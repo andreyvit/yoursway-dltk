@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<project name="Watch Feed" default="setup" basedir=".">
+	<target name="setup">
+		<echo message="Extracting org.eclipse.releng.services.rss.RSSFeedWatcherTask from CVS..."/>
+		<cvs cvsrsh="ssh" cvsroot=":pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse"
+			passfile="/dev/null"
+			reallyquiet="true"
+			command="export"
+			tag="releng_test"
+			package="org.eclipse.releng.basebuilder/plugins/org.eclipse.build.tools"
+			dest="."/>
+		<move file="org.eclipse.releng.basebuilder/plugins/org.eclipse.build.tools/feedTools.jar" todir="."/>
+		<delete dir="org.eclipse.releng.basebuilder"/>
+		<echo message="RSSFeedWatcherTask extracted to ./feedTools.jar"/>		
+	</target>
+</project>

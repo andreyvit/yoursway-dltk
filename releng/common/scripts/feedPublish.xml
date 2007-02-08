@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+
+<project name="Create/Update + Publish Feed" default="publishFeed" basedir=".">
+	<taskdef name="PublishFeed" classname="org.eclipse.releng.services.rss.RSSFeedPublisherTask"    classpath="./feedTools.jar"/>
+	<taskdef name="AddEntry"    classname="org.eclipse.releng.generators.rss.RSSFeedAddEntryTask"   classpath="./feedTools.jar"/>
+
+	<!-- run from shell like this:
+	
+		#!/bin/bash
+		
+		export JAVA_HOME=/opt/sun-java2-5.0;
+		export ANT_HOME=/home/www-data/apache-ant-1.6.5;
+		CLASSPATH="$JAVA_HOME/lib/rt.jar";
+		CLASSPATH=$CLASSPATH":"$ANT_HOME/lib/ant.jar":"$ANT_HOME/lib/ant-launcher.jar;
+		
+		cmd="$JAVA_HOME/bin/java -Dant.home=$ANT_HOME -Dant.library.dir=$JAVA_HOME/lib -classpath $CLASSPATH org.apache.tools.ant.launch.Launcher"
+		cmd=$cmd" -buildfile feedPublish.$projectName.xml -propertyfile feedPublish.$projectName.properties"
+		cmd=$cmd" -Dbranch=$branch -DbuildID=$buildID -DbuildAlias=$buildAlias -DbuildType="${buildID:0:1};
+		cmd=$cmd" -DdependencyURLs=$dependencyURLs -Ddebug=$debug";
+		echo ""; echo $cmd | sed -e "s/ \-/#  \-/g" -e "s/.jar:/.jar#    :/g" | tr "#" "\n"; echo "";
+		$cmd;
+
+	-->
+	
+	<target name="publishFeed">		
+		<antcall target="addEntry"/>
+		<antcall target="publishFeedToCVS"/>
+		<antcall target="publishFeedWithSCP"/>
+	</target>
+
+	<target name="addEntry">
+		<!-- 1. Add an entry (and create the feed if it doesn't already exist) -->
+		<AddEntry 
+			debug="${debug}" 
+			file="${file}" 
+
+			project="${project}"
+			version="${version}"
+			branch="${branch}"
+			buildID="${buildID}"
+			buildtype="${buildType}"
+			feedURL="${feedURL}"
+			buildURL="${buildURL}"
+
+			buildAlias="${buildAlias}"
+			
+			buildDetailURL="${buildDetailURL}"
+			buildConfigURL="${buildConfigURL}"
+			buildLogURL="${buildLogURL}"
+			buildMapURL="${buildMapURL}"
+			
+			dependencyURLs="${dependencyURLs}"
+			releases="${Releases}"
+			
+			releaseNotesURL="${releaseNotesURL}"
+			updateManagerURL="${updateManagerURL}"
+			downloadsURL="${downloadsURL}"
+			jarSigningStatus="${jarSigningStatus}"
+			coordinatedStatus="${coordinatedStatus}"
+			coordinatedDetails="${coordinatedDetails}"
+			
+			JUnitTestURL="${JUnitTestURL}"
+			performanceTestURL="${performanceTestURL}"
+			APITestURL="${APITestURL}"
+			JUnitTestResults="${JUnitTestResults}"
+			performanceTestResults="${performanceTestResults}"
+			APITestResults="${APITestResults}"
+		/>
+	</target>
+
+	<!-- 2. Publish feed: commit file into CVS - overwrite existing and add if necessary -->
+	<target name="publishFeedToCVS">
+		<PublishFeed 
+			debug="${debug}" 
+			file="${file}" 
+			
+			cvsExec="${cvsExec}"
+			cvsRoot="${cvsRoot}"
+			cvsPath="${cvsPath}"
+			cvsTemp="${cvsTemp}"
+		/>
+		<delete dir="${cvsTemp}"/>
+	</target>
+
+	<!-- 3. Publish feed: SCP file to remote server, overwriting existing if exists -->
+	<target name="publishFeedWithSCP">
+		<PublishFeed 
+			debug="${debug}" 
+			file="${file}" 
+			
+			scpExec="${scpExec}"
+			scpTarget="${scpTarget}"
+			sshExec="${sshExec}"
+		/>
+	</target>	
+
+</project>
