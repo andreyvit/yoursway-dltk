@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<response xmlns="urn:debugger_protocol" command="context_get" transaction_id="29" context_id="0">
+	<property name="{0}"
+	          fullname="{1}" 
+	          type="{2}" 
+	          size="{3}"
+	          children="{4}"
+	          encoding="base64"><![CDATA[NDM=]]></property>
+</response>

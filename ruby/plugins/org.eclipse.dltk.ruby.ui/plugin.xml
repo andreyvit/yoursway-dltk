@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	 <extension
+	     point="org.eclipse.ui.editors">
+	  <editor
+	        class="org.eclipse.dltk.ruby.internal.ui.editor.RubyEditor"
+	        contributorClass="org.eclipse.dltk.internal.ui.editor.SourceModuleEditorActionContributor"
+	        default="true"
+	        extensions="rb"
+	        icon="icons/ruby_obj.gif"
+	        id="org.eclipse.dltk.ruby.ui.editor.RubyEditor"
+	        name="DLTK Ruby Editor"/>
+	 </extension>   
+   
+	<extension
+	  id="org.eclipse.dltk.ruby.ui.editor.DocumentSetupParticipant"
+	  name="%documentSetupParticipantName"
+	  point="org.eclipse.core.filebuffers.documentSetup">
+		<participant extensions="rb" 
+			class="org.eclipse.dltk.ruby.internal.ui.editor.RubyDocumentSetupParticipant">
+	   		</participant>
+	</extension>
+	
+	<extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.dltk.ruby.ui"
+            name="DLTK Ruby"
+            >
+      </category>
+      <wizard
+            category="org.eclipse.dltk.ruby.ui"
+            class="org.eclipse.dltk.ruby.internal.ui.wizards.RubyProjectCreationWizard"
+            finalPerspective="org.eclipse.dltk.ruby.ui.RubyPerspective"
+            icon="icons/ruby_16_16.gif"
+            id="org.eclipse.dltk.ruby.internal.ui.wizards.RubyProjectWizard"
+            name="Ruby Project"
+            preferredPerspectives="org.eclipse.dltk.ruby.ui.RubyPerspective"
+            project="true">
+         <description>
+            Creates new Ruby Project.
+         </description>
+      </wizard>
+      
+      <wizard
+             category="org.eclipse.dltk.ruby.ui"
+             class="org.eclipse.dltk.ruby.internal.ui.wizards.RubyFileCreationWizard"
+             icon="icons/ruby_obj.gif"
+             id="org.eclipse.dltk.ruby.internal.ui.wizards.RubyFileCreationWizard"
+             name="%NewRubyFile.label">
+          <description>
+          	Creates new Ruby Source File.
+          </description>
+       </wizard>
+      
+	</extension>
+    <extension point="org.eclipse.core.runtime.preferences">
+        <initializer class="org.eclipse.dltk.ruby.internal.ui.RubyUIPreferenceInitializer"/>
+    </extension>
+    <extension
+       point="org.eclipse.ui.preferencePages">    
+       <page
+	          class="org.eclipse.dltk.ruby.internal.ui.preferences.RubyGlobalPreferencesPage"
+	          id="org.eclipse.dltk.ruby.ui.ruby"
+	          name="DLTK Ruby"/>
+		<page
+	          category="org.eclipse.dltk.ruby.ui.ruby"
+	          class="org.eclipse.dltk.ruby.internal.ui.preferences.RubyEditorPreferencesPage"
+	          id="org.eclipse.dltk.ruby.ui.EditorPreferences"
+	          name="Editor"/>
+	    <page
+	          category="org.eclipse.dltk.ruby.ui.EditorPreferences"
+	          class="org.eclipse.dltk.ruby.internal.ui.preferences.RubyEditorSyntaxColoringPreferencePage"
+	          id="org.eclipse.dltk.ruby.ui.editor.SyntaxColoring"
+	          name="Syntax Coloring"/>	          
+    </extension>
+    
+    <extension point="org.eclipse.ui.views">
+    <view
+            name="%RubyDocumentationView"
+            icon="$nl$/icons/ruby_16_16.gif"
+            category="org.eclipse.dltk.ruby.ui"
+            class="org.eclipse.dltk.ruby.internal.ui.infoviews.RubyDocumentationView"
+            id="org.eclipse.dltk.ruby.ui.RubyDocumentationView">
+      </view>  
+      <category
+            id="org.eclipse.dltk.ruby.ui"
+            name="DLTK Ruby"
+            >
+    </category> 
+    </extension>
+    
+ <extension
+       point="org.eclipse.ui.perspectives">
+    <perspective
+          class="org.eclipse.dltk.ruby.internal.ui.RubyPerspective"
+          icon="icons/ruby_16_16.gif"
+          id="org.eclipse.dltk.ruby.ui.RubyPerspective"
+          name="%RubyPerspectiveName"/>
+ </extension>    
+ <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            name="%context.editingRubySource.name"
+            description="%context.editingRubySource.description"
+            parentId="org.eclipse.dltk.ui.scriptEditorScope"
+            id="org.eclipse.dltk.ui.rubyEditorScope">
+      </context>
+  </extension>
+  
+  <!-- Code completion --> 
+  	<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="RubyTypeCompletionProposalComputer">
+		<scriptCompletionProposalComputer 
+			class="org.eclipse.dltk.ruby.internal.ui.text.completion.RubyTypeCompletionProposalComputer"
+			categoryId="org.eclipse.dltk.ui.scriptTypeProposalCategory"
+			toolkitId="org.eclipse.dltk.ruby.core.nature">
+			<partition type="__dftl_partition_content_type"/>
+		</scriptCompletionProposalComputer>	
+	</extension> 
+
+<extension
+       point="org.eclipse.dltk.ui.language">
+    <language
+          class="org.eclipse.dltk.ruby.internal.ui.RubyUILanguageToolkit"
+          nature="org.eclipse.dltk.ruby.core.nature"/>
+ </extension>   
+	
+	<extension
+        point="org.eclipse.dltk.ui.scriptDocumentationProviders">
+     <provider
+           class="org.eclipse.dltk.ruby.internal.ui.documentation.RubyDocumentationProvider"
+           id="org.eclipse.dltk.ruby.ui.RubyDocumentationProvider"
+           nature="org.eclipse.dltk.ruby.core.nature"/>
+  </extension>
+  
+</plugin>

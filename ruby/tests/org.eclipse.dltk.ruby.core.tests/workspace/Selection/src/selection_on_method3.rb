@@ -1,0 +1,4 @@
+megathing
+
+def megathing
+end

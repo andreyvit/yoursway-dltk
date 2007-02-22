@@ -1,0 +1,44 @@
+
+Customer
+MyCustomer
+  pay(amount)
+
+Foo
+  (const) FUCK
+    fuck
+    
+  @@foo
+  (static) @foo
+  @foo
+  
+  (attr) foo/foo=
+  
+  initialize(a)
+  bar
+  self.bar
+  fubar
+  Foo.fubar
+  (...).xxx
+
+  (singleton class) << self
+    boz
+    self.boz
+    
+  Foo (in Foo)
+    self.foo
+    
+Foo                              Foo.mega
+  self.mega                        Foo.verygood
+    Foo
+      self.verygood 
+    
+(::Foo).good
+
+test(x, &block)
+
+Fixnum
+  old_plus  =  +
+  +(z)
+  mega(a,b,c=nil,d=nil,*args,&block)
+  
+SuperFoo

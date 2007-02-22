@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<response xmlns="urn:debugger_protocol" command="property_get" transaction_id="0">
+	<property
+	    name="{0}"
+	    fullname="{1}"
+	    type="{2}"
+	    classname="name_of_object_class"
+	    constant="1"
+	    children="1"
+	    size="21312"
+	    page="3"
+	    pagesize="213"
+	    address="123"
+	    key="language_dependent_key"
+	    encoding="base64"
+	    numchildren="0"/>
+</response>

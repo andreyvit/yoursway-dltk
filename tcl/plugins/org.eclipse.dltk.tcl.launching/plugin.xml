@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.dltk.launching.interpreterInstallTypes">
+          <interpreterInstallType
+            class="org.eclipse.dltk.tcl.internal.launching.GenericTclInstallType"
+            id="org.eclipse.dltk.internal.debug.ui.launcher.GenericTclInstallType">
+      </interpreterInstallType>   
+   </extension>
+  
+   <extension
+         point="org.eclipse.dltk.console.scriptInterpreter">
+      <scriptInterpreter
+            class="org.eclipse.dltk.tcl.console.TclInterpreter"
+            natureID="org.eclipse.dltk.tcl.core.nature"/>
+   </extension>
+  
+  <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+         <launchConfigurationType
+               delegate="org.eclipse.dltk.tcl.launching.TclLaunchConfigurationDelegate"
+               id="org.eclipse.dltk.tcl.launching.TCLLaunchConfigurationType"
+               modes="run,debug"
+               name="TCL Script"
+               public="true"
+               sourceLocatorId="tclSourceLocator"
+               sourcePathComputerId="tclSourcePathComputer">
+		  </launchConfigurationType>
+         <!--launchConfigurationType
+               delegate="org.eclipse.dltk.tcl.launching.TclLaunchConfigurationDelegate"
+               id="org.eclipse.dltk.tcl.launching.TCLRemoteLaunchConfigurationType"
+               modes="debug"
+               name="Remote TCL Script"
+               public="true">
+         </launchConfigurationType-->         
+   </extension>
+  <extension
+        point="org.eclipse.debug.core.sourcePathComputers">
+     <sourcePathComputer
+           class="org.eclipse.dltk.internal.launching.TclSourcePathComputer"
+           id="tclSourcePathComputer"/>
+  </extension>
+  <extension
+        point="org.eclipse.debug.core.sourceLocators">
+     <sourceLocator
+           class="org.eclipse.dltk.internal.launching.TclSourceLookupDirector"
+           id="tclSourceLocator"
+           name="org.eclipse.dltk.tcl.launching.tclSourceLocator"/>
+  </extension>
+  
+
+
+</plugin>

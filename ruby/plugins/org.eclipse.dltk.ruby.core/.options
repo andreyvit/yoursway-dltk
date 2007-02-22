@@ -1,0 +1,2 @@
+org.eclipse.dltk.ruby.core/parsing/traceRecoveryWhenInterpretingAST = false
+org.eclipse.dltk.ruby.core/typeInferencing/traceEvaluationVisits = false

@@ -1,0 +1,183 @@
+<project name="Build specific targets and properties" default="noDefault" basedir=".">
+
+	<!-- ===================================================================== -->
+	<!-- Run a given ${target} on all elements being built -->
+	<!-- ===================================================================== -->
+	<target name="allElements">
+		<ant antfile="${genericTargets}" target="${target}">
+			<property name="type" value="feature" />
+			<property name="id" value="org.eclipse.dltk.${subprojectName}.sdk" />
+		</ant>
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Targets to assemble the built elements for particular configurations  -->
+	<!-- These generally call the generated assemble scripts (named in -->
+	<!-- ${assembleScriptName}) but may also add pre and post processing -->
+	<!-- Add one target for each root element and each configuration -->
+	<!-- ===================================================================== -->
+
+	<target name="assemble.org.eclipse.dltk.tcl.sdk">
+		<property name="archiveName" value="dltk-${subprojectName}-SDK-${buildAlias}.zip" />
+		<ant antfile="${assembleScriptName}" />
+		<!-- ADD POST STEPS -->
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Check out map files from correct repository -->
+	<!-- Replace values for cvsRoot, package and mapVersionTag as desired. -->
+	<!-- ===================================================================== -->
+	<target name="checkLocal">
+		<available property="mapsLocal" file="${buildDirectory}/maps" />
+	</target>
+
+	<target name="getMapFiles" depends="checkLocal" unless="mapsLocal">
+
+		<!-- ***  change the repo info -->
+		<property name="mapCvsRoot" value=":${cvsReadProtocol}:${cvsReadUser}@${cvsHost}:${cvsRep}" />
+
+		<property name="mapVersionTag" value="HEAD" />
+
+		<cvs cvsRsh="ssh" cvsRoot="${mapCvsRoot}" tag="${mapVersionTag}" 
+			package="org.eclipse.dltk/releng/${subprojectName}/maps" dest="${buildDirectory}/maps" />
+		<copy todir="${buildDirectory}/maps/CVS" overwrite="true">
+			<fileset dir="${buildDirectory}/maps/org.eclipse.dltk/releng/${subprojectName}/maps/CVS" />
+		</copy>
+		<copy todir="${buildDirectory}/maps" overwrite="true">
+			<fileset dir="${buildDirectory}/maps/org.eclipse.dltk/releng/${subprojectName}/maps" />
+		</copy>
+		<delete dir="${buildDirectory}/maps/org.eclipse.dltk/releng/${subprojectName}" />
+
+		<!--tag the map files project-->
+		<antcall target="tagMapFiles" />
+	</target>
+
+	<target name="tagMapFiles" if="tagMaps">
+		<cvs cvsRsh="ssh" dest="${buildDirectory}/maps" command="tag v${timestamp}" />
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do before setup -->
+	<!-- ===================================================================== -->
+	<target name="preSetup">
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do after setup but before starting the build proper -->
+	<!-- ===================================================================== -->
+	<target name="postSetup">
+		<echo message="Download, then unpack: Eclipse Platform SDK + DLTK Core SDK..."/>
+		<ant target="getDependency" antfile="${buildDirectory}/../org.eclipse.dltk.common.releng/scripts/getDependencies.xml">
+			<property name="url" value="${eclipseURL}"/>
+			<property name="file" value="${eclipseFile}"/>
+			<property name="isUnpackedFile" value="${buildDirectory}/plugins/org.eclipse.platform.doc.isv/plugin.xml" />
+		</ant>
+		<ant target="getDependency" antfile="${buildDirectory}/../org.eclipse.dltk.common.releng/scripts/getDependencies.xml">
+			<property name="url" value="${dltkURL}"/>
+			<property name="file" value="${dltkFile}"/>
+			<property name="isUnpackedFile" value="${buildDirectory}/plugins/org.eclipse.dltk.core/plugin.xml"/>
+		</ant>
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do before fetching the build elements -->
+	<!-- ===================================================================== -->
+	<target name="preFetch">
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do after the fetch -->
+	<!-- ===================================================================== -->
+	<target name="postFetch">
+		<replace dir="${buildDirectory}/plugins" value="${timestamp}" token="@buildid@">
+			<include name="**/about.mappings" />
+		</replace>
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do before generating build scripts -->
+	<!-- ===================================================================== -->
+	<target name="preGenerate">
+		<property name="projBuilderDir" location="${buildDirectory}/../org.eclipse.dltk/releng/${subprojectName}" />
+		<echo message="Run ChangeBundleClasspath in bundlesDirectory: ${buildDirectory}/plugins" />
+		<echo message="projBuilderDir: ${projBuilderDir}" />
+	
+		<java classname="org.eclipse.dltk.common.build.ChangeBundleClasspath" 
+			classpath="${projBuilderDir}/org.eclipse.dltk.common.build/dltk.common.build.jar">
+				<arg line="-bundleDirectoryMatchRegex org\.eclipse\.dltk\.tcl.*"/>
+				<arg line="-bundlesDirectory ${buildDirectory}/plugins" />
+				<arg line="-verbose" />
+		</java>
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do after generating the build scripts -->
+	<!-- ===================================================================== -->
+	<target name="postGenerate">
+		<antcall target="clean" />
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do before assembling -->
+	<!-- ===================================================================== -->
+	<target name="preAssemble">
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do after assembling-->
+	<!-- ===================================================================== -->
+	<target name="postAssemble">
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do before running the build.xmls for the elements being built. -->
+	<!-- ===================================================================== -->
+	<target name="preProcess">
+		<replace dir="${buildDirectory}/plugins" value="${timestamp}" token="@build@">
+			<include name="**/about.mappings" />
+		</replace>
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do after running the build.xmls for the elements being built. -->
+	<!-- ===================================================================== -->
+	<target name="postProcess">
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do after everything is built and assembled -->
+	<!-- (e.g., testing, posting, emailing, ...) -->
+	<!-- ===================================================================== -->
+	<target name="postBuild">
+		<antcall target="gatherLogs" />
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Helper targets -->
+	<!-- ===================================================================== -->
+	<target name="gatherLogs">
+		<mkdir dir="${buildDirectory}/${buildLabel}/compilelogs" />
+		<antcall target="allElements">
+			<param name="target" value="gatherLogs" />
+		</antcall>
+
+		<unzip dest="${buildDirectory}/${buildLabel}/compilelogs" overwrite="true">
+			<fileset dir="${buildDirectory}/features/org.eclipse.dltk.${subprojectName}.sdk">
+				<include name="*.log.zip" />
+			</fileset>
+		</unzip>
+	</target>
+	<target name="clean" unless="noclean">
+		<antcall target="allElements">
+			<param name="target" value="cleanElement" />
+		</antcall>
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Default target                                                        -->
+	<!-- ===================================================================== -->
+	<target name="noDefault">
+		<echo message="You must specify a target when invoking this file" />
+	</target>
+
+</project>

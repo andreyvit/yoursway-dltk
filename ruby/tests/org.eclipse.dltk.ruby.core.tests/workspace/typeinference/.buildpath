@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+    <buildpathentry kind="src" path="deptracking"/>
+    <buildpathentry kind="src" path="simple"/>
+    <buildpathentry kind="src" path="statements"/>
+</buildpath>

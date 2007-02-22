@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.dltk.launching">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.dltk.launching" id="interpreterInstallTypes" name="Script interpreter Install Types"/>
+      </appInfo>
+      <documentation>
+         This extension point represents different kinds of Script runtime environments and development kits.
+Each extension must implement &lt;code&gt;org.eclipse.dltk.launching.IInterpreterInstallType&lt;/code&gt;. 
+An &lt;code&gt;IInterpreterInstallType&lt;/code&gt; is responsible for creating and managing a set of instances of its corresponding &lt;code&gt;IInterpreterInstall&lt;/code&gt; class.
+Through creating different &lt;code&gt;IInterpreterInstall&lt;/code&gt; objects, an &lt;code&gt;IInterpreterInstallType&lt;/code&gt; allows for specific behaviour for various Script interpreters.
+A UI for managing &lt;code&gt;IInterpreterInstall&lt;/code&gt;s is provided by the Script Debug UI plug-in.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="interpreterInstallType" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="interpreterInstallType">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique identifier that can be used to reference this IInterpreterInstallType.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the class that implements this interpreter install type.  The class must implement IInterpreterInstallType.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.dltk.launching.AbstractInterpreterInstallType"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2000, 2005 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made 
+available under the terms of the Eclipse Public License v1.0 which 
+accompanies this distribution, and is available at 
+&lt;a href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

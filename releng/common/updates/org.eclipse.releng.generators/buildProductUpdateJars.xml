@@ -1,0 +1,62 @@
+<project name="Build Update Jars" default="run" basedir=".">
+
+    <!-- # $Id: buildProductUpdateJars.xml,v 1.3 2007/02/22 08:40:14 asobolev Exp $ -->
+
+	<!-- defaults, override when calling this via shell script -->
+    <property file="label.properties" />
+    <property name="workingDir" value="${basedir}/updateJars" />
+    <property name="dropDir" value="${dropDir}" />
+    <property name="site" value="${basedir}/../site" />
+    <property name="sitexml" value="site.xml" />
+    <property name="debug" value="0" />
+    <property name="fourthPart" value="add4thPart" />
+    <property name="base.builder" value="${basedir}/../org.eclipse.releng.basebuilder" />
+    <!-- requires the following properties to be passed in via commandline: 
+      	projectName=emft
+      	subprojectName=ocl
+    -->
+
+    <target name="run">
+	<!-- to regenerate productUpdateBuilder.jar:
+	cd ~/tmp/buildUpdate.sh-nickb/1/org.eclipse.releng.generators;
+	javac -classpath ~/tmp/buildUpdate.sh-nickb/1/org.eclipse.releng.generators/buildTools.jar:. ProductUpdateBuilder.java;
+	jar cvf productUpdateBuilder.jar org/*
+
+	or, in Eclipse, create a java project and copy the contents of org.eclipse.releng.generators into it,
+	then run buildProductUpdateBuilderJar.xml
+	-->
+
+       <echo message="Running ${projectName} ${subprojectName} ProductUpdateBuilder ..." />
+       <!--
+       <echo message="** basedir        = ${basedir}" />
+       <echo message="** dropDir        = ${dropDir}" />
+       <echo message="** site           = ${site}" />
+       <echo message="** base.builder   = ${base.builder}" />
+       -->
+       <echo message="org.eclipse.releng.generators.ProductUpdateBuilder"/>
+       <echo message="  -${fourthPart} -root ${workingDir}/eclipse -build ${timestamp} -buildDesc ${buildDesc} -site ${workingDir}/site -sitexml ${sitexml} -projectName ${projectName} -subprojectName ${subprojectName} -debug ${debug}" />
+       <echo message="Requires: ${base.builder}/plugins/org.eclipse.osgi.jar (renamed from *_x.y.z.jar)"/>
+       <move todir="${base.builder}/plugins">
+		<fileset dir="${base.builder}/plugins"><include name="**/org.eclipse.osgi*.jar"/></fileset>
+    	<mapper type="regexp" from="org.eclipse.osgi_.*\.jar" to="org.eclipse.osgi.jar"/>
+	   </move>
+       <java classname="org.eclipse.releng.generators.ProductUpdateBuilder" >
+         <arg     line="-${fourthPart} -root ${workingDir}/eclipse -build ${timestamp} -buildDesc ${buildDesc} -site ${workingDir}/site -sitexml ${sitexml} -projectName ${projectName} -subprojectName ${subprojectName} -debug ${debug}" />
+         <classpath>
+           <pathelement location="${base.builder}/plugins/org.eclipse.osgi.jar"/>
+           <pathelement location="${basedir}/productUpdateBuilder.jar"/>
+           <pathelement location="${basedir}/buildTools.jar"/>
+           <pathelement location="${basedir}"/>
+          </classpath>
+       </java>
+
+       <echo message="Copy ${sitexml} for cvs check-in" />
+       <echo message="Resulting folder: ${site}" />
+       <copy todir="${site}" file="${workingDir}/site/${sitexml}" />
+
+       <echo message="Update Manager jars and ${sitexml} ready for upload in ${workingDir}/site"/>
+       <echo message="${sitexml} ready for CVS commit in ${site}"/>
+
+    </target>
+
+</project>

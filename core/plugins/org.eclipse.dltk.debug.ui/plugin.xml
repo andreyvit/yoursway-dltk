@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+<!-- Extensions Points -->
+   <extension-point id="interpreterInstallTypePage" name="%interpreterInstallTypePage" schema="schema/interpreterInstallTypePage.exsd"/>
+
+<!-- Extensions -->
+
+ <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.debug.ui.launchActionSet">
+         <part
+               id="org.eclipse.dltk.ui.ScriptExplorer">
+         </part>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.debug.ui.DLTKDebugActionSet">
+      	<part
+           id="org.eclipse.dltk.ui.ScriptExplorer">
+        </part>
+      </actionSetPartAssociation>
+  </extension>
+ <!-- Adapters for contextual launch -->
+	<extension point="org.eclipse.core.runtime.adapters">
+         <factory 
+            class="" 
+            adaptableType="org.eclipse.dltk.core.IModelElement">
+            <adapter type="org.eclipse.debug.ui.actions.ILaunchable"/>
+         </factory>
+         <factory 
+            class="" 
+            adaptableType="org.eclipse.core.resources.IResource">
+            <adapter type="org.eclipse.debug.ui.actions.ILaunchable"/>
+         </factory>
+         <factory 
+            class="" 
+            adaptableType="org.eclipse.dltk.internal.ui.editor.ExternalStorageEditorInput">
+            <adapter type="org.eclipse.debug.ui.actions.ILaunchable"/>
+         </factory>
+         <factory
+          adaptableType="org.eclipse.dltk.internal.ui.editor.DLTKEditor"
+          class="org.eclipse.dltk.internal.debug.ui.DltkRetargettableActionAdapterFactory">
+       <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
+       <adapter
+             type="org.eclipse.debug.ui.actions.IRunToLineTarget">
+       </adapter>
+    </factory>         
+    </extension>
+ <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="%DebugActionSet.label"
+            visible="false"
+            id="org.eclipse.dltk.debug.ui.DLTKDebugActionSet">
+         <menu
+               label="%RunMenu.label"
+               path="additions"
+               id="org.eclipse.ui.run">
+            <separator
+                  name="dltkGroup">
+            </separator>
+         </menu>  
+       </actionSet>
+ </extension>
+ <extension
+       point="org.eclipse.ui.propertyPages">
+    <page
+          class="org.eclipse.dltk.debug.ui.ScriptBreakpointPropertyPage"
+          id="org.eclipse.dltk.debug.ui.ScriptBreakpointPropertyPage"
+          name="Breakpoint properties"
+          objectClass="org.eclipse.dltk.debug.core.model.IScriptBreakpoint"/>
+ </extension>
+ 
+    <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            name="DLTK Debugging"
+            description="DLTK Debugging description"
+            id="org.eclipse.dltk.debug.ui.debugging"
+            parentId="org.eclipse.debug.ui.debugging">
+      </context>
+   </extension>
+ 
+ <extension point="org.eclipse.debug.ui.debugModelContextBindings">
+	<modelContextBinding contextId="org.eclipse.dltk.debug.ui.debugging" debugModelId="org.eclipse.dltk.debug.core.model"></modelContextBinding>
+ </extension>   
+   
+ <extension
+       point="org.eclipse.debug.core.statusHandlers">
+    <statusHandler
+          class="org.eclipse.dltk.internal.debug.ui.DbgpServiceNotAvailableStatusHandler"
+          code="200"
+          id="org.eclipse.dltk.internal.debug.ui.DbgpServiceNotAvailableStatusHandler"
+          plugin="org.eclipse.dltk.launching">
+    </statusHandler>
+    <statusHandler
+          class="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotStartedStatusHandler"
+          code="201"
+          id="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotStartedStatusHandler"
+          plugin="org.eclipse.dltk.launching">
+    </statusHandler>
+    <statusHandler
+          class="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotConnectedStatusHandler"
+          code="202"
+          id="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotConnectedStatusHandler"
+          plugin="org.eclipse.dltk.launching">
+    </statusHandler>
+ </extension>
+ <extension
+       point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">
+		<view
+			relative="org.eclipse.debug.ui.DebugView"
+			visible="false"
+			relationship="stack"
+			id="org.eclipse.dltk.ui.ScriptExplorer">
+		</view> 
+	</perspectiveExtension>
+ </extension>
+</plugin>

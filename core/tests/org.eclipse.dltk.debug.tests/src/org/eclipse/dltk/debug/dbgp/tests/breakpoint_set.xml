@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<response xmlns="urn:debugger_protocol" 
+          command="breakpoint_set" 
+          transaction_id="{0}" 
+          state="{1}" 
+          id="{2}" />

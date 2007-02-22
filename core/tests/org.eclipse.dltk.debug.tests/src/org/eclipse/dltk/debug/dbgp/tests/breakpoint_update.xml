@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<response xmlns="urn:debugger_protocol" 
+		  command="breakpoint_update" 
+		  transaction_id="13" 
+		  id="0" 
+		  type="line" 
+		  state="enabled" 
+		  lineno="8" 
+		  filename="file:///C:%5Cprogramming%5Ceclipse%5Cruntime-New_configuration(Test)%5CTestTcl%5Ctest.tcl" 
+		  temporary="0" 
+		  hit_value="0" 
+		  hit_condition="&gt;=" 
+		  hit_count="0" />

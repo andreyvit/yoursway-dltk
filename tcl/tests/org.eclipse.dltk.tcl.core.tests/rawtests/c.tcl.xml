@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script>
+<command start="0" end="8">
+<word start="0" end="2" text="set">
+<string text="set"/>
+</word>
+<word start="4" end="5" text="a&quot;">
+<string text="a&quot;"/>
+</word>
+<word start="7" end="8" text="34">
+<string text="34"/>
+</word>
+</command>
+</script>

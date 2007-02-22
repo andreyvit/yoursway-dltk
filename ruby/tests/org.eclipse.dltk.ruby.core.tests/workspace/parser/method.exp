@@ -1,0 +1,18 @@
++ModuleDeclaration@[А,Я]
+  +Block@[0,-1]
+    +RubySingletonMethodDeclaration@[Б,Я][Б,Д]
+      +ConstantReference@[Б,В]
+      -ConstantReference
+      +Argument@[Е,Ё][Е,Ё]
+      -Argument
+      +Argument@[Ж,З][Ж,З]
+      -Argument
+      +Argument@[И,К][И,К]
+      -Argument
+      +Block@[0,-1]
+        +NumericLiteral@[Л,М]
+        -NumericLiteral
+      -Block
+    -RubySingletonMethodDeclaration
+  -Block
+-ModuleDeclaration

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="tclcheckerproblem"
+         name="%TclChecker.MarkerName"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.core.resources.problemmarker"/>
+      <super type="org.eclipse.core.resources.textmarker"/>
+      <persistent value="true"/>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.eclipse.dltk.tcl.internal.tclchecker.TclCheckerPreferenceInitializer"/>
+   </extension>
+   <extension
+         id="tclcheckerbuilder"
+         name="%TclChecker.BuilderName"
+         point="org.eclipse.core.resources.builders">
+      <builder hasNature="true">
+         <run class="org.eclipse.dltk.tcl.internal.tclchecker.TclCheckerBuilder"/>
+      </builder>
+   </extension>
+   <extension
+         id="tclcheckernature"
+         name="%TclChecker.NatureName"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run class="org.eclipse.dltk.tcl.internal.tclchecker.TclCheckerNature"/>
+      </runtime>
+      <builder id="org.eclipse.dltk.tcl.tclchecker.tclcheckerbuilder"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.dltk.tcl.ui.tcl"
+            class="org.eclipse.dltk.tcl.internal.tclchecker.ui.preferences.TclCheckerPreferences"
+            id="org.eclipse.dltk.tcl.tclchecker.ui.preferences.TclCheckerPreferences"
+            name="%TclChecker.PreferencePage"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="false"
+            id="org.eclipse.dltk.tcl.tclchecker.builder.objectContribution2"
+            nameFilter="*"
+            objectClass="org.eclipse.dltk.core.IDLTKProject">
+         <visibility>
+            <not>
+               <objectState
+                     name="nature"
+                     value="org.eclipse.dltk.tcl.tclchecker.tclcheckernature"/>
+            </not>
+         </visibility>
+         <action
+               class="org.eclipse.dltk.tcl.internal.tclchecker.ui.actions.AddTclCheckerNature"
+               id="org.eclipse.dltk.tcl.tclchecker.builder.actions.AddTclCheckerNature"
+               label="%TclChecker.AddNature"
+               menubarPath="additions"/>
+      </objectContribution>
+      <objectContribution
+            adaptable="false"
+            id="org.eclipse.dltk.tcl.tclchecker.builder.objectContribution2"
+            nameFilter="*"
+            objectClass="org.eclipse.dltk.core.IDLTKProject">
+         <visibility>
+            <objectState
+                  name="nature"
+                  value="org.eclipse.dltk.tcl.tclchecker.tclcheckernature"/>
+         </visibility>
+         <action
+               class="org.eclipse.dltk.tcl.internal.tclchecker.ui.actions.RemoveTclCheckerNature"
+               id="org.eclipse.dltk.tcl.tclchecker.builder.actions.RemoveTclCheckerNature"
+               label="%TclChecker.RemoveNature"
+               menubarPath="additions"/>
+      </objectContribution>
+   </extension>
+   
+</plugin>

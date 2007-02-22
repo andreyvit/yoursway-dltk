@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="language" name="%language" schema="schema/language.exsd"/>
+   <extension-point id="buildpathContainerInitializer" name="buildpathContainerInitializer" schema="schema/buildpathContainerInitializer.exsd"/>
+
+<!-- =================================================================================== -->
+<!-- Extension: DLTK Problem                                                             -->
+<!-- =================================================================================== -->
+<extension id="problem" point="org.eclipse.core.resources.markers" name="%dltkProblemName">
+	<super type="org.eclipse.core.resources.problemmarker"/>
+	<super type="org.eclipse.core.resources.textmarker"/>
+	<persistent value="true"/>
+	<attribute name="id"/>
+	<attribute name="flags"/>
+	<attribute name="arguments"/>
+	<attribute name="categoryId"/>
+</extension>   
+
+<extension
+        id="runtime_problem"
+        name="%runtimeproblem"
+        point="org.eclipse.core.resources.markers">
+     <super type="org.eclipse.core.resources.problemmarker"/>
+     <super type="org.eclipse.core.resources.textmarker"/>
+     <persistent value="true"/>
+  </extension>
+
+<!-- =================================================================================== -->
+<!-- Extension: DLTK Buildpath Problem                                                   -->
+<!-- =================================================================================== -->
+<extension id="buildpath_problem" point="org.eclipse.core.resources.markers" name="%buildPathProblemName">
+	<super type="org.eclipse.core.resources.problemmarker"/>
+	<super type="org.eclipse.core.resources.textmarker"/>
+	<persistent value="true"/>
+	<attribute name ="cycleDetected"/>
+	<attribute name="id"/>
+	<attribute name="arguments"/>
+</extension>   
+
+<!-- =================================================================================== -->
+<!-- Extension: Script Transient Problem                                                   -->
+<!-- =================================================================================== -->
+<extension id="transient_problem" point="org.eclipse.core.resources.markers" name="%transientDLTKProblemName">
+	<super type="org.eclipse.core.resources.textmarker"/>
+	<persistent value="false"/>
+	<attribute name="id"/>
+	<attribute name="flags"/>
+	<attribute name="arguments"/>
+</extension>
+
+<extension 
+	point="org.eclipse.core.resources.builders" 
+	id="scriptbuilder"
+	name="%scriptBuilderName">
+	<builder>
+		<run class="org.eclipse.dltk.internal.core.builder.ScriptBuilder">
+		</run>
+	</builder>
+</extension>
+<extension
+      point="org.eclipse.core.runtime.preferences">
+   <initializer class="org.eclipse.dltk.internal.core.DLTKCorePreferenceInitializer"/>
+</extension>
+</plugin>

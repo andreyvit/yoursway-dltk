@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.releng.generators
+Bundle-SymbolicName: org.eclipse.releng.generators
+Bundle-Version: 1.0.0
+Bundle-Localization: plugin

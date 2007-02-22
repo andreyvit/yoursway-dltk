@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script>
+<command start="0" end="19">
+<word start="0" end="3" text="puts">
+<string text="puts"/>
+</word>
+<word start="5" end="19" text="[expr {$x + 1}]">
+<command text="[expr {$x + 1}]"/>
+</word>
+</command>
+<command start="24" end="31">
+<word start="24" end="27" text="puts">
+<string text="puts"/>
+</word>
+<word start="29" end="31" text="wow">
+<string text="wow"/>
+</word>
+</command>
+<command start="36" end="42">
+<word start="36" end="38" text="set">
+<string text="set"/>
+</word>
+<word start="40" end="40" text="y">
+<string text="y"/>
+</word>
+<word start="42" end="42" text="5">
+<string text="5"/>
+</word>
+</command>
+<command start="44" end="51">
+<word start="45" end="48" text="puts">
+<string text="puts"/>
+</word>
+<word start="50" end="51" text="$y">
+<variable start="50" end="51" kind="0" name="y"/>
+</word>
+</command>
+<command start="54" end="60">
+<word start="54" end="56" text="set">
+<string text="set"/>
+</word>
+<word start="58" end="58" text="y">
+<string text="y"/>
+</word>
+<word start="60" end="60" text="5">
+<string text="5"/>
+</word>
+</command>
+<command start="63" end="69">
+<word start="63" end="66" text="puts">
+<string text="puts"/>
+</word>
+<word start="68" end="69" text="$y">
+<variable start="68" end="69" kind="0" name="y"/>
+</word>
+</command>
+</script>

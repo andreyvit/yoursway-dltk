@@ -1,0 +1,19 @@
+<project name="Build Update Jars" default="run" basedir=".">
+  <target name="run">
+  	<delete dir="org" includeemptydirs="yes" quiet="yes"/>
+  	<delete dir="bin" includeemptydirs="yes" quiet="yes"/>
+    <delete file="${basedir}/productUpdateBuilder.jar"/>
+    <javac sourcepath="" srcdir="${basedir}" destdir="${basedir}" deprecation="on">
+      <include name="**/ProductUpdateBuilder.java" />
+      <classpath>
+        <pathelement location="org.eclipse.osgi_3.1.0.jar"/>
+        <pathelement location="buildTools.jar"/>
+      </classpath>
+    </javac>
+    <jar destfile="${basedir}/productUpdateBuilder.jar" basedir="${basedir}">
+      <include name="**/ProductUpdateBuilder*.*"/>
+    </jar>
+  	<delete dir="org" includeemptydirs="yes" quiet="yes"/>
+  	<delete dir="bin" includeemptydirs="yes" quiet="yes"/>
+  </target>
+</project>

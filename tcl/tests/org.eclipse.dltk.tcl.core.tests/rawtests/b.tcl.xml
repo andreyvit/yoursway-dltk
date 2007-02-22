@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script>
+<command start="0" end="29">
+<word start="0" end="7" text="variable">
+<string text="variable"/>
+</word>
+<word start="9" end="19" text="punctuation">
+<string text="punctuation"/>
+</word>
+<word start="21" end="29" text="{[&lt;&gt;#%&quot;]}">
+<braces text="{[&lt;&gt;#%&quot;]}"/>
+</word>
+</command>
+<command start="53" end="67">
+<word start="53" end="60" text="variable">
+<string text="variable"/>
+</word>
+<word start="62" end="64" text="bar">
+<string text="bar"/>
+</word>
+<word start="66" end="67" text="12">
+<string text="12"/>
+</word>
+</command>
+</script>

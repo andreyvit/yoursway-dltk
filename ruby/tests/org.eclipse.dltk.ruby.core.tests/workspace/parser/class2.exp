@@ -1,0 +1,24 @@
++ModuleDeclaration@[А,Я]
+  +Block@[0,-1]
+    +TypeDeclaration@[А,Г][Б,В]
+    -TypeDeclaration
+    +TypeDeclaration@[Н,Р][О,П]
+    -TypeDeclaration
+    +TypeDeclaration@[С,Ц][Т,У]
+      +Block@[Ф,Ь]
+        +NumericLiteral@[Ф,Ъ]
+        -NumericLiteral
+        +NumericLiteral@[Ю,Ь]
+        -NumericLiteral
+      -Block
+    -TypeDeclaration
+    +TypeDeclaration@[Д,М][Е,Ё]
+      +Block@[Ж,Э]
+        +TypeDeclaration@[Ж,Л][И,К]
+        -TypeDeclaration
+        +TypeDeclaration@[Ч,Э][Ш,Щ]
+        -TypeDeclaration
+      -Block
+    -TypeDeclaration
+  -Block
+-ModuleDeclaration

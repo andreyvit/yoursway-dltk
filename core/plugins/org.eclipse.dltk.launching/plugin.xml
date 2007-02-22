@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+<!-- Extension point definitions -->
+   <extension-point id="buildpathProviders" name="%buildpathProviders" schema="schema/buildpathProviders.exsd"/>
+   <extension-point id="runtimeBuildpathEntryResolvers" name="%runtimeBuildpathEntryResolvers" schema="schema/runtimeBuildpathEntryResolvers.exsd"/>
+   <extension-point id="runtimeBuildpathEntries" name="%runtimeBuildpathEntries" schema="schema/runtimeBuildpathEntries.exsd"/>
+   <extension-point id="debugConnectors" name="%debugConnectors" schema="schema/debugConnectors.exsd"/>
+   <extension-point id="interpreterInstallTypes" name="%interpreterInstallTypes" schema="schema/interpreterInstallTypes.exsd"/>
+   <extension-point id="interpreterInstalls" name="%interpreterInstalls" schema="schema/interpreterInstalls.exsd"/>
+
+  <extension
+        point="org.eclipse.dltk.launching.runtimeBuildpathEntryResolvers">
+     <runtimeBuildpathEntryResolver
+           class="org.eclipse.dltk.internal.launching.InterpreterRuntimeBuildpathEntryResolver"
+           container="org.eclipse.dltk.launching.INTERPRETER_CONTAINER"
+           id="org.eclipse.dltk.launching.runtimeBuildpathEntryResolver1"/>
+  </extension>
+  <extension point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="org.eclipse.dltk.internal.launching.DLTKLaunchableTester"
+            id="org.eclipse.dltk.launching.DLTKLaunchableTester"
+            namespace="org.eclipse.dltk.launching"
+            properties="isContainer, hasProjectNature, buildpathReference"
+            type="org.eclipse.core.runtime.IAdaptable"/>            
+   </extension>
+  <extension
+        point="org.eclipse.dltk.core.buildpathContainerInitializer">
+     <buildpathContainerInitializer
+           class="org.eclipse.dltk.internal.launching.InterpreterContainerInitializer"
+           id="org.eclipse.dltk.launching.INTERPRETER_CONTAINER"/>
+  </extension>
+</plugin>

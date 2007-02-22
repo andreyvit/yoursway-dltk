@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.dltk.launching.interpreterInstallTypes">
+          <interpreterInstallType
+            class="org.eclipse.dltk.ruby.internal.launching.GenericRubyInstallType"
+            id="org.eclipse.dltk.internal.debug.ui.launcher.GenericRubyInstallType">
+      </interpreterInstallType>   
+   </extension>
+  
+  <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+         <launchConfigurationType
+               delegate="org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationDelegate"
+               id="org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationType"
+               modes="run,debug"
+               name="Ruby Script"
+               public="true">
+		  </launchConfigurationType>         
+   </extension>
+</plugin>

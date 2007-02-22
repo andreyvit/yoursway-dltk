@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+    <buildpathentry kind="src" path="src1"/>
+    <buildpathentry kind="prj" path="/Buildpath1"/>
+    <buildpathentry kind="src" path="src3"/>
+</buildpath>

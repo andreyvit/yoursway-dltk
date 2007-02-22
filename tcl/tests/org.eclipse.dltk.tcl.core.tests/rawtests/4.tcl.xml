@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script>
+<command start="0" end="9">
+<word start="0" end="3" text="puts">
+<string text="puts"/>
+</word>
+<word start="5" end="9" text="&quot;wow&quot;">
+<quotes text="&quot;wow&quot;"/>
+</word>
+</command>
+</script>

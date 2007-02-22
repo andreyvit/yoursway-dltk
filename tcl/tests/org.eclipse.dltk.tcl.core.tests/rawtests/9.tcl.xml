@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script>
+<command start="0" end="8">
+<word start="0" end="3" text="puts">
+<string text="puts"/>
+</word>
+<word start="8" end="8" text="a">
+<string text="a"/>
+</word>
+</command>
+<command start="11" end="19">
+<word start="11" end="14" text="puts">
+<string text="puts"/>
+</word>
+<word start="16" end="19" text="\123">
+<normalbs text="\123"/>
+</word>
+</command>
+<command start="22" end="30">
+<word start="22" end="25" text="puts">
+<string text="puts"/>
+</word>
+<word start="27" end="30" text="\999">
+<normalbs text="\9"/>
+<string text="99"/>
+</word>
+</command>
+<command start="55" end="63">
+<word start="55" end="58" text="puts">
+<string text="puts"/>
+</word>
+<word start="60" end="63" text="\xFF">
+<normalbs text="\xFF"/>
+</word>
+</command>
+<command start="66" end="77">
+<word start="66" end="69" text="puts">
+<string text="puts"/>
+</word>
+<word start="71" end="77" text="\u12345">
+<normalbs text="\u1234"/>
+<string text="5"/>
+</word>
+</command>
+</script>

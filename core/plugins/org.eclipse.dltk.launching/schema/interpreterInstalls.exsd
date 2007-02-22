@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.dltk.launching">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.dltk.launching" id="interpreterInstalls" name="Script VM Installs"/>
+      </appInfo>
+      <documentation>
+         Allows specific configurations of Script runtime environments and development kits to be contributed to the Script development tooling.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="interpreterInstall" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="interpreterInstall">
+      <complexType>
+         <sequence>
+            <element ref="library" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Unique identifier for this interpreter install
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="interpreterInstallType" type="string" use="required">
+            <annotation>
+               <documentation>
+                  References a registered interpreter install type via the corresponding interpreterInstallType&apos;s id
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Human readable name for this interpreter install
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="home" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Path to the home installation directory for this interpreter install. Paths must be absolute and may use string substitution variables such as ${eclipse_home}.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="javadocURL" type="string">
+            <annotation>
+               <documentation>
+                  URL referencing the default javadoc location for all libraries in this interpreter install.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="interpreterArgs" type="string">
+            <annotation>
+               <documentation>
+                  Default interpreter arguments used when launching this interpreter install as they should appear on the command line.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="library">
+      <complexType>
+         <attribute name="path" type="string" use="required">
+            <annotation>
+               <documentation>
+                  File system path to a system library, relative to the interpreter install&apos;s home directory.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="sourcePath" type="string">
+            <annotation>
+               <documentation>
+                  File system path to the source archive associated with this libaray, relative to the interpreter install&apos;s home directory. When unspecified, this library has no source attachment.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="packageRootPath" type="string">
+            <annotation>
+               <documentation>
+                  Path within the source archive where package names begin. For example, if the source for java.lang.Object is located at &quot;src\java\lang\Object&quot; the package root path would be &quot;src&quot;. When unspecified the package root path is automatically detected.
+               </documentation>
+            </annotation>
+         </attribute>        
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         3.2
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         DLTK does not provide any specific interpreter installs.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>

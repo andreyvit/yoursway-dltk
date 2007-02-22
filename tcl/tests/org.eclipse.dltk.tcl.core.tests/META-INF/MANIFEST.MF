@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.dltk.tcl.core.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.dltk.tcl.core.tests.model.Activator
+Bundle-Vendor: %pluginProvider
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.dltk.core,
+ org.eclipse.dltk.core.tests,
+ org.eclipse.dltk.tcl.core,
+ org.junit,
+ org.eclipse.dltk.launching
+Eclipse-LazyStart: true
+Export-Package: org.eclipse.dltk.tcl.core.tests.model,
+ org.eclipse.dltk.tcl.parser.tests

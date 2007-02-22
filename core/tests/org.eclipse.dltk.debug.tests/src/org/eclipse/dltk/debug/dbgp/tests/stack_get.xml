@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<response xmlns="urn:debugger_protocol" 
+		  command="stack_get" 
+		  transaction_id="11" >
+	<stack level="0" 
+		   type="source" 
+		   filename="file:///C:/programming/eclipse/runtime%2dNew%5fconfiguration%28Test%29/TestTcl/test%2etcl" 
+		   lineno="8" 
+		   cmdbegin="8:0" 
+		   cmdend="8:3" />
+</response>

@@ -1,0 +1,71 @@
+# This is Comment
+Bar = Class.new
+puts Bar.name
+Boz = Bar
+puts Boz.name
+
+=begin
+= simple Ruby DOC
+
+= example
+	puts 20
+=end
+
+$a = 0
+
+Customer = Struct.new(:name, :address, :email)
+
+class MyCustomer < Struct.new(:name, :address, :email)
+  
+  def pay(amount)
+  	$a = $a + amount
+  end
+
+end
+
+class Foo
+
+  @@foo = 0
+  @foo = 0
+
+  attr_accessor :foo
+
+  def initialize(a)
+    @foo = a
+  end
+
+  def bar; @foo += 1; end
+
+  def self.bar
+    @foo += 1
+  end
+
+  def fubar
+    @@foo += 1
+  end
+
+  def Foo.fubar
+    @@foo += 1
+  end
+
+  class << self
+    
+    def boz
+      @foo += 1
+    end
+
+    def self.boz
+      puts "Secret area found!"
+    end
+
+  end
+
+  class Foo
+    
+    def self.foo
+      puts "Foo::Foo.foo called!"
+    end
+
+  end
+
+end

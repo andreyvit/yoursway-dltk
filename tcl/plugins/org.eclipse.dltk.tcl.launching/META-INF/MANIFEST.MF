@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.dltk.tcl.launching;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.dltk.tcl.launching.TclLaunchingPlugin
+Bundle-Vendor: %pluginProvider
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.debug.core,
+ org.eclipse.dltk.tcl.core,
+ org.eclipse.dltk.core,
+ org.eclipse.core.resources,
+ org.eclipse.jface.text,
+ org.eclipse.dltk.launching,
+ org.eclipse.dltk.console,
+ org.eclipse.dltk.debug,
+ org.eclipse.dltk.tcl.debug
+Eclipse-LazyStart: true
+Export-Package: org.eclipse.dltk.tcl.console,
+ org.eclipse.dltk.tcl.launching
+

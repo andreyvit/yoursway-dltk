@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script>
+<command start="8" end="51">
+<word start="12" end="20" text="namespace">
+<string text="namespace"/>
+</word>
+<word start="22" end="27" text="export">
+<string text="export"/>
+</word>
+<word start="45" end="51" text="OptProc">
+<string text="OptProc"/>
+</word>
+</command>
+<command start="57" end="88">
+<word start="61" end="64" text="proc">
+<string text="proc"/>
+</word>
+<word start="66" end="82" text="OptCreateTestProc">
+<string text="OptCreateTestProc"/>
+</word>
+<word start="84" end="85" text="{}">
+<braces text="{}"/>
+</word>
+<word start="87" end="88" text="{}">
+<braces text="{}"/>
+</word>
+</command>
+</script>

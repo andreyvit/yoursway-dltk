@@ -1,0 +1,893 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="dltkElementFilters" name="Dltk Element Filters"/>  
+   <extension-point id="buildpathContainerPage" name="%buildpathContainerPageExtensionPoint" schema="schema/buildpathContainerPage.exsd"/>
+   <extension-point id="scriptCompletionProposalComputer" name="%scriptCompletionProposalComputer" schema="schema/scriptCompletionProposalComputer.exsd"/>
+   <extension-point id="scriptCompletionProposalSorters" name="%scriptCompletionProposalSorters" schema="schema/scriptCompletionProposalSorters.exsd"/>
+   <extension-point id="editorTextHovers" name="%editorTextHovers" schema="schema/editorTextHovers.exsd"/>
+   <extension-point id="scriptDocumentationProviders" name="Script documentation providers" schema="schema/scriptDocumentationProviders.exsd"/>
+   <extension-point id="language" name="DLTK UI Language Toolkit" schema="schema/language.exsd"/>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.eclipse.dltk.internal.ui.preferences.PreferenceInitializer"/>      
+      <page name="%buildPathPrefName"
+			category="org.eclipse.dltk.preferences.DLTKBasePreferencePage"
+			class="org.eclipse.dltk.internal.ui.preferences.NewDLTKProjectPreferencePage"
+			id="org.eclipse.dltk.ui.preferences.BuildPathPreferencePage">
+		<keywordReference id="org.eclipse.dltk.ui.buildpathoptions"/>
+      </page>  
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.eclipse.dltk.core.IDLTKProject"
+            class="org.eclipse.dltk.internal.ui.DLTKProjectAdapterFactory">
+         <adapter type="org.eclipse.core.resources.IProject"/>
+      </factory>
+      <factory
+            adaptableType="org.eclipse.dltk.core.IModelElement"
+            class="org.eclipse.dltk.internal.ui.ModelElementAdapterFactory">
+            
+            <adapter type="org.eclipse.core.resources.IResource"/>
+            
+            <adapter type="org.eclipse.ui.IPersistableElement"/>
+            <adapter type="org.eclipse.ui.IContributorResourceAdapter"/>
+            <adapter type="org.eclipse.ui.ide.IContributorResourceAdapter2"/>
+            <adapter type="org.eclipse.ui.IContainmentAdapter"/>
+            
+            <adapter type="org.eclipse.search.ui.ISearchPageScoreComputer"/>
+            
+            <adapter type="org.eclipse.ui.model.IWorkbenchAdapter"/>
+            <adapter type="org.eclipse.ui.views.properties.IPropertySource"/>
+            <adapter type="org.eclipse.ui.views.tasklist.ITaskListResourceAdapter"/>
+            
+            <adapter type="org.eclipse.dltk.internal.ui.IResourceLocator"/>
+      </factory>
+      <factory 
+            class="org.eclipse.dltk.internal.ui.ResourceAdapterFactory" 
+            adaptableType="org.eclipse.core.resources.IResource">
+            <adapter type="org.eclipse.dltk.core.IModelElement"/>
+	  </factory>
+	  <factory 
+            class="org.eclipse.dltk.internal.ui.MarkerAdapterFactory" 
+            adaptableType="org.eclipse.core.resources.IMarker">
+            <adapter type="org.eclipse.search.ui.ISearchPageScoreComputer"/>
+		</factory>	  
+            
+   </extension>
+   <extension
+         point="org.eclipse.ui.elementFactories">
+      <factory
+            class="org.eclipse.dltk.internal.ui.PersistableModelElementFactory"
+            id="org.eclipse.dltk.ui.PersistableModelElementFactory">
+      </factory>
+   </extension>
+ <extension point="org.eclipse.ui.ide.markerSupport">
+      <markerTypeCategory name="%markerCategory.problem">
+         <markerTypeReference id="org.eclipse.dltk.core.problem"/>
+      </markerTypeCategory>
+      <markerTypeCategory name="%markerCategory.buildpath_problem">
+         <markerTypeReference id="org.eclipse.dltk.core.buildpath_problem"/>
+      </markerTypeCategory>
+      
+    <markerGrouping id="org.eclipse.dltk.ui.dltk_marker_category" label="%MarkerCategory.name"/>
+    <markerGroupingEntry id="org.eclipse.dltk.ui.category.buildpath"
+        markerGrouping="org.eclipse.dltk.ui.dltk_marker_category"
+        label="%MarkerCategory.buildpath"
+        priority="100"/>
+    <markerGroupingEntry id="org.eclipse.dltk.ui.category.fatal"
+        markerGrouping="org.eclipse.dltk.ui.dltk_marker_category"
+        label="%MarkerCategory.fatal"
+        priority="90"/>
+    <markerGroupingEntry id="org.eclipse.dltk.ui.category.documentation"
+        markerGrouping="org.eclipse.dltk.ui.dltk_marker_category"
+        label="%MarkerCategory.documentation"
+        priority="80"/>
+    <markerGroupingEntry id="org.eclipse.dltk.ui.category.potential"
+        markerGrouping="org.eclipse.dltk.ui.dltk_marker_category"
+        label="%MarkerCategory.potential"
+        priority="70"/>        
+    <markerGroupingEntry id="org.eclipse.dltk.ui.category.codestyle"
+        markerGrouping="org.eclipse.dltk.ui.dltk_marker_category"
+        label="%MarkerCategory.codestyle"
+        priority="60"/>
+    <markerGroupingEntry id="org.eclipse.dltk.ui.category.restrictedAPI"
+        markerGrouping="org.eclipse.dltk.ui.dltk_marker_category"
+        label="%MarkerCategory.restrictedAPI"
+        priority="50"/>        
+    <markerGroupingEntry id="org.eclipse.dltk.ui.category.deprecation"
+        markerGrouping="org.eclipse.dltk.ui.dltk_marker_category"
+        label="%MarkerCategory.deprecation"
+        priority="40"/>
+    <markerGroupingEntry id="org.eclipse.dltk.ui.category.generictypes"
+        markerGrouping="org.eclipse.dltk.ui.dltk_marker_category"
+        label="%MarkerCategory.generictypes"
+        priority="30"/>
+    <markerGroupingEntry id="org.eclipse.dltk.ui.category.unnecessary"
+        markerGrouping="org.eclipse.dltk.ui.dltk_marker_category"
+        label="%MarkerCategory.unnecessary"
+        priority="20"/>          
+    <markerGroupingEntry id="org.eclipse.dltk.ui.category.nls"
+        markerGrouping="org.eclipse.dltk.ui.dltk_marker_category"
+        label="%MarkerCategory.nls"
+        priority="10"/>
+    <markerAttributeGrouping markerType="org.eclipse.dltk.core.problem" attribute="categoryId">
+        <markerAttributeMapping value="10" markerGroupingEntry="org.eclipse.dltk.ui.category.buildpath"/>
+        <markerAttributeMapping value="20" markerGroupingEntry="org.eclipse.dltk.ui.category.fatal"/>
+        <markerAttributeMapping value="30" markerGroupingEntry="org.eclipse.dltk.ui.category.fatal"/>
+        <markerAttributeMapping value="40" markerGroupingEntry="org.eclipse.dltk.ui.category.fatal"/>
+        <markerAttributeMapping value="50" markerGroupingEntry="org.eclipse.dltk.ui.category.fatal"/>
+        <markerAttributeMapping value="60" markerGroupingEntry="org.eclipse.dltk.ui.category.fatal"/>
+        <markerAttributeMapping value="70" markerGroupingEntry="org.eclipse.dltk.ui.category.documentation"/>
+        <markerAttributeMapping value="80" markerGroupingEntry="org.eclipse.dltk.ui.category.codestyle"/>
+        <markerAttributeMapping value="90" markerGroupingEntry="org.eclipse.dltk.ui.category.potential"/>
+        <markerAttributeMapping value="100" markerGroupingEntry="org.eclipse.dltk.ui.category.potential"/>
+        <markerAttributeMapping value="110" markerGroupingEntry="org.eclipse.dltk.ui.category.deprecation"/>
+        <markerAttributeMapping value="120" markerGroupingEntry="org.eclipse.dltk.ui.category.unnecessary"/>
+        <markerAttributeMapping value="130" markerGroupingEntry="org.eclipse.dltk.ui.category.generictypes"/>
+        <markerAttributeMapping value="140" markerGroupingEntry="org.eclipse.dltk.ui.category.nls"/>
+        <markerAttributeMapping value="150" markerGroupingEntry="org.eclipse.dltk.ui.category.restrictedAPI"/>
+     </markerAttributeGrouping>
+     <markerAttributeGrouping markerType="org.eclipse.dltk.core.buildpath_problem"
+        defaultGroupingEntry="org.eclipse.dltk.ui.category.buildpath"/>
+   </extension> 
+   
+<!-- NAVIAGTOR Extension-->
+
+<extension
+       point="org.eclipse.ui.views">
+    <!--view
+          allowMultiple="false"
+          category="org.eclipse.dltk.ui.main"
+          class="org.eclipse.ui.navigator.CommonNavigator"
+          icon="/icons/full/eview16/projects.gif"
+          id="org.eclipse.dltk.ui.views.navigator"
+          name="Script Navigator"/>
+    <category
+          id="org.eclipse.dltk.ui.main"
+          name="DLTK"/-->
+    <view
+          name="%ScriptExplorerViewName"
+          icon="icons/full/eview16/package.gif"
+          category="org.eclipse.dltk.ui.main"
+          class="org.eclipse.dltk.internal.ui.scriptview.ScriptExplorerPart"
+          id="org.eclipse.dltk.ui.ScriptExplorer">
+      </view>
+      
+      <view
+            name="%CallHierarchyViewName"
+            icon="icons/full/eview16/call_hierarchy.gif"
+            category="org.eclipse.dltk.ui.main"
+            class="org.eclipse.dltk.internal.ui.callhierarchy.CallHierarchyViewPart"
+            id="org.eclipse.dltk.callhierarchy.view">
+      </view>
+    <category
+          id="org.eclipse.dltk.ui.main"
+          name="DLTK"/>
+ </extension>
+   
+ <extension
+       point="org.eclipse.ui.navigator.viewer">
+    <viewer viewerId="org.eclipse.dltk.ui.views.navigator"/>
+    <viewerContentBinding viewerId="org.eclipse.dltk.ui.views.navigator">
+       <includes>
+          <contentExtension pattern="org.eclipse.dltk.ui.scriptContent"/>
+          <!--contentExtension pattern="org.eclipse.dltk.ui.filters.*" />
+          <contentExtension pattern="org.eclipse.dltk.ui.filters.*" /-->
+          <contentExtension pattern="org.eclipse.ui.navigator.resourceContent" />		       	      
+          <contentExtension pattern="org.eclipse.ui.navigator.resources.filters.*"/>
+          <contentExtension pattern="org.eclipse.ui.navigator.resources.linkHelper"/>          
+       </includes>
+    </viewerContentBinding>
+    
+    <viewerActionBinding viewerId="org.eclipse.dltk.ui.views.navigator">
+         <includes>
+             <actionExtension pattern="org.eclipse.ui.navigator.resources.*" />
+         </includes>
+    </viewerActionBinding>
+    <dragAssistant
+         class="org.eclipse.ui.navigator.resources.ResourceDragAdapterAssistant"
+         viewerId="org.eclipse.ui.navigator.ProjectExplorer"/>
+ </extension>
+ 
+ <extension
+       point="org.eclipse.ui.navigator.navigatorContent">
+    <navigatorContent
+          activeByDefault="true"
+          contentProvider="org.eclipse.dltk.internal.ui.navigator.ScriptNavigatorContentProvider"
+          icon="icons/tcl.gif"
+          id="org.eclipse.dltk.ui.scriptContent"
+          labelProvider="org.eclipse.dltk.internal.ui.navigator.ScriptNavigatorLabelProvider"
+          name="DLTK TCL Script content"
+          priority="high">
+          <triggerPoints>
+				<or>
+					<!--adapt
+							type="org.eclipse.core.resources.IProject" >
+						<test
+							property="org.eclipse.core.resources.projectNature"
+							value="org.eclipse.dltk.core.tclnature" />
+					</adapt-->
+					<instanceof
+							value="org.eclipse.core.resources.IWorkspaceRoot" />
+					<instanceof
+							value="org.eclipse.core.resources.IFolder" />
+					<instanceof
+							value="org.eclipse.core.resources.IFile" />
+					<instanceof
+							value="org.eclipse.core.resources.IStorage" />
+					<instanceof
+							value="org.eclipse.dltk.core.IDLTKProject" />
+					<instanceof
+							value="org.eclipse.dltk.core.IModelElement" />
+					<instanceof
+							value="org.eclipse.dltk.internal.core.ArchiveEntryFile" />
+					<instanceof
+							value="org.eclipse.dltk.internal.core.ExternalEntryFile" />
+					<instanceof
+							value="org.eclipse.dltk.internal.ui.scriptview.BuildPathContainer" />
+				</or>
+			</triggerPoints>
+			<possibleChildren>
+				<or>
+					<adapt
+							type="org.eclipse.core.resources.IProject" >
+					</adapt>
+					<instanceof
+							value="org.eclipse.core.resources.IWorkspaceRoot" />
+					<instanceof
+							value="org.eclipse.core.resources.IFolder" />
+					<instanceof
+							value="org.eclipse.core.resources.IFile" />
+					<instanceof
+							value="org.eclipse.core.resources.IStorage" />
+					<instanceof
+							value="org.eclipse.dltk.core.IDLTKProject" />
+					<instanceof
+							value="org.eclipse.dltk.core.IModelElement" />
+					<instanceof
+							value="org.eclipse.dltk.internal.core.ArchiveEntryFile" />
+					<instanceof
+							value="org.eclipse.dltk.internal.core.ExternalEntryFile" />							
+					<instanceof
+							value="org.eclipse.dltk.internal.ui.scriptview.BuildPathContainer" />
+				</or>
+			</possibleChildren>
+			<actionProvider
+					class="org.eclipse.dltk.internal.ui.navigator.ScriptExplorerActionProvider"
+					id="org.eclipse.dltk.ui.navigator.PackageExplorerActionProvider"
+					> 
+				<enablement>
+					<or>
+					<adapt
+							type="org.eclipse.core.resources.IProject" >
+					</adapt>
+					<instanceof
+							value="org.eclipse.core.resources.IWorkspaceRoot" />
+					<instanceof
+							value="org.eclipse.core.resources.IFolder" />
+					<instanceof
+							value="org.eclipse.core.resources.IFile" />
+					<instanceof
+							value="org.eclipse.core.resources.IStorage" />
+					<instanceof
+							value="org.eclipse.dltk.core.IDLTKProject" />
+					<instanceof
+							value="org.eclipse.dltk.core.IModelElement" />
+					<instanceof
+							value="org.eclipse.dltk.internal.core.ArchiveEntryFile" />
+					<instanceof
+							value="org.eclipse.dltk.internal.core.ExternalEntryFile" />
+					<instanceof
+							value="org.eclipse.dltk.internal.ui.scriptview.BuildPathContainer" />
+					<adapt type="java.util.Collection"> 
+						<count value="0" />
+					</adapt>				
+				</or>
+				</enablement>
+			</actionProvider>
+			
+			<actionProvider
+		         class="org.eclipse.dltk.internal.ui.navigator.ScriptExplorerOpenActionProvider"
+		         id="org.eclipse.dltk.ui.navigator.PackageExplorerOpenActionProvider"
+		         overrides="org.eclipse.ui.navigator.resources.OpenActions"> 
+			</actionProvider> 
+			
+		    <!--actionProvider
+           		class="org.eclipse.dltk.internal.ui.navigator.ScriptEditActionProvider"
+           		id="org.eclipse.dltk.actions.ui.navigator.ScriptEditActionProvider"
+           		overrides="org.eclipse.ui.navigator.resources.actions.EditActions">
+			</actionProvider--> 
+			<dropAssistant
+              	class="org.eclipse.ui.navigator.resources.ResourceDropAdapterAssistant"
+              	id="org.eclipse.ui.navigator.resources.resourceDropAdapter">
+           		<possibleDropTargets>
+              		<or>
+	              		<adapt type="org.eclipse.dltk.core.IDLTKProject"/>
+                 		<adapt type="org.eclipse.core.resources.IProject"/>
+                 		<adapt type="org.eclipse.core.resources.IFolder"/>
+                 		<adapt type="org.eclipse.core.resources.IFile"/>
+                 		<adapt type="org.eclipse.dltk.core.IDLTKProject"/>
+              		</or>
+           		</possibleDropTargets>
+        	</dropAssistant>
+        	
+			<override
+					policy="InvokeAlwaysRegardlessOfSuppressedExt"
+					suppressedExtensionId="org.eclipse.ui.navigator.resourceContent"/>			
+		   					
+			<commonSorter
+					class="org.eclipse.dltk.ui.ModelElementSorter"
+					id="org.eclipse.dltk.ui.modelElementSorter"/>		
+			<!-- Menu Shortcut Actions for Wizards -->
+	      <commonWizard
+	        		type="new"
+					wizardId="org.eclipse.ui.wizards.new.folder">
+				<enablement>
+					<or>
+						<adapt type="org.eclipse.core.resources.IFile" />	
+						<adapt type="org.eclipse.core.resources.IFolder" />
+						<adapt type="org.eclipse.dltk.internal.core.ScriptFolder" />
+						<adapt type="org.eclipse.dltk.core.IDLTKProject" />
+	         			<adapt type="org.eclipse.core.resources.IProject" /> 
+	               		<adapt type="org.eclipse.core.resources.IWorkspaceRoot" />	
+					</or>
+		         </enablement>
+			</commonWizard>   
+	        <commonWizard
+	            type="new"
+	            wizardId="org.eclipse.ui.wizards.new.file">
+				<enablement>
+					<or>
+						<adapt type="org.eclipse.core.resources.IFile" />							
+						<adapt type="org.eclipse.core.resources.IFolder" />
+						<adapt type="org.eclipse.dltk.internal.core.ScriptFolder" />
+						<adapt type="org.eclipse.dltk.core.IDLTKProject" />
+	         			<adapt type="org.eclipse.core.resources.IProject" /> 
+	               		<adapt type="org.eclipse.core.resources.IWorkspaceRoot" />	
+					</or>
+		         </enablement>
+			</commonWizard>              
+    </navigatorContent>
+ </extension>
+ <extension
+       point="org.eclipse.core.runtime.preferences">
+    <initializer class="org.eclipse.dltk.internal.ui.DLTKUIPreferenceInitializer"/>
+ </extension>
+ 
+ <!-- =========================================================================== -->
+<!-- Script Working Set                                                            -->
+<!-- =========================================================================== -->
+   <extension
+         point="org.eclipse.ui.workingSets">
+      <workingSet
+            name="%ScriptWorkingSetPage.name"
+            pageClass="org.eclipse.dltk.internal.ui.workingsets.ScriptWorkingSetPage"
+            updaterClass="org.eclipse.dltk.internal.ui.workingsets.ScriptWorkingSetUpdater"
+            icon="/icons/full/obj16/jworkingSet_obj.gif"
+            id="org.eclipse.dltk.ui.ScriptWorkingSetPage">
+      </workingSet>
+   </extension>
+<!-- =========================================================================== -->
+<!-- Others Working Set                                                          -->
+<!-- =========================================================================== -->
+   <extension point="org.eclipse.ui.workingSets">
+      <workingSet
+            name="%OthersWorkingSetWizardPage.name"
+            icon="/icons/full/obj16/jworkingSet_obj.gif"
+            updaterClass="org.eclipse.dltk.internal.ui.workingsets.OthersWorkingSetUpdater"
+            id="org.eclipse.dltk.internal.ui.OthersWorkingSet">
+      </workingSet>
+   </extension>
+   
+   <!-- =========================================================================== -->
+<!-- Filter Support                                                              -->
+<!-- =========================================================================== -->
+   <extension
+         point="org.eclipse.dltk.ui.dltkElementFilters">
+<!-- Script Explorer -->
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideSystemFiles.label"
+            enabled="true"
+            description="%HideSystemFiles.description"
+            pattern=".*">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideEmptyPackages.label"
+            enabled="false"
+            description="%HideEmptyPackages.description"
+            class="org.eclipse.dltk.internal.ui.filters.EmptyPackageFilter"
+            id="org.eclipse.dltk.internal.ui.PackageExplorer.EmptyPackageFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideEmptyInnerPackages.label"
+            enabled="true"
+            description="%HideEmptyInnerPackages.description"
+            class="org.eclipse.dltk.internal.ui.filters.EmptyInnerPackageFilter"
+            id="org.eclipse.dltk.internal.ui.PackageExplorer.EmptyInnerPackageFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideNonScriptElements.label"
+            enabled="false"
+            description="%HideNonScriptElements.description"
+            class="org.eclipse.dltk.internal.ui.filters.NonScriptElementFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.NonScriptElementFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideReferencedLibraries.label"
+            enabled="false"
+            description="%HideReferencedLibraries.description"
+            class="org.eclipse.dltk.internal.ui.filters.LibraryFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.LibraryFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideContainedLibraries.label"
+            enabled="false"
+            description="%HideContainedLibraries.description"
+            class="org.eclipse.dltk.internal.ui.filters.ContainedLibraryFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.ContainedLibraryFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideScriptFiles.label"
+            enabled="false"
+            description="%HideScriptFiles.description"
+            class="org.eclipse.dltk.internal.ui.filters.ScriptFileFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.SMFileFilter">
+      </filter>      
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideNonScriptProjects.label"
+            enabled="false"
+            description="%HideNonScriptProjects.description"
+            class="org.eclipse.dltk.internal.ui.filters.NonScriptProjectsFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.NonScriptProjectsFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideNonSharedProjects.label"
+            enabled="false"
+            description="%HideNonSharedProjects.description"
+            class="org.eclipse.dltk.internal.ui.filters.NonSharedProjectFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.NonSharedProjectsFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideClosedProjects.label"
+            enabled="false"
+            description="%HideClosedProjects.description"
+            class="org.eclipse.dltk.internal.ui.filters.ClosedProjectFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.ClosedProjectsFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideFields.label"
+            enabled="false"
+            description="%HideFields.description"
+            class="org.eclipse.dltk.internal.ui.filters.FieldsFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.FieldsFilter">
+      </filter>
+    </extension>
+    
+    
+<!-- Refactoring contributions -->    
+   <extension
+         point="org.eclipse.ltk.core.refactoring.refactoringContributions">
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameResourceRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.resource"/>
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameSourceModuleRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.sourcemodule"/>
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameDLTKProjectRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.script.project"/>
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameScriptFolderRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.script.folder"/>
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameSourceFolderRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.source.folder"/>
+   </extension>
+
+<!-- Code completion -->
+   <extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalSorters">
+		<proposalSorter
+			id="org.eclipse.dltk.ui.RelevanceSorter"
+			name="%RelevanceSorter.name"
+			class="org.eclipse.dltk.ui.text.completion.RelevanceSorter"/>
+		<proposalSorter
+			id="org.eclipse.dltk.ui.AlphabeticSorter"
+			name="%AlphabeticSorter.name"
+			class="org.eclipse.dltk.ui.text.completion.AlphabeticSorter"/>
+	</extension>
+<!-- content assist processors - do not change their order -->  
+
+	<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="scriptTypeProposalCategory"
+		name="%ScriptTypesCategory">
+		<proposalCategory
+			icon="/icons/full/elcl16/scripttypeassist_co.gif"/>
+	</extension>
+	<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="scriptNoTypeProposalCategory"
+		name="%ScriptProposalCategory">
+		<proposalCategory
+			icon="/icons/full/elcl16/scriptassist_co.gif"/>
+	</extension>
+	<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="defaultProposalCategory"
+		name="%DefaultProposalCategory">
+		<proposalCategory/>
+	</extension>
+	<!--extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="templateProposalCategory"
+		name="%TemplateProposalCategory">
+		<proposalCategory
+			icon="/icons/full/elcl16/templateprop_co.gif"/>
+	</extension-->
+	<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="textProposalCategory"
+		name="%TextProposalCategory">
+		<proposalCategory
+			icon="/icons/full/elcl16/wordassist_co.gif"/>
+	</extension>
+ <extension
+       point="org.eclipse.ui.commands">
+        <command
+            name="%ActionDefinition.foldingCollapseMembers.name"
+            description="%ActionDefinition.foldingCollapseMembers.description"
+            categoryId="org.eclipse.ui.category.textEditor"
+            id="org.eclipse.dltk.ui.edit.text.script.folding.collapseMembers">
+      </command>
+      <command
+            name="%ActionDefinition.foldingCollapseComments.name"
+            description="%ActionDefinition.foldingCollapseComments.description"
+            categoryId="org.eclipse.ui.category.textEditor"
+            id="org.eclipse.dltk.ui.edit.text.script.folding.collapseComments">
+      </command>
+      <command
+            name="%ActionDefinition.openEditor.name"
+            description="%ActionDefinition.openEditor.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.open.editor">
+      </command>
+      <command
+            name="%ActionDefinition.showDocumentation.name"
+            description="%ActionDefinition.showDocumentation.description"
+            categoryId="org.eclipse.ui.category.edit"
+            id="org.eclipse.dltk.ui.edit.text.script.show.documentation">
+      </command>
+      
+      <command
+            name="%ActionDefinition.show.outline.name"
+            description="%ActionDefinition.show.outline.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.show.outline">
+      </command>
+      
+	  <command
+            name="%ActionDefinition.gotoMatchingBracket.name"
+            description="%ActionDefinition.gotoMatchingBracket.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.goto.matching.bracket">
+      </command>
+      <command
+            name="%ActionDefinition.gotoNextMember.name"
+            description="%ActionDefinition.gotoNextMember.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.goto.next.member">
+      </command>
+      <command
+            name="%ActionDefinition.gotoPreviousMember.name"
+            description="%ActionDefinition.gotoPreviousMember.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.goto.previous.member">
+      </command>
+      <!-- source -->
+       <command
+            name="%ActionDefinition.comment.name"
+            description="%ActionDefinition.comment.description"
+            categoryId="org.eclipse.dltk.ui.category.source"
+            id="org.eclipse.dltk.ui.edit.text.script.comment">
+      </command>
+      <command
+            name="%ActionDefinition.uncomment.name"
+            description="%ActionDefinition.uncomment.description"
+            categoryId="org.eclipse.dltk.ui.category.source"
+            id="org.eclipse.dltk.ui.edit.text.script.uncomment">
+      </command>
+      <command
+            name="%ActionDefinition.toggleComment.name"
+            description="%ActionDefinition.toggleComment.description"
+            categoryId="org.eclipse.dltk.ui.category.source"
+            id="org.eclipse.dltk.ui.edit.text.script.toggle.comment">
+      </command>
+ </extension>
+
+	<!-- the parameterized content assist action and keybindings for our contributed computers -->
+	<extension
+		point="org.eclipse.ui.commands">
+		<command
+			categoryId="org.eclipse.ui.category.edit"
+			description="%SpecificContentAssist.desc"
+			id="org.eclipse.dltk.ui.specific_content_assist.command"
+			name="%SpecificContentAssist.name"
+			defaultHandler="org.eclipse.dltk.internal.ui.text.completion.ScriptContentAssistHandler">
+			<commandParameter
+				id="org.eclipse.dltk.ui.specific_content_assist.category_id"
+				name="%SpecificContentAssist.param"
+				optional="false"
+				values="org.eclipse.dltk.ui.text.completion.ContentAssistComputerParameter"/>
+		</command>
+	</extension>
+ <extension
+       point="org.eclipse.ui.actionSets">
+        <actionSet
+            label="%CodingActionSet.label"
+            description="%CodingActionSet.description"
+            visible="false"
+            id="org.eclipse.dltk.ui.CodingActionSet">
+<!-- =========================================================================== -->
+<!-- Refactoring Menu                                                            -->
+<!-- =========================================================================== -->       
+	   <menu
+               label="%Refactoring.menu.label"
+               path="edit"
+               id="org.eclipse.dltk.ui.refactoring.menu">
+            <separator name="undoRedoGroup"/>
+            <separator name="reorgGroup"/>
+            <separator name="codingGroup"/>
+            <separator name="reorgGroup2"/>
+            <separator name="typeGroup"/>
+            <separator name="codingGroup2"/>
+            <separator name="typeGroup2"/>
+            <separator name="scriptGroup"/>
+       </menu>       
+       <action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.move.element"
+               label="%Refactoring.moveAction.label"
+               retarget="true"
+               menubarPath="org.eclipse.dltk.ui.refactoring.menu/reorgGroup"
+               id="org.eclipse.dltk.ui.actions.Move">
+       </action>
+       <action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.rename.element"
+               label="%Refactoring.renameAction.label"
+               retarget="true"
+               menubarPath="org.eclipse.dltk.ui.refactoring.menu/reorgGroup"
+               id="org.eclipse.dltk.ui.actions.Rename">
+       </action>
+<!-- =========================================================================== -->
+<!-- Source Menu                                                                 -->
+<!-- =========================================================================== -->
+         <menu
+               label="%SourceMenu.label"
+               path="edit"
+               id="org.eclipse.dltk.ui.source.menu">
+		    <separator
+                  name="commentGroup">
+            </separator>
+            <separator
+                  name="editGroup">
+            </separator>
+            <separator
+                  name="importGroup">
+            </separator>
+            <separator
+                  name="generateGroup">
+            </separator>
+            <separator
+                  name="codeGroup">
+            </separator>
+            <separator
+                  name="externalizeGroup">
+            </separator>
+            <separator
+                  name="convertGroup">
+            </separator>
+         </menu>
+         <!-- Comment Group -->
+         <!--action
+               definitionId="org.eclipse.jdt.ui.edit.text.java.add.javadoc.comment"
+               label="%AddJavaDocCommentAction.label"
+               retarget="true"
+               menubarPath="org.eclipse.jdt.ui.source.menu/commentGroup"
+               id="org.eclipse.jdt.ui.actions.AddJavaDocComment">
+         </action-->
+         <action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.uncomment"
+               label="%UncommentAction.label"
+               retarget="true"
+               id="org.eclipse.dltk.ui.actions.Uncomment">
+         </action>
+         <action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.comment"
+               label="%CommentAction.label"
+               retarget="true"
+               id="org.eclipse.dltk.ui.actions.Comment">
+         </action>
+         <!--action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.remove.block.comment"
+               label="%RemoveBlockCommentAction.label"
+               retarget="true"
+               menubarPath="org.eclipse.dltk.ui.source.menu/commentGroup"
+               id="org.eclipse.dltk.ui.actions.RemoveBlockComment">
+         </action>
+         <action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.add.block.comment"
+               label="%AddBlockCommentAction.label"
+               retarget="true"
+               menubarPath="org.eclipse.dltk.ui.source.menu/commentGroup"
+               id="org.eclipse.dltk.ui.actions.AddBlockComment">
+         </action-->
+         <action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.toggle.comment"
+               label="%ToggleCommentAction.label"
+               retarget="true"
+               menubarPath="org.eclipse.dltk.ui.source.menu/commentGroup"
+               id="org.eclipse.dltk.ui.actions.ToggleComment">
+         </action>
+      </actionSet>
+ </extension>
+ 
+ <!-- with an A_                                                                -->
+<!-- the open action set is contributed before the CodeActionSet we prefix it  -->
+<!-- Action sets are contributed after they have been sorted. To enfore that   -->
+<!-- Begin Java Open action contributions  -->
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="%OpenActionSet.label"
+            description="%OpenActionSet.description"
+            visible="false"
+            id="org.eclipse.dltk.ui.A_OpenActionSet">
+         <action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.open.call.hierarchy"
+               label="%OpenCallHierarchyAction.label"
+               retarget="true"
+               menubarPath="navigate/open.ext"
+               id="org.eclipse.dltk.ui.actions.OpenCallHierarchy">
+         </action>
+         <!--action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.open.type.hierarchy"
+               label="%OpenTypeHierarchyAction.label"
+               retarget="true"
+               menubarPath="navigate/open.ext"
+               id="org.eclipse.dltk.ui.actions.OpenTypeHierarchy">
+         </action-->
+         <action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.open.editor"
+               label="%OpenAction.label"
+               tooltip="%OpenAction.tooltip"
+               retarget="true"
+               menubarPath="navigate/open.ext"
+               allowLabelUpdate="true"
+               id="org.eclipse.dltk.ui.actions.Open">
+         </action>
+      </actionSet>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            name="%context.editingScriptSource.name"
+            description="%context.editingScriptSource.description"
+            parentId="org.eclipse.ui.textEditorScope"
+            id="org.eclipse.dltk.ui.scriptEditorScope">
+      </context>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <!--  win32:  M1=CTRL,    M2=SHIFT, M3=ALT, M4=-
+            carbon: M1=COMMAND, M2=SHIFT, M3=ALT, M4=CTRL -->
+      <key
+            sequence="F3"
+            commandId="org.eclipse.dltk.ui.edit.text.script.open.editor"
+            contextId="org.eclipse.dltk.ui.scriptEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+            sequence="F2"
+            contextId="org.eclipse.dltk.ui.scriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.show.documentation"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+            sequence="M1+O"
+            contextId="org.eclipse.dltk.ui.scriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.show.outline"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+            sequence="M1+M2+P"
+            contextId="org.eclipse.dltk.ui.scriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.goto.matching.bracket"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+            sequence="M1+M2+ARROW_DOWN"
+            contextId="org.eclipse.dltk.ui.scriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.goto.next.member"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+  	  <key
+            platform="carbon"
+            sequence="CTRL+ALT+ARROW_DOWN"
+            contextId="org.eclipse.dltk.ui.scriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.goto.next.member"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+            sequence="M1+M2+ARROW_UP"
+            contextId="org.eclipse.dltk.ui.scriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.goto.previous.member"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+            platform="carbon"
+            sequence="M1+M2+ARROW_UP"
+            contextId="org.eclipse.dltk.ui.scriptEditorScope"
+            commandId=""
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+            platform="carbon"
+            sequence="CTRL+ALT+ARROW_UP"
+            contextId="org.eclipse.dltk.ui.scriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.goto.previous.member"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>   
+            
+	  <key
+            sequence="M1+M2+C"
+            contextId="org.eclipse.dltk.ui.scriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.toggle.comment"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+            sequence="M1+7"
+            contextId="org.eclipse.dltk.ui.scriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.toggle.comment"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+            sequence="M1+/"
+            contextId="org.eclipse.dltk.ui.scriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.toggle.comment"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>            
+	</extension>         
+	
+	
+	<!-- Note: Do not change the sequence of those hover contributions 
+	(this funny string was spizded from JDT) -->
+   <extension
+         point="org.eclipse.dltk.ui.editorTextHovers">
+      <hover
+            label="%sequentialHover"
+            description="%sequentialHoverDescription"
+            class="org.eclipse.dltk.internal.ui.text.hover.BestMatchHover"
+            id="org.eclipse.dltk.ui.BestMatchHover">
+      </hover>
+      <hover
+            label="%documentationHover"
+            description="%documentationHoverDescription"
+            class="org.eclipse.dltk.internal.ui.text.hover.DocumentationHover"
+            id="org.eclipse.dltk.ui.DocumentationHover">
+      </hover>
+   </extension>
+<!-- =========================================================================== -->
+<!-- Call Hierarchy                                                              -->
+<!-- =========================================================================== -->  
+   <extension
+    	id="DLTKSearchResultPage"
+        point="org.eclipse.search.searchResultViewPages">
+		<viewPage
+			id="org.eclipse.dltk.ui.DLTKSearchResultPage"
+			searchResultClass="org.eclipse.dltk.internal.ui.search.DLTKSearchResult"
+			class="org.eclipse.dltk.internal.ui.search.DLTKSearchResultPage">
+		</viewPage>
+   </extension>         
+</plugin>

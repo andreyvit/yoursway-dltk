@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script>
+<command start="0" end="51">
+<word start="0" end="8" text="namespace">
+<string text="namespace"/>
+</word>
+<word start="10" end="13" text="eval">
+<string text="eval"/>
+</word>
+<word start="15" end="17" text="Moo">
+<string text="Moo"/>
+</word>
+<word start="19" end="51" text="{&#10;	proc vffoo {} {&#10;	    &#10;	}&#10;}">
+<braces text="{&#10;	proc vffoo {} {&#10;	    &#10;	}&#10;}"/>
+</word>
+</command>
+<command start="60" end="86">
+<word start="61" end="64" text="proc">
+<string text="proc"/>
+</word>
+<word start="66" end="70" text="vffoo">
+<string text="vffoo"/>
+</word>
+<word start="72" end="73" text="{}">
+<braces text="{}"/>
+</word>
+<word start="75" end="86" text="{&#10;	    &#10;	}">
+<braces text="{&#10;	    &#10;	}"/>
+</word>
+</command>
+</script>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script>
+<command start="16" end="37">
+<word start="16" end="19" text="proc">
+<string text="proc"/>
+</word>
+<word start="21" end="23" text="foo">
+<string text="foo"/>
+</word>
+<word start="25" end="26" text="{}">
+<braces text="{}"/>
+</word>
+<word start="28" end="37" text="{&#10;    &#10;}">
+<braces text="{&#10;    &#10;}"/>
+</word>
+</command>
+</script>

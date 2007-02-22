@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   
+   
+   <extension
+	point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+ 		<launchConfigurationTypeImage
+			icon="icons/ruby.gif"
+			configTypeID="org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationType"
+			id="org.eclipse.dltk.ruby.debug.ui.launchConfigurationTypeImage.localTCLScript">
+		</launchConfigurationTypeImage>
+   </extension>
+   
+  
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationType"
+            class="org.eclipse.dltk.ruby.internal.debug.ui.launchConfigurations.RubyTabGroup"
+            id="org.eclipse.dltk.ruby.debug.ui.RubyTabGroup">
+      </launchConfigurationTabGroup>
+   </extension>
+   
+  
+   <extension point="org.eclipse.debug.ui.launchShortcuts">
+    <shortcut
+          class="org.eclipse.dltk.ruby.internal.debug.ui.launcher.RubyLaunchShortcut"
+          icon="icons/ruby.gif"
+          id="org.eclipse.dltk.ruby.debug.ui.launchShortcut"
+          label="Ruby Script"
+          modes="run, debug">
+		<perspective id="org.eclipse.dltk.ruby.ui.RubyPerspective"/> 
+        <contextualLaunch>
+           <enablement>
+             <with variable="selection">
+               <count value="1"/>
+               <iterate>
+                <or>
+           	     <test property="org.eclipse.dltk.launching.hasProjectNature" args="org.eclipse.dltk.ruby.core.nature"/>           	  
+               	</or>
+               </iterate>
+               </with>
+           </enablement>
+  		 </contextualLaunch>
+         <perspective
+               id="org.eclipse.debug.ui.DebugPerspective">
+         </perspective>
+	</shortcut>
+	</extension>
+	
+	<extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.debug.ui.launchActionSet">
+         <part
+               id="org.eclipse.dltk.ruby.ui.editor.RubyEditor">
+         </part>
+      </actionSetPartAssociation>
+   </extension>
+
+
+<extension
+         point="org.eclipse.ui.console.consolePatternMatchListeners">
+      <consolePatternMatchListener
+            class="org.eclipse.dltk.ruby.internal.debug.ui.console.RubyConsoleTracker"
+            regex=".+rb:\d+"
+            id="org.eclipse.dltk.ruby.debug.ui.RubyConsoleTracker">
+         <enablement>
+            <or>
+               <test property="org.eclipse.debug.ui.processTypeTest" value="rubyInterpreter"/>
+            </or>
+         </enablement>
+      </consolePatternMatchListener>
+     
+   </extension>  
+
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+		    category="org.eclipse.dltk.ruby.ui.ruby"
+            class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterPreferencePage"
+            id="org.eclipse.dltk.debug.ui.RubyInterpreters"
+            name="Ruby Interpreters"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.debug.ui.launchActionSet">
+         <part
+               id="org.eclipse.dltk.ui.ScriptExplorer">
+         </part>
+         <part
+               id="org.eclipse.dltk.ruby.ui.editor.RubyEditor">
+         </part>
+      </actionSetPartAssociation>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.statusHandlers">
+      <statusHandler
+            class="org.eclipse.dltk.ruby.debug.ui.launcher.NoDefaultRubyInterpreterStatusHandler"
+            code="167"
+            id="org.eclipse.dltk.ruby.debug.ui.noDefaultInterpreterInstall"
+            plugin="org.eclipse.dltk.ruby.launching"/>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.ui.buildpathContainerPage">
+      <buildpathContainerPath
+            class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterContainerWizardPage"
+            id="org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER"
+            name="Ruby Interpreter Libraries"
+            nature="org.eclipse.dltk.ruby.core.nature"/>
+   </extension>
+</plugin>

@@ -1,0 +1,83 @@
+package org.eclipse.dltk.tcl.internal.ui.editor;
+
+import java.util.ArrayList;
+
+import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
+import org.eclipse.dltk.internal.ui.editor.ScriptOutlinePage;
+import org.eclipse.dltk.ui.DLTKPluginImages;
+import org.eclipse.dltk.ui.actions.MemberFilterActionGroup;
+import org.eclipse.dltk.ui.viewsupport.MemberFilterAction;
+import org.eclipse.dltk.ui.viewsupport.ModelElementFilter;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.ILabelDecorator;
+import org.eclipse.ui.IActionBars;
+
+public class TclOutlinePage extends ScriptOutlinePage {
+
+	public TclOutlinePage(ScriptEditor editor, IPreferenceStore store) {
+		super(editor, store);
+	}
+
+	protected void registerSpecialToolbarActions(IActionBars actionBars) {
+		IToolBarManager toolBarManager = actionBars.getToolBarManager();
+		MemberFilterActionGroup fMemberFilterActionGroup = new MemberFilterActionGroup(
+				fOutlineViewer, fStore);
+		String title, helpContext;
+		ArrayList actions = new ArrayList(3);
+		// fill-in actions variables
+		// int filterProperty = MemberFilter.FILTER_FIELDS;
+		title = ActionMessages.MemberFilterActionGroup_hide_variables_label;
+		// TODO help support
+		helpContext = "";// IDLTKHelpContextIds.FILTER_FIELDS_ACTION;
+		MemberFilterAction hideVariables = new MemberFilterAction(
+				fMemberFilterActionGroup, title, new ModelElementFilter(
+						IModelElement.FIELD), helpContext, true);
+		hideVariables
+				.setDescription(ActionMessages.MemberFilterActionGroup_hide_variables_description);
+		hideVariables
+				.setToolTipText(ActionMessages.MemberFilterActionGroup_hide_variables_tooltip);
+		DLTKPluginImages.setLocalImageDescriptors(hideVariables,
+				"filter_fields.gif"); //$NON-NLS-1$
+		actions.add(hideVariables);
+		// procedures
+		title = ActionMessages.MemberFilterActionGroup_hide_procedures_label;
+		// TODO help support
+		helpContext = "";// IDLTKHelpContextIds.FILTER_STATIC_ACTION;
+		MemberFilterAction hideProcedures = new MemberFilterAction(
+				fMemberFilterActionGroup, title, new ModelElementFilter(
+						IModelElement.METHOD), helpContext, true);
+		hideProcedures
+				.setDescription(ActionMessages.MemberFilterActionGroup_hide_procedures_description);
+		hideProcedures
+				.setToolTipText(ActionMessages.MemberFilterActionGroup_hide_procedures_tooltip);
+		// TODO: add correct icon
+		DLTKPluginImages.setLocalImageDescriptors(hideProcedures,
+				"filter_methods.gif"); //$NON-NLS-1$
+		actions.add(hideProcedures);
+		// namespaces
+		title = ActionMessages.MemberFilterActionGroup_hide_namespaces_label;
+		// TODO help support
+		helpContext = "";// IDLTKHelpContextIds.FILTER_PUBLIC_ACTION;
+		MemberFilterAction hideNamespaces = new MemberFilterAction(
+				fMemberFilterActionGroup, title, new ModelElementFilter(
+						IModelElement.TYPE), helpContext, true);
+		hideNamespaces
+				.setDescription(ActionMessages.MemberFilterActionGroup_hide_namespaces_description);
+		hideNamespaces
+				.setToolTipText(ActionMessages.MemberFilterActionGroup_hide_namespaces_tooltip);
+		DLTKPluginImages.setLocalImageDescriptors(hideNamespaces,
+				"filter_classes.gif"); //$NON-NLS-1$
+		actions.add(hideNamespaces);
+		// order corresponds to order in toolbar
+		MemberFilterAction[] fFilterActions = (MemberFilterAction[]) actions
+				.toArray(new MemberFilterAction[actions.size()]);
+		fMemberFilterActionGroup.setActions(fFilterActions);
+		fMemberFilterActionGroup.contributeToToolBar(toolBarManager);
+	}
+
+	protected ILabelDecorator getLabelDecorator() {
+		return new TclOutlineLabelDecorator();
+	}
+}

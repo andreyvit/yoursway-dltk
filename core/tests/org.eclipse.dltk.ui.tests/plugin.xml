@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+<extension
+       point="org.eclipse.ui.views">
+    <view
+          allowMultiple="false"
+          category="org.eclipse.dltk.ui.tests.main"
+          class="org.eclipse.ui.navigator.CommonNavigator"
+          icon="$nl$/icons/full/eview16/package.gif"
+          id="org.eclipse.dltk.ui.views.navigator"
+          name="Script Navigator"/>
+    <category
+          id="org.eclipse.dltk.ui.tests.main"
+          name="DLTK UI TESTS"/>
+ </extension>
+ <extension
+       point="org.eclipse.ui.navigator.viewer">
+    <viewer viewerId="org.eclipse.dltk.ui.views.navigator"/>
+    <viewerContentBinding viewerId="org.eclipse.dltk.ui.views.navigator">
+       <includes>
+          <contentExtension pattern="org.eclipse.dltk.ui.scriptContent"/>
+       </includes>
+    </viewerContentBinding>
+    <viewerActionBinding viewerId="org.eclipse.dltk.ui.views.navigator">
+       <includes>
+          <actionExtension pattern="org.eclipse.ui.navigator.resources.*"/>
+       </includes>
+    </viewerActionBinding>
+ </extension>
+ 
+  <extension
+         point="org.eclipse.ui.views">
+      <view
+            name="MochPluginView"
+            class="org.eclipse.dltk.ui.tests.navigator.scriptexplorer.MockPluginView"
+            id="org.eclipse.dltk.ui.tests.packageview.MockPluginView">
+      </view>
+   </extension> 
+</plugin>

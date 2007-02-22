@@ -1,0 +1,16 @@
++ModuleDeclaration@[А,Н]
+  +Block@[0,-1]
+    +TypeDeclaration@[А,Ж][Б,В]
+      +ExpressionList@[0,-1]
+        +ConstantReference@[Г,Д]
+        -ConstantReference
+      -ExpressionList
+    -TypeDeclaration
+    +TypeDeclaration@[З,Н][И,К]
+      +ExpressionList@[0,-1]
+        +ConstantReference@[Л,М]
+        -ConstantReference
+      -ExpressionList
+    -TypeDeclaration
+  -Block
+-ModuleDeclaration

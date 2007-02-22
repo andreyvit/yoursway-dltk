@@ -1,0 +1,31 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.dltk.debug; singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.dltk.debug.core.DLTKDebugPlugin
+Bundle-Vendor: %pluginProvider
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.debug.core,
+ org.eclipse.core.resources,
+ org.eclipse.core.variables,
+ org.eclipse.dltk.core,
+ com.ibm.icu
+Eclipse-LazyStart: true
+Export-Package: org.eclipse.dltk.dbgp,
+ org.eclipse.dltk.dbgp.breakpoints,
+ org.eclipse.dltk.dbgp.commands,
+ org.eclipse.dltk.dbgp.exceptions,
+ org.eclipse.dltk.dbgp.internal;x-friends:="org.eclipse.dltk.debug.tests",
+ org.eclipse.dltk.dbgp.internal.breakpoints;x-friends:="org.eclipse.dltk.debug.tests",
+ org.eclipse.dltk.dbgp.internal.commands;x-friends:="org.eclipse.dltk.debug.tests",
+ org.eclipse.dltk.dbgp.internal.managers;x-friends:="org.eclipse.dltk.debug.tests",
+ org.eclipse.dltk.dbgp.internal.packets;x-friends:="org.eclipse.dltk.debug.tests",
+ org.eclipse.dltk.dbgp.internal.utils;x-friends:="org.eclipse.dltk.debug.tests",
+ org.eclipse.dltk.debug.core,
+ org.eclipse.dltk.debug.core.model,
+ org.eclipse.dltk.debug.internal.core.model,
+ org.eclipse.dltk.debug.internal.core.model.operations
+

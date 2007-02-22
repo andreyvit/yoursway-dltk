@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.dltk.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.dltk.ui" id="dltkElementFilters" name="Dltk Element Filters"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to extend UI views(for example outline view) with filters
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="filter">
+      <complexType>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  a unique id that will be used to identify this filter
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  a unique name that allows to identify this filter in the UI. This attribute should be a translated string. Though this attribute is not required for pattern filters (i.e. those using the pattern attribute) we suggest to provide a name anyway, otherwise the pattern string itself would be used to represent the filter in the UI
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  a short description for this filter. This attribute should be a translated string
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="targetId" type="string">
+            <annotation>
+               <documentation>
+                  the id of the target where this filter is contributed. If this attribute is missing, then the filter will be contributed to all views which use the org.eclipse.dltk.ui.actions.CustomFiltersActionGroup. 
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="enabled" type="boolean">
+            <annotation>
+               <documentation>
+                  the filter will be enabled if this attribute is present and its value is &quot;true&quot;. Most likely the user will be able to override this setting in the UI
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="pattern" type="string">
+            <annotation>
+               <documentation>
+                  elements whose name matches this pattern will be hidden
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  the name of the class used to filter the view. The class must extend org.eclipse.jface.viewers.ViewerFilter. If this attribute is here then the pattern attribute must not provided
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>
