@@ -1479,5 +1479,8 @@ public class DLTKCore extends Plugin {
 
 	public static void setOptions(Hashtable defaultOptions) {		
 		ModelManager.getModelManager().setOptions(defaultOptions);
-	}	
+	}
+	
+
+	
 }

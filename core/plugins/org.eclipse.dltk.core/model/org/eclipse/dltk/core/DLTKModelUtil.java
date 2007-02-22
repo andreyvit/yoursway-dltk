@@ -1,8 +1,18 @@
 package org.eclipse.dltk.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.compiler.CharOperation;
+import org.eclipse.dltk.core.search.IDLTKSearchConstants;
+import org.eclipse.dltk.core.search.IDLTKSearchScope;
+import org.eclipse.dltk.core.search.SearchEngine;
+import org.eclipse.dltk.core.search.SearchMatch;
+import org.eclipse.dltk.core.search.SearchParticipant;
+import org.eclipse.dltk.core.search.SearchPattern;
+import org.eclipse.dltk.core.search.SearchRequestor;
 
 
 public class DLTKModelUtil {
@@ -49,6 +59,53 @@ public class DLTKModelUtil {
 			System.err.println("TODO: Implement find in source module...");
 		}
 		return null;
+	}
+	
+	/**
+	 * Returns all the types with a given qualified name, that are located as childs of element.
+	 * @param element
+	 * @param qualifiedName
+	 * @param delimeter
+	 * @return
+	 */
+	public static IType[] getAllTypes(IDLTKProject project, final String qualifiedName, final String delimeter) {
+		final List types = new ArrayList ();
+
+		SearchRequestor requestor = new SearchRequestor() {
+			public void acceptSearchMatch(SearchMatch match)
+					throws CoreException {
+				Object element = match.getElement();
+				if (element instanceof IType) {
+					IType type = (IType) element;
+					if (type.getTypeQualifiedName(delimeter).equals(qualifiedName)) {
+						types.add(type);
+					}
+				}
+			}
+		};
+		
+		String[] names = qualifiedName.split(delimeter);
+		if (names == null || names.length == 0)
+			return new IType[0];
+		String patternString = names[names.length - 1];
+		
+		IDLTKSearchScope scope = SearchEngine.createSearchScope(new IModelElement[] {project});
+		
+		SearchPattern pattern = SearchPattern.createPattern(patternString,
+				IDLTKSearchConstants.TYPE, 
+				IDLTKSearchConstants.DECLARATIONS, 
+				SearchPattern.R_EXACT_MATCH);
+		try {
+			new SearchEngine().search(pattern,
+					new SearchParticipant[] { SearchEngine
+							.getDefaultSearchParticipant() }, scope, requestor,
+					null);
+		} catch (CoreException e) {			
+			if (DLTKCore.DEBUG)
+				e.printStackTrace();
+		}
+		
+		return (IType[]) types.toArray(new IType[types.size()]);
 	}
 	
 	public static IModelElement findType(IModelElement module, 
@@ -126,4 +183,15 @@ public class DLTKModelUtil {
 			return newMainName;
 		}
 	}
+	
+	public static boolean isSuperType(ITypeHierarchy hierarchy, IType possibleSuperType, IType type) {
+		// filed bug 112635 to add this method to ITypeHierarchy
+		IType superClass= hierarchy.getSuperclass(type);
+		if (superClass != null && (possibleSuperType.equals(superClass) || 
+				isSuperType(hierarchy, possibleSuperType, superClass))) {
+			return true;
+		}		
+		return false;
+	}
+	
 }

@@ -139,6 +139,14 @@ public class PreferenceConstants {
 	 * </p>
 	 */
 	public static final String SRCBIN_FOLDERS_IN_NEWPROJ= "com.xore.dltk.ui.wizards.srcBinFoldersInNewProjects"; //$NON-NLS-1$
+	
+	/**
+	 * A named preference that controls whether the hierarchy view's selection is linked to the active editor.
+	 * <p>
+	 * Value is of type <code>Boolean</code>.
+	 * </p>
+	 */
+	public static final String LINK_TYPEHIERARCHY_TO_EDITOR= "org.eclipse.dltk.ui.packages.linktypehierarchytoeditor"; //$NON-NLS-1$
 
 	/**
 	 * A named preference that specifies the source folder name used when creating a new script project. Value is inactive

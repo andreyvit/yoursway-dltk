@@ -625,4 +625,26 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 		list.toArray(array);
 		return array;
 	}
+	
+	public IType[] getAllTypes() throws ModelException {
+		IModelElement[] types = getTypes();
+		int i;
+		ArrayList allTypes = new ArrayList(types.length);
+		ArrayList typesToTraverse = new ArrayList(types.length);
+		for (i = 0; i < types.length; i++) {
+			typesToTraverse.add(types[i]);
+		}
+		while (!typesToTraverse.isEmpty()) {
+			IType type = (IType) typesToTraverse.get(0);
+			typesToTraverse.remove(type);
+			allTypes.add(type);
+			types = type.getTypes();
+			for (i = 0; i < types.length; i++) {
+				typesToTraverse.add(types[i]);
+			}
+		} 
+		IType[] arrayOfAllTypes = new IType[allTypes.size()];
+		allTypes.toArray(arrayOfAllTypes);
+		return arrayOfAllTypes;
+	}	
 }

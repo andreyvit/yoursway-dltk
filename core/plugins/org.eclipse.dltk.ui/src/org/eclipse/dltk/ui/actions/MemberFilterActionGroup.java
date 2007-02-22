@@ -18,6 +18,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.actions.ActionGroup;
 
 
@@ -170,6 +171,14 @@ public class MemberFilterActionGroup extends ActionGroup {
 	 */
 	public void dispose() {
 		super.dispose();
+	}
+	
+	public void saveState(IMemento memento) {
+		//TODO
+	}
+	
+	public void restoreState(IMemento memento) {
+		//TODO
 	}
 
 }

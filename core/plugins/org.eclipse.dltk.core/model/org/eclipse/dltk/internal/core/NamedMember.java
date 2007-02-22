@@ -38,19 +38,23 @@ public abstract class NamedMember extends Member {
 		return packageName + IScriptFolder.PACKAGE_DELIMETER_STR + getTypeQualifiedName(enclosingTypeSeparator, showParameters);
 	}
 
-	public String getTypeQualifiedName(String enclosingTypeSeparator, boolean showParameters) throws ModelException {
+	public String getTypeQualifiedName(String typeSeparator, boolean showParameters) throws ModelException {
 		NamedMember declaringType;
+		String thisName = this.name;
+		if (thisName.startsWith(typeSeparator))
+			return thisName;
 		switch (this.parent.getElementType()) {
 			case IModelElement.SOURCE_MODULE:
-				if (showParameters) {
-					StringBuffer buffer = new StringBuffer(this.name);
+				thisName = typeSeparator + thisName;
+				if (showParameters) {					
+					StringBuffer buffer = new StringBuffer(thisName);
 					// appendTypeParameters(buffer);
 					if (DLTKCore.DEBUG) {
 						System.err.println("TODO: NamedMember: add type parameters");
 					}
 					return buffer.toString();
 				}
-				return this.name;
+				return thisName;
 			case IModelElement.TYPE:
 				declaringType = (NamedMember) this.parent;
 				break;
@@ -61,8 +65,8 @@ public abstract class NamedMember extends Member {
 			default:
 				return null;
 		}
-		StringBuffer buffer = new StringBuffer(declaringType.getTypeQualifiedName(enclosingTypeSeparator, showParameters));
-		buffer.append(enclosingTypeSeparator);
+		StringBuffer buffer = new StringBuffer(declaringType.getTypeQualifiedName(typeSeparator, showParameters));
+		buffer.append(typeSeparator);
 		String simpleName = this.name.length() == 0 ? Integer.toString(this.occurrenceCount) : this.name;
 		buffer.append(simpleName);
 		if (showParameters) {

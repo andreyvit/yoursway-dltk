@@ -250,6 +250,8 @@ public interface ISourceModule extends IModule, ISourceReference,ISourceManipula
 	 */
 	IType[] getTypes() throws ModelException;
 	
+	public IType[] getAllTypes() throws ModelException;
+	
 	/**
 	 * Read only source module. From external resources.
 	 */

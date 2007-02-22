@@ -112,4 +112,39 @@ public interface IContextMenuConstants {
 	 * Pop-up menu: name of group for properties actions (value <code>"group.properties"</code>).
 	 */	
 	public static final String GROUP_PROPERTIES=	ICommonMenuConstants.GROUP_PROPERTIES;
+	
+	
+	/**
+	 * Type hierarchy view part: pop-up menu target ID for the member viewer
+	 * (value <code>"org.eclipse.jdt.ui.TypeHierarchy.members"</code>).
+	 * 
+	 * @since 2.0
+	 */
+	public static final String TARGET_ID_MEMBERS_VIEW= "org.eclipse.dltk.ui.TypeHierarchy.members"; //$NON-NLS-1$	
+	
+
+	/**
+	 * Type hierarchy view part: pop-up menu target ID for supertype hierarchy viewer
+	 * (value <code>"org.eclipse.jdt.ui.TypeHierarchy.supertypes"</code>).
+	 * 
+	 * @since 2.0
+	 */
+	public static final String TARGET_ID_SUPERTYPES_VIEW= "org.eclipse.dltk.ui.TypeHierarchy.supertypes"; //$NON-NLS-1$	
+
+	/**
+	 * Type hierarchy view part: Pop-up menu target ID for the subtype hierarchy viewer
+	 * (value <code>"org.eclipse.jdt.ui.TypeHierarchy.subtypes"</code>).
+	 * 
+	 * @since 2.0
+	 */
+	public static final String TARGET_ID_SUBTYPES_VIEW= "org.eclipse.dltk.ui.TypeHierarchy.subtypes"; //$NON-NLS-1$
+	/**
+	 * Type hierarchy view part: pop-up menu target ID for type hierarchy viewer
+	 * (value <code>"org.eclipse.jdt.ui.TypeHierarchy.typehierarchy"</code>).
+	 * 
+	 * @since 2.0
+	 */
+	public static final String TARGET_ID_HIERARCHY_VIEW= "org.eclipse.dltk.ui.TypeHierarchy.typehierarchy"; //$NON-NLS-1$
+
+	
 }
