@@ -14,6 +14,7 @@ import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ITypeHierarchy;
+import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.ScriptElementImageDescriptor;
@@ -43,7 +44,7 @@ public class HierarchyLabelProvider extends AppearanceAwareLabelProvider {
 		}
 		protected void drawCompositeImage(int width, int height) {
 			drawImage(getImageData(fBase), 0, 0);
-			drawImage(getImageData(DLTKPluginImages.DESC_OVR_FOCUS), 0, 0);
+			//drawImage(getImageData(DLTKPluginImages.DESC_OVR_FOCUS), 0, 0);
 		}
 		
 		private ImageData getImageData(ImageDescriptor descriptor) {
@@ -74,7 +75,7 @@ public class HierarchyLabelProvider extends AppearanceAwareLabelProvider {
 	private TypeHierarchyLifeCycle fHierarchy;
 	
 	public HierarchyLabelProvider(TypeHierarchyLifeCycle lifeCycle) {
-		super(DEFAULT_TEXTFLAGS | ScriptElementLabels.USE_RESOLVED, DEFAULT_IMAGEFLAGS, null); //XXX
+		super(DEFAULT_TEXTFLAGS | ScriptElementLabels.USE_RESOLVED, DEFAULT_IMAGEFLAGS, RubyUI.getDefault().getPreferenceStore()); 
 		fHierarchy= lifeCycle;
 		fFilter= null;
 	}
@@ -155,7 +156,7 @@ public class HierarchyLabelProvider extends AppearanceAwareLabelProvider {
 		
 		boolean isInner= (type.getDeclaringType() != null);
 		
-		ImageDescriptor desc= ScriptElementImageProvider.getTypeImageDescriptor(isInner, false, flags, isDifferentScope(type));
+		ImageDescriptor desc= ScriptElementImageProvider.getTypeImageDescriptor(flags, false);//(isInner, false, flags, isDifferentScope(type));
 
 		int adornmentFlags= 0;
 //		if (Flags.isFinal(flags)) {

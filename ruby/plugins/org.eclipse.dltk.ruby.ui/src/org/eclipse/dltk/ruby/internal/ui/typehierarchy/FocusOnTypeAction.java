@@ -33,28 +33,28 @@ public class FocusOnTypeAction extends Action {
 		setToolTipText(TypeHierarchyMessages.FocusOnTypeAction_tooltip); 
 		
 		fViewPart= part;
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this,	IJavaHelpContextIds.FOCUS_ON_TYPE_ACTION);
+		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this,	IJavaHelpContextIds.FOCUS_ON_TYPE_ACTION);
 	}
 
 	/*
 	 * @see Action#run
 	 */
 	public void run() {
-		Shell parent= fViewPart.getSite().getShell();
-		TypeSelectionDialog2 dialog= new TypeSelectionDialog2(parent, false, 
-			PlatformUI.getWorkbench().getProgressService(), 
-			SearchEngine.createWorkspaceScope(RubyLanguageToolkit.getDefault()), IDLTKSearchConstants.TYPE);
-	
-		dialog.setTitle(TypeHierarchyMessages.FocusOnTypeAction_dialog_title); 
-		dialog.setMessage(TypeHierarchyMessages.FocusOnTypeAction_dialog_message); 
-		if (dialog.open() != IDialogConstants.OK_ID) {
-			return;
-		}
-		
-		Object[] types= dialog.getResult();
-		if (types != null && types.length > 0) {
-			IType type= (IType)types[0];
-			fViewPart.setInputElement(type);
-		}
+//		Shell parent= fViewPart.getSite().getShell();
+//		TypeSelectionDialog2 dialog= new TypeSelectionDialog2(parent, false, 
+//			PlatformUI.getWorkbench().getProgressService(), 
+//			SearchEngine.createWorkspaceScope(RubyLanguageToolkit.getDefault()), IDLTKSearchConstants.TYPE);
+//	
+//		dialog.setTitle(TypeHierarchyMessages.FocusOnTypeAction_dialog_title); 
+//		dialog.setMessage(TypeHierarchyMessages.FocusOnTypeAction_dialog_message); 
+//		if (dialog.open() != IDialogConstants.OK_ID) {
+//			return;
+//		}
+//		
+//		Object[] types= dialog.getResult();
+//		if (types != null && types.length > 0) {
+//			IType type= (IType)types[0];
+//			fViewPart.setInputElement(type);
+//		}
 	}	
 }

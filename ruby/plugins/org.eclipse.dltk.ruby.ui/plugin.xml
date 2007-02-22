@@ -171,5 +171,6 @@
             sequence="M1+M2+T"
             commandId="org.eclipse.dltk.ruby.ui.navigate.open.type"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>       
+        
  </extension>
 </plugin>

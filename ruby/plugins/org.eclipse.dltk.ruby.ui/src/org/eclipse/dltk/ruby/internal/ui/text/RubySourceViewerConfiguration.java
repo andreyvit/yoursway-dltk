@@ -1,8 +1,11 @@
 package org.eclipse.dltk.ruby.internal.ui.text;
 
+import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
+import org.eclipse.dltk.internal.ui.text.ScriptElementProvider;
 import org.eclipse.dltk.ruby.internal.ui.text.completion.RubyCompletionProcessor;
 import org.eclipse.dltk.ruby.internal.ui.text.completion.RubyContentAssistPreference;
+import org.eclipse.dltk.ruby.internal.ui.typehierarchy.HierarchyInformationControl;
 import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.text.AbstractScriptScanner;
@@ -10,6 +13,7 @@ import org.eclipse.dltk.ui.text.DLTKSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.IColorManager;
 import org.eclipse.dltk.ui.text.SingleTokenScriptScanner;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.AbstractInformationControlManager;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
@@ -18,6 +22,8 @@ import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.information.IInformationPresenter;
+import org.eclipse.jface.text.information.IInformationProvider;
+import org.eclipse.jface.text.information.InformationPresenter;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
@@ -173,11 +179,36 @@ public class RubySourceViewerConfiguration extends
 		return fCodeScanner.affectsBehavior(event)
 				|| fStringScanner.affectsBehavior(event)|| fDocScanner.affectsBehavior(event);
 	}
+	
+	private IInformationControlCreator getHierarchyPresenterControlCreator(ISourceViewer sourceViewer) {
+		return new IInformationControlCreator() {
+			public IInformationControl createInformationControl(Shell parent) {
+				int shellStyle= SWT.RESIZE;
+				int treeStyle= SWT.V_SCROLL | SWT.H_SCROLL;
+				return new HierarchyInformationControl(parent, shellStyle, treeStyle);
+			}
+		};
+	}
 
 	public IInformationPresenter getHierarchyPresenter(
-			ScriptSourceViewer viewer, boolean b) {
-		// TODO Auto-generated method stub
-		return null;
+			ScriptSourceViewer sourceViewer, boolean doCodeResolve) {
+//		 Do not create hierarchy presenter if there's no CU.
+		if (getEditor() != null && getEditor().getEditorInput() != null && 
+				EditorUtility.getEditorInputModelElement(getEditor(), true) == null)
+			return null;
+		
+		InformationPresenter presenter= new InformationPresenter(getHierarchyPresenterControlCreator(sourceViewer));
+		presenter.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
+		presenter.setAnchor(AbstractInformationControlManager.ANCHOR_GLOBAL);
+		IInformationProvider provider= new ScriptElementProvider(getEditor(), doCodeResolve);
+		presenter.setInformationProvider(provider, IDocument.DEFAULT_CONTENT_TYPE);
+//		presenter.setInformationProvider(provider, IJavaPartitions.JAVA_DOC);
+//		presenter.setInformationProvider(provider, IJavaPartitions.JAVA_MULTI_LINE_COMMENT);
+//		presenter.setInformationProvider(provider, IJavaPartitions.JAVA_SINGLE_LINE_COMMENT);
+//		presenter.setInformationProvider(provider, IJavaPartitions.JAVA_STRING);
+//		presenter.setInformationProvider(provider, IJavaPartitions.JAVA_CHARACTER);
+		presenter.setSizeConstraints(50, 20, true, false);
+		return presenter;
 	}
 
 	/*

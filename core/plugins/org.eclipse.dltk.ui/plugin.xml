@@ -817,6 +817,11 @@
             commandId="org.eclipse.dltk.ui.edit.text.script.show.outline"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
       <key
+            sequence="M1+T"
+            contextId="org.eclipse.dltk.ui.scriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.open.hierarchy"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
             sequence="M1+M2+P"
             contextId="org.eclipse.dltk.ui.scriptEditorScope"
             commandId="org.eclipse.dltk.ui.edit.text.script.goto.matching.bracket"

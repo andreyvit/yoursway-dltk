@@ -25,6 +25,7 @@ import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.actions.RetargetAction;
 import org.eclipse.ui.texteditor.BasicTextEditorActionContributor;
@@ -43,6 +44,7 @@ public class BasicDLTKEditorActionContributor extends BasicTextEditorActionContr
 
 	private RetargetTextEditorAction fGotoMatchingBracket;
 	private RetargetTextEditorAction fShowOutline;
+	private RetargetTextEditorAction fOpenHierarchy;
 	
 	private RetargetAction fRetargetShowScriptDoc;
 	private RetargetTextEditorAction fShowScriptDoc;
@@ -65,7 +67,10 @@ public class BasicDLTKEditorActionContributor extends BasicTextEditorActionContr
 		fGotoMatchingBracket.setActionDefinitionId(IDLTKEditorActionDefinitionIds.GOTO_MATCHING_BRACKET);
 		
 		fShowOutline= new RetargetTextEditorAction(DLTKEditorMessages.getBundleForConstructedKeys(), "ShowOutline."); //$NON-NLS-1$
-		fShowOutline.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SHOW_OUTLINE);	
+		fShowOutline.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SHOW_OUTLINE);
+		
+		fOpenHierarchy= new RetargetTextEditorAction(DLTKEditorMessages.getBundleForConstructedKeys(), "OpenHierarchy."); //$NON-NLS-1$
+		fOpenHierarchy.setActionDefinitionId(IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY);
 
 		fGotoNextMemberAction= new RetargetTextEditorAction(b, "GotoNextMember."); //$NON-NLS-1$
 		fGotoNextMemberAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.GOTO_NEXT_MEMBER);
@@ -97,6 +102,12 @@ public class BasicDLTKEditorActionContributor extends BasicTextEditorActionContr
 	public void contributeToMenu(IMenuManager menu) {
 		super.contributeToMenu(menu);
 		
+		IMenuManager navigateMenu= menu.findMenuUsingPath(IWorkbenchActionConstants.M_NAVIGATE);
+		if (navigateMenu != null) {
+			navigateMenu.appendToGroup(IWorkbenchActionConstants.SHOW_EXT, fShowOutline);
+			navigateMenu.appendToGroup(IWorkbenchActionConstants.SHOW_EXT, fOpenHierarchy);
+		}
+		
 		IMenuManager gotoMenu= menu.findMenuUsingPath("navigate/goTo"); //$NON-NLS-1$
 		if (gotoMenu != null) {
 			gotoMenu.add(new Separator("additions2"));  //$NON-NLS-1$
@@ -118,6 +129,7 @@ public class BasicDLTKEditorActionContributor extends BasicTextEditorActionContr
 			textEditor= (ITextEditor)part;
 		
 		fShowOutline.setAction(getAction(textEditor, IDLTKEditorActionDefinitionIds.SHOW_OUTLINE));
+		fOpenHierarchy.setAction(getAction(textEditor, IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY));
 		fGotoMatchingBracket.setAction(getAction(textEditor, GotoMatchingBracketAction.GOTO_MATCHING_BRACKET));
 		
 		fGotoNextMemberAction.setAction(getAction(textEditor, GoToNextPreviousMemberAction.NEXT_MEMBER));

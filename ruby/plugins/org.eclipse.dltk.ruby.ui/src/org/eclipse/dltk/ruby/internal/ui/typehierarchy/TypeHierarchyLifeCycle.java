@@ -118,7 +118,7 @@ public class TypeHierarchyLifeCycle implements ITypeHierarchyChangedListener, IE
 	}
 	
 	private ITypeHierarchy createTypeHierarchy(IModelElement element, IProgressMonitor pm) throws ModelException {
-		if (element.getElementType() == IModelElement.TYPE) {
+/*		if (element.getElementType() == IModelElement.TYPE) {
 			IType type= (IType) element;
 			if (fIsSuperTypesOnly) {
 				return type.newSupertypeHierarchy(pm);
@@ -149,7 +149,8 @@ public class TypeHierarchyLifeCycle implements ITypeHierarchyChangedListener, IE
 			}
 			IDLTKProject jproject= element.getScriptProject();
 			return jproject.newTypeHierarchy(region, pm);
-		}
+		}*/
+		return null;
 	}
 	
 	

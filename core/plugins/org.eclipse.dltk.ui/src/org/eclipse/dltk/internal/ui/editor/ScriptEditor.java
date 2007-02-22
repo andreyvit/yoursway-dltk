@@ -1048,6 +1048,12 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		setAction(IDLTKEditorActionDefinitionIds.SHOW_OUTLINE, outlineAction);
 		// PlatformUI.getWorkbench().getHelpSystem().setHelp(action,
 		// IJavaHelpContextIds.SHOW_OUTLINE_ACTION);
+		
+		action= new TextOperationAction(DLTKEditorMessages.getBundleForConstructedKeys(),"OpenHierarchy.", this, 
+				ScriptSourceViewer.SHOW_HIERARCHY, true); //$NON-NLS-1$
+		action.setActionDefinitionId(IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY);
+		setAction(IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY, action);
+		//PlatformUI.getWorkbench().getHelpSystem().setHelp(action, IJavaHelpContextIds.OPEN_HIERARCHY_ACTION);
 
 		action = new ContentAssistAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(), "ContentAssistProposal.", this); //$NON-NLS-1$
