@@ -161,7 +161,7 @@ public class TypeNameMatchRequestorWrapper implements
 				.get(pkgName);
 		if (pkgFragment == null) {
 			pkgFragment = ((ProjectFragment) this.lastProjectFragment)
-					.getScriptFolder(resourcePath);
+					.getScriptFolder(pkgName);
 			this.packageHandles.put(pkgName, pkgFragment);
 		}
 		String simpleName = simpleNames[length];

@@ -12,8 +12,11 @@ package org.eclipse.dltk.internal.core.search.matching;
 
 import java.io.IOException;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.util.Util;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
@@ -47,6 +50,11 @@ public abstract class InternalSearchPattern {
 			AccessRuleSet access = javaSearchScope.getAccessRuleSet(relativePath, containerPath);
 			if (access != DLTKSearchScope.NOT_ENCLOSED) { // scope encloses the document path
 				String documentPath = documentPath(containerPath, relativePath);
+				
+				IPath realPath = new Path(documentPath);
+				if( scope.getLanguageToolkit().validateSourceModule(realPath).getSeverity() !=  IStatus.OK ) {
+					return;
+				}
 				if (!requestor.acceptIndexMatch(documentPath, pattern, participant, access)) 
 					throw new OperationCanceledException();
 			}

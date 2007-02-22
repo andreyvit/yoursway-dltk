@@ -1,9 +1,9 @@
 package org.eclipse.dltk.tcl.ui;
 
+import org.eclipse.dltk.tcl.internal.ui.TclUI;
 import org.eclipse.dltk.tcl.internal.ui.wizards.TclFileCreationWizard;
 import org.eclipse.dltk.tcl.internal.ui.wizards.TclProjectCreationWizard;
 import org.eclipse.dltk.ui.wizards.NewPackageCreationWizard;
-import org.eclipse.dltk.ui.wizards.NewSourceFolderCreationWizard;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
@@ -47,6 +47,7 @@ public class TclPerspective implements IPerspectiveFactory {
 
 	protected void addActionSets(IPageLayout layout) {
 		layout.addActionSet(IPageLayout.ID_NAVIGATE_ACTION_SET);
+		layout.addActionSet(TclUI.ID_ACTION_SET);
 	}
 
 	protected void addViews(IPageLayout layout) {

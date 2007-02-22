@@ -427,4 +427,15 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 				updateModelFlags, sibling);
 		op.runOperation(monitor);
 	}
+
+	public IScriptFolder getScriptFolder(String[] pkgName) {
+		if( pkgName.length == 0 ) {
+			return this.getScriptFolder(Path.EMPTY);
+		}
+		IPath path = new Path(pkgName[0]);
+		for( int i = 1; i < pkgName.length; ++i ) {
+			path = path.append(pkgName[i]);
+		}
+		return getScriptFolder(path);
+	}
 }

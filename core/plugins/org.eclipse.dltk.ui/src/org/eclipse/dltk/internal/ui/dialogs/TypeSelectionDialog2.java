@@ -309,7 +309,7 @@ public class TypeSelectionDialog2 extends SelectionStatusDialog {
 						// make sure we search a concrete name. This is faster according to Kent  
 						"_______________".toCharArray(), //$NON-NLS-1$
 						SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE, 
-						IDLTKSearchConstants.TYPE,
+						IDLTKSearchConstants.FIELD,
 						SearchEngine.createWorkspaceScope(fToolkit.getCoreToolkit()), 
 						new TypeNameRequestor() {}, 
 						IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, 

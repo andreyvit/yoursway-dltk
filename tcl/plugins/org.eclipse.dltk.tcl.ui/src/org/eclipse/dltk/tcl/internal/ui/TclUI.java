@@ -12,6 +12,8 @@ import org.osgi.framework.BundleContext;
  */
 public class TclUI extends AbstractUIPlugin {
 
+	public static final String ID_ACTION_SET = "org.eclipse.dltk.tcl.ui.TclActionSet";
+	
 	//The shared instance.
 	private static TclUI plugin;
 	

@@ -11,7 +11,7 @@
 	        icon="icons/ruby_obj.gif"
 	        id="org.eclipse.dltk.ruby.ui.editor.RubyEditor"
 	        name="DLTK Ruby Editor"/>
-	 </extension>   
+	 </extension>
    
 	<extension
 	  id="org.eclipse.dltk.ruby.ui.editor.DocumentSetupParticipant"
@@ -136,4 +136,40 @@
            nature="org.eclipse.dltk.ruby.core.nature"/>
   </extension>
   
+<!--Action Sets -->
+ <extension
+      point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="%RubyActionSet.label"
+            description="%RubyActionSet.description"
+            visible="false"
+            id="org.eclipse.dltk.ruby.ui.RubyActionSet">
+         <action
+            class="org.eclipse.dltk.ruby.internal.ui.actions.RubyOpenTypeAction"
+            definitionId="org.eclipse.dltk.ruby.ui.navigate.open.type"
+            icon="icons/opentype.gif"
+            id="openType"
+            label="%OpenTypeAction.label"
+            menubarPath="navigate/open.ext2"
+            toolbarPath="org.eclipse.search.searchActionSet/Search"
+            tooltip="%OpenTypeAction.tooltip">
+         </action>
+      </actionSet>
+  </extension>
+ <extension
+       point="org.eclipse.ui.commands">
+       <command
+            name="%ActionDefinition.openType.name"
+            description="%ActionDefinition.openType.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ruby.ui.navigate.open.type">
+         </command>
+ </extension>
+ <extension
+       point="org.eclipse.ui.bindings">
+         <key
+            sequence="M1+M2+T"
+            commandId="org.eclipse.dltk.ruby.ui.navigate.open.type"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>       
+ </extension>
 </plugin>

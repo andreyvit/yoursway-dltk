@@ -655,8 +655,7 @@ public class TypeInfoViewer {
 			fReqestor.cancel();
 			super.stop();
 		}
-		protected TypeNameMatch[] getSearchResult(Set matchIdsInHistory, ProgressMonitor monitor) throws CoreException {
-			long start= System.currentTimeMillis();
+		protected TypeNameMatch[] getSearchResult(Set matchIdsInHistory, ProgressMonitor monitor) throws CoreException {			long start= System.currentTimeMillis();
 			fReqestor.setHistory(matchIdsInHistory);
 			// consider primary working copies during searching
 			SearchEngine engine= new SearchEngine((WorkingCopyOwner)null);

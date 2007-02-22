@@ -13,11 +13,14 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.IBuffer;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.ISourceReference;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
 import org.eclipse.dltk.internal.ui.DLTKUIMessages;
 import org.eclipse.dltk.internal.ui.IDLTKStatusConstants;
 import org.eclipse.dltk.internal.ui.editor.DocumentAdapter;
+import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.dltk.internal.ui.editor.ISourceModuleDocumentProvider;
 import org.eclipse.dltk.internal.ui.editor.SourceModuleDocumentProvider;
 import org.eclipse.dltk.internal.ui.editor.WorkingCopyManager;
@@ -31,8 +34,10 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.navigator.ICommonMenuConstants;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.texteditor.ConfigurationElementSorter;
@@ -303,5 +308,45 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 		
 		return fEditorTextHoverDescriptors;
 	} 
+	/**
+	 * Opens an editor on the given Java element in the active page. Valid elements are all Java elements that are {@link ISourceReference}.
+ 	 * For elements inside a compilation unit or class file, the parent is opened in the editor is opened and the element revealed.
+ 	 * If there already is an open Java editor for the given element, it is returned.
+	 *
+	 * @param element the input element; either a compilation unit 
+	 *   (<code>ICompilationUnit</code>) or a class file (<code>IClassFile</code>) or source references inside.
+	 * @return returns the editor part of the opened editor or <code>null</code> if the element is not a {@link ISourceReference} or the
+	 * file was opened in an external editor.
+	 * @exception PartInitException if the editor could not be initialized or no workbench page is active
+	 * @exception JavaModelException if this element does not exist or if an exception occurs while accessing its underlying resource
+	 */
+	public static IEditorPart openInEditor(IModelElement element) throws ModelException, PartInitException {
+		return openInEditor(element, true, true);
+	}
 	
+	/**
+	 * Opens an editor on the given Java element in the active page. Valid elements are all Java elements that are {@link ISourceReference}.
+ 	 * For elements inside a compilation unit or class file, the parent is opened in the editor is opened.
+ 	 * If there already is an open Java editor for the given element, it is returned.
+	 *
+	 * @param element the input element; either a compilation unit 
+	 *   (<code>ICompilationUnit</code>) or a class file (<code>IClassFile</code>) or source references inside.
+	 * @param activate if set, the editor will be activated.
+	 * @param reveal if set, the element will be revealed.
+	 * @return returns the editor part of the opened editor or <code>null</code> if the element is not a {@link ISourceReference} or the
+	 * file was opened in an external editor.
+	 * @exception PartInitException if the editor could not be initialized or no workbench page is active
+	 * @exception JavaModelException if this element does not exist or if an exception occurs while accessing its underlying resource
+	 * @since 3.3
+	 */
+	public static IEditorPart openInEditor(IModelElement element, boolean activate, boolean reveal) throws ModelException, PartInitException {
+		if (!(element instanceof ISourceReference)) {
+			return null;
+		}
+		IEditorPart part= EditorUtility.openInEditor(element, activate);
+		if (reveal && part != null) {
+			EditorUtility.revealInEditor(part, element);
+		}
+		return part;
+	}	
 }

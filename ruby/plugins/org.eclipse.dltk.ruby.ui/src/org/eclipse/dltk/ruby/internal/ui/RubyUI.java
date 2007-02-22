@@ -12,6 +12,8 @@ public class RubyUI extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.ui";
 
+	public static final String ID_ACTION_SET = "org.eclipse.dltk.ruby.ui.RubyActionSet";
+
 	// The shared instance
 	private static RubyUI plugin;
 

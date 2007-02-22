@@ -76,7 +76,7 @@
       <perspectiveExtension
             targetID="org.eclipse.debug.ui.DebugPerspective">
          <actionSet
-               id="org.eclipse.jdt.ui.JavaActionSet">
+               id="org.eclipse.jdt.ui.DLTKActionSet">
          </actionSet>
       </perspectiveExtension>
       
@@ -349,5 +349,41 @@
          </visibility>
       </objectContribution>      
    </extension> -->
-    
+  
+<!--Action Sets -->
+ <extension
+      point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="%TclActionSet.label"
+            description="%TclActionSet.description"
+            visible="false"
+            id="org.eclipse.dltk.tcl.ui.TclActionSet">
+         <action
+            class="org.eclipse.dltk.tcl.internal.ui.actions.TclOpenTypeAction"
+            definitionId="org.eclipse.dltk.tcl.ui.navigate.open.type"
+            icon="icons/opentype.gif"
+            id="openType"
+            label="%OpenTypeAction.label"
+            menubarPath="navigate/open.ext2"
+            toolbarPath="org.eclipse.search.searchActionSet/Search"
+            tooltip="%OpenTypeAction.tooltip">
+         </action>
+      </actionSet>
+  </extension>
+ <extension
+       point="org.eclipse.ui.commands">
+       <command
+            name="%ActionDefinition.openType.name"
+            description="%ActionDefinition.openType.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.tcl.ui.navigate.open.type">
+         </command>
+ </extension>
+ <extension
+       point="org.eclipse.ui.bindings">
+         <key
+            sequence="M1+M2+T"
+            commandId="org.eclipse.dltk.tcl.ui.navigate.open.type"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>       
+ </extension>  
 </plugin>

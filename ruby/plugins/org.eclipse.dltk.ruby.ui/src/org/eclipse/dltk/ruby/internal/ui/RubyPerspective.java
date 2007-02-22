@@ -28,7 +28,7 @@ public class RubyPerspective implements IPerspectiveFactory  {
 		layout.addView(IPageLayout.ID_OUTLINE, IPageLayout.RIGHT, (float)0.75, editorArea);
 				
 		layout.addActionSet(IPageLayout.ID_NAVIGATE_ACTION_SET);
-		
+		layout.addActionSet(RubyUI.ID_ACTION_SET);
 		
 		// views - standard workbench
 		layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);

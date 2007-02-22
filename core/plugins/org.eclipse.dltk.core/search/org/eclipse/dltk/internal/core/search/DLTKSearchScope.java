@@ -17,9 +17,12 @@ import java.util.Map;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -462,7 +465,10 @@ public class DLTKSearchScope extends AbstractSearchScope {
 	private boolean encloses(String enclosingPath, String path, int index) {
 		// normalize given path as it can come from outside
 		path = normalize(path);
-
+		IPath realPath = new Path(path);
+		if( this.toolkit.validateSourceModule(realPath).getSeverity() !=  IStatus.OK ) {
+			return false;
+		}
 		int pathLength = path.length();
 		int enclosingLength = enclosingPath.length();
 		if (pathLength < enclosingLength) {
@@ -497,6 +503,16 @@ public class DLTKSearchScope extends AbstractSearchScope {
 	 * @see IJavaSearchScope#encloses(IModelElement)
 	 */
 	public boolean encloses(IModelElement element) {
+		
+		IDLTKLanguageToolkit languageToolkit = getLanguageToolkit();
+		try {
+			IDLTKLanguageToolkit langaugeToolkit2 = DLTKLanguageManager.getLangaugeToolkit(element);
+			if( !languageToolkit.getNatureID().equals(langaugeToolkit2.getNatureID())) {
+				return false;
+			}
+		} catch (CoreException e) {
+		}
+		
 		if (this.elements != null) {
 			for (int i = 0, length = this.elements.size(); i < length; i++) {
 				IModelElement scopeElement = (IModelElement) this.elements

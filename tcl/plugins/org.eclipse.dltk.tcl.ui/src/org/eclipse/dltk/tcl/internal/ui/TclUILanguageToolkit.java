@@ -5,9 +5,20 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.tcl.core.TclLanguageToolkit;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.ScriptElementLabels;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
+	
+	private static TclUILanguageToolkit sToolkit = null;
+	
+	public static IDLTKUILanguageToolkit getInstance() {
+		if( sToolkit == null ) {
+			sToolkit = new TclUILanguageToolkit();
+		}
+		return sToolkit;
+	}
+	
 	private static class TclScriptElementLabels extends ScriptElementLabels {
 		public void getElementLabel(IModelElement element, long flags, StringBuffer buf) {
 			StringBuffer buffer = new StringBuffer(60);
@@ -45,5 +56,8 @@ public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
 
 	public IDLTKLanguageToolkit getCoreToolkit() {
 		return TclLanguageToolkit.getDefault();
+	}
+	public IDialogSettings getDialogSettings() {
+		return TclUI.getDefault().getDialogSettings();
 	}
 }

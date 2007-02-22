@@ -176,7 +176,7 @@ public class OpenTypeHistory extends History {
 	private final IElementChangedListener fDeltaListener;
 	private final UpdateJob fUpdateJob;
 	
-	private static final String FILENAME= "OpenTypeHistory.xml"; //$NON-NLS-1$
+	private static final String FILENAME= "OpenTypeHistory"; //$NON-NLS-1$
 	private static final String NODE_ROOT= "typeInfoHistroy"; //$NON-NLS-1$
 	private static final String NODE_TYPE_INFO= "typeInfo"; //$NON-NLS-1$
 	private static final String NODE_HANDLE= "handle"; //$NON-NLS-1$
@@ -184,7 +184,7 @@ public class OpenTypeHistory extends History {
 	private static final String NODE_TIMESTAMP= "timestamp"; //$NON-NLS-1$
 	
 	private OpenTypeHistory(IDLTKUILanguageToolkit toolkit) {
-		super(FILENAME, NODE_ROOT, NODE_TYPE_INFO);
+		super(FILENAME + toolkit.getCoreToolkit().getNatureID().replace('.', '_') +".xml", NODE_ROOT, NODE_TYPE_INFO);
 		fTimestampMapping= new HashMap();
 		fNeedsConsistencyCheck= true;
 		load();
