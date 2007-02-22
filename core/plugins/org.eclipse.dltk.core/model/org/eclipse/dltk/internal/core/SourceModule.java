@@ -585,6 +585,16 @@ public class SourceModule extends Openable implements ISourceModule, org.eclipse
 				String typeName = memento.nextToken();
 				ModelElement type = (ModelElement)getType(typeName);
 				return type.getHandleFromMemento(memento, workingCopyOwner);
+			case JEM_METHOD:
+				if (!memento.hasMoreTokens()) return this;
+				String methodName = memento.nextToken();
+				ModelElement method = (ModelElement)getMethod(methodName);
+				return method.getHandleFromMemento(memento, workingCopyOwner);
+			case JEM_FIELD:
+				if (!memento.hasMoreTokens()) return this;
+				String field = memento.nextToken();
+				ModelElement fieldE = (ModelElement)getField(field);
+				return fieldE.getHandleFromMemento(memento, workingCopyOwner);
 		}
 		return null;
 	}
