@@ -11,6 +11,7 @@ import org.eclipse.dltk.ui.viewsupport.MemberFilterAction;
 import org.eclipse.dltk.ui.viewsupport.ModelElementFilter;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.ui.IActionBars;
 
 public class RubyOutlinePage extends ScriptOutlinePage {
@@ -80,5 +81,9 @@ public class RubyOutlinePage extends ScriptOutlinePage {
 
 		fMemberFilterActionGroup.setActions(fFilterActions);
 		fMemberFilterActionGroup.contributeToToolBar(toolBarManager);
+	}
+
+	protected ILabelDecorator getLabelDecorator() {
+		return new RubyOutlineLabelDecorator();
 	}
 }

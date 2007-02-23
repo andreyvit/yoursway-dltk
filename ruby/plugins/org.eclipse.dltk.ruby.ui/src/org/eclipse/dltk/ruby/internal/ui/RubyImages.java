@@ -16,4 +16,7 @@ public class RubyImages {
 
 	public static final ImageDescriptor DESC_WIZBAN_FILE_CREATION = util
 			.createUnManaged(ImageUtil.T_WIZBAN, "filecreate_wiz.png");
+	
+	public static final ImageDescriptor DESC_OVR_STATIC_FIELD = util
+		.createUnManaged(ImageUtil.T_OVR, "static_co.gif");
 }
