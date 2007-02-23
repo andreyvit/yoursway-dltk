@@ -218,9 +218,12 @@ public class RubySyntaxUtils {
 	}
 	
 	public static int skipWhitespaceForward(CharSequence content, final int offset, final int end) {
-		for (int result = offset; result < end; result++)
+		for (int result = offset; result < end; result++) {
+			if (result < 0 || result >= content.length())
+				break;
 			if (!isWhitespace(content.charAt(result)))
 				return result;
+		}
 		return -1;
 	}
 	

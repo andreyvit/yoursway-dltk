@@ -28,6 +28,7 @@ import org.eclipse.dltk.ast.statements.IfStatement;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
+import org.eclipse.dltk.ruby.ast.OrExpression;
 import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyVariableKind;
@@ -864,8 +865,10 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		ISourcePosition recvPos = node.getReceiverNode().getPosition();
 		int pos  = recvEnd;
 		if (pos >= 0) {
-			while (pos < content.length() && content.charAt(pos) != '.')
+			while (pos < content.length() && content.charAt(pos) != '.' && content.charAt(pos) != ':')
 				pos++; 
+			while (content.charAt(pos) == ':')
+				pos++;
 		}
 		if (pos  >= content.length() || pos < 0)
 			return recvPos;
@@ -1193,9 +1196,30 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitOrNode(OrNode iVisited) {
+		CollectingState state = new CollectingState();
+		pushState(state);
 		iVisited.getFirstNode().accept(this);
+		popState();
+		
+		Expression left = null;
+		if (state.list.size() == 1 && state.list.get(0) instanceof Expression) {
+			left = (Expression) state.list.get(0);
+		}
 
+		state.list.clear();
+		pushState(state);
 		iVisited.getSecondNode().accept(this);
+		popState();
+		
+		Statement right = null;
+		if (state.list.size() == 1 && state.list.get(0) instanceof Statement) {
+			right = (Statement) state.list.get(0);
+		}
+		
+		OrExpression or = new OrExpression(left, right);
+		
+		peekState().add(or);
+		
 		return null;
 	}
 
