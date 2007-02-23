@@ -51,6 +51,7 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "org.eclipse.dltk.ui";
 	public static final String ID_SCRIPTEXPLORER = "org.eclipse.dltk.ui.ScriptExplorer";
+	public static final String ID_TYPE_HIERARCHY= 		"org.eclipse.dltk.ruby.ui.TypeHierarchy";
 	//The shared instance.
 	private static DLTKUIPlugin plugin;
 	

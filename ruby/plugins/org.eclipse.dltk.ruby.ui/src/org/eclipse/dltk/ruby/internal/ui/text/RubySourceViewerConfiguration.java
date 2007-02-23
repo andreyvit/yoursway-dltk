@@ -3,9 +3,10 @@ package org.eclipse.dltk.ruby.internal.ui.text;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.internal.ui.text.ScriptElementProvider;
+import org.eclipse.dltk.internal.ui.typehierarchy.HierarchyInformationControl;
 import org.eclipse.dltk.ruby.internal.ui.text.completion.RubyCompletionProcessor;
 import org.eclipse.dltk.ruby.internal.ui.text.completion.RubyContentAssistPreference;
-import org.eclipse.dltk.ruby.internal.ui.typehierarchy.HierarchyInformationControl;
+import org.eclipse.dltk.ruby.internal.ui.typehierarchy.RubyHierarchyInformationControl;
 import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.text.AbstractScriptScanner;
@@ -185,7 +186,7 @@ public class RubySourceViewerConfiguration extends
 			public IInformationControl createInformationControl(Shell parent) {
 				int shellStyle= SWT.RESIZE;
 				int treeStyle= SWT.V_SCROLL | SWT.H_SCROLL;
-				return new HierarchyInformationControl(parent, shellStyle, treeStyle);
+				return new RubyHierarchyInformationControl(parent, shellStyle, treeStyle);
 			}
 		};
 	}

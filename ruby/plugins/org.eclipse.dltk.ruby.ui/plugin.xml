@@ -87,9 +87,9 @@
       
       <view
             name="%hierarchyViewName"
-            icon="$nl$/icons/full/eview16/class_hi.gif"
+            icon="$nl$/icons/class_hi.gif"
             category="org.eclipse.dltk.ruby.ui"
-            class="org.eclipse.dltk.ruby.internal.ui.typehierarchy.TypeHierarchyViewPart"
+            class="org.eclipse.dltk.ruby.internal.ui.typehierarchy.RubyTypeHierarchyViewPart"
             id="org.eclipse.dltk.ruby.ui.TypeHierarchy">
       </view>
       

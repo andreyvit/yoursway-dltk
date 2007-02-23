@@ -138,7 +138,7 @@ public class MemberFilterActionGroup extends ActionGroup {
 	 * @param tbm the tool bar to which the actions are added
 	 */
 	public void contributeToToolBar(IToolBarManager tbm) {
-		if (fInViewMenu)
+		if (fInViewMenu || fFilterActions == null)
 			return;
 		for (int i= 0; i < fFilterActions.length; i++) {
 			tbm.add(fFilterActions[i]);

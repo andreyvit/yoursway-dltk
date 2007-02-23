@@ -12,8 +12,6 @@ public class RubyUI extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.ui";
 	
-	public static final String ID_TYPE_HIERARCHY= 		"org.eclipse.dltk.ruby.ui.TypeHierarchy";
-
 	// The shared instance
 	private static RubyUI plugin;
 
