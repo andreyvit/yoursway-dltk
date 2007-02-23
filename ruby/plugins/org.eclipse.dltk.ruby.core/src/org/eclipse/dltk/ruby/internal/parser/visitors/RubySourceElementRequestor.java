@@ -15,11 +15,14 @@ import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionList;
+import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.ExtendedVariableReference;
+import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
+import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class RubySourceElementRequestor extends SourceElementRequestVisitor {
@@ -206,7 +209,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 			} else {// TODO: dynamic variable handling not yet supported.
 
 			}
-		}
+		} 
 	}
 
 	public boolean visit(Expression expression) throws Exception {
@@ -220,7 +223,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 			// Handle static variables
 			this.addVariableReference(left, right, this.fInClass,
 					this.fInMethod);
-		}
+		} 
 		return true;
 	}
 
@@ -252,6 +255,18 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 	}
 
 	public boolean visit(Statement statement) throws Exception {
+		if (statement instanceof ConstantDeclaration) {
+			ConstantDeclaration constant = (ConstantDeclaration) statement;
+			SimpleReference constName = constant.getName();
+			ISourceElementRequestor.FieldInfo info = new ISourceElementRequestor.FieldInfo();
+			info.modifiers = Modifiers.AccConstant;
+			info.name = constName.getName();
+			info.nameSourceEnd = constName.sourceEnd() - 1;
+			info.nameSourceStart = constName.sourceStart();
+			info.declarationStart = constName.sourceStart();
+			this.fRequestor.enterField(info);
+			this.fRequestor.exitField(constName.sourceEnd() - 1);			
+		}
 		return true;
 	}
 

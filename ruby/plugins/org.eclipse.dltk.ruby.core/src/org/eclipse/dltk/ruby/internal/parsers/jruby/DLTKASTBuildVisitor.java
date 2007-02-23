@@ -371,7 +371,16 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		if (pathNode != null)
 			pathResult = (Expression) collectSingleStatement(pathNode);
 		Statement value = collectSingleStatement(iVisited.getValueNode());
-		SimpleReference name = new SimpleReference(-1, -1, iVisited.getName());
+		ISourcePosition position = iVisited.getPosition();
+		int start = position.getStartOffset();
+		int end = start;
+		while (RubySyntaxUtils.isWhitespace(content.charAt(end))) {
+			end++;
+		}
+		while (RubySyntaxUtils.isNameChar(content.charAt(end))) {
+			end++;
+		}
+		SimpleReference name = new SimpleReference(start, end, iVisited.getName());
 		ConstantDeclaration node = new ConstantDeclaration(pathResult, name, value);
 		peekState().add(node);
 		return null;
@@ -867,7 +876,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		if (pos >= 0) {
 			while (pos < content.length() && content.charAt(pos) != '.' && content.charAt(pos) != ':')
 				pos++; 
-			while (content.charAt(pos) == ':')
+			if (content.charAt(pos) == ':')
 				pos++;
 		}
 		if (pos  >= content.length() || pos < 0)
