@@ -19,6 +19,7 @@ import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionList;
 import org.eclipse.dltk.ast.expressions.NumericLiteral;
+import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
@@ -1281,7 +1282,9 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitStrNode(StrNode iVisited) {
-
+		String value = iVisited.getValue();
+		ISourcePosition position = iVisited.getPosition();
+		peekState().add(new StringLiteral(position.getStartOffset(), position.getEndOffset(), value));
 		return null;
 	}
 
