@@ -1,9 +1,10 @@
-package org.eclipse.dltk.evaluation.types;
+package org.eclipse.dltk.ruby.typeinference;
 
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.evaluation.types.IClassType;
 
-public class CombinedClassType implements IClassType {
+public class RubyClassType implements IClassType {
 
 	String[] fqn;
 	IType[] fragments;
@@ -11,7 +12,7 @@ public class CombinedClassType implements IClassType {
 	
 	
 	
-	public CombinedClassType(String[] fqn, IType[] fragments, IMethod[] methods) {
+	public RubyClassType(String[] fqn, IType[] fragments, IMethod[] methods) {
 		this.fqn = fqn;
 		this.fragments = fragments;
 		this.methods = methods;
