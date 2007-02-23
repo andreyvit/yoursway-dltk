@@ -19,6 +19,7 @@ import org.eclipse.dltk.core.DLTKModelUtil;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IExternalSourceModule;
+import org.eclipse.dltk.core.IFakeElement;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
@@ -150,6 +151,11 @@ public class EditorUtility {
 			}
 		}
 		IEditorInput input = getEditorInput(inputElement);
+		if (inputElement instanceof IFakeElement){
+			IFakeElement el=(IFakeElement) inputElement;
+			el.codeSelect();
+		}
+		else
 		if (input != null) {
 			if (inputElement instanceof IModelElement) {
 				IModelElement element = (IModelElement)inputElement;	
@@ -351,6 +357,8 @@ public class EditorUtility {
 		}
 		return null;
 	}
+	
+	
 
 	private static void initializeHighlightRange(IEditorPart editorPart) {
 		if (editorPart instanceof ITextEditor) {
