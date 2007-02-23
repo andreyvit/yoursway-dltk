@@ -1,148 +1,152 @@
 package org.eclipse.dltk.core.tests.ddp;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import junit.framework.TestCase;
 
 import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.NumericLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
-import org.eclipse.dltk.ddp.GoalManager;
-import org.eclipse.dltk.ddp.ICalculatedType;
+import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.ddp.ExpressionGoal;
+import org.eclipse.dltk.ddp.GoalEvaluator;
+import org.eclipse.dltk.ddp.TypeInferencer;
 import org.eclipse.dltk.ddp.IGoal;
-import org.eclipse.dltk.ddp.IGoalsEvaluator;
-import org.eclipse.dltk.ddp.TypeGoal;
+import org.eclipse.dltk.ddp.IGoalEvaluatorFactory;
+import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 
 public class DDPTests extends TestCase {
-	
-	class MyNum implements ICalculatedType {
-		
+
+	private static final class FixedAnswerGoalEvaluator extends GoalEvaluator {
+		private final IEvaluatedType answer;
+
+		private FixedAnswerGoalEvaluator(IGoal goal, IEvaluatedType answer) {
+			super(goal);
+			this.answer = answer;
+		}
+
+		public IGoal produceNextSubgoal(IGoal previousGoal, IEvaluatedType previousResult) {
+			return null;
+		}
+
+		public IEvaluatedType produceType() {
+			return answer;
+		}
+	}
+
+	private static final class SingleDependentGoalEvaluator extends GoalEvaluator {
+		private final IEvaluatedType answer;
+
+		private final IGoal[] dependents;
+
+		private int state = 0;
+
+		private SingleDependentGoalEvaluator(IGoal goal, IGoal dependent, IEvaluatedType answer) {
+			super(goal);
+			this.dependents = new IGoal[] { dependent };
+			this.answer = answer;
+		}
+
+		private SingleDependentGoalEvaluator(IGoal goal, IGoal[] dependents, IEvaluatedType answer) {
+			super(goal);
+			this.dependents = dependents;
+			this.answer = answer;
+		}
+
+		public IGoal produceNextSubgoal(IGoal previousGoal, IEvaluatedType previousResult) {
+			if (state > 0)
+				assertTrue(previousResult instanceof MyNum);
+			if (state < dependents.length) {
+				return dependents[state++];
+			}
+			return null;
+		}
+
+		public IEvaluatedType produceType() {
+			return answer;
+		}
+	}
+
+	class MyNum implements IEvaluatedType {
+
 		public String toString() {
 			return "MyNum";
 		}
-		
+
+		public String getTypeName() {
+			return "MyNum";
+		}
+
 	}
-	
-	public void testSimple () throws Exception {
+
+	public void testSimple() throws Exception {
 		// y = 2; x = y; x?
-		final Expression x = new SimpleReference(0,0,"x");
-		final Expression y = new SimpleReference(0,0,"y");
+		final Expression x = new SimpleReference(0, 0, "x");
+		final Expression y = new SimpleReference(0, 0, "y");
 		final Expression num = new NumericLiteral(new DLTKToken());
-		
-		final GoalManager man = new GoalManager();
-		
-		IGoalsEvaluator evaluator = new IGoalsEvaluator() {
 
-			public boolean updateGoal(IGoal goal) {
-				TypeGoal g = (TypeGoal)goal;
-				
-				Collection subgoals = g.getUpdatedSubgoals();
-				for (Iterator iterator = subgoals.iterator(); iterator
-						.hasNext();) {
-					TypeGoal subgoal = (TypeGoal) iterator.next();
-					g.setAnswer(subgoal.getAnswer());
-					return true;
+		IGoalEvaluatorFactory factory = new IGoalEvaluatorFactory() {
+
+			public GoalEvaluator createEvaluator(IGoal goal) {
+				if (goal instanceof ExpressionGoal) {
+					ExpressionGoal egoal = (ExpressionGoal) goal;
+					Statement expr = egoal.getExpression();
+					if (expr == x)
+						return new SingleDependentGoalEvaluator(goal, new ExpressionGoal(null, y),
+								new MyNum());
+					if (expr == y)
+						return new SingleDependentGoalEvaluator(goal, new ExpressionGoal(null, num),
+								new MyNum());
+					if (expr == num)
+						return new FixedAnswerGoalEvaluator(goal, new MyNum());
 				}
-				
-				if (g.getExpr() == x) {
-					IGoal ng = new TypeGoal(y, null, goal);
-					man.postGoal(ng);
-					g.getSubgoals().add(ng);
-				}
-				if (g.getExpr() == y) {
-					IGoal ng = new TypeGoal(num, null, goal);
-					man.postGoal(ng);
-					g.getSubgoals().add(ng);
-				}
-				if (g.getExpr() == num) {
-					g.setAnswer(new MyNum());
-					return true;
-				}
-				return false;
-			}
-			
-		};
-		
-		TypeGoal rootGoal = new TypeGoal(x, null, null);
-		man.inferType(rootGoal, evaluator);
-		
-		System.out.println(rootGoal.toString());
-		
-		assertTrue (rootGoal.getAnswer() instanceof MyNum);		
-	}
-	
-	
-	public void testCycles () throws Exception {
-		/*
-		 * z = 2
-		 * y = z
-		 * z = y
-		 * x = z
-		 * x = y
-		 */
-		final Expression x = new SimpleReference(0,0,"x");
-		final Expression y = new SimpleReference(0,0,"y");
-		final Expression z = new SimpleReference(0,0,"z");
-		final Expression num = new NumericLiteral(new DLTKToken());
-		
-		final GoalManager man = new GoalManager();
-		
-		IGoalsEvaluator evaluator = new IGoalsEvaluator() {
-			
-			private Expression[] getAssgns (Expression e) {
-				if (e == x) 
-					return new Expression[] {z, y};
-				if (e == y) 
-					return new Expression[] {z};
-				if (e == z) 
-					return new Expression[] {num, y};
-				return new Expression[0];
-			}
-			
-			private boolean invalidate(TypeGoal goal) {
-				ICalculatedType oldAns = goal.getAnswer();
-				Collection subgoals = goal.getUpdatedSubgoals();
-				for (Iterator iterator = subgoals.iterator(); iterator
-						.hasNext();) {
-					TypeGoal subgoal = (TypeGoal) iterator.next();										
-					ICalculatedType newAns = subgoal.getAnswer();
-					if (newAns != null && newAns != oldAns) {					
-						goal.setAnswer(newAns);
-						return true;
-					}
-				}
-				return false;
+				return null;
 			}
 
-			public boolean updateGoal(IGoal goal) {
-				TypeGoal g = (TypeGoal)goal;
-				
-				if (g.getExpr() == num) {
-					g.setAnswer(new MyNum());
-					return true;
-				}
-				
-				Expression[] ex = getAssgns(g.getExpr());
-				
-				for (int i = 0; i < ex.length; i++) {
-					IGoal ng = new TypeGoal(ex[i], null, goal);
-					man.postGoal(ng);
-					//g.getSubgoals().add(ng);
-				}				
-				
-				return false;
-			}
-			
 		};
-		
-		TypeGoal rootGoal = new TypeGoal(x, null, null);
-		man.inferType(rootGoal, evaluator);
-		
-		System.out.println(rootGoal.toString());
-		
-		assertTrue (rootGoal.getAnswer() instanceof MyNum);		
+
+		final TypeInferencer man = new TypeInferencer(factory);
+
+		ExpressionGoal rootGoal = new ExpressionGoal(null, x);
+		IEvaluatedType answer = man.evaluateGoal(rootGoal, 0);
+
+		assertTrue(answer instanceof MyNum);
 	}
-	
+
+	public void testCycles() throws Exception {
+		final Expression x = new SimpleReference(0, 0, "x");
+		final Expression y = new SimpleReference(0, 0, "y");
+		final Expression z = new SimpleReference(0, 0, "z");
+		final Expression num = new NumericLiteral(new DLTKToken());
+
+		IGoalEvaluatorFactory factory = new IGoalEvaluatorFactory() {
+
+			public GoalEvaluator createEvaluator(IGoal goal) {
+				if (goal instanceof ExpressionGoal) {
+					ExpressionGoal egoal = (ExpressionGoal) goal;
+					Statement expr = egoal.getExpression();
+					if (expr == x)
+						return new SingleDependentGoalEvaluator(goal, new IGoal[] {
+								new ExpressionGoal(null, y), new ExpressionGoal(null, z) }, new MyNum());
+					if (expr == y)
+						return new SingleDependentGoalEvaluator(goal,
+								new IGoal[] { new ExpressionGoal(null, z) }, new MyNum());
+					if (expr == z)
+						return new SingleDependentGoalEvaluator(goal, new IGoal[] {
+								new ExpressionGoal(null, num), new ExpressionGoal(null, y) }, new MyNum());
+					if (expr == num)
+						return new FixedAnswerGoalEvaluator(goal, new MyNum());
+				}
+				return null;
+			}
+
+		};
+
+		final TypeInferencer man = new TypeInferencer(factory);
+
+		ExpressionGoal rootGoal = new ExpressionGoal(null, x);
+		IEvaluatedType answer = man.evaluateGoal(rootGoal, 0);
+
+		assertTrue(answer instanceof MyNum);
+	}
+
 }

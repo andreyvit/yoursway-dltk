@@ -1,9 +1,12 @@
 package org.eclipse.dltk.ruby.tests.typeinference;
 
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ruby.typeinference.internal.RubyTypeModel;
-import org.eclipse.dltk.typeinference.ASTCaching;
-import org.eclipse.dltk.typeinference.IUnit;
+import org.eclipse.dltk.ddp.ITypeInferencer;
+import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 
 public class TypeInferenceTest extends AbstractTypeInferencingTests {
 
@@ -24,11 +27,13 @@ public class TypeInferenceTest extends AbstractTypeInferencingTests {
 		super.tearDownSuite();
 	}
 
-	public void executeTest(String folder, String name, RubyTypeModel calculator) throws Exception {
+	public void executeTest(String folder, String name, ITypeInferencer inferencer, Collection assertions) throws Exception {
 		ISourceModule cu = getSourceModule(SRC_PROJECT, folder, name);
-		IUnit unit = calculator.getUnit(cu);
-		unit.getASTNode(ASTCaching.REPARSE);
-		calculator.recalculate(unit);
+		ModuleDeclaration rootNode = RubyTypeInferencingUtils.parseSource(cu);
+		for (Iterator iter = assertions.iterator(); iter.hasNext();) {
+			IAssertion assertion = (IAssertion) iter.next();
+			assertion.check(rootNode, cu, inferencer);
+		}
 	}
 
 }

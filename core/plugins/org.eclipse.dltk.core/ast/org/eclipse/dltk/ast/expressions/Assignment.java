@@ -12,6 +12,8 @@ import org.eclipse.dltk.utils.CorePrinter;
  */
 public class Assignment extends BinaryExpression
 {
+	
+	public static final Assignment[] EMPTY_ARRAY = new Assignment[0];
 
 	/**
 	 * Construct from left, right and type expression. Used to construct NotStrictAssignment class.

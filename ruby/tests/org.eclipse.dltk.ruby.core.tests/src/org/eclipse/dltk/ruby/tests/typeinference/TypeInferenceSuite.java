@@ -8,33 +8,31 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
+import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.references.VariableReference;
+import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.ddp.BasicContext;
+import org.eclipse.dltk.ddp.ExpressionGoal;
+import org.eclipse.dltk.ddp.ITypeInferencer;
+import org.eclipse.dltk.ddp.TypeInferencer;
+import org.eclipse.dltk.evaluation.types.IEvaluatedType;
+import org.eclipse.dltk.evaluation.types.RecursionTypeCall;
+import org.eclipse.dltk.evaluation.types.SimpleType;
+import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ruby.tests.Activator;
-import org.eclipse.dltk.ruby.tests.assist.RubySelectionTests;
-import org.eclipse.dltk.ruby.typeinference.RubyTypeUtils;
-import org.eclipse.dltk.ruby.typeinference.internal.RubyTypeModel;
-import org.eclipse.dltk.typeinference.AnyTypeDescriptor;
-import org.eclipse.dltk.typeinference.IKnownTypeDescriptor;
-import org.eclipse.dltk.typeinference.IMethodDescriptor;
-import org.eclipse.dltk.typeinference.ITypeDescriptor;
-import org.eclipse.dltk.typeinference.RecursiveCallTypeDescriptor;
+import org.eclipse.dltk.ruby.typeinference.OffsetTargetedASTVisitor;
+import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 
 public class TypeInferenceSuite extends TestSuite {
-
-	private interface IAssertion {
-
-		void check();
-
-	}
 
 	public TypeInferenceSuite(String testsDirectory) {
 		super(testsDirectory);
@@ -56,10 +54,7 @@ public class TypeInferenceSuite extends TestSuite {
 
 				private Collection assertions = new ArrayList();
 
-				private RubyTypeModel calculator;
-
 				public void setUp() {
-					calculator = new RubyTypeModel();
 				}
 
 				class MethodReturnTypeAssertion implements IAssertion {
@@ -77,31 +72,35 @@ public class TypeInferenceSuite extends TestSuite {
 						this.correctClassRef = correctClassRef;
 					}
 
-					public void check() {
-						ITypeDescriptor correctType;
-						if ("recursion".equals(correctClassRef))
-							correctType = RecursiveCallTypeDescriptor.INSTANCE;
-						else if ("any".equals(correctClassRef))
-							correctType = AnyTypeDescriptor.INSTANCE;
-						else
-							correctType = lookupType(correctClassRef);
-						IKnownTypeDescriptor methType = lookupType(className);
-						assertNotNull("class " + className + " not found", methType);
-						IMethodDescriptor method = methType.getMethodByName(methodName);
-						assertNotNull("method " + methodName + " not found", method);
-						ITypeDescriptor checkedType = method.getReturnType();
-						assertEquals("Incorrect type of " + className + "." + methodName, correctType, checkedType);
+					public void check(ModuleDeclaration rootNode, ISourceModule cu, ITypeInferencer inferencer) {
+						fail("This type of assertion is not implemented yet");
+//						ITypeDescriptor correctType;
+//						if ("recursion".equals(correctClassRef))
+//							correctType = RecursiveCallTypeDescriptor.INSTANCE;
+//						else if ("any".equals(correctClassRef))
+//							correctType = AnyTypeDescriptor.INSTANCE;
+//						else
+//							correctType = lookupType(correctClassRef);
+//						IKnownTypeDescriptor methType = lookupType(className);
+//						assertNotNull("class " + className + " not found", methType);
+//						IMethodDescriptor method = methType.getMethodByName(methodName);
+//						assertNotNull("method " + methodName + " not found", method);
+//						ITypeDescriptor checkedType = method.getReturnType();
+//						assertEquals("Incorrect type of " + className + "." + methodName, correctType, checkedType);
 					}
 
 				}
+				
 
 				protected void runTest() throws Throwable {
 					String content = loadContent(path);
 					String[] lines = content.split("\n");
+					int lineOffset = 0;
 					for (int i = 0; i < lines.length; i++) {
 						String line = lines[i].trim();
-						if (line.startsWith("##")) {
-							StringTokenizer tok = new StringTokenizer(line.substring(2));
+						int pos = line.indexOf("##");
+						if (pos >= 0) {
+							StringTokenizer tok = new StringTokenizer(line.substring(pos + 2));
 							String test = tok.nextToken();
 							if ("meth".equals(test)) {
 								String methodRef = tok.nextToken();
@@ -117,32 +116,85 @@ public class TypeInferenceSuite extends TestSuite {
 								} else {
 									Assert.isLegal(false);
 								}
+							} else if ("localvar".equals(test)) {
+								String varName = tok.nextToken();
+								int namePos = lines[i].indexOf(varName);
+								Assert.isLegal(namePos >= 0);
+								namePos += lineOffset;
+								String arrow = tok.nextToken();
+								Assert.isLegal(arrow.equals("=>"));
+								String correctClassRef = tok.nextToken();
+								assertions.add(new VariableReturnTypeAssertion(varName, namePos, correctClassRef));
 							} else {
 								Assert.isLegal(false);
 							}
 						}
+						lineOffset += lines[i].length() + 1;
 					}
 					
 					Assert.isLegal(assertions.size() > 0);
 					
 					if("simple.rb".equals(name)) 
-						System.out.println();
+						System.out.println("runTest(" + name + ")");
+					
+					ITypeInferencer inferencer = new TypeInferencer(new RubyEvaluatorFactory());
 
 					TypeInferenceTest tests = new TypeInferenceTest("ruby selection tests");
 					tests.setUpSuite();
 					try {
-						tests.executeTest(folder, name, calculator);						
-						for (Iterator iter = assertions.iterator(); iter.hasNext();) {
-							IAssertion assertion = (IAssertion) iter.next();
-							assertion.check();
-						}
+						tests.executeTest(folder, name, inferencer, assertions);						
 					} finally {
 						tests.tearDownSuite();
 					}
 				}
 
-				private IKnownTypeDescriptor lookupType(String typeName) {
-					return RubyTypeUtils.lookupType(calculator.getScope(), typeName);
+				class VariableReturnTypeAssertion implements IAssertion {
+					
+					private final String correctClassRef;
+
+					private final String varName;
+
+					private final int namePos;
+					
+					public VariableReturnTypeAssertion(String varName, int namePos, String correctClassRef) {
+						this.varName = varName;
+						this.namePos = namePos;
+						this.correctClassRef = correctClassRef;
+					}
+					
+					public void check(ModuleDeclaration rootNode, ISourceModule cu, ITypeInferencer inferencer) throws Exception {
+						final Statement[] result = new Statement[1];
+						ASTVisitor visitor = new OffsetTargetedASTVisitor(namePos) {
+
+							protected boolean visitInteresting(Expression s) {
+								if (s instanceof VariableReference)
+									if (s.sourceStart() == namePos) {
+										result[0] = s;
+									}
+								return true;
+							}
+							
+						};
+						rootNode.traverse(visitor);
+						Assert.isLegal(result[0] != null);
+						ExpressionGoal goal = new ExpressionGoal(new BasicContext(cu, rootNode), result[0]);
+						IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+						assertNotNull(type);
+						
+						IEvaluatedType correctType;
+						if ("recursion".equals(correctClassRef))
+							correctType = RecursionTypeCall.INSTANCE;
+						else if ("any".equals(correctClassRef))
+							correctType = UnknownType.INSTANCE;
+						else if ("Fixnum".equals(correctClassRef))
+							correctType = new SimpleType(SimpleType.TYPE_NUMBER);
+						else
+							correctType = null; // XXX
+						
+						assertEquals(correctType, type);
+					}
+					
+					
 				}
 
 			});
@@ -156,11 +208,9 @@ public class TypeInferenceSuite extends TestSuite {
 			input = Activator.getDefault().openResource(path);
 			InputStreamReader reader = new InputStreamReader(input);
 			BufferedReader br = new BufferedReader(reader);
-			String s = br.readLine();
-			while (s != null) {
-				buffer.append(s + "\n");
-				s = br.readLine();
-			}
+			char[] data = new char[10*1024*1024];
+			int size = br.read(data);
+			buffer.append(data, 0, size);
 		} finally {
 			if (input != null) {
 				input.close();
@@ -169,5 +219,4 @@ public class TypeInferenceSuite extends TestSuite {
 		String content = buffer.toString();
 		return content;
 	}
-
 }

@@ -33,10 +33,9 @@ public class ParentshipBuildingVisitor extends ASTVisitor {
 		return true;
 	}
 	
-	public boolean endvisitGeneral(ASTNode node) throws Exception {
+	public void endvisitGeneral(ASTNode node) throws Exception {
 		Assert.isTrue(node == peek());
 		pop();
-		return true;
 	}
 
 	public Map getParents() {

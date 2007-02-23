@@ -8,8 +8,6 @@ import org.eclipse.dltk.utils.CorePrinter;
 
 public class AST2StringVisitor extends ASTVisitor {
 	
-	
-
 	private StringWriter writer;
 	private CorePrinter printer;
 	private String indent;
@@ -33,10 +31,10 @@ public class AST2StringVisitor extends ASTVisitor {
 		return name.substring(pos + 1);
 	}	
 			
-	public boolean endvisitGeneral(ASTNode node) throws Exception {
+	public void endvisitGeneral(ASTNode node) throws Exception {
 		indent = indent.substring(0, indent.length() - 2);
 		this.printer.println(indent + "-" + simplifyClassName(node.getClass().getName()));			
-		return super.endvisitGeneral(node);
+		super.endvisitGeneral(node);
 	}
 
 	public String getResult() {

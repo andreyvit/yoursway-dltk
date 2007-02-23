@@ -19,8 +19,7 @@ public abstract class ASTVisitor {
 		return true;
 	}
 	
-	public boolean endvisitGeneral(ASTNode node) throws Exception {
-		return true;
+	public void endvisitGeneral(ASTNode node) throws Exception {
 	}
 
 	public boolean visit(Statement s) throws Exception {
@@ -44,22 +43,28 @@ public abstract class ASTVisitor {
 	}
 
 	public boolean endvisit(Statement s) throws Exception {
-		return endvisitGeneral(s);
+		endvisitGeneral(s);
+		return false;
 	}
 
 	public boolean endvisit(Expression s) throws Exception {
-		return endvisitGeneral(s);
+		endvisitGeneral(s);
+		return false;
 	}
 
 	public boolean endvisit(TypeDeclaration s) throws Exception {
-		return endvisitGeneral(s);
+		endvisitGeneral(s);
+		return false;
 	}
 
 	public boolean endvisit(MethodDeclaration s) throws Exception {
-		return endvisitGeneral(s);
+		endvisitGeneral(s);
+		return false;
 	}
 
 	public boolean endvisit(ModuleDeclaration s) throws Exception {
-		return endvisitGeneral(s);
+		endvisitGeneral(s);
+		return false;
 	}
+	
 }

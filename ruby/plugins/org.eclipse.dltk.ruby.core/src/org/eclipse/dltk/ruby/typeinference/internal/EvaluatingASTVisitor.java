@@ -54,18 +54,16 @@ public class EvaluatingASTVisitor extends ASTVisitor {
 			context.getCurrentScope().setLastCalculatedValueType(type);
 	}
 
-	public boolean endvisitGeneral(ASTNode node) throws Exception {
+	public void endvisitGeneral(ASTNode node) throws Exception {
 //		if (TRACE) 
 			System.out.println("End node " + node.getClass().getName());
 		ITypeEvaluator evaluator = evaluatorConfiguration.getTypeEvaluator(node);
 		if (evaluator == null)
-			return true;
+			return;
 		ITypeDescriptor type = evaluator.endTraverse(node, context);
 		if (type != null) {
 			submit(node, type);
-			return true;
 		}
-		return true;
 	}
 
 }
