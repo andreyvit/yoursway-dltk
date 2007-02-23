@@ -48,7 +48,7 @@ public class OpenViewActionGroup extends ActionGroup {
 
 	//private OpenSuperImplementationAction fOpenSuperImplementation;
 	//private OpenExternalJavadocAction fOpenExternalJavadoc;
-	//private OpenTypeHierarchyAction fOpenTypeHierarchy;
+//	private OpenTypeHierarchyAction fOpenTypeHierarchy;
     private OpenCallHierarchyAction fOpenCallHierarchy;
 	private PropertyDialogAction fOpenPropertiesDialog;
 	
@@ -144,9 +144,9 @@ public class OpenViewActionGroup extends ActionGroup {
 		//fOpenExternalJavadoc.setActionDefinitionId(IScriptEditorActionDefinitionIds.OPEN_EXTERNAL_JAVADOC);
 		//part.setAction("OpenExternalJavadoc", fOpenExternalJavadoc); //$NON-NLS-1$
 
-		//fOpenTypeHierarchy= new OpenTypeHierarchyAction(part);
-		//fOpenTypeHierarchy.setActionDefinitionId(IScriptEditorActionDefinitionIds.OPEN_TYPE_HIERARCHY);
-		//part.setAction("OpenTypeHierarchy", fOpenTypeHierarchy); //$NON-NLS-1$
+//		fOpenTypeHierarchy= new OpenTypeHierarchyAction(part);
+//		fOpenTypeHierarchy.setActionDefinitionId(IDLTKEditorActionDefinitionIds.OPEN_TYPE_HIERARCHY);
+//		part.setAction("OpenTypeHierarchy", fOpenTypeHierarchy); //$NON-NLS-1$
 		if( !disableCallHierarcy ) {
 			fOpenCallHierarchy= new OpenCallHierarchyAction(part);
 			fOpenCallHierarchy.setActionDefinitionId(IDLTKEditorActionDefinitionIds.OPEN_CALL_HIERARCHY);
@@ -166,9 +166,9 @@ public class OpenViewActionGroup extends ActionGroup {
 //		fOpenExternalJavadoc.setSpecialSelectionProvider(specialProvider);
 //
 //		fOpenTypeHierarchy= new OpenTypeHierarchyAction(site);
-//		fOpenTypeHierarchy.setActionDefinitionId(IScriptEditorActionDefinitionIds.OPEN_TYPE_HIERARCHY);
+//		fOpenTypeHierarchy.setActionDefinitionId(IDLTKEditorActionDefinitionIds.OPEN_TYPE_HIERARCHY);
 //		fOpenTypeHierarchy.setSpecialSelectionProvider(specialProvider);
-//
+
 		if( !disableCallHierarcy ) {
 			fOpenCallHierarchy= new OpenCallHierarchyAction(site);
 			fOpenCallHierarchy.setActionDefinitionId(IDLTKEditorActionDefinitionIds.OPEN_CALL_HIERARCHY);

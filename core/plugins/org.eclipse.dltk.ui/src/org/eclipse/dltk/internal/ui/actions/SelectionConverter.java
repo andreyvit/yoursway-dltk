@@ -24,14 +24,18 @@ import org.eclipse.dltk.core.ISourceReference;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
+import org.eclipse.dltk.ui.ModelElementLabelProvider;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
 
 public class SelectionConverter {
@@ -246,4 +250,28 @@ public class SelectionConverter {
 			return result;
 		}
 	}
+	/**
+	 * Shows a dialog for resolving an ambiguous java element.
+	 * Utility method that can be called by subclasses.
+	 */
+	public static IModelElement selectModelElement(IModelElement[] elements, Shell shell, String title, String message) {
+		int nResults= elements.length;
+		if (nResults == 0)
+			return null;
+		if (nResults == 1)
+			return elements[0];
+		
+		int flags= ModelElementLabelProvider.SHOW_DEFAULT | ModelElementLabelProvider.SHOW_QUALIFIED | ModelElementLabelProvider.SHOW_ROOT;
+						
+		ElementListSelectionDialog dialog= new ElementListSelectionDialog(shell, new ModelElementLabelProvider(flags));
+		dialog.setTitle(title);
+		dialog.setMessage(message);
+		dialog.setElements(elements);
+		
+		if (dialog.open() == Window.OK) {
+			return (IModelElement) dialog.getFirstResult();
+		}		
+		return null;
+	}
+	
 }

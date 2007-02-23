@@ -84,6 +84,15 @@
             class="org.eclipse.dltk.ruby.internal.ui.infoviews.RubyDocumentationView"
             id="org.eclipse.dltk.ruby.ui.RubyDocumentationView">
       </view>  
+      
+      <view
+            name="%hierarchyViewName"
+            icon="$nl$/icons/full/eview16/class_hi.gif"
+            category="org.eclipse.dltk.ruby.ui"
+            class="org.eclipse.dltk.ruby.internal.ui.typehierarchy.TypeHierarchyViewPart"
+            id="org.eclipse.dltk.ruby.ui.TypeHierarchy">
+      </view>
+      
       <category
             id="org.eclipse.dltk.ruby.ui"
             name="DLTK Ruby"

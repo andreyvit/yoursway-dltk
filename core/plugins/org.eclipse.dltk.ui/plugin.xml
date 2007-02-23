@@ -579,6 +579,13 @@
             id="org.eclipse.dltk.ui.edit.text.script.show.outline">
       </command>
       
+      <command
+            name="%ActionDefinition.open.hierarchy.name"
+            description="%ActionDefinition.open.hierarchy.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.open.hierarchy">
+      </command>
+      
 	  <command
             name="%ActionDefinition.gotoMatchingBracket.name"
             description="%ActionDefinition.gotoMatchingBracket.description"
@@ -769,13 +776,13 @@
                menubarPath="navigate/open.ext"
                id="org.eclipse.dltk.ui.actions.OpenCallHierarchy">
          </action>
-         <!--action
+         <action
                definitionId="org.eclipse.dltk.ui.edit.text.script.open.type.hierarchy"
                label="%OpenTypeHierarchyAction.label"
                retarget="true"
                menubarPath="navigate/open.ext"
                id="org.eclipse.dltk.ui.actions.OpenTypeHierarchy">
-         </action-->
+         </action>
          <action
                definitionId="org.eclipse.dltk.ui.edit.text.script.open.editor"
                label="%OpenAction.label"
@@ -810,6 +817,10 @@
             sequence="F2"
             contextId="org.eclipse.dltk.ui.scriptEditorScope"
             commandId="org.eclipse.dltk.ui.edit.text.script.show.documentation"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+            sequence="F4"
+            commandId="org.eclipse.dltk.ui.edit.text.script.open.type.hierarchy"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
       <key
             sequence="M1+O"
