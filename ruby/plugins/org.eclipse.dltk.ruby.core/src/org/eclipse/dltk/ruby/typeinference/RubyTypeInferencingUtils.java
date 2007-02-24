@@ -8,11 +8,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
+import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
@@ -22,7 +24,9 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.core.DLTKModelUtil;
 import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
@@ -32,6 +36,8 @@ import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
+import org.eclipse.dltk.ddp.BasicContext;
+import org.eclipse.dltk.ddp.IContext;
 import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
@@ -263,6 +269,17 @@ public class RubyTypeInferencingUtils {
 		}
 
 		return null;
+	}
+
+	public static IEvaluatedType determineSelfClass(IContext context, int keyOffset) {
+		if (context instanceof InstanceContext) {
+			InstanceContext instanceContext = (InstanceContext) context;
+			return instanceContext.getInstanceType();
+		} else {
+			BasicContext basicContext = (BasicContext) context;
+			return determineSelfClass(basicContext.getSourceModule(), basicContext.getRootNode(),
+					keyOffset);
+		}
 	}
 
 	/**
@@ -561,6 +578,31 @@ public class RubyTypeInferencingUtils {
 	
 	public static RubyMetaClassType getMetaType(RubyClassType type) {
 		return new RubyMetaClassType(type, null);
+	}
+	
+	public static RubyClassType resolveMethods(IDLTKProject project, RubyClassType type) {
+		if (type.getAllMethods() != null)
+			return type;
+		String[] fqn = type.getFQN();
+		StringBuffer strFqn = new StringBuffer();
+		for (int i = 0; i < fqn.length; i++) {
+			strFqn.append("::");
+			strFqn.append(fqn[i]);
+		}
+		List methods = new ArrayList ();
+		IType[] allTypes = DLTKModelUtil.getAllTypes(project, strFqn.toString(), "::");
+		for (int i = 0; i < allTypes.length; i++) {
+			try {
+				IMethod[] methods2 = allTypes[i].getMethods();
+				for (int j = 0; j < methods2.length; j++) {
+					if (!((methods2[j].getFlags() & Modifiers.AccStatic) > 0)) {
+						methods.add(methods2[j]);
+					}
+				}
+			} catch (ModelException e) {
+			}			
+		}
+		return new RubyClassType(fqn, allTypes, (IMethod[]) methods.toArray(new IMethod[methods.size()]));
 	}
 
 }

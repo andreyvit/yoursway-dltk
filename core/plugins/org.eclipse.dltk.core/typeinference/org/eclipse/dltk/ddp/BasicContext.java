@@ -13,6 +13,11 @@ public class BasicContext implements IContext {
 		this.rootNode = rootNode;
 	}
 
+	public BasicContext(BasicContext parent) {
+		sourceModule = parent.sourceModule;
+		rootNode = parent.rootNode;
+	}
+
 	public ModuleDeclaration getRootNode() {
 		return rootNode;
 	}

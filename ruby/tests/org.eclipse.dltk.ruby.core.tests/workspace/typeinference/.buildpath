@@ -3,5 +3,6 @@
     <buildpathentry kind="src" path="deptracking"/>
     <buildpathentry kind="src" path="simple"/>
     <buildpathentry kind="src" path="statements"/>
+    <buildpathentry kind="src" path="methods"/>
     <buildpathentry kind="src" path="variables"/>
 </buildpath>

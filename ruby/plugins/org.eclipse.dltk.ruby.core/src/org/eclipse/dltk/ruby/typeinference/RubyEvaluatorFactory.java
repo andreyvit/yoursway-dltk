@@ -1,6 +1,7 @@
 package org.eclipse.dltk.ruby.typeinference;
 
 import org.eclipse.dltk.ast.expressions.Assignment;
+import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.expressions.NumericLiteral;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.ConstantReference;
@@ -32,8 +33,12 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 				return new AssignmentEvaluator(goal);
 			else if (expr instanceof SelfReference)
 				return new SelfReferenceEvaluator(goal);
+			else if (expr instanceof CallExpression)
+				return new MethodCallTypeEvaluator((ExpressionGoal) goal);
 		} else if (goal instanceof ConstantTypeGoal)
 			return new ConstantReferenceEvaluator((ConstantTypeGoal) goal);
+		else if (goal instanceof MethodReturnTypeGoal)
+			return new MethodReturnTypeEvaluator(goal);
 		return null;
 	}
 

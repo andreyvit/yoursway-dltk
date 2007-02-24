@@ -11,9 +11,9 @@ public class RubyClassType implements IClassType {
 	public final static RubyClassType OBJECT_CLASS = new RubyClassType(new String[] { "Object" },
 			null, null);
 
-	String[] fqn;
-	IType[] fragments;
-	IMethod[] methods;
+	private String[] fqn;
+	private IType[] fragments;
+	private IMethod[] methods;
 	
 	
 	

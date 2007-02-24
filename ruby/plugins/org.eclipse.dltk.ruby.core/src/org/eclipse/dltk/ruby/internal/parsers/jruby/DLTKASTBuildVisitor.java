@@ -29,6 +29,8 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
 import org.eclipse.dltk.ruby.ast.OrExpression;
+
+import org.eclipse.dltk.ruby.ast.ReturnStatement;
 import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyVariableKind;
@@ -1283,7 +1285,16 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitReturnNode(ReturnNode iVisited) {
-
+		ISourcePosition position = iVisited.getPosition();
+		CollectingState state = new CollectingState();
+		pushState(state);
+		iVisited.getValueNode().accept(this);
+		popState();
+		ASTNode value = null;
+		if (state.list.size() == 1 && state.list.get(0) instanceof ASTNode) {
+			value = (ASTNode)state.list.get(0);
+		}
+		peekState().add(new ReturnStatement(value, position.getStartOffset(), position.getEndOffset()));
 		return null;
 	}
 

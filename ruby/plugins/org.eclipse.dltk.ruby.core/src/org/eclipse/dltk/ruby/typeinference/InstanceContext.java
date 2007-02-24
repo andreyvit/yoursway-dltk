@@ -13,6 +13,11 @@ public class InstanceContext extends BasicContext {
 		super(sourceModule, rootNode);
 		this.instanceType = instanceType;
 	}
+	
+	public InstanceContext(BasicContext parent, IEvaluatedType instanceType) {
+		super(parent);
+		this.instanceType = instanceType;
+	}
 
 	public IEvaluatedType getInstanceType() {
 		return instanceType;
