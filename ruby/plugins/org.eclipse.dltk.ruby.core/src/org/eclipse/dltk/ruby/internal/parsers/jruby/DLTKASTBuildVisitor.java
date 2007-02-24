@@ -857,6 +857,10 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 				.getEndOffset());		
 		
 		setMethodVisibility(method, iVisited.getVisibility());
+		if (peekState() instanceof ClassLikeState) {			
+			ClassLikeState classState = (ClassLikeState) peekState();
+			ASTUtils.setVisibility(method, classState.visibility);
+		}
 		
 		peekState().add(method);
 		pushState(new MethodState(method));		
@@ -913,6 +917,10 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 				.getEndOffset(), receiverExpression);
 		method.setModifier(Modifiers.AccStatic);
 		ASTUtils.setVisibility(method, Modifiers.AccPublic);
+		if (peekState() instanceof ClassLikeState) {			
+			ClassLikeState classState = (ClassLikeState) peekState();
+			ASTUtils.setVisibility(method, classState.visibility);
+		}
 		peekState().add(method);
 		pushState(new MethodState(method));
 		ArgsNode args = (ArgsNode) iVisited.getArgsNode();

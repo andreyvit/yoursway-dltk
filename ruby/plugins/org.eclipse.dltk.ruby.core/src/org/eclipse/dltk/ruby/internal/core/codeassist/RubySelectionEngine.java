@@ -132,17 +132,7 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 				}
 				
 				this.buildParentNodesMap(parsedUnit);
-				try {
-//					IUnit unit = calculator.getUnit((org.eclipse.dltk.core.ISourceModule) sourceModule);
-//					unit.getASTNode(ASTCaching.REPARSE);
-//					calculator.recalculate(unit);
-				} catch (Throwable e) {
-					if (DEBUG) {
-						e.printStackTrace();
-					}
-					return null;
-				}
-				
+								
 				ASTNode node = findMinimalNode(parsedUnit, actualSelectionStart, actualSelectionEnd);
 				
 				if (node == null)
@@ -163,8 +153,7 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 					ColonExpression colonExpression = (ColonExpression) node;
 					selectionOnType(modelModule, parsedUnit, colonExpression);
 				} else {
-					CallExpression parentCall = this.getEnclosingCallNode(node);
-						
+					CallExpression parentCall = this.getEnclosingCallNode(node);						
 					if (parentCall != null) {
 						selectOnMethod(modelModule, parsedUnit, parentCall);
 					} else { // parentCall == null
