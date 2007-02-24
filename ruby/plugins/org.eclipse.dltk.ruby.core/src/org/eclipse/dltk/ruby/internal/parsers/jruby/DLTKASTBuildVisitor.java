@@ -1286,13 +1286,15 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitReturnNode(ReturnNode iVisited) {
 		ISourcePosition position = iVisited.getPosition();
-		CollectingState state = new CollectingState();
-		pushState(state);
-		iVisited.getValueNode().accept(this);
-		popState();
 		ASTNode value = null;
-		if (state.list.size() == 1 && state.list.get(0) instanceof ASTNode) {
-			value = (ASTNode)state.list.get(0);
+		if (iVisited.getValueNode() != null) {
+			CollectingState state = new CollectingState();
+			pushState(state);
+			iVisited.getValueNode().accept(this);
+			popState();
+			if (state.list.size() == 1 && state.list.get(0) instanceof ASTNode) {
+				value = (ASTNode)state.list.get(0);
+			}
 		}
 		peekState().add(new ReturnStatement(value, position.getStartOffset(), position.getEndOffset()));
 		return null;
