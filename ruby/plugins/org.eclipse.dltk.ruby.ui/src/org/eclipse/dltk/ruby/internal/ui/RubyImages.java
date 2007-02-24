@@ -18,5 +18,8 @@ public class RubyImages {
 			.createUnManaged(ImageUtil.T_WIZBAN, "filecreate_wiz.png");
 	
 	public static final ImageDescriptor DESC_OVR_STATIC_FIELD = util
-		.createUnManaged(ImageUtil.T_OVR, "static_co.gif");
+		.createUnManaged(ImageUtil.T_OVR, "static.png");
+	
+	public static final ImageDescriptor DESC_OVR_CONST_FIELD = util
+	.createUnManaged(ImageUtil.T_OVR, "const.png");
 }

@@ -9,7 +9,7 @@ public final class TclKeywords {
 	public static final int FUNCTION = 2;
 
 	public static final int EXEC_EXPRESSION = 3;
-	
+			
 	private static String[] fgKeywords = { "after", "append", "array",
 		"binary", "break", "catch", "cd", "clock", "close", "concat",
 		"console", "continue", "error", "eof", "eval", "exec", "exit",

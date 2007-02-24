@@ -31,12 +31,12 @@ public class RubyOutlineLabelDecorator extends LabelProvider implements
 		protected void drawAnnotations() {
 			ImageData data = null;
 			
+			// Need more correct handling of flags
+			// Label generation will be moved in ruby specific class
 			if ((flags & Modifiers.AccStatic) != 0) {
 				data = getImageData(RubyImages.DESC_OVR_STATIC_FIELD);
-			}
-			
-			if ((flags & Modifiers.AccConst) !=0 ) {
-				System.out.println("=====######====");
+			} else if ((flags & Modifiers.AccConstant) !=0 ) {
+				data = getImageData(RubyImages.DESC_OVR_CONST_FIELD);
 			}
 			
 			if (data != null) {
