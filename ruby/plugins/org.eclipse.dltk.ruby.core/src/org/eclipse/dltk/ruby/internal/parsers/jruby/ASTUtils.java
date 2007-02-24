@@ -93,7 +93,7 @@ public class ASTUtils {
 			pos--;
 		for (int i = pos - 1; i >= 0; i--) {		
 			if (element.isInstance(wayToNode[i]))
-				return (TypeDeclaration) wayToNode[i];
+				return wayToNode[i];
 		}
 		
 		return null;

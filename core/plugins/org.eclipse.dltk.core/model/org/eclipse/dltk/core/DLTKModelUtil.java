@@ -132,7 +132,7 @@ public class DLTKModelUtil {
 
 		TypeNameMatchRequestor requestor = new TypeNameMatchRequestor() {
 			
-			public void acceptTypeNameMatch(TypeNameMatch match) {
+			public void acceptTypeNameMatch(TypeNameMatch match) {				
 				IType type = (IType) match.getType();
 				if (type.getTypeQualifiedName(delimeter).endsWith(nameEnding)) {
 					types.add(type);

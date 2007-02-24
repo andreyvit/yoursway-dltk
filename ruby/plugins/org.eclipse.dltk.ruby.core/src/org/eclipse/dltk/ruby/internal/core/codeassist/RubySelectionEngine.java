@@ -1,6 +1,7 @@
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -8,9 +9,11 @@ import java.util.Stack;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
+import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
+import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
@@ -23,17 +26,25 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKModelUtil;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.internal.codeassist.impl.Engine;
 import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
+import org.eclipse.dltk.internal.core.ModelElement;
+import org.eclipse.dltk.internal.core.SourceField;
+import org.eclipse.dltk.internal.core.SourceRefElement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.core.ParentshipBuildingVisitor;
+import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
+import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ruby.typeinference.internal.RubyTypeModel;
 import org.eclipse.dltk.ruby.typemodel.classes.RubyMetaTypeDescriptor;
 import org.eclipse.dltk.typeinference.ASTCaching;
@@ -324,19 +335,64 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 		}
 	}
 	
+
+	
 	private void selectionOnVariable (org.eclipse.dltk.core.ISourceModule modelModule, 
 			ModuleDeclaration parsedUnit, SimpleReference e) {
-//		
-//		if (scope != null) {
-//			IVariableDescriptor variable = scope.lookupVariable(e.getName(), false);
-//			if (variable != null) {
-//				//todo
-//			}
-//		}
-		//TODO
-		// does SimpleRef fits Inst, Local, Class vars?
+		String name = e.getName();
+		IDLTKProject project = modelModule.getScriptProject();
+		if (name.startsWith("@")) {
+			String qualifiedName = getTypeFQN(getStrictlyEnclosingType(e));
+			IType[] types = DLTKModelUtil.getAllTypes(project, qualifiedName, "::");
+			for (int i = 0; i < types.length; i++) {
+				IField[] fields;
+				try {
+					fields = types[i].getFields();
+					for (int j = 0; j < fields.length; j++) {
+						if (fields[i].getElementName().equals(name)) {
+							selectionElements.add(fields[i]);
+						}
+					}
+				} catch (ModelException e1) {					
+					e1.printStackTrace();
+				}				
+			}
+		} else { // local vars
+			ASTNode parentScope = null;
+			MethodDeclaration methodDeclaration = ASTUtils.getEnclosingMethod(wayToNode, e, false);
+			if (methodDeclaration != null) {
+				List arguments = methodDeclaration.getArguments();
+				for (Iterator iterator = arguments.iterator(); iterator.hasNext();) {
+					Argument arg = (Argument) iterator.next();
+					if (arg.getName().equals(name)) {
+						selectionElements.add(createLocalVariable(name, arg.sourceStart(), arg.sourceEnd()));
+						return;
+					}
+				}
+				parentScope = methodDeclaration; 	
+			} else
+			if (wayToNode.length >= 2) {
+				parentScope = wayToNode[wayToNode.length - 2];
+			}
+			if (parentScope != null) {
+				Assignment[] assignments = RubyTypeInferencingUtils.findLocalVariableAssignments(parentScope, e, name);
+				if (assignments.length > 0) {
+					Assignment assignment = assignments[0];
+					selectionElements.add(createLocalVariable(name, assignment.getLeft().sourceStart(), assignment.getLeft().sourceEnd()));
+				} else {
+					selectionElements.add (createLocalVariable(name, e.sourceStart(), e.sourceEnd()));
+				}				
+			}
+			
+			
+		}
+
 	}
 	
+	private IField createLocalVariable(String name, int nameStart, int nameEnd) {		
+		return new FakeField((ModelElement)sourceModule, name, nameStart, nameEnd - nameStart);
+	}
+
 	private void selectionOnTypeDeclaration(ModuleDeclaration parsedUnit,
 			TypeDeclaration typeDeclaration) {
 		String typeFQN = getTypeFQN(typeDeclaration);
@@ -362,25 +418,14 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 	}
 	
 	private void selectOnMethod (org.eclipse.dltk.core.ISourceModule modelModule, ModuleDeclaration parsedUnit, CallExpression parentCall) {
-		String methodName = ((CallExpression) parentCall).getName();
-		IUnit unit = calculator.getUnit(modelModule);
-		IScope scope = unit.getInnermostModelElement(parentCall).getScope();
+		String methodName = ((CallExpression) parentCall).getName();		
 		Statement receiver = parentCall.getReceiver();
 		
-		ITypeDescriptor type;
 		if (receiver == null) {
-			type = scope.getEnclosingType();
+			// get IType from TypeDecl
+			// 
 		} else {
-			type = calculator.calculateType(unit, receiver);
-		}
-		
-		if (type != null && type instanceof IKnownTypeDescriptor) {
-			IKnownTypeDescriptor knownTypeDescriptor = (IKnownTypeDescriptor) type;
-			IMethodDescriptor methodDescriptor = type.getMethodByName(methodName);
-			if (methodDescriptor instanceof UserMethodDescriptor) {
-				UserMethodDescriptor userMethodDescriptor = (UserMethodDescriptor) methodDescriptor;
-				selectionOnMethodDeclaration(parsedUnit, userMethodDescriptor.getNode());								
-			}
+			
 		}
 		
 	

@@ -630,8 +630,14 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		//body
 		pos = iVisited.getBodyNode().getPosition();
 		if (iVisited.getBodyNode().getBodyNode() != null) {
-			pos = fixBorders(pos);
-			Block bl = new Block(pos.getStartOffset(), pos.getEndOffset());
+			Node bodyNode = iVisited.getBodyNode().getBodyNode();
+			int end = -1;
+			if (bodyNode instanceof BlockNode) {
+				BlockNode blockNode = (BlockNode) bodyNode;
+				end = blockNode.getLast().getPosition().getEndOffset(); ///XXX!!!!
+			}			
+			pos = fixBorders(pos);			
+			Block bl = new Block(pos.getStartOffset(), (end == -1)?pos.getEndOffset():end);
 			type.setBody(bl);
 			iVisited.getBodyNode().accept(this);
 		}
