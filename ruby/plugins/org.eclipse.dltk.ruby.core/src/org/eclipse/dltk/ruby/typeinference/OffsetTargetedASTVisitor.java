@@ -16,7 +16,7 @@ public class OffsetTargetedASTVisitor extends ASTVisitor {
 		this.requestedOffset = requestedOffset;
 	}
 
-	private boolean interesting(ASTNode s) {
+	protected boolean interesting(ASTNode s) {
 		if (s.sourceStart() >= 0 && s.sourceEnd() > s.sourceStart()
 				&& (requestedOffset < s.sourceStart() || requestedOffset >= s.sourceEnd()))
 			return false;
@@ -43,13 +43,13 @@ public class OffsetTargetedASTVisitor extends ASTVisitor {
 		return visitGeneralInteresting(s);
 	}
 
-	public final boolean visit(TypeDeclaration s) {
+	public final boolean visit(TypeDeclaration s) throws Exception {
 		if (!interesting(s))
 			return false;
 		return visitInteresting(s);
 	}
 
-	protected boolean visitInteresting(TypeDeclaration s) {
+	protected boolean visitInteresting(TypeDeclaration s) throws Exception {
 		return visitGeneralInteresting(s);
 	}
 

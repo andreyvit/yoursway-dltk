@@ -1,25 +1,18 @@
 package org.eclipse.dltk.ddp;
 
-import java.util.Collection;
-
 import org.eclipse.dltk.ast.statements.Statement;
 
-public class ExpressionGoal implements IGoal {
-	
+public class ExpressionGoal extends AbstractGoal {
+
 	private final Statement expression;
-	private final IContext context;
 
 	public ExpressionGoal(IContext context, Statement expression) {
-		this.context = context;
+		super(context);
 		this.expression = expression;
 	}
 
 	public Statement getExpression() {
 		return expression;
-	}
-
-	public IContext getContext() {
-		return context;
 	}
 
 	public boolean equals(Object obj) {
@@ -35,7 +28,5 @@ public class ExpressionGoal implements IGoal {
 	public int hashCode() {
 		return expression.hashCode();
 	}
-	
-	
 
 }

@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
@@ -30,7 +31,9 @@ import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ruby.tests.Activator;
 import org.eclipse.dltk.ruby.typeinference.OffsetTargetedASTVisitor;
+import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
+import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
 
 public class TypeInferenceSuite extends TestSuite {
 
@@ -125,6 +128,15 @@ public class TypeInferenceSuite extends TestSuite {
 								Assert.isLegal(arrow.equals("=>"));
 								String correctClassRef = tok.nextToken();
 								assertions.add(new VariableReturnTypeAssertion(varName, namePos, correctClassRef));
+							} else if ("expr".equals(test)) {
+								String expr = tok.nextToken();
+								int namePos = lines[i].indexOf(expr);
+								Assert.isLegal(namePos >= 0);
+								namePos += lineOffset;
+								String arrow = tok.nextToken();
+								Assert.isLegal(arrow.equals("=>"));
+								String correctClassRef = tok.nextToken();
+								assertions.add(new ExpressionTypeAssertion(expr, namePos, correctClassRef));
 							} else {
 								Assert.isLegal(false);
 							}
@@ -181,17 +193,60 @@ public class TypeInferenceSuite extends TestSuite {
 						IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
 						assertNotNull(type);
 						
-						IEvaluatedType correctType;
-						if ("recursion".equals(correctClassRef))
-							correctType = RecursionTypeCall.INSTANCE;
-						else if ("any".equals(correctClassRef))
-							correctType = UnknownType.INSTANCE;
-						else if ("Fixnum".equals(correctClassRef))
-							correctType = new SimpleType(SimpleType.TYPE_NUMBER);
-						else
-							correctType = null; // XXX
-						
+						IEvaluatedType correctType = getIntrinsicType(correctClassRef);
 						assertEquals(correctType, type);
+					}
+					
+					
+				}
+				
+				class ExpressionTypeAssertion implements IAssertion {
+					
+					private final String correctClassRef;
+					
+					private final String expression;
+					
+					private final int namePos;
+					
+					public ExpressionTypeAssertion(String expression, int namePos, String correctClassRef) {
+						this.expression = expression;
+						this.namePos = namePos;
+						this.correctClassRef = correctClassRef;
+					}
+					
+					public void check(ModuleDeclaration rootNode, ISourceModule cu, ITypeInferencer inferencer) throws Exception {
+						final Statement[] result = new Statement[1];
+						ASTVisitor visitor = new OffsetTargetedASTVisitor(namePos) {
+							
+							protected boolean visitInteresting(Expression s) {
+								if (s instanceof Expression)
+									if (s.sourceStart() == namePos) {
+										result[0] = s;
+									}
+								return true;
+							}
+							
+						};
+						rootNode.traverse(visitor);
+						Assert.isLegal(result[0] != null);
+						ExpressionGoal goal = new ExpressionGoal(new BasicContext(cu, rootNode), result[0]);
+						IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+						assertNotNull(type);
+						
+						IEvaluatedType correctType = getIntrinsicType(correctClassRef);
+						
+						if (correctType != null)
+							assertEquals(correctType, type);
+						else if (correctClassRef.endsWith(".new")) {
+							String correctFQN = correctClassRef.substring(0, correctClassRef.length() - 4);
+							String realFQN = getFQN((RubyClassType) type);
+							assertEquals(correctFQN, realFQN);
+						} else {
+							RubyMetaClassType metatype = (RubyMetaClassType) type;
+							String correctFQN = correctClassRef;
+							String realFQN = getFQN((RubyClassType) metatype.getInstanceType());
+							assertEquals(correctFQN, realFQN);
+						}
 					}
 					
 					
@@ -199,6 +254,20 @@ public class TypeInferenceSuite extends TestSuite {
 
 			});
 		}
+	}
+	
+	public static String getFQN(RubyClassType type) {
+		String[] fqn = type.getFQN();
+		if (fqn == null || fqn.length == 0)
+			return "<none>";
+		StringBuffer result = new StringBuffer();
+		for (int i = 0; i < fqn.length; i++) {
+			String component = fqn[i];
+			if (result.length() > 0)
+				result.append("::");
+			result.append(component);
+		}
+		return result.toString();
 	}
 
 	private String loadContent(String path) throws IOException {
@@ -218,5 +287,20 @@ public class TypeInferenceSuite extends TestSuite {
 		}
 		String content = buffer.toString();
 		return content;
+	}
+
+	private static IEvaluatedType getIntrinsicType(String correctClassRef) {
+		IEvaluatedType correctType;
+		if ("recursion".equals(correctClassRef))
+			correctType = RecursionTypeCall.INSTANCE;
+		else if ("any".equals(correctClassRef))
+			correctType = UnknownType.INSTANCE;
+		else if ("Fixnum".equals(correctClassRef))
+			correctType = new SimpleType(SimpleType.TYPE_NUMBER);
+		else if ("Str".equals(correctClassRef))
+			correctType = new SimpleType(SimpleType.TYPE_STRING);
+		else
+			correctType = null;
+		return correctType;
 	}
 }

@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
@@ -14,12 +19,23 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.VariableReference;
+import org.eclipse.dltk.ast.statements.Block;
+import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.search.IDLTKSearchConstants;
+import org.eclipse.dltk.core.search.IDLTKSearchScope;
+import org.eclipse.dltk.core.search.SearchEngine;
+import org.eclipse.dltk.core.search.SearchParticipant;
+import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.RecursionTypeCall;
 import org.eclipse.dltk.evaluation.types.UnknownType;
+import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.internal.parser.Activator;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 
@@ -45,7 +61,7 @@ public class RubyTypeInferencingUtils {
 			}
 
 			// TODO: handle Ruby blocks here
-			
+
 		};
 		try {
 			rootNode.traverse(visitor);
@@ -54,8 +70,9 @@ public class RubyTypeInferencingUtils {
 		}
 		return (ASTNode[]) scopes.toArray(new ASTNode[scopes.size()]);
 	}
-	
-	public static LocalVariableInfo findLocalVariable(ModuleDeclaration rootNode, final int requestedOffset, String varName) {
+
+	public static LocalVariableInfo findLocalVariable(ModuleDeclaration rootNode,
+			final int requestedOffset, String varName) {
 		ASTNode[] staticScopes = getAllStaticScopes(rootNode, requestedOffset);
 		int end = staticScopes.length;
 		for (int start = end - 1; start >= 0; start--) {
@@ -63,15 +80,362 @@ public class RubyTypeInferencingUtils {
 			if (!isRootLocalScope(currentScope))
 				continue;
 			ASTNode nextScope = (end < staticScopes.length ? staticScopes[end] : null);
-			Assignment[] assignments = findLocalVariableAssignments(currentScope, nextScope, varName);
+			Assignment[] assignments = findLocalVariableAssignments(currentScope, nextScope,
+					varName);
 			if (assignments.length > 0) {
 				return new LocalVariableInfo(currentScope, assignments);
 			}
 		}
 		return null;
 	}
-	
-	public static Assignment[] findLocalVariableAssignments(final ASTNode scope, final ASTNode nextScope, final String varName) {
+
+	/**
+	 * Determines the type of a Ruby constant. Constant declarations are
+	 * searched inside the scopes corresponding to the given offset in the given
+	 * module.
+	 * 
+	 * Note that the given module/offset are used to determine the correct
+	 * search scopes only. They don't have to actually contain a reference to
+	 * the given constant.
+	 * 
+	 * The returned type contains a list of class fragments, but does not
+	 * contain a list of methods. Note that for a constant denoting a class, the
+	 * returned type is the metatype of the class.
+	 * 
+	 * The information is searched inside the project contaning the given
+	 * module.
+	 * 
+	 * XXX currently the only constants handled are class/module declarations
+	 * 
+	 * @param sourceModule
+	 *            the module containing the given offset
+	 * @param rootNode
+	 *            the root of AST corresponding to the given source module
+	 * @param requestedOffset
+	 *            the offset inside the given module denoting the correct set of
+	 *            scopes
+	 * @param constName
+	 *            A simple (non-qualified) name of the constant to search for
+	 * @return A type of the found constant
+	 */
+	public static IEvaluatedType evaluateConstantType(ISourceModule sourceModule,
+			ModuleDeclaration rootNode, final int requestedOffset, String constName) {
+		ConstantInfo[] declarations = findConstantDeclarations(sourceModule, rootNode,
+				requestedOffset, constName);
+
+		if (declarations == null)
+			return null;
+
+		boolean isType = false;
+		for (int i = 0; i < declarations.length; i++) {
+			ConstantInfo info = declarations[i];
+			if (info.getDeclaration() instanceof TypeDeclaration) {
+				isType = true;
+				break;
+			}
+		}
+
+		if (!isType) {
+			// TODO support non-type constants
+			System.out
+					.println("RubyTypeInferencingUtils.findConstant(): non-type constants are not supported yet.");
+			return null;
+		}
+
+		Collection fragments = new ArrayList();
+		ClassInfo container = null;
+		for (int i = 0; i < declarations.length; i++) {
+			ConstantInfo info = declarations[i];
+			if (info.getDeclaration() instanceof TypeDeclaration) {
+				TypeDeclaration typeDeclaration = (TypeDeclaration) info.getDeclaration();
+				container = info.getContainer();
+				try {
+					IType modelElement = RubyModelUtils.getModelTypeByAST(typeDeclaration, info
+							.getContainer().getSourceModule());
+					if (modelElement != null)
+						fragments.add(modelElement);
+				} catch (ModelException e) {
+					RubyPlugin.log(e);
+				}
+			}
+		}
+
+		Assert.isTrue(container != null);
+
+		String[] containerFQN = container.getFullyQualifiedName();
+		String[] fqn = new String[containerFQN.length + 1];
+		System.arraycopy(containerFQN, 0, fqn, 0, containerFQN.length);
+		fqn[containerFQN.length] = constName;
+		RubyClassType instanceType = new RubyClassType(fqn, (IType[]) fragments
+				.toArray(new IType[fragments.size()]), null);
+		RubyMetaClassType metaType = new RubyMetaClassType(instanceType, null);
+
+		return metaType;
+	}
+
+	/**
+	 * Finds all assignments/declarations of a Ruby constant. Constant
+	 * declarations are searched inside the scopes corresponding to the given
+	 * offset in the given module.
+	 * 
+	 * Note that the given module/offset are used to determine the correct
+	 * search scopes only. They don't have to actually contain a reference to
+	 * the given constant.
+	 * 
+	 * The information is searched inside the project contaning the given
+	 * module.
+	 * 
+	 * XXX currently the only constants handled are class/module declarations
+	 * 
+	 * @param sourceModule
+	 *            the module containing the given offset
+	 * @param rootNode
+	 *            the root of AST corresponding to the given source module
+	 * @param offset
+	 *            the offset inside the given module denoting the correct set of
+	 *            scopes
+	 * @param constName
+	 *            A simple (non-qualified) name of the constant to search for
+	 * @return An array listing all the declarations of the given constant
+	 *         (there might be multiple if the source code is incorrect, or if
+	 *         the constant denotes a class which is opened in several places).
+	 */
+	public static ConstantInfo[] findConstantDeclarations(ISourceModule sourceModule,
+			ModuleDeclaration rootNode, int offset, final String constName) {
+		IDLTKProject project = sourceModule.getScriptProject();
+		String patternString = constName;
+		IDLTKSearchScope scope = SearchEngine.createSearchScope(new IModelElement[] { project });
+
+		SearchPattern pattern = SearchPattern.createPattern(patternString,
+				IDLTKSearchConstants.TYPE, IDLTKSearchConstants.DECLARATIONS,
+				SearchPattern.R_EXACT_MATCH);
+		List sourceModules;
+		try {
+			sourceModules = new SearchEngine().searchSourceOnly(pattern,
+					new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() }, scope,
+					new NullProgressMonitor());
+		} catch (CoreException e) {
+			RubyPlugin.log(e);
+			return null;
+		}
+
+		if (sourceModules.isEmpty())
+			return null;
+
+		ClassInfo[] requestedInfos = resolveClassScopes(sourceModule, rootNode,
+				new int[] { offset });
+		System.out.println("RubyTypeInferencingUtils.findConstantDeclarations()");
+		Collection[] foundOccurances = new ArrayList[requestedInfos.length + 1];
+		for (int i = 0; i < foundOccurances.length; i++)
+			foundOccurances[i] = new ArrayList();
+
+		for (Iterator iter = sourceModules.iterator(); iter.hasNext();) {
+			ISourceModule occuranceModule = (ISourceModule) iter.next();
+			ModuleDeclaration occuranceRoot = RubyTypeInferencingUtils.parseSource(occuranceModule);
+			ConstantInfo[] occuranceInfos = findConstantDeclarations(occuranceModule,
+					occuranceRoot, constName);
+			for (int i = 0; i < occuranceInfos.length; i++) {
+				ConstantInfo occurance = occuranceInfos[i];
+				if (occurance.getContainer().getFullyQualifiedName().length == 0)
+					// global constant
+					foundOccurances[0].add(occurance);
+				else
+					for (int j = 0; j < requestedInfos.length; j++) {
+						ClassInfo requestedInfo = requestedInfos[j];
+						if (occurance.getContainer().getEvaluatedType().equals(
+								requestedInfo.getEvaluatedType())) {
+							foundOccurances[1 + j].add(occurance);
+							break;
+						}
+					}
+			}
+		}
+
+		for (int i = foundOccurances.length - 1; i >= 0; i--) {
+			Collection collection = foundOccurances[i];
+			if (!collection.isEmpty()) {
+				return (ConstantInfo[]) collection.toArray(new ConstantInfo[collection.size()]);
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Determines fully-qualified names of all the class scopes that the given
+	 * set of offsets is statically enclosed in.
+	 * 
+	 * @param sourceModule
+	 *            a module containing the given offsets
+	 * @param rootNode
+	 *            the root of AST corresponding to the given source module
+	 * @param sortedKeyOffsets
+	 *            the offsets in ascending order
+	 * @return
+	 */
+	private static ClassInfo[] resolveClassScopes(final ISourceModule sourceModule,
+			ModuleDeclaration rootNode, final int[] sortedKeyOffsets) {
+		final List scopes = new ArrayList();
+		final Collection classInfos = new ArrayList();
+		ASTVisitor visitor = new ASTVisitor() {
+
+			int index = 0;
+
+			private boolean interesting(ASTNode s) {
+				if (s.sourceStart() < 0 || s.sourceEnd() < s.sourceStart())
+					return true;
+				while (index < sortedKeyOffsets.length && sortedKeyOffsets[index] < s.sourceStart()) {
+					index++;
+				}
+				if (index >= sortedKeyOffsets.length)
+					return false;
+				if (sortedKeyOffsets[index] >= s.sourceEnd())
+					return false;
+				return true;
+			}
+
+			public boolean visit(Expression s) throws Exception {
+				if (!interesting(s))
+					return false;
+				return true;
+			}
+
+			public boolean visit(MethodDeclaration s) throws Exception {
+				if (!interesting(s))
+					return false;
+				return true;
+			}
+
+			public boolean visit(ModuleDeclaration s) throws Exception {
+				if (!interesting(s))
+					return false;
+				return true;
+			}
+
+			public boolean visit(Statement s) throws Exception {
+				// XXX workaround for a bug in block offset calculation
+				if (s instanceof Block)
+					return true;
+				if (!interesting(s))
+					return false;
+				return true;
+			}
+
+			public boolean visit(TypeDeclaration s) throws Exception {
+				if (!interesting(s))
+					return false;
+				String name = s.getName();
+				scopes.add(name);
+				String[] fqn = (String[]) scopes.toArray(new String[scopes.size()]);
+				ClassInfo type = new ClassInfo(s, sourceModule, new RubyClassType(fqn, null, null));
+				classInfos.add(type);
+				return true;
+			}
+
+			public boolean endvisit(TypeDeclaration s) throws Exception {
+				if (!interesting(s))
+					return false;
+				Assert.isTrue(scopes.size() >= 0);
+				scopes.remove(scopes.size() - 1);
+				return false /* dummy */;
+			}
+
+			public boolean visitGeneral(ASTNode s) throws Exception {
+				if (!interesting(s))
+					return false;
+				return true;
+			}
+
+		};
+		try {
+			rootNode.traverse(visitor);
+		} catch (Exception e) {
+			RubyPlugin.log(e);
+		}
+		return (ClassInfo[]) classInfos.toArray(new ClassInfo[classInfos.size()]);
+	}
+
+	/**
+	 * Searches the given module for all declaration of all constants with the
+	 * given name.
+	 * 
+	 * @param sourceModule
+	 *            the module containing the given offset
+	 * @param rootNode
+	 *            the root of AST corresponding to the given source module
+	 * @param constName
+	 *            a simple (non-qualified) name of the constant to search for
+	 * @return An array giving informations about every such constant
+	 *         declaration
+	 */
+	private static ConstantInfo[] findConstantDeclarations(final ISourceModule sourceModule,
+			ModuleDeclaration rootNode, final String constName) {
+		final List scopes = new ArrayList();
+		final Collection constInfos = new ArrayList();
+		ASTVisitor visitor = new ASTVisitor() {
+
+			public boolean visit(TypeDeclaration s) throws Exception {
+				String name = s.getName();
+				if (constName.equals(name)) {
+					String[] fqn = (String[]) scopes.toArray(new String[scopes.size()]);
+					ClassInfo type = new ClassInfo(s, sourceModule, new RubyClassType(fqn, null,
+							null));
+					ConstantInfo info = new ConstantInfo(type, s, name);
+					constInfos.add(info);
+				}
+				scopes.add(name);
+				return true;
+			}
+
+			public boolean endvisit(TypeDeclaration s) throws Exception {
+				scopes.remove(scopes.size() - 1);
+				return false /* dummy */;
+			}
+
+		};
+		try {
+			rootNode.traverse(visitor);
+		} catch (Exception e) {
+			RubyPlugin.log(e);
+		}
+		return (ConstantInfo[]) constInfos.toArray(new ConstantInfo[constInfos.size()]);
+	}
+
+	/**
+	 * XXX this method should be used in appropriate situations, but currently
+	 * is not XXX untested code
+	 */
+	private static ClassInfo[] calculateScopeInfo(ModuleDeclaration rootNode, final int keyOffsets) {
+		final List scopes = new ArrayList();
+		final Collection classInfos = new ArrayList();
+		ASTVisitor visitor = new OffsetTargetedASTVisitor(keyOffsets) {
+
+			public boolean visitInteresting(TypeDeclaration s) throws Exception {
+				String name = s.getName();
+				scopes.add(name);
+				String[] fqn = (String[]) scopes.toArray(new String[scopes.size()]);
+				RubyClassType type = new RubyClassType(fqn, null, null);
+				classInfos.add(type);
+				return true;
+			}
+
+			public boolean endvisit(TypeDeclaration s) throws Exception {
+				if (!interesting(s))
+					scopes.remove(scopes.size() - 1);
+				return false /* dummy */;
+			}
+
+		};
+		try {
+			rootNode.traverse(visitor);
+		} catch (Exception e) {
+			RubyPlugin.log(e);
+		}
+		return (ClassInfo[]) classInfos.toArray(new ClassInfo[classInfos.size()]);
+	}
+
+	public static Assignment[] findLocalVariableAssignments(final ASTNode scope,
+			final ASTNode nextScope, final String varName) {
 		final Collection assignments = new ArrayList();
 		ASTVisitor visitor = new ASTVisitor() {
 
@@ -103,20 +467,21 @@ public class RubyTypeInferencingUtils {
 		}
 		return (Assignment[]) assignments.toArray(new Assignment[assignments.size()]);
 	}
-	
+
 	public static boolean isRootLocalScope(ASTNode node) {
 		return node instanceof ModuleDeclaration || node instanceof TypeDeclaration
 				|| node instanceof MethodDeclaration;
 	}
-	
+
 	public static IEvaluatedType combineTypes(Collection evaluaedTypes) {
 		Set types = new HashSet(evaluaedTypes);
 		types.remove(null);
 		if (types.size() > 1 && types.contains(RecursionTypeCall.INSTANCE))
 			types.remove(RecursionTypeCall.INSTANCE);
-		return combineUniqueTypes((IEvaluatedType[]) types.toArray(new IEvaluatedType[types.size()]));
+		return combineUniqueTypes((IEvaluatedType[]) types
+				.toArray(new IEvaluatedType[types.size()]));
 	}
-	
+
 	public static IEvaluatedType combineUniqueTypes(IEvaluatedType[] types) {
 		if (types.length == 0)
 			return UnknownType.INSTANCE;
@@ -128,7 +493,7 @@ public class RubyTypeInferencingUtils {
 	public static IEvaluatedType combineTypes(IEvaluatedType[] evaluaedTypes) {
 		return combineTypes(Arrays.asList(evaluaedTypes));
 	}
-	
+
 	public static ModuleDeclaration parseSource(ISourceModule module) {
 		JRubySourceParser parser = new JRubySourceParser(null);
 		try {
@@ -138,5 +503,5 @@ public class RubyTypeInferencingUtils {
 			return null;
 		}
 	}
-	
+
 }

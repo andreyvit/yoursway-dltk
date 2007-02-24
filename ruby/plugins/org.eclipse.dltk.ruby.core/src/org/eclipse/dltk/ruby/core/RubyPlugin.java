@@ -1,6 +1,8 @@
 package org.eclipse.dltk.ruby.core;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.core.DLTKCore;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -44,6 +46,13 @@ public class RubyPlugin extends Plugin {
 	 */
 	public static RubyPlugin getDefault() {
 		return plugin;
+	}
+
+	public static void log(Exception ex) {
+		if (DLTKCore.DEBUG)
+			ex.printStackTrace();
+		getDefault().getLog().log(new Status(Status.ERROR,
+				PLUGIN_ID, 0, ex.getMessage(), ex));
 	}
 
 }

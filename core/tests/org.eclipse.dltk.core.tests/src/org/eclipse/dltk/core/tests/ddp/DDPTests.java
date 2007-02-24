@@ -102,6 +102,10 @@ public class DDPTests extends TestCase {
 				return null;
 			}
 
+			public IGoal translateGoal(IGoal goal) {
+				return goal;
+			}
+
 		};
 
 		final TypeInferencer man = new TypeInferencer(factory);
@@ -137,6 +141,10 @@ public class DDPTests extends TestCase {
 						return new FixedAnswerGoalEvaluator(goal, new MyNum());
 				}
 				return null;
+			}
+
+			public IGoal translateGoal(IGoal goal) {
+				return goal;
 			}
 
 		};

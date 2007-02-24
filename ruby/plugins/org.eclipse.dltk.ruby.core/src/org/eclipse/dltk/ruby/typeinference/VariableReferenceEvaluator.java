@@ -49,14 +49,13 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 	}
 	
 	private void storePreviousSubgoalResult(IGoal previousGoal, IEvaluatedType previousResult) {
-		Assert.isLegal(previousGoal == info.assignments[state - 1]);
 		if (previousResult != null)
 			evaluatedTypes[countOfEvaluatedTypes++] = previousResult;
 	}
 
 	private IGoal generateNextSubgoal() {
 		BasicContext context = (BasicContext) goal.getContext();
-		IGoal subgoal = new ExpressionGoal(context, info.assignments[state]);
+		IGoal subgoal = new ExpressionGoal(context, info.assignments[state].getRight());
 		state++;
 		return subgoal;
 	}

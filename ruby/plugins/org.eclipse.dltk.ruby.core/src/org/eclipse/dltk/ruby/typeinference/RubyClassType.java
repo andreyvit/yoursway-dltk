@@ -1,5 +1,7 @@
 package org.eclipse.dltk.ruby.typeinference;
 
+import java.util.Arrays;
+
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.evaluation.types.IClassType;
@@ -37,6 +39,20 @@ public class RubyClassType implements IClassType {
 	
 	public String[] getFQN() {
 		return fqn;
+	}
+
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (obj instanceof RubyClassType) {
+			RubyClassType peer = (RubyClassType) obj;
+			return Arrays.equals(fqn, peer.fqn);
+		}
+		return false;
+	}
+
+	public int hashCode() {
+		return Arrays.hashCode(fqn);
 	}
 
 }

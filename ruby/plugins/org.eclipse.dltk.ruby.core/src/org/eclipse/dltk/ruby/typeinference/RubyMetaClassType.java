@@ -1,39 +1,69 @@
 package org.eclipse.dltk.ruby.typeinference;
 
+import java.util.Arrays;
+
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 
 public class RubyMetaClassType implements IClassType {
 	
-	IEvaluatedType[] instanceTypes;
-	IMethod[] methods;
+	private IEvaluatedType instanceType;
+	private IMethod[] methods;
 	
 	
 
+	/**
+	 * @deprecated
+	 */
 	public RubyMetaClassType(IEvaluatedType[] instanceTypes, IMethod[] methods) {
-		this.instanceTypes = instanceTypes;
+		this(instanceTypes[0], methods);
+	}
+	
+	public RubyMetaClassType(IEvaluatedType instanceType, IMethod[] methods) {
+		Assert.isLegal(instanceType != null);
+		this.instanceType = instanceType;
 		this.methods = methods;
 	}
 
 
 
 	public String getTypeName() {
-		return null;
+		return "Metaclass_of(" + instanceType.getTypeName() + ")";
 	}
 
 
 
+	/**
+	 * @deprecated
+	 */
 	public IEvaluatedType[] getInstanceTypes() {
-		return instanceTypes;
+		return new IEvaluatedType[] {instanceType};
 	}
 
-
+	public IEvaluatedType getInstanceType() {
+		return instanceType;
+	}
 
 	public IMethod[] getMethods() {
 		return methods;
 	}
 	
 	
+
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (obj instanceof RubyMetaClassType) {
+			RubyMetaClassType peer = (RubyMetaClassType) obj;
+			return instanceType.equals(peer.instanceType);
+		}
+		return false;
+	}
+
+	public int hashCode() {
+		return instanceType.hashCode() ^ 0x42424242;
+	}
 
 }

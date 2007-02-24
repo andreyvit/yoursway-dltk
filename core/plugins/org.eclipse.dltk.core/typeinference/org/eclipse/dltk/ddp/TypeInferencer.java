@@ -61,6 +61,10 @@ public final class TypeInferencer implements ITypeInferencer {
 	}
 
 	public IEvaluatedType evaluateGoal(IGoal rootGoal, long timeLimit) {
+		rootGoal = evaluatorFactory.translateGoal(rootGoal);
+		if (rootGoal == null)
+			return null;
+		
 		totalGoalsRequested++;
 		
 		if (isInStack(rootGoal)) {
@@ -87,7 +91,9 @@ public final class TypeInferencer implements ITypeInferencer {
 		while(stackSize > emptyStackSize && (timeLimit == 0 || System.currentTimeMillis() < endTime)) {
 			GoalEvaluator goal = popStack();
 			IGoal subgoal = goal.produceNextSubgoal(lastFullyEvaluatedGoal, lastObtainedSubgoalResult);
-					
+
+			if (subgoal != null) 
+				subgoal = evaluatorFactory.translateGoal(subgoal);
 			if (subgoal == null) {
 				lastObtainedSubgoalResult = goal.produceType();
 				lastFullyEvaluatedGoal = goal.getGoal();

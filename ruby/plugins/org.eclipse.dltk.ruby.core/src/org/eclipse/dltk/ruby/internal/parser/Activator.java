@@ -1,11 +1,13 @@
 package org.eclipse.dltk.ruby.internal.parser;
 
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
+ * 
+ * @deprecated Use <code>RubyPlugin</code>.
  */
 public class Activator extends Plugin {
 
@@ -49,8 +51,7 @@ public class Activator extends Plugin {
 	}
 
 	public static void log(Exception ex) {
-		getDefault().getLog().log(new Status(Status.ERROR,
-				PLUGIN_ID, 0, ex.getMessage(), ex));
+		RubyPlugin.log(ex);
 	}
 
 }
