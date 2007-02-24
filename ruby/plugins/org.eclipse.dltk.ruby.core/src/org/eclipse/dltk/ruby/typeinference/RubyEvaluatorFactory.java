@@ -12,6 +12,7 @@ import org.eclipse.dltk.ddp.GoalEvaluator;
 import org.eclipse.dltk.ddp.IGoal;
 import org.eclipse.dltk.ddp.IGoalEvaluatorFactory;
 import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
+import org.eclipse.dltk.ruby.ast.SelfReference;
 
 public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 	
@@ -29,6 +30,8 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 				return new AssignmentEvaluator(goal);
 			else if (expr instanceof ConstantReference)
 				return new AssignmentEvaluator(goal);
+			else if (expr instanceof SelfReference)
+				return new SelfReferenceEvaluator(goal);
 		} else if (goal instanceof ConstantTypeGoal)
 			return new ConstantReferenceEvaluator((ConstantTypeGoal) goal);
 		return null;

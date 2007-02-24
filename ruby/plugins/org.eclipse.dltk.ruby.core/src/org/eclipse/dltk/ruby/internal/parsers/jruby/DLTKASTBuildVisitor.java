@@ -32,6 +32,7 @@ import org.eclipse.dltk.ruby.ast.OrExpression;
 import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyVariableKind;
+import org.eclipse.dltk.ruby.ast.SelfReference;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.jruby.ast.AliasNode;
 import org.jruby.ast.AndNode;
@@ -1319,7 +1320,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitSelfNode(SelfNode iVisited) {
 		ISourcePosition position = fixNamePosition(iVisited.getPosition());
-		peekState().add(new SimpleReference(position.getStartOffset(), position.getEndOffset(), "self"));
+		peekState().add(new SelfReference(position.getStartOffset(), position.getEndOffset()));
 		return null;
 	}
 

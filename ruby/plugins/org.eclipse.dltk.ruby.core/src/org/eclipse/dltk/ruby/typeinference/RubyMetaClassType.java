@@ -1,7 +1,5 @@
 package org.eclipse.dltk.ruby.typeinference;
 
-import java.util.Arrays;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.evaluation.types.IClassType;
@@ -9,6 +7,9 @@ import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 
 public class RubyMetaClassType implements IClassType {
 	
+	public final static RubyMetaClassType OBJECT_METATYPE = new RubyMetaClassType(
+			RubyClassType.OBJECT_CLASS, null);
+
 	private IEvaluatedType instanceType;
 	private IMethod[] methods;
 	

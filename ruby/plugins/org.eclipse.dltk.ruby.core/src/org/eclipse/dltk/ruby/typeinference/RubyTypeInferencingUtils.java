@@ -18,6 +18,7 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
@@ -32,9 +33,12 @@ import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.evaluation.types.AmbiguousType;
+import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.RecursionTypeCall;
 import org.eclipse.dltk.evaluation.types.UnknownType;
+import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
+import org.eclipse.dltk.ruby.ast.SelfReference;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.internal.parser.Activator;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
@@ -262,6 +266,90 @@ public class RubyTypeInferencingUtils {
 	}
 
 	/**
+	 * Determines a fully-qualified names of the class scope that the given
+	 * offset is statically enclosed in.
+	 * 
+	 * @param sourceModule
+	 *            a module containing the given offsets
+	 * @param rootNode
+	 *            the root of AST corresponding to the given source module
+	 * @param keyOffset
+	 *            the offset
+	 * @return The type of <code>self</code> at the given offset (never null)
+	 */
+	public static IClassType determineSelfClass(final ISourceModule sourceModule,
+			ModuleDeclaration rootNode, final int keyOffset) {
+		ClassInfo[] infos = resolveClassScopes(sourceModule, rootNode, new int[] { keyOffset });
+		RubyClassType result;
+		if (infos.length == 0)
+			result = RubyClassType.OBJECT_CLASS;
+		else
+			result = (RubyClassType) infos[infos.length - 1].getEvaluatedType();
+		ASTNode[] staticScopes = getAllStaticScopes(rootNode, keyOffset);
+		MethodDeclaration method = null;
+		for (int i = staticScopes.length - 1; i >= 0; i--)
+			if (staticScopes[i] instanceof MethodDeclaration) {
+				method = (MethodDeclaration) staticScopes[i];
+				break;
+			} else if (staticScopes[i] instanceof TypeDeclaration)
+				break;
+		RubyMetaClassType metaType = getMetaType(result);
+		if (method != null) {
+			if (method instanceof RubySingletonMethodDeclaration) {
+				RubySingletonMethodDeclaration declaration = (RubySingletonMethodDeclaration) method;
+				Expression receiver = declaration.getReceiver();
+				if (receiver instanceof SelfReference)
+					return metaType; // static method
+				if (receiver instanceof SimpleReference) 
+					if (((SimpleReference) receiver).getName().equals(result.getUnqualifiedName()))
+						return metaType; // singleton method of our metaclass
+				// TODO: handle singleton method of another class
+				return RubyMetaClassType.OBJECT_METATYPE;
+			}
+			return result;
+		}
+		return metaType;
+	}
+	
+	/**
+	 * Determines a fully-qualified names of the class scope that the given
+	 * offset is statically enclosed in.
+	 * 
+	 * @param sourceModule
+	 *            a module containing the given offsets
+	 * @param rootNode
+	 *            the root of AST corresponding to the given source module
+	 * @param keyOffset
+	 *            the offset
+	 * @return The information about the enclosing class, or null if there is no
+	 *         enclosing class.
+	 */
+	public static ClassInfo resolveEnclosingClass(final ISourceModule sourceModule,
+			ModuleDeclaration rootNode, final int keyOffset) {
+		ClassInfo[] infos = resolveClassScopes(sourceModule, rootNode, new int[] { keyOffset });
+		if (infos.length == 0)
+			return null;
+		return infos[infos.length - 1];
+	}
+
+	/**
+	 * Determines fully-qualified names of all the class scopes that the given
+	 * offset is statically enclosed in.
+	 * 
+	 * @param sourceModule
+	 *            a module containing the given offsets
+	 * @param rootNode
+	 *            the root of AST corresponding to the given source module
+	 * @param keyOffset
+	 *            the offset
+	 * @return
+	 */
+	public static ClassInfo[] resolveClassScopes(final ISourceModule sourceModule,
+			ModuleDeclaration rootNode, final int keyOffset) {
+		return resolveClassScopes(sourceModule, rootNode, new int[] { keyOffset });
+	}
+
+	/**
 	 * Determines fully-qualified names of all the class scopes that the given
 	 * set of offsets is statically enclosed in.
 	 * 
@@ -273,7 +361,7 @@ public class RubyTypeInferencingUtils {
 	 *            the offsets in ascending order
 	 * @return
 	 */
-	private static ClassInfo[] resolveClassScopes(final ISourceModule sourceModule,
+	public static ClassInfo[] resolveClassScopes(final ISourceModule sourceModule,
 			ModuleDeclaration rootNode, final int[] sortedKeyOffsets) {
 		final List scopes = new ArrayList();
 		final Collection classInfos = new ArrayList();
@@ -401,39 +489,6 @@ public class RubyTypeInferencingUtils {
 		return (ConstantInfo[]) constInfos.toArray(new ConstantInfo[constInfos.size()]);
 	}
 
-	/**
-	 * XXX this method should be used in appropriate situations, but currently
-	 * is not XXX untested code
-	 */
-	private static ClassInfo[] calculateScopeInfo(ModuleDeclaration rootNode, final int keyOffsets) {
-		final List scopes = new ArrayList();
-		final Collection classInfos = new ArrayList();
-		ASTVisitor visitor = new OffsetTargetedASTVisitor(keyOffsets) {
-
-			public boolean visitInteresting(TypeDeclaration s) throws Exception {
-				String name = s.getName();
-				scopes.add(name);
-				String[] fqn = (String[]) scopes.toArray(new String[scopes.size()]);
-				RubyClassType type = new RubyClassType(fqn, null, null);
-				classInfos.add(type);
-				return true;
-			}
-
-			public boolean endvisit(TypeDeclaration s) throws Exception {
-				if (!interesting(s))
-					scopes.remove(scopes.size() - 1);
-				return false /* dummy */;
-			}
-
-		};
-		try {
-			rootNode.traverse(visitor);
-		} catch (Exception e) {
-			RubyPlugin.log(e);
-		}
-		return (ClassInfo[]) classInfos.toArray(new ClassInfo[classInfos.size()]);
-	}
-
 	public static Assignment[] findLocalVariableAssignments(final ASTNode scope,
 			final ASTNode nextScope, final String varName) {
 		final Collection assignments = new ArrayList();
@@ -502,6 +557,10 @@ public class RubyTypeInferencingUtils {
 			Activator.log(e);
 			return null;
 		}
+	}
+	
+	public static RubyMetaClassType getMetaType(RubyClassType type) {
+		return new RubyMetaClassType(type, null);
 	}
 
 }

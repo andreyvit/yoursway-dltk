@@ -7,6 +7,9 @@ import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.evaluation.types.IClassType;
 
 public class RubyClassType implements IClassType {
+	
+	public final static RubyClassType OBJECT_CLASS = new RubyClassType(new String[] { "Object" },
+			null, null);
 
 	String[] fqn;
 	IType[] fragments;
@@ -53,6 +56,11 @@ public class RubyClassType implements IClassType {
 
 	public int hashCode() {
 		return Arrays.hashCode(fqn);
+	}
+
+
+	public Object getUnqualifiedName() {
+		return fqn[fqn.length - 1];
 	}
 
 }
