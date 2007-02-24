@@ -9,10 +9,9 @@ import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
-import org.eclipse.dltk.core.search.SearchMatch;
-import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
-import org.eclipse.dltk.core.search.SearchRequestor;
+import org.eclipse.dltk.core.search.TypeNameMatch;
+import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
 
 
 public class DLTKModelUtil {
@@ -61,6 +60,33 @@ public class DLTKModelUtil {
 		return null;
 	}
 	
+	
+	private static void searchTypeDeclarations (IDLTKProject project, String patternString, 
+			TypeNameMatchRequestor requestor) {
+		final List types = new ArrayList ();
+		
+		patternString = "*" + patternString + "*";
+		
+		
+		IDLTKSearchScope scope = SearchEngine.createSearchScope(new IModelElement[] {project});		
+		try {
+			SearchEngine engine = new SearchEngine();
+			engine.searchAllTypeNames(
+					null, 
+					0,
+					patternString.toCharArray(), 
+					SearchPattern.R_PATTERN_MATCH, 
+					IDLTKSearchConstants.TYPE, 
+					scope, 
+					requestor, 
+					IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, 
+					null);
+		} catch (CoreException e) {			
+			if (DLTKCore.DEBUG)
+				e.printStackTrace();
+		}		
+	}
+	
 	/**
 	 * Returns all the types with a given qualified name, that are located as childs of element.
 	 * @param element
@@ -71,17 +97,16 @@ public class DLTKModelUtil {
 	public static IType[] getAllTypes(IDLTKProject project, final String qualifiedName, final String delimeter) {
 		final List types = new ArrayList ();
 
-		SearchRequestor requestor = new SearchRequestor() {
-			public void acceptSearchMatch(SearchMatch match)
-					throws CoreException {
-				Object element = match.getElement();
-				if (element instanceof IType) {
-					IType type = (IType) element;
-					if (type.getTypeQualifiedName(delimeter).equals(qualifiedName)) {
-						types.add(type);
-					}
+		TypeNameMatchRequestor requestor = new TypeNameMatchRequestor() {
+
+			public void acceptTypeNameMatch(TypeNameMatch match) {
+				IType type = (IType) match.getType();
+				if (type.getTypeQualifiedName(delimeter).equals(qualifiedName)) {
+					types.add(type);
 				}
 			}
+			
+			
 		};
 		
 		String[] names = qualifiedName.split(delimeter);
@@ -89,20 +114,62 @@ public class DLTKModelUtil {
 			return new IType[0];
 		String patternString = names[names.length - 1];
 		
-		IDLTKSearchScope scope = SearchEngine.createSearchScope(new IModelElement[] {project});
+		searchTypeDeclarations(project, patternString, requestor);	
 		
-		SearchPattern pattern = SearchPattern.createPattern(patternString,
-				IDLTKSearchConstants.TYPE, 
-				IDLTKSearchConstants.DECLARATIONS, 
-				SearchPattern.R_EXACT_MATCH);
-		try {
-			new SearchEngine().search(pattern,
-					new SearchParticipant[] { SearchEngine
-							.getDefaultSearchParticipant() }, scope, requestor,
-					null);
-		} catch (CoreException e) {			
-			if (DLTKCore.DEBUG)
-				e.printStackTrace();
+		return (IType[]) types.toArray(new IType[types.size()]);
+	}
+	
+	
+	/**
+	 * Returns all ITypes, which fqn ends with nameEnding.
+	 * @param project
+	 * @param nameEnding
+	 * @param delimeter
+	 * @return
+	 */
+	public static IType[] getAllTypesWithFQNEnding(IDLTKProject project, final String nameEnding, final String delimeter) {
+		final List types = new ArrayList ();
+
+		TypeNameMatchRequestor requestor = new TypeNameMatchRequestor() {
+			
+			public void acceptTypeNameMatch(TypeNameMatch match) {
+				IType type = (IType) match.getType();
+				if (type.getTypeQualifiedName(delimeter).endsWith(nameEnding)) {
+					types.add(type);
+				}
+			}
+		};		
+		String[] names = nameEnding.split(delimeter);
+		if (names == null || names.length == 0)
+			return new IType[0];
+		String patternString = names[names.length - 1];		
+		searchTypeDeclarations(project, patternString, requestor);
+		
+		return (IType[]) types.toArray(new IType[types.size()]);
+	}
+	
+	public static IType[] getAllScopedTypes(IDLTKProject project, 
+			final String typeName, 
+			final String delimeter,
+			final String scopeFqn) {
+		List types = new ArrayList ();
+		int curLength = -1;
+
+		IType[] allTypes = getAllTypesWithFQNEnding(project, typeName, delimeter);
+		
+		for (int i = 0; i < allTypes.length; i++) {
+			String name = allTypes[i].getTypeQualifiedName(delimeter);
+			String start = name.substring(0, name.lastIndexOf(delimeter));
+			int length = start.length();
+			if  (length < curLength)
+				continue;
+			if (scopeFqn.startsWith(start)) {
+				if (length > curLength)  {
+					types.clear();
+					curLength = length;
+				}
+				types.add(allTypes[i]);
+			}
 		}
 		
 		return (IType[]) types.toArray(new IType[types.size()]);

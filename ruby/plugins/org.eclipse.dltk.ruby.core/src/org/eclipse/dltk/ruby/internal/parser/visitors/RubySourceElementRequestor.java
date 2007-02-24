@@ -150,7 +150,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 						this.fRequestor.exitField(var.sourceEnd() - 1);
 					}
 				}
-			}
+			}			
 
 		} else if (left instanceof ExtendedVariableReference) {
 			// This is for in class and in method.

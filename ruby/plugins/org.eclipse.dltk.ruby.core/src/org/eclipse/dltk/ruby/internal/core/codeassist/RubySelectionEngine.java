@@ -3,6 +3,7 @@ package org.eclipse.dltk.ruby.internal.core.codeassist;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.ASTNode;
@@ -11,7 +12,6 @@ import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
-import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
@@ -22,6 +22,7 @@ import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKModelUtil;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISearchableEnvironment;
@@ -32,12 +33,10 @@ import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.core.ParentshipBuildingVisitor;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
-import org.eclipse.dltk.ruby.typeinference.RubyTypeUtils;
-import org.eclipse.dltk.ruby.typeinference.internal.IContext;
+import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
 import org.eclipse.dltk.ruby.typeinference.internal.RubyTypeModel;
 import org.eclipse.dltk.ruby.typemodel.classes.RubyMetaTypeDescriptor;
 import org.eclipse.dltk.typeinference.ASTCaching;
-import org.eclipse.dltk.typeinference.AnyTypeDescriptor;
 import org.eclipse.dltk.typeinference.IClassLikeFragment;
 import org.eclipse.dltk.typeinference.IKnownTypeDescriptor;
 import org.eclipse.dltk.typeinference.IMethodDescriptor;
@@ -60,23 +59,25 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 		
 	private RubySelectionParser parser = new RubySelectionParser();
 	
-	private RubyTypeModel calculator = null;//new RubyTypeModel();
-
 	private ISourceModule sourceModule;
 
 	private IDLTKLanguageToolkit toolkit;
 
-	public RubySelectionEngine(ISearchableEnvironment environment, Map options,
-			IDLTKLanguageToolkit toolkit) {
-		super(options);
-		this.toolkit = toolkit;
-		this.nameEnvironment = environment;
-		this.lookupEnvironment = new LookupEnvironment(this, nameEnvironment);
+	private RubyTypeModel calculator;
+	
+	
+	private ASTNode[] wayToNode;
+
+	private TypeDeclaration getEnclosingType(ASTNode node) {
+		return ASTUtils.getEnclosingType(wayToNode, node, true);
 	}
 
-	public IAssistParser getParser() {
-		// TODO Auto-generated method stub
-		return null;
+	private CallExpression getEnclosingCallNode(ASTNode node) {
+		return ASTUtils.getEnclosingCallNode(wayToNode, node, true);
+	}
+	
+	private TypeDeclaration getStrictlyEnclosingType(ASTNode node) {
+		return ASTUtils.getEnclosingType(wayToNode, node, false);
 	}
 	
 	private String getTypeFQN (TypeDeclaration decl) {
@@ -89,12 +90,28 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 			if (curName.startsWith("::")) {
 				break;
 			}
-			decl = this.getEnclosingType2(decl);
+			decl = this.getStrictlyEnclosingType(decl);
 		} 
-		if (!fqn.startsWith("::"))
+		if (!fqn.startsWith("::") && fqn.length() > 0)
 			fqn = "::" + fqn;
 		return fqn;
 	}
+	
+	
+
+	public RubySelectionEngine(ISearchableEnvironment environment, Map options,
+			IDLTKLanguageToolkit toolkit) {
+		super(options);
+		this.toolkit = toolkit;
+		this.nameEnvironment = environment;
+		this.lookupEnvironment = new LookupEnvironment(this, nameEnvironment);
+	}
+
+	public IAssistParser getParser() {
+		return null;
+	}
+	
+	
 	
 	public IModelElement[] select(ISourceModule sourceUnit,
 			int selectionSourceStart, int selectionSourceEnd) {
@@ -130,13 +147,13 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 					System.out.println("SELECTION - AST :"); //$NON-NLS-1$
 					System.out.println(parsedUnit.toString());
 				}
-				
-				this.buildParentNodesMap(parsedUnit);
-								
-				ASTNode node = findMinimalNode(parsedUnit, actualSelectionStart, actualSelectionEnd);
+												
+				ASTNode node = findMinimalNode(parsedUnit, actualSelectionStart, actualSelectionEnd);				
 				
 				if (node == null)
 					return new IModelElement[0];
+				
+				this.wayToNode = ASTUtils.restoreWayToNode(parsedUnit, node);
 				
 				org.eclipse.dltk.core.ISourceModule modelModule = (org.eclipse.dltk.core.ISourceModule) sourceModule
 						.getModelElement();
@@ -148,10 +165,12 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 					selectionOnMethodDeclaration(parsedUnit, methodDeclaration);
 				} else if (node instanceof ConstantReference) {
 					ConstantReference reference = (ConstantReference) node;
-					selectionOnConstant(modelModule, parsedUnit, reference);
+					//selectionOnConstant(modelModule, parsedUnit, reference);
+					selectTypes (modelModule, reference); //FIXME: add support of non-Type constants
 				} else if (node instanceof ColonExpression) {
 					ColonExpression colonExpression = (ColonExpression) node;
-					selectionOnType(modelModule, parsedUnit, colonExpression);
+					//selectionOnType(modelModule, parsedUnit, colonExpression);
+					selectTypes (modelModule, colonExpression);
 				} else {
 					CallExpression parentCall = this.getEnclosingCallNode(node);						
 					if (parentCall != null) {
@@ -277,76 +296,43 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 
 		return false;
 	}
-	
-	private static String getTypeNameFromColon (ColonExpression e) {
-		String name = "";
-		Expression expr = e;
-		while (expr instanceof ColonExpression) {
-			ColonExpression colonExpression = (ColonExpression) expr;
-			if (name.length() > 0) 
-				name = "::" + name;
-			name = colonExpression.getName() + name;
-			if (colonExpression.isFull()) {
-				name = "::" + name;
-				break;
-			} else
-				expr = colonExpression.getLeft();
-		} 
-		if (expr instanceof ConstantReference) {
-			ConstantReference constantReference = (ConstantReference) expr;
-			if (name.length() > 0) 
-				name = "::" + name;
-			name = constantReference.getName() + name;
-		}		
-		return name;
-	}
-	
-	private void selectTypes (String name) {
-		//TODO:  need full search
-		IType type = (IType) DLTKModelUtil.findType((org.eclipse.dltk.core.ISourceModule) sourceModule, name, "::");
-		if (type != null) {
-			selectionElements.add(type);
+		
+	private void selectTypes(org.eclipse.dltk.core.ISourceModule modelModule,
+			ASTNode node) {
+		String qualifiedName;
+		if (node instanceof ColonExpression) {
+			qualifiedName = ASTUtils.getTypeNameFromColon((ColonExpression) node);	
+		} else if (node instanceof ConstantReference) {
+			ConstantReference constantReference = (ConstantReference) node;
+			qualifiedName = constantReference.getName();
+		} else
+			return;
+		
+		IDLTKProject project = modelModule.getScriptProject();		
+		IType[] types = null;
+		if (qualifiedName.startsWith("::")) {
+			types = DLTKModelUtil.getAllTypes(project, qualifiedName, "::");
+		} else {
+			String scopeFQN = getTypeFQN(getStrictlyEnclosingType(node));
+			types = DLTKModelUtil.getAllScopedTypes(project, qualifiedName, "::", scopeFQN); 
+		}
+		
+		if (types != null) {
+			for (int i = 0; i < types.length; i++) {
+				this.selectionElements.add(types[i]);			
+			}				
 		}
 	}
 	
-	private void selectionOnType (org.eclipse.dltk.core.ISourceModule modelModule, ModuleDeclaration parsedUnit, ColonExpression e) {
-		IUnit unit = calculator.getUnit(modelModule);
-		ITypeDescriptor node = calculator.calculateType(unit, e);
-		goToType(parsedUnit, node);
-//		//String name = getTypeNameFromColon(e);
-//		selectTypes(name);
-	}
-
-	private void goToType(ModuleDeclaration parsedUnit, ITypeDescriptor node) {
-		if (node instanceof RubyMetaTypeDescriptor) //XXX: little hack 
-			node = ((RubyMetaTypeDescriptor)node).getInstanceType();
-		if (node instanceof UserTypeDescriptor) {
-			UserTypeDescriptor typeDescriptor = (UserTypeDescriptor) node;
-			IClassLikeFragment[] fragments = typeDescriptor.getFragments();
-			if (fragments.length > 0) {
-				TypeDeclaration typeDeclaration = (TypeDeclaration) fragments[0].getASTNode(ASTCaching.ALLOW_ANY);
-				selectionOnTypeDeclaration(parsedUnit, typeDeclaration);
-			}
-		}
-	}
-	
-	private void selectionOnConstant (org.eclipse.dltk.core.ISourceModule modelModule, ModuleDeclaration parsedUnit, ConstantReference e) {
-		IUnit unit = calculator.getUnit(modelModule);
-		ITypeDescriptor node = calculator.calculateType(unit, e);
-		goToType(parsedUnit, node);
-		//selectTypes(constant.getName());
-		//TODO: find constants in currect scope
-	}
-	
-	private void selectionOnVariable (org.eclipse.dltk.core.ISourceModule modelModule, ModuleDeclaration parsedUnit, SimpleReference e) {
-		IUnit unit = calculator.getUnit(modelModule);
-		IScope scope = unit.getInnermostModelElement(e).getScope();
-		if (scope != null) {
-			IVariableDescriptor variable = scope.lookupVariable(e.getName(), false);
-			if (variable != null) {
-				//todo
-			}
-		}
+	private void selectionOnVariable (org.eclipse.dltk.core.ISourceModule modelModule, 
+			ModuleDeclaration parsedUnit, SimpleReference e) {
+//		
+//		if (scope != null) {
+//			IVariableDescriptor variable = scope.lookupVariable(e.getName(), false);
+//			if (variable != null) {
+//				//todo
+//			}
+//		}
 		//TODO
 		// does SimpleRef fits Inst, Local, Class vars?
 	}
@@ -399,58 +385,8 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 		
 	
 	}
-
-	/**
-	 * @deprecated
-	 */
-	private TypeDeclaration getEnclosingType(ASTNode node) {
-		while (node != null && !(node instanceof TypeDeclaration)) {
-			node = getParentNode(node);
-		}
-		return (TypeDeclaration) node;
-	}
-
-	/**
-	 * @deprecated
-	 */
-	private CallExpression getEnclosingCallNode(ASTNode node) {
-		while (node != null && !(node instanceof CallExpression)) {
-			node = getParentNode(node);
-		}
-		return (CallExpression) node;
-	}
 	
-	/**
-	 * @deprecated
-	 */
-	private TypeDeclaration getEnclosingType2(ASTNode node) {
-		node = getParentNode(node);
-		while (node != null && !(node instanceof TypeDeclaration)) {
-			node = getParentNode(node);
-		}
-		return (TypeDeclaration) node;
-	}
 	
-	private Map parentNodesMap;
 
-	/**
-	 * @deprecated
-	 */
-	private ASTNode getParentNode(ASTNode node) {
-		return (ASTNode) parentNodesMap.get(node);
-	}
-	
-	/**
-	 * @deprecated
-	 */
-	private void buildParentNodesMap(ModuleDeclaration rootNode) {
-		ParentshipBuildingVisitor visitor = new ParentshipBuildingVisitor();
-		try {
-			rootNode.traverse(visitor);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		parentNodesMap = visitor.getParents();
-	}
 
 }
