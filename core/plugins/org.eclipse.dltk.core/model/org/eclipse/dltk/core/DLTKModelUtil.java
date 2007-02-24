@@ -149,17 +149,22 @@ public class DLTKModelUtil {
 	}
 	
 	public static IType[] getAllScopedTypes(IDLTKProject project, 
-			final String typeName, 
-			final String delimeter,
-			final String scopeFqn) {
+			String typeName, 
+			String delimeter,
+			String scopeFqn) {
 		List types = new ArrayList ();
 		int curLength = -1;
 
 		IType[] allTypes = getAllTypesWithFQNEnding(project, typeName, delimeter);
 		
+		if (!typeName.startsWith(delimeter))	
+			typeName = delimeter + typeName;
 		for (int i = 0; i < allTypes.length; i++) {
 			String name = allTypes[i].getTypeQualifiedName(delimeter);
-			String start = name.substring(0, name.lastIndexOf(delimeter));
+			if (!name.endsWith(typeName))
+				continue;
+			String start = name.substring(0, name.length() - typeName.length());
+			//String start = name.substring(0, name.lastIndexOf(delimeter));
 			int length = start.length();
 			if  (length < curLength)
 				continue;
