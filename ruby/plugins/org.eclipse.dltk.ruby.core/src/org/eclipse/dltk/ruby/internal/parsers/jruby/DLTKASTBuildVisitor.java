@@ -464,6 +464,10 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 				}
 			}
 		} else {
+			if (nameEnd > firstArgStart) {
+				System.out.println();
+				return; ///XXX: it's a kind of magic, please, FIXME!!!
+			}
 			Assert.isLegal(nameEnd <= firstArgStart);
 			int lParenOffset = RubySyntaxUtils.skipWhitespaceForward(content, nameEnd, firstArgStart);
 			if (lParenOffset >= 0 && content.charAt(lParenOffset) == '(') {

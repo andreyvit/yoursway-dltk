@@ -20,6 +20,8 @@ public class MethodCallTypeEvaluator extends GoalEvaluator {
 	private final static int STATE_GOT_RECEIVER = 2;
 
 	private final static int STATE_WAITING_ARGUMENT_0 = 3;
+	
+	private final static int STATE_WAITING_ARGUMENT_LAST = 9999;
 
 	private final static int STATE_ARGS_DONE = 10000;
 
@@ -71,10 +73,11 @@ public class MethodCallTypeEvaluator extends GoalEvaluator {
 			List arguments = expression.getArgs().getExpressions();
 			this.arguments = new IEvaluatedType[arguments.size()];
 		}
-		if (state >= STATE_WAITING_ARGUMENT_0) {
+		if (state >= STATE_WAITING_ARGUMENT_0 && state <= STATE_WAITING_ARGUMENT_LAST) {
 			arguments[state - STATE_WAITING_ARGUMENT_0] = previousResult;
 		}
-		if (state == STATE_GOT_RECEIVER || state >= STATE_WAITING_ARGUMENT_0) {
+		if (state == STATE_GOT_RECEIVER || state >= STATE_WAITING_ARGUMENT_0
+				&& state <= STATE_WAITING_ARGUMENT_LAST) {
 			int nextArg = (state == STATE_GOT_RECEIVER ? 0 : state - STATE_WAITING_ARGUMENT_0 + 1);
 			ExpressionGoal typedGoal = (ExpressionGoal) goal;
 			CallExpression expression = (CallExpression) typedGoal.getExpression();

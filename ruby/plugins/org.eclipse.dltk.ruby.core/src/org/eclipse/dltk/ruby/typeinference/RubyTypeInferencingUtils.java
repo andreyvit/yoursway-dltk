@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -46,7 +45,6 @@ import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.SelfReference;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
-import org.eclipse.dltk.ruby.internal.parser.Activator;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 
 public class RubyTypeInferencingUtils {
@@ -71,12 +69,13 @@ public class RubyTypeInferencingUtils {
 			}
 
 			// TODO: handle Ruby blocks here
+			
 
 		};
 		try {
 			rootNode.traverse(visitor);
 		} catch (Exception e) {
-			Activator.log(e);
+			RubyPlugin.log(e);
 		}
 		return (ASTNode[]) scopes.toArray(new ASTNode[scopes.size()]);
 	}
@@ -525,6 +524,18 @@ public class RubyTypeInferencingUtils {
 				return true;
 			}
 
+			public boolean visit(MethodDeclaration s) throws Exception {
+				if (s == scope)
+					return true;
+				return false;
+			}
+
+			public boolean visit(TypeDeclaration s) throws Exception {
+				if (s == scope)
+					return true;
+				return false;
+			}
+
 			public boolean visitGeneral(ASTNode node) throws Exception {
 				if (node == nextScope)
 					return false;
@@ -535,7 +546,7 @@ public class RubyTypeInferencingUtils {
 		try {
 			scope.traverse(visitor);
 		} catch (Exception e) {
-			Activator.log(e);
+			RubyPlugin.log(e);
 		}
 		return (Assignment[]) assignments.toArray(new Assignment[assignments.size()]);
 	}
@@ -554,7 +565,7 @@ public class RubyTypeInferencingUtils {
 				.toArray(new IEvaluatedType[types.size()]));
 	}
 
-	public static IEvaluatedType combineUniqueTypes(IEvaluatedType[] types) {
+	private static IEvaluatedType combineUniqueTypes(IEvaluatedType[] types) {
 		if (types.length == 0)
 			return UnknownType.INSTANCE;
 		if (types.length == 1)
@@ -571,7 +582,7 @@ public class RubyTypeInferencingUtils {
 		try {
 			return parser.parse(module.getSource());
 		} catch (ModelException e) {
-			Activator.log(e);
+			RubyPlugin.log(e);
 			return null;
 		}
 	}
@@ -579,7 +590,31 @@ public class RubyTypeInferencingUtils {
 	public static RubyMetaClassType getMetaType(RubyClassType type) {
 		return new RubyMetaClassType(type, null);
 	}
+
+	public static IClassType getMetaType(IClassType type) {
+		if (type instanceof RubyMetaClassType)
+			return new RubyClassType(new String[] {"Class"}, null, null);
+		return new RubyMetaClassType(type, null);
+	}
 	
+	public static IEvaluatedType getAmbiguousMetaType(IEvaluatedType receiver) {
+		if (receiver instanceof IClassType) 
+			return getMetaType((IClassType) receiver);
+		else if (receiver instanceof AmbiguousType) {
+			Set possibleReturns = new HashSet();
+			AmbiguousType ambiguousType = (AmbiguousType) receiver;
+			IEvaluatedType[] possibleTypes = ambiguousType.getPossibleTypes();
+			for (int i = 0; i < possibleTypes.length; i++) {
+				IEvaluatedType type = possibleTypes[i];
+				IEvaluatedType possibleReturn = getAmbiguousMetaType(type);
+				possibleReturns.add(possibleReturn);
+			}
+			return RubyTypeInferencingUtils.combineTypes(possibleReturns);
+		} 
+		return null;
+	}
+	
+	// FIXME should be in RubyClassType itself!
 	public static RubyClassType resolveMethods(IDLTKProject project, RubyClassType type) {
 		if (type.getAllMethods() != null)
 			return type;

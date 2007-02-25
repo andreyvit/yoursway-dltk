@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ruby.typeinference;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
@@ -13,6 +14,7 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.ruby.core.RubyPlugin;
 
 public class RubyModelUtils {
 	
@@ -42,7 +44,7 @@ public class RubyModelUtils {
 		}
 		return bestType;
 	}
-
+	
 	public static MethodDeclaration getNodeByMethod(ModuleDeclaration rootNode, IMethod method) throws ModelException {
 
 		ISourceRange sourceRange = method.getSourceRange();
@@ -128,8 +130,7 @@ public class RubyModelUtils {
 		try {
 			rootNode.traverse(visitor);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			RubyPlugin.log(e);
 		}
 		
 		return bestResult[0];

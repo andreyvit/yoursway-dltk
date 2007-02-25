@@ -8,6 +8,7 @@ import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.GoalEvaluator;
 import org.eclipse.dltk.ddp.IGoal;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
+import org.eclipse.dltk.evaluation.types.UnknownType;
 
 public class VariableReferenceEvaluator extends GoalEvaluator {
 	
@@ -61,7 +62,10 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 	}
 
 	public IEvaluatedType produceType() {
-		return RubyTypeInferencingUtils.combineTypes(evaluatedTypes);
+		if (state == STATE_NOT_FOUND)
+			return UnknownType.INSTANCE;
+		else
+			return RubyTypeInferencingUtils.combineTypes(evaluatedTypes);
 	}
 
 }

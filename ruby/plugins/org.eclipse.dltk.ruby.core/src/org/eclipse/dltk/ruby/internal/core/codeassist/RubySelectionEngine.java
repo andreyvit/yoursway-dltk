@@ -15,6 +15,7 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.CallExpression;
+import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
@@ -34,6 +35,12 @@ import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.SearchEngine;
+import org.eclipse.dltk.ddp.BasicContext;
+import org.eclipse.dltk.ddp.ExpressionGoal;
+import org.eclipse.dltk.ddp.ITypeInferencer;
+import org.eclipse.dltk.ddp.TypeInferencer;
+import org.eclipse.dltk.evaluation.types.IClassType;
+import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.internal.codeassist.impl.Engine;
 import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
 import org.eclipse.dltk.internal.core.ModelElement;
@@ -44,6 +51,9 @@ import org.eclipse.dltk.ruby.core.ParentshipBuildingVisitor;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
+import org.eclipse.dltk.ruby.typeinference.RubyClassType;
+import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
+import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ruby.typeinference.internal.RubyTypeModel;
 import org.eclipse.dltk.ruby.typemodel.classes.RubyMetaTypeDescriptor;
@@ -78,6 +88,8 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 	
 	
 	private ASTNode[] wayToNode;
+
+	private TypeInferencer inferencer;
 
 	private TypeDeclaration getEnclosingType(ASTNode node) {
 		return ASTUtils.getEnclosingType(wayToNode, node, true);
@@ -116,6 +128,7 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 		this.toolkit = toolkit;
 		this.nameEnvironment = environment;
 		this.lookupEnvironment = new LookupEnvironment(this, nameEnvironment);
+		inferencer = new TypeInferencer(new RubyEvaluatorFactory());
 	}
 
 	public IAssistParser getParser() {
@@ -421,11 +434,33 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 		String methodName = ((CallExpression) parentCall).getName();		
 		Statement receiver = parentCall.getReceiver();
 		
+		IMethod[] availableMethods = null;
+		
 		if (receiver == null) {
-			// get IType from TypeDecl
-			// 
+			IClassType type = RubyTypeInferencingUtils.determineSelfClass(modelModule, parsedUnit, parentCall.sourceStart());
+			if (type instanceof RubyClassType) {
+				RubyClassType rubyClassType = (RubyClassType) type;
+				availableMethods = rubyClassType.getAllMethods();				
+			} else if (type instanceof RubyMetaClassType) {
+				RubyMetaClassType metaClassType = (RubyMetaClassType) type;
+				availableMethods = metaClassType.getMethods();
+			}
 		} else {
+			ExpressionGoal goal = new ExpressionGoal(new BasicContext(modelModule, parsedUnit), receiver);
+			IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+			if (type instanceof RubyClassType) {
+				RubyClassType rubyClassType = (RubyClassType) type;
+				type = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), rubyClassType);
+				availableMethods = rubyClassType.getAllMethods();
+			} else {
+				
+			}
 			
+		}
+		for (int i = 0; i < availableMethods.length; i++) {
+			if (availableMethods[i].getElementName().equals(methodName)) {
+				selectionElements.add(availableMethods[i]);
+			}
 		}
 		
 	

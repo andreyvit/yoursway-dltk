@@ -24,6 +24,7 @@ public class RubyClassType implements IClassType {
 	}
 
 
+	
 	public String getTypeName() {
 		if (fqn != null && fqn.length > 0) {
 			return fqn[fqn.length - 1]; 
@@ -55,11 +56,12 @@ public class RubyClassType implements IClassType {
 	}
 
 	public int hashCode() {
-		return Arrays.hashCode(fqn);
+		//return Arrays.hashCode(fqn); //XXX
+		return fqn.hashCode();
 	}
 
 
-	public Object getUnqualifiedName() {
+	public String getUnqualifiedName() {
 		return fqn[fqn.length - 1];
 	}
 

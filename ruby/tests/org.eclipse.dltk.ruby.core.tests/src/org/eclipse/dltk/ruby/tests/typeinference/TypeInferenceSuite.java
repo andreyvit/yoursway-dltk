@@ -180,7 +180,7 @@ public class TypeInferenceSuite extends TestSuite {
 
 							protected boolean visitInteresting(Expression s) {
 								if (s instanceof VariableReference)
-									if (s.sourceStart() == namePos) {
+									if (s.sourceStart() == namePos && result[0] == null) {
 										result[0] = s;
 									}
 								return true;
@@ -219,7 +219,7 @@ public class TypeInferenceSuite extends TestSuite {
 						ASTVisitor visitor = new OffsetTargetedASTVisitor(namePos) {
 							
 							protected boolean visitInteresting(Expression s) {
-								if (s instanceof Expression)
+								if (s instanceof Expression && result[0] == null)
 									if (s.sourceStart() == namePos) {
 										result[0] = s;
 									}
@@ -239,9 +239,11 @@ public class TypeInferenceSuite extends TestSuite {
 							assertEquals(correctType, type);
 						else if (correctClassRef.endsWith(".new")) {
 							String correctFQN = correctClassRef.substring(0, correctClassRef.length() - 4);
+							assertTrue(type instanceof RubyClassType);
 							String realFQN = getFQN((RubyClassType) type);
 							assertEquals(correctFQN, realFQN);
 						} else {
+							assertTrue(type instanceof RubyMetaClassType);
 							RubyMetaClassType metatype = (RubyMetaClassType) type;
 							String correctFQN = correctClassRef;
 							String realFQN = getFQN((RubyClassType) metatype.getInstanceType());

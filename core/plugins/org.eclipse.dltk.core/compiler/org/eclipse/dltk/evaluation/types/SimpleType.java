@@ -1,7 +1,7 @@
 package org.eclipse.dltk.evaluation.types;
 
 
-public class SimpleType implements IEvaluatedType
+public class SimpleType implements IClassType
 {
 	public final static int TYPE_STRING = 0;
 	public final static int TYPE_NUMBER = 1;
@@ -55,6 +55,10 @@ public class SimpleType implements IEvaluatedType
 				return "NULL";
 		}
 		return "unknown";
+	}
+	
+	public int hashCode() {
+		return fType ^ 0xDEADBEEF;
 	}
 
 	public boolean equals( Object obj ) {

@@ -50,7 +50,7 @@ public final class TypeInferencer implements ITypeInferencer {
 	
 	private boolean isInStack(IGoal goal) {
 		for (int i = stackSize - 1; i >= 0; i--)
-			if (stack[i].getGoal() == goal)
+			if (stack[i].getGoal().equals(goal))
 				return true;
 		return false;
 	}
@@ -58,6 +58,11 @@ public final class TypeInferencer implements ITypeInferencer {
 	private GoalEvaluator popStack() {
 		Assert.isTrue(stackSize > 0);
 		return stack[--stackSize];
+	}
+	
+	private GoalEvaluator peekStack() {
+		Assert.isTrue(stackSize > 0);
+		return stack[stackSize - 1];
 	}
 
 	public IEvaluatedType evaluateGoal(IGoal rootGoal, long timeLimit) {
@@ -89,16 +94,16 @@ public final class TypeInferencer implements ITypeInferencer {
 		pushToStack(rootEvaluator);
 		IGoal lastFullyEvaluatedGoal = null;
 		while(stackSize > emptyStackSize && (timeLimit == 0 || System.currentTimeMillis() < endTime)) {
-			GoalEvaluator goal = popStack();
+			GoalEvaluator goal = peekStack();
 			IGoal subgoal = goal.produceNextSubgoal(lastFullyEvaluatedGoal, lastObtainedSubgoalResult);
 
-			if (subgoal != null) 
-				subgoal = evaluatorFactory.translateGoal(subgoal);
 			if (subgoal == null) {
 				lastObtainedSubgoalResult = goal.produceType();
 				lastFullyEvaluatedGoal = goal.getGoal();
+				popStack();
 				totalGoalsCalculated++;
 			} else {
+				subgoal = evaluatorFactory.translateGoal(subgoal);
 				totalGoalsRequested++;
 				if (isInStack(subgoal)) {
 					totalRecursiveRequests++;

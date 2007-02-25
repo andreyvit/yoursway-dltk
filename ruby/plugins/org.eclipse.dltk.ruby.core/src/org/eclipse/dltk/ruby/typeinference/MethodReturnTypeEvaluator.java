@@ -18,6 +18,7 @@ import org.eclipse.dltk.ddp.IGoal;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.MultiTypeType;
 import org.eclipse.dltk.ruby.ast.ReturnStatement;
+import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 
 public class MethodReturnTypeEvaluator extends GoalEvaluator {
@@ -40,6 +41,8 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			return null;
 		if (!initialized) {
 			initialize();
+			if (done)
+				return null;
 			current = 0;
 		}
 		if (previousResult != null)
@@ -52,11 +55,19 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		current++;
 		return goal2;
 	}
-	
+		
 	private void initialize () {
 		MethodReturnTypeGoal typedGoal = getTypedGoal();
 		InstanceContext typedContext = getTypedContext();
 		IEvaluatedType instanceType = typedContext.getInstanceType();
+		String methodName = typedGoal.getMethodName();
+		IEvaluatedType intrinsicMethodReturnType = BuiltinMethods.getIntrinsicMethodReturnType(instanceType, methodName, typedGoal.getArguments());
+		if (intrinsicMethodReturnType != null) {
+			evaluated.add(intrinsicMethodReturnType);
+			done = true;
+			return;
+		}
+		
 		IMethod resultMethod = null;
 		MethodDeclaration decl = null;
 		if (instanceType instanceof RubyClassType) {
@@ -64,7 +75,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			type = RubyTypeInferencingUtils.resolveMethods(typedContext.getSourceModule().getScriptProject(), type);
 			IMethod[] allMethods = type.getAllMethods();
 			for (int i = 0; i < allMethods.length; i++) {
-				if (allMethods[i].getElementName().equals(typedGoal.getMethodName())) {
+				if (allMethods[i].getElementName().equals(methodName)) {
 					resultMethod = allMethods[i];
 				}
 			}
@@ -72,7 +83,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			RubyMetaClassType type = (RubyMetaClassType) instanceType;
 			IMethod[] methods = type.getMethods();
 			for (int i = 0; i < methods.length; i++) {
-				if (methods[i].getElementName().equals(typedGoal.getMethodName())) {
+				if (methods[i].getElementName().equals(methodName)) {
 					resultMethod = methods[i];				
 				}				
 			}
@@ -104,7 +115,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			try {
 				decl.traverse(visitor);
 			} catch (Exception e) {
-				e.printStackTrace();
+				RubyPlugin.log(e);
 			}
 			if (decl.getBody() != null) {
 				List statements = decl.getBody().getStatements();
@@ -115,7 +126,8 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 					}
 				}
 			}
-		}
+		}		
+		
 		initialized = true;
 	}
 	
@@ -128,8 +140,8 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 	}
 
 	public IEvaluatedType produceType() {
-		if (done) {
-			return RubyTypeInferencingUtils.combineUniqueTypes((IEvaluatedType[]) evaluated.toArray(new IEvaluatedType[evaluated.size()]));			
+		if (!evaluated.isEmpty()) {
+			return RubyTypeInferencingUtils.combineTypes(evaluated);			
 		}
 		return null;
 	}

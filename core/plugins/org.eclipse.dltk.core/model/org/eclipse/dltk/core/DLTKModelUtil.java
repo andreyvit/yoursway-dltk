@@ -73,7 +73,7 @@ public class DLTKModelUtil {
 			SearchEngine engine = new SearchEngine();
 			engine.searchAllTypeNames(
 					null, 
-					0,
+					SearchPattern.R_PATTERN_MATCH,
 					patternString.toCharArray(), 
 					SearchPattern.R_PATTERN_MATCH, 
 					IDLTKSearchConstants.TYPE, 

@@ -21,5 +21,9 @@ public class AmbiguousType implements IEvaluatedType
 		result.append(">");
 		return result.toString();
 	}
+
+	public IEvaluatedType[] getPossibleTypes() {
+		return possibleTypes;
+	}
 	
 }
