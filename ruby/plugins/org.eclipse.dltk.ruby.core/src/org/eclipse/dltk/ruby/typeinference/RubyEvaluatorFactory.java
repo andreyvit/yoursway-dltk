@@ -39,6 +39,8 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 			return new ConstantReferenceEvaluator((ConstantTypeGoal) goal);
 		else if (goal instanceof MethodReturnTypeGoal)
 			return new MethodReturnTypeEvaluator(goal);
+		else if (goal instanceof ColonExpressionGoal) 
+			return new ColonExpressionEvaluator(goal);
 		return null;
 	}
 

@@ -687,11 +687,16 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		
 		Expression left = null;
 		if (collector.list.size() == 1) {
-			if (collector.list.get(0) instanceof ConstantReference) {
-				left = (ConstantReference) collector.list.get(0);							
-			} else if (collector.list.get(0) instanceof ColonExpression) {
-				left = (ColonExpression) collector.list.get(0);							
-			}		
+//			if (collector.list.get(0) instanceof ConstantReference) {
+//				left = (ConstantReference) collector.list.get(0);							
+//			} else if (collector.list.get(0) instanceof ColonExpression) {
+//				left = (ColonExpression) collector.list.get(0);							
+//			} else {
+//				System.out.println();
+//			}
+			if (collector.list.get(0) instanceof Expression) {
+				left = (Expression) collector.list.get(0);	
+			}
 		}
 			 
 		String right = iVisited.getName();

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.ASTNode;
@@ -15,9 +14,7 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.CallExpression;
-import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.ConstantReference;
-import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
@@ -34,41 +31,25 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
-import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.ddp.BasicContext;
 import org.eclipse.dltk.ddp.ExpressionGoal;
-import org.eclipse.dltk.ddp.ITypeInferencer;
 import org.eclipse.dltk.ddp.TypeInferencer;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.internal.codeassist.impl.Engine;
 import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
 import org.eclipse.dltk.internal.core.ModelElement;
-import org.eclipse.dltk.internal.core.SourceField;
-import org.eclipse.dltk.internal.core.SourceRefElement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
-import org.eclipse.dltk.ruby.core.ParentshipBuildingVisitor;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
+import org.eclipse.dltk.ruby.typeinference.ColonExpressionGoal;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ruby.typeinference.internal.RubyTypeModel;
-import org.eclipse.dltk.ruby.typemodel.classes.RubyMetaTypeDescriptor;
-import org.eclipse.dltk.typeinference.ASTCaching;
-import org.eclipse.dltk.typeinference.IClassLikeFragment;
-import org.eclipse.dltk.typeinference.IKnownTypeDescriptor;
-import org.eclipse.dltk.typeinference.IMethodDescriptor;
-import org.eclipse.dltk.typeinference.IScope;
-import org.eclipse.dltk.typeinference.ITypeDescriptor;
-import org.eclipse.dltk.typeinference.IUnit;
-import org.eclipse.dltk.typeinference.IVariableDescriptor;
-import org.eclipse.dltk.typeinference.UserMethodDescriptor;
-import org.eclipse.dltk.typeinference.UserTypeDescriptor;
 
 
 public class RubySelectionEngine extends Engine implements ISelectionEngine {
@@ -191,10 +172,10 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 					selectionOnMethodDeclaration(parsedUnit, methodDeclaration);
 				} else if (node instanceof ConstantReference) {
 					ConstantReference reference = (ConstantReference) node;
-					selectTypes (modelModule, reference); //FIXME: add support of non-Type constants
+					selectTypes (modelModule, parsedUnit, reference); //FIXME: add support of non-Type constants
 				} else if (node instanceof ColonExpression) {
 					ColonExpression colonExpression = (ColonExpression) node;					
-					selectTypes (modelModule, colonExpression);
+					selectTypes (modelModule, parsedUnit, colonExpression);
 				} else if (node instanceof VariableReference) {
 					selectionOnVariable(modelModule, parsedUnit, (VariableReference)node);
 				} else {
@@ -320,31 +301,50 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 		return false;
 	}
 		
-	private void selectTypes(org.eclipse.dltk.core.ISourceModule modelModule,
+	private void selectTypes(org.eclipse.dltk.core.ISourceModule modelModule, ModuleDeclaration parsedUnit,
 			ASTNode node) {
 		String qualifiedName;
 		if (node instanceof ColonExpression) {
-			qualifiedName = ASTUtils.getTypeNameFromColon((ColonExpression) node);	
+			ColonExpressionGoal goal = new ColonExpressionGoal(new BasicContext(modelModule, 
+					parsedUnit), (ColonExpression)node);
+			IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+			if (type != null) {
+				RubyClassType classType = null;
+				if (type instanceof RubyClassType) {
+					classType = (RubyClassType) type;
+				} else if (type instanceof RubyMetaClassType) {
+					classType = (RubyClassType) ((RubyMetaClassType)type).getInstanceType();
+				}
+				if (classType != null) {
+					RubyClassType type2 = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), classType);
+					IType[] typeDeclarations = type2.getTypeDeclarations();
+					if (typeDeclarations != null) {
+						for (int i = 0; i < typeDeclarations.length; i++) {
+							selectionElements.add(typeDeclarations[i]);
+						}
+					}
+				}
+			}
 		} else if (node instanceof ConstantReference) {
 			ConstantReference constantReference = (ConstantReference) node;
 			qualifiedName = constantReference.getName();
+			IDLTKProject project = modelModule.getScriptProject();		
+			IType[] types = null;
+			if (qualifiedName.startsWith("::")) {
+				types = DLTKModelUtil.getAllTypes(project, qualifiedName, "::");
+			} else {
+				String scopeFQN = getTypeFQN(getStrictlyEnclosingType(node));
+				types = DLTKModelUtil.getAllScopedTypes(project, qualifiedName, "::", scopeFQN); 
+			}
+			
+			if (types != null) {
+				for (int i = 0; i < types.length; i++) {
+					this.selectionElements.add(types[i]);			
+				}				
+			}
 		} else
 			return;
 		
-		IDLTKProject project = modelModule.getScriptProject();		
-		IType[] types = null;
-		if (qualifiedName.startsWith("::")) {
-			types = DLTKModelUtil.getAllTypes(project, qualifiedName, "::");
-		} else {
-			String scopeFQN = getTypeFQN(getStrictlyEnclosingType(node));
-			types = DLTKModelUtil.getAllScopedTypes(project, qualifiedName, "::", scopeFQN); 
-		}
-		
-		if (types != null) {
-			for (int i = 0; i < types.length; i++) {
-				this.selectionElements.add(types[i]);			
-			}				
-		}
 	}
 	
 

@@ -645,5 +645,6 @@ public class RubyTypeInferencingUtils {
 		}
 		return new RubyClassType(fqn, allTypes, (IMethod[]) methods.toArray(new IMethod[methods.size()]));
 	}
+	
 
 }

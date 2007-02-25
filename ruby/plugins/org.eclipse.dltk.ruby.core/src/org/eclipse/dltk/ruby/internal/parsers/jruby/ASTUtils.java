@@ -26,28 +26,7 @@ public class ASTUtils {
 		methodDeclaration.setModifiers(modifiers | newVisibility);
 	}
 	
-	public static String getTypeNameFromColon (ColonExpression e) {
-		String name = "";
-		Expression expr = e;
-		while (expr instanceof ColonExpression) {
-			ColonExpression colonExpression = (ColonExpression) expr;
-			if (name.length() > 0) 
-				name = "::" + name;
-			name = colonExpression.getName() + name;
-			if (colonExpression.isFull()) {
-				name = "::" + name;
-				break;
-			} else
-				expr = colonExpression.getLeft();
-		} 
-		if (expr instanceof ConstantReference) {
-			ConstantReference constantReference = (ConstantReference) expr;
-			if (name.length() > 0) 
-				name = "::" + name;
-			name = constantReference.getName() + name;
-		}		
-		return name;
-	}
+	
 	
 	public static ASTNode[] restoreWayToNode (ModuleDeclaration module, final ASTNode nde) {
 		final Stack stack = new Stack();
