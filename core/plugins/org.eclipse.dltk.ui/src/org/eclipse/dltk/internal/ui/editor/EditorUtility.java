@@ -19,7 +19,7 @@ import org.eclipse.dltk.core.DLTKModelUtil;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IExternalSourceModule;
-import org.eclipse.dltk.core.IFakeElement;
+import org.eclipse.dltk.core.IForeignElement;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
@@ -150,12 +150,13 @@ public class EditorUtility {
 				}
 			}
 		}
-		IEditorInput input = getEditorInput(inputElement);
-		if (inputElement instanceof IFakeElement){
-			IFakeElement el=(IFakeElement) inputElement;
+		if (inputElement instanceof IForeignElement){
+			IForeignElement el=(IForeignElement) inputElement;
 			el.codeSelect();
 		}
 		else
+		{
+		IEditorInput input = getEditorInput(inputElement);
 		if (input != null) {
 			if (inputElement instanceof IModelElement) {
 				IModelElement element = (IModelElement)inputElement;	
@@ -174,7 +175,7 @@ public class EditorUtility {
 			} else
 				return openInEditor(input, getEditorID(input, inputElement), activate);
 		}
-		
+		}
 		return null;
 	}
 

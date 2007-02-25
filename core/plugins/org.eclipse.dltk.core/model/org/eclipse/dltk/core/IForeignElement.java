@@ -1,6 +1,6 @@
 package org.eclipse.dltk.core;
 
-public interface IFakeElement {
+public interface IForeignElement {
 
 	void codeSelect();
 
