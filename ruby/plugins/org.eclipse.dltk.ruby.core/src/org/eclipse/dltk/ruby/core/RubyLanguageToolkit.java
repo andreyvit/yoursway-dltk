@@ -123,8 +123,6 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	}
 
 	public IStatus validateSourceModule(String name) {
-		System.out.println("Validating: " + name);
-
 		if (name == null) {
 			return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
 					Messages.convention_unit_nullName, null);
@@ -139,6 +137,7 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 
 		return IModelStatus.VERIFIED_OK;
 	}
+
 
 	private String getRubyExtension() {
 		return "rb";
@@ -180,10 +179,13 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 
 	public IStatus validateSourceModule(IResource resource) {
 		if (resource == null || resource.getLocation() == null)
-			return new Status(IModelStatus.ERROR, RubyPlugin.PLUGIN_ID, "Resource passed to validateSourceModule() is null");
-		if (isRubyHeadered(resource.getLocation().toFile()) == IModelStatus.VERIFIED_OK) {
-			return IModelStatus.VERIFIED_OK;
-		}
+			return new Status(IModelStatus.ERROR, RubyPlugin.PLUGIN_ID, 1, "Resource passed to validateSourceModule() is null", null);
+		
+		String ext = resource.getLocation().getFileExtension();
+		if (ext == null || ext.length() == 0)
+			if (isRubyHeadered(resource.getLocation().toFile()) == IModelStatus.VERIFIED_OK) {
+				return IModelStatus.VERIFIED_OK;
+			}
 
 		return validateSourceModule(resource.getName());
 	}

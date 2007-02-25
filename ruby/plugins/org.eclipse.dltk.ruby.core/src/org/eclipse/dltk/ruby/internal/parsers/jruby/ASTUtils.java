@@ -113,6 +113,21 @@ public class ASTUtils {
 				return result;
 			}			
 			
+			private int calcLen (ASTNode s) {
+				int realStart = s.sourceStart();
+				int realEnd = s.sourceEnd();
+				if (s instanceof TypeDeclaration) {
+					TypeDeclaration declaration = (TypeDeclaration) s;
+					realStart = declaration.getNameStart();
+					realEnd = declaration.getNameEnd();
+				} else if (s instanceof MethodDeclaration) {
+					MethodDeclaration declaration = (MethodDeclaration) s;
+					realStart = declaration.getNameStart();
+					realEnd = declaration.getNameEnd();
+				}
+				return realEnd - realStart;
+			}
+			
 			public boolean visitGeneral(ASTNode s) throws Exception {				
 				int realStart = s.sourceStart();
 				int realEnd = s.sourceEnd();
@@ -128,7 +143,16 @@ public class ASTUtils {
 					realEnd = declaration.getNameEnd();
 				}
 				if (realStart <= start && realEnd >= end) {
-					result = s;
+					if (result != null) {
+						int oldlen = calcLen(result);
+						int newlen = realEnd - realStart;
+						if (newlen < oldlen )
+							result = s;
+					} else {
+						result = s;						
+					}
+					
+					
 					if (DLTKCore.DEBUG_SELECTION)
 						System.out.println("Found " + s.getClass().getName());
 				}

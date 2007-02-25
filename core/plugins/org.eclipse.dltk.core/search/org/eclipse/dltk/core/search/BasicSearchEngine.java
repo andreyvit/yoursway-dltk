@@ -515,7 +515,7 @@ public class BasicSearchEngine {
 	boolean match(char patternTypeSuffix, int modifiers) {
 		switch(patternTypeSuffix) {
 			case IIndexConstants.TYPE_SUFFIX :
-				return modifiers == 0;
+				return true; // TODO: add conditions here when needed
 //			case IIndexConstants.ANNOTATION_TYPE_SUFFIX :
 //				return (modifiers & Flags.AccAnnotation) != 0;
 		}

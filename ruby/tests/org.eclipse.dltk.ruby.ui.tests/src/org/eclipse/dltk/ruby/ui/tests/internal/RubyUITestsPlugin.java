@@ -15,7 +15,7 @@ import org.osgi.framework.BundleContext;
 public class RubyUITestsPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.dltk.ui.tests";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.ui.tests";
 
 	// The shared instance
 	private static RubyUITestsPlugin plugin;

@@ -35,6 +35,7 @@ import java.io.StringReader;
 import java.util.List;
 
 import org.eclipse.dltk.compiler.IProblemReporter;
+import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.internal.parser.Activator;
 import org.jruby.IRuby;
 import org.jruby.ast.Node;
@@ -88,8 +89,12 @@ public class Parser {
 //            throw runtime.newSyntaxError(buffer.toString());
         } catch (ClassCastException e) {
         	// often raised after error recovery is triggered
-        	Activator.log(e);
+        	RubyPlugin.log(e);
             warnings.error(parser.getLastTokenPosition(), e.getMessage());
+        } catch (RuntimeException e) {
+        	// often raised after error recovery is triggered
+        	RubyPlugin.log(e);
+        	warnings.error(parser.getLastTokenPosition(), e.getMessage());
         } catch (DefaultRubyParser.yyException e) {
         	warnings.error(parser.getLastTokenPosition(), e.getMessage());
         } finally {

@@ -74,7 +74,7 @@ public class DLTKModelUtil {
 			return;
 		}
 		//FIXME: use another search		
-		IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(langaugeToolkit);//createSearchScope(new IModelElement[] {project});		
+		IDLTKSearchScope scope = SearchEngine.createSearchScope(new IModelElement[] {project});		
 		try {
 			SearchEngine engine = new SearchEngine();
 			engine.searchAllTypeNames(
@@ -107,8 +107,8 @@ public class DLTKModelUtil {
 
 			public void acceptTypeNameMatch(TypeNameMatch match) {
 				IType type = (IType) match.getType();
-				if (!type.getScriptProject().equals(project))
-					return;
+//				if (!type.getScriptProject().equals(project))
+//					return;
 				if (type.getTypeQualifiedName(delimeter).equals(qualifiedName)) {
 					types.add(type);
 				}
@@ -142,8 +142,8 @@ public class DLTKModelUtil {
 			
 			public void acceptTypeNameMatch(TypeNameMatch match) {				
 				IType type = (IType) match.getType();
-				if (!type.getScriptProject().equals(project))
-					return;
+//				if (!type.getScriptProject().equals(project))
+//					return;
 				if (type.getTypeQualifiedName(delimeter).endsWith(nameEnding)) {
 					types.add(type);
 				}

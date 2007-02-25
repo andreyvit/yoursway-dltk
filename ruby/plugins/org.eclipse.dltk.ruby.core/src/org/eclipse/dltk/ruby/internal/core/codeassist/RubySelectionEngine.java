@@ -50,6 +50,7 @@ import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ruby.typeinference.internal.RubyTypeModel;
+import org.eclipse.dltk.utils.CorePrinter;
 
 
 public class RubySelectionEngine extends Engine implements ISelectionEngine {
@@ -148,7 +149,7 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 		
 		try {
 			ModuleDeclaration parsedUnit =	this.parser.parse(sourceUnit);
-
+			
 			if (parsedUnit != null) {
 				if(DEBUG) {
 					System.out.println("SELECTION - AST :"); //$NON-NLS-1$

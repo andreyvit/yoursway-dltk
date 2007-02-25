@@ -9,12 +9,12 @@ import org.eclipse.dltk.core.tests.model.AbstractModelCompletionTests;
 import org.eclipse.dltk.core.tests.model.CompletionTestsRequestor;
 import org.eclipse.dltk.ruby.ui.tests.internal.RubyUITestsPlugin;
 
-public class CompletionTests extends AbstractModelCompletionTests {
+public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 	private static final int RELEVANCE = (RelevanceConstants.R_DEFAULT
 			+ RelevanceConstants.R_INTERESTING + RelevanceConstants.R_CASE + RelevanceConstants.R_NON_RESTRICTED);
 
-	public CompletionTests(String name) {
+	public RubyCompletionTests(String name) {
 		super(RubyUITestsPlugin.PLUGIN_ID, name);
 	}
 
@@ -25,7 +25,7 @@ public class CompletionTests extends AbstractModelCompletionTests {
 	}
 
 	public static Test suite() {
-		return new Suite(CompletionTests.class);
+		return new Suite(RubyCompletionTests.class);
 	}
 
 	private String makeResult(String[] elements, String[] completions, int[] relevance) {
@@ -72,4 +72,17 @@ public class CompletionTests extends AbstractModelCompletionTests {
 				.getResults());
 	}
 
+	public void testCompletion002() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "inner.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "Foo42::";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertEquals(makeResult(new String[] { "Inner"}), requestor
+				.getResults());
+	}
+	
 }

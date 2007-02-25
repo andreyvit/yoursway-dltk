@@ -529,7 +529,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 					node.accept(this);
 				}
 			} else {
-				RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode() - unknown args node type");
+				RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode(" + methodName + ") - unknown args node type: " + argsNode.getClass().getName());
 				argsNode.accept(this);
 			}
 			popState();
@@ -653,10 +653,12 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 			int end = -1;
 			if (bodyNode instanceof BlockNode) {
 				BlockNode blockNode = (BlockNode) bodyNode;
-				end = blockNode.getLast().getPosition().getEndOffset(); ///XXX!!!!
-			}			
+				end = blockNode.getLast().getPosition().getEndOffset()+1; ///XXX!!!!
+			} else {
+				RubyPlugin.log("DLTKASTBuildVisitor.visitClassNode(" + name + "): unknown body type ");
+			}
 			pos = fixBorders(pos);			
-			Block bl = new Block(pos.getStartOffset(), (end == -1)?pos.getEndOffset():end);
+			Block bl = new Block(pos.getStartOffset(), (end == -1)?pos.getEndOffset()+1:end);
 			type.setBody(bl);
 			iVisited.getBodyNode().accept(this);
 		}
@@ -1006,7 +1008,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 					node.accept(this);
 				}
 			} else {
-				RubyPlugin.log("DLTKASTBuildVisitor.visitFCallNode() - unknown args node type");
+				RubyPlugin.log("DLTKASTBuildVisitor.visitFCallNode(" + methodName + ") - unknown args node type: " + argsNode.getClass().getName());
 				argsNode.accept(this);
 			}
 			popState();
@@ -1172,8 +1174,6 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitModuleNode(ModuleNode iVisited) {
-
-		
 		String name = "";
 		Node cpathNode = iVisited.getCPath();
 		if (cpathNode instanceof Colon2Node || cpathNode instanceof ConstNode) {
@@ -1184,19 +1184,28 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		cPos = fixNamePosition(cPos);
 		pos = fixNamePosition(pos);
 		TypeDeclaration type = new TypeDeclaration(name, pos.getStartOffset(), pos.getEndOffset(), 
-				cPos.getStartOffset(), cPos.getEndOffset());
+				cPos.getStartOffset(), cPos.getEndOffset());			
 		type.setModifier(Modifiers.AccModule);
 		peekState().add(type);
 		pushState(new ModuleState(type));
+		//body
 		pos = iVisited.getBodyNode().getPosition();
 		if (iVisited.getBodyNode().getBodyNode() != null) {
-			pos = fixBorders(pos);
-			Block bl = new Block(pos.getStartOffset(), pos.getEndOffset());
+			Node bodyNode = iVisited.getBodyNode().getBodyNode();
+			int end = -1;
+			if (bodyNode instanceof BlockNode) {
+				BlockNode blockNode = (BlockNode) bodyNode;
+				end = blockNode.getLast().getPosition().getEndOffset(); ///XXX!!!!
+			} else {
+				RubyPlugin.log("DLTKASTBuildVisitor.visitModuleNode(" + name + "): unknown body type");
+			}
+			pos = fixBorders(pos);			
+			Block bl = new Block(pos.getStartOffset(), (end == -1)?pos.getEndOffset():end);
 			type.setBody(bl);
 			iVisited.getBodyNode().accept(this);
 		}
 		popState();
-		return null;		
+		return null;
 	}
 
 	public Instruction visitNewlineNode(NewlineNode iVisited) {

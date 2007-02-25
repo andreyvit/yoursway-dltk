@@ -87,11 +87,11 @@ public abstract class Declaration extends Statement implements Modifiers {
 		this.name = name;
 	}
 
-	protected void setNameEnd(int end) {
+	public void setNameEnd(int end) {
 		nameEnd = end;
 	}
 
-	protected void setNameStart(int start) {
+	public void setNameStart(int start) {
 		nameStart = start;
 	}
 

@@ -51,14 +51,22 @@ public class DLTKCore extends Plugin {
 	public static final boolean VERBOSE_SEARCH_NAMELOOKUP = false;
 	public static final boolean VERBOSE_COMPLETION = false;
 	
-	public static final boolean DEBUG = false;
-	public static final boolean DEBUG_PRINT_MODEL = false;
-	public static final boolean DEBUG_SCOPES = false;
-	public static final boolean DEBUG_SCRIPT_BUILDER = false;
-	public static final boolean DEBUG_COMPLETION = false;
-	public static final boolean DEBUG_SELECTION = false;
-	public static final boolean DEBUG_PARSER = false;
-	public static final boolean DEBUG_INDEX = true;
+	public static final boolean DEBUG = Boolean.valueOf(
+			Platform.getDebugOption("org.eclipse.dltk.core/debug")).booleanValue();
+	public static final boolean DEBUG_PRINT_MODEL = Boolean.valueOf(
+			Platform.getDebugOption("org.eclipse.dltk.core/debugPrintModel")).booleanValue();
+	public static final boolean DEBUG_SCOPES = Boolean.valueOf(
+			Platform.getDebugOption("org.eclipse.dltk.core/debugScopes")).booleanValue();
+	public static final boolean DEBUG_SCRIPT_BUILDER = Boolean.valueOf(
+			Platform.getDebugOption("org.eclipse.dltk.core/debugScriptBuilder")).booleanValue();
+	public static final boolean DEBUG_COMPLETION = Boolean.valueOf(
+			Platform.getDebugOption("org.eclipse.dltk.core/debugCompletion")).booleanValue();
+	public static final boolean DEBUG_SELECTION = Boolean.valueOf(
+			Platform.getDebugOption("org.eclipse.dltk.core/debugSelection")).booleanValue();
+	public static final boolean DEBUG_PARSER = Boolean.valueOf(
+			Platform.getDebugOption("org.eclipse.dltk.core/debugParser")).booleanValue();
+	public static final boolean DEBUG_INDEX = Boolean.valueOf(
+			Platform.getDebugOption("org.eclipse.dltk.core/debugIndex")).booleanValue();
 	
 	// Log errors into log.
 	public static final boolean DEBUG_LOG = false;

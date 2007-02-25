@@ -5,11 +5,14 @@ class Bar
 	end
 	
 	def boz
-		Foo.new.
+		Foo42.new.dining_philosopher
+		Foo42::
 	end
 end
 
-class Foo
+class Foo42
+	class Inner
+	end
 	
 	def dining_philosopher
 		ultimate_answer

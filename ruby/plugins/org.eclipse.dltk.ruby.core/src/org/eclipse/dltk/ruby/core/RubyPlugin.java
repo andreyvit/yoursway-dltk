@@ -56,8 +56,11 @@ public class RubyPlugin extends Plugin {
 	public static void log(Exception ex) {
 		if (DLTKCore.DEBUG || DUMP_EXCEPTIONS_TO_CONSOLE)
 			ex.printStackTrace();
+		String message = ex.getMessage();
+		if (message == null)
+			message = "(no message)";
 		getDefault().getLog().log(new Status(Status.ERROR,
-				PLUGIN_ID, 0, ex.getMessage(), ex));
+				PLUGIN_ID, 0, message, ex));
 	}
 	
 	public static void log(String message) {
