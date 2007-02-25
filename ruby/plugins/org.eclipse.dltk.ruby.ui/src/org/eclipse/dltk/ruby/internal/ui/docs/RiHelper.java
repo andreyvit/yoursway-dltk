@@ -29,7 +29,7 @@ public class RiHelper {
 
 	public String getDocFor(String keyword) {
 		IInterpreterInstall install = DLTKLaunchUtil
-				.getDefaultInterpreter(RubyNature.NATURE_ID);
+				.getDefaultInterpreterInstall(RubyNature.NATURE_ID);
 
 		File interpreterPath = install.getInstallLocation();
 

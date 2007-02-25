@@ -7,8 +7,7 @@ import org.eclipse.debug.core.Launch;
 import org.eclipse.dltk.core.IDLTKProject;
 
 public class DLTKLaunchUtil {
-	public static IInterpreterInstall getDefaultInterpreterInstall(String nature)
-			throws CoreException {
+	public static IInterpreterInstall getDefaultInterpreterInstall(String nature) {
 		return ScriptRuntime.getDefaultInterpreterInstall(nature);
 	}
 
@@ -21,11 +20,7 @@ public class DLTKLaunchUtil {
 		}
 		return interp;
 	}
-
-	public static IInterpreterInstall getDefaultInterpreter(String nature) {
-		return ScriptRuntime.getDefaultInterpreterInstall(nature);
-	}
-
+	
 	public static ILaunch launchScript(IInterpreterInstall install,
 			String scriptPath, String[] args, String mode) throws CoreException {
 		ILaunch launch = new Launch(null, ILaunchManager.RUN_MODE, null);
