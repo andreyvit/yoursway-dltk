@@ -649,5 +649,33 @@ public class RubyTypeInferencingUtils {
 		return new RubyClassType(fqn, allTypes, (IMethod[]) methods.toArray(new IMethod[methods.size()]));
 	}
 	
+	public static String compileFQN(String[] fqn, boolean fully) {
+		StringBuffer res = new StringBuffer();
+		for (int i = 0; i < fqn.length; i++) {			
+			if (fully || i > 0)
+				res.append("::");
+			res.append(fqn[i]);
+		}
+		return res.toString();
+	}
+	
+	public static IType[] findSubtypes (IDLTKProject project, RubyClassType type) {
+		List result = new ArrayList ();
+		type = resolveMethods(project, type);		
+		IType[] declarations = type.getTypeDeclarations();
+		for (int i = 0; i < declarations.length; i++) {
+			IType[] subtypes;
+			try {
+				subtypes = declarations[i].getTypes();
+			} catch (ModelException e) {
+				e.printStackTrace();
+				continue;
+			}
+			for (int j = 0; j < subtypes.length; j++) {
+				result.add(subtypes[j]);
+			}
+		}
+		return (IType[]) result.toArray(new IType[result.size()]);
+	}
 
 }

@@ -12,6 +12,7 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.core.DLTKModelUtil;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ISourceModule;
@@ -167,5 +168,9 @@ public class RubyModelUtils {
 		}
 		return (IField[]) resultFields.toArray(new IField[resultFields.size()]);
 	}
+	
+
+
+	
 
 }

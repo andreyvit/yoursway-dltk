@@ -510,7 +510,7 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 	protected boolean isFiltered(CompletionProposal proposal) {
 		if (isIgnored(proposal.getKind()))
 			return true;
-		char[] declaringType = getDeclaringType(proposal);
+		char[] declaringType = null;//getDeclaringType(proposal);
 		if (DLTKCore.DEBUG) {
 			System.out.println("TODO:Add type filtering here");
 		}
@@ -769,7 +769,14 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 		// LazyJavaTypeCompletionProposal(typeProposal, getInvocationContext());
 		// adaptLength(proposal, typeProposal);
 		// return proposal;
-		return null;
+		String completion = new String(typeProposal.getCompletion());
+		int replaceStart = typeProposal.getReplaceStart();
+		int length = typeProposal.getReplaceEnd() - typeProposal.getReplaceStart() + 1;
+		Image image = getImage(getLabelProvider().createTypeImageDescriptor(typeProposal));
+		String displayString = completion;
+		
+		return createScriptCompletionProposal(completion, replaceStart, length, image, displayString, 0);
+
 	}
 
 	private IScriptCompletionProposal createScriptdocLinkTypeProposal(CompletionProposal typeProposal) {

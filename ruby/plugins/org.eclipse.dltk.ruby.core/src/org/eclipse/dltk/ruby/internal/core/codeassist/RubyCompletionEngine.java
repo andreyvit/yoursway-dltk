@@ -7,6 +7,7 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.references.ConstantReference;
+import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.codeassist.CompletionEngine;
 import org.eclipse.dltk.codeassist.IAssistParser;
@@ -24,11 +25,14 @@ import org.eclipse.dltk.ddp.BasicContext;
 import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.TypeInferencer;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
+import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
+import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
+import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 
 public class RubyCompletionEngine extends CompletionEngine {
@@ -42,6 +46,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 	}
 
 	private JRubySourceParser parser = new JRubySourceParser(null);
+
 
 	protected int getEndOfEmptyToken() {
 		// TODO Auto-generated method stub
@@ -88,7 +93,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 			position++;
 		if (position >= content.length())
 			return true;
-		if (content.charAt(position) == '\r' ||content.charAt(position) == '\n')
+		if (!RubySyntaxUtils.isNameChar(content.charAt(position)))
 			return true;
 		return false;
 	}
@@ -96,18 +101,18 @@ public class RubyCompletionEngine extends CompletionEngine {
 	public void complete(ISourceModule module, int position, int i) {
 		this.actualCompletionPosition = position;
 		this.requestor.beginReporting();
+		org.eclipse.dltk.core.ISourceModule modelModule = (org.eclipse.dltk.core.ISourceModule) module;
 		try {
 			String content = module.getSourceContents();
 			if (afterDot(content, position)) {
+				this.setSourceRange(position, position);
 				if (widowDot(content, position)) {
 					content = cut(content, position - 1, 1);
 					position--;
 				}
-				this.setSourceRange(position+1, position+1);
 				ModuleDeclaration moduleDeclaration = parser.parse(content);
 				ASTNode node = ASTUtils.findMaximalNodeEndingAt(moduleDeclaration, position-1);
 				if (node instanceof Statement) {
-					org.eclipse.dltk.core.ISourceModule modelModule = (org.eclipse.dltk.core.ISourceModule) module;
 					ExpressionGoal goal = new ExpressionGoal(new BasicContext(modelModule, moduleDeclaration), 
 							(Statement) node);
 					IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
@@ -116,25 +121,43 @@ public class RubyCompletionEngine extends CompletionEngine {
 						rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), rubyClassType);
 						IMethod[] allMethods = rubyClassType.getAllMethods();
 						for (int j = 0; j < allMethods.length; j++) {
-							reportLocalMethod("".toCharArray(), 0, allMethods[j]);
+							reportMethod("".toCharArray(), 0, allMethods[j]);
 						}				
 					}
 				}
 			} else if (afterColons(content, position)) {
+				this.setSourceRange(position, position);
 				if (widowDot(content, position)) {
 					content = cut(content, position - 2, 2);
 					position -= 2;
+				}
+				ModuleDeclaration moduleDeclaration = parser.parse(content);
+				ASTNode node = ASTUtils.findMaximalNodeEndingAt(moduleDeclaration, position-1);
+				if (node instanceof ColonExpression || node instanceof ConstantReference) {
+					ExpressionGoal goal = new ExpressionGoal(new BasicContext(modelModule, moduleDeclaration), 
+							(Statement) node);
+					IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+					if (type instanceof RubyMetaClassType)
+						type = ((RubyMetaClassType)type).getInstanceType();
+					if (type instanceof RubyClassType) {
+						IType[] subtypes = RubyTypeInferencingUtils.findSubtypes(modelModule.getScriptProject(), (RubyClassType) type);						
+						for (int j = 0; j < subtypes.length; j++) {
+							reportType("".toCharArray(), 0, subtypes[j], RubyTypeInferencingUtils.compileFQN(((RubyClassType)type).getFQN(), true).length() + 2);
+						}
+					}
 				}
 			} else {
 				ModuleDeclaration moduleDeclaration = parser.parse(content);
 				ASTNode minimalNode = ASTUtils.findMinimalNode(moduleDeclaration, position - 1, position - 1);
 				if (minimalNode != null) {
 					if (minimalNode instanceof CallExpression) {
-						completeCall(module, moduleDeclaration, (CallExpression)minimalNode, position);
+						completeCall(modelModule, moduleDeclaration, (CallExpression)minimalNode, position);
 					} else if (minimalNode instanceof ConstantReference) {
-						completeConstant(module, moduleDeclaration, (ConstantReference)minimalNode, position);
+						completeConstant(modelModule, moduleDeclaration, (ConstantReference)minimalNode, position);
 					} else if (minimalNode instanceof ColonExpression) {
-						completeColonExpression(module, moduleDeclaration, (ColonExpression)minimalNode, position);
+						completeColonExpression(modelModule, moduleDeclaration, (ColonExpression)minimalNode, position);
+					} else if (minimalNode instanceof SimpleReference) {
+						completeSimpleRef(modelModule, moduleDeclaration, (SimpleReference)minimalNode, position);
 					} else {
 						System.out.println("Node " + minimalNode.getClass().getName() + " is unsuppored by now");
 					}
@@ -147,25 +170,52 @@ public class RubyCompletionEngine extends CompletionEngine {
 		}
 	}
 
-	private void completeColonExpression(ISourceModule module,
-			ModuleDeclaration moduleDeclaration, ColonExpression minimalNode,
+	private void completeSimpleRef(org.eclipse.dltk.core.ISourceModule module,
+			ModuleDeclaration moduleDeclaration, SimpleReference node,
 			int position) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private void completeConstant(ISourceModule module,
-			ModuleDeclaration moduleDeclaration, ConstantReference minimalNode,
+	private void completeColonExpression(org.eclipse.dltk.core.ISourceModule module,
+			ModuleDeclaration moduleDeclaration, ColonExpression node,
 			int position) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private void completeCall(ISourceModule module,
-			ModuleDeclaration moduleDeclaration, CallExpression minimalNode,
+	private void completeConstant(org.eclipse.dltk.core.ISourceModule module,
+			ModuleDeclaration moduleDeclaration, ConstantReference node,
 			int position) {
 		// TODO Auto-generated method stub
 		
+	}
+		
+	private void completeCall(org.eclipse.dltk.core.ISourceModule module,
+			ModuleDeclaration moduleDeclaration, CallExpression node,
+			int position) {
+		Statement receiver = node.getReceiver();
+		
+//		sint pos = node.getReceiver().sourceEnd();
+		
+		if (receiver != null) {
+			ExpressionGoal goal = new ExpressionGoal(new BasicContext(module, moduleDeclaration), 
+					(Statement) receiver);
+			IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+			if (type instanceof RubyClassType) {
+				RubyClassType classType = RubyTypeInferencingUtils.resolveMethods(module.getScriptProject(), (RubyClassType) type);
+				IMethod[] allMethods = classType.getAllMethods();
+				for (int i = 0; i < allMethods.length; i++) {
+					
+				}				
+			} else if (type instanceof RubyMetaClassType) {
+				
+			} else if (type instanceof SimpleType) {
+				
+			}
+		} else {
+			//complete word
+		}
 	}
 
 	
@@ -175,7 +225,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 		return null;
 	}
 	
-	private void reportLocalMethod(char[] token, int length, IMethod method) {
+	private void reportMethod(char[] token, int length, IMethod method) {
 		char[] name = method.getElementName().toCharArray();
 		if (length <= name.length && CharOperation.prefixEquals(token, name, false)) {
 			int relevance = RelevanceConstants.R_INTERESTING;
@@ -201,6 +251,36 @@ public class RubyCompletionEngine extends CompletionEngine {
 
 				proposal.setName(name);
 				proposal.setCompletion(name);
+				// proposal.setFlags(Flags.AccDefault);
+				proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition - this.offset);
+				proposal.setRelevance(relevance);
+				this.requestor.accept(proposal);
+				if (DEBUG) {
+					this.printDebug(proposal);
+				}
+			}
+		}
+	}
+	
+	
+	private void reportType(char[] token, int length, IType type, int from) {
+		char[] name = type.getTypeQualifiedName("::").toCharArray();
+		if (length <= name.length && CharOperation.prefixEquals(token, name, false)) {
+			int relevance = RelevanceConstants.R_INTERESTING;
+			relevance += computeRelevanceForCaseMatching(token, name);
+			relevance += RelevanceConstants.R_NON_RESTRICTED;
+
+			// accept result
+			noProposal = false;
+			if (!requestor.isIgnored(CompletionProposal.TYPE_REF)) {
+				CompletionProposal proposal = createProposal(CompletionProposal.TYPE_REF,
+						actualCompletionPosition);
+				// proposal.setSignature(getSignature(typeBinding));
+				// proposal.setPackageName(q);
+				// proposal.setTypeName(displayName);
+
+				proposal.setName(name);
+				proposal.setCompletion(type.getTypeQualifiedName("::").substring(from).toCharArray());
 				// proposal.setFlags(Flags.AccDefault);
 				proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition - this.offset);
 				proposal.setRelevance(relevance);
