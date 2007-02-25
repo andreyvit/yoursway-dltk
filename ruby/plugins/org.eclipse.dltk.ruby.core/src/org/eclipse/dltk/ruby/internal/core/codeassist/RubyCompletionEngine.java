@@ -131,7 +131,6 @@ public class RubyCompletionEngine extends CompletionEngine {
 
 			public boolean visitGeneral(ASTNode s) throws Exception {
 				if (s.sourceEnd() == boundaryOffset + 1) {
-					// if (result == null)
 					result = s;
 					System.out.println("Found " + s.getClass().getName());
 				}

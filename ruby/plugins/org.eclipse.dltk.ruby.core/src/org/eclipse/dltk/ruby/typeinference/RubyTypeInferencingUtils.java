@@ -211,6 +211,20 @@ public class RubyTypeInferencingUtils {
 	 */
 	public static ConstantInfo[] findConstantDeclarations(ISourceModule sourceModule,
 			ModuleDeclaration rootNode, int offset, final String constName) {
+		Collection[] foundOccurances = findAllConstantDeclarations(sourceModule, rootNode, offset, constName);
+		if (foundOccurances == null)
+			return null;
+		for (int i = foundOccurances.length - 1; i >= 0; i--) {
+			Collection collection = foundOccurances[i];
+			if (!collection.isEmpty()) {
+				return (ConstantInfo[]) collection.toArray(new ConstantInfo[collection.size()]);
+			}
+		}
+
+		return null;
+	}
+
+	private static Collection[] findAllConstantDeclarations(ISourceModule sourceModule, ModuleDeclaration rootNode, int offset, final String constName) {
 		IDLTKProject project = sourceModule.getScriptProject();
 		String patternString = constName;
 		IDLTKSearchScope scope = SearchEngine.createSearchScope(new IModelElement[] { project });
@@ -259,15 +273,7 @@ public class RubyTypeInferencingUtils {
 					}
 			}
 		}
-
-		for (int i = foundOccurances.length - 1; i >= 0; i--) {
-			Collection collection = foundOccurances[i];
-			if (!collection.isEmpty()) {
-				return (ConstantInfo[]) collection.toArray(new ConstantInfo[collection.size()]);
-			}
-		}
-
-		return null;
+		return foundOccurances;
 	}
 
 	public static IEvaluatedType determineSelfClass(IContext context, int keyOffset) {

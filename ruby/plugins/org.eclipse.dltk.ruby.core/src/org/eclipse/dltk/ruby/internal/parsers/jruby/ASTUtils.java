@@ -91,7 +91,7 @@ public class ASTUtils {
 		Assert.isLegal(pos != -1);
 		if (!considerGiven)
 			pos--;
-		for (int i = pos - 1; i >= 0; i--) {		
+		for (int i = pos; i >= 0; i--) {		
 			if (element.isInstance(wayToNode[i]))
 				return wayToNode[i];
 		}

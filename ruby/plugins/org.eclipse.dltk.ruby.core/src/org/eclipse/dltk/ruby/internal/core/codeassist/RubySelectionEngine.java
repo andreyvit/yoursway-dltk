@@ -18,6 +18,7 @@ import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.codeassist.IAssistParser;
@@ -54,6 +55,7 @@ import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
+import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ruby.typeinference.internal.RubyTypeModel;
 import org.eclipse.dltk.ruby.typemodel.classes.RubyMetaTypeDescriptor;
@@ -189,20 +191,17 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 					selectionOnMethodDeclaration(parsedUnit, methodDeclaration);
 				} else if (node instanceof ConstantReference) {
 					ConstantReference reference = (ConstantReference) node;
-					//selectionOnConstant(modelModule, parsedUnit, reference);
 					selectTypes (modelModule, reference); //FIXME: add support of non-Type constants
 				} else if (node instanceof ColonExpression) {
-					ColonExpression colonExpression = (ColonExpression) node;
-					//selectionOnType(modelModule, parsedUnit, colonExpression);
+					ColonExpression colonExpression = (ColonExpression) node;					
 					selectTypes (modelModule, colonExpression);
+				} else if (node instanceof VariableReference) {
+					selectionOnVariable(modelModule, parsedUnit, (VariableReference)node);
 				} else {
 					CallExpression parentCall = this.getEnclosingCallNode(node);						
 					if (parentCall != null) {
 						selectOnMethod(modelModule, parsedUnit, parentCall);
 					} else { // parentCall == null
-						if (node instanceof SimpleReference) {
-							selectionOnVariable(modelModule, parsedUnit, (SimpleReference)node);
-						}
 					}					
 				}
 			}
@@ -351,24 +350,13 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 
 	
 	private void selectionOnVariable (org.eclipse.dltk.core.ISourceModule modelModule, 
-			ModuleDeclaration parsedUnit, SimpleReference e) {
+			ModuleDeclaration parsedUnit, VariableReference e) {
 		String name = e.getName();
 		IDLTKProject project = modelModule.getScriptProject();
 		if (name.startsWith("@")) {
-			String qualifiedName = getTypeFQN(getStrictlyEnclosingType(e));
-			IType[] types = DLTKModelUtil.getAllTypes(project, qualifiedName, "::");
-			for (int i = 0; i < types.length; i++) {
-				IField[] fields;
-				try {
-					fields = types[i].getFields();
-					for (int j = 0; j < fields.length; j++) {
-						if (fields[i].getElementName().equals(name)) {
-							selectionElements.add(fields[i]);
-						}
-					}
-				} catch (ModelException e1) {					
-					e1.printStackTrace();
-				}				
+			IField[] fields = RubyModelUtils.findFields(modelModule, parsedUnit, e);
+			for (int i = 0; i < fields.length; i++) {
+				selectionElements.add(fields[i]);
 			}
 		} else { // local vars
 			ASTNode parentScope = null;
@@ -439,7 +427,7 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 		if (receiver == null) {
 			IClassType type = RubyTypeInferencingUtils.determineSelfClass(modelModule, parsedUnit, parentCall.sourceStart());
 			if (type instanceof RubyClassType) {
-				RubyClassType rubyClassType = (RubyClassType) type;
+				RubyClassType rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), (RubyClassType) type);
 				availableMethods = rubyClassType.getAllMethods();				
 			} else if (type instanceof RubyMetaClassType) {
 				RubyMetaClassType metaClassType = (RubyMetaClassType) type;
@@ -450,23 +438,21 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 			IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
 			if (type instanceof RubyClassType) {
 				RubyClassType rubyClassType = (RubyClassType) type;
-				type = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), rubyClassType);
+				rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), rubyClassType);
 				availableMethods = rubyClassType.getAllMethods();
 			} else {
 				
 			}
 			
 		}
-		for (int i = 0; i < availableMethods.length; i++) {
-			if (availableMethods[i].getElementName().equals(methodName)) {
-				selectionElements.add(availableMethods[i]);
+		if (availableMethods != null) {
+			for (int i = 0; i < availableMethods.length; i++) {
+				if (availableMethods[i].getElementName().equals(methodName)) {
+					selectionElements.add(availableMethods[i]);
+				}
 			}
 		}
-		
 	
 	}
-	
-	
-
 
 }

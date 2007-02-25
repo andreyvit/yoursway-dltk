@@ -1,19 +1,24 @@
 package org.eclipse.dltk.ruby.typeinference;
 
-import org.eclipse.core.runtime.Assert;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 
 public class RubyModelUtils {
@@ -63,7 +68,7 @@ public class RubyModelUtils {
 			private boolean interesting(ASTNode s) {
 				if (s.sourceStart() < 0 || s.sourceEnd() < s.sourceStart())
 					return true;
-				if (s.sourceStart() < modelCutoffStart || s.sourceEnd() > modelCutoffEnd)
+				if (modelCutoffEnd < s.sourceStart() || modelCutoffStart >= s.sourceEnd())
 					return false;
 				return true;
 			}
@@ -135,6 +140,32 @@ public class RubyModelUtils {
 		
 		return bestResult[0];
 		
+	}
+	
+	public static IField[] findFields (ISourceModule modelModule, ModuleDeclaration parsedUnit, VariableReference ref) {
+		IType[] types = null;
+		IClassType type = RubyTypeInferencingUtils.determineSelfClass(modelModule, parsedUnit, ref.sourceStart());
+		if (type instanceof RubyClassType) {
+			RubyClassType rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), (RubyClassType) type);
+			types = rubyClassType.getTypeDeclarations();
+		}		
+		if (types == null)
+			return new IField[0];
+		List resultFields = new ArrayList ();
+		for (int i = 0; i < types.length; i++) {
+			IField[] fields;
+			try {
+				fields = types[i].getFields();
+				for (int j = 0; j < fields.length; j++) {
+					if (fields[i].getElementName().equals(ref.getName())) {
+						resultFields.add(fields[i]);
+					}
+				}
+			} catch (ModelException e1) {					
+				e1.printStackTrace();
+			}				
+		}
+		return (IField[]) resultFields.toArray(new IField[resultFields.size()]);
 	}
 
 }
