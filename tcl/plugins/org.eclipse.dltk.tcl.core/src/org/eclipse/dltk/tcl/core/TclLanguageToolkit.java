@@ -37,6 +37,7 @@ import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.DLTKSearchParticipant;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
@@ -284,7 +285,6 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 	}
 
 	public DLTKSearchParticipant createSearchParticipant() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -306,5 +306,10 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 
 	public ICallProcessor createCallProcessor() {
 		return new TclCallProcessor();
+	}
+
+	public IType[] getParentTypes(IType type) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

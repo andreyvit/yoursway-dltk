@@ -1,6 +1,9 @@
 package org.eclipse.dltk.core;
 
+import java.io.InputStream;
 import java.security.Signature;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 
 public interface IType extends IMember {
 	String[] getSuperClasses() throws ModelException;
@@ -240,4 +243,166 @@ public interface IType extends IMember {
 	 *
 	 */
 	IMethod[] findMethods(IMethod method);
+	
+	
+	// Type hierarchies.
+	/**
+	 * Loads a previously saved ITypeHierarchy from an input stream. A type hierarchy can
+	 * be stored using ITypeHierachy#store(OutputStream).
+	 * 
+	 * Only hierarchies originally created by the following methods can be loaded:
+	 * <ul>
+	 * <li>IType#newSupertypeHierarchy(IProgressMonitor)</li>
+	 * <li>IType#newTypeHierarchy(IJavaProject, IProgressMonitor)</li>
+	 * <li>IType#newTypeHierarchy(IProgressMonitor)</li>
+	 * </ul>
+	 * 
+	 * @param input stream where hierarchy will be read
+	 * @param monitor the given progress monitor
+	 * @return the stored hierarchy
+	 * @exception ModelException if the hierarchy could not be restored, reasons include:
+	 *      - type is not the focus of the hierarchy or 
+	 *		- unable to read the input stream (wrong format, IOException during reading, ...)
+	 * @see ITypeHierarchy#store(java.io.OutputStream, IProgressMonitor)
+	 */
+	ITypeHierarchy loadTypeHierachy(InputStream input, IProgressMonitor monitor) throws ModelException;
+	/**
+	 * Creates and returns a type hierarchy for this type containing
+	 * this type and all of its supertypes.
+	 *
+	 * @param monitor the given progress monitor
+	 * @exception ModelException if this element does not exist or if an
+	 *		exception occurs while accessing its corresponding resource.
+	 * @return a type hierarchy for this type containing this type and all of its supertypes
+	 */
+	ITypeHierarchy newSupertypeHierarchy(IProgressMonitor monitor) throws ModelException;
+	
+	/**
+	 * Creates and returns a type hierarchy for this type containing
+	 * this type and all of its supertypes, considering types in the given 
+	 * working copies. In other words, the list of working copies will take 
+	 * precedence over their original compilation units in the workspace.
+	 * <p>
+	 * Note that passing an empty working copy will be as if the original compilation
+	 * unit had been deleted.
+	 * </p>
+	 *
+	 * @param workingCopies the working copies that take precedence over their original compilation units
+	 * @param monitor the given progress monitor
+	 * @return a type hierarchy for this type containing this type and all of its supertypes
+	 * @exception ModelException if this element does not exist or if an
+	 *		exception occurs while accessing its corresponding resource.
+	 */
+	ITypeHierarchy newSupertypeHierarchy(ISourceModule[] workingCopies, IProgressMonitor monitor)
+		throws ModelException;
+	
+		
+	/**
+	 * Creates and returns a type hierarchy for this type containing
+	 * this type and all of its supertypes, considering types in the 
+	 * working copies with the given owner. 
+	 * In other words, the owner's working copies will take 
+	 * precedence over their original compilation units in the workspace.
+	 * <p>
+	 * Note that if a working copy is empty, it will be as if the original compilation
+	 * unit had been deleted.
+	 * <p>
+	 *
+	 * @param owner the owner of working copies that take precedence over their original compilation units
+	 * @param monitor the given progress monitor
+	 * @return a type hierarchy for this type containing this type and all of its supertypes
+	 * @exception ModelException if this element does not exist or if an
+	 *		exception occurs while accessing its corresponding resource.
+	 */
+	ITypeHierarchy newSupertypeHierarchy(WorkingCopyOwner owner, IProgressMonitor monitor)
+		throws ModelException;
+
+	/**
+	 * Creates and returns a type hierarchy for this type containing
+	 * this type, all of its supertypes, and all its subtypes 
+	 * in the context of the given project.
+	 *
+	 * @param project the given project
+	 * @param monitor the given progress monitor
+	 * @exception ModelException if this element does not exist or if an
+	 *		exception occurs while accessing its corresponding resource.
+	 * @return a type hierarchy for this type containing
+	 * this type, all of its supertypes, and all its subtypes 
+	 * in the context of the given project
+	 */
+	ITypeHierarchy newTypeHierarchy(IDLTKProject project, IProgressMonitor monitor) throws ModelException;
+	
+	/**
+	 * Creates and returns a type hierarchy for this type containing
+	 * this type, all of its supertypes, and all its subtypes 
+	 * in the context of the given project, considering types in the 
+	 * working copies with the given owner. 
+	 * In other words, the owner's working copies will take 
+	 * precedence over their original compilation units in the workspace.
+	 * <p>
+	 * Note that if a working copy is empty, it will be as if the original compilation
+	 * unit had been deleted.
+	 * <p>
+	 *
+	 * @param project the given project
+	 * @param owner the owner of working copies that take precedence over their original compilation units
+	 * @param monitor the given progress monitor
+	 * @exception ModelException if this element does not exist or if an
+	 *		exception occurs while accessing its corresponding resource.
+	 * @return a type hierarchy for this type containing
+	 * this type, all of its supertypes, and all its subtypes 
+	 * in the context of the given project
+	 */
+	ITypeHierarchy newTypeHierarchy(IDLTKProject project, WorkingCopyOwner owner, IProgressMonitor monitor) throws ModelException;
+
+	/**
+	 * Creates and returns a type hierarchy for this type containing
+	 * this type, all of its supertypes, and all its subtypes in the workspace.
+	 *
+	 * @param monitor the given progress monitor
+	 * @exception ModelException if this element does not exist or if an
+	 *		exception occurs while accessing its corresponding resource.
+	 * @return a type hierarchy for this type containing
+	 * this type, all of its supertypes, and all its subtypes in the workspace
+	 */
+	ITypeHierarchy newTypeHierarchy(IProgressMonitor monitor) throws ModelException;
+	
+	/**
+	 * Creates and returns a type hierarchy for this type containing
+	 * this type, all of its supertypes, and all its subtypes in the workspace, 
+	 * considering types in the given working copies. In other words, the list of working 
+	 * copies that will take precedence over their original compilation units in the workspace.
+	 * <p>
+	 * Note that passing an empty working copy will be as if the original compilation
+	 * unit had been deleted.
+	 *
+	 * @param workingCopies the working copies that take precedence over their original compilation units
+	 * @param monitor the given progress monitor
+	 * @return a type hierarchy for this type containing
+	 * this type, all of its supertypes, and all its subtypes in the workspace
+	 * @exception ModelException if this element does not exist or if an
+	 *		exception occurs while accessing its corresponding resource.
+	 */
+	ITypeHierarchy newTypeHierarchy(ISourceModule[] workingCopies, IProgressMonitor monitor) throws ModelException;
+	
+	
+	/**
+	 * Creates and returns a type hierarchy for this type containing
+	 * this type, all of its supertypes, and all its subtypes in the workspace, 
+	 * considering types in the working copies with the given owner. 
+	 * In other words, the owner's working copies will take 
+	 * precedence over their original compilation units in the workspace.
+	 * <p>
+	 * Note that if a working copy is empty, it will be as if the original compilation
+	 * unit had been deleted.
+	 * <p>
+	 *
+	 * @param owner the owner of working copies that take precedence over their original compilation units
+	 * @param monitor the given progress monitor
+	 * @return a type hierarchy for this type containing
+	 * this type, all of its supertypes, and all its subtypes in the workspace
+	 * @exception ModelException if this element does not exist or if an
+	 *		exception occurs while accessing its corresponding resource.
+	 */
+	ITypeHierarchy newTypeHierarchy(WorkingCopyOwner owner, IProgressMonitor monitor) throws ModelException;
 }

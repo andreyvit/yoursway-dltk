@@ -12,8 +12,14 @@ package org.eclipse.dltk.internal.ui.typehierarchy;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ITypeHierarchy;
+import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
@@ -70,11 +76,22 @@ public class SuperTypeHierarchyViewer extends TypeHierarchyViewer {
 			}
 		}
 		
-		protected IType getParentType(IType type) {
-			// cant handle
+		protected IType[] getParentType(IType type) {
+			try {
+				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLangaugeToolkit(type);
+				IType[] types = toolkit.getParentTypes(type);
+				//TODO: Add support for multi type hierarchies.
+				if( types != null && types.length > 1 ) {
+					return types;
+				}
+			} catch (CoreException e) {
+				if( DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
+			}
+			
 			return null;
-		}			
-		
+		}
 	}		
 
 }

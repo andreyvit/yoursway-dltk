@@ -85,7 +85,7 @@ public class SubTypeHierarchyViewer extends TypeHierarchyViewer {
 			
 		}
 		
-		protected IType getParentType(IType type) {
+		protected IType[] getParentType(IType type) {
 			ITypeHierarchy hierarchy= getHierarchy();
 			if (hierarchy != null) {
 				return hierarchy.getSuperclass(type);

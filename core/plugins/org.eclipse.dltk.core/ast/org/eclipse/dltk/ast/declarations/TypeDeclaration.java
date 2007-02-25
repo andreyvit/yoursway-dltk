@@ -16,7 +16,7 @@ import org.eclipse.dltk.ast.expressions.ExpressionList;
 import org.eclipse.dltk.ast.references.ExtendedVariableReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
-import org.eclipse.dltk.internal.compiler.lookup.TypeBinding;
+import org.eclipse.dltk.ast.utils.ASTUtil;
 import org.eclipse.dltk.utils.CorePrinter;
 
 
@@ -58,6 +58,8 @@ public class TypeDeclaration extends Declaration
 	protected List fMethods;
 	
 	protected List fTypes;
+	
+	protected List fVariables;
 	
 	protected String enclosingTypeName;
 		
@@ -386,31 +388,20 @@ public class TypeDeclaration extends Declaration
 		if( this.fMethods == null ) {
 			initInners();
 		}		
-		return (MethodDeclaration[])this.fMethods.toArray(new MethodDeclaration[this.fMethods.size()]);
+		return ASTUtil.getMethods(this.getStatements(), this.fMethods );
 	}
 	
 	public TypeDeclaration[] getTypes() {
 		if( this.fTypes == null ) {
 			initInners();
 		}
-		return (TypeDeclaration[])this.fTypes.toArray(new TypeDeclaration[this.fTypes.size()]);
+		return ASTUtil.getTypes(this.getStatements(), this.fTypes );
 	}	
 
 	private void initInners() {
 		this.fMethods = new ArrayList();
 		this.fTypes = new ArrayList();
-		if( this.fBody != null && this.fBody.getStatements() != null ) {
-			Iterator i = this.fBody.getStatements().iterator();
-			while( i.hasNext()) {
-				ASTNode node = (ASTNode)i.next();
-				if( node instanceof MethodDeclaration ) {
-					this.fMethods.add( node );
-				}
-				else if( node instanceof TypeDeclaration ) {
-					this.fTypes.add(node);
-				}
-			}
-		}
+		this.fVariables = new ArrayList();
 	}
 	public List getStatements() {
 		if( this.fBody == null ) {
@@ -436,7 +427,10 @@ public class TypeDeclaration extends Declaration
 	}
 
 	public FieldDeclaration[] getVariables() {
-		return null;
+		if( this.fVariables == null ) {
+			initInners();
+		}
+		return ASTUtil.getVariables(this.getStatements(), this.fVariables);
 	}
 
 	public String debugString() {

@@ -181,7 +181,7 @@ public abstract class TypeHierarchyContentProvider implements ITreeContentProvid
 	/**
 	 * Hook to overwrite. Return null if parent is ambiguous.
 	 */	
-	protected abstract IType getParentType(IType type);	
+	protected abstract IType[] getParentType(IType type);	
 	
 	
 	private boolean isInScope(IType type) {

@@ -1,6 +1,8 @@
 package org.eclipse.dltk.ruby.core;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
@@ -9,6 +11,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
@@ -30,6 +33,7 @@ import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.DLTKSearchParticipant;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
@@ -41,11 +45,13 @@ import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.core.util.Messages;
 import org.eclipse.dltk.ruby.internal.core.codeassist.RubyCompletionEngine;
 import org.eclipse.dltk.ruby.internal.core.codeassist.RubySelectionEngine;
+import org.eclipse.dltk.ruby.internal.core.search.RubyMatchLocator;
+import org.eclipse.dltk.ruby.internal.core.search.RubyMatchLocatorParser;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
-import org.eclipse.dltk.ruby.internal.parser.RubySourceParser;
+import org.eclipse.dltk.ruby.internal.typehierarchy.RubyTypeHierarchyEngine;
 
-public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
+public class RubyLanguageToolkit implements IDLTKLanguageToolkit  {
 	private static RubyLanguageToolkit sToolkit = new RubyLanguageToolkit();
 	public RubyLanguageToolkit() {
 
@@ -97,7 +103,6 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	}
 
 	private boolean isRubyLikeFileName(String name) {
-		// TODO: Add more correct checking here.
 		if (name.endsWith("." + getRubyExtension())) {
 			return true;
 		}
@@ -119,7 +124,6 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	public ICompletionEngine createCompletionEngine(
 			ISearchableEnvironment environment, CompletionRequestor requestor,
 			Map options, IDLTKProject project) {
-		// TODO Auto-generated method stub
 		return new RubyCompletionEngine(environment, requestor, options, project);
 	}
 
@@ -173,8 +177,7 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	}
 
 	public MatchLocator createMatchLocator(SearchPattern pattern, SearchRequestor requestor, IDLTKSearchScope scope, SubProgressMonitor monitor) {
-		// TODO Auto-generated method stub
-		return null;
+		return new RubyMatchLocator(pattern, requestor, scope, monitor );
 	}
 
 	public ICalleeProcessor createCalleeProcessor(IMethod method, IProgressMonitor monitor, IDLTKSearchScope scope) {
@@ -197,5 +200,9 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 
 	public String[] getLanguageFileExtensions() {		
 		return  new String[] {"rb"};
+	}
+
+	public IType[] getParentTypes(IType type) {
+		return RubyTypeHierarchyEngine.locateSuperTypes(type, new NullProgressMonitor());
 	}
 }

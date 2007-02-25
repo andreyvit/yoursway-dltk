@@ -258,11 +258,14 @@ public class DLTKModelUtil {
 	
 	public static boolean isSuperType(ITypeHierarchy hierarchy, IType possibleSuperType, IType type) {
 		// filed bug 112635 to add this method to ITypeHierarchy
-		IType superClass= hierarchy.getSuperclass(type);
-		if (superClass != null && (possibleSuperType.equals(superClass) || 
-				isSuperType(hierarchy, possibleSuperType, superClass))) {
-			return true;
-		}		
+		IType[] superClass= hierarchy.getSuperclass(type);
+		if (superClass != null ) {
+			for( int q = 0; q < superClass.length; ++q ) {
+				if( (possibleSuperType.equals(superClass[q]) || isSuperType(hierarchy, possibleSuperType, superClass[q]))) {
+					return true;
+				}	
+			}
+		}
 		return false;
 	}
 	

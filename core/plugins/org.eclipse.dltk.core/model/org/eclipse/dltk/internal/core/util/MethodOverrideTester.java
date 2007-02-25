@@ -112,25 +112,27 @@ public class MethodOverrideTester {
 		}
 		
 		IType type= overriding.getDeclaringType();
-		IType superClass= fHierarchy.getSuperclass(type);
+		IType[] superClass= fHierarchy.getSuperclass(type);
 		if (superClass != null) {
-			IMethod res= findOverriddenMethodInHierarchy(superClass, overriding);
+			for( int q = 0; q < superClass.length; ++q ) {
+			IMethod res= findOverriddenMethodInHierarchy(superClass[q], overriding);
 			if (res != null && !Flags.isPrivate(res.getFlags())) {
 //				if (!testVisibility || DLTKModelUtil.isVisibleInHierarchy(res, type.getPackageFragment())) {
 //					return res;
 //				}
 				return res;
 			}
-		}
-		if (!overriding.isConstructor()) {
-			IType[] interfaces= fHierarchy.getSuperInterfaces(type);
-			for (int i= 0; i < interfaces.length; i++) {
-				IMethod res= findOverriddenMethodInHierarchy(interfaces[i], overriding);
-				if (res != null) {
-					return res; // methods from interfaces are always public and therefore visible
-				}
 			}
 		}
+//		if (!overriding.isConstructor()) {
+//			IType[] interfaces= fHierarchy.getSuperInterfaces(type);
+//			for (int i= 0; i < interfaces.length; i++) {
+//				IMethod res= findOverriddenMethodInHierarchy(interfaces[i], overriding);
+//				if (res != null) {
+//					return res; // methods from interfaces are always public and therefore visible
+//				}
+//			}
+//		}
 		return null;
 	}
 	
@@ -147,22 +149,24 @@ public class MethodOverrideTester {
 		if (method != null) {
 			return method;
 		}
-		IType superClass= fHierarchy.getSuperclass(type);
+		IType[] superClass= fHierarchy.getSuperclass(type);
 		if (superClass != null) {
-			IMethod res=  findOverriddenMethodInHierarchy(superClass, overriding);
+			for( int q = 0; q < superClass.length; ++q ) {
+			IMethod res=  findOverriddenMethodInHierarchy(superClass[q], overriding);
 			if (res != null) {
 				return res;
 			}
-		}
-		if (!overriding.isConstructor()) {
-			IType[] superInterfaces= fHierarchy.getSuperInterfaces(type);
-			for (int i= 0; i < superInterfaces.length; i++) {
-				IMethod res= findOverriddenMethodInHierarchy(superInterfaces[i], overriding);
-				if (res != null) {
-					return res;
-				}
 			}
 		}
+//		if (!overriding.isConstructor()) {
+//			IType[] superInterfaces= fHierarchy.getSuperInterfaces(type);
+//			for (int i= 0; i < superInterfaces.length; i++) {
+//				IMethod res= findOverriddenMethodInHierarchy(superInterfaces[i], overriding);
+//				if (res != null) {
+//					return res;
+//				}
+//			}
+//		}
 		return method;		
 	}
 	

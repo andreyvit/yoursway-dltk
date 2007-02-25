@@ -26,6 +26,7 @@ import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.search.DLTKSearchParticipant;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.IMatchLocatorParser;
@@ -152,6 +153,11 @@ public class TestLanguageToolkit implements IDLTKLanguageToolkit {
 	}
 
 	public String[] getLanguageFileExtensions() {
+		return null;
+	}
+
+	public IType[] getParentTypes(IType type) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

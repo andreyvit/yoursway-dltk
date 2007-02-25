@@ -11,7 +11,6 @@ import java.util.List;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.ast.statements.Block;
-import org.eclipse.dltk.internal.compiler.lookup.MethodBinding;
 import org.eclipse.dltk.internal.compiler.lookup.MethodScope;
 import org.eclipse.dltk.utils.CorePrinter;
 

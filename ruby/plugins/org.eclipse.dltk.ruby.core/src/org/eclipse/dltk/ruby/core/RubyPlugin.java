@@ -12,6 +12,8 @@ public class RubyPlugin extends Plugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.core";
 
+	public static final boolean DEBUG = true;
+
 	// The shared instance
 	private static RubyPlugin plugin;
 	

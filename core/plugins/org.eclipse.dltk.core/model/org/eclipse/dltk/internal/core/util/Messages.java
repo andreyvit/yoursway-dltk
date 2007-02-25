@@ -8,6 +8,12 @@ public class Messages extends NLS {
 
 	private static final String BUNDLE_NAME = "org.eclipse.dltk.internal.core.util.messages";//$NON-NLS-1$
 
+	public static String hierarchy_nullProject;
+	public static String hierarchy_nullRegion;
+	public static String hierarchy_nullFocusType;
+	public static String hierarchy_creating;
+	public static String hierarchy_creatingOnType;
+	
 	public static String buildpath_buildPath;
 	public static String buildpath_cannotNestEntryInEntry;
 	public static String buildpath_cannotNestEntryInEntryNoExclusion;

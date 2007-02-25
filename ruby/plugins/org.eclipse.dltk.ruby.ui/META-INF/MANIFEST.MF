@@ -19,7 +19,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.launching,
  org.eclipse.dltk.debug,
  org.eclipse.dltk.debug.ui,
- org.eclipse.dltk.ruby.debug.ui
+ org.eclipse.dltk.ruby.debug.ui,
+ org.eclipse.search
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.ruby.internal.ui,
  org.eclipse.dltk.ruby.internal.ui.preferences,

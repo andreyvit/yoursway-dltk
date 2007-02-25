@@ -12,6 +12,7 @@ import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.PositionInformation;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
+import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionList;
@@ -288,31 +289,6 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 	}
 
 	public boolean endvisit(Statement s) throws Exception {
-		return true;
-	}
-
-	public boolean visit(MethodDeclaration method) throws Exception {
-		this.fNodes.push(method);
-		List/* < Argument > */args = method.getArguments();
-		String[] parameter = new String[args.size()];
-		for (int a = 0; a < args.size(); a++) {
-			Argument arg = (Argument) args.get(a);
-			parameter[a] = arg.getName();
-		}
-
-		ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
-		mi.parameterNames = parameter;
-		mi.name = method.getName();
-		System.out.println("RubySourceElementRequestor on method " + mi.name);
-		mi.modifiers = method.getModifiers();
-		mi.nameSourceStart = method.getNameStart();
-		mi.nameSourceEnd = method.getNameEnd() - 1;
-		mi.declarationStart = method.sourceStart();
-
-		this.fRequestor.enterMethodRemoveSame(mi);
-
-		this.fInMethod = true;
-		this.fCurrentMethod = method;
 		return true;
 	}
 }

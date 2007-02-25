@@ -175,6 +175,10 @@ public class DLTKPluginImages {
 	public static final ImageDescriptor DESC_ELCL_FILTER = createUnManaged(T_ELCL, "filter_ps.gif"); //$NON-NLS-1$
 	public static final ImageDescriptor DESC_DLCL_FILTER = createUnManaged(T_DLCL, "filter_ps.gif"); //$NON-NLS-1$
 	
+	public static final ImageDescriptor DESC_ELCL_VIEW_MENU = createUnManaged(T_ELCL, "view_menu.gif"); //$NON-NLS-1$
+	public static final ImageDescriptor DESC_DLCL_VIEW_MENU = createUnManaged(T_DLCL, "view_menu.gif"); //$NON-NLS-1$
+	
+	
 	public static final ImageDescriptor DESC_OBJS_JAR= createManagedFromKey(T_OBJ, IMG_OBJS_JAR);
 	public static final ImageDescriptor DESC_OBJS_EXTJAR= createManagedFromKey(T_OBJ, IMG_OBJS_EXTJAR);
 	public static final ImageDescriptor DESC_OBJS_JAR_WSRC= createManagedFromKey(T_OBJ, IMG_OBJS_JAR_WSRC);

@@ -12,6 +12,7 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.ast.utils.ASTUtil;
 import org.eclipse.dltk.internal.compiler.lookup.SourceModuleScope;
 import org.eclipse.dltk.utils.CorePrinter;
 
@@ -19,7 +20,7 @@ public class ModuleDeclaration extends ASTNode {
 	private List types;
 	private List functions;
 	protected List variables;
-	
+
 	private Block body;
 
 	private boolean rebuildEnabled;
@@ -34,7 +35,7 @@ public class ModuleDeclaration extends ASTNode {
 	protected List getFunctionList() {
 		return functions;
 	}
-	
+
 	protected List getVariablesList() {
 		return variables;
 	}
@@ -83,16 +84,16 @@ public class ModuleDeclaration extends ASTNode {
 	}
 
 	protected void doRebuild() {
-//		Iterator i = this.getStatements().iterator();
-//		while( i.hasNext()) {
-//			ASTNode node = (ASTNode)i.next();
-//			if( node instanceof MethodDeclaration ) {
-//				this.functions.add( node );
-//			}
-//			else if( node instanceof TypeDeclaration ) {
-//				this.types.add(node);
-//			}
-//		}
+		// Iterator i = this.getStatements().iterator();
+		// while( i.hasNext()) {
+		// ASTNode node = (ASTNode)i.next();
+		// if( node instanceof MethodDeclaration ) {
+		// this.functions.add( node );
+		// }
+		// else if( node instanceof TypeDeclaration ) {
+		// this.types.add(node);
+		// }
+		// }
 	}
 
 	public final void rebuild() {
@@ -110,13 +111,15 @@ public class ModuleDeclaration extends ASTNode {
 	}
 
 	public TypeDeclaration[] getTypes() {
-		return (TypeDeclaration[]) types.toArray(new TypeDeclaration[types
-				.size()]);
+		return ASTUtil.getTypes(this.getStatements(), this.types);
 	}
 
 	public MethodDeclaration[] getFunctions() {
-		return (MethodDeclaration[]) functions
-				.toArray(new MethodDeclaration[functions.size()]);
+		return ASTUtil.getMethods(this.getStatements(), this.functions);
+	}
+
+	public FieldDeclaration[] getVariables() {
+		return ASTUtil.getVariables(this.getStatements(), this.variables );
 	}
 
 	public ASTNode[] getNonTypeOrMethodNode() {
@@ -133,14 +136,5 @@ public class ModuleDeclaration extends ASTNode {
 			}
 		}
 		return (ASTNode[]) results.toArray(new ASTNode[results.size()]);
-	}
-
-	public FieldDeclaration[] getVariables() {
-		if (this.variables == null) {
-			return null;
-		}
-		FieldDeclaration[] vars = new FieldDeclaration[this.variables.size()];
-		this.variables.toArray(vars);
-		return vars;
 	}
 }

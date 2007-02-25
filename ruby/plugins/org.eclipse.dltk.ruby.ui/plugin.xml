@@ -182,4 +182,21 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>       
         
  </extension>
+ 
+ 
+ <extension
+         point="org.eclipse.search.searchPages">
+      <page
+            canSearchEnclosingProjects="true"
+            class="org.eclipse.dltk.ruby.internal.ui.search.RubySearchPage"
+            enabled="true"
+            extensions="rb:90"
+            icon="/icons/jsearch_obj.gif"
+            id="org.eclipse.dltk.ui.RubySearchPage"
+            label="%DLTKSearchPage.label"
+            showScopeSection="true"
+            sizeHint="460,160">
+      </page>
+   </extension>
+ 
 </plugin>

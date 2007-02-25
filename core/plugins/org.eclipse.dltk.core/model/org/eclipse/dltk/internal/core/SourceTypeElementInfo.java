@@ -8,7 +8,7 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 
-class SourceTypeElementInfo extends MemberElementInfo implements ISourceType {
+public class SourceTypeElementInfo extends MemberElementInfo implements ISourceType {
 
 	protected static final SourceField[] NO_FIELDS = new SourceField[0];
 

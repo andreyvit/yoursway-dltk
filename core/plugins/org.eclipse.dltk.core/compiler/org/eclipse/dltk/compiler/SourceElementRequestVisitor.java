@@ -48,6 +48,14 @@ public class SourceElementRequestVisitor extends ASTVisitor {
 	protected void onEndVisitMethod(MethodDeclaration method) {
 
 	}
+	
+	protected String[] processSuperClasses(TypeDeclaration type ) {
+		List names = type.getSuperClassNames();
+		if( names.size() == 0 ) {
+			return null;
+		}
+		return (String[])names.toArray(new String[names.size()]);
+	}
 
 	/**
 	 * Called then end of class are visted. Class are added to model before this
@@ -142,6 +150,7 @@ public class SourceElementRequestVisitor extends ASTVisitor {
 		info.nameSourceStart = s.getNameStart();
 		info.nameSourceEnd = s.getNameEnd() - 1;
 		info.declarationStart = s.sourceStart();
+		info.superclasses = processSuperClasses(s);
 
 		this.fRequestor.enterType(info);
 

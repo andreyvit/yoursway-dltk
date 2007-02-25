@@ -27,7 +27,7 @@
          point="org.eclipse.search.searchPages">
       <page
             canSearchEnclosingProjects="true"
-            class="org.eclipse.dltk.internal.ui.search.TclSearchPage"
+            class="org.eclipse.dltk.tcl.internal.ui.search.TclSearchPage"
             enabled="true"
             extensions="tcl:90, exp:90"
             icon="/icons/jsearch_obj.gif"
