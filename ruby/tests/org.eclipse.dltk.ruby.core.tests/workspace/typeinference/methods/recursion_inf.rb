@@ -1,4 +1,4 @@
-class Foo
+class FooRecursionInf
 	def foo
 		foo
 	end
@@ -6,4 +6,4 @@ class Foo
 	def bar
 		foo ## expr foo => recursion
 	end
-eend
+end

@@ -67,26 +67,32 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			return;
 		}
 		
-		IMethod resultMethod = null;
 		MethodDeclaration decl = null;
+		IMethod[] methods = null;
 		if (instanceType instanceof RubyClassType) {
 			RubyClassType type = (RubyClassType) instanceType;
 			type = RubyTypeInferencingUtils.resolveMethods(typedContext.getSourceModule().getScriptProject(), type);
-			IMethod[] allMethods = type.getAllMethods();
-			for (int i = 0; i < allMethods.length; i++) {
-				if (allMethods[i].getElementName().equals(methodName)) {
-					resultMethod = allMethods[i];
-				}
-			}
+			methods = type.getAllMethods();
 		} else if (instanceType instanceof RubyMetaClassType) {
 			RubyMetaClassType type = (RubyMetaClassType) instanceType;
-			IMethod[] methods = type.getMethods();
-			for (int i = 0; i < methods.length; i++) {
-				if (methods[i].getElementName().equals(methodName)) {
-					resultMethod = methods[i];				
-				}				
-			}
+			methods = type.getMethods();
 		}
+		if (methods == null)
+			return /* FIXME: handle AmbiguousType and all that stuff */;
+		
+		IMethod resultMethod = null;
+		// in case of ambiguity, prefer methods from the same module
+		IMethod resultMethodFromSameModule = null; 
+		for (int i = 0; i < methods.length; i++) {
+			if (methods[i].getElementName().equals(methodName)) {
+				if (methods[i].getSourceModule().equals(typedContext.getSourceModule()))
+					resultMethodFromSameModule = methods[i];
+				resultMethod = methods[i];				
+			}				
+		}
+		if (resultMethodFromSameModule != null)
+			resultMethod = resultMethodFromSameModule;
+		
 		if (resultMethod == null)
 			return;
 		
@@ -126,15 +132,8 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			} catch (Exception e) {
 				RubyPlugin.log(e);
 			}
-			if (decl.getBody() != null) {
-				List statements = decl.getBody().getStatements();
-				if (statements.size() > 0) {
-					Object st = statements.get(statements.size() - 1);
-					if (st instanceof Expression) {
-						possibilities.add(st);
-					}
-				}
-			}
+			if (decl.getBody() != null)
+				possibilities.add(decl.getBody());
 		}		
 		
 		initialized = true;

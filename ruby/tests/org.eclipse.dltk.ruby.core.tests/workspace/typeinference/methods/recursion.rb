@@ -1,4 +1,4 @@
-class Foo
+class FooRecursion
 	def foo(x)
 		if x > 0
 			foo(x-1)

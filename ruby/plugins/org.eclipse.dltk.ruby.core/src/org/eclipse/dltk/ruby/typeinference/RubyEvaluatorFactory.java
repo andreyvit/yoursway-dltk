@@ -7,11 +7,15 @@ import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
+import org.eclipse.dltk.ast.statements.Block;
+import org.eclipse.dltk.ast.statements.IfStatement;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.ddp.BasicContext;
 import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.GoalEvaluator;
 import org.eclipse.dltk.ddp.IGoal;
 import org.eclipse.dltk.ddp.IGoalEvaluatorFactory;
+import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
 import org.eclipse.dltk.ruby.ast.SelfReference;
 
@@ -35,6 +39,10 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 				return new SelfReferenceEvaluator(goal);
 			else if (expr instanceof CallExpression)
 				return new MethodCallTypeEvaluator((ExpressionGoal) goal);
+			else if (expr instanceof IfStatement)
+				return new IfStatementTypeEvaluator((ExpressionGoal) goal);
+			else if (expr instanceof Block)
+				return new BlockEvaluator((ExpressionGoal) goal);
 		} else if (goal instanceof ConstantTypeGoal)
 			return new ConstantReferenceEvaluator((ConstantTypeGoal) goal);
 		else if (goal instanceof MethodReturnTypeGoal)
@@ -55,6 +63,9 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 				SimpleReference reference = ((ConstantDeclaration) expr).getName();
 				// TODO: consider the constant's path
 				return new ConstantTypeGoal(goal.getContext(), reference.sourceStart(), reference.getName());
+			} else if (expr instanceof ColonExpression) {
+				ColonExpression colonExpression = (ColonExpression) expr;
+				return new ColonExpressionGoal((BasicContext) goal.getContext(), colonExpression);
 			}
 		}
 		return goal;

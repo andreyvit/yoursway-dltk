@@ -70,12 +70,40 @@ public class RubyCompletionEngine extends CompletionEngine {
 	public IAssistParser getParser() {
 		return null;
 	}
+	
+	private boolean afterColons(String content, int position) {
+		if (position < 2)
+			return false;
+		if (content.charAt(position - 1) == ':' && content.charAt(position - 2) == ':') 
+			return true;
+		return false;
+	}
+	
+	private boolean afterDot(String content, int position) {
+		if (position < 1)
+			return false;
+		if (content.charAt(position - 1) == '.') 
+			return true;
+		return false;
+	}
+	
+	private static String cut(String content, int position, int length) {
+		content = content.substring(0, position) + content.substring(position + length);
+		return content;
+	}
 
 	public void complete(ISourceModule module, int position, int i) {
 		this.actualCompletionPosition = position;
 		this.requestor.beginReporting();
 		try {
 			String content = module.getSourceContents();
+			if (afterDot(content, position)) {
+				
+			} else if (afterColons(content, position)) {
+				
+			} else {
+				
+			}
 
 			if (content.charAt(position - 1) != '.') {
 				content = content.substring(0, position) + "." + content.substring(position);
