@@ -1,10 +1,10 @@
 package org.eclipse.dltk.ruby.typeinference;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.dltk.ddp.BasicContext;
 import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.GoalEvaluator;
 import org.eclipse.dltk.ddp.IGoal;
+import org.eclipse.dltk.ddp.ISourceModuleContext;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
@@ -28,9 +28,9 @@ public class SelfReferenceEvaluator extends GoalEvaluator {
 	}
 
 	private void initialize() {
-		BasicContext typedContext = getTypedContext();
-		if (typedContext instanceof InstanceContext) {
-			result = ((InstanceContext) typedContext).getInstanceType();
+		ISourceModuleContext typedContext = getTypedContext();
+		if (typedContext instanceof IInstanceContext) {
+			result = ((IInstanceContext) typedContext).getInstanceType();
 		} else {
 			ExpressionGoal typedGoal = getTypedGoal();
 			result = RubyTypeInferencingUtils.determineSelfClass(typedContext.getSourceModule(),
@@ -45,8 +45,8 @@ public class SelfReferenceEvaluator extends GoalEvaluator {
 		return (ExpressionGoal) goal;
 	}
 
-	private BasicContext getTypedContext() {
-		return (BasicContext) goal.getContext();
+	private ISourceModuleContext getTypedContext() {
+		return (ISourceModuleContext) goal.getContext();
 	}
 
 	public IEvaluatedType produceType() {

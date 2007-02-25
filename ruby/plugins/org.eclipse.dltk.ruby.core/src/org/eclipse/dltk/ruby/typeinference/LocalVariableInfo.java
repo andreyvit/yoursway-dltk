@@ -17,5 +17,4 @@ public final class LocalVariableInfo {
 		this.assignments = assignments;
 	}
 	
-	
 }

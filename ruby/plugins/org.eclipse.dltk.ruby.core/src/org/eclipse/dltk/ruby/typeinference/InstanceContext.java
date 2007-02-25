@@ -3,9 +3,10 @@ package org.eclipse.dltk.ruby.typeinference;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.ddp.BasicContext;
+import org.eclipse.dltk.ddp.ISourceModuleContext;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 
-public class InstanceContext extends BasicContext {
+public class InstanceContext extends BasicContext implements IInstanceContext {
 
 	private final IEvaluatedType instanceType;
 
@@ -14,7 +15,7 @@ public class InstanceContext extends BasicContext {
 		this.instanceType = instanceType;
 	}
 	
-	public InstanceContext(BasicContext parent, IEvaluatedType instanceType) {
+	public InstanceContext(ISourceModuleContext parent, IEvaluatedType instanceType) {
 		super(parent);
 		this.instanceType = instanceType;
 	}

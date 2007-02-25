@@ -2,10 +2,10 @@ package org.eclipse.dltk.ruby.typeinference;
 
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.references.VariableReference;
-import org.eclipse.dltk.ddp.BasicContext;
 import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.GoalEvaluator;
 import org.eclipse.dltk.ddp.IGoal;
+import org.eclipse.dltk.ddp.ISourceModuleContext;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
 
@@ -34,7 +34,7 @@ public class ConstantReferenceEvaluator extends GoalEvaluator {
 	}
 
 	private void initialize() {
-		BasicContext typedContext = getTypedContext();
+		ISourceModuleContext typedContext = getTypedContext();
 		ConstantTypeGoal typedGoal = getTypedGoal();
 		result = RubyTypeInferencingUtils.evaluateConstantType(typedContext.getSourceModule(),
 				typedContext.getRootNode(), typedGoal.getOffset(), typedGoal.getName());
@@ -46,8 +46,8 @@ public class ConstantReferenceEvaluator extends GoalEvaluator {
 		return (ConstantTypeGoal) goal;
 	}
 
-	private BasicContext getTypedContext() {
-		return (BasicContext) goal.getContext();
+	private ISourceModuleContext getTypedContext() {
+		return (ISourceModuleContext) goal.getContext();
 	}
 
 	public IEvaluatedType produceType() {

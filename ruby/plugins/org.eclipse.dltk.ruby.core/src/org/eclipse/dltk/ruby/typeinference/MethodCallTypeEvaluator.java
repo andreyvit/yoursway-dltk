@@ -8,6 +8,7 @@ import org.eclipse.dltk.ddp.BasicContext;
 import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.GoalEvaluator;
 import org.eclipse.dltk.ddp.IGoal;
+import org.eclipse.dltk.ddp.ISourceModuleContext;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.ruby.ast.SelfReference;
 
@@ -93,7 +94,7 @@ public class MethodCallTypeEvaluator extends GoalEvaluator {
 			ExpressionGoal typedGoal = (ExpressionGoal) goal;
 			CallExpression expression = (CallExpression) typedGoal.getExpression();
 			state = STATE_WAITING_METHOD;
-			return new MethodReturnTypeGoal(new InstanceContext((BasicContext) goal.getContext(),
+			return new MethodReturnTypeGoal(new InstanceContext((ISourceModuleContext) goal.getContext(),
 					receiverType), expression.getName(), arguments);
 		}
 		if (state == STATE_WAITING_METHOD) {

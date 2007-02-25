@@ -35,8 +35,8 @@ import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
-import org.eclipse.dltk.ddp.BasicContext;
 import org.eclipse.dltk.ddp.IContext;
+import org.eclipse.dltk.ddp.ISourceModuleContext;
 import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
@@ -274,14 +274,14 @@ public class RubyTypeInferencingUtils {
 			}
 		}
 		return foundOccurances;
-	}
+			}
 
 	public static IEvaluatedType determineSelfClass(IContext context, int keyOffset) {
-		if (context instanceof InstanceContext) {
-			InstanceContext instanceContext = (InstanceContext) context;
+		if (context instanceof IInstanceContext) {
+			IInstanceContext instanceContext = (IInstanceContext) context;
 			return instanceContext.getInstanceType();
 		} else {
-			BasicContext basicContext = (BasicContext) context;
+			ISourceModuleContext basicContext = (ISourceModuleContext) context;
 			return determineSelfClass(basicContext.getSourceModule(), basicContext.getRootNode(),
 					keyOffset);
 		}

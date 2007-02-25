@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ruby.core;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
@@ -11,8 +12,10 @@ import org.osgi.framework.BundleContext;
 public class RubyPlugin extends Plugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.core";
-
-	public static final boolean DEBUG = true;
+	
+	public static final boolean DUMP_EXCEPTIONS_TO_CONSOLE = Boolean.valueOf(
+			Platform.getDebugOption("org.eclipse.dltk.ruby.core/dumpErrorsToConsole"))
+			.booleanValue();
 
 	// The shared instance
 	private static RubyPlugin plugin;
@@ -51,10 +54,17 @@ public class RubyPlugin extends Plugin {
 	}
 
 	public static void log(Exception ex) {
-		if (DLTKCore.DEBUG)
+		if (DLTKCore.DEBUG || DUMP_EXCEPTIONS_TO_CONSOLE)
 			ex.printStackTrace();
 		getDefault().getLog().log(new Status(Status.ERROR,
 				PLUGIN_ID, 0, ex.getMessage(), ex));
+	}
+	
+	public static void log(String message) {
+		if (DLTKCore.DEBUG || DUMP_EXCEPTIONS_TO_CONSOLE)
+			System.out.println(message);
+		getDefault().getLog().log(new Status(Status.WARNING,
+				PLUGIN_ID, 0, message, null));
 	}
 
 }

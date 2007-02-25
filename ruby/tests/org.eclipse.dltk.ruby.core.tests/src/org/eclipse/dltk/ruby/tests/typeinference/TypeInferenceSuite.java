@@ -228,6 +228,8 @@ public class TypeInferenceSuite extends TestSuite {
 							
 						};
 						rootNode.traverse(visitor);
+						if (result[0] == null)
+							System.out.println("ExpressionTypeAssertion.check()");
 						Assert.isLegal(result[0] != null);
 						ExpressionGoal goal = new ExpressionGoal(new BasicContext(cu, rootNode), result[0]);
 						IEvaluatedType type = inferencer.evaluateGoal(goal, 0);

@@ -1,3 +1,4 @@
 org.eclipse.dltk.core/typeInferencing/traceGoals = false
 org.eclipse.dltk.core/typeInferencing/traceTimeLimit = false
 org.eclipse.dltk.core/typeInferencing/showStatistics = false
+org.eclipse.dltk.ruby.core/dumpErrorsToConsole = false

@@ -35,6 +35,7 @@ import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyVariableKind;
 import org.eclipse.dltk.ruby.ast.SelfReference;
+import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.jruby.ast.AliasNode;
 import org.jruby.ast.AndNode;
@@ -520,7 +521,17 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		Node argsNode = iVisited.getArgsNode();
 		if (argsNode != null) {
 			pushState(new ArgumentsState(argList));
-			argsNode.accept(this);
+			if (argsNode instanceof ListNode) {
+				ListNode arrayNode = (ListNode) argsNode;
+				List list = arrayNode.childNodes();
+				for (Iterator iter = list.iterator(); iter.hasNext();) {
+					Node node = (Node) iter.next();
+					node.accept(this);
+				}
+			} else {
+				RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode() - unknown args node type");
+				argsNode.accept(this);
+			}
 			popState();
 			List children = argsNode.childNodes();
 			if (children.size() > 0) {
@@ -981,7 +992,17 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		Node argsNode = iVisited.getArgsNode();
 		if (argsNode != null) {
 			pushState(new ArgumentsState(argList));
-			argsNode.accept(this);
+			if (argsNode instanceof ListNode) {
+				ListNode arrayNode = (ListNode) argsNode;
+				List list = arrayNode.childNodes();
+				for (Iterator iter = list.iterator(); iter.hasNext();) {
+					Node node = (Node) iter.next();
+					node.accept(this);
+				}
+			} else {
+				RubyPlugin.log("DLTKASTBuildVisitor.visitFCallNode() - unknown args node type");
+				argsNode.accept(this);
+			}
 			popState();
 			List children = argsNode.childNodes();
 			if (children.size() > 0) {

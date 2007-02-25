@@ -88,7 +88,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 			RubyTypeCalculator typeCalculator = new RubyTypeCalculator(typeModel);
 
 			HeuristicLookupResult result = RubyContext.determineContext(content, position,
-					RubyContext.MODE_DOT_NAME);
+					RubyContext.MODE_FULL);
 			if (result.context == RubyContext.AFTER_DOT) {
 				this.setSourceRange(position, position);
 				HeuristicLookupResult result2 = RubyContext.determineContext(content,
