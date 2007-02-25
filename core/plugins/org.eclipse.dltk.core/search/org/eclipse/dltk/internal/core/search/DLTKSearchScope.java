@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.core.search;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
@@ -36,6 +37,7 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.compiler.env.AccessRuleSet;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ExternalProjectFragment;
 import org.eclipse.dltk.internal.core.Model;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.ModelManager;
@@ -705,6 +707,26 @@ public class DLTKSearchScope extends AbstractSearchScope {
 					IModelElement element = DLTKCore.create((IResource) target);
 					return (IProjectFragment) element
 							.getAncestor(IModelElement.PROJECT_FRAGMENT);
+				}
+				if( target instanceof File ) {
+					try {
+						IProjectFragment[] fragments = project.getProjectFragments();
+						File t = (File)target;
+						String absPath = t.getAbsolutePath();
+						for( int i = 0; i < fragments.length; ++i ) {
+							IProjectFragment f = fragments[i];
+							if( f instanceof ExternalProjectFragment ) {
+								ExternalProjectFragment ep = (ExternalProjectFragment)f;
+								String pPath = ep.getPath().toOSString();
+								if( absPath.equals(pPath)) {
+									return f;
+								}
+							}
+						}
+					} catch (ModelException e) {
+						e.printStackTrace();
+						return null;
+					}
 				}
 			}
 		}

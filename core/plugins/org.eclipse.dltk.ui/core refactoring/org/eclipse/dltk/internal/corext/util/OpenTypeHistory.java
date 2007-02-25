@@ -361,10 +361,12 @@ public class OpenTypeHistory extends History {
 			return false;
 		}
 		IResource resource= cu.getResource(); 
-		ITextFileBufferManager manager= FileBuffers.getTextFileBufferManager();
-		ITextFileBuffer textFileBuffer= manager.getTextFileBuffer(resource.getFullPath());
-		if (textFileBuffer != null) {
-			return textFileBuffer.isDirty();
+		if( resource != null ) {
+			ITextFileBufferManager manager= FileBuffers.getTextFileBufferManager();
+			ITextFileBuffer textFileBuffer= manager.getTextFileBuffer(resource.getFullPath());
+			if (textFileBuffer != null) {
+				return textFileBuffer.isDirty();
+			}
 		}
 		return false;
 	}

@@ -52,6 +52,7 @@ import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.LibraryLocation;
 import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.dltk.ui.DLTKPluginImages;
+import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.ScriptElementImageProvider;
@@ -283,10 +284,11 @@ public class TypeInfoViewer {
 			}
 			return result.toString();
 		}
+	
 		public String getFullyQualifiedText(TypeNameMatch type) {
 			StringBuffer result= new StringBuffer();
 			result.append(type.getSimpleTypeName());
-			String containerName= type.getTypeContainerName();
+			String containerName= getTypeContainerName(type);
 			if (containerName.length() > 0) {
 				result.append(ScriptElementLabels.CONCAT_STRING);
 				result.append(containerName);
@@ -369,7 +371,17 @@ public class TypeInfoViewer {
 		}
 		
 		private String getTypeContainerName(TypeNameMatch info) {
-			String result= info.getTypeContainerName();
+//			String result= info.getTypeContainerName();
+			String result = "";
+			try {
+				IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager.getLangaugeToolkit(info.getType());
+				if( toolkit != null ) {
+					ScriptElementLabels labels = toolkit.getScriptElementLabels();
+					result = labels.getElementLabel(info.getType(), ScriptElementLabels.T_CONTAINER_QUALIFIED );
+				}
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
 			if (result.length() > 0)
 				return result;
 			return DLTKUIMessages.TypeInfoViewer_default_package;

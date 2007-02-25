@@ -18,8 +18,10 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.compiler.CharOperation;
@@ -63,7 +65,7 @@ import org.eclipse.dltk.internal.core.util.Util;
 public class BasicSearchEngine {
 
 	/*
-	 * A default parser to parse non-reconciled working copies
+	 * A default parseor to parse non-reconciled working copies
 	 */
 		
 	/*
@@ -511,20 +513,12 @@ public class BasicSearchEngine {
 	}
 
 	boolean match(char patternTypeSuffix, int modifiers) {
-//		switch(patternTypeSuffix) {
-//			case IIndexConstants.TYPE_SUFFIX :
-//				return (modifiers & (Flags.)) == 0;
-//			case IIndexConstants.CLASS_AND_INTERFACE_SUFFIX:
-//				return (modifiers & (Flags.AccAnnotation | Flags.AccEnum)) == 0;
-//			case IIndexConstants.CLASS_AND_ENUM_SUFFIX:
-//				return (modifiers & (Flags.AccAnnotation | Flags.AccInterface)) == 0;
-//			case IIndexConstants.INTERFACE_SUFFIX :
-//				return (modifiers & Flags.AccInterface) != 0;
-//			case IIndexConstants.ENUM_SUFFIX :
-//				return (modifiers & Flags.AccEnum) != 0;
+		switch(patternTypeSuffix) {
+			case IIndexConstants.TYPE_SUFFIX :
+				return modifiers == 0;
 //			case IIndexConstants.ANNOTATION_TYPE_SUFFIX :
 //				return (modifiers & Flags.AccAnnotation) != 0;
-//		}
+		}
 		return true;
 	}
 
@@ -800,12 +794,17 @@ public class BasicSearchEngine {
 			}
 		}
 		final String singleWkcpPath = workingCopyPath;
-
+		final List documentPathFilter = new ArrayList();
 		// Index requestor
 		IndexQueryRequestor searchRequestor = new IndexQueryRequestor(){
 			public boolean acceptIndexMatch(String documentPath,
 					SearchPattern indexRecord, SearchParticipant participant,
 					AccessRuleSet access) {
+				IPath fullPath = new Path(documentPath);
+				if( documentPathFilter.contains(fullPath)) {
+					return true;
+				}
+				documentPathFilter.add(fullPath);
 				// Filter unexpected types
 				TypeDeclarationPattern record = (TypeDeclarationPattern)indexRecord;
 				if (record.enclosingTypeNames == IIndexConstants.ONE_ZERO_CHAR) {

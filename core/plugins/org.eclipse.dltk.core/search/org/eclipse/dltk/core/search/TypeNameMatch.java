@@ -132,7 +132,7 @@ public abstract class TypeNameMatch {
 	public String getTypeContainerName() {
 		IType outerType = getType().getDeclaringType();
 		if (outerType != null) {
-			return outerType.getFullyQualifiedName();
+			return outerType.getTypeQualifiedName();
 		} else {
 			return getType().getScriptFolder().getElementName();
 		}
