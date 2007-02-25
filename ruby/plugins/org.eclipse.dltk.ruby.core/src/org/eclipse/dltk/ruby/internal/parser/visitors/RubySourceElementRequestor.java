@@ -14,6 +14,8 @@ import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Assignment;
+import org.eclipse.dltk.ast.expressions.CallArgumentsList;
+import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionList;
 import org.eclipse.dltk.ast.references.ConstantReference;
@@ -225,6 +227,33 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 			this.addVariableReference(left, right, this.fInClass,
 					this.fInMethod);
 		} 
+		if(expression instanceof CallExpression ) {
+			CallExpression callE = (CallExpression)expression;
+			
+			CallArgumentsList args = callE.getArgs();
+			int argsCount = 0;
+			if( args != null && args.getExpressions() != null ) {
+				argsCount = args.getExpressions().size();
+			}
+			int start = callE.sourceStart();
+			int end = callE.sourceEnd();
+			if( start < 0 ) {
+				start = 0;
+			}
+			if( end < 0 ) {
+				end = 1;
+			}
+			this.fRequestor.acceptMethodReference(callE.getName().toCharArray(), argsCount, start, end );
+		}
+		if( expression instanceof VariableReference ) {
+			VariableReference variableReference = (VariableReference) expression;
+			int pos = variableReference.sourceStart();
+			if( pos < 0 ) {
+				pos = 0;
+			}
+			this.fRequestor.acceptFieldReference(variableReference.getName().toCharArray(), pos);
+			
+		}
 		return true;
 	}
 

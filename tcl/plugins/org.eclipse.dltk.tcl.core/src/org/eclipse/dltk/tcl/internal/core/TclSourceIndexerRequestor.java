@@ -11,8 +11,10 @@ public class TclSourceIndexerRequestor extends SourceIndexerRequestor {
 		// + new String(methodName));
 		String mName = new String(methodName);
 		String[] ns = mName.split("::");
-		this.indexer.addMethodReference(ns[ns.length - 1].toCharArray(),
-				argCount);
+		if( ns.length > 0 ) {
+			this.indexer.addMethodReference(ns[ns.length - 1].toCharArray(),
+					argCount);
+		}
 		for (int i = 0; i < ns.length - 1; ++i) {
 			if (ns[i].length() > 0) {
 				// System.out.println("TCLReferenceIndexing: Added namespace

@@ -90,7 +90,7 @@ private void createTypeHierarchyBasedOnRegion(HashMap allOpenablesInRegion, IPro
 			if (monitor != null) monitor.beginTask("", size * 2/* 1 for build binding, 1 for connect hierarchy*/); //$NON-NLS-1$
 			ISearchableEnvironment searchableEnvironment = project.newSearchableNameEnvironment(this.hierarchy.workingCopies);
 			this.nameLookup = searchableEnvironment.getNameLookup();
-			this.hierarchyResolver.resolve(openables, null, monitor);
+//			this.hierarchyResolver.resolve(openables, null, monitor);
 		} catch (ModelException e) {
 			// project doesn't exit: ignore
 		} finally {

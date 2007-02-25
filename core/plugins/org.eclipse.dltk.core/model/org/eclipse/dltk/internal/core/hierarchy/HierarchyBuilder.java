@@ -14,25 +14,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.compiler.DefaultProblemFactory;
 import org.eclipse.dltk.compiler.env.IGenericType;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.internal.compiler.lookup.ReferenceBinding;
 import org.eclipse.dltk.internal.core.DLTKProject;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.NameLookup;
 import org.eclipse.dltk.internal.core.Openable;
 import org.eclipse.dltk.internal.core.SourceTypeElementInfo;
 import org.eclipse.dltk.internal.core.util.ResourceSourceModule;
-import org.eclipse.dltk.internal.core.util.Util;
 
 public abstract class HierarchyBuilder {
 	/**
@@ -121,7 +117,7 @@ public abstract class HierarchyBuilder {
 		// in the hierarchy resolver, thus there is no need to check that a type
 		// is
 		// a sub or super type of the focus type.
-		this.hierarchyResolver.resolve(type);
+//		this.hierarchyResolver.resolve(type);
 
 		// Add focus if not already in (case of a type with no explicit super
 		// type)
@@ -181,7 +177,7 @@ public abstract class HierarchyBuilder {
 	/**
 	 * Returns a handle for the given generic type or null if not found.
 	 */
-	protected IType getHandle(IGenericType genericType, ReferenceBinding binding) {
+	protected IType getHandle(IGenericType genericType) {
 		if (genericType == null)
 			return null;
 		if (genericType instanceof HierarchyType) {

@@ -18,22 +18,22 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.core.internal.watson.IPathRequestor;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.compiler.DefaultProblemFactory;
 import org.eclipse.dltk.compiler.util.HashtableOfObject;
 import org.eclipse.dltk.compiler.util.HashtableOfObjectToInt;
-import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ISearchableEnvironment;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.search.DLTKSearchParticipant;
+import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
@@ -42,13 +42,14 @@ import org.eclipse.dltk.core.search.indexing.IndexManager;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.compiler.env.AccessRuleSet;
 import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.IPathRequestor;
 import org.eclipse.dltk.internal.core.Member;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.Openable;
-import org.eclipse.dltk.internal.core.SearchableEnvironment;
 import org.eclipse.dltk.internal.core.search.IndexQueryRequestor;
+import org.eclipse.dltk.internal.core.search.SubTypeSearchJob;
+import org.eclipse.dltk.internal.core.search.matching.SuperTypeReferencePattern;
 import org.eclipse.dltk.internal.core.util.HandleFactory;
-import org.eclipse.dltk.internal.core.util.Util;
 
 public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 	public static final int MAXTICKS = 800; // heuristic so that there still
@@ -249,34 +250,30 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 						.getOuterMostLocalContext();
 				if (declaringMember == null) {
 					// top level or member type
-					if (!inProjectOfFocusType) {
-						char[] typeQualifiedName = focusType
-								.getTypeQualifiedName('.').toCharArray();
-						String[] packageName = ((PackageFragment) focusType
-								.getPackageFragment()).names;
-						if (searchableEnvironment.findType(typeQualifiedName,
-								Util.toCharArrays(packageName)) == null) {
-							// focus type is not visible in this project: no
-							// need to go further
-							return;
-						}
-					}
+//					if (!inProjectOfFocusType) {
+//						char[] typeQualifiedName = focusType
+//								.getTypeQualifiedName('.').toCharArray();
+//						String[] packageName = ((PackageFragment) focusType
+//								.getPackageFragment()).names;
+//						if (searchableEnvironment.findType(typeQualifiedName,
+//								Util.toCharArrays(packageName)) == null) {
+//							// focus type is not visible in this project: no
+//							// need to go further
+//							return;
+//						}
+//					}
 				} else {
 					// local or anonymous type
 					Openable openable;
-					if (declaringMember.isBinary()) {
-						openable = (Openable) declaringMember.getClassFile();
-					} else {
-						openable = (Openable) declaringMember.getSourceModule();
-					}
+					openable = (Openable) declaringMember.getSourceModule();
 					localTypes = new HashSet();
 					localTypes.add(openable.getPath().toString());
-					this.hierarchyResolver.resolve(new Openable[] { openable },
-							localTypes, monitor);
+//					this.hierarchyResolver.resolve(new Openable[] { openable },
+//							localTypes, monitor);
 					return;
 				}
 			}
-			this.hierarchyResolver.resolve(openables, localTypes, monitor);
+//			this.hierarchyResolver.resolve(openables, localTypes, monitor);
 		}
 	}
 
@@ -337,7 +334,7 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 		try {
 			// create element infos for subtypes
 			HandleFactory factory = new HandleFactory();
-			IJavaProject currentProject = null;
+			IDLTKProject currentProject = null;
 			if (monitor != null)
 				monitor
 						.beginTask("", length * 2 /*
@@ -367,7 +364,7 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 							continue; // match is outside classpath
 					}
 
-					IJavaProject project = handle.getScriptProject();
+					IDLTKProject project = handle.getScriptProject();
 					if (currentProject == null) {
 						currentProject = project;
 						potentialSubtypes = new ArrayList(5);
@@ -391,11 +388,7 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 				if (currentProject == null) {
 					// case of no potential subtypes
 					currentProject = focusType.getScriptProject();
-					if (focusType.isBinary()) {
-						potentialSubtypes.add(focusType.getClassFile());
-					} else {
-						potentialSubtypes.add(focusType.getSourceModule());
-					}
+					potentialSubtypes.add(focusType.getSourceModule());
 				}
 				this.buildForProject((DLTKProject) currentProject,
 						potentialSubtypes, workingCopies, localTypes, monitor);
@@ -409,11 +402,8 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 				try {
 					currentProject = focusType.getScriptProject();
 					potentialSubtypes = new ArrayList();
-					if (focusType.isBinary()) {
-						potentialSubtypes.add(focusType.getClassFile());
-					} else {
-						potentialSubtypes.add(focusType.getSourceModule());
-					}
+					potentialSubtypes.add(focusType.getSourceModule());
+					
 					this.buildForProject((DLTKProject) currentProject,
 							potentialSubtypes, workingCopies, localTypes,
 							monitor);
@@ -433,47 +423,12 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 		}
 	}
 
-	protected ICompilationUnit createCompilationUnitFromPath(Openable handle,
+	protected ISourceModule createCompilationUnitFromPath(Openable handle,
 			IFile file) {
-		ICompilationUnit unit = super.createCompilationUnitFromPath(handle,
+		ISourceModule unit = super.createCompilationUnitFromPath(handle,
 				file);
 		this.cuToHandle.put(unit, handle);
 		return unit;
-	}
-
-	protected IBinaryType createInfoFromClassFile(Openable classFile,
-			IResource file) {
-		String documentPath = classFile.getPath().toString();
-		IBinaryType binaryType = (IBinaryType) this.binariesFromIndexMatches
-				.get(documentPath);
-		if (binaryType != null) {
-			this.infoToHandle.put(binaryType, classFile);
-			return binaryType;
-		} else {
-			return super.createInfoFromClassFile(classFile, file);
-		}
-	}
-
-	protected IBinaryType createInfoFromClassFileInJar(Openable classFile) {
-		String filePath = (((ClassFile) classFile).getType()
-				.getFullyQualifiedName('$')).replace('.', '/')
-				+ SuffixConstants.SUFFIX_STRING_class;
-		IProjectFragment root = classFile.getPackageFragmentRoot();
-		IPath path = root.getPath();
-		// take the OS path for external jars, and the forward slash path for
-		// internal jars
-		String rootPath = path.getDevice() == null ? path.toString() : path
-				.toOSString();
-		String documentPath = rootPath
-				+ IDLTKSearchScope.JAR_FILE_ENTRY_SEPARATOR + filePath;
-		IBinaryType binaryType = (IBinaryType) this.binariesFromIndexMatches
-				.get(documentPath);
-		if (binaryType != null) {
-			this.infoToHandle.put(binaryType, classFile);
-			return binaryType;
-		} else {
-			return super.createInfoFromClassFileInJar(classFile);
-		}
 	}
 
 	/**
@@ -500,7 +455,7 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 				monitor.beginTask("", MAXTICKS); //$NON-NLS-1$
 			searchAllPossibleSubTypes(this.getType(), this.scope,
 					this.binariesFromIndexMatches, collector,
-					IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, monitor);
+					IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, monitor);
 		} finally {
 			if (monitor != null)
 				monitor.done();
@@ -548,7 +503,7 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 		final Queue queue = new Queue();
 		final HashtableOfObject foundSuperNames = new HashtableOfObject(5);
 
-		IndexManager indexManager = ModelManager.getJavaModelManager()
+		IndexManager indexManager = ModelManager.getModelManager()
 				.getIndexManager();
 
 		/* use a special collector to collect paths and queue new subtype names */
@@ -560,41 +515,7 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 				boolean isLocalOrAnonymous = record.enclosingTypeName == IIndexConstants.ONE_ZERO;
 				pathRequestor.acceptPath(documentPath, isLocalOrAnonymous);
 				char[] typeName = record.simpleName;
-				int suffix = documentPath.toLowerCase().lastIndexOf(
-						SUFFIX_STRING_class);
-				if (suffix != -1) {
-					HierarchyBinaryType binaryType = (HierarchyBinaryType) binariesFromIndexMatches
-							.get(documentPath);
-					if (binaryType == null) {
-						char[] enclosingTypeName = record.enclosingTypeName;
-						if (isLocalOrAnonymous) {
-							int lastSlash = documentPath.lastIndexOf('/');
-							int lastDollar = documentPath.lastIndexOf('$');
-							if (lastDollar == -1) {
-								// malformed local or anonymous type: it doesn't
-								// contain a $ in its name
-								// treat it as a top level type
-								enclosingTypeName = null;
-								typeName = documentPath.substring(
-										lastSlash + 1, suffix).toCharArray();
-							} else {
-								enclosingTypeName = documentPath.substring(
-										lastSlash + 1, lastDollar)
-										.toCharArray();
-								typeName = documentPath.substring(
-										lastDollar + 1, suffix).toCharArray();
-							}
-						}
-						binaryType = new HierarchyBinaryType(record.modifiers,
-								record.pkgName, typeName, enclosingTypeName,
-								record.typeParameterSignatures,
-								record.classOrInterface);
-						binariesFromIndexMatches.put(documentPath, binaryType);
-					}
-					binaryType.recordSuperType(record.superSimpleName,
-							record.superQualification,
-							record.superClassOrInterface);
-				}
+
 				if (!isLocalOrAnonymous // local or anonymous types cannot have
 										// subtypes outside the cu that define
 										// them
@@ -607,18 +528,13 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 		};
 
 		int superRefKind;
-		try {
-			superRefKind = type.isClass() ? SuperTypeReferencePattern.ONLY_SUPER_CLASSES
-					: SuperTypeReferencePattern.ALL_SUPER_TYPES;
-		} catch (ModelException e) {
-			superRefKind = SuperTypeReferencePattern.ALL_SUPER_TYPES;
-		}
+		superRefKind = SuperTypeReferencePattern.ALL_SUPER_TYPES;
 		SuperTypeReferencePattern pattern = new SuperTypeReferencePattern(null,
 				null, superRefKind, SearchPattern.R_EXACT_MATCH
 						| SearchPattern.R_CASE_SENSITIVE);
 		MatchLocator.setFocus(pattern, type);
 		SubTypeSearchJob job = new SubTypeSearchJob(pattern,
-				new JavaSearchParticipant(), // java search only
+				new DLTKSearchParticipant(), // java search only
 				scope, searchRequestor);
 
 		int ticks = 0;

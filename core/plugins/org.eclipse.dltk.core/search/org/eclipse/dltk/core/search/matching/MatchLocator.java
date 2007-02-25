@@ -974,7 +974,7 @@ public class MatchLocator implements ITypeRequestor {
 		// if (enclosingBinding != null)
 		// enclosingElement = ((ModelElement)
 		// enclosingElement).resolved(enclosingBinding);
-		return new FieldReferenceMatch(null, reference, accuracy, offset,
+		return new FieldReferenceMatch(enclosingElement, reference, accuracy, offset,
 				length, isReadAccess, isWriteAccess, insideDocComment,
 				participant, resource);
 	}
