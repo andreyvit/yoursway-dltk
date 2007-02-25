@@ -54,9 +54,6 @@ public class RubyOutlineLabelDecorator extends LabelProvider implements
 	}
 
 	public Image decorateImage(Image image, Object obj) {
-		System.out.println("RubyOutlineLabelDecorator.decorateImage()");
-		String doc = RiHelper.getInstance().getDocFor("Fixnum.abs");		
-		System.out.println(doc);
 
 		try {
 			if (obj instanceof IMember) {
