@@ -18,6 +18,7 @@ import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 
 public class RubyTypeHierarchyEngine {
+	private static final boolean DEBUG = false;
 	public static IType[] locateSuperTypes( IType type, IProgressMonitor monitor ) {
 		try {
 			String[] superTypes = type.getSuperClasses();
@@ -25,7 +26,7 @@ public class RubyTypeHierarchyEngine {
 			monitor.beginTask("Collecting types...", superTypes.length);
 			IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLangaugeToolkit(type));
 			for( int i = 0; i < superTypes.length; ++i ) {
-				if( RubyPlugin.DEBUG ) {
+				if( DEBUG ) {
 					System.out.println("Type:" + type.getElementName() + " has supertype:" + superTypes[i]);
 				}
 				TypeNameMatch[] possibleTypes = searchTypesForName(superTypes[i], monitor, scope);
