@@ -594,7 +594,8 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	private ISourcePosition fixNamePosition (ISourcePosition pos) {
 		int start = pos.getStartOffset();
 		int end = pos.getEndOffset();
-		while (end - 1 >= 0 && !RubySyntaxUtils.isNameChar(content.charAt(end - 1))) {
+		
+		while (end - 1 >= 0 && (end - 1) > start && !RubySyntaxUtils.isNameChar(content.charAt(end - 1))) {
 				end--;
 		}
 		if (end >=0) {

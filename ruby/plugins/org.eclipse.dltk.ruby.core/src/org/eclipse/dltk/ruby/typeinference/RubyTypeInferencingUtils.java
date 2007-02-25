@@ -625,13 +625,16 @@ public class RubyTypeInferencingUtils {
 		if (type.getAllMethods() != null)
 			return type;
 		String[] fqn = type.getFQN();
-		StringBuffer strFqn = new StringBuffer();
-		for (int i = 0; i < fqn.length; i++) {
-			strFqn.append("::");
-			strFqn.append(fqn[i]);
+		IType[] allTypes = type.getTypeDeclarations();
+		if (allTypes == null) {
+			StringBuffer strFqn = new StringBuffer();
+			for (int i = 0; i < fqn.length; i++) {
+				strFqn.append("::");
+				strFqn.append(fqn[i]);
+			}
+			allTypes = DLTKModelUtil.getAllTypes(project, strFqn.toString(), "::");
 		}
-		List methods = new ArrayList ();
-		IType[] allTypes = DLTKModelUtil.getAllTypes(project, strFqn.toString(), "::");
+		List methods = new ArrayList ();		
 		for (int i = 0; i < allTypes.length; i++) {
 			try {
 				IMethod[] methods2 = allTypes[i].getMethods();

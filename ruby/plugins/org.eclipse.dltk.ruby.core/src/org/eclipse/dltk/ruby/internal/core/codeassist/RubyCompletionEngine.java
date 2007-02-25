@@ -26,6 +26,10 @@ import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.ddp.BasicContext;
+import org.eclipse.dltk.ddp.ExpressionGoal;
+import org.eclipse.dltk.ddp.TypeInferencer;
+import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.ruby.core.ParentshipBuildingVisitor;
 import org.eclipse.dltk.ruby.core.model.ICalculatedType;
 import org.eclipse.dltk.ruby.core.model.IElement;
@@ -35,6 +39,11 @@ import org.eclipse.dltk.ruby.core.model.internal.RubyTypeCalculator;
 import org.eclipse.dltk.ruby.core.text.RubyContext;
 import org.eclipse.dltk.ruby.core.text.RubyContext.HeuristicLookupResult;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
+import org.eclipse.dltk.ruby.typeinference.RubyClassType;
+import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
+import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
+import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
+import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeUtils;
 import org.eclipse.dltk.ruby.typeinference.internal.RubyTypeModel;
 import org.eclipse.dltk.typeinference.ASTCaching;
@@ -45,11 +54,16 @@ import org.eclipse.dltk.typeinference.ITypeDescriptor;
 import org.eclipse.dltk.typeinference.IUnit;
 import org.eclipse.dltk.typeinference.UserMethodDescriptor;
 
+import com.sun.rsasign.p;
+
 public class RubyCompletionEngine extends CompletionEngine {
+
+	private TypeInferencer inferencer;
 
 	public RubyCompletionEngine(ISearchableEnvironment nameEnvironment,
 			CompletionRequestor requestor, Map settings, IDLTKProject dltkProject) {
 		super(nameEnvironment, requestor, settings, dltkProject);
+		inferencer = new TypeInferencer(new RubyEvaluatorFactory());
 	}
 
 	private JRubySourceParser parser = new JRubySourceParser(null);
@@ -91,6 +105,18 @@ public class RubyCompletionEngine extends CompletionEngine {
 		content = content.substring(0, position) + content.substring(position + length);
 		return content;
 	}
+	
+	private static boolean widowDot (String content, int position) {
+		while (position < content.length() && ( 
+				content.charAt(position) == ' ' ||
+				content.charAt(position) == '\t'))
+			position++;
+		if (position >= content.length())
+			return true;
+		if (content.charAt(position) == '\r' ||content.charAt(position) == '\n')
+			return true;
+		return false;
+	}
 
 	public void complete(ISourceModule module, int position, int i) {
 		this.actualCompletionPosition = position;
@@ -98,44 +124,67 @@ public class RubyCompletionEngine extends CompletionEngine {
 		try {
 			String content = module.getSourceContents();
 			if (afterDot(content, position)) {
-				
+				if (widowDot(content, position)) {
+					content = cut(content, position - 1, 1);
+					position--;
+				}
+				this.setSourceRange(position-1, position-1);
+				ModuleDeclaration moduleDeclaration = parser.parse(content);
+				ASTNode node = findMaximalNodeEndingAt(moduleDeclaration, position-1);
+				if (node instanceof Statement) {
+					org.eclipse.dltk.core.ISourceModule modelModule = (org.eclipse.dltk.core.ISourceModule) module;
+					ExpressionGoal goal = new ExpressionGoal(new BasicContext(modelModule, moduleDeclaration), 
+							(Statement) node);
+					IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+					if (type instanceof RubyClassType) {
+						RubyClassType rubyClassType = (RubyClassType) type;
+						rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), rubyClassType);
+						IMethod[] allMethods = rubyClassType.getAllMethods();
+						for (int j = 0; j < allMethods.length; j++) {
+							reportLocalMethod("".toCharArray(), 0, allMethods[j]);
+						}				
+					}
+				}
 			} else if (afterColons(content, position)) {
-				
+				if (widowDot(content, position)) {
+					content = cut(content, position - 2, 2);
+					position -= 2;
+				}
 			} else {
 				
 			}
 
-			if (content.charAt(position - 1) != '.') {
-				content = content.substring(0, position) + "." + content.substring(position);
-			}
-			org.eclipse.dltk.core.ISourceModule modelModule = (org.eclipse.dltk.core.ISourceModule) module
-					.getModelElement();
-			
-			IDLTKProject project = (IDLTKProject) modelModule.getAncestor(IModelElement.SCRIPT_PROJECT);
-			Model typeModel = new Model(project);
-			RubyTypeCalculator typeCalculator = new RubyTypeCalculator(typeModel);
-
-			HeuristicLookupResult result = RubyContext.determineContext(content, position,
-					RubyContext.MODE_FULL);
-			if (result.context == RubyContext.AFTER_DOT) {
-				this.setSourceRange(position, position);
-				HeuristicLookupResult result2 = RubyContext.determineContext(content,
-						result.keyOffset, RubyContext.MODE_FULL);
-				if (result2.keyOffset >= 0) {
-					if (content.charAt(position) == '\r' || content.charAt(position) == '\n')
-						content = content.substring(0, position - 1) + content.substring(position);
-					ModuleDeclaration moduleDeclaration = (ModuleDeclaration) typeModel.getASTNode(modelModule, ASTCaching.REPARSE);
-					ASTNode node = findMaximalNodeEndingAt(moduleDeclaration, result2.keyOffset);
-					ICalculatedType type = typeCalculator.calculateType(node);
-					if (type != null) {
-						IElement[] elements = type.findChildren(IElementCriteria.ByKind.METHOD, null, new NullProgressMonitor());
-						for (int j = 0; j < elements.length; j++) {
-							IElement element = elements[j];
-							reportLocalMethod("".toCharArray(), 0, (org.eclipse.dltk.ruby.core.model.IMethod) element);
-						}
-					}
-				}
-			}
+//			if (content.charAt(position - 1) != '.') {
+//				content = content.substring(0, position) + "." + content.substring(position);
+//			}
+//			org.eclipse.dltk.core.ISourceModule modelModule = (org.eclipse.dltk.core.ISourceModule) module
+//					.getModelElement();
+//			
+//			IDLTKProject project = (IDLTKProject) modelModule.getAncestor(IModelElement.SCRIPT_PROJECT);
+//			Model typeModel = new Model(project);
+//			RubyTypeCalculator typeCalculator = new RubyTypeCalculator(typeModel);
+//
+//			HeuristicLookupResult result = RubyContext.determineContext(content, position,
+//					RubyContext.MODE_FULL);
+//			if (result.context == RubyContext.AFTER_DOT) {
+//				this.setSourceRange(position, position);
+//				HeuristicLookupResult result2 = RubyContext.determineContext(content,
+//						result.keyOffset, RubyContext.MODE_FULL);
+//				if (result2.keyOffset >= 0) {
+//					if (content.charAt(position) == '\r' || content.charAt(position) == '\n')
+//						content = content.substring(0, position - 1) + content.substring(position);
+//					ModuleDeclaration moduleDeclaration = (ModuleDeclaration) typeModel.getASTNode(modelModule, ASTCaching.REPARSE);
+//					ASTNode node = findMaximalNodeEndingAt(moduleDeclaration, result2.keyOffset);
+//					ICalculatedType type = typeCalculator.calculateType(node);
+//					if (type != null) {
+//						IElement[] elements = type.findChildren(IElementCriteria.ByKind.METHOD, null, new NullProgressMonitor());
+//						for (int j = 0; j < elements.length; j++) {
+//							IElement element = elements[j];
+//							reportLocalMethod("".toCharArray(), 0, (org.eclipse.dltk.ruby.core.model.IMethod) element);
+//						}
+//					}
+//				}
+//			}
 		} finally {
 			this.requestor.endReporting();
 		}
@@ -184,8 +233,8 @@ public class RubyCompletionEngine extends CompletionEngine {
 		return null;
 	}
 	
-	private void reportLocalMethod(char[] token, int length, org.eclipse.dltk.ruby.core.model.IMethod method) {
-		char[] name = method.getName().toCharArray();
+	private void reportLocalMethod(char[] token, int length, IMethod method) {
+		char[] name = method.getElementName().toCharArray();
 		if (length <= name.length && CharOperation.prefixEquals(token, name, false)) {
 			int relevance = RelevanceConstants.R_INTERESTING;
 			relevance += computeRelevanceForCaseMatching(token, name);
