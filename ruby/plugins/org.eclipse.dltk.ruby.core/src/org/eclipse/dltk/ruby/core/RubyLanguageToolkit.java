@@ -1,9 +1,14 @@
 package org.eclipse.dltk.ruby.core;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -51,8 +56,43 @@ import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 import org.eclipse.dltk.ruby.internal.typehierarchy.RubyTypeHierarchyEngine;
 
-public class RubyLanguageToolkit implements IDLTKLanguageToolkit  {
+public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	private static RubyLanguageToolkit sToolkit = new RubyLanguageToolkit();
+
+	private IStatus isRubyHeadered(File file) {
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			int size = (int) file.length(); // i hope, that size is covertable
+			// to int
+			char buf[] = new char[size + 1];
+			reader.read(buf);
+
+			String header = new String(buf);
+
+			if (header.indexOf("ruby") != -1) {
+				return IModelStatus.VERIFIED_OK;
+			}
+		} catch (FileNotFoundException e) {
+			return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
+					"Can't open file", null);
+		} catch (IOException e) {
+			return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
+					"Can't read file", null);
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					// Nothing to do
+				}
+			}
+		}
+
+		return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
+				"Header not found", null);
+	}
+
 	public RubyLanguageToolkit() {
 
 	}
@@ -77,24 +117,26 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit  {
 
 	public ISourceElementParser createSourceElementParser(
 			ISourceElementRequestor requestor,
-			IProblemReporter problemReporter, Map options)
-			throws CoreException {
+			IProblemReporter problemReporter, Map options) throws CoreException {
 
 		return new RubySourceElementParser(requestor, problemReporter);
 	}
 
 	public IStatus validateSourceModule(String name) {
+		System.out.println("Validating: " + name);
+
 		if (name == null) {
 			return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
 					Messages.convention_unit_nullName, null);
 		}
+
 		if (!isRubyLikeFileName(name)) {
 			return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
 					MessageFormat.format(
 							Messages.convention_unit_notScriptName,
-							new String[] { getRubyExtension(), "Ruby" }),
-					null);
+							new String[] { getRubyExtension(), "Ruby" }), null);
 		}
+
 		return IModelStatus.VERIFIED_OK;
 	}
 
@@ -113,7 +155,7 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit  {
 		return false;
 	}
 
-	public boolean validateSourcePackage(IPath path) {		
+	public boolean validateSourcePackage(IPath path) {
 		return true;
 	}
 
@@ -124,7 +166,8 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit  {
 	public ICompletionEngine createCompletionEngine(
 			ISearchableEnvironment environment, CompletionRequestor requestor,
 			Map options, IDLTKProject project) {
-		return new RubyCompletionEngine(environment, requestor, options, project);
+		return new RubyCompletionEngine(environment, requestor, options,
+				project);
 	}
 
 	public String getPartitioningID() {
@@ -136,6 +179,10 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit  {
 	}
 
 	public IStatus validateSourceModule(IResource resource) {
+		if (isRubyHeadered(resource.getLocation().toFile()) == IModelStatus.VERIFIED_OK) {
+			return IModelStatus.VERIFIED_OK;
+		}
+
 		return validateSourceModule(resource.getName());
 	}
 
@@ -156,18 +203,19 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit  {
 		try {
 			return parser.parse(module.getSource());
 		} catch (ModelException e) {
-			if( DLTKCore.DEBUG ) {
+			if (DLTKCore.DEBUG) {
 				e.printStackTrace();
 			}
 		}
 		return null;
 	}
 
-	public ISelectionEngine createSelectionEngine(ISearchableEnvironment environment, Map options) {
+	public ISelectionEngine createSelectionEngine(
+			ISearchableEnvironment environment, Map options) {
 		return new RubySelectionEngine(environment, options, this);
 	}
 
-	public SourceIndexerRequestor createSourceRequestor() {		
+	public SourceIndexerRequestor createSourceRequestor() {
 		return new SourceIndexerRequestor();
 	}
 
@@ -176,11 +224,14 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit  {
 		return null;
 	}
 
-	public MatchLocator createMatchLocator(SearchPattern pattern, SearchRequestor requestor, IDLTKSearchScope scope, SubProgressMonitor monitor) {
-		return new RubyMatchLocator(pattern, requestor, scope, monitor );
+	public MatchLocator createMatchLocator(SearchPattern pattern,
+			SearchRequestor requestor, IDLTKSearchScope scope,
+			SubProgressMonitor monitor) {
+		return new RubyMatchLocator(pattern, requestor, scope, monitor);
 	}
 
-	public ICalleeProcessor createCalleeProcessor(IMethod method, IProgressMonitor monitor, IDLTKSearchScope scope) {
+	public ICalleeProcessor createCalleeProcessor(IMethod method,
+			IProgressMonitor monitor, IDLTKSearchScope scope) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -194,15 +245,16 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit  {
 		return ".";
 	}
 
-	public static IDLTKLanguageToolkit getDefault() {	
+	public static IDLTKLanguageToolkit getDefault() {
 		return sToolkit;
 	}
 
-	public String[] getLanguageFileExtensions() {		
-		return  new String[] {"rb"};
+	public String[] getLanguageFileExtensions() {
+		return new String[] { "rb" };
 	}
 
 	public IType[] getParentTypes(IType type) {
-		return RubyTypeHierarchyEngine.locateSuperTypes(type, new NullProgressMonitor());
+		return RubyTypeHierarchyEngine.locateSuperTypes(type,
+				new NullProgressMonitor());
 	}
 }
