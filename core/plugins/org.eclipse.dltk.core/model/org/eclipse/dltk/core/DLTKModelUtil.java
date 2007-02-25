@@ -67,8 +67,14 @@ public class DLTKModelUtil {
 		
 		patternString = "*" + patternString + "*";
 		
-		
-		IDLTKSearchScope scope = SearchEngine.createSearchScope(new IModelElement[] {project});		
+		IDLTKLanguageToolkit langaugeToolkit;
+		try {
+			langaugeToolkit = DLTKLanguageManager.getLangaugeToolkit(project);
+		} catch (CoreException e1) {
+			return;
+		}
+		//FIXME: use another search		
+		IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(langaugeToolkit);//createSearchScope(new IModelElement[] {project});		
 		try {
 			SearchEngine engine = new SearchEngine();
 			engine.searchAllTypeNames(
@@ -94,13 +100,15 @@ public class DLTKModelUtil {
 	 * @param delimeter
 	 * @return
 	 */
-	public static IType[] getAllTypes(IDLTKProject project, final String qualifiedName, final String delimeter) {
+	public static IType[] getAllTypes(final IDLTKProject project, final String qualifiedName, final String delimeter) {
 		final List types = new ArrayList ();
 
 		TypeNameMatchRequestor requestor = new TypeNameMatchRequestor() {
 
 			public void acceptTypeNameMatch(TypeNameMatch match) {
 				IType type = (IType) match.getType();
+				if (!type.getScriptProject().equals(project))
+					return;
 				if (type.getTypeQualifiedName(delimeter).equals(qualifiedName)) {
 					types.add(type);
 				}
@@ -127,13 +135,15 @@ public class DLTKModelUtil {
 	 * @param delimeter
 	 * @return
 	 */
-	public static IType[] getAllTypesWithFQNEnding(IDLTKProject project, final String nameEnding, final String delimeter) {
+	public static IType[] getAllTypesWithFQNEnding(final IDLTKProject project, final String nameEnding, final String delimeter) {
 		final List types = new ArrayList ();
 
 		TypeNameMatchRequestor requestor = new TypeNameMatchRequestor() {
 			
 			public void acceptTypeNameMatch(TypeNameMatch match) {				
 				IType type = (IType) match.getType();
+				if (!type.getScriptProject().equals(project))
+					return;
 				if (type.getTypeQualifiedName(delimeter).endsWith(nameEnding)) {
 					types.add(type);
 				}

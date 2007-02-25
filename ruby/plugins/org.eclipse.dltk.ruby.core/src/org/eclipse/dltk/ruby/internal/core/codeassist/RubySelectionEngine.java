@@ -155,7 +155,7 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 					System.out.println(parsedUnit.toString());
 				}
 												
-				ASTNode node = findMinimalNode(parsedUnit, actualSelectionStart, actualSelectionEnd);				
+				ASTNode node = ASTUtils.findMinimalNode(parsedUnit, actualSelectionStart, actualSelectionEnd);				
 				
 				if (node == null)
 					return new IModelElement[0];
@@ -200,63 +200,7 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 				.toArray(new IModelElement[selectionElements.size()]);
 	}
 			
-	/**
-	 * Finds minimal ast node, that covers given position
-	 * @param unit
-	 * @param position
-	 * @return
-	 */
-	protected ASTNode findMinimalNode(ModuleDeclaration unit, int start, int end) {
-			
-		class Visitor extends ASTVisitor {
-			ASTNode result = null;
-			int start, end;
-			
-			public Visitor(int start, int end) {
-				this.start = start;
-				this.end = end;
-			}
-			
-			public ASTNode getResult () {
-				return result;
-			}			
-			
-			public boolean visitGeneral(ASTNode s) throws Exception {				
-				int realStart = s.sourceStart();
-				int realEnd = s.sourceEnd();
-				if (s instanceof Block) {
-					realStart = realEnd = -42; //never select on blocks
-				} else if (s instanceof TypeDeclaration) {
-					TypeDeclaration declaration = (TypeDeclaration) s;
-					realStart = declaration.getNameStart();
-					realEnd = declaration.getNameEnd();
-				} else if (s instanceof MethodDeclaration) {
-					MethodDeclaration declaration = (MethodDeclaration) s;
-					realStart = declaration.getNameStart();
-					realEnd = declaration.getNameEnd();
-				}
-				if (realStart <= start && realEnd >= end) {
-					result = s;
-					if (DLTKCore.DEBUG_SELECTION)
-						System.out.println("Found " + s.getClass().getName());
-				}
-				return true;
-			}
-
-			
-		}
-		
-		Visitor visitor = new Visitor(start, end);		
-		
-		try {
-			unit.traverse(visitor);
-		} catch (Exception e) {
-			if (DEBUG)
-				e.printStackTrace();
-		}
-		
-		return visitor.getResult();
-	}
+	
 		
 	
 

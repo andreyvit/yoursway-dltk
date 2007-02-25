@@ -1,60 +1,60 @@
-class Foo
- class Doo
-  class Coo
+class Foo42
+ class Doo42
+  class Coo42
   
-   def coo_method
+   def coo_method42
    end
    
-   def (::Foo).foo_method3
-    def (::Foo).foo_method4
+   def (::Foo42).foo_method3
+    def (::Foo42).foo_method4
     end
    end
    
   end
   
-  def doo_method
+  def doo_method42
   end
   
  end
 	
- def (::Foo).foo_method2
+ def (::Foo42).foo_method2
  end
  
- def Foo.foo_method22
+ def Foo42.foo_method22
  end
  
- def (::Foo.class).foo_method23
+ def (::Foo42.class).foo_method23
  end	
  
- def foo_method
+ def foo_method42
  
-  ::Foo::Inner.new
+  ::Foo42::Inner42.new
 
-  def (Foo::Doo::Coo).coo_method2		
+  def (Foo42::Doo42::Coo42).coo_method2		
   end
 
-  def (::Foo::Doo).doo_method2
+  def (::Foo42::Doo42).doo_method2
   end
 
-  f = Foo.new
-  d = ::Foo::Doo.new
-  c = ::Foo::Doo::Coo.new
+  f = Foo42.new
+  d = ::Foo42::Doo42.new
+  c = ::Foo42::Doo42::Coo42.new
 
-  f.foo_method 
-  Foo.foo_method2
-  Foo.foo_method22 
-  Foo.class.foo_method23 #wtf?
-  Foo.foo_method3
-  Foo.foo_method4
+  f.foo_method 42
+  Foo42.foo_method2
+  Foo42.foo_method22 
+  Foo42.class.foo_method23 #wtf?
+  Foo42.foo_method3
+  Foo42.foo_method4
 
-  d.doo_method
-  Foo::Doo.doo_method2
+  d.doo_method42
+  Foo42::Doo42.doo_method2
 
-  c.coo_method
-  Foo::Doo::Coo.coo_method2
+  c.coo_method42
+  Foo42::Doo42::Coo42.coo_method2
  end
  
- class ::Foo::Inner
+ class ::Foo42::Inner42
  end
 
 end
@@ -79,5 +79,5 @@ end
 ## 33 14 2 10
 ## 33 19 3 10
 ## 41 20 3 10
-## 54 23 33 25
-## 51 19 36 27
+## 54 29 33 25
+## 51 23 36 27

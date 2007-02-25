@@ -12,6 +12,8 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.ConstantReference;
+import org.eclipse.dltk.ast.statements.Block;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 
 public class ASTUtils {
@@ -89,5 +91,100 @@ public class ASTUtils {
 	public static MethodDeclaration getEnclosingMethod(ASTNode[] wayToNode, ASTNode node, boolean considerGiven) {
 		return (MethodDeclaration) getEnclosingElement(MethodDeclaration.class, wayToNode, node, considerGiven);
 	}
+	
+	/**
+	 * Finds minimal ast node, that covers given position
+	 * @param unit
+	 * @param position
+	 * @return
+	 */
+	public static ASTNode findMinimalNode(ModuleDeclaration unit, int start, int end) {
+			
+		class Visitor extends ASTVisitor {
+			ASTNode result = null;
+			int start, end;
+			
+			public Visitor(int start, int end) {
+				this.start = start;
+				this.end = end;
+			}
+			
+			public ASTNode getResult () {
+				return result;
+			}			
+			
+			public boolean visitGeneral(ASTNode s) throws Exception {				
+				int realStart = s.sourceStart();
+				int realEnd = s.sourceEnd();
+				if (s instanceof Block) {
+					realStart = realEnd = -42; //never select on blocks
+				} else if (s instanceof TypeDeclaration) {
+					TypeDeclaration declaration = (TypeDeclaration) s;
+					realStart = declaration.getNameStart();
+					realEnd = declaration.getNameEnd();
+				} else if (s instanceof MethodDeclaration) {
+					MethodDeclaration declaration = (MethodDeclaration) s;
+					realStart = declaration.getNameStart();
+					realEnd = declaration.getNameEnd();
+				}
+				if (realStart <= start && realEnd >= end) {
+					result = s;
+					if (DLTKCore.DEBUG_SELECTION)
+						System.out.println("Found " + s.getClass().getName());
+				}
+				return true;
+			}
+
+			
+		}
+		
+		Visitor visitor = new Visitor(start, end);		
+		
+		try {
+			unit.traverse(visitor);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return visitor.getResult();
+	}
+	
+	/**
+	 * Finds minimal ast node, that covers given position
+	 * 
+	 * @param unit
+	 * @param position
+	 * @return
+	 */
+	public static ASTNode findMaximalNodeEndingAt(ModuleDeclaration unit, final int boundaryOffset) {
+
+		class Visitor extends ASTVisitor {
+			ASTNode result = null;
+
+			public ASTNode getResult() {
+				return result;
+			}
+
+			public boolean visitGeneral(ASTNode s) throws Exception {
+				if (s.sourceEnd() == boundaryOffset + 1) {
+					result = s;
+					System.out.println("Found " + s.getClass().getName());
+				}
+				return true;
+			}
+
+		}
+
+		Visitor visitor = new Visitor();
+
+		try {
+			unit.traverse(visitor);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return visitor.getResult();
+	}
+	
 	
 }

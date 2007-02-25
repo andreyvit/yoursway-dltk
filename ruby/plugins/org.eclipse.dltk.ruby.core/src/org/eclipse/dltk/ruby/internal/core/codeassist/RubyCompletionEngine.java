@@ -1,14 +1,10 @@
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
-import java.util.Collection;
 import java.util.Map;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.statements.Statement;
@@ -19,42 +15,21 @@ import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;
-import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
-import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.ddp.BasicContext;
 import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.TypeInferencer;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
-import org.eclipse.dltk.ruby.core.ParentshipBuildingVisitor;
-import org.eclipse.dltk.ruby.core.model.ICalculatedType;
-import org.eclipse.dltk.ruby.core.model.IElement;
-import org.eclipse.dltk.ruby.core.model.IElementCriteria;
-import org.eclipse.dltk.ruby.core.model.internal.Model;
-import org.eclipse.dltk.ruby.core.model.internal.RubyTypeCalculator;
-import org.eclipse.dltk.ruby.core.text.RubyContext;
-import org.eclipse.dltk.ruby.core.text.RubyContext.HeuristicLookupResult;
+import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
+import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
-import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
-import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
-import org.eclipse.dltk.ruby.typeinference.RubyTypeUtils;
-import org.eclipse.dltk.ruby.typeinference.internal.RubyTypeModel;
-import org.eclipse.dltk.typeinference.ASTCaching;
-import org.eclipse.dltk.typeinference.ArgumentDescriptor;
-import org.eclipse.dltk.typeinference.IKnownTypeDescriptor;
-import org.eclipse.dltk.typeinference.IScope;
-import org.eclipse.dltk.typeinference.ITypeDescriptor;
-import org.eclipse.dltk.typeinference.IUnit;
-import org.eclipse.dltk.typeinference.UserMethodDescriptor;
-
-import com.sun.rsasign.p;
 
 public class RubyCompletionEngine extends CompletionEngine {
 
@@ -128,9 +103,9 @@ public class RubyCompletionEngine extends CompletionEngine {
 					content = cut(content, position - 1, 1);
 					position--;
 				}
-				this.setSourceRange(position-1, position-1);
+				this.setSourceRange(position+1, position+1);
 				ModuleDeclaration moduleDeclaration = parser.parse(content);
-				ASTNode node = findMaximalNodeEndingAt(moduleDeclaration, position-1);
+				ASTNode node = ASTUtils.findMaximalNodeEndingAt(moduleDeclaration, position-1);
 				if (node instanceof Statement) {
 					org.eclipse.dltk.core.ISourceModule modelModule = (org.eclipse.dltk.core.ISourceModule) module;
 					ExpressionGoal goal = new ExpressionGoal(new BasicContext(modelModule, moduleDeclaration), 
@@ -151,82 +126,49 @@ public class RubyCompletionEngine extends CompletionEngine {
 					position -= 2;
 				}
 			} else {
+				ModuleDeclaration moduleDeclaration = parser.parse(content);
+				ASTNode minimalNode = ASTUtils.findMinimalNode(moduleDeclaration, position - 1, position - 1);
+				if (minimalNode != null) {
+					if (minimalNode instanceof CallExpression) {
+						completeCall(module, moduleDeclaration, (CallExpression)minimalNode, position);
+					} else if (minimalNode instanceof ConstantReference) {
+						completeConstant(module, moduleDeclaration, (ConstantReference)minimalNode, position);
+					} else if (minimalNode instanceof ColonExpression) {
+						completeColonExpression(module, moduleDeclaration, (ColonExpression)minimalNode, position);
+					} else {
+						System.out.println("Node " + minimalNode.getClass().getName() + " is unsuppored by now");
+					}
+				}
 				
 			}
 
-//			if (content.charAt(position - 1) != '.') {
-//				content = content.substring(0, position) + "." + content.substring(position);
-//			}
-//			org.eclipse.dltk.core.ISourceModule modelModule = (org.eclipse.dltk.core.ISourceModule) module
-//					.getModelElement();
-//			
-//			IDLTKProject project = (IDLTKProject) modelModule.getAncestor(IModelElement.SCRIPT_PROJECT);
-//			Model typeModel = new Model(project);
-//			RubyTypeCalculator typeCalculator = new RubyTypeCalculator(typeModel);
-//
-//			HeuristicLookupResult result = RubyContext.determineContext(content, position,
-//					RubyContext.MODE_FULL);
-//			if (result.context == RubyContext.AFTER_DOT) {
-//				this.setSourceRange(position, position);
-//				HeuristicLookupResult result2 = RubyContext.determineContext(content,
-//						result.keyOffset, RubyContext.MODE_FULL);
-//				if (result2.keyOffset >= 0) {
-//					if (content.charAt(position) == '\r' || content.charAt(position) == '\n')
-//						content = content.substring(0, position - 1) + content.substring(position);
-//					ModuleDeclaration moduleDeclaration = (ModuleDeclaration) typeModel.getASTNode(modelModule, ASTCaching.REPARSE);
-//					ASTNode node = findMaximalNodeEndingAt(moduleDeclaration, result2.keyOffset);
-//					ICalculatedType type = typeCalculator.calculateType(node);
-//					if (type != null) {
-//						IElement[] elements = type.findChildren(IElementCriteria.ByKind.METHOD, null, new NullProgressMonitor());
-//						for (int j = 0; j < elements.length; j++) {
-//							IElement element = elements[j];
-//							reportLocalMethod("".toCharArray(), 0, (org.eclipse.dltk.ruby.core.model.IMethod) element);
-//						}
-//					}
-//				}
-//			}
 		} finally {
 			this.requestor.endReporting();
 		}
 	}
 
-	/**
-	 * Finds minimal ast node, that covers given position
-	 * 
-	 * @param unit
-	 * @param position
-	 * @return
-	 */
-	protected ASTNode findMaximalNodeEndingAt(ModuleDeclaration unit, final int boundaryOffset) {
-
-		class Visitor extends ASTVisitor {
-			ASTNode result = null;
-
-			public ASTNode getResult() {
-				return result;
-			}
-
-			public boolean visitGeneral(ASTNode s) throws Exception {
-				if (s.sourceEnd() == boundaryOffset + 1) {
-					result = s;
-					System.out.println("Found " + s.getClass().getName());
-				}
-				return true;
-			}
-
-		}
-
-		Visitor visitor = new Visitor();
-
-		try {
-			unit.traverse(visitor);
-		} catch (Exception e) {
-			if (DEBUG)
-				e.printStackTrace();
-		}
-
-		return visitor.getResult();
+	private void completeColonExpression(ISourceModule module,
+			ModuleDeclaration moduleDeclaration, ColonExpression minimalNode,
+			int position) {
+		// TODO Auto-generated method stub
+		
 	}
+
+	private void completeConstant(ISourceModule module,
+			ModuleDeclaration moduleDeclaration, ConstantReference minimalNode,
+			int position) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void completeCall(ISourceModule module,
+			ModuleDeclaration moduleDeclaration, CallExpression minimalNode,
+			int position) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 	protected String processFieldName(IField field, String token) {
 		// TODO Auto-generated method stub
