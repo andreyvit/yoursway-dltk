@@ -346,6 +346,8 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 			return baseRelevance + 0;
 		case CompletionProposal.KEYWORD:
 			return baseRelevance + 1;
+		case CompletionProposal.PACKAGE_REF:
+			return baseRelevance + 2;
 		case CompletionProposal.TYPE_REF:
 			return baseRelevance + 2;
 		case CompletionProposal.METHOD_REF:
@@ -393,6 +395,8 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 		switch (proposal.getKind()) {
 		case CompletionProposal.KEYWORD:
 			return createKeywordProposal(proposal);
+		case CompletionProposal.PACKAGE_REF:
+			return createPackageProposal(proposal);
 		case CompletionProposal.TYPE_REF:
 			return createTypeProposal(proposal);
 			// case CompletionProposal.JAVADOC_TYPE_REF:
@@ -585,6 +589,7 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 		case CompletionProposal.LOCAL_VARIABLE_REF:
 		case CompletionProposal.VARIABLE_DECLARATION:
 		case CompletionProposal.KEYWORD:
+		case CompletionProposal.PACKAGE_REF:
 		case CompletionProposal.LABEL_REF:
 			// case CompletionProposal.JAVADOC_BLOCK_TAG:
 			// case CompletionProposal.JAVADOC_INLINE_TAG:
@@ -722,6 +727,16 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 		return createScriptCompletionProposal(completion, start, length, null,
 				label, relevance);
 	}
+	protected IScriptCompletionProposal createPackageProposal(
+			CompletionProposal proposal) {
+		String completion = String.valueOf(proposal.getCompletion());
+		int start = proposal.getReplaceStart();
+		int length = getLength(proposal);
+		String label = getLabelProvider().createSimpleLabel(proposal);
+		int relevance = computeRelevance(proposal);
+		return createScriptCompletionProposal(completion, start, length, getImage(getLabelProvider().createImageDescriptor(proposal)),
+				label, relevance);
+	}
 
 	private IScriptCompletionProposal createLabelProposal(
 			CompletionProposal proposal) {
@@ -804,20 +819,7 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 		}
 	}
 
-	private IScriptCompletionProposal createPackageProposal(
-			CompletionProposal proposal) {
-		// String completion= String.valueOf(proposal.getCompletion());
-		// int start= proposal.getReplaceStart();
-		// int length= getLength(proposal);
-		// String label= getLabelProvider()..createSimpleLabel(proposal);
-		// Image image=
-		// getImage(getLabelProvider()..createPackageImageDescriptor(proposal));
-		// int relevance= computeRelevance(proposal);
-		//
-		// return new JavaCompletionProposal(completion, start, length, image,
-		// label, relevance);
-		return null;
-	}
+	
 
 	private IScriptCompletionProposal createTypeProposal(
 			CompletionProposal typeProposal) {

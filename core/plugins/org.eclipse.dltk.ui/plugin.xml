@@ -167,7 +167,7 @@
             icon="/icons/full/eview16/class_hi.gif"
             category="org.eclipse.dltk.ui.main"
             class="org.eclipse.dltk.internal.ui.typehierarchy.TypeHierarchyViewPart"
-            id="org.eclipse.dltk.ruby.ui.TypeHierarchy">
+            id="org.eclipse.dltk.ui.TypeHierarchy">
       </view>
     <category
           id="org.eclipse.dltk.ui.main"

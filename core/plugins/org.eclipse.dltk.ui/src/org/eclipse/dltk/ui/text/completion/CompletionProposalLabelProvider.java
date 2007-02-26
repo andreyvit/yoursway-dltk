@@ -340,6 +340,7 @@ public abstract class CompletionProposalLabelProvider {
 		case CompletionProposal.VARIABLE_DECLARATION:
 			return createSimpleLabelWithType(proposal);
 		case CompletionProposal.KEYWORD:
+		case CompletionProposal.PACKAGE_REF:
 		case CompletionProposal.LABEL_REF:
 			return createSimpleLabel(proposal);
 		default:
@@ -378,6 +379,9 @@ public abstract class CompletionProposalLabelProvider {
 		case CompletionProposal.LOCAL_VARIABLE_REF:
 		case CompletionProposal.VARIABLE_DECLARATION:
 			descriptor = DLTKPluginImages.DESC_OBJS_LOCAL_VARIABLE;
+			break;
+		case CompletionProposal.PACKAGE_REF:
+			descriptor = DLTKPluginImages.DESC_OBJS_PACKAGE;
 			break;
 		case CompletionProposal.KEYWORD:
 		case CompletionProposal.LABEL_REF:

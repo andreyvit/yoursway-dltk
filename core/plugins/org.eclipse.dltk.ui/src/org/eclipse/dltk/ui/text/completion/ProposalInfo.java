@@ -54,7 +54,7 @@ public class ProposalInfo {
 	 *            a progress monitor
 	 * @return the additional info text
 	 */
-	public final String getInfo(IProgressMonitor monitor) {
+	public  String getInfo(IProgressMonitor monitor) {
 //		if (hackMessage != null){
 //			return hackMessage;			
 //		}

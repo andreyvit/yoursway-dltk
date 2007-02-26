@@ -318,6 +318,8 @@ public abstract class LazyScriptCompletionProposal extends AbstractDLTKCompletio
 				return baseRelevance + 0;
 			case CompletionProposal.KEYWORD:
 				return baseRelevance + 1;
+			case CompletionProposal.PACKAGE_REF:
+				return baseRelevance + 1;
 			case CompletionProposal.TYPE_REF:
 				return baseRelevance + 2;
 			case CompletionProposal.METHOD_REF:

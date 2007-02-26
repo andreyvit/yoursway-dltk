@@ -91,6 +91,9 @@ public class TraditionalHierarchyViewer extends TypeHierarchyViewer {
 		private int getDepth(ITypeHierarchy hierarchy, IType input) {
 			int max = 0;
 			IType[] superType = hierarchy.getSuperclass(input);
+			if( superType == null ) {
+				return 0;
+			}
 			for (int q = 0; q < superType.length; ++q) {
 				int c = getDepth(hierarchy, superType[q]);
 				if (c > max)

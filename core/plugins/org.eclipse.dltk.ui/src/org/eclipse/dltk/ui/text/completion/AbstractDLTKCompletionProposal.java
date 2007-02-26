@@ -154,6 +154,8 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 		}
 	
 	}
+	
+	
 
 	private String fDisplayString;
 	private String fReplacementString;

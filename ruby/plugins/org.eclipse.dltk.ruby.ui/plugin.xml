@@ -146,6 +146,15 @@
             visible="false"
             id="org.eclipse.dltk.ruby.ui.RubyActionSet">
          <action
+               definitionId="org.eclipse.dltk.ruby.ui.navigate.open.type.in.hierarchy"
+               label="%OpenTypeInHierarchyAction.label"
+               tooltip="%OpenTypeInHierarchyAction.tooltip"
+               class="org.eclipse.dltk.ruby.internal.ui.actions.RubyOpenTypeInHierarchyAction"
+               menubarPath="navigate/open.ext2"
+               id="openTypeInHierarchy">
+         </action>
+            
+         <action
             class="org.eclipse.dltk.ruby.internal.ui.actions.RubyOpenTypeAction"
             definitionId="org.eclipse.dltk.ruby.ui.navigate.open.type"
             icon="icons/opentype.gif"
@@ -165,14 +174,25 @@
             categoryId="org.eclipse.ui.category.navigate"
             id="org.eclipse.dltk.ruby.ui.navigate.open.type">
          </command>
+       <command
+            name="%ActionDefinition.openTypeInHierarchy.name"
+            description="%ActionDefinition.openTypeInHierarchy.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ruby.ui.navigate.open.type.in.hierarchy">
+      </command>
  </extension>
  <extension
        point="org.eclipse.ui.bindings">
          <key
-            sequence="M1+M2+T"
-            commandId="org.eclipse.dltk.ruby.ui.navigate.open.type"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>       
-        
+               commandId="org.eclipse.dltk.ruby.ui.navigate.open.type"
+               contextId="org.eclipse.dltk.ui.rubyEditorScope"
+               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+               sequence="M1+M2+T"/>       
+        <key
+              commandId="org.eclipse.dltk.ruby.ui.navigate.open.type.in.hierarchy"
+              contextId="org.eclipse.dltk.ui.rubyEditorScope"
+              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+              sequence="M1+M2+H"/> 
  </extension>
  
  

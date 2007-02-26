@@ -84,7 +84,7 @@ public class MethodsViewer extends ProblemTableViewer {
 		
 		fMemberFilterActionGroup = new MemberFilterActionGroup(this, store);
 		
-		fMemberFilterActionGroup.setActions(new MemberFilterAction[0]);
+//		fMemberFilterActionGroup.setActions(new MemberFilterAction[0]);
 		
 /*		fMemberFilterActionGroup= new MemberFilterActionGroup(this, "HierarchyMethodView", false, 
 emberFilterActionGroup.ALL_FILTERS & ~MemberFilterActionGroup.FILTER_LOCALTYPES); //$NON-NLS-1$*/

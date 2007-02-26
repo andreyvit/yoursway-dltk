@@ -23,6 +23,7 @@ public abstract class ScriptNoTypeCompletionProposalComputer extends ScriptCompl
 		collector.setIgnored(CompletionProposal.ANNOTATION_ATTRIBUTE_REF, false);
 		collector.setIgnored(CompletionProposal.FIELD_REF, false);
 		collector.setIgnored(CompletionProposal.KEYWORD, false);
+		collector.setIgnored(CompletionProposal.PACKAGE_REF, false);
 		collector.setIgnored(CompletionProposal.LABEL_REF, false);
 		collector.setIgnored(CompletionProposal.LOCAL_VARIABLE_REF, false);
 		collector.setIgnored(CompletionProposal.METHOD_DECLARATION, false);

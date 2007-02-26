@@ -16,6 +16,7 @@ import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.core.search.SearchDocument;
 import org.eclipse.dltk.internal.core.search.matching.FieldPattern;
 import org.eclipse.dltk.internal.core.search.matching.MethodPattern;
+import org.eclipse.dltk.internal.core.search.matching.SuperTypeReferencePattern;
 import org.eclipse.dltk.internal.core.search.matching.TypeDeclarationPattern;
 
 public abstract class AbstractIndexer implements IIndexConstants {
@@ -25,97 +26,113 @@ public abstract class AbstractIndexer implements IIndexConstants {
 	public AbstractIndexer(SearchDocument document) {
 		this.document = document;
 	}
-	public void addTypeDeclaration(
-			int modifiers, 
-			char[] packageName,
-			String name, 
-			char[][] enclosingTypeNames, 
-			String[] superclasss ) {
-		char[] indexKey = TypeDeclarationPattern.createIndexKey(modifiers, name.toCharArray(), packageName, enclosingTypeNames);
+
+	public void addTypeDeclaration(int modifiers, char[] packageName,
+			String name, char[][] enclosingTypeNames, String[] superclasss) {
+		char[] indexKey = TypeDeclarationPattern.createIndexKey(modifiers, name
+				.toCharArray(), packageName, enclosingTypeNames);
 		addIndexEntry(TYPE_DECL, indexKey);
-//
+		//
 		if (superclasss != null) {
-			for( int i = 0; i < superclasss.length; ++i ) {
-				char[] superclass = erasure(superclasss[i].toCharArray());
-				addTypeReference(superclass);
+			// for (int i = 0; i < superclasss.length; ++i) {
+			// char[] superclass = erasure(superclasss[i].toCharArray());
+			// addTypeReference(superclass);
+			// }
+			for (int i = 0, max = superclasss.length; i < max; i++) {
+				char[] superClass = erasure(superclasss[i].toCharArray());
+				addTypeReference(superClass);
+				addIndexEntry(SUPER_REF, SuperTypeReferencePattern
+						.createIndexKey(modifiers, packageName, name
+								.toCharArray(), enclosingTypeNames, null,
+								TYPE_SUFFIX, superClass, TYPE_SUFFIX));
+
 			}
 		}
-//		addIndexEntry(
-//			SUPER_REF, 
-//			SuperTypeReferencePattern.createIndexKey(
-//				modifiers, packageName, name, enclosingTypeNames,  CLASS_SUFFIX, superclass, CLASS_SUFFIX));
-//		if (superinterfaces != null) {
-//			for (int i = 0, max = superinterfaces.length; i < max; i++) {
-//				char[] superinterface = erasure(superinterfaces[i]);
-//				addTypeReference(superinterface);
-//				addIndexEntry(
-//					SUPER_REF,
-//					SuperTypeReferencePattern.createIndexKey(
-//						modifiers, packageName, name, enclosingTypeNames, typeParameterSignatures, CLASS_SUFFIX, superinterface, INTERFACE_SUFFIX));
-//			}
-//		}
 	}
+
 	private char[] erasure(char[] typeName) {
-		int genericStart = CharOperation.indexOf(Signature.C_GENERIC_START, typeName);
-		if (genericStart > -1) 
+		int genericStart = CharOperation.indexOf(Signature.C_GENERIC_START,
+				typeName);
+		if (genericStart > -1)
 			typeName = CharOperation.subarray(typeName, 0, genericStart);
 		return typeName;
 	}
-	public void addConstructorDeclaration(String typeName, String[] parameterTypes, String[] exceptionTypes) {
-//		int argCount = parameterTypes == null ? 0 : parameterTypes.length;
-//		addIndexEntry(CONSTRUCTOR_DECL, ConstructorPattern.createIndexKey(CharOperation.lastSegment(typeName,'.'), argCount));
-//	
-//		if (parameterTypes != null) {
-//			for (int i = 0; i < argCount; i++)
-//				addTypeReference(parameterTypes[i]);
-//		}
-//		if (exceptionTypes != null)
-//			for (int i = 0, max = exceptionTypes.length; i < max; i++)
-//				addTypeReference(exceptionTypes[i]);
+
+	public void addConstructorDeclaration(String typeName,
+			String[] parameterTypes, String[] exceptionTypes) {
+		// int argCount = parameterTypes == null ? 0 : parameterTypes.length;
+		// addIndexEntry(CONSTRUCTOR_DECL,
+		// ConstructorPattern.createIndexKey(CharOperation.lastSegment(typeName,'.'),
+		// argCount));
+		//	
+		// if (parameterTypes != null) {
+		// for (int i = 0; i < argCount; i++)
+		// addTypeReference(parameterTypes[i]);
+		// }
+		// if (exceptionTypes != null)
+		// for (int i = 0, max = exceptionTypes.length; i < max; i++)
+		// addTypeReference(exceptionTypes[i]);
 	}
+
 	public void addConstructorReference(char[] typeName, int argCount) {
-//		char[] simpleTypeName = CharOperation.lastSegment(typeName,'.');
-//		addTypeReference(simpleTypeName);
-//		addIndexEntry(CONSTRUCTOR_REF, ConstructorPattern.createIndexKey(simpleTypeName, argCount));
-//		char[] innermostTypeName = CharOperation.lastSegment(simpleTypeName,'$');
-//		if (innermostTypeName != simpleTypeName)
-//			addIndexEntry(CONSTRUCTOR_REF, ConstructorPattern.createIndexKey(innermostTypeName, argCount));
+		// char[] simpleTypeName = CharOperation.lastSegment(typeName,'.');
+		// addTypeReference(simpleTypeName);
+		// addIndexEntry(CONSTRUCTOR_REF,
+		// ConstructorPattern.createIndexKey(simpleTypeName, argCount));
+		// char[] innermostTypeName =
+		// CharOperation.lastSegment(simpleTypeName,'$');
+		// if (innermostTypeName != simpleTypeName)
+		// addIndexEntry(CONSTRUCTOR_REF,
+		// ConstructorPattern.createIndexKey(innermostTypeName, argCount));
 	}
+
 	public void addFieldDeclaration(char[] typeName, char[] fieldName) {
 		addIndexEntry(FIELD_DECL, FieldPattern.createIndexKey(fieldName));
 		addTypeReference(typeName);
 	}
+
 	public void addFieldDeclaration(char[] fieldName) {
 		addIndexEntry(FIELD_DECL, FieldPattern.createIndexKey(fieldName));
 	}
+
 	public void addFieldReference(char[] fieldName) {
 		addNameReference(fieldName);
 	}
+
 	protected void addIndexEntry(char[] category, char[] key) {
 		this.document.addIndexEntry(category, key);
 	}
-	public void addMethodDeclaration(String methodName, String[] parameterNames, String[] exceptionTypes) {
+
+	public void addMethodDeclaration(String methodName,
+			String[] parameterNames, String[] exceptionTypes) {
 		int argCount = parameterNames == null ? 0 : parameterNames.length;
-		addIndexEntry(METHOD_DECL, MethodPattern.createIndexKey(methodName.toCharArray(), argCount));
-	
-//		if (parameterNames != null) {
-//			for (int i = 0; i < argCount; i++)
-//				addNameReference((parameterNames[i]).toCharArray());
-//		}
-//		if (exceptionTypes != null)
-//			for (int i = 0, max = exceptionTypes.length; i < max; i++)
-//				addTypeReference(exceptionTypes[i]);
-//		if (returnType != null)
-//			addTypeReference(returnType);
+		addIndexEntry(METHOD_DECL, MethodPattern.createIndexKey(methodName
+				.toCharArray(), argCount));
+
+		// if (parameterNames != null) {
+		// for (int i = 0; i < argCount; i++)
+		// addNameReference((parameterNames[i]).toCharArray());
+		// }
+		// if (exceptionTypes != null)
+		// for (int i = 0, max = exceptionTypes.length; i < max; i++)
+		// addTypeReference(exceptionTypes[i]);
+		// if (returnType != null)
+		// addTypeReference(returnType);
 	}
+
 	public void addMethodReference(char[] methodName, int argCount) {
-		addIndexEntry(METHOD_REF, MethodPattern.createIndexKey(methodName, argCount));
+		addIndexEntry(METHOD_REF, MethodPattern.createIndexKey(methodName,
+				argCount));
 	}
+
 	public void addNameReference(char[] name) {
 		addIndexEntry(REF, name);
 	}
+
 	public void addTypeReference(char[] typeName) {
-		addNameReference(CharOperation.lastSegment(typeName, IScriptFolder.PACKAGE_DELIMITER));
+		addNameReference(CharOperation.lastSegment(typeName,
+				IScriptFolder.PACKAGE_DELIMITER));
 	}
+
 	public abstract void indexDocument();
 }

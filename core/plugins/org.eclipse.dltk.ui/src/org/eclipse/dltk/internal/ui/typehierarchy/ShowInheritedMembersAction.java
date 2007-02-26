@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.ui.typehierarchy;
 
+import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.custom.BusyIndicator;
 
@@ -29,7 +30,7 @@ public class ShowInheritedMembersAction extends Action {
 		setDescription(TypeHierarchyMessages.ShowInheritedMembersAction_description); 
 		setToolTipText(TypeHierarchyMessages.ShowInheritedMembersAction_tooltip); 
 		
-		//JavaPluginImages.setLocalImageDescriptors(this, "inher_co.gif"); //$NON-NLS-1$
+		DLTKPluginImages.setLocalImageDescriptors(this, "inher_co.gif"); //$NON-NLS-1$
 
 		fMethodsViewer= viewer;
 		

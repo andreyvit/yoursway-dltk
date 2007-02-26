@@ -201,14 +201,10 @@ public class TypeHierarchyViewPart extends ViewPart implements ITypeHierarchyVie
 	private WorkingSetFilterActionGroup fWorkingSetActionGroup;
 	private Job fRestoreStateJob;
 	
-	protected IPreferenceStore getPreferenceStore () {
-		return null;
+	protected IPreferenceStore getPreferenceStore () { 
+		return DLTKUIPlugin.getDefault().getPreferenceStore();
 	}
-	
-	protected IDLTKLanguageToolkit getLanguageToolkit () {
-		return null;
-	}
-	
+		
 	public TypeHierarchyViewPart() {
 		fSelectedType= null;
 		fInputElement= null;
@@ -230,7 +226,7 @@ public class TypeHierarchyViewPart extends ViewPart implements ITypeHierarchyVie
 				doPropertyChange(event);
 			}
 		};
-		getPreferenceStore().addPropertyChangeListener(fPropertyChangeListener);
+//		getPreferenceStore().addPropertyChangeListener(fPropertyChangeListener);
 
 		fIsEnableMemberFilter= false;
 		
@@ -864,8 +860,8 @@ public class TypeHierarchyViewPart extends ViewPart implements ITypeHierarchyVie
 				new OpenViewActionGroup(this), 
 				new CCPActionGroup(this), 
 				//new GenerateActionGroup(this),
-				new RefactorActionGroup(this),
-				new DLTKSearchActionGroup(this, getLanguageToolkit())
+				new RefactorActionGroup(this)/*,
+				new DLTKSearchActionGroup(this, getLanguageToolkit())*/
 		});
 		
 		fActionGroups.fillActionBars(actionBars);

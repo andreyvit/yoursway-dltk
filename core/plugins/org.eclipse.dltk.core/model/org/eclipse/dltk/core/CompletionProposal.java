@@ -579,6 +579,8 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 *
 	 */
 	public static final int DOC_INLINE_TAG = 18;
+	
+	public static final int PACKAGE_REF = 22;
 
 	/**
 	 * First valid completion kind.
@@ -592,7 +594,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * 
 	 *
 	 */
-	protected static final int LAST_KIND = DOC_INLINE_TAG;
+	protected static final int LAST_KIND = PACKAGE_REF;
 	
 	/**
 	 * Kind of completion request.
@@ -624,6 +626,8 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 */
 	private char[] completion = CharOperation.NO_CHAR;
 	
+	
+	public Object extraInfo;
 	/**
 	 * Start position (inclusive) of source range in original buffer 
 	 * to be replaced by completion string; 

@@ -70,8 +70,10 @@ public class SuperTypeHierarchyViewer extends TypeHierarchyViewer {
 			ITypeHierarchy hierarchy= getHierarchy();
 			if (hierarchy != null) {
 				IType[] types= hierarchy.getSupertypes(type);
-				for (int i= 0; i < types.length; i++) {
-					res.add(types[i]);
+				if( types != null ) {
+					for (int i= 0; i < types.length; i++) {
+						res.add(types[i]);
+					}
 				}
 			}
 		}

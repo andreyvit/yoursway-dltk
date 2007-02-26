@@ -144,6 +144,72 @@ import org.eclipse.dltk.internal.core.util.Util;
 
 public final class Signature {
 
+	
+	/**
+	 * Character constant indicating the primitive type boolean in a signature.
+	 * Value is <code>'Z'</code>.
+	 */
+	public static final char C_BOOLEAN 		= 'Z';
+
+	/**
+	 * Character constant indicating the primitive type byte in a signature.
+	 * Value is <code>'B'</code>.
+	 */
+	public static final char C_BYTE 		= 'B';
+
+	/**
+	 * Character constant indicating the primitive type char in a signature.
+	 * Value is <code>'C'</code>.
+	 */
+	public static final char C_CHAR 		= 'C';
+
+	/**
+	 * Character constant indicating the primitive type double in a signature.
+	 * Value is <code>'D'</code>.
+	 */
+	public static final char C_DOUBLE 		= 'D';
+
+	/**
+	 * Character constant indicating the primitive type float in a signature.
+	 * Value is <code>'F'</code>.
+	 */
+	public static final char C_FLOAT 		= 'F';
+
+	/**
+	 * Character constant indicating the primitive type int in a signature.
+	 * Value is <code>'I'</code>.
+	 */
+	public static final char C_INT 			= 'I';
+	
+	/**
+	 * Character constant indicating the semicolon in a signature.
+	 * Value is <code>';'</code>.
+	 */
+	public static final char C_SEMICOLON 			= ';';
+
+	/**
+	 * Character constant indicating the colon in a signature.
+	 * Value is <code>':'</code>.
+	 * @since 3.0
+	 */
+
+
+	/**
+	 * Character constant indicating the primitive type long in a signature.
+	 * Value is <code>'J'</code>.
+	 */
+	public static final char C_LONG			= 'J';
+	
+	/**
+	 * Character constant indicating the primitive type short in a signature.
+	 * Value is <code>'S'</code>.
+	 */
+	public static final char C_SHORT		= 'S';
+	
+	/**
+	 * Character constant indicating result type void in a signature.
+	 * Value is <code>'V'</code>.
+	 */
 	/**
 	 * Character constant indicating result type void in a signature.
 	 * Value is <code>'V'</code>.
@@ -153,8 +219,7 @@ public final class Signature {
 	 * Character constant indicating the semicolon in a signature. Value is
 	 * <code>';'</code>.
 	 */
-	public static final char C_SEMICOLON = ';';
-
+	
 	/**
 	 * Character constant indicating the colon in a signature. Value is
 	 * <code>':'</code>.
@@ -2131,12 +2196,37 @@ public final class Signature {
 				int e = Util.scanTypeVariableSignature(string, start);
 				buffer.append(string, start + 1, e - start - 1);
 				return e;		
-			case C_VOID:
-				buffer.append(VOID);
-				return start;
+			
 			case C_CAPTURE:
 				return appendCaptureTypeSignature(string, start,
 						fullyQualifyTypeNames, buffer);
+			case C_BOOLEAN :
+				buffer.append(BOOLEAN);
+				return start;
+			case C_BYTE :
+				buffer.append(BYTE);
+				return start;
+			case C_CHAR :
+				buffer.append(CHAR);
+				return start;
+			case C_DOUBLE :
+				buffer.append(DOUBLE);
+				return start;
+			case C_FLOAT :
+				buffer.append(FLOAT);
+				return start;
+			case C_INT :
+				buffer.append(INT);
+				return start;
+			case C_LONG :
+				buffer.append(LONG);
+				return start;
+			case C_SHORT :
+				buffer.append(SHORT);
+				return start;
+			case C_VOID :
+				buffer.append(VOID);
+				return start;
 			case C_STAR:
 			case C_EXTENDS:
 			case C_SUPER:
@@ -2148,6 +2238,16 @@ public final class Signature {
 		}
 	}
 
+	private static final char[] BOOLEAN = "boolean".toCharArray(); //$NON-NLS-1$
+	private static final char[] BYTE = "byte".toCharArray(); //$NON-NLS-1$
+	private static final char[] CHAR = "char".toCharArray(); //$NON-NLS-1$
+	private static final char[] DOUBLE = "double".toCharArray(); //$NON-NLS-1$
+	private static final char[] FLOAT = "float".toCharArray(); //$NON-NLS-1$
+	private static final char[] INT = "int".toCharArray(); //$NON-NLS-1$
+	private static final char[] LONG = "long".toCharArray(); //$NON-NLS-1$
+	private static final char[] SHORT = "short".toCharArray(); //$NON-NLS-1$
+	
+	
 	/**
 	 * Scans the given string for an array type signature starting at the given
 	 * index and appends it to the given buffer, and returns the index of the
