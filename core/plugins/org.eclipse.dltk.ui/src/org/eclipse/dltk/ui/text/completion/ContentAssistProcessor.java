@@ -59,7 +59,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.keys.IBindingService;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 
-
 /**
  * A content assist processor that aggregates the proposals of the
  * {@link org.eclipse.dltk.ui.text.java.IScriptCompletionProposalComputer}s
@@ -80,7 +79,7 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
  * </ul>
  * </p>
  * 
-	 *
+ * 
  */
 public abstract class ContentAssistProcessor implements IContentAssistProcessor {
 	private static final boolean DEBUG = "true".equalsIgnoreCase(Platform.getDebugOption("org.eclipse.dltk.ui/debug/ResultCollector")); //$NON-NLS-1$//$NON-NLS-2$
@@ -89,7 +88,7 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 	 * Dialog settings key for the "all categories are disabled" warning dialog.
 	 * See {@link OptionalMessageDialog}.
 	 * 
-	 *
+	 * 
 	 */
 	private static final String PREF_WARN_ABOUT_EMPTY_ASSIST_CATEGORY = "EmptyDefaultAssistCategory"; //$NON-NLS-1$
 
@@ -220,8 +219,6 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 	 */
 	public final ICompletionProposal[] computeCompletionProposals(
 			ITextViewer viewer, int offset) {
-//		System.out
-//				.println("ContentAssistProcessor.computeCompletionProposals()");
 
 		long start = DEBUG ? System.currentTimeMillis() : 0;
 
@@ -242,7 +239,9 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 
 		monitor
 				.subTask(ScriptTextMessages.ContentAssistProcessor_sorting_proposals);
+		
 		List filtered = filterAndSortProposals(proposals, monitor, context);
+		
 		fNumberOfComputedResults = filtered.size();
 		long filter = DEBUG ? System.currentTimeMillis() : 0;
 
@@ -299,6 +298,7 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 	 */
 	protected List filterAndSortProposals(List proposals,
 			IProgressMonitor monitor, ContentAssistInvocationContext context) {
+
 		return proposals;
 	}
 
@@ -502,7 +502,7 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 	 * Informs the user about the fact that there are no enabled categories in
 	 * the default content assist set and shows a link to the preferences.
 	 * 
-	 *
+	 * 
 	 */
 	private boolean informUserAboutEmptyDefaultCategory() {
 		if (OptionalMessageDialog

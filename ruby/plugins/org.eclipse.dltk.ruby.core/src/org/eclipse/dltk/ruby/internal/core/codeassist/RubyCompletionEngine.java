@@ -252,7 +252,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 			int relevance = RelevanceConstants.R_INTERESTING;
 			relevance += computeRelevanceForCaseMatching(token, name);
 			relevance += RelevanceConstants.R_NON_RESTRICTED;
-
+			 
 			// accept result
 			noProposal = false;
 			if (!requestor.isIgnored(CompletionProposal.METHOD_DECLARATION)) {

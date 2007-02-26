@@ -3,7 +3,7 @@ package org.eclipse.dltk.tcl.internal.tclchecker.ui.preferences;
 import org.eclipse.osgi.util.NLS;
 
 public class PreferencesMessages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.dltk.tcl.tclchecker.ui.preferences.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.dltk.tcl.internal.tclchecker.ui.preferences.messages"; //$NON-NLS-1$
 
 	public static String TclChecker_path;
 
