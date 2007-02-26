@@ -112,7 +112,7 @@ import org.eclipse.ui.part.ViewPart;
 /**
  * view showing the super types/sub types of its input.
  */
-public abstract class TypeHierarchyViewPart extends ViewPart implements ITypeHierarchyViewPart, IViewPartInputProvider {
+public class TypeHierarchyViewPart extends ViewPart implements ITypeHierarchyViewPart, IViewPartInputProvider {
 
 	public static final int VIEW_ID_TYPE= 2;
 	public static final int VIEW_ID_SUPER= 0;
@@ -201,9 +201,13 @@ public abstract class TypeHierarchyViewPart extends ViewPart implements ITypeHie
 	private WorkingSetFilterActionGroup fWorkingSetActionGroup;
 	private Job fRestoreStateJob;
 	
-	protected abstract IPreferenceStore getPreferenceStore ();
+	protected IPreferenceStore getPreferenceStore () {
+		return null;
+	}
 	
-	protected abstract IDLTKLanguageToolkit getLanguageToolkit ();
+	protected IDLTKLanguageToolkit getLanguageToolkit () {
+		return null;
+	}
 	
 	public TypeHierarchyViewPart() {
 		fSelectedType= null;

@@ -545,4 +545,96 @@ public interface IDLTKProject extends IModelElement, IOpenable, IParent {
 	 *
 	 */
 	boolean isOnBuildpath(IResource resource);
+	
+	
+	/**
+	 * Creates and returns a type hierarchy for all types in the given
+	 * region, considering subtypes within that region.
+	 *
+	 * @param monitor the given progress monitor
+	 * @param region the given region
+	 * @exception JavaModelException if this element does not exist or if an
+	 *		exception occurs while accessing its corresponding resource
+	 * @exception IllegalArgumentException if region is <code>null</code>
+	 * @return a type hierarchy for all types in the given
+	 * region, considering subtypes within that region
+	 */
+	ITypeHierarchy newTypeHierarchy(IRegion region, IProgressMonitor monitor)
+		throws ModelException;
+
+	/**
+	 * Creates and returns a type hierarchy for all types in the given
+	 * region, considering subtypes within that region and considering types in the 
+	 * working copies with the given owner. 
+	 * In other words, the owner's working copies will take 
+	 * precedence over their original compilation units in the workspace.
+	 * <p>
+	 * Note that if a working copy is empty, it will be as if the original compilation
+	 * unit had been deleted.
+	 * <p>
+	 *
+	 * @param monitor the given progress monitor
+	 * @param region the given region
+	 * @param owner the owner of working copies that take precedence over their original compilation units
+	 * @exception JavaModelException if this element does not exist or if an
+	 *		exception occurs while accessing its corresponding resource
+	 * @exception IllegalArgumentException if region is <code>null</code>
+	 * @return a type hierarchy for all types in the given
+	 * region, considering subtypes within that region
+	 * @since 3.0
+	 */
+	ITypeHierarchy newTypeHierarchy(IRegion region, WorkingCopyOwner owner, IProgressMonitor monitor)
+		throws ModelException;
+
+	/**
+	 * Creates and returns a type hierarchy for the given type considering
+	 * subtypes in the specified region.
+	 * 
+	 * @param type the given type
+	 * @param region the given region
+	 * @param monitor the given monitor
+	 * 
+	 * @exception JavaModelException if this element does not exist or if an
+	 *		exception occurs while accessing its corresponding resource
+	 *
+	 * @exception IllegalArgumentException if type or region is <code>null</code>
+	 * @return a type hierarchy for the given type considering
+	 * subtypes in the specified region
+	 */
+	ITypeHierarchy newTypeHierarchy(
+		IType type,
+		IRegion region,
+		IProgressMonitor monitor)
+		throws ModelException;
+
+	/**
+	 * Creates and returns a type hierarchy for the given type considering
+	 * subtypes in the specified region and considering types in the 
+	 * working copies with the given owner. 
+	 * In other words, the owner's working copies will take 
+	 * precedence over their original compilation units in the workspace.
+	 * <p>
+	 * Note that if a working copy is empty, it will be as if the original compilation
+	 * unit had been deleted.
+	 * <p>
+	 * 
+	 * @param type the given type
+	 * @param region the given region
+	 * @param monitor the given monitor
+	 * @param owner the owner of working copies that take precedence over their original compilation units
+	 * 
+	 * @exception JavaModelException if this element does not exist or if an
+	 *		exception occurs while accessing its corresponding resource
+	 *
+	 * @exception IllegalArgumentException if type or region is <code>null</code>
+	 * @return a type hierarchy for the given type considering
+	 * subtypes in the specified region
+	 * @since 3.0
+	 */
+	ITypeHierarchy newTypeHierarchy(
+		IType type,
+		IRegion region,
+		WorkingCopyOwner owner,
+		IProgressMonitor monitor)
+		throws ModelException;
 }

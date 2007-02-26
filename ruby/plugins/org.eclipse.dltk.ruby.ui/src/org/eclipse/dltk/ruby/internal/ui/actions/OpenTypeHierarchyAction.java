@@ -27,7 +27,7 @@ import org.eclipse.dltk.internal.ui.actions.ActionUtil;
 import org.eclipse.dltk.internal.ui.actions.SelectionConverter;
 import org.eclipse.dltk.internal.ui.browsing.LogicalPackage;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
-import org.eclipse.dltk.internal.ui.util.OpenTypeHierarchyUtil;
+import org.eclipse.dltk.internal.ui.typehierarchy.OpenTypeHierarchyUtil;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.actions.SelectionDispatchAction;
 import org.eclipse.dltk.ui.util.ExceptionHandler;

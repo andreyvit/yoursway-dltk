@@ -85,14 +85,6 @@
             id="org.eclipse.dltk.ruby.ui.RubyDocumentationView">
       </view>  
       
-      <view
-            name="%hierarchyViewName"
-            icon="$nl$/icons/class_hi.gif"
-            category="org.eclipse.dltk.ruby.ui"
-            class="org.eclipse.dltk.ruby.internal.ui.typehierarchy.RubyTypeHierarchyViewPart"
-            id="org.eclipse.dltk.ruby.ui.TypeHierarchy">
-      </view>
-      
       <category
             id="org.eclipse.dltk.ruby.ui"
             name="DLTK Ruby"
@@ -199,4 +191,27 @@
       </page>
    </extension>
  
+ <extension
+       point="org.eclipse.ui.propertyPages">
+    <page
+          class="org.eclipse.dltk.ruby.internal.ui.preferences.RubyBuildPathPropertyPage"
+          id="org.eclipse.dltk.ruby.ui.BuildpathProperties"
+          name="Ruby Build Path"
+          objectClass="org.eclipse.core.resources.IProject">
+       <filter
+             name="nature"
+             value="org.eclipse.dltk.ruby.core.nature"/>
+       <keywordReference id="org.eclipse.dltk.ruby.ui.buildpath"/>
+    </page>
+    <page
+          class="org.eclipse.dltk.ruby.internal.ui.preferences.RubyBuildPathPropertyPage"
+          id="org.eclipse.dltk.ruby.ui.BuildpathProperties"
+          name="Ruby Build Path"
+          objectClass="org.eclipse.dltk.core.IDLTKProject">
+       <filter
+             name="nature"
+             value="org.eclipse.dltk.ruby.core.nature"/>
+       <keywordReference id="org.eclipse.dltk.ruby.ui.buildpath"/>
+    </page>    
+ </extension>
 </plugin>

@@ -25,7 +25,6 @@ Require-Bundle: org.eclipse.ui,
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.ruby.internal.ui,
  org.eclipse.dltk.ruby.internal.ui.preferences,
- org.eclipse.dltk.ruby.internal.ui.properties,
  org.eclipse.dltk.ruby.internal.ui.text,
  org.eclipse.dltk.ruby.internal.ui.text.folding,
  org.eclipse.dltk.ruby.internal.ui.text.rules,

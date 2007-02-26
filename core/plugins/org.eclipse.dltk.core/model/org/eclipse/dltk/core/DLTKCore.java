@@ -30,6 +30,7 @@ import org.eclipse.dltk.internal.core.DLTKProject;
 import org.eclipse.dltk.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.dltk.internal.core.Model;
 import org.eclipse.dltk.internal.core.ModelManager;
+import org.eclipse.dltk.internal.core.Region;
 import org.eclipse.dltk.internal.core.util.MementoTokenizer;
 import org.eclipse.dltk.internal.core.util.Util;
 import org.osgi.framework.BundleContext;
@@ -1488,7 +1489,8 @@ public class DLTKCore extends Plugin {
 	public static void setOptions(Hashtable defaultOptions) {		
 		ModelManager.getModelManager().setOptions(defaultOptions);
 	}
-	
 
-	
+	public static IRegion newRegion() {
+		return new Region();
+	}
 }

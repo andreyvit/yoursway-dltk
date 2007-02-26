@@ -77,19 +77,6 @@ public class SuperTypeHierarchyViewer extends TypeHierarchyViewer {
 		}
 		
 		protected IType[] getParentType(IType type) {
-			try {
-				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLangaugeToolkit(type);
-				IType[] types = toolkit.getParentTypes(type);
-				//TODO: Add support for multi type hierarchies.
-				if( types != null && types.length > 1 ) {
-					return types;
-				}
-			} catch (CoreException e) {
-				if( DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
-			}
-			
 			return null;
 		}
 	}		

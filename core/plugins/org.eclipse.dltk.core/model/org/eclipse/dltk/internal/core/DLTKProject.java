@@ -48,10 +48,12 @@ import org.eclipse.dltk.core.IModelMarker;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IProjectFragment;
+import org.eclipse.dltk.core.IRegion;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.internal.core.util.MementoTokenizer;
@@ -2505,6 +2507,71 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 */
 	public SearchableEnvironment newSearchableNameEnvironment(WorkingCopyOwner owner) throws ModelException {
 		return new SearchableEnvironment(this, owner);
+	}
+	
+	/**
+	 * @see IJavaProject
+	 */
+	public ITypeHierarchy newTypeHierarchy(
+		IRegion region,
+		IProgressMonitor monitor)
+		throws ModelException {
+			
+		return newTypeHierarchy(region, DefaultWorkingCopyOwner.PRIMARY, monitor);
+	}
+
+	/**
+	 * @see IJavaProject
+	 */
+	public ITypeHierarchy newTypeHierarchy(
+		IRegion region,
+		WorkingCopyOwner owner,
+		IProgressMonitor monitor)
+		throws ModelException {
+
+		if (region == null) {
+			throw new IllegalArgumentException(Messages.hierarchy_nullRegion);
+		}
+		ISourceModule[] workingCopies = ModelManager.getModelManager().getWorkingCopies(owner, true/*add primary working copies*/);
+		CreateTypeHierarchyOperation op =
+			new CreateTypeHierarchyOperation(region, workingCopies, null, true);
+		op.runOperation(monitor);
+		return op.getResult();
+	}
+
+	/**
+	 * @see IJavaProject
+	 */
+	public ITypeHierarchy newTypeHierarchy(
+		IType type,
+		IRegion region,
+		IProgressMonitor monitor)
+		throws ModelException {
+			
+		return newTypeHierarchy(type, region, DefaultWorkingCopyOwner.PRIMARY, monitor);
+	}
+
+	/**
+	 * @see IJavaProject
+	 */
+	public ITypeHierarchy newTypeHierarchy(
+		IType type,
+		IRegion region,
+		WorkingCopyOwner owner,
+		IProgressMonitor monitor)
+		throws ModelException {
+
+		if (type == null) {
+			throw new IllegalArgumentException(Messages.hierarchy_nullFocusType);
+		}
+		if (region == null) {
+			throw new IllegalArgumentException(Messages.hierarchy_nullRegion);
+		}
+		ISourceModule[] workingCopies = ModelManager.getModelManager().getWorkingCopies(owner, true/*add primary working copies*/);
+		CreateTypeHierarchyOperation op =
+			new CreateTypeHierarchyOperation(region, workingCopies, type, true/*compute subtypes*/);
+		op.runOperation(monitor);
+		return op.getResult();
 	}
 
 	/**

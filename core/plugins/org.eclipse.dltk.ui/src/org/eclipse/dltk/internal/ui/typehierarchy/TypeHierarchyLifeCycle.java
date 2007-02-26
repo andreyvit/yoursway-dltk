@@ -23,6 +23,9 @@ import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
+import org.eclipse.dltk.core.IProjectFragment;
+import org.eclipse.dltk.core.IRegion;
+import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ITypeHierarchy;
@@ -31,8 +34,6 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.text.IRegion;
-
 /**
  * Manages a type hierarchy, to keep it refreshed, and to allow it to be shared.
  */
@@ -118,7 +119,7 @@ public class TypeHierarchyLifeCycle implements ITypeHierarchyChangedListener, IE
 	}
 	
 	private ITypeHierarchy createTypeHierarchy(IModelElement element, IProgressMonitor pm) throws ModelException {
-/*		if (element.getElementType() == IModelElement.TYPE) {
+		if (element.getElementType() == IModelElement.TYPE) {
 			IType type= (IType) element;
 			if (fIsSuperTypesOnly) {
 				return type.newSupertypeHierarchy(pm);
@@ -129,28 +130,27 @@ public class TypeHierarchyLifeCycle implements ITypeHierarchyChangedListener, IE
 			IRegion region= DLTKCore.newRegion();
 			if (element.getElementType() == IModelElement.SCRIPT_PROJECT) {
 				// for projects only add the contained source folders
-//				IPackageFragmentRoot[] roots= ((IDLTKProject) element).getPackageFragmentRoots();
-//				for (int i= 0; i < roots.length; i++) {
-//					if (!roots[i].isExternal()) {
-//						region.add(roots[i]);
-//					}
-//				}
+				IProjectFragment[] roots= ((IDLTKProject) element).getProjectFragments();
+				for (int i= 0; i < roots.length; i++) {
+					if (!roots[i].isExternal()) {
+						region.add(roots[i]);
+					}
+				}
 			} else if (element.getElementType() == IModelElement.PROJECT_FRAGMENT) {
-//				IPackageFragmentRoot[] roots= element.getJavaProject().getPackageFragmentRoots();
-//				String name= element.getElementName();
-//				for (int i= 0; i < roots.length; i++) {
-//					IPackageFragment pack= roots[i].getPackageFragment(name);
-//					if (pack.exists()) {
-//						region.add(pack);
-//					}
-//				}
+				IProjectFragment[] roots= element.getScriptProject().getProjectFragments();
+				String name= element.getElementName();
+				for (int i= 0; i < roots.length; i++) {
+					IScriptFolder pack= roots[i].getScriptFolder(name);
+					if (pack.exists()) {
+						region.add(pack);
+					}
+				}
 			} else {
 				region.add(element);
 			}
 			IDLTKProject jproject= element.getScriptProject();
 			return jproject.newTypeHierarchy(region, pm);
-		}*/
-		return null;
+		}
 	}
 	
 	
