@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
+import java.util.Collection;
 import java.util.Map;
 
 import org.eclipse.dltk.ast.ASTNode;
@@ -28,9 +29,11 @@ import org.eclipse.dltk.ddp.TypeInferencer;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
+import org.eclipse.dltk.ruby.core.model.FakeMethod;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
+import org.eclipse.dltk.ruby.typeinference.BuiltinMethods;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
@@ -128,7 +131,10 @@ public class RubyCompletionEngine extends CompletionEngine {
 						for (int j = 0; j < allMethods.length; j++) {
 							reportMethod("".toCharArray(), 0, allMethods[j]);
 						}
-					}
+					} else if (type instanceof RubyMetaClassType) {
+						RubyMetaClassType metaType = (RubyMetaClassType) type;
+						//TODO
+					}					
 				}
 			} else if (afterColons(content, position)) {
 				this.setSourceRange(position, position);
@@ -246,6 +252,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 	}
 
 	private void reportMethod(char[] token, int length, IMethod method) {
+				
 		char[] name = method.getElementName().toCharArray();
 		if (length <= name.length
 				&& CharOperation.prefixEquals(token, name, false)) {
@@ -273,10 +280,12 @@ public class RubyCompletionEngine extends CompletionEngine {
 
 				String[] params = null;
 
-				try {
-					params = method.getParameters();
-				} catch (ModelException e) {
-					e.printStackTrace();
+				if (!(method instanceof FakeMethod)) {
+					try {
+						params = method.getParameters();
+					} catch (ModelException e) {
+						e.printStackTrace();
+					}
 				}
 
 				if (params != null && params.length > 0) {
@@ -287,6 +296,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 					proposal.setParameterNames(args);
 				}
 
+				proposal.setModelElement(method);
 				proposal.setName(name);
 				proposal.setCompletion(name);
 				// proposal.setFlags(Flags.AccDefault);
@@ -318,6 +328,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 				// proposal.setPackageName(q);
 				// proposal.setTypeName(displayName);
 
+				proposal.setModelElement(type);
 				proposal.setName(name);
 				proposal.setCompletion(type.getTypeQualifiedName("::")
 						.substring(from).toCharArray());

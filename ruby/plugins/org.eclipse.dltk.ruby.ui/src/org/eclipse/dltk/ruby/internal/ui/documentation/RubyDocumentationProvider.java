@@ -11,6 +11,8 @@ import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.ruby.core.model.FakeMethod;
+import org.eclipse.dltk.ruby.internal.ui.docs.RiHelper;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
 import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
 import org.eclipse.dltk.ui.documentation.IScriptDocumentationProvider;
@@ -150,7 +152,20 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 		return null;
 	}
 	
+	private Reader proccessBuiltin (FakeMethod method) {
+		String keyword = method.getReceiver() + "." + method.getElementName();
+		RiHelper helper = RiHelper.getInstance();
+		String doc = helper.getDocFor(keyword);
+		if (doc != null)
+			return new StringReader("<pre>" + doc + "</pre>");
+		return new StringReader("Built-in method");
+	}
+	
 	public Reader getInfo(IMember member, boolean lookIntoParents, boolean lookIntoExternal)  {
+		if (member instanceof FakeMethod) {
+			FakeMethod method = (FakeMethod) member;
+			return proccessBuiltin(method);
+		}
 		String header = getHeaderComment(member);
 		return new StringReader (convertToHTML (header));
 	}

@@ -258,8 +258,7 @@ public class BuiltinMethods {
 			}
 			return methods;
 		}
-		return null;
-		
+		return null;		
 	}
 
 	private static String getPossibleIntrinsicClassName(IClassType receiver) {
@@ -279,5 +278,7 @@ public class BuiltinMethods {
 		}
 		return null;
 	}
+	
+	
 
 }

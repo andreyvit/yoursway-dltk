@@ -655,7 +655,7 @@ public class RubyTypeInferencingUtils {
 				System.out.println();
 			} catch (ModelException e) {
 			}			
-		}
+		}		
 		return new RubyClassType(fqn, allTypes, (IMethod[]) methods.toArray(new IMethod[methods.size()]));
 	}
 	

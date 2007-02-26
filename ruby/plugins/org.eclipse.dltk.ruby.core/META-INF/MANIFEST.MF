@@ -13,6 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.ruby.ast,
  org.eclipse.dltk.ruby.core,
+ org.eclipse.dltk.ruby.core.model,
  org.eclipse.dltk.ruby.core.text,
  org.eclipse.dltk.ruby.core.utils,
  org.eclipse.dltk.ruby.internal.core.codeassist,

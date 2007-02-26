@@ -77,4 +77,12 @@ public class RubyCompletionProposalCollector extends
 		return createScriptCompletionProposal(completion, start, length, img,
 				label, relevance);
 	}
+
+	protected IScriptCompletionProposal createScriptCompletionProposal(CompletionProposal proposal) {
+		
+		return super.createScriptCompletionProposal(proposal);
+	}
+	
+	
+	
 }

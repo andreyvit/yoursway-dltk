@@ -1,6 +1,8 @@
 package org.eclipse.dltk.ruby.internal.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionProposal;
+import org.eclipse.dltk.core.IMethod;
+import org.eclipse.dltk.ruby.core.model.FakeMethod;
 import org.eclipse.dltk.ui.text.completion.CompletionProposalLabelProvider;
 
 public class RubyCompletionProposalLabelProvider extends
@@ -15,6 +17,15 @@ public class RubyCompletionProposalLabelProvider extends
 		nameBuffer.append('(');
 		appendUnboundedParameterList(nameBuffer, methodProposal);
 		nameBuffer.append(')');
+		
+		
+		IMethod method = (IMethod) methodProposal.getModelElement();
+		nameBuffer.append(" - ");
+		if (method instanceof FakeMethod) {
+			nameBuffer.append(((FakeMethod)method).getReceiver());
+		} else {
+			nameBuffer.append(method.getParent().getElementName());
+		}
 
 		// return type
 		if (!methodProposal.isConstructor()) {
@@ -44,7 +55,15 @@ public class RubyCompletionProposalLabelProvider extends
 		// parameters
 		nameBuffer.append('(');
 		appendUnboundedParameterList(nameBuffer, methodProposal);
-		nameBuffer.append(")  "); //$NON-NLS-1$
+		nameBuffer.append(")"); //$NON-NLS-1$
+		
+		IMethod method = (IMethod) methodProposal.getModelElement();
+		nameBuffer.append(" - ");
+		if (method instanceof FakeMethod) {
+			nameBuffer.append(((FakeMethod)method).getReceiver());
+		} else {
+			nameBuffer.append(method.getParent().getElementName());
+		}
 
 		// return type
 		// TODO remove SignatureUtil.fix83600 call when bugs are fixed

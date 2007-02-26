@@ -13,6 +13,7 @@ import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ISourceModule;
@@ -20,7 +21,10 @@ import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.evaluation.types.IClassType;
+import org.eclipse.dltk.evaluation.types.IEvaluatedType;
+import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
+import org.eclipse.dltk.ruby.core.model.FakeMethod;
 
 public class RubyModelUtils {
 	
@@ -178,8 +182,8 @@ public class RubyModelUtils {
 			return null;
 		}
 		if (superClasses != null && superClasses.length == 1) {
+			String name = superClasses[0];		
 			IType[] types;
-			String name = superClasses[0];			
 			if (name.startsWith("::")) {
 				types = DLTKModelUtil.getAllTypes(type.getScriptProject(), name, "::");
 			} else {
@@ -190,11 +194,45 @@ public class RubyModelUtils {
 				String typeQualifiedName = types[0].getTypeQualifiedName("::").substring(2);
 				String[] FQN = typeQualifiedName.split("::");				
 				return new RubyClassType(FQN, types, null);
+			} else {
+				FakeMethod[] fakeMethods = getFakeMethods((ModelElement) type, name);
+				if (fakeMethods != null) {
+					return new RubyClassType(new String[]{name}, null, fakeMethods);
+				}
 			}
 		}
-		return null;
+		FakeMethod[] fakeMethods = getFakeMethods((ModelElement) type, "Object");
+		return new RubyClassType(new String[]{"Object"}, null, fakeMethods);
 	}
 
+	public static FakeMethod[] getFakeMethods(ModelElement parent, String klass) {
+		String[] names = getBuiltinMethodNames(klass);
+		if (names == null) 
+			return new FakeMethod[0];
+		List methods = new ArrayList ();
+		for (int i = 0; i < names.length; i++) {
+			FakeMethod method = new FakeMethod(parent, names[i]);
+			method.setReceiver(klass);
+			methods.add(method);
+		}
+		return (FakeMethod[]) methods.toArray(new FakeMethod[methods.size()]);
+	} 
 	
+	public static String[] getBuiltinMethodNames(String klass) {
+		if (klass.equals("Object")) {
+			return BuiltinTypeMethods.objectMethods;
+		} else if (klass.equals("String")) {
+			return BuiltinTypeMethods.stringMethods;
+		} else  if (klass.equals("Fixnum")) {
+			return BuiltinTypeMethods.fixnumMethods;
+		} else if (klass.equals("Float")) {
+			return BuiltinTypeMethods.floatMethods;
+		} else if (klass.equals("Regexp")) {
+			return BuiltinTypeMethods.regexpMethods;
+		} else if (klass.equals("Array")) {
+			return BuiltinTypeMethods.arrayMethods;
+		} 
+		return null;
+	}
 
 }

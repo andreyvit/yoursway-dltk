@@ -698,6 +698,10 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * Indicates whether parameter names have been computed.
 	 */
 	private boolean parameterNamesComputed = false;
+	
+	
+	
+	private IModelElement modelElement = null;
 		
 	/**
 	 * Creates a basic completion proposal. All instance
@@ -1680,5 +1684,13 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	
 	protected boolean isParameterNamesComputed(){
 		return parameterNamesComputed;
+	}
+
+	public IModelElement getModelElement() {
+		return modelElement;
+	}
+
+	public void setModelElement(IModelElement modelElement) {
+		this.modelElement = modelElement;
 	}
 }

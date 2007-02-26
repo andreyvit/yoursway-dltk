@@ -55,9 +55,9 @@ public class ProposalInfo {
 	 * @return the additional info text
 	 */
 	public final String getInfo(IProgressMonitor monitor) {
-		if (hackMessage != null){
-			return hackMessage;			
-		}
+//		if (hackMessage != null){
+//			return hackMessage;			
+//		}
 		
 		if (!fScriptdocResolved) {
 			fScriptdocResolved = true;

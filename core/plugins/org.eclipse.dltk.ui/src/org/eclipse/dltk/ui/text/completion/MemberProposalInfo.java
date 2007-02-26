@@ -53,11 +53,16 @@ public abstract class MemberProposalInfo extends ProposalInfo {
 	 * @throws ModelException
 	 */
 	public IModelElement getModelElement() throws ModelException {
-		if (!fModelElementResolved) {
-			fModelElementResolved = true;
-			fElement = resolveMember();
-		}
-		return fElement;
+//		if (!fModelElementResolved) {
+//			fModelElementResolved = true;
+//			//fElement = resolveMember();
+//		}
+		return fProposal.getModelElement();
+	}
+	
+	public void setModelElement(IModelElement element) {
+		fModelElementResolved = true;
+		fElement = element;
 	}
 
 	/**
