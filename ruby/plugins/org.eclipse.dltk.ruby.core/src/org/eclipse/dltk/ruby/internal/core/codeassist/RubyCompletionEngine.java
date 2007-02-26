@@ -28,6 +28,7 @@ import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.TypeInferencer;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.SimpleType;
+import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
@@ -37,7 +38,9 @@ import org.eclipse.dltk.ruby.typeinference.BuiltinMethods;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
+import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
+import org.eclipse.dltk.ruby.typeinference.BuiltinMethods.BuiltinClass;
 
 public class RubyCompletionEngine extends CompletionEngine {
 
@@ -119,22 +122,12 @@ public class RubyCompletionEngine extends CompletionEngine {
 				ASTNode node = ASTUtils.findMaximalNodeEndingAt(
 						moduleDeclaration, position - 1);
 				if (node instanceof Statement) {
-					ExpressionGoal goal = new ExpressionGoal(new BasicContext(
-							modelModule, moduleDeclaration), (Statement) node);
-					IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
-					if (type instanceof RubyClassType) {
-						RubyClassType rubyClassType = (RubyClassType) type;
-						rubyClassType = RubyTypeInferencingUtils
-								.resolveMethods(modelModule.getScriptProject(),
-										rubyClassType);
-						IMethod[] allMethods = rubyClassType.getAllMethods();
+					IMethod[] allMethods = getMethodsForReceiver(modelModule, moduleDeclaration, node);
+					if (allMethods != null) {
 						for (int j = 0; j < allMethods.length; j++) {
-							reportMethod("".toCharArray(), 0, allMethods[j]);
+							reportMethod("".toCharArray(), 0, allMethods[j], allMethods.length - j);
 						}
-					} else if (type instanceof RubyMetaClassType) {
-						RubyMetaClassType metaType = (RubyMetaClassType) type;
-						//TODO
-					}					
+					}
 				}
 			} else if (afterColons(content, position)) {
 				this.setSourceRange(position, position);
@@ -195,6 +188,36 @@ public class RubyCompletionEngine extends CompletionEngine {
 		}
 	}
 
+	private IMethod[] getMethodsForReceiver(org.eclipse.dltk.core.ISourceModule modelModule, ModuleDeclaration moduleDeclaration, ASTNode receiver) {
+		ExpressionGoal goal = new ExpressionGoal(new BasicContext(
+				modelModule, moduleDeclaration), (Statement) receiver);
+		IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+		if (type instanceof RubyClassType) {
+			RubyClassType rubyClassType = (RubyClassType) type;
+			rubyClassType = RubyTypeInferencingUtils
+					.resolveMethods(modelModule.getScriptProject(),
+							rubyClassType);
+			return rubyClassType.getAllMethods();			
+		} else if (type instanceof RubyMetaClassType) {
+			RubyMetaClassType metaType = (RubyMetaClassType) type;
+			metaType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), metaType);
+			return metaType.getMethods();
+		} else if (type instanceof SimpleType) {
+			SimpleType simpleType = (SimpleType) type;
+			IMethod[] meth = null;
+			switch (simpleType.getType()) {
+				case SimpleType.TYPE_NUMBER:
+					meth = RubyModelUtils.getFakeMethods((ModelElement) modelModule, "Fixnum");
+					break;
+				case SimpleType.TYPE_STRING:
+					meth = RubyModelUtils.getFakeMethods((ModelElement) modelModule, "String");
+					break;
+			}
+			return meth;
+		}
+		return null;
+	}
+
 	private void completeSimpleRef(org.eclipse.dltk.core.ISourceModule module,
 			ModuleDeclaration moduleDeclaration, SimpleReference node,
 			int position) {
@@ -222,24 +245,24 @@ public class RubyCompletionEngine extends CompletionEngine {
 			int position) {
 		Statement receiver = node.getReceiver();
 
-		// sint pos = node.getReceiver().sourceEnd();
+		String content;
+		try {
+			content = module.getSource();
+		} catch (ModelException e) {
+			return;
+		}
+		
+		int pos = node.getReceiver().sourceEnd() + 1;
+		
+		String starting = content.substring(pos, position);
 
 		if (receiver != null) {
-			ExpressionGoal goal = new ExpressionGoal(new BasicContext(module,
-					moduleDeclaration), (Statement) receiver);
-			IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
-			if (type instanceof RubyClassType) {
-				RubyClassType classType = RubyTypeInferencingUtils
-						.resolveMethods(module.getScriptProject(),
-								(RubyClassType) type);
-				IMethod[] allMethods = classType.getAllMethods();
-				for (int i = 0; i < allMethods.length; i++) {
-
+			IMethod[] allMethods = getMethodsForReceiver(module, moduleDeclaration, receiver);
+			if (allMethods != null) {
+				for (int j = 0; j < allMethods.length; j++) {
+					if (allMethods[j].getElementName().startsWith(starting))
+						reportMethod("".toCharArray(), 0, allMethods[j], allMethods.length - j);
 				}
-			} else if (type instanceof RubyMetaClassType) {
-
-			} else if (type instanceof SimpleType) {
-
 			}
 		} else {
 			// complete word
@@ -251,7 +274,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 		return null;
 	}
 
-	private void reportMethod(char[] token, int length, IMethod method) {
+	private void reportMethod(char[] token, int length, IMethod method, int order) {
 				
 		char[] name = method.getElementName().toCharArray();
 		if (length <= name.length
@@ -259,7 +282,8 @@ public class RubyCompletionEngine extends CompletionEngine {
 			int relevance = RelevanceConstants.R_INTERESTING;
 			relevance += computeRelevanceForCaseMatching(token, name);
 			relevance += RelevanceConstants.R_NON_RESTRICTED;
-			 
+			relevance += order; 
+			
 			// accept result
 			noProposal = false;
 			if (!requestor.isIgnored(CompletionProposal.METHOD_DECLARATION)) {
@@ -318,7 +342,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 			int relevance = RelevanceConstants.R_INTERESTING;
 			relevance += computeRelevanceForCaseMatching(token, name);
 			relevance += RelevanceConstants.R_NON_RESTRICTED;
-
+			
 			// accept result
 			noProposal = false;
 			if (!requestor.isIgnored(CompletionProposal.TYPE_REF)) {

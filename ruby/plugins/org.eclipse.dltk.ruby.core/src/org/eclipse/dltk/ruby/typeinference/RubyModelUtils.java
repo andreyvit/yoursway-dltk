@@ -218,6 +218,20 @@ public class RubyModelUtils {
 		return (FakeMethod[]) methods.toArray(new FakeMethod[methods.size()]);
 	} 
 	
+	
+	public static FakeMethod[] getFakeMetaMethods(ModelElement parent, String klass) {
+		String[] names = getBuiltinMetaMethodNames(klass);
+		if (names == null) 
+			return new FakeMethod[0];
+		List methods = new ArrayList ();
+		for (int i = 0; i < names.length; i++) {
+			FakeMethod method = new FakeMethod(parent, names[i]);
+			method.setReceiver(klass);
+			methods.add(method);
+		}
+		return (FakeMethod[]) methods.toArray(new FakeMethod[methods.size()]);
+	} 
+	
 	public static String[] getBuiltinMethodNames(String klass) {
 		if (klass.equals("Object")) {
 			return BuiltinTypeMethods.objectMethods;
@@ -231,6 +245,13 @@ public class RubyModelUtils {
 			return BuiltinTypeMethods.regexpMethods;
 		} else if (klass.equals("Array")) {
 			return BuiltinTypeMethods.arrayMethods;
+		} 
+		return null;
+	}
+
+	public static String[] getBuiltinMetaMethodNames(String klass) {
+		if (klass.equals("Object")) {
+			return BuiltinMetaTypeMethods.objectMethods;
 		} 
 		return null;
 	}

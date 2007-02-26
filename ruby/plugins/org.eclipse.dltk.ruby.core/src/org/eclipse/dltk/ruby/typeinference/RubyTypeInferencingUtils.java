@@ -43,9 +43,11 @@ import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.RecursionTypeCall;
 import org.eclipse.dltk.evaluation.types.UnknownType;
+import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.SelfReference;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
+import org.eclipse.dltk.ruby.core.model.FakeMethod;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 
 public class RubyTypeInferencingUtils {
@@ -621,6 +623,16 @@ public class RubyTypeInferencingUtils {
 		return null;
 	}
 	
+	public static RubyMetaClassType resolveMethods(IDLTKProject project, RubyMetaClassType type) {
+		if (type.getMethods() == null) {
+			FakeMethod[] metaMethods = RubyModelUtils.getFakeMetaMethods((ModelElement) project, "Object");
+			if (metaMethods != null) {
+				return new RubyMetaClassType(type.getInstanceType(), metaMethods);
+			}
+		}
+		return type;
+	}
+	
 	// FIXME should be in RubyClassType itself!
 	public static RubyClassType resolveMethods(IDLTKProject project, RubyClassType type) {
 		if (type.getAllMethods() != null)
@@ -638,9 +650,15 @@ public class RubyTypeInferencingUtils {
 		List methods = new ArrayList ();		
 		for (int i = 0; i < allTypes.length; i++) {
 			try {
+				HashSet methodNames = new HashSet();
+				
 				IMethod[] methods2 = allTypes[i].getMethods();
 				for (int j = 0; j < methods2.length; j++) {
 					if (!((methods2[j].getFlags() & Modifiers.AccStatic) > 0)) {
+						String mName = methods2[j].getElementName();
+						if (methodNames.contains(mName))
+							continue;
+						methodNames.add(mName);
 						methods.add(methods2[j]);
 					}
 				}
@@ -649,10 +667,13 @@ public class RubyTypeInferencingUtils {
 					superType = resolveMethods(project, superType);
 					IMethod[] allMethods = superType.getAllMethods();
 					for (int j = 0; j < allMethods.length; j++) {
+						String mName = allMethods[j].getElementName();
+						if (methodNames.contains(mName))
+							continue;
+						methodNames.add(mName);
 						methods.add(allMethods[j]);
 					}
 				}
-				System.out.println();
 			} catch (ModelException e) {
 			}			
 		}		
