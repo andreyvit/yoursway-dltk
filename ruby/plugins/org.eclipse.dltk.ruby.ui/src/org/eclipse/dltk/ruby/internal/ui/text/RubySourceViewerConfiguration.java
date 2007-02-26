@@ -3,7 +3,6 @@ package org.eclipse.dltk.ruby.internal.ui.text;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.internal.ui.text.ScriptElementProvider;
-import org.eclipse.dltk.internal.ui.typehierarchy.HierarchyInformationControl;
 import org.eclipse.dltk.ruby.internal.ui.text.completion.RubyCompletionProcessor;
 import org.eclipse.dltk.ruby.internal.ui.text.completion.RubyContentAssistPreference;
 import org.eclipse.dltk.ruby.internal.ui.typehierarchy.RubyHierarchyInformationControl;
@@ -13,8 +12,10 @@ import org.eclipse.dltk.ui.text.AbstractScriptScanner;
 import org.eclipse.dltk.ui.text.DLTKSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.IColorManager;
 import org.eclipse.dltk.ui.text.SingleTokenScriptScanner;
+import org.eclipse.jface.internal.text.html.HTMLTextPresenter;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.AbstractInformationControlManager;
+import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
@@ -36,6 +37,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.w3c.dom.html.HTMLInputElement;
 
 public class RubySourceViewerConfiguration extends
 		DLTKSourceViewerConfiguration {
@@ -261,11 +263,21 @@ public class RubySourceViewerConfiguration extends
 
 			assistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
 			assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
+						
+			//assistant.setStatusLineVisible(true);
 			
 			return assistant;
 		}
 
 		return null;
 	}
-
+	
+	public IInformationControlCreator getInformationControlCreator(
+			ISourceViewer sourceViewer) {
+		return new IInformationControlCreator() {
+			public IInformationControl createInformationControl(Shell parent) {
+				return new DefaultInformationControl(parent, SWT.NONE, new HTMLTextPresenter(true), "My Status");
+			}
+		};
+	}
 }

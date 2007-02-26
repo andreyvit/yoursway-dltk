@@ -1,12 +1,19 @@
 package org.eclipse.dltk.console.ui;
 
+import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IInformationControl;
+import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
+import org.eclipse.jface.text.information.IInformationPresenter;
+import org.eclipse.jface.text.information.InformationPresenter;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Shell;
 
 public class ScriptConsoleSourceViewerConfiguration extends
 		SourceViewerConfiguration {
@@ -39,13 +46,13 @@ public class ScriptConsoleSourceViewerConfiguration extends
 	}
 
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
-		ContentAssistant assistant = new ContentAssistant();
-		assistant.setContentAssistProcessor(processor, PARTITION_TYPE);
+		ContentAssistant ca = new ContentAssistant();
+		ca.setContentAssistProcessor(processor, PARTITION_TYPE);
 
-		assistant.enableAutoActivation(true);
-		assistant.enableAutoInsert(false);
-		assistant.setAutoActivationDelay(DEFAULT_CA_DELAY);
-
-		return assistant;
+		ca.enableAutoActivation(true);
+		ca.enableAutoInsert(false);
+		ca.setAutoActivationDelay(DEFAULT_CA_DELAY);
+				
+		return ca;
 	}
 }

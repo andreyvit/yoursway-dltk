@@ -228,6 +228,8 @@ public class ScriptElementLabels {
 	 * <code>Vector<String>.get(String)</code>
 	 */
 	public final static long USE_RESOLVED = 1L << 48;
+	
+	public final static long APPEND_FILE = 1L << 49;
 
 	/**
 	 * Qualify all elements
@@ -459,6 +461,12 @@ public class ScriptElementLabels {
 		if (root != null && getFlag(flags, APPEND_ROOT_PATH)) {
 			buf.append(CONCAT_STRING);
 			getProjectFragmentLabel(root, ROOT_QUALIFIED, buf);
+		}
+		
+		ISourceModule sourceModule = (ISourceModule) element.getAncestor(IModelElement.SOURCE_MODULE);
+		if (sourceModule != null && getFlag(flags, APPEND_FILE)) {
+			buf.append(CONCAT_STRING);
+			getSourceModel(sourceModule, flags, buf);
 		}
 	}
 

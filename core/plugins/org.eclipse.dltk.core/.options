@@ -10,3 +10,5 @@ org.eclipse.dltk.core/debugCompletion = false
 org.eclipse.dltk.core/debugScriptBuilder = false
 org.eclipse.dltk.core/debugScopes = false
 org.eclipse.dltk.core/debugPrintModel = false
+org.eclipse.dltk.core/traceAST/jruby = false
+org.eclipse.dltk.core/traceAST/dltk = false

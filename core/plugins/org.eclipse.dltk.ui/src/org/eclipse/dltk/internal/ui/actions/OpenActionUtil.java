@@ -77,7 +77,9 @@ public class OpenActionUtil {
 		
 		int flags= ModelElementLabelProvider.SHOW_DEFAULT
 //						| ModelElementLabelProvider.SHOW_QUALIFIED
-						| ModelElementLabelProvider.SHOW_ROOT;
+//						| ModelElementLabelProvider.SHOW_ROOT
+						| ModelElementLabelProvider.SHOW_FILE_QUALIFIED
+						;
 						
 		ElementListSelectionDialog dialog= new ElementListSelectionDialog(shell, new ModelElementLabelProvider(flags));
 		dialog.setTitle(title);

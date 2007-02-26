@@ -1,11 +1,13 @@
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.Argument;
@@ -31,6 +33,10 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.search.SearchMatch;
+import org.eclipse.dltk.core.search.SearchRequestor;
+import org.eclipse.dltk.core.search.TypeNameMatch;
+import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
 import org.eclipse.dltk.ddp.BasicContext;
 import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.TypeInferencer;
@@ -135,6 +141,11 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 			System.out.println(selectionSourceEnd);
 			System.out.println("SELECTION - Source :"); //$NON-NLS-1$
 			System.out.println(source);
+		}
+		if (selectionSourceStart > selectionSourceEnd) {
+			int x = selectionSourceEnd;
+			selectionSourceEnd = selectionSourceStart;
+			selectionSourceStart = x;
 		}
 		if (!checkSelection(source, selectionSourceStart, selectionSourceEnd)) {
 			return new IModelElement[0];
@@ -248,6 +259,7 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 		
 	private void selectTypes(org.eclipse.dltk.core.ISourceModule modelModule, ModuleDeclaration parsedUnit,
 			ASTNode node) {
+		boolean foundSomething = false;
 		String qualifiedName;
 		if (node instanceof ColonExpression) {
 			ColonExpressionGoal goal = new ColonExpressionGoal(new BasicContext(modelModule, 
@@ -266,6 +278,7 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 					if (typeDeclarations != null) {
 						for (int i = 0; i < typeDeclarations.length; i++) {
 							selectionElements.add(typeDeclarations[i]);
+							foundSomething = true;
 						}
 					}
 				}
@@ -284,12 +297,32 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 			
 			if (types != null) {
 				for (int i = 0; i < types.length; i++) {
-					this.selectionElements.add(types[i]);			
+					this.selectionElements.add(types[i]);
+					foundSomething = true;
 				}				
 			}
-		} else
-			return;
+		} 
 		
+		if (!foundSomething) {
+			TypeNameMatchRequestor requestor = new TypeNameMatchRequestor() {
+
+				public void acceptTypeNameMatch(TypeNameMatch match) {
+					selectionElements.add(match.getType());
+				}
+				
+			};
+			String unqualifiedName = null;
+			if (node instanceof ColonExpression) {
+				ColonExpression expr = (ColonExpression) node;
+				unqualifiedName = expr.getName();
+			} else if (node instanceof ConstantReference) {
+				ConstantReference expr = (ConstantReference) node;
+				unqualifiedName = expr.getName();
+			}
+			if (unqualifiedName != null) {
+				DLTKModelUtil.searchTypeDeclarations(modelModule.getScriptProject(), unqualifiedName, requestor);
+			}
+		}
 	}
 	
 
@@ -390,9 +423,33 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 			}
 			
 		}
+		
+		if (availableMethods == null || availableMethods.length == 0) {
+			final Collection methods = new ArrayList();
+			SearchRequestor requestor = new SearchRequestor() {
+
+				public void acceptSearchMatch(SearchMatch match) throws CoreException {
+					IMethod method = (IMethod) match.getElement();
+					methods.add(method);
+				}
+				
+			};
+			DLTKModelUtil.searchMethodDeclarations(modelModule.getScriptProject(), methodName, requestor);
+			availableMethods = (IMethod[]) methods.toArray(new IMethod[methods.size()]);
+			if (availableMethods.length > 0)
+				System.out.println("RubySelectionEngine.selectOnMethod() used global search");
+		}
+		
 		if (availableMethods != null) {
+			int count = 0;
 			for (int i = 0; i < availableMethods.length; i++) {
 				if (availableMethods[i].getElementName().equals(methodName)) {
+					selectionElements.add(availableMethods[i]);
+					++count;
+				}
+			}
+			if (count == 0) {
+				for (int i = 0; i < availableMethods.length; i++) {
 					selectionElements.add(availableMethods[i]);
 				}
 			}

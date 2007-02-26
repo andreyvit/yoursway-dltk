@@ -50,6 +50,8 @@ import org.jruby.lexer.yacc.SyntaxException;
  */
 public class Parser {
     private final IRuby runtime;
+    
+    private boolean success;
 
     public Parser(IRuby runtime) {
         this.runtime = runtime;
@@ -68,6 +70,7 @@ public class Parser {
         	warnings = new NullWarnings();
         else
         	warnings = new RubyWarnings(problemReporter);
+        success = false;
         try {
             parser = RubyParserPool.getInstance().borrowParser();
             parser.setWarnings(warnings);
@@ -79,6 +82,7 @@ public class Parser {
 //            	runtime.defineGlobalConstant("DATA", new RubyFile(runtime, file, content));
             	result.setEndSeen(false);
             }
+            success = true;
         } catch (SyntaxException e) {
             StringBuffer buffer = new StringBuffer(100);
             buffer.append(e.getPosition().getFile()).append(':');
@@ -111,7 +115,11 @@ public class Parser {
         return null;
     }
 
-    private void expandLocalVariables(List localVariables) {
+    public boolean isSuccess() {
+		return success;
+	}
+
+	private void expandLocalVariables(List localVariables) {
         int oldSize = 0;
 //        ThreadContext tc = runtime.getCurrentContext();
 //        if (tc.getFrameScope().getLocalNames() != null) {

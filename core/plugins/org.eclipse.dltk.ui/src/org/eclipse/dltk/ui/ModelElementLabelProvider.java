@@ -105,7 +105,9 @@ public class ModelElementLabelProvider extends LabelProvider {
 	 * 
 	 *
 	 */
-	public final static int SHOW_POST_QUALIFIED=	0x800;	
+	public final static int SHOW_POST_QUALIFIED=	0x800;
+	
+	public final static int SHOW_FILE_QUALIFIED=	0x1000;	
 	
 	
 	/**
@@ -209,6 +211,9 @@ public class ModelElementLabelProvider extends LabelProvider {
 		}
 		if (getFlag(SHOW_ROOT)) {
 			fTextFlags |= ScriptElementLabels.APPEND_ROOT_PATH;
+		}			
+		if (getFlag(SHOW_FILE_QUALIFIED)) {
+			fTextFlags |= ScriptElementLabels.APPEND_FILE | ScriptElementLabels.T_CONTAINER_QUALIFIED | ScriptElementLabels.CU_POST_QUALIFIED;
 		}			
 		if (getFlag(SHOW_VARIABLE)) {
 			fTextFlags |= ScriptElementLabels.ROOT_VARIABLE;

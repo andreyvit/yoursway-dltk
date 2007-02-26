@@ -10,12 +10,14 @@ import java.util.regex.Pattern;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.Declaration;
 import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.IProblemReporter;
+import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.DLTKASTBuildVisitor;
 import org.jruby.IRuby;
 import org.jruby.ast.Node;
@@ -25,10 +27,59 @@ import org.jruby.parser.RubyParserConfiguration;
 
 public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 	
+	private final class ASTPositionsCorrector extends ASTVisitor {
+		public boolean visitGeneral(ASTNode node) throws Exception {
+			int st = 0;
+			int en = 0;
+			int n_st = 0;
+			int n_en = 0;
+			for (Iterator iterator = fixPositions.iterator(); iterator
+					.hasNext();) {
+				Integer pos = (Integer) iterator.next();
+				int fixPos = pos.intValue();
+				//starts
+				if (node.sourceStart() > fixPos) {
+					st++;
+				}
+				if (node.sourceEnd() > fixPos) {
+					en++;
+				}
+				if (node instanceof Declaration) {
+					Declaration declaration = (Declaration) node;
+					if (declaration.getNameStart() > fixPos) {
+						n_st++;
+					}
+					if (declaration.getNameEnd() > fixPos) {
+						n_en++;
+					}
+				}
+			}
+			
+			node.setStart(node.sourceStart() + st * magicLength);
+			node.setEnd(node.sourceEnd() + en * magicLength);
+			if (node instanceof Declaration) {
+				Declaration declaration = (Declaration) node;
+				declaration.setNameStart(declaration.getNameStart() + n_st*magicLength);
+				declaration.setNameEnd(declaration.getNameEnd() + n_en*magicLength);
+			}
+			if (st == 0 && en == 0 && n_st == 0 && n_en == 0)
+				return false;
+			
+			return true;
+		}
+	}
+
+	private static final boolean TRACE_AST_JRUBY = Boolean.valueOf(
+			Platform.getDebugOption("org.eclipse.dltk.core/traceAST/jruby")).booleanValue();
+	
+	private static final boolean TRACE_AST_DLTK = Boolean.valueOf(
+			Platform.getDebugOption("org.eclipse.dltk.core/traceAST/dltk")).booleanValue();
+	
 	private static final Pattern DOT_FIXER = Pattern.compile("\\.(?=\\s|$)");
 	private static final Pattern COLON_FIXER = Pattern.compile("::(?=\\s|$)");
 	private IProblemReporter problemReporter;
 	private static final String missingName = "_missing_method_name_";
+	private static final int magicLength = missingName.length();
 	
 	private final List fixPositions = new ArrayList(); 
 	
@@ -77,74 +128,42 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 	}
 	
 	public ModuleDeclaration parse(String content) {// throws
-		fixPositions.clear();
-		content = fixBrokenDots(content);
-		content = fixBrokenColons(content);
-				
-		ModuleDeclaration module = new ModuleDeclaration(content.length());
-		StringReader reader = new StringReader(content);
-		DLTKASTBuildVisitor visitor = new DLTKASTBuildVisitor(module, content);
-
 		Parser parser = new Parser(new IRuby() {});
-		Node node = parser.parse("", reader, new RubyParserConfiguration(), problemReporter);
-		if( node != null ) {
-			node.accept(visitor);
-		}
-
-		final int magicLength = missingName.length();
-		
-		ASTVisitor corrector = new ASTVisitor() {
-
-			public boolean visitGeneral(ASTNode node) throws Exception {
-				int st = 0;
-				int en = 0;
-				int n_st = 0;
-				int n_en = 0;
-				for (Iterator iterator = fixPositions.iterator(); iterator
-						.hasNext();) {
-					Integer pos = (Integer) iterator.next();
-					int fixPos = pos.intValue();
-					//starts
-					if (node.sourceStart() > fixPos) {
-						st++;
-					}
-					if (node.sourceEnd() > fixPos) {
-						en++;
-					}
-					if (node instanceof Declaration) {
-						Declaration declaration = (Declaration) node;
-						if (declaration.getNameStart() > fixPos) {
-							n_st++;
-						}
-						if (declaration.getNameEnd() > fixPos) {
-							n_en++;
-						}
-					}
-				}
-				
-				node.setStart(node.sourceStart() + st * magicLength);
-				node.setEnd(node.sourceEnd() + en * magicLength);
-				if (node instanceof Declaration) {
-					Declaration declaration = (Declaration) node;
-					declaration.setNameStart(declaration.getNameStart() + n_st*magicLength);
-					declaration.setNameEnd(declaration.getNameEnd() + n_en*magicLength);
-				}
-				if (st == 0 && en == 0 && n_st == 0 && n_en == 0)
-					return false;
-				
-				return true;
-			}
+		Node node = parser.parse("", new StringReader(content), new RubyParserConfiguration(),
+				problemReporter);
+		fixPositions.clear();
+		if (!parser.isSuccess()) {
+			content = fixBrokenDots(content);
+			content = fixBrokenColons(content);
 			
-		};
-		
-		
-		try {
-			module.traverse(corrector);
-		} catch (Exception e) {
-			e.printStackTrace();
+			Node node2 = parser.parse("", new StringReader(content), new RubyParserConfiguration(),
+					null);
+			if (node2 != null)
+				node = node2;
+			else
+				fixPositions.clear();
 		}
-	
 		
+		ModuleDeclaration module = new ModuleDeclaration(content.length());
+		DLTKASTBuildVisitor visitor = new DLTKASTBuildVisitor(module, content);
+		if (node != null)
+			node.accept(visitor);
+
+		if( node != null ) {
+			if (TRACE_AST_JRUBY || TRACE_AST_DLTK)
+				System.out.println("\n\nAST rebuilt\n");
+			if (TRACE_AST_JRUBY)
+				System.out.println("JRuby AST:\n" + node.toString());
+			if (TRACE_AST_DLTK)
+				System.out.println("DLTK AST:\n" + module.toString());
+		}
+		
+		if (!fixPositions.isEmpty())
+			try {
+				module.traverse(new ASTPositionsCorrector());
+			} catch (Exception e) {
+				RubyPlugin.log(e);
+			}
 		
 		return module;
 	}

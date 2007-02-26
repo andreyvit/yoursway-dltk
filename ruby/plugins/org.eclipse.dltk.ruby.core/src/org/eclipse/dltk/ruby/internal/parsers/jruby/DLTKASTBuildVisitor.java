@@ -271,7 +271,6 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		this.module = module;
 		this.content = content;
 		pushState(new TopLevelState(this.module));
-		System.out.println("\n\n===============================================");
 	}
 
 	public Instruction visitAliasNode(AliasNode iVisited) {
@@ -306,8 +305,6 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitArrayNode(ArrayNode iVisited) {
-		System.out.println("DLTKASTBuildVisitor.visitArrayNode()");
-		
 		CollectingState coll = new CollectingState();
 		
 		pushState(coll);
@@ -400,7 +397,9 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		ArrayList list = state.getList();
 		if (list.size() > 1) 
 			System.out.println();
-		//Assert.isTrue(list.size() <= 1);
+		if(list.size() > 1) {
+			RubyPlugin.log("DLTKASTBuildVisitor.collectSingleStatement(): JRuby node " + pathNode.getClass().getName() + " turned into multiple DLTK AST nodes");
+		}
 		if (!list.isEmpty())
 			return (Statement) list.iterator().next();
 		else
@@ -436,7 +435,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		} else {
 			// WTF?
 			if (TRACE_RECOVERING) 
-				System.out.println("Ruby AST: non-dot-call not recognized, non-dot found at "
+				RubyPlugin.log("Ruby AST: non-dot-call not recognized, non-dot found at "
 						+ dotPosition + ", function name " + methodName);
 		}
 	}
@@ -458,7 +457,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 					callNode.setEnd(rParenOffset + 1);
 				else {
 					if (TRACE_RECOVERING) 
-						System.out.println("Ruby AST: function call, empty args, no closing paren; "
+						RubyPlugin.log("Ruby AST: function call, empty args, no closing paren; "
 										+ "opening paren at " + lParenOffset + ", function name "
 										+ methodName);
 					callNode.setEnd(lParenOffset - 1); // don't include these parens
@@ -466,19 +465,21 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 			}
 		} else {
 			if (nameEnd > firstArgStart) {
-				System.out.println();
+				RubyPlugin.log("DLTKASTBuildVisitor.fixFunctionCallOffsets(" + methodName + "): nameEnd > firstArgStart");
 				return; ///XXX: it's a kind of magic, please, FIXME!!!
 			}
-			Assert.isLegal(nameEnd <= firstArgStart);
 			int lParenOffset = RubySyntaxUtils.skipWhitespaceForward(content, nameEnd, firstArgStart);
 			if (lParenOffset >= 0 && content.charAt(lParenOffset) == '(') {
-				Assert.isLegal(lastArgEnd > lParenOffset);
+				if(lastArgEnd <= lParenOffset) {
+					RubyPlugin.log("DLTKASTBuildVisitor.fixFunctionCallOffsets(" + methodName + "): lastArgEnd <= lParenOffset");
+					return;
+				}
 				int rParenOffset = RubySyntaxUtils.skipWhitespaceForward(content, lastArgEnd);
 				if (rParenOffset >= 0 && content.charAt(rParenOffset) == ')')
 					callNode.setEnd(rParenOffset + 1);
 				else {
 					if (TRACE_RECOVERING) 
-						System.out.println("Ruby AST: function call, non-empty args, no closing paren; "
+						RubyPlugin.log("Ruby AST: function call, non-empty args, no closing paren; "
 										+ "opening paren at " + lParenOffset + ", " +
 										"last argument ending at " + lastArgEnd + ", function name "
 										+ methodName);
@@ -486,6 +487,9 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 				}
 			}
 		}
+		
+		if (lastArgEnd >= 0 && callNode.sourceEnd() < lastArgEnd)
+			callNode.setEnd(lastArgEnd);
 	}
 
 	/**
@@ -500,10 +504,9 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		iVisited.getReceiverNode().accept(this);
 		popState();
 		// TODO: uncomment when visitor is done
-//		Assert.isTrue(collector.getList().size() == 1);
-		if (collector.getList().size() > 1)
-			System.out.println();
-		Assert.isTrue(collector.getList().size() <= 1);
+		if(collector.getList().size() > 1) {
+			RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode(" + methodName + "): receiver " + iVisited.getReceiverNode().getClass().getName() + " turned into multiple nodes");
+		}
 		Statement recv;
 		if (collector.getList().size() < 1) {
 			recv = new NumericLiteral(new DLTKToken(0, "")); // FIXME
@@ -1123,10 +1126,10 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		ISourcePosition pos = iVisited.getPosition();
 		Expression left = new VariableReference(pos.getStartOffset(), pos.getStartOffset() + name.length(), name, varKind);
 		Statement right = collectSingleStatement(valueNode);
-		if (VISITOR_COMPLETE) 
-			Assert.isTrue(right != null);
-		else if (right == null)
+		if (right == null) {
+			RubyPlugin.log("DLTKASTBuildVisitor.processVariableAssignment(" + name + "): cannot parse rhs, skipped");
 			return;
+		}
 		Assignment assgn = new Assignment(left, right);
 		copyOffsets(assgn, iVisited);
 		peekState().add(assgn);

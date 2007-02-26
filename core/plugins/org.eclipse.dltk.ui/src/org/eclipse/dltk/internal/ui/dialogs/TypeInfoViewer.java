@@ -30,7 +30,10 @@ import org.eclipse.core.runtime.ProgressMonitorWrapper;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
+import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
@@ -40,6 +43,7 @@ import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.TypeNameMatch;
 import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
 import org.eclipse.dltk.core.search.TypeNameRequestor;
+import org.eclipse.dltk.internal.core.search.DLTKSearchTypeNameMatch;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.corext.util.OpenTypeHistory;
 import org.eclipse.dltk.internal.corext.util.Strings;
@@ -270,78 +274,66 @@ public class TypeInfoViewer {
 			return Messages.format(DLTKUIMessages.TypeInfoViewer_library_name_format, name);
 		}
 		public String getText(Object element) {
-			return ((TypeNameMatch)element).getSimpleTypeName();
+			TypeNameMatch type = (TypeNameMatch)element;
+			return getTypeContainerName(type, 0);
 		}
 		public String getQualifiedText(TypeNameMatch type) {
 			StringBuffer result= new StringBuffer();
-			result.append(type.getSimpleTypeName());
-			String containerName= type.getTypeContainerName();
-			result.append(ScriptElementLabels.CONCAT_STRING);
-			if (containerName.length() > 0) {
-				result.append(containerName);
-			} else {
-				result.append(DLTKUIMessages.TypeInfoViewer_default_package);
-			}
+			result.append(getTypeContainerName(type, 2));
+//			String containerName= type.getTypeContainerName();
+//			result.append(ScriptElementLabels.CONCAT_STRING);
+//			if (containerName.length() > 0) {
+//				result.append(containerName);
+//			} else {
+//				result.append(DLTKUIMessages.TypeInfoViewer_default_package);
+//			}
 			return result.toString();
 		}
 	
 		public String getFullyQualifiedText(TypeNameMatch type) {
 			StringBuffer result= new StringBuffer();
-			result.append(type.getSimpleTypeName());
-			String containerName= getTypeContainerName(type);
-			if (containerName.length() > 0) {
-				result.append(ScriptElementLabels.CONCAT_STRING);
-				result.append(containerName);
-			}
-			result.append(ScriptElementLabels.CONCAT_STRING);
-			result.append(getContainerName(type));
+			result.append(getTypeContainerName(type, 2));
+//			IType dltkType = ((DLTKSearchTypeNameMatch) type).getType();
+//			ISourceModule sourceModule = (ISourceModule) dltkType.getAncestor(IModelElement.SOURCE_MODULE);
+//			String sourceModuleName = sourceModule.getElementName();
+//			if (sourceModuleName.length() > 0) {
+//				result.append(ScriptElementLabels.CONCAT_STRING);
+//				result.append(sourceModuleName);
+//			}
+//			result.append(ScriptElementLabels.CONCAT_STRING);
+//			result.append(getContainerName(type));
 			return result.toString();
 		}
 		public String getText(TypeNameMatch last, TypeNameMatch current, TypeNameMatch next) {
-			StringBuffer result= new StringBuffer();
-			int qualifications= 0;
-			String currentTN= current.getSimpleTypeName();
-			result.append(currentTN);
-			String currentTCN= getTypeContainerName(current);
+			int qualifications = 0;
+			String current0 = getTypeContainerName(current, 0);
+			String current1 = getTypeContainerName(current, 1);
+			String current2 = getTypeContainerName(current, 2);
 			if (last != null) {
-				String lastTN= last.getSimpleTypeName();
-				String lastTCN= getTypeContainerName(last);
-				if (currentTCN.equals(lastTCN)) {
-					if (currentTN.equals(lastTN)) {
-						result.append(ScriptElementLabels.CONCAT_STRING);
-						result.append(currentTCN);
-						result.append(ScriptElementLabels.CONCAT_STRING);
-						result.append(getContainerName(current));
-						return result.toString();
-					}
-				} else if (currentTN.equals(lastTN)) {
-					qualifications= 1;
+				String last0 = getTypeContainerName(last, 0);
+				String last1 = getTypeContainerName(last, 1);
+				if (current0.equals(last0)) {
+					if (current1.equals(last1))
+						qualifications = Math.max(qualifications, 2);
+					else
+						qualifications = Math.max(qualifications, 1);
 				}
 			}
 			if (next != null) {
-				String nextTN= next.getSimpleTypeName();
-				String nextTCN= getTypeContainerName(next);
-				if (currentTCN.equals(nextTCN)) {
-					if (currentTN.equals(nextTN)) {
-						result.append(ScriptElementLabels.CONCAT_STRING);
-						result.append(currentTCN);
-						result.append(ScriptElementLabels.CONCAT_STRING);
-						result.append(getContainerName(current));
-						return result.toString();
-					}
-				} else if (currentTN.equals(nextTN)) {
-					qualifications= 1;
+				String next0 = getTypeContainerName(next, 0);
+				String next1 = getTypeContainerName(next, 1);
+				if (current0.equals(next0)) {
+					if (current1.equals(next1)) 
+						qualifications = Math.max(qualifications, 2);
+					else
+						qualifications = Math.max(qualifications, 1);
 				}
 			}
-			if (qualifications > 0) {
-				result.append(ScriptElementLabels.CONCAT_STRING);
-				result.append(currentTCN);
-				if (fFullyQualifyDuplicates) {
-					result.append(ScriptElementLabels.CONCAT_STRING);
-					result.append(getContainerName(current));
-				}
-			}
-			return result.toString();
+			if (qualifications > 1) 
+				return current2;
+			if (qualifications > 0) 
+				return current1;
+			return current0;
 		}
 		public String getQualificationText(TypeNameMatch type) {
 			StringBuffer result= new StringBuffer();
@@ -370,14 +362,16 @@ public class TypeInfoViewer {
 				/*isInnerType(type), false,*/ type.getModifiers(), false);
 		}
 		
-		private String getTypeContainerName(TypeNameMatch info) {
+		private String getTypeContainerName(TypeNameMatch info, int infoLevel) {
 //			String result= info.getTypeContainerName();
 			String result = "";
 			try {
 				IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager.getLangaugeToolkit(info.getType());
 				if( toolkit != null ) {
 					ScriptElementLabels labels = toolkit.getScriptElementLabels();
-					result = labels.getElementLabel(info.getType(), ScriptElementLabels.T_CONTAINER_QUALIFIED );
+					result = labels.getElementLabel(info.getType(), ScriptElementLabels.T_CONTAINER_QUALIFIED 
+							| (infoLevel > 0 ? ScriptElementLabels.APPEND_FILE : 0) |
+							(infoLevel > 1 ? ScriptElementLabels.CU_POST_QUALIFIED : 0));
 				}
 			} catch (CoreException e) {
 				e.printStackTrace();

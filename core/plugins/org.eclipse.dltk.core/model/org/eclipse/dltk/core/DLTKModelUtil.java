@@ -9,9 +9,12 @@ import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
+import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
+import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.TypeNameMatch;
 import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
+import org.eclipse.dltk.internal.core.ExternalScriptFolder;
 
 
 public class DLTKModelUtil {
@@ -61,7 +64,7 @@ public class DLTKModelUtil {
 	}
 	
 	
-	private static void searchTypeDeclarations (IDLTKProject project, String patternString, 
+	public static void searchTypeDeclarations (IDLTKProject project, String patternString, 
 			TypeNameMatchRequestor requestor) {
 		final List types = new ArrayList ();
 		
@@ -93,6 +96,32 @@ public class DLTKModelUtil {
 		}		
 	}
 	
+	public static void searchMethodDeclarations (IDLTKProject project, String patternString, 
+			SearchRequestor requestor) {
+		final List types = new ArrayList ();
+		
+		patternString = "*" + patternString + "*";
+		
+		IDLTKLanguageToolkit langaugeToolkit;
+		try {
+			langaugeToolkit = DLTKLanguageManager.getLangaugeToolkit(project);
+		} catch (CoreException e1) {
+			return;
+		}
+		//FIXME: use another search		
+		IDLTKSearchScope scope = SearchEngine.createSearchScope(new IModelElement[] {project});		
+		try {
+			SearchEngine engine = new SearchEngine();
+			SearchPattern pattern = SearchPattern.createPattern(patternString, IDLTKSearchConstants.METHOD,
+					IDLTKSearchConstants.DECLARATIONS, SearchPattern.R_PATTERN_MATCH);
+			engine.search(pattern, new SearchParticipant[] { SearchEngine
+					.getDefaultSearchParticipant() }, scope, requestor, null);
+		} catch (CoreException e) {			
+			if (DLTKCore.DEBUG)
+				e.printStackTrace();
+		}		
+	}
+	
 	/**
 	 * Returns all the types with a given qualified name, that are located as childs of element.
 	 * @param element
@@ -107,8 +136,12 @@ public class DLTKModelUtil {
 
 			public void acceptTypeNameMatch(TypeNameMatch match) {
 				IType type = (IType) match.getType();
-//				if (!type.getScriptProject().equals(project))
-//					return;
+				// XXX dirty hack to accept Ruby lib matches from other projects
+				IScriptFolder scriptFolder = type.getScriptFolder();
+				if (scriptFolder instanceof ExternalScriptFolder)
+					;
+				else if (!type.getScriptProject().equals(project))
+					return;
 				if (type.getTypeQualifiedName(delimeter).equals(qualifiedName)) {
 					types.add(type);
 				}
@@ -127,7 +160,6 @@ public class DLTKModelUtil {
 		return (IType[]) types.toArray(new IType[types.size()]);
 	}
 	
-	
 	/**
 	 * Returns all ITypes, which fqn ends with nameEnding.
 	 * @param project
@@ -142,8 +174,13 @@ public class DLTKModelUtil {
 			
 			public void acceptTypeNameMatch(TypeNameMatch match) {				
 				IType type = (IType) match.getType();
-//				if (!type.getScriptProject().equals(project))
-//					return;
+				// XXX dirty hack to accept Ruby lib matches from other projects
+				IScriptFolder scriptFolder = type.getScriptFolder();
+				if (scriptFolder instanceof ExternalScriptFolder)
+					;
+				else if (!type.getScriptProject().equals(project))
+					return;
+				System.out.println();
 				if (type.getTypeQualifiedName(delimeter).endsWith(nameEnding)) {
 					types.add(type);
 				}
