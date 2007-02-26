@@ -252,10 +252,12 @@ public class RubyCompletionEngine extends CompletionEngine {
 			return;
 		}
 		
+		
 		int pos = node.getReceiver().sourceEnd() + 1;
 		
 		String starting = content.substring(pos, position);
 
+		this.setSourceRange(position - starting.length(), position);
 		if (receiver != null) {
 			IMethod[] allMethods = getMethodsForReceiver(module, moduleDeclaration, receiver);
 			if (allMethods != null) {
