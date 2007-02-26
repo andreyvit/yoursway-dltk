@@ -349,7 +349,6 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitBlockNode(BlockNode iVisited) {
-
 		Iterator iterator = iVisited.iterator();
 		while (iterator.hasNext()) {
 			((Node) iterator.next()).accept(this);
@@ -359,6 +358,10 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitBlockPassNode(BlockPassNode iVisited) {
 		System.out.println("DLTKASTBuildVisitor.visitBlockPassNode()");
+		Iterator iterator = iVisited.childNodes().iterator();
+		while (iterator.hasNext()) {
+			((Node) iterator.next()).accept(this);
+		}
 		return null;
 	}
 
@@ -412,7 +415,6 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitClassVarDeclNode(ClassVarDeclNode iVisited) {
-		System.out.println("DLTKASTBuildVisitor.visitClassVarDeclNode()");
 		return null;
 	}
 
@@ -654,11 +656,13 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		if (iVisited.getBodyNode().getBodyNode() != null) {
 			Node bodyNode = iVisited.getBodyNode().getBodyNode();
 			int end = -1;
+			while (bodyNode instanceof NewlineNode)
+				bodyNode = ((NewlineNode) bodyNode).getNextNode();
 			if (bodyNode instanceof BlockNode) {
 				BlockNode blockNode = (BlockNode) bodyNode;
 				end = blockNode.getLast().getPosition().getEndOffset()+1; ///XXX!!!!
 			} else {
-				RubyPlugin.log("DLTKASTBuildVisitor.visitClassNode(" + name + "): unknown body type ");
+				RubyPlugin.log("DLTKASTBuildVisitor.visitClassNode(" + name + "): unknown body type " + bodyNode.getClass().getName());
 			}
 			pos = fixBorders(pos);			
 			Block bl = new Block(pos.getStartOffset(), (end == -1)?pos.getEndOffset()+1:end);
@@ -734,8 +738,10 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitDAsgnNode(DAsgnNode iVisited) {
-
-		iVisited.getValueNode().accept(this);
+		Iterator iterator = iVisited.childNodes().iterator();
+		while (iterator.hasNext()) {
+			((Node) iterator.next()).accept(this);
+		}
 		return null;
 	}
 
@@ -1105,15 +1111,20 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		Statement condition = collectSingleStatement(iVisited.getCondition());
 		Statement thenPart = collectSingleStatement(iVisited.getThenBody());
 		Statement elsePart = collectSingleStatement(iVisited.getElseBody());
-		IfStatement res = new IfStatement((Expression) condition, thenPart, elsePart);
+		IfStatement res = new IfStatement(condition, thenPart, elsePart);
 		res.setStart(iVisited.getPosition().getStartOffset());
 		res.setEnd(iVisited.getPosition().getEndOffset() + 1);
 		peekState().add(res);
 		return null;
 	}
 
-	public Instruction visitIterNode(IterNode iVisited) {
+	public Instruction visitIterNode(IterNode
+			iVisited) {
 		System.out.println("DLTKASTBuildVisitor.visitIterNode()");
+		Iterator iterator = iVisited.childNodes().iterator();
+		while (iterator.hasNext()) {
+			((Node) iterator.next()).accept(this);
+		}
 		return null;
 	}
 
@@ -1196,11 +1207,13 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		if (iVisited.getBodyNode().getBodyNode() != null) {
 			Node bodyNode = iVisited.getBodyNode().getBodyNode();
 			int end = -1;
+			while (bodyNode instanceof NewlineNode)
+				bodyNode = ((NewlineNode) bodyNode).getNextNode();
 			if (bodyNode instanceof BlockNode) {
 				BlockNode blockNode = (BlockNode) bodyNode;
 				end = blockNode.getLast().getPosition().getEndOffset(); ///XXX!!!!
 			} else {
-				RubyPlugin.log("DLTKASTBuildVisitor.visitModuleNode(" + name + "): unknown body type");
+				RubyPlugin.log("DLTKASTBuildVisitor.visitModuleNode(" + name + "): unknown body type " + bodyNode.getClass().getName());
 			}
 			pos = fixBorders(pos);			
 			Block bl = new Block(pos.getStartOffset(), (end == -1)?pos.getEndOffset():end);
@@ -1368,6 +1381,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitScopeNode(ScopeNode iVisited) {
 
+
 		if (iVisited.getBodyNode() != null) {
 			iVisited.getBodyNode().accept(this);
 		}
@@ -1381,6 +1395,10 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitSplatNode(SplatNode iVisited) {
+		Iterator iterator = iVisited.childNodes().iterator();
+		while (iterator.hasNext()) {
+			((Node) iterator.next()).accept(this);
+		}
 
 		return null;
 	}
@@ -1393,7 +1411,10 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitSValueNode(SValueNode iVisited) {
-
+		Iterator iterator = iVisited.childNodes().iterator();
+		while (iterator.hasNext()) {
+			((Node) iterator.next()).accept(this);
+		}
 		return null;
 	}
 
@@ -1403,7 +1424,10 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitToAryNode(ToAryNode iVisited) {
-
+		Iterator iterator = iVisited.childNodes().iterator();
+		while (iterator.hasNext()) {
+			((Node) iterator.next()).accept(this);
+		}
 		return null;
 	}
 

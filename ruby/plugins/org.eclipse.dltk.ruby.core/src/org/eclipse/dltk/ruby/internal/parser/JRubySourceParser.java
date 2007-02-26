@@ -128,6 +128,7 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 	}
 	
 	public ModuleDeclaration parse(String content) {// throws
+		long timeStart = System.currentTimeMillis();
 		Parser parser = new Parser(new IRuby() {});
 		Node node = parser.parse("", new StringReader(content), new RubyParserConfiguration(),
 				problemReporter);
@@ -165,6 +166,8 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 				RubyPlugin.log(e);
 			}
 		
+		long timeEnd = System.currentTimeMillis();
+		System.out.println("Parsing took " + (timeEnd - timeStart) + " ms");
 		return module;
 	}
 

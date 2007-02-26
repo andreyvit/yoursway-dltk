@@ -12,7 +12,7 @@ public class IfStatement extends Statement {
 	/**
 	 * Condition expression.
 	 */
-	private Expression fCondition;
+	private Statement fCondition;
 
 	/**
 	 * Then statement of if.
@@ -24,7 +24,7 @@ public class IfStatement extends Statement {
 	 */
 	private Statement fElseStatement;
 
-	public IfStatement(DLTKToken ifToken, Expression condition,
+	public IfStatement(DLTKToken ifToken, Statement condition,
 			Statement thenStatement) {
 
 		super(ifToken);
@@ -32,7 +32,7 @@ public class IfStatement extends Statement {
 		this.fThenStatement = thenStatement;
 	}
 	
-	public IfStatement(Expression condition, Statement thenStatement, Statement elseStatement) {
+	public IfStatement(Statement condition, Statement thenStatement, Statement elseStatement) {
 		this.fCondition = condition;
 		this.fThenStatement = thenStatement;
 		fElseStatement = elseStatement;
@@ -91,7 +91,7 @@ public class IfStatement extends Statement {
 		return fThenStatement;
 	}
 
-	public Expression getCondition() {
+	public Statement getCondition() {
 		return this.fCondition;
 	}
 

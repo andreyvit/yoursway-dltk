@@ -229,7 +229,7 @@ public class ScriptElementLabels {
 	 */
 	public final static long USE_RESOLVED = 1L << 48;
 	
-	public final static long APPEND_FILE = 1L << 49;
+	public final static long APPEND_FILE = 1L << 63;
 
 	/**
 	 * Qualify all elements
