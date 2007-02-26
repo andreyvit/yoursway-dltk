@@ -1,10 +1,5 @@
 package org.eclipse.dltk.ruby.internal.ui.text.completion;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.CompletionContext;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
@@ -16,7 +11,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.TextPresentation;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
-import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationPresenter;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
@@ -75,18 +69,18 @@ public class RubyCompletionProcessor extends ScriptCompletionProcessor {
 		return validator;
 	}
 
-	protected List filterAndSortProposals(List proposals,
-			IProgressMonitor monitor, ContentAssistInvocationContext context) {
-
-		Collections.sort(proposals, new Comparator() {
-
-			public int compare(Object o1, Object o2) {
-				final ICompletionProposal a = (ICompletionProposal) o1;
-				final ICompletionProposal b = (ICompletionProposal) o2;				
-				return a.getDisplayString().compareTo(b.getDisplayString());
-			}
-		});
-
-		return proposals;
-	}
+//	protected List filterAndSortProposals(List proposals,
+//			IProgressMonitor monitor, ContentAssistInvocationContext context) {
+//
+//		Collections.sort(proposals, new Comparator() {
+//
+//			public int compare(Object o1, Object o2) {
+//				final ICompletionProposal a = (ICompletionProposal) o1;
+//				final ICompletionProposal b = (ICompletionProposal) o2;				
+//				return a.getDisplayString().compareTo(b.getDisplayString());
+//			}
+//		});
+//
+//		return proposals;
+//	}
 }
