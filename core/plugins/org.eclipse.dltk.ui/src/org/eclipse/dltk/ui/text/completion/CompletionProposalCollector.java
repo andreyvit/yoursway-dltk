@@ -781,7 +781,7 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 				.createMethodImageDescriptor(proposal)));
 
 		ProposalInfo info = new MethodProposalInfo(fScriptProject, proposal);
-		info.setHackMessage("<h1>This is my doc :)</h1>");
+		info.setHackMessage("<html><head></head><body><ol><li>First</li><li>Second</li></ol><marquee>Test!!!!</marquee></body></html>");
 		scriptProposal.setProposalInfo(info);
 
 		scriptProposal.setRelevance(computeRelevance(proposal));

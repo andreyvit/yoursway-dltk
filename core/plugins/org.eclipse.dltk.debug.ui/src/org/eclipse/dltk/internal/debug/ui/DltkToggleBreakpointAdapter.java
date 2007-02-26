@@ -46,11 +46,6 @@ public class DltkToggleBreakpointAdapter implements IToggleBreakpointsTarget {
 			ITextSelection textSelection = (ITextSelection) selection;			
 			int lineNumber = textSelection.getStartLine() + 1; //one based
 				
-			//System.out.println("Selection: " + textSelection);
-			//System.out.println("Line number: " + lineNumber);
-			//System.out.println("Offset: " + textSelection.getOffset());
-			//System.out.println("Length: " + textSelection.getLength());
-			
 			IResource resource = getPartResource(part);
 
 			if (resource != null) {

@@ -40,7 +40,7 @@
             <adapter type="org.eclipse.debug.ui.actions.ILaunchable"/>
          </factory>
          <factory
-          adaptableType="org.eclipse.dltk.internal.ui.editor.DLTKEditor"
+          adaptableType="org.eclipse.dltk.internal.ui.editor.ScriptEditor"
           class="org.eclipse.dltk.internal.debug.ui.DltkRetargettableActionAdapterFactory">
        <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
        <adapter

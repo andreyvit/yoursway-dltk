@@ -8,11 +8,10 @@ public class DltkRetargettableActionAdapterFactory implements IAdapterFactory {
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 		if (adapterType == IRunToLineTarget.class) {
 			return new DltkRunToLineAdapter();
-		}
-		else if (adapterType == IToggleBreakpointsTarget.class) {
+		} else if (adapterType == IToggleBreakpointsTarget.class) {
 			return new DltkToggleBreakpointAdapter();
 		}
-		
+
 		return null;
 	}
 
