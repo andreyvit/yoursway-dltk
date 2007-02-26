@@ -29,6 +29,7 @@ import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
@@ -643,6 +644,15 @@ public class RubyTypeInferencingUtils {
 						methods.add(methods2[j]);
 					}
 				}
+				RubyClassType superType = RubyModelUtils.getSuperType(allTypes[i]);
+				if (superType != null) {
+					superType = resolveMethods(project, superType);
+					IMethod[] allMethods = superType.getAllMethods();
+					for (int j = 0; j < allMethods.length; j++) {
+						methods.add(allMethods[j]);
+					}
+				}
+				System.out.println();
 			} catch (ModelException e) {
 			}			
 		}

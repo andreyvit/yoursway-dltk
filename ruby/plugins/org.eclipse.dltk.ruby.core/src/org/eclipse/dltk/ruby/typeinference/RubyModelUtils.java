@@ -167,9 +167,33 @@ public class RubyModelUtils {
 			}				
 		}
 		return (IField[]) resultFields.toArray(new IField[resultFields.size()]);
-	}
+	}	 
 	
-
+	public static RubyClassType getSuperType(IType type) {
+		String[] superClasses;
+		try {
+			superClasses = type.getSuperClasses();
+		} catch (ModelException e) {	
+			e.printStackTrace();
+			return null;
+		}
+		if (superClasses != null && superClasses.length == 1) {
+			IType[] types;
+			String name = superClasses[0];			
+			if (name.startsWith("::")) {
+				types = DLTKModelUtil.getAllTypes(type.getScriptProject(), name, "::");
+			} else {
+				String scopeFQN = type.getTypeQualifiedName("::");
+				types = DLTKModelUtil.getAllScopedTypes(type.getScriptProject(), name, "::", scopeFQN); 
+			}
+			if (types != null && types.length > 0) {
+				String typeQualifiedName = types[0].getTypeQualifiedName("::").substring(2);
+				String[] FQN = typeQualifiedName.split("::");				
+				return new RubyClassType(FQN, types, null);
+			}
+		}
+		return null;
+	}
 
 	
 

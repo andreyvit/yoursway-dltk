@@ -54,6 +54,7 @@ public class SourceElementRequestVisitor extends ASTVisitor {
 		if( names.size() == 0 ) {
 			return null;
 		}
+		
 		return (String[])names.toArray(new String[names.size()]);
 	}
 

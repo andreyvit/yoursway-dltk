@@ -25,6 +25,7 @@ import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
+import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
 import org.eclipse.dltk.utils.CorePrinter;
 
@@ -319,5 +320,36 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 	public boolean endvisit(Statement s) throws Exception {
 		return true;
+	}
+	
+	protected String[] processSuperClasses(TypeDeclaration type ) {
+		ExpressionList list = type.getSuperClasses();
+		if (list == null)
+			return new String[0];
+		List expressions = list.getExpressions();
+		List names = new ArrayList();
+		for (Iterator iter = expressions.iterator(); iter.hasNext();) {
+			Expression expr = (Expression) iter.next();
+			if (expr instanceof SimpleReference) {
+				names.add(((SimpleReference)expr).getName());
+			} else if (expr instanceof ColonExpression) { //FIXME
+				String name = "";
+				while (expr instanceof ColonExpression) {
+					ColonExpression colonExpression = (ColonExpression) expr;
+					name = "::" + colonExpression.getName();
+					Expression left = colonExpression.getLeft();
+					if (!colonExpression.isFull() && left == null)
+						name = name.substring(2);
+					expr = left;
+				}
+				if (expr instanceof ConstantReference) {
+					ConstantReference constant = (ConstantReference) expr;
+					name = constant.getName() + name;
+				}
+				names.add(name);
+			}
+		}
+
+		return (String[])names.toArray(new String[names.size()]);
 	}
 }
