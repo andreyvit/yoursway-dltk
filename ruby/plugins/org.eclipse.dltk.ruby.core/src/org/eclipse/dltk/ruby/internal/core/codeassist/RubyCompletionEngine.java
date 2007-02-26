@@ -21,6 +21,7 @@ import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.ddp.BasicContext;
 import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.TypeInferencer;
@@ -40,13 +41,13 @@ public class RubyCompletionEngine extends CompletionEngine {
 	private TypeInferencer inferencer;
 
 	public RubyCompletionEngine(ISearchableEnvironment nameEnvironment,
-			CompletionRequestor requestor, Map settings, IDLTKProject dltkProject) {
+			CompletionRequestor requestor, Map settings,
+			IDLTKProject dltkProject) {
 		super(nameEnvironment, requestor, settings, dltkProject);
 		inferencer = new TypeInferencer(new RubyEvaluatorFactory());
 	}
 
 	private JRubySourceParser parser = new JRubySourceParser(null);
-
 
 	protected int getEndOfEmptyToken() {
 		// TODO Auto-generated method stub
@@ -64,32 +65,33 @@ public class RubyCompletionEngine extends CompletionEngine {
 	public IAssistParser getParser() {
 		return null;
 	}
-	
+
 	private boolean afterColons(String content, int position) {
 		if (position < 2)
 			return false;
-		if (content.charAt(position - 1) == ':' && content.charAt(position - 2) == ':') 
+		if (content.charAt(position - 1) == ':'
+				&& content.charAt(position - 2) == ':')
 			return true;
 		return false;
 	}
-	
+
 	private boolean afterDot(String content, int position) {
 		if (position < 1)
 			return false;
-		if (content.charAt(position - 1) == '.') 
+		if (content.charAt(position - 1) == '.')
 			return true;
 		return false;
 	}
-	
+
 	private static String cut(String content, int position, int length) {
-		content = content.substring(0, position) + content.substring(position + length);
+		content = content.substring(0, position)
+				+ content.substring(position + length);
 		return content;
 	}
-	
-	private static boolean widowDot (String content, int position) {
-		while (position < content.length() && ( 
-				content.charAt(position) == ' ' ||
-				content.charAt(position) == '\t'))
+
+	private static boolean widowDot(String content, int position) {
+		while (position < content.length()
+				&& (content.charAt(position) == ' ' || content.charAt(position) == '\t'))
 			position++;
 		if (position >= content.length())
 			return true;
@@ -111,18 +113,21 @@ public class RubyCompletionEngine extends CompletionEngine {
 					position--;
 				}
 				ModuleDeclaration moduleDeclaration = parser.parse(content);
-				ASTNode node = ASTUtils.findMaximalNodeEndingAt(moduleDeclaration, position-1);
+				ASTNode node = ASTUtils.findMaximalNodeEndingAt(
+						moduleDeclaration, position - 1);
 				if (node instanceof Statement) {
-					ExpressionGoal goal = new ExpressionGoal(new BasicContext(modelModule, moduleDeclaration), 
-							(Statement) node);
+					ExpressionGoal goal = new ExpressionGoal(new BasicContext(
+							modelModule, moduleDeclaration), (Statement) node);
 					IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
 					if (type instanceof RubyClassType) {
 						RubyClassType rubyClassType = (RubyClassType) type;
-						rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), rubyClassType);
+						rubyClassType = RubyTypeInferencingUtils
+								.resolveMethods(modelModule.getScriptProject(),
+										rubyClassType);
 						IMethod[] allMethods = rubyClassType.getAllMethods();
 						for (int j = 0; j < allMethods.length; j++) {
 							reportMethod("".toCharArray(), 0, allMethods[j]);
-						}				
+						}
 					}
 				}
 			} else if (afterColons(content, position)) {
@@ -132,37 +137,51 @@ public class RubyCompletionEngine extends CompletionEngine {
 					position -= 2;
 				}
 				ModuleDeclaration moduleDeclaration = parser.parse(content);
-				ASTNode node = ASTUtils.findMaximalNodeEndingAt(moduleDeclaration, position-1);
-				if (node instanceof ColonExpression || node instanceof ConstantReference) {
-					ExpressionGoal goal = new ExpressionGoal(new BasicContext(modelModule, moduleDeclaration), 
-							(Statement) node);
+				ASTNode node = ASTUtils.findMaximalNodeEndingAt(
+						moduleDeclaration, position - 1);
+				if (node instanceof ColonExpression
+						|| node instanceof ConstantReference) {
+					ExpressionGoal goal = new ExpressionGoal(new BasicContext(
+							modelModule, moduleDeclaration), (Statement) node);
 					IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
 					if (type instanceof RubyMetaClassType)
-						type = ((RubyMetaClassType)type).getInstanceType();
+						type = ((RubyMetaClassType) type).getInstanceType();
 					if (type instanceof RubyClassType) {
-						IType[] subtypes = RubyTypeInferencingUtils.findSubtypes(modelModule.getScriptProject(), (RubyClassType) type);						
+						IType[] subtypes = RubyTypeInferencingUtils
+								.findSubtypes(modelModule.getScriptProject(),
+										(RubyClassType) type);
 						for (int j = 0; j < subtypes.length; j++) {
-							reportType("".toCharArray(), 0, subtypes[j], RubyTypeInferencingUtils.compileFQN(((RubyClassType)type).getFQN(), true).length() + 2);
+							reportType("".toCharArray(), 0, subtypes[j],
+									RubyTypeInferencingUtils.compileFQN(
+											((RubyClassType) type).getFQN(),
+											true).length() + 2);
 						}
 					}
 				}
 			} else {
 				ModuleDeclaration moduleDeclaration = parser.parse(content);
-				ASTNode minimalNode = ASTUtils.findMinimalNode(moduleDeclaration, position - 1, position - 1);
+				ASTNode minimalNode = ASTUtils.findMinimalNode(
+						moduleDeclaration, position - 1, position - 1);
 				if (minimalNode != null) {
 					if (minimalNode instanceof CallExpression) {
-						completeCall(modelModule, moduleDeclaration, (CallExpression)minimalNode, position);
+						completeCall(modelModule, moduleDeclaration,
+								(CallExpression) minimalNode, position);
 					} else if (minimalNode instanceof ConstantReference) {
-						completeConstant(modelModule, moduleDeclaration, (ConstantReference)minimalNode, position);
+						completeConstant(modelModule, moduleDeclaration,
+								(ConstantReference) minimalNode, position);
 					} else if (minimalNode instanceof ColonExpression) {
-						completeColonExpression(modelModule, moduleDeclaration, (ColonExpression)minimalNode, position);
+						completeColonExpression(modelModule, moduleDeclaration,
+								(ColonExpression) minimalNode, position);
 					} else if (minimalNode instanceof SimpleReference) {
-						completeSimpleRef(modelModule, moduleDeclaration, (SimpleReference)minimalNode, position);
+						completeSimpleRef(modelModule, moduleDeclaration,
+								(SimpleReference) minimalNode, position);
 					} else {
-						System.out.println("Node " + minimalNode.getClass().getName() + " is unsuppored by now");
+						System.out.println("Node "
+								+ minimalNode.getClass().getName()
+								+ " is unsuppored by now");
 					}
 				}
-				
+
 			}
 
 		} finally {
@@ -174,60 +193,62 @@ public class RubyCompletionEngine extends CompletionEngine {
 			ModuleDeclaration moduleDeclaration, SimpleReference node,
 			int position) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	private void completeColonExpression(org.eclipse.dltk.core.ISourceModule module,
+	private void completeColonExpression(
+			org.eclipse.dltk.core.ISourceModule module,
 			ModuleDeclaration moduleDeclaration, ColonExpression node,
 			int position) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void completeConstant(org.eclipse.dltk.core.ISourceModule module,
 			ModuleDeclaration moduleDeclaration, ConstantReference node,
 			int position) {
 		// TODO Auto-generated method stub
-		
+
 	}
-		
+
 	private void completeCall(org.eclipse.dltk.core.ISourceModule module,
 			ModuleDeclaration moduleDeclaration, CallExpression node,
 			int position) {
 		Statement receiver = node.getReceiver();
-		
-//		sint pos = node.getReceiver().sourceEnd();
-		
+
+		// sint pos = node.getReceiver().sourceEnd();
+
 		if (receiver != null) {
-			ExpressionGoal goal = new ExpressionGoal(new BasicContext(module, moduleDeclaration), 
-					(Statement) receiver);
+			ExpressionGoal goal = new ExpressionGoal(new BasicContext(module,
+					moduleDeclaration), (Statement) receiver);
 			IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
 			if (type instanceof RubyClassType) {
-				RubyClassType classType = RubyTypeInferencingUtils.resolveMethods(module.getScriptProject(), (RubyClassType) type);
+				RubyClassType classType = RubyTypeInferencingUtils
+						.resolveMethods(module.getScriptProject(),
+								(RubyClassType) type);
 				IMethod[] allMethods = classType.getAllMethods();
 				for (int i = 0; i < allMethods.length; i++) {
-					
-				}				
+
+				}
 			} else if (type instanceof RubyMetaClassType) {
-				
+
 			} else if (type instanceof SimpleType) {
-				
+
 			}
 		} else {
-			//complete word
+			// complete word
 		}
 	}
-
-	
 
 	protected String processFieldName(IField field, String token) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	private void reportMethod(char[] token, int length, IMethod method) {
 		char[] name = method.getElementName().toCharArray();
-		if (length <= name.length && CharOperation.prefixEquals(token, name, false)) {
+		if (length <= name.length
+				&& CharOperation.prefixEquals(token, name, false)) {
 			int relevance = RelevanceConstants.R_INTERESTING;
 			relevance += computeRelevanceForCaseMatching(token, name);
 			relevance += RelevanceConstants.R_NON_RESTRICTED;
@@ -235,24 +256,42 @@ public class RubyCompletionEngine extends CompletionEngine {
 			// accept result
 			noProposal = false;
 			if (!requestor.isIgnored(CompletionProposal.METHOD_DECLARATION)) {
-				CompletionProposal proposal = createProposal(CompletionProposal.METHOD_DECLARATION,
+				CompletionProposal proposal = createProposal(
+						CompletionProposal.METHOD_DECLARATION,
 						actualCompletionPosition);
 				// proposal.setSignature(getSignature(typeBinding));
 				// proposal.setPackageName(q);
 				// proposal.setTypeName(displayName);
-//				ArgumentDescriptor[] arguments = method.getArguments();
-//				if(arguments.length > 0 ) {
-//					char[][] args = new char[arguments.length][];
-//					for( int j = 0; j < arguments.length; ++j ) {
-//						args[j] = arguments[j].getName().toCharArray();
-//					}
-//					proposal.setParameterNames(args);
-//				}
+				// ArgumentDescriptor[] arguments = method.getArguments();
+				// if(arguments.length > 0 ) {
+				// char[][] args = new char[arguments.length][];
+				// for( int j = 0; j < arguments.length; ++j ) {
+				// args[j] = arguments[j].getName().toCharArray();
+				// }
+				// proposal.setParameterNames(args);
+				// }
+
+				String[] params = null;
+
+				try {
+					params = method.getParameters();
+				} catch (ModelException e) {
+					e.printStackTrace();
+				}
+
+				if (params != null && params.length > 0) {
+					char[][] args = new char[params.length][];
+					for (int i = 0; i < params.length; ++i) {
+						args[i] = params[i].toCharArray();
+					}
+					proposal.setParameterNames(args);
+				}
 
 				proposal.setName(name);
 				proposal.setCompletion(name);
 				// proposal.setFlags(Flags.AccDefault);
-				proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition - this.offset);
+				proposal.setReplaceRange(this.startPosition - this.offset,
+						this.endPosition - this.offset);
 				proposal.setRelevance(relevance);
 				this.requestor.accept(proposal);
 				if (DEBUG) {
@@ -261,11 +300,11 @@ public class RubyCompletionEngine extends CompletionEngine {
 			}
 		}
 	}
-	
-	
+
 	private void reportType(char[] token, int length, IType type, int from) {
 		char[] name = type.getTypeQualifiedName("::").toCharArray();
-		if (length <= name.length && CharOperation.prefixEquals(token, name, false)) {
+		if (length <= name.length
+				&& CharOperation.prefixEquals(token, name, false)) {
 			int relevance = RelevanceConstants.R_INTERESTING;
 			relevance += computeRelevanceForCaseMatching(token, name);
 			relevance += RelevanceConstants.R_NON_RESTRICTED;
@@ -273,16 +312,18 @@ public class RubyCompletionEngine extends CompletionEngine {
 			// accept result
 			noProposal = false;
 			if (!requestor.isIgnored(CompletionProposal.TYPE_REF)) {
-				CompletionProposal proposal = createProposal(CompletionProposal.TYPE_REF,
-						actualCompletionPosition);
+				CompletionProposal proposal = createProposal(
+						CompletionProposal.TYPE_REF, actualCompletionPosition);
 				// proposal.setSignature(getSignature(typeBinding));
 				// proposal.setPackageName(q);
 				// proposal.setTypeName(displayName);
 
 				proposal.setName(name);
-				proposal.setCompletion(type.getTypeQualifiedName("::").substring(from).toCharArray());
+				proposal.setCompletion(type.getTypeQualifiedName("::")
+						.substring(from).toCharArray());
 				// proposal.setFlags(Flags.AccDefault);
-				proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition - this.offset);
+				proposal.setReplaceRange(this.startPosition - this.offset,
+						this.endPosition - this.offset);
 				proposal.setRelevance(relevance);
 				this.requestor.accept(proposal);
 				if (DEBUG) {

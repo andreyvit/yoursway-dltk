@@ -21,14 +21,13 @@ import org.eclipse.dltk.ui.ScriptElementImageProvider;
 import org.eclipse.dltk.ui.ScriptElementLabels;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-
 /**
  * Provides labels forscriptcontent assist proposals. The functionality is
  * similar to the one provided by {@link org.eclipse.dltk.ui.ModelElementLabels},
  * but based on signatures and {@link CompletionProposal}s.
  * 
  * @see Signature
-	 *
+ * 
  */
 public abstract class CompletionProposalLabelProvider {
 
@@ -124,7 +123,7 @@ public abstract class CompletionProposalLabelProvider {
 	 *         arguments
 	 */
 	protected StringBuffer appendParameterSignature(StringBuffer buffer,
-			char[][] parameterTypes, char[][] parameterNames) {
+			char[][] parameterTypes, char[][] parameterNames) {		
 		if (parameterNames != null) {
 			for (int i = 0; i < parameterNames.length; i++) {
 				if (i > 0) {
@@ -153,8 +152,8 @@ public abstract class CompletionProposalLabelProvider {
 	 * <code>List<? extends Number></code>, the following display name is
 	 * returned: <code>get(int index)  Number - List</code>.<br>
 	 * For the <code>add(E)</code> method of a variable of type
-	 * <code>List<? super Number></code>, the following display name is
 	 * returned: <code>add(Number o)  void - List</code>.<br>
+	 * <code>List<? super Number></code>, the following display name is
 	 * </p>
 	 * 
 	 * @param methodProposal
@@ -482,7 +481,7 @@ public abstract class CompletionProposalLabelProvider {
 	 * 
 	 * @param context
 	 *            the completion context
-	 *
+	 * 
 	 */
 	void setContext(CompletionContext context) {
 		fContext = context;
