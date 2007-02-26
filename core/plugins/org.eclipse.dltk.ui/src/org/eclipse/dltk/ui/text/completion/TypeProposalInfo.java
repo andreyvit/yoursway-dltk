@@ -20,8 +20,6 @@ import org.eclipse.dltk.internal.corext.template.completion.SignatureUtil;
 
 /**
  * Proposal info that computes the javadoc lazily when it is queried.
- *
-	 *
  */
 public final class TypeProposalInfo extends MemberProposalInfo {
 

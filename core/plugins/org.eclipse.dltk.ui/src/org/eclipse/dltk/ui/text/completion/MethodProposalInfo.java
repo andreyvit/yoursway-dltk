@@ -22,11 +22,8 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.internal.corext.template.completion.SignatureUtil;
 
-
 /**
  * Proposal info that computes the javadoc lazily when it is queried.
- * 
-	 *
  */
 public final class MethodProposalInfo extends MemberProposalInfo {
 	/**
@@ -58,11 +55,14 @@ public final class MethodProposalInfo extends MemberProposalInfo {
 	protected IMember resolveMember() throws ModelException {
 		char[] declarationSignature = fProposal.getDeclarationSignature();
 		if (declarationSignature != null) {
-			String typeName = SignatureUtil.stripSignatureToFQN(String.valueOf(declarationSignature));
+			String typeName = SignatureUtil.stripSignatureToFQN(String
+					.valueOf(declarationSignature));
 			IType type = fScriptProject.findType(typeName);
 			if (type != null) {
 				String name = String.valueOf(fProposal.getName());
-				String[] parameters = Signature.getParameterTypes(String.valueOf(SignatureUtil.fix83600(fProposal.getSignature())));
+				String[] parameters = Signature.getParameterTypes(String
+						.valueOf(SignatureUtil.fix83600(fProposal
+								.getSignature())));
 				for (int i = 0; i < parameters.length; i++) {
 					parameters[i] = SignatureUtil.getLowerBound(parameters[i]);
 				}
@@ -89,7 +89,8 @@ public final class MethodProposalInfo extends MemberProposalInfo {
 	 *            If the method is a constructor
 	 * @return The first found method or <code>null</code>, if nothing found
 	 */
-	private IMethod findMethod(String name, String[] paramTypes, boolean isConstructor, IType type) throws ModelException {
+	private IMethod findMethod(String name, String[] paramTypes,
+			boolean isConstructor, IType type) throws ModelException {
 		return findMethod(name, paramTypes, isConstructor, type.getMethods());
 	}
 
@@ -112,9 +113,11 @@ public final class MethodProposalInfo extends MemberProposalInfo {
 	 *            a map from type variables to concretely used types
 	 * @return The found method or <code>null</code>, if nothing found
 	 */
-	private IMethod findMethod(String name, String[] paramTypes, boolean isConstructor, IMethod[] methods) throws ModelException {
+	private IMethod findMethod(String name, String[] paramTypes,
+			boolean isConstructor, IMethod[] methods) throws ModelException {
 		for (int i = methods.length - 1; i >= 0; i--) {
-			if (isSameMethodSignature(name, paramTypes, isConstructor, methods[i])) {
+			if (isSameMethodSignature(name, paramTypes, isConstructor,
+					methods[i])) {
 				return methods[i];
 			}
 		}
@@ -140,18 +143,20 @@ public final class MethodProposalInfo extends MemberProposalInfo {
 	 * @return Returns <code>true</code> if the method has the given name and
 	 *         parameter types and constructor state.
 	 */
-	private boolean isSameMethodSignature(String name, String[] paramTypes, boolean isConstructor, IMethod method) throws ModelException {
+	private boolean isSameMethodSignature(String name, String[] paramTypes,
+			boolean isConstructor, IMethod method) throws ModelException {
 		if (isConstructor || name.equals(method.getElementName())) {
 			if (isConstructor == method.isConstructor()) {
 				String[] otherParams = method.getParameters();
 				if (paramTypes.length == otherParams.length) {
 					fFallbackMatch = method;
 					String signature = method.getSignature();
-					String[] otherParamsFromSignature = Signature.getParameterTypes(signature); // types
-																								// are
-																								// resolved
-																								// /
-																								// upper-bounded
+					String[] otherParamsFromSignature = Signature
+							.getParameterTypes(signature); // types
+					// are
+					// resolved
+					// /
+					// upper-bounded
 					// no need to check method type variables since these are
 					// not yet bound when proposing a method
 					for (int i = 0; i < paramTypes.length; i++) {
@@ -163,7 +168,8 @@ public final class MethodProposalInfo extends MemberProposalInfo {
 						// computeSimpleTypeName(otherParamsFromSignature[i],
 						// typeVariables);
 						if (DLTKCore.DEBUG) {
-							System.out.println("TODO: Check this comparison:" + paramTypes[i] + "==" + otherParams[i]);
+							System.out.println("TODO: Check this comparison:"
+									+ paramTypes[i] + "==" + otherParams[i]);
 						}
 						if (!paramTypes[i].equals(otherParams[i])) {
 							return false;
@@ -190,10 +196,12 @@ public final class MethodProposalInfo extends MemberProposalInfo {
 		// method equality uses erased types
 		String erasure = Signature.getTypeErasure(signature);
 		erasure = erasure.replaceAll("/", "."); //$NON-NLS-1$//$NON-NLS-2$
-		String simpleName = Signature.getSimpleName(Signature.toString(erasure));
+		String simpleName = Signature
+				.getSimpleName(Signature.toString(erasure));
 		char[] typeVar = (char[]) typeVariables.get(simpleName);
 		if (typeVar != null)
-			simpleName = String.valueOf(Signature.getSignatureSimpleName(typeVar));
+			simpleName = String.valueOf(Signature
+					.getSignatureSimpleName(typeVar));
 		return simpleName;
 	}
 }

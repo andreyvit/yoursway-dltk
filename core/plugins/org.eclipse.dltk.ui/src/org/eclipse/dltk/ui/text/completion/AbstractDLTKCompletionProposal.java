@@ -431,7 +431,7 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 			}
 			return info;
 		}
-		return null;
+		return null;	
 	}
 	
 	/*

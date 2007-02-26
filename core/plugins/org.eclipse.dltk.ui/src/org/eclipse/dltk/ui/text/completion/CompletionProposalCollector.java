@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -729,13 +730,17 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 		int start = proposal.getReplaceStart();
 		int length = getLength(proposal);
 		String label = getLabelProvider().createOverrideMethodProposalLabel(proposal);
-		ScriptCompletionProposal javaProposal = createOverrideCompletionProposal(fScriptProject, fSourceModule, name, paramTypes, start, length,
+		ScriptCompletionProposal scriptProposal = createOverrideCompletionProposal(fScriptProject, fSourceModule, name, paramTypes, start, length,
 				label, String.valueOf(proposal.getCompletion()));
-		javaProposal.setImage(getImage(getLabelProvider().createMethodImageDescriptor(proposal)));
-		javaProposal.setProposalInfo(new MethodProposalInfo(fScriptProject, proposal));
-		javaProposal.setRelevance(computeRelevance(proposal));
+		scriptProposal.setImage(getImage(getLabelProvider().createMethodImageDescriptor(proposal)));
+		
+		ProposalInfo info = new MethodProposalInfo(fScriptProject, proposal);
+		info.setHackMessage("<h1>This is my doc :)</h1>");
+		scriptProposal.setProposalInfo(info);
+		
+		scriptProposal.setRelevance(computeRelevance(proposal));
 		fSuggestedMethodNames.add(new String(name));
-		return javaProposal;
+		return scriptProposal;
 	}
 
 	private IScriptCompletionProposal createMethodReferenceProposal(CompletionProposal methodProposal) {

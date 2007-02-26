@@ -17,43 +17,45 @@ import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 
-
 /**
  * Proposal info that computes the javadoc lazily when it is queried.
- *
-	 *
+ * 
  */
 public abstract class MemberProposalInfo extends ProposalInfo {
-	/* configuration */
+	// configuration
 	protected final IDLTKProject fScriptProject;
 	protected final CompletionProposal fProposal;
 
-	/* cache filled lazily */
-	private boolean fModelElementResolved= false;
+	// cache filled lazily
+	private boolean fModelElementResolved = false;
 
 	/**
 	 * Creates a new proposal info.
-	 *
-	 * @param project the script project to reference when resolving types
-	 * @param proposal the proposal to generate information for
+	 * 
+	 * @param project
+	 *            the script project to reference when resolving types
+	 * @param proposal
+	 *            the proposal to generate information for
 	 */
 	public MemberProposalInfo(IDLTKProject project, CompletionProposal proposal) {
 		Assert.isNotNull(project);
 		Assert.isNotNull(proposal);
-		fScriptProject= project;
-		fProposal= proposal;
+		fScriptProject = project;
+		fProposal = proposal;
 	}
 
 	/**
-	 * Returns the script element that this computer corresponds to, possibly <code>null</code>.
+	 * Returns the script element that this computer corresponds to, possibly
+	 * <code>null</code>.
 	 * 
-	 * @return the script element that this computer corresponds to, possibly <code>null</code>
+	 * @return the script element that this computer corresponds to, possibly
+	 *         <code>null</code>
 	 * @throws ModelException
 	 */
 	public IModelElement getModelElement() throws ModelException {
 		if (!fModelElementResolved) {
-			fModelElementResolved= true;
-			fElement= resolveMember();
+			fModelElementResolved = true;
+			fElement = resolveMember();
 		}
 		return fElement;
 	}
@@ -61,11 +63,11 @@ public abstract class MemberProposalInfo extends ProposalInfo {
 	/**
 	 * Resolves the member described by the receiver and returns it if found.
 	 * Returns <code>null</code> if no corresponding member can be found.
-	 *
+	 * 
 	 * @return the resolved member or <code>null</code> if none is found
-	 * @throws ModelException if accessing the script model fails
+	 * @throws ModelException
+	 *             if accessing the script model fails
 	 */
 	protected abstract IMember resolveMember() throws ModelException;
-
 
 }
