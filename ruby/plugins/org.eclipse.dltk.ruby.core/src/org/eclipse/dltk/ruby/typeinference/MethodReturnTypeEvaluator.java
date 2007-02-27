@@ -18,6 +18,7 @@ import org.eclipse.dltk.ddp.IGoal;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.ruby.ast.ReturnStatement;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
+import org.eclipse.dltk.ruby.core.model.FakeMethod;
 
 public class MethodReturnTypeEvaluator extends GoalEvaluator {
 	
@@ -75,6 +76,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			methods = type.getAllMethods();
 		} else if (instanceType instanceof RubyMetaClassType) {
 			RubyMetaClassType type = (RubyMetaClassType) instanceType;
+			type = RubyTypeInferencingUtils.resolveMethods(typedContext.getSourceModule(), type);
 			methods = type.getMethods();
 		}
 		if (methods == null)
@@ -84,6 +86,8 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		// in case of ambiguity, prefer methods from the same module
 		IMethod resultMethodFromSameModule = null; 
 		for (int i = 0; i < methods.length; i++) {
+			if (methods[i] instanceof FakeMethod)
+				continue;
 			if (methods[i].getElementName().equals(methodName)) {
 				if (methods[i].getSourceModule().equals(typedContext.getSourceModule()))
 					resultMethodFromSameModule = methods[i];

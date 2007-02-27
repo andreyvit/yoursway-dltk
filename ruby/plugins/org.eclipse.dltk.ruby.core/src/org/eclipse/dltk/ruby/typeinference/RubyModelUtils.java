@@ -1,8 +1,10 @@
 package org.eclipse.dltk.ruby.typeinference;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
@@ -12,17 +14,30 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.compiler.env.ISourceMethod;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKModelUtil;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
+import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.search.IDLTKSearchConstants;
+import org.eclipse.dltk.core.search.IDLTKSearchScope;
+import org.eclipse.dltk.core.search.SearchEngine;
+import org.eclipse.dltk.core.search.SearchMatch;
+import org.eclipse.dltk.core.search.SearchParticipant;
+import org.eclipse.dltk.core.search.SearchPattern;
+import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
+import org.eclipse.dltk.internal.core.ExternalSourceModule;
 import org.eclipse.dltk.internal.core.ModelElement;
+import org.eclipse.dltk.internal.core.SourceMethod;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
 
@@ -255,5 +270,54 @@ public class RubyModelUtils {
 		} 
 		return null;
 	}
+	
+	public static IMethod[] findTopLevelMethods (ISourceModule module, String namePrefix) {
+		List result = new ArrayList();
+		
+		try {
+			//TODO: add handling of "require"
+			IModelElement[] children = module.getChildren();
+			for (int i = 0; i < children.length; i++) {
+				if (children[i] instanceof IMethod && children[i].getElementName().startsWith(namePrefix))
+					result.add(children[i]);
+			}
+		} catch (ModelException e) {
+			e.printStackTrace();
+		}
+
+		return (IMethod[]) result.toArray(new IMethod[result.size()]);
+	}
+	
+	public static IMethod[] _bad_findTopLevelMethods (IDLTKProject project, String namePattern) {
+		final List result = new ArrayList ();
+		SearchRequestor requestor = new SearchRequestor() {
+
+			public void acceptSearchMatch(SearchMatch match) throws CoreException {
+				Object element = match.getElement();
+				if (element instanceof SourceMethod) {
+					SourceMethod meth = (SourceMethod)element;
+					if (meth.getParent() instanceof ISourceModule) {
+						result.add(meth);
+					}
+				}
+			}
+			
+		};
+		SearchPattern pattern = SearchPattern.createPattern(namePattern, IDLTKSearchConstants.METHOD, 
+				IDLTKSearchConstants.DECLARATIONS, SearchPattern.R_PATTERN_MATCH);
+		IDLTKSearchScope scope = SearchEngine.createSearchScope(new IModelElement[] {project});		
+		try {
+			SearchEngine engine = new SearchEngine();
+			engine.search(pattern, new SearchParticipant[] { SearchEngine
+						.getDefaultSearchParticipant() }, scope, 
+						requestor, null);
+		} catch (CoreException e) {			
+			if (DLTKCore.DEBUG)
+				e.printStackTrace();
+		}
+		
+		return (IMethod[]) result.toArray(new IMethod[result.size()]);
+	}
+	
 
 }

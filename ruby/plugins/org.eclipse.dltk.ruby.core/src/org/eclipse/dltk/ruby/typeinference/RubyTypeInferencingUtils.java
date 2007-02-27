@@ -623,11 +623,25 @@ public class RubyTypeInferencingUtils {
 		return null;
 	}
 	
-	public static RubyMetaClassType resolveMethods(IDLTKProject project, RubyMetaClassType type) {
+	public static RubyMetaClassType resolveMethods(ISourceModule module, RubyMetaClassType type) {
 		if (type.getMethods() == null) {
-			FakeMethod[] metaMethods = RubyModelUtils.getFakeMetaMethods((ModelElement) project, "Object");
+			List result = new ArrayList();	
+			if (type.getInstanceType() != null) {
+				RubyClassType instanceType = (RubyClassType) type.getInstanceType();
+				if (instanceType.getFQN()[0].equals("Object")) {					
+					IMethod[] topLevelMethods = RubyModelUtils.findTopLevelMethods(module, "");
+					for (int i = 0; i < topLevelMethods.length; i++) {
+						result.add(topLevelMethods[i]);
+					}					
+				}
+			}
+			
+			FakeMethod[] metaMethods = RubyModelUtils.getFakeMetaMethods((ModelElement) module.getScriptProject(), "Object");
+			for (int j = 0; j < metaMethods.length; j++) {
+				result.add(metaMethods[j]);
+			}
 			if (metaMethods != null) {
-				return new RubyMetaClassType(type.getInstanceType(), metaMethods);
+				return new RubyMetaClassType(type.getInstanceType(), (IMethod[])result.toArray(new IMethod[result.size()]));
 			}
 		}
 		return type;

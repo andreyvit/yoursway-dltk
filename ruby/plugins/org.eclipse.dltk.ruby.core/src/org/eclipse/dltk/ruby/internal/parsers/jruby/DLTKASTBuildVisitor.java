@@ -401,7 +401,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		if (list.size() > 1) 
 			System.out.println();
 		if(list.size() > 1) {
-			RubyPlugin.log("DLTKASTBuildVisitor.collectSingleStatement(): JRuby node " + pathNode.getClass().getName() + " turned into multiple DLTK AST nodes");
+			if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.collectSingleStatement(): JRuby node " + pathNode.getClass().getName() + " turned into multiple DLTK AST nodes");
 		}
 		if (!list.isEmpty())
 			return (Statement) list.iterator().next();
@@ -467,13 +467,13 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 			}
 		} else {
 			if (nameEnd > firstArgStart) {
-				RubyPlugin.log("DLTKASTBuildVisitor.fixFunctionCallOffsets(" + methodName + "): nameEnd > firstArgStart");
+				if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.fixFunctionCallOffsets(" + methodName + "): nameEnd > firstArgStart");
 				return; ///XXX: it's a kind of magic, please, FIXME!!!
 			}
 			int lParenOffset = RubySyntaxUtils.skipWhitespaceForward(content, nameEnd, firstArgStart);
 			if (lParenOffset >= 0 && content.charAt(lParenOffset) == '(') {
 				if(lastArgEnd <= lParenOffset) {
-					RubyPlugin.log("DLTKASTBuildVisitor.fixFunctionCallOffsets(" + methodName + "): lastArgEnd <= lParenOffset");
+					if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.fixFunctionCallOffsets(" + methodName + "): lastArgEnd <= lParenOffset");
 					return;
 				}
 				int rParenOffset = RubySyntaxUtils.skipWhitespaceForward(content, lastArgEnd);
@@ -507,7 +507,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		popState();
 		// TODO: uncomment when visitor is done
 		if(collector.getList().size() > 1) {
-			RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode(" + methodName + "): receiver " + iVisited.getReceiverNode().getClass().getName() + " turned into multiple nodes");
+			if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode(" + methodName + "): receiver " + iVisited.getReceiverNode().getClass().getName() + " turned into multiple nodes");
 		}
 		Statement recv;
 		if (collector.getList().size() < 1) {
@@ -534,7 +534,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 					node.accept(this);
 				}
 			} else {
-				RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode(" + methodName + ") - unknown args node type: " + argsNode.getClass().getName());
+				if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode(" + methodName + ") - unknown args node type: " + argsNode.getClass().getName());
 				argsNode.accept(this);
 			}
 			popState();
@@ -662,7 +662,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 				BlockNode blockNode = (BlockNode) bodyNode;
 				end = blockNode.getLast().getPosition().getEndOffset()+1; ///XXX!!!!
 			} else {
-				RubyPlugin.log("DLTKASTBuildVisitor.visitClassNode(" + name + "): unknown body type " + bodyNode.getClass().getName());
+				if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.visitClassNode(" + name + "): unknown body type " + bodyNode.getClass().getName());
 			}
 			pos = fixBorders(pos);			
 			Block bl = new Block(pos.getStartOffset(), (end == -1)?pos.getEndOffset()+1:end);
@@ -1017,7 +1017,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 					node.accept(this);
 				}
 			} else {
-				RubyPlugin.log("DLTKASTBuildVisitor.visitFCallNode(" + methodName + ") - unknown args node type: " + argsNode.getClass().getName());
+				if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.visitFCallNode(" + methodName + ") - unknown args node type: " + argsNode.getClass().getName());
 				argsNode.accept(this);
 			}
 			popState();
@@ -1138,7 +1138,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		Expression left = new VariableReference(pos.getStartOffset(), pos.getStartOffset() + name.length(), name, varKind);
 		Statement right = collectSingleStatement(valueNode);
 		if (right == null) {
-			RubyPlugin.log("DLTKASTBuildVisitor.processVariableAssignment(" + name + "): cannot parse rhs, skipped");
+			if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.processVariableAssignment(" + name + "): cannot parse rhs, skipped");
 			return;
 		}
 		Assignment assgn = new Assignment(left, right);
@@ -1213,7 +1213,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 				BlockNode blockNode = (BlockNode) bodyNode;
 				end = blockNode.getLast().getPosition().getEndOffset(); ///XXX!!!!
 			} else {
-				RubyPlugin.log("DLTKASTBuildVisitor.visitModuleNode(" + name + "): unknown body type " + bodyNode.getClass().getName());
+				if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.visitModuleNode(" + name + "): unknown body type " + bodyNode.getClass().getName());
 			}
 			pos = fixBorders(pos);			
 			Block bl = new Block(pos.getStartOffset(), (end == -1)?pos.getEndOffset():end);

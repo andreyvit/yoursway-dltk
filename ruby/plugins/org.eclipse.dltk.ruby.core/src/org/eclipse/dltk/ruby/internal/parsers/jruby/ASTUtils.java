@@ -190,7 +190,8 @@ public class ASTUtils {
 			}
 
 			public boolean visitGeneral(ASTNode s) throws Exception {
-				if (s.sourceEnd() == boundaryOffset + 1) {
+				int sourceEnd = s.sourceEnd();
+				if (sourceEnd == boundaryOffset) {
 					result = s;
 					System.out.println("Found " + s.getClass().getName());
 				}

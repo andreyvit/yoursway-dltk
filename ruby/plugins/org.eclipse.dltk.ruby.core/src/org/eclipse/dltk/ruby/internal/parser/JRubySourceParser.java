@@ -16,6 +16,7 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.Declaration;
 import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.compiler.IProblem;
 import org.eclipse.dltk.compiler.IProblemReporter;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.DLTKASTBuildVisitor;
@@ -79,6 +80,7 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 	private static final Pattern COLON_FIXER = Pattern.compile("::(?=\\s|$)");
 	private IProblemReporter problemReporter;
 	private static final String missingName = "_missing_method_name_";
+	private static final String missingName2 = "NoConstant__________";
 	private static final int magicLength = missingName.length();
 	
 	private final List fixPositions = new ArrayList(); 
@@ -111,9 +113,9 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 			int offset = matcher.start();
 			if (offset > regionStart)
 				result.append(content.subSequence(regionStart, offset));
-			result.append("::" + missingName);
+			result.append("::" + missingName2);
 			fixPositions.add(new Integer(offset));
-			regionStart = offset + 1;
+			regionStart = offset + 2;
 		}
 		if (regionStart < content.length() - 1)
 			result.append(content.subSequence(regionStart, content.length()));
@@ -123,6 +125,29 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 			return result.toString();
 	}
 	
+	private final boolean[] errorState = new boolean[1];
+	
+	private class ProxyProblemReporter implements IProblemReporter {
+
+		private final IProblemReporter original;
+				
+		public ProxyProblemReporter(IProblemReporter original) {
+			super();
+			this.original = original;
+		}
+
+
+
+		public void reportProblem(IProblem problem) throws CoreException {
+			if (original != null)
+				original.reportProblem(problem);
+			if (problem.isError()) {
+				errorState[0] = true;
+			}
+		}
+		
+	}
+	
 	public JRubySourceParser(IProblemReporter problemReporter) {
 		this.problemReporter = problemReporter;
 	}
@@ -130,10 +155,13 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 	public ModuleDeclaration parse(String content) {// throws
 		long timeStart = System.currentTimeMillis();
 		Parser parser = new Parser(new IRuby() {});
-		Node node = parser.parse("", new StringReader(content), new RubyParserConfiguration(),
-				problemReporter);
+		ProxyProblemReporter proxyProblemReporter = new ProxyProblemReporter(problemReporter);
+		errorState[0] = false;
+		Node node =	parser.parse("", new StringReader(content), new RubyParserConfiguration(),
+				proxyProblemReporter);
+		
 		fixPositions.clear();
-		if (!parser.isSuccess()) {
+		if (!parser.isSuccess() || errorState[0]) {
 			content = fixBrokenDots(content);
 			content = fixBrokenColons(content);
 			
