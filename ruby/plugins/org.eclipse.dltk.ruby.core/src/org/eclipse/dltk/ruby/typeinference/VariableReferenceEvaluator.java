@@ -62,7 +62,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 		IContext context = goal.getContext();
 		ModuleDeclaration rootNode = ((ISourceModuleContext) context).getRootNode();
 		VariableReference expression = (VariableReference) ((ExpressionGoal) goal).getExpression();
-		String varName = expression.getName();
+		String varName = expression.getName().trim();
 		if (expression.getVariableKind() instanceof VariableKind.Local) {
 			if (context instanceof IArgumentsContext) {
 				IArgumentsContext argumentsContext = (IArgumentsContext) context;

@@ -114,24 +114,6 @@ public class RubyCompletionEngine extends CompletionEngine {
 		org.eclipse.dltk.core.ISourceModule modelModule = (org.eclipse.dltk.core.ISourceModule) module;
 		try {
 			String content = module.getSourceContents();
-/*			if (afterDot(content, position)) {
-				this.setSourceRange(position, position);
-//				if (widowDot(content, position)) {
-//					content = cut(content, position - 1, 1);
-//					position--;
-//				}
-				ModuleDeclaration moduleDeclaration = parser.parse(content);
-				ASTNode node = ASTUtils.findMaximalNodeEndingAt(
-						moduleDeclaration, position - 1);
-				if (node instanceof Statement) {
-					IMethod[] allMethods = getMethodsForReceiver(modelModule, moduleDeclaration, node);
-					if (allMethods != null) {
-						for (int j = 0; j < allMethods.length; j++) {
-							reportMethod("".toCharArray(), 0, allMethods[j], allMethods.length - j);
-						}
-					}
-				}
-			} else */
 			if (afterColons(content, position)) {				
 				ModuleDeclaration moduleDeclaration = parser.parse(content);
 				ASTNode node = ASTUtils.findMaximalNodeEndingAt(
