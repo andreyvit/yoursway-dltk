@@ -22,8 +22,13 @@ public abstract class Statement extends ASTNode implements StatementConstants {
 	public abstract int getKind();
 
 	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
 		if (obj instanceof Statement) {
 			Statement s = (Statement) obj;
+			if (s.sourceEnd() < 0 || s.sourceStart() < 0) {
+				return false;
+			}				
 			return sourceStart() == s.sourceStart()
 					&& sourceEnd() == s.sourceEnd();
 		}

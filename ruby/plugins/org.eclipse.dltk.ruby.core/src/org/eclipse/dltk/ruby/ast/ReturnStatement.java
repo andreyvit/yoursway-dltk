@@ -26,8 +26,11 @@ public class ReturnStatement extends Statement {
 	}
 
 	public void traverse(ASTVisitor visitor) throws Exception {
-		if (value != null) {
-			value.traverse(visitor);
+		if (visitor.visit(this)) {
+			if (value != null) {
+				value.traverse(visitor);
+			}
+			visitor.endvisit(this);
 		}
 	}
 
