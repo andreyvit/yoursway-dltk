@@ -162,9 +162,12 @@ public class RubyModelUtils {
 		
 	}
 	
-	public static IField[] findFields (ISourceModule modelModule, ModuleDeclaration parsedUnit, VariableReference ref) {
+	public static IField[] findFields (ISourceModule modelModule, ModuleDeclaration parsedUnit, String prefix, int position) {
 		IType[] types = null;
-		IClassType type = RubyTypeInferencingUtils.determineSelfClass(modelModule, parsedUnit, ref.sourceStart());
+		IClassType type = RubyTypeInferencingUtils.determineSelfClass(modelModule, parsedUnit, position);
+		if (type instanceof RubyMetaClassType) {
+			type = (IClassType) ((RubyMetaClassType)type).getInstanceType();
+		}
 		if (type instanceof RubyClassType) {
 			RubyClassType rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), (RubyClassType) type);
 			types = rubyClassType.getTypeDeclarations();
@@ -177,8 +180,8 @@ public class RubyModelUtils {
 			try {
 				fields = types[i].getFields();
 				for (int j = 0; j < fields.length; j++) {
-					if (fields[i].getElementName().equals(ref.getName())) {
-						resultFields.add(fields[i]);
+					if (fields[j].getElementName().startsWith(prefix)) {
+						resultFields.add(fields[j]);
 					}
 				}
 			} catch (ModelException e1) {					

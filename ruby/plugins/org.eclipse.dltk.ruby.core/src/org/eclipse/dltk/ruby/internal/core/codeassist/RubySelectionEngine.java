@@ -332,9 +332,8 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 	private void selectionOnVariable (org.eclipse.dltk.core.ISourceModule modelModule, 
 			ModuleDeclaration parsedUnit, VariableReference e) {
 		String name = e.getName();
-		IDLTKProject project = modelModule.getScriptProject();
 		if (name.startsWith("@")) {
-			IField[] fields = RubyModelUtils.findFields(modelModule, parsedUnit, e);
+			IField[] fields = RubyModelUtils.findFields(modelModule, parsedUnit, name, e.sourceStart());
 			for (int i = 0; i < fields.length; i++) {
 				selectionElements.add(fields[i]);
 			}

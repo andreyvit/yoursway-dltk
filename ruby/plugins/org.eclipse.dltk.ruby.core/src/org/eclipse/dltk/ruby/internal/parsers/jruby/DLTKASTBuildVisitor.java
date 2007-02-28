@@ -423,6 +423,8 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitClassVarDeclNode(ClassVarDeclNode iVisited) {
+		processVariableAssignment(iVisited, iVisited.getName(),
+				RubyVariableKind.CLASS, iVisited.getValueNode());
 		return null;
 	}
 

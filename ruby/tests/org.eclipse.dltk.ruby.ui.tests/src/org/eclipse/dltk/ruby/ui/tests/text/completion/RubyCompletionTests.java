@@ -131,4 +131,85 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		assertTrue(requestor.getResults().length() > 0);
 	}
 	
+	public void testCompletion007() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "colon1.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "::";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue((requestor.getResults().indexOf("Mine") != -1) &&
+				(requestor.getResults().indexOf("Mix") != -1));
+				
+	}
+	
+	public void testCompletion008() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "colon2.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "::";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue((requestor.getResults().indexOf("Mine") != -1) &&
+				(requestor.getResults().indexOf("Mix") != -1));
+				
+	}
+	
+	public void testCompletion009() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "colon3.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "Min";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue((requestor.getResults().indexOf("Mine") != -1));
+				
+	}
+	
+	public void testCompletion010() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "var1.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "@a";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue((requestor.getResults().length() > 0));
+				
+	}
+	
+	public void testCompletion011() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "var2.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "@a";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue((requestor.getResults().length() > 0));
+				
+	}
+	
+	public void testCompletion012() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "var3.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "@@a";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue((requestor.getResults().length() > 0));
+				
+	}
+	
+	
 }

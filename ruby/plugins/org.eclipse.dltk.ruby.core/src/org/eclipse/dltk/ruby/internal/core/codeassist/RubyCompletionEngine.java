@@ -83,31 +83,6 @@ public class RubyCompletionEngine extends CompletionEngine {
 		return false;
 	}
 
-/*	private boolean afterDot(String content, int position) {
-		if (position < 1)
-			return false;
-		if (content.charAt(position - 1) == '.')
-			return true;
-		return false;
-	}
-
-	private static String cut(String content, int position, int length) {
-		content = content.substring(0, position)
-				+ content.substring(position + length);
-		return content;
-	}
-
-	private static boolean widowDot(String content, int position) {
-		while (position < content.length()
-				&& (content.charAt(position) == ' ' || content.charAt(position) == '\t'))
-			position++;
-		if (position >= content.length())
-			return true;
-		if (!RubySyntaxUtils.isNameChar(content.charAt(position)))
-			return true;
-		return false;
-	}
-*/
 	public void complete(ISourceModule module, int position, int i) {
 		this.actualCompletionPosition = position;
 		this.requestor.beginReporting();
@@ -198,8 +173,23 @@ public class RubyCompletionEngine extends CompletionEngine {
 	private void completeSimpleRef(org.eclipse.dltk.core.ISourceModule module,
 			ModuleDeclaration moduleDeclaration, SimpleReference node,
 			int position) {
-		// TODO Auto-generated method stub
+		String prefix = getPrefix(module, node, position);
+		this.setSourceRange(node.sourceStart(), position);
+		IField[] fields = RubyModelUtils.findFields(module, moduleDeclaration, prefix, node.sourceStart());
+		int relevance = 424242;
+		for (int i = 0; i < fields.length; i++) {
+			reportField(fields[i], relevance--);
+		}
+	}
 
+	private String getPrefix(org.eclipse.dltk.core.ISourceModule module, ASTNode node, int position) {
+		String content;
+		try {
+			content = module.getSource();
+		} catch (ModelException e) {
+			return "";
+		}
+		return content.substring(node.sourceStart(), position);
 	}
 	
 	private void reportSubtypes (org.eclipse.dltk.core.ISourceModule module, 
@@ -209,9 +199,10 @@ public class RubyCompletionEngine extends CompletionEngine {
 		if (type instanceof RubyClassType) {
 			IType[] subtypes = RubyTypeInferencingUtils
 					.findSubtypes(module, (RubyClassType) type, prefix);
+			int relevance = 424242;
 			for (int j = 0; j < subtypes.length; j++) {
 				if (subtypes[j].getElementName().startsWith(prefix)) {
-					reportType("".toCharArray(), 0, subtypes[j]);
+					reportType(subtypes[j], relevance--);
 				}
 			}
 		}
@@ -252,7 +243,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 			IEvaluatedType evaluatedType = infos[i].getEvaluatedType();
 			reportSubtypes(module, evaluatedType, prefix);
 		}
-		IClassType type = RubyTypeInferencingUtils.determineSelfClass(module, moduleDeclaration, position);
+		IClassType type = RubyClassType.OBJECT_CLASS;
 		reportSubtypes(module, type, prefix);		
 	}
 
@@ -306,7 +297,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 		if (methods != null) {
 			for (int j = 0; j < methods.length; j++) {
 				if (methods[j].getElementName().startsWith(starting))
-					reportMethod("".toCharArray(), 0, methods[j],
+					reportMethod(methods[j],
 							relevance--);				
 			}
 		}		
@@ -318,96 +309,113 @@ public class RubyCompletionEngine extends CompletionEngine {
 		return null;
 	}
 
-	private void reportMethod(char[] token, int length, IMethod method, int order) {
+	private void reportMethod(IMethod method, int rel) {
 				
 		char[] name = method.getElementName().toCharArray();
-		if (length <= name.length
-				&& CharOperation.prefixEquals(token, name, false)) {
-			int relevance = RelevanceConstants.R_INTERESTING;
-			relevance += computeRelevanceForCaseMatching(token, name);
-			relevance += RelevanceConstants.R_NON_RESTRICTED;
-			relevance += order; 
-			
-			// accept result
-			noProposal = false;
-			if (!requestor.isIgnored(CompletionProposal.METHOD_DECLARATION)) {
-				CompletionProposal proposal = createProposal(
-						CompletionProposal.METHOD_DECLARATION,
-						actualCompletionPosition);
-				// proposal.setSignature(getSignature(typeBinding));
-				// proposal.setPackageName(q);
-				// proposal.setTypeName(displayName);
-				// ArgumentDescriptor[] arguments = method.getArguments();
-				// if(arguments.length > 0 ) {
-				// char[][] args = new char[arguments.length][];
-				// for( int j = 0; j < arguments.length; ++j ) {
-				// args[j] = arguments[j].getName().toCharArray();
-				// }
-				// proposal.setParameterNames(args);
-				// }
+		
+		int relevance = RelevanceConstants.R_INTERESTING;
+		relevance += RelevanceConstants.R_NON_RESTRICTED;
+		relevance += rel; 
+		
+		// accept result
+		noProposal = false;
+		if (!requestor.isIgnored(CompletionProposal.METHOD_DECLARATION)) {
+			CompletionProposal proposal = createProposal(
+					CompletionProposal.METHOD_DECLARATION,
+					actualCompletionPosition);
 
-				String[] params = null;
+			String[] params = null;
 
-				if (!(method instanceof FakeMethod)) {
-					try {
-						params = method.getParameters();
-					} catch (ModelException e) {
-						e.printStackTrace();
-					}
-				}
-
-				if (params != null && params.length > 0) {
-					char[][] args = new char[params.length][];
-					for (int i = 0; i < params.length; ++i) {
-						args[i] = params[i].toCharArray();
-					}
-					proposal.setParameterNames(args);
-				}
-
-				proposal.setModelElement(method);
-				proposal.setName(name);
-				proposal.setCompletion(name);
-				// proposal.setFlags(Flags.AccDefault);
-				proposal.setReplaceRange(this.startPosition - this.offset,
-						this.endPosition - this.offset);
-				proposal.setRelevance(relevance);
-				this.requestor.accept(proposal);
-				if (DEBUG) {
-					this.printDebug(proposal);
+			if (!(method instanceof FakeMethod)) {
+				try {
+					params = method.getParameters();
+				} catch (ModelException e) {
+					e.printStackTrace();
 				}
 			}
+
+			if (params != null && params.length > 0) {
+				char[][] args = new char[params.length][];
+				for (int i = 0; i < params.length; ++i) {
+					args[i] = params[i].toCharArray();
+				}
+				proposal.setParameterNames(args);
+			}
+
+			proposal.setModelElement(method);
+			proposal.setName(name);
+			proposal.setCompletion(name);
+			// proposal.setFlags(Flags.AccDefault);
+			proposal.setReplaceRange(this.startPosition - this.offset,
+					this.endPosition - this.offset);
+			proposal.setRelevance(relevance);
+			this.requestor.accept(proposal);
+			if (DEBUG) {
+				this.printDebug(proposal);
+			}
 		}
+	
 	}
 
-	private void reportType(char[] token, int length, IType type) {
+	private void reportType(IType type, int rel) {
 		char[] name = type.getElementName().toCharArray();
 		if (name.length == 0)
 			return;
-		if (length <= name.length
-				&& CharOperation.prefixEquals(token, name, false)) {
-			int relevance = RelevanceConstants.R_INTERESTING;
-			relevance += computeRelevanceForCaseMatching(token, name);
-			relevance += RelevanceConstants.R_NON_RESTRICTED;
-			
-			// accept result
-			noProposal = false;
-			if (!requestor.isIgnored(CompletionProposal.TYPE_REF)) {
-				CompletionProposal proposal = createProposal(
-						CompletionProposal.TYPE_REF, actualCompletionPosition);
+		
+		int relevance = RelevanceConstants.R_INTERESTING;
+		relevance += RelevanceConstants.R_NON_RESTRICTED;
+		relevance += rel;
+		
+		// accept result
+		noProposal = false;
+		if (!requestor.isIgnored(CompletionProposal.TYPE_REF)) {
+			CompletionProposal proposal = createProposal(
+					CompletionProposal.TYPE_REF, actualCompletionPosition);
 
-				proposal.setModelElement(type);
-				proposal.setName(name);
-				proposal.setCompletion(type.getElementName().toCharArray());
-				// proposal.setFlags(Flags.AccDefault);
-				proposal.setReplaceRange(this.startPosition - this.offset,
-						this.endPosition - this.offset);
-				proposal.setRelevance(relevance);
-				this.requestor.accept(proposal);
-				if (DEBUG) {
-					this.printDebug(proposal);
-				}
+			proposal.setModelElement(type);
+			proposal.setName(name);
+			proposal.setCompletion(type.getElementName().toCharArray());
+			// proposal.setFlags(Flags.AccDefault);
+			proposal.setReplaceRange(this.startPosition - this.offset,
+					this.endPosition - this.offset);
+			proposal.setRelevance(relevance);
+			this.requestor.accept(proposal);
+			if (DEBUG) {
+				this.printDebug(proposal);
 			}
 		}
+	
 	}
 
+	
+	private void reportField(IField field, int rel) {
+		char[] name = field.getElementName().toCharArray();
+		if (name.length == 0)
+			return;
+		
+		int relevance = RelevanceConstants.R_INTERESTING;
+		relevance += RelevanceConstants.R_NON_RESTRICTED;
+		relevance += rel;
+		
+		// accept result
+		noProposal = false;
+		if (!requestor.isIgnored(CompletionProposal.FIELD_REF)) {
+			CompletionProposal proposal = createProposal(
+					CompletionProposal.FIELD_REF, actualCompletionPosition);
+
+			proposal.setModelElement(field);
+			proposal.setName(name);
+			proposal.setCompletion(field.getElementName().toCharArray());
+			// proposal.setFlags(Flags.AccDefault);
+			proposal.setReplaceRange(this.startPosition - this.offset,
+					this.endPosition - this.offset);
+			proposal.setRelevance(relevance);
+			this.requestor.accept(proposal);
+			if (DEBUG) {
+				this.printDebug(proposal);
+			}
+		}
+	
+	}
+	
 }
