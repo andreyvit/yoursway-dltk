@@ -128,7 +128,7 @@ public class ScriptDocumentationAccess {
 		for (int i = 0; i < providers.length; i++) {
 			IScriptDocumentationProvider p = providers[i];
 			String pNature  = (String) providerNatures.get(p);
-			if (!pNature.equals(nature))
+			if (pNature == null || !pNature.equals(nature))
 				continue;
 			Reader reader = p.getInfo(content);
 			if (reader != null) {
