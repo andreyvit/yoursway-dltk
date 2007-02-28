@@ -42,6 +42,7 @@ import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.TypeInferencer;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
+import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.internal.codeassist.impl.Engine;
 import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
 import org.eclipse.dltk.internal.core.ModelElement;
@@ -419,8 +420,22 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 				RubyClassType rubyClassType = (RubyClassType) type;
 				rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), rubyClassType);
 				availableMethods = rubyClassType.getAllMethods();
-			} else {
-				
+			} else if (type instanceof RubyMetaClassType) {
+				RubyMetaClassType metaType = (RubyMetaClassType) type;
+				metaType = RubyTypeInferencingUtils.resolveMethods(modelModule, metaType);
+				availableMethods = metaType.getMethods();
+			} else if (type instanceof SimpleType) {
+				SimpleType simpleType = (SimpleType) type;
+				IMethod[] meth = null;
+				switch (simpleType.getType()) {
+					case SimpleType.TYPE_NUMBER:
+						meth = RubyModelUtils.getFakeMethods((ModelElement) modelModule, "Fixnum");
+						break;
+					case SimpleType.TYPE_STRING:
+						meth = RubyModelUtils.getFakeMethods((ModelElement) modelModule, "String");
+						break;
+				}
+				availableMethods = meth;
 			}
 			
 		}
