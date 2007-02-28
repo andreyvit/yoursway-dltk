@@ -275,62 +275,8 @@ public class SearchEngine {
 	public static IDLTKSearchScope createSearchScope(IModelElement[] elements, int includeMask) {
 		return BasicSearchEngine.createSearchScope(elements, includeMask);
 	}
-		
-	/**
-	 * Returns a search pattern based on a given string pattern. The string patterns support '*' wild-cards.
-	 * The remaining parameters are used to narrow down the type of expected results.
-	 *
-	 * <br>
-	 *	Examples:
-	 *	<ul>
-	 * 		<li>search for case insensitive references to <code>Object</code>:
-	 *			<code>createSearchPattern("Object", TYPE, REFERENCES, false);</code></li>
-	 *  	<li>search for case sensitive references to exact <code>Object()</code> constructor:
-	 *			<code>createSearchPattern("java.lang.Object()", CONSTRUCTOR, REFERENCES, true);</code></li>
-	 *  	<li>search for implementers of <code>java.lang.Runnable</code>:
-	 *			<code>createSearchPattern("java.lang.Runnable", TYPE, IMPLEMENTORS, true);</code></li>
-	 *  </ul>
-	 * @param stringPattern the given pattern
-	 * @param searchFor determines the nature of the searched elements
-	 *	<ul>
-	 * 	<li>{@link IDLTKSearchConstants#CLASS}: only look for classes</li>
-	 *		<li>{@link IDLTKSearchConstants#INTERFACE}: only look for interfaces</li>
-	 * 	<li>{@link IDLTKSearchConstants#TYPE}: look for both classes and interfaces</li>
-	 *		<li>{@link IDLTKSearchConstants#FIELD}: look for fields</li>
-	 *		<li>{@link IDLTKSearchConstants#METHOD}: look for methods</li>
-	 *		<li>{@link IDLTKSearchConstants#CONSTRUCTOR}: look for constructors</li>
-	 *		<li>{@link IDLTKSearchConstants#PACKAGE}: look for packages</li>
-	 *	</ul>
-	 * @param limitTo determines the nature of the expected matches
-	 *	<ul>
-	 * 		<li>{@link IDLTKSearchConstants#DECLARATIONS}: will search declarations matching with the corresponding
-	 * 			element. In case the element is a method, declarations of matching methods in subtypes will also
-	 *  		be found, allowing to find declarations of abstract methods, etc.</li>
-	 *
-	 *		 <li>{@link IDLTKSearchConstants#REFERENCES}: will search references to the given element.</li>
-	 *
-	 *		 <li>{@link IDLTKSearchConstants#ALL_OCCURRENCES}: will search for either declarations or references as specified
-	 *  		above.</li>
-	 *
-	 *		 <li>{@link IDLTKSearchConstants#IMPLEMENTORS}: for types, will find all types
-	 *				which directly implement/extend a given interface.
-	 *				Note that types may be only classes or only interfaces if {@link IDLTKSearchConstants#CLASS } or
-	 *				{@link IDLTKSearchConstants#INTERFACE} is respectively used instead of {@link IDLTKSearchConstants#TYPE}.
-	 *		</li>
-	 *	</ul>
-	 *
-	 * @param isCaseSensitive indicates whether the search is case sensitive or not.
-	 * @return a search pattern on the given string pattern, or <code>null</code> if the string pattern is ill-formed.
-	 * @deprecated Use {@link SearchPattern#createPattern(String, int, int, int)} instead.
-	 */
-	public static ISearchPattern createSearchPattern(String stringPattern, int searchFor, int limitTo, boolean isCaseSensitive) {
-		int matchMode = stringPattern.indexOf('*') != -1 || stringPattern.indexOf('?') != -1
-			? SearchPattern.R_PATTERN_MATCH
-			: SearchPattern.R_EXACT_MATCH;
-		int matchRule = isCaseSensitive ? matchMode | SearchPattern.R_CASE_SENSITIVE : matchMode;
-		return  new SearchPatternAdapter(SearchPattern.createPattern(stringPattern, searchFor, limitTo, matchRule));
-	}
 	
+		
 	/**
 	 * Returns a search pattern based on a given Script element. 
 	 * The pattern is used to trigger the appropriate search, and can be parameterized as follows:

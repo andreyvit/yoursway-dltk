@@ -28,6 +28,7 @@ import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
+import org.eclipse.dltk.ruby.ast.SymbolReference;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class RubySourceElementRequestor extends SourceElementRequestVisitor {
@@ -283,6 +284,10 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 		fNotAddedFields.clear();
 	}
+	
+	protected static boolean isAttrLike(String name){
+		return name.equals("attr_reader") || name.equals("attr_writer") || name.equals("attr_accessor"); 
+	}
 
 	// Visiting expressions
 	public boolean visit(Expression expression) throws Exception {
@@ -306,10 +311,21 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			// Only for expermintal purposes!!!
 			String name = callExpression.getName();
-			if (name.indexOf("attr_") == 0) {
+
+			if (isAttrLike(name)) {
+				CallArgumentsList list = callExpression.getArgs();
+				List expr = list.getExpressions();
+				Iterator it = expr.iterator();
+
+				List args = new ArrayList();
+				while (it.hasNext()) {
+					SymbolReference sr = (SymbolReference) it.next();
+					args.add(sr.getName());
+				}
 
 				ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
-				mi.parameterNames = new String[] {};
+				mi.parameterNames = (String[]) args.toArray(new String[args
+						.size()]);
 				mi.name = name;
 				mi.modifiers = 0;
 				mi.nameSourceStart = callExpression.sourceStart();

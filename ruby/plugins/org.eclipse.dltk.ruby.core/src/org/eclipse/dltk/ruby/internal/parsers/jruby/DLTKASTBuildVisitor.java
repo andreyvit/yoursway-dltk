@@ -35,6 +35,7 @@ import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyVariableKind;
 import org.eclipse.dltk.ruby.ast.SelfReference;
+import org.eclipse.dltk.ruby.ast.SymbolReference;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.jruby.ast.AliasNode;
@@ -140,9 +141,9 @@ import org.jruby.runtime.Arity;
 import org.jruby.runtime.Visibility;
 
 public class DLTKASTBuildVisitor implements NodeVisitor {
-	
+
 	private static final boolean VISITOR_COMPLETE = false;
-	
+
 	private static final boolean TRACE_RECOVERING = Boolean
 			.valueOf(
 					Platform
@@ -154,117 +155,118 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	private ArrayList currentLevel = new ArrayList(5);
 
 	private final CharSequence content;
-	
+
 	private static class State {
 		public void add(Statement statement) {
 		}
 	}
-	
+
 	private static class CollectingState extends State {
 		private final ArrayList list;
-		
+
 		public CollectingState() {
-			list = new ArrayList ();
+			list = new ArrayList();
 		}
-		
+
 		public void add(Statement s) {
 			list.add(s);
 		}
-		
-		public ArrayList getList () {
+
+		public ArrayList getList() {
 			return list;
 		}
-		
-		public void reset () {
+
+		public void reset() {
 			list.clear();
 		}
-		
+
 	}
-	
+
 	private static class ArgumentsState extends State {
 		private final CallArgumentsList list;
 
 		public ArgumentsState(CallArgumentsList list) {
 			this.list = list;
 		}
-		
+
 		public void add(Statement s) {
-			// XXX FIXME TODO !!! don't differentiate statements and expressions in DLTK AST !!!
+			// XXX FIXME TODO !!! don't differentiate statements and expressions
+			// in DLTK AST !!!
 			if (s instanceof Expression)
 				list.addExpression((Expression) s);
 		}
-		
+
 	}
-	
+
 	private static class TopLevelState extends State {
 		private final ModuleDeclaration module;
 
 		public TopLevelState(ModuleDeclaration module) {
 			this.module = module;
 		}
-		
+
 		public void add(Statement statement) {
 			module.getStatements().add(statement);
 		}
 	}
-	
+
 	private static class ClassLikeState extends State {
 		public int visibility;
 		public final TypeDeclaration type;
-		
+
 		public ClassLikeState(TypeDeclaration type) {
 			this.type = type;
-			visibility = Modifiers.AccPublic; 
+			visibility = Modifiers.AccPublic;
 		}
-		
+
 		public void add(Statement statement) {
 			type.getStatements().add(statement);
 		}
-		
+
 	}
-	
+
 	private static class ClassState extends ClassLikeState {
-		
+
 		public ClassState(TypeDeclaration type) {
 			super(type);
 		}
-		
+
 	}
-	
+
 	private static class ModuleState extends ClassLikeState {
-		
+
 		public ModuleState(TypeDeclaration type) {
 			super(type);
 		}
-		
+
 	}
-	
+
 	private static class MethodState extends State {
-		
+
 		private final MethodDeclaration method;
 
 		public MethodState(MethodDeclaration method) {
 			this.method = method;
 		}
-		
+
 		public void add(Statement statement) {
 			method.getStatements().add(statement);
 		}
-		
+
 	}
-	
+
 	private static class BlockState extends State {
-		
+
 		public final Block block;
 
 		public BlockState(Block block) {
 			this.block = block;
 		}
-		
+
 		public void add(Statement statement) {
 			block.getStatements().add(statement);
 		}
-		
+
 	}
 
 	public DLTKASTBuildVisitor(ModuleDeclaration module, CharSequence content) {
@@ -306,26 +308,25 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitArrayNode(ArrayNode iVisited) {
 		CollectingState coll = new CollectingState();
-		
+
 		pushState(coll);
 		Iterator iterator = iVisited.iterator();
 		while (iterator.hasNext()) {
 			((Node) iterator.next()).accept(this);
 		}
 		popState();
-		
-		
+
 		ISourcePosition position = iVisited.getPosition();
 		ExpressionList arr = new ExpressionList();
 		arr.setEnd(position.getEndOffset());
 		arr.setStart(position.getStartOffset());
 		for (Iterator iter = coll.getList().iterator(); iter.hasNext();) {
-			 Object obj =  iter.next();
-			 if (obj instanceof Expression) {
+			Object obj = iter.next();
+			if (obj instanceof Expression) {
 				Expression ex = (Expression) obj;
 				arr.addExpression(ex);
 			}
-			
+
 		}
 		peekState().add(arr);
 
@@ -384,8 +385,10 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		while (RubySyntaxUtils.isNameChar(content.charAt(end))) {
 			end++;
 		}
-		SimpleReference name = new SimpleReference(start, end, iVisited.getName());
-		ConstantDeclaration node = new ConstantDeclaration(pathResult, name, value);
+		SimpleReference name = new SimpleReference(start, end, iVisited
+				.getName());
+		ConstantDeclaration node = new ConstantDeclaration(pathResult, name,
+				value);
 		peekState().add(node);
 		return null;
 	}
@@ -398,10 +401,14 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		pathNode.accept(this);
 		popState();
 		ArrayList list = state.getList();
-		if (list.size() > 1) 
+		if (list.size() > 1)
 			System.out.println();
-		if(list.size() > 1) {
-			if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.collectSingleStatement(): JRuby node " + pathNode.getClass().getName() + " turned into multiple DLTK AST nodes");
+		if (list.size() > 1) {
+			if (TRACE_RECOVERING)
+				RubyPlugin
+						.log("DLTKASTBuildVisitor.collectSingleStatement(): JRuby node "
+								+ pathNode.getClass().getName()
+								+ " turned into multiple DLTK AST nodes");
 		}
 		if (!list.isEmpty())
 			return (Statement) list.iterator().next();
@@ -410,7 +417,8 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitClassVarAsgnNode(ClassVarAsgnNode iVisited) {
-		processVariableAssignment(iVisited, iVisited.getName(), RubyVariableKind.CLASS, iVisited.getValueNode());
+		processVariableAssignment(iVisited, iVisited.getName(),
+				RubyVariableKind.CLASS, iVisited.getValueNode());
 		return null;
 	}
 
@@ -419,14 +427,19 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitClassVarNode(ClassVarNode iVisited) {
-		processVariableReference(iVisited, iVisited.getName(), RubyVariableKind.CLASS);
+		processVariableReference(iVisited, iVisited.getName(),
+				RubyVariableKind.CLASS);
 		return null;
 	}
-	
-	private void fixCallOffsets(CallExpression callNode, String nameNode, int possibleDotPosition, int firstArgStart, int lastArgEnd) {
-		int dotPosition = RubySyntaxUtils.skipWhitespaceForward(content, possibleDotPosition);
-		if (dotPosition >= 0 && dotPosition < content.length() && content.charAt(dotPosition) == '.') {
-			fixFunctionCallOffsets(callNode, nameNode, dotPosition + 1, firstArgStart, lastArgEnd);
+
+	private void fixCallOffsets(CallExpression callNode, String nameNode,
+			int possibleDotPosition, int firstArgStart, int lastArgEnd) {
+		int dotPosition = RubySyntaxUtils.skipWhitespaceForward(content,
+				possibleDotPosition);
+		if (dotPosition >= 0 && dotPosition < content.length()
+				&& content.charAt(dotPosition) == '.') {
+			fixFunctionCallOffsets(callNode, nameNode, dotPosition + 1,
+					firstArgStart, lastArgEnd);
 			return;
 		}
 		String methodName = nameNode;
@@ -436,60 +449,84 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 			// TODO
 		} else {
 			// WTF?
-			if (TRACE_RECOVERING) 
-				RubyPlugin.log("Ruby AST: non-dot-call not recognized, non-dot found at "
-						+ dotPosition + ", function name " + methodName);
+			if (TRACE_RECOVERING)
+				RubyPlugin
+						.log("Ruby AST: non-dot-call not recognized, non-dot found at "
+								+ dotPosition + ", function name " + methodName);
 		}
 	}
-	
-	private void fixFunctionCallOffsets(CallExpression callNode, String nameNode, int possibleNameStart, int firstArgStart, int lastArgEnd) {
+
+	private void fixFunctionCallOffsets(CallExpression callNode,
+			String nameNode, int possibleNameStart, int firstArgStart,
+			int lastArgEnd) {
 		String methodName = nameNode;
-		int nameStart = RubySyntaxUtils.skipWhitespaceForward(content, possibleNameStart);
+		int nameStart = RubySyntaxUtils.skipWhitespaceForward(content,
+				possibleNameStart);
 		int nameEnd = nameStart + methodName.length();
 		CharSequence nameSequence = content.subSequence(nameStart, nameEnd);
-		//Assert.isLegal(nameSequence.toString().equals(methodName)); //XXX mega fourdman fix
-//		nameNode.setStart(nameStart);
-//		nameNode.setEnd(nameEnd);
-		
+		// Assert.isLegal(nameSequence.toString().equals(methodName)); //XXX
+		// mega fourdman fix
+		// nameNode.setStart(nameStart);
+		// nameNode.setEnd(nameEnd);
+
 		if (firstArgStart < 0) {
-			int lParenOffset = RubySyntaxUtils.skipWhitespaceForward(content, nameEnd);
+			int lParenOffset = RubySyntaxUtils.skipWhitespaceForward(content,
+					nameEnd);
 			if (lParenOffset >= 0 && content.charAt(lParenOffset) == '(') {
-				int rParenOffset = RubySyntaxUtils.skipWhitespaceForward(content, lParenOffset + 1);
+				int rParenOffset = RubySyntaxUtils.skipWhitespaceForward(
+						content, lParenOffset + 1);
 				if (rParenOffset >= 0 && content.charAt(rParenOffset) == ')')
 					callNode.setEnd(rParenOffset + 1);
 				else {
-					if (TRACE_RECOVERING) 
-						RubyPlugin.log("Ruby AST: function call, empty args, no closing paren; "
-										+ "opening paren at " + lParenOffset + ", function name "
-										+ methodName);
-					callNode.setEnd(lParenOffset - 1); // don't include these parens
+					if (TRACE_RECOVERING)
+						RubyPlugin
+								.log("Ruby AST: function call, empty args, no closing paren; "
+										+ "opening paren at "
+										+ lParenOffset
+										+ ", function name " + methodName);
+					callNode.setEnd(lParenOffset - 1); // don't include these
+														// parens
 				}
 			}
 		} else {
 			if (nameEnd > firstArgStart) {
-				if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.fixFunctionCallOffsets(" + methodName + "): nameEnd > firstArgStart");
-				return; ///XXX: it's a kind of magic, please, FIXME!!!
+				if (TRACE_RECOVERING)
+					RubyPlugin
+							.log("DLTKASTBuildVisitor.fixFunctionCallOffsets("
+									+ methodName + "): nameEnd > firstArgStart");
+				return; // /XXX: it's a kind of magic, please, FIXME!!!
 			}
-			int lParenOffset = RubySyntaxUtils.skipWhitespaceForward(content, nameEnd, firstArgStart);
+			int lParenOffset = RubySyntaxUtils.skipWhitespaceForward(content,
+					nameEnd, firstArgStart);
 			if (lParenOffset >= 0 && content.charAt(lParenOffset) == '(') {
-				if(lastArgEnd <= lParenOffset) {
-					if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.fixFunctionCallOffsets(" + methodName + "): lastArgEnd <= lParenOffset");
+				if (lastArgEnd <= lParenOffset) {
+					if (TRACE_RECOVERING)
+						RubyPlugin
+								.log("DLTKASTBuildVisitor.fixFunctionCallOffsets("
+										+ methodName
+										+ "): lastArgEnd <= lParenOffset");
 					return;
 				}
-				int rParenOffset = RubySyntaxUtils.skipWhitespaceForward(content, lastArgEnd);
+				int rParenOffset = RubySyntaxUtils.skipWhitespaceForward(
+						content, lastArgEnd);
 				if (rParenOffset >= 0 && content.charAt(rParenOffset) == ')')
 					callNode.setEnd(rParenOffset + 1);
 				else {
-					if (TRACE_RECOVERING) 
-						RubyPlugin.log("Ruby AST: function call, non-empty args, no closing paren; "
-										+ "opening paren at " + lParenOffset + ", " +
-										"last argument ending at " + lastArgEnd + ", function name "
+					if (TRACE_RECOVERING)
+						RubyPlugin
+								.log("Ruby AST: function call, non-empty args, no closing paren; "
+										+ "opening paren at "
+										+ lParenOffset
+										+ ", "
+										+ "last argument ending at "
+										+ lastArgEnd
+										+ ", function name "
 										+ methodName);
 					callNode.setEnd(lastArgEnd); // probably no closing paren
 				}
 			}
 		}
-		
+
 		if (lastArgEnd >= 0 && callNode.sourceEnd() < lastArgEnd)
 			callNode.setEnd(lastArgEnd);
 	}
@@ -500,26 +537,29 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	public Instruction visitCallNode(CallNode iVisited) {
 		String methodName = iVisited.getName();
 		CollectingState collector = new CollectingState();
-		
+
 		Assert.isTrue(iVisited.getReceiverNode() != null);
 		pushState(collector);
 		iVisited.getReceiverNode().accept(this);
 		popState();
 		// TODO: uncomment when visitor is done
-		if(collector.getList().size() > 1) {
-			if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode(" + methodName + "): receiver " + iVisited.getReceiverNode().getClass().getName() + " turned into multiple nodes");
+		if (collector.getList().size() > 1) {
+			if (TRACE_RECOVERING)
+				RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode("
+						+ methodName + "): receiver "
+						+ iVisited.getReceiverNode().getClass().getName()
+						+ " turned into multiple nodes");
 		}
 		Statement recv;
 		if (collector.getList().size() < 1) {
 			recv = new NumericLiteral(new DLTKToken(0, "")); // FIXME
 			recv.setStart(iVisited.getPosition().getStartOffset());
 			recv.setEnd(iVisited.getPosition().getEndOffset() + 1);
-		}
-		else
-			recv = (Statement)collector.getList().get(0);
-			
+		} else
+			recv = (Statement) collector.getList().get(0);
+
 		collector.reset();
-		
+
 		Statement args = null;
 		int argsStart = -1, argsEnd = -1;
 		CallArgumentsList argList = new CallArgumentsList();
@@ -534,37 +574,45 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 					node.accept(this);
 				}
 			} else {
-				if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode(" + methodName + ") - unknown args node type: " + argsNode.getClass().getName());
+				if (TRACE_RECOVERING)
+					RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode("
+							+ methodName + ") - unknown args node type: "
+							+ argsNode.getClass().getName());
 				argsNode.accept(this);
 			}
 			popState();
 			List children = argsNode.childNodes();
 			if (children.size() > 0) {
-				argsStart = ((Node) children.get(0)).getPosition().getStartOffset();
-				argsEnd = ((Node) children.get(children.size() - 1)).getPosition().getEndOffset() + 1;
+				argsStart = ((Node) children.get(0)).getPosition()
+						.getStartOffset();
+				argsEnd = ((Node) children.get(children.size() - 1))
+						.getPosition().getEndOffset() + 1;
 				// correction for nodes with incorrect positions
 				List argListExprs = argList.getExpressions();
 				if (!argListExprs.isEmpty())
-					argsEnd = Math.max(argsEnd, ((ASTNode) argListExprs.get(argListExprs.size() - 1)).sourceEnd());
+					argsEnd = Math.max(argsEnd, ((ASTNode) argListExprs
+							.get(argListExprs.size() - 1)).sourceEnd());
 			}
 		}
-		
 
 		CallExpression c = new CallExpression(recv, methodName, argList);
 		int receiverStart = recv.sourceStart();
 		int receiverEnd = recv.sourceEnd();
-		
-		// FIXME handle whitespace and special functions like []= (which are called without dot)
+
+		// FIXME handle whitespace and special functions like []= (which are
+		// called without dot)
 		int funcNameStart = receiverEnd + 1 /* skip dot */;
 		int funcNameEnd = funcNameStart + methodName.length();
-//		Assert.isTrue(iVisited.getPosition().getStartOffset() == receiverStart);
+		// Assert.isTrue(iVisited.getPosition().getStartOffset() ==
+		// receiverStart);
 
 		c.setStart(receiverStart);
-		c.setEnd(argsEnd >= 0 ? argsEnd : funcNameEnd); // just in case, should be overriden
+		c.setEnd(argsEnd >= 0 ? argsEnd : funcNameEnd); // just in case, should
+														// be overriden
 		fixCallOffsets(c, methodName, receiverEnd, argsStart, argsEnd);
-		
+
 		this.peekState().add(c);
-		
+
 		return null;
 	}
 
@@ -572,16 +620,16 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 
 		return null;
 	}
-	
-	private static String colons2Name (Node cpathNode) {
+
+	private static String colons2Name(Node cpathNode) {
 		String name = "";
 		while (cpathNode instanceof Colon2Node) {
 			Colon2Node colon2Node = (Colon2Node) cpathNode;
 			if (name.length() > 0)
 				name = "::" + name;
 			name = colon2Node.getName() + name;
-			cpathNode = colon2Node.getLeftNode();				
-		} 
+			cpathNode = colon2Node.getLeftNode();
+		}
 		if (cpathNode instanceof Colon3Node) {
 			Colon3Node colon3Node = (Colon3Node) cpathNode;
 			if (name.length() > 0)
@@ -595,32 +643,38 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		}
 		return name;
 	}
-	
-	private ISourcePosition fixNamePosition (ISourcePosition pos) {
+
+	private ISourcePosition fixNamePosition(ISourcePosition pos) {
 		int start = pos.getStartOffset();
 		int end = pos.getEndOffset();
-		
-		while (end - 1 >= 0 && (end - 1) > start && !RubySyntaxUtils.isNameChar(content.charAt(end - 1))) {
-				end--;
+
+		while (end - 1 >= 0 && (end - 1) > start
+				&& !RubySyntaxUtils.isNameChar(content.charAt(end - 1))) {
+			end--;
 		}
-		if (end >=0) {
-			while (end < content.length() && RubySyntaxUtils.isNameChar(content.charAt(end)))
+		if (end >= 0) {
+			while (end < content.length()
+					&& RubySyntaxUtils.isNameChar(content.charAt(end)))
 				end++;
 		}
-		return new SourcePosition(pos.getFile(), pos.getStartLine(), pos.getEndLine(), start, end);
+		return new SourcePosition(pos.getFile(), pos.getStartLine(), pos
+				.getEndLine(), start, end);
 	}
-	
-	private ISourcePosition fixBorders (ISourcePosition pos) {
+
+	private ISourcePosition fixBorders(ISourcePosition pos) {
 		int start = pos.getStartOffset();
 		int end = pos.getEndOffset();
-		while (end - 1 >= 0 && RubySyntaxUtils.isWhitespace(content.charAt(end - 1))) {
-				end--;
+		while (end - 1 >= 0
+				&& RubySyntaxUtils.isWhitespace(content.charAt(end - 1))) {
+			end--;
 		}
-		if (end >=0) {
-			while (end < content.length() && RubySyntaxUtils.isNameChar(content.charAt(end)))
+		if (end >= 0) {
+			while (end < content.length()
+					&& RubySyntaxUtils.isNameChar(content.charAt(end)))
 				end++;
 		}
-		return new SourcePosition(pos.getFile(), pos.getStartLine(), pos.getEndLine(), start, end);
+		return new SourcePosition(pos.getFile(), pos.getStartLine(), pos
+				.getEndLine(), start, end);
 	}
 
 	public Instruction visitClassNode(ClassNode iVisited) {
@@ -633,14 +687,14 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		ISourcePosition cPos = iVisited.getPosition();
 		cPos = fixNamePosition(cPos);
 		pos = fixNamePosition(pos);
-		TypeDeclaration type = new TypeDeclaration(name, pos.getStartOffset(), pos.getEndOffset(), 
-				cPos.getStartOffset(), cPos.getEndOffset());			
+		TypeDeclaration type = new TypeDeclaration(name, pos.getStartOffset(),
+				pos.getEndOffset(), cPos.getStartOffset(), cPos.getEndOffset());
 		peekState().add(type);
 		pushState(new ClassState(type));
-		//superclass
+		// superclass
 		Node superNode = iVisited.getSuperNode();
 		if (superNode != null) {
-			CollectingState collect = new CollectingState ();
+			CollectingState collect = new CollectingState();
 			pushState(collect);
 			superNode.accept(this);
 			popState();
@@ -651,7 +705,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 				}
 			}
 		}
-		//body
+		// body
 		pos = iVisited.getBodyNode().getPosition();
 		if (iVisited.getBodyNode().getBodyNode() != null) {
 			Node bodyNode = iVisited.getBodyNode().getBodyNode();
@@ -660,12 +714,16 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 				bodyNode = ((NewlineNode) bodyNode).getNextNode();
 			if (bodyNode instanceof BlockNode) {
 				BlockNode blockNode = (BlockNode) bodyNode;
-				end = blockNode.getLast().getPosition().getEndOffset()+1; ///XXX!!!!
+				end = blockNode.getLast().getPosition().getEndOffset() + 1; // /XXX!!!!
 			} else {
-				if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.visitClassNode(" + name + "): unknown body type " + bodyNode.getClass().getName());
+				if (TRACE_RECOVERING)
+					RubyPlugin.log("DLTKASTBuildVisitor.visitClassNode(" + name
+							+ "): unknown body type "
+							+ bodyNode.getClass().getName());
 			}
-			pos = fixBorders(pos);			
-			Block bl = new Block(pos.getStartOffset(), (end == -1)?pos.getEndOffset()+1:end);
+			pos = fixBorders(pos);
+			Block bl = new Block(pos.getStartOffset(), (end == -1) ? pos
+					.getEndOffset() + 1 : end);
 			type.setBody(bl);
 			iVisited.getBodyNode().accept(this);
 		}
@@ -680,45 +738,45 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	private void pushState(State state) {
 		currentLevel.add(state);
 	}
-	
+
 	private void popState() {
 		currentLevel.remove(currentLevel.size() - 1);
 	}
 
 	public Instruction visitColon2Node(Colon2Node iVisited) {
-	
+
 		CollectingState collector = new CollectingState();
 		pushState(collector);
-		iVisited.getLeftNode().accept(this);		
+		iVisited.getLeftNode().accept(this);
 		popState();
-		
+
 		int start = iVisited.getPosition().getStartOffset();
 		int end = iVisited.getPosition().getEndOffset() + 1;
-		
+
 		Expression left = null;
 		if (collector.list.size() == 1) {
 			if (collector.list.get(0) instanceof Expression) {
-				left = (Expression) collector.list.get(0);	
+				left = (Expression) collector.list.get(0);
 			}
 		}
-			 
+
 		String right = iVisited.getName();
-		
+
 		ColonExpression colon = new ColonExpression(right, left, false);
 		colon.setStart(start);
 		colon.setEnd(end);
 		peekState().add(colon);
-		
+
 		return null;
 	}
 
-	
 	public Instruction visitColon3Node(Colon3Node iVisited) {
 		ISourcePosition position = iVisited.getPosition();
-		ColonExpression colon = new ColonExpression(iVisited.getName(), null, true);
+		ColonExpression colon = new ColonExpression(iVisited.getName(), null,
+				true);
 		colon.setStart(position.getStartOffset());
 		colon.setEnd(position.getEndOffset() + 1);
-		peekState().add(colon);		
+		peekState().add(colon);
 		return null;
 	}
 
@@ -726,7 +784,9 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		String name = iVisited.getName();
 		ISourcePosition pos = iVisited.getPosition();
 		pos = fixBorders(pos);
-		this.peekState().add(new ConstantReference(pos.getStartOffset(), pos.getEndOffset(), name));
+		this.peekState().add(
+				new ConstantReference(pos.getStartOffset(), pos.getEndOffset(),
+						name));
 		return null;
 	}
 
@@ -772,7 +832,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	private List processMethodArguments(ArgsNode args) {
- 		List arguments = new ArrayList();
+		List arguments = new ArrayList();
 		Arity arity = args.getArity();
 		int endPos = args.getPosition().getStartOffset() - 1;
 		if (arity.required() > 0) {
@@ -784,13 +844,14 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 					if (nde instanceof ArgumentNode) {
 						ArgumentNode a = (ArgumentNode) nde;
 						Argument aa = new RubyMethodArgument();
-						ISourcePosition argPos = fixNamePosition(a.getPosition());
-						
+						ISourcePosition argPos = fixNamePosition(a
+								.getPosition());
+
 						if (argPos.getEndOffset() > endPos)
 							endPos = argPos.getEndOffset();
-						
-						aa.set(new SimpleReference(argPos.getStartOffset(), argPos
-								.getEndOffset(), a.getName()), null);
+
+						aa.set(new SimpleReference(argPos.getStartOffset(),
+								argPos.getEndOffset(), a.getName()), null);
 						aa.setModifier(RubyMethodArgument.SIMPLE);
 						arguments.add(aa);
 					}
@@ -805,25 +866,28 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 						LocalAsgnNode a = (LocalAsgnNode) obj;
 						Argument aa = new RubyMethodArgument();
 						ISourcePosition argPos = a.getPosition();
-						
+
 						if (argPos.getEndOffset() > endPos)
 							endPos = argPos.getEndOffset();
-						
+
 						CollectingState coll = new CollectingState();
 						pushState(coll);
 						a.getValueNode().accept(this);
 						popState();
-						
+
 						Expression defaultVal = null;
-						
+
 						if (coll.list.size() == 1) {
 							Object object = coll.list.get(0);
 							if (object instanceof Expression)
-								defaultVal = (Expression)object;
+								defaultVal = (Expression) object;
 						}
-						
-						aa.set(new SimpleReference(argPos.getStartOffset(), argPos
-								.getEndOffset(), a.getName()), defaultVal);
+
+						aa
+								.set(new SimpleReference(argPos
+										.getStartOffset(), argPos
+										.getEndOffset(), a.getName()),
+										defaultVal);
 						aa.setModifier(RubyMethodArgument.SIMPLE);
 						arguments.add(aa);
 					} else {
@@ -833,25 +897,27 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 			}
 		}
 		if (!arity.isFixed()) {
-			
-			//restore vararg name and position
-			int vaStart = 0, vaEnd = 0;			
+
+			// restore vararg name and position
+			int vaStart = 0, vaEnd = 0;
 			if (endPos >= 0 && endPos < content.length()) {
-				while (endPos < content.length() && content.charAt(endPos) != '*')
+				while (endPos < content.length()
+						&& content.charAt(endPos) != '*')
 					endPos++;
 				endPos++;
 				if (endPos < content.length()) {
 					vaStart = endPos - 1;
-					while (RubySyntaxUtils.isIdentifierCharacter(content.charAt(endPos)))
+					while (RubySyntaxUtils.isIdentifierCharacter(content
+							.charAt(endPos)))
 						endPos++;
 					vaEnd = endPos;
-				} 
-				
+				}
+
 			}
-			
+
 			Argument aa = new RubyMethodArgument();
-			aa.set(new SimpleReference(vaStart + 1, vaEnd, 
-					content.subSequence(vaStart, vaEnd).toString()), null);
+			aa.set(new SimpleReference(vaStart + 1, vaEnd, content.subSequence(
+					vaStart, vaEnd).toString()), null);
 			aa.setModifier(RubyMethodArgument.VARARG);
 			arguments.add(aa);
 		}
@@ -859,7 +925,8 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		if (blockArgNode != null) {
 			ISourcePosition position = fixNamePosition(blockArgNode
 					.getPosition());
-			String baName = content.subSequence(position.getStartOffset()-1, position.getEndOffset()).toString();
+			String baName = content.subSequence(position.getStartOffset() - 1,
+					position.getEndOffset()).toString();
 			Argument aa = new RubyMethodArgument();
 			aa.set(new SimpleReference(position.getStartOffset(), position
 					.getEndOffset(), baName), null); // XXX:
@@ -868,36 +935,37 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		}
 		return arguments;
 	}
-	
-	private void setMethodVisibility (MethodDeclaration method, Visibility visibility) {
+
+	private void setMethodVisibility(MethodDeclaration method,
+			Visibility visibility) {
 		if (visibility.isPrivate())
 			ASTUtils.setVisibility(method, Modifiers.AccPrivate);
-		
+
 		if (visibility.isPublic())
 			ASTUtils.setVisibility(method, Modifiers.AccPublic);
-		
+
 		if (visibility.isProtected())
 			ASTUtils.setVisibility(method, Modifiers.AccProtected);
 	}
-	
+
 	// method
 	public Instruction visitDefnNode(DefnNode iVisited) {
-		ArgumentNode nameNode = iVisited.getNameNode();			
-		
-		ISourcePosition pos = fixNamePosition(nameNode.getPosition());		
+		ArgumentNode nameNode = iVisited.getNameNode();
+
+		ISourcePosition pos = fixNamePosition(nameNode.getPosition());
 		ISourcePosition cPos = fixNamePosition(iVisited.getPosition());
-		MethodDeclaration method = new MethodDeclaration(iVisited.getName(), pos.getStartOffset(), 
-				pos.getEndOffset(), cPos.getStartOffset(), cPos
-				.getEndOffset());		
-		
+		MethodDeclaration method = new MethodDeclaration(iVisited.getName(),
+				pos.getStartOffset(), pos.getEndOffset(),
+				cPos.getStartOffset(), cPos.getEndOffset());
+
 		setMethodVisibility(method, iVisited.getVisibility());
-		if (peekState() instanceof ClassLikeState) {			
+		if (peekState() instanceof ClassLikeState) {
 			ClassLikeState classState = (ClassLikeState) peekState();
 			ASTUtils.setVisibility(method, classState.visibility);
 		}
-		
+
 		peekState().add(method);
-		pushState(new MethodState(method));		
+		pushState(new MethodState(method));
 		ArgsNode args = (ArgsNode) iVisited.getArgsNode();
 		if (args != null) {
 			List arguments = processMethodArguments(args);
@@ -908,50 +976,54 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
-	private ISourcePosition restoreMethodNamePosition (DefsNode node, int recvEnd) {
+	private ISourcePosition restoreMethodNamePosition(DefsNode node, int recvEnd) {
 		ISourcePosition recvPos = node.getReceiverNode().getPosition();
-		int pos  = recvEnd;
+		int pos = recvEnd;
 		if (pos >= 0) {
-			while (pos < content.length() && content.charAt(pos) != '.' && content.charAt(pos) != ':')
-				pos++; 
+			while (pos < content.length() && content.charAt(pos) != '.'
+					&& content.charAt(pos) != ':')
+				pos++;
 			if (content.charAt(pos) == ':')
 				pos++;
 		}
-		if (pos  >= content.length() || pos < 0)
+		if (pos >= content.length() || pos < 0)
 			return recvPos;
 		int nameStart = RubySyntaxUtils.skipWhitespaceForward(content, pos + 1);
 		int nameEnd = nameStart;
 		while (RubySyntaxUtils.isIdentifierCharacter(content.charAt(nameEnd)))
 			nameEnd++;
-		return new SourcePosition(recvPos.getFile(), recvPos.getStartLine(), recvPos.getEndLine(), nameStart, nameEnd);
+		return new SourcePosition(recvPos.getFile(), recvPos.getStartLine(),
+				recvPos.getEndLine(), nameStart, nameEnd);
 	}
-	
+
 	// singleton method
 	public Instruction visitDefsNode(DefsNode iVisited) {
 		Expression receiverExpression = null;
 		Node receiverNode = iVisited.getReceiverNode();
 		CollectingState collectingState = new CollectingState();
-		
+
 		pushState(collectingState);
 		receiverNode.accept(this);
 		popState();
 		if (collectingState.list.size() == 1) {
 			Object obj = collectingState.list.get(0);
 			if (obj instanceof Expression) {
-				receiverExpression = (Expression)obj;
+				receiverExpression = (Expression) obj;
 			}
 		}
-		
+
 		ISourcePosition cPos = iVisited.getPosition();
 		if (receiverExpression == null)
 			System.out.println();
-		ISourcePosition namePos = restoreMethodNamePosition(iVisited, receiverExpression.sourceEnd());		
-		RubySingletonMethodDeclaration method = 
-			new RubySingletonMethodDeclaration(iVisited.getName(), namePos.getStartOffset(), namePos.getEndOffset(), cPos.getStartOffset(), cPos
-				.getEndOffset(), receiverExpression);
+		ISourcePosition namePos = restoreMethodNamePosition(iVisited,
+				receiverExpression.sourceEnd());
+		RubySingletonMethodDeclaration method = new RubySingletonMethodDeclaration(
+				iVisited.getName(), namePos.getStartOffset(), namePos
+						.getEndOffset(), cPos.getStartOffset(), cPos
+						.getEndOffset(), receiverExpression);
 		method.setModifier(Modifiers.AccStatic);
 		ASTUtils.setVisibility(method, Modifiers.AccPublic);
-		if (peekState() instanceof ClassLikeState) {			
+		if (peekState() instanceof ClassLikeState) {
 			ClassLikeState classState = (ClassLikeState) peekState();
 			ASTUtils.setVisibility(method, classState.visibility);
 		}
@@ -984,9 +1056,12 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 
 	/** @fixme iteration not correctly defined */
 	public Instruction visitFCallNode(FCallNode iVisited) {
-//		System.out.println("DLTKASTBuildVisitor.visitFCallNode(" + iVisited.getName() + ")");
+		// System.out.println("DLTKASTBuildVisitor.visitFCallNode(" +
+		// iVisited.getName() + ")");
 		String methodName = iVisited.getName();
-		
+
+		System.out.println("== (AST) Method name: " + methodName);
+
 		State state = peekState();
 		if (state instanceof ClassLikeState) {
 			if (methodName.equals("private"))
@@ -996,7 +1071,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 			else if (methodName.equals("public"))
 				handleVisibilitySetter(iVisited, Modifiers.AccPublic);
 		}
-		
+
 		int argsStart = -1, argsEnd = -1;
 		CallArgumentsList argList = new CallArgumentsList();
 		Node argsNode = iVisited.getArgsNode();
@@ -1010,23 +1085,28 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 					node.accept(this);
 				}
 			} else {
-				if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.visitFCallNode(" + methodName + ") - unknown args node type: " + argsNode.getClass().getName());
+				if (TRACE_RECOVERING)
+					RubyPlugin.log("DLTKASTBuildVisitor.visitFCallNode("
+							+ methodName + ") - unknown args node type: "
+							+ argsNode.getClass().getName());
 				argsNode.accept(this);
 			}
 			popState();
 			List children = argsNode.childNodes();
 			if (children.size() > 0) {
-				argsStart = ((Node) children.get(0)).getPosition().getStartOffset();
-				argsEnd = ((Node) children.get(children.size() - 1)).getPosition().getEndOffset() + 1;
+				argsStart = ((Node) children.get(0)).getPosition()
+						.getStartOffset();
+				argsEnd = ((Node) children.get(children.size() - 1))
+						.getPosition().getEndOffset() + 1;
 			}
 		}
-		
+
 		CallExpression c = new CallExpression(null, methodName, argList);
-		
+
 		int funcNameStart = iVisited.getPosition().getStartOffset();
 		c.setStart(funcNameStart);
 		fixFunctionCallOffsets(c, methodName, funcNameStart, argsStart, argsEnd);
-		
+
 		peekState().add(c);
 
 		return null;
@@ -1046,12 +1126,15 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 						SymbolNode symbolNode = (SymbolNode) arg;
 						String xmethodName = symbolNode.getName();
 						List statements = classState.type.getStatements();
-						for (Iterator statIter = statements.iterator(); statIter.hasNext();) {
+						for (Iterator statIter = statements.iterator(); statIter
+								.hasNext();) {
 							Statement statement = (Statement) statIter.next();
 							if (statement instanceof MethodDeclaration) {
 								MethodDeclaration methodDeclaration = (MethodDeclaration) statement;
-								if (methodDeclaration.getName().equals(xmethodName))
-									ASTUtils.setVisibility(methodDeclaration, newVisibility);
+								if (methodDeclaration.getName().equals(
+										xmethodName))
+									ASTUtils.setVisibility(methodDeclaration,
+											newVisibility);
 							}
 						}
 					}
@@ -1082,7 +1165,8 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitGlobalVarNode(GlobalVarNode iVisited) {
-		processVariableReference(iVisited, iVisited.getName(), RubyVariableKind.GLOBAL);
+		processVariableReference(iVisited, iVisited.getName(),
+				RubyVariableKind.GLOBAL);
 		return null;
 	}
 
@@ -1091,12 +1175,14 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitInstAsgnNode(InstAsgnNode iVisited) {
-		processVariableAssignment(iVisited, iVisited.getName(), RubyVariableKind.INSTANCE, iVisited.getValueNode());
+		processVariableAssignment(iVisited, iVisited.getName(),
+				RubyVariableKind.INSTANCE, iVisited.getValueNode());
 		return null;
 	}
 
 	public Instruction visitInstVarNode(InstVarNode iVisited) {
-		processVariableReference(iVisited, iVisited.getName(), RubyVariableKind.INSTANCE);
+		processVariableReference(iVisited, iVisited.getName(),
+				RubyVariableKind.INSTANCE);
 		return null;
 	}
 
@@ -1111,8 +1197,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
-	public Instruction visitIterNode(IterNode
-			iVisited) {
+	public Instruction visitIterNode(IterNode iVisited) {
 		System.out.println("DLTKASTBuildVisitor.visitIterNode()");
 		Iterator iterator = iVisited.childNodes().iterator();
 		while (iterator.hasNext()) {
@@ -1122,16 +1207,22 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitLocalAsgnNode(LocalAsgnNode iVisited) {
-		processVariableAssignment(iVisited, iVisited.getName(), RubyVariableKind.LOCAL, iVisited.getValueNode());
+		processVariableAssignment(iVisited, iVisited.getName(),
+				RubyVariableKind.LOCAL, iVisited.getValueNode());
 		return null;
 	}
 
-	private void processVariableAssignment(Node iVisited, String name, RubyVariableKind varKind, Node valueNode) {
+	private void processVariableAssignment(Node iVisited, String name,
+			RubyVariableKind varKind, Node valueNode) {
 		ISourcePosition pos = iVisited.getPosition();
-		Expression left = new VariableReference(pos.getStartOffset(), pos.getStartOffset() + name.length(), name, varKind);
+		Expression left = new VariableReference(pos.getStartOffset(), pos
+				.getStartOffset()
+				+ name.length(), name, varKind);
 		Statement right = collectSingleStatement(valueNode);
 		if (right == null) {
-			if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.processVariableAssignment(" + name + "): cannot parse rhs, skipped");
+			if (TRACE_RECOVERING)
+				RubyPlugin.log("DLTKASTBuildVisitor.processVariableAssignment("
+						+ name + "): cannot parse rhs, skipped");
 			return;
 		}
 		Assignment assgn = new Assignment(left, right);
@@ -1141,19 +1232,22 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitLocalVarNode(LocalVarNode iVisited) {
 		ISourcePosition pos = iVisited.getPosition();
-		String varName = content.subSequence(pos.getStartOffset(), pos.getEndOffset() + 1).toString();
+		String varName = content.subSequence(pos.getStartOffset(),
+				pos.getEndOffset() + 1).toString();
 		processVariableReference(iVisited, varName, RubyVariableKind.LOCAL);
 		return null;
 	}
 
-	private void processVariableReference(Node iVisited, String varName, RubyVariableKind varKind) {
+	private void processVariableReference(Node iVisited, String varName,
+			RubyVariableKind varKind) {
 		ISourcePosition pos2 = fixNamePosition(iVisited.getPosition());
 		if (varName.endsWith("\r"))
 			varName = varName.substring(0, varName.length() - 1);
-		VariableReference node = new VariableReference(pos2.getStartOffset(), pos2.getEndOffset(), varName, varKind);
+		VariableReference node = new VariableReference(pos2.getStartOffset(),
+				pos2.getEndOffset(), varName, varKind);
 		peekState().add(node);
 	}
-	
+
 	private void copyOffsets(ASTNode target, Node source) {
 		ISourcePosition pos = source.getPosition();
 		target.setStart(pos.getStartOffset());
@@ -1190,12 +1284,12 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		ISourcePosition cPos = iVisited.getPosition();
 		cPos = fixNamePosition(cPos);
 		pos = fixNamePosition(pos);
-		TypeDeclaration type = new TypeDeclaration(name, pos.getStartOffset(), pos.getEndOffset(), 
-				cPos.getStartOffset(), cPos.getEndOffset());			
+		TypeDeclaration type = new TypeDeclaration(name, pos.getStartOffset(),
+				pos.getEndOffset(), cPos.getStartOffset(), cPos.getEndOffset());
 		type.setModifier(Modifiers.AccModule);
 		peekState().add(type);
 		pushState(new ModuleState(type));
-		//body
+		// body
 		pos = iVisited.getBodyNode().getPosition();
 		if (iVisited.getBodyNode().getBodyNode() != null) {
 			Node bodyNode = iVisited.getBodyNode().getBodyNode();
@@ -1204,12 +1298,16 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 				bodyNode = ((NewlineNode) bodyNode).getNextNode();
 			if (bodyNode instanceof BlockNode) {
 				BlockNode blockNode = (BlockNode) bodyNode;
-				end = blockNode.getLast().getPosition().getEndOffset(); ///XXX!!!!
+				end = blockNode.getLast().getPosition().getEndOffset(); // /XXX!!!!
 			} else {
-				if (TRACE_RECOVERING) RubyPlugin.log("DLTKASTBuildVisitor.visitModuleNode(" + name + "): unknown body type " + bodyNode.getClass().getName());
+				if (TRACE_RECOVERING)
+					RubyPlugin.log("DLTKASTBuildVisitor.visitModuleNode("
+							+ name + "): unknown body type "
+							+ bodyNode.getClass().getName());
 			}
-			pos = fixBorders(pos);			
-			Block bl = new Block(pos.getStartOffset(), (end == -1)?pos.getEndOffset():end);
+			pos = fixBorders(pos);
+			Block bl = new Block(pos.getStartOffset(), (end == -1) ? pos
+					.getEndOffset() : end);
 			type.setBody(bl);
 			iVisited.getBodyNode().accept(this);
 		}
@@ -1275,7 +1373,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		pushState(state);
 		iVisited.getFirstNode().accept(this);
 		popState();
-		
+
 		Expression left = null;
 		if (state.list.size() == 1 && state.list.get(0) instanceof Expression) {
 			left = (Expression) state.list.get(0);
@@ -1285,16 +1383,16 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		pushState(state);
 		iVisited.getSecondNode().accept(this);
 		popState();
-		
+
 		Statement right = null;
 		if (state.list.size() == 1 && state.list.get(0) instanceof Statement) {
 			right = (Statement) state.list.get(0);
 		}
-		
+
 		OrExpression or = new OrExpression(left, right);
-		
+
 		peekState().add(or);
-		
+
 		return null;
 	}
 
@@ -1342,10 +1440,12 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 			iVisited.getValueNode().accept(this);
 			popState();
 			if (state.list.size() == 1 && state.list.get(0) instanceof ASTNode) {
-				value = (ASTNode)state.list.get(0);
+				value = (ASTNode) state.list.get(0);
 			}
 		}
-		peekState().add(new ReturnStatement(value, position.getStartOffset(), position.getEndOffset()));
+		peekState().add(
+				new ReturnStatement(value, position.getStartOffset(), position
+						.getEndOffset()));
 		return null;
 	}
 
@@ -1356,7 +1456,9 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		}
 		ISourcePosition pos = iVisited.getReceiverNode().getPosition();
 		ISourcePosition cPos = iVisited.getPosition();
-		TypeDeclaration type = new TypeDeclaration(name, pos.getStartOffset(), pos.getEndOffset() + 1, cPos.getStartOffset(), cPos.getEndOffset() + 1);
+		TypeDeclaration type = new TypeDeclaration(name, pos.getStartOffset(),
+				pos.getEndOffset() + 1, cPos.getStartOffset(), cPos
+						.getEndOffset() + 1);
 		peekState().add(type);
 		pushState(new ClassState(type));
 		// if (iVisited.getSuperNode() != null) {
@@ -1374,7 +1476,6 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitScopeNode(ScopeNode iVisited) {
 
-
 		if (iVisited.getBodyNode() != null) {
 			iVisited.getBodyNode().accept(this);
 		}
@@ -1383,7 +1484,9 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitSelfNode(SelfNode iVisited) {
 		ISourcePosition position = fixNamePosition(iVisited.getPosition());
-		peekState().add(new SelfReference(position.getStartOffset(), position.getEndOffset()));
+		peekState().add(
+				new SelfReference(position.getStartOffset(), position
+						.getEndOffset()));
 		return null;
 	}
 
@@ -1399,7 +1502,9 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	public Instruction visitStrNode(StrNode iVisited) {
 		String value = iVisited.getValue();
 		ISourcePosition position = iVisited.getPosition();
-		peekState().add(new StringLiteral(position.getStartOffset(), position.getEndOffset(), value));
+		peekState().add(
+				new StringLiteral(position.getStartOffset(), position
+						.getEndOffset(), value));
 		return null;
 	}
 
@@ -1446,8 +1551,9 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitVCallNode(VCallNode iVisited) {
 		String methodName = iVisited.getMethodName();
-//		System.out.println("DLTKASTBuildVisitor.visitVCallNode(" + methodName + ")");
-		
+		// System.out.println("DLTKASTBuildVisitor.visitVCallNode(" + methodName
+		// + ")");
+
 		State state = peekState();
 		if (state instanceof ClassLikeState) {
 			ClassLikeState classState = (ClassLikeState) state;
@@ -1458,17 +1564,17 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 			else if (methodName.equals("public"))
 				classState.visibility = Modifiers.AccPublic;
 		}
-		
+
 		ISourcePosition pos = iVisited.getPosition();
 		int funcNameStart = pos.getStartOffset();
 		int funcNameEnd = pos.getEndOffset() + 1;
-		//Assert.isTrue(funcNameStart + methodName.length() == funcNameEnd);
-		CallExpression c = new CallExpression(null, methodName, CallArgumentsList.EMPTY);
+		// Assert.isTrue(funcNameStart + methodName.length() == funcNameEnd);
+		CallExpression c = new CallExpression(null, methodName,
+				CallArgumentsList.EMPTY);
 		c.setStart(funcNameStart);
-		c.setEnd(funcNameEnd);				
+		c.setEnd(funcNameEnd);
 		this.peekState().add(c);
-		
-		
+
 		return null;
 	}
 
@@ -1518,7 +1624,8 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	 * @see NodeVisitor#visitFixnumNode(FixnumNode)
 	 */
 	public Instruction visitFixnumNode(FixnumNode iVisited) {
-		NumericLiteral node = new NumericLiteral(new DLTKToken(0, String.valueOf(iVisited.getValue())));
+		NumericLiteral node = new NumericLiteral(new DLTKToken(0, String
+				.valueOf(iVisited.getValue())));
 		ISourcePosition pos = iVisited.getPosition();
 		node.setStart(pos.getStartOffset());
 		node.setEnd(pos.getEndOffset() + 1);
@@ -1546,7 +1653,12 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	 * @see NodeVisitor#visitSymbolNode(SymbolNode)
 	 */
 	public Instruction visitSymbolNode(SymbolNode iVisited) {
+		ISourcePosition position = iVisited.getPosition();
 
+		SymbolReference sr = new SymbolReference(position.getStartOffset(),
+				position.getEndOffset(), iVisited.getName());
+		peekState().add(sr);
+		
 		return null;
 	}
 }

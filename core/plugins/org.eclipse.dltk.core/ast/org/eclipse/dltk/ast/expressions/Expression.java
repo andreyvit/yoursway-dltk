@@ -155,15 +155,17 @@ public abstract class Expression extends Statement implements
 	 * Testing purposes only. Print expression.
 	 */
 	public void printNode(CorePrinter output) {
-		output.formatPrintLn("Expression" + this.getSourceRange().toString() + ":" + this.getKind());
+		output.formatPrintLn("Expression" + this.getSourceRange().toString()
+				+ ":" + this.getKind());
 	}
 
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Statement)) {
-			return false;
+		if (obj instanceof Statement) {
+			Statement d = (Statement) obj;
+			return sourceStart() == d.sourceStart()
+					&& sourceEnd() == d.sourceEnd() && getKind() == d.getKind();
 		}
-		Statement d = (Statement) obj;
-		return sourceStart() == d.sourceStart() && sourceEnd() == d.sourceEnd()
-				&& getKind() == d.getKind();
+
+		return false;
 	}
 }
