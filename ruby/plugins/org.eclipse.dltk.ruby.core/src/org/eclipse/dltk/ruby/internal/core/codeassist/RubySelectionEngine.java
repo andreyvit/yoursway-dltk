@@ -246,11 +246,13 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 				return true;
 			}
 		} else {
-			String str = source.substring(start, end + 1);
-			if (RubySyntaxUtils.isRubyName(str)) {
-				this.actualSelectionStart = start;
-				this.actualSelectionEnd = end + 1;
-				return true;
+			if (start >= 0 && end < source.length()) {
+				String str = source.substring(start, end + 1);
+				if (RubySyntaxUtils.isRubyName(str)) {
+					this.actualSelectionStart = start;
+					this.actualSelectionEnd = end + 1;
+					return true;
+				}
 			}
 		}
 
