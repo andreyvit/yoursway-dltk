@@ -693,17 +693,10 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		popState();
 		
 		int start = iVisited.getPosition().getStartOffset();
-		int end = iVisited.getPosition().getEndOffset();
+		int end = iVisited.getPosition().getEndOffset() + 1;
 		
 		Expression left = null;
 		if (collector.list.size() == 1) {
-//			if (collector.list.get(0) instanceof ConstantReference) {
-//				left = (ConstantReference) collector.list.get(0);							
-//			} else if (collector.list.get(0) instanceof ColonExpression) {
-//				left = (ColonExpression) collector.list.get(0);							
-//			} else {
-//				System.out.println();
-//			}
 			if (collector.list.get(0) instanceof Expression) {
 				left = (Expression) collector.list.get(0);	
 			}
@@ -724,7 +717,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		ISourcePosition position = iVisited.getPosition();
 		ColonExpression colon = new ColonExpression(iVisited.getName(), null, true);
 		colon.setStart(position.getStartOffset());
-		colon.setEnd(position.getEndOffset());
+		colon.setEnd(position.getEndOffset() + 1);
 		peekState().add(colon);		
 		return null;
 	}

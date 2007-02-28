@@ -191,7 +191,7 @@ public class ASTUtils {
 
 			public boolean visitGeneral(ASTNode s) throws Exception {
 				int sourceEnd = s.sourceEnd();
-				if (sourceEnd == boundaryOffset) {
+				if (Math.abs(sourceEnd - boundaryOffset) <= 1) {
 					result = s;
 					System.out.println("Found " + s.getClass().getName());
 				}

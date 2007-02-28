@@ -288,6 +288,23 @@ public class RubyModelUtils {
 		return (IMethod[]) result.toArray(new IMethod[result.size()]);
 	}
 	
+	public static IType[] findTopLevelTypes (ISourceModule module, String namePrefix) {
+		List result = new ArrayList();
+		
+		try {
+			//TODO: add handling of "require"
+			IModelElement[] children = module.getChildren();
+			for (int i = 0; i < children.length; i++) {
+				if (children[i] instanceof IType && children[i].getElementName().startsWith(namePrefix))
+					result.add(children[i]);
+			}
+		} catch (ModelException e) {
+			e.printStackTrace();
+		}
+
+		return (IType[]) result.toArray(new IType[result.size()]);
+	}
+	
 	public static IMethod[] _bad_findTopLevelMethods (IDLTKProject project, String namePattern) {
 		final List result = new ArrayList ();
 		SearchRequestor requestor = new SearchRequestor() {

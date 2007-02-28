@@ -36,6 +36,7 @@ import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
 import org.eclipse.dltk.ruby.typeinference.BuiltinMethods;
+import org.eclipse.dltk.ruby.typeinference.ClassInfo;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
@@ -135,24 +136,14 @@ public class RubyCompletionEngine extends CompletionEngine {
 				ModuleDeclaration moduleDeclaration = parser.parse(content);
 				ASTNode node = ASTUtils.findMaximalNodeEndingAt(
 						moduleDeclaration, position - 2);
+				this.setSourceRange(position, position);	
 				if (node != null) {
-					this.setSourceRange(position, position);	
 					ExpressionGoal goal = new ExpressionGoal(new BasicContext(
 							modelModule, moduleDeclaration), (Statement) (node));
 					IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
-					if (type instanceof RubyMetaClassType)
-						type = ((RubyMetaClassType) type).getInstanceType();
-					if (type instanceof RubyClassType) {
-						IType[] subtypes = RubyTypeInferencingUtils
-								.findSubtypes(modelModule.getScriptProject(),
-										(RubyClassType) type);
-						for (int j = 0; j < subtypes.length; j++) {
-							reportType("".toCharArray(), 0, subtypes[j],
-									RubyTypeInferencingUtils.compileFQN(
-											((RubyClassType) type).getFQN(),
-											true).length() + 2);
-						}
-					}
+					reportSubtypes(modelModule, type, "");
+				} else {					
+					completeConstant(modelModule, moduleDeclaration, "", position);					
 				}
 				System.out.println();
 			} else {
@@ -228,6 +219,21 @@ public class RubyCompletionEngine extends CompletionEngine {
 		// TODO Auto-generated method stub
 
 	}
+	
+	private void reportSubtypes (org.eclipse.dltk.core.ISourceModule module, 
+			IEvaluatedType type, String prefix) {
+		if (type instanceof RubyMetaClassType)
+			type = ((RubyMetaClassType) type).getInstanceType();
+		if (type instanceof RubyClassType) {
+			IType[] subtypes = RubyTypeInferencingUtils
+					.findSubtypes(module, (RubyClassType) type, prefix);
+			for (int j = 0; j < subtypes.length; j++) {
+				if (subtypes[j].getElementName().startsWith(prefix)) {
+					reportType("".toCharArray(), 0, subtypes[j]);
+				}
+			}
+		}
+	}
 
 	private void completeColonExpression(
 			org.eclipse.dltk.core.ISourceModule module,
@@ -242,31 +248,45 @@ public class RubyCompletionEngine extends CompletionEngine {
 		int pos = (node.getLeft() != null) ? (node.getLeft().sourceEnd() + 2) : (node
 				.sourceStart());
 		String starting = content.substring(pos, position).trim();
+		
+		if (starting.startsWith("::")) {
+			this.setSourceRange(position - starting.length() + 2, position);
+			completeConstant(module, moduleDeclaration, starting.substring(2), position);
+			return;
+		}
+		
 		this.setSourceRange(position - starting.length(), position);
 		
 		ExpressionGoal goal = new ExpressionGoal(new BasicContext(
 				module, moduleDeclaration), (Statement) (node.getLeft()));
 		IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
-		if (type instanceof RubyMetaClassType)
-			type = ((RubyMetaClassType) type).getInstanceType();
-		if (type instanceof RubyClassType) {
-			IType[] subtypes = RubyTypeInferencingUtils
-					.findSubtypes(module.getScriptProject(),
-							(RubyClassType) type);
-			for (int j = 0; j < subtypes.length; j++) {
-				reportType("".toCharArray(), 0, subtypes[j],
-						RubyTypeInferencingUtils.compileFQN(
-								((RubyClassType) type).getFQN(),
-								true).length() + 2);
-			}
+		reportSubtypes(module, type, starting);
+	}
+	
+	private void completeConstant(org.eclipse.dltk.core.ISourceModule module,
+			ModuleDeclaration moduleDeclaration, String prefix, int position) {
+		ClassInfo[] infos = RubyTypeInferencingUtils.resolveClassScopes(module, moduleDeclaration, position);
+		for (int i = 0; i < infos.length; i++) {
+			IEvaluatedType evaluatedType = infos[i].getEvaluatedType();
+			reportSubtypes(module, evaluatedType, prefix);
 		}
+		IClassType type = RubyTypeInferencingUtils.determineSelfClass(module, moduleDeclaration, position);
+		reportSubtypes(module, type, prefix);		
 	}
 
 	private void completeConstant(org.eclipse.dltk.core.ISourceModule module,
 			ModuleDeclaration moduleDeclaration, ConstantReference node,
 			int position) {
-		// TODO Auto-generated method stub
-
+		String content;
+		try {
+			content = module.getSource();
+		} catch (ModelException e) {
+			return;
+		}
+			
+		String prefix = content.substring(node.sourceStart(), position);
+		this.setSourceRange(position - prefix.length(), position);
+		completeConstant(module, moduleDeclaration, prefix, position);
 	}
 	
 	private void completeCall(org.eclipse.dltk.core.ISourceModule module,
@@ -285,6 +305,8 @@ public class RubyCompletionEngine extends CompletionEngine {
 				.sourceStart());
 
 		String starting = content.substring(pos, position).trim();
+		
+		
 
 		this.setSourceRange(position - starting.length(), position);
 
@@ -375,8 +397,10 @@ public class RubyCompletionEngine extends CompletionEngine {
 		}
 	}
 
-	private void reportType(char[] token, int length, IType type, int from) {
-		char[] name = type.getTypeQualifiedName("::").toCharArray();
+	private void reportType(char[] token, int length, IType type) {
+		char[] name = type.getElementName().toCharArray();
+		if (name.length == 0)
+			return;
 		if (length <= name.length
 				&& CharOperation.prefixEquals(token, name, false)) {
 			int relevance = RelevanceConstants.R_INTERESTING;
@@ -388,14 +412,10 @@ public class RubyCompletionEngine extends CompletionEngine {
 			if (!requestor.isIgnored(CompletionProposal.TYPE_REF)) {
 				CompletionProposal proposal = createProposal(
 						CompletionProposal.TYPE_REF, actualCompletionPosition);
-				// proposal.setSignature(getSignature(typeBinding));
-				// proposal.setPackageName(q);
-				// proposal.setTypeName(displayName);
 
 				proposal.setModelElement(type);
 				proposal.setName(name);
-				proposal.setCompletion(type.getTypeQualifiedName("::")
-						.substring(from).toCharArray());
+				proposal.setCompletion(type.getElementName().toCharArray());
 				// proposal.setFlags(Flags.AccDefault);
 				proposal.setReplaceRange(this.startPosition - this.offset,
 						this.endPosition - this.offset);

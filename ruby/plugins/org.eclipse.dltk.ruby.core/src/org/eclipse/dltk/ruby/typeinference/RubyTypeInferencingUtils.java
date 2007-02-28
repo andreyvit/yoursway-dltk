@@ -704,9 +704,9 @@ public class RubyTypeInferencingUtils {
 		return res.toString();
 	}
 	
-	public static IType[] findSubtypes (IDLTKProject project, RubyClassType type) {
+	public static IType[] findSubtypes (ISourceModule module, RubyClassType type, String namePrefix) {
 		List result = new ArrayList ();
-		type = resolveMethods(project, type);		
+		type = resolveMethods(module.getScriptProject(), type);		
 		IType[] declarations = type.getTypeDeclarations();
 		for (int i = 0; i < declarations.length; i++) {
 			IType[] subtypes;
@@ -718,6 +718,13 @@ public class RubyTypeInferencingUtils {
 			}
 			for (int j = 0; j < subtypes.length; j++) {
 				result.add(subtypes[j]);
+			}
+		}
+		if (type.getFQN()[0].equals("Object")) {
+			//get all top level types too
+			IType[] top = RubyModelUtils.findTopLevelTypes(module, namePrefix);
+			for (int j = 0; j < top.length; j++) {
+				result.add(top[j]);
 			}
 		}
 		return (IType[]) result.toArray(new IType[result.size()]);
