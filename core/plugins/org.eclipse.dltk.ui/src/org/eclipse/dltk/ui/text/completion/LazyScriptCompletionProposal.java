@@ -339,12 +339,6 @@ public abstract class LazyScriptCompletionProposal extends AbstractDLTKCompletio
 		}
 	}
 	
-	public final String getSortString() {
-		if (!fSortStringComputed)
-			setSortString(computeSortString());
-		return super.getSortString();
-	}
-
 	protected final void setSortString(String string) {
 		fSortStringComputed= true;
 		super.setSortString(string);

@@ -5,9 +5,7 @@ import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.utils.CorePrinter;
-
 
 public class SourceMethod extends NamedMember implements IMethod {
 
@@ -18,37 +16,39 @@ public class SourceMethod extends NamedMember implements IMethod {
 	public int getElementType() {
 		return METHOD;
 	}
-	
+
 	public String[] getParameters() throws ModelException {
-		SourceMethodElementInfo info = (SourceMethodElementInfo)this.getElementInfo();		
-		if( info != null ) {
+		SourceMethodElementInfo info = (SourceMethodElementInfo) this
+				.getElementInfo();
+		if (info != null) {
 			return info.getArgumentNames();
 		}
 		return null;
 	}
+
 	public String[] getParameterInitializers() throws ModelException {
-		SourceMethodElementInfo info = (SourceMethodElementInfo)this.getElementInfo();		
-		if( info != null ) {
+		SourceMethodElementInfo info = (SourceMethodElementInfo) this
+				.getElementInfo();
+		if (info != null) {
 			return info.getArgumentInitializers();
 		}
 		return null;
 	}
-	public void printNode(CorePrinter output) {		
+
+	public void printNode(CorePrinter output) {
 		output.formatPrint("DLTK Source Method:" + getElementName());
 		output.indent();
 		try {
 			IModelElement modelElements[] = this.getChildren();
-			for( int i = 0; i < modelElements.length; ++i ) {
+			for (int i = 0; i < modelElements.length; ++i) {
 				IModelElement element = modelElements[i];
-				if( element instanceof ModelElement ) {
-					((ModelElement)element).printNode(output);
-				}
-				else {
-					output.print("Unknown element:" + element );
+				if (element instanceof ModelElement) {
+					((ModelElement) element).printNode(output);
+				} else {
+					output.print("Unknown element:" + element);
 				}
 			}
-		}
-		catch(ModelException ex ) {
+		} catch (ModelException ex) {
 			output.formatPrint(ex.getLocalizedMessage());
 		}
 		output.dedent();
@@ -68,21 +68,11 @@ public class SourceMethod extends NamedMember implements IMethod {
 
 	protected char getHandleMementoDelimiter() {
 		return JEM_METHOD;
-	}	
-	/**
-	 * @see IMethod
-	 */
-	public String getSignature() throws ModelException {
-		//SourceMethodElementInfo info = (SourceMethodElementInfo) getElementInfo();
-		return Signature.createMethodSignature(this.getParameters());
 	}
+
 	public String getFullyQualifiedName(String enclosingTypeSeparator) {
 		try {
-			return getFullyQualifiedName(enclosingTypeSeparator, false/*
-																		 * don't
-																		 * show
-																		 * parameters
-																		 */);
+			return getFullyQualifiedName(enclosingTypeSeparator, false);
 		} catch (ModelException e) {
 			// exception thrown only when showing parameters
 			return null;
@@ -91,7 +81,8 @@ public class SourceMethod extends NamedMember implements IMethod {
 
 	public String getFullyQualifiedName() {
 		return getFullyQualifiedName("$");
-	}	
+	}
+
 	public IScriptFolder getScriptFolder() {
 		IModelElement parentElement = this.parent;
 		while (parentElement != null) {
@@ -103,5 +94,5 @@ public class SourceMethod extends NamedMember implements IMethod {
 		}
 		Assert.isTrue(false); // should not happen
 		return null;
-	}	
+	}
 }

@@ -16,8 +16,6 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
 /**
  * A relevance based sorter.
- * 
-	 *
  */
 public final class RelevanceSorter extends AbstractProposalSorter {
 

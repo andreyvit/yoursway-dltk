@@ -36,8 +36,6 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * Computes Script completion proposals and context infos.
- * 
-	 *
  */
 public abstract class ScriptCompletionProposalComputer implements IScriptCompletionProposalComputer {
 

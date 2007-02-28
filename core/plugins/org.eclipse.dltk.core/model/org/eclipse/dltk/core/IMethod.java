@@ -26,7 +26,6 @@ public interface IMethod extends IMember {
 	 *      exception occurs while accessing its corresponding resource.
 	 * @see Signature
 	 */
-	String getSignature() throws ModelException;
 	
 	String getFullyQualifiedName(String enclosingTypeSeparator);
 	

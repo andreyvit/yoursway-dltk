@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.corext.util;
 
-import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.core.search.TypeNameMatch;
 import org.eclipse.dltk.ui.dialogs.ITypeInfoRequestor;
 
@@ -21,13 +20,6 @@ public class TypeInfoRequestorAdapter implements ITypeInfoRequestor {
 	
 	public void setMatch(TypeNameMatch type) {
 		fMatch= type;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jdt.ui.dialogs.ITypeInfoRequestor#getEnclosingName()
-	 */
-	public String getEnclosingName() {
-		return Signature.getQualifier(fMatch.getTypeQualifiedName());
 	}
 
 	/* (non-Javadoc)

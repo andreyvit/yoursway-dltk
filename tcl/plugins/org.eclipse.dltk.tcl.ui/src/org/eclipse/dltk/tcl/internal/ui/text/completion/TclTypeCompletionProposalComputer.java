@@ -19,7 +19,6 @@ import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.text.completion.CompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.ContentAssistInvocationContext;
@@ -146,7 +145,7 @@ public class TclTypeCompletionProposalComputer extends ScriptCompletionProposalC
 		proposal.setFlags(type.getFlags());
 		proposal.setRelevance(relevance);
 		proposal.setReplaceRange(context.getInvocationOffset(), context.getInvocationOffset());
-		proposal.setSignature(Signature.createTypeSignature(fullyQualifiedType).toCharArray());
+		proposal.setSignature(null);
 
 		return new LazyTclTypeCompletionProposal(proposal, context);
 	}

@@ -45,12 +45,4 @@ public interface ITypeInfoRequestor {
 	 * @return the info's package name.
 	 */ 
 	public String getPackageName();
-
-	/**
-	 * Returns a dot separated string of the enclosing types or an 
-	 * empty string if the type is a top level type.
-	 * 
-	 * @return a dot separated string of the enclosing types
-	 */
-	public String getEnclosingName();
 }

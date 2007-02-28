@@ -1086,14 +1086,6 @@ public class Util {
 		return result;
 	}
 
-	public static String[] getTrimmedSimpleNames(String name) {
-		String[] result = Signature.getSimpleNames(name);
-		for (int i = 0, length = result.length; i < length; i++) {
-			result[i] = result[i].trim();
-		}
-		return result;
-	}
-
 	public static boolean isReadOnly(IResource resource) {
 		if (resource != null) {
 			ResourceAttributes resourceAttributes = resource

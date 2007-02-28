@@ -27,9 +27,6 @@ import org.eclipse.dltk.internal.compiler.env.AccessRestriction;
 import org.eclipse.dltk.internal.core.search.IRestrictedAccessTypeRequestor;
 import org.eclipse.dltk.internal.core.search.TypeNameMatchRequestorWrapper;
 import org.eclipse.dltk.internal.core.search.TypeNameRequestorWrapper;
-import org.eclipse.dltk.internal.core.search.matching.DeclarationOfAccessedFieldsPattern;
-import org.eclipse.dltk.internal.core.search.matching.DeclarationOfReferencedMethodsPattern;
-import org.eclipse.dltk.internal.core.search.matching.DeclarationOfReferencedTypesPattern;
 
 
 /**
@@ -278,23 +275,7 @@ public class SearchEngine {
 	public static IDLTKSearchScope createSearchScope(IModelElement[] elements, int includeMask) {
 		return BasicSearchEngine.createSearchScope(elements, includeMask);
 	}
-	
-	/**
-	 * Returns a search pattern that combines the given two patterns into a "or" pattern.
-	 * The search result will match either the left pattern or the right pattern.
-	 *
-	 * @param leftPattern the left pattern
-	 * @param rightPattern the right pattern
-	 * @return a "or" pattern
-	 * @deprecated Use {@link SearchPattern#createOrPattern(SearchPattern, SearchPattern)} instead.
-	 */
-	public static ISearchPattern createOrSearchPattern(ISearchPattern leftPattern, ISearchPattern rightPattern) {
-		SearchPattern left = ((SearchPatternAdapter) leftPattern).pattern;
-		SearchPattern right = ((SearchPatternAdapter) rightPattern).pattern;
-		SearchPattern pattern = SearchPattern.createOrPattern(left, right);
-		return new SearchPatternAdapter(pattern);
-	}
-	
+		
 	/**
 	 * Returns a search pattern based on a given string pattern. The string patterns support '*' wild-cards.
 	 * The remaining parameters are used to narrow down the type of expected results.
@@ -403,59 +384,6 @@ public class SearchEngine {
 	 */
 	public static SearchParticipant getDefaultSearchParticipant() {
 		return BasicSearchEngine.getDefaultSearchParticipant();
-	}
-
-	/**
-	 * Searches for the Script element determined by the given signature. The signature
-	 * can be incomplete. For example, a call like 
-	 * <code>search(ws, "run()", METHOD,REFERENCES, col)</code>
-	 * searches for all references to the method <code>run</code>.
-	 *
-	 * Note that by default the pattern will be case insensitive. For specifying case s
-	 * sensitive search, use <code>search(workspace, createSearchPattern(patternString, searchFor, limitTo, true), scope, resultCollector);</code>
-	 * 
-	 * @param workspace the workspace
-	 * @param patternString the pattern to be searched for
-	 * @param searchFor a hint what kind of DLTK element the string pattern represents.
-	 *  Look into {@link IDLTKSearchConstants} for valid values
-	 * @param limitTo one of the following values:
-	 *	<ul>
-	 *	  <li>{@link IDLTKSearchConstants#DECLARATIONS}: search 
-	 *		  for declarations only </li>
-	 *	  <li>{@link IDLTKSearchConstants#REFERENCES}: search 
-	 *		  for all references </li>
-	 *	  <li>{@link IDLTKSearchConstants#ALL_OCCURRENCES}: search 
-	 *		  for both declarations and all references </li>
-	 *	  <li>{@link IDLTKSearchConstants#IMPLEMENTORS}: for types, will find all types
-	 *			which directly implement/extend a given interface.<br>
-	 *			Note that types may be only classes or only interfaces if respectively {@link IDLTKSearchConstants#CLASS} or
-	 *			{@link IDLTKSearchConstants#INTERFACE} is used for searchFor parameter instead of {@link IDLTKSearchConstants#TYPE}.
-	 *	  </li>
-	 * </ul>
-	 * @param scope the search result has to be limited to the given scope
-	 * @param resultCollector a callback object to which each match is reported	 
-	 * @exception ModelException if the search failed. Reasons include:
-	 *	<ul>
-	 *		<li>the buildpath is incorrectly set</li>
-	 *	</ul>
-	 * @deprecated Use {@link  #search(SearchPattern, SearchParticipant[], IDLTKSearchScope, SearchRequestor, IProgressMonitor)} instead.
-	 */
-	public void search(IWorkspace workspace, String patternString, int searchFor, int limitTo, IDLTKSearchScope scope, IDLTKSearchResultCollector resultCollector) throws ModelException {
-		try {
-			int matchMode = patternString.indexOf('*') != -1 || patternString.indexOf('?') != -1
-				? SearchPattern.R_PATTERN_MATCH
-				: SearchPattern.R_EXACT_MATCH;
-			search(
-				SearchPattern.createPattern(patternString, searchFor, limitTo, matchMode | SearchPattern.R_CASE_SENSITIVE), 
-				new SearchParticipant[] {getDefaultSearchParticipant()}, 
-				scope, 
-				new ResultCollectorAdapter(resultCollector), 
-				resultCollector.getProgressMonitor());
-		} catch (CoreException e) {
-			if (e instanceof ModelException)
-				throw (ModelException) e;
-			throw new ModelException(e);
-		}
 	}
 
 	/**
@@ -920,73 +848,6 @@ public class SearchEngine {
 	}
 
 	/**
-	 * Searches for all top-level types and member types in the given scope.
-	 * The search can be selecting specific types (given a package or a type name
-	 * prefix and match modes). 
-	 * 
-	 * @param workspace the workspace to search in
-	 * @param packageName the full name of the package of the searched types, or a prefix for this
-	 *						package, or a wild-carded string for this package.
-	 * @param typeName the dot-separated qualified name of the searched type (the qualification include
-	 *					the enclosing types if the searched type is a member type), or a prefix
-	 *					for this type, or a wild-carded string for this type.
-	 * @param matchMode one of
-	 * <ul>
-	 *		<li>{@link IDLTKSearchConstants#EXACT_MATCH} if the package name and type name are the full names
-	 *			of the searched types.</li>
-	 *		<li>{@link IDLTKSearchConstants#PREFIX_MATCH} if the package name and type name are prefixes of the names
-	 *			of the searched types.</li>
-	 *		<li>{@link IDLTKSearchConstants#PATTERN_MATCH} if the package name and type name contain wild-cards.</li>
-	 * </ul>
-	 * @param isCaseSensitive whether the search should be case sensitive
-	 * @param searchFor one of
-	 * <ul>
-	 * 		<li>{@link IDLTKSearchConstants#CLASS} if searching for classes only</li>
-	 * 		<li>{@link IDLTKSearchConstants#INTERFACE} if searching for interfaces only</li>
-	 * 		<li>{@link IDLTKSearchConstants#TYPE} if searching for both classes and interfaces</li>
-	 * </ul>
-	 * @param scope the scope to search in
-	 * @param nameRequestor the requestor that collects the results of the search
-	 * @param waitingPolicy one of
-	 * <ul>
-	 *		<li>{@link IDLTKSearchConstants#FORCE_IMMEDIATE_SEARCH} if the search should start immediately</li>
-	 *		<li>{@link IDLTKSearchConstants#CANCEL_IF_NOT_READY_TO_SEARCH} if the search should be cancelled if the
-	 *			underlying indexer has not finished indexing the workspace</li>
-	 *		<li>{@link IDLTKSearchConstants#WAIT_UNTIL_READY_TO_SEARCH} if the search should wait for the
-	 *			underlying indexer to finish indexing the workspace</li>
-	 * </ul>
-	 * @param progressMonitor the progress monitor to report progress to, or <code>null</code> if no progress
-	 *							monitor is provided
-	 * @exception ModelException if the search failed. Reasons include:
-	 *	<ul>
-	 *		<li>the buildpath is incorrectly set</li>
-	 *	</ul>
-	 *@deprecated Use {@link #searchAllTypeNames(char[], char[], int, int, IJavaSearchScope, ITypeNameRequestor, int, IProgressMonitor)} instead
-	 */
-	public void searchAllTypeNames(
-		IWorkspace workspace,
-		final char[] packageName, 
-		final char[] typeName,
-		final int matchMode, 
-		final boolean isCaseSensitive,
-		int searchFor, 
-		IDLTKSearchScope scope, 
-		final ITypeNameRequestor nameRequestor,
-		int waitingPolicy,
-		IProgressMonitor progressMonitor)  throws ModelException {
-		
-		searchAllTypeNames(
-			packageName, 
-			typeName, 
-			isCaseSensitive ? matchMode | SearchPattern.R_CASE_SENSITIVE : matchMode, 
-			searchFor, 
-			scope, 
-			nameRequestor, 
-			waitingPolicy, 
-			progressMonitor);
-	}	
-
-	/**
 	 * Searches for all declarations of the fields accessed in the given element.
 	 * The element can be a compilation unit, a source type, or a source method.
 	 * Reports the field declarations using the given requestor.
@@ -1026,49 +887,7 @@ public class SearchEngine {
 	public void searchDeclarationsOfAccessedFields(IModelElement enclosingElement, SearchRequestor requestor, IProgressMonitor monitor) throws ModelException {
 		this.basicEngine.searchDeclarationsOfAccessedFields(enclosingElement, requestor, monitor);
 	}
-	
-	/**
-	 * Searches for all declarations of the fields accessed in the given element.
-	 * The element can be a compilation unit, a source type, or a source method.
-	 * Reports the field declarations using the given collector.
-	 * <p>
-	 * Consider the following code:
-	 * <code>
-	 * <pre>
-	 *		class A {
-	 *			int field1;
-	 *		}
-	 *		class B extends A {
-	 *			String value;
-	 *		}
-	 *		class X {
-	 *			void test() {
-	 *				B b = new B();
-	 *				System.out.println(b.value + b.field1);
-	 *			};
-	 *		}
-	 * </pre>
-	 * </code>
-	 * then searching for declarations of accessed fields in method 
-	 * <code>X.test()</code> would collect the fields
-	 * <code>B.value</code> and <code>A.field1</code>.
-	 * </p>
-	 *
-	 * @param workspace the workspace
-	 * @param enclosingElement the method, type, or compilation unit to be searched in
-	 * @param resultCollector a callback object to which each match is reported
-	 * @exception ModelException if the search failed. Reasons include:
-	 *	<ul>
-	 *		<li>the element doesn't exist</li>
-	 *		<li>the buildpath is incorrectly set</li>
-	 *	</ul>
-	 * @deprecated Use {@link  #searchDeclarationsOfAccessedFields(IModelElement, SearchRequestor, IProgressMonitor)} instead.
-	 */	
-	public void searchDeclarationsOfAccessedFields(IWorkspace workspace, IModelElement enclosingElement, IDLTKSearchResultCollector resultCollector) throws ModelException {
-		SearchPattern pattern = new DeclarationOfAccessedFieldsPattern(enclosingElement);
-		this.basicEngine.searchDeclarations(enclosingElement, new ResultCollectorAdapter(resultCollector), pattern, resultCollector.getProgressMonitor());
-	}
-	
+		
 	/**
 	 * Searches for all declarations of the types referenced in the given element.
 	 * The element can be a compilation unit, a source type, or a source method.
@@ -1109,49 +928,7 @@ public class SearchEngine {
 	public void searchDeclarationsOfReferencedTypes(IModelElement enclosingElement, SearchRequestor requestor, IProgressMonitor monitor) throws ModelException {
 		this.basicEngine.searchDeclarationsOfReferencedTypes(enclosingElement, requestor, monitor);
 	}
-	
-	/**
-	 * Searches for all declarations of the types referenced in the given element.
-	 * The element can be a compilation unit, a source type, or a source method.
-	 * Reports the type declarations using the given collector.
-	 * <p>
-	 * Consider the following code:
-	 * <code>
-	 * <pre>
-	 *		class A {
-	 *		}
-	 *		class B extends A {
-	 *		}
-	 *		interface I {
-	 *		  int VALUE = 0;
-	 *		}
-	 *		class X {
-	 *			void test() {
-	 *				B b = new B();
-	 *				this.foo(b, I.VALUE);
-	 *			};
-	 *		}
-	 * </pre>
-	 * </code>
-	 * then searching for declarations of referenced types in method <code>X.test()</code>
-	 * would collect the class <code>B</code> and the interface <code>I</code>.
-	 * </p>
-	 *
-	 * @param workspace the workspace
-	 * @param enclosingElement the method, type, or compilation unit to be searched in
-	 * @param resultCollector a callback object to which each match is reported
-	 * @exception ModelException if the search failed. Reasons include:
-	 *	<ul>
-	 *		<li>the element doesn't exist</li>
-	 *		<li>the buildpath is incorrectly set</li>
-	 *	</ul>
-	 * @deprecated Use {@link #searchDeclarationsOfReferencedTypes(IModelElement, SearchRequestor, IProgressMonitor)} instead.
-	 */	
-	public void searchDeclarationsOfReferencedTypes(IWorkspace workspace, IModelElement enclosingElement, IDLTKSearchResultCollector resultCollector) throws ModelException {
-		SearchPattern pattern = new DeclarationOfReferencedTypesPattern(enclosingElement);
-		this.basicEngine.searchDeclarations(enclosingElement, new ResultCollectorAdapter(resultCollector), pattern, resultCollector.getProgressMonitor());
-	}
-	
+		
 	/**
 	 * Searches for all declarations of the methods invoked in the given element.
 	 * The element can be a compilation unit, a source type, or a source method.
@@ -1194,50 +971,5 @@ public class SearchEngine {
 	 */	
 	public void searchDeclarationsOfSentMessages(IModelElement enclosingElement, SearchRequestor requestor, IProgressMonitor monitor) throws ModelException {
 		this.basicEngine.searchDeclarationsOfSentMessages(enclosingElement, requestor, monitor);
-	}
-
-	/**
-	 * Searches for all declarations of the methods invoked in the given element.
-	 * The element can be a compilation unit, a source type, or a source method.
-	 * Reports the method declarations using the given collector.
-	 * <p>
-	 * Consider the following code:
-	 * <code>
-	 * <pre>
-	 *		class A {
-	 *			void foo() {};
-	 *			void bar() {};
-	 *		}
-	 *		class B extends A {
-	 *			void foo() {};
-	 *		}
-	 *		class X {
-	 *			void test() {
-	 *				A a = new B();
-	 *				a.foo();
-	 *				B b = (B)a;
-	 *				b.bar();
-	 *			};
-	 *		}
-	 * </pre>
-	 * </code>
-	 * then searching for declarations of sent messages in method 
-	 * <code>X.test()</code> would collect the methods
-	 * <code>A.foo()</code>, <code>B.foo()</code>, and <code>A.bar()</code>.
-	 * </p>
-	 *
-	 * @param workspace the workspace
-	 * @param enclosingElement the method, type, or compilation unit to be searched in
-	 * @param resultCollector a callback object to which each match is reported
-	 * @exception ModelException if the search failed. Reasons include:
-	 *	<ul>
-	 *		<li>the element doesn't exist</li>
-	 *		<li>the buildpath is incorrectly set</li>
-	 *	</ul>
-	 * @deprecated Use {@link #searchDeclarationsOfSentMessages(IModelElement, SearchRequestor, IProgressMonitor)} instead.
-	 */	
-	public void searchDeclarationsOfSentMessages(IWorkspace workspace, IModelElement enclosingElement, IDLTKSearchResultCollector resultCollector) throws ModelException {
-		SearchPattern pattern = new DeclarationOfReferencedMethodsPattern(enclosingElement);
-		this.basicEngine.searchDeclarations(enclosingElement, new ResultCollectorAdapter(resultCollector), pattern, resultCollector.getProgressMonitor());
 	}
 }

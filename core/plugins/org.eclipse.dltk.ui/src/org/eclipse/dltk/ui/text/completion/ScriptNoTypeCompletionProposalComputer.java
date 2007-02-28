@@ -12,10 +12,6 @@ package org.eclipse.dltk.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionProposal;
 
-/**
- * 
-	 *
- */
 public abstract class ScriptNoTypeCompletionProposalComputer extends ScriptCompletionProposalComputer {
 
 	protected CompletionProposalCollector createCollector(ScriptContentAssistInvocationContext context) {

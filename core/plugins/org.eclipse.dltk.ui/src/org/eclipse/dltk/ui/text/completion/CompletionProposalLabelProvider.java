@@ -13,6 +13,7 @@ package org.eclipse.dltk.ui.text.completion;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.CompletionContext;
 import org.eclipse.dltk.core.CompletionProposal;
+import org.eclipse.dltk.core.Flags;
 import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.internal.corext.template.completion.SignatureUtil;
 import org.eclipse.dltk.ui.DLTKPluginImages;

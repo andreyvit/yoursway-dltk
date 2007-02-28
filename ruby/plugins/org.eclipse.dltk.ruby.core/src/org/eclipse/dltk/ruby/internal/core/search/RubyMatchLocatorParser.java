@@ -31,7 +31,7 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 		return module;
 	}
 	
-	ASTVisitor visitor = new ASTVisitor () {
+	private ASTVisitor visitor = new ASTVisitor () {
 
 		public boolean visit(Expression s) throws Exception {
 			processStatement(s);
