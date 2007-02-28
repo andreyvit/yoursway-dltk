@@ -14,16 +14,10 @@ import org.eclipse.dltk.utils.CorePrinter;
  * Holds list of expressions.
  */
 public class ExpressionList extends Expression {
-	/**
-	 * Expressions.
-	 */
 	private List fExpressions = new ArrayList();
 
 	/**
 	 * Construct from position bindings.
-	 * 
-	 * @param start
-	 * @param end
 	 */
 	protected ExpressionList(int start, int end) {
 		super(start, end);
@@ -39,9 +33,6 @@ public class ExpressionList extends Expression {
 
 	}
 
-	/**
-	 * Walk on tree.
-	 */
 	public void traverse(ASTVisitor pVisitor) throws Exception {
 		if (pVisitor.visit(this)) {
 			Iterator i = fExpressions.iterator();
@@ -53,18 +44,10 @@ public class ExpressionList extends Expression {
 		}
 	}
 
-	/**
-	 * Return expression kind.
-	 */
 	public int getKind() {
 		return E_EXPRESSION_LIST;
 	}
 
-	/**
-	 * Set expressions to selected list.
-	 * 
-	 * @param exs
-	 */
 	public void setExpresssions(List exs) {
 		Iterator i = exs.iterator();
 		while (i.hasNext()) {
@@ -86,11 +69,6 @@ public class ExpressionList extends Expression {
 		}
 	}
 
-	/**
-	 * Return expressions.
-	 * 
-	 * @return - expressions list.
-	 */
 	public List getExpressions() {
 		return fExpressions;
 	}

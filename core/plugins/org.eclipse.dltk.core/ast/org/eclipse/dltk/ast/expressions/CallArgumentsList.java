@@ -3,7 +3,6 @@ package org.eclipse.dltk.ast.expressions;
 import java.util.List;
 
 public class CallArgumentsList extends ExpressionList {
-	
 	public static final CallArgumentsList EMPTY = new CallArgumentsList() {
 
 		public void addExpression(Expression ex) {
@@ -21,7 +20,7 @@ public class CallArgumentsList extends ExpressionList {
 		public void setStart(int start) {
 			throw new IllegalStateException("This object is unmodifiable");
 		}
-		
+
 	};
 
 	public CallArgumentsList() {
@@ -31,5 +30,4 @@ public class CallArgumentsList extends ExpressionList {
 	public CallArgumentsList(int start, int end) {
 		super(start, end);
 	}
-
 }

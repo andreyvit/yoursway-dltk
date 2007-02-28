@@ -25,12 +25,13 @@ import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class RubySourceElementRequestor extends SourceElementRequestVisitor {
-	
+
 	private static class TypeField {
 		private String fName;
 
@@ -42,8 +43,8 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 		private ASTNode fToNode;
 
-		TypeField(String name, String initValue, PositionInformation pos,
-				Expression expression, ASTNode toNode) {
+		public TypeField(String name, String initValue,
+				PositionInformation pos, Expression expression, ASTNode toNode) {
 
 			this.fName = name;
 			this.fInitValue = initValue;
@@ -52,117 +53,103 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 			this.fToNode = toNode;
 		}
 
-		String getName() {
-
-			return this.fName;
+		public String getName() {
+			return fName;
 		}
 
-		String getInitValue() {
-
-			return this.fInitValue;
+		public String getInitValue() {
+			return fInitValue;
 		}
 
-		PositionInformation getPos() {
-
-			return this.fPos;
+		public PositionInformation getPosition() {
+			return fPos;
 		}
 
-		Expression getExpression() {
-
-			return this.fExpression;
+		public Expression getExpression() {
+			return fExpression;
 		}
 
-		ASTNode getToNode() {
-
-			return this.fToNode;
+		public ASTNode getASTNode() {
+			return fToNode;
 		}
 
 		public boolean equals(Object obj) {
-
 			if (obj instanceof TypeField) {
-				TypeField second = (TypeField) obj;
-				return second.fName.equals(this.fName)
-						&& second.fToNode.equals(this.fToNode);
+				TypeField typeFileld = (TypeField) obj;
+				return typeFileld.fName.equals(fName)
+						&& typeFileld.fToNode.equals(fToNode);
 			}
-			return super.equals(obj);
+
+			return false;
 		}
 
 		public String toString() {
-
-			return this.fName;
+			return fName;
 		}
-
 	}
 
-	// Used to prehold fields if adding in methods.
-	private List/* <TypeField> */fNotAddedFields = new ArrayList/* <TypeField> */();
+	private List fNotAddedFields = new ArrayList(); // Used to prehold fields if
+	// adding in methods.
+	private Map fTypeVariables = new HashMap(); // Used to depermine duplicate
 
-	/**
-	 * Used to depermine duplicate names.
-	 */
-	private Map/* <TypeDeclaration, String> */fTypeVariables = new HashMap();
+	// names, ASTNode -> List of
+	// variables
 
-	public RubySourceElementRequestor(ISourceElementRequestor requestor) {
-
-		super(requestor);
-	}
-
-	/**
-	 * Used to create Call value in python syntax.
-	 */
-	protected String makeLanguageDependentValue(Expression value) {
-
-		String outValue = "";
-		if (value instanceof ExtendedVariableReference) {
-			// Lets use AST Printer to print extended variable in python like
-			// syntax.
-			StringWriter stringWriter = new StringWriter();
-			CorePrinter printer = new CorePrinter(stringWriter);
-			value.printNode(printer);
-			printer.flush();
-			return stringWriter.getBuffer().toString();
+	private boolean canAddVariables(ASTNode type, String name) {
+		if (fTypeVariables.containsKey(type)) {
+			List variables = (List) fTypeVariables.get(type);
+			if (variables.contains(name)) {
+				return false;
+			}
+			variables.add(name);
+			return true;
+		} else {
+			List variables = new ArrayList();
+			variables.add(name);
+			fTypeVariables.put(type, variables);
+			return true;
 		}
-		return outValue;
 	}
 
 	/**
 	 * Parsers Expresssion and extract correct variable reference.
-	 * 
-	 * @param left
 	 */
-	private void addVariableReference( Expression left, Statement right, boolean inClass, boolean inMethod ) {
+	private void addVariableReference(Expression left, Statement right,
+			boolean inClass, boolean inMethod) {
 
 		if (left == null) {
-			throw new RuntimeException("addVariable expression can't be null");
+			throw new IllegalArgumentException(
+					"addVariable expression can't be null");
 		}
+
 		if (left instanceof VariableReference) {
 			VariableReference var = (VariableReference) left;
 
-			if (!inMethod) { // for module static of class static variables.
-
-				if (canAddVariables((ASTNode) this.fNodes.peek(), var.getName())) {
+			if (!inMethod) {
+				// For module static of class static variables.
+				if (canAddVariables((ASTNode) fNodes.peek(), var.getName())) {
 					ISourceElementRequestor.FieldInfo info = new ISourceElementRequestor.FieldInfo();
 					info.modifiers = Modifiers.AccStatic;
 					info.name = var.getName();
 					info.nameSourceEnd = var.sourceEnd() - 1;
 					info.nameSourceStart = var.sourceStart();
 					info.declarationStart = var.sourceStart();
-					this.fRequestor.enterField(info);
+					fRequestor.enterField(info);
 					if (right != null) {
-						this.fRequestor.exitField(right.sourceEnd() - 1);
+						fRequestor.exitField(right.sourceEnd() - 1);
 					} else {
-						this.fRequestor.exitField(var.sourceEnd() - 1);
+						fRequestor.exitField(var.sourceEnd() - 1);
 					}
 				}
-			}			
+			}
 
 		} else if (left instanceof ExtendedVariableReference) {
-			// This is for in class and in method.
 			if (inClass && inMethod) {
+				// This is for in class and in method.
 				ExtendedVariableReference extendedVariable = ((ExtendedVariableReference) left);
 
-				List/* <Expression> */varParts = extendedVariable
-						.getExpressions();
+				List varParts = extendedVariable.getExpressions();
+
 				if (extendedVariable.isDot(0)) {
 					Expression first = (Expression) varParts.get(0);
 					// support only local variable addition.
@@ -174,174 +161,73 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 						String varName = ((VariableReference) first).getName();
 						MethodDeclaration currentMethod = this
 								.getCurrentMethod();
-						List/* <Argument> */arguments = currentMethod
-								.getArguments();
+						List arguments = currentMethod.getArguments();
 						if (arguments != null && arguments.size() > 0) {
 							Argument firstArgument = (Argument) arguments
 									.get(0);
+
 							String argumentName = firstArgument.getName();
 							if (argumentName.equals(varName)) {
 								VariableReference var = (VariableReference) second;
+
 								int initialValueStart = 0;
 								int initialValueEnd = 0;
 								if (right != null) {
 									initialValueStart = right.sourceStart();
 									initialValueEnd = right.sourceEnd();
 								}
+
 								PositionInformation pos = new PositionInformation(
 										var.sourceStart(), var.sourceEnd(),
 										initialValueStart, initialValueEnd);
-								String initialString = this.makeValue(right);
-								ASTNode method = (ASTNode) this.fNodes.pop();
-								ASTNode toClass = (ASTNode) this.fNodes.peek();
-								this.fNodes.push(method);
+
+								String initialString = makeValue(right);
+								ASTNode method = (ASTNode) fNodes.pop();
+								ASTNode toClass = (ASTNode) fNodes.peek();
+								fNodes.push(method);
 
 								TypeField field = new TypeField(var.getName(),
 										initialString, pos, left, toClass);
-								this.fNotAddedFields.add(field);
+								fNotAddedFields.add(field);
 							}
 						}
 					}
 				}
-			} else if (left instanceof ExpressionList) { // Multiple
+			} else if (left instanceof ExpressionList) {
+				// Multiple
 				// TODO: Add list of variables reporting.
-				/*
-				 * // assignment. ExpressionList list = (ExpressionList) left;
-				 * List<Expression> exprs = list.getExpressions(); for
-				 * (Expression expr : exprs) { }
-				 */
-			} else {// TODO: dynamic variable handling not yet supported.
-
-			}
-		} 
-	}
-
-	public boolean visit(Expression expression) throws Exception {
-
-		if (expression instanceof Assignment) {
-			// this is static variable assignment.
-			Assignment assignment = ( Assignment )expression;
-			Expression left = assignment.getLeft( );
-			Statement right = assignment.getRight( );
-
-			// Handle static variables
-			this.addVariableReference(left, right, this.fInClass,
-					this.fInMethod);
-		} 
-		if(expression instanceof CallExpression ) {
-			CallExpression callE = (CallExpression)expression;
-			
-			CallArgumentsList args = callE.getArgs();
-			int argsCount = 0;
-			if( args != null && args.getExpressions() != null ) {
-				argsCount = args.getExpressions().size();
-			}
-			int start = callE.sourceStart();
-			int end = callE.sourceEnd();
-			if( start < 0 ) {
-				start = 0;
-			}
-			if( end < 0 ) {
-				end = 1;
-			}
-			this.fRequestor.acceptMethodReference(callE.getName().toCharArray(), argsCount, start, end );
-		}
-		if( expression instanceof VariableReference ) {
-			VariableReference variableReference = (VariableReference) expression;
-			int pos = variableReference.sourceStart();
-			if( pos < 0 ) {
-				pos = 0;
-			}
-			this.fRequestor.acceptFieldReference(variableReference.getName().toCharArray(), pos);
-			
-		}
-		return true;
-	}
-
-	public boolean endvisit(Expression expression) throws Exception {
-		return true;
-	}
-
-	protected void onEndVisitMethod(MethodDeclaration method) {
-
-		Iterator i = this.fNotAddedFields.iterator();
-		while (i.hasNext()) {
-			TypeField field = (TypeField) i.next();
-			if (canAddVariables(field.getToNode(), field.getName())) {
-
-				PositionInformation pos = field.getPos();
-
-				ISourceElementRequestor.FieldInfo info = new ISourceElementRequestor.FieldInfo();
-				info.modifiers = Modifiers.AccStatic;
-				info.name = field.getName();
-				info.nameSourceEnd = pos.nameEnd - 1;
-				info.nameSourceStart = pos.nameStart;
-				info.declarationStart = pos.sourceStart;
-				this.fRequestor.enterField(info);
-				this.fRequestor.exitField(pos.sourceEnd);
-
+			} else {
+				// TODO: dynamic variable handling not yet supported.
 			}
 		}
-		this.fNotAddedFields.clear();
 	}
 
-	public boolean visit(Statement statement) throws Exception {
-		if (statement instanceof ConstantDeclaration) {
-			ConstantDeclaration constant = (ConstantDeclaration) statement;
-			SimpleReference constName = constant.getName();
-			ISourceElementRequestor.FieldInfo info = new ISourceElementRequestor.FieldInfo();
-			info.modifiers = Modifiers.AccConstant;
-			info.name = constName.getName();
-			info.nameSourceEnd = constName.sourceEnd() - 1;
-			info.nameSourceStart = constName.sourceStart();
-			info.declarationStart = constName.sourceStart();
-			this.fRequestor.enterField(info);
-			this.fRequestor.exitField(constName.sourceEnd() - 1);			
-		}
-		return true;
-	}
-
-	private boolean canAddVariables(ASTNode type, String name) {
-
-		if (this.fTypeVariables.containsKey(type)) {
-			List variables = (List) this.fTypeVariables.get(type);
-			if (variables.contains(name)) {
-				return false;
-			}
-			variables.add(name);
-			return true;
-		} else {
-			List variables = new ArrayList();
-			variables.add(name);
-			this.fTypeVariables.put(type, variables);
-			return true;
-		}
-	}
-
-	public boolean endvisit(Statement s) throws Exception {
-		return true;
-	}
-	
-	protected String[] processSuperClasses(TypeDeclaration type ) {
+	protected String[] processSuperClasses(TypeDeclaration type) {
 		ExpressionList list = type.getSuperClasses();
-		if (list == null)
+
+		if (list == null) {
 			return new String[0];
+		}
+
 		List expressions = list.getExpressions();
 		List names = new ArrayList();
 		for (Iterator iter = expressions.iterator(); iter.hasNext();) {
 			Expression expr = (Expression) iter.next();
 			if (expr instanceof SimpleReference) {
-				names.add(((SimpleReference)expr).getName());
-			} else if (expr instanceof ColonExpression) { //FIXME
+				names.add(((SimpleReference) expr).getName());
+			} else if (expr instanceof ColonExpression) { // FIXME
 				String name = "";
+
 				while (expr instanceof ColonExpression) {
 					ColonExpression colonExpression = (ColonExpression) expr;
 					name = "::" + colonExpression.getName();
 					Expression left = colonExpression.getLeft();
-					if (!colonExpression.isFull() && left == null)
+					if (!colonExpression.isFull() && left == null) {
 						name = name.substring(2);
+					}
 					expr = left;
 				}
+
 				if (expr instanceof ConstantReference) {
 					ConstantReference constant = (ConstantReference) expr;
 					name = constant.getName() + name;
@@ -350,6 +236,161 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 			}
 		}
 
-		return (String[])names.toArray(new String[names.size()]);
+		return (String[]) names.toArray(new String[names.size()]);
+	}
+
+	protected String makeLanguageDependentValue(Expression value) {
+		String outValue = "";
+		if (value instanceof ExtendedVariableReference) {
+			StringWriter stringWriter = new StringWriter();
+			CorePrinter printer = new CorePrinter(stringWriter);
+			value.printNode(printer);
+			printer.flush();
+			return stringWriter.getBuffer().toString();
+		}
+		return outValue;
+	}
+
+	public RubySourceElementRequestor(ISourceElementRequestor requestor) {
+		super(requestor);
+	}
+
+	// Visiting methods
+	protected void onEndVisitMethod(MethodDeclaration method) {
+		if (DLTKCore.DEBUG) {
+			System.out.println("==> Method: " + method.getName());
+		}
+
+		Iterator it = fNotAddedFields.iterator();
+
+		while (it.hasNext()) {
+			TypeField field = (TypeField) it.next();
+
+			if (canAddVariables(field.getASTNode(), field.getName())) {
+				PositionInformation pos = field.getPosition();
+
+				ISourceElementRequestor.FieldInfo info = new ISourceElementRequestor.FieldInfo();
+				info.modifiers = Modifiers.AccStatic;
+				info.name = field.getName();
+				info.nameSourceEnd = pos.nameEnd - 1;
+				info.nameSourceStart = pos.nameStart;
+				info.declarationStart = pos.sourceStart;
+
+				fRequestor.enterField(info);
+				fRequestor.exitField(pos.sourceEnd);
+			}
+		}
+
+		fNotAddedFields.clear();
+	}
+
+	// Visiting expressions
+	public boolean visit(Expression expression) throws Exception {
+		if (DLTKCore.DEBUG) {
+			System.out.println("==> Expression: " + expression.toString());
+		}
+
+		if (expression instanceof Assignment) {
+			// Assignment handling (this is static variable assignment.)
+
+			Assignment assignment = (Assignment) expression;
+			Expression left = assignment.getLeft();
+			Statement right = assignment.getRight();
+
+			// Handle static variables
+			addVariableReference(left, right, fInClass, fInMethod);
+		} else if (expression instanceof CallExpression) {
+			// CallExpression handling
+			CallExpression callExpression = (CallExpression) expression;
+
+			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			// Only for expermintal purposes!!!
+			String name = callExpression.getName();
+			if (name.indexOf("attr_") == 0) {
+
+				ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
+				mi.parameterNames = new String[] {};
+				mi.name = name;
+				mi.modifiers = 0;
+				mi.nameSourceStart = callExpression.sourceStart();
+				mi.nameSourceEnd = callExpression.sourceEnd();
+				mi.declarationStart = callExpression.sourceStart();
+
+				fRequestor.enterMethod(mi);
+				fRequestor.exitMethod(callExpression.sourceEnd());
+
+				return true;
+			}
+			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+			// Arguments
+			int argsCount = 0;
+			CallArgumentsList args = callExpression.getArgs();
+			if (args != null && args.getExpressions() != null) {
+				argsCount = args.getExpressions().size();
+			}
+
+			// Start
+			int start = callExpression.sourceStart();
+			if (start < 0) {
+				start = 0;
+			}
+
+			// End
+			int end = callExpression.sourceEnd();
+			if (end < 0) {
+				end = 1;
+			}
+
+			// Accept
+			fRequestor.acceptMethodReference(callExpression.getName()
+					.toCharArray(), argsCount, start, end);
+		} else if (expression instanceof VariableReference) {
+			// VariableReference handling
+			VariableReference variableReference = (VariableReference) expression;
+
+			int pos = variableReference.sourceStart();
+			if (pos < 0) {
+				pos = 0;
+			}
+
+			// Accept
+			fRequestor.acceptFieldReference(variableReference.getName()
+					.toCharArray(), pos);
+		}
+
+		return true;
+	}
+
+	public boolean endvisit(Expression expression) throws Exception {
+		return true;
+	}
+
+	// Visiting statements
+	public boolean visit(Statement statement) throws Exception {
+		if (DLTKCore.DEBUG) {
+			System.out.println("==> Statement: " + statement.toString());
+		}
+
+		if (statement instanceof ConstantDeclaration) {
+			ConstantDeclaration constant = (ConstantDeclaration) statement;
+			SimpleReference constName = constant.getName();
+
+			ISourceElementRequestor.FieldInfo info = new ISourceElementRequestor.FieldInfo();
+			info.modifiers = Modifiers.AccConstant;
+			info.name = constName.getName();
+			info.nameSourceEnd = constName.sourceEnd() - 1;
+			info.nameSourceStart = constName.sourceStart();
+			info.declarationStart = constName.sourceStart();
+
+			fRequestor.enterField(info);
+			fRequestor.exitField(constName.sourceEnd() - 1);
+		}
+
+		return true;
+	}
+
+	public boolean endvisit(Statement s) throws Exception {
+		return true;
 	}
 }

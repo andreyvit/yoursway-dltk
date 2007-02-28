@@ -11,7 +11,6 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Block;
 
 public class RubySingletonMethodDeclaration extends MethodDeclaration {
-
 	private final Expression receiver;
 
 	public RubySingletonMethodDeclaration(String name, int nameStart,
@@ -23,7 +22,7 @@ public class RubySingletonMethodDeclaration extends MethodDeclaration {
 	public Expression getReceiver() {
 		return receiver;
 	}
-	
+
 	public void traverse(ASTVisitor visitor) throws Exception {
 		List decorators = this.getDecorators();
 		Block body = this.getBody();
@@ -36,8 +35,8 @@ public class RubySingletonMethodDeclaration extends MethodDeclaration {
 					dec.traverse(visitor);
 				}
 			}
-			
-			//Receiver
+
+			// Receiver
 			if (receiver != null)
 				receiver.traverse(visitor);
 
@@ -55,7 +54,5 @@ public class RubySingletonMethodDeclaration extends MethodDeclaration {
 
 			visitor.endvisit(this);
 		}
-		
 	}
-
 }

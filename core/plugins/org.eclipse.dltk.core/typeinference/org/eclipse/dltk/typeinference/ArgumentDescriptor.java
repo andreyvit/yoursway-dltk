@@ -11,7 +11,7 @@ public class ArgumentDescriptor {
 	private int index = -1;
 
 	private final IMethodDescriptor method;
-
+		
 	public ArgumentDescriptor(IMethodDescriptor method, String name, ITypeDescriptor type) {
 		this.method = method;
 		this.name = name;

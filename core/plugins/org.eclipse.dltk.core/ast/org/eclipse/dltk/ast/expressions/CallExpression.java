@@ -1,7 +1,5 @@
 package org.eclipse.dltk.ast.expressions;
 
-import java.util.List;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.statements.Statement;
@@ -11,10 +9,6 @@ public class CallExpression extends Expression {
 	private Statement receiver;
 	private String name;
 	
-	/**
-	 * The main reason why this is a list node rather than a simple array/collection is that
-	 * the client might want to traverse the arguments separately. 
-	 */
 	private CallArgumentsList args;
 	
 	public CallExpression(Statement receiver, String name, CallArgumentsList args) {
