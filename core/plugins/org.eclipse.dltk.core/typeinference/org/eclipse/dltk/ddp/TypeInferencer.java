@@ -66,9 +66,9 @@ public final class TypeInferencer implements ITypeInferencer {
 	}
 
 	public IEvaluatedType evaluateGoal(IGoal rootGoal, long timeLimit) {
-		rootGoal = evaluatorFactory.translateGoal(rootGoal);
 		if (rootGoal == null)
 			return null;
+		rootGoal = evaluatorFactory.translateGoal(rootGoal);
 		
 		totalGoalsRequested++;
 		

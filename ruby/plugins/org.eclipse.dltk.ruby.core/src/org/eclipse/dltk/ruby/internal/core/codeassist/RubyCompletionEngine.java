@@ -99,9 +99,9 @@ public class RubyCompletionEngine extends CompletionEngine {
 				ASTNode node = ASTUtils.findMaximalNodeEndingAt(
 						moduleDeclaration, position - 2);
 				this.setSourceRange(position, position);	
-				if (node != null) {
-					ExpressionGoal goal = new ExpressionGoal(new BasicContext(
-							modelModule, moduleDeclaration), (Statement) (node));
+				if (node != null && node instanceof Statement) {					
+					BasicContext basicContext = new BasicContext(modelModule, moduleDeclaration);
+					ExpressionGoal goal = new ExpressionGoal(basicContext, (Statement) node);
 					IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
 					reportSubtypes(modelModule, type, "");
 				} else {					
@@ -223,7 +223,13 @@ public class RubyCompletionEngine extends CompletionEngine {
 		}
 		int pos = (node.getLeft() != null) ? (node.getLeft().sourceEnd() + 2) : (node
 				.sourceStart());
-		String starting = content.substring(pos, position).trim();
+		String starting = null;
+		try {
+			starting = content.substring(pos, position).trim();
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+			return;
+		}
 		
 		if (starting.startsWith("::")) {
 			this.setSourceRange(position - starting.length() + 2, position);

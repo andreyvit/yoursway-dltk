@@ -187,6 +187,8 @@ public class ASTUtils {
 			}
 
 			public boolean visitGeneral(ASTNode s) throws Exception {
+				if (s.sourceStart() < 0 || s.sourceEnd() < 0)
+					return true;
 				int sourceEnd = s.sourceEnd();
 				if (Math.abs(sourceEnd - boundaryOffset) <= 1) {
 					result = s;
