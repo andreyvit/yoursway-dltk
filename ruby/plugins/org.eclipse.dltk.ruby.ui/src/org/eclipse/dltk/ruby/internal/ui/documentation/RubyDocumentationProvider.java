@@ -157,7 +157,7 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 		RiHelper helper = RiHelper.getInstance();
 		String doc = helper.getDocFor(keyword);
 		if (doc != null)
-			return new StringReader("<pre>" + doc + "</pre>");
+			return new StringReader(doc);
 		return new StringReader("Built-in method");
 	}
 	

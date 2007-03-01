@@ -832,7 +832,7 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 				- typeProposal.getReplaceStart() + 1;
 		Image image = getImage(getLabelProvider().createTypeImageDescriptor(
 				typeProposal));
-		String displayString = completion;
+		String displayString = getLabelProvider().createTypeProposalLabel(typeProposal);
 
 		return createScriptCompletionProposal(completion, replaceStart, length,
 				image, displayString, 0);

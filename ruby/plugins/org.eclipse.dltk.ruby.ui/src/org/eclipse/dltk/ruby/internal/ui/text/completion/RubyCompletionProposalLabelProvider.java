@@ -91,7 +91,7 @@ public class RubyCompletionProposalLabelProvider extends
 		IModelElement parent = type.getParent();
 		if (parent instanceof IType) {
 			IType type2 = (IType) parent;
-			nameBuffer.append(type2.getTypeQualifiedName("::"));
+			nameBuffer.append(type2.getElementName()); //XXX, fqn may be better idea
 		} else {
 			nameBuffer.append(parent.getElementName());
 		}

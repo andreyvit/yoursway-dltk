@@ -761,7 +761,7 @@ public class RubyTypeInferencingUtils {
 	}
 	
 	public static IType[] findSubtypes (ISourceModule module, RubyClassType type, String namePrefix) {
-		List result = new ArrayList ();
+		List result = new UniqueNamesList ();
 		type = resolveMethods(module.getScriptProject(), type);		
 		IType[] declarations = type.getTypeDeclarations();
 		for (int i = 0; i < declarations.length; i++) {

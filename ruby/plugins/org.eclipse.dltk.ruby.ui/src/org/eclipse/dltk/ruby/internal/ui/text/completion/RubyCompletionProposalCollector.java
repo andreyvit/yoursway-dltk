@@ -29,14 +29,14 @@ public class RubyCompletionProposalCollector extends
 	protected ScriptCompletionProposal createScriptCompletionProposal(
 			String completion, int replaceStart, int length, Image image,
 			String displayString, int i) {
-		return new RubyCompletionProposal(displayString, replaceStart,
+		return new RubyCompletionProposal(completion, replaceStart,
 				length, image, displayString, i);
 	}
 
 	protected ScriptCompletionProposal createScriptCompletionProposal(
 			String completion, int replaceStart, int length, Image image,
 			String displayString, int i, boolean isInDoc) {
-		return new RubyCompletionProposal(displayString, replaceStart,
+		return new RubyCompletionProposal(completion, replaceStart,
 				length, image, displayString, i, isInDoc);
 	}
 	
