@@ -461,11 +461,11 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 					++count;
 				}
 			}
-			if (count == 0) {
-				for (int i = 0; i < availableMethods.length; i++) {
-					selectionElements.add(availableMethods[i]);
-				}
-			}
+//			if (count == 0) {
+//				for (int i = 0; i < availableMethods.length; i++) {
+//					selectionElements.add(availableMethods[i]);
+//				}
+//			}
 		}
 	
 	}
