@@ -49,6 +49,7 @@ import org.eclipse.dltk.ruby.ast.SelfReference;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
+import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 
 public class RubyTypeInferencingUtils {
 
@@ -587,13 +588,14 @@ public class RubyTypeInferencingUtils {
 	}
 
 	public static ModuleDeclaration parseSource(ISourceModule module) {
-		JRubySourceParser parser = new JRubySourceParser(null);
-		try {
-			return parser.parse(module.getSource());
-		} catch (ModelException e) {
-			RubyPlugin.log(e);
-			return null;
-		}
+//		JRubySourceParser parser = new JRubySourceParser(null);
+//		try {
+//			return parser.parse(module.getSource());
+//		} catch (ModelException e) {
+//			RubyPlugin.log(e);
+//			return null;
+//		}
+		return RubySourceElementParser.parseModule(module);
 	}
 	
 	public static RubyMetaClassType getMetaType(RubyClassType type) {
