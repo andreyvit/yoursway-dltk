@@ -289,5 +289,18 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		assertTrue((requestor.getResults().length() > 0));
 				
 	}
+
+	public void testCompletion019() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "c8.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "@categ";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue((requestor.getResults().length() > 0));
+				
+	}
 	
 }

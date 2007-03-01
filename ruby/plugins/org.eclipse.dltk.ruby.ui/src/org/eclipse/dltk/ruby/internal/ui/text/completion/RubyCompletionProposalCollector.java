@@ -39,8 +39,6 @@ public class RubyCompletionProposalCollector extends
 		return new RubyCompletionProposal(completion, replaceStart,
 				length, image, displayString, i, isInDoc);
 	}
-	
-	
 
 	protected char[] getVarTrigger() {
 		return VAR_TRIGGER;
@@ -82,7 +80,5 @@ public class RubyCompletionProposalCollector extends
 		
 		return super.createScriptCompletionProposal(proposal);
 	}
-	
-	
-	
+
 }

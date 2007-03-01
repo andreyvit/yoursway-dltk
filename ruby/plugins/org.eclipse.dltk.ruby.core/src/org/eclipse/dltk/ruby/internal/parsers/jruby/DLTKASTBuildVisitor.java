@@ -1465,7 +1465,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 			name = "<< " + ((ConstNode) iVisited.getReceiverNode()).getName();
 		} else if (receiver instanceof SelfNode) {
 			name = "<< self";
-		}
+		} 
 		ISourcePosition pos = iVisited.getReceiverNode().getPosition();
 		ISourcePosition cPos = iVisited.getPosition();
 		RubySingletonClassDeclaration type = new RubySingletonClassDeclaration(name, pos.getStartOffset(),
@@ -1478,7 +1478,12 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		receiver.accept(this);
 		popState();
 		if (coll.list.size() == 1 && coll.list.get(0) instanceof Expression) {
-			type.setReceiver((Expression) coll.list.get(0));
+			Object obj = coll.list.get(0);
+			type.setReceiver((Expression) obj);
+			if (obj instanceof SimpleReference) {
+				SimpleReference reference = (SimpleReference) obj;
+				type.setName("<< " + reference.getName());
+			}
 		}		
 		pushState(new ClassState(type));
 		pos = iVisited.getBodyNode().getPosition();

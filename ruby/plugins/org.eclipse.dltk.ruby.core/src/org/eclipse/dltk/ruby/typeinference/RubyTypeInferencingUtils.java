@@ -623,35 +623,6 @@ public class RubyTypeInferencingUtils {
 		return null;
 	}
 	
-	private static class UniqueNamesList extends ArrayList {
-
-		HashSet names = new HashSet ();
-		
-		public boolean add(Object elem) {
-			if (elem instanceof IModelElement) {
-				IModelElement modelElement = (IModelElement) elem;
-				if (names.contains(modelElement.getElementName()))
-						return false;
-				names.add(modelElement.getElementName());
-			}
-			return super.add(elem);
-		}
-
-		public void clear() {			
-			super.clear();
-			names.clear();
-		}
-
-		public boolean contains(Object elem) {
-			if (elem instanceof IModelElement) {
-				IModelElement modelElement = (IModelElement) elem;
-				return names.contains(modelElement.getElementName());
-			}
-			return super.contains(elem);
-		}
-
-	}
-	
 	public static RubyMetaClassType resolveMethods(ISourceModule module, RubyMetaClassType type) {
 		if (type.getMethods() == null) {
 			List result = new UniqueNamesList();	

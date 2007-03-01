@@ -162,25 +162,40 @@ public class RubyModelUtils {
 		if (type instanceof RubyMetaClassType) {
 			type = (IClassType) ((RubyMetaClassType)type).getInstanceType();
 		}
+		RubyClassType rubyClassType = null;
 		if (type instanceof RubyClassType) {
-			RubyClassType rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), (RubyClassType) type);
+			rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), (RubyClassType) type);
 			types = rubyClassType.getTypeDeclarations();
 		}		
-		if (types == null)
-			return new IField[0];
-		List resultFields = new ArrayList ();
-		for (int i = 0; i < types.length; i++) {
-			IField[] fields;
-			try {
-				fields = types[i].getFields();
+		List resultFields = new UniqueNamesList ();
+		
+		if (rubyClassType != null && 
+				rubyClassType.getFQN()[0].equals("Object") && 
+				rubyClassType.getFQN().length == 1) {
+			IField[] fields = RubyModelUtils.findTopLevelFields(modelModule, prefix);
+			if (fields != null) {
 				for (int j = 0; j < fields.length; j++) {
 					if (fields[j].getElementName().startsWith(prefix)) {
 						resultFields.add(fields[j]);
 					}
 				}
-			} catch (ModelException e1) {					
-				e1.printStackTrace();
-			}				
+			}
+		}
+		
+		if (types != null) {
+			for (int i = 0; i < types.length; i++) {
+				IField[] fields;
+				try {
+					fields = types[i].getFields();
+					for (int j = 0; j < fields.length; j++) {
+						if (fields[j].getElementName().startsWith(prefix)) {
+							resultFields.add(fields[j]);
+						}
+					}
+				} catch (ModelException e1) {					
+					e1.printStackTrace();
+				}				
+			}
 		}
 		return (IField[]) resultFields.toArray(new IField[resultFields.size()]);
 	}	 
@@ -300,6 +315,23 @@ public class RubyModelUtils {
 		}
 
 		return (IType[]) result.toArray(new IType[result.size()]);
+	}
+	
+	public static IField[] findTopLevelFields(ISourceModule module, String namePrefix) {
+		List result = new ArrayList();
+		
+		try {
+			//TODO: add handling of "require"
+			IModelElement[] children = module.getChildren();
+			for (int i = 0; i < children.length; i++) {
+				if (children[i] instanceof IField && children[i].getElementName().startsWith(namePrefix))
+					result.add(children[i]);
+			}
+		} catch (ModelException e) {
+			e.printStackTrace();
+		}
+
+		return (IField[]) result.toArray(new IField[result.size()]);
 	}
 	
 	public static IMethod[] _bad_findTopLevelMethods (IDLTKProject project, String namePattern) {
