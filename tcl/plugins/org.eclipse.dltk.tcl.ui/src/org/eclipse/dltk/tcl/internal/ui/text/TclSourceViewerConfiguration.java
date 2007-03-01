@@ -32,7 +32,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 public class TclSourceViewerConfiguration extends DLTKSourceViewerConfiguration {
 
 	private TclTextTools fTextTools;
-	
+
 	private TclCodeScanner fCodeScanner;
 	private AbstractScriptScanner fStringScanner;
 	private AbstractScriptScanner fCommentScanner;
@@ -44,8 +44,7 @@ public class TclSourceViewerConfiguration extends DLTKSourceViewerConfiguration 
 	}
 
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
-		return new String[] { IDocument.DEFAULT_CONTENT_TYPE, 
-				TclPartitions.TCL_STRING, TclPartitions.TCL_COMMENT };
+		return TclPartitions.TCL_PARTITION_TYPES;
 	}
 
 	public String[] getIndentPrefixes(ISourceViewer sourceViewer,
@@ -87,7 +86,7 @@ public class TclSourceViewerConfiguration extends DLTKSourceViewerConfiguration 
 
 	/**
 	 * Returns the TCL string scanner for this configuration.
-	 * 
+	 *
 	 * @return the TCL string scanner
 	 */
 	protected RuleBasedScanner getStringScanner() {
@@ -96,7 +95,7 @@ public class TclSourceViewerConfiguration extends DLTKSourceViewerConfiguration 
 
 	/**
 	 * Returns the TCL comment scanner for this configuration.
-	 * 
+	 *
 	 * @return the TCL comment scanner
 	 */
 	protected RuleBasedScanner getCommentScanner() {
@@ -138,13 +137,13 @@ public class TclSourceViewerConfiguration extends DLTKSourceViewerConfiguration 
 	public void handlePropertyChangeEvent(PropertyChangeEvent event) {
 		Assert.isTrue(isNewSetup());
 		if (fCodeScanner.affectsBehavior(event))
-			fCodeScanner.adaptToPreferenceChange(event);		
+			fCodeScanner.adaptToPreferenceChange(event);
 		if (fStringScanner.affectsBehavior(event))
 			fStringScanner.adaptToPreferenceChange(event);
 		if (fCommentScanner.affectsBehavior(event))
 			fCommentScanner.adaptToPreferenceChange(event);
 	}
-	
+
 	/**
 	 * Determines whether the preference change encoded by the given event
 	 * changes the behavior of one of its contained components.
@@ -154,7 +153,7 @@ public class TclSourceViewerConfiguration extends DLTKSourceViewerConfiguration 
 	 *
 	 */
 	public boolean affectsTextPresentation(PropertyChangeEvent event) {
-		return  fCodeScanner.affectsBehavior(event)			
+		return  fCodeScanner.affectsBehavior(event)
 			|| fStringScanner.affectsBehavior(event) ||
 			fCommentScanner.affectsBehavior(event);
 	}
@@ -192,13 +191,13 @@ public class TclSourceViewerConfiguration extends DLTKSourceViewerConfiguration 
 
 			assistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
 			assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
-			
+
 			return assistant;
 		}
 
 		return null;
 	}
-	
+
 	protected IInformationControlCreator getOutlinePresenterControlCreator(ISourceViewer sourceViewer, final String commandId) {
 	return new IInformationControlCreator() {
 		public IInformationControl createInformationControl(Shell parent) {
@@ -208,6 +207,6 @@ public class TclSourceViewerConfiguration extends DLTKSourceViewerConfiguration 
 		}
 	};
 }
-	
-	
+
+
 }

@@ -58,8 +58,9 @@ public class RubySourceViewerConfiguration extends
 	}
 
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
-		return new String[] { IDocument.DEFAULT_CONTENT_TYPE,
-				IRubyPartitions.RUBY_STRING, IRubyPartitions.RUBY_COMMENT, IRubyPartitions.RUBY_DOC};
+		//return new String[] { IDocument.DEFAULT_CONTENT_TYPE,
+		//		IRubyPartitions.RUBY_STRING, IRubyPartitions.RUBY_COMMENT, IRubyPartitions.RUBY_DOC};
+		return IRubyPartitions.RUBY_PARTITION_TYPES;
 	}
 
 	public String[] getIndentPrefixes(ISourceViewer sourceViewer,
