@@ -29,6 +29,7 @@ import org.eclipse.dltk.core.IProblemRequestor;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.ISourceModuleInfoCache;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
@@ -157,7 +158,9 @@ public class SourceModule extends Openable implements ISourceModule, org.eclipse
 			ISourceElementParser parser = toolkit.createSourceElementParser(
 					requestor, problemReporter, Collections.EMPTY_MAP);
 
-			parser.parseSourceModule(contents);
+			ISourceModuleInfoCache sourceModuleInfoCache = ModelManager.getModelManager().getSourceModuleInfoCache();
+			sourceModuleInfoCache.remove(this);
+			parser.parseSourceModule(contents, sourceModuleInfoCache.get(this));
 
 			if (SourceModule.DEBUG_PRINT_MODEL) {
 				System.out.println("Source Module Debug print:");

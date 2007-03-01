@@ -14,20 +14,21 @@ import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.core.search.matching.MatchLocatorParser;
 import org.eclipse.dltk.core.search.matching.PatternLocator;
 import org.eclipse.dltk.core.search.matching.PossibleMatch;
-import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
+import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 
 public class RubyMatchLocatorParser extends MatchLocatorParser {
-	private JRubySourceParser parser;
+//	private JRubySourceParser parser;
 
 
 	public RubyMatchLocatorParser(MatchLocator locator) {
 		super(locator);
-		parser = new JRubySourceParser(null);
+//		parser = new JRubySourceParser(null);
 	}
 
 	public ModuleDeclaration parse(PossibleMatch possibleMatch) {
-		ModuleDeclaration module = parser.parse(possibleMatch.getSourceContents());
-		module.rebuild();
+//		ModuleDeclaration module = parser.parse(possibleMatch.getSourceContents());
+		ModuleDeclaration module = RubySourceElementParser.parseModule((org.eclipse.dltk.core.ISourceModule)possibleMatch.getModelElement());
+//		module.rebuild();
 		return module;
 	}
 	

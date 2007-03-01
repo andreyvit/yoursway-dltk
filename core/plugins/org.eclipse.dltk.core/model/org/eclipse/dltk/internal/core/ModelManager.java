@@ -62,6 +62,7 @@ import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.ISourceModuleInfoCache;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
@@ -1196,6 +1197,10 @@ public class ModelManager implements ISaveParticipant {
 		DLTKCore.getDefault().savePluginPreferences();
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		workspace.removeResourceChangeListener(this.deltaState);
+		
+		if( sourceModuleInfoCach !=null ) {
+			sourceModuleInfoCach.stop();
+		}
 	}
 
 	public void removePerProjectInfo(DLTKProject scriptProject) {
@@ -2607,5 +2612,13 @@ public class ModelManager implements ISaveParticipant {
 				// problem occured closing zip file: cannot do much more
 			}
 		}
+	}
+	
+	private SourceModuleInfoCache sourceModuleInfoCach;
+	public ISourceModuleInfoCache getSourceModuleInfoCache() {
+		if( sourceModuleInfoCach == null ) {
+			sourceModuleInfoCach = new SourceModuleInfoCache();
+		}
+		return sourceModuleInfoCach;
 	}
 }

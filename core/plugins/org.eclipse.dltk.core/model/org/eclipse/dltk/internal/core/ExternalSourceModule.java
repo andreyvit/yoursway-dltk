@@ -126,7 +126,7 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 				throw new ModelException(new ModelStatus(ModelStatus.INVALID_NAME));
 			}
 			ISourceElementParser parser = toolkit.createSourceElementParser(requestor, null, Collections.EMPTY_MAP);
-			parser.parseSourceModule(contents);
+			parser.parseSourceModule(contents, null);
 			if (ExternalSourceModule.DEBUG_PRINT_MODEL) {
 				System.out.println("Source Module Debug print:");
 				CorePrinter printer = new CorePrinter(System.out);

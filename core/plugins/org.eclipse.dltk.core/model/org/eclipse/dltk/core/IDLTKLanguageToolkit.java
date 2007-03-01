@@ -66,13 +66,6 @@ public interface IDLTKLanguageToolkit {
 			Map options, IDLTKProject project);
 
 	IMatchLocatorParser createMatchParser(MatchLocator locator);
-	
-	/**
-	 * AST Should contain Method invocations and other stuff.
-	 * @param module
-	 * @return
-	 */
-	ModuleDeclaration createFullAST(ISourceModule module);
 
 	ISelectionEngine createSelectionEngine(ISearchableEnvironment environment, Map options);
 

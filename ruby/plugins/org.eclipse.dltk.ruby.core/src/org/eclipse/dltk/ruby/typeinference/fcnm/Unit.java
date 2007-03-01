@@ -6,6 +6,7 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.ruby.internal.parser.Activator;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
+import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 import org.eclipse.dltk.ruby.typeinference.ClassLikeFragment;
 import org.eclipse.dltk.ruby.typeinference.internal.RubyTypeModel;
 import org.eclipse.dltk.typeinference.ASTCaching;
@@ -42,14 +43,10 @@ public class Unit extends NodeElement implements IUnit {
 	}
 
 	protected ASTNode obtainASTNode(ASTCaching caching) {
-		JRubySourceParser parser = new JRubySourceParser(null);
+//		JRubySourceParser parser = new JRubySourceParser(null);
 		ModuleDeclaration result;
-		try {
-			result = parser.parse(sourceModule.getSource());
-		} catch (ModelException e) {
-			Activator.log(e);
-			result = null;
-		}
+//		result = parser.parse(sourceModule.getSource());
+		result = RubySourceElementParser.parseModule(sourceModule);
 		((INodeElementInternal) rootFragment).setASTNode(result);
 		return result;
 	}

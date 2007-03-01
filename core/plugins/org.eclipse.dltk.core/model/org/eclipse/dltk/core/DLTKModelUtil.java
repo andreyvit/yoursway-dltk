@@ -68,7 +68,7 @@ public class DLTKModelUtil {
 			TypeNameMatchRequestor requestor) {
 		final List types = new ArrayList ();
 		
-		patternString = "*" + patternString + "*";
+//		patternString = "*" + patternString + "*";
 		
 		IDLTKLanguageToolkit langaugeToolkit;
 		try {

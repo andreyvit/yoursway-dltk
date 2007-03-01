@@ -152,7 +152,7 @@ public class TclCalleeProcessor implements ICalleeProcessor {
 			String methodSource = method.getSource();
 			CaleeSourceElementRequestor requestor = new CaleeSourceElementRequestor();
 			TclSourceElementParser parser = new TclSourceElementParser(requestor);
-			parser.parseSourceModule(methodSource.toCharArray());
+			parser.parseSourceModule(methodSource.toCharArray(), null);
 
 			return fSearchResults;
 		} catch (ModelException e) {

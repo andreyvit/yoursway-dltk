@@ -87,7 +87,7 @@ public class SourceIndexer extends AbstractIndexer {
 			if (source == null || name == null)
 				return; // could not retrieve document info (e.g. resource was
 						// discarded)
-			parser.parseSourceModule(source);
+			parser.parseSourceModule(source, null);
 		} else { // This is for external documents				
 			if (parser == null || requestor == null ) {
 				//parser = ModelManager.getModelManager().indexManager.getSourceElementParser(dltkProject, requestor);
@@ -117,7 +117,7 @@ public class SourceIndexer extends AbstractIndexer {
 			if (source == null || name == null)
 				return; // could not retrieve document info (e.g. resource was
 						// discarded)
-			parser.parseSourceModule(source);
+			parser.parseSourceModule(source, null);
 			
 			long ended  = (new Date ()).getTime();
 			

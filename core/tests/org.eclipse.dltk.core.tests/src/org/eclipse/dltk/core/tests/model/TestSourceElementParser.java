@@ -3,6 +3,7 @@ package org.eclipse.dltk.core.tests.model;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.core.ISourceElementParser;
+import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 
 public class TestSourceElementParser implements ISourceElementParser {
 	
@@ -12,7 +13,7 @@ public class TestSourceElementParser implements ISourceElementParser {
 		this.requestor = requestor;
 	}
 
-	public ModuleDeclaration parseSourceModule(char[] contents) {
+	public ModuleDeclaration parseSourceModule(char[] contents, ISourceModuleInfo astCashe) {
 		requestor.enterModule();
 		ISourceElementRequestor.TypeInfo ti = new ISourceElementRequestor.TypeInfo();
 		ti.name = "Class1";

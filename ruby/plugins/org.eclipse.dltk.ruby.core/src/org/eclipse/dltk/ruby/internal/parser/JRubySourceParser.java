@@ -1,9 +1,16 @@
 package org.eclipse.dltk.ruby.internal.parser;
 
 import java.io.StringReader;
+import java.lang.ref.Reference;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -153,13 +160,13 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 	}
 	
 	public ModuleDeclaration parse(String content) {// throws
-		long timeStart = System.currentTimeMillis();
 		Parser parser = new Parser(new IRuby() {});
 		ProxyProblemReporter proxyProblemReporter = new ProxyProblemReporter(problemReporter);
 		errorState[0] = false;
-		Node node =	parser.parse("", new StringReader(content), new RubyParserConfiguration(),
-				proxyProblemReporter);
 		
+		long timeStart = System.currentTimeMillis();
+		Node node = parser.parse("", new StringReader(content), new RubyParserConfiguration(),
+				proxyProblemReporter);
 		fixPositions.clear();
 		if (!parser.isSuccess() || errorState[0]) {
 			content = fixBrokenDots(content);
@@ -195,7 +202,8 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 			}
 		
 		long timeEnd = System.currentTimeMillis();
-		System.out.println("Parsing took " + (timeEnd - timeStart) + " ms");
+		if (TRACE_AST_DLTK)
+			System.out.println("Parsing took " + (timeEnd - timeStart) + " ms");
 		return module;
 	}
 

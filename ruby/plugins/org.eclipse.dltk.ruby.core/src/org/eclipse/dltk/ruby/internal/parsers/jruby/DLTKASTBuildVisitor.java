@@ -288,7 +288,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitArgsNode(ArgsNode iVisited) {
-		System.out.println("DLTKASTBuildVisitor.visitArgsNode()");
+//		System.out.println("DLTKASTBuildVisitor.visitArgsNode()");
 		if (iVisited.getOptArgs() != null) {
 			iVisited.getOptArgs().accept(this);
 		}
@@ -297,7 +297,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 
 	// XXXEnebo - Just guessed.
 	public Instruction visitArgsCatNode(ArgsCatNode iVisited) {
-		System.out.println("DLTKASTBuildVisitor.visitArgsCatNode()");
+//		System.out.println("DLTKASTBuildVisitor.visitArgsCatNode()");
 		if (iVisited.getFirstNode() != null) {
 			iVisited.getFirstNode().accept(this);
 		}
@@ -335,7 +335,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitBackRefNode(BackRefNode iVisited) {
-		System.out.println("DLTKASTBuildVisitor.visitBackRefNode()");
+//		System.out.println("DLTKASTBuildVisitor.visitBackRefNode()");
 		return null;
 	}
 
@@ -346,7 +346,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitBlockArgNode(BlockArgNode iVisited) {
-		System.out.println("DLTKASTBuildVisitor.visitBlockArgNode()");
+//		System.out.println("DLTKASTBuildVisitor.visitBlockArgNode()");
 		return null;
 	}
 
@@ -359,7 +359,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitBlockPassNode(BlockPassNode iVisited) {
-		System.out.println("DLTKASTBuildVisitor.visitBlockPassNode()");
+//		System.out.println("DLTKASTBuildVisitor.visitBlockPassNode()");
 		Iterator iterator = iVisited.childNodes().iterator();
 		while (iterator.hasNext()) {
 			((Node) iterator.next()).accept(this);
@@ -402,8 +402,8 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		pathNode.accept(this);
 		popState();
 		ArrayList list = state.getList();
-		if (list.size() > 1)
-			System.out.println();
+//		if (list.size() > 1)
+//			System.out.println();
 		if (list.size() > 1) {
 			if (TRACE_RECOVERING)
 				RubyPlugin
@@ -830,7 +830,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitDefinedNode(DefinedNode iVisited) {
-		System.out.println("DLTKASTBuildVisitor.visitDefinedNode()");
+//		System.out.println("DLTKASTBuildVisitor.visitDefinedNode()");
 		return null;
 	}
 
@@ -1016,8 +1016,8 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		}
 
 		ISourcePosition cPos = iVisited.getPosition();
-		if (receiverExpression == null)
-			System.out.println();
+//		if (receiverExpression == null)
+//			System.out.println();
 		ISourcePosition namePos = restoreMethodNamePosition(iVisited,
 				receiverExpression.sourceEnd());
 		String name = iVisited.getName();
@@ -1059,7 +1059,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitEvStrNode(EvStrNode iVisited) {
-		System.out.println("DLTKASTBuildVisitor.visitEvStrNode()");
+//		System.out.println("DLTKASTBuildVisitor.visitEvStrNode()");
 		return null;
 	}
 
@@ -1069,7 +1069,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		// iVisited.getName() + ")");
 		String methodName = iVisited.getName();
 
-		System.out.println("== (AST) Method name: " + methodName);
+//		System.out.println("== (AST) Method name: " + methodName);
 
 		State state = peekState();
 		if (state instanceof ClassLikeState) {
@@ -1207,7 +1207,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitIterNode(IterNode iVisited) {
-		System.out.println("DLTKASTBuildVisitor.visitIterNode()");
+//		System.out.println("DLTKASTBuildVisitor.visitIterNode()");
 		Iterator iterator = iVisited.childNodes().iterator();
 		while (iterator.hasNext()) {
 			((Node) iterator.next()).accept(this);
@@ -1372,7 +1372,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitOptNNode(OptNNode iVisited) {
-		System.out.println("DLTKASTBuildVisitor.visitOptNNode()");
+//		System.out.println("DLTKASTBuildVisitor.visitOptNNode()");
 		iVisited.getBodyNode().accept(this);
 		return null;
 	}

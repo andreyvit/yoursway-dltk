@@ -31,6 +31,7 @@ import org.eclipse.dltk.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.dltk.internal.core.Model;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.Region;
+import org.eclipse.dltk.internal.core.SourceModuleInfoCache;
 import org.eclipse.dltk.internal.core.util.MementoTokenizer;
 import org.eclipse.dltk.internal.core.util.Util;
 import org.osgi.framework.BundleContext;

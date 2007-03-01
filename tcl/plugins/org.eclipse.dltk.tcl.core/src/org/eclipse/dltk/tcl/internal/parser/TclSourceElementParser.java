@@ -19,6 +19,7 @@ import org.eclipse.dltk.compiler.DLTKProblemReporter;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceElementParser;
+import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.tcl.TclKeywords;
 import org.eclipse.dltk.tcl.ast.TclConstants;
 import org.eclipse.dltk.tcl.ast.TclStatement;
@@ -57,7 +58,7 @@ public class TclSourceElementParser implements ISourceElementParser {
 
 	private static int counter = 0;
 
-	public ModuleDeclaration parseSourceModule(char[] contents) {
+	public ModuleDeclaration parseSourceModule(char[] contents, ISourceModuleInfo astCashe) {
 
 //		System.out.println("TclSourceElementParser.parseSourceModule() "
 //				+ (counter++));

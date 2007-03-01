@@ -34,6 +34,7 @@ import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
+import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
 import org.eclipse.dltk.ruby.typeinference.BuiltinMethods;
 import org.eclipse.dltk.ruby.typeinference.ClassInfo;
@@ -55,7 +56,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 		inferencer = new TypeInferencer(new RubyEvaluatorFactory());
 	}
 
-	private JRubySourceParser parser = new JRubySourceParser(null);
+//	private JRubySourceParser parser = new JRubySourceParser(null);
 
 	protected int getEndOfEmptyToken() {
 		// TODO Auto-generated method stub
@@ -89,8 +90,12 @@ public class RubyCompletionEngine extends CompletionEngine {
 		org.eclipse.dltk.core.ISourceModule modelModule = (org.eclipse.dltk.core.ISourceModule) module;
 		try {
 			String content = module.getSourceContents();
+//			ModuleDeclaration moduleDeclaration = parser.parse(content);
+			ModuleDeclaration moduleDeclaration;
+			
+			moduleDeclaration = RubySourceElementParser.parseModule((org.eclipse.dltk.core.ISourceModule)module.getModelElement());
 			if (afterColons(content, position)) {				
-				ModuleDeclaration moduleDeclaration = parser.parse(content);
+				
 				ASTNode node = ASTUtils.findMaximalNodeEndingAt(
 						moduleDeclaration, position - 2);
 				this.setSourceRange(position, position);	
@@ -102,13 +107,11 @@ public class RubyCompletionEngine extends CompletionEngine {
 				} else {					
 					completeConstant(modelModule, moduleDeclaration, "", position);					
 				}
-				System.out.println();
 			} else {
-				ModuleDeclaration moduleDeclaration = parser.parse(content);
 				ASTNode minimalNode = ASTUtils.findMinimalNode(
 						moduleDeclaration, position, position);
 				if (minimalNode != null) {
-					System.out.println(minimalNode.getClass());
+//					System.out.println(minimalNode.getClass());
 					if (minimalNode instanceof CallExpression) {
 						completeCall(modelModule, moduleDeclaration,
 								(CallExpression) minimalNode, position);
@@ -122,9 +125,9 @@ public class RubyCompletionEngine extends CompletionEngine {
 						completeSimpleRef(modelModule, moduleDeclaration,
 								(SimpleReference) minimalNode, position);
 					} else {
-						System.out.println("Node "
-								+ minimalNode.getClass().getName()
-								+ " is unsuppored by now");
+//						System.out.println("Node "
+//								+ minimalNode.getClass().getName()
+//								+ " is unsuppored by now");
 					}
 				}
 

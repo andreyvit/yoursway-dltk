@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -198,18 +200,6 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 
 	public String getEditorID(Object inputElement) {
 		return "org.eclipse.dltk.ruby.ui.editor.RubyEditor";
-	}
-
-	public ModuleDeclaration createFullAST(ISourceModule module) {
-		JRubySourceParser parser = new JRubySourceParser(null);
-		try {
-			return parser.parse(module.getSource());
-		} catch (ModelException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
-		return null;
 	}
 
 	public ISelectionEngine createSelectionEngine(

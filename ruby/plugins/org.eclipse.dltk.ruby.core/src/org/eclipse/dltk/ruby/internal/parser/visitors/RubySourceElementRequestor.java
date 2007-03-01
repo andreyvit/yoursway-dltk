@@ -319,8 +319,13 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 				List args = new ArrayList();
 				while (it.hasNext()) {
-					SymbolReference sr = (SymbolReference) it.next();
-					args.add(sr.getName());
+					Object sr = (Object) it.next();
+					if( sr instanceof SymbolReference ) {
+						args.add(((SymbolReference)sr).getName());
+					}
+					else {
+						continue;
+					}
 				}
 
 				ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
@@ -335,7 +340,6 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 				fRequestor.enterMethod(mi);
 				fRequestor.exitMethod(callExpression.sourceEnd());
 
-				return true;
 			}
 			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -408,7 +412,5 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 	public boolean endvisit(Statement s) throws Exception {
 		return true;
-	}	
-
-	
+	}
 }
