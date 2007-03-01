@@ -1,29 +1,20 @@
 package org.eclipse.dltk.ruby.tests.index;
 
-import java.io.IOException;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.util.SimpleSet;
 import org.eclipse.dltk.core.IDLTKProject;
-import org.eclipse.dltk.core.IField;
-import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.search.BasicSearchEngine;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
-import org.eclipse.dltk.core.search.SearchEngine;
-import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.index.EntryResult;
 import org.eclipse.dltk.core.search.index.Index;
 import org.eclipse.dltk.core.search.indexing.IIndexConstants;
 import org.eclipse.dltk.core.search.indexing.IndexManager;
 import org.eclipse.dltk.core.search.indexing.ReadWriteMonitor;
-import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.core.tests.model.AbstractDLTKSearchTests;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.ruby.tests.Activator;

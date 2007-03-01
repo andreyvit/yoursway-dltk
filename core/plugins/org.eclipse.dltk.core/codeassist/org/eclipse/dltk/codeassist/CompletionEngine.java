@@ -1,7 +1,5 @@
 package org.eclipse.dltk.codeassist;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -22,8 +20,6 @@ import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.codeassist.impl.Engine;
 import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
-import org.eclipse.dltk.typeinference.ArgumentDescriptor;
-import org.eclipse.dltk.typeinference.IMethodDescriptor;
 
 
 public abstract class CompletionEngine extends Engine implements ICompletionEngine {

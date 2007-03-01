@@ -6,7 +6,6 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.ILineBreakpoint;
 import org.eclipse.debug.ui.actions.IToggleBreakpointsTarget;
-import org.eclipse.debug.ui.actions.IToggleBreakpointsTargetExtension;
 import org.eclipse.dltk.debug.internal.core.model.ScriptModelConstants;
 import org.eclipse.dltk.debug.ui.BreakpointUtils;
 import org.eclipse.jface.text.ITextSelection;

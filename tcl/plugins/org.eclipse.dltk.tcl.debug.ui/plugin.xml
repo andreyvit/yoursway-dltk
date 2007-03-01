@@ -9,12 +9,6 @@
    <extension
          point="org.eclipse.debug.core.statusHandlers">
       <statusHandler
-            class="org.eclipse.dltk.tcl.internal.debug.ui.launcher.NoDefaultTclInterpreterStatusHandler"
-            code="167"
-            id="org.eclipse.dltk.tcl.debug.ui.noDefaultInterpreterInstall"
-            plugin="org.eclipse.dltk.launching"/>
-            
-      <statusHandler
             class="org.eclipse.dltk.tcl.internal.debug.ui.NoDebuggingEgineTclStatusHandler"
             code="180"
             id="org.eclipse.dltk.tcl.debug.ui.NoDebuggingEgineTclStatusHandler"

@@ -13,28 +13,13 @@ import org.eclipse.dltk.utils.CorePrinter;
 public abstract class Expression extends Statement implements
 		ExpressionConstants {
 
-	/**
-	 * Construct expression from start end end associated position.
-	 * 
-	 * @param start
-	 * @param end
-	 */
 	protected Expression(int start, int end) {
 		super(start, end);
 	}
 
-	/**
-	 * Construct expression without positions bintings.
-	 */
 	protected Expression() {
-
 	}
 
-	/**
-	 * Construct expression with bindings to ANTLR Token.
-	 * 
-	 * @param token
-	 */
 	public Expression(DLTKToken token) {
 		super(token);
 	}
@@ -155,15 +140,14 @@ public abstract class Expression extends Statement implements
 	 * Testing purposes only. Print expression.
 	 */
 	public void printNode(CorePrinter output) {
-		output.formatPrintLn("Expression" + this.getSourceRange().toString()
-				+ ":" + this.getKind());
+		output.formatPrintLn("Expression" + getSourceRange() + ":" + getKind());
 	}
 
 	public boolean equals(Object obj) {
 		if (obj instanceof Statement) {
-			Statement d = (Statement) obj;
-			return sourceStart() == d.sourceStart()
-					&& sourceEnd() == d.sourceEnd() && getKind() == d.getKind();
+			Statement s = (Statement) obj;
+			return sourceStart() == s.sourceStart()
+					&& sourceEnd() == s.sourceEnd() && getKind() == s.getKind();
 		}
 
 		return false;

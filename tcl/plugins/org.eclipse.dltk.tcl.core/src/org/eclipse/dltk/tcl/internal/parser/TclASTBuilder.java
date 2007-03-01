@@ -18,9 +18,6 @@ import org.eclipse.dltk.tcl.ast.TclModuleDeclaration;
 import org.eclipse.dltk.tcl.ast.TclNamespaceDeclaration;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
-import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
-import org.eclipse.dltk.tcl.internal.core.codeassist.TclASTUtil;
-import org.eclipse.dltk.tcl.internal.parser.TclParseUtils.IProcessStatementAction;
 
 /**
  * 

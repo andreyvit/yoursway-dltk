@@ -1,6 +1,5 @@
 package org.eclipse.dltk.ruby.typeinference;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.references.VariableKind;
 import org.eclipse.dltk.ast.references.VariableReference;

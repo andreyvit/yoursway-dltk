@@ -15,7 +15,6 @@ import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.TypeNameMatch;
 import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
-import org.eclipse.dltk.ruby.core.RubyPlugin;
 
 public class RubyTypeHierarchyEngine {
 	private static final boolean DEBUG = false;

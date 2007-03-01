@@ -1,9 +1,7 @@
 package org.eclipse.dltk.ruby.typeinference.internal;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,12 +11,7 @@ import java.util.WeakHashMap;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ruby.core.ParentshipBuildingVisitor;
-import org.eclipse.dltk.ruby.typeinference.ClassLikeFragment;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeUtils;
 import org.eclipse.dltk.ruby.typeinference.fcnm.Unit;
 import org.eclipse.dltk.ruby.typeinference.internal.evaluators.AssignmentTypeEvaluator;
@@ -34,11 +27,9 @@ import org.eclipse.dltk.ruby.typemodel.classes.ObjectTypeDescriptor;
 import org.eclipse.dltk.typeinference.ASTCaching;
 import org.eclipse.dltk.typeinference.AnyTypeDescriptor;
 import org.eclipse.dltk.typeinference.BaseTypeCalculator;
-import org.eclipse.dltk.typeinference.IClassLikeFragment;
-import org.eclipse.dltk.typeinference.IElementKind;
-import org.eclipse.dltk.typeinference.IKnownTypeDescriptor;
-import org.eclipse.dltk.typeinference.IMethodDescriptor;
 import org.eclipse.dltk.typeinference.IDependentTypedElement;
+import org.eclipse.dltk.typeinference.IElementKind;
+import org.eclipse.dltk.typeinference.IMethodDescriptor;
 import org.eclipse.dltk.typeinference.INodeElement;
 import org.eclipse.dltk.typeinference.IScope;
 import org.eclipse.dltk.typeinference.ITypeDescriptor;
@@ -46,7 +37,6 @@ import org.eclipse.dltk.typeinference.ITypeModel;
 import org.eclipse.dltk.typeinference.IUnit;
 import org.eclipse.dltk.typeinference.RecursiveCallTypeDescriptor;
 import org.eclipse.dltk.typeinference.UserMethodDescriptor;
-import org.eclipse.dltk.typeinference.UserTypeDescriptor;
 
 public class RubyTypeModel extends BaseTypeCalculator {
 

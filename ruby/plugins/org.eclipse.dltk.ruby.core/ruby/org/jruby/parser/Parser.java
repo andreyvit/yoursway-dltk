@@ -31,12 +31,10 @@
 package org.jruby.parser;
 
 import java.io.Reader;
-import java.io.StringReader;
 import java.util.List;
 
 import org.eclipse.dltk.compiler.IProblemReporter;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
-import org.eclipse.dltk.ruby.internal.parser.Activator;
 import org.jruby.IRuby;
 import org.jruby.ast.Node;
 import org.jruby.common.IRubyWarnings;

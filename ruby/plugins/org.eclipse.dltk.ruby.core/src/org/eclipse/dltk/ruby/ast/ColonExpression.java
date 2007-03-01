@@ -5,8 +5,6 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class ColonExpression extends Expression {
-	
-		
 	private final Expression left;
 	private final String name;
 	private final boolean full;

@@ -1,6 +1,5 @@
 package org.eclipse.dltk.core.tests.ddp;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -14,9 +13,9 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.GoalEvaluator;
-import org.eclipse.dltk.ddp.TypeInferencer;
 import org.eclipse.dltk.ddp.IGoal;
 import org.eclipse.dltk.ddp.IGoalEvaluatorFactory;
+import org.eclipse.dltk.ddp.TypeInferencer;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.RecursionTypeCall;
 

@@ -13,7 +13,6 @@ package org.eclipse.dltk.internal.ui.typehierarchy;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.dltk.core.Flags;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.jface.preference.IPreferenceStore;

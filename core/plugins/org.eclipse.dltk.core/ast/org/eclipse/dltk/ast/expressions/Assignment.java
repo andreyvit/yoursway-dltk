@@ -3,7 +3,6 @@
  */
 package org.eclipse.dltk.ast.expressions;
 
-import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
@@ -39,27 +38,10 @@ public class Assignment extends BinaryExpression
 	}
 
 	/**
-	 * Traverse on childs. Order: left, right
-	 */
-	public void traverse( ASTVisitor visitor ) throws Exception {
-
-		if( visitor.visit( this ) ) {
-			if( left != null ) {
-				left.traverse( visitor );
-			}
-			if( right != null ) {
-				right.traverse( visitor );
-			}
-			visitor.endvisit( this );
-		}
-	}
-
-	/**
 	 * Convert to string in pettern: "left = right"
 	 */
 	public String toString( ) {
-
-		return this.left.toString( ) + '=' + this.right.toString( );
+		return getLeft().toString( ) + '=' + getRight().toString( );
 	}
 
 	/**
@@ -67,12 +49,12 @@ public class Assignment extends BinaryExpression
 	 */
 	public void printNode( CorePrinter output ) {
 
-		if( this.left != null ) {
-			this.left.printNode( output );
+		if( getLeft() != null ) {
+			getLeft().printNode( output );
 		}
 		output.formatPrintLn( " = " );
-		if( this.right != null ) {
-			right.printNode( output );
+		if( getRight() != null ) {
+			getRight().printNode( output );
 		}
 	}
 }

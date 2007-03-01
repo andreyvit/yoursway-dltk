@@ -94,15 +94,7 @@
                id="org.eclipse.dltk.ruby.ui.editor.RubyEditor">
          </part>
       </actionSetPartAssociation>
-   </extension>
-   <extension
-         point="org.eclipse.debug.core.statusHandlers">
-      <statusHandler
-            class="org.eclipse.dltk.ruby.debug.ui.launcher.NoDefaultRubyInterpreterStatusHandler"
-            code="167"
-            id="org.eclipse.dltk.ruby.debug.ui.noDefaultInterpreterInstall"
-            plugin="org.eclipse.dltk.ruby.launching"/>
-   </extension>
+   </extension>   
    <extension
          point="org.eclipse.dltk.ui.buildpathContainerPage">
       <buildpathContainerPath

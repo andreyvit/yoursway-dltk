@@ -7,14 +7,12 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.internal.core.DLTKProject;
 import org.eclipse.dltk.ruby.core.model.IElement;
 import org.eclipse.dltk.ruby.core.model.IElementCriteria;
 import org.eclipse.dltk.ruby.core.model.IElementKind;
@@ -22,7 +20,6 @@ import org.eclipse.dltk.ruby.core.model.IModel;
 import org.eclipse.dltk.ruby.internal.parser.Activator;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 import org.eclipse.dltk.typeinference.ASTCaching;
-import org.eclipse.dltk.typeinference.INodeElementInternal;
 
 public class Model implements IModel {
 	

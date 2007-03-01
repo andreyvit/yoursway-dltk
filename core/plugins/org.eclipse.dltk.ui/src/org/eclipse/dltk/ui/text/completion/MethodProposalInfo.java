@@ -13,14 +13,11 @@ package org.eclipse.dltk.ui.text.completion;
 import java.util.Map;
 
 import org.eclipse.dltk.core.CompletionProposal;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IMethod;
-import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.Signature;
-import org.eclipse.dltk.internal.corext.template.completion.SignatureUtil;
 
 /**
  * Proposal info that computes the javadoc lazily when it is queried.

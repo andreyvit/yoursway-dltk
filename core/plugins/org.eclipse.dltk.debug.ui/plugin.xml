@@ -6,23 +6,6 @@
    <extension-point id="interpreterInstallTypePage" name="%interpreterInstallTypePage" schema="schema/interpreterInstallTypePage.exsd"/>
 
 <!-- Extensions -->
-
- <extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.debug.ui.launchActionSet">
-         <part
-               id="org.eclipse.dltk.ui.ScriptExplorer">
-         </part>
-      </actionSetPartAssociation>
-      <actionSetPartAssociation
-            targetID="org.eclipse.dltk.debug.ui.DLTKDebugActionSet">
-      	<part
-           id="org.eclipse.dltk.ui.ScriptExplorer">
-        </part>
-      </actionSetPartAssociation>
-  </extension>
- <!-- Adapters for contextual launch -->
 	<extension point="org.eclipse.core.runtime.adapters">
          <factory 
             class="" 
@@ -48,6 +31,23 @@
        </adapter>
     </factory>         
     </extension>
+
+ <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.debug.ui.launchActionSet">
+         <part
+               id="org.eclipse.dltk.ui.ScriptExplorer">
+         </part>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.debug.ui.DLTKDebugActionSet">
+      	<part
+           id="org.eclipse.dltk.ui.ScriptExplorer">
+        </part>
+      </actionSetPartAssociation>
+  </extension>
+ <!-- Adapters for contextual launch -->
  <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
@@ -82,6 +82,17 @@
             parentId="org.eclipse.debug.ui.debugging">
       </context>
    </extension>
+ <extension
+       point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">
+		<view
+			relative="org.eclipse.debug.ui.DebugView"
+			visible="false"
+			relationship="stack"
+			id="org.eclipse.dltk.ui.ScriptExplorer">
+		</view> 
+	</perspectiveExtension>
+ </extension>
  
  <extension point="org.eclipse.debug.ui.debugModelContextBindings">
 	<modelContextBinding contextId="org.eclipse.dltk.debug.ui.debugging" debugModelId="org.eclipse.dltk.debug.core.model"></modelContextBinding>
@@ -106,17 +117,12 @@
           code="202"
           id="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotConnectedStatusHandler"
           plugin="org.eclipse.dltk.launching">
+    </statusHandler>    
+    <statusHandler
+            class="org.eclipse.dltk.internal.debug.ui.NoDefaultInterpreterStatusHandler"
+            code="167"
+            id="org.eclipse.dltk.internal.debug.ui.NoDefaultInterpreterStatusHandler"
+            plugin="org.eclipse.dltk.launching">
     </statusHandler>
- </extension>
- <extension
-       point="org.eclipse.ui.perspectiveExtensions">
-    <perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">
-		<view
-			relative="org.eclipse.debug.ui.DebugView"
-			visible="false"
-			relationship="stack"
-			id="org.eclipse.dltk.ui.ScriptExplorer">
-		</view> 
-	</perspectiveExtension>
  </extension>
 </plugin>

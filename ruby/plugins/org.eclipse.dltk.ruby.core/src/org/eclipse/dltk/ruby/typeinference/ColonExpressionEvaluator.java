@@ -1,7 +1,6 @@
 package org.eclipse.dltk.ruby.typeinference;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import org.eclipse.dltk.ddp.AbstractGoal;
 import org.eclipse.dltk.ddp.BasicContext;
 import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.GoalEvaluator;
-import org.eclipse.dltk.ddp.IContext;
 import org.eclipse.dltk.ddp.IGoal;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.ruby.ast.ColonExpression;

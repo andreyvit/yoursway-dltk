@@ -7,13 +7,9 @@ import junit.framework.Test;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.ISourceRange;
-import org.eclipse.dltk.core.ISourceReference;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.tests.model.AbstractModelCompletionTests;
-import org.eclipse.dltk.internal.core.SourceMethod;
-import org.eclipse.dltk.internal.core.SourceType;
 import org.eclipse.dltk.ruby.internal.core.codeassist.RubySelectionEngine;
 
 public class RubySelectionTests extends AbstractModelCompletionTests {

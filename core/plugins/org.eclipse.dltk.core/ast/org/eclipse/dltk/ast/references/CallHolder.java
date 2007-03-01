@@ -17,30 +17,16 @@ public class CallHolder extends Expression {
 	 */
 	private Expression fArguments = null;
 
-	/**
-	 * Construct from position information and arguments.
-	 * 
-	 * @param start -
-	 *            start
-	 * @param end
-	 * @param arguments
-	 */
 	public CallHolder(int start, int end, Expression arguments) {
 
 		super(start, end);
 		this.fArguments = arguments;
 	}
 
-	/**
-	 * Return kind.
-	 */
 	public int getKind() {
 		return Expression.E_CALL;
 	}
 
-	/**
-	 * Traverse.
-	 */
 	public void traverse(ASTVisitor pVisitor) throws Exception {
 		if (pVisitor.visit(this)) {
 			if (this.fArguments != null) {
@@ -54,9 +40,6 @@ public class CallHolder extends Expression {
 		return fArguments;
 	}
 
-	/**
-	 * Testing purpose only. Used to print "call".
-	 */
 	public void printNode(CorePrinter output) {
 		output.formatPrintLn("( ");
 		if (this.fArguments != null) {

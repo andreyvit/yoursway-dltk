@@ -10,7 +10,6 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.ruby.typeinference.RubyTypeUtils;
 import org.eclipse.dltk.ruby.typeinference.internal.IContext;
 import org.eclipse.dltk.ruby.typeinference.internal.ITypeEvaluator;
 import org.eclipse.dltk.typeinference.AnyTypeDescriptor;

@@ -5,9 +5,7 @@ import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.GoalEvaluator;
 import org.eclipse.dltk.ddp.IGoal;
 import org.eclipse.dltk.ddp.ISourceModuleContext;
-import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
-import org.eclipse.dltk.evaluation.types.UnknownType;
 
 public class SelfReferenceEvaluator extends GoalEvaluator {
 

@@ -6,11 +6,7 @@ import java.util.List;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
-import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
-import org.eclipse.dltk.tcl.internal.parser.TclParseUtils.IProcessStatementAction;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class TclStatement extends Statement {

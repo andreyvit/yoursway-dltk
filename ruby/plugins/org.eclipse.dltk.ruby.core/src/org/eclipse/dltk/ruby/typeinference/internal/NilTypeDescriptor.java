@@ -3,7 +3,6 @@ package org.eclipse.dltk.ruby.typeinference.internal;
 import org.eclipse.dltk.ruby.typeinference.ClassLikeFragment;
 import org.eclipse.dltk.typeinference.ArgumentDescriptor;
 import org.eclipse.dltk.typeinference.IClassLikeFragment;
-import org.eclipse.dltk.typeinference.IElementKind;
 import org.eclipse.dltk.typeinference.ITypeModel;
 import org.eclipse.dltk.typeinference.IntrinsicMethodDescriptor;
 import org.eclipse.dltk.typeinference.UserTypeDescriptor;

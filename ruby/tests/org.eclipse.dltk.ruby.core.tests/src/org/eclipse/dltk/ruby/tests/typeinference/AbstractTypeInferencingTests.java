@@ -1,7 +1,6 @@
 package org.eclipse.dltk.ruby.tests.typeinference;
 
 import java.util.Hashtable;
-import java.util.List;
 
 import junit.framework.ComparisonFailure;
 

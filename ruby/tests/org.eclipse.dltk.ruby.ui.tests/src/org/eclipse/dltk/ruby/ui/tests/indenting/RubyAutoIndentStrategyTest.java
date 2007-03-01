@@ -9,7 +9,6 @@ import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocCmd;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;

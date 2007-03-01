@@ -1,7 +1,6 @@
 package org.eclipse.dltk.ruby.typeinference;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.internal.adaptor.IModel;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;

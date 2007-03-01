@@ -27,7 +27,6 @@ public class ExpressionList extends Expression {
 	 * Construct without position bindings. And without elements. By default
 	 * expression list is initialized. So you can call getExpressions after
 	 * creation.
-	 * 
 	 */
 	public ExpressionList() {
 
@@ -35,9 +34,9 @@ public class ExpressionList extends Expression {
 
 	public void traverse(ASTVisitor pVisitor) throws Exception {
 		if (pVisitor.visit(this)) {
-			Iterator i = fExpressions.iterator();
-			while (i.hasNext()) {
-				Expression e = (Expression) i.next();
+			Iterator it = fExpressions.iterator();
+			while (it.hasNext()) {
+				Expression e = (Expression) it.next();
 				e.traverse(pVisitor);
 			}
 			pVisitor.endvisit(this);
@@ -49,6 +48,7 @@ public class ExpressionList extends Expression {
 	}
 
 	public void setExpresssions(List exs) {
+		//TODO: rewrite
 		Iterator i = exs.iterator();
 		while (i.hasNext()) {
 			Expression e = (Expression) i.next();
@@ -61,11 +61,11 @@ public class ExpressionList extends Expression {
 	 * created.
 	 */
 	public void addExpression(Expression ex) {
-		if (this.fExpressions == null) {
-			this.fExpressions = new ArrayList/* < Expression > */();
+		if (fExpressions == null) {
+			fExpressions = new ArrayList();
 		}
 		if (ex != null) {
-			this.fExpressions.add(ex);
+			fExpressions.add(ex);
 		}
 	}
 

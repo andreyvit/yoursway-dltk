@@ -2,9 +2,7 @@ package org.eclipse.dltk.tcl.core.tests.model;
 
 import java.util.List;
 
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
@@ -14,7 +12,6 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
-import org.eclipse.dltk.core.search.SearchDocument;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.tests.model.AbstractDLTKSearchTests;
 

@@ -5,7 +5,6 @@ import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.editor.AnnotatedImageDescriptor;
 import org.eclipse.dltk.ruby.internal.ui.RubyImages;
-import org.eclipse.dltk.ruby.internal.ui.docs.RiHelper;
 import org.eclipse.dltk.ui.viewsupport.ImageImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelDecorator;

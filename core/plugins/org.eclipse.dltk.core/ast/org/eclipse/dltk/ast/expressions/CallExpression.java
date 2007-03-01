@@ -1,6 +1,5 @@
 package org.eclipse.dltk.ast.expressions;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
@@ -12,8 +11,13 @@ public class CallExpression extends Expression {
 	private CallArgumentsList args;
 	
 	public CallExpression(Statement receiver, String name, CallArgumentsList args) {
-		Assert.isNotNull(name);
-		Assert.isNotNull(args); 
+		if (name == null){
+			throw new IllegalArgumentException();
+		}
+		
+		if (args == null) {
+			throw new IllegalArgumentException();
+		}
 		
 		this.receiver = receiver;
 		this.name = name;

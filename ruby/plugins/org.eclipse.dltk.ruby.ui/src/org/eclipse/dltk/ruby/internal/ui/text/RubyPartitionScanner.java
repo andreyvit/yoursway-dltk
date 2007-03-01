@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.dltk.ruby.core.text.RubyContext;
 import org.eclipse.dltk.ruby.internal.ui.text.syntax.RubyContextUtils;
 import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.MultiLineRule;

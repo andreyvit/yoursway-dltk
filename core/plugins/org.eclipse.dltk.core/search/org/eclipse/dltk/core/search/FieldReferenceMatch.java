@@ -12,7 +12,6 @@ package org.eclipse.dltk.core.search;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.references.Reference;
 import org.eclipse.dltk.core.IModelElement;
 
 

@@ -31,12 +31,12 @@ public class NotStrictAssignment extends Assignment {
 	 */
 
 	public void printNode(CorePrinter output) {
-		if (this.left != null) {
-			this.left.printNode(output);
+		if (getLeft() != null) {
+			getLeft().printNode(output);
 		}
 		output.formatPrintLn(this.getOperator());
-		if (this.right != null) {
-			right.printNode(output);
+		if (getRight() != null) {
+			getRight().printNode(output);
 		}
 	}
 }

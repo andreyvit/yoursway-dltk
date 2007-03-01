@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.core.search.matching;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;

@@ -6,18 +6,13 @@ package org.eclipse.dltk.ruby.typeinference.internal.evaluators;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ruby.typeinference.ClassLikeFragment;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeUtils;
 import org.eclipse.dltk.ruby.typeinference.internal.IContext;
 import org.eclipse.dltk.ruby.typeinference.internal.ITypeEvaluator;
-import org.eclipse.dltk.ruby.typemodel.classes.RubyMetaTypeDescriptor;
 import org.eclipse.dltk.typeinference.IClassLikeFragment;
 import org.eclipse.dltk.typeinference.IKnownTypeDescriptor;
 import org.eclipse.dltk.typeinference.IScope;
 import org.eclipse.dltk.typeinference.ITypeDescriptor;
-import org.eclipse.dltk.typeinference.ITypeModel;
-import org.eclipse.dltk.typeinference.StaticScopeAddition;
-import org.eclipse.dltk.typeinference.UserTypeDescriptor;
 
 public class ClassContextTypeEvaluator implements ITypeEvaluator {
 

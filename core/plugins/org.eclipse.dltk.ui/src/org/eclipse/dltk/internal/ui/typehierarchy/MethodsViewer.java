@@ -21,7 +21,6 @@ import org.eclipse.dltk.ui.ScriptElementLabels;
 import org.eclipse.dltk.ui.actions.MemberFilterActionGroup;
 import org.eclipse.dltk.ui.actions.OpenAction;
 import org.eclipse.dltk.ui.viewsupport.DecoratingModelLabelProvider;
-import org.eclipse.dltk.ui.viewsupport.MemberFilterAction;
 import org.eclipse.dltk.ui.viewsupport.ProblemTableViewer;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;

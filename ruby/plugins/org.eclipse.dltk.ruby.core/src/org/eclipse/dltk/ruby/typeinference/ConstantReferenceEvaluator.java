@@ -1,8 +1,5 @@
 package org.eclipse.dltk.ruby.typeinference;
 
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.ast.references.VariableReference;
-import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.GoalEvaluator;
 import org.eclipse.dltk.ddp.IGoal;
 import org.eclipse.dltk.ddp.ISourceModuleContext;
