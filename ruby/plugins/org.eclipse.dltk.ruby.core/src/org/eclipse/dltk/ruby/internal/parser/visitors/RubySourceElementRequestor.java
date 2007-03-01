@@ -408,5 +408,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 	public boolean endvisit(Statement s) throws Exception {
 		return true;
-	}
+	}	
+
+	
 }

@@ -231,7 +231,7 @@ public abstract class CompletionProposalLabelProvider {
 	 *            the method proposal to display
 	 * @return the display label for the given type proposal
 	 */
-	String createTypeProposalLabel(CompletionProposal typeProposal) {
+	protected String createTypeProposalLabel(CompletionProposal typeProposal) {
 		char[] signature;
 		signature = typeProposal.getSignature();
 		char[] fullName = Signature.toCharArray(signature);

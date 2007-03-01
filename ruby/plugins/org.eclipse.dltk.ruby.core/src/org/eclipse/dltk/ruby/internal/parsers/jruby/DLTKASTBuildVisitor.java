@@ -32,6 +32,7 @@ import org.eclipse.dltk.ruby.ast.OrExpression;
 
 import org.eclipse.dltk.ruby.ast.ReturnStatement;
 import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
+import org.eclipse.dltk.ruby.ast.RubySingletonClassDeclaration;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyVariableKind;
 import org.eclipse.dltk.ruby.ast.SelfReference;
@@ -1019,8 +1020,14 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 			System.out.println();
 		ISourcePosition namePos = restoreMethodNamePosition(iVisited,
 				receiverExpression.sourceEnd());
+		String name = iVisited.getName();
+		if (receiverNode instanceof SelfNode) {
+			name = "self." + name;
+		} else if (receiverNode instanceof ConstNode) {
+			name = ((ConstNode)receiverNode).getName() + "." + name;
+		}		
 		RubySingletonMethodDeclaration method = new RubySingletonMethodDeclaration(
-				iVisited.getName(), namePos.getStartOffset(), namePos
+				name, namePos.getStartOffset(), namePos
 						.getEndOffset(), cPos.getStartOffset(), cPos
 						.getEndOffset(), receiverExpression);
 		method.setModifier(Modifiers.AccStatic);
@@ -1453,21 +1460,27 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitSClassNode(SClassNode iVisited) {
 		String name = "";
-		if (iVisited.getReceiverNode() instanceof ConstNode) {
-			name = ((ConstNode) iVisited.getReceiverNode()).getName();
+		Node receiver = iVisited.getReceiverNode();
+		if (receiver instanceof ConstNode) {
+			name = "<< " + ((ConstNode) iVisited.getReceiverNode()).getName();
+		} else if (receiver instanceof SelfNode) {
+			name = "<< self";
 		}
 		ISourcePosition pos = iVisited.getReceiverNode().getPosition();
 		ISourcePosition cPos = iVisited.getPosition();
-		TypeDeclaration type = new TypeDeclaration(name, pos.getStartOffset(),
+		RubySingletonClassDeclaration type = new RubySingletonClassDeclaration(name, pos.getStartOffset(),
 				pos.getEndOffset() + 1, cPos.getStartOffset(), cPos
 						.getEndOffset() + 1);
 		peekState().add(type);
+		
+		CollectingState coll = new CollectingState();
+		pushState(coll);
+		receiver.accept(this);
+		popState();
+		if (coll.list.size() == 1 && coll.list.get(0) instanceof Expression) {
+			type.setReceiver((Expression) coll.list.get(0));
+		}		
 		pushState(new ClassState(type));
-		// if (iVisited.getSuperNode() != null) {
-		// iVisited.getSuperNode().accept(this);
-		// }
-		// NOTE: suprised that this is not used
-		// It can be used.
 		pos = iVisited.getBodyNode().getPosition();
 		Block bl = new Block(pos.getStartOffset(), pos.getEndOffset() + 1);
 		type.setBody(bl);

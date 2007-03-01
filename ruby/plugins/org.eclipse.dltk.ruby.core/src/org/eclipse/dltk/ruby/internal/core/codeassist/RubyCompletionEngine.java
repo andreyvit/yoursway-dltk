@@ -311,7 +311,11 @@ public class RubyCompletionEngine extends CompletionEngine {
 
 	private void reportMethod(IMethod method, int rel) {
 				
-		char[] name = method.getElementName().toCharArray();
+		String elementName = method.getElementName();
+		if (elementName.indexOf('.') != -1) {
+			elementName = elementName.substring(elementName.indexOf('.') + 1);
+		}
+		char[] name = elementName.toCharArray();
 		
 		int relevance = RelevanceConstants.R_INTERESTING;
 		relevance += RelevanceConstants.R_NON_RESTRICTED;

@@ -2,6 +2,8 @@ package org.eclipse.dltk.ruby.internal.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.IMethod;
+import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
 import org.eclipse.dltk.ui.text.completion.CompletionProposalLabelProvider;
 
@@ -24,23 +26,14 @@ public class RubyCompletionProposalLabelProvider extends
 		if (method instanceof FakeMethod) {
 			nameBuffer.append(((FakeMethod)method).getReceiver());
 		} else {
-			nameBuffer.append(method.getParent().getElementName());
+			IModelElement parent = method.getParent();
+			if (parent instanceof IType) {
+				IType type = (IType) parent;
+				nameBuffer.append(type.getTypeQualifiedName("::"));
+			} else {
+				nameBuffer.append(parent.getElementName());
+			}
 		}
-
-		// return type
-		if (!methodProposal.isConstructor()) {
-			// TODO remove SignatureUtil.fix83600 call when bugs are fixed
-			// char[] returnType=
-			// createTypeDisplayName(methodProposal.getSignature());
-			// nameBuffer.append(" "); //$NON-NLS-1$
-			// nameBuffer.append(returnType);
-		}
-
-		// declaring type
-		// nameBuffer.append(" - "); //$NON-NLS-1$
-		// String declaringType= extractDeclaringTypeFQN(methodProposal);
-		// declaringType= Signature.getSimpleName(declaringType);
-		// nameBuffer.append(declaringType);
 
 		return nameBuffer.toString();
 	}
@@ -62,17 +55,14 @@ public class RubyCompletionProposalLabelProvider extends
 		if (method instanceof FakeMethod) {
 			nameBuffer.append(((FakeMethod)method).getReceiver());
 		} else {
-			nameBuffer.append(method.getParent().getElementName());
+			IModelElement parent = method.getParent();
+			if (parent instanceof IType) {
+				IType type = (IType) parent;
+				nameBuffer.append(type.getTypeQualifiedName("::"));
+			} else {
+				nameBuffer.append(parent.getElementName());
+			}
 		}
-
-		// return type
-		// TODO remove SignatureUtil.fix83600 call when bugs are fixed
-		// char[] returnType=
-		// createTypeDisplayName(methodProposal.getSignature());
-		// nameBuffer.append(returnType);
-
-		// declaring type
-		// nameBuffer.append(" - "); //$NON-NLS-1$
 
 		return nameBuffer.toString();
 	}
@@ -89,4 +79,25 @@ public class RubyCompletionProposalLabelProvider extends
 		}
 		return buffer;
 	}
+	
+	protected String createTypeProposalLabel(CompletionProposal typeProposal) {
+		StringBuffer nameBuffer = new StringBuffer();
+
+		nameBuffer.append(typeProposal.getName());
+
+		
+		IType type = (IType) typeProposal.getModelElement();
+		nameBuffer.append(" - ");
+		IModelElement parent = type.getParent();
+		if (parent instanceof IType) {
+			IType type2 = (IType) parent;
+			nameBuffer.append(type2.getTypeQualifiedName("::"));
+		} else {
+			nameBuffer.append(parent.getElementName());
+		}
+		
+		return nameBuffer.toString();
+	}
+	
+	
 }

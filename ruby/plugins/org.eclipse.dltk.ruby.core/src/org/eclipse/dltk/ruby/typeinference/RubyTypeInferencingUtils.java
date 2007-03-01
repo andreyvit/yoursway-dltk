@@ -623,16 +623,75 @@ public class RubyTypeInferencingUtils {
 		return null;
 	}
 	
+	private static class UniqueNamesList extends ArrayList {
+
+		HashSet names = new HashSet ();
+		
+		public boolean add(Object elem) {
+			if (elem instanceof IModelElement) {
+				IModelElement modelElement = (IModelElement) elem;
+				if (names.contains(modelElement.getElementName()))
+						return false;
+				names.add(modelElement.getElementName());
+			}
+			return super.add(elem);
+		}
+
+		public void clear() {			
+			super.clear();
+			names.clear();
+		}
+
+		public boolean contains(Object elem) {
+			if (elem instanceof IModelElement) {
+				IModelElement modelElement = (IModelElement) elem;
+				return names.contains(modelElement.getElementName());
+			}
+			return super.contains(elem);
+		}
+
+	}
+	
 	public static RubyMetaClassType resolveMethods(ISourceModule module, RubyMetaClassType type) {
 		if (type.getMethods() == null) {
-			List result = new ArrayList();	
+			List result = new UniqueNamesList();	
 			if (type.getInstanceType() != null) {
 				RubyClassType instanceType = (RubyClassType) type.getInstanceType();
+				
 				if (instanceType.getFQN()[0].equals("Object")) {					
 					IMethod[] topLevelMethods = RubyModelUtils.findTopLevelMethods(module, "");
 					for (int i = 0; i < topLevelMethods.length; i++) {
 						result.add(topLevelMethods[i]);
 					}					
+				}
+				
+				IType[] types = resolveTypeDeclarations(module.getScriptProject(), instanceType);
+				for (int i = 0; i < types.length; i++) {
+					try {
+						IMethod[] methods = types[i].getMethods();
+						IType[] subtypes = types[i].getTypes();
+						
+						for (int j = 0; j < methods.length; j++) {
+							if (methods[j].getElementName().startsWith("self.")) {
+								result.add(methods[j]);
+							}
+						}
+						
+						for (int j = 0; j < subtypes.length; j++) {
+							if (!subtypes[j].getElementName().equals("<< self"))
+								continue;
+							IMethod[] methods2 = subtypes[j].getMethods();
+							for (int k = 0; k < methods2.length; k++) {
+								int flags = methods2[k].getFlags();
+								if ((flags & Modifiers.AccStatic) == 0) {
+									result.add(methods2[k]);
+								}
+							}
+						}
+						
+					} catch (ModelException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			
@@ -647,10 +706,7 @@ public class RubyTypeInferencingUtils {
 		return type;
 	}
 	
-	// FIXME should be in RubyClassType itself!
-	public static RubyClassType resolveMethods(IDLTKProject project, RubyClassType type) {
-		if (type.getAllMethods() != null)
-			return type;
+	public static IType[] resolveTypeDeclarations (IDLTKProject project, RubyClassType type) {
 		String[] fqn = type.getFQN();
 		IType[] allTypes = type.getTypeDeclarations();
 		if (allTypes == null) {
@@ -661,18 +717,22 @@ public class RubyTypeInferencingUtils {
 			}
 			allTypes = DLTKModelUtil.getAllTypes(project, strFqn.toString(), "::");
 		}
-		List methods = new ArrayList ();		
+		return allTypes;
+	}
+	
+	// FIXME should be in RubyClassType itself!
+	public static RubyClassType resolveMethods(IDLTKProject project, RubyClassType type) {
+		if (type.getAllMethods() != null)
+			return type;
+		String[] fqn = type.getFQN();
+		IType[] allTypes = resolveTypeDeclarations(project, type);
+		List methods = new UniqueNamesList ();		
 		for (int i = 0; i < allTypes.length; i++) {
-			try {
-				HashSet methodNames = new HashSet();
-				
+			try {				
+			
 				IMethod[] methods2 = allTypes[i].getMethods();
 				for (int j = 0; j < methods2.length; j++) {
 					if (!((methods2[j].getFlags() & Modifiers.AccStatic) > 0)) {
-						String mName = methods2[j].getElementName();
-						if (methodNames.contains(mName))
-							continue;
-						methodNames.add(mName);
 						methods.add(methods2[j]);
 					}
 				}
@@ -681,10 +741,6 @@ public class RubyTypeInferencingUtils {
 					superType = resolveMethods(project, superType);
 					IMethod[] allMethods = superType.getAllMethods();
 					for (int j = 0; j < allMethods.length; j++) {
-						String mName = allMethods[j].getElementName();
-						if (methodNames.contains(mName))
-							continue;
-						methodNames.add(mName);
 						methods.add(allMethods[j]);
 					}
 				}
@@ -717,6 +773,9 @@ public class RubyTypeInferencingUtils {
 				continue;
 			}
 			for (int j = 0; j < subtypes.length; j++) {
+				String elementName = subtypes[j].getElementName();
+				if (elementName.startsWith("<<")) //skip singletons
+					continue;				
 				result.add(subtypes[j]);
 			}
 		}
