@@ -1240,9 +1240,9 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitLocalVarNode(LocalVarNode iVisited) {
-		ISourcePosition pos = iVisited.getPosition();
+		ISourcePosition pos = fixNamePosition(iVisited.getPosition());
 		String varName = content.subSequence(pos.getStartOffset(),
-				pos.getEndOffset() + 1).toString();
+				pos.getEndOffset()).toString();
 		processVariableReference(iVisited, varName, RubyVariableKind.LOCAL);
 		return null;
 	}

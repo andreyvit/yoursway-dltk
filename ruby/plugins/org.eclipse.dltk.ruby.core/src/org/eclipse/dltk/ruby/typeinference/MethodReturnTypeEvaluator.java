@@ -88,7 +88,10 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		for (int i = 0; i < methods.length; i++) {
 			if (methods[i] instanceof FakeMethod)
 				continue;
-			if (methods[i].getElementName().equals(methodName)) {
+			String elementName = methods[i].getElementName();
+			if (elementName.startsWith("self."))
+				elementName = elementName.substring("self.".length());
+			if (elementName.equals(methodName)) {
 				if (methods[i].getSourceModule().equals(typedContext.getSourceModule()))
 					resultMethodFromSameModule = methods[i];
 				resultMethod = methods[i];				
