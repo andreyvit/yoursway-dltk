@@ -12,6 +12,7 @@ import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.internal.debug.ui.interpreters.TclInterpreterPreferencePage;
+import org.eclipse.dltk.tcl.internal.ui.TclImages;
 import org.eclipse.dltk.tcl.internal.ui.TclUI;
 import org.eclipse.dltk.tcl.internal.ui.preferences.TclBuildPathsBlock;
 import org.eclipse.dltk.ui.DLTKPluginImages;
@@ -39,7 +40,7 @@ public class TclProjectCreationWizard extends NewElementWizard implements
 	private IConfigurationElement fConfigElement;
 
 	public TclProjectCreationWizard() {
-		setDefaultPageImageDescriptor(DLTKPluginImages.DESC_WIZBAN_NEWPRJ);
+		setDefaultPageImageDescriptor(TclImages.DESC_WIZBAN_PROJECT_CREATION);
 		setDialogSettings(DLTKUIPlugin.getDefault().getDialogSettings());
 		setWindowTitle(TclWizardMessages.ProjectCreationWizard_title);
 	}

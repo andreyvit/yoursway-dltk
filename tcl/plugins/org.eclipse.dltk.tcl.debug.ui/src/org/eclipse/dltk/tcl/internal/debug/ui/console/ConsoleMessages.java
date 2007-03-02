@@ -26,7 +26,6 @@ public class ConsoleMessages extends NLS {
 	public static String TclFileHyperlink_Unable_to_retrieve_hyperlink_text__8;
 
 	static {
-		// load message values from bundle file
 		NLS.initializeMessages(BUNDLE_NAME, ConsoleMessages.class);
 	}
 

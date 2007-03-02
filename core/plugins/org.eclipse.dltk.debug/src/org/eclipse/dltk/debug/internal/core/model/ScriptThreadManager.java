@@ -18,7 +18,7 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 
 	// Helper methods
 	private interface IThreadBoolean {
-		boolean get(IThread thread);
+		boolean get(IThread thread);		
 	}
 
 	private boolean getThreadBoolean(IThreadBoolean b) {
@@ -149,11 +149,21 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 
 	// ITerminate
 	public boolean canTerminate() {
-		return getThreadBoolean(new IThreadBoolean() {
-			public boolean get(IThread thread) {
-				return thread.canTerminate();
+		synchronized (threads) {
+			IThread[] ths = getThreads();
+
+			if (ths.length == 0) {
+				return true;
 			}
-		});
+
+			for (int i = 0; i < ths.length; ++i) {
+				if (!ths[i].canTerminate()) {
+					return false;
+				}
+			}
+
+			return true;
+		}
 	}
 
 	public boolean isTerminated() {

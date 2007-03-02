@@ -24,6 +24,7 @@ public class TclInterpreterDebugger extends AbstractInterpreterDebugger {
 
 	protected File getEngine() throws CoreException {
 		File engine = new File(TclDebugPreferences.getDebuggingEnginePath());
+
 		// TODO: add more checks
 		if (!engine.isFile()) {
 			abort("Tcl debugging engine not configured", null, 180);
@@ -52,6 +53,7 @@ public class TclInterpreterDebugger extends AbstractInterpreterDebugger {
 		list.add(SCRIPT_KEY);
 		list.add(script);
 		list.add(ARGS_SEPARATOR);
+
 		for (int i = 0; i < args.length; ++i) {
 			list.add(args[i]);
 		}

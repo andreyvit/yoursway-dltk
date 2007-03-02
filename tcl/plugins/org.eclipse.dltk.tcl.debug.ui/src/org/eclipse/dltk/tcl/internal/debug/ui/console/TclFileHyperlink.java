@@ -45,9 +45,6 @@ public class TclFileHyperlink implements IHyperlink {
 
 	private TextConsole fConsole;
 
-	/**
-	 * Constructor for TclFileHyperlink.
-	 */
 	public TclFileHyperlink(TextConsole console) {
 		fConsole = console;
 	}

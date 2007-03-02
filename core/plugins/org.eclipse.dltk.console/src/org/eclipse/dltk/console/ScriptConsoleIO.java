@@ -80,7 +80,10 @@ public class ScriptConsoleIO implements IScriptConsoleIO {
 		}
 
 		output.flush();
-		return ScriptConsoleXmlHelper.parseShellXml(readResponse(input));
+		
+		String response = readResponse(input);
+		System.out.println(response);
+		return ScriptConsoleXmlHelper.parseShellXml(response);
 	}
 
 	public InterpreterResponse execInterpreter(String command)

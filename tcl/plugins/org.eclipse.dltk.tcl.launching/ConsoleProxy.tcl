@@ -104,6 +104,10 @@ proc evaluate {statement} {
 }
 
 proc findProcs { {pattern "*"} } {
+	return [evaluate "uplevel #0 info procs $pattern"]
+}
+
+proc findCommands { {pattern "*"} } {
 	return [evaluate "uplevel #0 info commands $pattern"]
 }
 
@@ -272,6 +276,14 @@ proc makeCompletion { commandLine cursorPos } {
 		set xml ""
 		foreach match $matches {
 			set insert [skipPrefix [string length $prefix] $match]
+			
+			if {$type == "proc"} {
+				if {[hasProc $match]} {
+					set args [getProcArgs $match]
+					append match " \{$args\}"
+				}
+			}
+
 			append xml [makeCompletionCaseNode $match $insert $type]
 		}
 		return $xml
@@ -281,7 +293,7 @@ proc makeCompletion { commandLine cursorPos } {
 		set pattern $prefix
 		append pattern "*"
 		puts "Proc: |$pattern|"
-		set commands [findProcs $pattern]
+		set commands [findCommands $pattern]
                 return [generateCompletions $prefix $commands "proc"]
         	
 	}

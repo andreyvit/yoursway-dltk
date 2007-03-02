@@ -627,7 +627,6 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			// Interpreter-specific attributes
 			Map InterpreterAttributesMap = getInterpreterSpecificAttributesMap(configuration);			
 			
-			
 			// Create Interpreter config
 			InterpreterRunnerConfiguration runConfig = new InterpreterRunnerConfiguration(
 					project.getLocation().toPortableString()
@@ -670,7 +669,6 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		} finally {
 			monitor.done();
 		}
-
 	}
 
 	private String[] buildRunEnvironment(ILaunchConfiguration configuration)

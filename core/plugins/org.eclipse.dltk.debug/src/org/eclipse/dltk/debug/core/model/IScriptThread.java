@@ -21,7 +21,7 @@ import org.eclipse.dltk.dbgp.IDbgpSession;
  * 
  * @see org.eclipse.debug.core.model.IThread
  */
-public interface IScriptThread extends IThread /* , IFilteredStep */{
+public interface IScriptThread extends IThread  /*, IFilteredStep */{
 
 	IDbgpSession getDbgpSession();
 

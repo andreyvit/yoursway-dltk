@@ -199,6 +199,6 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public String toString() {
-		return "Stack Frame #" + stackLevel.getLevel();
+		return "Stack frame (level: " + stackLevel.getLevel() + ")";
 	}
 }

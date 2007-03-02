@@ -242,8 +242,8 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		}
 	}
 
-	public String toString() {
-		return "Debug (" + threadManager.getAcceptId() + ")";
+	public String toString() {		
+		return "Debugging engine (id = " + threadManager.getAcceptId() + ")";
 	}
 
 	// IScriptDebugTarget

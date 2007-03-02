@@ -129,7 +129,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		return breakpoint.toString();
 	}
 
-	public String getText(Object element) {
+	public final String getText(Object element) {
 		if (element instanceof IScriptBreakpoint) {
 			return getBreakpointText((IScriptBreakpoint) element);
 		} else if (element instanceof IScriptThread) {
