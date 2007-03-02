@@ -390,7 +390,7 @@ public class TclSourceElementParser implements ISourceElementParser {
 							.toCharArray());
 				} else {
 					this.fRequestor.acceptPackage(pkg.sourceStart(), pkg
-							.sourceEnd(), _pkg.toCharArray());
+							.sourceEnd(), (_pkg + " (version n/a)").toCharArray() );
 				}
 			}
 		}

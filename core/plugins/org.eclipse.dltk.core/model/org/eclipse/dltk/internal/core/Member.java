@@ -24,10 +24,15 @@ public abstract class Member extends SourceRefElement implements IMember {
 	 * @see IMember
 	 */
 	public ISourceRange getNameRange() throws ModelException {
-		MemberElementInfo info = (MemberElementInfo) getElementInfo();
-		return new SourceRange(info.getNameSourceStart(), info
-				.getNameSourceEnd()
-				- info.getNameSourceStart() + 1);
+		Object elementInfo = getElementInfo();
+		if (elementInfo instanceof MemberElementInfo) {
+			MemberElementInfo info = (MemberElementInfo) elementInfo;
+			return new SourceRange(info.getNameSourceStart(), info
+					.getNameSourceEnd()
+					- info.getNameSourceStart() + 1);
+		} else {
+			return null;
+		}
 	}
 
 	public int getFlags() throws ModelException {

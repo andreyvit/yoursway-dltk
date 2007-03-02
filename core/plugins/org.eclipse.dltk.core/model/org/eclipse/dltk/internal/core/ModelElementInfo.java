@@ -60,7 +60,7 @@ import org.eclipse.dltk.core.IModelElement;
 	protected boolean includesChild(IModelElement child) {
 		
 		for (int i= 0; i < this.children.length; i++) {
-			if (this.children[i].equals(child)) {
+			if (child.equals(this.children[i])) {
 				return true;
 			}
 		}

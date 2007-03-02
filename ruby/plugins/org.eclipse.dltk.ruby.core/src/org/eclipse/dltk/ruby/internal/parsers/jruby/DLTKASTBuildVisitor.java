@@ -322,10 +322,16 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		RubyArrayExpression arr = new RubyArrayExpression();
 		arr.setEnd(position.getEndOffset());
 		arr.setStart(position.getStartOffset());
+		boolean first = true;
 		for (Iterator iter = coll.getList().iterator(); iter.hasNext();) {
 			Object obj = iter.next();
 			if (obj instanceof Expression) {
 				Expression ex = (Expression) obj;
+				if (first) {
+					first = false;
+					arr.setStart(ex.sourceStart());
+				}
+				arr.setEnd(ex.sourceEnd() + 1);
 				arr.addExpression(ex);
 			}
 
