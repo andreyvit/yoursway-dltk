@@ -20,6 +20,8 @@ import org.eclipse.dltk.debug.core.model.IScriptVariable;
 public class ScriptStackFrame extends ScriptDebugElement implements
 		IScriptStackFrame {
 
+	private int stackDepth;
+	
 	private IScriptThread thread;
 
 	private IDbgpStackLevel stackLevel;
@@ -54,7 +56,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public ScriptStackFrame(IScriptThread thread, IDbgpStackLevel stackLevel,
-			IDbgpCoreCommands coreCommands) throws DbgpException {
+			IDbgpCoreCommands coreCommands, int stackDepth) throws DbgpException {
 		super(thread.getDebugTarget());
 
 		if (thread == null || stackLevel == null || coreCommands == null) {
@@ -65,6 +67,8 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		this.stackLevel = stackLevel;
 
 		this.variables = retrieveVariables(stackLevel.getLevel(), coreCommands);
+		
+		this.stackDepth = stackDepth;
 	}
 
 	public URI getFileName() {
@@ -199,6 +203,6 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public String toString() {
-		return "Stack frame (level: " + stackLevel.getLevel() + ")";
+		return "Stack frame (level: " + (stackDepth - stackLevel.getLevel()) + ")";
 	}
 }

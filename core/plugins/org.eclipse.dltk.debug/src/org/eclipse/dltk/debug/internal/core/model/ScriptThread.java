@@ -62,7 +62,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		int stackDepth = core.getStackDepth();
 		List frames = new ArrayList(stackDepth);
 		for (int i = 0; i < stackDepth; ++i) {
-			frames.add(new ScriptStackFrame(this, core.getStackLevel(i), core));
+			frames.add(new ScriptStackFrame(this, core.getStackLevel(i), core, stackDepth));
 		}
 
 		return frames;
