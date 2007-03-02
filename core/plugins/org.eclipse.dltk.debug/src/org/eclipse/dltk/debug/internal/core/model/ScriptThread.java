@@ -302,7 +302,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	public void stepReturn() throws DebugException {
 		beginStep(DebugEvent.STEP_RETURN);
-		engine.stepInto();
+		engine.stepReturn();
 	}
 
 	// ITerminate

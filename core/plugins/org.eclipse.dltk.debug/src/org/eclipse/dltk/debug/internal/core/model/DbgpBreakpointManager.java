@@ -159,7 +159,7 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 			throws DbgpException, CoreException {
 
 		DbgpBreakpointConfig config = new DbgpBreakpointConfig(true, -1, -1,
-				false);
+				true);
 
 		IThread[] threads = threadManager.getThreads();
 		for (int i = 0; i < threads.length; ++i) {

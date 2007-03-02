@@ -149,11 +149,16 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 
 	// ITerminate
 	public boolean canTerminate() {
+				
 		synchronized (threads) {
 			IThread[] ths = getThreads();
 
 			if (ths.length == 0) {
-				return true;
+				if (waitingForThreads){
+					return true;
+				} else {
+					return false;
+				}
 			}
 
 			for (int i = 0; i < ths.length; ++i) {
