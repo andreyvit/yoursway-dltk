@@ -662,6 +662,16 @@ public class RubyTypeInferencingUtils {
 							}
 						}
 						
+						if (!type.getInstanceType().getTypeName().equals("Object")) {
+							RubyMetaClassType superType = getMetaType(RubyModelUtils.getSuperType(types[i]));
+							if (superType != null) {
+								superType = resolveMethods(module, superType);
+								IMethod[] allMethods = superType.getMethods();
+								for (int j = 0; j < allMethods.length; j++) {
+									result.add(allMethods[j]);
+								}
+							}
+						}
 					} catch (ModelException e) {
 						e.printStackTrace();
 					}

@@ -143,7 +143,7 @@ public class ASTUtils {
 					if (result != null) {
 						int oldlen = calcLen(result);
 						int newlen = realEnd - realStart;
-						if (newlen < oldlen )
+						if (newlen <= oldlen )
 							result = s;
 					} else {
 						result = s;						

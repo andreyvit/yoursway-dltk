@@ -58,7 +58,7 @@ public class RubySyntaxUtils {
 	 */
 	public static ISourceRange getEnclosingName (CharSequence contents, int pos) {
 		if (pos < 0 || pos >= contents.length())
-			throw new IllegalArgumentException();
+			return null;
 		
 		int start = pos - 1;
 		int end = pos;
