@@ -57,7 +57,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 		inferencer = new TypeInferencer(new RubyEvaluatorFactory());
 	}
 
-//	private JRubySourceParser parser = new JRubySourceParser(null);
+	private JRubySourceParser parser = new JRubySourceParser(null);
 
 	protected int getEndOfEmptyToken() {
 		// TODO Auto-generated method stub
@@ -91,10 +91,10 @@ public class RubyCompletionEngine extends CompletionEngine {
 		org.eclipse.dltk.core.ISourceModule modelModule = (org.eclipse.dltk.core.ISourceModule) module;
 		try {
 			String content = module.getSourceContents();
-//			ModuleDeclaration moduleDeclaration = parser.parse(content);
-			ModuleDeclaration moduleDeclaration;
+			ModuleDeclaration moduleDeclaration = parser.parse(content);
+//			ModuleDeclaration moduleDeclaration;
 			
-			moduleDeclaration = RubySourceElementParser.parseModule((org.eclipse.dltk.core.ISourceModule)module.getModelElement());
+//			moduleDeclaration = RubySourceElementParser.parseModule((org.eclipse.dltk.core.ISourceModule)module.getModelElement());
 			if (afterColons(content, position)) {				
 				
 				ASTNode node = ASTUtils.findMaximalNodeEndingAt(

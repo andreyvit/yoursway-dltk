@@ -5112,13 +5112,13 @@ public class DefaultRubyParser {
       @param expected list of acceptable tokens, if available.
     */
   public void yyerror (String message, String[] expected, String found) {
-    if (expected != null && expected.length > 0) {
-      System.err.print(message+", expecting");
-      for (int n = 0; n < expected.length; ++ n)
-        System.err.print(" "+expected[n]);
-      System.err.println();
-    } else
-      System.err.println(message);
+//    if (expected != null && expected.length > 0) {
+//      System.err.print(message+", expecting");
+//      for (int n = 0; n < expected.length; ++ n)
+//        System.err.print(" "+expected[n]);
+//      System.err.println();
+//    } else
+//      System.err.println(message);
   }
 
   /** computes list of expected tokens on error by tracing the tables.
@@ -7830,13 +7830,13 @@ case 469:
 					// line 1877 "DefaultRubyParser.y"
   {
                     yyVal = ((ListNode)yyVals[-2+yyTop]).addAll(((ListNode)yyVals[0+yyTop]));
-              	System.err.println("assoc ok");
+//              	System.err.println("assoc ok");
                 }
   break;
 case 470:
 					// line 1881 "DefaultRubyParser.y"
   {
-              	System.err.println("assocs ',' error");
+//              	System.err.println("assocs ',' error");
               }
   break;
 case 471:

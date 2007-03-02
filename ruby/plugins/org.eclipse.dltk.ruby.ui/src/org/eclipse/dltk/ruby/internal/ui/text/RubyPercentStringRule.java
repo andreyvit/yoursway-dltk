@@ -161,7 +161,7 @@ public class RubyPercentStringRule implements IPredicateRule {
 		int nestCount = 1;
 		while ((c= scanner.read()) != ICharacterScanner.EOF) {
 			if (c == ESCAPE) {
-				System.out.println("ESCAPE " + (char) c);
+//				System.out.println("ESCAPE " + (char) c);
 				// Skip escaped character(s)
 				if (fEscapeContinuesLine) {
 					c= scanner.read();

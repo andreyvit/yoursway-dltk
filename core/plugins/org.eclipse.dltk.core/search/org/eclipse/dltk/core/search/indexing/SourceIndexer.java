@@ -22,6 +22,8 @@ import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.ISourceModuleInfoCache;
+import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchDocument;
 import org.eclipse.dltk.internal.core.ModelManager;
@@ -67,9 +69,11 @@ public class SourceIndexer extends AbstractIndexer {
 			}
 			String pkgName = "";
 			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+			ISourceModule sourceModule = null;
 			if (file.exists()) {
 				ISourceModule module = (ISourceModule) DLTKCore.create(file);
 				if (module != null) {
+					sourceModule = module;
 					IScriptFolder folder = (IScriptFolder) module.getParent();
 					pkgName = folder.getElementName();
 				}
@@ -87,7 +91,15 @@ public class SourceIndexer extends AbstractIndexer {
 			if (source == null || name == null)
 				return; // could not retrieve document info (e.g. resource was
 						// discarded)
+//			parser.parseSourceModule(source, null);
+//			ISourceModuleInfo info = null;
+//			if( sourceModule != null ) {
+//				ISourceModuleInfoCache sourceModuleInfoCache = ModelManager.getModelManager().getSourceModuleInfoCache();
+//				sourceModuleInfoCache.remove(sourceModule);
+//				info = sourceModuleInfoCache.get(sourceModule);
+//			}
 			parser.parseSourceModule(source, null);
+			
 		} else { // This is for external documents				
 			if (parser == null || requestor == null ) {
 				//parser = ModelManager.getModelManager().indexManager.getSourceElementParser(dltkProject, requestor);

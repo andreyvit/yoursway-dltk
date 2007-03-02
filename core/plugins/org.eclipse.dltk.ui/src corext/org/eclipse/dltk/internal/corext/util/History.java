@@ -37,6 +37,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.DLTKUIException;
 import org.eclipse.dltk.internal.ui.DLTKUIStatus;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
@@ -266,8 +268,15 @@ public abstract class History {
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				Element type= (Element) node;
 				if (type.getNodeName().equalsIgnoreCase(fInfoNodeName)) {
-					Object object= createFromElement(type);
-					fHistory.put(getKey(object), object);
+					try {
+						Object object= createFromElement(type);
+						fHistory.put(getKey(object), object);
+					}
+					catch( Exception me ) {
+						if(DLTKCore.DEBUG) {
+							me.printStackTrace();
+						}
+					}
 				}
 			}
 		}

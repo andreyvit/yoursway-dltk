@@ -1176,7 +1176,10 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitGlobalAsgnNode(GlobalAsgnNode iVisited) {
 
-		iVisited.getValueNode().accept(this);
+		Node valueNode = iVisited.getValueNode();
+		if( valueNode != null ) {
+			valueNode.accept(this);
+		}
 		return null;
 	}
 

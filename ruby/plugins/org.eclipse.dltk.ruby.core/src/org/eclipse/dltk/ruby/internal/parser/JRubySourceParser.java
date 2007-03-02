@@ -160,51 +160,57 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 	}
 	
 	public ModuleDeclaration parse(String content) {// throws
-		Parser parser = new Parser(new IRuby() {});
-		ProxyProblemReporter proxyProblemReporter = new ProxyProblemReporter(problemReporter);
-		errorState[0] = false;
-		
-		long timeStart = System.currentTimeMillis();
-		Node node = parser.parse("", new StringReader(content), new RubyParserConfiguration(),
-				proxyProblemReporter);
-		fixPositions.clear();
-		if (!parser.isSuccess() || errorState[0]) {
-			content = fixBrokenDots(content);
-			content = fixBrokenColons(content);
+		try {
+			Parser parser = new Parser(new IRuby() {});
+			ProxyProblemReporter proxyProblemReporter = new ProxyProblemReporter(problemReporter);
+			errorState[0] = false;
 			
-			Node node2 = parser.parse("", new StringReader(content), new RubyParserConfiguration(),
-					null);
-			if (node2 != null)
-				node = node2;
-			else
-				fixPositions.clear();
-		}
-		
-		ModuleDeclaration module = new ModuleDeclaration(content.length());
-		DLTKASTBuildVisitor visitor = new DLTKASTBuildVisitor(module, content);
-		if (node != null)
-			node.accept(visitor);
-
-		if( node != null ) {
-			if (TRACE_AST_JRUBY || TRACE_AST_DLTK)
-				System.out.println("\n\nAST rebuilt\n");
-			if (TRACE_AST_JRUBY)
-				System.out.println("JRuby AST:\n" + node.toString());
-			if (TRACE_AST_DLTK)
-				System.out.println("DLTK AST:\n" + module.toString());
-		}
-		
-		if (!fixPositions.isEmpty())
-			try {
-				module.traverse(new ASTPositionsCorrector());
-			} catch (Exception e) {
-				RubyPlugin.log(e);
+			long timeStart = System.currentTimeMillis();
+			Node node = parser.parse("", new StringReader(content), new RubyParserConfiguration(),
+					proxyProblemReporter);
+			fixPositions.clear();
+			if (!parser.isSuccess() || errorState[0]) {
+				content = fixBrokenDots(content);
+				content = fixBrokenColons(content);
+				
+				Node node2 = parser.parse("", new StringReader(content), new RubyParserConfiguration(),
+						null);
+				if (node2 != null)
+					node = node2;
+				else
+					fixPositions.clear();
 			}
-		
-		long timeEnd = System.currentTimeMillis();
-		if (TRACE_AST_DLTK)
-			System.out.println("Parsing took " + (timeEnd - timeStart) + " ms");
-		return module;
+			
+			ModuleDeclaration module = new ModuleDeclaration(content.length());
+			DLTKASTBuildVisitor visitor = new DLTKASTBuildVisitor(module, content);
+			if (node != null)
+				node.accept(visitor);
+	
+			if( node != null ) {
+				if (TRACE_AST_JRUBY || TRACE_AST_DLTK)
+					System.out.println("\n\nAST rebuilt\n");
+				if (TRACE_AST_JRUBY)
+					System.out.println("JRuby AST:\n" + node.toString());
+				if (TRACE_AST_DLTK)
+					System.out.println("DLTK AST:\n" + module.toString());
+			}
+			
+			if (!fixPositions.isEmpty())
+				try {
+					module.traverse(new ASTPositionsCorrector());
+				} catch (Exception e) {
+					RubyPlugin.log(e);
+				}
+			
+			long timeEnd = System.currentTimeMillis();
+			if (TRACE_AST_DLTK)
+				System.out.println("Parsing took " + (timeEnd - timeStart) + " ms");
+			return module;
+		}
+		catch( Throwable t ) {
+			ModuleDeclaration mdl = new ModuleDeclaration(1);
+			return mdl;
+		}
 	}
 
 	public void setInitializationData(IConfigurationElement config, String propertyName, Object data) throws CoreException {

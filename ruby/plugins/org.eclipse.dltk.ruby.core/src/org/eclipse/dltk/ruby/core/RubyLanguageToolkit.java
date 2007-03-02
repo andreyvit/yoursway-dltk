@@ -48,6 +48,8 @@ import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.indexing.SourceIndexerRequestor;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.core.util.Messages;
+import org.eclipse.dltk.ruby.internal.callhierarchy.RubyCallProcessor;
+import org.eclipse.dltk.ruby.internal.callhierarchy.RubyCalleeProcessor;
 import org.eclipse.dltk.ruby.internal.core.codeassist.RubyCompletionEngine;
 import org.eclipse.dltk.ruby.internal.core.codeassist.RubySelectionEngine;
 import org.eclipse.dltk.ruby.internal.core.search.RubyMatchLocator;
@@ -224,13 +226,11 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 
 	public ICalleeProcessor createCalleeProcessor(IMethod method,
 			IProgressMonitor monitor, IDLTKSearchScope scope) {
-		// TODO Auto-generated method stub
-		return null;
+		return new RubyCalleeProcessor( method, monitor, scope );
 	}
 
 	public ICallProcessor createCallProcessor() {
-		// TODO Auto-generated method stub
-		return null;
+		return new RubyCallProcessor();
 	}
 
 	public String getDelimeterReplacerString() {

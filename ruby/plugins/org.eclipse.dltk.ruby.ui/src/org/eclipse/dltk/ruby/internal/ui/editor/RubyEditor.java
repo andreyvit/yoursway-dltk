@@ -82,7 +82,7 @@ public class RubyEditor extends ScriptEditor {
 	}
 
 	public String getCallHierarchyID() {
-		return null;
+		return "org.eclipse.dltk.callhierarchy.view";
 	}
 
 	protected void initializeKeyBindingScopes() {

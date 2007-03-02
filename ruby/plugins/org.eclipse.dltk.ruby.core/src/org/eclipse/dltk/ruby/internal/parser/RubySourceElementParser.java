@@ -1,12 +1,9 @@
 package org.eclipse.dltk.ruby.internal.parser;
 
-import java.util.Collections;
-
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.IProblemReporter;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceModuleInfoCache;
@@ -61,7 +58,7 @@ public class RubySourceElementParser implements ISourceElementParser {
 		if( moduleDeclaration == null ) {
 			JRubySourceParser sourceParser = new JRubySourceParser(problemReporter);
 			moduleDeclaration = sourceParser.parse(content);
-			if( moduleDeclaration != null && astCashe !=null ) {
+			if( moduleDeclaration != null && astCashe != null ) {
 				astCashe.put(AST, moduleDeclaration );
 			}
 		}

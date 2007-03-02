@@ -260,23 +260,6 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 		return "org.eclipse.dltk.tcl.ui.editor.TclEditor";
 	}
 
-	public ModuleDeclaration createFullAST(ISourceModule module) {
-		TclSourceParser parser = new TclSourceParser();
-		try {
-			ModuleDeclaration decl = parser.parse(module.getSource());
-			decl.rebuild();
-
-			// this call has empty impl
-			// TclASTBuilder.buildFullAST(decl);
-			return decl;
-		} catch (ModelException e) {
-			if( DLTKCore.DEBUG ) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
-
 	public ISelectionEngine createSelectionEngine(ISearchableEnvironment environment, Map options) {
 		return new TclSelectionEngine(environment, options, this);
 	}

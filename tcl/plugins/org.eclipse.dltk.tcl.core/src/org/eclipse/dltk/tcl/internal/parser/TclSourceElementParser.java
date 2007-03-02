@@ -349,8 +349,13 @@ public class TclSourceElementParser implements ISourceElementParser {
 			inner = ((TclBlockExpression) code)
 					.parseBlock(code.sourceStart() + 1);
 
-			this.buildModel(inner, TYPE_NAMESPACE, parentNamespaceName + "::"
-					+ sNameSpaceName);
+			if(sNameSpaceName.startsWith("::") && parentNamespaceName.length() == 0 ) {
+				this.buildModel(inner, TYPE_NAMESPACE, sNameSpaceName);
+			}
+			else {
+				this.buildModel(inner, TYPE_NAMESPACE, parentNamespaceName + "::"
+						+ sNameSpaceName);
+			}
 
 			exit.go();
 		}

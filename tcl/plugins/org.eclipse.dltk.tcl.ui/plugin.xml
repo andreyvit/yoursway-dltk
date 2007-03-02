@@ -120,7 +120,7 @@
             name="%NewSourceFolderCreationWizard.label"
             icon="/icons/newpackfolder_wiz.gif"
             category="org.eclipse.dltk.tcl.ui"
-            class="org.eclipse.dltk.internal.ui.wizards.NewSourceFolderCreationWizard"
+            class="org.eclipse.dltk.ui.wizards.NewSourceFolderCreationWizard"
             id="org.eclipse.dltk.tcl.ui.wizards.NewSourceFolderCreationWizard">
          <description>
             %NewSourceFolderCreationWizard.description

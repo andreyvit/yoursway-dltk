@@ -16,6 +16,8 @@ import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.WorkingCopyOwner;
+import org.eclipse.dltk.internal.core.util.MementoTokenizer;
 import org.eclipse.dltk.internal.core.util.Util;
 
 
@@ -215,5 +217,34 @@ public class ExternalProjectFragment extends ProjectFragment {
 	}
 	public String getElementName() {		
 		return fPath.toOSString().replace(File.separatorChar, JEM_SKIP_DELIMETER);		
+	}
+	public IModelElement getHandleFromMemento(String token, MementoTokenizer memento, WorkingCopyOwner owner) {
+		switch (token.charAt(0)) {
+			case JEM_SCRIPTFOLDER:
+				String pkgName;
+				if (memento.hasMoreTokens()) {
+					pkgName = memento.nextToken();
+					char firstChar = pkgName.charAt(0);
+					if (firstChar == JEM_SOURCEMODULE || firstChar == JEM_COUNT) {
+						token = pkgName;
+						pkgName = IProjectFragment.DEFAULT_SCRIPT_FOLDER_NAME;
+					} else {
+						token = null;
+					}
+				} else {
+					pkgName = IScriptFolder.DEFAULT_FOLDER_NAME;
+					token = null;
+				}
+				ModelElement pkg = (ModelElement) getScriptFolder(pkgName);
+				if (token == null) {
+					return pkg.getHandleFromMemento(memento, owner);
+				} else {
+					return pkg.getHandleFromMemento(token, memento, owner);
+				}
+		}
+		return null;
+	}
+	protected char getHandleMementoDelimiter() {
+		return JEM_PROJECTFRAGMENT;
 	}
 }
