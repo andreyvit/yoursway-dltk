@@ -31,6 +31,7 @@ import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
 import org.eclipse.dltk.ruby.ast.OrExpression;
 
 import org.eclipse.dltk.ruby.ast.ReturnStatement;
+import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
 import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
 import org.eclipse.dltk.ruby.ast.RubySingletonClassDeclaration;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
@@ -318,7 +319,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		popState();
 
 		ISourcePosition position = iVisited.getPosition();
-		ExpressionList arr = new ExpressionList();
+		RubyArrayExpression arr = new RubyArrayExpression();
 		arr.setEnd(position.getEndOffset());
 		arr.setStart(position.getStartOffset());
 		for (Iterator iter = coll.getList().iterator(); iter.hasNext();) {

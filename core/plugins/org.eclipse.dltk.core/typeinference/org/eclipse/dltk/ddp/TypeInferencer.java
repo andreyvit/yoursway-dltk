@@ -90,6 +90,8 @@ public final class TypeInferencer implements ITypeInferencer {
 	
 		long endTime = System.currentTimeMillis() + timeLimit;
 		GoalEvaluator rootEvaluator = evaluatorFactory.createEvaluator(rootGoal);
+		if (rootEvaluator == null)
+			return null;
 		int emptyStackSize = stackSize; // there might already be some elements there
 		pushToStack(rootEvaluator);
 		IGoal lastFullyEvaluatedGoal = null;

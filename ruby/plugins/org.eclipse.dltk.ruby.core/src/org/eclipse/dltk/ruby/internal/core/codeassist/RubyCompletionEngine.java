@@ -31,6 +31,7 @@ import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
+import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
@@ -167,6 +168,9 @@ public class RubyCompletionEngine extends CompletionEngine {
 				case SimpleType.TYPE_STRING:
 					meth = RubyModelUtils.getFakeMethods((ModelElement) modelModule, "String");
 					break;
+				case SimpleType.TYPE_ARRAY:
+					meth = RubyModelUtils.getFakeMethods((ModelElement) modelModule, "Array");
+					break;
 			}
 			return meth;
 		}
@@ -296,6 +300,15 @@ public class RubyCompletionEngine extends CompletionEngine {
 		int relevance = 424242;
 
 		if (receiver != null) {
+			if (receiver instanceof RubyArrayExpression) {
+				int st = position;
+				while (st >= 0 && content.charAt(st) != '.')
+					st--;
+				if (st > 0) {
+					starting = content.substring(st + 1, position).trim();
+					this.setSourceRange(position - starting.length(), position);
+				}
+			}
 			methods = getMethodsForReceiver(module, moduleDeclaration, receiver);
 		} else {
 			IClassType self = RubyTypeInferencingUtils.determineSelfClass(

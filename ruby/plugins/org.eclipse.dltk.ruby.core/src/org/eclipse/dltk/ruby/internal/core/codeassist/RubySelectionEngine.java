@@ -143,11 +143,11 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 			System.out.println("SELECTION - Source :"); //$NON-NLS-1$
 			System.out.println(source);
 		}
-//		if (selectionSourceStart > selectionSourceEnd) {
-//			int x = selectionSourceEnd;
-//			selectionSourceEnd = selectionSourceStart;
-//			selectionSourceStart = x;
-//		}
+		if (selectionSourceStart > selectionSourceEnd) {
+			int x = selectionSourceEnd;
+			selectionSourceEnd = selectionSourceStart;
+			selectionSourceStart = x;
+		}
 		if (!checkSelection(source, selectionSourceStart, selectionSourceEnd)) {
 			return new IModelElement[0];
 		}		
@@ -433,6 +433,9 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 						break;
 					case SimpleType.TYPE_STRING:
 						meth = RubyModelUtils.getFakeMethods((ModelElement) modelModule, "String");
+						break;
+					case SimpleType.TYPE_ARRAY:
+						meth = RubyModelUtils.getFakeMethods((ModelElement) modelModule, "Array");
 						break;
 				}
 				availableMethods = meth;

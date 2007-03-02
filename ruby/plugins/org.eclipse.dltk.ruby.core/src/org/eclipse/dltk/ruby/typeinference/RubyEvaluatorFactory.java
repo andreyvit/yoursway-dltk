@@ -17,6 +17,7 @@ import org.eclipse.dltk.ddp.IGoal;
 import org.eclipse.dltk.ddp.IGoalEvaluatorFactory;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
+import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
 import org.eclipse.dltk.ruby.ast.SelfReference;
 
 public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
@@ -31,6 +32,8 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 				return new NumericLiteralEvaluator(goal);
 			else if (expr instanceof StringLiteral)
 				return new StringLiteralEvaluator(goal);
+			else if (expr instanceof RubyArrayExpression)
+				return new ArrayEvaluator(goal);
 			else if (expr instanceof Assignment)
 				return new AssignmentEvaluator(goal);
 			else if (expr instanceof ConstantReference)
