@@ -1089,7 +1089,7 @@ public abstract class AbstractASTFoldingStructureProvider implements IFoldingStr
 		return TextUtilities.getPartition(d, getPartition(), offset, true);
 	}
 
-	protected final IRegion[] computeCommentsRanges(String contents) {
+	protected IRegion[] computeCommentsRanges(String contents) {
 		try {
 			if (contents == null)
 				return new IRegion[0];
