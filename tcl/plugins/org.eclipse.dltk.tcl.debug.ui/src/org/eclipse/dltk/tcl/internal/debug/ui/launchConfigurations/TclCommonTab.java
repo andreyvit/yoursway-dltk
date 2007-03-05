@@ -936,9 +936,6 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute("proxy_path", TclConsoleProxy
 					.getInstance().getFile().getAbsolutePath());
 
-			// ScriptConsoleServer server = ScriptConsoleServer.getInstance();
-			// String id = server.generateId();
-
 			captureOutput = false;
 			useDltk = true;
 		} 
@@ -946,11 +943,11 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT, useDltk);
 
 		// Last option
-		if (!captureOutput) {
-			configuration.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, false);
-		} else {
+		if (captureOutput) {
 			configuration.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT,
 					(String) null);
+		} else {
+			configuration.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, false);
 		}
 	}
 

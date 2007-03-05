@@ -277,15 +277,12 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		String[] cmdLine = extractCommandLine(config);
 
 		ILaunchConfiguration configuration = launch.getLaunchConfiguration();
+		
 		if (configuration != null) {
-			boolean useDltkConsole = configuration.getAttribute(
+			boolean useDltk = configuration.getAttribute(
 					IDLTKLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT,
-					false);
-			if (DLTKCore.VERBOSE) {
-				System.out.println("Usage of dltk console: " + useDltkConsole);
-			}
-
-			if (useDltkConsole) {
+					false);			
+			if (useDltk) {				
 				String id = configuration.getAttribute(
 						IDLTKLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID,
 						(String) null);

@@ -3,9 +3,14 @@ package org.eclipse.dltk.debug.ui;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchListener;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
+import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
@@ -25,8 +30,41 @@ public class DebugConsoleManager implements ILaunchListener {
 
 	private Map launchToConsoleMap;
 
-	protected boolean testLaunch(ILaunch launch) {
-		return launch != null;
+	protected boolean acceptLaunch(ILaunch launch) {
+		if (launch == null){
+			return false;
+		}
+		
+		if (!launch.getLaunchMode().equals(ILaunchManager.DEBUG_MODE)){
+			return false;
+		}
+		
+		return true;
+		
+//		try {
+//			ILaunchConfiguration configuration = launch
+//					.getLaunchConfiguration();
+//
+//			final String natureId = configuration.getAttribute(
+//					IDLTKLaunchConfigurationConstants.ATTR_NATURE,
+//					(String) null);
+//
+//			if (natureId == null) {
+//				return false;
+//			}
+//
+//			String capture = configuration.getAttribute(
+//					DebugPlugin.ATTR_CAPTURE_OUTPUT, (String) null);
+//
+//			if (capture == null) {
+//				return false;
+//			}
+//			
+//		} catch (CoreException e) {
+//			return false;
+//		}
+//
+//		return true;
 	}
 
 	protected IOConsole createConsole(String name) {
@@ -48,9 +86,9 @@ public class DebugConsoleManager implements ILaunchListener {
 	protected DebugConsoleManager() {
 		launchToConsoleMap = new HashMap();
 	}
-	
+
 	public void launchAdded(ILaunch launch) {
-		if (!testLaunch(launch)) {
+		if (!acceptLaunch(launch)) {
 			return;
 		}
 
@@ -58,7 +96,7 @@ public class DebugConsoleManager implements ILaunchListener {
 	}
 
 	public void launchChanged(ILaunch launch) {
-		if (!testLaunch(launch)) {
+		if (!acceptLaunch(launch)) {
 			return;
 		}
 
@@ -78,7 +116,7 @@ public class DebugConsoleManager implements ILaunchListener {
 	}
 
 	public void launchRemoved(ILaunch launch) {
-		if (!testLaunch(launch)) {
+		if (!acceptLaunch(launch)) {
 			return;
 		}
 
