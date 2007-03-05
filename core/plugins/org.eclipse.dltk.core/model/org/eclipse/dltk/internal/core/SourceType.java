@@ -17,9 +17,11 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.internal.core.hierarchy.TypeHierarchy;
+import org.eclipse.dltk.internal.core.util.MementoTokenizer;
 import org.eclipse.dltk.internal.core.util.Messages;
 import org.eclipse.dltk.utils.CorePrinter;
 
@@ -91,8 +93,91 @@ public class SourceType extends NamedMember implements IType {
 		list.toArray(array);
 		return array;
 	}
+	
+	
+	public IModelElement getHandleFromMemento(String token, MementoTokenizer memento, WorkingCopyOwner workingCopyOwner) {
+		switch (token.charAt(0)) {
+			case JEM_COUNT:
+				return getHandleUpdatingCountFromMemento(memento, workingCopyOwner);
+			case JEM_FIELD:
+				if (!memento.hasMoreTokens()) return this;
+				String fieldName = memento.nextToken();
+				ModelElement field = (ModelElement)getField(fieldName);
+				return field.getHandleFromMemento(memento, workingCopyOwner);
+//			case JEM_INITIALIZER:
+//				if (!memento.hasMoreTokens()) return this;
+//				String count = memento.nextToken();
+//				JavaElement initializer = (JavaElement)getInitializer(Integer.parseInt(count));
+//				return initializer.getHandleFromMemento(memento, workingCopyOwner);
+			case JEM_METHOD:
+				if (!memento.hasMoreTokens()) return this;
+				String selector = memento.nextToken();
+				ArrayList params = new ArrayList();
+				nextParam: while (memento.hasMoreTokens()) {
+					token = memento.nextToken();
+					switch (token.charAt(0)) {
+						case JEM_TYPE:
+						case JEM_TYPE_PARAMETER:
+							break nextParam;
+						case JEM_METHOD:
+							if (!memento.hasMoreTokens()) return this;
+							String param = memento.nextToken();
+							StringBuffer buffer = new StringBuffer();
+							while (param.length() == 1 && Signature.C_ARRAY == param.charAt(0)) { // backward compatible with 3.0 mementos
+								buffer.append(Signature.C_ARRAY);
+								if (!memento.hasMoreTokens()) return this;
+								param = memento.nextToken();
+							}
+							params.add(buffer.toString() + param);
+							break;
+						default:
+							break nextParam;
+					}
+				}
+				String[] parameters = new String[params.size()];
+				params.toArray(parameters);
+				ModelElement method = (ModelElement)getMethod(selector);
+				switch (token.charAt(0)) {
+					case JEM_TYPE:
+					case JEM_TYPE_PARAMETER:
+					case JEM_LOCALVARIABLE:
+						return method.getHandleFromMemento(token, memento, workingCopyOwner);
+					default:
+						return method;
+				}
+			case JEM_TYPE:
+				String typeName;
+				if (memento.hasMoreTokens()) {
+					typeName = memento.nextToken();
+					char firstChar = typeName.charAt(0);
+					if (firstChar == JEM_FIELD /*|| firstChar == JEM_INITIALIZER */|| firstChar == JEM_METHOD || firstChar == JEM_TYPE || firstChar == JEM_COUNT) {
+						token = typeName;
+						typeName = ""; //$NON-NLS-1$
+					} else {
+						token = null;
+					}
+				} else {
+					typeName = ""; //$NON-NLS-1$
+					token = null;
+				}
+				ModelElement type = (ModelElement)getType(typeName);
+				if (token == null) {
+					return type.getHandleFromMemento(memento, workingCopyOwner);
+				} else {
+					return type.getHandleFromMemento(token, memento, workingCopyOwner);
+				}
+//			case JEM_TYPE_PARAMETER:
+//				if (!memento.hasMoreTokens()) return this;
+//				String typeParameterName = memento.nextToken();
+//				ModelElement typeParameter = new TypeParameter(this, typeParameterName);
+//				return typeParameter.getHandleFromMemento(memento, workingCopyOwner);
+				
+		}
+		return null;
+	}	
 
 	protected char getHandleMementoDelimiter() {
+
 		return JEM_TYPE;
 	}
 
