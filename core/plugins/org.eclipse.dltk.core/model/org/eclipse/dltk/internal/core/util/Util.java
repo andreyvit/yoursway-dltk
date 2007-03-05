@@ -1312,7 +1312,17 @@ public class Util {
 		case Signature.C_TYPE_VARIABLE:
 			return scanTypeVariableSignature(string, start);
 		case Signature.C_VOID:
+		case Signature.C_BOOLEAN :
+		case Signature.C_BYTE :
+		case Signature.C_CHAR :
+		case Signature.C_DOUBLE :
+		case Signature.C_FLOAT :
+		case Signature.C_INT :
+		case Signature.C_LONG :
+		case Signature.C_SHORT :
 			return scanBaseTypeSignature(string, start);
+		
+			
 		case Signature.C_CAPTURE:
 			return scanCaptureTypeSignature(string, start);
 		case Signature.C_EXTENDS:
@@ -1598,7 +1608,8 @@ public class Util {
 		if ("V".indexOf(c) >= 0) { //$NON-NLS-1$
 			return start;
 		} else {
-			throw new IllegalArgumentException();
+			return start;
+			//throw new IllegalArgumentException();
 		}
 	}
 

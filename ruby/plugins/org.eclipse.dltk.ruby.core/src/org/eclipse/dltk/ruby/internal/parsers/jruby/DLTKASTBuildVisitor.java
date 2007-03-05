@@ -1426,7 +1426,10 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitRescueBodyNode(RescueBodyNode iVisited) {
-
+		Node bodyNode = iVisited.getBodyNode();
+		Node exceptionNodes = iVisited.getExceptionNodes();
+		RescueBodyNode optRescueNode = iVisited.getOptRescueNode();
+		ISourcePosition position = iVisited.getPosition();
 		// XXX iVisited.getBodyNode().accept(this);
 		return null;
 	}
@@ -1442,6 +1445,11 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		 * lArgsNode.getNextNode()) lArgsNode.getHeadNode().accept(this);
 		 * body.accept(this); }
 		 */
+		
+		Node bodyNode = iVisited.getBodyNode();
+		Node elseNode = iVisited.getElseNode();
+		RescueBodyNode rescueNode = iVisited.getRescueNode();
+		ISourcePosition position = iVisited.getPosition();
 		return null;
 	}
 

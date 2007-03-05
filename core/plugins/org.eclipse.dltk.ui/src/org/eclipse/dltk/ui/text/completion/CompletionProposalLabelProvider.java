@@ -369,7 +369,7 @@ public abstract class CompletionProposalLabelProvider {
 		case CompletionProposal.METHOD_REF:
 		case CompletionProposal.ANNOTATION_ATTRIBUTE_REF:
 		case CompletionProposal.POTENTIAL_METHOD_DECLARATION:
-			descriptor = DLTKPluginImages.DESC_METHOD_PUBLIC;
+			descriptor = ScriptElementImageProvider.getMethodImageDescriptor(proposal.getFlags());
 			break;
 		case CompletionProposal.TYPE_REF:
 			descriptor = DLTKPluginImages.DESC_OBJS_CLASSALT;

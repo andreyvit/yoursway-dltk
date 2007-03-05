@@ -34,6 +34,10 @@ import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.SourceMethod;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
+import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.ClassMetaclass;
+import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.Metaclass;
+import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.MethodInfo;
+import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.ModuleMetaclass;
 
 public class RubyModelUtils {
 	
@@ -233,6 +237,13 @@ public class RubyModelUtils {
 	}
 
 	public static FakeMethod[] getFakeMethods(ModelElement parent, String klass) {
+		Metaclass metaclass = BuiltinMethodsDatabase.get(klass);
+		if (metaclass != null) {
+			List fakeMethods = new ArrayList();
+			addFakeMethods(parent, metaclass, fakeMethods);
+			return (FakeMethod[]) fakeMethods.toArray(new FakeMethod[fakeMethods.size()]);
+		}
+		// XXX the following code is legacy
 		String[] names = getBuiltinMethodNames(klass);
 		if (names == null) 
 			return new FakeMethod[0];
@@ -243,10 +254,59 @@ public class RubyModelUtils {
 			methods.add(method);
 		}
 		return (FakeMethod[]) methods.toArray(new FakeMethod[methods.size()]);
+	}
+
+	private static void addFakeMethods(ModelElement parent, Metaclass metaclass, List fakeMethods) {
+		// process included modules first, to allow the class to override
+		// some of the methods
+		ModuleMetaclass[] includedModules = metaclass.getIncludedModules();
+		for (int i = 0; i < includedModules.length; i++) {
+			ModuleMetaclass module = includedModules[i];
+			addFakeMethods(parent, module, fakeMethods);
+		}
+		MethodInfo[] methods = metaclass.getMethods();
+		for (int i = 0; i < methods.length; i++) {
+			MethodInfo info = methods[i];
+			FakeMethod method = createFakeMethod(parent, metaclass, info);
+			fakeMethods.add(method);
+		}
+		if (metaclass instanceof BuiltinMethodsDatabase.ClassMetaclass) {
+			BuiltinMethodsDatabase.ClassMetaclass classMeta =
+				(BuiltinMethodsDatabase.ClassMetaclass) metaclass;
+			ClassMetaclass superClass = classMeta.getSuperClass();
+			if (superClass != null)
+				addFakeMethods(parent, superClass, fakeMethods);
+		}
+	}
+
+	private static FakeMethod createFakeMethod(ModelElement parent, Metaclass metaclass, MethodInfo info) {
+		FakeMethod method = new FakeMethod(parent, info.getName());
+		int arity = info.getArity();
+		String parameters[] = new String[0];
+		if (arity > 0) {
+			parameters = new String[arity];
+			for(int i = 0; i < arity; i++)
+				parameters[i] = "arg" + (i+1);
+		} else if (arity < 0) {
+			parameters = new String[-arity];
+			for(int i = 0; i < -arity - 1; i++)
+				parameters[i] = "arg" + (i+1);
+			parameters[-arity-1] = "...";
+		}
+		method.setParameters(parameters);
+		method.setReceiver(metaclass.getName());
+		return method;
 	} 
 	
 	
 	public static FakeMethod[] getFakeMetaMethods(ModelElement parent, String klass) {
+		Metaclass metaclass = BuiltinMethodsDatabase.get(klass);
+		if (metaclass != null) {
+			ClassMetaclass metaMetaclass = metaclass.getMetaClass();
+			List fakeMethods = new ArrayList();
+			addFakeMethods(parent, metaMetaclass, fakeMethods);
+			return (FakeMethod[]) fakeMethods.toArray(new FakeMethod[fakeMethods.size()]);
+		}
 		String[] names = getBuiltinMetaMethodNames(klass);
 		if (names == null) 
 			return new FakeMethod[0];
@@ -278,7 +338,7 @@ public class RubyModelUtils {
 
 	public static String[] getBuiltinMetaMethodNames(String klass) {
 		if (klass.equals("Object")) {
-			return BuiltinMetaTypeMethods.objectMethods;
+			return BuiltinMethodsDatabase.objectMethods;
 		} 
 		return null;
 	}

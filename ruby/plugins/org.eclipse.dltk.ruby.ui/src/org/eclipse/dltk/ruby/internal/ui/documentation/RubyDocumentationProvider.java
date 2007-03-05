@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.core.IBuffer;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMember;
@@ -153,9 +154,21 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 	}
 	
 	private Reader proccessBuiltin (FakeMethod method) {
-		String keyword = method.getReceiver() + "." + method.getElementName();
+		String divider;
+		if (0 != (method.getFlags() & Modifiers.AccStatic))
+			divider = "::";
+		else
+			divider = "#";
+		String keyword = method.getReceiver() + divider + method.getElementName();
 		RiHelper helper = RiHelper.getInstance();
 		String doc = helper.getDocFor(keyword);
+		if (doc.contains("Nothing known about") || doc.trim().length() == 0) {
+			// XXX megafix: some Kernel methods are documented in Object
+			if (method.getReceiver().equals("Kernel")) {
+				keyword = "Object" + divider + method.getElementName();
+				doc = helper.getDocFor(keyword);
+			}
+		}
 		if (doc != null)
 			return new StringReader(doc);
 		return new StringReader("Built-in method");

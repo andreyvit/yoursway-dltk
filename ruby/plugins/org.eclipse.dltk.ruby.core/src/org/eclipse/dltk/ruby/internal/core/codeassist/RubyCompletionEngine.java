@@ -32,6 +32,7 @@ import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
+import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
@@ -351,15 +352,12 @@ public class RubyCompletionEngine extends CompletionEngine {
 					actualCompletionPosition);
 
 			String[] params = null;
-
-			if (!(method instanceof FakeMethod)) {
-				try {
-					params = method.getParameters();
-				} catch (ModelException e) {
-					e.printStackTrace();
-				}
+			try {
+				params = method.getParameters();
+			} catch (ModelException e) {
+				e.printStackTrace();
 			}
-
+				
 			if (params != null && params.length > 0) {
 				char[][] args = new char[params.length][];
 				for (int i = 0; i < params.length; ++i) {
@@ -371,7 +369,11 @@ public class RubyCompletionEngine extends CompletionEngine {
 			proposal.setModelElement(method);
 			proposal.setName(name);
 			proposal.setCompletion(name);
-			// proposal.setFlags(Flags.AccDefault);
+			try {
+				proposal.setFlags(method.getFlags());
+			} catch (ModelException e) {
+				RubyPlugin.log(e);
+			}
 			proposal.setReplaceRange(this.startPosition - this.offset,
 					this.endPosition - this.offset);
 			proposal.setRelevance(relevance);
