@@ -83,7 +83,10 @@ public class ScriptExplorerLabelProvider extends AppearanceAwareLabelProvider {
 		if(topName.equals(bottomName))
 			return topName;
 		
-		String deltaname= bottomName.substring(topName.length()+1);	
+		String deltaname= bottomName;
+		if (deltaname.startsWith(topName) && bottomName.length() >= topName.length()+1) {
+			deltaname= bottomName.substring(topName.length()+1);
+		}
 		return deltaname;
 	}
 	
