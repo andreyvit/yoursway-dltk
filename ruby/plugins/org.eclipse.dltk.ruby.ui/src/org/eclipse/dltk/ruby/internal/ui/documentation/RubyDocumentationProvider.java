@@ -162,7 +162,7 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 		String keyword = method.getReceiver() + divider + method.getElementName();
 		RiHelper helper = RiHelper.getInstance();
 		String doc = helper.getDocFor(keyword);
-		if (doc.contains("Nothing known about") || doc.trim().length() == 0) {
+		if ((doc.indexOf("Nothing known about") != -1) || doc.trim().length() == 0) {
 			// XXX megafix: some Kernel methods are documented in Object
 			if (method.getReceiver().equals("Kernel")) {
 				keyword = "Object" + divider + method.getElementName();
