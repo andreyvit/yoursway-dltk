@@ -370,7 +370,7 @@ public class TclParseUtils {
 	public static String processMethodName(IMethod method, String tok) {
 		String elName = method.getElementName();
 		if (elName.startsWith("::")) {
-			return elName;
+			return checkDots(elName,tok);
 		}
 		String name = "";
 		try {
@@ -383,7 +383,7 @@ public class TclParseUtils {
 		if (tok.startsWith("::") && !name.startsWith("::")) {
 			name = "::" + name;
 		}
-		return name;
+		return checkDots(name,tok);
 	}
 	public static String processFieldName(IField field, String tok) {
 		String elName = field.getElementName();
