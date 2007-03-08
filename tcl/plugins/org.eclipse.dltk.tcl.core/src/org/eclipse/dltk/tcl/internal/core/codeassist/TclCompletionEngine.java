@@ -583,6 +583,7 @@ public class TclCompletionEngine extends CompletionEngine {
 			final boolean provideDollar) {
 		final List fields = new ArrayList();
 		final List types = new ArrayList();
+		boolean provideDots = false; 
 		SearchRequestor requestor = new SearchRequestor() {
 			public void acceptSearchMatch(SearchMatch match)
 					throws CoreException {
@@ -661,6 +662,7 @@ public class TclCompletionEngine extends CompletionEngine {
 																	 * token[1] ==
 																	 * ':'
 																	 */) {
+			provideDots = true;
 			String[] tokens = to.split("::");
 			if (tokens.length < 2) {
 				return;

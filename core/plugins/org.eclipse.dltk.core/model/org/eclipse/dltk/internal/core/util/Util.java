@@ -88,6 +88,9 @@ public class Util {
 	 * Add a log entry
 	 */
 	public static void log(Throwable e, String message) {
+		if(e == null || message != null ) {
+			return;
+		}
 		Throwable nestedException;
 		if (e instanceof ModelException
 				&& (nestedException = ((ModelException) e).getException()) != null) {

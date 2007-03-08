@@ -251,7 +251,21 @@ public class BasicSearchEngine {
 							indexMatches[j] = participant.getDocument(indexMatchPaths[j]);
 						}
 						SearchDocument[] matches = MatchLocator.addWorkingCopies(pattern, indexMatches, getWorkingCopies(), participant);
-						participant.locateMatches(matches, pattern, scope, requestor, subMonitor);
+						//TODO: This is Quick fix... Dublicates of Interpreter libraris, should be handled not here...
+						if(DLTKCore.DEBUG ) {
+							System.err.println("This is Quick fix... Dublicates of Interpreter libraris, should be handled not here...");
+						}
+						List paths = new ArrayList();
+						List filteredMatches = new ArrayList();
+						for( int q = 0; q < matches.length; ++q ) {
+							IPath path = new Path( matches[q].getPath() );
+							if( !paths.contains(path)) {
+								paths.add(path);
+								filteredMatches.add(matches[q]);
+							}
+						}
+						SearchDocument[] fmatches = (SearchDocument[])filteredMatches.toArray(new SearchDocument[filteredMatches.size()]);
+						participant.locateMatches(fmatches, pattern, scope, requestor, subMonitor);
 					}
 				}
 				catch ( Exception e ) {

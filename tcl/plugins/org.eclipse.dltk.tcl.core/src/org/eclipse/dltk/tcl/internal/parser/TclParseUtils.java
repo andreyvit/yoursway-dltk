@@ -388,7 +388,7 @@ public class TclParseUtils {
 	public static String processFieldName(IField field, String tok) {
 		String elName = field.getElementName();
 		if (elName.startsWith("::")) {
-			return elName;
+			return checkDots( elName, tok );
 		}
 		String name = "";
 		try {
@@ -401,7 +401,14 @@ public class TclParseUtils {
 		if (tok.startsWith("::") && !name.startsWith("::")) {
 			name = "::" + name;
 		}
-		return name;
+		return checkDots( name, tok );
+	}
+
+	private static String checkDots(String elName, String tok) {
+		if( elName.startsWith("::") && !tok.startsWith("::") ) {
+			return elName.substring(2);
+		}
+		return elName;
 	}
 
 	public static String processTypeName(IType type, String tok) {
