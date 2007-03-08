@@ -6,6 +6,7 @@ public interface ISourceModuleInfoCache {
 		Object get(Object key);
 		void put(Object key, Object value);
 		void remove(Object key);
+		boolean isEmpty();
 	}
 	public ISourceModuleInfo get(ISourceModule module);
 	public void remove(ISourceModule sourceModule);

@@ -39,6 +39,7 @@ import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
+import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.internal.core.util.MementoTokenizer;
 import org.eclipse.dltk.internal.core.util.Messages;
 import org.eclipse.dltk.internal.core.util.Util;
@@ -130,7 +131,12 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 			
 			ISourceModuleInfoCache sourceModuleInfoCache = ModelManager.getModelManager().getSourceModuleInfoCache();
 //			sourceModuleInfoCache.remove(this);
-			parser.parseSourceModule(contents, sourceModuleInfoCache.get(this));
+//			parser.parseSourceModule(contents, sourceModuleInfoCache.get(this));
+			ISourceModuleInfo mifo = sourceModuleInfoCache.get(this);
+			parser.parseSourceModule(contents, mifo);
+			if( mifo.isEmpty()) {
+				sourceModuleInfoCache.remove(this);
+			}
 			
 //			parser.parseSourceModule(contents, null);
 			if (ExternalSourceModule.DEBUG_PRINT_MODEL) {

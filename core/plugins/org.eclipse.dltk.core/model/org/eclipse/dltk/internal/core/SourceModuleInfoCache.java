@@ -41,7 +41,9 @@ public class SourceModuleInfoCache implements ISourceModuleInfoCache {
 
 	public ISourceModuleInfo get(ISourceModule module) {
 		Object object = this.cache.get(module);
-		System.out.println("Filling ratio:" + this.cache.fillingRatio());
+		if(DLTKCore.VERBOSE ) {
+			System.out.println("Filling ratio:" + this.cache.fillingRatio());
+		}
 		if (object == null) {
 			return returnAdd(module);
 		}
@@ -103,6 +105,13 @@ public class SourceModuleInfoCache implements ISourceModuleInfoCache {
 			if (map != null) {
 				map.remove(key);
 			}
+		}
+
+		public boolean isEmpty() {
+			if( this.map == null ) {
+				return true;
+			}
+			return this.map.isEmpty();
 		}
 	}
 
