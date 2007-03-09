@@ -12,7 +12,6 @@ package org.eclipse.dltk.internal.ui.search;
 
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
-import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.Signature;
@@ -20,21 +19,6 @@ import org.eclipse.dltk.ui.ScriptElementLabels;
 
 public class PatternStrings {
 
-	public static String getSignature(IModelElement element) {
-		if (element == null)
-			return null;
-		else
-			switch (element.getElementType()) {
-				case IModelElement.METHOD:
-					return getMethodSignature((IMethod)element);
-				case IModelElement.TYPE:
-					return getTypeSignature((IType) element);
-				case IModelElement.FIELD:
-					return getFieldSignature((IField) element);
-				default:
-					return element.getElementName();
-			}
-	}
 	
 	public static String getMethodSignature(IMethod method) {
 		StringBuffer buffer= new StringBuffer();
@@ -75,10 +59,7 @@ public class PatternStrings {
 		return buffer.toString();
 	}
 
-	public static String getUnqualifiedMethodSignature(IMethod method) {
-		return getUnqualifiedMethodSignature(method, true);
-	}
-
+	
 	public static String getTypeSignature(IType field) {
 		return ScriptElementLabels.getDefault().getElementLabel(field, 
 			ScriptElementLabels.T_FULLY_QUALIFIED | ScriptElementLabels.T_TYPE_PARAMETERS | ScriptElementLabels.USE_RESOLVED);

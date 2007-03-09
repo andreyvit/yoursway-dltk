@@ -36,8 +36,7 @@ public class CompletionTestsRequestor extends CompletionRequestor {
 		char[] typeName = null;
 		switch(proposal.getKind()) {			
 				
-			case CompletionProposal.TYPE_REF :
-			
+			case CompletionProposal.TYPE_REF :			
 					typeName = Signature.getSignatureSimpleName(proposal.getSignature());
 					fElements.addElement(new String(typeName));
 					this.acceptCommon(proposal);

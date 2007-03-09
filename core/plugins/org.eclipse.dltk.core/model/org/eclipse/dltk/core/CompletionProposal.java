@@ -1029,7 +1029,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * 
 	 * @return a type signature or a package name (depending
 	 * on the kind of completion), or <code>null</code> if none
-	 * @see Signature
 	 */
 	public char[] getDeclarationSignature() {
 		return this.declarationSignature;
@@ -1179,7 +1178,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * </p>
 	 * 
 	 * @return the signature, or <code>null</code> if none
-	 * @see Signature
 	 */
 	public char[] getSignature() {
 		return this.signature;

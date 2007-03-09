@@ -268,11 +268,6 @@ public abstract class LazyScriptTypeCompletionProposal extends LazyScriptComplet
 		return super.computeProposalInfo();
 	}
 	
-	protected String computeSortString() {
-		// try fast sort string to avoid display string creation
-		return getSimpleTypeName() + Character.MIN_VALUE + getQualifiedTypeName();
-	}
-
 	protected int computeRelevance() {
 		/*
 		 * There are two histories: the RHS history remembers types used for the current expected

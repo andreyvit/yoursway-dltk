@@ -12,8 +12,6 @@ public interface ITypeModel extends IElement {
 	void invalidateMethodTypeInfo(IMethodDescriptor method);
 	
 	IUnit getUnit(ISourceModule sourceModule);
-	
-	void recalculate(IUnit unit);
 
 	public Object getNodeMapping(ASTNode key);
 

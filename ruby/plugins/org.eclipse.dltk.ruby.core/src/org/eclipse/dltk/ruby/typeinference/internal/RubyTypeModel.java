@@ -224,30 +224,6 @@ public class RubyTypeModel extends BaseTypeCalculator {
 		return unit;
 	}
 
-	public void recalculate(IUnit unit) {
-		ASTNode moduleNode = unit.getASTNode(ASTCaching.ALLOW_ANY);
-		IContext context = new Context(this);
-		context.enterScope(unit.getScope());
-		try {
-			context.evaluateType(moduleNode);
-
-			while (!methodsToRecalculateTypesFor.isEmpty()) {
-				Collection methodsToRecalculatesThisTime = methodsToRecalculateTypesFor;
-				methodsToRecalculateTypesFor = new HashSet();
-				for (Iterator iter = methodsToRecalculatesThisTime.iterator(); iter.hasNext();) {
-					IDependentTypedElement md = (IDependentTypedElement) iter.next();
-					ASTNode node = md.getASTNode(ASTCaching.ALLOW_ANY);
-					ITypeEvaluator typeEvaluator = evaluators.getTypeEvaluator(node);
-					Assert.isNotNull(typeEvaluator);
-					IReparsableElementTypeEvaluator rete = (IReparsableElementTypeEvaluator) typeEvaluator;
-					rete.reparse(md, context);
-				}
-			}
-		} finally {
-			context.leaveScope();
-		}
-	}
-
 	public ObjectTypeDescriptor getObjectType() {
 		return objectType;
 	}

@@ -555,36 +555,22 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 	 *            the completion proposal to get the declaring type for
 	 * @return the type signature of the declaring type, or <code>null</code>
 	 *         if there is none
-	 * @see Signature#toCharArray(char[])
 	 */
 	protected final char[] getDeclaringType(CompletionProposal proposal) {
 		switch (proposal.getKind()) {
 		case CompletionProposal.METHOD_DECLARATION:
 		case CompletionProposal.METHOD_NAME_REFERENCE:
-			// case CompletionProposal.JAVADOC_METHOD_REF:
 		case CompletionProposal.METHOD_REF:
 		case CompletionProposal.ANNOTATION_ATTRIBUTE_REF:
 		case CompletionProposal.POTENTIAL_METHOD_DECLARATION:
 		case CompletionProposal.FIELD_REF:
-			// case CompletionProposal.JAVADOC_FIELD_REF:
-			// case CompletionProposal.JAVADOC_VALUE_REF:
-			char[] declaration = proposal.getDeclarationSignature();
-			// special methods may not have a declaring type: methods
-			// defined on arrays etc.
-			// TODO remove when bug
-			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=84690 gets
-			// fixed
-			// if (declaration == null)
-			// return "java.lang.Object".toCharArray(); //$NON-NLS-1$
-			// return Signature.toCharArray(declaration);
 			if (DLTKCore.DEBUG) {
 				System.err
 						.println("TODO: Add support for DEclaration signature...");
 			}
 			return null;// Not yet support
 			// case CompletionProposal.JAVADOC_TYPE_REF:
-		case CompletionProposal.TYPE_REF:
-			return Signature.toCharArray(proposal.getSignature());
+		case CompletionProposal.TYPE_REF:			
 		case CompletionProposal.LOCAL_VARIABLE_REF:
 		case CompletionProposal.VARIABLE_DECLARATION:
 		case CompletionProposal.KEYWORD:
@@ -773,16 +759,12 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 		}
 				
 		String name = String.valueOf(proposal.getName());
-		char[] signature = proposal.getSignature();
+		
 		
 		String[] paramTypes;
-		if (signature != null) {
-			paramTypes = Signature.getParameterTypes(String.valueOf(signature));
-			for (int index = 0; index < paramTypes.length; index++)
-				paramTypes[index] = Signature.toString(paramTypes[index]);
-		} else {
-			paramTypes = new String[0];
-		}
+		
+		paramTypes = new String[0];
+
 		
 		int start = proposal.getReplaceStart();
 		int length = getLength(proposal);

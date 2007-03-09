@@ -361,7 +361,6 @@ public class CompletionTestsRequestor2 extends CompletionRequestor {
 		switch(proposal.getKind()) {
 			case CompletionProposal.TYPE_REF :
 			case CompletionProposal.DOC_TYPE_REF :
-				return new String(Signature.getSignatureSimpleName(proposal.getSignature()));
 			case CompletionProposal.FIELD_REF :
 			case CompletionProposal.KEYWORD:
 			case CompletionProposal.LABEL_REF:

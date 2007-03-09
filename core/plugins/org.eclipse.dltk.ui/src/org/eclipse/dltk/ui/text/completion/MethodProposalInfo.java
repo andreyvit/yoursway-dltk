@@ -41,29 +41,6 @@ public final class MethodProposalInfo extends MemberProposalInfo {
 		super(project, proposal);
 	}
 
-	/**
-	 * Returns the simple erased name for a given type signature, possibly
-	 * replacing type variables.
-	 * 
-	 * @param signature
-	 *            the type signature
-	 * @param typeVariables
-	 *            the Map&lt;SimpleName, VariableName>
-	 * @return the simple erased name for signature
-	 */
-	private String computeSimpleTypeName(String signature, Map typeVariables) {
-		// method equality uses erased types
-		String erasure = Signature.getTypeErasure(signature);
-		erasure = erasure.replaceAll("/", "."); //$NON-NLS-1$//$NON-NLS-2$
-		String simpleName = Signature
-				.getSimpleName(Signature.toString(erasure));
-		char[] typeVar = (char[]) typeVariables.get(simpleName);
-		if (typeVar != null)
-			simpleName = String.valueOf(Signature
-					.getSignatureSimpleName(typeVar));
-		return simpleName;
-	}
-
 	protected IMember resolveMember() throws ModelException {
 		throw new Error("Unimplemented method");		
 	}

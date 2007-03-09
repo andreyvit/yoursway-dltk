@@ -35,33 +35,4 @@ public final class FieldProposalInfo extends MemberProposalInfo {
 	public FieldProposalInfo(IDLTKProject project, CompletionProposal proposal) {
 		super(project, proposal);
 	}
-
-	/**
-	 * Resolves the member described by the receiver and returns it if found.
-	 * Returns <code>null</code> if no corresponding member can be found.
-	 * 
-	 * @return the resolved member or <code>null</code> if none is found
-	 * @throws ModelException
-	 *             if accessing thescriptmodel fails
-	 */
-	protected IMember resolveMember() throws ModelException {
-		char[] declarationSignature = fProposal.getDeclarationSignature();
-		// for synthetic fields on arrays, declaration signatures may be null
-		// TODO remove when https://bugs.eclipse.org/bugs/show_bug.cgi?id=84690
-		// gets fixed
-		if (declarationSignature == null)
-			return null;
-		
-		String typeName = SignatureUtil.stripSignatureToFQN(String
-				.valueOf(declarationSignature));
-		IType type = fScriptProject.findType(typeName);
-		if (type != null) {
-			String name = String.valueOf(fProposal.getName());
-			IField field = type.getField(name);
-			if (field.exists())
-				return field;
-		}
-
-		return null;
-	}
 }

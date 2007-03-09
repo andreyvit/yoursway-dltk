@@ -15,7 +15,8 @@ public class TclNamespaceDeclaration extends TypeDeclaration {
 		super(name);
 	}
 
-	public TclNamespaceDeclaration(String name, int nameStart, int nameEnd, int start, int end) {
+	public TclNamespaceDeclaration(String name, int nameStart, int nameEnd,
+			int start, int end) {
 		super(name, nameStart, nameEnd, start, end);
 	}
 
@@ -24,15 +25,16 @@ public class TclNamespaceDeclaration extends TypeDeclaration {
 		List variableDeclarations = new ArrayList();
 		List statements = this.getStatements();
 		Iterator i = statements.iterator();
-		while( i.hasNext() ) {
+		while (i.hasNext()) {
 			Object o = i.next();
-			if( o instanceof TclStatement ) {
-				TclStatement statement = (TclStatement)o;
-				FieldDeclaration[] decls = TclParseUtils.returnVariableDeclarations(statement);
-				if( decls != null ) {
-					for( int j = 0; j < decls.length; ++j ) {
+			if (o instanceof TclStatement) {
+				TclStatement statement = (TclStatement) o;
+				FieldDeclaration[] decls = TclParseUtils
+						.returnVariableDeclarations(statement);
+				if (decls != null) {
+					for (int j = 0; j < decls.length; ++j) {
 						String name2 = decls[j].getName();
-						if( !variableNames.contains(name2)) {
+						if (!variableNames.contains(name2)) {
 							variableNames.add(name2);
 							variableDeclarations.add(decls[j]);
 						}
@@ -40,6 +42,7 @@ public class TclNamespaceDeclaration extends TypeDeclaration {
 				}
 			}
 		}
-		return (FieldDeclaration[])variableDeclarations.toArray(new FieldDeclaration[variableDeclarations.size()]);
+		return (FieldDeclaration[]) variableDeclarations
+				.toArray(new FieldDeclaration[variableDeclarations.size()]);
 	}
 }

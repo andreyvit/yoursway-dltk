@@ -551,7 +551,6 @@ public abstract class SearchPattern extends InternalSearchPattern {
 	 * </ul>
 	 * Type arguments have the same pattern that for type patterns
 	 * 
-	 * @see #createTypePattern(String,int,int,char)
 	 */
 	private static SearchPattern createMethodOrConstructorPattern(String patternString, int limitTo, int matchRule, boolean isConstructor) {
 

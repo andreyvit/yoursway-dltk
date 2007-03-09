@@ -97,14 +97,16 @@ public class ScriptMethodCompletionProposal extends LazyScriptCompletionProposal
 	protected final boolean hasParameters() {
 		if (!fHasParametersComputed) {
 			fHasParametersComputed= true;
-			fHasParameters= computeHasParameters();
+			//fHasParameters= computeHasParameters();
+			
+			fHasParameters = false;
 		}
 		return fHasParameters;
 	}
 
-	private boolean computeHasParameters() throws IllegalArgumentException {
-		return Signature.getParameterCount(fProposal.getSignature()) > 0;
-	}
+	//private boolean computeHasParameters() throws IllegalArgumentException {
+		//return  Signature.getParameterCount(fProposal.getSignature()) > 0;
+	//}
 
 	/**
 	 * Returns <code>true</code> if the argument list should be inserted by the proposal,
@@ -171,26 +173,7 @@ public class ScriptMethodCompletionProposal extends LazyScriptCompletionProposal
 	public void setContextInformationPosition(int contextInformationPosition) {
 		fContextInformationPosition= contextInformationPosition;
 	}
-		
-	protected String computeSortString() {
-		/*
-		 * Lexicographical sort order:
-		 * 1) by relevance (done by the proposal sorter)
-		 * 2) by method name
-		 * 3) by parameter count
-		 * 4) by parameter type names
-		 */
-		char[] name= fProposal.getName();
-		char[] parameterList= Signature.toCharArray2(fProposal.getSignature(), null, null, false, false);
-		int parameterCount= Signature.getParameterCount(fProposal.getSignature()) % 10; // we don't care about insane methods with >9 parameters
-		StringBuffer buf= new StringBuffer(name.length + 2 + parameterList.length);
-		
-		buf.append(name);
-		buf.append('\0'); // separator
-		buf.append(parameterCount);
-		buf.append(parameterList);
-		return buf.toString();
-	}
+
 		
 	protected boolean isValidPrefix(String prefix) {
 		if (super.isValidPrefix(prefix))

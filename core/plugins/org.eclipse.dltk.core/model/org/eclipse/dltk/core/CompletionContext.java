@@ -54,7 +54,6 @@ public final class CompletionContext extends InternalCompletionContext {
 	 * @return signatures expected types of a potential completion proposal at the completion position or
 	 * <code>null</code> if there is no expected types.
 	 * 
-	 * @see Signature
 	 */
 	public char[][] getExpectedTypesSignatures() {
 		return this.expectedTypesSignatures;

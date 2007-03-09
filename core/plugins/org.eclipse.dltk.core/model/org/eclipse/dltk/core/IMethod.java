@@ -17,14 +17,12 @@ public interface IMethod extends IMember {
 	 * <p>
 	 * The type signatures embedded in the method signature may be either unresolved
 	 * (for source types) or resolved (for binary types), and either basic (for
-	 * basic types) or rich (for parameterized types). See {@link Signature} for
-	 * details.
+	 * basic types) or rich (for parameterized types). 
 	 * </p>
 	 *
 	 * @return the signature of this method
 	 * @exception ModelException if this element does not exist or if an
 	 *      exception occurs while accessing its corresponding resource.
-	 * @see Signature
 	 */
 	
 	String getFullyQualifiedName(String enclosingTypeSeparator);

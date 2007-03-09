@@ -43,26 +43,6 @@ public class SourceIndexerRequestor implements ISourceElementRequestor,
 	}
 
 	/**
-	 * @see ISourceElementRequestor#acceptConstructorReference(char[], int, int)
-	 */
-	public void acceptConstructorReference(char[] typeName, int argCount,
-			int sourcePosition) {
-		if (CharOperation.indexOf(Signature.C_GENERIC_START, typeName) > 0) {
-			typeName = Signature.toCharArray(Signature.getTypeErasure(
-					Signature.createTypeSignature(typeName)).toCharArray());
-		}
-		this.indexer.addConstructorReference(typeName, argCount);
-		int lastDot = CharOperation.lastIndexOf('.', typeName);
-		if (lastDot != -1) {
-			char[][] qualification = CharOperation.splitOn('.', CharOperation
-					.subarray(typeName, 0, lastDot));
-			for (int i = 0, length = qualification.length; i < length; i++) {
-				this.indexer.addNameReference(qualification[i]);
-			}
-		}
-	}
-
-	/**
 	 * @see ISourceElementRequestor#acceptFieldReference(char[], int)
 	 */
 	public void acceptFieldReference(char[] fieldName, int sourcePosition) {

@@ -492,93 +492,7 @@ public final class Signature {
 		result[index] = C_PARAM_END;
 		return result;
 	}
-
-	/**
-	 * Creates a method signature from the given parameter and return type
-	 * signatures. The encoded method signature is dot-based. This method is
-	 * equivalent to
-	 * <code>createMethodSignature(parameterTypes, returnType)</code>.
-	 * 
-	 * @param parameterTypes
-	 *            the list of parameter type signatures
-	 * @param returnType
-	 *            the return type signature
-	 * @return the encoded method signature
-	 * @see Signature#createMethodSignature(char[][], char[])
-	 */
-	public static String createMethodSignature(String[] parameterTypes) {
-		int parameterTypesLenth = parameterTypes.length;
-		char[][] parameters = new char[parameterTypesLenth][];
-		for (int i = 0; i < parameterTypesLenth; i++) {
-			parameters[i] = parameterTypes[i].toCharArray();
-		}
-		return new String(createMethodSignature(parameters));
-	}
-
-	/**
-	 * Creates a new type parameter signature with the given name and bounds.
-	 * 
-	 * @param typeParameterName
-	 *            the type parameter name
-	 * @param boundSignatures
-	 *            the signatures of associated bounds or empty array if none
-	 * @return the encoded type parameter signature
-	 * 
-	 *
-	 */
-	public static char[] createTypeParameterSignature(char[] typeParameterName,
-			char[][] boundSignatures) {
-		int length = boundSignatures.length;
-		if (length == 0) {
-			return CharOperation.append(typeParameterName, C_COLON); // param
-																		// signature
-																		// with
-																		// no
-																		// bounds
-																		// still
-																		// gets
-																		// trailing
-																		// colon
-		}
-		int boundsSize = 0;
-		for (int i = 0; i < length; i++) {
-			boundsSize += boundSignatures[i].length + 1;
-		}
-		int nameLength = typeParameterName.length;
-		char[] result = new char[nameLength + boundsSize];
-		System.arraycopy(typeParameterName, 0, result, 0, nameLength);
-		int index = nameLength;
-		for (int i = 0; i < length; i++) {
-			result[index++] = C_COLON;
-			int boundLength = boundSignatures[i].length;
-			System.arraycopy(boundSignatures[i], 0, result, index, boundLength);
-			index += boundLength;
-		}
-		return result;
-	}
-
-	/**
-	 * Creates a new type parameter signature with the given name and bounds.
-	 * 
-	 * @param typeParameterName
-	 *            the type parameter name
-	 * @param boundSignatures
-	 *            the signatures of associated bounds or empty array if none
-	 * @return the encoded type parameter signature
-	 * 
-	 *
-	 */
-	public static String createTypeParameterSignature(String typeParameterName,
-			String[] boundSignatures) {
-		int length = boundSignatures.length;
-		char[][] boundSignatureChars = new char[length][];
-		for (int i = 0; i < length; i++) {
-			boundSignatureChars[i] = boundSignatures[i].toCharArray();
-		}
-		return new String(createTypeParameterSignature(typeParameterName
-				.toCharArray(), boundSignatureChars));
-	}
-
+	
 	/**
 	 * Creates a new type signature from the given type name encoded as a
 	 * character array. The type name may contain primitive types, array types
@@ -1321,82 +1235,7 @@ public final class Signature {
 			return EMPTY;
 		return new String(qualifier);
 	}
-
-	/**
-	 * Returns package fragment of a type signature. The package fragment
-	 * separator must be '.' and the type fragment separator must be '$'.
-	 * <p>
-	 * For example:
-	 * 
-	 * <pre>
-	 * <code>
-	 *  getSignatureQualifier({'L', 'j', 'a', 'v', 'a', '.', 'u', 't', 'i', 'l', '.', 'M', 'a', 'p', '$', 'E', 'n', 't', 'r', 'y', ';'}) -&gt; {'j', 'a', 'v', 'a', '.', 'u', 't', 'i', 'l'}
-	 * </code>
-	 * </pre>
-	 * 
-	 * </p>
-	 * 
-	 * @param typeSignature
-	 *            the type signature
-	 * @return the package fragment (separators are '.')
-	 *
-	 */
-	public static char[] getSignatureQualifier(char[] typeSignature) {
-		if (typeSignature == null)
-			return CharOperation.NO_CHAR;
-
-		char[] qualifiedType = Signature.toCharArray(typeSignature);
-
-		int dotCount = 0;
-		indexFound: for (int i = 0; i < typeSignature.length; i++) {
-			switch (typeSignature[i]) {
-			case C_DOT:
-				dotCount++;
-				break;
-			case C_GENERIC_START:
-				break indexFound;
-			case C_DOLLAR:
-				break indexFound;
-			}
-		}
-
-		if (dotCount > 0) {
-			for (int i = 0; i < qualifiedType.length; i++) {
-				if (qualifiedType[i] == '.') {
-					dotCount--;
-				}
-				if (dotCount <= 0) {
-					return CharOperation.subarray(qualifiedType, 0, i);
-				}
-			}
-		}
-		return CharOperation.NO_CHAR;
-	}
-
-	/**
-	 * Returns package fragment of a type signature. The package fragment
-	 * separator must be '.' and the type fragment separator must be '$'.
-	 * <p>
-	 * For example:
-	 * 
-	 * <pre>
-	 * <code>
-	 *  getSignatureQualifier(&quot;Ljava.util.Map$Entry&quot;) -&gt; &quot;java.util&quot;
-	 * </code>
-	 * </pre>
-	 * 
-	 * </p>
-	 * 
-	 * @param typeSignature
-	 *            the type signature
-	 * @return the package fragment (separators are '.')
-	 *
-	 */
-	public static String getSignatureQualifier(String typeSignature) {
-		return new String(getSignatureQualifier(typeSignature == null ? null
-				: typeSignature.toCharArray()));
-	}
-
+	
 	/**
 	 * Returns type fragment of a type signature. The package fragment separator
 	 * must be '.' and the type fragment separator must be '$'.
@@ -1882,11 +1721,11 @@ public final class Signature {
 	 * 
 	 *
 	 */
-	public static char[] toCharArray(char[] methodSignature, char[] methodName,
-			char[][] parameterNames, boolean fullyQualifyTypeNames) {
-		return toCharArray2(methodSignature, methodName, parameterNames,
-				fullyQualifyTypeNames, false);
-	}
+//	public static char[] toCharArray(char[] methodSignature, char[] methodName,
+//			char[][] parameterNames, boolean fullyQualifyTypeNames) {
+//		return toCharArray2(methodSignature, methodName, parameterNames,
+//				fullyQualifyTypeNames, false);
+//	}
 
 	/**
 	 * Converts the given method signature to a readable form. The method
@@ -1924,44 +1763,44 @@ public final class Signature {
 	 * 
 	 *
 	 */
-	public static char[] toCharArray2(char[] methodSignature, char[] methodName,
-			char[][] parameterNames, boolean fullyQualifyTypeNames, boolean isVargArgs) {
-		int firstParen = CharOperation.indexOf(C_PARAM_START, methodSignature);
-		if (firstParen == -1) {
-			throw new IllegalArgumentException();
-		}
-
-		StringBuffer buffer = new StringBuffer(methodSignature.length + 10);
-		
-		// selector
-		if (methodName != null) {
-			buffer.append(methodName);
-		}
-
-		// parameters
-		buffer.append('(');
-		char[][] pts = getParameterTypes(methodSignature);
-		for (int i = 0, max = pts.length; i < max; i++) {
-			if (i == max - 1) {
-				appendTypeSignature(pts[i], 0, fullyQualifyTypeNames, buffer,
-						isVargArgs);
-			} else {
-				appendTypeSignature(pts[i], 0, fullyQualifyTypeNames, buffer);
-			}
-			if (parameterNames != null) {
-				buffer.append(' ');
-				buffer.append(parameterNames[i]);
-			}
-			if (i != pts.length - 1) {
-				buffer.append(',');
-				buffer.append(' ');
-			}
-		}
-		buffer.append(')');
-		char[] result = new char[buffer.length()];
-		buffer.getChars(0, buffer.length(), result, 0);
-		return result;
-	}
+//	private static char[] toCharArray2(char[] methodSignature, char[] methodName,
+//			char[][] parameterNames, boolean fullyQualifyTypeNames, boolean isVargArgs) {
+//		int firstParen = CharOperation.indexOf(C_PARAM_START, methodSignature);
+//		if (firstParen == -1) {
+//			throw new IllegalArgumentException();
+//		}
+//
+//		StringBuffer buffer = new StringBuffer(methodSignature.length + 10);
+//		
+//		// selector
+//		if (methodName != null) {
+//			buffer.append(methodName);
+//		}
+//
+//		// parameters
+//		buffer.append('(');
+//		char[][] pts = __getParameterTypes(methodSignature);
+//		for (int i = 0, max = pts.length; i < max; i++) {
+//			if (i == max - 1) {
+//				appendTypeSignature(pts[i], 0, fullyQualifyTypeNames, buffer,
+//						isVargArgs);
+//			} else {
+//				appendTypeSignature(pts[i], 0, fullyQualifyTypeNames, buffer);
+//			}
+//			if (parameterNames != null) {
+//				buffer.append(' ');
+//				buffer.append(parameterNames[i]);
+//			}
+//			if (i != pts.length - 1) {
+//				buffer.append(',');
+//				buffer.append(' ');
+//			}
+//		}
+//		buffer.append(')');
+//		char[] result = new char[buffer.length()];
+//		buffer.getChars(0, buffer.length(), result, 0);
+//		return result;
+//	}
 
 	/**
 	 * Converts the given type signature to a readable string. The signature is
@@ -2000,7 +1839,7 @@ public final class Signature {
 		int sigLength = signature.length;
 		if (sigLength == 0 || signature[0] == C_PARAM_START
 				|| signature[0] == C_GENERIC_START) {
-			return toCharArray(signature, CharOperation.NO_CHAR, null, true);
+			return new char[0]; // toCharArray(signature, CharOperation.NO_CHAR, null, true);
 		}
 
 		StringBuffer buffer = new StringBuffer(signature.length + 10);
@@ -2045,36 +1884,36 @@ public final class Signature {
 	 * 
 	 *
 	 */
-	public static char[][] getParameterTypes(char[] methodSignature) throws IllegalArgumentException {
-		try {
-			int count = getParameterCount(methodSignature);
-			char[][] result = new char[count][];
-			if (count == 0) {
-				return result;
-			}
-			int i = CharOperation.indexOf(C_PARAM_START, methodSignature);
-			if (i < 0) {
-				throw new IllegalArgumentException();
-			} else {
-				i++;
-			}
-			int t = 0;
-			for (;;) {
-				if (methodSignature[i] == C_PARAM_END) {
-					return result;
-				}
-				int e = Util.scanTypeSignature(methodSignature, i);
-				if (e < 0) {
-					throw new IllegalArgumentException();
-				}
-				result[t] = CharOperation.subarray(methodSignature, i, e + 1);
-				t++;
-				i = e + 1;
-			}
-		} catch (ArrayIndexOutOfBoundsException e) {
-			throw new IllegalArgumentException();
-		}
-	}
+//	private static char[][] __getParameterTypes(char[] methodSignature) throws IllegalArgumentException {
+//		try {
+//			int count = __getParameterCount(methodSignature);
+//			char[][] result = new char[count][];
+//			if (count == 0) {
+//				return result;
+//			}
+//			int i = CharOperation.indexOf(C_PARAM_START, methodSignature);
+//			if (i < 0) {
+//				throw new IllegalArgumentException();
+//			} else {
+//				i++;
+//			}
+//			int t = 0;
+//			for (;;) {
+//				if (methodSignature[i] == C_PARAM_END) {
+//					return result;
+//				}
+//				int e = Util.scanTypeSignature(methodSignature, i);
+//				if (e < 0) {
+//					throw new IllegalArgumentException();
+//				}
+//				result[t] = CharOperation.subarray(methodSignature, i, e + 1);
+//				t++;
+//				i = e + 1;
+//			}
+//		} catch (ArrayIndexOutOfBoundsException e) {
+//			throw new IllegalArgumentException();
+//		}
+//	}
 	/**
 	 * Returns the number of parameter types in the given method signature.
 	 *
@@ -2083,9 +1922,9 @@ public final class Signature {
 	 * @exception IllegalArgumentException if the signature is not syntactically
 	 *   correct
 	 */
-	public static int getParameterCount(String methodSignature) throws IllegalArgumentException {
-		return getParameterCount(methodSignature.toCharArray());
-	}
+//	public static int getParameterCount(String methodSignature) throws IllegalArgumentException {
+//		return __getParameterCount(methodSignature.toCharArray());
+//	}
 	
 	/**
 	 * Returns the number of parameter types in the given method signature.
@@ -2096,31 +1935,31 @@ public final class Signature {
 	 *   correct
 	 *
 	 */
-	public static int getParameterCount(char[] methodSignature) throws IllegalArgumentException {
-		try {
-			int count = 0;
-			int i = CharOperation.indexOf(C_PARAM_START, methodSignature);
-			if (i < 0) {
-				throw new IllegalArgumentException();
-			} else {
-				i++;
-			}
-			for (;;) {
-				if (methodSignature[i] == C_PARAM_END) {
-					return count;
-				}
-				int e= Util.scanTypeSignature(methodSignature, i);
-				if (e < 0) {
-					throw new IllegalArgumentException();
-				} else {
-					i = e + 1;
-				}
-				count++;
-			}
-		} catch (ArrayIndexOutOfBoundsException e) {
-			throw new IllegalArgumentException();
-		}
-	}	
+//	private static int __getParameterCount(char[] methodSignature) throws IllegalArgumentException {
+//		try {
+//			int count = 0;
+//			int i = CharOperation.indexOf(C_PARAM_START, methodSignature);
+//			if (i < 0) {
+//				throw new IllegalArgumentException();
+//			} else {
+//				i++;
+//			}
+//			for (;;) {
+//				if (methodSignature[i] == C_PARAM_END) {
+//					return count;
+//				}
+//				int e= Util.scanTypeSignature(methodSignature, i);
+//				if (e < 0) {
+//					throw new IllegalArgumentException();
+//				} else {
+//					i = e + 1;
+//				}
+//				count++;
+//			}
+//		} catch (ArrayIndexOutOfBoundsException e) {
+//			throw new IllegalArgumentException();
+//		}
+//	}	
 
 	/**
 	 * Extracts the parameter type signatures from the given method signature. 
@@ -2131,10 +1970,10 @@ public final class Signature {
 	 * @exception IllegalArgumentException if the signature is syntactically
 	 *   incorrect
 	 */
-	public static String[] getParameterTypes(String methodSignature) throws IllegalArgumentException {
-		char[][] parameterTypes = getParameterTypes(methodSignature.toCharArray());
-		return CharOperation.toStrings(parameterTypes);
-	}
+	//public static String[] getParameterTypes(String methodSignature) throws IllegalArgumentException {
+		//char[][] parameterTypes = getParameterTypes(methodSignature.toCharArray());
+		//return CharOperation.toStrings(parameterTypes);
+	//}
 	/**
 	 * Scans the given string for a type signature starting at the given index
 	 * and appends it to the given buffer, and returns the index of the last
@@ -2193,7 +2032,7 @@ public final class Signature {
 				return appendClassTypeSignature(string, start,
 						fullyQualifyTypeNames, buffer);
 			case C_TYPE_VARIABLE:
-				int e = Util.scanTypeVariableSignature(string, start);
+				int e = Util.__scanTypeVariableSignature(string, start);
 				buffer.append(string, start + 1, e - start - 1);
 				return e;		
 			
@@ -2678,11 +2517,11 @@ public final class Signature {
 	 * @see #toCharArray(char[], char[], char[][], boolean, boolean)
 	 * @return the string representation of the method signature
 	 */
-	public static String toString(String methodSignature, String methodName,
-			String[] parameterNames, boolean fullyQualifyTypeNames ) {
-		return toString(methodSignature, methodName, parameterNames,
-				fullyQualifyTypeNames, false);
-	}
+//	public static String toString(String methodSignature, String methodName,
+//			String[] parameterNames, boolean fullyQualifyTypeNames ) {
+//		return toString(methodSignature, methodName, parameterNames,
+//				fullyQualifyTypeNames, false);
+//	}
 
 	/**
 	 * Converts the given method signature to a readable string. The method
@@ -2711,20 +2550,20 @@ public final class Signature {
 	 * 
 	 *
 	 */
-	public static String toString(String methodSignature, String methodName,
-			String[] parameterNames, boolean fullyQualifyTypeNames, boolean isVarArgs) {
-		char[][] params;
-		if (parameterNames == null) {
-			params = null;
-		} else {
-			int paramLength = parameterNames.length;
-			params = new char[paramLength][];
-			for (int i = 0; i < paramLength; i++) {
-				params[i] = parameterNames[i].toCharArray();
-			}
-		}
-		return new String(toCharArray2(methodSignature.toCharArray(),
-				methodName == null ? null : methodName.toCharArray(), params,
-				fullyQualifyTypeNames, isVarArgs));
-	}
+//	public static String toString(String methodSignature, String methodName,
+//			String[] parameterNames, boolean fullyQualifyTypeNames, boolean isVarArgs) {
+//		char[][] params;
+//		if (parameterNames == null) {
+//			params = null;
+//		} else {
+//			int paramLength = parameterNames.length;
+//			params = new char[paramLength][];
+//			for (int i = 0; i < paramLength; i++) {
+//				params[i] = parameterNames[i].toCharArray();
+//			}
+//		}
+//		return new String(toCharArray2(methodSignature.toCharArray(),
+//				methodName == null ? null : methodName.toCharArray(), params,
+//				fullyQualifyTypeNames, isVarArgs));
+//	}
 }

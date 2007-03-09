@@ -8,16 +8,13 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeUtils;
 import org.eclipse.dltk.ruby.typeinference.internal.IContext;
-import org.eclipse.dltk.ruby.typeinference.internal.IReparsableElementTypeEvaluator;
 import org.eclipse.dltk.ruby.typeinference.internal.ITypeEvaluator;
-import org.eclipse.dltk.typeinference.IDependentTypedElement;
 import org.eclipse.dltk.typeinference.IKnownTypeDescriptor;
 import org.eclipse.dltk.typeinference.ITypeDescriptor;
 import org.eclipse.dltk.typeinference.MethodScope;
 import org.eclipse.dltk.typeinference.UserMethodDescriptor;
 
-public class MethodContextTypeEvaluator implements ITypeEvaluator,
-		IReparsableElementTypeEvaluator {
+public class MethodContextTypeEvaluator implements ITypeEvaluator {
 
 	private IKnownTypeDescriptor nilClass;
 
@@ -51,18 +48,4 @@ public class MethodContextTypeEvaluator implements ITypeEvaluator,
 		method.setReturnType(newReturnType);
 		return nilClass;
 	}
-
-	public ITypeDescriptor reparse(IDependentTypedElement element, IContext context) {
-		UserMethodDescriptor method = (UserMethodDescriptor) element;
-		context.enterScope(method.getScope().getParentScope());
-		ITypeDescriptor result;
-		try {
-			MethodDeclaration node = method.getNode();
-			result = context.evaluateType(node);
-		} finally {
-			context.leaveScope();
-		}
-		return result;
-	}
-
 }

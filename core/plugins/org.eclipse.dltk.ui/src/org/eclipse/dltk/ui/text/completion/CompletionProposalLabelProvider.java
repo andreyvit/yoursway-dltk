@@ -93,26 +93,6 @@ public abstract class CompletionProposalLabelProvider {
 	}
 
 	/**
-	 * Returns the display string for ascripttype signature.
-	 * 
-	 * @param typeSignature
-	 *            the type signature to create a display name for
-	 * @return the display name for <code>typeSignature</code>
-	 * @throws IllegalArgumentException
-	 *             if <code>typeSignature</code> is not a valid signature
-	 * @see Signature#toCharArray(char[])
-	 * @see Signature#getSimpleName(char[])
-	 */
-	private char[] createTypeDisplayName(char[] typeSignature)
-			throws IllegalArgumentException {
-		// char[] displayName=
-		// Signature.getSimpleName(Signature.toCharArray(typeSignature));
-
-		// return displayName;
-		return null;
-	}
-
-	/**
 	 * Creates a display string of a parameter list (without the parentheses)
 	 * for the given parameter types and names.
 	 * 
@@ -144,8 +124,6 @@ public abstract class CompletionProposalLabelProvider {
 	 * <li>the method name</li>
 	 * <li>the parameter list (see
 	 * {@link #createParameterList(CompletionProposal)})</li>
-	 * <li>the upper bound of the return type (see
-	 * {@link SignatureUtil#getUpperBound(String)})</li>
 	 * <li>the raw simple name of the declaring type</li>
 	 * </ul>
 	 * <p>

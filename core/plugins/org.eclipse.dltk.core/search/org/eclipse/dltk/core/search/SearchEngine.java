@@ -45,60 +45,6 @@ import org.eclipse.dltk.internal.core.search.TypeNameRequestorWrapper;
  * </p>
  */
 public class SearchEngine {
-
-	/**
-	 * Internal adapter class.
-	 * @deprecated marking deprecated as it uses deprecated ISearchPattern
-	 */
-	static class SearchPatternAdapter implements ISearchPattern {
-		SearchPattern pattern;
-		SearchPatternAdapter(SearchPattern pattern) {
-			this.pattern = pattern;
-		}
-	}
-
-	/**
-	 * Internal adapter class.
-	 * @deprecated marking deprecated as it uses deprecated IJavaSearchResultCollector
-	 */
-	class ResultCollectorAdapter extends SearchRequestor {
-		IDLTKSearchResultCollector resultCollector;
-		ResultCollectorAdapter(IDLTKSearchResultCollector resultCollector) {
-			this.resultCollector = resultCollector;
-		}
-		
-		public void acceptSearchMatch(SearchMatch match) throws CoreException {
-			this.resultCollector.accept(
-				match.getResource(),
-				match.getOffset(),
-				match.getOffset() + match.getLength(),
-				(IModelElement) match.getElement(),
-				match.getAccuracy()
-			);
-		}
-		
-		public void beginReporting() {
-			this.resultCollector.aboutToStart();
-		}
-		
-		public void endReporting() {
-			this.resultCollector.done();
-		}
-	}
-
-	/**
-	 * Internal adapter class.
-	 * @deprecated marking deprecated as it uses deprecated ITypeNameRequestor
-	 */
-	class TypeNameRequestorAdapter implements IRestrictedAccessTypeRequestor {
-		ITypeNameRequestor nameRequestor;
-		TypeNameRequestorAdapter(ITypeNameRequestor requestor) {
-			this.nameRequestor = requestor;
-		}
-		public void acceptType(int modifiers, char[] packageName, char[] simpleTypeName, char[][] enclosingTypeNames, String path, AccessRestriction access) {
-			nameRequestor.acceptClass(packageName, simpleTypeName, enclosingTypeNames, path);
-		}
-	}
 		
 	// Search engine now uses basic engine functionalities
 	private BasicSearchEngine basicEngine;
@@ -169,28 +115,6 @@ public class SearchEngine {
 	 */
 	public static IDLTKSearchScope createHierarchyScope(IType type, WorkingCopyOwner owner) throws ModelException {
 		return BasicSearchEngine.createHierarchyScope(type, owner);
-	}
-
-	/**
-	 * Returns a Script search scope limited to the given resources.
-	 * The Script elements resulting from a search with this scope will
-	 * have their underlying resource included in or equals to one of the given
-	 * resources.
-	 * <p>
-	 * Resources must not overlap, for example, one cannot include a folder and its children.
-	 * </p>
-	 *
-	 * @param resources the resources the scope is limited to
-	 * @return a new Script search scope
-	 * @deprecated Use {@link #createSearchScope(IModelElement[])} instead.
-	 */
-	public static IDLTKSearchScope createScriptSearchScope(IResource[] resources) {
-		int length = resources.length;
-		IModelElement[] elements = new IModelElement[length];
-		for (int i = 0; i < length; i++) {
-			elements[i] = DLTKCore.create(resources[i]);
-		}
-		return createSearchScope(elements);
 	}
 
 	/**
@@ -276,33 +200,6 @@ public class SearchEngine {
 		return BasicSearchEngine.createSearchScope(elements, includeMask);
 	}
 	
-		
-	/**
-	 * Returns a search pattern based on a given Script element. 
-	 * The pattern is used to trigger the appropriate search, and can be parameterized as follows:
-	 *
-	 * @param element the Script element the search pattern is based on
-	 * @param limitTo determines the nature of the expected matches
-	 * 	<ul>
-	 * 		<li>{@link IDLTKSearchConstants#DECLARATIONS}: will search declarations matching with the corresponding
-	 * 			element. In case the element is a method, declarations of matching methods in subtypes will also
-	 *  		be found, allowing to find declarations of abstract methods, etc.</li>
-	 *
-	 *		 <li>{@link IDLTKSearchConstants#REFERENCES}: will search references to the given element.</li>
-	 *
-	 *		 <li>{@link IDLTKSearchConstants#ALL_OCCURRENCES}: will search for either declarations or references as specified
-	 *  		above.</li>
-	 *
-	 *		 <li>{@link IDLTKSearchConstants#IMPLEMENTORS}: for types, will find all types
-	 *				which directly implement/extend a given interface.</li>
-	 *	</ul>
-	 * @return a search pattern for a Script element or <code>null</code> if the given element is ill-formed
-	 * @deprecated Use {@link SearchPattern#createPattern(IModelElement, int)} instead.
-	 */
-	public static ISearchPattern createSearchPattern(IModelElement element, int limitTo) {
-		return new SearchPatternAdapter(SearchPattern.createPattern(element, limitTo));
-	}
-
 	/**
 	 * Create a type name match on a given type with specific modifiers.
 	 * 
@@ -330,65 +227,6 @@ public class SearchEngine {
 	 */
 	public static SearchParticipant getDefaultSearchParticipant() {
 		return BasicSearchEngine.getDefaultSearchParticipant();
-	}
-
-	/**
-	 * Searches for the given Script element.
-	 *
-	 * @param workspace the workspace
-	 * @param element the Script element to be searched for
-	 * @param limitTo one of the following values:
-	 *	<ul>
-	 *	  <li>{@link IDLTKSearchConstants#DECLARATIONS}: search 
-	 *		  for declarations only </li>
-	 *	  <li>{@link IDLTKSearchConstants#REFERENCES}: search 
-	 *		  for all references </li>
-	 *	  <li>{@link IDLTKSearchConstants#ALL_OCCURRENCES}: search 
-	 *		  for both declarations and all references </li>
-	 *	  <li>{@link IDLTKSearchConstants#IMPLEMENTORS}: for types, will find all types
-	 *				which directly implement/extend a given interface.</li>
-	 * 	</ul>
-	 * @param scope the search result has to be limited to the given scope
-	 * @param resultCollector a callback object to which each match is reported
-	 * @exception ModelException if the search failed. Reasons include:
-	 *	<ul>
-	 *		<li>the element doesn't exist</li>
-	 *		<li>the buildpath is incorrectly set</li>
-	 *	</ul>
-	 * @deprecated Use {@link #search(SearchPattern, SearchParticipant[], IJavaSearchScope, SearchRequestor, IProgressMonitor)} instead.
-	 */
-	public void search(IWorkspace workspace, IModelElement element, int limitTo, IDLTKSearchScope scope, IDLTKSearchResultCollector resultCollector) throws ModelException {
-		search(workspace, createSearchPattern(element, limitTo), scope, resultCollector);
-	}
-
-	/**
-	 * Searches for matches of a given search pattern. Search patterns can be created using helper
-	 * methods (from a String pattern or a Script element) and encapsulate the description of what is
-	 * being searched (for example, search method declarations in a case sensitive way).
-	 *
-	 * @param workspace the workspace
-	 * @param searchPattern the pattern to be searched for
-	 * @param scope the search result has to be limited to the given scope
-	 * @param resultCollector a callback object to which each match is reported
-	 * @exception ModelException if the search failed. Reasons include:
-	 *	<ul>
-	 *		<li>the buildpath is incorrectly set</li>
-	 *	</ul>
-	 * @deprecated Use {@link  #search(SearchPattern, SearchParticipant[], IJavaSearchScope, SearchRequestor, IProgressMonitor)} instead.
-	 */
-	public void search(IWorkspace workspace, ISearchPattern searchPattern, IDLTKSearchScope scope, IDLTKSearchResultCollector resultCollector) throws ModelException {
-		try {
-			search(
-				((SearchPatternAdapter)searchPattern).pattern, 
-				new SearchParticipant[] {getDefaultSearchParticipant()}, 
-				scope, 
-				new ResultCollectorAdapter(resultCollector), 
-				resultCollector.getProgressMonitor());
-		} catch (CoreException e) {
-			if (e instanceof ModelException)
-				throw (ModelException) e;
-			throw new ModelException(e);
-		}
 	}
 	
 	/**
@@ -733,65 +571,6 @@ public class SearchEngine {
 			progressMonitor);
 	}
 
-	/**
-	 * Searches for all top-level types and member types in the given scope.
-	 * The search can be selecting specific types (given a package or a type name
-	 * prefix and match modes). 
-	 * 
-	 * @param packageName the full name of the package of the searched types, or a prefix for this
-	 *						package, or a wild-carded string for this package.
-	 * @param typeName the dot-separated qualified name of the searched type (the qualification include
-	 *					the enclosing types if the searched type is a member type), or a prefix
-	 *					for this type, or a wild-carded string for this type.
-	 * @param matchRule one of
-	 * <ul>
-	 *		<li>{@link SearchPattern#R_EXACT_MATCH} if the package name and type name are the full names
-	 *			of the searched types.</li>
-	 *		<li>{@link SearchPattern#R_PREFIX_MATCH} if the package name and type name are prefixes of the names
-	 *			of the searched types.</li>
-	 *		<li>{@link SearchPattern#R_PATTERN_MATCH} if the package name and type name contain wild-cards.</li>
-	 * </ul>
-	 * combined with {@link SearchPattern#R_CASE_SENSITIVE},
-	 *   e.g. {@link SearchPattern#R_EXACT_MATCH} | {@link SearchPattern#R_CASE_SENSITIVE} if an exact and case sensitive match is requested, 
-	 *   or {@link SearchPattern#R_PREFIX_MATCH} if a prefix non case sensitive match is requested.
-	 * @param searchFor one of
-	 * <ul>
-	 * 		<li>{@link IDLTKSearchConstants#CLASS} if searching for classes only</li>
-	 * 		<li>{@link IDLTKSearchConstants#INTERFACE} if searching for interfaces only</li>
-	 * 		<li>{@link IDLTKSearchConstants#TYPE} if searching for both classes and interfaces</li>
-	 * </ul>
-	 * @param scope the scope to search in
-	 * @param nameRequestor the requestor that collects the results of the search
-	 * @param waitingPolicy one of
-	 * <ul>
-	 *		<li>{@link IDLTKSearchConstants#FORCE_IMMEDIATE_SEARCH} if the search should start immediately</li>
-	 *		<li>{@link IDLTKSearchConstants#CANCEL_IF_NOT_READY_TO_SEARCH} if the search should be cancelled if the
-	 *			underlying indexer has not finished indexing the workspace</li>
-	 *		<li>{@link IDLTKSearchConstants#WAIT_UNTIL_READY_TO_SEARCH} if the search should wait for the
-	 *			underlying indexer to finish indexing the workspace</li>
-	 * </ul>
-	 * @param progressMonitor the progress monitor to report progress to, or <code>null</code> if no progress
-	 *							monitor is provided
-	 * @exception ModelException if the search failed. Reasons include:
-	 *	<ul>
-	 *		<li>the buildpath is incorrectly set</li>
-	 *	</ul>
-	 *
-	 *@deprecated Use {@link #searchAllTypeNames(char[], char[], int, int, IJavaSearchScope, TypeNameRequestor, int, IProgressMonitor)} instead
-	 */
-	public void searchAllTypeNames(
-		final char[] packageName, 
-		final char[] typeName,
-		final int matchRule, 
-		int searchFor, 
-		IDLTKSearchScope scope, 
-		final ITypeNameRequestor nameRequestor,
-		int waitingPolicy,
-		IProgressMonitor progressMonitor)  throws ModelException {
-		
-		TypeNameRequestorAdapter requestorAdapter = new TypeNameRequestorAdapter(nameRequestor);
-		this.basicEngine.searchAllTypeNames(packageName, SearchPattern.R_EXACT_MATCH, typeName, matchRule, searchFor, scope, requestorAdapter, waitingPolicy, progressMonitor);
-	}
 
 	/**
 	 * Searches for all declarations of the fields accessed in the given element.

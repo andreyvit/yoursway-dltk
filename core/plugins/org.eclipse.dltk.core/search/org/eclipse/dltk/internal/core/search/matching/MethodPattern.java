@@ -111,10 +111,7 @@ public class MethodPattern extends DLTKSearchPattern implements IIndexConstants 
 			char[] declaringSimpleName, String declaringSignature, char[][] arguments, int matchRule) {
 		this(findDeclarations, findReferences, selector, declaringQualification, declaringSimpleName, (IMethod)null, matchRule);
 		// Store type signature and arguments for declaring type
-		if (declaringSignature != null) {
-			typeSignatures = Util.splitTypeLevelsSignature(declaringSignature);
-			// setTypeArguments(Util.getAllTypeArguments(typeSignatures));
-		}		
+		
 		// Store type signatures and arguments for method
 		methodArguments = arguments;
 	}

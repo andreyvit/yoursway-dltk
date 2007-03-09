@@ -32,17 +32,4 @@ public final class TypeProposalInfo extends MemberProposalInfo {
 	public TypeProposalInfo(IDLTKProject project, CompletionProposal proposal) {
 		super(project, proposal);
 	}
-
-	/**
-	 * Resolves the member described by the receiver and returns it if found.
-	 * Returns <code>null</code> if no corresponding member can be found.
-	 *
-	 * @return the resolved member or <code>null</code> if none is found
-	 * @throws ModelException if accessing thescriptmodel fails
-	 */
-	protected IMember resolveMember() throws ModelException {
-		char[] signature= fProposal.getSignature();
-		String typeName= SignatureUtil.stripSignatureToFQN(String.valueOf(signature));
-		return fScriptProject.findType(typeName);
-	}
 }

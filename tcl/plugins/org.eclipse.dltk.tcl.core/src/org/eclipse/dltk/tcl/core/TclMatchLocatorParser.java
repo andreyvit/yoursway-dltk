@@ -40,7 +40,8 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 	}
 
 	public ModuleDeclaration parse(PossibleMatch possibleMatch) {
-		ModuleDeclaration module = parser.parse(possibleMatch.getSourceContents());
+		ModuleDeclaration module = parser.parse(possibleMatch
+				.getSourceContents());
 		module.rebuild();
 		return module;
 	}
@@ -61,7 +62,8 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 				MethodDeclaration method = methods[i];
 				if (method instanceof MethodDeclaration) {
 					MethodDeclaration methodDeclaration = method;
-					locator.match(processMethod(methodDeclaration), getNodeSet());
+					locator.match(processMethod(methodDeclaration),
+							getNodeSet());
 					parseBodies(methodDeclaration);
 				}
 			}
@@ -108,7 +110,8 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 				MethodDeclaration method = methods[i];
 				if (method instanceof MethodDeclaration) {
 					MethodDeclaration methodDeclaration = method;
-					locator.match(processMethod(methodDeclaration), getNodeSet());
+					locator.match(processMethod(methodDeclaration),
+							getNodeSet());
 					parseBodies(methodDeclaration);
 				}
 			}
@@ -146,8 +149,9 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 			PatternLocator locator = getPatternLocator();
 			TclStatement statement = (TclStatement) node;
 			// process variables.
-			FieldDeclaration[] fields = TclParseUtils.returnVariableDeclarations(statement);
-			for( int k = 0; k < fields.length; ++k ) {
+			FieldDeclaration[] fields = TclParseUtils
+					.returnVariableDeclarations(statement);
+			for (int k = 0; k < fields.length; ++k) {
 				locator.match(fields[k], getNodeSet());
 			}
 			processReferences(statement);
@@ -170,7 +174,11 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 					String[] ns = name.split("::");
 					for (int i = 0; i < ns.length; ++i) {
 						if (ns[i].length() > 0) {
-							locator.match((SimpleReference) new SimpleReference(commandId.sourceStart(), commandId.sourceEnd(), ns[i]), getNodeSet());
+							locator.match(
+									(SimpleReference) new SimpleReference(
+											commandId.sourceStart(), commandId
+													.sourceEnd(), ns[i]),
+									getNodeSet());
 						}
 					}
 				}
@@ -194,7 +202,8 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 		}
 		for (int j = 1; j < statement.getCount(); ++j) {
 			if (statement.getAt(j) instanceof TclExecuteExpression) {
-				TclExecuteExpression expr = (TclExecuteExpression) statement.getAt(j);
+				TclExecuteExpression expr = (TclExecuteExpression) statement
+						.getAt(j);
 				List exprs = expr.parseExpression();
 				for (int i = 0; i < exprs.size(); ++i) {
 					if (exprs.get(i) instanceof TclStatement) {
@@ -207,14 +216,12 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 
 	private void processBlock(Expression e) {
 		TclBlockExpression block = (TclBlockExpression) e;
-		List/* < Statement > */code = null;
-
-			code = block.parseBlock(block.sourceStart() + 1);
-			for (int i = 0; i < code.size(); ++i) {
-				if (code.get(i) instanceof TclStatement) {
-					processReferences((TclStatement) code.get(i));
-				}
+		List code = block.parseBlock(block.sourceStart() + 1);
+		for (int i = 0; i < code.size(); ++i) {
+			if (code.get(i) instanceof TclStatement) {
+				processReferences((TclStatement) code.get(i));
 			}
+		}
 	}
 
 	/**

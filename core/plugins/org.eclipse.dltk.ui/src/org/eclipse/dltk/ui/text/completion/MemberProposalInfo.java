@@ -64,15 +64,4 @@ public abstract class MemberProposalInfo extends ProposalInfo {
 		fModelElementResolved = true;
 		fElement = element;
 	}
-
-	/**
-	 * Resolves the member described by the receiver and returns it if found.
-	 * Returns <code>null</code> if no corresponding member can be found.
-	 * 
-	 * @return the resolved member or <code>null</code> if none is found
-	 * @throws ModelException
-	 *             if accessing the script model fails
-	 */
-	protected abstract IMember resolveMember() throws ModelException;
-
 }

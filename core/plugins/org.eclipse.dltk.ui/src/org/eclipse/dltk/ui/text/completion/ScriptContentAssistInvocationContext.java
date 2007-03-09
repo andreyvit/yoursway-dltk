@@ -223,9 +223,4 @@ public abstract class ScriptContentAssistInvocationContext extends ContentAssist
 	}
 
 	protected abstract CompletionProposalLabelProvider createLabelProvider();
-	
-	/*
-	 * Implementation note: There is no need to override hashCode and equals, as we only add cached
-	 * values shared across one assist invocation.
-	 */
 }
