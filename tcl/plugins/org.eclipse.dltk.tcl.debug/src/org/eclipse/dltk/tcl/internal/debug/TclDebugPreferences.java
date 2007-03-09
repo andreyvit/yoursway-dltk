@@ -15,12 +15,12 @@ public class TclDebugPreferences {
 		return Platform.getPreferencesService().getRootNode().node(
 				InstanceScope.SCOPE).node(id);
 	}
-	
-	public static void save(){
+
+	public static void save() {
 		try {
 			getNode().flush();
 		} catch (BackingStoreException e) {
-			//TODO: add logging
+			// TODO: add logging
 		}
 	}
 

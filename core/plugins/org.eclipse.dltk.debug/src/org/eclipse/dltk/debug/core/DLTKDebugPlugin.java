@@ -7,10 +7,6 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.dltk.debug.internal.core.model.DbgpService;
 import org.osgi.framework.BundleContext;
 
-/**
- * The plugin class for the DLTK Debug Model plug-in.
- */
-
 public class DLTKDebugPlugin extends Plugin {
 
 	public static final String PLUGIN_ID = "org.eclipse.dltk.debug";
@@ -34,15 +30,20 @@ public class DLTKDebugPlugin extends Plugin {
 
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
-		DbgpService.shutdown();
+		
+		//TODO: stop
 	}
 
-	public IDbgpService getDbgpService() {
-		return DbgpService.getInstance();
+	public IDbgpService createDbgpService() throws Exception {
+		return DbgpService.getService();
 	}
 
-	public IDbgpService getDbgpService(int port) {
-		return DbgpService.getInstance(port);
+	public IDbgpService creaeDbgpService(int port) throws Exception {
+		return DbgpService.getService(port);
+	}
+	
+	public IDbgpService createDbgpService(int portBegin, int portEnd) throws Exception {
+		return DbgpService.getService(portBegin, portEnd);
 	}
 
 	// Logging

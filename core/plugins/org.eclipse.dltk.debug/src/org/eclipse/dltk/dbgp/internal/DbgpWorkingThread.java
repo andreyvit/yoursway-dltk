@@ -1,6 +1,5 @@
 package org.eclipse.dltk.dbgp.internal;
 
-import org.eclipse.dltk.core.DLTKCore;
 
 public abstract class DbgpWorkingThread extends DbgpTermination {
 	private Thread thread;
@@ -20,11 +19,7 @@ public abstract class DbgpWorkingThread extends DbgpTermination {
 				}
 			});
 
-			thread.start();
-
-			if (DLTKCore.DEBUG) {
-				System.out.println("Starting thread for: " + getClass());
-			}
+			thread.start();			
 		} else {
 			throw new IllegalStateException("Thread already started");
 		}
@@ -32,18 +27,10 @@ public abstract class DbgpWorkingThread extends DbgpTermination {
 
 	// IDbgpTerminate
 	public void requestTermination() {
-		if (DLTKCore.DEBUG) {
-			System.out.println("DbgpWorkingThread.requestTerminate(): "
-					+ getClass());
-		}
 		thread.interrupt();
 	}
 
-	public void waitTerminated() throws InterruptedException {
-		if (DLTKCore.DEBUG) {
-			System.out.println("DbgpWorkingThread.waitTerminated(): "
-					+ getClass());
-		}
+	public void waitTerminated() throws InterruptedException {	
 		thread.join();
 	}
 

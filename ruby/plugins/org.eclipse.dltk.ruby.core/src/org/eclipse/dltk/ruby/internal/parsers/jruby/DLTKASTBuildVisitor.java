@@ -1587,7 +1587,7 @@ public class DLTKASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
-	public Instruction visitVCallNode(VCallNode iVisited) {
+	public Instruction visitVCallNode(VCallNode iVisited) {		
 		String methodName = iVisited.getMethodName();
 		// System.out.println("DLTKASTBuildVisitor.visitVCallNode(" + methodName
 		// + ")");

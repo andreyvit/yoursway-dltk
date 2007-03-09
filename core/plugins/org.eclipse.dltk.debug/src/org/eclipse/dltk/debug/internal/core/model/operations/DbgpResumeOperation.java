@@ -15,5 +15,4 @@ public class DbgpResumeOperation extends DbgpOperation {
 	protected void process() throws DbgpException {
 		callFinish(getCore().run(getContinuationHandler()));
 	}
-
 }

@@ -69,16 +69,20 @@ public abstract class AbstractInterpreterDebugger extends
 	}
 
 	protected String addDebugTarget(ILaunch launch,
-			ILaunchConfiguration configuration) throws CoreException {
+			ILaunchConfiguration configuration, IDbgpService dbgpService)
+			throws CoreException {
+
+		// Session id
 		String sessionId = configuration.getAttribute(
 				IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
 				(String) null);
+		
 		if (sessionId == null) {
 			sessionId = generateSessionId();
 		}
 
-		IScriptDebugTarget target = new ScriptDebugTarget(sessionId, launch,
-				null);
+		IScriptDebugTarget target = new ScriptDebugTarget(dbgpService,
+				sessionId, launch, null);
 		launch.addDebugTarget(target);
 
 		return sessionId;
@@ -88,29 +92,31 @@ public abstract class AbstractInterpreterDebugger extends
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 
 		final ILaunchConfiguration config = launch.getLaunchConfiguration();
-		final String sessionId = addDebugTarget(launch, config);
+
+		IDbgpService dbgpService = null;
+
+		try {
+			int port = config.getAttribute(
+					IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_PORT, -1);
+
+			if (port == -1) {
+				dbgpService = DLTKDebugPlugin.getDefault().createDbgpService();
+			} else {
+				dbgpService = DLTKDebugPlugin.getDefault().creaeDbgpService(
+						port);
+			}
+		} catch (Exception e) {
+			abort(DLTKLaunchingPlugin.ID_PLUGIN, "Dbgp service not available",
+					null, DLTKLaunchingPlugin.DBGP_SERVICE_NOT_AVAILABLE);
+		}
+
+		final String sessionId = addDebugTarget(launch, config, dbgpService);
+		final int port = dbgpService.getPort();
 
 		try {
 			boolean remoteDebugging = config.getAttribute(
 					IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_REMOTE,
 					false);
-
-			// Port
-			IDbgpService dbgpService = null;
-			int port = config.getAttribute(
-					IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_PORT, -1);
-			if (port == -1) {
-				dbgpService = DLTKDebugPlugin.getDefault().getDbgpService();
-			} else {
-				dbgpService = DLTKDebugPlugin.getDefault().getDbgpService(port);
-			}
-
-			// Checking if dbgp service started
-			if (!dbgpService.available()) {
-				abort(DLTKLaunchingPlugin.ID_PLUGIN,
-						"Dbgp service not available", null,
-						DLTKLaunchingPlugin.DBGP_SERVICE_NOT_AVAILABLE);
-			}
 
 			// Starting debugging
 			final String scriptFile = configuration.getScriptToLaunch();
@@ -118,8 +124,6 @@ public abstract class AbstractInterpreterDebugger extends
 			final String host = "localhost";
 
 			final String[] args = configuration.getProgramArguments();
-
-			port = dbgpService.getPort();
 
 			String[] commandLine = getCommandLine(sessionId, host, port,
 					scriptFile, args, shell);
@@ -163,7 +167,6 @@ public abstract class AbstractInterpreterDebugger extends
 			}
 		} catch (CoreException e) {
 			launch.terminate();
-
 			throw e;
 		}
 

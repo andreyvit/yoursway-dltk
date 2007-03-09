@@ -18,7 +18,7 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 
 	// Helper methods
 	private interface IThreadBoolean {
-		boolean get(IThread thread);		
+		boolean get(IThread thread);
 	}
 
 	private boolean getThreadBoolean(IThreadBoolean b) {
@@ -47,8 +47,6 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 
 	private ScriptDebugTarget target;
 
-	private String acceptId;
-
 	protected void fireThreadAccepted(IScriptThread thread, boolean first) {
 		Object[] list = listeners.getListeners();
 		for (int i = 0; i < list.length; ++i) {
@@ -76,10 +74,6 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 		return waitingForThreads;
 	}
 
-	public String getAcceptId() {
-		return acceptId;
-	}
-
 	public boolean hasThreads() {
 		synchronized (threads) {
 			return !threads.isEmpty();
@@ -92,25 +86,12 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 		}
 	}
 
-	protected void register() {
-		DLTKDebugPlugin.getDefault().getDbgpService().registerAcceptor(
-				acceptId, this);
-	}
-
-	protected void unregister() {
-		DLTKDebugPlugin.getDefault().getDbgpService().unregisterAcceptor(
-				acceptId);
-	}
-
-	public ScriptThreadManager(ScriptDebugTarget target, String acceptId) {
-		if (target == null || acceptId == null) {
+	public ScriptThreadManager(ScriptDebugTarget target) {
+		if (target == null) {
 			throw new IllegalArgumentException();
 		}
 
 		this.target = target;
-		this.acceptId = acceptId;
-
-		register();
 	}
 
 	// IDbgpThreadAcceptor
@@ -120,10 +101,10 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 				ScriptThread thread = new ScriptThread(target, session, this);
 				threads.add(thread);
 
-				boolean first = waitingForThreads;
+				boolean isFirstThread = waitingForThreads;
 				waitingForThreads = false;
 
-				fireThreadAccepted(thread, first);
+				fireThreadAccepted(thread, isFirstThread);
 
 				DebugEventHelper.fireCreateEvent(thread);
 
@@ -135,13 +116,16 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 		}
 	}
 
+	public void acceptDbgpThreadNotUnavailable() {
+
+	}
+
 	public void terminateThread(IScriptThread thread) {
 		synchronized (threads) {
 			threads.remove(thread);
 			DebugEventHelper.fireTerminateEvent(thread);
 
 			if (!hasThreads()) {
-				unregister();
 				fireAllThreadsTerminated();
 			}
 		}
@@ -149,12 +133,12 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 
 	// ITerminate
 	public boolean canTerminate() {
-				
+
 		synchronized (threads) {
 			IThread[] ths = getThreads();
 
 			if (ths.length == 0) {
-				if (waitingForThreads){
+				if (waitingForThreads) {
 					return true;
 				} else {
 					return false;

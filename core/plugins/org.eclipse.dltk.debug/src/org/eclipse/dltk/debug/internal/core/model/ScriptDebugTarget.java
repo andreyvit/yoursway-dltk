@@ -17,6 +17,7 @@ import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+import org.eclipse.dltk.debug.core.IDbgpService;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTargetListener;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
@@ -43,15 +44,22 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	private DbgpBreakpointManager breakpointManager;
 
-	public ScriptDebugTarget(String id, ILaunch launch, IProcess process)
-			throws CoreException {
+	private IDbgpService dbgpService;
+	private String dbgpId;
+
+	public ScriptDebugTarget(IDbgpService dbgpService, String id,
+			ILaunch launch, IProcess process) throws CoreException {
 
 		this.listeners = new ListenerList();
 
 		this.process = process;
 		this.launch = launch;
 
-		this.threadManager = new ScriptThreadManager(this, id);
+		this.threadManager = new ScriptThreadManager(this);
+		this.dbgpId = id;
+		this.dbgpService = dbgpService;
+		this.dbgpService.registerAcceptor(this.dbgpId, this.threadManager);
+
 		this.disconnected = false;
 
 		breakpointManager = new DbgpBreakpointManager(this.threadManager);
@@ -122,6 +130,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	public void terminate() throws DebugException {
+		dbgpService.unregisterAcceptor(dbgpId);		
+		dbgpService.shutdown();
+		
 		threadManager.terminate();
 
 		if (waitTermianted()) {
@@ -242,8 +253,8 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		}
 	}
 
-	public String toString() {		
-		return "Debugging engine (id = " + threadManager.getAcceptId() + ")";
+	public String toString() {
+		return "Debugging engine (id = " + this.dbgpId + ")";
 	}
 
 	// IScriptDebugTarget

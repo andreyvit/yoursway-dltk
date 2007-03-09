@@ -49,17 +49,17 @@ public class RubySourceElementParser implements ISourceElementParser {
 		return moduleDeclaration;
 	}
 
-	public static ModuleDeclaration parseModule(ISourceModuleInfo astCashe,
+	public static ModuleDeclaration parseModule(ISourceModuleInfo astCache,
 			String content, IProblemReporter problemReporter ) {
 		ModuleDeclaration moduleDeclaration = null;
-		if( astCashe != null ) {
-			moduleDeclaration = (ModuleDeclaration)astCashe.get(AST);
+		if( astCache != null ) {
+			moduleDeclaration = (ModuleDeclaration)astCache.get(AST);
 		}
 		if( moduleDeclaration == null ) {
 			JRubySourceParser sourceParser = new JRubySourceParser(problemReporter);
 			moduleDeclaration = sourceParser.parse(content);
-			if( moduleDeclaration != null && astCashe != null ) {
-				astCashe.put(AST, moduleDeclaration );
+			if( moduleDeclaration != null && astCache != null ) {
+				astCache.put(AST, moduleDeclaration );
 			}
 		}
 		return moduleDeclaration;
