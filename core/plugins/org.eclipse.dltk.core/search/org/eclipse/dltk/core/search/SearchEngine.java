@@ -12,19 +12,14 @@ package org.eclipse.dltk.core.search;
 
 import java.util.List;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
-import org.eclipse.dltk.internal.compiler.env.AccessRestriction;
-import org.eclipse.dltk.internal.core.search.IRestrictedAccessTypeRequestor;
 import org.eclipse.dltk.internal.core.search.TypeNameMatchRequestorWrapper;
 import org.eclipse.dltk.internal.core.search.TypeNameRequestorWrapper;
 

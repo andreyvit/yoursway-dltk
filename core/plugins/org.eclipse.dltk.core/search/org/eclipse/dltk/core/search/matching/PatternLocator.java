@@ -33,7 +33,6 @@ import org.eclipse.dltk.internal.core.search.matching.InternalSearchPattern;
 import org.eclipse.dltk.internal.core.search.matching.MatchingNodeSet;
 import org.eclipse.dltk.internal.core.search.matching.MethodLocator;
 import org.eclipse.dltk.internal.core.search.matching.MethodPattern;
-import org.eclipse.dltk.internal.core.search.matching.SuperTypeReferencePattern;
 import org.eclipse.dltk.internal.core.search.matching.TypeDeclarationLocator;
 import org.eclipse.dltk.internal.core.search.matching.TypeDeclarationPattern;
 import org.eclipse.dltk.internal.core.search.matching.TypeReferenceLocator;

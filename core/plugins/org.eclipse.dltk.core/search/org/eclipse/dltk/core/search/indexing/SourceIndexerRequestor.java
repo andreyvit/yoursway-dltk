@@ -14,7 +14,6 @@ import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.ISourceElementRequestor.MethodInfo;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.internal.core.search.processing.JobManager;
 
 /**

@@ -17,7 +17,6 @@ import org.eclipse.dltk.compiler.IProblem;
 import org.eclipse.dltk.core.CompletionContext;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;
-import org.eclipse.dltk.core.Signature;
 
 
 public class CompletionTestsRequestor2 extends CompletionRequestor {
@@ -269,10 +268,8 @@ public class CompletionTestsRequestor2 extends CompletionRequestor {
 		}
 		buffer.append("]{");
 		buffer.append(proposal.getCompletion() == null ? NULL_LITERAL : proposal.getCompletion());
+			  
 		buffer.append(", ");
-		buffer.append(proposal.getDeclarationSignature() == null ? NULL_LITERAL : proposal.getDeclarationSignature());  
-		buffer.append(", ");
-		buffer.append(proposal.getSignature() == null ? NULL_LITERAL : proposal.getSignature());
 		if(this.showUniqueKeys) {
 			buffer.append(", ");
 			buffer.append(proposal.getDeclarationKey() == null ? NULL_LITERAL : proposal.getDeclarationKey());

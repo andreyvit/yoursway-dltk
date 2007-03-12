@@ -117,10 +117,7 @@ public abstract class CompletionEngine extends Engine implements ICompletionEngi
 		buffer.append("{\n");//$NON-NLS-1$
 		buffer.append("\tCompletion[").append(proposal.getCompletion() == null ? "null".toCharArray() : proposal.getCompletion()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		buffer
-				.append("\tDeclarationSignature[").append(proposal.getDeclarationSignature() == null ? "null".toCharArray() : proposal.getDeclarationSignature()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		buffer
 				.append("\tDeclarationKey[").append(proposal.getDeclarationKey() == null ? "null".toCharArray() : proposal.getDeclarationKey()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		buffer.append("\tSignature[").append(proposal.getSignature() == null ? "null".toCharArray() : proposal.getSignature()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		buffer.append("\tKey[").append(proposal.getKey() == null ? "null".toCharArray() : proposal.getKey()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		// buffer.append("\tDeclarationPackage[").append(proposal.getDeclarationPackageName()
 		// == null ? "null".toCharArray() :
@@ -367,19 +364,7 @@ public abstract class CompletionEngine extends Engine implements ICompletionEngi
 							}
 							proposal.setParameterNames(args);
 						}
-						if (kind==CompletionProposal.METHOD_REF){
-							StringBuffer sig=new StringBuffer();
-							sig.append(method.getElementName());
-							sig.append('(');
-							if (arguments!=null)
-							for (int a=0;a<arguments.length;a++){
-								sig.append('L');
-								sig.append("Object");
-								sig.append(';');								
-							}
-							sig.append(')');
-							proposal.setSignature(sig.toString().toCharArray());
-						}
+						
 						proposal.setName(name);
 						proposal.setCompletion(name);
 						// proposal.setFlags(Flags.AccDefault);
