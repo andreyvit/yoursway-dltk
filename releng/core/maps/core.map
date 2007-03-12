@@ -7,15 +7,15 @@ fragment@org.eclipse.ant.optional.junit=v20050226,:pserver:anonymous@dev.eclipse
 
 !*** Default entries
 
-feature@org.eclipse.dltk.core.sdk=HEAD,:pserver:anonymous@eclipsedltk.org:/opt/org.eclipse.dltk,,org.eclipse.dltk/core/features/org.eclipse.dltk.core-feature/org.eclipse.dltk.core.sdk
+feature@org.eclipse.dltk.core.sdk=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology/org.eclipse.dltk,,org.eclipse.dltk/core/features/org.eclipse.dltk.core-feature/org.eclipse.dltk.core.sdk
 
 !*** DLTK plugins, features and fragments
 
-plugin@org.eclipse.dltk.core=HEAD,:pserver:anonymous@eclipsedltk.org:/opt/org.eclipse.dltk,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.core
-plugin@org.eclipse.dltk.console=HEAD,:pserver:anonymous@eclipsedltk.org:/opt/org.eclipse.dltk,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.console
-plugin@org.eclipse.dltk.launching=HEAD,:pserver:anonymous@eclipsedltk.org:/opt/org.eclipse.dltk,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.launching
-plugin@org.eclipse.dltk.debug=HEAD,:pserver:anonymous@eclipsedltk.org:/opt/org.eclipse.dltk,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.debug
+plugin@org.eclipse.dltk.core=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology/org.eclipse.dltk,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.core
+plugin@org.eclipse.dltk.console=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology/org.eclipse.dltk,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.console
+plugin@org.eclipse.dltk.launching=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology/org.eclipse.dltk,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.launching
+plugin@org.eclipse.dltk.debug=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology/org.eclipse.dltk,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.debug
 
-plugin@org.eclipse.dltk.console.ui=HEAD,:pserver:anonymous@eclipsedltk.org:/opt/org.eclipse.dltk,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.console.ui
-plugin@org.eclipse.dltk.ui=HEAD,:pserver:anonymous@eclipsedltk.org:/opt/org.eclipse.dltk,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.ui
-plugin@org.eclipse.dltk.debug.ui=HEAD,:pserver:anonymous@eclipsedltk.org:/opt/org.eclipse.dltk,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.debug.ui
+plugin@org.eclipse.dltk.console.ui=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology/org.eclipse.dltk,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.console.ui
+plugin@org.eclipse.dltk.ui=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology/org.eclipse.dltk,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.ui
+plugin@org.eclipse.dltk.debug.ui=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology/org.eclipse.dltk,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.debug.ui
