@@ -1,5 +1,5 @@
 # !/bin/sh
-# $Id: buildUpdate.sh,v 1.6 2007/03/12 11:37:55 aplatov Exp $
+# $Id: buildUpdate.sh,v 1.7 2007/03/12 11:40:40 aplatov Exp $
 
 # buildUpdate.sh script to generate Update Managers jars & promote them to download.eclipse
 # Copyright \(c\) 2004-2006, IBM. Nick Boldt. codeslave\(at\)ca.ibm.com
@@ -245,7 +245,7 @@ cvs -d $CVSRep $quietCVS co -P -d org.eclipse.releng.generators $relengGenerator
 if [[ $sub = "ocl" ]] || [[ $sub = "uml2-ocl" ]] || [[ $sub = "eodm" ]]; then
 	updatesCVSPath=www/modeling/mdt/updates; # www/modeling/mdt, not www/emft/updates
 else
-	updatesCVSPath=www/dltk/updates
+	updatesCVSPath=www/dltk/updates/1.0
 fi
 echo "[umj-co] [3] Checking out $updatesCVSPath/* from $wwwCVSRep"
 cd $buildDir/../1
