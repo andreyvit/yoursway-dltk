@@ -1,5 +1,5 @@
 # !/bin/sh
-# $Id: buildUpdate.sh,v 1.5 2007/03/12 11:35:07 aplatov Exp $
+# $Id: buildUpdate.sh,v 1.6 2007/03/12 11:37:55 aplatov Exp $
 
 # buildUpdate.sh script to generate Update Managers jars & promote them to download.eclipse
 # Copyright \(c\) 2004-2006, IBM. Nick Boldt. codeslave\(at\)ca.ibm.com
@@ -176,7 +176,7 @@ fi
 
 #TODO: move into modeling
 CVSRep=":ext:"$user"@"$eclipseServerFullName":/cvsroot/technology"
-wwwCVSRep=":ext:"$user"@"$eclipseServerFullName":/cvsroot/technology"
+wwwCVSRep=":ext:"$user"@"$eclipseServerFullName":/cvsroot/org.eclipse"
 wwwRemote=$user"@"$downloadServerFullName
 
 # temp folder
@@ -247,9 +247,8 @@ if [[ $sub = "ocl" ]] || [[ $sub = "uml2-ocl" ]] || [[ $sub = "eodm" ]]; then
 else
 	updatesCVSPath=www/dltk/updates
 fi
-echo "[umj-co] [3] Checking out $updatesCVSPath/site/* from $wwwCVSRep"
+echo "[umj-co] [3] Checking out $updatesCVSPath/* from $wwwCVSRep"
 cd $buildDir/../1
-echo "cvs -d $wwwCVSRep $quietCVS co -P -d site $updatesCVSPath/site.xml" 
 cvs -d $wwwCVSRep $quietCVS co -P -d site $updatesCVSPath/site.xml 
 cvs -d $wwwCVSRep $quietCVS co -P -d site $updatesCVSPath/site-interim.xml
 cvs -d $wwwCVSRep $quietCVS co -P -d site $updatesCVSPath/index.php 
