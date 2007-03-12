@@ -11,6 +11,7 @@
 package org.eclipse.dltk.debug.ui.launchConfigurations;
 
  
+import java.text.MessageFormat;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
@@ -41,8 +42,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-
-import com.ibm.icu.text.MessageFormat;
 
 /**
  * A launch configuration tab that displays and edits the Interpreter install 

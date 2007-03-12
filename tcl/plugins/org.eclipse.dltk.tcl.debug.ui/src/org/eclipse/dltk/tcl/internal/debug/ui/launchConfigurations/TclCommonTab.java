@@ -11,6 +11,7 @@ package org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations;
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -80,8 +81,6 @@ import org.eclipse.ui.ide.IDEEncoding;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceSorter;
-
-import com.ibm.icu.text.MessageFormat;
 
 /**
  * Launch configuration tab used to specify the location a launch configuration

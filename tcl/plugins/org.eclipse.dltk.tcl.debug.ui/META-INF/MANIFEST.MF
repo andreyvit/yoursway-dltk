@@ -5,8 +5,7 @@ Bundle-SymbolicName: org.eclipse.dltk.tcl.debug.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin
-Require-Bundle: com.ibm.icu,
- org.eclipse.debug.ui,
+Require-Bundle: org.eclipse.debug.ui,
  org.eclipse.debug.core,
  org.eclipse.core.variables,
  org.eclipse.core.runtime,

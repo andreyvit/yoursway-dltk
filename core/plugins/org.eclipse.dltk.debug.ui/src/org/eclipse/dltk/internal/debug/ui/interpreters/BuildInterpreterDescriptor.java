@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.ui.interpreters;
 
+import java.text.MessageFormat;
+
 import org.eclipse.dltk.debug.ui.messages.DLTKLaunchMessages;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.ScriptRuntime;
-
-import com.ibm.icu.text.MessageFormat;
 
 /**
  * Interpreter Descriptor used for the Interpreter container wizard page.

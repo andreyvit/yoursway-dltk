@@ -5,7 +5,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 
 public interface IInterpreterRunner {
-	
-	public void run(InterpreterRunnerConfiguration configuration, ILaunch launch, IProgressMonitor monitor) throws CoreException;	
-	
+	public void run(InterpreterRunnerConfiguration configuration,
+			ILaunch launch, IProgressMonitor monitor) throws CoreException;
+
 }

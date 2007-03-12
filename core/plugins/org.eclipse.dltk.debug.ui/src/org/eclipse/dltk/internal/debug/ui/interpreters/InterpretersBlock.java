@@ -13,6 +13,7 @@ package org.eclipse.dltk.internal.debug.ui.interpreters;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -73,8 +74,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-
-import com.ibm.icu.text.MessageFormat;
 
 /**
  * A composite that displays installed InterpreterEnvironment's in a table. InterpreterEnvironments can be 

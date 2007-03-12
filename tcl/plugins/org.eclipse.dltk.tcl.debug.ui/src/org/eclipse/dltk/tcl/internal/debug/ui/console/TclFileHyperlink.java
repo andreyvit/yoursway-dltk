@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.internal.debug.ui.console;
 
+import java.text.MessageFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,8 +36,6 @@ import org.eclipse.ui.console.TextConsole;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
-
-import com.ibm.icu.text.MessageFormat;
 
 /**
  * A hyperlink from a stack trace line of the form "(file "*.*")"
