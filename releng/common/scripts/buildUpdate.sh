@@ -1,5 +1,5 @@
 # !/bin/sh
-# $Id: buildUpdate.sh,v 1.3 2007/02/22 08:39:51 asobolev Exp $
+# $Id: buildUpdate.sh,v 1.4 2007/03/12 09:55:01 aplatov Exp $
 
 # buildUpdate.sh script to generate Update Managers jars & promote them to download.eclipse
 # Copyright \(c\) 2004-2006, IBM. Nick Boldt. codeslave\(at\)ca.ibm.com
@@ -175,8 +175,8 @@ else
 fi
 
 #TODO: move into modeling
-CVSRep=":ext:"$user"@"$eclipseServerFullName":/opt/org.eclipse.dltk"
-wwwCVSRep=":ext:"$user"@"$eclipseServerFullName":/opt/org.eclipse.dltk"
+CVSRep=":ext:"$user"@"$eclipseServerFullName":/cvsroot/technology"
+wwwCVSRep=":ext:"$user"@"$eclipseServerFullName":/cvsroot/technology"
 wwwRemote=$user"@"$downloadServerFullName
 
 # temp folder
