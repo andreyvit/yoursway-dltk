@@ -1,5 +1,5 @@
 # !/bin/sh
-# $Id: buildUpdate.sh,v 1.7 2007/03/12 11:40:40 aplatov Exp $
+# $Id: buildUpdate.sh,v 1.8 2007/03/12 15:16:34 aplatov Exp $
 
 # buildUpdate.sh script to generate Update Managers jars & promote them to download.eclipse
 # Copyright \(c\) 2004-2006, IBM. Nick Boldt. codeslave\(at\)ca.ibm.com
@@ -169,9 +169,9 @@ if [[ $sub = "ocl" ]] || [[ $sub = "uml2-ocl" ]] || [[ $sub = "eodm" ]]; then
 	updatesDir=$projectWWWDir/../updates
 else	
 	#path to update site on build server
-	localUpdatesWebDir=$localWebDir/updates
+	localUpdatesWebDir=$localWebDir/updates/1.0
 	# path to update site on download
-	updatesDir=$projectWWWDir/updates
+	updatesDir=$projectWWWDir/updates/1.0
 fi
 
 #TODO: move into modeling
@@ -352,13 +352,11 @@ cd $buildDir/org.eclipse.releng.generators/updateJars/site && cp -r . $localUpda
 mkdir -p $localUpdatesWebDir/md5s && cp $md5filepath $localUpdatesWebDir/md5s
 
 echo "[umj] [5b] Fix permissions in $localUpdatesWebDir ..."
-echo " \
-	cd $localUpdatesWebDir ; \
-	chgrp -fR $eclipseUserGroup *; \
-	find $localUpdatesWebDir -type f -exec chmod -f $eclipsePermsFile {} \; ; \
-	find $localUpdatesWebDir -type f -exec chmod -f $eclipsePermsFile {} \; ; \
-";
 
+cd $localUpdatesWebDir ;
+chgrp -fR $eclipseUserGroup *; 
+find $localUpdatesWebDir -type f -exec chmod -f $eclipsePermsFile {} \; ; 
+find $localUpdatesWebDir -type f -exec chmod -f $eclipsePermsFile {} \; ; 
 
 #promote to download
 if [ $promote -eq 1 ]; then
@@ -369,36 +367,32 @@ if [ $promote -eq 1 ]; then
 	if [ $skipjars -eq 0 ]; then
 		echo "[umj] [7a] Promoting jars to $downloadServerFullName..." ;
 		cd $buildDir/org.eclipse.releng.generators/updateJars/site ;
-		echo "scp -r -v $buildServerCVSUser:$buildDir/org.eclipse.releng.generators/updateJars/site/. $wwwRemote:$updatesDir ";
+		scp -r $buildDir/org.eclipse.releng.generators/updateJars/site/. $wwwRemote:$updatesDir;
 	else
 		echo "[umj] [7a] Promoting jars to $downloadServerFullName... omitted." ;
 	fi
 
 	echo "[umj] [7b] Promoting site/* to $downloadServerFullName..." ;
 	cd $buildDir/site ;
-	echo "scp -r $quiet $buildDir/site/. $wwwRemote:$updatesDir ";
+	scp -r $quiet $buildDir/site/. $wwwRemote:$updatesDir 
 
 	# copy md5 file into both places, too: second onto production server
-	echo $wwwRemote "mkdir -p $updatesDir/md5s/" ;
-	echo scp $quiet $md5filepath $wwwRemote:$updatesDir/md5s/ ;
+	ssh $wwwRemote "mkdir -p $updatesDir/md5s/"
+	scp $quiet $md5filepath $wwwRemote:$updatesDir/md5s/ 
 
 	echo "[umj] [7c] Fix permissions in $updatesDir ..." ;
-	echo $wwwRemote "
+	ssh $wwwRemote "
 		cd $updatesDir/..;
-		chgrp -fR $eclipseUserGroup updates;
-		find $updatesDir/../updates -type d -exec chmod -f $eclipsePermsDir {} \; ;
-		find $updatesDir/../updates -type f -exec chmod -f $eclipsePermsFile {} \; ;
+		chgrp -fR $eclipseUserGroup 1.0;
+		find $updatesDir/../1.0 -type d -exec chmod -f $eclipsePermsDir {} \; ;
+		find $updatesDir/../1.0 -type f -exec chmod -f $eclipsePermsFile {} \; ;
 	";
 
 	# validate MD5s
 	if [ $noCompareUMFolders -eq 0 ]; then
 		### CHECK MD5s and compare dir filesizes for match (du -s)
 		echo "[umj] [7d] [`date +%H:%M:%S`] Comparing local and remote folders MD5 sums to ensure SCP completeness... "
-		cmd="$buildScriptsDir/compareFolders.sh -md5only -md5file $md5file -user $user -local $localUpdatesWebDir -remote $updatesDir -server $wwwRemote"
-		if [ $debug -gt 0 ]; then
-			echo "$cmd" | perl -pe "s/ -/\n  -/g";			
-		fi
-		echo $buildServerCVSUser "$cmd"
+		$buildScriptsDir/compareFolders.sh -md5only -md5file $md5file -user $user -local $localUpdatesWebDir -remote $updatesDir -server $wwwRemote
 		returnCode=$?
 		if [ $returnCode -gt 0 ]; then
 			echo "[umj] [`date +%H:%M:%S`] ERROR! Script exiting with code $returnCode from compareFolders.sh"
@@ -417,7 +411,7 @@ exit 0
 
 # cleanup
 if [ $cleanup -eq 1 ]; then
-	ssh $buildServerCVSUser "rm -fr $tmpfolder/";
+	rm -fr $tmpfolder/
 fi
 
 ########### DONE ###########

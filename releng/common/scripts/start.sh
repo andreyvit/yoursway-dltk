@@ -1,5 +1,5 @@
 #!/bin/bash
-# $Id: start.sh,v 1.3 2007/02/22 08:39:51 asobolev Exp $
+# $Id: start.sh,v 1.4 2007/03/12 15:16:34 aplatov Exp $
 
 export PATH=/bin:/usr/bin/:/usr/local/bin
 export ANT=/opt/apache-ant-1.6/bin/ant
@@ -14,7 +14,7 @@ cd $scriptspath
 
 
 #default values
-dltkCVS="xored.com:/opt/org.eclipse.dltk";
+dltkCVS="dev.eclipse.org:/cvsroot/technology";
 project=""; # REQUIRED
 version=""; # REQUIRED
 tagBuild=true
