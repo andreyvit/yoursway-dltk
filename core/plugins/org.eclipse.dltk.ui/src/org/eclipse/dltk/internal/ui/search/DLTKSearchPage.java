@@ -235,25 +235,15 @@ public abstract class DLTKSearchPage extends DialogPage implements ISearchPage, 
 		};
 
 	private Button fIncludeInterpreterEnvironmentCheckbox; 
-	
-	
 
-	/**
-	 * 
-	 */
 	public DLTKSearchPage() {
 		fPreviousSearchPatterns= new ArrayList();
 	}
 	
-	
-	//---- Action Handling ------------------------------------------------
-	
 	public boolean performAction() {
 		return performNewSearch();
 	}
-	
-	protected abstract IDLTKLanguageToolkit getLanguageToolkit();
-	
+		
 	private boolean performNewSearch() {
 		SearchPatternData data= getPatternData();
 
@@ -477,29 +467,6 @@ public abstract class DLTKSearchPage extends DialogPage implements ISearchPage, 
 		}
 	}
 	
-	
-	/*private Control createParticipants(Composite result) {
-		if (!SearchParticipantsExtensionPoint.hasAnyParticipants())
-			return new Composite(result, SWT.NULL);
-		Button selectParticipants= new Button(result, SWT.PUSH);
-		selectParticipants.setText(SearchMessages.getString("SearchPage.select_participants.label")); //$NON-NLS-1$
-		GridData gd= new GridData();
-		gd.verticalAlignment= GridData.VERTICAL_ALIGN_BEGINNING;
-		gd.horizontalAlignment= GridData.HORIZONTAL_ALIGN_END;
-		gd.grabExcessHorizontalSpace= false;
-		gd.horizontalAlignment= GridData.END;
-		gd.horizontalSpan= 2;
-		selectParticipants.setLayoutData(gd);
-		selectParticipants.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				PreferencePageSupport.showPreferencePage(getShell(), "org.eclipse.dltk.ui.preferences.SearchParticipantsExtensionPoint", new SearchParticipantsExtensionPoint()); //$NON-NLS-1$
-			}
-
-		});
-		return selectParticipants;
-	}*/
-
-
 	private Control createExpression(Composite parent) {
 		Composite result= new Composite(parent, SWT.NONE);
 		GridLayout layout= new GridLayout(2, false);
@@ -823,7 +790,7 @@ public abstract class DLTKSearchPage extends DialogPage implements ISearchPage, 
 	 * Implements method from ISearchPage
 	 */
 	public void setContainer(ISearchPageContainer container) {
-		fContainer= container;
+		fContainer = container;
 	}
 	
 	/**
@@ -834,7 +801,7 @@ public abstract class DLTKSearchPage extends DialogPage implements ISearchPage, 
 	}
 		
 	private IEditorPart getActiveEditor() {
-		IWorkbenchPage activePage= DLTKUIPlugin.getActivePage();
+		IWorkbenchPage activePage = DLTKUIPlugin.getActivePage();
 		if (activePage != null) {
 			return activePage.getActiveEditor();
 		}
@@ -894,4 +861,6 @@ public abstract class DLTKSearchPage extends DialogPage implements ISearchPage, 
 			data.store(histSettings);
 		}
 	}
+	
+	protected abstract IDLTKLanguageToolkit getLanguageToolkit();
 }

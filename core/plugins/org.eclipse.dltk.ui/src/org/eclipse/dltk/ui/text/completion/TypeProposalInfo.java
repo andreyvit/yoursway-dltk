@@ -12,9 +12,6 @@ package org.eclipse.dltk.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.IDLTKProject;
-import org.eclipse.dltk.core.IMember;
-import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.internal.corext.template.completion.SignatureUtil;
 
 
 

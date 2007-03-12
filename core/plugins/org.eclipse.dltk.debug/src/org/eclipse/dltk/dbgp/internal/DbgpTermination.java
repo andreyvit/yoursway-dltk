@@ -1,7 +1,6 @@
 package org.eclipse.dltk.dbgp.internal;
 
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.dltk.core.DLTKCore;
 
 public abstract class DbgpTermination implements IDbgpTermination {
 	private ListenerList listeners = new ListenerList();

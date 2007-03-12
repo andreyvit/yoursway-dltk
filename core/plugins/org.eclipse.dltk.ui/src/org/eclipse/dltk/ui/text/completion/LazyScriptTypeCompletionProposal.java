@@ -23,117 +23,99 @@ import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 
-
 /**
- * If passed compilation unit is not null, the replacement string will be seen as a qualified type name.
-  */
-public abstract class LazyScriptTypeCompletionProposal extends LazyScriptCompletionProposal {
-	/** Triggers for types. Do not modify. */
-//	protected static final char[] TYPE_TRIGGERS= new char[] { '.', '\t', '[', '(', ' ' };
-	/** Triggers for types in scriptdoc. Do not modify. */
-//	protected static final char[] JDOC_TYPE_TRIGGERS= new char[] { '#', '}', ' ', '.' };
+ * If passed compilation unit is not null, the replacement string will be seen
+ * as a qualified type name.
+ */
+public abstract class LazyScriptTypeCompletionProposal extends
+		LazyScriptCompletionProposal {
 
-	/** The compilation unit, or <code>null</code> if none is available. */
 	protected final ISourceModule fSourceModule;
 
 	private String fQualifiedName;
 	private String fSimpleName;
-//	private ImportRewrite fImportRewrite;
-//	private ContextSensitiveImportRewriteContext fImportContext;
 
-	public LazyScriptTypeCompletionProposal(CompletionProposal proposal, ScriptContentAssistInvocationContext context) {
+	public LazyScriptTypeCompletionProposal(CompletionProposal proposal,
+			ScriptContentAssistInvocationContext context) {
 		super(proposal, context);
-		fSourceModule= context.getSourceModule();
-		fQualifiedName= null;
+		fSourceModule = context.getSourceModule();
+		fQualifiedName = null;
 	}
-	
+
 	public final String getQualifiedTypeName() {
 		if (fQualifiedName == null)
-			fQualifiedName= String.valueOf(Signature.toCharArray(Signature.getTypeErasure(fProposal.getSignature())));
+			fQualifiedName = String.valueOf(Signature.toCharArray(Signature
+					.getTypeErasure(fProposal.getSignature())));
 		return fQualifiedName;
 	}
-	
+
 	protected final String getSimpleTypeName() {
 		if (fSimpleName == null)
-			fSimpleName= Signature.getSimpleName(getQualifiedTypeName());
+			fSimpleName = Signature.getSimpleName(getQualifiedTypeName());
 		return fSimpleName;
 	}
-	
+
 	protected String computeReplacementString() {
-		String replacement= super.computeReplacementString();
+		String replacement = super.computeReplacementString();
 
-		/* No import rewriting ever from within the import section. */
-//		if (isImportCompletion())
-//	        return replacement;
-		
-		/* Always use the simple name for non-formal scriptdoc references to types. */
-		// TODO fix
-		 if (fProposal.getKind() == CompletionProposal.TYPE_REF &&  fInvocationContext.getCoreContext().isInDoc())
-			 return getSimpleTypeName();
-		
-		String qualifiedTypeName= getQualifiedTypeName();
- 		if (qualifiedTypeName.indexOf('.') == -1)
- 			// default package - no imports needed 
- 			return qualifiedTypeName;
-
- 		/*
-		 * If the user types in the qualification, don't force import rewriting on him - insert the
-		 * qualified name.
+		/*
+		 * Always use the simple name for non-formal scriptdoc references to
+		 * types.
 		 */
- 		IDocument document= fInvocationContext.getDocument();
+		// TODO fix
+		if (fProposal.getKind() == CompletionProposal.TYPE_REF
+				&& fInvocationContext.getCoreContext().isInDoc())
+			return getSimpleTypeName();
+
+		String qualifiedTypeName = getQualifiedTypeName();
+		if (qualifiedTypeName.indexOf('.') == -1)
+			// default package - no imports needed
+			return qualifiedTypeName;
+
+		/*
+		 * If the user types in the qualification, don't force import rewriting
+		 * on him - insert the qualified name.
+		 */
+		IDocument document = fInvocationContext.getDocument();
 		if (document != null) {
-			String prefix= getPrefix(document, getReplacementOffset() + getReplacementLength());
-			int dotIndex= prefix.lastIndexOf('.');
-			// match up to the last dot in order to make higher level matching still work (camel case...)
-			if (dotIndex != -1 && qualifiedTypeName.toLowerCase().startsWith(prefix.substring(0, dotIndex + 1).toLowerCase()))
+			String prefix = getPrefix(document, getReplacementOffset()
+					+ getReplacementLength());
+			int dotIndex = prefix.lastIndexOf('.');
+			// match up to the last dot in order to make higher level matching
+			// still work (camel case...)
+			if (dotIndex != -1
+					&& qualifiedTypeName.toLowerCase().startsWith(
+							prefix.substring(0, dotIndex + 1).toLowerCase()))
 				return qualifiedTypeName;
 		}
-		
+
 		/*
-		 * The replacement does not contain a qualification (e.g. an inner type qualified by its
-		 * parent) - use the replacement directly.
+		 * The replacement does not contain a qualification (e.g. an inner type
+		 * qualified by its parent) - use the replacement directly.
 		 */
 		if (replacement.indexOf('.') == -1) {
 			if (isInDoc())
-				return getSimpleTypeName(); // don't use the braces added for javadoc link proposals
+				return getSimpleTypeName(); // don't use the braces added for
+											// javadoc link proposals
 			return replacement;
 		}
-		
-//		/* Add imports if the preference is on. */
-//		fImportRewrite= createImportRewrite();
-//		if (fImportRewrite != null) {
-//			return fImportRewrite.addImport(qualifiedTypeName, fImportContext);
-//		}
-		
-		// fall back for the case we don't have an import rewrite (see allowAddingImports)
-		
-		/* No imports for implicit imports. */
-//		if (fSourceModule != null && ModelUtil.isImplicitImport(Signature.getQualifier(qualifiedTypeName), fSourceModule)) {
-//			return Signature.getSimpleName(qualifiedTypeName);
-//		}
-		
-		/* Default: use the fully qualified type name. */
+
 		return qualifiedTypeName;
 	}
-	
+
 	public void apply(IDocument document, char trigger, int offset) {
-		boolean insertClosingParenthesis= trigger == '(' && autocloseBrackets();
+		boolean insertClosingParenthesis = trigger == '('
+				&& autocloseBrackets();
 		if (insertClosingParenthesis) {
 			updateReplacementWithParentheses();
-			trigger= '\0';
+			trigger = '\0';
 		}
-		
 		super.apply(document, trigger, offset);
 
-//			if (fImportRewrite != null && fImportRewrite.hasRecordedChanges()) {
-//				int oldLen= document.getLength();
-//				fImportRewrite.rewriteImports(new NullProgressMonitor()).apply(document, TextEdit.UPDATE_REGIONS);
-//				setReplacementOffset(getReplacementOffset() + document.getLength() - oldLen);
-//			}
-		
-		if (insertClosingParenthesis)
+		if (insertClosingParenthesis) {
 			setUpLinkedMode(document, ')');
-		
+		}
+
 		try {
 			rememberSelection();
 		} catch (ModelException e) {
@@ -143,149 +125,166 @@ public abstract class LazyScriptTypeCompletionProposal extends LazyScriptComplet
 	}
 
 	private void updateReplacementWithParentheses() {
-		StringBuffer replacement= new StringBuffer(getReplacementString());
-//		FormatterPrefs prefs= getFormatterPrefs();
+		StringBuffer replacement = new StringBuffer(getReplacementString());
+		// FormatterPrefs prefs= getFormatterPrefs();
 
-//		if (prefs.beforeOpeningParen)
-//			replacement.append(SPACE);
+		// if (prefs.beforeOpeningParen)
+		// replacement.append(SPACE);
 		replacement.append(LPAREN);
 
-
-//		if (prefs.afterOpeningParen)
-//			replacement.append(SPACE);
+		// if (prefs.afterOpeningParen)
+		// replacement.append(SPACE);
 
 		setCursorPosition(replacement.length());
-		
-//		if (prefs.afterOpeningParen)
-//			replacement.append(SPACE);
-		
+
+		// if (prefs.afterOpeningParen)
+		// replacement.append(SPACE);
+
 		replacement.append(RPAREN);
-		
+
 		setReplacementString(replacement.toString());
 	}
 
 	/**
 	 * Remembers the selection in the content assist history.
 	 * 
-	 * @throws ModelException if anything goes wrong
-	 *
+	 * @throws ModelException
+	 *             if anything goes wrong
+	 * 
 	 */
 	protected final void rememberSelection() throws ModelException {
-		IType lhs= fInvocationContext.getExpectedType();
-		IType rhs= (IType) getModelElement();
+		IType lhs = fInvocationContext.getExpectedType();
+		IType rhs = (IType) getModelElement();
 		if (lhs != null && rhs != null)
-			DLTKUIPlugin.getDefault().getContentAssistHistory().remember(lhs, rhs);
-		
+			DLTKUIPlugin.getDefault().getContentAssistHistory().remember(lhs,
+					rhs);
+
 		QualifiedTypeNameHistory.remember(getQualifiedTypeName());
 	}
 
 	/**
-	 * Returns <code>true</code> if imports may be added. The return value depends on the context
-	 * and preferences only and does not take into account the contents of the compilation unit or
-	 * the kind of proposal. Even if <code>true</code> is returned, there may be cases where no
+	 * Returns <code>true</code> if imports may be added. The return value
+	 * depends on the context and preferences only and does not take into
+	 * account the contents of the compilation unit or the kind of proposal.
+	 * Even if <code>true</code> is returned, there may be cases where no
 	 * imports are added for the proposal. For example:
 	 * <ul>
 	 * <li>when completing within the import section</li>
-	 * <li>when completing informal javadoc references (e.g. within <code>&lt;code&gt;</code>
-	 * tags)</li>
+	 * <li>when completing informal javadoc references (e.g. within
+	 * <code>&lt;code&gt;</code> tags)</li>
 	 * <li>when completing a type that conflicts with an existing import</li>
-	 * <li>when completing an implicitly imported type (same package, <code>java.lang</code>
-	 * types)</li>
+	 * <li>when completing an implicitly imported type (same package,
+	 * <code>java.lang</code> types)</li>
 	 * </ul>
 	 * <p>
-	 * The decision whether a qualified type or the simple type name should be inserted must take
-	 * into account these different scenarios.
+	 * The decision whether a qualified type or the simple type name should be
+	 * inserted must take into account these different scenarios.
 	 * </p>
 	 * <p>
 	 * Subclasses may extend.
 	 * </p>
 	 * 
-	 * @return <code>true</code> if imports may be added, <code>false</code> if not
+	 * @return <code>true</code> if imports may be added, <code>false</code>
+	 *         if not
 	 */
 	protected boolean allowAddingImports() {
 		if (isInDoc()) {
 			// TODO fix
-//			if (!fContext.isInJavadocFormalReference())
-//				return false;
-			if (fProposal.getKind() == CompletionProposal.TYPE_REF &&  fInvocationContext.getCoreContext().isInDoc())
+			// if (!fContext.isInJavadocFormalReference())
+			// return false;
+			if (fProposal.getKind() == CompletionProposal.TYPE_REF
+					&& fInvocationContext.getCoreContext().isInDoc())
 				return false;
-			
+
 			if (!isDocProcessingEnabled())
 				return false;
 		}
-		
-		IPreferenceStore preferenceStore= DLTKUIPlugin.getDefault().getPreferenceStore();
-		return preferenceStore.getBoolean(PreferenceConstants.CODEASSIST_ADDIMPORT);
+
+		IPreferenceStore preferenceStore = DLTKUIPlugin.getDefault()
+				.getPreferenceStore();
+		return preferenceStore
+				.getBoolean(PreferenceConstants.CODEASSIST_ADDIMPORT);
 	}
 
 	private boolean isDocProcessingEnabled() {
-		IDLTKProject project= fSourceModule.getScriptProject();
+		IDLTKProject project = fSourceModule.getScriptProject();
 		boolean processJavadoc;
 		if (DLTKCore.DEBUG) {
 			System.out.println("TODO: Add documentation support.");
 		}
-//		if (project == null)
-//			processJavadoc= DLTKCore.ENABLED.equals(DLTKCore.getOption(DLTKCore.COMPILER_DOC_COMMENT_SUPPORT));
-//		else
-//			processJavadoc= DLTKCore.ENABLED.equals(project.getOption(DLTKCore.COMPILER_DOC_COMMENT_SUPPORT, true));
-//		return processJavadoc;
+		// if (project == null)
+		// processJavadoc=
+		// DLTKCore.ENABLED.equals(DLTKCore.getOption(DLTKCore.COMPILER_DOC_COMMENT_SUPPORT));
+		// else
+		// processJavadoc=
+		// DLTKCore.ENABLED.equals(project.getOption(DLTKCore.COMPILER_DOC_COMMENT_SUPPORT,
+		// true));
+		// return processJavadoc;
 		return false;
 	}
-	
+
 	protected boolean isValidPrefix(String prefix) {
-		return isPrefix(prefix, getSimpleTypeName()) || isPrefix(prefix, getQualifiedTypeName());
+		return isPrefix(prefix, getSimpleTypeName())
+				|| isPrefix(prefix, getQualifiedTypeName());
 	}
 
-	public CharSequence getPrefixCompletionText(IDocument document, int completionOffset) {
-		String prefix= getPrefix(document, completionOffset);
-		
+	public CharSequence getPrefixCompletionText(IDocument document,
+			int completionOffset) {
+		String prefix = getPrefix(document, completionOffset);
+
 		String completion;
 		// return the qualified name if the prefix is already qualified
 		if (prefix.indexOf('.') != -1)
-			completion= getQualifiedTypeName();
+			completion = getQualifiedTypeName();
 		else
-			completion= getSimpleTypeName();
-		
+			completion = getSimpleTypeName();
+
 		if (isCamelCaseMatching())
 			return getCamelCaseCompound(prefix, completion);
 
 		return completion;
 	}
-	
+
 	protected abstract char[] getTypeTriggers();
+
 	protected abstract char[] getDocTriggers();
-		
+
 	protected char[] computeTriggerCharacters() {
 		return isInDoc() ? getDocTriggers() : getTypeTriggers();
 	}
-		
+
 	protected ProposalInfo computeProposalInfo() {
 		if (fSourceModule != null) {
-			IDLTKProject project= fSourceModule.getScriptProject();
+			IDLTKProject project = fSourceModule.getScriptProject();
 			if (project != null)
 				return new TypeProposalInfo(project, fProposal);
 		}
 		return super.computeProposalInfo();
 	}
-	
+
 	protected int computeRelevance() {
 		/*
-		 * There are two histories: the RHS history remembers types used for the current expected
-		 * type (left hand side), while the type history remembers recently used types in general).
+		 * There are two histories: the RHS history remembers types used for the
+		 * current expected type (left hand side), while the type history
+		 * remembers recently used types in general).
 		 * 
-		 * The presence of an RHS ranking is a much more precise sign for relevance as it proves the
-		 * subtype relationship between the proposed type and the expected type.
+		 * The presence of an RHS ranking is a much more precise sign for
+		 * relevance as it proves the subtype relationship between the proposed
+		 * type and the expected type.
 		 * 
-		 * The "recently used" factor (of either the RHS or general history) is less important, it should
-		 * not override other relevance factors such as if the type is already imported etc.
+		 * The "recently used" factor (of either the RHS or general history) is
+		 * less important, it should not override other relevance factors such
+		 * as if the type is already imported etc.
 		 */
-		float rhsHistoryRank= fInvocationContext.getHistoryRelevance(getQualifiedTypeName());
-		float typeHistoryRank= QualifiedTypeNameHistory.getDefault().getNormalizedPosition(getQualifiedTypeName());
+		float rhsHistoryRank = fInvocationContext
+				.getHistoryRelevance(getQualifiedTypeName());
+		float typeHistoryRank = QualifiedTypeNameHistory.getDefault()
+				.getNormalizedPosition(getQualifiedTypeName());
 
-		int recencyBoost= Math.round((rhsHistoryRank + typeHistoryRank) * 5);
-		int rhsBoost= rhsHistoryRank > 0.0f ? 50 : 0;
-		int baseRelevance= super.computeRelevance();
-		
-		return baseRelevance +  rhsBoost + recencyBoost;
+		int recencyBoost = Math.round((rhsHistoryRank + typeHistoryRank) * 5);
+		int rhsBoost = rhsHistoryRank > 0.0f ? 50 : 0;
+		int baseRelevance = super.computeRelevance();
+
+		return baseRelevance + rhsBoost + recencyBoost;
 	}
 }

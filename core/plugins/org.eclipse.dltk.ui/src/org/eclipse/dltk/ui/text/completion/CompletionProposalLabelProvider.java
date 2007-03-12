@@ -15,7 +15,6 @@ import org.eclipse.dltk.core.CompletionContext;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.Flags;
 import org.eclipse.dltk.core.Signature;
-import org.eclipse.dltk.internal.corext.template.completion.SignatureUtil;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.ScriptElementImageDescriptor;
 import org.eclipse.dltk.ui.ScriptElementImageProvider;
@@ -269,15 +268,7 @@ public abstract class CompletionProposalLabelProvider {
 			buf.append("    "); //$NON-NLS-1$
 			buf.append(typeName);
 		}
-		char[] declaration = proposal.getDeclarationSignature();
-		if (declaration != null) {
-			declaration = Signature.getSignatureSimpleName(declaration);
-			if (declaration.length > 0) {
-				buf.append(" - "); //$NON-NLS-1$
-				buf.append(declaration);
-			}
-		}
-
+		
 		return buf.toString();
 	}
 

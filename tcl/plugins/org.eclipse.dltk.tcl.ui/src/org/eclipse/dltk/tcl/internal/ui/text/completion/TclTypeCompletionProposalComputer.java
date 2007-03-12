@@ -145,7 +145,6 @@ public class TclTypeCompletionProposalComputer extends ScriptCompletionProposalC
 		proposal.setFlags(type.getFlags());
 		proposal.setRelevance(relevance);
 		proposal.setReplaceRange(context.getInvocationOffset(), context.getInvocationOffset());
-		proposal.setSignature(null);
 
 		return new LazyTclTypeCompletionProposal(proposal, context);
 	}

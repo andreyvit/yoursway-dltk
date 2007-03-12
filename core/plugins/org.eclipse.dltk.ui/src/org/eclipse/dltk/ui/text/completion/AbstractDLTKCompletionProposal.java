@@ -12,6 +12,7 @@ package org.eclipse.dltk.ui.text.completion;
 
 import java.net.URL;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.core.DLTKCore;
@@ -23,7 +24,6 @@ import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.text.TextTools;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
-import org.eclipse.jface.text.Assert;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.BadPositionCategoryException;
 import org.eclipse.jface.text.DefaultPositionUpdater;
@@ -59,11 +59,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.texteditor.link.EditorLinkedModeUI;
 
-
-/**
- * 
-	 *
- */
 public abstract class AbstractDLTKCompletionProposal implements IScriptCompletionProposal, ICompletionProposalExtension, ICompletionProposalExtension2, ICompletionProposalExtension3, ICompletionProposalExtension5 {
 	/**
 	 * A class to simplify tracking a reference position in a document.
@@ -177,13 +172,11 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 	
 	/**
 	 * The control creator.
-	 * 
-	 *
 	 */
 	private IInformationControlCreator fCreator;
+
 	/**
 	 * The URL of the style sheet (css).
-	 *
 	 */
 	private URL fStyleSheetURL;	
 
@@ -297,38 +290,15 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 	}
 
 	protected abstract  boolean isSmartTrigger(char trigger); 
-//	{
-//		return trigger == ';' && DLTKUIPlugin.getDefault().getCombinedPreferenceStore().getBoolean(PreferenceConstants.EDITOR_SMART_SEMICOLON)
-//				|| trigger == '{' && DLTKUIPlugin.getDefault().getCombinedPreferenceStore().getBoolean(PreferenceConstants.EDITOR_SMART_OPENING_BRACE);
-//	}
 
 	protected abstract void handleSmartTrigger(IDocument document, char trigger, int referenceOffset) throws BadLocationException;
-//	{
-//		DocumentCommand cmd= new DocumentCommand() {
-//		};
-//		
-//		cmd.offset= referenceOffset;
-//		cmd.length= 0;
-//		cmd.text= Character.toString(trigger);
-//		cmd.doit= true;
-//		cmd.shiftsCaret= true;
-//		cmd.caretOffset= getReplacementOffset() + getCursorPosition();
-//		
-//		SmartSemicolonAutoEditStrategy strategy= new SmartSemicolonAutoEditStrategy(IJavaPartitions.JAVA_PARTITIONING);
-//		strategy.customizeDocumentCommand(document, cmd);
-//		
-//		replace(document, cmd.offset, cmd.length, cmd.text);
-//		setCursorPosition(cmd.caretOffset - getReplacementOffset() + cmd.text.length());
-//	}
+
 	
 	protected final void replace(IDocument document, int offset, int length, String string) throws BadLocationException {
 		if (!document.get(offset, length).equals(string))
 			document.replace(offset, length, string);
 	}
 	
-	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension1#apply(org.eclipse.jface.text.ITextViewer, char, int, int)
-	 */
 	public void apply(ITextViewer viewer, char trigger, int stateMask, int offset) {
 
 		IDocument document= viewer.getDocument();

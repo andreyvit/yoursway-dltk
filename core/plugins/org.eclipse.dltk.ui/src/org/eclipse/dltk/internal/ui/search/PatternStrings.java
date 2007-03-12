@@ -18,8 +18,6 @@ import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.ui.ScriptElementLabels;
 
 public class PatternStrings {
-
-	
 	public static String getMethodSignature(IMethod method) {
 		StringBuffer buffer= new StringBuffer();
 		IType type = method.getDeclaringType();

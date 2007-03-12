@@ -13,7 +13,6 @@ package org.eclipse.dltk.ui.text.completion;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.IDLTKProject;
-import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 

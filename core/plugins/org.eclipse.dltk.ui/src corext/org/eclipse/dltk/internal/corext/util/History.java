@@ -38,7 +38,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.DLTKUIException;
 import org.eclipse.dltk.internal.ui.DLTKUIStatus;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
