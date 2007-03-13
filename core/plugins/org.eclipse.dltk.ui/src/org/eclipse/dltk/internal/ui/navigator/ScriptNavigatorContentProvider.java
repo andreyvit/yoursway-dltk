@@ -36,8 +36,9 @@ import org.eclipse.ui.navigator.IPipelinedTreeContentProvider;
 import org.eclipse.ui.navigator.PipelinedShapeModification;
 import org.eclipse.ui.navigator.PipelinedViewerUpdate;
 
+public class ScriptNavigatorContentProvider extends
+		ScriptExplorerContentProvider implements IPipelinedTreeContentProvider {
 
-public class ScriptNavigatorContentProvider extends ScriptExplorerContentProvider implements IPipelinedTreeContentProvider {
 	public ScriptNavigatorContentProvider() {
 		super(false);
 	}
@@ -45,26 +46,36 @@ public class ScriptNavigatorContentProvider extends ScriptExplorerContentProvide
 	public ScriptNavigatorContentProvider(boolean provideMembers) {
 		super(provideMembers);
 	}
+
+	public static final String JDT_EXTENSION_ID = "org.eclipse.jdt.ui.javaContent"; //$NON-NLS-1$ 
+
 	private IExtensionStateModel fStateModel;
+
 	private Object fRealInput;
 
 	public void init(ICommonContentExtensionSite commonContentExtensionSite) {
-		IExtensionStateModel stateModel = commonContentExtensionSite.getExtensionStateModel();
+		IExtensionStateModel stateModel = commonContentExtensionSite
+				.getExtensionStateModel();
 		IMemento memento = commonContentExtensionSite.getMemento();
+
 		fStateModel = stateModel;
 		restoreState(memento);
 		fStateModel.addPropertyChangeListener(new IPropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent event) {
 				if (Values.IS_LAYOUT_FLAT.equals(event.getProperty())) {
 					if (event.getNewValue() != null) {
-						boolean newValue = ((Boolean) event.getNewValue()).booleanValue() ? true : false;
+						boolean newValue = ((Boolean) event.getNewValue())
+								.booleanValue() ? true : false;
 						setIsFlatLayout(newValue);
 					}
 				}
+
 			}
 		});
+
 		IPreferenceStore store = getPreferenceStore();
-		boolean showCUChildren = store.getBoolean(PreferenceConstants.SHOW_SOURCE_MODULE_CHILDREN);
+		boolean showCUChildren = store
+				.getBoolean(PreferenceConstants.SHOW_SOURCE_MODULE_CHILDREN);
 		setProvideMembers(showCUChildren);
 	}
 
@@ -87,7 +98,8 @@ public class ScriptNavigatorContentProvider extends ScriptExplorerContentProvide
 
 	public Object[] getElements(Object inputElement) {
 		if (inputElement instanceof IWorkspaceRoot)
-			return super.getElements(DLTKCore.create((IWorkspaceRoot) inputElement));
+			return super.getElements(DLTKCore
+					.create((IWorkspaceRoot) inputElement));
 		return super.getElements(inputElement);
 	}
 
@@ -98,9 +110,13 @@ public class ScriptNavigatorContentProvider extends ScriptExplorerContentProvide
 		return newInput;
 	}
 
-	public void restoreState(IMemento memento) {}
+	public void restoreState(IMemento memento) {
 
-	public void saveState(IMemento memento) {}
+	}
+
+	public void saveState(IMemento memento) {
+
+	}
 
 	public void getPipelinedChildren(Object parent, Set currentChildren) {
 		Object[] children = getChildren(parent);
@@ -112,9 +128,11 @@ public class ScriptNavigatorContentProvider extends ScriptExplorerContentProvide
 
 	public void getPipelinedElements(Object input, Set currentElements) {
 		Object[] children = getElements(input);
+
 		for (Iterator iter = currentElements.iterator(); iter.hasNext();)
 			if (iter.next() instanceof IResource)
 				iter.remove();
+
 		currentElements.addAll(Arrays.asList(children));
 	}
 
@@ -122,24 +140,27 @@ public class ScriptNavigatorContentProvider extends ScriptExplorerContentProvide
 		return getParent(object);
 	}
 
-	public PipelinedShapeModification interceptAdd(PipelinedShapeModification addModification) {
-		convertToModelElements(addModification);
+	public PipelinedShapeModification interceptAdd(
+			PipelinedShapeModification addModification) {
+		convertToJavaElements(addModification);
 		return addModification;
 	}
 
-	public PipelinedShapeModification interceptRemove(PipelinedShapeModification removeModification) {
-		convertToModelElements(removeModification.getChildren());
+	public PipelinedShapeModification interceptRemove(
+			PipelinedShapeModification removeModification) {
+		convertToJavaElements(removeModification.getChildren());
 		return removeModification;
 	}
 
 	/**
-	 * Converts the shape modification to use Script elements.
+	 * Converts the shape modification to use Java elements.
 	 * 
 	 * 
 	 * @param modification
 	 *            the shape modification to convert
 	 */
-	private boolean convertToModelElements(PipelinedShapeModification modification) {
+	private boolean convertToJavaElements(
+			PipelinedShapeModification modification) {
 		Object parent = modification.getParent();
 		if (parent instanceof IContainer) {
 			IModelElement element = DLTKCore.create((IContainer) parent);
@@ -147,27 +168,31 @@ public class ScriptNavigatorContentProvider extends ScriptExplorerContentProvide
 				// we don't convert the root
 				if (!(element instanceof IScriptModel))
 					modification.setParent(element);
-				return convertToModelElements(modification.getChildren());
+				return convertToJavaElements(modification.getChildren());
+
 			}
 		}
 		return false;
 	}
 
 	/**
-	 * Converts the shape modification to use Script elements.
+	 * Converts the shape modification to use Java elements.
 	 * 
 	 * 
 	 * @param currentChildren
 	 *            The set of current children that would be contributed or
 	 *            refreshed in the viewer.
 	 */
-	private boolean convertToModelElements(Set currentChildren) {
+	private boolean convertToJavaElements(Set currentChildren) {
+
 		LinkedHashSet convertedChildren = new LinkedHashSet();
 		IModelElement newChild;
-		for (Iterator childrenItr = currentChildren.iterator(); childrenItr.hasNext();) {
+		for (Iterator childrenItr = currentChildren.iterator(); childrenItr
+				.hasNext();) {
 			Object child = childrenItr.next();
 			if (child instanceof IResource)
-				if ((newChild = DLTKCore.create((IResource) child)) != null && newChild.exists()) {
+				if ((newChild = DLTKCore.create((IResource) child)) != null
+						&& newChild.exists()) {
 					childrenItr.remove();
 					convertedChildren.add(newChild);
 				}
@@ -177,14 +202,16 @@ public class ScriptNavigatorContentProvider extends ScriptExplorerContentProvide
 			return true;
 		}
 		return false;
+
 	}
 
 	public boolean interceptRefresh(PipelinedViewerUpdate refreshSynchronization) {
-		return convertToModelElements(refreshSynchronization.getRefreshTargets());
+		return convertToJavaElements(refreshSynchronization.getRefreshTargets());
+
 	}
 
 	public boolean interceptUpdate(PipelinedViewerUpdate updateSynchronization) {
-		return convertToModelElements(updateSynchronization.getRefreshTargets());
+		return convertToJavaElements(updateSynchronization.getRefreshTargets());
 	}
 
 	protected void postAdd(final Object parent, final Object element) {
@@ -206,4 +233,5 @@ public class ScriptNavigatorContentProvider extends ScriptExplorerContentProvide
 		}
 		super.postRefresh(toRefresh, updateLabels);
 	}
+
 }

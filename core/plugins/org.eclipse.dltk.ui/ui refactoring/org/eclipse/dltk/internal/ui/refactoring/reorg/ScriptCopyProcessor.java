@@ -66,7 +66,7 @@ public final class ScriptCopyProcessor extends CopyProcessor implements IReorgDe
 		return new ScriptCopyProcessor(copyPolicy);
 	}
 
-	private ScriptCopyProcessor(ICopyPolicy copyPolicy) {
+	public ScriptCopyProcessor(ICopyPolicy copyPolicy) {
 		fCopyPolicy= copyPolicy;
 	}
 	

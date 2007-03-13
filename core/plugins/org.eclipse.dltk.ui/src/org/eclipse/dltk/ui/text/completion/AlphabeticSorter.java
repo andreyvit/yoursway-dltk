@@ -14,8 +14,6 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
 /**
  * A alphabetic proposal based sorter.
- * 
-	 *
  */
 public final class AlphabeticSorter extends AbstractProposalSorter {
 

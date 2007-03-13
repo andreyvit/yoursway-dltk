@@ -23,91 +23,78 @@ import org.eclipse.ui.navigator.ICommonActionExtensionSite;
 import org.eclipse.ui.navigator.ICommonViewerWorkbenchSite;
 import org.eclipse.ui.navigator.IExtensionStateModel;
 
-
 public class ScriptExplorerActionProvider extends CommonActionProvider {
 
-	private static final int HIERARCHICAL_LAYOUT = 0x1;
+	private static final int HIERARCHICAL_LAYOUT = 1;
 
-	private static final int FLAT_LAYOUT = 0x2;
+	private static final int FLAT_LAYOUT = 2;
 
 	private static final String TAG_LAYOUT = "org.eclipse.dltk.internal.ui.navigator.layout"; //$NON-NLS-1$
 
 	private CommonLayoutActionGroup fLayoutActionGroup;
- 
-	private IExtensionStateModel fStateModel;
-	
-	private OpenViewActionGroup fOpenViewGroup; 
-
+	private OpenViewActionGroup fOpenViewGroup;
 	private GenerateBuildPathActionGroup fBuildPathGroup;
-	
-	public ScriptExplorerActionProvider() {
-	}
 
-	//private GenerateActionGroup fGenerateGroup;
+	private IExtensionStateModel fStateModel;
 
 	private boolean fInViewPart = false;
 	private boolean fHasFilledViewMenu = false;
+
+	public ScriptExplorerActionProvider() {
+	}
 
 	public void fillActionBars(IActionBars actionBars) {
 		if (!fHasFilledViewMenu) {
 			fLayoutActionGroup.fillActionBars(actionBars);
 			fHasFilledViewMenu = true;
 		}
-		if (fInViewPart) {
-			fOpenViewGroup.fillActionBars(actionBars); 
-			fBuildPathGroup.fillActionBars(actionBars);
-			//fGenerateGroup.fillActionBars(actionBars); 
-			//fSearchGroup.fillActionBars(actionBars);
-		}
 
+		if (fInViewPart) {
+			fOpenViewGroup.fillActionBars(actionBars);
+			fBuildPathGroup.fillActionBars(actionBars);
+		}
 	}
 
 	public void fillContextMenu(IMenuManager menu) {
-
 		if (fInViewPart) {
-			fOpenViewGroup.fillContextMenu(menu); 
+			fOpenViewGroup.fillContextMenu(menu);
 			fBuildPathGroup.fillContextMenu(menu);
-			//fGenerateGroup.fillContextMenu(menu); 
-			//fSearchGroup.fillContextMenu(menu);
 		}
 	}
 
 	public void init(ICommonActionExtensionSite site) {
-
 		ICommonViewerWorkbenchSite workbenchSite = null;
-		if (site.getViewSite() instanceof ICommonViewerWorkbenchSite)
+
+		if (site.getViewSite() instanceof ICommonViewerWorkbenchSite) {
 			workbenchSite = (ICommonViewerWorkbenchSite) site.getViewSite();
+		}
 
 		fStateModel = site.getExtensionStateModel();
 
-		fLayoutActionGroup = new CommonLayoutActionGroup(site.getStructuredViewer(), fStateModel);
+		fLayoutActionGroup = new CommonLayoutActionGroup(site
+				.getStructuredViewer(), fStateModel);
 
 		if (workbenchSite != null) {
-			if (workbenchSite.getPart() != null && workbenchSite.getPart() instanceof IViewPart) {
+			if (workbenchSite.getPart() != null
+					&& workbenchSite.getPart() instanceof IViewPart) {
 				IViewPart viewPart = (IViewPart) workbenchSite.getPart();
-				
-				fOpenViewGroup = new OpenViewActionGroup(viewPart, site.getStructuredViewer()) {
+
+				fOpenViewGroup = new OpenViewActionGroup(viewPart, site
+						.getStructuredViewer()) {
 					protected boolean getShowProperties() {
 						return false;
 					}
-				}; 
-//				fGenerateGroup = new GenerateActionGroup(viewPart);
-
+				};
 				fBuildPathGroup = new GenerateBuildPathActionGroup(viewPart);
-				
 				fInViewPart = true;
 			}
-
 		}
-
 	}
 
 	public void setContext(ActionContext context) {
 		super.setContext(context);
 		if (fInViewPart) {
-			fOpenViewGroup.setContext(context); 
-//			fGenerateGroup.setContext(context);
-//			fSearchGroup.setContext(context);
+			fOpenViewGroup.setContext(context);
 			fBuildPathGroup.setContext(context);
 		}
 	}
@@ -125,7 +112,8 @@ public class ScriptExplorerActionProvider extends CommonActionProvider {
 
 		// If no memento try an restore from preference store
 		if (state == null) {
-			IPreferenceStore store = DLTKUIPlugin.getDefault().getPreferenceStore();
+			IPreferenceStore store = DLTKUIPlugin.getDefault()
+					.getPreferenceStore();
 			state = new Integer(store.getInt(TAG_LAYOUT));
 		}
 
@@ -134,18 +122,18 @@ public class ScriptExplorerActionProvider extends CommonActionProvider {
 		else if (state.intValue() == HIERARCHICAL_LAYOUT)
 			isCurrentLayoutFlat = false;
 
-		fStateModel.setBooleanProperty(Values.IS_LAYOUT_FLAT, isCurrentLayoutFlat);
+		fStateModel.setBooleanProperty(Values.IS_LAYOUT_FLAT,
+				isCurrentLayoutFlat);
 		fLayoutActionGroup.setFlatLayout(isCurrentLayoutFlat);
 	}
 
 	public void saveState(IMemento aMemento) {
 		super.saveState(aMemento);
+
 		IPreferenceStore store = DLTKUIPlugin.getDefault().getPreferenceStore();
 		if (fStateModel.getBooleanProperty(Values.IS_LAYOUT_FLAT))
 			store.setValue(TAG_LAYOUT, FLAT_LAYOUT);
 		else
 			store.setValue(TAG_LAYOUT, HIERARCHICAL_LAYOUT);
-
 	}
-
 }

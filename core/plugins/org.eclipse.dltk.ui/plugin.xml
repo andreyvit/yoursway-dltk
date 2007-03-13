@@ -137,16 +137,14 @@
 
 <extension
        point="org.eclipse.ui.views">
-    <!--view
+    <view
           allowMultiple="false"
           category="org.eclipse.dltk.ui.main"
           class="org.eclipse.ui.navigator.CommonNavigator"
           icon="/icons/full/eview16/projects.gif"
           id="org.eclipse.dltk.ui.views.navigator"
           name="Script Navigator"/>
-    <category
-          id="org.eclipse.dltk.ui.main"
-          name="DLTK"/-->
+    
     <view
           name="%ScriptExplorerViewName"
           icon="icons/full/eview16/package.gif"
@@ -207,7 +205,8 @@
           id="org.eclipse.dltk.ui.scriptContent"
           labelProvider="org.eclipse.dltk.internal.ui.navigator.ScriptNavigatorLabelProvider"
           name="DLTK TCL Script content"
-          priority="high">
+          priority="high">			
+          
           <triggerPoints>
 				<or>
 					<!--adapt
@@ -299,35 +298,12 @@
 		         class="org.eclipse.dltk.internal.ui.navigator.ScriptExplorerOpenActionProvider"
 		         id="org.eclipse.dltk.ui.navigator.PackageExplorerOpenActionProvider"
 		         overrides="org.eclipse.ui.navigator.resources.OpenActions"> 
-			</actionProvider> 
-			
-		    <!--actionProvider
-           		class="org.eclipse.dltk.internal.ui.navigator.ScriptEditActionProvider"
-           		id="org.eclipse.dltk.actions.ui.navigator.ScriptEditActionProvider"
-           		overrides="org.eclipse.ui.navigator.resources.actions.EditActions">
-			</actionProvider--> 
-			<dropAssistant
-              	class="org.eclipse.ui.navigator.resources.ResourceDropAdapterAssistant"
-              	id="org.eclipse.ui.navigator.resources.resourceDropAdapter">
-           		<possibleDropTargets>
-              		<or>
-	              		<adapt type="org.eclipse.dltk.core.IDLTKProject"/>
-                 		<adapt type="org.eclipse.core.resources.IProject"/>
-                 		<adapt type="org.eclipse.core.resources.IFolder"/>
-                 		<adapt type="org.eclipse.core.resources.IFile"/>
-                 		<adapt type="org.eclipse.dltk.core.IDLTKProject"/>
-              		</or>
-           		</possibleDropTargets>
-        	</dropAssistant>
-        	
-			<override
-					policy="InvokeAlwaysRegardlessOfSuppressedExt"
-					suppressedExtensionId="org.eclipse.ui.navigator.resourceContent"/>			
+			</actionProvider>			
 		   					
 			<commonSorter
 					class="org.eclipse.dltk.ui.ModelElementSorter"
-					id="org.eclipse.dltk.ui.modelElementSorter"/>		
-			<!-- Menu Shortcut Actions for Wizards -->
+					id="org.eclipse.dltk.ui.modelElementorg.eclipse.internal.ui.navigator.ScriptDropAssistanteAlwaysRegardlessOfSuppressedExt"
+					suppressedExtensionId="org.eclipse.ui.navigator.resourceContent"/>
 	      <commonWizard
 	        		type="new"
 					wizardId="org.eclipse.ui.wizards.new.folder">
@@ -355,7 +331,31 @@
 	               		<adapt type="org.eclipse.core.resources.IWorkspaceRoot" />	
 					</or>
 		         </enablement>
-			</commonWizard>              
+			</commonWizard> 
+			<dropAssistant
+              	class="org.eclipse.dltk.internal.ui.navigator.ScriptDropAssistant"
+              	id="org.eclipse.ui.navigator.resources.eDropAdapter">
+           		<possibleDropTargets>
+              		<or>
+	              		<adapt type="org.eclipse.dltk.core.IDLTKProject"/>
+                 		<adapt type="org.eclipse.core.resources.IProject"/>
+                 		<adapt type="org.eclipse.core.resources.IFolder"/>
+                 		<adapt type="org.eclipse.core.resources.IFile"/>
+                 		<adapt type="org.eclipse.dltk.core.IDLTKProject"/>
+              		</or>
+           		</possibleDropTargets>
+        	</dropAssistant>
+          
+          <override
+			policy="InvokeAlwaysRegardlessOfSuppressedExt"
+			suppressedExtensionId="org.eclipse.ui.navigator.resourceContent"/> 
+			
+		    <!--actionProvider
+           		class="org.eclipse.dltk.internal.ui.navigator.ScriptEditActionProvider"
+           		id="org.eclipse.dltk.actions.ui.navigator.ScriptEditActionProvider"
+           		overrides="org.eclipse.ui.navigator.resources.actions.EditActions">
+			</actionProvider-->		
+			<!-- Menu Shortcut Actions for Wizards -->              
     </navigatorContent>
  </extension>
  <extension

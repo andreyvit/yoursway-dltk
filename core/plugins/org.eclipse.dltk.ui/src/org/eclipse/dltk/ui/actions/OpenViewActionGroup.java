@@ -31,12 +31,6 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 /**
  * Action group that adds actions to open a new DLTK view part or an external 
  * viewer to a context menu and the global menu bar.
- * 
- * <p>
- * This class may be instantiated; it is not intended to be subclassed.
- * </p>
- * 
-	 *
  */
 public class OpenViewActionGroup extends ActionGroup {
 

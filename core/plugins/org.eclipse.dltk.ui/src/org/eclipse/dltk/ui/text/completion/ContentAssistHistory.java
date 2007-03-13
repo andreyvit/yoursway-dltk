@@ -63,8 +63,6 @@ import org.xml.sax.SAXException;
 public final class ContentAssistHistory {
 	/**
 	 * Persistence implementation.
-	 * 
-	 *
 	 */
 	private static final class ReaderWriter {
 
@@ -261,8 +259,6 @@ public final class ContentAssistHistory {
 	
 	/**
 	 * A ranking of the most recently selected types.
-	 * 
-	 *
 	 */
 	public static final class RHSHistory {
 		private final LinkedHashMap fHistory;
@@ -442,10 +438,6 @@ public final class ContentAssistHistory {
 		}
 		
 		return rhsCache;
-	}
-
-	private IProgressMonitor getProgressMonitor() {
-		return new NullProgressMonitor();
 	}
 	
 	/**

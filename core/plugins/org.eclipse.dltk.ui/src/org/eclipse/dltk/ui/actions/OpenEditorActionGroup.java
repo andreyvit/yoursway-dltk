@@ -37,11 +37,6 @@ import org.eclipse.ui.actions.OpenWithMenu;
  * Action group that adds the actions opening a new editor to the context menu
  * and the action bar's navigate menu.
  * 
- * <p>
- * This class may be instantiated; it is not intended to be subclassed.
- * </p>
- * 
-	 *
  */
 public class OpenEditorActionGroup extends ActionGroup {
 	private IWorkbenchSite fSite;
