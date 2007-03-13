@@ -8,7 +8,7 @@ import org.eclipse.dltk.utils.CorePrinter;
  * For each statement.
  * 
  */
-public class ForEachStatement extends ForStatement {
+public class ForEachStatement extends ClassicalForStatement {
 
 	/**
 	 * Construct foreach from ANTLR token, initialization, condition, increment

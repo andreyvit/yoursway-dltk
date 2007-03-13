@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.dltk.ast.ASTCaching;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
@@ -19,7 +20,6 @@ import org.eclipse.dltk.ruby.core.model.IElementKind;
 import org.eclipse.dltk.ruby.core.model.IModel;
 import org.eclipse.dltk.ruby.internal.parser.Activator;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
-import org.eclipse.dltk.typeinference.ASTCaching;
 
 public class Model implements IModel {
 	

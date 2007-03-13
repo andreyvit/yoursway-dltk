@@ -5,9 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTVisitor;
+import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.utils.CorePrinter;
 
-public class Block extends Statement {
+public class Block extends Expression {
 	private List statements;
 
 	public Block() {

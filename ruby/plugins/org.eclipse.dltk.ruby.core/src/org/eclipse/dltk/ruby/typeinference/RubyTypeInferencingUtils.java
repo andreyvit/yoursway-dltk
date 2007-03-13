@@ -136,8 +136,12 @@ public class RubyTypeInferencingUtils {
 		ConstantInfo[] declarations = findConstantDeclarations(sourceModule, rootNode,
 				requestedOffset, constName);
 
-		if (declarations == null)
+		if (declarations == null) {
+			if (constName.equals("Object")) {
+				return RubyMetaClassType.OBJECT_METATYPE;
+			}
 			return null;
+		}
 
 		boolean isType = false;
 		for (int i = 0; i < declarations.length; i++) {
@@ -251,7 +255,7 @@ public class RubyTypeInferencingUtils {
 
 		ClassInfo[] requestedInfos = resolveClassScopes(sourceModule, rootNode,
 				new int[] { offset });
-		System.out.println("RubyTypeInferencingUtils.findConstantDeclarations()");
+		//System.out.println("RubyTypeInferencingUtils.findConstantDeclarations()");
 		Collection[] foundOccurances = new ArrayList[requestedInfos.length + 1];
 		for (int i = 0; i < foundOccurances.length; i++)
 			foundOccurances[i] = new ArrayList();
@@ -730,6 +734,12 @@ public class RubyTypeInferencingUtils {
 			} catch (ModelException e) {
 			}			
 		}		
+		if (allTypes.length  == 0) {
+			FakeMethod[] fakeMethods = RubyModelUtils.getFakeMethods((ModelElement) project, "Object");
+			for (int j = 0; j < fakeMethods.length; j++) {
+				methods.add(fakeMethods[j]);
+			}
+		}
 		return new RubyClassType(fqn, allTypes, (IMethod[]) methods.toArray(new IMethod[methods.size()]));
 	}
 	

@@ -1,0 +1,13 @@
+package org.eclipse.dltk.ruby.tests.parser;
+
+import org.eclipse.dltk.ruby.tests.parser.jruby.ZippedParserSuite;
+
+import junit.framework.Test;
+
+public class JRuby1RubyParserTests {
+
+	public static Test suite() {
+		return new ZippedParserSuite("/workspace/jruby-tests1.zip");
+	}
+
+}

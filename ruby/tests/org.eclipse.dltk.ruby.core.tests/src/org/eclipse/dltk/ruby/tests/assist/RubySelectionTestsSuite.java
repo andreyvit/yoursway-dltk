@@ -55,7 +55,6 @@ public class RubySelectionTestsSuite extends TestSuite {
 					int pos2 = Integer.parseInt(tok.nextToken());
 					int apos1 = getPos (content, line1, pos1);
 					int apos2 = getPos (content, line2, pos2);
-					System.out.println("df");
 					Integer integer = new Integer(apos1);
 					sources.add(integer);
 					Object st = destinations.get(integer);

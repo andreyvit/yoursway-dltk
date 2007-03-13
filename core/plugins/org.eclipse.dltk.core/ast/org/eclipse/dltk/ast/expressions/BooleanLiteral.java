@@ -12,6 +12,8 @@ import org.eclipse.dltk.utils.CorePrinter;
  */
 public class BooleanLiteral extends Literal {
 
+	private boolean value;
+
 	/**
 	 * Construct from ANTLR token.
 	 * 
@@ -19,6 +21,19 @@ public class BooleanLiteral extends Literal {
 	 */
 	public BooleanLiteral(DLTKToken t) {
 		super(t);
+	}
+
+	public BooleanLiteral(int start, int end, boolean value) {
+		super(start, end);
+		this.value = value;
+	}
+
+	public boolean isValue() {
+		return value;
+	}
+
+	public void setValue(boolean value) {
+		this.value = value;
 	}
 
 	/**

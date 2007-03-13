@@ -37,4 +37,6 @@ public interface StatementConstants {
 	public static final int S_TRY_CATCH = 2015;
 
 	public static final int S_TRY_FINALLY = 2016;
+	
+	public static final int S_UNTIL = 2017;
 }

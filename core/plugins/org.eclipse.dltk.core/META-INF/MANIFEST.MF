@@ -42,6 +42,5 @@ Export-Package: org.eclipse.dltk.ast,
  org.eclipse.dltk.internal.core.search.matching;x-internal:=true,
  org.eclipse.dltk.internal.core.search.processing;x-internal:=true,
  org.eclipse.dltk.internal.core.util;x-internal:=true,
- org.eclipse.dltk.typeinference,
  org.eclipse.dltk.utils
 Bundle-ClassPath: .

@@ -20,13 +20,15 @@ public class ExpressionGoal extends AbstractGoal {
 			return true;
 		if (obj instanceof ExpressionGoal) {
 			ExpressionGoal goal = (ExpressionGoal) obj;
-			return expression.equals(goal.expression);
+			//return expression.equals(goal.expression);
+			return expression == goal.expression;
 		}
 		return false;
 	}
 
 	public int hashCode() {
 		return expression.hashCode();
+		
 	}
 
 }

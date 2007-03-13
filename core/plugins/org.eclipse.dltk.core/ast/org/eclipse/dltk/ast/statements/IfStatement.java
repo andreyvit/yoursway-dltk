@@ -34,7 +34,7 @@ public class IfStatement extends Statement {
 	public IfStatement(Statement condition, Statement thenStatement, Statement elseStatement) {
 		this.fCondition = condition;
 		this.fThenStatement = thenStatement;
-		fElseStatement = elseStatement;
+		this.fElseStatement = elseStatement;
 	}
 
 	public void traverse(ASTVisitor pVisitor) throws Exception {

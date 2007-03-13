@@ -1,63 +1,39 @@
 package org.eclipse.dltk.ast.statements;
 
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.DLTKToken;
-import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.expressions.ExpressionList;
 import org.eclipse.dltk.utils.CorePrinter;
 
 /**
  * For Statement.
+ *  for <target> in <list> do 
+ *  	<action>
+ *  end
  */
 public class ForStatement extends Statement {
 
-	private Expression fInitialization;
-
-	private Expression fCondition;
-
-	private Expression fIncrement;
-
+	private Statement fTarget;
+	private ExpressionList fList;
 	private Statement fAction;
-
-	/**
-	 * Construct from ANTLR token, initialization, condition, increment
-	 * expressions and action statement
-	 * 
-	 * @param forToken -
-	 *            ANTLR token.
-	 * @param initialization -
-	 *            initialization expression.
-	 * @param condition -
-	 *            condition expression.
-	 * @param increment -
-	 *            increment expression.
-	 * @param action -
-	 *            action statement.
-	 */
-	public ForStatement(DLTKToken forToken, Expression initialization,
-			Expression condition, Expression increment, Statement action) {
-
-		this.fInitialization = initialization;
-		this.fCondition = condition;
-		this.fIncrement = increment;
-		this.fAction = action;
-		this.setStart(forToken.getColumn());
-		if (action != null) {
-			this.setEnd(action.sourceEnd());
-		}
+	
+	
+	public ForStatement(int start, int end, Statement target,
+			ExpressionList list, Statement action) {
+		super(start, end);
+		fTarget = target;
+		fList = list;
+		fAction = action;
 	}
 
 	public void traverse(ASTVisitor pVisitor) throws Exception {
 
 		if (pVisitor.visit(this)) {
-			if (fInitialization != null) {
-				fInitialization.traverse(pVisitor);
+			if (fTarget != null) {
+				fTarget.traverse(pVisitor);
 			}
-			if (fCondition != null) {
-				fCondition.traverse(pVisitor);
-			}
-			if (fIncrement != null) {
-				fIncrement.traverse(pVisitor);
-			}
+			if (fList != null) {
+				fList.traverse(pVisitor);
+			}			
 			if (fAction != null) {
 				fAction.traverse(pVisitor);
 			}
@@ -73,31 +49,24 @@ public class ForStatement extends Statement {
 		return fAction;
 	}
 
-	public Expression getCondition() {
-		return fCondition;
+	
+	public Statement getTarget() {
+		return fTarget;
 	}
 
-	public Expression getIncrement() {
-		return fIncrement;
-	}
-
-	public Expression getInitialization() {
-		return fInitialization;
+	public ExpressionList getList() {
+		return fList;
 	}
 
 	public void printNode(CorePrinter output) {
 		output.formatPrintLn("for:");
-		if (this.fCondition != null) {
-			output.formatPrintLn("condition:");
-			this.fCondition.printNode(output);
+		if (this.fTarget != null) {
+			output.formatPrintLn("target:");
+			this.fTarget.printNode(output);
 		}
-		if (this.fIncrement != null) {
-			output.formatPrintLn("increment:");
-			this.fIncrement.printNode(output);
-		}
-		if (this.fInitialization != null) {
-			output.formatPrintLn("initialization:");
-			this.fInitialization.printNode(output);
+		if (this.fList != null) {
+			output.formatPrintLn("list:");
+			this.fList.printNode(output);
 		}
 		if (this.fAction != null) {
 			output.indent();

@@ -16,7 +16,7 @@ import org.eclipse.dltk.ddp.ExpressionGoal;
 import org.eclipse.dltk.ddp.GoalEvaluator;
 import org.eclipse.dltk.ddp.IGoal;
 import org.eclipse.dltk.evaluation.types.IEvaluatedType;
-import org.eclipse.dltk.ruby.ast.ReturnStatement;
+import org.eclipse.dltk.ruby.ast.RubyReturnStatement;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
 
@@ -123,8 +123,8 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		ASTVisitor visitor = new ASTVisitor () {
 			
 			public boolean visitGeneral(ASTNode node) throws Exception {
-				if (node instanceof ReturnStatement) {
-					ReturnStatement statement = (ReturnStatement) node;
+				if (node instanceof RubyReturnStatement) {
+					RubyReturnStatement statement = (RubyReturnStatement) node;
 					if (statement.getValue() instanceof Expression) {
 						possibilities.add(statement.getValue());
 					}

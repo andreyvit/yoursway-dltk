@@ -7,7 +7,6 @@ import org.eclipse.dltk.utils.CorePrinter;
 public class ColonExpression extends Expression {
 	private final Expression left;
 	private final String name;
-	private final boolean full;
 
 
 	public Expression getLeft() {
@@ -18,10 +17,9 @@ public class ColonExpression extends Expression {
 		return name;
 	}
 
-	public ColonExpression (String name, Expression left, boolean full) {
+	public ColonExpression (String name, Expression left) {
 		this.name = name;
 		this.left = left;
-		this.full = full;		
 	}
 	
 	public int getKind() {
@@ -40,13 +38,13 @@ public class ColonExpression extends Expression {
 	}
 
 	public boolean isFull() {
-		return full;
+		return left == null;
 	}
 	
 	public void printNode(CorePrinter output) {
 		output.formatPrintLn("ColonExpression" + this.getSourceRange().toString() + ":");
 		output.indent();
-		if (this.full)
+		if (isFull())
 			output.formatPrint("::");
 		if (this.left != null) {
 			this.left.printNode(output);

@@ -34,10 +34,12 @@ public class ExpressionList extends Expression {
 
 	public void traverse(ASTVisitor pVisitor) throws Exception {
 		if (pVisitor.visit(this)) {
-			Iterator it = fExpressions.iterator();
-			while (it.hasNext()) {
-				Expression e = (Expression) it.next();
-				e.traverse(pVisitor);
+			if (fExpressions != null) {
+				Iterator it = fExpressions.iterator();
+				while (it.hasNext()) {
+					Expression e = (Expression) it.next();
+					e.traverse(pVisitor);
+				}
 			}
 			pVisitor.endvisit(this);
 		}

@@ -9,7 +9,7 @@ import org.eclipse.dltk.utils.CorePrinter;
  * While statement.
  */
 public class WhileStatement extends Statement {
-	private Expression fCondition;
+	private Statement fCondition;
 	private Statement fAction;
 
 	public WhileStatement(DLTKToken token) {
@@ -19,6 +19,11 @@ public class WhileStatement extends Statement {
 	public WhileStatement(DLTKToken whileToken, Expression condition,
 			Statement action) {
 		this.setStart(whileToken.getColumn());
+		this.fCondition = condition;
+		this.fAction = action;
+	}
+	
+	public WhileStatement(Statement condition, Statement action) {
 		this.fCondition = condition;
 		this.fAction = action;
 	}
@@ -39,7 +44,7 @@ public class WhileStatement extends Statement {
 		return S_WHILE;
 	}
 
-	public Expression getCondition() {
+	public Statement getCondition() {
 		return fCondition;
 	}
 

@@ -1,16 +1,10 @@
 package org.eclipse.dltk.ruby.internal.parser;
 
 import java.io.StringReader;
-import java.lang.ref.Reference;
-import java.lang.ref.ReferenceQueue;
-import java.lang.ref.SoftReference;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,11 +20,9 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.IProblem;
 import org.eclipse.dltk.compiler.IProblemReporter;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
-import org.eclipse.dltk.ruby.internal.parsers.jruby.DLTKASTBuildVisitor;
-import org.jruby.IRuby;
+import org.eclipse.dltk.ruby.internal.parsers.jruby.RubyASTBuildVisitor;
+import org.eclipse.dltk.ruby.internal.parsers.jruby.DLTKRubyParser;
 import org.jruby.ast.Node;
-import org.jruby.parser.Parser;
-import org.jruby.parser.RubyParserConfiguration;
 
 
 public class JRubySourceParser implements IExecutableExtension, ISourceParser {
@@ -159,22 +151,21 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 		this.problemReporter = problemReporter;
 	}
 	
-	public ModuleDeclaration parse(String content) {// throws
+	public ModuleDeclaration parse(String content) {
 		try {
-			Parser parser = new Parser(new IRuby() {});
+			//Ruby runtime = Ruby.getDefaultInstance();
+			DLTKRubyParser parser = new DLTKRubyParser();
 			ProxyProblemReporter proxyProblemReporter = new ProxyProblemReporter(problemReporter);
 			errorState[0] = false;
 			
 			long timeStart = System.currentTimeMillis();
-			Node node = parser.parse("", new StringReader(content), new RubyParserConfiguration(),
-					proxyProblemReporter);
+			Node node = parser.parse("", new StringReader(content), proxyProblemReporter);
 			fixPositions.clear();
 			if (!parser.isSuccess() || errorState[0]) {
 				content = fixBrokenDots(content);
 				content = fixBrokenColons(content);
 				
-				Node node2 = parser.parse("", new StringReader(content), new RubyParserConfiguration(),
-						null);
+				Node node2 = parser.parse("", new StringReader(content), null);
 				if (node2 != null)
 					node = node2;
 				else
@@ -182,7 +173,7 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 			}
 			
 			ModuleDeclaration module = new ModuleDeclaration(content.length());
-			DLTKASTBuildVisitor visitor = new DLTKASTBuildVisitor(module, content);
+			RubyASTBuildVisitor visitor = new RubyASTBuildVisitor(module, content);
 			if (node != null)
 				node.accept(visitor);
 	
@@ -208,8 +199,12 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 			return module;
 		}
 		catch( Throwable t ) {
-			ModuleDeclaration mdl = new ModuleDeclaration(1);
-			return mdl;
+			t.printStackTrace();
+			if (RubyASTBuildVisitor.SILENT_MODE) {				
+				ModuleDeclaration mdl = new ModuleDeclaration(1);
+				return mdl;
+			}
+			throw new RuntimeException(t);
 		}
 	}
 

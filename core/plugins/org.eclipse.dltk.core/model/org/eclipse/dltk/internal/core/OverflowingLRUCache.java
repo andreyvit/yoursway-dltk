@@ -13,6 +13,7 @@ package org.eclipse.dltk.internal.core;
 import java.util.Enumeration;
 import java.util.Iterator;
 
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.internal.core.util.LRUCache;
 import org.eclipse.dltk.internal.core.util.Messages;
 
@@ -209,7 +210,9 @@ public void printStats() {
 		forwardListLength++;
 		entry = entry._fNext;
 	}
-	System.out.println("Forward length: " + forwardListLength); //$NON-NLS-1$
+	if (DLTKCore.VERBOSE) {
+		System.out.println("Forward length: " + forwardListLength); //$NON-NLS-1$
+	}
 	
 	int backwardListLength = 0;
 	entry = fEntryQueueTail;
@@ -217,7 +220,10 @@ public void printStats() {
 		backwardListLength++;
 		entry = entry._fPrevious;
 	}
-	System.out.println("Backward length: " + backwardListLength); //$NON-NLS-1$
+	
+	if (DLTKCore.VERBOSE) {
+		System.out.println("Backward length: " + backwardListLength); //$NON-NLS-1$
+	}
 
 	Enumeration keys = fEntryTable.keys();
 	class Temp {
@@ -243,8 +249,10 @@ public void printStats() {
 		}
 	}
 
-	for (Iterator iter = h.keySet().iterator(); iter.hasNext();){
-		System.out.println(h.get(iter.next()));
+	if (DLTKCore.VERBOSE) {
+		for (Iterator iter = h.keySet().iterator(); iter.hasNext();){
+			System.out.println(h.get(iter.next()));
+		}
 	}
 }
 	/**
