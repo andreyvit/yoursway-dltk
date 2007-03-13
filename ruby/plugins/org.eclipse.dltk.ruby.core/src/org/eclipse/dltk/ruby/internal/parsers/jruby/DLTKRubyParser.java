@@ -103,9 +103,9 @@ public class DLTKRubyParser {
         // currently since we create the DynamicScope for a LocalStaticScope before parse begins.
         // Refactoring should make this fixable.
         if (result != null) {
-        	if (result.getScope() != null) {
-	            result.getScope().growIfNeeded();
-	        }
+//        	if (result.getScope() != null) {
+//	            result.getScope().growIfNeeded();
+//	        }
         	// FIXME: We should move this into ParserSupport.addRootNode since actual parser should do this.
         	result.addAppendBeginAndEndNodes();
         	return result.getAST();
