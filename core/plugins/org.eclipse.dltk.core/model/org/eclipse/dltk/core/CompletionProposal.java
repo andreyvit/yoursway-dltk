@@ -918,6 +918,10 @@ public final class CompletionProposal extends InternalCompletionProposal {
 		this.declarationSignature = signature;
 	}
 
+	public char[] getDeclarationSignature() {
+		return declarationSignature;
+	}
+	
 	/**
 	 * Sets the type or package key of the relevant declaration in the context,
 	 * or <code>null</code> if none.
