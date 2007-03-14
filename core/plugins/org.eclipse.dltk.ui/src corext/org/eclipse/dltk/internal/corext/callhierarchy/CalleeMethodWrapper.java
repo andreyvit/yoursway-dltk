@@ -91,7 +91,7 @@ class CalleeMethodWrapper extends MethodWrapper {
 	protected Map findChildren(IProgressMonitor progressMonitor) {
 		if (getMember().exists() && getMember().getElementType() == IModelElement.METHOD) {
 			try {
-				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLangaugeToolkit(getMember());
+				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(getMember());
 				if (toolkit != null) {
 					IDLTKSearchScope scope = CallHierarchy.getDefault().getSearchScope(toolkit);
 					ICalleeProcessor processor = toolkit.createCalleeProcessor((IMethod) getMember(), progressMonitor, scope);

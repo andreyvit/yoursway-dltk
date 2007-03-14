@@ -530,7 +530,7 @@ public class CopyResourceElementsOperation extends MultiOperation {
 				char[][] exclusionPatterns = root.fullExclusionPatternChars();
 				for (int i = 0; i < resources.length; i++) {
 					String resourceName = resources[i].getName();
-					IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLangaugeToolkit(newFrag);
+					IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(newFrag);
 					if (toolkit != null && toolkit.validateSourceModule(resources[i]).getSeverity() != IStatus.ERROR) {
 						// we only consider potential compilation units
 						ISourceModule cu = newFrag.getSourceModule(resourceName);

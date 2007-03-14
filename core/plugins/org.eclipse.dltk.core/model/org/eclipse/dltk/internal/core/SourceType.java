@@ -317,7 +317,7 @@ public class SourceType extends NamedMember implements IType {
 
 		CreateTypeHierarchyOperation op;
 		try {
-			op = new CreateTypeHierarchyOperation(this, workingCopies, SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLangaugeToolkit(this)), false);
+			op = new CreateTypeHierarchyOperation(this, workingCopies, SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLanguageToolkit(this)), false);
 		} catch (CoreException e) {
 			throw new ModelException(e);
 		}
@@ -336,7 +336,7 @@ public class SourceType extends NamedMember implements IType {
 		ISourceModule[] workingCopies = ModelManager.getModelManager().getWorkingCopies(owner, true/*add primary working copies*/);
 		CreateTypeHierarchyOperation op;
 		try {
-			op = new CreateTypeHierarchyOperation(this, workingCopies, SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLangaugeToolkit(this)), false);
+			op = new CreateTypeHierarchyOperation(this, workingCopies, SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLanguageToolkit(this)), false);
 		} catch (CoreException e) {
 			throw new ModelException(e);
 		}
@@ -386,7 +386,7 @@ public class SourceType extends NamedMember implements IType {
 	public ITypeHierarchy newTypeHierarchy(IProgressMonitor monitor) throws ModelException {
 		CreateTypeHierarchyOperation op;
 		try {
-			op = new CreateTypeHierarchyOperation(this, null, SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLangaugeToolkit(this)), true);
+			op = new CreateTypeHierarchyOperation(this, null, SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLanguageToolkit(this)), true);
 		} catch (CoreException e) {
 			throw new ModelException(e);
 		}
@@ -403,7 +403,7 @@ public class SourceType extends NamedMember implements IType {
 			
 		CreateTypeHierarchyOperation op;
 		try {
-			op = new CreateTypeHierarchyOperation(this, workingCopies, SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLangaugeToolkit(this)), true);
+			op = new CreateTypeHierarchyOperation(this, workingCopies, SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLanguageToolkit(this)), true);
 		} catch (CoreException e) {
 			throw new ModelException(e);
 		}
@@ -421,7 +421,7 @@ public class SourceType extends NamedMember implements IType {
 		ISourceModule[] workingCopies = ModelManager.getModelManager().getWorkingCopies(owner, true/*add primary working copies*/);
 		CreateTypeHierarchyOperation op;
 		try {
-			op = new CreateTypeHierarchyOperation(this, workingCopies, SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLangaugeToolkit(this)), true);
+			op = new CreateTypeHierarchyOperation(this, workingCopies, SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLanguageToolkit(this)), true);
 		} catch (CoreException e) {
 			throw new ModelException(e);
 		}

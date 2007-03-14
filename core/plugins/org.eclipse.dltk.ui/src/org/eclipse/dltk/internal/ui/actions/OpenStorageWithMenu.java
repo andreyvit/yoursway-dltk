@@ -212,7 +212,7 @@ public class OpenStorageWithMenu extends ContributionItem {
         if (elem != null) {
         	String editorID = null;
 			try {
-				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLangaugeToolkit(elem);
+				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(elem);
 				editorID = toolkit.getEditorID(elem);				
 			} catch (CoreException e) {				
 			}

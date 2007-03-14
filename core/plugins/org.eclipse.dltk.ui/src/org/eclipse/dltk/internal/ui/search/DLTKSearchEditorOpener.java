@@ -157,7 +157,7 @@ public class DLTKSearchEditorOpener {
 		String editorID = null;
 		IEditorDescriptor desc= null;
 		try {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLangaugeToolkit(module);
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(module);
 			editorID = toolkit.getEditorID(module);
 		} catch (CoreException e) {				
 		}

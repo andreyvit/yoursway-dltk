@@ -17,7 +17,7 @@ public class RubyMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
 			return false;
 		// check project nature		
 		try {
-			IDLTKLanguageToolkit ltk = DLTKLanguageManager.getLangaugeToolkit(project);
+			IDLTKLanguageToolkit ltk = DLTKLanguageManager.getLanguageToolkit(project);
 			if (ltk instanceof RubyLanguageToolkit)
 				return true;
 		} catch (CoreException e) {

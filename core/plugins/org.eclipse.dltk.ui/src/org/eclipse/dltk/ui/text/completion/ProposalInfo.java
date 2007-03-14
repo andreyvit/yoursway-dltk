@@ -128,7 +128,7 @@ public class ProposalInfo {
 			throws ModelException {
 		String nature = null;
 		try {
-			nature = DLTKLanguageManager.getLangaugeToolkit(member)
+			nature = DLTKLanguageManager.getLanguageToolkit(member)
 					.getNatureID();
 		} catch (CoreException e) {
 			return null;

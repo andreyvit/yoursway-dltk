@@ -560,7 +560,7 @@ public class MatchLocator implements ITypeRequestor {
 
 		IDLTKLanguageToolkit tk = null;
 		try {
-			tk = DLTKLanguageManager.getLangaugeToolkit(project);
+			tk = DLTKLanguageManager.getLanguageToolkit(project);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}

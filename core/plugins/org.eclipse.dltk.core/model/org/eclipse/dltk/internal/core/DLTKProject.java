@@ -1885,7 +1885,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 
 	public boolean isValid() {
 		try {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLangaugeToolkit(this);
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(this);
 			return toolkit != null;
 		} catch (CoreException ex) {
 			return false;

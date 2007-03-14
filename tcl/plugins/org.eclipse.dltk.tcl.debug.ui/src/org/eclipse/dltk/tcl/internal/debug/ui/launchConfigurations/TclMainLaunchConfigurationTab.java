@@ -17,7 +17,7 @@ public class TclMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
 
 		try {
 			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLangaugeToolkit(project);
+					.getLanguageToolkit(project);
 			if (toolkit instanceof TclLanguageToolkit) {
 				return true;
 			}

@@ -3,6 +3,7 @@
 <plugin>
    <extension-point id="language" name="%language" schema="schema/language.exsd"/>
    <extension-point id="buildpathContainerInitializer" name="buildpathContainerInitializer" schema="schema/buildpathContainerInitializer.exsd"/>
+   <extension-point id="mixin" name="mixin" schema="schema/mixin.exsd"/>
 
 <!-- =================================================================================== -->
 <!-- Extension: DLTK Problem                                                             -->

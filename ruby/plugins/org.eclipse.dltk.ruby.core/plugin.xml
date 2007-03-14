@@ -13,5 +13,12 @@
       <language
             class="org.eclipse.dltk.ruby.core.RubyLanguageToolkit"
             nature="org.eclipse.dltk.ruby.core.nature"/>
-   </extension>   
+   </extension>
+  <extension
+        point="org.eclipse.dltk.core.mixin">
+     <mixin
+           class="org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixin"
+           nature="org.eclipse.dltk.ruby.core.nature">
+     </mixin>
+  </extension>   
 </plugin>

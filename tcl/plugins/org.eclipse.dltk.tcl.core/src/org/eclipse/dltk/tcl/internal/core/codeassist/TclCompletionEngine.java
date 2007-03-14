@@ -261,7 +261,7 @@ public class TclCompletionEngine extends CompletionEngine {
 		};
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLangaugeToolkit(this.dltkProject);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(this.dltkProject);
 		} catch (CoreException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -643,7 +643,7 @@ public class TclCompletionEngine extends CompletionEngine {
 		};
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLangaugeToolkit(this.dltkProject);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(this.dltkProject);
 		} catch (CoreException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -756,7 +756,7 @@ public class TclCompletionEngine extends CompletionEngine {
 
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLangaugeToolkit(this.dltkProject);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(this.dltkProject);
 		} catch (CoreException e1) {
 			e1.printStackTrace();
 		}

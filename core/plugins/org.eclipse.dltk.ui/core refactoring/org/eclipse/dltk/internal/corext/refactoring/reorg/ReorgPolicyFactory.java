@@ -1130,7 +1130,7 @@ public class ReorgPolicyFactory {
 			String newName= nameProposer.createNewName(pack, destination);
 			IDLTKLanguageToolkit tk = null;
 			try {
-				tk = DLTKLanguageManager.getLangaugeToolkit(pack);
+				tk = DLTKLanguageManager.getLanguageToolkit(pack);
 			} catch (CoreException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

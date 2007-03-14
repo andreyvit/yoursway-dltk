@@ -385,7 +385,7 @@ public class SourceModule extends Openable implements ISourceModule, org.eclipse
 		}
 		if(!root.isArchive()) { 
 			try {
-				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLangaugeToolkit(this);
+				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(this);
 				if (toolkit != null) {
 					return toolkit.validateSourceModule(resource);
 				} else {

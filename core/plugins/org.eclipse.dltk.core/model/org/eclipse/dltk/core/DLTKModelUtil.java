@@ -72,7 +72,7 @@ public class DLTKModelUtil {
 		
 		IDLTKLanguageToolkit langaugeToolkit;
 		try {
-			langaugeToolkit = DLTKLanguageManager.getLangaugeToolkit(project);
+			langaugeToolkit = DLTKLanguageManager.getLanguageToolkit(project);
 		} catch (CoreException e1) {
 			return;
 		}
@@ -104,7 +104,7 @@ public class DLTKModelUtil {
 		
 		IDLTKLanguageToolkit langaugeToolkit;
 		try {
-			langaugeToolkit = DLTKLanguageManager.getLangaugeToolkit(project);
+			langaugeToolkit = DLTKLanguageManager.getLanguageToolkit(project);
 		} catch (CoreException e1) {
 			return;
 		}

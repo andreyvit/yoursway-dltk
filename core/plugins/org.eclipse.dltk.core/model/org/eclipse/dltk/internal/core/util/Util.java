@@ -521,7 +521,7 @@ public class Util {
 			IResource resource) {
 		try {
 			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLangaugeToolkit(parent);
+					.getLanguageToolkit(parent);
 			if (toolkit != null) {
 				return toolkit.validateSourceModule(resource).getSeverity() != IStatus.ERROR;
 			} else {
@@ -539,7 +539,7 @@ public class Util {
 	public static boolean isValidSourceModule(IModelElement parent, IPath path) {
 		try {
 			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLangaugeToolkit(parent);
+					.getLanguageToolkit(parent);
 			if (toolkit != null) {
 				return toolkit.validateSourceModule(path).getSeverity() != IStatus.ERROR;
 			} else {
@@ -558,7 +558,7 @@ public class Util {
 			IPath path) {
 		try {
 			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLangaugeToolkit(parent);
+					.getLanguageToolkit(parent);
 			if (toolkit != null) {
 				return toolkit.validateSourcePackage(path);
 			}
@@ -572,7 +572,7 @@ public class Util {
 			String name) {
 		try {
 			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLangaugeToolkit(parent);
+					.getLanguageToolkit(parent);
 			if (toolkit != null) {
 				return toolkit.validateSourceModuleName(name).getSeverity() != IStatus.ERROR;
 			} else {

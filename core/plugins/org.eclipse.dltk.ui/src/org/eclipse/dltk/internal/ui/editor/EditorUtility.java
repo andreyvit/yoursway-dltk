@@ -164,7 +164,7 @@ public class EditorUtility {
 					String editorID;
 						
 					try {
-						IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLangaugeToolkit(element);
+						IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(element);
 						editorID = toolkit.getEditorID(inputElement);
 					} catch (CoreException e) {
 						return null;

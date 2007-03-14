@@ -151,7 +151,7 @@ public class AddArchiveToBuildpathAction extends Action implements ISelectionCha
 		}
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLangaugeToolkit(fDLTKProject);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(fDLTKProject);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}

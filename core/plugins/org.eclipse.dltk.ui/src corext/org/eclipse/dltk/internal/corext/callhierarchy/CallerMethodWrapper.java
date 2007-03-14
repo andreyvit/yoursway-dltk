@@ -41,7 +41,7 @@ class CallerMethodWrapper extends MethodWrapper {
 		IModelElement el = this.getMember();
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLangaugeToolkit(el);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(el);
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -67,7 +67,7 @@ class CallerMethodWrapper extends MethodWrapper {
 			IProgressMonitor monitor = new SubProgressMonitor(progressMonitor, 95, SubProgressMonitor.SUPPRESS_SUBTASK_LABEL);
 			IDLTKSearchScope defaultSearchScope = getSearchScope();
 			IModelElement el = this.getMember();
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLangaugeToolkit(el);
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(el);
 			boolean isWorkspaceScope = SearchEngine.createWorkspaceScope(toolkit).equals(defaultSearchScope);
 
 			ICallProcessor processor = toolkit.createCallProcessor();

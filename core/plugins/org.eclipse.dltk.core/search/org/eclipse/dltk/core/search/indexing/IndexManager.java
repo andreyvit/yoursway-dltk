@@ -213,7 +213,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	public SourceIndexerRequestor getSourceRequestor(IDLTKProject dltkProject) {
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLangaugeToolkit(dltkProject);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(dltkProject);
 		} catch (CoreException e) {	
 			e.printStackTrace();
 		}		
@@ -229,7 +229,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		// options.put(DLTKCore.COMPILER_TASK_TAGS, ""); //$NON-NLS-1$
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLangaugeToolkit(project);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(project);
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -125,7 +125,7 @@ final class SpecificContentAssistAction extends Action implements IUpdate {
 		IModelElement modelElement = EditorUtility.getEditorInputModelElement(this.fEditor, false);
 		if (modelElement != null) {
 			try {
-				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLangaugeToolkit(modelElement);
+				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(modelElement);
 				if (toolkit != null) {
 					partitioning = toolkit.getPartitioningID();
 				}

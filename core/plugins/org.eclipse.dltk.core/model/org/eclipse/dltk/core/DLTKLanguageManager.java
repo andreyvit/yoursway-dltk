@@ -118,7 +118,7 @@ public class DLTKLanguageManager {
 		}
 	}
 
-	public static IDLTKLanguageToolkit getLangaugeToolkit(IModelElement element)
+	public static IDLTKLanguageToolkit getLanguageToolkit(IModelElement element)
 			throws CoreException {
 		IProject project = element.getScriptProject().getProject();
 		String natureId = findScriptNature(project);

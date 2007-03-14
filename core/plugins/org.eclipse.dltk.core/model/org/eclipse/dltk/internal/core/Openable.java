@@ -444,7 +444,7 @@ public abstract class Openable extends ModelElement implements IOpenable,
 
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLangaugeToolkit(this);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(this);
 		} catch (CoreException e) {
 			if (DLTKCore.DEBUG) {
 				e.printStackTrace();
@@ -494,7 +494,7 @@ public abstract class Openable extends ModelElement implements IOpenable,
 		}
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLangaugeToolkit(this);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(this);
 		} catch (CoreException e) {
 			if (DLTKCore.DEBUG) {
 				e.printStackTrace();

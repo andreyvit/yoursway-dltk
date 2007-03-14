@@ -1001,7 +1001,7 @@ public class TypeHierarchy implements ITypeHierarchy, IElementChangedListener {
 				typeHierarchy.project = null;
 				typeHierarchy.scope = SearchEngine
 						.createWorkspaceScope(DLTKLanguageManager
-								.getLangaugeToolkit(type));
+								.getLanguageToolkit(type));
 			}
 
 			// read missing type

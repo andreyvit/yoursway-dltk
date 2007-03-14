@@ -210,7 +210,7 @@ public class DeleteModifications extends RefactoringModifications {
 					IFile file= (IFile)member;
 					if ("class".equals(file.getFileExtension()) && file.isDerived()) //$NON-NLS-1$
 						continue;
-					IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLangaugeToolkit(pack);
+					IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(pack);
 					if (DLTKCore.DEBUG) {
 						System.err.println("TODO: Additional Check required...");
 					}

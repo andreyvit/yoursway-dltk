@@ -23,7 +23,7 @@ public class RubyTypeHierarchyEngine {
 			String[] superTypes = type.getSuperClasses();
 			List types = new ArrayList();
 			monitor.beginTask("Collecting types...", superTypes.length);
-			IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLangaugeToolkit(type));
+			IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLanguageToolkit(type));
 			for( int i = 0; i < superTypes.length; ++i ) {
 				if( DEBUG ) {
 					System.out.println("Type:" + type.getElementName() + " has supertype:" + superTypes[i]);

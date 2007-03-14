@@ -154,7 +154,7 @@ public class ScriptElementImageProvider {
 		}
 		String nature;
 		try {
-			nature = DLTKLanguageManager.getLangaugeToolkit(element)
+			nature = DLTKLanguageManager.getLanguageToolkit(element)
 					.getNatureID();
 		} catch (CoreException e) {
 			return null;

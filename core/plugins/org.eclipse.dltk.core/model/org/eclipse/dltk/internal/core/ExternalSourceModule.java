@@ -331,7 +331,7 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 		IPath path = this.getFullPath();
 		if(!root.isArchive()) { 
 			try {
-				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLangaugeToolkit(this);			
+				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(this);			
 				if (toolkit != null) {
 					return toolkit.validateSourceModule(path);
 				} else {

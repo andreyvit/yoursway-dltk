@@ -164,7 +164,7 @@ public class NewNameQueries implements INewNameQueries {
 				String newCuName= DLTKModelUtil.getRenamedCUName(cu, newText);
 				IDLTKLanguageToolkit toolkit = null;
 				try {
-					toolkit = DLTKLanguageManager.getLangaugeToolkit(cu);
+					toolkit = DLTKLanguageManager.getLanguageToolkit(cu);
 				} catch (CoreException e) {
 					e.printStackTrace();
 				}

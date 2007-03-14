@@ -239,7 +239,6 @@ class AddExternalFolderToIndex extends IndexRequest {
 			try {
 				contents = Util.getResourceContentsAsCharArray(ffile);
 			} catch (ModelException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

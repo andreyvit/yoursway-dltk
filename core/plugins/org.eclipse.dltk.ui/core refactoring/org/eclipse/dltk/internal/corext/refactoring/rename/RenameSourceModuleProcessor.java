@@ -149,7 +149,7 @@ public class RenameSourceModuleProcessor extends ScriptRenameProcessor implement
 		IScriptFolder pack= (IScriptFolder)parent;
 		IDLTKLanguageToolkit tk = null;
 		try {
-			tk = DLTKLanguageManager.getLangaugeToolkit(pack);
+			tk = DLTKLanguageManager.getLanguageToolkit(pack);
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

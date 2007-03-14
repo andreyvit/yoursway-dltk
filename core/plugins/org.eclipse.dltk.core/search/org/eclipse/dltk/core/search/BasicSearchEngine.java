@@ -153,7 +153,7 @@ public class BasicSearchEngine {
 		IDLTKLanguageToolkit toolkit = null;
 		if( elements.length > 0 ) {
 			try {
-				toolkit = DLTKLanguageManager.getLangaugeToolkit(elements[0]);
+				toolkit = DLTKLanguageManager.getLanguageToolkit(elements[0]);
 			} catch (CoreException e) {
 				if( DLTKCore.DEBUG ) {
 					e.printStackTrace();
@@ -1186,7 +1186,7 @@ public class BasicSearchEngine {
 	public DLTKSearchParticipant getSearchParticipant(IModelElement element) {
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLangaugeToolkit(element);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(element);
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

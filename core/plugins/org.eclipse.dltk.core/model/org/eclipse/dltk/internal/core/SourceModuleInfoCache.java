@@ -19,7 +19,7 @@ import org.eclipse.dltk.core.ISourceModuleInfoCache;
  * 
  */
 public class SourceModuleInfoCache implements ISourceModuleInfoCache {
-	ElementCache cache = null;
+	private ElementCache cache = null;
 
 	public SourceModuleInfoCache() {
 		// set the size of the caches in function of the maximum amount of

@@ -860,7 +860,7 @@ public class CallHierarchyViewPart extends ViewPart implements ICallHierarchyVie
     protected IDLTKLanguageToolkit getMethodLanguageToolkit() {
     	if( getMethod() != null ) {
     		try {
-				return DLTKLanguageManager.getLangaugeToolkit(getMethod());
+				return DLTKLanguageManager.getLanguageToolkit(getMethod());
 			} catch (CoreException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -508,7 +508,7 @@ public class DLTKSearchScope extends AbstractSearchScope {
 		
 		IDLTKLanguageToolkit languageToolkit = getLanguageToolkit();
 		try {
-			IDLTKLanguageToolkit langaugeToolkit2 = DLTKLanguageManager.getLangaugeToolkit(element);
+			IDLTKLanguageToolkit langaugeToolkit2 = DLTKLanguageManager.getLanguageToolkit(element);
 			if( !languageToolkit.getNatureID().equals(langaugeToolkit2.getNatureID())) {
 				return false;
 			}

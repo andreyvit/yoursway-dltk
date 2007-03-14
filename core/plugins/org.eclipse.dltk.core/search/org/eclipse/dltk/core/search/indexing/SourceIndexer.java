@@ -89,14 +89,10 @@ public class SourceIndexer extends AbstractIndexer {
 			if (source == null || name == null)
 				return; // could not retrieve document info (e.g. resource was
 						// discarded)
-//			parser.parseSourceModule(source, null);
-//			ISourceModuleInfo info = null;
-//			if( sourceModule != null ) {
-//				ISourceModuleInfoCache sourceModuleInfoCache = ModelManager.getModelManager().getSourceModuleInfoCache();
-//				sourceModuleInfoCache.remove(sourceModule);
-//				info = sourceModuleInfoCache.get(sourceModule);
-//			}
 			parser.parseSourceModule(source, null);
+			
+			// build mixin index entries
+			buildMixin(source);
 			
 		} else { // This is for external documents				
 			if (parser == null || requestor == null ) {
@@ -137,8 +133,13 @@ public class SourceIndexer extends AbstractIndexer {
 					System.err.println("Max indexDocument() work time " + maxWorkTime + " on " + document.getPath());
 				}
 			}
-				
-			
+			// build mixin index entries
+			buildMixin(source);	
 		}
+	}
+
+	// Building if mixin simple entries.
+	private void buildMixin(char[] source) {
+		
 	}
 }
