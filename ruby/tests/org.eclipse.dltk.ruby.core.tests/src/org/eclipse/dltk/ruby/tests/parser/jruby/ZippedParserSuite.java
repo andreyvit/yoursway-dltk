@@ -38,6 +38,7 @@ public class ZippedParserSuite extends TestSuite {
 
 					protected void runTest() throws Throwable {
 						JRubySourceParser parser = new JRubySourceParser(null);
+						JRubySourceParser.setSilentState(false);
 						ModuleDeclaration module = parser.parse(content);
 						assertNotNull(module);
 					}

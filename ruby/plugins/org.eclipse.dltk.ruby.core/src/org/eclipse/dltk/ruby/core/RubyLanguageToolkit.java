@@ -56,10 +56,12 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	private static RubyLanguageToolkit sToolkit = new RubyLanguageToolkit();
 
 	private IStatus isRubyHeadered(File file) {
+		//XXX: what a ??? are doing here?
+		//TODO: implement a real checking for file as ruby-file
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(file));
-			int size = (int) file.length(); // i hope, that size is covertable
+			int size = (int) file.length(); // i hope, that size is convertable
 			// to int
 			char buf[] = new char[size + 1];
 			reader.read(buf);
