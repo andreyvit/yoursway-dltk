@@ -1,5 +1,5 @@
 # !/bin/sh
-# $Id: buildUpdate.sh,v 1.8 2007/03/12 15:16:34 aplatov Exp $
+# $Id: buildUpdate.sh,v 1.9 2007/03/14 06:02:53 aplatov Exp $
 
 # buildUpdate.sh script to generate Update Managers jars & promote them to download.eclipse
 # Copyright \(c\) 2004-2006, IBM. Nick Boldt. codeslave\(at\)ca.ibm.com
@@ -162,17 +162,17 @@ fi
 #users (for ssh and cvs connections)
 buildServerCVSUser=$user"@"$buildServerFullName
 
-if [[ $sub = "ocl" ]] || [[ $sub = "uml2-ocl" ]] || [[ $sub = "eodm" ]]; then
-	#path to update site on build server
-	localUpdatesWebDir=$localWebDir/../updates
-	# path to update site on download - instead of mdt/uml2-ocl/updates, use mdt/updates (common for all mdt)
-	updatesDir=$projectWWWDir/../updates
-else	
-	#path to update site on build server
-	localUpdatesWebDir=$localWebDir/updates/1.0
-	# path to update site on download
-	updatesDir=$projectWWWDir/updates/1.0
+if [[ $branch = "0.8.0" ]]; then
+	updatesPrefix=0.8
+else
+	updatesPrefix=1.0
 fi
+
+	
+#path to update site on build server
+localUpdatesWebDir=$localWebDir/updates/$updatesPrefix
+# path to update site on download
+updatesDir=$projectWWWDir/updates/$updatesPrefix
 
 #TODO: move into modeling
 CVSRep=":ext:"$user"@"$eclipseServerFullName":/cvsroot/technology"
@@ -241,12 +241,8 @@ echo "[umj-co] [2] Checking out $relengGeneratorsCVSPath"
 cd $buildDir
 cvs -d $CVSRep $quietCVS co -P -d org.eclipse.releng.generators $relengGeneratorsCVSPath
 
-#TODO: move to www/modeling/mdt/updates and www/modeling/emf/updates
-if [[ $sub = "ocl" ]] || [[ $sub = "uml2-ocl" ]] || [[ $sub = "eodm" ]]; then
-	updatesCVSPath=www/modeling/mdt/updates; # www/modeling/mdt, not www/emft/updates
-else
-	updatesCVSPath=www/dltk/updates/1.0
-fi
+updatesCVSPath=www/dltk/updates/$updatesPrefix
+
 echo "[umj-co] [3] Checking out $updatesCVSPath/* from $wwwCVSRep"
 cd $buildDir/../1
 cvs -d $wwwCVSRep $quietCVS co -P -d site $updatesCVSPath/site.xml 
@@ -383,9 +379,9 @@ if [ $promote -eq 1 ]; then
 	echo "[umj] [7c] Fix permissions in $updatesDir ..." ;
 	ssh $wwwRemote "
 		cd $updatesDir/..;
-		chgrp -fR $eclipseUserGroup 1.0;
-		find $updatesDir/../1.0 -type d -exec chmod -f $eclipsePermsDir {} \; ;
-		find $updatesDir/../1.0 -type f -exec chmod -f $eclipsePermsFile {} \; ;
+		chgrp -fR $eclipseUserGroup $updatesProfix;
+		find $updatesDir/../$updatesProfix -type d -exec chmod -f $eclipsePermsDir {} \; ;
+		find $updatesDir/../$updatesProfix -type f -exec chmod -f $eclipsePermsFile {} \; ;
 	";
 
 	# validate MD5s
