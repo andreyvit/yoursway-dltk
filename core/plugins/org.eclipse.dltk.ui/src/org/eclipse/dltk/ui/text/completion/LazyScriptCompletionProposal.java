@@ -19,7 +19,7 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.swt.graphics.Image;
 
 public abstract class LazyScriptCompletionProposal extends
-		AbstractDLTKCompletionProposal {
+		AbstractScriptCompletionProposal {
 
 	protected static final String LPAREN = "("; //$NON-NLS-1$
 	protected static final String RPAREN = ")"; //$NON-NLS-1$

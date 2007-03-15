@@ -141,7 +141,7 @@ public class TclTypeCompletionProposalComputer extends ScriptCompletionProposalC
 
 		CompletionProposal proposal = CompletionProposal.create(CompletionProposal.TYPE_REF, context.getInvocationOffset());
 		proposal.setCompletion(type.getElementName().toCharArray());
-		proposal.setDeclarationSignature(type.getScriptFolder().getElementName().toCharArray());
+		//proposal.setDeclarationSignature(type.getScriptFolder().getElementName().toCharArray());
 		proposal.setFlags(type.getFlags());
 		proposal.setRelevance(relevance);
 		proposal.setReplaceRange(context.getInvocationOffset(), context.getInvocationOffset());

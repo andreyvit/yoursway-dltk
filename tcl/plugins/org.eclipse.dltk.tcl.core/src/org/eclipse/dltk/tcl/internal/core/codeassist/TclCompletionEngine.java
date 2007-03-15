@@ -66,7 +66,10 @@ public class TclCompletionEngine extends CompletionEngine {
 			System.out.println("COMPLETION - Source :"); //$NON-NLS-1$
 			System.out.println(sourceUnit.getSourceContents());
 		}
+		
 		this.requestor.beginReporting();
+		
+		
 		boolean contextAccepted = false;
 		try {
 			this.fileName = sourceUnit.getFileName();
@@ -113,14 +116,17 @@ public class TclCompletionEngine extends CompletionEngine {
 				}
 			}
 			if (this.noProposal && this.problem != null) {
-				if (!contextAccepted) {
-					contextAccepted = true;
+				if (!contextAccepted) {					
 					CompletionContext context = new CompletionContext();
 					context.setOffset(completionPosition);
-					context.setTokenKind(CompletionContext.TOKEN_KIND_UNKNOWN);
+					context.setTokenKind(CompletionContext.TOKEN_KIND_UNKNOWN);					
 					this.requestor.acceptContext(context);
+					
+					contextAccepted = true;
 				}
+				
 				this.requestor.completionFailure(this.problem);
+				
 				if (DEBUG) {
 					this.printDebug(this.problem);
 				}
@@ -191,8 +197,9 @@ public class TclCompletionEngine extends CompletionEngine {
 	}
 
 	private char[] removeLastColonFromToken(char[] token) {
-		//remove : on the end.
-		if( token.length > 2 && token[token.length -1 ] == ':' && token[token.length -2 ] != ':' ) {
+		// remove : on the end.
+		if (token.length > 2 && token[token.length - 1] == ':'
+				&& token[token.length - 2] != ':') {
 			char co2[] = new char[token.length - 1];
 			System.arraycopy(token, 0, co2, 0, co2.length);
 			token = co2;
@@ -202,7 +209,7 @@ public class TclCompletionEngine extends CompletionEngine {
 
 	private void findNamespaceFunctions(final char[] token,
 			final List methodNames) {
-		
+
 		final List methods = new ArrayList();
 		final List types = new ArrayList();
 		SearchRequestor requestor = new SearchRequestor() {
@@ -365,7 +372,7 @@ public class TclCompletionEngine extends CompletionEngine {
 	private void findLocalFunctions(char[] token,
 			boolean canCompleteEmptyToken, ASTNode astNodeParent,
 			List methodNames) {
-		
+
 		token = removeLastColonFromToken(token);
 		List methods = new ArrayList();
 		fillFunctionsByLevels(token, astNodeParent, methods, methodNames);
@@ -519,11 +526,11 @@ public class TclCompletionEngine extends CompletionEngine {
 			}
 			// Process variable setters.
 			statements = method.getStatements();
-			checkVariableStatements(beforePosition, choices, statements );
+			checkVariableStatements(beforePosition, choices, statements);
 			char[][] cc = new char[choices.size()][];
 			for (int i = 0; i < choices.size(); ++i) {
 				cc[i] = ((String) choices.get(i)).toCharArray();
-				gChoices.add( choices.get(i));
+				gChoices.add(choices.get(i));
 			}
 			findLocalVariables(token, cc, canCompleteEmptyToken, provideDollar);
 		} else if (parent instanceof ModuleDeclaration) {
@@ -556,14 +563,14 @@ public class TclCompletionEngine extends CompletionEngine {
 					canCompleteEmptyToken, choices);
 		}
 		// remove dublicates
-		for( int i = 0; i < gChoices.size(); ++i ) {
-			String c = (String)gChoices.get(i);
-			if( choices.contains(c)) {
+		for (int i = 0; i < gChoices.size(); ++i) {
+			String c = (String) gChoices.get(i);
+			if (choices.contains(c)) {
 				choices.remove(c);
 			}
-			if( c.startsWith("$")) {
+			if (c.startsWith("$")) {
 				String cc = c.substring(1);
-				if( choices.contains(cc)) {
+				if (choices.contains(cc)) {
 					choices.remove(cc);
 				}
 			}
@@ -583,7 +590,7 @@ public class TclCompletionEngine extends CompletionEngine {
 			final boolean provideDollar) {
 		final List fields = new ArrayList();
 		final List types = new ArrayList();
-		boolean provideDots = false; 
+		boolean provideDots = false;
 		SearchRequestor requestor = new SearchRequestor() {
 			public void acceptSearchMatch(SearchMatch match)
 					throws CoreException {
@@ -828,8 +835,7 @@ public class TclCompletionEngine extends CompletionEngine {
 							String var = prefix + add;
 							if (var.endsWith("::") && prev.startsWith("::")) {
 								var = var + prev.substring(2);
-							}
-							else {
+							} else {
 								var = var + prev;
 							}
 							if (!choices.contains(var)) {
@@ -845,14 +851,15 @@ public class TclCompletionEngine extends CompletionEngine {
 	}
 
 	private void checkVariables(char[] token, boolean canCompleteEmptyToken,
-			int beforePosition, List statements, boolean provideDollar, List gChoices) {
+			int beforePosition, List statements, boolean provideDollar,
+			List gChoices) {
 		List choices = new ArrayList();
 		// Process variable setters.
 		checkVariableStatements(beforePosition, choices, statements);
 		char[][] cc = new char[choices.size()][];
 		for (int i = 0; i < choices.size(); ++i) {
 			cc[i] = ((String) choices.get(i)).toCharArray();
-			gChoices.add( choices.get(i));
+			gChoices.add(choices.get(i));
 		}
 		findLocalVariables(token, cc, canCompleteEmptyToken, provideDollar);
 	}

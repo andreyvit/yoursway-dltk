@@ -14,8 +14,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.dltk.ui.PreferenceConstants;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.graphics.Image;
@@ -24,7 +22,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * If passed compilation unit is not null, the replacement string will be seen as a qualified type name.
   */
-public class DLTKTypeCompletionProposal extends ScriptCompletionProposal {
+public class ScriptTypeCompletionProposal extends ScriptCompletionProposal {
 
 	protected final ISourceModule fSourceModule;
 
@@ -33,11 +31,11 @@ public class DLTKTypeCompletionProposal extends ScriptCompletionProposal {
 	/** The fully qualified type name. */
 	private final String fFullyQualifiedTypeName;
 
-	public DLTKTypeCompletionProposal(String replacementString, ISourceModule cu, int replacementOffset, int replacementLength, Image image, String displayString, int relevance) {
+	public ScriptTypeCompletionProposal(String replacementString, ISourceModule cu, int replacementOffset, int replacementLength, Image image, String displayString, int relevance) {
 		this(replacementString, cu, replacementOffset, replacementLength, image, displayString, relevance, null);
 	}
 
-	public DLTKTypeCompletionProposal(String replacementString, ISourceModule cu, int replacementOffset, int replacementLength, Image image, String displayString, int relevance,
+	public ScriptTypeCompletionProposal(String replacementString, ISourceModule cu, int replacementOffset, int replacementLength, Image image, String displayString, int relevance,
 		String fullyQualifiedTypeName)
 	{
 		super(replacementString, replacementOffset, replacementLength, image, displayString, relevance);
@@ -47,33 +45,12 @@ public class DLTKTypeCompletionProposal extends ScriptCompletionProposal {
 	}
 
 	protected boolean updateReplacementString(IDocument document, char trigger, int offset) throws CoreException, BadLocationException {
-//		// avoid adding imports when inside imports container
-//		if (impRewrite != null && fFullyQualifiedTypeName != null) {
-//			String replacementString= getReplacementString();
-//			String qualifiedType= fFullyQualifiedTypeName;
-//			if (qualifiedType.indexOf('.') != -1 && replacementString.startsWith(qualifiedType) && !replacementString.endsWith(String.valueOf(';'))) {
-//				IType[] types= impRewrite.getSourceModule().getTypes();
-//				if (types.length > 0 && types[0].getSourceRange().getOffset() <= offset) {
-//					// ignore positions above type.
-//					setReplacementString(impRewrite.addImport(getReplacementString()));
-//					return true;
-//				}
-//			}
-//		}
 		return false;
 	}
 
 
-	/* (non-Javadoc)
-	 * @see ICompletionProposalExtension#apply(IDocument, char, int)
-	 */
 	public void apply(IDocument document, char trigger, int offset) {
 		try {
-//			ImportRewrite impRewrite= null;
-
-//			if (fSourceModule != null && allowAddingImports()) {
-//				impRewrite= StubUtility.createImportRewrite(fSourceModule, true);
-//			}
 
 			boolean importAdded= updateReplacementString(document, trigger, offset);
 
@@ -82,21 +59,11 @@ public class DLTKTypeCompletionProposal extends ScriptCompletionProposal {
 
 			super.apply(document, trigger, offset);
 
-//			if (importAdded && impRewrite != null) {
-//				int oldLen= document.getLength();
-//				impRewrite.rewriteImports(new NullProgressMonitor()).apply(document, TextEdit.UPDATE_REGIONS);
-//				setReplacementOffset(getReplacementOffset() + document.getLength() - oldLen);
-//			}
 		} catch (CoreException e) {
 			DLTKUIPlugin.log(e);
 		} catch (BadLocationException e) {
 			DLTKUIPlugin.log(e);
 		}
-	}
-
-	private boolean allowAddingImports() {
-		IPreferenceStore preferenceStore= DLTKUIPlugin.getDefault().getPreferenceStore();
-		return preferenceStore.getBoolean(PreferenceConstants.CODEASSIST_ADDIMPORT);
 	}
 	
 	protected boolean isValidPrefix(String prefix) {

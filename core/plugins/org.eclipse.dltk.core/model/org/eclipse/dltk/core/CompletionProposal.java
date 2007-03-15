@@ -54,23 +54,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * Completion is a reference to a field. This kind of completion might occur
 	 * in a context like <code>"this.ref^ = 0;"</code> and complete it to
 	 * <code>"this.refcount = 0;"</code>.
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getDeclarationSignature()} - the type signature of the type
-	 * that declares the field that is referenced </li>
-	 * <li>{@link #getFlags()} - the modifiers flags (including ACC_ENUM) of
-	 * the field that is referenced </li>
-	 * <li>{@link #getName()} - the simple name of the field that is referenced
-	 * </li>
-	 * <li>{@link #getSignature()} - the type signature of the field's type (as
-	 * opposed to the signature of the type in which the referenced field is
-	 * declared) </li>
-	 * </ul>
-	 * </p>
 	 * 
-	 * @see #getKind()
 	 */
 	public static final int FIELD_REF = 1;
 
@@ -78,15 +62,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * Completion is a keyword. This kind of completion might occur in a context
 	 * like <code>"public cl^ Foo {}"</code> and complete it to
 	 * <code>"public class Foo {}"</code>.
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getName()} - the keyword token </li>
-	 * <li>{@link #getFlags()} - the corresponding modifier flags if the
-	 * keyword is a modifier </li>
-	 * </ul>
-	 * </p>
 	 * 
 	 * @see #getKind()
 	 */
@@ -96,14 +71,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * Completion is a reference to a label. This kind of completion might occur
 	 * in a context like <code>"break lo^;"</code> and complete it to
 	 * <code>"break loop;"</code>.
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getName()} - the simple name of the label that is referenced
-	 * </li>
-	 * </ul>
-	 * </p>
 	 * 
 	 * @see #getKind()
 	 */
@@ -113,18 +80,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * Completion is a reference to a local variable. This kind of completion
 	 * might occur in a context like <code>"ke^ = 4;"</code> and complete it
 	 * to <code>"keys = 4;"</code>.
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getFlags()} - the modifiers flags of the local variable that
-	 * is referenced </li>
-	 * <li>{@link #getName()} - the simple name of the local variable that is
-	 * referenced </li>
-	 * <li>{@link #getSignature()} - the type signature of the local variable's
-	 * type </li>
-	 * </ul>
-	 * </p>
 	 * 
 	 * @see #getKind()
 	 */
@@ -134,20 +89,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * Completion is a reference to a method. This kind of completion might
 	 * occur in a context like <code>"System.out.pr^();"</code> and complete
 	 * it to <code>""System.out.println();"</code>.
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getDeclarationSignature()} - the type signature of the type
-	 * that declares the method that is referenced </li>
-	 * <li>{@link #getFlags()} - the modifiers flags of the method that is
-	 * referenced </li>
-	 * <li>{@link #getName()} - the simple name of the method that is
-	 * referenced </li>
-	 * <li>{@link #getSignature()} - the method signature of the method that is
-	 * referenced </li>
-	 * </ul>
-	 * </p>
 	 * 
 	 * @see #getKind()
 	 */
@@ -157,24 +98,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * Completion is a declaration of a method. This kind of completion might
 	 * occur in a context like <code>"new List() {si^};"</code> and complete
 	 * it to <code>"new List() {public int size() {} };"</code>.
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getDeclarationSignature()} - the type signature of the type
-	 * that declares the method that is being overridden or implemented </li>
-	 * <li>{@link #getDeclarationKey()} - the unique of the type that declares
-	 * the method that is being overridden or implemented </li>
-	 * <li>{@link #getName()} - the simple name of the method that is being
-	 * overridden or implemented </li>
-	 * <li>{@link #getSignature()} - the method signature of the method that is
-	 * being overridden or implemented </li>
-	 * <li>{@link #getKey()} - the method unique key of the method that is
-	 * being overridden or implemented </li>
-	 * <li>{@link #getFlags()} - the modifiers flags of the method that is
-	 * being overridden or implemented </li>
-	 * </ul>
-	 * </p>
 	 * 
 	 * @see #getKind()
 	 */
@@ -186,19 +109,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * types, and type variables. This kind of completion might occur in a
 	 * context like <code>"public static Str^ key;"</code> and complete it to
 	 * <code>"public static String key;"</code>.
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getDeclarationSignature()} - the dot-based package name of
-	 * the package that contains the type that is referenced </li>
-	 * <li>{@link #getSignature()} - the type signature of the type that is
-	 * referenced </li>
-	 * <li>{@link #getFlags()} - the modifiers flags (including
-	 * Flags.AccInterface, AccEnum, and AccAnnotation) of the type that is
-	 * referenceANONYMOUS_CLASS_DECLARATIONd </li>
-	 * </ul>
-	 * </p>
 	 * 
 	 * @see #getKind()
 	 */
@@ -207,18 +117,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	/**
 	 * Completion is a declaration of a variable (locals, parameters, fields,
 	 * etc.).
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getName()} - the simple name of the variable being declared
-	 * </li>
-	 * <li>{@link #getSignature()} - the type signature of the type of the
-	 * variable being declared </li>
-	 * <li>{@link #getFlags()} - the modifiers flags of the variable being
-	 * declared </li>
-	 * </ul>
-	 * </p>
 	 * 
 	 * @see #getKind()
 	 */
@@ -228,20 +126,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * Completion is a declaration of a new potential method. This kind of
 	 * completion might occur in a context like <code>"new List() {si^};"</code>
 	 * and complete it to <code>"new List() {public int si() {} };"</code>.
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getDeclarationSignature()} - the type signature of the type
-	 * that declares the method that is being created </li>
-	 * <li>{@link #getName()} - the simple name of the method that is being
-	 * created </li>
-	 * <li>{@link #getSignature()} - the method signature of the method that is
-	 * being created </li>
-	 * <li>{@link #getFlags()} - the modifiers flags of the method that is
-	 * being created </li>
-	 * </ul>
-	 * </p>
 	 * 
 	 * @see #getKind()
 	 * 
@@ -252,20 +136,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * Completion is a reference to a method name. This kind of completion might
 	 * occur in a context like <code>"import p.X.fo^"</code> and complete it
 	 * to <code>"import p.X.foo;"</code>.
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getDeclarationSignature()} - the type signature of the type
-	 * that declares the method that is referenced </li>
-	 * <li>{@link #getFlags()} - the modifiers flags of the method that is
-	 * referenced </li>
-	 * <li>{@link #getName()} - the simple name of the method that is
-	 * referenced </li>
-	 * <li>{@link #getSignature()} - the method signature of the method that is
-	 * referenced </li>
-	 * </ul>
-	 * </p>
 	 * 
 	 * @see #getKind()
 	 * 
@@ -277,21 +147,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * completion might occur in a context like
 	 * <code>"@Annot(attr^=value)"</code> and complete it to
 	 * <code>"@Annot(attribute^=value)"</code>.
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getDeclarationSignature()} - the type signature of the
-	 * annotation that declares the attribute that is referenced </li>
-	 * <li>{@link #getFlags()} - the modifiers flags of the attribute that is
-	 * referenced </li>
-	 * <li>{@link #getName()} - the simple name of the attribute that is
-	 * referenced </li>
-	 * <li>{@link #getSignature()} - the type signature of the attribute's type
-	 * (as opposed to the signature of the type in which the referenced
-	 * attribute is declared) </li>
-	 * </ul>
-	 * </p>
 	 * 
 	 * @see #getKind()
 	 * 
@@ -303,21 +158,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * kind of completion might occur in a context like
 	 * <code>"	* blabla System.o^ blabla"</code> and complete it to
 	 * <code>"	* blabla {&#64;link System#out } blabla"</code>.
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getDeclarationSignature()} - the type signature of the type
-	 * that declares the field that is referenced </li>
-	 * <li>{@link #getFlags()} - the modifiers flags (including ACC_ENUM) of
-	 * the field that is referenced </li>
-	 * <li>{@link #getName()} - the simple name of the field that is referenced
-	 * </li>
-	 * <li>{@link #getSignature()} - the type signature of the field's type (as
-	 * opposed to the signature of the type in which the referenced field is
-	 * declared) </li>
-	 * </ul>
-	 * </p>
 	 * 
 	 * @see #getKind()
 	 * 
@@ -329,20 +169,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * kind of completion might occur in a context like
 	 * <code>"	* blabla Runtime.get^ blabla"</code> and complete it to
 	 * <code>"	* blabla {&#64;link Runtime#getRuntime() }"</code>.
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getDeclarationSignature()} - the type signature of the type
-	 * that declares the method that is referenced </li>
-	 * <li>{@link #getFlags()} - the modifiers flags of the method that is
-	 * referenced </li>
-	 * <li>{@link #getName()} - the simple name of the method that is
-	 * referenced </li>
-	 * <li>{@link #getSignature()} - the method signature of the method that is
-	 * referenced </li>
-	 * </ul>
-	 * </p>
 	 * 
 	 * @see #getKind()
 	 * 
@@ -355,19 +181,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * parameterized types, and type variables. This kind of completion might
 	 * occur in a context like <code>"	* blabla Str^ blabla"</code> and
 	 * complete it to <code>"	* blabla {&#64;link String } blabla"</code>.
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getDeclarationSignature()} - the dot-based package name of
-	 * the package that contains the type that is referenced </li>
-	 * <li>{@link #getSignature()} - the type signature of the type that is
-	 * referenced </li>
-	 * <li>{@link #getFlags()} - the modifiers flags (including
-	 * Flags.AccInterface, AccEnum, and AccAnnotation) of the type that is
-	 * referenced </li>
-	 * </ul>
-	 * </p>
 	 * 
 	 * @see #getKind()
 	 * 
@@ -379,21 +192,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * kind of completion might occur in a context like
 	 * <code>"	* blabla System.o^ blabla"</code> and complete it to
 	 * <code>"	* blabla {&#64;value System#out } blabla"</code>.
-	 * <p>
-	 * The following additional context information is available for this kind
-	 * of completion proposal at little extra cost:
-	 * <ul>
-	 * <li>{@link #getDeclarationSignature()} - the type signature of the type
-	 * that declares the field that is referenced </li>
-	 * <li>{@link #getFlags()} - the modifiers flags (including ACC_ENUM) of
-	 * the field that is referenced </li>
-	 * <li>{@link #getName()} - the simple name of the field that is referenced
-	 * </li>
-	 * <li>{@link #getSignature()} - the type signature of the field's type (as
-	 * opposed to the signature of the type in which the referenced field is
-	 * declared) </li>
-	 * </ul>
-	 * </p>
 	 * 
 	 * @see #getKind()
 	 * 
@@ -409,16 +207,11 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 *            <p>
 	 *            The following additional context information is available for
 	 *            this kind of completion proposal at little extra cost:
-	 *            <ul>
-	 *            <li>{@link #getDeclarationSignature()} - the type signature
-	 *            of the type that declares the field that is referenced </li>
+	 *            <ul>            
 	 *            <li>{@link #getFlags()} - the modifiers flags (including
 	 *            ACC_ENUM) of the field that is referenced </li>
 	 *            <li>{@link #getName()} - the simple name of the field that is
-	 *            referenced </li>
-	 *            <li>{@link #getSignature()} - the type signature of the
-	 *            field's type (as opposed to the signature of the type in which
-	 *            the referenced field is declared) </li>
+	 *            referenced </li>            
 	 *            </ul>
 	 *            </p>
 	 * 
@@ -433,16 +226,11 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 *      <p>
 	 *      The following additional context information is available for this
 	 *      kind of completion proposal at little extra cost:
-	 *      <ul>
-	 *      <li>{@link #getDeclarationSignature()} - the type signature of the
-	 *      type that declares the field that is referenced </li>
+	 *      <ul>      
 	 *      <li>{@link #getFlags()} - the modifiers flags (including ACC_ENUM)
 	 *      of the field that is referenced </li>
 	 *      <li>{@link #getName()} - the simple name of the field that is
-	 *      referenced </li>
-	 *      <li>{@link #getSignature()} - the type signature of the field's
-	 *      type (as opposed to the signature of the type in which the
-	 *      referenced field is declared) </li>
+	 *      referenced </li>      
 	 *      </ul>
 	 *      </p>
 	 * 
@@ -458,16 +246,11 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 *     <p>
 	 *     The following additional context information is available for this
 	 *     kind of completion proposal at little extra cost:
-	 *     <ul>
-	 *     <li>{@link #getDeclarationSignature()} - the type signature of the
-	 *     type that declares the field that is referenced </li>
+	 *     <ul>     
 	 *     <li>{@link #getFlags()} - the modifiers flags (including ACC_ENUM)
 	 *     of the field that is referenced </li>
 	 *     <li>{@link #getName()} - the simple name of the field that is
-	 *     referenced </li>
-	 *     <li>{@link #getSignature()} - the type signature of the field's type
-	 *     (as opposed to the signature of the type in which the referenced
-	 *     field is declared) </li>
+	 *     referenced </li>     
 	 *     </ul>
 	 *     </p>
 	 * 
@@ -539,12 +322,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	private int relevance = 1;
 
 	/**
-	 * Signature of the relevant package or type declaration in the context, or
-	 * <code>null</code> if none. Defaults to null.
-	 */
-	private char[] declarationSignature = null;
-
-	/**
 	 * Unique key of the relevant package or type declaration in the context, or
 	 * <code>null</code> if none. Defaults to null.
 	 */
@@ -555,12 +332,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * context, or <code>null</code> if none. Defaults to null.
 	 */
 	private char[] name = null;
-
-	/**
-	 * Signature of the method, field type, member type, relevant in the
-	 * context, or <code>null</code> if none. Defaults to null.
-	 */
-	private char[] signature = null;
 
 	/**
 	 * Unique of the method, field type, member type, relevant in the context,
@@ -585,7 +356,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 */
 	private boolean parameterNamesComputed = false;
 
-	private IModelElement modelElement = null;
+	private IModelElement modelElement;
 
 	/**
 	 * Creates a basic completion proposal. All instance field have plausible
@@ -665,7 +436,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * @return character index in source file buffer
 	 * @see ICodeAssist#codeComplete(int,CompletionRequestor)
 	 */
-	// TODO (david) https://bugs.eclipse.org/bugs/show_bug.cgi?id=132558
 	public int getCompletionLocation() {
 		return this.completionLocation;
 	}
@@ -716,6 +486,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 		if (startIndex < 0 || endIndex < startIndex) {
 			throw new IllegalArgumentException();
 		}
+		
 		this.tokenStart = startIndex;
 		this.tokenEnd = endIndex;
 	}
@@ -843,6 +614,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 		if (startIndex < 0 || endIndex < startIndex) {
 			throw new IllegalArgumentException();
 		}
+		
 		this.replaceStart = startIndex;
 		this.replaceEnd = endIndex;
 	}
@@ -875,6 +647,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 		if (rating <= 0) {
 			throw new IllegalArgumentException();
 		}
+		
 		this.relevance = rating;
 	}
 
@@ -898,28 +671,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 */
 	public char[] getDeclarationKey() {
 		return this.declarationKey;
-	}
-
-	/**
-	 * Sets the type or package signature of the relevant declaration in the
-	 * context, or <code>null</code> if none.
-	 * <p>
-	 * If not set, defaults to none.
-	 * </p>
-	 * <p>
-	 * The completion engine creates instances of this class and sets its
-	 * properties; this method is not intended to be used by other clients.
-	 * </p>
-	 * 
-	 * @param signature
-	 *            the type or package signature, or <code>null</code> if none
-	 */
-	public void setDeclarationSignature(char[] signature) {
-		this.declarationSignature = signature;
-	}
-
-	public char[] getDeclarationSignature() {
-		return declarationSignature;
 	}
 	
 	/**
@@ -988,41 +739,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 */
 	public void setName(char[] name) {
 		this.name = name;
-	}
-
-	/**
-	 * Returns the signature of the method or type relevant in the context, or
-	 * <code>null</code> if none.
-	 * <p>
-	 * This field is available for the following kinds of completion proposals:
-	 * <ul>
-	 * <li><code>ANNOTATION_ATTRIBUT_REF</code> - the type signature of the
-	 * referenced attribute's type</li>
-	 * <li><code>ANONYMOUS_CLASS_DECLARATION</code> - method signature of the
-	 * constructor that is being invoked</li>
-	 * <li><code>FIELD_REF</code> - the type signature of the referenced
-	 * field's type</li>
-	 * <li><code>LOCAL_VARIABLE_REF</code> - the type signature of the
-	 * referenced local variable's type</li>
-	 * <li><code>METHOD_REF</code> - method signature of the method that is
-	 * referenced</li>
-	 * <li><code>METHOD_DECLARATION</code> - method signature of the method
-	 * that is being implemented or overridden</li>
-	 * <li><code>TYPE_REF</code> - type signature of the type that is
-	 * referenced</li>
-	 * <li><code>VARIABLE_DECLARATION</code> - the type signature of the type
-	 * of the variable being declared</li>
-	 * <li><code>POTENTIAL_METHOD_DECLARATION</code> - method signature of
-	 * the method that is being created</li>
-	 * </ul>
-	 * For kinds of completion proposals, this method returns <code>null</code>.
-	 * Clients must not modify the array returned.
-	 * </p>
-	 * 
-	 * @return the signature, or <code>null</code> if none
-	 */
-	public char[] getSignature() {
-		return this.signature;
 	}
 
 	/**
@@ -1277,9 +993,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 		buffer.append("]{completion:"); //$NON-NLS-1$
 		if (this.completion != null)
 			buffer.append(this.completion);
-		buffer.append(", declSign:"); //$NON-NLS-1$
-		if (this.declarationSignature != null)
-			buffer.append(this.declarationSignature);
+		buffer.append(", declSign:"); //$NON-NLS-1$		
 		buffer.append(", declKey:"); //$NON-NLS-1$
 		if (this.declarationKey != null)
 			buffer.append(this.declarationKey);
@@ -1297,10 +1011,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 		buffer.append(this.relevance);
 		buffer.append('}');
 		return buffer.toString();
-	}
-
-	protected boolean isParameterNamesComputed() {
-		return parameterNamesComputed;
 	}
 
 	public IModelElement getModelElement() {

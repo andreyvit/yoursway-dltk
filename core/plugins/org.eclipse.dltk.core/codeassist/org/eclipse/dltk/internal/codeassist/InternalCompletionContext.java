@@ -24,14 +24,6 @@ public class InternalCompletionContext {
 	protected char[] token = null;
 	protected int tokenKind;
 
-	protected void setExpectedTypesSignatures(char[][] expectedTypesSignatures) {
-		this.expectedTypesSignatures = expectedTypesSignatures;
-	}
-
-	protected void setExpectedTypesKeys(char[][] expectedTypesKeys) {
-		this.expectedTypesKeys = expectedTypesKeys;
-	}
-
 	protected void setDoc(int doc) {
 		this.doc = doc;
 	}

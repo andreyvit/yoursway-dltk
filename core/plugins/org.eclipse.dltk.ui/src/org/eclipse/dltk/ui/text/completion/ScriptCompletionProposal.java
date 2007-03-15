@@ -11,14 +11,13 @@
 
 package org.eclipse.dltk.ui.text.completion;
 
-
-import org.eclipse.jface.text.Assert;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.graphics.Image;
 
 
-public abstract class ScriptCompletionProposal extends AbstractDLTKCompletionProposal {
+public abstract class ScriptCompletionProposal extends AbstractScriptCompletionProposal {
 
 	/**
 	 * Creates a new completion proposal. All fields are initialized based on the provided
@@ -81,9 +80,6 @@ public abstract class ScriptCompletionProposal extends AbstractDLTKCompletionPro
 		return isPrefix(prefix, word);
 	}
 	
-	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension3#getReplacementText()
-	 */
 	public CharSequence getPrefixCompletionText(IDocument document, int completionOffset) {
 		String string= getReplacementString();
 		int pos= string.indexOf('(');
@@ -95,6 +91,5 @@ public abstract class ScriptCompletionProposal extends AbstractDLTKCompletionPro
 
 	protected void handleSmartTrigger(IDocument document, char trigger, int referenceOffset) throws BadLocationException {
 		// TODO Auto-generated method stub
-		
 	}	
 }

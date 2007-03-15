@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ui.text.completion.DLTKTypeCompletionProposal;
+import org.eclipse.dltk.ui.text.completion.ScriptTypeCompletionProposal;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
@@ -23,7 +23,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposalExtension4;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 
 
-public class RubyOverrideCompletionProposal extends DLTKTypeCompletionProposal implements ICompletionProposalExtension4 {
+public class RubyOverrideCompletionProposal extends ScriptTypeCompletionProposal implements ICompletionProposalExtension4 {
 
 	private IDLTKProject fDTLKProject;
 	private String fMethodName;

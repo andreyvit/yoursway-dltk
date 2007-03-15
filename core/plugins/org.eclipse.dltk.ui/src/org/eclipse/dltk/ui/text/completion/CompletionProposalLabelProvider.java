@@ -208,12 +208,9 @@ public abstract class CompletionProposalLabelProvider {
 	 *            the method proposal to display
 	 * @return the display label for the given type proposal
 	 */
-	protected String createTypeProposalLabel(CompletionProposal typeProposal) {
-		char[] signature;
-		signature = typeProposal.getSignature();
-		char[] fullName = Signature.toCharArray(signature);
-		return createTypeProposalLabel(fullName);
-	}
+//	protected String createTypeProposalLabel(CompletionProposal typeProposal) {		
+//		return createTypeProposalLabel(fullName);
+//	}
 
 	String createScriptdocSimpleProposalLabel(CompletionProposal proposal) {
 		// TODO get rid of this
@@ -221,8 +218,6 @@ public abstract class CompletionProposalLabelProvider {
 	}
 
 	String createTypeProposalLabel(char[] fullName) {
-		// only display innermost type name as type name, using any
-		// enclosing types as qualification
 		int qIndex = findSimpleNameStart(fullName);
 
 		StringBuffer buf = new StringBuffer();
@@ -250,26 +245,18 @@ public abstract class CompletionProposalLabelProvider {
 	String createSimpleLabelWithType(CompletionProposal proposal) {
 		StringBuffer buf = new StringBuffer();
 		buf.append(proposal.getCompletion());
-		char[] typeName = Signature.getSignatureSimpleName(proposal
-				.getSignature());
-		if (typeName.length > 0) {
-			buf.append("    "); //$NON-NLS-1$
-			buf.append(typeName);
-		}
+//		char[] typeName = Signature.getSignatureSimpleName(proposal
+//				.getSignature());
+//		if (typeName.length > 0) {
+//			buf.append("    "); //$NON-NLS-1$
+//			buf.append(typeName);
+//		}
+		
 		return buf.toString();
 	}
 
 	String createLabelWithTypeAndDeclaration(CompletionProposal proposal) {
-		StringBuffer buf = new StringBuffer();
-		buf.append(proposal.getCompletion());
-		char[] typeName = Signature.getSignatureSimpleName(proposal
-				.getSignature());
-		if (typeName.length > 0) {
-			buf.append("    "); //$NON-NLS-1$
-			buf.append(typeName);
-		}
-		
-		return buf.toString();
+		return new String(proposal.getCompletion());
 	}
 
 	public String createSimpleLabel(CompletionProposal proposal) {
@@ -292,7 +279,8 @@ public abstract class CompletionProposalLabelProvider {
 		case CompletionProposal.METHOD_DECLARATION:
 			return createOverrideMethodProposalLabel(proposal);
 		case CompletionProposal.TYPE_REF:
-			return createTypeProposalLabel(proposal);
+			return "xxx_" + getClass() + "_xxx";			
+			//return createTypeProposalLabel(proposal);			
 			// case CompletionProposal.JAVADOC_TYPE_REF:
 			// return createJavadocTypeProposalLabel(proposal);
 			// case CompletionProposal.JAVADOC_FIELD_REF:

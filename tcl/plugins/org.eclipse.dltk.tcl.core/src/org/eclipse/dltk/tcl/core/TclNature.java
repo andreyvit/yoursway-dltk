@@ -14,7 +14,7 @@ public class TclNature implements IProjectNature
 		
 	}
 	public void configure() throws CoreException {
-
+		
 	}
 
 	public void deconfigure() throws CoreException {

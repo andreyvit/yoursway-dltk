@@ -43,10 +43,11 @@ public abstract class LazyScriptTypeCompletionProposal extends
 	}
 
 	public final String getQualifiedTypeName() {
-		if (fQualifiedName == null)
-			fQualifiedName = String.valueOf(Signature.toCharArray(Signature
-					.getTypeErasure(fProposal.getSignature())));
-		return fQualifiedName;
+//		if (fQualifiedName == null) 
+//			fQualifiedName = String.valueOf(Signature.toCharArray(Signature
+//					.getTypeErasure(fProposal.getSignature())));
+//		return fQualifiedName;
+		return null;
 	}
 
 	protected final String getSimpleTypeName() {

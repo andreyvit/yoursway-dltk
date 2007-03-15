@@ -59,49 +59,59 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.texteditor.link.EditorLinkedModeUI;
 
-public abstract class AbstractDLTKCompletionProposal implements IScriptCompletionProposal, ICompletionProposalExtension, ICompletionProposalExtension2, ICompletionProposalExtension3, ICompletionProposalExtension5 {
+public abstract class AbstractScriptCompletionProposal implements
+		IScriptCompletionProposal, ICompletionProposalExtension,
+		ICompletionProposalExtension2, ICompletionProposalExtension3,
+		ICompletionProposalExtension5 {
+	
 	/**
 	 * A class to simplify tracking a reference position in a document.
 	 */
 	static final class ReferenceTracker {
-	
+
 		/** The reference position category name. */
-		private static final String CATEGORY= "reference_position"; //$NON-NLS-1$
+		private static final String CATEGORY = "reference_position"; //$NON-NLS-1$
 		/** The position updater of the reference position. */
-		private final IPositionUpdater fPositionUpdater= new DefaultPositionUpdater(CATEGORY);
+		private final IPositionUpdater fPositionUpdater = new DefaultPositionUpdater(
+				CATEGORY);
 		/** The reference position. */
-		private final Position fPosition= new Position(0);
-	
+		private final Position fPosition = new Position(0);
+
 		/**
-		 * Called before document changes occur. It must be followed by a call to postReplace().
-		 *
-		 * @param document the document on which to track the reference position.
-		 *
+		 * Called before document changes occur. It must be followed by a call
+		 * to postReplace().
+		 * 
+		 * @param document
+		 *            the document on which to track the reference position.
+		 * 
 		 */
-		public void preReplace(IDocument document, int offset) throws BadLocationException {
+		public void preReplace(IDocument document, int offset)
+				throws BadLocationException {
 			fPosition.setOffset(offset);
 			try {
 				document.addPositionCategory(CATEGORY);
 				document.addPositionUpdater(fPositionUpdater);
 				document.addPosition(CATEGORY, fPosition);
-	
+
 			} catch (BadPositionCategoryException e) {
 				// should not happen
 				DLTKUIPlugin.log(e);
 			}
 		}
-	
+
 		/**
-		 * Called after the document changed occurred. It must be preceded by a call to preReplace().
-		 *
-		 * @param document the document on which to track the reference position.
+		 * Called after the document changed occurred. It must be preceded by a
+		 * call to preReplace().
+		 * 
+		 * @param document
+		 *            the document on which to track the reference position.
 		 */
 		public int postReplace(IDocument document) {
 			try {
 				document.removePosition(CATEGORY, fPosition);
 				document.removePositionUpdater(fPositionUpdater);
 				document.removePositionCategory(CATEGORY);
-	
+
 			} catch (BadPositionCategoryException e) {
 				// should not happen
 				DLTKUIPlugin.log(e);
@@ -111,46 +121,48 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 	}
 
 	protected static final class ExitPolicy implements IExitPolicy {
-	
+
 		final char fExitCharacter;
 		private final IDocument fDocument;
-	
+
 		public ExitPolicy(char exitCharacter, IDocument document) {
-			fExitCharacter= exitCharacter;
-			fDocument= document;
+			fExitCharacter = exitCharacter;
+			fDocument = document;
 		}
-			
-		public ExitFlags doExit(LinkedModeModel environment, VerifyEvent event, int offset, int length) {
-	
+
+		public ExitFlags doExit(LinkedModeModel environment, VerifyEvent event,
+				int offset, int length) {
+
 			if (event.character == fExitCharacter) {
 				if (environment.anyPositionContains(offset))
-					return new ExitFlags(ILinkedModeListener.UPDATE_CARET, false);
+					return new ExitFlags(ILinkedModeListener.UPDATE_CARET,
+							false);
 				else
 					return new ExitFlags(ILinkedModeListener.UPDATE_CARET, true);
 			}
-	
+
 			switch (event.character) {
-				case ';':
-					return new ExitFlags(ILinkedModeListener.NONE, true);
-				case SWT.CR:
-					// when entering an anonymous class as a parameter, we don't want
-					// to jump after the parenthesis when return is pressed
-					if (offset > 0) {
-						try {
-							if (fDocument.getChar(offset - 1) == '{')
-								return new ExitFlags(ILinkedModeListener.EXIT_ALL, true);
-						} catch (BadLocationException e) {
-						}
+			case ';':
+				return new ExitFlags(ILinkedModeListener.NONE, true);
+			case SWT.CR:
+				// when entering an anonymous class as a parameter, we don't
+				// want
+				// to jump after the parenthesis when return is pressed
+				if (offset > 0) {
+					try {
+						if (fDocument.getChar(offset - 1) == '{')
+							return new ExitFlags(ILinkedModeListener.EXIT_ALL,
+									true);
+					} catch (BadLocationException e) {
 					}
-					// fall through
-				default:
-					return null;
+				}
+				// fall through
+			default:
+				return null;
 			}
 		}
-	
+
 	}
-	
-	
 
 	private String fDisplayString;
 	private String fReplacementString;
@@ -164,12 +176,11 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 	private String fSortString;
 	private int fRelevance;
 	private boolean fIsInDoc;
-	
+
 	private StyleRange fRememberedStyleRange;
 	private boolean fToggleEating;
 	private ITextViewer fTextViewer;
-	
-	
+
 	/**
 	 * The control creator.
 	 */
@@ -178,135 +189,142 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 	/**
 	 * The URL of the style sheet (css).
 	 */
-	private URL fStyleSheetURL;	
+	private URL fStyleSheetURL;
 
-	protected AbstractDLTKCompletionProposal() {
+	protected AbstractScriptCompletionProposal() {
 	}
 
-	/*
-	 * @see ICompletionProposalExtension#getTriggerCharacters()
-	 */
 	public char[] getTriggerCharacters() {
 		return fTriggerCharacters;
 	}
-	
+
 	/**
 	 * Sets the trigger characters.
 	 * 
-	 * @param triggerCharacters The set of characters which can trigger the application of this
-	 *        completion proposal
+	 * @param triggerCharacters
+	 *            The set of characters which can trigger the application of
+	 *            this completion proposal
 	 */
 	public void setTriggerCharacters(char[] triggerCharacters) {
-		fTriggerCharacters= triggerCharacters;
+		fTriggerCharacters = triggerCharacters;
 	}
 
 	/**
 	 * Sets the proposal info.
 	 * 
-	 * @param proposalInfo The additional information associated with this proposal or
-	 *        <code>null</code>
+	 * @param proposalInfo
+	 *            The additional information associated with this proposal or
+	 *            <code>null</code>
 	 */
 	public void setProposalInfo(ProposalInfo proposalInfo) {
-		fProposalInfo= proposalInfo;
+		fProposalInfo = proposalInfo;
 	}
 
 	/**
-	 * Returns the additional proposal info, or <code>null</code> if none exists.
+	 * Returns the additional proposal info, or <code>null</code> if none
+	 * exists.
 	 * 
-	 * @return the additional proposal info, or <code>null</code> if none exists
+	 * @return the additional proposal info, or <code>null</code> if none
+	 *         exists
 	 */
 	protected ProposalInfo getProposalInfo() {
 		return fProposalInfo;
 	}
 
 	/**
-	 * Sets the cursor position relative to the insertion offset. By default this is the length of
-	 * the completion string (Cursor positioned after the completion)
+	 * Sets the cursor position relative to the insertion offset. By default
+	 * this is the length of the completion string (Cursor positioned after the
+	 * completion)
 	 * 
-	 * @param cursorPosition The cursorPosition to set
+	 * @param cursorPosition
+	 *            The cursorPosition to set
 	 */
 	public void setCursorPosition(int cursorPosition) {
 		Assert.isTrue(cursorPosition >= 0);
-		fCursorPosition= cursorPosition;
+		fCursorPosition = cursorPosition;
 	}
-	
+
 	protected int getCursorPosition() {
 		return fCursorPosition;
 	}
 
-	/*
-	 * @see ICompletionProposal#apply
-	 */
 	public final void apply(IDocument document) {
 		// not used any longer
-		apply(document, (char) 0, getReplacementOffset() + getReplacementLength());
+		apply(document, (char) 0, getReplacementOffset()
+				+ getReplacementLength());
 	}
-	
-	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension#apply(org.eclipse.jface.text.IDocument, char, int)
-	 */
+
 	public void apply(IDocument document, char trigger, int offset) {
 		try {
 			// patch replacement length
-			int delta= offset - (getReplacementOffset() + getReplacementLength());
+			int delta = offset
+					- (getReplacementOffset() + getReplacementLength());
 			if (delta > 0)
 				setReplacementLength(getReplacementLength() + delta);
-	
-			boolean isSmartTrigger= isSmartTrigger(trigger);
-	
+
+			boolean isSmartTrigger = isSmartTrigger(trigger);
+
 			String replacement;
 			if (isSmartTrigger || trigger == (char) 0) {
-				replacement= getReplacementString();
+				replacement = getReplacementString();
 			} else {
-				StringBuffer buffer= new StringBuffer(getReplacementString());
-	
+				StringBuffer buffer = new StringBuffer(getReplacementString());
+
 				// fix for PR #5533. Assumes that no eating takes place.
-				if ((getCursorPosition() > 0 && getCursorPosition() <= buffer.length() && buffer.charAt(getCursorPosition() - 1) != trigger)) {
+				if ((getCursorPosition() > 0
+						&& getCursorPosition() <= buffer.length() && buffer
+						.charAt(getCursorPosition() - 1) != trigger)) {
 					buffer.insert(getCursorPosition(), trigger);
 					setCursorPosition(getCursorPosition() + 1);
 				}
-	
-				replacement= buffer.toString();
+
+				replacement = buffer.toString();
 				setReplacementString(replacement);
 			}
-	
+
 			// reference position just at the end of the document change.
-			int referenceOffset= getReplacementOffset() + getReplacementLength();
-			final ReferenceTracker referenceTracker= new ReferenceTracker();
+			int referenceOffset = getReplacementOffset()
+					+ getReplacementLength();
+			final ReferenceTracker referenceTracker = new ReferenceTracker();
 			referenceTracker.preReplace(document, referenceOffset);
-	
-			replace(document, getReplacementOffset(), getReplacementLength(), replacement);
-	
-			referenceOffset= referenceTracker.postReplace(document);
-			setReplacementOffset(referenceOffset - (replacement == null ? 0 : replacement.length()));
-	
+
+			replace(document, getReplacementOffset(), getReplacementLength(),
+					replacement);
+
+			referenceOffset = referenceTracker.postReplace(document);
+			setReplacementOffset(referenceOffset
+					- (replacement == null ? 0 : replacement.length()));
+
 			// PR 47097
 			if (isSmartTrigger)
 				handleSmartTrigger(document, trigger, referenceOffset);
-	
+
 		} catch (BadLocationException x) {
 			// ignore
 		}
 	}
 
-	protected abstract  boolean isSmartTrigger(char trigger); 
+	protected abstract boolean isSmartTrigger(char trigger);
 
-	protected abstract void handleSmartTrigger(IDocument document, char trigger, int referenceOffset) throws BadLocationException;
+	protected abstract void handleSmartTrigger(IDocument document,
+			char trigger, int referenceOffset) throws BadLocationException;
 
-	
-	protected final void replace(IDocument document, int offset, int length, String string) throws BadLocationException {
+	protected final void replace(IDocument document, int offset, int length,
+			String string) throws BadLocationException {
 		if (!document.get(offset, length).equals(string))
 			document.replace(offset, length, string);
 	}
-	
-	public void apply(ITextViewer viewer, char trigger, int stateMask, int offset) {
 
-		IDocument document= viewer.getDocument();
+	public void apply(ITextViewer viewer, char trigger, int stateMask,
+			int offset) {
+
+		IDocument document = viewer.getDocument();
 		if (fTextViewer == null)
-			fTextViewer= viewer;
-		
+			fTextViewer = viewer;
+
 		// see https://bugs.eclipse.org/bugs/show_bug.cgi?id=96059
-		// don't apply the proposal if for some reason we're not valid any longer
+		// don't apply the proposal if for some reason we're not valid any
+		// longer
 		if (!isInScriptdoc() && !validate(document, offset, null)) {
 			setCursorPosition(offset - getReplacementOffset());
 			if (trigger != '\0') {
@@ -323,40 +341,44 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 
 		// don't eat if not in preferences, XOR with modifier key 1 (Ctrl)
 		// but: if there is a selection, replace it!
-		Point selection= viewer.getSelectedRange();
-		fToggleEating= (stateMask & SWT.MOD1) != 0;
-		int newLength= selection.x + selection.y - getReplacementOffset();
+		Point selection = viewer.getSelectedRange();
+		fToggleEating = (stateMask & SWT.MOD1) != 0;
+		int newLength = selection.x + selection.y - getReplacementOffset();
 		if ((insertCompletion() ^ fToggleEating) && newLength >= 0)
 			setReplacementLength(newLength);
 
 		apply(document, trigger, offset);
-		fToggleEating= false;
+		fToggleEating = false;
 	}
 
-	protected void applyAutoClose(char trigger, IDocument document) throws BadLocationException {
+	protected void applyAutoClose(char trigger, IDocument document)
+			throws BadLocationException {
 		if (trigger == '(' && autocloseBrackets()) {
-			document.replace(getReplacementOffset() + getCursorPosition(), 0, ")"); //$NON-NLS-1$
+			document.replace(getReplacementOffset() + getCursorPosition(), 0,
+					")"); //$NON-NLS-1$
 			setUpLinkedMode(document, ')');
-		}		
+		}
 	}
 
 	/**
-	 * Returns <code>true</code> if the proposal is within javadoc, <code>false</code>
-	 * otherwise.
+	 * Returns <code>true</code> if the proposal is within javadoc,
+	 * <code>false</code> otherwise.
 	 * 
-	 * @return <code>true</code> if the proposal is within javadoc, <code>false</code> otherwise
+	 * @return <code>true</code> if the proposal is within javadoc,
+	 *         <code>false</code> otherwise
 	 */
-	protected boolean isInScriptdoc(){
+	protected boolean isInScriptdoc() {
 		return fIsInDoc;
 	}
-	
+
 	/**
 	 * Sets the javadoc attribute.
 	 * 
-	 * @param isInDoc <code>true</code> if the proposal is within javadoc
+	 * @param isInDoc
+	 *            <code>true</code> if the proposal is within javadoc
 	 */
 	protected void setInDoc(boolean isInDoc) {
-		fIsInDoc= isInDoc;
+		fIsInDoc = isInDoc;
 	}
 
 	/*
@@ -375,12 +397,14 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 
 	/**
 	 * Sets the context information.
-	 * @param contextInformation The context information associated with this proposal
+	 * 
+	 * @param contextInformation
+	 *            The context information associated with this proposal
 	 */
 	public void setContextInformation(IContextInformation contextInformation) {
-		fContextInformation= contextInformation;
+		fContextInformation = contextInformation;
 	}
-	
+
 	/*
 	 * @see ICompletionProposal#getDisplayString()
 	 */
@@ -393,56 +417,58 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 	 */
 	public String getAdditionalProposalInfo() {
 		if (getProposalInfo() != null) {
-			String info= getProposalInfo().getInfo(null);
+			String info = getProposalInfo().getInfo(null);
 			if (info != null && info.length() > 0) {
-				StringBuffer buffer= new StringBuffer();
+				StringBuffer buffer = new StringBuffer();
 				HTMLPrinter.insertPageProlog(buffer, 0, getStyleSheetURL());
 				buffer.append(info);
 				HTMLPrinter.addPageEpilog(buffer);
-				info= buffer.toString();
-			}
-			return info;
-		}
-		return null;	
-	}
-	
-	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension5#getAdditionalProposalInfo(org.eclipse.core.runtime.IProgressMonitor)
-	 */
-	public Object getAdditionalProposalInfo(IProgressMonitor monitor) {
-		if (getProposalInfo() != null) {			
-			String info= getProposalInfo().getInfo(monitor);
-			if (info != null && info.length() > 0) {
-				StringBuffer buffer= new StringBuffer();
-				HTMLPrinter.insertPageProlog(buffer, 0, getStyleSheetURL());
-				buffer.append(info);
-				HTMLPrinter.addPageEpilog(buffer);
-				info= buffer.toString();
+				info = buffer.toString();
 			}
 			return info;
 		}
 		return null;
 	}
-	
+
+	/*
+	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension5#getAdditionalProposalInfo(org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public Object getAdditionalProposalInfo(IProgressMonitor monitor) {
+		if (getProposalInfo() != null) {
+			String info = getProposalInfo().getInfo(monitor);
+			if (info != null && info.length() > 0) {
+				StringBuffer buffer = new StringBuffer();
+				HTMLPrinter.insertPageProlog(buffer, 0, getStyleSheetURL());
+				buffer.append(info);
+				HTMLPrinter.addPageEpilog(buffer);
+				info = buffer.toString();
+			}
+			return info;
+		}
+		return null;
+	}
+
 	/**
 	 * Returns the style sheet URL.
-	 *
-	 *
+	 * 
+	 * 
 	 */
 	protected URL getStyleSheetURL() {
 		if (fStyleSheetURL == null) {
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: Add AbstractDLTKCompletionProposal Stylesheed.");
+				System.err
+						.println("TODO: Add AbstractDLTKCompletionProposal Stylesheed.");
 			}
-//			Bundle bundle= Platform.getBundle(DLTKUIPlugin.getPluginId());
-//			fStyleSheetURL= bundle.getEntry("/JavadocHoverStyleSheet.css"); //$NON-NLS-1$
-//			if (fStyleSheetURL != null) {
-//				try {
-//					fStyleSheetURL= FileLocator.toFileURL(fStyleSheetURL);
-//				} catch (IOException ex) {
-//					DLTKUIPlugin.log(ex);
-//				}
-//			}
+			// Bundle bundle= Platform.getBundle(DLTKUIPlugin.getPluginId());
+			// fStyleSheetURL= bundle.getEntry("/JavadocHoverStyleSheet.css");
+			// //$NON-NLS-1$
+			// if (fStyleSheetURL != null) {
+			// try {
+			// fStyleSheetURL= FileLocator.toFileURL(fStyleSheetURL);
+			// } catch (IOException ex) {
+			// DLTKUIPlugin.log(ex);
+			// }
+			// }
 		}
 		return fStyleSheetURL;
 	}
@@ -458,6 +484,7 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 
 	/**
 	 * Gets the replacement offset.
+	 * 
 	 * @return Returns a int
 	 */
 	public int getReplacementOffset() {
@@ -466,22 +493,22 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 
 	/**
 	 * Sets the replacement offset.
-	 * @param replacementOffset The replacement offset to set
+	 * 
+	 * @param replacementOffset
+	 *            The replacement offset to set
 	 */
 	public void setReplacementOffset(int replacementOffset) {
 		Assert.isTrue(replacementOffset >= 0);
-		fReplacementOffset= replacementOffset;
+		fReplacementOffset = replacementOffset;
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension3#getCompletionOffset()
-	 */
 	public int getPrefixCompletionStart(IDocument document, int completionOffset) {
 		return getReplacementOffset();
 	}
 
 	/**
 	 * Gets the replacement length.
+	 * 
 	 * @return Returns a int
 	 */
 	public int getReplacementLength() {
@@ -490,15 +517,18 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 
 	/**
 	 * Sets the replacement length.
-	 * @param replacementLength The replacementLength to set
+	 * 
+	 * @param replacementLength
+	 *            The replacementLength to set
 	 */
 	public void setReplacementLength(int replacementLength) {
 		Assert.isTrue(replacementLength >= 0);
-		fReplacementLength= replacementLength;
+		fReplacementLength = replacementLength;
 	}
 
 	/**
 	 * Gets the replacement string.
+	 * 
 	 * @return Returns a String
 	 */
 	public String getReplacementString() {
@@ -507,60 +537,54 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 
 	/**
 	 * Sets the replacement string.
-	 * @param replacementString The replacement string to set
+	 * 
+	 * @param replacementString
+	 *            The replacement string to set
 	 */
 	public void setReplacementString(String replacementString) {
 		Assert.isNotNull(replacementString);
-		fReplacementString= replacementString;
+		fReplacementString = replacementString;
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension3#getReplacementText()
-	 */
-	public CharSequence getPrefixCompletionText(IDocument document, int completionOffset) {
+	public CharSequence getPrefixCompletionText(IDocument document,
+			int completionOffset) {
 		if (!isCamelCaseMatching())
 			return getReplacementString();
-		
-		String prefix= getPrefix(document, completionOffset);
+
+		String prefix = getPrefix(document, completionOffset);
 		return getCamelCaseCompound(prefix, getReplacementString());
 	}
 
-	/*
-	 * @see ICompletionProposal#getImage()
-	 */
 	public Image getImage() {
 		return fImage;
 	}
 
 	/**
 	 * Sets the image.
-	 * @param image The image to set
+	 * 
+	 * @param image
+	 *            The image to set
 	 */
 	public void setImage(Image image) {
-		fImage= image;
+		fImage = image;
 	}
 
-	/*
-	 * @see ICompletionProposalExtension#isValidFor(IDocument, int)
-	 */
 	public boolean isValidFor(IDocument document, int offset) {
 		return validate(document, offset, null);
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension2#validate(org.eclipse.jface.text.IDocument, int, org.eclipse.jface.text.DocumentEvent)
-	 */
 	public boolean validate(IDocument document, int offset, DocumentEvent event) {
 
 		if (offset < getReplacementOffset())
 			return false;
-		
-		boolean validated= isValidPrefix(getPrefix(document, offset));
+
+		boolean validated = isValidPrefix(getPrefix(document, offset));
 
 		if (validated && event != null) {
 			// adapt replacement range to document change
-			int delta= (event.fText == null ? 0 : event.fText.length()) - event.fLength;
-			final int newLength= Math.max(getReplacementLength() + delta, 0);
+			int delta = (event.fText == null ? 0 : event.fText.length())
+					- event.fLength;
+			final int newLength = Math.max(getReplacementLength() + delta, 0);
 			setReplacementLength(newLength);
 		}
 
@@ -568,31 +592,34 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 	}
 
 	/**
-	 * Checks whether <code>prefix</code> is a valid prefix for this proposal. Usually, while code
-	 * completion is in progress, the user types and edits the prefix in the document in order to
-	 * filter the proposal list. From {@link #validate(IDocument, int, DocumentEvent) }, the
-	 * current prefix in the document is extracted and this method is called to find out whether the
-	 * proposal is still valid.
+	 * Checks whether <code>prefix</code> is a valid prefix for this proposal.
+	 * Usually, while code completion is in progress, the user types and edits
+	 * the prefix in the document in order to filter the proposal list. From
+	 * {@link #validate(IDocument, int, DocumentEvent) }, the current prefix in
+	 * the document is extracted and this method is called to find out whether
+	 * the proposal is still valid.
 	 * <p>
-	 * The default implementation checks if <code>prefix</code> is a prefix of the proposal's
-	 * {@link #getDisplayString() display string} using the {@link #isPrefix(String, String) }
-	 * method.
+	 * The default implementation checks if <code>prefix</code> is a prefix of
+	 * the proposal's {@link #getDisplayString() display string} using the
+	 * {@link #isPrefix(String, String) } method.
 	 * </p>
 	 * 
-	 * @param prefix the current prefix in the document
-	 * @return <code>true</code> if <code>prefix</code> is a valid prefix of this proposal
+	 * @param prefix
+	 *            the current prefix in the document
+	 * @return <code>true</code> if <code>prefix</code> is a valid prefix of
+	 *         this proposal
 	 */
 	protected boolean isValidPrefix(String prefix) {
 		/*
-		 * See http://dev.eclipse.org/bugs/show_bug.cgi?id=17667
-		 * why we do not use the replacement string.
-		 * String word= fReplacementString;
+		 * See http://dev.eclipse.org/bugs/show_bug.cgi?id=17667 why we do not
+		 * use the replacement string. String word= fReplacementString;
 		 */
 		return isPrefix(prefix, getDisplayString());
 	}
 
 	/**
 	 * Gets the proposal's relevance.
+	 * 
 	 * @return Returns a int
 	 */
 	public int getRelevance() {
@@ -601,71 +628,85 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 
 	/**
 	 * Sets the proposal's relevance.
-	 * @param relevance The relevance to set
+	 * 
+	 * @param relevance
+	 *            The relevance to set
 	 */
 	public void setRelevance(int relevance) {
-		fRelevance= relevance;
+		fRelevance = relevance;
 	}
 
 	/**
-	 * Returns the text in <code>document</code> from {@link #getReplacementOffset()} to
-	 * <code>offset</code>. Returns the empty string if <code>offset</code> is before the
-	 * replacement offset or if an exception occurs when accessing the document.
+	 * Returns the text in <code>document</code> from
+	 * {@link #getReplacementOffset()} to <code>offset</code>. Returns the
+	 * empty string if <code>offset</code> is before the replacement offset or
+	 * if an exception occurs when accessing the document.
 	 * 
-	 *
+	 * 
 	 */
 	protected String getPrefix(IDocument document, int offset) {
 		try {
-			int length= offset - getReplacementOffset();
+			int length = offset - getReplacementOffset();
 			if (length > 0)
 				return document.get(getReplacementOffset(), length);
 		} catch (BadLocationException x) {
 		}
 		return ""; //$NON-NLS-1$
 	}
-	
+
 	/**
-	 * Case insensitive comparison of <code>prefix</code> with the start of <code>string</code>.
-	 * Returns <code>false</code> if <code>prefix</code> is longer than <code>string</code>
+	 * Case insensitive comparison of <code>prefix</code> with the start of
+	 * <code>string</code>. Returns <code>false</code> if
+	 * <code>prefix</code> is longer than <code>string</code>
 	 * 
-	 *
+	 * 
 	 */
 	protected boolean isPrefix(String prefix, String string) {
-		if (prefix == null || string ==null || prefix.length() > string.length())
+		if (prefix == null || string == null
+				|| prefix.length() > string.length())
 			return false;
-		String start= string.substring(0, prefix.length());
-		return start.equalsIgnoreCase(prefix) || isCamelCaseMatching() && CharOperation.camelCaseMatch(prefix.toCharArray(), string.toCharArray());
+		String start = string.substring(0, prefix.length());
+		return start.equalsIgnoreCase(prefix)
+				|| isCamelCaseMatching()
+				&& CharOperation.camelCaseMatch(prefix.toCharArray(), string
+						.toCharArray());
 	}
 
 	/**
-	 * Matches <code>prefix</code> against <code>string</code> and replaces the matched region
-	 * by prefix. Case is preserved as much as possible. This method returns <code>string</code> if camel case completion
-	 * is disabled. Examples when camel case completion is enabled:
+	 * Matches <code>prefix</code> against <code>string</code> and replaces
+	 * the matched region by prefix. Case is preserved as much as possible. This
+	 * method returns <code>string</code> if camel case completion is
+	 * disabled. Examples when camel case completion is enabled:
 	 * <ul>
-	 * <li>getCamelCompound("NuPo", "NullPointerException") -> "NuPointerException"</li>
+	 * <li>getCamelCompound("NuPo", "NullPointerException") ->
+	 * "NuPointerException"</li>
 	 * <li>getCamelCompound("NuPoE", "NullPointerException") -> "NuPoException"</li>
 	 * <li>getCamelCompound("hasCod", "hashCode") -> "hasCode"</li>
 	 * </ul>
 	 * 
-	 * @param prefix the prefix to match against
-	 * @param string the string to match
-	 * @return a compound of prefix and any postfix taken from <code>string</code>
-	 *
+	 * @param prefix
+	 *            the prefix to match against
+	 * @param string
+	 *            the string to match
+	 * @return a compound of prefix and any postfix taken from
+	 *         <code>string</code>
+	 * 
 	 */
 	protected final String getCamelCaseCompound(String prefix, String string) {
 		if (prefix.length() > string.length())
 			return string;
 
 		// a normal prefix - no camel case logic at all
-		String start= string.substring(0, prefix.length());
+		String start = string.substring(0, prefix.length());
 		if (start.equalsIgnoreCase(prefix))
 			return string;
 
-		final char[] patternChars= prefix.toCharArray();
-		final char[] stringChars= string.toCharArray();
+		final char[] patternChars = prefix.toCharArray();
+		final char[] stringChars = string.toCharArray();
 
-		for (int i= 1; i <= stringChars.length; i++)
-			if (CharOperation.camelCaseMatch(patternChars, 0, patternChars.length, stringChars, 0, i))
+		for (int i = 1; i <= stringChars.length; i++)
+			if (CharOperation.camelCaseMatch(patternChars, 0,
+					patternChars.length, stringChars, 0, i))
 				return prefix + string.substring(i);
 
 		// Not a camel case match at all.
@@ -676,35 +717,39 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 	/**
 	 * Returns true if camel case matching is enabled.
 	 * 
-	 *
+	 * 
 	 */
 	protected boolean isCamelCaseMatching() {
-		IDLTKProject project= getProject();
+		IDLTKProject project = getProject();
 		String value;
 		if (project == null)
-			value= DLTKCore.getOption(DLTKCore.CODEASSIST_CAMEL_CASE_MATCH);
+			value = DLTKCore.getOption(DLTKCore.CODEASSIST_CAMEL_CASE_MATCH);
 		else
-			value= project.getOption(DLTKCore.CODEASSIST_CAMEL_CASE_MATCH, true);
-		
+			value = project.getOption(DLTKCore.CODEASSIST_CAMEL_CASE_MATCH,
+					true);
+
 		return DLTKCore.ENABLED.equals(value);
 	}
-	
+
 	private IDLTKProject getProject() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	private static boolean insertCompletion() {
-		IPreferenceStore preference= DLTKUIPlugin.getDefault().getPreferenceStore();
-		return preference.getBoolean(PreferenceConstants.CODEASSIST_INSERT_COMPLETION);
+		IPreferenceStore preference = DLTKUIPlugin.getDefault()
+				.getPreferenceStore();
+		return preference
+				.getBoolean(PreferenceConstants.CODEASSIST_INSERT_COMPLETION);
 	}
 
 	private static Color getForegroundColor(StyledText text) {
 
-		IPreferenceStore preference= DLTKUIPlugin.getDefault().getPreferenceStore();
-		RGB rgb= PreferenceConverter.getColor(preference, PreferenceConstants.CODEASSIST_REPLACEMENT_FOREGROUND);
-		TextTools textTools= getTextTools();
+		IPreferenceStore preference = DLTKUIPlugin.getDefault()
+				.getPreferenceStore();
+		RGB rgb = PreferenceConverter.getColor(preference,
+				PreferenceConstants.CODEASSIST_REPLACEMENT_FOREGROUND);
+		TextTools textTools = getTextTools();
 		return textTools.getColorManager().getColor(rgb);
 	}
 
@@ -715,28 +760,37 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 
 	private static Color getBackgroundColor(StyledText text) {
 
-		IPreferenceStore preference= DLTKUIPlugin.getDefault().getPreferenceStore();
-		RGB rgb= PreferenceConverter.getColor(preference, PreferenceConstants.CODEASSIST_REPLACEMENT_BACKGROUND);
-		TextTools textTools= getTextTools();
+		IPreferenceStore preference = DLTKUIPlugin.getDefault()
+				.getPreferenceStore();
+		RGB rgb = PreferenceConverter.getColor(preference,
+				PreferenceConstants.CODEASSIST_REPLACEMENT_BACKGROUND);
+		TextTools textTools = getTextTools();
 		return textTools.getColorManager().getColor(rgb);
 	}
 
 	private void repairPresentation(ITextViewer viewer) {
 		if (fRememberedStyleRange != null) {
-			 if (viewer instanceof ITextViewerExtension2) {
-			 	// attempts to reduce the redraw area
-			 	ITextViewerExtension2 viewer2= (ITextViewerExtension2) viewer;
+			if (viewer instanceof ITextViewerExtension2) {
+				// attempts to reduce the redraw area
+				ITextViewerExtension2 viewer2 = (ITextViewerExtension2) viewer;
 
-			 	if (viewer instanceof ITextViewerExtension5) {
+				if (viewer instanceof ITextViewerExtension5) {
 
-			 		ITextViewerExtension5 extension= (ITextViewerExtension5) viewer;
-			 		IRegion modelRange= extension.widgetRange2ModelRange(new Region(fRememberedStyleRange.start, fRememberedStyleRange.length));
-			 		if (modelRange != null)
-			 			viewer2.invalidateTextPresentation(modelRange.getOffset(), modelRange.getLength());
+					ITextViewerExtension5 extension = (ITextViewerExtension5) viewer;
+					IRegion modelRange = extension
+							.widgetRange2ModelRange(new Region(
+									fRememberedStyleRange.start,
+									fRememberedStyleRange.length));
+					if (modelRange != null)
+						viewer2.invalidateTextPresentation(modelRange
+								.getOffset(), modelRange.getLength());
 
-			 	} else {
-					viewer2.invalidateTextPresentation(fRememberedStyleRange.start + viewer.getVisibleRegion().getOffset(), fRememberedStyleRange.length);
-			 	}
+				} else {
+					viewer2.invalidateTextPresentation(
+							fRememberedStyleRange.start
+									+ viewer.getVisibleRegion().getOffset(),
+							fRememberedStyleRange.length);
+				}
 
 			} else
 				viewer.invalidateTextPresentation();
@@ -745,19 +799,19 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 
 	private void updateStyle(ITextViewer viewer) {
 
-		StyledText text= viewer.getTextWidget();
+		StyledText text = viewer.getTextWidget();
 		if (text == null || text.isDisposed())
 			return;
 
-		int widgetCaret= text.getCaretOffset();
+		int widgetCaret = text.getCaretOffset();
 
-		int modelCaret= 0;
+		int modelCaret = 0;
 		if (viewer instanceof ITextViewerExtension5) {
-			ITextViewerExtension5 extension= (ITextViewerExtension5) viewer;
-			modelCaret= extension.widgetOffset2ModelOffset(widgetCaret);
+			ITextViewerExtension5 extension = (ITextViewerExtension5) viewer;
+			modelCaret = extension.widgetOffset2ModelOffset(widgetCaret);
 		} else {
-			IRegion visibleRegion= viewer.getVisibleRegion();
-			modelCaret= widgetCaret + visibleRegion.getOffset();
+			IRegion visibleRegion = viewer.getVisibleRegion();
+			modelCaret = widgetCaret + visibleRegion.getOffset();
 		}
 
 		if (modelCaret >= getReplacementOffset() + getReplacementLength()) {
@@ -765,70 +819,65 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 			return;
 		}
 
-		int offset= widgetCaret;
-		int length= getReplacementOffset() + getReplacementLength() - modelCaret;
+		int offset = widgetCaret;
+		int length = getReplacementOffset() + getReplacementLength()
+				- modelCaret;
 
-		Color foreground= getForegroundColor(text);
-		Color background= getBackgroundColor(text);
+		Color foreground = getForegroundColor(text);
+		Color background = getBackgroundColor(text);
 
-		StyleRange range= text.getStyleRangeAtOffset(offset);
-		int fontStyle= range != null ? range.fontStyle : SWT.NORMAL;
+		StyleRange range = text.getStyleRangeAtOffset(offset);
+		int fontStyle = range != null ? range.fontStyle : SWT.NORMAL;
 
 		repairPresentation(viewer);
-		fRememberedStyleRange= new StyleRange(offset, length, foreground, background, fontStyle);
+		fRememberedStyleRange = new StyleRange(offset, length, foreground,
+				background, fontStyle);
 		if (range != null) {
-			fRememberedStyleRange.strikeout= range.strikeout;
-			fRememberedStyleRange.underline= range.underline;
+			fRememberedStyleRange.strikeout = range.strikeout;
+			fRememberedStyleRange.underline = range.underline;
 		}
 
 		// http://dev.eclipse.org/bugs/show_bug.cgi?id=34754
 		try {
 			text.setStyleRange(fRememberedStyleRange);
 		} catch (IllegalArgumentException x) {
-			// catching exception as offset + length might be outside of the text widget
-			fRememberedStyleRange= null;
+			// catching exception as offset + length might be outside of the
+			// text widget
+			fRememberedStyleRange = null;
 		}
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension2#selected(ITextViewer, boolean)
-	 */
 	public void selected(ITextViewer viewer, boolean smartToggle) {
 		if (!insertCompletion() ^ smartToggle)
 			updateStyle(viewer);
 		else {
 			repairPresentation(viewer);
-			fRememberedStyleRange= null;
+			fRememberedStyleRange = null;
 		}
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension2#unselected(ITextViewer)
-	 */
 	public void unselected(ITextViewer viewer) {
 		repairPresentation(viewer);
-		fRememberedStyleRange= null;
+		fRememberedStyleRange = null;
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension3#getInformationControlCreator()
-	 */
 	public IInformationControlCreator getInformationControlCreator() {
 		if (DLTKCore.DEBUG) {
 			System.err.println("TODO: Add browser information control.");
 		}
-//		if (!BrowserInformationControl.isAvailable(null))
-//			return null;
-//		
-//		if (fCreator == null) {
-//			fCreator= new AbstractReusableInformationControlCreator() {
-//				
-//				public IInformationControl doCreateInformationControl(Shell parent) {
-//					return new BrowserInformationControl(parent, SWT.NO_TRIM | SWT.TOOL, SWT.NONE, null);
-//				}
-//			};
-//		}
-//		return fCreator;
+		// if (!BrowserInformationControl.isAvailable(null))
+		// return null;
+		//		
+//		 if (fCreator == null) {
+//		 fCreator= new AbstractReusableInformationControlCreator() {
+//						
+//		 public IInformationControl doCreateInformationControl(Shell parent) {
+//		 return new BrowserInformationControl(parent, SWT.NO_TRIM | SWT.TOOL,
+//		 SWT.NONE, null);
+// }
+		// };
+		// }
+		// return fCreator;
 		return null;
 	}
 
@@ -837,7 +886,7 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 	}
 
 	protected void setSortString(String string) {
-		fSortString= string;
+		fSortString = string;
 	}
 
 	protected ITextViewer getTextViewer() {
@@ -849,26 +898,29 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 	}
 
 	/**
-	 * Sets up a simple linked mode at {@link #getCursorPosition()} and an exit policy that will
-	 * exit the mode when <code>closingCharacter</code> is typed and an exit position at
-	 * <code>getCursorPosition() + 1</code>.
+	 * Sets up a simple linked mode at {@link #getCursorPosition()} and an exit
+	 * policy that will exit the mode when <code>closingCharacter</code> is
+	 * typed and an exit position at <code>getCursorPosition() + 1</code>.
 	 * 
-	 * @param document the document
-	 * @param closingCharacter the exit character
+	 * @param document
+	 *            the document
+	 * @param closingCharacter
+	 *            the exit character
 	 */
 	protected void setUpLinkedMode(IDocument document, char closingCharacter) {
 		if (getTextViewer() != null && autocloseBrackets()) {
-			int offset= getReplacementOffset() + getCursorPosition();
-			int exit= getReplacementOffset() + getReplacementString().length();
+			int offset = getReplacementOffset() + getCursorPosition();
+			int exit = getReplacementOffset() + getReplacementString().length();
 			try {
-				LinkedPositionGroup group= new LinkedPositionGroup();
-				group.addPosition(new LinkedPosition(document, offset, 0, LinkedPositionGroup.NO_STOP));
-				
-				LinkedModeModel model= new LinkedModeModel();
+				LinkedPositionGroup group = new LinkedPositionGroup();
+				group.addPosition(new LinkedPosition(document, offset, 0,
+						LinkedPositionGroup.NO_STOP));
+
+				LinkedModeModel model = new LinkedModeModel();
 				model.addGroup(group);
 				model.forceInstall();
-				
-				LinkedModeUI ui= new EditorLinkedModeUI(model, getTextViewer());
+
+				LinkedModeUI ui = new EditorLinkedModeUI(model, getTextViewer());
 				ui.setSimpleMode(true);
 				ui.setExitPolicy(new ExitPolicy(closingCharacter, document));
 				ui.setExitPosition(getTextViewer(), exit, 0, Integer.MAX_VALUE);
@@ -879,27 +931,28 @@ public abstract class AbstractDLTKCompletionProposal implements IScriptCompletio
 			}
 		}
 	}
-	
+
 	protected boolean autocloseBrackets() {
-		IPreferenceStore preferenceStore= DLTKUIPlugin.getDefault().getPreferenceStore();
-		return preferenceStore.getBoolean(PreferenceConstants.EDITOR_CLOSE_BRACKETS);
+		IPreferenceStore preferenceStore = DLTKUIPlugin.getDefault()
+				.getPreferenceStore();
+		return preferenceStore
+				.getBoolean(PreferenceConstants.EDITOR_CLOSE_BRACKETS);
 	}
 
 	protected void setDisplayString(String string) {
-		fDisplayString= string;
+		fDisplayString = string;
 	}
-	
-	/*
-	 * @see java.lang.Object#toString()
-	 */
+
 	public String toString() {
 		return getDisplayString();
 	}
-	
+
 	/**
-	 * Returns the script element proposed by the receiver, possibly <code>null</code>.
+	 * Returns the script element proposed by the receiver, possibly
+	 * <code>null</code>.
 	 * 
-	 * @return the script element proposed by the receiver, possibly <code>null</code>
+	 * @return the script element proposed by the receiver, possibly
+	 *         <code>null</code>
 	 */
 	public IModelElement getModelElement() {
 		if (getProposalInfo() != null)
