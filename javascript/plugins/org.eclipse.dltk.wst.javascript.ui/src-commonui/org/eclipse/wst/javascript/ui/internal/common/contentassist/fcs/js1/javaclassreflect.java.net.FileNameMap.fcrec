@@ -1,6 +1,0 @@
-#/------------------------------------------
-#!getContentTypeFor()
-#@type=method
-#@wasjspsupport=y
-#@displaytext=getContentTypeFor(String) String
-#@fc=javaclassreflect.java.lang.String
