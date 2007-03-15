@@ -1,10 +1,8 @@
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
-import java.util.Collection;
 import java.util.Map;
 
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.references.ConstantReference;
@@ -13,7 +11,6 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.codeassist.CompletionEngine;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.RelevanceConstants;
-import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;
@@ -23,29 +20,24 @@ import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.ddp.BasicContext;
-import org.eclipse.dltk.ddp.ExpressionGoal;
-import org.eclipse.dltk.ddp.TypeInferencer;
 import org.eclipse.dltk.evaluation.types.IClassType;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
-import org.eclipse.dltk.ruby.core.model.FakeMethod;
-import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
-import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
-import org.eclipse.dltk.ruby.typeinference.BuiltinMethods;
 import org.eclipse.dltk.ruby.typeinference.ClassInfo;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
-import org.eclipse.dltk.ruby.typeinference.BuiltinMethods.BuiltinClass;
+import org.eclipse.dltk.ti.BasicContext;
+import org.eclipse.dltk.ti.TypeInferencer;
+import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class RubyCompletionEngine extends CompletionEngine {
 
@@ -103,8 +95,8 @@ public class RubyCompletionEngine extends CompletionEngine {
 				this.setSourceRange(position, position);	
 				if (node != null && node instanceof Statement) {					
 					BasicContext basicContext = new BasicContext(modelModule, moduleDeclaration);
-					ExpressionGoal goal = new ExpressionGoal(basicContext, (Statement) node);
-					IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+					ExpressionTypeGoal goal = new ExpressionTypeGoal(basicContext, (Statement) node);
+					IEvaluatedType type = inferencer.evaluateType(goal, 0);
 					reportSubtypes(modelModule, type, "");
 				} else {					
 					completeConstant(modelModule, moduleDeclaration, "", position);					
@@ -142,9 +134,9 @@ public class RubyCompletionEngine extends CompletionEngine {
 
 	
 	private IMethod[] getMethodsForReceiver(org.eclipse.dltk.core.ISourceModule modelModule, ModuleDeclaration moduleDeclaration, ASTNode receiver) {
-			ExpressionGoal goal = new ExpressionGoal(new BasicContext(
+		ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
 					modelModule, moduleDeclaration), (Statement) receiver);
-			IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+			IEvaluatedType type = inferencer.evaluateType(goal, 0);
 			return getMethodsForReceiver(modelModule, moduleDeclaration, type);
 	}
 	
@@ -244,9 +236,9 @@ public class RubyCompletionEngine extends CompletionEngine {
 		
 		this.setSourceRange(position - starting.length(), position);
 		
-		ExpressionGoal goal = new ExpressionGoal(new BasicContext(
+		ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
 				module, moduleDeclaration), (Statement) (node.getLeft()));
-		IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+		IEvaluatedType type = inferencer.evaluateType(goal, 0);
 		reportSubtypes(module, type, starting);
 	}
 	

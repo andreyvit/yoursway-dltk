@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.evaluation.types.IClassType;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class RubyClassType implements IClassType {
 	
@@ -63,6 +64,13 @@ public class RubyClassType implements IClassType {
 
 	public String getUnqualifiedName() {
 		return fqn[fqn.length - 1];
+	}
+
+
+
+	public boolean subtypeOf(IEvaluatedType type) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

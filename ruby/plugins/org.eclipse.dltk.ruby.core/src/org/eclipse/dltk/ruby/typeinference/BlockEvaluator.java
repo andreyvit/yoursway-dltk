@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.ddp.ExpressionGoal;
-import org.eclipse.dltk.ddp.GoalEvaluator;
-import org.eclipse.dltk.ddp.IGoal;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
+import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
+import org.eclipse.dltk.ti.goals.GoalEvaluator;
+import org.eclipse.dltk.ti.goals.IGoal;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class BlockEvaluator extends GoalEvaluator {
 	
@@ -25,7 +25,7 @@ public class BlockEvaluator extends GoalEvaluator {
 	}
 
 	public IGoal produceNextSubgoal(IGoal previousGoal,
-			IEvaluatedType previousResult) {
+			Object previousResult) {
 		if (done)
 			return null;
 		if (!initialized) {
@@ -40,14 +40,14 @@ public class BlockEvaluator extends GoalEvaluator {
 			done = true;
 			return null;
 		}
-		ExpressionGoal subgoal = new ExpressionGoal(goal.getContext(), (Statement) possibilities
+		ExpressionTypeGoal subgoal = new ExpressionTypeGoal(goal.getContext(), (Statement) possibilities
 				.get(current));
 		current++;
 		return subgoal;
 	}
 		
 	private void initialize () {
-		ExpressionGoal typedGoal = getTypedGoal();
+		ExpressionTypeGoal typedGoal = getTypedGoal();
 		Block block = (Block) typedGoal.getExpression();
 		List statements = block.getStatements();
 		if (statements.size() > 0) {
@@ -57,11 +57,11 @@ public class BlockEvaluator extends GoalEvaluator {
 		initialized = true;
 	}
 	
-	private ExpressionGoal getTypedGoal () {
-		return (ExpressionGoal) this.getGoal();
+	private ExpressionTypeGoal getTypedGoal () {
+		return (ExpressionTypeGoal) this.getGoal();
 	}
 	
-	public IEvaluatedType produceType() {
+	public IEvaluatedType produceResult() {
 		if (!evaluated.isEmpty()) {
 			return RubyTypeInferencingUtils.combineTypes(evaluated);			
 		}

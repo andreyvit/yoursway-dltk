@@ -20,12 +20,6 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ddp.BasicContext;
-import org.eclipse.dltk.ddp.ExpressionGoal;
-import org.eclipse.dltk.ddp.ITypeInferencer;
-import org.eclipse.dltk.ddp.TypeInferencer;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
-import org.eclipse.dltk.evaluation.types.RecursionTypeCall;
 import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ruby.tests.Activator;
@@ -33,6 +27,12 @@ import org.eclipse.dltk.ruby.typeinference.OffsetTargetedASTVisitor;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
+import org.eclipse.dltk.ti.BasicContext;
+import org.eclipse.dltk.ti.ITypeInferencer;
+import org.eclipse.dltk.ti.TypeInferencer;
+import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
+import org.eclipse.dltk.ti.types.RecursionTypeCall;
 
 public class TypeInferenceSuite extends TestSuite {
 
@@ -188,8 +188,8 @@ public class TypeInferenceSuite extends TestSuite {
 						};
 						rootNode.traverse(visitor);
 						Assert.isLegal(result[0] != null);
-						ExpressionGoal goal = new ExpressionGoal(new BasicContext(cu, rootNode), result[0]);
-						IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+						ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(cu, rootNode), result[0]);
+						IEvaluatedType type = inferencer.evaluateType(goal, 0);
 						assertNotNull(type);
 						
 						IEvaluatedType correctType = getIntrinsicType(correctClassRef);
@@ -230,8 +230,8 @@ public class TypeInferenceSuite extends TestSuite {
 						if (result[0] == null)
 							System.out.println("ExpressionTypeAssertion.check()");
 						Assert.isLegal(result[0] != null);
-						ExpressionGoal goal = new ExpressionGoal(new BasicContext(cu, rootNode), result[0]);
-						IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+						ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(cu, rootNode), result[0]);
+						IEvaluatedType type = inferencer.evaluateType(goal, 0);
 						assertNotNull(type);
 						
 						IEvaluatedType correctType = getIntrinsicType(correctClassRef);

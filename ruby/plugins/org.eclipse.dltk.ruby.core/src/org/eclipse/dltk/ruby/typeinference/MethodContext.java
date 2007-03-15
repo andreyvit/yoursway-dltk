@@ -2,10 +2,10 @@ package org.eclipse.dltk.ruby.typeinference;
 
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ddp.IContext;
-import org.eclipse.dltk.ddp.ISourceModuleContext;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.SimpleType;
+import org.eclipse.dltk.ti.IContext;
+import org.eclipse.dltk.ti.ISourceModuleContext;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class MethodContext implements IContext, IArgumentsContext, IInstanceContext, ISourceModuleContext {
 

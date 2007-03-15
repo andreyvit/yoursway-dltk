@@ -11,13 +11,14 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.NumericLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.ddp.ExpressionGoal;
-import org.eclipse.dltk.ddp.GoalEvaluator;
-import org.eclipse.dltk.ddp.IGoal;
-import org.eclipse.dltk.ddp.IGoalEvaluatorFactory;
-import org.eclipse.dltk.ddp.TypeInferencer;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
-import org.eclipse.dltk.evaluation.types.RecursionTypeCall;
+import org.eclipse.dltk.ti.GoalEngine;
+import org.eclipse.dltk.ti.IGoalEvaluatorFactory;
+import org.eclipse.dltk.ti.ITypeInferencer;
+import org.eclipse.dltk.ti.TypeInferencer;
+import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
+import org.eclipse.dltk.ti.goals.GoalEvaluator;
+import org.eclipse.dltk.ti.goals.IGoal;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class DDPTests extends TestCase {
 
@@ -29,11 +30,11 @@ public class DDPTests extends TestCase {
 			this.answer = answer;
 		}
 
-		public IGoal produceNextSubgoal(IGoal previousGoal, IEvaluatedType previousResult) {
+		public IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
 			return null;
 		}
 
-		public IEvaluatedType produceType() {
+		public IEvaluatedType produceResult() {
 			return answer;
 		}
 	}
@@ -55,23 +56,23 @@ public class DDPTests extends TestCase {
 			this.answer = answer;
 		}
 
-		private SingleDependentGoalEvaluator(IGoal goal, IGoal[] dependents, IEvaluatedType answer) {
+		private SingleDependentGoalEvaluator(IGoal goal, IGoal[] dependents, Object answer) {
 			super(goal);
 			this.dependents = dependents;
-			this.answer = answer;
+			this.answer = (IEvaluatedType) answer;
 		}
 
-		public IGoal produceNextSubgoal(IGoal previousGoal, IEvaluatedType previousResult) {
+		public IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
 			++produceCalls;
 			if (state > 0)
-				assertTrue(previousResult instanceof MyNum || previousResult instanceof RecursionTypeCall);
+				assertTrue(previousResult instanceof MyNum || previousResult == GoalEngine.RECURSION_RESULT);
 			if (state < dependents.length) {
 				return dependents[state++];
 			}
 			return null;
 		}
 
-		public IEvaluatedType produceType() {
+		public IEvaluatedType produceResult() {
 			++produceTypeCalls;
 			return answer;
 		}
@@ -97,6 +98,11 @@ public class DDPTests extends TestCase {
 			return "MyNum";
 		}
 
+		public boolean subtypeOf(IEvaluatedType type) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
 	}
 
 	public void testSimple() throws Exception {
@@ -108,14 +114,14 @@ public class DDPTests extends TestCase {
 		IGoalEvaluatorFactory factory = new IGoalEvaluatorFactory() {
 
 			public GoalEvaluator createEvaluator(IGoal goal) {
-				if (goal instanceof ExpressionGoal) {
-					ExpressionGoal egoal = (ExpressionGoal) goal;
+				if (goal instanceof ExpressionTypeGoal) {
+					ExpressionTypeGoal egoal = (ExpressionTypeGoal) goal;
 					Statement expr = egoal.getExpression();
 					if (expr == x)
-						return new SingleDependentGoalEvaluator(goal, new ExpressionGoal(null, y),
+						return new SingleDependentGoalEvaluator(goal, new ExpressionTypeGoal(null, y),
 								new MyNum());
 					if (expr == y)
-						return new SingleDependentGoalEvaluator(goal, new ExpressionGoal(null, num),
+						return new SingleDependentGoalEvaluator(goal, new ExpressionTypeGoal(null, num),
 								new MyNum());
 					if (expr == num)
 						return new FixedAnswerGoalEvaluator(goal, new MyNum());
@@ -129,10 +135,10 @@ public class DDPTests extends TestCase {
 
 		};
 
-		final TypeInferencer man = new TypeInferencer(factory);
+		final ITypeInferencer man = new TypeInferencer(factory);
 
-		ExpressionGoal rootGoal = new ExpressionGoal(null, x);
-		IEvaluatedType answer = man.evaluateGoal(rootGoal, 0);
+		ExpressionTypeGoal rootGoal = new ExpressionTypeGoal(null, x);
+		IEvaluatedType answer = man.evaluateType(rootGoal, 0);
 
 		assertTrue(answer instanceof MyNum);
 	}
@@ -147,18 +153,18 @@ public class DDPTests extends TestCase {
 		IGoalEvaluatorFactory factory = new IGoalEvaluatorFactory() {
 
 			public GoalEvaluator createEvaluator2(IGoal goal) {
-				if (goal instanceof ExpressionGoal) {
-					ExpressionGoal egoal = (ExpressionGoal) goal;
+				if (goal instanceof ExpressionTypeGoal) {
+					ExpressionTypeGoal egoal = (ExpressionTypeGoal) goal;
 					Statement expr = egoal.getExpression();
 					if (expr == x)
 						return new SingleDependentGoalEvaluator(goal, new IGoal[] {
-								new ExpressionGoal(null, y), new ExpressionGoal(null, z) }, new MyNum());
+								new ExpressionTypeGoal(null, y), new ExpressionTypeGoal(null, z) }, new MyNum());
 					if (expr == y)
 						return new SingleDependentGoalEvaluator(goal,
-								new IGoal[] { new ExpressionGoal(null, z) }, new MyNum());
+								new IGoal[] { new ExpressionTypeGoal(null, z) }, new MyNum());
 					if (expr == z)
 						return new SingleDependentGoalEvaluator(goal, new IGoal[] {
-								new ExpressionGoal(null, num), new ExpressionGoal(null, y) }, new MyNum());
+								new ExpressionTypeGoal(null, num), new ExpressionTypeGoal(null, y) }, new MyNum());
 					if (expr == num)
 						return new FixedAnswerGoalEvaluator(goal, new MyNum());
 				}
@@ -178,10 +184,10 @@ public class DDPTests extends TestCase {
 
 		};
 
-		final TypeInferencer man = new TypeInferencer(factory);
+		final ITypeInferencer man = new TypeInferencer(factory);
 
-		ExpressionGoal rootGoal = new ExpressionGoal(null, x);
-		IEvaluatedType answer = man.evaluateGoal(rootGoal, 0);
+		ExpressionTypeGoal rootGoal = new ExpressionTypeGoal(null, x);
+		IEvaluatedType answer = man.evaluateType(rootGoal, 0);
 
 		assertTrue(answer instanceof MyNum);
 		for (Iterator iter = evaluators.iterator(); iter.hasNext();) {

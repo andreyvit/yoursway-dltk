@@ -29,27 +29,25 @@ import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
-import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
-import org.eclipse.dltk.ddp.IContext;
-import org.eclipse.dltk.ddp.ISourceModuleContext;
 import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.evaluation.types.IClassType;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
-import org.eclipse.dltk.evaluation.types.RecursionTypeCall;
 import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.SelfReference;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
-import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
+import org.eclipse.dltk.ti.IContext;
+import org.eclipse.dltk.ti.ISourceModuleContext;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
+import org.eclipse.dltk.ti.types.RecursionTypeCall;
 
 public class RubyTypeInferencingUtils {
 

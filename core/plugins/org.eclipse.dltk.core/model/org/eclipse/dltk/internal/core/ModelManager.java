@@ -54,6 +54,7 @@ import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.dltk.compiler.IProblem;
+import org.eclipse.dltk.compiler.IProblemReporter;
 import org.eclipse.dltk.compiler.util.HashtableOfObjectToInt;
 import org.eclipse.dltk.core.BuildpathContainerInitializer;
 import org.eclipse.dltk.core.DLTKCore;
@@ -192,12 +193,19 @@ public class ModelManager implements ISaveParticipant {
 	public static class PerWorkingCopyInfo implements IProblemRequestor {
 		int useCount = 0;
 		IProblemRequestor problemRequestor;
+		IProblemReporter problemReporter;
 		ISourceModule workingCopy;
 
 		public PerWorkingCopyInfo(ISourceModule workingCopy,
 				IProblemRequestor problemRequestor) {
 			this.workingCopy = workingCopy;
 			this.problemRequestor = problemRequestor;
+		}
+
+		public PerWorkingCopyInfo(ISourceModule workingCopy,
+				IProblemRequestor problemRequestor, IProblemReporter problemReporter) {
+			this(workingCopy, problemRequestor);
+			this.problemReporter = problemReporter;
 		}
 
 		public void acceptProblem(IProblem problem) {
@@ -691,6 +699,12 @@ public class ModelManager implements ISaveParticipant {
 	public PerWorkingCopyInfo getPerWorkingCopyInfo(SourceModule workingCopy,
 			boolean create, boolean recordUsage,
 			IProblemRequestor problemRequestor) {
+		return getPerWorkingCopyInfo(workingCopy, create, recordUsage, problemRequestor, null);
+	}
+
+	public PerWorkingCopyInfo getPerWorkingCopyInfo(SourceModule workingCopy,
+			boolean create, boolean recordUsage,
+			IProblemRequestor problemRequestor, IProblemReporter problemReporter) {
 		synchronized (this.perWorkingCopyInfos) { // use the
 			// perWorkingCopyInfo
 			// collection as its own
@@ -704,7 +718,7 @@ public class ModelManager implements ISaveParticipant {
 			PerWorkingCopyInfo info = workingCopyToInfos == null ? null
 					: (PerWorkingCopyInfo) workingCopyToInfos.get(workingCopy);
 			if (info == null && create) {
-				info = new PerWorkingCopyInfo(workingCopy, problemRequestor);
+				info = new PerWorkingCopyInfo(workingCopy, problemRequestor, problemReporter);
 				workingCopyToInfos.put(workingCopy, info);
 			}
 			if (info != null && recordUsage)

@@ -5,8 +5,8 @@ import java.util.Iterator;
 
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ddp.ITypeInferencer;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
+import org.eclipse.dltk.ti.ITypeInferencer;
 
 public class TypeInferenceTest extends AbstractTypeInferencingTests {
 

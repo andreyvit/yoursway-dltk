@@ -1,7 +1,7 @@
 package org.eclipse.dltk.ruby.typeinference;
 
-import org.eclipse.dltk.ddp.AbstractGoal;
-import org.eclipse.dltk.ddp.IContext;
+import org.eclipse.dltk.ti.IContext;
+import org.eclipse.dltk.ti.goals.AbstractGoal;
 
 public class ConstantTypeGoal extends AbstractGoal {
 

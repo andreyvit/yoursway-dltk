@@ -5,7 +5,7 @@ package org.eclipse.dltk.ruby.tests.typeinference;
 
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ddp.ITypeInferencer;
+import org.eclipse.dltk.ti.ITypeInferencer;
 
 public interface IAssertion {
 

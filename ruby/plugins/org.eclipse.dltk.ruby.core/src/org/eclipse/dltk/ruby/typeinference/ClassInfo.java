@@ -5,7 +5,7 @@ package org.eclipse.dltk.ruby.typeinference;
 
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class ClassInfo {
 

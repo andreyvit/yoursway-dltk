@@ -12,13 +12,15 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.ddp.ExpressionGoal;
-import org.eclipse.dltk.ddp.GoalEvaluator;
-import org.eclipse.dltk.ddp.IGoal;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.ruby.ast.RubyReturnStatement;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
+import org.eclipse.dltk.ti.GoalEngine;
+import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
+import org.eclipse.dltk.ti.goals.GoalEvaluator;
+import org.eclipse.dltk.ti.goals.IGoal;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
+import org.eclipse.dltk.ti.types.RecursionTypeCall;
 
 public class MethodReturnTypeEvaluator extends GoalEvaluator {
 	
@@ -36,7 +38,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 	}
 
 	public IGoal produceNextSubgoal(IGoal previousGoal,
-			IEvaluatedType previousResult) {
+			Object previousResult) {
 		if (done)
 			return null;
 		if (!initialized) {
@@ -45,13 +47,15 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 				return null;
 			current = 0;
 		}
-		if (previousResult != null)
+		if (previousResult == GoalEngine.RECURSION_RESULT) {
+			evaluated.add(RecursionTypeCall.INSTANCE);
+		} else if (previousResult != null)
 			evaluated.add(previousResult);
 		if (current == possibilities.size()) {
 			done = true;
 			return null;
 		}
-		ExpressionGoal subgoal = new ExpressionGoal(innerContext, (Statement) possibilities.get(current));
+		ExpressionTypeGoal subgoal = new ExpressionTypeGoal(innerContext, (Statement) possibilities.get(current));
 		current++;
 		return subgoal;
 	}
@@ -154,7 +158,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		return (InstanceContext) this.getGoal().getContext();
 	}
 
-	public IEvaluatedType produceType() {
+	public IEvaluatedType produceResult() {
 		if (!evaluated.isEmpty()) {
 			return RubyTypeInferencingUtils.combineTypes(evaluated);			
 		}

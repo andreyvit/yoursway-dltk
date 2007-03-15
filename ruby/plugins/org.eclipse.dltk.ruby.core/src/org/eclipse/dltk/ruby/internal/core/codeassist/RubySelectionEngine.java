@@ -35,11 +35,7 @@ import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.TypeNameMatch;
 import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
-import org.eclipse.dltk.ddp.BasicContext;
-import org.eclipse.dltk.ddp.ExpressionGoal;
-import org.eclipse.dltk.ddp.TypeInferencer;
 import org.eclipse.dltk.evaluation.types.IClassType;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.internal.codeassist.impl.Engine;
 import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
@@ -54,6 +50,10 @@ import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
+import org.eclipse.dltk.ti.BasicContext;
+import org.eclipse.dltk.ti.TypeInferencer;
+import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 
 public class RubySelectionEngine extends Engine implements ISelectionEngine {
@@ -257,7 +257,7 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 		if (node instanceof ColonExpression) {
 			ColonExpressionGoal goal = new ColonExpressionGoal(new BasicContext(modelModule, 
 					parsedUnit), (ColonExpression)node);
-			IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+			IEvaluatedType type = inferencer.evaluateType(goal, 0);
 			if (type != null) {
 				RubyClassType classType = null;
 				if (type instanceof RubyClassType) {
@@ -404,8 +404,8 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 				availableMethods = metaClassType.getMethods();
 			}
 		} else {
-			ExpressionGoal goal = new ExpressionGoal(new BasicContext(modelModule, parsedUnit), receiver);
-			IEvaluatedType type = inferencer.evaluateGoal(goal, 0);
+			ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(modelModule, parsedUnit), receiver);
+			IEvaluatedType type = inferencer.evaluateType(goal, 0);
 			if (type instanceof RubyClassType) {
 				RubyClassType rubyClassType = (RubyClassType) type;
 				rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), rubyClassType);

@@ -8,9 +8,9 @@ import java.util.Set;
 
 import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.evaluation.types.IClassType;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class BuiltinMethods {
 

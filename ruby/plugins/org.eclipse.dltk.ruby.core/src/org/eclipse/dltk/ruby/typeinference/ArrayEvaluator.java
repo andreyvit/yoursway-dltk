@@ -1,9 +1,9 @@
 package org.eclipse.dltk.ruby.typeinference;
 
-import org.eclipse.dltk.ddp.GoalEvaluator;
-import org.eclipse.dltk.ddp.IGoal;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.SimpleType;
+import org.eclipse.dltk.ti.goals.GoalEvaluator;
+import org.eclipse.dltk.ti.goals.IGoal;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class ArrayEvaluator extends GoalEvaluator {
 	
@@ -11,11 +11,11 @@ public class ArrayEvaluator extends GoalEvaluator {
 		super(goal);
 	}
 
-	public IGoal produceNextSubgoal(IGoal previousGoal, IEvaluatedType previousResult) {
+	public IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
 		return null;
 	}
 
-	public IEvaluatedType produceType() {
+	public IEvaluatedType produceResult() {
 		return new SimpleType(SimpleType.TYPE_ARRAY);
 	}
 

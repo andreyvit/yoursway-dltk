@@ -1,10 +1,10 @@
 package org.eclipse.dltk.ruby.typeinference;
 
-import org.eclipse.dltk.ddp.AbstractGoal;
-import org.eclipse.dltk.ddp.BasicContext;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
+import org.eclipse.dltk.ti.BasicContext;
+import org.eclipse.dltk.ti.goals.AbstractTypeGoal;
 
-public class ColonExpressionGoal extends AbstractGoal {
+public class ColonExpressionGoal extends AbstractTypeGoal {
 
 	private final ColonExpression expr;
 

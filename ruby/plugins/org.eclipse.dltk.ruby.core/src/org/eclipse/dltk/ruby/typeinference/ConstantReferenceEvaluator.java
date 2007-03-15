@@ -1,10 +1,10 @@
 package org.eclipse.dltk.ruby.typeinference;
 
-import org.eclipse.dltk.ddp.GoalEvaluator;
-import org.eclipse.dltk.ddp.IGoal;
-import org.eclipse.dltk.ddp.ISourceModuleContext;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
+import org.eclipse.dltk.ti.ISourceModuleContext;
+import org.eclipse.dltk.ti.goals.GoalEvaluator;
+import org.eclipse.dltk.ti.goals.IGoal;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class ConstantReferenceEvaluator extends GoalEvaluator {
 
@@ -22,7 +22,7 @@ public class ConstantReferenceEvaluator extends GoalEvaluator {
 		super(goal);
 	}
 
-	public IGoal produceNextSubgoal(IGoal previousGoal, IEvaluatedType previousResult) {
+	public IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
 		if (state == 0) {
 			initialize();
 			state = 1;
@@ -47,7 +47,7 @@ public class ConstantReferenceEvaluator extends GoalEvaluator {
 		return (ISourceModuleContext) goal.getContext();
 	}
 
-	public IEvaluatedType produceType() {
+	public IEvaluatedType produceResult() {
 		if (state == 0) {
 			initialize();
 			state = 1;

@@ -5,13 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ddp.AbstractGoal;
-import org.eclipse.dltk.ddp.BasicContext;
-import org.eclipse.dltk.ddp.ExpressionGoal;
-import org.eclipse.dltk.ddp.GoalEvaluator;
-import org.eclipse.dltk.ddp.IGoal;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
+import org.eclipse.dltk.ti.BasicContext;
+import org.eclipse.dltk.ti.goals.AbstractGoal;
+import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
+import org.eclipse.dltk.ti.goals.GoalEvaluator;
+import org.eclipse.dltk.ti.goals.IGoal;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class ColonExpressionEvaluator extends GoalEvaluator {
 
@@ -31,12 +31,12 @@ public class ColonExpressionEvaluator extends GoalEvaluator {
 		return (ColonExpressionGoal) this.goal;
 	}
 
-	public IGoal produceNextSubgoal(IGoal previousGoal, IEvaluatedType previousResult) {
+	public IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
 		if (!initialized) {
 			initialize();
 		}
 		if (previousResult != null) {
-			resultType = previousResult;
+			resultType = (IEvaluatedType) previousResult;
 		} else if (leftPart != null) {
 			AbstractGoal g = leftPart;
 			leftPart = null;
@@ -61,12 +61,12 @@ public class ColonExpressionEvaluator extends GoalEvaluator {
 			ColonExpression colonExpression = (ColonExpression) expr;
 			leftPart = new ConstantTypeGoal(context, expr.sourceStart(), colonExpression.getName());
 		} else  {
-			leftPart = new ExpressionGoal(context, expr);
+			leftPart = new ExpressionTypeGoal(context, expr);
 		}
 		initialized = true;
 	}
 
-	public IEvaluatedType produceType() { //FIXME
+	public IEvaluatedType produceResult() { //FIXME
 		if (resultType != null) {
 			String[] leftFQN = null;
 			if (resultType instanceof RubyClassType) {

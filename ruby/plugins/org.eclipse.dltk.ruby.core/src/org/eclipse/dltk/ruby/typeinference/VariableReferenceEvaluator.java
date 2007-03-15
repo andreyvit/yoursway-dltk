@@ -3,14 +3,14 @@ package org.eclipse.dltk.ruby.typeinference;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.references.VariableKind;
 import org.eclipse.dltk.ast.references.VariableReference;
-import org.eclipse.dltk.ddp.BasicContext;
-import org.eclipse.dltk.ddp.ExpressionGoal;
-import org.eclipse.dltk.ddp.GoalEvaluator;
-import org.eclipse.dltk.ddp.IContext;
-import org.eclipse.dltk.ddp.IGoal;
-import org.eclipse.dltk.ddp.ISourceModuleContext;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
+import org.eclipse.dltk.ti.BasicContext;
+import org.eclipse.dltk.ti.IContext;
+import org.eclipse.dltk.ti.ISourceModuleContext;
+import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
+import org.eclipse.dltk.ti.goals.GoalEvaluator;
+import org.eclipse.dltk.ti.goals.IGoal;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class VariableReferenceEvaluator extends GoalEvaluator {
 	
@@ -36,7 +36,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 		super(goal);
 	}
 
-	public IGoal produceNextSubgoal(IGoal previousGoal, IEvaluatedType previousResult) {
+	public IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
 		if (state == STATE_DONE) 
 			return null;
 		if (state == STATE_INIT) {
@@ -51,7 +51,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 			state = STATE_ASSIGNMENT_SUBGOAL_0;
 		}
 		if (state > STATE_ASSIGNMENT_SUBGOAL_0 && previousGoal != null)
-			storePreviousSubgoalResult(previousGoal, previousResult);
+			storePreviousSubgoalResult(previousGoal, (IEvaluatedType) previousResult);
 		if (state >= STATE_ASSIGNMENT_SUBGOAL_0 && state < STATE_ASSIGNMENT_SUBGOAL_0 + info.assignments.length)
 			return generateNextSubgoal();
 		return null;
@@ -60,7 +60,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 	private void initialize() {
 		IContext context = goal.getContext();
 		ModuleDeclaration rootNode = ((ISourceModuleContext) context).getRootNode();
-		VariableReference expression = (VariableReference) ((ExpressionGoal) goal).getExpression();
+		VariableReference expression = (VariableReference) ((ExpressionTypeGoal) goal).getExpression();
 		String varName = expression.getName().trim();
 		if (expression.getVariableKind() instanceof VariableKind.Local) {
 			if (context instanceof IArgumentsContext) {
@@ -84,12 +84,12 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 
 	private IGoal generateNextSubgoal() {
 		BasicContext context = (BasicContext) goal.getContext();
-		IGoal subgoal = new ExpressionGoal(context, info.assignments[state - STATE_ASSIGNMENT_SUBGOAL_0].getRight());
+		IGoal subgoal = new ExpressionTypeGoal(context, info.assignments[state - STATE_ASSIGNMENT_SUBGOAL_0].getRight());
 		state++;
 		return subgoal;
 	}
 
-	public IEvaluatedType produceType() {
+	public IEvaluatedType produceResult() {
 		if (state == STATE_NOT_FOUND)
 			return UnknownType.INSTANCE;
 		else if (state == STATE_DONE)

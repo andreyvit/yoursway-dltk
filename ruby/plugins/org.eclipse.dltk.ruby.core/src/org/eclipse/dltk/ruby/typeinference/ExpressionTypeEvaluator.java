@@ -1,8 +1,8 @@
 package org.eclipse.dltk.ruby.typeinference;
 
-import org.eclipse.dltk.ddp.GoalEvaluator;
-import org.eclipse.dltk.ddp.IGoal;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
+import org.eclipse.dltk.ti.goals.GoalEvaluator;
+import org.eclipse.dltk.ti.goals.IGoal;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class ExpressionTypeEvaluator extends GoalEvaluator {
 
@@ -10,11 +10,11 @@ public class ExpressionTypeEvaluator extends GoalEvaluator {
 		super(goal);
 	}
 
-	public IGoal produceNextSubgoal(IGoal previousGoal, IEvaluatedType previousResult) {
+	public IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
 		return null;
 	}
 
-	public IEvaluatedType produceType() {
+	public IEvaluatedType produceResult() {
 		return null;
 	}
 

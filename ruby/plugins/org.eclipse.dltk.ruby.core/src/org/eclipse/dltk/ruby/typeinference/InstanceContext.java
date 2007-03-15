@@ -2,9 +2,9 @@ package org.eclipse.dltk.ruby.typeinference;
 
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ddp.BasicContext;
-import org.eclipse.dltk.ddp.ISourceModuleContext;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
+import org.eclipse.dltk.ti.BasicContext;
+import org.eclipse.dltk.ti.ISourceModuleContext;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class InstanceContext extends BasicContext implements IInstanceContext {
 

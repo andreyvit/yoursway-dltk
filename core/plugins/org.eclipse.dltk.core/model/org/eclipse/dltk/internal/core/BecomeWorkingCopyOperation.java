@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.core;
 
+import org.eclipse.dltk.compiler.IProblemReporter;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IProblemRequestor;
@@ -23,6 +24,7 @@ import org.eclipse.dltk.core.ModelException;
 public class BecomeWorkingCopyOperation extends ModelOperation {
 	
 	IProblemRequestor problemRequestor;
+	IProblemReporter problemReporter;
 	
 	/*
 	 * Creates a BecomeWorkingCopyOperation for the given working copy.
@@ -33,11 +35,16 @@ public class BecomeWorkingCopyOperation extends ModelOperation {
 		this.problemRequestor = problemRequestor;
 	}
 	
+	public BecomeWorkingCopyOperation(SourceModule workingCopy, IProblemRequestor problemRequestor, IProblemReporter problemReporter) {
+		this(workingCopy, problemRequestor);
+		this.problemReporter = problemReporter;
+	}
+	
 	protected void executeOperation() throws ModelException {
 
 		// open the working copy now to ensure contents are that of the current state of this element
 		SourceModule workingCopy = getWorkingCopy();
-		ModelManager.getModelManager().getPerWorkingCopyInfo(workingCopy, true/*create if needed*/, true/*record usage*/, this.problemRequestor);
+		ModelManager.getModelManager().getPerWorkingCopyInfo(workingCopy, true/*create if needed*/, true/*record usage*/, this.problemRequestor, this.problemReporter);
 		workingCopy.openWhenClosed(workingCopy.createElementInfo(), this.progressMonitor);
 
 		if (!workingCopy.isPrimary()) {

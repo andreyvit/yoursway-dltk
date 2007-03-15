@@ -3,7 +3,7 @@ package org.eclipse.dltk.ruby.typeinference;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.evaluation.types.IClassType;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class RubyMetaClassType implements IClassType {
 	
@@ -65,6 +65,11 @@ public class RubyMetaClassType implements IClassType {
 
 	public int hashCode() {
 		return instanceType.hashCode() ^ 0x42424242;
+	}
+
+	public boolean subtypeOf(IEvaluatedType type) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

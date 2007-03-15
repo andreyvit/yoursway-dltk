@@ -1,10 +1,10 @@
 package org.eclipse.dltk.ruby.typeinference;
 
 import org.eclipse.dltk.ast.expressions.Assignment;
-import org.eclipse.dltk.ddp.ExpressionGoal;
-import org.eclipse.dltk.ddp.GoalEvaluator;
-import org.eclipse.dltk.ddp.IGoal;
-import org.eclipse.dltk.evaluation.types.IEvaluatedType;
+import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
+import org.eclipse.dltk.ti.goals.GoalEvaluator;
+import org.eclipse.dltk.ti.goals.IGoal;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class AssignmentEvaluator extends GoalEvaluator {
 	
@@ -20,18 +20,18 @@ public class AssignmentEvaluator extends GoalEvaluator {
 		super(goal);
 	}
 
-	public IGoal produceNextSubgoal(IGoal previousGoal, IEvaluatedType previousResult) {
+	public IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
 		if (state == STATE_BEFORE) {
-			ExpressionGoal typedGoal = (ExpressionGoal) goal;
+			ExpressionTypeGoal typedGoal = (ExpressionTypeGoal) goal;
 			Assignment expr = (Assignment) (typedGoal).getExpression();
 			state = STATE_AFTER;
-			return new ExpressionGoal(typedGoal.getContext(), expr.getRight());
+			return new ExpressionTypeGoal(typedGoal.getContext(), expr.getRight());
 		}
-		result = previousResult;
+		result = (IEvaluatedType) previousResult;
 		return null;
 	}
 
-	public IEvaluatedType produceType() {
+	public IEvaluatedType produceResult() {
 		return result;
 	}
 
