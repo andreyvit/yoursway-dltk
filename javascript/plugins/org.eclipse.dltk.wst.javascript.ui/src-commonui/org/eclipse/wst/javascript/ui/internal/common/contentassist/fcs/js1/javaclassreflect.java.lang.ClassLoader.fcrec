@@ -1,0 +1,112 @@
+#/------------------------------------------
+#!getSystemClassLoader()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getSystemClassLoader() ClassLoader
+#@fc=javaclassreflect.java.lang.ClassLoader
+#/------------------------------------------
+#!getSystemResource()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getSystemResource(String) URL
+#@fc=javaclassreflect.java.net.URL
+#/------------------------------------------
+#!getSystemResourceAsStream()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getSystemResourceAsStream(String) InputStream
+#@fc=javaclassreflect.java.io.InputStream
+#/------------------------------------------
+#!getSystemResources()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getSystemResources(String) Enumeration
+#@fc=javaclassreflect.java.util.Enumeration
+#/------------------------------------------
+#!equals()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=equals(Object) boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!getClass()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getClass() Class
+#@fc=javaclassreflect.java.lang.Class
+#/------------------------------------------
+#!hashCode()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=hashCode() int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!notify()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=notify() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!notifyAll()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=notifyAll() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!toString()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=toString() String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait(long) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait(long,int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!getParent()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getParent() ClassLoader
+#@fc=javaclassreflect.java.lang.ClassLoader
+#/------------------------------------------
+#!getResource()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getResource(String) URL
+#@fc=javaclassreflect.java.net.URL
+#/------------------------------------------
+#!getResourceAsStream()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getResourceAsStream(String) InputStream
+#@fc=javaclassreflect.java.io.InputStream
+#/------------------------------------------
+#!getResources()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getResources(String) Enumeration
+#@fc=javaclassreflect.java.util.Enumeration
+#/------------------------------------------
+#!loadClass()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=loadClass(String) Class
+#@fc=javaclassreflect.java.lang.Class
+#/------------------------------------------
+#!#isa
+#@wasjspsupport=y
+#@fc=javaclassreflect.java.lang.Object

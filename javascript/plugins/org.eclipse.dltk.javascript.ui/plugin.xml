@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+ <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.dltk.javascript.internal.ui.editor.JavaScriptEditor"
+            contributorClass="org.eclipse.dltk.internal.ui.editor.SourceModuleEditorActionContributor"
+            default="true"
+            extensions="js"
+            icon="icons/sourceEditor.gif"
+            id="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor"
+            name="DLTK Javascript Editor"/>
+   </extension>   
+   <extension point="org.eclipse.core.runtime.preferences">
+        <initializer class="org.eclipse.dltk.ruby.internal.ui.RubyUIPreferenceInitializer"/>
+    </extension>
+    <extension
+         point="org.eclipse.search.searchPages">
+      <page
+            canSearchEnclosingProjects="true"
+            class="org.eclipse.dltk.javascript.internal.ui.search.JavaScriptSearchPage"
+            enabled="true"
+            extensions="tcl:90, exp:90"
+            icon="/icons/jsearch_obj.gif"
+            id="org.eclipse.dltk.ui.TCLSearchPage"
+            label="%DLTKSearchPage.label"
+            showScopeSection="true"
+            sizeHint="460,160">
+      </page>
+   </extension>
+	<extension
+      id="org.eclipse.dltk.javascript.ui.editor.DocumentSetupParticipant"
+      name="%documentSetupParticipantName"
+      point="org.eclipse.core.filebuffers.documentSetup">
+		<participant extensions="js" 
+			class="org.eclipse.dltk.javascript.internal.ui.editor.JavaScriptDocumentSetupParticipant">
+   		</participant>
+	</extension>
+	
+	<extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.dltk.javascript.ui"
+            name="DLTK Javascript"
+            >
+      </category>
+      <wizard
+            category="org.eclipse.dltk.javascript.ui"
+            class="org.eclipse.dltk.javascript.internal.ui.wizards.JavascriptProjectCreationWizard"
+            finalPerspective="org.eclipse.dltk.javascript.ui.JavascriptPerspective"
+            icon="icons/full/ctool16/newjscript_wiz.gif"
+            id="org.eclipse.dltk.javascript.internal.ui.wizards.JavascriptProjectWizard"
+            name="Javascript Project"
+            preferredPerspectives="org.eclipse.dltk.javascript.ui.JavascriptPerspective"
+            project="true">
+         <description>
+            Creates new Javascript Project.
+         </description>
+      </wizard>
+      </extension>
+      <extension point="org.eclipse.core.runtime.preferences">
+        <initializer class="org.eclipse.dltk.javascript.internal.ui.JavaScriptUIPreferenceInitializer"/>
+    </extension>
+    
+    <extension
+       point="org.eclipse.ui.preferencePages">
+	    <page
+	          category="org.eclipse.dltk.javascript.ui.javascript"
+	          class="org.eclipse.dltk.javascript.internal.ui.preferences.JavascriptEditorPreferencesPage"
+	          id="org.eclipse.dltk.javascript.ui.EditorPreferences"
+	          name="Editor"/>
+	    <page
+	          category="org.eclipse.dltk.javascript.ui.EditorPreferences"
+	          class="org.eclipse.dltk.javascript.internal.ui.preferences.JavascriptEditorSyntaxColoringPreferencePage"
+	          id="org.eclipse.dltk.javascript.ui.editor.SyntaxColoring"
+	          name="Syntax Coloring"/>
+	    <page
+	          category="org.eclipse.dltk.javascript.ui.EditorPreferences"
+	          class="org.eclipse.dltk.javascript.internal.ui.preferences.JavascriptSmartTypingPreferencePage"
+	          id="org.eclipse.dltk.javascript.ui.editor.SmartTyping"
+	          name="Typing"/>          
+	    <page
+          category="org.eclipse.dltk.javascript.ui.EditorPreferences"
+          class="org.eclipse.dltk.javascript.internal.ui.preferences.JavascriptFoldingPreferencePage"
+          id="org.eclipse.dltk.javascript.ui.editor.JavascriptFolding"
+          name="Folding"/> 	          
+	    <page	          
+	          class="org.eclipse.dltk.javascript.internal.ui.preferences.JavascriptGlobalPreferencesPage"
+	          id="org.eclipse.dltk.javascript.ui.javascript"
+	          name="DLTK Javascript"/>
+	 </extension>
+	 <extension
+       point="org.eclipse.ui.perspectives">
+    <perspective
+          class="org.eclipse.dltk.javascript.ui.JavascriptPerspective"
+          icon="icons/javascript.gif"
+          id="org.eclipse.dltk.javascript.ui.JavascriptPerspective"
+          name="%JavascriptPerspectiveName"/>
+ </extension>
+  <extension
+       point="org.eclipse.ui.propertyPages">
+    <page
+          class="org.eclipse.dltk.javascript.internal.ui.preferences.JavaScriptBuildPathPropertyPage"
+          id="org.eclipse.dltk.javascript.ui.BuildpathProperties"
+          name="Javascript Build Path"
+          objectClass="org.eclipse.core.resources.IProject">
+       <filter
+             name="nature"
+             value="org.eclipse.dltk.javascript.core.nature"/>
+       <keywordReference id="org.eclipse.dltk.ui.buildpath"/>
+    </page>
+ </extension>
+ <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part
+               id="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor">
+         </part>
+	 </actionSetPartAssociation>
+ </extension> 
+ 
+  <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            name="%context.editingJavascriptSource.name"
+            description="%context.editingJavascriptSource.description"
+            parentId="org.eclipse.dltk.ui.scriptEditorScope"
+            id="org.eclipse.dltk.ui.javascriptEditorScope">
+      </context>
+  </extension>
+<!-- Code completion --> 
+	<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="JavaScriptTypeCompletionProposalComputer">
+		<scriptCompletionProposalComputer 
+			class="org.eclipse.dltk.javascript.internal.ui.text.completion.JavaScriptTypeCompletionProposalComputer"
+			categoryId="org.eclipse.dltk.ui.scriptTypeProposalCategory"
+			toolkitId="org.eclipse.dltk.javascript.core.nature">
+			<partition type="__dftl_partition_content_type"/>
+		</scriptCompletionProposalComputer>		
+	</extension>
+	
+	 <extension
+       point="org.eclipse.dltk.ui.language">
+    <language
+          class="org.eclipse.dltk.javascript.internal.ui.JavaScriptUILanguageToolkit"
+          nature="org.eclipse.dltk.javascript.core.nature"/>
+ </extension>
+  <extension
+        point="org.eclipse.dltk.ui.scriptDocumentationProviders">
+     <provider
+           class="org.eclipse.dltk.javascript.scriptdoc.ScriptDocumentationProvider"
+           id="org.eclipse.dltk.javascript.ui.javascriptDocumentationProvider"
+           nature="org.eclipse.dltk.javascript.core.nature">
+     </provider>
+  </extension>   
+</plugin>

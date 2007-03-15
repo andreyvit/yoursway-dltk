@@ -1,0 +1,412 @@
+#/------------------------------------------
+#!SC_CONTINUE
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_CONTINUE int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_SWITCHING_PROTOCOLS
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_SWITCHING_PROTOCOLS int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_OK
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_OK int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_CREATED
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_CREATED int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_ACCEPTED
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_ACCEPTED int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_NON_AUTHORITATIVE_INFORMATION
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_NON_AUTHORITATIVE_INFORMATION int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_NO_CONTENT
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_NO_CONTENT int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_RESET_CONTENT
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_RESET_CONTENT int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_PARTIAL_CONTENT
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_PARTIAL_CONTENT int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_MULTIPLE_CHOICES
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_MULTIPLE_CHOICES int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_MOVED_PERMANENTLY
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_MOVED_PERMANENTLY int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_MOVED_TEMPORARILY
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_MOVED_TEMPORARILY int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_SEE_OTHER
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_SEE_OTHER int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_NOT_MODIFIED
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_NOT_MODIFIED int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_USE_PROXY
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_USE_PROXY int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_BAD_REQUEST
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_BAD_REQUEST int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_UNAUTHORIZED
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_UNAUTHORIZED int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_PAYMENT_REQUIRED
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_PAYMENT_REQUIRED int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_FORBIDDEN
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_FORBIDDEN int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_NOT_FOUND
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_NOT_FOUND int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_METHOD_NOT_ALLOWED
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_METHOD_NOT_ALLOWED int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_NOT_ACCEPTABLE
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_NOT_ACCEPTABLE int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_PROXY_AUTHENTICATION_REQUIRED
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_PROXY_AUTHENTICATION_REQUIRED int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_REQUEST_TIMEOUT
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_REQUEST_TIMEOUT int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_CONFLICT
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_CONFLICT int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_GONE
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_GONE int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_LENGTH_REQUIRED
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_LENGTH_REQUIRED int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_PRECONDITION_FAILED
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_PRECONDITION_FAILED int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_REQUEST_ENTITY_TOO_LARGE
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_REQUEST_ENTITY_TOO_LARGE int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_REQUEST_URI_TOO_LONG
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_REQUEST_URI_TOO_LONG int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_UNSUPPORTED_MEDIA_TYPE
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_UNSUPPORTED_MEDIA_TYPE int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_REQUESTED_RANGE_NOT_SATISFIABLE
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_REQUESTED_RANGE_NOT_SATISFIABLE int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_EXPECTATION_FAILED
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_EXPECTATION_FAILED int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_INTERNAL_SERVER_ERROR
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_INTERNAL_SERVER_ERROR int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_NOT_IMPLEMENTED
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_NOT_IMPLEMENTED int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_BAD_GATEWAY
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_BAD_GATEWAY int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_SERVICE_UNAVAILABLE
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_SERVICE_UNAVAILABLE int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_GATEWAY_TIMEOUT
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_GATEWAY_TIMEOUT int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!SC_HTTP_VERSION_NOT_SUPPORTED
+#@type=field
+#@wasjspsupport=y
+#@displaytext=SC_HTTP_VERSION_NOT_SUPPORTED int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!flushBuffer()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=flushBuffer() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!getBufferSize()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getBufferSize() int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!getCharacterEncoding()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getCharacterEncoding() String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!getLocale()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getLocale() Locale
+#@fc=javaclassreflect.java.util.Locale
+#/------------------------------------------
+#!getOutputStream()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getOutputStream() ServletOutputStream
+#@fc=javaclassreflect.javax.servlet.ServletOutputStream
+#/------------------------------------------
+#!getWriter()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getWriter() PrintWriter
+#@fc=javaclassreflect.java.io.PrintWriter
+#/------------------------------------------
+#!isCommitted()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=isCommitted() boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!reset()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=reset() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setBufferSize()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setBufferSize(int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setContentLength()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setContentLength(int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setContentType()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setContentType(String) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setLocale()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setLocale(Locale) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!addCookie()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=addCookie(Cookie) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!addDateHeader()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=addDateHeader(String,long) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!addHeader()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=addHeader(String,String) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!addIntHeader()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=addIntHeader(String,int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!containsHeader()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=containsHeader(String) boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!encodeRedirectURL()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=encodeRedirectURL(String) String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!encodeRedirectUrl()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=encodeRedirectUrl(String) String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!encodeURL()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=encodeURL(String) String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!encodeUrl()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=encodeUrl(String) String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!sendError()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=sendError(int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!sendError()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=sendError(int,String) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!sendRedirect()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=sendRedirect(String) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setDateHeader()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setDateHeader(String,long) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setHeader()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setHeader(String,String) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setIntHeader()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setIntHeader(String,int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setStatus()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setStatus(int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setStatus()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setStatus(int,String) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!#isa
+#@wasjspsupport=y
+#@fc=javaclassreflect.javax.servlet.ServletResponse

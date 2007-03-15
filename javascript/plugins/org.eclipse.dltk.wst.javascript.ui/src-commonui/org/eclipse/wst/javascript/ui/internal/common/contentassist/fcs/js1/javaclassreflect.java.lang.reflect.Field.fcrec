@@ -1,0 +1,220 @@
+#/------------------------------------------
+#!PUBLIC
+#@type=field
+#@wasjspsupport=y
+#@displaytext=PUBLIC int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!DECLARED
+#@type=field
+#@wasjspsupport=y
+#@displaytext=DECLARED int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!setAccessible()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setAccessible(AccessibleObject[],boolean) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!equals()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=equals(Object) boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!getClass()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getClass() Class
+#@fc=javaclassreflect.java.lang.Class
+#/------------------------------------------
+#!hashCode()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=hashCode() int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!notify()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=notify() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!notifyAll()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=notifyAll() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!toString()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=toString() String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait(long) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait(long,int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!isAccessible()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=isAccessible() boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!setAccessible()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setAccessible(boolean) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!get()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=get(Object) Object
+#@fc=javaclassreflect.java.lang.Object
+#/------------------------------------------
+#!getBoolean()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getBoolean(Object) boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!getByte()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getByte(Object) byte
+#@fc=javaclassreflect.byte
+#/------------------------------------------
+#!getChar()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getChar(Object) char
+#@fc=javaclassreflect.char
+#/------------------------------------------
+#!getDeclaringClass()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getDeclaringClass() Class
+#@fc=javaclassreflect.java.lang.Class
+#/------------------------------------------
+#!getDouble()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getDouble(Object) double
+#@fc=javaclassreflect.double
+#/------------------------------------------
+#!getFloat()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getFloat(Object) float
+#@fc=javaclassreflect.float
+#/------------------------------------------
+#!getInt()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getInt(Object) int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!getLong()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getLong(Object) long
+#@fc=javaclassreflect.long
+#/------------------------------------------
+#!getModifiers()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getModifiers() int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!getName()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getName() String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!getShort()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getShort(Object) short
+#@fc=javaclassreflect.short
+#/------------------------------------------
+#!getType()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getType() Class
+#@fc=javaclassreflect.java.lang.Class
+#/------------------------------------------
+#!set()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=set(Object,Object) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setBoolean()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setBoolean(Object,boolean) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setByte()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setByte(Object,byte) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setChar()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setChar(Object,char) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setDouble()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setDouble(Object,double) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setFloat()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setFloat(Object,float) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setInt()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setInt(Object,int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setLong()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setLong(Object,long) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setShort()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setShort(Object,short) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!#isa
+#@wasjspsupport=y
+#@fc=javaclassreflect.java.lang.reflect.AccessibleObject

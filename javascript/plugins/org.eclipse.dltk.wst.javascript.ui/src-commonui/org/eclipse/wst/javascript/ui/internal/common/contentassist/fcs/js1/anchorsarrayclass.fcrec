@@ -1,0 +1,22 @@
+#/ note: js 1.3 says the object pointed to by this might also coincidentily support the Links interface. It seems unlikely that they'd come through a Anchor route and then access a Link method, so I'll add no support for this.
+#/---------------------------------------------
+#!#isa
+#@type=unspecified
+#@iesupport=q
+#@nssupport=y
+#@ecmasupport=q
+#@fc=arrayclass
+#/---------------------------------------------
+#!/anchorname/
+#@type=unspecified
+#@iesupport=n
+#@nssupport=y
+#@ecmasupport=q
+#@fc=anchorclass
+#/---------------------------------------------
+#!/number/
+#@type=unspecified
+#@iesupport=y
+#@nssupport=y
+#@ecmasupport=q
+#@fc=anchorclass

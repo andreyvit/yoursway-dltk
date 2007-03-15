@@ -1,0 +1,88 @@
+#/------------------------------------------
+#!equals()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=equals(Object) boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!getClass()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getClass() Class
+#@fc=javaclassreflect.java.lang.Class
+#/------------------------------------------
+#!hashCode()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=hashCode() int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!notify()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=notify() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!notifyAll()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=notifyAll() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!toString()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=toString() String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait(long) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait(long,int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!checkGuard()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=checkGuard(Object) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!getActions()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getActions() String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!getName()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getName() String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!implies()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=implies(Permission) boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!newPermissionCollection()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=newPermissionCollection() PermissionCollection
+#@fc=javaclassreflect.java.security.PermissionCollection
+#/------------------------------------------
+#!#isa
+#@wasjspsupport=y
+#@fc=javaclassreflect.java.lang.Object

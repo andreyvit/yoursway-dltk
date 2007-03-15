@@ -1,0 +1,262 @@
+#/------------------------------------------
+#!forName()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=forName(String) Class
+#@fc=javaclassreflect.java.lang.Class
+#/------------------------------------------
+#!forName()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=forName(String,boolean,ClassLoader) Class
+#@fc=javaclassreflect.java.lang.Class
+#/------------------------------------------
+#!equals()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=equals(Object) boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!getClass()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getClass() Class
+#@fc=javaclassreflect.java.lang.Class
+#/------------------------------------------
+#!hashCode()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=hashCode() int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!notify()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=notify() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!notifyAll()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=notifyAll() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!toString()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=toString() String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait(long) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait(long,int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!getClassLoader()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getClassLoader() ClassLoader
+#@fc=javaclassreflect.java.lang.ClassLoader
+#/------------------------------------------
+#!getClasses()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getClasses() Class[]
+#@fc=javaclassreflect.[Ljava.lang.Class;
+#/------------------------------------------
+#!getComponentType()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getComponentType() Class
+#@fc=javaclassreflect.java.lang.Class
+#/------------------------------------------
+#!getConstructor()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getConstructor(Class[]) Constructor
+#@fc=javaclassreflect.java.lang.reflect.Constructor
+#/------------------------------------------
+#!getConstructors()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getConstructors() Constructor[]
+#@fc=javaclassreflect.[Ljava.lang.reflect.Constructor;
+#/------------------------------------------
+#!getDeclaredClasses()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getDeclaredClasses() Class[]
+#@fc=javaclassreflect.[Ljava.lang.Class;
+#/------------------------------------------
+#!getDeclaredConstructor()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getDeclaredConstructor(Class[]) Constructor
+#@fc=javaclassreflect.java.lang.reflect.Constructor
+#/------------------------------------------
+#!getDeclaredConstructors()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getDeclaredConstructors() Constructor[]
+#@fc=javaclassreflect.[Ljava.lang.reflect.Constructor;
+#/------------------------------------------
+#!getDeclaredField()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getDeclaredField(String) Field
+#@fc=javaclassreflect.java.lang.reflect.Field
+#/------------------------------------------
+#!getDeclaredFields()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getDeclaredFields() Field[]
+#@fc=javaclassreflect.[Ljava.lang.reflect.Field;
+#/------------------------------------------
+#!getDeclaredMethod()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getDeclaredMethod(String,Class[]) Method
+#@fc=javaclassreflect.java.lang.reflect.Method
+#/------------------------------------------
+#!getDeclaredMethods()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getDeclaredMethods() Method[]
+#@fc=javaclassreflect.[Ljava.lang.reflect.Method;
+#/------------------------------------------
+#!getDeclaringClass()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getDeclaringClass() Class
+#@fc=javaclassreflect.java.lang.Class
+#/------------------------------------------
+#!getField()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getField(String) Field
+#@fc=javaclassreflect.java.lang.reflect.Field
+#/------------------------------------------
+#!getFields()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getFields() Field[]
+#@fc=javaclassreflect.[Ljava.lang.reflect.Field;
+#/------------------------------------------
+#!getInterfaces()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getInterfaces() Class[]
+#@fc=javaclassreflect.[Ljava.lang.Class;
+#/------------------------------------------
+#!getMethod()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getMethod(String,Class[]) Method
+#@fc=javaclassreflect.java.lang.reflect.Method
+#/------------------------------------------
+#!getMethods()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getMethods() Method[]
+#@fc=javaclassreflect.[Ljava.lang.reflect.Method;
+#/------------------------------------------
+#!getModifiers()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getModifiers() int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!getName()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getName() String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!getPackage()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getPackage() Package
+#@fc=javaclassreflect.java.lang.Package
+#/------------------------------------------
+#!getProtectionDomain()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getProtectionDomain() ProtectionDomain
+#@fc=javaclassreflect.java.security.ProtectionDomain
+#/------------------------------------------
+#!getResource()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getResource(String) URL
+#@fc=javaclassreflect.java.net.URL
+#/------------------------------------------
+#!getResourceAsStream()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getResourceAsStream(String) InputStream
+#@fc=javaclassreflect.java.io.InputStream
+#/------------------------------------------
+#!getSigners()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getSigners() Object[]
+#@fc=javaclassreflect.[Ljava.lang.Object;
+#/------------------------------------------
+#!getSuperclass()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getSuperclass() Class
+#@fc=javaclassreflect.java.lang.Class
+#/------------------------------------------
+#!isArray()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=isArray() boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!isAssignableFrom()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=isAssignableFrom(Class) boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!isInstance()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=isInstance(Object) boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!isInterface()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=isInterface() boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!isPrimitive()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=isPrimitive() boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!newInstance()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=newInstance() Object
+#@fc=javaclassreflect.java.lang.Object
+#/------------------------------------------
+#!#isa
+#@wasjspsupport=y
+#@fc=javaclassreflect.java.lang.Object

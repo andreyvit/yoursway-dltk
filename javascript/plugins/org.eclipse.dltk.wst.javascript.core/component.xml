@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component xmlns="http://eclipse.org/wtp/releng/tools/component-model" name="org.eclipse.wst.javascript">
+	<component-depends unrestricted="true"></component-depends>
+	<description url="http://eclipse.org/webtools/wst/components/javascript/overview.html" />
+	<plugin id="org.eclipse.wst.javascript.core" fragment="false" />
+	<plugin id="org.eclipse.wst.javascript.ui" fragment="false" />
+	<plugin id="org.eclipse.wst.javascript.ui.infopop" fragment="false" />
+</component>

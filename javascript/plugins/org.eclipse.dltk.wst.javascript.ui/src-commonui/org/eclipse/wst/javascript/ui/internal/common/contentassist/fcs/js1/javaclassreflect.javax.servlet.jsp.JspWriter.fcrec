@@ -1,0 +1,268 @@
+#/------------------------------------------
+#!NO_BUFFER
+#@type=field
+#@wasjspsupport=y
+#@displaytext=NO_BUFFER int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!DEFAULT_BUFFER
+#@type=field
+#@wasjspsupport=y
+#@displaytext=DEFAULT_BUFFER int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!UNBOUNDED_BUFFER
+#@type=field
+#@wasjspsupport=y
+#@displaytext=UNBOUNDED_BUFFER int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!equals()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=equals(Object) boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!getClass()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getClass() Class
+#@fc=javaclassreflect.java.lang.Class
+#/------------------------------------------
+#!hashCode()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=hashCode() int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!notify()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=notify() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!notifyAll()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=notifyAll() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!toString()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=toString() String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait(long) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!wait()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=wait(long,int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!close()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=close() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!flush()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=flush() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!write()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=write(int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!write()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=write(String) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!write()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=write(String,int,int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!write()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=write(char[]) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!write()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=write(char[],int,int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!clear()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=clear() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!clearBuffer()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=clearBuffer() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!getBufferSize()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getBufferSize() int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!getRemaining()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getRemaining() int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!isAutoFlush()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=isAutoFlush() boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!newLine()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=newLine() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!print()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=print(char) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!print()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=print(double) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!print()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=print(float) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!print()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=print(int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!print()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=print(long) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!print()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=print(Object) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!print()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=print(String) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!print()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=print(boolean) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!print()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=print(char[]) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!println()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=println() void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!println()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=println(char) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!println()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=println(double) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!println()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=println(float) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!println()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=println(int) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!println()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=println(long) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!println()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=println(Object) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!println()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=println(String) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!println()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=println(boolean) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!println()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=println(char[]) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!#isa
+#@wasjspsupport=y
+#@fc=javaclassreflect.java.io.Writer

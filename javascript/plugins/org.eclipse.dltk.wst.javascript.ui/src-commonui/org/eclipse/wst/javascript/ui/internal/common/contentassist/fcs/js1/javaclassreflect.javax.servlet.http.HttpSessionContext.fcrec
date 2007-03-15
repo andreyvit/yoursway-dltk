@@ -1,0 +1,12 @@
+#/------------------------------------------
+#!getIds()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getIds() Enumeration
+#@fc=javaclassreflect.java.util.Enumeration
+#/------------------------------------------
+#!getSession()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getSession(String) HttpSession
+#@fc=javaclassreflect.javax.servlet.http.HttpSession

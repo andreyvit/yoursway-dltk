@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.wst.javascript.core; singleton:=true
+Bundle-Version: 1.0.1.qualifier
+Bundle-Activator: org.eclipse.wst.javascript.core.internal.JavaScriptCorePlugin
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Export-Package: org.eclipse.wst.javascript.core.internal;x-friends:="org.eclipse.wst.javascript.ui",
+ org.eclipse.wst.javascript.core.internal.contenttype;x-friends:="org.eclipse.wst.javascript.ui",
+ org.eclipse.wst.javascript.core.internal.jsparser.analysis;x-friends:="org.eclipse.wst.javascript.ui",
+ org.eclipse.wst.javascript.core.internal.jsparser.lexer;x-friends:="org.eclipse.wst.javascript.ui",
+ org.eclipse.wst.javascript.core.internal.jsparser.node;x-friends:="org.eclipse.wst.javascript.ui",
+ org.eclipse.wst.javascript.core.internal.langlexer;x-friends:="org.eclipse.wst.javascript.ui",
+ org.eclipse.wst.javascript.core.internal.preferences;x-friends:="org.eclipse.wst.javascript.ui"
+Require-Bundle: org.eclipse.core.resources;bundle-version="[3.2.0,4.0.0)",
+ org.eclipse.core.runtime;bundle-version="[3.2.0,4.0.0)",
+ com.ibm.icu;bundle-version="[3.4.4,4.0.0)"
+Eclipse-LazyStart: true

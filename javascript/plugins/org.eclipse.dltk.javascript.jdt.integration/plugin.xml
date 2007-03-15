@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.dltk.javascript.core.resolver">
+      <resolver
+            class="org.eclipse.dltk.javascript.jdt.integration.JdtReferenceResolverFactory"
+            id="javaresolver">
+      </resolver>
+   </extension>
+
+</plugin>

@@ -1,0 +1,132 @@
+#/------------------------------------------
+#!getAttribute()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getAttribute(String) Object
+#@fc=javaclassreflect.java.lang.Object
+#/------------------------------------------
+#!getAttributeNames()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getAttributeNames() Enumeration
+#@fc=javaclassreflect.java.util.Enumeration
+#/------------------------------------------
+#!getContext()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getContext(String) ServletContext
+#@fc=javaclassreflect.javax.servlet.ServletContext
+#/------------------------------------------
+#!getInitParameter()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getInitParameter(String) String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!getInitParameterNames()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getInitParameterNames() Enumeration
+#@fc=javaclassreflect.java.util.Enumeration
+#/------------------------------------------
+#!getMajorVersion()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getMajorVersion() int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!getMimeType()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getMimeType(String) String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!getMinorVersion()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getMinorVersion() int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!getNamedDispatcher()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getNamedDispatcher(String) RequestDispatcher
+#@fc=javaclassreflect.javax.servlet.RequestDispatcher
+#/------------------------------------------
+#!getRealPath()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getRealPath(String) String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!getRequestDispatcher()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getRequestDispatcher(String) RequestDispatcher
+#@fc=javaclassreflect.javax.servlet.RequestDispatcher
+#/------------------------------------------
+#!getResource()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getResource(String) URL
+#@fc=javaclassreflect.java.net.URL
+#/------------------------------------------
+#!getResourceAsStream()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getResourceAsStream(String) InputStream
+#@fc=javaclassreflect.java.io.InputStream
+#/------------------------------------------
+#!getServerInfo()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getServerInfo() String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!getServlet()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getServlet(String) Servlet
+#@fc=javaclassreflect.javax.servlet.Servlet
+#/------------------------------------------
+#!getServletNames()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getServletNames() Enumeration
+#@fc=javaclassreflect.java.util.Enumeration
+#/------------------------------------------
+#!getServlets()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getServlets() Enumeration
+#@fc=javaclassreflect.java.util.Enumeration
+#/------------------------------------------
+#!log()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=log(Exception,String) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!log()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=log(String) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!log()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=log(String,Throwable) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!removeAttribute()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=removeAttribute(String) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!setAttribute()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=setAttribute(String,Object) void
+#@fc=javaclassreflect.void

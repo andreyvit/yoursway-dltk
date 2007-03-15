@@ -1,0 +1,12 @@
+#/------------------------------------------
+#!compare()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=compare(Object,Object) int
+#@fc=javaclassreflect.int
+#/------------------------------------------
+#!equals()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=equals(Object) boolean
+#@fc=javaclassreflect.boolean

@@ -1,0 +1,15 @@
+#/------------------------------------
+#/---------------------------------------
+#!disabled
+#@type=property
+#@iesupport=y
+#@nssupport=q
+#@ecmasupport=q
+#@fc=sstringclass
+#/---------------------------------------
+#!label
+#@type=property
+#@iesupport=y
+#@nssupport=q
+#@ecmasupport=q
+#@fc=sstringclass

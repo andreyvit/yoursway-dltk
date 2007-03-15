@@ -1,0 +1,12 @@
+#/------------------------------------------
+#!forward()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=forward(ServletRequest,ServletResponse) void
+#@fc=javaclassreflect.void
+#/------------------------------------------
+#!include()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=include(ServletRequest,ServletResponse) void
+#@fc=javaclassreflect.void

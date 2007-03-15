@@ -1,0 +1,37 @@
+package org.eclipse.dltk.javascript.internal.ui.text;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.dltk.javascript.ui.text.IJavaScriptPartitions;
+import org.eclipse.jface.text.rules.EndOfLineRule;
+import org.eclipse.jface.text.rules.IPredicateRule;
+import org.eclipse.jface.text.rules.IToken;
+import org.eclipse.jface.text.rules.MultiLineRule;
+import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
+import org.eclipse.jface.text.rules.SingleLineRule;
+import org.eclipse.jface.text.rules.Token;
+
+public class JavascriptPartitionScanner extends RuleBasedPartitionScanner {
+
+	/**
+	 * Creates the partitioner and sets up the appropriate rules.
+	 */
+	public JavascriptPartitionScanner() {
+		super();
+		
+		IToken string = new Token( IJavaScriptPartitions.JS_STRING );
+		IToken comment = new Token( IJavaScriptPartitions.JS_COMMENT );
+		
+		List/*< IPredicateRule >*/ rules= new ArrayList/*<IPredicateRule>*/();		
+		rules.add(new MultiLineRule("/*", "*/", comment)); //$NON-NLS-1$ //$NON-NLS-2$
+		rules.add(new EndOfLineRule("//", comment)); //$NON-NLS-1$		
+				// Add rule for character constants.
+		rules.add(new SingleLineRule("'", "'", string, '\\')); 				
+		rules.add(new MultiLineRule("\"", "\"", string, '\\'));
+							
+		
+		IPredicateRule[] result= new IPredicateRule[rules.size()];
+		rules.toArray(result);
+		setPredicateRules(result);
+	}
+}

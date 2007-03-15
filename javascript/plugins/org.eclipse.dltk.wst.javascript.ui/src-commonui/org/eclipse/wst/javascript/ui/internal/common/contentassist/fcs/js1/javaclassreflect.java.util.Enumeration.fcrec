@@ -1,0 +1,12 @@
+#/------------------------------------------
+#!hasMoreElements()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=hasMoreElements() boolean
+#@fc=javaclassreflect.boolean
+#/------------------------------------------
+#!nextElement()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=nextElement() Object
+#@fc=javaclassreflect.java.lang.Object

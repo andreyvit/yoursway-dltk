@@ -1,0 +1,24 @@
+#/------------------------------------------
+#!getInitParameter()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getInitParameter(String) String
+#@fc=javaclassreflect.java.lang.String
+#/------------------------------------------
+#!getInitParameterNames()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getInitParameterNames() Enumeration
+#@fc=javaclassreflect.java.util.Enumeration
+#/------------------------------------------
+#!getServletContext()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getServletContext() ServletContext
+#@fc=javaclassreflect.javax.servlet.ServletContext
+#/------------------------------------------
+#!getServletName()
+#@type=method
+#@wasjspsupport=y
+#@displaytext=getServletName() String
+#@fc=javaclassreflect.java.lang.String

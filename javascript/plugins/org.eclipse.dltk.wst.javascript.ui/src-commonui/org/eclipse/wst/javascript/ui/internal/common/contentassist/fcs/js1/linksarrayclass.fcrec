@@ -1,0 +1,16 @@
+#/ note: js 1.3 says the object pointed to by this can be an Links, Areas, and Anchors.  I'm not going to support those other interfaces there... only the one's we know emanate from objects pointed to by a Links array
+#/ todo: confirm this is indexed by a number
+#/---------------------------------------------
+#!#isa
+#@type=unspecified
+#@iesupport=q
+#@nssupport=y
+#@ecmasupport=q
+#@fc=arrayclass
+#/---------------------------------------------
+#!/number/
+#@type=unspecified
+#@iesupport=q
+#@nssupport=y
+#@ecmasupport=q
+#@fc=linkclass
