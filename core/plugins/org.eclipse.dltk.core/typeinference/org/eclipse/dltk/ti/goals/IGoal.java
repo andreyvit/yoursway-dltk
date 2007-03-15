@@ -13,6 +13,6 @@ public interface IGoal {
 	 * 
 	 * @return The context of this goal, or <code>null</code> is there is none.
 	 */
-	IContext getContext ();
+	public IContext getContext ();
 	
 }

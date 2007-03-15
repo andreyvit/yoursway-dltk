@@ -7,6 +7,10 @@ public interface IGoalEvaluatorFactory {
 	
 	GoalEvaluator createEvaluator(IGoal goal);
 	
+	/**
+	 * 
+	 * @deprecated
+	 */
 	IGoal translateGoal(IGoal goal);
 	
 }

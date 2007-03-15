@@ -5,10 +5,10 @@ import org.eclipse.dltk.ti.IContext;
 public class AbstractReferencesGoal extends AbstractGoal {
 
 	private final String name;
-	private final Object parentModelKey;
+	private final String parentModelKey;
 	
 	
-	public AbstractReferencesGoal(IContext context, String name, Object parentKey) {
+	public AbstractReferencesGoal(IContext context, String name, String parentKey) {
 		super(context);
 		this.name = name;
 		parentModelKey = parentKey;

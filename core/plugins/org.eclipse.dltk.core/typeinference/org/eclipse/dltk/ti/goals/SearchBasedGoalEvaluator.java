@@ -71,7 +71,7 @@ public abstract class SearchBasedGoalEvaluator extends GoalEvaluator {
 	}
 
 	public Object produceResult() {
-		return references;
+		return references.toArray(new ItemReference[references.size()]);
 	}
 	
 	protected abstract SearchPattern createSearchPattern ();
