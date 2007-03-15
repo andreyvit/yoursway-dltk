@@ -1,6 +1,7 @@
 package org.eclipse.dltk.dbgp;
 
 public interface IDbgpStatus {
+	// State
 	boolean isStarting();
 
 	boolean isStopping();
@@ -11,6 +12,7 @@ public interface IDbgpStatus {
 
 	boolean isBreak();
 
+	// Reason
 	boolean reasonOk();
 
 	boolean reasonError();

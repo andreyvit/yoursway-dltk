@@ -51,7 +51,7 @@ public abstract class DbgpOperation {
 
 	protected void callFinish(IDbgpStatus status) {
 		if (DEBUG) {
-			System.out.println("Status:" + status);
+			System.out.println("Status: " + status);
 		}
 
 		resultHandler.finish(status, null);

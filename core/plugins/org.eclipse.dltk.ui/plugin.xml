@@ -137,13 +137,6 @@
 
 <extension
        point="org.eclipse.ui.views">
-    <view
-          allowMultiple="false"
-          category="org.eclipse.dltk.ui.main"
-          class="org.eclipse.ui.navigator.CommonNavigator"
-          icon="/icons/full/eview16/projects.gif"
-          id="org.eclipse.dltk.ui.views.navigator"
-          name="Script Navigator"/>
     
     <view
           name="%ScriptExplorerViewName"
@@ -174,8 +167,8 @@
    
  <extension
        point="org.eclipse.ui.navigator.viewer">
-    <viewer viewerId="org.eclipse.dltk.ui.views.navigator"/>
-    <viewerContentBinding viewerId="org.eclipse.dltk.ui.views.navigator">
+    <viewer viewerId="org.eclipse.ui.navigator.ProjectExplorer"/>
+    <viewerContentBinding viewerId="org.eclipse.ui.navigator.ProjectExplorer">
        <includes>
           <contentExtension pattern="org.eclipse.dltk.ui.scriptContent"/>
           <!--contentExtension pattern="org.eclipse.dltk.ui.filters.*" />
@@ -186,14 +179,11 @@
        </includes>
     </viewerContentBinding>
     
-    <viewerActionBinding viewerId="org.eclipse.dltk.ui.views.navigator">
+    <viewerActionBinding viewerId="org.eclipse.ui.navigator.ProjectExplorer">
          <includes>
              <actionExtension pattern="org.eclipse.ui.navigator.resources.*" />
          </includes>
     </viewerActionBinding>
-    <dragAssistant
-         class="org.eclipse.ui.navigator.resources.ResourceDragAdapterAssistant"
-         viewerId="org.eclipse.ui.navigator.ProjectExplorer"/>
  </extension>
  
  <extension
@@ -201,10 +191,10 @@
     <navigatorContent
           activeByDefault="true"
           contentProvider="org.eclipse.dltk.internal.ui.navigator.ScriptNavigatorContentProvider"
-          icon="icons/tcl.gif"
+          icon="icons/full/tcl.gif"
           id="org.eclipse.dltk.ui.scriptContent"
           labelProvider="org.eclipse.dltk.internal.ui.navigator.ScriptNavigatorLabelProvider"
-          name="DLTK TCL Script content"
+          name="DLTK Script content"
           priority="high">			
           
           <triggerPoints>

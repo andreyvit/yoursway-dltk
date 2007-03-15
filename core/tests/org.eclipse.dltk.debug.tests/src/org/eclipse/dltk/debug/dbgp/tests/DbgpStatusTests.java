@@ -15,15 +15,15 @@ public class DbgpStatusTests extends TestCase {
 	}
 	
 	public void testConstruction() {
-		IDbgpStatus s = new DbgpStatus("running", "ok");
+		IDbgpStatus s = DbgpStatus.parse("running", "ok");
 		
 		assertTrue(s.isRunning());
 		assertTrue(s.reasonOk());
 	}
 
 	public void testEquals() {
-		IDbgpStatus a = new DbgpStatus("running", "ok");
-		IDbgpStatus b = new DbgpStatus("running", "ok");
+		IDbgpStatus a = DbgpStatus.parse("running", "ok");
+		IDbgpStatus b = DbgpStatus.parse("running", "ok");
 
 		assertEquals(a, b);
 	}

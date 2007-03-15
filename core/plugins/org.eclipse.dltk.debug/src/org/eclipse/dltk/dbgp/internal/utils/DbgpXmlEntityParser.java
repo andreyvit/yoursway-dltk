@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.eclipse.dltk.dbgp.IDbgpProperty;
 import org.eclipse.dltk.dbgp.IDbgpSessionInfo;
+import org.eclipse.dltk.dbgp.IDbgpStatus;
 import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.exceptions.DbgpProtocolException;
@@ -140,14 +141,14 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 				childrenCount, availableChildren, constant);
 	}
 
-	public static DbgpStatus parseStatus(Element element)
+	public static IDbgpStatus parseStatus(Element element)
 			throws DbgpProtocolException {
 		final String ATTR_REASON = "reason";
 		final String ATTR_STATUS = "status";
 
 		String status = element.getAttribute(ATTR_STATUS);
 		String reason = element.getAttribute(ATTR_REASON);
-		return new DbgpStatus(status, reason);
+		return DbgpStatus.parse(status, reason);
 	}
 
 	public static IDbgpBreakpoint parseBreakpoint(Element element) {

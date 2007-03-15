@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
+
+<!--
 <extension
        point="org.eclipse.ui.views">
     <view
@@ -14,6 +16,9 @@
           id="org.eclipse.dltk.ui.tests.main"
           name="DLTK UI TESTS"/>
  </extension>
+ -->
+ 
+ <!--
  <extension
        point="org.eclipse.ui.navigator.viewer">
     <viewer viewerId="org.eclipse.dltk.ui.views.navigator"/>
@@ -28,7 +33,9 @@
        </includes>
     </viewerActionBinding>
  </extension>
+ -->
  
+ <!--
   <extension
          point="org.eclipse.ui.views">
       <view
@@ -36,5 +43,6 @@
             class="org.eclipse.dltk.ui.tests.navigator.scriptexplorer.MockPluginView"
             id="org.eclipse.dltk.ui.tests.packageview.MockPluginView">
       </view>
-   </extension> 
+   </extension>
+   --> 
 </plugin>

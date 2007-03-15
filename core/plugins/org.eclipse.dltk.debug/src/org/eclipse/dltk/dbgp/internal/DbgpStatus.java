@@ -7,28 +7,28 @@ import org.eclipse.dltk.dbgp.IDbgpStatus;
 
 public class DbgpStatus implements IDbgpStatus {
 	// Reasons
-	private static final Integer REASON_OK = new Integer(0);
+	public static final Integer REASON_OK = new Integer(0);
 
-	private static final Integer REASON_ERROR = new Integer(1);
+	public static final Integer REASON_ERROR = new Integer(1);
 
-	private static final Integer REASON_ABORTED = new Integer(2);
+	public static final Integer REASON_ABORTED = new Integer(2);
 
-	private static final Integer REASON_EXCEPTION = new Integer(3);
+	public static final Integer REASON_EXCEPTION = new Integer(3);
 
 	// Status
-	private static final Integer STATUS_STARTING = new Integer(0);
+	public static final Integer STATUS_STARTING = new Integer(0);
 
-	private static final Integer STATUS_STOPPING = new Integer(1);
+	public static final Integer STATUS_STOPPING = new Integer(1);
 
-	private static final Integer STATUS_STOPPED = new Integer(2);
+	public static final Integer STATUS_STOPPED = new Integer(2);
 
-	private static final Integer STATUS_RUNNING = new Integer(3);
+	public static final Integer STATUS_RUNNING = new Integer(3);
 
-	private static final Integer STATUS_BREAK = new Integer(4);
+	public static final Integer STATUS_BREAK = new Integer(4);
 
-	private static Map statusParser = new TreeMap(String.CASE_INSENSITIVE_ORDER);
+	public static Map statusParser = new TreeMap(String.CASE_INSENSITIVE_ORDER);
 
-	private static Map reasonParser = new TreeMap(String.CASE_INSENSITIVE_ORDER);
+	public static Map reasonParser = new TreeMap(String.CASE_INSENSITIVE_ORDER);
 
 	static {
 		statusParser.put("starting", STATUS_STARTING);
@@ -42,19 +42,20 @@ public class DbgpStatus implements IDbgpStatus {
 		reasonParser.put("aborted", REASON_ABORTED);
 		reasonParser.put("exception", REASON_EXCEPTION);
 	}
+	
+	public static IDbgpStatus parse(String status, String reason) {
+		return new DbgpStatus((Integer) statusParser.get(status),
+				(Integer) reasonParser.get(reason));
+	}
 
 	private Integer status;
 
 	private Integer reason;
 
-	public DbgpStatus(String status, String reason) {
-		this.status = (Integer) statusParser.get(status);
-
+	public DbgpStatus(Integer status, Integer reason) {
 		if (this.status == null) {
 			throw new IllegalArgumentException();
 		}
-
-		this.reason = (Integer) reasonParser.get(reason);
 
 		if (this.reason == null) {
 			throw new IllegalArgumentException();

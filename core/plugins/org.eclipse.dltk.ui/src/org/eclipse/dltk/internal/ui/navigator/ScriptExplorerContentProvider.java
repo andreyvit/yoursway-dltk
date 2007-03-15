@@ -143,9 +143,10 @@ public abstract class ScriptExplorerContentProvider extends
 		Object[] children = NO_CHILDREN;
 		try {
 			if (parentElement instanceof IScriptModel)
-				return concatenate(
-						getDLTKProjects((IScriptModel) parentElement),
-						getNonDLTKProjects((IScriptModel) parentElement));
+				//return concatenate(
+					//	getDLTKProjects((IScriptModel) parentElement),
+						//getNonDLTKProjects((IScriptModel) parentElement));
+				return getDLTKProjects((IScriptModel) parentElement);
 			if (parentElement instanceof BuildPathContainer)
 				return getContainerProjectFragments((BuildPathContainer) parentElement);
 			if (parentElement instanceof IProject)

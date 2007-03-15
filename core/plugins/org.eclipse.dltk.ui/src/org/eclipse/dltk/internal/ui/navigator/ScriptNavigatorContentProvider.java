@@ -100,6 +100,7 @@ public class ScriptNavigatorContentProvider extends
 		if (inputElement instanceof IWorkspaceRoot)
 			return super.getElements(DLTKCore
 					.create((IWorkspaceRoot) inputElement));
+		
 		return super.getElements(inputElement);
 	}
 

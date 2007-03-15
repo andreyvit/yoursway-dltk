@@ -30,6 +30,6 @@ public class ClosedProjectFilter extends ViewerFilter {
 			return ((IModelElement)element).getScriptProject().getProject().isOpen();
 		if (element instanceof IResource)
 			return ((IResource)element).getProject().isOpen();
-		return true;
+		return true;				
 	}
 }
