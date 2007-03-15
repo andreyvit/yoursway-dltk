@@ -21,7 +21,7 @@ import org.eclipse.dltk.internal.core.search.matching.TypeDeclarationPattern;
 
 public abstract class AbstractIndexer implements IIndexConstants {
 
-	SearchDocument document;
+	protected SearchDocument document;
 
 	public AbstractIndexer(SearchDocument document) {
 		this.document = document;
@@ -135,4 +135,8 @@ public abstract class AbstractIndexer implements IIndexConstants {
 	}
 
 	public abstract void indexDocument();
+	
+	public void addMixin(char[] name) {
+		addIndexEntry(MIXIN, name);
+	}
 }

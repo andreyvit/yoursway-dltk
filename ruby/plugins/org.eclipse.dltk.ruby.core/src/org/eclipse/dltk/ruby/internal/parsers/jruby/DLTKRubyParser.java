@@ -89,7 +89,7 @@ public class DLTKRubyParser {
             buffer.append(e.getPosition().getFile()).append(':');
             buffer.append(e.getPosition().getEndLine()).append(": ");
             buffer.append(e.getMessage());
-            System.err.println(buffer.toString());
+//            System.err.println(buffer.toString());
             warnings.error(e.getPosition(), e.getMessage());
             //throw runtime.newSyntaxError(buffer.toString());
         } finally {

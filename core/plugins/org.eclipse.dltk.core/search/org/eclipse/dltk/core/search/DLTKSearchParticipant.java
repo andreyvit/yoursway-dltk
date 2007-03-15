@@ -19,8 +19,10 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.search.indexing.SourceIndexer;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
+import org.eclipse.dltk.internal.core.mixin.MixinIndexer;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
 import org.eclipse.dltk.internal.core.search.IndexSelector;
+import org.eclipse.dltk.internal.core.util.HandleFactory;
 
 
 /**
@@ -58,19 +60,13 @@ public class DLTKSearchParticipant extends SearchParticipant {
 	public SearchDocument getExternalDocument(String documentPath) {
 		return new DLTKSearchDocument(documentPath, this, true);
 	}
-	
 	public void indexDocument(SearchDocument document, IPath indexPath) {
 		// TODO must verify that the document + indexPath match, when this is
 		// not called from scheduleDocumentIndexing
 		document.removeAllIndexEntries(); // in case the document was already
 											// indexed
-//		String documentPath = document.getPath();
-//		//if (org.eclipse.dltk.internal.core.util.Util.isJavaLikeFileName(documentPath)) {
 		new SourceIndexer(document).indexDocument();
-		//} 
-//		else if (org.eclipse.dltk.internal.compiler.util.Util.isClassFileName(documentPath)) {
-//			new BinaryIndexer(document).indexDocument();
-//		}
+
 	}
 
 	/*

@@ -25,7 +25,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.compiler.util.SimpleLookupTable;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.search.index.Index;
@@ -200,8 +202,10 @@ public class IndexAllProject extends IndexRequest {
 					if (value != OK) {
 						if (value == DELETED)
 							this.manager.remove(name, this.containerPath);
-						else
-							this.manager.addSource((IFile) value, this.containerPath, parser, requestor);
+						else {
+							IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(dltkProject);
+							this.manager.addSource((IFile) value, this.containerPath, parser, requestor, toolkit );
+						}
 					}
 				}
 			}

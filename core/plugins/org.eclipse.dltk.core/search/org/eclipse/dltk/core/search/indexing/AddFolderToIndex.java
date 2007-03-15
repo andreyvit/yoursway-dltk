@@ -19,6 +19,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.search.index.Index;
@@ -58,6 +60,7 @@ class AddFolderToIndex extends IndexRequest {
 			final IPath container = this.containerPath;
 			final IndexManager indexManager = this.manager;
 			final IDLTKProject project = DLTKCore.create(this.project);
+			final IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(project);
 			final ISourceElementParser parser = indexManager.getSourceElementParser(project, null/*requestor will be set by indexer*/);
 			final SourceIndexerRequestor requestor = indexManager.getSourceRequestor(project);
 			if (this.exclusionPatterns == null && this.inclusionPatterns == null) {
@@ -67,7 +70,7 @@ class AddFolderToIndex extends IndexRequest {
 							if (proxy.getType() == IResource.FILE) {
 								IFile file = (IFile) proxy.requestResource();
 								if(org.eclipse.dltk.internal.core.util.Util.isValidSourceModule(project, file)) {
-									indexManager.addSource(file, container, parser, requestor);
+									indexManager.addSource(file, container, parser, requestor, toolkit );
 								}
 								return false;
 							}
@@ -85,7 +88,7 @@ class AddFolderToIndex extends IndexRequest {
 									IResource resource = proxy.requestResource();
 									if(org.eclipse.dltk.internal.core.util.Util.isValidSourceModule(project, resource)) {
 										if (!Util.isExcluded(resource, inclusionPatterns, exclusionPatterns))
-											indexManager.addSource((IFile)resource, container, parser, requestor);
+											indexManager.addSource((IFile)resource, container, parser, requestor, toolkit );
 									}
 									return false;
 								case IResource.FOLDER :

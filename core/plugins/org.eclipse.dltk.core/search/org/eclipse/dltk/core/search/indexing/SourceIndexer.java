@@ -15,53 +15,61 @@ import java.util.Date;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.mixin.IMixinParser;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchDocument;
 import org.eclipse.dltk.internal.core.ModelManager;
-
+import org.eclipse.dltk.internal.core.mixin.MixinIndexer;
+import org.eclipse.dltk.internal.core.mixin.MixinManager;
 
 /**
- * A SourceIndexer indexes script files using a script parser. The following items
- * are indexed: Declarations of: - Classes<br> - Interfaces; <br> - Methods;<br> -
- * Fields;<br>
+ * A SourceIndexer indexes script files using a script parser. The following
+ * items are indexed: Declarations of: - Classes<br> - Interfaces; <br> -
+ * Methods;<br> - Fields;<br>
  * References to: - Methods (with number of arguments); <br> - Fields;<br> -
  * Types;<br> - Constructors.
  */
 public class SourceIndexer extends AbstractIndexer {
-	
+
 	static long maxWorkTime = 0;
-	
+
 	public SourceIndexer(SearchDocument document) {
 		super(document);
 	}
 
 	public void indexDocument() {
-						
-		long started  = (new Date ()).getTime();
-		
+
+		long started = (new Date()).getTime();
+
 		// Create a new Parser
 		SourceIndexerRequestor requestor = ((InternalSearchDocument) this.document).requestor;
 		String documentPath = this.document.getPath();
 		IPath path = new Path(documentPath);
 		ISourceElementParser parser = ((InternalSearchDocument) this.document).parser;
 		if (!this.document.isExternal()) {
-			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(path.segment(0));
+			IProject project = ResourcesPlugin.getWorkspace().getRoot()
+					.getProject(path.segment(0));
 			IDLTKProject dltkProject = DLTKCore.create(project);
-			
-			if( requestor == null ) {
-				requestor = ModelManager.getModelManager().indexManager.getSourceRequestor(dltkProject);
+
+			if (requestor == null) {
+				requestor = ModelManager.getModelManager().indexManager
+						.getSourceRequestor(dltkProject);
 			}
 			requestor.setIndexer(this);
-			
+
 			if (parser == null) {
-				parser = ModelManager.getModelManager().indexManager.getSourceElementParser(dltkProject, requestor);
+				parser = ModelManager.getModelManager().indexManager
+						.getSourceElementParser(dltkProject, requestor);
 			} else {
 				parser.setRequirestor(requestor);
 			}
@@ -88,17 +96,20 @@ public class SourceIndexer extends AbstractIndexer {
 			}
 			if (source == null || name == null)
 				return; // could not retrieve document info (e.g. resource was
-						// discarded)
+			// discarded)
 			parser.parseSourceModule(source, null);
-			
+
 			// build mixin index entries
 			buildMixin(source);
-			
-		} else { // This is for external documents				
-			if (parser == null || requestor == null ) {
-				//parser = ModelManager.getModelManager().indexManager.getSourceElementParser(dltkProject, requestor);
+
+		} else { // This is for external documents
+			if (parser == null || requestor == null) {
+				// parser =
+				// ModelManager.getModelManager().indexManager.getSourceElementParser(dltkProject,
+				// requestor);
 				if (DLTKCore.DEBUG) {
-					System.err.println("TODO: Add getSourceElementParser here.");
+					System.err
+							.println("TODO: Add getSourceElementParser here.");
 				}
 				return;
 			} else {
@@ -109,7 +120,9 @@ public class SourceIndexer extends AbstractIndexer {
 			if (DLTKCore.DEBUG) {
 				System.err.println("TODO: Correct me please...");
 			}
-			String pkgName = (new Path( ppath.substring(ppath.indexOf(IDLTKSearchScope.FILE_ENTRY_SEPARATOR)+1) ).removeLastSegments(1)).toString();
+			String pkgName = (new Path(ppath.substring(ppath
+					.indexOf(IDLTKSearchScope.FILE_ENTRY_SEPARATOR) + 1))
+					.removeLastSegments(1)).toString();
 			requestor.setPackageName(pkgName);
 			// Launch the parser
 			char[] source = null;
@@ -122,24 +135,25 @@ public class SourceIndexer extends AbstractIndexer {
 			}
 			if (source == null || name == null)
 				return; // could not retrieve document info (e.g. resource was
-						// discarded)
+			// discarded)
 			parser.parseSourceModule(source, null);
-			
-			long ended  = (new Date ()).getTime();
-			
+
+			long ended = (new Date()).getTime();
+
 			if (ended - started > maxWorkTime) {
 				maxWorkTime = ended - started;
-				if( DLTKCore.VERBOSE ) {
-					System.err.println("Max indexDocument() work time " + maxWorkTime + " on " + document.getPath());
+				if (DLTKCore.VERBOSE) {
+					System.err.println("Max indexDocument() work time "
+							+ maxWorkTime + " on " + document.getPath());
 				}
 			}
 			// build mixin index entries
-			buildMixin(source);	
+			buildMixin(source);
 		}
 	}
 
 	// Building if mixin simple entries.
 	private void buildMixin(char[] source) {
-		
+		new MixinIndexer(document, source).indexDocument();
 	}
 }

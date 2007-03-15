@@ -39,6 +39,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
@@ -2258,9 +2259,9 @@ public class DeltaProcessor {
 						int flags = delta.getFlags();
 						if ((flags & IResourceDelta.CONTENT) == 0 && (flags & IResourceDelta.ENCODING) == 0)
 							break;
-					case IResourceDelta.ADDED:
-						indexManager.addExternal(file, binaryFolderPath);
-						break;
+//					case IResourceDelta.ADDED:
+//						indexManager.addExternal(file, binaryFolderPath);
+//						break;
 					case IResourceDelta.REMOVED:
 						String containerRelativePath = Util.relativePath(file.getFullPath(), binaryFolderPath.segmentCount());
 						indexManager.remove(containerRelativePath, binaryFolderPath);
@@ -2276,7 +2277,13 @@ public class DeltaProcessor {
 						if ((flags & IResourceDelta.CONTENT) == 0 && (flags & IResourceDelta.ENCODING) == 0)
 							break;
 					case IResourceDelta.ADDED:
-						indexManager.addSource(file, file.getProject().getFullPath(), getSourceElementParser(element), getSourceRequestor(element));
+						IDLTKLanguageToolkit toolkit = null;
+						try {
+							toolkit = DLTKLanguageManager.getLanguageToolkit(element);
+						} catch (CoreException e) {
+							e.printStackTrace();
+						}
+						indexManager.addSource(file, file.getProject().getFullPath(), getSourceElementParser(element), getSourceRequestor(element), toolkit );
 						if (DLTKCore.DEBUG) {
 							System.err.println("update index: some actions are required to perform here....");
 						}

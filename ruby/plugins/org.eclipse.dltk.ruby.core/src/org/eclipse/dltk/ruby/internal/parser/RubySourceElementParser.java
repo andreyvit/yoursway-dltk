@@ -44,7 +44,9 @@ public class RubySourceElementParser implements ISourceElementParser {
 		try {
 			moduleDeclaration.traverse(requestor);
 		} catch (Exception e) {
-			e.printStackTrace();
+			if( DLTKCore.DEBUG ) {
+				e.printStackTrace();
+			}
 		}
 		return moduleDeclaration;
 	}

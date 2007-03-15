@@ -1,7 +1,9 @@
 package org.eclipse.dltk.core.mixin;
 
+import org.eclipse.dltk.core.search.indexing.IIndexConstants;
+
 public interface IMixinRequestor {
-	public final static String MIXIN_NAME_SEPARATOR = "/";
+	public final static String MIXIN_NAME_SEPARATOR = "" + IIndexConstants.SEPARATOR;
 	public static class ElementInfo {
 		/**
 		 * Could be seperated by MIXIN_NAME_SEPARATOR.

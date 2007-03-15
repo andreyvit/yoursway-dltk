@@ -10,18 +10,29 @@
  *******************************************************************************/
 package org.eclipse.dltk.core.search;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
+import org.eclipse.dltk.core.search.indexing.IndexManager;
+import org.eclipse.dltk.internal.compiler.env.AccessRuleSet;
+import org.eclipse.dltk.internal.core.ModelManager;
+import org.eclipse.dltk.internal.core.Openable;
+import org.eclipse.dltk.internal.core.search.IndexQueryRequestor;
+import org.eclipse.dltk.internal.core.search.PatternSearchJob;
 import org.eclipse.dltk.internal.core.search.TypeNameMatchRequestorWrapper;
 import org.eclipse.dltk.internal.core.search.TypeNameRequestorWrapper;
+import org.eclipse.dltk.internal.core.search.matching.MixinPattern;
+import org.eclipse.dltk.internal.core.util.HandleFactory;
 
 
 /**
@@ -691,5 +702,43 @@ public class SearchEngine {
 	 */	
 	public void searchDeclarationsOfSentMessages(IModelElement enclosingElement, SearchRequestor requestor, IProgressMonitor monitor) throws ModelException {
 		this.basicEngine.searchDeclarationsOfSentMessages(enclosingElement, requestor, monitor);
+	}
+	
+	public static ISourceModule[] searchMixinSources(String key, IDLTKLanguageToolkit toolkit ) {
+		final IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit); 
+		// Index requestor
+		final List documentPathFilter = new ArrayList();
+		final HandleFactory factory = new HandleFactory();
+		final List modules = new ArrayList();
+		IndexQueryRequestor searchRequestor = new IndexQueryRequestor(){
+			public boolean acceptIndexMatch(String documentPath,
+					SearchPattern indexRecord, SearchParticipant participant,
+					AccessRuleSet access) {
+				IPath fullPath = new Path(documentPath);
+				if( documentPathFilter.contains(fullPath)) {
+					return true;
+				}
+				documentPathFilter.add(fullPath);
+				Openable createOpenable = factory.createOpenable(documentPath, scope);
+				if( createOpenable instanceof ISourceModule ) {
+					modules.add(createOpenable);
+				}
+				
+				return true;
+			}
+		};
+		IndexManager indexManager = ModelManager.getModelManager().getIndexManager();
+		
+		MixinPattern pattern = new MixinPattern(key.toCharArray(), SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE |  SearchPattern.R_PATTERN_MATCH);
+		// add type names from indexes
+		indexManager.performConcurrentJob(
+			new PatternSearchJob(
+				pattern, 
+				SearchEngine.getDefaultSearchParticipant(), // Script search only
+				scope, 
+				searchRequestor),
+				IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
+			null);	
+		return (ISourceModule[])modules.toArray(new ISourceModule[modules.size()]);
 	}
 }

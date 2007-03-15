@@ -1188,7 +1188,6 @@ public class BasicSearchEngine {
 		try {
 			toolkit = DLTKLanguageManager.getLanguageToolkit(element);
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if( toolkit != null ) {

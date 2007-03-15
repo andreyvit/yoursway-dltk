@@ -18,6 +18,7 @@ import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.IProblem;
 import org.eclipse.dltk.compiler.IProblemReporter;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.DLTKRubyParser;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.RubyASTBuildVisitor;
@@ -228,7 +229,9 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 						+ " ms");
 			return module;
 		} catch (Throwable t) {
-			t.printStackTrace();
+			if( DLTKCore.DEBUG ) {
+				t.printStackTrace();
+			}
 			if (isSilentState()) {
 				ModuleDeclaration mdl = new ModuleDeclaration(1);
 				return mdl;

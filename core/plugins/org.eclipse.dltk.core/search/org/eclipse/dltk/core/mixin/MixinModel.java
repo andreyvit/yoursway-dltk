@@ -1,6 +1,7 @@
 package org.eclipse.dltk.core.mixin;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,9 @@ import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
+import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.internal.core.ModelCache;
+import org.eclipse.dltk.internal.core.mixin.IInternalMixinElement;
 import org.eclipse.dltk.internal.core.mixin.MixinCache;
 import org.eclipse.dltk.internal.core.mixin.MixinManager;
 
@@ -61,8 +64,10 @@ public class MixinModel {
 		if( element.isFinal() && element.sourceModules.size() > 0 ) {
 			return element;
 		}
-		this.cache.remove(element);
-		cache.resetSpaceLimit(ModelCache.DEFAULT_ROOT_SIZE, element);
+		synchronized ( this.cache ) {
+			this.cache.remove(element);
+			cache.resetSpaceLimit(ModelCache.DEFAULT_ROOT_SIZE, element);
+		}
 		return null;
 	}
 
@@ -72,8 +77,10 @@ public class MixinModel {
 		}
 		ISourceModule[] containedModules = findModules(element);
 		if( containedModules.length == 0 ) {
-			cache.remove(element);
-			cache.resetSpaceLimit(ModelCache.DEFAULT_ROOT_SIZE, element);
+			synchronized (cache) {
+				cache.remove(element);
+				cache.resetSpaceLimit(ModelCache.DEFAULT_ROOT_SIZE, element);
+			}
 			return;
 		}
 		for (int i = 0; i < containedModules.length; ++i) {
@@ -110,51 +117,54 @@ public class MixinModel {
 		}
 	}
 
-	private void processChildren(IModelElement element, List els) {
-		if (element.getElementType() == IModelElement.SOURCE_MODULE) {
-			els.add(element);
-		} else if (element instanceof IParent) {
-			IParent parent = (IParent) element;
-			IModelElement[] children = null;
-			try {
-				children = parent.getChildren();
-			} catch (ModelException e) {
-				return;
-			}
-			for (int i = 0; i < children.length; ++i) {
-				processChildren(children[i], els);
-			}
-		}
-	}
+//	private void processChildren(IModelElement element, List els) {
+//		if (element.getElementType() == IModelElement.SOURCE_MODULE) {
+//			els.add(element);
+//		} else if (element instanceof IParent) {
+//			IParent parent = (IParent) element;
+//			IModelElement[] children = null;
+//			try {
+//				children = parent.getChildren();
+//			} catch (ModelException e) {
+//				return;
+//			}
+//			for (int i = 0; i < children.length; ++i) {
+//				processChildren(children[i], els);
+//			}
+//		}
+//	}
 
 	/**
 	 * Should find all elements source modules to be shure we build complete child tree.
 	 * @param element
 	 * @return
 	 */
-	private ISourceModule[] findModules(MixinElement element) {
-		// lets for test add all possible modules from workspace.
-		List modules = new ArrayList();
-		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
-				.getProjects();
-		for (int i = 0; i < projects.length; ++i) {
-			IDLTKProject prj = DLTKCore.create(projects[i]);
-			IDLTKLanguageToolkit languageToolkit = null;
-			try {
-				languageToolkit = DLTKLanguageManager.getLanguageToolkit(prj);
-			} catch (CoreException e) {
-				e.printStackTrace();
-				continue;
-			}
-			if (languageToolkit != null && languageToolkit.getNatureID().equals(this.toolkit.getNatureID())) {
-				processChildren(prj, modules);
-			}
-		}
-		return (ISourceModule[]) modules.toArray(new ISourceModule[modules
-				.size()]);
+	private ISourceModule[] findModules(MixinElement element ) {
+		return SearchEngine.searchMixinSources(element.getKey(), toolkit);
 	}
+//	private ISourceModule[] findModules(MixinElement element) {
+//		// lets for test add all possible modules from workspace.
+//		List modules = new ArrayList();
+//		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
+//				.getProjects();
+//		for (int i = 0; i < projects.length; ++i) {
+//			IDLTKProject prj = DLTKCore.create(projects[i]);
+//			IDLTKLanguageToolkit languageToolkit = null;
+//			try {
+//				languageToolkit = DLTKLanguageManager.getLanguageToolkit(prj);
+//			} catch (CoreException e) {
+//				e.printStackTrace();
+//				continue;
+//			}
+//			if (languageToolkit != null && languageToolkit.getNatureID().equals(this.toolkit.getNatureID())) {
+//				processChildren(prj, modules);
+//			}
+//		}
+//		return (ISourceModule[]) modules.toArray(new ISourceModule[modules
+//				.size()]);
+//	}
 
-	private MixinElement getCreateEmpty(String key) {
+	private synchronized MixinElement getCreateEmpty(String key) {
 		MixinElement element = (MixinElement)MixinModel.this.cache.get(key);
 		if( element == null ) {
 			element = new MixinElement(key, currentModule );
@@ -179,6 +189,12 @@ public class MixinModel {
 					MixinModel.this.remove((ISourceModule) element);
 				}
 			}
+			if (delta.getKind() == IModelElementDelta.ADDED ) {
+				if (element.getElementType() == IModelElement.SOURCE_MODULE) {
+					clearAllElementsState();
+				}
+			}
+			
 			if ((delta.getFlags() & IModelElementDelta.F_CHILDREN) != 0) {
 				IModelElementDelta[] affectedChildren = delta
 						.getAffectedChildren();
@@ -189,13 +205,33 @@ public class MixinModel {
 			}
 		}
 	};
-
-	public void remove(ISourceModule element) {
-		// cache.remove(element);
-		// cache.resetSpaceLimit(ModelCache.DEFAULT_ROOT_SIZE, element);
+	
+	private synchronized void clearAllElementsState() {
+		Enumeration elements = cache.elements();
+		while( elements.hasMoreElements() ) {
+			MixinElement o = (MixinElement)elements.nextElement();
+			o.bFinal = false;
+		}
 	}
 
-	private class MixinElement implements IMixinElement {
+	public synchronized void remove(ISourceModule element) {
+		if( this.elementToMixinCache.containsKey(element)) {
+			List elements = (List)this.elementToMixinCache.get(element);
+			for( int i = 0; i < elements.size(); ++i ) {
+				MixinElement mixin = (MixinElement)elements.get(i);
+				mixin.bFinal = false;
+				mixin.sourceModules.remove(element);
+				mixin.sourceModuleToObject.remove(element);
+				if( mixin.sourceModules.size() == 0 ) {
+					cache.remove(mixin);
+					cache.resetSpaceLimit(ModelCache.DEFAULT_ROOT_SIZE, mixin);
+				}
+			}
+			this.elementToMixinCache.remove(element);
+		}
+	}
+
+	private class MixinElement implements IMixinElement, IInternalMixinElement {
 		private final static String NONE_KEY = "";
 		private String key;
 		private boolean bFinal = false;
@@ -268,6 +304,7 @@ public class MixinModel {
 		}
 
 		public IMixinElement[] getChildren() {
+			this.validate();
 			List childs = new ArrayList();
 			for (int i = 0; i < this.children.size(); ++i) {
 				childs.add(MixinModel.this.get((String) this.children.get(i)));
@@ -305,6 +342,7 @@ public class MixinModel {
 		}
 
 		public ISourceModule[] getSourceModules() {
+			this.validate();
 			if (!this.isFinal()) {
 				get(this.key);
 			}
@@ -312,20 +350,49 @@ public class MixinModel {
 					.toArray(new ISourceModule[this.sourceModules.size()]);
 		}
 
-		public Object getObject(ISourceModule module) {
-			return this.sourceModuleToObject.get(module);
+		public Object[] getObjects(ISourceModule module) {
+			this.validate();
+			Object o = this.sourceModuleToObject.get(module);
+			if ( o instanceof List ) {
+				return ((List)o).toArray();
+			}
+			return new Object[] { o };
+		}
+		public Object[] getAllObjects() {
+			this.validate();
+			List objects = new ArrayList();
+			for( int i = 0; i < this.sourceModules.size(); ++i ) {
+				Object[] objs = this.getObjects((ISourceModule)this.sourceModules.get(i));
+				for( int j = 0; j < objs.length; ++j ) {
+					if( !objects.contains(objs[j])) {
+						objects.add(objs[j]);
+					}
+				}
+			}
+			return objects.toArray();
 		}
 
 		public boolean isFinal() {
 			return this.bFinal;
 		}
+
+		public void close() {
+			this.bFinal = false;
+			this.sourceModules.clear();
+			this.sourceModuleToObject.clear();
+		}
+		private void validate() {
+			if( !isFinal() ) {
+				buildElementTree(this);
+			}
+		}
 	};
 	private class MixinRequestor implements IMixinRequestor {
 		public void reportElement(ElementInfo info) {
-			if( DLTKCore.VERBOSE_MIXIN ) {
-				System.out.println("Append mixin:" + info.key);
-			}
-			String[] list = info.key.split(IMixinRequestor.MIXIN_NAME_SEPARATOR);
+//			if( DLTKCore.VERBOSE_MIXIN ) {
+//				System.out.println("Append mixin:" + info.key);
+//			}
+			String[] list = info.key.split( "\\" + IMixinRequestor.MIXIN_NAME_SEPARATOR);
 			MixinElement element = getCreateEmpty(info.key);
 			addElementToModules(element);
 			element.addModule(currentModule);

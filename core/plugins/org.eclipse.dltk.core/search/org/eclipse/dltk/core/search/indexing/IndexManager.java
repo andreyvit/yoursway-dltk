@@ -95,30 +95,31 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		}
 	}
 
-	/**
-	 * Trigger addition of a resource to an index Note: the actual operation is
-	 * performed in background
-	 */
-	public void addExternal(IFile resource, IPath containerPath) {
-		if (DLTKCore.getPlugin() == null)
-			return;
-		SearchParticipant participant = SearchEngine.getDefaultSearchParticipant();
-		SearchDocument document = participant.getDocument(resource.getFullPath().toString());
-		String indexLocation = computeIndexLocation(containerPath);
-		scheduleDocumentIndexing(document, containerPath, indexLocation, participant);
-	}
+//	/**
+//	 * Trigger addition of a resource to an index Note: the actual operation is
+//	 * performed in background
+//	 */
+//	public void addExternal(IFile resource, IPath containerPath) {
+//		if (DLTKCore.getPlugin() == null)
+//			return;
+//		SearchParticipant participant = SearchEngine.getDefaultSearchParticipant();
+//		SearchDocument document = participant.getDocument(resource.getFullPath().toString());
+//		String indexLocation = computeIndexLocation(containerPath);
+//		scheduleDocumentIndexing(document, containerPath, indexLocation, participant);
+//	}
 
 	/**
 	 * Trigger addition of a resource to an index Note: the actual operation is
 	 * performed in background
 	 */
-	public void addSource(IFile resource, IPath containerPath, ISourceElementParser parser, SourceIndexerRequestor requestor) {
+	public void addSource(IFile resource, IPath containerPath, ISourceElementParser parser, SourceIndexerRequestor requestor, IDLTKLanguageToolkit toolkit ) {
 		if (DLTKCore.getPlugin() == null)
 			return;
 		SearchParticipant participant = SearchEngine.getDefaultSearchParticipant();
 		SearchDocument document = participant.getDocument(resource.getFullPath().toString());
-		((InternalSearchDocument) document).parser = parser;		
+		((InternalSearchDocument) document).parser = parser;
 		((InternalSearchDocument) document).requestor = requestor;
+		((InternalSearchDocument) document).toolkit = toolkit;
 		String indexLocation = computeIndexLocation(containerPath);
 		scheduleDocumentIndexing(document, containerPath, indexLocation, participant);
 	}

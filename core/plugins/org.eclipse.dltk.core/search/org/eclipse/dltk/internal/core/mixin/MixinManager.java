@@ -54,7 +54,7 @@ public class MixinManager {
 		return null;
 	}
 
-	private static IMixinParser getMixinParser(String natureId)
+	public static IMixinParser getMixinParser(String natureId)
 			throws CoreException {
 		initialize();
 
