@@ -280,7 +280,7 @@ public class JavaScriptCompletionEngine extends CompletionEngine {
 				createProposal.setCompletion(name);
 				//createProposal.setSignature(name);
 				createProposal.extraInfo=cm;
-				createProposal.setDeclarationSignature(cm.getDeclarationSignature());
+				//createProposal.setDeclarationSignature(cm.getDeclarationSignature());
 				//createProposal.setSignature(cm.getSignature());
 				createProposal.setReplaceRange(this.startPosition - this.offset, this.endPosition - this.offset);
 				this.requestor.accept(createProposal);				
