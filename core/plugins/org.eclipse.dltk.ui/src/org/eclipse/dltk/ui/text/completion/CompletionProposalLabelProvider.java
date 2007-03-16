@@ -208,9 +208,10 @@ public abstract class CompletionProposalLabelProvider {
 	 *            the method proposal to display
 	 * @return the display label for the given type proposal
 	 */
-//	protected String createTypeProposalLabel(CompletionProposal typeProposal) {		
-//		return createTypeProposalLabel(fullName);
-//	}
+	protected String createTypeProposalLabel(CompletionProposal typeProposal) {
+		char[] fullName = typeProposal.getName();
+		return createTypeProposalLabel(fullName);
+	}
 
 	String createScriptdocSimpleProposalLabel(CompletionProposal proposal) {
 		// TODO get rid of this
@@ -278,9 +279,8 @@ public abstract class CompletionProposalLabelProvider {
 			return createMethodProposalLabel(proposal);
 		case CompletionProposal.METHOD_DECLARATION:
 			return createOverrideMethodProposalLabel(proposal);
-		case CompletionProposal.TYPE_REF:
-			return "xxx_" + getClass() + "_xxx";			
-			//return createTypeProposalLabel(proposal);			
+		case CompletionProposal.TYPE_REF:			
+			return createTypeProposalLabel(proposal);			
 			// case CompletionProposal.JAVADOC_TYPE_REF:
 			// return createJavadocTypeProposalLabel(proposal);
 			// case CompletionProposal.JAVADOC_FIELD_REF:
