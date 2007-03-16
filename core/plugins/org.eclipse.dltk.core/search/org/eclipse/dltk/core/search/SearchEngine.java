@@ -707,18 +707,12 @@ public class SearchEngine {
 	public static ISourceModule[] searchMixinSources(String key, IDLTKLanguageToolkit toolkit ) {
 		final IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit); 
 		// Index requestor
-		final List documentPathFilter = new ArrayList();
 		final HandleFactory factory = new HandleFactory();
 		final List modules = new ArrayList();
 		IndexQueryRequestor searchRequestor = new IndexQueryRequestor(){
 			public boolean acceptIndexMatch(String documentPath,
 					SearchPattern indexRecord, SearchParticipant participant,
 					AccessRuleSet access) {
-				IPath fullPath = new Path(documentPath);
-				if( documentPathFilter.contains(fullPath)) {
-					return true;
-				}
-				documentPathFilter.add(fullPath);
 				Openable createOpenable = factory.createOpenable(documentPath, scope);
 				if( createOpenable instanceof ISourceModule ) {
 					modules.add(createOpenable);
@@ -740,5 +734,35 @@ public class SearchEngine {
 				IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
 			null);	
 		return (ISourceModule[])modules.toArray(new ISourceModule[modules.size()]);
+	}
+	public static String[] searchMixinPatterns(String key, IDLTKLanguageToolkit toolkit ) {
+		final IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit); 
+		// Index requestor
+		final List result = new ArrayList();
+		IndexQueryRequestor searchRequestor = new IndexQueryRequestor(){
+			public boolean acceptIndexMatch(String documentPath,
+					SearchPattern indexRecord, SearchParticipant participant,
+					AccessRuleSet access) {
+				String val = new String( indexRecord.getIndexKey() );
+				if( !result.contains(val)) {
+					result.add(val);
+				}
+				
+				return true;
+			}
+		};
+		IndexManager indexManager = ModelManager.getModelManager().getIndexManager();
+		
+		MixinPattern pattern = new MixinPattern(key.toCharArray(), SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE |  SearchPattern.R_PATTERN_MATCH);
+		// add type names from indexes
+		indexManager.performConcurrentJob(
+			new PatternSearchJob(
+				pattern, 
+				SearchEngine.getDefaultSearchParticipant(), // Script search only
+				scope, 
+				searchRequestor),
+				IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
+			null);	
+		return (String[])result.toArray(new String[result.size()]);
 	}
 }

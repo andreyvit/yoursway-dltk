@@ -26,7 +26,11 @@ import org.eclipse.dltk.internal.core.util.HandleFactory;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.tests.Activator;
 
-
+/**
+ * !!!!! BE Aware Tests Depend on Execution of each over. Because they modify project.
+ * @author Haiodo
+ *
+ */
 public class MixinTests extends AbstractDLTKSearchTests implements IDLTKSearchConstants {
 	private static final String TCLSEARCH = "mixins";
 
@@ -41,6 +45,7 @@ public class MixinTests extends AbstractDLTKSearchTests implements IDLTKSearchCo
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
 		up();
+		waitUntilIndexesReady();
 	}
 
 	public void tearDownSuite() throws Exception {
@@ -58,12 +63,15 @@ public class MixinTests extends AbstractDLTKSearchTests implements IDLTKSearchCo
 	 * Simple type declaration test.
 	 */
 	public void testMixins01() throws Exception { 
-		up();
-//		this.waitUntilIndexesReady();
+		
 		System.gc();
 		long start = Runtime.getRuntime().freeMemory();
 		long timeStart = System.currentTimeMillis();
 		MixinModel model = new MixinModel(RubyLanguageToolkit.getDefault());
+		String[] patterns = model.findKeys("*");
+		System.out.println(patterns.length);
+//		assertEquals(27, patterns.length);
+		
 		IMixinElement mixinElement = model.get("Bar");
 		assertNotNull(mixinElement);
 		Object[] objs = mixinElement.getAllObjects();
@@ -79,13 +87,13 @@ public class MixinTests extends AbstractDLTKSearchTests implements IDLTKSearchCo
 		
 		Object objs2[] = mixinElement.getAllObjects();
 		assertEquals(8, objs2.length);
+		
 	}
 	/**
 	 * Simple type declaration test.
 	 */
 	public void testMixins02() throws Exception { 
-		up();
-//		this.waitUntilIndexesReady();
+		
 		System.gc();
 		long start = Runtime.getRuntime().freeMemory();
 		long timeStart = System.currentTimeMillis();
@@ -106,12 +114,11 @@ public class MixinTests extends AbstractDLTKSearchTests implements IDLTKSearchCo
 		
 		Object objs2[] = mixinElement.getAllObjects();
 		assertEquals(len + 1, objs2.length);
+		
 	}
 	
 	public void testMixins03() throws Exception { 
-		up();
-//		this.waitUntilIndexesReady();
-		
+			
 		final IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(RubyLanguageToolkit.getDefault()); 
 		// Index requestor
 		final List documentPathFilter = new ArrayList();
@@ -147,14 +154,10 @@ public class MixinTests extends AbstractDLTKSearchTests implements IDLTKSearchCo
 				IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
 			null);	
 		System.out.println(modules);
+		
 	}
 	
 	public void testMixins04() throws Exception { 
-		up();
-//		this.waitUntilIndexesReady();
-		System.gc();
-		long start = Runtime.getRuntime().freeMemory();
-		long timeStart = System.currentTimeMillis();
 		MixinModel model = new MixinModel(RubyLanguageToolkit.getDefault());
 		IMixinElement mixinElement = model.get("Bar{func");
 		assertNotNull(mixinElement);
@@ -162,9 +165,22 @@ public class MixinTests extends AbstractDLTKSearchTests implements IDLTKSearchCo
 		assertNotNull(mixinElement);
 		mixinElement = model.get("Foo");
 		assertNotNull(mixinElement);
-		ISourceModule sourceModule = getSourceModule(TCLSEARCH, "src", "/simple/localvar.rb");
+		ISourceModule sourceModule = getSourceModule(TCLSEARCH, "src", "/simple/new.rb");
 		sourceModule.delete(true, null);
 		mixinElement = model.get("Bar");
 		assertNotNull(mixinElement);
+		
+	}
+	public void testMixins05() throws Exception { 
+		waitUntilIndexesReady();
+		MixinModel model = new MixinModel(RubyLanguageToolkit.getDefault());
+		String[] patterns = model.findKeys("*");
+		assertEquals(69, patterns.length);
+		
+		patterns = model.findKeys("*strange*");
+		assertEquals(1, patterns.length);
+		
+		patterns = model.findKeys("*func");
+		assertEquals(2, patterns.length);
 	}
 }

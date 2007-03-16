@@ -11,10 +11,23 @@ public interface IMixinElement {
 	IMixinElement[] getChildren();
 	
 	/**
+	 * Add name to current key and return child.
+	 * @param name
+	 * @return
+	 */
+	IMixinElement getChildren( String name );
+	
+	/**
 	 * Return key value.
 	 * @return key value
 	 */
 	String getKey();
+	
+	/**
+	 * Return last key segment.
+	 * @return
+	 */
+	String getLastKeySegment();
 	
 	/**
 	 * Return sepecified objects.

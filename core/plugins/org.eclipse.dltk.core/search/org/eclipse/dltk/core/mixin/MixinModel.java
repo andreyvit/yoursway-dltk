@@ -6,28 +6,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
-import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
 import org.eclipse.dltk.core.search.SearchEngine;
+import org.eclipse.dltk.core.search.SearchPattern;
+import org.eclipse.dltk.core.search.indexing.IIndexConstants;
 import org.eclipse.dltk.internal.core.ModelCache;
 import org.eclipse.dltk.internal.core.mixin.IInternalMixinElement;
 import org.eclipse.dltk.internal.core.mixin.MixinCache;
 import org.eclipse.dltk.internal.core.mixin.MixinManager;
 
 public class MixinModel {
+	public static final String SEPARATOR = "" + IIndexConstants.SEPARATOR;
 	private MixinCache cache = null;
 	/**
 	 * Contains list of mixin elements.
@@ -69,6 +66,9 @@ public class MixinModel {
 			cache.resetSpaceLimit(ModelCache.DEFAULT_ROOT_SIZE, element);
 		}
 		return null;
+	}
+	public String[] findKeys(String pattern) {
+		return SearchEngine.searchMixinPatterns(pattern, toolkit);
 	}
 
 	private void buildElementTree(MixinElement element) {
@@ -258,7 +258,7 @@ public class MixinModel {
 			this.key = key;
 		}
 		public String toString() {
-			return this.getName() + " final[" + this.bFinal + "]" + this.children + " ";
+			return this.getLastKeySegment() + " final[" + this.bFinal + "]" + this.children + " ";
 		}
 
 		public MixinElement(ElementInfo info, ISourceModule module) {
@@ -266,7 +266,7 @@ public class MixinModel {
 			addInfo(info, module);
 		}
 
-		public void addInfo(ElementInfo info, ISourceModule module) {
+		void addInfo(ElementInfo info, ISourceModule module) {
 			if( info.object != null ) {
 				Object object = this.sourceModuleToObject.get(module);
 				if( object != null ) {
@@ -295,7 +295,7 @@ public class MixinModel {
 			addModule(currentModule);
 		}
 
-		public void addModule(ISourceModule currentModule) {
+		void addModule(ISourceModule currentModule) {
 			if( currentModule != null ) {
 				if( !this.sourceModules.contains(currentModule)) {
 					this.sourceModules.add(currentModule);
@@ -305,12 +305,12 @@ public class MixinModel {
 
 		public IMixinElement[] getChildren() {
 			this.validate();
-			List childs = new ArrayList();
-			for (int i = 0; i < this.children.size(); ++i) {
-				childs.add(MixinModel.this.get((String) this.children.get(i)));
-			}
-			return (IMixinElement[]) childs.toArray(new IMixinElement[childs
+			return (IMixinElement[]) this.children.toArray(new IMixinElement[this.children
 					.size()]);
+		}
+		public IMixinElement getChildren(String key) {
+			this.validate();
+			return MixinModel.this.get(this.key + IMixinRequestor.MIXIN_NAME_SEPARATOR + key);
 		}
 
 		public String getKey() {
@@ -324,7 +324,7 @@ public class MixinModel {
 			return this.key.substring(0, this.key
 					.lastIndexOf(IMixinRequestor.MIXIN_NAME_SEPARATOR));
 		}
-		protected String getName() {
+		public String getLastKeySegment() {
 			if (this.key.indexOf(IMixinRequestor.MIXIN_NAME_SEPARATOR) == -1) {
 				return this.key;
 			}
