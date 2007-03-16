@@ -158,7 +158,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		return (InstanceContext) this.getGoal().getContext();
 	}
 
-	public IEvaluatedType produceResult() {
+	public Object produceResult() {
 		if (!evaluated.isEmpty()) {
 			return RubyTypeInferencingUtils.combineTypes(evaluated);			
 		}

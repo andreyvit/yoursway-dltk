@@ -103,7 +103,7 @@ public class MethodCallTypeEvaluator extends GoalEvaluator {
 		return null;
 	}
 
-	public IEvaluatedType produceResult() {
+	public Object produceResult() {
 		if (state == STATE_UNKNOWN)
 			return null;
 		else

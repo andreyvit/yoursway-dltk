@@ -66,7 +66,7 @@ public class ColonExpressionEvaluator extends GoalEvaluator {
 		initialized = true;
 	}
 
-	public IEvaluatedType produceResult() { //FIXME
+	public Object produceResult() { //FIXME
 		if (resultType != null) {
 			String[] leftFQN = null;
 			if (resultType instanceof RubyClassType) {

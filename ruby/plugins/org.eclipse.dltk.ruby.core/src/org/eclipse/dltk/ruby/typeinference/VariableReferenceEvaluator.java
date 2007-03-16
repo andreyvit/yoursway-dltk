@@ -89,7 +89,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 		return subgoal;
 	}
 
-	public IEvaluatedType produceResult() {
+	public Object produceResult() {
 		if (state == STATE_NOT_FOUND)
 			return UnknownType.INSTANCE;
 		else if (state == STATE_DONE)

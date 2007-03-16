@@ -14,7 +14,7 @@ public class ExpressionTypeEvaluator extends GoalEvaluator {
 		return null;
 	}
 
-	public IEvaluatedType produceResult() {
+	public Object produceResult() {
 		return null;
 	}
 

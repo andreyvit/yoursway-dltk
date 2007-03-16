@@ -15,7 +15,7 @@ public class NumericLiteralEvaluator extends GoalEvaluator {
 		return null;
 	}
 
-	public IEvaluatedType produceResult() {
+	public Object produceResult() {
 		return new SimpleType(SimpleType.TYPE_NUMBER);
 	}
 

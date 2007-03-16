@@ -63,7 +63,7 @@ public class IfStatementTypeEvaluator extends GoalEvaluator {
 		return null;
 	}
 
-	public IEvaluatedType produceResult() {
+	public Object produceResult() {
 		return RubyTypeInferencingUtils.combineTypes(evaluatedTypes);
 	}
 

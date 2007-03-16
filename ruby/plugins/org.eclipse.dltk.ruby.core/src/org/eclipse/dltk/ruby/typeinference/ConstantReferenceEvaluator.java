@@ -47,7 +47,7 @@ public class ConstantReferenceEvaluator extends GoalEvaluator {
 		return (ISourceModuleContext) goal.getContext();
 	}
 
-	public IEvaluatedType produceResult() {
+	public Object produceResult() {
 		if (state == 0) {
 			initialize();
 			state = 1;

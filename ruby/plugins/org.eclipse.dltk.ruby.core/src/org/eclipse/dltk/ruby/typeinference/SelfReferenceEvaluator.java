@@ -47,7 +47,7 @@ public class SelfReferenceEvaluator extends GoalEvaluator {
 		return (ISourceModuleContext) goal.getContext();
 	}
 
-	public IEvaluatedType produceResult() {
+	public Object produceResult() {
 		if (!calculated) {
 			initialize();
 			calculated = true;

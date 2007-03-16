@@ -38,6 +38,7 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 				return new AssignmentEvaluator(goal);
 			else if (expr instanceof ConstantReference)
 				return new AssignmentEvaluator(goal);
+				//return new ConstantReferenceEvaluator(goal);
 			else if (expr instanceof SelfReference)
 				return new SelfReferenceEvaluator(goal);
 			else if (expr instanceof CallExpression)

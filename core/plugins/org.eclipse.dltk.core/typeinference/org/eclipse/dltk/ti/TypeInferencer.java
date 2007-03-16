@@ -43,6 +43,8 @@ public class TypeInferencer implements ITypeInferencer {
 		}
 
 		public IGoal translateGoal(IGoal goal) {
+			if (userFactory != null)
+				return userFactory.translateGoal(goal);
 			return goal;
 		}
 
@@ -52,8 +54,8 @@ public class TypeInferencer implements ITypeInferencer {
 	private final IGoalEvaluatorFactory userFactory;
 
 	private void initStdGoals () {
-		registerEvaluator(FieldReferencesGoal.class, FieldReferencesGoalEvaluator.class);
-		registerEvaluator(MethodCallsGoal.class, MethodCallsGoalEvaluator.class);
+		//registerEvaluator(FieldReferencesGoal.class, FieldReferencesGoalEvaluator.class);
+		//registerEvaluator(MethodCallsGoal.class, MethodCallsGoalEvaluator.class);
 	}
 	
 	public TypeInferencer() {

@@ -15,7 +15,7 @@ public class StringLiteralEvaluator extends GoalEvaluator {
 		return null;
 	}
 
-	public IEvaluatedType produceResult() {
+	public Object produceResult() {
 		return new SimpleType(SimpleType.TYPE_STRING);
 	}
 

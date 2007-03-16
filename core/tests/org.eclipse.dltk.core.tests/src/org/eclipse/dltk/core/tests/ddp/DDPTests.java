@@ -34,7 +34,7 @@ public class DDPTests extends TestCase {
 			return null;
 		}
 
-		public IEvaluatedType produceResult() {
+		public Object produceResult() {
 			return answer;
 		}
 	}
@@ -72,7 +72,7 @@ public class DDPTests extends TestCase {
 			return null;
 		}
 
-		public IEvaluatedType produceResult() {
+		public Object produceResult() {
 			++produceTypeCalls;
 			return answer;
 		}

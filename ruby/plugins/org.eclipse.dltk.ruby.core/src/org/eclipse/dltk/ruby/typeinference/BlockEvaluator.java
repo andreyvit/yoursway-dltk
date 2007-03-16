@@ -61,7 +61,7 @@ public class BlockEvaluator extends GoalEvaluator {
 		return (ExpressionTypeGoal) this.getGoal();
 	}
 	
-	public IEvaluatedType produceResult() {
+	public Object produceResult() {
 		if (!evaluated.isEmpty()) {
 			return RubyTypeInferencingUtils.combineTypes(evaluated);			
 		}
