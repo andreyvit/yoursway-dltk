@@ -31,8 +31,6 @@ package org.jruby.runtime;
 
 import java.io.Serializable;
 
-import org.jruby.util.IdUtil;
-
 /**
  * This class represents two concepts: method visibility and a mask for 
  * determining a set of valid method visibilities.  The first concept can only

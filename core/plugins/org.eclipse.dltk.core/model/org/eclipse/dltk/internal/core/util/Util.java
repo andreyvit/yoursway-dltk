@@ -35,7 +35,6 @@ import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.ProjectFragment;
 
@@ -1281,41 +1280,6 @@ public class Util {
 		return utflen + 2; // the number of bytes written to the stream
 	}
 
-	/**
-	 * Scans the given string for a type variable signature starting at the
-	 * given index and returns the index of the last character.
-	 * 
-	 * <pre>
-	 *   TypeVariableSignature:
-	 *       &lt;b&gt;T&lt;/b&gt; Identifier &lt;b&gt;;&lt;/b&gt;
-	 * </pre>
-	 * 
-	 * @param string
-	 *            the signature string
-	 * @param start
-	 *            the 0-based character index of the first character
-	 * @return the 0-based character index of the last character
-	 * @exception IllegalArgumentException
-	 *                if this is not a type variable signature
-	 */
-	public static int __scanTypeVariableSignature(char[] string, int start) {
-		// need a minimum 3 chars "Tx;"
-		if (start >= string.length - 2) {
-			throw new IllegalArgumentException();
-		}
-		// must start in "T"
-		char c = string[start];
-		if (c != Signature.C_TYPE_VARIABLE) {
-			throw new IllegalArgumentException();
-		}
-		int id = scanIdentifier(string, start + 1);
-		c = string[id + 1];
-		if (c == Signature.C_SEMICOLON) {
-			return id + 1;
-		} else {
-			throw new IllegalArgumentException();
-		}
-	}
 
 	/**
 	 * Scans the given string for an identifier starting at the given index and
@@ -1347,118 +1311,5 @@ public class Util {
 				return p - 1;
 			}
 		}
-	}
-
-	/**
-	 * Scans the given string for a base type signature starting at the given
-	 * index and returns the index of the last character.
-	 * 
-	 * <pre>
-	 *   BaseTypeSignature:
-	 *       &lt;b&gt;B&lt;/b&gt; | &lt;b&gt;C&lt;/b&gt; | &lt;b&gt;D&lt;/b&gt; | &lt;b&gt;F&lt;/b&gt; | &lt;b&gt;I&lt;/b&gt;
-	 *     | &lt;b&gt;J&lt;/b&gt; | &lt;b&gt;S&lt;/b&gt; | &lt;b&gt;V&lt;/b&gt; | &lt;b&gt;Z&lt;/b&gt;
-	 * </pre>
-	 * 
-	 * Note that although the base type "V" is only allowed in method return
-	 * types, there is no syntactic ambiguity. This method will accept them
-	 * anywhere without complaint.
-	 * 
-	 * @param string
-	 *            the signature string
-	 * @param start
-	 *            the 0-based character index of the first character
-	 * @return the 0-based character index of the last character
-	 * @exception IllegalArgumentException
-	 *                if this is not a base type signature
-	 */
-	public static int scanBaseTypeSignature(char[] string, int start) {
-		// need a minimum 1 char
-		if (start >= string.length) {
-			throw new IllegalArgumentException();
-		}
-		char c = string[start];
-		if ("V".indexOf(c) >= 0) { //$NON-NLS-1$
-			return start;
-		} else {
-			return start;
-			//throw new IllegalArgumentException();
-		}
-	}
-
-	
-
-	/**
-	 * Split signatures of all levels from a type unique key.
-	 * 
-	 * Example: For following type X<Y<Z>,V<W>,U>.A<B>, unique key is: "LX<LY<LZ;>;LV<LW;>;LU;>.LA<LB;>;"
-	 * 
-	 * The return splitted signatures array is: [ ['L','X','<','L','Y','<','L','Z',';'>',';','L','V','<','L','W',';'>',';','L','U','>',';'],
-	 * ['L','A','<','L','B',';','>',';']
-	 * 
-	 * @param typeSignature
-	 *            ParameterizedSourceType type signature
-	 * @return char[][] Array of signatures for each level of given unique key
-	 */
-	public final static char[][] splitTypeLevelsSignature(String typeSignature) {
-		// In case of IModelElement signature, replace '$' by '.'
-		char[] source = Signature.removeCapture(typeSignature.toCharArray());
-		CharOperation.replace(source, '$', '.');
-		// Init counters and arrays
-		char[][] signatures = new char[10][];
-		int signaturesCount = 0;
-		// int[] lengthes = new int [10];
-		int typeArgsCount = 0;
-		int paramOpening = 0;
-		// Scan each signature character
-		for (int idx = 0, ln = source.length; idx < ln; idx++) {
-			switch (source[idx]) {
-			case '>':
-				paramOpening--;
-				if (paramOpening == 0) {
-					if (signaturesCount == signatures.length) {
-						System.arraycopy(signatures, 0,
-								signatures = new char[signaturesCount + 10][],
-								0, signaturesCount);
-					}
-					typeArgsCount = 0;
-				}
-				break;
-			case '<':
-				paramOpening++;
-				if (paramOpening == 1) {
-					typeArgsCount = 1;
-				}
-				break;
-			case '*':
-			case ';':
-				if (paramOpening == 1)
-					typeArgsCount++;
-				break;
-			case '.':
-				if (paramOpening == 0) {
-					if (signaturesCount == signatures.length) {
-						System.arraycopy(signatures, 0,
-								signatures = new char[signaturesCount + 10][],
-								0, signaturesCount);
-					}
-					signatures[signaturesCount] = new char[idx + 1];
-					System.arraycopy(source, 0, signatures[signaturesCount], 0,
-							idx);
-					signatures[signaturesCount][idx] = Signature.C_SEMICOLON;
-					signaturesCount++;
-				}
-				break;
-			case '/':
-				source[idx] = '.';
-				break;
-			}
-		}
-		// Resize signatures array
-		char[][] typeSignatures = new char[signaturesCount + 1][];
-		typeSignatures[0] = source;
-		for (int i = 1, j = signaturesCount - 1; i <= signaturesCount; i++, j--) {
-			typeSignatures[i] = signatures[j];
-		}
-		return typeSignatures;
 	}
 }

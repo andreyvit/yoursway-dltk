@@ -14,7 +14,6 @@ import java.util.Vector;
 
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;
-import org.eclipse.dltk.core.Signature;
 
 
 public class CompletionTestsRequestor extends CompletionRequestor {

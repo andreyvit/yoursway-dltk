@@ -126,8 +126,8 @@ import org.jruby.lexer.yacc.StrTerm;
 import org.jruby.lexer.yacc.SyntaxException;
 import org.jruby.lexer.yacc.Token;
 import org.jruby.runtime.Visibility;
-import org.jruby.util.IdUtil;
 import org.jruby.util.ByteList;
+import org.jruby.util.IdUtil;
 
 public class DefaultRubyParser {
     private ParserSupport support;

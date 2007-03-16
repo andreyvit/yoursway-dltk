@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.core.mixin;
 
-import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.mixin.IMixinElement;
-import org.eclipse.dltk.internal.core.Openable;
 import org.eclipse.dltk.internal.core.OverflowingLRUCache;
 import org.eclipse.dltk.internal.core.util.LRUCache;
 

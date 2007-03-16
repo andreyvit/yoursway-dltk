@@ -5,12 +5,8 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ti.goals.AbstractTypeGoal;
-import org.eclipse.dltk.ti.goals.FieldReferencesGoal;
-import org.eclipse.dltk.ti.goals.FieldReferencesGoalEvaluator;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
-import org.eclipse.dltk.ti.goals.MethodCallsGoal;
-import org.eclipse.dltk.ti.goals.MethodCallsGoalEvaluator;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class TypeInferencer implements ITypeInferencer {

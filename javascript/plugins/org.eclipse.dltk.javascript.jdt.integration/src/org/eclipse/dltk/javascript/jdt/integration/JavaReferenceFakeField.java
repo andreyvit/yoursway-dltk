@@ -9,8 +9,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.IBuffer;
-import org.eclipse.dltk.core.IForeignElement;
 import org.eclipse.dltk.core.IField;
+import org.eclipse.dltk.core.IForeignElement;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IPackageDeclaration;
@@ -22,13 +22,11 @@ import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.javascript.reference.resolvers.IResolvableMember;
 import org.eclipse.dltk.internal.javascript.typeinference.FakeField;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jdt.ui.JavadocContentAccess;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 
 final class JavaReferenceFakeField extends FakeField implements ISourceModule,IForeignElement,IResolvableMember{

@@ -2,7 +2,6 @@ package org.eclipse.dltk.ruby.typeinference;
 
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
-import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class ExpressionTypeEvaluator extends GoalEvaluator {
 

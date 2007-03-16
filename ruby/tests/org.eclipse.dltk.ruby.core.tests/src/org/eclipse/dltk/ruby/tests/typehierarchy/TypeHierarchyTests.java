@@ -5,7 +5,6 @@ import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.tests.model.AbstractDLTKSearchTests;
-import org.eclipse.dltk.internal.core.hierarchy.TypeHierarchy;
 import org.eclipse.dltk.ruby.tests.Activator;
 
 

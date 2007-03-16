@@ -16,7 +16,6 @@ import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.internal.corext.util.QualifiedTypeNameHistory;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.PreferenceConstants;
@@ -50,9 +49,7 @@ public abstract class LazyScriptTypeCompletionProposal extends
 		return null;
 	}
 
-	protected final String getSimpleTypeName() {
-		if (fSimpleName == null)
-			fSimpleName = Signature.getSimpleName(getQualifiedTypeName());
+	protected final String getSimpleTypeName() {			
 		return fSimpleName;
 	}
 

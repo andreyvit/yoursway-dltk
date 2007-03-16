@@ -8,7 +8,6 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
-import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class BlockEvaluator extends GoalEvaluator {
 	

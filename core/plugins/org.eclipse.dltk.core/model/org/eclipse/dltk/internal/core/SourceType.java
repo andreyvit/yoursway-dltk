@@ -17,7 +17,6 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.internal.core.hierarchy.TypeHierarchy;
@@ -110,7 +109,10 @@ public class SourceType extends NamedMember implements IType {
 //				JavaElement initializer = (JavaElement)getInitializer(Integer.parseInt(count));
 //				return initializer.getHandleFromMemento(memento, workingCopyOwner);
 			case JEM_METHOD:
-				if (!memento.hasMoreTokens()) return this;
+				if (!memento.hasMoreTokens()){ 
+					return this;
+				}
+				
 				String selector = memento.nextToken();
 				ArrayList params = new ArrayList();
 				nextParam: while (memento.hasMoreTokens()) {
@@ -120,14 +122,20 @@ public class SourceType extends NamedMember implements IType {
 						case JEM_TYPE_PARAMETER:
 							break nextParam;
 						case JEM_METHOD:
-							if (!memento.hasMoreTokens()) return this;
+							if (!memento.hasMoreTokens()){ 
+								return this;
+							}
+							
 							String param = memento.nextToken();
 							StringBuffer buffer = new StringBuffer();
-							while (param.length() == 1 && Signature.C_ARRAY == param.charAt(0)) { // backward compatible with 3.0 mementos
+							
+							// backward compatible with 3.0 mementos
+							/*while (param.length() == 1 && Signature.C_ARRAY == param.charAt(0)) { 
 								buffer.append(Signature.C_ARRAY);
 								if (!memento.hasMoreTokens()) return this;
 								param = memento.nextToken();
-							}
+							}*/
+							
 							params.add(buffer.toString() + param);
 							break;
 						default:

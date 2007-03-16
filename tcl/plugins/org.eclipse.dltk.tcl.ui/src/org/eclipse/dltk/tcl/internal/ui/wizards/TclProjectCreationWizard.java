@@ -15,7 +15,6 @@ import org.eclipse.dltk.tcl.internal.debug.ui.interpreters.TclInterpreterPrefere
 import org.eclipse.dltk.tcl.internal.ui.TclImages;
 import org.eclipse.dltk.tcl.internal.ui.TclUI;
 import org.eclipse.dltk.tcl.internal.ui.preferences.TclBuildPathsBlock;
-import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.util.BusyIndicatorRunnableContext;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;

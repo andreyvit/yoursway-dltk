@@ -57,8 +57,7 @@ public class DLTKSearchPattern extends SearchPattern {
 	 */
 	public static final int MATCH_COMPATIBILITY_MASK = R_ERASURE_MATCH | R_EQUIVALENT_MATCH | R_FULL_MATCH;
 
-	// Signatures and arguments for parameterized types search
-	char[][] typeSignatures;
+
 	private char[][][] typeArguments;
 	private int flags = 0;
 	static final int HAS_TYPE_ARGUMENTS = 1;
@@ -145,7 +144,7 @@ public class DLTKSearchPattern extends SearchPattern {
 	 * @return true if {@link #typeSignatures} field is not null and has a length greater than 0.
 	 */
 	public final boolean hasSignatures() {
-		return this.typeSignatures != null && this.typeSignatures.length > 0;
+		return false;
 	}
 
 	/**
@@ -167,11 +166,7 @@ public class DLTKSearchPattern extends SearchPattern {
 	
 	protected StringBuffer print(StringBuffer output) {
 		output.append(", "); //$NON-NLS-1$
-		if (hasTypeArguments() && hasSignatures()) {
-			output.append("signature:\""); //$NON-NLS-1$
-			output.append(this.typeSignatures[0]);
-			output.append("\", "); //$NON-NLS-1$
-		}
+		
 		if (this.isCamelCase) {
 			output.append("camel case + "); //$NON-NLS-1$
 		}
@@ -207,12 +202,12 @@ public class DLTKSearchPattern extends SearchPattern {
 	 * Extract and store type signatures and arguments using unique key for parameterized types
 	 * and type parameters for non-generic ones
 	 */
-	void storeTypeSignaturesAndArguments(IType type) {	
-		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Add DLTKSearchPatter implementation of storeTypeSignatureAndArguments.");
-		}
-		//setTypeArguments(Util.getAllTypeArguments(this.typeSignatures));
-	}
+//	void storeTypeSignaturesAndArguments(IType type) {	
+//		if (DLTKCore.DEBUG) {
+//			System.err.println("TODO: Add DLTKSearchPatter implementation of storeTypeSignatureAndArguments.");
+//		}
+//		//setTypeArguments(Util.getAllTypeArguments(this.typeSignatures));
+//	}
 	public final String toString() {
 		return print(new StringBuffer(30)).toString();
 	}

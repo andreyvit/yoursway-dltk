@@ -245,8 +245,10 @@ public abstract class ScriptCompletionProposalComputer implements
 		if (context instanceof ScriptContentAssistInvocationContext) {
 			ScriptContentAssistInvocationContext scriptContext = (ScriptContentAssistInvocationContext) context;
 
-			return internalComputeCompletionProposals(context
+			List list = internalComputeCompletionProposals(context
 					.getInvocationOffset(), scriptContext, monitor);
+			System.out.println("=> size: " + list.size());
+			return list;
 		}
 
 		return Collections.EMPTY_LIST;

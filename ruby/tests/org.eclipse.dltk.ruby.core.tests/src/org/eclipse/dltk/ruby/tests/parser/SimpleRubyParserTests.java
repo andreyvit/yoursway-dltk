@@ -1,8 +1,8 @@
 package org.eclipse.dltk.ruby.tests.parser;
 
-import org.eclipse.dltk.ruby.tests.parser.jruby.ParserSuite;
-
 import junit.framework.Test;
+
+import org.eclipse.dltk.ruby.tests.parser.jruby.ParserSuite;
 
 public class SimpleRubyParserTests {
 

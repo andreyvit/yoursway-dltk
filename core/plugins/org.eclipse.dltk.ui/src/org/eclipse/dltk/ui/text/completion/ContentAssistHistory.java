@@ -37,9 +37,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IType;

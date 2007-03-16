@@ -10,13 +10,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.corext.template.completion;
 
-import org.eclipse.dltk.core.Signature;
 
 /**
  * Utilities for Signature operations.
  * 
- * @see Signature
-	 *
  */
 public final class SignatureUtil {
 	
@@ -28,8 +25,9 @@ public final class SignatureUtil {
 	 * @return the fully qualified type name of the signature
 	 */
 	public static String stripSignatureToFQN(String signature) throws IllegalArgumentException {
-		signature= Signature.getTypeErasure(signature);
-		signature= Signature.getElementType(signature);
-		return Signature.toString(signature);
+		//signature= Signature.getTypeErasure(signature);
+		//signature= Signature.getElementType(signature);
+		//return Signature.toString(signature);
+		return "xxx";
 	}
 }

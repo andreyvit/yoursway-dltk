@@ -19,10 +19,8 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.search.indexing.SourceIndexer;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
-import org.eclipse.dltk.internal.core.mixin.MixinIndexer;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
 import org.eclipse.dltk.internal.core.search.IndexSelector;
-import org.eclipse.dltk.internal.core.util.HandleFactory;
 
 
 /**

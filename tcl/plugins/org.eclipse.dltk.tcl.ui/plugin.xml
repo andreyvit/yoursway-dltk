@@ -226,17 +226,6 @@
       </actionSetPartAssociation>
  </extension>
 <!-- Code completion -->
-	<extension
-		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
-		id="TclScriptNoTypeCompletionProposalComputer">
-		<scriptCompletionProposalComputer
-	        categoryId="org.eclipse.dltk.ui.scriptNoTypeProposalCategory"
-    	    class="org.eclipse.dltk.tcl.internal.ui.text.completion.TclNoTypeCompletionProposalComputer"
-	        toolkitId="org.eclipse.dltk.tcl.core.nature">
-			<partition type="__dftl_partition_content_type"/>
-   <partition type="__tcl_string"/>
-		</scriptCompletionProposalComputer>
-	</extension>
  <extension
        point="org.eclipse.ui.views">
     <view
@@ -308,6 +297,52 @@
 			<partition type="__dftl_partition_content_type"/>
 		</scriptCompletionProposalComputer>		
 	</extension>
+	<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="TclScriptNoTypeCompletionProposalComputer">
+		<scriptCompletionProposalComputer
+	        categoryId="org.eclipse.dltk.ui.scriptNoTypeProposalCategory"
+    	    class="org.eclipse.dltk.tcl.internal.ui.text.completion.TclNoTypeCompletionProposalComputer"
+	        toolkitId="org.eclipse.dltk.tcl.core.nature">
+			<partition type="__dftl_partition_content_type"/>
+   <partition type="__tcl_string"/>
+		</scriptCompletionProposalComputer>
+	</extension>
+ <extension
+      point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="%TclActionSet.label"
+            description="%TclActionSet.description"
+            visible="false"
+            id="org.eclipse.dltk.tcl.ui.TclActionSet">
+         <action
+            class="org.eclipse.dltk.tcl.internal.ui.actions.TclOpenTypeAction"
+            definitionId="org.eclipse.dltk.tcl.ui.navigate.open.type"
+            icon="icons/opentype.gif"
+            id="openType"
+            label="%OpenTypeAction.label"
+            menubarPath="navigate/open.ext2"
+            toolbarPath="org.eclipse.search.searchActionSet/Search"
+            tooltip="%OpenTypeAction.tooltip">
+         </action>
+      </actionSet>
+  </extension>
+ <extension
+       point="org.eclipse.ui.bindings">
+         <key
+            sequence="M1+M2+T"
+            commandId="org.eclipse.dltk.tcl.ui.navigate.open.type"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>       
+ </extension>
+ <extension
+       point="org.eclipse.ui.commands">
+       <command
+            name="%ActionDefinition.openType.name"
+            description="%ActionDefinition.openType.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.tcl.ui.navigate.open.type">
+         </command>
+ </extension>
   <extension
         point="org.eclipse.dltk.ui.scriptDocumentationProviders">
      <provider
@@ -350,40 +385,5 @@
       </objectContribution>      
    </extension> -->
   
-<!--Action Sets -->
- <extension
-      point="org.eclipse.ui.actionSets">
-      <actionSet
-            label="%TclActionSet.label"
-            description="%TclActionSet.description"
-            visible="false"
-            id="org.eclipse.dltk.tcl.ui.TclActionSet">
-         <action
-            class="org.eclipse.dltk.tcl.internal.ui.actions.TclOpenTypeAction"
-            definitionId="org.eclipse.dltk.tcl.ui.navigate.open.type"
-            icon="icons/opentype.gif"
-            id="openType"
-            label="%OpenTypeAction.label"
-            menubarPath="navigate/open.ext2"
-            toolbarPath="org.eclipse.search.searchActionSet/Search"
-            tooltip="%OpenTypeAction.tooltip">
-         </action>
-      </actionSet>
-  </extension>
- <extension
-       point="org.eclipse.ui.commands">
-       <command
-            name="%ActionDefinition.openType.name"
-            description="%ActionDefinition.openType.description"
-            categoryId="org.eclipse.ui.category.navigate"
-            id="org.eclipse.dltk.tcl.ui.navigate.open.type">
-         </command>
- </extension>
- <extension
-       point="org.eclipse.ui.bindings">
-         <key
-            sequence="M1+M2+T"
-            commandId="org.eclipse.dltk.tcl.ui.navigate.open.type"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>       
- </extension>  
+<!--Action Sets -->  
 </plugin>

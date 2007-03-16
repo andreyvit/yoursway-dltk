@@ -14,7 +14,6 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.CompletionContext;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.Flags;
-import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.ScriptElementImageDescriptor;
 import org.eclipse.dltk.ui.ScriptElementImageProvider;
@@ -26,7 +25,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * similar to the one provided by {@link org.eclipse.dltk.ui.ModelElementLabels},
  * but based on signatures and {@link CompletionProposal}s.
  * 
- * @see Signature
  * 
  */
 public abstract class CompletionProposalLabelProvider {

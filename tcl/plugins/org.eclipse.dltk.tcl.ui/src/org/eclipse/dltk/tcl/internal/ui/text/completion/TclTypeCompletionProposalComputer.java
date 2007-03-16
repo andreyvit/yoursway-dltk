@@ -11,6 +11,8 @@
 package org.eclipse.dltk.tcl.internal.ui.text.completion;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,7 +30,6 @@ import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
 import org.eclipse.jface.text.BadLocationException;
 
 /**
- * 
  * 
  */
 public class TclTypeCompletionProposalComputer extends
@@ -94,14 +95,16 @@ public class TclTypeCompletionProposalComputer extends
 
 	public List computeCompletionProposals(
 			ContentAssistInvocationContext context, IProgressMonitor monitor) {
+				
 		List types = super.computeCompletionProposals(context, monitor);
-
+		
 		if (context instanceof ScriptContentAssistInvocationContext) {
 			ScriptContentAssistInvocationContext scriptContext = (ScriptContentAssistInvocationContext) context;
 			try {
 				if (types.size() > 0
 						&& context.computeIdentifierPrefix().length() == 0) {
 					IType expectedType = scriptContext.getExpectedType();
+					
 					if (expectedType != null) {
 						// empty prefix completion - insert LRU types if known
 						LazyTclTypeCompletionProposal typeProposal = (LazyTclTypeCompletionProposal) types

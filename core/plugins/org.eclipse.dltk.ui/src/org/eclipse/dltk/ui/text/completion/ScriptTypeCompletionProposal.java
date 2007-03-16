@@ -12,7 +12,6 @@ package org.eclipse.dltk.ui.text.completion;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.Signature;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -41,7 +40,7 @@ public class ScriptTypeCompletionProposal extends ScriptCompletionProposal {
 		super(replacementString, replacementOffset, replacementLength, image, displayString, relevance);
 		fSourceModule= cu;
 		fFullyQualifiedTypeName= fullyQualifiedTypeName;
-		fUnqualifiedTypeName= fullyQualifiedTypeName != null ? Signature.getSimpleName(fullyQualifiedTypeName) : null;
+		fUnqualifiedTypeName = null;
 	}
 
 	protected boolean updateReplacementString(IDocument document, char trigger, int offset) throws CoreException, BadLocationException {
