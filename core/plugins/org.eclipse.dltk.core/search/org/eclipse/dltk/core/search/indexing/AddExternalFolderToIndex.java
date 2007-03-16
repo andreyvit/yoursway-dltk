@@ -14,11 +14,14 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.util.SimpleLookupTable;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ModelException;
@@ -186,6 +189,15 @@ class AddExternalFolderToIndex extends IndexRequest {
 
 	private void visit(SimpleLookupTable table, IDLTKProject project, File folder, ISourceElementParser parser, SourceIndexerRequestor requestor, IndexManager indexManager,
 			IPath container, boolean operation, SearchParticipant participant, Index index) {
+		
+		IDLTKLanguageToolkit toolkit = null;
+		try {
+			toolkit = DLTKLanguageManager.getLanguageToolkit(project);
+		} catch (CoreException e) {
+			if( DLTKCore.DEBUG ) {
+				e.printStackTrace();
+			}
+		}
 		File[] files = folder.listFiles();
 		if (files != null) {
 			for (int i = 0; i < files.length; ++i) {
@@ -212,7 +224,7 @@ class AddExternalFolderToIndex extends IndexRequest {
 							if (!operation) {
 								table.put(rPath.toString(), EXISTS);
 							} else {
-								indexDocument(parser, requestor, participant, index, path);
+								indexDocument(parser, requestor, participant, index, path, toolkit );
 							}
 						} else {
 							if (!Util.isExcluded(rPath, inclusionPatterns, exclusionPatterns, false)) {
@@ -220,7 +232,7 @@ class AddExternalFolderToIndex extends IndexRequest {
 									table.put(rPath.toString(), EXISTS);
 								}
 								else {
-									indexDocument(parser, requestor, participant, index, path);
+									indexDocument(parser, requestor, participant, index, path, toolkit );
 								}
 							}
 						}
@@ -232,7 +244,7 @@ class AddExternalFolderToIndex extends IndexRequest {
 		}
 	}
 
-	private void indexDocument(ISourceElementParser parser, SourceIndexerRequestor requestor, SearchParticipant participant, Index index, String path) {
+	private void indexDocument(ISourceElementParser parser, SourceIndexerRequestor requestor, SearchParticipant participant, Index index, String path, IDLTKLanguageToolkit toolkit ) {
 		char[] contents = null;
 		File ffile = new File(path);
 		if (ffile != null && ffile.exists()) {
@@ -247,6 +259,7 @@ class AddExternalFolderToIndex extends IndexRequest {
 		DLTKSearchDocument entryDocument = new DLTKSearchDocument(dpath.toOSString(), containerPath, contents, participant, true);
 		entryDocument.parser = parser;
 		entryDocument.requestor = requestor;
+		entryDocument.toolkit = toolkit;
 		this.manager.indexDocument(entryDocument, participant, index, this.containerPath);
 	}
 
