@@ -9,7 +9,7 @@ import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
 import org.eclipse.dltk.javascript.internal.ui.text.JavaScriptPairMatcher;
 import org.eclipse.dltk.javascript.internal.ui.text.folding.JavascriptFoldingStructureProvider;
 import org.eclipse.dltk.javascript.ui.text.IJavaScriptPartitions;
-import org.eclipse.dltk.ui.text.TextTools;
+import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.dltk.ui.text.folding.IFoldingStructureProvider;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
@@ -34,7 +34,7 @@ public class JavaScriptEditor extends ScriptEditor {
 		return JavaScriptUI.getDefault().getPreferenceStore();
 	}
 
-	protected TextTools getTextTools() {
+	protected ScriptTextTools getTextTools() {
 		return JavaScriptUI.getDefault().getTextTools();
 	}
 

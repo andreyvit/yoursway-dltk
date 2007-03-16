@@ -9,91 +9,95 @@ import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.rules.IPartitionTokenScanner;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-
-public abstract class TextTools {
-	
-	/** The color manager. */
+public abstract class ScriptTextTools {
 	private DLTKColorManager fColorManager;
+
 	private String fDefaultPartitioning;
+
 	private String[] fLegalContentTypes;
 
-	protected TextTools(String defaultPartitioning, String[] legalContentTypes,
+	protected ScriptTextTools(String defaultPartitioning, String[] legalContentTypes,
 			boolean autoDisposeOnDisplayDispose) {
 		fDefaultPartitioning = defaultPartitioning;
 		fLegalContentTypes = legalContentTypes;
 		fColorManager = new DLTKColorManager(autoDisposeOnDisplayDispose);
 	}
-	
+
 	/**
 	 * Disposes all the individual tools of this tools collection.
 	 */
 	public void dispose() {
 		if (fColorManager != null) {
 			fColorManager.dispose();
-			fColorManager= null;
+			fColorManager = null;
 		}
 	}
-	
+
 	/**
-	 * Returns the color manager which is used to manage
-	 * any DLTK-specific colors needed for such things like syntax highlighting.
+	 * Returns the color manager which is used to manage any DLTK-specific
+	 * colors needed for such things like syntax highlighting.
 	 * <p>
 	 * Clients which are only interested in the color manager of the DLTK UI
 	 * plug-in should use ....
 	 * </p>
-	 *
+	 * 
 	 * @return the color manager to be used for DLTK text viewers
 	 */
 	public IColorManager getColorManager() {
 		return fColorManager;
 	}
-	
+
 	public final DLTKSourceViewerConfiguration createSourceViewerConfiguraton(
 			IPreferenceStore preferenceStore, ITextEditor editor) {
-		return createSourceViewerConfiguraton(preferenceStore, editor, fDefaultPartitioning);
+		return createSourceViewerConfiguraton(preferenceStore, editor,
+				fDefaultPartitioning);
 	}
 
 	public abstract DLTKSourceViewerConfiguration createSourceViewerConfiguraton(
-			IPreferenceStore preferenceStore, ITextEditor editor, String partitioning);
-	
+			IPreferenceStore preferenceStore, ITextEditor editor,
+			String partitioning);
+
 	public abstract IPartitionTokenScanner getPartitionScanner();
-	
+
 	/**
-	 * Factory method for creating a script-specific document partitioner
-	 * using this object's partitions scanner. This method is a
-	 * convenience method.
-	 *
+	 * Factory method for creating a script-specific document partitioner using
+	 * this object's partitions scanner. This method is a convenience method.
+	 * 
 	 * @return a newly created script document partitioner
 	 */
 	public IDocumentPartitioner createDocumentPartitioner() {
 		return new FastPartitioner(getPartitionScanner(), fLegalContentTypes);
 	}
-	
+
 	/**
-	 * Sets up the script document partitioner for the given document for the default partitioning.
-	 *
-	 * @param document the document to be set up
+	 * Sets up the script document partitioner for the given document for the
+	 * default partitioning.
+	 * 
+	 * @param document
+	 *            the document to be set up
 	 */
 	public void setupDocumentPartitioner(IDocument document) {
-		setupDocumentPartitioner(document, IDocumentExtension3.DEFAULT_PARTITIONING);
+		setupDocumentPartitioner(document,
+				IDocumentExtension3.DEFAULT_PARTITIONING);
 	}
 
 	/**
-	 * Sets up the script document partitioner for the given document for the given partitioning.
-	 *
-	 * @param document the document to be set up
-	 * @param partitioning the document partitioning
+	 * Sets up the script document partitioner for the given document for the
+	 * given partitioning.
+	 * 
+	 * @param document
+	 *            the document to be set up
+	 * @param partitioning
+	 *            the document partitioning
 	 */
 	public void setupDocumentPartitioner(IDocument document, String partitioning) {
-		IDocumentPartitioner partitioner= createDocumentPartitioner();
-		partitioner.connect(document); //XXX fourdman
+		IDocumentPartitioner partitioner = createDocumentPartitioner();
+		partitioner.connect(document); // XXX fourdman
 		if (document instanceof IDocumentExtension3) {
-			IDocumentExtension3 extension3= (IDocumentExtension3) document;
+			IDocumentExtension3 extension3 = (IDocumentExtension3) document;
 			extension3.setDocumentPartitioner(partitioning, partitioner);
 		} else {
 			document.setDocumentPartitioner(partitioner);
 		}
-		
 	}
-	
 }

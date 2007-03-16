@@ -21,7 +21,7 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.PreferenceConstants;
-import org.eclipse.dltk.ui.text.TextTools;
+import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.BadLocationException;
@@ -749,11 +749,11 @@ public abstract class AbstractScriptCompletionProposal implements
 				.getPreferenceStore();
 		RGB rgb = PreferenceConverter.getColor(preference,
 				PreferenceConstants.CODEASSIST_REPLACEMENT_FOREGROUND);
-		TextTools textTools = getTextTools();
+		ScriptTextTools textTools = getTextTools();
 		return textTools.getColorManager().getColor(rgb);
 	}
 
-	private static TextTools getTextTools() {
+	private static ScriptTextTools getTextTools() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -764,7 +764,7 @@ public abstract class AbstractScriptCompletionProposal implements
 				.getPreferenceStore();
 		RGB rgb = PreferenceConverter.getColor(preference,
 				PreferenceConstants.CODEASSIST_REPLACEMENT_BACKGROUND);
-		TextTools textTools = getTextTools();
+		ScriptTextTools textTools = getTextTools();
 		return textTools.getColorManager().getColor(rgb);
 	}
 

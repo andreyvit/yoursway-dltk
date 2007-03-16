@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.eclipse.dltk.ruby.core.text.RubyContext;
 import org.eclipse.dltk.ruby.internal.ui.text.syntax.RubyContextUtils;
-import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
+import org.eclipse.dltk.ruby.ui.text.RubyPartitions;
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.MultiLineRule;
@@ -24,11 +24,11 @@ public class RubyPartitionScanner extends RuleBasedPartitionScanner {
 	public RubyPartitionScanner() {
 		super();
 
-		string = new Token(IRubyPartitions.RUBY_STRING);
+		string = new Token(RubyPartitions.RUBY_STRING);
 
-		comment = new Token(IRubyPartitions.RUBY_COMMENT);
+		comment = new Token(RubyPartitions.RUBY_COMMENT);
 
-		rubyDoc = new Token(IRubyPartitions.RUBY_DOC);
+		rubyDoc = new Token(RubyPartitions.RUBY_DOC);
 
 		List/* < IPredicateRule > */rules = new ArrayList/* <IPredicateRule> */();
 
@@ -62,11 +62,11 @@ public class RubyPartitionScanner extends RuleBasedPartitionScanner {
 	}
 
 	protected Token getToken(String key) {
-		if (IRubyPartitions.RUBY_STRING.equals(key))
+		if (RubyPartitions.RUBY_STRING.equals(key))
 			return string;
-		if (IRubyPartitions.RUBY_COMMENT.equals(key))
+		if (RubyPartitions.RUBY_COMMENT.equals(key))
 			return comment;
-		if (IRubyPartitions.RUBY_DOC.equals(key))
+		if (RubyPartitions.RUBY_DOC.equals(key))
 			return rubyDoc;
 		return null;
 	}

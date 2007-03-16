@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%forTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.for1" 
+	name="for">for ${obj} in ${collection}
+  ${cursor}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%forTemplate2.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.for2" 
+	name="for">for ${i} in ${start_num}..${end_num}
+  ${cursor}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%defTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.def1" 
+	name="def">def ${method_name}
+  ${cursor}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%whileTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.while1" 
+	name="while">while ${condition}
+  ${cursor}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%whileTemplate2.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.while2" 
+	name="while">while ${condition}</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%classTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.class1" 
+	name="class">class ${ClassName}
+  ${cursor}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%classTemplate2.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.class2" 
+	name="class">class &lt;&lt; ${obj}
+  ${cursor}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%moduleTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.module1" 
+	name="module">module ${ModuleName}
+  ${cursor}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%doTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.do1" 
+	name="do">do |${block_var}|
+  ${cursor}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%ifTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.if1" 
+	name="if">if ${condition}
+  ${cursor}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%ifTemplate2.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.if2" 
+	name="if">if __FILE__ == $0
+    ${cursor}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%ifelseTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.ifelse1" 
+	name="ifelse">if ${condition}
+  ${if_body}
+else
+  ${else_body}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%elsifTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.elsif1" 
+	name="elsif">elsif ${condition}
+  ${cursor}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%caseTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.case" 
+	name="case">case ${condition}
+  when ${comparison1}
+    ${comparison1_body}
+  when ${comparison2}
+    ${comparison2_body}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%elseTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.else" 
+	name="else">else ${condition}
+  ${cursor}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%beginTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.begin1" 
+	name="begin">begin
+ ${body}
+end until {$condition}</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%beginTemplate2.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.begin2" 
+	name="begin">begin
+ ${body}
+end while {$condition}</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%beginTemplate3.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.begin3" 
+	name="begin">begin
+ ${begin_body}
+rescue ${ErrorType}
+  ${rescue_body}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%beginTemplate4.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.begin4" 
+	name="begin">begin
+ ${begin_body}
+rescue ${ErrorType}
+  ${rescue_body}
+ensure
+  ${ensure_body}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%untilTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.until1" 
+	name="until">until ${condition}
+  ${cursor}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%aliasTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.alias1" 
+	name="alias">alias :${new_method} :${old_method}</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%rescueTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.rescue1" 
+	name="rescue">rescue ${ErrorType}
+	${rescue_body}
+end</template>
+
+<template 
+	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	description="%rescueTemplate2.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.rescue2" 
+	name="rescue">rescue ${ErrorType} =&gt; ${error_var}
+	${rescue_body}
+end</template>
+
+</templates>

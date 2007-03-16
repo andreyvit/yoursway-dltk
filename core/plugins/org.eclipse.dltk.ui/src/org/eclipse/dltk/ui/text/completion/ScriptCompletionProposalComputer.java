@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
@@ -125,9 +126,15 @@ public abstract class ScriptCompletionProposalComputer implements
 		if (selection.y > 0) {
 			collector.setReplacementLength(selection.y);
 		}
+		
 
 		// Fillig collector with proposals
 		try {
+			IModelElement element = sourceModule.getElementAt(offset);
+			if (element != null){
+				System.out.println("========= Model element: " + element.getClass());
+			}
+			
 			sourceModule.codeComplete(offset, collector);
 		} catch (ModelException e) {
 			handleCodeCompletionException(e, context);
@@ -234,6 +241,7 @@ public abstract class ScriptCompletionProposalComputer implements
 
 	public List computeCompletionProposals(
 			ContentAssistInvocationContext context, IProgressMonitor monitor) {
+		
 		if (context instanceof ScriptContentAssistInvocationContext) {
 			ScriptContentAssistInvocationContext scriptContext = (ScriptContentAssistInvocationContext) context;
 

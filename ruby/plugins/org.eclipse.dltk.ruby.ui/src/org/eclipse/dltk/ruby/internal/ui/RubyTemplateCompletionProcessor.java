@@ -1,6 +1,6 @@
 package org.eclipse.dltk.ruby.internal.ui;
 
-import org.eclipse.dltk.ruby.ui.RubyTemplateContext;
+import org.eclipse.dltk.ruby.ui.RubyTemplateContextType;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.templates.Template;
@@ -19,7 +19,7 @@ public class RubyTemplateCompletionProcessor extends TemplateCompletionProcessor
 		System.out.println("==== Region: " + region.getLength());
 				
 		return RubyUI.getDefault().getContextTypeRegistry().getContextType(
-				RubyTemplateContext.TEMPLATE_ID);
+				RubyTemplateContextType.TEMPLATE_ID);
 	}
 
 	protected Image getImage(Template template) {

@@ -40,7 +40,7 @@ import org.eclipse.dltk.ui.actions.IDLTKEditorActionDefinitionIds;
 import org.eclipse.dltk.ui.actions.OpenEditorActionGroup;
 import org.eclipse.dltk.ui.actions.OpenViewActionGroup;
 import org.eclipse.dltk.ui.text.DLTKSourceViewerConfiguration;
-import org.eclipse.dltk.ui.text.TextTools;
+import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.dltk.ui.text.folding.IFoldingStructureProvider;
 import org.eclipse.dltk.ui.text.folding.IFoldingStructureProviderExtension;
 import org.eclipse.jface.action.Action;
@@ -724,7 +724,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	
 	protected abstract IPreferenceStore getScriptPreferenceStore();
 
-	protected abstract TextTools getTextTools();
+	protected abstract ScriptTextTools getTextTools();
 
 	protected abstract void connectPartitioningToElement(IEditorInput input,
 			IDocument document);

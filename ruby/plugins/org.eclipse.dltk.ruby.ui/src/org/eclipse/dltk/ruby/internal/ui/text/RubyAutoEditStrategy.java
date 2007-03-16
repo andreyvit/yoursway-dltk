@@ -2,7 +2,7 @@ package org.eclipse.dltk.ruby.internal.ui.text;
 
 import java.util.regex.Pattern;
 
-import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
+import org.eclipse.dltk.ruby.ui.text.RubyPartitions;
 import org.eclipse.dltk.ui.text.util.AutoEditUtils;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
@@ -49,11 +49,11 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 	 *            the document
 	 */
 	private static void installStuff(Document document) {
-		String[] types = new String[] { IRubyPartitions.RUBY_STRING, IRubyPartitions.RUBY_COMMENT,
+		String[] types = new String[] { RubyPartitions.RUBY_STRING, RubyPartitions.RUBY_COMMENT,
 				IDocument.DEFAULT_CONTENT_TYPE };
 		FastPartitioner partitioner = new FastPartitioner(new RubyPartitionScanner(), types);
 		partitioner.connect(document);
-		document.setDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING, partitioner);
+		document.setDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING, partitioner);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 	 *            the document
 	 */
 	private static void removeStuff(Document document) {
-		document.setDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING, null);
+		document.setDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING, null);
 	}
 
 	/**

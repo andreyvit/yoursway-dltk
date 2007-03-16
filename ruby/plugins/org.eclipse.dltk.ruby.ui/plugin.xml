@@ -243,8 +243,13 @@
  <extension
        point="org.eclipse.ui.editors.templates">
     <contextType
-          class="org.eclipse.dltk.ruby.ui.RubyTemplateContext"
-          id="org.eclipse.dltk.ruby.ui.RubyTemplateContext">
+          class="org.eclipse.dltk.ruby.ui.RubyTemplateContextType"
+          id="org.eclipse.dltk.ruby.ui.RubyTemplateContextType"
+          name="Ruby templates">
     </contextType>
+    <include
+          file="templates/templates.xml"
+          translations="templates/templates.properties">
+    </include>
  </extension>
 </plugin>

@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.Preferences;
-import org.eclipse.dltk.internal.ui.preferences.DLTKSourcePreviewerUpdater;
+import org.eclipse.dltk.internal.ui.preferences.ScriptSourcePreviewerUpdater;
 import org.eclipse.dltk.internal.ui.text.DLTKColorManager;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.PreferencesAdapter;
@@ -847,7 +847,7 @@ public abstract class AbstractDLTKEditorColoringConfigurationBlock extends
 //		Font font = JFaceResources
 //				.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
 		//fPreviewViewer.getTextWidget().setFont(font);
-		new DLTKSourcePreviewerUpdater(fPreviewViewer, configuration, store);
+		new ScriptSourcePreviewerUpdater(fPreviewViewer, configuration, store);
 		fPreviewViewer.setEditable(false);
 
 		String content = getPreviewContent(); 

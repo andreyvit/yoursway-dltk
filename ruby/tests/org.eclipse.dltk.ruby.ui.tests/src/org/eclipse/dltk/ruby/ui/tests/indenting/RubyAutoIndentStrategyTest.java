@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyAutoEditStrategy;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
-import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
+import org.eclipse.dltk.ruby.ui.text.RubyPartitions;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceStore;
@@ -42,12 +42,12 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 	 *            the document
 	 */
 	private void installStuff(Document document) {
-		String[] types = new String[] { IRubyPartitions.RUBY_STRING,
-				IRubyPartitions.RUBY_COMMENT, IDocument.DEFAULT_CONTENT_TYPE };
+		String[] types = new String[] { RubyPartitions.RUBY_STRING,
+				RubyPartitions.RUBY_COMMENT, IDocument.DEFAULT_CONTENT_TYPE };
 		FastPartitioner partitioner = new FastPartitioner(
 				new RubyPartitionScanner(), types);
 		partitioner.connect(document);
-		document.setDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING,
+		document.setDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING,
 				partitioner);
 	}
 
@@ -55,7 +55,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	fStore = new PreferenceStore();
     	RubyPreferenceConstants.initializeDefaultValues(fStore);
     	fStore.setValue(CodeFormatterConstants.FORMATTER_TAB_CHAR, CodeFormatterConstants.SPACE);
-		String fPartitioning = IRubyPartitions.RUBY_PARTITIONING;
+		String fPartitioning = RubyPartitions.RUBY_PARTITIONING;
     	strategy = new RubyAutoEditStrategy(fStore, fPartitioning);
         super.setUp();
     }

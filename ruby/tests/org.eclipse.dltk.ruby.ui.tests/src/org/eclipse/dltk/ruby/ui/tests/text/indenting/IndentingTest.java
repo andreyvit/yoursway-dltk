@@ -6,7 +6,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyAutoEditStrategy;
 import org.eclipse.dltk.ruby.ui.tests.internal.TestUtils;
-import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
+import org.eclipse.dltk.ruby.ui.text.RubyPartitions;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.DocCmd;
@@ -29,7 +29,7 @@ public class IndentingTest extends TestCase {
     	store.setValue(CodeFormatterConstants.FORMATTER_TAB_CHAR, 
     			(useTabs ? CodeFormatterConstants.TAB : CodeFormatterConstants.SPACE));
     	RubyPreferenceConstants.initializeDefaultValues(store);
-		String partitioning = IRubyPartitions.RUBY_PARTITIONING;
+		String partitioning = RubyPartitions.RUBY_PARTITIONING;
     	RubyAutoEditStrategy result = new RubyAutoEditStrategy(store, partitioning);
 		return result;
 	}

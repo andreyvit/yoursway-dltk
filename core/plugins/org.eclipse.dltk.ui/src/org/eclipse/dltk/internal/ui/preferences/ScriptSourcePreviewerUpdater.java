@@ -24,7 +24,7 @@ import org.eclipse.swt.events.DisposeListener;
 /**
  * Handles dltk editor font changes for script source preview viewers.
  */
-public class DLTKSourcePreviewerUpdater {
+public class ScriptSourcePreviewerUpdater {
 
 	/**
 	 * Creates a script source preview updater for the given viewer,
@@ -37,7 +37,7 @@ public class DLTKSourcePreviewerUpdater {
 	 * @param preferenceStore
 	 *            the preference store
 	 */
-	public DLTKSourcePreviewerUpdater(final SourceViewer viewer,
+	public ScriptSourcePreviewerUpdater(final SourceViewer viewer,
 			final DLTKSourceViewerConfiguration configuration,
 			final IPreferenceStore preferenceStore) {
 		Assert.isNotNull(viewer);
@@ -72,6 +72,7 @@ public class DLTKSourcePreviewerUpdater {
 						fontChangeListener);
 			}
 		});
+		
 		JFaceResources.getFontRegistry().addListener(fontChangeListener);
 		preferenceStore.addPropertyChangeListener(propertyChangeListener);
 	}

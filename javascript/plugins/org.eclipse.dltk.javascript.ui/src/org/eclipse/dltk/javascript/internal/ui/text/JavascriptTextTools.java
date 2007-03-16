@@ -2,13 +2,13 @@ package org.eclipse.dltk.javascript.internal.ui.text;
 
 import org.eclipse.dltk.javascript.ui.text.IJavaScriptPartitions;
 import org.eclipse.dltk.ui.text.DLTKSourceViewerConfiguration;
-import org.eclipse.dltk.ui.text.TextTools;
+import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.rules.IPartitionTokenScanner;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 
-public class JavascriptTextTools extends TextTools {
+public class JavascriptTextTools extends ScriptTextTools {
 	
 	private IPartitionTokenScanner fPartitionScanner;
 	

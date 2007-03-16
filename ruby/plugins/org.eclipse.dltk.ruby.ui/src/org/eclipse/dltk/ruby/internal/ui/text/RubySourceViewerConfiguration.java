@@ -7,7 +7,7 @@ import org.eclipse.dltk.internal.ui.text.ScriptElementProvider;
 import org.eclipse.dltk.ruby.internal.ui.text.completion.RubyCompletionProcessor;
 import org.eclipse.dltk.ruby.internal.ui.text.completion.RubyContentAssistPreference;
 import org.eclipse.dltk.ruby.internal.ui.typehierarchy.RubyHierarchyInformationControl;
-import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
+import org.eclipse.dltk.ruby.ui.text.RubyPartitions;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.text.AbstractScriptScanner;
 import org.eclipse.dltk.ui.text.DLTKSourceViewerConfiguration;
@@ -60,7 +60,7 @@ public class RubySourceViewerConfiguration extends
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		//return new String[] { IDocument.DEFAULT_CONTENT_TYPE,
 		//		IRubyPartitions.RUBY_STRING, IRubyPartitions.RUBY_COMMENT, IRubyPartitions.RUBY_DOC};
-		return IRubyPartitions.RUBY_PARTITION_TYPES;
+		return RubyPartitions.RUBY_PARTITION_TYPES;
 	}
 
 	public String[] getIndentPrefixes(ISourceViewer sourceViewer,
@@ -126,17 +126,17 @@ public class RubySourceViewerConfiguration extends
 		reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
 
 		dr = new DefaultDamagerRepairer(getStringScanner());
-		reconciler.setDamager(dr, IRubyPartitions.RUBY_STRING);
-		reconciler.setRepairer(dr, IRubyPartitions.RUBY_STRING);
+		reconciler.setDamager(dr, RubyPartitions.RUBY_STRING);
+		reconciler.setRepairer(dr, RubyPartitions.RUBY_STRING);
 		
 		dr = new DefaultDamagerRepairer(getDocScanner());
-		reconciler.setDamager(dr, IRubyPartitions.RUBY_DOC);
-		reconciler.setRepairer(dr, IRubyPartitions.RUBY_DOC);
+		reconciler.setDamager(dr, RubyPartitions.RUBY_DOC);
+		reconciler.setRepairer(dr, RubyPartitions.RUBY_DOC);
 
 		
 		dr = new DefaultDamagerRepairer(getCommentScanner());
-		reconciler.setDamager(dr, IRubyPartitions.RUBY_COMMENT);
-		reconciler.setRepairer(dr, IRubyPartitions.RUBY_COMMENT);
+		reconciler.setDamager(dr, RubyPartitions.RUBY_COMMENT);
+		reconciler.setRepairer(dr, RubyPartitions.RUBY_COMMENT);
 
 
 		return reconciler;

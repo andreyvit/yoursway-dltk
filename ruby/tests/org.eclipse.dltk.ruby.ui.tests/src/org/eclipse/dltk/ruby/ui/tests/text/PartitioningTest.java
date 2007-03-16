@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ruby.ui.tests.internal.TestUtils;
-import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
+import org.eclipse.dltk.ruby.ui.text.RubyPartitions;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITypedRegion;
@@ -25,7 +25,7 @@ public class PartitioningTest extends TestCase {
 		TestUtils.installStuff(doc);
 		StringBuffer expected = new StringBuffer(), actual = new StringBuffer();
 		for (int offset = startPos; offset < endPos; offset++) {
-			ITypedRegion p2 = TextUtilities.getPartition(doc, IRubyPartitions.RUBY_PARTITIONING, offset, 
+			ITypedRegion p2 = TextUtilities.getPartition(doc, RubyPartitions.RUBY_PARTITIONING, offset, 
 				(offset > startPos));
 			expected.append(offset);
 			expected.append(" ");
@@ -46,29 +46,29 @@ public class PartitioningTest extends TestCase {
 	}
 	
 	public void testString() throws Exception {
-		doTest("puts §\"Hello, world\"§, a", IRubyPartitions.RUBY_STRING);
+		doTest("puts §\"Hello, world\"§, a", RubyPartitions.RUBY_STRING);
 	}
 	
 	public void testPercentStringAfterPuts() throws Exception {
-		doTest("puts §%s/foo bar boz/§ / 2", IRubyPartitions.RUBY_STRING);
+		doTest("puts §%s/foo bar boz/§ / 2", RubyPartitions.RUBY_STRING);
 	}
 	
 	public void testPercentStringAfterMethodCall() throws Exception {
-		doTest("def foo(*args); puts(*args); end\nfoo §%s/foo bar boz/§ / 2", IRubyPartitions.RUBY_STRING);
+		doTest("def foo(*args); puts(*args); end\nfoo §%s/foo bar boz/§ / 2", RubyPartitions.RUBY_STRING);
 	}
 	
 	public void testPercentOperatorAfterVariable() throws Exception {
 		// XXX: this does not start a string in Ruby, but will be treated as a string in IDE
-		doTest("foo = 20\nfoo §%s/foo bar boz/§ 2", IRubyPartitions.RUBY_STRING);
+		doTest("foo = 20\nfoo §%s/foo bar boz/§ 2", RubyPartitions.RUBY_STRING);
 	}
 	
 	public void testPercentDoesStartString() throws Exception {
-		doTest("if a == §%s/2/§ then puts 1 else puts 2 end", IRubyPartitions.RUBY_STRING);
+		doTest("if a == §%s/2/§ then puts 1 else puts 2 end", RubyPartitions.RUBY_STRING);
 	}
 	
 	public void testPercentDoesNotStartString() throws Exception {
 		// XXX: this does not start a string in Ruby, but will be treated as a string in IDE
-		doTest("puts bar §%s/2/§\n3", IRubyPartitions.RUBY_STRING);
+		doTest("puts bar §%s/2/§\n3", RubyPartitions.RUBY_STRING);
 	}
 	
 	private void doHereDocTest(String data) throws Exception {
@@ -76,13 +76,13 @@ public class PartitioningTest extends TestCase {
 		String s2 = data.replaceAll("±", "§");
 		String s3 = data.replaceAll("ø", "§");
 		String s4 = data.replaceAll("∑", "§");
-		doTest(s1, IRubyPartitions.RUBY_STRING);
+		doTest(s1, RubyPartitions.RUBY_STRING);
 		if (!data.equals(s2))
-			doTest(s2, IRubyPartitions.RUBY_STRING);
+			doTest(s2, RubyPartitions.RUBY_STRING);
 		if (!data.equals(s3))
-			doTest(s3, IRubyPartitions.RUBY_STRING);
+			doTest(s3, RubyPartitions.RUBY_STRING);
 		if (!data.equals(s4))
-			doTest(s3, IRubyPartitions.RUBY_STRING);
+			doTest(s3, RubyPartitions.RUBY_STRING);
 	}
 	
 	public void testAllSortsOfHeredocs() throws Exception {

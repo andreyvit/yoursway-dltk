@@ -13,7 +13,7 @@ package org.eclipse.dltk.ruby.internal.ui.editor;
 import org.eclipse.core.filebuffers.IDocumentSetupParticipant;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyTextTools;
-import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
+import org.eclipse.dltk.ruby.ui.text.RubyPartitions;
 import org.eclipse.jface.text.IDocument;
 
 /**
@@ -28,6 +28,6 @@ public class RubyDocumentSetupParticipant implements
 	public void setup(IDocument document) {
 		RubyTextTools tools = RubyUI.getDefault().getTextTools();
 		tools.setupDocumentPartitioner(document,
-				IRubyPartitions.RUBY_PARTITIONING);
+				RubyPartitions.RUBY_PARTITIONING);
 	}
 }

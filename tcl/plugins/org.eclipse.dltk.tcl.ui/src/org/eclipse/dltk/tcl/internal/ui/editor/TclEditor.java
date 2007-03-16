@@ -15,7 +15,7 @@ import org.eclipse.dltk.tcl.ui.TclPreferenceConstants;
 import org.eclipse.dltk.tcl.ui.text.TclPartitions;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.actions.IDLTKEditorActionDefinitionIds;
-import org.eclipse.dltk.ui.text.TextTools;
+import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.dltk.ui.text.folding.IFoldingStructureProvider;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -122,7 +122,7 @@ public class TclEditor extends ScriptEditor {
 		return TclUI.getDefault().getPreferenceStore(); 
 	}
 	
-	protected TextTools getTextTools() {
+	protected ScriptTextTools getTextTools() {
 		return TclUI.getDefault().getTclTextTools();
 	}
 

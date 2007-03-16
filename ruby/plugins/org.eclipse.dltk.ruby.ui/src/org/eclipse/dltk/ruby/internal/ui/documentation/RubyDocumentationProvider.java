@@ -15,7 +15,7 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
 import org.eclipse.dltk.ruby.internal.ui.docs.RiHelper;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
-import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
+import org.eclipse.dltk.ruby.ui.text.RubyPartitions;
 import org.eclipse.dltk.ui.documentation.IScriptDocumentationProvider;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
@@ -39,11 +39,11 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 	 *            the document
 	 */
 	private static void installStuff(Document document) {
-		String[] types = new String[] { IRubyPartitions.RUBY_STRING, IRubyPartitions.RUBY_COMMENT,
+		String[] types = new String[] { RubyPartitions.RUBY_STRING, RubyPartitions.RUBY_COMMENT,
 				IDocument.DEFAULT_CONTENT_TYPE };
 		FastPartitioner partitioner = new FastPartitioner(new RubyPartitionScanner(), types);
 		partitioner.connect(document);
-		document.setDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING, partitioner);
+		document.setDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING, partitioner);
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 	 *            the document
 	 */
 	private static void removeStuff(Document document) {
-		document.setDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING, null);
+		document.setDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING, null);
 	}
 	
 	protected String getHeaderComment(IMember member) {
@@ -101,10 +101,10 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 			try {
 				while (pos >= 0 && pos <= doc.getLength()) {
 					ITypedRegion region = TextUtilities.getPartition(doc,
-							IRubyPartitions.RUBY_PARTITIONING, pos, true);
-					if (region.getType().equals(IRubyPartitions.RUBY_DOC)
+							RubyPartitions.RUBY_PARTITIONING, pos, true);
+					if (region.getType().equals(RubyPartitions.RUBY_DOC)
 							|| region.getType().equals(
-									IRubyPartitions.RUBY_COMMENT)) {
+									RubyPartitions.RUBY_COMMENT)) {
 						start = region.getOffset();
 					}
 					if (region.getType().equals(IDocument.DEFAULT_CONTENT_TYPE)) {
@@ -120,10 +120,10 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 				
 				while (pos <= doc.getLength()) {
 					ITypedRegion region = TextUtilities.getPartition(doc,
-							IRubyPartitions.RUBY_PARTITIONING, pos, true);
-					if (region.getType().equals(IRubyPartitions.RUBY_DOC)
+							RubyPartitions.RUBY_PARTITIONING, pos, true);
+					if (region.getType().equals(RubyPartitions.RUBY_DOC)
 							|| region.getType().equals(
-									IRubyPartitions.RUBY_COMMENT)) {
+									RubyPartitions.RUBY_COMMENT)) {
 						end = region.getOffset() + region.getLength();
 					}
 					if (region.getType().equals(IDocument.DEFAULT_CONTENT_TYPE)) {

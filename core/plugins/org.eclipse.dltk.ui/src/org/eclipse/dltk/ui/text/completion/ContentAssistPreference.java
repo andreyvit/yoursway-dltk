@@ -12,7 +12,7 @@ package org.eclipse.dltk.ui.text.completion;
 
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.text.IColorManager;
-import org.eclipse.dltk.ui.text.TextTools;
+import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.IDocument;
@@ -60,10 +60,10 @@ public abstract class ContentAssistPreference {
 		return manager.getColor(rgb);
 	}	
 
-	protected abstract TextTools getTextTools();	
+	protected abstract ScriptTextTools getTextTools();	
 	
 	private Color getColor(IPreferenceStore store, String key) {
-		TextTools textTools= getTextTools();
+		ScriptTextTools textTools= getTextTools();
 		return getColor(store, key, textTools.getColorManager());
 	}
 
@@ -96,7 +96,7 @@ public abstract class ContentAssistPreference {
 	 */
 	public void configure(ContentAssistant assistant, IPreferenceStore store) {
 
-		TextTools textTools= getTextTools();
+		ScriptTextTools textTools= getTextTools();
 		IColorManager manager= textTools.getColorManager();
 
 		boolean enabled= store.getBoolean(AUTOACTIVATION);

@@ -8,7 +8,7 @@ import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
 import org.eclipse.dltk.ruby.internal.ui.editor.RubyDocumentSetupParticipant;
 import org.eclipse.dltk.ruby.ui.preferences.RubyPreferencesMessages;
-import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
+import org.eclipse.dltk.ruby.ui.text.RubyPartitions;
 import org.eclipse.dltk.ui.preferences.AbstractDLTKEditorColoringConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
@@ -82,7 +82,7 @@ public class RubyEditorColoringConfigurationBlock extends
 			IColorManager colorManager, IPreferenceStore preferenceStore,
 			ITextEditor editor, boolean configureFormatter) {
 		return new SimpleRubySourceViewerConfiguration(colorManager,
-				preferenceStore, editor, IRubyPartitions.RUBY_PARTITIONING,
+				preferenceStore, editor, RubyPartitions.RUBY_PARTITIONING,
 				configureFormatter);
 	}
 

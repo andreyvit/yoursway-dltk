@@ -9,9 +9,9 @@ import org.eclipse.dltk.internal.ui.editor.ToggleCommentAction;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.dltk.ruby.internal.ui.text.folding.RubyFoldingStructureProvider;
-import org.eclipse.dltk.ruby.ui.text.IRubyPartitions;
+import org.eclipse.dltk.ruby.ui.text.RubyPartitions;
 import org.eclipse.dltk.ui.actions.IDLTKEditorActionDefinitionIds;
-import org.eclipse.dltk.ui.text.TextTools;
+import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.dltk.ui.text.folding.IFoldingStructureProvider;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -38,7 +38,7 @@ public class RubyEditor extends ScriptEditor {
 		return RubyUI.getDefault().getPreferenceStore();
 	}
 
-	protected TextTools getTextTools() {
+	protected ScriptTextTools getTextTools() {
 		return RubyUI.getDefault().getTextTools();
 	}
 
@@ -52,7 +52,7 @@ public class RubyEditor extends ScriptEditor {
 		if (document instanceof IDocumentExtension3) {
 			IDocumentExtension3 extension = (IDocumentExtension3) document;
 			if (extension
-					.getDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING) == null) {
+					.getDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING) == null) {
 				RubyDocumentSetupParticipant participant = new RubyDocumentSetupParticipant();
 				participant.setup(document);
 			}

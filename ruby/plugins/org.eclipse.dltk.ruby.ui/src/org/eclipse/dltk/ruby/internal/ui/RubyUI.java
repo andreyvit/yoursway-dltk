@@ -3,7 +3,7 @@ package org.eclipse.dltk.ruby.internal.ui;
 import java.io.IOException;
 
 import org.eclipse.dltk.ruby.internal.ui.text.RubyTextTools;
-import org.eclipse.dltk.ruby.ui.RubyTemplateContext;
+import org.eclipse.dltk.ruby.ui.RubyTemplateContextType;
 import org.eclipse.jface.text.templates.ContextTypeRegistry;
 import org.eclipse.jface.text.templates.persistence.TemplateStore;
 import org.eclipse.ui.editors.text.templates.ContributionContextTypeRegistry;
@@ -87,7 +87,7 @@ public class RubyUI extends AbstractUIPlugin {
         if (fRegistry == null) {
             // create an configure the contexts available in the template editor
             fRegistry = new ContributionContextTypeRegistry();
-            fRegistry.addContextType(RubyTemplateContext.TEMPLATE_ID);
+            fRegistry.addContextType(RubyTemplateContextType.TEMPLATE_ID);            
         }
         return fRegistry;
     }
