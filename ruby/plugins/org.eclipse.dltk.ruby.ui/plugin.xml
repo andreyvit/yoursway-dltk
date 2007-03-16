@@ -73,7 +73,13 @@
 	          category="org.eclipse.dltk.ruby.ui.EditorPreferences"
 	          class="org.eclipse.dltk.ruby.internal.ui.preferences.RubyEditorSyntaxColoringPreferencePage"
 	          id="org.eclipse.dltk.ruby.ui.editor.SyntaxColoring"
-	          name="Syntax Coloring"/>	          
+	          name="Syntax Coloring"/>
+     <page
+           category="org.eclipse.dltk.ruby.ui.ruby"
+           class="org.eclipse.dltk.ruby.ui.RubyTemplatePreferencePage"
+           id="org.eclipse.dltk.ruby.ui.RubyTemplatePreferencePage"
+           name="Ruby code templates">
+     </page>	          
     </extension>
     
     <extension point="org.eclipse.ui.views">
@@ -233,5 +239,12 @@
              value="org.eclipse.dltk.ruby.core.nature"/>
        <keywordReference id="org.eclipse.dltk.ruby.ui.buildpath"/>
     </page>    
+ </extension>
+ <extension
+       point="org.eclipse.ui.editors.templates">
+    <contextType
+          class="org.eclipse.dltk.ruby.ui.RubyTemplateContext"
+          id="org.eclipse.dltk.ruby.ui.RubyTemplateContext">
+    </contextType>
  </extension>
 </plugin>

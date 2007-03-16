@@ -21,7 +21,6 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
  * Contributions to the <tt>org.eclipse.dltk.ui.javaCompletionProposalComputer</tt> extension point
  * must implement this interface.
  * 
-	 *
  */
 public interface IScriptCompletionProposalComputer {
 	/**

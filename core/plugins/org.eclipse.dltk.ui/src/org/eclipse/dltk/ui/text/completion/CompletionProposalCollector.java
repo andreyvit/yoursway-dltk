@@ -172,8 +172,10 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 	 * 
 	 */
 	protected final ScriptContentAssistInvocationContext getInvocationContext() {
-		if (fInvocationContext == null)
+		if (fInvocationContext == null) {
 			setInvocationContext(createScriptContentAssistInvocationContext(getSourceModule()));
+		}
+		
 		return fInvocationContext;
 	}
 

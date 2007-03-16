@@ -1,15 +1,29 @@
 package org.eclipse.dltk.tcl.internal.ui.text.completion;
 
+import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.ui.text.completion.CompletionProposalCollector;
+import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalComputer;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
-import org.eclipse.dltk.ui.text.completion.ScriptNoTypeCompletionProposalComputer;
 
-public class TclNoTypeCompletionProposalComputer extends ScriptNoTypeCompletionProposalComputer {
+public class TclNoTypeCompletionProposalComputer extends ScriptCompletionProposalComputer {
 
-	protected CompletionProposalCollector internalCreateCollector(ScriptContentAssistInvocationContext context) {
-//		if (TclUI.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.CODEASSIST_FILL_ARGUMENT_NAMES))
-//			return new ExperimentalResultCollector(context);
-//		else
-		return new TclCompletionProposalCollector(context.getSourceModule());
+	protected CompletionProposalCollector createCollector(ScriptContentAssistInvocationContext context) {
+		CompletionProposalCollector collector =	new TclCompletionProposalCollector(context.getSourceModule());
+		
+		collector.setIgnored(CompletionProposal.ANNOTATION_ATTRIBUTE_REF, false);
+		collector.setIgnored(CompletionProposal.FIELD_REF, false);
+		collector.setIgnored(CompletionProposal.KEYWORD, false);
+		collector.setIgnored(CompletionProposal.PACKAGE_REF, false);
+		collector.setIgnored(CompletionProposal.LABEL_REF, false);
+		collector.setIgnored(CompletionProposal.LOCAL_VARIABLE_REF, false);
+		collector.setIgnored(CompletionProposal.METHOD_DECLARATION, false);
+		collector.setIgnored(CompletionProposal.METHOD_NAME_REFERENCE, false);
+		collector.setIgnored(CompletionProposal.METHOD_REF, false);
+		collector.setIgnored(CompletionProposal.POTENTIAL_METHOD_DECLARATION, false);
+		collector.setIgnored(CompletionProposal.VARIABLE_DECLARATION, false);
+			
+		collector.setIgnored(CompletionProposal.TYPE_REF, true);
+		
+		return collector;
 	}
 }

@@ -24,98 +24,94 @@ import org.eclipse.dltk.ui.text.completion.ContentAssistHistory.RHSHistory;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.ui.IEditorPart;
 
-
 /**
  * Describes the context of a content assist invocation in a Script editor.
- * <p>
- * Clients may use but not subclass this class.
- * </p>
- * 
-	 *
  */
-public abstract class ScriptContentAssistInvocationContext extends ContentAssistInvocationContext {
+public abstract class ScriptContentAssistInvocationContext extends
+		ContentAssistInvocationContext {
 	private final IEditorPart fEditor;
-	
-	private ISourceModule fCU= null;
-	private boolean fCUComputed= false;
-	
+
+	private ISourceModule fSourceModule = null;
+	private boolean fSourceModuleComputed = false;
+
 	private CompletionProposalLabelProvider fLabelProvider;
 	private CompletionProposalCollector fCollector;
-	private RHSHistory fRHSHistory;  
+	private RHSHistory fRHSHistory;
 	private IType fType;
-	
+
 	private String fLangaugeNatureID;
 
 	/**
 	 * Creates a new context.
 	 * 
-	 * @param viewer the viewer used by the editor
-	 * @param offset the invocation offset
-	 * @param editor the editor that content assist is invoked in
+	 * @param viewer
+	 *            the viewer used by the editor
+	 * @param offset
+	 *            the invocation offset
+	 * @param editor
+	 *            the editor that content assist is invoked in
 	 */
-	public ScriptContentAssistInvocationContext(ITextViewer viewer, int offset, IEditorPart editor, String natureID) {
+	public ScriptContentAssistInvocationContext(ITextViewer viewer, int offset,
+			IEditorPart editor, String natureId) {
 		super(viewer, offset);
 		Assert.isNotNull(editor);
-		fEditor= editor;		
-		fLangaugeNatureID = natureID;
-		
+		fEditor = editor;
+		fLangaugeNatureID = natureId;
 	}
-	
-	public void f(){
-		
-	}
-	
-	
-	
+
 	/**
 	 * Creates a new context.
 	 * 
-	 * @param unit the compilation unit in <code>document</code>
+	 * @param unit
+	 *            the compilation unit in <code>document</code>
 	 */
 	public ScriptContentAssistInvocationContext(ISourceModule unit) {
 		super();
-		fCU= unit;
-		fCUComputed= true;
-		fEditor= null;
+		fSourceModule = unit;
+		fSourceModuleComputed = true;
+		fEditor = null;
 	}
-	
+
 	public String getLangaugeNatureID() {
 		return fLangaugeNatureID;
 	}
-	
+
 	/**
-	 * Returns the compilation unit that content assist is invoked in, <code>null</code> if there
-	 * is none.
+	 * Returns the compilation unit that content assist is invoked in,
+	 * <code>null</code> if there is none.
 	 * 
-	 * @return the compilation unit that content assist is invoked in, possibly <code>null</code>
+	 * @return the compilation unit that content assist is invoked in, possibly
+	 *         <code>null</code>
 	 */
 	public ISourceModule getSourceModule() {
-		if (!fCUComputed) {
-			fCUComputed= true;
+		if (!fSourceModuleComputed) {
+			fSourceModuleComputed = true;
 			if (fCollector != null)
-				fCU= fCollector.getSourceModule();
+				fSourceModule = fCollector.getSourceModule();
 			else {
-				IModelElement je= EditorUtility.getEditorInputModelElement(fEditor, false);
+				IModelElement je = EditorUtility.getEditorInputModelElement(
+						fEditor, false);
 				if (je instanceof ISourceModule)
-					fCU= (ISourceModule)je;
+					fSourceModule = (ISourceModule) je;
 			}
 		}
-		return fCU;
+		return fSourceModule;
 	}
-	
+
 	/**
-	 * Returns the project of the compilation unit that content assist is invoked in,
-	 * <code>null</code> if none.
+	 * Returns the project of the compilation unit that content assist is
+	 * invoked in, <code>null</code> if none.
 	 * 
 	 * @return the currentscriptproject, possibly <code>null</code>
 	 */
 	public IDLTKProject getProject() {
-		ISourceModule unit= getSourceModule();
+		ISourceModule unit = getSourceModule();
 		return unit == null ? null : unit.getScriptProject();
 	}
-	
+
 	/**
-	 * Returns the keyword proposals that are available in this context, possibly none.
+	 * Returns the keyword proposals that are available in this context,
+	 * possibly none.
 	 * 
 	 * @return the available keyword proposals.
 	 */
@@ -124,22 +120,24 @@ public abstract class ScriptContentAssistInvocationContext extends ContentAssist
 			return fCollector.getKeywordCompletionProposals();
 		return new IScriptCompletionProposal[0];
 	}
-	
+
 	/**
-	 * Sets the collector, which is used to access the compilation unit, the core context and the
-	 * label provider.
+	 * Sets the collector, which is used to access the compilation unit, the
+	 * core context and the label provider.
 	 * 
-	 * @param collector the collector
+	 * @param collector
+	 *            the collector
 	 */
 	void setCollector(CompletionProposalCollector collector) {
-		fCollector= collector;
+		fCollector = collector;
 	}
-	
+
 	/**
-	 * Returns the {@link CompletionContext core completion context} if available, <code>null</code>
-	 * otherwise.
+	 * Returns the {@link CompletionContext core completion context} if
+	 * available, <code>null</code> otherwise.
 	 * 
-	 * @return the core completion context if available, <code>null</code> otherwise
+	 * @return the core completion context if available, <code>null</code>
+	 *         otherwise
 	 */
 	public CompletionContext getCoreContext() {
 		if (fCollector != null)
@@ -148,18 +146,22 @@ public abstract class ScriptContentAssistInvocationContext extends ContentAssist
 	}
 
 	/**
-	 * Returns an float in [0.0,&nbsp;1.0] based on whether the type has been recently used as a
-	 * right hand side for the type expected in the current context. 0 signals that the
-	 * <code>qualifiedTypeName</code> does not match the expected type, while 1.0 signals that
-	 * <code>qualifiedTypeName</code> has most recently been used in a similar context.
+	 * Returns an float in [0.0,&nbsp;1.0] based on whether the type has been
+	 * recently used as a right hand side for the type expected in the current
+	 * context. 0 signals that the <code>qualifiedTypeName</code> does not
+	 * match the expected type, while 1.0 signals that
+	 * <code>qualifiedTypeName</code> has most recently been used in a similar
+	 * context.
 	 * 
-	 * @param qualifiedTypeName the type name of the type of interest
-	 * @return a relevance in [0.0,&nbsp;1.0] based on previous content assist invocations
+	 * @param qualifiedTypeName
+	 *            the type name of the type of interest
+	 * @return a relevance in [0.0,&nbsp;1.0] based on previous content assist
+	 *         invocations
 	 */
 	public float getHistoryRelevance(String qualifiedTypeName) {
 		return getRHSHistory().getRank(qualifiedTypeName);
 	}
-	
+
 	/**
 	 * Returns the content assist type history for the expected type.
 	 * 
@@ -167,20 +169,23 @@ public abstract class ScriptContentAssistInvocationContext extends ContentAssist
 	 */
 	private RHSHistory getRHSHistory() {
 		if (fRHSHistory == null) {
-			CompletionContext context= getCoreContext();
+			CompletionContext context = getCoreContext();
 			if (context != null) {
-				char[][] expectedTypes= context.getExpectedTypesSignatures();
+				char[][] expectedTypes = context.getExpectedTypesSignatures();
 				if (expectedTypes != null && expectedTypes.length > 0) {
-					String expected= SignatureUtil.stripSignatureToFQN(String.valueOf(expectedTypes[0]));
-					fRHSHistory= DLTKUIPlugin.getDefault().getContentAssistHistory().getHistory(expected);
+					String expected = SignatureUtil.stripSignatureToFQN(String
+							.valueOf(expectedTypes[0]));
+					fRHSHistory = DLTKUIPlugin.getDefault()
+							.getContentAssistHistory().getHistory(expected);
 				}
 			}
 			if (fRHSHistory == null)
-				fRHSHistory= DLTKUIPlugin.getDefault().getContentAssistHistory().getHistory(null);
+				fRHSHistory = DLTKUIPlugin.getDefault()
+						.getContentAssistHistory().getHistory(null);
 		}
 		return fRHSHistory;
 	}
-	
+
 	/**
 	 * Returns the expected type if any, <code>null</code> otherwise.
 	 * 
@@ -188,14 +193,16 @@ public abstract class ScriptContentAssistInvocationContext extends ContentAssist
 	 */
 	public IType getExpectedType() {
 		if (fType == null && getSourceModule() != null) {
-			CompletionContext context= getCoreContext();
+			CompletionContext context = getCoreContext();
 			if (context != null) {
-				char[][] expectedTypes= context.getExpectedTypesSignatures();
+				char[][] expectedTypes = context.getExpectedTypesSignatures();
 				if (expectedTypes != null && expectedTypes.length > 0) {
-					IDLTKProject project= getSourceModule().getScriptProject();
+					IDLTKProject project = getSourceModule().getScriptProject();
 					if (project != null) {
 						try {
-							fType= project.findType(SignatureUtil.stripSignatureToFQN(String.valueOf(expectedTypes[0])));
+							fType = project.findType(SignatureUtil
+									.stripSignatureToFQN(String
+											.valueOf(expectedTypes[0])));
 						} catch (ModelException x) {
 							DLTKUIPlugin.log(x);
 						}
@@ -205,7 +212,7 @@ public abstract class ScriptContentAssistInvocationContext extends ContentAssist
 		}
 		return fType;
 	}
-	
+
 	/**
 	 * Returns a label provider that can be used to compute proposal labels.
 	 * 
@@ -214,9 +221,9 @@ public abstract class ScriptContentAssistInvocationContext extends ContentAssist
 	public CompletionProposalLabelProvider getLabelProvider() {
 		if (fLabelProvider == null) {
 			if (fCollector != null)
-				fLabelProvider= fCollector.getLabelProvider();
+				fLabelProvider = fCollector.getLabelProvider();
 			else
-				fLabelProvider= createLabelProvider();
+				fLabelProvider = createLabelProvider();
 		}
 
 		return fLabelProvider;

@@ -913,5 +913,8 @@
 			searchResultClass="org.eclipse.dltk.internal.ui.search.DLTKSearchResult"
 			class="org.eclipse.dltk.internal.ui.search.DLTKSearchResultPage">
 		</viewPage>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.templates">
    </extension>         
 </plugin>

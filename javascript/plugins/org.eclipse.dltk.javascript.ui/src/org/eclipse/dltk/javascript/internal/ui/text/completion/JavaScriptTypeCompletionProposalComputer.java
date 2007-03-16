@@ -14,7 +14,7 @@ import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalComputer;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 
-public class JavaScriptTypeCompletionProposalComputer extends ScriptCompletionProposalComputer implements IScriptCompletionProposalComputer{
+public class JavaScriptTypeCompletionProposalComputer extends ScriptCompletionProposalComputer {
 
 	public JavaScriptTypeCompletionProposalComputer() {
 	}
@@ -77,7 +77,7 @@ public class JavaScriptTypeCompletionProposalComputer extends ScriptCompletionPr
 		
 	}
 
-	protected CompletionProposalCollector internalCreateCollector(
+	protected CompletionProposalCollector createCollector(
 			ScriptContentAssistInvocationContext context) {
 		return new JavaScriptCompletionProposalCollector(context.getSourceModule());
 	}

@@ -1,6 +1,13 @@
 package org.eclipse.dltk.ruby.internal.ui;
 
+import java.io.IOException;
+
 import org.eclipse.dltk.ruby.internal.ui.text.RubyTextTools;
+import org.eclipse.dltk.ruby.ui.RubyTemplateContext;
+import org.eclipse.jface.text.templates.ContextTypeRegistry;
+import org.eclipse.jface.text.templates.persistence.TemplateStore;
+import org.eclipse.ui.editors.text.templates.ContributionContextTypeRegistry;
+import org.eclipse.ui.editors.text.templates.ContributionTemplateStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -55,4 +62,34 @@ public class RubyUI extends AbstractUIPlugin {
 			fRubyTextTools= new RubyTextTools(true);
 		return fRubyTextTools;
 	}
+	
+    private TemplateStore fStore;
+    
+    private static final String CUSTOM_TEMPLATES_KEY = "org.eclipse.ruby.Templates"; 
+	
+	public TemplateStore getTemplateStore() {
+        if (fStore == null) {
+            fStore = new ContributionTemplateStore(getContextTypeRegistry(), getPreferenceStore(), CUSTOM_TEMPLATES_KEY);
+            try {
+                fStore.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }
+        
+        return fStore;
+    }
+	    
+    private ContributionContextTypeRegistry fRegistry = null;
+	
+    public ContextTypeRegistry getContextTypeRegistry() {
+        if (fRegistry == null) {
+            // create an configure the contexts available in the template editor
+            fRegistry = new ContributionContextTypeRegistry();
+            fRegistry.addContextType(RubyTemplateContext.TEMPLATE_ID);
+        }
+        return fRegistry;
+    }
+
 }
