@@ -193,6 +193,12 @@
           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclGlobalPreferencesPage"
           id="org.eclipse.dltk.tcl.ui.tcl"
           name="DLTK Tcl"/>
+     <page
+           category="org.eclipse.dltk.tcl.ui.tcl"
+           class="org.eclipse.dltk.tcl.internal.ui.templates.TclTemplatePreferencePage"
+           id="tclTemplatePreferencePage"
+           name="Tcl code templates">
+     </page>
  </extension>
  <extension
        point="org.eclipse.ui.propertyPages">
@@ -359,6 +365,15 @@
     <language
           class="org.eclipse.dltk.tcl.internal.ui.TclUILanguageToolkit"
           nature="org.eclipse.dltk.tcl.core.nature"/>
+ </extension>
+ 
+ <extension
+       point="org.eclipse.ui.editors.templates">
+    <contextType
+          class="org.eclipse.dltk.tcl.internal.ui.templates.TclUniversalTemplateContextType"
+          id="tclUniversalTemplateContextType"
+          name="%tclUniversalTemplateContextTypeName">
+    </contextType>    
  </extension>       
    
    

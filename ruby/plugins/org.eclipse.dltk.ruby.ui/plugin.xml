@@ -77,7 +77,7 @@
      <page
            category="org.eclipse.dltk.ruby.ui.ruby"
            class="org.eclipse.dltk.ruby.internal.ui.templates.RubyTemplatePreferencePage"
-           id="org.eclipse.dltk.ruby.ui.RubyTemplatePreferencePage"
+           id="rubyTemplatePreferencePage"
            name="Ruby code templates">
      </page>	          
     </extension>

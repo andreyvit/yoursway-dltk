@@ -70,7 +70,7 @@ public abstract class AbstractASTFoldingStructureProvider implements IFoldingStr
 	 * collected via
 	 * {@linkplain #addProjectionRange(DefaultScriptFoldingStructureProvider.ScriptProjectionAnnotation, Position) addProjectionRange}.
 	 */
-	protected final class FoldingStructureComputationContext {
+	public final class FoldingStructureComputationContext {
 		private final ProjectionAnnotationModel fModel;
 		private final IDocument fDocument;
 		private final boolean fAllowCollapsing;

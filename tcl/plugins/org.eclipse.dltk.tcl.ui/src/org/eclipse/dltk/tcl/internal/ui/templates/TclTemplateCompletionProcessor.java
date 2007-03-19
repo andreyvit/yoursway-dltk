@@ -1,4 +1,4 @@
-package org.eclipse.dltk.ruby.internal.ui.templates;
+package org.eclipse.dltk.tcl.internal.ui.templates;
 
 import org.eclipse.dltk.ui.templates.ScriptTempalteCompletionProcessor;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
@@ -10,18 +10,18 @@ import org.eclipse.jface.text.templates.Template;
 import org.eclipse.jface.text.templates.TemplateContextType;
 import org.eclipse.swt.graphics.Image;
 
-public class RubyTemplateCompletionProcessor extends
+public class TclTemplateCompletionProcessor extends
 		ScriptTempalteCompletionProcessor {
 
-	public RubyTemplateCompletionProcessor(
+	public TclTemplateCompletionProcessor(
 			ScriptContentAssistInvocationContext context) {
 		super(context);
 	}
 
 	protected Template[] getTemplates(String contextTypeId) {
 		if (contextTypeId
-				.equals(RubyUniversalTemplateContextType.CONTEXT_TYPE_ID)) {
-			return RubyTemplateAccess.getInstance().getTemplateStore()
+				.equals(TclUniversalTemplateContextType.CONTEXT_TYPE_ID)) {
+			return TclTemplateAccess.getInstance().getTemplateStore()
 					.getTemplates();
 		}
 
@@ -47,11 +47,11 @@ public class RubyTemplateCompletionProcessor extends
 			}
 
 			if (s.indexOf('.') == -1) {
-				return RubyTemplateAccess
+				return TclTemplateAccess
 						.getInstance()
 						.getContextTypeRegistry()
 						.getContextType(
-								RubyUniversalTemplateContextType.CONTEXT_TYPE_ID);
+								TclUniversalTemplateContextType.CONTEXT_TYPE_ID);
 			}
 
 		} catch (BadLocationException e) {

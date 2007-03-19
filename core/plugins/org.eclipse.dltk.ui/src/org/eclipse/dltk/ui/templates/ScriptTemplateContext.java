@@ -40,11 +40,13 @@ public class ScriptTemplateContext extends DocumentTemplateContext {
 
 			String s = document.get(line.getOffset(), line.getLength());
 
-			int index = 0;
-			while (!Character.isJavaIdentifierPart(s.charAt(index))) {
-				++index;
+			if (s.length() > 0) {
+				int index = 0;
+				while (!Character.isJavaIdentifierPart(s.charAt(index))) {
+					++index;
+				}
+				indent = s.substring(0, index);
 			}
-			indent = s.substring(0, index);
 
 		} catch (BadLocationException e) {
 			e.printStackTrace();
@@ -71,7 +73,7 @@ public class ScriptTemplateContext extends DocumentTemplateContext {
 			for (int i = 1; i < lines.length; i++) {
 				buffer.append(delimeter);
 				buffer.append(indentTo);
-				buffer.append(lines[i]);				
+				buffer.append(lines[i]);
 			}
 
 			template = new Template(template.getName(), template

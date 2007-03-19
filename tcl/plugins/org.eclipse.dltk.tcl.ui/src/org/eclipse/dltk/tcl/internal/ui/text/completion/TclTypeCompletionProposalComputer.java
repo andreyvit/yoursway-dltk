@@ -19,6 +19,7 @@ import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.tcl.internal.ui.templates.TclTemplateCompletionProcessor;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.text.completion.ContentAssistInvocationContext;
 import org.eclipse.dltk.ui.text.completion.IScriptCompletionProposal;
@@ -26,6 +27,7 @@ import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalComputer;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.templates.TemplateCompletionProcessor;
 
 /**
  * 
@@ -143,6 +145,11 @@ public class TclTypeCompletionProposalComputer extends
 		}
 
 		return types;
+	}
+	
+	protected TemplateCompletionProcessor createTemplateProposalComputer(
+			ScriptContentAssistInvocationContext context) {
+		return new TclTemplateCompletionProcessor(context);
 	}
 
 	protected ScriptCompletionProposalCollector createCollector(

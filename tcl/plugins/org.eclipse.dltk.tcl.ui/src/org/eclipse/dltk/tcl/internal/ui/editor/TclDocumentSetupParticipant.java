@@ -22,7 +22,7 @@ public class TclDocumentSetupParticipant implements IDocumentSetupParticipant {
 	}
 
 	public void setup(IDocument document) {
-		TclTextTools tools = TclUI.getDefault().getTclTextTools();
+		TclTextTools tools = TclUI.getDefault().getTextTools();
 		tools.setupDocumentPartitioner(document,
 				TclPartitions.TCL_PARTITIONING);
 	}

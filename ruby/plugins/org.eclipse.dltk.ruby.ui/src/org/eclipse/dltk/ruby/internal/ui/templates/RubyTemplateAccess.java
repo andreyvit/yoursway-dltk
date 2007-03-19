@@ -1,8 +1,8 @@
-package org.eclipse.dltk.ruby.internal.ui;
+package org.eclipse.dltk.ruby.internal.ui.templates;
 
 import java.io.IOException;
 
-import org.eclipse.dltk.ruby.internal.ui.templates.RubyUniversalTemplateContextType;
+import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.templates.ContextTypeRegistry;
 import org.eclipse.jface.text.templates.persistence.TemplateStore;

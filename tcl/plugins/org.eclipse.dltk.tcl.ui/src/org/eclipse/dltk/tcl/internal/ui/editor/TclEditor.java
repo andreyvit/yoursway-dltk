@@ -123,7 +123,7 @@ public class TclEditor extends ScriptEditor {
 	}
 	
 	protected ScriptTextTools getTextTools() {
-		return TclUI.getDefault().getTclTextTools();
+		return TclUI.getDefault().getTextTools();
 	}
 
 	protected ScriptOutlinePage doCreateOutlinePage() {

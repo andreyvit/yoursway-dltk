@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.ITextViewer;
@@ -14,6 +15,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.templates.Template;
 import org.eclipse.jface.text.templates.TemplateCompletionProcessor;
 import org.eclipse.jface.text.templates.TemplateContext;
+import org.eclipse.jface.text.templates.TemplateContextType;
 import org.eclipse.jface.text.templates.TemplateException;
 import org.eclipse.jface.text.templates.TemplateProposal;
 
@@ -87,5 +89,18 @@ public abstract class ScriptTempalteCompletionProcessor extends
 
 		return (ICompletionProposal[]) matches
 				.toArray(new ICompletionProposal[matches.size()]);
+	}
+	
+	protected TemplateContext createContext(ITextViewer viewer, IRegion region) {
+		TemplateContextType contextType = getContextType(viewer, region);
+		if (contextType instanceof ScriptTemplateContextType) {
+			IDocument document = viewer.getDocument();
+
+			return ((ScriptTemplateContextType) contextType).createContext(
+					document, region.getOffset(), region.getLength(),
+					getContext().getSourceModule());
+		} else {
+			return super.createContext(viewer, region);
+		}
 	}
 }

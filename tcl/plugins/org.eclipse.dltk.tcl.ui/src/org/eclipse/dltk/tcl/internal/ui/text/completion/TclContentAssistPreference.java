@@ -7,7 +7,7 @@ import org.eclipse.dltk.ui.text.completion.ContentAssistPreference;
 public class TclContentAssistPreference extends ContentAssistPreference {
 	static TclContentAssistPreference sDefault;
 	protected ScriptTextTools getTextTools() {
-		return TclUI.getDefault().getTclTextTools();
+		return TclUI.getDefault().getTextTools();
 	}
 
 	public static ContentAssistPreference getDefault() {

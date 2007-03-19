@@ -61,10 +61,9 @@ public class TclUI extends AbstractUIPlugin {
 		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.dltk.tcl.ui", path);
 	}
 	
-	public synchronized TclTextTools getTclTextTools() {
+	public synchronized TclTextTools getTextTools() {
 		if (fTclTextTools == null)
 			fTclTextTools= new TclTextTools(true);
 		return fTclTextTools;
 	}	
-	
 }
