@@ -14,7 +14,7 @@ public abstract class ScriptTemplateContextType extends TemplateContextType {
 	public ScriptTemplateContextType(String id) {
 		super(id);
 	}
-
+	
 	public abstract ScriptTemplateContext createContext(IDocument document,
 			int completionPosition, int length, ISourceModule sourceModule);
 

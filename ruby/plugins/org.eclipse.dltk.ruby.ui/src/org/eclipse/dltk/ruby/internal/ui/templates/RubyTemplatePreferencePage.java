@@ -2,6 +2,7 @@ package org.eclipse.dltk.ruby.internal.ui.templates;
 
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.internal.ui.preferences.ScriptSourcePreviewerUpdater;
+import org.eclipse.dltk.ruby.internal.ui.RubyTemplateAccess;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.dltk.ruby.internal.ui.preferences.SimpleRubySourceViewerConfiguration;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
@@ -24,8 +25,8 @@ public class RubyTemplatePreferencePage extends TemplatePreferencePage
 		implements IWorkbenchPreferencePage {
 	public RubyTemplatePreferencePage() {
 		setPreferenceStore(RubyUI.getDefault().getPreferenceStore());
-		setTemplateStore(RubyUI.getDefault().getTemplateStore());
-		setContextTypeRegistry(RubyUI.getDefault().getContextTypeRegistry());
+		setTemplateStore(RubyTemplateAccess.getInstance().getTemplateStore());
+		setContextTypeRegistry(RubyTemplateAccess.getInstance().getContextTypeRegistry());
 	}
 
 	public boolean performOk() {

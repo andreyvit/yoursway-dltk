@@ -31,20 +31,10 @@ public class RubyUI extends AbstractUIPlugin {
 		plugin = this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
@@ -65,37 +55,5 @@ public class RubyUI extends AbstractUIPlugin {
 		}
 
 		return fRubyTextTools;
-	}
-
-	// Template
-	private static final String CUSTOM_TEMPLATES_KEY = "org.eclipse.ruby.Templates";
-
-	private TemplateStore fStore;
-
-	private ContributionContextTypeRegistry fRegistry;
-
-	public TemplateStore getTemplateStore() {
-		if (fStore == null) {
-			fStore = new ContributionTemplateStore(getContextTypeRegistry(),
-					getPreferenceStore(), CUSTOM_TEMPLATES_KEY);
-			try {
-				fStore.load();
-			} catch (IOException e) {
-				// TODO: handle
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-		}
-
-		return fStore;
-	}
-
-	public ContextTypeRegistry getContextTypeRegistry() {
-		if (fRegistry == null) {
-			fRegistry = new ContributionContextTypeRegistry();
-			fRegistry.addContextType(RubyUniversalTemplateContextType.CONTEXT_TYPE_ID);
-		}
-
-		return fRegistry;
 	}
 }
