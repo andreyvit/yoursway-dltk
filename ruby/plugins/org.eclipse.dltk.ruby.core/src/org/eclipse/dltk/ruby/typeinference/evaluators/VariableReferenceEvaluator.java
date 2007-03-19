@@ -1,10 +1,14 @@
-package org.eclipse.dltk.ruby.typeinference;
+package org.eclipse.dltk.ruby.typeinference.evaluators;
 
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.references.VariableKind;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.evaluation.types.UnknownType;
+import org.eclipse.dltk.ruby.typeinference.IArgumentsContext;
+import org.eclipse.dltk.ruby.typeinference.LocalVariableInfo;
+import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ti.BasicContext;
+import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.IContext;
 import org.eclipse.dltk.ti.ISourceModuleContext;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
@@ -36,7 +40,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 		super(goal);
 	}
 
-	public IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
+	private IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
 		if (state == STATE_DONE) 
 			return null;
 		if (state == STATE_INIT) {
@@ -96,6 +100,20 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 			return result;
 		else
 			return RubyTypeInferencingUtils.combineTypes(evaluatedTypes);
+	}
+
+	public IGoal[] init() {
+		IGoal goal = produceNextSubgoal(null, null); 
+		if (goal != null)
+			return new IGoal[] { goal };
+		return IGoal.NO_GOALS; 
+	}
+
+	public IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state) {
+		IGoal goal = produceNextSubgoal(subgoal, result);
+		if (goal != null)
+			return new IGoal[] { goal };
+		return IGoal.NO_GOALS;
 	}
 
 }

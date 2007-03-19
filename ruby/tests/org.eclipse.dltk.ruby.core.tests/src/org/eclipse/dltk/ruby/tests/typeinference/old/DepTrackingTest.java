@@ -1,4 +1,6 @@
-package org.eclipse.dltk.ruby.tests.typeinference;
+package org.eclipse.dltk.ruby.tests.typeinference.old;
+
+import org.eclipse.dltk.ruby.tests.typeinference.TypeInferenceSuite;
 
 import junit.framework.Test;
 

@@ -19,11 +19,14 @@ public class TypeInferencer implements ITypeInferencer {
 			Class goalClass = goal.getClass();
 			Object evaluator = evaluators.get(goalClass);
 			if (evaluator == null || (!(evaluator instanceof Class))) {
+				 
 				if (userFactory != null) {
-					return userFactory.createEvaluator(goal);
-				} else
+					evaluator = userFactory.createEvaluator(goal);
+				}
+				if (evaluator == null)
 					throw new RuntimeException("No evaluator registered for "
 							+ goalClass.getName());
+				return (GoalEvaluator) evaluator;
 			}
 			Class evalClass = (Class) evaluator;
 			GoalEvaluator newInstance;
@@ -36,12 +39,6 @@ public class TypeInferencer implements ITypeInferencer {
 				e.printStackTrace();
 			}
 			return null;
-		}
-
-		public IGoal translateGoal(IGoal goal) {
-			if (userFactory != null)
-				return userFactory.translateGoal(goal);
-			return goal;
 		}
 
 	}
@@ -78,10 +75,8 @@ public class TypeInferencer implements ITypeInferencer {
 	 * @see org.eclipse.dltk.ti.ITypeInferencer#evaluateType(org.eclipse.dltk.ti.AbstractTypeGoal,
 	 *      long)
 	 */
-	public IEvaluatedType evaluateType(AbstractTypeGoal goal, long timeLimit) {
-		Object result = engine.evaluateGoal(goal, timeLimit);
-		if (result == GoalEngine.RECURSION_RESULT)
-			throw new RecursionGoalException();
+	public IEvaluatedType evaluateType(AbstractTypeGoal goal, IPruner pruner) {
+		Object result = engine.evaluateGoal(goal, pruner);
 		return (IEvaluatedType) result;
 	}
 
@@ -91,7 +86,7 @@ public class TypeInferencer implements ITypeInferencer {
 	 * @see org.eclipse.dltk.ti.ITypeInferencer#evaluateType(org.eclipse.dltk.ti.AbstractTypeGoal)
 	 */
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal) {
-		return evaluateType(goal, 0);
+		return evaluateType(goal, null);
 	}
 
 }

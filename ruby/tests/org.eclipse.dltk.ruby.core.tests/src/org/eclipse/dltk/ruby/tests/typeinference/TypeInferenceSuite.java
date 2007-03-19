@@ -23,6 +23,7 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ruby.tests.Activator;
+import org.eclipse.dltk.ruby.tests.typeinference.old.TypeInferenceTest;
 import org.eclipse.dltk.ruby.typeinference.OffsetTargetedASTVisitor;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
@@ -189,7 +190,7 @@ public class TypeInferenceSuite extends TestSuite {
 						rootNode.traverse(visitor);
 						Assert.isLegal(result[0] != null);
 						ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(cu, rootNode), result[0]);
-						IEvaluatedType type = inferencer.evaluateType(goal, 0);
+						IEvaluatedType type = inferencer.evaluateType(goal, null);
 						assertNotNull(type);
 						
 						IEvaluatedType correctType = getIntrinsicType(correctClassRef);
@@ -218,7 +219,7 @@ public class TypeInferenceSuite extends TestSuite {
 						ASTVisitor visitor = new OffsetTargetedASTVisitor(namePos) {
 							
 							protected boolean visitInteresting(Expression s) {
-								if (s instanceof Expression && result[0] == null)
+								if (s instanceof Expression /*&& result[0] == null*/)
 									if (s.sourceStart() == namePos) {
 										result[0] = s;
 									}
@@ -231,25 +232,33 @@ public class TypeInferenceSuite extends TestSuite {
 							System.out.println("ExpressionTypeAssertion.check()");
 						Assert.isLegal(result[0] != null);
 						ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(cu, rootNode), result[0]);
-						IEvaluatedType type = inferencer.evaluateType(goal, 0);
+						IEvaluatedType type = inferencer.evaluateType(goal, null);
 						assertNotNull(type);
 						
-						IEvaluatedType correctType = getIntrinsicType(correctClassRef);
-						
-						if (correctType != null)
-							assertEquals(correctType, type);
-						else if (correctClassRef.endsWith(".new")) {
-							String correctFQN = correctClassRef.substring(0, correctClassRef.length() - 4);
-							assertTrue(type instanceof RubyClassType);
-							String realFQN = getFQN((RubyClassType) type);
-							assertEquals(correctFQN, realFQN);
-						} else {
-							assertTrue(type instanceof RubyMetaClassType);
-							RubyMetaClassType metatype = (RubyMetaClassType) type;
-							String correctFQN = correctClassRef;
-							String realFQN = getFQN((RubyClassType) metatype.getInstanceType());
-							assertEquals(correctFQN, realFQN);
+						if (type instanceof SimpleType) {
+							IEvaluatedType intrinsicType = getIntrinsicType(correctClassRef);
+							assertEquals(intrinsicType, type);
+						} else { 
+							RubyClassType rubyType = (RubyClassType)type;
+							assertEquals(correctClassRef, rubyType.getModelKey());
 						}
+						
+//						IEvaluatedType correctType = getIntrinsicType(correctClassRef);
+//						
+//						if (correctType != null)
+//							assertEquals(correctType, type);
+//						else if (correctClassRef.endsWith(".new")) {
+//							String correctFQN = correctClassRef.substring(0, correctClassRef.length() - 4);
+//							assertTrue(type instanceof RubyClassType);
+//							String realFQN = getFQN((RubyClassType) type);
+//							assertEquals(correctFQN, realFQN);
+//						} else {
+//							assertTrue(type instanceof RubyMetaClassType);
+//							RubyMetaClassType metatype = (RubyMetaClassType) type;
+//							String correctFQN = correctClassRef;
+//							String realFQN = getFQN((RubyClassType) metatype.getInstanceType());
+//							assertEquals(correctFQN, realFQN);
+//						}
 					}
 					
 					

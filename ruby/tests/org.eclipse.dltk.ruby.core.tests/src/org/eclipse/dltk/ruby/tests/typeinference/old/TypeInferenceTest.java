@@ -1,10 +1,12 @@
-package org.eclipse.dltk.ruby.tests.typeinference;
+package org.eclipse.dltk.ruby.tests.typeinference.old;
 
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.ruby.tests.typeinference.AbstractTypeInferencingTests;
+import org.eclipse.dltk.ruby.tests.typeinference.IAssertion;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ti.ITypeInferencer;
 

@@ -5,9 +5,10 @@ import java.util.Arrays;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.evaluation.types.IClassType;
+import org.eclipse.dltk.ti.types.ClassType;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
-public class RubyClassType implements IClassType {
+public class RubyClassType extends ClassType implements IClassType {
 	
 	public final static RubyClassType OBJECT_CLASS = new RubyClassType(new String[] { "Object" },
 			null, null);
@@ -15,8 +16,12 @@ public class RubyClassType implements IClassType {
 	private String[] fqn;
 	private IType[] fragments;
 	private IMethod[] methods;
+
+	private String modelKey;
 	
-	
+	public RubyClassType(String modelKey) {
+		this.modelKey = modelKey;		
+	}
 	
 	public RubyClassType(String[] fqn, IType[] fragments, IMethod[] methods) {
 		this.fqn = fqn;
@@ -63,14 +68,21 @@ public class RubyClassType implements IClassType {
 
 
 	public String getUnqualifiedName() {
-		return fqn[fqn.length - 1];
+		if (fqn != null)
+			return fqn[fqn.length - 1];
+		return modelKey;
 	}
 
 
 
 	public boolean subtypeOf(IEvaluatedType type) {
-		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+
+	public String getModelKey() {
+		return modelKey; 
 	}
 
 }

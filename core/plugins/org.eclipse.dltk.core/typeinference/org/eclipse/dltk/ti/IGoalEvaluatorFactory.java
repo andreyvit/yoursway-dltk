@@ -5,12 +5,7 @@ import org.eclipse.dltk.ti.goals.IGoal;
 
 public interface IGoalEvaluatorFactory {
 	
-	GoalEvaluator createEvaluator(IGoal goal);
+	public GoalEvaluator createEvaluator(IGoal goal);
 	
-	/**
-	 * 
-	 * @deprecated
-	 */
-	IGoal translateGoal(IGoal goal);
-	
+		
 }

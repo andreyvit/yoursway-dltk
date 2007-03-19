@@ -12,6 +12,6 @@ public abstract class ClassType implements IEvaluatedType {
 		return null;
 	}
 	
-	public abstract Object getModelKey ();
+	public abstract String getModelKey ();
 
 }

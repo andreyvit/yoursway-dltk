@@ -33,6 +33,10 @@ public class ClassInfo {
 		return type;
 	}
 
+	/**
+	 *  KILL ME
+	 * @deprecated
+	 */
 	public String[] getFullyQualifiedName() {
 		return et.getFQN();
 	}

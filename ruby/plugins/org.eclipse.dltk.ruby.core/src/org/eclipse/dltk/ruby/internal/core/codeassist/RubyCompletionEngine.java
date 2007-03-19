@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
+import java.util.HashSet;
 import java.util.Map;
 
 import org.eclipse.dltk.ast.ASTNode;
@@ -20,6 +21,8 @@ import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.mixin.IMixinElement;
+import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.internal.core.ModelElement;
@@ -28,11 +31,11 @@ import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
-import org.eclipse.dltk.ruby.typeinference.ClassInfo;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
+import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencer;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ti.BasicContext;
 import org.eclipse.dltk.ti.TypeInferencer;
@@ -41,16 +44,17 @@ import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class RubyCompletionEngine extends CompletionEngine {
 
-	private TypeInferencer inferencer;
+	private TypeInferencer inferencer;	
+	private JRubySourceParser parser = new JRubySourceParser(null);
+	private MixinModel model;
 
 	public RubyCompletionEngine(ISearchableEnvironment nameEnvironment,
 			CompletionRequestor requestor, Map settings,
 			IDLTKProject dltkProject) {
 		super(nameEnvironment, requestor, settings, dltkProject);
 		inferencer = new TypeInferencer(new RubyEvaluatorFactory());
+		model = RubyTypeInferencer.getModel();
 	}
-
-	private JRubySourceParser parser = new JRubySourceParser(null);
 
 	protected int getEndOfEmptyToken() {
 		// TODO Auto-generated method stub
@@ -96,8 +100,8 @@ public class RubyCompletionEngine extends CompletionEngine {
 				if (node != null && node instanceof Statement) {					
 					BasicContext basicContext = new BasicContext(modelModule, moduleDeclaration);
 					ExpressionTypeGoal goal = new ExpressionTypeGoal(basicContext, (Statement) node);
-					IEvaluatedType type = inferencer.evaluateType(goal, 0);
-					reportSubtypes(modelModule, type, "");
+					IEvaluatedType type = inferencer.evaluateType(goal, null);
+					reportSubElements(modelModule, type, "");
 				} else {					
 					completeConstant(modelModule, moduleDeclaration, "", position);					
 				}
@@ -136,7 +140,7 @@ public class RubyCompletionEngine extends CompletionEngine {
 	private IMethod[] getMethodsForReceiver(org.eclipse.dltk.core.ISourceModule modelModule, ModuleDeclaration moduleDeclaration, ASTNode receiver) {
 		ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
 					modelModule, moduleDeclaration), (Statement) receiver);
-			IEvaluatedType type = inferencer.evaluateType(goal, 0);
+			IEvaluatedType type = inferencer.evaluateType(goal, null);
 			return getMethodsForReceiver(modelModule, moduleDeclaration, type);
 	}
 	
@@ -192,20 +196,31 @@ public class RubyCompletionEngine extends CompletionEngine {
 		return content.substring(node.sourceStart(), position);
 	}
 	
-	private void reportSubtypes (org.eclipse.dltk.core.ISourceModule module, 
+	private void reportSubElements (org.eclipse.dltk.core.ISourceModule module, 
 			IEvaluatedType type, String prefix) {
-		if (type instanceof RubyMetaClassType)
-			type = ((RubyMetaClassType) type).getInstanceType();
 		if (type instanceof RubyClassType) {
-			IType[] subtypes = RubyTypeInferencingUtils
-					.findSubtypes(module, (RubyClassType) type, prefix);
-			int relevance = 424242;
-			for (int j = 0; j < subtypes.length; j++) {
-				if (subtypes[j].getElementName().startsWith(prefix)) {
-					reportType(subtypes[j], relevance--);
-				}
+			RubyClassType rubyClassType = (RubyClassType) type;
+			IMixinElement mixinElement = model.get(rubyClassType.getModelKey());
+			if (mixinElement != null) {
+				IMixinElement[] children = mixinElement.getChildren();
+				int relevance = 424242;
+				for (int i = 0; i < children.length; i++) {
+					Object obj = children[i].getAllObjects()[0];
+					if (obj instanceof IType) {
+						IType type2 = (IType) obj;
+						if (type2.getElementName().startsWith(prefix)) 
+							reportType(type2, relevance--);
+					} else if (obj instanceof IMethod) {
+						IMethod method2 = (IMethod) obj;
+						if (method2.getElementName().startsWith(prefix)) 
+							reportMethod(method2, relevance--);
+					}
+					
+				}				
 			}
-		}
+		} else {
+			//never should be here
+		}		
 	}
 
 	private void completeColonExpression(
@@ -238,19 +253,33 @@ public class RubyCompletionEngine extends CompletionEngine {
 		
 		ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
 				module, moduleDeclaration), (Statement) (node.getLeft()));
-		IEvaluatedType type = inferencer.evaluateType(goal, 0);
-		reportSubtypes(module, type, starting);
+		IEvaluatedType type = inferencer.evaluateType(goal, null);
+		reportSubElements(module, type, starting);
 	}
 	
 	private void completeConstant(org.eclipse.dltk.core.ISourceModule module,
 			ModuleDeclaration moduleDeclaration, String prefix, int position) {
-		ClassInfo[] infos = RubyTypeInferencingUtils.resolveClassScopes(module, moduleDeclaration, position);
-		for (int i = 0; i < infos.length; i++) {
-			IEvaluatedType evaluatedType = infos[i].getEvaluatedType();
-			reportSubtypes(module, evaluatedType, prefix);
+		
+		IMixinElement[] modelStaticScopes = RubyTypeInferencingUtils.getModelStaticScopes(model, moduleDeclaration, position);
+		
+		for (int i = modelStaticScopes.length - 1; i >= 0; i--) {
+			IMixinElement scope = modelStaticScopes[i];
+			reportSubElements(module, new RubyClassType(scope.getKey()), prefix);		
 		}
-		IClassType type = RubyClassType.OBJECT_CLASS;
-		reportSubtypes(module, type, prefix);		
+		
+		int relevance = 4242;
+		
+		HashSet names = new HashSet ();
+		IType[] allTypes = RubyTypeInferencingUtils.getAllTypes(module, prefix);
+		for (int i = 0; i < allTypes.length; i++) {
+			String elementName = allTypes[i].getElementName();
+			if (names.contains(elementName))
+				continue;
+			names.add(elementName);
+			reportType(allTypes[i], relevance--);
+		}
+		
+		//TODO: add search for all fields for non-type constants completion 		
 	}
 
 	private void completeConstant(org.eclipse.dltk.core.ISourceModule module,
@@ -302,6 +331,31 @@ public class RubyCompletionEngine extends CompletionEngine {
 					this.setSourceRange(position - starting.length(), position);
 				}
 			}
+			if (receiver instanceof ConstantReference) {
+				ConstantReference constantReference = (ConstantReference) receiver;
+				//resolve static scopes, etc...
+				String name = constantReference.getName();
+				IMixinElement mixinElement = model.get(name); 
+				if (mixinElement != null) {
+					try {
+						Object[] allObjects2 = mixinElement.getAllObjects();
+						IMixinElement[] children = mixinElement.getChildren();
+						for (int i = 0; i < children.length; i++) {
+							Object[] allObjects = children[i].getAllObjects();
+							for (int j = 0; j < allObjects.length; j++) {
+								if (allObjects[j] instanceof IMethod) {
+									IMethod method = (IMethod) allObjects[j];
+									if (method.getElementName().startsWith(starting))
+										reportMethod(method, relevance--);	
+								}
+							}
+						}
+					} catch (Throwable t) {
+						t.printStackTrace();
+					}
+					return;
+				}
+			} 
 			methods = getMethodsForReceiver(module, moduleDeclaration, receiver);
 		} else {
 			IClassType self = RubyTypeInferencingUtils.determineSelfClass(

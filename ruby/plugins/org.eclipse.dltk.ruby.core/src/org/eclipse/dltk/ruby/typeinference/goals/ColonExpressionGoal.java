@@ -1,4 +1,4 @@
-package org.eclipse.dltk.ruby.typeinference;
+package org.eclipse.dltk.ruby.typeinference.goals;
 
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ti.BasicContext;

@@ -1,9 +1,9 @@
 package org.eclipse.dltk.ruby.typeinference;
 
 import org.eclipse.dltk.ti.IContext;
-import org.eclipse.dltk.ti.goals.AbstractGoal;
+import org.eclipse.dltk.ti.goals.AbstractTypeGoal;
 
-public class ConstantTypeGoal extends AbstractGoal {
+public class ConstantTypeGoal extends AbstractTypeGoal {
 
 	private final int offset;
 	private final String name;

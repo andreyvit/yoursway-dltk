@@ -11,7 +11,7 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.NumericLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.ti.GoalEngine;
+import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.IGoalEvaluatorFactory;
 import org.eclipse.dltk.ti.ITypeInferencer;
 import org.eclipse.dltk.ti.TypeInferencer;
@@ -28,15 +28,21 @@ public class DDPTests extends TestCase {
 		private FixedAnswerGoalEvaluator(IGoal goal, IEvaluatedType answer) {
 			super(goal);
 			this.answer = answer;
-		}
-
-		public IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
-			return null;
-		}
+		}		
 
 		public Object produceResult() {
 			return answer;
 		}
+
+		public IGoal[] init() {
+			return IGoal.NO_GOALS;
+		}
+
+		public IGoal[] subGoalDone(IGoal goal2, Object result, GoalState state) {
+			return IGoal.NO_GOALS;
+		}
+				
+		
 	}
 
 	private static final class SingleDependentGoalEvaluator extends GoalEvaluator {
@@ -44,7 +50,7 @@ public class DDPTests extends TestCase {
 
 		private final IGoal[] dependents;
 
-		private int state = 0;
+//		private int state = 0;
 		
 		private int produceCalls = 0;
 		
@@ -61,15 +67,16 @@ public class DDPTests extends TestCase {
 			this.dependents = dependents;
 			this.answer = (IEvaluatedType) answer;
 		}
-
-		public IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
+	
+		public IGoal[] init() {
 			++produceCalls;
-			if (state > 0)
-				assertTrue(previousResult instanceof MyNum || previousResult == GoalEngine.RECURSION_RESULT);
-			if (state < dependents.length) {
-				return dependents[state++];
-			}
-			return null;
+			return dependents;
+		}
+
+		public IGoal[] subGoalDone(IGoal goal2, Object result, GoalState _state) {
+			++produceCalls;
+			assertTrue(result instanceof MyNum || _state == GoalState.RECURSIVE);			
+			return IGoal.NO_GOALS;
 		}
 
 		public Object produceResult() {
@@ -129,16 +136,12 @@ public class DDPTests extends TestCase {
 				return null;
 			}
 
-			public IGoal translateGoal(IGoal goal) {
-				return goal;
-			}
-
 		};
 
 		final ITypeInferencer man = new TypeInferencer(factory);
 
 		ExpressionTypeGoal rootGoal = new ExpressionTypeGoal(null, x);
-		IEvaluatedType answer = man.evaluateType(rootGoal, 0);
+		IEvaluatedType answer = man.evaluateType(rootGoal, null);
 
 		assertTrue(answer instanceof MyNum);
 	}
@@ -177,17 +180,13 @@ public class DDPTests extends TestCase {
 					evaluators.add(result);
 				return result;
 			}
-
-			public IGoal translateGoal(IGoal goal) {
-				return goal;
-			}
-
+			
 		};
 
 		final ITypeInferencer man = new TypeInferencer(factory);
 
 		ExpressionTypeGoal rootGoal = new ExpressionTypeGoal(null, x);
-		IEvaluatedType answer = man.evaluateType(rootGoal, 0);
+		IEvaluatedType answer = man.evaluateType(rootGoal, null);
 
 		assertTrue(answer instanceof MyNum);
 		for (Iterator iter = evaluators.iterator(); iter.hasNext();) {

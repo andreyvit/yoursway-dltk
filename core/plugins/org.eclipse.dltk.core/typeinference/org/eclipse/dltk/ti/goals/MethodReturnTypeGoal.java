@@ -1,6 +1,6 @@
-package org.eclipse.dltk.ruby.typeinference;
+package org.eclipse.dltk.ti.goals;
 
-import org.eclipse.dltk.ti.goals.AbstractGoal;
+import org.eclipse.dltk.ti.InstanceContext;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class MethodReturnTypeGoal extends AbstractGoal {

@@ -30,31 +30,61 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.mixin.IMixinElement;
+import org.eclipse.dltk.core.mixin.IMixinRequestor;
+import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
+import org.eclipse.dltk.core.search.TypeNameMatch;
+import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
 import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.internal.core.ModelElement;
+import org.eclipse.dltk.ruby.ast.RubySingletonClassDeclaration;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.SelfReference;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
 import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 import org.eclipse.dltk.ti.IContext;
+import org.eclipse.dltk.ti.IInstanceContext;
 import org.eclipse.dltk.ti.ISourceModuleContext;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 import org.eclipse.dltk.ti.types.RecursionTypeCall;
 
 public class RubyTypeInferencingUtils {
 
+	/**
+	 * Searches all top level types, which starts with prefix
+	 */
+	public static IType[] getAllTypes(
+			org.eclipse.dltk.core.ISourceModule module, String prefix) {
+		final List types = new ArrayList();
+
+		TypeNameMatchRequestor requestor = new TypeNameMatchRequestor() {
+
+			public void acceptTypeNameMatch(TypeNameMatch match) {
+				IType type = (IType) match.getType();
+				if (type.getParent() instanceof ISourceModule) {
+					types.add(type);
+				}
+			}
+
+		};
+
+		DLTKModelUtil.searchTypeDeclarations(module.getScriptProject(), prefix
+				+ "*", requestor);
+
+		return (IType[]) types.toArray(new IType[types.size()]);
+	}
+	
 	public static ASTNode[] getAllStaticScopes(ModuleDeclaration rootNode, final int requestedOffset) {
 		final Collection scopes = new ArrayList();
 		ASTVisitor visitor = new OffsetTargetedASTVisitor(requestedOffset) {
-
 			public boolean visitInteresting(MethodDeclaration s) {
 				scopes.add(s);
 				return true;
@@ -69,10 +99,8 @@ public class RubyTypeInferencingUtils {
 				scopes.add(s);
 				return true;
 			}
-
 			// TODO: handle Ruby blocks here
-			
-
+			// XXX: what for?
 		};
 		try {
 			rootNode.traverse(visitor);
@@ -81,6 +109,35 @@ public class RubyTypeInferencingUtils {
 		}
 		return (ASTNode[]) scopes.toArray(new ASTNode[scopes.size()]);
 	}
+	
+	public static IMixinElement[] getModelStaticScopes (MixinModel model, ModuleDeclaration rootNode, final int requestedOffset) {
+		List result = new ArrayList ();		
+		IMixinElement parent = null;
+		ASTNode[] allStaticScopes = getAllStaticScopes(rootNode, requestedOffset);		
+		for (int i = 0; i < allStaticScopes.length; i++) {
+			if (allStaticScopes[i] instanceof RubySingletonClassDeclaration) {
+				//TODO
+			}  else if (allStaticScopes[i] instanceof TypeDeclaration) {
+				TypeDeclaration decl = (TypeDeclaration) allStaticScopes[i];
+				String name = decl.getName();
+				if (parent == null) {
+					parent = model.get(name);
+					result.add(parent);
+				} else {
+					String possibleName = parent.getKey() + IMixinRequestor.MIXIN_NAME_SEPARATOR + name;
+					IMixinElement possibleElement = model.get(possibleName);
+					if (possibleElement != null) {
+						parent = possibleElement;
+						result.add(possibleElement);
+					} else {
+						throw new RuntimeException("Couldn't find appropriate model element for static scope member: " + decl);						
+					}					
+				}
+			} 
+		}
+		return (IMixinElement[]) result.toArray(new IMixinElement[result.size()]);
+	}
+	
 
 	public static LocalVariableInfo findLocalVariable(ModuleDeclaration rootNode,
 			final int requestedOffset, String varName) {
@@ -321,18 +378,19 @@ public class RubyTypeInferencingUtils {
 				break;
 			} else if (staticScopes[i] instanceof TypeDeclaration)
 				break;
-		RubyMetaClassType metaType = getMetaType(result);
+		RubyClassType metaType = getMetaType(result);
 		if (method != null) {
 			if (method instanceof RubySingletonMethodDeclaration) {
 				RubySingletonMethodDeclaration declaration = (RubySingletonMethodDeclaration) method;
 				Expression receiver = declaration.getReceiver();
 				if (receiver instanceof SelfReference)
 					return metaType; // static method
-				if (receiver instanceof SimpleReference) 
+					if (receiver instanceof SimpleReference) 
 					if (((SimpleReference) receiver).getName().equals(result.getUnqualifiedName()))
 						return metaType; // singleton method of our metaclass
 				// TODO: handle singleton method of another class
-				return RubyMetaClassType.OBJECT_METATYPE;
+				//return RubyMetaClassType.OBJECT_METATYPE;
+				return new RubyClassType("Object%");
 			}
 			return result;
 		}
@@ -443,7 +501,13 @@ public class RubyTypeInferencingUtils {
 				String name = s.getName();
 				scopes.add(name);
 				String[] fqn = (String[]) scopes.toArray(new String[scopes.size()]);
-				ClassInfo type = new ClassInfo(s, sourceModule, new RubyClassType(fqn, null, null));
+				//RubyClassType rubyClassType = new RubyClassType(fqn, null, null);
+				String key = "";
+				for (int i = 0; i < fqn.length; i++) {
+					key += ((i > 0)?"{":"") +  fqn[i];
+				}
+				RubyClassType rubyClassType = new RubyClassType(key);
+				ClassInfo type = new ClassInfo(s, sourceModule, rubyClassType);
 				classInfos.add(type);
 				return true;
 			}
@@ -600,8 +664,10 @@ public class RubyTypeInferencingUtils {
 		return RubySourceElementParser.parseModule(module);
 	}
 	
-	public static RubyMetaClassType getMetaType(RubyClassType type) {
-		return new RubyMetaClassType(type, null);
+
+	public static RubyClassType getMetaType(RubyClassType type) {
+		//TODO
+		return type;
 	}
 
 	public static IClassType getMetaType(IClassType type) {
@@ -665,7 +731,7 @@ public class RubyTypeInferencingUtils {
 						}
 						
 						if (!type.getInstanceType().getTypeName().equals("Object")) {
-							RubyMetaClassType superType = getMetaType(RubyModelUtils.getSuperType(types[i]));
+							RubyMetaClassType superType = null;///getMetaType(RubyModelUtils.getSuperType(types[i]));
 							if (superType != null) {
 								superType = resolveMethods(module, superType);
 								IMethod[] allMethods = superType.getMethods();
@@ -692,17 +758,14 @@ public class RubyTypeInferencingUtils {
 	}
 	
 	public static IType[] resolveTypeDeclarations (IDLTKProject project, RubyClassType type) {
-		String[] fqn = type.getFQN();
-		IType[] allTypes = type.getTypeDeclarations();
-		if (allTypes == null) {
-			StringBuffer strFqn = new StringBuffer();
-			for (int i = 0; i < fqn.length; i++) {
-				strFqn.append("::");
-				strFqn.append(fqn[i]);
-			}
-			allTypes = DLTKModelUtil.getAllTypes(project, strFqn.toString(), "::");
+		String modelKey = type.getModelKey();
+		IMixinElement mixinElement = RubyTypeInferencer.getModel().get(modelKey);
+		Object[] allObjects2 = mixinElement.getAllObjects();
+		IType[] allObjects = new IType[allObjects2.length];
+		for (int i = 0; i < allObjects2.length; i++) {
+			allObjects[i] = (IType) allObjects2[i];
 		}
-		return allTypes;
+		return allObjects;
 	}
 	
 	// FIXME should be in RubyClassType itself!

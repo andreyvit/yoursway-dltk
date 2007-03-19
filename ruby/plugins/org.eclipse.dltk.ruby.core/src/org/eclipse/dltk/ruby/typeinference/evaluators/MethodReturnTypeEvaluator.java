@@ -1,6 +1,7 @@
-package org.eclipse.dltk.ruby.typeinference;
+package org.eclipse.dltk.ruby.typeinference.evaluators;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
@@ -15,52 +16,47 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.ruby.ast.RubyReturnStatement;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
-import org.eclipse.dltk.ti.GoalEngine;
+import org.eclipse.dltk.ruby.typeinference.BuiltinMethods;
+import org.eclipse.dltk.ruby.typeinference.MethodContext;
+import org.eclipse.dltk.ruby.typeinference.RubyClassType;
+import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
+import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
+import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
+import org.eclipse.dltk.ti.GoalState;
+import org.eclipse.dltk.ti.InstanceContext;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
+import org.eclipse.dltk.ti.goals.MethodReturnTypeGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
-import org.eclipse.dltk.ti.types.RecursionTypeCall;
 
 public class MethodReturnTypeEvaluator extends GoalEvaluator {
 	
-	private boolean done = false;
-	private boolean initialized = false;
-	
 	private final List possibilities = new ArrayList();
 	private final List evaluated = new ArrayList();
-	
-	private int current = 0;
+
 	private MethodContext innerContext;
 
 	public MethodReturnTypeEvaluator(IGoal goal) {
 		super(goal);
 	}
-
-	public IGoal produceNextSubgoal(IGoal previousGoal,
-			Object previousResult) {
-		if (done)
-			return null;
-		if (!initialized) {
-			initialize();
-			if (done)
-				return null;
-			current = 0;
-		}
-		if (previousResult == GoalEngine.RECURSION_RESULT) {
-			evaluated.add(RecursionTypeCall.INSTANCE);
-		} else if (previousResult != null)
-			evaluated.add(previousResult);
-		if (current == possibilities.size()) {
-			done = true;
-			return null;
-		}
-		ExpressionTypeGoal subgoal = new ExpressionTypeGoal(innerContext, (Statement) possibilities.get(current));
-		current++;
-		return subgoal;
+	
+	private MethodReturnTypeGoal getTypedGoal () {
+		return (MethodReturnTypeGoal) this.getGoal();
 	}
-		
-	private void initialize () {
+	
+	private InstanceContext getTypedContext () {
+		return (InstanceContext) this.getGoal().getContext();
+	}
+
+	public Object produceResult() {
+		if (!evaluated.isEmpty()) {
+			return RubyTypeInferencingUtils.combineTypes(evaluated);			
+		}
+		return null;
+	}
+
+	public IGoal[] init() {
 		MethodReturnTypeGoal typedGoal = getTypedGoal();
 		InstanceContext typedContext = getTypedContext();
 		IEvaluatedType instanceType = typedContext.getInstanceType();
@@ -68,8 +64,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		IEvaluatedType intrinsicMethodReturnType = BuiltinMethods.getIntrinsicMethodReturnType(instanceType, methodName, typedGoal.getArguments());
 		if (intrinsicMethodReturnType != null) {
 			evaluated.add(intrinsicMethodReturnType);
-			done = true;
-			return;
+			return IGoal.NO_GOALS;
 		}
 		
 		MethodDeclaration decl = null;
@@ -84,7 +79,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			methods = type.getMethods();
 		}
 		if (methods == null)
-			return /* FIXME: handle AmbiguousType and all that stuff */;
+			return IGoal.NO_GOALS/* FIXME: handle AmbiguousType and all that stuff */;
 		
 		IMethod resultMethod = null;
 		// in case of ambiguity, prefer methods from the same module
@@ -105,7 +100,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			resultMethod = resultMethodFromSameModule;
 		
 		if (resultMethod == null)
-			return;
+			return IGoal.NO_GOALS;
 		
 		ISourceModule sourceModule = resultMethod.getSourceModule();
 		ModuleDeclaration module = RubyTypeInferencingUtils.parseSource(sourceModule);
@@ -145,24 +140,22 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			}
 			if (decl.getBody() != null)
 				possibilities.add(decl.getBody());
-		}		
+		}
 		
-		initialized = true;
-	}
-	
-	private MethodReturnTypeGoal getTypedGoal () {
-		return (MethodReturnTypeGoal) this.getGoal();
-	}
-	
-	private InstanceContext getTypedContext () {
-		return (InstanceContext) this.getGoal().getContext();
+		IGoal[] newGoals = new IGoal[possibilities.size()];
+		int i = 0;
+		for (Iterator iterator = possibilities.iterator(); iterator.hasNext();) {
+			Statement st = (Statement) iterator.next();
+			ExpressionTypeGoal subgoal = new ExpressionTypeGoal(innerContext, st);
+			newGoals[i++] = subgoal;
+		}		
+		return newGoals;
 	}
 
-	public Object produceResult() {
-		if (!evaluated.isEmpty()) {
-			return RubyTypeInferencingUtils.combineTypes(evaluated);			
-		}
-		return null;
+	public IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state) {
+		if (result != null)
+			evaluated.add(result);
+		return IGoal.NO_GOALS;
 	}
 
 }

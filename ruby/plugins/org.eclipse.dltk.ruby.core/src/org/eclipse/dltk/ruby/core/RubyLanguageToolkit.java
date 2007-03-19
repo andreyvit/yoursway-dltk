@@ -245,4 +245,5 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 		return RubyTypeHierarchyEngine.locateSuperTypes(type,
 				new NullProgressMonitor());
 	}
+		
 }

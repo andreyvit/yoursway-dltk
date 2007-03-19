@@ -1,14 +1,19 @@
-package org.eclipse.dltk.ruby.typeinference;
+package org.eclipse.dltk.ruby.typeinference.evaluators;
 
 import java.util.List;
 
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.ruby.ast.SelfReference;
+import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
+import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.ISourceModuleContext;
+import org.eclipse.dltk.ti.InstanceContext;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
+import org.eclipse.dltk.ti.goals.MethodReturnTypeGoal;
+import org.eclipse.dltk.ti.types.ClassType;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class MethodCallTypeEvaluator extends GoalEvaluator {
@@ -43,7 +48,7 @@ public class MethodCallTypeEvaluator extends GoalEvaluator {
 		super(goal);
 	}
 
-	public IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
+	private IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
 		if (state == STATE_INIT) {
 			ExpressionTypeGoal typedGoal = (ExpressionTypeGoal) goal;
 			CallExpression expression = (CallExpression) typedGoal.getExpression();
@@ -92,9 +97,10 @@ public class MethodCallTypeEvaluator extends GoalEvaluator {
 		if (state == STATE_ARGS_DONE) {
 			ExpressionTypeGoal typedGoal = (ExpressionTypeGoal) goal;
 			CallExpression expression = (CallExpression) typedGoal.getExpression();
-			state = STATE_WAITING_METHOD;
-			return new MethodReturnTypeGoal(new InstanceContext((ISourceModuleContext) goal.getContext(),
-					receiverType), expression.getName(), arguments);
+			state = STATE_WAITING_METHOD;			
+			return new MethodReturnTypeGoal(
+					new InstanceContext((ISourceModuleContext) goal.getContext(),
+					(ClassType) receiverType), expression.getName(), arguments);
 		}
 		if (state == STATE_WAITING_METHOD) {
 			result = (IEvaluatedType) previousResult;
@@ -108,6 +114,20 @@ public class MethodCallTypeEvaluator extends GoalEvaluator {
 			return null;
 		else
 			return result;
+	}
+	
+	public IGoal[] init() {
+		IGoal goal = produceNextSubgoal(null, null); 
+		if (goal != null)
+			return new IGoal[] { goal };
+		return IGoal.NO_GOALS; 
+	}
+
+	public IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state) {
+		IGoal goal = produceNextSubgoal(subgoal, result);
+		if (goal != null)
+			return new IGoal[] { goal };
+		return IGoal.NO_GOALS;
 	}
 
 }

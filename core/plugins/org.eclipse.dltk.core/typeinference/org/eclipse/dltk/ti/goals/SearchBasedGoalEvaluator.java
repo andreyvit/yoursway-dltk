@@ -1,7 +1,7 @@
 package org.eclipse.dltk.ti.goals;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.IDLTKProject;
@@ -13,30 +13,29 @@ import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.ti.BasicContext;
+import org.eclipse.dltk.ti.GoalState;
 
 public abstract class SearchBasedGoalEvaluator extends GoalEvaluator {
-	private Stack possiblePositions;
-	private List references;
 	
+	private List possiblePositionsGoals = new ArrayList();
+	private List references = new ArrayList();
+		
 	private SearchRequestor requestor = new SearchRequestor() {
 
 		public void acceptSearchMatch(SearchMatch match) throws CoreException {
 			PossiblePosition pos = new PossiblePosition(match.getResource(),
 					match.getOffset(), match.getLength());
-			possiblePositions.add(pos);
-			references = null;
+			possiblePositionsGoals.add(createVerificationGoal(pos));			
 		}
 		
 	};
 		
 	public SearchBasedGoalEvaluator(IGoal goal) {
 		super(goal);
-		possiblePositions = null;
 	}
 
-	private void initialize () throws CoreException {
-		possiblePositions = new Stack();
-		
+
+	public IGoal[] init() {	
 		FieldReferencesGoal goal = (FieldReferencesGoal)getGoal();
 		BasicContext basicContext = (BasicContext) goal.getContext();
 		IDLTKProject project = basicContext.getSourceModule().getScriptProject();
@@ -44,30 +43,22 @@ public abstract class SearchBasedGoalEvaluator extends GoalEvaluator {
 		SearchPattern pattern = createSearchPattern();
 		SearchEngine engine = new SearchEngine();
 	
-		engine.search(pattern, new SearchParticipant[] { SearchEngine
-				.getDefaultSearchParticipant() }, scope, requestor, null);
-	}
-	
-	public IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
-		if (possiblePositions == null) {
-			try {
-				initialize();
-			} catch (CoreException e) {
-				return null;
-			}
+		try {
+			engine.search(pattern, new SearchParticipant[] { SearchEngine
+					.getDefaultSearchParticipant() }, scope, requestor, null);
+		} catch (CoreException e) {
+			e.printStackTrace();
+			return IGoal.NO_GOALS;
 		}
-		
-		if (previousResult != null && previousResult instanceof ItemReference) {
-			references.add(previousResult);
-		}
-		
-		if (possiblePositions.isEmpty())
-			return null;
-		
-		PossiblePosition pos = (PossiblePosition)possiblePositions.pop();
 
-		
-		return createVerificationGoal(pos);
+		return (IGoal[]) possiblePositionsGoals.toArray(new IGoal[possiblePositionsGoals.size()]);
+	}
+
+	public IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state) {
+		if (result != null && result instanceof ItemReference) {
+			references.add(result);
+		}
+		return IGoal.NO_GOALS;
 	}
 
 	public Object produceResult() {

@@ -44,12 +44,12 @@ import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
-import org.eclipse.dltk.ruby.typeinference.ColonExpressionGoal;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
+import org.eclipse.dltk.ruby.typeinference.goals.ColonExpressionGoal;
 import org.eclipse.dltk.ti.BasicContext;
 import org.eclipse.dltk.ti.TypeInferencer;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
@@ -257,7 +257,7 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 		if (node instanceof ColonExpression) {
 			ColonExpressionGoal goal = new ColonExpressionGoal(new BasicContext(modelModule, 
 					parsedUnit), (ColonExpression)node);
-			IEvaluatedType type = inferencer.evaluateType(goal, 0);
+			IEvaluatedType type = inferencer.evaluateType(goal, null);
 			if (type != null) {
 				RubyClassType classType = null;
 				if (type instanceof RubyClassType) {
@@ -405,7 +405,7 @@ public class RubySelectionEngine extends Engine implements ISelectionEngine {
 			}
 		} else {
 			ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(modelModule, parsedUnit), receiver);
-			IEvaluatedType type = inferencer.evaluateType(goal, 0);
+			IEvaluatedType type = inferencer.evaluateType(goal, null);
 			if (type instanceof RubyClassType) {
 				RubyClassType rubyClassType = (RubyClassType) type;
 				rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), rubyClassType);

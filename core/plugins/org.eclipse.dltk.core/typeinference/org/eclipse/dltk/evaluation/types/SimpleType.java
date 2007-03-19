@@ -1,9 +1,13 @@
 package org.eclipse.dltk.evaluation.types;
 
+import org.eclipse.dltk.ti.types.ClassType;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 
-public class SimpleType implements IClassType
+/**
+ * @deprecated
+ */
+public class SimpleType extends ClassType implements IClassType
 {
 	public final static int TYPE_STRING = 0;
 	public final static int TYPE_NUMBER = 1;
@@ -75,5 +79,10 @@ public class SimpleType implements IClassType
 	public boolean subtypeOf(IEvaluatedType type) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public String getModelKey() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -4,7 +4,9 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.ti.IContext;
+import org.eclipse.dltk.ti.IInstanceContext;
 import org.eclipse.dltk.ti.ISourceModuleContext;
+import org.eclipse.dltk.ti.types.ClassType;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class MethodContext implements IContext, IArgumentsContext, IInstanceContext, ISourceModuleContext {
@@ -17,7 +19,7 @@ public class MethodContext implements IContext, IArgumentsContext, IInstanceCont
 
 	private final IEvaluatedType[] argTypes;
 
-	private IEvaluatedType instanceType;
+	private ClassType instanceType;
 
 	public MethodContext(IContext parent, ISourceModule sourceModule, ModuleDeclaration rootNode,
 			String[] argNames, IEvaluatedType[] argTypes) {
@@ -42,7 +44,7 @@ public class MethodContext implements IContext, IArgumentsContext, IInstanceCont
 		return null;
 	}
 
-	public IEvaluatedType getInstanceType() {
+	public ClassType getInstanceType() {
 		return instanceType;
 	}
 

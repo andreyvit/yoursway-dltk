@@ -7,6 +7,6 @@ class Boz
 	end
 	
 	class Bar
-		Foo ## expr Foo => Boz::Foo
+		Foo ## expr Foo => Boz{Foo
 	end
 end

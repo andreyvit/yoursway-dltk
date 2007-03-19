@@ -3,9 +3,10 @@ package org.eclipse.dltk.ruby.typeinference;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.evaluation.types.IClassType;
+import org.eclipse.dltk.ti.types.ClassType;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
-public class RubyMetaClassType implements IClassType {
+public class RubyMetaClassType extends ClassType implements IClassType {
 	
 	public final static RubyMetaClassType OBJECT_METATYPE = new RubyMetaClassType(
 			RubyClassType.OBJECT_CLASS, null);
@@ -70,6 +71,10 @@ public class RubyMetaClassType implements IClassType {
 	public boolean subtypeOf(IEvaluatedType type) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public String getModelKey() {
+		return null;
 	}
 
 }

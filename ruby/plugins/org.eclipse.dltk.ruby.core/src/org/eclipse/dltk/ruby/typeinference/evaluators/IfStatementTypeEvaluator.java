@@ -1,8 +1,10 @@
-package org.eclipse.dltk.ruby.typeinference;
+package org.eclipse.dltk.ruby.typeinference.evaluators;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.statements.IfStatement;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
+import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
@@ -30,7 +32,7 @@ public class IfStatementTypeEvaluator extends GoalEvaluator {
 		super(goal);
 	}
 
-	public IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
+	private IGoal produceNextSubgoal(IGoal previousGoal, Object previousResult) {
 		if (state == STATE_TRY_THEN) {
 			ExpressionTypeGoal typedGoal = (ExpressionTypeGoal) goal;
 			IfStatement expression = (IfStatement) typedGoal.getExpression();
@@ -65,6 +67,20 @@ public class IfStatementTypeEvaluator extends GoalEvaluator {
 
 	public Object produceResult() {
 		return RubyTypeInferencingUtils.combineTypes(evaluatedTypes);
+	}
+
+	public IGoal[] init() {
+		IGoal goal = produceNextSubgoal(null, null); 
+		if (goal != null)
+			return new IGoal[] { goal };
+		return IGoal.NO_GOALS; 
+	}
+
+	public IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state) {
+		IGoal goal = produceNextSubgoal(subgoal, result);
+		if (goal != null)
+			return new IGoal[] { goal };
+		return IGoal.NO_GOALS;
 	}
 
 }
