@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.ui.text.completion.CompletionProposalCollector;
+import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.ContentAssistInvocationContext;
 import org.eclipse.dltk.ui.text.completion.IScriptCompletionProposal;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalComputer;
@@ -76,7 +76,7 @@ public class JavaScriptTypeCompletionProposalComputer extends ScriptCompletionPr
 		
 	}
 
-	protected CompletionProposalCollector createCollector(
+	protected ScriptCompletionProposalCollector createCollector(
 			ScriptContentAssistInvocationContext context) {
 		return new JavaScriptCompletionProposalCollector(context.getSourceModule());
 	}

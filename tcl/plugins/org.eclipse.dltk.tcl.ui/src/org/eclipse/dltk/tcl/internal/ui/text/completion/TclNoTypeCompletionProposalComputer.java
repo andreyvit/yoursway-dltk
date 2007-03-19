@@ -1,14 +1,14 @@
 package org.eclipse.dltk.tcl.internal.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionProposal;
-import org.eclipse.dltk.ui.text.completion.CompletionProposalCollector;
+import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalComputer;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
 
 public class TclNoTypeCompletionProposalComputer extends ScriptCompletionProposalComputer {
 
-	protected CompletionProposalCollector createCollector(ScriptContentAssistInvocationContext context) {
-		CompletionProposalCollector collector =	new TclCompletionProposalCollector(context.getSourceModule());
+	protected ScriptCompletionProposalCollector createCollector(ScriptContentAssistInvocationContext context) {
+		ScriptCompletionProposalCollector collector =	new TclCompletionProposalCollector(context.getSourceModule());
 		
 		collector.setIgnored(CompletionProposal.ANNOTATION_ATTRIBUTE_REF, false);
 		collector.setIgnored(CompletionProposal.FIELD_REF, false);

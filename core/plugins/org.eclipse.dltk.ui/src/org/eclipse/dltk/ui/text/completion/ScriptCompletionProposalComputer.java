@@ -158,7 +158,7 @@ public abstract class ScriptCompletionProposalComputer implements
 		}
 
 		// Create and configure collector
-		CompletionProposalCollector collector = createCollector(context);
+		ScriptCompletionProposalCollector collector = createCollector(context);
 		if (collector == null) {
 			return Collections.EMPTY_LIST;
 		}
@@ -289,7 +289,7 @@ public abstract class ScriptCompletionProposalComputer implements
 		return null;
 	}
 
-	protected CompletionProposalCollector createCollector(
+	protected ScriptCompletionProposalCollector createCollector(
 			ScriptContentAssistInvocationContext context) {
 		return null;
 	}

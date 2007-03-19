@@ -12,7 +12,7 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.javascript.typeinference.IReference;
 import org.eclipse.dltk.javascript.scriptdoc.ScriptDocumentationProvider;
 import org.eclipse.dltk.ui.text.completion.AbstractScriptCompletionProposal;
-import org.eclipse.dltk.ui.text.completion.CompletionProposalCollector;
+import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.CompletionProposalLabelProvider;
 import org.eclipse.dltk.ui.text.completion.IScriptCompletionProposal;
 import org.eclipse.dltk.ui.text.completion.ProposalInfo;
@@ -21,19 +21,36 @@ import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
 import org.eclipse.swt.graphics.Image;
 
 public class JavaScriptCompletionProposalCollector extends
-		CompletionProposalCollector {
+		ScriptCompletionProposalCollector {
 
 	protected final static char[] VAR_TRIGGER = new char[] { '\t', ' ', '=',
 			';', '.' };
+	
+	protected char[] getVarTrigger() {
+		return VAR_TRIGGER;
+	}
 
 	public JavaScriptCompletionProposalCollector(ISourceModule module) {
 		super(module);
 	}
 
+	// Label provider
 	protected CompletionProposalLabelProvider createLabelProvider() {
 		return new JavaScriptCompletionProposalLabelProvider();
 	}
 
+	// Invocation context
+	protected ScriptContentAssistInvocationContext createScriptContentAssistInvocationContext(
+			ISourceModule sourceModule) {
+		return new ScriptContentAssistInvocationContext(sourceModule) {
+			protected CompletionProposalLabelProvider createLabelProvider() {
+				return new JavaScriptCompletionProposalLabelProvider();
+			}
+		};
+	}
+
+	
+	// Specific proposals creation. May be use factory?
 	protected IScriptCompletionProposal createScriptCompletionProposal(
 			CompletionProposal proposal) {
 		// TODO Auto-generated method stub
@@ -104,11 +121,7 @@ public class JavaScriptCompletionProposalCollector extends
 				isInDoc);
 		return javaScriptCompletionProposal;
 	}
-
-	protected char[] getVarTrigger() {
-		return VAR_TRIGGER;
-	}
-
+	
 	protected ScriptCompletionProposal createOverrideCompletionProposal(
 			IDLTKProject dltkProject, ISourceModule compilationUnit,
 			String name, String[] paramTypes, int start, int length,
@@ -117,16 +130,7 @@ public class JavaScriptCompletionProposalCollector extends
 				compilationUnit, name, paramTypes, start, length, displayName,
 				completionProposal);
 	}
-
-	protected ScriptContentAssistInvocationContext createScriptContentAssistInvocationContext(
-			ISourceModule sourceModule) {
-		return new ScriptContentAssistInvocationContext(sourceModule) {
-			protected CompletionProposalLabelProvider createLabelProvider() {
-				return new JavaScriptCompletionProposalLabelProvider();
-			}
-		};
-	}
-
+	
 	protected IScriptCompletionProposal createKeywordProposal(
 			CompletionProposal proposal) {
 		String completion = String.valueOf(proposal.getCompletion());

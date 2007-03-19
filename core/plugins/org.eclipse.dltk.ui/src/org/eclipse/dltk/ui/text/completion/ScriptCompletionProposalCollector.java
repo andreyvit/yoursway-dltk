@@ -65,7 +65,7 @@ import org.eclipse.swt.graphics.Image;
  * 
  * 
  */
-public abstract class CompletionProposalCollector extends CompletionRequestor {
+public abstract class ScriptCompletionProposalCollector extends CompletionRequestor {
 	/** Tells whether this class is in debug mode. */
 	private static final boolean DEBUG = "true".equalsIgnoreCase(Platform.getDebugOption("org.eclipse.dltk.ui/debug/ResultCollector")); //$NON-NLS-1$//$NON-NLS-2$
 
@@ -114,7 +114,7 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 	 * @param cu
 	 *            the compilation unit that the result collector will operate on
 	 */
-	public CompletionProposalCollector(ISourceModule cu) {
+	public ScriptCompletionProposalCollector(ISourceModule cu) {
 		this(cu.getScriptProject(), cu);
 	}
 
@@ -123,7 +123,7 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 	 * for anonymous types and method declarations are not created when using
 	 * this constructor, as those need to know the compilation unit that they
 	 * are created on. Use
-	 * {@link CompletionProposalCollector#CompletionProposalCollector(ISourceModule)}
+	 * {@link ScriptCompletionProposalCollector#CompletionProposalCollector(ISourceModule)}
 	 * instead to get all proposals.
 	 * <p>
 	 * If the passed Script project is <code>null</code>, no javadoc will be
@@ -136,11 +136,11 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 	 *            the project that the result collector will operate on, or
 	 *            <code>null</code>
 	 */
-	public CompletionProposalCollector(IDLTKProject project) {
+	public ScriptCompletionProposalCollector(IDLTKProject project) {
 		this(project, null);
 	}
 
-	protected CompletionProposalCollector(IDLTKProject project, ISourceModule cu) {
+	protected ScriptCompletionProposalCollector(IDLTKProject project, ISourceModule cu) {
 		fScriptProject = project;
 		fSourceModule = cu;
 		fUserReplacementLength = -1;
@@ -611,44 +611,6 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 		return scriptProposal;
 	}
 
-	private IScriptCompletionProposal createScriptdocSimpleProposal(
-			CompletionProposal javadocProposal) {
-		// TODO do better with javadoc proposals
-		// String completion= String.valueOf(proposal.getCompletion());
-		// int start= proposal.getReplaceStart();
-		// int length= getLength(proposal);
-		// String label= getLabelProvider()..createSimpleLabel(proposal);
-		// Image image=
-		// getImage(getLabelProvider()..createImageDescriptor(proposal));
-		// int relevance= computeRelevance(proposal);
-		//
-		// JavaCompletionProposal javaProposal= new
-		// JavaCompletionProposal(completion, start, length, image, label,
-		// relevance);
-		// if (fScriptProject != null)
-		// javaProposal.setProposalInfo(new FieldProposalInfo(fScriptProject,
-		// proposal));
-		//
-		// javaProposal.setTriggerCharacters(VAR_TRIGGER);
-		//
-		// return javaProposal;
-		// LazyJavaCompletionProposal proposal = new
-		// LazyJavaCompletionProposal(javadocProposal, getInvocationContext());
-		// adaptLength(proposal, javadocProposal);
-		// return proposal;
-		return null;
-	}
-
-	private IScriptCompletionProposal createScriptdocInlineTagProposal(
-			CompletionProposal javadocProposal) {
-		// LazyJavaCompletionProposal proposal= new
-		// JavadocInlineTagCompletionProposal(javadocProposal,
-		// getInvocationContext());
-		// adaptLength(proposal, javadocProposal);
-		// return proposal;
-		return null;
-	}
-
 	protected IScriptCompletionProposal createKeywordProposal(
 			CompletionProposal proposal) {
 		String completion = String.valueOf(proposal.getCompletion());
@@ -765,10 +727,5 @@ public abstract class CompletionProposalCollector extends CompletionRequestor {
 		return createScriptCompletionProposal(completion, replaceStart, length,
 				image, displayString, 0);
 
-	}
-
-	private IScriptCompletionProposal createScriptdocLinkTypeProposal(
-			CompletionProposal typeProposal) {
-		return null;
 	}
 }

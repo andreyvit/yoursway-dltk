@@ -35,7 +35,7 @@ public abstract class ScriptContentAssistInvocationContext extends
 	private boolean fSourceModuleComputed = false;
 
 	private CompletionProposalLabelProvider fLabelProvider;
-	private CompletionProposalCollector fCollector;
+	private ScriptCompletionProposalCollector fCollector;
 	private RHSHistory fRHSHistory;
 	private IType fType;
 
@@ -128,7 +128,7 @@ public abstract class ScriptContentAssistInvocationContext extends
 	 * @param collector
 	 *            the collector
 	 */
-	void setCollector(CompletionProposalCollector collector) {
+	void setCollector(ScriptCompletionProposalCollector collector) {
 		fCollector = collector;
 	}
 

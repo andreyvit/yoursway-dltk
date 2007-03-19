@@ -22,7 +22,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.dltk.ui.text.completion.CompletionProposalCollector;
+import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.ContentAssistInvocationContext;
 import org.eclipse.dltk.ui.text.completion.IScriptCompletionProposal;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalComputer;
@@ -147,9 +147,9 @@ public class TclTypeCompletionProposalComputer extends
 		return types;
 	}
 
-	protected CompletionProposalCollector createCollector(
+	protected ScriptCompletionProposalCollector createCollector(
 			ScriptContentAssistInvocationContext context) {
-		CompletionProposalCollector collector = new TclCompletionProposalCollector(
+		ScriptCompletionProposalCollector collector = new TclCompletionProposalCollector(
 				context.getSourceModule());
 
 		collector.setIgnored(CompletionProposal.ANNOTATION_ATTRIBUTE_REF, true);
