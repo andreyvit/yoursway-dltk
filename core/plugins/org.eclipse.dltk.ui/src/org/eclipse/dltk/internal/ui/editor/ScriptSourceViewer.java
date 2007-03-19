@@ -14,7 +14,7 @@ package org.eclipse.dltk.internal.ui.editor;
 import java.util.ArrayList;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.dltk.ui.text.DLTKSourceViewerConfiguration;
+import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.IDocument;
@@ -214,8 +214,8 @@ public class ScriptSourceViewer extends ProjectionViewer implements
 		}
 
 		super.configure(configuration);
-		if (configuration instanceof DLTKSourceViewerConfiguration) {
-			DLTKSourceViewerConfiguration dltkSVCconfiguration = (DLTKSourceViewerConfiguration) configuration;
+		if (configuration instanceof ScriptSourceViewerConfiguration) {
+			ScriptSourceViewerConfiguration dltkSVCconfiguration = (ScriptSourceViewerConfiguration) configuration;
 			fOutlinePresenter = dltkSVCconfiguration.getOutlinePresenter(this,
 					false);
 			if (fOutlinePresenter != null)

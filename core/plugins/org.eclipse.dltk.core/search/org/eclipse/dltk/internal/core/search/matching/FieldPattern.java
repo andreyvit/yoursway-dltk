@@ -13,7 +13,6 @@ package org.eclipse.dltk.internal.core.search.matching;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.indexing.IIndexConstants;
-import org.eclipse.dltk.internal.core.util.Util;
 
 public class FieldPattern extends VariablePattern implements IIndexConstants {
 	// declaring type

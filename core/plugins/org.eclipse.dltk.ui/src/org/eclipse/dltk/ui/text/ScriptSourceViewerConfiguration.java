@@ -35,14 +35,14 @@ import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 
-public abstract class DLTKSourceViewerConfiguration extends
+public abstract class ScriptSourceViewerConfiguration extends
 		TextSourceViewerConfiguration {
 
 	private IColorManager fColorManager;
 	private ITextEditor fTextEditor;
 	private String fDocumentPartitioning;
 	
-	public DLTKSourceViewerConfiguration(IColorManager colorManager, IPreferenceStore preferenceStore, ITextEditor editor, String partitioning) {
+	public ScriptSourceViewerConfiguration(IColorManager colorManager, IPreferenceStore preferenceStore, ITextEditor editor, String partitioning) {
 		super(preferenceStore);
 		fColorManager= colorManager;
 		fTextEditor= editor;
@@ -136,9 +136,8 @@ public abstract class DLTKSourceViewerConfiguration extends
 		return settings;
 	}
 	
-		/*
+	/*
 	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getHyperlinkDetectors(org.eclipse.jface.text.source.ISourceViewer)
-	 *
 	 */
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
 		if (!fPreferenceStore.getBoolean(AbstractDecoratedTextEditorPreferenceConstants.EDITOR_HYPERLINKS_ENABLED))

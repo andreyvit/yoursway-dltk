@@ -6,8 +6,8 @@ import org.eclipse.dltk.javascript.internal.ui.text.completion.JavaScriptContent
 import org.eclipse.dltk.javascript.ui.text.IJavaScriptPartitions;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.text.AbstractScriptScanner;
-import org.eclipse.dltk.ui.text.DLTKSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.IColorManager;
+import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.SingleTokenScriptScanner;
 import org.eclipse.dltk.ui.text.completion.ContentAssistProcessor;
 import org.eclipse.jface.internal.text.html.HTMLTextPresenter;
@@ -34,7 +34,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 
 public class JavascriptSourceViewerConfiguration extends
-		DLTKSourceViewerConfiguration {
+		ScriptSourceViewerConfiguration {
 
 	private JavascriptTextTools fTextTools;
 

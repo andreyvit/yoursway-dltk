@@ -2,8 +2,8 @@ package org.eclipse.dltk.ruby.internal.ui;
 
 import java.io.IOException;
 
+import org.eclipse.dltk.ruby.internal.ui.templates.RubyUniversalTemplateContextType;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyTextTools;
-import org.eclipse.dltk.ruby.ui.RubyTemplateContextType;
 import org.eclipse.jface.text.templates.ContextTypeRegistry;
 import org.eclipse.jface.text.templates.persistence.TemplateStore;
 import org.eclipse.ui.editors.text.templates.ContributionContextTypeRegistry;
@@ -93,7 +93,7 @@ public class RubyUI extends AbstractUIPlugin {
 	public ContextTypeRegistry getContextTypeRegistry() {
 		if (fRegistry == null) {
 			fRegistry = new ContributionContextTypeRegistry();
-			fRegistry.addContextType(RubyTemplateContextType.CONTEXT_TYPE_ID);
+			fRegistry.addContextType(RubyUniversalTemplateContextType.CONTEXT_TYPE_ID);
 		}
 
 		return fRegistry;

@@ -3,10 +3,10 @@ package org.eclipse.dltk.ruby.internal.ui.text.completion;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.CompletionProposalLabelProvider;
 import org.eclipse.dltk.ui.text.completion.IScriptCompletionProposal;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposal;
+import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
 import org.eclipse.swt.graphics.Image;
 

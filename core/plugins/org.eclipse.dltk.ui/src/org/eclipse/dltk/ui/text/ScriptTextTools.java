@@ -47,13 +47,13 @@ public abstract class ScriptTextTools {
 		return fColorManager;
 	}
 
-	public final DLTKSourceViewerConfiguration createSourceViewerConfiguraton(
+	public final ScriptSourceViewerConfiguration createSourceViewerConfiguraton(
 			IPreferenceStore preferenceStore, ITextEditor editor) {
 		return createSourceViewerConfiguraton(preferenceStore, editor,
 				fDefaultPartitioning);
 	}
 
-	public abstract DLTKSourceViewerConfiguration createSourceViewerConfiguraton(
+	public abstract ScriptSourceViewerConfiguration createSourceViewerConfiguraton(
 			IPreferenceStore preferenceStore, ITextEditor editor,
 			String partitioning);
 

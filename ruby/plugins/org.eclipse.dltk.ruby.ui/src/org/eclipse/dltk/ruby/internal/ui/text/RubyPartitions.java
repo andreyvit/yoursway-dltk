@@ -1,4 +1,4 @@
-package org.eclipse.dltk.ruby.ui.text;
+package org.eclipse.dltk.ruby.internal.ui.text;
 
 import org.eclipse.dltk.ruby.core.IRubyConstants;
 import org.eclipse.jface.text.IDocument;

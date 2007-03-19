@@ -7,14 +7,14 @@ import java.io.InputStreamReader;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
 import org.eclipse.dltk.ruby.internal.ui.editor.RubyDocumentSetupParticipant;
+import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
 import org.eclipse.dltk.ruby.ui.preferences.RubyPreferencesMessages;
-import org.eclipse.dltk.ruby.ui.text.RubyPartitions;
 import org.eclipse.dltk.ui.preferences.AbstractDLTKEditorColoringConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 import org.eclipse.dltk.ui.preferences.PreferencesMessages;
-import org.eclipse.dltk.ui.text.DLTKSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.IColorManager;
+import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.IOverviewRuler;
@@ -78,7 +78,7 @@ public class RubyEditorColoringConfigurationBlock extends
 				showAnnotationsOverview, styles, store);
 	}
 
-	protected DLTKSourceViewerConfiguration createSimpleSourceViewerConfiguration(
+	protected ScriptSourceViewerConfiguration createSimpleSourceViewerConfiguration(
 			IColorManager colorManager, IPreferenceStore preferenceStore,
 			ITextEditor editor, boolean configureFormatter) {
 		return new SimpleRubySourceViewerConfiguration(colorManager,

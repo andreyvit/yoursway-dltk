@@ -7,9 +7,8 @@ import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.progress.IProgressConstants;
 
 public class RubyPerspective implements IPerspectiveFactory  {
-
+		
 	public void createInitialLayout(IPageLayout layout) {
-
 		String editorArea = layout.getEditorArea();
 		
 		IFolderLayout folder= layout.createFolder("left", IPageLayout.LEFT, (float)0.2, editorArea); //$NON-NLS-1$

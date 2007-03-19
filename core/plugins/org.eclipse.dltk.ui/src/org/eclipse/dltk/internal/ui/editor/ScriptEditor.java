@@ -39,7 +39,7 @@ import org.eclipse.dltk.ui.actions.DLTKSearchActionGroup;
 import org.eclipse.dltk.ui.actions.IDLTKEditorActionDefinitionIds;
 import org.eclipse.dltk.ui.actions.OpenEditorActionGroup;
 import org.eclipse.dltk.ui.actions.OpenViewActionGroup;
-import org.eclipse.dltk.ui.text.DLTKSourceViewerConfiguration;
+import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.dltk.ui.text.folding.IFoldingStructureProvider;
 import org.eclipse.dltk.ui.text.folding.IFoldingStructureProviderExtension;
@@ -1751,7 +1751,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 				return;
 			}
 
-			((DLTKSourceViewerConfiguration) getSourceViewerConfiguration())
+			((ScriptSourceViewerConfiguration) getSourceViewerConfiguration())
 					.handlePropertyChangeEvent(event);
 		} finally {
 			super.handlePreferenceStoreChanged(event);
@@ -1773,7 +1773,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	}
 
 	protected boolean affectsTextPresentation(PropertyChangeEvent event) {
-		return ((DLTKSourceViewerConfiguration) getSourceViewerConfiguration())
+		return ((ScriptSourceViewerConfiguration) getSourceViewerConfiguration())
 				.affectsTextPresentation(event)
 				|| super.affectsTextPresentation(event);
 	}

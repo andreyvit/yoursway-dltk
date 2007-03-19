@@ -4,7 +4,6 @@ import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
-import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class NumericLiteralEvaluator extends GoalEvaluator {
 

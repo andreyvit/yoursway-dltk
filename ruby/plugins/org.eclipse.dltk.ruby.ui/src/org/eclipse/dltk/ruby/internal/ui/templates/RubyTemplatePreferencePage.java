@@ -1,11 +1,11 @@
-package org.eclipse.dltk.ruby.ui;
+package org.eclipse.dltk.ruby.internal.ui.templates;
 
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.internal.ui.preferences.ScriptSourcePreviewerUpdater;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.dltk.ruby.internal.ui.preferences.SimpleRubySourceViewerConfiguration;
+import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyTextTools;
-import org.eclipse.dltk.ruby.ui.text.RubyPartitions;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
@@ -31,7 +31,7 @@ public class RubyTemplatePreferencePage extends TemplatePreferencePage
 	public boolean performOk() {
 		boolean ok = super.performOk();
 
-		// PydevPlugin.getDefault().savePluginPreferences();
+		// TODO: save plugin prefereces
 
 		return ok;
 	}

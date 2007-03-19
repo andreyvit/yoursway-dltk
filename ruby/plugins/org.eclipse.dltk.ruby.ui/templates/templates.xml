@@ -2,7 +2,7 @@
 <templates>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%forTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.for1" 
 	name="for">for ${obj} in ${collection}
@@ -10,7 +10,7 @@
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%forTemplate2.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.for2" 
 	name="for">for ${i} in ${start_num}..${end_num}
@@ -18,7 +18,7 @@ end</template>
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%defTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.def1" 
 	name="def">def ${method_name}
@@ -26,7 +26,7 @@ end</template>
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%whileTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.while1" 
 	name="while">while ${condition}
@@ -34,13 +34,13 @@ end</template>
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%whileTemplate2.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.while2" 
 	name="while">while ${condition}</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%classTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.class1" 
 	name="class">class ${ClassName}
@@ -48,7 +48,7 @@ end</template>
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%classTemplate2.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.class2" 
 	name="class">class &lt;&lt; ${obj}
@@ -56,7 +56,7 @@ end</template>
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%moduleTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.module1" 
 	name="module">module ${ModuleName}
@@ -64,7 +64,7 @@ end</template>
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%doTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.do1" 
 	name="do">do |${block_var}|
@@ -72,7 +72,7 @@ end</template>
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%ifTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.if1" 
 	name="if">if ${condition}
@@ -80,7 +80,7 @@ end</template>
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%ifTemplate2.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.if2" 
 	name="if">if __FILE__ == $0
@@ -88,7 +88,7 @@ end</template>
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%ifelseTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.ifelse1" 
 	name="ifelse">if ${condition}
@@ -98,7 +98,7 @@ else
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%elsifTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.elsif1" 
 	name="elsif">elsif ${condition}
@@ -106,7 +106,7 @@ end</template>
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%caseTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.case" 
 	name="case">case ${condition}
@@ -117,7 +117,7 @@ end</template>
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%elseTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.else" 
 	name="else">else ${condition}
@@ -125,7 +125,7 @@ end</template>
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%beginTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.begin1" 
 	name="begin">begin
@@ -133,7 +133,7 @@ end</template>
 end until {$condition}</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%beginTemplate2.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.begin2" 
 	name="begin">begin
@@ -141,7 +141,7 @@ end until {$condition}</template>
 end while {$condition}</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%beginTemplate3.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.begin3" 
 	name="begin">begin
@@ -151,7 +151,7 @@ rescue ${ErrorType}
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%beginTemplate4.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.begin4" 
 	name="begin">begin
@@ -163,7 +163,7 @@ ensure
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%untilTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.until1" 
 	name="until">until ${condition}
@@ -171,13 +171,13 @@ end</template>
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%aliasTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.alias1" 
 	name="alias">alias :${new_method} :${old_method}</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%rescueTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.rescue1" 
 	name="rescue">rescue ${ErrorType}
@@ -185,7 +185,7 @@ end</template>
 end</template>
 
 <template 
-	context="org.eclipse.dltk.ruby.ui.RubyTemplateContextType" 
+	context="rubyUniversalTemplateContextType" 
 	description="%rescueTemplate2.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.rescue2" 
 	name="rescue">rescue ${ErrorType} =&gt; ${error_var}

@@ -6,8 +6,8 @@ import org.eclipse.dltk.tcl.internal.ui.text.completion.TclScriptCompletionProce
 import org.eclipse.dltk.tcl.ui.text.TclPartitions;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.text.AbstractScriptScanner;
-import org.eclipse.dltk.ui.text.DLTKSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.IColorManager;
+import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.SingleTokenScriptScanner;
 import org.eclipse.dltk.ui.text.completion.ContentAssistProcessor;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 
-public class TclSourceViewerConfiguration extends DLTKSourceViewerConfiguration {
+public class TclSourceViewerConfiguration extends ScriptSourceViewerConfiguration {
 
 	private TclTextTools fTextTools;
 

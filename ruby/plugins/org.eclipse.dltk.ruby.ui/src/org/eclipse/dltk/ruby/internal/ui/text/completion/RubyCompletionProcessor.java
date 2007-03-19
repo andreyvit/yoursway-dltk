@@ -68,19 +68,4 @@ public class RubyCompletionProcessor extends ScriptCompletionProcessor {
 		}
 		return validator;
 	}
-
-//	protected List filterAndSortProposals(List proposals,
-//			IProgressMonitor monitor, ContentAssistInvocationContext context) {
-//
-//		Collections.sort(proposals, new Comparator() {
-//
-//			public int compare(Object o1, Object o2) {
-//				final ICompletionProposal a = (ICompletionProposal) o1;
-//				final ICompletionProposal b = (ICompletionProposal) o2;				
-//				return a.getDisplayString().compareTo(b.getDisplayString());
-//			}
-//		});
-//
-//		return proposals;
-//	}
 }

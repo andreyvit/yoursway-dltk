@@ -30,5 +30,5 @@ Export-Package: org.eclipse.dltk.ruby.internal.ui,
  org.eclipse.dltk.ruby.internal.ui.text.folding,
  org.eclipse.dltk.ruby.internal.ui.text.rules,
  org.eclipse.dltk.ruby.internal.ui.text.syntax,
- org.eclipse.dltk.ruby.ui.preferences,
- org.eclipse.dltk.ruby.ui.text
+ org.eclipse.dltk.ruby.ui.preferences
+

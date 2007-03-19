@@ -1,4 +1,4 @@
-package org.eclipse.dltk.ruby.internal.ui;
+package org.eclipse.dltk.ui.templates;
 
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.jface.text.IDocument;

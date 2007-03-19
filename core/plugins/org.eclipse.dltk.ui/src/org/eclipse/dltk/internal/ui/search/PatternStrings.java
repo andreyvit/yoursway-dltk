@@ -13,7 +13,6 @@ package org.eclipse.dltk.internal.ui.search;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IType;
-import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.ui.ScriptElementLabels;
 
 public class PatternStrings {

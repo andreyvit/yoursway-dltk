@@ -1,7 +1,7 @@
-package org.eclipse.dltk.ruby.ui;
+package org.eclipse.dltk.ruby.internal.ui.templates;
 
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ruby.internal.ui.ScriptTemplateContext;
+import org.eclipse.dltk.ui.templates.ScriptTemplateContext;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.templates.Template;
@@ -11,21 +11,7 @@ import org.eclipse.jface.text.templates.TemplateException;
 import org.eclipse.jface.text.templates.TemplateTranslator;
 
 public class RubyTemplateContext extends ScriptTemplateContext {
-
-	/**
-	 * Creates a ruby template context.
-	 * 
-	 * @param type
-	 *            the context type.
-	 * @param document
-	 *            the document.
-	 * @param completionOffset
-	 *            the completion offset within the document.
-	 * @param completionLength
-	 *            the completion length.
-	 * @param compilationUnit
-	 *            the compilation unit (may be <code>null</code>).
-	 */
+	
 	public RubyTemplateContext(TemplateContextType type, IDocument document,
 			int completionOffset, int completionLength,
 			ISourceModule sourceModule) {

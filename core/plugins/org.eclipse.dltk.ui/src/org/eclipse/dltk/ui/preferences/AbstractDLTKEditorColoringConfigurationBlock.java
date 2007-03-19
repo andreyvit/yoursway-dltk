@@ -20,8 +20,8 @@ import org.eclipse.dltk.internal.ui.preferences.ScriptSourcePreviewerUpdater;
 import org.eclipse.dltk.internal.ui.text.DLTKColorManager;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.PreferencesAdapter;
-import org.eclipse.dltk.ui.text.DLTKSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.IColorManager;
+import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.util.PixelConverter;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -389,7 +389,7 @@ public abstract class AbstractDLTKEditorColoringConfigurationBlock extends
 	
 	protected abstract ProjectionViewer createPreviewViewer(Composite parent, IVerticalRuler verticalRuler, IOverviewRuler overviewRuler, boolean showAnnotationsOverview, int styles, IPreferenceStore store);
 	
-	protected abstract DLTKSourceViewerConfiguration createSimpleSourceViewerConfiguration(IColorManager colorManager, IPreferenceStore preferenceStore, ITextEditor editor, boolean configureFormatter);
+	protected abstract ScriptSourceViewerConfiguration createSimpleSourceViewerConfiguration(IColorManager colorManager, IPreferenceStore preferenceStore, ITextEditor editor, boolean configureFormatter);
 	
 	protected abstract void setDocumentPartitioning( IDocument document );
 	
@@ -840,7 +840,7 @@ public abstract class AbstractDLTKEditorColoringConfigurationBlock extends
 		if( fPreviewViewer == null ) {
 			return null;
 		}
-		DLTKSourceViewerConfiguration configuration = createSimpleSourceViewerConfiguration(
+		ScriptSourceViewerConfiguration configuration = createSimpleSourceViewerConfiguration(
 				fColorManager, store, null, false);
 		fPreviewViewer.configure(configuration);
 				

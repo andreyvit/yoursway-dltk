@@ -27,7 +27,6 @@ import org.eclipse.dltk.ruby.tests.typeinference.old.TypeInferenceTest;
 import org.eclipse.dltk.ruby.typeinference.OffsetTargetedASTVisitor;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
-import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
 import org.eclipse.dltk.ti.BasicContext;
 import org.eclipse.dltk.ti.ITypeInferencer;
 import org.eclipse.dltk.ti.TypeInferencer;

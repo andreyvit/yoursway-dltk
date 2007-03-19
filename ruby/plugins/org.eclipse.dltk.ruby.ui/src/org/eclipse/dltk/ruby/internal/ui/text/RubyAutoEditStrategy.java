@@ -2,7 +2,6 @@ package org.eclipse.dltk.ruby.internal.ui.text;
 
 import java.util.regex.Pattern;
 
-import org.eclipse.dltk.ruby.ui.text.RubyPartitions;
 import org.eclipse.dltk.ui.text.util.AutoEditUtils;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;

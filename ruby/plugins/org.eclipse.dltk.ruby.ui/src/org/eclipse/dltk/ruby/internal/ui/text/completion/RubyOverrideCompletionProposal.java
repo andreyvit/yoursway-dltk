@@ -47,16 +47,10 @@ public class RubyOverrideCompletionProposal extends ScriptTypeCompletionProposal
 		setReplacementString(buffer.toString());
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension3#getPrefixCompletionText(org.eclipse.jface.text.IDocument,int)
-	 */
 	public CharSequence getPrefixCompletionText(IDocument document, int completionOffset) {
 		return fMethodName;
 	}
 
-	/*
-	 * @see DLTKTypeCompletionProposal#updateReplacementString(IDocument,char,int,ImportRewrite)
-	 */
 	protected boolean updateReplacementString(IDocument document, char trigger, int offset) throws CoreException, BadLocationException {
 		final IDocument buffer= new Document(document.get());
 		int index= offset - 1;
@@ -66,10 +60,7 @@ public class RubyOverrideCompletionProposal extends ScriptTypeCompletionProposal
 		buffer.replace(index + 1, length, " "); //$NON-NLS-1$
 		return true;
 	}
-
-	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension4#isAutoInsertable()
-	 */
+	
 	public boolean isAutoInsertable() {
 		return false;
 	}

@@ -76,7 +76,7 @@
 	          name="Syntax Coloring"/>
      <page
            category="org.eclipse.dltk.ruby.ui.ruby"
-           class="org.eclipse.dltk.ruby.ui.RubyTemplatePreferencePage"
+           class="org.eclipse.dltk.ruby.internal.ui.templates.RubyTemplatePreferencePage"
            id="org.eclipse.dltk.ruby.ui.RubyTemplatePreferencePage"
            name="Ruby code templates">
      </page>	          
@@ -243,9 +243,9 @@
  <extension
        point="org.eclipse.ui.editors.templates">
     <contextType
-          class="org.eclipse.dltk.ruby.ui.RubyTemplateContextType"
-          id="org.eclipse.dltk.ruby.ui.RubyTemplateContextType"
-          name="Ruby templates">
+          class="org.eclipse.dltk.ruby.internal.ui.templates.RubyUniversalTemplateContextType"
+          id="rubyUniversalTemplateContextType"
+          name="%rubyUniversalTemplateContextTypeName">
     </contextType>
     <include
           file="templates/templates.xml"

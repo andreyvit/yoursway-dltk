@@ -12,7 +12,7 @@
 package org.eclipse.dltk.internal.ui.preferences;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.dltk.ui.text.DLTKSourceViewerConfiguration;
+import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.source.SourceViewer;
@@ -38,7 +38,7 @@ public class ScriptSourcePreviewerUpdater {
 	 *            the preference store
 	 */
 	public ScriptSourcePreviewerUpdater(final SourceViewer viewer,
-			final DLTKSourceViewerConfiguration configuration,
+			final ScriptSourceViewerConfiguration configuration,
 			final IPreferenceStore preferenceStore) {
 		Assert.isNotNull(viewer);
 		Assert.isNotNull(configuration);

@@ -13,7 +13,6 @@ package org.eclipse.dltk.internal.core.search.matching;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IMethod;
-import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.SearchPattern;
 

@@ -19,7 +19,6 @@ import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.index.EntryResult;
 import org.eclipse.dltk.core.search.index.Index;
 import org.eclipse.dltk.core.search.indexing.IIndexConstants;
-import org.eclipse.dltk.internal.core.util.Util;
 
 
 public class MethodPattern extends DLTKSearchPattern implements IIndexConstants {

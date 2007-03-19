@@ -13,8 +13,8 @@ import org.eclipse.dltk.ui.preferences.AbstractDLTKEditorColoringConfigurationBl
 import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 import org.eclipse.dltk.ui.preferences.PreferencesMessages;
-import org.eclipse.dltk.ui.text.DLTKSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.IColorManager;
+import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.IOverviewRuler;
@@ -66,7 +66,7 @@ public class JavascriptEditorColoringConfigurationBlock extends
 				showAnnotationsOverview, styles, store);
 	}
 
-	protected DLTKSourceViewerConfiguration createSimpleSourceViewerConfiguration(
+	protected ScriptSourceViewerConfiguration createSimpleSourceViewerConfiguration(
 			IColorManager colorManager, IPreferenceStore preferenceStore,
 			ITextEditor editor, boolean configureFormatter) {
 		return new SimpleJavascriptSourceViewerConfiguration(colorManager,

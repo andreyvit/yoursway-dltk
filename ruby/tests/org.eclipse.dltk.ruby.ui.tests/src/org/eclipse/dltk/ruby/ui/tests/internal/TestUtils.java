@@ -7,8 +7,8 @@ import java.io.InputStream;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
+import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
 import org.eclipse.dltk.ruby.internal.ui.text.syntax.RubyBlocks;
-import org.eclipse.dltk.ruby.ui.text.RubyPartitions;
 import org.eclipse.dltk.ui.text.blocks.BlocksConfiguration;
 import org.eclipse.dltk.ui.text.util.IRangeFilter;
 import org.eclipse.jface.text.BadLocationException;

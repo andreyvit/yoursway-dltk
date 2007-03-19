@@ -1,8 +1,8 @@
 package org.eclipse.dltk.ruby.tests.typeinference.old;
 
-import org.eclipse.dltk.ruby.tests.typeinference.TypeInferenceSuite;
-
 import junit.framework.Test;
+
+import org.eclipse.dltk.ruby.tests.typeinference.TypeInferenceSuite;
 
 public class StatementsTest {
 
