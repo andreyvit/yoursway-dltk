@@ -1,13 +1,14 @@
 package org.eclipse.dltk.ruby.ui;
 
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ruby.internal.ui.ScriptContextType;
+import org.eclipse.dltk.ruby.internal.ui.ScriptTemplateContextType;
 import org.eclipse.dltk.ruby.internal.ui.ScriptTemplateContext;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.templates.GlobalTemplateVariables;
+import org.eclipse.jface.text.templates.TemplateException;
 
-public class RubyTemplateContextType extends ScriptContextType {
-	public static final String TEMPLATE_ID = "org.eclipse.dltk.ruby.ui.RubyTemplateContextType";
+public class RubyTemplateContextType extends ScriptTemplateContextType {
+	public static final String CONTEXT_TYPE_ID = "org.eclipse.dltk.ruby.ui.RubyTemplateContextType";
 
 	private void addGlobalResolvers() {
 		addResolver(new GlobalTemplateVariables.Cursor());
@@ -21,20 +22,13 @@ public class RubyTemplateContextType extends ScriptContextType {
 	}
 
 	public RubyTemplateContextType() {
-		super(TEMPLATE_ID);
+		super(CONTEXT_TYPE_ID);
 
 		addGlobalResolvers();
 	}
-
-	public RubyTemplateContextType(String id) {
-		super(id);
-
-		addGlobalResolvers();
-	}
-
+	
 	public ScriptTemplateContext createContext(IDocument document, int offset,
 			int length, ISourceModule sourceModule) {
-
-		return new RubyContext(this, document, offset, length, sourceModule);
-	}
+		return new RubyTemplateContext(this, document, offset, length, sourceModule);
+	}		
 }

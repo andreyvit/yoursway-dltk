@@ -29,18 +29,16 @@ public abstract class Engine implements ITypeRequestor {
 	protected ISearchableEnvironment nameEnvironment;
 	protected SourceModuleScope unitScope;
 	public AssistOptions options;
-	public boolean forbiddenReferenceIsError;
-	public boolean discouragedReferenceIsError;
 
 	protected static int EXACT_RULE = SearchPattern.R_EXACT_MATCH
 			| SearchPattern.R_CASE_SENSITIVE;
 
 	public Engine(Map settings) {
 		this.options = new AssistOptions(settings);
-		this.forbiddenReferenceIsError = false;
-		this.discouragedReferenceIsError = false;
 	}
 
+	
+	// TODO: move this to other class!!!
 	/*
 	 * Find the node (a field, a method or an initializer) at the given position
 	 * and parse its block statements if it is a method or an initializer.
@@ -143,12 +141,13 @@ public abstract class Engine implements ITypeRequestor {
 		return null;
 	}
 
-	public abstract IAssistParser getParser();
-
 	protected void reset() {
 		if (lookupEnvironment != null) {
 			lookupEnvironment.reset();
 		}
 	}
+
+	// TODO: remove this!!!
+	public abstract IAssistParser getParser();
 
 }

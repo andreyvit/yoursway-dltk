@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.codeassist.CompletionEngine;
+import org.eclipse.dltk.codeassist.ScriptCompletionEngine;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.RelevanceConstants;
 import org.eclipse.dltk.compiler.CharOperation;
@@ -47,7 +47,7 @@ import org.eclipse.dltk.javascript.core.JavaScriptKeywords;
 import org.eclipse.dltk.javascript.internal.core.codeassist.AssitUtils;
 import org.eclipse.dltk.javascript.internal.core.codeassist.AssitUtils.PositionCalculator;
 
-public class JavaScriptCompletionEngine extends CompletionEngine {
+public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 
 	private boolean useEngine = true;
 

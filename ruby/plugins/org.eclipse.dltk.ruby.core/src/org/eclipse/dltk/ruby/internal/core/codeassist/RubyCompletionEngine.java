@@ -9,7 +9,7 @@ import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.codeassist.CompletionEngine;
+import org.eclipse.dltk.codeassist.ScriptCompletionEngine;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.RelevanceConstants;
 import org.eclipse.dltk.compiler.env.ISourceModule;
@@ -42,7 +42,7 @@ import org.eclipse.dltk.ti.TypeInferencer;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
-public class RubyCompletionEngine extends CompletionEngine {
+public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 	private TypeInferencer inferencer;	
 	private JRubySourceParser parser = new JRubySourceParser(null);

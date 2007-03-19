@@ -12,7 +12,7 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
-import org.eclipse.dltk.codeassist.CompletionEngine;
+import org.eclipse.dltk.codeassist.ScriptCompletionEngine;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.complete.CompletionNodeFound;
 import org.eclipse.dltk.compiler.env.ISourceModule;
@@ -45,7 +45,7 @@ import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnVari
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.TclCompletionParser;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 
-public class TclCompletionEngine extends CompletionEngine {
+public class TclCompletionEngine extends ScriptCompletionEngine {
 	boolean assistNodeIsNamespace;
 	boolean assistNodeIsFunction;
 	TclCompletionParser parser;

@@ -4,14 +4,13 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.ruby.internal.ui.ScriptTemplateContext;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.templates.Template;
 import org.eclipse.jface.text.templates.TemplateBuffer;
 import org.eclipse.jface.text.templates.TemplateContextType;
 import org.eclipse.jface.text.templates.TemplateException;
 import org.eclipse.jface.text.templates.TemplateTranslator;
 
-public class RubyContext extends ScriptTemplateContext {
+public class RubyTemplateContext extends ScriptTemplateContext {
 
 	/**
 	 * Creates a ruby template context.
@@ -27,7 +26,7 @@ public class RubyContext extends ScriptTemplateContext {
 	 * @param compilationUnit
 	 *            the compilation unit (may be <code>null</code>).
 	 */
-	public RubyContext(TemplateContextType type, IDocument document,
+	public RubyTemplateContext(TemplateContextType type, IDocument document,
 			int completionOffset, int completionLength,
 			ISourceModule sourceModule) {
 		super(type, document, completionOffset, completionLength, sourceModule);
@@ -42,20 +41,20 @@ public class RubyContext extends ScriptTemplateContext {
 		}
 
 		TemplateTranslator translator = new TemplateTranslator();
-		
-//		{
-//			protected TemplateVariable createVariable(String type, String name,
-//					int[] offsets) {
-//				// XXX
-//				// return new MultiVariable(type, name, offsets);
-//				return null;
-//			}
-//		};
+
+		// {
+		// protected TemplateVariable createVariable(String type, String name,
+		// int[] offsets) {
+		// // XXX
+		// // return new MultiVariable(type, name, offsets);
+		// return null;
+		// }
+		// };
 		TemplateBuffer buffer = translator.translate(template);
 
 		getContextType().resolve(buffer, this);
 
-		//IPreferenceStore prefs = RubyUI.getDefault().getPreferenceStore();
+		// IPreferenceStore prefs = RubyUI.getDefault().getPreferenceStore();
 
 		// boolean useCodeFormatter = prefs
 		// .getBoolean(PreferenceConstants.TEMPLATES_USE_CODEFORMATTER);
@@ -70,36 +69,7 @@ public class RubyContext extends ScriptTemplateContext {
 		return buffer;
 	}
 
-	/**
-	 * Returns the indentation level at the position of code completion.
-	 * 
-	 * @return the indentation level at the position of the code completion
-	 */
-	private int getIndentation() {
-		int start = getStart();
-		IDocument document = getDocument();
-		try {
-			IRegion region = document.getLineInformationOfOffset(start);
-			String lineContent = document.get(region.getOffset(), region
-					.getLength());
-
-			// IRubyScript compilationUnit = getRubyScript();
-			// IRubyProject project = compilationUnit == null ? null
-			// : compilationUnit.getRubyProject();
-			// return Strings.computeIndentUnits(lineContent, project);
-			return 0;
-		} catch (BadLocationException e) {
-			return 0;
-		}
-	}
-
-	/*
-	 * @see TemplateContext#canEvaluate(Template templates)
-	 */
 	public boolean canEvaluate(Template template) {
-		if (fForceEvaluation)
-			return true;
-
 		String key = getKey();
 		return template.matches(key, getContextType().getId())
 				&& key.length() != 0
@@ -107,13 +77,10 @@ public class RubyContext extends ScriptTemplateContext {
 						key.toLowerCase());
 	}
 
-	/*
-	 * @see org.eclipse.jdt.internal.corext.template.DocumentTemplateContext#getKey()
-	 */
 	public String getKey() {
-
-		if (getCompletionLength() == 0)
+		if (getCompletionLength() == 0) {
 			return super.getKey();
+		}
 
 		try {
 			IDocument document = getDocument();
@@ -127,15 +94,10 @@ public class RubyContext extends ScriptTemplateContext {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.text.templates.DocumentTemplateContext#getEnd()
-	 */
 	public int getEnd() {
-
-		if (getCompletionLength() == 0)
+		if (getCompletionLength() == 0) {
 			return super.getEnd();
+		}
 
 		try {
 			IDocument document = getDocument();
@@ -154,13 +116,7 @@ public class RubyContext extends ScriptTemplateContext {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.text.templates.DocumentTemplateContext#getStart()
-	 */
 	public int getStart() {
-
 		try {
 			IDocument document = getDocument();
 

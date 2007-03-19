@@ -10,8 +10,8 @@ import org.eclipse.jface.text.templates.TemplateVariable;
 /**
  * A very simple context type.
  */
-public abstract class ScriptContextType extends TemplateContextType {
-	public ScriptContextType(String id) {
+public abstract class ScriptTemplateContextType extends TemplateContextType {
+	public ScriptTemplateContextType(String id) {
 		super(id);
 	}
 

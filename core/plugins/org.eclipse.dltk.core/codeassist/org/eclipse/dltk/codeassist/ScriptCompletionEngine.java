@@ -21,22 +21,25 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.codeassist.impl.Engine;
 import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
 
-
-public abstract class CompletionEngine extends Engine implements ICompletionEngine {
+public abstract class ScriptCompletionEngine extends Engine implements ICompletionEngine {
 	protected static boolean DEBUG = DLTKCore.DEBUG_COMPLETION;
 
 	protected IDLTKProject dltkProject;
 
+	// Accpets completion proposals
 	protected CompletionRequestor requestor;
 
 	protected int startPosition, actualCompletionPosition, endPosition, offset;
 
 	protected char[] fileName = null;
 
+	
+	// Packages and types
 	protected HashtableOfObject knownPkgs = new HashtableOfObject(10);
 
 	protected HashtableOfObject knownTypes = new HashtableOfObject(10);
 
+	// Flags
 	boolean insideQualifiedReference = false;
 
 	protected boolean noProposal = true;
@@ -45,7 +48,7 @@ public abstract class CompletionEngine extends Engine implements ICompletionEngi
 
 	protected char[] source;
 
-	public CompletionEngine(ISearchableEnvironment nameEnvironment, CompletionRequestor requestor, Map settings, IDLTKProject dltkProject) {
+	public ScriptCompletionEngine(ISearchableEnvironment nameEnvironment, CompletionRequestor requestor, Map settings, IDLTKProject dltkProject) {
 		super(settings);
 		this.dltkProject = dltkProject;
 		this.requestor = requestor;
@@ -61,7 +64,7 @@ public abstract class CompletionEngine extends Engine implements ICompletionEngi
 	}
 
 	protected void printDebug(CategorizedProblem error) {
-		if (CompletionEngine.DEBUG) {
+		if (ScriptCompletionEngine.DEBUG) {
 			System.out.print("COMPLETION - completionFailure("); //$NON-NLS-1$
 			System.out.print(error);
 			System.out.println(")"); //$NON-NLS-1$
@@ -175,7 +178,7 @@ public abstract class CompletionEngine extends Engine implements ICompletionEngi
 	protected void findKeywords(char[] keyword, char[][] choices, boolean canCompleteEmptyToken) {
 		if (choices == null || choices.length == 0)
 			return;
-
+		
 		int length = keyword.length;
 		if (canCompleteEmptyToken || length > 0) {
 			for (int i = 0; i < choices.length; i++) {
@@ -241,11 +244,11 @@ public abstract class CompletionEngine extends Engine implements ICompletionEngi
 					relevance += computeRelevanceForRestrictions(IAccessRule.K_ACCESSIBLE); // no
 
 					// accept result
-					CompletionEngine.this.noProposal = false;
+					ScriptCompletionEngine.this.noProposal = false;
 					
-					if (!CompletionEngine.this.requestor.isIgnored(kind)) {
-						CompletionProposal proposal = CompletionEngine.this.createProposal(kind,
-								CompletionEngine.this.actualCompletionPosition);
+					if (!ScriptCompletionEngine.this.requestor.isIgnored(kind)) {
+						CompletionProposal proposal = ScriptCompletionEngine.this.createProposal(kind,
+								ScriptCompletionEngine.this.actualCompletionPosition);
 						// proposal.setSignature(getSignature(typeBinding));
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
@@ -280,10 +283,10 @@ public abstract class CompletionEngine extends Engine implements ICompletionEngi
 					relevance += computeRelevanceForRestrictions(IAccessRule.K_ACCESSIBLE); // no
 
 					// accept result
-					CompletionEngine.this.noProposal = false;
-					if (!CompletionEngine.this.requestor.isIgnored(CompletionProposal.METHOD_DECLARATION)) {
-						CompletionProposal proposal = CompletionEngine.this.createProposal(CompletionProposal.METHOD_DECLARATION,
-								CompletionEngine.this.actualCompletionPosition);
+					ScriptCompletionEngine.this.noProposal = false;
+					if (!ScriptCompletionEngine.this.requestor.isIgnored(CompletionProposal.METHOD_DECLARATION)) {
+						CompletionProposal proposal = ScriptCompletionEngine.this.createProposal(CompletionProposal.METHOD_DECLARATION,
+								ScriptCompletionEngine.this.actualCompletionPosition);
 						// proposal.setSignature(getSignature(typeBinding));
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
@@ -342,10 +345,10 @@ public abstract class CompletionEngine extends Engine implements ICompletionEngi
 					relevance += computeRelevanceForRestrictions(IAccessRule.K_ACCESSIBLE); // no
 
 					// accept result
-					CompletionEngine.this.noProposal = false;
-					if (!CompletionEngine.this.requestor.isIgnored(kind)) {
-						CompletionProposal proposal = CompletionEngine.this.createProposal(kind,
-								CompletionEngine.this.actualCompletionPosition);
+					ScriptCompletionEngine.this.noProposal = false;
+					if (!ScriptCompletionEngine.this.requestor.isIgnored(kind)) {
+						CompletionProposal proposal = ScriptCompletionEngine.this.createProposal(kind,
+								ScriptCompletionEngine.this.actualCompletionPosition);
 						// proposal.setSignature(getSignature(typeBinding));
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
@@ -401,10 +404,10 @@ public abstract class CompletionEngine extends Engine implements ICompletionEngi
 					relevance += computeRelevanceForRestrictions(IAccessRule.K_ACCESSIBLE); // no
 
 					// accept result
-					CompletionEngine.this.noProposal = false;
-					if (!CompletionEngine.this.requestor.isIgnored(kind)) {
-						CompletionProposal proposal = CompletionEngine.this.createProposal(kind,
-								CompletionEngine.this.actualCompletionPosition);
+					ScriptCompletionEngine.this.noProposal = false;
+					if (!ScriptCompletionEngine.this.requestor.isIgnored(kind)) {
+						CompletionProposal proposal = ScriptCompletionEngine.this.createProposal(kind,
+								ScriptCompletionEngine.this.actualCompletionPosition);
 						// proposal.setSignature(getSignature(typeBinding));
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
@@ -443,10 +446,10 @@ public abstract class CompletionEngine extends Engine implements ICompletionEngi
 					relevance += computeRelevanceForRestrictions(IAccessRule.K_ACCESSIBLE); // no
 
 					// accept result
-					CompletionEngine.this.noProposal = false;
-					if (!CompletionEngine.this.requestor.isIgnored(CompletionProposal.TYPE_REF)) {
-						CompletionProposal proposal = CompletionEngine.this.createProposal(CompletionProposal.TYPE_REF,
-								CompletionEngine.this.actualCompletionPosition);
+					ScriptCompletionEngine.this.noProposal = false;
+					if (!ScriptCompletionEngine.this.requestor.isIgnored(CompletionProposal.TYPE_REF)) {
+						CompletionProposal proposal = ScriptCompletionEngine.this.createProposal(CompletionProposal.TYPE_REF,
+								ScriptCompletionEngine.this.actualCompletionPosition);
 						// proposal.setSignature(getSignature(typeBinding));
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
