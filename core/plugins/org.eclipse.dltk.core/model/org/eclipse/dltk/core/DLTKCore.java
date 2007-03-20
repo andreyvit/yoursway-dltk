@@ -89,6 +89,8 @@ public class DLTKCore extends Plugin {
 	 */
 	public static final String ERROR = "error"; //$NON-NLS-1$
 	
+	public static final String BUILDER_ID = PLUGIN_ID + ".scriptbuilder" ; //$NON-NLS-1$
+	
 	/**
 	 * Possible  configurable option value.
 	 * @see #getDefaultOptions()

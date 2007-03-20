@@ -20,5 +20,5 @@
            class="org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixin"
            nature="org.eclipse.dltk.ruby.core.nature">
      </mixin>
-  </extension>   
+  </extension>
 </plugin>

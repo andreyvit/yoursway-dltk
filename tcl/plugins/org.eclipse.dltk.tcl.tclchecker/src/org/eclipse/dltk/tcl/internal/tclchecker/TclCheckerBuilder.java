@@ -72,9 +72,9 @@ public class TclCheckerBuilder extends IncrementalProjectBuilder {
 	protected void fullBuild(final IProgressMonitor monitor)
 			throws CoreException {
 		try {
-			List reources = new ArrayList();
-			getProject().accept(new ResourceVisitor(reources));
-			runTclChecker(reources);
+			List resource = new ArrayList();
+			getProject().accept(new ResourceVisitor(resource));
+			runTclChecker(resource);
 		} catch (CoreException e) {
 		}
 	}
@@ -87,13 +87,13 @@ public class TclCheckerBuilder extends IncrementalProjectBuilder {
 	}
 
 	protected void runTclChecker(List resources) throws CoreException {
-		List sourceMoudels = new ArrayList();
+		List sourceModules = new ArrayList();
 
 		Iterator it = resources.iterator();
 		while (it.hasNext()) {
 			IModelElement element = DLTKCore.create((IResource) it.next());
 			if (element instanceof ISourceModule) {
-				sourceMoudels.add(element);
+				sourceModules.add(element);
 			}
 		}
 		
@@ -106,6 +106,6 @@ public class TclCheckerBuilder extends IncrementalProjectBuilder {
 			return;
 		}
 	
-		checker.check(sourceMoudels, JOB_NAME, false);
+		checker.check(sourceModules, JOB_NAME, false);
 	}
 }

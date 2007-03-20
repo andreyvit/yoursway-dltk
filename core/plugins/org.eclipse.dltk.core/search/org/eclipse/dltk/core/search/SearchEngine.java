@@ -733,6 +733,7 @@ public class SearchEngine {
 			null);	
 		return (ISourceModule[])modules.toArray(new ISourceModule[modules.size()]);
 	}
+	
 	public static String[] searchMixinPatterns(String key, IDLTKLanguageToolkit toolkit ) {
 		final IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit); 
 		// Index requestor

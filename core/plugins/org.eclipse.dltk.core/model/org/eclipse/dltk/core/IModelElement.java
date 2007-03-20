@@ -283,4 +283,6 @@ public interface IModelElement extends IAdaptable {
 	 *		exception occurs while accessing its corresponding resource
 	 */// TODO (philippe) predicate shouldn't throw an exception
 	boolean isStructureKnown() throws ModelException;
+	
+	void accept( IModelElementVisitor visitor ) throws ModelException;
 }

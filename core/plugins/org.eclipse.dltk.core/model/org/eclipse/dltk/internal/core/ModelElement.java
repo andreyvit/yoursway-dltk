@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IModelElementVisitor;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IOpenable;
@@ -601,5 +602,13 @@ public abstract class ModelElement extends PlatformObject implements
 	}
 	public ISourceModule getSourceModule() {
 		return null;
+	}
+	public void accept( IModelElementVisitor visitor ) throws ModelException {
+		if( visitor.visit(this) ) {
+			IModelElement[] elements = getChildren();
+			for( int i = 0; i < elements.length; ++i ) {
+				elements[i].accept(visitor);
+			}
+		}
 	}
 }

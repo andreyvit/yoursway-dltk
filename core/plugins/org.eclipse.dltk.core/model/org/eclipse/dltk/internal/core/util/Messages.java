@@ -14,6 +14,36 @@ public class Messages extends NLS {
 	public static String hierarchy_creating;
 	public static String hierarchy_creatingOnType;
 	
+	
+	public static String build_preparingBuild;
+	public static String build_readStateProgress;
+	public static String build_readingDelta;
+	public static String build_analyzingDeltas;
+	public static String build_analyzingSources;
+	public static String build_cleaningOutput;
+	public static String build_copyingResources;
+	public static String build_compiling;
+	public static String build_foundHeader;
+	public static String build_fixedHeader;
+	public static String build_oneError;
+	public static String build_oneWarning;
+	public static String build_multipleErrors;
+	public static String build_multipleWarnings;
+	public static String build_done;
+	public static String build_wrongFileFormat;
+	public static String build_initializationError;
+	public static String build_serializationError;
+	public static String build_classFileCollision;
+	public static String build_duplicateClassFile;
+	public static String build_duplicateResource;
+	public static String build_inconsistentClassFile;
+	public static String build_inconsistentProject;
+	public static String build_incompleteClassPath;
+	public static String build_missingSourceFile;
+	public static String build_prereqProjectHasClasspathProblems;
+	public static String build_prereqProjectMustBeRebuilt;
+	public static String build_abortDueToClasspathProblems;
+	
 	public static String buildpath_buildPath;
 	public static String buildpath_cannotNestEntryInEntry;
 	public static String buildpath_cannotNestEntryInEntryNoExclusion;

@@ -1,6 +1,8 @@
 package org.eclipse.dltk.core;
 
 
+
+
 public interface IModelMarker {
 	
 	/**
@@ -10,6 +12,10 @@ public interface IModelMarker {
 	 * the script tooling during compilation.
 	 */
 	String SCRIPT_RUNTIME_PROBLEM_MARKER = DLTKCore.PLUGIN_ID + ".runtime_problem"; //$NON-NLS-1$
+
+	String SCRIPT_MODEL_PROBLEM_MARKER = DLTKCore.PLUGIN_ID + ".problem"; //$NON-NLS-1$
+	
+	String TASK_MARKER = DLTKCore.PLUGIN_ID + ".task"; //$NON-NLS-1$
 
 	/**
 	 * Build path problem marker type (value

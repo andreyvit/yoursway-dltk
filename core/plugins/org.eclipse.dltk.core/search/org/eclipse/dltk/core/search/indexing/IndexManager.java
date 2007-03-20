@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.CRC32;
@@ -74,6 +75,8 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	public static Integer UPDATING_STATE = new Integer(1);
 	public static Integer UNKNOWN_STATE = new Integer(2);
 	public static Integer REBUILDING_STATE = new Integer(3);
+	
+	public static List sourcesToMixin = new ArrayList();
 
 	public synchronized void aboutToUpdateIndex(IPath containerPath, Integer newIndexState) {
 		// newIndexState is either UPDATING_STATE or REBUILDING_STATE
