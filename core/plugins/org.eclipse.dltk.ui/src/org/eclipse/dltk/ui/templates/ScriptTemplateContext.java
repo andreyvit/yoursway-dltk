@@ -42,7 +42,7 @@ public class ScriptTemplateContext extends DocumentTemplateContext {
 
 			if (s.length() > 0) {
 				int index = 0;
-				while (!Character.isJavaIdentifierPart(s.charAt(index))) {
+				while (index < s.length() && !Character.isJavaIdentifierPart(s.charAt(index))) {
 					++index;
 				}
 				indent = s.substring(0, index);

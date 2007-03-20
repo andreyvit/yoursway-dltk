@@ -88,7 +88,6 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 	 * Dialog settings key for the "all categories are disabled" warning dialog.
 	 * See {@link OptionalMessageDialog}.
 	 * 
-	 * 
 	 */
 	private static final String PREF_WARN_ABOUT_EMPTY_ASSIST_CATEGORY = "EmptyDefaultAssistCategory"; //$NON-NLS-1$
 
@@ -114,7 +113,7 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 	/* cycling stuff */
 	private int fRepetition = -1;
 
-	private List/* <List<CompletionProposalCategory>> */fCategoryIteration = null;
+	private List fCategoryIteration = null;
 
 	private String fIterationGesture = null;
 
@@ -125,15 +124,13 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 	public ContentAssistProcessor(ContentAssistant assistant, String partition) {
 		Assert.isNotNull(partition);
 		Assert.isNotNull(assistant);
+
 		fPartition = partition;
 		fCategories = CompletionProposalComputerRegistry.getDefault()
 				.getProposalCategories();
 		fAssistant = assistant;
 		fAssistant.addCompletionListener(new ICompletionListener() {
 
-			/*
-			 * @see org.eclipse.jface.text.contentassist.ICompletionListener#assistSessionStarted(org.eclipse.jface.text.contentassist.ContentAssistEvent)
-			 */
 			public void assistSessionStarted(ContentAssistEvent event) {
 				if (event.processor != ContentAssistProcessor.this)
 					return;
@@ -202,10 +199,6 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 				}
 			}
 
-			/*
-			 * @see org.eclipse.jface.text.contentassist.ICompletionListener#selectionChanged(org.eclipse.jface.text.contentassist.ICompletionProposal,
-			 *      boolean)
-			 */
 			public void selectionChanged(ICompletionProposal proposal,
 					boolean smartToggle) {
 			}
@@ -213,14 +206,10 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 		});
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeCompletionProposals(org.eclipse.jface.text.ITextViewer,
-	 *      int)
-	 */
 	public final ICompletionProposal[] computeCompletionProposals(
 			ITextViewer viewer, int offset) {
 
-		long start = DEBUG ? System.currentTimeMillis() : 0;
+		final long startTime = System.currentTimeMillis();
 
 		clearState();
 
@@ -230,20 +219,20 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 				fCategories.size() + 1);
 
 		ContentAssistInvocationContext context = createContext(viewer, offset);
-		long setup = DEBUG ? System.currentTimeMillis() : 0;
+		final long setupTime = System.currentTimeMillis();
 
 		monitor
 				.subTask(ScriptTextMessages.ContentAssistProcessor_collecting_proposals);
-		List proposals = collectProposals(viewer, offset, monitor, context);
-		long collect = DEBUG ? System.currentTimeMillis() : 0;
+		final List proposals = collectProposals(viewer, offset, monitor, context);
+		final long collectTime = System.currentTimeMillis();
 
 		monitor
 				.subTask(ScriptTextMessages.ContentAssistProcessor_sorting_proposals);
-		
-		List filtered = filterAndSortProposals(proposals, monitor, context);
-		
+
+		final List filtered = filterAndSortProposals(proposals, monitor, context);
 		fNumberOfComputedResults = filtered.size();
-		long filter = DEBUG ? System.currentTimeMillis() : 0;
+		
+		final long filterTime = System.currentTimeMillis();
 
 		ICompletionProposal[] result = (ICompletionProposal[]) filtered
 				.toArray(new ICompletionProposal[filtered.size()]);
@@ -251,10 +240,13 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 
 		if (DEBUG) {
 			System.err
-					.println("Code Assist Stats (" + result.length + " proposals)"); //$NON-NLS-1$ //$NON-NLS-2$
-			System.err.println("Code Assist (setup):\t" + (setup - start)); //$NON-NLS-1$
-			System.err.println("Code Assist (collect):\t" + (collect - setup)); //$NON-NLS-1$
-			System.err.println("Code Assist (sort):\t" + (filter - collect)); //$NON-NLS-1$
+					.println("Code Assist stats of " + result.length + " proposals:"); //$NON-NLS-1$ //$NON-NLS-2$
+			System.err
+					.println("Code Assist (setup):\t" + (setupTime - startTime)); //$NON-NLS-1$
+			System.err
+					.println("Code Assist (collect):\t" + (collectTime - setupTime)); //$NON-NLS-1$
+			System.err
+					.println("Code Assist (sort):\t" + (filterTime - collectTime)); //$NON-NLS-1$
 		}
 
 		return result;
@@ -275,8 +267,9 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 			List computed = cat.computeCompletionProposals(context, fPartition,
 					new SubProgressMonitor(monitor, 1));
 			proposals.addAll(computed);
-			if (fErrorMessage == null)
+			if (fErrorMessage == null) {
 				fErrorMessage = cat.getErrorMessage();
+			}
 		}
 
 		return proposals;
@@ -298,19 +291,11 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 	 */
 	protected List filterAndSortProposals(List proposals,
 			IProgressMonitor monitor, ContentAssistInvocationContext context) {
-
 		return proposals;
 	}
-
-	/*
-	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeContextInformation(org.eclipse.jface.text.ITextViewer,
-	 *      int)
-	 */
+	
 	public IContextInformation[] computeContextInformation(ITextViewer viewer,
-			int offset) {
-		System.out
-				.println("ContentAssistProcessor.computeContextInformation()");
-
+			int offset) {		
 		clearState();
 
 		IProgressMonitor monitor = createProgressMonitor();
@@ -320,7 +305,7 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 
 		monitor
 				.subTask(ScriptTextMessages.ContentAssistProcessor_collecting_contexts);
-		List proposals = collectContextInformation(viewer, offset, monitor);
+		final List proposals = collectContextInformation(viewer, offset, monitor);
 
 		monitor
 				.subTask(ScriptTextMessages.ContentAssistProcessor_sorting_contexts);
@@ -332,13 +317,6 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 		monitor.done();
 
 		return result;
-
-		// IContextInformation c1 = new ContextInformation("Display string",
-		// "informSrring ");
-		// IContextInformation c2 = new ContextInformation("Display string",
-		// "informSrring ");
-		//
-		// return new IContextInformation[] { c1 };
 	}
 
 	private List collectContextInformation(ITextViewer viewer, int offset,
@@ -353,8 +331,9 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 			List computed = cat.computeContextInformation(context, fPartition,
 					new SubProgressMonitor(monitor, 1));
 			proposals.addAll(computed);
-			if (fErrorMessage == null)
+			if (fErrorMessage == null) {
 				fErrorMessage = cat.getErrorMessage();
+			}
 		}
 
 		return proposals;
@@ -389,23 +368,14 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 		fCompletionAutoActivationCharacters = activationSet;
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getCompletionProposalAutoActivationCharacters()
-	 */
 	public final char[] getCompletionProposalAutoActivationCharacters() {
 		return fCompletionAutoActivationCharacters;
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getContextInformationAutoActivationCharacters()
-	 */
 	public char[] getContextInformationAutoActivationCharacters() {
 		return null;
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getErrorMessage()
-	 */
 	public String getErrorMessage() {
 		if (fNumberOfComputedResults > 0)
 			return null;
@@ -414,12 +384,7 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 		return DLTKUIMessages.ScriptEditor_codeassist_noCompletions;
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getContextInformationValidator()
-	 */
-
 	public IContextInformationValidator getContextInformationValidator() {
-
 		return null;
 	}
 
@@ -450,8 +415,9 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 	}
 
 	private List getCategories() {
-		if (fCategoryIteration == null)
+		if (fCategoryIteration == null) {
 			return fCategories;
+		}
 
 		int iteration = fRepetition % fCategoryIteration.size();
 		fAssistant.setStatusMessage(createIterationMessage());
@@ -459,7 +425,7 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 		fRepetition++;
 
 		// fAssistant.setShowMessage(fRepetition % 2 != 0);
-		//		
+		
 		return (List) fCategoryIteration.get(iteration);
 	}
 
@@ -501,8 +467,6 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 	/**
 	 * Informs the user about the fact that there are no enabled categories in
 	 * the default content assist set and shows a link to the preferences.
-	 * 
-	 * 
 	 */
 	private boolean informUserAboutEmptyDefaultCategory() {
 		if (OptionalMessageDialog
@@ -565,9 +529,6 @@ public abstract class ContentAssistProcessor implements IContentAssistProcessor 
 					return parent;
 				}
 
-				/*
-				 * @see org.eclipse.jface.dialogs.MessageDialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
-				 */
 				protected void createButtonsForButtonBar(Composite parent) {
 					Button[] buttons = new Button[2];
 					buttons[0] = createButton(parent, restoreId,
