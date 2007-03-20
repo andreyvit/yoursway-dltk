@@ -8,7 +8,7 @@ import org.eclipse.dltk.internal.compiler.impl.ITypeRequestor;
 public class LookupEnvironment {
 	public LookupEnvironment(ITypeRequestor typeRequestor,
 			INameEnvironment nameEnvironment) {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public void reset() {
@@ -16,7 +16,6 @@ public class LookupEnvironment {
 
 	public void buildTypeScope(ModuleDeclaration unit,
 			AccessRestriction accessRestriction) {
-		/*SourceModuleScope scope =*/ new SourceModuleScope(unit, this);		
-		// TODO: Add other bindings build..
+		/* SourceModuleScope scope = */new SourceModuleScope(unit, this);
 	}
 }

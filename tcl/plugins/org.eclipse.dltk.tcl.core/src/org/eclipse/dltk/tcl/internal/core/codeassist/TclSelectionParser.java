@@ -16,8 +16,6 @@ import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnKeywor
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnVariable;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 
-//import antlr.ANTLRException;
-
 public class TclSelectionParser extends TclAssistParser {
 	public void handleNotInElement(ASTNode node, int position) {
 //		System.out.println(node);

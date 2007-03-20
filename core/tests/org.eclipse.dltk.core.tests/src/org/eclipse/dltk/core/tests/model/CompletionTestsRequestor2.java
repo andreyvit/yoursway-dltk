@@ -105,34 +105,35 @@ public class CompletionTestsRequestor2 extends CompletionRequestor {
 			}
 			buffer.append('\n');
 		}
-		char[][] expectedTypesSignatures = this.context.getExpectedTypesSignatures();
-		buffer.append("expectedTypesSignatures=");
-		if(expectedTypesSignatures == null) {
-			buffer.append(NULL_LITERAL);
-		} else {
-			buffer.append('{');
-			for (int i = 0; i < expectedTypesSignatures.length; i++) {
-				if(i > 0) buffer.append(',');
-				buffer.append(expectedTypesSignatures[i]);
-				
-			}
-			buffer.append('}');
-		}
-		buffer.append('\n');
 		
-		char[][] expectedTypesKeys = this.context.getExpectedTypesKeys();
-		buffer.append("expectedTypesKeys=");
-		if(expectedTypesSignatures == null) {
-			buffer.append(NULL_LITERAL);
-		} else {
-			buffer.append('{');
-			for (int i = 0; i < expectedTypesKeys.length; i++) {
-				if(i > 0) buffer.append(',');
-				buffer.append(expectedTypesKeys[i]);
-				
-			}
-			buffer.append('}');
-		}
+//		char[][] expectedTypesSignatures = this.context.getExpectedTypesSignatures();
+//		buffer.append("expectedTypesSignatures=");
+//		if(expectedTypesSignatures == null) {
+//			buffer.append(NULL_LITERAL);
+//		} else {
+//			buffer.append('{');
+//			for (int i = 0; i < expectedTypesSignatures.length; i++) {
+//				if(i > 0) buffer.append(',');
+//				buffer.append(expectedTypesSignatures[i]);
+//				
+//			}
+//			buffer.append('}');
+//		}
+//		buffer.append('\n');
+//		
+//		char[][] expectedTypesKeys = this.context.getExpectedTypesKeys();
+//		buffer.append("expectedTypesKeys=");
+//		if(expectedTypesSignatures == null) {
+//			buffer.append(NULL_LITERAL);
+//		} else {
+//			buffer.append('{');
+//			for (int i = 0; i < expectedTypesKeys.length; i++) {
+//				if(i > 0) buffer.append(',');
+//				buffer.append(expectedTypesKeys[i]);
+//				
+//			}
+//			buffer.append('}');
+//		}
 		//buffer.append('\n');
 		
 		

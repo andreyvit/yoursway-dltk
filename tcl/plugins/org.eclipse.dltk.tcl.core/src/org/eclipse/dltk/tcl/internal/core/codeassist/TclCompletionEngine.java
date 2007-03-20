@@ -46,9 +46,9 @@ import org.eclipse.dltk.tcl.internal.core.codeassist.completion.TclCompletionPar
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 
 public class TclCompletionEngine extends ScriptCompletionEngine {
-	boolean assistNodeIsNamespace;
-	boolean assistNodeIsFunction;
-	TclCompletionParser parser;
+	private boolean assistNodeIsNamespace;
+	private boolean assistNodeIsFunction;
+	private TclCompletionParser parser;
 
 	public TclCompletionEngine(ISearchableEnvironment environment,
 			CompletionRequestor requestor, Map options, IDLTKProject project) {
@@ -56,27 +56,27 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		this.parser = new TclCompletionParser();
 	}
 
-	public void complete(ISourceModule sourceUnit, int completionPosition,
+	public void complete(ISourceModule sourceModule, int completionPosition,
 			int pos) {
 		if (DEBUG) {
 			System.out.print("COMPLETION IN "); //$NON-NLS-1$
-			System.out.print(sourceUnit.getFileName());
+			System.out.print(sourceModule.getFileName());
 			System.out.print(" AT POSITION "); //$NON-NLS-1$
 			System.out.println(completionPosition);
 			System.out.println("COMPLETION - Source :"); //$NON-NLS-1$
-			System.out.println(sourceUnit.getSourceContents());
+			System.out.println(sourceModule.getSourceContents());
 		}
 		
 		this.requestor.beginReporting();
-		
-		
+				
 		boolean contextAccepted = false;
 		try {
-			this.fileName = sourceUnit.getFileName();
+			this.fileName = sourceModule.getFileName();
 			this.actualCompletionPosition = completionPosition;
 			this.offset = pos;
 			TclModuleDeclaration parsedUnit = (TclModuleDeclaration) this.parser
-					.parse(sourceUnit);
+					.parse(sourceModule);
+			
 			if (parsedUnit != null) {
 				if (DEBUG) {
 					System.out.println("COMPLETION - Diet AST :"); //$NON-NLS-1$
@@ -84,11 +84,13 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 				}
 				try {
 					this.lookupEnvironment.buildTypeScope(parsedUnit, null);
+					
 					if ((this.unitScope = parsedUnit.scope) != null) {
-						this.source = sourceUnit.getSourceContents()
+						this.source = sourceModule.getSourceContents()
 								.toCharArray();
 						parseBlockStatements(parsedUnit,
 								this.actualCompletionPosition);
+						
 						if (DEBUG) {
 							System.out.println("COMPLETION - AST :"); //$NON-NLS-1$
 							System.out.println(parsedUnit.toString());
@@ -115,13 +117,14 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 					}
 				}
 			}
+			
 			if (this.noProposal && this.problem != null) {
 				if (!contextAccepted) {					
 					CompletionContext context = new CompletionContext();
 					context.setOffset(completionPosition);
-					context.setTokenKind(CompletionContext.TOKEN_KIND_UNKNOWN);					
-					this.requestor.acceptContext(context);
+					context.setTokenKind(CompletionContext.TOKEN_KIND_UNKNOWN);			
 					
+					this.requestor.acceptContext(context);					
 					contextAccepted = true;
 				}
 				
@@ -133,12 +136,13 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			}
 		} finally {
 			reset();
-			if (!contextAccepted) {
-				contextAccepted = true;
+			if (!contextAccepted) {				
 				CompletionContext context = new CompletionContext();
 				context.setTokenKind(CompletionContext.TOKEN_KIND_UNKNOWN);
 				context.setOffset(completionPosition);
+				
 				this.requestor.acceptContext(context);
+				contextAccepted = true;
 			}
 			this.requestor.endReporting();
 		}

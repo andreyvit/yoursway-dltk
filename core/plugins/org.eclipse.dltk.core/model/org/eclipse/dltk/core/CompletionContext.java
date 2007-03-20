@@ -22,7 +22,6 @@ import org.eclipse.dltk.internal.codeassist.InternalCompletionContext;
  * </p>
  * 
  * @see CompletionRequestor#acceptContext(CompletionContext)
-	 *
  */
 public final class CompletionContext extends InternalCompletionContext {
 
@@ -45,32 +44,7 @@ public final class CompletionContext extends InternalCompletionContext {
 	 */
 	
 	public static final int TOKEN_KIND_STRING_LITERAL = 2;
-
-	/**
-	 * Return signatures of expected types of a potential completion proposal at the completion position.
-	 * 
-	 * It's not mandatory to a completion proposal to respect this expectation. 
-	 * 
-	 * @return signatures expected types of a potential completion proposal at the completion position or
-	 * <code>null</code> if there is no expected types.
-	 * 
-	 */
-	public char[][] getExpectedTypesSignatures() {
-		return this.expectedTypesSignatures;
-	}
-	/**
-	 * Return keys of expected types of a potential completion proposal at the completion position.
-	 * 
-	 * It's not mandatory to a completion proposal to respect this expectation. 
-	 * 
-	 * @return keys of expected types of a potential completion proposal at the completion position or
-	 * <code>null</code> if there is no expected types.
-	 * 
-	 */
-	public char[][] getExpectedTypesKeys() {
-		return this.expectedTypesKeys;
-	}
-	
+		
 	/**
 	 * Returns the completed token.
 	 * This token is either the identifier or language keyword
@@ -172,34 +146,8 @@ public final class CompletionContext extends InternalCompletionContext {
 			buffer.append('\"');
 		}
 		buffer.append('\n');
-		
-		buffer.append("expectedTypesSignatures="); //$NON-NLS-1$
-		if(this.expectedTypesSignatures == null) {
-			buffer.append(string);
-		} else {
-			buffer.append('{');
-			for (int i = 0; i < this.expectedTypesSignatures.length; i++) {
-				if(i > 0) buffer.append(',');
-				buffer.append(this.expectedTypesSignatures[i]);
-				
-			}
-			buffer.append('}');
-		}
-		buffer.append('\n');
-		
-		buffer.append("expectedTypesKeys="); //$NON-NLS-1$
-		if(expectedTypesSignatures == null) {
-			buffer.append(string);
-		} else {
-			buffer.append('{');
-			for (int i = 0; i < this.expectedTypesKeys.length; i++) {
-				if(i > 0) buffer.append(',');
-				buffer.append(this.expectedTypesKeys[i]);
-				
-			}
-			buffer.append('}');
-		}
-		buffer.append('\n');
+			
+			
 			
 		return buffer.toString();
 	}

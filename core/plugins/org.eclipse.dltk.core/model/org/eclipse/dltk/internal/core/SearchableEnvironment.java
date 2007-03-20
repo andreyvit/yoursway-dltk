@@ -38,10 +38,15 @@ import org.eclipse.dltk.internal.core.search.IRestrictedAccessTypeRequestor;
 public class SearchableEnvironment implements IDLTKSearchConstants,
 		ISearchableEnvironment {
 	public NameLookup nameLookup;
+	
 	protected ISourceModule unitToSkip;
+	
 	protected org.eclipse.dltk.core.ISourceModule[] workingCopies;
+	
 	protected DLTKProject project;
+	
 	protected IDLTKSearchScope searchScope;
+	
 	protected boolean checkAccessRestrictions;
 
 	/**
@@ -140,23 +145,12 @@ public class SearchableEnvironment implements IDLTKSearchConstants,
 		}
 		return null;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.dltk.internal.core.ISearchableEnvironment#findPackages(char[],
-	 *      org.eclipse.dltk.internal.codeassist.ISearchRequestor)
-	 */
+	
 	public void findPackages(char[] prefix, ISearchRequestor requestor) {
 		this.nameLookup.seekScriptFolders(new String(prefix), true,
 				new SearchableEnvironmentRequestor(requestor));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.dltk.internal.core.ISearchableEnvironment#findType(char[][])
-	 */
 	public NameEnvironmentAnswer findType(char[][] compoundTypeName) {
 		if (compoundTypeName == null)
 			return null;
@@ -172,13 +166,7 @@ public class SearchableEnvironment implements IDLTKSearchConstants,
 		return find(new String(compoundTypeName[lengthM1]), CharOperation
 				.toString(packageName));
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.dltk.internal.core.ISearchableEnvironment#findType(char[],
-	 *      char[][])
-	 */
+	
 	public NameEnvironmentAnswer findType(char[] name, char[][] packageName) {
 		if (name == null)
 			return null;
@@ -186,14 +174,7 @@ public class SearchableEnvironment implements IDLTKSearchConstants,
 				|| packageName.length == 0 ? null : CharOperation
 				.toString(packageName));
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.dltk.internal.core.ISearchableEnvironment#findTypes(char[],
-	 *      boolean, boolean,
-	 *      org.eclipse.dltk.internal.codeassist.ISearchRequestor)
-	 */
+	
 	public void findTypes(char[] prefix, final boolean findMembers,
 			boolean camelCaseMatch, final ISearchRequestor storage) {
 		/*
@@ -331,26 +312,6 @@ public class SearchableEnvironment implements IDLTKSearchConstants,
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.dltk.internal.core.ISearchableEnvironment#isPackage(char[][],
-	 *      char[])
-	 */
-	public boolean isPackage(char[][] parentPackageName, char[] subPackageName) {
-		String[] pkgName;
-		if (parentPackageName == null)
-			pkgName = new String[] { new String(subPackageName) };
-		else {
-			int length = parentPackageName.length;
-			pkgName = new String[length + 1];
-			for (int i = 0; i < length; i++)
-				pkgName[i] = new String(parentPackageName[i]);
-			pkgName[length] = new String(subPackageName);
-		}
-		return this.nameLookup.isPackage(pkgName);
-	}
-
 	/**
 	 * Returns a printable string for the array.
 	 */
@@ -369,12 +330,7 @@ public class SearchableEnvironment implements IDLTKSearchConstants,
 		}
 		return result.toString();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.dltk.internal.core.ISearchableEnvironment#cleanup()
-	 */
+	
 	public void cleanup() {
 		// nothing to do
 	}

@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ruby.internal.ui.text;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
@@ -31,7 +32,6 @@ import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.ITokenScanner;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
@@ -47,7 +47,7 @@ public class RubySourceViewerConfiguration extends
 	private AbstractScriptScanner fStringScanner;
 
 	private AbstractScriptScanner fCommentScanner;
-	
+
 	private AbstractScriptScanner fDocScanner;
 
 	public RubySourceViewerConfiguration(IColorManager colorManager,
@@ -57,36 +57,31 @@ public class RubySourceViewerConfiguration extends
 	}
 
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
-		//return new String[] { IDocument.DEFAULT_CONTENT_TYPE,
-		//		IRubyPartitions.RUBY_STRING, IRubyPartitions.RUBY_COMMENT, IRubyPartitions.RUBY_DOC};
 		return RubyPartitions.RUBY_PARTITION_TYPES;
 	}
 
 	public String[] getIndentPrefixes(ISourceViewer sourceViewer,
 			String contentType) {
-		//XXX: what happens here?.. why "    " ?
-		return new String[] { "\t", "    " }; 
+		// XXX: what happens here?.. why " " ?
+		return new String[] { "\t", "    " };
 	}
-	
-	/*
-	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getTabWidth(org.eclipse.jface.text.source.ISourceViewer)
-	 */
+
 	public int getTabWidth(ISourceViewer sourceViewer) {
 		if (fPreferenceStore == null)
 			return super.getTabWidth(sourceViewer);
-		return fPreferenceStore.getInt(CodeFormatterConstants.FORMATTER_TAB_SIZE);
+		return fPreferenceStore
+				.getInt(CodeFormatterConstants.FORMATTER_TAB_SIZE);
 	}
 
 	protected void initializeScanners() {
 		Assert.isTrue(isNewSetup());
-		fCodeScanner = new RubyCodeScanner(getColorManager(),
-				fPreferenceStore);
+		fCodeScanner = new RubyCodeScanner(getColorManager(), fPreferenceStore);
 		fStringScanner = new RubyStringScanner(getColorManager(),
 				fPreferenceStore);
 		fCommentScanner = new SingleTokenScriptScanner(getColorManager(),
 				fPreferenceStore, RubyColorConstants.RUBY_SINGLE_LINE_COMMENT);
-		
-		fDocScanner = new RubyDocScanner(getColorManager(), fPreferenceStore );
+
+		fDocScanner = new RubyDocScanner(getColorManager(), fPreferenceStore);
 	}
 
 	/**
@@ -97,22 +92,14 @@ public class RubySourceViewerConfiguration extends
 		return fTextTools == null;
 	}
 
-	/**
-	 * Returns the TCL string scanner for this configuration.
-	 * 
-	 * @return the TCL string scanner
-	 */
 	protected RuleBasedScanner getStringScanner() {
 		return fStringScanner;
 	}
 
-	/**
-	 * Returns the TCL comment scanner for this configuration.
-	 * 
-	 * @return the TCL comment scanner
-	 */	
-	protected RuleBasedScanner getCommentScanner() { return fCommentScanner; }
-	
+	protected RuleBasedScanner getCommentScanner() {
+		return fCommentScanner;
+	}
+
 	public IPresentationReconciler getPresentationReconciler(
 			ISourceViewer sourceViewer) {
 		PresentationReconciler reconciler = new PresentationReconciler();
@@ -127,16 +114,14 @@ public class RubySourceViewerConfiguration extends
 		dr = new DefaultDamagerRepairer(getStringScanner());
 		reconciler.setDamager(dr, RubyPartitions.RUBY_STRING);
 		reconciler.setRepairer(dr, RubyPartitions.RUBY_STRING);
-		
+
 		dr = new DefaultDamagerRepairer(getDocScanner());
 		reconciler.setDamager(dr, RubyPartitions.RUBY_DOC);
 		reconciler.setRepairer(dr, RubyPartitions.RUBY_DOC);
 
-		
 		dr = new DefaultDamagerRepairer(getCommentScanner());
 		reconciler.setDamager(dr, RubyPartitions.RUBY_COMMENT);
 		reconciler.setRepairer(dr, RubyPartitions.RUBY_COMMENT);
-
 
 		return reconciler;
 	}
@@ -175,107 +160,112 @@ public class RubySourceViewerConfiguration extends
 	 * @param event
 	 *            the event to be investigated
 	 * @return <code>true</code> if event causes a behavioral change
-	 *
+	 * 
 	 */
 	public boolean affectsTextPresentation(PropertyChangeEvent event) {
 		return fCodeScanner.affectsBehavior(event)
-				|| fStringScanner.affectsBehavior(event)|| fDocScanner.affectsBehavior(event);
+				|| fStringScanner.affectsBehavior(event)
+				|| fDocScanner.affectsBehavior(event);
 	}
-	
-	private IInformationControlCreator getHierarchyPresenterControlCreator(ISourceViewer sourceViewer) {
+
+	private IInformationControlCreator getHierarchyPresenterControlCreator(
+			ISourceViewer sourceViewer) {
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
-				int shellStyle= SWT.RESIZE;
-				int treeStyle= SWT.V_SCROLL | SWT.H_SCROLL;
-				return new RubyHierarchyInformationControl(parent, shellStyle, treeStyle);
+				int shellStyle = SWT.RESIZE;
+				int treeStyle = SWT.V_SCROLL | SWT.H_SCROLL;
+				return new RubyHierarchyInformationControl(parent, shellStyle,
+						treeStyle);
 			}
 		};
 	}
 
 	public IInformationPresenter getHierarchyPresenter(
 			ScriptSourceViewer sourceViewer, boolean doCodeResolve) {
-//		 Do not create hierarchy presenter if there's no CU.
-		if (getEditor() != null && getEditor().getEditorInput() != null && 
-				EditorUtility.getEditorInputModelElement(getEditor(), true) == null)
+		// Do not create hierarchy presenter if there's no CU.
+		if (getEditor() != null
+				&& getEditor().getEditorInput() != null
+				&& EditorUtility.getEditorInputModelElement(getEditor(), true) == null)
 			return null;
-		
-		InformationPresenter presenter= new InformationPresenter(getHierarchyPresenterControlCreator(sourceViewer));
-		presenter.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
+
+		InformationPresenter presenter = new InformationPresenter(
+				getHierarchyPresenterControlCreator(sourceViewer));
+		presenter
+				.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
 		presenter.setAnchor(AbstractInformationControlManager.ANCHOR_GLOBAL);
-		IInformationProvider provider= new ScriptElementProvider(getEditor(), doCodeResolve);
-		presenter.setInformationProvider(provider, IDocument.DEFAULT_CONTENT_TYPE);
-//		presenter.setInformationProvider(provider, IJavaPartitions.JAVA_DOC);
-//		presenter.setInformationProvider(provider, IJavaPartitions.JAVA_MULTI_LINE_COMMENT);
-//		presenter.setInformationProvider(provider, IJavaPartitions.JAVA_SINGLE_LINE_COMMENT);
-//		presenter.setInformationProvider(provider, IJavaPartitions.JAVA_STRING);
-//		presenter.setInformationProvider(provider, IJavaPartitions.JAVA_CHARACTER);
+		IInformationProvider provider = new ScriptElementProvider(getEditor(),
+				doCodeResolve);
+		presenter.setInformationProvider(provider,
+				IDocument.DEFAULT_CONTENT_TYPE);
+		
 		presenter.setSizeConstraints(50, 20, true, false);
 		return presenter;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getAutoEditStrategies(org.eclipse.jface.text.source.ISourceViewer,
-	 *      java.lang.String)
-	 */
+	
 	public IAutoEditStrategy[] getAutoEditStrategies(
 			ISourceViewer sourceViewer, String contentType) {
-//		// TODO: check contentType. think, do we really need it? :)
+		// // TODO: check contentType. think, do we really need it? :)
 		String partitioning = getConfiguredDocumentPartitioning(sourceViewer);
-		return new IAutoEditStrategy[] { new RubyAutoEditStrategy(fPreferenceStore, partitioning) };
+		return new IAutoEditStrategy[] { new RubyAutoEditStrategy(
+				fPreferenceStore, partitioning) };
 	}
 
-	protected IInformationControlCreator getOutlinePresenterControlCreator(ISourceViewer sourceViewer, final String commandId) {
+	protected IInformationControlCreator getOutlinePresenterControlCreator(
+			ISourceViewer sourceViewer, final String commandId) {
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
-				int shellStyle= SWT.RESIZE;
-				int treeStyle= SWT.V_SCROLL | SWT.H_SCROLL;
-				return new RubyOutlineInformationControl(parent, shellStyle, treeStyle, commandId);
+				int shellStyle = SWT.RESIZE;
+				int treeStyle = SWT.V_SCROLL | SWT.H_SCROLL;
+				return new RubyOutlineInformationControl(parent, shellStyle,
+						treeStyle, commandId);
 			}
 		};
 	}
 
-	public String[] getDefaultPrefixes(ISourceViewer sourceViewer, String contentType) {
+	public String[] getDefaultPrefixes(ISourceViewer sourceViewer,
+			String contentType) {
 		return new String[] { "#", "" }; //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 
 		if (getEditor() != null) {
 
-			ContentAssistant assistant= new ContentAssistant();
-			assistant.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
+			ContentAssistant assistant = new ContentAssistant();
+			assistant
+					.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
 
-			assistant.setRestoreCompletionProposalSize(getSettings("completion_proposal_size")); //$NON-NLS-1$
+			assistant
+					.setRestoreCompletionProposalSize(getSettings("completion_proposal_size")); //$NON-NLS-1$
 
-			IContentAssistProcessor scriptProcessor= new RubyCompletionProcessor(getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
-			assistant.setContentAssistProcessor(scriptProcessor, IDocument.DEFAULT_CONTENT_TYPE);
+			IContentAssistProcessor scriptProcessor = new RubyCompletionProcessor(
+					getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
+			assistant.setContentAssistProcessor(scriptProcessor,
+					IDocument.DEFAULT_CONTENT_TYPE);
+		
 
-//			ContentAssistProcessor singleLineProcessor= new RubyCompletionProcessor(getEditor(), assistant, IJavaScriptPartitions.JS_COMMENT);
-//			assistant.setContentAssistProcessor(singleLineProcessor, IJavaScriptPartitions.JS_COMMENT);
-//
-//			ContentAssistProcessor stringProcessor= new RubyCompletionProcessor(getEditor(), assistant, IJavaScriptPartitions.JS_STRING);
-//			assistant.setContentAssistProcessor(stringProcessor, IRubyPartitions.JS_STRING);
+			RubyContentAssistPreference.getDefault().configure(assistant,
+					fPreferenceStore);
 
-			RubyContentAssistPreference.getDefault().configure(assistant, fPreferenceStore);
+			assistant
+					.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
+			assistant
+					.setInformationControlCreator(getInformationControlCreator(sourceViewer));
 
-			assistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
-			assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
-						
-			//assistant.setStatusLineVisible(true);
-			
+			// assistant.setStatusLineVisible(true);
+
 			return assistant;
 		}
 
 		return null;
 	}
-	
+
 	public IInformationControlCreator getInformationControlCreator(
 			ISourceViewer sourceViewer) {
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
-				return new DefaultInformationControl(parent, SWT.NONE, new HTMLTextPresenter(true), "My Status");
+				return new DefaultInformationControl(parent, SWT.NONE,
+						new HTMLTextPresenter(true), "My Status");
 			}
 		};
 	}

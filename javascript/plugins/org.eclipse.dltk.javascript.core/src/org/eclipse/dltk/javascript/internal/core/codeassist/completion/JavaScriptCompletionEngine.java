@@ -382,7 +382,7 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 		return RelevanceConstants.R_INTERESTING;
 	}
 	
-	int computeRelevanceForRestrictions(int accessRuleKind) {
+	protected int computeRelevanceForRestrictions(int accessRuleKind) {
 		if (accessRuleKind == IAccessRule.K_ACCESSIBLE) {
 			return RelevanceConstants.R_NON_RESTRICTED;
 		}

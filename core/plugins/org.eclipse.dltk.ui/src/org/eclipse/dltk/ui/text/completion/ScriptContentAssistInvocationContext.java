@@ -16,8 +16,6 @@ import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
-import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.internal.corext.template.completion.SignatureUtil;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.text.completion.ContentAssistHistory.RHSHistory;
@@ -171,13 +169,13 @@ public abstract class ScriptContentAssistInvocationContext extends
 		if (fRHSHistory == null) {
 			CompletionContext context = getCoreContext();
 			if (context != null) {
-				char[][] expectedTypes = context.getExpectedTypesSignatures();
-				if (expectedTypes != null && expectedTypes.length > 0) {
-					String expected = SignatureUtil.stripSignatureToFQN(String
-							.valueOf(expectedTypes[0]));
-					fRHSHistory = DLTKUIPlugin.getDefault()
-							.getContentAssistHistory().getHistory(expected);
-				}
+//				char[][] expectedTypes = context.getExpectedTypesSignatures();
+//				if (expectedTypes != null && expectedTypes.length > 0) {
+//					String expected = SignatureUtil.stripSignatureToFQN(String
+//							.valueOf(expectedTypes[0]));
+//					fRHSHistory = DLTKUIPlugin.getDefault()
+//							.getContentAssistHistory().getHistory(expected);
+//				}
 			}
 			if (fRHSHistory == null)
 				fRHSHistory = DLTKUIPlugin.getDefault()
@@ -192,24 +190,24 @@ public abstract class ScriptContentAssistInvocationContext extends
 	 * @return the expected type if any, <code>null</code> otherwise
 	 */
 	public IType getExpectedType() {
-		if (fType == null && getSourceModule() != null) {
-			CompletionContext context = getCoreContext();
-			if (context != null) {
-				char[][] expectedTypes = context.getExpectedTypesSignatures();
-				if (expectedTypes != null && expectedTypes.length > 0) {
-					IDLTKProject project = getSourceModule().getScriptProject();
-					if (project != null) {
-						try {
-							fType = project.findType(SignatureUtil
-									.stripSignatureToFQN(String
-											.valueOf(expectedTypes[0])));
-						} catch (ModelException x) {
-							DLTKUIPlugin.log(x);
-						}
-					}
-				}
-			}
-		}
+//		if (fType == null && getSourceModule() != null) {
+//			CompletionContext context = getCoreContext();
+//			if (context != null) {
+//				char[][] expectedTypes = context.getExpectedTypesSignatures();
+//				if (expectedTypes != null && expectedTypes.length > 0) {
+//					IDLTKProject project = getSourceModule().getScriptProject();
+//					if (project != null) {
+//						try {
+//							fType = project.findType(SignatureUtil
+//									.stripSignatureToFQN(String
+//											.valueOf(expectedTypes[0])));
+//						} catch (ModelException x) {
+//							DLTKUIPlugin.log(x);
+//						}
+//					}
+//				}
+//			}
+//		}
 		return fType;
 	}
 

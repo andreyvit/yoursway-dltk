@@ -11,6 +11,5 @@
 package org.eclipse.dltk.compiler.env;
 
 public interface IGenericField {
-	// We have added AccDeprecated & AccSynthetic.
 	int getModifiers();
 }

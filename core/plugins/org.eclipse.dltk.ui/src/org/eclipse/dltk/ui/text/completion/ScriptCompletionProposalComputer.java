@@ -228,8 +228,8 @@ public abstract class ScriptCompletionProposalComputer implements
 			List proposals = new ArrayList();
 
 			// Language specific proposals (already sorted and etc.)
-			//proposals.addAll(computeScriptCompletionProposals(context
-				//	.getInvocationOffset(), scriptContext, monitor));
+			proposals.addAll(computeScriptCompletionProposals(context
+					.getInvocationOffset(), scriptContext, monitor));
 
 			// Template proposals (already sorted and etc.)
 			proposals.addAll(computeTemplateCompletionProposals(context

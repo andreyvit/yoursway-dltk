@@ -422,8 +422,7 @@ public abstract class Openable extends ModelElement implements IOpenable,
 			int position, CompletionRequestor requestor, WorkingCopyOwner owner)
 			throws ModelException {
 		if (requestor == null) {
-			throw new IllegalArgumentException(
-					"Completion requestor cannot be null"); //$NON-NLS-1$
+			throw new IllegalArgumentException("Completion requestor cannot be null");
 		}
 
 		IBuffer buffer = getBuffer();
@@ -434,8 +433,10 @@ public abstract class Openable extends ModelElement implements IOpenable,
 			throw new ModelException(new ModelStatus(
 					IModelStatusConstants.INDEX_OUT_OF_BOUNDS));
 		}
+		
 		DLTKProject project = (DLTKProject) getScriptProject();
-		// TODO. Add searchable environment support.
+
+		//TODO: Add searchable environment support.
 		SearchableEnvironment environment = project
 				.newSearchableNameEnvironment(owner);
 
@@ -443,6 +444,8 @@ public abstract class Openable extends ModelElement implements IOpenable,
 		environment.unitToSkip = cu;
 
 		IDLTKLanguageToolkit toolkit = null;
+		
+		//TODO: rewrite this ugly code
 		try {
 			toolkit = DLTKLanguageManager.getLanguageToolkit(this);
 		} catch (CoreException e) {
@@ -450,17 +453,18 @@ public abstract class Openable extends ModelElement implements IOpenable,
 				e.printStackTrace();
 			}
 		}
+		
 		if (toolkit == null) {
 			toolkit = DLTKLanguageManager.findToolkit(this.getResource());
 			if (toolkit == null) {
 				return;
 			}
 		}
+		
 		// code complete
 		ICompletionEngine engine = toolkit.createCompletionEngine(environment,
 				requestor, project.getOptions(true), project);
-		// CompletionEngine engine = new CompletionEngine(environment,
-		// requestor, project.getOptions(true), project);
+
 		if (engine != null) {
 			engine.complete(cu, position, 0);
 		}

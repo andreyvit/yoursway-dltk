@@ -14,14 +14,18 @@ import org.eclipse.dltk.compiler.env.lookup.Scope;
 
 public class BlockScope extends Scope {
 	// Local variable management
-	public int localIndex; // position for next variable
 
-	public int startIndex; // start position in this scope - for ordering
-							// scopes vs. variables
+	/* position for next variable */
+	public int localIndex;
 
-	public int offset; // for variable allocation throughout scopes
+	/* start position in this scope - for ordering scopes vs. variables */
+	public int startIndex;
 
-	public int maxOffset; // for variable allocation throughout scopes
+	/* for variable allocation throughout scopes */
+	public int offset;
+
+	/* for variable allocation throughout scopes */
+	public int maxOffset;
 
 	// finally scopes must be shifted behind respective try&catch scope(s) so as
 	// to avoid
@@ -29,8 +33,17 @@ public class BlockScope extends Scope {
 	public BlockScope[] shiftScopes;
 
 	public Scope[] subscopes = new Scope[1]; // need access from code assist
-
 	public int subscopeCount = 0; // need access from code assist
+	
+	private String basicToString(int tab) {
+		String newLine = "\n"; //$NON-NLS-1$
+		for (int i = tab; --i >= 0;)
+			newLine += "\t"; //$NON-NLS-1$
+		String s = newLine + "--- Block Scope ---"; //$NON-NLS-1$
+		newLine += "\t"; //$NON-NLS-1$
+		s += newLine + "startIndex = " + this.startIndex; //$NON-NLS-1$
+		return s;
+	}
 
 	// record the current case statement being processed (for entire switch case
 	// block).
@@ -40,8 +53,11 @@ public class BlockScope extends Scope {
 
 	public BlockScope(BlockScope parent, boolean addToParentScope) {
 		this(Scope.BLOCK_SCOPE, parent);
-		if (addToParentScope)
+
+		if (addToParentScope) {
 			parent.addSubscope(this);
+		}
+
 		this.startIndex = parent.localIndex;
 	}
 
@@ -61,16 +77,6 @@ public class BlockScope extends Scope {
 					(this.subscopes = new Scope[this.subscopeCount * 2]), 0,
 					this.subscopeCount);
 		this.subscopes[this.subscopeCount++] = childScope;
-	}
-
-	String basicToString(int tab) {
-		String newLine = "\n"; //$NON-NLS-1$
-		for (int i = tab; --i >= 0;)
-			newLine += "\t"; //$NON-NLS-1$
-		String s = newLine + "--- Block Scope ---"; //$NON-NLS-1$
-		newLine += "\t"; //$NON-NLS-1$
-		s += newLine + "startIndex = " + this.startIndex; //$NON-NLS-1$
-		return s;
 	}
 
 	public int maxShiftedOffset() {

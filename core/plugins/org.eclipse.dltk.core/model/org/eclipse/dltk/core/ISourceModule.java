@@ -250,7 +250,7 @@ public interface ISourceModule extends IModule, ISourceReference,ISourceManipula
 	 */
 	IType[] getTypes() throws ModelException;
 	
-	public IType[] getAllTypes() throws ModelException;
+	IType[] getAllTypes() throws ModelException;
 	
 	/**
 	 * Read only source module. From external resources.
@@ -289,15 +289,15 @@ public interface ISourceModule extends IModule, ISourceReference,ISourceManipula
 	 * <p>
 	 * The type signatures may be either unresolved (for source types)
 	 * or resolved (for binary types), and either basic (for basic types)
-	 * or rich (for parameterized types). See {@link Signature} for details.
+	 * or rich (for parameterized types).
 	 * </p>
 	 * 
 	 * @param name the given name
-	 * @param parameterTypeSignatures the given parameter types
 	 * @return the method with the specified name and parameter types in this type
 	 */
 	IMethod getMethod(String name);
 	
 	IField getField(String string);
+	
 	IField[] getFields() throws ModelException;
 }

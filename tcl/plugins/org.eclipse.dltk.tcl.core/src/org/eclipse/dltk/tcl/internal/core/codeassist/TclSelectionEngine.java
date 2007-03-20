@@ -426,9 +426,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 	private void processExecuteBlock(String name, Expression bl,
 			int beforePosition) {
 		TclExecuteExpression block = (TclExecuteExpression) bl;
-		List/* < Statement > */code = null;
-
-		code = block.parseExpression(block.sourceStart() + 1);
+		List code = block.parseExpression(block.sourceStart() + 1);
 		checkVariableStatements(name, beforePosition, code, "");
 
 	}

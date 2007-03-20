@@ -20,13 +20,14 @@ public class SourceModuleScope extends Scope {
 	public ModuleDeclaration referenceContext;
 	public char[][] currentPackageName;
 	public HashtableOfObject typeOrPackageCache; // used in
-													// Scope.getTypeOrPackage()
-	//private CompoundNameVector qualifiedReferences;
-	//private SimpleNameVector simpleNameReferences;
-	//private ObjectVector referencedTypes;
-	//private ObjectVector referencedSuperTypes;
+
+	// Scope.getTypeOrPackage()
+	// private CompoundNameVector qualifiedReferences;
+	// private SimpleNameVector simpleNameReferences;
+	// private ObjectVector referencedTypes;
+	// private ObjectVector referencedSuperTypes;
 	// HashtableOfType constantPoolNameUsage;
-	//private int captureID = 1;
+	// private int captureID = 1;
 
 	public SourceModuleScope(ModuleDeclaration unit,
 			LookupEnvironment environment) {
@@ -37,12 +38,12 @@ public class SourceModuleScope extends Scope {
 		// this.currentPackageName = unit.currentPackage == null ?
 		// CharOperation.NO_CHAR_CHAR : unit.currentPackage.tokens;
 		// if (compilerOptions().produceReferenceInfo) {
-		//===
-		//this.qualifiedReferences = new CompoundNameVector();
-		//this.simpleNameReferences = new SimpleNameVector();
-		//this.referencedTypes = new ObjectVector();
-		//this.referencedSuperTypes = new ObjectVector();
-		//===
+		// ===
+		// this.qualifiedReferences = new CompoundNameVector();
+		// this.simpleNameReferences = new SimpleNameVector();
+		// this.referencedTypes = new ObjectVector();
+		// this.referencedSuperTypes = new ObjectVector();
+		// ===
 		// } else {
 		// this.qualifiedReferences = null; // used to test if dependencies
 		// should be recorded

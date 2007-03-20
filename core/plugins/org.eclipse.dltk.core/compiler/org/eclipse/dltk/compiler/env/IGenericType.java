@@ -11,14 +11,11 @@
 package org.eclipse.dltk.compiler.env;
 
 public interface IGenericType extends IDependent {
-
-	
 	int getModifiers();
 
 	/**
 	 * Answer whether the receiver contains the resolved binary form or the
 	 * unresolved source form of the type.
 	 */
-
 	boolean isBinaryType();
 }

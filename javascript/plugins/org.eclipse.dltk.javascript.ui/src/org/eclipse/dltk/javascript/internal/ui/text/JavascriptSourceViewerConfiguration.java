@@ -1,5 +1,6 @@
 package org.eclipse.dltk.javascript.internal.ui.text;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.javascript.internal.ui.text.completion.JavaScriptCompletionProcessor;
 import org.eclipse.dltk.javascript.internal.ui.text.completion.JavaScriptContentAssistPreference;
@@ -26,7 +27,6 @@ import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
@@ -204,13 +204,7 @@ public class JavascriptSourceViewerConfiguration extends
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getAutoEditStrategies(org.eclipse.jface.text.source.ISourceViewer,
-	 *      java.lang.String)
-	 */
+	
 	public IAutoEditStrategy[] getAutoEditStrategies(
 			ISourceViewer sourceViewer, String contentType) {
 		// TODO: check contentType. think, do we really need it? :)
@@ -227,7 +221,6 @@ public class JavascriptSourceViewerConfiguration extends
 			}
 		};
 	}
-
 	
 	protected IInformationControlCreator getOutlinePresenterControlCreator(ISourceViewer sourceViewer, final String commandId) {
 		return new IInformationControlCreator() {

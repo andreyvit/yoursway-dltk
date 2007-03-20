@@ -29,9 +29,6 @@ import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.templates.TemplateCompletionProcessor;
 
-/**
- * 
- */
 public class TclTypeCompletionProposalComputer extends
 		ScriptCompletionProposalComputer {
 	private IScriptCompletionProposal createTypeProposal(int relevance,

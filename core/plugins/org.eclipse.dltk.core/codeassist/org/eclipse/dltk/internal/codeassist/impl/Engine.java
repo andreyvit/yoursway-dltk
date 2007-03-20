@@ -26,8 +26,11 @@ import org.eclipse.dltk.internal.compiler.lookup.SourceModuleScope;
 
 public abstract class Engine implements ITypeRequestor {
 	public LookupEnvironment lookupEnvironment;
+
 	protected ISearchableEnvironment nameEnvironment;
+
 	protected SourceModuleScope unitScope;
+
 	public AssistOptions options;
 
 	protected static int EXACT_RULE = SearchPattern.R_EXACT_MATCH
@@ -37,7 +40,6 @@ public abstract class Engine implements ITypeRequestor {
 		this.options = new AssistOptions(settings);
 	}
 
-	
 	// TODO: move this to other class!!!
 	/*
 	 * Find the node (a field, a method or an initializer) at the given position
@@ -121,10 +123,12 @@ public abstract class Engine implements ITypeRequestor {
 				return node;
 			}
 		}
+
 		getParser().handleNotInElement(type, position);
 		if (DLTKCore.DEBUG) {
 			System.err.println("TODO: Engine: Add fields support.");
 		}
+
 		return null;
 	}
 

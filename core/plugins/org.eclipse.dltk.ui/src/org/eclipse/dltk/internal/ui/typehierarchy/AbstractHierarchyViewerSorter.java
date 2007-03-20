@@ -120,18 +120,20 @@ public abstract class AbstractHierarchyViewerSorter extends ViewerSorter {
 	}
 	
 	private IType getDefiningType(IMethod method) throws ModelException {
-		int flags= method.getFlags();
-		if (Flags.isPrivate(flags) || Flags.isStatic(flags) || method.isConstructor()) {
-			return null;
-		}
-	
-		IType declaringType= method.getDeclaringType();
-		MethodOverrideTester tester= new MethodOverrideTester(declaringType, getHierarchy(declaringType));
-		IMethod res= tester.findDeclaringMethod(method, true);
-		if (res == null) {
-			return null;
-		}
-		return res.getDeclaringType();
+//		int flags= method.getFlags();
+//		if (Flags.isPrivate(flags) || Flags.isStatic(flags) || method.isConstructor()) {
+//			return null;
+//		}
+//	
+//		IType declaringType= method.getDeclaringType();
+//		MethodOverrideTester tester= new MethodOverrideTester(declaringType, getHierarchy(declaringType));
+//		IMethod res= tester.findDeclaringMethod(method, true);
+//		if (res == null) {
+//			return null;
+//		}
+//		return res.getDeclaringType();
+		
+		return null;
 	}
 	
 

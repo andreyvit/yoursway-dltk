@@ -11,16 +11,13 @@
 package org.eclipse.dltk.compiler.env;
 
 public interface IGenericMethod {
-	
-	// We have added AccDeprecated
 	int getModifiers();
-
+	
 	boolean isConstructor();
 
 	/**
 	 * Answer the names of the argument or null if the argument names are not
 	 * available.
 	 */
-
 	char[][] getArgumentNames();
 }

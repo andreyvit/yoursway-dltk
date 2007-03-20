@@ -21,7 +21,8 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.codeassist.impl.Engine;
 import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
 
-public abstract class ScriptCompletionEngine extends Engine implements ICompletionEngine {
+public abstract class ScriptCompletionEngine extends Engine implements
+		ICompletionEngine {
 	protected static boolean DEBUG = DLTKCore.DEBUG_COMPLETION;
 
 	protected IDLTKProject dltkProject;
@@ -33,7 +34,6 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 
 	protected char[] fileName = null;
 
-	
 	// Packages and types
 	protected HashtableOfObject knownPkgs = new HashtableOfObject(10);
 
@@ -48,7 +48,9 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 
 	protected char[] source;
 
-	public ScriptCompletionEngine(ISearchableEnvironment nameEnvironment, CompletionRequestor requestor, Map settings, IDLTKProject dltkProject) {
+	public ScriptCompletionEngine(ISearchableEnvironment nameEnvironment,
+			CompletionRequestor requestor, Map settings,
+			IDLTKProject dltkProject) {
 		super(settings);
 		this.dltkProject = dltkProject;
 		this.requestor = requestor;
@@ -57,12 +59,15 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 	}
 
 	protected CompletionProposal createProposal(int kind, int completionOffset) {
-		CompletionProposal proposal = CompletionProposal.create(kind, completionOffset - this.offset);
+		CompletionProposal proposal = CompletionProposal.create(kind,
+				completionOffset - this.offset);
 		proposal.completionEngine = this;
 		proposal.nameLookup = this.nameEnvironment.getNameLookup();
+		
 		return proposal;
 	}
 
+	// print
 	protected void printDebug(CategorizedProblem error) {
 		if (ScriptCompletionEngine.DEBUG) {
 			System.out.print("COMPLETION - completionFailure("); //$NON-NLS-1$
@@ -118,10 +123,12 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 		}
 
 		buffer.append("{\n");//$NON-NLS-1$
-		buffer.append("\tCompletion[").append(proposal.getCompletion() == null ? "null".toCharArray() : proposal.getCompletion()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		buffer
+				.append("\tCompletion[").append(proposal.getCompletion() == null ? "null".toCharArray() : proposal.getCompletion()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		buffer
 				.append("\tDeclarationKey[").append(proposal.getDeclarationKey() == null ? "null".toCharArray() : proposal.getDeclarationKey()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		buffer.append("\tKey[").append(proposal.getKey() == null ? "null".toCharArray() : proposal.getKey()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		buffer
+				.append("\tKey[").append(proposal.getKey() == null ? "null".toCharArray() : proposal.getKey()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		// buffer.append("\tDeclarationPackage[").append(proposal.getDeclarationPackageName()
 		// == null ? "null".toCharArray() :
 		// proposal.getDeclarationPackageName()).append("]\n");
@@ -132,7 +139,8 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 		// ? "null".toCharArray() : proposal.getPackageName()).append("]\n");
 		// buffer.append("\tType[").append(proposal.getTypeName() == null ?
 		// "null".toCharArray() : proposal.getTypeName()).append("]\n");
-		buffer.append("\tName[").append(proposal.getName() == null ? "null".toCharArray() : proposal.getName()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		buffer
+				.append("\tName[").append(proposal.getName() == null ? "null".toCharArray() : proposal.getName()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		buffer.append("\tFlags[");//$NON-NLS-1$
 		// int flags = proposal.getFlags();
@@ -142,28 +150,33 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 		// if((flags & Flags.AccEnum) != 0) buffer.append("enum ");//$NON-NLS-1$
 		buffer.append("]\n"); //$NON-NLS-1$
 
-		buffer.append("\tCompletionLocation[").append(proposal.getCompletionLocation()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer
+				.append("\tCompletionLocation[").append(proposal.getCompletionLocation()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		int start = proposal.getReplaceStart();
 		int end = proposal.getReplaceEnd();
 		buffer.append("\tReplaceStart[").append(start).append("]"); //$NON-NLS-1$ //$NON-NLS-2$
 		buffer.append("-ReplaceEnd[").append(end).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		if (this.source != null)
-			buffer.append("\tReplacedText[").append(this.source, start, end - start).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		buffer.append("\tTokenStart[").append(proposal.getTokenStart()).append("]"); //$NON-NLS-1$ //$NON-NLS-2$
-		buffer.append("-TokenEnd[").append(proposal.getTokenEnd()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		buffer.append("\tRelevance[").append(proposal.getRelevance()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$
+			buffer
+					.append("\tReplacedText[").append(this.source, start, end - start).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer
+				.append("\tTokenStart[").append(proposal.getTokenStart()).append("]"); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer
+				.append("-TokenEnd[").append(proposal.getTokenEnd()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer
+				.append("\tRelevance[").append(proposal.getRelevance()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		buffer.append("}\n");//$NON-NLS-1$
 		System.out.println(buffer.toString());
 	}
 
+	// Source range
 	protected void setSourceRange(int start, int end) {
 		this.setSourceRange(start, end, true);
 	}
 
-	protected abstract int getEndOfEmptyToken();
-
-	protected void setSourceRange(int start, int end, boolean emptyTokenAdjstment) {
+	protected void setSourceRange(int start, int end,
+			boolean emptyTokenAdjstment) {
 		this.startPosition = start;
 		if (emptyTokenAdjstment) {
 			int endOfEmptyToken = getEndOfEmptyToken();
@@ -172,24 +185,27 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 			this.endPosition = end;
 		}
 	}
+	
+	protected abstract int getEndOfEmptyToken();
 
 	// what about onDemand types? Ignore them since it does not happen!
 	// import p1.p2.A.*;
-	protected void findKeywords(char[] keyword, char[][] choices, boolean canCompleteEmptyToken) {
+	protected void findKeywords(char[] keyword, char[][] choices,
+			boolean canCompleteEmptyToken) {
 		if (choices == null || choices.length == 0)
 			return;
-		
+
 		int length = keyword.length;
 		if (canCompleteEmptyToken || length > 0) {
 			for (int i = 0; i < choices.length; i++) {
-				if (length <= choices[i].length && CharOperation.prefixEquals(keyword, choices[i], false /*
-																											 * ignore
-																											 * case
-																											 */
-				)) {
+				if (length <= choices[i].length
+						&& CharOperation.prefixEquals(keyword, choices[i],
+								false)) {
 					int relevance = computeBaseRelevance();
+					
 					relevance += computeRelevanceForInterestingProposal();
-					relevance += computeRelevanceForCaseMatching(keyword, choices[i]);
+					relevance += computeRelevanceForCaseMatching(keyword,
+							choices[i]);
 					relevance += computeRelevanceForRestrictions(IAccessRule.K_ACCESSIBLE); // no
 					/*
 					 * access restriction for keywors
@@ -203,10 +219,13 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 					// }
 					this.noProposal = false;
 					if (!this.requestor.isIgnored(CompletionProposal.KEYWORD)) {
-						CompletionProposal proposal = this.createProposal(CompletionProposal.KEYWORD, this.actualCompletionPosition);
+						CompletionProposal proposal = this.createProposal(
+								CompletionProposal.KEYWORD,
+								this.actualCompletionPosition);
 						proposal.setName(choices[i]);
 						proposal.setCompletion(choices[i]);
-						proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition - this.offset);
+						proposal.setReplaceRange(this.startPosition
+								- this.offset, this.endPosition - this.offset);
 						proposal.setRelevance(relevance);
 						this.requestor.accept(proposal);
 						if (DEBUG) {
@@ -218,7 +237,8 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 		}
 	}
 
-	protected void findLocalVariables(char[] token, char[][] choices, boolean canCompleteEmptyToken, boolean provideDollar) {
+	protected void findLocalVariables(char[] token, char[][] choices,
+			boolean canCompleteEmptyToken, boolean provideDollar) {
 		int kind = CompletionProposal.LOCAL_VARIABLE_REF;
 		findElements(token, choices, canCompleteEmptyToken, provideDollar, kind);
 	}
@@ -232,12 +252,13 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 		if (canCompleteEmptyToken || length > 0) {
 			for (int i = 0; i < choices.length; i++) {
 				char[] co = choices[i];
-				if( !provideDollar && co.length > 1 && co[0] == '$' ) {
+				if (!provideDollar && co.length > 1 && co[0] == '$') {
 					char co2[] = new char[co.length - 1];
 					System.arraycopy(co, 1, co2, 0, co2.length);
 					co = co2;
 				}
-				if (length <= choices[i].length && CharOperation.prefixEquals(token, co, false)) {
+				if (length <= choices[i].length
+						&& CharOperation.prefixEquals(token, co, false)) {
 					int relevance = computeBaseRelevance();
 					relevance += computeRelevanceForInterestingProposal();
 					relevance += computeRelevanceForCaseMatching(token, co);
@@ -245,17 +266,20 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 
 					// accept result
 					ScriptCompletionEngine.this.noProposal = false;
-					
+
 					if (!ScriptCompletionEngine.this.requestor.isIgnored(kind)) {
-						CompletionProposal proposal = ScriptCompletionEngine.this.createProposal(kind,
-								ScriptCompletionEngine.this.actualCompletionPosition);
+						CompletionProposal proposal = ScriptCompletionEngine.this
+								.createProposal(
+										kind,
+										ScriptCompletionEngine.this.actualCompletionPosition);
 						// proposal.setSignature(getSignature(typeBinding));
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
 						proposal.setName(co);
 						proposal.setCompletion(co);
 						// proposal.setFlags(Flags.AccDefault);
-						proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition - this.offset);
+						proposal.setReplaceRange(this.startPosition
+								- this.offset, this.endPosition - this.offset);
 						proposal.setRelevance(relevance);
 						this.requestor.accept(proposal);
 						if (DEBUG) {
@@ -267,16 +291,18 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 		}
 	}
 
-	protected void findLocalMethods(char[] token, boolean canCompleteEmptyToken, List methods, List methodNames) {
+	protected void findLocalMethods(char[] token,
+			boolean canCompleteEmptyToken, List methods, List methodNames) {
 		if (methods == null || methods.size() == 0)
 			return;
 
 		int length = token.length;
 		if (canCompleteEmptyToken || length > 0) {
 			for (int i = 0; i < methods.size(); i++) {
-				MethodDeclaration method = (MethodDeclaration)methods.get(i);
-				char[] name = ((String)(methodNames.get(i))).toCharArray();
-				if (length <= name.length && CharOperation.prefixEquals(token, name, false)) {
+				MethodDeclaration method = (MethodDeclaration) methods.get(i);
+				char[] name = ((String) (methodNames.get(i))).toCharArray();
+				if (length <= name.length
+						&& CharOperation.prefixEquals(token, name, false)) {
 					int relevance = computeBaseRelevance();
 					relevance += computeRelevanceForInterestingProposal();
 					relevance += computeRelevanceForCaseMatching(token, name);
@@ -284,17 +310,21 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 
 					// accept result
 					ScriptCompletionEngine.this.noProposal = false;
-					if (!ScriptCompletionEngine.this.requestor.isIgnored(CompletionProposal.METHOD_DECLARATION)) {
-						CompletionProposal proposal = ScriptCompletionEngine.this.createProposal(CompletionProposal.METHOD_DECLARATION,
-								ScriptCompletionEngine.this.actualCompletionPosition);
+					if (!ScriptCompletionEngine.this.requestor
+							.isIgnored(CompletionProposal.METHOD_DECLARATION)) {
+						CompletionProposal proposal = ScriptCompletionEngine.this
+								.createProposal(
+										CompletionProposal.METHOD_DECLARATION,
+										ScriptCompletionEngine.this.actualCompletionPosition);
 						// proposal.setSignature(getSignature(typeBinding));
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
 						List arguments = method.getArguments();
-						if( arguments != null && arguments.size() > 0 ) {
+						if (arguments != null && arguments.size() > 0) {
 							char[][] args = new char[arguments.size()][];
-							for( int j = 0; j < arguments.size(); ++j ) {
-								args[j] = ((Argument)arguments.get(j)).getName().toCharArray();
+							for (int j = 0; j < arguments.size(); ++j) {
+								args[j] = ((Argument) arguments.get(j))
+										.getName().toCharArray();
 							}
 							proposal.setParameterNames(args);
 						}
@@ -302,7 +332,8 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 						proposal.setName(name);
 						proposal.setCompletion(name);
 						// proposal.setFlags(Flags.AccDefault);
-						proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition - this.offset);
+						proposal.setReplaceRange(this.startPosition
+								- this.offset, this.endPosition - this.offset);
 						proposal.setRelevance(relevance);
 						this.requestor.accept(proposal);
 						if (DEBUG) {
@@ -313,18 +344,27 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 			}
 		}
 	}
+
 	protected abstract String processMethodName(IMethod method, String token);
+
 	protected abstract String processTypeName(IType method, String token);
+
 	protected abstract String processFieldName(IField field, String token);
-	protected void findMethods(char[] token, boolean canCompleteEmptyToken, List methods) {
-		findMethods(token, canCompleteEmptyToken, methods,CompletionProposal.METHOD_DECLARATION);
+
+	protected void findMethods(char[] token, boolean canCompleteEmptyToken,
+			List methods) {
+		findMethods(token, canCompleteEmptyToken, methods,
+				CompletionProposal.METHOD_DECLARATION);
 	}
-	protected void findFields(char[] token, boolean canCompleteEmptyToken, List methods, String prefix) {
-		findFields(token, canCompleteEmptyToken, methods,CompletionProposal.FIELD_REF, prefix );
+
+	protected void findFields(char[] token, boolean canCompleteEmptyToken,
+			List methods, String prefix) {
+		findFields(token, canCompleteEmptyToken, methods,
+				CompletionProposal.FIELD_REF, prefix);
 	}
 
 	protected void findMethods(char[] token, boolean canCompleteEmptyToken,
-			List methods,int kind) {
+			List methods, int kind) {
 		if (methods == null || methods.size() == 0)
 			return;
 
@@ -332,13 +372,14 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 		String tok = new String(token);
 		if (canCompleteEmptyToken || length > 0) {
 			for (int i = 0; i < methods.size(); i++) {
-				IMethod method = (IMethod)methods.get(i);
+				IMethod method = (IMethod) methods.get(i);
 				String qname = processMethodName(method, tok);
 				char[] name = qname.toCharArray();
-				if( DLTKCore.DEBUG_COMPLETION ) {
+				if (DLTKCore.DEBUG_COMPLETION) {
 					System.out.println("Completion:" + qname);
 				}
-				if (length <= name.length && CharOperation.prefixEquals(token, name, false)) {
+				if (length <= name.length
+						&& CharOperation.prefixEquals(token, name, false)) {
 					int relevance = computeBaseRelevance();
 					relevance += computeRelevanceForInterestingProposal();
 					relevance += computeRelevanceForCaseMatching(token, name);
@@ -347,8 +388,10 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 					// accept result
 					ScriptCompletionEngine.this.noProposal = false;
 					if (!ScriptCompletionEngine.this.requestor.isIgnored(kind)) {
-						CompletionProposal proposal = ScriptCompletionEngine.this.createProposal(kind,
-								ScriptCompletionEngine.this.actualCompletionPosition);
+						CompletionProposal proposal = ScriptCompletionEngine.this
+								.createProposal(
+										kind,
+										ScriptCompletionEngine.this.actualCompletionPosition);
 						// proposal.setSignature(getSignature(typeBinding));
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
@@ -360,18 +403,19 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						if( arguments != null && arguments.length > 0 ) {
+						if (arguments != null && arguments.length > 0) {
 							char[][] args = new char[arguments.length][];
-							for( int j = 0; j < arguments.length; ++j ) {
+							for (int j = 0; j < arguments.length; ++j) {
 								args[j] = arguments[j].toCharArray();
 							}
 							proposal.setParameterNames(args);
 						}
-						
+
 						proposal.setName(name);
 						proposal.setCompletion(name);
 						// proposal.setFlags(Flags.AccDefault);
-						proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition - this.offset);
+						proposal.setReplaceRange(this.startPosition
+								- this.offset, this.endPosition - this.offset);
 						proposal.setRelevance(relevance);
 						this.requestor.accept(proposal);
 						if (DEBUG) {
@@ -382,8 +426,9 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 			}
 		}
 	}
+
 	protected void findFields(char[] token, boolean canCompleteEmptyToken,
-			List fields,int kind, String prefix) {
+			List fields, int kind, String prefix) {
 		if (fields == null || fields.size() == 0)
 			return;
 
@@ -391,13 +436,14 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 		String tok = new String(token);
 		if (canCompleteEmptyToken || length > 0) {
 			for (int i = 0; i < fields.size(); i++) {
-				IField field = (IField)fields.get(i);
+				IField field = (IField) fields.get(i);
 				String qname = processFieldName(field, tok);
 				char[] name = qname.toCharArray();
-				if( DLTKCore.DEBUG_COMPLETION ) {
+				if (DLTKCore.DEBUG_COMPLETION) {
 					System.out.println("Completion:" + qname);
 				}
-				if (length <= name.length && CharOperation.prefixEquals(token, name, false)) {
+				if (length <= name.length
+						&& CharOperation.prefixEquals(token, name, false)) {
 					int relevance = computeBaseRelevance();
 					relevance += computeRelevanceForInterestingProposal();
 					relevance += computeRelevanceForCaseMatching(token, name);
@@ -406,15 +452,18 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 					// accept result
 					ScriptCompletionEngine.this.noProposal = false;
 					if (!ScriptCompletionEngine.this.requestor.isIgnored(kind)) {
-						CompletionProposal proposal = ScriptCompletionEngine.this.createProposal(kind,
-								ScriptCompletionEngine.this.actualCompletionPosition);
+						CompletionProposal proposal = ScriptCompletionEngine.this
+								.createProposal(
+										kind,
+										ScriptCompletionEngine.this.actualCompletionPosition);
 						// proposal.setSignature(getSignature(typeBinding));
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
 						proposal.setName(name);
-						proposal.setCompletion((prefix+qname).toCharArray());
+						proposal.setCompletion((prefix + qname).toCharArray());
 						// proposal.setFlags(Flags.AccDefault);
-						proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition - this.offset);
+						proposal.setReplaceRange(this.startPosition
+								- this.offset, this.endPosition - this.offset);
 						proposal.setRelevance(relevance);
 						this.requestor.accept(proposal);
 						if (DEBUG) {
@@ -425,7 +474,9 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 			}
 		}
 	}
-	protected void findTypes(char[] token, boolean canCompleteEmptyToken, List types) {
+
+	protected void findTypes(char[] token, boolean canCompleteEmptyToken,
+			List types) {
 		if (types == null || types.size() == 0)
 			return;
 
@@ -433,13 +484,14 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 		String tok = new String(token);
 		if (canCompleteEmptyToken || length > 0) {
 			for (int i = 0; i < types.size(); i++) {
-				IType type = (IType)types.get(i);
+				IType type = (IType) types.get(i);
 				String qname = processTypeName(type, tok);
 				char[] name = qname.toCharArray();
-				if( DLTKCore.DEBUG_COMPLETION ) {
+				if (DLTKCore.DEBUG_COMPLETION) {
 					System.out.println("Completion:" + qname);
 				}
-				if (length <= name.length && CharOperation.prefixEquals(token, name, false)) {
+				if (length <= name.length
+						&& CharOperation.prefixEquals(token, name, false)) {
 					int relevance = computeBaseRelevance();
 					relevance += computeRelevanceForInterestingProposal();
 					relevance += computeRelevanceForCaseMatching(token, name);
@@ -447,9 +499,12 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 
 					// accept result
 					ScriptCompletionEngine.this.noProposal = false;
-					if (!ScriptCompletionEngine.this.requestor.isIgnored(CompletionProposal.TYPE_REF)) {
-						CompletionProposal proposal = ScriptCompletionEngine.this.createProposal(CompletionProposal.TYPE_REF,
-								ScriptCompletionEngine.this.actualCompletionPosition);
+					if (!ScriptCompletionEngine.this.requestor
+							.isIgnored(CompletionProposal.TYPE_REF)) {
+						CompletionProposal proposal = ScriptCompletionEngine.this
+								.createProposal(
+										CompletionProposal.TYPE_REF,
+										ScriptCompletionEngine.this.actualCompletionPosition);
 						// proposal.setSignature(getSignature(typeBinding));
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
@@ -457,7 +512,8 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 						proposal.setName(name);
 						proposal.setCompletion(name);
 						// proposal.setFlags(Flags.AccDefault);
-						proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition - this.offset);
+						proposal.setReplaceRange(this.startPosition
+								- this.offset, this.endPosition - this.offset);
 						proposal.setRelevance(relevance);
 						this.requestor.accept(proposal);
 						if (DEBUG) {
@@ -469,8 +525,8 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 		}
 	}
 
-
-	int computeBaseRelevance() {
+	// Relevance
+	private int computeBaseRelevance() {
 		return RelevanceConstants.R_DEFAULT;
 	}
 
@@ -478,10 +534,12 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 		return RelevanceConstants.R_INTERESTING;
 	}
 
-	protected int computeRelevanceForCaseMatching(char[] token, char[] proposalName) {
+	protected int computeRelevanceForCaseMatching(char[] token,
+			char[] proposalName) {
 		if (this.options.camelCaseMatch) {
-			if (CharOperation.equals(token, proposalName, true )) {
-				return RelevanceConstants.R_CASE + RelevanceConstants.R_EXACT_NAME;
+			if (CharOperation.equals(token, proposalName, true)) {
+				return RelevanceConstants.R_CASE
+						+ RelevanceConstants.R_EXACT_NAME;
 			} else if (CharOperation.prefixEquals(token, proposalName, true)) {
 				return RelevanceConstants.R_CASE;
 			} else if (CharOperation.camelCaseMatch(token, proposalName)) {
@@ -490,18 +548,19 @@ public abstract class ScriptCompletionEngine extends Engine implements ICompleti
 				return RelevanceConstants.R_EXACT_NAME;
 			}
 		} else if (CharOperation.prefixEquals(token, proposalName, true)) {
-			if (CharOperation.equals(token, proposalName, true )) {
-				return RelevanceConstants.R_CASE + RelevanceConstants.R_EXACT_NAME;
+			if (CharOperation.equals(token, proposalName, true)) {
+				return RelevanceConstants.R_CASE
+						+ RelevanceConstants.R_EXACT_NAME;
 			} else {
 				return RelevanceConstants.R_CASE;
 			}
-		} else if (CharOperation.equals(token, proposalName, false )) {
+		} else if (CharOperation.equals(token, proposalName, false)) {
 			return RelevanceConstants.R_EXACT_NAME;
 		}
 		return 0;
 	}
 
-	int computeRelevanceForRestrictions(int accessRuleKind) {
+	protected int computeRelevanceForRestrictions(int accessRuleKind) {
 		if (accessRuleKind == IAccessRule.K_ACCESSIBLE) {
 			return RelevanceConstants.R_NON_RESTRICTED;
 		}

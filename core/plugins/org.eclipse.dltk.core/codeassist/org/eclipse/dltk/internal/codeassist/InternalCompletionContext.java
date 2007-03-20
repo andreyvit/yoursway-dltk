@@ -14,8 +14,6 @@ package org.eclipse.dltk.internal.codeassist;
  * Internal completion context
  */
 public class InternalCompletionContext {
-	protected char[][] expectedTypesSignatures;
-	protected char[][] expectedTypesKeys;
 	protected int doc;
 
 	protected int offset = -1;

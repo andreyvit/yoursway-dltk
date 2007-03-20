@@ -54,11 +54,10 @@ public interface IType extends IMember {
 	 * <p>
 	 * The type signatures may be either unresolved (for source types)
 	 * or resolved (for binary types), and either basic (for basic types)
-	 * or rich (for parameterized types). See {@link Signature} for details.
+	 * or rich (for parameterized types).
 	 * </p>
 	 * 
 	 * @param name the given name
-	 * @param parameterTypeSignatures the given parameter types
 	 * @return the method with the specified name and parameter types in this type
 	 */
 	IMethod getMethod(String name);

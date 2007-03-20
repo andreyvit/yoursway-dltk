@@ -66,19 +66,6 @@ public class RubyCompletionProposalLabelProvider extends
 
 		return nameBuffer.toString();
 	}
-
-	protected final StringBuffer appendParameterSignature(StringBuffer buffer,
-			char[][] parameterTypes, char[][] parameterNames) {
-		if (parameterNames != null) {
-			for (int i = 0; i < parameterNames.length; i++) {
-				if (i > 0) {
-					buffer.append(',');
-				}
-				buffer.append(parameterNames[i]);
-			}
-		}
-		return buffer;
-	}
 	
 	protected String createTypeProposalLabel(CompletionProposal typeProposal) {
 		StringBuffer nameBuffer = new StringBuffer();

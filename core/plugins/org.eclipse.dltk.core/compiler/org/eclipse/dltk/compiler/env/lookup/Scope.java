@@ -13,10 +13,9 @@ package org.eclipse.dltk.compiler.env.lookup;
 import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
 import org.eclipse.dltk.internal.compiler.lookup.MethodScope;
 import org.eclipse.dltk.internal.compiler.lookup.SourceModuleScope;
-import org.eclipse.dltk.internal.compiler.lookup.TypeConstants;
 import org.eclipse.dltk.internal.compiler.lookup.TypeScope;
 
-public abstract class Scope implements TypeConstants {
+public abstract class Scope {
 
 	/* Scope kinds */
 	public final static int BLOCK_SCOPE = 1;

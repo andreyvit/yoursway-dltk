@@ -28,8 +28,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-
-public class TclSourceViewerConfiguration extends ScriptSourceViewerConfiguration {
+public class TclSourceViewerConfiguration extends
+		ScriptSourceViewerConfiguration {
 
 	private TclTextTools fTextTools;
 
@@ -49,29 +49,32 @@ public class TclSourceViewerConfiguration extends ScriptSourceViewerConfiguratio
 
 	public String[] getIndentPrefixes(ISourceViewer sourceViewer,
 			String contentType) {
-		//TODO: what's a shit this method returns?
-		return new String[] { "\t", "    " };
+		// TODO: what's a shit this method returns?
+		return new String[] { "\t", "    " }; //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	/*
-	 * @see SourceViewerConfiguration#getDefaultPrefixes(ISourceViewer, String)
-	 */
-	public String[] getDefaultPrefixes(ISourceViewer sourceViewer, String contentType) {
+
+	public String[] getDefaultPrefixes(ISourceViewer sourceViewer,
+			String contentType) {
 		return new String[] { "#", "" }; //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	/*
-	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getTabWidth(org.eclipse.jface.text.source.ISourceViewer)
-	 */
+
 	public int getTabWidth(ISourceViewer sourceViewer) {
 		if (fPreferenceStore == null)
 			return super.getTabWidth(sourceViewer);
-		return fPreferenceStore.getInt(CodeFormatterConstants.FORMATTER_TAB_SIZE);
+
+		return fPreferenceStore
+				.getInt(CodeFormatterConstants.FORMATTER_TAB_SIZE);
 	}
 
 	protected void initializeScanners() {
 		Assert.isTrue(isNewSetup());
+		
+		// Creating scanners 
 		fCodeScanner = new TclCodeScanner(getColorManager(), fPreferenceStore);
+		
 		fStringScanner = new TclStringScanner(getColorManager(),
 				fPreferenceStore);
+		
 		fCommentScanner = new SingleTokenScriptScanner(getColorManager(),
 				fPreferenceStore, TclColorConstants.TCL_SINGLE_LINE_COMMENT);
 	}
@@ -84,20 +87,10 @@ public class TclSourceViewerConfiguration extends ScriptSourceViewerConfiguratio
 		return fTextTools == null;
 	}
 
-	/**
-	 * Returns the TCL string scanner for this configuration.
-	 *
-	 * @return the TCL string scanner
-	 */
 	protected RuleBasedScanner getStringScanner() {
 		return fStringScanner;
 	}
-
-	/**
-	 * Returns the TCL comment scanner for this configuration.
-	 *
-	 * @return the TCL comment scanner
-	 */
+	
 	protected RuleBasedScanner getCommentScanner() {
 		return fCommentScanner;
 	}
@@ -123,74 +116,97 @@ public class TclSourceViewerConfiguration extends ScriptSourceViewerConfiguratio
 
 		return reconciler;
 	}
+
 	/**
-	 * Adapts the behavior of the contained components to the change
-	 * encoded in the given event.
+	 * Adapts the behavior of the contained components to the change encoded in
+	 * the given event.
 	 * <p>
-	 * Clients are not allowed to call this method if the old setup with
-	 * text tools is in use.
+	 * Clients are not allowed to call this method if the old setup with text
+	 * tools is in use.
 	 * </p>
-	 *
-	 * @param event the event to which to adapt
-	 * @see TclSourceViewerConfiguration#TclSourceViewerConfiguration(IColorManager, IPreferenceStore, ITextEditor, String)
+	 * 
+	 * @param event
+	 *            the event to which to adapt
+	 * @see TclSourceViewerConfiguration#TclSourceViewerConfiguration(IColorManager,
+	 *      IPreferenceStore, ITextEditor, String)
 	 */
 	public void handlePropertyChangeEvent(PropertyChangeEvent event) {
 		Assert.isTrue(isNewSetup());
-		if (fCodeScanner.affectsBehavior(event))
+
+		if (fCodeScanner.affectsBehavior(event)) {
 			fCodeScanner.adaptToPreferenceChange(event);
-		if (fStringScanner.affectsBehavior(event))
+		}
+
+		if (fStringScanner.affectsBehavior(event)) {
 			fStringScanner.adaptToPreferenceChange(event);
-		if (fCommentScanner.affectsBehavior(event))
+		}
+
+		if (fCommentScanner.affectsBehavior(event)) {
 			fCommentScanner.adaptToPreferenceChange(event);
+		}
 	}
 
 	/**
 	 * Determines whether the preference change encoded by the given event
 	 * changes the behavior of one of its contained components.
-	 *
-	 * @param event the event to be investigated
+	 * 
+	 * @param event
+	 *            the event to be investigated
 	 * @return <code>true</code> if event causes a behavioral change
-	 *
+	 * 
 	 */
 	public boolean affectsTextPresentation(PropertyChangeEvent event) {
-		return  fCodeScanner.affectsBehavior(event)
-			|| fStringScanner.affectsBehavior(event) ||
-			fCommentScanner.affectsBehavior(event);
+		return fCodeScanner.affectsBehavior(event)
+				|| fStringScanner.affectsBehavior(event)
+				|| fCommentScanner.affectsBehavior(event);
 	}
 
-	public IAutoEditStrategy[] getAutoEditStrategies(ISourceViewer sourceViewer, String contentType) {
-		//return super.getAutoEditStrategies(sourceViewer, contentType);
+	public IAutoEditStrategy[] getAutoEditStrategies(
+			ISourceViewer sourceViewer, String contentType) {
+		// return super.getAutoEditStrategies(sourceViewer, contentType);
 		String partitioning = getConfiguredDocumentPartitioning(sourceViewer);
-		return new TclAutoEditStrategy[] {new TclAutoEditStrategy(fPreferenceStore, partitioning)};
+		return new TclAutoEditStrategy[] { new TclAutoEditStrategy(
+				fPreferenceStore, partitioning) };
 	}
-	/*
-	 * @see SourceViewerConfiguration#getContentAssistant(ISourceViewer)
-	 */
+	
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 
 		if (getEditor() != null) {
 
-			ContentAssistant assistant= new ContentAssistant();
-			assistant.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
+			ContentAssistant assistant = new ContentAssistant();
+			assistant
+					.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
 
-			assistant.setRestoreCompletionProposalSize(getSettings("completion_proposal_size")); //$NON-NLS-1$
+			assistant
+					.setRestoreCompletionProposalSize(getSettings("completion_proposal_size")); //$NON-NLS-1$
 
-			IContentAssistProcessor scriptProcessor= new TclScriptCompletionProcessor(getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
-			assistant.setContentAssistProcessor(scriptProcessor, IDocument.DEFAULT_CONTENT_TYPE);
+			// IDocument.DEFAULT_CONTENT_TYPE
+			IContentAssistProcessor scriptProcessor = new TclScriptCompletionProcessor(
+					getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
+			assistant.setContentAssistProcessor(scriptProcessor,
+					IDocument.DEFAULT_CONTENT_TYPE);
 
-			ContentAssistProcessor singleLineProcessor= new TclScriptCompletionProcessor(getEditor(), assistant, TclPartitions.TCL_COMMENT);
-			assistant.setContentAssistProcessor(singleLineProcessor, TclPartitions.TCL_COMMENT);
+			// TclPartitions.TCL_COMMENT
+			ContentAssistProcessor singleLineProcessor = new TclScriptCompletionProcessor(
+					getEditor(), assistant, TclPartitions.TCL_COMMENT);
+			assistant.setContentAssistProcessor(singleLineProcessor,
+					TclPartitions.TCL_COMMENT);
 
-			ContentAssistProcessor stringProcessor= new TclScriptCompletionProcessor(getEditor(), assistant, TclPartitions.TCL_STRING);
-			assistant.setContentAssistProcessor(stringProcessor, TclPartitions.TCL_STRING);
-//
-//			ContentAssistProcessor docProcessor= new TclDocCompletionProcessor(getEditor(), assistant);
-//			assistant.setContentAssistProcessor(tclDocProcessor, ITclPartitions.TCL_DOC);
-//
-			TclContentAssistPreference.getDefault().configure(assistant, fPreferenceStore);
+			// TclPartitions.TCL_STRING
+			ContentAssistProcessor stringProcessor = new TclScriptCompletionProcessor(
+					getEditor(), assistant, TclPartitions.TCL_STRING);
+			assistant.setContentAssistProcessor(stringProcessor,
+					TclPartitions.TCL_STRING);
 
-			assistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
-			assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
+			// Configuration
+			TclContentAssistPreference.getDefault().configure(assistant,
+					fPreferenceStore);
+
+			assistant
+					.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
+			
+			assistant
+					.setInformationControlCreator(getInformationControlCreator(sourceViewer));
 
 			return assistant;
 		}
@@ -198,15 +214,15 @@ public class TclSourceViewerConfiguration extends ScriptSourceViewerConfiguratio
 		return null;
 	}
 
-	protected IInformationControlCreator getOutlinePresenterControlCreator(ISourceViewer sourceViewer, final String commandId) {
-	return new IInformationControlCreator() {
-		public IInformationControl createInformationControl(Shell parent) {
-			int shellStyle= SWT.RESIZE;
-			int treeStyle= SWT.V_SCROLL | SWT.H_SCROLL;
-			return new TclOutlineInformationControl(parent, shellStyle, treeStyle, commandId);
-		}
-	};
-}
-
-
+	protected IInformationControlCreator getOutlinePresenterControlCreator(
+			ISourceViewer sourceViewer, final String commandId) {
+		return new IInformationControlCreator() {
+			public IInformationControl createInformationControl(Shell parent) {
+				int shellStyle = SWT.RESIZE;
+				int treeStyle = SWT.V_SCROLL | SWT.H_SCROLL;
+				return new TclOutlineInformationControl(parent, shellStyle,
+						treeStyle, commandId);
+			}
+		};
+	}
 }

@@ -47,18 +47,7 @@ public interface INameEnvironment {
 	 */
 
 	NameEnvironmentAnswer findType(char[] typeName, char[][] packageName);
-
-	/**
-	 * Answer whether packageName is the name of a known subpackage inside the
-	 * package parentPackageName. A top level package is found relative to null.
-	 * The default package is always assumed to exist.
-	 * 
-	 * For example: isPackage({{java}, {awt}}, {event}); isPackage(null,
-	 * {java});
-	 */
-
-	boolean isPackage(char[][] parentPackageName, char[] packageName);
-
+	
 	/**
 	 * This method cleans the environment uo. It is responsible for releasing
 	 * the memory and freeing resources. Passed that point, the name environment
