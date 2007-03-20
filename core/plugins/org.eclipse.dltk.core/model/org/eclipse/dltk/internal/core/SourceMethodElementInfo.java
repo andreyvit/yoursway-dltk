@@ -1,8 +1,9 @@
 package org.eclipse.dltk.internal.core;
 
+import org.eclipse.dltk.compiler.env.ISourceMethod;
 import org.eclipse.dltk.core.DLTKCore;
 
-class SourceMethodElementInfo extends MemberElementInfo {
+class SourceMethodElementInfo extends MemberElementInfo implements ISourceMethod {
 
 	/**
 	 * For a source method (that is, a method contained in a source module)
@@ -32,5 +33,25 @@ class SourceMethodElementInfo extends MemberElementInfo {
 			System.err.println("Implement is Constructor");
 		}
 		return false;
+	}
+
+	public char[][] getExceptionTypeNames() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public char[] getReturnTypeName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public char[][][] getTypeParameterBounds() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public char[][] getTypeParameterNames() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -48,8 +48,6 @@ import org.eclipse.dltk.internal.codeassist.InternalCompletionProposal;
  * 
  */
 public final class CompletionProposal extends InternalCompletionProposal {
-	private boolean updateCompletion = false;
-
 	/**
 	 * Completion is a reference to a field. This kind of completion might occur
 	 * in a context like <code>"this.ref^ = 0;"</code> and complete it to
@@ -274,6 +272,11 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * 
 	 */
 	protected static final int LAST_KIND = PACKAGE_REF;
+	
+	/**
+	 * 
+	 */
+	private boolean updateCompletion = false;
 
 	/**
 	 * Kind of completion request.
@@ -391,11 +394,12 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * @param completionLocation
 	 *            original offset of code completion request
 	 */
-	CompletionProposal(int kind, int completionLocation) {
+	protected CompletionProposal(int kind, int completionLocation) {
 		if ((kind < CompletionProposal.FIRST_KIND)
 				|| (kind > CompletionProposal.LAST_KIND)) {
 			throw new IllegalArgumentException();
 		}
+		
 		if (this.completion == null || completionLocation < 0) {
 			// Work around for bug 132558
 			// (https://bugs.eclipse.org/bugs/show_bug.cgi?id=132558).
@@ -408,6 +412,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 			}
 			completionLocation = 0;
 		}
+		
 		this.completionKind = kind;
 		this.completionLocation = completionLocation;
 	}
@@ -878,49 +883,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 		this.parameterNamesComputed = true;
 	}
 
-	/**
-	 * Returns the accessibility of the proposal.
-	 * <p>
-	 * This field is available for the following kinds of completion proposals:
-	 * <ul>
-	 * <li><code>TYPE_REF</code> - accessibility of the type</li>
-	 * </ul>
-	 * For these kinds of completion proposals, this method returns
-	 * {@link IAccessRule#K_ACCESSIBLE} or {@link IAccessRule#K_DISCOURAGED} or
-	 * {@link IAccessRule#K_NON_ACCESSIBLE}. By default this method return
-	 * {@link IAccessRule#K_ACCESSIBLE}.
-	 * </p>
-	 * 
-	 * @see IAccessRule
-	 * 
-	 * @return the accessibility of the proposal
-	 * 
-	 * 
-	 */
-	public int getAccessibility() {
-		return this.accessibility;
-	}
-
-	/**
-	 * Returns whether this proposal is a constructor.
-	 * <p>
-	 * This field is available for the following kinds of completion proposals:
-	 * <ul>
-	 * <li><code>METHOD_REF</code> - return <code>true</code> if the
-	 * referenced method is a constructor</li>
-	 * <li><code>METHOD_DECLARATION</code> - return <code>true</code> if
-	 * the declared method is a constructor</li>
-	 * </ul>
-	 * For kinds of completion proposals, this method returns <code>false</code>.
-	 * </p>
-	 * 
-	 * @return <code>true</code> if the proposal is a constructor.
-	 * 
-	 */
-	public boolean isConstructor() {
-		return this.isConstructor;
-	}
-
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append('[');
@@ -939,13 +901,13 @@ public final class CompletionProposal extends InternalCompletionProposal {
 			break;
 		case CompletionProposal.METHOD_DECLARATION:
 			buffer.append("METHOD_DECLARATION"); //$NON-NLS-1$
-			if (this.isConstructor) {
+			if (this.isConstructor()) {
 				buffer.append("<CONSTRUCTOR>"); //$NON-NLS-1$
 			}
 			break;
 		case CompletionProposal.METHOD_REF:
 			buffer.append("METHOD_REF"); //$NON-NLS-1$
-			if (this.isConstructor) {
+			if (this.isConstructor()) {
 				buffer.append("<CONSTRUCTOR>"); //$NON-NLS-1$
 			}
 			break;

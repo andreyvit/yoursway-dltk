@@ -193,10 +193,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 				System.out.println("Exception caught by RubySelectionEngine:"); //$NON-NLS-1$
 				e.printStackTrace(System.out);
 			}
-		}  finally {
-			reset();
-		}		
-		
+		}  		
 
 		return (IModelElement[]) selectionElements
 				.toArray(new IModelElement[selectionElements.size()]);

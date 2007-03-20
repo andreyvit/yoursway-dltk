@@ -19,9 +19,11 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.internal.ui.text.hover.AbstractReusableInformationControlCreator;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.text.ScriptTextTools;
+import org.eclipse.jface.internal.text.html.BrowserInformationControl;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.BadLocationException;
@@ -29,6 +31,7 @@ import org.eclipse.jface.text.BadPositionCategoryException;
 import org.eclipse.jface.text.DefaultPositionUpdater;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.IPositionUpdater;
 import org.eclipse.jface.text.IRegion;
@@ -57,13 +60,14 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.link.EditorLinkedModeUI;
 
 public abstract class AbstractScriptCompletionProposal implements
 		IScriptCompletionProposal, ICompletionProposalExtension,
 		ICompletionProposalExtension2, ICompletionProposalExtension3,
 		ICompletionProposalExtension5 {
-	
+
 	/**
 	 * A class to simplify tracking a reference position in a document.
 	 */
@@ -867,18 +871,19 @@ public abstract class AbstractScriptCompletionProposal implements
 		}
 		// if (!BrowserInformationControl.isAvailable(null))
 		// return null;
-		//		
-//		 if (fCreator == null) {
-//		 fCreator= new AbstractReusableInformationControlCreator() {
-//						
-//		 public IInformationControl doCreateInformationControl(Shell parent) {
-//		 return new BrowserInformationControl(parent, SWT.NO_TRIM | SWT.TOOL,
-//		 SWT.NONE, null);
-// }
-		// };
-		// }
-		// return fCreator;
-		return null;
+
+		if (fCreator == null) {
+			fCreator = new AbstractReusableInformationControlCreator() {
+
+				public IInformationControl doCreateInformationControl(
+						Shell parent) {
+					return new BrowserInformationControl(parent, SWT.NO_TRIM
+							| SWT.TOOL, SWT.NONE, null);
+				}
+			};
+		}
+		return fCreator;
+		// return null;
 	}
 
 	public String getSortString() {

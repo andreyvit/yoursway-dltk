@@ -41,10 +41,9 @@ public abstract class HierarchyBuilder {
 	protected NameLookup nameLookup;
 	/**
 	 * The resolver used to resolve type hierarchies
-	 * 
-	 * @see HierarchyResolver
+	 *
 	 */
-	protected HierarchyResolver hierarchyResolver;
+	//protected HierarchyResolver hierarchyResolver;
 	/**
 	 * A temporary cache of infos to handles to speed info to handle translation -
 	 * it only contains the entries for the types in the region (in other words,
@@ -84,10 +83,8 @@ public abstract class HierarchyBuilder {
 			ISearchableEnvironment searchableEnvironment = project
 					.newSearchableNameEnvironment(unitsToLookInside);
 			this.nameLookup = searchableEnvironment.getNameLookup();
-			this.hierarchyResolver = new HierarchyResolver(
-					searchableEnvironment, project.getOptions(true), this,
-					new DefaultProblemFactory());
 		}
+		
 		this.infoToHandle = new HashMap(5);
 		this.focusQualifiedName = focusType == null ? null : focusType
 				.getFullyQualifiedName();

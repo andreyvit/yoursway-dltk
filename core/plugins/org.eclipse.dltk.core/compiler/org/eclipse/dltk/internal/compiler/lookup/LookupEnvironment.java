@@ -8,14 +8,11 @@ import org.eclipse.dltk.internal.compiler.impl.ITypeRequestor;
 public class LookupEnvironment {
 	public LookupEnvironment(ITypeRequestor typeRequestor,
 			INameEnvironment nameEnvironment) {
-
 	}
-
-	public void reset() {
-	}
-
+	
 	public void buildTypeScope(ModuleDeclaration unit,
 			AccessRestriction accessRestriction) {
-		/* SourceModuleScope scope = */new SourceModuleScope(unit, this);
+		//TODO: fix this. Don't simply remove this line!!!
+		/* SourceModuleScope scope = */new SourceModuleScope(unit, this);		
 	}
 }

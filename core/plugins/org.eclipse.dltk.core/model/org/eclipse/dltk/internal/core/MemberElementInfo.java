@@ -13,7 +13,7 @@ package org.eclipse.dltk.internal.core;
 /** 
  *Element info for IMember elements. 
  */
-/* package */ abstract class MemberElementInfo extends SourceRefElementInfo {	
+public abstract class MemberElementInfo extends SourceRefElementInfo {	
 	protected int flags;
 
 	/**

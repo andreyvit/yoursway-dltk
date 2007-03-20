@@ -180,16 +180,10 @@ public abstract class LazyScriptCompletionProposal extends
 		return fInvocationContext.getLabelProvider().createLabel(fProposal);
 	}
 
-	/*
-	 * @see ICompletionProposal#getAdditionalProposalInfo()
-	 */
 	public final String getAdditionalProposalInfo() {
 		return super.getAdditionalProposalInfo();
 	}
-
-	/*
-	 * @see ICompletionProposalExtension#getContextInformationPosition()
-	 */
+	
 	public final int getContextInformationPosition() {
 		if (getContextInformation() == null)
 			return getReplacementOffset() - 1;
@@ -217,10 +211,7 @@ public abstract class LazyScriptCompletionProposal extends
 		fReplacementOffsetComputed = true;
 		super.setReplacementOffset(replacementOffset);
 	}
-
-	/*
-	 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension3#getCompletionOffset()
-	 */
+	
 	public final int getPrefixCompletionStart(IDocument document,
 			int completionOffset) {
 		return getReplacementOffset();
@@ -274,10 +265,7 @@ public abstract class LazyScriptCompletionProposal extends
 		fReplacementStringComputed = true;
 		super.setReplacementString(replacementString);
 	}
-
-	/*
-	 * @see ICompletionProposal#getImage()
-	 */
+	
 	public final Image getImage() {
 		if (!fImageComputed)
 			setImage(computeImage());

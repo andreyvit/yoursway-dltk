@@ -45,8 +45,6 @@ public class BlockScope extends Scope {
 		return s;
 	}
 
-	// record the current case statement being processed (for entire switch case
-	// block).
 	public BlockScope(BlockScope parent) {
 		this(parent, true);
 	}

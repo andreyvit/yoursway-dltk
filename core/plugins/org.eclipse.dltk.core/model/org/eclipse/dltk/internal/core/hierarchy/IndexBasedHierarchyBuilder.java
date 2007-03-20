@@ -242,9 +242,10 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 			Map options = project.getOptions(true);
 			// disable task tags to speed up parsing
 			// options.put(DLTKCore.COMPILER_TASK_TAGS, ""); //$NON-NLS-1$
-			this.hierarchyResolver = new HierarchyResolver(
-					searchableEnvironment, options, this,
-					new DefaultProblemFactory());
+			//this.hierarchyResolver = new HierarchyResolver(
+				//	searchableEnvironment, options, this,
+					//new DefaultProblemFactory());
+			
 			if (focusType != null) {
 				Member declaringMember = ((Member) focusType)
 						.getOuterMostLocalContext();

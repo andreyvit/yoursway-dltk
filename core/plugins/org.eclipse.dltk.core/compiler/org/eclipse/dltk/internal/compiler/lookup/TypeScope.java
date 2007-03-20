@@ -14,24 +14,26 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.compiler.env.lookup.Scope;
 
 public class TypeScope extends Scope {
-	
+
 	public TypeDeclaration referenceContext;
 
 	public TypeScope(Scope parent, TypeDeclaration context) {
 		super(CLASS_SCOPE, parent);
 		this.referenceContext = context;
 	}
-	
-	/* Answer the reference type of this scope.
-	 * It is the nearest enclosing type of this scope.
+
+	/*
+	 * Answer the reference type of this scope. It is the nearest enclosing type
+	 * of this scope.
 	 */
 	public TypeDeclaration referenceType() {
 		return referenceContext;
 	}
-	
+
 	public String toString() {
-		if (referenceContext != null)
-			return "--- Class Scope ---\n\n";
-		return "--- Class Scope ---\n\n Binding not initialized" ; //$NON-NLS-1$
+		if (referenceContext != null) {
+			return "--- Class Scope ---\n\n"; //$NON-NLS-1$
+		}
+		return "--- Class Scope ---\n\n Binding not initialized"; //$NON-NLS-1$
 	}
 }

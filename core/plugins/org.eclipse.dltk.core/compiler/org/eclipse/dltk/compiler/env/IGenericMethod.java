@@ -19,5 +19,5 @@ public interface IGenericMethod {
 	 * Answer the names of the argument or null if the argument names are not
 	 * available.
 	 */
-	char[][] getArgumentNames();
+	String[] getArgumentNames();
 }

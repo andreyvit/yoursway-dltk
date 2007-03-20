@@ -14,6 +14,7 @@ package org.eclipse.dltk.internal.ui.text.hover;
 import org.eclipse.dltk.internal.ui.text.DLTKWordFinder;
 import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
 import org.eclipse.dltk.ui.text.hover.IScriptEditorTextHover;
+import org.eclipse.jface.internal.text.html.BrowserInformationControl;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
@@ -36,21 +37,12 @@ public class ScriptInformationProvider implements IInformationProvider, IInforma
 
 	class EditorWatcher implements IPartListener {
 
-		/**
-		 * @see IPartListener#partOpened(IWorkbenchPart)
-		 */
 		public void partOpened(IWorkbenchPart part) {
 		}
 
-		/**
-		 * @see IPartListener#partDeactivated(IWorkbenchPart)
-		 */
 		public void partDeactivated(IWorkbenchPart part) {
 		}
 
-		/**
-		 * @see IPartListener#partClosed(IWorkbenchPart)
-		 */
 		public void partClosed(IWorkbenchPart part) {
 			if (part == fEditor) {
 				fEditor.getSite().getWorkbenchWindow().getPartService().removePartListener(fPartListener);
@@ -58,9 +50,6 @@ public class ScriptInformationProvider implements IInformationProvider, IInforma
 			}
 		}
 
-		/**
-		 * @see IPartListener#partActivated(IWorkbenchPart)
-		 */
 		public void partActivated(IWorkbenchPart part) {
 			update();
 		}
@@ -78,12 +67,8 @@ public class ScriptInformationProvider implements IInformationProvider, IInforma
 
 	/**
 	 * The presentation control creator.
-	 * 
-	 *
 	 */
 	private IInformationControlCreator fPresenterControlCreator;
-	
-
 
 	public ScriptInformationProvider(IEditorPart editor) {
 
@@ -118,10 +103,7 @@ public class ScriptInformationProvider implements IInformationProvider, IInforma
 			}
 		}
 	}
-
-	/*
-	 * @see IInformationProvider#getSubject(ITextViewer, int)
-	 */
+	
 	public IRegion getSubject(ITextViewer textViewer, int offset) {
 
 		if (textViewer != null)
@@ -130,9 +112,6 @@ public class ScriptInformationProvider implements IInformationProvider, IInforma
 		return null;
 	}
 
-	/*
-	 * @see IInformationProvider#getInformation(ITextViewer, IRegion)
-	 */
 	public String getInformation(ITextViewer textViewer, IRegion subject) {
 		if (fImplementation != null) {
 			String s= fImplementation.getHoverInfo(textViewer, subject);
@@ -143,11 +122,7 @@ public class ScriptInformationProvider implements IInformationProvider, IInforma
 
 		return null;
 	}
-
-	/*
-	 * @see IInformationProviderExtension2#getInformationPresenterControlCreator()
-	 *
-	 */
+	
 	public IInformationControlCreator getInformationPresenterControlCreator() {
 		if (fPresenterControlCreator == null) {
 			fPresenterControlCreator= new AbstractReusableInformationControlCreator() {

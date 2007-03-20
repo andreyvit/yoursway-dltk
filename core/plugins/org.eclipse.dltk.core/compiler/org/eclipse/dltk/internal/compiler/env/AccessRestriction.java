@@ -13,7 +13,9 @@ package org.eclipse.dltk.internal.compiler.env;
 public class AccessRestriction {
 
 	private AccessRule accessRule;
+	
 	private String[] messageTemplates;
+	
 	public AccessRestriction(AccessRule accessRule, String [] messageTemplates) {
 		this.accessRule = accessRule;
 		this.messageTemplates = messageTemplates;

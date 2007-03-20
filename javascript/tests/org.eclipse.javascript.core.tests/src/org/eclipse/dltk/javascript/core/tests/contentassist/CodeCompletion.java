@@ -432,16 +432,16 @@ public class CodeCompletion extends TestCase {
 	}
 
 	private final class NullEnvironment implements ISearchableEnvironment {
-		public void findPackages(char[] prefix, ISearchRequestor requestor) {
-			// TODO Auto-generated method stub
+//		public void findPackages(char[] prefix, ISearchRequestor requestor) {
+//			// TODO Auto-generated method stub
+//
+//		}
 
-		}
-
-		public void findTypes(char[] prefix, boolean findMembers,
-				boolean camelCaseMatch, ISearchRequestor storage) {
-			// TODO Auto-generated method stub
-
-		}
+//		public void findTypes(char[] prefix, boolean findMembers,
+//				boolean camelCaseMatch, ISearchRequestor storage) {
+//			// TODO Auto-generated method stub
+//
+//		}
 
 		public NameLookup getNameLookup() {
 			// TODO Auto-generated method stub
@@ -453,14 +453,14 @@ public class CodeCompletion extends TestCase {
 
 		}
 
-		public NameEnvironmentAnswer findType(char[][] compoundTypeName) {
-			return null;
-		}
-
-		public NameEnvironmentAnswer findType(char[] typeName,
-				char[][] packageName) {
-			return null;
-		}
+//		public NameEnvironmentAnswer findType(char[][] compoundTypeName) {
+//			return null;
+//		}
+//
+//		public NameEnvironmentAnswer findType(char[] typeName,
+//				char[][] packageName) {
+//			return null;
+//		}
 
 		public boolean isPackage(char[][] parentPackageName, char[] packageName) {
 			// TODO Auto-generated method stub

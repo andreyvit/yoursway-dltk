@@ -24,15 +24,16 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 public class ScriptMethodCompletionProposal extends LazyScriptCompletionProposal {
 	/** Triggers for method proposals without parameters. Do not modify. */
 	protected final static char[] METHOD_TRIGGERS= new char[] { ';', ',', '.', '\t', '[' };
+	
 	/** Triggers for method proposals. Do not modify. */
 	protected final static char[] METHOD_WITH_ARGUMENTS_TRIGGERS= new char[] { '(', '-', ' ' };
+	
 	/** Triggers for method name proposals (static imports). Do not modify. */
 	protected final static char[] METHOD_NAME_TRIGGERS= new char[] { ';' };
 	
 	private boolean fHasParameters;
 	private boolean fHasParametersComputed= false;
 	private int fContextInformationPosition;
-	//private FormatterPrefs fFormatterPrefs;
 
 	public ScriptMethodCompletionProposal(CompletionProposal proposal, ScriptContentAssistInvocationContext context) {
 		super(proposal, context);
@@ -79,8 +80,10 @@ public class ScriptMethodCompletionProposal extends LazyScriptCompletionProposal
 	protected char[] computeTriggerCharacters() {
 		if (fProposal.getKind() == CompletionProposal.METHOD_NAME_REFERENCE)
 			return METHOD_NAME_TRIGGERS;
+		
 		if (hasParameters())
 			return METHOD_WITH_ARGUMENTS_TRIGGERS;
+		
 		return METHOD_TRIGGERS;
 	}
 	

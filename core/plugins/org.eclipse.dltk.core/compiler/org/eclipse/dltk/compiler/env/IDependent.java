@@ -23,9 +23,7 @@ public interface IDependent {
 	/**
 	 * Answer the file name which defines the type.
 	 * 
-	 * 
 	 * Return null if no file defines the type.
 	 */
-
 	char[] getFileName();
 }

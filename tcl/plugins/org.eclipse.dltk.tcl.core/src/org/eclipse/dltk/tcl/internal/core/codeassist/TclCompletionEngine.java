@@ -46,8 +46,7 @@ import org.eclipse.dltk.tcl.internal.core.codeassist.completion.TclCompletionPar
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 
 public class TclCompletionEngine extends ScriptCompletionEngine {
-	private boolean assistNodeIsNamespace;
-	private boolean assistNodeIsFunction;
+	
 	private TclCompletionParser parser;
 
 	public TclCompletionEngine(ISearchableEnvironment environment,
@@ -134,8 +133,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 					this.printDebug(this.problem);
 				}
 			}
-		} finally {
-			reset();
+		} finally {			
 			if (!contextAccepted) {				
 				CompletionContext context = new CompletionContext();
 				context.setTokenKind(CompletionContext.TOKEN_KIND_UNKNOWN);
@@ -732,85 +730,6 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		findFields(token, false, fields, provideDollar ? "$" : "");
 	}
 
-	private void findGlobalVariablesOld(final char[] token, final List choices,
-			final boolean provideDollar) {
-		final String to = new String(token);
-		SearchRequestor requestor = new SearchRequestor() {
-			public void acceptSearchMatch(SearchMatch match)
-					throws CoreException {
-				Object element = match.getElement();
-				if (element instanceof IField) {
-					IField field = (IField) element;
-					String nme = field.getElementName();
-					if (field.getDeclaringType() != null) {
-						// IType type = field.getDeclaringType();
-						// nme = type.getTypeQualifiedName("::") + "::" + nme;
-						return;
-					}
-					if (nme.startsWith("::")) {
-						nme = nme.substring(2);
-					}
-					if ((token.length >= 2 && token[0] == ':' && token[1] == ':')
-							|| (token.length >= 3 && token[0] == '$'
-									&& token[1] == ':' && token[2] == ':')) {
-						nme = "::" + nme;
-					}
-					if (provideDollar) {
-						nme = "$" + nme;
-					}
-					if (nme.startsWith(to) && !choices.contains(nme)) {
-						choices.add(nme);
-					}
-				}
-			}
-		};
-
-		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(this.dltkProject);
-		} catch (CoreException e1) {
-			e1.printStackTrace();
-		}
-		IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit);
-		try {
-			String tok = new String(token);
-			if (tok.indexOf("::") == -1 && tok.length() > 1) {
-				if (tok.startsWith("$")) {
-					tok = tok.substring(1);
-				}
-				search(tok + "*", IDLTKSearchConstants.FIELD,
-						IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-			} else {
-				if (tok.startsWith("::")) {
-					String tt = tok.substring(2);
-					if (tt.indexOf("::") == -1 && tt.length() > 1) {
-						search(tt + "*", IDLTKSearchConstants.FIELD,
-								IDLTKSearchConstants.DECLARATIONS, scope,
-								requestor);
-					}
-				}
-			}
-			if (tok.startsWith("$") && tok.length() > 2) {
-				if (tok.indexOf("::") == -1) {
-					search(tok + "*", IDLTKSearchConstants.FIELD,
-							IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-				} else {
-					String tt = tok.substring(1);
-					if (tt.startsWith("::")) {
-						tt = tt.substring(2);
-						if (tt.indexOf("::") == -1 && tt.length() > 1) {
-							search(tt + "*", IDLTKSearchConstants.FIELD,
-									IDLTKSearchConstants.DECLARATIONS, scope,
-									requestor);
-						}
-					}
-				}
-			}
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private void findASTVariables(ASTNode node, String prefix, char[] token,
 			boolean canCompleteEmptyToken, List choices) {
 		List statements = null;
@@ -998,13 +917,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		}
 		return str;
 	}
-
-	protected void reset() {
-		super.reset();
-		this.knownPkgs = new HashtableOfObject(10);
-		this.knownTypes = new HashtableOfObject(10);
-	}
-
+	
 	public IAssistParser getParser() {
 		return parser;
 	}

@@ -30,17 +30,12 @@ public abstract class ScriptCompletionEngine extends Engine implements
 	// Accpets completion proposals
 	protected CompletionRequestor requestor;
 
-	protected int startPosition, actualCompletionPosition, endPosition, offset;
+	protected int startPosition;
+	protected int actualCompletionPosition;
+	protected int endPosition;
+	protected int offset;
 
 	protected char[] fileName = null;
-
-	// Packages and types
-	protected HashtableOfObject knownPkgs = new HashtableOfObject(10);
-
-	protected HashtableOfObject knownTypes = new HashtableOfObject(10);
-
-	// Flags
-	boolean insideQualifiedReference = false;
 
 	protected boolean noProposal = true;
 
@@ -52,6 +47,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 			CompletionRequestor requestor, Map settings,
 			IDLTKProject dltkProject) {
 		super(settings);
+		
 		this.dltkProject = dltkProject;
 		this.requestor = requestor;
 		this.nameEnvironment = nameEnvironment;
@@ -60,10 +56,8 @@ public abstract class ScriptCompletionEngine extends Engine implements
 
 	protected CompletionProposal createProposal(int kind, int completionOffset) {
 		CompletionProposal proposal = CompletionProposal.create(kind,
-				completionOffset - this.offset);
-		proposal.completionEngine = this;
-		proposal.nameLookup = this.nameEnvironment.getNameLookup();
-		
+				completionOffset - this.offset);	
+	
 		return proposal;
 	}
 
@@ -98,9 +92,9 @@ public abstract class ScriptCompletionEngine extends Engine implements
 		case CompletionProposal.METHOD_REF:
 			buffer.append("METHOD_REF"); //$NON-NLS-1$
 			break;
-		// case CompletionProposal.PACKAGE_REF :
-		// buffer.append("PACKAGE_REF"); //$NON-NLS-1$
-		// break;
+		 case CompletionProposal.PACKAGE_REF :
+			 buffer.append("PACKAGE_REF"); //$NON-NLS-1$
+			 break;
 		case CompletionProposal.TYPE_REF:
 			buffer.append("TYPE_REF"); //$NON-NLS-1$
 			break;
@@ -129,27 +123,11 @@ public abstract class ScriptCompletionEngine extends Engine implements
 				.append("\tDeclarationKey[").append(proposal.getDeclarationKey() == null ? "null".toCharArray() : proposal.getDeclarationKey()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		buffer
 				.append("\tKey[").append(proposal.getKey() == null ? "null".toCharArray() : proposal.getKey()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		// buffer.append("\tDeclarationPackage[").append(proposal.getDeclarationPackageName()
-		// == null ? "null".toCharArray() :
-		// proposal.getDeclarationPackageName()).append("]\n");
-		// buffer.append("\tDeclarationType[").append(proposal.getDeclarationTypeName()
-		// == null ? "null".toCharArray() :
-		// proposal.getDeclarationTypeName()).append("]\n");
-		// buffer.append("\tPackage[").append(proposal.getPackageName() == null
-		// ? "null".toCharArray() : proposal.getPackageName()).append("]\n");
-		// buffer.append("\tType[").append(proposal.getTypeName() == null ?
-		// "null".toCharArray() : proposal.getTypeName()).append("]\n");
+	
 		buffer
 				.append("\tName[").append(proposal.getName() == null ? "null".toCharArray() : proposal.getName()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		buffer.append("\tFlags[");//$NON-NLS-1$
-		// int flags = proposal.getFlags();
-		// buffer.append(Flags.toString(flags));
-		// if((flags & Flags.AccInterface) != 0) buffer.append("interface
-		// ");//$NON-NLS-1$
-		// if((flags & Flags.AccEnum) != 0) buffer.append("enum ");//$NON-NLS-1$
-		buffer.append("]\n"); //$NON-NLS-1$
-
+		
 		buffer
 				.append("\tCompletionLocation[").append(proposal.getCompletionLocation()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		int start = proposal.getReplaceStart();
@@ -187,6 +165,12 @@ public abstract class ScriptCompletionEngine extends Engine implements
 	}
 	
 	protected abstract int getEndOfEmptyToken();
+	
+	protected abstract String processMethodName(IMethod method, String token);
+
+	protected abstract String processTypeName(IType method, String token);
+
+	protected abstract String processFieldName(IField field, String token);
 
 	// what about onDemand types? Ignore them since it does not happen!
 	// import p1.p2.A.*;
@@ -344,13 +328,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 			}
 		}
 	}
-
-	protected abstract String processMethodName(IMethod method, String token);
-
-	protected abstract String processTypeName(IType method, String token);
-
-	protected abstract String processFieldName(IField field, String token);
-
+	
 	protected void findMethods(char[] token, boolean canCompleteEmptyToken,
 			List methods) {
 		findMethods(token, canCompleteEmptyToken, methods,

@@ -145,12 +145,6 @@ public abstract class Engine implements ITypeRequestor {
 		return null;
 	}
 
-	protected void reset() {
-		if (lookupEnvironment != null) {
-			lookupEnvironment.reset();
-		}
-	}
-
 	// TODO: remove this!!!
 	public abstract IAssistParser getParser();
 
