@@ -24,7 +24,7 @@ public class InternalSearchDocument {
 	protected String containerRelativePath;
 	protected ISourceElementParser parser;
 	public SourceIndexerRequestor requestor;
-	protected IDLTKLanguageToolkit toolkit;
+	public IDLTKLanguageToolkit toolkit;
 	/*
 	 * Hidden by API SearchDocument subclass
 	 */
@@ -64,5 +64,11 @@ public class InternalSearchDocument {
 	}
 	public IDLTKLanguageToolkit getToolkit() {
 		return this.toolkit;
+	}
+	public void setIndex(Index index) {
+		this.index = index;
+	}
+	public void setContainerRelativePath(String path ) {
+		this.containerRelativePath = path;
 	}
 }

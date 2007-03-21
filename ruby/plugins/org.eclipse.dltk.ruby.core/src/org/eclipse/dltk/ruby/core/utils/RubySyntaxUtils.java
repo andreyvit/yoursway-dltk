@@ -213,15 +213,15 @@ public class RubySyntaxUtils {
 		}
 	}
 	
-	public static int skipWhitespaceForward(CharSequence content, final int offset) {
-		return skipWhitespaceForward(content, offset, content.length());
+	public static int skipWhitespaceForward(char[] content, final int offset) {
+		return skipWhitespaceForward(content, offset, content.length);
 	}
 	
-	public static int skipWhitespaceForward(CharSequence content, final int offset, final int end) {
+	public static int skipWhitespaceForward(char[] content, final int offset, final int end) {
 		for (int result = offset; result < end; result++) {
-			if (result < 0 || result >= content.length())
+			if (result < 0 || result >= content.length)
 				break;
-			if (!isWhitespace(content.charAt(result)))
+			if (!isWhitespace(content[result]))
 				return result;
 		}
 		return -1;

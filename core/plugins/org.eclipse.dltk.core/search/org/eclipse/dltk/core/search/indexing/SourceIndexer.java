@@ -94,9 +94,6 @@ public class SourceIndexer extends AbstractIndexer {
 			// discarded)
 			parser.parseSourceModule(source, null);
 
-			// build mixin index entries
-			buildMixin(source);
-
 		} else { // This is for external documents
 			if (parser == null || requestor == null) {
 				// parser =
@@ -142,13 +139,6 @@ public class SourceIndexer extends AbstractIndexer {
 							+ maxWorkTime + " on " + document.getPath());
 				}
 			}
-			// build mixin index entries
-			buildMixin(source);
 		}
-	}
-
-	// Building if mixin simple entries.
-	private void buildMixin(char[] source) {
-		new MixinIndexer(document, source).indexDocument();
 	}
 }

@@ -11,6 +11,7 @@
 package org.eclipse.dltk.internal.core.search;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.util.SimpleSet;
 import org.eclipse.dltk.core.IBuildpathEntry;
@@ -126,9 +127,18 @@ public class IndexSelector {
 		IndexManager manager = ModelManager.getModelManager().getIndexManager();
 		SimpleSet locations = new SimpleSet();
 		IModelElement focus = MatchLocator.projectOrArchiveFocus(this.pattern);
+		// Add all special indexes for selected project.
+		if( focus != null && focus.getElementType() == IModelElement.SCRIPT_PROJECT ) {
+			String prjPath = "#special#" + ((IDLTKProject)focus).getProject().getFullPath().toString();
+			checkSpecialCase(manager, locations, prjPath);
+		}
 		if (focus == null) {
-			for (int i = 0; i < projectsAndArchives.length; i++)
+			for (int i = 0; i < projectsAndArchives.length; i++) {
 				locations.add(manager.computeIndexLocation(projectsAndArchives[i]));
+				// check for special cases
+				String prjPath = "#special#" + projectsAndArchives[i].toString();
+				checkSpecialCase(manager, locations, prjPath);
+			}
 		} else {
 			try {
 				// find the projects from projectsAndArchives that see the focus
@@ -204,6 +214,20 @@ public class IndexSelector {
 		for (int i = values.length; --i >= 0;)
 			if (values[i] != null)
 				this.indexLocations[count++] = new Path((String) values[i]);
+	}
+
+	private void checkSpecialCase(IndexManager manager, SimpleSet locations,
+			String prjPath) {
+		Object[] keyTable = manager.indexLocations.keyTable;
+		for( int i = 0; i < keyTable.length; ++i ) {
+			IPath path = (IPath)keyTable[i];
+			if( path != null ) {
+				String sPath = path.toString();
+				if( sPath.startsWith(prjPath)) {
+					locations.add(manager.indexLocations.get(path));
+				}
+			}
+		}
 	}
 
 	public IPath[] getIndexLocations() {

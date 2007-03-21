@@ -260,4 +260,12 @@ final class JavaReferenceFakeField extends FakeField implements ISourceModule,IF
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public char[] getSourceAsCharArray() throws ModelException {
+		String source =  getSource();
+		if( source != null ) {
+			return source.toCharArray();
+		}
+		return null;
+	}
 }

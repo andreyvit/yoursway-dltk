@@ -3,7 +3,10 @@ package org.eclipse.dltk.ruby.tests.search.mixin;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
@@ -46,6 +49,8 @@ public class MixinTests extends AbstractDLTKSearchTests implements IDLTKSearchCo
 		super.setUpSuite();
 		up();
 		waitUntilIndexesReady();
+		ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+		waitForAutoBuild();
 	}
 
 	public void tearDownSuite() throws Exception {
@@ -111,6 +116,8 @@ public class MixinTests extends AbstractDLTKSearchTests implements IDLTKSearchCo
 		IScriptFolder scriptFolder = getScriptFolder(TCLSEARCH, "src", new Path( "simple") );
 		String contents = "class Bar\n def myFyb\n end\n end\n";
 		ISourceModule createSourceModule = scriptFolder.createSourceModule("NewModule.rb", contents, true, null);
+		ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+		waitForAutoBuild();
 		
 		Object objs2[] = mixinElement.getAllObjects();
 		assertEquals(len + 1, objs2.length);
@@ -172,13 +179,14 @@ public class MixinTests extends AbstractDLTKSearchTests implements IDLTKSearchCo
 		
 	}
 	public void testMixins05() throws Exception { 
+		ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 		waitUntilIndexesReady();
 		MixinModel model = new MixinModel(RubyLanguageToolkit.getDefault());
 		String[] patterns = model.findKeys("*");
-		assertEquals(69, patterns.length);
+		assertEquals(71, patterns.length);
 		
 		patterns = model.findKeys("*strange*");
-		assertEquals(1, patterns.length);
+		assertEquals(2, patterns.length);
 		
 		patterns = model.findKeys("*func");
 		assertEquals(2, patterns.length);

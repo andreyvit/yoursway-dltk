@@ -329,6 +329,14 @@ public class SourceModule extends Openable implements ISourceModule, org.eclipse
 			return ""; //$NON-NLS-1$
 		return buffer.getContents();
 	}
+	
+	public char[] getSourceAsCharArray() throws ModelException {
+
+		IBuffer buffer = getBuffer();
+		if (buffer == null)
+			return new char[0]; //$NON-NLS-1$
+		return buffer.getCharacters();
+	}
 
 	public String getElementName() {
 

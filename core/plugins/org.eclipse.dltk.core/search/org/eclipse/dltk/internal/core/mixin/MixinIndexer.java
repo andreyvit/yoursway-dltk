@@ -27,15 +27,22 @@ public class MixinIndexer extends AbstractIndexer {
 		}
 		try {
 			IMixinParser parser = MixinManager.getMixinParser(toolkit.getNatureID());
-			parser.setRequirestor(this.requestor);
-			parser.parserSourceModule(this.source, false, null);
+			if( parser != null ) {
+				parser.setRequirestor(this.requestor);
+				parser.parserSourceModule(this.source, false, null);
+			}
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 	}
 	private class MixinIndexRequestor implements IMixinRequestor {
-		public void reportElement(ElementInfo info) {	
-			MixinIndexer.this.addMixin(info.key.toCharArray());
+		public void reportElement(ElementInfo info) {
+			if( info.key.length() > 0 ) {
+				MixinIndexer.this.addMixin(info.key.toCharArray());
+			}
+			else {
+				System.out.println("error");
+			}
 		}	
 	}
 }

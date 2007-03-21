@@ -1,8 +1,10 @@
 package org.eclipse.dltk.internal.core.builder;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,21 +13,39 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementVisitor;
 import org.eclipse.dltk.core.IModelMarker;
+import org.eclipse.dltk.core.IProjectFragment;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.builder.IScriptBuilder;
+import org.eclipse.dltk.core.search.IDLTKSearchScope;
+import org.eclipse.dltk.core.search.SearchEngine;
+import org.eclipse.dltk.internal.core.BuildpathEntry;
+import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ExternalProjectFragment;
+import org.eclipse.dltk.internal.core.ExternalSourceModule;
+import org.eclipse.dltk.internal.core.ModelManager;
+import org.eclipse.dltk.internal.core.util.HandleFactory;
 
 public class ScriptBuilder extends IncrementalProjectBuilder {
 	public static final boolean DEBUG = DLTKCore.DEBUG_SCRIPT_BUILDER;
+
+	public IProject currentProject = null;
+	DLTKProject scriptProject = null;
+	State lastState;
 
 	class ResourceVisitor implements IResourceDeltaVisitor, IResourceVisitor {
 		private List resources;
@@ -39,7 +59,8 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			switch (delta.getKind()) {
 			case IResourceDelta.ADDED:
 			case IResourceDelta.CHANGED:
-				if (!this.resources.contains(resource) && resource.getType() == IResource.FILE ) {
+				if (!this.resources.contains(resource)
+						&& resource.getType() == IResource.FILE) {
 					resources.add(resource);
 				}
 				break;
@@ -48,22 +69,39 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		}
 
 		public boolean visit(IResource resource) {
-			if (!this.resources.contains(resource)&& resource.getType() == IResource.FILE) {
+			if (!this.resources.contains(resource)
+					&& resource.getType() == IResource.FILE) {
 				resources.add(resource);
 			}
 			return true;
 		}
 	}
 
-	class ModelModuleVisitor implements IModelElementVisitor {
+	class ExternalModuleVisitor implements IModelElementVisitor {
 		private List elements;
 
-		public ModelModuleVisitor(List elements) {
+		public ExternalModuleVisitor(List elements) {
 			this.elements = elements;
 		}
 
+		/**
+		 * Visit only external source modules, witch we aren't builded yet.
+		 */
 		public boolean visit(IModelElement element) {
-			if (element.getElementType() == IModelElement.SOURCE_MODULE) {
+			if (element.getElementType() == IModelElement.PROJECT_FRAGMENT) {
+				if (!(element instanceof ExternalProjectFragment)) {
+					return false;
+				}
+				IProjectFragment fragment = (IProjectFragment) element;
+				
+				if (lastState.externalFolderLocations.contains(fragment.getPath())) {
+					return false;
+				} else {
+					lastState.externalFolderLocations.add(fragment.getPath());
+				}
+			}
+			if (element.getElementType() == IModelElement.SOURCE_MODULE
+					&& element instanceof ExternalSourceModule) {
 				if (!elements.contains(element)) {
 					elements.add(element);
 				}
@@ -92,41 +130,107 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor)
 			throws CoreException {
+		this.currentProject = getProject();
+		
+		this.scriptProject = (DLTKProject) DLTKCore.create(currentProject);
+
+		if (currentProject == null || !currentProject.isAccessible())
+			return new IProject[0];
+
 		if (kind == FULL_BUILD) {
 			fullBuild(monitor);
 		} else {
-			IResourceDelta delta = getDelta(getProject());
-			if (delta == null) {
+			if ((this.lastState = getLastState(currentProject, monitor )) == null) {
+				if (DEBUG)
+					System.out
+							.println("Performing full build since last saved state was not found"); //$NON-NLS-1$
 				fullBuild(monitor);
 			} else {
-				incrementalBuild(delta, monitor);
+				IResourceDelta delta = getDelta(getProject());
+				if (delta == null) {
+					fullBuild(monitor);
+				} else {
+					incrementalBuild(delta, monitor);
+				}
 			}
 		}
-		return null;
+		IProject[] requiredProjects = getRequiredProjects(true);
+		if (DEBUG)
+			System.out.println("Finished build of " + currentProject.getName() //$NON-NLS-1$
+				+ " @ " + new Date(System.currentTimeMillis())); //$NON-NLS-1$
+		return requiredProjects;
+	}
+	private IProject[] getRequiredProjects(boolean includeBinaryPrerequisites) {
+		if (scriptProject == null ) return new IProject[0];
+		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+		ArrayList projects = new ArrayList();
+		try {
+			IBuildpathEntry[] entries = scriptProject.getExpandedBuildpath(true);
+			for (int i = 0, l = entries.length; i < l; i++) {
+				IBuildpathEntry entry = entries[i];
+				IPath path = entry.getPath();
+				IProject p = null;
+				switch (entry.getEntryKind()) {
+					case IBuildpathEntry.BPE_PROJECT :
+						p = workspaceRoot.getProject(path.lastSegment()); // missing projects are considered too
+						if (((BuildpathEntry) entry).isOptional() && !DLTKProject.hasScriptNature(p)) // except if entry is optional
+							p = null;
+						break;
+					case IBuildpathEntry.BPE_LIBRARY :
+						if (includeBinaryPrerequisites && path.segmentCount() > 1) {
+							// some binary resources on the class path can come from projects that are not included in the project references
+							IResource resource = workspaceRoot.findMember(path.segment(0));
+							if (resource instanceof IProject)
+								p = (IProject) resource;
+						}
+				}
+				if (p != null && !projects.contains(p))
+					projects.add(p);
+			}
+		} catch(ModelException e) {
+			return new IProject[0];
+		}
+		IProject[] result = new IProject[projects.size()];
+		projects.toArray(result);
+		return result;
 	}
 
+	public State getLastState(IProject project, IProgressMonitor monitor) {
+		return (State) ModelManager.getModelManager().getLastBuiltState(project, monitor);
+	}
+	private void clearLastState() {
+		ModelManager.getModelManager().setLastBuiltState(currentProject, null);
+	}
 	protected void fullBuild(final IProgressMonitor monitor)
 			throws CoreException {
+		
+		clearLastState();
+		State newState = new State(this);
+		if( this.lastState != null ) {
+			newState.copyFrom(this.lastState);
+		}
+		lastState = newState;
 		try {
 			List resources = new ArrayList();
 
-			// Project real resources.
-			IProject project = getProject();
-			if (!DLTKLanguageManager.hasScriptNature(project)) {
-				return;
-			}
-			IDLTKProject dltkProject = DLTKCore.create(project);
-			project.accept(new ResourceVisitor(resources));
-			// Call builders for resources.
-			buildResources(resources);
+			currentProject.accept(new ResourceVisitor(resources));
 
 			// Project external resources should also be added into list. Only
 			// on full build we need to manage this.
 			List elements = new ArrayList();
-			dltkProject.accept(new ModelModuleVisitor(elements));
-			buildElements(elements);
+			scriptProject.accept(new ExternalModuleVisitor(elements));
+
+			// Call builders for resources.
+			int count = resources.size() + elements.size();
+			monitor.beginTask("Building", count);
+			buildResources(resources, monitor);
+			buildElements(elements, monitor);
+			monitor.done();
 		} catch (CoreException e) {
 			e.printStackTrace();
+		}
+		finally {
+			ModelManager.getModelManager().setLastBuiltState(currentProject, this.lastState);
 		}
 	}
 
@@ -140,87 +244,66 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		delta.accept(new ResourceVisitor(resources));
 		// Call builders for resources.
 		List actualResourcesToBuild = findDependencies(resources);
-		buildResources(actualResourcesToBuild);
+
+		List elements = new ArrayList();
+		IDLTKProject dltkProject = DLTKCore.create(project);
+		dltkProject.accept(new ExternalModuleVisitor(elements));
+
+		monitor.beginTask("Building", actualResourcesToBuild.size()
+				+ elements.size());
+		buildResources(actualResourcesToBuild, monitor);
+		buildElements(elements, monitor);
+		monitor.done();
 	}
 
-	protected void buildResources(List resources) {
+	private HandleFactory factory = new HandleFactory();
+
+	protected void buildResources(List resources, IProgressMonitor monitor) {
 		List status = new ArrayList();
 		IDLTKProject dltkProject = DLTKCore.create(getProject());
+		IDLTKSearchScope scope = SearchEngine
+				.createSearchScope(new IModelElement[] { dltkProject });
+
+		List realResources = new ArrayList(); // real resources
+		List elements = new ArrayList(); // Model elements
+
 		for (int i = 0; i < resources.size(); ++i) {
+			monitor.worked(1);
+			if (monitor.isCanceled()) {
+				return;
+			}
 			IResource res = (IResource) resources.get(i);
-			IProject project = res.getProject();
-			String[] natureIds = null;
-			try {
-				natureIds = project.getDescription().getNatureIds();
-			} catch (CoreException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
-				continue;
-			}
-			// Check if resource is model element.
-			try {
-				IModelElement element = dltkProject.findElement(res
-						.getProjectRelativePath());
-				if (element != null && element.getElementType() == IModelElement.SOURCE_MODULE ) {
-					IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-							.getLanguageToolkit(element);
-					if (toolkit != null) {
-						IScriptBuilder[] builders = ScriptBuilderManager
-								.getScriptBuilders(toolkit.getNatureID());
-						if (builders != null) {
-							for (int k = 0; k < builders.length; k++) {
-								IStatus s = builders[k].buildModelElement(element);
-								if (s != null && s.getSeverity() != IStatus.OK) {
-									status.add(s);
-								}
-							}
-						}
-						continue;
-					}
-				}
-			} catch (CoreException e1) {
-				e1.printStackTrace();
-			}
-			//Else build as resource.
-			for (int j = 0; j < natureIds.length; j++) {
-				try {
-					IScriptBuilder[] builders = ScriptBuilderManager
-							.getScriptBuilders(natureIds[j]);
-					if (builders != null) {
-						for (int k = 0; k < builders.length; k++) {
-							IStatus s = builders[k].buildResources(res);
-							if (s != null && s.getSeverity() != IStatus.OK) {
-								status.add(s);
-							}
-						}
-					}
-				} catch (CoreException e) {
-					if (DLTKCore.DEBUG) {
-						e.printStackTrace();
-					}
-				}
+			IModelElement element = factory.createOpenable(res.getFullPath()
+					.toString(), scope);
+			if (element != null
+					&& element.getElementType() == IModelElement.SOURCE_MODULE
+					&& element.exists()) {
+				elements.add(element);
+			} else {
+				realResources.add(res);
 			}
 		}
-		// TODO: Do something with status.
-	}
+		buildElements(elements, monitor);
 
-	protected void buildElements(List elements) {
-		List status = new ArrayList();
-		for (int i = 0; i < elements.size(); ++i) {
-			IModelElement elem = (IModelElement) elements.get(i);
+		// Else build as resource.
+		IProject project = getProject();
+		String[] natureIds = null;
+		try {
+			natureIds = project.getDescription().getNatureIds();
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+			return;
+		}
+		for (int j = 0; j < natureIds.length; j++) {
 			try {
-				IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-						.getLanguageToolkit(elem);
-				if (toolkit == null) {
-					// TODO: Add error reporting here...
-					continue;
-				}
 				IScriptBuilder[] builders = ScriptBuilderManager
-						.getScriptBuilders(toolkit.getNatureID());
+						.getScriptBuilders(natureIds[j]);
 				if (builders != null) {
 					for (int k = 0; k < builders.length; k++) {
-						IStatus s = builders[k].buildModelElement(elem);
+						IStatus s = builders[k].buildResources(realResources,
+								monitor);
 						if (s != null && s.getSeverity() != IStatus.OK) {
 							status.add(s);
 						}
@@ -235,10 +318,37 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		// TODO: Do something with status.
 	}
 
+	protected void buildElements(List elements, IProgressMonitor monitor) {
+		List status = new ArrayList();
+		IDLTKProject dltkProject = DLTKCore.create(getProject());
+		IDLTKLanguageToolkit toolkit = null;
+		try {
+			toolkit = DLTKLanguageManager.getLanguageToolkit(dltkProject);
+			IScriptBuilder[] builders = ScriptBuilderManager
+					.getScriptBuilders(toolkit.getNatureID());
+
+			if (builders != null) {
+				for (int k = 0; k < builders.length; k++) {
+					IStatus s = builders[k].buildModelElements(dltkProject,
+							elements, monitor);
+					if (s != null && s.getSeverity() != IStatus.OK) {
+						status.add(s);
+					}
+				}
+
+			}
+		} catch (CoreException e) {
+			e.printStackTrace();
+			return;
+		}
+		// TODO: Do something with status.
+	}
+
 	private List findDependencies(List resources) {
 		try {
 			IScriptBuilder[] builders = ScriptBuilderManager
 					.getAllScriptBuilders();
+
 			List elementsToCheck = new ArrayList();
 			elementsToCheck.addAll(resources);
 			List result = new ArrayList();
@@ -286,5 +396,12 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 
 	public static void writeState(Object state, DataOutputStream out)
 			throws IOException {
+		((State) state).write(out);
+	}
+
+	public static State readState(IProject project, DataInputStream in)
+			throws IOException {
+		State state = State.read(project, in);
+		return state;
 	}
 }

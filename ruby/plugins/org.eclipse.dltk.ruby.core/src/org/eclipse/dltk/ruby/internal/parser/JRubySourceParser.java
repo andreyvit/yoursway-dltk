@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ruby.internal.parser;
 
+import java.io.CharArrayReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -176,11 +177,11 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 	 * @return
 	 */
 	protected NodeVisitor getASTBuilderVisitor(ModuleDeclaration module,
-			String content) {
+			char[] content) {
 		return new RubyASTBuildVisitor(module, content);
 	}
 
-	public ModuleDeclaration parse(String content) {
+	public ModuleDeclaration parse(char[] content) {
 		try {
 			DLTKRubyParser parser = new DLTKRubyParser();
 			ProxyProblemReporter proxyProblemReporter = new ProxyProblemReporter(
@@ -188,21 +189,22 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 			errorState[0] = false;
 
 			long timeStart = System.currentTimeMillis();
-			Node node = parser.parse("", new StringReader(content),
+			Node node = parser.parse("", new CharArrayReader(content),
 					proxyProblemReporter);
 			fixPositions.clear();
 			if (!parser.isSuccess() || errorState[0]) {
-				content = fixBrokenDots(content);
-				content = fixBrokenColons(content);
+				String content2 = fixBrokenDots(new String( content ) );
+				content2 = fixBrokenColons(content2);
 
-				Node node2 = parser.parse("", new StringReader(content), null);
+				Node node2 = parser.parse("", new StringReader(content2), null);
 				if (node2 != null)
 					node = node2;
 				else
 					fixPositions.clear();
+				content = content2.toCharArray();
 			}
 
-			ModuleDeclaration module = new ModuleDeclaration(content.length());
+			ModuleDeclaration module = new ModuleDeclaration(content.length);
 			NodeVisitor visitor = getASTBuilderVisitor(module, content);
 			if (node != null)
 				node.accept(visitor);
@@ -242,6 +244,10 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 
 	public void setInitializationData(IConfigurationElement config,
 			String propertyName, Object data) throws CoreException {
+	}
+
+	public ModuleDeclaration parse(String source) {
+		return this.parse(source.toCharArray());
 	}
 
 }

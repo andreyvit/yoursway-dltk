@@ -2,9 +2,9 @@ package org.eclipse.dltk.core.builder;
 
 import java.util.List;
 
-import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IDLTKProject;
 
 /**
  * Interace called from script builder to builde selected resource.
@@ -18,14 +18,14 @@ public interface IScriptBuilder {
 	 * Only resorces with specified project nature are here.
 	 * @return
 	 */
-	IStatus buildResources( IResource res );
+	IStatus buildResources( List resources, IProgressMonitor monitor );
 	
 	/**
 	 * Called for earch resource required to builde.
 	 * Only resorces with specified project nature are here.
 	 * @return
 	 */
-	IStatus buildModelElement( IModelElement element );
+	IStatus buildModelElements( IDLTKProject project, List elements, IProgressMonitor monitor );
 
 	/**
 	 * Return all dependencies for selected resource. Should also return all

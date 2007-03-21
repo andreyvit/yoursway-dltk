@@ -293,6 +293,13 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 			return ""; //$NON-NLS-1$
 		return buffer.getContents();
 	}
+	public char[] getSourceAsCharArray() throws ModelException {
+
+		IBuffer buffer = getBuffer();
+		if (buffer == null)
+			return new char[0]; //$NON-NLS-1$
+		return buffer.getCharacters();
+	}
 
 	public String getElementName() {
 

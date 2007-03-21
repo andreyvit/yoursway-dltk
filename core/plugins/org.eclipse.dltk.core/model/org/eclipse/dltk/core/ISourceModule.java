@@ -101,6 +101,16 @@ public interface ISourceModule extends IModule, ISourceReference,ISourceManipula
 	 *                    if an exception occurs while accessing its corresponding resource
 	 */
 	String getSource( ) throws ModelException;
+	
+	/**
+	 * Returns the source code associated with this element. This extracts the substring from the source buffer containing this source element.
+	 * This corresponds to the source range that would be returned by <code>getSourceRange</code>.
+	 * 
+	 * @return the source code, or <code>null</code> if this element has no associated source code
+	 * @exception ModelException
+	 *                    if an exception occurs while accessing its corresponding resource
+	 */
+	char[] getSourceAsCharArray() throws ModelException;
 
 	/**
 	 * Returns a new working copy of this compilation unit if it is a primary compilation unit, or this compilation unit if it is already a

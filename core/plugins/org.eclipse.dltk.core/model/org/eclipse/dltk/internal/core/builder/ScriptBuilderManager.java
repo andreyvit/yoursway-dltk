@@ -66,7 +66,9 @@ public class ScriptBuilderManager {
 			if( ext instanceof IScriptBuilder[]) {
 				IScriptBuilder[] b = (IScriptBuilder[])ext;
 				for (int i = 0; i < b.length; i++) {
-					results.add(b[i]);
+					if( !results.contains(b[i])) {
+						results.add(b[i]);
+					}
 				}
 			}
 			else if ( ext instanceof List ) {
@@ -86,13 +88,17 @@ public class ScriptBuilderManager {
 				}
 				builders.put(natureId, result) ;
 				for (int i = 0; i < result.length; i++) {
-					results.add(result[i]);
+					if( !results.contains(result[i])) {
+						results.add(result[i]);
+					}
 				}
 			}
 		}
 	}
 
 	public static IScriptBuilder[] getAllScriptBuilders() throws CoreException {
+		
+		initialize();
 		List result = new ArrayList();
 		Iterator iterator = builders.keySet().iterator();
 		while( iterator.hasNext() ) {

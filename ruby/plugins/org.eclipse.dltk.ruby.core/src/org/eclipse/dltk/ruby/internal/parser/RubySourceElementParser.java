@@ -34,9 +34,7 @@ public class RubySourceElementParser implements ISourceElementParser {
 
 	public ModuleDeclaration parseSourceModule(char[] contents, ISourceModuleInfo astCashe) {
 
-		String content = new String(contents);
-
-		ModuleDeclaration moduleDeclaration = parseModule(astCashe, content, this.problemReporter);
+		ModuleDeclaration moduleDeclaration = parseModule(astCashe, contents, this.problemReporter);
 
 		RubySourceElementRequestor requestor = new RubySourceElementRequestor(
 				this.fRequestor);
@@ -52,7 +50,7 @@ public class RubySourceElementParser implements ISourceElementParser {
 	}
 
 	public static ModuleDeclaration parseModule(ISourceModuleInfo astCache,
-			String content, IProblemReporter problemReporter ) {
+			char[] content, IProblemReporter problemReporter ) {
 		ModuleDeclaration moduleDeclaration = null;
 		if( astCache != null ) {
 			moduleDeclaration = (ModuleDeclaration)astCache.get(AST);
@@ -74,7 +72,7 @@ public class RubySourceElementParser implements ISourceElementParser {
 	public static ModuleDeclaration parseModule(ISourceModule module) {
 		ISourceModuleInfoCache sourceModuleInfoCache = ModelManager.getModelManager().getSourceModuleInfoCache();
 		try {
-			return parseModule(sourceModuleInfoCache.get(module), module.getSource(), null);
+			return parseModule(sourceModuleInfoCache.get(module), module.getSourceAsCharArray(), null);
 		} catch (ModelException e) {
 			if( DLTKCore.DEBUG ) {
 				e.printStackTrace();
