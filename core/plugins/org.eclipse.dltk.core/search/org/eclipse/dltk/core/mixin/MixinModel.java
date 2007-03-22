@@ -199,10 +199,14 @@ public class MixinModel {
 
 		private void processDelta(IModelElementDelta delta) {
 			IModelElement element = delta.getElement();
-			if (delta.getKind() == IModelElementDelta.REMOVED
+			if (delta.getKind() == IModelElementDelta.REMOVED || delta.getKind() == IModelElementDelta.CHANGED
 					|| (delta.getFlags() & IModelElementDelta.F_REMOVED_FROM_BUILDPATH) != 0
 					|| (delta.getFlags() & IModelElementDelta.CHANGED) != 0) {
-				if (element.getElementType() == IModelElement.SOURCE_MODULE) {
+				if (element.getElementType() != IModelElement.SOURCE_MODULE && element.getElementType() != IModelElement.PROJECT_FRAGMENT && element.getElementType() != IModelElement.SCRIPT_FOLDER && element.getElementType() != IModelElement.SCRIPT_MODEL && element.getElementType() != IModelElement.SCRIPT_PROJECT) {
+					ISourceModule module = (ISourceModule)element.getAncestor(IModelElement.SOURCE_MODULE);
+					MixinModel.this.remove(module);
+				}
+				if(element.getElementType() == IModelElement.SOURCE_MODULE ) {
 					MixinModel.this.remove((ISourceModule) element);
 				}
 			}
