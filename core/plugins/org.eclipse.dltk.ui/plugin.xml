@@ -885,8 +885,7 @@
 	</extension>         
 	
 	
-	<!-- Note: Do not change the sequence of those hover contributions 
-	(this funny string was spizded from JDT) -->
+	<!-- Note: Do not change the sequence of those hover contributions -->
    <extension
          point="org.eclipse.dltk.ui.editorTextHovers">
       <hover
@@ -895,11 +894,25 @@
             class="org.eclipse.dltk.internal.ui.text.hover.BestMatchHover"
             id="org.eclipse.dltk.ui.BestMatchHover">
       </hover>
+      
+      <hover
+            label="%problemHover"
+            description="%problemHoverDescription"
+            class="org.eclipse.dltk.internal.ui.text.hover.ProblemHover"
+            id="org.eclipse.dltk.ui.ProblemHover">
+      </hover>
+      
       <hover
             label="%documentationHover"
             description="%documentationHoverDescription"
             class="org.eclipse.dltk.internal.ui.text.hover.DocumentationHover"
             id="org.eclipse.dltk.ui.DocumentationHover">
+      </hover>
+      <hover
+            label="%annotationHover"
+            description="%annotationHoverDescription"
+            class="org.eclipse.dltk.internal.ui.text.hover.AnnotationHover"
+            id="org.eclipse.dltk.ui.AnnotationHover">
       </hover>
    </extension>
 <!-- =========================================================================== -->

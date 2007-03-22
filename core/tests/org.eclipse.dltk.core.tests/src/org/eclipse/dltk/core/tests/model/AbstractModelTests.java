@@ -30,12 +30,12 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.dltk.compiler.IProblem;
+import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKModelMarker;
+import org.eclipse.dltk.core.IScriptModelMarker;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
@@ -717,7 +717,7 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 	}
 
 	protected void assertMarkers(String message, String expectedMarkers, IDLTKProject project) throws CoreException {
-		IMarker[] markers = project.getProject().findMarkers(IDLTKModelMarker.BUILDPATH_PROBLEM_MARKER, false, IResource.DEPTH_ZERO);
+		IMarker[] markers = project.getProject().findMarkers(IScriptModelMarker.BUILDPATH_PROBLEM_MARKER, false, IResource.DEPTH_ZERO);
 		sortMarkers(markers);
 		assertMarkers(message, expectedMarkers, markers);
 	}

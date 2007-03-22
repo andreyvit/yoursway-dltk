@@ -9,11 +9,11 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.compiler.DLTKProblemReporter;
-import org.eclipse.dltk.compiler.DefaultProblem;
-import org.eclipse.dltk.compiler.IProblemReporter;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
-import org.eclipse.dltk.compiler.ProblemSeverities;
+import org.eclipse.dltk.compiler.problem.DLTKProblemReporter;
+import org.eclipse.dltk.compiler.problem.DefaultProblem;
+import org.eclipse.dltk.compiler.problem.IProblemReporter;
+import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.internal.javascript.reference.resolvers.ReferenceResolverContext;
@@ -59,7 +59,7 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 					if (fReporter != null)
 						fReporter.reportProblem(new DefaultProblem(arg1, arg0,
 								0, new String[] {}, ProblemSeverities.Error,
-								arg4 - arg3.length(), arg4, arg2));
+								arg4 - arg3.length(), arg4, arg2, 0));
 				} catch (CoreException e) {
 					e.printStackTrace();
 				}
@@ -77,7 +77,7 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 					if (fReporter != null)
 						fReporter.reportProblem(new DefaultProblem(arg1, arg0,
 								0, new String[] {}, ProblemSeverities.Warning,
-								arg4, arg4 + 1, arg2));
+								arg4, arg4 + 1, arg2, 0));
 				} catch (CoreException e) {
 					e.printStackTrace();
 				}

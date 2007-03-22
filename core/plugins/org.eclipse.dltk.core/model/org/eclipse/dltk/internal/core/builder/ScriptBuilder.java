@@ -132,6 +132,9 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			throws CoreException {
 		this.currentProject = getProject();
 		
+		if( !DLTKLanguageManager.hasScriptNature(this.currentProject) ) {
+			return null;
+		}
 		this.scriptProject = (DLTKProject) DLTKCore.create(currentProject);
 
 		if (currentProject == null || !currentProject.isAccessible())
@@ -236,18 +239,13 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 
 	protected void incrementalBuild(IResourceDelta delta,
 			IProgressMonitor monitor) throws CoreException {
-		IProject project = getProject();
-		if (!DLTKLanguageManager.hasScriptNature(project)) {
-			return;
-		}
 		List resources = new ArrayList();
 		delta.accept(new ResourceVisitor(resources));
 		// Call builders for resources.
 		List actualResourcesToBuild = findDependencies(resources);
 
 		List elements = new ArrayList();
-		IDLTKProject dltkProject = DLTKCore.create(project);
-		dltkProject.accept(new ExternalModuleVisitor(elements));
+		scriptProject.accept(new ExternalModuleVisitor(elements));
 
 		monitor.beginTask("Building", actualResourcesToBuild.size()
 				+ elements.size());
@@ -260,9 +258,8 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 
 	protected void buildResources(List resources, IProgressMonitor monitor) {
 		List status = new ArrayList();
-		IDLTKProject dltkProject = DLTKCore.create(getProject());
 		IDLTKSearchScope scope = SearchEngine
-				.createSearchScope(new IModelElement[] { dltkProject });
+				.createSearchScope(new IModelElement[] { scriptProject });
 
 		List realResources = new ArrayList(); // real resources
 		List elements = new ArrayList(); // Model elements
@@ -286,10 +283,9 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		buildElements(elements, monitor);
 
 		// Else build as resource.
-		IProject project = getProject();
 		String[] natureIds = null;
 		try {
-			natureIds = project.getDescription().getNatureIds();
+			natureIds = currentProject.getDescription().getNatureIds();
 		} catch (CoreException e) {
 			if (DLTKCore.DEBUG) {
 				e.printStackTrace();
@@ -302,7 +298,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 						.getScriptBuilders(natureIds[j]);
 				if (builders != null) {
 					for (int k = 0; k < builders.length; k++) {
-						IStatus s = builders[k].buildResources(realResources,
+						IStatus s = builders[k].buildResources( this.scriptProject, realResources,
 								monitor);
 						if (s != null && s.getSeverity() != IStatus.OK) {
 							status.add(s);
@@ -320,16 +316,15 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 
 	protected void buildElements(List elements, IProgressMonitor monitor) {
 		List status = new ArrayList();
-		IDLTKProject dltkProject = DLTKCore.create(getProject());
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(dltkProject);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(scriptProject);
 			IScriptBuilder[] builders = ScriptBuilderManager
 					.getScriptBuilders(toolkit.getNatureID());
 
 			if (builders != null) {
 				for (int k = 0; k < builders.length; k++) {
-					IStatus s = builders[k].buildModelElements(dltkProject,
+					IStatus s = builders[k].buildModelElements(scriptProject,
 							elements, monitor);
 					if (s != null && s.getSeverity() != IStatus.OK) {
 						status.add(s);
@@ -357,7 +352,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 				List newElementsToCheck = new ArrayList();
 				for (int i = 0; i < builders.length; ++i) {
 					List newResources = builders[i]
-							.getDependencies(elementsToCheck);
+							.getDependencies(this.scriptProject, elementsToCheck);
 					if (newResources != null) {
 						newElementsToCheck.addAll(newResources);
 					}

@@ -29,6 +29,7 @@ import org.eclipse.dltk.internal.ui.editor.selectionaction.GoToNextPreviousMembe
 import org.eclipse.dltk.internal.ui.text.DLTKWordIterator;
 import org.eclipse.dltk.internal.ui.text.DocumentCharacterIterator;
 import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
+import org.eclipse.dltk.internal.ui.text.hover.ScriptExpandHover;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.IContextMenuConstants;
@@ -39,6 +40,7 @@ import org.eclipse.dltk.ui.actions.DLTKSearchActionGroup;
 import org.eclipse.dltk.ui.actions.IDLTKEditorActionDefinitionIds;
 import org.eclipse.dltk.ui.actions.OpenEditorActionGroup;
 import org.eclipse.dltk.ui.actions.OpenViewActionGroup;
+import org.eclipse.dltk.ui.editor.IScriptAnnotation;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.dltk.ui.text.folding.IFoldingStructureProvider;
@@ -64,6 +66,7 @@ import org.eclipse.jface.text.ITextViewerExtension2;
 import org.eclipse.jface.text.ITextViewerExtension4;
 import org.eclipse.jface.text.ITextViewerExtension5;
 import org.eclipse.jface.text.IWidgetTokenKeeper;
+import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
@@ -72,15 +75,22 @@ import org.eclipse.jface.text.information.IInformationProviderExtension;
 import org.eclipse.jface.text.information.IInformationProviderExtension2;
 import org.eclipse.jface.text.information.InformationPresenter;
 import org.eclipse.jface.text.reconciler.IReconciler;
+import org.eclipse.jface.text.source.Annotation;
+import org.eclipse.jface.text.source.AnnotationRulerColumn;
+import org.eclipse.jface.text.source.CompositeRuler;
+import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.IOverviewRuler;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.ISourceViewerExtension2;
 import org.eclipse.jface.text.source.IVerticalRuler;
+import org.eclipse.jface.text.source.IVerticalRulerColumn;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -97,6 +107,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IPartService;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
@@ -1087,6 +1098,42 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 
 	protected abstract FoldingActionGroup createFoldingActionGroup();
 
+	
+	/*
+	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createAnnotationRulerColumn(org.eclipse.jface.text.source.CompositeRuler)
+	 * @since 3.2
+	 */
+	protected IVerticalRulerColumn createAnnotationRulerColumn(CompositeRuler ruler) {
+		if (!getPreferenceStore().getBoolean(PreferenceConstants.EDITOR_ANNOTATION_ROLL_OVER))
+			return super.createAnnotationRulerColumn(ruler);
+
+		AnnotationRulerColumn column= new AnnotationRulerColumn(VERTICAL_RULER_WIDTH, getAnnotationAccess());
+		column.setHover(new ScriptExpandHover(ruler, getAnnotationAccess(), new IDoubleClickListener() {
+
+			public void doubleClick(DoubleClickEvent event) {
+				// for now: just invoke ruler double click action
+				triggerAction(ITextEditorActionConstants.RULER_DOUBLE_CLICK);
+			}
+
+			private void triggerAction(String actionID) {
+				IAction action= getAction(actionID);
+				if (action != null) {
+					if (action instanceof IUpdate)
+						((IUpdate) action).update();
+					// hack to propagate line change
+					if (action instanceof ISelectionListener) {
+						((ISelectionListener)action).selectionChanged(null, null);
+					}
+					if (action.isEnabled())
+						action.run();
+				}
+			}
+
+		}));
+		
+		return column;
+	}
+	
 	/**
 	 * Returns the folding action group, or <code>null</code> if there is
 	 * none.
@@ -1382,6 +1429,115 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Overrides the default implementation to handle {@link IJavaAnnotation}.
+	 * </p>
+	 *
+	 * @param offset the region offset
+	 * @param length the region length
+	 * @param forward <code>true</code> for forwards, <code>false</code> for backward
+	 * @param annotationPosition the position of the found annotation
+	 * @return the found annotation
+	 */
+	protected Annotation findAnnotation(final int offset, final int length, boolean forward, Position annotationPosition) {
+
+		Annotation nextAnnotation= null;
+		Position nextAnnotationPosition= null;
+		Annotation containingAnnotation= null;
+		Position containingAnnotationPosition= null;
+		boolean currentAnnotation= false;
+
+		IDocument document= getDocumentProvider().getDocument(getEditorInput());
+		int endOfDocument= document.getLength();
+		int distance= Integer.MAX_VALUE;
+
+		IAnnotationModel model= getDocumentProvider().getAnnotationModel(getEditorInput());
+		Iterator e= new ScriptAnnotationIterator(model, true, true);
+		while (e.hasNext()) {
+			Annotation a= (Annotation) e.next();
+			if ((a instanceof IScriptAnnotation) && ((IScriptAnnotation)a).hasOverlay() || !isNavigationTarget(a))
+				continue;
+
+			Position p= model.getPosition(a);
+			if (p == null)
+				continue;
+
+			if (forward && p.offset == offset || !forward && p.offset + p.getLength() == offset + length) {// || p.includes(offset)) {
+				if (containingAnnotation == null || (forward && p.length >= containingAnnotationPosition.length || !forward && p.length >= containingAnnotationPosition.length)) {
+					containingAnnotation= a;
+					containingAnnotationPosition= p;
+					currentAnnotation= p.length == length;
+				}
+			} else {
+				int currentDistance= 0;
+
+				if (forward) {
+					currentDistance= p.getOffset() - offset;
+					if (currentDistance < 0)
+						currentDistance= endOfDocument + currentDistance;
+
+					if (currentDistance < distance || currentDistance == distance && p.length < nextAnnotationPosition.length) {
+						distance= currentDistance;
+						nextAnnotation= a;
+						nextAnnotationPosition= p;
+					}
+				} else {
+					currentDistance= offset + length - (p.getOffset() + p.length);
+					if (currentDistance < 0)
+						currentDistance= endOfDocument + currentDistance;
+
+					if (currentDistance < distance || currentDistance == distance && p.length < nextAnnotationPosition.length) {
+						distance= currentDistance;
+						nextAnnotation= a;
+						nextAnnotationPosition= p;
+					}
+				}
+			}
+		}
+		if (containingAnnotationPosition != null && (!currentAnnotation || nextAnnotation == null)) {
+			annotationPosition.setOffset(containingAnnotationPosition.getOffset());
+			annotationPosition.setLength(containingAnnotationPosition.getLength());
+			return containingAnnotation;
+		}
+		if (nextAnnotationPosition != null) {
+			annotationPosition.setOffset(nextAnnotationPosition.getOffset());
+			annotationPosition.setLength(nextAnnotationPosition.getLength());
+		}
+
+		return nextAnnotation;
+	}
+
+	/**
+	 * Returns the annotation overlapping with the given range or <code>null</code>.
+	 *
+	 * @param offset the region offset
+	 * @param length the region length
+	 * @return the found annotation or <code>null</code>
+	 * @since 3.0
+	 */
+	private Annotation getAnnotation(int offset, int length) {
+		IAnnotationModel model= getDocumentProvider().getAnnotationModel(getEditorInput());
+		Iterator e= new ScriptAnnotationIterator(model, true, false);
+		while (e.hasNext()) {
+			Annotation a= (Annotation) e.next();
+			Position p= model.getPosition(a);
+			if (p != null && p.overlapsWith(offset, length))
+				return a;
+		}
+		return null;
+	}
+
+	/*
+	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#gotoAnnotation(boolean)
+	 * @since 3.2
+	 */
+	public Annotation gotoAnnotation(boolean forward) {
+		fSelectionChangedViaGotoAnnotation= true;
+		return super.gotoAnnotation(forward);
+	}
+	
+	/**
 	 * Computes and returns the source reference that includes the caret and
 	 * serves as provider for the outline page selection and the editor range
 	 * indication.
@@ -1538,6 +1694,13 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	 * 
 	 */
 	private ToggleFoldingRunner fFoldingRunner;
+	
+	/**
+	 * Tells whether the selection changed event is caused
+	 * by a call to {@link #gotoAnnotation(boolean)}.
+	 * 
+	 */
+	private boolean fSelectionChangedViaGotoAnnotation;
 
 	/**
 	 * Runner that will toggle folding either instantly (if the editor is

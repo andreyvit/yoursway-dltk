@@ -13,7 +13,7 @@ package org.eclipse.dltk.core.tests.model;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import org.eclipse.dltk.compiler.IProblem;
+import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.core.CompletionContext;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;

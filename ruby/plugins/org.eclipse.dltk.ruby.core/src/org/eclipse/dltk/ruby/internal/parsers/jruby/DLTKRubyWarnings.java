@@ -28,10 +28,10 @@ package org.eclipse.dltk.ruby.internal.parsers.jruby;
  ***** END LICENSE BLOCK *****/
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.compiler.DefaultProblem;
-import org.eclipse.dltk.compiler.IProblem;
-import org.eclipse.dltk.compiler.IProblemReporter;
-import org.eclipse.dltk.compiler.ProblemSeverities;
+import org.eclipse.dltk.compiler.problem.DefaultProblem;
+import org.eclipse.dltk.compiler.problem.IProblem;
+import org.eclipse.dltk.compiler.problem.IProblemReporter;
+import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.ruby.internal.parser.Activator;
 import org.jruby.lexer.yacc.ISourcePosition;
 import org.jruby.lexer.yacc.SourcePosition;

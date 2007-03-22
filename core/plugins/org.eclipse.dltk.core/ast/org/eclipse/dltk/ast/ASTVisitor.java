@@ -9,7 +9,7 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.compiler.IProblem;
+import org.eclipse.dltk.compiler.problem.IProblem;
 
 public abstract class ASTVisitor {
 	public void acceptProblem(IProblem problem) {

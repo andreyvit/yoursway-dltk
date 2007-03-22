@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.compiler.IProblem;
+import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.core.ISourceRange;
 
 

@@ -18,7 +18,7 @@ public interface IScriptBuilder {
 	 * Only resorces with specified project nature are here.
 	 * @return
 	 */
-	IStatus buildResources( List resources, IProgressMonitor monitor );
+	IStatus buildResources( IDLTKProject project, List resources, IProgressMonitor monitor );
 	
 	/**
 	 * Called for earch resource required to builde.
@@ -40,5 +40,5 @@ public interface IScriptBuilder {
 	 * @return null, if no dependencies are found. Should not return elements
 	 *         from resources list.
 	 */
-	List getDependencies(List resources);
+	List getDependencies(IDLTKProject project, List resources);
 }

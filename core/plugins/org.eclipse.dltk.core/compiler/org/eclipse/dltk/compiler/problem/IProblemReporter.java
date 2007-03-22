@@ -1,4 +1,4 @@
-package org.eclipse.dltk.compiler;
+package org.eclipse.dltk.compiler.problem;
 
 import org.eclipse.core.runtime.CoreException;
 

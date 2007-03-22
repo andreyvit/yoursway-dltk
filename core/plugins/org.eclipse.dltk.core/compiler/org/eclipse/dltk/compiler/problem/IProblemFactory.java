@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.dltk.compiler;
+package org.eclipse.dltk.compiler.problem;
 
 import java.util.Locale;
 
@@ -32,7 +32,7 @@ public interface IProblemFactory {
 		int severity,
 		int startPosition,
 		int endPosition,
-		int lineNumber);
+		int lineNumber, int columnNumber);
 		
 	Locale getLocale();
 	

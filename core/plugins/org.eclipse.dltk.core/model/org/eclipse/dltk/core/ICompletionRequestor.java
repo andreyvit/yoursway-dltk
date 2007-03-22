@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.core;
 
-import org.eclipse.dltk.compiler.IProblem;
+import org.eclipse.dltk.compiler.problem.IProblem;
 
 /**
  * A completion requestor accepts results as they are computed and is aware

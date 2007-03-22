@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.core;
 
-import org.eclipse.dltk.compiler.IProblem;
+import org.eclipse.dltk.compiler.problem.IProblem;
 
 /**
  * Abstract base class for a completion requestor which is passed completion

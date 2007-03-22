@@ -8,7 +8,9 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.dltk.compiler;
+package org.eclipse.dltk.compiler.problem;
+
+import org.eclipse.dltk.compiler.CharOperation;
 
 
 public abstract class CategorizedProblem implements IProblem {

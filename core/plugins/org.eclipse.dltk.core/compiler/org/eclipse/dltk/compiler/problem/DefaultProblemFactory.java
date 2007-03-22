@@ -1,4 +1,4 @@
-package org.eclipse.dltk.compiler;
+package org.eclipse.dltk.compiler.problem;
 
 import java.util.Locale;
 
@@ -25,12 +25,12 @@ public class DefaultProblemFactory implements IProblemFactory {
 	
 	public IProblem createProblem(String originatingFileName, int problemId,
 			String[] problemArguments, String[] messageArguments, int severity,
-			int startPosition, int endPosition, int lineNumber) {
+			int startPosition, int endPosition, int lineNumber, int columnNumber ) {
 
 		String message = getLocalizedMessage(problemId, messageArguments);
 						
 		return new DefaultProblem(null, message, problemId,
-				problemArguments, severity, startPosition, endPosition, lineNumber);
+				problemArguments, severity, startPosition, endPosition, lineNumber, columnNumber );
 	}
 
 	public Locale getLocale() {

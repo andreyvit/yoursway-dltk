@@ -12,7 +12,7 @@ package org.eclipse.dltk.internal.core;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.dltk.compiler.IProblem;
+import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.internal.compiler.env.AccessRule;
 

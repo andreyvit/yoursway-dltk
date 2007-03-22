@@ -11,7 +11,7 @@
 package org.eclipse.dltk.internal.compiler.env;
 
 import org.eclipse.dltk.compiler.CharOperation;
-import org.eclipse.dltk.compiler.IProblem;
+import org.eclipse.dltk.compiler.problem.IProblem;
 
 
 /**

@@ -93,6 +93,15 @@ public class PreferenceConstants {
 	public final static String EDITOR_SMART_HOME_END= AbstractTextEditor.PREFERENCE_NAVIGATION_SMART_HOME_END;
 
 	/**
+	 * A named preference that controls if temporary problems are evaluated and shown in the UI.
+	 * <p>
+	 * Value is of type <code>Boolean</code>.
+	 * </p>
+	 */
+	public final static String EDITOR_EVALUTE_TEMPORARY_PROBLEMS= "handleTemporaryProblems"; //$NON-NLS-1$
+
+	
+	/**
 	 * A named preference that controls whether the 'sub-word navigation' feature is
 	 * enabled.
 	 * <p>
@@ -130,6 +139,14 @@ public class PreferenceConstants {
 	 *
 	 */
 	public final static String EDITOR_SYNC_OUTLINE_ON_CURSOR_MOVE= "syncOutlineOnCursorMove"; //$NON-NLS-1$
+	
+	/**
+	 * A named preference that controls if correction indicators are shown in the UI.
+	 * <p>
+	 * Value is of type <code>Boolean</code>.
+	 * </p>
+	 */
+	public final static String EDITOR_CORRECTION_INDICATION= "ScriptEditor.ShowTemporaryProblem"; //$NON-NLS-1$
 
 	/**
 	 * A named preference that controls whether new projects are generated using source and output folder.
@@ -481,6 +498,18 @@ public class PreferenceConstants {
 	 *
 	 */
 	public final static String CODEASSIST_REPLACEMENT_FOREGROUND= "content_assist_completion_replacement_foreground"; //$NON-NLS-1$
+	
+	
+	/**
+	 * A named preference that controls whether annotation roll over is used or not.
+	 * <p>
+	 * Value is of type <code>Boolean</code>. If <code>true</code> the annotation ruler column
+	 * uses a roll over to display multiple annotations
+	 * </p>
+	 * 
+	 */
+	public static final String EDITOR_ANNOTATION_ROLL_OVER= "editor_annotation_roll_over"; //$NON-NLS-1$
+	
 	/**
 	 * A named preference that controls if content assist inserts the common
 	 * prefix of all proposals before presenting choices.

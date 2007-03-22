@@ -17,7 +17,7 @@ package org.eclipse.dltk.core;
  * or extended.
  * </p>
  */
-public interface IDLTKModelMarker {
+public interface IScriptModelMarker {
 
 	/**
 	 * DLTK model problem marker type (value

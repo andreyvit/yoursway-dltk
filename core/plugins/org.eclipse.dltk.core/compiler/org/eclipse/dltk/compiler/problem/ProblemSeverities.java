@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.dltk.compiler;
+package org.eclipse.dltk.compiler.problem;
 
 public final class ProblemSeverities {
 	

@@ -1,4 +1,4 @@
-package org.eclipse.dltk.compiler;
+package org.eclipse.dltk.compiler.problem;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -64,7 +64,7 @@ public class DLTKProblemReporter implements IProblemReporter {
 	public void reportTestProblem(){
 		IProblem problem = new DefaultProblem("originatingFileName", "message", 0,
 				null, IMarker.SEVERITY_INFO, 0,
-				1, 0);
+				1, 0, 0 );
 		try {
 			reportProblem(problem);
 		} catch (CoreException e) {

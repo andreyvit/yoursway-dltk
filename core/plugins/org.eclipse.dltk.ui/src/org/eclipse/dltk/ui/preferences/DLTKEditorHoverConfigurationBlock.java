@@ -209,8 +209,8 @@ public class DLTKEditorHoverConfigurationBlock implements IPreferenceConfigurati
 		layout.numColumns= 2;
 		hoverComposite.setLayout(layout);
 
-		/*String rollOverLabel= PreferencesMessages.DLTKEditorHoverConfigurationBlock_annotationRollover; 
-		addCheckBox(hoverComposite, rollOverLabel, PreferenceConstants.EDITOR_ANNOTATION_ROLL_OVER, 0); */
+		String rollOverLabel= PreferencesMessages.DLTKEditorHoverConfigurationBlock_annotationRollover; 
+		addCheckBox(hoverComposite, rollOverLabel, PreferenceConstants.EDITOR_ANNOTATION_ROLL_OVER, 0);
 
 		// Affordance checkbox
 		fShowHoverAffordanceCheckbox= new Button(hoverComposite, SWT.CHECK);

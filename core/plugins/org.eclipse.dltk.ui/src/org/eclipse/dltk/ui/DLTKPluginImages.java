@@ -122,7 +122,14 @@ public class DLTKPluginImages {
 	public static final ImageDescriptor DESC_TERMINATE_CONSOLE = createUnManaged(T_ELCL, "ch_cancel.gif"); //$NON-NLS-1$
 	public static final ImageDescriptor DESC_SAVE_SESSION = createUnManaged(T_ELCL, "save.gif"); //$NON-NLS-1$
 	
+	public static final String IMG_OBJS_EXCEPTION= NAME_PREFIX + "jexception_obj.gif"; 	//$NON-NLS-1$
+	public static final String IMG_OBJS_ERROR= NAME_PREFIX + "jrtexception_obj.gif"; 		//$NON-NLS-1$
 	
+	public static final String IMG_OBJS_BREAKPOINT_INSTALLED= NAME_PREFIX + "brkpi_obj.gif"; //$NON-NLS-1$
+	public static final String IMG_OBJS_QUICK_ASSIST= NAME_PREFIX + "quickassist_obj.gif"; //$NON-NLS-1$
+	public static final String IMG_OBJS_FIXABLE_PROBLEM= NAME_PREFIX + "quickfix_warning_obj.gif"; //$NON-NLS-1$
+	public static final String IMG_OBJS_FIXABLE_ERROR= NAME_PREFIX + "quickfix_error_obj.gif"; //$NON-NLS-1$
+
 	
 	public static final ImageDescriptor DESC_OBJS_EXCLUSION_FILTER_ATTRIB = createUnManaged(T_OBJ, "exclusion_filter_attrib.gif"); //$NON-NLS-1$
 	public static final ImageDescriptor DESC_OBJS_INCLUSION_FILTER_ATTRIB = createUnManaged(T_OBJ, "inclusion_filter_attrib.gif"); //$NON-NLS-1$

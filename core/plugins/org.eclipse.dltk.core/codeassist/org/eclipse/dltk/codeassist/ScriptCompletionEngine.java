@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
-import org.eclipse.dltk.compiler.CategorizedProblem;
 import org.eclipse.dltk.compiler.CharOperation;
+import org.eclipse.dltk.compiler.problem.CategorizedProblem;
 import org.eclipse.dltk.compiler.util.HashtableOfObject;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;

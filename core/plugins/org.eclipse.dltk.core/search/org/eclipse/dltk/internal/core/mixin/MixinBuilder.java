@@ -33,11 +33,11 @@ import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
 
 public class MixinBuilder implements IScriptBuilder {
-	public IStatus buildResources(List resources, IProgressMonitor monitor) {
+	public IStatus buildResources(IDLTKProject project, List resources, IProgressMonitor monitor) {
 		return null;
 	}
 
-	public List getDependencies(List resources) {
+	public List getDependencies(IDLTKProject project, List resources) {
 		return null;
 	}
 

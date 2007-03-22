@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.dltk.compiler;
+package org.eclipse.dltk.compiler.problem;
 
 import org.eclipse.dltk.compiler.util.Messages;
 import org.eclipse.dltk.compiler.util.Util;
@@ -20,7 +20,7 @@ public class DefaultProblem extends CategorizedProblem {
 
 	private int id;
 
-	private int startPosition, endPosition, line;
+	private int startPosition, endPosition, line, column ;
 
 	private int severity;
 
@@ -36,7 +36,7 @@ public class DefaultProblem extends CategorizedProblem {
 
 	public DefaultProblem(String originatingFileName, String message, int id,
 			String[] stringArguments, int severity, int startPosition,
-			int endPosition, int line) {
+			int endPosition, int line, int column ) {
 
 		this.fileName = originatingFileName;
 		this.message = message;
@@ -46,6 +46,13 @@ public class DefaultProblem extends CategorizedProblem {
 		this.startPosition = startPosition;
 		this.endPosition = endPosition;
 		this.line = line;
+		this.column = column;
+	}
+	public DefaultProblem(String originatingFileName, String message, int id,
+			String[] stringArguments, int severity, int startPosition,
+			int endPosition, int line) {
+
+		this(originatingFileName, message, id, stringArguments, severity, startPosition, endPosition, line, 0);
 	}
 
 	public String errorReportSource(char[] unitSource) {

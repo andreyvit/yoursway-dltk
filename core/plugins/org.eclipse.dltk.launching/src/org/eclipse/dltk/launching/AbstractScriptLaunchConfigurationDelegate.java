@@ -41,7 +41,7 @@ import org.eclipse.debug.core.IStatusHandler;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKModelMarker;
+import org.eclipse.dltk.core.IScriptModelMarker;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.launching.InterpreterRuntimeBuildpathEntryResolver;
@@ -906,7 +906,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			throws CoreException {
 		return super.isLaunchProblem(problemMarker)
 				&& problemMarker.getType().equals(
-						IDLTKModelMarker.DLTK_MODEL_PROBLEM_MARKER);
+						IScriptModelMarker.DLTK_MODEL_PROBLEM_MARKER);
 	}
 
 	/*

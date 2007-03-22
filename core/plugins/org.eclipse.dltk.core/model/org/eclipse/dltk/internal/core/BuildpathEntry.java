@@ -861,10 +861,10 @@ public class BuildpathEntry implements IBuildpathEntry {
 		HashMap parameters = new HashMap();
 		parameters.put(TAG_PATTERN, new String(accessRule.pattern));
 		switch (accessRule.getProblemId()) {
-		case org.eclipse.dltk.compiler.IProblem.ForbiddenReference:
+		case org.eclipse.dltk.compiler.problem.IProblem.ForbiddenReference:
 			parameters.put(TAG_KIND, TAG_NON_ACCESSIBLE);
 			break;
-		case org.eclipse.dltk.compiler.IProblem.DiscouragedReference:
+		case org.eclipse.dltk.compiler.problem.IProblem.DiscouragedReference:
 			parameters.put(TAG_KIND, TAG_DISCOURAGED);
 			break;
 		default:

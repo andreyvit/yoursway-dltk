@@ -11,7 +11,7 @@
 package org.eclipse.dltk.internal.compiler.problem;
 
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.compiler.CategorizedProblem;
+import org.eclipse.dltk.compiler.problem.CategorizedProblem;
 import org.eclipse.dltk.internal.core.util.Util;
 
 /*
