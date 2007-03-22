@@ -25,7 +25,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * similar to the one provided by {@link org.eclipse.dltk.ui.ModelElementLabels},
  * but based on signatures and {@link CompletionProposal}s.
  * 
- * 
  */
 public abstract class CompletionProposalLabelProvider {
 

@@ -42,6 +42,7 @@ public abstract class LazyScriptCompletionProposal extends
 	 * The core proposal wrapped by this completion proposal.
 	 */
 	protected final CompletionProposal fProposal;
+
 	/**
 	 * The invocation context of this completion proposal.
 	 */
@@ -52,16 +53,16 @@ public abstract class LazyScriptCompletionProposal extends
 		Assert.isNotNull(proposal);
 		Assert.isNotNull(context);
 		Assert.isNotNull(context.getCoreContext());
+
 		fInvocationContext = context;
 		fProposal = proposal;
 	}
 
-	/*
-	 * @see ICompletionProposalExtension#getTriggerCharacters()
-	 */
 	public final char[] getTriggerCharacters() {
-		if (!fTriggerCharactersComputed)
+		if (!fTriggerCharactersComputed) {
 			setTriggerCharacters(computeTriggerCharacters());
+		}
+
 		return super.getTriggerCharacters();
 	}
 
@@ -101,8 +102,10 @@ public abstract class LazyScriptCompletionProposal extends
 	 *         exists
 	 */
 	protected final ProposalInfo getProposalInfo() {
-		if (!fProposalInfoComputed)
+		if (!fProposalInfoComputed) {
 			setProposalInfo(computeProposalInfo());
+		}
+
 		return super.getProposalInfo();
 	}
 
@@ -124,8 +127,9 @@ public abstract class LazyScriptCompletionProposal extends
 	}
 
 	protected final int getCursorPosition() {
-		if (!fCursorPositionComputed)
+		if (!fCursorPositionComputed) {
 			setCursorPosition(computeCursorPosition());
+		}
 		return super.getCursorPosition();
 	}
 
@@ -137,12 +141,10 @@ public abstract class LazyScriptCompletionProposal extends
 		return fInvocationContext.getCoreContext().isInDoc();
 	}
 
-	/*
-	 * @see ICompletionProposal#getContextInformation()
-	 */
 	public final IContextInformation getContextInformation() {
-		if (!fContextInformationComputed)
+		if (!fContextInformationComputed) {
 			setContextInformation(computeContextInformation());
+		}
 		return super.getContextInformation();
 	}
 
@@ -166,8 +168,9 @@ public abstract class LazyScriptCompletionProposal extends
 	 * @see ICompletionProposal#getDisplayString()
 	 */
 	public final String getDisplayString() {
-		if (!fDisplayStringComputed)
+		if (!fDisplayStringComputed) {
 			setDisplayString(computeDisplayString());
+		}
 		return super.getDisplayString();
 	}
 
@@ -183,10 +186,11 @@ public abstract class LazyScriptCompletionProposal extends
 	public final String getAdditionalProposalInfo() {
 		return super.getAdditionalProposalInfo();
 	}
-	
+
 	public final int getContextInformationPosition() {
-		if (getContextInformation() == null)
+		if (getContextInformation() == null) {
 			return getReplacementOffset() - 1;
+		}
 		return getReplacementOffset() + getCursorPosition();
 	}
 
@@ -196,8 +200,9 @@ public abstract class LazyScriptCompletionProposal extends
 	 * @return Returns a int
 	 */
 	public final int getReplacementOffset() {
-		if (!fReplacementOffsetComputed)
+		if (!fReplacementOffsetComputed) {
 			setReplacementOffset(fProposal.getReplaceStart());
+		}
 		return super.getReplacementOffset();
 	}
 
@@ -211,7 +216,7 @@ public abstract class LazyScriptCompletionProposal extends
 		fReplacementOffsetComputed = true;
 		super.setReplacementOffset(replacementOffset);
 	}
-	
+
 	public final int getPrefixCompletionStart(IDocument document,
 			int completionOffset) {
 		return getReplacementOffset();
@@ -265,7 +270,7 @@ public abstract class LazyScriptCompletionProposal extends
 		fReplacementStringComputed = true;
 		super.setReplacementString(replacementString);
 	}
-	
+
 	public final Image getImage() {
 		if (!fImageComputed)
 			setImage(computeImage());

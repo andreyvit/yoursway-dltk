@@ -148,6 +148,10 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 	}
 
 	public void removeBreakpoint(String id) throws DbgpException {
+		if (id == null) {
+			return;
+		}
+		
 		DbgpRequest request = createRequest(BREAKPOINT_REMOVE_COMMAND);
 		request.addOption("-d", id);
 		communicate(request);

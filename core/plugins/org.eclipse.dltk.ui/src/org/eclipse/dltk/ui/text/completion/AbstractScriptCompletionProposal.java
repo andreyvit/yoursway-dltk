@@ -864,14 +864,8 @@ public abstract class AbstractScriptCompletionProposal implements
 		repairPresentation(viewer);
 		fRememberedStyleRange = null;
 	}
-
-	public IInformationControlCreator getInformationControlCreator() {
-		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Add browser information control.");
-		}
-		// if (!BrowserInformationControl.isAvailable(null))
-		// return null;
-
+		
+	public IInformationControlCreator getInformationControlCreator() {	
 		if (fCreator == null) {
 			fCreator = new AbstractReusableInformationControlCreator() {
 
@@ -966,6 +960,7 @@ public abstract class AbstractScriptCompletionProposal implements
 			} catch (ModelException x) {
 				DLTKUIPlugin.log(x);
 			}
+			
 		return null;
 	}
 }

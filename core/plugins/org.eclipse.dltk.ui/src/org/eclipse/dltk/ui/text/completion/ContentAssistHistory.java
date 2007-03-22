@@ -56,7 +56,6 @@ import org.xml.sax.SAXException;
 /**
  * An LRU cache for code assist.
  * 
-	 *
  */
 public final class ContentAssistHistory {
 	/**

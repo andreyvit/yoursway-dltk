@@ -35,8 +35,4 @@ public class JavaScriptCompletionProposal extends ScriptCompletionProposal {
 		}
 		return false;
 	}
-
-	public IContextInformation getContextInformation() {
-		return new ContextInformation(getDisplayString(), getDisplayString());
-	}
 }

@@ -53,13 +53,16 @@ public class DbgpStatus implements IDbgpStatus {
 	private Integer reason;
 
 	public DbgpStatus(Integer status, Integer reason) {
-		if (this.status == null) {
+		if (status == null) {
 			throw new IllegalArgumentException();
 		}
 
-		if (this.reason == null) {
+		if (reason == null) {
 			throw new IllegalArgumentException();
 		}
+		
+		this.status = status;
+		this.reason = reason;
 	}
 
 	public boolean reasonAborred() {

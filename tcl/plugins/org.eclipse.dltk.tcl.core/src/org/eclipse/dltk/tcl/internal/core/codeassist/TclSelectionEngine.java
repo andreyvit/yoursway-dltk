@@ -49,10 +49,10 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 	private int actualSelectionStart;
 
 	private int actualSelectionEnd;
+	
+	private List selectionElements = new ArrayList();
 
 	private TclSelectionParser parser = new TclSelectionParser();
-
-	private List selectionElements = new ArrayList();
 
 	private org.eclipse.dltk.core.ISourceModule sourceModule;
 
@@ -70,7 +70,8 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 			int selectionSourceStart, int selectionSourceEnd) {
 		sourceModule = (org.eclipse.dltk.core.ISourceModule) sourceUnit
 				.getModelElement();
-		String source = sourceUnit.getSourceContents();
+		String content = sourceUnit.getSourceContents();
+		
 		if (DEBUG) {
 			System.out.print("SELECTION IN "); //$NON-NLS-1$
 			System.out.print(sourceUnit.getFileName());
@@ -79,17 +80,20 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 			System.out.print(" TO "); //$NON-NLS-1$
 			System.out.println(selectionSourceEnd);
 			System.out.println("SELECTION - Source :"); //$NON-NLS-1$
-			System.out.println(source);
+			System.out.println(content);
 		}
-		if (!checkSelection(source, selectionSourceStart, selectionSourceEnd)) {
+		
+		if (!checkSelection(content, selectionSourceStart, selectionSourceEnd)) {
 			return new IModelElement[0];
 		}
+		
 		if (DEBUG) {
 			System.out.print("SELECTION - Checked : \""); //$NON-NLS-1$
-			System.out.print(source.substring(actualSelectionStart,
+			System.out.print(content.substring(actualSelectionStart,
 					actualSelectionEnd));
 			System.out.println('"');
 		}
+		
 		try {
 			TclModuleDeclaration parsedUnit = (TclModuleDeclaration) this.parser
 					.parse(sourceUnit);

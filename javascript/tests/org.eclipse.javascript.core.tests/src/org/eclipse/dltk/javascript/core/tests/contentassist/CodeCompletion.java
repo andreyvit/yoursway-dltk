@@ -417,6 +417,11 @@ public class CodeCompletion extends TestCase {
 			// TODO Auto-generated method stub
 			return null;
 		}
+
+		public char[] getSourceAsCharArray() throws ModelException {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 
 	private final class TestCompletionRequetor extends CompletionRequestor {

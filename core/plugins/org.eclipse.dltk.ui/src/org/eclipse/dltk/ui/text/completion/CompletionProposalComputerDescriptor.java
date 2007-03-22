@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IContributor;
@@ -29,7 +30,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.jface.text.Assert;
 import org.osgi.framework.Bundle;
 
 /**

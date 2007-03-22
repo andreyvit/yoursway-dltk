@@ -27,6 +27,7 @@ public class ScriptTypeCompletionProposal extends ScriptCompletionProposal {
 
 	/** The unqualified type name. */
 	private final String fUnqualifiedTypeName;
+	
 	/** The fully qualified type name. */
 	private final String fFullyQualifiedTypeName;
 

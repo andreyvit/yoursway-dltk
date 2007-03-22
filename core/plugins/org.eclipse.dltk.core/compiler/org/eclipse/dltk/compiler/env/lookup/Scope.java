@@ -19,10 +19,10 @@ public abstract class Scope {
 
 	/* Scope kinds */
 	public final static int BLOCK_SCOPE = 1;
+	public final static int METHOD_SCOPE = 2;
 	public final static int CLASS_SCOPE = 3;
 	public final static int COMPILATION_UNIT_SCOPE = 4;
-	public final static int METHOD_SCOPE = 2;
-
+	
 	/* Argument Compatibilities */
 	public final static int NOT_COMPATIBLE = -1;
 	public final static int COMPATIBLE = 0;

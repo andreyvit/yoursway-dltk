@@ -1,8 +1,6 @@
 package org.eclipse.dltk.ruby.internal.ui.text.completion;
 
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposal;
-import org.eclipse.jface.text.contentassist.ContextInformation;
-import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.swt.graphics.Image;
 
 public class RubyCompletionProposal extends ScriptCompletionProposal {
@@ -25,10 +23,7 @@ public class RubyCompletionProposal extends ScriptCompletionProposal {
 		if (trigger == '$') {
 			return true;
 		}
-		return false;
-	}
 
-	public IContextInformation getContextInformation() {
-		return new ContextInformation(getDisplayString(), getDisplayString());
+		return false;
 	}
 }

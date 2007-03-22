@@ -22,7 +22,6 @@ import org.eclipse.jface.text.templates.TemplateProposal;
  * Note: this comparator imposes orderings that are inconsistent with equals.
  * </p>
  * 
-	 *
  */
 public final class CompletionProposalComparator implements Comparator {
 
@@ -45,10 +44,7 @@ public final class CompletionProposalComparator implements Comparator {
 	public void setOrderAlphabetically(boolean orderAlphabetically) {
 		fOrderAlphabetically= orderAlphabetically;
 	}
-
-	/*
-	 * @see Comparator#compare(Object, Object)
-	 */
+	
 	public int compare(Object o1, Object o2) {
 		ICompletionProposal p1= (ICompletionProposal) o1;
 		ICompletionProposal p2= (ICompletionProposal) o2;

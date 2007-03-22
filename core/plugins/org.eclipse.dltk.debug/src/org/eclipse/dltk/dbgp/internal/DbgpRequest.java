@@ -27,6 +27,10 @@ public class DbgpRequest {
 	}
 
 	public void addOption(String optionName, Object optionValue) {
+		if (optionValue == null) {			
+			throw new IllegalArgumentException();
+		}
+
 		options.put(optionName, optionValue.toString());
 	}
 

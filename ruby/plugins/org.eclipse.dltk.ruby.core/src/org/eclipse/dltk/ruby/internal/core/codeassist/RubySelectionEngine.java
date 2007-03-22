@@ -200,8 +200,6 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 	}
 			
 	
-		
-	
 
 	/**
 	 * Checks, whether giver selection is correct selection, or can be expanded 
@@ -313,9 +311,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 			}
 		}
 	}
-	
-
-	
+		
 	private void selectionOnVariable (org.eclipse.dltk.core.ISourceModule modelModule, 
 			ModuleDeclaration parsedUnit, VariableReference e) {
 		String name = e.getName();

@@ -149,7 +149,6 @@ public class JavaScriptSelectionEngine extends ScriptSelectionEngine {
 		}
 	}
 		
-	
 	private void doCompletionOnFunction(final String startPart,final List modelElements) {
 		SearchRequestor requestor = new SearchRequestor() {
 			public void acceptSearchMatch(SearchMatch match)

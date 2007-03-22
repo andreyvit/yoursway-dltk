@@ -31,10 +31,6 @@ import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 
-
-/**
-	 *
- */
 public final class ProposalSorterRegistry {
 	private static final String EXTENSION_POINT= "scriptCompletionProposalSorters"; //$NON-NLS-1$
 	private static final String DEFAULT_ID= "org.eclipse.dltk.ui.RelevanceSorter"; //$NON-NLS-1$
