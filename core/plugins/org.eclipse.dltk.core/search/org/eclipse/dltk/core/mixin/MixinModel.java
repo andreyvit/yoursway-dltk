@@ -244,6 +244,15 @@ public class MixinModel {
 				mixin.sourceModules.remove(element);
 				mixin.sourceModuleToObject.remove(element);
 				if( mixin.sourceModules.size() == 0 ) {
+					// Remove frob parent.
+					String parentKey = mixin.getParentKey();
+					if( parentKey != null ) {
+						MixinElement parent = (MixinElement)this.cache.get(parentKey);
+						if( parent != null ) {
+							parent.children.remove(mixin);
+						}
+					}
+					// Remove from cache
 					cache.remove(mixin);
 					cache.resetSpaceLimit(ModelCache.DEFAULT_ROOT_SIZE, mixin);
 				}
@@ -253,7 +262,6 @@ public class MixinModel {
 	}
 
 	private class MixinElement implements IMixinElement, IInternalMixinElement {
-		private final static String NONE_KEY = "";
 		private String key;
 		private boolean bFinal = false;
 		private List sourceModules = new ArrayList();
@@ -340,7 +348,7 @@ public class MixinModel {
 
 		protected String getParentKey() {
 			if (this.key.indexOf(IMixinRequestor.MIXIN_NAME_SEPARATOR) == -1) {
-				return NONE_KEY;
+				return null;
 			}
 			return this.key.substring(0, this.key
 					.lastIndexOf(IMixinRequestor.MIXIN_NAME_SEPARATOR));
