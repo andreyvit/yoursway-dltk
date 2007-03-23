@@ -2,7 +2,7 @@
 class MethodsIntrinsicNew
 	class Bar
 		def foo
-			Foo.new ## expr Foo.new => MethodsIntrinsicNew::Foo.new
+			Foo.new ## expr Foo.new => MethodsIntrinsicNew{Foo%
 		end
 	end
 	

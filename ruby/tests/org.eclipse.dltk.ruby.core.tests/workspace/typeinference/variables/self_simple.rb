@@ -1,15 +1,24 @@
 
 class BozSelf
 	class Bar
+	
+		xxx
+	
 		self ## expr self => BozSelf{Bar
 		
 		def foo
-			self ## expr self => BozSelf{Bar.new
+			
+			xxx
+		
+			self ## expr self => BozSelf{Bar%
 		end
 	end
 
 	def foo
-		self ## expr self => BozSelf.new
+	
+		xxx
+	
+		self ## expr self => BozSelf%
 	end
 
 	self ## expr self => BozSelf

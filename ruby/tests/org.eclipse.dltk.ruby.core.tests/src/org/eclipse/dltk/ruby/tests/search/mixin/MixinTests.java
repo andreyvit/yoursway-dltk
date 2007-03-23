@@ -166,7 +166,7 @@ public class MixinTests extends AbstractDLTKSearchTests implements IDLTKSearchCo
 	
 	public void testMixins04() throws Exception { 
 		MixinModel model = new MixinModel(RubyLanguageToolkit.getDefault());
-		IMixinElement mixinElement = model.get("Bar{func");
+		IMixinElement mixinElement = model.get("Bar%{func");
 		assertNotNull(mixinElement);
 		mixinElement = model.get("Bar");
 		assertNotNull(mixinElement);
