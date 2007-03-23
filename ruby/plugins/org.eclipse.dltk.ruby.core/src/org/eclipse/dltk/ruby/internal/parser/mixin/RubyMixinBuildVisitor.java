@@ -75,6 +75,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		}
 
 		public String reportMethod(String name, Object object) {
+			report ("Object", null);
 			return report("Object" + SEPARATOR + name, object);
 		}
 
@@ -84,6 +85,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		}
 
 		public String reportVariable(String name, Object object) {
+			report ("Object", null);
 			if (name.startsWith("@"))
 				return report("Object" + SEPARATOR + name, object);
 			else
@@ -249,7 +251,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 
 	public boolean visit(ModuleDeclaration s) throws Exception {
 		this.scopes.add(new SourceModuleScope(s));
-		report("Object", null);
+//		report("Object", null);
 		return true;
 	}
 

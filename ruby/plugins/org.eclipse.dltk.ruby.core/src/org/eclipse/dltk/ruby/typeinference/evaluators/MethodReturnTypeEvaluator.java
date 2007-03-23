@@ -78,9 +78,11 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		if (instanceType instanceof RubyClassType) {
 			RubyClassType rubyClassType = (RubyClassType) instanceType;
 			RubyMixinClass class1 = RubyMixinModel.getInstance().createRubyClass(rubyClassType);
-			RubyMixinMethod[] mixinMethods = class1.getMethods();
-			for (int i = 0; i < mixinMethods.length; i++) {
-				methods.addAll(Arrays.asList(mixinMethods[i].getSourceMethods()));
+			if (class1 != null) {
+				RubyMixinMethod[] mixinMethods = class1.getMethods();
+				for (int i = 0; i < mixinMethods.length; i++) {
+					methods.addAll(Arrays.asList(mixinMethods[i].getSourceMethods()));
+				}
 			}
 		}
 				
