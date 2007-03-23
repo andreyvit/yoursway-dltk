@@ -1,6 +1,7 @@
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
+import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.internal.core.ModelElement;
@@ -151,13 +153,14 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		if (type instanceof RubyClassType) {
 			RubyClassType rubyClassType = (RubyClassType) type;
 			RubyMixinClass rubyClass = RubyMixinModel.getInstance().createRubyClass(rubyClassType);
-			RubyMixinMethod[] methods = rubyClass.getMethods();
-			for (int i = 0; i < methods.length; i++) {
-				IMethod[] sourceMethods = methods[i].getSourceMethods();
-				if (sourceMethods != null && sourceMethods.length > 0)
-					result.add(sourceMethods[0]);
+			if (rubyClass != null) { //remove, when built-in types will be added (this failed on "FalseClass" type)
+				RubyMixinMethod[] methods = rubyClass.getMethods();
+				for (int i = 0; i < methods.length; i++) {
+					IMethod[] sourceMethods = methods[i].getSourceMethods();
+					if (sourceMethods != null && sourceMethods.length > 0)
+						result.add(sourceMethods[0]);
+				}
 			}
-			
 			
 		} else if (type instanceof SimpleType) {
 			SimpleType simpleType = (SimpleType) type;
@@ -174,6 +177,15 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					break;
 			}
 			return meth;
+		} else if (type instanceof AmbiguousType) {
+			AmbiguousType type2 = (AmbiguousType) type;
+			IEvaluatedType[] possibleTypes = type2.getPossibleTypes();
+			for (int i = 0; i < possibleTypes.length; i++) {
+				IMethod[] m = getMethodsForReceiver(modelModule, moduleDeclaration, possibleTypes[i]);
+				for (int j = 0; j < m.length; j++) {
+					result.add(m[j]);
+				}
+			}			
 		}
 		return (IMethod[]) result.toArray(new IMethod[result.size()]);
 	}
