@@ -50,6 +50,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	private DLTKTypeInferenceEngine inferencer;	
 	private JRubySourceParser parser = new JRubySourceParser(null);
 	private MixinModel model;
+	private HashSet completedNames = new HashSet ();
 
 	public RubyCompletionEngine(ISearchableEnvironment nameEnvironment,
 			CompletionRequestor requestor, Map settings,
@@ -85,6 +86,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	public void complete(ISourceModule module, int position, int i) {
+		completedNames.clear();
 		this.actualCompletionPosition = position;
 		this.requestor.beginReporting();
 		org.eclipse.dltk.core.ISourceModule modelModule = (org.eclipse.dltk.core.ISourceModule) module;
@@ -103,7 +105,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					IEvaluatedType type = inferencer.evaluateType(goal, null);
 					reportSubElements(modelModule, type, "");
 				} else {					
-					completeConstant(modelModule, moduleDeclaration, "", position);					
+					completeConstant(modelModule, moduleDeclaration, "", position, true);					
 				}
 			} else {
 				ASTNode minimalNode = ASTUtils.findMinimalNode(
@@ -253,7 +255,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		
 		if (starting.startsWith("::")) {
 			this.setSourceRange(position - starting.length() + 2, position);
-			completeConstant(module, moduleDeclaration, starting.substring(2), position);
+			completeConstant(module, moduleDeclaration, starting.substring(2), position, true);
 			return;
 		}
 		
@@ -266,14 +268,16 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	}
 	
 	private void completeConstant(org.eclipse.dltk.core.ISourceModule module,
-			ModuleDeclaration moduleDeclaration, String prefix, int position) {
+			ModuleDeclaration moduleDeclaration, String prefix, int position, boolean topLevelOnly) {
 		
-		IMixinElement[] modelStaticScopes = RubyTypeInferencingUtils.getModelStaticScopes(model, moduleDeclaration, position);
-		
-		for (int i = modelStaticScopes.length - 1; i >= 0; i--) {
-			IMixinElement scope = modelStaticScopes[i];
-			reportSubElements(module, new RubyClassType(scope.getKey()), prefix);		
+		if (!topLevelOnly) {
+			IMixinElement[] modelStaticScopes = RubyTypeInferencingUtils.getModelStaticScopes(model, moduleDeclaration, position);
+			for (int i = modelStaticScopes.length - 1; i >= 0; i--) {
+				IMixinElement scope = modelStaticScopes[i];
+				reportSubElements(module, new RubyClassType(scope.getKey()), prefix);		
+			}
 		}
+		
 		
 		int relevance = 4242;
 		
@@ -302,7 +306,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			
 		String prefix = content.substring(node.sourceStart(), position);
 		this.setSourceRange(position - prefix.length(), position);
-		completeConstant(module, moduleDeclaration, prefix, position);
+		completeConstant(module, moduleDeclaration, prefix, position, false);
 	}
 	
 	private void completeCall(org.eclipse.dltk.core.ISourceModule module,
@@ -362,8 +366,11 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	private void reportMethod(IMethod method, int rel) {
-				
 		String elementName = method.getElementName();
+		if (completedNames.contains(elementName)) {
+			return;
+		}
+		completedNames.add(elementName);
 		if (elementName.indexOf('.') != -1) {
 			elementName = elementName.substring(elementName.indexOf('.') + 1);
 		}
@@ -415,7 +422,12 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	private void reportType(IType type, int rel) {
-		char[] name = type.getElementName().toCharArray();
+		String elementName = type.getElementName();
+		if (completedNames.contains(elementName)) {
+			return;
+		}
+		completedNames.add(elementName);
+		char[] name = elementName.toCharArray();
 		if (name.length == 0)
 			return;
 		
@@ -431,7 +443,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 			proposal.setModelElement(type);
 			proposal.setName(name);
-			proposal.setCompletion(type.getElementName().toCharArray());
+			proposal.setCompletion(elementName.toCharArray());
 			// proposal.setFlags(Flags.AccDefault);
 			proposal.setReplaceRange(this.startPosition - this.offset,
 					this.endPosition - this.offset);
@@ -446,7 +458,12 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 	
 	private void reportField(IField field, int rel) {
-		char[] name = field.getElementName().toCharArray();
+		String elementName = field.getElementName();
+		if (completedNames.contains(elementName)) {
+			return;
+		}
+		completedNames.add(elementName);
+		char[] name = elementName.toCharArray();
 		if (name.length == 0)
 			return;
 		
@@ -462,7 +479,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 			proposal.setModelElement(field);
 			proposal.setName(name);
-			proposal.setCompletion(field.getElementName().toCharArray());
+			proposal.setCompletion(elementName.toCharArray());
 			// proposal.setFlags(Flags.AccDefault);
 			proposal.setReplaceRange(this.startPosition - this.offset,
 					this.endPosition - this.offset);

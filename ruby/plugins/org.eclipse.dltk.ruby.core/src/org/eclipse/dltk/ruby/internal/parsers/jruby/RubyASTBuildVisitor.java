@@ -883,7 +883,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		popState();
 
 		int start = iVisited.getPosition().getStartOffset();
-		int end = iVisited.getPosition().getEndOffset() + 1;
+		int end = iVisited.getPosition().getEndOffset();
 
 		Expression left = null;
 		if (collector.list.size() == 1) {
@@ -911,7 +911,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		ISourcePosition position = iVisited.getPosition();
 		ColonExpression colon = new ColonExpression(iVisited.getName(), null);
 		colon.setStart(position.getStartOffset());
-		colon.setEnd(position.getEndOffset() + 1);
+		colon.setEnd(position.getEndOffset());
 		peekState().add(colon);
 		return null;
 	}

@@ -46,12 +46,10 @@ public class ColonExpressionEvaluator extends GoalEvaluator {
 					return new RubyClassType(modelKey);
 				return null;
 			}
-		} else if (!expr.isFull()) { 
+		} else { 
 			IMixinElement mixinElement = RubyMixinModel.getRawInstance().get(expr.getName());
 			if (mixinElement != null)
-				return mixinElement.getKey();
-		} else {
-			return helperResult;
+				return new RubyClassType(mixinElement.getKey());
 		}
 		
 		return null;
@@ -64,12 +62,9 @@ public class ColonExpressionEvaluator extends GoalEvaluator {
 		
 		if (left != null) {
 			helperGoal =  new ExpressionTypeGoal(getGoal().getContext(), left);
-		} else if (!expr.isFull()) {
-			helperGoal = new ConstantTypeGoal(goal.getContext(), expr.sourceStart(), expr.getName());
-		}
-		if (helperGoal != null) {
 			return new IGoal[] {helperGoal};
-		}
+		} 
+		
 		return IGoal.NO_GOALS;
 	}
 

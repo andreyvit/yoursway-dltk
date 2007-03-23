@@ -209,9 +209,6 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		
 		clearLastState();
 		State newState = new State(this);
-		if( this.lastState != null ) {
-			newState.copyFrom(this.lastState);
-		}
 		lastState = newState;
 		try {
 			List resources = new ArrayList();
@@ -239,6 +236,11 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 
 	protected void incrementalBuild(IResourceDelta delta,
 			IProgressMonitor monitor) throws CoreException {
+		State newState = new State(this);
+		if( this.lastState != null ) {
+			newState.copyFrom(this.lastState);
+		}
+		this.lastState = newState;
 		List resources = new ArrayList();
 		delta.accept(new ResourceVisitor(resources));
 		// Call builders for resources.

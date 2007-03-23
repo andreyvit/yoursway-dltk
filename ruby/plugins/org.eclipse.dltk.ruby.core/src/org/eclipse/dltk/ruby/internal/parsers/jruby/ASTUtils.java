@@ -190,7 +190,7 @@ public class ASTUtils {
 				if (s.sourceStart() < 0 || s.sourceEnd() < 0)
 					return true;
 				int sourceEnd = s.sourceEnd();
-				if (Math.abs(sourceEnd - boundaryOffset) <= 1) {
+				if (Math.abs(sourceEnd - boundaryOffset) <= 0) { //XXX: was ... <= 1
 					result = s;
 					System.out.println("Found " + s.getClass().getName());
 				}
