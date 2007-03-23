@@ -661,7 +661,7 @@ public final class ScriptRuntime {
 	 * Returns whether the user preferences should be set - i.e. if it was
 	 * not already set when initialized.
 	 */
-	private static boolean addPersistedInterpreters(InterpreterDefinitionsContainer InterpreterDefs) throws IOException {
+	private static boolean addPersistedInterpreters(InterpreterDefinitionsContainer interpreterDefs) throws IOException {
 		// Try retrieving the Interpreter preferences from the preference store
 		String InterpreterXMLString = getPreferences().getString(PREF_INTERPRETER_XML);
 		
@@ -669,7 +669,7 @@ public final class ScriptRuntime {
 		if (InterpreterXMLString.length() > 0) {
 			try {
 				ByteArrayInputStream inputStream = new ByteArrayInputStream(InterpreterXMLString.getBytes());
-				InterpreterDefinitionsContainer.parseXMLIntoContainer(inputStream, InterpreterDefs);
+				InterpreterDefinitionsContainer.parseXMLIntoContainer(inputStream, interpreterDefs);
 				return false;
 			} catch (IOException ioe) {
 				DLTKLaunchingPlugin.log(ioe);
@@ -684,7 +684,7 @@ public final class ScriptRuntime {
 				// If file exists, load Interpreter definitions from it into memory and write the definitions to
 				// the preference store WITHOUT triggering any processing of the new value
 				FileInputStream fileInputStream = new FileInputStream(file);
-				InterpreterDefinitionsContainer.parseXMLIntoContainer(fileInputStream, InterpreterDefs);			
+				InterpreterDefinitionsContainer.parseXMLIntoContainer(fileInputStream, interpreterDefs);			
 			}		
 		}
 		return true;

@@ -77,6 +77,7 @@ import org.eclipse.dltk.ruby.ast.SelfReference;
 import org.eclipse.dltk.ruby.ast.SymbolReference;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
+import org.eclipse.dltk.ruby.internal.core.RubyClassDeclaration;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 import org.jruby.ast.AliasNode;
 import org.jruby.ast.AndNode;
@@ -828,33 +829,23 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitClassNode(ClassNode iVisited) {
-		String name = "";
 		Node cpathNode = iVisited.getCPath();
-		if (cpathNode instanceof Colon2Node || cpathNode instanceof ConstNode) {
-			name = colons2Name(cpathNode);
-		}
+		Node superClassNode = iVisited.getSuperNode();
+		Statement cpath = collectSingleStatementSafe(cpathNode);
+		Statement supernode = collectSingleStatementSafe(superClassNode);
 		ISourcePosition pos = iVisited.getCPath().getPosition();
 		ISourcePosition cPos = iVisited.getPosition();
 		cPos = fixNamePosition(cPos);
 		pos = fixNamePosition(pos);
-		TypeDeclaration type = new TypeDeclaration(name, pos.getStartOffset(),
-				pos.getEndOffset(), cPos.getStartOffset(), cPos.getEndOffset());
+
+		RubyClassDeclaration type = new RubyClassDeclaration((Expression)supernode, 
+				cpath, null, cPos.getStartOffset(), cPos.getEndOffset());
+		
+		String name = String.copyValueOf(content, pos.getStartOffset(), pos.getEndOffset() - pos.getStartOffset());
+		type.setName(name);
+		
 		peekState().add(type);
 		pushState(new ClassState(type));
-		// superclass
-		Node superNode = iVisited.getSuperNode();
-		if (superNode != null) {
-			CollectingState collect = new CollectingState();
-			pushState(collect);
-			superNode.accept(this);
-			popState();
-			if (collect.getList().size() == 1) {
-				Object superclass = collect.getList().get(0);
-				if (superclass instanceof Expression) {
-					type.addSuperClass((Expression) superclass);
-				}
-			}
-		}
 		// body
 		if (iVisited.getBodyNode() != null) {
 			pos = iVisited.getBodyNode().getPosition();
@@ -867,7 +858,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				end = blockNode.getLast().getPosition().getEndOffset() + 1; // /XXX!!!!
 			} else {
 				if (TRACE_RECOVERING)
-					RubyPlugin.log("DLTKASTBuildVisitor.visitClassNode(" + name
+					RubyPlugin.log("DLTKASTBuildVisitor.visitClassNode(" 
 							+ "): unknown body type "
 							+ bodyNode.getClass().getName());
 			}
@@ -877,6 +868,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			type.setBody(bl);
 			iVisited.getBodyNode().accept(this);
 		}
+		
 		popState();
 		return null;
 	}
@@ -885,7 +877,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 		CollectingState collector = new CollectingState();
 		pushState(collector);
-		iVisited.getLeftNode().accept(this);
+		if (iVisited.getLeftNode() != null) {
+			iVisited.getLeftNode().accept(this);
+		}
 		popState();
 
 		int start = iVisited.getPosition().getStartOffset();
@@ -900,10 +894,15 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 		String right = iVisited.getName();
 
-		ColonExpression colon = new ColonExpression(right, left);
-		colon.setStart(start);
-		colon.setEnd(end);
-		peekState().add(colon);
+		if (left != null) {
+			ColonExpression colon = new ColonExpression(right, left);
+			colon.setStart(start);
+			colon.setEnd(end);
+			peekState().add(colon);
+ 		} else {
+ 			ConstantReference ref = new ConstantReference(start, end, right);
+ 			peekState().add(ref);
+ 		}
 
 		return null;
 	}
@@ -1202,11 +1201,11 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		ISourcePosition namePos = restoreMethodNamePosition(iVisited,
 				receiverExpression.sourceEnd());
 		String name = iVisited.getName();
-		if (receiverNode instanceof SelfNode) {
-			name = "self." + name;
-		} else if (receiverNode instanceof ConstNode) {
-			name = ((ConstNode) receiverNode).getName() + "." + name;
-		}
+//		if (receiverNode instanceof SelfNode) {
+//			name = "self." + name;
+//		} else if (receiverNode instanceof ConstNode) {
+//			name = ((ConstNode) receiverNode).getName() + "." + name;
+//		}
 		RubySingletonMethodDeclaration method = new RubySingletonMethodDeclaration(
 				name, namePos.getStartOffset(), namePos.getEndOffset(), cPos
 						.getStartOffset(), cPos.getEndOffset(),

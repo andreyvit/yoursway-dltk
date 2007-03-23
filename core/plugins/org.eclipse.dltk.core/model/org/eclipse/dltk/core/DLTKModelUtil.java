@@ -16,19 +16,17 @@ import org.eclipse.dltk.core.search.TypeNameMatch;
 import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
 import org.eclipse.dltk.internal.core.ExternalScriptFolder;
 
-
 public class DLTKModelUtil {
 	/**
 	 * Force a reconcile of a compilation unit.
+	 * 
 	 * @param unit
 	 */
 	public static void reconcile(ISourceModule unit) throws ModelException {
-		unit.reconcile(				
-				false /* don't force problem detection */, 
-				null /* use primary owner */, 
-				null /* no progress monitor */);
+		unit.reconcile(false /* don't force problem detection */,
+				null /* use primary owner */, null /* no progress monitor */);
 	}
-	
+
 	public static boolean isPrimary(ISourceModule unit) {
 		return unit.getOwner() == null;
 	}
@@ -62,75 +60,79 @@ public class DLTKModelUtil {
 		}
 		return null;
 	}
-	
-	
-	public static void searchTypeDeclarations (IDLTKProject project, String patternString, 
-			TypeNameMatchRequestor requestor) {
-		final List types = new ArrayList ();
-		
-//		patternString = "*" + patternString + "*";
-		
+
+	public static void searchTypeDeclarations(IDLTKProject project,
+			String patternString, TypeNameMatchRequestor requestor) {
+		final List types = new ArrayList();
+
+		// patternString = "*" + patternString + "*";
+
 		IDLTKLanguageToolkit langaugeToolkit;
 		try {
 			langaugeToolkit = DLTKLanguageManager.getLanguageToolkit(project);
 		} catch (CoreException e1) {
 			return;
 		}
-		//FIXME: use another search		
-		IDLTKSearchScope scope = SearchEngine.createSearchScope(new IModelElement[] {project});		
+		// FIXME: use another search
+		IDLTKSearchScope scope = SearchEngine
+				.createSearchScope(new IModelElement[] { project });
 		try {
 			SearchEngine engine = new SearchEngine();
-			engine.searchAllTypeNames(
-					null, 
-					SearchPattern.R_PATTERN_MATCH,
-					patternString.toCharArray(), 
-					SearchPattern.R_PATTERN_MATCH, 
-					IDLTKSearchConstants.TYPE, 
-					scope, 
-					requestor, 
-					IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, 
-					null);
-		} catch (CoreException e) {			
+			engine.searchAllTypeNames(null, SearchPattern.R_PATTERN_MATCH,
+					patternString.toCharArray(), SearchPattern.R_PATTERN_MATCH,
+					IDLTKSearchConstants.TYPE, scope, requestor,
+					IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, null);
+		} catch (CoreException e) {
 			if (DLTKCore.DEBUG)
 				e.printStackTrace();
-		}		
+		}
 	}
-	
-	public static void searchMethodDeclarations (IDLTKProject project, String patternString, 
-			SearchRequestor requestor) {
-		final List types = new ArrayList ();
-		
-		patternString = "*" + patternString + "*";
-		
+
+	public static void searchMethodDeclarations(IDLTKProject project,
+			String patternString, SearchRequestor requestor) {
+		final List types = new ArrayList();
+
+		// patternString = "*" + patternString + "*";
+
 		IDLTKLanguageToolkit langaugeToolkit;
 		try {
 			langaugeToolkit = DLTKLanguageManager.getLanguageToolkit(project);
 		} catch (CoreException e1) {
 			return;
 		}
-		//FIXME: use another search		
-		IDLTKSearchScope scope = SearchEngine.createSearchScope(new IModelElement[] {project});		
+		IDLTKSearchScope scope;
+		if (project != null)
+			scope = SearchEngine
+					.createSearchScope(new IModelElement[] { project });
+		else
+			scope = SearchEngine.createWorkspaceScope(langaugeToolkit);
+
 		try {
 			SearchEngine engine = new SearchEngine();
-			SearchPattern pattern = SearchPattern.createPattern(patternString, IDLTKSearchConstants.METHOD,
-					IDLTKSearchConstants.DECLARATIONS, SearchPattern.R_PATTERN_MATCH);
+			SearchPattern pattern = SearchPattern.createPattern(patternString,
+					IDLTKSearchConstants.METHOD,
+					IDLTKSearchConstants.DECLARATIONS,
+					SearchPattern.R_PATTERN_MATCH);
 			engine.search(pattern, new SearchParticipant[] { SearchEngine
 					.getDefaultSearchParticipant() }, scope, requestor, null);
-		} catch (CoreException e) {			
+		} catch (CoreException e) {
 			if (DLTKCore.DEBUG)
 				e.printStackTrace();
-		}		
+		}
 	}
-	
+
 	/**
-	 * Returns all the types with a given qualified name, that are located as childs of element.
+	 * Returns all the types with a given qualified name, that are located as
+	 * childs of element.
+	 * 
 	 * @param element
 	 * @param qualifiedName
 	 * @param delimeter
 	 * @return
 	 */
-	public static IType[] getAllTypes(final IDLTKProject project, final String qualifiedName, final String delimeter) {
-		final List types = new ArrayList ();
+	public static IType[] getAllTypes(final IDLTKProject project,
+			final String qualifiedName, final String delimeter) {
+		final List types = new ArrayList();
 
 		TypeNameMatchRequestor requestor = new TypeNameMatchRequestor() {
 
@@ -146,33 +148,34 @@ public class DLTKModelUtil {
 					types.add(type);
 				}
 			}
-			
-			
+
 		};
-		
+
 		String[] names = qualifiedName.split(delimeter);
 		if (names == null || names.length == 0)
 			return new IType[0];
 		String patternString = names[names.length - 1];
-		
-		searchTypeDeclarations(project, patternString, requestor);	
-		
+
+		searchTypeDeclarations(project, patternString, requestor);
+
 		return (IType[]) types.toArray(new IType[types.size()]);
 	}
-	
+
 	/**
 	 * Returns all ITypes, which fqn ends with nameEnding.
+	 * 
 	 * @param project
 	 * @param nameEnding
 	 * @param delimeter
 	 * @return
 	 */
-	public static IType[] getAllTypesWithFQNEnding(final IDLTKProject project, final String nameEnding, final String delimeter) {
-		final List types = new ArrayList ();
+	public static IType[] getAllTypesWithFQNEnding(final IDLTKProject project,
+			final String nameEnding, final String delimeter) {
+		final List types = new ArrayList();
 
 		TypeNameMatchRequestor requestor = new TypeNameMatchRequestor() {
-			
-			public void acceptTypeNameMatch(TypeNameMatch match) {				
+
+			public void acceptTypeNameMatch(TypeNameMatch match) {
 				IType type = (IType) match.getType();
 				// XXX dirty hack to accept Ruby lib matches from other projects
 				IScriptFolder scriptFolder = type.getScriptFolder();
@@ -185,63 +188,62 @@ public class DLTKModelUtil {
 					types.add(type);
 				}
 			}
-		};		
+		};
 		String[] names = nameEnding.split(delimeter);
 		if (names == null || names.length == 0)
 			return new IType[0];
-		String patternString = names[names.length - 1];		
+		String patternString = names[names.length - 1];
 		searchTypeDeclarations(project, patternString, requestor);
-		
+
 		return (IType[]) types.toArray(new IType[types.size()]);
 	}
-	
-	public static IType[] getAllScopedTypes(IDLTKProject project, 
-			String typeName, 
-			String delimeter,
-			String scopeFqn) {
-		List types = new ArrayList ();
+
+	public static IType[] getAllScopedTypes(IDLTKProject project,
+			String typeName, String delimeter, String scopeFqn) {
+		List types = new ArrayList();
 		int curLength = -1;
 
-		IType[] allTypes = getAllTypesWithFQNEnding(project, typeName, delimeter);
-		
-		if (!typeName.startsWith(delimeter))	
+		IType[] allTypes = getAllTypesWithFQNEnding(project, typeName,
+				delimeter);
+
+		if (!typeName.startsWith(delimeter))
 			typeName = delimeter + typeName;
 		for (int i = 0; i < allTypes.length; i++) {
 			String name = allTypes[i].getTypeQualifiedName(delimeter);
 			if (!name.endsWith(typeName))
 				continue;
 			String start = name.substring(0, name.length() - typeName.length());
-			//String start = name.substring(0, name.lastIndexOf(delimeter));
+			// String start = name.substring(0, name.lastIndexOf(delimeter));
 			int length = start.length();
-			if  (length < curLength)
+			if (length < curLength)
 				continue;
 			if (scopeFqn.startsWith(start)) {
-				if (length > curLength)  {
+				if (length > curLength) {
 					types.clear();
 					curLength = length;
 				}
 				types.add(allTypes[i]);
 			}
 		}
-		
+
 		return (IType[]) types.toArray(new IType[types.size()]);
 	}
-	
-	public static IModelElement findType(IModelElement module, 
+
+	public static IModelElement findType(IModelElement module,
 			String qualifiedName, String delimeter) {
-		
+
 		if (module instanceof IType) {
-			IType type = (IType)module;
+			IType type = (IType) module;
 			String tmpFqn = type.getTypeQualifiedName(delimeter);
 			if (!tmpFqn.startsWith(delimeter))
 				tmpFqn = delimeter + tmpFqn;
-			if (tmpFqn.equals(qualifiedName)) 
-				return type;			
+			if (tmpFqn.equals(qualifiedName))
+				return type;
 		}
-		
+
 		if (module instanceof IParent) {
 			IModelElement el = null;
-			IParent p = (IParent)module;
+			IParent p = (IParent) module;
 			IModelElement[] childs;
 			try {
 				childs = p.getChildren();
@@ -256,7 +258,7 @@ public class DLTKModelUtil {
 				return null;
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -302,18 +304,20 @@ public class DLTKModelUtil {
 			return newMainName;
 		}
 	}
-	
-	public static boolean isSuperType(ITypeHierarchy hierarchy, IType possibleSuperType, IType type) {
+
+	public static boolean isSuperType(ITypeHierarchy hierarchy,
+			IType possibleSuperType, IType type) {
 		// filed bug 112635 to add this method to ITypeHierarchy
-		IType[] superClass= hierarchy.getSuperclass(type);
-		if (superClass != null ) {
-			for( int q = 0; q < superClass.length; ++q ) {
-				if( (possibleSuperType.equals(superClass[q]) || isSuperType(hierarchy, possibleSuperType, superClass[q]))) {
+		IType[] superClass = hierarchy.getSuperclass(type);
+		if (superClass != null) {
+			for (int q = 0; q < superClass.length; ++q) {
+				if ((possibleSuperType.equals(superClass[q]) || isSuperType(
+						hierarchy, possibleSuperType, superClass[q]))) {
 					return true;
-				}	
+				}
 			}
 		}
 		return false;
 	}
-	
+
 }

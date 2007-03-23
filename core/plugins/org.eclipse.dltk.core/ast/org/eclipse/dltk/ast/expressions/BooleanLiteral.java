@@ -28,7 +28,7 @@ public class BooleanLiteral extends Literal {
 		this.value = value;
 	}
 
-	public boolean isValue() {
+	public boolean boolValue() {
 		return value;
 	}
 

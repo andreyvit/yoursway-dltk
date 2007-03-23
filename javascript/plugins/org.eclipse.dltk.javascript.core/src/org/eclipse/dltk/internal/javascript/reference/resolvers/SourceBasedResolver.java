@@ -27,51 +27,50 @@ import org.eclipse.dltk.internal.javascript.typeinference.VaribleDeclarationRefe
 import org.eclipse.dltk.javascript.core.FunctionDeclarationReference;
 import org.eclipse.dltk.javascript.core.JavaScriptNature;
 
-public class SourceBasedResolver implements IReferenceResolver,IExecutableExtension{
+public class SourceBasedResolver implements IReferenceResolver,
+		IExecutableExtension {
 
 	public boolean canResolve(ISourceModule module) {
 		return true;
 	}
 
-	
 	public Set getChilds(IResolvableReference ref) {
-		if (ref instanceof AbstractCallResultReference)
-		{
-		AbstractCallResultReference cm=(AbstractCallResultReference) ref;
-		String id=cm.getId();
-		List result = searchMethods(id);
-		HashSet hashSet = new HashSet();
+		if (ref instanceof AbstractCallResultReference) {
+			AbstractCallResultReference cm = (AbstractCallResultReference) ref;
+			String id = cm.getId();
+			List result = searchMethods(id);
+			HashSet hashSet = new HashSet();
 
-		for (int a = 0; a < result.size(); a++) {
-			FunctionDeclarationReference fr = (FunctionDeclarationReference) result
-					.get(a);
-			HostCollection ms = fr.getCollection();
-			IReference reference = ms.getReference(cm.getResultId());
-			if (reference!=null)
-			{
-			hashSet.addAll(reference.getChilds(true));
+			for (int a = 0; a < result.size(); a++) {
+				FunctionDeclarationReference fr = (FunctionDeclarationReference) result
+						.get(a);
+				HostCollection ms = fr.getCollection();
+				IReference reference = ms.getReference(cm.getResultId());
+				if (reference != null) {
+					hashSet.addAll(reference.getChilds(true));
+				}
 			}
-		}			
-		result=searchRefs(id);
-		for (int a = 0; a < result.size(); a++) {
-			VaribleDeclarationReference fr = (VaribleDeclarationReference) result
-					.get(a);
-			IReference reference = fr.getReference().getChild(cm.getResultId(), true);
-			if (reference!=null)
-			hashSet.addAll(reference.getChilds(true));
-		}	
-		if (hashSet.isEmpty())return null;
-		return hashSet;
+			result = searchRefs(id);
+			for (int a = 0; a < result.size(); a++) {
+				VaribleDeclarationReference fr = (VaribleDeclarationReference) result
+						.get(a);
+				IReference reference = fr.getReference().getChild(
+						cm.getResultId(), true);
+				if (reference != null)
+					hashSet.addAll(reference.getChilds(true));
+			}
+			if (hashSet.isEmpty())
+				return null;
+			return hashSet;
 		}
 		return null;
 	}
 
-
 	public void setInitializationData(IConfigurationElement config,
 			String propertyName, Object data) throws CoreException {
-		
+
 	}
-	
+
 	protected static IDLTKLanguageToolkit toolkit;
 	protected static IDLTKSearchScope scope;
 
@@ -107,7 +106,7 @@ public class SourceBasedResolver implements IReferenceResolver,IExecutableExtens
 		}
 		return result;
 	}
-	
+
 	protected List searchRefs(String name) {
 		final List result = new ArrayList(2);
 		try {
@@ -134,10 +133,10 @@ public class SourceBasedResolver implements IReferenceResolver,IExecutableExtens
 		search("!!!" + methodName, IDLTKSearchConstants.FIELD,
 				IDLTKSearchConstants.REFERENCES, resultCollector);
 	}
-	
+
 	protected void searchMethodDefs(String methodName,
 			SearchRequestor resultCollector) throws CoreException {
-		search( methodName, IDLTKSearchConstants.FIELD,
+		search(methodName, IDLTKSearchConstants.FIELD,
 				IDLTKSearchConstants.REFERENCES, resultCollector);
 	}
 
@@ -160,25 +159,22 @@ public class SourceBasedResolver implements IReferenceResolver,IExecutableExtens
 				null);
 	}
 
-
 	public Set resolveGlobals(String id) {
 		return new HashSet();
 	}
 
-
 	public void processCall(String call, String objId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-
 	public void init() {
-		
+
 	}
 
 	public void init(ReferenceResolverContext owner) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

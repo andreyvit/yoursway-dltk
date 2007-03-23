@@ -21,4 +21,11 @@
            nature="org.eclipse.dltk.ruby.core.nature">
      </mixin>
   </extension>
+  <extension
+        point="org.eclipse.dltk.core.goalEvaluators">
+     <evaluator
+           evaluator="org.eclipse.dltk.ruby.typeinference.RubyTypeInferencer"
+           nature="org.eclipse.dltk.ruby.core.nature">
+     </evaluator>
+  </extension>
 </plugin>

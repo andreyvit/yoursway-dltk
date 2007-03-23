@@ -1,6 +1,7 @@
 package org.eclipse.dltk.ruby.typeinference.evaluators;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,10 +17,12 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.ruby.ast.RubyReturnStatement;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinMethod;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.typeinference.BuiltinMethods;
 import org.eclipse.dltk.ruby.typeinference.MethodContext;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
-import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ti.GoalState;
@@ -28,6 +31,7 @@ import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
 import org.eclipse.dltk.ti.goals.MethodReturnTypeGoal;
+import org.eclipse.dltk.ti.types.ClassType;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class MethodReturnTypeEvaluator extends GoalEvaluator {
@@ -59,7 +63,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 	public IGoal[] init() {
 		MethodReturnTypeGoal typedGoal = getTypedGoal();
 		InstanceContext typedContext = getTypedContext();
-		IEvaluatedType instanceType = typedContext.getInstanceType();
+		ClassType instanceType = typedContext.getInstanceType();
 		String methodName = typedGoal.getMethodName();
 		IEvaluatedType intrinsicMethodReturnType = BuiltinMethods.getIntrinsicMethodReturnType(instanceType, methodName, typedGoal.getArguments());
 		if (intrinsicMethodReturnType != null) {
@@ -68,36 +72,32 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		}
 		
 		MethodDeclaration decl = null;
-		IMethod[] methods = null;
+		List methods = new ArrayList ();
 		if (instanceType instanceof RubyClassType) {
-			RubyClassType type = (RubyClassType) instanceType;
-			type = RubyTypeInferencingUtils.resolveMethods(typedContext.getSourceModule().getScriptProject(), type);
-			methods = type.getAllMethods();
-		} else if (instanceType instanceof RubyMetaClassType) {
-			RubyMetaClassType type = (RubyMetaClassType) instanceType;
-			type = RubyTypeInferencingUtils.resolveMethods(typedContext.getSourceModule(), type);
-			methods = type.getMethods();
+			RubyClassType rubyClassType = (RubyClassType) instanceType;
+			RubyMixinClass class1 = RubyMixinModel.getInstance().createRubyClass(rubyClassType);
+			RubyMixinMethod[] mixinMethods = class1.getMethods();
+			for (int i = 0; i < mixinMethods.length; i++) {
+				methods.addAll(Arrays.asList(mixinMethods[i].getSourceMethods()));
+			}
 		}
-		if (methods == null)
-			return IGoal.NO_GOALS/* FIXME: handle AmbiguousType and all that stuff */;
-		
+				
 		IMethod resultMethod = null;
 		// in case of ambiguity, prefer methods from the same module
 		IMethod resultMethodFromSameModule = null; 
-		for (int i = 0; i < methods.length; i++) {
-			if (methods[i] instanceof FakeMethod)
+		for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
+			IMethod method = (IMethod) iterator.next();
+			if (method instanceof FakeMethod)
 				continue;
-			String elementName = methods[i].getElementName();
-			if (elementName.startsWith("self."))
-				elementName = elementName.substring("self.".length());
+			String elementName = method.getElementName();			
 			if (elementName.equals(methodName)) {
-				if (methods[i].getSourceModule().equals(typedContext.getSourceModule()))
-					resultMethodFromSameModule = methods[i];
-				resultMethod = methods[i];				
+				if (method.getSourceModule().equals(typedContext.getSourceModule()))
+					resultMethodFromSameModule = method;
+				resultMethod = method;				
 			}				
 		}
 		if (resultMethodFromSameModule != null)
-			resultMethod = resultMethodFromSameModule;
+			resultMethod = resultMethodFromSameModule;		
 		
 		if (resultMethod == null)
 			return IGoal.NO_GOALS;

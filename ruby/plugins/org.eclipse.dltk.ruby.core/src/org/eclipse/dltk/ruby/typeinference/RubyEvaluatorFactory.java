@@ -2,6 +2,7 @@ package org.eclipse.dltk.ruby.typeinference;
 
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.expressions.Assignment;
+import org.eclipse.dltk.ast.expressions.BooleanLiteral;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.expressions.NumericLiteral;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
@@ -10,20 +11,24 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.IfStatement;
+import org.eclipse.dltk.ast.statements.ReturnStatement;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
+import org.eclipse.dltk.ruby.ast.RubyReturnStatement;
 import org.eclipse.dltk.ruby.ast.SelfReference;
 import org.eclipse.dltk.ruby.typeinference.evaluators.ArrayEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.AssignmentEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.BlockEvaluator;
+import org.eclipse.dltk.ruby.typeinference.evaluators.BooleanLiteralEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.ColonExpressionEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.ConstantReferenceEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.IfStatementTypeEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.MethodCallTypeEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.MethodReturnTypeEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.NumericLiteralEvaluator;
+import org.eclipse.dltk.ruby.typeinference.evaluators.ReturnStatementEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.SelfReferenceEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.StringLiteralEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.VariableReferenceEvaluator;
@@ -48,6 +53,8 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 				return new NumericLiteralEvaluator(goal);
 			else if (expr instanceof StringLiteral)
 				return new StringLiteralEvaluator(goal);
+			else if (expr instanceof BooleanLiteral)
+				return new BooleanLiteralEvaluator(goal);
 			else if (expr instanceof RubyArrayExpression)
 				return new ArrayEvaluator(goal);
 			else if (expr instanceof Assignment)
@@ -70,6 +77,8 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 			} 
 			else if (expr instanceof ConstantDeclaration) {
 				return new ConstantReferenceEvaluator(goal);
+			} else if (expr instanceof ReturnStatement || expr instanceof RubyReturnStatement) {
+				return new ReturnStatementEvaluator(goal);
 			}
 		} else if (goal instanceof ConstantTypeGoal)
 			return new ConstantReferenceEvaluator((ConstantTypeGoal) goal);

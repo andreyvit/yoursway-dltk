@@ -3,8 +3,7 @@ package org.eclipse.dltk.ruby.typeinference.evaluators;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.mixin.IMixinElement;
-import org.eclipse.dltk.core.mixin.IMixinRequestor;
-import org.eclipse.dltk.core.mixin.MixinModel;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.typeinference.ConstantTypeGoal;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
@@ -38,7 +37,7 @@ public class ConstantReferenceEvaluator extends GoalEvaluator {
 	public Object produceResult() {		
 		return result; 
 	}
-
+	
 	public IGoal[] init() {
 		helperGoal = null;
 		ISourceModuleContext typedContext = getTypedContext();
@@ -46,23 +45,12 @@ public class ConstantReferenceEvaluator extends GoalEvaluator {
 		String constantName = typedGoal.getName();
 		int calculationOffset = typedGoal.getOffset();
 		
-		MixinModel model = RubyTypeInferencer.getModel();
-		IMixinElement[] modelStaticScopes = RubyTypeInferencingUtils.getModelStaticScopes(model, 
-				typedContext.getRootNode(), calculationOffset);
+		String elementKey = RubyTypeInferencingUtils.searchConstantElement(typedContext.getRootNode(), calculationOffset, constantName);
 		
 		IMixinElement constantElement = null;
 		
-		for (int i = modelStaticScopes.length - 1; i >= 0; i--) {
-			IMixinElement scope = modelStaticScopes[i];
-			String possibleKey = scope.getKey() + IMixinRequestor.MIXIN_NAME_SEPARATOR + constantName;
-			constantElement = model.get(possibleKey);
-			if (constantElement != null)
-				break;
-		}
-		
-		//check top-most scope
-		if (constantElement == null)
-			constantElement = model.get(constantName);
+		if (elementKey != null)
+			constantElement = RubyMixinModel.getRawInstance().get(elementKey);
 		
 		if (constantElement == null)
 			return IGoal.NO_GOALS;

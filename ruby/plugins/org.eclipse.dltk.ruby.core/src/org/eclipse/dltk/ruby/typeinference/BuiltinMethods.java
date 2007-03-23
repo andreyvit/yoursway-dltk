@@ -6,29 +6,28 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinMethod;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class BuiltinMethods {
 
-	private static final RubyClassType fixnumType = new RubyClassType(new String[] { "Fixnum" },
-			null, null);
+	private static final RubyClassType fixnumType = new RubyClassType("Fixnum");
 	
-	private static final RubyClassType arrayType = new RubyClassType(new String[] { "Array" },
-			null, null);
+	private static final RubyClassType arrayType = new RubyClassType("Array");
 	
-	private static final RubyClassType strType = new RubyClassType(new String[] { "Str" },
-			null, null);
+	private static final RubyClassType strType = new RubyClassType("String");
 
-	private static final RubyClassType classType = new RubyClassType(new String[] { "Class" },
-			null, null);
+	private static final RubyClassType classType = new RubyClassType("Class");
 
 	private static final IEvaluatedType boolType = new AmbiguousType(new IEvaluatedType[] {
-			new RubyClassType(new String[] { "TrueClass" }, null, null),
-			new RubyClassType(new String[] { "FalseClass" }, null, null) });
+			new RubyClassType("TrueClass"),
+			new RubyClassType("FalseClass")});
 
 	private static final class NewMethod implements IntrinsicMethod {
 		public boolean dependsOnArguments() {
@@ -44,9 +43,12 @@ public class BuiltinMethods {
 		}
 
 		public IEvaluatedType getReturnType(IEvaluatedType receiver, IEvaluatedType[] arguments) {
-			if (receiver instanceof RubyMetaClassType) {
-				RubyMetaClassType metaClass = (RubyMetaClassType) receiver;
-				return metaClass.getInstanceType();
+			if (receiver instanceof RubyClassType) {
+				RubyClassType rubyClassType = (RubyClassType) receiver;
+				String key = rubyClassType.getModelKey();
+				if (!key.endsWith("%"))
+					return new RubyClassType(key + "%");
+				return null;
 			} else if (receiver instanceof AmbiguousType) {
 				Set possibleReturns = new HashSet();
 				AmbiguousType ambiguousType = (AmbiguousType) receiver;
@@ -262,11 +264,12 @@ public class BuiltinMethods {
 	}
 
 	private static String getPossibleIntrinsicClassName(IClassType receiver) {
-		if (receiver instanceof RubyMetaClassType) {
+		/*if (receiver instanceof RubyMetaClassType) {
 			return "Class";
-		} else if (receiver instanceof RubyClassType) {
-			RubyClassType type = (RubyClassType) receiver;
-			return type.getUnqualifiedName();
+		} else*/ if (receiver instanceof RubyClassType) {
+//			RubyClassType type = (RubyClassType) receiver;						
+//			return RubyMixinModel.getInstance().createRubyClass(type).getName();
+			return "Class";
 		} else if (receiver instanceof SimpleType) {
 			SimpleType type = (SimpleType) receiver;
 			switch (type.getType()) {

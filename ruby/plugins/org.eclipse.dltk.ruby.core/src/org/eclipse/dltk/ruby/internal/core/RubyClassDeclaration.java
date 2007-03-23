@@ -5,10 +5,11 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionList;
 import org.eclipse.dltk.ast.statements.Block;
+import org.eclipse.dltk.ast.statements.Statement;
 
 public class RubyClassDeclaration extends TypeDeclaration {
 
-	private Expression name;
+	private Statement name;
 	private Block body;
 	
 	
@@ -16,8 +17,8 @@ public class RubyClassDeclaration extends TypeDeclaration {
 		super(name);
 	}
 
-	public RubyClassDeclaration(Expression superClass, Expression name, Block body, int start, int end) {
-		super (null); //wtf?
+	public RubyClassDeclaration(Expression superClass, Statement name, Block body, int start, int end) {
+		super("", name.sourceStart(), name.sourceEnd(), start, end);
 		ExpressionList el = new ExpressionList();
 		el.addExpression(superClass);
 		this.setSuperClasses(el);
@@ -27,7 +28,7 @@ public class RubyClassDeclaration extends TypeDeclaration {
 		setEnd(end);
 	}
 	
-	public Expression getClassName() {
+	public Statement getClassName() {
 		return name;
 	}
 	

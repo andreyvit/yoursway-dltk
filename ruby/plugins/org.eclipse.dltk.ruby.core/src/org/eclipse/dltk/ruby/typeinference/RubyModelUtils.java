@@ -13,7 +13,6 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
@@ -29,11 +28,13 @@ import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
-import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.SourceMethod;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinVariable;
 import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.ClassMetaclass;
 import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.Metaclass;
 import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.MethodInfo;
@@ -161,80 +162,52 @@ public class RubyModelUtils {
 	}
 	
 	public static IField[] findFields (ISourceModule modelModule, ModuleDeclaration parsedUnit, String prefix, int position) {
-		IType[] types = null;
-		IClassType type = RubyTypeInferencingUtils.determineSelfClass(modelModule, parsedUnit, position);
-		if (type instanceof RubyMetaClassType) {
-			type = (IClassType) ((RubyMetaClassType)type).getInstanceType();
-		}
-		RubyClassType rubyClassType = null;
-		if (type instanceof RubyClassType) {
-			rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), (RubyClassType) type);
-			types = rubyClassType.getTypeDeclarations();
-		}		
+		RubyClassType type = RubyTypeInferencingUtils.determineSelfClass(modelModule, parsedUnit, position);
+		RubyMixinClass rubyClass = RubyMixinModel.getInstance().createRubyClass(type);
+				
 		List resultFields = new UniqueNamesList ();
 		
-		if (rubyClassType != null && 
-				rubyClassType.getFQN()[0].equals("Object") && 
-				rubyClassType.getFQN().length == 1) {
-			IField[] fields = RubyModelUtils.findTopLevelFields(modelModule, prefix);
-			if (fields != null) {
-				for (int j = 0; j < fields.length; j++) {
-					if (fields[j].getElementName().startsWith(prefix)) {
-						resultFields.add(fields[j]);
-					}
-				}
-			}
+		RubyMixinVariable[] fields = rubyClass.getFields();
+		for (int i = 0; i < fields.length; i++) {
+			IField[] sourceFields = fields[i].getSourceFields();
+			if (sourceFields != null && sourceFields.length > 0)
+				resultFields.add(sourceFields[0]);
 		}
 		
-		if (types != null) {
-			for (int i = 0; i < types.length; i++) {
-				IField[] fields;
-				try {
-					fields = types[i].getFields();
-					for (int j = 0; j < fields.length; j++) {
-						if (fields[j].getElementName().startsWith(prefix)) {
-							resultFields.add(fields[j]);
-						}
-					}
-				} catch (ModelException e1) {					
-					e1.printStackTrace();
-				}				
-			}
-		}
 		return (IField[]) resultFields.toArray(new IField[resultFields.size()]);
 	}	 
 	
-	public static RubyClassType getSuperType(IType type) {
-		String[] superClasses;
-		try {
-			superClasses = type.getSuperClasses();
-		} catch (ModelException e) {	
-			e.printStackTrace();
-			return null;
-		}
-		if (superClasses != null && superClasses.length == 1) {
-			String name = superClasses[0];		
-			IType[] types;
-			if (name.startsWith("::")) {
-				types = DLTKModelUtil.getAllTypes(type.getScriptProject(), name, "::");
-			} else {
-				String scopeFQN = type.getTypeQualifiedName("::");
-				types = DLTKModelUtil.getAllScopedTypes(type.getScriptProject(), name, "::", scopeFQN); 
-			}
-			if (types != null && types.length > 0) {
-				String typeQualifiedName = types[0].getTypeQualifiedName("::").substring(2);
-				String[] FQN = typeQualifiedName.split("::");				
-				return new RubyClassType(FQN, types, null);
-			} else {
-				FakeMethod[] fakeMethods = getFakeMethods((ModelElement) type, name);
-				if (fakeMethods != null) {
-					return new RubyClassType(new String[]{name}, null, fakeMethods);
-				}
-			}
-		}
-		FakeMethod[] fakeMethods = getFakeMethods((ModelElement) type, "Object");
-		return new RubyClassType(new String[]{"Object"}, null, fakeMethods);
-	}
+//	public static RubyClassType getSuperType(IType type) {
+//		String[] superClasses;
+//		try {
+//			superClasses = type.getSuperClasses();
+//		} catch (ModelException e) {	
+//			e.printStackTrace();
+//			return null;
+//		}
+//		if (superClasses != null && superClasses.length == 1) {
+//			String name = superClasses[0];		
+//			IType[] types;
+//			if (name.startsWith("::")) {
+//				types = DLTKModelUtil.getAllTypes(type.getScriptProject(), name, "::");
+//			} else {
+//				String scopeFQN = type.getTypeQualifiedName("::");
+//				types = DLTKModelUtil.getAllScopedTypes(type.getScriptProject(), name, "::", scopeFQN); 
+//			}
+//			if (types != null && types.length > 0) {
+//				String typeQualifiedName = types[0].getTypeQualifiedName("::").substring(2);
+//				String[] FQN = typeQualifiedName.split("::");				
+//				return new RubyClassType(FQN, types, null);
+//			} else {
+//				FakeMethod[] fakeMethods = getFakeMethods((ModelElement) type, name);
+//				if (fakeMethods != null) {
+//					return new RubyClassType(new String[]{name}, null, fakeMethods);
+//				}
+//			}
+//		}
+//		FakeMethod[] fakeMethods = getFakeMethods((ModelElement) type, "Object");
+//		return new RubyClassType(new String[]{"Object"}, null, fakeMethods);
+//	}
 
 	public static FakeMethod[] getFakeMethods(ModelElement parent, String klass) {
 		Metaclass metaclass = BuiltinMethodsDatabase.get(klass);
@@ -423,6 +396,26 @@ public class RubyModelUtils {
 		}
 		
 		return (IMethod[]) result.toArray(new IMethod[result.size()]);
+	}
+
+	/**
+	 * Should return mixin-key of superclass
+	 * @param type
+	 * @return
+	 */
+	public static String evaluateSuperClass(IType type) {
+		String superclass = "Object";
+		String[] superClasses;
+		try {
+			superClasses = type.getSuperClasses();
+		} catch (ModelException e) {
+			e.printStackTrace();
+			return null;
+		}
+		if (superClasses != null && superClasses.length > 0)
+			superclass = superClasses[0];
+		//TODO: add appropriate evaluation here	
+		return superclass;
 	}
 	
 

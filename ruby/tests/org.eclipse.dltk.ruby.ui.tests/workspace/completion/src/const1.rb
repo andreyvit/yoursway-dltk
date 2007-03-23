@@ -1,4 +1,0 @@
-class Megaclass
-end
-
-Mega

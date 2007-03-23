@@ -1,3 +1,0 @@
-x = Object.new
-x.
-

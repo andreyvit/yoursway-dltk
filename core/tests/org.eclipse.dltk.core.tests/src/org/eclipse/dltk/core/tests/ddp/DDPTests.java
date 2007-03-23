@@ -14,7 +14,7 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.IGoalEvaluatorFactory;
 import org.eclipse.dltk.ti.ITypeInferencer;
-import org.eclipse.dltk.ti.TypeInferencer;
+import org.eclipse.dltk.ti.DefaultTypeInferencer;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
@@ -138,7 +138,7 @@ public class DDPTests extends TestCase {
 
 		};
 
-		final ITypeInferencer man = new TypeInferencer(factory);
+		final ITypeInferencer man = new DefaultTypeInferencer(factory);
 
 		ExpressionTypeGoal rootGoal = new ExpressionTypeGoal(null, x);
 		IEvaluatedType answer = man.evaluateType(rootGoal, null);
@@ -183,7 +183,7 @@ public class DDPTests extends TestCase {
 			
 		};
 
-		final ITypeInferencer man = new TypeInferencer(factory);
+		final ITypeInferencer man = new DefaultTypeInferencer(factory);
 
 		ExpressionTypeGoal rootGoal = new ExpressionTypeGoal(null, x);
 		IEvaluatedType answer = man.evaluateType(rootGoal, null);

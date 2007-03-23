@@ -9,7 +9,7 @@ import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
-public class TypeInferencer implements ITypeInferencer {
+public class DefaultTypeInferencer implements ITypeInferencer {
 
 	private Map evaluators = new HashMap();
 
@@ -25,7 +25,7 @@ public class TypeInferencer implements ITypeInferencer {
 				}
 				if (evaluator == null)
 					throw new RuntimeException("No evaluator registered for "
-							+ goalClass.getName());
+							+ goalClass.getName() + " : " + goal);
 				return (GoalEvaluator) evaluator;
 			}
 			Class evalClass = (Class) evaluator;
@@ -50,14 +50,8 @@ public class TypeInferencer implements ITypeInferencer {
 		//registerEvaluator(FieldReferencesGoal.class, FieldReferencesGoalEvaluator.class);
 		//registerEvaluator(MethodCallsGoal.class, MethodCallsGoalEvaluator.class);
 	}
-	
-	public TypeInferencer() {
-		engine = new GoalEngine(new MapBasedEvaluatorFactory());
-		this.userFactory = null;
-		initStdGoals();
-	}
 
-	public TypeInferencer(IGoalEvaluatorFactory userFactory) {
+	public DefaultTypeInferencer(IGoalEvaluatorFactory userFactory) {
 		engine = new GoalEngine(new MapBasedEvaluatorFactory());
 		this.userFactory = userFactory;
 		initStdGoals();

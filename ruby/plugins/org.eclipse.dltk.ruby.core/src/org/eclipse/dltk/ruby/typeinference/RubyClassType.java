@@ -1,88 +1,50 @@
 package org.eclipse.dltk.ruby.typeinference;
 
-import java.util.Arrays;
-
-import org.eclipse.dltk.core.IMethod;
-import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.evaluation.types.IClassType;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
 import org.eclipse.dltk.ti.types.ClassType;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class RubyClassType extends ClassType implements IClassType {
-	
-	public final static RubyClassType OBJECT_CLASS = new RubyClassType(new String[] { "Object" },
-			null, null);
-
-	private String[] fqn;
-	private IType[] fragments;
-	private IMethod[] methods;
 
 	private String modelKey;
-	
+
 	public RubyClassType(String modelKey) {
-		this.modelKey = modelKey;		
+		this.modelKey = modelKey;
 	}
-	
-	public RubyClassType(String[] fqn, IType[] fragments, IMethod[] methods) {
-		this.fqn = fqn;
-		this.fragments = fragments;
-		this.methods = methods;
-	}
-
-
-	
-	public String getTypeName() {
-		if (fqn != null && fqn.length > 0) {
-			return fqn[fqn.length - 1]; 
-		}
-		return null;
-	}
-	
-	
-	public IMethod[] getAllMethods () {
-		return methods;
-	}
-	
-	public IType[] getTypeDeclarations () {
-		return fragments;
-	}
-	
-	public String[] getFQN() {
-		return fqn;
-	}
-
-	public boolean equals(Object obj) {
-		if (obj == this)
-			return true;
-		if (obj instanceof RubyClassType) {
-			RubyClassType peer = (RubyClassType) obj;
-			return Arrays.equals(fqn, peer.fqn);
-		}
-		return false;
-	}
-
-	public int hashCode() {
-		//return Arrays.hashCode(fqn); //XXX
-		return fqn.hashCode();
-	}
-
-
-	public String getUnqualifiedName() {
-		if (fqn != null)
-			return fqn[fqn.length - 1];
-		return modelKey;
-	}
-
-
 
 	public boolean subtypeOf(IEvaluatedType type) {
 		return false;
 	}
 
-
-
 	public String getModelKey() {
-		return modelKey; 
+		return modelKey;
 	}
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((modelKey == null) ? 0 : modelKey.hashCode());
+		return result;
+	}
+
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final RubyClassType other = (RubyClassType) obj;
+		if (modelKey == null) {
+			if (other.modelKey != null)
+				return false;
+		} else if (!modelKey.equals(other.modelKey))
+			return false;
+		return true;
+	}
+	
+	
 
 }

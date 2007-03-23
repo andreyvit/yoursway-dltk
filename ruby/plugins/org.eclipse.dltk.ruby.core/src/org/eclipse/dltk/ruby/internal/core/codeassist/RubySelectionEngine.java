@@ -35,22 +35,24 @@ import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.TypeNameMatch;
 import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
-import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinMethod;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
-import org.eclipse.dltk.ruby.typeinference.RubyMetaClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ruby.typeinference.goals.ColonExpressionGoal;
 import org.eclipse.dltk.ti.BasicContext;
-import org.eclipse.dltk.ti.TypeInferencer;
+import org.eclipse.dltk.ti.DLTKTypeInferenceEngine;
+import org.eclipse.dltk.ti.DefaultTypeInferencer;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
@@ -70,7 +72,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 	
 	private ASTNode[] wayToNode;
 
-	private TypeInferencer inferencer;
+	private DLTKTypeInferenceEngine inferencer;
 
 	private TypeDeclaration getEnclosingType(ASTNode node) {
 		return ASTUtils.getEnclosingType(wayToNode, node, true);
@@ -108,7 +110,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 		super(options);
 		this.nameEnvironment = environment;
 		this.lookupEnvironment = new LookupEnvironment(this, nameEnvironment);
-		inferencer = new TypeInferencer(new RubyEvaluatorFactory());
+		inferencer = new DLTKTypeInferenceEngine();
 	}
 
 	public IAssistParser getParser() {
@@ -200,6 +202,8 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 	}
 			
 	
+		
+	
 
 	/**
 	 * Checks, whether giver selection is correct selection, or can be expanded 
@@ -256,21 +260,16 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 				RubyClassType classType = null;
 				if (type instanceof RubyClassType) {
 					classType = (RubyClassType) type;
-				} else if (type instanceof RubyMetaClassType) {
-					classType = (RubyClassType) ((RubyMetaClassType)type).getInstanceType();
-				}
-				if (classType != null) {
-					RubyClassType type2 = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), classType);
-					IType[] typeDeclarations = type2.getTypeDeclarations();
-					if (typeDeclarations != null) {
-						for (int i = 0; i < typeDeclarations.length; i++) {
-							selectionElements.add(typeDeclarations[i]);
+					RubyMixinClass rubyClass = RubyMixinModel.getInstance().createRubyClass(classType);
+					IType[] sourceTypes = rubyClass.getSourceTypes();
+					if (sourceTypes != null)
+						for (int i = 0; i < sourceTypes.length; i++) {
+							selectionElements.add(sourceTypes[i]);
 							foundSomething = true;
 						}
-					}
-				}
+				} 
 			}
-		} else if (node instanceof ConstantReference) {
+		} else if (node instanceof ConstantReference) { //FIXME
 			ConstantReference constantReference = (ConstantReference) node;
 			qualifiedName = constantReference.getName();
 			IDLTKProject project = modelModule.getScriptProject();		
@@ -311,11 +310,13 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 			}
 		}
 	}
-		
+	
+
+	
 	private void selectionOnVariable (org.eclipse.dltk.core.ISourceModule modelModule, 
 			ModuleDeclaration parsedUnit, VariableReference e) {
 		String name = e.getName();
-		if (name.startsWith("@")) {
+		if (name.startsWith("@")) {						
 			IField[] fields = RubyModelUtils.findFields(modelModule, parsedUnit, name, e.sourceStart());
 			for (int i = 0; i < fields.length; i++) {
 				selectionElements.add(fields[i]);
@@ -387,25 +388,22 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 		IMethod[] availableMethods = null;
 		
 		if (receiver == null) {
-			IClassType type = RubyTypeInferencingUtils.determineSelfClass(modelModule, parsedUnit, parentCall.sourceStart());
+			RubyClassType type = RubyTypeInferencingUtils.determineSelfClass(modelModule, parsedUnit, parentCall.sourceStart());
 			if (type instanceof RubyClassType) {
-				RubyClassType rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), (RubyClassType) type);
-				availableMethods = rubyClassType.getAllMethods();				
-			} else if (type instanceof RubyMetaClassType) {
-				RubyMetaClassType metaClassType = RubyTypeInferencingUtils.resolveMethods(modelModule, (RubyMetaClassType) type);				
-				availableMethods = metaClassType.getMethods();
-			}
+				RubyMixinClass rubyClass = RubyMixinModel.getInstance().createRubyClass(type);
+				RubyMixinMethod method = rubyClass.getMethod(methodName);
+				if (method != null)
+					availableMethods = method.getSourceMethods();							
+			} 
 		} else {
 			ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(modelModule, parsedUnit), receiver);
 			IEvaluatedType type = inferencer.evaluateType(goal, null);
 			if (type instanceof RubyClassType) {
 				RubyClassType rubyClassType = (RubyClassType) type;
-				rubyClassType = RubyTypeInferencingUtils.resolveMethods(modelModule.getScriptProject(), rubyClassType);
-				availableMethods = rubyClassType.getAllMethods();
-			} else if (type instanceof RubyMetaClassType) {
-				RubyMetaClassType metaType = (RubyMetaClassType) type;
-				metaType = RubyTypeInferencingUtils.resolveMethods(modelModule, metaType);
-				availableMethods = metaType.getMethods();
+				RubyMixinClass rubyClass = RubyMixinModel.getInstance().createRubyClass(rubyClassType);
+				RubyMixinMethod method = rubyClass.getMethod(methodName);
+				if (method != null)
+					availableMethods = method.getSourceMethods();							
 			} else if (type instanceof SimpleType) {
 				SimpleType simpleType = (SimpleType) type;
 				IMethod[] meth = null;

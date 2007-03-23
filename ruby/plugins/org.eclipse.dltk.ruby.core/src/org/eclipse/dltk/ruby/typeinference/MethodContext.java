@@ -1,6 +1,9 @@
 package org.eclipse.dltk.ruby.typeinference;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.ti.IContext;
@@ -54,6 +57,19 @@ public class MethodContext implements IContext, IArgumentsContext, IInstanceCont
 
 	public ISourceModule getSourceModule() {
 		return sourceModule;
+	}
+	
+	public String getLangNature() {
+		if (sourceModule != null) {
+			try {
+				IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager.getLanguageToolkit(sourceModule);
+				if (languageToolkit != null)
+					return languageToolkit.getNatureID();
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 }
