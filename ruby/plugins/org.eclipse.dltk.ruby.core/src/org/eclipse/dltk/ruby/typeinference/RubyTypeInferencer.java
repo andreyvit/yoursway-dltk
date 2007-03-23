@@ -11,8 +11,8 @@ public class RubyTypeInferencer extends DefaultTypeInferencer {
 		super( new RubyEvaluatorFactory());
 	}
 
-	public IEvaluatedType evaluateType(AbstractTypeGoal goal, IPruner pruner) {
-		return super.evaluateType(goal, pruner);
+	public IEvaluatedType evaluateType(AbstractTypeGoal goal) {
+		return super.evaluateType(goal, null); //TODO: add pruner
 	}
 
 }

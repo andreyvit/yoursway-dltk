@@ -40,6 +40,20 @@ public class RubyMixinClass implements IRubyMixinElement {
 		return key;
 	}
 	
+	public RubyMixinClass getMetaclass () {
+		if (isMeta())
+			return this;
+		String metakey = key.substring(0, key.indexOf(RubyMixin.INSTANCE_SUFFIX));
+		IRubyMixinElement r = model.createRubyElement(metakey);
+		if (r instanceof RubyMixinClass)
+			return (RubyMixinClass) r;
+		return null;
+	}
+	
+	public boolean isMeta () {
+		return (!key.endsWith(RubyMixin.INSTANCE_SUFFIX))&&(!key.endsWith(RubyMixin.VIRTUAL_SUFFIX));
+	}
+	
 	public String getName () {
 		String name = key.substring(key.lastIndexOf(MixinModel.SEPARATOR));
 		int pos;

@@ -8,20 +8,24 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
+import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.ConstantReference;
+import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
+import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
+import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
 import org.eclipse.dltk.ruby.ast.RubySingletonClassDeclaration;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.SelfReference;
+import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.internal.core.RubyClassDeclaration;
-import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencer;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ti.DLTKTypeInferenceEngine;
 import org.eclipse.dltk.ti.ITypeInferencer;
@@ -111,11 +115,15 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 
 		public String reportVariable(String name, Object object) {
 			String key = null;
-			if (name.startsWith("@@")) {
+			if (name.startsWith("@@")) {				
+				key = classKey + SEPARATOR + name;
+				report(classKey + INSTANCE_SUFFIX + SEPARATOR + name, object);
+				return report(key, object);
+			} else if (name.startsWith("@")) {
 				key = classKey + SEPARATOR + name;
 				return report(key, object);
 			} else {
-				key = classKey + INSTANCE_SUFFIX + SEPARATOR + name;
+				key = classKey + SEPARATOR + name;
 				return report(key, object);
 			}
 		}
@@ -150,6 +158,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 
 		public String reportVariable(String name, Object object) {
 			if (name.startsWith("@@")) {
+				report(classKey + INSTANCE_SUFFIX + SEPARATOR + name, object);
 				return report(classKey + SEPARATOR + name, object);
 			} else {
 				return report(classKey + SEPARATOR + name, object);
@@ -185,8 +194,18 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		}
 
 		public String reportVariable(String name, Object obj) {
-			if (name.startsWith("@")) {
-				return classScope.reportVariable(name, obj);
+			if (name.startsWith("@@")) {
+				String key = classScope.getKey() + SEPARATOR + name;
+				report(classScope.getKey() + INSTANCE_SUFFIX + SEPARATOR + name, obj);
+				return report(key, obj);
+			} if (name.startsWith("@")) {
+				String key;
+				if (classScope instanceof ClassScope) {
+					key = classScope.getKey() + INSTANCE_SUFFIX + SEPARATOR + name;
+				} else {
+					key = classScope.getKey() + SEPARATOR + name;
+				}
+				return report(key, obj);
 			} else {
 				return report(methodKey + SEPARATOR + name, obj);
 			}
@@ -258,7 +277,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 				MetaClassScope metaScope = new MetaClassScope(scope.getNode(),
 						scope.getClassKey());
 				String method = metaScope.reportMethod(name, obj);
-				scopes.push(new MethodScope(decl, scope, method));
+				scopes.push(new MethodScope(decl, metaScope, method));
 			} else if (receiver instanceof ConstantReference
 					|| receiver instanceof ColonExpression) {
 				String evaluatedClassKey = evaluateClassKey(receiver);
@@ -267,7 +286,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 					MetaClassScope metaScope = new MetaClassScope(decl,
 							evaluatedClassKey);
 					String method = metaScope.reportMethod(name, obj);
-					scopes.push(new MethodScope(decl, scope, method));
+					scopes.push(new MethodScope(decl, metaScope, method));
 				} 
 			} else {
 				// TODO
@@ -280,8 +299,38 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		return true;
 	}
 
+	
+	
+	public boolean visit(Expression s) throws Exception {
+		return this.visit((Statement)s);
+	}
+
 	public boolean visit(Statement s) throws Exception {
-		// TODO Auto-generated method stub
+		if (s instanceof RubyMethodArgument) {
+			RubyMethodArgument argument = (RubyMethodArgument) s;
+			String name = argument.getName();
+			Scope scope = peekScope();
+			Object obj = null;
+			if (sourceModule != null) {
+				obj = new FakeField((ModelElement) sourceModule, name, s.sourceStart(), s.sourceEnd());
+			}
+			String key = scope.reportVariable(name, obj);
+			System.out.println("Variable reported: " + key);
+		}
+		if (s instanceof Assignment) {
+			Assignment assignment = (Assignment) s;
+			Expression left = assignment.getLeft();
+			if (left instanceof VariableReference) {
+				VariableReference ref = (VariableReference) left;
+				String name = ref.getName();
+				Scope scope = peekScope();
+				Object obj = null;
+				if (sourceModule != null)
+					obj = new FakeField((ModelElement) sourceModule, name, ref.sourceStart(), ref.sourceEnd());
+				String key = scope.reportVariable(name, obj);
+				System.out.println("Variable reported: " + key);
+			}			
+		}
 		return super.visit(s);
 	}
 
@@ -331,9 +380,9 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		info.object = object;
 		if (requestor != null) {
 			requestor.reportElement(info);
-//			if (DLTKCore.DEBUG_INDEX) {
+			if (DLTKCore.DEBUG_INDEX) {
 				System.out.println("Mixin reported: " + key);
-//			}
+			}
 		}
 		return key;
 	}

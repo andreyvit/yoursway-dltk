@@ -60,7 +60,6 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	protected int getEndOfEmptyToken() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -156,6 +155,8 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				if (sourceMethods != null && sourceMethods.length > 0)
 					result.add(sourceMethods[0]);
 			}
+			
+			
 		} else if (type instanceof SimpleType) {
 			SimpleType simpleType = (SimpleType) type;
 			IMethod[] meth = null;

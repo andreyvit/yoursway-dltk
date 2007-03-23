@@ -26,7 +26,7 @@ end
 
 class Var2
 
-	class foo
+	class Foo
 		abc = 4
 	end
 	
@@ -41,7 +41,7 @@ class Var2
 end
 
 ## get Var2{local
-## get Var2%{foo{abc
+## get Var2{Foo{abc
 ## get Var2{foo2{abc2
 
 def global_method
@@ -50,7 +50,7 @@ end
 
 ## get global_method{var
 
-def Var2.meta1
+def (::Var2).meta1
 	@m1 = 33
 	@@m2 = 455
 end
