@@ -55,41 +55,41 @@ import org.eclipse.dltk.ruby.internal.typehierarchy.RubyTypeHierarchyEngine;
 public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	private static RubyLanguageToolkit sToolkit = new RubyLanguageToolkit();
 
-	private IStatus isRubyHeadered(File file) {
-		//XXX: what a ??? are doing here?
-		//TODO: implement a real checking for file as ruby-file
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			int size = (int) file.length(); // i hope, that size is convertable
-			// to int
-			char buf[] = new char[size + 1];
-			reader.read(buf);
-
-			String header = new String(buf);
-
-			if (header.indexOf("ruby") != -1) {
-				return IModelStatus.VERIFIED_OK;
-			}
-		} catch (FileNotFoundException e) {
-			return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
-					"Can't open file", null);
-		} catch (IOException e) {
-			return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
-					"Can't read file", null);
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-					// Nothing to do
-				}
-			}
-		}
-
-		return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
-				"Header not found", null);
-	}
+//	private IStatus isRubyHeadered(File file) {
+//		//XXX: what a ??? are doing here?
+//		//TODO: implement a real checking for file as ruby-file
+//		BufferedReader reader = null;
+//		try {
+//			reader = new BufferedReader(new FileReader(file));
+//			int size = (int) file.length(); // i hope, that size is convertable
+//			// to int
+//			char buf[] = new char[size + 1];
+//			reader.read(buf);
+//
+//			String header = new String(buf);
+//
+////			if (header.indexOf("ruby") != -1) {
+////				return IModelStatus.VERIFIED_OK;
+////			}
+//		} catch (FileNotFoundException e) {
+//			return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
+//					"Can't open file", null);
+//		} catch (IOException e) {
+//			return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
+//					"Can't read file", null);
+//		} finally {
+//			if (reader != null) {
+//				try {
+//					reader.close();
+//				} catch (IOException e) {
+//					// Nothing to do
+//				}
+//			}
+//		}
+//
+//		return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
+//				"Header not found", null);
+//	}
 
 	public RubyLanguageToolkit() {
 
@@ -180,10 +180,10 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 			return new Status(IModelStatus.ERROR, RubyPlugin.PLUGIN_ID, 1, "Resource passed to validateSourceModule() is null", null);
 		
 		String ext = resource.getLocation().getFileExtension();
-		if (ext == null || ext.length() == 0)
-			if (isRubyHeadered(resource.getLocation().toFile()) == IModelStatus.VERIFIED_OK) {
-				return IModelStatus.VERIFIED_OK;
-			}
+//		if (ext == null || ext.length() == 0)
+//			if (isRubyHeadered(resource.getLocation().toFile()) == IModelStatus.VERIFIED_OK) {
+//				return IModelStatus.VERIFIED_OK;
+//			}
 
 		return validateSourceModule(resource.getName());
 	}

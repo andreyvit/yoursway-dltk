@@ -3,8 +3,11 @@ package org.eclipse.dltk.core.mixin;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -112,8 +115,8 @@ public class MixinModel {
 
 	private void markElementAsFinal(MixinElement element) {
 		element.bFinal = true;
-		for( int i = 0; i < element.children.size(); ++i ) {
-			markElementAsFinal((MixinElement)element.children.get(i));
+		for( Iterator i = element.children.iterator();i.hasNext();  ) {
+			markElementAsFinal((MixinElement)i.next());
 		}
 	}
 
@@ -140,7 +143,7 @@ public class MixinModel {
 	 * @param element
 	 * @return
 	 */
-	private ISourceModule[] findModules(MixinElement element ) {
+	private ISourceModule[] findModules( MixinElement element ) {
 		long start = System.currentTimeMillis();
 		ISourceModule[] searchMixinSources = SearchEngine.searchMixinSources(element.getKey(), toolkit);
 		long end = System.currentTimeMillis();
@@ -238,7 +241,7 @@ public class MixinModel {
 		/**
 		 * List of Strings.
 		 */
-		private List children = new ArrayList();
+		private Set children = new HashSet();
 
 		public boolean equals(Object obj) {
 			if( obj instanceof MixinElement ) {
@@ -427,9 +430,9 @@ public class MixinModel {
 
 		private void addElementToModules(MixinElement element) {
 			List elements = (List)MixinModel.this.elementToMixinCache.get(currentModule);
-			if( !elements.contains(element)) {
-				elements.add(element);
-			}
+//			if( !elements.contains(element)) {
+			elements.add(element);
+//			}
 		}
 	};
 }
