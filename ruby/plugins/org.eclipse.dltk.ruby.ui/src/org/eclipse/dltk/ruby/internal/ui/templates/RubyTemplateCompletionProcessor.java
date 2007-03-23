@@ -46,7 +46,7 @@ public class RubyTemplateCompletionProcessor extends
 				s = s.substring(spaceIndex);
 			}
 
-			if (s.indexOf('.') == -1) {
+			if (s.indexOf('.') == -1 && s.indexOf(':') == -1) {
 				return RubyTemplateAccess
 						.getInstance()
 						.getContextTypeRegistry()
