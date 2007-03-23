@@ -16,12 +16,14 @@ set strStdout ""
 
 proc my_puts {args} {
 	global strStdout
+
 	switch -exact -- [llength $args] {
 		#puts "data"
 		1 {
 			set arg0 [lindex $args 0]
 			append strStdout $arg0
 			append strStdout "\n"
+			return
 		}
 
 		#puts -nonewline "data"
@@ -35,10 +37,11 @@ proc my_puts {args} {
 				append strStdout $arg1
 				append strStdout "\n"
 			} else {
-				puts $arg0 $arg1
-			}			
+				evaluate [list __dltk__puts__ $arg0 $arg1]
+			}
+			return
 		}
-		
+
 		#puts stdout -nonewline "data"
 		3 {
 			set arg0 [lindex $args 0]
@@ -48,17 +51,59 @@ proc my_puts {args} {
 			if {$arg1 eq "stdout"} {
 				append strStdout $arg2
 			} else {
-				puts $arg0 $arg1 $arg2
-			}			
+				evaluate [list __dltk__puts__ $arg0 $arg1 $arg2]
+			}
+			return
 		}
 	}
+
+	append strStdout "wrong # args: should be \"puts ?-nonewline? ?channelId? string\"\n"
+}
+
+# Internal interpreter
+proc my_gets {args} {
+	global strStdout
+
+	switch -exact -- [llength $args] {
+		1 {
+			set arg0 [lindex $args 0]
+
+			if {$arg0 eq "stdin"} {
+				append strStdout "Input from 'stdin' not supported\n"
+			} else {
+				evaluate [list __dltk__gets__ $arg0]
+			}
+			
+			return
+		}
+
+		2 {
+			set arg0 [lindex $args 0]
+			set arg1 [lindex $args 1]
+
+			if {$arg0 eq "stdin"} {
+				append strStdout "Input from 'stdin' not supported\n"
+			} else {
+				evaluate [list __dltk__gets__ $arg0 $arg1]
+			}
+			
+			return
+		}
+	}
+
+	append strStdout "wrong # args: should be \"gets channelId ?varName?\"\n"
+}
+
+proc my_exit {args} {
+	global strStdout
+	append strStdout "'exit' command not supported, please close console from Eclipse\n"
 }
 
 proc getOutput { {clear 1} } {
 	global strStdout
-	
+
 	set output $strStdout
-	
+
 	if {$clear} {
 		set strStdout ""
 	}
@@ -66,49 +111,50 @@ proc getOutput { {clear 1} } {
 	return $output
 }
 
-# Internal interpreter
-proc my_gets {args} {
-	switch -exact -- [llength $args] {
-		1 {
-			set arg0 [lindex $args 0]
-
-		}
-		
-		2 {
-			set arg0 [lindex $args 0]
-			set arg1 [lindex $args 1]
-
-		}
-	}
-}
-
 
 proc getInput { {clear 1} } {
 
 }
 
-
 interp create foo
-
-foo alias puts my_puts
-#foo alias gets my_gets
 
 proc evaluate {statement} {
 	global foo
 
-	catch { 
-		foo eval $statement 
+	catch {
+		foo eval $statement
 	} res
 
 	return $res
 }
+
+evaluate "rename puts __dltk__puts__"
+evaluate "rename gets __dltk__gets__"
+evaluate "rename exit __dltk__exit__"
+
+foo alias puts my_puts
+foo alias gets my_gets
+foo alias exit my_exit
 
 proc findProcs { {pattern "*"} } {
 	return [evaluate "uplevel #0 info procs $pattern"]
 }
 
 proc findCommands { {pattern "*"} } {
-	return [evaluate "uplevel #0 info commands $pattern"]
+	set cs [evaluate "uplevel #0 info commands $pattern"]	
+	
+	set commands {}
+	foreach c $cs {
+		if { $c eq "__dltk__puts__" || $c eq "__dltk__gets__" || $c eq "__dltk__exit__" } {
+			continue
+		}
+	
+		lappend commands $c
+	}
+	
+	return $commands	
+	
+	return $cs
 }
 
 proc findVars { {pattern "*"} } {
@@ -190,7 +236,7 @@ proc matchPattern { line pos pattern } {
 proc extractVarPrefix { loc line pos } {
 	set first [lindex $loc 0]
 	set last [lindex $loc 1]
-	
+
 	if {$first == $pos} {
 		return 0
 	}
@@ -201,10 +247,10 @@ proc extractVarPrefix { loc line pos } {
 proc extractVarName { loc line pos } {
 	set first [lindex $loc 0]
 	set last [lindex $loc 1]
-	
+
 	if {$first == $pos} {
 		return ""
-	}	
+	}
 
 	return [string range $line [expr {$first + 1}] $last]
 }
@@ -214,7 +260,7 @@ proc extractVarName { loc line pos } {
 proc extractProcPrefix { loc line pos } {
 	set first [lindex $loc 0]
 	set last [lindex $loc 1]
-	
+
 	if {$first == $pos} {
 		return ""
 	}
@@ -256,12 +302,12 @@ proc makeDescriptionNode {body} {
 proc makeInterpreterNode {state body} {
 	return "<interpreter state=\"$state\">$body</interpreter>"
 }
-                  
+
 proc makeCompletionNode {body} {
 	return "<completion>$body</completion>"
 }
 
-proc makeCompletionCaseNode {display insert type} {	
+proc makeCompletionCaseNode {display insert type} {
 	return "<case display=\"$display\" insert=\"$insert\" type=\"$type\" />"
 }
 
@@ -276,7 +322,7 @@ proc makeCompletion { commandLine cursorPos } {
 		set xml ""
 		foreach match $matches {
 			set insert [skipPrefix [string length $prefix] $match]
-			
+
 			if {$type == "proc"} {
 				if {[hasProc $match]} {
 					set args [getProcArgs $match]
@@ -294,8 +340,8 @@ proc makeCompletion { commandLine cursorPos } {
 		append pattern "*"
 		puts "Proc: |$pattern|"
 		set commands [findCommands $pattern]
-                return [generateCompletions $prefix $commands "proc"]
-        	
+        return [generateCompletions $prefix $commands "proc"]
+
 	}
 
 	proc completeVar { prefix } {
@@ -321,11 +367,11 @@ proc makeCompletion { commandLine cursorPos } {
 		} else {
 			puts "No var name"
 		}
-	} else {	
+	} else {
 		set loc [matchPattern $commandLine $cursorPos $procPattern]
 		if {[isLocation $loc]} {
 			set procNamePrefix [extractProcPrefix $loc $commandLine $cursorPos]
-			if {$procNamePrefix != 0} {			
+			if {$procNamePrefix != 0} {
 				append xml [completeProc $procNamePrefix]
 			} else {
 				puts "No proc name"
@@ -334,8 +380,8 @@ proc makeCompletion { commandLine cursorPos } {
 			puts "Generate default list"
 			append xml [completeProc ""]
 			append xml [completeVar ""]
-		}	
-	}	
+		}
+	}
 
 
 	return [makeCompletionNode $xml]
@@ -352,7 +398,7 @@ proc makeDescription { commandLine cursorPos } {
 			return  "$name = [getOutput]"
 		} else {
 			return ""
-		}		
+		}
 	}
 
 	proc describeProc {name} {
@@ -362,7 +408,7 @@ proc makeDescription { commandLine cursorPos } {
 			return  "$name \{$args\}"
 		} else {
 			return ""
-		}		
+		}
 	}
 
 	global procPattern varPattern
@@ -374,13 +420,13 @@ proc makeDescription { commandLine cursorPos } {
 	if {[isLocation $loc]} {
 		set name [extractVarName $loc $commandLine $cursorPos]
 		set xml [describeVar $name]
-	} else {	
+	} else {
 		set loc [matchPattern $commandLine $cursorPos $procPattern]
 		if {[isLocation $loc]} {
-			set name [extractProcName $loc $commandLine $cursorPos] 
+			set name [extractProcName $loc $commandLine $cursorPos]
 			set xml [describeProc $name]
-		} 
-	}	
+		}
+	}
 
 	return [makeDescriptionNode $xml]
 }
@@ -389,8 +435,8 @@ proc makeDescription { commandLine cursorPos } {
 # Communication functions
 proc connectToServer {host port} {
 	set client [socket $host $port]
-	fconfigure $client -translation binary	
-	return $client	
+	fconfigure $client -translation binary
+	return $client
 }
 
 
@@ -404,7 +450,7 @@ proc sendResponse { out str } {
 		set str [string repeat "0" [expr {$len - $n}]]
 		append str $val
 		return $str
-	}        
+	}
 
 	set len [string length $str]
 	set strLen [makeFixedLength $len 10]
@@ -430,9 +476,9 @@ proc shellHandler {input} {
 
 	switch -exact -- $command {
 		"close" {
-			set closeFlag 1	
+			set closeFlag 1
 			return [makeShellNode [makeCloseNode]]
-		}	
+		}
 
 		"complete" {
 			gets $input commandLine
@@ -441,17 +487,17 @@ proc shellHandler {input} {
 			puts "Position: $cursorPosition"
 
 			return [makeShellNode [makeCompletion $commandLine $cursorPosition]]
-		}		
-	
+		}
+
 		"describe" {
 			gets $input commandLine
 			puts "Command line: $commandLine"
 			gets $input cursorPosition
 			puts "Position: $cursorPosition"
-			
+
 			return [makeShellNode [makeDescription $commandLine $cursorPosition]]
 		}
-		
+
 		default {
 			puts "Invalid shell command..."
 		}
@@ -461,7 +507,7 @@ proc shellHandler {input} {
 # Interpreter handler
 set command ""
 
-proc interpreterHandler {input} {	
+proc interpreterHandler {input} {
 	global command
 
 	puts "Invoking interpreterHandler..."
@@ -492,11 +538,7 @@ proc interpreterHandler {input} {
 	return [makeInterpreterNode "continue" ""]
 }
 
-# Connecting to IDE...
-#set host "localhost"
-#set port 25000
-#set id xxx
-
+# Reading command line args
 set host [lindex $argv 0]
 set port [lindex $argv 1]
 set id   [lindex $argv 2]
@@ -514,12 +556,13 @@ if {[llength $argv] > 3} {
 	for {set i 4} {$i < $argc} {incr i} {
 		lappend scriptArgs [lindex $argv $i]
 	}
-	
+
 	puts "Script args: "
 	evaluate [list set argc [llength $scriptArgs]]
 	evaluate [list set argv $scriptArgs]
 }
 
+# Testing
 #set in stdin
 #set out stdout
 
@@ -530,7 +573,6 @@ set out $server
 
 # Send initial information
 sendResponse $out [makeConsoleNode [makeInfoNode $id]]
-
 
 # Handle commands and send responses
 proc localHandler {} {
@@ -549,16 +591,9 @@ proc localHandler {} {
 	}
 
 	if {$closeFlag} {
-		puts "Exiting..."
 		exit 0
 	}
 }
 
 fileevent $in readable localHandler
 vwait __forever__
-
-# Console data
-#set commandLine {auto_i}
-#set cursorPos 1
-#printCommandLine $commandLine $cursorPos
-#set xml [makeConsoleNode [makeShellNode [makeCompletion $commandLine $cursorPos]]]  
