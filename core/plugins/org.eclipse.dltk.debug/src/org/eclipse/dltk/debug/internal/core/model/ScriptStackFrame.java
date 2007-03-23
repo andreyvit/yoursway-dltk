@@ -181,6 +181,10 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	public boolean equals(Object obj) {
 		if (obj instanceof ScriptStackFrame) {
 			ScriptStackFrame sf = (ScriptStackFrame) obj;
+			
+			if (stackLevel.getLineNumber() != sf.stackLevel.getLineNumber()){
+				return false;
+			}
 
 			if (variables.length != sf.variables.length) {
 				return false;
