@@ -203,7 +203,6 @@ public class RubyTypeInferencingUtils {
 		if (keys != null && keys.length > 0) {
 			String inner = keys[keys.length - 1];
 			IRubyMixinElement rubyElement = rubyModel.createRubyElement(inner);
-			System.out.println();
 			if (rubyElement instanceof RubyMixinMethod) {
 				RubyMixinMethod method = (RubyMixinMethod) rubyElement;
 				return new RubyClassType(method.getSelfType().getKey());

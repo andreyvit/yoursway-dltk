@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import junit.framework.Test;
 
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
@@ -47,6 +50,9 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 		PROJECT = setUpScriptProject(SELECTION_PROJECT);
 
 		super.setUpSuite();
+		waitUntilIndexesReady();
+		ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+		waitForAutoBuild();
 	}
 
 	public static Test suite() {
