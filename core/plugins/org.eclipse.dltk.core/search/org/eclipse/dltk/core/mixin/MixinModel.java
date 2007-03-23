@@ -250,6 +250,7 @@ public class MixinModel {
 						MixinElement parent = (MixinElement)this.cache.get(parentKey);
 						if( parent != null ) {
 							parent.children.remove(mixin);
+							parent.bFinal = false;
 						}
 					}
 					// Remove from cache
