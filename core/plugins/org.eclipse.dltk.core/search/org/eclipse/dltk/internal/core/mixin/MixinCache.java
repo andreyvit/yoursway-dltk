@@ -43,7 +43,7 @@ public class MixinCache extends OverflowingLRUCache {
 	 * element.
 	 */
 	protected boolean close(LRUCacheEntry entry) {
-		IMixinElement element = (IMixinElement) entry._fKey;
+		IMixinElement element = (IMixinElement) entry._fValue;
 		if( element instanceof IInternalMixinElement ) {
 			((IInternalMixinElement)element).close();
 		}

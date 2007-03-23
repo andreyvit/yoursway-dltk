@@ -224,7 +224,8 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 			return null;
 
 		// set the buffer source
-		if (buffer.getCharacters() == null) {
+		char[] chars = buffer.getCharacters();
+		if (chars == null ) {
 			if (isWorkingCopy) {
 				ISourceModule original;
 				if (!isPrimary() && (original = new ExternalSourceModule((ScriptFolder) getParent(), getElementName(), DefaultWorkingCopyOwner.PRIMARY, this.fStorage)).isOpen()) {

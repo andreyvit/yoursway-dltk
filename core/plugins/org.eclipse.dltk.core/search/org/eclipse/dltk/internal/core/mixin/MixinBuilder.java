@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -30,6 +31,7 @@ import org.eclipse.dltk.core.search.indexing.InternalSearchDocument;
 import org.eclipse.dltk.internal.core.ExternalProjectFragment;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
 import org.eclipse.dltk.internal.core.ModelManager;
+import org.eclipse.dltk.internal.core.SourceModule;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
 
 public class MixinBuilder implements IScriptBuilder {
@@ -60,11 +62,12 @@ public class MixinBuilder implements IScriptBuilder {
 				ISourceModule element = (ISourceModule) elements.get(i);
 				
 				IProjectFragment projectFragment = (IProjectFragment)element.getAncestor(IModelElement.PROJECT_FRAGMENT);
-				
+				IPath containerPath = project.getPath();
 				if( projectFragment instanceof ExternalProjectFragment ) {
 					IPath path = projectFragment.getPath();
 					if( indexes.containsKey(path)) {
 						currentIndex = (Index)indexes.get(path);
+						containerPath = path;
 					}
 					else {
 						Index index = manager.getSpecialIndex("mixin:"
@@ -72,6 +75,7 @@ public class MixinBuilder implements IScriptBuilder {
 						if( index != null ) {
 							currentIndex = index;
 							indexes.put(path, index);
+							containerPath = path;
 						}
 					}
 				}
@@ -79,19 +83,24 @@ public class MixinBuilder implements IScriptBuilder {
 				char[] source = element.getSourceAsCharArray();
 				SearchParticipant participant = SearchEngine
 						.getDefaultSearchParticipant();
-				DLTKSearchDocument document = new DLTKSearchDocument(element
-						.getPath().toOSString(), participant, false);
+				
+				DLTKSearchDocument document;
+					document = new DLTKSearchDocument(element
+						.getPath().toOSString(), containerPath, source, participant, element instanceof ExternalSourceModule );
 //				System.out.println("mixin indexing:" + document.getPath());
 				((InternalSearchDocument) document).toolkit = toolkit;
+				String containerRelativePath = null;
+				
 				if (element instanceof ExternalSourceModule) {
-					((InternalSearchDocument) document)
-							.setContainerRelativePath(element.getPath()
-									.toOSString());
+					containerRelativePath= (element.getPath().removeFirstSegments(containerPath.segmentCount()).setDevice(null)
+									.toString());
 				} else {
-					((InternalSearchDocument) document)
-							.setContainerRelativePath(element.getPath()
+					containerRelativePath = (element.getPath()
 									.removeFirstSegments(1).toOSString());
 				}
+				((InternalSearchDocument) document)
+				.setContainerRelativePath(containerRelativePath);
+				currentIndex.remove(containerRelativePath);
 				((InternalSearchDocument) document).setIndex(currentIndex);
 				new MixinIndexer(document, source).indexDocument();
 			}

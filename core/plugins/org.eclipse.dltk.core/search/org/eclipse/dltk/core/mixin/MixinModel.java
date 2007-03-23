@@ -89,9 +89,9 @@ public class MixinModel {
 	}
 
 	private void buildElementTree(MixinElement element) {
-		if (element.isFinal()) {
-			return;
-		}
+//		if (element.isFinal()) {
+//			return;
+//		}
 		ISourceModule[] containedModules = findModules(element);
 		if( containedModules.length == 0 ) {
 			synchronized (cache) {
@@ -123,7 +123,7 @@ public class MixinModel {
 			mixinParser = MixinManager.getMixinParser(sourceModule);
 			if (mixinParser != null) {
 				this.currentModule = sourceModule;
-				char[] content = sourceModule.getSource().toCharArray();
+				char[] content = sourceModule.getSourceAsCharArray();
 				mixinParser.setRequirestor(mixinRequestor);
 				mixinParser.parserSourceModule(content, true, sourceModule );
 				this.currentModule = null;
@@ -134,23 +134,6 @@ public class MixinModel {
 		}
 	}
 
-//	private void processChildren(IModelElement element, List els) {
-//		if (element.getElementType() == IModelElement.SOURCE_MODULE) {
-//			els.add(element);
-//		} else if (element instanceof IParent) {
-//			IParent parent = (IParent) element;
-//			IModelElement[] children = null;
-//			try {
-//				children = parent.getChildren();
-//			} catch (ModelException e) {
-//				return;
-//			}
-//			for (int i = 0; i < children.length; ++i) {
-//				processChildren(children[i], els);
-//			}
-//		}
-//	}
-
 	/**
 	 * Should find all elements source modules to be shure we build complete child tree.
 	 * @param element
@@ -159,27 +142,6 @@ public class MixinModel {
 	private ISourceModule[] findModules(MixinElement element ) {
 		return SearchEngine.searchMixinSources(element.getKey(), toolkit);
 	}
-//	private ISourceModule[] findModules(MixinElement element) {
-//		// lets for test add all possible modules from workspace.
-//		List modules = new ArrayList();
-//		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
-//				.getProjects();
-//		for (int i = 0; i < projects.length; ++i) {
-//			IDLTKProject prj = DLTKCore.create(projects[i]);
-//			IDLTKLanguageToolkit languageToolkit = null;
-//			try {
-//				languageToolkit = DLTKLanguageManager.getLanguageToolkit(prj);
-//			} catch (CoreException e) {
-//				e.printStackTrace();
-//				continue;
-//			}
-//			if (languageToolkit != null && languageToolkit.getNatureID().equals(this.toolkit.getNatureID())) {
-//				processChildren(prj, modules);
-//			}
-//		}
-//		return (ISourceModule[]) modules.toArray(new ISourceModule[modules
-//				.size()]);
-//	}
 
 	private synchronized MixinElement getCreateEmpty(String key) {
 		MixinElement element = (MixinElement)MixinModel.this.cache.get(key);
@@ -410,6 +372,24 @@ public class MixinModel {
 			this.bFinal = false;
 			this.sourceModules.clear();
 			this.sourceModuleToObject.clear();
+			
+			// Lets also clean parent data
+			// Remove frob parent.
+			String parentKey = getParentKey();
+			MixinElement element = this;
+			while( parentKey != null ) {
+				MixinElement parent = (MixinElement)cache.get(parentKey);
+				if( parent != null ) {
+					parent.children.remove(element);
+					parent.bFinal = false;
+					element = parent;
+					parentKey = parent.getParentKey();
+				}
+				else {
+					break;
+				}
+			}
+			
 		}
 		private void validate() {
 			if( !isFinal() ) {
