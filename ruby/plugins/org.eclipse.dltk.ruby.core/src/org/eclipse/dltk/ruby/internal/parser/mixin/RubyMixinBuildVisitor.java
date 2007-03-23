@@ -272,8 +272,9 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	public boolean visit(MethodDeclaration decl) throws Exception {
 		Object obj = null;
 		String name = decl.getName();
-		if (moduleAvailable)
-			obj = sourceModule.getElementAt(decl.sourceStart() + 1);
+		if (moduleAvailable) {
+			obj = sourceModule.getElementAt(decl.sourceStart() + 1);			
+		}
 		if (decl instanceof RubySingletonMethodDeclaration) {
 			RubySingletonMethodDeclaration singl = (RubySingletonMethodDeclaration) decl;
 			Expression receiver = singl.getReceiver();

@@ -89,9 +89,9 @@ public class MixinModel {
 	}
 
 	private void buildElementTree(MixinElement element) {
-//		if (element.isFinal()) {
-//			return;
-//		}
+		if (element.isFinal()) {
+			return;
+		}
 		ISourceModule[] containedModules = findModules(element);
 		if( containedModules.length == 0 ) {
 			synchronized (cache) {
@@ -125,6 +125,7 @@ public class MixinModel {
 				this.currentModule = sourceModule;
 				char[] content = sourceModule.getSourceAsCharArray();
 				mixinParser.setRequirestor(mixinRequestor);
+				System.out.println("fourdman: " + sourceModule.getElementName());
 				mixinParser.parserSourceModule(content, true, sourceModule );
 				this.currentModule = null;
 			}

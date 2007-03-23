@@ -412,8 +412,12 @@ public class RubyModelUtils {
 			e.printStackTrace();
 			return null;
 		}
-		if (superClasses != null && superClasses.length > 0)
+		if (superClasses != null && superClasses.length > 0) {
 			superclass = superClasses[0];
+			if (superclass.startsWith("::"))
+				superclass = superclass.substring(2);
+			superclass = superclass.replaceAll("::", "{");
+		}
 		
 		//TODO: add appropriate evaluation here
 		

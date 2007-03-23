@@ -155,7 +155,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			RubyClassType rubyClassType = (RubyClassType) type;
 			RubyMixinClass rubyClass = RubyMixinModel.getInstance().createRubyClass(rubyClassType);
 			if (rubyClass != null) { //remove, when built-in types will be added (this failed on "FalseClass" type)
-				RubyMixinMethod[] methods = rubyClass.getMethods();
+				RubyMixinMethod[] methods = rubyClass.getMethods(true);
 				for (int i = 0; i < methods.length; i++) {
 					IMethod[] sourceMethods = methods[i].getSourceMethods();
 					if (sourceMethods != null && sourceMethods.length > 0)
@@ -320,6 +320,8 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			IMixinElement[] modelStaticScopes = RubyTypeInferencingUtils.getModelStaticScopes(model, moduleDeclaration, position);
 			for (int i = modelStaticScopes.length - 1; i >= 0; i--) {
 				IMixinElement scope = modelStaticScopes[i];
+				if (scope == null) //XXX-fourdman
+					continue; 
 				reportSubElements(module, new RubyClassType(scope.getKey()), prefix);		
 			}
 		}
@@ -377,7 +379,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 		IMethod[] methods = null;
 		
-		completeSimpleRef(module, moduleDeclaration, node, position);
+//		completeSimpleRef(module, moduleDeclaration, node, position);
 
 		int relevance = 424242;
 		if (receiver != null) {

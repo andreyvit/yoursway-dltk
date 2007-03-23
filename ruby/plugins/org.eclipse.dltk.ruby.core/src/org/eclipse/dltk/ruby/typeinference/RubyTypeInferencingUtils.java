@@ -103,7 +103,7 @@ public class RubyTypeInferencingUtils {
 		String[] modelStaticScopesKeys = getModelStaticScopesKeys(model,
 				rootNode, requestedOffset);
 		IMixinElement[] result = new IMixinElement[modelStaticScopesKeys.length];
-		for (int i = 0; i < modelStaticScopesKeys.length; i++) {
+		for (int i = 1; i < modelStaticScopesKeys.length; i++) { //XXX-fourdman: removed Object resulution
 			result[i] = model.get(modelStaticScopesKeys[i]);
 			if (result[i] == null)
 				throw new RuntimeException("getModelStaticScopes(): Failed to get element from mixin-model: " + modelStaticScopesKeys[i]);

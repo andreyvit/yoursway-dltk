@@ -88,7 +88,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 		return null;
 	}
 	
-	public RubyMixinMethod[] getMethods () {
+	public RubyMixinMethod[] getMethods (boolean ignoreObjectMethods) {
 		final List result = new ArrayList ();
 			
 		IMixinElement mixinElement = model.getRawModel().get(key);
@@ -100,8 +100,10 @@ public class RubyMixinClass implements IRubyMixinElement {
 		}
 		RubyMixinClass superclass = getSuperclass();
 		if (superclass != null) {
-			RubyMixinMethod[] methods = superclass.getMethods();
-			result.addAll(Arrays.asList(methods));
+			if (!(superclass.key.equals("Object") && ignoreObjectMethods)) {				
+				RubyMixinMethod[] methods = superclass.getMethods(ignoreObjectMethods);
+				result.addAll(Arrays.asList(methods));
+			}
 		}		
 		return (RubyMixinMethod[]) result.toArray(new RubyMixinMethod[result.size()]);
 	}

@@ -725,7 +725,7 @@ public class SearchEngine {
 		};
 		IndexManager indexManager = ModelManager.getModelManager().getIndexManager();
 		
-		MixinPattern pattern = new MixinPattern(key.toCharArray(), SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE |  SearchPattern.R_PATTERN_MATCH);
+		MixinPattern pattern = new MixinPattern(key.toCharArray(), SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE/* |  SearchPattern.R_PATTERN_MATCH*/);
 		// add type names from indexes
 		indexManager.performConcurrentJob(
 			new PatternSearchJob(
