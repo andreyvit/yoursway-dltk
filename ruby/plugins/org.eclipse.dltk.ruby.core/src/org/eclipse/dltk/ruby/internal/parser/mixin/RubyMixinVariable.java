@@ -31,5 +31,6 @@ public class RubyMixinVariable implements IRubyMixinElement {
 		}
 		return (IField[]) result.toArray(new IField[result.size()]);
 	}
+	
 
 }

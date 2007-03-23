@@ -34,6 +34,7 @@ import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
+import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinMethod;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
@@ -191,21 +192,54 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	private void completeSimpleRef(org.eclipse.dltk.core.ISourceModule module,
-			ModuleDeclaration moduleDeclaration, SimpleReference node,
+			ModuleDeclaration moduleDeclaration, ASTNode node,
 			int position) {
 		int relevance = 424242;
 		String prefix = getPrefix(module, node, position);
-		this.setSourceRange(node.sourceStart(), position);		
-		RubyClassType selfClass = 
-			RubyTypeInferencingUtils.determineSelfClass(module, moduleDeclaration, position);
+		this.setSourceRange(node.sourceStart(), position);
+		
+		RubyClassType selfClass = null;
+		
+		RubyMixinModel rubyModel = RubyMixinModel.getInstance();
+		String[] keys = RubyTypeInferencingUtils.getModelStaticScopesKeys(rubyModel.getRawModel(),
+				moduleDeclaration, position);
+		IRubyMixinElement innerElement = null;
+		if (keys != null && keys.length > 0) {
+			String inner = keys[keys.length - 1];
+			innerElement = rubyModel.createRubyElement(inner);
+			if (innerElement instanceof RubyMixinMethod) {
+				RubyMixinMethod method = (RubyMixinMethod) innerElement;
+				selfClass = new RubyClassType(method.getSelfType().getKey());
+			} else if (innerElement instanceof RubyMixinClass) {
+				RubyMixinClass rubyMixinClass = (RubyMixinClass) innerElement;
+				selfClass = new RubyClassType(rubyMixinClass.getKey());
+			}
+		}
+				
 		RubyMixinClass rubyClass = RubyMixinModel.getInstance().createRubyClass(selfClass);
 		RubyMixinVariable[] fields2 = rubyClass.getFields();
+		addVariablesFrom(fields2, prefix, relevance);
+		relevance -= fields2.length;
+		
+		if (innerElement != null) {
+			if (innerElement instanceof RubyMixinMethod) {
+				RubyMixinMethod rubyMixinMethod = (RubyMixinMethod) innerElement;
+				fields2 = rubyMixinMethod.getFields();
+				addVariablesFrom(fields2, prefix, relevance);
+				relevance -= fields2.length;
+			}
+		}
+		
+	}
+	
+	private void addVariablesFrom (RubyMixinVariable[] fields2, String prefix, int relevance) {
 		for (int i = 0; i < fields2.length; i++) {
 			IField[] sourceFields = fields2[i].getSourceFields();
-			if (sourceFields != null && sourceFields.length > 0)
-				reportField(sourceFields[0], relevance--);			
+			if (sourceFields != null && sourceFields.length > 0) {
+				if (sourceFields[0].getElementName().startsWith(prefix))
+					reportField(sourceFields[0], relevance--);			
+			}
 		}
-		//TODO: add localvars
 	}
 
 	private String getPrefix(org.eclipse.dltk.core.ISourceModule module, ASTNode node, int position) {
@@ -337,14 +371,15 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				.sourceStart());
 
 		String starting = content.substring(pos, position).trim();
+			
 		
-		
-
 		this.setSourceRange(position - starting.length(), position);
 
 		IMethod[] methods = null;
-		int relevance = 424242;
+		
+		completeSimpleRef(module, moduleDeclaration, node, position);
 
+		int relevance = 424242;
 		if (receiver != null) {
 			if (receiver instanceof RubyArrayExpression) {
 				int st = position;
@@ -369,6 +404,8 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 							relevance--);				
 			}
 		}		
+		
+		
 		
 	}
 
