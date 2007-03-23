@@ -76,9 +76,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 	
 	public RubyMixinClass getSuperclass () {
 		IMixinElement mixinElement = model.getRawModel().get(key);
-		Object[] allObjects = mixinElement.getAllObjects();
-		if (allObjects == null || allObjects.length == 0)
-			return null;
+		Object[] allObjects = mixinElement.getAllObjects();		
 		IType type = (IType) allObjects[0];
 		if (type != null) { 
 			String key = RubyModelUtils.evaluateSuperClass (type);
@@ -92,39 +90,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 	
 	public RubyMixinMethod[] getMethods () {
 		final List result = new ArrayList ();
-		if (key.equals("Object")) {
-			// search top-level methods
-			SearchRequestor requestor = new SearchRequestor() {
-
-				public void acceptSearchMatch(SearchMatch match) throws CoreException {
-					if (match.getElement() instanceof IMethod) {
-						IMethod method = (IMethod) match.getElement();
-						if (method.getParent() instanceof ISourceModule) {
-							String possibleKey = method.getElementName();
-							IRubyMixinElement element = RubyMixinModel.getInstance().createRubyElement(possibleKey);
-							if (element instanceof RubyMixinMethod)
-								result.add(element);
-						}
-					}
-				}
-				
-			};
-			IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(RubyLanguageToolkit.getDefault());
-
-//			try {
-//				SearchEngine engine = new SearchEngine();
-//				SearchPattern pattern = SearchPattern.createPattern("*",
-//						IDLTKSearchConstants.METHOD,
-//						IDLTKSearchConstants.DECLARATIONS,
-//						SearchPattern.R_PATTERN_MATCH | SearchPattern.R_EXACT_MATCH);
-//				engine.search(pattern, new SearchParticipant[] { SearchEngine
-//						.getDefaultSearchParticipant() }, scope, requestor, null);
-//			} catch (CoreException e) {
-//				if (DLTKCore.DEBUG)
-//					e.printStackTrace();
-//			}
-//			
-		}		
+			
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		IMixinElement[] children = mixinElement.getChildren();
 		for (int i = 0; i < children.length; i++) {

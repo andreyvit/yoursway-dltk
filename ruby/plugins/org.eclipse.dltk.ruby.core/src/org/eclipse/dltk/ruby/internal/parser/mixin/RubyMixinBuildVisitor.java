@@ -75,16 +75,19 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		}
 
 		public String reportMethod(String name, Object object) {
-			return report(name, object);
+			return report("Object" + SEPARATOR + name, object);
 		}
 
 		public String reportType(String name, Object object) {
-			report(name + INSTANCE_SUFFIX, object);
+			report(name + INSTANCE_SUFFIX, object); 
 			return report(name, object);
 		}
 
 		public String reportVariable(String name, Object object) {
-			return report(name, object);
+			if (name.startsWith("@"))
+				return report("Object" + SEPARATOR + name, object);
+			else
+				return null; //no top-level vars
 		}
 
 		public String getKey() {
@@ -314,8 +317,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			if (sourceModule != null) {
 				obj = new FakeField((ModelElement) sourceModule, name, s.sourceStart(), s.sourceEnd());
 			}
-			String key = scope.reportVariable(name, obj);
-			System.out.println("Variable reported: " + key);
+			scope.reportVariable(name, obj);
 		}
 		if (s instanceof Assignment) {
 			Assignment assignment = (Assignment) s;
@@ -327,8 +329,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 				Object obj = null;
 				if (sourceModule != null)
 					obj = new FakeField((ModelElement) sourceModule, name, ref.sourceStart(), ref.sourceEnd());
-				String key = scope.reportVariable(name, obj);
-				System.out.println("Variable reported: " + key);
+				scope.reportVariable(name, obj);
 			}			
 		}
 		return super.visit(s);

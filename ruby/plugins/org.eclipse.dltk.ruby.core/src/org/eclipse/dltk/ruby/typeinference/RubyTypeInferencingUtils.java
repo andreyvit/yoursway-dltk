@@ -93,6 +93,8 @@ public class RubyTypeInferencingUtils {
 		} catch (Exception e) {
 			RubyPlugin.log(e);
 		}
+		if (scopes.size() == 0)
+			scopes.add(rootNode);
 		return (ASTNode[]) scopes.toArray(new ASTNode[scopes.size()]);
 	}
 
@@ -103,45 +105,17 @@ public class RubyTypeInferencingUtils {
 		IMixinElement[] result = new IMixinElement[modelStaticScopesKeys.length];
 		for (int i = 0; i < modelStaticScopesKeys.length; i++) {
 			result[i] = model.get(modelStaticScopesKeys[i]);
+			if (result[i] == null)
+				throw new RuntimeException("getModelStaticScopes(): Failed to get element from mixin-model: " + modelStaticScopesKeys[i]);
 		}
 		return result;
 	}
 
 	public static String[] getModelStaticScopesKeys(MixinModel model,
 			ModuleDeclaration rootNode, final int requestedOffset) {
-		// List result = new ArrayList ();
-		// String parent = null;
 		ASTNode[] allStaticScopes = RubyTypeInferencingUtils
-				.getAllStaticScopes(rootNode, requestedOffset);
-		if (allStaticScopes == null || allStaticScopes.length == 0)
-			return new String[] { "Object" };
+				.getAllStaticScopes(rootNode, requestedOffset);		
 		return RubyMixinBuildVisitor.restoreScopesByNodes(allStaticScopes);
-		// for (int i = 0; i < allStaticScopes.length; i++) {
-		// if (allStaticScopes[i] instanceof RubySingletonClassDeclaration) {
-		//
-		// } else if (allStaticScopes[i] instanceof RubyClassDeclaration) {
-		// RubyClassDeclaration decl = (RubyClassDeclaration)
-		// allStaticScopes[i];
-		// Statement className = decl.getClassName();
-		// String key;
-		// if (className instanceof ConstantReference) {
-		// String name = ((ConstantReference)className).getName();
-		// if (parent != null) {
-		//						
-		// key = parent + IMixinRequestor.MIXIN_NAME_SEPARATOR + name;
-		// } else {
-		// key = name;
-		// }
-		//						
-		// } else {
-		// key = evaluateClassKey(className, result, model);
-		// }
-		// parent = key;
-		// result.add(key);
-		//				
-		// }
-		// }
-		// return (String[]) result.toArray(new String[result.size()]);
 	}
 
 	private static String evaluateClassKey(Statement expr, List topScopes,

@@ -414,7 +414,9 @@ public class RubyModelUtils {
 		}
 		if (superClasses != null && superClasses.length > 0)
 			superclass = superClasses[0];
-		//TODO: add appropriate evaluation here	
+		
+		//TODO: add appropriate evaluation here
+		
 		return superclass;
 	}
 	

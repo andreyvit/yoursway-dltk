@@ -73,6 +73,8 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		
 		MethodDeclaration decl = null;
 		List methods = new ArrayList ();
+		if (instanceType == null)
+			instanceType = new RubyClassType("Object"); //handle top-level methods
 		if (instanceType instanceof RubyClassType) {
 			RubyClassType rubyClassType = (RubyClassType) instanceType;
 			RubyMixinClass class1 = RubyMixinModel.getInstance().createRubyClass(rubyClassType);

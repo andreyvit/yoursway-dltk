@@ -48,7 +48,7 @@ def global_method
 	var = 34
 end
 
-## get global_method{var
+## get Object{global_method{var
 
 def (::Var2).meta1
 	@m1 = 33
