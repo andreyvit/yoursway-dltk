@@ -50,6 +50,7 @@ import org.eclipse.dltk.internal.core.util.HandleFactory;
  */
 public class SearchEngine {
 		
+	private static final String SPECIAL_MIXIN = "#special#mixin:";
 	// Search engine now uses basic engine functionalities
 	private BasicSearchEngine basicEngine;
 
@@ -711,6 +712,9 @@ public class SearchEngine {
 			public boolean acceptIndexMatch(String documentPath,
 					SearchPattern indexRecord, SearchParticipant participant,
 					AccessRuleSet access) {
+				if( documentPath.startsWith(SPECIAL_MIXIN)) {
+					documentPath = documentPath.substring(SPECIAL_MIXIN.length());
+				}
 				Openable createOpenable = factory.createOpenable(documentPath, scope);
 				if( createOpenable instanceof ISourceModule ) {
 					modules.add(createOpenable);

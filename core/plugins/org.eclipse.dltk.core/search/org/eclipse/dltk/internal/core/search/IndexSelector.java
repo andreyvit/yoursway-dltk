@@ -129,15 +129,16 @@ public class IndexSelector {
 		IModelElement focus = MatchLocator.projectOrArchiveFocus(this.pattern);
 		// Add all special indexes for selected project.
 		if( focus != null && focus.getElementType() == IModelElement.SCRIPT_PROJECT ) {
-			String prjPath = "#special#" + ((IDLTKProject)focus).getProject().getFullPath().toString();
+			String prjPath = "#special#mixin:" + ((IDLTKProject)focus).getProject().getFullPath().toString();
 			checkSpecialCase(manager, locations, prjPath);
 		}
 		if (focus == null) {
 			for (int i = 0; i < projectsAndArchives.length; i++) {
 				locations.add(manager.computeIndexLocation(projectsAndArchives[i]));
 				// check for special cases
-				String prjPath = "#special#" + projectsAndArchives[i].toString();
-				checkSpecialCase(manager, locations, prjPath);
+				String prjPath = "#special#mixin:" + projectsAndArchives[i].toString();
+//				checkSpecialCase(manager, locations, prjPath);
+				locations.add(manager.computeIndexLocation(new Path( prjPath )));
 			}
 		} else {
 			try {

@@ -19,6 +19,7 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.builder.IScriptBuilder;
+import org.eclipse.dltk.core.mixin.IMixinParser;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
@@ -46,16 +47,26 @@ public class MixinBuilder implements IScriptBuilder {
 	public IStatus buildModelElements(IDLTKProject project, List elements,
 			IProgressMonitor monitor) {
 		IndexManager manager = ModelManager.getModelManager().getIndexManager();
+		
+		IDLTKLanguageToolkit toolkit = null;
+		IMixinParser parser = null;;
 		try {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLanguageToolkit(project);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(project);
+			parser = MixinManager.getMixinParser(toolkit.getNatureID());
+		} catch (CoreException e1) {
+			e1.printStackTrace();
+		}
+		
+		if( parser == null || toolkit == null ) {
+			return null;
+		}
+		try {
 			waitUntilIndexReady(toolkit);
 			IPath fullPath = project.getProject().getFullPath();
 			
 			Map indexes = new HashMap();
 			
-			Index mixinIndex = manager.getSpecialIndex("mixin:"
-					+ toolkit.getNatureID(),  /*project.getProject()*/ fullPath.toString(), fullPath.toOSString() );
+			Index mixinIndex = manager.getSpecialIndex("mixin",  /*project.getProject()*/ fullPath.toString(), fullPath.toOSString() );
 			for (int i = 0; i < elements.size(); ++i) {
 				Index currentIndex = mixinIndex;
 				monitor.worked(1);
@@ -70,8 +81,7 @@ public class MixinBuilder implements IScriptBuilder {
 						containerPath = path;
 					}
 					else {
-						Index index = manager.getSpecialIndex("mixin:"
-								+ toolkit.getNatureID(), path.toString(), path.toOSString() );
+						Index index = manager.getSpecialIndex("mixin", path.toString(), path.toOSString() );
 						if( index != null ) {
 							currentIndex = index;
 							indexes.put(path, index);

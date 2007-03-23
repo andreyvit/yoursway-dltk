@@ -384,7 +384,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		if (requestor != null) {
 			requestor.reportElement(info);
 //			if (DLTKCore.DEBUG_INDEX) {
-				System.out.println("Mixin reported: " + key);
+//				System.out.println("Mixin reported: " + key);
 //			}
 		}
 		return key;

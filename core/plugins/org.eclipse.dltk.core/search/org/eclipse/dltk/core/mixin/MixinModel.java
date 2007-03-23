@@ -68,7 +68,7 @@ public class MixinModel {
 	}
 
 	public IMixinElement get(String key) {
-		waitForAutoBuild();
+//		waitForAutoBuild();
 		MixinElement element = getCreateEmpty(key);
 		if (DLTKCore.VERBOSE) {
 			System.out.println("Filling ratio:" + this.cache.fillingRatio());
@@ -140,7 +140,11 @@ public class MixinModel {
 	 * @return
 	 */
 	private ISourceModule[] findModules(MixinElement element ) {
-		return SearchEngine.searchMixinSources(element.getKey(), toolkit);
+		long start = System.currentTimeMillis();
+		ISourceModule[] searchMixinSources = SearchEngine.searchMixinSources(element.getKey(), toolkit);
+		long end = System.currentTimeMillis();
+		System.out.println(Long.toString(end - start ));
+		return searchMixinSources;
 	}
 
 	private synchronized MixinElement getCreateEmpty(String key) {

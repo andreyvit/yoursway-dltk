@@ -213,7 +213,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 			checksumCalculator.update(pathString.getBytes());
 			String fileName = Long.toString(checksumCalculator.getValue())
 					+ ".index"; //$NON-NLS-1$
-			if (VERBOSE)
+//			if (VERBOSE)
 				Util
 						.verbose("-> index name for " + pathString + " is " + fileName); //$NON-NLS-1$ //$NON-NLS-2$
 			indexLocation = getScriptPluginWorkingLocation().append(fileName)
@@ -298,7 +298,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	public synchronized Index getSpecialIndex(String id, String path, String containerPath/*, IProject project*/ ) {
 //		String containerPath = project.getFullPath().toOSString();
 //		String path = project.getFullPath();
-		String indexLocation = computeIndexLocation(new Path("#special#" + path + ":" + id));
+		String indexLocation = computeIndexLocation(new Path("#special#" + id + ":" + path));
 
 		Index index = (Index) indexes.get(indexLocation);
 
