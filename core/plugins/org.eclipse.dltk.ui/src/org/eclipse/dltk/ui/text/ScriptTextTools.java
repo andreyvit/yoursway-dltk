@@ -92,7 +92,7 @@ public abstract class ScriptTextTools {
 	 */
 	public void setupDocumentPartitioner(IDocument document, String partitioning) {
 		IDocumentPartitioner partitioner = createDocumentPartitioner();
-		partitioner.connect(document); // XXX fourdman
+		partitioner.connect(document); 
 		if (document instanceof IDocumentExtension3) {
 			IDocumentExtension3 extension3 = (IDocumentExtension3) document;
 			extension3.setDocumentPartitioner(partitioning, partitioner);

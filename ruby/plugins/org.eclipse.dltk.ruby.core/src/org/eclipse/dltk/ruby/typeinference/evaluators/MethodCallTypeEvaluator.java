@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ruby.ast.SelfReference;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ti.GoalState;
@@ -97,7 +98,9 @@ public class MethodCallTypeEvaluator extends GoalEvaluator {
 		if (state == STATE_ARGS_DONE) {
 			ExpressionTypeGoal typedGoal = (ExpressionTypeGoal) goal;
 			CallExpression expression = (CallExpression) typedGoal.getExpression();
-			state = STATE_WAITING_METHOD;			
+			state = STATE_WAITING_METHOD;
+			if (receiverType == UnknownType.INSTANCE)
+				receiverType = null;
 			return new MethodReturnTypeGoal(
 					new InstanceContext((ISourceModuleContext) goal.getContext(),
 					(ClassType) receiverType), expression.getName(), arguments);

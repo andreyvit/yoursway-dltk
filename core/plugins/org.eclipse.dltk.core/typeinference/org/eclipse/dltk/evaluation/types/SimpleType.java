@@ -4,9 +4,6 @@ import org.eclipse.dltk.ti.types.ClassType;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 
-/**
- * @deprecated
- */
 public class SimpleType extends ClassType implements IClassType
 {
 	public final static int TYPE_STRING = 0;

@@ -354,7 +354,6 @@ public class RubyModelUtils {
 		List result = new ArrayList();
 		
 		try {
-			//TODO: add handling of "require"
 			IModelElement[] children = module.getChildren();
 			for (int i = 0; i < children.length; i++) {
 				if (children[i] instanceof IField && children[i].getElementName().startsWith(namePrefix))

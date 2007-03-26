@@ -270,7 +270,7 @@ public class BuiltinMethods {
 //			RubyClassType type = (RubyClassType) receiver;						
 //			return RubyMixinModel.getInstance().createRubyClass(type).getName();
 			return "Class";
-		} else if (receiver instanceof SimpleType) {
+		} /*else if (receiver instanceof SimpleType) {
 			SimpleType type = (SimpleType) receiver;
 			switch (type.getType()) {
 			case SimpleType.TYPE_NUMBER:
@@ -278,7 +278,7 @@ public class BuiltinMethods {
 			case SimpleType.TYPE_STRING:
 				return "Str";
 			}
-		}
+		}*/
 		return null;
 	}
 	

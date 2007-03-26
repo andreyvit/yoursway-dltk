@@ -1,6 +1,6 @@
 package org.eclipse.dltk.ruby.typeinference.evaluators;
 
-import org.eclipse.dltk.evaluation.types.SimpleType;
+import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
@@ -16,8 +16,8 @@ public class StringLiteralEvaluator extends GoalEvaluator {
 	}
 
 	public Object produceResult() {
-		return new SimpleType(SimpleType.TYPE_STRING);
-		//return new RubyClassType ("String");
+//		return new SimpleType(SimpleType.TYPE_STRING);
+		return new RubyClassType ("String");
 	}
 
 	public IGoal[] init() {

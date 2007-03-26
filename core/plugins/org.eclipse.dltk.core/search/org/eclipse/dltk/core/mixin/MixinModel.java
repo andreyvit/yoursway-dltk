@@ -128,7 +128,6 @@ public class MixinModel {
 				this.currentModule = sourceModule;
 				char[] content = sourceModule.getSourceAsCharArray();
 				mixinParser.setRequirestor(mixinRequestor);
-				System.out.println("fourdman: " + sourceModule.getElementName());
 				mixinParser.parserSourceModule(content, true, sourceModule );
 				this.currentModule = null;
 			}

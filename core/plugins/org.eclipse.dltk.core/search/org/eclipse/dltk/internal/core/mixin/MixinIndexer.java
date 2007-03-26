@@ -29,7 +29,6 @@ public class MixinIndexer extends AbstractIndexer {
 			IMixinParser parser = MixinManager.getMixinParser(toolkit.getNatureID());
 			if( parser != null ) {
 				parser.setRequirestor(this.requestor);
-				System.out.println("fourdman: parsing " + this.document.getPath());
 				parser.parserSourceModule(this.source, false, null);
 			}
 		} catch (CoreException e) {

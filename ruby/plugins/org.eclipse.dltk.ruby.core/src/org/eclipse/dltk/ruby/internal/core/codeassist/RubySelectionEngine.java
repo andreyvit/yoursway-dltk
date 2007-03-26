@@ -404,7 +404,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 				RubyMixinMethod method = rubyClass.getMethod(methodName);
 				if (method != null)
 					availableMethods = method.getSourceMethods();							
-			} else if (type instanceof SimpleType) {
+			} /*else if (type instanceof SimpleType) {
 				SimpleType simpleType = (SimpleType) type;
 				IMethod[] meth = null;
 				switch (simpleType.getType()) {
@@ -419,7 +419,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 						break;
 				}
 				availableMethods = meth;
-			}
+			}*/
 			
 		}
 		

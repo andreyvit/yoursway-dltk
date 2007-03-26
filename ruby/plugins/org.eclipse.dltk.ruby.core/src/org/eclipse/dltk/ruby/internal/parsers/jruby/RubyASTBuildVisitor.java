@@ -599,7 +599,6 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		int nameEnd = nameStart + methodName.length();
 
 		// Assert.isLegal(nameSequence.toString().equals(methodName)); //XXX
-		// mega fourdman fix
 		// nameNode.setStart(nameStart);
 		// nameNode.setEnd(nameEnd);
 
@@ -816,7 +815,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	private ISourcePosition fixBorders(ISourcePosition pos) {
 		int start = pos.getStartOffset();
 		int end = pos.getEndOffset();
-		while (end - 1 >= 0 && RubySyntaxUtils.isWhitespace(content[end - 1])) {
+		while (end - 1 >= 0 && !RubySyntaxUtils.isNameChar(content[end - 1])) {
 			end--;
 		}
 		if (end >= 0) {

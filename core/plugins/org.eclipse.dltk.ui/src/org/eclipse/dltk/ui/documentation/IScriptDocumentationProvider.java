@@ -8,8 +8,6 @@ import org.eclipse.dltk.core.IMember;
 /**
  * Interface for org.eclipse.dltk.ui.scriptDocumentationProviders extension point.
  * 
- * @author fourdman
- *
  */
 public interface IScriptDocumentationProvider {
 	

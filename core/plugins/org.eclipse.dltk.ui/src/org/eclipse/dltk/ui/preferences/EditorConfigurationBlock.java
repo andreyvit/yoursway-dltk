@@ -14,10 +14,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 
-/**
- * @author fourdman
- *
- */
 public class EditorConfigurationBlock extends AbstractConfigurationBlock {
 	private boolean smartDisabled = false;
 	public EditorConfigurationBlock(PreferencePage mainPreferencePage, OverlayPreferenceStore store) {

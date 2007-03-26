@@ -11,6 +11,7 @@ import org.eclipse.dltk.ti.IInstanceContext;
 import org.eclipse.dltk.ti.ISourceModuleContext;
 import org.eclipse.dltk.ti.types.ClassType;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
+import org.eclipse.dltk.ti.types.MostSpecificType;
 
 public class MethodContext implements IContext, IArgumentsContext, IInstanceContext, ISourceModuleContext {
 
@@ -42,7 +43,7 @@ public class MethodContext implements IContext, IArgumentsContext, IInstanceCont
 				if (i < argTypes.length)
 					return argTypes[i];
 				else
-					return new SimpleType(SimpleType.TYPE_NONE);
+					return null;
 		}
 		return null;
 	}
