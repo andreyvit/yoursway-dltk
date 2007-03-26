@@ -2,7 +2,6 @@ package org.eclipse.dltk.ruby.internal.parsers.jruby;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -2087,7 +2086,13 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitRootNode(RootNode arg0) { // done
 		Node bodyNode = arg0.getBodyNode();
-		if (bodyNode != null)
+		if (bodyNode instanceof BlockNode) {
+			BlockNode blockNode = (BlockNode) bodyNode;
+			Iterator iterator = blockNode.iterator();
+			while (iterator.hasNext()) {
+				((Node) iterator.next()).accept(this);
+			}
+		} else if (bodyNode != null)
 			bodyNode.accept(this);
 		return null;
 	}
