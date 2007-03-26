@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ti.goals.AbstractTypeGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
@@ -53,7 +54,7 @@ public class DLTKTypeInferenceEngine implements ITypeInferencer {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				ITypeInferencer ti = (ITypeInferencer) iterator.next();
 				IEvaluatedType type = ti.evaluateType(goal, pruner);
-				if (type != null)
+				if (type != null && !(type instanceof UnknownType)) //TODO
 					return type;
 			}
 		}
