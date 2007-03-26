@@ -195,8 +195,7 @@ public class TypeInferenceSuite extends TestSuite {
 						IEvaluatedType type = inferencer.evaluateType(goal, null);
 						assertNotNull(type);
 						
-						IEvaluatedType correctType = getIntrinsicType(correctClassRef);
-						assertEquals(correctType, type);
+						assertEquals(correctClassRef, ((RubyClassType)type).getModelKey());
 					}
 					
 					
@@ -298,10 +297,10 @@ public class TypeInferenceSuite extends TestSuite {
 			correctType = RecursionTypeCall.INSTANCE;
 		else if ("any".equals(correctClassRef))
 			correctType = UnknownType.INSTANCE;
-		else if ("Fixnum".equals(correctClassRef))
-			correctType = new SimpleType(SimpleType.TYPE_NUMBER);
-		else if ("Str".equals(correctClassRef))
-			correctType = new SimpleType(SimpleType.TYPE_STRING);
+//		else if ("Fixnum".equals(correctClassRef))
+//			correctType = new SimpleType(SimpleType.TYPE_NUMBER);
+//		else if ("Str".equals(correctClassRef))
+//			correctType = new SimpleType(SimpleType.TYPE_STRING);
 		else
 			correctType = null;
 		return correctType;

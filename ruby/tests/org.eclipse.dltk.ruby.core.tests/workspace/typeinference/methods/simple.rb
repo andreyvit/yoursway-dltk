@@ -2,7 +2,7 @@
 class MethodsSimpleBoz
 	class Bar
 		def foo
-			bar ## expr bar => Str
+			bar ## expr bar => String
 		end
 		
 		def bar
