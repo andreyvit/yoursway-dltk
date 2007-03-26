@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
+import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.references.Reference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.core.IModelElement;
@@ -114,14 +115,14 @@ public class MethodLocator extends PatternLocator {
 	public String toString() {
 		return "Locator for " + this.pattern.toString(); //$NON-NLS-1$
 	}
-	public int match(Reference node, MatchingNodeSet nodeSet) { // interested in NameReference & its subtypes
+
+	public int match(CallExpression node, MatchingNodeSet nodeSet) { // interested in NameReference & its subtypes
 		if (!this.pattern.findReferences) return IMPOSSIBLE_MATCH;
-		if (!(node instanceof SimpleReference)) return IMPOSSIBLE_MATCH;
 		
 		if (this.pattern.selector == null)
 			return nodeSet.addMatch(node, POSSIBLE_MATCH);
 		
-		if (matchesName(this.pattern.selector, ((SimpleReference) node).getName().toCharArray()))
+		if (matchesName(this.pattern.selector, ((CallExpression) node).getName().toCharArray()))
 			return nodeSet.addMatch(node, ACCURATE_MATCH);
 		
 		

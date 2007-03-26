@@ -9,8 +9,11 @@ import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
+import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.ast.references.TypeReference;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.core.search.matching.MatchLocatorParser;
 import org.eclipse.dltk.core.search.matching.PatternLocator;
@@ -161,6 +164,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 	private void processReferences(TclStatement statement) {
 		Expression commandId = statement.getAt(0);
 		PatternLocator locator;
+		locator = getPatternLocator();
 		if (commandId != null && commandId instanceof SimpleReference) {
 			String name = ((SimpleReference) commandId).getName();
 			if (name.startsWith("::")) {
@@ -170,15 +174,21 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 				// int argCount = statement.getCount() - 1;
 				// System.out.println("Matching:"+ name);
 				if (!kwMap.containsKey(name)) {
-					locator = getPatternLocator();
 					String[] ns = name.split("::");
 					for (int i = 0; i < ns.length; ++i) {
 						if (ns[i].length() > 0) {
-							locator.match(
-									(SimpleReference) new SimpleReference(
-											commandId.sourceStart(), commandId
-													.sourceEnd(), ns[i]),
-									getNodeSet());
+							if(i == ns.length - 1 ) {
+								locator.match((CallExpression) new CallExpression(
+										commandId.sourceStart(), commandId
+										.sourceEnd(), null, ns[i], null),
+										getNodeSet());
+							}
+							else {
+								locator.match((TypeReference) new TypeReference(
+										commandId.sourceStart(), commandId
+										.sourceEnd(), ns[i]),
+										getNodeSet());
+							}
 						}
 					}
 				}
@@ -201,14 +211,54 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 			}
 		}
 		for (int j = 1; j < statement.getCount(); ++j) {
-			if (statement.getAt(j) instanceof TclExecuteExpression) {
-				TclExecuteExpression expr = (TclExecuteExpression) statement
-						.getAt(j);
+			Expression st = statement.getAt(j);
+			if (st instanceof TclExecuteExpression) {
+				TclExecuteExpression expr = (TclExecuteExpression) st;
 				List exprs = expr.parseExpression();
 				for (int i = 0; i < exprs.size(); ++i) {
 					if (exprs.get(i) instanceof TclStatement) {
 						processReferences((TclStatement) exprs.get(i));
 					}
+				}
+			} else if (st instanceof StringLiteral) {
+				int pos = 0;
+				StringLiteral literal = (StringLiteral)st;
+				String value = literal.getValue();
+				pos = value.indexOf("$");
+				while( pos != -1 ) {
+					SimpleReference ref = TclParseUtils.findVariableFromString(literal, pos);
+					if( ref != null ) {
+						ref.setName(ref.getName().substring(1));
+						ref.setEnd(ref.sourceEnd() - 1);
+						locator.match(ref, getNodeSet());
+						pos = pos + ref.getName().length();
+					}
+					pos = value.indexOf("$", pos + 1 );
+				}	
+			}
+//			else if (st instanceof TclBlockExpression) {
+//				int pos = 0;
+//				StringLiteral literal = (StringLiteral)st;
+//				String value = literal.getValue();
+//				pos = value.indexOf("$");
+//				while( pos != -1 ) {
+//					SimpleReference ref = TclParseUtils.findVariableFromString(literal, pos);
+//					if( ref != null ) {
+//						ref.setName(ref.getName().substring(1));
+//						ref.setEnd(ref.sourceEnd() - 1);
+//						locator.match(ref, getNodeSet());
+//						pos = pos + ref.getName().length();
+//					}
+//					pos = value.indexOf("$", pos + 1 );
+//				}	
+//			}  
+			else if (st instanceof SimpleReference) {
+				SimpleReference ref = (SimpleReference) st;
+				String name = ref.getName();
+				if (name.startsWith("$")) { // This is variable usage.
+					ref.setName(name.substring(1));
+					ref.setEnd(ref.sourceEnd() - 1);
+					locator.match(ref, getNodeSet());
 				}
 			}
 		}

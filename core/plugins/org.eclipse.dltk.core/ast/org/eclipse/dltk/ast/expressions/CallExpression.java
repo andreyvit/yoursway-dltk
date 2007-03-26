@@ -10,18 +10,23 @@ public class CallExpression extends Expression {
 	
 	private CallArgumentsList args;
 	
-	public CallExpression(Statement receiver, String name, CallArgumentsList args) {
+	public CallExpression(int start, int end, Statement receiver, String name, CallArgumentsList args) {
+		super(start, end);
 		if (name == null){
 			throw new IllegalArgumentException();
 		}
 		
 		if (args == null) {
-			throw new IllegalArgumentException();
+//			throw new IllegalArgumentException();
+			args = new CallArgumentsList();
 		}
 		
 		this.receiver = receiver;
 		this.name = name;
 		this.args = args;
+	}
+	public CallExpression(Statement receiver, String name, CallArgumentsList args) {
+		this(0, 0, receiver, name, args );
 	}
 
 	public int getKind() {		

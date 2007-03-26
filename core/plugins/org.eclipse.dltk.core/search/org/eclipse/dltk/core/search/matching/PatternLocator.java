@@ -17,8 +17,10 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
+import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.Reference;
+import org.eclipse.dltk.ast.references.TypeReference;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.compiler.env.lookup.Scope;
 import org.eclipse.dltk.core.DLTKCore;
@@ -182,6 +184,11 @@ public abstract class PatternLocator implements IIndexConstants {
 		// each subtype should override if needed
 		return IMPOSSIBLE_MATCH;
 	}
+	
+	public int match(CallExpression node, MatchingNodeSet nodeSet) { // needed for
+		// each subtype should override if needed
+		return IMPOSSIBLE_MATCH;
+	}
 
 	public int match(Expression node, MatchingNodeSet nodeSet) {
 		// each subtype should override if needed
@@ -194,6 +201,10 @@ public abstract class PatternLocator implements IIndexConstants {
 	}
 
 	public int match(Reference node, MatchingNodeSet nodeSet) {
+		// each subtype should override if needed
+		return IMPOSSIBLE_MATCH;
+	}
+	public int match(TypeReference node, MatchingNodeSet nodeSet) {
 		// each subtype should override if needed
 		return IMPOSSIBLE_MATCH;
 	}

@@ -55,6 +55,7 @@ public class TclSourceIndexerRequestor extends SourceIndexerRequestor {
 
 	public boolean enterMethodWithParentType(MethodInfo info,
 			String parentName, String delimiter) {
+		enterMethod(info);
 		return false;
 	}
 }

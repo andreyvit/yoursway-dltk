@@ -58,10 +58,11 @@ public class TclSourceElementParser implements ISourceElementParser {
 
 	private static int counter = 0;
 
-	public ModuleDeclaration parseSourceModule(char[] contents, ISourceModuleInfo astCashe) {
+	public ModuleDeclaration parseSourceModule(char[] contents,
+			ISourceModuleInfo astCashe) {
 
-//		System.out.println("TclSourceElementParser.parseSourceModule() "
-//				+ (counter++));
+		// System.out.println("TclSourceElementParser.parseSourceModule() "
+		// + (counter++));
 
 		// TODO: Add correct visitor like model builder for TCL.
 		TclSourceParser sourceParser = new TclSourceParser();
@@ -176,21 +177,40 @@ public class TclSourceElementParser implements ISourceElementParser {
 					this.fRequestor.acceptMethodReference(name.toCharArray(),
 							argCount, commandId.sourceStart(), commandId
 									.sourceEnd());
-				} else {
-					this.fRequestor.acceptFieldReference(name.toCharArray(),
-							statement.sourceStart());
 				}
 			}
 		}
 		for (int j = 1; j < statement.getCount(); ++j) {
-			if (statement.getAt(j) instanceof TclExecuteExpression) {
-				TclExecuteExpression expr = (TclExecuteExpression) statement
-						.getAt(j);
+			Expression st = statement.getAt(j);
+			if (st instanceof TclExecuteExpression) {
+				TclExecuteExpression expr = (TclExecuteExpression) st;
 				List exprs = expr.parseExpression();
 				for (int i = 0; i < exprs.size(); ++i) {
 					if (exprs.get(i) instanceof TclStatement) {
 						processReferences((TclStatement) exprs.get(i));
 					}
+				}
+			} else if (st instanceof StringLiteral) {
+				int pos = 0;
+				StringLiteral literal = (StringLiteral) st;
+				String value = literal.getValue();
+				pos = value.indexOf("$");
+				while (pos != -1) {
+					SimpleReference ref = TclParseUtils.findVariableFromString(
+							literal, pos);
+					if (ref != null) {
+						this.fRequestor.acceptFieldReference(ref.getName()
+								.substring(1).toCharArray(), ref.sourceStart());
+						pos = pos + ref.getName().length();
+					}
+					pos = value.indexOf("$", pos + 1);
+				}
+			} else if (st instanceof SimpleReference) {
+				SimpleReference ref = (SimpleReference) st;
+				String name = ref.getName();
+				if (name.startsWith("$")) { // This is variable usage.
+					this.fRequestor.acceptFieldReference(ref.getName()
+							.substring(1).toCharArray(), ref.sourceStart());
 				}
 			}
 		}
@@ -349,12 +369,12 @@ public class TclSourceElementParser implements ISourceElementParser {
 			inner = ((TclBlockExpression) code)
 					.parseBlock(code.sourceStart() + 1);
 
-			if(sNameSpaceName.startsWith("::") && parentNamespaceName.length() == 0 ) {
+			if (sNameSpaceName.startsWith("::")
+					&& parentNamespaceName.length() == 0) {
 				this.buildModel(inner, TYPE_NAMESPACE, sNameSpaceName);
-			}
-			else {
-				this.buildModel(inner, TYPE_NAMESPACE, parentNamespaceName + "::"
-						+ sNameSpaceName);
+			} else {
+				this.buildModel(inner, TYPE_NAMESPACE, parentNamespaceName
+						+ "::" + sNameSpaceName);
 			}
 
 			exit.go();
@@ -395,7 +415,8 @@ public class TclSourceElementParser implements ISourceElementParser {
 							.toCharArray());
 				} else {
 					this.fRequestor.acceptPackage(pkg.sourceStart(), pkg
-							.sourceEnd(), (_pkg + " (version n/a)").toCharArray() );
+							.sourceEnd(), (_pkg + " (version n/a)")
+							.toCharArray());
 				}
 			}
 		}
@@ -608,8 +629,8 @@ public class TclSourceElementParser implements ISourceElementParser {
 			if (variableName == null) {
 				throw new RuntimeException("empty variable name");
 			}
-			makeVariable(variableName, vars, TclConstants.TCL_FIELD_TYPE_NAMESPACE,
-					namespaceName);
+			makeVariable(variableName, vars,
+					TclConstants.TCL_FIELD_TYPE_NAMESPACE, namespaceName);
 		}
 	}
 

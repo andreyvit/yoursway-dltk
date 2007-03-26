@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.core.search.matching;
 
-import org.eclipse.dltk.ast.references.Reference;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.ast.references.TypeReference;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.matching.PatternLocator;
@@ -42,9 +42,11 @@ public class TypeReferenceLocator extends PatternLocator {
 			element = element.getParent();
 		return element;
 	}	
-	
-	public int match(Reference node, MatchingNodeSet nodeSet) { // interested in NameReference & its subtypes
-		if (!(node instanceof SimpleReference)) return IMPOSSIBLE_MATCH;
+	public int match(SimpleReference ref, MatchingNodeSet nodeSet) {
+		if (!(ref instanceof TypeReference)) return IMPOSSIBLE_MATCH;
+		return match((TypeReference)ref, nodeSet );
+	}
+	public int match(TypeReference node, MatchingNodeSet nodeSet) { // interested in NameReference & its subtypes
 		
 		if (this.pattern.simpleName == null)
 			return nodeSet.addMatch(node, POSSIBLE_MATCH);

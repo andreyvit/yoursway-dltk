@@ -269,9 +269,10 @@ public class TclParseUtils {
 		}
 		if ((content.charAt(start) == '$' && content.charAt(start + 1) == '{')
 				|| (content.charAt(start) == '{')) {
-			while (content.charAt(end) != '}' && end < content.length())
+			while (content.charAt(end) != '}' && content.charAt(end) != '\\' && end < content.length())
 				end++;
 			end++;
+			
 		}
 		if (start < end) {
 			String sub = content.substring(start, end);
@@ -339,7 +340,7 @@ public class TclParseUtils {
 
 	private static boolean checkBounds(String content, int pos) {
 		char[] syms = { ' ', '\t', '\n', '\r', ']', '[', '}', '{', '(', ')',
-				'$' };
+				'$', '\\' };
 		char c = content.charAt(pos);
 		for (int i = 0; i < syms.length; ++i) {
 			if (syms[i] == c) {

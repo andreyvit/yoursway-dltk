@@ -14,8 +14,6 @@ import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.core.search.matching.MatchLocatorParser;
 import org.eclipse.dltk.core.search.matching.PatternLocator;
 import org.eclipse.dltk.core.search.matching.PossibleMatch;
-import org.eclipse.dltk.internal.core.search.matching.FieldLocator;
-import org.eclipse.dltk.internal.core.search.matching.MethodLocator;
 import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 
 public class RubyMatchLocatorParser extends MatchLocatorParser {
@@ -143,7 +141,7 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 			return;
 		}
 		PatternLocator locator = getPatternLocator();
-		if( node instanceof CallExpression && locator instanceof MethodLocator ) {
+		if( node instanceof CallExpression ) {
 			CallExpression call = (CallExpression)node;
 			int start = call.sourceStart();
 			int end = call.sourceEnd();
@@ -153,9 +151,9 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 			if( end < 0 ) {
 				end = 1;
 			}
-			locator.match((SimpleReference) new SimpleReference(start, end, call.getName()), getNodeSet());
+			locator.match((CallExpression) new CallExpression(start, end, null, call.getName(), null ), getNodeSet());
 		}
-		else if( node instanceof VariableReference && locator instanceof FieldLocator ) {
+		else if( node instanceof VariableReference ) {
 			VariableReference variableReference = (VariableReference) node;
 			int pos = variableReference.sourceStart();
 			if( pos < 0 ) {

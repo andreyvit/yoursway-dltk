@@ -65,7 +65,8 @@ public class FieldLocator extends PatternLocator {
 //				}
 //			}
 		}
-		return nodeSet.addMatch(node, declarationsLevel);
+//		return nodeSet.addMatch(node, declarationsLevel);
+		return IMPOSSIBLE_MATCH;
 	}
 
 	
