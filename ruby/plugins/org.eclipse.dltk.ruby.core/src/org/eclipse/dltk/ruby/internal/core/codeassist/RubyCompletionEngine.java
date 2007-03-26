@@ -141,16 +141,16 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 	private IMethod[] getMethodsForReceiver(
 			org.eclipse.dltk.core.ISourceModule modelModule,
-			ModuleDeclaration moduleDeclaration, ASTNode receiver) {
+			ModuleDeclaration moduleDeclaration, ASTNode receiver, String pattern) {
 		ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
 				modelModule, moduleDeclaration), (Statement) receiver);
 		IEvaluatedType type = inferencer.evaluateType(goal, null);
-		return getMethodsForReceiver(modelModule, moduleDeclaration, type);
+		return getMethodsForReceiver(modelModule, moduleDeclaration, type, pattern);
 	}
 
 	private IMethod[] getMethodsForReceiver(
 			org.eclipse.dltk.core.ISourceModule modelModule,
-			ModuleDeclaration moduleDeclaration, IEvaluatedType type) {
+			ModuleDeclaration moduleDeclaration, IEvaluatedType type, String pattern) {
 		List result = new ArrayList();
 		if (type instanceof RubyClassType) {
 			RubyClassType rubyClassType = (RubyClassType) type;
@@ -159,7 +159,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			if (rubyClass != null) { // remove, when built-in types will be
 										// added (this failed on "FalseClass"
 										// type)
-				RubyMixinMethod[] methods = rubyClass.getMethods(true);
+				RubyMixinMethod[] methods = rubyClass.findMethods(pattern, true);
 				for (int i = 0; i < methods.length; i++) {
 					IMethod[] sourceMethods = methods[i].getSourceMethods();
 					if (sourceMethods != null && sourceMethods.length > 0)
@@ -167,30 +167,12 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				}
 			}
 
-		} else /*if (type instanceof SimpleType) {
-			SimpleType simpleType = (SimpleType) type;
-			IMethod[] meth = null;
-			switch (simpleType.getType()) {
-			case SimpleType.TYPE_NUMBER:
-				meth = RubyModelUtils.getFakeMethods(
-						(ModelElement) modelModule, "Fixnum");
-				break;
-			case SimpleType.TYPE_STRING:
-				meth = RubyModelUtils.getFakeMethods(
-						(ModelElement) modelModule, "String");
-				break;
-			case SimpleType.TYPE_ARRAY:
-				meth = RubyModelUtils.getFakeMethods(
-						(ModelElement) modelModule, "Array");
-				break;
-			}
-			return meth;
-		} else*/ if (type instanceof AmbiguousType) {
+		} else if (type instanceof AmbiguousType) {
 			AmbiguousType type2 = (AmbiguousType) type;
 			IEvaluatedType[] possibleTypes = type2.getPossibleTypes();
 			for (int i = 0; i < possibleTypes.length; i++) {
 				IMethod[] m = getMethodsForReceiver(modelModule,
-						moduleDeclaration, possibleTypes[i]);
+						moduleDeclaration, possibleTypes[i], pattern);
 				for (int j = 0; j < m.length; j++) {
 					result.add(m[j]);
 				}
@@ -404,11 +386,11 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					this.setSourceRange(position - starting.length(), position);
 				}
 			}
-			methods = getMethodsForReceiver(module, moduleDeclaration, receiver);
+			methods = getMethodsForReceiver(module, moduleDeclaration, receiver, starting + "*");
 		} else {
 			IClassType self = RubyTypeInferencingUtils.determineSelfClass(
 					module, moduleDeclaration, position);
-			methods = getMethodsForReceiver(module, moduleDeclaration, self);
+			methods = getMethodsForReceiver(module, moduleDeclaration, self, starting + "*");
 
 		}
 		if (methods != null) {
@@ -421,8 +403,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	protected String processFieldName(IField field, String token) {
-		// TODO Auto-generated method stub
-		return null;
+		return field.getElementName();
 	}
 
 	private void reportMethod(IMethod method, int rel) {

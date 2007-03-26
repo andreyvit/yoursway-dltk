@@ -40,6 +40,7 @@ public class RubyMixinModel {
 	public IRubyMixinElement createRubyElement(String key) {
 		if (key.equals("Object")) {
 			return new RubyObjectMixinClass(this);
+//			return new RubyMixinClass(this, "Object");
 		}
 		IMixinElement mixinElement = model.get(key);
 		if (mixinElement != null) {

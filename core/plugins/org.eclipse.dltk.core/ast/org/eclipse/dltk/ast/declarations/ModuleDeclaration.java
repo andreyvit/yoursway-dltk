@@ -70,7 +70,7 @@ public class ModuleDeclaration extends ASTNode {
 		body.addStatement(statement);
 	}
 
-	public List getStatements() {
+	public List getStatements() {		
 		return body.getStatements();
 	}
 

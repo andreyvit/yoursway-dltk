@@ -10,11 +10,19 @@ public class RubyMixinMethod implements IRubyMixinElement {
 
 	private final String key;
 	private final RubyMixinModel model;
+	private IMethod[] sourceMethods;
 
 	public RubyMixinMethod(RubyMixinModel model, String key) {
 		super();
 		this.model = model;
 		this.key = key;
+	}
+	
+	public RubyMixinMethod(RubyMixinModel model, String key, IMethod[] sourceMethods) {
+		super();
+		this.model = model;
+		this.key = key;
+		this.sourceMethods = sourceMethods;
 	}
 
 	public String getKey() {
@@ -30,10 +38,26 @@ public class RubyMixinMethod implements IRubyMixinElement {
 		if (rubyParent instanceof RubyMixinClass) {
 			return (RubyMixinClass) rubyParent;
 		}		
-		return null;
+		return null;	
 	}
 	
+	/**
+	 * Allows to set precalculated source methods and not use mixin 
+	 * model to find them.
+	 */
+	public void setSourceMethods(IMethod[] sourceMethods) {
+		this.sourceMethods = sourceMethods;
+	}
+
+	/**
+	 * Returns model elements for this method. If they
+	 * were previously saved using setSourceMethods() or
+	 * constructor, then exactly they are returned. Else
+	 * mixin model are used.
+	 */
 	public IMethod[] getSourceMethods () {
+		if (this.sourceMethods != null)
+			return sourceMethods;
 		List result = new ArrayList ();
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		Object[] allObjects = mixinElement.getAllObjects();

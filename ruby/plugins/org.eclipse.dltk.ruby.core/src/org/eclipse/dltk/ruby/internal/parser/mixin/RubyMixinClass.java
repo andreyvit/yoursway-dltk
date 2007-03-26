@@ -28,7 +28,7 @@ import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
 public class RubyMixinClass implements IRubyMixinElement {
 
 	private final String key;
-	private final RubyMixinModel model;
+	protected final RubyMixinModel model;
 
 	public RubyMixinClass(RubyMixinModel model, String key) {
 		super();
@@ -88,7 +88,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 		return null;
 	}
 	
-	public RubyMixinMethod[] getMethods (boolean ignoreObjectMethods) {
+	public RubyMixinMethod[] findMethods (boolean ignoreObjectMethods) {
 		final List result = new ArrayList ();
 			
 		IMixinElement mixinElement = model.getRawModel().get(key);
@@ -101,10 +101,31 @@ public class RubyMixinClass implements IRubyMixinElement {
 		RubyMixinClass superclass = getSuperclass();
 		if (superclass != null) {
 			if (!(superclass.key.equals("Object") && ignoreObjectMethods)) {				
-				RubyMixinMethod[] methods = superclass.getMethods(ignoreObjectMethods);
+				RubyMixinMethod[] methods = superclass.findMethods(ignoreObjectMethods);
 				result.addAll(Arrays.asList(methods));
 			}
 		}		
+		return (RubyMixinMethod[]) result.toArray(new RubyMixinMethod[result.size()]);
+	}
+	
+	public RubyMixinMethod[] findMethods (String pattern, boolean ignoreObjectMethods) {
+		final List result = new ArrayList ();
+		
+		String[] keys = model.getRawModel().findKeys(key + MixinModel.SEPARATOR + pattern);
+		for (int i = 0; i < keys.length; i++) {
+			IRubyMixinElement element = model.createRubyElement(keys[i]);
+			if (element instanceof RubyMixinMethod)
+				result.add(element);
+		}					
+		if (!this.key.equals("Object")) {
+			RubyMixinClass superclass = getSuperclass();
+			if (superclass != null) {
+				if (!(superclass.key.equals("Object") && ignoreObjectMethods)) {				
+					RubyMixinMethod[] methods = superclass.findMethods(pattern, ignoreObjectMethods);
+					result.addAll(Arrays.asList(methods));
+				}
+			}	
+		}
 		return (RubyMixinMethod[]) result.toArray(new RubyMixinMethod[result.size()]);
 	}
 	
