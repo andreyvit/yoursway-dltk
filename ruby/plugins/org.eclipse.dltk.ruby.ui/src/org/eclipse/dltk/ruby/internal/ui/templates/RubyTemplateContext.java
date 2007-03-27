@@ -29,9 +29,9 @@ public class RubyTemplateContext extends ScriptTemplateContext {
 		super(type, document, completionOffset, completionLength, sourceModule);
 	}
 
-	
+	/*
 	private static class FormattingAstVisitor extends ASTVisitor
-	{
+	{	
 		private int indentLevel;
 		
 		public FormattingAstVisitor(){
@@ -105,37 +105,35 @@ public class RubyTemplateContext extends ScriptTemplateContext {
 			
 		}
 	}
+	*/
 	
 	// Just for testing
-	public TemplateBuffer evaluate(Template template)
+	public TemplateBuffer test_evaluate(Template template)
 			throws BadLocationException, TemplateException {
 		if (!canEvaluate(template)) {
 			return null;
 		}
 
 		String indentTo = calculateIndent(getDocument(), getStart());
+		
+		System.out.println("Indent: |" + indentTo + "|");
 
 		String delimeter = TextUtilities.getDefaultLineDelimiter(getDocument());
 		String[] lines = template.getPattern().split("\n");
 		
-		String p = "class XXX\ndef test\n print x\n end\n end\n";
-		OldCodeFormatter formater = new OldCodeFormatter(Collections.EMPTY_MAP);
-		String formatted = formater.formatString(p, 0);
+		//String p = "class XXX\ndef test\n print x\n end\n end\n";
+		//OldCodeFormatter formater = new OldCodeFormatter(Collections.EMPTY_MAP);
+		//String formatted = formater.formatString(p, 0);		
+		//System.out.println("Unformatted: |" + p + "|");
+		//System.out.println("Formatted: |" + formatted + "|");		
+		//ModuleDeclaration decl = RubySourceElementParser.parseModule(null, p.toCharArray(), null);
+		//try {
+		//decl.traverse(new FormattingAstVisitor());
+		//} catch (Exception e) {
+		// TODO Auto-generated catch block
+		//e.printStackTrace();
+		//}
 		
-		System.out.println("Unformatted: |" + p + "|");
-		System.out.println("Formatted: |" + formatted + "|");
-		
-		ModuleDeclaration decl = RubySourceElementParser.parseModule(null, p.toCharArray(), null);
-		try {
-			decl.traverse(new FormattingAstVisitor());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-
 		if (lines.length > 1 && indentTo != null && indentTo.length() > 0) {
 			StringBuffer buffer = new StringBuffer(lines[0]);
 

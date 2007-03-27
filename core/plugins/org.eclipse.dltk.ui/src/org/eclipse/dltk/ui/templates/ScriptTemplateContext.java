@@ -62,6 +62,8 @@ public class ScriptTemplateContext extends DocumentTemplateContext {
 		}
 
 		String indentTo = calculateIndent(getDocument(), getStart());
+		
+		//System.out.println("Indent: |" + indentTo + "|");
 
 		String delimeter = TextUtilities.getDefaultLineDelimiter(getDocument());
 		String[] lines = template.getPattern().split("\n");
