@@ -17,7 +17,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ElementChangedEvent;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IExternalSourceModule;
@@ -29,7 +31,9 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.ExternalScriptFolder;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.dltk.internal.ui.filters.IFilterElementNameProvider;
+import org.eclipse.dltk.tcl.core.TclLanguageToolkit;
 import org.eclipse.dltk.tcl.core.TclNature;
+import org.eclipse.dltk.tcl.core.TclPlugin;
 import org.eclipse.dltk.tcl.internal.ui.TclUI;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.ModelElementSorter;
@@ -247,6 +251,7 @@ public abstract class ElementsView extends ViewPart {
 
 				private void processChildren(IModelElementDelta delta) {
 					IModelElement element = delta.getElement();
+					
 					if (delta.getKind() == IModelElementDelta.ADDED) {
 						addElementsJob(element);
 					}
@@ -323,6 +328,14 @@ public abstract class ElementsView extends ViewPart {
 		}
 
 		synchronized public void addElement(IModelElement element) {
+			try {
+				IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager.getLanguageToolkit(element);
+				if( !languageToolkit.getNatureID().equals(TclLanguageToolkit.getDefault().getNatureID())) {
+					return;
+				}
+			} catch (CoreException e) {
+			}
+			
 			String name = labelProvider.getText(element);
 			if (elements.containsKey(name)) {
 				Object o = elements.get(name);
@@ -422,7 +435,9 @@ public abstract class ElementsView extends ViewPart {
 			try {
 				children = ((IParent) element).getChildren();
 			} catch (ModelException e) {
-				e.printStackTrace();
+				if( DLTKCore.DEBUG ) { 
+					e.printStackTrace();
+				}
 				return;
 			}
 			if (children != null) {
@@ -449,6 +464,13 @@ public abstract class ElementsView extends ViewPart {
 	}
 
 	private void removeElements(IModelElement element) {
+		try {
+			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager.getLanguageToolkit(element);
+			if( !languageToolkit.getNatureID().equals(TclLanguageToolkit.getDefault().getNatureID())) {
+				return;
+			}
+		} catch (CoreException e) {
+		}
 		if (isElement(element)) {
 			provider.removeElement(element);
 			asyncRefresh();

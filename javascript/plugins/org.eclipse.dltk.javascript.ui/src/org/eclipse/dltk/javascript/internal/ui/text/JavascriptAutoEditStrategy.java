@@ -240,6 +240,16 @@ public class JavascriptAutoEditStrategy extends DefaultIndentLineAutoEditStrateg
 	}
 
 	private void smartIndentAfterNewLine(IDocument d, DocumentCommand c) {
+		int indexOf = c.text.indexOf('\t');
+		if (indexOf!=-1)
+		{
+			c.text=c.text.substring(0,indexOf);
+		}
+		indexOf = c.text.indexOf(' ');
+		if (indexOf!=-1)
+		{
+			c.text=c.text.substring(0,indexOf);
+		}
 		JavaHeuristicScanner scanner= new JavaHeuristicScanner(d);
 		JavaIndenter indenter= new JavaIndenter(d, scanner, fProject);
 		StringBuffer indent= indenter.computeIndentation(c.offset);
@@ -948,7 +958,7 @@ public class JavascriptAutoEditStrategy extends DefaultIndentLineAutoEditStrateg
     private boolean isLineDelimiter(IDocument document, String text) {
 		String[] delimiters= document.getLegalLineDelimiters();
 		if (delimiters != null)
-			return TextUtilities.equals(delimiters, text) > -1;
+			return TextUtilities.startsWith(delimiters, text) > -1;
 		return false;
 	}
     /**

@@ -1,8 +1,12 @@
 package org.eclipse.dltk.internal.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IModelStatusConstants;
@@ -10,8 +14,8 @@ import org.eclipse.dltk.core.IProblemRequestor;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
+import org.eclipse.dltk.internal.core.mixin.MixinBuilder;
 import org.eclipse.dltk.internal.core.util.Messages;
-
 
 public class ReconcileWorkingCopyOperation extends ModelOperation {
 	boolean forceProblemDetection;
@@ -22,7 +26,8 @@ public class ReconcileWorkingCopyOperation extends ModelOperation {
 
 	public ModelElementDeltaBuilder deltaBuilder;
 
-	public ReconcileWorkingCopyOperation(ISourceModule module, boolean forceProblemDetection, WorkingCopyOwner workingCopyOwner) {
+	public ReconcileWorkingCopyOperation(ISourceModule module,
+			boolean forceProblemDetection, WorkingCopyOwner workingCopyOwner) {
 		super(new IModelElement[] { module });
 		this.forceProblemDetection = forceProblemDetection;
 		this.workingCopyOwner = workingCopyOwner;
@@ -36,8 +41,9 @@ public class ReconcileWorkingCopyOperation extends ModelOperation {
 		}
 
 		SourceModule workingCopy = getWorkingCopy();
-		//boolean wasConsistent = workingCopy.isConsistent();
-		IProblemRequestor problemRequestor = workingCopy.getPerWorkingCopyInfo();
+		// boolean wasConsistent = workingCopy.isConsistent();
+		IProblemRequestor problemRequestor = workingCopy
+				.getPerWorkingCopyInfo();
 
 		// create the delta builder (this remembers the current content of the
 		// cu)
@@ -61,16 +67,24 @@ public class ReconcileWorkingCopyOperation extends ModelOperation {
 	 * Makes the given working copy consistent, computes the delta and computes
 	 * an AST if needed. Returns the AST.
 	 */
-	public void makeConsistent(SourceModule workingCopy, IProblemRequestor problemRequestor) throws ModelException {
+	public void makeConsistent(SourceModule workingCopy,
+			IProblemRequestor problemRequestor) throws ModelException {
 		if (!workingCopy.isConsistent()) {
 			// make working copy consistent
 			if (this.problems == null)
 				this.problems = new HashMap();
 			workingCopy.makeConsistent(this.progressMonitor);
 			this.deltaBuilder.buildDeltas();
+			// Mixin source index operation required.
+
+			List elements = new ArrayList();
+			IDLTKProject project = workingCopy.getScriptProject();
+			elements.add(workingCopy);
+			MixinBuilder.getDefault().buildModelElements(project, elements,
+					new NullProgressMonitor());
+
 			return;
 		}
-		// TODO: Add problem reporting here.
 	}
 
 	/**
@@ -94,8 +108,9 @@ public class ReconcileWorkingCopyOperation extends ModelOperation {
 		}
 		SourceModule workingCopy = getWorkingCopy();
 		if (!workingCopy.isWorkingCopy()) {
-			return new ModelStatus(IModelStatusConstants.ELEMENT_DOES_NOT_EXIST, workingCopy); // was
-																								// destroyed
+			return new ModelStatus(
+					IModelStatusConstants.ELEMENT_DOES_NOT_EXIST, workingCopy); // was
+			// destroyed
 		}
 		return status;
 	}

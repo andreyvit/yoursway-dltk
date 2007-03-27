@@ -42,6 +42,7 @@ import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
+import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceModule;
@@ -974,6 +975,27 @@ public class MatchLocator implements ITypeRequestor {
 		// if (enclosingBinding != null)
 		// enclosingElement = ((ModelElement)
 		// enclosingElement).resolved(enclosingBinding);
+		if( enclosingElement instanceof IParent && reference instanceof FieldDeclaration  ) {
+			IParent parent = (IParent)enclosingElement;
+			IModelElement[] children;
+			try {
+				FieldDeclaration decl = (FieldDeclaration)reference;
+				children = parent.getChildren();
+				boolean found = false;
+				for (int i = 0; i < children.length; i++) {
+					if( children[i].getElementName().equals( decl.getName() ) && children[i] instanceof IField ) {
+						enclosingElement = children[i];
+						found = true;
+						break;
+					}
+				}
+				if( !found ) {
+					return null;
+				}
+			} catch (ModelException e) {
+				return null;
+			}
+		}
 		return new FieldReferenceMatch(enclosingElement, reference, accuracy, offset,
 				length, isReadAccess, isWriteAccess, insideDocComment,
 				participant, resource);

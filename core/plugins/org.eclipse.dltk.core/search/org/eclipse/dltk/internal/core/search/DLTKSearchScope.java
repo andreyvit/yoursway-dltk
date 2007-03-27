@@ -559,7 +559,7 @@ public class DLTKSearchScope extends AbstractSearchScope {
 				return Path.EMPTY;
 			return element.getPath();
 		case IModelElement.SCRIPT_FOLDER:
-			String relativePath = ((ScriptFolder) element).getPath().toString() + '/';
+			String relativePath = ((ScriptFolder) element).getRelativePath().toString() + '/';
 			return getPath(element.getParent(), relativeToRoot).append(
 					new Path(relativePath));
 		case IModelElement.SOURCE_MODULE:

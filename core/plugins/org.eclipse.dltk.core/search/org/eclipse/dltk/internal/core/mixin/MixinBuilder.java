@@ -10,7 +10,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -32,7 +31,6 @@ import org.eclipse.dltk.core.search.indexing.InternalSearchDocument;
 import org.eclipse.dltk.internal.core.ExternalProjectFragment;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
 import org.eclipse.dltk.internal.core.ModelManager;
-import org.eclipse.dltk.internal.core.SourceModule;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
 
 public class MixinBuilder implements IScriptBuilder {
@@ -49,7 +47,7 @@ public class MixinBuilder implements IScriptBuilder {
 		IndexManager manager = ModelManager.getModelManager().getIndexManager();
 		
 		IDLTKLanguageToolkit toolkit = null;
-		IMixinParser parser = null;;
+		IMixinParser parser = null;
 		try {
 			toolkit = DLTKLanguageManager.getLanguageToolkit(project);
 			parser = MixinManager.getMixinParser(toolkit.getNatureID());
@@ -149,5 +147,9 @@ public class MixinBuilder implements IScriptBuilder {
 		} catch (CoreException e) {
 		}
 
+	}
+	private static MixinBuilder builder = new MixinBuilder();
+	public static MixinBuilder getDefault() {
+		return builder;
 	}
 }

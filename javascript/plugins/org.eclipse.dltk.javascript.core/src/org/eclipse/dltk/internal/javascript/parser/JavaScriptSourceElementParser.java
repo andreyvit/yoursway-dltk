@@ -10,6 +10,7 @@ import java.util.Set;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
+import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.compiler.problem.DLTKProblemReporter;
 import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
@@ -32,7 +33,7 @@ import com.xored.org.mozilla.javascript.ScriptOrFnNode.Position;
 public class JavaScriptSourceElementParser implements ISourceElementParser {
 
 	private ISourceElementRequestor fRequestor = null;
-	private DLTKProblemReporter fReporter = null;
+	private IProblemReporter fReporter = null;
 
 	/**
 	 * Python lexer handler helper.
@@ -45,7 +46,7 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 	public JavaScriptSourceElementParser(ISourceElementRequestor requestor,
 			IProblemReporter problemReporter) {
 		this.fRequestor = requestor;
-		this.fReporter = (DLTKProblemReporter) problemReporter;
+		this.fReporter = problemReporter;
 	}
 
 	public ModuleDeclaration parseSourceModule(char[] contents, ISourceModuleInfo info ) {
@@ -59,7 +60,7 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 					if (fReporter != null)
 						fReporter.reportProblem(new DefaultProblem(arg1, arg0,
 								0, new String[] {}, ProblemSeverities.Error,
-								arg4 - arg3.length(), arg4, arg2, 0));
+								arg4 - arg3.length(), arg4, arg2));
 				} catch (CoreException e) {
 					e.printStackTrace();
 				}
@@ -77,7 +78,7 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 					if (fReporter != null)
 						fReporter.reportProblem(new DefaultProblem(arg1, arg0,
 								0, new String[] {}, ProblemSeverities.Warning,
-								arg4, arg4 + 1, arg2, 0));
+								arg4, arg4 + 1, arg2));
 				} catch (CoreException e) {
 					e.printStackTrace();
 				}

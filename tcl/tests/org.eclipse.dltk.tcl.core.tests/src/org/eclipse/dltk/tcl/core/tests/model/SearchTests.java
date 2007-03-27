@@ -83,6 +83,7 @@ public class SearchTests extends AbstractDLTKSearchTests implements IDLTKSearchC
 				"src/p3/X.tcl p3/Z$T2\n" +
 				"src/p3/X.tcl p3/Z$T2$T3\n" +
 				"src/p3/X.tcl p3/Z$T2$T3$T4\n" +
+				"src/p4/t.tcl p4/alfa\n"+
 				"src/q5/AQ.tcl q5/I\n"+
 				"src/q5/AQ.tcl q5/I2"
 		, this.resultCollector);
@@ -113,7 +114,7 @@ public class SearchTests extends AbstractDLTKSearchTests implements IDLTKSearchC
 	}
 	public void testNamespaceDeclaration09() throws Exception {
 		up();
-		IType type = getSourceModule(TCLSEARCH, "src", "pr/t.tcl").getType("alfa");
+		IType type = getSourceModule(TCLSEARCH, "src", "p4/t.tcl").getType("alfa");
 		search(type, DECLARATIONS, getSearchScope(TCLSEARCH));
 		assertSearchResults("src/p4/t.tcl p4/alfa", resultCollector);	
 	}
@@ -263,17 +264,21 @@ public class SearchTests extends AbstractDLTKSearchTests implements IDLTKSearchC
 			DECLARATIONS,
 			getSearchScope(TCLSEARCH));
 		assertSearchResults(
-			"src/p/X.tcl globalX\n" +
-			"src/p3/X.tcl p3/X$T1$T1$v6\n" +
-			"src/p3/X.tcl p3/X$T1$v5\n" +
-			"src/p3/X.tcl p3/X$v1\n" +
-			"src/p3/X.tcl p3/X$v2\n" +
-			"src/p3/X.tcl p3/X$v3\n" +
+			"src/p/X.tcl globalX\n"+
+			"src/p3/X.tcl p3/X$T1$T1$v6\n"+
+			"src/p3/X.tcl p3/X$T1$v5\n"+
+			"src/p3/X.tcl p3/X$v1\n"+
+			"src/p3/X.tcl p3/X$v2\n"+
+			"src/p3/X.tcl p3/X$v3\n"+
 			"src/p3/X.tcl p3/X$v4\n" +
-			"src/p3/X.tcl p3/Y$T2$T3$v10\n" +
-			"src/p3/X.tcl p3/Y$T2$v9\n" +
-			"src/p3/X.tcl p3/Y$v7\n" +
-			"src/p3/X.tcl p3/Z$T2$T3$T4$v11",
+			"src/p3/X.tcl v8\n"+
+			"src/p3/X.tcl p3/Y$T2$T3$v10\n"+
+			"src/p3/X.tcl p3/Y$T2$v9\n"+
+			"src/p3/X.tcl p3/Y$v7\n"+
+			"src/p3/X.tcl p3/Z$T2$T3$T4$v11\n"+
+			"src/p4/t.tcl p4/alfa$superFU\n"+
+			"src/p4/t.tcl p4/alfa$superFU\n"+
+			"src/p4/t.tcl p4/alfa$superFU",
 			this.resultCollector);
 	}
 	public void testVariableDeclaration03() throws Exception {

@@ -12,4 +12,5 @@ Export-Package: org.eclipse.dltk.internal.javascript.parser,
  org.eclipse.dltk.internal.javascript.reference.resolvers,
  org.eclipse.dltk.internal.javascript.typeinference,
  org.eclipse.dltk.javascript.core,
- org.eclipse.dltk.javascript.internal.core.codeassist.completion;x-friends:="org.eclipse.dltk.javascript.core.tests"
+ org.eclipse.dltk.javascript.internal.core.codeassist.completion;x-friends:="org.eclipse.dltk.javascript.core.tests",
+ org.eclipse.dltk.javascript.internal.core.codeassist.selection

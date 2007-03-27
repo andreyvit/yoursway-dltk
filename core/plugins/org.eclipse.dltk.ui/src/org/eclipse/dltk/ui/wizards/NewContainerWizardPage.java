@@ -331,7 +331,7 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 				
 				if (res.exists()) {
 					try {
-						if (!DLTKLanguageManager.hasScriptNature(jproject.getProject())) {
+//						if (!DLTKLanguageManager.hasScriptNature(jproject.getProject())) {
 							String nature = getRequiredNature();
 							if (nature != null && !proj.hasNature(nature)) {
 								if (resType == IResource.PROJECT) {
@@ -343,7 +343,7 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 								}
 								return status;
 							}
-						}
+//						}
 						
 					} catch (CoreException e) {
 						status.setWarning(NewWizardMessages.NewContainerWizardPage_warning_NotAScriptProject);

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui.text.completion;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.CompletionContext;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
@@ -52,7 +51,7 @@ public abstract class ScriptContentAssistInvocationContext extends
 	public ScriptContentAssistInvocationContext(ITextViewer viewer, int offset,
 			IEditorPart editor, String natureId) {
 		super(viewer, offset);
-		Assert.isNotNull(editor);
+		
 		fEditor = editor;
 		fLangaugeNatureID = natureId;
 	}

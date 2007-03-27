@@ -51,7 +51,7 @@ public class DLTKCore extends Plugin {
 	public static final boolean VERBOSE_SEARCH = false;	
 	public static final boolean VERBOSE_SEARCH_NAMELOOKUP = false;
 	public static final boolean VERBOSE_COMPLETION = false;
-	public static final boolean VERBOSE_MIXIN = true;
+	public static final boolean VERBOSE_MIXIN = false;
 	
 	public static final boolean DEBUG = Boolean.valueOf(
 			Platform.getDebugOption("org.eclipse.dltk.core/debug")).booleanValue();

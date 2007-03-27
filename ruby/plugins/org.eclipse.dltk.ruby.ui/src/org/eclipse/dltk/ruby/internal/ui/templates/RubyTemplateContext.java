@@ -1,17 +1,6 @@
 package org.eclipse.dltk.ruby.internal.ui.templates;
 
-import java.util.Collections;
-
-import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.declarations.MethodDeclaration;
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
-import org.eclipse.dltk.ruby.internal.ui.formatting.OldCodeFormatter;
 import org.eclipse.dltk.ui.templates.ScriptTemplateContext;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;

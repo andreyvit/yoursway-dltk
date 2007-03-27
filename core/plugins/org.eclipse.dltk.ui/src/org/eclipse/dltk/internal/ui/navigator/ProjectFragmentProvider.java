@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
@@ -192,11 +193,16 @@ public class ProjectFragmentProvider implements IPropertyChangeListener {
 		for (int i= 0; i < resources.length; i++) {
 			IResource resource= resources[i];
 			if (resource instanceof IFolder) {
-				IFolder folder= (IFolder) resource;
-				IModelElement element= DLTKCore.create(folder);
-				if (element instanceof IScriptFolder) {
-					list.add(element);	
-				} 
+				IFolder folder = (IFolder) resource;
+//				IModelElement element= DLTKCore.create(folder);
+//				if (element instanceof IScriptFolder) {
+					IProject project = folder.getProject();
+					IDLTKProject dltkProject= DLTKCore.create(project);
+					if (dltkProject != null) {
+						if (dltkProject.isOnBuildpath(folder))
+							list.add(folder);	
+					}
+//				} 
 			}	
 		}
 		return list;
