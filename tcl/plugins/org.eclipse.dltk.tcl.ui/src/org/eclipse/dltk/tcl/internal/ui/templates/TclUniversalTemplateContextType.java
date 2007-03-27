@@ -8,7 +8,7 @@ import org.eclipse.jface.text.templates.GlobalTemplateVariables;
 
 public class TclUniversalTemplateContextType extends ScriptTemplateContextType {
 	public static final String CONTEXT_TYPE_ID = "tclUniversalTemplateContextType";
-
+		
 	private void addGlobalResolvers() {
 		addResolver(new GlobalTemplateVariables.Cursor());
 		addResolver(new GlobalTemplateVariables.WordSelection());
@@ -21,11 +21,21 @@ public class TclUniversalTemplateContextType extends ScriptTemplateContextType {
 	}
 
 	public TclUniversalTemplateContextType() {
-		super(CONTEXT_TYPE_ID);
-
 		addGlobalResolvers();
 	}
 	
+	public TclUniversalTemplateContextType(String id) {
+		super(id);
+		addGlobalResolvers();
+	}
+	
+	public TclUniversalTemplateContextType(String id, String name) {
+		super(id, name);
+		addGlobalResolvers();
+	}
+	
+	
+		
 	public ScriptTemplateContext createContext(IDocument document, int offset,
 			int length, ISourceModule sourceModule) {
 		return new TclTemplateContext(this, document, offset, length, sourceModule);

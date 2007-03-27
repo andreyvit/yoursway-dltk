@@ -372,7 +372,7 @@
     <contextType
           class="org.eclipse.dltk.tcl.internal.ui.templates.TclUniversalTemplateContextType"
           id="tclUniversalTemplateContextType"
-          name="%tclUniversalTemplateContextTypeName">
+          name="%TclTemplateContext">
     </contextType>    
  </extension>       
    

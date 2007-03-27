@@ -20,9 +20,17 @@ public class RubyUniversalTemplateContextType extends ScriptTemplateContextType 
 		addResolver(new GlobalTemplateVariables.User());
 	}
 
-	public RubyUniversalTemplateContextType() {
-		super(CONTEXT_TYPE_ID);
-
+	public RubyUniversalTemplateContextType() {		
+		addGlobalResolvers();
+	}
+	
+	public RubyUniversalTemplateContextType(String id) {
+		super(id);
+		addGlobalResolvers();
+	}
+	
+	public RubyUniversalTemplateContextType(String id, String name) {
+		super(id, name);
 		addGlobalResolvers();
 	}
 	

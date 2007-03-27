@@ -11,10 +11,17 @@ import org.eclipse.jface.text.templates.TemplateVariable;
  * A very simple context type.
  */
 public abstract class ScriptTemplateContextType extends TemplateContextType {
+	public ScriptTemplateContextType() {
+	}
+
 	public ScriptTemplateContextType(String id) {
 		super(id);
 	}
 	
+	public ScriptTemplateContextType(String id, String name) {
+		super(id, name);
+	}
+
 	public abstract ScriptTemplateContext createContext(IDocument document,
 			int completionPosition, int length, ISourceModule sourceModule);
 

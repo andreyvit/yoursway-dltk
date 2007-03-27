@@ -245,7 +245,7 @@
     <contextType
           class="org.eclipse.dltk.ruby.internal.ui.templates.RubyUniversalTemplateContextType"
           id="rubyUniversalTemplateContextType"
-          name="%rubyUniversalTemplateContextTypeName">
+          name="%RubyTemplateContextName">
     </contextType>
     <include
           file="templates/templates.xml"
