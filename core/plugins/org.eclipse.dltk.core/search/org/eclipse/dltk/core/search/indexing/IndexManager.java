@@ -213,7 +213,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 			checksumCalculator.update(pathString.getBytes());
 			String fileName = Long.toString(checksumCalculator.getValue())
 					+ ".index"; //$NON-NLS-1$
-//			if (VERBOSE)
+			if (VERBOSE)
 				Util
 						.verbose("-> index name for " + pathString + " is " + fileName); //$NON-NLS-1$ //$NON-NLS-2$
 			indexLocation = getScriptPluginWorkingLocation().append(fileName)
