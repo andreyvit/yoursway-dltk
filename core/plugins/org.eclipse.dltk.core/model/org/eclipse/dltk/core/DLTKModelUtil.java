@@ -63,19 +63,8 @@ public class DLTKModelUtil {
 
 	public static void searchTypeDeclarations(IDLTKProject project,
 			String patternString, TypeNameMatchRequestor requestor) {
-		final List types = new ArrayList();
-
-		// patternString = "*" + patternString + "*";
-
-		IDLTKLanguageToolkit langaugeToolkit;
-		try {
-			langaugeToolkit = DLTKLanguageManager.getLanguageToolkit(project);
-		} catch (CoreException e1) {
-			return;
-		}
-		// FIXME: use another search
 		IDLTKSearchScope scope = SearchEngine
-				.createSearchScope(new IModelElement[] { project });
+			.createSearchScope(new IModelElement[] { project });
 		try {
 			SearchEngine engine = new SearchEngine();
 			engine.searchAllTypeNames(null, SearchPattern.R_PATTERN_MATCH,
@@ -90,22 +79,9 @@ public class DLTKModelUtil {
 
 	public static void searchMethodDeclarations(IDLTKProject project,
 			String patternString, SearchRequestor requestor) {
-		final List types = new ArrayList();
-
-		// patternString = "*" + patternString + "*";
-
-		IDLTKLanguageToolkit langaugeToolkit;
-		try {
-			langaugeToolkit = DLTKLanguageManager.getLanguageToolkit(project);
-		} catch (CoreException e1) {
-			return;
-		}
-		IDLTKSearchScope scope;
-		if (project != null)
-			scope = SearchEngine
+		
+		IDLTKSearchScope scope = SearchEngine
 					.createSearchScope(new IModelElement[] { project });
-		else
-			scope = SearchEngine.createWorkspaceScope(langaugeToolkit);
 
 		try {
 			SearchEngine engine = new SearchEngine();
@@ -120,115 +96,7 @@ public class DLTKModelUtil {
 				e.printStackTrace();
 		}
 	}
-
-	/**
-	 * Returns all the types with a given qualified name, that are located as
-	 * childs of element.
-	 * 
-	 * @param element
-	 * @param qualifiedName
-	 * @param delimeter
-	 * @return
-	 */
-	public static IType[] getAllTypes(final IDLTKProject project,
-			final String qualifiedName, final String delimeter) {
-		final List types = new ArrayList();
-
-		TypeNameMatchRequestor requestor = new TypeNameMatchRequestor() {
-
-			public void acceptTypeNameMatch(TypeNameMatch match) {
-				IType type = (IType) match.getType();
-				// XXX dirty hack to accept Ruby lib matches from other projects
-				IScriptFolder scriptFolder = type.getScriptFolder();
-				if (scriptFolder instanceof ExternalScriptFolder)
-					;
-				else if (!type.getScriptProject().equals(project))
-					return;
-				if (type.getTypeQualifiedName(delimeter).equals(qualifiedName)) {
-					types.add(type);
-				}
-			}
-
-		};
-
-		String[] names = qualifiedName.split(delimeter);
-		if (names == null || names.length == 0)
-			return new IType[0];
-		String patternString = names[names.length - 1];
-
-		searchTypeDeclarations(project, patternString, requestor);
-
-		return (IType[]) types.toArray(new IType[types.size()]);
-	}
-
-	/**
-	 * Returns all ITypes, which fqn ends with nameEnding.
-	 * 
-	 * @param project
-	 * @param nameEnding
-	 * @param delimeter
-	 * @return
-	 */
-	public static IType[] getAllTypesWithFQNEnding(final IDLTKProject project,
-			final String nameEnding, final String delimeter) {
-		final List types = new ArrayList();
-
-		TypeNameMatchRequestor requestor = new TypeNameMatchRequestor() {
-
-			public void acceptTypeNameMatch(TypeNameMatch match) {
-				IType type = (IType) match.getType();
-				// XXX dirty hack to accept Ruby lib matches from other projects
-				IScriptFolder scriptFolder = type.getScriptFolder();
-				if (scriptFolder instanceof ExternalScriptFolder)
-					;
-				else if (!type.getScriptProject().equals(project))
-					return;
-				System.out.println();
-				if (type.getTypeQualifiedName(delimeter).endsWith(nameEnding)) {
-					types.add(type);
-				}
-			}
-		};
-		String[] names = nameEnding.split(delimeter);
-		if (names == null || names.length == 0)
-			return new IType[0];
-		String patternString = names[names.length - 1];
-		searchTypeDeclarations(project, patternString, requestor);
-
-		return (IType[]) types.toArray(new IType[types.size()]);
-	}
-
-	public static IType[] getAllScopedTypes(IDLTKProject project,
-			String typeName, String delimeter, String scopeFqn) {
-		List types = new ArrayList();
-		int curLength = -1;
-
-		IType[] allTypes = getAllTypesWithFQNEnding(project, typeName,
-				delimeter);
-
-		if (!typeName.startsWith(delimeter))
-			typeName = delimeter + typeName;
-		for (int i = 0; i < allTypes.length; i++) {
-			String name = allTypes[i].getTypeQualifiedName(delimeter);
-			if (!name.endsWith(typeName))
-				continue;
-			String start = name.substring(0, name.length() - typeName.length());
-			// String start = name.substring(0, name.lastIndexOf(delimeter));
-			int length = start.length();
-			if (length < curLength)
-				continue;
-			if (scopeFqn.startsWith(start)) {
-				if (length > curLength) {
-					types.clear();
-					curLength = length;
-				}
-				types.add(allTypes[i]);
-			}
-		}
-
-		return (IType[]) types.toArray(new IType[types.size()]);
-	}
-
+	
 	public static IModelElement findType(IModelElement module,
 			String qualifiedName, String delimeter) {
 

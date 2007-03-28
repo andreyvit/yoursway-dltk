@@ -23,6 +23,8 @@ public class RubyMixin implements IMixinParser {
 
 	public void parserSourceModule(char[] contents, boolean signature,
 			ISourceModule module) {
+		if (new String(contents).indexOf("Mine") != -1)
+			contents = contents;
 		if (NEW) {			
 			ModuleDeclaration moduleDeclaration = RubySourceElementParser.parseModule(null, contents, null);
 			RubyMixinBuildVisitor visitor = new RubyMixinBuildVisitor(moduleDeclaration, module, signature, requestor);

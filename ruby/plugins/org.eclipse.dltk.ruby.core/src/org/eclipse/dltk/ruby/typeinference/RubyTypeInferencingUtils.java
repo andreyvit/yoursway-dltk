@@ -14,9 +14,7 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.VariableReference;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKModelUtil;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
@@ -27,7 +25,6 @@ import org.eclipse.dltk.core.search.TypeNameMatch;
 import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
 import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
-import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
@@ -103,10 +100,14 @@ public class RubyTypeInferencingUtils {
 		String[] modelStaticScopesKeys = getModelStaticScopesKeys(model,
 				rootNode, requestedOffset);
 		IMixinElement[] result = new IMixinElement[modelStaticScopesKeys.length];
-		for (int i = 1; i < modelStaticScopesKeys.length; i++) { //XXX-fourdman: removed Object resulution
+		for (int i = 1; i < modelStaticScopesKeys.length; i++) { // XXX-fourdman:
+																	// removed
+																	// Object
+																	// resulution
 			result[i] = model.get(modelStaticScopesKeys[i]);
-			if (result[i] == null)
-				throw new RuntimeException("getModelStaticScopes(): Failed to get element from mixin-model: " + modelStaticScopesKeys[i]);
+			// if (result[i] == null)
+			// throw new RuntimeException("getModelStaticScopes(): Failed to get
+			// element from mixin-model: " + modelStaticScopesKeys[i]);
 		}
 		return result;
 	}
@@ -114,40 +115,8 @@ public class RubyTypeInferencingUtils {
 	public static String[] getModelStaticScopesKeys(MixinModel model,
 			ModuleDeclaration rootNode, final int requestedOffset) {
 		ASTNode[] allStaticScopes = RubyTypeInferencingUtils
-				.getAllStaticScopes(rootNode, requestedOffset);		
+				.getAllStaticScopes(rootNode, requestedOffset);
 		return RubyMixinBuildVisitor.restoreScopesByNodes(allStaticScopes);
-	}
-
-	private static String evaluateClassKey(Statement expr, List topScopes,
-			MixinModel model) {
-		if (expr instanceof ColonExpression) {
-			ColonExpression colonExpression = (ColonExpression) expr;
-			if (colonExpression.isFull()) {
-				return colonExpression.getName();
-			} else {
-				String key = evaluateClassKey(colonExpression.getLeft(),
-						topScopes, model);
-				if (key != null) {
-					return key + MixinModel.SEPARATOR
-							+ colonExpression.getName();
-				}
-			}
-		} else if (expr instanceof ConstantReference) {
-			ConstantReference constantReference = (ConstantReference) expr;
-			String name = constantReference.getName();
-			String[] top = (String[]) topScopes.toArray(new String[topScopes
-					.size()]);
-			for (int i = top.length - 1; i >= 0; i--) {
-				String pk = top[i] + MixinModel.SEPARATOR + name;
-				String[] findKeys = model.findKeys(pk);
-				if (findKeys != null && findKeys.length > 0)
-					return pk;
-			}
-			String[] findKeys = model.findKeys(name);
-			if (findKeys != null && findKeys.length > 0)
-				return name;
-		}
-		return null;
 	}
 
 	public static LocalVariableInfo findLocalVariable(

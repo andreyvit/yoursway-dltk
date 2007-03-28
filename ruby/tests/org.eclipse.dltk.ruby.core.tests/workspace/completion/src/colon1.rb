@@ -6,5 +6,6 @@ end
 class Mix
 	class Cool2
 	end
-	::
+	::A
 end
+

@@ -2,27 +2,11 @@ package org.eclipse.dltk.ruby.internal.parser.mixin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.compiler.env.ISourceModule;
-import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
-import org.eclipse.dltk.core.IMethod;
-import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
-import org.eclipse.dltk.core.search.IDLTKSearchConstants;
-import org.eclipse.dltk.core.search.IDLTKSearchScope;
-import org.eclipse.dltk.core.search.SearchEngine;
-import org.eclipse.dltk.core.search.SearchMatch;
-import org.eclipse.dltk.core.search.SearchParticipant;
-import org.eclipse.dltk.core.search.SearchPattern;
-import org.eclipse.dltk.core.search.SearchRequestor;
-import org.eclipse.dltk.internal.core.search.matching.MethodPattern;
-import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
 
 public class RubyMixinClass implements IRubyMixinElement {
@@ -38,6 +22,16 @@ public class RubyMixinClass implements IRubyMixinElement {
 
 	public String getKey() {
 		return key;
+	}
+	
+	public RubyMixinClass getInstanceClass() {
+		if (!isMeta())
+			return this;
+		String newkey = key + RubyMixin.INSTANCE_SUFFIX;
+		IRubyMixinElement r = model.createRubyElement(newkey);
+		if (r instanceof RubyMixinClass)
+			return (RubyMixinClass) r;
+		return null;
 	}
 	
 	public RubyMixinClass getMetaclass () {
@@ -81,8 +75,8 @@ public class RubyMixinClass implements IRubyMixinElement {
 		if (type != null) { 
 			String key = RubyModelUtils.evaluateSuperClass (type);
 			if (key != null) {
-				IRubyMixinElement rubyElement = model.createRubyElement(key);
-				return (RubyMixinClass) rubyElement;
+				RubyMixinClass s = (RubyMixinClass) model.createRubyElement(key);				
+				return s;
 			}
 		}
 		return null;
@@ -98,13 +92,17 @@ public class RubyMixinClass implements IRubyMixinElement {
 			if (element instanceof RubyMixinMethod)
 				result.add(element);
 		}
-		RubyMixinClass superclass = getSuperclass();
-		if (superclass != null) {
-			if (!(superclass.key.equals("Object") && ignoreObjectMethods)) {				
-				RubyMixinMethod[] methods = superclass.findMethods(ignoreObjectMethods);
-				result.addAll(Arrays.asList(methods));
-			}
-		}		
+		if (!this.key.equals("Object")) {
+			RubyMixinClass superclass = getSuperclass();
+			if (superclass != null) {
+				if (!(superclass.key.equals("Object") && ignoreObjectMethods)) {
+					if (!this.isMeta())
+						superclass = superclass.getInstanceClass();
+					RubyMixinMethod[] methods = superclass.findMethods(ignoreObjectMethods);
+					result.addAll(Arrays.asList(methods));
+				}
+			}		
+		}
 		return (RubyMixinMethod[]) result.toArray(new RubyMixinMethod[result.size()]);
 	}
 	
@@ -120,7 +118,9 @@ public class RubyMixinClass implements IRubyMixinElement {
 		if (!this.key.equals("Object")) {
 			RubyMixinClass superclass = getSuperclass();
 			if (superclass != null) {
-				if (!(superclass.key.equals("Object") && ignoreObjectMethods)) {				
+				if (!(superclass.key.equals("Object") && ignoreObjectMethods)) {
+					if (!this.isMeta())
+						superclass = superclass.getInstanceClass();
 					RubyMixinMethod[] methods = superclass.findMethods(pattern, ignoreObjectMethods);
 					result.addAll(Arrays.asList(methods));
 				}
@@ -161,5 +161,18 @@ public class RubyMixinClass implements IRubyMixinElement {
 		}
 		return (RubyMixinVariable[]) result.toArray(new RubyMixinVariable[result.size()]);
 	}
+	
+	public RubyMixinVariable[] findFields (String pattern) {
+		List result = new ArrayList ();
+		String[] keys = model.getRawModel().findKeys(this.key + MixinModel.SEPARATOR + pattern);
+		for (int i = 0; i < keys.length; i++) {
+			IRubyMixinElement element = model.createRubyElement(keys[i]);
+			if (element instanceof RubyMixinVariable)
+				result.add(element);
+		}
+		return (RubyMixinVariable[]) result.toArray(new RubyMixinVariable[result.size()]);
+	}
+
+	
 	
 }

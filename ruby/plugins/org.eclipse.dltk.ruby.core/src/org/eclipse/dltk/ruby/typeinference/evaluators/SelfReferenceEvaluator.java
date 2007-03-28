@@ -42,7 +42,7 @@ public class SelfReferenceEvaluator extends GoalEvaluator {
 		}
 		// TODO: check if static self type is a descendent of the type from
 		// InstanceContext (and use the descendent in this case)
-		Assert.isTrue(result != null);
+		//Assert.isTrue(result != null);
 		return IGoal.NO_GOALS;
 	}
 

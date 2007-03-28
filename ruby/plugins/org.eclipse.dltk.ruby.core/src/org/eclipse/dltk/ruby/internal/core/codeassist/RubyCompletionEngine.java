@@ -1,9 +1,6 @@
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.dltk.ast.ASTNode;
@@ -26,19 +23,12 @@ import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
-import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.evaluation.types.IClassType;
-import org.eclipse.dltk.evaluation.types.SimpleType;
-import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
-import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
-import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
-import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinMethod;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
-import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinVariable;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
@@ -141,44 +131,13 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 	private IMethod[] getMethodsForReceiver(
 			org.eclipse.dltk.core.ISourceModule modelModule,
-			ModuleDeclaration moduleDeclaration, ASTNode receiver, String pattern) {
+			ModuleDeclaration moduleDeclaration, ASTNode receiver,
+			String pattern) {
 		ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
 				modelModule, moduleDeclaration), (Statement) receiver);
 		IEvaluatedType type = inferencer.evaluateType(goal, null);
-		return getMethodsForReceiver(modelModule, moduleDeclaration, type, pattern);
-	}
-
-	private IMethod[] getMethodsForReceiver(
-			org.eclipse.dltk.core.ISourceModule modelModule,
-			ModuleDeclaration moduleDeclaration, IEvaluatedType type, String pattern) {
-		List result = new ArrayList();
-		if (type instanceof RubyClassType) {
-			RubyClassType rubyClassType = (RubyClassType) type;
-			RubyMixinClass rubyClass = RubyMixinModel.getInstance()
-					.createRubyClass(rubyClassType);
-			if (rubyClass != null) { // remove, when built-in types will be
-										// added (this failed on "FalseClass"
-										// type)
-				RubyMixinMethod[] methods = rubyClass.findMethods(pattern, true);
-				for (int i = 0; i < methods.length; i++) {
-					IMethod[] sourceMethods = methods[i].getSourceMethods();
-					if (sourceMethods != null && sourceMethods.length > 0)
-						result.add(sourceMethods[0]);
-				}
-			}
-
-		} else if (type instanceof AmbiguousType) {
-			AmbiguousType type2 = (AmbiguousType) type;
-			IEvaluatedType[] possibleTypes = type2.getPossibleTypes();
-			for (int i = 0; i < possibleTypes.length; i++) {
-				IMethod[] m = getMethodsForReceiver(modelModule,
-						moduleDeclaration, possibleTypes[i], pattern);
-				for (int j = 0; j < m.length; j++) {
-					result.add(m[j]);
-				}
-			}
-		}
-		return (IMethod[]) result.toArray(new IMethod[result.size()]);
+		return RubyModelUtils.searchClassMethods(modelModule,
+				moduleDeclaration, type, pattern);
 	}
 
 	private void completeSimpleRef(org.eclipse.dltk.core.ISourceModule module,
@@ -187,49 +146,10 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		String prefix = getPrefix(module, node, position);
 		this.setSourceRange(node.sourceStart(), position);
 
-		RubyClassType selfClass = null;
-
-		RubyMixinModel rubyModel = RubyMixinModel.getInstance();
-		String[] keys = RubyTypeInferencingUtils.getModelStaticScopesKeys(
-				rubyModel.getRawModel(), moduleDeclaration, position);
-		IRubyMixinElement innerElement = null;
-		if (keys != null && keys.length > 0) {
-			String inner = keys[keys.length - 1];
-			innerElement = rubyModel.createRubyElement(inner);
-			if (innerElement instanceof RubyMixinMethod) {
-				RubyMixinMethod method = (RubyMixinMethod) innerElement;
-				selfClass = new RubyClassType(method.getSelfType().getKey());
-			} else if (innerElement instanceof RubyMixinClass) {
-				RubyMixinClass rubyMixinClass = (RubyMixinClass) innerElement;
-				selfClass = new RubyClassType(rubyMixinClass.getKey());
-			}
-		}
-
-		RubyMixinClass rubyClass = RubyMixinModel.getInstance()
-				.createRubyClass(selfClass);
-		RubyMixinVariable[] fields2 = rubyClass.getFields();
-		addVariablesFrom(fields2, prefix, relevance);
-		relevance -= fields2.length;
-
-		if (innerElement != null) {
-			if (innerElement instanceof RubyMixinMethod) {
-				RubyMixinMethod rubyMixinMethod = (RubyMixinMethod) innerElement;
-				fields2 = rubyMixinMethod.getFields();
-				addVariablesFrom(fields2, prefix, relevance);
-				relevance -= fields2.length;
-			}
-		}
-
-	}
-
-	private void addVariablesFrom(RubyMixinVariable[] fields2, String prefix,
-			int relevance) {
-		for (int i = 0; i < fields2.length; i++) {
-			IField[] sourceFields = fields2[i].getSourceFields();
-			if (sourceFields != null && sourceFields.length > 0) {
-				if (sourceFields[0].getElementName().startsWith(prefix))
-					reportField(sourceFields[0], relevance--);
-			}
+		IField[] fields = RubyModelUtils.findFields(module, moduleDeclaration,
+				prefix, position);
+		for (int i = 0; i < fields.length; i++) {
+			reportField(fields[0], relevance--);
 		}
 	}
 
@@ -386,11 +306,13 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					this.setSourceRange(position - starting.length(), position);
 				}
 			}
-			methods = getMethodsForReceiver(module, moduleDeclaration, receiver, starting + "*");
+			methods = getMethodsForReceiver(module, moduleDeclaration,
+					receiver, starting + "*");
 		} else {
 			IClassType self = RubyTypeInferencingUtils.determineSelfClass(
 					module, moduleDeclaration, position);
-			methods = getMethodsForReceiver(module, moduleDeclaration, self, starting + "*");
+			methods = RubyModelUtils.searchClassMethods(module,
+					moduleDeclaration, self, starting + "*");
 
 		}
 		if (methods != null) {

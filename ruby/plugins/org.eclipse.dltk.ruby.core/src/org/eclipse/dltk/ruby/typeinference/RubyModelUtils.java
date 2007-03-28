@@ -28,18 +28,22 @@ import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
+import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.SourceMethod;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
+import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinMethod;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinVariable;
 import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.ClassMetaclass;
 import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.Metaclass;
 import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.MethodInfo;
 import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.ModuleMetaclass;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class RubyModelUtils {
 	
@@ -162,21 +166,82 @@ public class RubyModelUtils {
 		
 	}
 	
-	public static IField[] findFields (ISourceModule modelModule, ModuleDeclaration parsedUnit, String prefix, int position) {
-		RubyClassType type = RubyTypeInferencingUtils.determineSelfClass(modelModule, parsedUnit, position);
-		RubyMixinClass rubyClass = RubyMixinModel.getInstance().createRubyClass(type);
-				
-		List resultFields = new UniqueNamesList ();
+	
+	
+	public static IField[] findFields (ISourceModule modelModule, 
+			ModuleDeclaration parsedUnit, String prefix, int position) {
+		List result = new ArrayList ();
 		
-		RubyMixinVariable[] fields = rubyClass.getFields();
-		for (int i = 0; i < fields.length; i++) {
-			IField[] sourceFields = fields[i].getSourceFields();
-			if (sourceFields != null && sourceFields.length > 0)
-				resultFields.add(sourceFields[0]);
+		RubyMixinModel rubyModel = RubyMixinModel.getInstance();
+		String[] keys = RubyTypeInferencingUtils.getModelStaticScopesKeys(
+				rubyModel.getRawModel(), parsedUnit, position);
+		
+		IRubyMixinElement innerElement = null;
+		RubyMixinClass selfClass = null;
+		
+		if (keys != null && keys.length > 0) {
+			String inner = keys[keys.length - 1];
+			innerElement = rubyModel.createRubyElement(inner);
+			if (innerElement instanceof RubyMixinMethod) {
+				RubyMixinMethod method = (RubyMixinMethod) innerElement;
+				selfClass = method.getSelfType();				
+				RubyMixinVariable[] fields2 = method.getFields();
+				addVariablesFrom(fields2, prefix, result);
+			} else if (innerElement instanceof RubyMixinClass) {
+				selfClass = (RubyMixinClass) innerElement;
+			}
 		}
+
+		RubyMixinVariable[] fields2 = selfClass.findFields(prefix + "*");
+		addVariablesFrom(fields2, null, result);
 		
-		return (IField[]) resultFields.toArray(new IField[resultFields.size()]);
-	}	 
+		return (IField[]) result.toArray(new IField[result.size()]);
+	}	
+	
+	public static IMethod[] searchClassMethods(
+			org.eclipse.dltk.core.ISourceModule modelModule,
+			ModuleDeclaration moduleDeclaration, IEvaluatedType type,
+			String pattern) {
+		List result = new ArrayList();
+		if (type instanceof RubyClassType) {
+			RubyClassType rubyClassType = (RubyClassType) type;
+			RubyMixinClass rubyClass = RubyMixinModel.getInstance()
+					.createRubyClass(rubyClassType);
+			if (rubyClass != null) {
+				RubyMixinMethod[] methods = rubyClass
+						.findMethods(pattern, true);
+				for (int i = 0; i < methods.length; i++) {
+					IMethod[] sourceMethods = methods[i].getSourceMethods();
+					if (sourceMethods != null && sourceMethods.length > 0)
+						result.add(sourceMethods[0]);
+				}
+			}
+
+		} else if (type instanceof AmbiguousType) {
+			AmbiguousType type2 = (AmbiguousType) type;
+			IEvaluatedType[] possibleTypes = type2.getPossibleTypes();
+			for (int i = 0; i < possibleTypes.length; i++) {
+				IMethod[] m = searchClassMethods(modelModule,
+						moduleDeclaration, possibleTypes[i], pattern);
+				for (int j = 0; j < m.length; j++) {
+					result.add(m[j]);
+				}
+			}
+		}
+		return (IMethod[]) result.toArray(new IMethod[result.size()]);
+	}
+	
+	private static void addVariablesFrom(RubyMixinVariable[] fields2, String prefix,
+			List resultList) {
+		for (int i = 0; i < fields2.length; i++) {
+			IField[] sourceFields = fields2[i].getSourceFields();
+			if (sourceFields != null && sourceFields.length > 0) {
+				if (prefix == null || sourceFields[0].getElementName().startsWith(prefix)) {
+					resultList.add(sourceFields[0]);
+				}
+			}
+		}
+	}
 	
 //	public static RubyClassType getSuperType(IType type) {
 //		String[] superClasses;

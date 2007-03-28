@@ -14,6 +14,7 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.ruby.ast.RubyDotExpression;
 import org.eclipse.dltk.ruby.ast.RubyReturnStatement;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
@@ -38,6 +39,8 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 	
 	private final List possibilities = new ArrayList();
 	private final List evaluated = new ArrayList();
+	
+	private IEvaluatedType rdocResult = null;
 
 	private MethodContext innerContext;
 
@@ -54,6 +57,8 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 	}
 
 	public Object produceResult() {
+		if (rdocResult != null)
+			return rdocResult;
 		if (!evaluated.isEmpty()) {
 			return RubyTypeInferencingUtils.combineTypes(evaluated);			
 		}
@@ -104,7 +109,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			resultMethod = resultMethodFromSameModule;		
 		
 		if (resultMethod == null)
-			return IGoal.NO_GOALS;
+			return IGoal.NO_GOALS;		
 		
 		ISourceModule sourceModule = resultMethod.getSourceModule();
 		ModuleDeclaration module = RubyTypeInferencingUtils.parseSource(sourceModule);

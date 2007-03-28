@@ -14,6 +14,9 @@ end
 
 def bar_f
 end
+
+def self.abcd; end
+
 end
 
 t = false

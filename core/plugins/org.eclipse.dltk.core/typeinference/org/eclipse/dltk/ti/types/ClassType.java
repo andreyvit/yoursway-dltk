@@ -14,4 +14,10 @@ public abstract class ClassType implements IEvaluatedType {
 	
 	public abstract String getModelKey ();
 
+	public String toString() {		
+		return getModelKey();
+	}
+	
+	
+
 }

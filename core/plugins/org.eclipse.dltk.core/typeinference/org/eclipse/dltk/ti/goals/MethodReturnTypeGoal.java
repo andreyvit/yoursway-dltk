@@ -3,7 +3,7 @@ package org.eclipse.dltk.ti.goals;
 import org.eclipse.dltk.ti.InstanceContext;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
-public class MethodReturnTypeGoal extends AbstractGoal {
+public class MethodReturnTypeGoal extends AbstractTypeGoal {
 
 	private final String methodName;
 	private final IEvaluatedType[] arguments;

@@ -1,4 +1,5 @@
 class XXX2
+	def foo;end
 end
 
 def test_func
