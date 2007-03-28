@@ -46,6 +46,8 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 
 	private final class ASTPositionsCorrector extends ASTVisitor {
 		public boolean visitGeneral(ASTNode node) throws Exception {
+			if (node.sourceStart() < 0 || node.sourceEnd() < 0)
+				return true;
 			int st = 0;
 			int en = 0;
 			int n_st = 0;
@@ -72,17 +74,17 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 				}
 			}
 
-			node.setStart(node.sourceStart() + st * magicLength);
-			node.setEnd(node.sourceEnd() + en * magicLength);
+			node.setStart(node.sourceStart() - st * magicLength);
+			node.setEnd(node.sourceEnd() - en * magicLength);
 			if (node instanceof Declaration) {
 				Declaration declaration = (Declaration) node;
-				declaration.setNameStart(declaration.getNameStart() + n_st
+				declaration.setNameStart(declaration.getNameStart() - n_st
 						* magicLength);
-				declaration.setNameEnd(declaration.getNameEnd() + n_en
+				declaration.setNameEnd(declaration.getNameEnd() - n_en
 						* magicLength);
 			}
-			if (st == 0 && en == 0 && n_st == 0 && n_en == 0)
-				return false;
+//			if (st == 0 && en == 0 && n_st == 0 && n_en == 0)
+//				return false;
 
 			return true;
 		}
@@ -99,9 +101,9 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 	private static final Pattern DOT_FIXER = Pattern.compile("\\.(?=\\s|$)");
 	private static final Pattern COLON_FIXER = Pattern.compile("::(?=\\s|$)");
 	private IProblemReporter problemReporter;
-	private static final String missingName = "_missing_method_name_";
-	private static final String missingName2 = "NoConstant__________";
-	private static final int magicLength = missingName.length();
+	private static final String missingName  = "_missing_method_name_";
+	private static final String missingName2 = "NoConstant___________";
+	private static final int magicLength = missingName.length(); // missingName.len should == missingName2.len
 
 	private final List fixPositions = new ArrayList();
 
@@ -114,7 +116,7 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 			if (offset > regionStart)
 				result.append(content.subSequence(regionStart, offset));
 			result.append("." + missingName);
-			fixPositions.add(new Integer(offset));
+			fixPositions.add(new Integer(offset + fixPositions.size() * magicLength));
 			regionStart = offset + 1;
 		}
 		if (regionStart < content.length() - 1)

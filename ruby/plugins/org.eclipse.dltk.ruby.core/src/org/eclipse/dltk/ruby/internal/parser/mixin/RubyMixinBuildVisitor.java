@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ruby.internal.parser.mixin;
 
+import java.util.Iterator;
 import java.util.Stack;
 
 import org.eclipse.core.runtime.Assert;
@@ -286,6 +287,10 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 				scopes.push(new MethodScope(decl, metaScope, method));
 			} else if (receiver instanceof ConstantReference
 					|| receiver instanceof ColonExpression) {
+				if (receiver instanceof ConstantReference && 
+						((ConstantReference)receiver).getName().equals("Thread") && 
+						singl.getName().equals("exclusive"))
+					System.out.println();
 				String evaluatedClassKey = evaluateClassKey(receiver);
 				if (evaluatedClassKey != null) {
 					Scope scope = peekScope();
@@ -349,8 +354,17 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 				Scope scope = peekScope();
 				scopes.push(new MetaClassScope(decl, scope.getClassKey()));
 				return true;
+			} else if (receiver instanceof ConstantReference
+					|| receiver instanceof ColonExpression) {				
+				String evaluatedClassKey = evaluateClassKey(receiver);
+				if (evaluatedClassKey != null) {
+					MetaClassScope metaScope = new MetaClassScope(decl,
+							evaluatedClassKey);					
+					scopes.push(metaScope);
+					return true;
+				} 
 			} else {
-				// TODO
+				//TODO
 			}
 		} else if (decl instanceof RubyClassDeclaration) {
 			RubyClassDeclaration declaration = (RubyClassDeclaration) decl;
@@ -410,6 +424,19 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 								constantReference.getName());
 				if (elementKey != null) {
 					return elementKey;
+				}
+			} else { // just heuristics
+				int size = this.scopes.size();
+				for (int i = size - 1; i >= 0; i--) {
+					String possibleKey = ""; 
+					if (i > 0) {
+						Scope s = (Scope) this.scopes.get(i);					
+						possibleKey = s.getKey() + SEPARATOR + constantReference.getName();
+					} else 
+						possibleKey = constantReference.getName();
+					String[] keys = RubyMixinModel.getRawInstance().findKeys(possibleKey);
+					if (keys.length > 0)
+						return keys[0];
 				}
 			}
 		}

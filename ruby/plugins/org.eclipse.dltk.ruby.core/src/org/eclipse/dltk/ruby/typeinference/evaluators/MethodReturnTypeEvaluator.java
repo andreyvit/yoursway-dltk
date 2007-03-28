@@ -64,17 +64,53 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		}
 		return null;
 	}
+	
+	private static MethodDeclaration resolveMethodDeclaration (ISourceModule module, RubyClassType instanceType, String methodName) {
+		MethodDeclaration decl = null;
+		List methods = new ArrayList (); // possible source methods
+			
+		RubyMixinClass class1 = RubyMixinModel.getInstance().createRubyClass(instanceType);
+		if (class1 != null) {
+			RubyMixinMethod[] mixinMethods = class1.findMethods(methodName, true);
+			for (int i = 0; i < mixinMethods.length; i++) {
+				methods.addAll(Arrays.asList(mixinMethods[i].getSourceMethods()));
+			}
+		}
+		
+		if (methods.isEmpty())
+			return null;
+		
+		IMethod resultMethod = (IMethod) methods.get(0);
+		
+		if (methods.size() > 1) { //prefer method from the same module
+			for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
+				IMethod m = (IMethod) iterator.next();
+				if (m.getSourceModule().equals(module))
+					resultMethod = m;
+			}
+		}
+		
+		ISourceModule resultSourceModule = resultMethod.getSourceModule();
+		ModuleDeclaration moduleDecl = RubyTypeInferencingUtils.parseSource(resultSourceModule);
+		try {
+			decl = RubyModelUtils.getNodeByMethod(moduleDecl, resultMethod);
+		} catch (ModelException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 
 	public IGoal[] init() {
 		MethodReturnTypeGoal typedGoal = getTypedGoal();
 		InstanceContext typedContext = getTypedContext();
 		ClassType instanceType = typedContext.getInstanceType();
 		String methodName = typedGoal.getMethodName();
-		IEvaluatedType intrinsicMethodReturnType = BuiltinMethods.getIntrinsicMethodReturnType(instanceType, methodName, typedGoal.getArguments());
-		if (intrinsicMethodReturnType != null) {
-			evaluated.add(intrinsicMethodReturnType);
-			return IGoal.NO_GOALS;
-		}
+//		IEvaluatedType intrinsicMethodReturnType = BuiltinMethods.getIntrinsicMethodReturnType(instanceType, methodName, typedGoal.getArguments());
+//		if (intrinsicMethodReturnType != null) {
+//			evaluated.add(intrinsicMethodReturnType);
+//			return IGoal.NO_GOALS;
+//		}
 		
 		MethodDeclaration decl = null;
 		List methods = new ArrayList ();
