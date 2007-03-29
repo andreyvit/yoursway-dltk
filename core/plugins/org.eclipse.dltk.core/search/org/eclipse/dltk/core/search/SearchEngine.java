@@ -718,7 +718,7 @@ public class SearchEngine {
 					documentPath = documentPath.substring(SPECIAL_MIXIN.length());
 				}
 				String s = IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY.toString();
-				if( documentPath.contains(s)) {
+				if( documentPath.indexOf(s) != -1) {
 					documentPath = documentPath.substring(documentPath.indexOf(s));
 				}
 				Openable createOpenable = factory.createOpenable(documentPath, scope);
