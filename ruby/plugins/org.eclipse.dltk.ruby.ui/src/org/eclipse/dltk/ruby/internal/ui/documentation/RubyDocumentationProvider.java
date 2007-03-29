@@ -9,9 +9,14 @@ import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.core.IBuffer;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMember;
+import org.eclipse.dltk.core.IMethod;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.internal.core.BuiltinProjectFragment;
+import org.eclipse.dltk.ruby.core.PredefinedVariables;
+import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
 import org.eclipse.dltk.ruby.internal.ui.docs.RiHelper;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
@@ -154,20 +159,28 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 		return null;
 	}
 
-	private Reader proccessBuiltin(FakeMethod method) {
+	private Reader proccessBuiltin(IMethod method) {
 		String divider;
-		if (0 != (method.getFlags() & Modifiers.AccStatic))
-			divider = "::";
-		else
-			divider = "#";
-		String keyword = method.getReceiver() + divider
+		try {
+			if (0 != (method.getFlags() & Modifiers.AccStatic))
+				divider = "::";
+			else
+				divider = "#";
+		} catch (ModelException e) {
+			e.printStackTrace();
+			return null;
+		}
+		IModelElement pp = method.getAncestor(IModelElement.TYPE);
+		if (pp.getElementName().startsWith("<<"))
+				pp = pp.getAncestor(IModelElement.TYPE);
+		String keyword = pp.getElementName() + divider
 				+ method.getElementName();
 		RiHelper helper = RiHelper.getInstance();
 		String doc = helper.getDocFor(keyword);
 		if ((doc.indexOf("Nothing known about") != -1)
 				|| doc.trim().length() == 0) {
 			// XXX megafix: some Kernel methods are documented in Object
-			if (method.getReceiver().equals("Kernel")) {
+			if (pp.getElementName().equals("Kernel")) {
 				keyword = "Object" + divider + method.getElementName();
 				doc = helper.getDocFor(keyword);
 			}
@@ -179,9 +192,15 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 
 	public Reader getInfo(IMember member, boolean lookIntoParents,
 			boolean lookIntoExternal) {
-		if (member instanceof FakeMethod) {
-			FakeMethod method = (FakeMethod) member;
+		if (member.getAncestor(IModelElement.PROJECT_FRAGMENT) instanceof BuiltinProjectFragment
+				&& member instanceof IMethod) {
+			IMethod method = (IMethod) member;
 			return proccessBuiltin(method);
+		} else if (member instanceof FakeField) {
+			FakeField field = (FakeField) member;
+			String doc = PredefinedVariables.getDocOf(field.getElementName());
+			if (doc != null)
+				return new StringReader(doc);
 		}
 		String header = getHeaderComment(member);
 		if (header == null || header.length() == 0)
