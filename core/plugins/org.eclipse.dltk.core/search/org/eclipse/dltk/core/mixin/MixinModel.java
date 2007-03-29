@@ -434,6 +434,10 @@ public class MixinModel {
 
 		private void addElementToModules(MixinElement element) {
 			List elements = (List)MixinModel.this.elementToMixinCache.get(currentModule);
+			if( elements == null ) {
+				elements = new ArrayList();
+				MixinModel.this.elementToMixinCache.put(currentModule, elements ) ;
+			}
 //			if( !elements.contains(element)) {
 			elements.add(element);
 //			}

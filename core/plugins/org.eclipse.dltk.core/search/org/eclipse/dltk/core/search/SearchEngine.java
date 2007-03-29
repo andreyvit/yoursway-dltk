@@ -15,6 +15,8 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IBuiltinModuleProvider;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
@@ -714,6 +716,10 @@ public class SearchEngine {
 					AccessRuleSet access) {
 				if( documentPath.startsWith(SPECIAL_MIXIN)) {
 					documentPath = documentPath.substring(SPECIAL_MIXIN.length());
+				}
+				String s = IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY.toString();
+				if( documentPath.contains(s)) {
+					documentPath = documentPath.substring(documentPath.indexOf(s));
 				}
 				Openable createOpenable = factory.createOpenable(documentPath, scope);
 				if( createOpenable instanceof ISourceModule ) {

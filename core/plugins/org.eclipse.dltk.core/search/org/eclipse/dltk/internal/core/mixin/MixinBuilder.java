@@ -28,9 +28,12 @@ import org.eclipse.dltk.core.search.TypeNameRequestor;
 import org.eclipse.dltk.core.search.index.Index;
 import org.eclipse.dltk.core.search.indexing.IndexManager;
 import org.eclipse.dltk.core.search.indexing.InternalSearchDocument;
+import org.eclipse.dltk.internal.core.BuiltinProjectFragment;
+import org.eclipse.dltk.internal.core.BuiltinSourceModule;
 import org.eclipse.dltk.internal.core.ExternalProjectFragment;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
 import org.eclipse.dltk.internal.core.ModelManager;
+import org.eclipse.dltk.internal.core.SourceModule;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
 
 public class MixinBuilder implements IScriptBuilder {
@@ -59,7 +62,7 @@ public class MixinBuilder implements IScriptBuilder {
 			return null;
 		}
 		try {
-			waitUntilIndexReady(toolkit);
+//			waitUntilIndexReady(toolkit);
 			IPath fullPath = project.getProject().getFullPath();
 			
 			Map indexes = new HashMap();
@@ -90,6 +93,21 @@ public class MixinBuilder implements IScriptBuilder {
 						}
 					}
 				}
+				else if( projectFragment instanceof BuiltinProjectFragment ) {
+					IPath path = projectFragment.getPath();
+//					if( indexes.containsKey(path)) {
+//						currentIndex = (Index)indexes.get(path);
+					containerPath = path;
+//					}
+//					else {
+//						Index index = manager.getSpecialIndex("mixin", path.toString(), path.toOSString() );
+//						if( index != null ) {
+////							currentIndex = index;
+//							indexes.put(path, index);
+//							containerPath = path.removeLastSegments(1);
+//						}
+//					}
+				}
 				
 				char[] source = element.getSourceAsCharArray();
 				SearchParticipant participant = SearchEngine
@@ -105,9 +123,14 @@ public class MixinBuilder implements IScriptBuilder {
 				if (element instanceof ExternalSourceModule) {
 					containerRelativePath= (element.getPath().removeFirstSegments(containerPath.segmentCount()).setDevice(null)
 									.toString());
-				} else {
+				} else if( element instanceof SourceModule ) {
 					containerRelativePath = (element.getPath()
 									.removeFirstSegments(1).toOSString());
+				} 
+				else if( element instanceof BuiltinSourceModule ) {
+					containerRelativePath = document.getPath();
+//					(element.getPath()
+//							.removeFirstSegments().toOSString());
 				}
 				((InternalSearchDocument) document)
 				.setContainerRelativePath(containerRelativePath);
@@ -133,7 +156,7 @@ public class MixinBuilder implements IScriptBuilder {
 		return null;
 	}
 
-	private void waitUntilIndexReady(IDLTKLanguageToolkit toolkit) {
+	private void waitUntilIndexReady(IDLTKLanguageToolkit toolkit, IProgressMonitor monitor) {
 		// dummy query for waiting until the indexes are ready
 		SearchEngine engine = new SearchEngine();
 		IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit);
@@ -146,7 +169,7 @@ public class MixinBuilder implements IScriptBuilder {
 								char[] packageName, char[] simpleTypeName,
 								char[][] enclosingTypeNames, String path) {
 						}
-					}, IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, null);
+					}, IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, monitor);
 		} catch (CoreException e) {
 		}
 

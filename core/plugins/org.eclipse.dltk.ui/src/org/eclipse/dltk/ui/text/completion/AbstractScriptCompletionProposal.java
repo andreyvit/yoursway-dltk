@@ -754,6 +754,9 @@ public abstract class AbstractScriptCompletionProposal implements
 		RGB rgb = PreferenceConverter.getColor(preference,
 				PreferenceConstants.CODEASSIST_REPLACEMENT_FOREGROUND);
 		ScriptTextTools textTools = getTextTools();
+		if( textTools == null ) {
+			return null;
+		}
 		return textTools.getColorManager().getColor(rgb);
 	}
 
