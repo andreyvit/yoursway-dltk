@@ -30,6 +30,7 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.TypeNameMatch;
@@ -39,6 +40,7 @@ import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.core.RubyClassDeclaration;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinBuildVisitor;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinMethod;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
@@ -326,43 +328,34 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 
 	private void selectionOnTypeDeclaration(ModuleDeclaration parsedUnit,
 			TypeDeclaration typeDeclaration) {
-		if (typeDeclaration instanceof RubyClassDeclaration) {
-			RubyClassDeclaration rcd = (RubyClassDeclaration) typeDeclaration;
-			IType[] types = getSourceTypesForClass(parsedUnit, rcd
-					.getClassName());
-			selectionElements.addAll(Arrays.asList(types));
+//		if (typeDeclaration instanceof RubyClassDeclaration) {
+//			RubyClassDeclaration rcd = (RubyClassDeclaration) typeDeclaration;
+//			IType[] types = getSourceTypesForClass(parsedUnit, rcd
+//					.getClassName());
+//			selectionElements.addAll(Arrays.asList(types));
+//		}
+		IModelElement elementAt = null;
+		try {
+			elementAt = ((org.eclipse.dltk.core.ISourceModule) sourceModule).getElementAt(typeDeclaration.sourceStart()+1);
+		} catch (ModelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		if (elementAt != null)
+			selectionElements.add(elementAt);
 	}
 
 	private void selectionOnMethodDeclaration(ModuleDeclaration parsedUnit,
 			MethodDeclaration methodDeclaration) {
-		TypeDeclaration typeDeclaration = this
-				.getEnclosingType(methodDeclaration);
-		if (typeDeclaration == null) {
-			IMethod method = ((org.eclipse.dltk.core.ISourceModule) sourceModule)
-					.getMethod(methodDeclaration.getName());
-			selectionElements.add(method);
-		} else if (typeDeclaration instanceof RubyClassDeclaration) {
-			RubyClassDeclaration rcd = (RubyClassDeclaration) typeDeclaration;
-			ExpressionTypeGoal typeGoal = new ExpressionTypeGoal(
-					new BasicContext(
-							(org.eclipse.dltk.core.ISourceModule) sourceModule,
-							parsedUnit), rcd.getClassName());
-			IEvaluatedType evaluatedType = this.inferencer.evaluateType(
-					typeGoal, null);
-			if (evaluatedType instanceof RubyClassType) {
-				RubyMixinClass mixinClass = RubyMixinModel.getInstance()
-						.createRubyClass((RubyClassType) evaluatedType);
-				if (mixinClass.isMeta())
-					mixinClass = mixinClass.getInstanceClass ();
-				RubyMixinMethod method = mixinClass.getMethod(methodDeclaration
-						.getName());
-				if (method != null) {
-					IMethod[] sourceMethods = method.getSourceMethods();
-					selectionElements.addAll(Arrays.asList(sourceMethods));
-				}
-			}
+		IModelElement elementAt = null;
+		try {
+			elementAt = ((org.eclipse.dltk.core.ISourceModule) sourceModule).getElementAt(methodDeclaration.sourceStart()+1);
+		} catch (ModelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		if (elementAt != null)
+			selectionElements.add(elementAt);
 	}
 
 	private void selectOnMethod(

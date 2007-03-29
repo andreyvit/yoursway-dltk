@@ -87,7 +87,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 	}
 
 	private IGoal generateNextSubgoal() {
-		BasicContext context = (BasicContext) goal.getContext();
+		IContext context = goal.getContext();
 		IGoal subgoal = new ExpressionTypeGoal(context, info.assignments[state - STATE_ASSIGNMENT_SUBGOAL_0].getRight());
 		state++;
 		return subgoal;

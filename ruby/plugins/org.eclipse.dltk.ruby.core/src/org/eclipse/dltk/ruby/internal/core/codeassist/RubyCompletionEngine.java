@@ -149,7 +149,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		IField[] fields = RubyModelUtils.findFields(module, moduleDeclaration,
 				prefix, position);
 		for (int i = 0; i < fields.length; i++) {
-			reportField(fields[0], relevance--);
+			reportField(fields[i], relevance--);
 		}
 	}
 
@@ -307,12 +307,12 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				}
 			}
 			methods = getMethodsForReceiver(module, moduleDeclaration,
-					receiver, starting + "*");
+					receiver, starting);
 		} else {
 			IClassType self = RubyTypeInferencingUtils.determineSelfClass(
 					module, moduleDeclaration, position);
 			methods = RubyModelUtils.searchClassMethods(module,
-					moduleDeclaration, self, starting + "*");
+					moduleDeclaration, self, starting);
 
 		}
 		if (methods != null) {

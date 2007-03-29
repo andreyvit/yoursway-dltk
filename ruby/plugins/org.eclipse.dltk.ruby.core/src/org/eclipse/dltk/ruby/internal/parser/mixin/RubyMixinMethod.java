@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.mixin.IMixinElement;
+import org.eclipse.dltk.core.mixin.MixinModel;
 
 public class RubyMixinMethod implements IRubyMixinElement {
 
@@ -16,6 +17,10 @@ public class RubyMixinMethod implements IRubyMixinElement {
 		super();
 		this.model = model;
 		this.key = key;
+	}
+	
+	public String getName () {
+		return key.substring(key.lastIndexOf(MixinModel.SEPARATOR) + 1);
 	}
 	
 	public RubyMixinMethod(RubyMixinModel model, String key, IMethod[] sourceMethods) {
@@ -33,7 +38,7 @@ public class RubyMixinMethod implements IRubyMixinElement {
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		IMixinElement parent = mixinElement.getParent();
 		if (parent == null)
-			return null;
+			return new RubyObjectMixinClass(model, true);
 		IRubyMixinElement rubyParent = model.createRubyElement(parent);
 		if (rubyParent instanceof RubyMixinClass) {
 			return (RubyMixinClass) rubyParent;

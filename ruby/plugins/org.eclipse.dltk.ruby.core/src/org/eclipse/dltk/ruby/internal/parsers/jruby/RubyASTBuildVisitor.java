@@ -1741,6 +1741,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			name = "<< " + ((ConstNode) iVisited.getReceiverNode()).getName();
 		} else if (receiver instanceof SelfNode) {
 			name = "<< self";
+		} else {
+			int startOffset = receiver.getPosition().getStartOffset();
+			int endOffset = receiver.getPosition().getEndOffset();
+			name = "<< " + new String(String.copyValueOf(content, startOffset, endOffset - startOffset - 1));			
 		}
 		ISourcePosition pos = iVisited.getReceiverNode().getPosition();
 		ISourcePosition cPos = iVisited.getPosition();
@@ -1768,8 +1772,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			Block bl = new Block(pos.getStartOffset(), pos.getEndOffset() + 1);
 			type.setBody(bl);
 			bodyNode.accept(this);
-			popState();
 		}
+		popState();
 		return null;
 	}
 

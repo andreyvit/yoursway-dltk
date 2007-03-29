@@ -90,6 +90,10 @@ public class MixinModel {
 	public String[] findKeys(String pattern) {
 		return SearchEngine.searchMixinPatterns(pattern, toolkit);
 	}
+	
+	public boolean keyExists(String key) {
+		return findKeys(key).length > 0;
+	}
 
 	private void buildElementTree(MixinElement element) {
 		if (element.isFinal()) {
@@ -128,6 +132,7 @@ public class MixinModel {
 				this.currentModule = sourceModule;
 				char[] content = sourceModule.getSourceAsCharArray();
 				mixinParser.setRequirestor(mixinRequestor);
+				System.out.println("Mixins: reporting " + sourceModule.getPath());
 				mixinParser.parserSourceModule(content, true, sourceModule );
 				this.currentModule = null;
 			}

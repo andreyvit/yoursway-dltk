@@ -39,8 +39,9 @@ public class RubyMixinModel {
 
 	public IRubyMixinElement createRubyElement(String key) {
 		if (key.equals("Object")) {
-			return new RubyObjectMixinClass(this);
-//			return new RubyMixinClass(this, "Object");
+			return new RubyObjectMixinClass(this, true);
+		} else if (key.equals("Object%")) {
+			return new RubyObjectMixinClass(this, false);
 		}
 		IMixinElement mixinElement = model.get(key);
 		if (mixinElement != null) {
@@ -52,12 +53,13 @@ public class RubyMixinModel {
 	public IRubyMixinElement createRubyElement(IMixinElement element) {
 		Assert.isLegal(element != null);
 		if (element.getKey().equals("Object")) {
-			return new RubyObjectMixinClass(this);
-//			return new RubyMixinClass(this, "Object");
-		}
+			return new RubyObjectMixinClass(this, true);
+		} else if (element.getKey().equals("Object%")) {
+			return new RubyObjectMixinClass(this, false);
+		}		
 		Object[] objects = element.getAllObjects();
 		if (objects != null && objects.length > 0) {
-			Object obj = objects[0]; // TODO: add normal info objects
+			Object obj = objects[0]; 
 			if (obj instanceof IType) {
 				return new RubyMixinClass(this, element.getKey());
 			} else if (obj instanceof IMethod) {

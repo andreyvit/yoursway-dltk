@@ -18,6 +18,8 @@ import org.eclipse.dltk.ruby.ast.RubyDotExpression;
 import org.eclipse.dltk.ruby.ast.RubyReturnStatement;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixin;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinBuildVisitor;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinMethod;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
@@ -71,10 +73,10 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			
 		RubyMixinClass class1 = RubyMixinModel.getInstance().createRubyClass(instanceType);
 		if (class1 != null) {
-			RubyMixinMethod[] mixinMethods = class1.findMethods(methodName, true);
-			for (int i = 0; i < mixinMethods.length; i++) {
-				methods.addAll(Arrays.asList(mixinMethods[i].getSourceMethods()));
-			}
+			RubyMixinMethod mixinMethod = class1.getMethod(methodName);
+//			for (int i = 0; i < mixinMethods.length; i++) {
+				methods.addAll(Arrays.asList(mixinMethod.getSourceMethods()));
+//			}
 		}
 		
 		if (methods.isEmpty())
@@ -106,11 +108,12 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		InstanceContext typedContext = getTypedContext();
 		ClassType instanceType = typedContext.getInstanceType();
 		String methodName = typedGoal.getMethodName();
-//		IEvaluatedType intrinsicMethodReturnType = BuiltinMethods.getIntrinsicMethodReturnType(instanceType, methodName, typedGoal.getArguments());
-//		if (intrinsicMethodReturnType != null) {
-//			evaluated.add(intrinsicMethodReturnType);
-//			return IGoal.NO_GOALS;
-//		}
+					
+		IEvaluatedType intrinsicMethodReturnType = checkMethodReturnType(instanceType, methodName, typedGoal.getArguments());
+		if (intrinsicMethodReturnType != null) {
+			evaluated.add(intrinsicMethodReturnType);
+			return IGoal.NO_GOALS;
+		}
 		
 		MethodDeclaration decl = null;
 		List methods = new ArrayList ();
@@ -120,10 +123,9 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			RubyClassType rubyClassType = (RubyClassType) instanceType;
 			RubyMixinClass class1 = RubyMixinModel.getInstance().createRubyClass(rubyClassType);
 			if (class1 != null) {
-				RubyMixinMethod[] mixinMethods = class1.findMethods(methodName, true);
-				for (int i = 0; i < mixinMethods.length; i++) {
-					methods.addAll(Arrays.asList(mixinMethods[i].getSourceMethods()));
-				}
+				RubyMixinMethod mixinMethods = class1.getMethod(methodName);
+				if (mixinMethods != null)
+					methods.addAll(Arrays.asList(mixinMethods.getSourceMethods()));
 			}
 		}
 				
@@ -195,6 +197,20 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			newGoals[i++] = subgoal;
 		}		
 		return newGoals;
+	}
+
+	private IEvaluatedType checkMethodReturnType(ClassType instanceType,
+			String methodName, IEvaluatedType[] arguments) {
+		if (instanceType.getModelKey().endsWith(RubyMixin.INSTANCE_SUFFIX) || 
+				instanceType.getModelKey().endsWith(RubyMixin.VIRTUAL_SUFFIX) )
+			return null;
+//		RubyMixinClass rubyClass = RubyMixinModel.getInstance().createRubyClass((RubyClassType) instanceType);
+//		RubyMixinMethod method = rubyClass.getMethod(methodName);
+//		if (method.getSelfType().getKey().equals("Class%") && methodName.equals("new")) 
+//			return new RubyClassType (instanceType.getModelKey() + RubyMixin.INSTANCE_SUFFIX);
+		if (methodName.equals("new")) 
+			return new RubyClassType (instanceType.getModelKey() + RubyMixin.INSTANCE_SUFFIX);
+		return null;
 	}
 
 	public IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state) {

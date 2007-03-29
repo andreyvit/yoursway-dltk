@@ -192,8 +192,8 @@ public class RubyModelUtils {
 			}
 		}
 
-		RubyMixinVariable[] fields2 = selfClass.findFields(prefix + "*");
-		addVariablesFrom(fields2, null, result);
+		RubyMixinVariable[] fields2 = selfClass.getFields();
+		addVariablesFrom(fields2, prefix, result);
 		
 		return (IField[]) result.toArray(new IField[result.size()]);
 	}	
@@ -201,19 +201,19 @@ public class RubyModelUtils {
 	public static IMethod[] searchClassMethods(
 			org.eclipse.dltk.core.ISourceModule modelModule,
 			ModuleDeclaration moduleDeclaration, IEvaluatedType type,
-			String pattern) {
+			String prefix) {
 		List result = new ArrayList();
 		if (type instanceof RubyClassType) {
 			RubyClassType rubyClassType = (RubyClassType) type;
 			RubyMixinClass rubyClass = RubyMixinModel.getInstance()
 					.createRubyClass(rubyClassType);
 			if (rubyClass != null) {
-				RubyMixinMethod[] methods = rubyClass
-						.findMethods(pattern, true);
+				RubyMixinMethod[] methods = rubyClass.findMethods(prefix, false);
 				for (int i = 0; i < methods.length; i++) {
 					IMethod[] sourceMethods = methods[i].getSourceMethods();
-					if (sourceMethods != null && sourceMethods.length > 0)
+					if (sourceMethods != null && sourceMethods.length > 0 && sourceMethods[0].getElementName().startsWith(prefix)) {						
 						result.add(sourceMethods[0]);
+					}
 				}
 			}
 
@@ -222,7 +222,7 @@ public class RubyModelUtils {
 			IEvaluatedType[] possibleTypes = type2.getPossibleTypes();
 			for (int i = 0; i < possibleTypes.length; i++) {
 				IMethod[] m = searchClassMethods(modelModule,
-						moduleDeclaration, possibleTypes[i], pattern);
+						moduleDeclaration, possibleTypes[i], prefix);
 				for (int j = 0; j < m.length; j++) {
 					result.add(m[j]);
 				}
@@ -457,7 +457,7 @@ public class RubyModelUtils {
 	 * @return
 	 */
 	public static String evaluateSuperClass(IType type) {
-		String superclass = "Object";
+		String superclass = null;
 		String[] superClasses;
 		try {
 			superClasses = type.getSuperClasses();

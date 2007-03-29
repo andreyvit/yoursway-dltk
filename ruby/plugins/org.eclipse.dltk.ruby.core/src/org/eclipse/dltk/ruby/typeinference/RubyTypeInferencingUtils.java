@@ -322,163 +322,6 @@ public class RubyTypeInferencingUtils {
 		return null;
 	}
 
-	// public static RubyMetaClassType resolveMethods(ISourceModule module,
-	// RubyMetaClassType type) {
-	// if (type.getMethods() == null) {
-	// List result = new UniqueNamesList();
-	// if (type.getInstanceType() != null) {
-	// RubyClassType instanceType = (RubyClassType) type
-	// .getInstanceType();
-	//
-	// if (instanceType.getFQN()[0].equals("Object")) {
-	// IMethod[] topLevelMethods = RubyModelUtils
-	// .findTopLevelMethods(module, "");
-	// for (int i = 0; i < topLevelMethods.length; i++) {
-	// result.add(topLevelMethods[i]);
-	// }
-	// }
-	//
-	// IType[] types = resolveTypeDeclarations(module
-	// .getScriptProject(), instanceType);
-	// for (int i = 0; i < types.length; i++) {
-	// try {
-	// IMethod[] methods = types[i].getMethods();
-	// IType[] subtypes = types[i].getTypes();
-	//
-	// for (int j = 0; j < methods.length; j++) {
-	// if (methods[j].getElementName().startsWith("self.")) {
-	// result.add(methods[j]);
-	// }
-	// }
-	//
-	// for (int j = 0; j < subtypes.length; j++) {
-	// if (!subtypes[j].getElementName().equals("<< self"))
-	// continue;
-	// IMethod[] methods2 = subtypes[j].getMethods();
-	// for (int k = 0; k < methods2.length; k++) {
-	// int flags = methods2[k].getFlags();
-	// if ((flags & Modifiers.AccStatic) == 0) {
-	// result.add(methods2[k]);
-	// }
-	// }
-	// }
-	//
-	// if (!type.getInstanceType().getTypeName().equals(
-	// "Object")) {
-	// RubyMetaClassType superType = null;//
-	// /getMetaType(RubyModelUtils.getSuperType(types[i]));
-	// if (superType != null) {
-	// superType = resolveMethods(module, superType);
-	// IMethod[] allMethods = superType.getMethods();
-	// for (int j = 0; j < allMethods.length; j++) {
-	// result.add(allMethods[j]);
-	// }
-	// }
-	// }
-	// } catch (ModelException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// }
-	//
-	// FakeMethod[] metaMethods = RubyModelUtils.getFakeMetaMethods(
-	// (ModelElement) module.getScriptProject(), "Object");
-	// for (int j = 0; j < metaMethods.length; j++) {
-	// result.add(metaMethods[j]);
-	// }
-	// if (metaMethods != null) {
-	// return new RubyMetaClassType(type.getInstanceType(),
-	// (IMethod[]) result.toArray(new IMethod[result.size()]));
-	// }
-	// }
-	// return type;
-	// }
-
-	// public static IType[] resolveTypeDeclarations(IDLTKProject project,
-	// RubyClassType type) {
-	// String modelKey = type.getModelKey();
-	// IMixinElement mixinElement = RubyTypeInferencer.getModel()
-	// .get(modelKey);
-	// if (mixinElement == null)
-	// return new IType[0];
-	// Object[] allObjects2 = mixinElement.getAllObjects();
-	// IType[] allObjects = new IType[allObjects2.length];
-	// for (int i = 0; i < allObjects2.length; i++) {
-	// allObjects[i] = (IType) allObjects2[i];
-	// }
-	// return allObjects;
-	// }
-	//
-	// // FIXME should be in RubyClassType itself!
-	// public static RubyClassType resolveMethods(IDLTKProject project,
-	// RubyClassType type) {
-	// if (type.getAllMethods() != null)
-	// return type;
-	// String[] fqn = type.getFQN();
-	// IType[] allTypes = resolveTypeDeclarations(project, type);
-	// List methods = new UniqueNamesList();
-	// for (int i = 0; i < allTypes.length; i++) {
-	// try {
-	//
-	// IMethod[] methods2 = allTypes[i].getMethods();
-	// for (int j = 0; j < methods2.length; j++) {
-	// if (!((methods2[j].getFlags() & Modifiers.AccStatic) > 0)) {
-	// methods.add(methods2[j]);
-	// }
-	// }
-	// RubyClassType superType = RubyModelUtils
-	// .getSuperType(allTypes[i]);
-	// if (superType != null) {
-	// superType = resolveMethods(project, superType);
-	// IMethod[] allMethods = superType.getAllMethods();
-	// for (int j = 0; j < allMethods.length; j++) {
-	// methods.add(allMethods[j]);
-	// }
-	// }
-	// } catch (ModelException e) {
-	// }
-	// }
-	// if (allTypes.length == 0) {
-	// FakeMethod[] fakeMethods = RubyModelUtils.getFakeMethods(
-	// (ModelElement) project, "Object");
-	// for (int j = 0; j < fakeMethods.length; j++) {
-	// methods.add(fakeMethods[j]);
-	// }
-	// }
-	// return new RubyClassType(fqn, allTypes, (IMethod[]) methods
-	// .toArray(new IMethod[methods.size()]));
-	// }
-
-	// public static IType[] findSubtypes(ISourceModule module,
-	// RubyClassType type, String namePrefix) {
-	// List result = new UniqueNamesList();
-	// type = resolveMethods(module.getScriptProject(), type);
-	// IType[] declarations = type.getTypeDeclarations();
-	// for (int i = 0; i < declarations.length; i++) {
-	// IType[] subtypes;
-	// try {
-	// subtypes = declarations[i].getTypes();
-	// } catch (ModelException e) {
-	// e.printStackTrace();
-	// continue;
-	// }
-	// for (int j = 0; j < subtypes.length; j++) {
-	// String elementName = subtypes[j].getElementName();
-	// if (elementName.startsWith("<<")) // skip singletons
-	// continue;
-	// result.add(subtypes[j]);
-	// }
-	// }
-	// if (type.getFQN()[0].equals("Object")) {
-	// // get all top level types too
-	// IType[] top = RubyModelUtils.findTopLevelTypes(module, namePrefix);
-	// for (int j = 0; j < top.length; j++) {
-	// result.add(top[j]);
-	// }
-	// }
-	// return (IType[]) result.toArray(new IType[result.size()]);
-	// }
-
 	public static String searchConstantElement(ModuleDeclaration module,
 			int calculationOffset, String constantName) {
 		MixinModel model = RubyMixinModel.getRawInstance();
@@ -490,8 +333,7 @@ public class RubyTypeInferencingUtils {
 		for (int i = modelStaticScopes.length - 1; i >= 0; i--) {
 			String possibleKey = modelStaticScopes[i]
 					+ IMixinRequestor.MIXIN_NAME_SEPARATOR + constantName;
-			String[] keys = model.findKeys(possibleKey);
-			if (keys != null && keys.length > 0) {
+			if (model.keyExists(possibleKey)) {
 				resultKey = possibleKey;
 				break;
 			}
@@ -499,9 +341,7 @@ public class RubyTypeInferencingUtils {
 
 		// check top-most scope
 		if (resultKey == null) {
-			// constantElement = model.get(constantName);
-			String[] keys = model.findKeys(constantName);
-			if (keys != null && keys.length > 0) {
+			if (model.keyExists(constantName)) {
 				resultKey = constantName;
 			}
 		}

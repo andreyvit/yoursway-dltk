@@ -725,7 +725,7 @@ public class SearchEngine {
 		};
 		IndexManager indexManager = ModelManager.getModelManager().getIndexManager();
 		
-		MixinPattern pattern = new MixinPattern(key.toCharArray(), SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE/* |  SearchPattern.R_PATTERN_MATCH*/);
+		MixinPattern pattern = new MixinPattern(key.toCharArray(), SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE |  SearchPattern.R_PATTERN_MATCH);
 		// add type names from indexes
 		indexManager.performConcurrentJob(
 			new PatternSearchJob(
@@ -738,7 +738,7 @@ public class SearchEngine {
 		return (ISourceModule[])modules.toArray(new ISourceModule[modules.size()]);
 	}
 	
-	public static String[] searchMixinPatterns(String key, IDLTKLanguageToolkit toolkit ) {
+	public static String[] searchMixinPatterns(String key, IDLTKLanguageToolkit toolkit) {
 		final IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit); 
 		// Index requestor
 		final List result = new ArrayList();
@@ -756,7 +756,11 @@ public class SearchEngine {
 		};
 		IndexManager indexManager = ModelManager.getModelManager().getIndexManager();
 		
-		MixinPattern pattern = new MixinPattern(key.toCharArray(), SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE |  SearchPattern.R_PATTERN_MATCH);
+		int flags = SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE;
+		if (key.indexOf('*') != -1 || key.indexOf('?') != -1)
+			flags |= SearchPattern.R_PATTERN_MATCH;
+		
+		MixinPattern pattern = new MixinPattern(key.toCharArray(), flags);
 		// add type names from indexes
 		indexManager.performConcurrentJob(
 			new PatternSearchJob(
