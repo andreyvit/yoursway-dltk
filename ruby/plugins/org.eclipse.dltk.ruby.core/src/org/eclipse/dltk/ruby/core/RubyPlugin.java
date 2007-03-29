@@ -32,7 +32,7 @@ public class RubyPlugin extends Plugin {
 	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		super.start(context);
+		super.start(context);		
 	}
 
 	/*
