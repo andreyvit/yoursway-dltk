@@ -67,8 +67,8 @@ public class DLTKModelUtil {
 			.createSearchScope(new IModelElement[] { project });
 		try {
 			SearchEngine engine = new SearchEngine();
-			engine.searchAllTypeNames(null, SearchPattern.R_PATTERN_MATCH,
-					patternString.toCharArray(), SearchPattern.R_PATTERN_MATCH,
+			engine.searchAllTypeNames(null, 0,
+					patternString.toCharArray(), SearchPattern.R_EXACT_MATCH | SearchPattern.R_PATTERN_MATCH,
 					IDLTKSearchConstants.TYPE, scope, requestor,
 					IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, null);
 		} catch (CoreException e) {

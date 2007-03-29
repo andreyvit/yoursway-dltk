@@ -410,14 +410,17 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 					return possibleKey;
 			}
 
-			if (moduleAvailable) {
-				 String elementKey = RubyTypeInferencingUtils
-						.searchConstantElement(module, expr.sourceStart() - 1,
-								constantReference.getName());
-				if (elementKey != null) {
-					return elementKey;
-				}
-			} 
+			// one more terrible, in face, speed improvement
+			return constantReference.getName();
+			
+//			if (moduleAvailable) {
+//				 String elementKey = RubyTypeInferencingUtils
+//						.searchConstantElement(module, expr.sourceStart() - 1,
+//								constantReference.getName());
+//				if (elementKey != null) {
+//					return elementKey;
+//				}
+//			} 
 		}
 		return null;
 	}
