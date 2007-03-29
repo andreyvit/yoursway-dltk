@@ -67,8 +67,10 @@ public class RubyMixinMethod implements IRubyMixinElement {
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		Object[] allObjects = mixinElement.getAllObjects();
 		for (int i = 0; i < allObjects.length; i++) {
-			if (allObjects[i] instanceof IMethod)
-				result.add (allObjects[i]);			
+			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
+			if (info.getKind() == RubyMixinElementInfo.K_METHOD) {
+				result.add (info.getObject());							
+			}		
 		}
 		return (IMethod[]) result.toArray(new IMethod[result.size()]);
 	}

@@ -26,4 +26,7 @@ public class RubyCompletionProposal extends ScriptCompletionProposal {
 
 		return false;
 	}
+	
+	
+	
 }

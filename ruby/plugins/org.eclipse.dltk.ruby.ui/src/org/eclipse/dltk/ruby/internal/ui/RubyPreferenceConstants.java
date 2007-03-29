@@ -405,6 +405,6 @@ public class RubyPreferenceConstants extends PreferenceConstants
 		
 		store.setDefault(PreferenceConstants.SHOW_SOURCE_MODULE_CHILDREN, true);
 		
-		store.setDefault(PreferenceConstants.CODEASSIST_AUTOACTIVATION_TRIGGERS, ".:");
+		store.setDefault(PreferenceConstants.CODEASSIST_AUTOACTIVATION_TRIGGERS, ".:$@");
 	}
 }

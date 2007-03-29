@@ -10,7 +10,7 @@ import org.eclipse.dltk.utils.CorePrinter;
  */
 public class NumericLiteral extends Literal {
 
-	private int intValue;
+	private long intValue;
 	
 	/**
 	 * Construct from ANTLR token. With appropriate position information.
@@ -21,12 +21,12 @@ public class NumericLiteral extends Literal {
 		super(number);
 	}
 
-	public NumericLiteral(int start, int end, int value) {
+	public NumericLiteral(int start, int end, long value) {
 		super(start, end);
 		this.intValue = value;
 	}
 	
-	public int getIntValue () {
+	public long getIntValue () {
 		return intValue;
 	}
 

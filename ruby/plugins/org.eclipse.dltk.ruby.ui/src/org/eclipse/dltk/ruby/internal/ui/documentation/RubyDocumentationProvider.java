@@ -184,6 +184,8 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 			return proccessBuiltin(method);
 		}
 		String header = getHeaderComment(member);
+		if (header == null || header.length() == 0)
+			return null;
 		return new StringReader(convertToHTML(header));
 	}
 

@@ -17,7 +17,7 @@ public class StringLiteralEvaluator extends GoalEvaluator {
 
 	public Object produceResult() {
 //		return new SimpleType(SimpleType.TYPE_STRING);
-		return new RubyClassType ("String");
+		return new RubyClassType ("String%");
 	}
 
 	public IGoal[] init() {

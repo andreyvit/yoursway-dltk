@@ -17,7 +17,7 @@ public class NumericLiteralEvaluator extends GoalEvaluator {
 
 	public Object produceResult() {
 //		return new SimpleType(SimpleType.TYPE_NUMBER);
-		return new RubyClassType("Fixnum");
+		return new RubyClassType("Fixnum%");
 	}
 
 	public IGoal[] init() {

@@ -18,17 +18,23 @@ import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.evaluation.types.IClassType;
+import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
+import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
+import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinElementInfo;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinVariable;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
@@ -40,6 +46,14 @@ import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class RubyCompletionEngine extends ScriptCompletionEngine {
 
+	private final static String[] globalVars = {
+		"$DEBUG", "$$", "$-i", "$deferr", "$/", "$'", "$stdout", "$-l", "$-I", "$.",
+		    "$KCODE", "$binding", "$-w", "$FILENAME", "$defout", "$,", "$`", "$-F", "$*", 		    
+		   "$LOADED_FEATURES", "$stdin", "$-p", "$:", "$\\", "$=", "$!", "$-v", "$>", "$&",
+		   "$;", "$SAFE", "$PROGRAM_NAME", "$\"", "$-d", "$?", "$-0", "$+", "$@", "$-a", 
+		   "$VERBOSE", "$stderr", "$~", "$0", "$LOAD_PATH", "$<", "$_", "$-K"
+	};
+	
 	private DLTKTypeInferenceEngine inferencer;
 	private JRubySourceParser parser = new JRubySourceParser(null);
 	private MixinModel model;
@@ -77,6 +91,31 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			return true;
 		return false;
 	}
+	
+	private boolean afterDollar(String content, int position) {
+		if (position < 1)
+			return false;
+		if (content.charAt(position - 1) == '$')
+			return true;
+		return false;
+	}
+	
+	private boolean afterAt(String content, int position) {
+		if (position < 1)
+			return false;
+		if (content.charAt(position - 1) == '@')
+			return true;
+		return false;
+	}
+	
+	private boolean afterAt2(String content, int position) {
+		if (position < 2)
+			return false;
+		if (content.charAt(position - 1) == '@' &&
+				content.charAt(position - 2) == '@')
+			return true;
+		return false;
+	}
 
 	public void complete(ISourceModule module, int position, int i) {
 		completedNames.clear();
@@ -87,7 +126,13 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			String content = module.getSourceContents();
 			ModuleDeclaration moduleDeclaration = parser.parse(content);
 
-			if (afterColons(content, position)) {
+			if (afterDollar(content, position)) {
+				completeGlobalVar((org.eclipse.dltk.core.ISourceModule) module, moduleDeclaration, "$", position);
+			} else if (afterAt2(content, position)) {
+				completeSimpleRef((org.eclipse.dltk.core.ISourceModule) module, moduleDeclaration, "@@", position);
+			} else if (afterAt(content, position)) {
+				completeSimpleRef((org.eclipse.dltk.core.ISourceModule) module, moduleDeclaration, "@", position);
+			} else if (afterColons(content, position)) {
 
 				ASTNode node = ASTUtils.findMaximalNodeEndingAt(
 						moduleDeclaration, position - 2);
@@ -118,7 +163,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 								(ColonExpression) minimalNode, position);
 					} else if (minimalNode instanceof SimpleReference) {
 						completeSimpleRef(modelModule, moduleDeclaration,
-								(SimpleReference) minimalNode, position);
+								((SimpleReference) minimalNode).getName(), position);
 					}
 				}
 
@@ -139,18 +184,49 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		return RubyModelUtils.searchClassMethods(modelModule,
 				moduleDeclaration, type, pattern);
 	}
+	
+	private void completeGlobalVar (org.eclipse.dltk.core.ISourceModule module,
+			ModuleDeclaration moduleDeclaration, String prefix, int position) {
+		int relevance = 424242;
+		this.setSourceRange(position - prefix.length(), position);
+		String[] findKeys = RubyMixinModel.getRawInstance().findKeys(prefix + "*");
+		for (int i = 0; i < findKeys.length; i++) {
+			IRubyMixinElement rubyElement = RubyMixinModel.getInstance().createRubyElement(findKeys[i]);
+			if (rubyElement instanceof RubyMixinVariable) {
+				RubyMixinVariable variable = (RubyMixinVariable) rubyElement;
+				IField[] sourceFields = variable.getSourceFields();
+				for (int j = 0; j < sourceFields.length; j++) {
+					if (sourceFields[j] != null) {
+						reportField(sourceFields[j], relevance--);
+						break;
+					}
+				}
+			}
+		}
+		
+		for (int i = 0; i < globalVars.length; i++) {
+			if (globalVars[i].startsWith(prefix)) 
+				reportField(new FakeField((ModelElement) module, globalVars[i], 0, 0), relevance--);
+		}
+	}
 
 	private void completeSimpleRef(org.eclipse.dltk.core.ISourceModule module,
-			ModuleDeclaration moduleDeclaration, ASTNode node, int position) {
+			ModuleDeclaration moduleDeclaration, String prefix, int position) {
 		int relevance = 424242;
-		String prefix = getPrefix(module, node, position);
-		this.setSourceRange(node.sourceStart(), position);
+//		String prefix = getPrefix(module, node, position);
+		this.setSourceRange(/*node.sourceStart()*/position - prefix.length(), position);
 
-		IField[] fields = RubyModelUtils.findFields(module, moduleDeclaration,
-				prefix, position);
-		for (int i = 0; i < fields.length; i++) {
-			reportField(fields[i], relevance--);
+		if (prefix.startsWith("$")) { //globals
+			completeGlobalVar(module, moduleDeclaration, prefix, position);
+		} else { //class & instance & locals
+			IField[] fields = RubyModelUtils.findFields(module, moduleDeclaration,
+					prefix, position);
+			for (int i = 0; i < fields.length; i++) {
+				reportField(fields[i], relevance--);
+			}			
 		}
+		
+		
 	}
 
 	private String getPrefix(org.eclipse.dltk.core.ISourceModule module,
@@ -173,15 +249,26 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				IMixinElement[] children = mixinElement.getChildren();
 				int relevance = 424242;
 				for (int i = 0; i < children.length; i++) {
-					Object obj = children[i].getAllObjects()[0];
-					if (obj instanceof IType) {
-						IType type2 = (IType) obj;
-						if (type2.getElementName().startsWith(prefix))
-							reportType(type2, relevance--);
-					} else if (obj instanceof IMethod) {
-						IMethod method2 = (IMethod) obj;
-						if (method2.getElementName().startsWith(prefix))
-							reportMethod(method2, relevance--);
+					Object[] infos =  children[i].getAllObjects();
+					for (int j = 0; j < infos.length; j++) {
+						RubyMixinElementInfo obj = (RubyMixinElementInfo) infos[j];
+						if (obj.getObject() == null)
+							continue;
+						if (obj.getKind() == RubyMixinElementInfo.K_CLASS || 
+								obj.getKind() == RubyMixinElementInfo.K_MODULE) {
+							IType type2 = (IType) obj.getObject();
+							if (type2 != null && type2.getElementName().startsWith(prefix))
+								reportType(type2, relevance--);
+						} else if (obj.getKind() == RubyMixinElementInfo.K_METHOD) {
+							IMethod method2 = (IMethod) obj.getObject();
+							if (method2 != null && method2.getElementName().startsWith(prefix))
+								reportMethod(method2, relevance--);
+						} if (obj.getKind() == RubyMixinElementInfo.K_VARIABLE) {
+							IField fff = (IField) obj.getObject();
+							if (fff != null && fff.getElementName().startsWith(prefix))
+								reportField(fff, relevance--);
+						}			
+						break;
 					}
 
 				}
@@ -230,7 +317,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			ModuleDeclaration moduleDeclaration, String prefix, int position,
 			boolean topLevelOnly) {
 
-		if (!topLevelOnly) {
+ 		if (!topLevelOnly) {
 			IMixinElement[] modelStaticScopes = RubyTypeInferencingUtils
 					.getModelStaticScopes(model, moduleDeclaration, position);
 			for (int i = modelStaticScopes.length - 1; i >= 0; i--) {
@@ -241,8 +328,32 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 						prefix);
 			}
 		}
-
+		
 		int relevance = 4242;
+		
+//		try {
+		if (prefix.length() > 0) {
+			String varkey = "Object" + MixinModel.SEPARATOR + prefix;
+			RubyMixinModel rubyModel = RubyMixinModel.getInstance();
+			String[] keys2 = rubyModel.getRawModel().findKeys(varkey + "*");
+			for (int i = 0; i < keys2.length; i++) {
+				IRubyMixinElement element = rubyModel.createRubyElement(keys2[i]);
+				if (element instanceof RubyMixinVariable) {
+					RubyMixinVariable variable = (RubyMixinVariable) element;
+					IField[] sourceFields = variable.getSourceFields();
+					for (int j = 0; j < sourceFields.length; j++) {
+						if (sourceFields[j] != null) {
+							reportField(sourceFields[j], relevance--);
+							break;
+						}						
+					}
+				}
+			}
+		}
+//		} catch (ModelException e) {
+//			e.printStackTrace();
+//		}
+
 
 		HashSet names = new HashSet();
 		IType[] allTypes = RubyTypeInferencingUtils.getAllTypes(module, prefix);
@@ -252,9 +363,9 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				continue;
 			names.add(elementName);
 			reportType(allTypes[i], relevance--);
-		}
-
-		// TODO: add search for all fields for non-type constants completion
+		}		
+		
+		
 	}
 
 	private void completeConstant(org.eclipse.dltk.core.ISourceModule module,
@@ -269,7 +380,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 		String prefix = content.substring(node.sourceStart(), position);
 		this.setSourceRange(position - prefix.length(), position);
-		completeConstant(module, moduleDeclaration, prefix, position, false);
+		completeConstant(module, moduleDeclaration, prefix, position, false);		
 	}
 
 	private void completeCall(org.eclipse.dltk.core.ISourceModule module,
@@ -288,12 +399,14 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				.sourceStart());
 
 		String starting = content.substring(pos, position).trim();
+		
+		if (receiver == null)
+			completeSimpleRef(module, moduleDeclaration, starting, position);
 
 		this.setSourceRange(position - starting.length(), position);
 
 		IMethod[] methods = null;
 
-		// completeSimpleRef(module, moduleDeclaration, node, position);
 
 		int relevance = 424242;
 		if (receiver != null) {
@@ -338,6 +451,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			elementName = elementName.substring(elementName.indexOf('.') + 1);
 		}
 		char[] name = elementName.toCharArray();
+		char[] compl = name;
 
 		int relevance = RelevanceConstants.R_INTERESTING;
 		relevance += RelevanceConstants.R_NON_RESTRICTED;
@@ -363,11 +477,21 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					args[i] = params[i].toCharArray();
 				}
 				proposal.setParameterNames(args);
+				
+				String replacement = new String(name) + "("; //XXX!
+				for (int i = 0; i < params.length; i++) {
+					replacement += params[i];
+					if (i != params.length - 1)
+						replacement += ", ";
+				}
+				replacement += ")";
+				compl = replacement.toCharArray();
 			}
+			
 
 			proposal.setModelElement(method);
 			proposal.setName(name);
-			proposal.setCompletion(name);
+			proposal.setCompletion(compl);
 			try {
 				proposal.setFlags(method.getFlags());
 			} catch (ModelException e) {

@@ -2033,11 +2033,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	 * @see NodeVisitor#visitFixnumNode(FixnumNode)
 	 */
 	public Instruction visitFixnumNode(FixnumNode iVisited) {
-		NumericLiteral node = new NumericLiteral(new DLTKToken(0, String
-				.valueOf(iVisited.getValue())));
 		ISourcePosition pos = iVisited.getPosition();
-		node.setStart(pos.getStartOffset());
-		node.setEnd(pos.getEndOffset() + 1);
+		NumericLiteral node = new NumericLiteral(pos.getStartOffset(), pos.getEndOffset(), iVisited.getValue());		
 		states.peek().add(node);
 		return null;
 	}

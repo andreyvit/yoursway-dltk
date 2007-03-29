@@ -13,8 +13,11 @@ import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.IfStatement;
 import org.eclipse.dltk.ast.statements.ReturnStatement;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.ruby.ast.BacktickStringLiteral;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
+import org.eclipse.dltk.ruby.ast.DynamicBackquoteStringExpression;
+import org.eclipse.dltk.ruby.ast.DynamicStringExpression;
 import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
 import org.eclipse.dltk.ruby.ast.RubyReturnStatement;
 import org.eclipse.dltk.ruby.ast.SelfReference;
@@ -52,6 +55,12 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 			else if (expr instanceof NumericLiteral)
 				return new NumericLiteralEvaluator(goal);
 			else if (expr instanceof StringLiteral)
+				return new StringLiteralEvaluator(goal);
+			else if (expr instanceof DynamicBackquoteStringExpression)
+				return new StringLiteralEvaluator(goal);
+			else if (expr instanceof DynamicStringExpression)
+				return new StringLiteralEvaluator(goal);
+			else if (expr instanceof BacktickStringLiteral)
 				return new StringLiteralEvaluator(goal);
 			else if (expr instanceof BooleanLiteral)
 				return new BooleanLiteralEvaluator(goal);

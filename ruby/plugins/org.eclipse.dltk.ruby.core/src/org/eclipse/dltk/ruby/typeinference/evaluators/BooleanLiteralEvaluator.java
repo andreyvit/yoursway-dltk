@@ -21,9 +21,9 @@ public class BooleanLiteralEvaluator extends GoalEvaluator {
 		ExpressionTypeGoal tg = (ExpressionTypeGoal) goal;
 		BooleanLiteral l = (BooleanLiteral) tg.getExpression();
 		if (l.boolValue())
-			return new RubyClassType ("TrueClass");
+			return new RubyClassType ("TrueClass%");
 		else
-			return new RubyClassType ("FalseClass");// TrueClass || FalseClass
+			return new RubyClassType ("FalseClass%");// TrueClass || FalseClass
 	}
 
 	public IGoal[] init() {

@@ -21,6 +21,7 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
@@ -39,6 +40,7 @@ import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinMethod;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinVariable;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyObjectMixinClass;
 import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.ClassMetaclass;
 import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.Metaclass;
 import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.MethodInfo;
@@ -46,8 +48,9 @@ import org.eclipse.dltk.ruby.typeinference.BuiltinMethodsDatabase.ModuleMetaclas
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class RubyModelUtils {
-	
-	public static IType getModelTypeByAST(TypeDeclaration astNode, ISourceModule sourceModule) throws ModelException {
+
+	public static IType getModelTypeByAST(TypeDeclaration astNode,
+			ISourceModule sourceModule) throws ModelException {
 		IType[] types = sourceModule.getAllTypes();
 		int astStart = astNode.sourceStart();
 		int astEnd = astNode.sourceEnd();
@@ -73,8 +76,9 @@ public class RubyModelUtils {
 		}
 		return bestType;
 	}
-	
-	public static MethodDeclaration getNodeByMethod(ModuleDeclaration rootNode, IMethod method) throws ModelException {
+
+	public static MethodDeclaration getNodeByMethod(ModuleDeclaration rootNode,
+			IMethod method) throws ModelException {
 
 		ISourceRange sourceRange = method.getSourceRange();
 		final int modelStart = sourceRange.getOffset();
@@ -86,13 +90,14 @@ public class RubyModelUtils {
 		final MethodDeclaration[] bestResult = new MethodDeclaration[1];
 
 		ASTVisitor visitor = new ASTVisitor() {
-			
+
 			int bestScore = Integer.MAX_VALUE;
 
 			private boolean interesting(ASTNode s) {
 				if (s.sourceStart() < 0 || s.sourceEnd() < s.sourceStart())
 					return true;
-				if (modelCutoffEnd < s.sourceStart() || modelCutoffStart >= s.sourceEnd())
+				if (modelCutoffEnd < s.sourceStart()
+						|| modelCutoffStart >= s.sourceEnd())
 					return false;
 				return true;
 			}
@@ -116,7 +121,7 @@ public class RubyModelUtils {
 						bestScore = score;
 						bestResult[0] = s;
 					}
-					
+
 				}
 				return true;
 			}
@@ -153,51 +158,79 @@ public class RubyModelUtils {
 					return false;
 				return true;
 			}
-			
+
 		};
-		
+
 		try {
 			rootNode.traverse(visitor);
 		} catch (Exception e) {
 			RubyPlugin.log(e);
 		}
-		
+
 		return bestResult[0];
-		
+
 	}
-	
-	
-	
-	public static IField[] findFields (ISourceModule modelModule, 
+
+	public static IField[] findFields(ISourceModule modelModule,
 			ModuleDeclaration parsedUnit, String prefix, int position) {
-		List result = new ArrayList ();
-		
+		List result = new ArrayList();
+
 		RubyMixinModel rubyModel = RubyMixinModel.getInstance();
 		String[] keys = RubyTypeInferencingUtils.getModelStaticScopesKeys(
 				rubyModel.getRawModel(), parsedUnit, position);
-		
+
 		IRubyMixinElement innerElement = null;
-		RubyMixinClass selfClass = null;
-		
+		RubyMixinClass selfClass = new RubyObjectMixinClass(rubyModel, true);
+
 		if (keys != null && keys.length > 0) {
 			String inner = keys[keys.length - 1];
-			innerElement = rubyModel.createRubyElement(inner);
-			if (innerElement instanceof RubyMixinMethod) {
-				RubyMixinMethod method = (RubyMixinMethod) innerElement;
-				selfClass = method.getSelfType();				
-				RubyMixinVariable[] fields2 = method.getFields();
-				addVariablesFrom(fields2, prefix, result);
-			} else if (innerElement instanceof RubyMixinClass) {
-				selfClass = (RubyMixinClass) innerElement;
+			if (prefix.length() > 0 && !prefix.startsWith("@")) { // locals &
+				// constants
+				String varkey = inner + MixinModel.SEPARATOR + prefix;
+				String[] keys2 = rubyModel.getRawModel().findKeys(varkey + "*");
+				for (int i = 0; i < keys2.length; i++) {
+					IRubyMixinElement element = rubyModel
+							.createRubyElement(keys2[i]);
+					if (element instanceof RubyMixinVariable) {
+						RubyMixinVariable variable = (RubyMixinVariable) element;
+						result.add(variable.getSourceFields()[0]);
+					}
+				}
+			} else {
+				innerElement = rubyModel.createRubyElement(inner);
+				if (innerElement instanceof RubyMixinMethod) {
+					RubyMixinMethod method = (RubyMixinMethod) innerElement;
+					selfClass = method.getSelfType();
+					RubyMixinVariable[] fields2 = method.getFields();
+					addVariablesFrom(fields2, prefix, result);
+				} else if (innerElement instanceof RubyMixinClass) {
+					selfClass = (RubyMixinClass) innerElement;
+				}
 			}
 		}
 
 		RubyMixinVariable[] fields2 = selfClass.getFields();
 		addVariablesFrom(fields2, prefix, result);
-		
+
+		if (selfClass.getKey().equals("Object")) { // add top-level used class
+			// variables
+			try {
+				IModelElement[] children = modelModule.getChildren();
+				for (int i = 0; i < children.length; i++) {
+					if (children[i] instanceof IField) {
+						IField field = (IField) children[i];
+						if (field.getElementName().startsWith(prefix))
+							result.add(field);
+					}
+				}
+			} catch (ModelException e) {
+				e.printStackTrace();
+			}
+		}
+
 		return (IField[]) result.toArray(new IField[result.size()]);
-	}	
-	
+	}
+
 	public static IMethod[] searchClassMethods(
 			org.eclipse.dltk.core.ISourceModule modelModule,
 			ModuleDeclaration moduleDeclaration, IEvaluatedType type,
@@ -208,11 +241,18 @@ public class RubyModelUtils {
 			RubyMixinClass rubyClass = RubyMixinModel.getInstance()
 					.createRubyClass(rubyClassType);
 			if (rubyClass != null) {
-				RubyMixinMethod[] methods = rubyClass.findMethods(prefix, false);
+				RubyMixinMethod[] methods = rubyClass
+						.findMethods(prefix, (prefix.length() > 0));
 				for (int i = 0; i < methods.length; i++) {
 					IMethod[] sourceMethods = methods[i].getSourceMethods();
-					if (sourceMethods != null && sourceMethods.length > 0 && sourceMethods[0].getElementName().startsWith(prefix)) {						
-						result.add(sourceMethods[0]);
+					if (sourceMethods != null) {
+						for (int j = 0; j < sourceMethods.length; j++) {
+							if (sourceMethods[j] != null
+									&& sourceMethods[j].getElementName()
+											.startsWith(prefix)) {
+								result.add(sourceMethods[j]);
+							}
+						}
 					}
 				}
 			}
@@ -230,63 +270,75 @@ public class RubyModelUtils {
 		}
 		return (IMethod[]) result.toArray(new IMethod[result.size()]);
 	}
-	
-	private static void addVariablesFrom(RubyMixinVariable[] fields2, String prefix,
-			List resultList) {
+
+	private static void addVariablesFrom(RubyMixinVariable[] fields2,
+			String prefix, List resultList) {
 		for (int i = 0; i < fields2.length; i++) {
 			IField[] sourceFields = fields2[i].getSourceFields();
-			if (sourceFields != null && sourceFields.length > 0) {
-				if (prefix == null || sourceFields[0].getElementName().startsWith(prefix)) {
-					resultList.add(sourceFields[0]);
+			if (sourceFields != null) {
+				for (int j = 0; j < sourceFields.length; j++) {
+					if (sourceFields[j] != null) {
+						if (prefix == null
+								|| sourceFields[j].getElementName().startsWith(
+										prefix)) {
+							resultList.add(sourceFields[j]);
+							break;
+						}
+
+					}
+
 				}
 			}
 		}
 	}
-	
-//	public static RubyClassType getSuperType(IType type) {
-//		String[] superClasses;
-//		try {
-//			superClasses = type.getSuperClasses();
-//		} catch (ModelException e) {	
-//			e.printStackTrace();
-//			return null;
-//		}
-//		if (superClasses != null && superClasses.length == 1) {
-//			String name = superClasses[0];		
-//			IType[] types;
-//			if (name.startsWith("::")) {
-//				types = DLTKModelUtil.getAllTypes(type.getScriptProject(), name, "::");
-//			} else {
-//				String scopeFQN = type.getTypeQualifiedName("::");
-//				types = DLTKModelUtil.getAllScopedTypes(type.getScriptProject(), name, "::", scopeFQN); 
-//			}
-//			if (types != null && types.length > 0) {
-//				String typeQualifiedName = types[0].getTypeQualifiedName("::").substring(2);
-//				String[] FQN = typeQualifiedName.split("::");				
-//				return new RubyClassType(FQN, types, null);
-//			} else {
-//				FakeMethod[] fakeMethods = getFakeMethods((ModelElement) type, name);
-//				if (fakeMethods != null) {
-//					return new RubyClassType(new String[]{name}, null, fakeMethods);
-//				}
-//			}
-//		}
-//		FakeMethod[] fakeMethods = getFakeMethods((ModelElement) type, "Object");
-//		return new RubyClassType(new String[]{"Object"}, null, fakeMethods);
-//	}
+
+	// public static RubyClassType getSuperType(IType type) {
+	// String[] superClasses;
+	// try {
+	// superClasses = type.getSuperClasses();
+	// } catch (ModelException e) {
+	// e.printStackTrace();
+	// return null;
+	// }
+	// if (superClasses != null && superClasses.length == 1) {
+	// String name = superClasses[0];
+	// IType[] types;
+	// if (name.startsWith("::")) {
+	// types = DLTKModelUtil.getAllTypes(type.getScriptProject(), name, "::");
+	// } else {
+	// String scopeFQN = type.getTypeQualifiedName("::");
+	// types = DLTKModelUtil.getAllScopedTypes(type.getScriptProject(), name,
+	// "::", scopeFQN);
+	// }
+	// if (types != null && types.length > 0) {
+	// String typeQualifiedName =
+	// types[0].getTypeQualifiedName("::").substring(2);
+	// String[] FQN = typeQualifiedName.split("::");
+	// return new RubyClassType(FQN, types, null);
+	// } else {
+	// FakeMethod[] fakeMethods = getFakeMethods((ModelElement) type, name);
+	// if (fakeMethods != null) {
+	// return new RubyClassType(new String[]{name}, null, fakeMethods);
+	// }
+	// }
+	// }
+	// FakeMethod[] fakeMethods = getFakeMethods((ModelElement) type, "Object");
+	// return new RubyClassType(new String[]{"Object"}, null, fakeMethods);
+	// }
 
 	public static FakeMethod[] getFakeMethods(ModelElement parent, String klass) {
 		Metaclass metaclass = BuiltinMethodsDatabase.get(klass);
 		if (metaclass != null) {
 			List fakeMethods = new ArrayList();
 			addFakeMethods(parent, metaclass, fakeMethods);
-			return (FakeMethod[]) fakeMethods.toArray(new FakeMethod[fakeMethods.size()]);
+			return (FakeMethod[]) fakeMethods
+					.toArray(new FakeMethod[fakeMethods.size()]);
 		}
 		// XXX the following code is legacy
 		String[] names = getBuiltinMethodNames(klass);
-		if (names == null) 
+		if (names == null)
 			return new FakeMethod[0];
-		List methods = new ArrayList ();
+		List methods = new ArrayList();
 		for (int i = 0; i < names.length; i++) {
 			FakeMethod method = new FakeMethod(parent, names[i]);
 			method.setReceiver(klass);
@@ -295,7 +347,8 @@ public class RubyModelUtils {
 		return (FakeMethod[]) methods.toArray(new FakeMethod[methods.size()]);
 	}
 
-	private static void addFakeMethods(ModelElement parent, Metaclass metaclass, List fakeMethods) {
+	private static void addFakeMethods(ModelElement parent,
+			Metaclass metaclass, List fakeMethods) {
 		// process included modules first, to allow the class to override
 		// some of the methods
 		ModuleMetaclass[] includedModules = metaclass.getIncludedModules();
@@ -310,60 +363,61 @@ public class RubyModelUtils {
 			fakeMethods.add(method);
 		}
 		if (metaclass instanceof BuiltinMethodsDatabase.ClassMetaclass) {
-			BuiltinMethodsDatabase.ClassMetaclass classMeta =
-				(BuiltinMethodsDatabase.ClassMetaclass) metaclass;
+			BuiltinMethodsDatabase.ClassMetaclass classMeta = (BuiltinMethodsDatabase.ClassMetaclass) metaclass;
 			ClassMetaclass superClass = classMeta.getSuperClass();
 			if (superClass != null)
 				addFakeMethods(parent, superClass, fakeMethods);
 		}
 	}
 
-	private static FakeMethod createFakeMethod(ModelElement parent, Metaclass metaclass, MethodInfo info) {
+	private static FakeMethod createFakeMethod(ModelElement parent,
+			Metaclass metaclass, MethodInfo info) {
 		FakeMethod method = new FakeMethod(parent, info.getName());
 		int arity = info.getArity();
 		String parameters[] = new String[0];
 		if (arity > 0) {
 			parameters = new String[arity];
-			for(int i = 0; i < arity; i++)
-				parameters[i] = "arg" + (i+1);
+			for (int i = 0; i < arity; i++)
+				parameters[i] = "arg" + (i + 1);
 		} else if (arity < 0) {
 			parameters = new String[-arity];
-			for(int i = 0; i < -arity - 1; i++)
-				parameters[i] = "arg" + (i+1);
-			parameters[-arity-1] = "...";
+			for (int i = 0; i < -arity - 1; i++)
+				parameters[i] = "arg" + (i + 1);
+			parameters[-arity - 1] = "...";
 		}
 		method.setParameters(parameters);
 		method.setReceiver(metaclass.getName());
 		return method;
-	} 
-	
-	
-	public static FakeMethod[] getFakeMetaMethods(ModelElement parent, String klass) {
+	}
+
+	public static FakeMethod[] getFakeMetaMethods(ModelElement parent,
+			String klass) {
 		Metaclass metaclass = BuiltinMethodsDatabase.get(klass);
 		if (metaclass != null) {
 			ClassMetaclass metaMetaclass = metaclass.getMetaClass();
 			List fakeMethods = new ArrayList();
 			addFakeMethods(parent, metaMetaclass, fakeMethods);
-			return (FakeMethod[]) fakeMethods.toArray(new FakeMethod[fakeMethods.size()]);
+			return (FakeMethod[]) fakeMethods
+					.toArray(new FakeMethod[fakeMethods.size()]);
 		}
 		String[] names = getBuiltinMetaMethodNames(klass);
-		if (names == null) 
+		if (names == null)
 			return new FakeMethod[0];
-		List methods = new ArrayList ();
+		List methods = new ArrayList();
 		for (int i = 0; i < names.length; i++) {
 			FakeMethod method = new FakeMethod(parent, names[i]);
 			method.setReceiver(klass);
 			methods.add(method);
 		}
 		return (FakeMethod[]) methods.toArray(new FakeMethod[methods.size()]);
-	} 
-	
+	}
+
 	public static String[] getBuiltinMethodNames(String klass) {
 		if (klass.equals("Object")) {
 			return BuiltinTypeMethods.objectMethods;
 		} else if (klass.equals("String")) {
 			return BuiltinTypeMethods.stringMethods;
-		} else  if (klass.equals("Fixnum")) {
+		} else if (klass.equals("Fixnum")) {
 			return BuiltinTypeMethods.fixnumMethods;
 		} else if (klass.equals("Float")) {
 			return BuiltinTypeMethods.floatMethods;
@@ -371,25 +425,27 @@ public class RubyModelUtils {
 			return BuiltinTypeMethods.regexpMethods;
 		} else if (klass.equals("Array")) {
 			return BuiltinTypeMethods.arrayMethods;
-		} 
+		}
 		return null;
 	}
 
 	public static String[] getBuiltinMetaMethodNames(String klass) {
 		if (klass.equals("Object")) {
 			return BuiltinMethodsDatabase.objectMethods;
-		} 
+		}
 		return null;
 	}
-	
-	public static IType[] findTopLevelTypes (ISourceModule module, String namePrefix) {
+
+	public static IType[] findTopLevelTypes(ISourceModule module,
+			String namePrefix) {
 		List result = new ArrayList();
-		
+
 		try {
-			//TODO: add handling of "require"
+			// TODO: add handling of "require"
 			IModelElement[] children = module.getChildren();
 			for (int i = 0; i < children.length; i++) {
-				if (children[i] instanceof IType && children[i].getElementName().startsWith(namePrefix))
+				if (children[i] instanceof IType
+						&& children[i].getElementName().startsWith(namePrefix))
 					result.add(children[i]);
 			}
 		} catch (ModelException e) {
@@ -398,14 +454,16 @@ public class RubyModelUtils {
 
 		return (IType[]) result.toArray(new IType[result.size()]);
 	}
-	
-	public static IField[] findTopLevelFields(ISourceModule module, String namePrefix) {
+
+	public static IField[] findTopLevelFields(ISourceModule module,
+			String namePrefix) {
 		List result = new ArrayList();
-		
+
 		try {
 			IModelElement[] children = module.getChildren();
 			for (int i = 0; i < children.length; i++) {
-				if (children[i] instanceof IField && children[i].getElementName().startsWith(namePrefix))
+				if (children[i] instanceof IField
+						&& children[i].getElementName().startsWith(namePrefix))
 					result.add(children[i]);
 			}
 		} catch (ModelException e) {
@@ -414,45 +472,49 @@ public class RubyModelUtils {
 
 		return (IField[]) result.toArray(new IField[result.size()]);
 	}
-	
-	public static IMethod[] findTopLevelMethods (IDLTKProject project, String namePattern) {
-		final List result = new ArrayList ();
+
+	public static IMethod[] findTopLevelMethods(IDLTKProject project,
+			String namePattern) {
+		final List result = new ArrayList();
 		SearchRequestor requestor = new SearchRequestor() {
 
-			public void acceptSearchMatch(SearchMatch match) throws CoreException {
+			public void acceptSearchMatch(SearchMatch match)
+					throws CoreException {
 				Object element = match.getElement();
 				if (element instanceof SourceMethod) {
-					SourceMethod meth = (SourceMethod)element;
+					SourceMethod meth = (SourceMethod) element;
 					if (meth.getParent() instanceof ISourceModule) {
 						result.add(meth);
 					}
 				}
 			}
-		
-			
+
 		};
-		SearchPattern pattern = SearchPattern.createPattern(namePattern, IDLTKSearchConstants.METHOD, 
-				IDLTKSearchConstants.DECLARATIONS, SearchPattern.R_PATTERN_MATCH | SearchPattern.R_EXACT_MATCH);
+		SearchPattern pattern = SearchPattern.createPattern(namePattern,
+				IDLTKSearchConstants.METHOD, IDLTKSearchConstants.DECLARATIONS,
+				SearchPattern.R_PATTERN_MATCH | SearchPattern.R_EXACT_MATCH);
 		IDLTKSearchScope scope;
 		if (project != null)
-			scope = SearchEngine.createSearchScope(new IModelElement[] {project});
+			scope = SearchEngine
+					.createSearchScope(new IModelElement[] { project });
 		else
-			scope = SearchEngine.createWorkspaceScope(RubyLanguageToolkit.getDefault());
+			scope = SearchEngine.createWorkspaceScope(RubyLanguageToolkit
+					.getDefault());
 		try {
 			SearchEngine engine = new SearchEngine();
 			engine.search(pattern, new SearchParticipant[] { SearchEngine
-						.getDefaultSearchParticipant() }, scope, 
-						requestor, null);
-		} catch (CoreException e) {			
+					.getDefaultSearchParticipant() }, scope, requestor, null);
+		} catch (CoreException e) {
 			if (DLTKCore.DEBUG)
 				e.printStackTrace();
 		}
-		
+
 		return (IMethod[]) result.toArray(new IMethod[result.size()]);
 	}
 
 	/**
 	 * Should return mixin-key of superclass
+	 * 
 	 * @param type
 	 * @return
 	 */
@@ -471,11 +533,10 @@ public class RubyModelUtils {
 				superclass = superclass.substring(2);
 			superclass = superclass.replaceAll("::", "{");
 		}
-		
-		//TODO: add appropriate evaluation here
-		
+
+		// TODO: add appropriate evaluation here
+
 		return superclass;
 	}
-	
 
 }

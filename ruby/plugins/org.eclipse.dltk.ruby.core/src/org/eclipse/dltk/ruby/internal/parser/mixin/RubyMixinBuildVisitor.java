@@ -6,27 +6,32 @@ import java.util.Stack;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
+import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Assignment;
+import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.core.IField;
+import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
+import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
 import org.eclipse.dltk.ruby.ast.RubySingletonClassDeclaration;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.SelfReference;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.internal.core.RubyClassDeclaration;
-import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 
 public class RubyMixinBuildVisitor extends ASTVisitor {
 
@@ -51,11 +56,13 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			return node;
 		}
 
-		public abstract String reportMethod(String name, Object object);
+		public abstract String reportMethod(String name, IMethod object);
 
-		public abstract String reportVariable(String name, Object object);
+		public abstract String reportVariable(String name, IField object);
 
-		public abstract String reportType(String name, Object object);
+		public abstract String reportType(String name, IType object, boolean module);
+		
+		public abstract String reportInclude(String object);
 
 		public abstract String getClassKey();
 
@@ -72,25 +79,35 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			return "Object";
 		}
 
-		public String reportMethod(String name, Object object) {
-			return report(name, object);
+		public String reportMethod(String name, IMethod object) {
+			return report(name, RubyMixinElementInfo.createMethod(object));
 		}
 
-		public String reportType(String name, Object object) {
-			report(name + INSTANCE_SUFFIX, object);
-			return report(name, object);
+		public String reportType(String name, IType object, boolean module) {
+			RubyMixinElementInfo obj = null;
+			if (module)
+				obj = RubyMixinElementInfo.createModule(object);
+			else 
+				obj = RubyMixinElementInfo.createClass(object);
+			report(name + INSTANCE_SUFFIX, obj);
+			return report(name, obj);
 		}
 
-		public String reportVariable(String name, Object object) {
-			report("Object", null);
-			if (name.startsWith("@"))
-				return report("Object" + SEPARATOR + name, object);
+		public String reportVariable(String name, IField object) {
+			if (name.startsWith("$"))
+				return report(name, RubyMixinElementInfo.createVariable(object));
+			if (name.startsWith("@") || Character.isUpperCase(name.charAt(0)))
+				return report("Object" + SEPARATOR + name, RubyMixinElementInfo.createVariable(object));
 			else
 				return null; // no top-level vars
 		}
 
 		public String getKey() {
 			return "Object";
+		}
+
+		public String reportInclude(String object) {
+			return null;
 		}
 
 	}
@@ -104,29 +121,37 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			this.classKey = classKey;
 		}
 
-		public String reportMethod(String name, Object object) {
+		public String reportMethod(String name, IMethod object) {
 			String key = classKey + INSTANCE_SUFFIX + SEPARATOR + name;
+			return report(key, RubyMixinElementInfo.createMethod(object));
+		}
+
+		public String reportType(String name, IType obj, boolean module) {
+			RubyMixinElementInfo object = null;
+			if (module)
+				object = RubyMixinElementInfo.createModule(obj);
+			else
+				object = RubyMixinElementInfo.createClass(obj);
+			String key = classKey + SEPARATOR + name;
+			report(key + INSTANCE_SUFFIX, object);
 			return report(key, object);
 		}
 
-		public String reportType(String name, Object obj) {
-			String key = classKey + SEPARATOR + name;
-			report(key + INSTANCE_SUFFIX, obj);
-			return report(key, obj);
-		}
-
-		public String reportVariable(String name, Object object) {
+		public String reportVariable(String name, IField object) {
+			if (name.startsWith("$"))
+				return report(name, RubyMixinElementInfo.createVariable(object));
+			RubyMixinElementInfo obj = RubyMixinElementInfo.createVariable(object);
 			String key = null;
 			if (name.startsWith("@@")) {
 				key = classKey + SEPARATOR + name;
-				report(classKey + INSTANCE_SUFFIX + SEPARATOR + name, object);
-				return report(key, object);
+				report(classKey + INSTANCE_SUFFIX + SEPARATOR + name, obj);
+				return report(key, obj);
 			} else if (name.startsWith("@")) {
 				key = classKey + SEPARATOR + name;
-				return report(key, object);
+				return report(key, obj);
 			} else {
 				key = classKey + SEPARATOR + name;
-				return report(key, object);
+				return report(key, obj);
 			}
 		}
 
@@ -136,6 +161,10 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 
 		public String getKey() {
 			return classKey;
+		}
+
+		public String reportInclude(String object) {			
+			return report(classKey + INSTANCE_SUFFIX, new RubyMixinElementInfo(RubyMixinElementInfo.K_INCLUDE, object));
 		}
 
 	}
@@ -149,21 +178,29 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			this.classKey = classKey;
 		}
 
-		public String reportMethod(String name, Object object) {
-			return report(classKey + SEPARATOR + name, object);
+		public String reportMethod(String name, IMethod object) {
+			return report(classKey + SEPARATOR + name, RubyMixinElementInfo.createMethod(object));
 		}
 
-		public String reportType(String name, Object object) {
-			report(classKey + SEPARATOR + name + INSTANCE_SUFFIX, object);
-			return report(classKey + SEPARATOR + name, object);
+		public String reportType(String name, IType object, boolean module) {
+			RubyMixinElementInfo obj = null;
+			if (module)
+				obj = RubyMixinElementInfo.createModule(object);
+			else 
+				obj = RubyMixinElementInfo.createClass(object);
+			report(classKey + SEPARATOR + name + INSTANCE_SUFFIX, obj);
+			return report(classKey + SEPARATOR + name, obj);
 		}
 
-		public String reportVariable(String name, Object object) {
+		public String reportVariable(String name, IField object) {
+			if (name.startsWith("$"))
+				return report(name, RubyMixinElementInfo.createVariable(object));
+			RubyMixinElementInfo obj = RubyMixinElementInfo.createVariable(object);
 			if (name.startsWith("@@")) {
-				report(classKey + INSTANCE_SUFFIX + SEPARATOR + name, object);
-				return report(classKey + SEPARATOR + name, object);
+				report(classKey + INSTANCE_SUFFIX + SEPARATOR + name, obj);
+				return report(classKey + SEPARATOR + name, obj);
 			} else {
-				return report(classKey + SEPARATOR + name, object);
+				return report(classKey + SEPARATOR + name, obj);
 			}
 		}
 
@@ -174,6 +211,11 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		public String getKey() {
 			return classKey;
 		}
+		
+		public String reportInclude(String object) {			
+			return report(classKey, new RubyMixinElementInfo(RubyMixinElementInfo.K_INCLUDE, object));
+		}
+		
 	}
 
 	private class MethodScope extends Scope {
@@ -187,21 +229,25 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			this.methodKey = methodKey;
 		}
 
-		public String reportMethod(String name, Object object) {
+		public String reportMethod(String name, IMethod object) {
 			return classScope.reportMethod(name, object);
 		}
 
-		public String reportType(String name, Object obj) {
-			throw new RuntimeException();
+		public String reportType(String name, IType obj, boolean module) {
+			//throw new RuntimeException();
+			return null;
 		}
 
-		public String reportVariable(String name, Object obj) {
+		public String reportVariable(String name, IField obj) {
+			if (name.startsWith("$"))
+				return report(name, RubyMixinElementInfo.createVariable(obj));
+			RubyMixinElementInfo object = RubyMixinElementInfo.createVariable(obj);
 			if (name.startsWith("@@")) {
 				String key = classScope.getKey() + SEPARATOR + name;
 				report(
 						classScope.getKey() + INSTANCE_SUFFIX + SEPARATOR
-								+ name, obj);
-				return report(key, obj);
+								+ name, object);
+				return report(key, object);
 			}
 			if (name.startsWith("@")) {
 				String key;
@@ -211,9 +257,9 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 				} else {
 					key = classScope.getKey() + SEPARATOR + name;
 				}
-				return report(key, obj);
+				return report(key, object);
 			} else {
-				return report(methodKey + SEPARATOR + name, obj);
+				return report(methodKey + SEPARATOR + name, object);
 			}
 		}
 
@@ -223,6 +269,10 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 
 		public String getKey() {
 			return methodKey;
+		}
+		
+		public String reportInclude(String object) {			
+			return classScope.reportInclude(object);
 		}
 
 	}
@@ -251,10 +301,10 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	}
 
 	public boolean visit(MethodDeclaration decl) throws Exception {
-		Object obj = null;
+		IMethod obj = null;
 		String name = decl.getName();
 		if (moduleAvailable) {
-			obj = sourceModule.getElementAt(decl.sourceStart() + 1);
+			obj = (IMethod) sourceModule.getElementAt(decl.sourceStart() + 1);
 		}
 		if (decl instanceof RubySingletonMethodDeclaration) {
 			RubySingletonMethodDeclaration singl = (RubySingletonMethodDeclaration) decl;
@@ -294,13 +344,13 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			RubyMethodArgument argument = (RubyMethodArgument) s;
 			String name = argument.getName();
 			Scope scope = peekScope();
-			Object obj = null;
+			IField obj = null;
 			if (sourceModule != null) {
 				obj = new FakeField((ModelElement) sourceModule, name, s
 						.sourceStart(), s.sourceEnd());
 			}
 			scope.reportVariable(name, obj);
-		}
+		} else 
 		if (s instanceof Assignment) {
 			Assignment assignment = (Assignment) s;
 			Expression left = assignment.getLeft();
@@ -308,20 +358,39 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 				VariableReference ref = (VariableReference) left;
 				String name = ref.getName();
 				Scope scope = peekScope();
-				Object obj = null;
+				IField obj = null;
 				if (sourceModule != null)
 					obj = new FakeField((ModelElement) sourceModule, name, ref
 							.sourceStart(), ref.sourceEnd());
 				scope.reportVariable(name, obj);
+			} 
+		} else if (s instanceof CallExpression) {
+			CallExpression call = (CallExpression) s;
+			if (call.getReceiver() == null && call.getName().equals("include")) {
+				Expression expr = (Expression) call.getArgs().getExpressions().get(0);
+				Scope scope = peekScope();
+				String incl = evaluateClassKey(expr);
+				if (incl != null)
+					scope.reportInclude(incl);
 			}
+		} else if (s instanceof ConstantDeclaration) {
+			ConstantDeclaration constantDeclaration = (ConstantDeclaration) s;
+			String name = constantDeclaration.getName().getName();
+			Scope scope = peekScope();
+			IField obj = null;
+			if (sourceModule != null)
+				obj = new FakeField((ModelElement) sourceModule, name, constantDeclaration
+						.getName().sourceStart(), constantDeclaration.getName().sourceEnd());
+			scope.reportVariable(name, obj);
 		}
 		return super.visit(s);
 	}
 
 	public boolean visit(TypeDeclaration decl) throws Exception {
-		Object obj = null;
+		IType obj = null;
 		if (moduleAvailable)
-			obj = sourceModule.getElementAt(decl.sourceStart() + 1);
+			obj = (IType) sourceModule.getElementAt(decl.sourceStart() + 1);
+		boolean module =  (decl.getModifiers() & Modifiers.AccModule) != 0;
 		if (decl instanceof RubySingletonClassDeclaration) {
 			RubySingletonClassDeclaration declaration = (RubySingletonClassDeclaration) decl;
 			Expression receiver = declaration.getReceiver();
@@ -347,12 +416,12 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			if (className instanceof ConstantReference) {
 				String name = ((ConstantReference) className).getName();
 				Scope scope = peekScope();
-				String newKey = scope.reportType(name, obj);
+				String newKey = scope.reportType(name, obj, module);
 				scopes.push(new ClassScope(decl, newKey));
 			} else {
 				String name = evaluateClassKey(className);
 				if (name != null) {
-					report(name, obj);
+					report(name, RubyMixinElementInfo.createClass(obj));
 					scopes.push(new ClassScope(decl, name));
 				}
 			}
@@ -360,14 +429,14 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		} else {
 			String name = decl.getName();
 			Scope scope = peekScope();
-			String newKey = scope.reportType(name, obj);
+			String newKey = scope.reportType(name, obj, module);
 			scopes.push(new ClassScope(decl, newKey));
 			return true;
 		}
 		return false;
 	}
 
-	private String report(String key, Object object) {
+	private String report(String key, RubyMixinElementInfo object) {
 		ElementInfo info = new IMixinRequestor.ElementInfo();
 		info.key = key;
 		info.object = object;
@@ -377,8 +446,8 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			// System.out.println("Mixin reported: " + key);
 			// }
 			allReportedKeys.add(key);
-			if (key.startsWith("Object"))
-				System.out.println("######################## Object key reported: " + key);
+//			if (key.startsWith("Object"))
+//				System.out.println("######################## Object key reported: " + key);
 		}
 		return key;
 	}

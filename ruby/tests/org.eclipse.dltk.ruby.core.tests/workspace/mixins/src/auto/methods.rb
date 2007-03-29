@@ -6,7 +6,7 @@ end
 def top_level
 end
 
-## get Object{top_level
+## get top_level
 
 class MAbc
 	def inst1

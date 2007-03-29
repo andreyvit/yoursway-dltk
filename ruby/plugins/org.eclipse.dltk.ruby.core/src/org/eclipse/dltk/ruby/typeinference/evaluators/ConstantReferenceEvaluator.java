@@ -3,6 +3,7 @@ package org.eclipse.dltk.ruby.typeinference.evaluators;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.mixin.IMixinElement;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinElementInfo;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.typeinference.ConstantTypeGoal;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
@@ -55,11 +56,18 @@ public class ConstantReferenceEvaluator extends GoalEvaluator {
 		if (constantElement == null)
 			return IGoal.NO_GOALS;
 		
-		Object realObj = constantElement.getAllObjects()[0];
-		if (realObj instanceof IType) { 
-			result = new RubyClassType(constantElement.getKey());
-		} else if (realObj instanceof IField) {
-			helperGoal = new NonTypeConstantTypeGoal (goal.getContext(), constantElement);
+		Object[] realObjs = constantElement.getAllObjects();
+		for (int i = 0; i < realObjs.length; i++) {
+			RubyMixinElementInfo realObj = (RubyMixinElementInfo) realObjs[i];
+			if (realObj == null)
+				continue;
+			if (realObj.getKind() == RubyMixinElementInfo.K_CLASS || 
+					realObj.getKind() == RubyMixinElementInfo.K_MODULE) { 
+				result = new RubyClassType(constantElement.getKey());
+			} else if (realObj.getKind() == RubyMixinElementInfo.K_VARIABLE) {
+				helperGoal = new NonTypeConstantTypeGoal (goal.getContext(), constantElement);
+			}
+			break;
 		}
 		if (helperGoal != null) {
 			return new IGoal[] { helperGoal };

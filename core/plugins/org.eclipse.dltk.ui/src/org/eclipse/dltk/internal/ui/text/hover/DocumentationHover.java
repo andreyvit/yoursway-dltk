@@ -126,13 +126,32 @@ public class DocumentationHover extends AbstractScriptEditorTextHover implements
 		if (nResults > 1) {
 
 			for (int i= 0; i < result.length; i++) {
-				HTMLPrinter.startBulletList(buffer);
+//				HTMLPrinter.startBulletList(buffer);
 				IModelElement curr= result[i];
 				if (curr instanceof IMember) {
-					HTMLPrinter.addBullet(buffer, getInfoText(curr));
+					Reader reader;
+					try {
+						reader= ScriptDocumentationAccess.getHTMLContentReader(nature, (IMember) curr, true, true);
+						
+						// Provide hint why there's no doc
+						if (reader == null) {
+//							reader= new StringReader(DLTKHoverMessages.ScriptdocHover_noAttachedInformation);
+							continue;
+						}
+						
+					} catch (ModelException ex) {
+						return null;
+					}
+					
+					if (reader != null) {
+//						HTMLPrinter.addBullet(buffer, getInfoText(curr));
+//						HTMLPrinter.addParagraph(buffer, "<br>");
+						HTMLPrinter.addParagraph(buffer, reader);
+						HTMLPrinter.addParagraph(buffer, "<hr>");
+					}
 					hasContents= true;
 				}
-				HTMLPrinter.endBulletList(buffer);
+//				HTMLPrinter.endBulletList(buffer);
 			}
 
 		} else {

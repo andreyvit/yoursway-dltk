@@ -58,15 +58,22 @@ public class RubyMixinModel {
 			return new RubyObjectMixinClass(this, false);
 		}		
 		Object[] objects = element.getAllObjects();
-		if (objects != null && objects.length > 0) {
-			Object obj = objects[0]; 
-			if (obj instanceof IType) {
-				return new RubyMixinClass(this, element.getKey());
-			} else if (obj instanceof IMethod) {
-				return new RubyMixinMethod(this, element.getKey());
-			} else if (obj instanceof IField) {
-				return new RubyMixinVariable(this, element.getKey());
-			}
+		if (objects == null)
+			return null;
+		for (int i = 0; i < objects.length; i++) {
+			RubyMixinElementInfo obj = (RubyMixinElementInfo) objects[i];
+			if (obj == null)
+				continue;
+			switch (obj.getKind()) {
+				case RubyMixinElementInfo.K_CLASS:
+					return new RubyMixinClass(this, element.getKey(), false);
+				case RubyMixinElementInfo.K_MODULE:
+					return new RubyMixinClass(this, element.getKey(), true);
+				case RubyMixinElementInfo.K_METHOD:
+					return new RubyMixinMethod(this, element.getKey());
+				case RubyMixinElementInfo.K_VARIABLE:
+					return new RubyMixinVariable(this, element.getKey());
+			}						
 		}
 		return null;
 	}

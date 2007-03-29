@@ -26,8 +26,10 @@ public class RubyMixinVariable implements IRubyMixinElement {
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		Object[] allObjects = mixinElement.getAllObjects();
 		for (int i = 0; i < allObjects.length; i++) {
-			if (allObjects[i] instanceof IField)
-				result.add (allObjects[i]);			
+			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
+			if (info.getKind() == RubyMixinElementInfo.K_VARIABLE) {
+				result.add (info.getObject());							
+			}
 		}
 		return (IField[]) result.toArray(new IField[result.size()]);
 	}

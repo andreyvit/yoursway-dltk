@@ -99,6 +99,8 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 			.booleanValue();
 
 	private static final Pattern DOT_FIXER = Pattern.compile("\\.(?=\\s|$)");
+	private static final Pattern DOLLAR_FIXER = Pattern.compile("\\$(?=\\s|$)");
+	private static final Pattern AT_FIXER = Pattern.compile("@(?=\\s|$)");
 	private static final Pattern COLON_FIXER = Pattern.compile("::(?=\\s|$)");
 	private IProblemReporter problemReporter;
 	private static final String missingName  = "_missing_method_name_";
@@ -107,44 +109,40 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 
 	private final List fixPositions = new ArrayList();
 
-	private String fixBrokenDots(String content) {
-		Matcher matcher = DOT_FIXER.matcher(content);
+	private String fixBrokenThings(Pattern pattern, String content, String replacement, int delta) {
+		Matcher matcher = pattern.matcher(content);
 		StringBuffer result = new StringBuffer();
 		int regionStart = 0;
 		while (matcher.find(regionStart)) {
 			int offset = matcher.start();
 			if (offset > regionStart)
 				result.append(content.subSequence(regionStart, offset));
-			result.append("." + missingName);
+			result.append(/*"::" + missingName2*/replacement);
 			fixPositions.add(new Integer(offset + fixPositions.size() * magicLength));
-			regionStart = offset + 1;
+			regionStart = offset + delta; //2
 		}
 		if (regionStart < content.length() - 1)
 			result.append(content.subSequence(regionStart, content.length()));
 		if (regionStart == 0)
-			return content; // no dots fixed
+			return content; // nothing fixed
 		else
 			return result.toString();
 	}
-
+	
+	private String fixBrokenDots(String content) {
+		return fixBrokenThings(DOT_FIXER, content, "." + missingName, 1);
+	}
+	
 	private String fixBrokenColons(String content) {
-		Matcher matcher = COLON_FIXER.matcher(content);
-		StringBuffer result = new StringBuffer();
-		int regionStart = 0;
-		while (matcher.find(regionStart)) {
-			int offset = matcher.start();
-			if (offset > regionStart)
-				result.append(content.subSequence(regionStart, offset));
-			result.append("::" + missingName2);
-			fixPositions.add(new Integer(offset));
-			regionStart = offset + 2;
-		}
-		if (regionStart < content.length() - 1)
-			result.append(content.subSequence(regionStart, content.length()));
-		if (regionStart == 0)
-			return content; // no dots fixed
-		else
-			return result.toString();
+		return fixBrokenThings(COLON_FIXER, content, "::" + missingName2, 2);
+	}
+	
+	private String fixBrokenDollars(String content) {
+		return fixBrokenThings(DOLLAR_FIXER, content, "$" + missingName, 1);
+	}
+	
+	private String fixBrokenAts(String content) {
+		return fixBrokenThings(AT_FIXER, content, "@" + missingName, 1);
 	}
 
 	private final boolean[] errorState = new boolean[1];
@@ -197,6 +195,8 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 			if (!parser.isSuccess() || errorState[0]) {
 				String content2 = fixBrokenDots(new String( content ) );
 				content2 = fixBrokenColons(content2);
+				content2 = fixBrokenDollars(content2);
+				content2 = fixBrokenAts(content2);
 
 				Node node2 = parser.parse("", new StringReader(content2), null);
 				if (node2 != null)

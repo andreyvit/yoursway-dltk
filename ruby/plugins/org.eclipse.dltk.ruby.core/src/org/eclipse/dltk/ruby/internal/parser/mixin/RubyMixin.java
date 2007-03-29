@@ -24,7 +24,7 @@ public class RubyMixin implements IMixinParser {
 		ModuleDeclaration moduleDeclaration = RubySourceElementParser
 				.parseModule(null, contents, null);
 		long end = System.currentTimeMillis();		
-		System.out.println("RubyMixin: parsing took " + (end - start));
+//		System.out.println("RubyMixin: parsing took " + (end - start));
 		start = end;
 		RubyMixinBuildVisitor visitor = new RubyMixinBuildVisitor(
 				moduleDeclaration, module, signature, requestor);
@@ -34,7 +34,7 @@ public class RubyMixin implements IMixinParser {
 			e.printStackTrace();
 		}
 		end = System.currentTimeMillis();
-		System.out.println("RubyMixin: traversing took " + (end - start) + " signature=" + signature);
+//		System.out.println("RubyMixin: traversing took " + (end - start) + " signature=" + signature);
 	}
 
 	public void setRequirestor(IMixinRequestor requestor) {

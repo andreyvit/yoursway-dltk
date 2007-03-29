@@ -44,7 +44,7 @@ public class RubyOverrideCompletionProposal extends ScriptTypeCompletionProposal
 		StringBuffer buffer= new StringBuffer();
 		buffer.append(completionProposal);		
 		
-		setReplacementString(buffer.toString());
+		setReplacementString(buffer.toString());		
 	}
 
 	public CharSequence getPrefixCompletionText(IDocument document, int completionOffset) {

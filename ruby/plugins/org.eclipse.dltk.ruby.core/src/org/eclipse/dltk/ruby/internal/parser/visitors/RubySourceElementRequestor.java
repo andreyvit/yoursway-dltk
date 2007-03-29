@@ -125,7 +125,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 		if (left instanceof VariableReference) {
 			VariableReference var = (VariableReference) left;
-
+						
 			if (!inMethod) {
 				// For module static of class static variables.
 				if (canAddVariables((ASTNode) fNodes.peek(), var.getName())) {
@@ -142,6 +142,8 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 						fRequestor.exitField(var.sourceEnd() - 1);
 					}
 				}
+			} else {
+				
 			}
 
 		} else if (left instanceof ExtendedVariableReference) {
