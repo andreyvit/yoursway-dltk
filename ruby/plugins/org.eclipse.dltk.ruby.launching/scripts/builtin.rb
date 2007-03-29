@@ -117,7 +117,7 @@ def dumpClass(klass)
 	put_rdoc(name)
 	$data << <<-"END"
 	
-class ::#{name} #{scname}
+class #{name} #{scname}
 	END
 	put_included_modules!(klass)
 	put_methods!(klass)

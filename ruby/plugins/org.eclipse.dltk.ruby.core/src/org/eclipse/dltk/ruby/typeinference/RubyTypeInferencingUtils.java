@@ -345,6 +345,7 @@ public class RubyTypeInferencingUtils {
 				resultKey = constantName;
 			}
 		}
+		System.out.println();
 
 		return resultKey;
 	}
