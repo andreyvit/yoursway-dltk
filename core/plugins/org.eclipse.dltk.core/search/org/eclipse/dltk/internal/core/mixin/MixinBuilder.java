@@ -68,6 +68,9 @@ public class MixinBuilder implements IScriptBuilder {
 			for (int i = 0; i < elements.size(); ++i) {
 				Index currentIndex = mixinIndex;
 				monitor.worked(1);
+				if( monitor.isCanceled()) {
+					return null;
+				}
 				ISourceModule element = (ISourceModule) elements.get(i);
 				
 				IProjectFragment projectFragment = (IProjectFragment)element.getAncestor(IModelElement.PROJECT_FRAGMENT);

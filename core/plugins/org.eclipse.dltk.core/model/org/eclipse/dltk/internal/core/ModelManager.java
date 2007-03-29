@@ -63,6 +63,7 @@ import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IBuiltinModuleProvider;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
@@ -120,6 +121,11 @@ public class ModelManager implements ISaveParticipant {
 
 		public String toString() {
 			return getDescription();
+		}
+
+		public IBuiltinModuleProvider getBuiltinProvider() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	};
 	/*
@@ -1197,6 +1203,10 @@ public class ModelManager implements ISaveParticipant {
 
 					public String toString() {
 						return getDescription();
+					}
+
+					public IBuiltinModuleProvider getBuiltinProvider() {
+						return null;
 					}
 				};
 				if (addToContainerValues) {
@@ -2421,6 +2431,10 @@ public class ModelManager implements ISaveParticipant {
 
 		public String toString() {
 			return getDescription();
+		}
+
+		public IBuiltinModuleProvider getBuiltinProvider() {
+			return null;
 		}
 	}
 

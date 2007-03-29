@@ -226,4 +226,10 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 		throw new CoreException(new Status(IStatus.ERROR, DLTKLaunchingPlugin
 				.getUniqueIdentifier(), code, message, exception));
 	}
+	public String[] getBuiltinModules() {
+		return null;
+	}
+	public String getBuiltinModuleContent( String name ) {
+		return null;
+	}
 }

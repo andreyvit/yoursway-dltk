@@ -298,7 +298,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	public synchronized Index getSpecialIndex(String id, String path, String containerPath/*, IProject project*/ ) {
 //		String containerPath = project.getFullPath().toOSString();
 //		String path = project.getFullPath();
-		String indexLocation = computeIndexLocation(new Path("#special#" + id + ":" + path));
+		String indexLocation = computeIndexLocation(new Path("#special#" + id + "#" + path));
 
 		Index index = (Index) indexes.get(indexLocation);
 
@@ -604,6 +604,9 @@ public class IndexManager extends JobManager implements IIndexConstants {
 			// request = new IndexContainerFolder((IContainer) target, this,
 			// requestingProject);
 			return;
+		}
+		else if( target == null && path.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY)) {
+			request = new AddBuiltinFolderToIndex(path, requestingProject, this );
 		}
 		// check if the same request is not already in the queue
 		// TODO: Uncheck this. After adding some library indexing.

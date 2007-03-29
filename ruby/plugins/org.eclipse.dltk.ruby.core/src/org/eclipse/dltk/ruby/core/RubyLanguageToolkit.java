@@ -26,6 +26,7 @@ import org.eclipse.dltk.compiler.problem.IProblemFactory;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.ICallProcessor;
 import org.eclipse.dltk.core.ICalleeProcessor;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -189,6 +190,9 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	}
 
 	public IStatus validateSourceModule(IPath resource) {
+		if( resource.toString().startsWith(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY.toString())) {
+			return IModelStatus.VERIFIED_OK;
+		}
 		return validateSourceModule(resource.lastSegment());
 	}
 

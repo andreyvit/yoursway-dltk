@@ -16,6 +16,7 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceReference;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
+import org.eclipse.dltk.internal.core.BuiltinSourceModule;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
 import org.eclipse.dltk.internal.ui.DLTKUIMessages;
 import org.eclipse.dltk.internal.ui.IDLTKStatusConstants;
@@ -85,6 +86,10 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 						return new DocumentAdapter(workingCopy,
 								(IFile) resource);
 				} else if (original instanceof ExternalSourceModule) {
+					IPath path = original.getPath();
+					return new DocumentAdapter(workingCopy, path);
+				}
+				if (original instanceof BuiltinSourceModule) {
 					IPath path = original.getPath();
 					return new DocumentAdapter(workingCopy, path);
 				}

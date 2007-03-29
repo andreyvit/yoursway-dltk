@@ -169,6 +169,9 @@ public class Util {
 	public final static boolean isArchiveFileName(String name) {
 		//System.err.println("TODO: Util.isArchiveFileName always return false for:" + name);
 		//return false;
+		if( name == null ) {
+			return false;
+		}
 		return name.toLowerCase().endsWith(".zip") || name.toLowerCase().endsWith(".zip");
 	}	
 	/* TODO (philippe) should consider promoting it to CharOperation

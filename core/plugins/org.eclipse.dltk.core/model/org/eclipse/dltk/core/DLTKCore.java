@@ -1446,6 +1446,27 @@ public class DLTKCore extends Plugin {
 			extraAttributes, 
 			externalLib);
 	}
+	public static IBuildpathEntry newBuiltinEntry(
+			IPath path,
+			IAccessRule[] accessRules, 
+			IBuildpathAttribute[] extraAttributes,
+			IPath[] include, IPath[] exclude,
+			boolean isExported, 
+			boolean externalLib) {
+			
+		if (path == null) Assert.isTrue(false, "Library path cannot be null"); //$NON-NLS-1$
+		return new BuildpathEntry(
+			IProjectFragment.K_BINARY,
+			IBuildpathEntry.BPE_LIBRARY,
+			path,
+			isExported,
+			include, // inclusion patterns
+			exclude, // exclusion patterns		
+			accessRules,
+			false, // no access rules to combine
+			extraAttributes, 
+			externalLib);
+	}
 	
 	/**
 	 * Returns the script model element corresponding to the given handle identifier

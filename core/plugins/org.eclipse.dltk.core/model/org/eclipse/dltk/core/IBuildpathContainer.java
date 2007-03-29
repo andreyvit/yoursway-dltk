@@ -11,7 +11,6 @@
 package org.eclipse.dltk.core;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.internal.adaptor.IModel;
 
 /** 
  * Interface of a buildpath container.
@@ -81,7 +80,7 @@ public interface IBuildpathContainer {
 	 * <li>{@link DLTKCore#newProjectEntry(IPath, boolean)} and variants</li>
 	 * <li>{@link DLTKCore#create(org.eclipse.core.resources.IWorkspaceRoot)}</li>
 	 * <li>{@link DLTKCore#create(org.eclipse.core.resources.IProject)}</li>
-	 * <li>{@link IModel#getDLTKProjects()}</li>
+	 * <li>{@link IScriptModel#getDLTKProjects()}</li>
 	 * <li>{@link IDLTKProject#getRawbuildpath()}</li>
 	 * <li>{@link IDLTKProject#readRawbuildpath()}</li>
 	 * <li>{@link IDLTKProject#getOutputLocation()}</li>
@@ -128,5 +127,7 @@ public interface IBuildpathContainer {
 	 * @return IPath - the container path that is associated with this container
 	 */	
     IPath getPath();
+    
+    IBuiltinModuleProvider getBuiltinProvider();
 }
 

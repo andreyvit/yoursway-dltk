@@ -24,6 +24,7 @@ import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IBuiltinModuleProvider;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallChangedListener;
@@ -73,7 +74,9 @@ public class InterpreterContainer implements IBuildpathContainer {
 					}
 				}
 
-				public void interpreterAdded(IInterpreterInstall newInterpreter) {}
+				public void interpreterAdded(IInterpreterInstall newInterpreter) {
+					
+				}
 
 				public void interpreterRemoved(IInterpreterInstall removedInterpreter) {
 					fgBuildpathEntries.remove(removedInterpreter);
@@ -153,6 +156,11 @@ public class InterpreterContainer implements IBuildpathContainer {
 				rawEntries.add (entryPath);
 			}
 		}
+		// Add builtin entry.
+		{
+			IBuildpathAttribute[] attributes = new IBuildpathAttribute[0];
+			entries.add(DLTKCore.newBuiltinEntry(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY, EMPTY_RULES, attributes, BuildpathEntry.INCLUDE_ALL, new IPath[0], false, true ));
+		}
 		return (IBuildpathEntry[]) entries.toArray(new IBuildpathEntry[entries.size()]);
 	}
 
@@ -199,5 +207,9 @@ public class InterpreterContainer implements IBuildpathContainer {
 	 */
 	public IPath getPath() {
 		return fPath;
+	}
+
+	public IBuiltinModuleProvider getBuiltinProvider() {
+		return fInterpreterInstall;
 	}
 }

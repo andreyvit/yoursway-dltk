@@ -2,7 +2,9 @@ package org.eclipse.dltk.launching;
 
 import java.io.File;
 
-public interface IInterpreterInstall {
+import org.eclipse.dltk.core.IBuiltinModuleProvider;
+
+public interface IInterpreterInstall extends IBuiltinModuleProvider {
 	IInterpreterRunner getInterpreterRunner(String mode);
 
 	String getId();
@@ -23,9 +25,9 @@ public interface IInterpreterInstall {
 
 	public String[] getInterpreterArguments();
 
-	public void setInterpreterArguments(String[] InterpreterArgs);
+	void setInterpreterArguments(String[] InterpreterArgs);
 
-	public String getInterpreterArgs();
+	String getInterpreterArgs();
 
-	public void setInterpreterArgs(String InterpreterArgs);
+	void setInterpreterArgs(String InterpreterArgs);
 }

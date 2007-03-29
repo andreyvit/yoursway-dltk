@@ -24,7 +24,6 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementVisitor;
 import org.eclipse.dltk.core.IModelMarker;
@@ -34,6 +33,8 @@ import org.eclipse.dltk.core.builder.IScriptBuilder;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
+import org.eclipse.dltk.internal.core.BuiltinProjectFragment;
+import org.eclipse.dltk.internal.core.BuiltinSourceModule;
 import org.eclipse.dltk.internal.core.DLTKProject;
 import org.eclipse.dltk.internal.core.ExternalProjectFragment;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
@@ -89,19 +90,21 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		 */
 		public boolean visit(IModelElement element) {
 			if (element.getElementType() == IModelElement.PROJECT_FRAGMENT) {
-				if (!(element instanceof ExternalProjectFragment)) {
+				if (!(element instanceof ExternalProjectFragment)
+						&& !(element instanceof BuiltinProjectFragment)) {
 					return false;
 				}
 				IProjectFragment fragment = (IProjectFragment) element;
-				
-				if (lastState.externalFolderLocations.contains(fragment.getPath())) {
+
+				if (lastState.externalFolderLocations.contains(fragment
+						.getPath())) {
 					return false;
 				} else {
 					lastState.externalFolderLocations.add(fragment.getPath());
 				}
 			}
 			if (element.getElementType() == IModelElement.SOURCE_MODULE
-					&& element instanceof ExternalSourceModule) {
+					&& (element instanceof ExternalSourceModule || element instanceof BuiltinSourceModule)) {
 				if (!elements.contains(element)) {
 					elements.add(element);
 				}
@@ -131,8 +134,8 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor)
 			throws CoreException {
 		this.currentProject = getProject();
-		
-		if( !DLTKLanguageManager.hasScriptNature(this.currentProject) ) {
+
+		if (!DLTKLanguageManager.hasScriptNature(this.currentProject)) {
 			return null;
 		}
 		this.scriptProject = (DLTKProject) DLTKCore.create(currentProject);
@@ -143,7 +146,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		if (kind == FULL_BUILD) {
 			fullBuild(monitor);
 		} else {
-			if ((this.lastState = getLastState(currentProject, monitor )) == null) {
+			if ((this.lastState = getLastState(currentProject, monitor)) == null) {
 				if (DEBUG)
 					System.out
 							.println("Performing full build since last saved state was not found"); //$NON-NLS-1$
@@ -160,37 +163,50 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		IProject[] requiredProjects = getRequiredProjects(true);
 		if (DEBUG)
 			System.out.println("Finished build of " + currentProject.getName() //$NON-NLS-1$
-				+ " @ " + new Date(System.currentTimeMillis())); //$NON-NLS-1$
+					+ " @ " + new Date(System.currentTimeMillis())); //$NON-NLS-1$
 		return requiredProjects;
 	}
+
 	private IProject[] getRequiredProjects(boolean includeBinaryPrerequisites) {
-		if (scriptProject == null ) return new IProject[0];
+		if (scriptProject == null)
+			return new IProject[0];
 		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 		ArrayList projects = new ArrayList();
 		try {
-			IBuildpathEntry[] entries = scriptProject.getExpandedBuildpath(true);
+			IBuildpathEntry[] entries = scriptProject
+					.getExpandedBuildpath(true);
 			for (int i = 0, l = entries.length; i < l; i++) {
 				IBuildpathEntry entry = entries[i];
 				IPath path = entry.getPath();
 				IProject p = null;
 				switch (entry.getEntryKind()) {
-					case IBuildpathEntry.BPE_PROJECT :
-						p = workspaceRoot.getProject(path.lastSegment()); // missing projects are considered too
-						if (((BuildpathEntry) entry).isOptional() && !DLTKProject.hasScriptNature(p)) // except if entry is optional
-							p = null;
-						break;
-					case IBuildpathEntry.BPE_LIBRARY :
-						if (includeBinaryPrerequisites && path.segmentCount() > 1) {
-							// some binary resources on the class path can come from projects that are not included in the project references
-							IResource resource = workspaceRoot.findMember(path.segment(0));
-							if (resource instanceof IProject)
-								p = (IProject) resource;
-						}
+				case IBuildpathEntry.BPE_PROJECT:
+					p = workspaceRoot.getProject(path.lastSegment()); // missing
+																		// projects
+																		// are
+																		// considered
+																		// too
+					if (((BuildpathEntry) entry).isOptional()
+							&& !DLTKProject.hasScriptNature(p)) // except if
+																// entry is
+																// optional
+						p = null;
+					break;
+				case IBuildpathEntry.BPE_LIBRARY:
+					if (includeBinaryPrerequisites && path.segmentCount() > 1) {
+						// some binary resources on the class path can come from
+						// projects that are not included in the project
+						// references
+						IResource resource = workspaceRoot.findMember(path
+								.segment(0));
+						if (resource instanceof IProject)
+							p = (IProject) resource;
+					}
 				}
 				if (p != null && !projects.contains(p))
 					projects.add(p);
 			}
-		} catch(ModelException e) {
+		} catch (ModelException e) {
 			return new IProject[0];
 		}
 		IProject[] result = new IProject[projects.size()];
@@ -199,14 +215,17 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 	}
 
 	public State getLastState(IProject project, IProgressMonitor monitor) {
-		return (State) ModelManager.getModelManager().getLastBuiltState(project, monitor);
+		return (State) ModelManager.getModelManager().getLastBuiltState(
+				project, monitor);
 	}
+
 	private void clearLastState() {
 		ModelManager.getModelManager().setLastBuiltState(currentProject, null);
 	}
+
 	protected void fullBuild(final IProgressMonitor monitor)
 			throws CoreException {
-		
+
 		clearLastState();
 		State newState = new State(this);
 		lastState = newState;
@@ -228,32 +247,37 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			monitor.done();
 		} catch (CoreException e) {
 			e.printStackTrace();
-		}
-		finally {
-			ModelManager.getModelManager().setLastBuiltState(currentProject, this.lastState);
+		} finally {
+			ModelManager.getModelManager().setLastBuiltState(currentProject,
+					this.lastState);
 		}
 	}
 
 	protected void incrementalBuild(IResourceDelta delta,
 			IProgressMonitor monitor) throws CoreException {
 		State newState = new State(this);
-		if( this.lastState != null ) {
+		if (this.lastState != null) {
 			newState.copyFrom(this.lastState);
 		}
 		this.lastState = newState;
-		List resources = new ArrayList();
-		delta.accept(new ResourceVisitor(resources));
-		// Call builders for resources.
-		List actualResourcesToBuild = findDependencies(resources);
+		try {
+			List resources = new ArrayList();
+			delta.accept(new ResourceVisitor(resources));
+			// Call builders for resources.
+			List actualResourcesToBuild = findDependencies(resources);
 
-		List elements = new ArrayList();
-		scriptProject.accept(new ExternalModuleVisitor(elements));
+			List elements = new ArrayList();
+			scriptProject.accept(new ExternalModuleVisitor(elements));
 
-		monitor.beginTask("Building", actualResourcesToBuild.size()
-				+ elements.size());
-		buildResources(actualResourcesToBuild, monitor);
-		buildElements(elements, monitor);
-		monitor.done();
+			monitor.beginTask("Building", actualResourcesToBuild.size()
+					+ elements.size());
+			buildResources(actualResourcesToBuild, monitor);
+			buildElements(elements, monitor);
+			monitor.done();
+		} finally {
+			ModelManager.getModelManager().setLastBuiltState(currentProject,
+					this.lastState);
+		}
 	}
 
 	private HandleFactory factory = new HandleFactory();
@@ -300,8 +324,8 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 						.getScriptBuilders(natureIds[j]);
 				if (builders != null) {
 					for (int k = 0; k < builders.length; k++) {
-						IStatus s = builders[k].buildResources( this.scriptProject, realResources,
-								monitor);
+						IStatus s = builders[k].buildResources(
+								this.scriptProject, realResources, monitor);
 						if (s != null && s.getSeverity() != IStatus.OK) {
 							status.add(s);
 						}
@@ -353,8 +377,8 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			while (elementsToCheck.size() > 0) {
 				List newElementsToCheck = new ArrayList();
 				for (int i = 0; i < builders.length; ++i) {
-					List newResources = builders[i]
-							.getDependencies(this.scriptProject, elementsToCheck);
+					List newResources = builders[i].getDependencies(
+							this.scriptProject, elementsToCheck);
 					if (newResources != null) {
 						newElementsToCheck.addAll(newResources);
 					}

@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IBuiltinModuleProvider;
 import org.eclipse.dltk.debug.tests.AbstractDebugTest;
 import org.eclipse.dltk.internal.launching.InterpreterContainer;
 import org.eclipse.dltk.internal.launching.InterpreterContainerInitializer;
@@ -51,6 +52,11 @@ public class BuildpathContainerTests extends AbstractDebugTest {
 		
 		public void setEntries(IBuildpathEntry[] cpe) {
 			entries = cpe;
+		}
+
+		public IBuiltinModuleProvider getBuiltinProvider() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	}
 	

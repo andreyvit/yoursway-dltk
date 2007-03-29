@@ -1,6 +1,7 @@
 package org.eclipse.dltk.core;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 
 public interface IBuildpathEntry {
 
@@ -28,6 +29,8 @@ public interface IBuildpathEntry {
 	 * a name buildpath container.
 	 */
 	int BPE_CONTAINER = 5;
+
+	IPath BUILDIN_EXTERNAL_ENTRY = new Path("#special#builtin#");
 	
 	/**
 	 * Returns whether the access rules of the project's exported entries should be combined with this entry's access rules.

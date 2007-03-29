@@ -26,6 +26,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IBuiltinModuleProvider;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IMember;
@@ -581,6 +582,9 @@ public class DLTKSearchScope extends AbstractSearchScope {
 	 */
 	public AccessRuleSet getAccessRuleSet(String relativePath,
 			String containerPath) {
+		if( containerPath.startsWith(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY.toString())) {
+			containerPath = IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY.toString();
+		}
 		int index = indexOf(containerPath, relativePath);
 		if (index == -1) {
 			// this search scope does not enclose given path
@@ -675,6 +679,7 @@ public class DLTKSearchScope extends AbstractSearchScope {
 		int separatorIndex = resourcePathString
 				.indexOf(FILE_ENTRY_SEPARATOR);
 		boolean isZIPFile = separatorIndex != -1;
+		boolean isBuiltin = resourcePathString.startsWith(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY.toString());
 		if (isZIPFile) {
 			// internal or external jar (case 3, 4, or 5)
 			String zipPath = resourcePathString.substring(0, separatorIndex);
@@ -695,6 +700,9 @@ public class DLTKSearchScope extends AbstractSearchScope {
 				if (isZIPFile) {
 					return project
 							.getProjectFragment(this.containerPaths[index]);
+				}
+				if( isBuiltin ) {
+					return project.getProjectFragment(this.containerPaths[index] + "/" + projectPath);
 				}
 				Object target = Model.getTarget(ResourcesPlugin
 						.getWorkspace().getRoot(), new Path(

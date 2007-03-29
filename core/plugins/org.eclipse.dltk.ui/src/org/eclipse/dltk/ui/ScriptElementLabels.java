@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.BuildpathContainerInitializer;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathContainer;
+import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
@@ -18,6 +19,7 @@ import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.internal.core.BuiltinProjectFragment;
 import org.eclipse.dltk.internal.core.ExternalProjectFragment;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 
@@ -305,6 +307,8 @@ public class ScriptElementLabels {
 	 * package)").
 	 */
 	public final static String DEFAULT_PACKAGE = "(default package)";
+	
+	public final static String BUILTINS_FRAGMENT = "(builtins)";
 
 	private final static long QUALIFIER_FLAGS = P_COMPRESSED | USE_RESOLVED;
 	
@@ -390,9 +394,8 @@ public class ScriptElementLabels {
 	 * @return the label of the model element
 	 */
 	public  String getElementLabel(IModelElement element, long flags) {
-
-		StringBuffer buf = new StringBuffer(60);		
-		getElementLabel(element, flags, buf);
+		StringBuffer buf = new StringBuffer(61);		
+		getElementLabel( element, flags, buf );
 		return buf.toString();
 	}
 
@@ -696,7 +699,10 @@ public class ScriptElementLabels {
 		if (root.isArchive())
 			getArchiveLabel(root, flags, buf);
 		else {
-			if (root.isExternal()) {
+			if( root.getPath().toString().startsWith(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY.toString())) {
+				buf.append(BUILTINS_FRAGMENT);
+			}
+			else if (root.isExternal()) {
 				getExternalFolderLabel(root, flags, buf);
 			} else {
 				getFolderLabel(root, flags, buf);
@@ -848,7 +854,12 @@ public class ScriptElementLabels {
 			if (pack instanceof ExternalProjectFragment) {
 				buf.append(pack.getElementName().replace(ExternalProjectFragment.JEM_SKIP_DELIMETER, Path.SEPARATOR) + " ");
 			} else {
-				buf.append(pack.getElementName() + " ");
+				if( pack instanceof BuiltinProjectFragment ) {
+					buf.append(BUILTINS_FRAGMENT + " ");
+				}
+				else {
+					buf.append(pack.getElementName() + " ");
+				}
 			}
 //		}
 		if (getFlag(flags, P_POST_QUALIFIED)) {

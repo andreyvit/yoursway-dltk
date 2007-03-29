@@ -68,6 +68,7 @@ import org.eclipse.dltk.internal.compiler.impl.ITypeRequestor;
 import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
 import org.eclipse.dltk.internal.compiler.lookup.SourceModuleScope;
 import org.eclipse.dltk.internal.core.ArchiveProjectFragment;
+import org.eclipse.dltk.internal.core.BuiltinSourceModule;
 import org.eclipse.dltk.internal.core.DLTKProject;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
 import org.eclipse.dltk.internal.core.ModelElement;
@@ -464,8 +465,11 @@ public class MatchLocator implements ITypeRequestor {
 		Openable openable = this.currentPossibleMatch.openable;
 		if (openable instanceof SourceModule)
 			return ((SourceModule) openable).getType(simpleTypeName);
-		if (openable instanceof ExternalSourceModule) {
+		else if (openable instanceof ExternalSourceModule) {
 			return ((ExternalSourceModule) openable).getType(simpleTypeName);
+		}
+		else if (openable instanceof BuiltinSourceModule) {
+			return ((BuiltinSourceModule) openable).getType(simpleTypeName);
 		}
 		return null;
 	}

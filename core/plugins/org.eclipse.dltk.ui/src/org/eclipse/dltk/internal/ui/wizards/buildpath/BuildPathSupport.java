@@ -21,6 +21,7 @@ import org.eclipse.dltk.core.BuildpathContainerInitializer;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IBuiltinModuleProvider;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
@@ -65,6 +66,10 @@ public class BuildPathSupport {
 
 		public IPath getPath() {
 			return fOriginal.getPath();
+		}
+
+		public IBuiltinModuleProvider getBuiltinProvider() {
+			return fOriginal.getBuiltinProvider();
 		}
 	}
 

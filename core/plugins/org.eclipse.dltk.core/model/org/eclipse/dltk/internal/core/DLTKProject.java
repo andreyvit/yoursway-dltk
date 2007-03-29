@@ -70,7 +70,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-
 public class DLTKProject extends Openable implements IDLTKProject {
 	/**
 	 * Name of file containing project buildpath
@@ -115,7 +114,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		if (path.segmentCount() == 1) { // default project root
 			return getProjectFragment(this.project);
 		}
-		return getProjectFragment(this.project.getWorkspace().getRoot().getFolder(path));
+		return getProjectFragment(this.project.getWorkspace().getRoot()
+				.getFolder(path));
 	}
 
 	/**
@@ -130,19 +130,19 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 */
 	public IProjectFragment getProjectFragment(IResource resource) {
 		switch (resource.getType()) {
-			case IResource.FILE:
-				if (org.eclipse.dltk.compiler.util.Util.isArchiveFileName(resource.getName())) {
-					return new ArchiveProjectFragment(resource, this);
-				}
-				else {
-					return null;
-				}
-			case IResource.FOLDER:
-				return new ProjectFragment(resource, this);
-			case IResource.PROJECT:
-				return new ProjectFragment(resource, this);
-			default:
+		case IResource.FILE:
+			if (org.eclipse.dltk.compiler.util.Util.isArchiveFileName(resource
+					.getName())) {
+				return new ArchiveProjectFragment(resource, this);
+			} else {
 				return null;
+			}
+		case IResource.FOLDER:
+			return new ProjectFragment(resource, this);
+		case IResource.PROJECT:
+			return new ProjectFragment(resource, this);
+		default:
+			return null;
 		}
 	}
 
@@ -170,62 +170,81 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 *         segment. The path may be relative or absolute.
 	 */
 	public IProjectFragment getProjectFragment(IPath path) {
-		if (!path.isAbsolute()) {
+		boolean isBuiltin = path.toString().startsWith(
+				IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY.toString());
+		if (!path.isAbsolute() && !isBuiltin) {
 			path = getPath().append(path);
 		}
 		int segmentCount = path.segmentCount();
 		switch (segmentCount) {
-			case 0:
-				return null;
-			case 1:
-				if (path.equals(getPath())) { // see
-					// https://bugs.eclipse.org/bugs/show_bug.cgi?id=75814
-					// default root
-					return getProjectFragment(this.project);
+		case 0:
+			return null;
+		case 1:
+			if (path.equals(getPath())) { // see
+				// https://bugs.eclipse.org/bugs/show_bug.cgi?id=75814
+				// default root
+				return getProjectFragment(this.project);
+			}
+		default:
+			// a path ending with .jar/.zip is still ambiguous and could
+			// still
+			// resolve to a source/lib folder
+			// thus will try to guess based on existing resource
+			if (isBuiltin) {
+				return new BuiltinProjectFragment(path,
+						this);
+			}
+			if (org.eclipse.dltk.compiler.util.Util.isArchiveFileName(path
+					.lastSegment())) {
+				IResource resource = this.project.getWorkspace().getRoot()
+						.findMember(path);
+				if (resource != null && resource.getType() == IResource.FOLDER) {
+					return getProjectFragment(resource);
 				}
-			default:
-				// a path ending with .jar/.zip is still ambiguous and could
-				// still
-				// resolve to a source/lib folder
-				// thus will try to guess based on existing resource
-				if (org.eclipse.dltk.compiler.util.Util.isArchiveFileName(path.lastSegment())) {
-					IResource resource = this.project.getWorkspace().getRoot().findMember(path);
-					if (resource != null && resource.getType() == IResource.FOLDER) {
-						return getProjectFragment(resource);
-					}
-					return getProjectFragment0(path);
-				} else if (segmentCount == 1) {
-					// lib being another project
-					return getProjectFragment(this.project.getWorkspace().getRoot().getProject(path.lastSegment()));
-				} else {
-					// lib being a folder
-					return getProjectFragment(this.project.getWorkspace().getRoot().getFolder(path));
-				}
+				return getProjectFragment0(path);
+			} else if (segmentCount == 1) {
+				// lib being another project
+				return getProjectFragment(this.project.getWorkspace().getRoot()
+						.getProject(path.lastSegment()));
+			} else {
+				// lib being a folder
+				return getProjectFragment(this.project.getWorkspace().getRoot()
+						.getFolder(path));
+			}
 		}
 	}
 
-//	/*
-//	 * Returns the cached resolved buildpath, or compute it ignoring unresolved
-//	 * entries and cache it.
-//	 */
+	// /*
+	// * Returns the cached resolved buildpath, or compute it ignoring
+	// unresolved
+	// * entries and cache it.
+	// */
 	public IBuildpathEntry[] getResolvedBuildpath() throws ModelException {
-		return getResolvedBuildpath(true/*ignoreUnresolvedEntry*/, false/*don't generateMarkerOnError*/, false/*don't returnResolutionInProgress*/); // force the reverse rawEntry cache to be populated
+		return getResolvedBuildpath(true/* ignoreUnresolvedEntry */,
+				false/* don't generateMarkerOnError */, false/*
+															 * don't
+															 * returnResolutionInProgress
+															 */); // force
+																									// the
+																									// reverse
+																									// rawEntry
+																									// cache
+																									// to
+																									// be
+																									// populated
 	}
-
-	
 
 	/*
 	 * Internal variant which can create marker on project for invalid entries
-	 * and caches the resolved buildpath on perProjectInfo.
-	 * If requested, return a special buildpath (RESOLUTION_IN_PROGRESS) if the buildpath is being resolved.
+	 * and caches the resolved buildpath on perProjectInfo. If requested, return
+	 * a special buildpath (RESOLUTION_IN_PROGRESS) if the buildpath is being
+	 * resolved.
 	 */
 	public IBuildpathEntry[] getResolvedBuildpath(
-		boolean ignoreUnresolvedEntry,
-		boolean generateMarkerOnError,
-		boolean returnResolutionInProgress)
-		throws ModelException {
+			boolean ignoreUnresolvedEntry, boolean generateMarkerOnError,
+			boolean returnResolutionInProgress) throws ModelException {
 
-	    ModelManager manager = ModelManager.getModelManager();
+		ModelManager manager = ModelManager.getModelManager();
 		ModelManager.PerProjectInfo perProjectInfo = null;
 		if (ignoreUnresolvedEntry && !generateMarkerOnError) {
 			perProjectInfo = getPerProjectInfo();
@@ -234,42 +253,49 @@ public class DLTKProject extends Openable implements IDLTKProject {
 				IBuildpathEntry[] infoPath = perProjectInfo.resolvedBuildpath;
 				if (infoPath != null) {
 					return infoPath;
-				} else if  (returnResolutionInProgress && manager.isBuildpathBeingResolved(this)) {
+				} else if (returnResolutionInProgress
+						&& manager.isBuildpathBeingResolved(this)) {
 					if (ModelManager.BP_RESOLVE_VERBOSE) {
-						Util.verbose(
-							"CPResolution: reentering raw buildpath resolution, will use empty buildpath instead" + //$NON-NLS-1$
-							"	project: " + getElementName() + '\n' + //$NON-NLS-1$
-							"	invocation stack trace:"); //$NON-NLS-1$
+						Util
+								.verbose("CPResolution: reentering raw buildpath resolution, will use empty buildpath instead" + //$NON-NLS-1$
+										"	project: " + getElementName() + '\n' + //$NON-NLS-1$
+										"	invocation stack trace:"); //$NON-NLS-1$
 						new Exception("<Fake exception>").printStackTrace(System.out); //$NON-NLS-1$
-					}						
-				    return RESOLUTION_IN_PROGRESS;
+					}
+					return RESOLUTION_IN_PROGRESS;
 				}
 			}
 		}
 		Map rawReverseMap = perProjectInfo == null ? null : new HashMap(5);
 		IBuildpathEntry[] resolvedPath = null;
-		boolean nullOldResolvedCP = perProjectInfo != null && perProjectInfo.resolvedBuildpath == null;
+		boolean nullOldResolvedCP = perProjectInfo != null
+				&& perProjectInfo.resolvedBuildpath == null;
 		try {
-			// protect against misbehaving clients (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=61040)
-			if (nullOldResolvedCP) manager.setBuildpathBeingResolved(this, true);
-			resolvedPath = getResolvedBuildpath(
-				getRawBuildpath(generateMarkerOnError, !generateMarkerOnError), 				
-				ignoreUnresolvedEntry, 
-				generateMarkerOnError,
-				rawReverseMap);
+			// protect against misbehaving clients (see
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=61040)
+			if (nullOldResolvedCP)
+				manager.setBuildpathBeingResolved(this, true);
+			resolvedPath = getResolvedBuildpath(getRawBuildpath(
+					generateMarkerOnError, !generateMarkerOnError),
+					ignoreUnresolvedEntry, generateMarkerOnError, rawReverseMap);
 		} finally {
-			if (nullOldResolvedCP) perProjectInfo.resolvedBuildpath = null;
+			if (nullOldResolvedCP)
+				perProjectInfo.resolvedBuildpath = null;
 		}
 
-		if (perProjectInfo != null){
-			if (perProjectInfo.rawBuildpath == null // .buildpath file could not be read
-				&& generateMarkerOnError 
-				&& DLTKLanguageManager.hasScriptNature(this.project)) {
-					// flush .buildpath format markers (bug 39877), but only when file cannot be read (bug 42366)
-					this.flushBuildpathProblemMarkers(false, true);
-					this.createBuildpathProblemMarker(new ModelStatus(
+		if (perProjectInfo != null) {
+			if (perProjectInfo.rawBuildpath == null // .buildpath file could not
+													// be read
+					&& generateMarkerOnError
+					&& DLTKLanguageManager.hasScriptNature(this.project)) {
+				// flush .buildpath format markers (bug 39877), but only when
+				// file cannot be read (bug 42366)
+				this.flushBuildpathProblemMarkers(false, true);
+				this.createBuildpathProblemMarker(new ModelStatus(
 						IModelStatusConstants.INVALID_BUILDPATH_FILE_FORMAT,
-						Messages.bind(Messages.buildpath_cannotReadBuildpathFile, this.getElementName()))); 
+						Messages.bind(
+								Messages.buildpath_cannotReadBuildpathFile,
+								this.getElementName())));
 			}
 
 			perProjectInfo.resolvedBuildpath = resolvedPath;
@@ -278,217 +304,287 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		}
 		return resolvedPath;
 	}
+
 	/**
 	 * Internal variant which can process any arbitrary buildpath
-	 * @param buildpathEntries IBuildpathEntry[] 
-	 * @param projectOutputLocation IPath
-	 * @param ignoreUnresolvedEntry boolean
-	 * @param generateMarkerOnError boolean
-	 * @param rawReverseMap Map
-	 * @return IBuildpathEntry[] 
+	 * 
+	 * @param buildpathEntries
+	 *            IBuildpathEntry[]
+	 * @param projectOutputLocation
+	 *            IPath
+	 * @param ignoreUnresolvedEntry
+	 *            boolean
+	 * @param generateMarkerOnError
+	 *            boolean
+	 * @param rawReverseMap
+	 *            Map
+	 * @return IBuildpathEntry[]
 	 * @throws ModelException
 	 */
 	public IBuildpathEntry[] getResolvedBuildpath(
-		IBuildpathEntry[] buildpathEntries,
-		boolean ignoreUnresolvedEntry, // if unresolved entries are met, should it trigger initializations
-		boolean generateMarkerOnError,
-		Map rawReverseMap) // can be null if not interested in reverse mapping
-		throws ModelException {
+			IBuildpathEntry[] buildpathEntries, boolean ignoreUnresolvedEntry, // if
+																				// unresolved
+																				// entries
+																				// are
+																				// met,
+																				// should
+																				// it
+																				// trigger
+																				// initializations
+			boolean generateMarkerOnError, Map rawReverseMap) // can be null
+																// if not
+																// interested in
+																// reverse
+																// mapping
+			throws ModelException {
 
 		IModelStatus status;
-		if (generateMarkerOnError){
+		if (generateMarkerOnError) {
 			flushBuildpathProblemMarkers(false, false);
 		}
 
 		int length = buildpathEntries.length;
 		ArrayList resolvedEntries = new ArrayList();
-		
+
 		for (int i = 0; i < length; i++) {
 
 			IBuildpathEntry rawEntry = buildpathEntries[i];
 			IPath resolvedPath;
 			status = null;
-			
+
 			/* validation if needed */
 			if (generateMarkerOnError || !ignoreUnresolvedEntry) {
-				status = BuildpathEntry.validateBuildpathEntry(this, rawEntry, false /*do not recurse in containers, done later to accumulate*/);
+				status = BuildpathEntry
+						.validateBuildpathEntry(this, rawEntry, false /*
+																		 * do
+																		 * not
+																		 * recurse
+																		 * in
+																		 * containers,
+																		 * done
+																		 * later
+																		 * to
+																		 * accumulate
+																		 */);
 				if (generateMarkerOnError && !status.isOK()) {
-					if (status.getCode() == IModelStatusConstants.INVALID_PATH && ((BuildpathEntry) rawEntry).isOptional())
+					if (status.getCode() == IModelStatusConstants.INVALID_PATH
+							&& ((BuildpathEntry) rawEntry).isOptional())
 						continue; // ignore this entry
 					createBuildpathProblemMarker(status);
 				}
 			}
 
-			switch (rawEntry.getEntryKind()){
-				
-				case IBuildpathEntry.BPE_CONTAINER :
-				
-					IBuildpathContainer container = DLTKCore.getBuildpathContainer(rawEntry.getPath(), this);
-					if (container == null){
-						if (!ignoreUnresolvedEntry) throw new ModelException(status);
-						break;
-					}
+			switch (rawEntry.getEntryKind()) {
 
-					IBuildpathEntry[] containerEntries = container.getBuildpathEntries();
-					if (containerEntries == null) break;
+			case IBuildpathEntry.BPE_CONTAINER:
 
-					// container was bound
-					for (int j = 0, containerLength = containerEntries.length; j < containerLength; j++){
-						BuildpathEntry cEntry = (BuildpathEntry) containerEntries[j];
-						if (generateMarkerOnError) {
-							IModelStatus containerStatus = BuildpathEntry.validateBuildpathEntry(this, cEntry, true /*recurse*/);
-							if (!containerStatus.isOK()) createBuildpathProblemMarker(containerStatus);
-						}
-						// if container is exported or restricted, then its nested entries must in turn be exported  (21749) and/or propagate restrictions
-						cEntry = cEntry.combineWith((BuildpathEntry) rawEntry);
-						if (rawReverseMap != null) {
-							if (rawReverseMap.get(resolvedPath = cEntry.getPath()) == null) rawReverseMap.put(resolvedPath , rawEntry);
-						}
-						resolvedEntries.add(cEntry);
-					}
+				IBuildpathContainer container = DLTKCore.getBuildpathContainer(
+						rawEntry.getPath(), this);
+				if (container == null) {
+					if (!ignoreUnresolvedEntry)
+						throw new ModelException(status);
 					break;
-										
-				default :
+				}
 
-					if (rawReverseMap != null) {
-						if (rawReverseMap.get(resolvedPath = rawEntry.getPath()) == null) rawReverseMap.put(resolvedPath , rawEntry);
+				IBuildpathEntry[] containerEntries = container
+						.getBuildpathEntries();
+				if (containerEntries == null)
+					break;
+
+				// container was bound
+				for (int j = 0, containerLength = containerEntries.length; j < containerLength; j++) {
+					BuildpathEntry cEntry = (BuildpathEntry) containerEntries[j];
+					if (generateMarkerOnError) {
+						IModelStatus containerStatus = BuildpathEntry
+								.validateBuildpathEntry(this, cEntry, true /* recurse */);
+						if (!containerStatus.isOK())
+							createBuildpathProblemMarker(containerStatus);
 					}
-					resolvedEntries.add(rawEntry);
-				
-			}					
+					// if container is exported or restricted, then its nested
+					// entries must in turn be exported (21749) and/or propagate
+					// restrictions
+					cEntry = cEntry.combineWith((BuildpathEntry) rawEntry);
+					if (rawReverseMap != null) {
+						if (rawReverseMap.get(resolvedPath = cEntry.getPath()) == null)
+							rawReverseMap.put(resolvedPath, rawEntry);
+					}
+					resolvedEntries.add(cEntry);
+				}
+				break;
+
+			default:
+
+				if (rawReverseMap != null) {
+					if (rawReverseMap.get(resolvedPath = rawEntry.getPath()) == null)
+						rawReverseMap.put(resolvedPath, rawEntry);
+				}
+				resolvedEntries.add(rawEntry);
+
+			}
 		}
 
-		IBuildpathEntry[] resolvedPath = new IBuildpathEntry[resolvedEntries.size()];
+		IBuildpathEntry[] resolvedPath = new IBuildpathEntry[resolvedEntries
+				.size()];
 		resolvedEntries.toArray(resolvedPath);
 
 		if (generateMarkerOnError) {
 			status = BuildpathEntry.validateBuildpath(this, resolvedPath);
-			if (!status.isOK()) createBuildpathProblemMarker(status);
+			if (!status.isOK())
+				createBuildpathProblemMarker(status);
 		}
 		return resolvedPath;
 	}
+
 	/*
 	 * Internal variant which can create marker on project for invalid entries
 	 * and caches the resolved buildpath on perProjectInfo. If requested, return
 	 * a special buildpath (RESOLUTION_IN_PROGRESS) if the buildpath is being
 	 * resolved.
 	 */
-	public IBuildpathEntry[] getResolvedBuildpath(boolean ignoreUnresolvedEntry) throws ModelException {
-		return 
-		getResolvedBuildpath(
-			ignoreUnresolvedEntry, 
-			false, // don't generateMarkerOnError
-			true // returnResolutionInProgress
+	public IBuildpathEntry[] getResolvedBuildpath(boolean ignoreUnresolvedEntry)
+			throws ModelException {
+		return getResolvedBuildpath(ignoreUnresolvedEntry, false, // don't
+																	// generateMarkerOnError
+				true // returnResolutionInProgress
 		);
 	}
+
 	/**
 	 * @see IScriptProject
 	 */
-	public IBuildpathEntry[] getResolvedBuildpath(boolean ignoreUnresolvedEntry, boolean generateMarkerOnError)
-		throws ModelException {
+	public IBuildpathEntry[] getResolvedBuildpath(
+			boolean ignoreUnresolvedEntry, boolean generateMarkerOnError)
+			throws ModelException {
 
-		return 
-			getResolvedBuildpath(
-				ignoreUnresolvedEntry, 
-				generateMarkerOnError,
-				true // returnResolutionInProgress
-			);
+		return getResolvedBuildpath(ignoreUnresolvedEntry,
+				generateMarkerOnError, true // returnResolutionInProgress
+		);
 	}
 
 	/**
-	 * This is a helper method returning the expanded buildpath for the project, as a list of buildpath entries, 
-	 * where all buildpath variable entries have been resolved and substituted with their final target entries.
-	 * All project exports have been appended to project entries.
-	 * @param ignoreUnresolvedVariable boolean
-	 * @return IBuildpathEntry[]
-	 * @throws ModelException
-	 */
-	public IBuildpathEntry[] getExpandedBuildpath(boolean ignoreUnresolvedVariable)	throws ModelException {
-			
-			return getExpandedBuildpath(ignoreUnresolvedVariable, false/*don't create markers*/, null);
-	}
-	/**
-	 * Internal variant which can create marker on project for invalid entries,
-	 * it will also perform buildpath expansion in presence of project prerequisites
-	 * exporting their entries.
-	 * @param ignoreUnresolvedVariable boolean
-	 * @param generateMarkerOnError boolean
-	 * @param preferredBuildpaths Map
-	 * @param preferredOutputs Map
+	 * This is a helper method returning the expanded buildpath for the project,
+	 * as a list of buildpath entries, where all buildpath variable entries have
+	 * been resolved and substituted with their final target entries. All
+	 * project exports have been appended to project entries.
+	 * 
+	 * @param ignoreUnresolvedVariable
+	 *            boolean
 	 * @return IBuildpathEntry[]
 	 * @throws ModelException
 	 */
 	public IBuildpathEntry[] getExpandedBuildpath(
-		boolean ignoreUnresolvedVariable,
-		boolean generateMarkerOnError,
-		Map preferredBuildpaths) throws ModelException {
-	
-		ObjectVector accumulatedEntries = new ObjectVector();		
-		computeExpandedBuildpath(null, ignoreUnresolvedVariable, generateMarkerOnError, new HashSet(5), accumulatedEntries, preferredBuildpaths);
-		
-		IBuildpathEntry[] expandedPath = new IBuildpathEntry[accumulatedEntries.size()];
+			boolean ignoreUnresolvedVariable) throws ModelException {
+
+		return getExpandedBuildpath(ignoreUnresolvedVariable,
+				false/* don't create markers */, null);
+	}
+
+	/**
+	 * Internal variant which can create marker on project for invalid entries,
+	 * it will also perform buildpath expansion in presence of project
+	 * prerequisites exporting their entries.
+	 * 
+	 * @param ignoreUnresolvedVariable
+	 *            boolean
+	 * @param generateMarkerOnError
+	 *            boolean
+	 * @param preferredBuildpaths
+	 *            Map
+	 * @param preferredOutputs
+	 *            Map
+	 * @return IBuildpathEntry[]
+	 * @throws ModelException
+	 */
+	public IBuildpathEntry[] getExpandedBuildpath(
+			boolean ignoreUnresolvedVariable, boolean generateMarkerOnError,
+			Map preferredBuildpaths) throws ModelException {
+
+		ObjectVector accumulatedEntries = new ObjectVector();
+		computeExpandedBuildpath(null, ignoreUnresolvedVariable,
+				generateMarkerOnError, new HashSet(5), accumulatedEntries,
+				preferredBuildpaths);
+
+		IBuildpathEntry[] expandedPath = new IBuildpathEntry[accumulatedEntries
+				.size()];
 		accumulatedEntries.copyInto(expandedPath);
 
 		return expandedPath;
 	}
 
 	/**
-	 * Internal computation of an expanded buildpath. It will eliminate duplicates, and produce copies
-	 * of exported or restricted buildpath entries to avoid possible side-effects ever after.
-	 */			
-	private void computeExpandedBuildpath(
-		BuildpathEntry referringEntry,
-		boolean ignoreUnresolvedVariable,
-		boolean generateMarkerOnError,
-		HashSet rootIDs,
-		ObjectVector accumulatedEntries,
-		Map preferredBuildpaths	) throws ModelException {
-		
+	 * Internal computation of an expanded buildpath. It will eliminate
+	 * duplicates, and produce copies of exported or restricted buildpath
+	 * entries to avoid possible side-effects ever after.
+	 */
+	private void computeExpandedBuildpath(BuildpathEntry referringEntry,
+			boolean ignoreUnresolvedVariable, boolean generateMarkerOnError,
+			HashSet rootIDs, ObjectVector accumulatedEntries,
+			Map preferredBuildpaths) throws ModelException {
+
 		String projectRootId = this.rootID();
-		if (rootIDs.contains(projectRootId)){
+		if (rootIDs.contains(projectRootId)) {
 			return; // break cycles if any
 		}
 		rootIDs.add(projectRootId);
 
-		IBuildpathEntry[] preferredBuildpath = preferredBuildpaths != null ? (IBuildpathEntry[])preferredBuildpaths.get(this) : null;
-		IBuildpathEntry[] immediateBuildpath = 
-			preferredBuildpath != null 
-				? getResolvedBuildpath(preferredBuildpath, ignoreUnresolvedVariable, generateMarkerOnError, null /*no reverse map*/)
-				: getResolvedBuildpath(ignoreUnresolvedVariable, generateMarkerOnError, false/*don't returnResolutionInProgress*/);
-			
+		IBuildpathEntry[] preferredBuildpath = preferredBuildpaths != null ? (IBuildpathEntry[]) preferredBuildpaths
+				.get(this)
+				: null;
+		IBuildpathEntry[] immediateBuildpath = preferredBuildpath != null ? getResolvedBuildpath(
+				preferredBuildpath, ignoreUnresolvedVariable,
+				generateMarkerOnError, null /* no reverse map */)
+				: getResolvedBuildpath(ignoreUnresolvedVariable,
+						generateMarkerOnError, false/*
+													 * don't
+													 * returnResolutionInProgress
+													 */);
+
 		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 		boolean isInitialProject = referringEntry == null;
-		for (int i = 0, length = immediateBuildpath.length; i < length; i++){
+		for (int i = 0, length = immediateBuildpath.length; i < length; i++) {
 			BuildpathEntry entry = (BuildpathEntry) immediateBuildpath[i];
-			if (isInitialProject || entry.isExported()){
+			if (isInitialProject || entry.isExported()) {
 				String rootID = entry.rootID();
 				if (rootIDs.contains(rootID)) {
 					continue;
 				}
 				// combine restrictions along the project chain
-				BuildpathEntry combinedEntry = entry.combineWith(referringEntry);
+				BuildpathEntry combinedEntry = entry
+						.combineWith(referringEntry);
 				accumulatedEntries.add(combinedEntry);
-				
-				// recurse in project to get all its indirect exports (only consider exported entries from there on)				
+
+				// recurse in project to get all its indirect exports (only
+				// consider exported entries from there on)
 				if (entry.getEntryKind() == IBuildpathEntry.BPE_PROJECT) {
-					IResource member = workspaceRoot.findMember(entry.getPath()); 
-					if (member != null && member.getType() == IResource.PROJECT){ // double check if bound to project (23977)
+					IResource member = workspaceRoot
+							.findMember(entry.getPath());
+					if (member != null && member.getType() == IResource.PROJECT) { // double
+																					// check
+																					// if
+																					// bound
+																					// to
+																					// project
+																					// (23977)
 						IProject projRsc = (IProject) member;
 						if (DLTKProject.hasScriptNature(projRsc)) {
-							DLTKProject scriptProject = (DLTKProject) DLTKCore.create(projRsc);
-							scriptProject.computeExpandedBuildpath(
-								combinedEntry, 
-								ignoreUnresolvedVariable, 
-								false /* no marker when recursing in prereq*/,
-								rootIDs,
-								accumulatedEntries,
-								preferredBuildpaths);
+							DLTKProject scriptProject = (DLTKProject) DLTKCore
+									.create(projRsc);
+							scriptProject
+									.computeExpandedBuildpath(
+											combinedEntry,
+											ignoreUnresolvedVariable,
+											false /*
+													 * no marker when recursing
+													 * in prereq
+													 */,
+											rootIDs, accumulatedEntries,
+											preferredBuildpaths);
 						}
 					}
 				} else {
 					rootIDs.add(rootID);
 				}
-			}			
+			}
 		}
 	}
 
@@ -500,11 +596,11 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 *            IBuildpathEntry
 	 * @return IProjectFragment[]
 	 */
-	public IProjectFragment[] computeProjectFragments(IBuildpathEntry resolvedEntry) {
+	public IProjectFragment[] computeProjectFragments(
+			IBuildpathEntry resolvedEntry) {
 		try {
-			return computeProjectFragments(new IBuildpathEntry[] {
-				resolvedEntry
-			}, false, // don't
+			return computeProjectFragments(
+					new IBuildpathEntry[] { resolvedEntry }, false, // don't
 					// retrieve
 					// exported
 					// roots
@@ -519,27 +615,32 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		return SCRIPT_PROJECT;
 	}
 
-	protected boolean buildStructure(OpenableElementInfo info, IProgressMonitor pm, Map newElements, IResource underlyingResource)
+	protected boolean buildStructure(OpenableElementInfo info,
+			IProgressMonitor pm, Map newElements, IResource underlyingResource)
 			throws ModelException {
 		// check whether the dltk project can be opened
-		
+
 		if (!underlyingResource.isAccessible()) {
 			throw newNotPresentException();
 		}
-		
+
 		// cannot refresh bp markers on opening (emulate cp check on startup)
 		// since can create deadlocks (see bug 37274)
 		IBuildpathEntry[] resolvedBuildpath = getResolvedBuildpath();
 		// compute the project fragements
-		info.setChildren(computeProjectFragments(resolvedBuildpath, false, null));
+		info
+				.setChildren(computeProjectFragments(resolvedBuildpath, false,
+						null));
 		// remember the timestamps of external libraries the first time they are
 		// looked up
 		getPerProjectInfo().rememberExternalLibTimestamps();
 		return true;
 	}
 
-	public ModelManager.PerProjectInfo getPerProjectInfo() throws ModelException {
-		return ModelManager.getModelManager().getPerProjectInfoCheckExistence(this.project);
+	public ModelManager.PerProjectInfo getPerProjectInfo()
+			throws ModelException {
+		return ModelManager.getModelManager().getPerProjectInfoCheckExistence(
+				this.project);
 	}
 
 	/**
@@ -555,14 +656,17 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * @return IProjectFragment[]
 	 * @throws ModelException
 	 */
-	public IProjectFragment[] computeProjectFragments(IBuildpathEntry[] resolvedBuildpath, boolean retrieveExportedRoots,
+	public IProjectFragment[] computeProjectFragments(
+			IBuildpathEntry[] resolvedBuildpath, boolean retrieveExportedRoots,
 			Map rootToResolvedEntries) throws ModelException {
 		ObjectVector accumulatedRoots = new ObjectVector();
-		computeProjectFragments(resolvedBuildpath, accumulatedRoots, new HashSet(5), // rootIDs
+		computeProjectFragments(resolvedBuildpath, accumulatedRoots,
+				new HashSet(5), // rootIDs
 				null, // inside original project
 				true, // check existency
 				retrieveExportedRoots, rootToResolvedEntries);
-		IProjectFragment[] rootArray = new IProjectFragment[accumulatedRoots.size()];
+		IProjectFragment[] rootArray = new IProjectFragment[accumulatedRoots
+				.size()];
 		accumulatedRoots.copyInto(rootArray);
 		return rootArray;
 	}
@@ -587,15 +691,18 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 *            boolean
 	 * @throws ModelException
 	 */
-	public void computeProjectFragments(IBuildpathEntry[] resolvedBuildpath, ObjectVector accumulatedRoots, HashSet rootIDs,
-			IBuildpathEntry referringEntry, boolean checkExistency, boolean retrieveExportedRoots, Map rootToResolvedEntries)
+	public void computeProjectFragments(IBuildpathEntry[] resolvedBuildpath,
+			ObjectVector accumulatedRoots, HashSet rootIDs,
+			IBuildpathEntry referringEntry, boolean checkExistency,
+			boolean retrieveExportedRoots, Map rootToResolvedEntries)
 			throws ModelException {
 		if (referringEntry == null) {
 			rootIDs.add(rootID());
 		}
 		for (int i = 0, length = resolvedBuildpath.length; i < length; i++) {
-			computeProjectFragments(resolvedBuildpath[i], accumulatedRoots, rootIDs, referringEntry, checkExistency, retrieveExportedRoots,
-					rootToResolvedEntries);
+			computeProjectFragments(resolvedBuildpath[i], accumulatedRoots,
+					rootIDs, referringEntry, checkExistency,
+					retrieveExportedRoots, rootToResolvedEntries);
 		}
 	}
 
@@ -619,8 +726,10 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 *            boolean
 	 * @throws ModelException
 	 */
-	public void computeProjectFragments(IBuildpathEntry resolvedEntry, ObjectVector accumulatedRoots, HashSet rootIDs,
-			IBuildpathEntry referringEntry, boolean checkExistency, boolean retrieveExportedRoots, Map rootToResolvedEntries)
+	public void computeProjectFragments(IBuildpathEntry resolvedEntry,
+			ObjectVector accumulatedRoots, HashSet rootIDs,
+			IBuildpathEntry referringEntry, boolean checkExistency,
+			boolean retrieveExportedRoots, Map rootToResolvedEntries)
 			throws ModelException {
 		String rootID = ((BuildpathEntry) resolvedEntry).rootID();
 		if (rootIDs.contains(rootID))
@@ -630,83 +739,108 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 		IProjectFragment root = null;
 		switch (resolvedEntry.getEntryKind()) {
-			// source folder
-			case IBuildpathEntry.BPE_SOURCE:
-				if (projectPath.isPrefixOf(entryPath)) {
-					if (checkExistency) {
-						Object target = Model.getTarget(workspaceRoot, entryPath, checkExistency);
-						if (target == null)
-							return;
-						if (target instanceof IFolder || target instanceof IProject) {
-							root = getProjectFragment((IResource) target);
-						}
-					} else {
-						root = getFolderProjectFragment(entryPath);
-					}
-				}
-				break;
-			// internal/external ZIP or folder
-			case IBuildpathEntry.BPE_LIBRARY:
-				if (referringEntry != null && !resolvedEntry.isExported())
-					return;
+		// source folder
+		case IBuildpathEntry.BPE_SOURCE:
+			if (projectPath.isPrefixOf(entryPath)) {
 				if (checkExistency) {
-					Object target = Model.getTarget(workspaceRoot, entryPath, checkExistency);
+					Object target = Model.getTarget(workspaceRoot, entryPath,
+							checkExistency);
 					if (target == null)
 						return;
-					if (!resolvedEntry.isExternal()) {
-						if (target instanceof IResource) {
-							// internal target
-							root = getProjectFragment((IResource) target);
-						}
-					} else {// external target
-						// This is external folder or zip.
-						if (Model.isFile(target) && (org.eclipse.dltk.compiler.util.Util.isArchiveFileName(entryPath.lastSegment()))) {
-							root = new ArchiveProjectFragment(entryPath, this);
-						} else { 
-							if (resolvedEntry.isContainerEntry()) {
-								root = new ExternalProjectFragment(entryPath, this, true, true);
-							} else {
-								root = new ExternalProjectFragment(entryPath, this, true, true);
-							}
-						}
+					if (target instanceof IFolder || target instanceof IProject) {
+						root = getProjectFragment((IResource) target);
 					}
 				} else {
-					root = getProjectFragment(entryPath);
+					root = getFolderProjectFragment(entryPath);
 				}
-				break;
-			// recurse into required project
-			case IBuildpathEntry.BPE_PROJECT:
-				if (!retrieveExportedRoots)
-					return;
-				if (referringEntry != null && !resolvedEntry.isExported())
-					return;
-				IResource member = workspaceRoot.findMember(entryPath);
-				if (member != null && member.getType() == IResource.PROJECT) {// double
-					/*
-					 * check if bound to project (23977)
-					 */
-					IProject requiredProjectRsc = (IProject) member;
-					rootIDs.add(rootID);
-					DLTKProject requiredProject = (DLTKProject) DLTKCore.create(requiredProjectRsc);
-					requiredProject.computeProjectFragments(requiredProject.getResolvedBuildpath(), accumulatedRoots,
-							rootIDs, rootToResolvedEntries == null ? resolvedEntry
-									: ((BuildpathEntry) resolvedEntry).combineWith((BuildpathEntry) referringEntry), checkExistency,
-							retrieveExportedRoots, rootToResolvedEntries);
+			}
+			break;
+		// internal/external ZIP or folder
+		case IBuildpathEntry.BPE_LIBRARY:
+			if (referringEntry != null && !resolvedEntry.isExported())
+				return;
+			if (checkExistency) {
+				if (entryPath.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY)) {
+					root = new BuiltinProjectFragment(entryPath.append("/")
+							.append(this.getPath()), this);
+					break;
 				}
-				break;
+				Object target = Model.getTarget(workspaceRoot, entryPath,
+						checkExistency);
+				if (target == null)
+					return;
+				if (!resolvedEntry.isExternal()) {
+					if (target instanceof IResource) {
+						// internal target
+						root = getProjectFragment((IResource) target);
+					}
+				} else {// external target
+					// This is external folder or zip.
+					if (Model.isFile(target)
+							&& (org.eclipse.dltk.compiler.util.Util
+									.isArchiveFileName(entryPath.lastSegment()))) {
+						root = new ArchiveProjectFragment(entryPath, this);
+					} else {
+						if (resolvedEntry.isContainerEntry()) {
+							root = new ExternalProjectFragment(entryPath, this,
+									true, true);
+						} else {
+							root = new ExternalProjectFragment(entryPath, this,
+									true, true);
+						}
+					}
+				}
+			} else {
+				root = getProjectFragment(entryPath);
+			}
+			break;
+		// recurse into required project
+		case IBuildpathEntry.BPE_PROJECT:
+			if (!retrieveExportedRoots)
+				return;
+			if (referringEntry != null && !resolvedEntry.isExported())
+				return;
+			IResource member = workspaceRoot.findMember(entryPath);
+			if (member != null && member.getType() == IResource.PROJECT) {// double
+				/*
+				 * check if bound to project (23977)
+				 */
+				IProject requiredProjectRsc = (IProject) member;
+				rootIDs.add(rootID);
+				DLTKProject requiredProject = (DLTKProject) DLTKCore
+						.create(requiredProjectRsc);
+				requiredProject
+						.computeProjectFragments(
+								requiredProject.getResolvedBuildpath(),
+								accumulatedRoots,
+								rootIDs,
+								rootToResolvedEntries == null ? resolvedEntry
+										: ((BuildpathEntry) resolvedEntry)
+												.combineWith((BuildpathEntry) referringEntry),
+								checkExistency, retrieveExportedRoots,
+								rootToResolvedEntries);
+			}
+			break;
 		}
 		if (root != null) {
 			accumulatedRoots.add(root);
 			rootIDs.add(rootID);
 			if (rootToResolvedEntries != null)
-				rootToResolvedEntries.put(root, ((BuildpathEntry) resolvedEntry).combineWith((BuildpathEntry) referringEntry));
+				rootToResolvedEntries.put(root,
+						((BuildpathEntry) resolvedEntry)
+								.combineWith((BuildpathEntry) referringEntry));
 		}
 	}
-	
-	public String[] projectPrerequisites(IBuildpathEntry[] entries) throws ModelException {
+
+	public String[] projectPrerequisites(IBuildpathEntry[] entries)
+			throws ModelException {
 		ArrayList prerequisites = new ArrayList();
 		// need resolution
-		entries = getResolvedBuildpath(entries, true, false, null/*no reverse map*/);
+		entries = getResolvedBuildpath(entries, true, false, null/*
+																	 * no
+																	 * reverse
+																	 * map
+																	 */);
 		for (int i = 0, length = entries.length; i < length; i++) {
 			IBuildpathEntry entry = entries[i];
 			if (entry.getEntryKind() == IBuildpathEntry.BPE_PROJECT) {
@@ -727,9 +861,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * Returns a default build path. This is the root of the project
 	 */
 	protected IBuildpathEntry[] defaultBuildpath() {
-		return new IBuildpathEntry[] {
-			DLTKCore.newSourceEntry(this.project.getFullPath())
-		};
+		return new IBuildpathEntry[] { DLTKCore.newSourceEntry(this.project
+				.getFullPath()) };
 	}
 
 	/**
@@ -779,7 +912,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		}
 		IPath canonicalPath = null;
 		try {
-			canonicalPath = new Path(new File(externalPath.toOSString()).getCanonicalPath());
+			canonicalPath = new Path(new File(externalPath.toOSString())
+					.getCanonicalPath());
 		} catch (IOException e) {
 			// default to original path
 			return externalPath;
@@ -798,7 +932,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			// 'd:/myfolder/lib/classes.zip'
 			int externalLength = externalPath.segmentCount();
 			if (canonicalLength >= externalLength) {
-				result = canonicalPath.removeFirstSegments(canonicalLength - externalLength);
+				result = canonicalPath.removeFirstSegments(canonicalLength
+						- externalLength);
 			} else {
 				return externalPath;
 			}
@@ -823,7 +958,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * Resets this project's caches
 	 */
 	public void resetCaches() {
-		ProjectElementInfo info = (ProjectElementInfo) ModelManager.getModelManager().peekAtInfo(this);
+		ProjectElementInfo info = (ProjectElementInfo) ModelManager
+				.getModelManager().peekAtInfo(this);
 		if (info != null) {
 			info.resetCaches();
 		}
@@ -862,11 +998,10 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		IBuildpathEntry[] buildpath = getResolvedBuildpath();
 		ProjectElementInfo.ProjectCache projectCache = info.projectCache;
 		if (projectCache != null) {
-			IProjectFragment[] newRoots = computeProjectFragments(buildpath, true, null /*
-																						 * no
-																						 * reverse
-																						 * map
-																						 */);
+			IProjectFragment[] newRoots = computeProjectFragments(buildpath,
+					true, null /*
+								 * no reverse map
+								 */);
 			checkIdentical: { // compare all pkg fragment root lists
 				IProjectFragment[] oldRoots = projectCache.allProjectFragmentCache;
 				if (oldRoots.length == newRoots.length) {
@@ -898,7 +1033,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	/*
 	 * Internal variant allowing to parameterize problem creation/logging
 	 */
-	public IBuildpathEntry[] getRawBuildpath(boolean createMarkers, boolean logProblems) throws ModelException {
+	public IBuildpathEntry[] getRawBuildpath(boolean createMarkers,
+			boolean logProblems) throws ModelException {
 		ModelManager.PerProjectInfo perProjectInfo = null;
 		IBuildpathEntry[] buildpath;
 		if (createMarkers) {
@@ -925,7 +1061,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * contains (including output location entry) Returns null if .classfile is
 	 * not present. Returns INVALID_CLASSPATH if it has a format problem.
 	 */
-	protected IBuildpathEntry[] readBuildpathFile(boolean createMarker, boolean logProblems) {
+	protected IBuildpathEntry[] readBuildpathFile(boolean createMarker,
+			boolean logProblems) {
 		return readBuildpathFile(createMarker, logProblems, null/*
 																 * not
 																 * interested in
@@ -934,22 +1071,30 @@ public class DLTKProject extends Openable implements IDLTKProject {
 																 */);
 	}
 
-	protected IBuildpathEntry[] readBuildpathFile(boolean createMarker, boolean logProblems, Map unknownElements) {
+	protected IBuildpathEntry[] readBuildpathFile(boolean createMarker,
+			boolean logProblems, Map unknownElements) {
 		try {
 			String xmlBuildpath = getSharedProperty(BUILDPATH_FILENAME);
 			if (xmlBuildpath == null) {
 				if (createMarker && this.project.isAccessible()) {
-					createBuildpathProblemMarker(new ModelStatus(IModelStatusConstants.INVALID_BUILDPATH_FILE_FORMAT, Messages.bind(
-							Messages.buildpath_cannotReadBuildpathFile, this.getElementName())));
+					createBuildpathProblemMarker(new ModelStatus(
+							IModelStatusConstants.INVALID_BUILDPATH_FILE_FORMAT,
+							Messages.bind(
+									Messages.buildpath_cannotReadBuildpathFile,
+									this.getElementName())));
 				}
 				return null;
 			}
-			return decodeBuildpath(xmlBuildpath, createMarker, logProblems, unknownElements);
+			return decodeBuildpath(xmlBuildpath, createMarker, logProblems,
+					unknownElements);
 		} catch (CoreException e) {
 			// file does not exist (or not accessible)
 			if (createMarker && this.project.isAccessible()) {
-				createBuildpathProblemMarker(new ModelStatus(IModelStatusConstants.INVALID_BUILDPATH_FILE_FORMAT, Messages.bind(
-						Messages.buildpath_cannotReadBuildpathFile, this.getElementName())));
+				createBuildpathProblemMarker(new ModelStatus(
+						IModelStatusConstants.INVALID_BUILDPATH_FILE_FORMAT,
+						Messages.bind(
+								Messages.buildpath_cannotReadBuildpathFile,
+								this.getElementName())));
 			}
 			if (logProblems) {
 				Util.log(e, "Exception while retrieving " + this.getPath() //$NON-NLS-1$
@@ -968,42 +1113,47 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		String[] arguments = new String[0];
 		boolean isCycleProblem = false, isBuildpathFileFormatProblem = false;
 		switch (status.getCode()) {
-			case IModelStatusConstants.BUILDPATH_CYCLE:
-				isCycleProblem = true;
-				if (DLTKCore.ERROR.equals(getOption(DLTKCore.CORE_CIRCULAR_BUILDPATH, true))) {
-					severity = IMarker.SEVERITY_ERROR;
-				} else {
-					severity = IMarker.SEVERITY_WARNING;
-				}
-				break;
-			case IModelStatusConstants.INVALID_BUILDPATH_FILE_FORMAT:
-				isBuildpathFileFormatProblem = true;
+		case IModelStatusConstants.BUILDPATH_CYCLE:
+			isCycleProblem = true;
+			if (DLTKCore.ERROR.equals(getOption(
+					DLTKCore.CORE_CIRCULAR_BUILDPATH, true))) {
 				severity = IMarker.SEVERITY_ERROR;
-				break;
-			default:
-				IPath path = status.getPath();
-				if (path != null) {
-					arguments = new String[] {
-						path.toString()
-					};
-				}
-				if (DLTKCore.ERROR.equals(getOption(DLTKCore.CORE_INCOMPLETE_BUILDPATH, true))) {
-					severity = IMarker.SEVERITY_ERROR;
-				} else {
-					severity = IMarker.SEVERITY_WARNING;
-				}
-				break;
+			} else {
+				severity = IMarker.SEVERITY_WARNING;
+			}
+			break;
+		case IModelStatusConstants.INVALID_BUILDPATH_FILE_FORMAT:
+			isBuildpathFileFormatProblem = true;
+			severity = IMarker.SEVERITY_ERROR;
+			break;
+		default:
+			IPath path = status.getPath();
+			if (path != null) {
+				arguments = new String[] { path.toString() };
+			}
+			if (DLTKCore.ERROR.equals(getOption(
+					DLTKCore.CORE_INCOMPLETE_BUILDPATH, true))) {
+				severity = IMarker.SEVERITY_ERROR;
+			} else {
+				severity = IMarker.SEVERITY_WARNING;
+			}
+			break;
 		}
 		try {
-			marker = this.project.createMarker(IModelMarker.BUILDPATH_PROBLEM_MARKER);
-			marker.setAttributes(new String[] {
-					IMarker.MESSAGE, IMarker.SEVERITY, IMarker.LOCATION, IModelMarker.CYCLE_DETECTED, IModelMarker.BUILDPATH_FILE_FORMAT,
-					IModelMarker.ID, IModelMarker.ARGUMENTS,
-			}, new Object[] {
-					status.getMessage(), new Integer(severity), Messages.buildpath_buildPath, isCycleProblem ? "true" : "false",//$NON-NLS-1$ //$NON-NLS-2$
+			marker = this.project
+					.createMarker(IModelMarker.BUILDPATH_PROBLEM_MARKER);
+			marker.setAttributes(new String[] { IMarker.MESSAGE,
+					IMarker.SEVERITY, IMarker.LOCATION,
+					IModelMarker.CYCLE_DETECTED,
+					IModelMarker.BUILDPATH_FILE_FORMAT, IModelMarker.ID,
+					IModelMarker.ARGUMENTS, }, new Object[] {
+					status.getMessage(),
+					new Integer(severity),
+					Messages.buildpath_buildPath,
+					isCycleProblem ? "true" : "false",//$NON-NLS-1$ //$NON-NLS-2$
 					isBuildpathFileFormatProblem ? "true" : "false",//$NON-NLS-1$ //$NON-NLS-2$
-					new Integer(status.getCode()), Util.getProblemArgumentsForMarker(arguments),
-			});
+					new Integer(status.getCode()),
+					Util.getProblemArgumentsForMarker(arguments), });
 		} catch (CoreException e) {
 			// could not create marker: cannot do much
 			if (ModelManager.VERBOSE) {
@@ -1015,19 +1165,26 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	/**
 	 * Remove all markers denoting buildpath problems
 	 */
-	protected void flushBuildpathProblemMarkers(boolean flushCycleMarkers, boolean flushBuildpathFormatMarkers) {
+	protected void flushBuildpathProblemMarkers(boolean flushCycleMarkers,
+			boolean flushBuildpathFormatMarkers) {
 		try {
 			if (this.project.isAccessible()) {
-				IMarker[] markers = this.project.findMarkers(IModelMarker.BUILDPATH_PROBLEM_MARKER, false, IResource.DEPTH_ZERO);
+				IMarker[] markers = this.project.findMarkers(
+						IModelMarker.BUILDPATH_PROBLEM_MARKER, false,
+						IResource.DEPTH_ZERO);
 				for (int i = 0, length = markers.length; i < length; i++) {
 					IMarker marker = markers[i];
 					if (flushCycleMarkers && flushBuildpathFormatMarkers) {
 						marker.delete();
 					} else {
-						String cycleAttr = (String) marker.getAttribute(IModelMarker.CYCLE_DETECTED);
-						String buildpathFileFormatAttr = (String) marker.getAttribute(IModelMarker.BUILDPATH_FILE_FORMAT);
-						if ((flushCycleMarkers == (cycleAttr != null && cycleAttr.equals("true"))) //$NON-NLS-1$
-								&& (flushBuildpathFormatMarkers == (buildpathFileFormatAttr != null && buildpathFileFormatAttr.equals("true")))) { //$NON-NLS-1$
+						String cycleAttr = (String) marker
+								.getAttribute(IModelMarker.CYCLE_DETECTED);
+						String buildpathFileFormatAttr = (String) marker
+								.getAttribute(IModelMarker.BUILDPATH_FILE_FORMAT);
+						if ((flushCycleMarkers == (cycleAttr != null && cycleAttr
+								.equals("true"))) //$NON-NLS-1$
+								&& (flushBuildpathFormatMarkers == (buildpathFileFormatAttr != null && buildpathFileFormatAttr
+										.equals("true")))) { //$NON-NLS-1$
 							marker.delete();
 						}
 					}
@@ -1044,7 +1201,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	/**
 	 * Reads and decode an XML buildpath string
 	 */
-	protected IBuildpathEntry[] decodeBuildpath(String xmlBuildpath, boolean createMarker, boolean logProblems) {
+	protected IBuildpathEntry[] decodeBuildpath(String xmlBuildpath,
+			boolean createMarker, boolean logProblems) {
 		return decodeBuildpath(xmlBuildpath, createMarker, logProblems, null/*
 																			 * not
 																			 * interested
@@ -1057,7 +1215,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	/**
 	 * Reads and decode an XML buildpath string
 	 */
-	protected IBuildpathEntry[] decodeBuildpath(String xmlBuildpath, boolean createMarker, boolean logProblems, Map unknownElements) {
+	protected IBuildpathEntry[] decodeBuildpath(String xmlBuildpath,
+			boolean createMarker, boolean logProblems, Map unknownElements) {
 		ArrayList paths = new ArrayList();
 		try {
 			if (xmlBuildpath == null)
@@ -1065,8 +1224,10 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			StringReader reader = new StringReader(xmlBuildpath);
 			Element cpElement;
 			try {
-				DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-				cpElement = parser.parse(new InputSource(reader)).getDocumentElement();
+				DocumentBuilder parser = DocumentBuilderFactory.newInstance()
+						.newDocumentBuilder();
+				cpElement = parser.parse(new InputSource(reader))
+						.getDocumentElement();
 			} catch (SAXException e) {
 				throw new IOException(Messages.file_badFormat);
 			} catch (ParserConfigurationException e) {
@@ -1082,7 +1243,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			for (int i = 0; i < length; ++i) {
 				Node node = list.item(i);
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
-					IBuildpathEntry entry = BuildpathEntry.elementDecode((Element) node, this, unknownElements);
+					IBuildpathEntry entry = BuildpathEntry.elementDecode(
+							(Element) node, this, unknownElements);
 					if (entry != null)
 						paths.add(entry);
 				}
@@ -1090,10 +1252,11 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		} catch (IOException e) {
 			// bad format
 			if (createMarker && this.project.isAccessible()) {
-				this.createBuildpathProblemMarker(new ModelStatus(IModelStatusConstants.INVALID_BUILDPATH_FILE_FORMAT, Messages.bind(
-						Messages.buildpath_xmlFormatError, new String[] {
-								this.getElementName(), e.getMessage()
-						})));
+				this.createBuildpathProblemMarker(new ModelStatus(
+						IModelStatusConstants.INVALID_BUILDPATH_FILE_FORMAT,
+						Messages.bind(Messages.buildpath_xmlFormatError,
+								new String[] { this.getElementName(),
+										e.getMessage() })));
 			}
 			if (logProblems) {
 				Util.log(e, "Exception while retrieving " + this.getPath() //$NON-NLS-1$
@@ -1103,10 +1266,12 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		} catch (AssertionFailedException e) {
 			// failed creating CP entries from file
 			if (createMarker && this.project.isAccessible()) {
-				this.createBuildpathProblemMarker(new ModelStatus(IModelStatusConstants.INVALID_BUILDPATH_FILE_FORMAT, Messages.bind(
-						Messages.buildpath_illegalEntryInBuildpathFile, new String[] {
-								this.getElementName(), e.getMessage()
-						})));
+				this.createBuildpathProblemMarker(new ModelStatus(
+						IModelStatusConstants.INVALID_BUILDPATH_FILE_FORMAT,
+						Messages.bind(
+								Messages.buildpath_illegalEntryInBuildpathFile,
+								new String[] { this.getElementName(),
+										e.getMessage() })));
 			}
 			if (logProblems) {
 				Util.log(e, "Exception while retrieving " + this.getPath() //$NON-NLS-1$
@@ -1122,13 +1287,16 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	/*
 	 * Reads and decode an XML buildpath string
 	 */
-	public IBuildpathEntry[] decodeBuildpath(String xmlBuildpath, Map unknownElements) throws IOException, AssertionFailedException {
+	public IBuildpathEntry[] decodeBuildpath(String xmlBuildpath,
+			Map unknownElements) throws IOException, AssertionFailedException {
 		ArrayList paths = new ArrayList();
 		StringReader reader = new StringReader(xmlBuildpath);
 		Element cpElement;
 		try {
-			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			cpElement = parser.parse(new InputSource(reader)).getDocumentElement();
+			DocumentBuilder parser = DocumentBuilderFactory.newInstance()
+					.newDocumentBuilder();
+			cpElement = parser.parse(new InputSource(reader))
+					.getDocumentElement();
 		} catch (SAXException e) {
 			throw new IOException(Messages.file_badFormat);
 		} catch (ParserConfigurationException e) {
@@ -1144,7 +1312,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		for (int i = 0; i < length; ++i) {
 			Node node = list.item(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
-				IBuildpathEntry entry = BuildpathEntry.elementDecode((Element) node, this, unknownElements);
+				IBuildpathEntry entry = BuildpathEntry.elementDecode(
+						(Element) node, this, unknownElements);
 				if (entry != null) {
 					paths.add(entry);
 				}
@@ -1165,8 +1334,10 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			StringReader reader = new StringReader(encodedEntry);
 			Element node;
 			try {
-				DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-				node = parser.parse(new InputSource(reader)).getDocumentElement();
+				DocumentBuilder parser = DocumentBuilderFactory.newInstance()
+						.newDocumentBuilder();
+				node = parser.parse(new InputSource(reader))
+						.getDocumentElement();
 			} catch (SAXException e) {
 				return null;
 			} catch (ParserConfigurationException e) {
@@ -1210,7 +1381,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		if (rscFile.exists()) {
 			byte[] bytes = Util.getResourceContentsAsByteArray(rscFile);
 			try {
-				property = new String(bytes, org.eclipse.dltk.compiler.util.Util.UTF_8); // .buildpath
+				property = new String(bytes,
+						org.eclipse.dltk.compiler.util.Util.UTF_8); // .buildpath
 				// always
 				// encoded
 				// with
@@ -1234,18 +1406,22 @@ public class DLTKProject extends Openable implements IDLTKProject {
 				if (file != null && file.exists()) {
 					byte[] bytes;
 					try {
-						bytes = org.eclipse.dltk.compiler.util.Util.getFileByteContent(file);
+						bytes = org.eclipse.dltk.compiler.util.Util
+								.getFileByteContent(file);
 					} catch (IOException e) {
 						return null;
 					}
 					try {
-						property = new String(bytes, org.eclipse.dltk.compiler.util.Util.UTF_8); // .buildpath
+						property = new String(bytes,
+								org.eclipse.dltk.compiler.util.Util.UTF_8); // .buildpath
 						// always
 						// encoded
 						// with
 						// UTF-8
 					} catch (UnsupportedEncodingException e) {
-						Util.log(e, "Could not read .buildpath with UTF-8 encoding"); //$NON-NLS-1$
+						Util
+								.log(e,
+										"Could not read .buildpath with UTF-8 encoding"); //$NON-NLS-1$
 						// fallback to default
 						property = new String(bytes);
 					}
@@ -1262,7 +1438,9 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		Object[] children;
 		int length;
 		IProjectFragment[] roots;
-		System.arraycopy(children = getChildren(), 0, roots = new IProjectFragment[length = children.length], 0, length);
+		System.arraycopy(children = getChildren(), 0,
+				roots = new IProjectFragment[length = children.length], 0,
+				length);
 		return roots;
 	}
 
@@ -1278,7 +1456,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * @return boolean Return whether the .buildpath file was modified.
 	 * @throws ModelException
 	 */
-	public boolean saveBuildpath(IBuildpathEntry[] newBuildpath) throws ModelException {
+	public boolean saveBuildpath(IBuildpathEntry[] newBuildpath)
+			throws ModelException {
 		if (!this.project.isAccessible())
 			return false;
 		Map unknownElements = new HashMap();
@@ -1288,13 +1467,15 @@ public class DLTKProject extends Openable implements IDLTKProject {
 																 */, false/*
 					 * don't log problems
 					 */, unknownElements);
-		if (fileEntries != null && isBuildpathEqualsTo(newBuildpath, fileEntries)) {
+		if (fileEntries != null
+				&& isBuildpathEqualsTo(newBuildpath, fileEntries)) {
 			// no need to save it, it is the same
 			return false;
 		}
 		// actual file saving
 		try {
-			setSharedProperty(DLTKProject.BUILDPATH_FILENAME, encodeBuildpath(newBuildpath, true, unknownElements));
+			setSharedProperty(DLTKProject.BUILDPATH_FILENAME, encodeBuildpath(
+					newBuildpath, true, unknownElements));
 			return true;
 		} catch (CoreException e) {
 			throw new ModelException(e);
@@ -1321,7 +1502,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * @see ScriptProject#getSharedProperty(String key)
 	 * @throws CoreException
 	 */
-	public void setSharedProperty(String key, String value) throws CoreException {
+	public void setSharedProperty(String key, String value)
+			throws CoreException {
 		IFile rscFile = this.project.getFile(key);
 		byte[] bytes = null;
 		try {
@@ -1341,9 +1523,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			if (rscFile.isReadOnly()) {
 				// provide opportunity to checkout read-only .buildpath file
 				// (23984)
-				ResourcesPlugin.getWorkspace().validateEdit(new IFile[] {
-					rscFile
-				}, null);
+				ResourcesPlugin.getWorkspace().validateEdit(
+						new IFile[] { rscFile }, null);
 			}
 			rscFile.setContents(inputStream, IResource.FORCE, null);
 		} else {
@@ -1363,7 +1544,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 *            IBuildpathEntry[]
 	 * @return boolean
 	 */
-	public boolean isBuildpathEqualsTo(IBuildpathEntry[] newBuildpath, IBuildpathEntry[] otherBuildpath) {
+	public boolean isBuildpathEqualsTo(IBuildpathEntry[] newBuildpath,
+			IBuildpathEntry[] otherBuildpath) {
 		if (otherBuildpath == null || otherBuildpath.length == 0)
 			return false;
 		int length = otherBuildpath.length;
@@ -1381,7 +1563,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	/**
 	 * Returns the XML String encoding of the buildpath.
 	 */
-	protected String encodeBuildpath(IBuildpathEntry[] buildpath, boolean indent, Map unknownElements) throws ModelException {
+	protected String encodeBuildpath(IBuildpathEntry[] buildpath,
+			boolean indent, Map unknownElements) throws ModelException {
 		try {
 			ByteArrayOutputStream s = new ByteArrayOutputStream();
 			OutputStreamWriter writer = new OutputStreamWriter(s, "UTF8"); //$NON-NLS-1$
@@ -1391,7 +1574,9 @@ public class DLTKProject extends Openable implements IDLTKProject {
 																	 */);
 			xmlWriter.startTag(BuildpathEntry.TAG_BUILDPATH, indent);
 			for (int i = 0; i < buildpath.length; ++i) {
-				((BuildpathEntry) buildpath[i]).elementEncode(xmlWriter, this.project.getFullPath(), indent, true, unknownElements);
+				((BuildpathEntry) buildpath[i]).elementEncode(xmlWriter,
+						this.project.getFullPath(), indent, true,
+						unknownElements);
 			}
 			xmlWriter.endTag(BuildpathEntry.TAG_BUILDPATH, indent, true/*
 																		 * insert
@@ -1415,13 +1600,14 @@ public class DLTKProject extends Openable implements IDLTKProject {
 																	 * print XML
 																	 * version
 																	 */);
-			((BuildpathEntry) buildpathEntry).elementEncode(xmlWriter, this.project.getFullPath(), true/* indent */, true/*
-																															 * insert
-																															 * new
-																															 * line
-																															 */, null/*
-						 * not interested in unknown elements
-						 */);
+			((BuildpathEntry) buildpathEntry).elementEncode(xmlWriter,
+					this.project.getFullPath(), true/* indent */, true/*
+																		 * insert
+																		 * new
+																		 * line
+																		 */, null/*
+								 * not interested in unknown elements
+								 */);
 			writer.flush();
 			writer.close();
 			return s.toString("UTF8");//$NON-NLS-1$
@@ -1437,7 +1623,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		HashSet cycleParticipants = new HashSet();
 		HashMap preferredBuildpaths = new HashMap(1);
 		preferredBuildpaths.put(this, preferredBuildpath);
-		updateCycleParticipants(new ArrayList(2), cycleParticipants, ResourcesPlugin.getWorkspace().getRoot(), new HashSet(2),
+		updateCycleParticipants(new ArrayList(2), cycleParticipants,
+				ResourcesPlugin.getWorkspace().getRoot(), new HashSet(2),
 				preferredBuildpaths);
 		return !cycleParticipants.isEmpty();
 	}
@@ -1456,10 +1643,13 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	public IMarker getCycleMarker() {
 		try {
 			if (this.project.isAccessible()) {
-				IMarker[] markers = this.project.findMarkers(IModelMarker.BUILDPATH_PROBLEM_MARKER, false, IResource.DEPTH_ZERO);
+				IMarker[] markers = this.project.findMarkers(
+						IModelMarker.BUILDPATH_PROBLEM_MARKER, false,
+						IResource.DEPTH_ZERO);
 				for (int i = 0, length = markers.length; i < length; i++) {
 					IMarker marker = markers[i];
-					String cycleAttr = (String) marker.getAttribute(IModelMarker.CYCLE_DETECTED);
+					String cycleAttr = (String) marker
+							.getAttribute(IModelMarker.CYCLE_DETECTED);
 					if (cycleAttr != null && cycleAttr.equals("true")) { //$NON-NLS-1$
 						return marker;
 					}
@@ -1478,7 +1668,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 *            Map
 	 * @throws ModelException
 	 */
-	public static void updateAllCycleMarkers(Map preferredBuildpaths) throws ModelException {
+	public static void updateAllCycleMarkers(Map preferredBuildpaths)
+			throws ModelException {
 		// long start = System.currentTimeMillis();
 		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 		IProject[] rscProjects = workspaceRoot.getProjects();
@@ -1489,10 +1680,12 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		// compute cycle participants
 		ArrayList prereqChain = new ArrayList();
 		for (int i = 0; i < length; i++) {
-			DLTKProject project = (projects[i] = (DLTKProject) DLTKCore.create(rscProjects[i]));
+			DLTKProject project = (projects[i] = (DLTKProject) DLTKCore
+					.create(rscProjects[i]));
 			if (!traversed.contains(project.getPath())) {
 				prereqChain.clear();
-				project.updateCycleParticipants(prereqChain, cycleParticipants, workspaceRoot, traversed, preferredBuildpaths);
+				project.updateCycleParticipants(prereqChain, cycleParticipants,
+						workspaceRoot, traversed, preferredBuildpaths);
 			}
 		}
 		for (int i = 0; i < length; i++) {
@@ -1500,21 +1693,29 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			if (project != null) {
 				if (cycleParticipants.contains(project.getPath())) {
 					IMarker cycleMarker = project.getCycleMarker();
-					String circularCPOption = project.getOption(DLTKCore.CORE_CIRCULAR_BUILDPATH, true);
-					int circularCPSeverity = DLTKCore.ERROR.equals(circularCPOption) ? IMarker.SEVERITY_ERROR : IMarker.SEVERITY_WARNING;
+					String circularCPOption = project.getOption(
+							DLTKCore.CORE_CIRCULAR_BUILDPATH, true);
+					int circularCPSeverity = DLTKCore.ERROR
+							.equals(circularCPOption) ? IMarker.SEVERITY_ERROR
+							: IMarker.SEVERITY_WARNING;
 					if (cycleMarker != null) {
 						// update existing cycle marker if needed
 						try {
-							int existingSeverity = ((Integer) cycleMarker.getAttribute(IMarker.SEVERITY)).intValue();
+							int existingSeverity = ((Integer) cycleMarker
+									.getAttribute(IMarker.SEVERITY)).intValue();
 							if (existingSeverity != circularCPSeverity) {
-								cycleMarker.setAttribute(IMarker.SEVERITY, circularCPSeverity);
+								cycleMarker.setAttribute(IMarker.SEVERITY,
+										circularCPSeverity);
 							}
 						} catch (CoreException e) {
 							throw new ModelException(e);
 						}
 					} else {
 						// create new marker
-						project.createBuildpathProblemMarker(new ModelStatus(IModelStatusConstants.BUILDPATH_CYCLE, project));
+						project
+								.createBuildpathProblemMarker(new ModelStatus(
+										IModelStatusConstants.BUILDPATH_CYCLE,
+										project));
 					}
 				} else {
 					project.flushBuildpathProblemMarkers(true, false);
@@ -1527,18 +1728,21 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		String propertyName = optionName;
 		if (ModelManager.getModelManager().optionNames.contains(propertyName)) {
 			IEclipsePreferences projectPreferences = getEclipsePreferences();
-			String javaCoreDefault = inheritCoreOptions ? DLTKCore.getOption(propertyName) : null;
+			String javaCoreDefault = inheritCoreOptions ? DLTKCore
+					.getOption(propertyName) : null;
 			if (projectPreferences == null)
 				return javaCoreDefault;
-			String value = projectPreferences.get(propertyName, javaCoreDefault);
+			String value = projectPreferences
+					.get(propertyName, javaCoreDefault);
 			return value == null ? null : value.trim();
 		}
 		return null;
 	}
-	
+
 	public Map getOptions(boolean inheritCoreOptions) {
 		// initialize to the defaults from DLTKCore options pool
-		Map options = inheritCoreOptions ? DLTKCore.getOptions() : new Hashtable(5);
+		Map options = inheritCoreOptions ? DLTKCore.getOptions()
+				: new Hashtable(5);
 		// Get project specific options
 		ModelManager.PerProjectInfo perProjectInfo = null;
 		Hashtable projectOptions = null;
@@ -1574,7 +1778,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			Iterator propertyNames = projectOptions.keySet().iterator();
 			while (propertyNames.hasNext()) {
 				String propertyName = (String) propertyNames.next();
-				String propertyValue = (String) projectOptions.get(propertyName);
+				String propertyValue = (String) projectOptions
+						.get(propertyName);
 				if (propertyValue != null && optionNames.contains(propertyName)) {
 					options.put(propertyName, propertyValue.trim());
 				}
@@ -1583,7 +1788,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		}
 		return projectOptions;
 	}
-	
+
 	public void setOption(String optionName, String optionValue) {
 		if (!ModelManager.getModelManager().optionNames.contains(optionName))
 			return; // unrecognized option
@@ -1604,7 +1809,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			// problem with pref store - quietly ignore
 		}
 	}
-	
+
 	public void setOptions(Map newOptions) {
 		IEclipsePreferences projectPreferences = getEclipsePreferences();
 		try {
@@ -1614,7 +1819,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 				Iterator keys = newOptions.keySet().iterator();
 				while (keys.hasNext()) {
 					String key = (String) keys.next();
-					if (!ModelManager.getModelManager().optionNames.contains(key))
+					if (!ModelManager.getModelManager().optionNames
+							.contains(key))
 						continue; // unrecognized option
 					// no filtering for encoding (custom encoding for project is
 					// allowed)
@@ -1647,66 +1853,64 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			// problem with pref store - quietly ignore
 		}
 	}
-	
+
 	/**
 	 * @see IScriptProject#setRawBuildpath(IBuildpathEntry[],IPath,boolean,IProgressMonitor)
 	 */
-	public void setRawBuildpath(
-		IBuildpathEntry[] entries,
-		boolean canModifyResources,
-		IProgressMonitor monitor)
-		throws ModelException {
+	public void setRawBuildpath(IBuildpathEntry[] entries,
+			boolean canModifyResources, IProgressMonitor monitor)
+			throws ModelException {
 
 		setRawBuildpath(
-			entries, 
-			monitor, 
-			canModifyResources, 
-			getResolvedBuildpath(true/*ignoreUnresolvedEntry*/, false/*don't generateMarkerOnError*/, false/*don't returnResolutionInProgress*/),
-			true, // needValidation
-			canModifyResources); // save only if modifying resources is allowed
+				entries,
+				monitor,
+				canModifyResources,
+				getResolvedBuildpath(true/* ignoreUnresolvedEntry */,
+						false/* don't generateMarkerOnError */, false/*
+																	 * don't
+																	 * returnResolutionInProgress
+																	 */),
+				true, // needValidation
+				canModifyResources); // save only if modifying resources is
+										// allowed
 	}
+
 	/**
 	 * @see IScriptProject#setRawClasspath(IClasspathEntry[],IPath,IProgressMonitor)
 	 */
-	public void setRawBuildpath(
-		IBuildpathEntry[] entries,
-		IProgressMonitor monitor)
-		throws ModelException {
+	public void setRawBuildpath(IBuildpathEntry[] entries,
+			IProgressMonitor monitor) throws ModelException {
 
 		setRawBuildpath(
-			entries, 
-			monitor, 
-			true, // canChangeResource (as per API contract)
-			getResolvedBuildpath(true/*ignoreUnresolvedEntry*/, false/*don't generateMarkerOnError*/, false/*don't returnResolutionInProgress*/),
-			true, // needValidation
-			true); // need to save
+				entries,
+				monitor,
+				true, // canChangeResource (as per API contract)
+				getResolvedBuildpath(true/* ignoreUnresolvedEntry */,
+						false/* don't generateMarkerOnError */, false/*
+																	 * don't
+																	 * returnResolutionInProgress
+																	 */),
+				true, // needValidation
+				true); // need to save
 	}
 
-	public void setRawBuildpath(
-		IBuildpathEntry[] newEntries,
-		IProgressMonitor monitor,
-		boolean canChangeResource,
-		IBuildpathEntry[] oldResolvedPath,
-		boolean needValidation,
-		boolean needSave)
-		throws ModelException {
+	public void setRawBuildpath(IBuildpathEntry[] newEntries,
+			IProgressMonitor monitor, boolean canChangeResource,
+			IBuildpathEntry[] oldResolvedPath, boolean needValidation,
+			boolean needSave) throws ModelException {
 
 		ModelManager manager = ModelManager.getModelManager();
 		try {
 			IBuildpathEntry[] newRawPath = newEntries;
-			if (newRawPath == null) { //are we already with the default buildpath
+			if (newRawPath == null) { // are we already with the default
+										// buildpath
 				newRawPath = defaultBuildpath();
 			}
-			SetBuildpathOperation op =
-				new SetBuildpathOperation(
-					this, 
-					oldResolvedPath, 
-					newRawPath,
-					canChangeResource, 
-					needValidation,
-					needSave);
+			SetBuildpathOperation op = new SetBuildpathOperation(this,
+					oldResolvedPath, newRawPath, canChangeResource,
+					needValidation, needSave);
 			op.runOperation(monitor);
-			
+
 		} catch (ModelException e) {
 			manager.getDeltaProcessor().flush();
 			throw e;
@@ -1721,31 +1925,37 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 */
 	public IEclipsePreferences getEclipsePreferences() {
 		// Get cached preferences if exist
-		ModelManager.PerProjectInfo perProjectInfo = ModelManager.getModelManager().getPerProjectInfo(this.project, true);
+		ModelManager.PerProjectInfo perProjectInfo = ModelManager
+				.getModelManager().getPerProjectInfo(this.project, true);
 		if (perProjectInfo.preferences != null)
 			return perProjectInfo.preferences;
 		// Init project preferences
 		IScopeContext context = new ProjectScope(getProject());
-		final IEclipsePreferences eclipsePreferences = context.getNode(DLTKCore.PLUGIN_ID);
+		final IEclipsePreferences eclipsePreferences = context
+				.getNode(DLTKCore.PLUGIN_ID);
 		perProjectInfo.preferences = eclipsePreferences;
 		// Listen to node removal from parent in order to reset cache (see bug
 		// 68993)
 		IEclipsePreferences.INodeChangeListener nodeListener = new IEclipsePreferences.INodeChangeListener() {
 			public void added(IEclipsePreferences.NodeChangeEvent event) {
-			// do nothing
+				// do nothing
 			}
 
 			public void removed(IEclipsePreferences.NodeChangeEvent event) {
 				if (event.getChild() == eclipsePreferences) {
-					ModelManager.getModelManager().resetProjectPreferences(DLTKProject.this);
+					ModelManager.getModelManager().resetProjectPreferences(
+							DLTKProject.this);
 				}
 			}
 		};
-		((IEclipsePreferences) eclipsePreferences.parent()).addNodeChangeListener(nodeListener);
+		((IEclipsePreferences) eclipsePreferences.parent())
+				.addNodeChangeListener(nodeListener);
 		// Listen to preference changes
 		IEclipsePreferences.IPreferenceChangeListener preferenceListener = new IEclipsePreferences.IPreferenceChangeListener() {
-			public void preferenceChange(IEclipsePreferences.PreferenceChangeEvent event) {
-				ModelManager.getModelManager().resetProjectOptions(DLTKProject.this);
+			public void preferenceChange(
+					IEclipsePreferences.PreferenceChangeEvent event) {
+				ModelManager.getModelManager().resetProjectOptions(
+						DLTKProject.this);
 			}
 		};
 		eclipsePreferences.addPreferenceChangeListener(preferenceListener);
@@ -1756,30 +1966,37 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * Update .buildpath format markers.
 	 */
 	public void updateBuildpathMarkers(Map preferredBuildpaths) {
-		
-		this.flushBuildpathProblemMarkers(false/*cycle*/, true/*format*/);
-		this.flushBuildpathProblemMarkers(false/*cycle*/, false/*format*/);
 
-		IBuildpathEntry[] buildpath = this.readBuildpathFile(true/*marker*/, false/*log*/);
+		this.flushBuildpathProblemMarkers(false/* cycle */, true/* format */);
+		this.flushBuildpathProblemMarkers(false/* cycle */, false/* format */);
+
+		IBuildpathEntry[] buildpath = this.readBuildpathFile(true/* marker */,
+				false/* log */);
 		// remember invalid path so as to avoid reupdating it again later on
 		if (preferredBuildpaths != null) {
-			preferredBuildpaths.put(this, buildpath == null ? INVALID_BUILDPATH : buildpath);
+			preferredBuildpaths.put(this, buildpath == null ? INVALID_BUILDPATH
+					: buildpath);
 		}
-		
-		 // force buildpath marker refresh
-		 if (buildpath != null) {
-		 	for (int i = 0; i < buildpath.length; i++) {
-				IModelStatus status = BuildpathEntry.validateBuildpathEntry(this, buildpath[i], true /*recurse in container*/);
+
+		// force buildpath marker refresh
+		if (buildpath != null) {
+			for (int i = 0; i < buildpath.length; i++) {
+				IModelStatus status = BuildpathEntry.validateBuildpathEntry(
+						this, buildpath[i], true /* recurse in container */);
 				if (!status.isOK()) {
-					if (status.getCode() == IModelStatusConstants.INVALID_BUILDPATH && ((BuildpathEntry) buildpath[i]).isOptional())
+					if (status.getCode() == IModelStatusConstants.INVALID_BUILDPATH
+							&& ((BuildpathEntry) buildpath[i]).isOptional())
 						continue; // ignore this entry
-					this.createBuildpathProblemMarker(status);	
+					this.createBuildpathProblemMarker(status);
 				}
-			 }
-			IModelStatus status = BuildpathEntry.validateBuildpath(this, buildpath);
-			if (!status.isOK()) this.createBuildpathProblemMarker(status);
-		 }
+			}
+			IModelStatus status = BuildpathEntry.validateBuildpath(this,
+					buildpath);
+			if (!status.isOK())
+				this.createBuildpathProblemMarker(status);
+		}
 	}
+
 	/**
 	 * If a cycle is detected, then cycleParticipants contains all the paths of
 	 * projects involved in this cycle (directly and indirectly), no cycle if
@@ -1796,8 +2013,9 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * @param preferredBuildpaths
 	 *            Map
 	 */
-	public void updateCycleParticipants(ArrayList prereqChain, HashSet cycleParticipants, IWorkspaceRoot workspaceRoot, HashSet traversed,
-			Map preferredBuildpaths) {
+	public void updateCycleParticipants(ArrayList prereqChain,
+			HashSet cycleParticipants, IWorkspaceRoot workspaceRoot,
+			HashSet traversed, Map preferredBuildpaths) {
 		IPath path = this.getPath();
 		prereqChain.add(path);
 		traversed.add(path);
@@ -1811,17 +2029,23 @@ public class DLTKProject extends Openable implements IDLTKProject {
 				IBuildpathEntry entry = buildpath[i];
 				if (entry.getEntryKind() == IBuildpathEntry.BPE_PROJECT) {
 					IPath prereqProjectPath = entry.getPath();
-					int index = cycleParticipants.contains(prereqProjectPath) ? 0 : prereqChain.indexOf(prereqProjectPath);
+					int index = cycleParticipants.contains(prereqProjectPath) ? 0
+							: prereqChain.indexOf(prereqProjectPath);
 					if (index >= 0) { // refer to cycle, or in cycle itself
 						for (int size = prereqChain.size(); index < size; index++) {
 							cycleParticipants.add(prereqChain.get(index));
 						}
 					} else {
 						if (!traversed.contains(prereqProjectPath)) {
-							IResource member = workspaceRoot.findMember(prereqProjectPath);
-							if (member != null && member.getType() == IResource.PROJECT) {
-								DLTKProject scriptProject = (DLTKProject) DLTKCore.create((IProject) member);
-								scriptProject.updateCycleParticipants(prereqChain, cycleParticipants, workspaceRoot, traversed,
+							IResource member = workspaceRoot
+									.findMember(prereqProjectPath);
+							if (member != null
+									&& member.getType() == IResource.PROJECT) {
+								DLTKProject scriptProject = (DLTKProject) DLTKCore
+										.create((IProject) member);
+								scriptProject.updateCycleParticipants(
+										prereqChain, cycleParticipants,
+										workspaceRoot, traversed,
 										preferredBuildpaths);
 							}
 						}
@@ -1858,7 +2082,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	public String getElementName() {
 		return project.getName();
 	}
-	
+
 	/*
 	 * Returns whether the given resource is accessible through the children or
 	 * the non-script resources of this project. Returns true if the resource is
@@ -1876,7 +2100,9 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		for (int j = 0, cpLength = buildpath.length; j < cpLength; j++) {
 			IBuildpathEntry entry = buildpath[j];
 			IPath entryPath = entry.getPath();
-			if ((innerMostEntry == null || innerMostEntry.getPath().isPrefixOf(entryPath)) && entryPath.isPrefixOf(fullPath)) {
+			if ((innerMostEntry == null || innerMostEntry.getPath().isPrefixOf(
+					entryPath))
+					&& entryPath.isPrefixOf(fullPath)) {
 				innerMostEntry = entry;
 			}
 		}
@@ -1888,7 +2114,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 
 	public boolean isValid() {
 		try {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(this);
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+					.getLanguageToolkit(this);
 			return toolkit != null;
 		} catch (CoreException ex) {
 			return false;
@@ -1920,7 +2147,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * in the given map (if not null) Throws exceptions if the file cannot be
 	 * accessed or is malformed.
 	 */
-	public IBuildpathEntry[] readFileEntriesWithException(Map unknownElements) throws CoreException, IOException, AssertionFailedException {
+	public IBuildpathEntry[] readFileEntriesWithException(Map unknownElements)
+			throws CoreException, IOException, AssertionFailedException {
 		String xmlBuildpath;
 		IFile rscFile = this.project.getFile(DLTKProject.BUILDPATH_FILENAME);
 		if (rscFile.exists()) {
@@ -1942,7 +2170,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			// see https://bugs.eclipse.org/bugs/show_bug.cgi?id=96258
 			URI location = rscFile.getLocationURI();
 			if (location == null)
-				throw new IOException("Cannot obtain a location URI for " + rscFile); //$NON-NLS-1$
+				throw new IOException(
+						"Cannot obtain a location URI for " + rscFile); //$NON-NLS-1$
 			File file = Util.toLocalFile(location, null/*
 														 * no progress monitor
 														 * available
@@ -1951,7 +2180,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 				throw new IOException("Unable to fetch file from " + location); //$NON-NLS-1$
 			byte[] bytes;
 			try {
-				bytes = org.eclipse.dltk.compiler.util.Util.getFileByteContent(file);
+				bytes = org.eclipse.dltk.compiler.util.Util
+						.getFileByteContent(file);
 			} catch (IOException e) {
 				if (!file.exists())
 					return defaultBuildpath();
@@ -1971,7 +2201,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		return decodeBuildpath(xmlBuildpath, unknownElements);
 	}
 
-	public static boolean areBuildpathsEqual(IBuildpathEntry[] firstBuildpath, IBuildpathEntry[] secondBuildpath) {
+	public static boolean areBuildpathsEqual(IBuildpathEntry[] firstBuildpath,
+			IBuildpathEntry[] secondBuildpath) {
 		if (secondBuildpath == null || secondBuildpath.length == 0)
 			return false;
 		int length = firstBuildpath.length;
@@ -1989,7 +2220,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * markers if necessary. @param preferredBuildpaths Map @throws
 	 * ModelException
 	 */
-	public static void validateCycles(Map preferredBuildpaths) throws ModelException {
+	public static void validateCycles(Map preferredBuildpaths)
+			throws ModelException {
 		// long start = System.currentTimeMillis();
 		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 		IProject[] rscProjects = workspaceRoot.getProjects();
@@ -2001,10 +2233,13 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		ArrayList prereqChain = new ArrayList();
 		for (int i = 0; i < length; i++) {
 			if (DLTKLanguageManager.hasScriptNature(rscProjects[i])) {
-				DLTKProject project = (projects[i] = (DLTKProject) DLTKCore.create(rscProjects[i]));
+				DLTKProject project = (projects[i] = (DLTKProject) DLTKCore
+						.create(rscProjects[i]));
 				if (!traversed.contains(project.getPath())) {
 					prereqChain.clear();
-					project.updateCycleParticipants(prereqChain, cycleParticipants, workspaceRoot, traversed, preferredBuildpaths);
+					project.updateCycleParticipants(prereqChain,
+							cycleParticipants, workspaceRoot, traversed,
+							preferredBuildpaths);
 				}
 			}
 		}
@@ -2015,21 +2250,29 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			if (project != null) {
 				if (cycleParticipants.contains(project.getPath())) {
 					IMarker cycleMarker = project.getCycleMarker();
-					String circularCPOption = project.getOption(DLTKCore.CORE_CIRCULAR_BUILDPATH, true);
-					int circularCPSeverity = DLTKCore.ERROR.equals(circularCPOption) ? IMarker.SEVERITY_ERROR : IMarker.SEVERITY_WARNING;
+					String circularCPOption = project.getOption(
+							DLTKCore.CORE_CIRCULAR_BUILDPATH, true);
+					int circularCPSeverity = DLTKCore.ERROR
+							.equals(circularCPOption) ? IMarker.SEVERITY_ERROR
+							: IMarker.SEVERITY_WARNING;
 					if (cycleMarker != null) {
 						// update existing cycle marker if needed
 						try {
-							int existingSeverity = ((Integer) cycleMarker.getAttribute(IMarker.SEVERITY)).intValue();
+							int existingSeverity = ((Integer) cycleMarker
+									.getAttribute(IMarker.SEVERITY)).intValue();
 							if (existingSeverity != circularCPSeverity) {
-								cycleMarker.setAttribute(IMarker.SEVERITY, circularCPSeverity);
+								cycleMarker.setAttribute(IMarker.SEVERITY,
+										circularCPSeverity);
 							}
 						} catch (CoreException e) {
 							throw new ModelException(e);
 						}
 					} else {
 						// create new marker
-						project.createBuildpathProblemMarker(new ModelStatus(IModelStatusConstants.BUILDPATH_CYCLE, project));
+						project
+								.createBuildpathProblemMarker(new ModelStatus(
+										IModelStatusConstants.BUILDPATH_CYCLE,
+										project));
 					}
 				} else {
 					project.flushBuildpathProblemMarkers(true, false);
@@ -2049,21 +2292,34 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	/**
 	 * @see IDLTKProject
 	 */
-	public IModelElement findElement(IPath path, WorkingCopyOwner owner) throws ModelException {
+	public IModelElement findElement(IPath path, WorkingCopyOwner owner)
+			throws ModelException {
 		if (path == null) {
-//			throw new ModelException(
-//				new ModelStatus(IModelStatusConstants.INVALID_PATH, path));
-//		}
+			// throw new ModelException(
+			// new ModelStatus(IModelStatusConstants.INVALID_PATH, path));
+			// }
 			return null;
 		}
 		try {
 
 			String extension = path.getFileExtension();
 			if (extension == null) {
-				String packageName = path.toString();//.replace(IPath.SEPARATOR, '.');
+				String packageName = path.toString();// .replace(IPath.SEPARATOR,
+														// '.');
 
-				NameLookup lookup = newNameLookup((WorkingCopyOwner)null/*no need to look at working copies for pkgs*/);
-				IScriptFolder[] pkgFragments = lookup.findScriptFolders(packageName, false);
+				NameLookup lookup = newNameLookup((WorkingCopyOwner) null/*
+																			 * no
+																			 * need
+																			 * to
+																			 * look
+																			 * at
+																			 * working
+																			 * copies
+																			 * for
+																			 * pkgs
+																			 */);
+				IScriptFolder[] pkgFragments = lookup.findScriptFolders(
+						packageName, false);
 				if (pkgFragments == null) {
 					return null;
 
@@ -2079,28 +2335,28 @@ public class DLTKProject extends Openable implements IDLTKProject {
 					// default to the first one
 					return pkgFragments[0];
 				}
-			} else if (Util.isValidSourceModule(this, path) ) {
+			} else if (Util.isValidSourceModule(this, path)) {
 				IPath packagePath = path.removeLastSegments(1);
-				String packageName = packagePath.toString();//.replace(IPath.SEPARATOR, '.');
+				String packageName = packagePath.toString();// .replace(IPath.SEPARATOR,
+															// '.');
 				String typeName = path.lastSegment();
-				typeName = typeName.substring(0, typeName.length() - extension.length() - 1);
+				typeName = typeName.substring(0, typeName.length()
+						- extension.length() - 1);
 				String qualifiedName = null;
 				if (packageName.length() > 0) {
-					qualifiedName = packageName + IScriptFolder.PACKAGE_DELIMETER_STR + typeName; 
+					qualifiedName = packageName
+							+ IScriptFolder.PACKAGE_DELIMETER_STR + typeName;
 				} else {
 					qualifiedName = typeName;
 				}
 
 				// lookup type
 				NameLookup lookup = newNameLookup(owner);
-				NameLookup.Answer answer = lookup.findType(
-					qualifiedName,
-					false,
-					NameLookup.ACCEPT_ALL,
-					true/* consider secondary types */,
-					false/* do NOT wait for indexes */,
-					false/*don't check restrictions*/,
-					null);
+				NameLookup.Answer answer = lookup.findType(qualifiedName,
+						false, NameLookup.ACCEPT_ALL,
+						true/* consider secondary types */,
+						false/* do NOT wait for indexes */,
+						false/* don't check restrictions */, null);
 
 				if (answer != null) {
 					return answer.type.getParent();
@@ -2112,8 +2368,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 				return null;
 			}
 		} catch (ModelException e) {
-			if (e.getStatus().getCode()
-				== IModelStatusConstants.ELEMENT_DOES_NOT_EXIST) {
+			if (e.getStatus().getCode() == IModelStatusConstants.ELEMENT_DOES_NOT_EXIST) {
 				return null;
 			} else {
 				throw e;
@@ -2141,14 +2396,16 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	/**
 	 * @see IDLTKProject
 	 */
-	public IProjectFragment findProjectFragment(IPath path) throws ModelException {
+	public IProjectFragment findProjectFragment(IPath path)
+			throws ModelException {
 		return findProjectFragment0(DLTKProject.canonicalizedPath(path));
 	}
 
 	/*
 	 * no path canonicalization
 	 */
-	public IProjectFragment findProjectFragment0(IPath path) throws ModelException {
+	public IProjectFragment findProjectFragment0(IPath path)
+			throws ModelException {
 		IProjectFragment[] allRoots = this.getAllProjectFragments();
 		if (!path.isAbsolute()) {
 			throw new IllegalArgumentException(Messages.path_mustBeAbsolute);
@@ -2172,7 +2429,12 @@ public class DLTKProject extends Openable implements IDLTKProject {
 				if (buildpath[i].equals(entry)) { // entry may need to be
 					// resolved
 					return computeProjectFragments(
-							getResolvedBuildpath(new IBuildpathEntry[] {entry}, true, false, null/*no reverse map*/), false, // don't retrieve exported roots
+							getResolvedBuildpath(
+									new IBuildpathEntry[] { entry }, true,
+									false, null/* no reverse map */), false, // don't
+																			// retrieve
+																			// exported
+																			// roots
 							null); /* no reverse map */
 				}
 			}
@@ -2192,14 +2454,17 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	/**
 	 * @see IDLTKProject#findType(String, IProgressMonitor)
 	 */
-	public IType findType(String fullyQualifiedName, IProgressMonitor progressMonitor) throws ModelException {
-		return findType(fullyQualifiedName, DefaultWorkingCopyOwner.PRIMARY, progressMonitor);
+	public IType findType(String fullyQualifiedName,
+			IProgressMonitor progressMonitor) throws ModelException {
+		return findType(fullyQualifiedName, DefaultWorkingCopyOwner.PRIMARY,
+				progressMonitor);
 	}
 
 	/*
 	 * Internal findType with instanciated name lookup
 	 */
-	IType findType(String fullyQualifiedName, Object lookup, boolean considerSecondaryTypes, IProgressMonitor progressMonitor)
+	IType findType(String fullyQualifiedName, Object lookup,
+			boolean considerSecondaryTypes, IProgressMonitor progressMonitor)
 			throws ModelException {
 		if (DLTKCore.DEBUG) {
 			System.err.println("Search Need to be implemented");
@@ -2210,22 +2475,27 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	/**
 	 * @see IDLTKProject#findType(String, String)
 	 */
-	public IType findType(String packageName, String typeQualifiedName) throws ModelException {
-		return findType(packageName, typeQualifiedName, DefaultWorkingCopyOwner.PRIMARY);
+	public IType findType(String packageName, String typeQualifiedName)
+			throws ModelException {
+		return findType(packageName, typeQualifiedName,
+				DefaultWorkingCopyOwner.PRIMARY);
 	}
 
 	/**
 	 * @see IDLTKProject#findType(String, String, IProgressMonitor)
 	 */
-	public IType findType(String packageName, String typeQualifiedName, IProgressMonitor progressMonitor) throws ModelException {
-		return findType(packageName, typeQualifiedName, DefaultWorkingCopyOwner.PRIMARY, progressMonitor);
+	public IType findType(String packageName, String typeQualifiedName,
+			IProgressMonitor progressMonitor) throws ModelException {
+		return findType(packageName, typeQualifiedName,
+				DefaultWorkingCopyOwner.PRIMARY, progressMonitor);
 	}
 
 	/*
 	 * Internal findType with instanciated name lookup
 	 */
-	IType findType(String packageName, String typeQualifiedName, Object lookup, boolean considerSecondaryTypes,
-			IProgressMonitor progressMonitor) throws ModelException {
+	IType findType(String packageName, String typeQualifiedName, Object lookup,
+			boolean considerSecondaryTypes, IProgressMonitor progressMonitor)
+			throws ModelException {
 		if (DLTKCore.DEBUG) {
 			System.err.println("Search Need to be implemented");
 		}
@@ -2235,7 +2505,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	/**
 	 * @see IDLTKProject#findType(String, String, WorkingCopyOwner)
 	 */
-	public IType findType(String packageName, String typeQualifiedName, WorkingCopyOwner owner) throws ModelException {
+	public IType findType(String packageName, String typeQualifiedName,
+			WorkingCopyOwner owner) throws ModelException {
 		if (DLTKCore.DEBUG) {
 			System.err.println("Search Need to be implemented");
 		}
@@ -2246,7 +2517,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * @see IDLTKProject#findType(String, String, WorkingCopyOwner,
 	 *      IProgressMonitor)
 	 */
-	public IType findType(String packageName, String typeQualifiedName, WorkingCopyOwner owner, IProgressMonitor progressMonitor)
+	public IType findType(String packageName, String typeQualifiedName,
+			WorkingCopyOwner owner, IProgressMonitor progressMonitor)
 			throws ModelException {
 		if (DLTKCore.DEBUG) {
 			System.err.println("Search Need to be implemented");
@@ -2257,7 +2529,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	/**
 	 * @see IDLTKProject#findType(String, WorkingCopyOwner)
 	 */
-	public IType findType(String fullyQualifiedName, WorkingCopyOwner owner) throws ModelException {
+	public IType findType(String fullyQualifiedName, WorkingCopyOwner owner)
+			throws ModelException {
 		if (DLTKCore.DEBUG) {
 			System.err.println("Search Need to be implemented");
 		}
@@ -2267,7 +2540,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	/**
 	 * @see IDLTKProject#findType(String, WorkingCopyOwner, IProgressMonitor)
 	 */
-	public IType findType(String fullyQualifiedName, WorkingCopyOwner owner, IProgressMonitor progressMonitor) throws ModelException {
+	public IType findType(String fullyQualifiedName, WorkingCopyOwner owner,
+			IProgressMonitor progressMonitor) throws ModelException {
 		if (DLTKCore.DEBUG) {
 			System.err.println("Search Need to be implemented");
 		}
@@ -2297,13 +2571,22 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		try {
 			return readFileEntriesWithException(unkwownElements);
 		} catch (CoreException e) {
-			Util.log(e, "Exception while reading " + getPath().append(DLTKProject.BUILDPATH_FILENAME)); //$NON-NLS-1$
+			Util
+					.log(
+							e,
+							"Exception while reading " + getPath().append(DLTKProject.BUILDPATH_FILENAME)); //$NON-NLS-1$
 			return DLTKProject.INVALID_BUILDPATH;
 		} catch (IOException e) {
-			Util.log(e, "Exception while reading " + getPath().append(DLTKProject.BUILDPATH_FILENAME)); //$NON-NLS-1$
+			Util
+					.log(
+							e,
+							"Exception while reading " + getPath().append(DLTKProject.BUILDPATH_FILENAME)); //$NON-NLS-1$
 			return DLTKProject.INVALID_BUILDPATH;
 		} catch (AssertionFailedException e) {
-			Util.log(e, "Exception while reading " + getPath().append(DLTKProject.BUILDPATH_FILENAME)); //$NON-NLS-1$
+			Util
+					.log(
+							e,
+							"Exception while reading " + getPath().append(DLTKProject.BUILDPATH_FILENAME)); //$NON-NLS-1$
 			return DLTKProject.INVALID_BUILDPATH;
 		}
 	}
@@ -2312,7 +2595,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * Returns an array of non-java resources contained in the receiver.
 	 */
 	public Object[] getForeignResources() throws ModelException {
-		return ((ProjectElementInfo) getElementInfo()).getForeignResources(this);
+		return ((ProjectElementInfo) getElementInfo())
+				.getForeignResources(this);
 	}
 
 	public boolean isOnBuildpath(IModelElement element) {
@@ -2324,25 +2608,27 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		}
 		int elementType = element.getElementType();
 		boolean isFolderPath = false;
-		//boolean isSource = false;
+		// boolean isSource = false;
 		boolean isProjectFragment = false;
 		switch (elementType) {
-			case IModelElement.SCRIPT_MODEL:
-				return false;
-			case IModelElement.SCRIPT_PROJECT:
-				break;
-			case IModelElement.PROJECT_FRAGMENT:
-				isProjectFragment = true;
-				break;
-			case IModelElement.SCRIPT_FOLDER:
-				isFolderPath = !((IProjectFragment) element.getParent()).isArchive();
-				break;
-			case IModelElement.SOURCE_MODULE:
-				//isSource = true;
-				break;
-			default:
-				//isSource = element.getAncestor(IModelElement.SOURCE_MODULE) != null;
-				break;
+		case IModelElement.SCRIPT_MODEL:
+			return false;
+		case IModelElement.SCRIPT_PROJECT:
+			break;
+		case IModelElement.PROJECT_FRAGMENT:
+			isProjectFragment = true;
+			break;
+		case IModelElement.SCRIPT_FOLDER:
+			isFolderPath = !((IProjectFragment) element.getParent())
+					.isArchive();
+			break;
+		case IModelElement.SOURCE_MODULE:
+			// isSource = true;
+			break;
+		default:
+			// isSource = element.getAncestor(IModelElement.SOURCE_MODULE) !=
+			// null;
+			break;
 		}
 		IPath elementPath = element.getPath();
 		// first look at unresolved entries
@@ -2350,42 +2636,46 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		for (int i = 0; i < length; i++) {
 			IBuildpathEntry entry = rawBuildpath[i];
 			switch (entry.getEntryKind()) {
-				case IBuildpathEntry.BPE_LIBRARY:
-				case IBuildpathEntry.BPE_PROJECT:
-				case IBuildpathEntry.BPE_SOURCE:
-					if (isOnBuildpathEntry(elementPath, isFolderPath, isProjectFragment, entry))
-						return true;
-					break;
+			case IBuildpathEntry.BPE_LIBRARY:
+			case IBuildpathEntry.BPE_PROJECT:
+			case IBuildpathEntry.BPE_SOURCE:
+				if (isOnBuildpathEntry(elementPath, isFolderPath,
+						isProjectFragment, entry))
+					return true;
+				break;
 			}
 		}
 		// no need to go further for compilation units and elements inside a
 		// compilation unit
 		// it can only be in a source folder, thus on the raw buildpath
-//		if (isSource)
-//			return false;
+		// if (isSource)
+		// return false;
 		// then look at resolved entries
 		for (int i = 0; i < length; i++) {
 			IBuildpathEntry rawEntry = rawBuildpath[i];
 			switch (rawEntry.getEntryKind()) {
-				case IBuildpathEntry.BPE_CONTAINER:
-					IBuildpathContainer container;
-					try {
-						container = DLTKCore.getBuildpathContainer(rawEntry.getPath(), this);
-					} catch (ModelException e) {
-						break;
-					}
-					if (container == null)
-						break;
-					IBuildpathEntry[] containerEntries = container.getBuildpathEntries();
-					if (containerEntries == null)
-						break;
-					// container was bound
-					for (int j = 0, containerLength = containerEntries.length; j < containerLength; j++) {
-						IBuildpathEntry resolvedEntry = containerEntries[j];
-						if (isOnBuildpathEntry(elementPath, isFolderPath, isProjectFragment, resolvedEntry))
-							return true;
-					}
+			case IBuildpathEntry.BPE_CONTAINER:
+				IBuildpathContainer container;
+				try {
+					container = DLTKCore.getBuildpathContainer(rawEntry
+							.getPath(), this);
+				} catch (ModelException e) {
 					break;
+				}
+				if (container == null)
+					break;
+				IBuildpathEntry[] containerEntries = container
+						.getBuildpathEntries();
+				if (containerEntries == null)
+					break;
+				// container was bound
+				for (int j = 0, containerLength = containerEntries.length; j < containerLength; j++) {
+					IBuildpathEntry resolvedEntry = containerEntries[j];
+					if (isOnBuildpathEntry(elementPath, isFolderPath,
+							isProjectFragment, resolvedEntry))
+						return true;
+				}
+				break;
 			}
 		}
 		return false;
@@ -2400,7 +2690,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		// ensure that folders are only excluded if all of their children are
 		// excluded
 		int resourceType = resource.getType();
-		boolean isFolderPath = resourceType == IResource.FOLDER || resourceType == IResource.PROJECT;
+		boolean isFolderPath = resourceType == IResource.FOLDER
+				|| resourceType == IResource.PROJECT;
 		IBuildpathEntry[] buildpath;
 		try {
 			buildpath = this.getResolvedBuildpath();
@@ -2416,15 +2707,18 @@ public class DLTKProject extends Openable implements IDLTKProject {
 				return true;
 			}
 			if (entryPath.isPrefixOf(path)
-					&& !Util.isExcluded(path, ((BuildpathEntry) entry).fullInclusionPatternChars(),
-							((BuildpathEntry) entry).fullExclusionPatternChars(), isFolderPath)) {
+					&& !Util.isExcluded(path, ((BuildpathEntry) entry)
+							.fullInclusionPatternChars(),
+							((BuildpathEntry) entry)
+									.fullExclusionPatternChars(), isFolderPath)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private boolean isOnBuildpathEntry(IPath elementPath, boolean isFolderPath, boolean isProjectFragment, IBuildpathEntry entry) {
+	private boolean isOnBuildpathEntry(IPath elementPath, boolean isFolderPath,
+			boolean isProjectFragment, IBuildpathEntry entry) {
 		IPath entryPath = entry.getPath();
 		if (isProjectFragment) {
 			// package fragment roots must match exactly entry pathes (no
@@ -2433,43 +2727,47 @@ public class DLTKProject extends Openable implements IDLTKProject {
 				return true;
 		} else {
 			if (entryPath.isPrefixOf(elementPath)
-					&& !Util.isExcluded(elementPath, ((BuildpathEntry) entry).fullInclusionPatternChars(),
-							((BuildpathEntry) entry).fullExclusionPatternChars(), isFolderPath))
+					&& !Util.isExcluded(elementPath, ((BuildpathEntry) entry)
+							.fullInclusionPatternChars(),
+							((BuildpathEntry) entry)
+									.fullExclusionPatternChars(), isFolderPath))
 				return true;
 		}
 		return false;
 	}
 
-	public IModelElement getHandleFromMemento(String token, MementoTokenizer memento, WorkingCopyOwner owner) {
+	public IModelElement getHandleFromMemento(String token,
+			MementoTokenizer memento, WorkingCopyOwner owner) {
 		switch (token.charAt(0)) {
-			case JEM_PROJECTFRAGMENT:
-				String rootPath = IProjectFragment.DEFAULT_PACKAGE_ROOT;
-				token = null;
-				while (memento.hasMoreTokens()) {
-					token = memento.nextToken();
-					char firstChar = token.charAt(0);
-					if (firstChar != JEM_SCRIPTFOLDER && firstChar != JEM_COUNT) {
-						rootPath += token;
-					} else {
-						break;
-					}
-				}
-				ModelElement root = null;
-				if (rootPath.indexOf(JEM_SKIP_DELIMETER) != -1) {
-					root = getExternalScriptFolderOrContainerFolder(rootPath);
+		case JEM_PROJECTFRAGMENT:
+			String rootPath = IProjectFragment.DEFAULT_PACKAGE_ROOT;
+			token = null;
+			while (memento.hasMoreTokens()) {
+				token = memento.nextToken();
+				char firstChar = token.charAt(0);
+				if (firstChar != JEM_SCRIPTFOLDER && firstChar != JEM_COUNT) {
+					rootPath += token;
 				} else {
-					root = (ModelElement) getProjectFragment(new Path(rootPath));
+					break;
 				}
-				if (token != null && token.charAt(0) == JEM_SCRIPTFOLDER) {
-					return root.getHandleFromMemento(token, memento, owner);
-				} else {
-					return root.getHandleFromMemento(memento, owner);
-				}
+			}
+			ModelElement root = null;
+			if (rootPath.indexOf(JEM_SKIP_DELIMETER) != -1) {
+				root = getExternalScriptFolderOrContainerFolder(rootPath);
+			} else {
+				root = (ModelElement) getProjectFragment(new Path(rootPath));
+			}
+			if (token != null && token.charAt(0) == JEM_SCRIPTFOLDER) {
+				return root.getHandleFromMemento(token, memento, owner);
+			} else {
+				return root.getHandleFromMemento(memento, owner);
+			}
 		}
 		return null;
 	}
 
-	private ModelElement getExternalScriptFolderOrContainerFolder(String rootPath) {
+	private ModelElement getExternalScriptFolderOrContainerFolder(
+			String rootPath) {
 		IProjectFragment[] allRoots;
 		try {
 			allRoots = this.getProjectFragments();
@@ -2500,7 +2798,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * Returns a new search name environment for this project. This name
 	 * environment first looks in the given working copies.
 	 */
-	public ISearchableEnvironment newSearchableNameEnvironment(ISourceModule[] workingCopies) throws ModelException {
+	public ISearchableEnvironment newSearchableNameEnvironment(
+			ISourceModule[] workingCopies) throws ModelException {
 		return new SearchableEnvironment(this, workingCopies);
 	}
 
@@ -2508,36 +2807,35 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * Returns a new search name environment for this project. This name
 	 * environment first looks in the working copies of the given owner.
 	 */
-	public SearchableEnvironment newSearchableNameEnvironment(WorkingCopyOwner owner) throws ModelException {
+	public SearchableEnvironment newSearchableNameEnvironment(
+			WorkingCopyOwner owner) throws ModelException {
 		return new SearchableEnvironment(this, owner);
-	}
-	
-	/**
-	 * @see IJavaProject
-	 */
-	public ITypeHierarchy newTypeHierarchy(
-		IRegion region,
-		IProgressMonitor monitor)
-		throws ModelException {
-			
-		return newTypeHierarchy(region, DefaultWorkingCopyOwner.PRIMARY, monitor);
 	}
 
 	/**
 	 * @see IJavaProject
 	 */
-	public ITypeHierarchy newTypeHierarchy(
-		IRegion region,
-		WorkingCopyOwner owner,
-		IProgressMonitor monitor)
-		throws ModelException {
+	public ITypeHierarchy newTypeHierarchy(IRegion region,
+			IProgressMonitor monitor) throws ModelException {
+
+		return newTypeHierarchy(region, DefaultWorkingCopyOwner.PRIMARY,
+				monitor);
+	}
+
+	/**
+	 * @see IJavaProject
+	 */
+	public ITypeHierarchy newTypeHierarchy(IRegion region,
+			WorkingCopyOwner owner, IProgressMonitor monitor)
+			throws ModelException {
 
 		if (region == null) {
 			throw new IllegalArgumentException(Messages.hierarchy_nullRegion);
 		}
-		ISourceModule[] workingCopies = ModelManager.getModelManager().getWorkingCopies(owner, true/*add primary working copies*/);
-		CreateTypeHierarchyOperation op =
-			new CreateTypeHierarchyOperation(region, workingCopies, null, true);
+		ISourceModule[] workingCopies = ModelManager.getModelManager()
+				.getWorkingCopies(owner, true/* add primary working copies */);
+		CreateTypeHierarchyOperation op = new CreateTypeHierarchyOperation(
+				region, workingCopies, null, true);
 		op.runOperation(monitor);
 		return op.getResult();
 	}
@@ -2545,24 +2843,19 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	/**
 	 * @see IJavaProject
 	 */
-	public ITypeHierarchy newTypeHierarchy(
-		IType type,
-		IRegion region,
-		IProgressMonitor monitor)
-		throws ModelException {
-			
-		return newTypeHierarchy(type, region, DefaultWorkingCopyOwner.PRIMARY, monitor);
+	public ITypeHierarchy newTypeHierarchy(IType type, IRegion region,
+			IProgressMonitor monitor) throws ModelException {
+
+		return newTypeHierarchy(type, region, DefaultWorkingCopyOwner.PRIMARY,
+				monitor);
 	}
 
 	/**
 	 * @see IJavaProject
 	 */
-	public ITypeHierarchy newTypeHierarchy(
-		IType type,
-		IRegion region,
-		WorkingCopyOwner owner,
-		IProgressMonitor monitor)
-		throws ModelException {
+	public ITypeHierarchy newTypeHierarchy(IType type, IRegion region,
+			WorkingCopyOwner owner, IProgressMonitor monitor)
+			throws ModelException {
 
 		if (type == null) {
 			throw new IllegalArgumentException(Messages.hierarchy_nullFocusType);
@@ -2570,9 +2863,10 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		if (region == null) {
 			throw new IllegalArgumentException(Messages.hierarchy_nullRegion);
 		}
-		ISourceModule[] workingCopies = ModelManager.getModelManager().getWorkingCopies(owner, true/*add primary working copies*/);
-		CreateTypeHierarchyOperation op =
-			new CreateTypeHierarchyOperation(region, workingCopies, type, true/*compute subtypes*/);
+		ISourceModule[] workingCopies = ModelManager.getModelManager()
+				.getWorkingCopies(owner, true/* add primary working copies */);
+		CreateTypeHierarchyOperation op = new CreateTypeHierarchyOperation(
+				region, workingCopies, type, true/* compute subtypes */);
 		op.runOperation(monitor);
 		return op.getResult();
 	}
@@ -2586,7 +2880,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * @return IBuildpathEntry
 	 * @throws ModelException
 	 */
-	public IBuildpathEntry getBuildpathEntryFor(IPath path) throws ModelException {
+	public IBuildpathEntry getBuildpathEntryFor(IPath path)
+			throws ModelException {
 		IBuildpathEntry[] entries = getExpandedBuildpath(true);
 		for (int i = 0; i < entries.length; i++) {
 			if (entries[i].getPath().equals(path)) {
@@ -2600,7 +2895,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * Returns a new name lookup. This name lookup first looks in the given
 	 * working copies.
 	 */
-	public NameLookup newNameLookup(ISourceModule[] workingCopies) throws ModelException {
+	public NameLookup newNameLookup(ISourceModule[] workingCopies)
+			throws ModelException {
 		return getProjectElementInfo().newNameLookup(this, workingCopies);
 	}
 
@@ -2608,110 +2904,144 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * Returns a new name lookup. This name lookup first looks in the working
 	 * copies of the given owner.
 	 */
-	public NameLookup newNameLookup(WorkingCopyOwner owner) throws ModelException {
+	public NameLookup newNameLookup(WorkingCopyOwner owner)
+			throws ModelException {
 		ModelManager manager = ModelManager.getModelManager();
-		ISourceModule[] workingCopies = owner == null ? null : manager.getWorkingCopies(owner, true/*
-																									 * add
-																									 * primary
-																									 * WCs
-																									 */);
+		ISourceModule[] workingCopies = owner == null ? null : manager
+				.getWorkingCopies(owner, true/*
+												 * add primary WCs
+												 */);
 		return newNameLookup(workingCopies);
 	}
+
 	/*
-	 * Force the project to reload its <code>.buildpath</code> file from disk and update the buildpath accordingly.
-	 * Usually, a change to the <code>.buildpath</code> file is automatically noticed and reconciled at the next 
-	 * resource change notification event. If required to consider such a change prior to the next automatic
-	 * refresh, then this functionnality should be used to trigger a refresh. In particular, if a change to the file is performed,
-	 * during an operation where this change needs to be reflected before the operation ends, then an explicit refresh is
-	 * necessary.
-	 * Note that buildpath markers are NOT created.
+	 * Force the project to reload its <code>.buildpath</code> file from disk
+	 * and update the buildpath accordingly. Usually, a change to the <code>.buildpath</code>
+	 * file is automatically noticed and reconciled at the next resource change
+	 * notification event. If required to consider such a change prior to the
+	 * next automatic refresh, then this functionnality should be used to
+	 * trigger a refresh. In particular, if a change to the file is performed,
+	 * during an operation where this change needs to be reflected before the
+	 * operation ends, then an explicit refresh is necessary. Note that
+	 * buildpath markers are NOT created.
 	 * 
 	 * @param monitor a progress monitor for reporting operation progress
 	 * @exception ModelException if the buildpath could not be updated. Reasons
-	 * include:
-	 * <ul>
-	 * <li> This Script element does not exist (ELEMENT_DOES_NOT_EXIST)</li>
-	 * <li> Two or more entries specify source roots with the same or overlapping paths (NAME_COLLISION)
-	 * <li> A entry of kind <code>CPE_PROJECT</code> refers to this project (INVALID_PATH)
-	 *  <li>This Script element does not exist (ELEMENT_DOES_NOT_EXIST)</li>
-	 *	<li>The output location path refers to a location not contained in this project (<code>PATH_OUTSIDE_PROJECT</code>)
-	 *	<li>The output location path is not an absolute path (<code>RELATIVE_PATH</code>)
-	 *  <li>The output location path is nested inside a package fragment root of this project (<code>INVALID_PATH</code>)
-	 * <li> The buildpath is being modified during resource change event notification (CORE_EXCEPTION)
-	 * </ul>
+	 * include: <ul> <li> This Script element does not exist
+	 * (ELEMENT_DOES_NOT_EXIST)</li> <li> Two or more entries specify source
+	 * roots with the same or overlapping paths (NAME_COLLISION) <li> A entry of
+	 * kind <code>CPE_PROJECT</code> refers to this project (INVALID_PATH)
+	 * <li>This Script element does not exist (ELEMENT_DOES_NOT_EXIST)</li>
+	 * <li>The output location path refers to a location not contained in this
+	 * project (<code>PATH_OUTSIDE_PROJECT</code>) <li>The output location
+	 * path is not an absolute path (<code>RELATIVE_PATH</code>) <li>The
+	 * output location path is nested inside a package fragment root of this
+	 * project (<code>INVALID_PATH</code>) <li> The buildpath is being
+	 * modified during resource change event notification (CORE_EXCEPTION) </ul>
 	 */
-	protected void forceBuildpathReload(IProgressMonitor monitor) throws ModelException {
+	protected void forceBuildpathReload(IProgressMonitor monitor)
+			throws ModelException {
 
-		if (monitor != null && monitor.isCanceled()) return;
-		
+		if (monitor != null && monitor.isCanceled())
+			return;
+
 		// check if any actual difference
-		boolean wasSuccessful = false; // flag recording if .buildpath file change got reflected
+		boolean wasSuccessful = false; // flag recording if .buildpath file
+										// change got reflected
 		try {
 			// force to (re)read the property file
-			IBuildpathEntry[] fileEntries = readBuildpathFile(false/*don't create markers*/, false/*don't log problems*/);
+			IBuildpathEntry[] fileEntries = readBuildpathFile(
+					false/* don't create markers */, false/* don't log problems */);
 			if (fileEntries == null) {
-				return; // could not read, ignore 
+				return; // could not read, ignore
 			}
 			ModelManager.PerProjectInfo info = getPerProjectInfo();
-			if (info.rawBuildpath != null) { // if there is an in-memory buildpath
+			if (info.rawBuildpath != null) { // if there is an in-memory
+												// buildpath
 				if (isBuildpathEqualsTo(info.rawBuildpath, fileEntries)) {
 					wasSuccessful = true;
 					return;
 				}
 			}
 
-			// will force an update of the buildpath/output location based on the file information
-			// extract out the output location						
+			// will force an update of the buildpath/output location based on
+			// the file information
+			// extract out the output location
 			IBuildpathEntry[] oldResolvedBuildpath = info.resolvedBuildpath;
 			setRawBuildpath(
-				fileEntries, 
-				monitor, 
-				!ResourcesPlugin.getWorkspace().isTreeLocked(), // canChangeResource
-				oldResolvedBuildpath != null ? oldResolvedBuildpath : getResolvedBuildpath(true/*ignoreUnresolvedEntry*/, false/*don't generateMarkerOnError*/, false/*don't returnResolutionInProgress*/),
-				true, // needValidation
-				false); // no need to save
-			
+					fileEntries,
+					monitor,
+					!ResourcesPlugin.getWorkspace().isTreeLocked(), // canChangeResource
+					oldResolvedBuildpath != null ? oldResolvedBuildpath
+							: getResolvedBuildpath(
+									true/* ignoreUnresolvedEntry */,
+									false/* don't generateMarkerOnError */,
+									false/* don't returnResolutionInProgress */),
+					true, // needValidation
+					false); // no need to save
+
 			// if reach that far, the buildpath file change got absorbed
 			wasSuccessful = true;
 		} catch (RuntimeException e) {
-			// setRawBuildpath might fire a delta, and a listener may throw an exception
+			// setRawBuildpath might fire a delta, and a listener may throw an
+			// exception
 			if (this.project.isAccessible()) {
-				Util.log(e, "Could not set buildpath for "+ getPath()); //$NON-NLS-1$
+				Util.log(e, "Could not set buildpath for " + getPath()); //$NON-NLS-1$
 			}
-			throw e; // rethrow 
+			throw e; // rethrow
 		} catch (ModelException e) { // CP failed validation
 			if (!ResourcesPlugin.getWorkspace().isTreeLocked()) {
 				if (this.project.isAccessible()) {
 					if (e.getModelStatus().getException() instanceof CoreException) {
-						// happens if the .buildpath could not be written to disk
+						// happens if the .buildpath could not be written to
+						// disk
 						createBuildpathProblemMarker(new ModelStatus(
 								IModelStatusConstants.INVALID_BUILDPATH_FILE_FORMAT,
-								Messages.bind(Messages.buildpath_couldNotWriteBuildpathFile, new String[] {getElementName(), e.getMessage()}))); 
+								Messages
+										.bind(
+												Messages.buildpath_couldNotWriteBuildpathFile,
+												new String[] {
+														getElementName(),
+														e.getMessage() })));
 					} else {
 						createBuildpathProblemMarker(new ModelStatus(
 								IModelStatusConstants.INVALID_BUILDPATH_FILE_FORMAT,
-								Messages.bind(Messages.buildpath_invalidBuildpathInBuildpathFile, new String[] {getElementName(), e.getMessage()}))); 
-					}			
+								Messages
+										.bind(
+												Messages.buildpath_invalidBuildpathInBuildpathFile,
+												new String[] {
+														getElementName(),
+														e.getMessage() })));
+					}
 				}
 			}
 			throw e; // rethrow
 		} finally {
-			if (!wasSuccessful) { 
+			if (!wasSuccessful) {
 				try {
-					this.getPerProjectInfo().updateBuildpathInformation(DLTKProject.INVALID_BUILDPATH);
+					this.getPerProjectInfo().updateBuildpathInformation(
+							DLTKProject.INVALID_BUILDPATH);
 					updateProjectFragments();
 				} catch (ModelException e) {
 					// ignore
 				}
 			}
 		}
-	}	
+	}
+
 	public IProjectFragment[] getAllProjectFragments() throws ModelException {
 		return getAllProjectFragments(null /* no reverse map */);
 	}
 
-	public IProjectFragment[] getAllProjectFragments(Map rootToResolvedEntries) throws ModelException {
-		return computeProjectFragments(getResolvedBuildpath(true/*ignoreUnresolvedEntry*/, false/*don't generateMarkerOnError*/, false/*don't returnResolutionInProgress*/), true/*retrieveExportedRoots*/, rootToResolvedEntries);
+	public IProjectFragment[] getAllProjectFragments(Map rootToResolvedEntries)
+			throws ModelException {
+		return computeProjectFragments(
+				getResolvedBuildpath(true/* ignoreUnresolvedEntry */,
+						false/* don't generateMarkerOnError */, false/*
+																	 * don't
+																	 * returnResolutionInProgress
+																	 */),
+				true/* retrieveExportedRoots */, rootToResolvedEntries);
 	}
 
 	public static boolean hasScriptNature(IProject p) {

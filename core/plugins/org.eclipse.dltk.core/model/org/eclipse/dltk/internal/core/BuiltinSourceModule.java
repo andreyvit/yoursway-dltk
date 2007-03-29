@@ -1,10 +1,6 @@
 package org.eclipse.dltk.internal.core;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,8 +13,7 @@ import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.dltk.compiler.CharOperation;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
@@ -31,7 +26,6 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IPackageDeclaration;
 import org.eclipse.dltk.core.IProblemRequestor;
-import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceModuleInfoCache;
@@ -42,11 +36,10 @@ import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.internal.core.util.MementoTokenizer;
 import org.eclipse.dltk.internal.core.util.Messages;
-import org.eclipse.dltk.internal.core.util.Util;
 import org.eclipse.dltk.utils.CorePrinter;
 
 
-public class ExternalSourceModule extends Openable implements IExternalSourceModule, IStorage, org.eclipse.dltk.compiler.env.ISourceModule {
+public class BuiltinSourceModule extends Openable implements IExternalSourceModule, IStorage, org.eclipse.dltk.compiler.env.ISourceModule {
 
 	private static final boolean DEBUG_PRINT_MODEL = DLTKCore.DEBUG_PRINT_MODEL;
 
@@ -54,24 +47,13 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 
 	public WorkingCopyOwner owner;
 	final private boolean fReadOnly;
-	private IStorage fStorage;
 
-	public ExternalSourceModule(ScriptFolder parent, String name, WorkingCopyOwner owner, IStorage storage) {
+	public BuiltinSourceModule(BuiltinScriptFolder parent, String name, WorkingCopyOwner owner) {
 
 		super(parent);
 		this.name = name;
 		this.owner = owner;
 		this.fReadOnly = true;
-		fStorage = storage;
-	}
-	
-	public ExternalSourceModule(ScriptFolder parent, String name, WorkingCopyOwner owner, boolean readOnly, IStorage storage) {
-
-		super(parent);
-		this.name = name;
-		this.owner = owner;
-		this.fReadOnly = readOnly;
-		fStorage = storage;
 	}
 	
 	/*
@@ -97,14 +79,6 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 
 	protected boolean buildStructure(OpenableElementInfo info, IProgressMonitor pm, Map newElements, IResource underlyingResource) throws ModelException {
 
-		// check if this source module can be opened
-		if (!isWorkingCopy()) { // no check is done on root kind or
-			// exclusion
-			// pattern for working copies
-			IStatus status = validateSourceModule(underlyingResource);
-			if (!status.isOK())
-				throw newModelException(status);
-		}
 		// prevents reopening of non-primary working copies (they are closed
 		// when they are discarded and should not be reopened)
 		if (!isPrimary() ) {
@@ -122,8 +96,8 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 		try {
 			// generate structure and compute syntax problems if needed
 			SourceModuleStructureRequestor requestor = new SourceModuleStructureRequestor(this, moduleInfo, newElements);
-			IDLTKLanguageToolkit toolkit = null;								
-			toolkit = DLTKLanguageManager.findToolkit(this.getFullPath());
+			IDLTKLanguageToolkit toolkit = null;
+			toolkit = DLTKLanguageManager.getLanguageToolkit(this.getScriptProject());
 			if(toolkit == null) {
 				throw new ModelException(new ModelStatus(ModelStatus.INVALID_NAME));
 			}
@@ -139,7 +113,7 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 			}
 			
 //			parser.parseSourceModule(contents, null);
-			if (ExternalSourceModule.DEBUG_PRINT_MODEL) {
+			if (BuiltinSourceModule.DEBUG_PRINT_MODEL) {
 				System.out.println("Source Module Debug print:");
 				CorePrinter printer = new CorePrinter(System.out);
 				this.printNode(printer);
@@ -209,9 +183,9 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 	 */
 	public boolean equals(Object obj) {
 
-		if (!(obj instanceof ExternalSourceModule))
+		if (!(obj instanceof BuiltinSourceModule))
 			return false;
-		ExternalSourceModule other = (ExternalSourceModule) obj;
+		BuiltinSourceModule other = (BuiltinSourceModule) obj;
 		return this.owner.equals(other.owner) && super.equals(obj);
 	}
 
@@ -228,22 +202,11 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 		if ( chars == null || ( chars != null && chars.length == 0 ) ) {
 			if (isWorkingCopy) {
 				ISourceModule original;
-				if (!isPrimary() && (original = new ExternalSourceModule((ScriptFolder) getParent(), getElementName(), DefaultWorkingCopyOwner.PRIMARY, this.fStorage)).isOpen()) {
+				if (!isPrimary() && (original = new BuiltinSourceModule((BuiltinScriptFolder) getParent(), getElementName(), DefaultWorkingCopyOwner.PRIMARY)).isOpen()) {
 					buffer.setContents(original.getSource());
 				} else {
-					if( getResource()!= null) {
-						IFile file = (IFile) getResource();
-						if (file == null || !file.exists()) {
-						// initialize buffer with empty contents
-						buffer.setContents(CharOperation.NO_CHAR);
-						} else {
-							buffer.setContents(Util.getResourceContentsAsCharArray(file));
-						}
-					}
-					else {
-						char[] content = getBufferContent();
-						buffer.setContents(content);
-					}
+					char[] content = getBufferContent();
+					buffer.setContents(content);
 				}
 			} else {						
 				char[] content = getBufferContent();
@@ -262,29 +225,11 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 	}
 
 	private char[] getBufferContent() throws ModelException {
-		File file = new File(getPath().toOSString());//(IFile) this.getResource();
-		if (file == null || !file.exists())
-			throw newNotPresentException();
-		
-		InputStream stream= null;
-		char[] content;
-		try {
-			stream = new BufferedInputStream( new FileInputStream(file));
-		} catch (FileNotFoundException e) {
-			throw new ModelException(e, IModelStatusConstants.ELEMENT_DOES_NOT_EXIST);
+		String content = getSourceModuleContent();
+		if( content != null ) {
+			return content.toCharArray();
 		}
-		try {
-			content=org.eclipse.dltk.compiler.util.Util.getInputStreamAsCharArray(stream, -1, "utf-8");
-		} catch (IOException e) {
-			throw new ModelException(e, IModelStatusConstants.IO_EXCEPTION);
-		} finally {
-			try {
-				stream.close();
-			} catch (IOException e) {
-				// ignore
-			}
-		}
-		return content;
+		return new char[0];
 	}
 
 	public String getSource() throws ModelException {
@@ -324,42 +269,7 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 
 		// if not a working copy, it exists only if it is a primary compilation
 		// unit
-		return isPrimary() && validateSourceModule(null).isOK();
-	}
-
-	protected IStatus validateSourceModule(IResource resource) {
-		IProjectFragment root = getProjectFragment();
-		try {
-			if (root.getKind() != IProjectFragment.K_SOURCE) {
-				return new ModelStatus(IModelStatusConstants.INVALID_ELEMENT_TYPES, root);
-			}
-		} catch (ModelException e) {
-			return e.getModelStatus();
-		}
-		IPath path = this.getFullPath();
-		if(!root.isArchive()) { 
-			try {
-				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(this);			
-				if (toolkit != null) {
-					return toolkit.validateSourceModule(path);
-				} else {
-					toolkit = DLTKLanguageManager.findToolkit(path);
-					if (toolkit != null) {
-						return toolkit.validateSourceModule(path);
-					}
-					return new ModelStatus(IModelStatusConstants.INVALID_RESOURCE, root);
-				}
-			} catch (CoreException ex) {
-				return new ModelStatus(ex);
-			}
-		}
-		else {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.findToolkit(path);
-			if (toolkit != null) {
-				return toolkit.validateSourceModule(path);
-			}
-			return new ModelStatus(IModelStatusConstants.INVALID_RESOURCE, root);
-		}
+		return isPrimary();
 	}
 
 	public boolean canBeRemovedFromCache() {		
@@ -384,7 +294,7 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 
 		if (checkOwner && isPrimary())
 			return this;
-		return new ExternalSourceModule((ScriptFolder) getParent(), getElementName(), DefaultWorkingCopyOwner.PRIMARY, this.fStorage);
+		return new BuiltinSourceModule((BuiltinScriptFolder) getParent(), getElementName(), DefaultWorkingCopyOwner.PRIMARY);
 	}
 
 	public IResource getUnderlyingResource() throws ModelException {
@@ -439,7 +349,7 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 	/*
 	 * Assume that this is a working copy
 	 */
-	protected void updateTimeStamp(ExternalSourceModule original) throws ModelException {
+	protected void updateTimeStamp(BuiltinSourceModule original) throws ModelException {
 		long timeStamp = ((IFile) original.getResource()).getModificationStamp();
 		if (timeStamp == IResource.NULL_STAMP) {
 			throw new ModelException(new ModelStatus(IModelStatusConstants.INVALID_RESOURCE));
@@ -527,15 +437,26 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 	}
 
 	public InputStream getContents() throws CoreException {
-		return this.fStorage.getContents();
+		String builtinModuleContent = getSourceModuleContent();
+		if( builtinModuleContent == null ) {
+			return new ByteArrayInputStream(new byte[0]);
+		}
+		ByteArrayInputStream input = new ByteArrayInputStream(builtinModuleContent.getBytes());
+		return input;
+	}
+
+	private String getSourceModuleContent() {
+		BuiltinProjectFragment fragment = (BuiltinProjectFragment)getProjectFragment();
+		String builtinModuleContent = fragment.builtinProvider.getBuiltinModuleContent(this.name);
+		return builtinModuleContent;
 	}
 
 	public IPath getFullPath() {
-		return this.fStorage.getFullPath();
+		return new Path( this.name );
 	}
 
 	public String getName() {
-		return this.fStorage.getName();
+		return this.name;
 	}
 	public Object getAdapter(Class adapter) {
 		if( adapter == IStorage.class ) {

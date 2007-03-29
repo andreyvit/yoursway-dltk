@@ -23,6 +23,7 @@ import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.core.search.matching.FieldPattern;
 import org.eclipse.dltk.internal.core.search.matching.InternalSearchPattern;
 import org.eclipse.dltk.internal.core.search.matching.MethodPattern;
+import org.eclipse.dltk.internal.core.search.matching.OrPattern;
 import org.eclipse.dltk.internal.core.search.matching.QualifiedTypeDeclarationPattern;
 import org.eclipse.dltk.internal.core.search.matching.TypeDeclarationPattern;
 import org.eclipse.dltk.internal.core.search.matching.TypeReferencePattern;
@@ -1043,28 +1044,17 @@ public abstract class SearchPattern extends InternalSearchPattern {
 			// simpleName,
 			// SuperTypeReferencePattern.ONLY_SUPER_INTERFACES,
 			// matchRule);
-			// case IDLTKSearchConstants.ALL_OCCURRENCES :
-			// return new OrPattern(
-			// new TypeDeclarationPattern(
-			// packageName,
-			// enclosingTypeNames,
-			// simpleName,
-			// IIndexConstants.TYPE_SUFFIX,
-			// matchRule),
-			// (type != null)
-			// ? new TypeReferencePattern(
-			// CharOperation.concatWith(packageName, enclosingTypeNames,
-			// '.'),
-			// simpleName,
-			// type,
-			// matchRule)
-			// : new TypeReferencePattern(
-			// CharOperation.concatWith(packageName, enclosingTypeNames,
-			// '.'),
-			// simpleName,
-			// typeSignature,
-			// matchRule)
-			// );
+		case IDLTKSearchConstants.ALL_OCCURRENCES:
+			return new OrPattern(new TypeDeclarationPattern(packageName,
+					enclosingTypeNames, simpleName,
+					IIndexConstants.TYPE_SUFFIX, matchRule),
+					(type != null) ? new TypeReferencePattern(CharOperation
+							.concatWith(packageName, enclosingTypeNames, '$'),
+							simpleName, type, matchRule)
+							: new TypeReferencePattern(CharOperation
+									.concatWith(packageName,
+											enclosingTypeNames, '$'),
+									simpleName, matchRule));
 		}
 		return null;
 	}
@@ -1091,17 +1081,24 @@ public abstract class SearchPattern extends InternalSearchPattern {
 			return null;
 
 		char[] qualificationChars = null, typeChars = null;
-
-		switch (limitTo) {
-
-		case IDLTKSearchConstants.DECLARATIONS:
-			// cannot search for explicit member types
-			return new QualifiedTypeDeclarationPattern(qualificationChars,
-					typeChars, indexSuffix, matchRule);
-		case IDLTKSearchConstants.REFERENCES:
-			return new TypeReferencePattern(qualificationChars, typeChars,
-					matchRule);
+		
+		typeChars = patternString.toCharArray();
+		if (typeChars.length == 1 && typeChars[0] == '*') {
+			typeChars = null;
 		}
+		
+		switch (limitTo) {
+		case IDLTKSearchConstants.DECLARATIONS : // cannot search for explicit member types
+			return new QualifiedTypeDeclarationPattern(qualificationChars, typeChars, indexSuffix, matchRule);
+		case IDLTKSearchConstants.REFERENCES :
+			return new TypeReferencePattern(qualificationChars, typeChars, matchRule);
+//		case IDLTKSearchConstants.IMPLEMENTORS : 
+//			return new SuperTypeReferencePattern(qualificationChars, typeChars, SuperTypeReferencePattern.ONLY_SUPER_INTERFACES, indexSuffix, matchRule);
+		case IDLTKSearchConstants.ALL_OCCURRENCES :
+			return new OrPattern(
+				new QualifiedTypeDeclarationPattern(qualificationChars, typeChars, indexSuffix, matchRule),// cannot search for explicit member types
+				new TypeReferencePattern(qualificationChars, typeChars, matchRule));
+	}
 		return null;
 	}
 
