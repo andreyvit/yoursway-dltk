@@ -2,6 +2,9 @@ class Abc
 end
 
 class XYZ
+	
+	include Abc
+
 	class Wow
 	end
 end

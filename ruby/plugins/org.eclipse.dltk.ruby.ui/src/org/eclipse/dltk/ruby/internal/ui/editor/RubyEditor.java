@@ -34,7 +34,7 @@ public class RubyEditor extends ScriptEditor {
 
 	protected void doSetInput(IEditorInput input) throws CoreException {
 		super.doSetInput(input);
-//		preCacheInfo();
+		preCacheInfo();
 	}
 	private void preCacheInfo() {
 		// Lets prebuilt all builtins into mixin model for speed.

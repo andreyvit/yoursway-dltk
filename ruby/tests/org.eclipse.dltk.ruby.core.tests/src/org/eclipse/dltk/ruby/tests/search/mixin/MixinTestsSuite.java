@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinElementInfo;
 import org.eclipse.dltk.ruby.tests.Activator;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencer;
 
@@ -77,6 +78,16 @@ public class MixinTestsSuite extends TestSuite {
 						IMixinElement mixinElement = model.get(key);
 						if (mixinElement == null) {
 							throw new AssertionFailedError("Key " + key + " not found");
+						}
+						Object[] allObjects = mixinElement.getAllObjects();
+						if (allObjects == null && allObjects.length > 0)
+							throw new AssertionFailedError("Key " + key + " has null or empty object set");
+						for (int i = 0; i < allObjects.length; i++) {							
+							if (allObjects[i] == null)
+								throw new AssertionFailedError("Key " + key + " has null object at index " + i);
+							RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
+							if (info.getObject() == null)
+								throw new AssertionFailedError("Key " + key + " has info with a null object at index " + i + " (kind=" + info.getKind() + ")");
 						}
 					}
 
