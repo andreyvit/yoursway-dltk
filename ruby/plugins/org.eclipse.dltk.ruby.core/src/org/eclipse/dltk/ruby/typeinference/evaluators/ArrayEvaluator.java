@@ -17,7 +17,7 @@ public class ArrayEvaluator extends GoalEvaluator {
 
 	public Object produceResult() {
 //		return new SimpleType(SimpleType.TYPE_ARRAY); //XXX: fixme
-		return new RubyClassType("Array"); 
+		return new RubyClassType("Array%"); 
 	}
 
 	public IGoal[] init() {		

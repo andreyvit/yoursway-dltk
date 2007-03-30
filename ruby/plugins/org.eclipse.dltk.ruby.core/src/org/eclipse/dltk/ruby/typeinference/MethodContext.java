@@ -5,13 +5,10 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.ti.IContext;
 import org.eclipse.dltk.ti.IInstanceContext;
 import org.eclipse.dltk.ti.ISourceModuleContext;
-import org.eclipse.dltk.ti.types.ClassType;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
-import org.eclipse.dltk.ti.types.MostSpecificType;
 
 public class MethodContext implements IContext, IArgumentsContext, IInstanceContext, ISourceModuleContext {
 
@@ -23,7 +20,7 @@ public class MethodContext implements IContext, IArgumentsContext, IInstanceCont
 
 	private final IEvaluatedType[] argTypes;
 
-	private ClassType instanceType;
+	private IEvaluatedType instanceType;
 
 	public MethodContext(IContext parent, ISourceModule sourceModule, ModuleDeclaration rootNode,
 			String[] argNames, IEvaluatedType[] argTypes) {
@@ -48,7 +45,7 @@ public class MethodContext implements IContext, IArgumentsContext, IInstanceCont
 		return null;
 	}
 
-	public ClassType getInstanceType() {
+	public IEvaluatedType getInstanceType() {
 		return instanceType;
 	}
 

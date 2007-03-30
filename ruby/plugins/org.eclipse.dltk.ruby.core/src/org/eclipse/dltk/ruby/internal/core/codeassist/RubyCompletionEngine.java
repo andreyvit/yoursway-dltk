@@ -419,15 +419,6 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 		int relevance = 424242;
 		if (receiver != null) {
-			if (receiver instanceof RubyArrayExpression) {
-				int st = position;
-				while (st >= 0 && content.charAt(st) != '.')
-					st--;
-				if (st > 0) {
-					starting = content.substring(st + 1, position).trim();
-					this.setSourceRange(position - starting.length(), position);
-				}
-			}
 			methods = getMethodsForReceiver(module, moduleDeclaration,
 					receiver, starting);
 		} else {
@@ -487,14 +478,14 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				}
 				proposal.setParameterNames(args);
 				
-				String replacement = new String(name) + "("; //XXX!
-				for (int i = 0; i < params.length; i++) {
-					replacement += params[i];
-					if (i != params.length - 1)
-						replacement += ", ";
-				}
-				replacement += ")";
-				compl = replacement.toCharArray();
+//				String replacement = new String(name) + "("; //XXX!
+//				for (int i = 0; i < params.length; i++) {
+//					replacement += params[i];
+//					if (i != params.length - 1)
+//						replacement += ", ";
+//				}
+//				replacement += ")";
+//				compl = replacement.toCharArray();
 			}
 			
 

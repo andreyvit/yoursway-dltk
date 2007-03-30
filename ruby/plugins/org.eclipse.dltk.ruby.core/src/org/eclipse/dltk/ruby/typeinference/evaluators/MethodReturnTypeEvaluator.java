@@ -14,6 +14,7 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.ruby.ast.RubyDotExpression;
 import org.eclipse.dltk.ruby.ast.RubyReturnStatement;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
@@ -106,10 +107,12 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 	public IGoal[] init() {
 		MethodReturnTypeGoal typedGoal = getTypedGoal();
 		InstanceContext typedContext = getTypedContext();
-		ClassType instanceType = typedContext.getInstanceType();
+		IEvaluatedType instanceType = typedContext.getInstanceType();
+		if (instanceType instanceof AmbiguousType)
+			instanceType = ((AmbiguousType)instanceType).getPossibleTypes()[0];
 		String methodName = typedGoal.getMethodName();
 					
-		IEvaluatedType intrinsicMethodReturnType = checkMethodReturnType(instanceType, methodName, typedGoal.getArguments());
+		IEvaluatedType intrinsicMethodReturnType = checkMethodReturnType((ClassType) instanceType, methodName, typedGoal.getArguments());
 		if (intrinsicMethodReturnType != null) {
 			evaluated.add(intrinsicMethodReturnType);
 			return IGoal.NO_GOALS;

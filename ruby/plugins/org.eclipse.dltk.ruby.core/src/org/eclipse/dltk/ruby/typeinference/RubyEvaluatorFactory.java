@@ -32,6 +32,7 @@ import org.eclipse.dltk.ruby.typeinference.evaluators.ConstantReferenceEvaluator
 import org.eclipse.dltk.ruby.typeinference.evaluators.IfStatementTypeEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.MethodCallTypeEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.MethodReturnTypeEvaluator;
+import org.eclipse.dltk.ruby.typeinference.evaluators.NonTypeConstantTypeEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.NullGoalEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.NumericLiteralEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.ReturnStatementEvaluator;
@@ -39,6 +40,7 @@ import org.eclipse.dltk.ruby.typeinference.evaluators.SelfReferenceEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.StringLiteralEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.VariableReferenceEvaluator;
 import org.eclipse.dltk.ruby.typeinference.goals.ColonExpressionGoal;
+import org.eclipse.dltk.ruby.typeinference.goals.NonTypeConstantTypeGoal;
 import org.eclipse.dltk.ti.BasicContext;
 import org.eclipse.dltk.ti.IGoalEvaluatorFactory;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
@@ -98,6 +100,8 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 			return new MethodReturnTypeEvaluator(goal);
 		else if (goal instanceof ColonExpressionGoal) 
 			return new ColonExpressionEvaluator(goal);
+		else if (goal instanceof NonTypeConstantTypeGoal)
+			return new NonTypeConstantTypeEvaluator(goal);
 		return new NullGoalEvaluator(goal);
 	}
 

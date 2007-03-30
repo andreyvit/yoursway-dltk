@@ -103,7 +103,7 @@ public class MethodCallTypeEvaluator extends GoalEvaluator {
 				receiverType = null;
 			return new MethodReturnTypeGoal(
 					new InstanceContext((ISourceModuleContext) goal.getContext(),
-					(ClassType) receiverType), expression.getName(), arguments);
+					receiverType), expression.getName(), arguments);
 		}
 		if (state == STATE_WAITING_METHOD) {
 			result = (IEvaluatedType) previousResult;

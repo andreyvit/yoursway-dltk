@@ -63,6 +63,7 @@ def put_singleton_methods!(metaclass)
 end
 
 def put_included_modules!(metaclass)
+
 	ms = (metaclass.included_modules - 
 			((metaclass.is_a?(Class) &&
 			metaclass.superclass &&
@@ -75,20 +76,32 @@ def put_included_modules!(metaclass)
 	
 		END
 	end
+	
 end
 
 def put_singleton_included_modules!(metaclass)
+	$data << <<-"END2"
+	class << ::#{metaclass.name}
+	END2
+
 	sup = (class << metaclass; superclass; end)
-	ms = ((class << metaclass; included_modules; end) -
-			((sup && sup.included_modules) || [])).collect { |m|
-		const_for(m)
-	}.join(",");
+#	ms = ((class << metaclass; included_modules; end) -
+#			((sup && sup.included_modules) || []))
+	ms = (class << metaclass; included_modules; end)
 	
-	$data << <<-"END"
-		#{const_for_singleton(metaclass)}.setIncludedModules(new ModuleMetaclass[] {
-			#{ms}
-		});
-	END
+	
+	for in_mod in ms do
+		$data << <<-"END"
+		
+		include #{in_mod.name}
+	
+		END
+	end
+	
+	$data << <<-"END2"
+	end
+	END2
+
 end
 
 def put_superclass!(metaclass)
@@ -120,6 +133,7 @@ def dumpClass(klass)
 class #{name} #{scname}
 	END
 	put_included_modules!(klass)
+	put_singleton_included_modules!(klass)
 	put_methods!(klass)
 	put_singleton_methods!(klass)
 	$data << <<-"END"	
@@ -201,6 +215,19 @@ def process_all
 		puts "#### DLTK RUBY BUILTINS ####" + file + "\n"
 		puts $data 
 		#File.open(file, 'a') {|f| f.write $data}		
+	}
+	
+	ccc = Module.constants.to_a
+	known_modules.each { |x|
+		ccc.delete(x.to_s)
+	}
+	classes.each { |x|
+		ccc.delete(x.to_s)
+	}
+	
+	puts "#### DLTK RUBY BUILTINS ####constants.rb\n\n\n"
+	ccc.each { |bar|
+		puts "#{bar} = #{Module.const_get(bar).class.to_s}.new"
 	}
 	
 end
