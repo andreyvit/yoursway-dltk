@@ -183,12 +183,9 @@ def process_all
 			filename = filename.slice(0..pos-1)
 			#puts "sliced " + filename  
 		end		
-		file = filename + ".rb"
-		if $names then
-			puts file
-		else
-			if file == ARGV[0] then puts $data end
-		end
+		file = filename + ".rb"		
+		puts "#### DLTK RUBY BUILTINS ####" + file + "\n"
+		puts $data 
 		#File.open(file, 'a') {|f| f.write $data}
 	}
 	known_modules.each { |c|
@@ -201,18 +198,15 @@ def process_all
 			#puts "sliced " + filename 
 		end		
 		file = filename + ".rb"
-		if $names then
-			puts file
-		else
-			if file == ARGV[0] then puts $data end
-		end
+		puts "#### DLTK RUBY BUILTINS ####" + file + "\n"
+		puts $data 
 		#File.open(file, 'a') {|f| f.write $data}		
 	}
 	
 end
 
 #puts "Begin"
-$names = (ARGV[0] == "names")
+#$names = (ARGV[0] == "names")
 process_all
 
 #puts "End"

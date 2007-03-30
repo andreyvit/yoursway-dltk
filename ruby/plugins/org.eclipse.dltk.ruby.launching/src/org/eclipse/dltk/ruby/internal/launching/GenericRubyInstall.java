@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.eclipse.core.runtime.CoreException;
@@ -123,23 +124,39 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 	}
 	
 	
+	private static final String prefix = "#### DLTK RUBY BUILTINS ####";
+	private static final int prefixLength = prefix.length();
+	private HashMap sources = null;
+	
+	private void initialize () {
+		sources = new HashMap();
+		String content = new BuiltinsHelper().execute("");
+		int nl;
+		int start = 0;
+		int pos = content.indexOf(prefix, start);
+		while (pos >= 0) {
+			nl = content.indexOf('\n', pos);
+			String filename = content.substring(pos + prefixLength, nl).trim();
+			String data = "";
+			pos = content.indexOf(prefix, nl + 1);
+			if (pos != -1)
+				data = content.substring(nl + 1, pos);
+			else 
+				data = content.substring(nl + 1);
+			sources.put(filename, data);
+		}
+	}
 
 	public String getBuiltinModuleContent(String name) {
-		String content = new BuiltinsHelper().execute(name);
-		return content;
+		if (sources == null)
+			initialize();
+		return (String) sources.get(name);
 	}
 
 	public String[] getBuiltinModules() {
-		HashSet names = new HashSet();
-		String execute = new BuiltinsHelper().execute("names");
-		String[] split = execute.split("\n");
-		for (int i = 0; i < split.length; i++) {
-			if (split[i].length() > 0)
-				names.add(split[i]);
-		}
-		
-		//return new String[] {"types.rb", "functions.rb"};
-		return (String[]) names.toArray(new String[names.size()]);
+		if (sources == null)
+			initialize();
+		return (String[]) sources.keySet().toArray(new String[sources.size()]);
 	}
 	
 }
