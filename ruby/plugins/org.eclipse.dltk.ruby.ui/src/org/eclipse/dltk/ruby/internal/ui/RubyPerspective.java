@@ -27,7 +27,7 @@ public class RubyPerspective implements IPerspectiveFactory  {
 		layout.addView(IPageLayout.ID_OUTLINE, IPageLayout.RIGHT, (float)0.75, editorArea);
 				
 		layout.addActionSet(IPageLayout.ID_NAVIGATE_ACTION_SET);
-		//layout.addActionSet(RubyUI.ID_ACTION_SET);
+		layout.addActionSet("org.eclipse.dltk.ruby.ui.RubyActionSet"); // TODO: externalize constant
 		
 		// views - standard workbench
 		layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
@@ -36,7 +36,7 @@ public class RubyPerspective implements IPerspectiveFactory  {
 		layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);
 		layout.addShowViewShortcut(IProgressConstants.PROGRESS_VIEW_ID);
 		
-		// new actions - Python project creation wizard
+		// new actions - Ruby project creation wizard
 		layout.addNewWizardShortcut("org.eclipse.dltk.ruby.internal.ui.wizards.RubyProjectWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.dltk.ruby.internal.ui.wizards.RubyFileCreationWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder");//$NON-NLS-1$
