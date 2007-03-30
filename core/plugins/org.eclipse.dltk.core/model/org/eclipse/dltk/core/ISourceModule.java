@@ -310,4 +310,6 @@ public interface ISourceModule extends IModule, ISourceReference,ISourceManipula
 	IField getField(String string);
 	
 	IField[] getFields() throws ModelException;
+	
+	boolean isBuiltin();
 }

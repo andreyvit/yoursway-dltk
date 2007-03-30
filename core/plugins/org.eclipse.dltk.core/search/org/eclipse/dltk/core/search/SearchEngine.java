@@ -732,11 +732,16 @@ public class SearchEngine {
 		IndexManager indexManager = ModelManager.getModelManager().getIndexManager();
 		
 		MixinPattern pattern = new MixinPattern(key.toCharArray(), SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE |  SearchPattern.R_PATTERN_MATCH);
+		
+		SearchParticipant participant = SearchEngine.getDefaultSearchParticipant();
+		
+		participant.selectMixinIndexes(pattern, scope);
+		
 		// add type names from indexes
 		indexManager.performConcurrentJob(
 			new PatternSearchJob(
 				pattern, 
-				SearchEngine.getDefaultSearchParticipant(), // Script search only
+				participant, // Script search only
 				scope, 
 				searchRequestor),
 				IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
@@ -767,11 +772,16 @@ public class SearchEngine {
 			flags |= SearchPattern.R_PATTERN_MATCH;
 		
 		MixinPattern pattern = new MixinPattern(key.toCharArray(), flags);
+		
+		SearchParticipant participant = SearchEngine.getDefaultSearchParticipant();
+		
+		participant.selectMixinIndexes(pattern, scope);
+
 		// add type names from indexes
 		indexManager.performConcurrentJob(
 			new PatternSearchJob(
 				pattern, 
-				SearchEngine.getDefaultSearchParticipant(), // Script search only
+				participant, // Script search only
 				scope, 
 				searchRequestor),
 				IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,

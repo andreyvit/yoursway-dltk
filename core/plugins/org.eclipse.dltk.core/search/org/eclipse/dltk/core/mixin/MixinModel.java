@@ -20,10 +20,13 @@ import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.ISourceModuleInfoCache;
+import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.indexing.IIndexConstants;
 import org.eclipse.dltk.internal.core.ModelCache;
+import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.mixin.IInternalMixinElement;
 import org.eclipse.dltk.internal.core.mixin.MixinCache;
 import org.eclipse.dltk.internal.core.mixin.MixinManager;
@@ -40,12 +43,13 @@ public class MixinModel {
 	private MixinRequestor mixinRequestor = new MixinRequestor();
 	
 	private ISourceModule currentModule;
+	private Set modulesToReparse = new HashSet(); // list of modules required to be reparsed.
 
 	public MixinModel(IDLTKLanguageToolkit toolkit) {
 		this.toolkit = toolkit;
 
 		// long maxMemory = Runtime.getRuntime().freeMemory();
-		double ratio = 1000;
+		double ratio = 500;
 
 		this.cache = new MixinCache(
 				(int) (ModelCache.DEFAULT_ROOT_SIZE * ratio));
@@ -108,10 +112,7 @@ public class MixinModel {
 			return;
 		}
 		for (int i = 0; i < containedModules.length; ++i) {
-			if (!this.elementToMixinCache.containsKey(containedModules[i])) {
-				this.elementToMixinCache.put(containedModules[i], new ArrayList());
-				reportModule(containedModules[i]);
-			}
+			reportModule(containedModules[i]);
 		}
 		// mark selected element and all subelements as finished.
 		markElementAsFinal(element);
@@ -124,7 +125,17 @@ public class MixinModel {
 		}
 	}
 
-	private void reportModule(ISourceModule sourceModule) {
+	public synchronized void reportModule(ISourceModule sourceModule) {
+		if (!this.elementToMixinCache.containsKey(sourceModule)) {
+			this.elementToMixinCache.put(sourceModule, new ArrayList());
+		}
+		else { // Module already in model. So we do not to rebuild it.
+			if( !this.modulesToReparse.contains(sourceModule)) {
+				return;
+			}
+			this.modulesToReparse.remove(sourceModule);
+			// We need to reparse module if some elements are moved from it.
+		}
 		IMixinParser mixinParser;
 		try {
 			mixinParser = MixinManager.getMixinParser(sourceModule);
@@ -133,7 +144,15 @@ public class MixinModel {
 				char[] content = sourceModule.getSourceAsCharArray();
 				mixinParser.setRequirestor(mixinRequestor);
 //				System.out.println("Mixins: reporting " + sourceModule.getPath());
-				mixinParser.parserSourceModule(content, true, sourceModule );
+				ISourceModuleInfoCache sourceModuleInfoCache = ModelManager.getModelManager().getSourceModuleInfoCache();
+//				sourceModuleInfoCache.remove(sourceModule);
+				ISourceModuleInfo mifo = sourceModuleInfoCache.get(sourceModule);
+				
+				mixinParser.parserSourceModule(content, true, sourceModule, mifo );
+				
+				if( mifo.isEmpty() ) {
+					sourceModuleInfoCache.remove(sourceModule);
+				}
 				this.currentModule = null;
 			}
 		} catch (CoreException e) {
@@ -382,6 +401,19 @@ public class MixinModel {
 
 		public void close() {
 			this.bFinal = false;
+			for (int i = 0; i < sourceModules.size(); i++) {
+				Object module = sourceModules.get(i);
+				List list = (List)elementToMixinCache.get(module);
+				if( list != null ) {
+					list.remove( this );
+					if( list.size() == 0 ) {
+						elementToMixinCache.remove(module);
+					}
+				}
+				if( !modulesToReparse.contains(module) && elementToMixinCache.containsKey(module)) {
+					modulesToReparse.add(module);
+				}
+			}
 			this.sourceModules.clear();
 			this.sourceModuleToObject.clear();
 			

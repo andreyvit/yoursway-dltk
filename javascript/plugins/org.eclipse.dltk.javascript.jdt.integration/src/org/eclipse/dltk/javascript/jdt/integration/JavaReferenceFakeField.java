@@ -268,4 +268,9 @@ final class JavaReferenceFakeField extends FakeField implements ISourceModule,IF
 		}
 		return null;
 	}
+
+	public boolean isBuiltin() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

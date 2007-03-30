@@ -1,6 +1,7 @@
 package org.eclipse.dltk.core.mixin;
 
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.ISourceModuleInfoCache;
 
 
 public interface IMixinParser {
@@ -13,6 +14,6 @@ public interface IMixinParser {
 	 * @param signature
 	 * @param module
 	 */
-	public void parserSourceModule(char[] contents, boolean signature, ISourceModule module);
+	public void parserSourceModule(char[] contents, boolean signature, ISourceModule module, ISourceModuleInfoCache.ISourceModuleInfo info);
 	void setRequirestor( IMixinRequestor requestor );
 }

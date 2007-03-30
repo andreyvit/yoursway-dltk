@@ -17,6 +17,8 @@ import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.ISourceModuleInfoCache;
+import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.core.builder.IScriptBuilder;
 import org.eclipse.dltk.core.mixin.IMixinParser;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
@@ -136,7 +138,15 @@ public class MixinBuilder implements IScriptBuilder {
 				.setContainerRelativePath(containerRelativePath);
 				currentIndex.remove(containerRelativePath);
 				((InternalSearchDocument) document).setIndex(currentIndex);
-				new MixinIndexer(document, source).indexDocument();
+				
+				ISourceModuleInfoCache sourceModuleInfoCache = ModelManager.getModelManager().getSourceModuleInfoCache();
+//				sourceModuleInfoCache.remove(element);
+				ISourceModuleInfo mifo = sourceModuleInfoCache.get(element);
+				
+				new MixinIndexer(document, source, mifo ).indexDocument();
+				if( mifo.isEmpty() ) {
+					sourceModuleInfoCache.remove(element);
+				}
 			}
 			if (mixinIndex != null)
 				manager.saveIndex(mixinIndex);

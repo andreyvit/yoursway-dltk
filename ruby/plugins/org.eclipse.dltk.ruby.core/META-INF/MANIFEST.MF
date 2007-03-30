@@ -52,12 +52,13 @@ Export-Package: org.eclipse.dltk.ruby.ast;
    org.osgi.framework,
    org.eclipse.dltk.core,
    org.eclipse.core.runtime",
+ org.eclipse.dltk.ruby.internal.parser.mixin,
  org.eclipse.dltk.ruby.internal.parser.visitors;
   uses:="org.eclipse.dltk.ast.expressions,
    org.eclipse.dltk.compiler,
    org.eclipse.dltk.ast.statements,
    org.eclipse.dltk.ast.declarations",
-  org.eclipse.dltk.ruby.internal.parsers.jruby;
+ org.eclipse.dltk.ruby.internal.parsers.jruby;
   uses:="org.jruby.evaluator,
    org.eclipse.dltk.ast.expressions,
    org.eclipse.dltk.ast,

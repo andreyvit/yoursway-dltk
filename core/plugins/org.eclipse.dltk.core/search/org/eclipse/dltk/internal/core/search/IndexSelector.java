@@ -34,6 +34,9 @@ public class IndexSelector {
 	IDLTKSearchScope searchScope;
 	SearchPattern pattern;
 	IPath[] indexLocations; // cache of the keys for looking index up
+	public boolean mixin = false; // Set to true then mixin search are used.
+
+	// Filter some builtin elements.
 
 	public IndexSelector(IDLTKSearchScope searchScope, SearchPattern pattern) {
 		this.searchScope = searchScope;
@@ -68,12 +71,12 @@ public class IndexSelector {
 			IDLTKProject[] allProjects = model.getScriptProjects();
 			for (int i = 0, length = allProjects.length; i < length; i++) {
 				DLTKProject otherProject = (DLTKProject) allProjects[i];
-				IBuildpathEntry[] entries = otherProject
-						.getResolvedBuildpath(true/* ignoreUnresolvedEntry */,
-								false/* don't generateMarkerOnError */, false/*
-																			 * don't
-																			 * returnResolutionInProgress
-																			 */);
+				IBuildpathEntry[] entries = otherProject.getResolvedBuildpath(
+						true/* ignoreUnresolvedEntry */,
+						false/* don't generateMarkerOnError */, false/*
+																		 * don't
+																		 * returnResolutionInProgress
+																		 */);
 				for (int j = 0, length2 = entries.length; j < length2; j++) {
 					IBuildpathEntry entry = entries[j];
 					if (entry.getEntryKind() == IBuildpathEntry.BPE_LIBRARY
@@ -155,8 +158,10 @@ public class IndexSelector {
 		IScriptModel model = ModelManager.getModelManager().getModel();
 		if (focus == null) {
 			for (int i = 0; i < projectsAndArchives.length; i++) {
-				locations.add(manager
-						.computeIndexLocation(projectsAndArchives[i]));
+				if (!mixin) {
+					locations.add(manager
+							.computeIndexLocation(projectsAndArchives[i]));
+				}
 
 				checkSpecial(projectsAndArchives[i], manager, locations, model);
 			}
@@ -186,7 +191,10 @@ public class IndexSelector {
 					if (project != null) {
 						visitedProjects.add(project);
 						if (canSeeFocus(focus, project, focusEntries)) {
-							locations.add(manager.computeIndexLocation(path));
+							if (!mixin) {
+								locations.add(manager
+										.computeIndexLocation(path));
+							}
 							checkSpecial(path, manager, locations, model);
 							projectsCanSeeFocus[projectIndex++] = project;
 						}
@@ -206,8 +214,11 @@ public class IndexSelector {
 						if (entry.getEntryKind() == IBuildpathEntry.BPE_LIBRARY) {
 							IPath path = entry.getPath();
 							if (archivesToCheck.includes(path)) {
-								locations.add(manager
-										.computeIndexLocation(entry.getPath()));
+								if (!mixin) {
+									locations.add(manager
+											.computeIndexLocation(entry
+													.getPath()));
+								}
 								archivesToCheck.remove(path);
 							}
 						}
@@ -229,9 +240,11 @@ public class IndexSelector {
 								if (entry.getEntryKind() == IBuildpathEntry.BPE_LIBRARY) {
 									IPath path = entry.getPath();
 									if (archivesToCheck.includes(path)) {
-										locations.add(manager
-												.computeIndexLocation(entry
-														.getPath()));
+										if (!mixin) {
+											locations.add(manager
+													.computeIndexLocation(entry
+															.getPath()));
+										}
 										archivesToCheck.remove(path);
 									}
 								}
@@ -259,12 +272,15 @@ public class IndexSelector {
 		locations.add(manager.computeIndexLocation(new Path(prjPath)));
 		// add builtin indexes
 		IPath path = projectsAndArchives;
-		if (!path.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY)) {
-			DLTKProject project = (DLTKProject) getScriptProject(path, model);
-			if (project != null) {
-				IPath p = new Path("#special#builtin#")
-						.append(projectsAndArchives);
-				locations.add(manager.computeIndexLocation(p));
+		if (!mixin) {
+			if (!path.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY)) {
+				DLTKProject project = (DLTKProject) getScriptProject(path,
+						model);
+				if (project != null) {
+					IPath p = new Path("#special#builtin#")
+							.append(projectsAndArchives);
+					locations.add(manager.computeIndexLocation(p));
+				}
 			}
 		}
 	}

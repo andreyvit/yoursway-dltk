@@ -1,11 +1,18 @@
 package org.eclipse.dltk.ruby.internal.parser.mixin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.dltk.core.IField;
-import org.eclipse.dltk.core.IMethod;
-import org.eclipse.dltk.core.IType;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IModelElementVisitor;
+import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
+import org.eclipse.dltk.internal.core.BuiltinProjectFragment;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 
@@ -77,5 +84,39 @@ public class RubyMixinModel {
 		}
 		return null;
 	}
-
+	public static void preBuildMixinModelForBuiltint(IDLTKProject project, IProgressMonitor monitor ) {
+		try {
+			final MixinModel model = getRawInstance();
+			final List modules = new ArrayList();
+			project.accept( new IModelElementVisitor() {
+				public boolean visit(IModelElement element) {
+					if( element.getElementType() == IModelElement.PROJECT_FRAGMENT ) {
+						//Ignore not builtin project fragments.
+						if( element instanceof BuiltinProjectFragment) {
+							return true;
+						}
+						return false;
+					}
+					if( element.getElementType() == IModelElement.SOURCE_MODULE) {
+						if( ((ISourceModule)element).isBuiltin() ) {
+							modules.add(element);
+						}
+						return false;
+					}
+					return true;
+				}
+			});
+			monitor.beginTask("Ruby builtin precaching...", modules.size());
+			for (int i = 0; i < modules.size(); i++) {
+				monitor.worked(1);
+				model.reportModule((ISourceModule)modules.get(i));
+				if( monitor.isCanceled() ) {
+					return;
+				}
+			}
+			monitor.done();
+		} catch (ModelException e) {
+			e.printStackTrace();
+		}
+	}
 }

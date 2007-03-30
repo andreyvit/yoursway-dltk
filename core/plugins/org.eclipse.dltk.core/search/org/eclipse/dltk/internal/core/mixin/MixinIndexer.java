@@ -4,6 +4,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.ISourceModuleInfoCache;
 import org.eclipse.dltk.core.mixin.IMixinParser;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.search.SearchDocument;
@@ -12,9 +13,11 @@ import org.eclipse.dltk.core.search.indexing.AbstractIndexer;
 public class MixinIndexer extends AbstractIndexer {
 	char[] source;
 	MixinIndexRequestor requestor = new MixinIndexRequestor();
-	public MixinIndexer(SearchDocument document, char[] source) {
+	ISourceModuleInfoCache.ISourceModuleInfo info;
+	public MixinIndexer(SearchDocument document, char[] source, ISourceModuleInfoCache.ISourceModuleInfo info ) {
 		super(document);
 		this.source = source;
+		this.info = info;
 	}
 	public void indexDocument() {
 		IDLTKLanguageToolkit toolkit = this.document.getToolkit();
@@ -30,7 +33,7 @@ public class MixinIndexer extends AbstractIndexer {
 			if( parser != null ) {
 				parser.setRequirestor(this.requestor);
 //				System.out.println("Mixins: indexing " + this.document.getPath());
-				parser.parserSourceModule(this.source, false, null);
+				parser.parserSourceModule(this.source, false, null, info);
 			}
 		} catch (CoreException e) {
 			e.printStackTrace();

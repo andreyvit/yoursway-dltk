@@ -3,6 +3,8 @@ package org.eclipse.dltk.ruby.internal.core.codeassist;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
@@ -118,6 +120,10 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	public void complete(ISourceModule module, int position, int i) {
+		if( !Job.getJobManager().isIdle()) {
+			return;
+		}
+		
 		completedNames.clear();
 		this.actualCompletionPosition = position;
 		this.requestor.beginReporting();

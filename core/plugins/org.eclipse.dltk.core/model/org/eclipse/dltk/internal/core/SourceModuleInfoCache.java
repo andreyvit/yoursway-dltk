@@ -28,7 +28,7 @@ public class SourceModuleInfoCache implements ISourceModuleInfoCache {
 		// if max memory is infinite, set the ratio to 4d which corresponds to
 		// the 256MB that Eclipse defaults to
 		// (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=111299)
-		double ratio = 10; // 64000000
+		double ratio = 20; // 64000000
 
 		this.cache = new ElementCache(
 				(int) (ModelCache.DEFAULT_ROOT_SIZE * ratio));

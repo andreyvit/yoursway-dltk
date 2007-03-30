@@ -587,5 +587,9 @@ public class BuiltinSourceModule extends Openable implements IExternalSourceModu
 		IType[] arrayOfAllTypes = new IType[allTypes.size()];
 		allTypes.toArray(arrayOfAllTypes);
 		return arrayOfAllTypes;
+	}
+
+	public boolean isBuiltin() {
+		return true;
 	}	
 }

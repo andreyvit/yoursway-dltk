@@ -35,7 +35,6 @@ import org.eclipse.dltk.utils.CorePrinter;
 public class VirialModule extends ModelElement implements ISourceModule,
 		org.eclipse.dltk.core.ISourceModule {
 
-	
 	private IResource    resource;
 	private String contents;
 
@@ -346,6 +345,11 @@ public class VirialModule extends ModelElement implements ISourceModule,
 
 	public char[] getSourceAsCharArray() throws ModelException {
 		return null;	
+	}
+
+	public boolean isBuiltin() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

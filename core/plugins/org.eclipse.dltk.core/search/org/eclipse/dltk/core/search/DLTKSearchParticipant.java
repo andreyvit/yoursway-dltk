@@ -114,4 +114,14 @@ public class DLTKSearchParticipant extends SearchParticipant {
 		}
 		return this.indexSelector.getIndexLocations();
 	}
+
+	public IPath[] selectMixinIndexes(SearchPattern query,
+			IDLTKSearchScope scope) {
+		if (this.indexSelector == null ||( this.indexSelector != null && this.indexSelector.mixin == false )) {
+			this.indexSelector = new IndexSelector(scope, query);
+			this.indexSelector.mixin = true;
+		}
+		return this.indexSelector.getIndexLocations();
+//		return null;
+	}
 }

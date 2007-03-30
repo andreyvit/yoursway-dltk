@@ -666,5 +666,10 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 		IType[] arrayOfAllTypes = new IType[allTypes.size()];
 		allTypes.toArray(arrayOfAllTypes);
 		return arrayOfAllTypes;
+	}
+
+	public boolean isBuiltin() {
+		// TODO Auto-generated method stub
+		return false;
 	}	
 }

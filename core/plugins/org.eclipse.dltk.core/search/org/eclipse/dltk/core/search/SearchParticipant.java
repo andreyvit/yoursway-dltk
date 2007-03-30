@@ -244,4 +244,6 @@ public abstract class SearchParticipant {
 	 * @return the collection of index paths to consider
 	 */
 	public abstract IPath[] selectIndexes(SearchPattern query, IDLTKSearchScope scope);
+	
+	public abstract IPath[] selectMixinIndexes(SearchPattern query, IDLTKSearchScope scope);
 }
