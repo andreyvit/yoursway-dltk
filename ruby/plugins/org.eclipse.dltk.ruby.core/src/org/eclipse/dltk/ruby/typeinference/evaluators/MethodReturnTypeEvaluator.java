@@ -118,7 +118,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		MethodDeclaration decl = null;
 		List methods = new ArrayList ();
 		if (instanceType == null)
-			instanceType = new RubyClassType("Object"); //handle top-level methods
+			instanceType = new RubyClassType("Object"); 
 		if (instanceType instanceof RubyClassType) {
 			RubyClassType rubyClassType = (RubyClassType) instanceType;
 			RubyMixinClass class1 = RubyMixinModel.getInstance().createRubyClass(rubyClassType);
@@ -201,7 +201,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 
 	private IEvaluatedType checkMethodReturnType(ClassType instanceType,
 			String methodName, IEvaluatedType[] arguments) {
-		if (instanceType.getModelKey().endsWith(RubyMixin.INSTANCE_SUFFIX) || 
+		if (instanceType == null || instanceType.getModelKey().endsWith(RubyMixin.INSTANCE_SUFFIX) || 
 				instanceType.getModelKey().endsWith(RubyMixin.VIRTUAL_SUFFIX) )
 			return null;
 //		RubyMixinClass rubyClass = RubyMixinModel.getInstance().createRubyClass((RubyClassType) instanceType);

@@ -19,17 +19,20 @@ import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
 import org.eclipse.dltk.ruby.ast.DynamicBackquoteStringExpression;
 import org.eclipse.dltk.ruby.ast.DynamicStringExpression;
 import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
+import org.eclipse.dltk.ruby.ast.RubyCaseStatement;
 import org.eclipse.dltk.ruby.ast.RubyReturnStatement;
 import org.eclipse.dltk.ruby.ast.SelfReference;
 import org.eclipse.dltk.ruby.typeinference.evaluators.ArrayEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.AssignmentEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.BlockEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.BooleanLiteralEvaluator;
+import org.eclipse.dltk.ruby.typeinference.evaluators.CaseStatementTypeEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.ColonExpressionEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.ConstantReferenceEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.IfStatementTypeEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.MethodCallTypeEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.MethodReturnTypeEvaluator;
+import org.eclipse.dltk.ruby.typeinference.evaluators.NullGoalEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.NumericLiteralEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.ReturnStatementEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.SelfReferenceEvaluator;
@@ -83,19 +86,19 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 				return new FixedTypeEvaluator (goal, new RubyClassType("NilClass"));
 			else if (expr instanceof ColonExpression) {
 				return new ColonExpressionEvaluator(goal);
-			} 
-			else if (expr instanceof ConstantDeclaration) {
+			} else if (expr instanceof ConstantDeclaration) {
 				return new ConstantReferenceEvaluator(goal);
 			} else if (expr instanceof ReturnStatement || expr instanceof RubyReturnStatement) {
 				return new ReturnStatementEvaluator(goal);
-			}
+			} else if (expr instanceof RubyCaseStatement)
+				return new CaseStatementTypeEvaluator(goal);
 		} else if (goal instanceof ConstantTypeGoal)
 			return new ConstantReferenceEvaluator((ConstantTypeGoal) goal);
 		else if (goal instanceof MethodReturnTypeGoal)
 			return new MethodReturnTypeEvaluator(goal);
 		else if (goal instanceof ColonExpressionGoal) 
 			return new ColonExpressionEvaluator(goal);
-		return null;
+		return new NullGoalEvaluator(goal);
 	}
 
 	public static IGoal translateGoal(IGoal goal) {
