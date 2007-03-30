@@ -47,13 +47,13 @@ public class DLTKTypeInferenceEngine implements ITypeInferencer {
 	public DLTKTypeInferenceEngine() {		
 	}
 
-	public IEvaluatedType evaluateType(AbstractTypeGoal goal, IPruner pruner) {
+	public IEvaluatedType evaluateType(AbstractTypeGoal goal, int time) {
 		String nature = goal.getContext().getLangNature();
 		List list = (List) evaluatorsByNatures.get(nature);
 		if (list != null) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				ITypeInferencer ti = (ITypeInferencer) iterator.next();
-				IEvaluatedType type = ti.evaluateType(goal, pruner);
+				IEvaluatedType type = ti.evaluateType(goal, time);
 				if (type != null && !(type instanceof UnknownType)) //TODO
 					return type;
 			}

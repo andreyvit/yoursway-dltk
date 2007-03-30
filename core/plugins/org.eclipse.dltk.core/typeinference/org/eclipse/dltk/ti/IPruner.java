@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ti;
 
+import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
 
 
@@ -17,7 +18,9 @@ public interface IPruner {
 	/**
 	 * Called every time before getting new goal from evaluating 
 	 * queue. 
+	 * @param goal goal to prune
+	 * @param stat information about created evaluator
 	 */
-	public boolean prune (IGoal goal);
+	public boolean prune (IGoal goal, EvaluatorStatistics stat);
 
 }

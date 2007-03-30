@@ -312,7 +312,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 						(org.eclipse.dltk.core.ISourceModule) sourceModule,
 						parsedUnit), statement);
 		IEvaluatedType evaluatedType = this.inferencer.evaluateType(typeGoal,
-				null);
+				5000);
 		if (evaluatedType instanceof RubyClassType) {
 			RubyMixinClass mixinClass = RubyMixinModel.getInstance()
 					.createRubyClass((RubyClassType) evaluatedType);
@@ -369,7 +369,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 		} else {
 			ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
 					modelModule, parsedUnit), receiver);
-			IEvaluatedType type = inferencer.evaluateType(goal, null);
+			IEvaluatedType type = inferencer.evaluateType(goal, 5000);
 			availableMethods = RubyModelUtils.searchClassMethods(modelModule, parsedUnit, type, methodName);
 		}
 

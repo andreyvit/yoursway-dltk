@@ -5,6 +5,12 @@ import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public interface ITypeInferencer {
 
-	public IEvaluatedType evaluateType(AbstractTypeGoal goal, IPruner pruner);
+	/**
+	 * Should evaluate type for a goal
+	 * @param goal
+	 * @param timeLimit time in milliseconds, or -1 if no limits
+	 * @return
+	 */
+	public IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit);
 
 }

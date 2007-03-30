@@ -7,8 +7,8 @@ class Boz
 		def func
 			test = "Abc"
 			test = "Def"
-			test ## localvar test => String
+			test ## localvar test => String%
 		end
-		test ## localvar test => Fixnum
+		test ## localvar test => Fixnum%
 	end
 end

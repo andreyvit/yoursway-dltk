@@ -49,7 +49,7 @@ public class MixinModel {
 		this.toolkit = toolkit;
 
 		// long maxMemory = Runtime.getRuntime().freeMemory();
-		double ratio = 500;
+		double ratio = 2200;
 
 		this.cache = new MixinCache(
 				(int) (ModelCache.DEFAULT_ROOT_SIZE * ratio));
@@ -96,7 +96,8 @@ public class MixinModel {
 	}
 	
 	public boolean keyExists(String key) {
-		return findKeys(key).length > 0;
+//		return findKeys(key).length > 0;
+		return get(key) != null;
 	}
 
 	private void buildElementTree(MixinElement element) {
@@ -205,7 +206,8 @@ public class MixinModel {
 			}
 			if (delta.getKind() == IModelElementDelta.ADDED ) {
 				if (element.getElementType() == IModelElement.SOURCE_MODULE) {
-					clearAllElementsState();
+					modulesToReparse.add( element );
+//					clearAllElementsState();
 				}
 			}
 			
@@ -220,13 +222,13 @@ public class MixinModel {
 		}
 	};
 	
-	private synchronized void clearAllElementsState() {
-		Enumeration elements = cache.elements();
-		while( elements.hasMoreElements() ) {
-			MixinElement o = (MixinElement)elements.nextElement();
-			o.bFinal = false;
-		}
-	}
+//	private synchronized void clearAllElementsState() {
+//		Enumeration elements = cache.elements();
+//		while( elements.hasMoreElements() ) {
+//			MixinElement o = (MixinElement)elements.nextElement();
+//			o.bFinal = false;
+//		}
+//	}
 
 	public synchronized void remove(ISourceModule element) {
 		if( this.elementToMixinCache.containsKey(element)) {

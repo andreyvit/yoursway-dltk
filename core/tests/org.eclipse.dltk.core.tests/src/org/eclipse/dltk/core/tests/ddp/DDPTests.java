@@ -141,7 +141,7 @@ public class DDPTests extends TestCase {
 		final ITypeInferencer man = new DefaultTypeInferencer(factory);
 
 		ExpressionTypeGoal rootGoal = new ExpressionTypeGoal(null, x);
-		IEvaluatedType answer = man.evaluateType(rootGoal, null);
+		IEvaluatedType answer = man.evaluateType(rootGoal, -1);
 
 		assertTrue(answer instanceof MyNum);
 	}
@@ -186,7 +186,7 @@ public class DDPTests extends TestCase {
 		final ITypeInferencer man = new DefaultTypeInferencer(factory);
 
 		ExpressionTypeGoal rootGoal = new ExpressionTypeGoal(null, x);
-		IEvaluatedType answer = man.evaluateType(rootGoal, null);
+		IEvaluatedType answer = man.evaluateType(rootGoal, -1);
 
 		assertTrue(answer instanceof MyNum);
 		for (Iterator iter = evaluators.iterator(); iter.hasNext();) {

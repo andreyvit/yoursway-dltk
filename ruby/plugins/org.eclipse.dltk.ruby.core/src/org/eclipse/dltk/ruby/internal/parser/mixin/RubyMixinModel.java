@@ -92,15 +92,15 @@ public class RubyMixinModel {
 				public boolean visit(IModelElement element) {
 					if( element.getElementType() == IModelElement.PROJECT_FRAGMENT ) {
 						//Ignore not builtin project fragments.
-						if( element instanceof BuiltinProjectFragment) {
-							return true;
-						}
-						return false;
+//						if( element instanceof BuiltinProjectFragment) {
+//							return true;
+//						}
+						return true;
 					}
 					if( element.getElementType() == IModelElement.SOURCE_MODULE) {
-						if( ((ISourceModule)element).isBuiltin() ) {
+//						if( ((ISourceModule)element).isBuiltin() ) {
 							modules.add(element);
-						}
+//						}
 						return false;
 					}
 					return true;
@@ -114,6 +114,7 @@ public class RubyMixinModel {
 					return;
 				}
 			}
+			// If cache has no removes than set final to true for all elements.
 			monitor.done();
 		} catch (ModelException e) {
 			e.printStackTrace();

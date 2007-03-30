@@ -34,11 +34,18 @@ public class GoalEngine {
 	private final HashMap evaluatorStates = new HashMap();
 		
 	private class EvalutorState {
+		public long timeCreated;
+		public int totalSubgoals;
+		public int successfulSubgoals;
+		
 		public int subgoalsLeft;
 
 		public EvalutorState(int subgoalsLeft) {
 			this.subgoalsLeft = subgoalsLeft;
-		}		
+			this.timeCreated = System.currentTimeMillis();
+			totalSubgoals = subgoalsLeft;
+		}	
+				
 	}
 	
 	private class WorkingPair {
@@ -83,7 +90,10 @@ public class GoalEngine {
 		}
 		EvalutorState ev = (EvalutorState) evaluatorStates.get(evaluator);
 		ev.subgoalsLeft--;
-		ev.subgoalsLeft += newGoals.length;				
+		ev.subgoalsLeft += newGoals.length;			
+		ev.totalSubgoals += newGoals.length;
+		if (state == GoalState.DONE)
+			ev.successfulSubgoals++;
 		if (ev.subgoalsLeft == 0) {
 			Object newRes = evaluator.produceResult();
 			GoalEvaluationState st = (GoalEvaluationState) goalStates.get(evaluator.getGoal());
@@ -93,6 +103,14 @@ public class GoalEngine {
 			if (st.creator != null)
 				notifyEvaluator(st.creator, evaluator.getGoal());			
 		}
+	}
+	
+	private EvaluatorStatistics getEvaluatorStatistics (GoalEvaluator evaluator) {
+		EvalutorState ev = (EvalutorState) evaluatorStates.get(evaluator);
+		if (ev == null)
+			return null;
+		long currentTime = System.currentTimeMillis();
+		return new EvaluatorStatistics(ev.totalSubgoals,currentTime - ev.timeCreated,ev.totalSubgoals - ev.subgoalsLeft,ev.successfulSubgoals);
 	}
 	
 	public Object evaluateGoal(IGoal rootGoal, IPruner pruner) {
@@ -109,7 +127,7 @@ public class GoalEngine {
 			} else {
 				boolean prune = false;
 				if (pruner != null && pair.creator != null)
-					prune = pruner.prune(pair.goal);
+					prune = pruner.prune(pair.goal, getEvaluatorStatistics(pair.creator));
 				if (prune) {
 					storeGoal (pair.goal, GoalState.PRUNED, null, pair.creator);
 					notifyEvaluator(pair.creator, pair.goal);

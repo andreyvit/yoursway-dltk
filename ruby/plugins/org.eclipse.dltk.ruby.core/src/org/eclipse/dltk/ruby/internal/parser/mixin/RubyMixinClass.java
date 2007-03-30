@@ -111,6 +111,8 @@ public class RubyMixinClass implements IRubyMixinElement {
 	public RubyMixinClass[] getIncluded () {
 		List result = new ArrayList ();
 		IMixinElement mixinElement = model.getRawModel().get(key);
+		if (mixinElement == null)
+			return new RubyMixinClass[0];
 		Object[] allObjects = mixinElement.getAllObjects();
 		for (int i = 0; i < allObjects.length; i++) {
 			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];

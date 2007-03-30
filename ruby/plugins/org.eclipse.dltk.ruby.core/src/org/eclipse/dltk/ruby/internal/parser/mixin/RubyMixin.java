@@ -20,9 +20,9 @@ public class RubyMixin implements IMixinParser {
 
 	public void parserSourceModule(char[] contents, boolean signature,
 			ISourceModule module, ISourceModuleInfoCache.ISourceModuleInfo info ) {
-		if( module != null ) {
-			RubyMixinModel.getRawInstance().remove(module);
-		}
+//		if( module != null ) {
+//			RubyMixinModel.getRawInstance().remove(module);
+//		}
 //		long start = System.currentTimeMillis();
 		ModuleDeclaration moduleDeclaration = RubySourceElementParser
 				.parseModule(info, contents, null);

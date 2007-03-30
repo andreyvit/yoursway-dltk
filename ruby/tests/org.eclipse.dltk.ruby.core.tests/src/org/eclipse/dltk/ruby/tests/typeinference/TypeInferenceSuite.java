@@ -192,7 +192,7 @@ public class TypeInferenceSuite extends TestSuite {
 						rootNode.traverse(visitor);
 						Assert.isLegal(result[0] != null);
 						ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(cu, rootNode), result[0]);
-						IEvaluatedType type = inferencer.evaluateType(goal, null);
+						IEvaluatedType type = inferencer.evaluateType(goal, -1);
 						assertNotNull(type);
 						
 						assertEquals(correctClassRef, ((RubyClassType)type).getModelKey());
@@ -233,7 +233,7 @@ public class TypeInferenceSuite extends TestSuite {
 							System.out.println("ExpressionTypeAssertion.check()");
 						Assert.isLegal(result[0] != null);
 						ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(cu, rootNode), result[0]);
-						IEvaluatedType type = inferencer.evaluateType(goal, null);
+						IEvaluatedType type = inferencer.evaluateType(goal, -1);
 						if (!correctClassRef.equals("recursion")) {
 							assertNotNull(type);
 							if (type instanceof SimpleType) {
