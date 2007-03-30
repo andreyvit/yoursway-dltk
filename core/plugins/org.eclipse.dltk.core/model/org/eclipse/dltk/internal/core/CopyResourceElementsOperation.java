@@ -682,6 +682,10 @@ public class CopyResourceElementsOperation extends MultiOperation {
 			if (isMove())
 				error(IModelStatusConstants.INVALID_ELEMENT_TYPES, element);
 		}
+		else if(elementType== IModelElement.SOURCE_MODULE && element instanceof BuiltinSourceModule ) {
+			if (isMove())
+				error(IModelStatusConstants.INVALID_ELEMENT_TYPES, element);
+		}
 		else if (elementType != IModelElement.SCRIPT_FOLDER) {
 			error(IModelStatusConstants.INVALID_ELEMENT_TYPES, element);
 		}

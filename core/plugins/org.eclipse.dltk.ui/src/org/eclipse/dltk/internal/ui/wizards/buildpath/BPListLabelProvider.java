@@ -196,6 +196,9 @@ public class BPListLabelProvider extends LabelProvider
 	public String getCPListElementText( BPListElement cpentry ) {
 
 		IPath path = cpentry.getPath( );
+		if( path.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY)) {
+			return ScriptElementLabels.BUILTINS_FRAGMENT;
+		}
 		switch( cpentry.getEntryKind( ) ) {
 			case IBuildpathEntry.BPE_LIBRARY: {
 				IResource resource = cpentry.getResource( );

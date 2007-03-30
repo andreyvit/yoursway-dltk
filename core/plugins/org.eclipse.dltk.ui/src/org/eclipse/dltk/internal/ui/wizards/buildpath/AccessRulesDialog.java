@@ -232,6 +232,9 @@ public class AccessRulesDialog extends StatusDialog {
 	private String getDescriptionString() {
 		String desc;
 		String name= fCurrElement.getPath().lastSegment();
+		if( name.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY.toString())) {
+			name = ScriptElementLabels.BUILTINS_FRAGMENT;
+		}
 		switch (fCurrElement.getEntryKind()) {
 			case IBuildpathEntry.BPE_CONTAINER:
 				try {

@@ -1859,14 +1859,14 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		CallArgumentsList callArguments = processCallArguments(argsNode);
 
 		Node iterNode = iVisited.getIterNode();
-		Block block = (Block) collectSingleStatementSafe(iterNode);
+		Statement block = (Statement) collectSingleStatementSafe(iterNode);
 
 		ISourcePosition pos = iVisited.getPosition();
 
 		RubySuperExpression expr = new RubySuperExpression(
 				pos.getStartOffset(), pos.getEndOffset(), callArguments, block);
 
-		states.peek().add(expr);
+		states.peek().add( expr);
 
 		return null;
 	}

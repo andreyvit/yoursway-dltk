@@ -84,6 +84,9 @@ public class RubyMixinClass implements IRubyMixinElement {
 		IType type = null;
 		for (int i = 0; i < allObjects.length; i++) {
 			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
+			if( info == null ) {
+				continue;
+			}
 			if (info.getKind() == RubyMixinElementInfo.K_CLASS) {
 				type = (IType) info.getObject();
 				if (type == null)
@@ -116,6 +119,9 @@ public class RubyMixinClass implements IRubyMixinElement {
 		Object[] allObjects = mixinElement.getAllObjects();
 		for (int i = 0; i < allObjects.length; i++) {
 			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
+			if( info == null ) {
+				continue;
+			}
 			if(info.getKind() == RubyMixinElementInfo.K_INCLUDE) {
 				String inclKey = (String) info.getObject();
 				if (!this.isMeta() && !inclKey.endsWith(RubyMixin.INSTANCE_SUFFIX))

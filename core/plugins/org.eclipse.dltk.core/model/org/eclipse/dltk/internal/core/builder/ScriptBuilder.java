@@ -241,7 +241,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 
 			// Call builders for resources.
 			int count = resources.size() + elements.size();
-			monitor.beginTask("Building", count);
+			monitor.beginTask("Indexing", count);
 			buildResources(resources, monitor);
 			buildElements(elements, monitor);
 			monitor.done();
@@ -269,7 +269,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			List elements = new ArrayList();
 			scriptProject.accept(new ExternalModuleVisitor(elements));
 
-			monitor.beginTask("Building", actualResourcesToBuild.size()
+			monitor.beginTask("Indexing", actualResourcesToBuild.size()
 					+ elements.size());
 			buildResources(actualResourcesToBuild, monitor);
 			buildElements(elements, monitor);

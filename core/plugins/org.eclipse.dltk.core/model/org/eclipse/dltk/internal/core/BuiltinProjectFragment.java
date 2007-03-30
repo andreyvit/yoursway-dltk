@@ -73,7 +73,8 @@ public class BuiltinProjectFragment extends ProjectFragment {
 	}
 
 	public static boolean isSupported(IDLTKProject project) {
-		return false;
+		IBuiltinModuleProvider prov = getBuiltinProvider(project);
+		return prov != null && prov.getBuiltinModules() != null;
 	}
 
 	/**
@@ -110,6 +111,9 @@ public class BuiltinProjectFragment extends ProjectFragment {
 			throws ModelException {
 		BuiltinScriptFolder fldr = (BuiltinScriptFolder)getScriptFolder(new Path(""));
 		vChildren.add(fldr);
+		if( this.builtinProvider == null ) {
+			return;
+		}
 		try {
 			BuiltinScriptFolderInfo fragInfo = new BuiltinScriptFolderInfo();
 			fldr.computeChildren(fragInfo, this.builtinProvider.getBuiltinModules() );

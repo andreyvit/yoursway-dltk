@@ -25,6 +25,7 @@ public class MixinCache extends OverflowingLRUCache {
 	 */
 	public MixinCache(int size) {
 		super(size);
+		fLoadFactor = 0.90;
 	}
 
 	/**

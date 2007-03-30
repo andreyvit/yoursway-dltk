@@ -17,12 +17,12 @@ public class RubyObjectMixinClass extends RubyMixinClass {
 		mixinResult.addAll(Arrays.asList(methods));
 		
 		if (includeTopLevel && prefix.length() > 0) {
-//			String[] keys = model.getRawModel().findKeys(prefix + "*");
-//			for (int i = 0; i < keys.length; i++) {
-//				IRubyMixinElement createdRubyElement = model.createRubyElement(keys[i]);
-//				if (createdRubyElement instanceof RubyMixinMethod)
-//					mixinResult.add(createdRubyElement);
-//			}			
+			String[] keys = model.getRawModel().findKeys(prefix + "*");
+			for (int i = 0; i < keys.length; i++) {
+				IRubyMixinElement createdRubyElement = model.createRubyElement(keys[i]);
+				if (createdRubyElement instanceof RubyMixinMethod)
+					mixinResult.add(createdRubyElement);
+			}			
 			
 //			HashMap result = new HashMap();
 //

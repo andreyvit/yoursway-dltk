@@ -28,6 +28,7 @@ import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 
@@ -185,7 +186,12 @@ public class BPListElement
 				return DLTKCore.newSourceEntry( fPath, inclusionPattern, exclusionPattern, extraAttributes );
 			case IBuildpathEntry.BPE_LIBRARY: {				
 				IAccessRule[] accesRules = ( IAccessRule[] )getAttribute( ACCESSRULES );
-				return DLTKCore.newLibraryEntry( fPath,  accesRules, extraAttributes, isExported( ), fExternal );
+				if( fPath.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY)) {
+					return DLTKCore.newBuiltinEntry( fPath,  accesRules, extraAttributes, new IPath[0], BuildpathEntry.INCLUDE_ALL, isExported( ), fExternal );
+				}
+				else {
+					return DLTKCore.newLibraryEntry( fPath,  accesRules, extraAttributes, isExported( ), fExternal );
+				}
 			}
 			case IBuildpathEntry.BPE_PROJECT: {
 				IAccessRule[] accesRules = ( IAccessRule[] )getAttribute( ACCESSRULES );

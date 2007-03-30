@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTVisitor;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.utils.CorePrinter;
 
 /**
@@ -53,8 +54,16 @@ public class ExpressionList extends Expression {
 		//TODO: rewrite
 		Iterator i = exs.iterator();
 		while (i.hasNext()) {
-			Expression e = (Expression) i.next();
-			this.addExpression(e);
+			//TODO: XXX: We need to change expression list into statement list.
+			Object e = i.next();
+			if( e instanceof Expression ) {
+				this.addExpression((Expression)e);
+			}
+			else {
+				if( DLTKCore.DEBUG ) {
+					System.err.println("TODO: Add expression to statemenet conversion or change expressin list to statement list...");
+				}
+			}
 		}
 	}
 

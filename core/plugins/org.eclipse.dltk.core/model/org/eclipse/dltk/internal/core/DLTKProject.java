@@ -760,7 +760,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			if (referringEntry != null && !resolvedEntry.isExported())
 				return;
 			if (checkExistency) {
-				if (entryPath.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY)) {
+				if (entryPath.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY) && BuiltinProjectFragment.isSupported(this)) {
 					root = new BuiltinProjectFragment(entryPath.append("/")
 							.append(this.getPath()), this);
 					break;

@@ -84,7 +84,8 @@ public class RubyMixinModel {
 		}
 		return null;
 	}
-	public static void preBuildMixinModelForBuiltint(IDLTKProject project, IProgressMonitor monitor ) {
+	// Testing purpose only.
+	private static void preBuildMixinModelForBuiltint(IDLTKProject project, IProgressMonitor monitor ) {
 		try {
 			final MixinModel model = getRawInstance();
 			final List modules = new ArrayList();
@@ -107,6 +108,7 @@ public class RubyMixinModel {
 				}
 			});
 			monitor.beginTask("Ruby builtin precaching...", modules.size());
+			model.setRemovesToZero();
 			for (int i = 0; i < modules.size(); i++) {
 				monitor.worked(1);
 				model.reportModule((ISourceModule)modules.get(i));
@@ -114,7 +116,7 @@ public class RubyMixinModel {
 					return;
 				}
 			}
-			// If cache has no removes than set final to true for all elements.
+			model.makeAllElementsFinalIfNoCacheRemoves();
 			monitor.done();
 		} catch (ModelException e) {
 			e.printStackTrace();
