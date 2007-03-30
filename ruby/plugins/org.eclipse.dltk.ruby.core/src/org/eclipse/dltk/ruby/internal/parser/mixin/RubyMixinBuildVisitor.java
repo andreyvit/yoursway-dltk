@@ -437,6 +437,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	}
 
 	private String report(String key, RubyMixinElementInfo object) {
+		RubyMixinModel.getRawInstance().clearKeysCashe( key );
 		ElementInfo info = new IMixinRequestor.ElementInfo();
 		info.key = key;
 		info.object = object;

@@ -62,7 +62,7 @@ public class DiskIndex {
 
 	private char[] cachedCategoryName;
 
-	public static final String SIGNATURE = "DLTK INDEX VERSION 1.006"; //$NON-NLS-1$
+	public static final String SIGNATURE = "DLTK INDEX VERSION 1.007"; //$NON-NLS-1$
 
 	public static boolean DEBUG = false;
 

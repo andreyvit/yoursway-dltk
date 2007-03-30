@@ -30,7 +30,6 @@ import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.mixin.IInternalMixinElement;
 import org.eclipse.dltk.internal.core.mixin.MixinCache;
 import org.eclipse.dltk.internal.core.mixin.MixinManager;
-import org.eclipse.dltk.internal.core.util.WeakHashSet;
 
 public class MixinModel {
 	public static final String SEPARATOR = "" + IIndexConstants.SEPARATOR;
@@ -547,5 +546,10 @@ public class MixinModel {
 
 	public void setRemovesToZero() {
 		removes = 0;		
+	}
+
+	public void clearKeysCashe(String key) {
+		existKeysCache.remove(key);
+		notExistKeysCache.remove(key);
 	};
 }
