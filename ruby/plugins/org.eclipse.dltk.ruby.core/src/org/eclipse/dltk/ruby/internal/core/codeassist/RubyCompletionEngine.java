@@ -151,7 +151,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 							moduleDeclaration);
 					ExpressionTypeGoal goal = new ExpressionTypeGoal(
 							basicContext, (Statement) node);
-					IEvaluatedType type = inferencer.evaluateType(goal, 5000);
+					IEvaluatedType type = inferencer.evaluateType(goal, 3000);
 					reportSubElements(modelModule, type, "");
 				} else {
 					completeConstant(modelModule, moduleDeclaration, "",
@@ -189,7 +189,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			String pattern) {
 		ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
 				modelModule, moduleDeclaration), (Statement) receiver);
-		IEvaluatedType type = inferencer.evaluateType(goal, 5000);
+		IEvaluatedType type = inferencer.evaluateType(goal, 3000);
 		return RubyModelUtils.searchClassMethods(modelModule,
 				moduleDeclaration, type, pattern);
 	}
@@ -318,7 +318,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 		ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
 				module, moduleDeclaration), (Statement) (node.getLeft()));
-		IEvaluatedType type = inferencer.evaluateType(goal, 5000);
+		IEvaluatedType type = inferencer.evaluateType(goal, 3000);
 		reportSubElements(module, type, starting);
 	}
 

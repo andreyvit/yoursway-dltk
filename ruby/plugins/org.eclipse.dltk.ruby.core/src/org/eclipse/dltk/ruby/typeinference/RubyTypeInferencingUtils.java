@@ -169,6 +169,7 @@ public class RubyTypeInferencingUtils {
 		RubyMixinModel rubyModel = RubyMixinModel.getInstance();
 		String[] keys = getModelStaticScopesKeys(rubyModel.getRawModel(),
 				rootNode, keyOffset);
+		System.out.println();
 		if (keys != null && keys.length > 0) {
 			String inner = keys[keys.length - 1];
 			IRubyMixinElement rubyElement = rubyModel.createRubyElement(inner);

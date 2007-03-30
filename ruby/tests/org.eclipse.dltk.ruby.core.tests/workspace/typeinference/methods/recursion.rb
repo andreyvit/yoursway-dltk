@@ -8,7 +8,7 @@ class FooRecursion
 	end
 	
 	def bar
-		foo ## expr foo => Fixnum
+		foo ## expr foo => Fixnum%
 	end
 end
 

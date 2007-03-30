@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 
+import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
@@ -146,10 +147,8 @@ public class TypeInferenceSuite extends TestSuite {
 						lineOffset += lines[i].length() + 1;
 					}
 					
-					Assert.isLegal(assertions.size() > 0);
-					
-					if("simple.rb".equals(name)) 
-						System.out.println("runTest(" + name + ")");
+					if (assertions.size() == 0)
+						return;
 					
 					ITypeInferencer inferencer = new DLTKTypeInferenceEngine();
 
@@ -235,6 +234,8 @@ public class TypeInferenceSuite extends TestSuite {
 						ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(cu, rootNode), result[0]);
 						IEvaluatedType type = inferencer.evaluateType(goal, -1);
 						if (!correctClassRef.equals("recursion")) {
+							if (type == null)
+								throw new AssertionFailedError("null type fetched, but " + correctClassRef + " expected");
 							assertNotNull(type);
 							if (type instanceof SimpleType) {
 								IEvaluatedType intrinsicType = getIntrinsicType(correctClassRef);

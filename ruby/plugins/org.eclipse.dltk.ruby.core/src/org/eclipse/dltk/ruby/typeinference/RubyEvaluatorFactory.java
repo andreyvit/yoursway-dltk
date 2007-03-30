@@ -90,8 +90,8 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 				return new ConstantReferenceEvaluator(goal);
 			} else if (expr instanceof ReturnStatement || expr instanceof RubyReturnStatement) {
 				return new ReturnStatementEvaluator(goal);
-			} /*else if (expr instanceof RubyCaseStatement)
-				return new CaseStatementTypeEvaluator(goal);*/
+			} else if (expr instanceof RubyCaseStatement)
+				return new CaseStatementTypeEvaluator(goal);
 		} else if (goal instanceof ConstantTypeGoal)
 			return new ConstantReferenceEvaluator((ConstantTypeGoal) goal);
 		else if (goal instanceof MethodReturnTypeGoal)

@@ -70,7 +70,7 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 	 *      long)
 	 */
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit) {
-		Object result = engine.evaluateGoal(goal, null); //timelimit prunner
+		Object result = this.evaluateType(goal, null); //TODO: add timelimit prunner
 		return (IEvaluatedType) result;
 	}
 
@@ -80,7 +80,7 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 	 * @see org.eclipse.dltk.ti.ITypeInferencer#evaluateType(org.eclipse.dltk.ti.AbstractTypeGoal)
 	 */
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal, IPruner pruner) {
-		return evaluateType(goal, pruner);
+		return (IEvaluatedType) engine.evaluateGoal(goal, pruner);
 	}
 	
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal) {
