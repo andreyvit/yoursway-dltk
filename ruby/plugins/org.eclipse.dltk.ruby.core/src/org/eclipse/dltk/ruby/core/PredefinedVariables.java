@@ -95,7 +95,7 @@ public class PredefinedVariables {
 			}
 		} catch (IOException e) {
 			IStatus status = new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, 0,
-					"Can't load TclChecker problem descriptions", e);
+					"Can't load ruby predefined variables", e);
 			RubyPlugin.getDefault().getLog().log(status);
 		}
 	}
