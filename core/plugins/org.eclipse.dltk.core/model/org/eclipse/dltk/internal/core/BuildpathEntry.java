@@ -1130,6 +1130,9 @@ public class BuildpathEntry implements IBuildpathEntry {
 			break;
 		// library entry check
 		case IBuildpathEntry.BPE_LIBRARY:
+			if( path.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY)) {
+				break;
+			}
 			if (path != null && path.isAbsolute() && !path.isEmpty()) {
 				Object target = Model.getTarget(workspaceRoot, path, true);
 				// TODO: Add here some library version cheking
