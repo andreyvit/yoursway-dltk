@@ -108,7 +108,6 @@ public class MixinModel {
 	private Set existKeysCache = new HashSet();
 	private Set notExistKeysCache = new HashSet();
 	public boolean keyExists(String key) {
-		
 		//TODO: For this version we cache all information, so should be 0.
 		if( removes == 0 ) {
 			return this.cache.get(key) != null;
@@ -124,6 +123,7 @@ public class MixinModel {
 			return false;
 		}
 		boolean exist = get(key) != null;
+//		System.out.println("1");
 		if( exist ) {
 			if( existKeysCache.size() > 500000) {
 				existKeysCache.clear();
@@ -150,6 +150,7 @@ public class MixinModel {
 			synchronized (cache) {
 				cache.remove(element);
 				cache.resetSpaceLimit(ModelCache.DEFAULT_ROOT_SIZE, element);
+				cache.removeKey(element.key);
 			}
 			return;
 		}
@@ -551,5 +552,6 @@ public class MixinModel {
 	public void clearKeysCashe(String key) {
 		existKeysCache.remove(key);
 		notExistKeysCache.remove(key);
+//		MixinElement e = (MixinElement)this.cache.get(key);
 	};
 }
