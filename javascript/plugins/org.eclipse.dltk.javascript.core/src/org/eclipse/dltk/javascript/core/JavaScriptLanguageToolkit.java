@@ -205,5 +205,9 @@ public class JavaScriptLanguageToolkit implements IDLTKLanguageToolkit {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	public String getLanguageName()
+	{
+		return "Javascript";
+	}
 }

@@ -422,6 +422,11 @@ public class CodeCompletion extends TestCase {
 			// TODO Auto-generated method stub
 			return null;
 		}
+
+		public boolean isBuiltin() {
+			// TODO Auto-generated method stub
+			return false;
+		}
 	}
 
 	private final class TestCompletionRequetor extends CompletionRequestor {

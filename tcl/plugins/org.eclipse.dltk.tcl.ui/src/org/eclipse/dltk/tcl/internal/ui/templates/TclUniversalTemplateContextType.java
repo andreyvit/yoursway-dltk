@@ -3,6 +3,7 @@ package org.eclipse.dltk.tcl.internal.ui.templates;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.ui.templates.ScriptTemplateContext;
 import org.eclipse.dltk.ui.templates.ScriptTemplateContextType;
+import org.eclipse.dltk.ui.templates.ScriptTemplateVariables;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.templates.GlobalTemplateVariables;
 
@@ -18,6 +19,8 @@ public class TclUniversalTemplateContextType extends ScriptTemplateContextType {
 		addResolver(new GlobalTemplateVariables.Year());
 		addResolver(new GlobalTemplateVariables.Time());
 		addResolver(new GlobalTemplateVariables.User());
+		addResolver(new ScriptTemplateVariables.File());
+		addResolver(new ScriptTemplateVariables.Language());
 	}
 
 	public TclUniversalTemplateContextType() {

@@ -250,4 +250,8 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 				new NullProgressMonitor());
 	}
 		
+	public String getLanguageName()
+	{
+		return "Ruby";
+	}
 }

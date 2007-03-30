@@ -290,4 +290,9 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public String getLanguageName()
+	{
+		return "Tcl";
+	}
 }

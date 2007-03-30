@@ -160,4 +160,9 @@ public class TestLanguageToolkit implements IDLTKLanguageToolkit {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public String getLanguageName()
+	{
+		return "Test";
+	}
 }

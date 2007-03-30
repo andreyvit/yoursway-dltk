@@ -85,4 +85,6 @@ public interface IDLTKLanguageToolkit {
 	String[] getLanguageFileExtensions();
 
 	IType[] getParentTypes(IType type);
+	
+	String getLanguageName();
 }
