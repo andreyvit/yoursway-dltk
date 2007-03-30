@@ -191,7 +191,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 
 		IModelElement[] elements = cu.codeSelect(start + 1, 0);
 		assertNotNull(elements);
-		assertEquals(2, elements.length);
+		assertEquals(1, elements.length);
 		IType type = cu.getType("Foo");
 		assertNotNull(type);
 		assertEquals(type, elements[0]);
