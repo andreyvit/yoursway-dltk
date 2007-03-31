@@ -878,10 +878,11 @@
             contextId="org.eclipse.dltk.ui.scriptEditorScope"
             commandId="org.eclipse.dltk.ui.edit.text.script.toggle.comment"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>    
-      <key
+   <!--   <key
             sequence="M1+M2+T"
             commandId="org.eclipse.dltk.ui.navigate.open.type"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>        
+            contextId="org.eclipse.dltk.ui.scriptEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>-->        
 	</extension>         
 	
 	

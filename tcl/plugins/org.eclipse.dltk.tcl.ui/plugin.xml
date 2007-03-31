@@ -338,6 +338,7 @@
          <key
             sequence="M1+M2+T"
             commandId="org.eclipse.dltk.tcl.ui.navigate.open.type"
+            contextId="org.eclipse.dltk.ui.tclEditorScope"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>       
  </extension>
  <extension

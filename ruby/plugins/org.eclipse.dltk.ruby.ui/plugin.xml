@@ -193,7 +193,7 @@
                commandId="org.eclipse.dltk.ruby.ui.navigate.open.type"
                contextId="org.eclipse.dltk.ui.rubyEditorScope"
                schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-               sequence="M1+M2+T"/>       
+               sequence="M1+M2+T"/>        
         <key
               commandId="org.eclipse.dltk.ruby.ui.navigate.open.type.in.hierarchy"
               contextId="org.eclipse.dltk.ui.rubyEditorScope"
