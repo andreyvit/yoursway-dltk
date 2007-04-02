@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-   <extension-point id="dltkElementFilters" name="Dltk Element Filters"/>  
+   <extension-point id="dltkElementFilters" name="Dltk Element Filters" schema="schema/dltkElementFilters.exsd"/>  
    <extension-point id="buildpathContainerPage" name="%buildpathContainerPageExtensionPoint" schema="schema/buildpathContainerPage.exsd"/>
    <extension-point id="scriptCompletionProposalComputer" name="%scriptCompletionProposalComputer" schema="schema/scriptCompletionProposalComputer.exsd"/>
    <extension-point id="scriptCompletionProposalSorters" name="%scriptCompletionProposalSorters" schema="schema/scriptCompletionProposalSorters.exsd"/>

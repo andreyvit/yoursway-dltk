@@ -17,12 +17,17 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptModel;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.navigator.IExtensionStateConstants.Values;
+import org.eclipse.dltk.internal.ui.scriptview.BuildPathContainer;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -100,7 +105,7 @@ public class ScriptNavigatorContentProvider extends
 		if (inputElement instanceof IWorkspaceRoot)
 			return super.getElements(DLTKCore
 					.create((IWorkspaceRoot) inputElement));
-		
+
 		return super.getElements(inputElement);
 	}
 
@@ -235,4 +240,15 @@ public class ScriptNavigatorContentProvider extends
 		super.postRefresh(toRefresh, updateLabels);
 	}
 
+	public Object[] getChildren(Object parentElement) {
+		if (parentElement instanceof IScriptModel) {
+			try {
+				return getDLTKProjects((IScriptModel) parentElement);
+			} catch (ModelException e) {
+				return NO_CHILDREN;
+			}
+		} else {
+			return super.getChildren(parentElement);
+		}
+	}
 }
