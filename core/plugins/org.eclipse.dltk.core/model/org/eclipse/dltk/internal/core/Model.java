@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptModel;
@@ -52,14 +51,20 @@ public class Model extends Openable implements IScriptModel {
 																				 * ModelException
 																				 */{
 		// determine my children
-		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
-				.getProjects();
-		for (int i = 0, max = projects.length; i < max; i++) {
+		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		int length = projects.length;
+		IModelElement[] children = new IModelElement[length];
+		int index = 0;
+		for (int i = 0; i < length; i++) {
 			IProject project = projects[i];
-			if (DLTKLanguageManager.hasScriptNature(project)) {
-				info.addChild(getScriptProject(project));
+			if (DLTKProject.hasScriptNature(project)) {
+				children[index++] = getScriptProject(project);
 			}
 		}
+		if (index < length)
+			System.arraycopy(children, 0, children = new IModelElement[index], 0, index);
+		info.setChildren(children);
+
 		newElements.put(this, info);
 		return true;
 	}

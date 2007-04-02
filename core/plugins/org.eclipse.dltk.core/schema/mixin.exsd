@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.dltk.core" id="mixinParser" name="mixinParser"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         
       </documentation>
    </annotation>
 

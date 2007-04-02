@@ -142,6 +142,11 @@ public class IndexSelector {
 	private void initializeIndexLocations() {
 		IPath[] projectsAndArchives = this.searchScope
 				.enclosingProjectsAndZips();
+		System.out.println("********************IndexSelector************************");
+		for (int i = 0; i < projectsAndArchives.length; i++) {
+			System.out.println("Root:" + projectsAndArchives[i].toString());
+		}
+		System.out.println("********************IndexSelector************************");
 		IndexManager manager = ModelManager.getModelManager().getIndexManager();
 		SimpleSet locations = new SimpleSet();
 		IModelElement focus = MatchLocator.projectOrArchiveFocus(this.pattern);

@@ -312,7 +312,7 @@ public class ModelManager implements ISaveParticipant {
 	 * Interpreters.
 	 */
 	private WeakHashSet stringSymbols = new WeakHashSet(5);
-	private Map workspaceScope = null;
+	Map workspaceScope = null;
 	public static final String DELTA_LISTENER_PERF = DLTKCore.PLUGIN_ID
 			+ "/perf/deltalistener"; //$NON-NLS-1$
 

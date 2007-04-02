@@ -3,10 +3,11 @@
 <schema targetNamespace="org.eclipse.dltk.core">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.dltk.core" id="language" name="%language"/>
+         <meta.schema plugin="org.eclipse.dltk.core" id="language" name="language"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         Main DLTK based IDE entry point.
+Used to specify parsers, locators, validators, etc.
       </documentation>
    </annotation>
 
@@ -69,7 +70,7 @@
          <meta.section type="since"/>
       </appInfo>
       <documentation>
-         [Enter the first release in which this extension point appears.]
+         
       </documentation>
    </annotation>
 
@@ -78,7 +79,7 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-         [Enter extension point usage example here.]
+         
       </documentation>
    </annotation>
 
@@ -87,7 +88,7 @@
          <meta.section type="apiInfo"/>
       </appInfo>
       <documentation>
-         [Enter API information here.]
+         
       </documentation>
    </annotation>
 
@@ -96,7 +97,7 @@
          <meta.section type="implementation"/>
       </appInfo>
       <documentation>
-         [Enter information about supplied implementation of this extension point.]
+         
       </documentation>
    </annotation>
 
