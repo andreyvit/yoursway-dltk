@@ -21,6 +21,8 @@ import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
+import org.eclipse.jface.text.formatter.IContentFormatter;
+import org.eclipse.jface.text.formatter.MultiPassContentFormatter;
 import org.eclipse.jface.text.information.IInformationPresenter;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
@@ -54,11 +56,30 @@ public class JavascriptSourceViewerConfiguration extends
 		return new String[] { IDocument.DEFAULT_CONTENT_TYPE,
 				IJavaScriptPartitions.JS_STRING, IJavaScriptPartitions.JS_COMMENT};
 	}
+	
+	public String[] getDefaultPrefixes(ISourceViewer sourceViewer,
+			String contentType) {
+		return new String[] { "//", "" }; //$NON-NLS-1$ //$NON-NLS-2$
+	}
 
 	public String[] getIndentPrefixes(ISourceViewer sourceViewer,
 			String contentType) {
 		// XXX: what happens here?.. why " " ?
 		return new String[] { "\t", "    " }; 
+	}
+	
+	/*
+	 * @see SourceViewerConfiguration#getContentFormatter(ISourceViewer)
+	 */
+	public IContentFormatter getContentFormatter(ISourceViewer sourceViewer) {
+		final MultiPassContentFormatter formatter= new MultiPassContentFormatter(getConfiguredDocumentPartitioning(sourceViewer), IDocument.DEFAULT_CONTENT_TYPE);
+
+		formatter.setMasterStrategy(new JavaScriptFormattingStrategy());
+//		formatter.setSlaveStrategy(new CommentFormattingStrategy(), IJavaPartitions.JAVA_DOC);
+//		formatter.setSlaveStrategy(new CommentFormattingStrategy(), IJavaPartitions.JAVA_SINGLE_LINE_COMMENT);
+//		formatter.setSlaveStrategy(new CommentFormattingStrategy(), IJavaPartitions.JAVA_MULTI_LINE_COMMENT);
+
+		return formatter;
 	}
 	
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {

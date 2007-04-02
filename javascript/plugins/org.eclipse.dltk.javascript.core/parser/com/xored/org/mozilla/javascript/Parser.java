@@ -83,7 +83,7 @@ public class Parser
 
     private int nestingOfFunction;
 
-    private Decompiler decompiler;
+    protected Decompiler decompiler;
     private String encodedSource;
 
 // The following are per function variables and should be saved/restored
@@ -446,6 +446,7 @@ public class Parser
         int nameEnd=ts.getCursor();
         String name;
         Node memberExprNode = null;
+        decompiler.addFunction();
         if (matchToken(Token.NAME)) {
             name = ts.getString();
             nameStart=ts.getCursor()-name.length()-1;

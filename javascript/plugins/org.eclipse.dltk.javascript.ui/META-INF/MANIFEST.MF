@@ -19,7 +19,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.javascript.core,
  org.eclipse.dltk.launching,
  org.eclipse.dltk.debug.ui,
- org.eclipse.search
+ org.eclipse.search,
+ org.eclipse.core.expressions
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.javascript.internal.ui,
  org.eclipse.dltk.javascript.internal.ui.text,

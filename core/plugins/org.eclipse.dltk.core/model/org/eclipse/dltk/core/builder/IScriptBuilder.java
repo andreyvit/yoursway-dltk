@@ -18,14 +18,14 @@ public interface IScriptBuilder {
 	 * Only resorces with specified project nature are here.
 	 * @return
 	 */
-	IStatus buildResources( IDLTKProject project, List resources, IProgressMonitor monitor );
+	IStatus[] buildResources( IDLTKProject project, List resources, IProgressMonitor monitor );
 	
 	/**
 	 * Called for earch resource required to builde.
 	 * Only resorces with specified project nature are here.
 	 * @return
 	 */
-	IStatus buildModelElements( IDLTKProject project, List elements, IProgressMonitor monitor );
+	IStatus[] buildModelElements( IDLTKProject project, List elements, IProgressMonitor monitor );
 
 	/**
 	 * Return all dependencies for selected resource. Should also return all

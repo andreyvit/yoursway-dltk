@@ -31,9 +31,7 @@ public class SourceModuleEditorActionContributor extends BasicSourceModuleEditor
 
 	public SourceModuleEditorActionContributor() {
 		super();
-
 		ResourceBundle b= ScriptEditorMessages.getBundleForConstructedKeys();
-
 		fToggleInsertModeAction= new RetargetTextEditorAction(b, "SourceModuleEditorActionContributor.ToggleInsertMode.", IAction.AS_CHECK_BOX); //$NON-NLS-1$
 		fToggleInsertModeAction.setActionDefinitionId(ITextEditorActionDefinitionIds.TOGGLE_INSERT_MODE);
 	}

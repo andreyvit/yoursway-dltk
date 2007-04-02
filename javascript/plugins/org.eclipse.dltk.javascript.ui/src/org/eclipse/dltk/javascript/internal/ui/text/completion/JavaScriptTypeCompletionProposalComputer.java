@@ -6,12 +6,14 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.javascript.internal.ui.templates.JavaScriptTemplateCompletionProcessor;
 import org.eclipse.dltk.ui.text.completion.ContentAssistInvocationContext;
 import org.eclipse.dltk.ui.text.completion.IScriptCompletionProposal;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalComputer;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.IContextInformation;
+import org.eclipse.jface.text.templates.TemplateCompletionProcessor;
 
 public class JavaScriptTypeCompletionProposalComputer extends ScriptCompletionProposalComputer {
 
@@ -22,6 +24,11 @@ public class JavaScriptTypeCompletionProposalComputer extends ScriptCompletionPr
 			ContentAssistInvocationContext context, IProgressMonitor monitor) {
 		List types = super.computeCompletionProposals(context, monitor);
 		return types;
+	}
+	
+	protected TemplateCompletionProcessor createTemplateProposalComputer(
+			ScriptContentAssistInvocationContext context) {
+		return new JavaScriptTemplateCompletionProcessor(context);
 	}
 
 	public List computeContextInformation(

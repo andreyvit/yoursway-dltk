@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+
+<template 
+	context="javascriptUniversalTemplateContextType" 
+	description="%forTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.for1" 
+	name="for">for ${obj} in ${collection} 
+  	${cursor}
+end</template>
+
+</templates>

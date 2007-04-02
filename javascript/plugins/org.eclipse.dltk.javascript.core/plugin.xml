@@ -23,4 +23,18 @@
             id="sourceResolver">
       </resolver>
    </extension>
+   <extension
+         point="org.eclipse.dltk.core.mixin">
+      <mixin
+            class="org.eclipse.dltk.javascript.internal.core.mixin.JavaScriptMixinParser"
+            nature="org.eclipse.dltk.javascript.core.nature">
+      </mixin>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.builder">
+      <builder
+            class="org.eclipse.dltk.javascript.core.builders.JavaScriptBuilder"
+            nature="org.eclipse.dltk.javascript.core.nature">
+      </builder>
+   </extension>
 </plugin>

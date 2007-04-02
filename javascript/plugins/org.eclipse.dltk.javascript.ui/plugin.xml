@@ -13,7 +13,7 @@
             name="DLTK Javascript Editor"/>
    </extension>   
    <extension point="org.eclipse.core.runtime.preferences">
-        <initializer class="org.eclipse.dltk.ruby.internal.ui.RubyUIPreferenceInitializer"/>
+        <initializer class="org.eclipse.dltk.javascript.internal.ui.JavaScriptUIPreferenceInitializer"/>
     </extension>
     <extension
          point="org.eclipse.search.searchPages">
@@ -27,9 +27,121 @@
             label="%DLTKSearchPage.label"
             showScopeSection="true"
             sizeHint="460,160">
-      </page>
+      </page>      
    </extension>
-	<extension
+   <extension
+       point="org.eclipse.ui.actionSets">
+        <actionSet
+            label="%CodingActionSet.label"
+            description="%CodingActionSet.description"
+            visible="false"
+            id="org.eclipse.dltk.javascript.ui.CodingActionSet">
+<!-- =========================================================================== -->
+<!-- Refactoring Menu                                                            -->
+<!-- =========================================================================== -->       
+	         
+       
+<!-- =========================================================================== -->
+<!-- Source Menu                                                                 -->
+<!-- =========================================================================== -->
+         <menu
+               label="%SourceMenu.label"
+               path="edit"
+               id="org.eclipse.dltk.ui.source.menu">
+		    <separator
+                  name="commentGroup">
+            </separator>
+            <separator
+                  name="editGroup">
+            </separator>
+            <separator
+                  name="importGroup">
+            </separator>
+            <separator
+                  name="generateGroup">
+            </separator>
+            <separator
+                  name="codeGroup">
+            </separator>
+            <separator
+                  name="externalizeGroup">
+            </separator>
+            <separator
+                  name="convertGroup">
+            </separator>
+         </menu>
+         <!-- Comment Group -->
+         <!--action
+               definitionId="org.eclipse.jdt.ui.edit.text.java.add.javadoc.comment"
+               label="%AddJavaDocCommentAction.label"
+               retarget="true"
+               menubarPath="org.eclipse.jdt.ui.source.menu/commentGroup"
+               id="org.eclipse.jdt.ui.actions.AddJavaDocComment">
+         </action-->
+         <action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.quick.format"
+               label="%FormatElementAction.label"
+               retarget="true"
+               menubarPath="org.eclipse.dltk.ui.source.menu/editGroup"
+               id="org.eclipse.dltk.ui.actions.FormatElement">
+         </action>
+         <action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.format"
+               label="%FormatAction.label"
+               retarget="true"
+               menubarPath="org.eclipse.dltk.ui.source.menu/editGroup"
+               id="org.eclipse.dltk.ui.actions.Format">
+         </action>
+         <action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.indent"
+               label="%IndentAction.label"
+               retarget="true"
+               menubarPath="org.eclipse.dltk.ui.source.menu/editGroup"
+               id="org.eclipse.dltk.ui.actions.Indent">
+         </action>
+         <action
+               definitionId="org.eclipse.ui.edit.text.shiftLeft"
+               label="%ShiftLeftAction.label"
+               retarget="true"
+               menubarPath="org.eclipse.dltk.ui.source.menu/editGroup"
+               id="org.eclipse.dltk.ui.actions.ShiftLeft">
+         </action>
+         <action
+               definitionId="org.eclipse.ui.edit.text.shiftRight"
+               label="%ShiftRightAction.label"
+               retarget="true"
+               menubarPath="org.eclipse.dltk.ui.source.menu/editGroup"
+               id="org.eclipse.dltk.ui.actions.ShiftRight">
+         </action>
+         <action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.uncomment"
+               label="%UncommentAction.label"
+               retarget="true"
+               id="org.eclipse.dltk.ui.actions.Uncomment">
+         </action>
+         <action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.comment"
+               label="%CommentAction.label"
+               retarget="true"
+               id="org.eclipse.dltk.ui.actions.Comment">
+         </action>
+		<action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.remove.block.comment"
+               label="%RemoveBlockCommentAction.label"
+               retarget="true"
+               menubarPath="org.eclipse.dltk.ui.source.menu/commentGroup"
+               id="org.eclipse.dltk.ui.actions.RemoveBlockComment">
+         </action>
+         <action
+               definitionId="org.eclipse.dltk.ui.edit.text.script.add.block.comment"
+               label="%AddBlockCommentAction.label"
+               retarget="true"
+               menubarPath="org.eclipse.dltk.ui.source.menu/commentGroup"
+               id="org.eclipse.dltk.ui.actions.AddBlockComment">
+         </action>
+      </actionSet>
+ </extension>
+   <extension
       id="org.eclipse.dltk.javascript.ui.editor.DocumentSetupParticipant"
       name="%documentSetupParticipantName"
       point="org.eclipse.core.filebuffers.documentSetup">
@@ -37,7 +149,45 @@
 			class="org.eclipse.dltk.javascript.internal.ui.editor.JavaScriptDocumentSetupParticipant">
    		</participant>
 	</extension>
-	
+	<extension
+       point="org.eclipse.ui.bindings">
+       <key
+            sequence="M1+M2+/"
+            contextId="org.eclipse.dltk.ui.javascriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.add.block.comment"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <!-- free this on MAC, see: https://bugs.eclipse.org/bugs/show_bug.cgi?id=113981 -->
+      <key
+            platform="carbon"
+            sequence="M1+M2+/"
+            contextId="org.eclipse.dltk.ui.javascriptEditorScope"
+            commandId=""
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+
+      <key
+            sequence="M1+M2+\"
+            contextId="org.eclipse.dltk.ui.javascriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.remove.block.comment"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+            sequence="M1+I"
+            contextId="org.eclipse.dltk.ui.javascriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.indent"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+            
+ 	<key
+            sequence="M1+M2+F"
+            contextId="org.eclipse.dltk.ui.javascriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.format"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <!-- alternative for some gtk input modes -->
+      <key
+            platform="gtk"
+            sequence="ESC CTRL+F"
+            contextId="org.eclipse.dltk.ui.javascriptEditorScope"
+            commandId="org.eclipse.dltk.ui.edit.text.script.format"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>                   
+ 	</extension>
 	<extension
          point="org.eclipse.ui.newWizards">
       <category
@@ -89,6 +239,12 @@
 	          class="org.eclipse.dltk.javascript.internal.ui.preferences.JavascriptGlobalPreferencesPage"
 	          id="org.eclipse.dltk.javascript.ui.javascript"
 	          name="DLTK Javascript"/>
+	<page
+           category="org.eclipse.dltk.javascript.ui.EditorPreferences"
+           class="org.eclipse.dltk.javascript.internal.ui.templates.JavaScriptTemplatePreferencePage"
+           id="javascriptTemplatePreferencePage"
+           name="Templates">
+     </page>	          
 	 </extension>
 	 <extension
        point="org.eclipse.ui.perspectives">
@@ -111,6 +267,23 @@
        <keywordReference id="org.eclipse.dltk.ui.buildpath"/>
     </page>
  </extension>
+ 
+ <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.ui.CodingActionSet">
+         <part id="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor"/>
+	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
+      </actionSetPartAssociation>
+ </extension>
+ <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.javascript.ui.CodingActionSet">
+         <part id="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor"/>
+	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
+      </actionSetPartAssociation>
+ </extension>
  <extension
          point="org.eclipse.ui.actionSetPartAssociations">
       <actionSetPartAssociation
@@ -120,7 +293,40 @@
          </part>
 	 </actionSetPartAssociation>
  </extension> 
- 
+ <extension
+         point="org.eclipse.ui.commands">
+         <command
+            name="%ActionDefinition.addBlockComment.name"
+            description="%ActionDefinition.addBlockComment.description"
+            categoryId="org.eclipse.dltk.ui.category.source"
+            id="org.eclipse.dltk.ui.edit.text.script.add.block.comment">
+      </command>
+      <command
+            name="%ActionDefinition.removeBlockComment.name"
+            description="%ActionDefinition.removeBlockComment.description"
+            categoryId="org.eclipse.dltk.ui.category.source"
+            id="org.eclipse.dltk.ui.edit.text.script.remove.block.comment">
+      </command>
+      <command
+            name="%ActionDefinition.indent.name"
+            description="%ActionDefinition.indent.description"
+            categoryId="org.eclipse.dltk.ui.category.source"
+            id="org.eclipse.dltk.ui.edit.text.script.indent">
+      </command>
+	<command
+            name="%ActionDefinition.format.name"
+            description="%ActionDefinition.format.description"
+            categoryId="org.eclipse.dltk.ui.category.source"
+            id="org.eclipse.dltk.ui.edit.text.script.format">
+      </command>
+      <command
+            name="%ActionDefinition.quickformat.name"
+            description="%ActionDefinition.quickformat.description"
+            categoryId="org.eclipse.dltk.ui.category.source"
+            id="org.eclipse.dltk.ui.edit.text.script.quick.format">
+      </command>      
+      
+  </extension>
   <extension
          point="org.eclipse.ui.contexts">
       <context
@@ -156,4 +362,18 @@
            nature="org.eclipse.dltk.javascript.core.nature">
      </provider>
   </extension>   
+  <extension
+       point="org.eclipse.ui.editors.templates">
+    <contextType
+          class="org.eclipse.dltk.javascript.internal.ui.templates.JavaScriptUniversalTemplateContextType"
+          id="javascriptUniversalTemplateContextType"
+          name="%JavaScriptTemplateContextName">
+    </contextType>
+    <include
+          file="templates/templates.xml"
+          translations="templates/templates.properties">
+    </include>
+ </extension>
+ 
+  
 </plugin>

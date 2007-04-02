@@ -69,7 +69,7 @@ public abstract class NativeFunction extends BaseFunction
         } else {
             UintMap properties = new UintMap(1);
             properties.put(Decompiler.INITIAL_INDENT_PROP, indent);
-            return Decompiler.decompile(encodedSource, flags, properties);
+            return new Decompiler().decompile(encodedSource, flags, properties);
         }
     }
 

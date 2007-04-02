@@ -151,7 +151,7 @@ public class ScriptSourceViewer extends ProjectionViewer implements
 //				map);
 //
 //		return context;
-		return null;
+		return super.createFormattingContext();
 	}
 
 	/*

@@ -1,6 +1,7 @@
 package org.eclipse.dltk.javascript.internal.ui;
 
 import org.eclipse.dltk.javascript.internal.ui.text.JavascriptTextTools;
+import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -55,6 +56,10 @@ public class JavaScriptUI extends AbstractUIPlugin {
 		if (fJavascriptTextTools == null)
 			fJavascriptTextTools= new JavascriptTextTools(true);
 		return fJavascriptTextTools;
+	}
+
+	public static void log(Exception exception) {
+		exception.printStackTrace();
 	}	
 
 }

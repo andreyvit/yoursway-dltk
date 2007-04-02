@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.dltk.core" id="builder" name="builder"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         
       </documentation>
    </annotation>
 
@@ -57,7 +57,7 @@
          <attribute name="nature" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  If nature are # then builder is available for all script natures.
                </documentation>
             </annotation>
          </attribute>
@@ -69,7 +69,7 @@
          <meta.section type="since"/>
       </appInfo>
       <documentation>
-         [Enter the first release in which this extension point appears.]
+         
       </documentation>
    </annotation>
 
@@ -78,7 +78,7 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-         [Enter extension point usage example here.]
+         
       </documentation>
    </annotation>
 
@@ -87,7 +87,7 @@
          <meta.section type="apiInfo"/>
       </appInfo>
       <documentation>
-         [Enter API information here.]
+         
       </documentation>
    </annotation>
 
@@ -96,7 +96,7 @@
          <meta.section type="implementation"/>
       </appInfo>
       <documentation>
-         [Enter information about supplied implementation of this extension point.]
+         
       </documentation>
    </annotation>
 

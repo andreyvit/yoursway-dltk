@@ -40,7 +40,7 @@ import org.eclipse.dltk.internal.core.SourceModule;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
 
 public class MixinBuilder implements IScriptBuilder {
-	public IStatus buildResources(IDLTKProject project, List resources, IProgressMonitor monitor) {
+	public IStatus[] buildResources(IDLTKProject project, List resources, IProgressMonitor monitor) {
 		return null;
 	}
 
@@ -48,7 +48,7 @@ public class MixinBuilder implements IScriptBuilder {
 		return null;
 	}
 
-	public IStatus buildModelElements(IDLTKProject project, List elements,
+	public IStatus[] buildModelElements(IDLTKProject project, List elements,
 			IProgressMonitor monitor) {
 		IndexManager manager = ModelManager.getModelManager().getIndexManager();
 		

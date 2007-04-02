@@ -97,7 +97,7 @@ public class DLTKPluginImages {
 	public static final String IMG_OBJS_UNKNOWN = NAME_PREFIX + "unknown_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_LOCAL_VARIABLE = NAME_PREFIX + "localvariable_obj.gif"; //$NON-NLS-1$	
 	public static final String IMG_OBJS_PROJECT_SETTINGS = NAME_PREFIX + "settings_obj.gif"; //$NON-NLS-1$
-	
+	public static final String IMG_OBJS_TEMPLATE= NAME_PREFIX + "template_obj.gif"; 		//$NON-NLS-1$	
 	public static final String IMG_OBJS_PACKDECL= NAME_PREFIX + "packd_obj.gif"; 			//$NON-NLS-1$
 	public static final String IMG_OBJS_IMPDECL= NAME_PREFIX + "imp_obj.gif"; 			//$NON-NLS-1$
 	public static final String IMG_OBJS_IMPCONT= NAME_PREFIX + "impc_obj.gif"; 			//$NON-NLS-1$
@@ -143,7 +143,7 @@ public class DLTKPluginImages {
 	public static final ImageDescriptor DESC_OBJS_CLASS= createManagedFromKey(T_OBJ, IMG_OBJS_CLASS);
 	public static final ImageDescriptor DESC_OBJS_NAMESPACE= createManagedFromKey(T_OBJ, IMG_OBJS_NAMESPACE);
 	public static final ImageDescriptor DESC_OBJS_MODULE= createManagedFromKey(T_OBJ, IMG_OBJS_MODULE);
-	
+	public static final ImageDescriptor DESC_OBJS_TEMPLATE= createManagedFromKey(T_OBJ, IMG_OBJS_TEMPLATE);
 	public static final ImageDescriptor DESC_OVR_RECURSIVE = createUnManaged(T_OVR, "recursive_co.gif"); //$NON-NLS-1$
 	public static final ImageDescriptor DESC_OVR_MAX_LEVEL = createUnManaged(T_OVR, "maxlevel_co.gif"); //$NON-NLS-1$
 	public static final ImageDescriptor DESC_WIZBAN_NEWCLASS = createUnManaged(T_WIZBAN, "newclass_wiz.png"); //$NON-NLS-1$

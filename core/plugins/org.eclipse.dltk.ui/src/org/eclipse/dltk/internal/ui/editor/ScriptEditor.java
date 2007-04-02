@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
@@ -54,11 +55,14 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.AbstractInformationControlManager;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.BadPositionCategoryException;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.DocumentCommand;
+import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
+import org.eclipse.jface.text.IPositionUpdater;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
@@ -74,6 +78,11 @@ import org.eclipse.jface.text.information.IInformationProvider;
 import org.eclipse.jface.text.information.IInformationProviderExtension;
 import org.eclipse.jface.text.information.IInformationProviderExtension2;
 import org.eclipse.jface.text.information.InformationPresenter;
+import org.eclipse.jface.text.link.ILinkedModeListener;
+import org.eclipse.jface.text.link.LinkedModeModel;
+import org.eclipse.jface.text.link.LinkedModeUI;
+import org.eclipse.jface.text.link.LinkedModeUI.ExitFlags;
+import org.eclipse.jface.text.link.LinkedModeUI.IExitPolicy;
 import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.AnnotationRulerColumn;
@@ -100,6 +109,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ST;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -144,6 +154,157 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	protected final static String MATCHING_BRACKETS=  PreferenceConstants.EDITOR_MATCHING_BRACKETS;
 	/** Preference key for matching brackets color */
 	protected final static String MATCHING_BRACKETS_COLOR=  PreferenceConstants.EDITOR_MATCHING_BRACKETS_COLOR;
+	
+	
+	
+	public ISourceViewer getScriptSourceViewer(){
+		return super.getSourceViewer();
+	}
+	
+	public static class BracketLevel {
+		public int fOffset;
+		public int fLength;
+		public LinkedModeUI fUI;
+		public Position fFirstPosition;
+		public Position fSecondPosition;
+	}
+	
+	
+	public class ExitPolicy implements IExitPolicy {
+
+		public final char fExitCharacter;
+		public final char fEscapeCharacter;
+		public final Stack fStack;
+		public final int fSize;
+
+		public ExitPolicy(char exitCharacter, char escapeCharacter, Stack stack) {
+			fExitCharacter= exitCharacter;
+			fEscapeCharacter= escapeCharacter;
+			fStack= stack;
+			fSize= fStack.size();
+		}
+
+		/*
+		 * @see org.eclipse.jdt.internal.ui.text.link.LinkedPositionUI.ExitPolicy#doExit(org.eclipse.jdt.internal.ui.text.link.LinkedPositionManager, org.eclipse.swt.events.VerifyEvent, int, int)
+		 */
+		public ExitFlags doExit(LinkedModeModel model, VerifyEvent event, int offset, int length) {
+
+			if (fSize == fStack.size() && !isMasked(offset)) {
+				if (event.character == fExitCharacter) {
+					BracketLevel level= (BracketLevel) fStack.peek();
+					if (level.fFirstPosition.offset > offset || level.fSecondPosition.offset < offset)
+						return null;
+					if (level.fSecondPosition.offset == offset && length == 0)
+						// don't enter the character if if its the closing peer
+						return new ExitFlags(ILinkedModeListener.UPDATE_CARET, false);
+				}
+				// when entering an anonymous class between the parenthesis', we don't want
+				// to jump after the closing parenthesis when return is pressed
+				if (event.character == SWT.CR && offset > 0) {
+					IDocument document= getSourceViewer().getDocument();
+					try {
+						if (document.getChar(offset - 1) == '{')
+							return new ExitFlags(ILinkedModeListener.EXIT_ALL, true);
+					} catch (BadLocationException e) {
+					}
+				}
+			}
+			return null;
+		}
+
+		private boolean isMasked(int offset) {
+			IDocument document= getSourceViewer().getDocument();
+			try {
+				return fEscapeCharacter == document.getChar(offset - 1);
+			} catch (BadLocationException e) {
+			}
+			return false;
+		}
+	}
+	
+	
+	static class ExclusivePositionUpdater implements IPositionUpdater {
+
+		/** The position category. */
+		private final String fCategory;
+
+		/**
+		 * Creates a new updater for the given <code>category</code>.
+		 *
+		 * @param category the new category.
+		 */
+		public ExclusivePositionUpdater(String category) {
+			fCategory= category;
+		}
+
+		/*
+		 * @see org.eclipse.jface.text.IPositionUpdater#update(org.eclipse.jface.text.DocumentEvent)
+		 */
+		public void update(DocumentEvent event) {
+
+			int eventOffset= event.getOffset();
+			int eventOldLength= event.getLength();
+			int eventNewLength= event.getText() == null ? 0 : event.getText().length();
+			int deltaLength= eventNewLength - eventOldLength;
+
+			try {
+				Position[] positions= event.getDocument().getPositions(fCategory);
+
+				for (int i= 0; i != positions.length; i++) {
+
+					Position position= positions[i];
+
+					if (position.isDeleted())
+						continue;
+
+					int offset= position.getOffset();
+					int length= position.getLength();
+					int end= offset + length;
+
+					if (offset >= eventOffset + eventOldLength)
+						// position comes
+						// after change - shift
+						position.setOffset(offset + deltaLength);
+					else if (end <= eventOffset) {
+						// position comes way before change -
+						// leave alone
+					} else if (offset <= eventOffset && end >= eventOffset + eventOldLength) {
+						// event completely internal to the position - adjust length
+						position.setLength(length + deltaLength);
+					} else if (offset < eventOffset) {
+						// event extends over end of position - adjust length
+						int newEnd= eventOffset;
+						position.setLength(newEnd - offset);
+					} else if (end > eventOffset + eventOldLength) {
+						// event extends from before position into it - adjust offset
+						// and length
+						// offset becomes end of event, length adjusted accordingly
+						int newOffset= eventOffset + eventNewLength;
+						position.setOffset(newOffset);
+						position.setLength(end - newOffset);
+					} else {
+						// event consumes the position - delete it
+						position.delete();
+					}
+				}
+			} catch (BadPositionCategoryException e) {
+				// ignore and return
+			}
+		}
+
+		/**
+		 * Returns the position category.
+		 *
+		 * @return the position category
+		 */
+		public String getCategory() {
+			return fCategory;
+		}
+
+	}
+	
+	
+	
 	
 	/**
 	 * Text operation code for requesting common prefix completion.
@@ -350,7 +511,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	/** The information presenter. */
 	private InformationPresenter fInformationPresenter;
 
-	private CompositeActionGroup fContextMenuGroup;
+	protected CompositeActionGroup fContextMenuGroup;
 
 	// private SelectionHistory fSelectionHistory;
 
@@ -1604,6 +1765,8 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		fEditorSelectionChangedListener.install(getSelectionProvider());
 
 	}
+	
+	
 
 	/**
 	 * React to changed selection.
