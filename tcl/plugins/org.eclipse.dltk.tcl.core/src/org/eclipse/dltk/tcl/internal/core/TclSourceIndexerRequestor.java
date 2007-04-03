@@ -26,10 +26,14 @@ public class TclSourceIndexerRequestor extends SourceIndexerRequestor {
 
 	public boolean enterTypeAppend(String fullName, String delimiter) {
 		if (fullName.startsWith("::")) {
-			if (DLTKCore.DEBUG) {
-				System.out
-						.println("We need to correct index global namespace append from other namespace..");
-			}
+//			if (DLTKCore.DEBUG) {
+//				System.out
+//						.println("We need to correct index global namespace append from other namespace..");
+//			}
+			String name = fullName.substring(2);
+			this.indexer.addTypeDeclaration(Modifiers.AccNameSpace,
+					this.pkgName, name, enclosingTypeNames(), null);
+			this.pushTypeName(name.toCharArray());
 		} else {
 			String name = fullName;
 			int pos = fullName.lastIndexOf("::");

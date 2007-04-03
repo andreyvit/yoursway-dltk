@@ -576,8 +576,8 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 				try {
 					search(to, IDLTKSearchConstants.METHOD,
 							IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-					search(to, IDLTKSearchConstants.METHOD,
-							IDLTKSearchConstants.DECLARATIONS, scope, requestor);
+//					search(to, IDLTKSearchConstants.METHOD,
+//							IDLTKSearchConstants.DECLARATIONS, scope, requestor);
 					// search( "::" + tok + "*", IDLTKSearchConstants.TYPE,
 					// IDLTKSearchConstants.DECLARATIONS, scope, requestor );
 					search(tok + "*", IDLTKSearchConstants.TYPE,

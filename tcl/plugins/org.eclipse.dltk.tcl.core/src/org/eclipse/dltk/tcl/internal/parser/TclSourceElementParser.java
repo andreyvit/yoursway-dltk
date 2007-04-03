@@ -173,10 +173,12 @@ public class TclSourceElementParser implements ISourceElementParser {
 			}
 			if (!kwMap.containsKey(name)) {
 				int argCount = statement.getCount() - 1;
-				if (name.charAt(0) != '$') {
-					this.fRequestor.acceptMethodReference(name.toCharArray(),
-							argCount, commandId.sourceStart(), commandId
-									.sourceEnd());
+				if (name.length() > 0) {
+					if (name.charAt(0) != '$') {
+						this.fRequestor.acceptMethodReference(name
+								.toCharArray(), argCount, commandId
+								.sourceStart(), commandId.sourceEnd());
+					}
 				}
 			}
 		}
