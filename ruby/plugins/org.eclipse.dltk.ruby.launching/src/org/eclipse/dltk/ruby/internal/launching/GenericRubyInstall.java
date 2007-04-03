@@ -143,6 +143,9 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 				data = content.substring(nl + 1, pos);
 			else 
 				data = content.substring(nl + 1);
+			String prev = (String) sources.get(filename);
+			if (prev != null)
+				data = prev + data;
 			sources.put(filename, data);
 		}
 	}
