@@ -1316,6 +1316,14 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 						.getPosition().getEndOffset() + 1;
 			}
 		}
+		
+		if (iVisited.getIterNode() != null) {
+			Statement s = collectSingleStatementSafe(iVisited.getIterNode());
+			if (s instanceof Expression)
+				argList.addExpression((Expression) s);
+			else
+				System.err.println("Failed to get block argument");
+		}
 
 		CallExpression c = new CallExpression(null, methodName, argList);
 
