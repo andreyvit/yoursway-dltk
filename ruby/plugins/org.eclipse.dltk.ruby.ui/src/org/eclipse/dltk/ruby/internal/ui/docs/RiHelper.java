@@ -14,6 +14,8 @@ import org.eclipse.dltk.ruby.core.RubyNature;
 
 public class RiHelper {
 	private static RiHelper instance;
+	
+	private final static boolean[] busy = new boolean[] { false };
 
 	public static RiHelper getInstance() {
 		if (instance == null) {
@@ -26,8 +28,21 @@ public class RiHelper {
 	protected RiHelper() {
 
 	}
-
+	
 	public String getDocFor(String keyword) {
+		synchronized (busy) {
+			while (busy[0]) {
+				try {
+					System.out.println("Ri is busy, waiting...");
+					busy.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					return "";
+				}
+			}
+			System.out.println("Fetching doc from ri...");
+			busy[0] = true;
+		}
 		IInterpreterInstall install = DLTKLaunchUtil
 				.getDefaultInterpreterInstall(RubyNature.NATURE_ID);
 
@@ -40,6 +55,8 @@ public class RiHelper {
 		BufferedReader input = null;
 		OutputStreamWriter output = null;
 
+		String result = null;
+		
 		try {
 			try {
 				Process process = DebugPlugin.exec(cmdLine, null);
@@ -52,9 +69,10 @@ public class RiHelper {
 				while ((line = input.readLine()) != null) {
 					sb.append(line);
 					sb.append('\n');
+					
 				}
 
-				return sb.toString();
+				result = sb.toString();
 			} finally {
 				if (output != null) {
 					output.close();
@@ -71,7 +89,13 @@ public class RiHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		synchronized (busy) {
+			System.out.println("Doc from ri successfully fetched");
+			busy[0] = false;
+			busy.notify();
+		}
 
-		return null;
+		return result;
 	}
 }
