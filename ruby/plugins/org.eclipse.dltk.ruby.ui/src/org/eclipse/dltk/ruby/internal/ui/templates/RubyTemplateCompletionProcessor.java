@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ruby.internal.ui.templates;
 
+import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.templates.ScriptTempalteCompletionProcessor;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
 import org.eclipse.jface.text.BadLocationException;
@@ -16,6 +17,7 @@ public class RubyTemplateCompletionProcessor extends
 	public RubyTemplateCompletionProcessor(
 			ScriptContentAssistInvocationContext context) {
 		super(context);
+		
 	}
 
 	protected Template[] getTemplates(String contextTypeId) {
@@ -62,6 +64,6 @@ public class RubyTemplateCompletionProcessor extends
 	}
 
 	protected Image getImage(Template template) {
-		return null;
-	}
+		return DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_TEMPLATE);
+	}	
 }
