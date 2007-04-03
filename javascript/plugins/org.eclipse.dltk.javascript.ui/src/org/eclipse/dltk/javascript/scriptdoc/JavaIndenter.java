@@ -7,7 +7,11 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.internal.ui.text.DocumentCharacterIterator;
+import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
+import org.eclipse.dltk.javascript.internal.ui.text.JsPreferenceInterpreter;
 import org.eclipse.dltk.javascript.internal.ui.text.Symbols;
+import org.eclipse.dltk.ui.text.util.AutoEditUtils;
+import org.eclipse.dltk.ui.text.util.TabStyle;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -73,6 +77,9 @@ public final class JavaIndenter {
 		 * @return the value of the preference
 		 * @since 3.1
 		 */
+		
+		JsPreferenceInterpreter prefs=new JsPreferenceInterpreter(JavaScriptUI.getDefault().getPreferenceStore());
+		
 		private String getCoreFormatterOption(String key) {
 			if (this.fProject == null)
 				return DLTKCore.getOption(key);
@@ -140,23 +147,20 @@ public final class JavaIndenter {
 				prefIndentBracesForMethods= prefIndentBracesForMethods();
 				prefIndentBracesForTypes= prefIndentBracesForTypes();
 				prefHasGenerics= hasGenerics();
-				prefTabChar= getCoreFormatterOption(DefaultCodeFormatterConstants.FORMATTER_TAB_CHAR);
+				prefTabChar= prefUseTabs()?"\t":" ";
 			}
 		}
 		
 		private boolean prefUseTabs() {
-			return !" ".equals(getCoreFormatterOption(DefaultCodeFormatterConstants.FORMATTER_TAB_CHAR));
+			if (prefs.getTabStyle() == TabStyle.TAB) {
+				return true;
+			} 
+			return false;
 		}
 		
-		private int getCoreOption(IDLTKProject project, String key, int i) {
-			try{
-			if (project == null)
-				return Integer.valueOf(DLTKCore.getOption(key)).intValue();
-			return Integer.valueOf(project.getOption(key, true)).intValue();
-			} catch (Exception e) {
-				return 4;
-			}
-		}
+		
+		
+		
 		public  int getTabWidth(IDLTKProject project) {
 			/*
 			 * If the tab-char is SPACE, FORMATTER_INDENTATION_SIZE is not used
@@ -164,11 +168,8 @@ public final class JavaIndenter {
 			 * We piggy back the visual tab length setting in that preference in
 			 * that case.
 			 */
-			String key;
 			
-			key= DefaultCodeFormatterConstants.FORMATTER_TAB_SIZE;
-			
-			return getCoreOption(project, key, 4);
+			return prefs.getTabSize();
 		}
 
 		private int prefTabSize() {
@@ -176,10 +177,7 @@ public final class JavaIndenter {
 		}
 		
 		public int getIndentWidth(IDLTKProject project) {
-			
-			String key= DefaultCodeFormatterConstants.FORMATTER_TAB_SIZE;
-			
-			return getCoreOption(project, key, 4);
+			return prefs.getIndentSize();
 		}
 
 		private int prefIndentationSize() {

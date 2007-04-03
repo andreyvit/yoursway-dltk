@@ -2,6 +2,9 @@ package org.eclipse.dltk.javascript.internal.ui.formatting;
 
 import java.util.Map;
 
+import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
+import org.eclipse.dltk.javascript.internal.ui.text.JsPreferenceInterpreter;
+import org.eclipse.dltk.ui.text.util.TabStyle;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
 
@@ -22,18 +25,18 @@ public class OldCodeFormatter extends CodeFormatter {
 
 	public TextEdit format(int kind, String source, int offset, int length,
 			StringBuffer computeIndentation, String lineSeparator) {
-		String newText = formatString(source.substring(offset, offset+length),
-				computeIndentation);
+		String newText = formatString(
+				source.substring(offset, offset + length), computeIndentation);
 		return new ReplaceEdit(offset, length, newText);
 	}
 
 	public String formatString(String substring, StringBuffer computeIndentation) {
-		Parser ps=new Parser(new CompilerEnvirons(),new ErrorReporter(){
+		Parser ps = new Parser(new CompilerEnvirons(), new ErrorReporter() {
 
 			public void error(String message, String sourceName, int line,
 					String lineSource, int offset) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			public EvaluatorException runtimeError(String message,
@@ -46,17 +49,27 @@ public class OldCodeFormatter extends CodeFormatter {
 			public void warning(String message, String sourceName, int line,
 					String lineSource, int lineOffset) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 		});
 		ps.parse(substring, "", 0);
 		String encodedSource = ps.getEncodedSource();
 		Decompiler de = new Decompiler();
 		de.setIndent(computeIndentation);
-		if (computeIndentation==null||computeIndentation.length()==0)
-		return de.decompile(encodedSource, 0, new UintMap()).trim();
-		else return de.decompile(encodedSource, 0, new UintMap());
+		UintMap uintMap = new UintMap();
+		JsPreferenceInterpreter pi = new JsPreferenceInterpreter(JavaScriptUI
+				.getDefault().getPreferenceStore());
+		uintMap.put(Decompiler.INDENT_GAP_PROP, pi.getIndentSize());
+		TabStyle tabStyle = pi.getTabStyle();
+		if (tabStyle==TabStyle.TAB)
+		uintMap.put(Decompiler.INDENT_USE_TAB, 1);
+		else
+		uintMap.put(Decompiler.INDENT_USE_TAB, 0);	
+		if (computeIndentation == null || computeIndentation.length() == 0)
+			return de.decompile(encodedSource, 0, uintMap).trim();
+		else
+			return de.decompile(encodedSource, 0, uintMap);
 	}
 
 }

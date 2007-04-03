@@ -92,6 +92,8 @@ public class Decompiler {
 	 */
 	public static final int INDENT_GAP_PROP = 2;
 
+	public static final int INDENT_USE_TAB = 5;
+
 	/**
 	 * Decompilation property to specify identation offset for case labels.
 	 */
@@ -269,6 +271,11 @@ public class Decompiler {
 	 * 
 	 */
 	public String decompile(String source, int flags, UintMap properties) {
+		int pT = properties.getInt(Decompiler.INDENT_USE_TAB, 0);
+		char tChar = ' ';
+		if (pT != 0) {
+			tChar = '\t';
+		}
 		int length = source.length();
 		if (length == 0) {
 			return "";
@@ -278,6 +285,9 @@ public class Decompiler {
 		if (indent < 0)
 			throw new IllegalArgumentException();
 		int indentGap = properties.getInt(INDENT_GAP_PROP, 4);
+		if (pT == 1) {
+			indentGap = 1;
+		}
 		if (indentGap < 0)
 			throw new IllegalArgumentException();
 		int caseGap = properties.getInt(CASE_GAP_PROP, 2);
@@ -326,15 +336,12 @@ public class Decompiler {
 		}
 
 		if (!toSource) {
-			if (indentBuffer.length()==0)
-			{
-			// add an initial newline to exactly match js.
-			result.append('\n');
+			if (indentBuffer.length() == 0) {
+				// add an initial newline to exactly match js.
+				result.append('\n');
 			}
-			result.append(indentBuffer);
-			for (int j = 0; j < indent; j++)
-				result.append(' ');
-			
+			indent(indent, result, tChar);
+
 		} else {
 			if (topFunctionType == FunctionNode.FUNCTION_EXPRESSION) {
 				result.append('(');
@@ -352,7 +359,7 @@ public class Decompiler {
 			case Token.LOCAL_LOAD:
 				result.append("//");
 				i = printSourceString(source, i + 1, false, result);
-				
+
 				boolean newLine = true;
 				if (!afterFirstEOL) {
 					afterFirstEOL = true;
@@ -393,21 +400,21 @@ public class Decompiler {
 						if (source.charAt(afterName) == Token.COLON)
 							less = indentGap;
 					}
-					
+
 					for (; less < indent; less++)
-						result.append(' ');
-				}				
+						result.append(tChar);
+				}
 				continue;
-				
+
 			case Token.LOCAL_BLOCK:
 				result.append("/*");
-				i = printCommentString(source, i + 1,indent,  result);
-				
+				i = printCommentString(source, i + 1, indent, result, tChar);
+
 				newLine = true;
-//				if (source.charAt(i)==Token.NAME){
-//					newLine=false;
-//					result.append(' ');
-//				}
+				// if (source.charAt(i)==Token.NAME){
+				// newLine=false;
+				// result.append(tChar);
+				// }
 				if (!afterFirstEOL) {
 					afterFirstEOL = true;
 					if (justFunctionBody) {
@@ -449,8 +456,8 @@ public class Decompiler {
 					}
 
 					for (; less < indent; less++)
-						result.append(' ');
-				}				
+						result.append(tChar);
+				}
 				continue;
 			case Token.STRING:
 				i = printSourceString(source, i + 1, true, result);
@@ -516,7 +523,7 @@ public class Decompiler {
 				case Token.WHILE:
 				case Token.ELSE:
 					indent -= indentGap;
-					result.append(' ');
+					result.append(tChar);
 					break;
 				default:
 					indent -= indentGap;
@@ -586,7 +593,7 @@ public class Decompiler {
 					}
 
 					for (; less < indent; less++)
-						result.append(' ');
+						result.append(tChar);
 				}
 				break;
 			}
@@ -905,25 +912,30 @@ public class Decompiler {
 		if (!toSource) {
 			// add that trailing newline if it's an outermost function.
 			if (!justFunctionBody)
-				if (this.indentBuffer.length()==0)
-				{
-				result.append('\n');
-				result.append(indentBuffer);
+				if (this.indentBuffer.length() == 0) {
+					result.append('\n');
+					result.append(indentBuffer);
 				}
 		} else {
 			if (topFunctionType == FunctionNode.FUNCTION_EXPRESSION) {
 				result.append(')');
 			}
 		}
-		int rr=result.length();
-		for (int a=0;a<result.length();a++){
+		int rr = result.length();
+		for (int a = 0; a < result.length(); a++) {
 			char charAt = result.charAt(a);
-			boolean ws=Character.isWhitespace(charAt);
-			if (!ws){
-				rr=a+1;
+			boolean ws = Character.isWhitespace(charAt);
+			if (!ws) {
+				rr = a + 1;
 			}
-		}				
-		return result.substring(0,rr);
+		}
+		return result.substring(0, rr);
+	}
+
+	private void indent(int indent, StringBuffer result, char tChar) {
+		result.append(indentBuffer);
+		for (int j = 0; j < indent; j++)
+			result.append(tChar);
 	}
 
 	private static int getNext(String source, int length, int i) {
@@ -954,11 +966,11 @@ public class Decompiler {
 		}
 		return offset + length;
 	}
-	
-	private  int printCommentString(String source, int offset,
-			 int indent, StringBuffer sb) {
+
+	private int printCommentString(String source, int offset, int indent,
+			StringBuffer sb, char tc) {
 		int length = source.charAt(offset);
-		
+
 		++offset;
 		if ((0x8000 & length) != 0) {
 			length = ((0x7FFF & length) << 16) | source.charAt(offset);
@@ -966,27 +978,28 @@ public class Decompiler {
 		}
 		if (sb != null) {
 			String str = source.substring(offset, offset + length);
-			boolean afterLine=false;
-			for (int a=0;a<str.length();a++){
+			boolean afterLine = false;
+			for (int a = 0; a < str.length(); a++) {
 				char charAt = str.charAt(a);
-				if (afterLine){
-					if (Character.isWhitespace(charAt)) continue;
-					afterLine=false;
+				if (afterLine) {
+					if (Character.isWhitespace(charAt))
+						continue;
+					afterLine = false;
 				}
 				/**
-				 * dde
-				 * dede
-				 * ded
+				 * dde dede ded
 				 * 
 				 */
 				sb.append(charAt);
-				
-				if (charAt=='\n'){
+
+				if (charAt == '\n') {
 					sb.append(indentBuffer);
-					for (int i=0;i<indent+1;i++)sb.append(' ');
-					afterLine=true;
-				}				
-			}					
+					for (int i = 0; i < indent; i++) {
+						sb.append(tc);
+					}
+					afterLine = true;
+				}
+			}
 		}
 		return offset + length;
 	}
@@ -1049,10 +1062,11 @@ public class Decompiler {
 		appendString(string);
 	}
 
-	StringBuffer indentBuffer=new StringBuffer();
+	StringBuffer indentBuffer = new StringBuffer();
+
 	public void setIndent(StringBuffer computeIndentation) {
-		if (computeIndentation!=null)
-		this.indentBuffer=computeIndentation;
+		if (computeIndentation != null)
+			this.indentBuffer = computeIndentation;
 	}
 
 }

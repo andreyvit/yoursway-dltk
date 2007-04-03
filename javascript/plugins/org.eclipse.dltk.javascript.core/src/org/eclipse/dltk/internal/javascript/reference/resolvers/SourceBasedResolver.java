@@ -11,15 +11,18 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchPattern;
+import org.eclipse.dltk.core.search.indexing.IIndexConstants;
 import org.eclipse.dltk.internal.javascript.typeinference.AbstractCallResultReference;
 import org.eclipse.dltk.internal.javascript.typeinference.HostCollection;
 import org.eclipse.dltk.internal.javascript.typeinference.IReference;
 import org.eclipse.dltk.internal.javascript.typeinference.VaribleDeclarationReference;
 import org.eclipse.dltk.javascript.core.FunctionDeclarationReference;
 import org.eclipse.dltk.javascript.core.JavaScriptNature;
+import org.eclipse.dltk.javascript.internal.core.mixin.JavaScriptMixinModel;
 
 public class SourceBasedResolver implements IReferenceResolver,
 		IExecutableExtension {
@@ -92,7 +95,17 @@ public class SourceBasedResolver implements IReferenceResolver,
 	}
 
 	public Set resolveGlobals(String id) {
-		return new HashSet();
+		JavaScriptMixinModel m=JavaScriptMixinModel.getInstance();
+		String[] findElements = m.findElements(IIndexConstants.SEPARATOR+ id.replace('.',IIndexConstants.SEPARATOR));
+		HashSet result=new HashSet();
+		for (int a=0;a<findElements.length;a++){
+			IMixinElement mixinElement = m.getRawInstance().get(findElements[a]);
+			Object[] allObjects = mixinElement.getAllObjects();
+			for (int i=0;i<allObjects.length;i++){
+				result.add(allObjects[i]);
+			}
+		}
+		return result;
 	}
 
 	public void processCall(String call, String objId) {

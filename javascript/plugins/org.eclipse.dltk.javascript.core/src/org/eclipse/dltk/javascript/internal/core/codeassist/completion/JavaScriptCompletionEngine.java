@@ -1,5 +1,6 @@
 package org.eclipse.dltk.javascript.internal.core.codeassist.completion;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,9 +25,11 @@ import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.internal.javascript.reference.resolvers.ReferenceResolverContext;
 import org.eclipse.dltk.internal.javascript.reference.resolvers.SelfCompletingReference;
@@ -110,13 +113,46 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 			String startPart) {
 		HashSet completedNames = new HashSet();
 
+		char[] token = startPart.toCharArray();
 		if (useEngine) {
 			doCompletionOnKeyword(position, pos, startPart);
 			JavaScriptMixinModel instance = JavaScriptMixinModel.getInstance();
-			instance.findElements(MixinModel.SEPARATOR + startPart);
-			// doCompletionOnFunction(position, pos, startPart);
-			// doCompletionOnGlobalVariable(position, pos, startPart,
-			// completedNames);
+			String[] findElements = instance.findElements(MixinModel.SEPARATOR + startPart);
+			
+			ArrayList methods=new ArrayList();
+			ArrayList fields=new ArrayList();
+			for (int a=0;a<findElements.length;a++){
+				IMixinElement mixinElement = instance.getRawInstance().get(findElements[a]);
+				System.out.println(mixinElement);
+				Object[] allObjects = mixinElement.getAllObjects();
+				if (allObjects.length>0){
+					for (int i=0;i<allObjects.length;i++){
+						Object object = allObjects[i];
+						if (object instanceof IModelElement){
+							IModelElement el=(IModelElement) object;
+							int elementType = el.getElementType();
+							if (elementType==IModelElement.METHOD){
+								methods.add(el);
+							}
+							else if (elementType==IModelElement.FIELD){
+								fields.add(el.getElementName().toCharArray());
+							}							
+						}
+						else if (object==null){
+							fields.add(mixinElement.getLastKeySegment().toCharArray());		
+						}
+					}
+				}				
+			}
+			findMethods(token, true, methods);
+			char[][] choices=new char[fields.size()][];
+			for (int a=0;a<fields.size();a++){
+				choices[a]=(char[]) fields.get(a);
+			}
+			findLocalVariables(token, choices, true,false);
+			//doCompletionOnFunction(position, pos, startPart);
+			//doCompletionOnGlobalVariable(position, pos, startPart,
+			//completedNames);
 		}
 		// report parameters and local variables
 		Map rfs = collection.getReferences();
@@ -162,12 +198,13 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 			choices[ia] = name.toCharArray();
 			ia++;
 		}
-		findLocalVariables(startPart.toCharArray(), choices, true, false);
+		findLocalVariables(token, choices, true, false);
 	}
 
 	private void doCompletionOnMember(ReferenceResolverContext buildContext,
 			ISourceModule cu, int position, String content, int pos,
 			HostCollection collection) {
+		
 		String completionPart = calculator.getCompletionPart();
 		String corePart = calculator.getCorePart();
 		int k = corePart.indexOf('[');
@@ -219,8 +256,7 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 					dubR.put(refa, name);
 				}
 			}
-		} else {
-
+		} else {			
 			Set resolveGlobals = buildContext.resolveGlobals(calculator
 					.getCorePart() + '.');
 			Iterator it = resolveGlobals.iterator();

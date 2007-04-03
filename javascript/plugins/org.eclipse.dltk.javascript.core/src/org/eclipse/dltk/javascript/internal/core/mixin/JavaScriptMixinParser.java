@@ -17,6 +17,9 @@ import org.eclipse.dltk.core.mixin.IMixinParser;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.core.search.indexing.IIndexConstants;
+import org.eclipse.dltk.internal.core.ModelElement;
+import org.eclipse.dltk.internal.core.SourceField;
+import org.eclipse.dltk.internal.core.SourceMethod;
 import org.eclipse.dltk.internal.javascript.parser.JavaScriptModuleDeclaration;
 import org.eclipse.dltk.internal.javascript.reference.resolvers.ReferenceResolverContext;
 import org.eclipse.dltk.internal.javascript.typeinference.HostCollection;
@@ -44,7 +47,6 @@ public class JavaScriptMixinParser implements IMixinParser,
 
 		Parser parser = new Parser(cenv, reporter);
 		try {
-
 			ScriptOrFnNode parse = parser.parse(new CharArrayReader(contents),
 					"", 0);
 			TypeInferencer interferencer = new TypeInferencer(null,
@@ -52,7 +54,7 @@ public class JavaScriptMixinParser implements IMixinParser,
 			// interferencer.setRequestor(fRequestor);
 			interferencer.doInterferencing(parse, Integer.MAX_VALUE);
 			// fRequestor.enterModule();
-			processNode("", parse);
+			processNode("", parse,signature,(ModelElement) module);
 			HostCollection collection = interferencer.getCollection();
 			// elements/
 			moduleDeclaration.setCollection(collection);
@@ -84,22 +86,23 @@ public class JavaScriptMixinParser implements IMixinParser,
 				IReference refa = (IReference) next;
 				reportRef(refa, key, level + 1);
 			}
-		}
-
+		}		
 		IMixinRequestor.ElementInfo elementInfo = new IMixinRequestor.ElementInfo();
-		elementInfo.key = key.replace('.', IIndexConstants.SEPARATOR);
+		elementInfo.key = IIndexConstants.SEPARATOR+key.replace('.', IIndexConstants.SEPARATOR);
 		requestor.reportElement(elementInfo);
 	}
 
-	private void processNode(String parent, ScriptOrFnNode parse) {
+	private void processNode(String parent, ScriptOrFnNode parse, boolean signature,ModelElement parentElement) {
 		for (int a = 0; a < parse.getFunctionCount(); a++) {
 			FunctionNode functionNode = parse.getFunctionNode(a);
 			String functionName = functionNode.getFunctionName();
 			IMixinRequestor.ElementInfo elementInfo = new IMixinRequestor.ElementInfo();
 			String key = parent + MixinModel.SEPARATOR + functionName;
 			elementInfo.key = key;
-			requestor.reportElement(elementInfo);
-			processNode(key, functionNode);
+			SourceMethod ms=new SourceMethod(parentElement,functionName);			
+			elementInfo.object=ms;			
+			requestor.reportElement(elementInfo);			
+			processNode(key, functionNode,signature,ms);
 		}
 		String[] paramsAndVars = parse.getParamAndVarNames();
 		String[] params = new String[parse.getParamCount()];
@@ -121,6 +124,7 @@ public class JavaScriptMixinParser implements IMixinParser,
 				IMixinRequestor.ElementInfo elementInfo = new IMixinRequestor.ElementInfo();
 				String key = parent + MixinModel.SEPARATOR + var;
 				elementInfo.key = key;
+				elementInfo.object=new SourceField(parentElement,var);
 				requestor.reportElement(elementInfo);
 			}
 	}
@@ -136,6 +140,5 @@ public class JavaScriptMixinParser implements IMixinParser,
 	public void parserSourceModule(char[] contents, boolean signature,
 			ISourceModule module, ISourceModuleInfo info) {
 		reportRefs(contents, signature, module, info);
-
 	}
 }
