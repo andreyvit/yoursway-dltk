@@ -182,14 +182,14 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 				switch (entry.getEntryKind()) {
 				case IBuildpathEntry.BPE_PROJECT:
 					p = workspaceRoot.getProject(path.lastSegment()); // missing
-																		// projects
-																		// are
-																		// considered
-																		// too
+					// projects
+					// are
+					// considered
+					// too
 					if (((BuildpathEntry) entry).isOptional()
 							&& !DLTKProject.hasScriptNature(p)) // except if
-																// entry is
-																// optional
+						// entry is
+						// optional
 						p = null;
 					break;
 				case IBuildpathEntry.BPE_LIBRARY:
@@ -326,11 +326,13 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 					for (int k = 0; k < builders.length; k++) {
 						IStatus[] st = builders[k].buildResources(
 								this.scriptProject, realResources, monitor);
-						for (int i = 0; i < st.length; i++) {
-							IStatus s = st[i];
-							if (s != null && s.getSeverity() != IStatus.OK) {
-								status.add(s);
-							}	
+						if (st != null) {
+							for (int i = 0; i < st.length; i++) {
+								IStatus s = st[i];
+								if (s != null && s.getSeverity() != IStatus.OK) {
+									status.add(s);
+								}
+							}
 						}
 					}
 				}
@@ -353,13 +355,15 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 
 			if (builders != null) {
 				for (int k = 0; k < builders.length; k++) {
-					IStatus[] st = builders[k].buildModelElements(scriptProject,
-							elements, monitor);
-					for (int i = 0; i < st.length; i++) {
-						IStatus s = st[i];
-						if (s != null && s.getSeverity() != IStatus.OK) {
-							status.add(s);
-						}	
+					IStatus[] st = builders[k].buildModelElements(
+							scriptProject, elements, monitor);
+					if (st != null) {
+						for (int i = 0; i < st.length; i++) {
+							IStatus s = st[i];
+							if (s != null && s.getSeverity() != IStatus.OK) {
+								status.add(s);
+							}
+						}
 					}
 				}
 
