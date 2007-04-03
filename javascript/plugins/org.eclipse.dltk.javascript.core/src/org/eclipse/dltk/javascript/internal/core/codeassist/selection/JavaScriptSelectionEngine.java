@@ -82,9 +82,13 @@ public class JavaScriptSelectionEngine extends ScriptSelectionEngine {
 			Set resolveGlobals = rc.resolveGlobals(selection);
 			Iterator it=resolveGlobals.iterator();
 			while (it.hasNext()){
-				IReference r=(IReference) it.next();
+				Object next = it.next();
+				if (it instanceof IReference)
+				{
+				IReference r=(IReference) next;
 				if (r.getName().equals(selection))
 				r.addModelElements(result);
+				}
 			}
 		}
 		

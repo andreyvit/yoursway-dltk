@@ -89,6 +89,7 @@ public class JavaScriptMixinParser implements IMixinParser,
 		}		
 		IMixinRequestor.ElementInfo elementInfo = new IMixinRequestor.ElementInfo();
 		elementInfo.key = IIndexConstants.SEPARATOR+key.replace('.', IIndexConstants.SEPARATOR);
+		elementInfo.object=ref;
 		requestor.reportElement(elementInfo);
 	}
 
@@ -96,6 +97,8 @@ public class JavaScriptMixinParser implements IMixinParser,
 		for (int a = 0; a < parse.getFunctionCount(); a++) {
 			FunctionNode functionNode = parse.getFunctionNode(a);
 			String functionName = functionNode.getFunctionName();
+			if (functionName.length()>0)
+			{
 			IMixinRequestor.ElementInfo elementInfo = new IMixinRequestor.ElementInfo();
 			String key = parent + MixinModel.SEPARATOR + functionName;
 			elementInfo.key = key;
@@ -103,6 +106,7 @@ public class JavaScriptMixinParser implements IMixinParser,
 			elementInfo.object=ms;			
 			requestor.reportElement(elementInfo);			
 			processNode(key, functionNode,signature,ms);
+			}
 		}
 		String[] paramsAndVars = parse.getParamAndVarNames();
 		String[] params = new String[parse.getParamCount()];

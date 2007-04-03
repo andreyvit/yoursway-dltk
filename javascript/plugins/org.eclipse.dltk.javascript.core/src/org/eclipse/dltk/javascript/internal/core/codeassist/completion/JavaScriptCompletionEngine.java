@@ -117,42 +117,56 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 		if (useEngine) {
 			doCompletionOnKeyword(position, pos, startPart);
 			JavaScriptMixinModel instance = JavaScriptMixinModel.getInstance();
-			String[] findElements = instance.findElements(MixinModel.SEPARATOR + startPart);
+			String[] findElements = instance.findElements(MixinModel.SEPARATOR
+					+ startPart);
+
+			ArrayList methods = new ArrayList();
+			ArrayList fields = new ArrayList();
 			
-			ArrayList methods=new ArrayList();
-			ArrayList fields=new ArrayList();
-			for (int a=0;a<findElements.length;a++){
-				IMixinElement mixinElement = instance.getRawInstance().get(findElements[a]);
-				System.out.println(mixinElement);
+			for (int a = 0; a < findElements.length; a++) {
+				String string = findElements[a];
+				if (string.lastIndexOf(MixinModel.SEPARATOR)>0)continue;
+				IMixinElement mixinElement = instance.getRawInstance().get(
+						string);
+				if (mixinElement==null)continue;
 				Object[] allObjects = mixinElement.getAllObjects();
-				if (allObjects.length>0){
-					for (int i=0;i<allObjects.length;i++){
+				if (allObjects.length > 0) {
+					for (int i = 0; i < allObjects.length; i++) {
 						Object object = allObjects[i];
-						if (object instanceof IModelElement){
-							IModelElement el=(IModelElement) object;
+						if (object instanceof IModelElement) {
+							IModelElement el = (IModelElement) object;
 							int elementType = el.getElementType();
-							if (elementType==IModelElement.METHOD){
+							if (elementType == IModelElement.METHOD) {
 								methods.add(el);
+							} else if (elementType == IModelElement.FIELD) {
+								String elementName = el.getElementName();
+								if (!completedNames.contains(elementName))
+								{
+								fields.add(elementName.toCharArray());
+								completedNames.add(elementName);
+								}
 							}
-							else if (elementType==IModelElement.FIELD){
-								fields.add(el.getElementName().toCharArray());
-							}							
-						}
-						else if (object==null){
-							fields.add(mixinElement.getLastKeySegment().toCharArray());		
+						} else if (object == null) {
+							String lastKeySegment = mixinElement.getLastKeySegment();
+							if (!completedNames.contains(lastKeySegment))
+							{
+							fields.add(lastKeySegment
+									.toCharArray());
+							completedNames.add(lastKeySegment);
+							}
 						}
 					}
-				}				
+				}
 			}
 			findMethods(token, true, methods);
-			char[][] choices=new char[fields.size()][];
-			for (int a=0;a<fields.size();a++){
-				choices[a]=(char[]) fields.get(a);
+			char[][] choices = new char[fields.size()][];
+			for (int a = 0; a < fields.size(); a++) {
+				choices[a] = (char[]) fields.get(a);
 			}
-			findLocalVariables(token, choices, true,false);
-			//doCompletionOnFunction(position, pos, startPart);
-			//doCompletionOnGlobalVariable(position, pos, startPart,
-			//completedNames);
+			findLocalVariables(token, choices, true, false);
+			// doCompletionOnFunction(position, pos, startPart);
+			// doCompletionOnGlobalVariable(position, pos, startPart,
+			// completedNames);
 		}
 		// report parameters and local variables
 		Map rfs = collection.getReferences();
@@ -182,12 +196,18 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 			names.put(name, rfs.get(name));
 		}
 		ReferenceResolverContext createResolverContext = buildContext;
-		Set resolveGlobals = createResolverContext.resolveGlobals(calculator
-				.getCompletion());
+		Set resolveGlobals = Collections.EMPTY_SET;
+		//createResolverContext.resolveGlobals(calculator
+			//	.getCompletion());
 		it = resolveGlobals.iterator();
 		while (it.hasNext()) {
-			IReference r = (IReference) it.next();
+			Object o=it.next();
+			if (o instanceof IReference)
+			{
+			IReference r = (IReference) o;
+			if (completedNames.contains(r.getName()))continue;
 			names.put(r.getName(), r);
+			}
 		}
 		names.remove("!!!returnValue");
 		completeFromMap(position, startPart, names);
@@ -204,7 +224,7 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 	private void doCompletionOnMember(ReferenceResolverContext buildContext,
 			ISourceModule cu, int position, String content, int pos,
 			HostCollection collection) {
-		
+
 		String completionPart = calculator.getCompletionPart();
 		String corePart = calculator.getCorePart();
 		int k = corePart.indexOf('[');
@@ -256,13 +276,16 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 					dubR.put(refa, name);
 				}
 			}
-		} else {			
+		} else {
 			Set resolveGlobals = buildContext.resolveGlobals(calculator
 					.getCorePart() + '.');
 			Iterator it = resolveGlobals.iterator();
 			while (it.hasNext()) {
-				IReference r = (IReference) it.next();
+				Object o=it.next();
+				if (o instanceof IReference){
+				IReference r = (IReference) o;
 				dubR.put(r.getName(), r);
+				}
 			}
 			long currentTimeMillis = System.currentTimeMillis();
 			String[] findElements = JavaScriptMixinModel.getInstance()
@@ -288,7 +311,6 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 			String refa = (String) next;
 			choices[ia++] = refa.toCharArray();
 		}
-
 		findElements(completionPart.toCharArray(), choices, true, false,
 				CompletionProposal.FIELD_REF);
 

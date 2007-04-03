@@ -42,4 +42,5 @@ public interface IReference {
 	public void addModelElements(Collection toAdd);
 
 	public void setLocationInformation(ModelElement mo, int position, int length);
+
 }

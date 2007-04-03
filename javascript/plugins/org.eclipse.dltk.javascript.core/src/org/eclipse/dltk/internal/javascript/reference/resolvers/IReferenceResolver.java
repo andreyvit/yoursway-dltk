@@ -15,4 +15,6 @@ public interface IReferenceResolver {
 	void processCall(String call, String objId);
 	
 	void init(ReferenceResolverContext owner);
+	
+	
 }
