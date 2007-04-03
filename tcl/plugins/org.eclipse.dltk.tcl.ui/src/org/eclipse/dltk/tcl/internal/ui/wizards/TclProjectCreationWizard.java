@@ -1,5 +1,6 @@
 package org.eclipse.dltk.tcl.internal.ui.wizards;
 
+import java.util.Observable;
 import java.util.Observer;
 
 import org.eclipse.core.runtime.CoreException;
@@ -73,7 +74,7 @@ public class TclProjectCreationWizard extends NewElementWizard implements
 				fInterpreterGroup = new TclInterpreterGroup(parent);
 			}
 
-			protected Observer getInterpreterGroupObservable() {
+			protected Observable getInterpreterGroupObservable() {
 				return fInterpreterGroup;
 			}
 
@@ -87,6 +88,11 @@ public class TclProjectCreationWizard extends NewElementWizard implements
 
 			protected void handlePossibleInterpreterChange() {
 				fInterpreterGroup.handlePossibleInterpreterChange();
+			}
+
+			protected boolean interpeterRequired() {
+				// TODO Auto-generated method stub
+				return false;
 			}
 
 		};

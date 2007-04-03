@@ -1,5 +1,6 @@
 package org.eclipse.dltk.javascript.internal.ui.wizards;
 
+import java.util.Observable;
 import java.util.Observer;
 
 import org.eclipse.core.runtime.CoreException;
@@ -67,7 +68,7 @@ public class JavascriptProjectCreationWizard extends NewElementWizard implements
 				fInterpreterGroup = new JavascriptInterpreterGroup(parent);
 			}
 
-			protected Observer getInterpreterGroupObservable() {
+			protected Observable getInterpreterGroupObservable() {
 				return fInterpreterGroup;
 			}
 
@@ -81,6 +82,11 @@ public class JavascriptProjectCreationWizard extends NewElementWizard implements
 
 			protected void handlePossibleInterpreterChange() {
 				fInterpreterGroup.handlePossibleInterpreterChange();
+			}
+
+			protected boolean interpeterRequired() {
+				// TODO Auto-generated method stub
+				return false;
 			}
 		};
 		fFirstPage

@@ -284,7 +284,7 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 	}
 	
 
-	protected abstract class AbstractInterpreterGroup implements Observer, SelectionListener, IDialogFieldListener {
+	protected abstract class AbstractInterpreterGroup extends Observable implements Observer, SelectionListener, IDialogFieldListener {
 
 		private final SelectionButtonDialogField fUseDefaultInterpreterEnvironment, fUseProjectInterpreterEnvironment;
 		private final ComboDialogField fInterpreterEnvironmentCombo;
@@ -354,7 +354,8 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 				fInterpreterEnvironmentCombo.selectItem(getDefaultInterpreterName());
 			} else {
 				fInterpreterEnvironmentCombo.selectItem(selectedItem);
-			}
+			}		
+			interpretersPresent = (fInstalledJInterpreters.length > 0);
 		}
 		
 		private IInterpreterInstall[] getWorkspaceInterpeters() {
@@ -425,10 +426,12 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 		public void handlePossibleInterpreterChange() {
 			fUseDefaultInterpreterEnvironment.setLabelText(getDefaultInterpreterLabel());
 			fillInstalledInterpreterEnvironments(fInterpreterEnvironmentCombo);
+			setChanged();
+			notifyObservers();
 		}
 	
 		public void dialogFieldChanged(DialogField field) {
-			updateEnableState();
+			updateEnableState();			
 			//fDetectGroup.handlePossibleInterpreterChange();
 		}
 		
@@ -601,6 +604,13 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 					return;
 				}
 			}
+			if (supportInterpreter() && interpeterRequired()) {
+				if (!interpretersPresent) {
+					setErrorMessage("Please configure interpreters");
+					setPageComplete(false);
+					return;
+				}
+			}
 			setPageComplete(true);
 			setErrorMessage(null);
 			setMessage(null);
@@ -610,6 +620,7 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 	private LocationGroup fLocationGroup;
 	// private LayoutGroup fLayoutGroup;
 	// private InterpreterEnvironmentGroup fInterpreterEnvironmentGroup;
+	private boolean interpretersPresent;
 	private DetectGroup fDetectGroup;
 	private Validator fValidator;
 	private String fInitialName;
@@ -638,14 +649,16 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 			fNameGroup.setName(name);
 		}
 	}
-
+	
+	protected abstract boolean interpeterRequired();
+	
 	protected abstract boolean supportInterpreter();
 
 	protected abstract void createInterpreterGroup(Composite parent);
 		
 	protected abstract void handlePossibleInterpreterChange();
 	
-	protected abstract Observer getInterpreterGroupObservable();
+	protected abstract Observable getInterpreterGroupObservable();
 	
 	protected abstract IInterpreterInstall getInterpreter();
 
@@ -660,9 +673,9 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 		fLocationGroup = new LocationGroup(composite);
 		
 		// fInterpreterEnvironmentGroup= new InterpreterEnvironmentGroup(composite);
+		ProjectWizardFirstPage.AbstractInterpreterGroup interpGroup = null;
 		if (supportInterpreter()) {
 			createInterpreterGroup(composite);
-			;
 		}
 		// fLayoutGroup= new LayoutGroup(composite);
 		fDetectGroup = new DetectGroup(composite);
@@ -670,16 +683,21 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 		fNameGroup.addObserver(fLocationGroup);
 		// fDetectGroup.addObserver(fLayoutGroup);
 		// fDetectGroup.addObserver(fInterpreterEnvironmentGroup);
-		if( supportInterpreter() ) {
-			fDetectGroup.addObserver(getInterpreterGroupObservable());
-		}
+
 		fLocationGroup.addObserver(fDetectGroup);
 		// initialize all elements
 		fNameGroup.notifyObservers();
 		// create and connect validator
 		fValidator = new Validator();
+		Observable interpreterGroupObservable = getInterpreterGroupObservable();
+		if( supportInterpreter() && interpreterGroupObservable != null) {
+//			fDetectGroup.addObserver(getInterpreterGroupObservable());
+			interpreterGroupObservable.addObserver(fValidator);
+			handlePossibleInterpreterChange();
+		}
 		fNameGroup.addObserver(fValidator);
 		fLocationGroup.addObserver(fValidator);
+		
 		setControl(composite);
 		Dialog.applyDialogFont(composite);
 		if (DLTKCore.DEBUG) {

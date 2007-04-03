@@ -248,7 +248,7 @@ public abstract class ProjectWizardSecondPage extends CapabilityConfigurationPag
 		if (inst != null) {
 			IPath newPath= InterpreterEnvironmentContainerPath.append(inst.getInterpreterInstallType().getId()).append(inst.getName());
 			return new IBuildpathEntry[] { DLTKCore.newContainerEntry(newPath) };
-		}
+		} 
 		
 		if (defaultPath != null)
 			return new IBuildpathEntry[] {defaultPath};

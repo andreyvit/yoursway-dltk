@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ruby.internal.ui.wizards;
 
+import java.util.Observable;
 import java.util.Observer;
 
 import org.eclipse.core.runtime.CoreException;
@@ -66,7 +67,7 @@ public class RubyProjectCreationWizard extends NewElementWizard implements INewW
 				fInterpreterGroup = new RubyInterpreterGroup(parent);
 			}
 
-			protected Observer getInterpreterGroupObservable() {
+			protected Observable getInterpreterGroupObservable() {
 				return fInterpreterGroup;
 			}
 
@@ -80,6 +81,10 @@ public class RubyProjectCreationWizard extends NewElementWizard implements INewW
 
 			protected void handlePossibleInterpreterChange() {
 				fInterpreterGroup.handlePossibleInterpreterChange();
+			}
+
+			protected boolean interpeterRequired() {
+				return true;
 			}
 		};
 		
