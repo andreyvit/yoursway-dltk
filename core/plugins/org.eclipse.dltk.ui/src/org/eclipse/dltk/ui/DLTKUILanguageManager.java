@@ -74,6 +74,9 @@ public class DLTKUILanguageManager {
 
 	public static IDLTKUILanguageToolkit getLangaugeToolkit(IModelElement element)
 			throws CoreException {
+		if( element.getElementType() == IModelElement.SCRIPT_MODEL ) {
+			return null;
+		}
 		IProject project = element.getScriptProject().getProject();
 		String natureId = findScriptNature(project);
 		if (natureId != null) {
