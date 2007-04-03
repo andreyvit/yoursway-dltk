@@ -5,11 +5,13 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import org.eclipse.dltk.dbgp.internal.packets.DbgpLogger;
 import org.eclipse.dltk.dbgp.internal.packets.DbgpNotifyPacket;
 import org.eclipse.dltk.dbgp.internal.packets.DbgpPacketReceiver;
 import org.eclipse.dltk.dbgp.internal.packets.DbgpPacketSender;
 import org.eclipse.dltk.dbgp.internal.packets.DbgpResponsePacket;
 import org.eclipse.dltk.dbgp.internal.packets.DbgpStreamPacket;
+import org.eclipse.dltk.dbgp.internal.packets.IDbgpLogger;
 
 public class DbgpDebugingEngine extends DbgpTermination implements
 		IDbgpDebugingEngine, IDbgpTerminationListener {
@@ -21,12 +23,16 @@ public class DbgpDebugingEngine extends DbgpTermination implements
 
 	private Object terminatedLock = new Object();
 	private boolean terminated = false;
+	
+	private IDbgpLogger logger = new DbgpLogger();
 
 	public DbgpDebugingEngine(Socket socket) throws IOException {
 		this.socket = socket;
 
 		receiver = new DbgpPacketReceiver(new BufferedInputStream(socket
 				.getInputStream()));
+		
+		receiver.setLogger(logger);
 
 		receiver.addTerminationListener(this);
 
@@ -34,6 +40,8 @@ public class DbgpDebugingEngine extends DbgpTermination implements
 
 		sender = new DbgpPacketSender(new BufferedOutputStream(socket
 				.getOutputStream()));
+		
+		sender.setLogger(logger);
 	}
 
 	public DbgpStreamPacket getStreamPacket() throws IOException,

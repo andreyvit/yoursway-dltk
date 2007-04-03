@@ -12,9 +12,11 @@ public class ScriptDebugModel {
 			IResource resource, int lineNumber, int charStart, int charEnd,
 			int hitCount, boolean register, Map attributes)
 			throws CoreException {
+		
 		if (attributes == null) {
 			attributes = new HashMap(10);
 		}
+		
 		return new ScriptLineBreakpoint(resource, lineNumber, charStart,
 				charEnd, hitCount, register, attributes);
 	}

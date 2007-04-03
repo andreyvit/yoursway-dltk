@@ -21,7 +21,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		IScriptStackFrame {
 
 	private int stackDepth;
-	
+
 	private IScriptThread thread;
 
 	private IDbgpStackLevel stackLevel;
@@ -56,7 +56,8 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public ScriptStackFrame(IScriptThread thread, IDbgpStackLevel stackLevel,
-			IDbgpCoreCommands coreCommands, int stackDepth) throws DbgpException {
+			IDbgpCoreCommands coreCommands, int stackDepth)
+			throws DbgpException {
 		super(thread.getDebugTarget());
 
 		if (thread == null || stackLevel == null || coreCommands == null) {
@@ -67,7 +68,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		this.stackLevel = stackLevel;
 
 		this.variables = retrieveVariables(stackLevel.getLevel(), coreCommands);
-		
+
 		this.stackDepth = stackDepth;
 	}
 
@@ -181,8 +182,8 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	public boolean equals(Object obj) {
 		if (obj instanceof ScriptStackFrame) {
 			ScriptStackFrame sf = (ScriptStackFrame) obj;
-			
-			if (stackLevel.getLineNumber() != sf.stackLevel.getLineNumber()){
+
+			if (stackLevel.getLineNumber() != sf.stackLevel.getLineNumber()) {
 				return false;
 			}
 
@@ -207,6 +208,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public String toString() {
-		return "Stack frame (level: " + (stackDepth - stackLevel.getLevel()) + ")";
+		return "Stack frame (level: " + (stackDepth - stackLevel.getLevel())
+				+ ")";
 	}
 }

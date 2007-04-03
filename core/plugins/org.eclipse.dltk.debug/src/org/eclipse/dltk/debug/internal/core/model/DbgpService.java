@@ -69,12 +69,12 @@ public class DbgpService implements IDbgpService {
 	public IDbgpThreadAcceptor unregisterAcceptor(String id) {
 		return server.unregisterAcceptor(id);
 	}
-	
-	public void shutdown(){
+
+	public void shutdown() {
 		try {
 			server.stop();
 		} catch (DbgpServerException e) {
-			DebugPlugin.log(e);			
+			DebugPlugin.log(e);
 		}
 	}
 }

@@ -198,10 +198,11 @@ public class JavaScriptTemplateContext extends ScriptTemplateContext {
 		while (it.hasNext()){
 			String key=(String) it.next();
 			String value=(String) qs.get(key);
+			// TODO: replace -> replaceAll for compatiblity with java 1.4
 			if (key==cId){
-				formatted=formatted.replace(key+";", value);
+				formatted=formatted.replaceAll(key+";", value);
 			}
-			else formatted=formatted.replace(key, value);
+			else formatted=formatted.replaceAll(key, value);
 		}		
 		template = new Template(template.getName(), template
 					.getDescription(), template.getContextTypeId(), formatted, template.isAutoInsertable());		

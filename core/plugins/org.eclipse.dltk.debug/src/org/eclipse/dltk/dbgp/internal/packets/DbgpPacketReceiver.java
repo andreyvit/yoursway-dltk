@@ -69,10 +69,16 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 
 	private InputStream input;
 
+	private IDbgpLogger logger;
+
 	protected void workingCycle() throws Exception {
 		while (!Thread.interrupted()) {
 			DbgpRawPacket packet = DbgpRawPacket.readPacket(input);
-			System.out.println(packet.toString());
+
+			if (logger != null) {
+				logger.logInput(packet.toString());
+			}
+
 			addDocument(packet.getParsedXml());
 		}
 
@@ -120,5 +126,9 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 		this.notifyQueue = new SyncQueue();
 		this.streamQueue = new SyncQueue();
 		this.responseQueue = new SyncMap();
+	}
+
+	public void setLogger(IDbgpLogger logger) {
+		this.logger = logger;
 	}
 }

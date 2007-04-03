@@ -87,8 +87,13 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 				setTerminated();
 			}
 		} catch (DbgpException e) {
-			System.out.println("MEGA EXCEPTION: " + e.getMessage());
-			setTerminated();
+			try {
+				streamProxy.getStdout().write(e.getMessage().getBytes());				
+				setTerminated();
+			} catch (IOException e1) {
+				// TODO: log properly
+				e1.printStackTrace();
+			}
 		}
 	}
 

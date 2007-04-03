@@ -15,13 +15,6 @@ import org.eclipse.debug.core.model.IPersistableSourceLocator;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.dltk.debug.internal.core.model.ScriptStackFrame;
 
-
-//public class TclSourceLookupDirector extends AbstractSourceLookupDirector {
-//	public void initializeParticipants() {
-//		addParticipants(new ISourceLookupParticipant[]{new TclSourceLookupParticipant()});				
-//	}
-//}
-
 public class TclSourceLookupDirector implements IPersistableSourceLocator {
 		
 	public TclSourceLookupDirector() {
@@ -33,9 +26,12 @@ public class TclSourceLookupDirector implements IPersistableSourceLocator {
 			URI uri = sf.getFileName();
 
 			String pathname = uri.getPath();
+			
 			if (Platform.getOS().equals(Platform.OS_WIN32)) {
 				pathname = pathname.substring(1);
 			}
+			
+		//	System.out.println("====> " + pathname);
 
 			File file = new File(pathname);
 
