@@ -48,6 +48,8 @@ public class JavaScriptEditor extends ScriptEditor {
 	public static final String EDITOR_ID = "org.eclipse.dltk.javascript.internal.ui.editor.JavascriptEditor";
 
 	public static final String EDITOR_CONTEXT = "#JavascriptEditorContext";
+	
+	public static final String RULER_CONTEXT = "#JavascriptRulerContext";
 
 	private org.eclipse.dltk.internal.ui.editor.BracketInserter fBracketInserter = new JavaScriptBracketInserter(
 			this);
@@ -145,6 +147,7 @@ protected class FormatElementAction extends Action implements IUpdate {
 	protected void initializeEditor() {
 		super.initializeEditor();
 		setEditorContextMenuId(EDITOR_CONTEXT);
+		setRulerContextMenuId(RULER_CONTEXT);
 	}
 
 	protected IPreferenceStore getScriptPreferenceStore() {

@@ -45,8 +45,9 @@ public class JavascriptPerspective implements IPerspectiveFactory  {
 		layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);
 		layout.addShowViewShortcut(IProgressConstants.PROGRESS_VIEW_ID);
 		
-		// new actions - Javascript project creation wizard
+		// new actions - Javascript project creation wizard org.eclipse.dltk.ruby.internal.ui.wizards.JavascriptFileCreationWizard
 		layout.addNewWizardShortcut("org.eclipse.dltk.javascript.internal.ui.wizards.JavascriptProjectWizard"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("org.eclipse.dltk.ruby.internal.ui.wizards.JavascriptFileCreationWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder");//$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file");//$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.editors.wizards.UntitledTextFileWizard");//$NON-NLS-1$

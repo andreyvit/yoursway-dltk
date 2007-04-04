@@ -20,7 +20,7 @@
          point="org.eclipse.debug.core.launchConfigurationTypes">
          <launchConfigurationType
                delegate="org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationDelegate"
-               id="org.eclipse.dltk.javascript.launching.TCLLaunchConfigurationType"
+               id="org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationType"
                modes="run,debug"
                name="JavaScript"
                public="true"

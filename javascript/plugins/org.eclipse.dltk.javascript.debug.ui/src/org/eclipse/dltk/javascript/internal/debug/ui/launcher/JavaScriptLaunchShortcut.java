@@ -10,7 +10,7 @@ public class JavaScriptLaunchShortcut extends ScriptLaunchShortcut {
 	// TODO: abstract in future
 	protected ILaunchConfigurationType getConfigurationType() {
 		return getLaunchManager().getLaunchConfigurationType(
-				IJavaScriptLaunchConfigurationConstants.ID_TCL_SCRIPT);
+				IJavaScriptLaunchConfigurationConstants.ID_JAVASCRIPT_SCRIPT);
 	}
 
 	protected String getNature() {

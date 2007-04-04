@@ -208,6 +208,16 @@
             Creates new Javascript Project.
          </description>
       </wizard>
+       <wizard
+             category="org.eclipse.dltk.javascript.ui"
+             class="org.eclipse.dltk.javascript.internal.ui.wizards.JavaScriptFileCreationWizard"
+             icon="icons/full/ctool16/newjscript_wiz.gif"
+             id="org.eclipse.dltk.ruby.internal.ui.wizards.JavascriptFileCreationWizard"
+             name="%NewJsFile.label">
+          <description>
+          	Creates new JavaScript Source File.
+          </description>
+       </wizard>
       </extension>
       <extension point="org.eclipse.core.runtime.preferences">
         <initializer class="org.eclipse.dltk.javascript.internal.ui.JavaScriptUIPreferenceInitializer"/>

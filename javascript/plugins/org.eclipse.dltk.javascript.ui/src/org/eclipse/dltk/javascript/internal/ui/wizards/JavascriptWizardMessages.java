@@ -6,6 +6,8 @@ public class JavascriptWizardMessages {
 
 	private static final String BUNDLE_NAME= "org.eclipse.dltk.javascript.internal.ui.wizards.JavascriptWizardMessages";//$NON-NLS-1$
 
+	public static String FileCreationWizard_title;
+
 	public static String ProjectCreationWizard_title;
 	public static String ProjectCreationWizardFirstPage_title;
 	public static String ProjectCreationWizardFirstPage_description;

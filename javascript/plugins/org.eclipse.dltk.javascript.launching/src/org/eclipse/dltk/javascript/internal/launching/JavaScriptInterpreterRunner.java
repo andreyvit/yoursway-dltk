@@ -47,6 +47,6 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 	}
 
 	protected String getProcessType() {
-		return IJavaScriptLaunchConfigurationConstants.ID_TCL_PROCESS_TYPE;
+		return IJavaScriptLaunchConfigurationConstants.ID_JAVASCRIPT_PROCESS_TYPE;
 	}
 }
