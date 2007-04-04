@@ -68,7 +68,7 @@ public class JavascriptProjectCreationWizard extends NewElementWizard implements
 				fInterpreterGroup = new JavascriptInterpreterGroup(parent);
 			}
 
-			protected Observer getInterpreterGroupObservable() {
+			protected Observable getInterpreterGroupObservable() {
 				return fInterpreterGroup;
 			}
 
