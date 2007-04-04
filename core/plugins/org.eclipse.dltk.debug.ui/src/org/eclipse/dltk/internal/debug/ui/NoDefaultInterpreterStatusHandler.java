@@ -48,6 +48,9 @@ public class NoDefaultInterpreterStatusHandler implements IStatusHandler {
 		} else if (natureId.indexOf("python") != -1) {
 			preferencePageId = "org.eclipse.dltk.debug.ui.PythonInterpreters";
 		}
+		else if (natureId.indexOf("javascript") != -1) {
+			preferencePageId = "org.eclipse.dltk.debug.ui.JavaScriptInterpreters";
+		}
 		// !!!!!!!!!!!!!!!!!!!!!
 
 		if (preferencePageId != null) {
