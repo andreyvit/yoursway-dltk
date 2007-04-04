@@ -5,7 +5,7 @@
          point="org.eclipse.dltk.launching.interpreterInstallTypes">
           <interpreterInstallType
             class="org.eclipse.dltk.javascript.internal.launching.GenericJavaScriptInstallType"
-            id="org.eclipse.dltk.internal.debug.ui.launcher.GenericTclInstallType">
+            id="org.eclipse.dltk.internal.debug.ui.launcher.GenericRhinoInstallType">
       </interpreterInstallType>   
    </extension>
   
@@ -48,7 +48,4 @@
            id="tclSourceLocator"
            name="org.eclipse.dltk.javascript.launching.tclSourceLocator"/>
   </extension>
-  
-
-
 </plugin>

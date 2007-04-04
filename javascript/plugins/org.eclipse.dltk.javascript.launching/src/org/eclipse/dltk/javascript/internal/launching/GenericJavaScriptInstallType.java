@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.internal.launching.AbstractInterpreterInstallType;
 import org.eclipse.dltk.javascript.core.JavaScriptNature;
 import org.eclipse.dltk.javascript.launching.JavaScriptLaunchingPlugin;
@@ -41,6 +43,11 @@ public class GenericJavaScriptInstallType extends AbstractInterpreterInstallType
 		environment.remove("TCLLIBPATH");
 		// block wish from showing window under linux
 		environment.remove("DISPLAY");
+	}
+
+	@Override
+	public IStatus validateInstallLocation(File installLocation) {		
+		return Status.OK_STATUS;
 	}
 
 	protected File createPathFile() throws IOException {

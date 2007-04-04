@@ -61,7 +61,6 @@ public class JavaScriptInterpreter implements IScriptInterpreter, ConsoleRequest
 	}
 
 	public String[] getNames(String type) throws IOException {
-
 		return null;
 	}
 
