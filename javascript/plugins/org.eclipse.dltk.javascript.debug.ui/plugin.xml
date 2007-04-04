@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.eclipse.dltk.javascript.internal.console.ui.preferences.JavaScriptConsolePreferenceInitializer"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.statusHandlers">
+      <statusHandler
+            class="org.eclipse.dltk.javascript.internal.debug.ui.NoDebuggingEgineJavaScriptStatusHandler"
+            code="180"
+            id="org.eclipse.dltk.javascript.debug.ui.NoDebuggingEgineTclStatusHandler"
+            plugin="org.eclipse.dltk.javascript.launching"/>
+            
+   </extension>
+      <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.eclipse.dltk.javascript.launching.TCLLaunchConfigurationType"
+            class="org.eclipse.dltk.javascript.internal.debug.ui.launchConfigurations.JavaScriptTabGroup"
+            id="org.eclipse.dltk.javascript.internal.debug.ui.launchConfigurations.TclTabGroup">
+           <launchMode 
+                 mode="debug"
+                 perspective="org.eclipse.debug.ui.DebugPerspective"
+                 description="Debug JavaScript">
+           </launchMode>
+           <launchMode 
+                 mode="run"
+                 description="Run JavaScript">
+           </launchMode>
+      </launchConfigurationTabGroup>
+   </extension>
+   
+   
+   <extension
+	point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+ 		<launchConfigurationTypeImage
+			icon="icons/javascript.gif"
+			configTypeID="org.eclipse.dltk.javascript.launching.TCLLaunchConfigurationType"
+			id="org.eclipse.dltk.javascript.debug.ui.launchConfigurationTypeImage.localTCLScript">
+		</launchConfigurationTypeImage>
+   <!--launchConfigurationTypeImage
+         configTypeID="org.eclipse.dltk.javascript.launching.TCLRemoteLaunchConfigurationType"
+         icon="icons/javascript.gif"
+         id="org.eclipse.dltk.javascript.debug.ui.launchConfigurationTypeImage.remoteTCLScript">
+   </launchConfigurationTypeImage-->
+   </extension>
+  
+   <extension point="org.eclipse.debug.ui.launchShortcuts">
+    <shortcut
+          class="org.eclipse.dltk.javascript.internal.debug.ui.launcher.JavaScriptLaunchShortcut"
+          icon="icons/javascript.gif"
+          id="org.eclipse.dltk.javascript.debug.ui.launchShortcut"
+          label="JavaScript"
+          modes="run, debug">
+        <contextualLaunch>
+           <enablement>
+             <with variable="selection">
+               <count value="1"/>
+               <iterate>
+                <or>
+           	     <test property="org.eclipse.dltk.launching.hasProjectNature" args="org.eclipse.dltk.javascript.core.nature"/>           	  
+               	</or>
+               </iterate>
+               </with>
+           </enablement>
+  		 </contextualLaunch>
+         <perspective
+               id="org.eclipse.dltk.javascript.ui.TclPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.debug.ui.DebugPerspective">
+         </perspective>
+	</shortcut>
+	</extension>
+   <extension
+         point="org.eclipse.debug.ui.debugModelPresentations">
+      <debugModelPresentation
+            class="org.eclipse.dltk.javascript.internal.debug.ui.JavaScriptDebugModelPresentation"
+            id="org.eclipse.dltk.debug.core.model"/>
+   </extension>
+    <extension
+       point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="false"
+            id="org.eclipse.dltk.javascript.console.ui.objectContribution1"
+            nameFilter="*"
+            objectClass="org.eclipse.dltk.core.ISourceModule">
+         <action
+               class="org.eclipse.dltk.javascript.internal.console.ui.actions.PasteJavaScriptToConsole"
+               id="org.eclipse.dltk.javascript.console.ui.internal.actions.PasteTclTextToConsoleAction"
+               label="%TclConsole.Actions.PasteToTclConsole"/>
+      </objectContribution> 
+       
+    <viewerContribution
+          id="org.eclipse.dltk.javascript.debug.ui.viewerContribution1"
+          targetID="#JavascriptEditorContext">
+       <action
+             class="org.eclipse.dltk.debug.ui.actions.WatchExpressionAction"
+             id="org.eclipse.dltk.javascript.debug.ui.WatchExpressionAction"
+             label="%WatchVariable"
+             menubarPath="additions"/>
+       <action
+            id="org.eclipse.dltk.javascript.console.ui.internal.actions.PasteToTclConsoleAction" 
+            label="%TclConsole.Actions.PasteToTclConsole"
+            menubarPath="additions"           
+            class="org.eclipse.dltk.javascript.internal.console.ui.actions.PasteJavaScriptTextToConsoleAction">
+         </action>
+    </viewerContribution>    
+    <viewerContribution
+          id="org.eclipse.dltk.javascript.debug.ui.viewerContribution3"
+          targetID="#JavascriptRulerContext">
+
+         <action
+               label="%EnableDisableBreakpoint.label"
+			   id="org.eclipse.dltk.javascript.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+               class="org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"               
+               menubarPath="debug">
+          </action>
+         
+         <action
+         	   label="%ToggleBreakpoint.label"
+         	   id="org.eclipse.dltk.javascript.ui.actions.RulerToggleBreakpointActionDelegate"
+               class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"                           
+               menubarPath="debug">
+         </action>        
+       
+       <action
+             class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesRulerActionDelegate"
+             id="org.eclipse.dltk.javascript.debug.ui.ScriptBreakpointPropertiesRulerActionDelegate"
+             label="%BreakpointProperties.label"
+             menubarPath="additions"/>
+    </viewerContribution>    
+ </extension>
+	
+	<extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.debug.ui.launchActionSet">
+         <part
+               id="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor">
+         </part>
+      </actionSetPartAssociation>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.debug.ui.launchActionSet">
+         <part
+               id="org.eclipse.dltk.ui.ScriptExplorer">
+         </part>
+         <part
+               id="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor">
+         </part>
+      </actionSetPartAssociation>
+   </extension>   
+   <extension
+         point="org.eclipse.ui.console.consolePatternMatchListeners">
+      <consolePatternMatchListener
+            class="org.eclipse.dltk.javascript.internal.debug.ui.console.JavaScriptConsoleTracker"
+            regex="\(file &quot;.*&quot; line .*\)"
+            id="org.eclipse.dltk.javascript.debug.ui.TclConsoleTracker">
+         <enablement>
+            <or>
+               <test property="org.eclipse.debug.ui.processTypeTest" value="tclInterpreter"/>
+            </or>
+         </enablement>
+      </consolePatternMatchListener>
+     
+   </extension>
+   <!--extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.eclipse.dltk.javascript.launching.localTCLApplication"
+            class="org.eclipse.dltk.javascript.internal.debug.ui.launchConfigurations.TclTabGroup"
+            id="org.eclipse.dltk.javascript.debug.ui.TCLTabGroup">
+            <launchMode 
+                 mode="debug"
+                 perspective="org.eclipse.debug.ui.DebugPerspective"
+                 description="Debug">
+           </launchMode>
+      </launchConfigurationTabGroup>
+   </extension-->
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.dltk.javascript.ui.javascript"
+            class="org.eclipse.dltk.javascript.internal.debug.ui.preferences.JavaScriptDebugPreferencePage"
+            id="org.eclipse.dltk.javascript.internal.debug.ui.preferences.JavaScriptDebugPreferences"
+            name="Debug"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+		    category="org.eclipse.dltk.javascript.ui.javascript"
+            class="org.eclipse.dltk.javascript.internal.debug.ui.interpreters.JavaScriptInterpreterPreferencePage"
+            id="org.eclipse.dltk.debug.ui.JavaScriptInterpreters"
+            name="JavaScript Interpreters"/>
+   </extension>
+ <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            targetID="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor"
+            id="org.eclipse.dltk.javascript.debug.JavaScriptEditor.BreakpointRulerActions">
+          
+         <action
+             label="Togle Breakpoint (label not used)"
+             class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+             style="push"
+             actionID="RulerDoubleClick"
+             id="javascript.doubleClickBreakpointAction"/>
+            
+      </editorContribution>   
+ </extension>
+   <extension
+         point="org.eclipse.ui.console.consoleFactories">
+      <consoleFactory
+            class="org.eclipse.dltk.javascript.internal.console.ui.JavaScriptConsoleFactory"
+            label="%TclConsole.Console"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.dltk.javascript.ui.javascript"
+            class="org.eclipse.dltk.javascript.internal.console.ui.preferences.JavaScriptConsolePreferences"
+            id="org.eclipse.dltk.javascript.console.ui.internal.preferences.TclConsolePreferences"
+            name="%TclConsole.PreferencePage"/>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.console.ui.scriptConsole">
+      <scriptConsole
+            class="org.eclipse.dltk.javascript.internal.console.ui.JavaScriptConsoleFactory"
+            natureID="org.eclipse.dltk.javascript.core.nature"/>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.ui.buildpathContainerPage">
+      <buildpathContainerPath
+            class="org.eclipse.dltk.javascript.internal.debug.ui.interpreters.JavaScriptInterpreterContainerWizardPage"
+            id="org.eclipse.dltk.javascript.launching.INTERPRETER_CONTAINER"
+            name="javascript Interpreter Libraries"
+            nature="org.eclipse.dltk.javascript.core.nature"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.dltk.javascript.ui.JavascriptPerspective">
+         <actionSet
+               id="org.eclipse.debug.ui.breakpointActionSet">
+         </actionSet>
+      </perspectiveExtension>
+   </extension>      
+ 
+ 
+ 
+ <!--- javascript console ui -->
+</plugin>
