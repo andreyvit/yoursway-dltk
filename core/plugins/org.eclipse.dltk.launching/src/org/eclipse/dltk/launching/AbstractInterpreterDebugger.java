@@ -18,9 +18,9 @@ public abstract class AbstractInterpreterDebugger extends
 		AbstractInterpreterRunner {
 	private static final boolean DEBUG = DLTKCore.DEBUG;
 
-	private static final int DEFAULT_WAITING_TIMEOUT = 1000 * 30;
+	protected static final int DEFAULT_WAITING_TIMEOUT = 1000 * 30;
 
-	private static final int DEFAULT_PAUSE = 500;
+	protected static final int DEFAULT_PAUSE = 500;
 
 	protected static class ScriptDebugTargetWaiter implements
 			IScriptDebugTargetListener {
