@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathEntry;
@@ -61,12 +62,7 @@ public class InterpreterRuntimeBuildpathEntryResolver implements IRuntimeBuildpa
 	
 	private String getNatureFromProject (IDLTKProject project) {
 		try {
-			IProject proj = project.getProject();
-			String[] natures = proj.getDescription().getNatureIds();
-			for (int i = 0; i < natures.length; i++) {
-				if (proj.isNatureEnabled(natures[i]))
-					return natures[i];
-			}
+			return DLTKLanguageManager.getLanguageToolkit(project).getNatureID();			
 		} catch (CoreException e) {
 			DLTKLaunchingPlugin.log(e);
 		}
