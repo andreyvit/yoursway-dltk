@@ -39,7 +39,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	private String name;
 
 	private DbgpDebugger engine;
-
+		
 	// Session
 	private IDbgpSession session;
 
@@ -111,7 +111,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		stepping = false;
 		processOperationEnd(execption, status, DebugEvent.STEP_END);
 	}
-
+	
+	
 	public ScriptThread(IScriptDebugTarget target, IDbgpSession session,
 			ScriptThreadManager manager) throws DbgpException, CoreException {
 		super(target);
@@ -119,6 +120,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		if (target == null || session == null) {
 			throw new IllegalArgumentException();
 		}
+		
+		
 
 		this.manager = manager;
 

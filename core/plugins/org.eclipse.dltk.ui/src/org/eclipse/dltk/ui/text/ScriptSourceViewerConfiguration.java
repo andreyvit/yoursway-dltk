@@ -89,7 +89,7 @@ public abstract class ScriptSourceViewerConfiguration extends
 	public abstract boolean affectsTextPresentation(PropertyChangeEvent event);
 
 	public abstract void handlePropertyChangeEvent(PropertyChangeEvent event);
-
+	
 	/**
 	 * Returns the outline presenter control creator. The creator is a factory
 	 * creating outline presenter controls for the given source viewer. This

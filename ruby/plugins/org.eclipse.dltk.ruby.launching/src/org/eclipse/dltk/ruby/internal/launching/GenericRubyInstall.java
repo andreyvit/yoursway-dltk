@@ -12,11 +12,11 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.launching.AbstractInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
@@ -119,8 +119,14 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 		super(type, id);
 	}
 
-	public IInterpreterRunner getInterpreterRunner(String mode) {
-		return new RubyInterpreterRunner(this);
+	public IInterpreterRunner getInterpreterRunner(String mode) {		
+		if (mode.equals(ILaunchManager.RUN_MODE)) {
+			return new RubyInterpreterRunner(this);
+		} else if (mode.equals(ILaunchManager.DEBUG_MODE)) {
+			return new RubyInterpreterDebugger(this);
+		}
+		
+		return null;
 	}
 	
 	
