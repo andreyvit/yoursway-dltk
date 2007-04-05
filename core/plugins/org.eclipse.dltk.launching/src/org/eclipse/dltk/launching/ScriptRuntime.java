@@ -36,6 +36,7 @@ import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
@@ -272,13 +273,14 @@ public final class ScriptRuntime {
 	
 	private static String getNatureFromProject (IDLTKProject project) {
 		try {
-			IProject proj = project.getProject();
-			String[] natures = proj.getDescription().getNatureIds();
-			for (int i = 0; i < natures.length; i++) {
-				if (proj.isNatureEnabled(natures[i]))
-					return natures[i];
-			}
-		} catch (CoreException e) {
+			return DLTKLanguageManager.getLanguageToolkit(project).getNatureID();
+//			IProject proj = project.getProject();
+//			String[] natures = proj.getDescription().getNatureIds();			
+//			for (int i = 0; i < natures.length; i++) { 				
+//				if (proj.isNatureEnabled(natures[i]))
+//					return natures[i];
+//			}
+		} catch (Exception e) {
 			DLTKLaunchingPlugin.log(e);
 		}
 		return null;
