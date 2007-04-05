@@ -8,9 +8,7 @@ import org.eclipse.dltk.dbgp.internal.utils.DbgpXmlParser;
 import org.w3c.dom.Document;
 
 public class DbgpRawPacket {
-	private static String makeDigit(byte asciiByte) {
-		return new String(new byte[] { asciiByte });
-	}
+	
 
 	protected static int readPacketSize(InputStream input) throws IOException {
 		StringBuffer sb = new StringBuffer();
@@ -27,7 +25,7 @@ public class DbgpRawPacket {
 				break;
 			}
 
-			sb.append(makeDigit((byte) b));
+			sb.append((char) b);
 		}
 
 		return Integer.parseInt(sb.toString());
