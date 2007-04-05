@@ -185,6 +185,9 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 //			if (isRubyHeadered(resource.getLocation().toFile()) == IModelStatus.VERIFIED_OK) {
 //				return IModelStatus.VERIFIED_OK;
 //			}
+		if ("rakefile".equalsIgnoreCase(resource.getLocation().lastSegment())) {
+			return IModelStatus.VERIFIED_OK;
+		}
 
 		return validateSourceModule(resource.getName());
 	}
