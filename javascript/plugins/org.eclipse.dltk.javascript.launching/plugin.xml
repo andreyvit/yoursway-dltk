@@ -15,7 +15,14 @@
             class="org.eclipse.dltk.javascript.console.TclInterpreter"
             natureID="org.eclipse.dltk.javascript.core.nature"/>
    </extension>
-  
+  <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            icon="$nl$/icons/javascript.gif"
+            configTypeID="org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationType"
+            id="org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationTypeImage">
+      </launchConfigurationTypeImage>
+  </extension>
   <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
          <launchConfigurationType

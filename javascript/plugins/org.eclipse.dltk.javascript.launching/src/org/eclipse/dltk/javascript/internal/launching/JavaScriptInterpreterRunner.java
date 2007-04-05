@@ -10,23 +10,21 @@
  *******************************************************************************/
 package org.eclipse.dltk.javascript.internal.launching;
 
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.IStatusHandler;
 import org.eclipse.debug.core.Launch;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.dltk.console.ScriptConsoleServer;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKProject;
@@ -34,11 +32,8 @@ import org.eclipse.dltk.javascript.launching.IJavaScriptLaunchConfigurationConst
 import org.eclipse.dltk.javascript.launching.JavaScriptLaunchingPlugin;
 import org.eclipse.dltk.launching.AbstractInterpreterRunner;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IInterpreterInstall;
-import org.eclipse.dltk.launching.IInterpreterRunner;
 import org.eclipse.dltk.launching.InterpreterRunnerConfiguration;
-import org.eclipse.dltk.launching.LaunchingMessages;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IVMInstall;
@@ -68,14 +63,38 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 				} catch (CoreException e) {
 				}
 				if (classPath != null) {
-					
-					VMRunnerConfiguration vmConfig = new VMRunnerConfiguration(
-							"MyClass", classPath);
-					ILaunch launchr = new Launch(null, ILaunchManager.RUN_MODE,
-							null);
-					vmRunner.run(vmConfig, launchr, null);
-					Bundle bundle = Platform.getBundle("org.eclipse.dltk.javascript.rhino");
-					FileLocator.resolve(bundle.getResource(""));
+
+					Bundle bundle = Platform
+							.getBundle("org.eclipse.dltk.javascript.rhino");
+					try {
+						URL resolve = FileLocator.toFileURL(bundle
+								.getResource("RhinoRunner.class"));
+						try {
+							File fl = new File(resolve.toURI()).getParentFile();
+							String[] newClassPath = new String[classPath.length + 1];
+							System.arraycopy(classPath, 0, newClassPath, 0,
+									classPath.length);
+							newClassPath[classPath.length] = fl
+									.getAbsolutePath();
+							VMRunnerConfiguration vmConfig = new VMRunnerConfiguration(
+									"RhinoRunner", newClassPath);
+							vmConfig.setProgramArguments(new String[] { config
+									.getScriptToLaunch() });
+							ILaunch launchr = new Launch(launch.getLaunchConfiguration(),
+									ILaunchManager.RUN_MODE, null);
+							vmRunner.run(vmConfig, launchr, null);
+							IProcess[] processes = launchr.getProcesses();
+							for (int a = 0; a < processes.length; a++)
+								launch.addProcess(processes[a]);
+							return;
+						} catch (URISyntaxException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		}
