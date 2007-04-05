@@ -66,8 +66,8 @@ public class TclSourceElementParser implements ISourceElementParser {
 
 		// TODO: Add correct visitor like model builder for TCL.
 		TclSourceParser sourceParser = new TclSourceParser();
-		ModuleDeclaration moduleDeclaration = sourceParser.parse(new String(
-				contents));
+		ModuleDeclaration moduleDeclaration = sourceParser.parse(
+				contents, null);
 		moduleDeclaration.disableRebuild();
 		List statements = moduleDeclaration.getStatements();
 		try {

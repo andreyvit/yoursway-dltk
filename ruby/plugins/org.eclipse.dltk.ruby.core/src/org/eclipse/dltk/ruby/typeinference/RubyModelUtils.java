@@ -212,7 +212,7 @@ public class RubyModelUtils {
 		RubyMixinVariable[] fields2 = selfClass.getFields();
 		addVariablesFrom(fields2, prefix, result);
 
-		if (selfClass.getKey().equals("Object")) { // add top-level used class
+		if (selfClass.getKey().equals("Object")) { 
 			// variables
 			try {
 				IModelElement[] children = modelModule.getChildren();

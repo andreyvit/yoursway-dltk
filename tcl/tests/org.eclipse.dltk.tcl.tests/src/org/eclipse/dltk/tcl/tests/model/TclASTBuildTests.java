@@ -37,7 +37,7 @@ public class TclASTBuildTests extends AbstractModelTests
 		String source = module.getSource();
 		
 		TclSourceParser parser = new TclSourceParser();
-		ModuleDeclaration decl = parser.parse(source);
+		ModuleDeclaration decl = parser.parse(source.toCharArray(), null);
 		CorePrinter printer = new CorePrinter(System.out, true);
 		decl.printNode(printer);
 		

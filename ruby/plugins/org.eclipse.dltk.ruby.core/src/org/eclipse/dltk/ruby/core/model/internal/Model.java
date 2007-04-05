@@ -8,12 +8,15 @@ import java.util.WeakHashMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.ast.ASTCaching;
+import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.compiler.DLTKParsingManager;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.core.model.IElement;
 import org.eclipse.dltk.ruby.core.model.IElementCriteria;
 import org.eclipse.dltk.ruby.core.model.IElementKind;
@@ -37,9 +40,9 @@ public class Model implements IModel {
 		if (astNode != null && caching != ASTCaching.REPARSE)
 			result = (ModuleDeclaration) astNode.get();
 		if (result == null && caching != ASTCaching.CACHED_ONLY) {
-			JRubySourceParser parser = new JRubySourceParser(null);
 			try {
-				result = parser.parse(sourceModule.getSource());
+				ISourceParser parser = DLTKParsingManager.createParser(RubyLanguageToolkit.getDefault());
+				result = parser.parse(sourceModule.getSourceAsCharArray(), null);
 			} catch (ModelException e) {
 				Activator.log(e);
 				result = null;

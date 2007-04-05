@@ -22,10 +22,18 @@
      </mixin>
   </extension>
   <extension
-        point="org.eclipse.dltk.core.goalEvaluators">
+        point="org.eclipse.dltk.core.typeEvaluators">
      <evaluator
            evaluator="org.eclipse.dltk.ruby.typeinference.RubyTypeInferencer"
            nature="org.eclipse.dltk.ruby.core.nature">
      </evaluator>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.core.sourceParsers">
+     <parser
+           class="org.eclipse.dltk.ruby.internal.parser.JRubySourceParser"
+           nature="org.eclipse.dltk.ruby.core.nature"
+           priority="1">
+     </parser>
   </extension>
 </plugin>

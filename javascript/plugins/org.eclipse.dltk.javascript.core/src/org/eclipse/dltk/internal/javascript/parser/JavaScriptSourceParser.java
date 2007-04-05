@@ -1,5 +1,6 @@
 package org.eclipse.dltk.internal.javascript.parser;
 
+import java.io.CharArrayReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
+import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.javascript.reference.resolvers.ReferenceResolverContext;
@@ -151,9 +153,9 @@ public class JavaScriptSourceParser implements IExecutableExtension,
 
 	}
 
-	public ModuleDeclaration parse(String content) {
+	public ModuleDeclaration parse(char[] content, IProblemReporter r) {
 		JavaScriptModuleDeclaration moduleDeclaration = new JavaScriptModuleDeclaration(content
-				.length());
+				.length);
 		
 		CompilerEnvirons cenv=new CompilerEnvirons();
 		ErrorReporter reporter=new ErrorReporter(){
@@ -180,7 +182,7 @@ public class JavaScriptSourceParser implements IExecutableExtension,
 		Parser parser = new Parser(cenv, reporter);
 		try {
 
-			ScriptOrFnNode parse = parser.parse(new StringReader(content),
+			ScriptOrFnNode parse = parser.parse(new CharArrayReader(content),
 					"", 0);
 			TypeInferencer interferencer = new TypeInferencer(element,new ReferenceResolverContext(null,new HashMap()));
 			ReferenceRecordingRequestor referenceRecordingRequestor = new ReferenceRecordingRequestor();

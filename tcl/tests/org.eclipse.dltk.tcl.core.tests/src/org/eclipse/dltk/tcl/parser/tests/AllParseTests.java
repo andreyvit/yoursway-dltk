@@ -226,7 +226,7 @@ public class AllParseTests extends TestCase
 			String content = getContents(scriptsZip.getInputStream(entry));
 			
 			TclSourceParser parser = new TclSourceParser();
-			parser.parse(content);
+			parser.parse(content.toCharArray(), null);
 
 		} finally {
 			if (input != null) {

@@ -274,12 +274,6 @@ public final class ScriptRuntime {
 	private static String getNatureFromProject (IDLTKProject project) {
 		try {
 			return DLTKLanguageManager.getLanguageToolkit(project).getNatureID();
-//			IProject proj = project.getProject();
-//			String[] natures = proj.getDescription().getNatureIds();			
-//			for (int i = 0; i < natures.length; i++) { 				
-//				if (proj.isNatureEnabled(natures[i]))
-//					return natures[i];
-//			}
 		} catch (Exception e) {
 			DLTKLaunchingPlugin.log(e);
 		}

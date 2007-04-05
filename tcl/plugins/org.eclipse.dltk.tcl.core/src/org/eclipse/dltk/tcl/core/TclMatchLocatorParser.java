@@ -44,7 +44,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 
 	public ModuleDeclaration parse(PossibleMatch possibleMatch) {
 		ModuleDeclaration module = parser.parse(possibleMatch
-				.getSourceContents());
+				.getSourceContents().toCharArray(), null);
 		module.rebuild();
 		return module;
 	}

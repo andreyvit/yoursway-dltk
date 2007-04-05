@@ -76,6 +76,7 @@ public class MixinModel {
 
 	public IMixinElement get(String key) {
 //		waitForAutoBuild();
+		System.out.println("$$$ MixinModel.get() key=" + key);
 		if( notExistKeysCache.contains(key)) {
 			return null;
 		}
@@ -103,6 +104,7 @@ public class MixinModel {
 		return null;
 	}
 	public String[] findKeys(String pattern) {
+		System.out.println("$$$ MixinModel.findKeys() pattern=" + pattern);
 		return SearchEngine.searchMixinPatterns(pattern, toolkit);
 	}
 	private Set existKeysCache = new HashSet();

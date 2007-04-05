@@ -16,11 +16,12 @@ import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class DLTKTypeInferenceEngine implements ITypeInferencer {
 	
+	private static final String TYPE_EVALUATORS = "org.eclipse.dltk.core.typeEvaluators";
 	private final static Map evaluatorsByNatures = new HashMap();
 	
 	static {		
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry()
-				.getExtensionPoint("org.eclipse.dltk.core.goalEvaluators");
+				.getExtensionPoint(TYPE_EVALUATORS);
 		IExtension[] ext = extensionPoint.getExtensions();
 		ArrayList resolvers = new ArrayList();
 		for (int a = 0; a < ext.length; a++) {

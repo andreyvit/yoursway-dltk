@@ -3,7 +3,8 @@ package org.eclipse.dltk.ruby.internal.ui.text.folding;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
+import org.eclipse.dltk.compiler.DLTKParsingManager;
+import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
@@ -83,7 +84,8 @@ public class RubyFoldingStructureProvider extends AbstractASTFoldingStructurePro
      * @see org.eclipse.dltk.ui.text.folding.AbstractASTFoldingStructureProvider#getSourceParser()
      */
     protected ISourceParser getSourceParser() {
-        return new JRubySourceParser(null);
+//        return new JRubySourceParser(null);
+    	return DLTKParsingManager.createParser(RubyLanguageToolkit.getDefault());
     }
 
     /*

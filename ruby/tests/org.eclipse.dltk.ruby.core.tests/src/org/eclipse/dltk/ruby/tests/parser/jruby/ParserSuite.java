@@ -11,7 +11,10 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.compiler.DLTKParsingManager;
+import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 import org.eclipse.dltk.ruby.tests.Activator;
 
@@ -49,9 +52,9 @@ public class ParserSuite extends TestSuite {
 					Map map = new HashMap ();
 					String input = loadInput(cleanPath + ".rb", map);
 					String output = loadOutput(cleanPath + ".exp", map);
-					
-					JRubySourceParser parser = new JRubySourceParser(null);
-					ModuleDeclaration module = parser.parse(input);
+										
+					ISourceParser parser = DLTKParsingManager.createParser(RubyLanguageToolkit.getDefault());
+					ModuleDeclaration module = parser.parse(input.toCharArray(), null);
 					assertNotNull(module);
 					
 					AST2StringVisitor vis = new AST2StringVisitor();

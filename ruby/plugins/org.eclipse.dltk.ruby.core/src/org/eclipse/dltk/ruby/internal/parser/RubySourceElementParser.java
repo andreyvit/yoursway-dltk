@@ -1,6 +1,8 @@
 package org.eclipse.dltk.ruby.internal.parser;
 
+import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.compiler.DLTKParsingManager;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.DLTKCore;
@@ -10,6 +12,7 @@ import org.eclipse.dltk.core.ISourceModuleInfoCache;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.internal.core.ModelManager;
+import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.internal.parser.visitors.RubySourceElementRequestor;
 
 public class RubySourceElementParser implements ISourceElementParser {
@@ -56,8 +59,8 @@ public class RubySourceElementParser implements ISourceElementParser {
 			moduleDeclaration = (ModuleDeclaration)astCache.get(AST);
 		}
 		if( moduleDeclaration == null ) {
-			JRubySourceParser sourceParser = new JRubySourceParser(problemReporter);
-			moduleDeclaration = sourceParser.parse(content);
+			ISourceParser sourceParser = DLTKParsingManager.createParser(RubyLanguageToolkit.getDefault());
+			moduleDeclaration = sourceParser.parse(content, null);
 			if( moduleDeclaration != null && astCache != null ) {
 				astCache.put(AST, moduleDeclaration );
 			}

@@ -70,7 +70,7 @@ public abstract class TclAssistParser implements IAssistParser {
 
 	public ModuleDeclaration parse(ISourceModule sourceUnit) {
 		ModuleDeclaration module = this.parser.parse(sourceUnit
-				.getSourceContents());
+				.getSourceContents().toCharArray(), null);
 		module.rebuild();
 
 		TclASTUtil.extendStatements(module, sourceUnit.getSourceContents());

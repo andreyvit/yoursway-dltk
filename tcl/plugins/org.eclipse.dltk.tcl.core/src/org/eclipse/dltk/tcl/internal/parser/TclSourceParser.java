@@ -9,6 +9,7 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.tcl.ast.TclModuleDeclaration;
 import org.eclipse.dltk.tcl.ast.TclStatement;
@@ -26,7 +27,8 @@ import org.eclipse.dltk.tcl.internal.parsers.raw.TclWord;
 public class TclSourceParser implements ISourceParser {
 	private int currentPosition = 0;
 
-	public ModuleDeclaration parse(String content) {
+	public ModuleDeclaration parse(char[] content0, IProblemReporter reporter) {
+		String content = new String(content0);
 		// System.out.println("TclSourceParser.parse() " +
 		// System.currentTimeMillis());
 

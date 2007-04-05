@@ -16,6 +16,8 @@ public class RubyObjectMixinClass extends RubyMixinClass {
 		RubyMixinMethod[] methods = super.findMethods(prefix, false);
 		mixinResult.addAll(Arrays.asList(methods));
 		
+		
+		
 		if (includeTopLevel && prefix.length() > 0) {
 			String[] keys = model.getRawModel().findKeys(prefix + "*");
 			for (int i = 0; i < keys.length; i++) {

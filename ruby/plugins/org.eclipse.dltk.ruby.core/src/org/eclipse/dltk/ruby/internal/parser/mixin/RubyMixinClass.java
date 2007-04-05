@@ -2,6 +2,7 @@ package org.eclipse.dltk.ruby.internal.parser.mixin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.dltk.core.IType;
@@ -113,6 +114,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 	
 	public RubyMixinClass[] getIncluded () {
 		List result = new ArrayList ();
+		HashSet names = new HashSet ();
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		if (mixinElement == null)
 			return new RubyMixinClass[0];
@@ -124,11 +126,14 @@ public class RubyMixinClass implements IRubyMixinElement {
 			}
 			if(info.getKind() == RubyMixinElementInfo.K_INCLUDE) {
 				String inclKey = (String) info.getObject();
-				if (!this.isMeta() && !inclKey.endsWith(RubyMixin.INSTANCE_SUFFIX))
-					inclKey += RubyMixin.INSTANCE_SUFFIX;
-				IRubyMixinElement element = model.createRubyElement(inclKey);
-				if (element instanceof RubyMixinClass)
-					result.add(element);
+				if (!names.contains(inclKey)) {
+					names.add(inclKey);
+					if (!this.isMeta() && !inclKey.endsWith(RubyMixin.INSTANCE_SUFFIX))
+						inclKey += RubyMixin.INSTANCE_SUFFIX;
+					IRubyMixinElement element = model.createRubyElement(inclKey);
+					if (element instanceof RubyMixinClass)
+						result.add(element);
+				}
 			}
 		}		
 		return (RubyMixinClass[]) result.toArray(new RubyMixinClass[result.size()]);
@@ -136,15 +141,15 @@ public class RubyMixinClass implements IRubyMixinElement {
 
 	public RubyMixinMethod[] findMethods(String prefix, boolean includeTopLevel) {
 		final List result = new ArrayList();
-
+		
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		IMixinElement[] children = mixinElement.getChildren();
 		for (int i = 0; i < children.length; i++) {
-			IRubyMixinElement element = model.createRubyElement(children[i]);
-			if (element instanceof RubyMixinMethod) {
-				RubyMixinMethod rubyMixinMethod = (RubyMixinMethod) element;
-				if (rubyMixinMethod.getName().startsWith(prefix))
-					result.add(element);
+			if (children[i].getLastKeySegment().startsWith(prefix)) {
+				IRubyMixinElement element = model.createRubyElement(children[i]);
+				if (element instanceof RubyMixinMethod) {
+						result.add(element);
+				}
 			}
 		}
 		

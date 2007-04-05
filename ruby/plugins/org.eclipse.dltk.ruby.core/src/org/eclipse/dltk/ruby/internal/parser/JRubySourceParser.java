@@ -165,9 +165,9 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 		}
 
 	}
-
-	public JRubySourceParser(IProblemReporter problemReporter) {
-		this.problemReporter = problemReporter;
+	
+	public JRubySourceParser() {
+		this.problemReporter = null;
 	}
 
 	/**
@@ -181,7 +181,8 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 		return new RubyASTBuildVisitor(module, content);
 	}
 
-	public ModuleDeclaration parse(char[] content) {
+	public ModuleDeclaration parse(char[] content, IProblemReporter reporter) {
+		this.problemReporter = reporter;
 		try {
 			DLTKRubyParser parser = new DLTKRubyParser();
 			ProxyProblemReporter proxyProblemReporter = new ProxyProblemReporter(
@@ -249,7 +250,7 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 	}
 
 	public ModuleDeclaration parse(String source) {
-		return this.parse(source.toCharArray());
+		return this.parse(source.toCharArray(), null);
 	}
 
 }

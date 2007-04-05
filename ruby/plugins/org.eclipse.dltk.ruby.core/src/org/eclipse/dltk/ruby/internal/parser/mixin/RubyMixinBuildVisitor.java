@@ -18,8 +18,10 @@ import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
@@ -303,8 +305,8 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	public boolean visit(MethodDeclaration decl) throws Exception {
 		IMethod obj = null;
 		String name = decl.getName();
-		if (moduleAvailable) {
-			obj = (IMethod) sourceModule.getElementAt(decl.sourceStart() + 1);
+		if (moduleAvailable) { 
+			obj = (IMethod) findModelElementFor(decl);
 		}
 		if (decl instanceof RubySingletonMethodDeclaration) {
 			RubySingletonMethodDeclaration singl = (RubySingletonMethodDeclaration) decl;
@@ -333,6 +335,12 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			scopes.push(new MethodScope(decl, scope, method));
 		}
 		return true;
+	}
+
+	private IModelElement findModelElementFor(ASTNode decl)
+			throws ModelException {
+		return  sourceModule.getElementAt(decl.sourceStart() + 1);		
+//		return null;
 	}
 
 	public boolean visit(Expression s) throws Exception {
@@ -388,8 +396,9 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 
 	public boolean visit(TypeDeclaration decl) throws Exception {
 		IType obj = null;
-		if (moduleAvailable)
-			obj = (IType) sourceModule.getElementAt(decl.sourceStart() + 1);
+		if (moduleAvailable) {
+			obj = (IType) findModelElementFor(decl);
+		}
 		boolean module =  (decl.getModifiers() & Modifiers.AccModule) != 0;
 		if (decl instanceof RubySingletonClassDeclaration) {
 			RubySingletonClassDeclaration declaration = (RubySingletonClassDeclaration) decl;

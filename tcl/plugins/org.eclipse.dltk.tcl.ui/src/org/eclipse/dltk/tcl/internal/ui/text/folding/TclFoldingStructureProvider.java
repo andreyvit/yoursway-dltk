@@ -48,7 +48,7 @@ public class TclFoldingStructureProvider extends AbstractASTFoldingStructureProv
          * and remove this method
          */
         TclSourceParser pp = new TclSourceParser();
-        ModuleDeclaration md = pp.parse(code);
+        ModuleDeclaration md = pp.parse(code.toCharArray(), null);
         List statements = md.getStatements();
         if (statements == null) { return new CodeBlock[0]; }
 

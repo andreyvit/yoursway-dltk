@@ -53,7 +53,7 @@ public class TclExecuteExpression extends Expression {
 
 		TclSourceParser parser = new TclSourceParser();
 		parser.setCurrentPosition(startFrom);
-		ModuleDeclaration module = parser.parse(content);
+		ModuleDeclaration module = parser.parse(content.toCharArray(), null);
 		return module.getStatements();
 	}
 

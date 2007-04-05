@@ -7,6 +7,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.references.ConstantReference;
@@ -15,6 +16,7 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.RelevanceConstants;
 import org.eclipse.dltk.codeassist.ScriptCompletionEngine;
+import org.eclipse.dltk.compiler.DLTKParsingManager;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.core.CompletionProposal;
@@ -30,10 +32,9 @@ import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
-import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
+import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeField;
-import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinElementInfo;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
@@ -58,7 +59,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	};
 	
 	private DLTKTypeInferenceEngine inferencer;
-	private JRubySourceParser parser = new JRubySourceParser(null);
+	private ISourceParser parser = DLTKParsingManager.createParser(RubyLanguageToolkit.getDefault());;
 	private MixinModel model;
 	private HashSet completedNames = new HashSet();
 
@@ -133,7 +134,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		org.eclipse.dltk.core.ISourceModule modelModule = (org.eclipse.dltk.core.ISourceModule) module;
 		try {
 			String content = module.getSourceContents();
-			ModuleDeclaration moduleDeclaration = parser.parse(content);
+			ModuleDeclaration moduleDeclaration = parser.parse(content.toCharArray(), null);
 
 			if (afterDollar(content, position)) {
 				completeGlobalVar((org.eclipse.dltk.core.ISourceModule) module, moduleDeclaration, "$", position);

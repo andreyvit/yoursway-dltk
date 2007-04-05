@@ -5,7 +5,9 @@
    <extension-point id="buildpathContainerInitializer" name="buildpathContainerInitializer" schema="schema/buildpathContainerInitializer.exsd"/>
    <extension-point id="mixin" name="mixin" schema="schema/mixin.exsd"/>
    <extension-point id="builder" name="builder" schema="schema/builder.exsd"/>
-   <extension-point id="goalEvaluators" name="Goal Evaluators" schema="schema/goalEvaluators.exsd"/>
+   <extension-point id="typeEvaluators" name="Type Evaluators" schema="schema/goalEvaluators.exsd"/>
+   <extension-point id="sourceParsers" name="Source Parsers" schema="schema/sourceParsers.exsd"/>
+   <extension-point id="sourceElementParsers" name="Source Element Parsers" schema="schema/sourceElementParsers.exsd"/>
 
 <!-- =================================================================================== -->
 <!-- Extension: DLTK Problem                                                             -->

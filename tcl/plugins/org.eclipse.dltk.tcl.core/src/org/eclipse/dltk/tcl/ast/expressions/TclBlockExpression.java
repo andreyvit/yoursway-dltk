@@ -56,7 +56,7 @@ public class TclBlockExpression extends Expression {
 		String content = fBlockContent.substring(1, fBlockContent.length() - 1);
 		TclSourceParser parser = new TclSourceParser();
 		parser.setCurrentPosition(startFrom);
-		ModuleDeclaration module = parser.parse(content);
+		ModuleDeclaration module = parser.parse(content.toCharArray(), null);
 		return module.getStatements();
 	}
 

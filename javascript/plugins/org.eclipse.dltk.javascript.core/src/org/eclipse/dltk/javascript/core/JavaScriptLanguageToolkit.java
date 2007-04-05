@@ -150,7 +150,7 @@ public class JavaScriptLanguageToolkit implements IDLTKLanguageToolkit {
 	public ModuleDeclaration createFullAST(ISourceModule module) {
 		JavaScriptSourceParser parser = new JavaScriptSourceParser();
 		try {
-			return parser.parse(module.getSource());
+			return parser.parse(module.getSource().toCharArray(), null);
 		} catch (ModelException e) {
 			if (DLTKCore.DEBUG) {
 				e.printStackTrace();

@@ -67,7 +67,7 @@ public final class TclPairMatcher implements ICharacterPairMatcher {
 
 	private PairBlock[] computePairRanges(int offset, String contents) {
 		TclSourceParser pp = new TclSourceParser();
-		ModuleDeclaration md = pp.parse(contents);
+		ModuleDeclaration md = pp.parse(contents.toCharArray(), null);
 		if (md == null) {
 			return new PairBlock[0];
 		}

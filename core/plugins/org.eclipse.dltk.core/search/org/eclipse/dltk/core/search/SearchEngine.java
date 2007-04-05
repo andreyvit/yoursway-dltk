@@ -768,7 +768,7 @@ public class SearchEngine {
 		IndexManager indexManager = ModelManager.getModelManager().getIndexManager();
 		
 		int flags = SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE;
-		if (key.indexOf('*') != -1 || key.indexOf('?') != -1)
+		if (key.indexOf('*') != -1 || key.indexOf('?') != -1) 
 			flags |= SearchPattern.R_PATTERN_MATCH;
 		
 		MixinPattern pattern = new MixinPattern(key.toCharArray(), flags);

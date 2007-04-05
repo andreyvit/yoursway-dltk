@@ -38,7 +38,7 @@ public class JavaScriptMatchLocatorParser extends MatchLocatorParser implements
 		
 		parent= possibleMatch.getModelElement();
 		parser=new JavaScriptSourceParser(parent);
-		return parser.parse(possibleMatch.getSourceContents());
+		return parser.parse(possibleMatch.getSourceContents().toCharArray(), null);
 	}
 
 	public void parseBodies(ModuleDeclaration unit) {

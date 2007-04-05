@@ -10,8 +10,12 @@ import java.util.zip.ZipFile;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.compiler.DLTKParsingManager;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
+import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 import org.eclipse.dltk.ruby.tests.Activator;
 
@@ -37,9 +41,9 @@ public class ZippedParserSuite extends TestSuite {
 					}
 
 					protected void runTest() throws Throwable {
-						JRubySourceParser parser = new JRubySourceParser(null);
 						JRubySourceParser.setSilentState(false);
-						ModuleDeclaration module = parser.parse(content);
+						ISourceParser parser = DLTKParsingManager.createParser(RubyLanguageToolkit.getDefault());
+						ModuleDeclaration module = parser.parse(content.toCharArray(), null);
 						assertNotNull(module);
 					}
 
