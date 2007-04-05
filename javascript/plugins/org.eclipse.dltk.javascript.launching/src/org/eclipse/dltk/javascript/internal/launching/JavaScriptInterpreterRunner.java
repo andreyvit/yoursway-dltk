@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
+import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.dltk.console.ScriptConsoleServer;
 import org.eclipse.dltk.core.DLTKCore;
@@ -46,6 +47,11 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 
 	public void run(InterpreterRunnerConfiguration config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
+		doRun(config, launch,"","","");
+	}
+
+	protected static void doRun(InterpreterRunnerConfiguration config, ILaunch launch, String host, String port, String sessionId)
+			throws CoreException {
 		IDLTKProject proj = AbstractScriptLaunchConfigurationDelegate
 				.getScriptProject(launch.getLaunchConfiguration());
 		IJavaProject myJavaProject = JavaCore.create(proj.getProject());
@@ -53,7 +59,7 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 		if (vmInstall == null)
 			vmInstall = JavaRuntime.getDefaultVMInstall();
 		if (vmInstall != null) {
-			IVMRunner vmRunner = vmInstall.getVMRunner(ILaunchManager.RUN_MODE);
+			IVMRunner vmRunner = vmInstall.getVMRunner(ILaunchManager.DEBUG_MODE);
 			if (vmRunner != null) {
 				String[] classPath = null;
 				try {
@@ -78,10 +84,14 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 							VMRunnerConfiguration vmConfig = new VMRunnerConfiguration(
 									"RhinoRunner", newClassPath);
 							vmConfig.setProgramArguments(new String[] { config
-									.getScriptToLaunch() });
+									.getScriptToLaunch(),host,""+port,sessionId });
 							ILaunch launchr = new Launch(launch.getLaunchConfiguration(),
 									ILaunchManager.RUN_MODE, null);
 							vmRunner.run(vmConfig, launchr, null);
+							IDebugTarget[] debugTargets = launchr.getDebugTargets();
+							for (int a=0;a<debugTargets.length;a++){
+								launch.addDebugTarget(debugTargets[a]);
+							}
 							IProcess[] processes = launchr.getProcesses();
 							for (int a = 0; a < processes.length; a++)
 								launch.addProcess(processes[a]);

@@ -2,19 +2,26 @@ package org.eclipse.dltk.javascript.internal.launching;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.internal.launching.AbstractInterpreterInstallType;
 import org.eclipse.dltk.javascript.core.JavaScriptNature;
 import org.eclipse.dltk.javascript.launching.JavaScriptLaunchingPlugin;
 import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.eclipse.dltk.launching.LibraryLocation;
 import org.osgi.framework.Bundle;
 
-public class GenericJavaScriptInstallType extends AbstractInterpreterInstallType {
+public class GenericJavaScriptInstallType extends
+		AbstractInterpreterInstallType {
 
 	public String getNatureId() {
 		return JavaScriptNature.NATURE_ID;
@@ -22,6 +29,33 @@ public class GenericJavaScriptInstallType extends AbstractInterpreterInstallType
 
 	public String getName() {
 		return "Generic Rhino install";
+	}
+
+	public LibraryLocation[] getDefaultLibraryLocations(File installLocation) {
+		if (true) {
+			Bundle bundle = Platform
+					.getBundle("org.eclipse.dltk.javascript.rhino");
+
+			URL resolve;
+			try {
+				resolve = FileLocator.toFileURL(bundle
+						.getResource("RhinoRunner.class"));
+				try {
+					File fl = new File(resolve.toURI()).getParentFile();
+					return new LibraryLocation[] { new LibraryLocation(
+							new Path(fl.getAbsolutePath())) };
+				} catch (URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		}
+		// TODO Auto-generated method stub
+		return super.getDefaultLibraryLocations(installLocation);
 	}
 
 	private static String[] possibleExes = { "js" };
@@ -45,7 +79,7 @@ public class GenericJavaScriptInstallType extends AbstractInterpreterInstallType
 		environment.remove("DISPLAY");
 	}
 
-	public IStatus validateInstallLocation(File installLocation) {		
+	public IStatus validateInstallLocation(File installLocation) {
 		return Status.OK_STATUS;
 	}
 
