@@ -1819,6 +1819,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	public Instruction visitStrNode(StrNode iVisited) {
 		String value = iVisited.getValue().toString();
 		ISourcePosition position = iVisited.getPosition();
+		if (value.length() == 0) {
+			value = String.copyValueOf(content, position.getStartOffset(), position.getEndOffset() - position.getStartOffset());
+		}
 		states.peek().add(
 				new StringLiteral(position.getStartOffset(), position
 						.getEndOffset(), value));
