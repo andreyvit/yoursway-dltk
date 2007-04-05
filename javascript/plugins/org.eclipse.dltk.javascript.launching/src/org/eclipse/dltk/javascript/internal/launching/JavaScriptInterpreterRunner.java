@@ -44,7 +44,6 @@ import org.osgi.framework.Bundle;
 
 public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 
-	@Override
 	public void run(InterpreterRunnerConfiguration config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
 		IDLTKProject proj = AbstractScriptLaunchConfigurationDelegate
@@ -101,7 +100,6 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 		throw new CoreException(new Status(IStatus.ERROR, "", ""));
 	}
 
-	@Override
 	protected String constructProgramString(
 			InterpreterRunnerConfiguration config) throws CoreException {
 

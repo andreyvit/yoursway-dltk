@@ -45,7 +45,6 @@ public class GenericJavaScriptInstallType extends AbstractInterpreterInstallType
 		environment.remove("DISPLAY");
 	}
 
-	@Override
 	public IStatus validateInstallLocation(File installLocation) {		
 		return Status.OK_STATUS;
 	}

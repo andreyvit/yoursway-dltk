@@ -416,7 +416,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 * @exception CoreException
 	 *                if unable to retrieve the attribute
 	 */
-	public IDLTKProject getScriptProject(ILaunchConfiguration configuration)
+	public static IDLTKProject getScriptProject(ILaunchConfiguration configuration)
 			throws CoreException {
 		String projectName = getScriptProjectName(configuration);
 		if (projectName != null) {
@@ -444,7 +444,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 * @exception CoreException
 	 *                if unable to retrieve the attribute
 	 */
-	public String getScriptProjectName(ILaunchConfiguration configuration)
+	public static String getScriptProjectName(ILaunchConfiguration configuration)
 			throws CoreException {
 		return configuration.getAttribute(
 				IDLTKLaunchConfigurationConstants.ATTR_PROJECT_NAME,
