@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.BuildpathContainerInitializer;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
@@ -115,17 +116,7 @@ public class InterpreterContainerInitializer extends BuildpathContainerInitializ
 	
 	private String getNatureFromProject (IDLTKProject project) {
 		try {
-			IProject proj = project.getProject();
-			if( proj.isOpen() ) {
-				String[] natures = proj.getDescription().getNatureIds();
-				for (int i = 0; i < natures.length; i++) {
-					if (proj.isNatureEnabled(natures[i]))
-						return natures[i];					
-				}
-			}
-			else {
-				return null;
-			}
+			return DLTKLanguageManager.getLanguageToolkit(project).getNatureID();			
 		} catch (CoreException e) {
 			DLTKLaunchingPlugin.log(e);
 		}
