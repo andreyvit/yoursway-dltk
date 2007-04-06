@@ -18,7 +18,7 @@
       <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            type="org.eclipse.dltk.javascript.launching.TCLLaunchConfigurationType"
+            type="org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationType"
             class="org.eclipse.dltk.javascript.internal.debug.ui.launchConfigurations.JavaScriptTabGroup"
             id="org.eclipse.dltk.javascript.internal.debug.ui.launchConfigurations.TclTabGroup">
            <launchMode 
