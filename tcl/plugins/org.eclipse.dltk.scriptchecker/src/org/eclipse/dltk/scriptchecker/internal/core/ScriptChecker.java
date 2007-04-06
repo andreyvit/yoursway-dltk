@@ -134,7 +134,7 @@ public class ScriptChecker extends AbstractValidator {
 		String args = processArguments(resource);
 		List cmd = new ArrayList();
 		cmd.add(this.path.toOSString());
-		String[] sArgs = args.split(" ");
+		String[] sArgs = args.split("::");
 		for (int i = 0; i < sArgs.length; i++) {
 			cmd.add(sArgs[i]);
 		}
@@ -245,16 +245,16 @@ public class ScriptChecker extends AbstractValidator {
 
 	private String processArguments(IResource resource) {
 		String path = resource.getLocation().makeAbsolute().toOSString();
-		String user = replaceSequence(this.arguments, 'f', path);
+		String user = replaceSequence(this.arguments.replaceAll("\t", "::"), 'f', path);
 		String result = "";
 		if( this.noStyle ) {
-			result = result + " -no_style";
+			result = result + "::-no_style";
 		}
 		if( this.noSyntax ) {
-			result = result + " -no_syntax";
+			result = result + "::-no_syntax";
 		}
-		result = result + " -severity " + this.severity.toLowerCase();
-		return result + " " + user;
+		result = result + "::-severity::" + this.severity.toLowerCase();
+		return result + "::" + user;
 	}
 
 	private String replaceSequence(String from, char pattern, String value) {
