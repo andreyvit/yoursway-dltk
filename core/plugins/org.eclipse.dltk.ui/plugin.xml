@@ -546,7 +546,7 @@
        point="org.eclipse.ui.commands">
         <category
             id="org.eclipse.dltk.ui.category.source"
-            name="DLTK Source"/>
+            name="%DLTKSource"/>
         <command
             name="%ActionDefinition.foldingCollapseMembers.name"
             description="%ActionDefinition.foldingCollapseMembers.description"
