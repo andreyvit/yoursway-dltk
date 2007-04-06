@@ -270,17 +270,19 @@ public class ValidatorDefinitionsContainer {
 			ValidatorDefinitionsContainer container) {
 		String id = validatorElement.getAttribute("id"); //$NON-NLS-1$
 		String name = validatorElement.getAttribute("name"); //$NON-NLS-1$
-		boolean active = Boolean.parseBoolean(validatorElement.getAttribute("active"));
+		boolean active = (new Boolean(validatorElement
+				.getAttribute("active"))).booleanValue();
 		if (id != null) {
 			try {
-				IValidator validator = interpreterType
-				.createValidatorFrom(id, validatorElement);
+				IValidator validator = interpreterType.createValidatorFrom(id,
+						validatorElement);
 				validator.setName(name);
 				validator.setActive(active);
 				container.addValidator(validator);
-			}
-			catch(IOException e ) {
-				DLTKCore.getDefault().getLog().log(new Status(0,ValidatorsCore.PLUGIN_ID, "Failed to load validator from XML..."));
+			} catch (IOException e) {
+				DLTKCore.getDefault().getLog().log(
+						new Status(0, ValidatorsCore.PLUGIN_ID,
+								"Failed to load validator from XML..."));
 			}
 		} else {
 			if (DLTKCore.DEBUG) {

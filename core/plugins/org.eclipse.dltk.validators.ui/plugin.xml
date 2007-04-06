@@ -27,7 +27,7 @@
             </separator>
          </menu>
          <action
-               class="org.eclipse.dltk.validators.internal.ui.popup.actions.ValidatуSelectionWithConsoleAction"
+               class="org.eclipse.dltk.validators.internal.ui.popup.actions.ValidatorSelectionWithConsoleAction"
                id="org.eclipse.dltk.validators.ui.newAction"
                label="Validate selection with console"
                menubarPath="org.eclipse.dltk.validators.ui.menu/top"

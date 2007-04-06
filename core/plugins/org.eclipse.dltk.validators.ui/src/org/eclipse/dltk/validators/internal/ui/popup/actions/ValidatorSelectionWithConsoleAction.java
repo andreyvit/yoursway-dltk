@@ -26,14 +26,14 @@ import org.eclipse.ui.console.IOConsole;
 import org.eclipse.ui.console.IOConsoleOutputStream;
 import org.eclipse.ui.console.IPatternMatchListener;
 
-public class ValidatóSelectionWithConsoleAction implements
+public class ValidatorSelectionWithConsoleAction implements
 		IObjectActionDelegate {
 	ISelection selection;
 
 	/**
 	 * Constructor for Action1.
 	 */
-	public ValidatóSelectionWithConsoleAction() {
+	public ValidatorSelectionWithConsoleAction() {
 		super();
 	}
 

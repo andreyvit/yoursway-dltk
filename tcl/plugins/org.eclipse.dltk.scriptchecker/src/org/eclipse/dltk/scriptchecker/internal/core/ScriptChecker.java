@@ -105,8 +105,8 @@ public class ScriptChecker extends AbstractValidator {
 		}
 		initialized = true;
 		this.path = new Path(element.getAttribute(PATH));
-		this.noStyle = Boolean.parseBoolean(element.getAttribute(NO_STYLE));
-		this.noSyntax = Boolean.parseBoolean(element.getAttribute(NO_SYNTAX));
+		this.noStyle = (new Boolean(element.getAttribute(NO_STYLE))).booleanValue();
+		this.noSyntax = (new Boolean(element.getAttribute(NO_SYNTAX))).booleanValue();
 		this.severity = element.getAttribute(SEVERITY);
 		this.arguments = element.getAttribute(ARGUMENTS);
 	}
