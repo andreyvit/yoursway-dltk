@@ -11,8 +11,11 @@
 	        icon="icons/ruby_obj.gif"
 	        id="org.eclipse.dltk.ruby.ui.editor.RubyEditor"
 	        name="DLTK Ruby Editor"/>
+	        
+	         
+	        
 	 </extension>
-   
+      
 	<extension
 	  id="org.eclipse.dltk.ruby.ui.editor.DocumentSetupParticipant"
 	  name="%documentSetupParticipantName"

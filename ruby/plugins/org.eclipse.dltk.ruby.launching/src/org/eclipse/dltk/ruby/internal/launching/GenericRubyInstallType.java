@@ -42,5 +42,9 @@ public class GenericRubyInstallType extends AbstractInterpreterInstallType {
 	protected ILog getLog() {
 		return RubyLaunchingPlugin.getDefault().getLog();
 	}
+	
+	protected String getBuildPathDelimeter() {
+		return ";:";
+	}
 
 }

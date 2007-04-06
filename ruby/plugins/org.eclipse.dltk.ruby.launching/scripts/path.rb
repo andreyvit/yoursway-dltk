@@ -1,1 +1,1 @@
-puts $:.join(' ')
+puts $:.join(';:')

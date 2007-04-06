@@ -351,7 +351,7 @@ public abstract class AbstractInterpreterInstallType implements
 		List filtered = new ArrayList();
 		for (int i = 0; i < paths.length; ++i) {
 			if (!paths[i].equals(".")) {
-				filtered.add(paths[i]);
+				filtered.add(paths[i].trim());
 			}
 		}
 
