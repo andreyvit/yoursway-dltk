@@ -157,7 +157,7 @@ public class TclCheckerPreferences extends PreferencePage implements
 		allMode.setText(PreferencesMessages.TclChecker_mode_all);
 	}
 
-	protected void createPathGroup(Composite parent, Object data) {
+	protected void createPathGroup(final Composite parent, Object data) {
 		Group group = new Group(parent, SWT.NONE);
 		group.setText(PreferencesMessages.TclChecker_path);
 		group.setLayoutData(data);
@@ -185,7 +185,7 @@ public class TclCheckerPreferences extends PreferencePage implements
 
 		browse.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
+				FileDialog dialog = new FileDialog(parent.getShell(), SWT.OPEN);
 				String file = dialog.open();
 				if (file != null) {
 					path.setText(file);
