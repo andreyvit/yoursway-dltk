@@ -18,11 +18,10 @@ public class SaveConsoleSessionAction extends Action {
 	private ScriptConsole console;
 
 	public SaveConsoleSessionAction(ScriptConsole console, String text,
-			String tooltip, String id) {
+			String tooltip) {
 		this.console = console;
 		setText(text);
 		setToolTipText(tooltip);
-		setActionDefinitionId(id);
 	}
 
 	public void run() {
@@ -35,8 +34,6 @@ public class SaveConsoleSessionAction extends Action {
 
 		try {
 			if (file != null) {
-				//System.out.println("Saving session to: " + file);
-
 				FileWriter writer = null;
 				try {
 					writer = new FileWriter(file);

@@ -37,6 +37,8 @@ public class DbgpServer extends DbgpWorkingThread implements IDbgpServer {
 		try {
 			while (true) {
 				Socket client = server.accept();
+				
+				System.out.println("Client connected!");				
 
 				client.setSoTimeout(clientTimeout);
 

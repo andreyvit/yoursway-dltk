@@ -13,12 +13,11 @@ public class CloseScriptConsoleAction extends Action {
 	private ScriptConsole console;
 
 	public CloseScriptConsoleAction(ScriptConsole console, String text,
-			String tooltip, String id) {
+			String tooltip) {
 		this.console = console;
 
 		setText(text);
-		setToolTipText(tooltip);
-		setActionDefinitionId(id);
+		setToolTipText(tooltip);		
 	}
 
 	public void run() {

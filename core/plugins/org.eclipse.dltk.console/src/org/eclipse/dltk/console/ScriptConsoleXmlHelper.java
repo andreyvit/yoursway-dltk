@@ -46,7 +46,6 @@ public final class ScriptConsoleXmlHelper {
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
-			factory.setValidating(true);
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			StringReader reader = new StringReader(xml);
 			return builder.parse(new InputSource(reader));
@@ -70,12 +69,12 @@ public final class ScriptConsoleXmlHelper {
 		List completions = new ArrayList();
 		for (int i = 0; i < children.getLength(); ++i) {
 			Node node = children.item(i);
-						 
+
 			if (!isElement(node, "case")) {
 				continue;
 			}
-			
-			Element element = (Element)node;
+
+			Element element = (Element) node;
 
 			String display = element.getAttribute("display");
 			String insert = element.getAttribute("insert");
@@ -100,9 +99,9 @@ public final class ScriptConsoleXmlHelper {
 
 		list = node.getChildNodes();
 		for (int i = 0; i < list.getLength(); ++i) {
-			Node n = list.item(i);			
+			Node n = list.item(i);
 			if (isElement(n, "info")) {
-				return ((Element)n).getAttribute("id");
+				return ((Element) n).getAttribute("id");
 			}
 		}
 

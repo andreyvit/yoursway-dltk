@@ -41,8 +41,6 @@ public class ScriptConsolePage extends TextConsolePage implements
 
 	private TextViewerAction proposalsAction;
 
-	//private TextViewerAction contextInfoAction;
-
 	protected void createActions() {
 		super.createActions();
 
@@ -52,12 +50,12 @@ public class ScriptConsolePage extends TextConsolePage implements
 		SaveConsoleSessionAction saveSessionAction = new SaveConsoleSessionAction(
 				(ScriptConsole) getConsole(),
 				ScriptConsoleMessages.SaveSessionAction,
-				ScriptConsoleMessages.SaveSessionTooltip, "id1");
+				ScriptConsoleMessages.SaveSessionTooltip);
 
 		CloseScriptConsoleAction colseConsoleAction = new CloseScriptConsoleAction(
 				(ScriptConsole) getConsole(),
 				ScriptConsoleMessages.TerminateConsoleAction,
-				ScriptConsoleMessages.TerminateConsoleTooltip, "id1");
+				ScriptConsoleMessages.TerminateConsoleTooltip);
 
 		IActionBars bars = getSite().getActionBars();
 

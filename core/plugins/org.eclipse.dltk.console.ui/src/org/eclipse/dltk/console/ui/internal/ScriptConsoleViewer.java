@@ -23,7 +23,6 @@ import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.console.TextConsoleViewer;
 
-
 public class ScriptConsoleViewer extends TextConsoleViewer implements
 		IScriptConsoleViewer {
 
@@ -39,14 +38,14 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 
 		private IDocument doc;
 
-		protected void connectListener(){
-			doc.addDocumentListener(this);	
+		protected void connectListener() {
+			doc.addDocumentListener(this);
 		}
-		
-		protected void disconnectListener(){
-			doc.removeDocumentListener(this);	
+
+		protected void disconnectListener() {
+			doc.removeDocumentListener(this);
 		}
-				
+
 		public void clear() {
 			try {
 				disconnectListener();
@@ -77,7 +76,7 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 
 		public void setDocument(IDocument doc) {
 			if (this.doc != null) {
-				disconnectListener();				
+				disconnectListener();
 			}
 
 			this.doc = doc;
@@ -92,48 +91,24 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 		}
 
 		protected void handleCommandLine() throws BadLocationException,
-				IOException {						
-			//viewer.getTextWidget().setEditable(false);
-			
-			final String command = getCommandLine();						
+				IOException {
+			// viewer.getTextWidget().setEditable(false);
+
+			final String command = getCommandLine();
 			appendDelimeter();
-									
+
 			processResult(handler.handleCommand(command));
-			
-//			Thread thread = new Thread(new Runnable(){
-//				public void run() {
-//					try {												
-//						
-//					} catch (BadLocationException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					} catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					
-//				}				
-//			});
-			
-			//thread.start();
+
 		}
-					
-		protected void processResult(final String result) throws BadLocationException {			
-			//viewer.getTextWidget().getDisplay().asyncExec(new Runnable() {
-				//public void run() {
-					//try {						
-						//viewer.getTextWidget().setEditable(true);
-						if (result != null) {
-							appendText(result);
-							history.commit();
-							offset = getLastLineLength();
-						}
-						appendInvitation();
-					//} catch (BadLocationException e) {
-						//e.printStackTrace();
-					//}					
-				//}				
-			//});			
+
+		protected void processResult(final String result)
+				throws BadLocationException {
+			if (result != null) {
+				appendText(result);
+				history.commit();
+				offset = getLastLineLength();
+			}
+			appendInvitation();
 		}
 
 		protected void printString(String str) {
@@ -179,7 +154,7 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 			}
 		}
 
-		public void documentChanged(DocumentEvent event) {			
+		public void documentChanged(DocumentEvent event) {
 			disconnectListener();
 			proccessAddition(event.getOffset(), event.getText());
 			connectListener();
@@ -194,15 +169,15 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 			viewer.setCaretPosition(doc.getLength());
 			viewer.revealEndOfDocument();
 		}
-		
+
 		protected void appendDelimeter() throws BadLocationException {
 			appendText(getDelimeter());
 		}
-		
+
 		protected String getDelimeter() {
 			return TextUtilities.getDefaultLineDelimiter(doc);
 		}
-		
+
 		protected int getLastLineLength() throws BadLocationException {
 			int lastLine = doc.getNumberOfLines() - 1;
 			return doc.getLineLength(lastLine);
@@ -291,8 +266,8 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 		public void paste() {
 			if (isCaretOnLastLine()) {
 				super.paste();
-			}			
-		}		
+			}
+		}
 	}
 
 	private ScriptConsoleHistory history;
@@ -344,8 +319,8 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 		this.listener.setDocument(getDocument());
 
 		final StyledText styledText = getTextWidget();
-		
-		//styledText.setEditable(false);
+
+		// styledText.setEditable(false);
 
 		// Correct keyboard actions
 		styledText.addFocusListener(new FocusListener() {
@@ -391,7 +366,7 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 		styledText.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (e.keyCode == 32 && (e.stateMask & SWT.CTRL) > 0) {
-					//System.out.println(".keyPressed()");
+					// System.out.println(".keyPressed()");
 					contentHandler.contentAssistRequired();
 				}
 			}

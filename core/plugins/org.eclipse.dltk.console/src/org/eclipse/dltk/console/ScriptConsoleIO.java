@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class ScriptConsoleIO implements IScriptConsoleIO {
+
 	private static final String INTERPRETER = "interpreter";
 
 	private static final String SHELL = "shell";
@@ -14,6 +15,14 @@ public class ScriptConsoleIO implements IScriptConsoleIO {
 	private OutputStream output;
 
 	private String id;
+
+	protected static void logInterpreterResponse(String response) {
+		System.out.println("interpreter: " + response);
+	}
+
+	protected static void logShellResponse(String response) {
+		System.out.println("shell: " + response);
+	}
 
 	protected static String readFixed(int len, InputStream input)
 			throws IOException {
@@ -58,7 +67,7 @@ public class ScriptConsoleIO implements IScriptConsoleIO {
 		if (input == null || output == null) {
 			throw new IllegalArgumentException();
 		}
-		
+
 		this.input = input;
 		this.output = output;
 
@@ -80,9 +89,9 @@ public class ScriptConsoleIO implements IScriptConsoleIO {
 		}
 
 		output.flush();
-		
-		String response = readResponse(input);
-		System.out.println(response);
+
+		final String response = readResponse(input);
+		logShellResponse(response);
 		return ScriptConsoleXmlHelper.parseShellXml(response);
 	}
 
@@ -92,7 +101,9 @@ public class ScriptConsoleIO implements IScriptConsoleIO {
 		output.write((command + "\n").getBytes());
 		output.flush();
 
-		return ScriptConsoleXmlHelper.parseInterpreterXml(readResponse(input));
+		final String response = readResponse(input);
+		logInterpreterResponse(response);
+		return ScriptConsoleXmlHelper.parseInterpreterXml(response);
 	}
 
 	public void close() throws IOException {
