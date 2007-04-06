@@ -245,7 +245,7 @@ public class ScriptChecker extends AbstractValidator {
 
 	private String processArguments(IResource resource) {
 		String path = resource.getLocation().makeAbsolute().toOSString();
-		String user = replaceSequence(this.arguments, "%f", path);
+		String user = replaceSequence(this.arguments, 'f', path);
 		String result = "";
 		if( this.noStyle ) {
 			result = result + " -no_style";
@@ -257,8 +257,19 @@ public class ScriptChecker extends AbstractValidator {
 		return result + " " + user;
 	}
 
-	private String replaceSequence(String from, String pattern, String value) {
-		return from.replace((CharSequence) pattern, (CharSequence) value);
+	private String replaceSequence(String from, char pattern, String value) {
+		StringBuffer buffer = new StringBuffer();
+		for( int i = 0; i < from.length(); ++i ) {
+			char c = from.charAt(i);
+			if( c == '%' && i < from.length() - 1 && from.charAt(i + 1) == pattern ) {
+				buffer.append(value);
+				i++;
+			}
+			else {
+				buffer.append(c);
+			}
+		}
+		return buffer.toString();
 	}
 
 	public boolean isValidatorValid() {
