@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="validatorConfigPage" name="validatorConfigPage" schema="schema/validatorConfigPage.exsd"/>
+   <extension-point id="validatorConsoleTracker" name="validatorConsoleTracker" schema="schema/validatorConsoleTracker.exsd"/>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.eclipse.dltk.validators.internal.ui.ValidatorPreferencePage"
+            id="org.eclipse.dltk.validators.ui.validators"
+            name="DLTK Validators">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="false"
+            id="org.eclipse.dltk.validators.ui.contribution"
+            nameFilter="*"
+            objectClass="org.eclipse.dltk.core.IModelElement">
+         <menu
+               id="org.eclipse.dltk.validators.ui.menu"
+               label="DLTK Validators"
+               path="additions">
+            <separator
+                  name="top">
+            </separator>
+         </menu>
+         <action
+               class="org.eclipse.dltk.validators.internal.ui.popup.actions.ValidatуSelectionWithConsoleAction"
+               id="org.eclipse.dltk.validators.ui.newAction"
+               label="Validate selection with console"
+               menubarPath="org.eclipse.dltk.validators.ui.menu/top"
+               >
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>

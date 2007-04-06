@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="validator" name="DLTK Validator" schema="schema/validator.exsd"/>
+   <extension
+         point="org.eclipse.dltk.core.builder">
+      <builder
+            class="org.eclipse.dltk.validators.internal.core.ValidatorBuilder"
+            nature="#">
+      </builder>
+   </extension>
+
+</plugin>

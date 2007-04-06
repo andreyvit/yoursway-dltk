@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.dltk.validators.core.validator">
+      <validatorType
+            class="org.eclipse.dltk.validators.core.tests.SimpleValidatorType"
+            id="org.eclipse.dltk.validators.core.tests.simpleValidator"
+            nature="org.eclipse.dltk.validators.core.tests.validatorType1">
+      </validatorType>
+   </extension>
+
+</plugin>
