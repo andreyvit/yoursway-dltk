@@ -63,6 +63,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 				if (!this.resources.contains(resource)
 						&& resource.getType() == IResource.FILE) {
 					resources.add(resource);
+					return false;
 				}
 				break;
 			}
@@ -73,6 +74,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			if (!this.resources.contains(resource)
 					&& resource.getType() == IResource.FILE) {
 				resources.add(resource);
+				return false;
 			}
 			return true;
 		}

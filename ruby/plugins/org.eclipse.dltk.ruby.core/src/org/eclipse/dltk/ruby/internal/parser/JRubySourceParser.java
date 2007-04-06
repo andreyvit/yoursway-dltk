@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
@@ -156,12 +157,14 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 			this.original = original;
 		}
 
-		public void reportProblem(IProblem problem) throws CoreException {
+		public IMarker reportProblem(IProblem problem) throws CoreException {
+			IMarker m = null;
 			if (original != null)
-				original.reportProblem(problem);
+				m = original.reportProblem(problem);
 			if (problem.isError()) {
 				errorState[0] = true;
 			}
+			return m;
 		}
 
 	}

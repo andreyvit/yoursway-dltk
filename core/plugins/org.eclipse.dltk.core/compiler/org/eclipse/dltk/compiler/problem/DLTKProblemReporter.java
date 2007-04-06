@@ -10,7 +10,7 @@ public class DLTKProblemReporter implements IProblemReporter {
 //		res.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 //	}
 
-	private static IMarker reportProblem(IResource res, int line, int start,
+	protected IMarker reportProblem(IResource res, int line, int start,
 			int end, String msg, int severity, int priority)
 			throws CoreException {
 		IMarker m = res.createMarker(IMarker.PROBLEM);
@@ -28,7 +28,7 @@ public class DLTKProblemReporter implements IProblemReporter {
 	private IResource resource;
 	private IProblemFactory factory;
 	
-	public void reportProblem(IProblem problem)
+	public IMarker reportProblem(IProblem problem)
 			throws CoreException {
 		int severity = IMarker.SEVERITY_INFO;
 
@@ -38,7 +38,7 @@ public class DLTKProblemReporter implements IProblemReporter {
 			severity = IMarker.SEVERITY_WARNING;
 		}
 
-		reportProblem(resource, problem.getSourceLineNumber(), problem
+		return reportProblem(resource, problem.getSourceLineNumber(), problem
 				.getSourceStart(), problem.getSourceEnd(),
 				problem.getMessage(), severity, IMarker.PRIORITY_NORMAL);
 	}

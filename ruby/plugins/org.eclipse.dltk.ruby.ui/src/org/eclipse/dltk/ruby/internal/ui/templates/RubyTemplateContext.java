@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ruby.internal.ui.templates;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
@@ -152,8 +153,9 @@ public class RubyTemplateContext extends ScriptTemplateContext {
 		//System.out.println("Formatted: |" + formatted + "|");		
 		ModuleDeclaration decl = RubySourceElementParser.parseModule(null, p.toCharArray(), new IProblemReporter(){
 
-			public void reportProblem(IProblem problem) throws CoreException {
-				System.out.println("Problem: " + problem.toString());				
+			public IMarker reportProblem(IProblem problem) throws CoreException {
+				System.out.println("Problem: " + problem.toString());
+				return null;
 			}
 		});
 		

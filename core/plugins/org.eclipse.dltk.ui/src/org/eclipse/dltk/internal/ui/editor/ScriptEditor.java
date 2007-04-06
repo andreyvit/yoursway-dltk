@@ -2694,9 +2694,9 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 			ISourceModule unit = manager.getWorkingCopy(getEditorInput());
 
 			if (unit != null) {
-				synchronized (unit) {
+//				synchronized (unit) {
 					performSave(false, progressMonitor);
-				}
+//				}
 			} else
 				performSave(false, progressMonitor);
 		}
