@@ -312,10 +312,35 @@ public final class ValidatorRuntime {
 		}
 		return (IValidator[]) possible.toArray(new IValidator[possible.size()]);
 	}
+	public static IValidator[] getValidValidators() {
+		List possible = new ArrayList();
+		IValidatorType[] vals = getValidatorTypes();
+		for (int i = 0; i < vals.length; i++) {
+			IValidator[] v = vals[i].getValidators();
+			for (int j = 0; j < v.length; j++) {
+				if (v[j].isValidatorValid()) {
+					if (!possible.contains(v[j])) {
+						possible.add(v[j]);
+					}
+				}
+			}
+		}
+		return (IValidator[]) possible.toArray(new IValidator[possible.size()]);
+	}
 
 	public static void executeActiveValidatorsWithConsole(OutputStream stream,
 			List elements, List resources) {
 		IValidator[] activeValidators = getActiveValidators();
+		process(stream, elements, resources, activeValidators);
+	}
+	public static void executeAllValidatorsWithConsole(OutputStream stream,
+			List elements, List resources) {
+		IValidator[] activeValidators = getValidValidators();
+		process(stream, elements, resources, activeValidators);
+	}
+
+	private static void process(OutputStream stream, List elements,
+			List resources, IValidator[] activeValidators) {
 		if (elements != null) {
 			for (Iterator iterator = elements.iterator(); iterator.hasNext();) {
 				IModelElement el = (IModelElement) iterator.next();

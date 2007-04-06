@@ -81,7 +81,7 @@ public class ValidatorSelectionWithConsoleAction implements
 				ValidatorUtils.processResourcesToElements(o, elements, resources);
 			}
 		}
-		ValidatorRuntime.executeActiveValidatorsWithConsole(out, elements, resources);
+		ValidatorRuntime.executeAllValidatorsWithConsole(out, elements, resources);
 	}
 
 	/**
