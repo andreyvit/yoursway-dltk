@@ -5,7 +5,7 @@ import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
 import org.eclipse.ui.IEditorInput;
 
 public class JavaScriptDebugModelPresentation extends ScriptDebugModelPresentation {
-	private static final String TCL_EDITOR_ID = "org.eclipse.dltk.tcl.ui.editor.TclEditor";
+	private static final String JS_EDITOR_ID = "org.eclipse.dltk.javascript.ui.editor.JavascriptEditor";
 	
 	private static final String MAIN_THREAD_NAME = "Main thread";
 	
@@ -14,6 +14,6 @@ public class JavaScriptDebugModelPresentation extends ScriptDebugModelPresentati
 	}
 	
 	public String getEditorId(IEditorInput input, Object element) {		
-		return TCL_EDITOR_ID;
+		return JS_EDITOR_ID;
 	}
 }

@@ -6,6 +6,7 @@ import java.net.URI;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
@@ -39,7 +40,8 @@ public class JavaScriptSourceLookupDirector implements IPersistableSourceLocator
 
 			File file = new File(pathname);
 
-			IContainer container = ResourcesPlugin.getWorkspace().getRoot()
+			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();			
+			IContainer container = root
 					.getContainerForLocation(new Path(file.getParent()));
 
 			if (container != null) {
