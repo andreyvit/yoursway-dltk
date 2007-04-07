@@ -104,7 +104,12 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	}
 
 	protected String getStackFrameText(IScriptStackFrame stackFrame) {
-		return stackFrame.toString();
+		try {
+			return stackFrame.getName();
+		} catch (DebugException e) {
+			DLTKDebugUIPlugin.log(e);
+			return stackFrame.toString();
+		}
 	}
 
 	protected String getVariableText(IScriptVariable variable) {

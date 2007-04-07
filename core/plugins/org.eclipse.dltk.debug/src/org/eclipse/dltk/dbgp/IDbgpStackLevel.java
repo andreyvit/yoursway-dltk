@@ -14,4 +14,6 @@ public interface IDbgpStackLevel {
 	int getLineEnd();
 
 	URI getFileURI();
+
+	String getWhere();
 }

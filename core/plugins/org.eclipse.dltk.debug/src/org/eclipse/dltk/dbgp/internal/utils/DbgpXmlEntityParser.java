@@ -36,6 +36,7 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		final String ATTR_CMDEND = "cmdend";
 		final String ATTR_LINENO = "lineno";
 		final String ATTR_FILENAME = "filename";
+		final String ATTR_WHERE = "where";
 
 		int level = Integer.parseInt(element.getAttribute(ATTR_LEVEL));
 
@@ -65,7 +66,8 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		// throw new DbgpException(e);
 		// }
 
-		return new DbgpStackLevel(fileUri, level, lineNumber, lineBegin,
+		String where = element.getAttribute(ATTR_WHERE);
+		return new DbgpStackLevel(fileUri, where,level, lineNumber, lineBegin,
 				lineEnd);
 	}
 

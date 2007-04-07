@@ -28,6 +28,8 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 
 	private IScriptVariable[] variables;
 
+	private String name;
+
 	protected IScriptVariable[] retrieveVariables(int stackDepth,
 			IDbgpCoreCommands core) throws DbgpException {
 
@@ -66,7 +68,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 
 		this.thread = thread;
 		this.stackLevel = stackLevel;
-
+		this.name=stackLevel.getWhere();
 		this.variables = retrieveVariables(stackLevel.getLevel(), coreCommands);
 
 		this.stackDepth = stackDepth;
@@ -89,7 +91,9 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public String getName() throws DebugException {
+		if (name==null||name.length()==0)
 		return "Stack Frame, level = " + stackLevel.getLevel();
+		else return name+"("+stackLevel.getFileURI()+")"; 
 	}
 
 	public IRegisterGroup[] getRegisterGroups() throws DebugException {

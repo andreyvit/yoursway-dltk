@@ -18,13 +18,20 @@ public class DbgpStackLevel implements IDbgpStackLevel {
 
 	private int type;
 
-	public DbgpStackLevel(URI fileUri, int level, int lineNumber,
+	private String where;
+
+	public DbgpStackLevel(URI fileUri,String where, int level, int lineNumber,
 			int lineBegin, int lineEnd) {
 		this.fileUri = fileUri;
 		this.level = level;
 		this.lineNumber = lineNumber;
 		this.lineBegin = lineBegin;
 		this.lineEnd = lineEnd;
+		this.where=where;
+	}
+	
+	public String getWhere(){
+		return where;
 	}
 
 	public int getLevel() {
