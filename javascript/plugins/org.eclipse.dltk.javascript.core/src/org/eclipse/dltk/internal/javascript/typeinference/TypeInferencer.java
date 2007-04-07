@@ -633,6 +633,8 @@ public class TypeInferencer {
 		Node child = expression.getFirstChild();
 		UncknownReference uRef = new UncknownReference(key, false);
 		for (int a = 0; a < ids.length; a++) {
+			if (ids[a] instanceof String)
+			{
 			String name = (String) ids[a];
 			IReference internalEvaluate = internalEvaluate(col, name, child,parent, cs);
 			if (internalEvaluate == null)
@@ -640,6 +642,7 @@ public class TypeInferencer {
 			internalEvaluate.setLocationInformation(parent, ((Integer)positions.get(a)).intValue()-name.length()-1,name.length());
 			uRef.setChild(name, internalEvaluate);
 			child = child.getNext();
+			}
 		}
 		return uRef;
 	}

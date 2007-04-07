@@ -3,6 +3,7 @@ package org.eclipse.dltk.internal.javascript.parser;
 import java.io.CharArrayReader;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -127,8 +128,11 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 
 		return moduleDeclaration;
 	}
+	private HashSet reportedRefs=new HashSet();
 
-	private void reportRef(IReference ref, String sma, int level) {		
+	private void reportRef(IReference ref, String sma, int level) {
+		if (reportedRefs.contains(ref))return;
+		reportedRefs.add(ref);
 		Set sm = ref.getChilds(false);
 		String key = ref.getName();
 		if (sma != null)
