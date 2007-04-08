@@ -22,6 +22,7 @@ import org.eclipse.dltk.dbgp.internal.breakpoints.DbgpLineBreakpoint;
 import org.eclipse.dltk.dbgp.internal.breakpoints.DbgpReturnBreakpoint;
 import org.eclipse.dltk.dbgp.internal.breakpoints.DbgpWatchBreakpoint;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class DbgpXmlEntityParser extends DbgpXmlParser {
@@ -67,7 +68,7 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		// }
 
 		String where = element.getAttribute(ATTR_WHERE);
-		return new DbgpStackLevel(fileUri, where,level, lineNumber, lineBegin,
+		return new DbgpStackLevel(fileUri, where, level, lineNumber, lineBegin,
 				lineEnd);
 	}
 
@@ -113,8 +114,10 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 
 			NodeList properties = property.getChildNodes();
 			for (int i = 0; i < properties.getLength(); ++i) {
-				availableChildren.add(parseProperty((Element) properties
-						.item(i)));
+				Node item = properties.item(i);
+				if (item instanceof Element) {
+					availableChildren.add(parseProperty((Element) item));
+				}
 			}
 		}
 
