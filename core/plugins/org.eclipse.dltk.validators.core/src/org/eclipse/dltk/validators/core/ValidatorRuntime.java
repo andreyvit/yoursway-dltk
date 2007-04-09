@@ -312,6 +312,7 @@ public final class ValidatorRuntime {
 		}
 		return (IValidator[]) possible.toArray(new IValidator[possible.size()]);
 	}
+
 	public static IValidator[] getValidValidators() {
 		List possible = new ArrayList();
 		IValidatorType[] vals = getValidatorTypes();
@@ -331,16 +332,48 @@ public final class ValidatorRuntime {
 	public static void executeActiveValidatorsWithConsole(OutputStream stream,
 			List elements, List resources) {
 		IValidator[] activeValidators = getActiveValidators();
-		process(stream, elements, resources, activeValidators);
+		process(stream, elements, resources, activeValidators, processValidate);
 	}
+
 	public static void executeAllValidatorsWithConsole(OutputStream stream,
 			List elements, List resources) {
 		IValidator[] activeValidators = getValidValidators();
-		process(stream, elements, resources, activeValidators);
+		process(stream, elements, resources, activeValidators, processValidate);
 	}
 
+	private interface IProcessAction {
+		IStatus execute(IValidator validator, ISourceModule o, OutputStream out);
+
+		IStatus execute(IValidator validator, IResource o, OutputStream out);
+	}
+
+	public static IProcessAction processValidate = new IProcessAction() {
+		public IStatus execute(IValidator validator, ISourceModule o,
+				OutputStream out) {
+			return validator.validate(o, out);
+		}
+
+		public IStatus execute(IValidator validator, IResource o,
+				OutputStream out) {
+			return validator.validate(o, out);
+		}
+	};
+	public static IProcessAction processClean = new IProcessAction() {
+		public IStatus execute(IValidator validator, ISourceModule o,
+				OutputStream out) {
+			validator.clean(o);
+			return null;
+		}
+
+		public IStatus execute(IValidator validator, IResource o,
+				OutputStream out) {
+			validator.clean(o);
+			return null;
+		}
+	};
+
 	private static void process(OutputStream stream, List elements,
-			List resources, IValidator[] activeValidators) {
+			List resources, IValidator[] activeValidators, IProcessAction action) {
 		if (elements != null) {
 			for (Iterator iterator = elements.iterator(); iterator.hasNext();) {
 				IModelElement el = (IModelElement) iterator.next();
@@ -369,14 +402,17 @@ public final class ValidatorRuntime {
 						if (toolkit.getNatureID().equals(nature)
 								|| nature.equals("#")) {
 
-							IStatus e = v.validate(module, stream);
-							if (e.getSeverity() == IStatus.ERROR) {
-								if (stream != null) {
-									String message = e.getMessage();
-									try {
-										stream.write(message.getBytes());
-									} catch (IOException e1) {
-										e1.printStackTrace();
+							// IStatus e = v.validate(module, stream);
+							IStatus e = action.execute(v, module, stream);
+							if (e != null) {
+								if (e.getSeverity() == IStatus.ERROR) {
+									if (stream != null) {
+										String message = e.getMessage();
+										try {
+											stream.write(message.getBytes());
+										} catch (IOException e1) {
+											e1.printStackTrace();
+										}
 									}
 								}
 							}
@@ -391,9 +427,16 @@ public final class ValidatorRuntime {
 				IResource el = (IResource) iterator.next();
 				for (int i = 0; i < activeValidators.length; i++) {
 					IValidator v = activeValidators[i];
-					v.validate(el, stream);
+					// v.validate(el, stream);
+					action.execute(v, el, stream);
 				}
 			}
 		}
+	}
+
+	public static void executeCleanAllValidatorsWithConsole(List elements,
+			List resources) {
+		IValidator[] activeValidators = getActiveValidators();
+		process(null, elements, resources, activeValidators, processClean);
 	}
 }

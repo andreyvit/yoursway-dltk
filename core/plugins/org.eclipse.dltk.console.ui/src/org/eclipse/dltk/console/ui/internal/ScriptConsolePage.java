@@ -52,7 +52,7 @@ public class ScriptConsolePage extends TextConsolePage implements
 				ScriptConsoleMessages.SaveSessionAction,
 				ScriptConsoleMessages.SaveSessionTooltip);
 
-		CloseScriptConsoleAction colseConsoleAction = new CloseScriptConsoleAction(
+		CloseScriptConsoleAction closeConsoleAction = new CloseScriptConsoleAction(
 				(ScriptConsole) getConsole(),
 				ScriptConsoleMessages.TerminateConsoleAction,
 				ScriptConsoleMessages.TerminateConsoleTooltip);
@@ -67,7 +67,7 @@ public class ScriptConsolePage extends TextConsolePage implements
 				new Separator());
 
 		toolbarManager.appendToGroup(ScriptConsoleConstants.SCRIPT_GROUP,
-				colseConsoleAction);
+				closeConsoleAction);
 		
 		toolbarManager.appendToGroup(ScriptConsoleConstants.SCRIPT_GROUP,
 				saveSessionAction);

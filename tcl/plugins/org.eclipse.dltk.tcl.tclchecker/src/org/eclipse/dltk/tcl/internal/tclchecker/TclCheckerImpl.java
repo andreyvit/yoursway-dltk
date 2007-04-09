@@ -9,6 +9,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.validators.core.AbstractValidator;
 import org.eclipse.dltk.validators.core.IValidatorType;
@@ -61,5 +62,20 @@ public class TclCheckerImpl extends AbstractValidator {
 				.getPreferenceStore());
 		
 		return checker.canCheck();
+	}
+
+	public void clean(ISourceModule module) {
+		IResource res = module.getResource();
+		clean(res);
+	}
+
+	public void clean(IResource resource) {
+		try {
+			TclCheckerMarker.clearMarkers(resource);
+		} catch (CoreException e) {
+			if( DLTKCore.DEBUG ) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

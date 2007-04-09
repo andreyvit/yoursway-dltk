@@ -6,13 +6,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.validators.core.ValidatorRuntime;
 import org.eclipse.dltk.validators.internal.core.ValidatorUtils;
 import org.eclipse.dltk.validators.internal.ui.ValidatorConsoleTrackerManager;
-import org.eclipse.dltk.validators.internal.ui.ValidatorUpdater;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -28,6 +24,7 @@ import org.eclipse.ui.console.IPatternMatchListener;
 
 public class ValidatorSelectionWithConsoleAction implements
 		IObjectActionDelegate {
+	public static final String DLTK_VALIDATORS_CONSOLE = "DLTK Validators output";
 	ISelection selection;
 
 	/**
@@ -49,7 +46,7 @@ public class ValidatorSelectionWithConsoleAction implements
 	public void run(IAction action) {
 		IConsoleManager consoleManager = ConsolePlugin.getDefault()
 				.getConsoleManager();
-		IOConsole ioConsole = new IOConsole("DLTK Validators output", null);
+		IOConsole ioConsole = new IOConsole(DLTK_VALIDATORS_CONSOLE, null);
 		IPatternMatchListener[] listeners = ValidatorConsoleTrackerManager.getListeners();
 		for (int i = 0; i < listeners.length; i++) {
 			ioConsole.addPatternMatchListener(listeners[i]);
@@ -63,8 +60,7 @@ public class ValidatorSelectionWithConsoleAction implements
 		processSelectionToElements(newOutputStream, selection);
 		try {
 			newOutputStream.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) {			
 			e.printStackTrace();
 		}
 	}

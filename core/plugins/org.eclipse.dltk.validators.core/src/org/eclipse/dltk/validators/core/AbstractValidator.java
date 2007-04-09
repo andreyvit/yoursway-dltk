@@ -5,7 +5,7 @@ public abstract class AbstractValidator implements IValidator {
 	private String id;
 	private String name;
 	private IValidatorType type;
-	boolean active = true;
+	private boolean active = true;
 	
 	protected AbstractValidator(String id, String name, IValidatorType type ) {
 		this.id = id;

@@ -1,7 +1,13 @@
 package org.eclipse.dltk.validators.internal.ui;
 
+import java.awt.Dialog;
+
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.ui.DLTKPluginImages;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -59,5 +65,15 @@ public class ValidatorsUI extends AbstractUIPlugin {
 	public static void log(Throwable e) {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, e
 				.getMessage(), e));
+	}
+	
+	public ImageDescriptor getImageDescriptor(String key) {
+		ImageRegistry registry = getImageRegistry();
+		ImageDescriptor descriptor = registry.getDescriptor(key);
+		if( descriptor == null ) {
+			descriptor = DLTKPluginImages.createImageDescriptor(this.getBundle(), new Path(key), true);
+			registry.put(key, descriptor);
+		}
+		return descriptor;
 	}
 }

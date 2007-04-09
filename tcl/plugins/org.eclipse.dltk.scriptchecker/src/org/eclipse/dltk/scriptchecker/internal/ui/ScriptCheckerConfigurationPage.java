@@ -43,7 +43,7 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 	
 		createBrowseButton(parent, columns);
 		this.fArguments.doFillIntoGrid(parent, columns);
-		createLabel( parent, "(%f will be replaced to filename)", columns);
+		createLabel( parent, "(%f will be replaced to filename, if no -- are specified, then it added before all arguments)", columns);
 		this.fSeverity.doFillIntoGrid(parent, columns);
 		this.fStyle.doFillIntoGrid(parent, columns);
 		this.fSyntax.doFillIntoGrid(parent, columns);

@@ -1,7 +1,5 @@
 package org.eclipse.dltk.scriptchecker.internal.ui;
 
-import java.util.regex.Pattern;
-
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.ui.console.IHyperlink;
 import org.eclipse.ui.console.IPatternMatchListener;
@@ -43,6 +41,7 @@ public class ScriptCheckerSyntaxConsoleTracker implements IPatternMatchListener 
 	}
 
 	public String getPattern() {
-		return "((\\w:)?[^:]+):(\\d+)\\s+\\((\\w+)\\)\\s+(.*)";
+		//return "((\\w:)?[^:]+):(\\d+)\\s+\\((\\w+)\\)\\s+(.*)";
+		return "(.*):(\\d+)\\s+";
 	}
 }

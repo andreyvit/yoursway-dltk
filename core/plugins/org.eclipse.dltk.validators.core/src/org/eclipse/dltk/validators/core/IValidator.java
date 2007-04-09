@@ -30,4 +30,11 @@ public interface IValidator {
 	
 	boolean isActive();
 	void setActive(boolean active);
+	
+	/**
+	 * Remove all reported markers.
+	 * @param module
+	 */
+	void clean(ISourceModule module);
+	void clean(IResource resource);
 }

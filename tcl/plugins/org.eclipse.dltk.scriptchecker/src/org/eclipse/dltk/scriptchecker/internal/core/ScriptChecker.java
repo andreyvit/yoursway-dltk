@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.validators.core.AbstractValidator;
@@ -79,7 +80,7 @@ public class ScriptChecker extends AbstractValidator {
 		this.noStyle = false;
 		this.noSyntax = false;
 		this.severity = SEVERITY_VALUES[1];
-		this.arguments = "%f";
+		this.arguments = "-- %f";
 		this.path = new Path("script_checker");
 	}
 
@@ -137,7 +138,7 @@ public class ScriptChecker extends AbstractValidator {
 		String[] sArgs = args.split("::");
 		for (int i = 0; i < sArgs.length; i++) {
 			cmd.add(sArgs[i]);
-		}
+		}		
 
 		String[] cmdLine = (String[]) cmd.toArray(new String[cmd.size()]);
 
@@ -203,8 +204,14 @@ public class ScriptChecker extends AbstractValidator {
 						reportErrorProblem(resource, problem, bounds[0], bounds[1]);
 					}
 				} catch (CoreException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					if( DLTKCore.DEBUG ) {
+						e.printStackTrace();
+					}
+				}
+				catch(ArrayIndexOutOfBoundsException e ) {
+					if( DLTKCore.DEBUG ) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -222,7 +229,7 @@ public class ScriptChecker extends AbstractValidator {
 		int lineNumber = Integer.parseInt(matcher.group(3));
 		String message = matcher.group(4);
 
-		return new ScriptCheckerProblem(file, lineNumber, message);
+		return new ScriptCheckerProblem(file, lineNumber-1, message);
 	}
 
 	protected static IMarker reportErrorProblem(IResource resource,
@@ -245,7 +252,11 @@ public class ScriptChecker extends AbstractValidator {
 
 	private String processArguments(IResource resource) {
 		String path = resource.getLocation().makeAbsolute().toOSString();
-		String user = replaceSequence(this.arguments.replaceAll("\t", "::"), 'f', path);
+		String arguments = this.arguments;
+		if( arguments.indexOf("--")==-1) {
+			arguments = "-- " + arguments;
+		}
+		String user = replaceSequence(arguments.replaceAll("\t", "::").replaceAll(" ", "::"), 'f', path);
 		String result = "";
 		if( this.noStyle ) {
 			result = result + "::-no_style";
@@ -325,5 +336,19 @@ public class ScriptChecker extends AbstractValidator {
 	public void setArguments(String arguments) {
 		initialized = true;
 		this.arguments = arguments;
+	}
+
+	public void clean(ISourceModule module) {
+		clean(module.getResource());
+	}
+
+	public void clean(IResource resource) {
+		try {
+			ScriptCheckerMarker.clearMarkers(resource);
+		} catch (CoreException e) {
+			if( DLTKCore.DEBUG ) {
+				e.printStackTrace();
+			}
+		}		
 	}
 }

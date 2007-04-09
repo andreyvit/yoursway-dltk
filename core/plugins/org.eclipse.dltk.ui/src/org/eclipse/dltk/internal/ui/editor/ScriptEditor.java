@@ -66,6 +66,7 @@ import org.eclipse.jface.text.IPositionUpdater;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.jface.text.ITextViewerExtension;
 import org.eclipse.jface.text.ITextViewerExtension2;
 import org.eclipse.jface.text.ITextViewerExtension4;
 import org.eclipse.jface.text.ITextViewerExtension5;
@@ -110,6 +111,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ST;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -155,6 +157,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	/** Preference key for matching brackets color */
 	protected final static String MATCHING_BRACKETS_COLOR=  PreferenceConstants.EDITOR_MATCHING_BRACKETS_COLOR;
 	
+	private ScriptEditorErrorTickUpdater fScriptEditorErrorTickUpdater;	
 	
 	
 	public ISourceViewer getScriptSourceViewer(){
@@ -860,6 +863,26 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		super();
 		setDocumentProvider(DLTKUIPlugin.getDefault()
 				.getSourceModuleDocumentProvider());
+		fScriptEditorErrorTickUpdater= new ScriptEditorErrorTickUpdater(this);
+	}
+	
+	public void dispose() {
+
+//		ISourceViewer sourceViewer= getSourceViewer();
+//		if (sourceViewer instanceof ITextViewerExtension)
+//			((ITextViewerExtension) sourceViewer).removeVerifyKeyListener(fBracketInserter);
+
+		if (fScriptEditorErrorTickUpdater != null) {
+			fScriptEditorErrorTickUpdater.dispose();
+			fScriptEditorErrorTickUpdater= null;
+		}
+
+//		if (fCorrectionCommands != null) {
+//			fCorrectionCommands.deregisterCommands();
+//			fCorrectionCommands= null;
+//		}
+
+		super.dispose();
 	}
 
 	protected void initializeEditor() {
@@ -1327,6 +1350,9 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		getSourceViewerDecorationSupport(sourceViewer).install(
 				getPreferenceStore());
 		internalDoSetInput(input);
+		
+		if (fScriptEditorErrorTickUpdater != null)
+			fScriptEditorErrorTickUpdater.updateEditorImage(getInputModelElement());
 	}
 
 	// protected IEditorInput transformEditorInput(IEditorInput input) {
@@ -2752,5 +2778,8 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	
 	public void gotoMatchingBracket() {
 		// Nothing to do by default
+	}
+	public void updatedTitleImage(Image image) {
+		setTitleImage(image);
 	}
 }

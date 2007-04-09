@@ -30,12 +30,12 @@ public class ScriptExplorerLabelProvider extends AppearanceAwareLabelProvider {
 	private ScriptExplorerContentProvider fContentProvider;
 
 	private boolean fIsFlatLayout;
-	//private PackageExplorerProblemsDecorator fProblemDecorator;
+	private ScriptExplorerProblemsDecorator fProblemDecorator;
 
 	public ScriptExplorerLabelProvider(long textFlags, int imageFlags, ScriptExplorerContentProvider cp, IPreferenceStore store) {
 		super(textFlags, imageFlags, store);
-		//fProblemDecorator= new PackageExplorerProblemsDecorator();
-		//addLabelDecorator(fProblemDecorator);
+		fProblemDecorator= new ScriptExplorerProblemsDecorator();
+		addLabelDecorator(fProblemDecorator);
 		Assert.isNotNull(cp);
 		fContentProvider= cp;
 	}		
@@ -92,6 +92,6 @@ public class ScriptExplorerLabelProvider extends AppearanceAwareLabelProvider {
 	
 	public void setIsFlatLayout(boolean state) {
 		fIsFlatLayout= state;
-		//fProblemDecorator.setIsFlatLayout(state);
+		fProblemDecorator.setIsFlatLayout(state);
 	}
 }

@@ -39,7 +39,7 @@ public class TclCheckerType extends AbstractValidatorType {
 	}
 
 	public boolean isConfigurable() {
-		return false;
+		return true;
 	}
 
 	public boolean isBuiltin() {

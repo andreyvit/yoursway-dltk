@@ -28,6 +28,7 @@ import org.eclipse.dltk.internal.ui.editor.WorkingCopyManager;
 import org.eclipse.dltk.internal.ui.text.hover.EditorTextHoverDescriptor;
 import org.eclipse.dltk.ui.text.completion.ContentAssistHistory;
 import org.eclipse.dltk.ui.viewsupport.ImageDescriptorRegistry;
+import org.eclipse.dltk.ui.viewsupport.ProblemMarkerManager;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
@@ -153,6 +154,7 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 
 	private IWorkingCopyManager fWorkingCopyManager;
 	private ISourceModuleDocumentProvider fSourceModuleDocumentProvider;
+	private ProblemMarkerManager fProblemMarkerManager;
 	private ImageDescriptorRegistry fImageDescriptorRegistry;
 
 	public synchronized IWorkingCopyManager getWorkingCopyManager() {
@@ -402,4 +404,9 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 		}
 		return part;
 	}
+	public synchronized ProblemMarkerManager getProblemMarkerManager() {
+		if (fProblemMarkerManager == null)
+			fProblemMarkerManager= new ProblemMarkerManager();
+		return fProblemMarkerManager;
+	}	
 }

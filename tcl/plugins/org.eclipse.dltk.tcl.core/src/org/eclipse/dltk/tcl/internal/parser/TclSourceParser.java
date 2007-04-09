@@ -34,7 +34,7 @@ public class TclSourceParser implements ISourceParser {
 
 		TclScript script;
 		try {
-			script = SimpleTclParser.parse(content);
+			script = SimpleTclParser.parse(content );
 		} catch (TclParseException e) {
 			if (DLTKCore.DEBUG_PARSER)
 				e.printStackTrace();

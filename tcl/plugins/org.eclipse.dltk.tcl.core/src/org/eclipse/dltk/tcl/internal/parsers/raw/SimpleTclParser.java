@@ -2,6 +2,8 @@ package org.eclipse.dltk.tcl.internal.parsers.raw;
 
 import java.text.ParseException;
 
+import org.eclipse.dltk.compiler.problem.IProblemReporter;
+
 public class SimpleTclParser {
 
 	/**
@@ -12,8 +14,12 @@ public class SimpleTclParser {
 	 * @return
 	 */
 	public static boolean handleError(ErrorDescription error) {
+		//TODO: Add corrrect problem reporting here.
 		//if (DLTKCore.DEBUG_PARSER)
-			System.err.println(error);
+//			System.err.println(error);
+//		if( sReporter != null ) {
+//			IProblem problem = new DefaultProblem(error.get);
+//		}
 		// fix me, sometimes we should hang and return false
 		return true;
 	}
@@ -172,7 +178,7 @@ public class SimpleTclParser {
 	 * @param nest
 	 * @throws ParseException
 	 */
-	public static TclScript parse(CodeScanner input, boolean nest)
+	public static TclScript parse(CodeScanner input, boolean nest )
 			throws TclParseException {
 		TclScript script = new TclScript();
 		script.setStart(input.getPosition());
@@ -191,10 +197,8 @@ public class SimpleTclParser {
 		script.setEnd(input.getPosition() - 1);
 		return script;
 	}
-
-	
-	public static TclScript parse(String content) throws TclParseException {
-		CodeScanner scanner = new CodeScanner(content);
+	public static TclScript parse(String content ) throws TclParseException {		
+		CodeScanner scanner = new CodeScanner(content); 
 		TclScript script = parse(scanner, false);
 		return script;
 	}

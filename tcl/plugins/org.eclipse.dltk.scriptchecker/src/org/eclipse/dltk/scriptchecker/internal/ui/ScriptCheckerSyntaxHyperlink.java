@@ -187,7 +187,7 @@ public class ScriptCheckerSyntaxHyperlink implements IHyperlink {
 		if (m.find()) {
 			String lineText = m.group(3);
 			try {
-				return Integer.parseInt(lineText) + 1;
+				return Integer.parseInt(lineText);
 			} catch (NumberFormatException e) {
 //				IStatus status = new Status(
 //						IStatus.ERROR,
