@@ -26,6 +26,7 @@ import org.eclipse.jdt.core.eval.IEvaluationContext;
 public class JdtReferenceResolver implements IExecutableExtension,
 		IReferenceResolver {
 	
+	private static final String PACKAGES = "Packages.";
 	ArrayList imports=new ArrayList();
 	public void evaluate(IProject pr) {
 		JavaCore.create(pr);
@@ -45,15 +46,19 @@ public class JdtReferenceResolver implements IExecutableExtension,
 			) {
 		if (ref instanceof AbstractCallResultReference) {
 			final AbstractCallResultReference cm = (AbstractCallResultReference) ref;
-			if (cm instanceof NewReference) {				
-				String string = cm.getId() + " z=new " + cm.getId() + ";z.";
+			if (cm instanceof NewReference) {
+				String preId=cm.getId();
+				if (preId.startsWith(PACKAGES))preId=preId.substring(PACKAGES.length());
+				final String cmid =preId;
+				
+				String string = cmid + " z=new " + cmid + ";z.";
 				try {
 					final HashSet result = new HashSet();
 					context.codeComplete(string, string.length(),
 							new CompletionRequestor() {
 								public void accept(CompletionProposal proposal) {
 									IReference r = new JavaProposalReference(context,proposal,
-											owner, create,cm.getId());
+											owner, create,cmid);
 									result.add(r);
 									
 								}
@@ -80,10 +85,13 @@ public class JdtReferenceResolver implements IExecutableExtension,
 		return null;
 	}
 
-	public Set resolveGlobals(final String id) {
+	public Set resolveGlobals( String id) {
 		
 		final HashSet result=new HashSet();
+		if (id.startsWith(PACKAGES))id=id.substring(PACKAGES.length());
+		final String id2=id;
 		String sm=id;
+		
 		if (id.indexOf('.')==-1)
 		{
 			sm="import "+sm;
@@ -131,10 +139,10 @@ public class JdtReferenceResolver implements IExecutableExtension,
 						String pName=sm;
 						if (proposal.getKind()==CompletionProposal.PACKAGE_REF)
 						{
-						sm=sm.substring(id.length());
+						sm=sm.substring(id2.length());
 						}
 						else{
-							if (sm.startsWith(id)&&sm.length()!=id.length())sm=sm.substring(id.length()).trim();
+							if (sm.startsWith(id2)&&sm.length()!=id2.length())sm=sm.substring(id2.length()).trim();
 							
 						}
 						IReference r = new JavaProposalReference(context,sm, proposal,

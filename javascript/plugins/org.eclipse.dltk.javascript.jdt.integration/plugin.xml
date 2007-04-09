@@ -8,5 +8,36 @@
             id="javaresolver">
       </resolver>
    </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="org.eclipse.dltk.javascript.jdt.integration.objectContribution2"
+            objectClass="org.eclipse.core.resources.IProject">
+         <action
+               class="org.eclipse.dltk.javascript.jdt.integration.AddJsNatureAction"
+               enablesFor="1"
+               icon="icons/javascript.gif"
+               id="org.eclipse.dltk.javascript.jdt.integration.action2"
+               label="Add JavaScript Nature"
+               menubarPath="additions"
+               style="push">
+         </action>
+         <visibility>
+         	<and>
+         		<objectState
+                  name="nature"
+                  value="org.eclipse.jdt.core.javanature">
+            	</objectState>
+				<not>
+				<objectState
+                  name="nature"
+                  value="org.eclipse.dltk.javascript.core.nature">
+            	</objectState>
+				</not>            			
+         	</and>
+         </visibility>            
+      </objectContribution>
+   </extension>
 
 </plugin>
