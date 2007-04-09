@@ -176,12 +176,12 @@ public class ScriptChecker extends AbstractValidator {
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return new Status(IStatus.ERROR, ScriptCheckerPlugin.PLUGIN_ID,
+			return new Status(IStatus.ERROR, ScriptCheckerPlugin.PLUGIN_ID, 0,
 					"Failed to execute script_checker", e);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return new Status(IStatus.ERROR, ScriptCheckerPlugin.PLUGIN_ID,
+			return new Status(IStatus.ERROR, ScriptCheckerPlugin.PLUGIN_ID, 0,
 					"Failed to execute script_checker", e);
 		}
 

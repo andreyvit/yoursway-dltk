@@ -136,7 +136,7 @@ public class ValidatorsCore extends Plugin implements IPropertyChangeListener {
 				return ValidatorDefinitionsContainer
 						.parseXMLIntoContainer(stream);
 			} catch (IOException e) {
-				ValidatorsCore.getDefault().getLog().log(new Status( 0, ValidatorsCore.PLUGIN_ID, "Exception", e ));
+				ValidatorsCore.getDefault().getLog().log(new Status( 0, ValidatorsCore.PLUGIN_ID, 0, "Exception", e ));
 			}
 		}
 		return new ValidatorDefinitionsContainer();
