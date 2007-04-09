@@ -328,6 +328,20 @@ public final class ValidatorRuntime {
 		}
 		return (IValidator[]) possible.toArray(new IValidator[possible.size()]);
 	}
+	
+	public static IValidator[] getAllValidators() {
+		List possible = new ArrayList();
+		IValidatorType[] vals = getValidatorTypes();
+		for (int i = 0; i < vals.length; i++) {
+			IValidator[] v = vals[i].getValidators();
+			for (int j = 0; j < v.length; j++) {				
+				if (!possible.contains(v[j])) {
+					possible.add(v[j]);
+				}				
+			}
+		}
+		return (IValidator[]) possible.toArray(new IValidator[possible.size()]);
+	}
 
 	public static void executeActiveValidatorsWithConsole(OutputStream stream,
 			List elements, List resources) {
@@ -436,7 +450,7 @@ public final class ValidatorRuntime {
 
 	public static void executeCleanAllValidatorsWithConsole(List elements,
 			List resources) {
-		IValidator[] activeValidators = getValidValidators();
+		IValidator[] activeValidators = getAllValidators();
 		process(null, elements, resources, activeValidators, processClean);
 	}
 }
