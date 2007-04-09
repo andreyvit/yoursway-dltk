@@ -312,26 +312,52 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		}
 
 	}
-	
-	private static class StateManager
-	{
+
+	private static class StateManager {
 		private LinkedList states = new LinkedList();
-		
-		public IState peek() {			
-			return (IState)states.getLast();
+
+		public IState peek() {
+			return (IState) states.getLast();
 		}
-		
+
 		public void pop() {
-			states.removeLast();				
+			states.removeLast();
 		}
-		
+
 		public void push(IState state) {
 			states.add(state);
-		}	
-	}
-	
-	private StateManager states = new StateManager();
+		}
 
+		public boolean isClassLikeState() {
+			IState state = peek();
+			if (state instanceof ClassLikeState) {
+				return true;
+			} else if (state instanceof BlockState) {
+				if (states.size() > 1) {
+					return states.get(1) instanceof ClassLikeState;
+				}
+			}
+			return false;
+		}
+
+		public ClassLikeState getClassLikeState() {
+			IState state = peek();
+			if (state instanceof ClassLikeState) {
+				return (ClassLikeState) state;
+			} else if (state instanceof BlockState) {
+				if (states.size() > 1) {
+					Object blocksDeclaringState = states.get(1);
+					if (blocksDeclaringState instanceof ClassLikeState) {
+						return (ClassLikeState) blocksDeclaringState;
+					}
+				}
+			}
+			return null;
+		}
+
+	}
+
+	private StateManager states = new StateManager();
 
 	protected Statement collectSingleStatementSafe(Node pathNode) {
 		return collectSingleStatementSafe(pathNode, false);
@@ -850,12 +876,15 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		cPos = fixNamePosition(cPos);
 		pos = fixNamePosition(pos);
 
-		RubyClassDeclaration type = new RubyClassDeclaration((Expression)supernode, 
-				cpath, null, cPos.getStartOffset(), cPos.getEndOffset());
-		
-		String name = String.copyValueOf(content, pos.getStartOffset(), pos.getEndOffset() - pos.getStartOffset());
+		RubyClassDeclaration type = new RubyClassDeclaration(
+				(Expression) supernode, cpath, null, cPos.getStartOffset(),
+				cPos.getEndOffset());
+
+		String name = String.copyValueOf(content, pos.getStartOffset(), pos
+				.getEndOffset()
+				- pos.getStartOffset());
 		type.setName(name);
-		
+
 		states.peek().add(type);
 		states.push(new ClassState(type));
 		// body
@@ -870,7 +899,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				end = blockNode.getLast().getPosition().getEndOffset() + 1; // /XXX!!!!
 			} else {
 				if (TRACE_RECOVERING)
-					RubyPlugin.log("DLTKASTBuildVisitor.visitClassNode(" 
+					RubyPlugin.log("DLTKASTBuildVisitor.visitClassNode("
 							+ "): unknown body type "
 							+ bodyNode.getClass().getName());
 			}
@@ -880,7 +909,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			type.setBody(bl);
 			iVisited.getBodyNode().accept(this);
 		}
-		
+
 		states.pop();
 		return null;
 	}
@@ -911,10 +940,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			colon.setStart(start);
 			colon.setEnd(end);
 			states.peek().add(colon);
- 		} else {
- 			ConstantReference ref = new ConstantReference(start, end, right);
- 			states.peek().add(ref);
- 		}
+		} else {
+			ConstantReference ref = new ConstantReference(start, end, right);
+			states.peek().add(ref);
+		}
 
 		return null;
 	}
@@ -939,7 +968,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitDAsgnNode(DAsgnNode iVisited) { // FIXME, just a
-															// stub
+		// stub
 		ISourcePosition pos = iVisited.getPosition();
 		RubyDAssgnExpression e = new RubyDAssgnExpression(pos.getStartOffset(),
 				pos.getEndOffset());
@@ -1105,8 +1134,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			}
 
 			Argument aa = new RubyMethodArgument();
-			aa.set(new SimpleReference(vaStart + 1, vaEnd, String.copyValueOf(content, 
-					vaStart, vaEnd - vaStart )), null);
+			aa.set(new SimpleReference(vaStart + 1, vaEnd, String.copyValueOf(
+					content, vaStart, vaEnd - vaStart)), null);
 			aa.setModifier(RubyMethodArgument.VARARG);
 			arguments.add(aa);
 		}
@@ -1114,8 +1143,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		if (blockArgNode != null) {
 			ISourcePosition position = fixNamePosition(blockArgNode
 					.getPosition());
-			String baName = String.copyValueOf( content, position.getStartOffset() - 1,
-					position.getEndOffset() - (position.getStartOffset() - 1));
+			String baName = String.copyValueOf(content, position
+					.getStartOffset() - 1, position.getEndOffset()
+					- (position.getStartOffset() - 1));
 			Argument aa = new RubyMethodArgument();
 			aa.set(new SimpleReference(position.getStartOffset(), position
 					.getEndOffset(), baName), null); // XXX:
@@ -1148,8 +1178,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				cPos.getStartOffset(), cPos.getEndOffset());
 
 		setMethodVisibility(method, iVisited.getVisibility());
-		if (states.peek() instanceof ClassLikeState) {
-			ClassLikeState classState = (ClassLikeState) states.peek();
+		if (states.isClassLikeState()) {
+			ClassLikeState classState = states.getClassLikeState();
 			ASTUtils.setVisibility(method, classState.visibility);
 		}
 
@@ -1213,19 +1243,20 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		ISourcePosition namePos = restoreMethodNamePosition(iVisited,
 				receiverExpression.sourceEnd());
 		String name = iVisited.getName();
-//		if (receiverNode instanceof SelfNode) {
-//			name = "self." + name;
-//		} else if (receiverNode instanceof ConstNode) {
-//			name = ((ConstNode) receiverNode).getName() + "." + name;
-//		}
+		// if (receiverNode instanceof SelfNode) {
+		// name = "self." + name;
+		// } else if (receiverNode instanceof ConstNode) {
+		// name = ((ConstNode) receiverNode).getName() + "." + name;
+		// }
 		RubySingletonMethodDeclaration method = new RubySingletonMethodDeclaration(
 				name, namePos.getStartOffset(), namePos.getEndOffset(), cPos
 						.getStartOffset(), cPos.getEndOffset(),
 				receiverExpression);
 		method.setModifier(Modifiers.AccStatic);
 		ASTUtils.setVisibility(method, Modifiers.AccPublic);
-		if (states.peek() instanceof ClassLikeState) {
-			ClassLikeState classState = (ClassLikeState) states.peek();
+//		if (states.peek() instanceof ClassLikeState) {
+		if (states.isClassLikeState()) {
+			ClassLikeState classState = states.getClassLikeState();
 			ASTUtils.setVisibility(method, classState.visibility);
 		}
 		states.peek().add(method);
@@ -1278,8 +1309,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 		// System.out.println("== (AST) Method name: " + methodName);
 
-		IState state = states.peek();
-		if (state instanceof ClassLikeState) {
+//		IState state = states.peek();
+//		if (state instanceof ClassLikeState) {
+		if (states.isClassLikeState()) {
 			if (methodName.equals("private"))
 				handleVisibilitySetter(iVisited, Modifiers.AccPrivate);
 			else if (methodName.equals("protected"))
@@ -1316,7 +1348,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 						.getPosition().getEndOffset() + 1;
 			}
 		}
-		
+
 		if (iVisited.getIterNode() != null) {
 			Statement s = collectSingleStatementSafe(iVisited.getIterNode());
 			if (s instanceof Expression)
@@ -1338,8 +1370,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	private void handleVisibilitySetter(FCallNode node, int newVisibility) {
 		IState state = states.peek();
-		if (state instanceof ClassLikeState) {
-			ClassLikeState classState = (ClassLikeState) state;
+//		if (state instanceof ClassLikeState) {
+		if (states.isClassLikeState()) {
+			ClassLikeState classState = states.getClassLikeState();			
 			Node argsNode = node.getArgsNode();
 			if (argsNode instanceof ArrayNode) {
 				ArrayNode argsArrayNode = (ArrayNode) argsNode;
@@ -1503,8 +1536,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitLocalVarNode(LocalVarNode iVisited) {
 		ISourcePosition pos = fixNamePosition(iVisited.getPosition());
-		String varName = String.copyValueOf(content, pos.getStartOffset(),
-				pos.getEndOffset() - pos.getStartOffset() );
+		String varName = String.copyValueOf(content, pos.getStartOffset(), pos
+				.getEndOffset()
+				- pos.getStartOffset());
 		processVariableReference(iVisited, varName, RubyVariableKind.LOCAL);
 		return null;
 	}
@@ -1766,7 +1800,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		} else {
 			int startOffset = receiver.getPosition().getStartOffset();
 			int endOffset = receiver.getPosition().getEndOffset();
-			name = "<< " + new String(String.copyValueOf(content, startOffset, endOffset - startOffset)).trim();			
+			name = "<< "
+					+ new String(String.copyValueOf(content, startOffset,
+							endOffset - startOffset)).trim();
 		}
 		ISourcePosition pos = iVisited.getReceiverNode().getPosition();
 		ISourcePosition cPos = iVisited.getPosition();
@@ -1820,7 +1856,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		String value = iVisited.getValue().toString();
 		ISourcePosition position = iVisited.getPosition();
 		if (value.length() == 0) {
-			value = String.copyValueOf(content, position.getStartOffset(), position.getEndOffset() - position.getStartOffset());
+			value = String.copyValueOf(content, position.getStartOffset(),
+					position.getEndOffset() - position.getStartOffset());
 		}
 		states.peek().add(
 				new StringLiteral(position.getStartOffset(), position
@@ -1884,7 +1921,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		RubySuperExpression expr = new RubySuperExpression(
 				pos.getStartOffset(), pos.getEndOffset(), callArguments, block);
 
-		states.peek().add( expr);
+		states.peek().add(expr);
 
 		return null;
 	}
@@ -1933,8 +1970,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		// + ")");
 
 		IState state = states.peek();
-		if (state instanceof ClassLikeState) {
-			ClassLikeState classState = (ClassLikeState) state;
+//		if (state instanceof ClassLikeState) {
+		if (states.isClassLikeState()) {
+//			ClassLikeState classState = (ClassLikeState) state;
+			ClassLikeState classState = states.getClassLikeState();
 			if (methodName.equals("private"))
 				classState.visibility = Modifiers.AccPrivate;
 			else if (methodName.equals("protected"))
@@ -2052,7 +2091,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	 */
 	public Instruction visitFixnumNode(FixnumNode iVisited) {
 		ISourcePosition pos = iVisited.getPosition();
-		NumericLiteral node = new NumericLiteral(pos.getStartOffset(), pos.getEndOffset(), iVisited.getValue());		
+		NumericLiteral node = new NumericLiteral(pos.getStartOffset(), pos
+				.getEndOffset(), iVisited.getValue());
 		states.peek().add(node);
 		return null;
 	}
