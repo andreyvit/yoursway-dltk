@@ -3,10 +3,10 @@
 
 <template 
 	context="javascriptUniversalTemplateContextType" 
-	description="%forTemplate1.description" 
-	id="org.eclipse.dltk.ruby.ui.templates.for1" 
-	name="for">for ${obj} in ${collection} 
+	description="%defTemplate1.description" 
+	id="org.eclipse.dltk.ruby.ui.templates.func1" 
+	name="function">function ${funcName}(${args}){ 
   	${cursor}
-end</template>
+  	}</template>
 
 </templates>

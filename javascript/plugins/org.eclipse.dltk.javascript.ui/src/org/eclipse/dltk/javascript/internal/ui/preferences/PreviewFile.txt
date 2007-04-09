@@ -1,12 +1,22 @@
-import imaplib
-import time
+dojo.provide("dojo.math");
 
-# We can check only that it successfully produces a result,
-# not the correctness of the result itself, since the result
-# depends on the timezone the machine is in.
+dojo.math.degToRad = function(/* float */x) {
+	//	summary
+	//	Converts degrees to radians.
+	return (x*Math.PI) / 180; 	//	float
+}
+dojo.math.radToDeg = function(/* float */x) { 
+	//	summary
+	//	Converts radians to degrees.
+	return (x*180) / Math.PI; 	//	float
+}
 
-timevalues = [2000000000, 2000000000.0, time.localtime(2000000000),
-              '"18-May-2033 05:33:20 +0200"']
+dojo.math.factorial = function(/* integer */n){
+	//	summary
+	//	Returns n!
+	if(n<1){ return 0; }
+	var retVal = 1;
+	for(var i=1;i<=n;i++){ retVal *= i; }
+	return retVal;	//	integer
+}
 
-for t in timevalues:
-    imaplib.Time2Internaldate(t)

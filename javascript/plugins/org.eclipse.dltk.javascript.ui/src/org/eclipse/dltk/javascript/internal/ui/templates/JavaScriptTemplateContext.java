@@ -2,6 +2,8 @@ package org.eclipse.dltk.javascript.internal.ui.templates;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
@@ -189,24 +191,25 @@ public class JavaScriptTemplateContext extends ScriptTemplateContext {
 				bf.append(c);
 			}
 		}
-		OldCodeFormatter formater = new OldCodeFormatter(Collections.EMPTY_MAP);
-		
-		String string = bf.toString();
-		
+		OldCodeFormatter formater = new OldCodeFormatter(Collections.EMPTY_MAP);		
+		String string = bf.toString();		
 		String formatted = formater.formatString(string,new StringBuffer());
 		java.util.Iterator it=qs.keySet().iterator();
 		while (it.hasNext()){
 			String key=(String) it.next();
 			String value=(String) qs.get(key);
-			// TODO: replace -> replaceAll for compatiblity with java 1.4
 			if (key==cId){
-				formatted=formatted.replaceAll(key+";", value);
+				formatted=replaceSeq(formatted,key+";", value);
 			}
-			else formatted=formatted.replaceAll(key, value);
+			else formatted=replaceSeq(formatted,key, value);
 		}		
 		template = new Template(template.getName(), template
 					.getDescription(), template.getContextTypeId(), formatted, template.isAutoInsertable());		
 
 		return super.evaluate(template);
 	}
+	private static String replaceSeq(String sq, CharSequence target, CharSequence replacement) {
+        return Pattern.compile(target.toString(), Pattern.LITERAL).matcher(
+            sq).replaceAll(Matcher.quoteReplacement(replacement.toString()));
+    }
 }
