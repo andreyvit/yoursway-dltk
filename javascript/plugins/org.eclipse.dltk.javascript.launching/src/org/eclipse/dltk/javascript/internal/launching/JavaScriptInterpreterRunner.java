@@ -59,7 +59,7 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 		if (vmInstall == null)
 			vmInstall = JavaRuntime.getDefaultVMInstall();
 		if (vmInstall != null) {
-			IVMRunner vmRunner = vmInstall.getVMRunner(ILaunchManager.RUN_MODE);
+			IVMRunner vmRunner = vmInstall.getVMRunner(ILaunchManager.DEBUG_MODE);
 			if (vmRunner != null) {
 				String[] classPath = null;
 				try {
