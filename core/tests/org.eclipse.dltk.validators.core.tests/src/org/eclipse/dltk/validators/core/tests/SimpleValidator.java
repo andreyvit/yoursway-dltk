@@ -46,4 +46,11 @@ public class SimpleValidator extends AbstractValidator {
 	public boolean isValidatorValid() {
 		return this.valid;
 	}
+	public void clean(ISourceModule module) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void clean(IResource resource) {
+		// TODO Auto-generated method stub
+	}
 }
