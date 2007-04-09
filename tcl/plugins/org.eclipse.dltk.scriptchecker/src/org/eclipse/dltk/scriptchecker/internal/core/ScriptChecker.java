@@ -104,6 +104,7 @@ public class ScriptChecker extends AbstractValidator {
 		if (initialized) {
 			return;
 		}
+		super.loadFrom(element);
 		initialized = true;
 		this.path = new Path(element.getAttribute(PATH));
 		this.noStyle = (new Boolean(element.getAttribute(NO_STYLE))).booleanValue();
@@ -113,6 +114,7 @@ public class ScriptChecker extends AbstractValidator {
 	}
 
 	public void storeTo(Document doc, Element element) {
+		super.storeTo(doc, element);
 		element.setAttribute(PATH, this.path.toOSString());
 		element.setAttribute(NO_STYLE, Boolean.toString(this.noStyle));
 		element.setAttribute(NO_SYNTAX, Boolean.toString(this.noSyntax));

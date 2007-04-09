@@ -213,14 +213,14 @@ public class ValidatorBlock implements ISelectionProvider,
 		if (selection instanceof IStructuredSelection) {
 			if (!selection.equals(fPrevSelection)) {
 				fPrevSelection = selection;
-				Object interp = ((IStructuredSelection) selection)
-						.getFirstElement();
-				if (interp == null) {
-					fValidatorList.setCheckedElements(new Object[0]);
-				} else {
-					fValidatorList.setCheckedElements(new Object[] { interp });
-					fValidatorList.reveal(interp);
-				}
+//				Object interp = ((IStructuredSelection) selection)
+//						.getFirstElement();
+//				if (interp == null) {
+//					fValidatorList.setCheckedElements(new Object[0]);
+//				} else {
+//					fValidatorList.setCheckedElements(new Object[] { interp });
+//					fValidatorList.reveal(interp);
+//				}
 				fireSelectionChanged();
 			}
 		}

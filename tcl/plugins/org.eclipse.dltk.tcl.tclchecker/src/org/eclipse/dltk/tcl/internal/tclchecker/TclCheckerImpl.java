@@ -18,6 +18,7 @@ import org.w3c.dom.Element;
 
 public class TclCheckerImpl extends AbstractValidator {
 	private static final String JOB_NAME = "Checking with TclChecker";
+	boolean initialized = false;
 	protected TclCheckerImpl(String id, IValidatorType type) {
 		super(id, null, type);
 	}
@@ -29,9 +30,20 @@ public class TclCheckerImpl extends AbstractValidator {
 	protected TclCheckerImpl(String id, Element element, IValidatorType type)
 			throws IOException {
 		super(id, null, type);
+		loadFrom(element);
+	}
+	
+
+	protected void loadFrom(Element element) {
+		if( initialized ) {
+			return;
+		}
+		initialized = true;
+		super.loadFrom(element);
 	}
 
 	public void storeTo(Document doc, Element element) {
+		super.storeTo(doc, element);
 	}
 
 	public IStatus validate(IResource resource, OutputStream console) {

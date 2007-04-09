@@ -166,8 +166,6 @@ public class ValidatorDefinitionsContainer {
 		// attributes
 		Element element = doc.createElement("validator"); //$NON-NLS-1$
 		element.setAttribute("id", validator.getID()); //$NON-NLS-1$
-		element.setAttribute("name", validator.getName()); //$NON-NLS-1$
-		element.setAttribute("active", Boolean.toString(validator.isActive()));
 
 		validator.storeTo(doc, element);
 
@@ -269,15 +267,10 @@ public class ValidatorDefinitionsContainer {
 			IValidatorType interpreterType, Element validatorElement,
 			ValidatorDefinitionsContainer container) {
 		String id = validatorElement.getAttribute("id"); //$NON-NLS-1$
-		String name = validatorElement.getAttribute("name"); //$NON-NLS-1$
-		boolean active = (new Boolean(validatorElement
-				.getAttribute("active"))).booleanValue();
 		if (id != null) {
 			try {
 				IValidator validator = interpreterType.createValidatorFrom(id,
 						validatorElement);
-				validator.setName(name);
-				validator.setActive(active);
 				container.addValidator(validator);
 			} catch (IOException e) {
 				DLTKCore.getDefault().getLog().log(
