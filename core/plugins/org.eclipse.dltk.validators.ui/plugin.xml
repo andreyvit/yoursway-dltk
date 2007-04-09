@@ -36,7 +36,7 @@
          <action
                class="org.eclipse.dltk.validators.internal.ui.popup.actions.RemoveValidatorAllMarkersAction"
                id="org.eclipse.dltk.validators.ui.action2"
-               label="Remove all validatior markers"
+               label="Remove all validator markers"
                menubarPath="org.eclipse.dltk.validators.ui.menu/top">
          </action>
       </objectContribution>

@@ -436,7 +436,7 @@ public final class ValidatorRuntime {
 
 	public static void executeCleanAllValidatorsWithConsole(List elements,
 			List resources) {
-		IValidator[] activeValidators = getActiveValidators();
+		IValidator[] activeValidators = getValidValidators();
 		process(null, elements, resources, activeValidators, processClean);
 	}
 }
