@@ -15,7 +15,7 @@ public class DbgpStackLevelTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		level = new DbgpStackLevel(new URI(uri), 2, 56, 0, 80);
+		level = new DbgpStackLevel(new URI(uri), "", 2, 56, 0, 80);
 	}
 
 	protected void tearDown() throws Exception {
@@ -23,7 +23,7 @@ public class DbgpStackLevelTests extends TestCase {
 	}
 
 	public void testEquals() throws Exception {
-		IDbgpStackLevel l = new DbgpStackLevel(new URI(uri), 2, 56, 0, 80);
+		IDbgpStackLevel l = new DbgpStackLevel(new URI(uri), "", 2, 56, 0, 80);
 
 		assertEquals(l, level);
 	}
