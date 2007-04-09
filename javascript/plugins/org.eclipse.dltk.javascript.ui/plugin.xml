@@ -267,15 +267,17 @@
   <extension
        point="org.eclipse.ui.propertyPages">
     <page
+          adaptable="true"
           class="org.eclipse.dltk.javascript.internal.ui.preferences.JavaScriptBuildPathPropertyPage"
           id="org.eclipse.dltk.javascript.ui.BuildpathProperties"
           name="Javascript Build Path"
           objectClass="org.eclipse.core.resources.IProject">
        <filter
              name="nature"
-             value="org.eclipse.dltk.javascript.core.nature"/>
-       <keywordReference id="org.eclipse.dltk.ui.buildpath"/>
-    </page>
+             value="org.eclipse.dltk.javascript.core.nature">
+       </filter>       
+    </page>    
+ 
  </extension>
  
  <extension
