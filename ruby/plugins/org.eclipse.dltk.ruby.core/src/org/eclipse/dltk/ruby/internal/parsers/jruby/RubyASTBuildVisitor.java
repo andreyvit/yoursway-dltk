@@ -1984,7 +1984,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 		ISourcePosition pos = iVisited.getPosition();
 		int funcNameStart = pos.getStartOffset();
-		int funcNameEnd = pos.getEndOffset() + 1;
+		int funcNameEnd = pos.getEndOffset();
 		// Assert.isTrue(funcNameStart + methodName.length() == funcNameEnd);
 		CallExpression c = new CallExpression(null, methodName,
 				CallArgumentsList.EMPTY);

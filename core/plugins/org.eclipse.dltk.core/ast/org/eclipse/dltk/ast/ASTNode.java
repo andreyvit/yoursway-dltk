@@ -108,7 +108,7 @@ public abstract class ASTNode {
 			this.sourceEnd = -1;
 		}
 	}
-
+	
 	public final int sourceStart() {
 		return sourceStart;
 	}

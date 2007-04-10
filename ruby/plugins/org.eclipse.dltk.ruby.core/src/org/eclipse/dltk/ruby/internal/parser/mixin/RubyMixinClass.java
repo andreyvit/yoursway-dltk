@@ -81,6 +81,8 @@ public class RubyMixinClass implements IRubyMixinElement {
 		if (this.module)
 			return null; // no inheritance for modules
 		IMixinElement mixinElement = model.getRawModel().get(key);
+		if (mixinElement == null)
+			return null;
 		Object[] allObjects = mixinElement.getAllObjects();
 		IType type = null;
 		for (int i = 0; i < allObjects.length; i++) {
@@ -143,6 +145,8 @@ public class RubyMixinClass implements IRubyMixinElement {
 		final List result = new ArrayList();
 		
 		IMixinElement mixinElement = model.getRawModel().get(key);
+		if (mixinElement == null)
+			return new RubyMixinMethod[0];
 		IMixinElement[] children = mixinElement.getChildren();
 		for (int i = 0; i < children.length; i++) {
 			if (children[i].getLastKeySegment().startsWith(prefix)) {

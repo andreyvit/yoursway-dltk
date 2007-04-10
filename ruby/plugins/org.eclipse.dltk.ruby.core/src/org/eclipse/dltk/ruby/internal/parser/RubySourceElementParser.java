@@ -60,7 +60,7 @@ public class RubySourceElementParser implements ISourceElementParser {
 		}
 		if( moduleDeclaration == null ) {
 			ISourceParser sourceParser = DLTKParsingManager.createParser(RubyLanguageToolkit.getDefault());
-			moduleDeclaration = sourceParser.parse(content, null);
+			moduleDeclaration = sourceParser.parse(content, problemReporter);
 			if( moduleDeclaration != null && astCache != null ) {
 				astCache.put(AST, moduleDeclaration );
 			}
