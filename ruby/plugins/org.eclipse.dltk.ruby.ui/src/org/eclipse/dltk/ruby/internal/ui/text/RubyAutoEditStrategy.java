@@ -148,7 +148,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 					int start = d.getLineOffset(d.getLineOfOffset(c.offset));
 					String curLine = d.get(start, c.offset - start);
 					if (Pattern.matches(regex, curLine) && !Pattern.matches(regex2, curLine)) {
-						c.text = "():";
+						c.text = "()";
 						c.shiftsCaret = false;
 						c.caretOffset = c.offset + 1;
 						return;
