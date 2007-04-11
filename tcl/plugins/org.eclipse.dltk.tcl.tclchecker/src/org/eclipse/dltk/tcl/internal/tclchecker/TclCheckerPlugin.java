@@ -1,15 +1,12 @@
 package org.eclipse.dltk.tcl.internal.tclchecker;
 
-import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class to be used in the desktop.
  */
-public class TclCheckerPlugin extends Plugin {
+public class TclCheckerPlugin extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "org.eclipse.dltk.tcl.tclchecker";
 	
@@ -45,13 +42,13 @@ public class TclCheckerPlugin extends Plugin {
 		return plugin;
 	}	
 	
-	private IPreferenceStore preferenceStore;
-	
-	public IPreferenceStore getPreferenceStore() {
-        if (preferenceStore == null) {
-            preferenceStore = new ScopedPreferenceStore(new InstanceScope(),getBundle().getSymbolicName());
-
-        }
-        return preferenceStore;
-    }
+//	private IPreferenceStore preferenceStore;
+//	
+//	public IPreferenceStore getPreferenceStore() {
+//        if (preferenceStore == null) {
+//            preferenceStore = new ScopedPreferenceStore(new InstanceScope(),getBundle().getSymbolicName());
+//
+//        }        
+//        return preferenceStore;
+//    }
 }

@@ -66,6 +66,7 @@ public class TclCheckerPreferences extends PreferencePage implements
 	public static boolean checkTclCheckerPath(boolean askUser) {
 		IPreferenceStore store = TclCheckerPlugin.getDefault()
 				.getPreferenceStore();
+		
 
 		while (!TclCheckerHelper.canExecuteTclChecker(store)) {
 			if (!askUser) {
@@ -106,7 +107,7 @@ public class TclCheckerPreferences extends PreferencePage implements
 		return -1;
 	}
 
-	protected void validateTclCheckerPath() {
+	public void validateTclCheckerPath() {
 		String txtPath = path.getText().trim();
 		
 		if ("".equals(txtPath)) {
@@ -323,10 +324,10 @@ public class TclCheckerPreferences extends PreferencePage implements
 
 	protected IPreferenceStore doGetPreferenceStore() {
 		return TclCheckerPlugin.getDefault().getPreferenceStore();
-	}
+	}	
 
-	protected void initializeValues() {
-		IPreferenceStore store = getPreferenceStore();
+	public void initializeValues() {
+		IPreferenceStore store = doGetPreferenceStore();
 
 		// Path
 		path.setText(store.getString(TclCheckerConstants.PREF_PATH));
@@ -348,7 +349,7 @@ public class TclCheckerPreferences extends PreferencePage implements
 	}
 
 	public boolean performOk() {
-		IPreferenceStore store = getPreferenceStore();
+		IPreferenceStore store = doGetPreferenceStore();
 
 		// Path
 		store.setValue(TclCheckerConstants.PREF_PATH, path.getText());

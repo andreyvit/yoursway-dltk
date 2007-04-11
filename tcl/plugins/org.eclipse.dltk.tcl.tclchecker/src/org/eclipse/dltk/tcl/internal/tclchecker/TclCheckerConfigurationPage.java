@@ -21,6 +21,9 @@ public class TclCheckerConfigurationPage extends ValidatorConfigurationPage {
 		c.setLayoutData(gd);
 		c.setLayout(new FillLayout());
 		prefs.createContents(c);
+		prefs.initializeValues();
+
+		prefs.validateTclCheckerPath();
 	}
 
 }
