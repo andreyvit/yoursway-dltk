@@ -83,7 +83,7 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 
 	public File getInstallLocation() {
 		return fInstallLocation;
-	}
+	}	
 
 	public void setInstallLocation(File installLocation) {
 		if (!installLocation.equals(fInstallLocation)) {

@@ -359,7 +359,7 @@ public class InterpreterDefinitionsContainer {
 		String installPath= "";                          //$NON-NLS-1$
 		File installLocation= Interpreter.getInstallLocation();
 		if (installLocation != null) {
-			installPath= installLocation.getAbsolutePath();
+			installPath= installLocation.toString();
 		}
 		element.setAttribute("path", installPath);       //$NON-NLS-1$
 		

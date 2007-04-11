@@ -13,7 +13,7 @@ public interface IInterpreterInstall extends IBuiltinModuleProvider {
 
 	void setName(String name);
 
-	File getInstallLocation();
+	File getInstallLocation();	
 
 	void setInstallLocation(File installLocation);
 

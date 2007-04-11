@@ -155,7 +155,7 @@ public abstract class InterpretersBlock implements IAddInterpreterDialogRequesto
 					case 1:
 						return interp.getInterpreterInstallType().getName();	
 					case 2: 						
-						return interp.getInstallLocation().getAbsolutePath();
+						return interp.getInstallLocation().toString();
 				}
 			}
 			return element.toString();
@@ -453,7 +453,7 @@ public abstract class InterpretersBlock implements IAddInterpreterDialogRequesto
 				if ((e1 instanceof IInterpreterInstall) && (e2 instanceof IInterpreterInstall)) {
 					IInterpreterInstall left= (IInterpreterInstall)e1;
 					IInterpreterInstall right= (IInterpreterInstall)e2;
-					return left.getInstallLocation().getAbsolutePath().compareToIgnoreCase(right.getInstallLocation().getAbsolutePath());
+					return left.getInstallLocation().toString().compareToIgnoreCase(right.getInstallLocation().toString());
 				}
 				return super.compare(viewer, e1, e2);
 			}
@@ -593,7 +593,7 @@ public abstract class InterpretersBlock implements IAddInterpreterDialogRequesto
 		final Set exstingLocations = new HashSet();
 		Iterator iter = fInterpreters.iterator();
 		while (iter.hasNext()) {
-			exstingLocations.add(((IInterpreterInstall)iter.next()).getInstallLocation());
+			exstingLocations.add(((IInterpreterInstall)iter.next()).getInstallLocation().getAbsoluteFile());
 		}
 		
 		// search

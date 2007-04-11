@@ -135,9 +135,9 @@ public abstract class AddDLTKInterpreterDialog extends StatusDialog {
 		return fInterpreterName.getText();
 	}
 		
-	protected File getInstallLocation() {
-		return new File(fInterpreterPath.getText());
-	}
+//	protected File getInstallLocation() {
+//		return new File(fInterpreterPath.getText()).getAbsoluteFile();
+//	}
 		
 	protected abstract AbstractInterpreterLibraryBlock createLibraryBlock(AddDLTKInterpreterDialog dialog);
 	protected Control createDialogArea(Composite ancestor) {
@@ -230,7 +230,7 @@ public abstract class AddDLTKInterpreterDialog extends StatusDialog {
 		} else {
 			fInterpreterTypeCombo.setEnabled(false);
 			fInterpreterName.setText(fEditedInterpreter.getName());
-			fInterpreterPath.setText(fEditedInterpreter.getInstallLocation().getAbsolutePath());
+			fInterpreterPath.setText(fEditedInterpreter.getInstallLocation().toString());
 			fLibraryBlock.initializeFrom(fEditedInterpreter, fSelectedInterpreterType);
 			String InterpreterArgs = fEditedInterpreter.getInterpreterArgs();
 			if (InterpreterArgs != null) {
@@ -369,11 +369,12 @@ public abstract class AddDLTKInterpreterDialog extends StatusDialog {
 	
 	protected void setFieldValuesToInterpreter(IInterpreterInstall Interpreter) {
 		File dir = new File(fInterpreterPath.getText());
-		try {
-			Interpreter.setInstallLocation(dir.getCanonicalFile());
-		} catch (IOException e) {
-			Interpreter.setInstallLocation(dir.getAbsoluteFile());
-		}
+//		try {
+			Interpreter.setInstallLocation(dir);
+//		} catch (IOException e) {
+////			Interpreter.setInstallLocation(dir.getAbsoluteFile());
+//			Interpreter.setInstallLocation(dir);
+//		}
 		Interpreter.setName(fInterpreterName.getText());
 		
 		if(this.useInterpreterArgs() ) {
@@ -392,12 +393,12 @@ public abstract class AddDLTKInterpreterDialog extends StatusDialog {
 		fLibraryBlock.performApply(Interpreter);
 	}
 	
-	protected File getAbsoluteFileOrEmpty(String path) {
-		if (path == null || path.length() == 0) {
-			return new File(""); //$NON-NLS-1$
-		}
-		return new File(path).getAbsoluteFile();
-	}
+//	protected File getAbsoluteFileOrEmpty(String path) {
+//		if (path == null || path.length() == 0) {
+//			return new File(""); //$NON-NLS-1$
+//		}
+//		return new File(path).getAbsoluteFile();
+//	}
 	
 	private void setInterpreterNameStatus(IStatus status) {
 		fStati[0]= status;
