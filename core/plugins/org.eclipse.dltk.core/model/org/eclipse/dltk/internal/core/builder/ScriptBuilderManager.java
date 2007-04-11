@@ -37,9 +37,11 @@ public class ScriptBuilderManager {
 				List elements = (List)builders.get(nature);
 				elements.add(cfg[i]);
 			}
-			List elements = new ArrayList();
-			elements.add( cfg[i] );
-			builders.put(nature, elements);
+			else {
+				List elements = new ArrayList();
+				elements.add( cfg[i] );
+				builders.put(nature, elements);
+			}
 		}
 	}
 	/**
