@@ -1132,6 +1132,8 @@ public abstract class AbstractASTFoldingStructureProvider implements IFoldingStr
 					if (start != -1) {
 						int offset0 = docRegions[start].getOffset();
 						int length0 = docRegions[i - 1].getOffset() - offset0 + docRegions[i - 1].getLength() - 1;
+						String testForTrim = contents.substring(offset0, offset0 + length0).trim();
+						length0 = testForTrim.length();
 						fullRegion = new Region(offset0, length0);
 						if (isMultilineRegion(d, fullRegion)) {
 							regions.add(fullRegion);
