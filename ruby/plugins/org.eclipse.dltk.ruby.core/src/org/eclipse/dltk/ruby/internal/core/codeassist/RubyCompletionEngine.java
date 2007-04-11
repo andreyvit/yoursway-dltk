@@ -1,7 +1,9 @@
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
@@ -32,6 +34,8 @@ import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
+import org.eclipse.dltk.ruby.ast.RubyBlock;
+import org.eclipse.dltk.ruby.ast.RubyDAssgnExpression;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeField;
@@ -62,6 +66,10 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	private ISourceParser parser = DLTKParsingManager.createParser(RubyLanguageToolkit.getDefault());;
 	private MixinModel model;
 	private HashSet completedNames = new HashSet();
+
+	private ASTNode selectionNode;
+
+	private ASTNode completionNode;
 
 	public RubyCompletionEngine(ISearchableEnvironment nameEnvironment,
 			CompletionRequestor requestor, Map settings,
@@ -162,6 +170,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				ASTNode minimalNode = ASTUtils.findMinimalNode(
 						moduleDeclaration, position, position);
 				if (minimalNode != null) {
+					this.completionNode = minimalNode;
 					if (minimalNode instanceof CallExpression) {
 						completeCall(modelModule, moduleDeclaration,
 								(CallExpression) minimalNode, position);
@@ -223,8 +232,26 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	private void completeSimpleRef(org.eclipse.dltk.core.ISourceModule module,
 			ModuleDeclaration moduleDeclaration, String prefix, int position) {
 		int relevance = 424242;
-//		String prefix = getPrefix(module, node, position);
+		
+		
+				
 		this.setSourceRange(/*node.sourceStart()*/position - prefix.length(), position);
+		ASTNode[] wayToNode = ASTUtils.restoreWayToNode(moduleDeclaration, this.completionNode);
+		for (int i = wayToNode.length - 1; i > 0; i--) {
+			if (wayToNode[i] instanceof RubyBlock) {
+				RubyBlock rubyBlock = (RubyBlock) wayToNode[i];
+				Set vars = rubyBlock.getVars();
+				for (Iterator iterator = vars.iterator(); iterator.hasNext();) {
+					ASTNode n = (ASTNode) iterator.next();
+					if (n instanceof RubyDAssgnExpression) {
+						RubyDAssgnExpression rd = (RubyDAssgnExpression) n;
+						if (rd.getName().startsWith(prefix)) {
+							reportField(new FakeField((ModelElement) module, rd.getName(), 0, 0), relevance--);
+						}
+					}
+				}
+			}
+		}
 
 		if (prefix.startsWith("$")) { //globals
 			completeGlobalVar(module, moduleDeclaration, prefix, position);

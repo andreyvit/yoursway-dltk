@@ -4,14 +4,20 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 
 public class RubyDAssgnExpression extends Expression {
-	
-	//TODO
-	
-	
+
+	private String name;
 
 	public RubyDAssgnExpression(int start, int end) {
 		super(start, end);
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getKind() {

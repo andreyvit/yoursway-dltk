@@ -972,6 +972,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		ISourcePosition pos = iVisited.getPosition();
 		RubyDAssgnExpression e = new RubyDAssgnExpression(pos.getStartOffset(),
 				pos.getEndOffset());
+		e.setName(iVisited.getName());
 		states.peek().add(e);
 		// Iterator iterator = iVisited.childNodes().iterator();
 		// while (iterator.hasNext()) {
