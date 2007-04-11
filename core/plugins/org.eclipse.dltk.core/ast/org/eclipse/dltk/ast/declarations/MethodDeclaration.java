@@ -11,6 +11,7 @@ import java.util.List;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.ast.statements.Block;
+import org.eclipse.dltk.ast.statements.CompoundStatement;
 import org.eclipse.dltk.internal.compiler.lookup.MethodScope;
 import org.eclipse.dltk.utils.CorePrinter;
 
@@ -41,6 +42,12 @@ public class MethodDeclaration extends Declaration {
 		this.setName(name);
 		this.setNameStart(nameStart);
 		this.setNameEnd(nameEnd);
+	}
+	
+	
+
+	public MethodDeclaration(int start, int end) {
+		super(start, end);
 	}
 
 	public void setDecorators(List decorators) {
@@ -86,6 +93,10 @@ public class MethodDeclaration extends Declaration {
 	public List getArguments() {
 		return arguments;
 	}
+	
+	public void addArgument (Argument arg) {
+		this.arguments.add(arg);
+	}
 
 	public void acceptArguments(List arguments) {
 		this.arguments = arguments;
@@ -93,6 +104,12 @@ public class MethodDeclaration extends Declaration {
 
 	public void acceptBody(Block block) {
 		acceptBody(block, true);
+	}
+	
+	public void setBody (CompoundStatement statement) {
+		Block b = new Block (statement.sourceStart(), statement.sourceEnd());
+		b.acceptStatements(statement.getStatements());
+		acceptBody(b, true);
 	}
 
 	public void acceptBody(Block block, boolean replace) {

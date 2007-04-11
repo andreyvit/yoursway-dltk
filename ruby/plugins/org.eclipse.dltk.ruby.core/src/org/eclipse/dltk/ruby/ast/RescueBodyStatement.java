@@ -17,6 +17,15 @@ public class RescueBodyStatement extends Statement {
 		this.exceptionNode = exceptionNode;
 		this.optNode = optNode;
 	}
+	
+	
+
+	public RescueBodyStatement(int start, int end) {
+		super(start, end);
+		// TODO Auto-generated constructor stub
+	}
+
+
 
 	public Statement getBodyNode() {
 		return bodyNode;

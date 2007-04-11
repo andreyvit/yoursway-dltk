@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTVisitor;
+import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.Decorator;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
@@ -18,6 +19,22 @@ public class RubySingletonMethodDeclaration extends MethodDeclaration {
 		super(name, nameStart, nameEnd, declStart, declEnd);
 		this.receiver = receiver;
 	}
+	
+	
+
+
+
+
+	public RubySingletonMethodDeclaration(DLTKToken function_t, DLTKToken name,
+			Expression receiver) {
+		super(function_t, name);
+		this.receiver = receiver;
+	}
+
+
+
+
+
 
 	public Expression getReceiver() {
 		return receiver;

@@ -47,7 +47,7 @@ import org.eclipse.dltk.ruby.ast.DynamicStringExpression;
 import org.eclipse.dltk.ruby.ast.EvaluatableStringExpression;
 import org.eclipse.dltk.ruby.ast.HashExpression;
 import org.eclipse.dltk.ruby.ast.HashPairExpression;
-import org.eclipse.dltk.ruby.ast.IterableBlock;
+import org.eclipse.dltk.ruby.ast.RubyBlock;
 import org.eclipse.dltk.ruby.ast.RegexpExpression;
 import org.eclipse.dltk.ruby.ast.RescueBodyStatement;
 import org.eclipse.dltk.ruby.ast.RescueStatement;
@@ -1282,7 +1282,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
-	public Instruction visitEnsureNode(EnsureNode iVisited) { // done
+	public Instruction visitEnsureNode(EnsureNode iVisited) { // done		
 		Statement body = collectSingleStatementSafe(iVisited.getBodyNode());
 		Statement ensure = collectSingleStatementSafe(iVisited.getEnsureNode());
 		ISourcePosition pos = iVisited.getPosition();
@@ -1488,7 +1488,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
-	public Instruction visitIfNode(IfNode iVisited) { // done
+	public Instruction visitIfNode(IfNode iVisited) { // done		
 		Statement condition = collectSingleStatementSafe(iVisited
 				.getCondition());
 		Statement thenPart = collectSingleStatementSafe(iVisited.getThenBody());
@@ -1504,8 +1504,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		Statement bodyNode = collectSingleStatementSafe(iVisited.getBodyNode());
 		Statement varNode = collectSingleStatementSafe(iVisited.getVarNode());
 		ISourcePosition pos = iVisited.getPosition();
-		IterableBlock block = new IterableBlock(pos.getStartOffset(), pos
-				.getEndOffset(), varNode, bodyNode);
+		RubyBlock block = new RubyBlock(pos.getStartOffset(), pos
+				.getEndOffset(), bodyNode);
+		block.addVar(varNode);
 		states.peek().add(block);
 		return null;
 	}

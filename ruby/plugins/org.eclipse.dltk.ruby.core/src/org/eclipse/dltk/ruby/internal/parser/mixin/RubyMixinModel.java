@@ -51,6 +51,7 @@ public class RubyMixinModel {
 			return new RubyObjectMixinClass(this, false);
 		}
 		IMixinElement mixinElement = model.get(key);
+		System.out.println();
 		if (mixinElement != null) {
 			return createRubyElement(mixinElement);
 		}

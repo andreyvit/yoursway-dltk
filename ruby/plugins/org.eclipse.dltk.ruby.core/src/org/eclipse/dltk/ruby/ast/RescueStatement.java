@@ -25,6 +25,33 @@ public class RescueStatement extends Statement {
 		this.elseNode = elseNode;
 		this.rescueNode = rescueNode;
 	}
+	
+	
+
+	public void setBodyNode(Statement bodyNode) {
+		this.bodyNode = bodyNode;
+	}
+
+
+
+	public void setElseNode(Statement elseNode) {
+		this.elseNode = elseNode;
+	}
+
+
+
+	public void setRescueNode(RescueBodyStatement rescueNode) {
+		this.rescueNode = rescueNode;
+	}
+
+
+
+	public RescueStatement(int start, int end) {
+		super(start, end);
+		// TODO Auto-generated constructor stub
+	}
+
+
 
 	public Statement getBodyNode() {
 		return bodyNode;

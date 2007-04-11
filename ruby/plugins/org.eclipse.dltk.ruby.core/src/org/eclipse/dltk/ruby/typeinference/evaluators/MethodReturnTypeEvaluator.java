@@ -19,6 +19,7 @@ import org.eclipse.dltk.ruby.ast.RubyDotExpression;
 import org.eclipse.dltk.ruby.ast.RubyReturnStatement;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
+import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixin;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinBuildVisitor;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
@@ -120,15 +121,24 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		
 		MethodDeclaration decl = null;
 		List methods = new ArrayList ();
-		if (instanceType == null)
-			instanceType = new RubyClassType("Object"); 
+		if (instanceType == null) {
+			instanceType = new RubyClassType("Object");			
+		}
 		if (instanceType instanceof RubyClassType) {
 			RubyClassType rubyClassType = (RubyClassType) instanceType;
 			RubyMixinClass class1 = RubyMixinModel.getInstance().createRubyClass(rubyClassType);
 			if (class1 != null) {
 				RubyMixinMethod mixinMethods = class1.getMethod(methodName);
+				System.out.println();
 				if (mixinMethods != null)
 					methods.addAll(Arrays.asList(mixinMethods.getSourceMethods()));
+			}
+			if (rubyClassType.getModelKey().equals("Object")) {
+				IRubyMixinElement element = RubyMixinModel.getInstance().createRubyElement(methodName);
+				if (element instanceof RubyMixinMethod) {
+					RubyMixinMethod rubyMixinMethod = (RubyMixinMethod) element;
+					methods.addAll(Arrays.asList(rubyMixinMethod.getSourceMethods()));
+				}
 			}
 		}
 				
@@ -168,7 +178,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		}
 		innerContext = new MethodContext(goal.getContext(), sourceModule, module, 
 				parameters, typedGoal.getArguments());
-		
+		System.out.println();
 		ASTVisitor visitor = new ASTVisitor () {
 			
 			public boolean visitGeneral(ASTNode node) throws Exception {

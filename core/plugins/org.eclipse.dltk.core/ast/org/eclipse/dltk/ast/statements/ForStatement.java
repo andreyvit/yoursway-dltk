@@ -24,6 +24,32 @@ public class ForStatement extends Statement {
 		fList = list;
 		fAction = action;
 	}
+	
+	
+
+	public ForStatement(int start, int end) {
+		super(start, end);
+	}
+
+
+
+	public void setTarget(Statement target) {
+		fTarget = target;
+	}
+
+
+
+	public void setList(ExpressionList list) {
+		fList = list;
+	}
+
+
+
+	public void setAction(Statement action) {
+		fAction = action;
+	}
+
+
 
 	public void traverse(ASTVisitor pVisitor) throws Exception {
 
