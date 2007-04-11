@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.eclipse.dltk.ruby.core.text.RubyContext;
 import org.eclipse.dltk.ruby.internal.ui.text.syntax.RubyContextUtils;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.MultiLineRule;
+import org.eclipse.jface.text.rules.PatternRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
 import org.eclipse.jface.text.rules.Token;
 
@@ -16,12 +18,15 @@ public class RubyPartitionScanner extends RuleBasedPartitionScanner {
 	private Token string;
 	private Token comment;
 	private Token rubyDoc;
+	private Token defaultToken;
 	
 	/**
 	 * Creates the partitioner and sets up the appropriate rules.
 	 */
 	public RubyPartitionScanner() {
 		super();
+		
+		defaultToken = new Token (IDocument.DEFAULT_CONTENT_TYPE);
 
 		string = new Token(RubyPartitions.RUBY_STRING);
 
@@ -42,6 +47,8 @@ public class RubyPartitionScanner extends RuleBasedPartitionScanner {
 		rules.add(new RubyPercentStringRule(string, false));
 
 		rules.add(new RubySlashRegexpRule(string));
+		
+		rules.add(new RubyGlobalVarRule(defaultToken));
 
 		IPredicateRule[] result = new IPredicateRule[rules.size()];
 		rules.toArray(result);
