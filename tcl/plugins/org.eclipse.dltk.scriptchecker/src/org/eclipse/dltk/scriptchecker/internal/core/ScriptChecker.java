@@ -127,7 +127,9 @@ public class ScriptChecker extends AbstractValidator {
 	}
 	public IStatus validate(ISourceModule module, OutputStream console) {
 		IResource resource = module.getResource();
-		
+		if( resource == null ) {
+			return Status.CANCEL_STATUS;
+		}
 		try {
 			resource.deleteMarkers(ScriptCheckerMarker.PROBLEM_ID, true, IResource.DEPTH_INFINITE);
 		} catch (CoreException e1) {

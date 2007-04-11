@@ -55,9 +55,11 @@ public class ValidatorManager {
 				elements.add(cfg[i]);
 				continue;
 			}
-			List elements = new ArrayList();
-			elements.add( cfg[i] );
-			validators.put( nature, elements );
+			else {
+				List elements = new ArrayList();
+				elements.add( cfg[i] );
+				validators.put( nature, elements );
+			}
 		}
 	}
 	/**

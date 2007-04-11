@@ -1,6 +1,7 @@
 package org.eclipse.dltk.tcl.internal.core.codeassist;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,6 @@ import org.eclipse.dltk.codeassist.ScriptCompletionEngine;
 import org.eclipse.dltk.codeassist.complete.CompletionNodeFound;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.compiler.env.lookup.Scope;
-import org.eclipse.dltk.compiler.util.HashtableOfObject;
 import org.eclipse.dltk.core.CompletionContext;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;
@@ -192,7 +192,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 				CompletionOnVariable completion = (CompletionOnVariable) astNode;
 				findVariables(completion.getToken(), completion.getInNode(),
 						completion.canHandleEmpty(), astNode.sourceStart(),
-						completion.getProvideDollar());
+						completion.getProvideDollar(), null);
 			}
 		}
 		return true;
@@ -507,8 +507,11 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 
 	private void findVariables(char[] token, ASTNode parent,
 			boolean canCompleteEmptyToken, int beforePosition,
-			boolean provideDollar) {
+			boolean provideDollar, List cho) {
 		List gChoices = new ArrayList();
+		if(cho != null) {
+			gChoices.addAll(cho);
+		}
 		if (token.length > 0 && token[0] != '$') {
 			provideDollar = false;
 		}
@@ -586,6 +589,26 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		findLocalVariables(token, cc, canCompleteEmptyToken, true);
 
 		findGlobalVariables(token, gChoices, provideDollar);
+		// Find one level up
+		if( !( checkValidParetNode(parent) ) ) {
+			// Lets find scope parent
+			List findLevelsTo = this.parser.findLevelsTo(parent);
+			ASTNode realParent = null;
+			for (Iterator iterator = findLevelsTo.iterator(); iterator
+					.hasNext();) {
+				ASTNode nde = (ASTNode) iterator.next();
+				if( checkValidParetNode(nde) ) {
+					realParent = nde;
+				}
+			}
+			if( realParent != null && !realParent.equals(parent)) {
+				findVariables(token, realParent, canCompleteEmptyToken, beforePosition, provideDollar, gChoices);
+			}
+		}
+	}
+
+	private boolean checkValidParetNode(ASTNode parent) {
+		return parent instanceof MethodDeclaration || parent instanceof ModuleDeclaration || parent instanceof TypeDeclaration;
 	}
 
 	private void findGlobalVariables(char[] token, final List choices,
@@ -910,6 +933,9 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 
 	private String preProcessVariable(String n) {
 		String str;
+		if( n.startsWith("$")) {
+			return n;
+		}
 		if (n.indexOf(' ') != -1) {
 			str = "$" + '{' + n + '}';
 		} else {

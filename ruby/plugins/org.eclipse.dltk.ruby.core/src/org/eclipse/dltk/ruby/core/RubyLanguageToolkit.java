@@ -180,7 +180,7 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 		if (resource == null || resource.getLocation() == null)
 			return new Status(IModelStatus.ERROR, RubyPlugin.PLUGIN_ID, 1, "Resource passed to validateSourceModule() is null", null);
 		
-		String ext = resource.getLocation().getFileExtension();
+//		String ext = resource.getLocation().getFileExtension();
 //		if (ext == null || ext.length() == 0)
 //			if (isRubyHeadered(resource.getLocation().toFile()) == IModelStatus.VERIFIED_OK) {
 //				return IModelStatus.VERIFIED_OK;

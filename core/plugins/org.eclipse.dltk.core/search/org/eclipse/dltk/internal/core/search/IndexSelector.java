@@ -142,11 +142,11 @@ public class IndexSelector {
 	private void initializeIndexLocations() {
 		IPath[] projectsAndArchives = this.searchScope
 				.enclosingProjectsAndZips();
-		System.out.println("********************IndexSelector************************");
-		for (int i = 0; i < projectsAndArchives.length; i++) {
-			System.out.println("Root:" + projectsAndArchives[i].toString());
-		}
-		System.out.println("********************IndexSelector************************");
+//		System.out.println("********************IndexSelector************************");
+//		for (int i = 0; i < projectsAndArchives.length; i++) {
+//			System.out.println("Root:" + projectsAndArchives[i].toString());
+//		}
+//		System.out.println("********************IndexSelector************************");
 		IndexManager manager = ModelManager.getModelManager().getIndexManager();
 		SimpleSet locations = new SimpleSet();
 		IModelElement focus = MatchLocator.projectOrArchiveFocus(this.pattern);
@@ -290,19 +290,19 @@ public class IndexSelector {
 		}
 	}
 
-	private void checkSpecialCase(IndexManager manager, SimpleSet locations,
-			String prjPath) {
-		Object[] keyTable = manager.indexLocations.keyTable;
-		for (int i = 0; i < keyTable.length; ++i) {
-			IPath path = (IPath) keyTable[i];
-			if (path != null) {
-				String sPath = path.toString();
-				if (sPath.startsWith(prjPath)) {
-					locations.add(manager.indexLocations.get(path));
-				}
-			}
-		}
-	}
+//	private void checkSpecialCase(IndexManager manager, SimpleSet locations,
+//			String prjPath) {
+//		Object[] keyTable = manager.indexLocations.keyTable;
+//		for (int i = 0; i < keyTable.length; ++i) {
+//			IPath path = (IPath) keyTable[i];
+//			if (path != null) {
+//				String sPath = path.toString();
+//				if (sPath.startsWith(prjPath)) {
+//					locations.add(manager.indexLocations.get(path));
+//				}
+//			}
+//		}
+//	}
 
 	public IPath[] getIndexLocations() {
 		if (this.indexLocations == null) {

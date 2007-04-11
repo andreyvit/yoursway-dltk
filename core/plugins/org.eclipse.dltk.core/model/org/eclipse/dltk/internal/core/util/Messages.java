@@ -22,7 +22,7 @@ public class Messages extends NLS {
 	public static String build_analyzingSources;
 	public static String build_cleaningOutput;
 	public static String build_copyingResources;
-	public static String build_compiling;
+	//public static String build_compiling;
 	public static String build_foundHeader;
 	public static String build_fixedHeader;
 	public static String build_oneError;
@@ -33,7 +33,7 @@ public class Messages extends NLS {
 	public static String build_wrongFileFormat;
 	public static String build_initializationError;
 	public static String build_serializationError;
-	public static String build_classFileCollision;
+	//public static String build_classFileCollision;
 	public static String build_duplicateClassFile;
 	public static String build_duplicateResource;
 	public static String build_inconsistentClassFile;

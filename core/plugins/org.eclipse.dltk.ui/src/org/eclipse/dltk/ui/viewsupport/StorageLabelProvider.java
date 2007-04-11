@@ -189,6 +189,9 @@ public class StorageLabelProvider extends LabelProvider
 		// Use DLTK Based editor images for all editors.
 		try {
 			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(element);
+			if( toolkit == null ) {
+				return null;
+			}
 			String editorID = toolkit.getEditorID(element);
 			IEditorDescriptor ed = getEditorRegistry().findEditor(editorID);
 			if (ed != null) {

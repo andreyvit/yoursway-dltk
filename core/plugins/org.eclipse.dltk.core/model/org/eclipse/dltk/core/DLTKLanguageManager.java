@@ -131,7 +131,8 @@ public class DLTKLanguageManager {
 		
 		IStatus status = new Status(IStatus.ERROR, DLTKCore.PLUGIN_ID, 0,
 				"Project has no associated script nature", null);
-		throw new CoreException(status);
+//		throw new CoreException(status);
+		return null;
 	}
 
 	public static IDLTKLanguageToolkit findToolkit(IResource resource) {

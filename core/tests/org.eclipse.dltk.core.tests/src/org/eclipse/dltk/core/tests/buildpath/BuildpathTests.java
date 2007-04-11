@@ -468,7 +468,6 @@ public class BuildpathTests extends ModifyingResourceTests {
 			newCP[originalCP.length] = DLTKCore.newSourceEntry(new Path("/P"));
 
 			IModelStatus status = BuildpathEntry.validateBuildpath(proj, newCP);
-
 			assertStatus(
 					"should have detected nested source folders on the buildpath",
 					"Cannot nest \'P/src\' inside \'P\'. To enable the nesting exclude \'src/\' from \'P\'",

@@ -4,6 +4,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -42,6 +43,8 @@ public class RubyPlugin extends Plugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
+		
+		RubyMixinModel.getRawInstance().stop();
 	}
 
 	/**

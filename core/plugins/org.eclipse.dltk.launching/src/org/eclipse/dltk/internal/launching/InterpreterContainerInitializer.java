@@ -23,6 +23,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IInterpreterInstall;
@@ -116,7 +117,10 @@ public class InterpreterContainerInitializer extends BuildpathContainerInitializ
 	
 	private String getNatureFromProject (IDLTKProject project) {
 		try {
-			return DLTKLanguageManager.getLanguageToolkit(project).getNatureID();			
+			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager.getLanguageToolkit(project);
+			if( languageToolkit != null ) {
+				return languageToolkit.getNatureID();
+			}
 		} catch (CoreException e) {
 			DLTKLaunchingPlugin.log(e);
 		}

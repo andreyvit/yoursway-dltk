@@ -356,6 +356,15 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 									getDocument().getLength());
 							return;
 						}
+						if (event.keyCode == 9) {
+							event.doit = false;
+							return;
+						}
+						if (event.keyCode == 32
+								&& (event.stateMask & SWT.CTRL) > 0) {
+							event.doit = false;
+							return;
+						}
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -365,14 +374,16 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 
 		styledText.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
-				if (e.keyCode == 32 && (e.stateMask & SWT.CTRL) > 0) {
+				// if (e.keyCode == 32 && (e.stateMask & SWT.CTRL) > 0) {
+				if ((e.keyCode == 32 && (e.stateMask & SWT.CTRL) > 0)
+						|| (e.keyCode == 9)) {
 					// System.out.println(".keyPressed()");
 					contentHandler.contentAssistRequired();
 				}
+
 			}
 
 			public void keyReleased(KeyEvent e) {
-
 			}
 		});
 
