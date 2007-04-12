@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -83,7 +84,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 				if (stopDebugger().isStopped()) {
 					setTerminated();
 				}
-			} else if (status.isStopped()) {
+			} else if (status.isStopped()) {				
 				setTerminated();
 			}
 		} catch (DbgpException e) {

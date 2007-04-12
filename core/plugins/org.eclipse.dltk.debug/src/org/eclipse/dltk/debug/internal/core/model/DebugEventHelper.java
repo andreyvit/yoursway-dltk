@@ -18,14 +18,15 @@ public final class DebugEventHelper {
 
 	public static void fireResumeEvent(IDebugElement element, int detail) {
 		fireEvent(new DebugEvent(element, DebugEvent.RESUME, detail));
+		
 	}
 
 	public static void fireSuspendEvent(IDebugElement element, int detail) {
-		fireEvent(new DebugEvent(element, DebugEvent.SUSPEND, detail));
+		fireEvent(new DebugEvent(element, DebugEvent.SUSPEND, detail));		
 	}
 
 	public static void fireTerminateEvent(IDebugElement element) {
-		fireEvent(new DebugEvent(element, DebugEvent.TERMINATE));
+		fireEvent(new DebugEvent(element, DebugEvent.TERMINATE));		
 	}
 
 	public static void fireChangeEvent(IDebugElement scriptVariable) {

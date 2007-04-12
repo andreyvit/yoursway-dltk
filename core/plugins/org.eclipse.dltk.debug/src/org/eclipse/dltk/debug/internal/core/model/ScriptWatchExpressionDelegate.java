@@ -47,6 +47,7 @@ public class ScriptWatchExpressionDelegate implements IWatchExpressionDelegate,
 		Job job = new Job("Evaluate expression") {
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
+					if (context.getDebugTarget().isTerminated())return Status.OK_STATUS;
 					IDbgpProperty property = extended.evaluate(expression);
 
 					IScriptVariable variable = new ScriptVariable(0, property,

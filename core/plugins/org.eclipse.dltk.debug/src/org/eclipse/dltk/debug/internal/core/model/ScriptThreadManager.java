@@ -1,6 +1,7 @@
 package org.eclipse.dltk.debug.internal.core.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.ListenerList;
@@ -80,7 +81,7 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 		}
 	}
 
-	public IThread[] getThreads() {
+	public IThread[] getThreads() {		
 		synchronized (threads) {
 			return (IThread[]) threads.toArray(new IThread[threads.size()]);
 		}
@@ -122,9 +123,8 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 
 	public void terminateThread(IScriptThread thread) {
 		synchronized (threads) {
-			threads.remove(thread);
-			DebugEventHelper.fireTerminateEvent(thread);
-
+			threads.remove(thread);				
+			DebugEventHelper.fireTerminateEvent(thread);			
 			if (!hasThreads()) {
 				fireAllThreadsTerminated();
 			}
@@ -173,9 +173,9 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 			for (int i = 0; i < threads.length; ++i) {
 				threads[i].terminate();
 			}
-
 			waitingForThreads = false;
-		}
+
+		}		
 	}
 
 	public boolean canResume() {

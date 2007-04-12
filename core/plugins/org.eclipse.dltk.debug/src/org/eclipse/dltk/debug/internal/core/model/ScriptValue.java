@@ -35,4 +35,8 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 		// TODO: By default return true...
 		return true;
 	}
+	
+	public String toString(){
+		return variable.getValueString();
+	}
 }

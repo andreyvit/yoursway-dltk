@@ -89,7 +89,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		return threadManager.hasThreads();
 	}
 
-	public IThread[] getThreads() throws DebugException {
+	public IThread[] getThreads() throws DebugException {		
 		return threadManager.getThreads();
 	}
 
@@ -140,9 +140,10 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 			DebugPlugin.getDefault().getBreakpointManager()
 					.removeBreakpointListener(this);
-
+			
 			DebugEventHelper.fireTerminateEvent(this);
 		}
+		
 	}
 
 	// ISuspendResume
