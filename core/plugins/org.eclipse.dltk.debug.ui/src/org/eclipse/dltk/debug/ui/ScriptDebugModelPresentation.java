@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.ILineBreakpoint;
 import org.eclipse.debug.core.model.IValue;
+import org.eclipse.debug.core.model.IWatchExpression;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
@@ -145,6 +146,10 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			return getVariableText((IScriptVariable) element);
 		} else if (element instanceof IScriptValue) {
 			return getValueText((IScriptValue) element);
+		}
+		else if (element instanceof IWatchExpression){
+			IWatchExpression exp=(IWatchExpression) element;
+			return exp.getExpressionText();
 		}
 
 		return element.toString();
