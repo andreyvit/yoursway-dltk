@@ -16,7 +16,14 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.dltk.javascript.core,
  org.eclipse.dltk.javascript.debug,
  org.eclipse.jdt.launching,
- org.eclipse.jdt.core
+ org.eclipse.jdt.core,
+ org.eclipse.debug.ui,
+ org.eclipse.jface,
+ org.eclipse.ui,
+ org.eclipse.jdt.debug.ui,
+ org.eclipse.jdt.debug,
+ org.eclipse.ui.console,
+ org.eclipse.dltk.debug.ui
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.javascript.console,
  org.eclipse.dltk.javascript.launching

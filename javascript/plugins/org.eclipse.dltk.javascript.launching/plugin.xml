@@ -8,7 +8,16 @@
             id="org.eclipse.dltk.internal.debug.ui.launcher.GenericRhinoInstallType">
       </interpreterInstallType>   
    </extension>
-  
+   
+<extension point="org.eclipse.debug.core.launchDelegates">
+    <launchDelegate
+          delegate="org.eclipse.dltk.javascript.internal.launching.JavaLocalApplicationLaunchConfigurationDelegate"
+          id="com.Instantiations.profiler.localJavaApplicationDelegate"
+          modes="debug"
+          name="Debugging with JavaScript debug support"
+          type="org.eclipse.jdt.launching.localJavaApplication">
+    </launchDelegate>    >
+</extension>  
    <extension
          point="org.eclipse.dltk.console.scriptInterpreter">
       <scriptInterpreter
@@ -31,8 +40,8 @@
                modes="run,debug"
                name="JavaScript"
                public="true"
-               sourceLocatorId="tclSourceLocator"
-               sourcePathComputerId="tclSourcePathComputer">
+               sourceLocatorId="javascriptSourceLocator"
+               sourcePathComputerId="javascriptSourcePathComputer">
 		  </launchConfigurationType>
          <!--launchConfigurationType
                delegate="org.eclipse.dltk.javascript.launching.TclLaunchConfigurationDelegate"
@@ -46,13 +55,13 @@
         point="org.eclipse.debug.core.sourcePathComputers">
      <sourcePathComputer
            class="org.eclipse.dltk.internal.launching.JavaScriptSourcePathComputer"
-           id="tclSourcePathComputer"/>
+           id="javascriptSourcePathComputer"/>
   </extension>
   <extension
         point="org.eclipse.debug.core.sourceLocators">
      <sourceLocator
            class="org.eclipse.dltk.internal.launching.JavaScriptSourceLookupDirector"
-           id="tclSourceLocator"
-           name="org.eclipse.dltk.javascript.launching.tclSourceLocator"/>
+           id="javascriptSourceLocator"
+           name="org.eclipse.dltk.javascript.launching.javascriptSourceLocator"/>
   </extension>
 </plugin>
