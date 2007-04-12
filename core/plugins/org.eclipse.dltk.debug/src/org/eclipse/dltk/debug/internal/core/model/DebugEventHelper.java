@@ -27,4 +27,8 @@ public final class DebugEventHelper {
 	public static void fireTerminateEvent(IDebugElement element) {
 		fireEvent(new DebugEvent(element, DebugEvent.TERMINATE));
 	}
+
+	public static void fireChangeEvent(IDebugElement scriptVariable) {
+		fireEvent(new DebugEvent(scriptVariable, DebugEvent.CHANGE));
+	}
 }

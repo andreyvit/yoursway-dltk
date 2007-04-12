@@ -54,6 +54,8 @@ public class ScriptVariable extends ScriptDebugElement implements
 		try {
 			// TODO: Set current value of IValue !!!
 			core.setPropery(property.getFullName(), stackLevel, expression);
+			property.setValue(expression);
+			DebugEventHelper.fireChangeEvent(this);
 		} catch (DbgpException e) {
 
 			e.printStackTrace();
