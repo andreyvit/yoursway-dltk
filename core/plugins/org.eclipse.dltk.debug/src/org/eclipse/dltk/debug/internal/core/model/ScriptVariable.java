@@ -8,6 +8,7 @@ import org.eclipse.debug.core.model.IValue;
 import org.eclipse.dltk.dbgp.IDbgpProperty;
 import org.eclipse.dltk.dbgp.commands.IDbgpCoreCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+import org.eclipse.dltk.dbgp.internal.packets.DbgpLogger;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
 public class ScriptVariable extends ScriptDebugElement implements
@@ -53,7 +54,7 @@ public class ScriptVariable extends ScriptDebugElement implements
 		newValue = expression;
 		try {
 			// TODO: Set current value of IValue !!!
-			core.setPropery(property.getFullName(), stackLevel, expression);
+			core.setProperty(property.getFullName(), stackLevel, expression);
 			property.setValue(expression);
 			DebugEventHelper.fireChangeEvent(this);
 		} catch (DbgpException e) {
@@ -87,16 +88,24 @@ public class ScriptVariable extends ScriptDebugElement implements
 		return property.hasChildren();
 	}
 
-	public IScriptVariable[] getChildren() {
+	public synchronized IScriptVariable[] getChildren() {
+		
 		List properties = property.getAvailableChildren();
 		int size = properties.size();
-
+		if (size!=property.getChildrenCount()){
+			try {
+				property=core.getProperty(property.getFullName(), stackLevel);
+				return getChildren();
+			} catch (DbgpException e) {				
+				//// TODO Auto-generated catch block
+				//e.printStackTrace();				
+			}
+		}	
 		IScriptVariable[] variables = new IScriptVariable[size];
 		for (int i = 0; i < size; ++i) {
 			variables[i] = new ScriptVariable(stackLevel,
 					(IDbgpProperty) properties.get(i), getDebugTarget(), core);
 		}
-
 		return variables;
 	}
 

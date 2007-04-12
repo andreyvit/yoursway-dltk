@@ -111,38 +111,35 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	protected boolean waitTermianted() {
-		final int WAIT_CHUNK = 200; // 200 ms
+		final int WAIT_CHUNK = 400; // 200 ms
 
 		int all = 0;
 		while (all < THREAD_TERMINATION_TIMEOUT) {
-			if (threadManager.isTerminated()) {
-				return true;
-			}
-
 			try {
 				Thread.sleep(WAIT_CHUNK);
 				all += WAIT_CHUNK;
 			} catch (InterruptedException e) {
 
 			}
+			if (threadManager.isTerminated()) {
+				return true;
+			}			
 		}
 		return false;
 	}
 
 	public void terminate() throws DebugException {
 		dbgpService.unregisterAcceptor(dbgpId);		
-		dbgpService.shutdown();
-		
+		dbgpService.shutdown();				
 		threadManager.terminate();
-
 		if (waitTermianted()) {
-			threadManager.removeListener(this);
-
-			DebugPlugin.getDefault().getBreakpointManager()
-					.removeBreakpointListener(this);
 			
-			DebugEventHelper.fireTerminateEvent(this);
+			threadManager.removeListener(this);
+			DebugPlugin.getDefault().getBreakpointManager()
+					.removeBreakpointListener(this);			
+			DebugEventHelper.fireTerminateEvent(this);			
 		}
+		
 		
 	}
 
@@ -287,4 +284,6 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	public void removeListener(IScriptDebugTargetListener listener) {
 		listeners.remove(listener);
 	}
+
+	
 }

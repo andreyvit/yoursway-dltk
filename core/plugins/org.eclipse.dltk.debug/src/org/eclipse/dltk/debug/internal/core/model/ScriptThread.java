@@ -184,7 +184,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	}
 
 	// IThread
-	public IStackFrame[] getStackFrames() throws DebugException {
+	public IStackFrame[] getStackFrames() throws DebugException {	
 		synchronized (frames) {
 			return (IStackFrame[]) frames
 					.toArray(new IStackFrame[frames.size()]);
@@ -221,9 +221,13 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	protected void setSuspended(boolean value, int detail) {
 		suspended = value;
 		if (value) {
+			
 			DebugEventHelper.fireSuspendEvent(this, detail);
+			
 		} else {
+			this.frames.clear();
 			DebugEventHelper.fireResumeEvent(this, detail);
+			DebugEventHelper.fireChangeEvent(this);
 		}
 	}
 
@@ -264,6 +268,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	public void resume() throws DebugException {
 		setSuspended(false, DebugEvent.CLIENT_REQUEST);
+		
 		engine.resume();
 	}
 

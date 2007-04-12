@@ -201,32 +201,32 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		return streamCommands.configureStdout(value);
 	}
 
-	public IDbgpProperty getPropery(String name) throws DbgpException {
-		return propertyCommands.getPropery(name);
+	public IDbgpProperty getProperty(String name) throws DbgpException {
+		return propertyCommands.getProperty(name);
 	}
 
-	public IDbgpProperty getPropery(String name, int stackDepth)
+	public IDbgpProperty getProperty(String name, int stackDepth)
 			throws DbgpException {
-		return propertyCommands.getPropery(name, stackDepth);
+		return propertyCommands.getProperty(name, stackDepth);
 	}
 
-	public IDbgpProperty getPropery(String name, int stackDepth, int contextId)
+	public IDbgpProperty getProperty(String name, int stackDepth, int contextId)
 			throws DbgpException {
-		return propertyCommands.getPropery(name, stackDepth, contextId);
+		return propertyCommands.getProperty(name, stackDepth, contextId);
 	}
 
-	public IDbgpProperty getPropery(String name, int stackDepth, int contextId,
+	public IDbgpProperty getProperty(String name, int stackDepth, int contextId,
 			String dataType, String dataPage) throws DbgpException {
-		return propertyCommands.getPropery(name, stackDepth, contextId,
+		return propertyCommands.getProperty(name, stackDepth, contextId,
 				dataType, dataPage);
 	}
 
-	public boolean setPropery(IDbgpProperty property) throws DbgpException {
-		return propertyCommands.setPropery(property);
+	public boolean setProperty(IDbgpProperty property) throws DbgpException {
+		return propertyCommands.setProperty(property);
 	}
 
-	public boolean setPropery(String name, int stackDepth, String value)
+	public boolean setProperty(String name, int stackDepth, String value)
 			throws DbgpException {
-		return propertyCommands.setPropery(name, stackDepth, value);
+		return propertyCommands.setProperty(name, stackDepth, value);
 	}
 }

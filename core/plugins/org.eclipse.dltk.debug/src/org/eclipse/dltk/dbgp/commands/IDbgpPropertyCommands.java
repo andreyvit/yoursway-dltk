@@ -17,18 +17,18 @@ public interface IDbgpPropertyCommands {
 	 * provided by the debugger engine.
 	 */
 
-	IDbgpProperty getPropery(String name) throws DbgpException;
+	IDbgpProperty getProperty(String name) throws DbgpException;
 
-	IDbgpProperty getPropery(String name, int stackDepth) throws DbgpException;
+	IDbgpProperty getProperty(String name, int stackDepth) throws DbgpException;
 
-	IDbgpProperty getPropery(String name, int stackDepth, int contextId)
+	IDbgpProperty getProperty(String name, int stackDepth, int contextId)
 			throws DbgpException;
 
-	IDbgpProperty getPropery(String name, int stackDepth, int contextId,
+	IDbgpProperty getProperty(String name, int stackDepth, int contextId,
 			String dataType, String dataPage) throws DbgpException;
 
-	boolean setPropery(IDbgpProperty property) throws DbgpException;
+	boolean setProperty(IDbgpProperty property) throws DbgpException;
 
-	boolean setPropery(String name, int stackDepth, String value)
+	boolean setProperty(String name, int stackDepth, String value)
 			throws DbgpException;
 }

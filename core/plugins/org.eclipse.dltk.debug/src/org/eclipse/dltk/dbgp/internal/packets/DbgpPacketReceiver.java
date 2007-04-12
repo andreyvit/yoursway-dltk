@@ -72,6 +72,7 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 	private IDbgpLogger logger;
 
 	protected void workingCycle() throws Exception {
+		
 		while (!Thread.interrupted()) {
 			DbgpRawPacket packet = DbgpRawPacket.readPacket(input);
 
@@ -81,7 +82,7 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 
 			addDocument(packet.getParsedXml());
 		}
-
+		
 	}
 
 	protected void addDocument(Document doc) {

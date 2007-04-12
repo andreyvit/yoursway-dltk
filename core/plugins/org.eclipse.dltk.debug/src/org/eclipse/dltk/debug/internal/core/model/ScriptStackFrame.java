@@ -42,10 +42,10 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		Iterator iter = properties.iterator();
 		while (iter.hasNext()) {
 			IDbgpProperty property = (IDbgpProperty) iter.next();
-			if (property.hasChildren()) {
-				property = core.getPropery(property.getFullName(), stackLevel
-						.getLevel());
-			}
+//			if (property.hasChildren()) {
+//				property = core.getProperty(property.getFullName(), stackLevel
+//						.getLevel());
+//			}
 			variables.add(new ScriptVariable(stackDepth, property,
 					getDebugTarget(), core));
 		}

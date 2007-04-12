@@ -34,7 +34,9 @@ public class DbgpServer extends DbgpWorkingThread implements IDbgpServer {
 	}
 
 	protected void workingCycle() throws Exception, IOException {
+		
 		try {
+			
 			while (true) {
 				Socket client = server.accept();
 				
@@ -42,8 +44,9 @@ public class DbgpServer extends DbgpWorkingThread implements IDbgpServer {
 
 				client.setSoTimeout(clientTimeout);
 
-				DbgpSession session = new DbgpSession(new DbgpDebugingEngine(
-						client));
+				DbgpDebugingEngine dbgpDebugingEngine = new DbgpDebugingEngine(
+						client);
+				DbgpSession session = new DbgpSession(dbgpDebugingEngine);
 
 				String id = session.getInfo().getIdeKey();
 
@@ -58,7 +61,7 @@ public class DbgpServer extends DbgpWorkingThread implements IDbgpServer {
 			}
 		} finally {
 			server.close();
-
+			
 			acceptNotAvailable();
 		}
 	}

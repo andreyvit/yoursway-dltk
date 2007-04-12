@@ -46,34 +46,34 @@ public class DbgpPropertyCommands extends DbgpBaseCommands implements
 		return parsePropertyResponse(communicate(request));
 	}
 
-	public IDbgpProperty getPropery(String name) throws DbgpException {
+	public IDbgpProperty getProperty(String name) throws DbgpException {
 		return getProperty(name, null, null);
 	}
 
-	public IDbgpProperty getPropery(String name, int stackDepth)
+	public IDbgpProperty getProperty(String name, int stackDepth)
 			throws DbgpException {
 		return getProperty(name, new Integer(stackDepth), null);
 	}
 
-	public IDbgpProperty getPropery(String name, int stackDepth, int contextId)
+	public IDbgpProperty getProperty(String name, int stackDepth, int contextId)
 			throws DbgpException {
 		return getProperty(name, new Integer(stackDepth),
 				new Integer(contextId));
 	}
 
-	public IDbgpProperty getPropery(String name, int stackDepth, int contextId,
+	public IDbgpProperty getProperty(String name, int stackDepth, int contextId,
 			String dataType, String dataPage) throws DbgpException {
 		return null;
 	}
 
-	public boolean setPropery(IDbgpProperty property) throws DbgpException {
+	public boolean setProperty(IDbgpProperty property) throws DbgpException {
 		DbgpRequest request = createRequest(PROPERTY_SET_COMMAND);
 		request.addOption("-n", property.getName());
 		request.setData(property.getValue());
 		return DbgpXmlParser.parseSuccess(communicate(request));
 	}
 
-	public boolean setPropery(String name, int stackDepth, String value)
+	public boolean setProperty(String name, int stackDepth, String value)
 			throws DbgpException {
 		DbgpRequest request = createRequest(PROPERTY_SET_COMMAND);
 		request.addOption("-n", name);
