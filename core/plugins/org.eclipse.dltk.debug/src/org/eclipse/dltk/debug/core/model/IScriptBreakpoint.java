@@ -31,4 +31,14 @@ public interface IScriptBreakpoint extends IBreakpoint {
 
 	// Resource name
 	String getResourceName();
+	
+	String getConditionalExpression();
+	
+	public void setConditionalExpression(String id) throws CoreException ;
+		
+	
+	boolean isConditionalExpressionEnabled();
+	
+	void    setConditionalExpressionEnabled(boolean enabled) throws CoreException;
+	
 }

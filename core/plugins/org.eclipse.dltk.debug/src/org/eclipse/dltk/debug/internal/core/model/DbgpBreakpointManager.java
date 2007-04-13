@@ -45,9 +45,13 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 
 			boolean enabled = b.isEnabled()
 					&& getBreakpointManager().isEnabled();
-
+			String cExpr=null;
+			if (breakpoint.isConditionalExpressionEnabled())
+			{
+				cExpr=breakpoint.getConditionalExpression();
+			}
 			DbgpBreakpointConfig config = new DbgpBreakpointConfig(enabled, b
-					.getHitValue(), b.getHitCondition());
+					.getHitValue(), b.getHitCondition(),cExpr);
 
 			String id = commands.setLineBreakpoint(b.getResourceURI(), b
 					.getLineNumber(), config);
@@ -86,8 +90,13 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 
 		int hitValue = b.getHitValue();
 		int hitCondition = b.getHitCondition();
+		String cExpr=null;
+		if (breakpoint.isConditionalExpressionEnabled())
+		{
+			cExpr=breakpoint.getConditionalExpression();
+		}
 		DbgpBreakpointConfig config = new DbgpBreakpointConfig(enabled,
-				hitValue, hitCondition);
+				hitValue, hitCondition,cExpr);
 		commands.updateBreakpoint(b.getIdentifier(), config);
 	}
 
@@ -159,7 +168,7 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 			throws DbgpException, CoreException {
 
 		DbgpBreakpointConfig config = new DbgpBreakpointConfig(true, -1, -1,
-				true);
+				true,null);
 
 		IThread[] threads = threadManager.getThreads();
 		for (int i = 0; i < threads.length; ++i) {

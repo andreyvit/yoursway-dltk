@@ -89,6 +89,10 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 				request.addOption("-h", info.getHitValue());
 				request.addOption("-o", info.getHitConditionString());
 			}
+			String conditionExpression = info.getConditionExpression();
+			if (conditionExpression!=null){
+				request.setData(conditionExpression);
+			}
 		}
 
 		if (expression != null) {
@@ -170,7 +174,12 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 		if (config.getHitCondition() != -1) {
 			request.addOption("-o", config.getHitConditionString());
 		}
-
+		// not sure that this is correct but it looks that this is possible
+		// TODO review it
+		String conditionExpression = config.getConditionExpression();
+		if (conditionExpression!=null){
+			request.setData(conditionExpression);
+		}
 		communicate(request);
 	}
 

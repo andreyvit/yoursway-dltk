@@ -11,6 +11,11 @@ public abstract class ScriptBreakpoint extends Breakpoint implements
 
 	private static final String BREAKPOINT_ID = BREAKPOINT + ".id";
 
+	private static final String EXPRESSION_ID = BREAKPOINT + ".expression";
+
+	private static final String COND_EXPRESSION_ENABLED_ID = BREAKPOINT
+			+ ".expression.enabled";
+
 	private static final String BREAKPOINT_HIT_VALUE = BREAKPOINT
 			+ ".hit_value";
 
@@ -24,6 +29,24 @@ public abstract class ScriptBreakpoint extends Breakpoint implements
 
 	public void setIdentifier(String id) throws CoreException {
 		getMarker().setAttribute(BREAKPOINT_ID, id);
+	}
+
+	public String getConditionalExpression() {
+		return getMarker().getAttribute(EXPRESSION_ID, null);
+	}
+
+	public boolean isConditionalExpressionEnabled() {
+		return getMarker().getAttribute(COND_EXPRESSION_ENABLED_ID, "false")
+				.equals("true");
+	}
+
+	public void setConditionalExpression(String id) throws CoreException {
+		getMarker().setAttribute(EXPRESSION_ID, id);
+	}
+
+	public void setConditionalExpressionEnabled(boolean enabled)
+			throws CoreException {
+		getMarker().setAttribute(COND_EXPRESSION_ENABLED_ID, enabled + "");
 	}
 
 	// Hit count
