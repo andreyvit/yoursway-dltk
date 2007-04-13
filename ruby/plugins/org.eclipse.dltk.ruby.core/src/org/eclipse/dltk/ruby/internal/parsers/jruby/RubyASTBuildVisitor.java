@@ -47,12 +47,12 @@ import org.eclipse.dltk.ruby.ast.DynamicStringExpression;
 import org.eclipse.dltk.ruby.ast.EvaluatableStringExpression;
 import org.eclipse.dltk.ruby.ast.HashExpression;
 import org.eclipse.dltk.ruby.ast.HashPairExpression;
-import org.eclipse.dltk.ruby.ast.RubyBlock;
 import org.eclipse.dltk.ruby.ast.RegexpExpression;
 import org.eclipse.dltk.ruby.ast.RescueBodyStatement;
 import org.eclipse.dltk.ruby.ast.RescueStatement;
 import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
 import org.eclipse.dltk.ruby.ast.RubyBeginExpression;
+import org.eclipse.dltk.ruby.ast.RubyBlock;
 import org.eclipse.dltk.ruby.ast.RubyBlockPassExpression;
 import org.eclipse.dltk.ruby.ast.RubyBreakExpression;
 import org.eclipse.dltk.ruby.ast.RubyCaseStatement;
@@ -497,7 +497,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		RubyArrayExpression arr = new RubyArrayExpression();
 		arr.setEnd(position.getEndOffset());
 		arr.setStart(position.getStartOffset());
-		arr.setExpresssions(exprs); // XXX cast exception cause
+		arr.setStatements(exprs); // XXX cast exception cause
 		states.peek().add(arr);
 
 		return null;
@@ -986,7 +986,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		List list = processListNode(iVisited);
 		RubyDRegexpExpression ex = new RubyDRegexpExpression(pos
 				.getStartOffset(), pos.getEndOffset());
-		ex.setExpresssions(list);
+		ex.setStatements(list);
 		states.peek().add(ex);
 		return null;
 	}
@@ -996,7 +996,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		List list = processListNode(iVisited);
 		DynamicStringExpression ex = new DynamicStringExpression(pos
 				.getStartOffset(), pos.getEndOffset());
-		ex.setExpresssions(list);
+		ex.setStatements(list);
 		states.peek().add(ex);
 		return null;
 	}
@@ -1027,8 +1027,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		ISourcePosition pos = iVisited.getPosition();
 		List list = processListNode(iVisited);
 		DynamicBackquoteStringExpression ex = new DynamicBackquoteStringExpression(
-				pos.getStartOffset(), pos.getEndOffset());
-		ex.setExpresssions(list);
+				pos.getStartOffset(), pos.getEndOffset());		
+		ex.setStatements(list);
 		states.peek().add(ex);
 		return null;
 	}
@@ -1774,7 +1774,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
-	public Instruction visitReturnNode(ReturnNode iVisited) {
+	public Instruction visitReturnNode(ReturnNode iVisited) { //incorrect, should implement multiply args fetching
 		ISourcePosition position = iVisited.getPosition();
 		ASTNode value = null;
 		if (iVisited.getValueNode() != null) {
@@ -1786,8 +1786,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				value = (ASTNode) state.list.get(0);
 			}
 		}
+		 CallArgumentsList list = new CallArgumentsList();
+		list.addExpression((Expression) value);
 		states.peek().add(
-				new RubyReturnStatement(value, position.getStartOffset(),
+				new RubyReturnStatement(list, position.getStartOffset(),
 						position.getEndOffset()));
 		return null;
 	}
@@ -2091,7 +2093,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	/**
 	 * @see NodeVisitor#visitFixnumNode(FixnumNode)
 	 */
-	public Instruction visitFixnumNode(FixnumNode iVisited) {
+	public Instruction visitFixnumNode(FixnumNode iVisited) {		
 		ISourcePosition pos = iVisited.getPosition();
 		NumericLiteral node = new NumericLiteral(pos.getStartOffset(), pos
 				.getEndOffset(), iVisited.getValue());

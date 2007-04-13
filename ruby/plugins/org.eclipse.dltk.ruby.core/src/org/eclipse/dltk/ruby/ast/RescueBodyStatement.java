@@ -38,6 +38,26 @@ public class RescueBodyStatement extends Statement {
 	public Statement getOptNode() {
 		return optNode;
 	}
+	
+	
+
+	public void setBodyNode(Statement bodyNode) {
+		this.bodyNode = bodyNode;
+	}
+
+
+
+	public void setExceptionNode(Statement exceptionNode) {
+		this.exceptionNode = exceptionNode;
+	}
+
+
+
+	public void setOptNode(Statement optNode) {
+		this.optNode = optNode;
+	}
+
+
 
 	public int getKind() {
 		return 0;

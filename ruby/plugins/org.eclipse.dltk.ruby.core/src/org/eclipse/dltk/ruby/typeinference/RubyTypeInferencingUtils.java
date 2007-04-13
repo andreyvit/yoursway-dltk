@@ -15,6 +15,7 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.VariableReference;
+import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKModelUtil;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
@@ -226,7 +227,7 @@ public class RubyTypeInferencingUtils {
 			public boolean visit(Expression s) throws Exception {
 				if (s instanceof Assignment) {
 					Assignment assignment = (Assignment) s;
-					Expression lhs = assignment.getLeft();
+					Statement lhs = assignment.getLeft();
 					if (lhs instanceof VariableReference) {
 						VariableReference varRef = (VariableReference) lhs;
 						if (varName.equals(varRef.getName())) {

@@ -310,7 +310,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		}
 		if (decl instanceof RubySingletonMethodDeclaration) {
 			RubySingletonMethodDeclaration singl = (RubySingletonMethodDeclaration) decl;
-			Expression receiver = singl.getReceiver();
+			Statement receiver = singl.getReceiver();
 			if (receiver instanceof SelfReference) {
 				Scope scope = peekScope();
 				MetaClassScope metaScope = new MetaClassScope(scope.getNode(),
@@ -361,7 +361,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		} else 
 		if (s instanceof Assignment) {
 			Assignment assignment = (Assignment) s;
-			Expression left = assignment.getLeft();
+			Statement left = assignment.getLeft();
 			if (left instanceof VariableReference) {
 				VariableReference ref = (VariableReference) left;
 				String name = ref.getName();
@@ -402,7 +402,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		boolean module =  (decl.getModifiers() & Modifiers.AccModule) != 0;
 		if (decl instanceof RubySingletonClassDeclaration) {
 			RubySingletonClassDeclaration declaration = (RubySingletonClassDeclaration) decl;
-			Expression receiver = declaration.getReceiver();
+			Statement receiver = declaration.getReceiver();
 			if (receiver instanceof SelfReference) {
 				Scope scope = peekScope();
 				scopes.push(new MetaClassScope(decl, scope.getClassKey()));

@@ -2,14 +2,15 @@ package org.eclipse.dltk.ruby.ast;
 
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class ColonExpression extends Expression {
-	private final Expression left;
+	private final Statement left;
 	private final String name;
 
 
-	public Expression getLeft() {
+	public Statement getLeft() {
 		return left;
 	}
 
@@ -17,7 +18,7 @@ public class ColonExpression extends Expression {
 		return name;
 	}
 
-	public ColonExpression (String name, Expression left) {
+	public ColonExpression (String name, Statement left) {
 		this.name = name;
 		this.left = left;
 	}

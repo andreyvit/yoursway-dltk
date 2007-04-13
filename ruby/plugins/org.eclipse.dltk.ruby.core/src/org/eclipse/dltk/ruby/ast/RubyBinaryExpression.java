@@ -1,22 +1,20 @@
-/*
- * (c) 2002, 2005 xored software and others all rights reserved. http://www.xored.com
- */
-package org.eclipse.dltk.ast.expressions;
+package org.eclipse.dltk.ruby.ast;
 
 import org.eclipse.dltk.ast.ASTVisitor;
+import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
 /**
- * Base binary class for binary Expressions.
+ * Base binary class for binary expressions.
  */
-public class BinaryExpression extends Expression {
+public class RubyBinaryExpression extends Expression {
 	private Statement left;
 	private Statement right;
 	
 	protected int kind;
 
-	public BinaryExpression(Statement left, int kind, Statement right) {
+	public RubyBinaryExpression(Statement left, int kind, Statement right) {
 		if (left != null) {
 			this.setStart(left.sourceStart());
 		}

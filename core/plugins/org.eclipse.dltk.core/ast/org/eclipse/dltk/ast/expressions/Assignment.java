@@ -21,7 +21,7 @@ public class Assignment extends BinaryExpression
 	 * @param type
 	 * @param right
 	 */
-	protected Assignment( Expression left, int type, Statement right ) {
+	protected Assignment( Statement left, int type, Statement right ) {
 
 		super( left, type, right );
 	}
@@ -32,7 +32,7 @@ public class Assignment extends BinaryExpression
 	 * @param left
 	 * @param right
 	 */
-	public Assignment( Expression left, Statement right ) {
+	public Assignment( Statement left, Statement right ) {
 
 		super( left, E_ASSIGN, right );
 	}

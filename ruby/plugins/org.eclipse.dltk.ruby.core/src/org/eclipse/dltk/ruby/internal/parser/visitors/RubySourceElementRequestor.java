@@ -22,6 +22,7 @@ import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.ExtendedVariableReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
+import org.eclipse.dltk.ast.statements.CompoundStatement;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
@@ -115,7 +116,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 	/**
 	 * Parsers Expresssion and extract correct variable reference.
 	 */
-	private void addVariableReference(Expression left, Statement right,
+	private void addVariableReference(Statement left, Statement right,
 			boolean inClass, boolean inMethod) {
 
 		if (left == null) {
@@ -190,7 +191,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 								fNodes.push(method);
 
 								TypeField field = new TypeField(var.getName(),
-										initialString, pos, left, toClass);
+										initialString, pos, (Expression)left, toClass);
 								fNotAddedFields.add(field);
 							}
 						}
@@ -206,16 +207,16 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 	}
 
 	protected String[] processSuperClasses(TypeDeclaration type) {
-		ExpressionList list = type.getSuperClasses();
+		CompoundStatement list = type.getSuperClasses();
 
 		if (list == null) {
 			return new String[0];
 		}
 
-		List expressions = list.getExpressions();
+		List expressions = list.getStatements();
 		List names = new ArrayList();
 		for (Iterator iter = expressions.iterator(); iter.hasNext();) {
-			Expression expr = (Expression) iter.next();
+			Statement expr = (Statement) iter.next();
 			if (expr instanceof SimpleReference) {
 				names.add(((SimpleReference) expr).getName());
 			} else if (expr instanceof ColonExpression) { // FIXME
@@ -224,7 +225,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 				while (expr instanceof ColonExpression) {
 					ColonExpression colonExpression = (ColonExpression) expr;
 					name = "::" + colonExpression.getName();
-					Expression left = colonExpression.getLeft();
+					Statement left = colonExpression.getLeft();
 					if (!colonExpression.isFull() && left == null) {
 						name = name.substring(2);
 					}
@@ -301,7 +302,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 			// Assignment handling (this is static variable assignment.)
 
 			Assignment assignment = (Assignment) expression;
-			Expression left = assignment.getLeft();
+			Statement left = assignment.getLeft();
 			Statement right = assignment.getRight();
 
 			// Handle static variables

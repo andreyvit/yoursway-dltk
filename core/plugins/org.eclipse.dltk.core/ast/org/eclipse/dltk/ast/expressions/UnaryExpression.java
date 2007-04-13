@@ -7,6 +7,7 @@ package org.eclipse.dltk.ast.expressions;
 
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.DLTKToken;
+import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
 /**
@@ -20,7 +21,7 @@ public class UnaryExpression extends Expression {
 	/**
 	 * Expression.
 	 */
-	protected Expression expression;
+	protected Statement expression;
 
 	/**
 	 * Unary kind.
@@ -40,7 +41,7 @@ public class UnaryExpression extends Expression {
 	 * @param expression -
 	 *            expression.
 	 */
-	public UnaryExpression(int start, int end, int knd, Expression expression) {
+	public UnaryExpression(int start, int end, int knd, Statement expression) {
 		super(start, end);
 		this.kind = knd;
 		this.expression = expression;
@@ -91,7 +92,7 @@ public class UnaryExpression extends Expression {
 	 * 
 	 * @return
 	 */
-	public Expression getExpression() {
+	public Statement getExpression() {
 		return this.expression;
 	}
 

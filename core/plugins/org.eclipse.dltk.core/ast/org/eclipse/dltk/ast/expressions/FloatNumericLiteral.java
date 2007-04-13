@@ -13,6 +13,11 @@ public class FloatNumericLiteral extends Literal {
 		this.doubleValue = value;
 	}
 	
+	public FloatNumericLiteral(int start, int end, String value) {
+		super(start, end);
+		this.doubleValue = Double.parseDouble(value);
+	}
+	
 	public double getDoubleValue () {
 		return doubleValue;
 	}

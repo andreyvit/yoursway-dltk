@@ -16,6 +16,8 @@ import org.eclipse.dltk.ast.expressions.ExpressionList;
 import org.eclipse.dltk.ast.references.ExtendedVariableReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
+import org.eclipse.dltk.ast.statements.CompoundStatement;
+import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.ast.utils.ASTUtil;
 import org.eclipse.dltk.utils.CorePrinter;
 
@@ -48,7 +50,7 @@ public class TypeDeclaration extends Declaration
 	/**
 	 * List of all super classes. Expression may be complex such as templates or other constructions.
 	 */
-	protected ExpressionList fSuperClasses;
+	protected CompoundStatement fSuperClasses;
 	
 	/**
 	 * List of body statements.
@@ -129,7 +131,7 @@ public class TypeDeclaration extends Declaration
 	 * Return list of superclass declaration expressions.
 	 * @return
 	 */
-	public ExpressionList getSuperClasses( ) {
+	public CompoundStatement getSuperClasses( ) {
 
 		return this.fSuperClasses;
 	}
@@ -138,7 +140,7 @@ public class TypeDeclaration extends Declaration
 	 * Set superclases expression list.
 	 * @param exprList
 	 */	
-	public void setSuperClasses( ExpressionList exprList ) {
+	public void setSuperClasses( CompoundStatement exprList ) {
 
 		this.fSuperClasses = exprList;
 	}
@@ -148,13 +150,13 @@ public class TypeDeclaration extends Declaration
 	 * List would be created if not yet.
 	 * @param expression
 	 */
-	public void addSuperClass( Expression expression ) {
+	public void addSuperClass( Statement expression ) {
 
 		if( this.fSuperClasses == null ) {
-			this.fSuperClasses = new ExpressionList( );
+			this.fSuperClasses = new CompoundStatement( );
 		}
 
-		this.fSuperClasses.addExpression( expression );
+		this.fSuperClasses.addStatement( expression );
 
 	}
 	
@@ -323,7 +325,7 @@ public class TypeDeclaration extends Declaration
 	{
 		List/*< String >*/ names = new ArrayList/*< String >*/();		
 		if( this.fSuperClasses != null ) {
-			List/*< Expression >*/ superClasseExpressions = this.fSuperClasses.getExpressions( );
+			List/*< Expression >*/ superClasseExpressions = this.fSuperClasses.getStatements();
 			Iterator i = superClasseExpressions.iterator();
 			while( i.hasNext() ) {
 				Expression expr = (Expression)i.next();

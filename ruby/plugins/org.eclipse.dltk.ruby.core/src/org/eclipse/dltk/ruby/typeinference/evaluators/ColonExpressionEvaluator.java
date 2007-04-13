@@ -1,6 +1,7 @@
 package org.eclipse.dltk.ruby.typeinference.evaluators;
 
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
@@ -34,7 +35,7 @@ public class ColonExpressionEvaluator extends GoalEvaluator {
 
 	public Object produceResult() { 		
 		ColonExpression expr = getTypedGoal().getColonExpression();
-		Expression left = expr.getLeft();
+		Statement left = expr.getLeft();
 		
 		if (left != null) {
 			if (helperResult instanceof ClassType) { //TODO: check existance of the new key
@@ -58,7 +59,7 @@ public class ColonExpressionEvaluator extends GoalEvaluator {
 	public IGoal[] init() {
 		ColonExpression expr = getTypedGoal().getColonExpression();
 		
-		Expression left = expr.getLeft();
+		Statement left = expr.getLeft();
 		
 		if (left != null) {
 			helperGoal =  new ExpressionTypeGoal(getGoal().getContext(), left);

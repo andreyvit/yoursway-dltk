@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.VariableReference;
+import org.eclipse.dltk.ast.statements.Statement;
 
 public class ExceptionList extends Expression {
 	
@@ -17,7 +18,7 @@ public class ExceptionList extends Expression {
 		this.var = var;
 	}
 	
-	public void addArg(Expression e) {
+	public void addArg(Statement e) {
 		args.add(e);
 	}
 	

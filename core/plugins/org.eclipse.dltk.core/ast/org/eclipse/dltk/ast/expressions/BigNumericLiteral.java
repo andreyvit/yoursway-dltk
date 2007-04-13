@@ -15,8 +15,9 @@ public class BigNumericLiteral extends Literal {
 		this.bigValue = value;
 	}
 	
-	public BigInteger getDoubleValue () {
-		return bigValue;
+	public BigNumericLiteral(int start, int end, String value, int radix) {
+		super(start, end);
+		this.bigValue = new BigInteger(value, radix);
 	}
 
 	

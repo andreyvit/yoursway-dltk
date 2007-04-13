@@ -1,11 +1,13 @@
 package org.eclipse.dltk.ruby.ast;
 
-import org.eclipse.dltk.ast.expressions.ExpressionList;
+import java.util.ArrayList;
 
-public class DynamicBackquoteStringExpression extends ExpressionList {
+import org.eclipse.dltk.ast.statements.CompoundStatement;
+
+public class DynamicBackquoteStringExpression extends CompoundStatement {
 
 	public DynamicBackquoteStringExpression(int start, int end) {
-		super(start, end);
+		super(start, end, new ArrayList());
 	}
 	
 }

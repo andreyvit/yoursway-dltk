@@ -8,14 +8,14 @@ import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.Decorator;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
-import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Block;
+import org.eclipse.dltk.ast.statements.Statement;
 
 public class RubySingletonMethodDeclaration extends MethodDeclaration {
-	private final Expression receiver;
+	private final Statement receiver;
 
 	public RubySingletonMethodDeclaration(String name, int nameStart,
-			int nameEnd, int declStart, int declEnd, Expression receiver) {
+			int nameEnd, int declStart, int declEnd, Statement receiver) {
 		super(name, nameStart, nameEnd, declStart, declEnd);
 		this.receiver = receiver;
 	}
@@ -26,7 +26,7 @@ public class RubySingletonMethodDeclaration extends MethodDeclaration {
 
 
 	public RubySingletonMethodDeclaration(DLTKToken function_t, DLTKToken name,
-			Expression receiver) {
+			Statement receiver) {
 		super(function_t, name);
 		this.receiver = receiver;
 	}
@@ -36,7 +36,7 @@ public class RubySingletonMethodDeclaration extends MethodDeclaration {
 
 
 
-	public Expression getReceiver() {
+	public Statement getReceiver() {
 		return receiver;
 	}
 

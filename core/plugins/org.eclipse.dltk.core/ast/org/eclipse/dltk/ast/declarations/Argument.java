@@ -8,18 +8,33 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class Argument extends Declaration {
 
-	protected Expression initialization;
+	protected Statement initialization;
 
 	public Argument(DLTKToken name, int start, int end, Expression init) {
 		super(name, start, end);
 		this.initialization = init;
 	}
 
-	public Argument(SimpleReference name, int start, Expression init, int mods) {
+	public Argument(SimpleReference name, int start, Statement init, int mods) {
+		super(start, 0);
+
+		if (name != null) {
+			this.setName(name.getName());
+			this.setEnd(start + name.getName().length());
+		}
+		this.modifiers = mods;
+		this.initialization = init;
+		if (init != null) {
+			this.setEnd(init.sourceEnd());
+		}
+	}
+	
+	public Argument(SimpleReference name, int start, int end, Expression init, int mods) {
 		super(start, 0);
 
 		if (name != null) {
@@ -54,7 +69,7 @@ public class Argument extends Declaration {
 		this.setEnd(mn.sourceEnd());
 	}
 
-	public final Expression getInitialization() {
+	public final Statement getInitialization() {
 		return initialization;
 	}
 

@@ -4,6 +4,7 @@
 package org.eclipse.dltk.ast.expressions;
 
 import org.eclipse.dltk.ast.DLTKToken;
+import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
 /**
@@ -30,7 +31,7 @@ public class PrintExpression extends UnaryExpression {
 	 */
 	public void printNode(CorePrinter output) {
 		output.formatPrintLn("print ");
-		Expression expr = this.getExpression();
+		Statement expr = this.getExpression();
 		if (expr != null) {
 			expr.printNode(output);
 		}

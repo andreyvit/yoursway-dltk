@@ -3,6 +3,7 @@
  */
 package org.eclipse.dltk.ast.expressions;
 
+import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
 /**
@@ -22,7 +23,7 @@ public class NotStrictAssignment extends Assignment {
 	 * @param right -
 	 *            right expression.
 	 */
-	public NotStrictAssignment(Expression left, int type, Expression right) {
+	public NotStrictAssignment(Statement left, int type, Statement right) {
 		super(left, type, right);
 	}
 

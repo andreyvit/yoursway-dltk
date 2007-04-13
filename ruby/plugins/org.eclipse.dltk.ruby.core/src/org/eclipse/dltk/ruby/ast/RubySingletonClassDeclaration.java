@@ -3,12 +3,12 @@ package org.eclipse.dltk.ruby.ast;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.statements.Statement;
 
 
 public class RubySingletonClassDeclaration extends TypeDeclaration {
 
-	private Expression receiver;
+	private Statement receiver;
 	
 	public RubySingletonClassDeclaration(String friendlyName, int nameStart,
 			int nameEnd, int start, int end) {
@@ -16,11 +16,11 @@ public class RubySingletonClassDeclaration extends TypeDeclaration {
 		this.setModifier(Modifiers.AccStatic);
 	}
 
-	public Expression getReceiver() {
+	public Statement getReceiver() {
 		return receiver;
 	}
 
-	public void setReceiver(Expression receiver) {
+	public void setReceiver(Statement receiver) {
 		this.receiver = receiver;
 	}
 	
