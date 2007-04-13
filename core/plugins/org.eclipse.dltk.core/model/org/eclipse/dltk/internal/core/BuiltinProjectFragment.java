@@ -62,6 +62,9 @@ public class BuiltinProjectFragment extends ProjectFragment {
 			}
 			IBuildpathContainer buildpathContainer = ModelManager.getModelManager().getBuildpathContainer(containerPath,
 					project);
+			if( buildpathContainer == null ) {
+				return null;
+			}
 			IBuiltinModuleProvider builtinProvider = buildpathContainer.getBuiltinProvider();
 			return builtinProvider;
 		} catch (CoreException ex) {

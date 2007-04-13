@@ -437,7 +437,7 @@ public class DeltaProcessor {
 					if (project.isOpen()) {
 						if (DLTKLanguageManager.hasScriptNature(project)) {
 							this.addToParentInfo(dltkProject);
-//							readRawBuildpath(dltkProject);
+							// readRawBuildpath(dltkProject);
 							// ensure project references are updated
 							checkProjectReferenceChange(project, dltkProject);
 						}
@@ -467,7 +467,7 @@ public class DeltaProcessor {
 						// workaround for bug 15168 circular errors not reported
 						if (isDLTKProject) {
 							this.addToParentInfo(dltkProject);
-//							readRawClasspath(dltkProject);
+							// readRawClasspath(dltkProject);
 							// ensure project references are updated (see
 							// https://bugs.eclipse.org/bugs/show_bug.cgi?id=172666)
 							checkProjectReferenceChange(project, dltkProject);
@@ -555,14 +555,14 @@ public class DeltaProcessor {
 							.getProject());
 
 					// force to (re)read the .buildpath file
-//					try {
-//						dltkProject.getPerProjectInfo().readAndCacheClasspath(
-//								dltkProject);
-//						dltkProject.r
-//					} catch (ModelException e){
-//						// project doesn't exist
-//						return;
-//					}
+					// try {
+					// dltkProject.getPerProjectInfo().readAndCacheClasspath(
+					// dltkProject);
+					// dltkProject.r
+					// } catch (ModelException e){
+					// // project doesn't exist
+					// return;
+					// }
 					break;
 				}
 				this.state.rootsAreStale = true;
@@ -576,13 +576,15 @@ public class DeltaProcessor {
 			}
 		}
 	}
+
 	private void checkProjectReferenceChange(IProject project,
 			DLTKProject javaProject) {
-//		BuildpathChange change = (BuildpathChange) this.buildpathChanges
-//				.get(project);
-		this.state.addProjectReferenceChange(javaProject, /*change == null ? */null
-				/*: change.oldResolvedClasspath*/);
-	}	
+		// BuildpathChange change = (BuildpathChange) this.buildpathChanges
+		// .get(project);
+		this.state.addProjectReferenceChange(javaProject, /* change == null ? */
+				null
+		/* : change.oldResolvedClasspath */);
+	}
 
 	/*
 	 * Closes the given element, which removes it from the cache of open
@@ -724,8 +726,11 @@ public class DeltaProcessor {
 				switch (this.currentElement.getElementType()) {
 				case IModelElement.PROJECT_FRAGMENT:
 					ProjectFragment root = (ProjectFragment) this.currentElement;
+					IPath rootPath = root.getPath();
 					IPath pkgPath = path.removeLastSegments(1);
-					pkgFragment = root.getScriptFolder(pkgPath);
+					IPath pkgName = pkgPath.removeFirstSegments(
+							rootPath.segmentCount());
+					pkgFragment = root.getScriptFolder(pkgName);
 					break;
 				case IModelElement.SCRIPT_FOLDER:
 					Openable pkg = this.currentElement;
@@ -1856,31 +1861,32 @@ public class DeltaProcessor {
 						stopDeltas();
 						checkProjectsBeingAddedOrRemoved(delta);
 						// generate classpath change deltas
-//						if (this.buildpathChanges.size() > 0) {
-//							boolean hasDelta = this.currentDelta != null;
-//							ModelElementDelta javaDelta = currentDelta();
-//							Iterator changes = this.buildpathChanges.values()
-//									.iterator();
-//							while (changes.hasNext()) {
-//								BuildpathChange change = (BuildpathChange) changes
-//										.next();
-//								int result = change.generateDelta(javaDelta);
-//								if ((result & BuildpathChange.HAS_DELTA) != 0) {
-//									hasDelta = true;
-//									change.requestIndexing();
-//									this.state
-//											.addClasspathValidation(change.project);
-//								}
-//								if ((result & BuildpathChange.HAS_PROJECT_CHANGE) != 0) {
-//									this.state.addProjectReferenceChange(
-//											change.project,
-//											change.oldResolvedClasspath);
-//								}
-//							}
-//							this.buildpathChanges.clear();
-//							if (!hasDelta)
-//								this.currentDelta = null;
-//						}
+						// if (this.buildpathChanges.size() > 0) {
+						// boolean hasDelta = this.currentDelta != null;
+						// ModelElementDelta javaDelta = currentDelta();
+						// Iterator changes = this.buildpathChanges.values()
+						// .iterator();
+						// while (changes.hasNext()) {
+						// BuildpathChange change = (BuildpathChange) changes
+						// .next();
+						// int result = change.generateDelta(javaDelta);
+						// if ((result & BuildpathChange.HAS_DELTA) != 0) {
+						// hasDelta = true;
+						// change.requestIndexing();
+						// this.state
+						// .addClasspathValidation(change.project);
+						// }
+						// if ((result & BuildpathChange.HAS_PROJECT_CHANGE) !=
+						// 0) {
+						// this.state.addProjectReferenceChange(
+						// change.project,
+						// change.oldResolvedClasspath);
+						// }
+						// }
+						// this.buildpathChanges.clear();
+						// if (!hasDelta)
+						// this.currentDelta = null;
+						// }
 
 						// generate external archive change deltas
 						if (this.refreshedElements != null) {
@@ -1918,7 +1924,7 @@ public class DeltaProcessor {
 				return; // avoid populating for SYNC or MARKER deltas
 
 			// create classpath markers if necessary
-//			boolean needCycleValidation = validateBuildpaths(delta);
+			// boolean needCycleValidation = validateBuildpaths(delta);
 			BuildpathValidation[] validations = this.state
 					.removeBuildpathValidations();
 			if (validations != null) {
@@ -1942,7 +1948,7 @@ public class DeltaProcessor {
 					}
 				}
 			}
-			if (/*needCycleValidation ||*/ projectRefChanges != null) {
+			if (/* needCycleValidation || */projectRefChanges != null) {
 				// update all cycle markers since the project references changes
 				// may have affected cycles
 				try {
@@ -1996,7 +2002,9 @@ public class DeltaProcessor {
 	 */
 	private void traverseDelta(IResourceDelta delta, int elementType,
 			RootInfo rootInfo) {
+
 		IResource res = delta.getResource();
+
 		// set stack of elements
 		if (this.currentElement == null && rootInfo != null) {
 			this.currentElement = rootInfo.project;
@@ -2615,8 +2623,8 @@ public class DeltaProcessor {
 				// secondary
 				// types from cache
 				// this.manager.secondaryTypesRemoving(file, true);
-				//System.err
-				//		.println("this.manager.secondaryTypesRemoving(file, true);");
+				// System.err
+				// .println("this.manager.secondaryTypesRemoving(file, true);");
 				break;
 			}
 		}

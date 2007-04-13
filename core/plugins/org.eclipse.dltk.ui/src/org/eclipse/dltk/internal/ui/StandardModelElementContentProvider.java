@@ -212,6 +212,9 @@ public class StandardModelElementContentProvider implements ITreeContentProvider
 
 	private Object[] getScriptFolders(IProjectFragment root) throws ModelException {
 		IModelElement[] fragments = root.getChildren();
+		if (isProjectProjectFragment(root)) {
+			return fragments;
+		}
 		Object[] nonScriptResources = root.getForeignResources();
 		if (nonScriptResources == null)
 			return fragments;
@@ -325,8 +328,8 @@ public class StandardModelElementContentProvider implements ITreeContentProvider
 	 * method.
 	 */
 	protected boolean isProjectProjectFragment(IProjectFragment root) {
-		IResource resource = root.getResource();
-		return (resource instanceof IProject);
+		IDLTKProject scriptProject= root.getScriptProject();
+		return scriptProject != null && scriptProject.getPath().equals(root.getPath());
 	}
 
 	/**
