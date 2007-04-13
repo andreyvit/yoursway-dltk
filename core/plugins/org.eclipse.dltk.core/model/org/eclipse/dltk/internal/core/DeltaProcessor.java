@@ -52,7 +52,6 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.indexing.IndexManager;
 import org.eclipse.dltk.core.search.indexing.SourceIndexerRequestor;
 import org.eclipse.dltk.internal.core.builder.ScriptBuilder;
-import org.eclipse.dltk.internal.core.search.AbstractSearchScope;
 import org.eclipse.dltk.internal.core.search.DLTKWorkspaceScope;
 import org.eclipse.dltk.internal.core.util.Util;
 
@@ -377,13 +376,13 @@ public class DeltaProcessor {
 	 */
 	private void checkProjectsBeingAddedOrRemoved(IResourceDelta delta) {
 		IResource resource = delta.getResource();
-		boolean processChildren = false;
+		IResourceDelta[] children = null;
 
 		switch (resource.getType()) {
 		case IResource.ROOT:
 			// workaround for bug 15168 circular errors not reported
 			this.state.getOldScriptProjectNames(); // force list to be computed
-			processChildren = true;
+			children = delta.getAffectedChildren();
 			break;
 		case IResource.PROJECT:
 			// NB: No need to check project's nature as if the project is not a
@@ -438,6 +437,9 @@ public class DeltaProcessor {
 					if (project.isOpen()) {
 						if (DLTKLanguageManager.hasScriptNature(project)) {
 							this.addToParentInfo(dltkProject);
+//							readRawBuildpath(dltkProject);
+							// ensure project references are updated
+							checkProjectReferenceChange(project, dltkProject);
 						}
 					} else {
 						try {
@@ -465,6 +467,10 @@ public class DeltaProcessor {
 						// workaround for bug 15168 circular errors not reported
 						if (isDLTKProject) {
 							this.addToParentInfo(dltkProject);
+//							readRawClasspath(dltkProject);
+							// ensure project references are updated (see
+							// https://bugs.eclipse.org/bugs/show_bug.cgi?id=172666)
+							checkProjectReferenceChange(project, dltkProject);
 						} else {
 							// remove buildpath cache so that initializeRoots()
 							// will not consider the project has a buildpath
@@ -485,7 +491,7 @@ public class DeltaProcessor {
 						// changed (see bug 19799)
 						if (isDLTKProject) { // need nature check - 18698
 							this.addToParentInfo(dltkProject);
-							processChildren = true;
+							children = delta.getAffectedChildren();
 						}
 					}
 				} else {
@@ -497,7 +503,7 @@ public class DeltaProcessor {
 						// -
 						// 18698
 						this.addToParentInfo(dltkProject);
-						processChildren = true;
+						children = delta.getAffectedChildren();
 					}
 				}
 				break;
@@ -524,62 +530,59 @@ public class DeltaProcessor {
 			/* buildpath file change */
 			if (file.getName().equals(DLTKProject.BUILDPATH_FILENAME)) {
 				this.manager.batchContainerInitializations = true;
-				reconcileBuildpathFileUpdate(delta, (DLTKProject) DLTKCore
-						.create(file.getProject()));
+				switch (delta.getKind()) {
+				case IResourceDelta.CHANGED:
+					int flags = delta.getFlags();
+					if ((flags & IResourceDelta.CONTENT) == 0 // only consider
+							// content
+							// change
+							&& (flags & IResourceDelta.ENCODING) == 0 // and
+							// encoding
+							// change
+							&& (flags & IResourceDelta.MOVED_FROM) == 0) {// and
+						// also
+						// move
+						// and
+						// overide
+						// scenario
+						// (see
+						// http://dev.eclipse.org/bugs/show_bug.cgi?id=21420)
+						break;
+					}
+					// fall through
+				case IResourceDelta.ADDED:
+					dltkProject = (DLTKProject) DLTKCore.create(file
+							.getProject());
+
+					// force to (re)read the .buildpath file
+//					try {
+//						dltkProject.getPerProjectInfo().readAndCacheClasspath(
+//								dltkProject);
+//						dltkProject.r
+//					} catch (ModelException e){
+//						// project doesn't exist
+//						return;
+//					}
+					break;
+				}
 				this.state.rootsAreStale = true;
 			}
 			break;
 
 		}
-		if (processChildren) {
-			IResourceDelta[] children = delta.getAffectedChildren();
+		if (children != null) {
 			for (int i = 0; i < children.length; i++) {
 				checkProjectsBeingAddedOrRemoved(children[i]);
 			}
 		}
 	}
-
-	/*
-	 * Update the Model according to a .buildpath file change. The file can have
-	 * changed as a result of a previous call to DLTKProject#setRawBuildpath or
-	 * as a result of some user update (through repository)
-	 */
-	private void reconcileBuildpathFileUpdate(IResourceDelta delta,
-			DLTKProject project) {
-
-		switch (delta.getKind()) {
-		case IResourceDelta.REMOVED: // recreate one based on in-memory
-			// buildpath
-			break;
-		case IResourceDelta.CHANGED:
-			int flags = delta.getFlags();
-			if ((flags & IResourceDelta.CONTENT) == 0 // only consider content
-					// change
-					&& (flags & IResourceDelta.ENCODING) == 0 // and encoding
-					// change
-					&& (flags & IResourceDelta.MOVED_FROM) == 0) {// and also
-				// move and
-				// overide
-				// scenario
-				// (see
-				// http://dev.eclipse.org/bugs/show_bug.cgi?id=21420)
-				break;
-			}
-			// fall through
-		case IResourceDelta.ADDED:
-			try {
-				project.forceBuildpathReload(null);
-			} catch (RuntimeException e) {
-				if (VERBOSE) {
-					e.printStackTrace();
-				}
-			} catch (ModelException e) {
-				if (VERBOSE) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+	private void checkProjectReferenceChange(IProject project,
+			DLTKProject javaProject) {
+//		BuildpathChange change = (BuildpathChange) this.buildpathChanges
+//				.get(project);
+		this.state.addProjectReferenceChange(javaProject, /*change == null ? */null
+				/*: change.oldResolvedClasspath*/);
+	}	
 
 	/*
 	 * Closes the given element, which removes it from the cache of open
@@ -620,6 +623,10 @@ public class DeltaProcessor {
 			int flags = IModelElementDelta.F_CONTENT;
 			if (element instanceof ArchiveProjectFragment) {
 				flags |= IModelElementDelta.F_ARCHIVE_CONTENT_CHANGED;
+				// need also to reset project cache otherwise it will be
+				// out-of-date
+				// see bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=162621
+				this.projectCachesToReset.add(element.getScriptProject());
 			}
 			if (isPrimary) {
 				flags |= IModelElementDelta.F_PRIMARY_RESOURCE;
@@ -636,6 +643,7 @@ public class DeltaProcessor {
 			RootInfo rootInfo) {
 		if (resource == null)
 			return null;
+
 		IPath path = resource.getFullPath();
 		IModelElement element = null;
 		switch (elementType) {
@@ -1042,6 +1050,21 @@ public class DeltaProcessor {
 									delta.getMovedFromPath().lastSegment());
 					currentDelta().movedTo(element, movedFromElement);
 				} else {
+					// Force the project to be closed as it might have been
+					// opened
+					// before the resource modification came in and it might
+					// have a new child
+					// For example, in an IWorkspaceRunnable:
+					// 1. create a Java project P (where P=src)
+					// 2. open project P
+					// 3. add folder f in P's pkg fragment root
+					// When the resource delta comes in, only the addition of P
+					// is notified,
+					// but the pkg fragment root of project P is already opened,
+					// thus its children are not recomputed
+					// and it appears to contain only the default package.
+					close(element);
+
 					currentDelta().added(element);
 				}
 				this.state.updateRoots(element.getPath(), delta, this);
@@ -1261,6 +1284,10 @@ public class DeltaProcessor {
 			if (rootInfo == null) {
 				return NON_SCRIPT_RESOURCE;
 			}
+			if (Util.isExcluded(res, rootInfo.inclusionPatterns,
+					rootInfo.exclusionPatterns)) {
+				return NON_SCRIPT_RESOURCE;
+			}
 			if (res.getType() == IResource.FOLDER) {
 				if (parentType == NON_SCRIPT_RESOURCE
 						&& !Util.isExcluded(res.getParent(),
@@ -1270,9 +1297,6 @@ public class DeltaProcessor {
 					// have a
 					// valid package name (see
 					// https://bugs.eclipse.org/bugs/show_bug.cgi?id=130982)
-					if (Util.isValidFolderNameForPackage(res.getName())) {
-						return IModelElement.SCRIPT_FOLDER;
-					}
 					return NON_SCRIPT_RESOURCE;
 				}
 				if (Util.isValidFolderNameForPackage(res.getName())) {
@@ -1831,6 +1855,34 @@ public class DeltaProcessor {
 					try {
 						stopDeltas();
 						checkProjectsBeingAddedOrRemoved(delta);
+						// generate classpath change deltas
+//						if (this.buildpathChanges.size() > 0) {
+//							boolean hasDelta = this.currentDelta != null;
+//							ModelElementDelta javaDelta = currentDelta();
+//							Iterator changes = this.buildpathChanges.values()
+//									.iterator();
+//							while (changes.hasNext()) {
+//								BuildpathChange change = (BuildpathChange) changes
+//										.next();
+//								int result = change.generateDelta(javaDelta);
+//								if ((result & BuildpathChange.HAS_DELTA) != 0) {
+//									hasDelta = true;
+//									change.requestIndexing();
+//									this.state
+//											.addClasspathValidation(change.project);
+//								}
+//								if ((result & BuildpathChange.HAS_PROJECT_CHANGE) != 0) {
+//									this.state.addProjectReferenceChange(
+//											change.project,
+//											change.oldResolvedClasspath);
+//								}
+//							}
+//							this.buildpathChanges.clear();
+//							if (!hasDelta)
+//								this.currentDelta = null;
+//						}
+
+						// generate external archive change deltas
 						if (this.refreshedElements != null) {
 							createExternalArchiveDelta(null);
 						}
@@ -1862,23 +1914,46 @@ public class DeltaProcessor {
 			return;
 
 		case IResourceChangeEvent.PRE_BUILD:
-			DeltaProcessingState.ProjectUpdateInfo[] updates = this.state
-					.removeAllProjectUpdates();
-			if (updates != null) {
-				for (int i = 0, length = updates.length; i < length; i++) {
+			if (!isAffectedBy(delta))
+				return; // avoid populating for SYNC or MARKER deltas
+
+			// create classpath markers if necessary
+//			boolean needCycleValidation = validateBuildpaths(delta);
+			BuildpathValidation[] validations = this.state
+					.removeBuildpathValidations();
+			if (validations != null) {
+				for (int i = 0, length = validations.length; i < length; i++) {
+					BuildpathValidation validation = validations[i];
+					validation.validate();
+				}
+			}
+
+			// update project references if necessary
+			ProjectReferenceChange[] projectRefChanges = this.state
+					.removeProjectReferenceChanges();
+			if (projectRefChanges != null) {
+				for (int i = 0, length = projectRefChanges.length; i < length; i++) {
 					try {
-						updates[i].updateProjectReferencesIfNecessary();
+						projectRefChanges[i]
+								.updateProjectReferencesIfNecessary();
 					} catch (ModelException e) {
-						// do nothing
+						// project doesn't exist any longer, continue with next
+						// one
 					}
 				}
 			}
-			// this.processPostChange = false;
-			if (isAffectedBy(delta)) { // avoid populating for SYNC or MARKER
-				// deltas
-				updateBuildpathMarkers(delta, updates);
-				ScriptBuilder.buildStarting();
+			if (/*needCycleValidation ||*/ projectRefChanges != null) {
+				// update all cycle markers since the project references changes
+				// may have affected cycles
+				try {
+					DLTKProject.validateCycles(null);
+				} catch (ModelException e) {
+					// a project no longer exists
+				}
 			}
+			Model.flushExternalFileCache();
+			ScriptBuilder.buildStarting();
+
 			// does not fire any deltas
 			return;
 
@@ -2253,6 +2328,8 @@ public class DeltaProcessor {
 			}
 			updateIndex(element, delta);
 			elementAdded(element, delta, rootInfo);
+			if (elementType == IModelElement.PROJECT_FRAGMENT)
+				this.state.addBuildpathValidation(rootInfo.project);
 			return elementType == IModelElement.SCRIPT_FOLDER;
 		case IResourceDelta.REMOVED:
 			deltaRes = delta.getResource();
@@ -2264,6 +2341,9 @@ public class DeltaProcessor {
 			}
 			updateIndex(element, delta);
 			elementRemoved(element, delta, rootInfo);
+			if (elementType == IModelElement.PROJECT_FRAGMENT)
+				this.state.addBuildpathValidation(rootInfo.project);
+
 			if (deltaRes.getType() == IResource.PROJECT) {
 				// reset the corresponding project built state, since cannot
 				// reuse if added back
@@ -2522,10 +2602,6 @@ public class DeltaProcessor {
 				// through
 				// indexing itself
 				// this.manager.secondaryTypesRemoving(file, false);
-				if (DLTKCore.DEBUG) {
-					System.err
-							.println("this.manager.secondaryTypesRemoving(file, false);");
-				}
 				break;
 			case IResourceDelta.REMOVED:
 				indexManager.remove(Util.relativePath(file.getFullPath(), 1/*
@@ -2539,8 +2615,8 @@ public class DeltaProcessor {
 				// secondary
 				// types from cache
 				// this.manager.secondaryTypesRemoving(file, true);
-				System.err
-						.println("this.manager.secondaryTypesRemoving(file, true);");
+				//System.err
+				//		.println("this.manager.secondaryTypesRemoving(file, true);");
 				break;
 			}
 		}
