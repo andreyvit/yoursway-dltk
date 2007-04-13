@@ -129,8 +129,9 @@ public class AddLibraryToBuildpathAction extends Action implements ISelectionCha
 						pm.beginTask(NewWizardMessages.BuildpathModifier_Monitor_AddToBuildpath, 4); 
 
 						List addedEntries= new ArrayList();
-						for (int i= 0; i < selected.length; i++) {							
-							addedEntries.add(new BPListElement(project, IBuildpathEntry.BPE_CONTAINER, selected[i].getPath(), null, false ));
+						for (int i= 0; i < selected.length; i++) {		
+							IBuildpathEntry entry = selected[i];
+							addedEntries.add(new BPListElement(project, entry.getEntryKind(), entry.getPath(), null, entry.isExported() ));
 						}
 
 						pm.worked(1);
