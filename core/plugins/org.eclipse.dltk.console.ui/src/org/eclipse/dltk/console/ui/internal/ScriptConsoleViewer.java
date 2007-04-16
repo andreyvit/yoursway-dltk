@@ -414,4 +414,22 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 	public void insertText(String text) {
 		getTextWidget().append(text);
 	}
+	public boolean canDoOperation(int operation) {
+	    boolean canDoOperation = super.canDoOperation(operation);
+
+	    if (canDoOperation) {
+	      switch (operation) {
+	        case CUT:
+	        case DELETE:
+	        case PASTE:
+	        case SHIFT_LEFT:
+	        case SHIFT_RIGHT:
+	        case PREFIX:
+	        case STRIP_PREFIX:
+	          canDoOperation = isCaretOnLastLine();
+	      }
+	    }
+
+	    return canDoOperation;
+	  }
 }
