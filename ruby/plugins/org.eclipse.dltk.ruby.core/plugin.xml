@@ -3,8 +3,9 @@
 <plugin>
  <extension
          id="nature"
-         point="org.eclipse.core.resources.natures">
-      <runtime>
+         point="org.eclipse.core.resources.natures"
+         name="%rubyNature">
+      <runtime>	
          <run class="org.eclipse.dltk.ruby.core.RubyNature"/>
       </runtime>
    </extension> 
