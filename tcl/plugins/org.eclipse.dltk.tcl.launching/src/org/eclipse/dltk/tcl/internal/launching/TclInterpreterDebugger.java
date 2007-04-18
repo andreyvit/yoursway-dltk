@@ -7,6 +7,7 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.launching.AbstractInterpreterDebugger;
 import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.eclipse.dltk.launching.InterpreterRunnerConfiguration;
 import org.eclipse.dltk.tcl.internal.debug.TclDebugPreferences;
 import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
 
@@ -18,7 +19,7 @@ public class TclInterpreterDebugger extends AbstractInterpreterDebugger {
 	private static final String SCRIPT_KEY = "-app-file";
 	private static final String ARGS_SEPARATOR = "--";
 
-	protected String getPluginIdentifier() {
+	protected String getPluginId() {
 		return TclLaunchingPlugin.PLUGIN_ID;
 	}
 
@@ -36,8 +37,9 @@ public class TclInterpreterDebugger extends AbstractInterpreterDebugger {
 		super(install);
 	}
 
-	protected String[] getCommandLine(String id, String host, int port,
-			String script, String[] args, String shell) throws CoreException {
+	protected String[] getCommandLine(String sessionId, String host, int port,
+			InterpreterRunnerConfiguration configuration) throws CoreException {
+		final String shell = constructProgramString(configuration);
 
 		List list = new ArrayList();
 
@@ -49,19 +51,16 @@ public class TclInterpreterDebugger extends AbstractInterpreterDebugger {
 		list.add(SHELL_KEY);
 		list.add(shell);
 		list.add(IDE_KEY);
-		list.add(id);
+		list.add(sessionId);
 		list.add(SCRIPT_KEY);
-		list.add(script);
+		list.add(configuration.getScriptToLaunch());
 		list.add(ARGS_SEPARATOR);
 
+		String[] args = configuration.getProgramArguments();
 		for (int i = 0; i < args.length; ++i) {
 			list.add(args[i]);
 		}
 
 		return (String[]) list.toArray(new String[list.size()]);
-	}
-
-	protected File getWorkingDir() throws CoreException {
-		return getEngine().getParentFile();
 	}
 }

@@ -40,6 +40,7 @@ public class ScriptDebugElement extends PlatformObject implements
 	}
 
 	public String getModelIdentifier() {
+		//TODO: expand this!!!
 		return ScriptModelConstants.MODEL_ID;
 	}
 

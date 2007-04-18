@@ -42,7 +42,7 @@ public class TclInterpreterRunner extends AbstractInterpreterRunner {
 		return newCmdLine;
 	}
 
-	protected String getPluginIdentifier() {
+	protected String getPluginId() {
 		return TclLaunchingPlugin.getUniqueIdentifier();
 	}
 

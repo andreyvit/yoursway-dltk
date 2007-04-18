@@ -29,6 +29,7 @@ public class InterpreterRunnerConfiguration {
 		if (args == null) {
 			throw new IllegalArgumentException("null arguments!");
 		}
+		
 		this.interpreterArgs = args;
 	}
 
@@ -44,6 +45,7 @@ public class InterpreterRunnerConfiguration {
 		if (args == null) {
 			throw new IllegalArgumentException("null arguments!");
 		}
+		
 		this.programArgs = args;
 	}
 
@@ -51,6 +53,7 @@ public class InterpreterRunnerConfiguration {
 		if (programArgs == null) {
 			return emptyStringArray;
 		}
+		
 		return programArgs;
 	}
 

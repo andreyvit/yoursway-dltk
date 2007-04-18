@@ -94,19 +94,15 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		return (String[]) arguments.toArray(new String[arguments.size()]);
 	}
 
-	protected String getCmdLineAsString(String[] cmdLine) {
-		StringBuffer buff = new StringBuffer();
-		for (int i = 0, numStrings = cmdLine.length; i < numStrings; i++) {
-			buff.append(cmdLine[i]);
-			buff.append(' ');
-		}
-		return buff.toString().trim();
-	}
-
 	protected String[] alterCommandLine(String[] cmdLine, String id) {
 		return cmdLine; // Do nothing
 	}
 
+	/**
+	 * String representation of the command line
+	 * @param commandLine
+	 * @return
+	 */
 	protected String renderCommandLine(String[] commandLine) {
 		if (commandLine.length < 1)
 			return ""; //$NON-NLS-1$
@@ -138,7 +134,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 
 	protected void abort(String message, Throwable exception, int code)
 			throws CoreException {
-		abort(getPluginIdentifier(), message, exception, code);
+		abort(getPluginId(), message, exception, code);
 	}
 
 	protected void abort(String pluginId, String message, Throwable exception,
@@ -250,7 +246,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	 *                if the working directory specified by the configuration
 	 *                does not exist or is not a directory
 	 */
-	protected File getWorkingDir(InterpreterRunnerConfiguration config)
+	protected File getWorkingDir(InterpreterRunnerConfiguration config) 
 			throws CoreException {
 		String path = config.getWorkingDirectory();
 		if (path == null) {
@@ -344,5 +340,5 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		return subMonitor;
 	}
 
-	protected abstract String getPluginIdentifier();
+	protected abstract String getPluginId();
 }

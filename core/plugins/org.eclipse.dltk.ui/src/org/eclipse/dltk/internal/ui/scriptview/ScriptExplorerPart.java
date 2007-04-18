@@ -289,7 +289,7 @@ public class ScriptExplorerPart extends ViewPart
 		
 //		/*
 //		 * @see org.eclipse.jface.viewers.StructuredViewer#filter(java.lang.Object[])
-//	 *
+//	 	 *
 //		 */
 //		protected Object[] filter(Object[] elements) {
 //			if (isFlatLayout())

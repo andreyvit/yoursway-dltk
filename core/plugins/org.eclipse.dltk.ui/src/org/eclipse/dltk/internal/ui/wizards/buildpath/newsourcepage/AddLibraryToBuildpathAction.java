@@ -130,8 +130,7 @@ public class AddLibraryToBuildpathAction extends Action implements ISelectionCha
 
 						List addedEntries= new ArrayList();
 						for (int i= 0; i < selected.length; i++) {		
-							IBuildpathEntry entry = selected[i];
-							addedEntries.add(new BPListElement(project, entry.getEntryKind(), entry.getPath(), null, entry.isExported() ));
+							addedEntries.add(new BPListElement(project, selected[i].getEntryKind(), selected[i].getPath(), null, selected[i].isExported() ));
 						}
 
 						pm.worked(1);

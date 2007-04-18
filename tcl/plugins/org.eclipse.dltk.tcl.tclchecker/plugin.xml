@@ -35,7 +35,7 @@
    <!--extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.eclipse.dltk.tcl.ui.tcl"
+            category="org.eclipse.dltk.tcl.preferences"
             class="org.eclipse.dltk.tcl.internal.tclchecker.ui.preferences.TclCheckerPreferences"
             id="org.eclipse.dltk.tcl.tclchecker.ui.preferences.TclCheckerPreferences"
             name="%TclChecker.PreferencePage"/>

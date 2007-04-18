@@ -67,7 +67,9 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		this.thread = thread;
 		this.stackLevel = stackLevel;
 		this.name = stackLevel.getWhere();
-		this.variables = retrieveVariables(stackLevel.getLevel(), coreCommands);
+		//this.variables =  new IScriptVariable[0];  // retrieveVariables(stackLevel.getLevel(), coreCommands);
+		
+		this.variables =  retrieveVariables(stackLevel.getLevel(), coreCommands);
 
 		this.stackDepth = stackDepth;
 	}

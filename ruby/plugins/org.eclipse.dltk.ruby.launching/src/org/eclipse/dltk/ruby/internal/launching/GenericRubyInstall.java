@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.core.DLTKCore;
@@ -22,60 +23,30 @@ import org.eclipse.dltk.launching.AbstractInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.IInterpreterRunner;
 import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
+import org.eclipse.dltk.utils.DeployHelper;
 import org.osgi.framework.Bundle;
 
-public class GenericRubyInstall extends AbstractInterpreterInstall {
-	
+public class GenericRubyInstall extends AbstractInterpreterInstall {	
 	public class BuiltinsHelper {
 		public BuiltinsHelper() {
 
 		}
-		
-		protected void storeFile(File dest, URL url) throws IOException {
-			InputStream input = null;
-			OutputStream output = null;
+
+		public String execute(String command) {			
+			File builder = null;
 			try {
-				input = new BufferedInputStream(url.openStream());
-
-				output = new BufferedOutputStream(new FileOutputStream(dest));
-
-				// Simple copy
-				int ch = -1;
-				while ((ch = input.read()) != -1) {
-					output.write(ch);
-				}
-			} finally {
-				if (input != null) {
-					input.close();
-				}
-
-				if (output != null) {
-					output.close();
-				}
-			}
-		}
-		
-		protected File storeToMetadata(Bundle bundle, String name, String path)
-		throws IOException {
-			File pathFile = DLTKCore.getDefault().getStateLocation().append(name)
-					.toFile();
-			storeFile(pathFile, FileLocator.resolve(bundle.getEntry(path)));
-			return pathFile;
-		}
-
-
-		public String execute(String command) {
-			Bundle bundle = RubyLaunchingPlugin.getDefault().getBundle();
-			File builder;
-			try {
-				builder = storeToMetadata(bundle, "builtin.rb", "scripts/builtin.rb");
+				IPath path = DeployHelper.deploy(RubyLaunchingPlugin.getDefault(), "scripts");
+				builder = path.append("builtin.rb").toFile();				
+				
 			} catch (IOException e1) {
 				e1.printStackTrace();
 				return null;
 			}
 
-			String[] cmdLine = new String[] { GenericRubyInstall.this.getInstallLocation().getAbsolutePath(),
-					builder.getAbsolutePath(), command};
+			String[] cmdLine = new String[] {
+					GenericRubyInstall.this.getInstallLocation()
+							.getAbsolutePath(), builder.getAbsolutePath(),
+					command };
 
 			BufferedReader input = null;
 			OutputStreamWriter output = null;
@@ -90,7 +61,7 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 					StringBuffer sb = new StringBuffer();
 					String line = null;
 					while ((line = input.readLine()) != null) {
-						sb.append(line + "\n");						
+						sb.append(line + "\n");
 					}
 
 					return sb.toString();
@@ -119,22 +90,21 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 		super(type, id);
 	}
 
-	public IInterpreterRunner getInterpreterRunner(String mode) {		
+	public IInterpreterRunner getInterpreterRunner(String mode) {
 		if (mode.equals(ILaunchManager.RUN_MODE)) {
 			return new RubyInterpreterRunner(this);
 		} else if (mode.equals(ILaunchManager.DEBUG_MODE)) {
 			return new RubyInterpreterDebugger(this);
 		}
-		
+
 		return null;
 	}
-	
-	
+
 	private static final String prefix = "#### DLTK RUBY BUILTINS ####";
 	private static final int prefixLength = prefix.length();
 	private HashMap sources = null;
-	
-	private void initialize () {
+
+	private void initialize() {
 		sources = new HashMap();
 		String content = new BuiltinsHelper().execute("");
 		int nl;
@@ -147,7 +117,7 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 			pos = content.indexOf(prefix, nl + 1);
 			if (pos != -1)
 				data = content.substring(nl + 1, pos);
-			else 
+			else
 				data = content.substring(nl + 1);
 			String prev = (String) sources.get(filename);
 			if (prev != null)
@@ -167,5 +137,4 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 			initialize();
 		return (String[]) sources.keySet().toArray(new String[sources.size()]);
 	}
-	
 }

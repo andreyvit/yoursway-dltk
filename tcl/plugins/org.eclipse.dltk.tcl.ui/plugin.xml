@@ -159,46 +159,47 @@
    </extension>
  <extension
        point="org.eclipse.ui.preferencePages">
-    <page
-          category="org.eclipse.dltk.tcl.ui.tcl"
-          class="org.eclipse.dltk.tcl.internal.ui.preferences.TclEditorPreferencesPage"
-          id="org.eclipse.dltk.tcl.ui.EditorPreferences"
-          name="Editor"/>
-    <page
-          category="org.eclipse.dltk.tcl.ui.EditorPreferences"
-          class="org.eclipse.dltk.tcl.internal.ui.preferences.TclEditorSyntaxColoringPreferencePage"
-          id="org.eclipse.dltk.tcl.ui.editor.SyntaxColoring"
-          name="Syntax Coloring"/>
-    <page
-          category="org.eclipse.dltk.tcl.ui.EditorPreferences"
-          class="org.eclipse.dltk.tcl.internal.ui.preferences.TclEditorHoverPreferencePage"
-          id="org.eclipse.dltk.tcl.ui.editor.Hovers"
-          name="Hovers"/>
-    <page
-          category="org.eclipse.dltk.tcl.ui.tcl"
-          class="org.eclipse.dltk.tcl.internal.ui.preferences.ManPagesPreferencePage"
-          id="org.eclipse.dltk.tcl.ui.editor.ManPagesPreferencePage"
-          name="Man pages locations"/>
-    <page
-          category="org.eclipse.dltk.tcl.ui.EditorPreferences"
-          class="org.eclipse.dltk.tcl.internal.ui.preferences.TclSmartTypingPreferencePage"
-          id="org.eclipse.dltk.tcl.ui.editor.SmartTyping"
-          name="Typing"/>          
-    <page
-          category="org.eclipse.dltk.tcl.ui.EditorPreferences"
-          class="org.eclipse.dltk.tcl.internal.ui.preferences.TclFoldingPreferencePage"
-          id="org.eclipse.dltk.tcl.ui.editor.TclFolding"
-          name="Folding"/>  
+       
     <page          
           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclGlobalPreferencesPage"
-          id="org.eclipse.dltk.tcl.ui.tcl"
-          name="DLTK Tcl"/>
-     <page
-           category="org.eclipse.dltk.tcl.ui.tcl"
+          id="org.eclipse.dltk.tcl.preferences"
+          name="%TclPreferencePage"/>
+    <page
+          category="org.eclipse.dltk.tcl.preferences"
+          class="org.eclipse.dltk.tcl.internal.ui.preferences.ManPagesPreferencePage"
+          id="org.eclipse.dltk.tcl.preferences.mans"
+          name="%TclManPagesPreferencePage"/>
+    <page
+           category="org.eclipse.dltk.tcl.preferences"
            class="org.eclipse.dltk.tcl.internal.ui.templates.TclTemplatePreferencePage"
-           id="tclTemplatePreferencePage"
-           name="Tcl code templates">
-     </page>
+           id="org.eclipse.dltk.tcl.preferences.templates"
+           name="%TclCodeTemplatesPreferencePage"/>        
+    <page
+          category="org.eclipse.dltk.tcl.preferences"
+          class="org.eclipse.dltk.tcl.internal.ui.preferences.TclEditorPreferencesPage"
+          id="org.eclipse.dltk.tcl.preferences.editor"
+          name="%TclEditorPreferencePage"/>
+    <page
+          category="org.eclipse.dltk.tcl.preferences.editor"
+          class="org.eclipse.dltk.tcl.internal.ui.preferences.TclEditorSyntaxColoringPreferencePage"
+          id="org.eclipse.dltk.tcl.preferences.editor.syntaxcoloring"
+          name="%TclEditorSyntaxColoringPreferencePage"/>
+    <page
+          category="org.eclipse.dltk.tcl.preferences.editor"
+          class="org.eclipse.dltk.tcl.internal.ui.preferences.TclEditorHoverPreferencePage"
+          id="org.eclipse.dltk.tcl.preferences.editor.hovers"
+          name="%TclEditorHoversPreferencePage"/>    
+    <page
+          category="org.eclipse.dltk.tcl.preferences.editor"
+          class="org.eclipse.dltk.tcl.internal.ui.preferences.TclSmartTypingPreferencePage"
+          id="org.eclipse.dltk.tcl.preferences.editor.smarttyping"
+          name="%TclEditorTypingPreferencePage"/>          
+    <page
+          category="org.eclipse.dltk.tcl.preferences.editor"
+          class="org.eclipse.dltk.tcl.internal.ui.preferences.TclFoldingPreferencePage"
+          id="org.eclipse.dltk.tcl.preferences.editor.folding"
+          name="%TclEditorFoldingPreferencePage"/>
+          
  </extension>
  <extension
        point="org.eclipse.ui.propertyPages">

@@ -933,5 +933,13 @@
    </extension>
    <extension
          point="org.eclipse.ui.editors.templates">
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.eclipse.dltk.ui.preferences.DLTKCorePreferences"
+            id="org.eclipse.dltk.preferences"
+            name="DLTK">
+      </page>
    </extension>         
 </plugin>

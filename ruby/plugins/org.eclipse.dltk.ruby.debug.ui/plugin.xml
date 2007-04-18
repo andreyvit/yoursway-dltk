@@ -78,10 +78,10 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-		    category="org.eclipse.dltk.ruby.ui.ruby"
+		    category="org.eclipse.dltk.ruby.preferences"
             class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterPreferencePage"
-            id="org.eclipse.dltk.debug.ui.RubyInterpreters"
-            name="Ruby Interpreters"/>
+            id="org.eclipse.dltk.ruby.preferences.interpreters"
+            name="Interpreters"/>
    </extension>
    <extension
          point="org.eclipse.ui.actionSetPartAssociations">
@@ -102,5 +102,12 @@
             id="org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER"
             name="Ruby Interpreter Libraries"
             nature="org.eclipse.dltk.ruby.core.nature"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.debugModelPresentations">
+      <debugModelPresentation
+            class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugModelPresentation"
+            id="org.eclipse.dltk.debug.core.model">
+      </debugModelPresentation>
    </extension>
 </plugin>

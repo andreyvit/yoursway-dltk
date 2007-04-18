@@ -18,7 +18,7 @@ public class StandardInterpreterRunner extends AbstractInterpreterRunner {
 		super(install);
 	}
 
-	protected String getPluginIdentifier() {
+	protected String getPluginId() {
 		return DLTKLaunchingPlugin.getUniqueIdentifier();
 	}
 }

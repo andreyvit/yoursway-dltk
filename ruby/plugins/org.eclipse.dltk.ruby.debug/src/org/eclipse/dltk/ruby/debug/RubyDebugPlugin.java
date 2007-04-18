@@ -1,6 +1,10 @@
 package org.eclipse.dltk.ruby.debug;
 
+import java.io.IOException;
+
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.dltk.utils.DeployHelper;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -13,7 +17,7 @@ public class RubyDebugPlugin extends Plugin {
 
 	// The shared instance
 	private static RubyDebugPlugin plugin;
-	
+
 	/**
 	 * The constructor
 	 */
@@ -22,6 +26,7 @@ public class RubyDebugPlugin extends Plugin {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
@@ -31,6 +36,7 @@ public class RubyDebugPlugin extends Plugin {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
@@ -40,11 +46,16 @@ public class RubyDebugPlugin extends Plugin {
 
 	/**
 	 * Returns the shared instance
-	 *
+	 * 
 	 * @return the shared instance
 	 */
 	public static RubyDebugPlugin getDefault() {
 		return plugin;
 	}
+	
+	private static final String DEBUGGER_DIR = "debugger";
 
+	public IPath deployDebuggerSource() throws IOException {		
+		return DeployHelper.deploy(this, DEBUGGER_DIR);		
+	}
 }

@@ -10,6 +10,7 @@ import org.eclipse.dltk.internal.launching.AbstractInterpreterInstallType;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
+import org.eclipse.dltk.utils.DeployHelper;
 import org.osgi.framework.Bundle;
 
 public class GenericTclInstallType extends AbstractInterpreterInstallType {
@@ -44,6 +45,8 @@ public class GenericTclInstallType extends AbstractInterpreterInstallType {
 	}
 
 	protected File createPathFile() throws IOException {
+		DeployHelper.deploy(TclLaunchingPlugin.getDefault(), "scripts").append("");
+		
 		Bundle bundle = TclLaunchingPlugin.getDefault().getBundle();
 		return storeToMetadata(bundle, "path.tcl", "scripts/path.tcl");
 	}

@@ -1,6 +1,10 @@
 package org.eclipse.dltk.tcl.launching;
 
+import java.io.IOException;
+
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.dltk.utils.DeployHelper;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -10,10 +14,10 @@ public class TclLaunchingPlugin extends Plugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.dltk.tcl.launching";
-	
+
 	// The shared instance
 	private static TclLaunchingPlugin plugin;
-	
+
 	/**
 	 * The constructor
 	 */
@@ -23,6 +27,7 @@ public class TclLaunchingPlugin extends Plugin {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
@@ -31,6 +36,7 @@ public class TclLaunchingPlugin extends Plugin {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
@@ -40,7 +46,7 @@ public class TclLaunchingPlugin extends Plugin {
 
 	/**
 	 * Returns the shared instance
-	 *
+	 * 
 	 * @return the shared instance
 	 */
 	public static TclLaunchingPlugin getDefault() {
@@ -51,4 +57,7 @@ public class TclLaunchingPlugin extends Plugin {
 		return PLUGIN_ID;
 	}
 
+	public IPath getConsoleProxy() throws IOException {
+		return DeployHelper.deploy(this, "console").append("ConsoleProxy.tcl");
+	}
 }

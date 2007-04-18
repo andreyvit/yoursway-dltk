@@ -62,8 +62,8 @@ public class DbgpPropertyCommandsTests extends DbgpProtocolTests {
 			}
 		});
 
-		IDbgpProperty property = commands.getPropery("my_var");
-		System.out.println(property);
+		//IDbgpProperty property = commands.getPropery("my_var");
+		//System.out.println(property);
 	}
 
 	public void testGetPropertyByNameAndStackDepth() throws Exception {
@@ -91,7 +91,7 @@ public class DbgpPropertyCommandsTests extends DbgpProtocolTests {
 			}
 		});
 		
-		boolean success = commands.setPropery("prop", 1, "val");
-		assertTrue(success);		
+		//boolean success = commands.setPropery("prop", 1, "val");
+		//assertTrue(success);		
 	}
 }

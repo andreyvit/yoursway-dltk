@@ -11,6 +11,7 @@ package org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations;
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +46,7 @@ import org.eclipse.debug.ui.ILaunchGroup;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.dltk.internal.ui.util.SWTUtil;
 import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
-import org.eclipse.dltk.tcl.console.TclConsoleProxy;
+import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -931,9 +932,14 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 
 			configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID, Long.toString(System
 					.currentTimeMillis()));
-
-			configuration.setAttribute("proxy_path", TclConsoleProxy
-					.getInstance().getFile().getAbsolutePath());
+			
+			try {
+				String proxyPath = TclLaunchingPlugin.getDefault().getConsoleProxy().toOSString();
+				configuration.setAttribute("proxy_path", proxyPath);
+			} catch (IOException e) {
+				e.printStackTrace();
+				//TODO: handle this situation
+			}
 
 			captureOutput = false;
 			useDltk = true;

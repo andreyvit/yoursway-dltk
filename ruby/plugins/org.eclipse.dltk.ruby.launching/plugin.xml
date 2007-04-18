@@ -16,7 +16,16 @@
                id="org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationType"
                modes="run,debug"
                name="Ruby Script"
-               public="true">
+               public="true"
+               sourceLocatorId="rubySourceLocator">
 		  </launchConfigurationType>         
    </extension>
+  <extension
+        point="org.eclipse.debug.core.sourceLocators">
+     <sourceLocator
+           class="org.eclipse.dltk.ruby.internal.launching.RubySourceLookupDirector"
+           id="rubySourceLocator"
+           name="org.eclipse.dltk.ruby.internal.launching.RubySourceLookupDirector">
+     </sourceLocator>
+  </extension>
 </plugin>

@@ -224,7 +224,11 @@
     </extension>
     
     <extension
-       point="org.eclipse.ui.preferencePages">
+       point="org.eclipse.ui.preferencePages"> 	          
+	    <page	          
+	          class="org.eclipse.dltk.javascript.internal.ui.preferences.JavascriptGlobalPreferencesPage"
+	          id="org.eclipse.dltk.javascript.ui.javascript"
+	          name="DLTK &gt; Javascript"/>
 	    <page
 	          category="org.eclipse.dltk.javascript.ui.javascript"
 	          class="org.eclipse.dltk.javascript.internal.ui.preferences.JavascriptEditorPreferencesPage"
@@ -244,11 +248,7 @@
           category="org.eclipse.dltk.javascript.ui.EditorPreferences"
           class="org.eclipse.dltk.javascript.internal.ui.preferences.JavascriptFoldingPreferencePage"
           id="org.eclipse.dltk.javascript.ui.editor.JavascriptFolding"
-          name="Folding"/> 	          
-	    <page	          
-	          class="org.eclipse.dltk.javascript.internal.ui.preferences.JavascriptGlobalPreferencesPage"
-	          id="org.eclipse.dltk.javascript.ui.javascript"
-	          name="DLTK Javascript"/>
+          name="Folding"/>
 	<page
            category="org.eclipse.dltk.javascript.ui.EditorPreferences"
            class="org.eclipse.dltk.javascript.internal.ui.templates.JavaScriptTemplatePreferencePage"

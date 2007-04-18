@@ -6,9 +6,10 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="org.eclipse.dltk.preferences"
             class="org.eclipse.dltk.validators.internal.ui.ValidatorPreferencePage"
-            id="org.eclipse.dltk.validators.ui.validators"
-            name="DLTK Validators">
+            id="org.eclipse.dltk.preferences.validators"
+            name="Validators">
       </page>
    </extension>
    <extension

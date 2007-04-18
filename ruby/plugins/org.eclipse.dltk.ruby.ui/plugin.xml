@@ -65,23 +65,23 @@
        point="org.eclipse.ui.preferencePages">    
        <page
 	          class="org.eclipse.dltk.ruby.internal.ui.preferences.RubyGlobalPreferencesPage"
-	          id="org.eclipse.dltk.ruby.ui.ruby"
-	          name="DLTK Ruby"/>
+	          id="org.eclipse.dltk.ruby.preferences"
+	          name="DLTK &gt; Ruby"/>
 		<page
-	          category="org.eclipse.dltk.ruby.ui.ruby"
+	          category="org.eclipse.dltk.ruby.preferences"
 	          class="org.eclipse.dltk.ruby.internal.ui.preferences.RubyEditorPreferencesPage"
-	          id="org.eclipse.dltk.ruby.ui.EditorPreferences"
+	          id="org.eclipse.dltk.ruby.preferences.editor"
 	          name="Editor"/>
 	    <page
-	          category="org.eclipse.dltk.ruby.ui.EditorPreferences"
+	          category="org.eclipse.dltk.ruby.preferences.editor"
 	          class="org.eclipse.dltk.ruby.internal.ui.preferences.RubyEditorSyntaxColoringPreferencePage"
-	          id="org.eclipse.dltk.ruby.ui.editor.SyntaxColoring"
+	          id="org.eclipse.dltk.ruby.preferences.editor.syntaxcoloring"
 	          name="Syntax Coloring"/>
-     <page
-           category="org.eclipse.dltk.ruby.ui.ruby"
-           class="org.eclipse.dltk.ruby.internal.ui.templates.RubyTemplatePreferencePage"
-           id="rubyTemplatePreferencePage"
-           name="Ruby code templates">
+     	<page
+              category="org.eclipse.dltk.ruby.preferences"
+              class="org.eclipse.dltk.ruby.internal.ui.templates.RubyTemplatePreferencePage"
+              id="org.eclipse.dltk.ruby.preferences.templates"
+              name="Code templates">
      </page>	          
     </extension>
     

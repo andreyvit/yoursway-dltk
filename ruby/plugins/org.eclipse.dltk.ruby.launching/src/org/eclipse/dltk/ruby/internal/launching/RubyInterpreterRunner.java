@@ -30,7 +30,7 @@ public class RubyInterpreterRunner extends AbstractInterpreterRunner
     /*
      * @see InterpreterRunner#getPluginIdentifier()
      */
-    protected String getPluginIdentifier()
+    protected String getPluginId()
     {
         return RubyLaunchingPlugin.getUniqueIdentifier();
     }

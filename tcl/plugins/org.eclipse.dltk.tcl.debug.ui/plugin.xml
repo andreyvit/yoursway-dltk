@@ -184,22 +184,24 @@
       </launchConfigurationTabGroup>
    </extension-->
    <extension
-         point="org.eclipse.ui.preferencePages">
+         point="org.eclipse.ui.preferencePages">         
       <page
-            category="org.eclipse.dltk.tcl.ui.tcl"
-            class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebugPreferencePage"
-            id="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebugPreferences"
-            name="Debug"/>
-   </extension>
-
-   <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-		    category="org.eclipse.dltk.tcl.ui.tcl"
+		    category="org.eclipse.dltk.tcl.preferences"
             class="org.eclipse.dltk.tcl.internal.debug.ui.interpreters.TclInterpreterPreferencePage"
-            id="org.eclipse.dltk.debug.ui.TCLInterpreters"
-            name="Tcl Interpreters"/>
+            id="org.eclipse.dltk.tcl.preferences.interpreters"
+            name="%InterpretersPreferencePage"/>
+      <page
+            category="org.eclipse.dltk.tcl.preferences"
+            class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebugPreferencePage"
+            id="org.eclipse.dltk.tcl.preferences.debug"
+            name="%Debug.PreferencePage"/>            
+      <page
+            category="org.eclipse.dltk.tcl.preferences"
+            class="org.eclipse.dltk.tcl.internal.console.ui.preferences.TclConsolePreferencePage"
+            id="org.eclipse.dltk.tcl.preferences.console"
+            name="%TclConsole.PreferencePage"/>
    </extension>
+   
  <extension
          point="org.eclipse.ui.editorActions">
       <editorContribution
@@ -220,15 +222,7 @@
       <consoleFactory
             class="org.eclipse.dltk.tcl.internal.console.ui.TclConsoleFactory"
             label="%TclConsole.Console"/>
-   </extension>
-   <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            category="org.eclipse.dltk.tcl.ui.tcl"
-            class="org.eclipse.dltk.tcl.internal.console.ui.preferences.TclConsolePreferences"
-            id="org.eclipse.dltk.tcl.console.ui.internal.preferences.TclConsolePreferences"
-            name="%TclConsole.PreferencePage"/>
-   </extension>
+   </extension>   
    <extension
          point="org.eclipse.dltk.console.ui.scriptConsole">
       <scriptConsole

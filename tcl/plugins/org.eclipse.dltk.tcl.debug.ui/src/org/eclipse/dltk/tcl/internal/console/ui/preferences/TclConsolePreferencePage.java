@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class TclConsolePreferences extends PreferencePage implements
+public class TclConsolePreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage {
 
 	private Text newPrompt;

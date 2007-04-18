@@ -18,7 +18,7 @@ public abstract class AbstractInterpreterDebugger extends
 		AbstractInterpreterRunner {
 	private static final boolean DEBUG = DLTKCore.DEBUG;
 
-	protected static final int DEFAULT_WAITING_TIMEOUT = 1000 * 30;
+	protected static final int DEFAULT_WAITING_TIMEOUT = 1000 * 1000;
 
 	protected static final int DEFAULT_PAUSE = 500;
 
@@ -76,7 +76,7 @@ public abstract class AbstractInterpreterDebugger extends
 		String sessionId = configuration.getAttribute(
 				IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
 				(String) null);
-		
+
 		if (sessionId == null) {
 			sessionId = generateSessionId();
 		}
@@ -113,38 +113,31 @@ public abstract class AbstractInterpreterDebugger extends
 		final String sessionId = addDebugTarget(launch, config, dbgpService);
 		final int port = dbgpService.getPort();
 
+		System.out.println("Session id: " + sessionId);
+		System.out.println("Port: " + port);
+
 		try {
 			boolean remoteDebugging = config.getAttribute(
 					IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_REMOTE,
 					false);
 
 			// Starting debugging
-			final String scriptFile = configuration.getScriptToLaunch();
-			final String shell = constructProgramString(configuration);
-			final String host = "localhost";
+			final String host = "127.0.0.1";
 
-			final String[] args = configuration.getProgramArguments();
+			final String[] commandLine = getCommandLine(sessionId, host, port,
+					configuration);
 
-			String[] commandLine = getCommandLine(sessionId, host, port,
-					scriptFile, args, shell);
-
-			if (DEBUG) {
-				System.out.println(getCmdLineAsString(commandLine));
-			}
-
-			File workingDir = getWorkingDir();
+			// if (DEBUG) {
+			System.out.println(renderCommandLine(commandLine));
+			// }
 
 			if (!remoteDebugging) {
 				// Start local debugging engine
 				sleep(DEFAULT_PAUSE);
 
 				try {
-					exec(commandLine, workingDir, configuration
-							.getEnvironment());
-					// Testing for two threads
-					// sleep(2000);
-					// exec(commandLine,
-					// workingDir,configuration.getEnvironment());
+					exec(commandLine, getWorkingDir(configuration),
+							configuration.getEnvironment());
 				} catch (CoreException e) {
 					abort(DLTKLaunchingPlugin.ID_PLUGIN,
 							"Debugging engine not started", null,
@@ -173,9 +166,7 @@ public abstract class AbstractInterpreterDebugger extends
 		// Happy debugging :)
 	}
 
-	protected abstract File getWorkingDir() throws CoreException;
-
-	protected abstract String[] getCommandLine(String id, String host,
-			int port, String script, String args[], String shell)
+	protected abstract String[] getCommandLine(String sessionId, String host,
+			int port, InterpreterRunnerConfiguration configuration)
 			throws CoreException;
 }
