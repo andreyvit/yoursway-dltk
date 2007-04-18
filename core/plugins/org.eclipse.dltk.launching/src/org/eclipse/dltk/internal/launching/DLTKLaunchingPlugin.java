@@ -59,10 +59,7 @@ public class DLTKLaunchingPlugin extends Plugin implements
 	
 	public static final int DEBUGGING_ENGINE_NOT_CONNECTED = 202;
 	
-
 	public final static String ID_PLUGIN = "org.eclipse.dltk.launching";
-
-	public static final String ID_EXTENSION_POINT_DEBUG_CONNECTORS = "debugConnectors"; //$NON-NLS-1$
 
 	public static final String ID_EXTENSION_POINT_RUNTIME_BUILDPATH_ENTRIES = "runtimeBuildpathEntries"; //$NON-NLS-1$
 
@@ -589,7 +586,7 @@ public class DLTKLaunchingPlugin extends Plugin implements
 		 * 
 		 * @param monitor
 		 */
-		private void rebind(IProgressMonitor monitor, IDLTKProject[] projects)
+		public void rebind(IProgressMonitor monitor, IDLTKProject[] projects)
 				throws CoreException {
 			monitor.worked(1);
 
