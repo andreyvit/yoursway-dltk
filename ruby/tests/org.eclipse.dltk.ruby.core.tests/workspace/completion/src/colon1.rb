@@ -1,9 +1,9 @@
-class Mine
+class Mine42
 	class Cool
 	end
 end
 
-class Mix
+class Mix42
 	class Cool2
 	end
 	::A

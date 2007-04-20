@@ -1,6 +1,7 @@
 package org.eclipse.dltk.ruby.ast;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,10 +59,20 @@ public class RubyBlock extends Expression {
 
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
-			// if (var != null)
-			// var.traverse(visitor);
+			for (Iterator iterator = vars.keySet().iterator(); iterator.hasNext();) {
+				Statement var = (Statement) iterator.next();
+				if (var != null)
+					var.traverse(visitor);
+			}
+			for (Iterator iterator = vars.values().iterator(); iterator.hasNext();) {
+				Statement var = (Statement) iterator.next();
+				if (var != null)
+					var.traverse(visitor);
+			}
 			if (body != null)
 				body.traverse(visitor);
+			if (asterixParameter != null)
+				asterixParameter.traverse(visitor);
 			visitor.endvisit(this);
 		}
 	}

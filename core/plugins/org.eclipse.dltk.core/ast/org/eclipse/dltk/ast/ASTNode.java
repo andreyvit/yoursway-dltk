@@ -5,6 +5,8 @@
 package org.eclipse.dltk.ast;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.internal.core.SourceRange;
@@ -152,4 +154,29 @@ public abstract class ASTNode {
 		printer.close();
 		return writer.getBuffer().toString();
 	}
+	
+	/**
+	 * Uses simplest visitor to get childs and returns collection of ASTNode objects
+	 * @return
+	 */
+	public List getChilds () {
+		final List result = new ArrayList();
+		ASTVisitor visitor = new ASTVisitor() {
+
+			public boolean visitGeneral(ASTNode node) throws Exception {
+				if (node == ASTNode.this)
+					return true;
+				result.add(node);
+				return false; //we needn't subchilds and more
+			}
+			
+		};
+		try {
+			this.traverse(visitor);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 }

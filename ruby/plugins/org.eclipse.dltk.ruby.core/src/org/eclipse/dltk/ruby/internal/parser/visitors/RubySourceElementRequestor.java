@@ -27,9 +27,9 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.ruby.ast.ColonExpression;
-import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
-import org.eclipse.dltk.ruby.ast.SymbolReference;
+import org.eclipse.dltk.ruby.ast.RubyColonExpression;
+import org.eclipse.dltk.ruby.ast.RubyConstantDeclaration;
+import org.eclipse.dltk.ruby.ast.RubySymbolReference;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class RubySourceElementRequestor extends SourceElementRequestVisitor {
@@ -219,11 +219,11 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 			Statement expr = (Statement) iter.next();
 			if (expr instanceof SimpleReference) {
 				names.add(((SimpleReference) expr).getName());
-			} else if (expr instanceof ColonExpression) { // FIXME
+			} else if (expr instanceof RubyColonExpression) { // FIXME
 				String name = "";
 
-				while (expr instanceof ColonExpression) {
-					ColonExpression colonExpression = (ColonExpression) expr;
+				while (expr instanceof RubyColonExpression) {
+					RubyColonExpression colonExpression = (RubyColonExpression) expr;
 					name = "::" + colonExpression.getName();
 					Statement left = colonExpression.getLeft();
 					if (!colonExpression.isFull() && left == null) {
@@ -323,8 +323,8 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 				List args = new ArrayList();
 				while (it.hasNext()) {
 					Object sr = (Object) it.next();
-					if( sr instanceof SymbolReference ) {
-						args.add(((SymbolReference)sr).getName());
+					if( sr instanceof RubySymbolReference ) {
+						args.add(((RubySymbolReference)sr).getName());
 					}
 					else {
 						continue;
@@ -395,8 +395,8 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 			System.out.println("==> Statement: " + statement.toString());
 		}
 
-		if (statement instanceof ConstantDeclaration) {
-			ConstantDeclaration constant = (ConstantDeclaration) statement;
+		if (statement instanceof RubyConstantDeclaration) {
+			RubyConstantDeclaration constant = (RubyConstantDeclaration) statement;
 			SimpleReference constName = constant.getName();
 
 			ISourceElementRequestor.FieldInfo info = new ISourceElementRequestor.FieldInfo();

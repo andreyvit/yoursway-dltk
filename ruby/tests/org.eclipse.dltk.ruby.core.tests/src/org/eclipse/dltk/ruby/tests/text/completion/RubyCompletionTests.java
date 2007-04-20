@@ -145,8 +145,8 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertTrue((requestor.getResults().indexOf("Mine") != -1) &&
-				(requestor.getResults().indexOf("Mix") != -1));
+		assertTrue((requestor.getResults().indexOf("Mine42") != -1) &&
+				(requestor.getResults().indexOf("Mix42") != -1));
 				
 	}
 	

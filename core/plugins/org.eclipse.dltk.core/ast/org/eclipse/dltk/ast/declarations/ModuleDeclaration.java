@@ -48,6 +48,7 @@ public class ModuleDeclaration extends ASTNode {
 		super(0, sourceLength);
 
 		this.body = new Block();
+		this.body.setEnd(sourceLength);
 		this.types = new ArrayList();
 		this.functions = new ArrayList();
 		this.variables = new ArrayList();
@@ -137,4 +138,16 @@ public class ModuleDeclaration extends ASTNode {
 		}
 		return (ASTNode[]) results.toArray(new ASTNode[results.size()]);
 	}
+
+	public void setEnd(int end) {		
+		super.setEnd(end);
+		body.setEnd(end);
+	}
+
+	public void setStart(int start) {
+		super.setStart(start);
+		body.setStart(start);
+	}
+	
+	
 }

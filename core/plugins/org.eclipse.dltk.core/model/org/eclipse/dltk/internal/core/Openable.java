@@ -165,6 +165,7 @@ public abstract class Openable extends ModelElement implements IOpenable,
 		// handle behave as if the element existed
 		// (case of compilation units becoming working copies)
 		newElements.put(this, info);
+		System.out.println();
 
 		// build the structure of the openable (this will open the buffer if
 		// needed)

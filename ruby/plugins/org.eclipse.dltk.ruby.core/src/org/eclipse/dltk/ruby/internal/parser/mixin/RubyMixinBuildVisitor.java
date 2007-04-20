@@ -26,14 +26,15 @@ import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
 import org.eclipse.dltk.internal.core.ModelElement;
-import org.eclipse.dltk.ruby.ast.ColonExpression;
-import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
+import org.eclipse.dltk.ruby.ast.RubyCallArgument;
+import org.eclipse.dltk.ruby.ast.RubyClassDeclaration;
+import org.eclipse.dltk.ruby.ast.RubyColonExpression;
+import org.eclipse.dltk.ruby.ast.RubyConstantDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
 import org.eclipse.dltk.ruby.ast.RubySingletonClassDeclaration;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
-import org.eclipse.dltk.ruby.ast.SelfReference;
+import org.eclipse.dltk.ruby.ast.RubySelfReference;
 import org.eclipse.dltk.ruby.core.model.FakeField;
-import org.eclipse.dltk.ruby.internal.core.RubyClassDeclaration;
 
 public class RubyMixinBuildVisitor extends ASTVisitor {
 
@@ -305,20 +306,23 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	public boolean visit(MethodDeclaration decl) throws Exception {
 		IMethod obj = null;
 		String name = decl.getName();
-		if (moduleAvailable) { 
-			obj = (IMethod) findModelElementFor(decl);
+		if (moduleAvailable) {
+			IModelElement element = findModelElementFor(decl);
+			if (!(element instanceof IMethod))
+				System.out.println();
+			obj = (IMethod) element;
 		}
 		if (decl instanceof RubySingletonMethodDeclaration) {
 			RubySingletonMethodDeclaration singl = (RubySingletonMethodDeclaration) decl;
 			Statement receiver = singl.getReceiver();
-			if (receiver instanceof SelfReference) {
+			if (receiver instanceof RubySelfReference) {
 				Scope scope = peekScope();
 				MetaClassScope metaScope = new MetaClassScope(scope.getNode(),
 						scope.getClassKey());
 				String method = metaScope.reportMethod(name, obj);
 				scopes.push(new MethodScope(decl, metaScope, method));
 			} else if (receiver instanceof ConstantReference
-					|| receiver instanceof ColonExpression) {
+					|| receiver instanceof RubyColonExpression) {
 				String evaluatedClassKey = evaluateClassKey(receiver);
 				if (evaluatedClassKey != null) {
 					MetaClassScope metaScope = new MetaClassScope(decl,
@@ -375,14 +379,16 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		} else if (s instanceof CallExpression) {
 			CallExpression call = (CallExpression) s;
 			if (call.getReceiver() == null && call.getName().equals("include")) {
-				Expression expr = (Expression) call.getArgs().getExpressions().get(0);
+				Statement expr = (Expression) call.getArgs().getExpressions().get(0);
+				if (expr instanceof RubyCallArgument)
+					expr = ((RubyCallArgument)expr).getValue();
 				Scope scope = peekScope();
 				String incl = evaluateClassKey(expr);
 				if (incl != null)
 					scope.reportInclude(incl);
 			}
-		} else if (s instanceof ConstantDeclaration) {
-			ConstantDeclaration constantDeclaration = (ConstantDeclaration) s;
+		} else if (s instanceof RubyConstantDeclaration) {
+			RubyConstantDeclaration constantDeclaration = (RubyConstantDeclaration) s;
 			String name = constantDeclaration.getName().getName();
 			Scope scope = peekScope();
 			IField obj = null;
@@ -397,18 +403,22 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	public boolean visit(TypeDeclaration decl) throws Exception {
 		IType obj = null;
 		if (moduleAvailable) {
-			obj = (IType) findModelElementFor(decl);
+			System.out.println();
+			IModelElement elementFor = findModelElementFor(decl);
+			if (!(elementFor instanceof IType))
+				System.out.println();
+			obj = (IType) elementFor;
 		}
 		boolean module =  (decl.getModifiers() & Modifiers.AccModule) != 0;
 		if (decl instanceof RubySingletonClassDeclaration) {
 			RubySingletonClassDeclaration declaration = (RubySingletonClassDeclaration) decl;
 			Statement receiver = declaration.getReceiver();
-			if (receiver instanceof SelfReference) {
+			if (receiver instanceof RubySelfReference) {
 				Scope scope = peekScope();
 				scopes.push(new MetaClassScope(decl, scope.getClassKey()));
 				return true;
 			} else if (receiver instanceof ConstantReference
-					|| receiver instanceof ColonExpression) {
+					|| receiver instanceof RubyColonExpression) {
 				String evaluatedClassKey = evaluateClassKey(receiver);
 				if (evaluatedClassKey != null) {
 					MetaClassScope metaScope = new MetaClassScope(decl,
@@ -453,7 +463,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		if (requestor != null) {
 			requestor.reportElement(info);
 			// if (DLTKCore.DEBUG_INDEX) {
-//			 System.out.println("Mixin reported: " + key);
+			 System.out.println("Mixin reported: " + key);
 			// }
 //			if (key.startsWith("Object"))
 //				System.out.println("######################## Object key reported: " + key);
@@ -463,8 +473,8 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	}
 
 	private String evaluateClassKey(Statement expr) {
-		if (expr instanceof ColonExpression) {
-			ColonExpression colonExpression = (ColonExpression) expr;
+		if (expr instanceof RubyColonExpression) {
+			RubyColonExpression colonExpression = (RubyColonExpression) expr;
 			if (colonExpression.isFull()) {
 				return colonExpression.getName();
 			} else {

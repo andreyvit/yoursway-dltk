@@ -26,8 +26,9 @@ public class RubyDAssgnExpression extends Expression {
 	}
 
 	public void traverse(ASTVisitor visitor) throws Exception {
-		// TODO Auto-generated method stub
-
+		if (visitor.visit(this)) {			
+			visitor.endvisit(this);
+		}
 	}
 
 }

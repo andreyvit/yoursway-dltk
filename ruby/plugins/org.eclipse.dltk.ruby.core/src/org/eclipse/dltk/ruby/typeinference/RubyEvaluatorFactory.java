@@ -13,15 +13,16 @@ import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.IfStatement;
 import org.eclipse.dltk.ast.statements.ReturnStatement;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.ruby.ast.BacktickStringLiteral;
-import org.eclipse.dltk.ruby.ast.ColonExpression;
-import org.eclipse.dltk.ruby.ast.ConstantDeclaration;
-import org.eclipse.dltk.ruby.ast.DynamicBackquoteStringExpression;
-import org.eclipse.dltk.ruby.ast.DynamicStringExpression;
+import org.eclipse.dltk.ruby.ast.RubyBacktickStringLiteral;
+import org.eclipse.dltk.ruby.ast.RubyCallArgument;
+import org.eclipse.dltk.ruby.ast.RubyColonExpression;
+import org.eclipse.dltk.ruby.ast.RubyConstantDeclaration;
+import org.eclipse.dltk.ruby.ast.RubyDynamicBackquoteStringExpression;
+import org.eclipse.dltk.ruby.ast.RubyDynamicStringExpression;
 import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
 import org.eclipse.dltk.ruby.ast.RubyCaseStatement;
 import org.eclipse.dltk.ruby.ast.RubyReturnStatement;
-import org.eclipse.dltk.ruby.ast.SelfReference;
+import org.eclipse.dltk.ruby.ast.RubySelfReference;
 import org.eclipse.dltk.ruby.typeinference.evaluators.ArrayEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.AssignmentEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.BlockEvaluator;
@@ -36,6 +37,7 @@ import org.eclipse.dltk.ruby.typeinference.evaluators.NonTypeConstantTypeEvaluat
 import org.eclipse.dltk.ruby.typeinference.evaluators.NullGoalEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.NumericLiteralEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.ReturnStatementEvaluator;
+import org.eclipse.dltk.ruby.typeinference.evaluators.RubyArgumentTypeEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.SelfReferenceEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.StringLiteralEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.VariableReferenceEvaluator;
@@ -61,11 +63,11 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 				return new NumericLiteralEvaluator(goal);
 			else if (expr instanceof StringLiteral)
 				return new StringLiteralEvaluator(goal);
-			else if (expr instanceof DynamicBackquoteStringExpression)
+			else if (expr instanceof RubyDynamicBackquoteStringExpression)
 				return new StringLiteralEvaluator(goal);
-			else if (expr instanceof DynamicStringExpression)
+			else if (expr instanceof RubyDynamicStringExpression)
 				return new StringLiteralEvaluator(goal);
-			else if (expr instanceof BacktickStringLiteral)
+			else if (expr instanceof RubyBacktickStringLiteral)
 				return new StringLiteralEvaluator(goal);
 			else if (expr instanceof BooleanLiteral)
 				return new BooleanLiteralEvaluator(goal);
@@ -76,7 +78,7 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 			else if (expr instanceof ConstantReference)
 				//return new AssignmentEvaluator(goal);
 				return new ConstantReferenceEvaluator(goal);
-			else if (expr instanceof SelfReference)
+			else if (expr instanceof RubySelfReference)
 				return new SelfReferenceEvaluator(goal);
 			else if (expr instanceof CallExpression)
 				return new MethodCallTypeEvaluator((ExpressionTypeGoal) goal);
@@ -86,14 +88,18 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 				return new BlockEvaluator((ExpressionTypeGoal) goal);
 			else if (expr instanceof MethodDeclaration) 
 				return new FixedTypeEvaluator (goal, new RubyClassType("NilClass"));
-			else if (expr instanceof ColonExpression) {
+			else if (expr instanceof RubyColonExpression) {
 				return new ColonExpressionEvaluator(goal);
-			} else if (expr instanceof ConstantDeclaration) {
+			} else if (expr instanceof RubyConstantDeclaration) {
 				return new ConstantReferenceEvaluator(goal);
 			} else if (expr instanceof ReturnStatement || expr instanceof RubyReturnStatement) {
 				return new ReturnStatementEvaluator(goal);
-			} else if (expr instanceof RubyCaseStatement)
+			} else if (expr instanceof RubyCaseStatement) {
 				return new CaseStatementTypeEvaluator(goal);
+			} else if (expr instanceof RubyCallArgument) {
+				return new RubyArgumentTypeEvaluator(goal);
+			}
+			
 		} else if (goal instanceof ConstantTypeGoal)
 			return new ConstantReferenceEvaluator((ConstantTypeGoal) goal);
 		else if (goal instanceof MethodReturnTypeGoal)
@@ -112,12 +118,12 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 			if (expr instanceof ConstantReference) {
 				ConstantReference reference = (ConstantReference) expr;
 				return new ConstantTypeGoal(goal.getContext(), reference.sourceStart(), reference.getName());
-			} else if (expr instanceof ConstantDeclaration) {
-				SimpleReference reference = ((ConstantDeclaration) expr).getName();
+			} else if (expr instanceof RubyConstantDeclaration) {
+				SimpleReference reference = ((RubyConstantDeclaration) expr).getName();
 				// TODO: consider the constant's path
 				return new ConstantTypeGoal(goal.getContext(), reference.sourceStart(), reference.getName());
-			} else if (expr instanceof ColonExpression) {
-				ColonExpression colonExpression = (ColonExpression) expr;
+			} else if (expr instanceof RubyColonExpression) {
+				RubyColonExpression colonExpression = (RubyColonExpression) expr;
 				return new ColonExpressionGoal((BasicContext) goal.getContext(), colonExpression);
 			}
 		}

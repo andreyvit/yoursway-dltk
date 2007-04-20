@@ -59,9 +59,11 @@ public class CompoundStatement extends Statement {
 
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
-			for (Iterator iter = statements.iterator(); iter.hasNext();) {
-				Statement s = (Statement) iter.next();
-				s.traverse(visitor);				
+			if (statements != null) {
+				for (Iterator iter = statements.iterator(); iter.hasNext();) {
+					Statement s = (Statement) iter.next();
+					s.traverse(visitor);				
+				}
 			}
 			visitor.endvisit(this);
 		}

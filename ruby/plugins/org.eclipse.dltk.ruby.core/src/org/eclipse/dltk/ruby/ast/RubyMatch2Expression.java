@@ -2,24 +2,25 @@ package org.eclipse.dltk.ruby.ast;
 
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.statements.Statement;
 
 public class RubyMatch2Expression extends Expression {
 
-	private final Expression receiver;
-	private final Expression value;
+	private final Statement receiver;
+	private final Statement value;
 
-	public RubyMatch2Expression(int start, int end, Expression receiver,
-			Expression value) {
+	public RubyMatch2Expression(int start, int end, Statement receiver,
+			Statement value) {
 		super(start, end);
 		this.receiver = receiver;
 		this.value = value;
 	}
 
-	public Expression getReceiver() {
+	public Statement getReceiver() {
 		return receiver;
 	}
 
-	public Expression getValue() {
+	public Statement getValue() {
 		return value;
 	}
 

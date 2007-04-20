@@ -4,7 +4,7 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
-import org.eclipse.dltk.ruby.ast.ColonExpression;
+import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.typeinference.ConstantTypeGoal;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
@@ -34,7 +34,7 @@ public class ColonExpressionEvaluator extends GoalEvaluator {
 	}
 
 	public Object produceResult() { 		
-		ColonExpression expr = getTypedGoal().getColonExpression();
+		RubyColonExpression expr = getTypedGoal().getColonExpression();
 		Statement left = expr.getLeft();
 		
 		if (left != null) {
@@ -57,7 +57,7 @@ public class ColonExpressionEvaluator extends GoalEvaluator {
 	}
 
 	public IGoal[] init() {
-		ColonExpression expr = getTypedGoal().getColonExpression();
+		RubyColonExpression expr = getTypedGoal().getColonExpression();
 		
 		Statement left = expr.getLeft();
 		

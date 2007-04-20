@@ -117,8 +117,8 @@ public class TypeDeclaration extends Declaration
 	public void traverse( ASTVisitor visitor ) throws Exception {
 
 		if( visitor.visit( this ) ) {
-			if( this.fSuperClasses != null ) {
-				this.fSuperClasses.traverse( visitor );
+			if( this.getSuperClasses() != null ) {
+				this.getSuperClasses().traverse( visitor );
 			}
 			if( this.fBody != null ) {
 				fBody.traverse( visitor );

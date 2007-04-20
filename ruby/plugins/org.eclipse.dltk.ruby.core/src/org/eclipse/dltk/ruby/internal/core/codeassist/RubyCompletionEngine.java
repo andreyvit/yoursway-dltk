@@ -30,7 +30,7 @@ import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.internal.core.ModelElement;
-import org.eclipse.dltk.ruby.ast.ColonExpression;
+import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyBlock;
 import org.eclipse.dltk.ruby.ast.RubyDAssgnExpression;
 import org.eclipse.dltk.ruby.core.RubyNature;
@@ -177,9 +177,9 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					} else if (minimalNode instanceof ConstantReference) {
 						completeConstant(modelModule, moduleDeclaration,
 								(ConstantReference) minimalNode, position);
-					} else if (minimalNode instanceof ColonExpression) {
+					} else if (minimalNode instanceof RubyColonExpression) {
 						completeColonExpression(modelModule, moduleDeclaration,
-								(ColonExpression) minimalNode, position);
+								(RubyColonExpression) minimalNode, position);
 					} else if (minimalNode instanceof SimpleReference) {
 						completeSimpleRef(modelModule, moduleDeclaration,
 								((SimpleReference) minimalNode).getName(), position);
@@ -200,6 +200,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
 				modelModule, moduleDeclaration), (Statement) receiver);
 		IEvaluatedType type = inferencer.evaluateType(goal, 3000);
+		System.out.println();
 		return RubyModelUtils.searchClassMethods(modelModule,
 				moduleDeclaration, type, pattern);
 	}
@@ -317,7 +318,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 	private void completeColonExpression(
 			org.eclipse.dltk.core.ISourceModule module,
-			ModuleDeclaration moduleDeclaration, ColonExpression node,
+			ModuleDeclaration moduleDeclaration, RubyColonExpression node,
 			int position) {
 		String content;
 		try {

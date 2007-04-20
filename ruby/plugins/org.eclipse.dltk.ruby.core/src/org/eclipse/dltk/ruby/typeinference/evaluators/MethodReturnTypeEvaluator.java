@@ -147,7 +147,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		IMethod resultMethodFromSameModule = null; 
 		for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
 			IMethod method = (IMethod) iterator.next();
-			if (method instanceof FakeMethod)
+			if (method instanceof FakeMethod || method == null)
 				continue;
 			String elementName = method.getElementName();			
 			if (elementName.equals(methodName)) {

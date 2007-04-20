@@ -51,8 +51,11 @@ public class RubyCallArgument extends Expression {
 	}
 
 	public void traverse(ASTVisitor visitor) throws Exception {
-		// TODO Auto-generated method stub
-
+		if (visitor.visit(this)) {
+			if (getValue() != null)
+				getValue().traverse(visitor);
+			visitor.endvisit(this);
+		}
 	}
 
 }

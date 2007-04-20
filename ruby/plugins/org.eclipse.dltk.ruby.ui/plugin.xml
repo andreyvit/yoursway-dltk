@@ -94,6 +94,14 @@
             id="org.eclipse.dltk.ruby.ui.RubyDocumentationView">
       </view>  
       
+      <view
+            name="%Views.ASTOutline"
+            icon="/icons/ruby_obj.gif"
+            category="org.eclipse.dltk.ui.main"
+            class="org.eclipse.dltk.ruby.internal.ui.editor.ASTOutline"
+            id="org.eclipse.dltk.ui.ASTOutline">
+      </view>
+      
       <category
             id="org.eclipse.dltk.ruby.ui"
             name="DLTK Ruby"

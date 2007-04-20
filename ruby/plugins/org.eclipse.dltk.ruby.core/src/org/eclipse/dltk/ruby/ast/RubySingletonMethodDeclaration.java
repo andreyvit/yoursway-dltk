@@ -1,12 +1,10 @@
 package org.eclipse.dltk.ruby.ast;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.ast.declarations.Argument;
-import org.eclipse.dltk.ast.declarations.Decorator;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
@@ -19,11 +17,6 @@ public class RubySingletonMethodDeclaration extends MethodDeclaration {
 		super(name, nameStart, nameEnd, declStart, declEnd);
 		this.receiver = receiver;
 	}
-	
-	
-
-
-
 
 	public RubySingletonMethodDeclaration(DLTKToken function_t, DLTKToken name,
 			Statement receiver) {
@@ -31,28 +24,14 @@ public class RubySingletonMethodDeclaration extends MethodDeclaration {
 		this.receiver = receiver;
 	}
 
-
-
-
-
-
 	public Statement getReceiver() {
 		return receiver;
 	}
 
 	public void traverse(ASTVisitor visitor) throws Exception {
-		List decorators = this.getDecorators();
 		Block body = this.getBody();
 		if (visitor.visit(this)) {
-			// Decorators
-			if (decorators != null) {
-				Iterator it = decorators.iterator();
-				while (it.hasNext()) {
-					Decorator dec = (Decorator) it.next();
-					dec.traverse(visitor);
-				}
-			}
-
+			
 			// Receiver
 			if (receiver != null)
 				receiver.traverse(visitor);

@@ -371,7 +371,8 @@ public class SourceModuleStructureRequestor implements ISourceElementRequestor {
 	}
 	
 	protected void exitMember(int declarationEnd) {
-		SourceRefElementInfo info = (SourceRefElementInfo) this.infoStack.pop();
+		Object object = this.infoStack.pop();
+		SourceRefElementInfo info = (SourceRefElementInfo) object;
 		info.setSourceRangeEnd(declarationEnd);
 		this.handleStack.pop();
 	}

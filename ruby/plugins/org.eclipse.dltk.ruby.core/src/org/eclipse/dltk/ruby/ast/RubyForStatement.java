@@ -51,8 +51,13 @@ public class RubyForStatement extends Statement {
 	}
 
 	public void traverse(ASTVisitor visitor) throws Exception {
-		// TODO Auto-generated method stub
-
+		if (visitor.visit(this)) {
+			if (expression != null)
+				expression.traverse(visitor);
+			if (block != null)
+				block.traverse(visitor);
+			visitor.endvisit(this);
+		}
 	}
 
 }

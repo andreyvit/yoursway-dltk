@@ -5,7 +5,7 @@ import java.util.List;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.evaluation.types.UnknownType;
-import org.eclipse.dltk.ruby.ast.SelfReference;
+import org.eclipse.dltk.ruby.ast.RubySelfReference;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.ISourceModuleContext;
@@ -54,7 +54,7 @@ public class MethodCallTypeEvaluator extends GoalEvaluator {
 			ExpressionTypeGoal typedGoal = (ExpressionTypeGoal) goal;
 			CallExpression expression = (CallExpression) typedGoal.getExpression();
 			Statement receiver = expression.getReceiver();
-			if (receiver == null || receiver instanceof SelfReference) {
+			if (receiver == null || receiver instanceof RubySelfReference) {
 				// handling SelfReference here just for simplicity, could be
 				// left to the TI engine as well
 				receiverType = RubyTypeInferencingUtils.determineSelfClass(goal.getContext(),

@@ -154,6 +154,7 @@ public abstract class ModelElement extends PlatformObject implements
 		boolean hadTemporaryCache = manager.hasTemporaryCache();
 		try {
 			HashMap newElements = manager.getTemporaryCache();
+			System.out.println();
 			generateInfos(info, newElements, monitor);
 			if (info == null) {
 				info = newElements.get(this);

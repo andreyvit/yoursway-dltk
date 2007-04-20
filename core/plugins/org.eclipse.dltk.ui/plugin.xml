@@ -159,7 +159,7 @@
             category="org.eclipse.dltk.ui.main"
             class="org.eclipse.dltk.internal.ui.typehierarchy.TypeHierarchyViewPart"
             id="org.eclipse.dltk.ui.TypeHierarchy">
-      </view>
+      </view>      
     <category
           id="org.eclipse.dltk.ui.main"
           name="DLTK"/>

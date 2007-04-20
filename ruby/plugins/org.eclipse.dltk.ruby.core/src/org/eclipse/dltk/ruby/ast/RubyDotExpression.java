@@ -8,6 +8,7 @@ public class RubyDotExpression extends Expression {
 
 	private final Statement begin;
 	private final Statement end;
+	private boolean exclusive;
 
 	public Statement getBegin() {
 		return begin;
@@ -21,6 +22,27 @@ public class RubyDotExpression extends Expression {
 		super(start, end);
 		this.begin = begin;
 		this.end = end2;
+		exclusive = false;
+	}
+	
+	
+
+	public RubyDotExpression(Statement begin,
+			Statement end2, boolean exclusive) {
+		super(begin.sourceStart(), end2.sourceEnd());
+		this.begin = begin;
+		this.end = end2;
+		this.exclusive = exclusive;
+	}
+	
+	
+
+	public boolean isExclusive() {
+		return exclusive;
+	}
+
+	public void setExclusive(boolean exclusive) {
+		this.exclusive = exclusive;
 	}
 
 	public int getKind() {

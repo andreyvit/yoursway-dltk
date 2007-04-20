@@ -35,7 +35,7 @@ import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.TypeNameMatch;
 import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
 import org.eclipse.dltk.internal.core.ModelElement;
-import org.eclipse.dltk.ruby.ast.ColonExpression;
+import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
@@ -150,8 +150,8 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 					// of
 					// non-Type
 					// constants
-				} else if (node instanceof ColonExpression) {
-					ColonExpression colonExpression = (ColonExpression) node;
+				} else if (node instanceof RubyColonExpression) {
+					RubyColonExpression colonExpression = (RubyColonExpression) node;
 					selectTypes(modelModule, parsedUnit, colonExpression);
 				} else if (node instanceof VariableReference) {
 					selectionOnVariable(modelModule, parsedUnit,
@@ -239,8 +239,8 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 				}
 			};
 			String unqualifiedName = null;
-			if (node instanceof ColonExpression) {
-				ColonExpression expr = (ColonExpression) node;
+			if (node instanceof RubyColonExpression) {
+				RubyColonExpression expr = (RubyColonExpression) node;
 				unqualifiedName = expr.getName();
 			} else if (node instanceof ConstantReference) {
 				ConstantReference expr = (ConstantReference) node;

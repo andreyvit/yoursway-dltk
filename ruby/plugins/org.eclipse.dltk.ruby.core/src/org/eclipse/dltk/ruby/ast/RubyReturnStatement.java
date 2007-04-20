@@ -1,6 +1,5 @@
 package org.eclipse.dltk.ruby.ast;
 
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.CallArgumentsList;
 import org.eclipse.dltk.ast.expressions.Expression;
