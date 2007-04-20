@@ -62,6 +62,13 @@ Used to specify parsers, locators, validators, etc.
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="priority" type="string" use="default" value="0">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

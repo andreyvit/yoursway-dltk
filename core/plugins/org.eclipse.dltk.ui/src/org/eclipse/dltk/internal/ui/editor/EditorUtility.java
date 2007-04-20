@@ -27,7 +27,9 @@ import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.ISourceReference;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.util.Messages;
+import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
+import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.IRegion;
@@ -164,7 +166,7 @@ public class EditorUtility {
 					String editorID;
 						
 					try {
-						IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(element);
+						IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager.getLanguageToolkit(element);
 						editorID = toolkit.getEditorID(inputElement);
 					} catch (CoreException e) {
 						return null;

@@ -17,5 +17,5 @@ Export-Package: org.eclipse.dltk.tcl,
  org.eclipse.dltk.tcl.internal.core,
  org.eclipse.dltk.tcl.internal.core.codeassist,
  org.eclipse.dltk.tcl.internal.parser,
- org.eclipse.dltk.tcl.internal.parsers.raw,
- org.eclipse.dltk.tcl.internal.problem
+ org.eclipse.dltk.tcl.internal.parsers.raw
+ 

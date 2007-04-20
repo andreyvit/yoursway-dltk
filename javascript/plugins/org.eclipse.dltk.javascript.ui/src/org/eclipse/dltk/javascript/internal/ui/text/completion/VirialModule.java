@@ -30,6 +30,7 @@ import org.eclipse.dltk.internal.core.ProjectFragment;
 import org.eclipse.dltk.internal.core.ScriptFolder;
 import org.eclipse.dltk.internal.core.SearchableEnvironment;
 import org.eclipse.dltk.internal.core.util.MementoTokenizer;
+import org.eclipse.dltk.javascript.core.JavaScriptNature;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class VirialModule extends ModelElement implements ISourceModule,
@@ -318,9 +319,19 @@ public class VirialModule extends ModelElement implements ISourceModule,
 			}
 		}
 		// code complete
-		ICompletionEngine engine = toolkit.createCompletionEngine(environment,
-				requestor, project.getOptions(true), project);
+		ICompletionEngine engine = null;
+		try {
+			engine = DLTKLanguageManager.getCompletionEngine(JavaScriptNature.NATURE_ID);
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		if (engine != null) {
+			engine.setEnvironment(environment);
+			engine.setRequestor(requestor);
+			engine.setOptions(project.getOptions(true));
+			engine.setProject(project);
 			engine.complete(this, offset, 0);
 		}
 	}

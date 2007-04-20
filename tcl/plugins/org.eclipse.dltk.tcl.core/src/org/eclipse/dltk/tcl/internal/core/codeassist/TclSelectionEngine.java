@@ -34,10 +34,12 @@ import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.internal.codeassist.select.SelectionNodeFound;
 import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
+import org.eclipse.dltk.internal.core.SearchableEnvironment;
 import org.eclipse.dltk.tcl.ast.TclModuleDeclaration;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
+import org.eclipse.dltk.tcl.core.TclLanguageToolkit;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnAST;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnKeywordOrFunction;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnVariable;
@@ -58,12 +60,8 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 
 	private IDLTKLanguageToolkit toolkit;
 
-	public TclSelectionEngine(ISearchableEnvironment environment, Map options,
-			IDLTKLanguageToolkit toolkit) {
-		super(options);
-		this.toolkit = toolkit;
-		this.nameEnvironment = environment;
-		this.lookupEnvironment = new LookupEnvironment(this, nameEnvironment);
+	public TclSelectionEngine() {
+		this.toolkit = TclLanguageToolkit.getDefault();
 	}
 
 	public IModelElement[] select(ISourceModule sourceUnit,

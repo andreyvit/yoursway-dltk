@@ -7,50 +7,25 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.dltk.codeassist.ICompletionEngine;
-import org.eclipse.dltk.codeassist.ISelectionEngine;
-import org.eclipse.dltk.compiler.ISourceElementRequestor;
-import org.eclipse.dltk.compiler.problem.DefaultProblemFactory;
-import org.eclipse.dltk.compiler.problem.IProblemFactory;
-import org.eclipse.dltk.compiler.problem.IProblemReporter;
-import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.ICallProcessor;
 import org.eclipse.dltk.core.ICalleeProcessor;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelStatus;
-import org.eclipse.dltk.core.ISearchableEnvironment;
-import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.IType;
-import org.eclipse.dltk.core.search.DLTKSearchParticipant;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
-import org.eclipse.dltk.core.search.IMatchLocatorParser;
-import org.eclipse.dltk.core.search.SearchPattern;
-import org.eclipse.dltk.core.search.SearchRequestor;
-import org.eclipse.dltk.core.search.indexing.SourceIndexerRequestor;
-import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.core.util.Messages;
 import org.eclipse.dltk.tcl.internal.core.TclCalleeProcessor;
-import org.eclipse.dltk.tcl.internal.core.TclSourceIndexerRequestor;
-import org.eclipse.dltk.tcl.internal.core.codeassist.TclCompletionEngine;
-import org.eclipse.dltk.tcl.internal.core.codeassist.TclSelectionEngine;
 import org.eclipse.dltk.tcl.internal.core.search.TclCallProcessor;
-import org.eclipse.dltk.tcl.internal.core.search.TclMatchLocator;
-import org.eclipse.dltk.tcl.internal.parser.TclSourceElementParser;
-import org.eclipse.dltk.tcl.internal.problem.TclProblemReporter;
 
 
 public class TclLanguageToolkit implements IDLTKLanguageToolkit {
@@ -139,24 +114,6 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 	public TclLanguageToolkit() {
 	}
 
-	public IProblemReporter createProblemReporter(IResource resource,
-			IProblemFactory factory) {
-		return new TclProblemReporter(resource, factory);
-	}
-
-	public IProblemFactory createProblemFactory() {
-		return new DefaultProblemFactory();
-	}
-
-	public ISourceElementParser createSourceElementParser(
-			ISourceElementRequestor requestor,
-			IProblemReporter problemReporter, Map options)
-			throws CoreException {
-
-		return new TclSourceElementParser(requestor,
-				(TclProblemReporter) problemReporter);
-	}
-
 	public boolean languageSupportZIPBuildpath() {
 		return false;
 	}
@@ -232,65 +189,20 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 		}
 		return false;
 	}
-
-	public ICompletionEngine createCompletionEngine(
-			ISearchableEnvironment environment, CompletionRequestor requestor,
-			Map options, IDLTKProject project) {
-		return new TclCompletionEngine(environment, requestor, options, project);
-	}
-
-	public IMatchLocatorParser createMatchParser(MatchLocator locator) {
-		return new TclMatchLocatorParser(locator);
-	}
-
-	public String getPartitioningID() {
-		return TclConstants.TCL_PARTITIONING;
-	}
-
+	
 	public String getNatureID() {
 		return TclNature.NATURE_ID;
-	}
-
-	public String getEditorID(Object inputElement) {
-		return "org.eclipse.dltk.tcl.ui.editor.TclEditor";
-	}
-
-	public ISelectionEngine createSelectionEngine(ISearchableEnvironment environment, Map options) {
-		return new TclSelectionEngine(environment, options, this);
-	}
-	public SourceIndexerRequestor createSourceRequestor() {
-		return new TclSourceIndexerRequestor();
-	}
-
-	public DLTKSearchParticipant createSearchParticipant() {
-		return null;
 	}
 
 	public static IDLTKLanguageToolkit getDefault() {
 		return sInstance;
 	}
 
-	public MatchLocator createMatchLocator(SearchPattern pattern, SearchRequestor requestor, IDLTKSearchScope scope, SubProgressMonitor monitor) {
-		return new TclMatchLocator(pattern, requestor, scope, monitor);
-	}
-
-	public ICalleeProcessor createCalleeProcessor(IMethod method, IProgressMonitor monitor, IDLTKSearchScope scope) {
-		return new TclCalleeProcessor( method, monitor, scope );
-	}
 
 	public String getDelimeterReplacerString() {
 		return "::";
 	}
 
-	public ICallProcessor createCallProcessor() {
-		return new TclCallProcessor();
-	}
-
-	public IType[] getParentTypes(IType type) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	public String getLanguageName()
 	{
 		return "Tcl";

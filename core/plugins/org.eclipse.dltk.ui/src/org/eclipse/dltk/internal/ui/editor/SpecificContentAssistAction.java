@@ -12,9 +12,9 @@ package org.eclipse.dltk.internal.ui.editor;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.ui.DLTKUILanguageManager;
+import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.text.completion.CompletionProposalCategory;
 import org.eclipse.dltk.ui.text.completion.CompletionProposalComputerRegistry;
 import org.eclipse.jface.action.Action;
@@ -125,7 +125,7 @@ final class SpecificContentAssistAction extends Action implements IUpdate {
 		IModelElement modelElement = EditorUtility.getEditorInputModelElement(this.fEditor, false);
 		if (modelElement != null) {
 			try {
-				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(modelElement);
+				IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager.getLanguageToolkit(modelElement);
 				if (toolkit != null) {
 					partitioning = toolkit.getPartitioningID();
 				}

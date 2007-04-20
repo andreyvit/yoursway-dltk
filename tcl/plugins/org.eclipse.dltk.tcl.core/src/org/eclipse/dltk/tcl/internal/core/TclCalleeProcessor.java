@@ -9,9 +9,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ICalleeProcessor;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
@@ -19,7 +21,7 @@ import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
-import org.eclipse.dltk.tcl.internal.parser.TclSourceElementParser;
+import org.eclipse.dltk.tcl.core.TclNature;
 
 
 public class TclCalleeProcessor implements ICalleeProcessor {
@@ -151,12 +153,14 @@ public class TclCalleeProcessor implements ICalleeProcessor {
 		try {
 			String methodSource = method.getSource();
 			CaleeSourceElementRequestor requestor = new CaleeSourceElementRequestor();
-			TclSourceElementParser parser = new TclSourceElementParser(requestor);
+			ISourceElementParser parser = DLTKLanguageManager.getSourceElementParser(TclNature.NATURE_ID);
+			parser.setRequestor(requestor);
 			parser.parseSourceModule(methodSource.toCharArray(), null);
 
 			return fSearchResults;
 		} catch (ModelException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 		return fSearchResults;

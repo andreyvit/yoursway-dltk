@@ -9,9 +9,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ICalleeProcessor;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
@@ -20,6 +22,7 @@ import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.internal.javascript.parser.JavaScriptSourceElementParser;
+import org.eclipse.dltk.javascript.core.JavaScriptNature;
 
 
 public class JavaScriptCalleeProcessor implements ICalleeProcessor {
@@ -155,11 +158,15 @@ public class JavaScriptCalleeProcessor implements ICalleeProcessor {
 			this.index = methodSource.indexOf('{');
 			methodSource=methodSource.substring(index);
 			CaleeSourceElementRequestor requestor = new CaleeSourceElementRequestor();
-			JavaScriptSourceElementParser parser = new JavaScriptSourceElementParser(requestor,null);
+			ISourceElementParser parser = DLTKLanguageManager.getSourceElementParser(JavaScriptNature.NATURE_ID);
+			parser.setRequestor(requestor);
 			parser.parseSourceModule(methodSource.toCharArray(), null);
 
 			return fSearchResults;
 		} catch (ModelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -6,10 +6,9 @@ import java.io.InputStreamReader;
 
 import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.compiler.DLTKParsingManager;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
-import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
-import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
+import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.tests.Activator;
 import org.eclipse.dltk.utils.CorePrinter;
 
@@ -38,7 +37,7 @@ public class RubyParserTests extends AbstractModelTests {
 					buffer.append('\n');
 				}
 			}
-			ISourceParser parser = DLTKParsingManager.createParser(RubyLanguageToolkit.getDefault());
+			ISourceParser parser = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
 			ModuleDeclaration module = parser.parse(buffer.toString().toCharArray(), null);
 			CorePrinter printer = new CorePrinter(System.out, true);
 			module.printNode(printer);

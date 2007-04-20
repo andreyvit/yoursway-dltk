@@ -1,11 +1,12 @@
 package org.eclipse.dltk.ruby.internal.parser;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.compiler.DLTKParsingManager;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceModuleInfoCache;
@@ -13,13 +14,14 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
+import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.internal.parser.visitors.RubySourceElementRequestor;
 
 public class RubySourceElementParser implements ISourceElementParser {
 
 	public static final Object AST = "ast";
 	private ISourceElementRequestor fRequestor = null;
-	private final IProblemReporter problemReporter;
+	private IProblemReporter problemReporter;
 
 	/**
 	 * Python lexer handler helper.
@@ -29,10 +31,10 @@ public class RubySourceElementParser implements ISourceElementParser {
 	 * @param enveronment
 	 */
 
-	public RubySourceElementParser(ISourceElementRequestor requestor,
-			IProblemReporter problemReporter) {
-		this.fRequestor = requestor;
-		this.problemReporter = problemReporter;
+	public RubySourceElementParser(/*ISourceElementRequestor requestor,
+			IProblemReporter problemReporter*/) {
+//		this.fRequestor = requestor;
+//		this.problemReporter = problemReporter;
 	}
 
 	public ModuleDeclaration parseSourceModule(char[] contents, ISourceModuleInfo astCashe) {
@@ -59,16 +61,23 @@ public class RubySourceElementParser implements ISourceElementParser {
 			moduleDeclaration = (ModuleDeclaration)astCache.get(AST);
 		}
 		if( moduleDeclaration == null ) {
-			ISourceParser sourceParser = DLTKParsingManager.createParser(RubyLanguageToolkit.getDefault());
-			moduleDeclaration = sourceParser.parse(content, problemReporter);
-			if( moduleDeclaration != null && astCache != null ) {
-				astCache.put(AST, moduleDeclaration );
+			ISourceParser sourceParser = null;
+			try {
+				sourceParser = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+			if( sourceParser != null ) {
+				moduleDeclaration = sourceParser.parse(content, problemReporter);
+				if( moduleDeclaration != null && astCache != null ) {
+					astCache.put(AST, moduleDeclaration );
+				}
 			}
 		}
 		return moduleDeclaration;
 	}
 
-	public void setRequirestor(ISourceElementRequestor requestor) {
+	public void setRequestor(ISourceElementRequestor requestor) {
 		this.fRequestor = requestor;
 	}
 
@@ -82,5 +91,9 @@ public class RubySourceElementParser implements ISourceElementParser {
 			}
 			return null;
 		}
+	}
+
+	public void setReporter(IProblemReporter reporter) {
+		this.problemReporter = reporter;
 	}
 }

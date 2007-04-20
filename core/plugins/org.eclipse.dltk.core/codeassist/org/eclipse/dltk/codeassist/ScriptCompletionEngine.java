@@ -43,15 +43,15 @@ public abstract class ScriptCompletionEngine extends Engine implements
 
 	protected char[] source;
 
-	public ScriptCompletionEngine(ISearchableEnvironment nameEnvironment,
+	public ScriptCompletionEngine(/*ISearchableEnvironment nameEnvironment,
 			CompletionRequestor requestor, Map settings,
-			IDLTKProject dltkProject) {
-		super(settings);
+			IDLTKProject dltkProject*/) {
+		super(null);
 		
-		this.dltkProject = dltkProject;
-		this.requestor = requestor;
-		this.nameEnvironment = nameEnvironment;
-		this.lookupEnvironment = new LookupEnvironment(this, nameEnvironment);
+//		this.dltkProject = dltkProject;
+//		this.requestor = requestor;
+//		this.nameEnvironment = nameEnvironment;
+//		this.lookupEnvironment = new LookupEnvironment(this, nameEnvironment);
 	}
 
 	protected CompletionProposal createProposal(int kind, int completionOffset) {
@@ -543,5 +543,20 @@ public abstract class ScriptCompletionEngine extends Engine implements
 			return RelevanceConstants.R_NON_RESTRICTED;
 		}
 		return 0;
+	}
+	public void setEnvironment(ISearchableEnvironment environment) {
+		this.nameEnvironment = environment;
+		this.lookupEnvironment = new LookupEnvironment(this, nameEnvironment);
+	}
+
+	public void setOptions(Map options) {
+	}
+
+	public void setProject(IDLTKProject project) {
+		this.dltkProject = project;
+	}
+
+	public void setRequestor(CompletionRequestor requestor) {
+		this.requestor = requestor;
 	}
 }

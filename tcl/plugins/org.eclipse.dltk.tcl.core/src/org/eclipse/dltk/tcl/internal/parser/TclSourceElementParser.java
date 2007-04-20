@@ -17,6 +17,7 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.problem.DLTKProblemReporter;
+import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
@@ -46,14 +47,10 @@ public class TclSourceElementParser implements ISourceElementParser {
 			kwMap.put(kw[q], Boolean.TRUE);
 		}
 	}
-
-	public TclSourceElementParser(ISourceElementRequestor requestor) {
-		this(requestor, null);
-	}
-
-	public TclSourceElementParser(ISourceElementRequestor requestor,
-			DLTKProblemReporter reporter) {
-		this.fRequestor = requestor;
+	
+	public TclSourceElementParser(/*ISourceElementRequestor requestor,
+			DLTKProblemReporter reporter*/) {
+//		this.fRequestor = requestor;
 	}
 
 	private static int counter = 0;
@@ -894,7 +891,10 @@ public class TclSourceElementParser implements ISourceElementParser {
 
 	}
 
-	public void setRequirestor(ISourceElementRequestor requestor) {
+	public void setRequestor(ISourceElementRequestor requestor) {
 		this.fRequestor = requestor;
+	}
+
+	public void setReporter(IProblemReporter reporter) {
 	}
 }

@@ -6,7 +6,6 @@
    <extension-point id="buildpathProviders" name="%buildpathProviders" schema="schema/buildpathProviders.exsd"/>
    <extension-point id="runtimeBuildpathEntryResolvers" name="%runtimeBuildpathEntryResolvers" schema="schema/runtimeBuildpathEntryResolvers.exsd"/>
    <extension-point id="runtimeBuildpathEntries" name="%runtimeBuildpathEntries" schema="schema/runtimeBuildpathEntries.exsd"/>
-   <extension-point id="debugConnectors" name="%debugConnectors" schema="schema/debugConnectors.exsd"/>
    <extension-point id="interpreterInstallTypes" name="%interpreterInstallTypes" schema="schema/interpreterInstallTypes.exsd"/>
    <extension-point id="interpreterInstalls" name="%interpreterInstalls" schema="schema/interpreterInstalls.exsd"/>
 

@@ -1,10 +1,12 @@
 package org.eclipse.dltk.ruby.internal.ui.text.folding;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.compiler.DLTKParsingManager;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
+import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
@@ -85,7 +87,13 @@ public class RubyFoldingStructureProvider extends AbstractASTFoldingStructurePro
      */
     protected ISourceParser getSourceParser() {
 //        return new JRubySourceParser(null);
-    	return DLTKParsingManager.createParser(RubyLanguageToolkit.getDefault());
+    	try {
+			return DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
     }
 
     /*

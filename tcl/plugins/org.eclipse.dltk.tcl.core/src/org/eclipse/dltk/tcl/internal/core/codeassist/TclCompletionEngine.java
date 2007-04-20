@@ -3,7 +3,6 @@ package org.eclipse.dltk.tcl.internal.core.codeassist;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
@@ -20,14 +19,11 @@ import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.compiler.env.lookup.Scope;
 import org.eclipse.dltk.core.CompletionContext;
 import org.eclipse.dltk.core.CompletionProposal;
-import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
-import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
@@ -49,9 +45,9 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 	
 	private TclCompletionParser parser;
 
-	public TclCompletionEngine(ISearchableEnvironment environment,
-			CompletionRequestor requestor, Map options, IDLTKProject project) {
-		super(environment, requestor, options, project);
+	public TclCompletionEngine(/*ISearchableEnvironment environment,
+			CompletionRequestor requestor, Map options, IDLTKProject project*/) {
+//		super(environment, requestor, options, project);
 		this.parser = new TclCompletionParser();
 	}
 

@@ -1,7 +1,5 @@
 package org.eclipse.dltk.ruby.tests.assist;
 
-import java.util.ArrayList;
-
 import junit.framework.Test;
 
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -21,7 +19,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 	private static class ThinkRubySelectionEngine extends RubySelectionEngine {
 
 		public ThinkRubySelectionEngine() {
-			super(null, null, null);
+			super();
 		}
 
 		public boolean checkSelection(String source, int start, int end) {

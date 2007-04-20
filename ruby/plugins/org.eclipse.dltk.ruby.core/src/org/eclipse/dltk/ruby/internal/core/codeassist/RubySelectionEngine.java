@@ -74,9 +74,10 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 		return ASTUtils.getEnclosingCallNode(wayToNode, node, true);
 	}
 
-	public RubySelectionEngine(ISearchableEnvironment environment, Map options,
-			IDLTKLanguageToolkit toolkit) {
-		super(options);
+	public RubySelectionEngine(/*ISearchableEnvironment environment, Map options,
+			IDLTKLanguageToolkit toolkit*/) {
+//		super();
+//		setOptions(options);
 //		this.nameEnvironment = environment;
 //		this.lookupEnvironment = new LookupEnvironment(this, nameEnvironment);
 		inferencer = new DLTKTypeInferenceEngine();

@@ -3,6 +3,7 @@ package org.eclipse.dltk.ruby.internal.ui;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.ruby.core.IRubyConstants;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.ScriptElementLabels;
@@ -60,4 +61,11 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 	public IDialogSettings getDialogSettings() {
 		return RubyUI.getDefault().getDialogSettings();
 	}
+	public String getPartitioningID() {
+		return IRubyConstants.RUBY_PARTITIONING;
+	}
+	public String getEditorID(Object inputElement) {
+		return "org.eclipse.dltk.ruby.ui.editor.RubyEditor";
+	}
+
 }

@@ -44,10 +44,10 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 	 * @param enveronment
 	 */
 
-	public JavaScriptSourceElementParser(ISourceElementRequestor requestor,
-			IProblemReporter problemReporter) {
-		this.fRequestor = requestor;
-		this.fReporter = problemReporter;
+	public JavaScriptSourceElementParser(/*ISourceElementRequestor requestor,
+			IProblemReporter problemReporter*/) {
+//		this.fRequestor = requestor;
+//		this.fReporter = problemReporter;
 	}
 
 	public ModuleDeclaration parseSourceModule(char[] contents, ISourceModuleInfo info ) {
@@ -196,7 +196,11 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 		}
 	}
 
-	public void setRequirestor(ISourceElementRequestor requestor) {
+	public void setRequestor(ISourceElementRequestor requestor) {
 		this.fRequestor = requestor;
+	}
+
+	public void setReporter(IProblemReporter reporter) {
+		this.fReporter = reporter;
 	}
 }

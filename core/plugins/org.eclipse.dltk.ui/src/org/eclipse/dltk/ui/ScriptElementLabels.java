@@ -360,7 +360,7 @@ public class ScriptElementLabels {
 			IModelElement element = (IModelElement)obj;
 			if( this.equals( sInstance )) {
 				try {
-					IDLTKUILanguageToolkit uiToolkit = DLTKUILanguageManager.getLangaugeToolkit(element);
+					IDLTKUILanguageToolkit uiToolkit = DLTKUILanguageManager.getLanguageToolkit(element);
 					if( uiToolkit != null ) {
 						ScriptElementLabels labels = uiToolkit.getScriptElementLabels();
 						if( labels != null ) {

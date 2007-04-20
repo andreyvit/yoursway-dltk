@@ -48,14 +48,14 @@ public class JavaScriptEditor extends ScriptEditor {
 	public static final String EDITOR_ID = "org.eclipse.dltk.javascript.internal.ui.editor.JavascriptEditor";
 
 	public static final String EDITOR_CONTEXT = "#JavascriptEditorContext";
-	
+
 	public static final String RULER_CONTEXT = "#JavascriptRulerContext";
 
 	private org.eclipse.dltk.internal.ui.editor.BracketInserter fBracketInserter = new JavaScriptBracketInserter(
 			this);
-	
-protected class FormatElementAction extends Action implements IUpdate {
-		
+
+	protected class FormatElementAction extends Action implements IUpdate {
+
 		/*
 		 * @since 3.2
 		 */
@@ -68,29 +68,40 @@ protected class FormatElementAction extends Action implements IUpdate {
 		 */
 		public void run() {
 
-			final ScriptSourceViewer viewer= (ScriptSourceViewer) getSourceViewer();
+			final ScriptSourceViewer viewer = (ScriptSourceViewer) getSourceViewer();
 			if (viewer.isEditable()) {
 
-				final Point selection= viewer.rememberSelection();
+				final Point selection = viewer.rememberSelection();
 				try {
 					viewer.setRedraw(false);
 
-					final String type= TextUtilities.getContentType(viewer.getDocument(), IJavaScriptPartitions.JS_PARTITIONING, selection.x, true);
-					if (type.equals(IDocument.DEFAULT_CONTENT_TYPE) && selection.y == 0) {
+					final String type = TextUtilities.getContentType(viewer
+							.getDocument(),
+							IJavaScriptPartitions.JS_PARTITIONING, selection.x,
+							true);
+					if (type.equals(IDocument.DEFAULT_CONTENT_TYPE)
+							&& selection.y == 0) {
 
 						try {
-							final IModelElement element= getElementAt(selection.x, true);
+							final IModelElement element = getElementAt(
+									selection.x, true);
 							if (element != null && element.exists()) {
 
-								final int kind= element.getElementType();
-								if (kind == IModelElement.TYPE || kind == IModelElement.METHOD ) {
+								final int kind = element.getElementType();
+								if (kind == IModelElement.TYPE
+										|| kind == IModelElement.METHOD) {
 
-									final ISourceReference reference= (ISourceReference)element;
-									final ISourceRange range= reference.getSourceRange();
+									final ISourceReference reference = (ISourceReference) element;
+									final ISourceRange range = reference
+											.getSourceRange();
 
 									if (range != null) {
-										viewer.setSelectedRange(range.getOffset(), range.getLength());
-										viewer.doOperation(ISourceViewer.FORMAT);
+										viewer
+												.setSelectedRange(range
+														.getOffset(), range
+														.getLength());
+										viewer
+												.doOperation(ISourceViewer.FORMAT);
 									}
 								}
 							}
@@ -140,8 +151,8 @@ protected class FormatElementAction extends Action implements IUpdate {
 			((ITextViewerExtension) sourceViewer)
 					.prependVerifyKeyListener(fBracketInserter);
 
-//		if (isMarkingOccurrences())
-//			installOccurrencesFinder(false);
+		// if (isMarkingOccurrences())
+		// installOccurrencesFinder(false);
 	}
 
 	protected void initializeEditor() {
@@ -211,57 +222,65 @@ protected class FormatElementAction extends Action implements IUpdate {
 	public String getCallHierarchyID() {
 		return "org.eclipse.dltk.callhierarchy.view";
 	}
-	
+
 	public void dispose() {
-		ISourceViewer sourceViewer= getSourceViewer();
+		ISourceViewer sourceViewer = getSourceViewer();
 		if (sourceViewer instanceof ITextViewerExtension)
-			((ITextViewerExtension) sourceViewer).removeVerifyKeyListener(fBracketInserter);
+			((ITextViewerExtension) sourceViewer)
+					.removeVerifyKeyListener(fBracketInserter);
 		super.dispose();
 	}
-	
+
 	/** Preference key for automatically closing strings */
-	private final static String CLOSE_STRINGS= JavascriptPreferenceConstants.EDITOR_CLOSE_STRINGS;
+	private final static String CLOSE_STRINGS = JavascriptPreferenceConstants.EDITOR_CLOSE_STRINGS;
 	/** Preference key for automatically closing brackets and parenthesis */
-	private final static String CLOSE_BRACKETS= JavascriptPreferenceConstants.EDITOR_CLOSE_BRACKETS;
-	
-	protected void handlePreferenceStoreChanged(PropertyChangeEvent event){
+	private final static String CLOSE_BRACKETS = JavascriptPreferenceConstants.EDITOR_CLOSE_BRACKETS;
+
+	protected void handlePreferenceStoreChanged(PropertyChangeEvent event) {
 		try {
 
-				String p= event.getProperty();
-				if (CLOSE_BRACKETS.equals(p)) {
-					fBracketInserter.setCloseBracketsEnabled(getPreferenceStore().getBoolean(p));
-					return;
-				}
+			String p = event.getProperty();
+			if (CLOSE_BRACKETS.equals(p)) {
+				fBracketInserter.setCloseBracketsEnabled(getPreferenceStore()
+						.getBoolean(p));
+				return;
+			}
 
-				if (CLOSE_STRINGS.equals(p)) {
-					fBracketInserter.setCloseStringsEnabled(getPreferenceStore().getBoolean(p));
-					return;
-				}
-				
-//				if (SPACES_FOR_TABS.equals(p)) {
-//					if (isTabsToSpacesConversionEnabled())
-//						installTabsToSpacesConverter();
-//					else
-//						uninstallTabsToSpacesConverter();
-//					return;
-//				}
-//
-//				if (PreferenceConstants.EDITOR_SMART_TAB.equals(p)) {
-//					if (getPreferenceStore().getBoolean(PreferenceConstants.EDITOR_SMART_TAB)) {
-//						setActionActivationCode("IndentOnTab", '\t', -1, SWT.NONE); //$NON-NLS-1$
-//					} else {
-//						removeActionActivationCode("IndentOnTab"); //$NON-NLS-1$
-//					}
-//				}
-//
-//				IContentAssistant c= asv.getContentAssistant();
-//				if (c instanceof ContentAssistant)
-//					ContentAssistPreference.changeConfiguration((ContentAssistant) c, getPreferenceStore(), event);
-//
-//				if (CODE_FORMATTER_TAB_SIZE.equals(p) && isTabsToSpacesConversionEnabled()) {
-//					uninstallTabsToSpacesConverter();
-//					installTabsToSpacesConverter();
-//				}
+			if (CLOSE_STRINGS.equals(p)) {
+				fBracketInserter.setCloseStringsEnabled(getPreferenceStore()
+						.getBoolean(p));
+				return;
+			}
+
+			// if (SPACES_FOR_TABS.equals(p)) {
+			// if (isTabsToSpacesConversionEnabled())
+			// installTabsToSpacesConverter();
+			// else
+			// uninstallTabsToSpacesConverter();
+			// return;
+			// }
+			//
+			// if (PreferenceConstants.EDITOR_SMART_TAB.equals(p)) {
+			// if
+			// (getPreferenceStore().getBoolean(PreferenceConstants.EDITOR_SMART_TAB))
+			// {
+			// setActionActivationCode("IndentOnTab", '\t', -1, SWT.NONE);
+			// //$NON-NLS-1$
+			// } else {
+			// removeActionActivationCode("IndentOnTab"); //$NON-NLS-1$
+			// }
+			// }
+			//
+			// IContentAssistant c= asv.getContentAssistant();
+			// if (c instanceof ContentAssistant)
+			// ContentAssistPreference.changeConfiguration((ContentAssistant) c,
+			// getPreferenceStore(), event);
+			//
+			// if (CODE_FORMATTER_TAB_SIZE.equals(p) &&
+			// isTabsToSpacesConversionEnabled()) {
+			// uninstallTabsToSpacesConverter();
+			// installTabsToSpacesConverter();
+			// }
 		} finally {
 			super.handlePreferenceStoreChanged(event);
 		}
@@ -273,7 +292,7 @@ protected class FormatElementAction extends Action implements IUpdate {
 	protected void initializeKeyBindingScopes() {
 		setKeyBindingScopes(new String[] { "org.eclipse.dltk.ui.javascriptEditorScope" }); //$NON-NLS-1$
 	}
-	
+
 	protected void createActions() {
 		super.createActions();
 
@@ -300,52 +319,61 @@ protected class FormatElementAction extends Action implements IUpdate {
 		ISourceViewer sourceViewer = getSourceViewer();
 		SourceViewerConfiguration configuration = getSourceViewerConfiguration();
 		((ToggleCommentAction) action).configure(sourceViewer, configuration);
-		action= new TextOperationAction(DLTKEditorMessages.getBundleForConstructedKeys(), "Format.", this, ISourceViewer.FORMAT); //$NON-NLS-1$
+		action = new TextOperationAction(DLTKEditorMessages
+				.getBundleForConstructedKeys(),
+				"Format.", this, ISourceViewer.FORMAT); //$NON-NLS-1$
 		action.setActionDefinitionId(IDLTKEditorActionDefinitionIds.FORMAT);
 		setAction("Format", action); //$NON-NLS-1$
 		markAsStateDependentAction("Format", true); //$NON-NLS-1$
 		markAsSelectionDependentAction("Format", true); //$NON-NLS-1$
-		//PlatformUI.getWorkbench().getHelpSystem().setHelp(action, IJavaHelpContextIds.FORMAT_ACTION);
+		// PlatformUI.getWorkbench().getHelpSystem().setHelp(action,
+		// IJavaHelpContextIds.FORMAT_ACTION);
 
-		action= new FormatElementAction();
-		action.setActionDefinitionId(IDLTKEditorActionDefinitionIds.QUICK_FORMAT);
+		action = new FormatElementAction();
+		action
+				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.QUICK_FORMAT);
 		setAction("QuickFormat", action); //$NON-NLS-1$
 		markAsStateDependentAction("QuickFormat", true); //$NON-NLS-1$
-		
-		action= new AddBlockCommentAction(DLTKEditorMessages.getBundleForConstructedKeys(), "AddBlockComment.", this);  //$NON-NLS-1$
-		action.setActionDefinitionId(IDLTKEditorActionDefinitionIds.ADD_BLOCK_COMMENT);
+
+		action = new AddBlockCommentAction(DLTKEditorMessages
+				.getBundleForConstructedKeys(), "AddBlockComment.", this); //$NON-NLS-1$
+		action
+				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.ADD_BLOCK_COMMENT);
 		setAction("AddBlockComment", action); //$NON-NLS-1$
 		markAsStateDependentAction("AddBlockComment", true); //$NON-NLS-1$
 		markAsSelectionDependentAction("AddBlockComment", true); //$NON-NLS-1$
-		//PlatformUI.getWorkbench().getHelpSystem().setHelp(action, IDLTKJavaHelpContextIds.ADD_BLOCK_COMMENT_ACTION);
+		// PlatformUI.getWorkbench().getHelpSystem().setHelp(action,
+		// IDLTKJavaHelpContextIds.ADD_BLOCK_COMMENT_ACTION);
 
-		action= new RemoveBlockCommentAction(DLTKEditorMessages.getBundleForConstructedKeys(), "RemoveBlockComment.", this);  //$NON-NLS-1$
-		action.setActionDefinitionId(IDLTKEditorActionDefinitionIds.REMOVE_BLOCK_COMMENT);
+		action = new RemoveBlockCommentAction(DLTKEditorMessages
+				.getBundleForConstructedKeys(), "RemoveBlockComment.", this); //$NON-NLS-1$
+		action
+				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.REMOVE_BLOCK_COMMENT);
 		setAction("RemoveBlockComment", action); //$NON-NLS-1$
 		markAsStateDependentAction("RemoveBlockComment", true); //$NON-NLS-1$
 		markAsSelectionDependentAction("RemoveBlockComment", true); //$NON-NLS-1$
-		//PlatformUI.getWorkbench().getHelpSystem().setHelp(action, IJavaHelpContextIds.REMOVE_BLOCK_COMMENT_ACTION);
+		// PlatformUI.getWorkbench().getHelpSystem().setHelp(action,
+		// IJavaHelpContextIds.REMOVE_BLOCK_COMMENT_ACTION);
 
-		action= new IndentAction(DLTKEditorMessages.getBundleForConstructedKeys(), "Indent.", this, false); //$NON-NLS-1$
+		action = new IndentAction(DLTKEditorMessages
+				.getBundleForConstructedKeys(), "Indent.", this, false); //$NON-NLS-1$
 		action.setActionDefinitionId(IDLTKEditorActionDefinitionIds.INDENT);
 		setAction("Indent", action); //$NON-NLS-1$
 		markAsStateDependentAction("Indent", true); //$NON-NLS-1$
 		markAsSelectionDependentAction("Indent", true); //$NON-NLS-1$
-		//PlatformUI.getWorkbench().getHelpSystem().setHelp(action, IJavaHelpContextIds.INDENT_ACTION);
-		
+		// PlatformUI.getWorkbench().getHelpSystem().setHelp(action,
+		// IJavaHelpContextIds.INDENT_ACTION);
 
-		
-		
-		
+		fGenerateActionGroup = new GenerateActionGroup(this,
+				ITextEditorActionConstants.GROUP_EDIT);
+		// ActionGroup rg= new RefactorActionGroup(this,
+		// ITextEditorActionConstants.GROUP_EDIT, false);
+		// ActionGroup surroundWith= new SurroundWithActionGroup(this,
+		// ITextEditorActionConstants.GROUP_EDIT);
 
-		fGenerateActionGroup= new GenerateActionGroup(this, ITextEditorActionConstants.GROUP_EDIT);
-		//ActionGroup rg= new RefactorActionGroup(this, ITextEditorActionConstants.GROUP_EDIT, false);
-		//ActionGroup surroundWith= new SurroundWithActionGroup(this, ITextEditorActionConstants.GROUP_EDIT);
-		
 		fContextMenuGroup.addGroup(fGenerateActionGroup);
-		//fActionGroups.addGroup(rg);
-		//fActionGroups.addGroup(fGenerateActionGroup);
-		
-		
+		// fActionGroups.addGroup(rg);
+		// fActionGroups.addGroup(fGenerateActionGroup);
+
 	}
 }

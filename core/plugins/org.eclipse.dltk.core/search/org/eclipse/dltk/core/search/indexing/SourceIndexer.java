@@ -66,7 +66,7 @@ public class SourceIndexer extends AbstractIndexer {
 				parser = ModelManager.getModelManager().indexManager
 						.getSourceElementParser(dltkProject, requestor);
 			} else {
-				parser.setRequirestor(requestor);
+				parser.setRequestor(requestor);
 			}
 			String pkgName = "";
 			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
@@ -105,7 +105,7 @@ public class SourceIndexer extends AbstractIndexer {
 				}
 				return;
 			} else {
-				parser.setRequirestor(requestor);
+				parser.setRequestor(requestor);
 			}
 			requestor.setIndexer(this);
 			String ppath = path.toString();

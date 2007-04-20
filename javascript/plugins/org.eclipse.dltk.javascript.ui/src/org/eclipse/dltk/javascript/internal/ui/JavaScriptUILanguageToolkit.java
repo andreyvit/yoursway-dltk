@@ -1,6 +1,7 @@
 package org.eclipse.dltk.javascript.internal.ui;
 
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.javascript.core.IJavaScriptConstants;
 import org.eclipse.dltk.javascript.core.JavaScriptLanguageToolkit;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.ScriptElementLabels;
@@ -24,5 +25,11 @@ public class JavaScriptUILanguageToolkit implements IDLTKUILanguageToolkit {
 
 	public IDialogSettings getDialogSettings() {
 		return JavaScriptUI.getDefault().getDialogSettings();
+	}
+	public String getEditorID(Object inputElement) {
+		return "org.eclipse.dltk.javascript.ui.editor.JavascriptEditor";
+	}
+	public String getPartitioningID() {
+		return IJavaScriptConstants.JS_PARTITIONING;
 	}
 }

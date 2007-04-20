@@ -7,9 +7,9 @@ import java.util.Map;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.ui.DLTKUILanguageManager;
+import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -188,7 +188,7 @@ public class StorageLabelProvider extends LabelProvider
 		ImageDescriptor desc = null;
 		// Use DLTK Based editor images for all editors.
 		try {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(element);
+			IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager.getLanguageToolkit(element);
 			if( toolkit == null ) {
 				return null;
 			}

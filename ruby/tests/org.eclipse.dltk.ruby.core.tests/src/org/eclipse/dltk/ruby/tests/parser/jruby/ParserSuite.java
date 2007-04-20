@@ -13,9 +13,9 @@ import junit.framework.TestSuite;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.compiler.DLTKParsingManager;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
-import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
+import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.tests.Activator;
 
 public class ParserSuite extends TestSuite {
@@ -53,7 +53,7 @@ public class ParserSuite extends TestSuite {
 					String input = loadInput(cleanPath + ".rb", map);
 					String output = loadOutput(cleanPath + ".exp", map);
 										
-					ISourceParser parser = DLTKParsingManager.createParser(RubyLanguageToolkit.getDefault());
+					ISourceParser parser = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
 					ModuleDeclaration module = parser.parse(input.toCharArray(), null);
 					assertNotNull(module);
 					

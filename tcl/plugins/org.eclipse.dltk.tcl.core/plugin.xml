@@ -15,5 +15,45 @@
             class="org.eclipse.dltk.tcl.core.TclLanguageToolkit"
             nature="org.eclipse.dltk.tcl.core.nature"/>
    </extension>
+   <extension
+         point="org.eclipse.dltk.core.sourceElementParsers">
+      <parser
+            class="org.eclipse.dltk.tcl.internal.parser.TclSourceElementParser"
+            nature="org.eclipse.dltk.tcl.core.nature"
+            priority="0">
+      </parser>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.selectionEngine">
+      <selectionEngine
+            class="org.eclipse.dltk.tcl.internal.core.codeassist.TclSelectionEngine"
+            nature="org.eclipse.dltk.tcl.core.nature"
+            priority="0">
+      </selectionEngine>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.completionEngine">
+      <completionEngine
+            class="org.eclipse.dltk.tcl.internal.core.codeassist.TclCompletionEngine"
+            nature="org.eclipse.dltk.tcl.core.nature"
+            priority="0">
+      </completionEngine>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.search">
+      <seachFactory
+            class="org.eclipse.dltk.tcl.internal.core.TclSearchFactory"
+            nature="org.eclipse.dltk.tcl.core.nature"
+            priority="0">
+      </seachFactory>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.callHierarchy">
+      <callHerarchiesFactory
+            class="org.eclipse.dltk.tcl.internal.core.TclCallHierarchyFactory"
+            nature="org.eclipse.dltk.tcl.core.nature"
+            priority="0">
+      </callHerarchiesFactory>
+   </extension>
 
 </plugin>

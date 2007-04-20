@@ -1191,7 +1191,7 @@ public class BasicSearchEngine {
 			e.printStackTrace();
 		}
 		if( toolkit != null ) {
-			DLTKSearchParticipant par = toolkit.createSearchParticipant();
+			DLTKSearchParticipant par = DLTKLanguageManager.createSearchParticipant(toolkit.getNatureID());
 			if(par != null ) {
 				return par;
 			}

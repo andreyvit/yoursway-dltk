@@ -244,7 +244,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 			e.printStackTrace();
 		}
 		if (toolkit != null) {
-			return toolkit.createSourceRequestor();
+			return DLTKLanguageManager.createSourceRequestor(toolkit.getNatureID());
 		}
 		return null;
 	}
@@ -252,7 +252,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	public ISourceElementParser getSourceElementParser(IDLTKProject project,
 			ISourceElementRequestor requestor) {
 		// disable task tags to speed up parsing
-		Map options = project.getOptions(true);
+//		Map options = project.getOptions(true);
 		// options.put(DLTKCore.COMPILER_TASK_TAGS, ""); //$NON-NLS-1$
 		IDLTKLanguageToolkit toolkit = null;
 		try {
@@ -264,8 +264,8 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		if (toolkit != null) {
 			ISourceElementParser parser = null;
 			try {
-				parser = toolkit.createSourceElementParser(requestor, null,
-						options);
+				parser = DLTKLanguageManager.getSourceElementParser(toolkit.getNatureID());
+				parser.setRequestor(requestor);
 			} catch (CoreException e) {
 			}
 			return parser;

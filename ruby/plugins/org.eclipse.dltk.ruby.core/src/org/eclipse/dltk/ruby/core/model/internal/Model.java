@@ -6,23 +6,23 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.ast.ASTCaching;
 import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.compiler.DLTKParsingManager;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
+import org.eclipse.dltk.ruby.core.RubyNature;
+import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.IElement;
 import org.eclipse.dltk.ruby.core.model.IElementCriteria;
 import org.eclipse.dltk.ruby.core.model.IElementKind;
 import org.eclipse.dltk.ruby.core.model.IModel;
-import org.eclipse.dltk.ruby.internal.parser.Activator;
-import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 
 public class Model implements IModel {
 	
@@ -41,11 +41,13 @@ public class Model implements IModel {
 			result = (ModuleDeclaration) astNode.get();
 		if (result == null && caching != ASTCaching.CACHED_ONLY) {
 			try {
-				ISourceParser parser = DLTKParsingManager.createParser(RubyLanguageToolkit.getDefault());
+				ISourceParser parser = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
 				result = parser.parse(sourceModule.getSourceAsCharArray(), null);
 			} catch (ModelException e) {
-				Activator.log(e);
+				RubyPlugin.log(e);
 				result = null;
+			} catch (CoreException e) {
+				e.printStackTrace();
 			}
 			if (result != null) {
 				astNode = new SoftReference(result);

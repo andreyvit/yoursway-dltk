@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
@@ -34,8 +33,8 @@ import org.eclipse.dltk.javascript.internal.core.codeassist.AssitUtils;
 
 public class JavaScriptSelectionEngine extends ScriptSelectionEngine {
 
-	public JavaScriptSelectionEngine(Map settings) {
-		super(settings);
+	public JavaScriptSelectionEngine(/*Map settings*/) {
+//		super(settings);
 	}
 
 	public IAssistParser getParser() {

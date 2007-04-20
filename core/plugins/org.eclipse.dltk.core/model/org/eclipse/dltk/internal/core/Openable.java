@@ -462,12 +462,25 @@ public abstract class Openable extends ModelElement implements IOpenable,
 		}
 		
 		// code complete
-		ICompletionEngine engine = toolkit.createCompletionEngine(environment,
-				requestor, project.getOptions(true), project);
-
-		if (engine != null) {
-			engine.complete(cu, position, 0);
+		ICompletionEngine engine = null;
+		try {
+			engine = DLTKLanguageManager.getCompletionEngine(toolkit.getNatureID());
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		if( engine == null ) {
+			return;
+		}
+		engine.setEnvironment(environment);
+		engine.setRequestor(requestor);
+		engine.setOptions(project.getOptions(true));
+		engine.setProject(project);
+		
+		/*toolkit.createCompletionEngine(environment,
+				requestor, project.getOptions(true), project);*/
+
+		engine.complete(cu, position, 0);
 
 		if (NameLookup.VERBOSE) {
 			System.out
@@ -522,11 +535,21 @@ public abstract class Openable extends ModelElement implements IOpenable,
 					IModelStatusConstants.INDEX_OUT_OF_BOUNDS));
 		}
 
-		ISelectionEngine engine = toolkit.createSelectionEngine(environment,
-				project.getOptions(true));
+		ISelectionEngine engine = null;
+		try {
+			engine = DLTKLanguageManager.getSelectionEngine(toolkit.getNatureID());
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (engine == null) {
 			return new IModelElement[0];
 		}
+		engine.setEnvironment(environment);
+		engine.setOptions(project.getOptions(true));
+//		createSelectionEngine(environment,
+//				project.getOptions(true));
+		
 		IModelElement[] elements = engine.select(cu, offset, offset + length
 				- 1);
 

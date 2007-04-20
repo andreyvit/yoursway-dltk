@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.CharOperation;
+import org.eclipse.dltk.compiler.problem.IProblemFactory;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
@@ -155,15 +156,18 @@ public class SourceModule extends Openable implements ISourceModule, org.eclipse
 				problemReporter = wcInfo.problemReporter;
 			}
 			else {
-				problemReporter = toolkit
-						.createProblemReporter(resource, toolkit
-								.createProblemFactory());
+//				problemReporter = toolkit
+//						.createProblemReporter(resource, toolkit
+//								.createProblemFactory());
+				IProblemFactory factory = DLTKLanguageManager.getProblemFactory(toolkit.getNatureID());
+				problemReporter = factory.createReporter(resource);
 			}
 
 			//problemReporter.reportTestProblem();
 
-			ISourceElementParser parser = toolkit.createSourceElementParser(
-					requestor, problemReporter, Collections.EMPTY_MAP);
+			ISourceElementParser parser = DLTKLanguageManager.getSourceElementParser(toolkit.getNatureID());
+			parser.setRequestor(requestor);
+			parser.setReporter(problemReporter);
 
 			ISourceModuleInfoCache sourceModuleInfoCache = ModelManager.getModelManager().getSourceModuleInfoCache();
 			sourceModuleInfoCache.remove(this);

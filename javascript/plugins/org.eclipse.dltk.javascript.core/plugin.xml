@@ -37,4 +37,52 @@
             nature="org.eclipse.dltk.javascript.core.nature">
       </builder>
    </extension>
+   <extension
+         point="org.eclipse.dltk.core.sourceParsers">
+      <parser
+            class="org.eclipse.dltk.internal.javascript.parser.JavaScriptSourceParser"
+            nature="org.eclipse.dltk.javascript.core.nature"
+            priority="0">
+      </parser>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.sourceElementParsers">
+      <parser
+            class="org.eclipse.dltk.internal.javascript.parser.JavaScriptSourceElementParser"
+            nature="org.eclipse.dltk.javascript.core.nature"
+            priority="0">
+      </parser>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.completionEngine">
+      <completionEngine
+            class="org.eclipse.dltk.javascript.internal.core.codeassist.completion.JavaScriptCompletionEngine"
+            nature="org.eclipse.dltk.javascript.core.nature"
+            priority="0">
+      </completionEngine>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.selectionEngine">
+      <selectionEngine
+            class="org.eclipse.dltk.javascript.internal.core.codeassist.selection.JavaScriptSelectionEngine"
+            nature="org.eclipse.dltk.javascript.core.nature"
+            priority="0">
+      </selectionEngine>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.search">
+      <seachFactory
+            class="org.eclipse.dltk.javascript.internal.core.JavaScriptSearchFactory"
+            nature="org.eclipse.dltk.javascript.core.nature"
+            priority="0">
+      </seachFactory>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.callHierarchy">
+      <callHerarchiesFactory
+            class="org.eclipse.dltk.javascript.internal.core.JavaScriptCallHierarchyFactory"
+            nature="org.eclipse.dltk.javascript.core.nature"
+            priority="0">
+      </callHerarchiesFactory>
+   </extension>
 </plugin>

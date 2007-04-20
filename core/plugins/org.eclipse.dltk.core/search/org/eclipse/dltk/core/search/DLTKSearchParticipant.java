@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.search.indexing.SourceIndexer;
@@ -100,7 +101,7 @@ public class DLTKSearchParticipant extends SearchParticipant {
 	protected MatchLocator createMatchLocator(SearchPattern pattern, SearchRequestor requestor, IDLTKSearchScope scope, SubProgressMonitor monitor) {
 		IDLTKLanguageToolkit toolkit = scope.getLanguageToolkit();
 		if( toolkit != null ) {
-			MatchLocator locator = toolkit.createMatchLocator(pattern, requestor, scope, monitor == null ? null: new SubProgressMonitor(monitor, 95));
+			MatchLocator locator = DLTKLanguageManager.createMatchLocator(toolkit.getNatureID(), pattern, requestor, scope, monitor == null ? null: new SubProgressMonitor(monitor, 95));
 			if( locator != null ) {
 				return locator;
 			}

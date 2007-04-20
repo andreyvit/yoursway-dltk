@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.dltk.launching" id="buildpathProviders" name="Script Runtime Classpath Providers"/>
       </appInfo>
       <documentation>
-         This extension point allows clients to dynamically compute and resolve buildpaths and source lookup paths for Script launch configurations. A Script launch configuration is can be associated with a custom buildpath provider via the launch configuration attriubte ATTR_CLASSPATH_PROVIDER and a custom source path provider via the attribute ATTR_SOURCE_PATH_PROVIDER. When specified, the launch configuration attributes correspond to the id of a buildpath provider extension.
+         
       </documentation>
    </annotation>
 
@@ -66,7 +66,7 @@
          <meta.section type="since"/>
       </appInfo>
       <documentation>
-         2.1
+         
       </documentation>
    </annotation>
 
@@ -75,6 +75,7 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
+         
       </documentation>
    </annotation>
 
@@ -83,7 +84,7 @@
          <meta.section type="implementation"/>
       </appInfo>
       <documentation>
-         A default implementation is provided for all launch configurations that do not specify a custom buildpath provider.
+         
       </documentation>
    </annotation>
 
@@ -92,11 +93,7 @@
          <meta.section type="copyright"/>
       </appInfo>
       <documentation>
-         Copyright (c) 2000, 2005 IBM Corporation and others.&lt;br&gt;
-All rights reserved. This program and the accompanying materials are made 
-available under the terms of the Eclipse Public License v1.0 which 
-accompanies this distribution, and is available at 
-&lt;a href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+         
       </documentation>
    </annotation>
 

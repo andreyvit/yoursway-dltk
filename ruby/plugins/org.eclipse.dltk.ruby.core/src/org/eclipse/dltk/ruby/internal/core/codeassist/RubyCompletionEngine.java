@@ -2,10 +2,10 @@ package org.eclipse.dltk.ruby.internal.core.codeassist;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.ast.ASTNode;
@@ -18,15 +18,12 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.RelevanceConstants;
 import org.eclipse.dltk.codeassist.ScriptCompletionEngine;
-import org.eclipse.dltk.compiler.DLTKParsingManager;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.core.CompletionProposal;
-import org.eclipse.dltk.core.CompletionRequestor;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
-import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinElement;
@@ -36,7 +33,7 @@ import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.ColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyBlock;
 import org.eclipse.dltk.ruby.ast.RubyDAssgnExpression;
-import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
+import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
@@ -63,7 +60,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	};
 	
 	private DLTKTypeInferenceEngine inferencer;
-	private ISourceParser parser = DLTKParsingManager.createParser(RubyLanguageToolkit.getDefault());;
+	private ISourceParser parser = null;
 	private MixinModel model;
 	private HashSet completedNames = new HashSet();
 
@@ -71,12 +68,15 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 	private ASTNode completionNode;
 
-	public RubyCompletionEngine(ISearchableEnvironment nameEnvironment,
-			CompletionRequestor requestor, Map settings,
-			IDLTKProject dltkProject) {
-		super(nameEnvironment, requestor, settings, dltkProject);
-		inferencer = new DLTKTypeInferenceEngine();
-		model = RubyMixinModel.getRawInstance();
+	public RubyCompletionEngine() {
+//		super(nameEnvironment, requestor, settings, dltkProject);
+		this.inferencer = new DLTKTypeInferenceEngine();
+		this.model = RubyMixinModel.getRawInstance();
+		try {
+			this.parser = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
+		} catch (CoreException e) {
+			throw new RuntimeException("Failed to initialize RubyCompletionEnfine", e);
+		}
 	}
 
 	protected int getEndOfEmptyToken() {

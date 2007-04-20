@@ -13,7 +13,8 @@
          point="org.eclipse.dltk.core.language">
       <language
             class="org.eclipse.dltk.ruby.core.RubyLanguageToolkit"
-            nature="org.eclipse.dltk.ruby.core.nature"/>
+            nature="org.eclipse.dltk.ruby.core.nature"
+            priority="0"/>
    </extension>
   <extension
         point="org.eclipse.dltk.core.mixin">
@@ -34,7 +35,47 @@
      <parser
            class="org.eclipse.dltk.ruby.internal.parser.JRubySourceParser"
            nature="org.eclipse.dltk.ruby.core.nature"
-           priority="1">
+           priority="0">
      </parser>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.core.sourceElementParsers">
+     <parser
+           class="org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser"
+           nature="org.eclipse.dltk.ruby.core.nature"
+           priority="0">
+     </parser>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.core.callHierarchy">
+     <callHerarchiesFactory
+           class="org.eclipse.dltk.ruby.internal.callhierarchy.RubyCallHierarchyFactory"
+           nature="org.eclipse.dltk.ruby.core.nature"
+           priority="0">
+     </callHerarchiesFactory>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.core.search">
+     <seachFactory
+           class="org.eclipse.dltk.ruby.internal.core.search.RubySearchFactory"
+           nature="org.eclipse.dltk.ruby.core.nature"
+           priority="0">
+     </seachFactory>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.core.completionEngine">
+     <completionEngine
+           class="org.eclipse.dltk.ruby.internal.core.codeassist.RubyCompletionEngine"
+           nature="org.eclipse.dltk.ruby.core.nature"
+           priority="0">
+     </completionEngine>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.core.selectionEngine">
+     <selectionEngine
+           class="org.eclipse.dltk.ruby.internal.core.codeassist.RubySelectionEngine"
+           nature="org.eclipse.dltk.ruby.core.nature"
+           priority="0">
+     </selectionEngine>
   </extension>
 </plugin>

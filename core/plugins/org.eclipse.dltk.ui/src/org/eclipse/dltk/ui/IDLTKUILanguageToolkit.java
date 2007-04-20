@@ -12,4 +12,8 @@ public interface IDLTKUILanguageToolkit {
 	IDLTKLanguageToolkit getCoreToolkit();
 
 	IDialogSettings getDialogSettings();
+	
+	String getPartitioningID();
+	
+	String getEditorID(Object inputElement);
 }

@@ -362,7 +362,7 @@ public class TypeInfoViewer {
 //			String result= info.getTypeContainerName();
 			String result = "";
 			try {
-				IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager.getLangaugeToolkit(info.getType());
+				IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager.getLanguageToolkit(info.getType());
 				if( toolkit != null ) {
 					ScriptElementLabels labels = toolkit.getScriptElementLabels();
 					result = labels.getElementLabel(info.getType(), ScriptElementLabels.T_CONTAINER_QUALIFIED 

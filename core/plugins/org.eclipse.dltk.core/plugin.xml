@@ -8,6 +8,11 @@
    <extension-point id="typeEvaluators" name="Type Evaluators" schema="schema/goalEvaluators.exsd"/>
    <extension-point id="sourceParsers" name="Source Parsers" schema="schema/sourceParsers.exsd"/>
    <extension-point id="sourceElementParsers" name="Source Element Parsers" schema="schema/sourceElementParsers.exsd"/>
+   <extension-point id="search" name="search" schema="schema/search.exsd"/>
+   <extension-point id="selectionEngine" name="selectionEngine" schema="schema/selectionEngine.exsd"/>
+   <extension-point id="completionEngine" name="completionEngine" schema="schema/completionEngine.exsd"/>
+   <extension-point id="callHierarchy" name="callHierarchy" schema="schema/callHierarchy.exsd"/>
+   <extension-point id="problemFactory" name="problemFactory" schema="schema/problemFactory.exsd"/>
 
 <!-- =================================================================================== -->
 <!-- Extension: DLTK Problem                                                             -->

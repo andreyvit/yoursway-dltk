@@ -52,10 +52,9 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 		this.useEngine = useEngine;
 	}
 
-	public JavaScriptCompletionEngine(ISearchableEnvironment nameEnvironment,
+	public JavaScriptCompletionEngine(/*ISearchableEnvironment nameEnvironment,
 			CompletionRequestor requestor, Map settings,
-			IDLTKProject dltkProject) {
-		super(nameEnvironment, requestor, settings, dltkProject);
+			IDLTKProject dltkProject*/) {
 	}
 
 	protected int getEndOfEmptyToken() {

@@ -32,7 +32,7 @@ import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
-import org.eclipse.dltk.ruby.internal.parser.Activator;
+import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.jruby.lexer.yacc.ISourcePosition;
 import org.jruby.lexer.yacc.SourcePosition;
 
@@ -55,7 +55,7 @@ public class DLTKRubyWarnings implements IDLTKRubyWarnings {
 		try {
 			problemReporter.reportProblem(problem);
 		} catch (CoreException e) {
-			Activator.log(e);
+			RubyPlugin.log(e);
 		}
     }
 
@@ -72,7 +72,7 @@ public class DLTKRubyWarnings implements IDLTKRubyWarnings {
     		try {
     			problemReporter.reportProblem(problem);
     		} catch (CoreException e) {
-    			Activator.log(e);
+    			RubyPlugin.log(e);
     		}
         }
     }
@@ -85,7 +85,7 @@ public class DLTKRubyWarnings implements IDLTKRubyWarnings {
 		try {
 			problemReporter.reportProblem(problem);
 		} catch (CoreException e) {
-			Activator.log(e);
+			RubyPlugin.log(e);
 		}
 	}
 

@@ -12,6 +12,8 @@ package org.eclipse.dltk.compiler.problem;
 
 import java.util.Locale;
 
+import org.eclipse.core.resources.IResource;
+
 
 /*
  * Factory used from inside the compiler to build the actual problems
@@ -37,4 +39,6 @@ public interface IProblemFactory {
 	Locale getLocale();
 	
 	String getLocalizedMessage(int problemId, String[] messageArguments);
+	
+	IProblemReporter createReporter(IResource resource);
 }

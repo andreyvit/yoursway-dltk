@@ -127,7 +127,8 @@ public class ExternalSourceModule extends Openable implements IExternalSourceMod
 			if(toolkit == null) {
 				throw new ModelException(new ModelStatus(ModelStatus.INVALID_NAME));
 			}
-			ISourceElementParser parser = toolkit.createSourceElementParser(requestor, null, Collections.EMPTY_MAP);
+			ISourceElementParser parser = DLTKLanguageManager.getSourceElementParser(toolkit.getNatureID());
+			parser.setRequestor(requestor);
 			
 			ISourceModuleInfoCache sourceModuleInfoCache = ModelManager.getModelManager().getSourceModuleInfoCache();
 //			sourceModuleInfoCache.remove(this);
