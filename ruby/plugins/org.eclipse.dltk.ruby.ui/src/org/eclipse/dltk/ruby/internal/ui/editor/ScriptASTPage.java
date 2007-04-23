@@ -77,7 +77,7 @@ public class ScriptASTPage extends Page implements IContentOutlinePage,
 			return null;
 		}
 	}
-	
+
 	/**
 	 * The element change listener of thescriptoutline viewer.
 	 * 
@@ -95,13 +95,12 @@ public class ScriptASTPage extends Page implements IContentOutlinePage,
 			fASTViewer.refresh();
 		}
 
-		
 	}
 
 	private class ScriptASTChildrenProvider implements ITreeContentProvider {
 
 		private ElementChangedListener fListener;
-		
+
 		public Object[] getChildren(Object parentElement) {
 			if (parentElement instanceof ASTNode) {
 				ASTNode node = (ASTNode) parentElement;
@@ -111,7 +110,7 @@ public class ScriptASTPage extends Page implements IContentOutlinePage,
 			return new Object[0];
 		}
 
-		public Object getParent(Object element) {			
+		public Object getParent(Object element) {
 			return null;
 		}
 
@@ -137,7 +136,8 @@ public class ScriptASTPage extends Page implements IContentOutlinePage,
 		}
 
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-			newInput = EditorUtility.getEditorInputModelElement(fEditor, false);;
+			newInput = EditorUtility.getEditorInputModelElement(fEditor, false);
+			;
 			boolean isSM = (newInput instanceof ISourceModule);
 
 			if (isSM && fListener == null) {
@@ -167,15 +167,18 @@ public class ScriptASTPage extends Page implements IContentOutlinePage,
 			public void selectionChanged(SelectionChangedEvent event) {
 				Object source = event.getSource();
 				if (event.getSelection() instanceof StructuredSelection) {
-					StructuredSelection selection = (StructuredSelection) event.getSelection();
+					StructuredSelection selection = (StructuredSelection) event
+							.getSelection();
 					Object element = selection.getFirstElement();
 					if (element instanceof ASTNode) {
 						ASTNode node = (ASTNode) element;
-						fEditor.selectAndReveal(node.sourceStart(), node.sourceEnd() - node.sourceStart());
+						fEditor.selectAndReveal(node.sourceStart(), node
+								.sourceEnd()
+								- node.sourceStart());
 					}
 				}
 			}
-			
+
 		});
 	}
 
@@ -190,25 +193,32 @@ public class ScriptASTPage extends Page implements IContentOutlinePage,
 	public void createControl(Composite parent) {
 
 		Tree tree = new Tree(parent, SWT.MULTI);
-		
-		fASTViewer = new ScriptASTViewer(tree);		
+
+		fASTViewer = new ScriptASTViewer(tree);
 		fASTViewer.setContentProvider(newScriptModelChildrenProvider());
 		fASTViewer.setLabelProvider(new LabelProvider() {
+			private String getLabel(ASTNode node) {
+				String className = node.getClass().getName();
+				int index = className.lastIndexOf('.');
+				if (index != -1) {
+					className = className.substring(index + 1);
+				}
+				
+				return className + " [" + node.sourceStart()
+						+ ", " + node.sourceEnd() + "]";
+			}
 
 			public String getText(Object element) {
 				if (element instanceof ASTNode) {
-					ASTNode node = (ASTNode) element;
-					return element.getClass().getSimpleName() + "["
-							+ node.sourceStart() + "," + node.sourceEnd() + "]";
+					return getLabel((ASTNode) element);
 				} else
 					return super.getText(element);
 			}
 
 			public Image getImage(Object element) {
-				return DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_LOCAL_VARIABLE);
+				return DLTKPluginImages
+						.get(DLTKPluginImages.IMG_OBJS_LOCAL_VARIABLE);
 			}
-			
-			
 
 		});
 
@@ -236,24 +246,28 @@ public class ScriptASTPage extends Page implements IContentOutlinePage,
 
 		registerToolbarActions(bars);
 
-		if (fInput == null) {			
-			 updateInput();
+		if (fInput == null) {
+			updateInput();
 		}
 
 		if (fFListener == null) {
 			fFListener = new ElementChangedListener();
 			DLTKCore.addElementChangedListener(fFListener);
-		} 
-		fASTViewer.setInput(fInput);	
+		}
+		fASTViewer.setInput(fInput);
 	}
 
 	private void updateInput() {
-		IModelElement inputModelElement = EditorUtility.getEditorInputModelElement(fEditor, false);;
-		 if (inputModelElement instanceof ISourceModule) {
+		IModelElement inputModelElement = EditorUtility
+				.getEditorInputModelElement(fEditor, false);
+		;
+		if (inputModelElement instanceof ISourceModule) {
 			ISourceModule module = (ISourceModule) inputModelElement;
 			try {
 				char[] sourceAsCharArray = module.getSourceAsCharArray();
-				ISourceParser parser = DLTKLanguageManager.getSourceParser(fEditor.getLanguageToolkit().getNatureID());
+				ISourceParser parser = DLTKLanguageManager
+						.getSourceParser(fEditor.getLanguageToolkit()
+								.getNatureID());
 				ModuleDeclaration m = parser.parse(sourceAsCharArray, null);
 				fInput = m;
 			} catch (ModelException e) {
@@ -261,8 +275,8 @@ public class ScriptASTPage extends Page implements IContentOutlinePage,
 			} catch (CoreException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}				
-		 }
+			}
+		}
 	}
 
 	public Control getControl() {
@@ -354,8 +368,7 @@ public class ScriptASTPage extends Page implements IContentOutlinePage,
 
 			ISelection s = fASTViewer.getSelection();
 			if (s instanceof IStructuredSelection) {
-				IStructuredSelection ss = (IStructuredSelection) s;
-				List elements = ss.toList();
+				List elements = ((IStructuredSelection) s).toList();
 				if (!elements.contains(reference)) {
 					s = (reference == null ? StructuredSelection.EMPTY
 							: new StructuredSelection(reference));
@@ -379,7 +392,7 @@ public class ScriptASTPage extends Page implements IContentOutlinePage,
 		fPostSelectionChangedListeners = null;
 
 		fASTViewer = null;
-		
+
 		if (fFListener != null) {
 			DLTKCore.removeElementChangedListener(fFListener);
 			fFListener = null;
