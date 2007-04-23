@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -496,6 +497,66 @@ public class DLTKLaunchingPlugin extends Plugin implements
 	}
 
 	/**
+	 * Re-bind buildpath variables and containers affected by the
+	 * InterpreterEnvironment changes.
+	 * 
+	 * @param monitor
+	 */
+	public void rebind(IProgressMonitor monitor, IDLTKProject[] projects, Map renamedContainerIds)
+			throws CoreException {
+		monitor.worked(1);
+	
+		// re-bind all container entries
+		for (int i = 0; i < projects.length; i++) {
+			IDLTKProject project = projects[i];
+			IBuildpathEntry[] entries = project.getRawBuildpath();
+			boolean replace = false;
+			for (int j = 0; j < entries.length; j++) {
+				IBuildpathEntry entry = entries[j];
+				switch (entry.getEntryKind()) {
+				case IBuildpathEntry.BPE_CONTAINER:
+					IPath reference = entry.getPath();
+					IPath newBinding = null;
+					String firstSegment = reference.segment(0);
+					if (ScriptRuntime.INTERPRETER_CONTAINER
+							.equals(firstSegment)) {
+						if (reference.segmentCount() > 1) {
+							IPath renamed = (IPath) renamedContainerIds
+									.get(reference);
+							if (renamed != null) {
+								// The interpreter was re-named. This
+								// changes the identifier of
+								// the container entry.
+								newBinding = renamed;
+							}
+						}
+						InterpreterContainerInitializer initializer = new InterpreterContainerInitializer();
+						if (newBinding == null) {
+							// rebind old path
+							initializer.initialize(reference, project);
+						} else {
+							// replace old bp entry with a new one
+							IBuildpathEntry newEntry = DLTKCore
+									.newContainerEntry(newBinding, entry
+											.isExported());
+							entries[j] = newEntry;
+							replace = true;
+						}
+					}
+					break;
+				default:
+					break;
+				}
+			}
+			if (replace) {
+				project.setRawBuildpath(entries, null);
+			}
+			monitor.worked(1);
+		}
+	
+	}
+
+	/**
 	 * Stores Interpreter changes resulting from a InterpreterEnvironment
 	 * preference change.
 	 */
@@ -573,71 +634,11 @@ public class DLTKLaunchingPlugin extends Plugin implements
 							.getScriptProjects();
 					monitor1.beginTask(LaunchingMessages.LaunchingPlugin_0,
 							projects.length + 1);
-					rebind(monitor1, projects);
+					rebind(monitor1, projects, fRenamedContainerIds);
 					monitor1.done();
 				}
 			};
 			DLTKCore.run(runnable, null, monitor);
-		}
-
-		/**
-		 * Re-bind buildpath variables and containers affected by the
-		 * InterpreterEnvironment changes.
-		 * 
-		 * @param monitor
-		 */
-		public void rebind(IProgressMonitor monitor, IDLTKProject[] projects)
-				throws CoreException {
-			monitor.worked(1);
-
-			// re-bind all container entries
-			for (int i = 0; i < projects.length; i++) {
-				IDLTKProject project = projects[i];
-				IBuildpathEntry[] entries = project.getRawBuildpath();
-				boolean replace = false;
-				for (int j = 0; j < entries.length; j++) {
-					IBuildpathEntry entry = entries[j];
-					switch (entry.getEntryKind()) {
-					case IBuildpathEntry.BPE_CONTAINER:
-						IPath reference = entry.getPath();
-						IPath newBinding = null;
-						String firstSegment = reference.segment(0);
-						if (ScriptRuntime.INTERPRETER_CONTAINER
-								.equals(firstSegment)) {
-							if (reference.segmentCount() > 1) {
-								IPath renamed = (IPath) fRenamedContainerIds
-										.get(reference);
-								if (renamed != null) {
-									// The interpreter was re-named. This
-									// changes the identifier of
-									// the container entry.
-									newBinding = renamed;
-								}
-							}
-							InterpreterContainerInitializer initializer = new InterpreterContainerInitializer();
-							if (newBinding == null) {
-								// rebind old path
-								initializer.initialize(reference, project);
-							} else {
-								// replace old bp entry with a new one
-								IBuildpathEntry newEntry = DLTKCore
-										.newContainerEntry(newBinding, entry
-												.isExported());
-								entries[j] = newEntry;
-								replace = true;
-							}
-						}
-						break;
-					default:
-						break;
-					}
-				}
-				if (replace) {
-					project.setRawBuildpath(entries, null);
-				}
-				monitor.worked(1);
-			}
-
 		}
 
 	}
