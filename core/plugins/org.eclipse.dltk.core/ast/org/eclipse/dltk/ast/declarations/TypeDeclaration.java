@@ -123,8 +123,8 @@ public class TypeDeclaration extends Declaration
 			if( this.fBody != null ) {
 				fBody.traverse( visitor );
 			}
+			visitor.endvisit( this );
 		}
-		visitor.endvisit( this );
 	}
 
 	/**

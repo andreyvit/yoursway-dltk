@@ -33,8 +33,8 @@ public class RubyModuleDeclaration extends TypeDeclaration {
 			if( this.getBody() != null ) {
 				getBody().traverse( visitor );
 			}
+			visitor.endvisit( this );
 		}
-		visitor.endvisit( this );
 	}
 	
 }

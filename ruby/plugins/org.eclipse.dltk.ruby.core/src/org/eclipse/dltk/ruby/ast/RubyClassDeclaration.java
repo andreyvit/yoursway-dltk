@@ -25,8 +25,8 @@ public class RubyClassDeclaration extends RubyModuleDeclaration {
 			if( this.getBody() != null ) {
 				getBody().traverse( visitor );
 			}
+			visitor.endvisit( this );
 		}
-		visitor.endvisit( this );
 	}
 		
 	

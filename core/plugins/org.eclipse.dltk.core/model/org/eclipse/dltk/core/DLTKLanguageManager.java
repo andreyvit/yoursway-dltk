@@ -20,6 +20,7 @@ import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.indexing.SourceIndexerRequestor;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.core.ClassBasedDLTKExtensionManager;
+import org.eclipse.dltk.internal.core.NewInstanceClassBasedDLTKExtensionManager;
 import org.eclipse.dltk.internal.core.BasicDLTKExtensionManager.ElementInfo;
 
 public class DLTKLanguageManager  {
@@ -35,12 +36,12 @@ public class DLTKLanguageManager  {
 	private static ClassBasedDLTKExtensionManager instance = new ClassBasedDLTKExtensionManager(LANGUAGE_EXTPOINT);
 	
 	// Inner managers
-	private static ClassBasedDLTKExtensionManager sourceElementParsersManager = new ClassBasedDLTKExtensionManager(SOURCE_ELEMENT_PARSERS_EXTPOINT);
+	private static ClassBasedDLTKExtensionManager sourceElementParsersManager = new NewInstanceClassBasedDLTKExtensionManager(SOURCE_ELEMENT_PARSERS_EXTPOINT);
 	private static ClassBasedDLTKExtensionManager problemFactoryManager = new ClassBasedDLTKExtensionManager(PROBLEM_FACTORY_EXTPOINT);
 	
-	private static ClassBasedDLTKExtensionManager selectionEngineManager = new ClassBasedDLTKExtensionManager(SELECTION_ENGINE_EXTPOINT);
-	private static ClassBasedDLTKExtensionManager completionEngineManager = new ClassBasedDLTKExtensionManager(COMPLETION_ENGINE_EXTPOINT);
-	private static ClassBasedDLTKExtensionManager sourceParsersManager = new ClassBasedDLTKExtensionManager(SOURCE_PARSERS_EXTPOINT);
+	private static ClassBasedDLTKExtensionManager selectionEngineManager = new NewInstanceClassBasedDLTKExtensionManager(SELECTION_ENGINE_EXTPOINT);
+	private static ClassBasedDLTKExtensionManager completionEngineManager = new NewInstanceClassBasedDLTKExtensionManager(COMPLETION_ENGINE_EXTPOINT);
+	private static ClassBasedDLTKExtensionManager sourceParsersManager = new NewInstanceClassBasedDLTKExtensionManager(SOURCE_PARSERS_EXTPOINT);
 	
 	private static ClassBasedDLTKExtensionManager searchManager = new ClassBasedDLTKExtensionManager(SEARCH_EXTPOINT);
 	private static ClassBasedDLTKExtensionManager callHierarchyManager = new ClassBasedDLTKExtensionManager(CALLHIERARCHY_EXTPOINT);
