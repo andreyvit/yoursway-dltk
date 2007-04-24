@@ -15,8 +15,6 @@ import java.util.List;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
-import org.eclipse.dltk.ast.references.Reference;
-import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
@@ -127,5 +125,5 @@ public class MethodLocator extends PatternLocator {
 		
 		
 		return IMPOSSIBLE_MATCH;
-	}	
+	}
 }

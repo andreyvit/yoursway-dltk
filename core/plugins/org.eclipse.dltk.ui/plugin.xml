@@ -171,8 +171,7 @@
     <viewerContentBinding viewerId="org.eclipse.ui.navigator.ProjectExplorer">
        <includes>
           <contentExtension pattern="org.eclipse.dltk.ui.scriptContent"/>
-          <!--contentExtension pattern="org.eclipse.dltk.ui.filters.*" />
-          <contentExtension pattern="org.eclipse.dltk.ui.filters.*" /-->
+          <contentExtension pattern="org.eclipse.dltk.script.ui.filters.*"/>
           <contentExtension pattern="org.eclipse.ui.navigator.resourceContent" />		       	      
           <contentExtension pattern="org.eclipse.ui.navigator.resources.filters.*"/>
           <contentExtension pattern="org.eclipse.ui.navigator.resources.linkHelper"/>          
@@ -347,6 +346,43 @@
 			</actionProvider-->		
 			<!-- Menu Shortcut Actions for Wizards -->              
     </navigatorContent>
+   		<commonFilter
+		        activeByDefault="false"
+		        class="org.eclipse.dltk.internal.ui.filters.EmptyPackageFilter"
+		        name="%HideEmptyPackages.label"
+		        description="%HideEmptyPackages.description"
+		        id="org.eclipse.dltk.script.ui.filters.HideEmptyPackages"/>
+  		<commonFilter
+		        activeByDefault="true"
+		        class="org.eclipse.dltk.internal.ui.filters.EmptyInnerPackageFilter"
+		        name="%HideEmptyInnerPackages.label"
+		        description="%HideEmptyInnerPackages.description"
+		        id="org.eclipse.dltk.script.ui.filters.HideEmptyInnerPackages"/>
+  		<commonFilter 
+		        class="org.eclipse.dltk.internal.ui.filters.FieldsFilter"
+		        name="%HideFields.label"
+		        description="%HideFields.description"
+		        id="org.eclipse.dltk.script.ui.filters.HideFields"/>
+  		<commonFilter 
+		        class="org.eclipse.dltk.internal.ui.filters.NonScriptElementFilter"
+		        name="%HideNonScriptElements.label"
+		        description="%HideNonScriptElements.description"
+		        id="org.eclipse.dltk.script.ui.filters.HideNonJavaElements"/>   		
+  		<commonFilter 
+		        class="org.eclipse.dltk.internal.ui.filters.NonScriptProjectsFilter"
+		        name="%HideNonScriptProjects.label"
+		        description="%HideNonScriptProjects.description"
+		        id="org.eclipse.dltk.script.ui.filters.HideNonJavaProjects"/>   
+  		<commonFilter 
+		        class="org.eclipse.dltk.internal.ui.filters.NonSharedProjectFilter"
+		        name="%HideNonSharedProjects.label"
+		        description="%HideNonSharedProjects.description"
+		        id="org.eclipse.dltk.script.ui.filters.HideNonSharedProjects"/>   
+  		<commonFilter 
+		        class="org.eclipse.dltk.internal.ui.filters.LibraryFilter"
+		        name="%HideReferencedLibraries.label"
+		        description="%HideReferencedLibraries.description"
+		        id="org.eclipse.dltk.script.ui.filters.HideReferencedLibraries"/>   
  </extension>
  <extension
        point="org.eclipse.core.runtime.preferences">
