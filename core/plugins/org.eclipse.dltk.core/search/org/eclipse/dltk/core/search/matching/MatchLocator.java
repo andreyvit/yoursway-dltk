@@ -1032,7 +1032,7 @@ public class MatchLocator implements ITypeRequestor {
 		IResource resource = this.currentPossibleMatch.resource;
 		return new MethodReferenceMatch(enclosingElement, accuracy, offset,
 				length, isConstructor, isSynthetic, false, participant,
-				resource);
+				resource, reference);
 	}
 
 	public SearchMatch newPackageReferenceMatch(IModelElement enclosingElement,

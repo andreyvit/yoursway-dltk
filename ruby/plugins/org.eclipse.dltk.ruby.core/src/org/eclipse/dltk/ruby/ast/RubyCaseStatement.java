@@ -62,7 +62,8 @@ public class RubyCaseStatement extends Statement {
 				for (Iterator iterator = this.whens.iterator(); iterator
 						.hasNext();) {
 					ASTNode node = (ASTNode) iterator.next();
-					node.traverse(visitor);					
+					if (node != null)
+						node.traverse(visitor);					
 				}
 			}
 		}

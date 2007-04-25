@@ -43,6 +43,7 @@ import org.eclipse.dltk.ruby.typeinference.evaluators.ConstantReferenceEvaluator
 import org.eclipse.dltk.ruby.typeinference.evaluators.FieldParentKeyVerificator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.IfStatementTypeEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.MethodCallTypeEvaluator;
+import org.eclipse.dltk.ruby.typeinference.evaluators.MethodCallVerificator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.MethodReturnTypeEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.NonTypeConstantTypeEvaluator;
 import org.eclipse.dltk.ruby.typeinference.evaluators.RubyArgumentTypeEvaluator;
@@ -59,6 +60,7 @@ import org.eclipse.dltk.ti.goals.FieldPositionVerificationGoal;
 import org.eclipse.dltk.ti.goals.FixedAnswerEvaluator;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
+import org.eclipse.dltk.ti.goals.MethodCallVerificationGoal;
 import org.eclipse.dltk.ti.goals.MethodReturnTypeGoal;
 
 public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
@@ -154,6 +156,9 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 	public GoalEvaluator createEvaluator(IGoal goal) {
 		if (goal instanceof FieldPositionVerificationGoal)
 			return new FieldParentKeyVerificator(goal);
+		
+		if (goal instanceof MethodCallVerificationGoal)
+			return new MethodCallVerificator(goal);
 
 		if (goal instanceof ExpressionTypeGoal) {
 			ExpressionTypeGoal exprGoal = (ExpressionTypeGoal) goal;

@@ -9,6 +9,7 @@ import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.search.FieldReferenceMatch;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
+import org.eclipse.dltk.core.search.MethodReferenceMatch;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchParticipant;
@@ -30,6 +31,10 @@ public abstract class SearchBasedGoalEvaluator extends GoalEvaluator {
 				FieldReferenceMatch match2 = (FieldReferenceMatch) match;
 				node = match2.getNode();
 			}						
+			if (match instanceof MethodReferenceMatch) {
+				MethodReferenceMatch match2 = (MethodReferenceMatch) match;
+				node = match2.getNode();
+			}
 			PossiblePosition pos = new PossiblePosition(match.getResource(),
 					match.getOffset(), match.getLength(), node);
 			possiblePositionsGoals.add(createVerificationGoal(pos));			
@@ -43,7 +48,7 @@ public abstract class SearchBasedGoalEvaluator extends GoalEvaluator {
 
 
 	public IGoal[] init() {	
-		FieldReferencesGoal goal = (FieldReferencesGoal)getGoal();
+		IGoal goal = getGoal();
 		BasicContext basicContext = (BasicContext) goal.getContext();
 		IDLTKProject project = basicContext.getSourceModule().getScriptProject();
 		IDLTKSearchScope scope = SearchEngine.createSearchScope(new IModelElement[] {project});
