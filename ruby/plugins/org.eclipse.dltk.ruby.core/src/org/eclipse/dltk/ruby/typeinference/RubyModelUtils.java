@@ -240,7 +240,6 @@ public class RubyModelUtils {
 			RubyClassType rubyClassType = (RubyClassType) type;
 			RubyMixinClass rubyClass = RubyMixinModel.getInstance()
 					.createRubyClass(rubyClassType);
-			System.out.println();
 			if (rubyClass != null) {
 				RubyMixinMethod[] methods = rubyClass
 						.findMethods(prefix, (prefix.length() > 0));

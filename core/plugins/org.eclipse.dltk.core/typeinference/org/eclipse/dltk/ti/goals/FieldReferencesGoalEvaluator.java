@@ -16,11 +16,10 @@ public class FieldReferencesGoalEvaluator extends SearchBasedGoalEvaluator {
 				IDLTKSearchConstants.REFERENCES, SearchPattern.R_EXACT_MATCH);
 	}
 
-	protected IGoal createVerificationGoal(PossiblePosition pos) {
-		FieldPositionVerificationGoal g = new FieldPositionVerificationGoal(
+	protected IGoal createVerificationGoal(PossiblePosition pos) {		
+		return new FieldPositionVerificationGoal(
 				this.getGoal().getContext(), (FieldReferencesGoal) this
 						.getGoal(), pos);
-		return g;
 	}
 
 }

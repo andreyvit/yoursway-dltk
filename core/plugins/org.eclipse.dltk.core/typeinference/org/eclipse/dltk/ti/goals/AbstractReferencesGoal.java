@@ -18,7 +18,7 @@ public class AbstractReferencesGoal extends AbstractGoal {
 		return name;
 	}
 
-	public Object getParentModelKey() {
+	public String getParentModelKey() {
 		return parentModelKey;
 	}
 

@@ -7,6 +7,7 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
@@ -14,6 +15,7 @@ import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.core.search.matching.MatchLocatorParser;
 import org.eclipse.dltk.core.search.matching.PatternLocator;
 import org.eclipse.dltk.core.search.matching.PossibleMatch;
+import org.eclipse.dltk.ruby.ast.RubyVariableKind.Constant;
 import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 
 public class RubyMatchLocatorParser extends MatchLocatorParser {
@@ -155,6 +157,13 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 		}
 		else if( node instanceof VariableReference ) {
 			VariableReference variableReference = (VariableReference) node;
+			int pos = variableReference.sourceStart();
+			if( pos < 0 ) {
+				pos = 0;
+			}
+			locator.match((SimpleReference) new SimpleReference(pos, pos + variableReference.getName().length(), variableReference.getName()), getNodeSet());
+		} else if ( node instanceof ConstantReference ) {
+			ConstantReference variableReference = (ConstantReference) node;
 			int pos = variableReference.sourceStart();
 			if( pos < 0 ) {
 				pos = 0;

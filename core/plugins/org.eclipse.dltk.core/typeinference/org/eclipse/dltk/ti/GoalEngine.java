@@ -84,7 +84,9 @@ public class GoalEngine {
 		if (state == GoalState.WAITING)
 			state = GoalState.RECURSIVE;
 		
-		IGoal[] newGoals = evaluator.subGoalDone(subGoal, result, state);										
+		IGoal[] newGoals = evaluator.subGoalDone(subGoal, result, state);
+		if (newGoals == null)
+			newGoals = IGoal.NO_GOALS;
 		for (int i = 0; i < newGoals.length; i++) {
 			workingQueue.add(new WorkingPair(newGoals[i], evaluator));
 		}
@@ -113,6 +115,7 @@ public class GoalEngine {
 		return new EvaluatorStatistics(ev.totalSubgoals,currentTime - ev.timeCreated,ev.totalSubgoals - ev.subgoalsLeft,ev.successfulSubgoals);
 	}
 	
+	
 	public Object evaluateGoal(IGoal rootGoal, IPruner pruner) {
 		reset();
 		if (pruner != null)
@@ -136,6 +139,8 @@ public class GoalEngine {
 					Assert.isNotNull(evaluator);
 					System.out.println("Evaluating " + pair.goal + " with a " + evaluator);
 					IGoal[] newGoals = evaluator.init();
+					if (newGoals == null)
+						newGoals = IGoal.NO_GOALS;						
 					if (newGoals.length > 0) {
 						for (int i = 0; i < newGoals.length; i++) {
 							workingQueue.add(new WorkingPair(newGoals[i], evaluator));

@@ -1,10 +1,7 @@
 package org.eclipse.dltk.ti.types;
 
 public interface IEvaluatedType {
-	/**
-	 * 
-	 * @deprecated
-	 */
+	
 	public String getTypeName();
 	
 	/**

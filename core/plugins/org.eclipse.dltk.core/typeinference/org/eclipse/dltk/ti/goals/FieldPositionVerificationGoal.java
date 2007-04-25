@@ -6,7 +6,7 @@ import org.eclipse.dltk.ti.IContext;
  * Task of this goal is to verify given possible position as a
  * real position, where given field were read or changed.
  * 
- * As result, object of ItemReference should be returned. 
+ * As result, object of ItemReference or null should be returned. 
  */
 public class FieldPositionVerificationGoal extends AbstractGoal {
 

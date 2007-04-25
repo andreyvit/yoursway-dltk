@@ -1,13 +1,14 @@
-package org.eclipse.dltk.ruby.typeinference.evaluators;
+package org.eclipse.dltk.ti.goals;
 
 import org.eclipse.dltk.ti.GoalState;
-import org.eclipse.dltk.ti.goals.GoalEvaluator;
-import org.eclipse.dltk.ti.goals.IGoal;
 
-public class NullGoalEvaluator extends GoalEvaluator {
+public class FixedAnswerEvaluator extends GoalEvaluator {
 
-	public NullGoalEvaluator(IGoal goal) {
+	private final Object result;
+
+	public FixedAnswerEvaluator(IGoal goal, Object result) {
 		super(goal);
+		this.result = result;
 	}
 
 	public IGoal[] init() {
@@ -15,7 +16,7 @@ public class NullGoalEvaluator extends GoalEvaluator {
 	}
 
 	public Object produceResult() {
-		return null;
+		return result;
 	}
 
 	public IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state) {

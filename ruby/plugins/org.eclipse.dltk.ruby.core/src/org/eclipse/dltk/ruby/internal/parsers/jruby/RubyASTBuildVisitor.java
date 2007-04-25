@@ -42,6 +42,7 @@ import org.eclipse.dltk.ruby.ast.RubyAliasExpression;
 import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
 import org.eclipse.dltk.ruby.ast.RubyBacktickStringLiteral;
 import org.eclipse.dltk.ruby.ast.RubyBeginExpression;
+import org.eclipse.dltk.ruby.ast.RubyBinaryExpression;
 import org.eclipse.dltk.ruby.ast.RubyBlock;
 import org.eclipse.dltk.ruby.ast.RubyBreakExpression;
 import org.eclipse.dltk.ruby.ast.RubyCallArgumentsList;
@@ -448,11 +449,11 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitAndNode(AndNode iVisited) { // done
-		Expression left = (Expression) collectSingleStatementSafe(iVisited
+		Statement left = collectSingleStatementSafe(iVisited
 				.getFirstNode());
-		Expression right = (Expression) collectSingleStatementSafe(iVisited
+		Statement right = collectSingleStatementSafe(iVisited
 				.getSecondNode());
-		BinaryExpression b = new BinaryExpression(left, Expression.E_BAND,
+		RubyBinaryExpression b = new RubyBinaryExpression(left, Expression.E_BAND,
 				right);
 		states.peek().add(b);
 		return null;

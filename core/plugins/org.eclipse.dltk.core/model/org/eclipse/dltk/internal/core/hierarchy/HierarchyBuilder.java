@@ -145,7 +145,6 @@ public abstract class HierarchyBuilder {
 			if (superclassHandles == null || superclassHandles.length == 0) {
 				System.out.println(" <None>"); //$NON-NLS-1$
 			} else {
-				System.out.println();
 				for (int i = 0, length = superclassHandles.length; i < length; i++) {
 					if (superclassHandles[i] == null)
 						continue;

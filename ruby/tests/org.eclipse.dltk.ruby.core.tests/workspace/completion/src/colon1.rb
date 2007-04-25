@@ -4,8 +4,12 @@ class Mine42
 end
 
 class Mix42
+
 	class Cool2
 	end
+	
 	::A
+	
+	
 end
 

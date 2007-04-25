@@ -135,7 +135,7 @@ public abstract class AbstractModelCompletionTests extends AbstractModelTests {
 			assertEquals(expected, actual);
 		} catch (ComparisonFailure c) {
 			System.out.println(actual);
-			System.out.println();
+//			System.out.println();
 			throw c;
 		}
 	}

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.search.FieldReferenceMatch;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchMatch;
@@ -23,8 +25,13 @@ public abstract class SearchBasedGoalEvaluator extends GoalEvaluator {
 	private SearchRequestor requestor = new SearchRequestor() {
 
 		public void acceptSearchMatch(SearchMatch match) throws CoreException {
+			ASTNode node = null;
+			if (match instanceof FieldReferenceMatch) {
+				FieldReferenceMatch match2 = (FieldReferenceMatch) match;
+				node = match2.getNode();
+			}						
 			PossiblePosition pos = new PossiblePosition(match.getResource(),
-					match.getOffset(), match.getLength());
+					match.getOffset(), match.getLength(), node);
 			possiblePositionsGoals.add(createVerificationGoal(pos));			
 		}
 		

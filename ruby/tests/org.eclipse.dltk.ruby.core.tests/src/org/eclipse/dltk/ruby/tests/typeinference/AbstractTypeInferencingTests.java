@@ -116,7 +116,7 @@ public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
 			assertEquals(expected, actual);
 		} catch (ComparisonFailure c) {
 			System.out.println(actual);
-			System.out.println();
+//			System.out.println();
 			throw c;
 		}
 	}

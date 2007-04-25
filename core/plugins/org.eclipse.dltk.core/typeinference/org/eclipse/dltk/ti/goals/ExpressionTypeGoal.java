@@ -27,7 +27,9 @@ public class ExpressionTypeGoal extends AbstractTypeGoal {
 	}
 
 	public int hashCode() {
-		return expression.hashCode();		
+		if (expression != null)
+			return expression.hashCode();
+		return super.hashCode();
 	}
 
 }

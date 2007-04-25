@@ -3,15 +3,21 @@ package org.eclipse.dltk.ruby.internal.parsers.jruby;
 import java.util.Stack;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.Modifiers;
+import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.ruby.core.RubyNature;
 
 public class ASTUtils {
 
@@ -37,7 +43,7 @@ public class ASTUtils {
 				if (found)
 					return super.visitGeneral(node);
 				stack.push(node);
-				if (node == nde)
+				if (node.equals(nde))
 					found = true;
 				return super.visitGeneral(node);
 			}
@@ -210,5 +216,21 @@ public class ASTUtils {
 		return visitor.getResult();
 	}
 	
+	
+	public static ModuleDeclaration getAST(ISourceModule module) {
+		char[] cs;
+		try {
+			cs = module.getSourceAsCharArray();
+			ISourceParser sourceParser = DLTKLanguageManager
+					.getSourceParser(RubyNature.NATURE_ID);
+			ModuleDeclaration declaration = sourceParser.parse(cs, null);
+			return declaration;
+		} catch (ModelException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 }

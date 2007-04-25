@@ -43,7 +43,11 @@ public class RubyTypeInferencer extends DefaultTypeInferencer {
 	}
 
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit) {
-		return super.evaluateType(goal, null); //TODO: add pruner
+		IEvaluatedType type = super.evaluateType(goal, null); //TODO: add pruner
+		if (type == null) { 
+			type = new RubyClassType("Object"); //anyway, all things in ruby are objects
+		}
+		return type;
 	}
 	
 

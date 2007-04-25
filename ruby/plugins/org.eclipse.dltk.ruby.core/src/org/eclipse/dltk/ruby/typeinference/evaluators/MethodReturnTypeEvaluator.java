@@ -9,23 +9,22 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.ast.expressions.CallArgumentsList;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.evaluation.types.AmbiguousType;
-import org.eclipse.dltk.ruby.ast.RubyDotExpression;
+import org.eclipse.dltk.ruby.ast.RubyCallArgumentsList;
 import org.eclipse.dltk.ruby.ast.RubyReturnStatement;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
 import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixin;
-import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinBuildVisitor;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinMethod;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
-import org.eclipse.dltk.ruby.typeinference.BuiltinMethods;
 import org.eclipse.dltk.ruby.typeinference.MethodContext;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
@@ -69,42 +68,6 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		return null;
 	}
 	
-	private static MethodDeclaration resolveMethodDeclaration (ISourceModule module, RubyClassType instanceType, String methodName) {
-		MethodDeclaration decl = null;
-		List methods = new ArrayList (); // possible source methods
-			
-		RubyMixinClass class1 = RubyMixinModel.getInstance().createRubyClass(instanceType);
-		if (class1 != null) {
-			RubyMixinMethod mixinMethod = class1.getMethod(methodName);
-//			for (int i = 0; i < mixinMethods.length; i++) {
-				methods.addAll(Arrays.asList(mixinMethod.getSourceMethods()));
-//			}
-		}
-		
-		if (methods.isEmpty())
-			return null;
-		
-		IMethod resultMethod = (IMethod) methods.get(0);
-		
-		if (methods.size() > 1) { //prefer method from the same module
-			for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
-				IMethod m = (IMethod) iterator.next();
-				if (m.getSourceModule().equals(module))
-					resultMethod = m;
-			}
-		}
-		
-		ISourceModule resultSourceModule = resultMethod.getSourceModule();
-		ModuleDeclaration moduleDecl = RubyTypeInferencingUtils.parseSource(resultSourceModule);
-		try {
-			decl = RubyModelUtils.getNodeByMethod(moduleDecl, resultMethod);
-		} catch (ModelException e) {
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
-
 	public IGoal[] init() {
 		MethodReturnTypeGoal typedGoal = getTypedGoal();
 		InstanceContext typedContext = getTypedContext();
@@ -129,7 +92,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			RubyMixinClass class1 = RubyMixinModel.getInstance().createRubyClass(rubyClassType);
 			if (class1 != null) {
 				RubyMixinMethod mixinMethods = class1.getMethod(methodName);
-				System.out.println();
+//				System.out.println();
 				if (mixinMethods != null)
 					methods.addAll(Arrays.asList(mixinMethods.getSourceMethods()));
 			}
@@ -178,14 +141,19 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		}
 		innerContext = new MethodContext(goal.getContext(), sourceModule, module, 
 				parameters, typedGoal.getArguments());
-		System.out.println();
+
 		ASTVisitor visitor = new ASTVisitor () {
 			
 			public boolean visitGeneral(ASTNode node) throws Exception {
 				if (node instanceof RubyReturnStatement) {
 					RubyReturnStatement statement = (RubyReturnStatement) node;
-					if (statement.getValue() instanceof Expression) {
-						possibilities.add(statement.getValue());
+					CallArgumentsList list = statement.getValue();
+					if (list.getExpressions().size() == 0) {
+						MethodReturnTypeEvaluator.this.evaluated.add(new RubyClassType("NilClass"));
+					} else if (list.getExpressions().size() > 1) {
+						MethodReturnTypeEvaluator.this.evaluated.add(new RubyClassType("Array"));
+					} else {
+						possibilities.add(list.getExpressions().get(0));				
 					}
 				}
 				return super.visitGeneral(node);

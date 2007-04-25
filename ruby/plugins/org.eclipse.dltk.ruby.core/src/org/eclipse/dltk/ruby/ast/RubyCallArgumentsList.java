@@ -6,6 +6,8 @@ import org.eclipse.dltk.ast.statements.Statement;
 public class RubyCallArgumentsList extends CallArgumentsList {
 	
 	public void addArgument (Statement value, int kind) {
+		if (value == null)
+			return;
 		RubyCallArgument r = new RubyCallArgument(value, kind);
 		this.addExpression(r);
 	}

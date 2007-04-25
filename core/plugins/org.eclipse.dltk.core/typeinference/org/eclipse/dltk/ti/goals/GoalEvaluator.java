@@ -3,7 +3,7 @@ package org.eclipse.dltk.ti.goals;
 import org.eclipse.dltk.ti.GoalState;
 
 /**
- * Goal evaluator. Created for every evaluating goal.
+ * Abstact goal evaluator. 
  */
 public abstract class GoalEvaluator {
 

@@ -307,9 +307,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		IMethod obj = null;
 		String name = decl.getName();
 		if (moduleAvailable) {
-			IModelElement element = findModelElementFor(decl);
-			if (!(element instanceof IMethod))
-				System.out.println();
+			IModelElement element = findModelElementFor(decl);			
 			obj = (IMethod) element;
 		}
 		if (decl instanceof RubySingletonMethodDeclaration) {
@@ -403,10 +401,10 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	public boolean visit(TypeDeclaration decl) throws Exception {
 		IType obj = null;
 		if (moduleAvailable) {
-			System.out.println();
+//			System.out.println();
 			IModelElement elementFor = findModelElementFor(decl);
-			if (!(elementFor instanceof IType))
-				System.out.println();
+//			if (!(elementFor instanceof IType))
+//				System.out.println();
 			obj = (IType) elementFor;
 		}
 		boolean module =  (decl.getModifiers() & Modifiers.AccModule) != 0;

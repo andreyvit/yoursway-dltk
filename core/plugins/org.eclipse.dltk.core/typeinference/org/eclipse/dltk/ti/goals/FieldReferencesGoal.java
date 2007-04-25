@@ -13,8 +13,11 @@ import org.eclipse.dltk.ti.IContext;
  */
 public class FieldReferencesGoal extends AbstractReferencesGoal {
 
+
+	
 	public FieldReferencesGoal(IContext context, String name, String parentKey) {
 		super(context, name, parentKey);
 	}
+
 	
 }

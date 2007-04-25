@@ -375,8 +375,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 				correctLineIndentSize = Math.max(existingLineIndentSize + indentSizeDelta, 0);
 			if (existingLineIndentSize != correctLineIndentSize) {
 				String indent = prefs.getIndentByVirtualSize(correctLineIndentSize);
-				temp.replace(lineStart, home - lineStart, indent);
-				System.out.println();
+				temp.replace(lineStart, home - lineStart, indent);				
 			}
 		}
 	}

@@ -208,8 +208,7 @@ public class RubyIndenter {
 		// extract the first word of the line (if any)
 		Pattern pattern = RubyBlocks.ALL_BLOCKS.getMiddleEndAlignedPattern();
 		Matcher matcher = pattern.matcher(unindentedLine);
-		if (matcher.find()) {
-			System.out.println();
+		if (matcher.find()) {			
 			int matchedOffset = findMatchBackward(document, lineIndex - 1,
 					matcher.group(), lineOffset, 1000, RubyBlocks.ALL_BLOCKS, prevLineRightLimit);
 			if (matchedOffset >= 0) {

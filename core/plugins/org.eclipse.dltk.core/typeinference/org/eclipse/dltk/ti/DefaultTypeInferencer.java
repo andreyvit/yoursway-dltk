@@ -1,14 +1,36 @@
 package org.eclipse.dltk.ti;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ti.goals.AbstractTypeGoal;
+import org.eclipse.dltk.ti.goals.FieldReferencesGoal;
+import org.eclipse.dltk.ti.goals.FieldReferencesGoalEvaluator;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
+import org.eclipse.dltk.ti.goals.MethodCallsGoal;
+import org.eclipse.dltk.ti.goals.MethodCallsGoalEvaluator;
+import org.eclipse.dltk.ti.goals.NullGoalEvaluator;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
+/**
+ * <p>
+ * Default DLTK type inferencing implementation, that uses ideas of
+ * demand-driven analisys with a subgoal pruning (see GoalEngine class).Type
+ * evaluation becomes a root goal for a GoalEngine.
+ * 
+ * <p>
+ * Cause this class is common, it doesn't provide lots of evaluators. Only
+ * FieldReferencesGoalEvaluator and MethodCallsGoalEvaluator registered. Please,
+ * look for their javadocs for more info.
+ * 
+ * <p>
+ * User can register evaluators via registerEvaluator() method. Also user are
+ * able to provide custom evaluators factory, it will have higher priority, than
+ * evaluators, registered via registerEvaluator() method.
+ */
 public class DefaultTypeInferencer implements ITypeInferencer {
 
 	private Map evaluators = new HashMap();
@@ -16,28 +38,45 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 	private class MapBasedEvaluatorFactory implements IGoalEvaluatorFactory {
 
 		public GoalEvaluator createEvaluator(IGoal goal) {
-			Class goalClass = goal.getClass();
-			Object evaluator = evaluators.get(goalClass);
-			if (evaluator == null || (!(evaluator instanceof Class))) {
-				 
-				if (userFactory != null) {
-					evaluator = userFactory.createEvaluator(goal);
+			Object evaluator = null;
+			if (userFactory != null) {
+				evaluator = userFactory.createEvaluator(goal);
+				if (evaluator != null) {
+					return (GoalEvaluator) evaluator;
 				}
-				if (evaluator == null)
-					throw new RuntimeException("No evaluator registered for "
-							+ goalClass.getName() + " : " + goal);
-				return (GoalEvaluator) evaluator;
+			}
+
+			Class goalClass = goal.getClass();
+			evaluator = evaluators.get(goalClass);
+			if (evaluator == null || (!(evaluator instanceof Class))) {
+				// throw new RuntimeException("No evaluator registered for "
+				// + goalClass.getName() + " : " + goal);
+				System.err.println("No evaluator registered for "
+						+ goalClass.getName() + " : " + goal + " - using Null");
+				return new NullGoalEvaluator(goal);
 			}
 			Class evalClass = (Class) evaluator;
 			GoalEvaluator newInstance;
+
 			try {
-				newInstance = (GoalEvaluator) evalClass.newInstance();
+				newInstance = (GoalEvaluator) evalClass.getConstructor(
+						new Class[] { IGoal.class }).newInstance(
+						new Object[] { goal });
 				return newInstance;
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
+
 			return null;
 		}
 
@@ -46,9 +85,10 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 	private final GoalEngine engine;
 	private final IGoalEvaluatorFactory userFactory;
 
-	private void initStdGoals () {
-		//registerEvaluator(FieldReferencesGoal.class, FieldReferencesGoalEvaluator.class);
-		//registerEvaluator(MethodCallsGoal.class, MethodCallsGoalEvaluator.class);
+	private void initStdGoals() {
+		registerEvaluator(FieldReferencesGoal.class,
+				FieldReferencesGoalEvaluator.class);
+		registerEvaluator(MethodCallsGoal.class, MethodCallsGoalEvaluator.class);
 	}
 
 	public DefaultTypeInferencer(IGoalEvaluatorFactory userFactory) {
@@ -58,8 +98,8 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 	}
 
 	public void registerEvaluator(Class goalClass, Class evaluatorClass) {
-		Assert.isLegal(goalClass.isAssignableFrom(IGoal.class));
-		Assert.isLegal(evaluatorClass.isAssignableFrom(GoalEvaluator.class));
+		Assert.isLegal((IGoal.class.isAssignableFrom(goalClass)));
+		Assert.isLegal(GoalEvaluator.class.isAssignableFrom(evaluatorClass));
 		evaluators.put(goalClass, evaluatorClass);
 	}
 
@@ -70,7 +110,7 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 	 *      long)
 	 */
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit) {
-		Object result = this.evaluateType(goal, null); //TODO: add timelimit prunner
+		Object result = this.evaluateType(goal, new TimelimitPruner(timeLimit));
 		return (IEvaluatedType) result;
 	}
 
@@ -82,7 +122,7 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal, IPruner pruner) {
 		return (IEvaluatedType) engine.evaluateGoal(goal, pruner);
 	}
-	
+
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal) {
 		return evaluateType(goal, null);
 	}

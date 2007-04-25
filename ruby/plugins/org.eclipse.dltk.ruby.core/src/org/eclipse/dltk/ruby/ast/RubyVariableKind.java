@@ -15,6 +15,9 @@ public interface RubyVariableKind extends VariableKind {
 	
 	public class Class extends VariableKind.Global implements RubyVariableKind {
 	}
+	
+	public class Constant extends VariableKind.Global implements RubyVariableKind {
+	}
 
 	public static final RubyVariableKind LOCAL = new Local();
 
@@ -24,5 +27,6 @@ public interface RubyVariableKind extends VariableKind {
 
 	public static final RubyVariableKind CLASS = new Class();
 	
+	public static final RubyVariableKind CONSTANT = new Constant();
 
 }

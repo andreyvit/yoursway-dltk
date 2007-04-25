@@ -1,8 +1,10 @@
 package org.eclipse.dltk.ruby.typeinference.evaluators;
 
+import org.eclipse.dltk.ast.references.VariableKind;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.mixin.IMixinElement;
+import org.eclipse.dltk.ruby.ast.RubyVariableKind;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinElementInfo;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.typeinference.ConstantTypeGoal;
@@ -10,6 +12,7 @@ import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencer;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
+import org.eclipse.dltk.ruby.typeinference.VariableTypeGoal;
 import org.eclipse.dltk.ruby.typeinference.goals.NonTypeConstantTypeGoal;
 import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.ISourceModuleContext;
@@ -65,7 +68,11 @@ public class ConstantReferenceEvaluator extends GoalEvaluator {
 					realObj.getKind() == RubyMixinElementInfo.K_MODULE) { 
 				result = new RubyClassType(constantElement.getKey());
 			} else if (realObj.getKind() == RubyMixinElementInfo.K_VARIABLE) {
-				helperGoal = new NonTypeConstantTypeGoal (goal.getContext(), constantElement);
+//				String parent = constantElement.getParent().getKey();
+//				String name = constantElement.getLastKeySegment();
+//				helperGoal = new VariableTypeGoal (goal.getContext(), name, parent, RubyVariableKind.CONSTANT);
+				Object[] allObjects = constantElement.getAllObjects();
+				helperGoal = new NonTypeConstantTypeGoal(goal.getContext(), constantElement);
 			}
 			break;
 		}
