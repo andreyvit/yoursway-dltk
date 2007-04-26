@@ -80,7 +80,7 @@ public abstract class ScriptExplorerContentProvider extends
 				getPreferenceStore());
 	}
 
-	/* package */ProjectFragmentProvider getScriptFolderProvider() {
+	public ProjectFragmentProvider getScriptFolderProvider() {
 		return fScriptFolderProvider;
 	}
 
