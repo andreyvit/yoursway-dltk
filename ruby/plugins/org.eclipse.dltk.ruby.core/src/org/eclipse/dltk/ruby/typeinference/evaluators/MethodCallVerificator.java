@@ -34,6 +34,7 @@ public class MethodCallVerificator extends GoalEvaluator {
 	private RubyMethodReference result = null;
 	private IEvaluatedType receiverType;
 	private PossiblePosition position;
+	private boolean topLevelMethod;
 
 	public MethodCallVerificator(IGoal goal) {
 		super(goal);
@@ -44,6 +45,7 @@ public class MethodCallVerificator extends GoalEvaluator {
 	}
 
 	public IGoal[] init() {
+		topLevelMethod = false;
 		MethodCallVerificationGoal goal2 = getTypedGoal();
 		position = goal2.getPosition();
 		IResource resource = position.getResource();
@@ -66,7 +68,8 @@ public class MethodCallVerificator extends GoalEvaluator {
 							receiver);
 					state = RECEIVER_WAIT;
 					return new IGoal[] { rgoal };
-				} else {
+				} else {					
+//					ASTNode[] nodes = RubyTypeInferencingUtils.getAllStaticScopes(decl, node.sourceStart());
 					receiverType = RubyTypeInferencingUtils.determineSelfClass(
 							(ISourceModule) element, decl, node.sourceStart());
 				}
@@ -83,24 +86,29 @@ public class MethodCallVerificator extends GoalEvaluator {
 
 		MethodCallVerificationGoal goal2 = getTypedGoal();
 		RubyClassType type = (RubyClassType) receiverType;
-		String requiredKey = goal2.getGoal().getParentModelKey()
-				+ MixinModel.SEPARATOR + goal2.getGoal().getName();
+		String parentModelKey = goal2.getGoal().getParentModelKey();
+		String name = goal2.getGoal().getName();
+		String requiredKey = ((parentModelKey != null)?(parentModelKey
+				+ MixinModel.SEPARATOR):"") + name;
 		RubyMixinClass rclass = RubyMixinModel.getInstance().createRubyClass(
 				type);
-		if (rclass != null) {
-			RubyMixinMethod method = rclass
-					.getMethod(goal2.getGoal().getName());
-			if (method != null) {
-				String key = method.getKey();
-				if (key.equals(requiredKey)) {
-					result = new RubyMethodReference(goal2.getGoal().getName(),
-							goal2.getGoal().getParentModelKey(), position,
-							RubyMethodReference.ACCURATE);
-					if (position.getNode() instanceof CallExpression) {
-						result.setNode((CallExpression) position.getNode());
-					}
+		RubyMixinMethod method = null;
+		if (topLevelMethod) {
+			method = (RubyMixinMethod) RubyMixinModel.getInstance().createRubyElement(name);
+		} else if (rclass != null) {
+			method = rclass
+					.getMethod(name);
+		}
+		if (method != null) {
+			String key = method.getKey();
+			if (key.equals(requiredKey) || (parentModelKey.equals("Object") && key.equals(name))) {
+				result = new RubyMethodReference(name,
+						parentModelKey, position,
+						RubyMethodReference.ACCURATE);
+				if (position.getNode() instanceof CallExpression) {
+					result.setNode((CallExpression) position.getNode());
 				}
-			}
+			} 
 		}
 
 		return result;

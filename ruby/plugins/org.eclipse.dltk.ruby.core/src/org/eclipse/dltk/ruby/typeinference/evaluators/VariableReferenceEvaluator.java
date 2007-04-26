@@ -18,6 +18,7 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.ruby.ast.RubyCallArgument;
 import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
+import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyVariableKind;
 import org.eclipse.dltk.ruby.core.model.IElementKind.Model;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
@@ -55,15 +56,20 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 		return RubyTypeInferencingUtils.combineTypes(results);
 	}
 	
-	private String determineMethod (ISourceModule module, ModuleDeclaration decl, VariableReference ref) {
-		RubyClassType selfClass = RubyTypeInferencingUtils.determineSelfClass(module, decl, ref.sourceStart());
-		if (selfClass == null)
-			return null;
+	private String determineMethod (ISourceModule module, ModuleDeclaration decl, VariableReference ref) {		
+		RubyClassType selfClass;
 		ASTNode[] wayToNode = ASTUtils.restoreWayToNode(decl, ref);
 		for (int i = wayToNode.length - 1; i >= 0; i--) {
 			if (wayToNode[i] instanceof MethodDeclaration) {
 				methodDeclaration = (MethodDeclaration) wayToNode[i];
 				String name = methodDeclaration.getName();
+				if (wayToNode[i] instanceof ModuleDeclaration && !(methodDeclaration instanceof RubySingletonMethodDeclaration)) {
+					return name;
+				} else {
+					selfClass = RubyTypeInferencingUtils.determineSelfClass(module, decl, ref.sourceStart());
+					if (selfClass == null)
+						return null;
+				}
 				return selfClass.getModelKey() + MixinModel.SEPARATOR + name;
 			}
 		}
@@ -112,9 +118,12 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 				key = determineMethod(basicContext.getSourceModule(), basicContext.getRootNode(), ref);
 			}
 			
-			if (poss.size() == 0 && key != null) {
+			if (poss.size() == 0 && key != null) {				
 				int lastCurly = key.lastIndexOf(MixinModel.SEPARATOR);
-				String parent = key.substring(0, lastCurly);
+				String parent = null;
+				if (lastCurly != -1) {
+					parent = key.substring(0, lastCurly);
+				}
 				String name = key.substring(lastCurly + 1);
 				callsGoal = new MethodCallsGoal(context, name, parent);
 				return new IGoal[] { callsGoal };

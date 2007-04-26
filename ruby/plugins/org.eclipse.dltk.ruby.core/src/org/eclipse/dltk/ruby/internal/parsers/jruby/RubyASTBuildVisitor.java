@@ -18,7 +18,6 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.BigNumericLiteral;
-import org.eclipse.dltk.ast.expressions.BinaryExpression;
 import org.eclipse.dltk.ast.expressions.BooleanLiteral;
 import org.eclipse.dltk.ast.expressions.CallArgumentsList;
 import org.eclipse.dltk.ast.expressions.CallExpression;
@@ -752,7 +751,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				argsStart = ((Node) children.get(0)).getPosition()
 						.getStartOffset();
 				argsEnd = ((Node) children.get(children.size() - 1))
-						.getPosition().getEndOffset() + 1;
+						.getPosition().getEndOffset();
 				// correction for nodes with incorrect positions
 				List argListExprs = argList.getExpressions();
 				if (!argListExprs.isEmpty())
@@ -768,6 +767,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				System.err.println("Failed to get block argument");
 		}
 
+		argList.autosetOffsets();
 		CallExpression c = new CallExpression(recv, methodName, argList);
 		int receiverStart = recv.sourceStart();
 		int receiverEnd = recv.sourceEnd();
@@ -1343,7 +1343,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				argsStart = ((Node) children.get(0)).getPosition()
 						.getStartOffset();
 				argsEnd = ((Node) children.get(children.size() - 1))
-						.getPosition().getEndOffset() + 1;
+						.getPosition().getEndOffset() - 1;
 			}
 		}
 
@@ -1355,6 +1355,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				System.err.println("Failed to get block argument");
 		}
 
+		argList.autosetOffsets();
 		CallExpression c = new CallExpression(null, methodName, argList);
 
 		int funcNameStart = iVisited.getPosition().getStartOffset();
@@ -1443,12 +1444,18 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitHashNode(HashNode iVisited) { // done
-		List exprs = processListNode(iVisited.getListNode());
+		ListNode listNode = iVisited.getListNode();
+		List exprs = processListNode(listNode);
 
 		ISourcePosition position = iVisited.getPosition();
 		RubyHashExpression arr = new RubyHashExpression();
-		arr.setEnd(position.getEndOffset());
 		arr.setStart(position.getStartOffset());
+		arr.setEnd(position.getEndOffset());
+		
+		if (arr.sourceEnd() == arr.sourceStart() && listNode != null) {
+			arr.setStart (listNode.getPosition().getStartOffset());
+			arr.setEnd (listNode.getPosition().getEndOffset());
+		}
 
 		List hashPairs = new ArrayList();
 
@@ -1457,7 +1464,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			while (i.hasNext()) {
 				Statement key = (Statement) i.next();
 				Statement value = (Statement) i.next();
-				RubyHashPairExpression e = new RubyHashPairExpression(0, 0,
+				RubyHashPairExpression e = new RubyHashPairExpression(key.sourceStart(), value.sourceEnd(),
 						key, value);
 				hashPairs.add(e);
 			}
@@ -1758,20 +1765,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitOrNode(OrNode iVisited) { // done
 		Statement leftSt = collectSingleStatementSafe(iVisited.getFirstNode());
-		Expression left;
-		if (leftSt instanceof Expression) {
-			left = (Expression) leftSt;
-		} else {
-			left = null;
-		}
-		Statement rightSt = collectSingleStatementSafe(iVisited.getFirstNode());
-		Expression right;
-		if (rightSt instanceof Expression) {
-			right = (Expression) rightSt;
-		} else {
-			right = null;
-		}
-		BinaryExpression b = new BinaryExpression(left, Expression.E_BOR, right);
+		
+		Statement rightSt = collectSingleStatementSafe(iVisited.getSecondNode());
+		
+		RubyBinaryExpression b = new RubyBinaryExpression(leftSt, Expression.E_BOR, rightSt);
 		states.peek().add(b);
 		return null;
 	}
