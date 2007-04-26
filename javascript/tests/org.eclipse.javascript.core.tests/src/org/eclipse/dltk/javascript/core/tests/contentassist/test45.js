@@ -7,8 +7,8 @@ x={
 	my1:function (r,t){
 	},
 	hello:{
-		fuck:"AA",
-		other_fuck:"AAA"
+		word:"AA",
+		other_word:"AAA"
 	}
 };
 x.hello.

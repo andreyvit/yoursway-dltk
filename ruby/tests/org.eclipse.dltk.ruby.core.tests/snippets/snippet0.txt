@@ -4,8 +4,8 @@ MyCustomer
   pay(amount)
 
 Foo
-  (const) FUCK
-    fuck
+  (const) WORD
+    word
     
   @@foo
   (static) @foo

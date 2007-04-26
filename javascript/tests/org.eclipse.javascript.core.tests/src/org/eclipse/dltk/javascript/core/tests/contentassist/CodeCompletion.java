@@ -812,7 +812,7 @@ public class CodeCompletion extends TestCase {
 	}
 	
 	public void test45() {
-		String[] names=new String[]{"fuck","other_fuck"};
+		String[] names=new String[]{"word","other_word"};
 		String module = "test45.js";
 		basicTest(module, 139, names);
 	}

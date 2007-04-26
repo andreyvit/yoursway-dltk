@@ -10,7 +10,7 @@ foo $x
 
 puts [expr {$x + 1}]
 
-set string "fuckingly! and number really is $x..."
+set string "_________! and number really is $x..."
 
 set {a
 b} 12 ; puts ${a

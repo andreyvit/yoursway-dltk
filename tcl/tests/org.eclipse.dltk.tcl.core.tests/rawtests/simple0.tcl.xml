@@ -56,8 +56,8 @@
 <word start="136" end="141" text="string">
 <string text="string"/>
 </word>
-<word start="143" end="181" text="&quot;fuckingly! and number really is $x...&quot;">
-<quotes text="&quot;fuckingly! and number really is $x...&quot;"/>
+<word start="143" end="181" text="&quot;_________! and number really is $x...&quot;">
+<quotes text="&quot;_________! and number really is $x...&quot;"/>
 </word>
 </command>
 <command start="186" end="198">

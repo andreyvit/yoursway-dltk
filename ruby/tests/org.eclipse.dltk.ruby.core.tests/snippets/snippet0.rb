@@ -15,7 +15,7 @@ end
 
 class Foo
 
-  FUCK = "fuck"
+  WORD = "word"
 
   @@foo = 0
   @foo = 0
@@ -40,12 +40,12 @@ class Foo
     @@foo += 1
   end
 
-  def (Foo.new("fuck")).xxx
+  def (Foo.new("word")).xxx
     puts "5!!!"
   end
 
-  def FUCK.fuck
-    puts "fuck!!!"
+  def WORD.word
+    puts "word!!!"
   end
 
   class << self
@@ -152,7 +152,7 @@ SuperFoo.boz
 
 test "5 + 4" do end
 
-Foo::FUCK.fuck
+Foo::WORD.word
 
 Foo.mega
 Foo.good
