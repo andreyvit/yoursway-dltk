@@ -13,8 +13,6 @@ public class RubyObjectMixinClass extends RubyMixinClass {
 	public RubyMixinMethod[] findMethods(String prefix, boolean includeTopLevel) {
 		List mixinResult = new ArrayList ();
 		
-		RubyMixinMethod[] methods = super.findMethods(prefix, false);
-		mixinResult.addAll(Arrays.asList(methods));
 		
 		if (includeTopLevel && prefix.length() > 0) {
 			String[] keys = model.getRawModel().findKeys(prefix + "*");
@@ -22,8 +20,13 @@ public class RubyObjectMixinClass extends RubyMixinClass {
 				IRubyMixinElement createdRubyElement = model.createRubyElement(keys[i]);
 				if (createdRubyElement instanceof RubyMixinMethod)
 					mixinResult.add(createdRubyElement);
-			}			
-			
+			}		
+		}
+		
+		
+		RubyMixinMethod[] methods = super.findMethods(prefix, false);
+		mixinResult.addAll(Arrays.asList(methods));
+		
 //			HashMap result = new HashMap();
 //
 //			IMethod[] topLevelMethods = RubyModelUtils.findTopLevelMethods(
@@ -46,7 +49,7 @@ public class RubyObjectMixinClass extends RubyMixinClass {
 //				mixinResult.add(new RubyMixinMethod(model, getKey()
 //						+ MixinModel.SEPARATOR + name, m));
 //			}
-		}
+		
 			
 		return (RubyMixinMethod[]) mixinResult.toArray(new RubyMixinMethod[mixinResult.size()]);
 	}

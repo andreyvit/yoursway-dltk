@@ -776,7 +776,7 @@ public class SourceModule extends Openable implements ISourceModule, org.eclipse
 		IType[] arrayOfAllTypes = new IType[allTypes.size()];
 		allTypes.toArray(arrayOfAllTypes);
 		return arrayOfAllTypes;
-	}
+	}		
 
 	public boolean isBuiltin() {
 		// TODO Auto-generated method stub

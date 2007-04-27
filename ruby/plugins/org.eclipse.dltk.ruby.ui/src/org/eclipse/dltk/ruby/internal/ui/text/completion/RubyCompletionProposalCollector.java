@@ -69,7 +69,7 @@ public class RubyCompletionProposalCollector extends
 		int start = proposal.getReplaceStart();
 		int length = getLength(proposal);
 		String label = getLabelProvider().createSimpleLabel(proposal);
-		Image img = getImage(getLabelProvider().createMethodImageDescriptor(
+		Image img = getImage(getLabelProvider().createImageDescriptor(
 				proposal));
 		int relevance = computeRelevance(proposal);
 		return createScriptCompletionProposal(completion, start, length, img,

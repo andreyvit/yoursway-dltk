@@ -1,5 +1,7 @@
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -37,11 +39,13 @@ import org.eclipse.dltk.ruby.ast.RubyDAssgnExpression;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeField;
+import org.eclipse.dltk.ruby.core.text.RubyKeyword;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixin;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinElementInfo;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinMethod;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinVariable;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
@@ -130,6 +134,21 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			return true;
 		return false;
 	}
+	
+	private String getWordStarting(String content, int position, int maxLen) {
+		int original = position;
+		if (position < 0)
+			return "";
+		if (position >= content.length())
+			position = content.length() - 1;
+		int len = 0;
+		while (position >= 0 && len < maxLen && RubySyntaxUtils.isStrictIdentifierCharacter(content.charAt(position))) {
+			position--;
+		}		
+		if (position + 1 > original)
+			return "";
+		return content.substring(position + 1, original);
+	}
 
 	public void complete(ISourceModule module, int position, int i) {
 		if (Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_BUILD).length > 0) {
@@ -144,6 +163,14 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		org.eclipse.dltk.core.ISourceModule modelModule = (org.eclipse.dltk.core.ISourceModule) module;
 		try {
 			String content = module.getSourceContents();
+			
+			String wordStarting = getWordStarting(content, position, 10); // no ruby keywords have more 10 chars
+			this.setSourceRange(position - wordStarting.length(), position);
+			String[] keywords = RubyKeyword.findByPrefix(wordStarting);			
+			for (int j = 0; j < keywords.length; j++) {
+				reportKeyword(keywords[j]);
+			}
+			
 			ModuleDeclaration moduleDeclaration = parser.parse(content.toCharArray(), null);
 
 			if (afterDollar(content, position)) {
@@ -185,6 +212,21 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					} else if (minimalNode instanceof SimpleReference) {
 						completeSimpleRef(modelModule, moduleDeclaration,
 								((SimpleReference) minimalNode).getName(), position);
+					} else { //worst case 
+						int rel = 4242;
+						RubyClassType selfClass = RubyTypeInferencingUtils.determineSelfClass(
+								(org.eclipse.dltk.core.ISourceModule) module, moduleDeclaration, position);
+						RubyMixinClass rubyClass = RubyMixinModel.getInstance().createRubyClass(selfClass);
+						RubyMixinMethod[] findMethods = rubyClass.findMethods("", true);
+						for (int j = 0; j < findMethods.length; j++) {
+							IMethod[] sourceMethods = findMethods[j].getSourceMethods();
+							if (sourceMethods != null && sourceMethods.length > 0) {
+								reportMethod(sourceMethods[0], rel--);
+							}
+						}
+						for (int k = 0; k < globalVars.length; k++) {							
+								reportField(new FakeField((ModelElement) module, globalVars[k], 0, 0), rel--);
+						}
 					}
 				}
 
@@ -616,6 +658,27 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			proposal.setReplaceRange(this.startPosition - this.offset,
 					this.endPosition - this.offset);
 			proposal.setRelevance(relevance);
+			this.requestor.accept(proposal);
+			if (DEBUG) {
+				this.printDebug(proposal);
+			}
+		}
+
+	}
+	
+	private void reportKeyword(String name) {		
+		// accept result
+		noProposal = false;
+		if (!requestor.isIgnored(CompletionProposal.FIELD_REF)) {
+			CompletionProposal proposal = createProposal(
+					CompletionProposal.KEYWORD, actualCompletionPosition);
+
+			proposal.setName(name.toCharArray());
+			proposal.setCompletion(name.toCharArray());
+			// proposal.setFlags(Flags.AccDefault);
+			proposal.setReplaceRange(this.startPosition - this.offset,
+					this.endPosition - this.offset);
+			proposal.setRelevance(Integer.MAX_VALUE);
 			this.requestor.accept(proposal);
 			if (DEBUG) {
 				this.printDebug(proposal);

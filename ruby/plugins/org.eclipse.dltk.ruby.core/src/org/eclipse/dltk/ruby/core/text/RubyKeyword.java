@@ -3,7 +3,9 @@
  */
 package org.eclipse.dltk.ruby.core.text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -225,6 +227,15 @@ public class RubyKeyword {
 			break;
 		}
 		return hval + asso_values[str.charAt(len - 1) & 255];
+	}
+	
+	public static String[] findByPrefix (String prefix) {
+		List result = new ArrayList ();
+		for (int i = 0; i < wordlist.length; i++) {
+			if (wordlist[i] != null && wordlist[i].name.startsWith(prefix))
+				result.add(wordlist[i].name);
+		}		
+		return (String[]) result.toArray(new String[result.size()]);
 	}
 
 	private static final RubyKeyword[] wordlist = { null, null, null, KW_END, KW_ELSE,
