@@ -103,6 +103,8 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 	private static final Pattern DOLLAR_FIXER = Pattern.compile("\\$(?=\\s|$)");
 	private static final Pattern AT_FIXER = Pattern.compile("@(?=\\s|$)");
 	private static final Pattern COLON_FIXER = Pattern.compile("::(?=\\s|$)");
+	private static final Pattern INST_BRACK_FIXER = Pattern.compile("@(])");
+	private static final Pattern GLOB_BRACK_FIXER = Pattern.compile("\\$(])");
 	private IProblemReporter problemReporter;
 	private static final String missingName  = "_missing_method_name_";
 	private static final String missingName2 = "NoConstant___________";
@@ -118,7 +120,7 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 			int offset = matcher.start();
 			if (offset > regionStart)
 				result.append(content.subSequence(regionStart, offset));
-			result.append(/*"::" + missingName2*/replacement);
+			result.append(replacement);
 			fixPositions.add(new Integer(offset + fixPositions.size() * magicLength));
 			regionStart = offset + delta; //2
 		}
@@ -144,6 +146,14 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 	
 	private String fixBrokenAts(String content) {
 		return fixBrokenThings(AT_FIXER, content, "@" + missingName, 1);
+	}
+	
+	private String fixBrokenInstbracks(String content) {
+		return fixBrokenThings(INST_BRACK_FIXER, content, "@" + missingName, 1);
+	}
+	
+	private String fixBrokenGlobbracks(String content) {
+		return fixBrokenThings(GLOB_BRACK_FIXER, content, "$" + missingName, 1);
 	}
 
 	private final boolean[] errorState = new boolean[1];
@@ -201,6 +211,8 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 				content2 = fixBrokenColons(content2);
 				content2 = fixBrokenDollars(content2);
 				content2 = fixBrokenAts(content2);
+				content2 = fixBrokenInstbracks(content2);
+				content2 = fixBrokenGlobbracks(content2);
 
 				Node node2 = parser.parse("", new StringReader(content2), null);
 				if (node2 != null)

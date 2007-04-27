@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ruby.typeinference;
 
+import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ti.DefaultTypeInferencer;
 import org.eclipse.dltk.ti.EvaluatorStatistics;
 import org.eclipse.dltk.ti.IPruner;
@@ -44,7 +45,7 @@ public class RubyTypeInferencer extends DefaultTypeInferencer {
 
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit) {
 		IEvaluatedType type = super.evaluateType(goal, null); //TODO: add pruner
-		if (type == null) { 
+		if (type == null || type instanceof UnknownType) { 
 			type = new RubyClassType("Object"); //anyway, all things in ruby are objects
 		}
 		return type;
