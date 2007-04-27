@@ -358,4 +358,16 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 				
 	}
 	
+	public void testCompletion024() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180869.rb");
+
+		String str = cu.getSource();
+		String completeBehind = ".x";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue((requestor.getResults().length() > 0));
+	}
+	
 }

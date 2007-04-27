@@ -64,8 +64,6 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	private MixinModel model;
 	private HashSet completedNames = new HashSet();
 
-	private ASTNode selectionNode;
-
 	private ASTNode completionNode;
 
 	public RubyCompletionEngine() {
@@ -434,6 +432,8 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 		int pos = (receiver != null) ? (receiver.sourceEnd() + 1) : (node
 				.sourceStart());
+		if (pos < content.length() && content.charAt(pos) == '.') //for (...).calls
+			pos++;
 
 		String starting = content.substring(pos, position).trim();
 		

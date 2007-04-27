@@ -621,6 +621,14 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 						.log("Ruby AST: non-dot-call not recognized, non-dot found at "
 								+ dotPosition + ", function name " + methodName);
 		}
+		
+		//trim end whitespaces
+		int sourceEnd = callNode.sourceEnd() - 1;
+		while (sourceEnd >= 0 && Character.isWhitespace(content[sourceEnd])) 
+			sourceEnd--;
+		if (sourceEnd >= 0)
+			callNode.setEnd(sourceEnd + 1);
+		
 	}
 
 	private void fixFunctionCallOffsets(CallExpression callNode,
@@ -771,16 +779,16 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		CallExpression c = new CallExpression(recv, methodName, argList);
 		int receiverStart = recv.sourceStart();
 		int receiverEnd = recv.sourceEnd();
+//
+//		// FIXME handle whitespace and special functions like []= (which are
+//		// called without dot)
+//		int funcNameStart = receiverEnd + 1 /* skip dot */;
+//		int funcNameEnd = funcNameStart + methodName.length();
+//		// Assert.isTrue(iVisited.getPosition().getStartOffset() ==
+//		// receiverStart);
 
-		// FIXME handle whitespace and special functions like []= (which are
-		// called without dot)
-		int funcNameStart = receiverEnd + 1 /* skip dot */;
-		int funcNameEnd = funcNameStart + methodName.length();
-		// Assert.isTrue(iVisited.getPosition().getStartOffset() ==
-		// receiverStart);
-
-		c.setStart(receiverStart);
-		c.setEnd(argsEnd >= 0 ? argsEnd : funcNameEnd); // just in case, should
+		c.setStart(iVisited.getPosition().getStartOffset());
+		c.setEnd(argsEnd >= 0 ? argsEnd : iVisited.getPosition().getEndOffset()); // just in case, should
 		// be overriden
 		fixCallOffsets(c, methodName, receiverEnd, argsStart, argsEnd);
 
