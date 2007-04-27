@@ -33,9 +33,11 @@ import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyBlock;
 import org.eclipse.dltk.ruby.ast.RubyDAssgnExpression;
+import org.eclipse.dltk.ruby.ast.RubySymbolReference;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeField;
+import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinElementInfo;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
@@ -432,8 +434,11 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 		int pos = (receiver != null) ? (receiver.sourceEnd() + 1) : (node
 				.sourceStart());
-		if (pos < content.length() && content.charAt(pos) == '.') //for (...).calls
-			pos++;
+		
+		for (int t = 0; t < 2; t++) { //correct not more 2 chars
+			if (pos < position && !RubySyntaxUtils.isStrictIdentifierCharacter(content.charAt(pos))) //for (...).name and Foo::name calls
+				pos++;
+		}
 
 		String starting = content.substring(pos, position).trim();
 		
