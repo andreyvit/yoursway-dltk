@@ -76,6 +76,9 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 			instanceType = ((AmbiguousType)instanceType).getPossibleTypes()[0];
 		String methodName = typedGoal.getMethodName();
 					
+		if (!(instanceType instanceof RubyClassType))
+			return null;
+		
 		IEvaluatedType intrinsicMethodReturnType = checkMethodReturnType((ClassType) instanceType, methodName, typedGoal.getArguments());
 		if (intrinsicMethodReturnType != null) {
 			evaluated.add(intrinsicMethodReturnType);

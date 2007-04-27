@@ -36,6 +36,7 @@ import org.jruby.ast.visitor.NodeVisitor;
 import org.jruby.evaluator.Instruction;
 import org.jruby.lexer.yacc.ISourcePosition;
 import org.jruby.parser.StaticScope;
+import org.jruby.runtime.ICallable;
 
 /**
  * Represents a block.  
@@ -50,7 +51,7 @@ public class IterNode extends Node {
     // What static scoping relationship exists when it comes into being.
     private StaticScope scope;
     
-//    private transient ICallable callable;
+    private transient ICallable callable;
 
     public IterNode(ISourcePosition position, Node varNode, StaticScope scope, Node bodyNode) {
         this(position, varNode, scope, bodyNode, NodeTypes.ITERNODE);
@@ -63,10 +64,10 @@ public class IterNode extends Node {
         this.scope = scope;
         this.bodyNode = bodyNode;
         
-        // if body and var are null, don't both with a heavyweight callable
-        if (bodyNode == null && varNode == null) {
+//        // if body and var are null, don't both with a heavyweight callable
+//        if (bodyNode == null && varNode == null) {
 //            callable = NilCallable.NIL_CALLABLE;
-        }
+//        }
     }
 
     /**
@@ -100,7 +101,7 @@ public class IterNode extends Node {
     public List childNodes() {
         return Node.createList(varNode, bodyNode);
     }
-//
+
 //    public ICallable getCallable() {
 //        if (callable == null) {
 //            callable = new EvaluateCallable(bodyNode, varNode);

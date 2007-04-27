@@ -38,7 +38,12 @@ public class DynamicScope {
 
     public DynamicScope(StaticScope staticScope, DynamicScope parent) {
         this.staticScope = staticScope;
-        this.parent = parent;
+        
+        // Only use the given DynamicScope as our parent if it's based on our StaticScope's parent
+        // FIXME: This is kinda hacky...we shouldn't have to do this check
+        if (parent != null && parent.getStaticScope() == staticScope.getEnclosingScope()) {
+            this.parent = parent;
+        }
         
         int size = staticScope.getNumberOfVariables();
         if (size > 0) variableValues = new IRubyObject[size];
@@ -65,7 +70,7 @@ public class DynamicScope {
      * Get value from current scope or one of its captured scopes.
      * 
      * FIXME: block variables are not getting primed to nil so we need to null check those
-     *  until we prime them properly.  Also add //assert back in.
+     *  until we prime them properly.  Also add assert back in.
      * 
      * @param offset zero-indexed value that represents where variable lives
      * @param depth how many captured scopes down this variable should be set
@@ -75,10 +80,10 @@ public class DynamicScope {
         if (depth > 0) {
             return parent.getValue(offset, depth - 1);
         }
-        //assert variableValues != null : "No variables in getValue for Off: " + offset + ", Dep: " + depth;
-        //assert offset < variableValues.length : "Index to big for getValue Off: " + offset + ", Dep: " + depth + ", O: " + this;
-        // &foo are not getting set from somewhere...I want the following //assert to be true though
-        ////assert variableValues[offset] != null : "Getting unassigned: " + staticScope.getVariables()[offset];
+//        assert variableValues != null : "No variables in getValue for Off: " + offset + ", Dep: " + depth;
+//        assert offset < variableValues.length : "Index to big for getValue Off: " + offset + ", Dep: " + depth + ", O: " + this;
+        // &foo are not getting set from somewhere...I want the following assert to be true though
+        //assert variableValues[offset] != null : "Getting unassigned: " + staticScope.getVariables()[offset];
         return variableValues[offset];
     }
 
@@ -91,11 +96,11 @@ public class DynamicScope {
      */
     public void setValue(int offset, IRubyObject value, int depth) {
         if (depth > 0) {
-            //assert parent != null : "If depth > 0, then parent should not ever be null";
+//            assert parent != null : "If depth > 0, then parent should not ever be null";
             
             parent.setValue(offset, value, depth - 1);
         } else {
-            //assert offset < variableValues.length : "Setting " + offset + " to " + value + ", O: " + this; 
+//            assert offset < variableValues.length : "Setting " + offset + " to " + value + ", O: " + this; 
 
             variableValues[offset] = value;
         }
@@ -113,8 +118,15 @@ public class DynamicScope {
      * @param size is the number of values to assign as ordinary parm values
      */
     public void setArgValues(IRubyObject[] values, int size) {
-        for (int i = 0; i < size; i++) {
-            setValue(i + 2, values[i], 0);
+        System.arraycopy(values, 0, variableValues, 2, size);
+    }
+
+    /**
+     * Copy variable values back for ZSuper call.
+     */
+    public void getArgValues(IRubyObject[] args, int size) {
+        if(variableValues != null && args != null && variableValues.length>=(size+2)) {
+            System.arraycopy(variableValues, 2, args, 0, size);
         }
     }
 
@@ -220,8 +232,8 @@ public class DynamicScope {
             }
             buf.append(names[size-1]).append("=");
             
-            //assert variableValues.length == names.length : "V: " + variableValues.length + 
-            //    " != N: " + names.length + " for " + buf;
+//            assert variableValues.length == names.length : "V: " + variableValues.length + 
+//                " != N: " + names.length + " for " + buf;
             
             if (variableValues[size-1] == null) {
                 buf.append("null");

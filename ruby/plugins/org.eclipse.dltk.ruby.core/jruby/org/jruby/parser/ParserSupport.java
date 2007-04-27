@@ -34,8 +34,6 @@
  ***** END LICENSE BLOCK *****/
 package org.jruby.parser;
 
-import java.util.Iterator;
-
 import org.jruby.ast.AndNode;
 import org.jruby.ast.ArgsCatNode;
 import org.jruby.ast.ArgsPushNode;
@@ -287,11 +285,15 @@ public class ParserSupport {
         	return first.getPosition();
         }
         
+        if(first == null){
+            return second.getPosition();
+        }
+        
         return first.getPosition().union(second.getPosition());
     }
     
     public ISourcePosition union(ISourcePosition first, ISourcePosition second) {
-		//assert first.getFile().equals(second.getFile());
+//		assert first.getFile().equals(second.getFile());
 
 		if (first.getStartOffset() < second.getStartOffset()) {
 			return new SourcePosition(first.getFile(), first.getStartLine(),
@@ -302,10 +304,10 @@ public class ParserSupport {
 		}
 	}
     
-    public Node addRootNode(Node topOfAST) {
+    public Node addRootNode(Node topOfAST, ISourcePosition position) {
         // I am not sure we need to get AST to set AST and the appendToBlock could maybe get removed.
         // For sure once we do two pass parsing we should since this is mostly just optimzation.
-        RootNode root = new RootNode(topOfAST != null ? topOfAST.getPosition() : null, result.getScope(),
+        RootNode root = new RootNode(topOfAST != null ? topOfAST.getPosition() : position, result.getScope(),
                 appendToBlock(result.getAST(), topOfAST));
 
         // FIXME: Should add begin and end nodes
@@ -342,8 +344,17 @@ public class ParserSupport {
 
         return new CallNode(firstNode.getPosition(), firstNode, operator, null);
     }
-
+    
     public Node getOperatorCallNode(Node firstNode, String operator, Node secondNode) {
+        return getOperatorCallNode(firstNode, operator, secondNode, null);
+    }
+
+    public Node getOperatorCallNode(Node firstNode, String operator, Node secondNode, ISourcePosition defaultPosition) {
+        if (defaultPosition != null) {
+            firstNode = checkForNilNode(firstNode, defaultPosition);
+        	secondNode = checkForNilNode(secondNode, defaultPosition);
+        }
+        
         checkExpression(firstNode);
         checkExpression(secondNode);
         
@@ -395,7 +406,7 @@ public class ParserSupport {
     }
 
     public Node arg_add(ISourcePosition position, Node node1, Node node2) {
-        if (node1 == null) return new ArrayNode(position, node2);
+        if (node1 == null) return new ArrayNode(node2.getPosition(), node2);
         if (node1 instanceof ArrayNode) return ((ArrayNode) node1).add(node2);
         
         return new ArgsPushNode(position, node1, node2);
@@ -428,7 +439,7 @@ public class ParserSupport {
             if (node instanceof BlockPassNode) {
                 throw new SyntaxException(position, "Dynamic constant assignment.");
             } else if (node instanceof ArrayNode && ((ArrayNode)node).size() == 1) {
-                node = (Node) ((ArrayNode)node).iterator().next();
+                node = ((ArrayNode)node).get(0);
             } else if (node instanceof SplatNode) {
                 node = new SValueNode(position, node);
             }
@@ -573,8 +584,8 @@ public class ParserSupport {
         if (warnings.isVerbose()) {
             Node lastNode = blockNode.getLast();
 
-            for (Iterator iterator = blockNode.iterator(); iterator.hasNext(); ) {
-                Node currentNode = (Node) iterator.next();
+            for (int i = 0; i < blockNode.size(); i++) {
+                Node currentNode = blockNode.get(i);
         		
                 if (lastNode != currentNode ) {
                     checkUselessStatement(currentNode);
@@ -660,7 +671,7 @@ public class ParserSupport {
 
     public Node getReturnArgsNode(Node node) {
         if (node instanceof ArrayNode && ((ArrayNode) node).size() == 1) { 
-            return (Node) ((ListNode) node).iterator().next();
+            return ((ListNode) node).get(0);
         } else if (node instanceof BlockPassNode) {
             throw new SyntaxException(node.getPosition(), "Block argument should not be given.");
         }
@@ -791,7 +802,7 @@ public class ParserSupport {
         	
         } else if (tail instanceof DStrNode) {
             if (head instanceof StrNode){
-                ((DStrNode)tail).childNodes().add(0, head);
+                ((DStrNode)tail).prepend(head);
                 return tail;
             } 
 
@@ -839,7 +850,7 @@ public class ParserSupport {
             }
             
             if (node instanceof ArrayNode && ((ArrayNode)node).size() == 1) {
-                node = (Node) ((ArrayNode)node).iterator().next();
+                node = ((ArrayNode)node).get(0);
                 state = false;
             }
             
@@ -874,10 +885,18 @@ public class ParserSupport {
         return floatNode;
     }
     
+    public ISourcePosition createEmptyArgsNodePosition(ISourcePosition pos) {
+        return new SourcePosition(pos.getFile(), pos.getStartLine(), pos.getEndLine(), pos.getEndOffset() - 1, pos.getEndOffset() - 1);
+    }
+    
     public Node unwrapNewlineNode(Node node) {
     	if(node instanceof NewlineNode) {
     		return ((NewlineNode) node).getNextNode();
     	}
     	return node;
+    }
+    
+    private Node checkForNilNode(Node node, ISourcePosition defaultPosition) {
+        return (node == null) ? new NilNode(defaultPosition) : node; 
     }
 }

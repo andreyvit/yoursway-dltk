@@ -481,7 +481,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		CollectingState coll = new CollectingState();
 
 		states.push(coll);
-		Iterator iterator = node.iterator();
+		Iterator iterator = node.childNodes().iterator();
 		while (iterator.hasNext()) {
 			((Node) iterator.next()).accept(this);
 		}
@@ -529,7 +529,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		ISourcePosition pos = iVisited.getPosition();
 		Block block = new Block(pos.getStartOffset(), pos.getEndOffset());
 		states.push(new BlockState(block));
-		Iterator iterator = iVisited.iterator();
+		Iterator iterator = iVisited.childNodes().iterator();
 		while (iterator.hasNext()) {
 			((Node) iterator.next()).accept(this);
 		}
@@ -1053,7 +1053,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		if (arity.getValue() != 0) { // BIG XXX, PLEASE CHECK IT
 			ListNode argsList = args.getArgs();
 			if (argsList != null) {
-				Iterator i = argsList.iterator();
+				Iterator i = argsList.childNodes().iterator();
 				while (i.hasNext()) {
 					Node nde = (Node) i.next();
 					if (nde instanceof ArgumentNode) {
@@ -1074,7 +1074,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			}
 			ListNode optArgs = args.getOptArgs();
 			if (optArgs != null) {
-				Iterator iterator = optArgs.iterator();
+				Iterator iterator = optArgs.childNodes().iterator();
 				while (iterator.hasNext()) {
 					Object obj = iterator.next();
 					if (obj instanceof LocalAsgnNode) {
@@ -1569,7 +1569,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				pos.getStartOffset(), pos.getEndOffset());
 		ListNode headNode = iVisited.getHeadNode();
 		if (headNode != null) {
-			for (Iterator iterator = headNode.iterator(); iterator.hasNext();) {
+			for (Iterator iterator = headNode.childNodes().iterator(); iterator.hasNext();) {
 				Node n = (Node) iterator.next();
 				if (n instanceof LocalAsgnNode
 						&& ((LocalAsgnNode) n).getValueNode() == null) {
@@ -1594,7 +1594,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			Node firstNode = argsCatNode.getFirstNode();
 			if (firstNode instanceof ListNode) {
 				ListNode list = (ListNode) firstNode;
-				for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				for (Iterator iterator = list.childNodes().iterator(); iterator.hasNext();) {
 					Node nd = (Node) iterator.next();
 					s.addRhs(collectSingleStatementSafe(nd));
 				}
@@ -1605,7 +1605,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				s.setRightAsterix(collectSingleStatementSafe(secondNode));
 		} else if (valueNode instanceof ListNode) {
 			ListNode list = (ListNode) valueNode;
-			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			for (Iterator iterator = list.childNodes().iterator(); iterator.hasNext();) {
 				Node nd = (Node) iterator.next();
 				s.addRhs(collectSingleStatementSafe(nd));
 			}
@@ -2220,7 +2220,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		Node bodyNode = arg0.getBodyNode();
 		if (bodyNode instanceof BlockNode) {
 			BlockNode blockNode = (BlockNode) bodyNode;
-			Iterator iterator = blockNode.iterator();
+			Iterator iterator = blockNode.childNodes().iterator();
 			while (iterator.hasNext()) {
 				((Node) iterator.next()).accept(this);
 			}

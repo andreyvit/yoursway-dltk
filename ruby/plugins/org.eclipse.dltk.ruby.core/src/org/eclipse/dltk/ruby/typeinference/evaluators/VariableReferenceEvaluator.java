@@ -20,11 +20,9 @@ import org.eclipse.dltk.ruby.ast.RubyCallArgument;
 import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyVariableKind;
-import org.eclipse.dltk.ruby.core.model.IElementKind.Model;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
 import org.eclipse.dltk.ruby.typeinference.IArgumentsContext;
 import org.eclipse.dltk.ruby.typeinference.LocalVariableInfo;
-import org.eclipse.dltk.ruby.typeinference.MethodContext;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyMethodReference;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
@@ -43,7 +41,7 @@ import org.eclipse.dltk.ti.types.IEvaluatedType;
 public class VariableReferenceEvaluator extends GoalEvaluator {
 
 	private LocalVariableInfo info;
-	private MethodCallsGoal callsGoal = null;	
+	private MethodCallsGoal callsGoal = null;
 
 	private List results = new ArrayList();
 	private MethodDeclaration methodDeclaration;
@@ -55,18 +53,21 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 	public Object produceResult() {
 		return RubyTypeInferencingUtils.combineTypes(results);
 	}
-	
-	private String determineMethod (ISourceModule module, ModuleDeclaration decl, VariableReference ref) {		
+
+	private String determineEnclosingMethod(ISourceModule module,
+			ModuleDeclaration decl, VariableReference ref) {
 		RubyClassType selfClass;
 		ASTNode[] wayToNode = ASTUtils.restoreWayToNode(decl, ref);
 		for (int i = wayToNode.length - 1; i >= 0; i--) {
 			if (wayToNode[i] instanceof MethodDeclaration) {
 				methodDeclaration = (MethodDeclaration) wayToNode[i];
 				String name = methodDeclaration.getName();
-				if (wayToNode[i] instanceof ModuleDeclaration && !(methodDeclaration instanceof RubySingletonMethodDeclaration)) {
+				if (wayToNode[i] instanceof ModuleDeclaration
+						&& !(methodDeclaration instanceof RubySingletonMethodDeclaration)) {
 					return name;
 				} else {
-					selfClass = RubyTypeInferencingUtils.determineSelfClass(module, decl, ref.sourceStart());
+					selfClass = RubyTypeInferencingUtils.determineSelfClass(
+							module, decl, ref.sourceStart());
 					if (selfClass == null)
 						return null;
 				}
@@ -108,25 +109,28 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 							info.assignments[i].getRight());
 					poss.add(subgoal);
 				}
-			}
-			
-			//TODO: add check whether variable is an argument
-			
+			}			
+
 			String key = null;
-			if (context instanceof BasicContext) {				
-				BasicContext basicContext = (BasicContext) context;
-				key = determineMethod(basicContext.getSourceModule(), basicContext.getRootNode(), ref);
+			if (context instanceof ISourceModuleContext) {
+				ISourceModuleContext basicContext = (ISourceModuleContext) context;
+				key = determineEnclosingMethod(basicContext.getSourceModule(),
+						basicContext.getRootNode(), ref);
 			}
-			
-			if (poss.size() == 0 && key != null) {				
-				int lastCurly = key.lastIndexOf(MixinModel.SEPARATOR);
-				String parent = null;
-				if (lastCurly != -1) {
-					parent = key.substring(0, lastCurly);
+
+			if (poss.size() == 0 && key != null) {
+				int argPos = determineArgumentPos(methodDeclaration, ref
+						.getName());
+				if (argPos != -1) {
+					int lastCurly = key.lastIndexOf(MixinModel.SEPARATOR);
+					String parent = null;
+					if (lastCurly != -1) {
+						parent = key.substring(0, lastCurly);
+					}
+					String name = key.substring(lastCurly + 1);
+					callsGoal = new MethodCallsGoal(context, name, parent);
+					return new IGoal[] { callsGoal };
 				}
-				String name = key.substring(lastCurly + 1);
-				callsGoal = new MethodCallsGoal(context, name, parent);
-				return new IGoal[] { callsGoal };
 			}
 
 			return (IGoal[]) poss.toArray(new IGoal[poss.size()]);
@@ -136,73 +140,86 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 					.determineSelfClass(goal.getContext(), ref.sourceStart());
 			if (selfClass instanceof RubyClassType) {
 				String selfKey = ((RubyClassType) selfClass).getModelKey();
-				return new IGoal[] { new VariableTypeGoal(goal.getContext(), ref.getName(), 
-						selfKey, ref.getVariableKind()) };
+				return new IGoal[] { new VariableTypeGoal(goal.getContext(),
+						ref.getName(), selfKey, ref.getVariableKind()) };
 			}
 		}
 		return IGoal.NO_GOALS;
 	}
 
-	private Statement getArgFromCall (CallExpression expr) {
-		VariableReference ref = (VariableReference) ((ExpressionTypeGoal) goal)
-			.getExpression();
-		if (ref.getVariableKind() != RubyVariableKind.LOCAL)
-			return null;
-		
-		String name = ref.getName();
-		
+	private int determineArgumentPos(MethodDeclaration decl, String varName) {
 		List methodArgs = methodDeclaration.getArguments();
-		
+
 		int pos = 0;
 		int argPos = -1;
 		for (Iterator iterator = methodArgs.iterator(); iterator.hasNext();) {
 			Statement marg = (Statement) iterator.next();
 			if (marg instanceof RubyMethodArgument) {
 				RubyMethodArgument rubyMethodArgument = (RubyMethodArgument) marg;
-				if (rubyMethodArgument.getName().equals(name)) {
+				if (rubyMethodArgument.getName().equals(varName)) {
 					argPos = pos;
 					break;
 				}
 			}
 			pos++;
 		}
-		
+		return argPos;
+	}
+
+	private Statement getArgFromCall(CallExpression expr) {
+		VariableReference ref = (VariableReference) ((ExpressionTypeGoal) goal)
+				.getExpression();
+		if (ref.getVariableKind() != RubyVariableKind.LOCAL)
+			return null;
+
+		String name = ref.getName();
+
+		int argPos = determineArgumentPos(methodDeclaration, name);
+
 		if (argPos != -1) {
-		
+
 			CallArgumentsList args = expr.getArgs();
 			if (args != null) {
 				List list = args.getExpressions();
-				Statement st = (Statement) list.get(argPos);
-				if (st instanceof RubyCallArgument) {
-					RubyCallArgument rubyCallArgument = (RubyCallArgument) st;
-					st = rubyCallArgument.getValue();
+				if (argPos < list.size()){
+					Statement st = (Statement) list.get(argPos);
+					if (st instanceof RubyCallArgument) {
+						RubyCallArgument rubyCallArgument = (RubyCallArgument) st;
+						st = rubyCallArgument.getValue();
+					}
+					return st;
 				}
-				return st;
 			}
-			
+
 		}
-				
+
 		return null;
 	}
-	
+
 	public IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state) {
 		if (subgoal == callsGoal) {
-			List possibles = new ArrayList ();
+			List possibles = new ArrayList();
 			ItemReference[] refs = (ItemReference[]) result;
-			for (int i = 0; i < refs.length; i++) { //TODO: for performance reasons, sort them somehow or leave only one
-				CallExpression node = ((RubyMethodReference)refs[i]).getNode();
+			for (int i = 0; i < refs.length; i++) { // TODO: for performance
+													// reasons, sort them
+													// somehow or leave only one
+				CallExpression node = ((RubyMethodReference) refs[i]).getNode();
 				if (node != null) {
 					Statement arg = getArgFromCall(node);
 					if (arg != null) {
-						IResource resource = refs[i].getPosition().getResource();
-						ISourceModule module = (ISourceModule) DLTKCore.create(resource);
+						IResource resource = refs[i].getPosition()
+								.getResource();
+						ISourceModule module = (ISourceModule) DLTKCore
+								.create(resource);
 						if (module == null)
 							continue;
 						ModuleDeclaration decl = ASTUtils.getAST(module);
 						if (decl == null)
 							continue;
-						BasicContext callContext = new BasicContext(module, decl);
-						ExpressionTypeGoal g = new ExpressionTypeGoal(callContext, arg);
+						BasicContext callContext = new BasicContext(module,
+								decl);
+						ExpressionTypeGoal g = new ExpressionTypeGoal(
+								callContext, arg);
 						possibles.add(g);
 					}
 				}

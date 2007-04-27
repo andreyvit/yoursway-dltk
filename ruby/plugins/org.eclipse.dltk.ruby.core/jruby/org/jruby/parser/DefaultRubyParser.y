@@ -268,7 +268,7 @@ program       : {
                           support.checkUselessStatement($2);
                       }
                   }
-                  support.getResult().setAST(support.addRootNode($2));
+                  support.getResult().setAST(support.addRootNode($2, getPosition($2)));
               }
 
 bodystmt      : compstmt opt_rescue opt_else opt_ensure {
@@ -299,7 +299,7 @@ stmts         : none
                   $$ = support.newline_node($1, getPosition($1, true));
               }
               | stmts terms stmt {
-	          $$ = support.appendToBlock($1, support.newline_node($3, getPosition($1, true)));
+	          $$ = support.appendToBlock($1, support.newline_node($3, getPosition($3, true)));
               }
               | error stmt {
                   $$ = $2;
@@ -359,9 +359,8 @@ stmt          : kALIAS fitem {
                   if (support.isInDef() || support.isInSingle()) {
                       yyerror("END in method; use at_exit");
                   }
-		  // FIXME: Totally broken if scoping is important...though if not this is an improvement over iterNode
-                  support.getResult().addEndNode(new PostExeNode(getPosition($1), $3));
-                  $$ = null;
+
+                  $$ = new PostExeNode(getPosition($1), $3);
               }
               | lhs '=' command_call {
                   support.checkExpression($3);
@@ -383,12 +382,13 @@ stmt          : kALIAS fitem {
 		  String asgnOp = (String) $2.getValue();
 		  if (asgnOp.equals("||")) {
 	              $1.setValueNode($3);
-	              $$ = new OpAsgnOrNode(getPosition($1), support.gettable2(name, $1.getPosition()), $1);
+	              $$ = new OpAsgnOrNode(support.union($1, $3), support.gettable2(name, $1.getPosition()), $1);
 		  } else if (asgnOp.equals("&&")) {
 	              $1.setValueNode($3);
-                      $$ = new OpAsgnAndNode(getPosition($1), support.gettable2(name, $1.getPosition()), $1);
+                      $$ = new OpAsgnAndNode(support.union($1, $3), support.gettable2(name, $1.getPosition()), $1);
 		  } else {
                       $1.setValueNode(support.getOperatorCallNode(support.gettable2(name, $1.getPosition()), asgnOp, $3));
+                      $1.setPosition(support.union($1, $3));
 		      $$ = $1;
 		  }
 	      }
@@ -683,10 +683,10 @@ arg           : lhs '=' arg {
 
 		  if (asgnOp.equals("||")) {
 	              $1.setValueNode($3);
-	              $$ = new OpAsgnOrNode(getPosition($1), support.gettable2(name, $1.getPosition()), $1);
+	              $$ = new OpAsgnOrNode(support.union($1, $3), support.gettable2(name, $1.getPosition()), $1);
 		  } else if (asgnOp.equals("&&")) {
 	              $1.setValueNode($3);
-                      $$ = new OpAsgnAndNode(getPosition($1), support.gettable2(name, $1.getPosition()), $1);
+                      $$ = new OpAsgnAndNode(support.union($1, $3), support.gettable2(name, $1.getPosition()), $1);
 		  } else {
 		      $1.setValueNode(support.getOperatorCallNode(support.gettable2(name, $1.getPosition()), asgnOp, $3));
                       $1.setPosition(support.union($1, $3));
@@ -725,28 +725,28 @@ arg           : lhs '=' arg {
                   $$ = new DotNode(support.union($1, $3), $1, $3, true);
               }
               | arg tPLUS arg {
-                  $$ = support.getOperatorCallNode($1, "+", $3);
+                  $$ = support.getOperatorCallNode($1, "+", $3, getPosition(null));
               }
               | arg tMINUS arg {
-                  $$ = support.getOperatorCallNode($1, "-", $3);
+                  $$ = support.getOperatorCallNode($1, "-", $3, getPosition(null));
               }
               | arg tSTAR2 arg {
-                  $$ = support.getOperatorCallNode($1, "*", $3);
+                  $$ = support.getOperatorCallNode($1, "*", $3, getPosition(null));
               }
               | arg tDIVIDE arg {
-                  $$ = support.getOperatorCallNode($1, "/", $3);
+                  $$ = support.getOperatorCallNode($1, "/", $3, getPosition(null));
               }
               | arg tPERCENT arg {
-                  $$ = support.getOperatorCallNode($1, "%", $3);
+                  $$ = support.getOperatorCallNode($1, "%", $3, getPosition(null));
               }
               | arg tPOW arg {
-		  $$ = support.getOperatorCallNode($1, "**", $3);
+		  $$ = support.getOperatorCallNode($1, "**", $3, getPosition(null));
               }
 	      | tUMINUS_NUM tINTEGER tPOW arg {
-                  $$ = support.getOperatorCallNode(support.getOperatorCallNode($2, "**", $4), "-@");
+                  $$ = support.getOperatorCallNode(support.getOperatorCallNode($2, "**", $4, getPosition(null)), "-@");
               }
 	      | tUMINUS_NUM tFLOAT tPOW arg {
-                  $$ = support.getOperatorCallNode(support.getOperatorCallNode($2, "**", $4), "-@");
+                  $$ = support.getOperatorCallNode(support.getOperatorCallNode($2, "**", $4, getPosition(null)), "-@");
               }
               | tUPLUS arg {
  	          if ($2 != null && $2 instanceof ILiteralNode) {
@@ -759,37 +759,37 @@ arg           : lhs '=' arg {
                   $$ = support.getOperatorCallNode($2, "-@");
 	      }
               | arg tPIPE arg {
-                  $$ = support.getOperatorCallNode($1, "|", $3);
+                  $$ = support.getOperatorCallNode($1, "|", $3, getPosition(null));
               }
               | arg tCARET arg {
-                  $$ = support.getOperatorCallNode($1, "^", $3);
+                  $$ = support.getOperatorCallNode($1, "^", $3, getPosition(null));
               }
               | arg tAMPER2 arg {
-                  $$ = support.getOperatorCallNode($1, "&", $3);
+                  $$ = support.getOperatorCallNode($1, "&", $3, getPosition(null));
               }
               | arg tCMP arg {
-                  $$ = support.getOperatorCallNode($1, "<=>", $3);
+                  $$ = support.getOperatorCallNode($1, "<=>", $3, getPosition(null));
               }
               | arg tGT arg {
-                  $$ = support.getOperatorCallNode($1, ">", $3);
+                  $$ = support.getOperatorCallNode($1, ">", $3, getPosition(null));
               }
               | arg tGEQ arg {
-                  $$ = support.getOperatorCallNode($1, ">=", $3);
+                  $$ = support.getOperatorCallNode($1, ">=", $3, getPosition(null));
               }
               | arg tLT arg {
-                  $$ = support.getOperatorCallNode($1, "<", $3);
+                  $$ = support.getOperatorCallNode($1, "<", $3, getPosition(null));
               }
               | arg tLEQ arg {
-                  $$ = support.getOperatorCallNode($1, "<=", $3);
+                  $$ = support.getOperatorCallNode($1, "<=", $3, getPosition(null));
               }
               | arg tEQ arg {
-                  $$ = support.getOperatorCallNode($1, "==", $3);
+                  $$ = support.getOperatorCallNode($1, "==", $3, getPosition(null));
               }
               | arg tEQQ arg {
-                  $$ = support.getOperatorCallNode($1, "===", $3);
+                  $$ = support.getOperatorCallNode($1, "===", $3, getPosition(null));
               }
               | arg tNEQ arg {
-                  $$ = new NotNode(support.union($1, $3), support.getOperatorCallNode($1, "==", $3));
+                  $$ = new NotNode(support.union($1, $3), support.getOperatorCallNode($1, "==", $3, getPosition(null)));
               }
               | arg tMATCH arg {
                   $$ = support.getMatchNode($1, $3);
@@ -804,10 +804,10 @@ arg           : lhs '=' arg {
                   $$ = support.getOperatorCallNode($2, "~");
               }
               | arg tLSHFT arg {
-                  $$ = support.getOperatorCallNode($1, "<<", $3);
+                  $$ = support.getOperatorCallNode($1, "<<", $3, getPosition(null));
               }
               | arg tRSHFT arg {
-                  $$ = support.getOperatorCallNode($1, ">>", $3);
+                  $$ = support.getOperatorCallNode($1, ">>", $3, getPosition(null));
               }
               | arg tANDOP arg {
                   $$ = support.newAndNode($1, $3);
@@ -870,7 +870,7 @@ opt_paren_args: none | paren_args
 
 // Node:call_args - Arguments for a function call
 call_args     : command {
-                  warnings.warn(getPosition($1), "parenthesize argument(s) for future version");
+                  warnings.warn($1.getPosition(), "parenthesize argument(s) for future version");
                   $$ = new ArrayNode(getPosition($1), $1);
               }
               | args opt_block_arg {
@@ -1479,8 +1479,6 @@ dsym	       : tSYMBEG xstring_contents tSTRING_END {
 		   // DStrNode: :"some text #{some expression}"
                    // StrNode: :"some text"
 		   // EvStrNode :"#{some expression}"
-		   DStrNode node;
-
                    if ($2 == null) {
                        yyerror("empty symbol literal");
                    }
@@ -1591,8 +1589,7 @@ f_args         : f_arg ',' f_optarg ',' f_rest_arg opt_f_block_arg {
                    $$ = new ArgsNode(getPosition($1), null, null, -1, $1);
                }
                | /* none */ {
-                   //take the last position from the lexer, this isn't entirely correct, but more accurate then getPosition(null). 
-                   $$ = new ArgsNode(lexer.getPosition(), null, null, -1, null);
+                   $$ = new ArgsNode(support.createEmptyArgsNodePosition(getPosition(null)), null, null, -1, null);
                }
 
 f_norm_arg     : tCONSTANT {

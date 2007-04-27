@@ -65,13 +65,19 @@ public class FixnumNode extends Node implements ILiteralNode {
     }
     
     public void setValue(long value) {
-//        // This should never happen past parse, but just bulletproof this just in case
+        // This should never happen past parse, but just bulletproof this just in case
 //        if (fixnum != null) {
 //            fixnum = null;
 //        }
         this.value = value;
     }
     
+//    public RubyFixnum getFixnum(Ruby runtime) {
+//        if (fixnum == null) {
+//            return fixnum = RubyFixnum.newFixnum(runtime, value);
+//        }
+//        return fixnum;
+//    }
     
     public List childNodes() {
         return EMPTY_LIST;

@@ -15,8 +15,9 @@ import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
-import org.eclipse.dltk.ti.BasicContext;
 import org.eclipse.dltk.ti.GoalState;
+import org.eclipse.dltk.ti.IContext;
+import org.eclipse.dltk.ti.ISourceModuleContext;
 
 public abstract class SearchBasedGoalEvaluator extends GoalEvaluator {
 	
@@ -49,8 +50,14 @@ public abstract class SearchBasedGoalEvaluator extends GoalEvaluator {
 
 	public IGoal[] init() {	
 		IGoal goal = getGoal();
-		BasicContext basicContext = (BasicContext) goal.getContext();
-		IDLTKProject project = basicContext.getSourceModule().getScriptProject();
+		IDLTKProject project = null;
+		IContext context = goal.getContext();
+		if (context instanceof ISourceModuleContext) {
+			ISourceModuleContext basicContext = (ISourceModuleContext) goal.getContext();
+			project = basicContext.getSourceModule().getScriptProject();
+		} 
+		if (project == null)
+			return null;
 		IDLTKSearchScope scope = SearchEngine.createSearchScope(new IModelElement[] {project});
 		SearchPattern pattern = createSearchPattern();
 		SearchEngine engine = new SearchEngine();

@@ -37,8 +37,8 @@ package org.jruby.runtime;
 // TODO: Consider making this be an interface that will have immutable concrete implementations
 public interface ICallable {
 //    IRubyObject call(ThreadContext context, IRubyObject receiver, IRubyObject[] args, Block block);
-//
-//    Arity getArity();
-//
-//    ICallable dup();
+
+    Arity getArity();
+
+    ICallable dup();
 }

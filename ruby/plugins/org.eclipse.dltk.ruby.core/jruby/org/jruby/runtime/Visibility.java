@@ -31,6 +31,8 @@ package org.jruby.runtime;
 
 import java.io.Serializable;
 
+import org.jruby.util.IdUtil;
+
 /**
  * This class represents two concepts: method visibility and a mask for 
  * determining a set of valid method visibilities.  The first concept can only
@@ -103,7 +105,7 @@ public final class Visibility implements Serializable {
                 return "mixed mask: " + restore;
         }
     }
-//    
+    
 //    public String errorMessageFormat(CallType callType, String name) {
 //        String format = "undefined method `%s' for %s%s%s";
 //        if (callType ==  CallType.VARIABLE) {

@@ -31,8 +31,6 @@
  ***** END LICENSE BLOCK *****/
 package org.jruby.ast.visitor;
 
-import java.util.Iterator;
-
 import org.jruby.ast.AliasNode;
 import org.jruby.ast.AndNode;
 import org.jruby.ast.ArgsCatNode;
@@ -92,7 +90,6 @@ import org.jruby.ast.MultipleAsgnNode;
 import org.jruby.ast.NewlineNode;
 import org.jruby.ast.NextNode;
 import org.jruby.ast.NilNode;
-import org.jruby.ast.Node;
 import org.jruby.ast.NotNode;
 import org.jruby.ast.NthRefNode;
 import org.jruby.ast.OpAsgnAndNode;
@@ -208,10 +205,10 @@ public class DefaultIteratorVisitor implements NodeVisitor {
 
     public Instruction visitArrayNode(ArrayNode iVisited) {
 		iVisited.accept(_Payload);
-		Iterator iterator = iVisited.iterator();
-		while (iterator.hasNext()) {
-			((Node) iterator.next()).accept(this);
-		}
+                
+                for (int i = 0; i < iVisited.size(); i++) {
+                    iVisited.get(i).accept(this);
+                }
 
 		return null;
 	}
@@ -233,10 +230,11 @@ public class DefaultIteratorVisitor implements NodeVisitor {
 
 	public Instruction visitBlockNode(BlockNode iVisited) {
 		iVisited.accept(_Payload);
-		Iterator iterator = iVisited.iterator();
-		while (iterator.hasNext()) {
-			((Node) iterator.next()).accept(this);
-		}
+                
+                for (int i = 0; i < iVisited.size(); i++) {
+                    iVisited.get(i).accept(this);
+                }
+                
 		return null;
 	}
 

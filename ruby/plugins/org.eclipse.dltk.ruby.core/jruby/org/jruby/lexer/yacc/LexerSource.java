@@ -253,25 +253,24 @@ public class LexerSource {
      * @return the current char or EOF (at EOF or on error)
      */
     private char wrappedRead() throws IOException {
-            int c = reader.read();
-        	
-            // If \r\n then just pass along \n (windows)
-            // If \r[^\n] then pass along \n (MAC)
-            if (c == '\r') {
-                if ((c = reader.read()) != '\n') {
-                    unread((char)c);
-                    c = '\n';
-                } else {
-                    // Position within source must reflect the actual offset and column.  Since
-                	// we ate an extra character here (this accounting is normally done in read
-                	// ), we should update position info.
-                    offset++;
-                    column++;
-                }
-            }
-        	
-            return c != -1 ? (char) c : '\0';
+        int c = reader.read();
 
+        // If \r\n then just pass along \n (windows)
+        // If \r[^\n] then pass along \n (MAC)
+        if (c == '\r') {
+            if ((c = reader.read()) != '\n') {
+                unread((char)c);
+                c = '\n';
+            } else {
+                // Position within source must reflect the actual offset and column.  Since
+                // we ate an extra character here (this accounting is normally done in read
+                // ), we should update position info.
+                offset++;
+                column++;
+            }
+        }
+                   
+        return c != -1 ? (char) c : '\0';
     }
     
     /**
@@ -354,11 +353,11 @@ public class LexerSource {
             case 'f' : // form feed
                 return '\f';
             case 'v' : // vertical tab
-                return '\u0013';
+                return '\u000B';
             case 'a' : // alarm(bell)
                 return '\u0007';
             case 'e' : // escape
-                return '\u0033';
+                return '\u001B';
             case '0' : case '1' : case '2' : case '3' : // octal constant
             case '4' : case '5' : case '6' : case '7' :
                 unread(c);
