@@ -15,6 +15,8 @@ public class RubyMixinElementInfo {
 	public static final int K_VARIABLE = 3;
 
 	public static final int K_INCLUDE = 4;
+	
+	public static final int K_VIRTUAL = 5;
 
 	private int kind = 0;
 	private Object object = null;
@@ -59,6 +61,10 @@ public class RubyMixinElementInfo {
 	
 	public  static RubyMixinElementInfo createVariable (IField type) {
 		return new RubyMixinElementInfo(K_VARIABLE, type);
+	}
+	
+	public  static RubyMixinElementInfo createVirtualClass () {
+		return new RubyMixinElementInfo(K_VIRTUAL, null);
 	}
 
 }

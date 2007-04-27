@@ -163,13 +163,15 @@ public class RubyMixinClass implements IRubyMixinElement {
 			result.addAll(Arrays.asList(methods));
 		}
 		
-		RubyMixinClass superclass = getSuperclass();
-		if (superclass != null) {
-			
-			if (!superclass.getKey().equals(key)) {
-				RubyMixinMethod[] methods = superclass.findMethods(prefix,
-						includeTopLevel);
-				result.addAll(Arrays.asList(methods));
+		if (!this.key.endsWith(RubyMixin.VIRTUAL_SUFFIX)) {		
+			RubyMixinClass superclass = getSuperclass();
+			if (superclass != null) {
+				
+				if (!superclass.getKey().equals(key)) {
+					RubyMixinMethod[] methods = superclass.findMethods(prefix,
+							includeTopLevel);
+					result.addAll(Arrays.asList(methods));
+				}
 			}
 		}
 

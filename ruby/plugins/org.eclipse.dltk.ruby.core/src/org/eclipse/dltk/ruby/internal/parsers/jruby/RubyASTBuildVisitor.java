@@ -1875,8 +1875,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		ISourcePosition pos = iVisited.getReceiverNode().getPosition();
 		ISourcePosition cPos = iVisited.getPosition();
 		RubySingletonClassDeclaration type = new RubySingletonClassDeclaration(
-				name, pos.getStartOffset(), pos.getEndOffset() + 1, cPos
-						.getStartOffset(), cPos.getEndOffset() + 1);
+				name, pos.getStartOffset(), pos.getEndOffset(), cPos
+						.getStartOffset(), cPos.getEndOffset());
 		states.peek().add(type);
 
 		CollectingState coll = new CollectingState();

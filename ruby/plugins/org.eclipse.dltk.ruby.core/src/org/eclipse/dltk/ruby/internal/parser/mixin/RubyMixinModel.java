@@ -73,6 +73,7 @@ public class RubyMixinModel {
 				continue;
 			switch (obj.getKind()) {
 				case RubyMixinElementInfo.K_CLASS:
+				case RubyMixinElementInfo.K_VIRTUAL:
 					return new RubyMixinClass(this, element.getKey(), false);
 				case RubyMixinElementInfo.K_MODULE:
 					return new RubyMixinClass(this, element.getKey(), true);

@@ -31,9 +31,9 @@ import org.eclipse.dltk.ruby.ast.RubyClassDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyConstantDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
+import org.eclipse.dltk.ruby.ast.RubySelfReference;
 import org.eclipse.dltk.ruby.ast.RubySingletonClassDeclaration;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
-import org.eclipse.dltk.ruby.ast.RubySelfReference;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 
 public class RubyMixinBuildVisitor extends ASTVisitor {
@@ -97,12 +97,16 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		}
 
 		public String reportVariable(String name, IField object) {
+			RubyMixinElementInfo info = (name.endsWith(VIRTUAL_SUFFIX))?RubyMixinElementInfo.createVirtualClass():RubyMixinElementInfo.createVariable(object);
 			if (name.startsWith("$"))
-				return report(name, RubyMixinElementInfo.createVariable(object));
+				return report(name, info);
 			if (name.startsWith("@") || Character.isUpperCase(name.charAt(0)))
-				return report("Object" + SEPARATOR + name, RubyMixinElementInfo.createVariable(object));
-			else
+				return report("Object" + SEPARATOR + name, info);
+			else {
+				if (info.getKind() == RubyMixinElementInfo.K_VIRTUAL)
+					return report(name, info); 
 				return null; // no top-level vars
+			}
 		}
 
 		public String getKey() {
@@ -141,9 +145,10 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		}
 
 		public String reportVariable(String name, IField object) {
+			RubyMixinElementInfo info = (name.endsWith(VIRTUAL_SUFFIX))?RubyMixinElementInfo.createVirtualClass():RubyMixinElementInfo.createVariable(object);
 			if (name.startsWith("$"))
-				return report(name, RubyMixinElementInfo.createVariable(object));
-			RubyMixinElementInfo obj = RubyMixinElementInfo.createVariable(object);
+				return report(name, info);
+			RubyMixinElementInfo obj = info;
 			String key = null;
 			if (name.startsWith("@@")) {
 				key = classKey + SEPARATOR + name;
@@ -196,9 +201,10 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		}
 
 		public String reportVariable(String name, IField object) {
+			RubyMixinElementInfo info = (name.endsWith(VIRTUAL_SUFFIX))?RubyMixinElementInfo.createVirtualClass():RubyMixinElementInfo.createVariable(object);
 			if (name.startsWith("$"))
-				return report(name, RubyMixinElementInfo.createVariable(object));
-			RubyMixinElementInfo obj = RubyMixinElementInfo.createVariable(object);
+				return report(name, info);
+			RubyMixinElementInfo obj = info;
 			if (name.startsWith("@@")) {
 				report(classKey + INSTANCE_SUFFIX + SEPARATOR + name, obj);
 				return report(classKey + SEPARATOR + name, obj);
@@ -242,9 +248,10 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		}
 
 		public String reportVariable(String name, IField obj) {
+			RubyMixinElementInfo info = (name.endsWith(VIRTUAL_SUFFIX))?RubyMixinElementInfo.createVirtualClass():RubyMixinElementInfo.createVariable(obj);
 			if (name.startsWith("$"))
-				return report(name, RubyMixinElementInfo.createVariable(obj));
-			RubyMixinElementInfo object = RubyMixinElementInfo.createVariable(obj);
+				return report(name, info);
+			RubyMixinElementInfo object = info;
 			if (name.startsWith("@@")) {
 				String key = classScope.getKey() + SEPARATOR + name;
 				report(
@@ -424,8 +431,14 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 					scopes.push(metaScope);
 					return true;
 				}
+			} else if (receiver instanceof VariableReference) {
+				VariableReference ref = (VariableReference) receiver;
+				Scope scope = peekScope();
+				String key = scope.reportVariable(ref.getName() + VIRTUAL_SUFFIX, null);
+				scopes.push(new MetaClassScope(decl, key));
+				return true;
 			} else {
-				// TODO
+				// TODO: add common method for singletons resolving
 			}
 		} else if (decl instanceof RubyClassDeclaration) {
 			RubyClassDeclaration declaration = (RubyClassDeclaration) decl;
@@ -461,7 +474,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		if (requestor != null) {
 			requestor.reportElement(info);
 			// if (DLTKCore.DEBUG_INDEX) {
-//			 System.out.println("Mixin reported: " + key);
+			 System.out.println("Mixin reported: " + key);
 			// }
 //			if (key.startsWith("Object"))
 //				System.out.println("######################## Object key reported: " + key);

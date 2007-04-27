@@ -10,6 +10,7 @@ import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKCore;
@@ -36,6 +37,7 @@ import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeMethod;
 import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixin;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinMethod;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
@@ -209,22 +211,23 @@ public class RubyModelUtils {
 			}
 		}
 
-		RubyMixinVariable[] fields2 = selfClass.getFields();
-		addVariablesFrom(fields2, prefix, result);
-
-		if (selfClass.getKey().equals("Object")) { 
-			// variables
-			try {
-				IModelElement[] children = modelModule.getChildren();
-				for (int i = 0; i < children.length; i++) {
-					if (children[i] instanceof IField) {
-						IField field = (IField) children[i];
-						if (field.getElementName().startsWith(prefix))
-							result.add(field);
+		if (selfClass != null) {
+			RubyMixinVariable[] fields2 = selfClass.getFields();
+			addVariablesFrom(fields2, prefix, result);
+			if (selfClass.getKey().equals("Object")) {
+				// variables
+				try {
+					IModelElement[] children = modelModule.getChildren();
+					for (int i = 0; i < children.length; i++) {
+						if (children[i] instanceof IField) {
+							IField field = (IField) children[i];
+							if (field.getElementName().startsWith(prefix))
+								result.add(field);
+						}
 					}
+				} catch (ModelException e) {
+					e.printStackTrace();
 				}
-			} catch (ModelException e) {
-				e.printStackTrace();
 			}
 		}
 
@@ -241,8 +244,8 @@ public class RubyModelUtils {
 			RubyMixinClass rubyClass = RubyMixinModel.getInstance()
 					.createRubyClass(rubyClassType);
 			if (rubyClass != null) {
-				RubyMixinMethod[] methods = rubyClass
-						.findMethods(prefix, (prefix.length() > 0));
+				RubyMixinMethod[] methods = rubyClass.findMethods(prefix,
+						(prefix.length() > 0));
 				for (int i = 0; i < methods.length; i++) {
 					IMethod[] sourceMethods = methods[i].getSourceMethods();
 					if (sourceMethods != null) {
@@ -290,6 +293,37 @@ public class RubyModelUtils {
 				}
 			}
 		}
+	}
+
+	public static IMethod[] getVirtualMethods(VariableReference receiver,
+			ModuleDeclaration parsedUnit, ISourceModule modelModule,
+			String methodName) {
+		IMethod[] res = null;
+		// if (receiver instanceof VariableReference) {
+		VariableReference ref = (VariableReference) receiver;
+		String[] scopesKeys = RubyTypeInferencingUtils
+				.getModelStaticScopesKeys(RubyMixinModel.getRawInstance(),
+						parsedUnit, ref.sourceStart());
+		if (scopesKeys != null && scopesKeys.length > 0) {
+			String possibleName;
+			if (scopesKeys.length == 1) {
+				possibleName = ref.getName() + RubyMixin.VIRTUAL_SUFFIX;
+			} else {
+				String last = scopesKeys[scopesKeys.length - 1];
+				possibleName = last + MixinModel.SEPARATOR + ref.getName()
+						+ RubyMixin.VIRTUAL_SUFFIX;
+			}
+			IRubyMixinElement element = RubyMixinModel.getInstance()
+					.createRubyElement(possibleName);
+			if (element instanceof RubyMixinClass) {
+				RubyMixinClass rubyMixinClass = (RubyMixinClass) element;
+				res = RubyModelUtils.searchClassMethods(modelModule,
+						parsedUnit, new RubyClassType(rubyMixinClass.getKey()),
+						methodName);
+			}
+		}
+		// }
+		return res;
 	}
 
 	// public static RubyClassType getSuperType(IType type) {

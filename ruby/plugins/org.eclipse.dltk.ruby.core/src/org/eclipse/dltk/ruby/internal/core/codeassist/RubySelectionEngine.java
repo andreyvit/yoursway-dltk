@@ -1,6 +1,7 @@
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +31,7 @@ import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.TypeNameMatch;
@@ -38,6 +40,8 @@ import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
+import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixin;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
@@ -362,6 +366,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 		Statement receiver = parentCall.getReceiver();
 
 		IMethod[] availableMethods = null;
+		IMethod[] availableMethods2 = null;
 
 		if (receiver == null) {
 			RubyClassType type = RubyTypeInferencingUtils.determineSelfClass(
@@ -372,6 +377,20 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 					modelModule, parsedUnit), receiver);
 			IEvaluatedType type = inferencer.evaluateType(goal, 5000);
 			availableMethods = RubyModelUtils.searchClassMethods(modelModule, parsedUnit, type, methodName);
+			if (receiver instanceof VariableReference) {
+				availableMethods2 = RubyModelUtils.getVirtualMethods((VariableReference) receiver, parsedUnit, modelModule, methodName);
+			}
+		}
+		
+		if (availableMethods2 != null) {
+			IMethod[] newm = new IMethod[((availableMethods != null)?availableMethods.length:0) + availableMethods2.length];
+			int next = 0;
+			if (availableMethods != null) {
+				System.arraycopy(availableMethods, 0, newm, 0, availableMethods.length);
+				next = availableMethods.length;
+			}
+			System.arraycopy(availableMethods2, 0, newm, next, availableMethods2.length);
+			availableMethods = newm;
 		}
 
 		if (availableMethods == null || availableMethods.length == 0) {

@@ -14,6 +14,7 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.RelevanceConstants;
@@ -30,15 +31,16 @@ import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.internal.core.ModelElement;
-import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyBlock;
+import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyDAssgnExpression;
-import org.eclipse.dltk.ruby.ast.RubySymbolReference;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixin;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinElementInfo;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinVariable;
@@ -199,7 +201,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			String pattern) {
 		ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
 				modelModule, moduleDeclaration), (Statement) receiver);
-		IEvaluatedType type = inferencer.evaluateType(goal, 3000);
+		IEvaluatedType type = inferencer.evaluateType(goal, 3000);						
 		return RubyModelUtils.searchClassMethods(modelModule,
 				moduleDeclaration, type, pattern);
 	}
@@ -448,19 +450,30 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		this.setSourceRange(position - starting.length(), position);
 
 		IMethod[] methods = null;
+		IMethod[] methods2 = null;
 
 
 		int relevance = 424242;
 		if (receiver != null) {
 			methods = getMethodsForReceiver(module, moduleDeclaration,
 					receiver, starting);
+			if (receiver instanceof VariableReference) {
+				methods2 = RubyModelUtils.getVirtualMethods((VariableReference) receiver, moduleDeclaration, module, starting);
+			}
 		} else {
 			IClassType self = RubyTypeInferencingUtils.determineSelfClass(
 					module, moduleDeclaration, position);
 			methods = RubyModelUtils.searchClassMethods(module,
 					moduleDeclaration, self, starting);
-
 		}
+		
+		if (methods2 != null) { // virtual methods
+			for (int j = 0; j < methods2.length; j++) {
+				if (methods2[j].getElementName().startsWith(starting))
+					reportMethod(methods2[j], relevance--);
+			}
+		}
+		
 		if (methods != null) {
 			for (int j = 0; j < methods.length; j++) {
 				if (methods[j].getElementName().startsWith(starting))
