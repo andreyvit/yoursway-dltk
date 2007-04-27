@@ -577,7 +577,7 @@ begin
 
 		set_trace_func nil
 
-		@core.shutdown
+		@debugger.shutdown
 	end
 
 rescue Exception
