@@ -288,13 +288,11 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	}
 
 	private Stack scopes = new Stack();
-	private ModuleDeclaration module;
 
 	public RubyMixinBuildVisitor(ModuleDeclaration module,
 			ISourceModule sourceModule, boolean moduleAvailable,
 			IMixinRequestor requestor) {
 		super();
-		this.module = module;
 		this.sourceModule = sourceModule;
 		this.moduleAvailable = moduleAvailable;
 		this.requestor = requestor;
@@ -306,7 +304,6 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 
 	public boolean visit(ModuleDeclaration s) throws Exception {
 		this.scopes.add(new SourceModuleScope(s));
-		// report("Object", null);
 		return true;
 	}
 
@@ -348,8 +345,8 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 
 	private IModelElement findModelElementFor(ASTNode decl)
 			throws ModelException {
-		return  sourceModule.getElementAt(decl.sourceStart() + 1);		
 //		return null;
+		return  sourceModule.getElementAt(decl.sourceStart() + 1);		
 	}
 
 	public boolean visit(Expression s) throws Exception {
@@ -474,7 +471,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		if (requestor != null) {
 			requestor.reportElement(info);
 			// if (DLTKCore.DEBUG_INDEX) {
-			 System.out.println("Mixin reported: " + key);
+//			 System.out.println("Mixin reported: " + key);
 			// }
 //			if (key.startsWith("Object"))
 //				System.out.println("######################## Object key reported: " + key);
