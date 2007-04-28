@@ -130,7 +130,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 				String inclKey = (String) info.getObject();
 				if (!names.contains(inclKey)) {
 					names.add(inclKey);
-					if (!this.isMeta() && !inclKey.endsWith(RubyMixin.INSTANCE_SUFFIX))
+					if (/*!this.isMeta() && */!inclKey.endsWith(RubyMixin.INSTANCE_SUFFIX))
 						inclKey += RubyMixin.INSTANCE_SUFFIX;
 					IRubyMixinElement element = model.createRubyElement(inclKey);
 					if (element instanceof RubyMixinClass)

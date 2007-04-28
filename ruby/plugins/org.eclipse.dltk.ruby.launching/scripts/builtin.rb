@@ -47,9 +47,13 @@ def generateArgs(arity)
 end
 
 def put_singleton_methods!(metaclass)
-	$data << <<-"END2"
-	class << ::#{metaclass.name}
-	END2
+	if (metaclass.is_a?(Class))
+		$data << <<-"END2"
+		class << self
+		END2
+	else
+		$data << "\t\tprivate\n"
+	end
 	ms = (metaclass.public_methods(false) - Class.instance_methods(false)).each { |m|
 	$data << <<-"END2"
 		def #{m.to_s} (#{generateArgs(metaclass.method(m).arity)})
@@ -57,9 +61,11 @@ def put_singleton_methods!(metaclass)
 	
 	END2
 	}
-	$data << <<-"END2"
+	if (metaclass.is_a?(Class))
+		$data << <<-"END2"
+		end
+		END2
 	end
-	END2
 end
 
 def put_included_modules!(metaclass)

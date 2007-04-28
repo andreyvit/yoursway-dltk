@@ -58,4 +58,15 @@ public class RubyCallArgument extends Expression {
 		}
 	}
 
+	public boolean equals(Object obj) {
+		if (!(obj instanceof RubyCallArgument))
+			return false;
+		RubyCallArgument arg = (RubyCallArgument) obj;
+		return (arg.kind == kind && arg.value == value);
+	}
+
+	
+	
+	
+
 }

@@ -221,8 +221,10 @@ public abstract class AbstractInterpreterComboBlock {
 		fCombo = new Combo(group, SWT.DROP_DOWN | SWT.READ_ONLY);
 		fCombo.setFont(font);
 		data= new GridData(GridData.FILL_HORIZONTAL);
+//		data.minimumWidth = 100;
+//		data.widthHint = 100;
 		data.horizontalSpan = 1;
-		fCombo.setLayoutData(data);
+		fCombo.setLayoutData(data);		
 		ControlAccessibleListener.addListener(fCombo, fSpecificButton.getText());
 		
 		fCombo.addSelectionListener(new SelectionAdapter() {
@@ -320,6 +322,10 @@ public abstract class AbstractInterpreterComboBlock {
 		}
 		fCombo.setItems(names);
 		fCombo.setVisibleItemCount(Math.min(names.length, 20));
+//		if (names.length == 0) {			
+//			fCombo.setEnabled(names.length > 0);
+//			fSpecificButton.setEnabled(names.length > 0);
+//		}
 	}
 	
 	protected Shell getShell() {

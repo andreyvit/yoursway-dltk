@@ -315,12 +315,14 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 			fUseProjectInterpreterEnvironment.doFillIntoGrid(fGroup, 1);
 			fUseProjectInterpreterEnvironment.setDialogFieldListener(this);
 						
-			fInterpreterEnvironmentCombo= new ComboDialogField(SWT.READ_ONLY);
+			fInterpreterEnvironmentCombo= new ComboDialogField(SWT.READ_ONLY);			
 			fillInstalledInterpreterEnvironments(fInterpreterEnvironmentCombo);
 			fInterpreterEnvironmentCombo.setDialogFieldListener(this);
 
 			Combo comboControl= fInterpreterEnvironmentCombo.getComboControl(fGroup);
-			comboControl.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false)); // make sure column 2 is grabing (but no fill)
+			GridData gridData = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+			gridData.minimumWidth = 100;
+			comboControl.setLayoutData(gridData); // make sure column 2 is grabing (but no fill)
 			comboControl.setVisibleItemCount(20);
 			
 			DialogField.createEmptySpace(fGroup);
