@@ -299,7 +299,16 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 				if (document != null) {
 					String variableName = document.get(hoverRegion.getOffset(),
 							hoverRegion.getLength());
-					return generateHoverForLocal(frame, variableName);
+					String generateHoverForLocal = generateHoverForLocal(frame,
+							variableName);
+					if (generateHoverForLocal == null) {
+						if (!variableName.startsWith("this")) {
+							variableName = "this." + variableName;
+							generateHoverForLocal = generateHoverForLocal(
+									frame, variableName);
+						}
+					}
+					return generateHoverForLocal;
 				}
 			} catch (BadLocationException x) {
 			}
@@ -316,25 +325,26 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 				String vn = varName.substring(0, iip);
 				IScriptVariable findVariable = frame.findVariable(vn);
 				while (iip != -1) {
-					
-					String name=varName.substring(iip+1);
-					int pos=name.indexOf('.');
-					if (pos!=-1){
-						varName=name;
-						name=name.substring(0,pos);
-						
+
+					String name = varName.substring(iip + 1);
+					int pos = name.indexOf('.');
+					if (pos != -1) {
+						varName = name;
+						name = name.substring(0, pos);
+
 					}
-					iip=pos;
-					if (findVariable==null)return null;
+					iip = pos;
+					if (findVariable == null)
+						return null;
 					IScriptVariable[] children = findVariable.getChildren();
-					for (int a=0;a<children.length;a++){
-						if (children[a].getName().equals(name)){
-							findVariable=children[a];
+					for (int a = 0; a < children.length; a++) {
+						if (children[a].getName().equals(name)) {
+							findVariable = children[a];
 						}
 					}
 				}
 				return getVariableText(findVariable) + "="
-					+ findVariable.getValueString();
+						+ findVariable.getValueString();
 			} catch (DebugException e) {
 				DLTKDebugPlugin.log(e);
 				return null;
