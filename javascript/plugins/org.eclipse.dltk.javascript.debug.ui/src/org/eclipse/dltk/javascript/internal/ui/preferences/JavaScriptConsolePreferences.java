@@ -1,4 +1,4 @@
-package org.eclipse.dltk.javascript.internal.console.ui.preferences;
+package org.eclipse.dltk.javascript.internal.ui.preferences;
 
 import org.eclipse.dltk.javascript.console.JavaScriptConsoleConstants;
 import org.eclipse.dltk.javascript.internal.debug.ui.JavaScriptDebugUIPlugin;

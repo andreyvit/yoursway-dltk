@@ -23,6 +23,8 @@ import org.eclipse.dltk.dbgp.IDbgpSession;
  */
 public interface IScriptThread extends IThread  /*, IFilteredStep */{
 
+	int ERR_THREAD_NOT_SUSPENDED = -3;
+
 	IDbgpSession getDbgpSession();
 
 	/**

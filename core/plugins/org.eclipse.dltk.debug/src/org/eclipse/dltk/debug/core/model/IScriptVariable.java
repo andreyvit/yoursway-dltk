@@ -12,5 +12,7 @@ public interface IScriptVariable extends IVariable {
 
 	boolean hasChildren();
 
+	String getFullName();
+
 	IScriptVariable[] getChildren();
 }

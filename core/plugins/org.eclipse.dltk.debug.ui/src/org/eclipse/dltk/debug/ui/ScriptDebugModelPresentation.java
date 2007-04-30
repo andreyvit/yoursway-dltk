@@ -113,7 +113,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		}
 	}
 
-	protected String getVariableText(IScriptVariable variable) {
+	public String getVariableText(IScriptVariable variable) {
 		return variable.toString();
 	}
 

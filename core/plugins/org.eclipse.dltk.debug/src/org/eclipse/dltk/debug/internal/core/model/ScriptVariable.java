@@ -124,4 +124,8 @@ public class ScriptVariable extends ScriptDebugElement implements
 	public String toString() {
 		return property.getName();
 	}
+
+	public String getFullName() {
+		return property.getFullName();
+	}
 }

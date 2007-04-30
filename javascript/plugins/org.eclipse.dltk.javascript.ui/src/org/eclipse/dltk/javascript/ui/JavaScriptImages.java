@@ -1,7 +1,8 @@
-package org.eclipse.dltk.javascript.internal.ui;
+package org.eclipse.dltk.javascript.ui;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
 import org.eclipse.dltk.ui.ImageUtil;
 import org.eclipse.jface.resource.ImageDescriptor;
 

@@ -4,7 +4,40 @@
 >
    <extension
          point="org.eclipse.core.runtime.preferences">
-      <initializer class="org.eclipse.dltk.javascript.internal.console.ui.preferences.JavaScriptConsolePreferenceInitializer"/>
+      <initializer class="org.eclipse.dltk.javascript.internal.ui.preferences.JavaScriptConsolePreferenceInitializer"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+         
+         <viewContribution
+            targetID="org.eclipse.debug.ui.VariableView"
+            id="org.eclipse.jdt.debug.ui.VariableViewActions">
+         <action
+               style="toggle"
+               id="org.eclipse.jdt.debug.ui.variableViewActions.ShowStatic"
+               class="org.eclipse.dltk.javascript.internal.console.ui.actions.ShowFunctionsAction"
+               icon="icons/javascript.gif"
+               helpContextId="show_functions_context"
+               label="%showStaticAction.label"
+               menubarPath="org.eclipse.dltk.debug.ui.VariableView.javascriptSubmenu/javascriptPart"
+               tooltip="%showStaticAction.tooltip">
+         </action>
+         <menu
+               id="org.eclipse.dltk.debug.ui.VariableView.javascriptSubmenu"
+               label="%VariablesViewJavaScriptSubmenu.label"
+               path="javascriptActions">
+            <groupMarker name="org.eclipse.dltk.debug.ui.javascriptPart"/>
+         </menu>
+      </viewContribution>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.ui.editorTextHovers">
+      <hover
+            label="%javascriptVariabl1eHoverLabel"
+            description="%javaVariableHoverDescription"
+            class="org.eclipse.dltk.javascript.internal.debug.ui.JavaScriptDebugHover"
+            id="org.eclipse.dltk.javascript.internal.debug.ui.JavaScriptDebugHover">
+      </hover>
    </extension>
    <extension
          point="org.eclipse.debug.core.statusHandlers">
@@ -225,7 +258,7 @@
          point="org.eclipse.ui.preferencePages">
       <page
             category="org.eclipse.dltk.javascript.ui.javascript"
-            class="org.eclipse.dltk.javascript.internal.console.ui.preferences.JavaScriptConsolePreferences"
+            class="org.eclipse.dltk.javascript.internal.ui.preferences.JavaScriptConsolePreferences"
             id="org.eclipse.dltk.javascript.console.ui.internal.preferences.TclConsolePreferences"
             name="%TclConsole.PreferencePage"/>
    </extension>

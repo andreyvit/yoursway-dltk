@@ -1,7 +1,7 @@
 package org.eclipse.dltk.javascript.internal.ui.wizards;
 
 import org.eclipse.dltk.javascript.core.JavaScriptNature;
-import org.eclipse.dltk.javascript.internal.ui.JavaScriptImages;
+import org.eclipse.dltk.javascript.ui.JavaScriptImages;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.wizards.NewSourceModulePage;
 import org.eclipse.dltk.ui.wizards.NewSourceModuleWizard;

@@ -216,4 +216,11 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		return "Stack frame (level: " + (stackDepth - stackLevel.getLevel())
 				+ ")";
 	}
+
+	public IScriptVariable findVariable(String varName) throws DebugException {
+		for (int a=0;a<variables.length;a++){
+			if (variables[a].getName().equals(varName))return variables[a];
+		}
+		return null;
+	}
 }

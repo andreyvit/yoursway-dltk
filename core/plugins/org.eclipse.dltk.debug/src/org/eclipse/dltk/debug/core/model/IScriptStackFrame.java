@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.core.model;
 
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IStackFrame;
+import org.eclipse.debug.core.model.IVariable;
 
 /**
  * A stack frame in a thread on a Script virtual machine.
@@ -26,6 +28,8 @@ import org.eclipse.debug.core.model.IStackFrame;
  */
 
 public interface IScriptStackFrame extends IStackFrame {
+
+	IScriptVariable findVariable(String varName) throws DebugException;
 
 	/**
 	 * Returns the line number of the instruction pointer in this stack frame
