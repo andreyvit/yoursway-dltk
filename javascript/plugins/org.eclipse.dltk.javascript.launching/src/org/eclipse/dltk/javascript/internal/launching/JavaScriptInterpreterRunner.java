@@ -147,4 +147,8 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 	protected String getProcessType() {
 		return IJavaScriptLaunchConfigurationConstants.ID_JAVASCRIPT_PROCESS_TYPE;
 	}
+
+	protected String getPluginId() {
+		return JavaScriptLaunchingPlugin.PLUGIN_ID;
+	}
 }

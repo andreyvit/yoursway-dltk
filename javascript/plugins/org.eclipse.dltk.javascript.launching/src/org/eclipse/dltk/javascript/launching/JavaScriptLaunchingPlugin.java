@@ -1,6 +1,10 @@
 package org.eclipse.dltk.javascript.launching;
 
+import java.io.IOException;
+
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.dltk.utils.DeployHelper;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -49,6 +53,10 @@ public class JavaScriptLaunchingPlugin extends Plugin {
 
 	public static String getUniqueIdentifier() {
 		return PLUGIN_ID;
+	}
+	
+	public IPath getConsoleProxy() throws IOException {
+		return DeployHelper.deploy(this, "console").append("ConsoleProxy.js");
 	}
 
 }

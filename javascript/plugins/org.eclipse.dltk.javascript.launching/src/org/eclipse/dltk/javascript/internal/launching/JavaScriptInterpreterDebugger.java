@@ -121,4 +121,14 @@ public class JavaScriptInterpreterDebugger extends AbstractInterpreterDebugger {
 	protected File getWorkingDir() throws CoreException {
 		return getEngine().getParentFile();
 	}
+
+	protected String[] getCommandLine(String sessionId, String host, int port,
+			InterpreterRunnerConfiguration configuration) throws CoreException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected String getPluginId() {
+		return JavaScriptLaunchingPlugin.PLUGIN_ID;
+	}
 }

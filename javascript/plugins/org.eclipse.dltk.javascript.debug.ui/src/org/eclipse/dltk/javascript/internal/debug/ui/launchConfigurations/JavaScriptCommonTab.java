@@ -11,6 +11,7 @@ package org.eclipse.dltk.javascript.internal.debug.ui.launchConfigurations;
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.ILaunchGroup;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.dltk.internal.ui.util.SWTUtil;
-import org.eclipse.dltk.javascript.console.JavaScriptConsoleProxy;
+import org.eclipse.dltk.javascript.launching.JavaScriptLaunchingPlugin;
 import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -932,8 +933,13 @@ public class JavaScriptCommonTab extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID, Long.toString(System
 					.currentTimeMillis()));
 
-			configuration.setAttribute("proxy_path", JavaScriptConsoleProxy
-					.getInstance().getFile().getAbsolutePath());
+			try {
+				configuration.setAttribute("proxy_path", JavaScriptLaunchingPlugin.getDefault().getConsoleProxy().toOSString()
+					);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			captureOutput = false;
 			useDltk = true;
