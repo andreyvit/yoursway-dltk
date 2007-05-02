@@ -54,7 +54,7 @@ public class ScriptLineBreakpoint extends ScriptBreakpoint implements
 						getModelIdentifier(), true, lineNumber, charStart,
 						charEnd);
 
-				setMarker(ScriptMarkerFactory.makeMarker(resource, attributes));
+				setMarker(ScriptMarkerFactory.makeMarker(resource, attributes,getMarkerID()));
 				ensureMarker().setAttributes(attributes);
 
 				register(add);
@@ -62,6 +62,9 @@ public class ScriptLineBreakpoint extends ScriptBreakpoint implements
 		};
 
 		run(getMarkerRule(resource), wr);
+	}
+	protected String getMarkerID(){
+		return ScriptMarkerFactory.MARKER_ID;
 	}
 
 	// ILineBreakpoint

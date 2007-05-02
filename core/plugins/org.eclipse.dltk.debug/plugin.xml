@@ -4,6 +4,21 @@
    <extension
          point="org.eclipse.debug.core.breakpoints">
       <breakpoint
+            markerType="org.eclipse.dltk.debug.scriptMethodEntryBreakpointMarker"
+            class="org.eclipse.dltk.debug.internal.core.model.ScriptMethodEntryBreakpoint"
+            id="org.eclipse.dltk.debug.internal.core.model.ScriptMethodEntryBreakpoint">
+      </breakpoint>
+   </extension>
+   <extension
+         id="scriptBreakpointMarker"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.debug.core.breakpointMarker">
+      </super>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.breakpoints">
+      <breakpoint
             markerType="org.eclipse.dltk.debug.scriptLineBreakpointMarker"
             class="org.eclipse.dltk.debug.internal.core.model.ScriptLineBreakpoint"
             id="org.eclipse.dltk.debug.internal.core.model.ScriptLineBreakpoint">
@@ -27,6 +42,28 @@
       <super
             type="org.eclipse.dltk.debug.scriptBreakpointMarker">
       </super>
+   </extension>
+   <extension
+         id="scriptMethodEntryBreakpointMarker"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.dltk.debug.scriptLineBreakpointMarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+      <attribute
+            name="org.eclipse.debug.core.id.methodName">
+      </attribute>
+      <attribute
+            name="org.eclipse.debug.core.id.methodSignature">
+      </attribute>
+      <attribute
+            name="org.eclipse.debug.core.id.methodEntry">
+      </attribute>
+      <attribute
+            name="org.eclipse.debug.core.id.methodExit">
+      </attribute>
    </extension>
     
       

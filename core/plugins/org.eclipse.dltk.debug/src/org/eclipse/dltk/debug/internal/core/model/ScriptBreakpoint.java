@@ -7,7 +7,7 @@ import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 
 public abstract class ScriptBreakpoint extends Breakpoint implements
 		IScriptBreakpoint {
-	private static final String BREAKPOINT = "org.eclipse.dltk.script_breakpoint";
+	public static final String BREAKPOINT = "org.eclipse.dltk.script_breakpoint";
 
 	private static final String BREAKPOINT_ID = BREAKPOINT + ".id";
 

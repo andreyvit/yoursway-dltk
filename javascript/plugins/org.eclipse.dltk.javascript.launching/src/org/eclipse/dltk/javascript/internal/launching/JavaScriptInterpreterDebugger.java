@@ -18,6 +18,7 @@ import org.eclipse.dltk.launching.AbstractInterpreterDebugger;
 import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterRunnerConfiguration;
+import org.eclipse.dltk.launching.AbstractInterpreterDebugger.ScriptDebugTargetWaiter;
 
 
 public class JavaScriptInterpreterDebugger extends AbstractInterpreterDebugger {

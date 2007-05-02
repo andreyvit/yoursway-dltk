@@ -20,7 +20,7 @@ public abstract class AbstractInterpreterDebugger extends
 
 	protected static final int DEFAULT_PAUSE = 500;
 
-	protected static class ScriptDebugTargetWaiter implements
+	public static class ScriptDebugTargetWaiter implements
 			IScriptDebugTargetListener {
 		private IScriptDebugTarget target;
 

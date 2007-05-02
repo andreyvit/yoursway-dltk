@@ -5,8 +5,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
+import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -34,6 +36,10 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 	private Text conditionExpressionText;
 
 	private Button enableConditionExpression;
+
+	private Button method_entry;
+
+	private Button method_exit;
 
 	protected Composite createComposite(Composite parent, int numColumns) {
 		Composite composit = new Composite(parent, SWT.NONE);
@@ -179,13 +185,26 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 			createEnabledButton(mainComposite);
 			createHitCountEditor(mainComposite);
 			createConditionExpression(mainComposite);
-			
+			createTypeSpecificExtensions(mainComposite);
 		} catch (CoreException e) {
 
 		}
 
 		setValid(true);
 		return mainComposite;
+	}
+
+	private void createTypeSpecificExtensions(Composite mainComposite) {
+		IScriptBreakpoint breakpoint = getBreakpoint();
+		if (breakpoint instanceof IScriptMethodEntryBreakpoint){
+			IScriptMethodEntryBreakpoint ee=(IScriptMethodEntryBreakpoint) breakpoint;
+			Composite createComposite = createComposite(mainComposite, 4);
+			method_entry = createCheckButton(createComposite,"Suspend on Method entry");
+			method_exit = createCheckButton(createComposite,"Suspend on Method exit");
+			method_entry.setSelection(ee.shouldBreakOnEntry());
+			method_exit.setSelection(ee.shouldBreakOnExit());
+		}
+		
 	}
 
 	private void createConditionExpression(Composite mainComposite) {
@@ -253,8 +272,34 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 					storeEnabled(breakpoint);
 					storeHits(breakpoint);			
 					storeConditions(breakpoint);
+					storeEntryValues(breakpoint);
 					DebugPlugin.getDefault().getBreakpointManager()
 							.fireBreakpointChanged(breakpoint);
+				}
+
+				private void storeEntryValues(IScriptBreakpoint breakpoint) {
+					if (breakpoint instanceof IScriptMethodEntryBreakpoint)
+					{
+					IScriptMethodEntryBreakpoint ee=(IScriptMethodEntryBreakpoint) breakpoint;
+					if (method_entry!=null){
+						boolean sel=method_entry.getSelection();
+						try {
+							ee.setBreakOnEntry(sel);
+						} catch (CoreException e) {
+							DLTKDebugUIPlugin.log(e);
+						}
+					}
+					if (method_exit!=null){
+						boolean sel=method_exit.getSelection();
+						try {
+							ee.setBreakOnExit(sel);
+						} catch (CoreException e) {
+							DLTKDebugUIPlugin.log(e);
+						}
+					}
+					
+					}
+					
 				}
 			}, null, 0, null);
 

@@ -31,4 +31,25 @@ public class BreakpointUtils {
 			}
 		}
 	}
+
+	public static void addMethodEntryBreakpoint(ITextEditor textEditor, int lineNumber,String methodName,String methodSignature)
+			throws CoreException {
+		IDocument document = textEditor.getDocumentProvider().getDocument(
+				textEditor.getEditorInput());
+
+		IResource resource = (IResource) textEditor.getEditorInput()
+				.getAdapter(IResource.class);
+		if (resource != null) {
+			try {
+				IRegion line = document.getLineInformation(lineNumber - 1);
+				int start = line.getOffset();
+				int end = start + line.getLength() - 1;
+				ILineBreakpoint b = ScriptDebugModel.createMethodEntryBreakpoint(
+						resource, lineNumber, start, end, 0, true, null,methodName,methodSignature);
+			} catch (BadLocationException e) {
+				// TODO: log exception
+				e.printStackTrace();
+			}
+		}
+	}
 }

@@ -118,9 +118,9 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 				info);
 	}
 
-	public String setReturnBreakpoint(String function, DbgpBreakpointConfig info)
+	public String setReturnBreakpoint(URI uri, String function, DbgpBreakpointConfig info)
 			throws DbgpException {
-		return setBreakpoint(RETURN_BREAKPOINT, null, null, function, null,
+		return setBreakpoint(RETURN_BREAKPOINT, uri, new Integer(-1), function, null,
 				null, info);
 	}
 

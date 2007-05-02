@@ -109,9 +109,8 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		// Children count
 		int childrenCount = 0;
 		List availableChildren = new ArrayList();
-		//if (hasChildren) {
-			//childrenCount = Integer.parseInt(property
-				//	.getAttribute(ATTR_NUMCHILDREN));
+		if (hasChildren) {
+			childrenCount = Integer.parseInt(property	.getAttribute(ATTR_NUMCHILDREN));
 
 			NodeList properties = property.getChildNodes();
 			for (int i = 0; i < properties.getLength(); ++i) {
@@ -120,7 +119,7 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 					availableChildren.add(parseProperty((Element) item));
 				}
 			}
-		//}
+		}
 
 		// Constant
 		boolean constant = false;

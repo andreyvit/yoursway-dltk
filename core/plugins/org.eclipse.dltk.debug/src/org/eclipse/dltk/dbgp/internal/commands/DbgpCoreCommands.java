@@ -104,9 +104,9 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		return breakpointCommands.setLineBreakpoint(uri, lineNumber, info);
 	}
 
-	public String setReturnBreakpoint(String function, DbgpBreakpointConfig info)
+	public String setReturnBreakpoint(URI uri,String function, DbgpBreakpointConfig info)
 			throws DbgpException {
-		return breakpointCommands.setReturnBreakpoint(function, info);
+		return breakpointCommands.setReturnBreakpoint(uri,function, info);
 	}
 
 	public String setWatchBreakpoint(String expression,
