@@ -14,8 +14,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.variables,
  com.ibm.icu,
  org.eclipse.core.expressions,
- org.eclipse.dltk.debug,
- org.eclipse.dltk.ruby.debug
+ org.eclipse.dltk.debug
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.internal.launching,
  org.eclipse.dltk.launching
