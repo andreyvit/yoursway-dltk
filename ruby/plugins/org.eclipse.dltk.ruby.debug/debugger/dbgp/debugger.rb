@@ -7,6 +7,7 @@ require 'dbgp/command'
 require 'dbgp/logger'
 require 'dbgp/socket_io'
 require 'dbgp/test_io'
+require 'dbgp/properties.rb'
 
 require 'cgi'
 
@@ -200,6 +201,19 @@ private
 	end
 
 	# Context
+	def make_property(name, obj) # TODO: move!!!
+		type = obj.class
+
+		if type == Hash
+			prepare_hash(name, obj)
+		elsif type == Array
+			prepare_array(name, obj)
+		else
+			prepare_object(name, obj)
+		end
+	end
+
+
 	def context_names(depth)
 	    { 'contexts' => [
 			{'name' => 'Local',  'id' => 0 },
@@ -209,36 +223,40 @@ private
 	end
 
 	def context_get(depth, context_id)
-		def make_property(var)
-			type = @stack.eval(var + '.class').to_s
-			value = @stack.eval(var).to_s
-
-			{ 'short_name'  => var,
-			  'long_name'   => var,
-			  'data_type'   => type,  # language specific
-			  'class_name'  => '',    # optional
-			  'cosntant'    => '0',
-			  'children'    => '0',
-			  'value'       => value }
-		end
-
 		properties = []
 
-		for var in @stack.eval('local_variables') do
-			properties << make_property(var)
-		end
+		vars = @stack.eval('local_variables')
+	
+		vars.each { |var|
+			real_var = @stack.eval(var)
 
-		for var in @stack.eval('instance_variables') do
-			properties << make_property(var)
-		end
+			unless real_var.nil?
+				properties << make_property(var, real_var)				
+			end
+		}	
+
+		#for var in @stack.eval('instance_variables') do
+		#	properties << make_property(var)
+		#end
 
 		#for var in @stack.eval('global_variables') do
 		#	properties << make_property(var)
 		#end
-		
+
 		{ 'properties' => properties, 
 		  'context_id' => context_id }
 	end
+
+	# Property commands
+	def property_get(name, key)
+		obj = ObjectSpace._id2ref(key)
+		if obj.nil?
+			obj = 'Invalid key :('
+		end
+	
+		{ 'property' => make_property(name, obj) }
+	end
+
 
 	# Breakpoint commands
 	def set_line_breakpoint(file, line, state = true)
@@ -405,14 +423,10 @@ private
 
     		# Property commands
     		when 'property_get'
-    			depth = command.arg_with_default('-d', 0)  # stack depth (optional, debugger engine should assume zero if not provided)
-    			context_id = command.arg_width_default('-c', 0)  # context id (optional, retrieved by context-names, debugger engine should assume zero if not provided)
-    			long_name = command.arg('-n')   # property long name (required)
-    			max_data = command.arg('-m')    # max data size to retrieve (optional)
-    			data_type = command.arg('-t')   # data type (optional)
-    			data_page = command.arg('-p')   # data page (optional, for arrays, hashes, objects, etc.)
-    			key = command.arg('-k')         # property key as retrieved in a property element, optional, used for property_get of children and property_value, required if it was provided by the debugger engine.
-    			address = command.arg('-a')     # property address as retrieved in a property element, optional, used for property_set/value, required if it was provided by the debugger engine.
+    			name = command.arg('-n')
+    			key = command.arg('-k').to_i
+
+				property_get(name, key)
     			
     		when 'property_set'
 

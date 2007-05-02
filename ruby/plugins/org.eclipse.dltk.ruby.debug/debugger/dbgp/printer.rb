@@ -20,6 +20,10 @@ private
 		}			
 	end
 
+	def bool_to_bit(value)
+		return value ? '1' : '0'
+	end
+
 
 	def wrap(xml)
 		'<?xml version="1.0" encoding="UTF-8"?>' + xml
@@ -32,12 +36,21 @@ private
 
 	def print_property(m)
 		escape_map(m)
-		#sprintf('<property name="%s" fullname="%s" type="%s" classname="%s" constant="%d" children="%d" size="%d"
-		#	          page="%d" pagesize="%d" address="%d"  key="%s"  encoding="base64" numchildren="%d">%s</property>',
-		#		m['short_name'], m['long_name'], m['data_type'], m['class_name'], m['cosntant'], m['children'], m['size'],
-		#		m['page'], m['page_size'], m['address'], m['key'],  m['numchildren'], Base64.encode64(m['value']))
-		sprintf('<property name="%s" fullname="%s" type="%s" classname="%s" constant="%d" children="%d" encoding="base64">%s</property>',
-				m['short_name'], m['long_name'], m['data_type'], m['class_name'], m['cosntant'], m['children'], Base64.encode64(m['value']))
+
+        value = ''
+		children = m['children_props']
+		unless children.nil?
+			value =	children.collect { |p| print_property(p) }.join("\n")
+		end
+		
+		sprintf('<property name="%s" fullname="%s" type="%s" constant="%d" children="%d" encoding="base64" key="%s">%s</property>',
+				m['name'], 
+				m['eval_name'], 
+				m['type'].to_s,
+				bool_to_bit(m['is_cosntant']),
+				bool_to_bit(m['has_children']), 
+				m['key'].to_s,
+				value.empty? ? Base64.encode64(m['value']) : value)
 	end
 
 	def print_continuation(command, m)
@@ -126,10 +139,8 @@ public
 	end
 
 	def print_context_get(m)
-		props = ''
-		m['properties'].each { |s|
-			props += print_property(s)
-		}
+
+		props = m['properties'].collect { |p| print_property(p) }.join("\n")
 
 		sprintf('<response command="context_get" context="%d"  transaction_id="%d">%s</response>',
 			m['context_id'], m['id'], props)

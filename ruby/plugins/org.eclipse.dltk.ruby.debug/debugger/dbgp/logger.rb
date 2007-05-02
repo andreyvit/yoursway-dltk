@@ -9,7 +9,7 @@ class FileLogger
 
 	def puts(str)
 		@f.puts(str)
-		#Kernel.puts(str)
+#		Kernel.puts(str)
 	end
 
 	def close
