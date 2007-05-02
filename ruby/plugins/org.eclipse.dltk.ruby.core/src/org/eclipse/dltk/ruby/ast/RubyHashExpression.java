@@ -1,7 +1,7 @@
 package org.eclipse.dltk.ruby.ast;
 
-import org.eclipse.dltk.ast.expressions.ExpressionList;
+import org.eclipse.dltk.ast.ASTListNode;
 
-public class RubyHashExpression extends ExpressionList {
+public class RubyHashExpression extends ASTListNode {
 
 }

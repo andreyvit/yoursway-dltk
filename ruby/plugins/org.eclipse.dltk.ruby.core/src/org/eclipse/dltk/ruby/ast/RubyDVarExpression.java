@@ -1,9 +1,9 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
 
-public class RubyDVarExpression extends Expression {
+public class RubyDVarExpression extends ASTNode {
 
 	private final String name;
 

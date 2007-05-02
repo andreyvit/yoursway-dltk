@@ -1,29 +1,18 @@
-package org.eclipse.dltk.ast.statements;
+package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.DLTKToken;
-import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.utils.CorePrinter;
 
 /**
  * While statement.
  */
-public class WhileStatement extends Statement {
-	private Statement fCondition;
-	private Statement fAction;
+public class RubyWhileStatement extends ASTNode {
+	private ASTNode fCondition;
+	private ASTNode fAction;
 
-	public WhileStatement(DLTKToken token) {
-		super(token);
-	}
-
-	public WhileStatement(DLTKToken whileToken, Expression condition,
-			Statement action) {
-		this.setStart(whileToken.getColumn());
-		this.fCondition = condition;
-		this.fAction = action;
-	}
 	
-	public WhileStatement(Statement condition, Statement action) {
+	public RubyWhileStatement(ASTNode condition, ASTNode action) {
 		this.fCondition = condition;
 		this.fAction = action;
 	}
@@ -40,15 +29,12 @@ public class WhileStatement extends Statement {
 		}
 	}
 
-	public int getKind() {
-		return S_WHILE;
-	}
-
-	public Statement getCondition() {
+	
+	public ASTNode getCondition() {
 		return fCondition;
 	}
 
-	public Statement getAction() {
+	public ASTNode getAction() {
 		return fAction;
 	}
 

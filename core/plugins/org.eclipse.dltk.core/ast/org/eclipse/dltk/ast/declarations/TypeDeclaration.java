@@ -7,26 +7,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.ast.Modifiers;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.expressions.ExpressionList;
-import org.eclipse.dltk.ast.references.ExtendedVariableReference;
+import org.eclipse.dltk.ast.references.Reference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
-import org.eclipse.dltk.ast.statements.CompoundStatement;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.ast.utils.ASTUtil;
 import org.eclipse.dltk.utils.CorePrinter;
 
-
 /**
- * Used to represent types or classes. 
+ * Used to represent types or classes.
  */
-public class TypeDeclaration extends Declaration
-{
+public class TypeDeclaration extends Declaration {
 	/**
 	 * Body start position in associated file.
 	 */
@@ -48,133 +43,143 @@ public class TypeDeclaration extends Declaration
 	protected int parentStart;
 
 	/**
-	 * List of all super classes. Expression may be complex such as templates or other constructions.
+	 * List of all super classes. Expression may be complex such as templates or
+	 * other constructions.
 	 */
-	protected CompoundStatement fSuperClasses;
-	
+	protected ASTListNode fSuperClasses;
+
 	/**
 	 * List of body statements.
 	 */
 	protected Block fBody;
-	
+
 	protected List fMethods;
-	
+
 	protected List fTypes;
-	
+
 	protected List fVariables;
-	
+
 	protected String enclosingTypeName;
-		
-	public TypeDeclaration( DLTKToken name, int start, int end ) {
 
-		super( name, start, end );
+	public TypeDeclaration(DLTKToken name, int start, int end) {
+
+		super(name, start, end);
 	}
-	
-	/**
-	 * Creates new type declaration from type name ANTLR token, start and end position.
-	 * @param name - type name ANTLR token.
-	 * @param start - type start position in associated file.
-	 * @param end - type end position in associated file.
-	 */
-	public TypeDeclaration( String name, int nameStart, int nameEnd, int start, int end ) {
 
-		super( start, end );
+	/**
+	 * Creates new type declaration from type name ANTLR token, start and end
+	 * position.
+	 * 
+	 * @param name -
+	 *            type name ANTLR token.
+	 * @param start -
+	 *            type start position in associated file.
+	 * @param end -
+	 *            type end position in associated file.
+	 */
+	public TypeDeclaration(String name, int nameStart, int nameEnd, int start,
+			int end) {
+
+		super(start, end);
 		setName(name);
 		setNameStart(nameStart);
 		setNameEnd(nameEnd);
 		this.enclosingTypeName = "";
-	}	
-	
+	}
+
 	public void setEnclosingTypeName(String name) {
-		if( name.startsWith("$")) {
+		if (name.startsWith("$")) {
 			name = name.substring(1);
 		}
 		if (name != null && name.length() > 0) {
 			this.enclosingTypeName = name;
 		}
 	}
-	
+
 	public String getEnclosingTypeName() {
 		return this.enclosingTypeName;
 	}
 
 	/**
 	 * Creates type declaration from name token.
-	 * @param name - name ANTRL token.
+	 * 
+	 * @param name -
+	 *            name ANTRL token.
 	 */
-	public TypeDeclaration( DLTKToken name ) {
+	public TypeDeclaration(DLTKToken name) {
 
-		super( );
-		this.setName( name.getText( ) );
-	}	
+		super();
+		this.setName(name.getText());
+	}
 
 	/**
-	 * Used to walk on tree.
-	 * traverse order:
-	 * superclasses,
-	 * body.
+	 * Used to walk on tree. traverse order: superclasses, body.
 	 */
-	public void traverse( ASTVisitor visitor ) throws Exception {
+	public void traverse(ASTVisitor visitor) throws Exception {
 
-		if( visitor.visit( this ) ) {
-			if( this.getSuperClasses() != null ) {
-				this.getSuperClasses().traverse( visitor );
+		if (visitor.visit(this)) {
+			if (this.getSuperClasses() != null) {
+				this.getSuperClasses().traverse(visitor);
 			}
-			if( this.fBody != null ) {
-				fBody.traverse( visitor );
+			if (this.fBody != null) {
+				fBody.traverse(visitor);
 			}
-			visitor.endvisit( this );
+			visitor.endvisit(this);
 		}
 	}
 
 	/**
 	 * Return list of superclass declaration expressions.
+	 * 
 	 * @return
 	 */
-	public CompoundStatement getSuperClasses( ) {
+	public ASTListNode getSuperClasses() {
 
 		return this.fSuperClasses;
 	}
 
 	/**
 	 * Set superclases expression list.
+	 * 
 	 * @param exprList
-	 */	
-	public void setSuperClasses( CompoundStatement exprList ) {
+	 */
+	public void setSuperClasses(ASTListNode exprList) {
 
 		this.fSuperClasses = exprList;
 	}
 
 	/**
-	 * Add superclass expression to list of superclasses.
-	 * List would be created if not yet.
+	 * Add superclass expression to list of superclasses. List would be created
+	 * if not yet.
+	 * 
 	 * @param expression
 	 */
-	public void addSuperClass( Statement expression ) {
+	public void addSuperClass(ASTNode expression) {
 
-		if( this.fSuperClasses == null ) {
-			this.fSuperClasses = new CompoundStatement( );
+		if (this.fSuperClasses == null) {
+			this.fSuperClasses = new ASTListNode();
 		}
 
-		this.fSuperClasses.addStatement( expression );
+		this.fSuperClasses.addNode(expression);
 
 	}
-	
+
 	/**
 	 * Return TypeDeclaration kind.
 	 */
-	
-	public int getKind( ) {
+
+	public int getKind() {
 
 		return D_CLASS;
 	}
-	
+
 	/**
 	 * Return body end position in associated file.
+	 * 
 	 * @return
 	 */
-	public int getBodyEnd( ) {		
-		if( getBody() != null ) {
+	public int getBodyEnd() {
+		if (getBody() != null) {
 			return getBody().sourceEnd();
 		}
 		return bodyEnd;
@@ -182,19 +187,21 @@ public class TypeDeclaration extends Declaration
 
 	/**
 	 * Sets body end position in associated file.
+	 * 
 	 * @param bodyEnd
 	 */
-	protected void setBodyEnd( int bodyEnd ) {
+	protected void setBodyEnd(int bodyEnd) {
 
 		this.bodyEnd = bodyEnd;
 	}
 
 	/**
 	 * Return body start position in associated file.
+	 * 
 	 * @return
 	 */
-	public int getBodyStart( ) {
-		if( getBody() != null ) {
+	public int getBodyStart() {
+		if (getBody() != null) {
 			return getBody().sourceStart();
 		}
 		return bodyStart;
@@ -203,233 +210,223 @@ public class TypeDeclaration extends Declaration
 	/**
 	 * Set body start position in associated file.
 	 */
-	protected void setBodyStart( int bodyStart ) {
+	protected void setBodyStart(int bodyStart) {
 
 		this.bodyStart = bodyStart;
 	}
 
 	/**
 	 * Use sourceEnd() instead.
+	 * 
 	 * @return
 	 * @deprecated
 	 */
-	
-	public int getDeclarationSourceEnd( ) {
+
+	public int getDeclarationSourceEnd() {
 
 		return this.sourceEnd();
 	}
 
 	/**
 	 * Use setEnd instead
+	 * 
 	 * @param declarationSourceEnd
 	 * @deprecated
 	 */
-	
-	protected void setDeclarationSourceEnd( int declarationSourceEnd ) {
-		this.setEnd(declarationSourceEnd);		
+
+	protected void setDeclarationSourceEnd(int declarationSourceEnd) {
+		this.setEnd(declarationSourceEnd);
 	}
 
 	/**
 	 * Use sourceStart instead.
+	 * 
 	 * @return
 	 * @deprecated
 	 */
-	
-	public int getDeclarationSourceStart( ) {
+
+	public int getDeclarationSourceStart() {
 
 		return this.sourceStart();
 	}
 
 	/**
 	 * Used setStart instead
+	 * 
 	 * @param declarationSourceStart
 	 * @deprecated
 	 */
-	
-	protected void setDeclarationSourceStart( int declarationSourceStart ) {
+
+	protected void setDeclarationSourceStart(int declarationSourceStart) {
 
 		this.setStart(declarationSourceStart);
 	}
 
 	/**
 	 * Return parents end position in associated file.
+	 * 
 	 * @return
 	 */
-	public int getParentEnd( ) {
+	public int getParentEnd() {
 
 		return parentEnd;
 	}
-	
+
 	/**
 	 * Sets parents end position in associated file.
+	 * 
 	 * @param parentEnd
 	 */
-	protected void setParentEnd( int parentEnd ) {
+	protected void setParentEnd(int parentEnd) {
 
 		this.parentEnd = parentEnd;
 	}
 
 	/**
 	 * Return parents start position in associated file.
+	 * 
 	 * @return
 	 */
-	public int getParentStart( ) {
+	public int getParentStart() {
 
 		return parentStart;
 	}
 
 	/**
 	 * Sets parents start position in associated file.
+	 * 
 	 * @param parentStart
 	 */
-	protected void setParentStart( int parentStart ) {
+	protected void setParentStart(int parentStart) {
 
 		this.parentStart = parentStart;
 	}
 
 	/**
 	 * Set inner statements.
+	 * 
 	 * @param body
 	 */
-	public void setBody( Block body ) {
+	public void setBody(Block body) {
 
 		this.fBody = body;
-		if( body != null ) {
+		if (body != null) {
 			this.bodyStart = body.sourceStart();
 			this.bodyEnd = body.sourceEnd();
-			//this.setEnd(body.sourceEnd()); //XXX: why?
+			// this.setEnd(body.sourceEnd()); //XXX: why?
 		}
 	}
+
 	public Block getBody() {
 		return this.fBody;
 	}
 
 	/**
 	 * Set inner statements with start and end position in associated file.
-	 * @param startBody - start position. 
-	 * @param body - inner statements.
-	 * @param endBody - end position.
+	 * 
+	 * @param startBody -
+	 *            start position.
+	 * @param body -
+	 *            inner statements.
+	 * @param endBody -
+	 *            end position.
 	 */
-	public void setBody( int startBody, Block body, int endBody ) {
+	public void setBody(int startBody, Block body, int endBody) {
 
-		this.setBody( body );
-		this.setBodyStart( startBody );
-		this.setBodyEnd( endBody );
+		this.setBody(body);
+		this.setBodyStart(startBody);
+		this.setBodyEnd(endBody);
 	}
-	
+
 	/**
-	 * Return super class names. 
+	 * Return super class names.
+	 * 
 	 * @return
 	 */
-	public List/*<String>*/ getSuperClassNames()
-	{
-		List/*< String >*/ names = new ArrayList/*< String >*/();		
-		if( this.fSuperClasses != null ) {
-			List/*< Expression >*/ superClasseExpressions = this.fSuperClasses.getStatements();
+	public List/* <String> */getSuperClassNames() {
+		List/* < String > */names = new ArrayList/* < String > */();
+		if (this.fSuperClasses != null) {
+			List/* < Expression > */superClasseExpressions = this.fSuperClasses
+					.getChilds();
 			Iterator i = superClasseExpressions.iterator();
-			while( i.hasNext() ) {
-				Expression expr = (Expression)i.next();
-				if( expr instanceof SimpleReference ) {
-					names.add( ((SimpleReference)expr ).getName() ); 
+			while (i.hasNext()) {
+				ASTNode expr = (ASTNode) i.next();
+				if (expr instanceof Reference) {
+					names.add(((SimpleReference) expr).getName());
 				}
-				else if( expr instanceof ExtendedVariableReference ) {
-					// TODO: Add correct solution here.
-					ExtendedVariableReference ref = (ExtendedVariableReference)expr; 
-					List/*< Expression >*/ exprs = ref.getExpressions();
-					boolean notAllSR = false;
-					Iterator j = exprs.iterator();
-					while( j.hasNext()) {
-						Expression ex = (Expression)j.next();
-						if( !( ex instanceof SimpleReference ) ) {
-							notAllSR = true;
-						}
-					}
-					if( notAllSR == false ) {
-						String name = "";
-						boolean bFirst = true;
-						Iterator j2 = exprs.iterator();
-						while( j2.hasNext()) {
-							Expression ex = (Expression)j2.next();
-							if( bFirst ) {
-								bFirst = false;
-							}
-							else {
-								name += ".";
-							}
-							name += ( (SimpleReference)ex ).getName();
-						}
-						names.add( ref.getStringRepresentation() );
-					}
-				}
+
 			}
 		}
 		return names;
 	}
 
 	/**
-	 * Testing purpose only.
-	 * Prints type and all inner statements to printer.
+	 * Testing purpose only. Prints type and all inner statements to printer.
 	 */
-	public void printNode( CorePrinter output ) {
+	public void printNode(CorePrinter output) {
 
-		output.formatPrintLn( "Type" + this.getSourceRange().toString()+ this.getNameSourceRange().toString() +":" );
-		String name = this.getName( );
-		if( name != null ) {
-			output.formatPrintLn( name );
+		output.formatPrintLn("Type" + this.getSourceRange().toString()
+				+ this.getNameSourceRange().toString() + ":");
+		String name = this.getName();
+		if (name != null) {
+			output.formatPrintLn(name);
 		}
-		if( this.fSuperClasses != null ) {
-			output.formatPrintLn( "(" );
-			this.fSuperClasses.printNode( output );
-			output.formatPrintLn( ")" );
+		if (this.fSuperClasses != null) {
+			output.formatPrintLn("(");
+			this.fSuperClasses.printNode(output);
+			output.formatPrintLn(")");
 		}
-		if( this.fBody != null ) {
-			this.fBody.printNode( output );
+		if (this.fBody != null) {
+			this.fBody.printNode(output);
 		}
-	}	
-	public MethodDeclaration[] getMethods() {
-		if( this.fMethods == null ) {
-			initInners();
-		}		
-		return ASTUtil.getMethods(this.getStatements(), this.fMethods );
 	}
-	
-	public TypeDeclaration[] getTypes() {
-		if( this.fTypes == null ) {
+
+	public MethodDeclaration[] getMethods() {
+		if (this.fMethods == null) {
 			initInners();
 		}
-		return ASTUtil.getTypes(this.getStatements(), this.fTypes );
-	}	
+		return ASTUtil.getMethods(this.getStatements(), this.fMethods);
+	}
+
+	public TypeDeclaration[] getTypes() {
+		if (this.fTypes == null) {
+			initInners();
+		}
+		return ASTUtil.getTypes(this.getStatements(), this.fTypes);
+	}
 
 	private void initInners() {
 		this.fMethods = new ArrayList();
 		this.fTypes = new ArrayList();
 		this.fVariables = new ArrayList();
 	}
+
 	public List getStatements() {
-		if( this.fBody == null ) {
+		if (this.fBody == null) {
 			this.fBody = new Block(this.sourceStart(), this.sourceEnd(), null);
-		}		
+		}
 		return this.fBody.getStatements();
 	}
 
-	public ASTNode[] getNonTypeOrMethodNode() {		
+	public ASTNode[] getNonTypeOrMethodNode() {
 		List statements = getStatements();
-		if( statements != null ) {
+		if (statements != null) {
 			Iterator i = statements.iterator();
 			List results = new ArrayList();
-			while( i.hasNext() ) {
-				ASTNode node = (ASTNode)i.next();
-				if( !(node instanceof TypeDeclaration) && !(node instanceof MethodDeclaration) ) {
+			while (i.hasNext()) {
+				ASTNode node = (ASTNode) i.next();
+				if (!(node instanceof TypeDeclaration)
+						&& !(node instanceof MethodDeclaration)) {
 					results.add(node);
 				}
 			}
-			return (ASTNode[])results.toArray(new ASTNode[results.size()]);
+			return (ASTNode[]) results.toArray(new ASTNode[results.size()]);
 		}
 		return null;
 	}
 
 	public FieldDeclaration[] getVariables() {
-		if( this.fVariables == null ) {
+		if (this.fVariables == null) {
 			initInners();
 		}
 		return ASTUtil.getVariables(this.getStatements(), this.fVariables);
@@ -441,7 +438,5 @@ public class TypeDeclaration extends Declaration
 			prev += "(module)";
 		return prev;
 	}
-	
-	
-	
+
 }

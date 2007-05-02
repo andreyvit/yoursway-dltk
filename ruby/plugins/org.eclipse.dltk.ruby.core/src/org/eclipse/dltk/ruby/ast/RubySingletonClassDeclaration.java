@@ -1,14 +1,14 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.statements.Statement;
 
 
 public class RubySingletonClassDeclaration extends TypeDeclaration {
 
-	private Statement receiver;
+	private ASTNode receiver;
 	
 	public RubySingletonClassDeclaration(String friendlyName, int nameStart,
 			int nameEnd, int start, int end) {
@@ -16,11 +16,11 @@ public class RubySingletonClassDeclaration extends TypeDeclaration {
 		this.setModifier(Modifiers.AccStatic);
 	}
 
-	public Statement getReceiver() {
+	public ASTNode getReceiver() {
 		return receiver;
 	}
 
-	public void setReceiver(Statement receiver) {
+	public void setReceiver(ASTNode receiver) {
 		this.receiver = receiver;
 	}
 	

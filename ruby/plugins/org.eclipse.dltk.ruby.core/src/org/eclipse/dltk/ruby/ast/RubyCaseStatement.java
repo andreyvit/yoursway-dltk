@@ -5,24 +5,22 @@ import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.utils.CorePrinter;
 
-public class RubyCaseStatement extends Statement {
+public class RubyCaseStatement extends ASTNode {
 
-	private Statement target;
+	private ASTNode target;
 	private List whens;
-	private Statement elseWhen;
+	private ASTNode elseWhen;
 
 	public RubyCaseStatement(int start, int end) {
 		super(start, end);
 	}
 
-	public Statement getTarget() {
+	public ASTNode getTarget() {
 		return target;
 	}
 
-	public void setTarget(Statement target) {
+	public void setTarget(ASTNode target) {
 		this.target = target;
 	}
 
@@ -34,20 +32,12 @@ public class RubyCaseStatement extends Statement {
 		this.whens = whens;
 	}
 
-	public Statement getElseWhen() {
+	public ASTNode getElseWhen() {
 		return elseWhen;
 	}
 
-	public void setElseWhen(Statement elseWhen) {
+	public void setElseWhen(ASTNode elseWhen) {
 		this.elseWhen = elseWhen;
-	}
-
-	public int getKind() {
-		return S_SWITCH;
-	}
-
-	public void printNode(CorePrinter output) {
-		// TODO Auto-generated method stub
 	}
 
 	public void traverse(ASTVisitor visitor) throws Exception {

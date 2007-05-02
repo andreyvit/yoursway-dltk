@@ -1,7 +1,7 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
 /**
@@ -12,14 +12,13 @@ import org.eclipse.dltk.utils.CorePrinter;
  * end
  *
  */
-public class RubyRescueStatement extends Statement {
+public class RubyRescueStatement extends ASTNode {
 
-	private Statement bodyNode;
-	private Statement elseNode;
+	private ASTNode bodyNode;
+	private ASTNode elseNode;
 	private RubyRescueBodyStatement rescueNode;
 
-	public RubyRescueStatement(int start, int end, Statement bodyNode,
-			Statement elseNode, RubyRescueBodyStatement rescueNode) {
+	public RubyRescueStatement(int start, int end, ASTNode bodyNode, ASTNode elseNode, RubyRescueBodyStatement rescueNode) {
 		super(start, end);
 		this.bodyNode = bodyNode;
 		this.elseNode = elseNode;
@@ -28,13 +27,13 @@ public class RubyRescueStatement extends Statement {
 	
 	
 
-	public void setBodyNode(Statement bodyNode) {
+	public void setBodyNode(ASTNode bodyNode) {
 		this.bodyNode = bodyNode;
 	}
 
 
 
-	public void setElseNode(Statement elseNode) {
+	public void setElseNode(ASTNode elseNode) {
 		this.elseNode = elseNode;
 	}
 
@@ -53,11 +52,11 @@ public class RubyRescueStatement extends Statement {
 
 
 
-	public Statement getBodyNode() {
+	public ASTNode getBodyNode() {
 		return bodyNode;
 	}
 
-	public Statement getElseNode() {
+	public ASTNode getElseNode() {
 		return elseNode;
 	}
 

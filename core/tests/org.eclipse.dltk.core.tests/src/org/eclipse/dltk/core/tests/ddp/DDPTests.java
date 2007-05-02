@@ -6,15 +6,15 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.NumericLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
-import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.ti.DefaultTypeInferencer;
 import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.IGoalEvaluatorFactory;
 import org.eclipse.dltk.ti.ITypeInferencer;
-import org.eclipse.dltk.ti.DefaultTypeInferencer;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
@@ -123,7 +123,7 @@ public class DDPTests extends TestCase {
 			public GoalEvaluator createEvaluator(IGoal goal) {
 				if (goal instanceof ExpressionTypeGoal) {
 					ExpressionTypeGoal egoal = (ExpressionTypeGoal) goal;
-					Statement expr = egoal.getExpression();
+					ASTNode expr = egoal.getExpression();
 					if (expr == x)
 						return new SingleDependentGoalEvaluator(goal, new ExpressionTypeGoal(null, y),
 								new MyNum());
@@ -158,7 +158,7 @@ public class DDPTests extends TestCase {
 			public GoalEvaluator createEvaluator2(IGoal goal) {
 				if (goal instanceof ExpressionTypeGoal) {
 					ExpressionTypeGoal egoal = (ExpressionTypeGoal) goal;
-					Statement expr = egoal.getExpression();
+					ASTNode expr = egoal.getExpression();
 					if (expr == x)
 						return new SingleDependentGoalEvaluator(goal, new IGoal[] {
 								new ExpressionTypeGoal(null, y), new ExpressionTypeGoal(null, z) }, new MyNum());

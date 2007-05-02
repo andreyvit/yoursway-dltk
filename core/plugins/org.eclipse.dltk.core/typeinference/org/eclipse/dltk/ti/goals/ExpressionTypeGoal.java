@@ -1,18 +1,18 @@
 package org.eclipse.dltk.ti.goals;
 
-import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ti.IContext;
 
 public class ExpressionTypeGoal extends AbstractTypeGoal {
 
-	private final Statement expression;
+	private final ASTNode expression;
 
-	public ExpressionTypeGoal(IContext context, Statement expression) {
+	public ExpressionTypeGoal(IContext context, ASTNode expression) {
 		super(context);
 		this.expression = expression;
 	}
 
-	public Statement getExpression() {
+	public ASTNode getExpression() {
 		return expression;
 	}
 

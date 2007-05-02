@@ -1,20 +1,19 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.utils.CorePrinter;
+import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
 /**
  * Base binary class for binary expressions.
  */
-public class RubyBinaryExpression extends Expression {
-	private Statement left;
-	private Statement right;
+public class RubyBinaryExpression extends ASTNode implements ExpressionConstants {
+	private ASTNode left;
+	private ASTNode right;
 	
 	protected int kind;
 
-	public RubyBinaryExpression(Statement left, int kind, Statement right) {
+	public RubyBinaryExpression(ASTNode left, int kind, ASTNode right) {
 		if (left != null) {
 			this.setStart(left.sourceStart());
 		}
@@ -28,11 +27,11 @@ public class RubyBinaryExpression extends Expression {
 		this.right = right;
 	}
 
-	public Statement getLeft() {
+	public ASTNode getLeft() {
 		return left;
 	}
 
-	public Statement getRight() {
+	public ASTNode getRight() {
 		return right;
 	}
 
@@ -48,35 +47,10 @@ public class RubyBinaryExpression extends Expression {
 
 			pVisitor.endvisit(this);
 		}
-	}
-
-	public String toString() {
-		String out = "";
-		if (left != null) {
-			out += left.toString();
-		}
-
-		out += this.getOperator();
-		if (right != null) {
-			out += this.right.toString();
-		}
-
-		return out;
-	}
+	}	
 
 	public int getKind() {
 		return kind;
 	}
 
-	public void printNode(CorePrinter output) {
-		if (this.left != null) {
-			this.left.printNode(output);
-		}
-
-		output.formatPrintLn(this.getOperator());
-
-		if (this.right != null) {
-			this.right.printNode(output);
-		}
-	}
 }

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.ruby.ast.RubyAssignment;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyFieldReference;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
@@ -64,8 +64,8 @@ public class RubyVariableTypeEvaluator extends GoalEvaluator {
 				for (int i = 0; i < references.length; i++) {
 					if (references[i] instanceof RubyFieldReference) {
 						RubyFieldReference ref = (RubyFieldReference) references[i];
-						if (ref.getNode() instanceof Assignment) {
-							Assignment assignment = (Assignment) ref.getNode();							
+						if (ref.getNode() instanceof RubyAssignment) {
+							RubyAssignment assignment = (RubyAssignment) ref.getNode();							
 							ExpressionTypeGoal s = new ExpressionTypeGoal(buildContext(ref), assignment.getRight());
 							possibilities.add(s);
 						}

@@ -1,19 +1,18 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.statements.Statement;
 
-public class RubyMatchExpression extends Expression {
+public class RubyMatchExpression extends ASTNode {
 
-	private final Statement regexp;
+	private final ASTNode regexp;
 
-	public RubyMatchExpression(int start, int end, Statement regexp) {
+	public RubyMatchExpression(int start, int end, ASTNode regexp) {
 		super(start, end);
 		this.regexp = regexp;
 	}
 
-	public Statement getRegexp() {
+	public ASTNode getRegexp() {
 		return regexp;
 	}
 

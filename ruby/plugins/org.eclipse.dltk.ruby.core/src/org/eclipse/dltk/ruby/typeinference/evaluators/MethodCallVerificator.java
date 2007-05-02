@@ -61,7 +61,7 @@ public class MethodCallVerificator extends GoalEvaluator {
 			if (node instanceof CallExpression) {
 				receiverType = null;
 				CallExpression call = (CallExpression) node;
-				Statement receiver = call.getReceiver();
+				ASTNode receiver = call.getReceiver();
 				if (receiver != null) {
 					ExpressionTypeGoal rgoal = new ExpressionTypeGoal(
 							new BasicContext((ISourceModule) element, decl),

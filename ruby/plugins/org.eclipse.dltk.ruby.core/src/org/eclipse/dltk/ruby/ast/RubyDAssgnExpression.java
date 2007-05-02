@@ -1,9 +1,9 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
 
-public class RubyDAssgnExpression extends Expression {
+public class RubyDAssgnExpression extends ASTNode {
 
 	private String name;
 

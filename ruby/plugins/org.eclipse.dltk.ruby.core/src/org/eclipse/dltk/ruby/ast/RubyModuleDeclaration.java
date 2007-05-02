@@ -1,18 +1,18 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
+import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.statements.Block;
-import org.eclipse.dltk.ast.statements.CompoundStatement;
-import org.eclipse.dltk.ast.statements.Statement;
 
 public class RubyModuleDeclaration extends TypeDeclaration {
 
-	private Statement name;
+	private ASTNode name;
 	
-	public RubyModuleDeclaration(Statement name, Block body, int start, int end) {
+	public RubyModuleDeclaration(ASTNode name, Block body, int start, int end) {
 		super("", name.sourceStart(), name.sourceEnd(), start, end);
-		CompoundStatement el = new CompoundStatement();
+		ASTListNode el = new ASTListNode();
 		this.setSuperClasses(el);
 		this.name = name;
 		this.fBody = body;
@@ -20,7 +20,7 @@ public class RubyModuleDeclaration extends TypeDeclaration {
 		setEnd(end);
 	}
 	
-	public Statement getClassName() {
+	public ASTNode getClassName() {
 		return name;
 	}
 

@@ -12,10 +12,7 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.expressions.Assignment;
-import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.VariableReference;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKModelUtil;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
@@ -26,6 +23,7 @@ import org.eclipse.dltk.core.search.TypeNameMatch;
 import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
 import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
+import org.eclipse.dltk.ruby.ast.RubyAssignment;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
@@ -131,7 +129,7 @@ public class RubyTypeInferencingUtils {
 				continue;
 			ASTNode nextScope = (end < staticScopes.length ? staticScopes[end]
 					: null);
-			Assignment[] assignments = findLocalVariableAssignments(
+			RubyAssignment[] assignments = findLocalVariableAssignments(
 					currentScope, nextScope, varName);
 			if (assignments.length > 0) {
 				return new LocalVariableInfo(currentScope, assignments);
@@ -218,24 +216,10 @@ public class RubyTypeInferencingUtils {
 		// return metaType;
 	}
 
-	public static Assignment[] findLocalVariableAssignments(
+	public static RubyAssignment[] findLocalVariableAssignments(
 			final ASTNode scope, final ASTNode nextScope, final String varName) {
 		final Collection assignments = new ArrayList();
 		ASTVisitor visitor = new ASTVisitor() {
-
-			public boolean visit(Expression s) throws Exception {
-				if (s instanceof Assignment) {
-					Assignment assignment = (Assignment) s;
-					Statement lhs = assignment.getLeft();
-					if (lhs instanceof VariableReference) {
-						VariableReference varRef = (VariableReference) lhs;
-						if (varName.equals(varRef.getName())) {
-							assignments.add(assignment);
-						}
-					}
-				}
-				return true;
-			}
 
 			public boolean visit(MethodDeclaration s) throws Exception {
 				if (s == scope)
@@ -249,7 +233,17 @@ public class RubyTypeInferencingUtils {
 				return false;
 			}
 
-			public boolean visitGeneral(ASTNode node) throws Exception {
+			public boolean visit(ASTNode node) throws Exception {
+				if (node instanceof RubyAssignment) {
+					RubyAssignment assignment = (RubyAssignment) node;
+					ASTNode lhs = assignment.getLeft();
+					if (lhs instanceof VariableReference) {
+						VariableReference varRef = (VariableReference) lhs;
+						if (varName.equals(varRef.getName())) {
+							assignments.add(assignment);
+						}
+					}
+				}
 				if (node == nextScope)
 					return false;
 				return true;
@@ -261,7 +255,7 @@ public class RubyTypeInferencingUtils {
 		} catch (Exception e) {
 			RubyPlugin.log(e);
 		}
-		return (Assignment[]) assignments.toArray(new Assignment[assignments
+		return (RubyAssignment[]) assignments.toArray(new RubyAssignment[assignments
 				.size()]);
 	}
 

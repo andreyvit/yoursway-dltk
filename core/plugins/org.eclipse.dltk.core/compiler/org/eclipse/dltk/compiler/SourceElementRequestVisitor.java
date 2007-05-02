@@ -3,6 +3,7 @@ package org.eclipse.dltk.compiler;
 import java.util.List;
 import java.util.Stack;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
@@ -11,7 +12,6 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.Literal;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
-import org.eclipse.dltk.ast.references.ExtendedVariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 
 public class SourceElementRequestVisitor extends ASTVisitor {
@@ -34,7 +34,7 @@ public class SourceElementRequestVisitor extends ASTVisitor {
 		return fCurrentMethod;
 	}
 
-	protected String makeLanguageDependentValue(Expression expr) {
+	protected String makeLanguageDependentValue(ASTNode expr) {
 		return "";
 	}
 
@@ -72,25 +72,21 @@ public class SourceElementRequestVisitor extends ASTVisitor {
 	 * @param expr
 	 * @return
 	 */
-	protected String makeValue(Statement stmt) {
-		if (!(stmt instanceof Expression))
-			return null;
+	protected String makeValue(ASTNode stmt) {
+//		if (!(stmt instanceof Expression))
+//			return null;
 
-		Expression expr = (Expression) stmt;
-
-		if (expr == null) {
-			return null;
-		}
+		
 
 		String value = "";
-		if (expr instanceof StringLiteral) {
-			value = "\"" + ((StringLiteral) expr).getValue() + "\"";
-		} else if (expr instanceof Literal) {
-			value = ((Literal) expr).getValue();
-		} else if (expr instanceof ExtendedVariableReference) {
+		if (stmt instanceof StringLiteral) {
+			value = "\"" + ((StringLiteral) stmt).getValue() + "\"";
+		} else if (stmt instanceof Literal) {
+			value = ((Literal) stmt).getValue();
+		} else /*if (stmt instanceof ExtendedVariableReference) */{
 			// If it is Dot.
 			// Lets make recursive value parsing in this case.
-			value += makeLanguageDependentValue(expr);
+			value += makeLanguageDependentValue(stmt);
 		}
 
 		return value;

@@ -1,11 +1,9 @@
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
@@ -13,35 +11,29 @@ import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.VariableReference;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.ScriptSelectionEngine;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKModelUtil;
-import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.TypeNameMatch;
 import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
 import org.eclipse.dltk.internal.core.ModelElement;
+import org.eclipse.dltk.ruby.ast.RubyAssignment;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
-import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
-import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixin;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
@@ -78,12 +70,15 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 		return ASTUtils.getEnclosingCallNode(wayToNode, node, true);
 	}
 
-	public RubySelectionEngine(/*ISearchableEnvironment environment, Map options,
-			IDLTKLanguageToolkit toolkit*/) {
-//		super();
-//		setOptions(options);
-//		this.nameEnvironment = environment;
-//		this.lookupEnvironment = new LookupEnvironment(this, nameEnvironment);
+	public RubySelectionEngine(/*
+								 * ISearchableEnvironment environment, Map
+								 * options, IDLTKLanguageToolkit toolkit
+								 */) {
+		// super();
+		// setOptions(options);
+		// this.nameEnvironment = environment;
+		// this.lookupEnvironment = new LookupEnvironment(this,
+		// nameEnvironment);
 		inferencer = new DLTKTypeInferenceEngine();
 	}
 
@@ -230,7 +225,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 			ModuleDeclaration parsedUnit, ASTNode node) {
 		boolean foundSomething = false;
 
-		IType[] types = getSourceTypesForClass(parsedUnit, (Statement) node);
+		IType[] types = getSourceTypesForClass(parsedUnit, node);
 		for (int i = 0; i < types.length; i++) {
 			this.selectionElements.add(types[i]);
 			foundSomething = true;
@@ -268,7 +263,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 				selectionElements.add(fields[i]);
 			}
 		} else { // local vars (legacy, saved for speed reasons: we dont need
-					// to use mixin model for local vars)
+			// to use mixin model for local vars)
 			ASTNode parentScope = null;
 			MethodDeclaration methodDeclaration = ASTUtils.getEnclosingMethod(
 					wayToNode, e, false);
@@ -288,10 +283,10 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 				parentScope = wayToNode[wayToNode.length - 2];
 			}
 			if (parentScope != null) {
-				Assignment[] assignments = RubyTypeInferencingUtils
+				RubyAssignment[] assignments = RubyTypeInferencingUtils
 						.findLocalVariableAssignments(parentScope, e, name);
 				if (assignments.length > 0) {
-					Assignment assignment = assignments[0];
+					RubyAssignment assignment = assignments[0];
 					selectionElements.add(createLocalVariable(name, assignment
 							.getLeft().sourceStart(), assignment.getLeft()
 							.sourceEnd()));
@@ -311,7 +306,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 	}
 
 	private IType[] getSourceTypesForClass(ModuleDeclaration parsedUnit,
-			Statement statement) {
+			ASTNode statement) {
 		ExpressionTypeGoal typeGoal = new ExpressionTypeGoal(
 				new BasicContext(
 						(org.eclipse.dltk.core.ISourceModule) sourceModule,
@@ -329,15 +324,16 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 
 	private void selectionOnTypeDeclaration(ModuleDeclaration parsedUnit,
 			TypeDeclaration typeDeclaration) {
-//		if (typeDeclaration instanceof RubyClassDeclaration) {
-//			RubyClassDeclaration rcd = (RubyClassDeclaration) typeDeclaration;
-//			IType[] types = getSourceTypesForClass(parsedUnit, rcd
-//					.getClassName());
-//			selectionElements.addAll(Arrays.asList(types));
-//		}
+		// if (typeDeclaration instanceof RubyClassDeclaration) {
+		// RubyClassDeclaration rcd = (RubyClassDeclaration) typeDeclaration;
+		// IType[] types = getSourceTypesForClass(parsedUnit, rcd
+		// .getClassName());
+		// selectionElements.addAll(Arrays.asList(types));
+		// }
 		IModelElement elementAt = null;
 		try {
-			elementAt = ((org.eclipse.dltk.core.ISourceModule) sourceModule).getElementAt(typeDeclaration.sourceStart()+1);
+			elementAt = ((org.eclipse.dltk.core.ISourceModule) sourceModule)
+					.getElementAt(typeDeclaration.sourceStart() + 1);
 		} catch (ModelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -350,7 +346,8 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 			MethodDeclaration methodDeclaration) {
 		IModelElement elementAt = null;
 		try {
-			elementAt = ((org.eclipse.dltk.core.ISourceModule) sourceModule).getElementAt(methodDeclaration.sourceStart()+1);
+			elementAt = ((org.eclipse.dltk.core.ISourceModule) sourceModule)
+					.getElementAt(methodDeclaration.sourceStart() + 1);
 		} catch (ModelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -363,7 +360,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 			org.eclipse.dltk.core.ISourceModule modelModule,
 			ModuleDeclaration parsedUnit, CallExpression parentCall) {
 		String methodName = ((CallExpression) parentCall).getName();
-		Statement receiver = parentCall.getReceiver();
+		ASTNode receiver = parentCall.getReceiver();
 
 		IMethod[] availableMethods = null;
 		IMethod[] availableMethods2 = null;
@@ -371,25 +368,33 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 		if (receiver == null) {
 			RubyClassType type = RubyTypeInferencingUtils.determineSelfClass(
 					modelModule, parsedUnit, parentCall.sourceStart());
-			availableMethods = RubyModelUtils.searchClassMethods(modelModule, parsedUnit, type, methodName);
+			availableMethods = RubyModelUtils.searchClassMethods(modelModule,
+					parsedUnit, type, methodName);
 		} else {
 			ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
 					modelModule, parsedUnit), receiver);
 			IEvaluatedType type = inferencer.evaluateType(goal, 5000);
-			availableMethods = RubyModelUtils.searchClassMethods(modelModule, parsedUnit, type, methodName);
+			availableMethods = RubyModelUtils.searchClassMethods(modelModule,
+					parsedUnit, type, methodName);
 			if (receiver instanceof VariableReference) {
-				availableMethods2 = RubyModelUtils.getVirtualMethods((VariableReference) receiver, parsedUnit, modelModule, methodName);
+				availableMethods2 = RubyModelUtils.getVirtualMethods(
+						(VariableReference) receiver, parsedUnit, modelModule,
+						methodName);
 			}
 		}
-		
+
 		if (availableMethods2 != null) {
-			IMethod[] newm = new IMethod[((availableMethods != null)?availableMethods.length:0) + availableMethods2.length];
+			IMethod[] newm = new IMethod[((availableMethods != null) ? availableMethods.length
+					: 0)
+					+ availableMethods2.length];
 			int next = 0;
 			if (availableMethods != null) {
-				System.arraycopy(availableMethods, 0, newm, 0, availableMethods.length);
+				System.arraycopy(availableMethods, 0, newm, 0,
+						availableMethods.length);
 				next = availableMethods.length;
 			}
-			System.arraycopy(availableMethods2, 0, newm, next, availableMethods2.length);
+			System.arraycopy(availableMethods2, 0, newm, next,
+					availableMethods2.length);
 			availableMethods = newm;
 		}
 

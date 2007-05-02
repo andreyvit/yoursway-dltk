@@ -1,26 +1,24 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.statements.Statement;
 
-public class RubyMatch2Expression extends Expression {
+public class RubyMatch2Expression extends ASTNode {
 
-	private final Statement receiver;
-	private final Statement value;
+	private final ASTNode receiver;
+	private final ASTNode value;
 
-	public RubyMatch2Expression(int start, int end, Statement receiver,
-			Statement value) {
+	public RubyMatch2Expression(int start, int end, ASTNode receiver, ASTNode value) {
 		super(start, end);
 		this.receiver = receiver;
 		this.value = value;
 	}
 
-	public Statement getReceiver() {
+	public ASTNode getReceiver() {
 		return receiver;
 	}
 
-	public Statement getValue() {
+	public ASTNode getValue() {
 		return value;
 	}
 

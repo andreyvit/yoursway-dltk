@@ -1,29 +1,22 @@
-package org.eclipse.dltk.ast.statements;
+package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.DLTKToken;
-import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.utils.CorePrinter;
 
 /**
  * While statement.
  */
-public class UntilStatement extends Statement {
-	private Statement fCondition;
-	private Statement fAction;
+public class RubyUntilStatement extends ASTNode {
+	private ASTNode fCondition;
+	private ASTNode fAction;
 
-	public UntilStatement(DLTKToken token) {
+	public RubyUntilStatement(DLTKToken token) {
 		super(token);
 	}
 
-	public UntilStatement(DLTKToken whileToken, Expression condition,
-			Statement action) {
-		this.setStart(whileToken.getColumn());
-		this.fCondition = condition;
-		this.fAction = action;
-	}
-	
-	public UntilStatement(Statement condition, Statement action) {
+	public RubyUntilStatement(ASTNode condition, ASTNode action) {
 		this.fCondition = condition;
 		this.fAction = action;
 	}
@@ -40,15 +33,11 @@ public class UntilStatement extends Statement {
 		}
 	}
 
-	public int getKind() {
-		return S_UNTIL;
-	}
-
-	public Statement getCondition() {
+	public ASTNode getCondition() {
 		return fCondition;
 	}
 
-	public Statement getAction() {
+	public ASTNode getAction() {
 		return fAction;
 	}
 

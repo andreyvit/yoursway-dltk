@@ -20,12 +20,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IElementChangedListener;
@@ -767,7 +767,7 @@ public abstract class AbstractASTFoldingStructureProvider implements IFoldingStr
 	}
 
     protected class CodeBlock {
-		public Statement statement;
+		public ASTNode statement;
 		public IRegion region;
 
 		/**
@@ -778,7 +778,7 @@ public abstract class AbstractASTFoldingStructureProvider implements IFoldingStr
 		 * @param r
 		 *            <b>Absolute</b> statement position in source file
 		 */
-		public CodeBlock(Statement s, IRegion r) {
+		public CodeBlock(ASTNode s, IRegion r) {
 			this.statement = s;
 			this.region = r;
 		}
@@ -1003,7 +1003,7 @@ public abstract class AbstractASTFoldingStructureProvider implements IFoldingStr
             return (CodeBlock[]) result.toArray(new CodeBlock[result.size()]);
         }
 
-        protected final void add(Statement s)
+        protected final void add(ASTNode s)
         {
             int start = offset + s.sourceStart();
             int end = s.sourceEnd() - s.sourceStart();
@@ -1052,9 +1052,9 @@ public abstract class AbstractASTFoldingStructureProvider implements IFoldingStr
 	 * @param ctx
 	 * @return
 	 */
-	protected abstract boolean mayCollapse(Statement s, FoldingStructureComputationContext ctx);
+	protected abstract boolean mayCollapse(ASTNode s, FoldingStructureComputationContext ctx);
 
-	protected abstract boolean initiallyCollapse(Statement s, FoldingStructureComputationContext ctx);
+	protected abstract boolean initiallyCollapse(ASTNode s, FoldingStructureComputationContext ctx);
 
 	protected abstract boolean initiallyCollapseComments(FoldingStructureComputationContext ctx);
 

@@ -1,18 +1,17 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
-public class RubyConstantDeclaration extends Expression {
+public class RubyConstantDeclaration extends ASTNode {
 
-	private final Expression path;
+	private final ASTNode path;
 	private final SimpleReference name;
-	private final Statement value;
+	private final ASTNode value;
 
-	public RubyConstantDeclaration(Expression path, SimpleReference name, Statement value) {
+	public RubyConstantDeclaration(ASTNode path, SimpleReference name, ASTNode value) {
 		this.path = path;
 		this.name = name;
 		this.value = value;
@@ -22,11 +21,11 @@ public class RubyConstantDeclaration extends Expression {
 		return name;
 	}
 
-	public Expression getPath() {
+	public ASTNode getPath() {
 		return path;
 	}
 
-	public Statement getValue() {
+	public ASTNode getValue() {
 		return value;
 	}
 

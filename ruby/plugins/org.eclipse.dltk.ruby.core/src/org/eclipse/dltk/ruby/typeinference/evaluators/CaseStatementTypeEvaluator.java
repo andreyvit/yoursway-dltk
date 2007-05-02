@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ruby.ast.RubyCaseStatement;
 import org.eclipse.dltk.ruby.ast.RubyWhenStatement;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
@@ -27,7 +27,7 @@ public class CaseStatementTypeEvaluator extends GoalEvaluator {
 	
 	public IGoal[] init() {
 		ExpressionTypeGoal typedGoal = this.getTypedGoal();
-		Statement expression = typedGoal.getExpression();
+		ASTNode expression = typedGoal.getExpression();
 		if (!(expression instanceof RubyCaseStatement))
 			return IGoal.NO_GOALS;
 		RubyCaseStatement caseSt = (RubyCaseStatement) expression;
@@ -35,7 +35,7 @@ public class CaseStatementTypeEvaluator extends GoalEvaluator {
 		List whens = caseSt.getWhens();
 		for (Iterator iterator = whens.iterator(); iterator.hasNext();) {
 			RubyWhenStatement when = (RubyWhenStatement) iterator.next();
-			Statement body = when.getBody();
+			ASTNode body = when.getBody();
 			subgoals.add(new ExpressionTypeGoal(this.goal.getContext(), body));			
 		}
 		return (IGoal[]) subgoals.toArray(new IGoal[subgoals.size()]);

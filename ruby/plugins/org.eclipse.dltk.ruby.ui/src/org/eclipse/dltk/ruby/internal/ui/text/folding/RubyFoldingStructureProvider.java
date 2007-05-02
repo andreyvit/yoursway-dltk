@@ -2,10 +2,9 @@ package org.eclipse.dltk.ruby.internal.ui.text.folding;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ISourceParser;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
@@ -33,7 +32,7 @@ public class RubyFoldingStructureProvider extends AbstractASTFoldingStructurePro
     /*
     * @see org.eclipse.dltk.ui.text.folding.AbstractASTFoldingStructureProvider#initiallyCollapse(org.eclipse.dltk.ast.statements.Statement, org.eclipse.dltk.ui.text.folding.AbstractASTFoldingStructureProvider.FoldingStructureComputationContext)
      */
-    protected boolean initiallyCollapse(Statement s,
+    protected boolean initiallyCollapse(ASTNode s,
         FoldingStructureComputationContext ctx) {
         return false;
     }
@@ -49,7 +48,7 @@ public class RubyFoldingStructureProvider extends AbstractASTFoldingStructurePro
     /*
      * @see org.eclipse.dltk.ui.text.folding.AbstractASTFoldingStructureProvider#mayCollapse(org.eclipse.dltk.ast.statements.Statement, org.eclipse.dltk.ui.text.folding.AbstractASTFoldingStructureProvider.FoldingStructureComputationContext)
      */
-    protected boolean mayCollapse(Statement s,
+    protected boolean mayCollapse(ASTNode s,
         FoldingStructureComputationContext ctx) {
         return true;
     }

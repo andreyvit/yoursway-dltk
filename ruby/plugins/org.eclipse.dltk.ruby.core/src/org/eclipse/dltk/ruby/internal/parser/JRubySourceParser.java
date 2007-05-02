@@ -46,7 +46,7 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 	}
 
 	private final class ASTPositionsCorrector extends ASTVisitor {
-		public boolean visitGeneral(ASTNode node) throws Exception {
+		public boolean visit (ASTNode node) throws Exception {
 			if (node.sourceStart() < 0 || node.sourceEnd() < 0)
 				return true;
 			int st = 0;

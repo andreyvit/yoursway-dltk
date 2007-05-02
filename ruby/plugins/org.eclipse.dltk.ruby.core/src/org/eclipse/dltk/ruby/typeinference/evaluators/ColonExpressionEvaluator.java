@@ -1,15 +1,13 @@
 package org.eclipse.dltk.ruby.typeinference.evaluators;
 
-import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
-import org.eclipse.dltk.ruby.typeinference.ConstantTypeGoal;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
-import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencer;
 import org.eclipse.dltk.ruby.typeinference.goals.ColonExpressionGoal;
 import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.goals.AbstractTypeGoal;
@@ -35,7 +33,7 @@ public class ColonExpressionEvaluator extends GoalEvaluator {
 
 	public Object produceResult() { 		
 		RubyColonExpression expr = getTypedGoal().getColonExpression();
-		Statement left = expr.getLeft();
+		ASTNode left = expr.getLeft();
 		
 		if (left != null) {
 			if (helperResult instanceof ClassType) { //TODO: check existance of the new key
@@ -59,7 +57,7 @@ public class ColonExpressionEvaluator extends GoalEvaluator {
 	public IGoal[] init() {
 		RubyColonExpression expr = getTypedGoal().getColonExpression();
 		
-		Statement left = expr.getLeft();
+		ASTNode left = expr.getLeft();
 		
 		if (left != null) {
 			helperGoal =  new ExpressionTypeGoal(getGoal().getContext(), left);

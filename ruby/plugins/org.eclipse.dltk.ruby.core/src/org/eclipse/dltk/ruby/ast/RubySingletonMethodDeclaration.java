@@ -2,29 +2,28 @@ package org.eclipse.dltk.ruby.ast;
 
 import java.util.Iterator;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.statements.Block;
-import org.eclipse.dltk.ast.statements.Statement;
 
 public class RubySingletonMethodDeclaration extends MethodDeclaration {
-	private final Statement receiver;
+	private final ASTNode receiver;
 
 	public RubySingletonMethodDeclaration(String name, int nameStart,
-			int nameEnd, int declStart, int declEnd, Statement receiver) {
+			int nameEnd, int declStart, int declEnd, ASTNode receiver) {
 		super(name, nameStart, nameEnd, declStart, declEnd);
 		this.receiver = receiver;
 	}
 
-	public RubySingletonMethodDeclaration(DLTKToken function_t, DLTKToken name,
-			Statement receiver) {
+	public RubySingletonMethodDeclaration(DLTKToken function_t, DLTKToken name, ASTNode receiver) {
 		super(function_t, name);
 		this.receiver = receiver;
 	}
 
-	public Statement getReceiver() {
+	public ASTNode getReceiver() {
 		return receiver;
 	}
 

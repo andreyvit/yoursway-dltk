@@ -1,37 +1,40 @@
-package org.eclipse.dltk.ast.statements;
+package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.DLTKToken;
+import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.utils.CorePrinter;
+
 
 /**
  * If statement.
  */
-public class IfStatement extends Statement {
+public class RubyIfStatement extends ASTNode {
 	/**
 	 * Condition expression.
 	 */
-	private Statement fCondition;
+	private ASTNode fCondition;
 
 	/**
 	 * Then statement of if.
 	 */
-	private Statement fThenStatement;
+	private ASTNode fThenStatement;
 
 	/**
 	 * Else statement of if. Can be null, or possible EmptyStatement..
 	 */
-	private Statement fElseStatement;
+	private ASTNode fElseStatement;
 
-	public IfStatement(DLTKToken ifToken, Statement condition,
-			Statement thenStatement) {
+	public RubyIfStatement(DLTKToken ifToken, ASTNode condition,
+			ASTNode thenStatement) {
 
 		super(ifToken);
 		this.fCondition = condition;
 		this.fThenStatement = thenStatement;
 	}
 	
-	public IfStatement(Statement condition, Statement thenStatement, Statement elseStatement) {
+	public RubyIfStatement(ASTNode condition, ASTNode thenStatement, ASTNode elseStatement) {
 		this.fCondition = condition;
 		this.fThenStatement = thenStatement;
 		this.fElseStatement = elseStatement;
@@ -53,24 +56,14 @@ public class IfStatement extends Statement {
 		}
 	}
 
-	public int getKind() {
-		return S_IF;
-	}
-
-	// TODO: Replace to acceptElse for similarity.
-	/**
-	 * @deprecated
-	 */
-	public void setElse(Statement elses) {
-		this.acceptElse(elses);
-	}
+	
 
 	/**
 	 * Acccept Else statement.
 	 * 
 	 * @param elseStatement
 	 */
-	public void acceptElse(Statement elseStatement) {
+	public void acceptElse(ASTNode elseStatement) {
 		this.fElseStatement = elseStatement;
 		if (this.fElseStatement != null) {
 			this.setEnd(this.fElseStatement.sourceEnd());
@@ -82,15 +75,15 @@ public class IfStatement extends Statement {
 	 * 
 	 * @return - else statement. Be aware can be null.
 	 */
-	public Statement getElse() {
+	public ASTNode getElse() {
 		return fElseStatement;
 	}
 
-	public Statement getThen() {
+	public ASTNode getThen() {
 		return fThenStatement;
 	}
 
-	public Statement getCondition() {
+	public ASTNode getCondition() {
 		return this.fCondition;
 	}
 

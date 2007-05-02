@@ -1,16 +1,15 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
-public class RubyColonExpression extends Expression {
-	private final Statement left;
+public class RubyColonExpression extends ASTNode {
+	private final ASTNode left;
 	private final String name;
 
 
-	public Statement getLeft() {
+	public ASTNode getLeft() {
 		return left;
 	}
 
@@ -18,7 +17,7 @@ public class RubyColonExpression extends Expression {
 		return name;
 	}
 
-	public RubyColonExpression (String name, Statement left) {
+	public RubyColonExpression (String name, ASTNode left) {
 		this.name = name;
 		this.left = left;
 	}

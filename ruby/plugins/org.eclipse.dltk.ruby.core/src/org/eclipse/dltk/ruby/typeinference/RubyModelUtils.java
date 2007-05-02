@@ -12,7 +12,6 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IField;
@@ -132,16 +131,7 @@ public class RubyModelUtils {
 				if (!interesting(s))
 					return false;
 				return true;
-			}
-
-			public boolean visit(Statement s) throws Exception {
-				// XXX workaround for a bug in block offset calculation
-				if (s instanceof Block)
-					return true;
-				if (!interesting(s))
-					return false;
-				return true;
-			}
+			}			
 
 			public boolean visit(TypeDeclaration s) throws Exception {
 				if (!interesting(s))
@@ -156,6 +146,8 @@ public class RubyModelUtils {
 			}
 
 			public boolean visitGeneral(ASTNode s) throws Exception {
+				if (s instanceof Block)
+					return true;
 				if (!interesting(s))
 					return false;
 				return true;

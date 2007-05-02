@@ -684,7 +684,7 @@ public class TclSourceElementParser implements ISourceElementParser {
 				if (node instanceof Argument) {
 					Argument ref = (Argument) node;
 					parameter[a] = ref.getName();
-					Statement e = ref.getInitialization();
+					Statement e = (Statement) ref.getInitialization();
 					if (e != null) {
 						if (e instanceof SimpleReference) {
 							parameterInitializers[a] = ((SimpleReference) e)

@@ -1,18 +1,17 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.statements.Statement;
 
-public class RubyBeginExpression extends Expression {
+public class RubyBeginExpression extends ASTNode {
 
-	private final Statement body;
+	private final ASTNode body;
 
-	public Statement getBody() {
+	public ASTNode getBody() {
 		return body;
 	}
 
-	public RubyBeginExpression(int start, int end, Statement body) {
+	public RubyBeginExpression(int start, int end, ASTNode body) {
 		super(start, end);
 		this.body = body;
 	}

@@ -16,29 +16,22 @@ import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.BigNumericLiteral;
 import org.eclipse.dltk.ast.expressions.BooleanLiteral;
 import org.eclipse.dltk.ast.expressions.CallArgumentsList;
 import org.eclipse.dltk.ast.expressions.CallExpression;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.expressions.ExpressionList;
+import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 import org.eclipse.dltk.ast.expressions.FloatNumericLiteral;
 import org.eclipse.dltk.ast.expressions.NilLiteral;
 import org.eclipse.dltk.ast.expressions.NumericLiteral;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
-import org.eclipse.dltk.ast.expressions.UnaryNotExpression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
-import org.eclipse.dltk.ast.statements.ForStatement;
-import org.eclipse.dltk.ast.statements.IfStatement;
-import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.ast.statements.UntilStatement;
-import org.eclipse.dltk.ast.statements.WhileStatement;
 import org.eclipse.dltk.ruby.ast.RubyAliasExpression;
 import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
+import org.eclipse.dltk.ruby.ast.RubyAssignment;
 import org.eclipse.dltk.ruby.ast.RubyBacktickStringLiteral;
 import org.eclipse.dltk.ruby.ast.RubyBeginExpression;
 import org.eclipse.dltk.ruby.ast.RubyBinaryExpression;
@@ -59,14 +52,17 @@ import org.eclipse.dltk.ruby.ast.RubyDynamicBackquoteStringExpression;
 import org.eclipse.dltk.ruby.ast.RubyDynamicStringExpression;
 import org.eclipse.dltk.ruby.ast.RubyEnsureExpression;
 import org.eclipse.dltk.ruby.ast.RubyEvaluatableStringExpression;
+import org.eclipse.dltk.ruby.ast.RubyForStatement2;
 import org.eclipse.dltk.ruby.ast.RubyHashExpression;
 import org.eclipse.dltk.ruby.ast.RubyHashPairExpression;
+import org.eclipse.dltk.ruby.ast.RubyIfStatement;
 import org.eclipse.dltk.ruby.ast.RubyMatch2Expression;
 import org.eclipse.dltk.ruby.ast.RubyMatch3Expression;
 import org.eclipse.dltk.ruby.ast.RubyMatchExpression;
 import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
 import org.eclipse.dltk.ruby.ast.RubyMultipleAssignmentStatement;
 import org.eclipse.dltk.ruby.ast.RubyNextExpression;
+import org.eclipse.dltk.ruby.ast.RubyNotExpression;
 import org.eclipse.dltk.ruby.ast.RubyRedoExpression;
 import org.eclipse.dltk.ruby.ast.RubyRegexpExpression;
 import org.eclipse.dltk.ruby.ast.RubyRescueBodyStatement;
@@ -79,8 +75,10 @@ import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.RubySuperExpression;
 import org.eclipse.dltk.ruby.ast.RubySymbolReference;
 import org.eclipse.dltk.ruby.ast.RubyUndefStatement;
+import org.eclipse.dltk.ruby.ast.RubyUntilStatement;
 import org.eclipse.dltk.ruby.ast.RubyVariableKind;
 import org.eclipse.dltk.ruby.ast.RubyWhenStatement;
+import org.eclipse.dltk.ruby.ast.RubyWhileStatement;
 import org.eclipse.dltk.ruby.ast.RubyYieldExpression;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
@@ -205,7 +203,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	private final char[] content;
 
 	protected static interface IState {
-		public void add(Statement statement);
+		public void add(ASTNode node);
 	}
 
 	protected static class CollectingState implements IState {
@@ -215,7 +213,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			list = new ArrayList();
 		}
 
-		public void add(Statement s) {
+		public void add(ASTNode s) {
 			list.add(s);
 		}
 
@@ -236,8 +234,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			this.list = list;
 		}
 
-		public void add(Statement s) {
-			list.addArgument(s, 0);			
+		public void add(ASTNode s) {
+			list.addArgument(s, 0);
 		}
 
 	}
@@ -249,7 +247,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			this.module = module;
 		}
 
-		public void add(Statement statement) {
+		public void add(ASTNode statement) {
 			module.getStatements().add(statement);
 		}
 	}
@@ -263,7 +261,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			visibility = Modifiers.AccPublic;
 		}
 
-		public void add(Statement statement) {
+		public void add(ASTNode statement) {
 			type.getStatements().add(statement);
 		}
 
@@ -293,7 +291,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			this.method = method;
 		}
 
-		public void add(Statement statement) {
+		public void add(ASTNode statement) {
 			method.getStatements().add(statement);
 		}
 
@@ -307,7 +305,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			this.block = block;
 		}
 
-		public void add(Statement statement) {
+		public void add(ASTNode statement) {
 			block.getStatements().add(statement);
 		}
 
@@ -359,8 +357,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	private StateManager states = new StateManager();
 
-	protected Statement collectSingleStatementSafe(Node pathNode) {
-		return collectSingleStatementSafe(pathNode, false);
+	protected ASTNode collectSingleNodeSafe(Node pathNode) {
+		return collectSingleNodeSafe(pathNode, false);
 	}
 
 	/**
@@ -372,10 +370,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	 * @param allowZero
 	 * @return
 	 */
-	protected Statement collectSingleStatementSafe(Node node, boolean allowZero) {
-		Statement res = null;
+	protected ASTNode collectSingleNodeSafe(Node node, boolean allowZero) {
+		ASTNode res = null;
 		try {
-			res = collectSingleStatement0(node, allowZero);
+			res = collectSingleNode0(node, allowZero);
 		} catch (Throwable t) {
 			if (JRubySourceParser.isSilentState()) {
 				node.accept(this);
@@ -397,7 +395,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	 * @param allowZero
 	 * @return
 	 */
-	protected Statement collectSingleStatement0(Node node, boolean allowZero) {
+	protected ASTNode collectSingleNode0(Node node, boolean allowZero) {
 		if (node == null)
 			return null;
 		CollectingState state = new CollectingState();
@@ -407,7 +405,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 		ArrayList list = state.getList();
 		if (list.size() == 1)
-			return (Statement) list.iterator().next();
+			return (ASTNode) list.iterator().next();
 
 		if (node instanceof NewlineNode) {
 			NewlineNode newlineNode = (NewlineNode) node;
@@ -448,12 +446,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitAndNode(AndNode iVisited) { // done
-		Statement left = collectSingleStatementSafe(iVisited
-				.getFirstNode());
-		Statement right = collectSingleStatementSafe(iVisited
-				.getSecondNode());
-		RubyBinaryExpression b = new RubyBinaryExpression(left, Expression.E_BAND,
-				right);
+		ASTNode left = collectSingleNodeSafe(iVisited.getFirstNode());
+		ASTNode right = collectSingleNodeSafe(iVisited.getSecondNode());
+		RubyBinaryExpression b = new RubyBinaryExpression(left,
+				ExpressionConstants.E_BAND, right);
 		states.peek().add(b);
 		return null;
 	}
@@ -497,7 +493,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		RubyArrayExpression arr = new RubyArrayExpression();
 		arr.setEnd(position.getEndOffset());
 		arr.setStart(position.getStartOffset());
-		arr.setStatements(exprs); // XXX cast exception cause
+		arr.setChilds(exprs);
 		states.peek().add(arr);
 
 		return null;
@@ -512,7 +508,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitBeginNode(BeginNode iVisited) { // done
-		Statement body = collectSingleStatementSafe(iVisited.getBodyNode());
+		ASTNode body = collectSingleNodeSafe(iVisited.getBodyNode());
 		ISourcePosition pos = iVisited.getPosition();
 		RubyBeginExpression e = new RubyBeginExpression(pos.getStartOffset(),
 				pos.getEndOffset(), body);
@@ -539,8 +535,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitBlockPassNode(BlockPassNode iVisited) {
-		Statement args = collectSingleStatementSafe(iVisited.getArgsNode());
-		Statement body = collectSingleStatementSafe(iVisited.getBodyNode());
+		ASTNode args = collectSingleNodeSafe(iVisited.getArgsNode());
+		ASTNode body = collectSingleNodeSafe(iVisited.getBodyNode());
 		ISourcePosition pos = iVisited.getPosition();
 		RubyBlock e = new RubyBlock(pos.getStartOffset(), pos.getEndOffset(),
 				body);
@@ -550,7 +546,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitBreakNode(BreakNode iVisited) { // done
-		Statement value = collectSingleStatementSafe(iVisited.getValueNode());
+		ASTNode value = collectSingleNodeSafe(iVisited.getValueNode());
 		ISourcePosition pos = iVisited.getPosition();
 		RubyBreakExpression e = new RubyBreakExpression(pos.getStartOffset(),
 				pos.getEndOffset(), value);
@@ -560,10 +556,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitConstDeclNode(ConstDeclNode iVisited) {
 		Node pathNode = iVisited.getConstNode();
-		Expression pathResult = null;
+		ASTNode pathResult = null;
 		if (pathNode != null)
-			pathResult = (Expression) collectSingleStatementSafe(pathNode);
-		Statement value = collectSingleStatementSafe(iVisited.getValueNode());
+			pathResult = (ASTNode) collectSingleNodeSafe(pathNode);
+		ASTNode value = collectSingleNodeSafe(iVisited.getValueNode());
 		ISourcePosition position = iVisited.getPosition();
 		int start = position.getStartOffset();
 		int end = start;
@@ -621,14 +617,14 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 						.log("Ruby AST: non-dot-call not recognized, non-dot found at "
 								+ dotPosition + ", function name " + methodName);
 		}
-		
-		//trim end whitespaces
+
+		// trim end whitespaces
 		int sourceEnd = callNode.sourceEnd() - 1;
-		while (sourceEnd >= 0 && Character.isWhitespace(content[sourceEnd])) 
+		while (sourceEnd >= 0 && Character.isWhitespace(content[sourceEnd]))
 			sourceEnd--;
 		if (sourceEnd >= 0)
 			callNode.setEnd(sourceEnd + 1);
-		
+
 	}
 
 	private void fixFunctionCallOffsets(CallExpression callNode,
@@ -724,13 +720,13 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 						+ iVisited.getReceiverNode().getClass().getName()
 						+ " turned into multiple nodes");
 		}
-		Statement recv;
+		ASTNode recv;
 		if (collector.getList().size() < 1) {
 			recv = new NumericLiteral(new DLTKToken(0, "")); // FIXME
 			recv.setStart(iVisited.getPosition().getStartOffset());
 			recv.setEnd(iVisited.getPosition().getEndOffset() + 1);
 		} else
-			recv = (Statement) collector.getList().get(0);
+			recv = (ASTNode) collector.getList().get(0);
 
 		collector.reset();
 
@@ -761,34 +757,26 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				argsEnd = ((Node) children.get(children.size() - 1))
 						.getPosition().getEndOffset();
 				// correction for nodes with incorrect positions
-				List argListExprs = argList.getExpressions();
+				List argListExprs = argList.getChilds();
 				if (!argListExprs.isEmpty())
 					argsEnd = Math.max(argsEnd, ((ASTNode) argListExprs
 							.get(argListExprs.size() - 1)).sourceEnd());
 			}
 		}
 		if (iVisited.getIterNode() != null) {
-			Statement s = collectSingleStatementSafe(iVisited.getIterNode());
-			if (s instanceof Expression)
-				argList.addExpression((Expression) s);
-			else
-				System.err.println("Failed to get block argument");
+			ASTNode s = collectSingleNodeSafe(iVisited.getIterNode());
+			argList.addNode(s);
+
 		}
 
 		argList.autosetOffsets();
 		CallExpression c = new CallExpression(recv, methodName, argList);
-		int receiverStart = recv.sourceStart();
 		int receiverEnd = recv.sourceEnd();
-//
-//		// FIXME handle whitespace and special functions like []= (which are
-//		// called without dot)
-//		int funcNameStart = receiverEnd + 1 /* skip dot */;
-//		int funcNameEnd = funcNameStart + methodName.length();
-//		// Assert.isTrue(iVisited.getPosition().getStartOffset() ==
-//		// receiverStart);
 
 		c.setStart(iVisited.getPosition().getStartOffset());
-		c.setEnd(argsEnd >= 0 ? argsEnd : iVisited.getPosition().getEndOffset()); // just in case, should
+		c
+				.setEnd(argsEnd >= 0 ? argsEnd : iVisited.getPosition()
+						.getEndOffset()); // just in case, should
 		// be overriden
 		fixCallOffsets(c, methodName, receiverEnd, argsStart, argsEnd);
 
@@ -801,17 +789,16 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		ISourcePosition pos = iVisited.getPosition();
 		RubyCaseStatement statement = new RubyCaseStatement(pos
 				.getStartOffset(), pos.getEndOffset());
-		Statement caseTarget = collectSingleStatementSafe(iVisited
-				.getCaseNode());
+		ASTNode caseTarget = collectSingleNodeSafe(iVisited.getCaseNode());
 		statement.setTarget(caseTarget);
 		Node caseBody = iVisited.getFirstWhenNode();
-		Statement caseSt = collectSingleStatementSafe(caseBody);
+		ASTNode caseSt = collectSingleNodeSafe(caseBody);
 		List whens = new ArrayList(1);
 		while (caseBody instanceof WhenNode) {
 			WhenNode whenNode = (WhenNode) caseBody;
 			whens.add(caseSt);
 			caseBody = whenNode.getNextCase();
-			caseSt = collectSingleStatementSafe(caseBody);
+			caseSt = collectSingleNodeSafe(caseBody);
 		}
 		statement.setWhens(whens);
 		if (caseSt != null) {
@@ -879,16 +866,15 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	public Instruction visitClassNode(ClassNode iVisited) {
 		Node cpathNode = iVisited.getCPath();
 		Node superClassNode = iVisited.getSuperNode();
-		Statement cpath = collectSingleStatementSafe(cpathNode);
-		Statement supernode = collectSingleStatementSafe(superClassNode);
+		ASTNode cpath = collectSingleNodeSafe(cpathNode);
+		ASTNode supernode = collectSingleNodeSafe(superClassNode);
 		ISourcePosition pos = iVisited.getCPath().getPosition();
 		ISourcePosition cPos = iVisited.getPosition();
 		cPos = fixNamePosition(cPos);
 		pos = fixNamePosition(pos);
 
-		RubyClassDeclaration type = new RubyClassDeclaration(
-				(Expression) supernode, cpath, null, cPos.getStartOffset(),
-				cPos.getEndOffset());
+		RubyClassDeclaration type = new RubyClassDeclaration(supernode, cpath,
+				null, cPos.getStartOffset(), cPos.getEndOffset());
 
 		String name = String.copyValueOf(content, pos.getStartOffset(), pos
 				.getEndOffset()
@@ -898,26 +884,29 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		states.peek().add(type);
 		states.push(new ClassState(type));
 		// body
-		if (iVisited.getBodyNode() != null) {
-			pos = iVisited.getBodyNode().getPosition();
-			Node bodyNode = iVisited.getBodyNode();
+		Node bodyNode = iVisited.getBodyNode();
+		if (bodyNode != null) {
+			pos = bodyNode.getPosition();
 			int end = -1;
 			while (bodyNode instanceof NewlineNode)
 				bodyNode = ((NewlineNode) bodyNode).getNextNode();
 			if (bodyNode instanceof BlockNode) {
 				BlockNode blockNode = (BlockNode) bodyNode;
 				end = blockNode.getLast().getPosition().getEndOffset() + 1; // /XXX!!!!
-			} else {
-				if (TRACE_RECOVERING)
-					RubyPlugin.log("DLTKASTBuildVisitor.visitClassNode("
-							+ "): unknown body type "
-							+ bodyNode.getClass().getName());
-			}
+			} 
 			pos = fixBorders(pos);
 			Block bl = new Block(pos.getStartOffset(), (end == -1) ? pos
 					.getEndOffset() + 1 : end);
 			type.setBody(bl);
-			iVisited.getBodyNode().accept(this);
+			
+			if (bodyNode instanceof BlockNode){
+				for (Iterator iterator = bodyNode.childNodes().iterator(); iterator
+						.hasNext();) {
+					Node n = (Node) iterator.next();
+					n.accept(this);
+				}
+			}	else
+				bodyNode.accept(this);
 		}
 
 		states.pop();
@@ -935,12 +924,11 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 		int start = iVisited.getPosition().getStartOffset();
 		int end = iVisited.getPosition().getEndOffset();
-
-		Expression left = null;
+		ASTNode left = null;
 		if (collector.list.size() == 1) {
-			if (collector.list.get(0) instanceof Expression) {
-				left = (Expression) collector.list.get(0);
-			}
+
+			left = (ASTNode) collector.list.get(0);
+
 		}
 
 		String right = iVisited.getName();
@@ -997,7 +985,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		List list = processListNode(iVisited);
 		RubyDRegexpExpression ex = new RubyDRegexpExpression(pos
 				.getStartOffset(), pos.getEndOffset());
-		ex.setStatements(list);
+		ex.setChilds(list);
 		states.peek().add(ex);
 		return null;
 	}
@@ -1007,7 +995,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		List list = processListNode(iVisited);
 		RubyDynamicStringExpression ex = new RubyDynamicStringExpression(pos
 				.getStartOffset(), pos.getEndOffset());
-		ex.setStatements(list);
+		ex.setChilds(list);
 		states.peek().add(ex);
 		return null;
 	}
@@ -1020,7 +1008,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		List list = processListNode(iVisited);
 		RubyDSymbolExpression ex = new RubyDSymbolExpression(pos
 				.getStartOffset(), pos.getEndOffset());
-		ex.setExpresssions(list);
+		ex.setChilds(list);
 		states.peek().add(ex);
 		return null;
 	}
@@ -1039,15 +1027,14 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		List list = processListNode(iVisited);
 		RubyDynamicBackquoteStringExpression ex = new RubyDynamicBackquoteStringExpression(
 				pos.getStartOffset(), pos.getEndOffset());
-		ex.setStatements(list);
+		ex.setChilds(list);
 		states.peek().add(ex);
 		return null;
 	}
 
 	public Instruction visitDefinedNode(DefinedNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
-		Statement value = collectSingleStatementSafe(iVisited
-				.getExpressionNode());
+		ASTNode value = collectSingleNodeSafe(iVisited.getExpressionNode());
 		RubyDefinedExpression e = new RubyDefinedExpression(pos
 				.getStartOffset(), pos.getEndOffset(), value);
 		states.peek().add(e);
@@ -1097,13 +1084,11 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 						states.push(coll);
 						a.getValueNode().accept(this);
 						states.pop();
-
-						Expression defaultVal = null;
+						ASTNode defaultVal = null;
 
 						if (coll.list.size() == 1) {
 							Object object = coll.list.get(0);
-							if (object instanceof Expression)
-								defaultVal = (Expression) object;
+							defaultVal = (ASTNode) object;
 						}
 
 						aa
@@ -1125,8 +1110,6 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			int vaStart = 0, vaEnd = 0;
 			IState s = states.peek();
 			if (s instanceof MethodState) {
-				MethodState ms = (MethodState) s;
-				// int bodyStart = ms.method.getBody().sourceStart();
 				int bodyStart = args.getPosition().getEndOffset();
 				if (endPos >= 0 && endPos < bodyStart) { // this assumes that
 					// sourceStart is always set and always less than
@@ -1202,7 +1185,14 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			ISourcePosition bodyPos = bodyNode.getPosition();
 			method.getBody().setStart(bodyPos.getStartOffset());
 			method.getBody().setEnd(bodyPos.getEndOffset());
-			bodyNode.accept(this);
+			if (bodyNode instanceof BlockNode){
+				for (Iterator iterator = bodyNode.childNodes().iterator(); iterator
+						.hasNext();) {
+					Node n = (Node) iterator.next();
+					n.accept(this);
+				}
+			}	else
+				bodyNode.accept(this);
 		}
 		ArgsNode args = (ArgsNode) iVisited.getArgsNode();
 		if (args != null) {
@@ -1235,7 +1225,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	// singleton method
 	public Instruction visitDefsNode(DefsNode iVisited) {
-		Expression receiverExpression = null;
+		ASTNode receiverExpression = null;
 		Node receiverNode = iVisited.getReceiverNode();
 		CollectingState collectingState = new CollectingState();
 
@@ -1244,9 +1234,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		states.pop();
 		if (collectingState.list.size() == 1) {
 			Object obj = collectingState.list.get(0);
-			if (obj instanceof Expression) {
-				receiverExpression = (Expression) obj;
-			}
+			receiverExpression = (ASTNode) obj;
 		}
 
 		ISourcePosition cPos = iVisited.getPosition();
@@ -1278,15 +1266,24 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			List list = processMethodArguments(args);
 			method.acceptArguments(list);
 		}
-		if (iVisited.getBodyNode() != null)
-			iVisited.getBodyNode().accept(this);
+		Node bodyNode = iVisited.getBodyNode();
+		if (bodyNode != null) {
+			if (bodyNode instanceof BlockNode){
+				for (Iterator iterator = bodyNode.childNodes().iterator(); iterator
+						.hasNext();) {
+					Node n = (Node) iterator.next();
+					n.accept(this);
+				}
+			}	else
+				bodyNode.accept(this);
+		}
 		states.pop();
 		return null;
 	}
 
 	public Instruction visitDotNode(DotNode iVisited) { // done
-		Statement begin = collectSingleStatementSafe(iVisited.getBeginNode());
-		Statement end = collectSingleStatementSafe(iVisited.getEndNode());
+		ASTNode begin = collectSingleNodeSafe(iVisited.getBeginNode());
+		ASTNode end = collectSingleNodeSafe(iVisited.getEndNode());
 		ISourcePosition pos = iVisited.getPosition();
 		RubyDotExpression e = new RubyDotExpression(pos.getStartOffset(), pos
 				.getEndOffset(), begin, end);
@@ -1295,8 +1292,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitEnsureNode(EnsureNode iVisited) { // done
-		Statement body = collectSingleStatementSafe(iVisited.getBodyNode());
-		Statement ensure = collectSingleStatementSafe(iVisited.getEnsureNode());
+		ASTNode body = collectSingleNodeSafe(iVisited.getBodyNode());
+		ASTNode ensure = collectSingleNodeSafe(iVisited.getEnsureNode());
 		ISourcePosition pos = iVisited.getPosition();
 		RubyEnsureExpression e = new RubyEnsureExpression(pos.getStartOffset(),
 				pos.getEndOffset(), ensure, body);
@@ -1306,7 +1303,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitEvStrNode(EvStrNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
-		Statement body = collectSingleStatementSafe(iVisited.getBody());
+		ASTNode body = collectSingleNodeSafe(iVisited.getBody());
 		RubyEvaluatableStringExpression e = new RubyEvaluatableStringExpression(
 				pos.getStartOffset(), pos.getEndOffset(), body);
 		states.peek().add(e);
@@ -1351,16 +1348,13 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				argsStart = ((Node) children.get(0)).getPosition()
 						.getStartOffset();
 				argsEnd = ((Node) children.get(children.size() - 1))
-						.getPosition().getEndOffset() - 1;
+						.getPosition().getEndOffset();
 			}
 		}
 
 		if (iVisited.getIterNode() != null) {
-			Statement s = collectSingleStatementSafe(iVisited.getIterNode());
-			if (s instanceof Expression)
-				argList.addExpression((Expression) s);
-			else
-				System.err.println("Failed to get block argument");
+			ASTNode s = collectSingleNodeSafe(iVisited.getIterNode());
+			argList.addNode(s);
 		}
 
 		argList.autosetOffsets();
@@ -1376,8 +1370,6 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	private void handleVisibilitySetter(FCallNode node, int newVisibility) {
-		IState state = states.peek();
-		// if (state instanceof ClassLikeState) {
 		if (states.isClassLikeState()) {
 			ClassLikeState classState = states.getClassLikeState();
 			Node argsNode = node.getArgsNode();
@@ -1392,7 +1384,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 						List statements = classState.type.getStatements();
 						for (Iterator statIter = statements.iterator(); statIter
 								.hasNext();) {
-							Statement statement = (Statement) statIter.next();
+							ASTNode statement = (ASTNode) statIter.next();
 							if (statement instanceof MethodDeclaration) {
 								MethodDeclaration methodDeclaration = (MethodDeclaration) statement;
 								if (methodDeclaration.getName().equals(
@@ -1421,20 +1413,20 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitForNode(ForNode iVisited) { // done
-		Statement varNode = collectSingleStatementSafe(iVisited.getVarNode());
-		Statement listSt = collectSingleStatementSafe(iVisited.getIterNode());
-		Expression listNode;
-		if (!(listSt instanceof ExpressionList)) {
-			ExpressionList list = new ExpressionList();
-			if (listSt instanceof Expression)
-				list.addExpression((Expression) listSt);
+		ASTNode varNode = collectSingleNodeSafe(iVisited.getVarNode());
+		ASTNode listSt = collectSingleNodeSafe(iVisited.getIterNode());
+		ASTNode listNode;
+		if (!(listSt instanceof org.eclipse.dltk.ast.ASTListNode)) {
+			org.eclipse.dltk.ast.ASTListNode list = new org.eclipse.dltk.ast.ASTListNode();
+			list.addNode(listSt);
 			listNode = list;
 		} else
-			listNode = (Expression) listSt;
-		Statement bodyNode = collectSingleStatementSafe(iVisited.getBodyNode());
+			listNode = listSt;
+		ASTNode bodyNode = collectSingleNodeSafe(iVisited.getBodyNode());
 		ISourcePosition pos = iVisited.getPosition();
-		ForStatement statement = new ForStatement(pos.getStartOffset(), pos
-				.getEndOffset(), varNode, (ExpressionList) listNode, bodyNode);
+		RubyForStatement2 statement = new RubyForStatement2(pos
+				.getStartOffset(), pos.getEndOffset(), varNode,
+				(org.eclipse.dltk.ast.ASTListNode) listNode, bodyNode);
 		states.peek().add(statement);
 		return null;
 	}
@@ -1459,10 +1451,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		RubyHashExpression arr = new RubyHashExpression();
 		arr.setStart(position.getStartOffset());
 		arr.setEnd(position.getEndOffset());
-		
+
 		if (arr.sourceEnd() == arr.sourceStart() && listNode != null) {
-			arr.setStart (listNode.getPosition().getStartOffset());
-			arr.setEnd (listNode.getPosition().getEndOffset());
+			arr.setStart(listNode.getPosition().getStartOffset());
+			arr.setEnd(listNode.getPosition().getEndOffset());
 		}
 
 		List hashPairs = new ArrayList();
@@ -1470,10 +1462,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		if (exprs.size() % 2 == 0) {
 			Iterator i = exprs.iterator();
 			while (i.hasNext()) {
-				Statement key = (Statement) i.next();
-				Statement value = (Statement) i.next();
-				RubyHashPairExpression e = new RubyHashPairExpression(key.sourceStart(), value.sourceEnd(),
-						key, value);
+				ASTNode key = (ASTNode) i.next();
+				ASTNode value = (ASTNode) i.next();
+				RubyHashPairExpression e = new RubyHashPairExpression(key
+						.sourceStart(), value.sourceEnd(), key, value);
 				hashPairs.add(e);
 			}
 		} else {
@@ -1482,7 +1474,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			}
 		}
 
-		arr.setExpresssions(hashPairs);
+		arr.setChilds(hashPairs);
 		states.peek().add(arr);
 		return null;
 	}
@@ -1500,11 +1492,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitIfNode(IfNode iVisited) { // done
-		Statement condition = collectSingleStatementSafe(iVisited
-				.getCondition());
-		Statement thenPart = collectSingleStatementSafe(iVisited.getThenBody());
-		Statement elsePart = collectSingleStatementSafe(iVisited.getElseBody());
-		IfStatement res = new IfStatement(condition, thenPart, elsePart);
+		ASTNode condition = collectSingleNodeSafe(iVisited.getCondition());
+		ASTNode thenPart = collectSingleNodeSafe(iVisited.getThenBody());
+		ASTNode elsePart = collectSingleNodeSafe(iVisited.getElseBody());
+		RubyIfStatement res = new RubyIfStatement(condition, thenPart, elsePart);
 		res.setStart(iVisited.getPosition().getStartOffset());
 		res.setEnd(iVisited.getPosition().getEndOffset() + 1);
 		states.peek().add(res);
@@ -1512,8 +1503,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitIterNode(IterNode iVisited) { // done
-		Statement bodyNode = collectSingleStatementSafe(iVisited.getBodyNode());
-		Statement varNode = collectSingleStatementSafe(iVisited.getVarNode());
+		ASTNode bodyNode = collectSingleNodeSafe(iVisited.getBodyNode());
+		ASTNode varNode = collectSingleNodeSafe(iVisited.getVarNode());
 		ISourcePosition pos = iVisited.getPosition();
 		RubyBlock block = new RubyBlock(pos.getStartOffset(), pos
 				.getEndOffset(), bodyNode);
@@ -1531,17 +1522,11 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	private void processVariableAssignment(Node iVisited, String name,
 			RubyVariableKind varKind, Node valueNode) {
 		ISourcePosition pos = iVisited.getPosition();
-		Expression left = new VariableReference(pos.getStartOffset(), pos
+		ASTNode left = new VariableReference(pos.getStartOffset(), pos
 				.getStartOffset()
 				+ name.length(), name, varKind);
-		Statement right = collectSingleStatementSafe(valueNode);
-		// if (right == null) {
-		// if (TRACE_RECOVERING)
-		// RubyPlugin.log("DLTKASTBuildVisitor.processVariableAssignment("
-		// + name + "): cannot parse rhs, skipped");
-		// return;
-		// }
-		Assignment assgn = new Assignment(left, right);
+		ASTNode right = collectSingleNodeSafe(valueNode);
+		RubyAssignment assgn = new RubyAssignment(left, right);
 		copyOffsets(assgn, iVisited);
 		states.peek().add(assgn);
 	}
@@ -1558,7 +1543,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	private void processVariableReference(Node iVisited, String varName,
 			RubyVariableKind varKind) {
 		ISourcePosition pos2 = fixNamePosition(iVisited.getPosition());
-		if (varName.endsWith("\r"))
+		if (varName.endsWith("\r")) // varName.trim() ?
 			varName = varName.substring(0, varName.length() - 1);
 		VariableReference node = new VariableReference(pos2.getStartOffset(),
 				pos2.getEndOffset(), varName, varKind);
@@ -1577,7 +1562,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				pos.getStartOffset(), pos.getEndOffset());
 		ListNode headNode = iVisited.getHeadNode();
 		if (headNode != null) {
-			for (Iterator iterator = headNode.childNodes().iterator(); iterator.hasNext();) {
+			for (Iterator iterator = headNode.childNodes().iterator(); iterator
+					.hasNext();) {
 				Node n = (Node) iterator.next();
 				if (n instanceof LocalAsgnNode
 						&& ((LocalAsgnNode) n).getValueNode() == null) {
@@ -1586,14 +1572,14 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 					s.addLhs(new VariableReference(nPos.getStartOffset(), nPos
 							.getEndOffset(), name, RubyVariableKind.LOCAL));
 				} else {
-					Statement ss = collectSingleStatementSafe(n);
+					ASTNode ss = collectSingleNodeSafe(n);
 					s.addLhs(ss);
 				}
 			}
 		}
 		Node argsNode = iVisited.getArgsNode();
 		if (argsNode != null) {
-			s.setLeftAsterix(collectSingleStatementSafe(argsNode), argsNode
+			s.setLeftAsterix(collectSingleNodeSafe(argsNode), argsNode
 					.getPosition().getStartOffset());
 		}
 		Node valueNode = iVisited.getValueNode();
@@ -1602,23 +1588,25 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			Node firstNode = argsCatNode.getFirstNode();
 			if (firstNode instanceof ListNode) {
 				ListNode list = (ListNode) firstNode;
-				for (Iterator iterator = list.childNodes().iterator(); iterator.hasNext();) {
+				for (Iterator iterator = list.childNodes().iterator(); iterator
+						.hasNext();) {
 					Node nd = (Node) iterator.next();
-					s.addRhs(collectSingleStatementSafe(nd));
+					s.addRhs(collectSingleNodeSafe(nd));
 				}
 			} else if (firstNode != null)
-				s.addRhs(collectSingleStatementSafe(firstNode));
+				s.addRhs(collectSingleNodeSafe(firstNode));
 			Node secondNode = argsCatNode.getSecondNode();
 			if (secondNode != null)
-				s.setRightAsterix(collectSingleStatementSafe(secondNode));
+				s.setRightAsterix(collectSingleNodeSafe(secondNode));
 		} else if (valueNode instanceof ListNode) {
 			ListNode list = (ListNode) valueNode;
-			for (Iterator iterator = list.childNodes().iterator(); iterator.hasNext();) {
+			for (Iterator iterator = list.childNodes().iterator(); iterator
+					.hasNext();) {
 				Node nd = (Node) iterator.next();
-				s.addRhs(collectSingleStatementSafe(nd));
+				s.addRhs(collectSingleNodeSafe(nd));
 			}
 		} else if (valueNode != null) {
-			s.addRhs(collectSingleStatementSafe(valueNode));
+			s.addRhs(collectSingleNodeSafe(valueNode));
 		}
 		states.peek().add(s);
 		return null;
@@ -1626,10 +1614,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitMatch2Node(Match2Node iVisited) {// done
 		ISourcePosition pos = iVisited.getPosition();
-		Statement receiverNode =  collectSingleStatementSafe(iVisited
-				.getReceiverNode());
-		Statement valueNode =  collectSingleStatementSafe(iVisited
-				.getValueNode());
+		ASTNode receiverNode = collectSingleNodeSafe(iVisited.getReceiverNode());
+		ASTNode valueNode = collectSingleNodeSafe(iVisited.getValueNode());
 		RubyMatch2Expression e = new RubyMatch2Expression(pos.getStartOffset(),
 				pos.getEndOffset(), receiverNode, valueNode);
 		states.peek().add(e);
@@ -1638,10 +1624,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitMatch3Node(Match3Node iVisited) {// done
 		ISourcePosition pos = iVisited.getPosition();
-		Statement receiverNode =  collectSingleStatementSafe(iVisited
-				.getReceiverNode());
-		Statement valueNode = collectSingleStatementSafe(iVisited
-				.getValueNode());
+		ASTNode receiverNode = collectSingleNodeSafe(iVisited.getReceiverNode());
+		ASTNode valueNode = collectSingleNodeSafe(iVisited.getValueNode());
 		RubyMatch3Expression e = new RubyMatch3Expression(pos.getStartOffset(),
 				pos.getEndOffset(), receiverNode, valueNode);
 		states.peek().add(e);
@@ -1650,8 +1634,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitMatchNode(MatchNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
-		Statement regexp =  collectSingleStatementSafe(iVisited
-				.getRegexpNode());
+		ASTNode regexp = collectSingleNodeSafe(iVisited.getRegexpNode());
 		RubyMatchExpression e = new RubyMatchExpression(pos.getStartOffset(),
 				pos.getEndOffset(), regexp);
 		states.peek().add(e);
@@ -1704,12 +1687,12 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
-	public Instruction visitNextNode(NextNode iVisited) { //done
+	public Instruction visitNextNode(NextNode iVisited) { // done
 		ISourcePosition position = iVisited.getPosition();
 		RubyCallArgumentsList args = new RubyCallArgumentsList();
 		Node valueNode = iVisited.getValueNode();
 		if (valueNode != null) {
-			Statement s = collectSingleStatementSafe(valueNode);
+			ASTNode s = collectSingleNodeSafe(valueNode);
 			args.addArgument(s, 0);
 		}
 		states.peek().add(
@@ -1727,15 +1710,14 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitNotNode(NotNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
-		Expression expr = (Expression) collectSingleStatementSafe(iVisited
-				.getConditionNode());
-		UnaryNotExpression e = new UnaryNotExpression(pos.getStartOffset(), pos
+		ASTNode expr = collectSingleNodeSafe(iVisited.getConditionNode());
+		RubyNotExpression e = new RubyNotExpression(pos.getStartOffset(), pos
 				.getEndOffset(), expr);
 		states.peek().add(e);
 		return null;
 	}
 
-	public Instruction visitNthRefNode(NthRefNode iVisited) { //done
+	public Instruction visitNthRefNode(NthRefNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		states.peek().add(
 				new VariableReference(pos.getStartOffset(), pos.getEndOffset(),
@@ -1772,11 +1754,11 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitOrNode(OrNode iVisited) { // done
-		Statement leftSt = collectSingleStatementSafe(iVisited.getFirstNode());
-		
-		Statement rightSt = collectSingleStatementSafe(iVisited.getSecondNode());
-		
-		RubyBinaryExpression b = new RubyBinaryExpression(leftSt, Expression.E_BOR, rightSt);
+		ASTNode leftSt = collectSingleNodeSafe(iVisited.getFirstNode());
+		ASTNode rightSt = collectSingleNodeSafe(iVisited.getSecondNode());
+
+		RubyBinaryExpression b = new RubyBinaryExpression(leftSt,
+				ExpressionConstants.E_BOR, rightSt);
 		states.peek().add(b);
 		return null;
 	}
@@ -1795,14 +1777,14 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitRescueBodyNode(RescueBodyNode iVisited) { // done
-		Statement bodyNode = collectSingleStatementSafe(iVisited.getBodyNode());
-		Statement exceptionNodes = collectSingleStatementSafe(iVisited
+		ASTNode bodyNode = collectSingleNodeSafe(iVisited.getBodyNode());
+		ASTNode exceptionNodes = collectSingleNodeSafe(iVisited
 				.getExceptionNodes()); // in fact it would be an expression
 		// list
 		// TODO: exception nodes contains only names of exceptions, not their
 		// names itself
 		// so we need to parse them by hands
-		RubyRescueBodyStatement optRescueNode = (RubyRescueBodyStatement) collectSingleStatementSafe(iVisited
+		RubyRescueBodyStatement optRescueNode = (RubyRescueBodyStatement) collectSingleNodeSafe(iVisited
 				.getOptRescueNode());
 
 		ISourcePosition pos = iVisited.getPosition();
@@ -1817,11 +1799,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitRescueNode(RescueNode iVisited) { // done
+		ASTNode bodyNode = collectSingleNodeSafe(iVisited.getBodyNode());
+		ASTNode elseNode = collectSingleNodeSafe(iVisited.getElseNode());
 
-		Statement bodyNode = collectSingleStatementSafe(iVisited.getBodyNode());
-		Statement elseNode = collectSingleStatementSafe(iVisited.getElseNode());
-
-		RubyRescueBodyStatement rescueNode = (RubyRescueBodyStatement) collectSingleStatementSafe(iVisited
+		RubyRescueBodyStatement rescueNode = (RubyRescueBodyStatement) collectSingleNodeSafe(iVisited
 				.getRescueNode());
 
 		ISourcePosition pos = iVisited.getPosition();
@@ -1845,9 +1826,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitReturnNode(ReturnNode iVisited) {
 		ISourcePosition position = iVisited.getPosition();
-		Statement value = null;
+		ASTNode value = null;
 		if (iVisited.getValueNode() != null) {
-			value = collectSingleStatementSafe(iVisited.getValueNode());
+			value = collectSingleNodeSafe(iVisited.getValueNode());
 		}
 		RubyCallArgumentsList list = new RubyCallArgumentsList();
 		if (value != null)
@@ -1883,9 +1864,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		states.push(coll);
 		receiver.accept(this);
 		states.pop();
-		if (coll.list.size() == 1 && coll.list.get(0) instanceof Expression) {
+		if (coll.list.size() == 1 && coll.list.get(0) instanceof ASTNode) {
 			Object obj = coll.list.get(0);
-			type.setReceiver((Expression) obj);
+			type.setReceiver((ASTNode) obj);
 			if (obj instanceof SimpleReference) {
 				SimpleReference reference = (SimpleReference) obj;
 				type.setName("<< " + reference.getName());
@@ -1958,15 +1939,15 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 					.getFirstNode());
 			CallArgumentsList second = processCallArguments(argsCatNode
 					.getSecondNode());
-			for (Iterator iterator = first.getExpressions().iterator(); iterator
+			for (Iterator iterator = first.getChilds().iterator(); iterator
 					.hasNext();) {
-				Expression e = (Expression) iterator.next();
-				argList.addExpression(e);
+				ASTNode e = (ASTNode) iterator.next();
+				argList.addNode(e);
 			}
-			for (Iterator iterator = second.getExpressions().iterator(); iterator
+			for (Iterator iterator = second.getChilds().iterator(); iterator
 					.hasNext();) {
-				Expression e = (Expression) iterator.next();
-				argList.addExpression(e);
+				ASTNode e = (ASTNode) iterator.next();
+				argList.addNode(e);
 			}
 		} else if (argsNode != null) {
 			argsNode.accept(this);
@@ -1982,7 +1963,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		CallArgumentsList callArguments = processCallArguments(argsNode);
 
 		Node iterNode = iVisited.getIterNode();
-		Statement block = (Statement) collectSingleStatementSafe(iterNode);
+		ASTNode block = (ASTNode) collectSingleNodeSafe(iterNode);
 
 		ISourcePosition pos = iVisited.getPosition();
 
@@ -2019,11 +2000,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitUntilNode(UntilNode iVisited) { // done
-		Statement condition = collectSingleStatementSafe(iVisited
-				.getConditionNode());
-		Statement body = collectSingleStatementSafe(iVisited.getBodyNode());
+		ASTNode condition = collectSingleNodeSafe(iVisited.getConditionNode());
+		ASTNode body = collectSingleNodeSafe(iVisited.getBodyNode());
 		ISourcePosition pos = iVisited.getPosition();
-		UntilStatement st = new UntilStatement(condition, body);
+		RubyUntilStatement st = new RubyUntilStatement(condition, body);
 		st.setStart(pos.getStartOffset());
 		st.setEnd(pos.getEndOffset());
 		states.peek().add(st);
@@ -2038,8 +2018,6 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	public Instruction visitVCallNode(VCallNode iVisited) {
 		String methodName = iVisited.getName();
 
-		IState state = states.peek();
-
 		if (states.isClassLikeState()) {
 			ClassLikeState classState = states.getClassLikeState();
 			if (methodName.equals("private"))
@@ -2052,7 +2030,6 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 		ISourcePosition pos = iVisited.getPosition();
 		int funcNameStart = pos.getStartOffset();
-		int funcNameEnd = pos.getEndOffset();
 		// Assert.isTrue(funcNameStart + methodName.length() == funcNameEnd);
 		CallExpression c = new CallExpression(null, methodName,
 				CallArgumentsList.EMPTY);
@@ -2067,31 +2044,29 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		ISourcePosition position = iVisited.getPosition();
 		RubyWhenStatement statement = new RubyWhenStatement(position
 				.getStartOffset(), position.getEndOffset());
-		Statement bodyStatement = collectSingleStatementSafe(iVisited
-				.getBodyNode());
-		Statement expressionsStatement = collectSingleStatementSafe(iVisited
+		ASTNode bodyStatement = collectSingleNodeSafe(iVisited.getBodyNode());
+		ASTNode expressionsStatement = collectSingleNodeSafe(iVisited
 				.getExpressionNodes());
 
 		statement.setBody(bodyStatement);
-		if (expressionsStatement instanceof ExpressionList) {
-			ExpressionList list = (ExpressionList) expressionsStatement;
-			statement.setExpressions(list.getExpressions());
-		} else if (expressionsStatement instanceof Statement) {
+		if (expressionsStatement instanceof org.eclipse.dltk.ast.ASTListNode) {
+			org.eclipse.dltk.ast.ASTListNode list = (org.eclipse.dltk.ast.ASTListNode) expressionsStatement;
+			statement.setExpressions(list.getChilds());
+		} else if (expressionsStatement instanceof ASTNode) {
 			List list = new ArrayList(1);
 			list.add(expressionsStatement);
 			statement.setExpressions(list);
-		} 
+		}
 
 		states.peek().add(statement);
 		return null;
 	}
 
 	public Instruction visitWhileNode(WhileNode iVisited) { // done
-		Statement condition = collectSingleStatementSafe(iVisited
-				.getConditionNode());
-		Statement body = collectSingleStatementSafe(iVisited.getBodyNode());
+		ASTNode condition = collectSingleNodeSafe(iVisited.getConditionNode());
+		ASTNode body = collectSingleNodeSafe(iVisited.getBodyNode());
 		ISourcePosition pos = iVisited.getPosition();
-		WhileStatement st = new WhileStatement(condition, body);
+		RubyWhileStatement st = new RubyWhileStatement(condition, body);
 		st.setStart(pos.getStartOffset());
 		st.setEnd(pos.getEndOffset());
 		states.peek().add(st);
@@ -2112,7 +2087,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		RubyCallArgumentsList args = new RubyCallArgumentsList();
 		Node valueNode = iVisited.getArgsNode();
 		if (valueNode != null) {
-			Statement s = collectSingleStatementSafe(valueNode);
+			ASTNode s = collectSingleNodeSafe(valueNode);
 			args.addArgument(s, 0);
 		}
 		states.peek().add(
@@ -2136,7 +2111,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		// arguments
 
 		Node iterNode = iVisited.getIterNode();
-		Statement block = collectSingleStatementSafe(iterNode);
+		ASTNode block = collectSingleNodeSafe(iterNode);
 
 		ISourcePosition pos = iVisited.getPosition();
 
@@ -2216,7 +2191,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitAttrAssignNode(AttrAssignNode arg0) { // done
-		Statement receiver = collectSingleStatementSafe(arg0.getReceiverNode());
+		ASTNode receiver = collectSingleNodeSafe(arg0.getReceiverNode());
 		CallArgumentsList list = processCallArguments(arg0.getArgsNode());
 		CallExpression expr = new CallExpression(receiver, arg0.getName(), list);
 		copyOffsets(expr, arg0);

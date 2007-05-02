@@ -176,7 +176,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		IGoal[] newGoals = new IGoal[possibilities.size()];
 		int i = 0;
 		for (Iterator iterator = possibilities.iterator(); iterator.hasNext();) {
-			Statement st = (Statement) iterator.next();
+			ASTNode st = (ASTNode) iterator.next();
 			ExpressionTypeGoal subgoal = new ExpressionTypeGoal(innerContext, st);
 			newGoals[i++] = subgoal;
 		}		

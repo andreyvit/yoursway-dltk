@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.internal.javascript.parser.JavaScriptSourceParser;
 import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
@@ -174,7 +174,7 @@ public class JavascriptFoldingStructureProvider extends AbstractASTFoldingStruct
 		return (CodeBlock[]) result.toArray(new CodeBlock[result.size()]);
 	}
 
-	protected boolean initiallyCollapse(Statement s, FoldingStructureComputationContext ctx) {		
+	protected boolean initiallyCollapse(ASTNode s, FoldingStructureComputationContext ctx) {		
 		return false;		
 	}
 
@@ -182,7 +182,7 @@ public class JavascriptFoldingStructureProvider extends AbstractASTFoldingStruct
 		return ctx.allowCollapsing() && fInitCollapseComments;
 	}
 
-	protected boolean mayCollapse(Statement s, FoldingStructureComputationContext ctx) {		
+	protected boolean mayCollapse(ASTNode s, FoldingStructureComputationContext ctx) {		
 		return true;
 	}
 	

@@ -1,16 +1,16 @@
 package org.eclipse.dltk.ast.expressions;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class CallExpression extends Expression {
-	private Statement receiver;
+	private ASTNode receiver;
 	private String name;
 	
 	private CallArgumentsList args;
 	
-	public CallExpression(int start, int end, Statement receiver, String name, CallArgumentsList args) {
+	public CallExpression(int start, int end, ASTNode receiver, String name, CallArgumentsList args) {
 		super(start, end);
 		if (name == null){
 			throw new IllegalArgumentException();
@@ -25,7 +25,7 @@ public class CallExpression extends Expression {
 		this.name = name;
 		this.args = args;
 	}
-	public CallExpression(Statement receiver, String name, CallArgumentsList args) {
+	public CallExpression(ASTNode receiver, String name, CallArgumentsList args) {
 		this(0, 0, receiver, name, args );
 	}
 
@@ -46,7 +46,7 @@ public class CallExpression extends Expression {
 		}
 	}
 	
-	public Statement getReceiver() {
+	public ASTNode getReceiver() {
 		return receiver;
 	}
 	

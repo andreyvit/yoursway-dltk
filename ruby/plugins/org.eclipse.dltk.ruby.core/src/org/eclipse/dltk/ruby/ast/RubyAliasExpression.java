@@ -1,9 +1,9 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
 
-public class RubyAliasExpression extends Expression {
+public class RubyAliasExpression extends ASTNode {
 
 	private final String oldValue;
 	private final String newValue;
@@ -22,15 +22,10 @@ public class RubyAliasExpression extends Expression {
 		this.newValue = newValue;
 	}
 
-	public int getKind() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {			
 			visitor.endvisit(this);
 		}
-	}
+	}	
 
 }

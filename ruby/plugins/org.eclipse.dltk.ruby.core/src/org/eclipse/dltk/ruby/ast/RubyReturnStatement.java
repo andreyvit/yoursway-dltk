@@ -1,11 +1,11 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.CallArgumentsList;
-import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.utils.CorePrinter;
 
-public class RubyReturnStatement extends Expression {
+public class RubyReturnStatement extends ASTNode {
 
 	
 	private final CallArgumentsList value;

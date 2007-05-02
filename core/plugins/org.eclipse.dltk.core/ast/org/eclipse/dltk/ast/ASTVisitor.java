@@ -67,4 +67,13 @@ public abstract class ASTVisitor {
 		return false;
 	}
 	
+	public boolean visit (ASTNode s) throws Exception {
+		return visitGeneral(s);		
+	}
+	
+	public boolean endvisit (ASTNode s) throws Exception {
+		endvisitGeneral(s);
+		return false;
+	}
+	
 }

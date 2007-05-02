@@ -9,6 +9,7 @@ import org.eclipse.dltk.utils.CorePrinter;
 
 /**
  * Base class for all expressions.
+ * 
  */
 public abstract class Expression extends Statement implements
 		ExpressionConstants {

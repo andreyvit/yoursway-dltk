@@ -1,30 +1,29 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.statements.Statement;
 
-public class RubyArrayAccessExpression extends Expression {
+public class RubyArrayAccessExpression extends ASTNode {
 
-	private Statement array;
+	private ASTNode array;
 	private RubyCallArgumentsList args;
 
 	public RubyArrayAccessExpression(int start, int end) {
 		super(start, end);
 	}
 
-	public RubyArrayAccessExpression(int start, int end, Statement array,
+	public RubyArrayAccessExpression(int start, int end, ASTNode array,
 			RubyCallArgumentsList args) {
 		super(start, end);
 		this.array = array;
 		this.args = args;
 	}
 
-	public Statement getArray() {
+	public ASTNode getArray() {
 		return array;
 	}
 
-	public void setArray(Statement array) {
+	public void setArray(ASTNode array) {
 		this.array = array;
 	}
 

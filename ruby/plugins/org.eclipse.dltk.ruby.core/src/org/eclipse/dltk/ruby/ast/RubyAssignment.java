@@ -1,18 +1,16 @@
-/*
- * (c) 2002, 2005 xored software and others all rights reserved. http://www.xored.com
- */
-package org.eclipse.dltk.ast.expressions;
+package org.eclipse.dltk.ruby.ast;
 
-import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.utils.CorePrinter;
+
 
 /**
  * Assignment expression used to hold a = b expressions.
  */
-public class Assignment extends BinaryExpression
+public class RubyAssignment extends RubyBinaryExpression
 {
 	
-	public static final Assignment[] EMPTY_ARRAY = new Assignment[0];
+	public static final RubyAssignment[] EMPTY_ARRAY = new RubyAssignment[0];
 
 	/**
 	 * Construct from left, right and type expression. Used to construct NotStrictAssignment class.
@@ -21,7 +19,7 @@ public class Assignment extends BinaryExpression
 	 * @param type
 	 * @param right
 	 */
-	protected Assignment( Statement left, int type, Statement right ) {
+	protected RubyAssignment( ASTNode left, int type, ASTNode right ) {
 
 		super( left, type, right );
 	}
@@ -32,7 +30,7 @@ public class Assignment extends BinaryExpression
 	 * @param left
 	 * @param right
 	 */
-	public Assignment( Statement left, Statement right ) {
+	public RubyAssignment( ASTNode left, ASTNode right ) {
 
 		super( left, E_ASSIGN, right );
 	}

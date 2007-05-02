@@ -1,24 +1,24 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.statements.CompoundStatement;
+import org.eclipse.dltk.ast.ASTListNode;
 
-public class RubyParenthesisExpression extends Expression {
+public class RubyParenthesisExpression extends ASTNode {
 
-	private CompoundStatement internals;
+	private ASTListNode internals;
 
 	public RubyParenthesisExpression(int start, int end,
-			CompoundStatement internals) {
+			ASTListNode internals) {
 		super(start, end);
 		this.internals = internals;
 	}
 
-	public CompoundStatement getInternals() {
+	public ASTListNode getInternals() {
 		return internals;
 	}
 
-	public void setInternals(CompoundStatement internals) {
+	public void setInternals(ASTListNode internals) {
 		this.internals = internals;
 	}
 

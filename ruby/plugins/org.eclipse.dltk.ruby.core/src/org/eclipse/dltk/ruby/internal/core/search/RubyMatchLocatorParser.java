@@ -6,11 +6,9 @@ import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
-import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.core.search.matching.MatchLocatorParser;
 import org.eclipse.dltk.core.search.matching.PatternLocator;
@@ -35,14 +33,12 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 	
 	private ASTVisitor visitor = new ASTVisitor () {
 
-		public boolean visit(Expression s) throws Exception {
-			processStatement(s);
-			return super.visit(s);
+		public boolean visitGeneral(ASTNode node) throws Exception {
+			processStatement(node);
+			return true;
+//			return super.visitGeneral(node);
 		}
-
-		public boolean visit(Statement s) throws Exception {
-			return super.visit(s);
-		}
+		
 	};
 
 	public void parseBodies(ModuleDeclaration unit) {

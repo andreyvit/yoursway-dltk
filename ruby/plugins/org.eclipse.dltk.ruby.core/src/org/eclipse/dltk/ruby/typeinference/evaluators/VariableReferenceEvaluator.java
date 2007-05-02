@@ -153,7 +153,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 		int pos = 0;
 		int argPos = -1;
 		for (Iterator iterator = methodArgs.iterator(); iterator.hasNext();) {
-			Statement marg = (Statement) iterator.next();
+			ASTNode marg = (ASTNode) iterator.next();
 			if (marg instanceof RubyMethodArgument) {
 				RubyMethodArgument rubyMethodArgument = (RubyMethodArgument) marg;
 				if (rubyMethodArgument.getName().equals(varName)) {
@@ -166,7 +166,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 		return argPos;
 	}
 
-	private Statement getArgFromCall(CallExpression expr) {
+	private ASTNode getArgFromCall(CallExpression expr) {
 		VariableReference ref = (VariableReference) ((ExpressionTypeGoal) goal)
 				.getExpression();
 		if (ref.getVariableKind() != RubyVariableKind.LOCAL)
@@ -180,9 +180,9 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 
 			CallArgumentsList args = expr.getArgs();
 			if (args != null) {
-				List list = args.getExpressions();
+				List list = args.getChilds();
 				if (argPos < list.size()){
-					Statement st = (Statement) list.get(argPos);
+					ASTNode st = (ASTNode) list.get(argPos);
 					if (st instanceof RubyCallArgument) {
 						RubyCallArgument rubyCallArgument = (RubyCallArgument) st;
 						st = rubyCallArgument.getValue();
@@ -205,7 +205,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 													// somehow or leave only one
 				CallExpression node = ((RubyMethodReference) refs[i]).getNode();
 				if (node != null) {
-					Statement arg = getArgFromCall(node);
+					ASTNode arg = getArgFromCall(node);
 					if (arg != null) {
 						IResource resource = refs[i].getPosition()
 								.getResource();

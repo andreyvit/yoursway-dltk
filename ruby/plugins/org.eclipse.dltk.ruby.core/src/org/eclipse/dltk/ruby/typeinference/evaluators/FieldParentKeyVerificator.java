@@ -2,11 +2,10 @@ package org.eclipse.dltk.ruby.typeinference.evaluators;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.ast.expressions.Assignment;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.ruby.ast.RubyAssignment;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyFieldReference;
@@ -25,14 +24,14 @@ public class FieldParentKeyVerificator extends GoalEvaluator {
 		super(goal);
 	}
 
-	private Statement translateNode(ASTNode node, ModuleDeclaration decl) {
+	private ASTNode translateNode(ASTNode node, ModuleDeclaration decl) {
 		ASTNode[] way = ASTUtils.restoreWayToNode(decl, node);
-		if (way.length >= 2 && way[way.length - 2] instanceof Assignment) {
-			Assignment assignment = (Assignment) way[way.length - 2];
+		if (way.length >= 2 && way[way.length - 2] instanceof RubyAssignment) {
+			RubyAssignment assignment = (RubyAssignment) way[way.length - 2];
 			if (assignment.getLeft().equals(node)) 
-				return (Statement) way[way.length - 2];
+				return way[way.length - 2];
 		}
-		return (Statement) node;
+		return node;
 	}
 
 	public IGoal[] init() {
@@ -71,7 +70,7 @@ public class FieldParentKeyVerificator extends GoalEvaluator {
 									
 				if (approve) {
 					result = new RubyFieldReference(goal.getGoal().getName(),
-							selfClass.getModelKey(), position, (Statement) node);
+							selfClass.getModelKey(), position,  node);
 				}
 			}
 		}

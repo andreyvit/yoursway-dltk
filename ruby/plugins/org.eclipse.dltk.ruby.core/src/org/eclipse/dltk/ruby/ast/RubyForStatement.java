@@ -1,12 +1,12 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
-public class RubyForStatement extends Statement {
+public class RubyForStatement extends ASTNode {
 
-	private Statement expression;
+	private ASTNode expression;
 	private RubyBlock block;
 
 	public RubyForStatement(int start, int end) {
@@ -15,7 +15,7 @@ public class RubyForStatement extends Statement {
 	
 	
 
-	public RubyForStatement(int start, int end, Statement expression,
+	public RubyForStatement(int start, int end, ASTNode expression,
 			RubyBlock block) {
 		super(start, end);
 		this.expression = expression;
@@ -24,11 +24,11 @@ public class RubyForStatement extends Statement {
 
 
 
-	public Statement getExpression() {
+	public ASTNode getExpression() {
 		return expression;
 	}
 
-	public void setExpression(Statement expression) {
+	public void setExpression(ASTNode expression) {
 		this.expression = expression;
 	}
 

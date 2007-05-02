@@ -4,23 +4,22 @@
 
 package org.eclipse.dltk.ast.declarations;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.DLTKToken;
-import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class Argument extends Declaration {
 
-	protected Statement initialization;
+	protected ASTNode initialization;
 
-	public Argument(DLTKToken name, int start, int end, Expression init) {
+	public Argument(DLTKToken name, int start, int end, ASTNode init) {
 		super(name, start, end);
 		this.initialization = init;
 	}
 
-	public Argument(SimpleReference name, int start, Statement init, int mods) {
+	public Argument(SimpleReference name, int start, ASTNode init, int mods) {
 		super(start, 0);
 
 		if (name != null) {
@@ -34,7 +33,7 @@ public class Argument extends Declaration {
 		}
 	}
 	
-	public Argument(SimpleReference name, int start, int end, Expression init, int mods) {
+	public Argument(SimpleReference name, int start, int end, ASTNode init, int mods) {
 		super(start, 0);
 
 		if (name != null) {
@@ -62,18 +61,18 @@ public class Argument extends Declaration {
 	 * Please don't use this function. Helper method for initializing Argument
 	 * 
 	 */
-	public final void set(SimpleReference mn, Expression initialization) {
+	public final void set(SimpleReference mn, ASTNode initialization) {
 		this.initialization = initialization;
 		this.setName(mn.getName());
 		this.setStart(mn.sourceStart());
 		this.setEnd(mn.sourceEnd());
 	}
 
-	public final Statement getInitialization() {
+	public final ASTNode getInitialization() {
 		return initialization;
 	}
 
-	public final void setInitializationExpression(Expression initialization) {
+	public final void setInitializationExpression(ASTNode initialization) {
 		this.initialization = initialization;
 	}
 

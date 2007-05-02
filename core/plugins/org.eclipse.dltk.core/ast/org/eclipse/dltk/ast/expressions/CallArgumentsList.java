@@ -2,14 +2,17 @@ package org.eclipse.dltk.ast.expressions;
 
 import java.util.List;
 
-public class CallArgumentsList extends ExpressionList {
+import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.ASTListNode;
+
+public class CallArgumentsList extends ASTListNode {
 	public static final CallArgumentsList EMPTY = new CallArgumentsList() {
 
-		public void addExpression(Expression ex) {
+		public void addNode(ASTNode s) {
 			throw new IllegalStateException("This object is unmodifiable");
 		}
 
-		public void setExpresssions(List exs) {
+		public void setChilds(List l) {
 			throw new IllegalStateException("This object is unmodifiable");
 		}
 

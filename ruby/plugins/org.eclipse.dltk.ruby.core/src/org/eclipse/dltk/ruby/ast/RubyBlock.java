@@ -5,26 +5,25 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.statements.Statement;
 
-public class RubyBlock extends Expression {
+public class RubyBlock extends ASTNode {
 
 	private Map vars = new HashMap();
-	private Statement asterixParameter = null;
-	private Statement body;
+	private ASTNode asterixParameter = null;
+	private ASTNode body;
 
-	public RubyBlock(int start, int end, Statement body) {
+	public RubyBlock(int start, int end, ASTNode body) {
 		super(start, end);
 		this.body = body;
 	}
 
-	public Statement getAsterixParameter() {
+	public ASTNode getAsterixParameter() {
 		return asterixParameter;
 	}
 
-	public void setAsterixParameter(Statement asterixParameter) {
+	public void setAsterixParameter(ASTNode asterixParameter) {
 		this.asterixParameter = asterixParameter;
 	}
 
@@ -36,19 +35,19 @@ public class RubyBlock extends Expression {
 		return vars.keySet();
 	}
 
-	public void addVar(Statement var) {
+	public void addVar(ASTNode var) {
 		addVar(var, null);
 	}
 
-	public void addVar(Statement var, Statement defaultValue) {
+	public void addVar(ASTNode var, ASTNode defaultValue) {
 		vars.put(var, defaultValue);
 	}
 
-	public Statement getBody() {
+	public ASTNode getBody() {
 		return body;
 	}
 
-	public void setBody(Statement body) {
+	public void setBody(ASTNode body) {
 		this.body = body;
 	}
 
@@ -59,13 +58,15 @@ public class RubyBlock extends Expression {
 
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
-			for (Iterator iterator = vars.keySet().iterator(); iterator.hasNext();) {
-				Statement var = (Statement) iterator.next();
+			for (Iterator iterator = vars.keySet().iterator(); iterator
+					.hasNext();) {
+				ASTNode var = (ASTNode) iterator.next();
 				if (var != null)
 					var.traverse(visitor);
 			}
-			for (Iterator iterator = vars.values().iterator(); iterator.hasNext();) {
-				Statement var = (Statement) iterator.next();
+			for (Iterator iterator = vars.values().iterator(); iterator
+					.hasNext();) {
+				ASTNode var = (ASTNode) iterator.next();
 				if (var != null)
 					var.traverse(visitor);
 			}

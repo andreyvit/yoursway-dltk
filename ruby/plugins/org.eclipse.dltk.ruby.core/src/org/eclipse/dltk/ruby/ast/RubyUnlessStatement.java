@@ -1,12 +1,10 @@
 package org.eclipse.dltk.ruby.ast;
 
-import org.eclipse.dltk.ast.statements.IfStatement;
-import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.ast.ASTNode;
 
-public class RubyUnlessStatement extends IfStatement {
+public class RubyUnlessStatement extends RubyIfStatement {
 
-	public RubyUnlessStatement(Statement condition, Statement thenStatement,
-			Statement elseStatement) {
+	public RubyUnlessStatement(ASTNode condition, ASTNode thenStatement, ASTNode elseStatement) {
 		super(condition, thenStatement, elseStatement);
 	}
 

@@ -1,11 +1,10 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
-public class RubyCallArgument extends Expression {
+public class RubyCallArgument extends ASTNode {
 	
 	public final static int SIMPLE = 0;	
 	
@@ -13,24 +12,24 @@ public class RubyCallArgument extends Expression {
 	
 	public final static int BLOCK = 2;
 	
-	private Statement value;
+	private ASTNode value;
 	
 	private int kind;
 
-	public Statement getValue() {
+	public ASTNode getValue() {
 		return value;
 	}
 
-	public void setValue(Statement value) {
+	public void setValue(ASTNode value) {
 		this.value = value;
 	}
 
-	public RubyCallArgument(Statement value) {
+	public RubyCallArgument(ASTNode value) {
 		super(value.sourceStart(), value.sourceEnd());
 		this.value = value;
 	}
 	
-	public RubyCallArgument(Statement value, int kind) {
+	public RubyCallArgument(ASTNode value, int kind) {
 		super(value.sourceStart(), value.sourceEnd());
 		this.value = value;
 		this.kind = kind;

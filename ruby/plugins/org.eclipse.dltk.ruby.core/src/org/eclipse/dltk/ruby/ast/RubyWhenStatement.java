@@ -5,13 +5,12 @@ import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
-public class RubyWhenStatement extends Statement {
+public class RubyWhenStatement extends ASTNode {
 	
 	private List expressions;
-	private Statement body;
+	private ASTNode body;
 	
 	public RubyWhenStatement(int start, int end) {
 		super(start, end);
@@ -25,11 +24,11 @@ public class RubyWhenStatement extends Statement {
 		this.expressions = expressions;
 	}
 
-	public Statement getBody() {
+	public ASTNode getBody() {
 		return body;
 	}
 
-	public void setBody(Statement body) {
+	public void setBody(ASTNode body) {
 		this.body = body;
 	}
 

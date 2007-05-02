@@ -29,14 +29,14 @@ public class RubyArrayExpressionTest extends AbstractASTTest {
 	public void test2 () throws Exception {
 		String text = "%w'abc def'";
 		RubyArrayExpression node = (RubyArrayExpression) checkNode (text, 0, text.length());
-		assertEquals(2, node.getStatements().size());
+		assertEquals(2, node.getChilds().size());
 		assertEquals(RubyArrayExpression.ARRAY_WSMALL, node.getArrayKind());
 	}
 	
 	public void test3 () throws Exception {
 		String text = "%W'abc def'";
 		RubyArrayExpression node = (RubyArrayExpression) checkNode (text, 0, text.length());
-		assertEquals(2, node.getStatements().size());
+		assertEquals(2, node.getChilds().size());
 		assertEquals(RubyArrayExpression.ARRAY_WBIG, node.getArrayKind());
 	}
 	

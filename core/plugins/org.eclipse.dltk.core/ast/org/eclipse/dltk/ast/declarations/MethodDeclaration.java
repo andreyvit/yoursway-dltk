@@ -10,8 +10,8 @@ import java.util.List;
 
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.DLTKToken;
+import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.statements.Block;
-import org.eclipse.dltk.ast.statements.CompoundStatement;
 import org.eclipse.dltk.internal.compiler.lookup.MethodScope;
 import org.eclipse.dltk.utils.CorePrinter;
 
@@ -106,9 +106,9 @@ public class MethodDeclaration extends Declaration {
 		acceptBody(block, true);
 	}
 	
-	public void setBody (CompoundStatement statement) {
+	public void setBody (ASTListNode statement) {
 		Block b = new Block (statement.sourceStart(), statement.sourceEnd());
-		b.acceptStatements(statement.getStatements());
+		b.acceptStatements(statement.getChilds());
 		acceptBody(b, true);
 	}
 

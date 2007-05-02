@@ -1,12 +1,12 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.statements.Block;
-import org.eclipse.dltk.ast.statements.Statement;
 
 public class RubyClassDeclaration extends RubyModuleDeclaration {
 
-	public RubyClassDeclaration(Statement superClass, Statement name, Block body, int start, int end) {
+	public RubyClassDeclaration(ASTNode superClass, ASTNode name, Block body, int start, int end) {
 		super(name, body, start, end);
 		this.setNameStart(name.sourceStart());
 		this.setNameEnd(name.sourceEnd());

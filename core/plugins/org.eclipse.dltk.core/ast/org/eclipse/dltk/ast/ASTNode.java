@@ -129,9 +129,11 @@ public abstract class ASTNode {
 		this.sourceEnd = end;
 	}
 
-	public abstract void traverse(ASTVisitor pVisitor) throws Exception;
+	public abstract void traverse(ASTVisitor visitor) throws Exception;
 
-	public abstract void printNode(CorePrinter output);
+	public void printNode(CorePrinter output) {
+		output.println ("This node("+ this.getClass() +") doesn't support printing\n" );
+	}
 	
 	protected ISourceRange getSourceRange () {
 		return new SourceRange(this.sourceStart(), this.sourceEnd() - this.sourceStart() + 1);

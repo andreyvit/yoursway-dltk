@@ -1,6 +1,5 @@
 package org.eclipse.dltk.internal.javascript.parser.visitors;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,13 +12,10 @@ import org.eclipse.dltk.ast.PositionInformation;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.expressions.ExpressionList;
-import org.eclipse.dltk.ast.references.ExtendedVariableReference;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
-import org.eclipse.dltk.utils.CorePrinter;
 
 public class JavaScriptSourceElementRequestor extends
 		SourceElementRequestVisitor {
@@ -106,7 +102,7 @@ public class JavaScriptSourceElementRequestor extends
 	protected String makeLanguageDependentValue(Expression value) {
 
 		String outValue = "";
-		if (value instanceof ExtendedVariableReference) {
+		/*if (value instanceof ExtendedVariableReference) {
 			// Lets use AST Printer to print extended variable in python like
 			// syntax.
 			StringWriter stringWriter = new StringWriter();
@@ -114,7 +110,7 @@ public class JavaScriptSourceElementRequestor extends
 			value.printNode(printer);
 			printer.flush();
 			return stringWriter.getBuffer().toString();
-		}
+		}*/
 		return outValue;
 	}
 
@@ -150,7 +146,7 @@ public class JavaScriptSourceElementRequestor extends
 				}
 			}
 
-		} else if (left instanceof ExtendedVariableReference) {
+		}/* else if (left instanceof ExtendedVariableReference) {
 			// This is for in class and in method.
 			if (inClass && inMethod) {
 				ExtendedVariableReference extendedVariable = ((ExtendedVariableReference) left);
@@ -167,7 +163,7 @@ public class JavaScriptSourceElementRequestor extends
 						String varName = ((VariableReference) first).getName();
 						MethodDeclaration currentMethod = this
 								.getCurrentMethod();
-						List/* <Argument> */arguments = currentMethod
+						List <Argument> arguments = currentMethod
 								.getArguments();
 						if (arguments != null && arguments.size() > 0) {
 							Argument firstArgument = (Argument) arguments
@@ -198,15 +194,15 @@ public class JavaScriptSourceElementRequestor extends
 				}
 			} else if (left instanceof ExpressionList) { // Multiple
 				// TODO: Add list of variables reporting.
-				/*
+				
 				 * // assignment. ExpressionList list = (ExpressionList) left;
 				 * List<Expression> exprs = list.getExpressions(); for
 				 * (Expression expr : exprs) { }
-				 */
+				 
 			} else {// TODO: dynamic variable handling not yet supported.
 
 			}
-		}
+		}*/
 	}
 
 	public boolean visit(Expression expression) throws Exception {

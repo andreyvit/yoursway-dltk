@@ -1,26 +1,24 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.statements.Statement;
 
-public class RubyEnsureExpression extends Expression {
+public class RubyEnsureExpression extends ASTNode {
 
-	private final Statement ensure;
-	private final Statement body;
+	private final ASTNode ensure;
+	private final ASTNode body;
 
 
 
-	public Statement getEnsure() {
+	public ASTNode getEnsure() {
 		return ensure;
 	}
 
-	public Statement getBody() {
+	public ASTNode getBody() {
 		return body;
 	}
 
-	public RubyEnsureExpression(int start, int end, Statement ensure,
-			Statement body) {
+	public RubyEnsureExpression(int start, int end, ASTNode ensure, ASTNode body) {
 		super(start, end);
 		this.ensure = ensure;
 		this.body = body;

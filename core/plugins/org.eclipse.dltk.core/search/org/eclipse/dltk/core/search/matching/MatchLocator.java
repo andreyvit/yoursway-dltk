@@ -28,7 +28,6 @@ import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.references.ExtendedVariableReference;
 import org.eclipse.dltk.compiler.env.INameEnvironment;
 import org.eclipse.dltk.compiler.env.ISourceType;
 import org.eclipse.dltk.compiler.env.lookup.Scope;
@@ -1218,85 +1217,85 @@ public class MatchLocator implements ITypeRequestor {
 		// report(match);
 	}
 
-	/**
-	 * Finds the accurate positions of each valid token in the source and
-	 * reports a reference to this token to the search requestor. A token is
-	 * valid if it has an accuracy which is not -1.
-	 */
-	protected void reportAccurateFieldReference(SearchMatch[] matches,
-			ExtendedVariableReference qNameRef) throws CoreException {
-		if (matches == null)
-			return; // there's nothing to accurate in this case
-		// int matchesLength = matches.length;
-		// int sourceStart = qNameRef.sourceStart;
-		// int sourceEnd = qNameRef.sourceEnd;
-		// char[][] tokens = qNameRef.tokens;
-		// // compute source positions of the qualified reference
-		// Scanner scanner = this.parser.scanner;
-		// scanner.setSource(this.currentPossibleMatch.getContents());
-		// scanner.resetTo(sourceStart, sourceEnd);
-		// int sourceLength = sourceEnd - sourceStart + 1;
-		// int refSourceStart = -1, refSourceEnd = -1;
-		// int length = tokens.length;
-		// int token = -1;
-		// int previousValid = -1;
-		// int i = 0;
-		// int index = 0;
-		// do {
-		// int currentPosition = scanner.currentPosition;
-		// // read token
-		// try {
-		// token = scanner.getNextToken();
-		// } catch (InvalidInputException e) {
-		// // ignore
-		// }
-		// if (token != TerminalTokens.TokenNameEOF) {
-		// char[] currentTokenSource = scanner.getCurrentTokenSource();
-		// boolean equals = false;
-		// while (i < length && !(equals =
-		// this.pattern.matchesName(tokens[i++],
-		// currentTokenSource))) {/* empty */
-		// }
-		// if (equals && (previousValid == -1 || previousValid == i - 2)) {
-		// previousValid = i - 1;
-		// if (refSourceStart == -1)
-		// refSourceStart = currentPosition;
-		// refSourceEnd = scanner.currentPosition - 1;
-		// } else {
-		// i = 0;
-		// refSourceStart = -1;
-		// previousValid = -1;
-		// }
-		// // read '.'
-		// try {
-		// token = scanner.getNextToken();
-		// } catch (InvalidInputException e) {
-		// // ignore
-		// }
-		// }
-		// SearchMatch match = matches[index];
-		// if (match != null && match.getRule() != 0) {
-		// if (!encloses((IModelElement) match.getElement()))
-		// return;
-		// // accept reference
-		// if (refSourceStart != -1) {
-		// match.setOffset(refSourceStart);
-		// match.setLength(refSourceEnd - refSourceStart + 1);
-		// report(match);
-		// } else {
-		// match.setOffset(sourceStart);
-		// match.setLength(sourceLength);
-		// report(match);
-		// }
-		// i = 0;
-		// }
-		// refSourceStart = -1;
-		// previousValid = -1;
-		// if (index < matchesLength - 1) {
-		// index++;
-		// }
-		// } while (token != TerminalTokens.TokenNameEOF);
-	}
+//	/**
+//	 * Finds the accurate positions of each valid token in the source and
+//	 * reports a reference to this token to the search requestor. A token is
+//	 * valid if it has an accuracy which is not -1.
+//	 */
+//	protected void reportAccurateFieldReference(SearchMatch[] matches,
+//			ExtendedVariableReference qNameRef) throws CoreException {
+//		if (matches == null)
+//			return; // there's nothing to accurate in this case
+//		// int matchesLength = matches.length;
+//		// int sourceStart = qNameRef.sourceStart;
+//		// int sourceEnd = qNameRef.sourceEnd;
+//		// char[][] tokens = qNameRef.tokens;
+//		// // compute source positions of the qualified reference
+//		// Scanner scanner = this.parser.scanner;
+//		// scanner.setSource(this.currentPossibleMatch.getContents());
+//		// scanner.resetTo(sourceStart, sourceEnd);
+//		// int sourceLength = sourceEnd - sourceStart + 1;
+//		// int refSourceStart = -1, refSourceEnd = -1;
+//		// int length = tokens.length;
+//		// int token = -1;
+//		// int previousValid = -1;
+//		// int i = 0;
+//		// int index = 0;
+//		// do {
+//		// int currentPosition = scanner.currentPosition;
+//		// // read token
+//		// try {
+//		// token = scanner.getNextToken();
+//		// } catch (InvalidInputException e) {
+//		// // ignore
+//		// }
+//		// if (token != TerminalTokens.TokenNameEOF) {
+//		// char[] currentTokenSource = scanner.getCurrentTokenSource();
+//		// boolean equals = false;
+//		// while (i < length && !(equals =
+//		// this.pattern.matchesName(tokens[i++],
+//		// currentTokenSource))) {/* empty */
+//		// }
+//		// if (equals && (previousValid == -1 || previousValid == i - 2)) {
+//		// previousValid = i - 1;
+//		// if (refSourceStart == -1)
+//		// refSourceStart = currentPosition;
+//		// refSourceEnd = scanner.currentPosition - 1;
+//		// } else {
+//		// i = 0;
+//		// refSourceStart = -1;
+//		// previousValid = -1;
+//		// }
+//		// // read '.'
+//		// try {
+//		// token = scanner.getNextToken();
+//		// } catch (InvalidInputException e) {
+//		// // ignore
+//		// }
+//		// }
+//		// SearchMatch match = matches[index];
+//		// if (match != null && match.getRule() != 0) {
+//		// if (!encloses((IModelElement) match.getElement()))
+//		// return;
+//		// // accept reference
+//		// if (refSourceStart != -1) {
+//		// match.setOffset(refSourceStart);
+//		// match.setLength(refSourceEnd - refSourceStart + 1);
+//		// report(match);
+//		// } else {
+//		// match.setOffset(sourceStart);
+//		// match.setLength(sourceLength);
+//		// report(match);
+//		// }
+//		// i = 0;
+//		// }
+//		// refSourceStart = -1;
+//		// previousValid = -1;
+//		// if (index < matchesLength - 1) {
+//		// index++;
+//		// }
+//		// } while (token != TerminalTokens.TokenNameEOF);
+//	}
 
 	protected void reportBinaryMemberDeclaration(IResource resource,
 			IMember binaryMember, int accuracy) throws CoreException {

@@ -1,18 +1,17 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.statements.Statement;
 
-public class RubyBreakExpression extends Expression {
+public class RubyBreakExpression extends ASTNode {
 
-	private final Statement value;
+	private final ASTNode value;
 
-	public Statement getValue() {
+	public ASTNode getValue() {
 		return value;
 	}
 
-	public RubyBreakExpression(int start, int end, Statement value) {
+	public RubyBreakExpression(int start, int end, ASTNode value) {
 		super(start, end);
 		this.value = value;
 	}

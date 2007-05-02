@@ -10,12 +10,9 @@ import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.CallExpression;
-import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.VariableReference;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -26,6 +23,7 @@ import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
 import org.eclipse.dltk.internal.core.ModelElement;
+import org.eclipse.dltk.ruby.ast.RubyAssignment;
 import org.eclipse.dltk.ruby.ast.RubyCallArgument;
 import org.eclipse.dltk.ruby.ast.RubyClassDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;
@@ -316,7 +314,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		}
 		if (decl instanceof RubySingletonMethodDeclaration) {
 			RubySingletonMethodDeclaration singl = (RubySingletonMethodDeclaration) decl;
-			Statement receiver = singl.getReceiver();
+			ASTNode receiver = singl.getReceiver();
 			if (receiver instanceof RubySelfReference) {
 				Scope scope = peekScope();
 				MetaClassScope metaScope = new MetaClassScope(scope.getNode(),
@@ -349,11 +347,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		return  sourceModule.getElementAt(decl.sourceStart() + 1);		
 	}
 
-	public boolean visit(Expression s) throws Exception {
-		return this.visit((Statement) s);
-	}
-
-	public boolean visit(Statement s) throws Exception {
+	public boolean visitGeneral(ASTNode s) throws Exception {
 		if (s instanceof RubyMethodArgument) {
 			RubyMethodArgument argument = (RubyMethodArgument) s;
 			String name = argument.getName();
@@ -365,9 +359,9 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			}
 			scope.reportVariable(name, obj);
 		} else 
-		if (s instanceof Assignment) {
-			Assignment assignment = (Assignment) s;
-			Statement left = assignment.getLeft();
+		if (s instanceof RubyAssignment) {
+			RubyAssignment assignment = (RubyAssignment) s;
+			ASTNode left = assignment.getLeft();
 			if (left instanceof VariableReference) {
 				VariableReference ref = (VariableReference) left;
 				String name = ref.getName();
@@ -381,7 +375,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		} else if (s instanceof CallExpression) {
 			CallExpression call = (CallExpression) s;
 			if (call.getReceiver() == null && call.getName().equals("include")) {
-				Statement expr = (Expression) call.getArgs().getExpressions().get(0);
+				ASTNode expr = (ASTNode) call.getArgs().getExpressions().get(0);
 				if (expr instanceof RubyCallArgument)
 					expr = ((RubyCallArgument)expr).getValue();
 				Scope scope = peekScope();
@@ -399,7 +393,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 						.getName().sourceStart(), constantDeclaration.getName().sourceEnd());
 			scope.reportVariable(name, obj);
 		}
-		return super.visit(s);
+		return true;
 	}
 
 	public boolean visit(TypeDeclaration decl) throws Exception {
@@ -414,7 +408,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		boolean module =  (decl.getModifiers() & Modifiers.AccModule) != 0;
 		if (decl instanceof RubySingletonClassDeclaration) {
 			RubySingletonClassDeclaration declaration = (RubySingletonClassDeclaration) decl;
-			Statement receiver = declaration.getReceiver();
+			ASTNode receiver = declaration.getReceiver();
 			if (receiver instanceof RubySelfReference) {
 				Scope scope = peekScope();
 				scopes.push(new MetaClassScope(decl, scope.getClassKey()));
@@ -439,7 +433,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			}
 		} else if (decl instanceof RubyClassDeclaration) {
 			RubyClassDeclaration declaration = (RubyClassDeclaration) decl;
-			Statement className = declaration.getClassName();
+			ASTNode className = declaration.getClassName();
 			if (className instanceof ConstantReference) {
 				String name = ((ConstantReference) className).getName();
 				Scope scope = peekScope();
@@ -480,7 +474,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		return key;
 	}
 
-	private String evaluateClassKey(Statement expr) {
+	private String evaluateClassKey(ASTNode expr) {
 		if (expr instanceof RubyColonExpression) {
 			RubyColonExpression colonExpression = (RubyColonExpression) expr;
 			if (colonExpression.isFull()) {
@@ -545,8 +539,8 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 				} else if (nodes[i] instanceof MethodDeclaration) {
 					visitor.visit((MethodDeclaration) nodes[i]);
 				} else {
-					Statement s = (Statement) nodes[i];
-					visitor.visit(s);
+//					Statement s = (Statement) nodes[i];
+					visitor.visit(nodes[i]);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

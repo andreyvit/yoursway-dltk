@@ -1,24 +1,23 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.statements.Statement;
 
-public class RubyDotExpression extends Expression {
+public class RubyDotExpression extends ASTNode {
 
-	private final Statement begin;
-	private final Statement end;
+	private final ASTNode begin;
+	private final ASTNode end;
 	private boolean exclusive;
 
-	public Statement getBegin() {
+	public ASTNode getBegin() {
 		return begin;
 	}
 
-	public Statement getEnd() {
+	public ASTNode getEnd() {
 		return end;
 	}
 
-	public RubyDotExpression(int start, int end, Statement begin, Statement end2) {
+	public RubyDotExpression(int start, int end, ASTNode begin, ASTNode end2) {
 		super(start, end);
 		this.begin = begin;
 		this.end = end2;
@@ -27,8 +26,7 @@ public class RubyDotExpression extends Expression {
 	
 	
 
-	public RubyDotExpression(Statement begin,
-			Statement end2, boolean exclusive) {
+	public RubyDotExpression(ASTNode begin, ASTNode end2, boolean exclusive) {
 		super(begin.sourceStart(), end2.sourceEnd());
 		this.begin = begin;
 		this.end = end2;

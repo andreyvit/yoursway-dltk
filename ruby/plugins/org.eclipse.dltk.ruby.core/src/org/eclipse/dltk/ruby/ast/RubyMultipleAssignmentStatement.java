@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
-public class RubyMultipleAssignmentStatement extends Statement {
+public class RubyMultipleAssignmentStatement extends ASTNode {
 
 	private List lhs = new ArrayList();
 	private List rhs = new ArrayList();
 
-	private Statement leftAsterix;
-	private Statement rightAsterix;
+	private ASTNode leftAsterix;
+	private ASTNode rightAsterix;
 
 	public RubyMultipleAssignmentStatement(int start, int end) {
 		super(start, end);
 	}
 
-	public void addLhs(Statement s) {
+	public void addLhs(ASTNode s) {
 		if (s == null)
 			return;
 		if (this.sourceStart() == -1 ||  s.sourceStart() < this.sourceStart())
@@ -28,7 +28,7 @@ public class RubyMultipleAssignmentStatement extends Statement {
 		lhs.add(s);
 	}
 
-	public void addRhs(Statement s) {
+	public void addRhs(ASTNode s) {
 		if (s == null)
 			return;
 		if (this.sourceEnd() == -1 ||  s.sourceEnd() > this.sourceEnd())
@@ -44,21 +44,21 @@ public class RubyMultipleAssignmentStatement extends Statement {
 		return rhs;
 	}
 
-	public Statement getLeftAsterix() {
+	public ASTNode getLeftAsterix() {
 		return leftAsterix;
 	}
 
-	public void setLeftAsterix(Statement leftAsterix, int offset) {
+	public void setLeftAsterix(ASTNode leftAsterix, int offset) {
 		if (this.sourceStart() == -1 ||  offset < this.sourceStart())
 			setStart(offset);
 		this.leftAsterix = leftAsterix;
 	}
 
-	public Statement getRightAsterix() {
+	public ASTNode getRightAsterix() {
 		return rightAsterix;
 	}
 
-	public void setRightAsterix(Statement rightAsterix) {
+	public void setRightAsterix(ASTNode rightAsterix) {
 		if (this.sourceEnd() == -1 ||  rightAsterix.sourceEnd() > this.sourceEnd())
 			setEnd(rightAsterix.sourceEnd());
 		this.rightAsterix = rightAsterix;
@@ -82,15 +82,13 @@ public class RubyMultipleAssignmentStatement extends Statement {
 				rightAsterix.traverse(visitor);
 			if (this.lhs != null)
 				for (Iterator iterator = this.lhs.iterator(); iterator
-						.hasNext();) {
-					Statement v = (Statement) iterator.next();
+						.hasNext();) { ASTNode v = (ASTNode) iterator.next();
 					if (v != null)
 						v.traverse(visitor);
 				}
 			if (this.rhs != null)
 				for (Iterator iterator = this.rhs.iterator(); iterator
-						.hasNext();) {
-					Statement v = (Statement) iterator.next();
+						.hasNext();) { ASTNode v = (ASTNode) iterator.next();
 					if (v != null)
 						v.traverse(visitor);
 				}

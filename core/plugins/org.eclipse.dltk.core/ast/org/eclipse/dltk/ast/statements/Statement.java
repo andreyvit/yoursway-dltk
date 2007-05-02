@@ -5,6 +5,7 @@ import org.eclipse.dltk.ast.DLTKToken;
 
 /**
  * Base class for all statements.
+ * 
  */
 public abstract class Statement extends ASTNode implements StatementConstants {
 	protected Statement(int start, int end) {

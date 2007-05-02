@@ -1,17 +1,16 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
-public class RubyRescueBodyStatement extends Statement {
+public class RubyRescueBodyStatement extends ASTNode {
 
-	private Statement bodyNode;
-	private Statement exceptionNode;
-	private Statement optNode;
+	private ASTNode bodyNode;
+	private ASTNode exceptionNode;
+	private ASTNode optNode;
 
-	public RubyRescueBodyStatement(int start, int end, Statement bodyNode,
-			Statement exceptionNode, Statement optNode) {
+	public RubyRescueBodyStatement(int start, int end, ASTNode bodyNode, ASTNode exceptionNode, ASTNode optNode) {
 		super(start, end);
 		this.bodyNode = bodyNode;
 		this.exceptionNode = exceptionNode;
@@ -27,33 +26,33 @@ public class RubyRescueBodyStatement extends Statement {
 
 
 
-	public Statement getBodyNode() {
+	public ASTNode getBodyNode() {
 		return bodyNode;
 	}
 
-	public Statement getExceptionNode() {
+	public ASTNode getExceptionNode() {
 		return exceptionNode;
 	}
 
-	public Statement getOptNode() {
+	public ASTNode getOptNode() {
 		return optNode;
 	}
 	
 	
 
-	public void setBodyNode(Statement bodyNode) {
+	public void setBodyNode(ASTNode bodyNode) {
 		this.bodyNode = bodyNode;
 	}
 
 
 
-	public void setExceptionNode(Statement exceptionNode) {
+	public void setExceptionNode(ASTNode exceptionNode) {
 		this.exceptionNode = exceptionNode;
 	}
 
 
 
-	public void setOptNode(Statement optNode) {
+	public void setOptNode(ASTNode optNode) {
 		this.optNode = optNode;
 	}
 

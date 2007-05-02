@@ -2,8 +2,8 @@ package org.eclipse.dltk.ruby.typeinference.evaluators;
 
 import java.util.List;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.statements.Block;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
@@ -12,7 +12,7 @@ import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class BlockEvaluator extends GoalEvaluator {
 
-	private Statement lastStatement;
+	private ASTNode lastStatement;
 	private IEvaluatedType result;
 
 	public BlockEvaluator(IGoal goal) {
@@ -32,7 +32,7 @@ public class BlockEvaluator extends GoalEvaluator {
 		Block block = (Block) typedGoal.getExpression();
 		List statements = block.getStatements();
 		if (statements.size() > 0) {
-			this.lastStatement = (Statement) statements.get(statements.size() - 1);
+			this.lastStatement = (ASTNode) statements.get(statements.size() - 1);
 			ExpressionTypeGoal subgoal = new ExpressionTypeGoal(goal.getContext(),this.lastStatement);
 			return new IGoal[] {subgoal};
 		}

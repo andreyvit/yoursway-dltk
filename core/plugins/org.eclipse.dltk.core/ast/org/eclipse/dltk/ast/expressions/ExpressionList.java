@@ -13,6 +13,7 @@ import org.eclipse.dltk.utils.CorePrinter;
 
 /**
  * Holds list of expressions.
+ * @deprecated
  */
 public class ExpressionList extends Expression {
 	private List fExpressions = new ArrayList();

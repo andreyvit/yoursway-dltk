@@ -2,6 +2,7 @@ package org.eclipse.dltk.ruby.typeinference.evaluators;
 
 import java.util.List;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.evaluation.types.UnknownType;
@@ -14,7 +15,6 @@ import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
 import org.eclipse.dltk.ti.goals.MethodReturnTypeGoal;
-import org.eclipse.dltk.ti.types.ClassType;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class MethodCallTypeEvaluator extends GoalEvaluator {
@@ -53,7 +53,7 @@ public class MethodCallTypeEvaluator extends GoalEvaluator {
 		if (state == STATE_INIT) {
 			ExpressionTypeGoal typedGoal = (ExpressionTypeGoal) goal;
 			CallExpression expression = (CallExpression) typedGoal.getExpression();
-			Statement receiver = expression.getReceiver();
+			ASTNode receiver = expression.getReceiver();
 			if (receiver == null || receiver instanceof RubySelfReference) {
 				// handling SelfReference here just for simplicity, could be
 				// left to the TI engine as well
@@ -90,7 +90,7 @@ public class MethodCallTypeEvaluator extends GoalEvaluator {
 			List arguments = expression.getArgs().getExpressions();
 			if (nextArg < arguments.size()) {
 				state = STATE_WAITING_ARGUMENT_0 + nextArg;
-				return new ExpressionTypeGoal(goal.getContext(), (Statement) arguments.get(nextArg));
+				return new ExpressionTypeGoal(goal.getContext(), (ASTNode) arguments.get(nextArg));
 			} else {
 				state = STATE_ARGS_DONE;
 			}

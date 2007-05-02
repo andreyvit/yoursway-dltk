@@ -1,16 +1,7 @@
 package org.eclipse.dltk.ruby.typeinference;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
-import org.eclipse.dltk.ast.expressions.Assignment;
 import org.eclipse.dltk.ast.expressions.BigNumericLiteral;
 import org.eclipse.dltk.ast.expressions.BooleanLiteral;
 import org.eclipse.dltk.ast.expressions.CallExpression;
@@ -20,9 +11,8 @@ import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
-import org.eclipse.dltk.ast.statements.IfStatement;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
+import org.eclipse.dltk.ruby.ast.RubyAssignment;
 import org.eclipse.dltk.ruby.ast.RubyBacktickStringLiteral;
 import org.eclipse.dltk.ruby.ast.RubyCallArgument;
 import org.eclipse.dltk.ruby.ast.RubyCaseStatement;
@@ -31,6 +21,7 @@ import org.eclipse.dltk.ruby.ast.RubyConstantDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyDynamicBackquoteStringExpression;
 import org.eclipse.dltk.ruby.ast.RubyDynamicStringExpression;
 import org.eclipse.dltk.ruby.ast.RubyHashExpression;
+import org.eclipse.dltk.ruby.ast.RubyIfStatement;
 import org.eclipse.dltk.ruby.ast.RubyRegexpExpression;
 import org.eclipse.dltk.ruby.ast.RubySelfReference;
 import org.eclipse.dltk.ruby.ast.RubySymbolReference;
@@ -54,7 +45,6 @@ import org.eclipse.dltk.ruby.typeinference.goals.ColonExpressionGoal;
 import org.eclipse.dltk.ruby.typeinference.goals.NonTypeConstantTypeGoal;
 import org.eclipse.dltk.ti.BasicContext;
 import org.eclipse.dltk.ti.IGoalEvaluatorFactory;
-import org.eclipse.dltk.ti.ITypeInferencer;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.goals.FieldPositionVerificationGoal;
 import org.eclipse.dltk.ti.goals.FixedAnswerEvaluator;
@@ -96,7 +86,7 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 	
 
 	private GoalEvaluator createExpressionEvaluator(ExpressionTypeGoal goal) {
-		Statement expr = goal.getExpression();
+		ASTNode expr = goal.getExpression();
 
 		// literals
 		if (expr instanceof RubyRegexpExpression)
@@ -128,7 +118,7 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 		if (expr instanceof VariableReference)
 			return new VariableReferenceEvaluator(goal);
 
-		if (expr instanceof Assignment)
+		if (expr instanceof RubyAssignment)
 			return new AssignmentEvaluator(goal);
 		if (expr instanceof ConstantReference)
 			return new ConstantReferenceEvaluator(goal);
@@ -136,7 +126,7 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 			return new SelfReferenceEvaluator(goal);
 		if (expr instanceof CallExpression)
 			return new MethodCallTypeEvaluator((ExpressionTypeGoal) goal);
-		if (expr instanceof IfStatement)
+		if (expr instanceof RubyIfStatement)
 			return new IfStatementTypeEvaluator((ExpressionTypeGoal) goal);
 		if (expr instanceof RubyCaseStatement)
 			return new CaseStatementTypeEvaluator(goal);
@@ -182,7 +172,7 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 	public static IGoal translateGoal(IGoal goal) {
 		if (goal instanceof ExpressionTypeGoal) {
 			ExpressionTypeGoal exprGoal = (ExpressionTypeGoal) goal;
-			Statement expr = exprGoal.getExpression();
+			ASTNode expr = exprGoal.getExpression();
 			if (expr instanceof ConstantReference) {
 				ConstantReference reference = (ConstantReference) expr;
 				return new ConstantTypeGoal(goal.getContext(), reference

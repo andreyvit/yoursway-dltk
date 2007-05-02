@@ -1,26 +1,34 @@
 package org.eclipse.dltk.ruby.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.CallArgumentsList;
-import org.eclipse.dltk.ast.expressions.SuperExpression;
-import org.eclipse.dltk.ast.statements.Statement;
 
-public class RubySuperExpression extends SuperExpression {
+public class RubySuperExpression extends ASTNode {
 
-	private Statement block;
+	private ASTNode block;
+	private CallArgumentsList args;
 
-	public RubySuperExpression(int start, int end, CallArgumentsList args,
-			Statement b) {
-		super(start, end, args);
+	public RubySuperExpression(int start, int end, CallArgumentsList args, ASTNode b) {
+		super(start, end);
+		this.args = args;
 		this.block = b;
 	}
 
-	public Statement getBlock() {
+	public ASTNode getBlock() {
 		return block;
 	}
 
-	public void setBlock(Statement block) {
+	public void setBlock(ASTNode block) {
 		this.block = block;
+	}
+	
+	public CallArgumentsList getArgs() {
+		return args;
+	}
+
+	public void setArgs(CallArgumentsList args) {
+		this.args = args;
 	}
 
 	public void traverse(ASTVisitor visitor) throws Exception {

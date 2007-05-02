@@ -14,10 +14,8 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
@@ -29,11 +27,9 @@ import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ruby.tests.Activator;
 import org.eclipse.dltk.ruby.typeinference.OffsetTargetedASTVisitor;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
-import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 import org.eclipse.dltk.ti.BasicContext;
 import org.eclipse.dltk.ti.DLTKTypeInferenceEngine;
 import org.eclipse.dltk.ti.ITypeInferencer;
-import org.eclipse.dltk.ti.DefaultTypeInferencer;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 import org.eclipse.dltk.ti.types.RecursionTypeCall;
@@ -176,10 +172,10 @@ public class TypeInferenceSuite extends TestSuite {
 					}
 					
 					public void check(ModuleDeclaration rootNode, ISourceModule cu, ITypeInferencer inferencer) throws Exception {
-						final Statement[] result = new Statement[1];
+						final ASTNode[] result = new ASTNode[1];
 						ASTVisitor visitor = new OffsetTargetedASTVisitor(namePos) {
 
-							protected boolean visitInteresting(Expression s) {
+							protected boolean visitGeneralInteresting(ASTNode s) {
 								if (s instanceof VariableReference)
 									if (s.sourceStart() == namePos && result[0] == null) {
 										result[0] = s;
@@ -215,11 +211,11 @@ public class TypeInferenceSuite extends TestSuite {
 					}
 					
 					public void check(ModuleDeclaration rootNode, ISourceModule cu, ITypeInferencer inferencer) throws Exception {
-						final Statement[] result = new Statement[1];
+						final ASTNode[] result = new ASTNode[1];
 						ASTVisitor visitor = new OffsetTargetedASTVisitor(namePos) {
 							
-							protected boolean visitInteresting(Expression s) {
-								if (s instanceof Expression && result[0] == null)
+							protected boolean visitGeneralInteresting(ASTNode s) {
+								if (s instanceof ASTNode && result[0] == null)
 									if (s.sourceStart() == namePos) {
 										result[0] = s;
 									}
@@ -245,25 +241,6 @@ public class TypeInferenceSuite extends TestSuite {
 								assertEquals(correctClassRef, rubyType.getModelKey());
 							}
 						}
-						
-						
-						
-//						IEvaluatedType correctType = getIntrinsicType(correctClassRef);
-//						
-//						if (correctType != null)
-//							assertEquals(correctType, type);
-//						else if (correctClassRef.endsWith(".new")) {
-//							String correctFQN = correctClassRef.substring(0, correctClassRef.length() - 4);
-//							assertTrue(type instanceof RubyClassType);
-//							String realFQN = getFQN((RubyClassType) type);
-//							assertEquals(correctFQN, realFQN);
-//						} else {
-//							assertTrue(type instanceof RubyMetaClassType);
-//							RubyMetaClassType metatype = (RubyMetaClassType) type;
-//							String correctFQN = correctClassRef;
-//							String realFQN = getFQN((RubyClassType) metatype.getInstanceType());
-//							assertEquals(correctFQN, realFQN);
-//						}
 					}
 					
 					

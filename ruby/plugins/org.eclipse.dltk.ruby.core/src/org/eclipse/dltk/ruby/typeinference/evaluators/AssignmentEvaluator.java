@@ -1,7 +1,7 @@
 package org.eclipse.dltk.ruby.typeinference.evaluators;
 
-import org.eclipse.dltk.ast.expressions.Assignment;
-import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ruby.ast.RubyAssignment;
 import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
@@ -18,11 +18,11 @@ public class AssignmentEvaluator extends GoalEvaluator {
 
 	public IGoal[] init() {
 		ExpressionTypeGoal typedGoal = (ExpressionTypeGoal) goal;
-		Statement expression = (typedGoal).getExpression();
-		if (!(expression instanceof Assignment)) {
+		ASTNode expression = (typedGoal).getExpression();
+		if (!(expression instanceof RubyAssignment)) {
 			return IGoal.NO_GOALS;
 		}
-		Assignment expr = (Assignment) expression;
+		RubyAssignment expr = (RubyAssignment) expression;
 		return new IGoal[] { new ExpressionTypeGoal(typedGoal.getContext(),
 				expr.getRight()) };
 	}

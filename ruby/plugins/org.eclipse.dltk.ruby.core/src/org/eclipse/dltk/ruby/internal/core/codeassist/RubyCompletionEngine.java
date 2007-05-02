@@ -214,11 +214,11 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				ASTNode node = ASTUtils.findMaximalNodeEndingAt(
 						moduleDeclaration, position - 2);
 				this.setSourceRange(position, position);
-				if (node != null && node instanceof Statement) {
+				if (node != null) {
 					BasicContext basicContext = new BasicContext(modelModule,
 							moduleDeclaration);
 					ExpressionTypeGoal goal = new ExpressionTypeGoal(
-							basicContext, (Statement) node);
+							basicContext, node);
 					IEvaluatedType type = inferencer.evaluateType(goal, 3000);
 					reportSubElements(modelModule, type, "");
 				} else {
@@ -299,7 +299,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			ModuleDeclaration moduleDeclaration, ASTNode receiver,
 			String pattern) {
 		ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
-				modelModule, moduleDeclaration), (Statement) receiver);
+				modelModule, moduleDeclaration), receiver);
 		IEvaluatedType type = inferencer.evaluateType(goal, 3000);
 		return RubyModelUtils.searchClassMethods(modelModule,
 				moduleDeclaration, type, pattern);
@@ -455,7 +455,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		this.setSourceRange(position - starting.length(), position);
 
 		ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
-				module, moduleDeclaration), (Statement) (node.getLeft()));
+				module, moduleDeclaration), node.getLeft());
 		IEvaluatedType type = inferencer.evaluateType(goal, 3000);
 		reportSubElements(module, type, starting);
 	}
@@ -532,7 +532,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	private void completeCall(org.eclipse.dltk.core.ISourceModule module,
 			ModuleDeclaration moduleDeclaration, CallExpression node,
 			int position) {
-		Statement receiver = node.getReceiver();
+		ASTNode receiver = node.getReceiver();
 
 		String content;
 		try {
