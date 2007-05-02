@@ -1,10 +1,21 @@
+/*******************************************************************************
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ 
+ *******************************************************************************/
 package org.eclipse.dltk.internal.core;
 
+import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ElementChangedEvent;
+import org.eclipse.dltk.core.IElementCacheListener;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
@@ -20,7 +31,10 @@ import org.eclipse.dltk.core.ISourceModuleInfoCache;
  */
 public class SourceModuleInfoCache implements ISourceModuleInfoCache {
 	private ElementCache cache = null;
-
+	static long allAccess = 0;
+	static long miss = 0;
+	static long closes = 0;
+	
 	public SourceModuleInfoCache() {
 		// set the size of the caches in function of the maximum amount of
 		// memory available
@@ -28,32 +42,51 @@ public class SourceModuleInfoCache implements ISourceModuleInfoCache {
 		// if max memory is infinite, set the ratio to 4d which corresponds to
 		// the 256MB that Eclipse defaults to
 		// (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=111299)
-		double ratio = 20; // 64000000
+		double ratio = 30; // 64000000
 
 		this.cache = new ElementCache(
 				(int) (ModelCache.DEFAULT_ROOT_SIZE * ratio));
+		this.cache.setLoadFactor( 0.90 );
+		this.cache.addListener(new IElementCacheListener(){
+			public void close(Object element) {
+				closes++;
+			}
+		});
 		DLTKCore.addElementChangedListener(changedListener);
 	}
 
 	public void stop() {
 		DLTKCore.removeElementChangedListener(changedListener);
 	}
-
+	
 	public ISourceModuleInfo get(ISourceModule module) {
 		Object object = this.cache.get(module);
 		if (DLTKCore.VERBOSE ) {
 			System.out.println("Filling ratio:" + this.cache.fillingRatio());
 		}
+		allAccess++;
 		if (object == null) {
+			miss++;
 			return returnAdd(module);
 		}
-		this.cache.printStats();
-		return (ISourceModuleInfo) object;
+		SoftReference ref = (SoftReference) object;
+		ISourceModuleInfo info = (ISourceModuleInfo) ref.get();
+		if( info == null ) {
+			miss++;
+			return returnAdd(module);
+		}
+//		this.cache.printStats();
+		if(DLTKCore.PERFOMANCE) {
+			System.out.println("SourceModuleInfoCache: access:" + allAccess + " ok:" + ( 100.0f * (allAccess - miss ) / allAccess) + "% closes:" + closes );
+			System.out.println("Filling ratio:" + this.cache.fillingRatio());
+		}
+		return (ISourceModuleInfo) info;
 	}
 
 	private ISourceModuleInfo returnAdd(ISourceModule module) {
 		ISourceModuleInfo info = new SourceModuleInfo();
-		this.cache.put(module, info);
+		SoftReference ref = new SoftReference(info);
+		this.cache.put(module, ref);
 		this.cache.ensureSpaceLimit(1, module);
 		return info;
 	}

@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ 
+ *******************************************************************************/
 package org.eclipse.dltk.core.mixin;
 
 import java.util.ArrayList;
@@ -89,7 +98,9 @@ public class MixinModel {
 
 	public IMixinElement get(String key) {
 		// waitForAutoBuild();
-		System.out.println("$$$ MixinModel.get() key=" + key);
+		if (DLTKCore.VERBOSE) {
+//		System.out.println("$$$ MixinModel.get() key=" + key);
+		}
 		if (notExistKeysCache.contains(key)) {
 			return null;
 		}
@@ -118,7 +129,7 @@ public class MixinModel {
 	}
 
 	public String[] findKeys(String pattern) {
-		System.out.println("$$$ MixinModel.findKeys() pattern=" + pattern);
+//		System.out.println("$$$ MixinModel.findKeys() pattern=" + pattern);
 		return SearchEngine.searchMixinPatterns(pattern, toolkit);
 	}
 
@@ -187,7 +198,7 @@ public class MixinModel {
 
 	public synchronized void reportModule(ISourceModule sourceModule) {
 		// if (DLTKCore.VERBOSE) {
-		System.out.println("Filling ratio:" + this.cache.fillingRatio());
+//		System.out.println("Filling ratio:" + this.cache.fillingRatio());
 		// this.cache.printStats();
 		// }
 		if (!this.elementToMixinCache.containsKey(sourceModule)) {
@@ -584,6 +595,7 @@ public class MixinModel {
 			// if( DLTKCore.VERBOSE_MIXIN ) {
 			// System.out.println("Append mixin:" + info.key);
 			// }
+			existKeysCache.add(info.key);
 			String[] list = info.key.split("\\"
 					+ IMixinRequestor.MIXIN_NAME_SEPARATOR);
 			MixinElement element = getCreateEmpty(info.key);

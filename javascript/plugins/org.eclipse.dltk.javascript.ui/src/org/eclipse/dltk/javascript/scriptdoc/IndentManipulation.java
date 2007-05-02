@@ -8,8 +8,7 @@ package org.eclipse.dltk.javascript.scriptdoc;
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *     IBM Corporation - initial API and implementation
+ 
  *******************************************************************************/
 
 import java.util.ArrayList;
@@ -32,8 +31,7 @@ import org.eclipse.text.edits.ReplaceEdit;
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *     IBM Corporation - initial API and implementation
+ 
  *******************************************************************************/
 
 

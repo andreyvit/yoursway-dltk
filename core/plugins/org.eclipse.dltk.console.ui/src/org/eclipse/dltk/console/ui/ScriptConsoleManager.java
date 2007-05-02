@@ -1,4 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ 
+ *******************************************************************************/
 package org.eclipse.dltk.console.ui;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -43,8 +55,15 @@ public class ScriptConsoleManager implements ILaunchListener {
 		this.manager = ConsolePlugin.getDefault().getConsoleManager();
 	}
 
-	public ScriptConsole[] getScriptConsoles(String consoleTypes) {
-		return null;
+	public ScriptConsole[] getScriptConsoles(String consoleType) {
+		List consoles = new ArrayList();
+		IConsole[] consoles2 = manager.getConsoles();
+		for( int i  = 0; i < consoles2.length; ++i ) {
+			if( consoles2[i] instanceof ScriptConsole && consoles2[i].getType().equals(consoleType)) {
+				consoles.add(consoles2[i]);
+			}
+		}
+		return (ScriptConsole[])consoles.toArray(new ScriptConsole[consoles.size()]);
 	}
 
 	public ScriptConsole getActiveScriptConsole(String consoleType) {

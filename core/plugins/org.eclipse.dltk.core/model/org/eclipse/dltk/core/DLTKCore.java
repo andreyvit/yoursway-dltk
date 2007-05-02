@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ 
+ *******************************************************************************/
 package org.eclipse.dltk.core;
 
 import java.util.HashMap;
@@ -52,6 +61,8 @@ public class DLTKCore extends Plugin {
 	public static final boolean VERBOSE_SEARCH_NAMELOOKUP = false;
 	public static final boolean VERBOSE_COMPLETION = false;
 	public static final boolean VERBOSE_MIXIN = false;
+	
+	public static final boolean PERFOMANCE = false;
 	
 	public static final boolean DEBUG = Boolean.valueOf(
 			Platform.getDebugOption("org.eclipse.dltk.core/debug")).booleanValue();
@@ -235,6 +246,7 @@ public class DLTKCore extends Plugin {
 	 *
 	 */
 	public static final String CODEASSIST_DISCOURAGED_REFERENCE_CHECK= PLUGIN_ID + ".codeComplete.discouragedReferenceCheck"; //$NON-NLS-1$					
+
 
 
 	/**

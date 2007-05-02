@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ 
+ *******************************************************************************/
 package org.eclipse.dltk.internal.core;
 
 import java.io.ByteArrayInputStream;
@@ -109,9 +118,9 @@ public class BuiltinSourceModule extends Openable implements IExternalSourceModu
 //			parser.parseSourceModule(contents, sourceModuleInfoCache.get(this));
 			ISourceModuleInfo mifo = sourceModuleInfoCache.get(this);
 			parser.parseSourceModule(contents, mifo);
-			if( mifo.isEmpty()) {
-				sourceModuleInfoCache.remove(this);
-			}
+//			if( mifo.isEmpty()) {
+//				sourceModuleInfoCache.remove(this);
+//			}
 			
 //			parser.parseSourceModule(contents, null);
 			if (BuiltinSourceModule.DEBUG_PRINT_MODEL) {

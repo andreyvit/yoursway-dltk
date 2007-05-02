@@ -1,15 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *     IBM Corporation - initial API and implementation
+ 
  *******************************************************************************/
 package org.eclipse.dltk.internal.core;
 
+import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.dltk.core.IElementCacheListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.util.LRUCache;
@@ -19,6 +20,7 @@ import org.eclipse.dltk.internal.core.util.LRUCache;
  */
 public class ElementCache extends OverflowingLRUCache {
 	IModelElement spaceLimitParent = null;
+	private ListenerList listeners;
 
 	/**
 	 * Constructs a new element cache of the given size.
@@ -44,14 +46,17 @@ public class ElementCache extends OverflowingLRUCache {
 	 */
 	protected boolean close(LRUCacheEntry entry) {
 		Openable element = (Openable) entry._fKey;
+		notifyListenersClose(element);
 		try {
 			if (!element.canBeRemovedFromCache()) {
 				return false;
 			} else {
 				// We must close an entire external folder of zip.
-				if (element instanceof ArchiveFolder || element instanceof ExternalScriptFolder) {
+				if (element instanceof ArchiveFolder
+						|| element instanceof ExternalScriptFolder) {
 					ScriptFolder archiveFolder = (ScriptFolder) element;
-					ProjectFragment root = (ProjectFragment) archiveFolder.getParent();
+					ProjectFragment root = (ProjectFragment) archiveFolder
+							.getParent();
 					root.close();
 				} else {
 					element.close();
@@ -94,6 +99,31 @@ public class ElementCache extends OverflowingLRUCache {
 		if (parent.equals(this.spaceLimitParent)) {
 			setSpaceLimit(defaultLimit);
 			this.spaceLimitParent = null;
+		}
+	}
+
+	protected ListenerList getListenerList() {
+		if (listeners == null) {
+			listeners = new ListenerList();
+		}
+		return listeners;
+	}
+
+	public void addListener(IElementCacheListener listener) {
+		getListenerList().add(listener);
+	}
+
+	public void removeListener(IElementCacheListener listener) {
+		getListenerList().remove(listener);
+	}
+
+	protected void notifyListenersClose(Object element) {
+		Object[] listeners2 = getListenerList().getListeners();
+		for (int i = 0; i < listeners2.length; i++) {
+			IElementCacheListener listener = (IElementCacheListener) listeners2[i];
+			if (listener != null) {
+				listener.close(element);
+			}
 		}
 	}
 }

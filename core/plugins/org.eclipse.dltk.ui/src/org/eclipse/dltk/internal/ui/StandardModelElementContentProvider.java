@@ -1,12 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *     IBM Corporation - initial API and implementation
+ 
  *******************************************************************************/
 package org.eclipse.dltk.internal.ui;
 
@@ -32,7 +31,6 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-
 /**
  * A base content provider for model elements. It provides access to the model
  * element hierarchy without listening to changes in the script model. If
@@ -45,12 +43,36 @@ import org.eclipse.jface.viewers.Viewer;
  * <p>
  * 
  * <pre>
-Script model (<code>IScriptModel</code>)
-   Script project (<code>IScriptProject</code>)
-      package fragment root (<code>IProjectFragment</code>)
-         package fragment (<code>IScriptFolder</code>)
-            compilation unit (<code>ISourceModule</code>)
-            binary class file (<code>IClassFile</code>)
+ *  Script model (
+ * <code>
+ * IScriptModel
+ * </code>
+ * )
+ *  Script project (
+ * <code>
+ * IScriptProject
+ * </code>
+ * )
+ *  package fragment root (
+ * <code>
+ * IProjectFragment
+ * </code>
+ * )
+ *  package fragment (
+ * <code>
+ * IScriptFolder
+ * </code>
+ * )
+ *  compilation unit (
+ * <code>
+ * ISourceModule
+ * </code>
+ * )
+ *  binary class file (
+ * <code>
+ * IClassFile
+ * </code>
+ * )
  * </pre>
  * 
  * </p>
@@ -61,9 +83,10 @@ Script model (<code>IScriptModel</code>)
  * filtered out.
  * </p>
  * 
-	 *
+ * 
  */
-public class StandardModelElementContentProvider implements ITreeContentProvider, IWorkingCopyProvider {
+public class StandardModelElementContentProvider implements
+		ITreeContentProvider, IWorkingCopyProvider {
 	protected static final Object[] NO_CHILDREN = new Object[0];
 	protected boolean fProvideMembers;
 	protected boolean fProvideWorkingCopy;
@@ -132,12 +155,14 @@ public class StandardModelElementContentProvider implements ITreeContentProvider
 	/*
 	 * (non-Javadoc) Method declared on IContentProvider.
 	 */
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+	}
 
 	/*
 	 * (non-Javadoc) Method declared on IContentProvider.
 	 */
-	public void dispose() {}
+	public void dispose() {
+	}
 
 	/*
 	 * (non-Javadoc) Method declared on ITreeContentProvider.
@@ -156,7 +181,8 @@ public class StandardModelElementContentProvider implements ITreeContentProvider
 				return getFolderContents((IScriptFolder) element);
 			if (element instanceof IFolder)
 				return getResources((IFolder) element);
-			if (getProvideMembers() && element instanceof ISourceReference && element instanceof IParent) {
+			if (getProvideMembers() && element instanceof ISourceReference
+					&& element instanceof IParent) {
 				return ((IParent) element).getChildren();
 			}
 		} catch (ModelException e) {
@@ -210,11 +236,30 @@ public class StandardModelElementContentProvider implements ITreeContentProvider
 		return internalGetParent(element);
 	}
 
-	private Object[] getScriptFolders(IProjectFragment root) throws ModelException {
+	private Object[] getScriptFolders(IProjectFragment root)
+			throws ModelException {
 		IModelElement[] fragments = root.getChildren();
+
 		if (isProjectProjectFragment(root)) {
 			return fragments;
 		}
+
+		// Lets filter default project fragment
+		List newFragments = new ArrayList();
+		for (int i = 0; i < fragments.length; ++i) {
+			if (fragments[i] instanceof IScriptFolder) {
+				IScriptFolder scriptFolder = ((IScriptFolder) fragments[i]);
+				if (scriptFolder.isRootFolder()) {
+					IModelElement[] children = scriptFolder.getChildren();
+					for (int j = 0; j < children.length; ++j) {
+						newFragments.add(children[j]);
+					}
+					continue;
+				}
+			}
+			newFragments.add(fragments[i]);
+		}
+		fragments = (IModelElement[]) newFragments.toArray(new IModelElement[newFragments.size()]);
 		Object[] nonScriptResources = root.getForeignResources();
 		if (nonScriptResources == null)
 			return fragments;
@@ -225,7 +270,8 @@ public class StandardModelElementContentProvider implements ITreeContentProvider
 	 * Note: This method is for internal use only. Clients should not call this
 	 * method.
 	 */
-	protected Object[] getProjectFragments(IDLTKProject project) throws ModelException {
+	protected Object[] getProjectFragments(IDLTKProject project)
+			throws ModelException {
 		if (!project.getProject().isOpen())
 			return NO_CHILDREN;
 		IProjectFragment[] roots = project.getProjectFragments();
@@ -236,8 +282,20 @@ public class StandardModelElementContentProvider implements ITreeContentProvider
 			IProjectFragment root = roots[i];
 			if (isProjectProjectFragment(root)) {
 				Object[] children = root.getChildren();
-				for (int k = 0; k < children.length; k++)
-					list.add(children[k]);
+				for (int k = 0; k < children.length; k++) {
+					if (children[k] instanceof IScriptFolder) {
+						IScriptFolder folder = (IScriptFolder) children[k];
+						if (folder.isRootFolder()) {
+							IModelElement[] rootChildren = folder.getChildren();
+							for (int j = 0; j < rootChildren.length; j++) {
+								list.add(rootChildren[j]);
+							}
+
+						} else {
+							list.add(children[k]);
+						}
+					}
+				}
 			} else if (hasChildren(root)) {
 				list.add(root);
 			}
@@ -253,9 +311,11 @@ public class StandardModelElementContentProvider implements ITreeContentProvider
 		return jm.getScriptProjects();
 	}
 
-	private Object[] getFolderContents(IScriptFolder fragment) throws ModelException {
+	private Object[] getFolderContents(IScriptFolder fragment)
+			throws ModelException {
 		// if (fragment.getKind() == IProjectFragment.K_SOURCE) {
-		return concatenate(fragment.getSourceModules(), fragment.getForeignResources());
+		return concatenate(fragment.getSourceModules(), fragment
+				.getForeignResources());
 		// }
 		// return concatenate(fragment.getClassFiles(),
 		// fragment.getNonScriptResources());
@@ -288,7 +348,7 @@ public class StandardModelElementContentProvider implements ITreeContentProvider
 		} catch (CoreException e) {
 			return NO_CHILDREN;
 		}
-	}	
+	}
 
 	/**
 	 * Note: This method is for internal use only. Clients should not call this
@@ -299,11 +359,11 @@ public class StandardModelElementContentProvider implements ITreeContentProvider
 		if (delta.getElement().getElementType() != IModelElement.PROJECT_FRAGMENT)
 			return false;
 		int flags = delta.getFlags();
-		return (delta.getKind() == IModelElementDelta.CHANGED && 
-			((flags & IModelElementDelta.F_ADDED_TO_BUILDPATH) != 0) || 
-			((flags & IModelElementDelta.F_REMOVED_FROM_BUILDPATH) != 0) || 
-			((flags & IModelElementDelta.F_REORDER) != 0));
-	}	 
+		return (delta.getKind() == IModelElementDelta.CHANGED
+				&& ((flags & IModelElementDelta.F_ADDED_TO_BUILDPATH) != 0)
+				|| ((flags & IModelElementDelta.F_REMOVED_FROM_BUILDPATH) != 0) || ((flags & IModelElementDelta.F_REORDER) != 0));
+	}
+
 	protected Object skipProjectProjectFragmment(IProjectFragment root) {
 		if (isProjectProjectFragment(root))
 			return root.getParent();
@@ -314,10 +374,14 @@ public class StandardModelElementContentProvider implements ITreeContentProvider
 	 * Note: This method is for internal use only. Clients should not call this
 	 * method.
 	 */
-	protected boolean isScriptFolderEmpty(IModelElement element) throws ModelException {
+	protected boolean isScriptFolderEmpty(IModelElement element)
+			throws ModelException {
 		if (element instanceof IScriptFolder) {
 			IScriptFolder fragment = (IScriptFolder) element;
-			if (fragment.exists() && !(fragment.hasChildren() || fragment.getForeignResources().length > 0) && fragment.hasSubfolders())
+			if (fragment.exists()
+					&& !(fragment.hasChildren() || fragment
+							.getForeignResources().length > 0)
+					&& fragment.hasSubfolders())
 				return true;
 		}
 		return false;
@@ -328,8 +392,9 @@ public class StandardModelElementContentProvider implements ITreeContentProvider
 	 * method.
 	 */
 	protected boolean isProjectProjectFragment(IProjectFragment root) {
-		IDLTKProject scriptProject= root.getScriptProject();
-		return scriptProject != null && scriptProject.getPath().equals(root.getPath());
+		IDLTKProject scriptProject = root.getScriptProject();
+		return scriptProject != null
+				&& scriptProject.getPath().equals(root.getPath());
 	}
 
 	/**
@@ -391,13 +456,15 @@ public class StandardModelElementContentProvider implements ITreeContentProvider
 	protected Object[] getScriptProjects(IScriptModel jm) throws ModelException {
 		return jm.getScriptProjects();
 	}
+
 	protected Object skipProjectProjectFragment(IProjectFragment root) {
 		if (isProjectScriptFolder(root))
-			return root.getParent(); 
+			return root.getParent();
 		return root;
 	}
+
 	protected boolean isProjectScriptFolder(IProjectFragment root) {
-		IResource resource= root.getResource();
+		IResource resource = root.getResource();
 		return (resource instanceof IProject);
 	}
 }

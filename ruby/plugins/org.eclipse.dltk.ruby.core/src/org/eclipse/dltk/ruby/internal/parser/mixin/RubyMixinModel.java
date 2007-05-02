@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ 
+ *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.parser.mixin;
 
 import java.util.ArrayList;
@@ -84,43 +93,5 @@ public class RubyMixinModel {
 			}						
 		}
 		return null;
-	}
-	// Testing purpose only.
-	private static void preBuildMixinModelForBuiltint(IDLTKProject project, IProgressMonitor monitor ) {
-		try {
-			final MixinModel model = getRawInstance();
-			final List modules = new ArrayList();
-			project.accept( new IModelElementVisitor() {
-				public boolean visit(IModelElement element) {
-					if( element.getElementType() == IModelElement.PROJECT_FRAGMENT ) {
-						//Ignore not builtin project fragments.
-//						if( element instanceof BuiltinProjectFragment) {
-//							return true;
-//						}
-						return true;
-					}
-					if( element.getElementType() == IModelElement.SOURCE_MODULE) {
-//						if( ((ISourceModule)element).isBuiltin() ) {
-							modules.add(element);
-//						}
-						return false;
-					}
-					return true;
-				}
-			});
-			monitor.beginTask("Ruby builtin precaching...", modules.size());
-			model.setRemovesToZero();
-			for (int i = 0; i < modules.size(); i++) {
-				monitor.worked(1);
-				model.reportModule((ISourceModule)modules.get(i));
-				if( monitor.isCanceled() ) {
-					return;
-				}
-			}
-			model.makeAllElementsFinalIfNoCacheRemoves();
-			monitor.done();
-		} catch (ModelException e) {
-			e.printStackTrace();
-		}
 	}
 }
