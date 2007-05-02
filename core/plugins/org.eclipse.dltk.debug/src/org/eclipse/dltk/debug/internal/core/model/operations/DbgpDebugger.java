@@ -26,26 +26,25 @@ public class DbgpDebugger {
 
 	private IDbgpSession session;
 
-	public DbgpDebugger(IThreadManagement m, IDbgpSession session,
-			final IDbgpDebuggerFeedback end) {
+	public DbgpDebugger(IDbgpSession session, final IDbgpDebuggerFeedback end) {
 
 		this.session = session;
 
-		stepIntoOperation = new DbgpStepIntoOperation(m, session,
+		stepIntoOperation = new DbgpStepIntoOperation(session,
 				new DbgpOperation.IResultHandler() {
 					public void finish(IDbgpStatus status, DbgpException e) {
 						end.endStepInto(e, status);
 					}
 				});
 
-		stepOverOperation = new DbgpStepOverOperation(m, session,
+		stepOverOperation = new DbgpStepOverOperation(session,
 				new DbgpOperation.IResultHandler() {
 					public void finish(IDbgpStatus status, DbgpException e) {
 						end.endStepOver(e, status);
 					}
 				});
 
-		stepReturnOperation = new DbgpStepReturnOperation(m, session,
+		stepReturnOperation = new DbgpStepReturnOperation(session,
 				new DbgpOperation.IResultHandler() {
 					public void finish(IDbgpStatus status, DbgpException e) {
 						end.endStepReturn(e, status);
@@ -53,7 +52,7 @@ public class DbgpDebugger {
 				});
 
 		try {
-			suspendOperation = new DbgpSuspendOperation(m, session,
+			suspendOperation = new DbgpSuspendOperation(session,
 					new DbgpOperation.IResultHandler() {
 						public void finish(IDbgpStatus status, DbgpException e) {
 							end.endSuspend(e, status);
@@ -64,14 +63,14 @@ public class DbgpDebugger {
 			e.printStackTrace();
 		}
 
-		resumeOperation = new DbgpResumeOperation(m, session,
+		resumeOperation = new DbgpResumeOperation(session,
 				new DbgpOperation.IResultHandler() {
 					public void finish(IDbgpStatus status, DbgpException e) {
 						end.endResume(e, status);
 					}
 				});
 
-		terminateOperation = new DbgpTerminateOperation(m, session,
+		terminateOperation = new DbgpTerminateOperation(session,
 				new DbgpOperation.IResultHandler() {
 					public void finish(IDbgpStatus status, DbgpException e) {
 						end.endTerminate(e, status);

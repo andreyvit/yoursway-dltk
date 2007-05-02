@@ -34,13 +34,11 @@ public interface IDbgpProperty {
 
 	boolean isConstant();
 
-	/*
-	 * True/false whether the property has children this would be true for
-	 * objects or array's.
-	 */
 	boolean hasChildren();
 
 	int getChildrenCount();
 
-	List getAvailableChildren();
+	IDbgpProperty[] getAvailableChildren();
+	
+	String getKey();
 }

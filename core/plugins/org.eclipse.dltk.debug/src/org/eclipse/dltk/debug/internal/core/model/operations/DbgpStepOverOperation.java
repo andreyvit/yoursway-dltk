@@ -8,9 +8,8 @@ import org.eclipse.dltk.debug.internal.core.model.IThreadManagement;
 public class DbgpStepOverOperation extends DbgpStepOperation {
 	private static final String JOB_NAME = "StepOver operation";
 
-	public DbgpStepOverOperation(IThreadManagement management,
-			IDbgpCommands commands, IResultHandler finish) {
-		super(management, commands, JOB_NAME, finish);
+	public DbgpStepOverOperation(IDbgpCommands commands, IResultHandler finish) {
+		super(commands, JOB_NAME, finish);
 	}
 
 	protected IDbgpStatus step() throws DbgpException {

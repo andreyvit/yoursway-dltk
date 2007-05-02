@@ -229,4 +229,9 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 			throws DbgpException {
 		return propertyCommands.setProperty(name, stackDepth, value);
 	}
+
+	public IDbgpProperty getPropertyByKey(String name, String key)
+			throws DbgpException {
+		return propertyCommands.getPropertyByKey(name, key);
+	}
 }

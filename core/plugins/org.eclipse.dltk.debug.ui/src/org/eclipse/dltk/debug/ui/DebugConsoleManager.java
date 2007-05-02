@@ -27,40 +27,40 @@ public class DebugConsoleManager implements ILaunchListener {
 	private Map launchToConsoleMap;
 
 	protected boolean acceptLaunch(ILaunch launch) {
-		if (launch == null){
+		if (launch == null) {
 			return false;
 		}
-		
-		if (!launch.getLaunchMode().equals(ILaunchManager.DEBUG_MODE)){
+
+		if (!launch.getLaunchMode().equals(ILaunchManager.DEBUG_MODE)) {
 			return false;
 		}
-		
+
 		return true;
-		
-//		try {
-//			ILaunchConfiguration configuration = launch
-//					.getLaunchConfiguration();
-//
-//			final String natureId = configuration.getAttribute(
-//					IDLTKLaunchConfigurationConstants.ATTR_NATURE,
-//					(String) null);
-//
-//			if (natureId == null) {
-//				return false;
-//			}
-//
-//			String capture = configuration.getAttribute(
-//					DebugPlugin.ATTR_CAPTURE_OUTPUT, (String) null);
-//
-//			if (capture == null) {
-//				return false;
-//			}
-//			
-//		} catch (CoreException e) {
-//			return false;
-//		}
-//
-//		return true;
+
+		// try {
+		// ILaunchConfiguration configuration = launch
+		// .getLaunchConfiguration();
+		//
+		// final String natureId = configuration.getAttribute(
+		// IDLTKLaunchConfigurationConstants.ATTR_NATURE,
+		// (String) null);
+		//
+		// if (natureId == null) {
+		// return false;
+		// }
+		//
+		// String capture = configuration.getAttribute(
+		// DebugPlugin.ATTR_CAPTURE_OUTPUT, (String) null);
+		//
+		// if (capture == null) {
+		// return false;
+		// }
+		//			
+		// } catch (CoreException e) {
+		// return false;
+		// }
+		//
+		// return true;
 	}
 
 	protected IOConsole createConsole(String name) {
@@ -96,16 +96,19 @@ public class DebugConsoleManager implements ILaunchListener {
 			return;
 		}
 
-		IScriptDebugTarget target = (IScriptDebugTarget) launch
-				.getDebugTarget();
+		if (launch.getDebugTarget() instanceof IScriptDebugTarget) {
 
-		if (target != null) {
-			IOConsole console = (IOConsole) launchToConsoleMap.get(launch);
-			if (console != null) {
-				if (target.getStreamManager() == null) {
-					ConsoleScriptDebugTargetStreamManager manager = new ConsoleScriptDebugTargetStreamManager(
-							console);
-					target.setStreamManager(manager);
+			IScriptDebugTarget target = (IScriptDebugTarget) launch
+					.getDebugTarget();
+
+			if (target != null) {
+				IOConsole console = (IOConsole) launchToConsoleMap.get(launch);
+				if (console != null) {
+					if (target.getStreamManager() == null) {
+						ConsoleScriptDebugTargetStreamManager manager = new ConsoleScriptDebugTargetStreamManager(
+								console);
+						target.setStreamManager(manager);
+					}
 				}
 			}
 		}

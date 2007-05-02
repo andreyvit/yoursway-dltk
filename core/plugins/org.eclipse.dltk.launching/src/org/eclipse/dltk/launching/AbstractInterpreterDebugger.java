@@ -13,6 +13,8 @@ import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTargetListener;
 import org.eclipse.dltk.debug.internal.core.model.ScriptDebugTarget;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
+import org.eclipse.dltk.ruby.debug.RubyDebugPlugin;
+import org.eclipse.dltk.ruby.debug.model.RubyDebugTarget;
 
 public abstract class AbstractInterpreterDebugger extends
 		AbstractInterpreterRunner {
@@ -80,10 +82,16 @@ public abstract class AbstractInterpreterDebugger extends
 		if (sessionId == null) {
 			sessionId = generateSessionId();
 		}
-
-		IScriptDebugTarget target = new ScriptDebugTarget(dbgpService,
-				sessionId, launch, null);
+		
+		RubyDebugTarget target = new RubyDebugTarget(launch, null, sessionId, dbgpService);
 		launch.addDebugTarget(target);
+
+		//IScriptDebugTarget target = new ScriptDebugTarget(dbgpService,
+			//	sessionId, launch, null);
+		//launch.addDebugTarget(target);
+		
+		
+		
 
 		return sessionId;
 	}
@@ -150,13 +158,20 @@ public abstract class AbstractInterpreterDebugger extends
 							IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
 							DEFAULT_WAITING_TIMEOUT);
 
-			ScriptDebugTargetWaiter waiter = new ScriptDebugTargetWaiter(
-					(IScriptDebugTarget) launch.getDebugTarget());
+			//ScriptDebugTargetWaiter waiter = new ScriptDebugTargetWaiter(
+				//	(IScriptDebugTarget) launch.getDebugTarget());
 
-			if (!waiter.waitThread(waitingTimeout)) {
-				abort(DLTKLaunchingPlugin.ID_PLUGIN,
-						"Debugging engine not connected", null,
-						DLTKLaunchingPlugin.DEBUGGING_ENGINE_NOT_CONNECTED);
+			//if (!waiter.waitThread(waitingTimeout)) {
+				//abort(DLTKLaunchingPlugin.ID_PLUGIN,
+					//	"Debugging engine not connected", null,
+						//DLTKLaunchingPlugin.DEBUGGING_ENGINE_NOT_CONNECTED);
+			//}
+			
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (CoreException e) {
 			launch.terminate();

@@ -8,9 +8,8 @@ import org.eclipse.dltk.debug.internal.core.model.IThreadManagement;
 public class DbgpStepIntoOperation extends DbgpStepOperation {
 	private static final String JOB_NAME = "StepInto operation";
 
-	public DbgpStepIntoOperation(IThreadManagement management,
-			IDbgpCommands commands, IResultHandler finish) {
-		super(management, commands, JOB_NAME, finish);
+	public DbgpStepIntoOperation(IDbgpCommands commands, IResultHandler finish) {
+		super(commands, JOB_NAME, finish);
 	}
 
 	protected IDbgpStatus step() throws DbgpException {

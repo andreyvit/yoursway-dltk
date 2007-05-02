@@ -45,6 +45,13 @@ public class DbgpPropertyCommands extends DbgpBaseCommands implements
 
 		return parsePropertyResponse(communicate(request));
 	}
+	
+	public IDbgpProperty getPropertyByKey(String name, String key) throws DbgpException {
+		DbgpRequest request = createRequest(PROPERTY_GET_COMMAND);
+		request.addOption("-n", name);
+		request.addOption("-k", key);
+		return parsePropertyResponse(communicate(request));
+	}
 
 	public IDbgpProperty getProperty(String name) throws DbgpException {
 		return getProperty(name, null, null);

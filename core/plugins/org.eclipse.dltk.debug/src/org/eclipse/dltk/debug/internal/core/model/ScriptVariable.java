@@ -89,10 +89,9 @@ public class ScriptVariable extends ScriptDebugElement implements
 	}
 
 	public synchronized IScriptVariable[] getChildren() {
+		IDbgpProperty[] properties = property.getAvailableChildren();
 		
-		List properties = property.getAvailableChildren();
-		int size = properties.size();
-		if (size!=property.getChildrenCount()){
+		if (properties.length!=property.getChildrenCount()){
 			try {
 				property=core.getProperty(property.getFullName(), stackLevel);
 				return getChildren();
@@ -101,10 +100,10 @@ public class ScriptVariable extends ScriptDebugElement implements
 				//e.printStackTrace();				
 			}
 		}	
-		IScriptVariable[] variables = new IScriptVariable[size];
-		for (int i = 0; i < size; ++i) {
+		IScriptVariable[] variables = new IScriptVariable[properties.length];
+		for (int i = 0; i < properties.length; ++i) {
 			variables[i] = new ScriptVariable(stackLevel,
-					(IDbgpProperty) properties.get(i), getDebugTarget(), core);
+					(IDbgpProperty) properties[i], getDebugTarget(), core);
 		}
 		return variables;
 	}

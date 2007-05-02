@@ -26,7 +26,7 @@ import org.eclipse.dltk.debug.internal.core.model.operations.DbgpDebugger;
 import org.eclipse.dltk.debug.internal.core.model.operations.IDbgpDebuggerFeedback;
 
 public class ScriptThread extends ScriptDebugElement implements IScriptThread,
-		IThreadManagement, IDbgpDebuggerFeedback {
+	IThreadManagement, IDbgpDebuggerFeedback {
 
 	private boolean canSuspend;
 
@@ -138,7 +138,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		// Stepping
 		this.stepping = this.suspended;
 
-		engine = new DbgpDebugger(this, session, this);
+		engine = new DbgpDebugger(session, this);
 
 		if (DLTKCore.DEBUG) {
 			DbgpDebugger.printEngineInfo(engine);

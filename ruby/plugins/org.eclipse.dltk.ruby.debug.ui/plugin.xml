@@ -107,7 +107,7 @@
          point="org.eclipse.debug.ui.debugModelPresentations">
       <debugModelPresentation
             class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugModelPresentation"
-            id="org.eclipse.dltk.debug.core.model">
+            id="org.eclipse.dltk.debug.rubyModel">
       </debugModelPresentation>
    </extension>
 </plugin>

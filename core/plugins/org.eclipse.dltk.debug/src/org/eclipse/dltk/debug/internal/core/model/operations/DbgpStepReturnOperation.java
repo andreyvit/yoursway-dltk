@@ -8,9 +8,8 @@ import org.eclipse.dltk.debug.internal.core.model.IThreadManagement;
 public class DbgpStepReturnOperation extends DbgpStepOperation {
 	private static final String JOB_NAME = "StepReturn operation";
 
-	public DbgpStepReturnOperation(IThreadManagement management,
-			IDbgpCommands commands, IResultHandler finish) {
-		super(management, commands, JOB_NAME, finish);
+	public DbgpStepReturnOperation(IDbgpCommands commands, IResultHandler finish) {
+		super(commands, JOB_NAME, finish);
 	}
 
 	protected IDbgpStatus step() throws DbgpException {

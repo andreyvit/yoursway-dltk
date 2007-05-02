@@ -14,6 +14,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IPersistableSourceLocator;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.dltk.debug.internal.core.model.ScriptStackFrame;
+import org.eclipse.dltk.ruby.debug.model.RubyStackFrame;
 
 public class RubySourceLookupDirector implements IPersistableSourceLocator {
 		
@@ -21,9 +22,9 @@ public class RubySourceLookupDirector implements IPersistableSourceLocator {
 	}
 
 	public Object getSourceElement(IStackFrame stackFrame) {
-		if (stackFrame instanceof ScriptStackFrame) {
-			ScriptStackFrame sf = (ScriptStackFrame) stackFrame;
-			URI uri = sf.getFileName();
+		if (stackFrame instanceof RubyStackFrame) {
+			RubyStackFrame sf = (RubyStackFrame) stackFrame;
+			URI uri = sf.getFile();
 
 			String pathname = uri.getPath();
 			
@@ -31,7 +32,7 @@ public class RubySourceLookupDirector implements IPersistableSourceLocator {
 				pathname = pathname.substring(1);
 			}
 			
-		//	System.out.println("====> " + pathname);
+			System.out.println("====> " + pathname);
 
 			File file = new File(pathname);
 

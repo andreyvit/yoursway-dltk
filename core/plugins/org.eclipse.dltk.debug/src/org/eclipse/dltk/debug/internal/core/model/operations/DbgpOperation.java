@@ -22,18 +22,12 @@ public abstract class DbgpOperation {
 	public interface IResultHandler {
 		void finish(IDbgpStatus status, DbgpException e);
 	}
-
+	
 	private Job job;
 
 	private IDbgpContinuationHandler continuationHandler;
 
-	private IThreadManagement management;
-
 	private IDbgpCommands commands;
-
-	protected IThreadManagement getManagement() {
-		return management;
-	}
 
 	protected IDbgpCoreCommands getCore() {
 		return commands.getCoreCommands();
@@ -57,15 +51,13 @@ public abstract class DbgpOperation {
 		resultHandler.finish(status, null);
 	}
 
-	protected DbgpOperation(IThreadManagement management,
-			IDbgpCommands commands, String name, IResultHandler handler) {
-		if (management == null || commands == null) {
+	protected DbgpOperation(IDbgpCommands commands, String name, IResultHandler handler) {
+		if (commands == null) {
 			throw new IllegalArgumentException();
 		}
 
 		this.resultHandler = handler;
-
-		this.management = management;
+		
 		this.commands = commands;
 
 		job = new Job(name) {
@@ -88,25 +80,29 @@ public abstract class DbgpOperation {
 
 		this.continuationHandler = new IDbgpContinuationHandler() {
 			public void stderrReceived(String data) {
-				try {
-					OutputStream err = getManagement().getStreamProxy()
-							.getStderr();
-					err.write(data.getBytes());
-					err.flush();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				//try {
+//					OutputStream err = getManagement().getStreamProxy()
+//							.getStderr();
+//					err.write(data.getBytes());
+//					err.flush();
+					System.out.println("Received (stderr): " + data);
+					
+				//} catch (IOException e) {
+					//e.printStackTrace();
+				//}
 			}
 
 			public void stdoutReceived(String data) {
-				try {
-					OutputStream out = getManagement().getStreamProxy()
-							.getStdout();
-					out.write(data.getBytes());
-					out.flush();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				//try {
+					//OutputStream out = getManagement().getStreamProxy()
+						//	.getStdout();
+					//out.write(data.getBytes());
+					//out.flush();
+				//} catch (IOException e) {
+					//e.printStackTrace();
+				//}
+				
+				System.out.println("Received (stdout): " + data);
 			}
 		};
 	}
