@@ -10,7 +10,6 @@
 package org.eclipse.dltk.javascript.internal.ui.wizards;
 
 import java.util.Observable;
-import java.util.Observer;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;

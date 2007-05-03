@@ -12,13 +12,10 @@ package org.eclipse.dltk.javascript.ui.actions;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
-import org.eclipse.dltk.javascript.core.JavaScriptPlugin;
 import org.eclipse.dltk.javascript.internal.ui.formatting.DefaultCodeFormatterConstants;
 import org.eclipse.dltk.javascript.scriptdoc.JavaHeuristicScanner;
 import org.eclipse.dltk.javascript.scriptdoc.JavaIndenter;

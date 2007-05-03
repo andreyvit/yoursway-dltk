@@ -13,7 +13,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.dltk.core.CompletionContext;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.javascript.core.JavaScriptNature;
 import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
 import org.eclipse.dltk.ui.text.completion.CompletionProposalLabelProvider;

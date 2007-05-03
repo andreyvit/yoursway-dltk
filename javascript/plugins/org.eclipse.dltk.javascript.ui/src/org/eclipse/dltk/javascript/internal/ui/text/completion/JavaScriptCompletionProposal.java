@@ -11,8 +11,6 @@ package org.eclipse.dltk.javascript.internal.ui.text.completion;
 
 import org.eclipse.dltk.ui.text.completion.ProposalInfo;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposal;
-import org.eclipse.jface.text.contentassist.ContextInformation;
-import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.swt.graphics.Image;
 
 public class JavaScriptCompletionProposal extends ScriptCompletionProposal {

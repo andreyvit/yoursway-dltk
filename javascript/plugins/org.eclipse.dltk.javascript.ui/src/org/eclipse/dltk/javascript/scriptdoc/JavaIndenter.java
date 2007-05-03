@@ -19,7 +19,6 @@ import org.eclipse.dltk.internal.ui.text.DocumentCharacterIterator;
 import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
 import org.eclipse.dltk.javascript.internal.ui.text.JsPreferenceInterpreter;
 import org.eclipse.dltk.javascript.internal.ui.text.Symbols;
-import org.eclipse.dltk.ui.text.util.AutoEditUtils;
 import org.eclipse.dltk.ui.text.util.TabStyle;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;

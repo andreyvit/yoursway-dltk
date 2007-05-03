@@ -15,8 +15,6 @@ import java.util.Map;
 import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
 import org.eclipse.dltk.javascript.internal.ui.formatting.CodeFormatter;
 import org.eclipse.dltk.javascript.internal.ui.formatting.CodeFormatterUtil;
-import org.eclipse.dltk.javascript.scriptdoc.JavaHeuristicScanner;
-import org.eclipse.dltk.javascript.scriptdoc.JavaIndenter;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
