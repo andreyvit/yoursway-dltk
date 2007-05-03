@@ -206,7 +206,7 @@ public
 	end
 
 	def print_breakpoint_remove(m)
-		sprintf('<response command="breakpoint_remove", transaction_id="%d"/>',
+		sprintf('<response command="breakpoint_remove" transaction_id="%d"/>',
 			m['id'])
 	end
 

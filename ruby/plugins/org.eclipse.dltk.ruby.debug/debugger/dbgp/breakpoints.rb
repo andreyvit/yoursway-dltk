@@ -19,7 +19,7 @@ public
 
 	def break?(file, line)
 		for bp in @line_bps.values do
-			if bp['line'] == line and bp['file'] == file
+			if bp['line'] == line and bp['file'] == file and  bp['state']
 				return true
 			end
 		end
@@ -27,12 +27,13 @@ public
 		false
 	end
 
-	def set_line(file, line)
+	def set_line(file, line, state)
 		id = Breakpoints.next_id
 		@line_bps[id] = {
-			'id'   => id,
-			'line' => line,
-			'file' => file
+			'id'      => id,
+			'line'    => line,
+			'file'    => file,
+			'state' => state
 		}
 		id
 	end
@@ -52,5 +53,9 @@ public
 
 	def remove(id)
 		@line_bps.delete(id)
+	end
+
+	def update(id, state)
+		@line_bps[id]['state'] = state
 	end
 end

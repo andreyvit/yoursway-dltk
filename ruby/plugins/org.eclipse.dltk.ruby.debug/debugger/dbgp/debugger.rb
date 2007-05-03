@@ -259,10 +259,10 @@ private
 
 
 	# Breakpoint commands
-	def set_line_breakpoint(file, line, state = true)
-		log("Setting line breakpoint, file: #{file}; line: #{line}")
+	def set_line_breakpoint(file, line, state)
+		log("Setting line breakpoint, file: #{file}; line: #{line}; state: #{state}")
 
-		id = @breakpoints.set_line(file, line)
+		id = @breakpoints.set_line(file, line, state)
 
 		{ 'state' => state, 
 		  'breakpoint_id' => id }
@@ -270,7 +270,11 @@ private
 
 	def breakpoint_remove(id)
 		@breakpoints.remove(id)
+		{}
+	end
 
+	def breakpoint_update(id, state)
+		@breakpoints.update(id, state)
 		{}
 	end
 
@@ -374,6 +378,7 @@ private
     		# Breakpoint commands
     		when 'breakpoint_set'
     			type = command.arg('-t')           # breakpoint type, see below for valid values [required]
+				state = command.arg('-s') == 'enabled' ? true : false			
 
     			#state = command.arg('-s')         # breakpoint state [optional, defaults to "enabled"]    			
     			#function = command.arg('-m')      # function name [required for call or return breakpoint types]
@@ -387,7 +392,7 @@ private
 					file = File.expand_path(decode_uri(command.arg('-f')))
 
       				line = command.arg('-n').to_i
-					set_line_breakpoint(file, line)
+					set_line_breakpoint(file, line, state)
 				end
 
 
@@ -396,12 +401,9 @@ private
 				{}
 
     		when 'breakpoint_update'
-				# TODO:
-    			# state = command.arg('-s')
-    			# lineno = command.arg('-n')
-    			# hit_value = command.arg('-h')
-    			#hist_condition = command.arg('-o')
-				{}
+				id = command.arg('-d').to_i
+				state = command.arg('-s') == 'enabled' ? true : false
+				breakpoint_update(id, state)
     		
     		when 'breakpoint_remove'
     			id = command.arg('-d').to_i
@@ -409,7 +411,7 @@ private
 
     		when 'breakpoint_list'
     			# TODO:
-			{}
+				{}
 
     		# Context commands
     		when 'context_names'              
