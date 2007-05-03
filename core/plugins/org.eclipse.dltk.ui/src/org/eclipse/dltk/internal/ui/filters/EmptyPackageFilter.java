@@ -32,7 +32,12 @@ public class EmptyPackageFilter extends ViewerFilter {
 		if (element instanceof IScriptFolder) {
 			IScriptFolder pkg= (IScriptFolder)element;
 			try {
-				return pkg.hasChildren();
+				Object[] foreignResources = pkg.getForeignResources();
+				boolean hasForeign = false;
+				if( foreignResources != null ) {
+					hasForeign = foreignResources.length > 0;
+				}
+				return pkg.hasChildren() || hasForeign;
 			} catch (ModelException e) {
 				return false;
 			}

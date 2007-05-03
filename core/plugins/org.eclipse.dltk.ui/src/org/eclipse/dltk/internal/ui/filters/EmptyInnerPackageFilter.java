@@ -29,8 +29,9 @@ public class EmptyInnerPackageFilter extends ViewerFilter {
 		if (element instanceof IScriptFolder) {
 			IScriptFolder pkg= (IScriptFolder)element;
 			try {
-				if (pkg.isRootFolder())
+				if (pkg.isRootFolder()) {
 					return pkg.hasChildren();
+				}
 				return !pkg.hasSubfolders() || pkg.hasChildren() || (pkg.getForeignResources().length > 0);
 			} catch (ModelException e) {
 				return false;

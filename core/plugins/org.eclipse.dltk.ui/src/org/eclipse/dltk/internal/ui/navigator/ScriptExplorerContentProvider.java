@@ -256,15 +256,18 @@ public abstract class ScriptExplorerContentProvider extends
 			Object parent) {
 		Object[] objects = super.getChildren(parent);
 		List list = new ArrayList();
+		if (existingObject != null) {
+			list.addAll(Arrays.asList(existingObject));
+		}
 		// Add everything that is not a ScriptFolder
 		for (int i = 0; i < objects.length; i++) {
 			Object object = objects[i];
 			if (!(object instanceof ScriptFolder)) {
-				list.add(object);
+				if( !list.contains(object)) {
+					list.add(object);
+				}
 			}
 		}
-		if (existingObject != null)
-			list.addAll(Arrays.asList(existingObject));
 		return list.toArray();
 	}
 

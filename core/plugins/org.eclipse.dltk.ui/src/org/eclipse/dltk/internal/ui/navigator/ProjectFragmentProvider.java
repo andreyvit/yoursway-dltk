@@ -181,7 +181,16 @@ public class ProjectFragmentProvider implements IPropertyChangeListener {
 			IModelElement iModelElement= elements[i];
 			//if the name of the ScriptFolder is the top level package it will contain no "." separators
 			if (iModelElement instanceof IScriptFolder && iModelElement.getElementName().indexOf(IScriptFolder.PACKAGE_DELIMITER)==-1) {
-				topLevelElements.add(iModelElement);
+				IScriptFolder folder = (IScriptFolder) iModelElement;
+				if( !folder.isRootFolder() ) {
+					topLevelElements.add(iModelElement);
+				}
+				else {
+					IModelElement[] children = folder.getChildren();
+					for (int j = 0; j < children.length; j++) {
+						topLevelElements.add(children[j]);
+					}
+				}
 			}
 		}	
 		return topLevelElements;
