@@ -2,6 +2,7 @@ package org.eclipse.dltk.javascript.internal.launching;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,7 +42,8 @@ public class GenericJavaScriptInstallType extends
 				resolve = FileLocator.toFileURL(bundle
 						.getResource("RhinoRunner.class"));
 				try {
-					File fl = new File(resolve.toURI()).getParentFile();
+					
+					File fl = new File(new URI(resolve.toString())).getParentFile();
 					return new LibraryLocation[] { new LibraryLocation(
 							new Path(fl.getAbsolutePath())) };
 				} catch (URISyntaxException e) {

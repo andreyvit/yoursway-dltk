@@ -12,6 +12,7 @@ package org.eclipse.dltk.javascript.internal.launching;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -75,7 +76,7 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 						URL resolve = FileLocator.toFileURL(bundle
 								.getResource("RhinoRunner.class"));
 						try {
-							File fl = new File(resolve.toURI()).getParentFile();
+							File fl = new File(new URI(resolve.toString())).getParentFile();
 							String[] newClassPath = new String[classPath.length + 1];
 							System.arraycopy(classPath, 0, newClassPath, 0,
 									classPath.length);
