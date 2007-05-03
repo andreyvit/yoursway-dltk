@@ -218,7 +218,8 @@ public class JavaScriptTemplateContext extends ScriptTemplateContext {
 		return super.evaluate(template);
 	}
 	private static String replaceSeq(String sq, CharSequence target, CharSequence replacement) {
-        return Pattern.compile(target.toString(), Pattern.LITERAL).matcher(
-            sq).replaceAll(Matcher.quoteReplacement(replacement.toString()));
+//        return Pattern.compile(target.toString(), Pattern.LITERAL).matcher(
+//            sq).replaceAll(Matcher.quoteReplacement(replacement.toString()));
+		throw new UnsupportedOperationException();
     }
 }
