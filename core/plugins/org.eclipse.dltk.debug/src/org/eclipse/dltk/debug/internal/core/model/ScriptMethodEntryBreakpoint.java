@@ -7,36 +7,28 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
 
-public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
-		IScriptMethodEntryBreakpoint {
+public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements IScriptMethodEntryBreakpoint {
 
-	private static final String METHOD_NAME = ScriptLineBreakpoint.ID
-		+ ".methodName";
-	private static final String METHOD_SIGNATURE = ScriptLineBreakpoint.ID
-			+ ".methodSignature";
-	
-	private static final String SECONDARY_ID = ScriptLineBreakpoint.ID
-	+ ".secondaryId";
-	
-	private static final String BREAK_ON_ENTRY = ScriptLineBreakpoint.ID
-	+ ".methodEntry";
-	
-	private static final String BREAK_ON_EXIT = ScriptLineBreakpoint.ID
-	+ ".methodExit";
-	
-	protected String getMarkerID(){
+	private static final String METHOD_NAME = ScriptLineBreakpoint.ID + ".methodName";
+	private static final String METHOD_SIGNATURE = ScriptLineBreakpoint.ID + ".methodSignature";
+
+	private static final String SECONDARY_ID = ScriptLineBreakpoint.ID + ".secondaryId";
+
+	private static final String BREAK_ON_ENTRY = ScriptLineBreakpoint.ID + ".methodEntry";
+
+	private static final String BREAK_ON_EXIT = ScriptLineBreakpoint.ID + ".methodExit";
+
+	protected String getMarkerID() {
 		return ScriptMarkerFactory.METHOD_ENTRY_MARKER_ID;
 	}
-	public ScriptMethodEntryBreakpoint(){
-		
+
+	public ScriptMethodEntryBreakpoint() {
+
 	}
 
-	public ScriptMethodEntryBreakpoint(IResource resource, int lineNumber,
-			int charStart, int charEnd, int hitCount, boolean register,
-			Map attributes, String methodName2, String methodSignature2)
+	public ScriptMethodEntryBreakpoint(IResource resource, int lineNumber, int charStart, int charEnd, int hitCount, boolean register, Map attributes, String methodName2, String methodSignature2)
 			throws DebugException {
-		super(resource, lineNumber, charStart, charEnd, hitCount, register,
-				attributes);
+		super(resource, lineNumber, charStart, charEnd, hitCount, register, attributes);
 		try {
 			getMarker().setAttribute(METHOD_NAME, methodName2);
 			getMarker().setAttribute(METHOD_SIGNATURE, methodSignature2);
@@ -48,31 +40,34 @@ public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
 	public String getMethodName() throws CoreException {
 		return getMarker().getAttribute(METHOD_NAME, "");
 	}
-	
-	public boolean shouldBreakOnEntry(){
+
+	public boolean shouldBreakOnEntry() {
 		String attribute = getMarker().getAttribute(BREAK_ON_ENTRY, "true");
-		return Boolean.parseBoolean(attribute);
+		return (new Boolean(attribute)).booleanValue();
 	}
-	public boolean shouldBreakOnExit(){
+
+	public boolean shouldBreakOnExit() {
 		String attribute = getMarker().getAttribute(BREAK_ON_EXIT, "true");
-		return Boolean.parseBoolean(attribute);
+		return (new Boolean(attribute)).booleanValue();
 	}
-	
-	public void setBreakOnEntry(boolean value) throws CoreException{		
-		getMarker().setAttribute(BREAK_ON_ENTRY, value+"");
+
+	public void setBreakOnEntry(boolean value) throws CoreException {
+		getMarker().setAttribute(BREAK_ON_ENTRY, value + "");
 	}
-	
-	public void setBreakOnExit(boolean value)throws CoreException{		
-		getMarker().setAttribute(BREAK_ON_EXIT, value+"");
-				
+
+	public void setBreakOnExit(boolean value) throws CoreException {
+		getMarker().setAttribute(BREAK_ON_EXIT, value + "");
+
 	}
 
 	public String getMethodSignature() throws CoreException {
 		return getMarker().getAttribute(METHOD_SIGNATURE, "");
 	}
-	public String getSecondaryId() { 
+
+	public String getSecondaryId() {
 		return getMarker().getAttribute(SECONDARY_ID, null);
 	}
+
 	public void setSecondaryId(String id) throws CoreException {
 		getMarker().setAttribute(SECONDARY_ID, id);
 	}
