@@ -139,7 +139,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		case IResource.FILE:
 			if (org.eclipse.dltk.compiler.util.Util.isArchiveFileName(resource
 					.getName())) {
-				return new ArchiveProjectFragment(resource, this);
+				return createArchiveFragment(resource);
 			} else {
 				return null;
 			}
@@ -150,6 +150,23 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		default:
 			return null;
 		}
+	}
+
+	private IProjectFragment createArchiveFragment(IResource resource) {
+		try {
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+					.getLanguageToolkit(this);
+			if (toolkit != null) {
+				if (toolkit.languageSupportZIPBuildpath()) {
+					return new ArchiveProjectFragment(resource, this);
+				}
+			}
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -163,7 +180,20 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * no path canonicalization
 	 */
 	public IProjectFragment getProjectFragment0(IPath archivePath) {
-		return new ArchiveProjectFragment(archivePath, this);
+		try {
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+					.getLanguageToolkit(this);
+			if (toolkit != null) {
+				if (toolkit.languageSupportZIPBuildpath()) {
+					return new ArchiveProjectFragment(archivePath, this);
+				}
+			}
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -197,8 +227,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			// resolve to a source/lib folder
 			// thus will try to guess based on existing resource
 			if (isBuiltin) {
-				return new BuiltinProjectFragment(path,
-						this);
+				return new BuiltinProjectFragment(path, this);
 			}
 			if (org.eclipse.dltk.compiler.util.Util.isArchiveFileName(path
 					.lastSegment())) {
@@ -228,16 +257,16 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	public IBuildpathEntry[] getResolvedBuildpath() throws ModelException {
 		return getResolvedBuildpath(true/* ignoreUnresolvedEntry */,
 				false/* don't generateMarkerOnError */, false/*
-															 * don't
-															 * returnResolutionInProgress
-															 */); // force
-																									// the
-																									// reverse
-																									// rawEntry
-																									// cache
-																									// to
-																									// be
-																									// populated
+																 * don't
+																 * returnResolutionInProgress
+																 */); // force
+		// the
+		// reverse
+		// rawEntry
+		// cache
+		// to
+		// be
+		// populated
 	}
 
 	/*
@@ -291,7 +320,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 
 		if (perProjectInfo != null) {
 			if (perProjectInfo.rawBuildpath == null // .buildpath file could not
-													// be read
+					// be read
 					&& generateMarkerOnError
 					&& DLTKLanguageManager.hasScriptNature(this.project)) {
 				// flush .buildpath format markers (bug 39877), but only when
@@ -329,19 +358,19 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 */
 	public IBuildpathEntry[] getResolvedBuildpath(
 			IBuildpathEntry[] buildpathEntries, boolean ignoreUnresolvedEntry, // if
-																				// unresolved
-																				// entries
-																				// are
-																				// met,
-																				// should
-																				// it
-																				// trigger
-																				// initializations
+			// unresolved
+			// entries
+			// are
+			// met,
+			// should
+			// it
+			// trigger
+			// initializations
 			boolean generateMarkerOnError, Map rawReverseMap) // can be null
-																// if not
-																// interested in
-																// reverse
-																// mapping
+			// if not
+			// interested in
+			// reverse
+			// mapping
 			throws ModelException {
 
 		IModelStatus status;
@@ -360,18 +389,11 @@ public class DLTKProject extends Openable implements IDLTKProject {
 
 			/* validation if needed */
 			if (generateMarkerOnError || !ignoreUnresolvedEntry) {
-				status = BuildpathEntry
-						.validateBuildpathEntry(this, rawEntry, false /*
-																		 * do
-																		 * not
-																		 * recurse
-																		 * in
-																		 * containers,
-																		 * done
-																		 * later
-																		 * to
-																		 * accumulate
-																		 */);
+				status = BuildpathEntry.validateBuildpathEntry(this, rawEntry,
+						false /*
+								 * do not recurse in containers, done later to
+								 * accumulate
+								 */);
 				if (generateMarkerOnError && !status.isOK()) {
 					if (status.getCode() == IModelStatusConstants.INVALID_PATH
 							&& ((BuildpathEntry) rawEntry).isOptional())
@@ -450,7 +472,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	public IBuildpathEntry[] getResolvedBuildpath(boolean ignoreUnresolvedEntry)
 			throws ModelException {
 		return getResolvedBuildpath(ignoreUnresolvedEntry, false, // don't
-																	// generateMarkerOnError
+				// generateMarkerOnError
 				true // returnResolutionInProgress
 		);
 	}
@@ -565,26 +587,23 @@ public class DLTKProject extends Openable implements IDLTKProject {
 					IResource member = workspaceRoot
 							.findMember(entry.getPath());
 					if (member != null && member.getType() == IResource.PROJECT) { // double
-																					// check
-																					// if
-																					// bound
-																					// to
-																					// project
-																					// (23977)
+						// check
+						// if
+						// bound
+						// to
+						// project
+						// (23977)
 						IProject projRsc = (IProject) member;
 						if (DLTKProject.hasScriptNature(projRsc)) {
 							DLTKProject scriptProject = (DLTKProject) DLTKCore
 									.create(projRsc);
-							scriptProject
-									.computeExpandedBuildpath(
-											combinedEntry,
-											ignoreUnresolvedVariable,
-											false /*
-													 * no marker when recursing
-													 * in prereq
-													 */,
-											rootIDs, accumulatedEntries,
-											preferredBuildpaths);
+							scriptProject.computeExpandedBuildpath(
+									combinedEntry, ignoreUnresolvedVariable,
+									false /*
+											 * no marker when recursing in
+											 * prereq
+											 */, rootIDs, accumulatedEntries,
+									preferredBuildpaths);
 						}
 					}
 				} else {
@@ -766,7 +785,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			if (referringEntry != null && !resolvedEntry.isExported())
 				return;
 			if (checkExistency) {
-				if (entryPath.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY) && BuiltinProjectFragment.isSupported(this)) {
+				if (entryPath.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY)
+						&& BuiltinProjectFragment.isSupported(this)) {
 					root = new BuiltinProjectFragment(entryPath.append("/")
 							.append(this.getPath()), this);
 					break;
@@ -785,7 +805,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 					if (Model.isFile(target)
 							&& (org.eclipse.dltk.compiler.util.Util
 									.isArchiveFileName(entryPath.lastSegment()))) {
-						root = new ArchiveProjectFragment(entryPath, this);
+//						root = new ArchiveProjectFragment(entryPath, this);
+						root = getProjectFragment0(entryPath);
 					} else {
 						if (resolvedEntry.isContainerEntry()) {
 							root = new ExternalProjectFragment(entryPath, this,
@@ -1867,18 +1888,14 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			boolean canModifyResources, IProgressMonitor monitor)
 			throws ModelException {
 
-		setRawBuildpath(
-				entries,
-				monitor,
-				canModifyResources,
+		setRawBuildpath(entries, monitor, canModifyResources,
 				getResolvedBuildpath(true/* ignoreUnresolvedEntry */,
 						false/* don't generateMarkerOnError */, false/*
-																	 * don't
-																	 * returnResolutionInProgress
-																	 */),
-				true, // needValidation
+																		 * don't
+																		 * returnResolutionInProgress
+																		 */), true, // needValidation
 				canModifyResources); // save only if modifying resources is
-										// allowed
+		// allowed
 	}
 
 	/**
@@ -1887,16 +1904,13 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	public void setRawBuildpath(IBuildpathEntry[] entries,
 			IProgressMonitor monitor) throws ModelException {
 
-		setRawBuildpath(
-				entries,
-				monitor,
-				true, // canChangeResource (as per API contract)
+		setRawBuildpath(entries, monitor, true, // canChangeResource (as per API
+				// contract)
 				getResolvedBuildpath(true/* ignoreUnresolvedEntry */,
 						false/* don't generateMarkerOnError */, false/*
-																	 * don't
-																	 * returnResolutionInProgress
-																	 */),
-				true, // needValidation
+																		 * don't
+																		 * returnResolutionInProgress
+																		 */), true, // needValidation
 				true); // need to save
 	}
 
@@ -1909,7 +1923,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		try {
 			IBuildpathEntry[] newRawPath = newEntries;
 			if (newRawPath == null) { // are we already with the default
-										// buildpath
+				// buildpath
 				newRawPath = defaultBuildpath();
 			}
 			SetBuildpathOperation op = new SetBuildpathOperation(this,
@@ -1974,7 +1988,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	public void updateBuildpathMarkers(Map preferredBuildpaths) {
 
 		this.flushBuildpathProblemMarkers(false/* cycle */, true/* format */);
-		this.flushBuildpathProblemMarkers(false/* cycle */, false/* format */);
+		this
+				.flushBuildpathProblemMarkers(false/* cycle */, false/* format */);
 
 		IBuildpathEntry[] buildpath = this.readBuildpathFile(true/* marker */,
 				false/* log */);
@@ -2311,7 +2326,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			String extension = path.getFileExtension();
 			if (extension == null) {
 				String packageName = path.toString();// .replace(IPath.SEPARATOR,
-														// '.');
+				// '.');
 
 				NameLookup lookup = newNameLookup((WorkingCopyOwner) null/*
 																			 * no
@@ -2344,7 +2359,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			} else if (Util.isValidSourceModule(this, path)) {
 				IPath packagePath = path.removeLastSegments(1);
 				String packageName = packagePath.toString();// .replace(IPath.SEPARATOR,
-															// '.');
+				// '.');
 				String typeName = path.lastSegment();
 				typeName = typeName.substring(0, typeName.length()
 						- extension.length() - 1);
@@ -2438,9 +2453,9 @@ public class DLTKProject extends Openable implements IDLTKProject {
 							getResolvedBuildpath(
 									new IBuildpathEntry[] { entry }, true,
 									false, null/* no reverse map */), false, // don't
-																			// retrieve
-																			// exported
-																			// roots
+							// retrieve
+							// exported
+							// roots
 							null); /* no reverse map */
 				}
 			}
@@ -2953,17 +2968,20 @@ public class DLTKProject extends Openable implements IDLTKProject {
 
 		// check if any actual difference
 		boolean wasSuccessful = false; // flag recording if .buildpath file
-										// change got reflected
+		// change got reflected
 		try {
 			// force to (re)read the property file
 			IBuildpathEntry[] fileEntries = readBuildpathFile(
-					false/* don't create markers */, false/* don't log problems */);
+					false/* don't create markers */, false/*
+															 * don't log
+															 * problems
+															 */);
 			if (fileEntries == null) {
 				return; // could not read, ignore
 			}
 			ModelManager.PerProjectInfo info = getPerProjectInfo();
 			if (info.rawBuildpath != null) { // if there is an in-memory
-												// buildpath
+				// buildpath
 				if (isBuildpathEqualsTo(info.rawBuildpath, fileEntries)) {
 					wasSuccessful = true;
 					return;
@@ -3041,13 +3059,12 @@ public class DLTKProject extends Openable implements IDLTKProject {
 
 	public IProjectFragment[] getAllProjectFragments(Map rootToResolvedEntries)
 			throws ModelException {
-		return computeProjectFragments(
-				getResolvedBuildpath(true/* ignoreUnresolvedEntry */,
-						false/* don't generateMarkerOnError */, false/*
-																	 * don't
-																	 * returnResolutionInProgress
-																	 */),
-				true/* retrieveExportedRoots */, rootToResolvedEntries);
+		return computeProjectFragments(getResolvedBuildpath(
+				true/* ignoreUnresolvedEntry */,
+				false/* don't generateMarkerOnError */, false/*
+																 * don't
+																 * returnResolutionInProgress
+																 */), true/* retrieveExportedRoots */, rootToResolvedEntries);
 	}
 
 	public static boolean hasScriptNature(IProject p) {
