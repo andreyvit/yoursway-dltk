@@ -13,18 +13,11 @@ import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.dltk.core.ICallProcessor;
-import org.eclipse.dltk.core.ICalleeProcessor;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelStatus;
-import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.internal.core.util.Messages;
-import org.eclipse.dltk.javascript.internal.core.codeassist.JavaScriptCallProcessor;
-import org.eclipse.dltk.javascript.internal.core.codeassist.JavaScriptCalleeProcessor;
 
 public class JavaScriptLanguageToolkit implements IDLTKLanguageToolkit {
 	private static JavaScriptLanguageToolkit sInstance = new JavaScriptLanguageToolkit();

@@ -9,8 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.validators.internal.ui;
 
-import java.awt.Dialog;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;

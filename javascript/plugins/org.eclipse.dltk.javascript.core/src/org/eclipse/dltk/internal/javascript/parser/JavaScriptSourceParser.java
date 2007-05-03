@@ -10,7 +10,6 @@
 package org.eclipse.dltk.internal.javascript.parser;
 
 import java.io.CharArrayReader;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 

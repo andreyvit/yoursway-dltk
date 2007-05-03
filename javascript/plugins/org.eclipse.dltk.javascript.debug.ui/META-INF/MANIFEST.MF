@@ -24,8 +24,7 @@ Require-Bundle: org.eclipse.debug.ui,
  org.eclipse.dltk.debug,
  org.eclipse.dltk.javascript.core,
  org.eclipse.dltk.javascript.debug,
- org.eclipse.dltk.javascript.launching,
- org.eclipse.wst.javascript.ui
+ org.eclipse.dltk.javascript.launching 
 Export-Package: org.eclipse.dltk.javascript.internal.console.ui,
  org.eclipse.dltk.javascript.internal.debug.ui,
  org.eclipse.dltk.javascript.internal.debug.ui.console,

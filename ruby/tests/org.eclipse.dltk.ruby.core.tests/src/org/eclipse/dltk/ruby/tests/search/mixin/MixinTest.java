@@ -17,7 +17,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.tests.model.AbstractDLTKSearchTests;
-import org.eclipse.dltk.ti.ITypeInferencer;
 
 public class MixinTest extends AbstractDLTKSearchTests implements IDLTKSearchConstants {
 

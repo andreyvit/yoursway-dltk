@@ -13,13 +13,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IBreakpoint;
+import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.dbgp.IDbgpNotification;
@@ -59,6 +59,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	private volatile boolean suspended;
 
 	private volatile boolean terminated;
+	
+	private IScriptDebugTarget target;
 
 	// Stop
 	private IDbgpStatus stopDebugger() throws DbgpException {
@@ -125,12 +127,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	
 	public ScriptThread(IScriptDebugTarget target, IDbgpSession session,
 			ScriptThreadManager manager) throws DbgpException, CoreException {
-		super(target);
-
-		if (target == null || session == null) {
-			throw new IllegalArgumentException();
-		}
 		
+		this.target = target;
 		
 
 		this.manager = manager;
@@ -360,5 +358,9 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	public String toString() {
 		return "Thread (" + session.getInfo().getThreadId() + ")";
+	}
+
+	public IDebugTarget getDebugTarget() {
+		return target.getDebugTarget();
 	}
 }

@@ -462,6 +462,8 @@ private
 	    	data['id'] = command.arg('-i')
 		end
 
+		log('OK')
+
 		data
     end
 

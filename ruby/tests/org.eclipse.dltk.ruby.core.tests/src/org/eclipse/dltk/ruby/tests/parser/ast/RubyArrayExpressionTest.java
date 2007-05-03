@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.tests.parser.ast;
 
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ruby.ast.RubyArrayExpression;
 import org.eclipse.dltk.ruby.tests.Activator;
 import org.eclipse.dltk.ruby.tests.parser.AbstractASTTest;

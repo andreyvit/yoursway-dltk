@@ -40,8 +40,8 @@ import org.eclipse.debug.core.IStatusHandler;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IScriptModelMarker;
 import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptModelMarker;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.launching.InterpreterRuntimeBuildpathEntryResolver;
 

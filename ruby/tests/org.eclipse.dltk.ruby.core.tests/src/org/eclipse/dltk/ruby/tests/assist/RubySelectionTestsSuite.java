@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.tests.assist;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;

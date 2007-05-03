@@ -19,7 +19,7 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 
 public class NoDebuggingEgineTclStatusHandler implements IStatusHandler {
 
-	private static final String TCL_DEBUG_PREFERENCES_ID = "org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebugPreferences";
+	private static final String TCL_DEBUG_PREFERENCES_ID = "org.eclipse.dltk.tcl.preferences.debug";
 
 	public Object handleStatus(IStatus status, Object source)
 			throws CoreException {

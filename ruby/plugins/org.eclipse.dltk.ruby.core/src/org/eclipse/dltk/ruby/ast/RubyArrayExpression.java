@@ -11,9 +11,9 @@ package org.eclipse.dltk.ruby.ast;
 
 import java.util.Iterator;
 
+import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.ASTListNode;
 
 public class RubyArrayExpression extends ASTListNode {
 

@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.launching;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,8 +47,7 @@ public class RubyInterpreterDebugger extends AbstractInterpreterDebugger {
 		return IRubyLaunchConfigurationConstants.ID_RUBY_PROCESS_TYPE;
 	}
 
-	private void setupEnvironment(InterpreterRunnerConfiguration configuration,
-			String host, int port, String sessionId) {
+	private void setupEnvironment(InterpreterRunnerConfiguration configuration, String host, int port, String sessionId) {
 		List list = new ArrayList(Arrays.asList(configuration.getEnvironment()));
 
 		list.add(RUBY_HOST_VAR + "=" + host);
@@ -59,36 +57,33 @@ public class RubyInterpreterDebugger extends AbstractInterpreterDebugger {
 
 		boolean logging = true;
 		if (logging) {
-			String logFile = RubyDebugPlugin.getDefault().getStateLocation()
-					.append("debug_log.txt").toOSString();
+			String logFile = RubyDebugPlugin.getDefault().getStateLocation().append("debug_log.txt").toOSString();
 			list.add(RUBY_LOG_VAR + "=" + logFile);
 		}
 
-		configuration.setEnvironment((String[]) list.toArray(new String[list
-				.size()]));
+		configuration.setEnvironment((String[]) list.toArray(new String[list.size()]));
 	}
 
-	protected String[] getCommandLine(String sessionId, String host, int port,
-			InterpreterRunnerConfiguration configuration) throws CoreException {
+	protected String[] getCommandLine(String sessionId, String host, int port, InterpreterRunnerConfiguration configuration) throws CoreException {
 
 		final String shell = constructProgramString(configuration);
 
 		IPath debuggerLocation = null;
 
 		try {
-			debuggerLocation = RubyDebugPlugin.getDefault()
-					.deployDebuggerSource();
+			debuggerLocation = RubyDebugPlugin.getDefault().deployDebuggerSource();
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, getPluginId(),
-					"Can't deploy debugger source", e));
+			throw new CoreException(new Status(IStatus.ERROR, getPluginId(), "Can't deploy debugger source", e));
 		}
 
-		IPath debuggerScript = debuggerLocation.append(DEBUGGER_DBGP_DIR)
-				.append(DEBUGGER_SCRIPT);
+		IPath debuggerScript = debuggerLocation.append(DEBUGGER_DBGP_DIR).append(DEBUGGER_SCRIPT);
 
 		setupEnvironment(configuration, host, port, sessionId);
 
-		return new String[] { shell, "-I" + debuggerLocation.toOSString(),
-				debuggerScript.toOSString() };
+		return new String[] { shell, "-I" + debuggerLocation.toOSString(), debuggerScript.toOSString() };
+	}
+
+	protected String getDebugModelIdentidier() {
+		return "org.eclipse.dltk.debug.rubyModel";
 	}
 }

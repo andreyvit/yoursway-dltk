@@ -18,7 +18,6 @@ import org.eclipse.dltk.launching.AbstractInterpreterDebugger;
 import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterRunnerConfiguration;
-import org.eclipse.dltk.launching.AbstractInterpreterDebugger.ScriptDebugTargetWaiter;
 
 
 public class JavaScriptInterpreterDebugger extends AbstractInterpreterDebugger {
@@ -46,9 +45,6 @@ public class JavaScriptInterpreterDebugger extends AbstractInterpreterDebugger {
 		final int port = dbgpService.getPort();
 		JavaScriptInterpreterRunner.doRun(configuration, launch,host,""+port,sessionId);
 		try {
-			
-
-						
 			int waitingTimeout = config
 					.getAttribute(
 							IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
@@ -131,5 +127,9 @@ public class JavaScriptInterpreterDebugger extends AbstractInterpreterDebugger {
 
 	protected String getPluginId() {
 		return JavaScriptLaunchingPlugin.PLUGIN_ID;
+	}
+
+	protected String getDebugModelIdentidier() {
+		return "org.eclipse.dltk.debug.core.model";
 	}
 }

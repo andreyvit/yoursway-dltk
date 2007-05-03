@@ -10,7 +10,6 @@
 package org.eclipse.dltk.core;
 
 import java.io.InputStream;
-import java.security.Signature;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 

@@ -11,10 +11,9 @@ package org.eclipse.dltk.ruby.debug.model;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.debug.core.DebugException;
@@ -64,8 +63,14 @@ public class RubyStackFrame extends PlatformObject implements IStackFrame {
 			//if (dirty) {
 				System.out.println("== Updating variables ==");
 				RubyVariable[] newVariables = readVariables();
-				RubyVariableUpdater.update(variables, newVariables);
-				variables = newVariables;
+				//RubyVariableUpdater.update(variables, newVariables);
+				
+				List list = Arrays.asList(newVariables);
+				
+				
+				//Collections.shuffle(list);
+								
+				variables = (RubyVariable[])list.toArray(new RubyVariable[list.size()]);
 				//dirty = false;
 			//}
 		} catch (DebugException e) {
@@ -242,6 +247,6 @@ public class RubyStackFrame extends PlatformObject implements IStackFrame {
 
 	public String toString() {
 		return name + " [line: " + Integer.toString(level.getLineNumber())
-				+ "; dirty: " + dirty + "]";
+				+ "; hash: " + super.hashCode() + "]" ;
 	}
 }

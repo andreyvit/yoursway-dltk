@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
-<plugin>
-   
-   
+<plugin>      
    <extension
 	point="org.eclipse.debug.ui.launchConfigurationTypeImages">
  		<launchConfigurationTypeImage
@@ -110,4 +108,55 @@
             id="org.eclipse.dltk.debug.rubyModel">
       </debugModelPresentation>
    </extension>
+   
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            targetID="org.eclipse.dltk.ruby.ui.editor.RubyEditor"
+            id="org.eclipse.dltk.ruby.ui.editor.RubyEditor.BreakpointRulerActions">
+          
+         <action
+             label="Toogle Breakpoint (label not used)"
+             class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+             style="push"
+             actionID="RulerDoubleClick"
+             id="RubyEditor.doubleClickBreakpointAction"/>
+            
+      </editorContribution>   
+ </extension>
+ 
+  <extension
+       point="org.eclipse.ui.popupMenus">
+         
+                      
+    <viewerContribution
+          id="org.eclipse.dltk.ruby.debug.ui.rulerContribution"
+          targetID="#RubyRulerContext">
+
+         <action
+               label="%EnableDisableBreakpoint.label"
+			   id="org.eclipse.dltk.ruby.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+               class="org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"               
+               menubarPath="debug">
+          </action>
+         
+         <action
+         	   label="%ToggleBreakpoint.label"
+         	   id="org.eclipse.dltk.ruby.ui.actions.RulerToggleBreakpointActionDelegate"
+               class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"                           
+               menubarPath="debug">
+         </action>        
+       
+       <action
+             class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesRulerActionDelegate"
+             id="org.eclipse.dltk.ruby.debug.ui.ScriptBreakpointPropertiesRulerActionDelegate"
+             label="%BreakpointProperties.label"
+             menubarPath="additions"/>
+    </viewerContribution>    
+ </extension>
+ 
+  <extension point="org.eclipse.debug.ui.debugModelContextBindings">
+	<modelContextBinding contextId="org.eclipse.dltk.debug.ui.debugging" debugModelId="org.eclipse.dltk.debug.rubyModel"></modelContextBinding>
+ </extension>
+ 
 </plugin>

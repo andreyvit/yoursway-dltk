@@ -15,8 +15,8 @@ import java.util.Iterator;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IScriptModelMarker;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IScriptModelMarker;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
 import org.eclipse.ui.texteditor.MarkerUtilities;

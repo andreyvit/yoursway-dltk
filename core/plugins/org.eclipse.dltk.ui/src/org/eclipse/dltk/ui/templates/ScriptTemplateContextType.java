@@ -12,11 +12,9 @@ package org.eclipse.dltk.ui.templates;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.templates.GlobalTemplateVariables;
-import org.eclipse.jface.text.templates.TemplateContext;
 import org.eclipse.jface.text.templates.TemplateContextType;
 import org.eclipse.jface.text.templates.TemplateException;
 import org.eclipse.jface.text.templates.TemplateVariable;
-import org.eclipse.jface.text.templates.TemplateVariableResolver;
 
 /**
  * A very simple context type.

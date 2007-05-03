@@ -11,8 +11,8 @@ package org.eclipse.dltk.ast.expressions;
 
 import java.util.List;
 
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTListNode;
+import org.eclipse.dltk.ast.ASTNode;
 
 public class CallArgumentsList extends ASTListNode {
 	public static final CallArgumentsList EMPTY = new CallArgumentsList() {

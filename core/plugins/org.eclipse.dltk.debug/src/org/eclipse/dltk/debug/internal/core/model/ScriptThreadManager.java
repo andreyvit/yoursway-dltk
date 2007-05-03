@@ -10,7 +10,6 @@
 package org.eclipse.dltk.debug.internal.core.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.ListenerList;

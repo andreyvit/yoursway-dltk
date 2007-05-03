@@ -46,8 +46,7 @@ public class TclInterpreterDebugger extends AbstractInterpreterDebugger {
 		super(install);
 	}
 
-	protected String[] getCommandLine(String sessionId, String host, int port,
-			InterpreterRunnerConfiguration configuration) throws CoreException {
+	protected String[] getCommandLine(String sessionId, String host, int port, InterpreterRunnerConfiguration configuration) throws CoreException {
 		final String shell = constructProgramString(configuration);
 
 		List list = new ArrayList();
@@ -71,5 +70,10 @@ public class TclInterpreterDebugger extends AbstractInterpreterDebugger {
 		}
 
 		return (String[]) list.toArray(new String[list.size()]);
+	}
+
+	protected String getDebugModelIdentidier() {
+		//return "org.eclipse.dltk.debug.core.model";
+		return "org.eclipse.dltk.debug.tclModel";
 	}
 }

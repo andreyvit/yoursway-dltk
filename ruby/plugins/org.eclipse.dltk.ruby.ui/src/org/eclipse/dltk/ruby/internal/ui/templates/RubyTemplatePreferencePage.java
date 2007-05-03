@@ -17,7 +17,6 @@ import org.eclipse.dltk.ui.templates.ScriptTemplatePreferencePage;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class RubyTemplatePreferencePage extends ScriptTemplatePreferencePage

@@ -15,8 +15,6 @@ package org.eclipse.dltk.internal.ui.editor;
 import java.util.Stack;
 
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor.BracketLevel;
-import org.eclipse.dltk.internal.ui.editor.ScriptEditor.ExclusivePositionUpdater;
-import org.eclipse.dltk.internal.ui.editor.ScriptEditor.ExitPolicy;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.BadPositionCategoryException;
@@ -24,20 +22,11 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension;
 import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.IPositionUpdater;
-import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.ITypedRegion;
-import org.eclipse.jface.text.Position;
-import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.text.link.ILinkedModeListener;
 import org.eclipse.jface.text.link.LinkedModeModel;
-import org.eclipse.jface.text.link.LinkedModeUI;
-import org.eclipse.jface.text.link.LinkedPosition;
-import org.eclipse.jface.text.link.LinkedPositionGroup;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.custom.VerifyKeyListener;
 import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.ui.texteditor.link.EditorLinkedModeUI;
 
 public abstract class BracketInserter implements VerifyKeyListener, ILinkedModeListener {
 

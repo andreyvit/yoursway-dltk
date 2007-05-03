@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
 import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.dltk.validators.core.IValidator;
-import org.eclipse.dltk.validators.core.IValidatorChangedListener;
 import org.eclipse.dltk.validators.core.ValidatorRuntime;
 import org.osgi.framework.BundleContext;
 import org.w3c.dom.Document;

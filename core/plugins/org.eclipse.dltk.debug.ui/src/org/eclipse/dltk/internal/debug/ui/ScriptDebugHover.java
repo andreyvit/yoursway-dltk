@@ -9,18 +9,20 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.ui;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IVariable;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Shell;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
-
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.dltk.core.ICodeAssist;
+import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
+import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
+import org.eclipse.dltk.debug.core.model.IScriptVariable;
+import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
+import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
+import org.eclipse.dltk.ui.DLTKUIPlugin;
+import org.eclipse.dltk.ui.text.hover.IScriptEditorTextHover;
 import org.eclipse.jface.internal.text.html.HTMLTextPresenter;
 import org.eclipse.jface.preference.IPreferenceStore;
-
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IDocument;
@@ -29,24 +31,11 @@ import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHoverExtension;
 import org.eclipse.jface.text.ITextViewer;
-
-import org.eclipse.ui.editors.text.EditorsUI;
-
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-
-import org.eclipse.debug.ui.DebugUITools;
-import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.dltk.core.ICodeAssist;
-import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
-import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
-import org.eclipse.dltk.debug.core.model.IScriptThread;
-import org.eclipse.dltk.debug.core.model.IScriptVariable;
-import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
-import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
-import org.eclipse.dltk.debug.ui.preferences.DebuggingPreferences;
-import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.dltk.ui.text.hover.IScriptEditorTextHover;
+import org.eclipse.ui.editors.text.EditorsUI;
 
 public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 		ITextHoverExtension {

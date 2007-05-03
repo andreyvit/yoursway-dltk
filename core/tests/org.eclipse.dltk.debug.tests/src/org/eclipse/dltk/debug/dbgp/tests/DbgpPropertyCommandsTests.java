@@ -12,7 +12,6 @@ package org.eclipse.dltk.debug.dbgp.tests;
 import java.io.IOException;
 import java.text.MessageFormat;
 
-import org.eclipse.dltk.dbgp.IDbgpProperty;
 import org.eclipse.dltk.dbgp.commands.IDbgpPropertyCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.exceptions.DbgpProtocolException;

@@ -36,8 +36,12 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 			while (!map.containsKey(key)) {
 				wait();
 			}
-
-			return map.get(key);
+			
+			return map.remove(key);			
+		}
+		
+		public synchronized int size() {
+			return map.size();
 		}
 	}
 
@@ -123,6 +127,7 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 
 	public DbgpResponsePacket getResponsePacket(int transactionId)
 			throws InterruptedException {
+					
 		return (DbgpResponsePacket) responseQueue
 				.get(new Integer(transactionId));
 	}

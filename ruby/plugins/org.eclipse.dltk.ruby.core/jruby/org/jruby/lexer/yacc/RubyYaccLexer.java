@@ -35,7 +35,6 @@
 package org.jruby.lexer.yacc;
 
 import java.io.IOException;
-
 import java.math.BigInteger;
 
 import org.jruby.ast.BackRefNode;

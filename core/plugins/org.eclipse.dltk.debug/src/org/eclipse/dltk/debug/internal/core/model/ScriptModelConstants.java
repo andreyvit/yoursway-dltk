@@ -14,5 +14,6 @@ public class ScriptModelConstants {
 
 	}
 
+	// TODO: should remove this
 	public static final String MODEL_ID = "org.eclipse.dltk.debug.core.model";
 }

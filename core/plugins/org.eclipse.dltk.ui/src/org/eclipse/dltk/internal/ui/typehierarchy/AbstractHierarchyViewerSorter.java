@@ -10,12 +10,10 @@
 package org.eclipse.dltk.internal.ui.typehierarchy;
 
 import org.eclipse.dltk.core.DLTKModelUtil;
-import org.eclipse.dltk.core.Flags;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.internal.core.util.MethodOverrideTester;
 import org.eclipse.dltk.ui.ModelElementSorter;
 import org.eclipse.dltk.ui.viewsupport.SourcePositionSorter;
 import org.eclipse.jface.viewers.Viewer;

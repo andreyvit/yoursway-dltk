@@ -9,8 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.core;
 
-import java.security.Signature;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 
 /**

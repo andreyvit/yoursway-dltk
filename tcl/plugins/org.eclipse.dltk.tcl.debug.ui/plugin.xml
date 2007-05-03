@@ -79,7 +79,7 @@
          point="org.eclipse.debug.ui.debugModelPresentations">
       <debugModelPresentation
             class="org.eclipse.dltk.tcl.internal.debug.ui.TclDebugModelPresentation"
-            id="org.eclipse.dltk.debug.core.model"/>
+            id="org.eclipse.dltk.debug.tclModel"/>
    </extension>
     <extension
        point="org.eclipse.ui.popupMenus">
@@ -213,7 +213,7 @@
              class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
              style="push"
              actionID="RulerDoubleClick"
-             id="example.doubleClickBreakpointAction"/>
+             id="TclEditor.doubleClickBreakpointAction"/>
             
       </editorContribution>   
  </extension>
@@ -246,8 +246,10 @@
          </actionSet>
       </perspectiveExtension>
    </extension>      
- 
- 
- 
+   
  <!--- Tcl console ui -->
+ 
+ <extension point="org.eclipse.debug.ui.debugModelContextBindings">
+	<modelContextBinding contextId="org.eclipse.dltk.debug.ui.debugging" debugModelId="org.eclipse.dltk.debug.tclModel"></modelContextBinding>
+ </extension>
 </plugin>

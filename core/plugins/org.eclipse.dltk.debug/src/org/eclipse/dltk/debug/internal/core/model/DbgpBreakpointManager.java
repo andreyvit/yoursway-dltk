@@ -174,6 +174,8 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 	protected static void removeBreakpoint(IDbgpBreakpointCommands commands,
 			IScriptBreakpoint breakpoint) throws DbgpException {
 		IScriptBreakpoint b = (IScriptBreakpoint) breakpoint;
+		
+		System.out.println("DbgpBreakpointManager.removeBreakpoint()");
 
 		commands.removeBreakpoint(b.getIdentifier());
 		if (b instanceof IScriptMethodEntryBreakpoint) {

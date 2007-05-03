@@ -131,10 +131,7 @@
 		</view> 
 	</perspectiveExtension>
  </extension>
- 
- <extension point="org.eclipse.debug.ui.debugModelContextBindings">
-	<modelContextBinding contextId="org.eclipse.dltk.debug.ui.debugging" debugModelId="org.eclipse.dltk.debug.core.model"></modelContextBinding>
- </extension>   
+    
    
  <extension
        point="org.eclipse.debug.core.statusHandlers">

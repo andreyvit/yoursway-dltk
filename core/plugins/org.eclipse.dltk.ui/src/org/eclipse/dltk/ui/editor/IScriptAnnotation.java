@@ -11,6 +11,7 @@ package org.eclipse.dltk.ui.editor;
 
 import java.util.Iterator;
 
+import org.eclipse.dltk.compiler.problem.CategorizedProblem;
 import org.eclipse.dltk.core.ISourceModule;
 
 

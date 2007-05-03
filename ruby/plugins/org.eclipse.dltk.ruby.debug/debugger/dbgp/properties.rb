@@ -4,7 +4,7 @@ def has_children(obj)
 end
 
 def get_string(obj)
-	has_children(obj) ? '' : obj.to_s
+	has_children(obj) ? 'Object' : obj.to_s
 end
 
 

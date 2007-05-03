@@ -9,31 +9,22 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.launching;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.URL;
 import java.util.HashMap;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.launching.AbstractInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.IInterpreterRunner;
 import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
 import org.eclipse.dltk.utils.DeployHelper;
-import org.osgi.framework.Bundle;
 
 public class GenericRubyInstall extends AbstractInterpreterInstall {	
 	public class BuiltinsHelper {

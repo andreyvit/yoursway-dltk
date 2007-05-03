@@ -39,10 +39,13 @@ public class RubyEditor extends ScriptEditor {
 	public static final String EDITOR_ID = "org.eclipse.dltk.ruby.ui.editor.RubyEditor";
 
 	public static final String EDITOR_CONTEXT = "#RubyEditorContext";
+	
+	public static final String RULER_CONTEXT = "#TclRulerContext";
 
 	protected void initializeEditor() {
 		super.initializeEditor();
 		setEditorContextMenuId(EDITOR_CONTEXT);
+		setRulerContextMenuId(RULER_CONTEXT);
 	}
 
 	protected IPreferenceStore getScriptPreferenceStore() {

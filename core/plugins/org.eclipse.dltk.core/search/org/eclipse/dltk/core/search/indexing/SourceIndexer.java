@@ -24,7 +24,6 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchDocument;
 import org.eclipse.dltk.internal.core.ModelManager;
-import org.eclipse.dltk.internal.core.mixin.MixinIndexer;
 
 /**
  * A SourceIndexer indexes script files using a script parser. The following

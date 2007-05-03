@@ -22,41 +22,50 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IPersistableSourceLocator;
 import org.eclipse.debug.core.model.IStackFrame;
+import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.internal.core.model.ScriptStackFrame;
 import org.eclipse.dltk.ruby.debug.model.RubyStackFrame;
 
 public class RubySourceLookupDirector implements IPersistableSourceLocator {
-		
+
 	public RubySourceLookupDirector() {
 	}
 
 	public Object getSourceElement(IStackFrame stackFrame) {
+		// Transition code, will be removed later
+		URI uri = null;
 		if (stackFrame instanceof RubyStackFrame) {
 			RubyStackFrame sf = (RubyStackFrame) stackFrame;
-			URI uri = sf.getFile();
+			uri = sf.getFile();
+		} else if (stackFrame instanceof IScriptStackFrame) {
+			ScriptStackFrame sf = (ScriptStackFrame) stackFrame;
+			uri = sf.getFileName();
+		}
 
-			String pathname = uri.getPath();
-			
-			if (Platform.getOS().equals(Platform.OS_WIN32)) {
-				pathname = pathname.substring(1);
+		if (uri == null) {
+			return null;
+		}
+
+		String pathname = uri.getPath();
+
+		if (Platform.getOS().equals(Platform.OS_WIN32)) {
+			pathname = pathname.substring(1);
+		}
+
+		System.out.println("====> " + pathname);
+
+		File file = new File(pathname);
+
+		IContainer container = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(new Path(file.getParent()));
+
+		if (container != null) {
+			IResource resource = container.findMember(file.getName());
+
+			if (resource instanceof IFile) {
+				return (IFile) resource;
 			}
-			
-			System.out.println("====> " + pathname);
-
-			File file = new File(pathname);
-
-			IContainer container = ResourcesPlugin.getWorkspace().getRoot()
-					.getContainerForLocation(new Path(file.getParent()));
-
-			if (container != null) {
-				IResource resource = container.findMember(file.getName());
-
-				if (resource instanceof IFile) {
-					return (IFile) resource;
-				}
-			} else {
-				return file;
-			}
+		} else {
+			return file;
 		}
 
 		return null;
@@ -66,8 +75,7 @@ public class RubySourceLookupDirector implements IPersistableSourceLocator {
 		return null;
 	}
 
-	public void initializeDefaults(ILaunchConfiguration configuration)
-			throws CoreException {
+	public void initializeDefaults(ILaunchConfiguration configuration) throws CoreException {
 
 	}
 
@@ -75,4 +83,3 @@ public class RubySourceLookupDirector implements IPersistableSourceLocator {
 
 	}
 }
-

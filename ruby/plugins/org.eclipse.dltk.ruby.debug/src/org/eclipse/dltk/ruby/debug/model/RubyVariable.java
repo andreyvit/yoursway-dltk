@@ -42,13 +42,12 @@ public class RubyVariable extends PlatformObject implements IVariable, IValue {
 		this.suspendCount = -1;
 		this.variables = new RubyVariable[0];
 	}
-	
+
 	protected RubyVariable[] readVariables() throws DbgpException {
 		IDbgpSession session = getThread().getSession();
-		
+
 		synchronized (session) {
-			property = session.getCoreCommands().getPropertyByKey(
-					property.getName(), property.getKey());
+			property = session.getCoreCommands().getPropertyByKey(property.getName(), property.getKey());
 
 			IDbgpProperty[] props = property.getAvailableChildren();
 
@@ -57,8 +56,7 @@ public class RubyVariable extends PlatformObject implements IVariable, IValue {
 				newVariables.add(new RubyVariable(frame, props[i]));
 			}
 
-			return (RubyVariable[]) newVariables
-					.toArray(new RubyVariable[newVariables.size()]);
+			return (RubyVariable[]) newVariables.toArray(new RubyVariable[newVariables.size()]);
 		}
 	}
 
@@ -68,13 +66,13 @@ public class RubyVariable extends PlatformObject implements IVariable, IValue {
 		try {
 			if (dirty) {
 				RubyVariable[] newVariables = readVariables();
-				RubyVariableUpdater.update(variables, newVariables);
+				//RubyVariableUpdater.update(variables, newVariables);
 				variables = newVariables;
 				// dirty = false;
 			}
-		} catch (DebugException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		//} catch (DebugException e) {
+			//// TODO Auto-generated catch block
+			//e.printStackTrace();
 		} catch (DbgpException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -90,16 +88,18 @@ public class RubyVariable extends PlatformObject implements IVariable, IValue {
 	}
 
 	public String getReferenceTypeName() throws DebugException {
-		return "Count: " + Integer.toString(suspendCount) + "; Hash: "
-				+ super.hashCode(); // property.getType();
+		return "Count: " + Integer.toString(suspendCount) + "; Hash: " + super.hashCode(); // property.getType();
 	}
 
 	public IValue getValue() throws DebugException {
-		return this;
+				
+		return clone(this); 
 	}
 
 	public boolean hasValueChanged() throws DebugException {
-		return getThread().getSuspendCount() == suspendCount;
+		//return getThread().getSuspendCount() == suspendCount;
+		
+		return false;
 	}
 
 	// =========================================================================
@@ -151,15 +151,15 @@ public class RubyVariable extends PlatformObject implements IVariable, IValue {
 
 	public IVariable[] getVariables() throws DebugException {
 		checkVariables();
-		
+
 		System.out.println("############# RubyVariable.getVariables() ################");
 
 		IVariable[] vars = (IVariable[]) variables.clone();
-		
-		for(int i = 0; i < vars.length; ++i) {
+
+		for (int i = 0; i < vars.length; ++i) {
 			System.out.println("Variable name: " + vars[i].getName());
 		}
-		
+
 		return vars;
 	}
 
@@ -183,6 +183,18 @@ public class RubyVariable extends PlatformObject implements IVariable, IValue {
 
 	public void setDirty() {
 		dirty = true;
-
 	}
+
+//	public boolean equals(Object obj) {
+//		if (obj instanceof RubyVariable) {
+//			RubyVariable v = (RubyVariable) obj;
+//			return v.property.getName().equals(property.getName()) && v.property.getValue().equals(property.getValue());
+//		}
+//		
+//		return false;
+//	}
+//
+//	public int hashCode() {
+//		return property.getName().hashCode() ^ property.getValue().hashCode();
+//	}
 }

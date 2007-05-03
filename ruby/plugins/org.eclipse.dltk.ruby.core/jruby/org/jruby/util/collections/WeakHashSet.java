@@ -25,7 +25,10 @@
  ***** END LICENSE BLOCK *****/
 package org.jruby.util.collections;
 
-import java.util.*;
+import java.util.AbstractSet;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.WeakHashMap;
 
 /**
  * A simple set that uses weak references to ensure that its elements can be garbage collected.

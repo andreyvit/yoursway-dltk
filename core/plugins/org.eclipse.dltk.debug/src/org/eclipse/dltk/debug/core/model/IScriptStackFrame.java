@@ -11,7 +11,6 @@ package org.eclipse.dltk.debug.core.model;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IStackFrame;
-import org.eclipse.debug.core.model.IVariable;
 
 /**
  * A stack frame in a thread on a Script virtual machine.

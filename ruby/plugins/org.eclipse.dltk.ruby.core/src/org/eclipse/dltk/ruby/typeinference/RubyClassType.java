@@ -10,7 +10,6 @@
 package org.eclipse.dltk.ruby.typeinference;
 
 import org.eclipse.dltk.evaluation.types.IClassType;
-import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
 import org.eclipse.dltk.ti.types.ClassType;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 

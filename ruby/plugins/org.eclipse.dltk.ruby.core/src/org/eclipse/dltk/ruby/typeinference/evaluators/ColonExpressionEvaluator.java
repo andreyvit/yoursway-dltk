@@ -10,7 +10,6 @@
 package org.eclipse.dltk.ruby.typeinference.evaluators;
 
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;

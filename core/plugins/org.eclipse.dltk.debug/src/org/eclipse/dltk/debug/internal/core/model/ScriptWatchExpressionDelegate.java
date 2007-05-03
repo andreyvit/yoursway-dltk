@@ -32,8 +32,7 @@ import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
-public class ScriptWatchExpressionDelegate implements IWatchExpressionDelegate,
-		IWatchExpressionResult {
+public class ScriptWatchExpressionDelegate implements IWatchExpressionDelegate, IWatchExpressionResult {
 
 	private IDebugElement context;
 
@@ -56,15 +55,14 @@ public class ScriptWatchExpressionDelegate implements IWatchExpressionDelegate,
 		Job job = new Job("Evaluate expression") {
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
-					if (context.getDebugTarget().isTerminated())return Status.OK_STATUS;
+					if (context.getDebugTarget().isTerminated())
+						return Status.OK_STATUS;
 					IDbgpProperty property = extended.evaluate(expression);
 
-					IScriptVariable variable = new ScriptVariable(0, property,
-							context.getDebugTarget(), core);
+					IScriptVariable variable = new ScriptVariable(context.getDebugTarget(), 0, property, core);
 					value = new ScriptValue(variable);
 
-					listener
-							.watchEvaluationFinished(ScriptWatchExpressionDelegate.this);
+					listener.watchEvaluationFinished(ScriptWatchExpressionDelegate.this);
 				} catch (DbgpException e) {
 					addError(e.getMessage());
 				}
@@ -90,8 +88,7 @@ public class ScriptWatchExpressionDelegate implements IWatchExpressionDelegate,
 	}
 
 	// IWatchExpressionDelegate
-	public void evaluateExpression(String expression, IDebugElement context,
-			IWatchExpressionListener listener) {
+	public void evaluateExpression(String expression, IDebugElement context, IWatchExpressionListener listener) {
 		this.expression = expression;
 		this.context = context;
 		this.listener = listener;

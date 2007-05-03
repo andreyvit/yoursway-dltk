@@ -55,9 +55,13 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	private IDbgpService dbgpService;
 	private String dbgpId;
+	
+	private String mondelId;
 
-	public ScriptDebugTarget(IDbgpService dbgpService, String id,
+	public ScriptDebugTarget(String modelId, IDbgpService dbgpService, String id,
 			ILaunch launch, IProcess process) throws CoreException {
+		
+		this.mondelId = modelId;
 
 		this.listeners = new ListenerList();
 
@@ -85,6 +89,10 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		return this;
 	}
 
+	public String getModelIdentifier() {
+		return mondelId;	
+	}
+	
 	public ILaunch getLaunch() {
 		return launch;
 	}

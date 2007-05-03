@@ -17,8 +17,7 @@ import org.eclipse.dltk.dbgp.commands.IDbgpCoreCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
-public class ScriptVariable extends ScriptDebugElement implements
-		IScriptVariable {
+public class ScriptVariable extends ScriptDebugElement implements IScriptVariable {
 
 	private int stackLevel;
 
@@ -28,9 +27,10 @@ public class ScriptVariable extends ScriptDebugElement implements
 
 	private IDbgpCoreCommands core;
 
-	protected ScriptVariable(int stackLevel, IDbgpProperty property,
-			IDebugTarget target, IDbgpCoreCommands core) {
-		super(target);
+	private IDebugTarget target;
+	
+	protected ScriptVariable(IDebugTarget target, int stackLevel, IDbgpProperty property, IDbgpCoreCommands core) {
+		this.target = target;
 
 		this.stackLevel = stackLevel;
 		this.property = property;
@@ -38,6 +38,10 @@ public class ScriptVariable extends ScriptDebugElement implements
 		this.newValue = null;
 
 		this.core = core;
+	}
+
+	public IDebugTarget getDebugTarget() {
+		 return target;
 	}
 
 	public String getName() throws DebugException {
@@ -96,20 +100,19 @@ public class ScriptVariable extends ScriptDebugElement implements
 
 	public synchronized IScriptVariable[] getChildren() {
 		IDbgpProperty[] properties = property.getAvailableChildren();
-		
-		if (properties.length!=property.getChildrenCount()){
+
+		if (properties.length != property.getChildrenCount()) {
 			try {
-				property=core.getProperty(property.getFullName(), stackLevel);
+				property = core.getProperty(property.getFullName(), stackLevel);
 				return getChildren();
-			} catch (DbgpException e) {				
-				//// TODO Auto-generated catch block
-				//e.printStackTrace();				
+			} catch (DbgpException e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
 			}
-		}	
+		}
 		IScriptVariable[] variables = new IScriptVariable[properties.length];
 		for (int i = 0; i < properties.length; ++i) {
-			variables[i] = new ScriptVariable(stackLevel,
-					(IDbgpProperty) properties[i], getDebugTarget(), core);
+			variables[i] = new ScriptVariable(getDebugTarget(), stackLevel, (IDbgpProperty) properties[i], core);
 		}
 		return variables;
 	}

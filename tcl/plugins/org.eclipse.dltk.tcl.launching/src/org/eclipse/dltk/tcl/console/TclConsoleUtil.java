@@ -12,7 +12,6 @@ package org.eclipse.dltk.tcl.console;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.console.ScriptConsoleServer;
 import org.eclipse.dltk.launching.DLTKLaunchUtil;

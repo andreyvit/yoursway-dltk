@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.dbgp;
 
-import java.util.List;
 
 public interface IDbgpProperty {
 

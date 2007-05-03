@@ -10,7 +10,6 @@
 package org.eclipse.dltk.tcl.internal.core;
 
 import org.eclipse.dltk.ast.Modifiers;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.search.indexing.SourceIndexerRequestor;
 
 public class TclSourceIndexerRequestor extends SourceIndexerRequestor {

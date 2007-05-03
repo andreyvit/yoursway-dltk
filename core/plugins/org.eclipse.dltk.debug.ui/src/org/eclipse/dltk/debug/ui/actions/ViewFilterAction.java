@@ -10,7 +10,6 @@
 package org.eclipse.dltk.debug.ui.actions;
 
 import org.eclipse.debug.ui.IDebugView;
-import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferenceStore;

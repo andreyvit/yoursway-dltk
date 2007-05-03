@@ -20,11 +20,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.util.SimpleLookupTable;
-import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.core.IDLTKProject;
-import org.eclipse.dltk.core.IProjectFragment;
-import org.eclipse.dltk.core.ModelException;
 
 public class State {
 	// NOTE: this state cannot contain types that are not defined in this

@@ -9,9 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.internal.core.model.operations;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -23,7 +20,6 @@ import org.eclipse.dltk.dbgp.commands.IDbgpCommands;
 import org.eclipse.dltk.dbgp.commands.IDbgpCoreCommands;
 import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
-import org.eclipse.dltk.debug.internal.core.model.IThreadManagement;
 
 public abstract class DbgpOperation {
 	private static final boolean DEBUG = DLTKCore.DEBUG;

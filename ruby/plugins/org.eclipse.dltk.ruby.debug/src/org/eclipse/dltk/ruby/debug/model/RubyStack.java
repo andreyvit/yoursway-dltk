@@ -11,16 +11,10 @@ package org.eclipse.dltk.ruby.debug.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.IDbgpStackLevel;
-import org.eclipse.dltk.dbgp.exceptions.DbgpException;
-import org.eclipse.dltk.dbgp.internal.DbgpStackLevel;
-import org.eclipse.dltk.dbgp.internal.commands.DbgpStackCommands;
-
-import sun.security.action.GetLongAction;
 
 public class RubyStack {
 	private RubyStackFrame[] frames;

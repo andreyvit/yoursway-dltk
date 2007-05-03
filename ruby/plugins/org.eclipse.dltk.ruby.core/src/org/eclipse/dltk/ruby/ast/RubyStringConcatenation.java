@@ -9,8 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ast;
 
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTListNode;
+import org.eclipse.dltk.ast.ASTNode;
 
 public class RubyStringConcatenation extends ASTListNode {
 

@@ -25,7 +25,7 @@
      <sourceLocator
            class="org.eclipse.dltk.ruby.internal.launching.RubySourceLookupDirector"
            id="rubySourceLocator"
-           name="org.eclipse.dltk.ruby.internal.launching.RubySourceLookupDirector">
+           name="Ruby files source locator">
      </sourceLocator>
   </extension>
 </plugin>

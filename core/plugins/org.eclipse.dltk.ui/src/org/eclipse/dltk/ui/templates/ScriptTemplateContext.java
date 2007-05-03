@@ -20,8 +20,6 @@ import org.eclipse.jface.text.templates.TemplateBuffer;
 import org.eclipse.jface.text.templates.TemplateContextType;
 import org.eclipse.jface.text.templates.TemplateException;
 
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
-
 public class ScriptTemplateContext extends DocumentTemplateContext {
 	private ISourceModule sourceModule;
 

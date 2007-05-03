@@ -11,7 +11,6 @@ package org.eclipse.dltk.internal.ui.text;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.internal.core.SourceModule;
 
 
 /**

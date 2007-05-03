@@ -30,7 +30,6 @@ import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
-import org.eclipse.dltk.internal.javascript.parser.JavaScriptSourceElementParser;
 import org.eclipse.dltk.javascript.core.JavaScriptNature;
 
 

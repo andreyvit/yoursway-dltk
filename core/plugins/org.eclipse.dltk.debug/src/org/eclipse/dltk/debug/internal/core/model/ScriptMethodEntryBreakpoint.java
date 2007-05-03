@@ -71,5 +71,4 @@ public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
 	public void setSecondaryId(String id) throws CoreException {
 		getMarker().setAttribute(SECONDARY_ID, id);
 	}
-
 }

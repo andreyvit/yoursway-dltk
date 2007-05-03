@@ -11,8 +11,6 @@ package org.eclipse.dltk.tcl.internal.parsers.raw;
 
 import java.text.ParseException;
 
-import org.eclipse.dltk.compiler.problem.IProblemReporter;
-
 public class SimpleTclParser {
 
 	/**
