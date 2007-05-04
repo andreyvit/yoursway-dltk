@@ -71,17 +71,22 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 				if (classPath != null) {
 
 					Bundle bundle = Platform
-							.getBundle("org.eclipse.dltk.javascript.rhino");
+							.getBundle(GenericJavaScriptInstallType.EMBEDDED_RHINO_BUNDLE_ID);
+					
+					Bundle bundle1 = Platform.getBundle(GenericJavaScriptInstallType.DBGP_FOR_RHINO_BUNDLE_ID);
 					try {
-						URL resolve = FileLocator.toFileURL(bundle
+						URL resolve = FileLocator.toFileURL(bundle1
 								.getResource("RhinoRunner.class"));
 						try {
 							File fl = new File(new URI(resolve.toString())).getParentFile();
-							String[] newClassPath = new String[classPath.length + 1];
+							URL fileURL = FileLocator.toFileURL(bundle.getResource("org/mozilla/classfile/ByteCode.class"));
+							File fl1 = new File(new URI(fileURL.toString())).getParentFile().getParentFile().getParentFile().getParentFile();
+							String[] newClassPath = new String[classPath.length + 2];
 							System.arraycopy(classPath, 0, newClassPath, 0,
 									classPath.length);
 							newClassPath[classPath.length] = fl
 									.getAbsolutePath();
+							newClassPath[classPath.length+1] = fl1.getAbsolutePath();
 							VMRunnerConfiguration vmConfig = new VMRunnerConfiguration(
 									"RhinoRunner", newClassPath);
 							vmConfig.setProgramArguments(new String[] { config

@@ -3,7 +3,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 
 import org.eclipse.dltk.rhino.dbgp.DBGPDebugger;
 import org.mozilla.javascript.Context;

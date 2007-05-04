@@ -23,6 +23,10 @@ import org.osgi.framework.Bundle;
 
 public class GenericJavaScriptInstallType extends
 		AbstractInterpreterInstallType {
+	
+	
+	public static final String DBGP_FOR_RHINO_BUNDLE_ID ="org.eclipse.dltk.javascript.rhino.dbgp";
+	public static final String EMBEDDED_RHINO_BUNDLE_ID = "org.eclipse.dltk.javascript.rhino";
 
 	public String getNatureId() {
 		return JavaScriptNature.NATURE_ID;
@@ -35,15 +39,15 @@ public class GenericJavaScriptInstallType extends
 	public LibraryLocation[] getDefaultLibraryLocations(File installLocation) {
 		if (true) {
 			Bundle bundle = Platform
-					.getBundle("org.eclipse.dltk.javascript.rhino");
+					.getBundle(EMBEDDED_RHINO_BUNDLE_ID);
 
 			URL resolve;
 			try {
 				resolve = FileLocator.toFileURL(bundle
-						.getResource("RhinoRunner.class"));
+						.getResource("/org/mozilla/classfile/ByteCode.class"));
 				try {
 					
-					File fl = new File(new URI(resolve.toString())).getParentFile();
+					File fl = new File(new URI(resolve.toString())).getParentFile().getParentFile().getParentFile().getParentFile();
 					return new LibraryLocation[] { new LibraryLocation(
 							new Path(fl.getAbsolutePath())) };
 				} catch (URISyntaxException e) {
