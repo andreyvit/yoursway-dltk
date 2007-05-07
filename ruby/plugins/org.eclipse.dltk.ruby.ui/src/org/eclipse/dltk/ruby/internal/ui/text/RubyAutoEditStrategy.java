@@ -258,7 +258,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 			int pasteOffset = c.offset;
 			final int firstLineIndex = d.getLineOfOffset(pasteOffset);
 			final int firstLineStart = d.getLineOffset(firstLineIndex);
-			final int firstLineLength = d.getLineOffset(firstLineIndex);
+			final int firstLineLength = d.getLineLength(firstLineIndex);
 			final int firstLineHome = AutoEditUtils.findEndOfWhiteSpace(d, firstLineStart, firstLineStart + firstLineLength);
 			
 			Document temp = new Document(d.get(0, pasteOffset) + c.text);

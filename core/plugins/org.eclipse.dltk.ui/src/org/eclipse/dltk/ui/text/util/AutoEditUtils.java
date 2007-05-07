@@ -225,8 +225,12 @@ public class AutoEditUtils {
 	 *                if position is an invalid range in the given document
 	 */
 	public static int findEndOfWhiteSpace(IDocument document, int offset, int end)
-			throws BadLocationException {
+			throws BadLocationException {		
+//		int docLength = document.getLength();
 		while (offset < end) {
+//			if (offset >= docLength) {
+//				return docLength;
+//			}
 			char c = document.getChar(offset);
 			if (c != ' ' && c != '\t') {
 				return offset;
