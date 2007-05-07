@@ -13,6 +13,7 @@ package org.eclipse.dltk.ruby.internal.ui;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
+import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.progress.IProgressConstants;
 
 public class RubyPerspective implements IPerspectiveFactory  {
@@ -29,9 +30,11 @@ public class RubyPerspective implements IPerspectiveFactory  {
 		outputfolder.addView(IPageLayout.ID_PROBLEM_VIEW);
 		outputfolder.addView(IPageLayout.ID_TASK_LIST);
 		outputfolder.addView("org.eclipse.dltk.ruby.ui.RubyDocumentationView");
+		outputfolder.addView(IConsoleConstants.ID_CONSOLE_VIEW);
 		
 		outputfolder.addPlaceholder(IPageLayout.ID_BOOKMARKS);
 		outputfolder.addPlaceholder(IProgressConstants.PROGRESS_VIEW_ID);
+		
 		
 		layout.addView(IPageLayout.ID_OUTLINE, IPageLayout.RIGHT, (float)0.75, editorArea);
 				

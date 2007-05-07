@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.debug.ui,
  org.eclipse.dltk.ruby.debug.ui,
  org.eclipse.search,
- org.eclipse.debug.core
+ org.eclipse.debug.core,
+ org.eclipse.ui.console
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.ruby.internal.ui,
  org.eclipse.dltk.ruby.internal.ui.editor,

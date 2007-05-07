@@ -303,7 +303,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			String pattern) {
 		ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(
 				modelModule, moduleDeclaration), receiver);
-		IEvaluatedType type = inferencer.evaluateType(goal, 3000);
+		IEvaluatedType type = inferencer.evaluateType(goal, 2000);
 		return RubyModelUtils.searchClassMethods(modelModule,
 				moduleDeclaration, type, pattern);
 	}

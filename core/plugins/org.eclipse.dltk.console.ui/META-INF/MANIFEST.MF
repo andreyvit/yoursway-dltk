@@ -14,6 +14,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.debug.core,
  org.eclipse.dltk.console,
- org.eclipse.dltk.launching
+ org.eclipse.dltk.launching,
+ org.eclipse.dltk.ui
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.console.ui

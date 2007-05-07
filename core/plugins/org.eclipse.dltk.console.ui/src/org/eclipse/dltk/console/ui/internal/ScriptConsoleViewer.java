@@ -13,15 +13,19 @@ import java.io.IOException;
 
 import org.eclipse.dltk.console.ScriptConsoleHistory;
 import org.eclipse.dltk.console.ScriptConsolePrompt;
+import org.eclipse.dltk.console.ui.IConsoleStyleProvider;
 import org.eclipse.dltk.console.ui.IScriptConsoleViewer;
 import org.eclipse.dltk.console.ui.ScriptConsole;
+import org.eclipse.dltk.console.ui.ScriptConsolePartitioner;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
+import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ST;
+import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.custom.VerifyKeyListener;
 import org.eclipse.swt.events.FocusEvent;
@@ -113,11 +117,27 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 		protected void processResult(final String result)
 				throws BadLocationException {
 			if (result != null) {
-				appendText(result);
+				int start = appendText(result);
+				
+				if (viewer.styleProvider != null) {
+					StyleRange style = viewer.styleProvider.createInterpreterOutputStyle(result, start);
+					if (style != null) {
+						addToPartitioner(style);
+					}
+				}
+				
 				history.commit();
 				offset = getLastLineLength();
 			}
 			appendInvitation();
+		}
+		
+		private void addToPartitioner (StyleRange style) {
+			IDocumentPartitioner partitioner = viewer.getDocument().getDocumentPartitioner();
+			if (partitioner instanceof ScriptConsolePartitioner) {
+				ScriptConsolePartitioner scriptConsolePartitioner = (ScriptConsolePartitioner) partitioner;						
+				scriptConsolePartitioner.addRange(style);
+			}
 		}
 
 		protected void printString(String str) {
@@ -148,13 +168,31 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 				int start = 0;
 				int index = -1;
 				while ((index = text.indexOf(delim, start)) != -1) {
-					appendText(text.substring(start, index));
+					String cmd = text.substring(start, index);
+					int offset2 = appendText(cmd);
+					
+					if (viewer.styleProvider != null) {
+						StyleRange style = viewer.styleProvider.createUserInputStyle(cmd, offset2);
+						if (style != null) {
+							addToPartitioner(style);
+						}
+					}
+					
 					history.update(getCommandLine());
 					start = index + delim.length();
 					handleCommandLine();
 				}
 
-				appendText(text.substring(start, text.length()));
+				String cmd = text.substring(start, text.length());
+				int offset2 = appendText(cmd);
+				
+				if (viewer.styleProvider != null) {
+					StyleRange style = viewer.styleProvider.createUserInputStyle(cmd, offset2);
+					if (style != null) {
+						addToPartitioner(style);
+					}
+				}
+				
 				history.update(getCommandLine());
 			} catch (BadLocationException e) {
 				e.printStackTrace();
@@ -169,14 +207,23 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 			connectListener();
 		}
 
-		protected void appendText(String text) throws BadLocationException {
+		protected int appendText(String text) throws BadLocationException {
+			int offset = doc.getLength();
 			doc.replace(doc.getLength(), 0, text);
+			return offset;
 		}
 
 		protected void appendInvitation() throws BadLocationException {
+			int start = doc.getLength();
 			appendText(prompt.toString());
 			viewer.setCaretPosition(doc.getLength());
 			viewer.revealEndOfDocument();
+			if (viewer.styleProvider != null) {
+				StyleRange style = viewer.styleProvider.createPromptStyle(prompt, start);
+				if (style != null) {
+					addToPartitioner(style);
+				}
+			}
 		}
 
 		protected void appendDelimeter() throws BadLocationException {
@@ -283,6 +330,8 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 
 	private ConsoleDocumentListener listener;
 
+	private IConsoleStyleProvider styleProvider;
+
 	public int getCaretPosition() {
 		return getTextWidget().getCaretOffset();
 	}
@@ -318,14 +367,16 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 	}
 
 	public ScriptConsoleViewer(Composite parent, ScriptConsole console,
-			final IScriptConsoleContentHandler contentHandler) {
+			final IScriptConsoleContentHandler contentHandler, IConsoleStyleProvider styleProvider) {
 		super(parent, console);
+		
+		this.styleProvider = styleProvider;
 
 		this.history = console.getHistory();
 
 		this.listener = new ConsoleDocumentListener(this, console, console
 				.getPrompt(), console.getHistory());
-		this.listener.setDocument(getDocument());
+		this.listener.setDocument(getDocument());		
 
 		final StyledText styledText = getTextWidget();
 
@@ -441,4 +492,8 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 
 	    return canDoOperation;
 	  }
+
+	public void setStyleProvider(IConsoleStyleProvider provider) {
+		this.styleProvider = provider;		
+	}
 }

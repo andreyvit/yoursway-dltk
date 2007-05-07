@@ -13,6 +13,7 @@ import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ti.DefaultTypeInferencer;
 import org.eclipse.dltk.ti.EvaluatorStatistics;
 import org.eclipse.dltk.ti.IPruner;
+import org.eclipse.dltk.ti.TimelimitPruner;
 import org.eclipse.dltk.ti.goals.AbstractTypeGoal;
 import org.eclipse.dltk.ti.goals.IGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
@@ -53,9 +54,9 @@ public class RubyTypeInferencer extends DefaultTypeInferencer {
 	}
 
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit) {
-		IEvaluatedType type = super.evaluateType(goal, null); //TODO: add pruner
+		IEvaluatedType type = super.evaluateType(goal, new TimelimitPruner(timeLimit)); 
 		if (type == null || type instanceof UnknownType) { 
-			type = new RubyClassType("Object"); //anyway, all things in ruby are objects
+			type = new RubyClassType("Object"); //anyway, all things in ruby are objects :)
 		}
 		return type;
 	}

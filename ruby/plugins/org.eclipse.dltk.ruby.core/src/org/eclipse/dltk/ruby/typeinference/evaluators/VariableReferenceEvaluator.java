@@ -207,28 +207,30 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 	public IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state) {
 		if (subgoal == callsGoal) {
 			List possibles = new ArrayList();
-			ItemReference[] refs = (ItemReference[]) result;
-			for (int i = 0; i < refs.length; i++) { // TODO: for performance
-													// reasons, sort them
-													// somehow or leave only one
-				CallExpression node = ((RubyMethodReference) refs[i]).getNode();
-				if (node != null) {
-					ASTNode arg = getArgFromCall(node);
-					if (arg != null) {
-						IResource resource = refs[i].getPosition()
-								.getResource();
-						ISourceModule module = (ISourceModule) DLTKCore
-								.create(resource);
-						if (module == null)
-							continue;
-						ModuleDeclaration decl = ASTUtils.getAST(module);
-						if (decl == null)
-							continue;
-						BasicContext callContext = new BasicContext(module,
-								decl);
-						ExpressionTypeGoal g = new ExpressionTypeGoal(
-								callContext, arg);
-						possibles.add(g);
+			if (result != null) {
+				ItemReference[] refs = (ItemReference[]) result;
+				for (int i = 0; i < refs.length; i++) { // TODO: for performance
+														// reasons, sort them
+														// somehow or leave only one
+					CallExpression node = ((RubyMethodReference) refs[i]).getNode();
+					if (node != null) {
+						ASTNode arg = getArgFromCall(node);
+						if (arg != null) {
+							IResource resource = refs[i].getPosition()
+									.getResource();
+							ISourceModule module = (ISourceModule) DLTKCore
+									.create(resource);
+							if (module == null)
+								continue;
+							ModuleDeclaration decl = ASTUtils.getAST(module);
+							if (decl == null)
+								continue;
+							BasicContext callContext = new BasicContext(module,
+									decl);
+							ExpressionTypeGoal g = new ExpressionTypeGoal(
+									callContext, arg);
+							possibles.add(g);
+						}
 					}
 				}
 			}
