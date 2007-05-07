@@ -137,7 +137,9 @@ public class PreferenceConstants {
 	 * </p>
 	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants#EDITOR_TAB_WIDTH
 	 */
-	public final static String EDITOR_TAB_WIDTH= AbstractDecoratedTextEditorPreferenceConstants.EDITOR_TAB_WIDTH; 
+	public final static String EDITOR_TAB_WIDTH= AbstractDecoratedTextEditorPreferenceConstants.EDITOR_TAB_WIDTH;
+	
+	public final static String EDITOR_TAB_ALWAYS_INDENT= "tab_always_indent";
 	
 	/**
 	 * A named preference that controls whether the outline view selection
@@ -316,6 +318,7 @@ public class PreferenceConstants {
 		store.setDefault(PreferenceConstants.EDITOR_SHOW_TEXT_HOVER_AFFORDANCE, true);
 		
 		store.setDefault(PreferenceConstants.EDITOR_MATCHING_BRACKETS, true);
+		store.setDefault(PreferenceConstants.EDITOR_TAB_ALWAYS_INDENT, false);
 		PreferenceConverter.setDefault(store, PreferenceConstants.EDITOR_MATCHING_BRACKETS_COLOR, new RGB(192, 192,192));
 		
 	}

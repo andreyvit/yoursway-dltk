@@ -393,6 +393,7 @@ public final class FormatterMessages extends NLS {
 	public static String IndentationTabPage_general_group_option_tab_policy_TAB;
 	public static String IndentationTabPage_general_group_option_tab_policy_MIXED;
 	public static String IndentationTabPage_general_group_option_tab_size;
+	public static String IndentationTabPage_general_group_option_tab_always_indent;
 	public static String IndentationTabPage_general_group_option_indent_size;
 	public static String IndentationTabPage_field_alignment_group_title;
 	public static String IndentationTabPage_field_alignment_group_align_fields_in_columns;

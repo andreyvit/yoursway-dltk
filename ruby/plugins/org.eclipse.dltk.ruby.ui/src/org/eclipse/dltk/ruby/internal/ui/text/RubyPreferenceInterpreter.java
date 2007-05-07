@@ -83,7 +83,6 @@ public class RubyPreferenceInterpreter implements ITabPreferencesProvider {
 	}
 
 	public boolean getTabAlwaysIndents() {
-		return true;
+		return store.getBoolean(PreferenceConstants.EDITOR_TAB_ALWAYS_INDENT);
 	}
-	
 }

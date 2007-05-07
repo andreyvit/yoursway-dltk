@@ -1363,20 +1363,6 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 			fScriptEditorErrorTickUpdater.updateEditorImage(getInputModelElement());
 	}
 
-	// protected IEditorInput transformEditorInput(IEditorInput input) {
-	// if (input instanceof IFileEditorInput) {
-	// IFile file = ((IFileEditorInput) input).getFile();
-	// IScriptFileEditorInput scriptFileInput = new ScriptFileEditorInput(file);
-	// ISourceModule module = scriptFileInput.getSourceModule();
-	// IDLTKProject project = EditorUtility.getDLTKProject(input);
-	// if (module != null && project.isValid()) {
-	// input = scriptFileInput;
-	// }
-	// }
-	// return input;
-	// }
-	
-	
 	
 	private ScriptOutlinePage createOutlinePage() {
 		final ScriptOutlinePage page = doCreateOutlinePage();
@@ -1422,17 +1408,6 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		} else {
 			page.setInput(null);
 		}
-		// IDLTKProject project = EditorUtility.getDLTKProject(input);
-		// if (page != null && project != null && input instanceof
-		// IScriptFileEditorInput) {
-		// IScriptFileEditorInput sfi = (IScriptFileEditorInput) input;
-		// ISourceModule module = sfi.getSourceModule();
-		// if (module != null && module.exists() && project.isValid()) {
-		// page.setInput(module);
-		// } else {
-		// page.setInput(null);
-		// }
-		// }
 	}
 
 	public Object getAdapter(Class required) {

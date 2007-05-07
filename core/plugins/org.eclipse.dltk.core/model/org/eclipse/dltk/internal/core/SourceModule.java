@@ -491,6 +491,11 @@ public class SourceModule extends Openable implements ISourceModule, org.eclipse
 	public void makeConsistent(IProgressMonitor monitor) throws ModelException {
 
 		// makeConsistent(false/*don't create AST*/, 0, monitor);
+		
+		//Remove AST Cache element
+		ISourceModuleInfoCache sourceModuleInfoCache = ModelManager.getModelManager().getSourceModuleInfoCache();
+//		sourceModuleInfoCache.remove(this);
+		sourceModuleInfoCache.remove(this);
 		openWhenClosed(createElementInfo(), monitor);
 	}
 

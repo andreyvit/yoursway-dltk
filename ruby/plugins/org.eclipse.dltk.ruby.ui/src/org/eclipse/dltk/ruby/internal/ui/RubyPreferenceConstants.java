@@ -384,6 +384,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 		store.setDefault( RubyPreferenceConstants.EDITOR_KEYWORD_RETURN_ITALIC, false );
 		
 		store.setDefault( PreferenceConstants.EDITOR_SMART_INDENT, true);
+		store.setDefault( PreferenceConstants.EDITOR_TAB_ALWAYS_INDENT, false);
 		store.setDefault( PreferenceConstants.EDITOR_CLOSE_STRINGS, true);
 		store.setDefault( PreferenceConstants.EDITOR_CLOSE_BRACKETS, true);
 		store.setDefault( PreferenceConstants.EDITOR_CLOSE_BRACES, true);

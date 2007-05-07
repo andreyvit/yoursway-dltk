@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Control;
 
 public class EditorConfigurationBlock extends AbstractConfigurationBlock {
 	private boolean smartDisabled = false;
+	boolean tabAlwaysIndent = false;
 	public EditorConfigurationBlock(PreferencePage mainPreferencePage, OverlayPreferenceStore store) {
 		super(store, mainPreferencePage);
 		getPreferenceStore().addKeys(createOverlayStoreKeys());
@@ -33,6 +34,12 @@ public class EditorConfigurationBlock extends AbstractConfigurationBlock {
 		super(store, mainPreferencePage);
 		getPreferenceStore().addKeys(createOverlayStoreKeys());
 		this.smartDisabled = disableSmart;
+	}
+	public EditorConfigurationBlock(PreferencePage mainPreferencePage, OverlayPreferenceStore store, boolean disableSmart, boolean tabAlwaysIndent) {
+		super(store, mainPreferencePage);
+		getPreferenceStore().addKeys(createOverlayStoreKeys());
+		this.smartDisabled = disableSmart;
+		this.tabAlwaysIndent = tabAlwaysIndent;
 	}
 	
 	private OverlayPreferenceStore.OverlayKey[] createOverlayStoreKeys() {
@@ -44,6 +51,7 @@ public class EditorConfigurationBlock extends AbstractConfigurationBlock {
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.STRING, CodeFormatterConstants.FORMATTER_TAB_CHAR));
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.INT, CodeFormatterConstants.FORMATTER_TAB_SIZE));
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.INT, CodeFormatterConstants.FORMATTER_INDENTATION_SIZE));
+		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN, PreferenceConstants.EDITOR_TAB_ALWAYS_INDENT));
 		
 		OverlayPreferenceStore.OverlayKey[] keys= new OverlayPreferenceStore.OverlayKey[overlayKeys.size()];
 		overlayKeys.toArray(keys);
@@ -101,6 +109,10 @@ public class EditorConfigurationBlock extends AbstractConfigurationBlock {
 		
 		addLabelledTextField(generalGroup, FormatterMessages.IndentationTabPage_general_group_option_tab_size, 
 				CodeFormatterConstants.FORMATTER_TAB_SIZE, 2, 1, true);
+		
+		if( tabAlwaysIndent ) {
+			addCheckBox(generalGroup, PreferencesMessages.EditorPreferencePage_tabAlwaysIndent, PreferenceConstants.EDITOR_TAB_ALWAYS_INDENT, 2);
+		}
 	}	
 	    
     private Control createSettingsGroup(Composite composite) {
@@ -117,7 +129,7 @@ public class EditorConfigurationBlock extends AbstractConfigurationBlock {
 		addCheckBox(composite, label, PreferenceConstants.EDITOR_SUB_WORD_NAVIGATION, 0);
 		
 		label= PreferencesMessages.EditorPreferencePage_smartIndent; 
-		addCheckBox(composite, label, PreferenceConstants.EDITOR_SMART_INDENT, 0);			
+		addCheckBox(composite, label, PreferenceConstants.EDITOR_SMART_INDENT, 0);		
 
 		return composite;
 	}

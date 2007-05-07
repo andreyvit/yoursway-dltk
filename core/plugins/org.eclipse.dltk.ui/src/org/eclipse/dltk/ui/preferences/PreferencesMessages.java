@@ -729,6 +729,7 @@ public final class PreferencesMessages extends NLS {
 	public static String EditorPreferencePage_smartHomeEnd;
 	public static String EditorPreferencePage_subWordNavigation;
 	public static String EditorPreferencePage_smartIndent;
+	public static String EditorPreferencePage_tabAlwaysIndent;
 	
 	public static String TCLGlobalPreferencePage_description;
 	

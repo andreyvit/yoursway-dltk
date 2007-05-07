@@ -54,6 +54,6 @@ public class RubyEditorPreferencesPage extends
 	 */
 	protected IPreferenceConfigurationBlock createConfigurationBlock(
 			OverlayPreferenceStore overlayPreferenceStore) {
-		return new EditorConfigurationBlock(this, overlayPreferenceStore, true);
+		return new EditorConfigurationBlock(this, overlayPreferenceStore, true, true );
 	}
 }
