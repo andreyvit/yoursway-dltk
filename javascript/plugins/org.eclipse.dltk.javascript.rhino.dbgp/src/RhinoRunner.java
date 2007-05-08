@@ -15,7 +15,7 @@ public class RhinoRunner {
 		if (args.length > 1) {
 			String host = args[1];
 			String porg = args[2];
-			
+
 			DBGPDebugger debugger;
 			try {
 				final Socket s = new Socket(host, Integer.parseInt(porg));
