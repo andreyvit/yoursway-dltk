@@ -194,12 +194,12 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 				"selection_on_method1.rb");
 
 		String source = cu.getSource();
-		int start = source.indexOf("Foo");
+		int start = source.indexOf("Fooo");
 
 		IModelElement[] elements = cu.codeSelect(start + 1, 0);
 		assertNotNull(elements);
 		assertEquals(1, elements.length);
-		IType type = cu.getType("Foo");
+		IType type = cu.getType("Fooo");
 		assertNotNull(type);
 		assertEquals(type, elements[0]);
 	}
@@ -229,7 +229,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 		IModelElement[] elements = cu.codeSelect(start + 1, 0);
 		assertNotNull(elements);
 		assertEquals(1, elements.length);
-		IMethod method = cu.getType("Foo").getMethod("doo");
+		IMethod method = cu.getType("Fooo").getMethod("doo");
 		assertNotNull(method);
 		assertEquals(method, elements[0]);
 	}
@@ -259,7 +259,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 				"selection_on_method1.rb");
 
 		String source = cu.getSource();
-		int start = source.indexOf("ff = Foo.new") + 1;
+		int start = source.indexOf("ff = Fooo.new") + 1;
 
 		IModelElement[] elements = cu.codeSelect(start, 0);
 		assertNotNull(elements);
@@ -281,7 +281,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 		IModelElement[] elements = cu.codeSelect(start + 3, 0);
 		assertNotNull(elements);
 		assertEquals(1, elements.length);
-		IMethod method = cu.getType("Foo").getMethod("doo");
+		IMethod method = cu.getType("Fooo").getMethod("doo");
 		assertNotNull(method);
 		assertEquals(method, elements[0]);
 	}
