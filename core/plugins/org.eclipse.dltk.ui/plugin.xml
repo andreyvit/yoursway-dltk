@@ -534,13 +534,13 @@
    <extension
 		point="org.eclipse.dltk.ui.scriptCompletionProposalSorters">
 		<proposalSorter
-			id="org.eclipse.dltk.ui.RelevanceSorter"
-			name="%RelevanceSorter.name"
-			class="org.eclipse.dltk.ui.text.completion.RelevanceSorter"/>
-		<proposalSorter
 			id="org.eclipse.dltk.ui.AlphabeticSorter"
 			name="%AlphabeticSorter.name"
 			class="org.eclipse.dltk.ui.text.completion.AlphabeticSorter"/>
+		<proposalSorter
+			id="org.eclipse.dltk.ui.RelevanceSorter"
+			name="%RelevanceSorter.name"
+			class="org.eclipse.dltk.ui.text.completion.RelevanceSorter"/>
 	</extension>
 <!-- content assist processors - do not change their order -->  
 

@@ -65,8 +65,8 @@ public final class CompletionProposalComparator implements Comparator {
 	}
 
 	private String getSortKey(ICompletionProposal p) {
-//		if (p instanceof AbstractJavaCompletionProposal)
-//			return ((AbstractJavaCompletionProposal) p).getSortString();
+		if (p instanceof AbstractScriptCompletionProposal)
+			return ((AbstractScriptCompletionProposal) p).getSortString();
 		return p.getDisplayString();
 	}
 
@@ -81,5 +81,4 @@ public final class CompletionProposalComparator implements Comparator {
 		// catch all
 		return 0;
 	}
-
 }
