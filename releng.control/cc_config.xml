@@ -1,0 +1,223 @@
+<cruisecontrol>
+
+    <!--
+        Note to be cross-platform, "environment variables" are only appropriate for
+        some variables, e.g. ones we set, since properties are case sensitive, even if
+        the environment variables on your operating system are not, e.g. it will
+        be ${env.Path} not ${env.PATH} on Windows -->
+    <property
+        environment="env"
+        toupper="true" />
+
+    <!-- Note: can not quite use "standard properites" pattern, as in ant files,
+        since for CC, it is an error if a property file does not exist. -->
+
+    <!-- remember, our logDir must be same as logdir specified in CC's web.xml file  -->
+    <property
+        name="logDir"
+        value="${env.LOG_DIR}/${project.name}" />
+
+
+    <property
+        name="time.tenMinutes"
+        value="600" />
+
+    <property
+        name="time.oneHour"
+        value="3600" />
+
+    <property
+        name="time.VeryVeryLongTime"
+        value="31536000" />
+
+    <plugin
+        name="log"
+        dir="${logDir}"
+        encoding="ISO-8859-1" />
+
+    <plugin
+        name="currentbuildstatuslistener"
+        file="${logDir}/buildstatus.html" />
+
+    <plugin
+        name="dateformat"
+        format="yyyyMMdd-HHmm z" />
+
+    <plugin
+        name="project"
+        buildafterfailed="true">
+        <dateformat format="yyyyMMdd-HHmm z" />
+        <log
+            dir="${logDir}"
+            encoding="ISO-8859-1" />
+        <listeners>
+            <currentbuildstatuslistener />
+        </listeners>
+        <modificationset>
+            <forceonly />
+        </modificationset>
+        <publishers>
+            <email
+                mailhost="localhost"
+                returnaddress="${env.BUILD_BUILDMASTER_EMAIL}"
+                skipusers="false"
+                subjectprefix="[${project.name}]"
+                spamwhilebroken="false"
+                buildresultsurl="${env.BUILD_RESULT_URL}/${project.name}">
+                <always address="${env.BUILD_TOADDRESS}" />
+            </email>
+        </publishers>
+    </plugin>
+
+    <plugin
+        name="cvs"
+        cvsroot="${env.CVS_MAIN_REPO}" />
+
+    <!--
+        Note: projects should normally be named in the form
+        ${build.distribution}-${buildBranch}-${buildType}
+    -->
+
+    <project name="rubygears-R1.0-I">
+        <!-- Defines where cruise looks for changes, to decide whether to run the build -->
+        <modificationset quietperiod="120">
+            <cvs module="releng" />
+
+        </modificationset>
+
+        <schedule interval="${time.oneHour}">
+            <ant
+                antscript="${env.BUILD_HOME}/releng.control/ant.sh"
+                buildfile="cc_project_build.xml"
+                target="Build"
+                useQuiet="false"
+                useLogger="false"
+                savelogdir="${logDir}"
+                usedebug="false"
+                antworkingdir="${env.BUILD_HOME}/releng.control">
+                <property
+                    name="buildType"
+                    value="I" />
+                <property
+                    name="buildBranch"
+                    value="R1.0" />
+                <property
+                    name="checkoutprojectname"
+                    value="${project.name}" />
+
+                <property
+                    name="mapVersionTag"
+                    value="HEAD" />
+                <property
+                    name="build.distribution"
+                    value="rubygears" />
+
+
+            </ant>
+        </schedule>
+
+    </project>
+
+
+    <project name="rubygears-R1.0-N">
+
+        <schedule interval="${time.VeryVeryLongTime}">
+            <ant
+                antscript="${env.BUILD_HOME}/releng.control/ant.sh"
+                buildfile="cc_project_build.xml"
+                target="Build"
+                useQuiet="false"
+                useLogger="false"
+                savelogdir="${logDir}"
+                usedebug="false"
+                antworkingdir="${env.BUILD_HOME}/releng.control">
+                <property
+                    name="buildType"
+                    value="N" />
+                <!-- in this context, buildBranch is simply a label -->
+                <property
+                    name="buildBranch"
+                    value="R1.0" />
+                <property
+                    name="mapVersionTag"
+                    value="HEAD" />
+                <property
+                    name="build.distribution"
+                    value="rubygears" />
+                <property
+                    name="build.trial"
+                    value="true" />
+
+
+            </ant>
+        </schedule>
+
+    </project>
+
+
+    <project name="rubygears-R1.0-S">
+        <!-- Defines where cruise looks for changes, to decide whether to run the build -->
+        <modificationset quietperiod="120">
+            <cvs module="releng" />
+
+        </modificationset>
+
+        <schedule interval="${time.VeryVeryLongTime}">
+            <ant
+                antscript="${env.BUILD_HOME}/releng.control/ant.sh"
+                buildfile="cc_project_build.xml"
+                target="Build"
+                useQuiet="false"
+                useLogger="false"
+                savelogdir="${logDir}"
+                usedebug="false"
+                antworkingdir="${env.BUILD_HOME}/releng.control">
+                <property
+                    name="buildType"
+                    value="S" />
+                <property
+                    name="buildId"
+                    value="1.0M6" />
+                <property
+                    name="buildBranch"
+                    value="R1.0" />
+                <property
+                    name="checkoutprojectname"
+                    value="${project.name}" />
+
+                <property
+                    name="mapVersionTag"
+                    value="HEAD" />
+                <property
+                    name="build.distribution"
+                    value="rubygears" />
+                <property
+                    name="build.pack-all-in-one"
+                    value="true" />
+
+            </ant>
+        </schedule>
+
+
+    </project>
+
+    <project name="rubygears-whatisfixed">
+        <schedule interval="${time.VeryVeryLongTime}">
+            <ant
+                antscript="${env.BUILD_HOME}/releng.control/ant.sh"
+                buildfile="whatisfixed.xml"
+                target="whatisfixed"
+                useQuiet="false"
+                useLogger="false"
+                savelogdir="${logDir}"
+                usedebug="false"
+                antworkingdir="${env.BUILD_HOME}/releng.control">
+
+            </ant>
+        </schedule>
+
+    </project>
+
+
+</cruisecontrol>
+

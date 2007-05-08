@@ -1,0 +1,24 @@
+
+The files in this directory, in theory, are not used
+in production builds on build.eclipse.org. 
+
+They are provided as "default values" that may need 
+to be changed on other machines. 
+
+The are given here as examples of how someone might
+override various build properties on their own machine.
+
+These files, if used, should be in the directory named in 
+the STANDARD_PROPERTIES_DIR environment variable, which 
+is set in the "commonVariations" file.  
+
+Note to build developers: the "defaults" here, in the 
+CVS version, should "written in" as default values in build 
+scripts, so the eclipse build.eclipse "official builds" are 
+always correct, even without these files. It is best to keep 
+these files "up to date", though, as a means of documenting 
+what can be varied from machine to machine. 
+
+Individual "local builds" should use the LOCAL_BUILD_PROPERTIES_DIR
+mechanism to provide their own "local" parameters. See the 
+localBuildExample directory. 

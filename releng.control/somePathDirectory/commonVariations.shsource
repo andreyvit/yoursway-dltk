@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# This particular file is not used in production builds, 
+# though there is a similar one (with same name) in main 
+# directory that is. 
+
+# If "local" users have this file on their path, 
+# that is, in "someDirectory" on the users local path, 
+# then the bash "include source" function will find that version
+# first, instead of the "standard" eclipse ppc one.
+
+export BUILD_HOME=/home/shared/webtools
+
+export DISPLAY=127.0.0.1:0
+
+# remember to check virtual display with 
+# ps -ef | grep Xvfb
+
+JAVA_4_DIR="j2sdk1.4.2_11"
+JAVA_5_DIR="jdk1.5.0_09"
+ANT_DIR="apache-ant-1.7.0"
+
+export BASEOS=linux
+export BASEWS=gtk
+export BASEARCH=x86
+
+
+export LOCAL_BUILD_PROPERTIES_DIR=${BUILD_HOME}/localBuildProperties
+
+# technically should not be needed for "local builds" ... but ... just in case. 
+export STANDARD_PROPERTIES_DIR=${BUILD_HOME}/releng.control/standardMachineProperties
+
+export BUILD_BUILDMASTER_EMAIL=andrey@xored.com
+export BUILD_RESULT_URL=http://gw.inetlab.com:7777/cruisecontrol/buildresults
+export BUILD_TOADDRESS=andrey@xored.com
+

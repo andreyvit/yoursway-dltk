@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# Note: if "local" users have this file first in their path, then 
+# the bash shell's "include source" function will find that paths version 
+# first, instead of this "standard" eclipse ppc one.
+
+# this file is intentionally named "shsource" to denote this is intended to 
+# be included in other sh files, with "source" command, not 
+# executed on its own. 
+
+
+export BUILD_HOME=/home/buildmeister
+
+export DISPLAY=127.0.0.1:1.0
+
+export JAVA_4_DIR="j2sdk1.4.2_13"
+export JAVA_5_DIR="jdk1.5.0_09"
+export ANT_DIR="apache-ant-1.7.0"
+
+export BASEOS=linux
+export BASEWS=gtk
+export BASEARCH=ppc
+
+# no local build properties, for production builds
+export LOCAL_BUILD_PROPERTIES_DIR=
+
+export STANDARD_PROPERTIES_DIR=${BUILD_HOME}/releng.control/standardMachineProperties
+
+export BUILD_BUILDMASTER_EMAIL=andrey@xored.com
+export BUILD_RESULT_URL=http://us.xored.com:7777/cruisecontrol/buildresults
+export BUILD_TOADDRESS=andrey@xored.com
+

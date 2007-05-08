@@ -1,0 +1,76 @@
+<project name="whatisfixed" default="whatisfixed" basedir=".">
+
+    <!-- = = = standard properties pattern = = = -->
+    <!-- 
+    	Note to be cross-platform, "environment variables" are only appropriate for 
+        some variables, e.g. ones we set, since properties are case sensitive, even if 
+        the environment variables on your operating system are not, e.g. it will 
+        be ${env.Path} not ${env.PATH} on Windows -->
+    <property environment="env" />
+     
+    <!-- 
+    	Let users override standard properties, if desired.
+    	If directory, file, or some properties do not exist,  
+    	then standard properties will be used.
+     -->
+    <property file="${env.LOCAL_BUILD_PROPERTIES_DIR}/${ant.project.name}.properties" />
+
+    <!-- load standard properties for production environment -->
+    <property file="${env.STANDARD_PROPERTIES_DIR}/${ant.project.name}.properties" />
+    <!-- = = = end standard properties pattern = = = -->
+
+	<target name="whatisfixed" depends="clean">
+
+
+
+		<mkdir dir="${whatisfixed.workdir}" />
+		<antcall target="releng" />
+
+		<!-- create what-is-fixed summary files -->
+		<ant antfile="${rubygearsBuilder}">
+			<property name="rubygears.builder.home" value="${whatisfixed.workdir}/releng.rubygearsbuilder" />
+			<property name="buildBranch" value="${buildBranch}" />
+			<property name="rubygearsbuilder.whatisfixed.properties.file" value="${basedir}/whatisfixed.properties" />
+ 		</ant>
+
+		<antcall target="sync" />
+
+	</target>
+
+	<target name="releng">
+
+		<available file="${whatisfixed.workdir}/releng/maps/dependencies.properties" property="map.exists" />
+		<available file="${whatisfixed.workdir}/releng.rubygearsbuilder/scripts/dependency/build.xml" property="releng.exists" />
+		<antcall target="checkout-maps" />
+		<antcall target="getrubygearsbuilder" />
+	</target>
+
+	<target name="checkout-maps" unless="map.exists">
+		<cvs quiet="true" cvsRoot="${mapCvsRoot}" package="releng/maps/build.cfg" dest="${whatisfixed.workdir}" tag="${rubygears.cvsTag}" />
+	</target>
+
+	<target name="getrubygearsbuilder" unless="releng.exists">
+		<property file="${whatisfixed.workdir}/releng/maps/build.cfg" />
+		<delete dir="${whatisfixed.workdir}/releng.rubygearsbuilder" failonerror="false" />
+		<echo message="Version tag for releng.rubygearsbuilder is: ${rubygearsBuilderVersion}" />
+		<cvs quiet="true" cvsRoot="${mapCvsRoot}" package="releng.rubygearsbuilder" dest="${whatisfixed.workdir}" tag="${rubygearsBuilderVersion}" />
+	</target>
+
+	<target name="clean" >
+		<delete dir="${whatisfixed.workdir}" />
+	</target>
+
+	<target name="sync" >
+
+
+
+		<echo message="RSYNC to: ${uploadRemoteDirectory}" />
+
+		<exec executable="rsync">
+			<arg line="-e ssh -Cavz ${whatisfixed.dir} ${uploadUser}@${uploadServer}:${uploadRemoteDirectory}" />
+		</exec>
+	</target>
+	
+
+
+</project>

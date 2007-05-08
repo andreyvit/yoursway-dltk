@@ -1,0 +1,97 @@
+#!/bin/sh
+
+# intentionally named "shsource" to denote this is intended to 
+# be included in other sh files, with "source" command, not 
+# executed on its own. 
+
+########################################################
+
+export PROJECT_HOME=`dirname "$0"`
+
+export ANT_HOME=${BUILD_HOME}/apps/${ANT_DIR}
+
+export JAVA_4_HOME=${BUILD_HOME}/apps/${JAVA_4_DIR}
+export JAVA_5_HOME=${BUILD_HOME}/apps/${JAVA_5_DIR}
+
+export PATH=${PATH}:${HOME}/bin:${ANT_HOME}/bin:${JAVA_HOME}/bin
+
+# project name is resolved dynamically, as CC runs
+export LOG_DIR=${BUILD_HOME}/cruise-project-logs
+
+# need for some PPC or Linux issues? 
+export JAVA_HIGH_ZIPFDS=500
+
+# Spec java 1.4 as default vm to use
+export JAVA_HOME=${JAVA_4_HOME}
+
+
+# OS specific support.
+sunjvm=false;
+ibmjvm=false;
+javaversion="`uname -a`"
+
+case "$javaversion" in
+  *i686*) sunjvm=true;;
+  *ppc*)  ibmjvm=true;;
+esac
+
+
+# values of the bootclasspath attribute used in ant javac calls.
+# the names of these jars are VM vendor specific. the first set
+# below, commented out, are typical for sun VM's. The 
+# second set are for IBM's VM's ... which is what we use 
+# on the PPC machine, so we'll leave that as the defaults 
+# in this file. 
+
+
+# set initial values as if for IBM's PPC VM
+export bootclasspath="${JAVA_4_HOME}/jre/lib/core.jar:${JAVA_4_HOME}/jre/lib/xml.jar:${JAVA_4_HOME}/jre/lib/graphics.jar:${JAVA_4_HOME}/jre/lib/server.jar"
+export bootclasspath_15="${JAVA_5_HOME}/jre/lib/core.jar:${JAVA_5_HOME}/jre/lib/vm.jar:${JAVA_5_HOME}/jre/lib/xml.jar:${JAVA_5_HOME}/jre/lib/graphics.jar:${JAVA_5_HOME}/jre/lib/server.jar"
+export ANT_OPTS="-Xms128m -Xmx512m"
+
+# and change them if Sun's VM is being used
+if $sunjvm ; then
+	export bootclasspath="${JAVA_4_HOME}/jre/lib/rt.jar"
+	export bootclasspath_15="${JAVA_5_HOME}/jre/lib/rt.jar"
+	export ANT_OPTS="-Xms128m -Xmx512m -XX:MaxPermSize=128M -XX:+UseParallelGC"
+fi
+
+
+export CVS_RSH=ssh
+#export CVS_MAIN_REPO=:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools
+export CVS_MAIN_REPO=:ext:andrey@us.xored.com:/opt/rubygears
+
+export J2SE14=${bootclasspath} 
+export J2SE15=${bootclasspath_15}
+
+
+# 	Set this to the relative path for the 
+# 	directory that keeps the downloaded drivers 
+#   and pre-reqs
+export LOCAL_PREREQS_CACHE=${BUILD_HOME}/downloads
+
+
+export BUILD_INITIALIZED="true"
+
+echo " "
+echo "    Project Home: ${PROJECT_HOME}"
+echo "    Build Home: ${BUILD_HOME}"
+echo "    DISPLAY: ${DISPLAY}"
+echo " "
+echo "    JAVA_4_HOME: ${JAVA_4_HOME}"
+echo "        ${bootclasspath}"
+echo " "
+echo "    JAVA_5_HOME: ${JAVA_5_HOME}"
+echo "        ${bootclasspath_15}"
+echo " "
+echo "     ANT_HOME: ${ANT_HOME}"
+echo " "
+echo "     PATH: ${PATH}"
+echo " "
+echo "      BASEOS: ${BASEOS}"
+echo "      BASEWS: ${BASEWS}"
+echo "    BASEARCH: ${BASEARCH}"
+echo " "
+echo "   LOCAL_BUILD_PROPERTIES_DIR: ${LOCAL_BUILD_PROPERTIES_DIR}" 
+echo "   STANDARD_PROPERTIES_DIR: ${STANDARD_PROPERTIES_DIR}"
+echo " "
