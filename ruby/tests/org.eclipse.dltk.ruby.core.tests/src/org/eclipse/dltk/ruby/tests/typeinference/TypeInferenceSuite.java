@@ -144,7 +144,7 @@ public class TypeInferenceSuite extends TestSuite {
 								String correctClassRef = tok.nextToken();
 								assertions.add(new ExpressionTypeAssertion(expr, namePos, correctClassRef));
 							} else {
-								Assert.isLegal(false);
+//								Assert.isLegal(false);
 							}
 						}
 						lineOffset += lines[i].length() + 1;
