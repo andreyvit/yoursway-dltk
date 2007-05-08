@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuffer;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
@@ -417,5 +418,9 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 		if (fProblemMarkerManager == null)
 			fProblemMarkerManager= new ProblemMarkerManager();
 		return fProblemMarkerManager;
+	}
+
+	public static boolean isDebug() {
+		return DLTKCore.DEBUG;
 	}	
 }

@@ -167,7 +167,6 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	
 	private ScriptEditorErrorTickUpdater fScriptEditorErrorTickUpdater;	
 	
-	
 	public ISourceViewer getScriptSourceViewer(){
 		return super.getSourceViewer();
 	}

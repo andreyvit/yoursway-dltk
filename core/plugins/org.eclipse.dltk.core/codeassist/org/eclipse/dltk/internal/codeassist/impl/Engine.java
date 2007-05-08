@@ -146,5 +146,4 @@ public abstract class Engine implements ITypeRequestor {
 
 	// TODO: remove this!!!
 	public abstract IAssistParser getParser();
-
 }

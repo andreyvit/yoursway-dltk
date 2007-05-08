@@ -124,12 +124,12 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			
 			if (this.noProposal && this.problem != null) {
 				if (!contextAccepted) {					
+					contextAccepted = true;
 					CompletionContext context = new CompletionContext();
 					context.setOffset(completionPosition);
 					context.setTokenKind(CompletionContext.TOKEN_KIND_UNKNOWN);			
 					
 					this.requestor.acceptContext(context);					
-					contextAccepted = true;
 				}
 				
 				this.requestor.completionFailure(this.problem);
@@ -139,13 +139,13 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 				}
 			}
 		} finally {			
-			if (!contextAccepted) {				
+			if (!contextAccepted) {	
+				contextAccepted = true;
 				CompletionContext context = new CompletionContext();
 				context.setTokenKind(CompletionContext.TOKEN_KIND_UNKNOWN);
 				context.setOffset(completionPosition);
 				
 				this.requestor.acceptContext(context);
-				contextAccepted = true;
 			}
 			this.requestor.endReporting();
 		}
@@ -259,8 +259,18 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 				for (int i = 0; i < tmethods.length; ++i) {
 					String mn = tmethods[i].getTypeQualifiedName("$", false)
 							.replaceAll("\\$", "::");
-					if (!mn.startsWith("::")) {
-						mn = "::" + mn;
+					if (methodNames.contains(mn)) {
+						continue;
+					}
+					if (mn.startsWith("::")) {
+						if (methodNames.contains(mn.substring(2))) {
+							continue;
+						}
+					}
+					else {
+						if (methodNames.contains("::" + mn)) {
+							continue;
+						}
 					}
 					if (!methodNames.contains(mn)) {
 						methods.add(tmethods[i]);
