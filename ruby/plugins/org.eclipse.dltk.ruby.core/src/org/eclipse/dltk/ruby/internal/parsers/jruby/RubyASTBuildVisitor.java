@@ -11,6 +11,7 @@ package org.eclipse.dltk.ruby.internal.parsers.jruby;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -1173,6 +1174,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	// method
 	public Instruction visitDefnNode(DefnNode iVisited) {
+		Collection comments = iVisited.getComments();
+		System.out.println(comments);
 		ArgumentNode nameNode = iVisited.getNameNode();
 
 		ISourcePosition pos = fixNamePosition(nameNode.getPosition());

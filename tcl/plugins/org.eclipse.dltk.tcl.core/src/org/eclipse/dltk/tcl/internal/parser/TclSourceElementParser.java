@@ -480,7 +480,7 @@ public class TclSourceElementParser implements ISourceElementParser {
 			String arrayIndex = null;
 			if (isArrayVariable(name)) {
 				int t1 = name.indexOf("(");
-				if (name.charAt(t1 - 1) == '\\')
+				if (t1 > 0 && (name.charAt(t1 - 1) == '\\'))
 					t1--;
 				arrayName = name.substring(0, t1);
 				arrayIndex = name.substring(name.indexOf("(") + 1, name
