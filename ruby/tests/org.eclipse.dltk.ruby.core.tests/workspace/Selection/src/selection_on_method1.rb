@@ -8,7 +8,7 @@
 
 ###############################################################################
 
-class Foo
+class Fooo
 	def doo
 		creator.cool_method
 	end
@@ -30,7 +30,7 @@ end
 class Baz
 	def bobobo
 		Bar.new.cool_method
-		ff = Foo.new
+		ff = Fooo.new
 		ff.doo
 	end
 end
