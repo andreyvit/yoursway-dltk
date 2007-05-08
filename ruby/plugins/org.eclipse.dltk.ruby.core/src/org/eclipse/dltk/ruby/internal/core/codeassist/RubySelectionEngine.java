@@ -10,6 +10,7 @@
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +35,7 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.TypeNameMatch;
@@ -44,14 +46,21 @@ import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinElementInfo;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
+import org.eclipse.dltk.ruby.typeinference.evaluators.ColonExpressionEvaluator;
+import org.eclipse.dltk.ruby.typeinference.evaluators.ConstantReferenceEvaluator;
+import org.eclipse.dltk.ruby.typeinference.goals.NonTypeConstantTypeGoal;
 import org.eclipse.dltk.ti.BasicContext;
 import org.eclipse.dltk.ti.DLTKTypeInferenceEngine;
+import org.eclipse.dltk.ti.GoalState;
+import org.eclipse.dltk.ti.goals.AbstractTypeGoal;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
+import org.eclipse.dltk.ti.goals.IGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class RubySelectionEngine extends ScriptSelectionEngine {
@@ -150,17 +159,8 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 				} else if (node instanceof MethodDeclaration) {
 					MethodDeclaration methodDeclaration = (MethodDeclaration) node;
 					selectionOnMethodDeclaration(parsedUnit, methodDeclaration);
-				} else if (node instanceof ConstantReference) {
-					ConstantReference reference = (ConstantReference) node;
-					selectTypes(modelModule, parsedUnit, reference); // FIXME:
-					// add
-					// support
-					// of
-					// non-Type
-					// constants
-				} else if (node instanceof RubyColonExpression) {
-					RubyColonExpression colonExpression = (RubyColonExpression) node;
-					selectTypes(modelModule, parsedUnit, colonExpression);
+				} else if (node instanceof ConstantReference || node instanceof RubyColonExpression) {
+					selectTypes(modelModule, parsedUnit, node);
 				} else if (node instanceof VariableReference) {
 					selectionOnVariable(modelModule, parsedUnit,
 							(VariableReference) node);
@@ -181,6 +181,79 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 
 		return (IModelElement[]) selectionElements
 				.toArray(new IModelElement[selectionElements.size()]);
+	}
+
+	private void selectOnColonExpression(ModuleDeclaration parsedUnit,
+			RubyColonExpression node,
+			org.eclipse.dltk.core.ISourceModule modelModule) {
+		BasicContext basicContext = new BasicContext(
+				(org.eclipse.dltk.core.ISourceModule) sourceModule, parsedUnit);
+		ColonExpressionEvaluator evaluator = new ColonExpressionEvaluator(
+				new ExpressionTypeGoal(basicContext, node));
+		IGoal[] init = evaluator.init();
+		if (init == null || init.length == 0) {
+			 // should never be here
+			System.err.println("Why did ColonExpressionEvaluator evaluated so fast?");
+		} else {
+			IEvaluatedType leftType = inferencer.evaluateType((AbstractTypeGoal) init[0], -1);
+			IGoal[] goals = evaluator.subGoalDone(init[0], leftType, GoalState.DONE);
+			if (goals== null || goals.length == 0) { // good, we have type-constant 
+				Object evaluatedType = evaluator.produceResult();
+				if (evaluatedType instanceof RubyClassType) {
+					RubyMixinClass mixinClass = RubyMixinModel.getInstance()
+							.createRubyClass((RubyClassType) evaluatedType);
+					if (mixinClass != null)
+						this.selectionElements.addAll(Arrays.asList(mixinClass.getSourceTypes()));
+				}
+			} else {
+				if (goals[0] instanceof NonTypeConstantTypeGoal) {
+					processNonTypeConstant((NonTypeConstantTypeGoal) (goals[0]));
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Uses goal info for selection on non-type goal
+	 * @param ngoal
+	 */
+	private void processNonTypeConstant (NonTypeConstantTypeGoal ngoal) {
+		IMixinElement element = ngoal.getElement();
+		if (element != null) {
+			Object[] eObjects = element.getAllObjects();
+			for (int i = 0; i < eObjects.length; i++) {
+				if (eObjects[i] instanceof RubyMixinElementInfo) {
+					RubyMixinElementInfo info = (RubyMixinElementInfo) eObjects[i];
+					Object obj = info.getObject();
+					if (obj instanceof IModelElement) {
+						this.selectionElements.add(obj);
+					}
+				}
+			}
+		}
+	}
+
+	private void selectOnConstant(ModuleDeclaration parsedUnit,
+			ConstantReference node,
+			org.eclipse.dltk.core.ISourceModule modelModule) {
+		BasicContext basicContext = new BasicContext(
+				(org.eclipse.dltk.core.ISourceModule) sourceModule, parsedUnit);
+		ConstantReferenceEvaluator evaluator = new ConstantReferenceEvaluator(
+				new ExpressionTypeGoal(basicContext, node));
+		IGoal[] init = evaluator.init();
+		if (init == null || init.length == 0) {
+			Object evaluatedType = evaluator.produceResult();
+			if (evaluatedType instanceof RubyClassType) {
+				RubyMixinClass mixinClass = RubyMixinModel.getInstance()
+						.createRubyClass((RubyClassType) evaluatedType);
+				if (mixinClass != null)
+					this.selectionElements.addAll(Arrays.asList(mixinClass.getSourceTypes()));
+			}
+		} else if (init[0] instanceof NonTypeConstantTypeGoal) { // it'a
+																	// non-type
+																	// constant
+			processNonTypeConstant((NonTypeConstantTypeGoal) init[0]);
+		}
 	}
 
 	/**
@@ -232,15 +305,14 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 
 	private void selectTypes(org.eclipse.dltk.core.ISourceModule modelModule,
 			ModuleDeclaration parsedUnit, ASTNode node) {
-		boolean foundSomething = false;
-
-		IType[] types = getSourceTypesForClass(parsedUnit, node);
-		for (int i = 0; i < types.length; i++) {
-			this.selectionElements.add(types[i]);
-			foundSomething = true;
+		if (node instanceof ConstantReference) {
+			selectOnConstant(parsedUnit, (ConstantReference) node,
+					modelModule);
+		} else if (node instanceof RubyColonExpression) {
+			selectOnColonExpression(parsedUnit, (RubyColonExpression) node, modelModule);
 		}
-
-		if (!foundSomething) {
+		
+		if (this.selectionElements.isEmpty()) {
 			TypeNameMatchRequestor requestor = new TypeNameMatchRequestor() {
 				public void acceptTypeNameMatch(TypeNameMatch match) {
 					selectionElements.add(match.getType());

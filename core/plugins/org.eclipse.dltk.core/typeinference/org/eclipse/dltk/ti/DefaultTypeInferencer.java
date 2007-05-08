@@ -131,6 +131,10 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal, IPruner pruner) {
 		return (IEvaluatedType) engine.evaluateGoal(goal, pruner);
 	}
+	
+	protected Object evaluateGoal(IGoal goal, IPruner pruner) {
+		return engine.evaluateGoal(goal, pruner);
+	}
 
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal) {
 		return evaluateType(goal, null);

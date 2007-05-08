@@ -723,8 +723,11 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 
 
 
-		return createScriptCompletionProposal(completion, replaceStart, length,
+		ScriptCompletionProposal scriptProposal = createScriptCompletionProposal(completion, replaceStart, length,
 				image, displayString, 0);
+		
+		scriptProposal.setRelevance(computeRelevance(typeProposal));
+		return scriptProposal;
 
 	}
 }

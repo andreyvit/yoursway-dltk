@@ -9,8 +9,14 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -41,6 +47,7 @@ import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.internal.core.ModelElement;
+import org.eclipse.dltk.internal.core.SourceModule;
 import org.eclipse.dltk.ruby.ast.RubyBlock;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyDAssgnExpression;
@@ -65,6 +72,10 @@ import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class RubyCompletionEngine extends ScriptCompletionEngine {
+	
+	private final static int RELEVANCE_FREE_SPACE = 10000000;
+	
+	private final static int RELEVANCE_KEYWORD = 1000000;
 
 	private final static String[] globalVars = { "$DEBUG", "$$", "$-i",
 			"$deferr", "$/", "$'", "$stdout", "$-l", "$-I", "$.", "$KCODE",
@@ -80,6 +91,22 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	private HashSet completedNames = new HashSet();
 
 	private ASTNode completionNode;
+
+	private final static Comparator modelElementComparator = new Comparator() {
+
+		Collator collator = Collator.getInstance(Locale.ENGLISH);
+
+		public int compare(Object arg0, Object arg1) {
+			if (arg0 instanceof IModelElement && arg1 instanceof IModelElement) {
+				IModelElement me1 = (IModelElement) arg1;
+				IModelElement me2 = (IModelElement) arg0;
+				return -collator.compare(me1.getElementName(), me2
+						.getElementName());
+			}
+			return 0;
+		}
+
+	};;
 
 	public RubyCompletionEngine() {
 		// super(nameEnvironment, requestor, settings, dltkProject);
@@ -145,29 +172,24 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	private String getWordStarting(String content, int position, int maxLen) {
-		HeuristicLookupResult context = RubyContext.determineContext(content,
-				position, 0);
-//		if (context.context == RubyContext.COMMAND_START ||
-//				context.context == RubyContext.NAME) {
-
-			int original = position;
-			if (position <= 0)
-				return "";
- 			if (position >= content.length())
-				position = content.length();
+		int original = position;
+		if (position <= 0)
+			return "";
+		if (position >= content.length())
+			position = content.length();
+		position--;
+		int len = 0;
+		while (position >= 0
+				&& len < maxLen
+				&& RubySyntaxUtils.isStrictIdentifierCharacter(content
+						.charAt(position))) {
 			position--;
-			int len = 0;
-			while (position >= 0
-					&& len < maxLen
-					&& RubySyntaxUtils.isStrictIdentifierCharacter(content
-							.charAt(position))) {
-				position--;
-			}
-			if (position + 1 > original)
-				return "";
+		}
+		if (position + 1 > original)
+			return "";
+		if (Character.isWhitespace(content.charAt(position)))
 			return content.substring(position + 1, original);
-//		}
-//		return null;
+		return null;
 	}
 
 	public void complete(ISourceModule module, int position, int i) {
@@ -185,13 +207,8 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		try {
 			String content = module.getSourceContents();
 
-			String wordStarting = getWordStarting(content, position, 10); // no
-																			// ruby
-																			// keywords
-																			// have
-																			// more
-																			// 10
-																			// chars
+			String wordStarting = getWordStarting(content, position, 10); 
+			
 			if (wordStarting != null) {
 				this.setSourceRange(position - wordStarting.length(), position);
 				String[] keywords = RubyKeyword.findByPrefix(wordStarting);
@@ -248,44 +265,31 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 								position);
 					} else { // worst case
 						if (wordStarting == null || wordStarting.length() == 0) {
-							int rel = 4242;
-//							RubyClassType selfClass = RubyTypeInferencingUtils
-//									.determineSelfClass(
-//											(org.eclipse.dltk.core.ISourceModule) module,
-//											moduleDeclaration, position);
-//							RubyMixinClass rubyClass = RubyMixinModel.getInstance()
-//									.createRubyClass(selfClass);
-//							RubyMixinMethod[] findMethods = rubyClass.findMethods(
-//									"", true);
-//							for (int j = 0; j < findMethods.length; j++) {
-//								IMethod[] sourceMethods = findMethods[j]
-//										.getSourceMethods();
-//								if (sourceMethods != null
-//										&& sourceMethods.length > 0) {
-//									reportMethod(sourceMethods[0], rel--);
-//								}
-//							}
-//							for (int k = 0; k < globalVars.length; k++) {
-//								reportField(new FakeField((ModelElement) module,
-//										globalVars[k], 0, 0), rel--);
-//							}
+							int rel = RELEVANCE_FREE_SPACE;
 							try {
-								IModelElement[] children = modelModule.getChildren();
+								IModelElement[] children = modelModule
+										.getChildren();
 								if (children != null)
 									for (int j = 0; j < children.length; j++) {
 										if (children[j] instanceof IField)
-											reportField((IField) children[j], rel--);
+											reportField((IField) children[j],
+													rel);
 										if (children[j] instanceof IMethod) {
 											IMethod method = (IMethod) children[j];
 											if ((method.getFlags() & Modifiers.AccStatic) == 0)
-												reportMethod(method, rel--);
+												reportMethod(method, rel);
 										}
-										if (children[j] instanceof IType && !children[j].getElementName().trim().startsWith("<<"))
-											reportType((IType) children[j], rel--);
+										if (children[j] instanceof IType
+												&& !children[j]
+														.getElementName()
+														.trim()
+														.startsWith("<<"))
+											reportType((IType) children[j],
+													rel);
 									}
 							} catch (ModelException e) {
 								e.printStackTrace();
-							}							
+							}
 						}
 					}
 				}
@@ -340,8 +344,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			ModuleDeclaration moduleDeclaration, String prefix, int position) {
 		int relevance = 424242;
 
-		this.setSourceRange(/* node.sourceStart() */position - prefix.length(),
-				position);
+		this.setSourceRange(position - prefix.length(), position);
 		ASTNode[] wayToNode = ASTUtils.restoreWayToNode(moduleDeclaration,
 				this.completionNode);
 		for (int i = wayToNode.length - 1; i > 0; i--) {
@@ -386,12 +389,17 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 	private void reportSubElements(org.eclipse.dltk.core.ISourceModule module,
 			IEvaluatedType type, String prefix) {
+		int relevance = 424242;
+
+		ArrayList types = new ArrayList();
+		ArrayList methods = new ArrayList();
+		ArrayList fields = new ArrayList();
+
 		if (type instanceof RubyClassType) {
 			RubyClassType rubyClassType = (RubyClassType) type;
 			IMixinElement mixinElement = model.get(rubyClassType.getModelKey());
 			if (mixinElement != null) {
 				IMixinElement[] children = mixinElement.getChildren();
-				int relevance = 424242;
 				for (int i = 0; i < children.length; i++) {
 					Object[] infos = children[i].getAllObjects();
 					for (int j = 0; j < infos.length; j++) {
@@ -403,20 +411,26 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 							IType type2 = (IType) obj.getObject();
 							if (type2 != null
 									&& type2.getElementName()
-											.startsWith(prefix))
-								reportType(type2, relevance--);
+											.startsWith(prefix)) {
+								// reportType(type2, relevance--);
+								types.add(type2);
+							}
 						} else if (obj.getKind() == RubyMixinElementInfo.K_METHOD) {
 							IMethod method2 = (IMethod) obj.getObject();
 							if (method2 != null
 									&& method2.getElementName().startsWith(
-											prefix))
-								reportMethod(method2, relevance--);
+											prefix)) {
+								// reportMethod(method2, relevance--);
+								methods.add(method2);
+							}
 						}
 						if (obj.getKind() == RubyMixinElementInfo.K_VARIABLE) {
 							IField fff = (IField) obj.getObject();
 							if (fff != null
-									&& fff.getElementName().startsWith(prefix))
-								reportField(fff, relevance--);
+									&& fff.getElementName().startsWith(prefix)) {
+								// reportField(fff, relevance--);
+								fields.add(fff);
+							}
 						}
 						break;
 					}
@@ -426,6 +440,25 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		} else {
 			// never should be here
 		}
+
+		Collections.sort(fields, modelElementComparator);
+		for (Iterator iterator = fields.iterator(); iterator.hasNext();) {
+			IField t = (IField) iterator.next();
+			reportField(t, relevance--);
+		}
+
+		Collections.sort(types, modelElementComparator);
+		for (Iterator iterator = types.iterator(); iterator.hasNext();) {
+			IType t = (IType) iterator.next();
+			reportType(t, relevance--);
+		}
+
+		Collections.sort(methods, modelElementComparator);
+		for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
+			IMethod t = (IMethod) iterator.next();
+			reportMethod(t, relevance--);
+		}
+
 	}
 
 	private void completeColonExpression(
@@ -472,7 +505,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					.getModelStaticScopes(model, moduleDeclaration, position);
 			for (int i = modelStaticScopes.length - 1; i >= 0; i--) {
 				IMixinElement scope = modelStaticScopes[i];
-				if (scope == null) // XXX-fourdman
+				if (scope == null) 
 					continue;
 				reportSubElements(module, new RubyClassType(scope.getKey()),
 						prefix);
@@ -551,7 +584,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			if (pos < position
 					&& !RubySyntaxUtils.isStrictIdentifierCharacter(content
 							.charAt(pos))) // for (...).name and Foo::name
-											// calls
+				// calls
 				pos++;
 		}
 
@@ -559,8 +592,16 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 		if (receiver == null)
 			completeSimpleRef(module, moduleDeclaration, starting, position);
-
+		
 		this.setSourceRange(position - starting.length(), position);
+		
+		if (starting.startsWith("__")) {
+			String[] keywords = RubyKeyword.findByPrefix("__");
+			for (int j = 0; j < keywords.length; j++) {
+				reportKeyword(keywords[j]);
+			}
+		}
+
 
 		IMethod[] methods = null;
 		IMethod[] methods2 = null;
@@ -581,7 +622,9 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					moduleDeclaration, self, starting);
 		}
 
+
 		if (methods2 != null) { // virtual methods
+			Arrays.sort(methods2, modelElementComparator);
 			for (int j = 0; j < methods2.length; j++) {
 				if (methods2[j].getElementName().startsWith(starting))
 					reportMethod(methods2[j], relevance--);
@@ -589,6 +632,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		}
 
 		if (methods != null) {
+			Arrays.sort(methods, modelElementComparator);
 			for (int j = 0; j < methods.length; j++) {
 				if (methods[j].getElementName().startsWith(starting))
 					reportMethod(methods[j], relevance--);
@@ -613,9 +657,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		char[] name = elementName.toCharArray();
 		char[] compl = name;
 
-		int relevance = RelevanceConstants.R_INTERESTING;
-		relevance += RelevanceConstants.R_NON_RESTRICTED;
-		relevance += rel;
+		int relevance = rel;
 
 		// accept result
 		noProposal = false;
@@ -677,9 +719,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		if (name.length == 0)
 			return;
 
-		int relevance = RelevanceConstants.R_INTERESTING;
-		relevance += RelevanceConstants.R_NON_RESTRICTED;
-		relevance += rel;
+		int relevance = rel;
 
 		// accept result
 		noProposal = false;
@@ -712,9 +752,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		if (name.length == 0)
 			return;
 
-		int relevance = RelevanceConstants.R_INTERESTING;
-		relevance += RelevanceConstants.R_NON_RESTRICTED;
-		relevance += rel;
+		int relevance = rel;
 
 		// accept result
 		noProposal = false;
@@ -749,7 +787,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			// proposal.setFlags(Flags.AccDefault);
 			proposal.setReplaceRange(this.startPosition - this.offset,
 					this.endPosition - this.offset);
-			proposal.setRelevance(Integer.MAX_VALUE);
+			proposal.setRelevance(RELEVANCE_KEYWORD);
 			this.requestor.accept(proposal);
 			if (DEBUG) {
 				this.printDebug(proposal);

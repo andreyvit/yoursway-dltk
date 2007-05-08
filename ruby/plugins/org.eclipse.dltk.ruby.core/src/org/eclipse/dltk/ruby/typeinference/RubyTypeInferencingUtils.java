@@ -147,11 +147,11 @@ public class RubyTypeInferencingUtils {
 		return null;
 	}
 
-	public static IEvaluatedType determineSelfClass(IContext context,
+	public static RubyClassType determineSelfClass(IContext context,
 			int keyOffset) {
 		if (context instanceof IInstanceContext) {
 			IInstanceContext instanceContext = (IInstanceContext) context;
-			return instanceContext.getInstanceType();
+			return (RubyClassType) instanceContext.getInstanceType();
 		} else {
 			ISourceModuleContext basicContext = (ISourceModuleContext) context;
 			return determineSelfClass(basicContext.getSourceModule(),

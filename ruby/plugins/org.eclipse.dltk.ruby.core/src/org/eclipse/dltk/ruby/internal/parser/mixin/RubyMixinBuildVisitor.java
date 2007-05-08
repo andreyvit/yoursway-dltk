@@ -21,6 +21,7 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.references.ConstantReference;
+import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
@@ -364,7 +365,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			IField obj = null;
 			if (sourceModule != null) {
 				obj = new FakeField((ModelElement) sourceModule, name, s
-						.sourceStart(), s.sourceEnd());
+						.sourceStart(), s.sourceEnd() - s.sourceStart());
 			}
 			scope.reportVariable(name, obj);
 		} else 
@@ -378,7 +379,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 				IField obj = null;
 				if (sourceModule != null)
 					obj = new FakeField((ModelElement) sourceModule, name, ref
-							.sourceStart(), ref.sourceEnd());
+							.sourceStart(), ref.sourceEnd() - ref.sourceStart());
 				scope.reportVariable(name, obj);
 			} 
 		} else if (s instanceof CallExpression) {
@@ -394,13 +395,24 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			}
 		} else if (s instanceof RubyConstantDeclaration) {
 			RubyConstantDeclaration constantDeclaration = (RubyConstantDeclaration) s;
-			String name = constantDeclaration.getName().getName();
+			SimpleReference name2 = constantDeclaration.getName();
+			String name = name2.getName();
+			boolean closeScope = false;
+			if (constantDeclaration.getPath() instanceof RubyColonExpression) {
+				RubyColonExpression colon = (RubyColonExpression) constantDeclaration.getPath();
+				String classKey = evaluateClassKey(colon.getLeft());
+				if (classKey != null) {
+					this.scopes.add(new ClassScope(colon, classKey));					
+					closeScope = true;
+				}
+			} 
 			Scope scope = peekScope();
 			IField obj = null;
 			if (sourceModule != null)
-				obj = new FakeField((ModelElement) sourceModule, name, constantDeclaration
-						.getName().sourceStart(), constantDeclaration.getName().sourceEnd());
+				obj = new FakeField((ModelElement) sourceModule, name, name2.sourceStart(), name2.sourceEnd() - name2.sourceStart());
 			scope.reportVariable(name, obj);
+			if (closeScope)
+				this.scopes.pop();
 		}
 		return true;
 	}
@@ -475,6 +487,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			requestor.reportElement(info);
 			// if (DLTKCore.DEBUG_INDEX) {
 //			 System.out.println("Mixin reported: " + key);
+			 
 			// }
 //			if (key.startsWith("Object"))
 //				System.out.println("######################## Object key reported: " + key);

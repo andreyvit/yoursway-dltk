@@ -19,13 +19,11 @@ import org.eclipse.dltk.ti.goals.IGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class RubyTypeInferencer extends DefaultTypeInferencer {
-	
+
 	private class SimplestRubyPruner implements IPruner {
-		
+
 		private long timeStart;
 		private final long timeLimit;
-		
-		
 
 		public SimplestRubyPruner(long timeLimit) {
 			super();
@@ -33,33 +31,38 @@ public class RubyTypeInferencer extends DefaultTypeInferencer {
 		}
 
 		public void init() {
-			this.timeStart = System.currentTimeMillis();			
+			this.timeStart = System.currentTimeMillis();
 		}
 
 		public boolean prune(IGoal goal, EvaluatorStatistics stat) {
 			long currentTime = System.currentTimeMillis();
 			if (stat != null) {
-//				if (stat.getSubGoalsDoneSuccessful() > 5)
-//					return true;
+// if (stat.getSubGoalsDoneSuccessful() > 5)
+// return true;
 			}
-//			if (currentTime - timeStart > timeLimit)
-//				return true;
+// if (currentTime - timeStart > timeLimit)
+// return true;
 			return false;
 		}
-		
+
 	}
-	
+
 	public RubyTypeInferencer() {
-		super( new RubyEvaluatorFactory());
+		super(new RubyEvaluatorFactory());
 	}
 
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit) {
-		IEvaluatedType type = super.evaluateType(goal, new TimelimitPruner(timeLimit)); 
-		if (type == null || type instanceof UnknownType) { 
-			type = new RubyClassType("Object"); //anyway, all things in ruby are objects :)
+		IEvaluatedType type = super.evaluateType(goal, new TimelimitPruner(
+				timeLimit));
+		if (type == null || type instanceof UnknownType) {
+			type = new RubyClassType("Object"); // anyway, all things in ruby
+												// are objects :)
 		}
 		return type;
 	}
-	
+
+	public Object evaluateGoal(IGoal goal, IPruner pruner) {
+		return super.evaluateGoal(goal, pruner);
+	}
 
 }

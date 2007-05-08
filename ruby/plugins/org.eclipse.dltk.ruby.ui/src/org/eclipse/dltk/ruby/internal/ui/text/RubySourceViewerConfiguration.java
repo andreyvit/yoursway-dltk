@@ -52,7 +52,7 @@ public class RubySourceViewerConfiguration extends
 	private RubyTextTools fTextTools;
 
 	private RubyCodeScanner fCodeScanner;
-
+ 
 	private AbstractScriptScanner fStringScanner;
 
 	private AbstractScriptScanner fCommentScanner;

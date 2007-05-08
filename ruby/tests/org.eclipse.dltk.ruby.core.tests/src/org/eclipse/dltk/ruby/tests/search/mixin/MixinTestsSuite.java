@@ -114,7 +114,8 @@ public class MixinTestsSuite extends TestSuite {
 								assertions.add(new GetElementAssertion(key,
 										MixinTestsSuite.this.model));
 							} else {
-								Assert.isLegal(false);
+//								continue;
+//								Assert.isLegal(false);
 							}
 						}
 						lineOffset += lines[i].length() + 1;
