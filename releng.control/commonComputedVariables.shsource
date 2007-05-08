@@ -59,7 +59,7 @@ fi
 
 export CVS_RSH=ssh
 #export CVS_MAIN_REPO=:pserver:anonymous@dev.eclipse.org:/cvsroot/webtools
-export CVS_MAIN_REPO=:ext:andrey@us.xored.com:/opt/rubygears
+export CVS_MAIN_REPO=:ext:aplatov@dev.eclipse.org:/cvsroot/technology
 
 export J2SE14=${bootclasspath} 
 export J2SE15=${bootclasspath_15}
