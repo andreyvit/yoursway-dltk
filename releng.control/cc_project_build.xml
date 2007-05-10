@@ -26,7 +26,7 @@
     	Normally this is literally the project name from CruiseControl, but 
     	if running "standalone", we make this simplifying assumption.
     -->
-    <property name="build.distribution" value="rubygears" />
+    <property name="build.distribution" value="dltk" />
     <property name="buildBranch" value="R1.0" />
     <property name="buildType" value="I" />
     <property name="checkoutprojectname" value="${build.distribution}-${buildBranch}-${buildType}" />
@@ -34,8 +34,8 @@
     <target name="Build">
 
         <!-- set main builder file name, based on distribution, buildBranch and build type -->
-        <property name="rubygearsBuilder"
-                  value="${env.BUILD_HOME}/build-node/checkout/${checkoutprojectname}/releng.rubygearsbuilder/build.xml" />
+        <property name="dltkBuilder"
+                  value="${env.BUILD_HOME}/build-node/checkout/${checkoutprojectname}/releng.dltkbuilder/build.xml" />
 
 
 
@@ -57,22 +57,22 @@
 
 
         <!-- build and create preliminary download site files -->
-        <ant antfile="${rubygearsBuilder}" target="build">
+        <ant antfile="${dltkBuilder}" target="build">
 
         </ant>
 
-        <ant antfile="${rubygearsBuilder}" target="site" />
+        <ant antfile="${dltkBuilder}" target="site" />
         
         <!-- upload what we have so far -->
-        <ant antfile="${rubygearsBuilder}" target="upload" />
+        <ant antfile="${dltkBuilder}" target="upload" />
 
 
         <!-- test and create test summary files -->
-        <ant antfile="${rubygearsBuilder}" target="test" />
+        <ant antfile="${dltkBuilder}" target="test" />
 
-        <ant antfile="${rubygearsBuilder}" target="site" />
+        <ant antfile="${dltkBuilder}" target="site" />
         <!-- upload what we have so far -->
-        <ant antfile="${rubygearsBuilder}" target="upload" />
+        <ant antfile="${dltkBuilder}" target="upload" />
 
     </target>
 

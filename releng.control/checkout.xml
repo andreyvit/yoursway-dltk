@@ -20,7 +20,7 @@
     <!-- = = = end standard properties pattern = = = -->
 
     <!-- if not otherwise set, the following are good default values -->
-    <property name="checkout.rubygearsbuilder.clean"
+    <property name="checkout.dltkbuilder.clean"
               value="true" />
     <property name="mapVersionTag" value="HEAD" />
 
@@ -35,12 +35,12 @@
     <echo message="checkoutprojectname: ${checkoutprojectname}" />
     <target name="checkout" if="checkoutprojectname">
         <!-- we always check and init the builder -->
-        <antcall target="getrubygearsbuilder" />
+        <antcall target="getdltkbuilder" />
         <!-- and projects can do more if needed. -->
         <antcall target="${checkoutprojectname}" />
     </target>
 
-    <target name="rubygears-R1.0-N">
+    <target name="dltk-R1.0-N">
 
         <!-- 
         	do not need, since we do nightly builds "on demand" only
@@ -50,18 +50,18 @@
 
     </target>
 
-    <target name="rubygears-R1.0-S">
+    <target name="dltk-R1.0-S">
         <cvs quiet="true"
              cvsRoot="${mapCvsRoot}"
-             package="releng"
+             package="${cvsPrefix}/releng"
              dest="${codir}"
              tag="HEAD" />
     </target>
 
-    <target name="rubygears-R1.0-I">
+    <target name="dltk-R1.0-I">
         <cvs quiet="true"
              cvsRoot="${mapCvsRoot}"
-             package="releng"
+             package="${cvsPrefix}/releng"
              dest="${codir}"
              tag="HEAD" />
     </target>
@@ -69,29 +69,29 @@
     <!-- 
         The order of execution of these three worker targets
         is critical, check.clean, initBuilders, and 
-        then getrubygearsbuilder.
+        then getdltkbuilder.
     -->
-    <target name="getrubygearsbuilder"
+    <target name="getdltkbuilder"
             depends="check.clean,initBuilders"
             if="doClean">
         <!-- This is a special property file, that contains (only) the 
-        value of rubygearsBuilderVersion. Then, that version of the builder 
+        value of dltkBuilderVersion. Then, that version of the builder 
         is fetched to control the rest of the build -->
         <property file="${codir}/${releng}/maps/build.cfg" />
-        <delete dir="${codir}/releng.rubygearsbuilder"
+        <delete dir="${codir}/releng.dltkbuilder"
                 failonerror="false" />
-        <echo message="Version tag for ${releng.builder} is: ${rubygearsBuilderVersion}" />
+        <echo message="Version tag for ${releng.builder} is: ${dltkBuilderVersion}" />
         <cvs quiet="true"
              cvsRoot="${mapCvsRoot}"
-             package="${releng.builder}"
+             package="${cvsPrefix}/${releng.builder}"
              dest="${codir}"
-             tag="${rubygearsBuilderVersion}" />
+             tag="${dltkBuilderVersion}" />
     </target>
 
     <target name="check.clean">
-        <echo message="checkout.rubygearsbuilder.clean: ${checkout.rubygearsbuilder.clean}" />
+        <echo message="checkout.dltkbuilder.clean: ${checkout.dltkbuilder.clean}" />
         <condition property="doClean">
-            <equals arg1="${checkout.rubygearsbuilder.clean}"
+            <equals arg1="${checkout.dltkbuilder.clean}"
                     arg2="true"
                     trim="true"
                     casesensitive="false" />
@@ -102,7 +102,7 @@
         <echo message="Version tag for ${releng}: ${mapVersionTag}" />
         <cvs quiet="true"
              cvsRoot="${mapCvsRoot}"
-             package="${releng}"
+             package="${cvsPrefix}/${releng}"
              dest="${codir}"
              tag="${mapVersionTag}" />
     </target>

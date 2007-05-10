@@ -78,10 +78,10 @@
         ${build.distribution}-${buildBranch}-${buildType}
     -->
 
-    <project name="rubygears-R1.0-I">
+    <project name="dltk-R1.0-I">
         <!-- Defines where cruise looks for changes, to decide whether to run the build -->
         <modificationset quietperiod="120">
-            <cvs module="releng" />
+            <cvs module="${cvsPrefix}/releng" />
 
         </modificationset>
 
@@ -110,7 +110,7 @@
                     value="HEAD" />
                 <property
                     name="build.distribution"
-                    value="rubygears" />
+                    value="dltk" />
 
 
             </ant>
@@ -119,7 +119,7 @@
     </project>
 
 
-    <project name="rubygears-R1.0-N">
+    <project name="dltk-R1.0-N">
 
         <schedule interval="${time.VeryVeryLongTime}">
             <ant
@@ -143,7 +143,7 @@
                     value="HEAD" />
                 <property
                     name="build.distribution"
-                    value="rubygears" />
+                    value="dltk" />
                 <property
                     name="build.trial"
                     value="true" />
@@ -155,10 +155,10 @@
     </project>
 
 
-    <project name="rubygears-R1.0-S">
+    <project name="dltk-R1.0-S">
         <!-- Defines where cruise looks for changes, to decide whether to run the build -->
         <modificationset quietperiod="120">
-            <cvs module="releng" />
+            <cvs module="${cvsPrefix}/releng" />
 
         </modificationset>
 
@@ -190,7 +190,7 @@
                     value="HEAD" />
                 <property
                     name="build.distribution"
-                    value="rubygears" />
+                    value="dltk" />
                 <property
                     name="build.pack-all-in-one"
                     value="true" />
@@ -201,7 +201,7 @@
 
     </project>
 
-    <project name="rubygears-whatisfixed">
+    <project name="dltk-whatisfixed">
         <schedule interval="${time.VeryVeryLongTime}">
             <ant
                 antscript="${env.BUILD_HOME}/releng.control/ant.sh"

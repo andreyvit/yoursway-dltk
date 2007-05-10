@@ -19,7 +19,7 @@ rm -fr ./workspace
 
 export CCDIR=${BUILD_HOME}/apps/cruisecontrol-bin-2.6.1
 
-CCNAME="RubyGears"
+CCNAME="DLTK"
 
 # We want to execute CC itself in Java 5
 export JAVA_HOME=${JAVA_5_HOME}

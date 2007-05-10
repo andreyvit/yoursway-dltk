@@ -9,7 +9,7 @@
 # executed on its own. 
 
 
-export BUILD_HOME=/home/buildmeister
+export BUILD_HOME=/home/andrey
 
 export DISPLAY=127.0.0.1:1.0
 
@@ -19,7 +19,7 @@ export ANT_DIR="apache-ant-1.7.0"
 
 export BASEOS=linux
 export BASEWS=gtk
-export BASEARCH=ppc
+export BASEARCH=x86
 
 # no local build properties, for production builds
 export LOCAL_BUILD_PROPERTIES_DIR=

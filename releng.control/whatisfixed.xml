@@ -27,10 +27,10 @@
 		<antcall target="releng" />
 
 		<!-- create what-is-fixed summary files -->
-		<ant antfile="${rubygearsBuilder}">
-			<property name="rubygears.builder.home" value="${whatisfixed.workdir}/releng.rubygearsbuilder" />
+		<ant antfile="${dltkBuilder}">
+			<property name="dltk.builder.home" value="${whatisfixed.workdir}/releng.dltkbuilder" />
 			<property name="buildBranch" value="${buildBranch}" />
-			<property name="rubygearsbuilder.whatisfixed.properties.file" value="${basedir}/whatisfixed.properties" />
+			<property name="dltkbuilder.whatisfixed.properties.file" value="${basedir}/whatisfixed.properties" />
  		</ant>
 
 		<antcall target="sync" />
@@ -40,20 +40,20 @@
 	<target name="releng">
 
 		<available file="${whatisfixed.workdir}/releng/maps/dependencies.properties" property="map.exists" />
-		<available file="${whatisfixed.workdir}/releng.rubygearsbuilder/scripts/dependency/build.xml" property="releng.exists" />
+		<available file="${whatisfixed.workdir}/releng.dltkbuilder/scripts/dependency/build.xml" property="releng.exists" />
 		<antcall target="checkout-maps" />
-		<antcall target="getrubygearsbuilder" />
+		<antcall target="getdltkbuilder" />
 	</target>
 
 	<target name="checkout-maps" unless="map.exists">
-		<cvs quiet="true" cvsRoot="${mapCvsRoot}" package="releng/maps/build.cfg" dest="${whatisfixed.workdir}" tag="${rubygears.cvsTag}" />
+		<cvs quiet="true" cvsRoot="${mapCvsRoot}" package="${cvsPrefix}/releng/maps/build.cfg" dest="${whatisfixed.workdir}" tag="${dltk.cvsTag}" />
 	</target>
 
-	<target name="getrubygearsbuilder" unless="releng.exists">
+	<target name="getdltkbuilder" unless="releng.exists">
 		<property file="${whatisfixed.workdir}/releng/maps/build.cfg" />
-		<delete dir="${whatisfixed.workdir}/releng.rubygearsbuilder" failonerror="false" />
-		<echo message="Version tag for releng.rubygearsbuilder is: ${rubygearsBuilderVersion}" />
-		<cvs quiet="true" cvsRoot="${mapCvsRoot}" package="releng.rubygearsbuilder" dest="${whatisfixed.workdir}" tag="${rubygearsBuilderVersion}" />
+		<delete dir="${whatisfixed.workdir}/releng.dltkbuilder" failonerror="false" />
+		<echo message="Version tag for releng.dltkbuilder is: ${dltkBuilderVersion}" />
+		<cvs quiet="true" cvsRoot="${mapCvsRoot}" package="${cvsPrefix}/releng.dltkbuilder" dest="${whatisfixed.workdir}" tag="${dltkBuilderVersion}" />
 	</target>
 
 	<target name="clean" >
