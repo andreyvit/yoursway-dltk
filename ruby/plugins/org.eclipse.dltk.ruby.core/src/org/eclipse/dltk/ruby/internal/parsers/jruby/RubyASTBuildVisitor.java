@@ -11,7 +11,6 @@ package org.eclipse.dltk.ruby.internal.parsers.jruby;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -1335,7 +1334,6 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				handleVisibilitySetter(iVisited, Modifiers.AccPublic);
 		}
 
-		int argsStart = -1, argsEnd = -1;
 		RubyCallArgumentsList argList = new RubyCallArgumentsList();
 		Node argsNode = iVisited.getArgsNode();
 		if (argsNode != null) {
@@ -1355,13 +1353,6 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				argsNode.accept(this);
 			}
 			states.pop();
-			List children = argsNode.childNodes();
-			if (children.size() > 0) {
-				argsStart = ((Node) children.get(0)).getPosition()
-						.getStartOffset();
-				argsEnd = ((Node) children.get(children.size() - 1))
-						.getPosition().getEndOffset();
-			}
 		}
 
 		if (iVisited.getIterNode() != null) {
@@ -1374,7 +1365,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 		int funcNameStart = iVisited.getPosition().getStartOffset();
 		c.setStart(funcNameStart);
-		fixFunctionCallOffsets(c, methodName, funcNameStart, argsStart, argsEnd);
+		fixFunctionCallOffsets(c, methodName, funcNameStart, argList.sourceStart(), argList.sourceEnd());
 
 		states.peek().add(c);
 
