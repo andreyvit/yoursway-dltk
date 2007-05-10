@@ -8,11 +8,26 @@
 
 ###############################################################################
 
+t1 = Thread.new {
+    10.times {  |i|
+        puts i
+        sleep 0.3
+    }
+}
+
+t2 = Thread.new {
+    10.times {  |i|
+        puts i
+        sleep 0.1
+    }
+}
+
+
 class Tank
-	def initialize
-		@a = 'test'
-		@b = 2354
-	end
+    def initialize
+        @a = 'test'
+        @b = 2354
+    end
 end
 
 tank = Tank.new
@@ -20,3 +35,5 @@ x = 45
 y = 345
 z = x + y
 
+t1.join
+#t2.join

@@ -8,64 +8,61 @@
 
 ###############################################################################
 
-#
-# class Breakpoints
-#
+module XoredDebugger
 
-class Breakpoints
+    class Breakpoints
+        @@id = 0
 
-private
-	@@id = 0
+    private
+        def Breakpoints.next_id
+            @@id += 1
+            @@id    
+        end
 
-	def Breakpoints.next_id
-		@@id += 1
-		@@id
-	end
+    public
+        def initialize
+            @line_bps = {}
+        end
 
-public
-	def initialize
-		@line_bps = {}
-	end
+        def break?(file, line)
+            for bp in @line_bps.values do
+                if bp['line'] == line and bp['file'] == file and  bp['state']
+                    return true
+                end
+            end
 
-	def break?(file, line)
-		for bp in @line_bps.values do
-			if bp['line'] == line and bp['file'] == file and  bp['state']
-				return true
-			end
-		end
+            false
+        end
 
-		false
-	end
+        def set_line(file, line, state)
+            id = Breakpoints.next_id
+            @line_bps[id] = {
+                'id'      => id,
+                'line'    => line,
+                'file'    => file,
+                'state' => state
+            }
+            id
+        end
 
-	def set_line(file, line, state)
-		id = Breakpoints.next_id
-		@line_bps[id] = {
-			'id'      => id,
-			'line'    => line,
-			'file'    => file,
-			'state' => state
-		}
-		id
-	end
+        def set_line_conditional(file, line, condition)
+        end
 
-	def set_line_conditional(file, line, condition)
+        def set_call(function_name)
+        end
 
-	end
+        def set_return(function_name)
+        end
 
-	def set_call(function_name)
-	end
+        def set_exection(exception_name)
+        end     
 
-	def set_return(function_name)
-	end
+        def remove(id)
+            @line_bps.delete(id)
+        end
 
-	def set_exection(exception_name)
-	end  	
-
-	def remove(id)
-		@line_bps.delete(id)
-	end
-
-	def update(id, state)
-		@line_bps[id]['state'] = state
-	end
-end
+        def update(id, state)
+            @line_bps[id]['state'] = state
+        end
+    end # class Breakpoints
+end # module XoredDebugger

@@ -34,7 +34,7 @@ public class SimpleValidator extends AbstractValidator {
 	protected SimpleValidator(String id, Element element, IValidatorType type) throws IOException {
 		super(id, null, type);
 		this.value = element.getAttribute("simple_value");
-		this.valid = Boolean.parseBoolean(element.getAttribute("simple_valid"));
+		this.valid =  (new Boolean(element.getAttribute("simple_valid"))).booleanValue();
 	}
 
 	public void storeTo(Document doc, Element element) {

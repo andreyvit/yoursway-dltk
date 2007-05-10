@@ -1,3 +1,5 @@
+@ECHO OFF
+
 rem *******************************************************************************
 rem  Copyright (c) 2005, 2007 IBM Corporation and others.
 rem  All rights reserved. This program and the accompanying materials
@@ -8,12 +10,12 @@ rem
 rem  Contributors:
 rem      IBM Corporation - initial API and implementation
 rem *******************************************************************************
-@ECHO OFF
+
 
 SET DBGP_RUBY_HOST=localhost
 SET DBGP_RUBY_PORT=12000
 SET DBGP_RUBY_KEY=test
-SET DBGP_RUBY_SCRIPT=F:\programming\java\dltk\org.eclipse.dltk.ruby.debug\debugger\test.rb 
-SET DBGP_RUBY_LOG=C:/dbgp_log.txt
+SET DBGP_RUBY_SCRIPT=C:/data/programming/java/dltk/org.eclipse.dltk.ruby.debug/debugger/test.rb 
+SET DBGP_RUBY_LOG=stdout
 
-"C:/ruby/bin/ruby.exe"  -Idbgp dbgp/debugger.rb
+ruby -Idbgp dbgp/debugger.rb

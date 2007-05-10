@@ -9,33 +9,37 @@
 ###############################################################################
 
 module XoredDebugger
-   
-    class StdoutCapturer
-        def initialize()
-            @output = ""
-            @saved_stdout = $stdout
+
+    class NullLogger
+        def puts(str)
         end
 
-        def write(s)
-            @output += s
+        def close
+        end
+    end
+
+    class StdoutLogger
+        def puts(str)
+            Kernel.puts(str)
         end
 
-        def enable
-            self.reset
-            $stdout = self
+        def close
+        end
+    end
+
+    class FileLogger
+        def initialize(filename)
+            @f = File.open(filename, 'w')
         end
 
-        def disable
-            $stdout = @saved_stdout
+        def puts(str)
+            @f.puts(str)
+            @f.flush
         end
 
-        def output
-            @output
+        def close
+            @f.close
         end
+    end # class FileLogger
 
-        def reset
-            @output = ""
-        end
-    end # class StdoutCapturer
-
-end # module XoredDebugger
+end # module
