@@ -34,8 +34,7 @@ public class RubyMixin implements IMixinParser {
 //		long start = System.currentTimeMillis();
 		
 		ModuleDeclaration moduleDeclaration = RubySourceElementParser
-				.parseModule(info, contents, null);
-		
+				.parseModule(info, contents, null);		
 		
 //		long end = System.currentTimeMillis();		
 //		System.out.println("RubyMixin: parsing took " + (end - start));

@@ -62,6 +62,10 @@ public class FieldParentKeyVerificator extends GoalEvaluator {
 				RubyClassType selfClass = RubyTypeInferencingUtils
 						.determineSelfClass(sourceModule, module, node
 								.sourceStart());
+				
+//				if (selfClass == null)
+//					return null;
+				
 				node = translateNode(node, module);
 				
 				boolean approve = false;

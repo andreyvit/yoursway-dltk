@@ -17,7 +17,11 @@ import java.util.List;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
-import org.eclipse.dltk.ruby.typeinference.RubyModelUtils;
+import org.eclipse.dltk.ruby.typeinference.RubyClassType;
+import org.eclipse.dltk.ti.BasicContext;
+import org.eclipse.dltk.ti.DLTKTypeInferenceEngine;
+import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class RubyMixinClass implements IRubyMixinElement {
 
@@ -93,23 +97,37 @@ public class RubyMixinClass implements IRubyMixinElement {
 		if (mixinElement == null)
 			return null;
 		Object[] allObjects = mixinElement.getAllObjects();
-		IType type = null;
+//		IType type = null;
 		for (int i = 0; i < allObjects.length; i++) {
 			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
 			if( info == null ) {
 				continue;
 			}
-			if (info.getKind() == RubyMixinElementInfo.K_CLASS) {
-				type = (IType) info.getObject();
-				if (type == null)
-					continue;
-				String key = RubyModelUtils.evaluateSuperClass(type);
-				if (key == null)
-					continue;
-				if (!this.isMeta())
-					key = key + RubyMixin.INSTANCE_SUFFIX;
-				RubyMixinClass s = (RubyMixinClass) model.createRubyElement(key);
-				return s;				
+//			if (info.getKind() == RubyMixinElementInfo.K_CLASS) {
+//				type = (IType) info.getObject();
+//				if (type == null)
+//					continue;
+//				String key = RubyModelUtils.evaluateSuperClass(type);
+//				if (key == null)
+//					continue;
+//				if (!this.isMeta())
+//					key = key + RubyMixin.INSTANCE_SUFFIX;
+//				RubyMixinClass s = (RubyMixinClass) model.createRubyElement(key);
+//				return s;				
+//			}
+			if (info.getKind() == RubyMixinElementInfo.K_SUPER) {
+				SuperclassReferenceInfo sinfo = (SuperclassReferenceInfo) info.getObject();
+				BasicContext c = new BasicContext(sinfo.getModule(), sinfo.getDecl());
+				ExpressionTypeGoal g = new ExpressionTypeGoal(c, sinfo.getNode());
+				DLTKTypeInferenceEngine engine = new DLTKTypeInferenceEngine();
+				IEvaluatedType type2 = engine.evaluateType(g, 500);
+				if (type2 instanceof RubyClassType) {
+					RubyClassType rubyClassType = (RubyClassType) type2;
+					String key =  rubyClassType.getModelKey();
+					if (!this.isMeta())
+						key = key + RubyMixin.INSTANCE_SUFFIX;
+					return (RubyMixinClass) model.createRubyElement(key);
+				}
 			}
 		}
 		String key;
@@ -236,6 +254,14 @@ public class RubyMixinClass implements IRubyMixinElement {
 			if (element instanceof RubyMixinVariable)
 				result.add(element);
 		}
+		RubyMixinClass superclass = getSuperclass();
+		if (superclass != null && superclass.key != "Object" && superclass.key != "Object%") {
+			if (superclass.getKey().equals(key))
+				return null;
+			 RubyMixinVariable[] superFields = superclass.getFields();
+			 result.addAll(Arrays.asList(superFields));
+		}
+		
 		return (RubyMixinVariable[]) result
 				.toArray(new RubyMixinVariable[result.size()]);
 	}

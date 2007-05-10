@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -32,7 +33,7 @@ public class DLTKTypeInferenceEngine implements ITypeInferencer {
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry()
 				.getExtensionPoint(TYPE_EVALUATORS);
 		IExtension[] ext = extensionPoint.getExtensions();
-		ArrayList resolvers = new ArrayList();
+//		ArrayList resolvers = new ArrayList();
 		for (int a = 0; a < ext.length; a++) {
 			IConfigurationElement[] elements = ext[a]
 					.getConfigurationElements();
@@ -46,8 +47,9 @@ public class DLTKTypeInferenceEngine implements ITypeInferencer {
 				}
 				ITypeInferencer resolver = (ITypeInferencer) myElement
 						.createExecutableExtension("evaluator");
-				resolvers.add(resolver);
-				list.add(resolver);
+//				resolvers.add(resolver);
+//				list.add(resolver);
+				list.add(myElement);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -62,7 +64,15 @@ public class DLTKTypeInferenceEngine implements ITypeInferencer {
 		List list = (List) evaluatorsByNatures.get(nature);
 		if (list != null) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-				ITypeInferencer ti = (ITypeInferencer) iterator.next();
+				IConfigurationElement element =  (IConfigurationElement) iterator.next();
+				ITypeInferencer ti;
+				try {
+					ti = (ITypeInferencer) element.createExecutableExtension("evaluator");
+				} catch (CoreException e) {
+					e.printStackTrace();
+					continue;
+				}
+//				ITypeInferencer ti = (ITypeInferencer) iterator.next();
 				IEvaluatedType type = ti.evaluateType(goal, time);
 				if (type != null && !(type instanceof UnknownType)) //TODO
 					return type;

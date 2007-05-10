@@ -102,8 +102,8 @@ public class ColonExpressionEvaluator extends GoalEvaluator {
 					}
 
 					answer = new RubyClassType(modelKey);
-				}
-				answer = null;
+				} else 
+					answer = null;
 			}
 		} else {
 			IMixinElement mixinElement = RubyMixinModel.getRawInstance().get(
