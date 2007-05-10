@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKModelUtil;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IMethod;
@@ -42,25 +43,28 @@ public class ModelElementSorter extends ViewerSorter {
 
 	private static final int PROJECTS = 1;
 	private static final int PROJECTFRAGMENT = 2;
-	private static final int SCRIPTFOLDER = 3;
+	
+	private static final int SCRIPTFOLDER = 4;
 
-	private static final int SOURCEMODULES = 4;
-	private static final int CLASSFILES = 5;
+	private static final int SOURCEMODULES = 5;
+	// private static final int CLASSFILES = 5;
 
-	private static final int RESOURCEFOLDERS = 7;
-	private static final int RESOURCES = 8;
-	private static final int STORAGE = 9;
+	private static final int RESOURCEFOLDERS = 6;
+	private static final int RESOURCES = 7;
+	private static final int STORAGE = 8;
 
-	private static final int PACKAGE_DECL = 10;
-	private static final int IMPORT_CONTAINER = 11;
-	private static final int IMPORT_DECLARATION = 12;
+	private static final int PACKAGE_DECL = 9;
+	// private static final int IMPORT_CONTAINER = 11;
+	// private static final int IMPORT_DECLARATION = 12;
 
 	// Includes all categories ordered using the OutlineSortOrderPage:
 	// types, initializers, methods & fields
-	private static final int MEMBERSOFFSET = 15;
+	private static final int MEMBERSOFFSET = 10;
 
 	private static final int SCRIPT_ELEMENTS = 50;
 	private static final int OTHERS = 51;
+	
+	private static final int CONTAINER = 60;
 
 	private MembersOrderPreferenceCache fMemberOrderCache;
 	private Collator fNewCollator; // collator from ICU
@@ -106,8 +110,8 @@ public class ModelElementSorter extends ViewerSorter {
 					// }
 				case IModelElement.TYPE:
 					return getMemberCategory(MembersOrderPreferenceCache.TYPE_INDEX);
-					// case IModelElement.PACKAGE_DECLARATION :
-					// return PACKAGE_DECL;
+				case IModelElement.PACKAGE_DECLARATION:
+					return PACKAGE_DECL;
 					// case IModelElement.IMPORT_CONTAINER :
 					// return IMPORT_CONTAINER;
 					// case IModelElement.IMPORT_DECLARATION :
@@ -136,7 +140,7 @@ public class ModelElementSorter extends ViewerSorter {
 		} else if (element instanceof IStorage) {
 			return STORAGE;
 		} else if (element instanceof BuildPathContainer) {
-			return PROJECTFRAGMENT;
+			return CONTAINER;
 		}
 		return OTHERS;
 	}
@@ -231,8 +235,9 @@ public class ModelElementSorter extends ViewerSorter {
 			try {
 				params2 = ((IMethod) e2).getParameters();
 			} catch (ModelException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if( DLTKCore.DEBUG ) {
+					e.printStackTrace();
+				}
 			}
 			if (params1 != null && params2 != null) {
 				int len = Math.min(params1.length, params2.length);
@@ -320,7 +325,7 @@ public class ModelElementSorter extends ViewerSorter {
 
 	private boolean needsBuildpathComparision(Object e1, int cat1, Object e2,
 			int cat2) {
-		if ((cat1 == PROJECTFRAGMENT && cat2 == PROJECTFRAGMENT)
+		if ((cat1 == PROJECTFRAGMENT && cat2 == PROJECTFRAGMENT)||(cat1 == CONTAINER && cat2 == CONTAINER)
 				|| (cat1 == SCRIPTFOLDER
 						&& ((IScriptFolder) e1).getParent().getResource() instanceof IProject && cat2 == PROJECTFRAGMENT)
 				|| (cat1 == PROJECTFRAGMENT && cat2 == SCRIPTFOLDER && ((IScriptFolder) e2)

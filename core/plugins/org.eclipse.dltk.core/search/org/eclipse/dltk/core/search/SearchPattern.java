@@ -618,8 +618,8 @@ public abstract class SearchPattern extends InternalSearchPattern {
 	 */
 	public static SearchPattern createOrPattern(SearchPattern leftPattern,
 			SearchPattern rightPattern) {
-		// return new OrPattern(leftPattern, rightPattern);
-		return null;
+		return new OrPattern(leftPattern, rightPattern);
+//		return null;
 	}
 
 	private static SearchPattern createScriptFolderPattern(
@@ -1012,7 +1012,7 @@ public abstract class SearchPattern extends InternalSearchPattern {
 			break;
 		case IModelElement.FIELD:
 			searchPattern = createFieldPattern(element.getElementName(),
-					limitTo, matchRule);
+					maskedLimitTo, matchRule);
 			break;
 		}
 		if (searchPattern != null)

@@ -392,6 +392,7 @@ public class TypeInfoViewer {
 			StringBuffer buf= new StringBuffer();
 			ScriptElementLabels labels = fToolkit.getScriptElementLabels();
 			labels.getProjectFragmentLabel(root, ScriptElementLabels.ROOT_QUALIFIED | ScriptElementLabels.ROOT_VARIABLE, buf);
+			
 			return buf.toString();
 		}
 	}

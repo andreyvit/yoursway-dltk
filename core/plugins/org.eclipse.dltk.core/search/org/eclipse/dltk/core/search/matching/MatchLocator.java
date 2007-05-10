@@ -1398,50 +1398,7 @@ public class MatchLocator implements ITypeRequestor {
 		this.fieldHandles = new HashSet();
 		boolean matchedUnitContainer = (this.matchContainer & PatternLocator.COMPILATION_UNIT_CONTAINER) != 0;
 		// report references in javadoc
-		// if (unit.javadoc != null) {
-		// ASTNode[] nodes = nodeSet.matchingNodes(unit.javadoc.sourceStart,
-		// unit.javadoc.sourceEnd);
-		// if (nodes != null) {
-		// if (!matchedUnitContainer) {
-		// for (int i = 0, l = nodes.length; i < l; i++)
-		// nodeSet.matchingNodes.removeKey(nodes[i]);
-		// } else {
-		// IModelElement element = createPackageDeclarationHandle(unit);
-		// for (int i = 0, l = nodes.length; i < l; i++) {
-		// ASTNode node = nodes[i];
-		// Integer level = (Integer) nodeSet.matchingNodes.removeKey(node);
-		// if (encloses(element))
-		// this.patternLocator.matchReportReference(node, element, null/*
-		// * no
-		// * binding
-		// */, level.intValue(), this);
-		// }
-		// }
-		// }
-		// }
-		// if (matchedUnitContainer) {
-		// ImportReference pkg = unit.currentPackage;
-		// if (pkg != null && pkg.annotations != null) {
-		// IModelElement element = createPackageDeclarationHandle(unit);
-		// if (element != null) {
-		// reportMatching(pkg.annotations, element, null, nodeSet, true,
-		// encloses(element));
-		// }
-		// }
-		// ImportReference[] imports = unit.imports;
-		// if (imports != null) {
-		// for (int i = 0, l = imports.length; i < l; i++) {
-		// ImportReference importRef = imports[i];
-		// Integer level = (Integer) nodeSet.matchingNodes.removeKey(importRef);
-		// if (level != null)
-		// this.patternLocator.matchReportImportRef(importRef, null/*
-		// * no
-		// * binding
-		// */, createImportHandle(importRef),
-		// level.intValue(), this);
-		// }
-		// }
-		// }
+
 		TypeDeclaration[] types = unit.getTypes();
 		if (types != null) {
 			for (int i = 0, l = types.length; i < l; i++) {
@@ -1541,31 +1498,7 @@ public class MatchLocator implements ITypeRequestor {
 			report(match);
 		}
 		boolean matchedClassContainer = (this.matchContainer & PatternLocator.CLASS_CONTAINER) != 0;
-		// super types
-		// if ((type.bits & ASTNode.IsAnonymousType) != 0) {
-		// TypeReference superType = type.allocation.type;
-		// if (superType != null) {
-		// Integer level = (Integer) nodeSet.matchingNodes.removeKey(superType);
-		// if (level != null && matchedClassContainer)
-		// this.patternLocator.matchReportReference(superType, enclosingElement,
-		// type.binding, level.intValue(), this);
-		// }
-		// } else {
-		// TypeReference superClass = type.superclass;
-		// if (superClass != null) {
-		// reportMatchingSuper(superClass, enclosingElement, type.binding,
-		// nodeSet,
-		// matchedClassContainer);
-		// }
-		// TypeReference[] superInterfaces = type.superInterfaces;
-		// if (superInterfaces != null) {
-		// for (int i = 0, l = superInterfaces.length; i < l; i++) {
-		// reportMatchingSuper(superInterfaces[i], enclosingElement,
-		// type.binding,
-		// nodeSet, matchedClassContainer);
-		// }
-		// }
-		// }
+
 		// filter out element not in hierarchy scope
 		if (DLTKCore.DEBUG) {
 			System.out
@@ -1573,58 +1506,7 @@ public class MatchLocator implements ITypeRequestor {
 		}
 
 		boolean typeInHierarchy = true;// type.binding == null ||
-		// typeInHierarchy(type.binding);
-		// matchedClassContainer = matchedClassContainer && typeInHierarchy;
-		// // Visit fields
-		// FieldDeclaration[] fields = type.fields;
-		// if (fields != null) {
-		// if (nodeSet.matchingNodes.elementSize == 0)
-		// return; // end as all matching nodes were reported
-		// FieldDeclaration[] otherFields = null;
-		// int first = -1;
-		// int length = fields.length;
-		// for (int i = 0; i < length; i++) {
-		// FieldDeclaration field = fields[i];
-		// boolean last = field.endPart2Position == 0 || field.declarationEnd ==
-		// field.endPart2Position;
-		// // Store first index of multiple field declaration
-		// if (!last) {
-		// if (first == -1) {
-		// first = i;
-		// }
-		// }
-		// if (first >= 0) {
-		// // Store all multiple fields but first one for other
-		// // elements
-		// if (i > first) {
-		// if (otherFields == null) {
-		// otherFields = new FieldDeclaration[length - i];
-		// }
-		// otherFields[i - 1 - first] = field;
-		// }
-		// // On last field, report match with all other elements
-		// if (last) {
-		// for (int j = first; j <= i; j++) {
-		// Integer level = (Integer) nodeSet.matchingNodes.removeKey(fields[j]);
-		// int value = (level != null && matchedClassContainer) ?
-		// level.intValue() : -1;
-		// reportMatching(fields[j], otherFields, type, enclosingElement, value,
-		// typeInHierarchy, nodeSet);
-		// }
-		// first = -1;
-		// otherFields = null;
-		// }
-		// } else {
-		// // Single field, report normally
-		// Integer level = (Integer) nodeSet.matchingNodes.removeKey(field);
-		// int value = (level != null && matchedClassContainer) ?
-		// level.intValue() : -1;
-		// reportMatching(field, null, type, enclosingElement, value,
-		// typeInHierarchy,
-		// nodeSet);
-		// }
-		// }
-		// }
+		
 		// Visit methods
 		MethodDeclaration[] methods = type.getMethods();
 		if (methods != null) {

@@ -34,6 +34,8 @@ import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.internal.core.util.MementoTokenizer;
 import org.eclipse.dltk.internal.core.util.Util;
 
+import sun.org.mozilla.javascript.internal.ScriptRuntime;
+
 /**
  * Project fragment for buildpath script folders and modules.
  * 
@@ -42,6 +44,8 @@ import org.eclipse.dltk.internal.core.util.Util;
  */
 public class BuiltinProjectFragment extends ProjectFragment {
 	public final static ArrayList EMPTY_LIST = new ArrayList();
+
+	private static final Object INTERPRETER_CONTAINER = "org.eclipse.dltk.launching.INTERPRETER_CONTAINER";
 
 	protected final IPath fPath;
 	
@@ -62,7 +66,11 @@ public class BuiltinProjectFragment extends ProjectFragment {
 			IPath containerPath = null;
 			for (int i = 0; i < entries.length; i++) {
 				if (entries[i].getEntryKind() == IBuildpathEntry.BPE_CONTAINER) {
-					containerPath = entries[i].getPath();
+					IPath path = entries[i].getPath();
+					if(path.segment(0).equals(INTERPRETER_CONTAINER)) {
+						containerPath = entries[i].getPath();
+						break;
+					}
 				}
 			}
 			if (containerPath == null) {
