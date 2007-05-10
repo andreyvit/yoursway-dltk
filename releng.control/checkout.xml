@@ -77,7 +77,7 @@
         <!-- This is a special property file, that contains (only) the 
         value of dltkBuilderVersion. Then, that version of the builder 
         is fetched to control the rest of the build -->
-    	<echo message="Using releng project: ${releng}" />
+    	<echo message="Reading builder version from: ${codir}/${releng}/build.cfg" />
         <property file="${codir}/${releng}/build.cfg" />
         <delete dir="${codir}/releng.dltkbuilder"
                 failonerror="false" />
