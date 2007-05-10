@@ -146,7 +146,7 @@ public class GoalEngine {
 				} else {
 					GoalEvaluator evaluator = evaluatorFactory.createEvaluator(pair.goal);
 					Assert.isNotNull(evaluator);
-					System.out.println("Evaluating " + pair.goal + " with a " + evaluator);
+//					System.out.println("Evaluating " + pair.goal + " with a " + evaluator);
 					IGoal[] newGoals = evaluator.init();
 					if (newGoals == null)
 						newGoals = IGoal.NO_GOALS;						

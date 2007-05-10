@@ -34,7 +34,6 @@ import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.internal.core.util.MementoTokenizer;
 import org.eclipse.dltk.internal.core.util.Util;
 
-import sun.org.mozilla.javascript.internal.ScriptRuntime;
 
 /**
  * Project fragment for buildpath script folders and modules.

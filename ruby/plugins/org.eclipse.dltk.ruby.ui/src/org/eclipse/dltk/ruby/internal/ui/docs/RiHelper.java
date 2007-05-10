@@ -42,14 +42,14 @@ public class RiHelper {
 		synchronized (busy) {
 			while (busy[0]) {
 				try {
-					System.out.println("Ri is busy, waiting...");
+//					System.out.println("Ri is busy, waiting...");
 					busy.wait();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 					return "";
 				}
 			}
-			System.out.println("Fetching doc from ri...");
+//			System.out.println("Fetching doc from ri...");
 			busy[0] = true;
 		}
 		IInterpreterInstall install = DLTKLaunchUtil
@@ -100,7 +100,7 @@ public class RiHelper {
 		}
 		
 		synchronized (busy) {
-			System.out.println("Doc from ri successfully fetched");
+//			System.out.println("Doc from ri successfully fetched");
 			busy[0] = false;
 			busy.notify();
 		}

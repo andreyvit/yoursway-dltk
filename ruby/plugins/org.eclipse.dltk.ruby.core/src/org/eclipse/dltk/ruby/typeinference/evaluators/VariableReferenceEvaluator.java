@@ -92,8 +92,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 			IContext context = goal.getContext();
 			ModuleDeclaration rootNode = ((ISourceModuleContext) context)
 					.getRootNode();
-			VariableReference expression = (VariableReference) ((ExpressionTypeGoal) goal)
-					.getExpression();
+			VariableReference expression = ref;
 			String varName = expression.getName().trim();
 			if (expression.getVariableKind() instanceof VariableKind.Local) {
 				if (context instanceof IArgumentsContext) {
@@ -106,38 +105,45 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 					}
 				}
 			}
-			info = RubyTypeInferencingUtils.findLocalVariable(rootNode,
+
+			info = RubyTypeInferencingUtils.searchLocalVars(rootNode,
 					expression.sourceStart(), varName);
 
 			List poss = new ArrayList();
 
-			if (info != null && info.assignments != null) {
-				for (int i = 0; i < info.assignments.length; i++) {
+			if (info != null) {
+				if (info.lastAssignment != null) {
 					IGoal subgoal = new ExpressionTypeGoal(context,
-							info.assignments[i].getRight());
+							info.lastAssignment.getRight());
 					poss.add(subgoal);
 				}
-			}			
-
-			String key = null;
-			if (context instanceof ISourceModuleContext) {
-				ISourceModuleContext basicContext = (ISourceModuleContext) context;
-				key = determineEnclosingMethod(basicContext.getSourceModule(),
-						basicContext.getRootNode(), ref);
+				for (int i = 0; i < info.conditionalAssignments.length; i++) {
+					IGoal subgoal = new ExpressionTypeGoal(context,
+							info.conditionalAssignments[i].getRight());
+					poss.add(subgoal);
+				}
 			}
 
-			if (poss.size() == 0 && key != null) {
-				int argPos = determineArgumentPos(methodDeclaration, ref
-						.getName());
-				if (argPos != -1) {
-					int lastCurly = key.lastIndexOf(MixinModel.SEPARATOR);
-					String parent = null;
-					if (lastCurly != -1) {
-						parent = key.substring(0, lastCurly);
+			if (poss.size() == 0) {
+				String key = null;
+				if (context instanceof ISourceModuleContext) {
+					ISourceModuleContext basicContext = (ISourceModuleContext) context;
+					key = determineEnclosingMethod(basicContext
+							.getSourceModule(), basicContext.getRootNode(), ref);
+				}
+				if (key != null) {
+					int argPos = determineArgumentPos(methodDeclaration, ref
+							.getName());
+					if (argPos != -1) {
+						int lastCurly = key.lastIndexOf(MixinModel.SEPARATOR);
+						String parent = null;
+						if (lastCurly != -1) {
+							parent = key.substring(0, lastCurly);
+						}
+						String name = key.substring(lastCurly + 1);
+						callsGoal = new MethodCallsGoal(context, name, parent);
+						return new IGoal[] { callsGoal };
 					}
-					String name = key.substring(lastCurly + 1);
-					callsGoal = new MethodCallsGoal(context, name, parent);
-					return new IGoal[] { callsGoal };
 				}
 			}
 
@@ -189,7 +195,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 			CallArgumentsList args = expr.getArgs();
 			if (args != null) {
 				List list = args.getChilds();
-				if (argPos < list.size()){
+				if (argPos < list.size()) {
 					ASTNode st = (ASTNode) list.get(argPos);
 					if (st instanceof RubyCallArgument) {
 						RubyCallArgument rubyCallArgument = (RubyCallArgument) st;
@@ -210,9 +216,10 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 			if (result != null) {
 				ItemReference[] refs = (ItemReference[]) result;
 				for (int i = 0; i < refs.length; i++) { // TODO: for performance
-														// reasons, sort them
-														// somehow or leave only one
-					CallExpression node = ((RubyMethodReference) refs[i]).getNode();
+					// reasons, sort them
+					// somehow or leave only one
+					CallExpression node = ((RubyMethodReference) refs[i])
+							.getNode();
 					if (node != null) {
 						ASTNode arg = getArgFromCall(node);
 						if (arg != null) {

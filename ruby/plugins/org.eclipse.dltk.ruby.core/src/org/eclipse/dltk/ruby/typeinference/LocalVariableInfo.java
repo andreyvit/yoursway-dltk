@@ -16,14 +16,18 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ruby.ast.RubyAssignment;
 
 public final class LocalVariableInfo {
-	
-	public final ASTNode declaringScope;
-	
-	public final RubyAssignment[] assignments;
 
-	public LocalVariableInfo(final ASTNode declaringScope, final RubyAssignment[] assignments) {
+	public final ASTNode declaringScope;
+
+	public final RubyAssignment[] conditionalAssignments;
+
+	public final RubyAssignment lastAssignment;
+
+	public LocalVariableInfo(final ASTNode declaringScope,
+			final RubyAssignment[] assignments, final RubyAssignment last) {
 		this.declaringScope = declaringScope;
-		this.assignments = assignments;
+		this.conditionalAssignments = assignments;
+		lastAssignment = last;
 	}
-	
+
 }

@@ -70,6 +70,7 @@ import org.eclipse.dltk.ti.BasicContext;
 import org.eclipse.dltk.ti.DLTKTypeInferenceEngine;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
+import org.omg.PortableServer.POAOperations;
 
 public class RubyCompletionEngine extends ScriptCompletionEngine {
 	
@@ -187,7 +188,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		}
 		if (position + 1 > original)
 			return "";
-		if (Character.isWhitespace(content.charAt(position)))
+		if (position >= 0 && Character.isWhitespace(content.charAt(position)))
 			return content.substring(position + 1, original);
 		return null;
 	}

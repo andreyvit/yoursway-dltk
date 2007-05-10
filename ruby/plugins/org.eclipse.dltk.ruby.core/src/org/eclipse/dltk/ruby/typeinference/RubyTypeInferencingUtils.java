@@ -13,9 +13,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
+import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
@@ -33,6 +36,13 @@ import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
 import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ruby.ast.RubyAssignment;
+import org.eclipse.dltk.ruby.ast.RubyBlock;
+import org.eclipse.dltk.ruby.ast.RubyDAssgnExpression;
+import org.eclipse.dltk.ruby.ast.RubyForStatement2;
+import org.eclipse.dltk.ruby.ast.RubyIfStatement;
+import org.eclipse.dltk.ruby.ast.RubyUnlessStatement;
+import org.eclipse.dltk.ruby.ast.RubyUntilStatement;
+import org.eclipse.dltk.ruby.ast.RubyWhileStatement;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
@@ -109,9 +119,9 @@ public class RubyTypeInferencingUtils {
 				rootNode, requestedOffset);
 		IMixinElement[] result = new IMixinElement[modelStaticScopesKeys.length];
 		for (int i = 1; i < modelStaticScopesKeys.length; i++) { // XXX-fourdman:
-																	// removed
-																	// Object
-																	// resulution
+			// removed
+			// Object
+			// resulution
 			result[i] = model.get(modelStaticScopesKeys[i]);
 			// if (result[i] == null)
 			// throw new RuntimeException("getModelStaticScopes(): Failed to get
@@ -127,25 +137,25 @@ public class RubyTypeInferencingUtils {
 		return RubyMixinBuildVisitor.restoreScopesByNodes(allStaticScopes);
 	}
 
-	public static LocalVariableInfo findLocalVariable(
-			ModuleDeclaration rootNode, final int requestedOffset,
-			String varName) {
-		ASTNode[] staticScopes = getAllStaticScopes(rootNode, requestedOffset);
-		int end = staticScopes.length;
-		for (int start = end - 1; start >= 0; start--) {
-			ASTNode currentScope = staticScopes[start];
-			if (!isRootLocalScope(currentScope))
-				continue;
-			ASTNode nextScope = (end < staticScopes.length ? staticScopes[end]
-					: null);
-			RubyAssignment[] assignments = findLocalVariableAssignments(
-					currentScope, nextScope, varName);
-			if (assignments.length > 0) {
-				return new LocalVariableInfo(currentScope, assignments);
-			}
-		}
-		return null;
-	}
+//	public static LocalVariableInfo findLocalVariable(
+//			ModuleDeclaration rootNode, final int requestedOffset,
+//			String varName) {
+//		ASTNode[] staticScopes = getAllStaticScopes(rootNode, requestedOffset);
+//		int end = staticScopes.length;
+//		for (int start = end - 1; start >= 0; start--) {
+//			ASTNode currentScope = staticScopes[start];
+//			if (!isRootLocalScope(currentScope))
+//				continue;
+//			ASTNode nextScope = (end < staticScopes.length ? staticScopes[end]
+//					: null);
+//			RubyAssignment[] assignments = findLocalVariableAssignments(
+//					currentScope, nextScope, varName);
+//			if (assignments.length > 0) {
+//				return new LocalVariableInfo(currentScope, assignments);
+//			}
+//		}
+//		return null;
+//	}
 
 	public static RubyClassType determineSelfClass(IContext context,
 			int keyOffset) {
@@ -176,7 +186,7 @@ public class RubyTypeInferencingUtils {
 			final int keyOffset) {
 		RubyMixinModel rubyModel = RubyMixinModel.getInstance();
 		String[] keys = getModelStaticScopesKeys(rubyModel.getRawModel(),
-				rootNode, keyOffset);		
+				rootNode, keyOffset);
 		if (keys != null && keys.length > 0) {
 			String inner = keys[keys.length - 1];
 			IRubyMixinElement rubyElement = rubyModel.createRubyElement(inner);
@@ -264,8 +274,8 @@ public class RubyTypeInferencingUtils {
 		} catch (Exception e) {
 			RubyPlugin.log(e);
 		}
-		return (RubyAssignment[]) assignments.toArray(new RubyAssignment[assignments
-				.size()]);
+		return (RubyAssignment[]) assignments
+				.toArray(new RubyAssignment[assignments.size()]);
 	}
 
 	public static boolean isRootLocalScope(ASTNode node) {
@@ -349,9 +359,128 @@ public class RubyTypeInferencingUtils {
 				resultKey = constantName;
 			}
 		}
-//		System.out.println();
-
 		return resultKey;
+	}
+
+	private static class LocalVarSearchVisitor extends ASTVisitor {
+
+		private Stack conditionalStack = new Stack();
+		private List conds = new ArrayList();
+		private RubyAssignment last = null;
+		
+		private final String name;
+		private final int offset;
+		private final ASTNode root;
+		
+		
+
+		public LocalVarSearchVisitor(String name, ASTNode root, int offset) {
+			super();
+			this.name = name;
+			this.root = root;
+			this.offset = offset;
+		}
+
+		public boolean visitGeneral(ASTNode node) throws Exception {
+			if (node == root)
+				return true;						
+			if (node instanceof MethodDeclaration ||
+					node instanceof TypeDeclaration)
+				return false;
+			if (node instanceof RubyAssignment) {
+				if (!(node.sourceEnd() <= offset))
+					return false;
+				RubyAssignment rubyAssignment = (RubyAssignment) node;
+				ASTNode lhs = rubyAssignment.getLeft();
+				if (lhs instanceof VariableReference) {
+					VariableReference varRef = (VariableReference) lhs;
+					if (name.equals(varRef.getName())) {
+						if (conditionalStack.size() > 0)
+							conds.add(node);
+						else {
+							conds.clear();
+							last = (RubyAssignment) node;
+						}
+					}
+				}				
+			} else if (node instanceof RubyIfStatement ||
+					node instanceof RubyForStatement2 ||
+					node instanceof RubyWhileStatement ||
+					node instanceof RubyBlock ||
+					node instanceof RubyUntilStatement ||
+					node instanceof RubyUnlessStatement)
+				conditionalStack.add(node);
+			return true;
+		}
+
+		public void endvisitGeneral(ASTNode node) throws Exception {
+			if (conditionalStack.size() > 0) {
+				Object peek = conditionalStack.peek();
+				if (peek == node)
+					conditionalStack.pop();
+			}
+		}
+
+		public List getConds() {
+			return conds;
+		}
+
+		public RubyAssignment getLast() {
+			return last;
+		}
+
+	}
+
+	public static LocalVariableInfo searchLocalVars(ModuleDeclaration module, int offset,
+			String name) {
+		ASTNode[] scopes = getAllStaticScopes(module, offset);
+		int i = -1;
+		loop: for (i = scopes.length - 1; i >= 0; i--) {
+			if (scopes[i] instanceof MethodDeclaration
+					|| scopes[i] instanceof TypeDeclaration) {
+				break;
+			} else if (scopes[i] instanceof RubyBlock) {
+				RubyBlock rubyBlock = (RubyBlock) scopes[i];
+				Set vars = rubyBlock.getVars();
+				for (Iterator iterator = vars.iterator(); iterator.hasNext();) {
+					ASTNode vnode = (ASTNode) iterator.next();
+					if (vnode instanceof RubyDAssgnExpression) {
+						RubyDAssgnExpression v = (RubyDAssgnExpression) vnode;
+						if (v.getName().equals(name)) {
+							break loop;
+						}
+					}
+				}
+			} else if (scopes[i] instanceof RubyForStatement2) {
+				RubyForStatement2 forst = (RubyForStatement2) scopes[i];
+				ASTListNode vars = forst.getList();
+				for (Iterator iterator = vars.getChilds().iterator(); iterator
+						.hasNext();) {
+					ASTNode vnode = (ASTNode) iterator.next();
+					if (vnode instanceof RubyAssignment) {
+						RubyAssignment assign = (RubyAssignment) vnode;
+						if (assign.getLeft() instanceof VariableReference) {
+							VariableReference ref = (VariableReference) assign
+									.getLeft();
+							if (ref.getName().equals(name))
+								break loop;
+						}
+					}
+				}
+			}
+		}
+		if (i < 0)
+			i = 0;
+		LocalVarSearchVisitor visitor = new LocalVarSearchVisitor(name, scopes[i], offset);
+		try {
+			scopes[i].traverse(visitor);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		List conds = visitor.getConds();
+		RubyAssignment[] c = (RubyAssignment[]) conds.toArray(new RubyAssignment[conds.size()]);
+		return new LocalVariableInfo(scopes[i], c, visitor.getLast());
+		
 	}
 
 }

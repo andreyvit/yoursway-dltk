@@ -247,11 +247,11 @@ public class MixinModel {
 	 * @return
 	 */
 	private ISourceModule[] findModules(MixinElement element) {
-		long start = System.currentTimeMillis();
+//		long start = System.currentTimeMillis();
 		ISourceModule[] searchMixinSources = SearchEngine.searchMixinSources(
 				element.getKey(), toolkit);
-		long end = System.currentTimeMillis();
-		System.out.println("findModules:" + Long.toString(end - start));
+//		long end = System.currentTimeMillis();
+//		System.out.println("findModules:" + Long.toString(end - start));
 		return searchMixinSources;
 	}
 
