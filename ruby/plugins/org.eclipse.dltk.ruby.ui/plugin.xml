@@ -153,10 +153,10 @@
            id="org.eclipse.dltk.ruby.ui.RubyDocumentationProvider"
            nature="org.eclipse.dltk.ruby.core.nature"/>
            
-     <provider
+    <!-- <provider
            class="org.eclipse.dltk.ruby.internal.ui.documentation.RubyTypeDocumentationProvider"
            id="org.eclipse.dltk.ruby.ui.RubyTypeDocumentationProvider"
-           nature="org.eclipse.dltk.ruby.core.nature"/>
+           nature="org.eclipse.dltk.ruby.core.nature"/> -->
   </extension>
   
 <!--Action Sets -->
