@@ -81,7 +81,7 @@
     <project name="dltk-R1.0-I">
         <!-- Defines where cruise looks for changes, to decide whether to run the build -->
         <modificationset quietperiod="120">
-            <cvs module="${cvsPrefix}/releng" />
+            <cvs module="${cvsPrefix}/${releng}" />
 
         </modificationset>
 
@@ -158,7 +158,7 @@
     <project name="dltk-R1.0-S">
         <!-- Defines where cruise looks for changes, to decide whether to run the build -->
         <modificationset quietperiod="120">
-            <cvs module="${cvsPrefix}/releng" />
+            <cvs module="${cvsPrefix}/${releng}" />
 
         </modificationset>
 
