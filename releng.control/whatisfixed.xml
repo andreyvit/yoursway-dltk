@@ -39,18 +39,18 @@
 
 	<target name="releng">
 
-		<available file="${whatisfixed.workdir}/releng/maps/dependencies.properties" property="map.exists" />
+		<available file="${whatisfixed.workdir}/${releng}/dependencies.properties" property="map.exists" />
 		<available file="${whatisfixed.workdir}/releng.dltkbuilder/scripts/dependency/build.xml" property="releng.exists" />
 		<antcall target="checkout-maps" />
 		<antcall target="getdltkbuilder" />
 	</target>
 
 	<target name="checkout-maps" unless="map.exists">
-		<cvs quiet="true" cvsRoot="${mapCvsRoot}" package="${cvsPrefix}/releng/maps/build.cfg" dest="${whatisfixed.workdir}" tag="${dltk.cvsTag}" />
+		<cvs quiet="true" cvsRoot="${mapCvsRoot}" package="${cvsPrefix}/${releng}/build.cfg" dest="${whatisfixed.workdir}" tag="${dltk.cvsTag}" />
 	</target>
 
 	<target name="getdltkbuilder" unless="releng.exists">
-		<property file="${whatisfixed.workdir}/releng/maps/build.cfg" />
+		<property file="${whatisfixed.workdir}/{$releng}/build.cfg" />
 		<delete dir="${whatisfixed.workdir}/releng.dltkbuilder" failonerror="false" />
 		<echo message="Version tag for releng.dltkbuilder is: ${dltkBuilderVersion}" />
 		<cvs quiet="true" cvsRoot="${mapCvsRoot}" package="${cvsPrefix}/releng.dltkbuilder" dest="${whatisfixed.workdir}" tag="${dltkBuilderVersion}" />
