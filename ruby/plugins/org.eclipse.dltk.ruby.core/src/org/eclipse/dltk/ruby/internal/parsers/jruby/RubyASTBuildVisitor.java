@@ -1174,8 +1174,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	// method
 	public Instruction visitDefnNode(DefnNode iVisited) {
-		Collection comments = iVisited.getComments();
-		System.out.println(comments);
+//		Collection comments = iVisited.getComments();
+//		System.out.println(comments);
 		ArgumentNode nameNode = iVisited.getNameNode();
 
 		ISourcePosition pos = fixNamePosition(nameNode.getPosition());
