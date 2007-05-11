@@ -59,7 +59,7 @@ public class ScriptWatchExpressionDelegate implements IWatchExpressionDelegate, 
 						return Status.OK_STATUS;
 					IDbgpProperty property = extended.evaluate(expression);
 
-					IScriptVariable variable = new ScriptVariable(context.getDebugTarget(), 0, property, core);
+					ScriptVariable variable = new ScriptVariable(context.getDebugTarget(), 0, property, core);
 					value = new ScriptValue(variable);
 
 					listener.watchEvaluationFinished(ScriptWatchExpressionDelegate.this);

@@ -166,7 +166,9 @@ private
             unless real_var.nil?
                 properties << make_property(var, real_var)              
             end
-        }   
+        } 
+
+        properties << make_property('self', @stack.eval('self'))  
 
         #for var in @stack.eval('instance_variables') do
         #   properties << make_property(var)
@@ -245,7 +247,8 @@ private
                         'filename' => 'file:///' + level['file'],
                         'lineno'   => level['line'],
                         'cmdbegin' => '0:0',
-                        'cmdend'   => '0:0' }
+                        'cmdend'   => '0:0',
+                        'where'    => level['where'] }
             l += 1
 
         }
@@ -449,7 +452,7 @@ public
         @capturer = StdoutCapturer.new
         
         @stack = VirtualStack.new
-        @stack.push(nil, nil, nil)
+        @stack.push(nil, nil, nil, nil)
 
         @waitDepth = -1
         
@@ -483,9 +486,16 @@ public
             return
         end
 
-        if klass.to_s == 'StdoutCapturer'
+        logger.puts('Klass: |' + klass.to_s + '|')
+        if klass.to_s.index('XoredDebugger::') == 0
             return
         end
+
+        @where = nil
+        if lines = SCRIPT_LINES__[file] and lines != true
+            @where = lines[line - 1].chomp
+        end      
+        
                   
         @file = File.expand_path(file)  #File.expand_path(File.join(Dir.pwd, file))
         @line = line
@@ -493,7 +503,7 @@ public
 
         case event
             when 'line'
-                @stack.update(@binding, @file, @line)
+                @stack.update(@binding, @file, @line, @where)
 
                 
                 capturer.disable
@@ -549,7 +559,7 @@ public
                 capturer.enable
    
             when 'call'
-                @stack.push(@binding, @file, @line)
+                @stack.push(@binding, @file, @line, @where)
     
             when 'return'
                 @stack.pop

@@ -198,8 +198,8 @@ public
     def print_stack_get(m)
         levels = ''
         m['levels'].each { |s|
-            levels += sprintf('<stack level="%d" type="%s" filename="%s" lineno="%d" cmdbegin="%s" cmdend="%s"/>',
-                s['level'], s['type'], s['filename'], s['lineno'], s['cmdbegin'], s['cmdend'])
+            levels += sprintf('<stack level="%d" type="%s" filename="%s" lineno="%d" cmdbegin="%s" cmdend="%s" where="%s"/>',
+                s['level'], s['type'], s['filename'], s['lineno'], s['cmdbegin'], s['cmdend'], s['where'])
         }
 
         sprintf('<response command="stack_get" transaction_id="%d">%s</response>',

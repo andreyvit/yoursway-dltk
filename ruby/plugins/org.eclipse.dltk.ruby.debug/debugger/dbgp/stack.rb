@@ -15,15 +15,16 @@ module XoredDebugger
             @levels = []
         end
 
-        def update(binding, file, line)
+        def update(binding, file, line, where)
             pop
-            push(binding, file, line)
+            push(binding, file, line, where)
         end
 
-        def push(binding, file, line)
+        def push(binding, file, line, where)
             level = { 'binding' => binding, 
                       'file'    => file, 
-                      'line'    => line }
+                      'line'    => line,
+                      'where'   => where }
 
             @levels.push(level)
         end
@@ -35,7 +36,7 @@ module XoredDebugger
         def get(index)
             @levels[index]
         end
-
+        
         def eval(text)
             Kernel.eval(text, @levels.last['binding'])
         end
@@ -51,6 +52,7 @@ module XoredDebugger
         def to_a
             @levels
         end
+
     end # VirtualStack
 
 end # module
