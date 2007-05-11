@@ -185,8 +185,8 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 		
 		for (Iterator iterator = selectionElements.iterator(); iterator.hasNext();) {
 			IModelElement element = (IModelElement) iterator.next();
-			if (sourceUnit.getModelElement().getScriptProject() == 
-				element.getScriptProject())
+			if (sourceUnit.getModelElement().getScriptProject().equals( 
+				element.getScriptProject()))
 				resultElements.add(element);
 		}
 		
