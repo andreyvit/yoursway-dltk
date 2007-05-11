@@ -9,7 +9,7 @@ then
 fi
 
 port="7000"
-webport="7778"
+webport="7777"
 # its ok for these to be trivial, just used to prevent 
 # accidental use, no real security needed. 
 trivialUserName="releng"

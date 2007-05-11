@@ -35,7 +35,7 @@
 
         <!-- set main builder file name, based on distribution, buildBranch and build type -->
         <property name="dltkBuilder"
-                  value="${env.BUILD_HOME}/build-node/checkout/${checkoutprojectname}/releng.dltkbuilder/build.xml" />
+                  value="${env.BUILD_HOME}/build-node/checkout/${checkoutprojectname}/org.eclipse.dltk/releng.dltkbuilder/build.xml" />
 
 
 

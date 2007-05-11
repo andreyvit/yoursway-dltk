@@ -27,6 +27,6 @@ export LOCAL_BUILD_PROPERTIES_DIR=
 export STANDARD_PROPERTIES_DIR=${BUILD_HOME}/releng.control/standardMachineProperties
 
 export BUILD_BUILDMASTER_EMAIL=andrey@xored.com
-export BUILD_RESULT_URL=http://gw.inetlab.com:7778/cruisecontrol/buildresults
+export BUILD_RESULT_URL=http://gw.inetlab.com:7777/cruisecontrol/buildresults
 export BUILD_TOADDRESS=andrey@xored.com
 
