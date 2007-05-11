@@ -40,8 +40,6 @@ import org.eclipse.dltk.ruby.ast.RubyConstantDeclaration;
 import org.eclipse.dltk.ruby.ast.RubySymbolReference;
 import org.eclipse.dltk.ruby.core.IRubyConstants;
 
-import com.sun.org.apache.xerces.internal.xs.StringList;
-
 public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 	private static final String ATTR = "attr";
