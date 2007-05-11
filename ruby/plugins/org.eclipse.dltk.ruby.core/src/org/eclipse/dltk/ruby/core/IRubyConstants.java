@@ -9,6 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core;
 
+import org.eclipse.dltk.ast.Modifiers;
+
 public interface IRubyConstants {
 	public final static String RUBY_PARTITIONING = "__ruby_partitioning";
+	int RubyAttributeModifier = Modifiers.USER_MODIFIER*2;
 }

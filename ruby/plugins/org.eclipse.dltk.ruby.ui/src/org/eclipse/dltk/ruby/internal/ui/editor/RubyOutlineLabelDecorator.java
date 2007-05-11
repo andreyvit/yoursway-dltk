@@ -44,7 +44,8 @@ public class RubyOutlineLabelDecorator extends LabelProvider implements
 			// Label generation will be moved in ruby specific class
 			if ((flags & Modifiers.AccStatic) != 0) {
 				data = getImageData(RubyImages.DESC_OVR_STATIC_FIELD);
-			} else if ((flags & Modifiers.AccConstant) !=0 ) {
+			} 
+			else if ((flags & Modifiers.AccConstant) !=0 ) {
 				data = getImageData(RubyImages.DESC_OVR_CONST_FIELD);
 			}
 			

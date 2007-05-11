@@ -35,6 +35,7 @@ public class BooleanLiteral extends Literal {
 	public BooleanLiteral(int start, int end, boolean value) {
 		super(start, end);
 		this.value = value;
+		this.fLiteralValue = Boolean.toString(value);
 	}
 
 	public boolean boolValue() {
@@ -43,6 +44,7 @@ public class BooleanLiteral extends Literal {
 
 	public void setValue(boolean value) {
 		this.value = value;
+		this.fLiteralValue = Boolean.toString(value);
 	}
 
 	/**

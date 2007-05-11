@@ -133,8 +133,14 @@ public abstract class ScriptSourceViewerConfiguration extends
 				doCodeResolve);
 		presenter.setInformationProvider(provider,
 				IDocument.DEFAULT_CONTENT_TYPE);
+		initializeQuickOutlineContexts(presenter, provider);
+		
 		presenter.setSizeConstraints(50, 20, true, false);
 		return presenter;
+	}
+
+	protected void initializeQuickOutlineContexts(InformationPresenter presenter,
+			IInformationProvider provider) {
 	}
 
 	public IInformationPresenter getHierarchyPresenter(

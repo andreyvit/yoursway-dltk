@@ -21,9 +21,11 @@ import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.PositionInformation;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
+import org.eclipse.dltk.ast.expressions.BooleanLiteral;
 import org.eclipse.dltk.ast.expressions.CallArgumentsList;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
@@ -32,11 +34,21 @@ import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.ruby.ast.RubyAssignment;
+import org.eclipse.dltk.ruby.ast.RubyCallArgument;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyConstantDeclaration;
 import org.eclipse.dltk.ruby.ast.RubySymbolReference;
+import org.eclipse.dltk.ruby.core.IRubyConstants;
+
+import com.sun.org.apache.xerces.internal.xs.StringList;
 
 public class RubySourceElementRequestor extends SourceElementRequestVisitor {
+
+	private static final String ATTR = "attr";
+	private static final String VALUE = "value";
+	private static final String ATTR_ACCESSOR = "attr_accessor";
+	private static final String ATTR_WRITER = "attr_writer";
+	private static final String ATTR_READER = "attr_reader";
 
 	private static class TypeField {
 		private String fName;
@@ -130,7 +142,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 		if (left instanceof VariableReference) {
 			VariableReference var = (VariableReference) left;
-						
+
 			if (!inMethod) {
 				// For module static of class static variables.
 				if (canAddVariables((ASTNode) fNodes.peek(), var.getName())) {
@@ -148,10 +160,10 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 					}
 				}
 			} else {
-				
+
 			}
 
-		} 
+		}
 	}
 
 	protected String[] processSuperClasses(TypeDeclaration type) {
@@ -193,13 +205,12 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 	protected String makeLanguageDependentValue(ASTNode value) {
 		String outValue = "";
-		/*if (value instanceof ExtendedVariableReference) {
-			StringWriter stringWriter = new StringWriter();
-			CorePrinter printer = new CorePrinter(stringWriter);
-			value.printNode(printer);
-			printer.flush();
-			return stringWriter.getBuffer().toString();
-		}*/
+		/*
+		 * if (value instanceof ExtendedVariableReference) { StringWriter
+		 * stringWriter = new StringWriter(); CorePrinter printer = new
+		 * CorePrinter(stringWriter); value.printNode(printer); printer.flush();
+		 * return stringWriter.getBuffer().toString(); }
+		 */
 		return outValue;
 	}
 
@@ -235,9 +246,10 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 		fNotAddedFields.clear();
 	}
-	
-	protected static boolean isAttrLike(String name){
-		return name.equals("attr_reader") || name.equals("attr_writer") || name.equals("attr_accessor"); 
+
+	protected static boolean isAttrLike(String name) {
+		return name.equals(ATTR_READER) || name.equals(ATTR_WRITER)
+				|| name.equals(ATTR_ACCESSOR) || name.equals(ATTR);
 	}
 
 	// Visiting expressions
@@ -267,30 +279,73 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 				CallArgumentsList list = callExpression.getArgs();
 				List expr = list.getChilds();
 				Iterator it = expr.iterator();
-
-				List args = new ArrayList();
-				while (it.hasNext()) {
-					Object sr = (Object) it.next();
-					if( sr instanceof RubySymbolReference ) {
-						args.add(((RubySymbolReference)sr).getName());
+				boolean create_reader = false;
+				boolean create_writer = false;
+				if (name.equals(ATTR_READER)) {
+					create_reader = true;
+				} else if (name.equals(ATTR_WRITER)) {
+					create_writer = true;
+				} else if (name.equals(ATTR_ACCESSOR)) {
+					create_reader = true;
+					create_writer = true;
+				} else if (name.equals(ATTR)) {
+					create_reader = true;
+					if (expr.size() > 0) {
+						ASTNode node = (ASTNode) expr.get(expr.size() - 1);
+						if( node instanceof RubyCallArgument ) {
+							node = ((RubyCallArgument)node).getValue();
+						}
+						if (node instanceof BooleanLiteral) {
+							BooleanLiteral lit = (BooleanLiteral) node;
+							create_writer = lit.boolValue();
+						}
 					}
-					else {
+
+				}
+				// List args = new ArrayList();
+				while (it.hasNext()) {
+					ASTNode sr = (ASTNode) it.next();
+					if (!(sr instanceof RubyCallArgument)) {
 						continue;
 					}
+					sr = ((RubyCallArgument) sr).getValue();
+					if (sr == null) {
+						continue;
+					}
+					String attr = null;
+					if (sr instanceof RubySymbolReference) {
+						attr = ((RubySymbolReference) sr).getName();
+					} else if (sr instanceof StringLiteral) {
+						attr = ((StringLiteral) sr).getValue();
+					}
+					if (attr == null) {
+						continue;
+					}
+					ASTNode rubySymbolReference = ((ASTNode) sr);
+					if (create_reader) {
+						ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
+						mi.name = attr;
+						mi.modifiers = IRubyConstants.RubyAttributeModifier;
+						mi.nameSourceStart = rubySymbolReference.sourceStart();
+						mi.nameSourceEnd = rubySymbolReference.sourceEnd() - 1;
+						mi.declarationStart = rubySymbolReference.sourceStart();
+
+						fRequestor.enterMethod(mi);
+						fRequestor.exitMethod(rubySymbolReference.sourceEnd());
+					}
+					if (create_writer) {
+						ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
+						mi.parameterNames = new String[] { VALUE };
+						mi.name = attr + "=";
+						mi.modifiers = IRubyConstants.RubyAttributeModifier;
+						mi.nameSourceStart = rubySymbolReference.sourceStart();
+						mi.nameSourceEnd = rubySymbolReference.sourceEnd() - 1;
+						mi.declarationStart = rubySymbolReference.sourceStart();
+
+						fRequestor.enterMethod(mi);
+						fRequestor.exitMethod(rubySymbolReference.sourceEnd());
+					}
 				}
-
-				ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
-				mi.parameterNames = (String[]) args.toArray(new String[args
-						.size()]);
-				mi.name = name;
-				mi.modifiers = 0;
-				mi.nameSourceStart = callExpression.sourceStart();
-				mi.nameSourceEnd = callExpression.sourceEnd();
-				mi.declarationStart = callExpression.sourceStart();
-
-				fRequestor.enterMethod(mi);
-				fRequestor.exitMethod(callExpression.sourceEnd());
-
 			}
 			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -352,15 +407,12 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 	public boolean visit(Expression expression) throws Exception {
 		super.visit(expression);
-		return visit((ASTNode)expression);
+		return visit((ASTNode) expression);
 	}
 
 	public boolean visit(Statement statement) throws Exception {
 		super.visit(statement);
-		return visit((ASTNode)statement);
+		return visit((ASTNode) statement);
 	}
 
-	
-	
-	
 }

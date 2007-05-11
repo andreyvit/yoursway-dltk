@@ -27,6 +27,8 @@ import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
+import org.eclipse.jface.text.information.IInformationProvider;
+import org.eclipse.jface.text.information.InformationPresenter;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
@@ -233,5 +235,11 @@ public class TclSourceViewerConfiguration extends
 						treeStyle, commandId);
 			}
 		};
+	}
+	protected void initializeQuickOutlineContexts(InformationPresenter presenter,
+			IInformationProvider provider) {
+		presenter.setInformationProvider(provider, TclPartitions.TCL_COMMENT);
+		presenter.setInformationProvider(provider, TclPartitions.TCL_INNER_CODE);
+		presenter.setInformationProvider(provider, TclPartitions.TCL_STRING);
 	}
 }
