@@ -75,6 +75,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.util.TransferDragSourceListener;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -965,6 +966,10 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 		fActionGroups.setContext(new ActionContext(selection));
 		fActionGroups.fillContextMenu(menu);
 	}
+	
+	protected ILabelDecorator getLabelDecorator() {
+		return null;
+	}
 
 	/*
 	 * @see IPage#createControl
@@ -978,6 +983,10 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 						| ScriptElementLabels.F_APP_TYPE_SIGNATURE
 						| ScriptElementLabels.ALL_CATEGORY,
 				AppearanceAwareLabelProvider.DEFAULT_IMAGEFLAGS, fStore);
+		
+		ILabelDecorator ldecorator = getLabelDecorator();
+		if (ldecorator != null)
+			lprovider.addLabelDecorator(ldecorator);
 
 		fOutlineViewer = new ScriptOutlineViewer(tree);
 		initDragAndDrop();
@@ -1268,6 +1277,10 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 		return false;
 	}
 
+	protected void registerSpecialToolbarActions(IActionBars actionBars) {
+		// derived classes could implement it
+	}
+	
 	private void registerToolbarActions(IActionBars actionBars) {
 		IToolBarManager toolBarManager = actionBars.getToolBarManager();
 		toolBarManager.add(new LexicalSortingAction());
@@ -1277,6 +1290,8 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 		fMemberFilterActionGroup.contributeToToolBar(toolBarManager);
 
 		fCustomFiltersActionGroup.fillActionBars(actionBars);
+		
+		registerSpecialToolbarActions(actionBars);
 
 		IMenuManager viewMenuManager = actionBars.getMenuManager();
 		viewMenuManager.add(new Separator("EndFilterGroup")); //$NON-NLS-1$
