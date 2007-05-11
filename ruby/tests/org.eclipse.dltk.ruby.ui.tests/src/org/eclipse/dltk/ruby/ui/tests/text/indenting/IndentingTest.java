@@ -9,9 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ui.tests.text.indenting;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.dltk.core.tests.model.SuiteOfTestCases;
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyAutoEditStrategy;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
@@ -22,9 +21,13 @@ import org.eclipse.jface.text.DocCmd;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextUtilities;
 
-public class IndentingTest extends TestCase {
+public class IndentingTest extends SuiteOfTestCases {
 
-    private static final String PATH = "resources/indenting/";
+    public IndentingTest(String name) {
+		super(name);
+	}
+
+	private static final String PATH = "resources/indenting/";
 	private RubyAutoEditStrategy tabStrategy, spaceStrategy;
 
 	protected void setUp() throws Exception {

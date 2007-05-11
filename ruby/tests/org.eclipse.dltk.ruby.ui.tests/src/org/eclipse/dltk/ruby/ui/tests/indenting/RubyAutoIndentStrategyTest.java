@@ -9,8 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ui.tests.indenting;
 
-import junit.framework.TestCase;
-
+import org.eclipse.dltk.core.tests.model.SuiteOfTestCases;
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyAutoEditStrategy;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
@@ -24,12 +23,16 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.rules.FastPartitioner;
 
 
-public class RubyAutoIndentStrategyTest extends TestCase {
+public class RubyAutoIndentStrategyTest extends SuiteOfTestCases {
 	/*
 	 * Tests with _ in the beginning relies on features, not
 	 * presented now, and may be will be implemented in future
 	 */
 	
+	public RubyAutoIndentStrategyTest(String name) {
+		super(name);
+	}
+
 	private static final String FOUR = "    ";
 	
 	private static final String EIGHT = FOUR + FOUR;

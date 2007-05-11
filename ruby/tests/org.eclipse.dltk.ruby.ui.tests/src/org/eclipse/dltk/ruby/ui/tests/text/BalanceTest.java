@@ -9,9 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ui.tests.text;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.dltk.core.tests.model.SuiteOfTestCases;
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
 import org.eclipse.dltk.ruby.ui.tests.internal.TestUtils;
 import org.eclipse.dltk.ui.text.blocks.Balance;
@@ -22,8 +21,12 @@ import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextUtilities;
 
-public class BalanceTest extends TestCase {
+public class BalanceTest extends SuiteOfTestCases {
 	
+	public BalanceTest(String name) {
+		super(name);
+	}
+
 	IPreferenceStore fStore;
 	
 	protected void setUp() throws Exception {
