@@ -103,7 +103,7 @@
             value="HEAD" />
         <property
             name="cvsPackage"
-            value="{cvsPrefix}/releng" />
+            value="${cvsPrefix}/releng" />
         <echo message="${mapCvsRoot} ${mapVersionTag} " />
         <echo message="cvsPackage = ${cvsPackage} " />
 
