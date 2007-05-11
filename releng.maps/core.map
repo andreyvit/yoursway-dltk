@@ -1,8 +1,7 @@
 !***************  DLTK CONTRIBUTION  ******************************************************** 
 
-!feature@org.eclipse.dltk.core.sdk=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology/org.eclipse.dltk,,org.eclipse.dltk/core/features/org.eclipse.dltk.core-feature/org.eclipse.dltk.core.sdk
-
 feature@org.eclipse.dltk.core=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/features/org.eclipse.dltk.core-feature
+feature@org.eclipse.dltk.core.sdk=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology/org.eclipse.dltk,,org.eclipse.dltk/core/features/org.eclipse.dltk.core.sdk
 
 plugin@org.eclipse.dltk.core=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.core
 plugin@org.eclipse.dltk.console=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.console
