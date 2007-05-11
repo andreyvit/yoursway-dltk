@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="runbuild" default="runbuild" basedir=".">
+
+    <!-- = = = standard properties pattern = = = -->
+    <!-- 
+    	Note to be cross-platform, "environment variables" are only appropriate for 
+        some variables, e.g. ones we set, since properties are case sensitive, even if 
+        the environment variables on your operating system are not, e.g. it will 
+        be ${env.Path} not ${env.PATH} on Windows -->
+    <property environment="env" />
+     
+    <!-- 
+    	Let users override standard properties, if desired.
+    	If directory, file, or some properties do not exist,  
+    	then standard properties will be used.
+     -->
+    <property file="${env.LOCAL_BUILD_PROPERTIES_DIR}/${ant.project.name}.properties" />
+
+    <!-- load standard properties for production environment -->
+    <property file="${env.STANDARD_PROPERTIES_DIR}/${ant.project.name}.properties" />
+    <!-- = = = end standard properties pattern = = = -->
+
+    
+
+    <!-- if not explicitly set by caller, we'll assume we should fail 
+    	here on errors. In some cases, such as JUnit test compiles, or 
+    	even leaf components, the caller may want to set to false, so that 
+    	some part of the build is still made available -->
+    <property name="eclipseBuildFailOnError" value="true" />
+
+
+    <target name="runbuild">
+        <dirname file="${ant.file}"
+                 property="scripts.build.dir" />
+        <property name="dltk.builder.home"
+                  value="${scripts.build.dir}/../.." />
+
+        <antcall target="runEclipseBuild">
+            <param name="dltk.builder.home"
+                   value="${dltk.builder.home}" />
+        </antcall>
+        <antcall target="runEclipseBuildStamped">
+            <param name="dltk.builder.home"
+                   value="${dltk.builder.home}" />
+        </antcall>
+    </target>
+
+
+
+    <target name="build" depends="init">
+
+        <!--this property required as of Eclipse 3.0 stream builds > 20031126 -->
+        <property name="buildingOSGi" value="true" />
+
+        <!-- this generateFeatureVersionSuffix property causes feature 
+            suffixes to be calcuated based on their 
+            own CVS tag, plus the qualifier of their contained plugins -->
+        <!-- 
+            https://bugs.eclipse.org/bugs/show_bug.cgi?id=138825
+            false for builds intended for 3.1.2, since can generate underscores
+            true for builds instended for 3.2
+        -->
+        <property name="generateFeatureVersionSuffix"
+                  value="true" />
+
+        <property name="outputUpdateJars" value="true" />
+
+        <!--run the build for the specified component-->
+        <echo message="basedir: ${basedir}" />
+        <echo message="component: ${component}" />
+        <echo message="buildDirectory: ${buildDirectory}" />
+        <echo message="dltk.builder.home: ${dltk.builder.home}" />
+
+        <ant antfile="build.xml" dir="${pde.build.scripts}">
+            <property name="builder"
+                      value="${dltk.builder.home}/components/${component}" />
+            <property name="dltk.builder.home"
+                      value="${dltk.builder.home}" />
+            <property name="buildBranch"
+                      value="${buildBranch}" />
+            <property name="cvsUser" value="${cvsUser}" />
+            <property name="cvsProtocol"
+                      value="${cvsProtocol}" />
+            <property name="dependencyTargets"
+                      value="${dltk.builder.home}/scripts/dependency/build.xml" />
+            <property name="local.cache.dir"
+                      value="${env.LOCAL_PREREQS_CACHE}" />
+            <property name="baseLocation"
+                      value="${env.BUILD_HOME}/${build.current}-${build.distribution}-${buildBranch}-${buildType}/${base.location}" />
+            <property name="buildBranch"
+                      value="${buildBranch}" />
+            <property name="build.pack-all-in-one"
+                      value="${build.pack-all-in-one}" />
+            <property name="buildRoot"
+                      value="${env.BUILD_HOME}/${build.current}-${build.distribution}-${buildBranch}-${buildType}" />
+            <property name="testRoot"
+                      value="${env.BUILD_HOME}/${build.tests}-${build.distribution}-${buildBranch}-${buildType}" />
+            <property name="performanceRoot"
+                      value="${env.BUILD_HOME}/${build.perf.tests}-${buildType}" />
+        </ant>
+    </target>
+
+    <target name="checkBaseBuilder">
+    	<!-- TODO: need to make more sophisicated to handle updates 
+    	in basebuilder, or wtpbasebuild
+    	
+        <available property="basebuilderLocal"
+                   file="${pde.builder.path}" />
+       -->            
+    </target>
+
+    <target name="getBaseBuilder"
+            depends="checkBaseBuilder"
+            unless="basebuilderLocal">
+        <!-- ***  change the repo info -->
+        <property name="builderCvsRoot"
+                  value=":pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse" />
+    	  <property name="basebuilder.path" value="${env.BUILD_HOME}/builders/${eclipse.builder.version}" />
+        <!-- note: untagged or some default version of base builder is not good to use. 
+            in some cases, won't run at all, in the best of cases, will simply
+            be unstable, so we'll fail if we forgot to specify it -->
+        <fail unless="eclipse.builder.version" /> 
+        <mkdir dir="${env.BUILD_HOME}/builders/${eclipse.builder.version}" />
+        <cvs cvsRoot="${builderCvsRoot}"
+             package="org.eclipse.releng.basebuilder"
+             dest="${basebuilder.path}"
+             tag="${eclipse.builder.version}" />
+
+			<property name="wtpBuildTools.url" value="http://download.eclipse.org/webtools/wtpBuildTools/drops/R2.0/T-T200704100508-200704100508/updateSite/plugins" />
+    	<property name="wtpBuildTools.file" value="org.eclipse.wtp.releng.tools_1.0.0.v200704100230.jar"/>
+    	
+    	  <fail unless="wtpBuildTools.url" />
+				<!-- now add our WTP base builder -->
+  		  <get dest="${basebuilder.path}/org.eclipse.releng.basebuilder/plugins/${wtpBuildTools.file}" src="${wtpBuildTools.url}/${wtpBuildTools.file}" usetimestamp="true"/>
+    	
+
+    </target>
+
+
+    <target name="init">
+
+
+        <condition property="buildBranch" value="R1.0">
+            <equals arg1="${mapVersionTag}" arg2="HEAD" />
+        </condition>
+        <condition property="buildBranch" value="R0.7">
+            <equals arg1="${mapVersionTag}"
+                    arg2="R0_7_maintenance" />
+        </condition>
+        <!-- condition property="buildBranch" value="R1.0">
+            <equals arg1="${mapVersionTag}"
+                    arg2="R1_0_maintenance" />
+        </condition>
+        <condition property="buildBranch" value="R1.5">
+            <equals arg1="${mapVersionTag}"
+                    arg2="R1_5_maintenance" />
+        </condition -->
+
+
+        <property file="${dltk.builder.home}/build.properties" />
+        
+
+        <ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
+        <property file="${buildDirectory}/label.properties" />
+
+        <!--fetch the HEAD stream of all projects if build type specified as N-->
+        <condition property="fetchTag" value="HEAD">
+            <equals arg1="${buildType}" arg2="N" />
+        </condition>
+
+        <condition property="tagMaps">
+            <equals arg1="${build.trial}" arg2="false" />
+        </condition>
+    </target>
+
+    <target name="runEclipseBuild" if="buildId">
+        <java taskname="build-${build.distribution}-${component}"
+              jar="${eclipse.launcher}"
+              fork="true"
+              failonerror="${eclipseBuildFailOnError}">
+            <jvmarg value="-Dosgi.ws=${env.BASEWS}" />
+            <jvmarg value="-Dosgi.os=${env.BASEOS}" />
+            <jvmarg value="-Dosgi.arch=${env.BASEARCH}" />
+            <jvmarg value="-Dbuild.home=${env.BUILD_HOME}" />
+            <jvmarg value="-Dbuild.trial=${build.trial}" />
+            <jvmarg value="-DbuildType=${buildType}" />
+            <jvmarg value="-DbuildId=${buildId}" />
+            <jvmarg value="-DjavacDebugInfo=${javacDebugInfo}" />
+            <jvmarg value="-DmapVersionTag=${mapVersionTag}" />
+        	<jvmarg value="-DlogExtension=${logExtension}" />
+        	<jvmarg value="-DcvsUser=${cvsUser}" />
+            <jvmarg value="-DcvsProtocol=${cvsProtocol}" />
+            <jvmarg value="-Ddltk.builder.home=${dltk.builder.home}" />
+            <jvmarg value="-Dbuild.distribution=${build.distribution}" />
+            <jvmarg value="-Dcomponent=${component}" />
+            <jvmarg value="-DJ2SE-1.5=${env.J2SE15}" />
+            <jvmarg value="-DJ2SE-1.4=${env.J2SE14}" />
+            <arg value="-application" />
+            <arg value="org.eclipse.ant.core.antRunner" />
+            <arg value="-buildfile" />
+            <arg value="${ant.file}" />
+            <arg value="build" />
+            <sysproperty key="logExtension" value="${logExtension}"/>
+            
+        </java>
+    </target>
+    
+    <target name="runEclipseBuildStamped" unless="buildId">
+        <java taskname="build-${build.distribution}-${component}"
+              jar="${eclipse.launcher}"
+              fork="true"
+              failonerror="${eclipseBuildFailOnError}">
+            <jvmarg value="-Dosgi.ws=${env.BASEWS}" />
+            <jvmarg value="-Dosgi.os=${env.BASEOS}" />
+            <jvmarg value="-Dosgi.arch=${env.BASEARCH}" />
+            <jvmarg value="-Dbuild.home=${env.BUILD_HOME}" />
+            <jvmarg value="-Dbuild.trial=${build.trial}" />
+            <jvmarg value="-DbuildType=${buildType}" />
+            <jvmarg value="-DjavacDebugInfo=${javacDebugInfo}" />
+            <jvmarg value="-DmapVersionTag=${mapVersionTag}" />
+            <jvmarg value="-DcvsUser=${cvsUser}" />
+            <jvmarg value="-DcvsProtocol=${cvsProtocol}" />
+        	<jvmarg value="-DlogExtension=${logExtension}" />
+            <jvmarg value="-Ddltk.builder.home=${dltk.builder.home}" />
+            <jvmarg value="-Dbuild.distribution=${build.distribution}" />
+            <jvmarg value="-Dcomponent=${component}" />
+            <jvmarg value="-DJ2SE-1.5=${env.J2SE15}" />
+            <jvmarg value="-DJ2SE-1.4=${env.J2SE14}" />
+            <arg value="-application" />
+            <arg value="org.eclipse.ant.core.antRunner" />
+            <arg value="-buildfile" />
+            <arg value="${ant.file}" />
+            <arg value="build" />
+            <sysproperty key="logExtension" value="${logExtension}"/>
+       </java>
+    </target>
+</project>

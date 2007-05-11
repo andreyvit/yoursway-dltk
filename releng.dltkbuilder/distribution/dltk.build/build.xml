@@ -1,0 +1,128 @@
+<project default="build" basedir=".">
+
+
+
+	<target name="build" depends="getBaseBuilder">
+		<dirname file="${ant.file}" property="distribution.dltk.build.dir" />
+		<property file="${dltk.builder.home}/build.properties" />
+		<property name="buildTargets" value="${dltk.builder.home}/scripts/build/runbuild.xml" />
+
+
+		<ant antfile="${buildTargets}">
+			<property name="component" value="core" />
+		</ant>
+
+		<!-- ant antfile="${buildTargets}">
+			<property name="component" value="core-sdk" />
+		</ant>
+		<ant antfile="${buildTargets}">
+			<property name="component" value="core.tests" />
+			<property name="eclipseBuildFailOnError" value="false" />
+		</ant -->
+
+		<!-- ant antfile="${buildTargets}">
+			<property name="component" value="wysiwyg" />
+		</ant>
+		<ant antfile="${buildTargets}">
+			<property name="component" value="jst-sdk" />
+		</ant>
+		<ant antfile="${buildTargets}">
+			<property name="component" value="jst.tests" />
+			<property name="eclipseBuildFailOnError" value="false" />
+		</ant>
+
+		<ant antfile="${buildTargets}">
+			<property name="component" value="jsf" />
+			<property name="eclipseBuildFailOnError" value="false" />
+		</ant>
+
+		<ant antfile="${buildTargets}">
+			<property name="component" value="jsf-sdk" />
+			<property name="eclipseBuildFailOnError" value="false" />
+		</ant>
+		<ant antfile="${buildTargets}">
+			<property name="component" value="jsf.tests" />
+			<property name="eclipseBuildFailOnError" value="false" />
+		</ant>
+
+		<ant antfile="${buildTargets}">
+			<property name="component" value="dali" />
+			<property name="eclipseBuildFailOnError" value="false" />
+		</ant>
+
+		<ant antfile="${buildTargets}">
+			<property name="component" value="dali-sdk" />
+			<property name="eclipseBuildFailOnError" value="false" />
+		</ant>
+
+		<ant antfile="${buildTargets}">
+			<property name="component" value="dali.tests" />
+			<property name="eclipseBuildFailOnError" value="false" />
+		</ant -->
+
+
+		<ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
+
+		<antcall target="package"/>
+		
+		<!-- todo: all-one's will have to be moved after 'package' now --> 
+		
+	</target>
+
+	<target name="getBaseBuilder" if="eclipse.builder.fetch">
+		<dirname file="${ant.file}" property="wtbuilder.dir" />
+		<property name="buildTargets" value="${dltk.builder.home}/scripts/build/runbuild.xml" />
+		<ant antfile="${buildTargets}" target="getBaseBuilder">
+			<property name="eclipse.builder.fetch" value="${eclipse.builder.fetch}" />
+		</ant>
+	</target>
+	
+	<target name="package">
+		<!-- post, post packaging, for WTP ... "manually" assemble the desired zips -->
+	
+		<antcall target="combineArchives">
+			<param name="corename" value=""/>
+		</antcall>
+	
+		<!-- antcall target="combineArchives">
+			<param name="corename" value="-sdk"/>
+		</antcall>
+		
+		<antcall target="combineArchives">
+			<param name="corename" value="-Automated-Tests"/>
+		</antcall -->
+	
+		
+	</target>
+	<target name="combineArchives">
+		<property name="archiveName" value="dltk${corename}-${buildLabel}.zip" />
+		<delete dir="${buildDirectory}/tempforrezipping" failonerror="false"/>
+		
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
+			<arg line="-o -qq dltk-core${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
+		</exec>
+	
+		<!-- exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
+			<arg line="-o -qq dltk-wysiwyg${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
+		</exec>
+	
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
+			<arg line="-o -qq dltk-jsf${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
+		</exec>
+	
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
+			<arg line="-o -qq dltk-jpa${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
+		</exec -->
+	
+	
+		<zip destfile="${buildDirectory}/${buildLabel}/${archiveName}" basedir="${buildDirectory}/tempforrezipping" />
+	
+		<delete dir="${buildDirectory}/tempforrezipping" failonerror="false"/>
+		
+		<ant antfile="${dltk.builder.home}/scripts/build/buildutilities.xml" target="createChecksums">
+			<property name="buildDirectory" value="${buildDirectory}" />
+			<property name="buildLabel" value="${buildLabel}" />
+			<property name="archiveName" value="${archiveName}" />
+		</ant>
+	</target>
+</project>

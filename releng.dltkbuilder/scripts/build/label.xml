@@ -1,0 +1,111 @@
+<project
+    name="label"
+    default="label"
+    basedir=".">
+
+    <!-- = = = standard properties pattern = = = -->
+    <!-- 
+    	Note to be cross-platform, "environment variables" are only appropriate for 
+        some variables, e.g. ones we set, since properties are case sensitive, even if 
+        the environment variables on your operating system are not, e.g. it will 
+        be ${env.Path} not ${env.PATH} on Windows -->
+    <property environment="env" />
+     
+    <!-- 
+    	Let users override standard properties, if desired.
+    	If directory, file, or some properties do not exist,  
+    	then standard properties will be used.
+     -->
+    <property file="${env.LOCAL_BUILD_PROPERTIES_DIR}/${ant.project.name}.properties" />
+
+    <!-- load standard properties for production environment -->
+    <property file="${env.STANDARD_PROPERTIES_DIR}/${ant.project.name}.properties" />
+    <!-- = = = end standard properties pattern = = = -->
+
+
+    <!-- Capture the computer name in a cross-platform manner -->
+    <property
+        name="env.COMPUTERNAME"
+        value="${env.HOSTNAME}" />
+
+
+    <target name="label">
+        <available
+            file="${buildDirectory}/label.properties"
+            property="label.properties.exists" />
+        <antcall target="create.label.properties" />
+    </target>
+
+    <target
+        name="create.label.properties"
+        unless="label.properties.exists">
+        <mkdir dir="${buildDirectory}" />
+        <tstamp>
+            <format
+                property="date"
+                pattern="yyyyMMdd"
+                timezone="UTC" />
+        </tstamp>
+        <tstamp>
+            <format
+                property="time"
+                pattern="HHmm"
+                timezone="UTC" />
+        </tstamp>
+        <property
+            name="timestamp"
+            value="${date}${time}" />
+        <property
+            name="buildType"
+            value="I" />
+        <property
+            name="buildId"
+            value="${buildType}${timestamp}" />
+
+        <!--this naming convention used by php scripts on download server-->
+        <property
+            name="buildLabel"
+            value="${buildType}-${buildId}-${timestamp}" />
+
+        <!--store the build label information in a file-->
+        <echo
+            file="${buildDirectory}/label.properties"
+            append="true">
+            buildType=${buildType}
+        </echo>
+        <echo
+            file="${buildDirectory}/label.properties"
+            append="true">
+            buildId=${buildId}
+        </echo>
+        <echo
+            file="${buildDirectory}/label.properties"
+            append="true">
+            timestamp=${timestamp}
+        </echo>
+        <echo
+            file="${buildDirectory}/label.properties"
+            append="true">
+            buildLabel=${buildLabel}
+        </echo>
+        <echo
+            file="${buildDirectory}/label.properties"
+            append="true">
+            date=${date}
+        </echo>
+        <echo
+            file="${buildDirectory}/label.properties"
+            append="true">
+            time=${time}
+        </echo>
+
+
+        <echo
+            file="${buildDirectory}/buildmachineinfo.properties"
+            append="true">
+            buildComputer="${env.COMPUTERNAME}" buildOS="${env.OS}"
+        </echo>
+
+    </target>
+
+</project>

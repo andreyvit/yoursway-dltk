@@ -1,0 +1,71 @@
+<project basedir=".">
+	<dirname file="${ant.file}" property="bugloglib.dir" />
+
+	<path id="rlog.path">
+		<fileset dir="${bugloglib.dir}/libs">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	<!-- ***  change the repo info -->
+	<property name="mapCvsRoot" value=":${cvsProtocol}:${cvsUser}@${cvsServer}:${cvsRoot}" />
+	<property name="whatisfixed.dir" value="${buildDirectory}/${buildLabel}/whatisfixed" />
+	<property name="whatisfixed.toBuildId" value="${buildLabel}" />
+
+	<target name="init">
+		<condition property="doTrial">
+			<equals arg1="${build.trial}" arg2="true" />
+		</condition>
+	</target>
+
+
+
+	<target name="whatisfixed-log" description="--> Builds a whatisfixed log from cvs bugzilla">
+
+
+		<tstamp>
+			<format property="whatisfixed.to.date" pattern="yyyy-MM-dd HH:mm:ss 'GMT'" locale="en" />
+		</tstamp>
+
+
+		<mkdir dir="${whatisfixed.dir}" />
+		<mkdir dir="${whatisfixed.dir}/cvs" />
+		<mkdir dir="${whatisfixed.dir}/bugs" />
+
+		<java taskname="cvsbugz" classpathref="rlog.path" fork="true" classname="org.eclipse.wtp.releng.cvslog.tools.Main" failonerror="false">
+			<jvmarg value="-Xms128m" />
+			<jvmarg value="-Xmx1024m" />
+			<jvmarg value="-Xcompactgc" />
+			
+			<arg value="${mapCvsRoot}" />
+			<arg value="${whatisfixed.since.date}" />
+			<arg value="${whatisfixed.to.date}" />
+			<!--arg value="${whatisfixed.to.branch}" /-->
+			<arg value="HEAD" />
+			<arg value="${whatisfixed.dir}/cvs/rlog.xml" />
+			<arg value="${whatisfixed.dir}/bugs/buglog.xml" />
+			<arg value="${whatisfixed.targetMilestones}" />
+			<arg value="${whatisfixed.status}" />
+			<arg value="${whatisfixed.fromBuildId}" />
+			<arg value="${whatisfixed.toBuildId}" />
+			<arg value="${whatisfixed.modules}" />
+		</java>
+	</target>
+
+	<target name="whatisfixed-html">
+		<style style="${bugloglib.dir}/templates/whatsfixed.xsl" 
+			basedir="${whatisfixed.dir}/bugs" 
+			destdir="${whatisfixed.dir}" />
+		<copy todir="${whatisfixed.dir}">
+			<fileset dir="${bugloglib.dir}/templates" id="id">
+			    <include name="buglog_style.css"/>
+			    <include name="images/*.gif"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="whatisfixed" depends="init" description="what is fixed" unless="doTrial">
+		<antcall target="whatisfixed-log"></antcall>
+		<antcall target="whatisfixed-html"></antcall>
+	</target>
+
+</project>

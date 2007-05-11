@@ -1,0 +1,128 @@
+<project name="build" default="build" basedir=".">
+
+	<!-- = = = standard properties pattern = = = -->
+	<!-- 
+    	Note to be cross-platform, "environment variables" are only appropriate for 
+        some variables, e.g. ones we set, since properties are case sensitive, even if 
+        the environment variables on your operating system are not, e.g. it will 
+        be ${env.Path} not ${env.PATH} on Windows -->
+	<property environment="env" />
+
+	<!-- 
+    	Let users override standard properties, if desired.
+    	If directory, file, or some properties do not exist,  
+    	then standard properties will be used.
+     -->
+	<property file="${env.LOCAL_BUILD_PROPERTIES_DIR}/${ant.project.name}.properties" />
+
+	<!-- load standard properties for production environment -->
+	<property file="${env.STANDARD_PROPERTIES_DIR}/${ant.project.name}.properties" />
+
+	<property file="${ant.project.name}.properties" />
+
+	<!-- = = = end standard properties pattern = = = -->
+
+
+
+	<target name="build" depends="init" if="build_distro_target_exists">
+		<property name="buildfile" value="${distributionCoreName}.build/build.xml" />
+		<echo message="buildfile: ${buildfile}" />
+		<ant antfile="${buildfile}">
+			<property name="dltk.builder.home" value="${dltk.builder.home}" />
+			<property name="buildBranch" value="${buildBranch}" />
+			<property name="build.pack-all-in-one" value="${build.pack-all-in-one}" />
+			<property name="eclipse.builder.fetch" value="${eclipse.builder.fetch}" />
+		</ant>
+		
+		
+	</target>
+
+
+
+	<target name="site" depends="init" if="site_distro_target_exists">
+		<ant antfile="${distributionCoreName}.site/build.xml">
+			<property name="dltk.builder.home" value="${dltk.builder.home}" />
+			<property name="buildBranch" value="${buildBranch}" />
+			<property name="build.pack-all-in-one" value="${build.pack-all-in-one}" />
+			<property name="eclipse.launcher" value="${eclipse.launcher}" />
+		</ant>
+	</target>
+
+
+	<target name="test" depends="init" if="tests_distro_target_exists">
+		<ant antfile="${distributionCoreName}.tests/build.xml">
+			<property name="dltk.builder.home" value="${dltk.builder.home}" />
+			<property name="buildBranch" value="${buildBranch}" />
+			<property name="build.pack-all-in-one" value="${build.pack-all-in-one}" />
+			<property name="testRoot" value="${env.BUILD_HOME}/${build.tests}-${build.distribution}-${buildBranch}-${buildType}" />
+			<property name="dependencyTargets" value="${dltk.builder.home}/scripts/dependency/build.xml" />
+			<property name="local.cache.dir" value="${env.LOCAL_PREREQS_CACHE}" />
+			<property name="buildDirectory" value="${buildDirectory}" />
+			<property name="buildLabel" value="${buildLabel}" />
+			<property name="eclipse.launcher" value="${eclipse.launcher}" />
+
+		</ant>
+	</target>
+
+	<target name="upload" depends="init" if="upload_distro_target_exists">
+		<ant antfile="${distributionCoreName}.upload/build.xml">
+			<property name="dltk.builder.home" value="${dltk.builder.home}" />
+			<property name="buildBranch" value="${buildBranch}" />
+			<property name="build.pack-all-in-one" value="${build.pack-all-in-one}" />
+			<property name="eclipse.launcher" value="${eclipse.launcher}" />
+
+		</ant>
+	</target>
+
+	<target name="whatisfixed" depends="init" if="whatisfixed_distro_target_exists">
+		<ant antfile="${distributionCoreName}.whatisfixed/build.xml">
+			<property name="dltk.builder.home" value="${dltk.builder.home}" />
+			<property name="buildBranch" value="${buildBranch}" />
+			<property name="build.pack-all-in-one" value="${build.pack-all-in-one}" />
+			<property name="eclipse.launcher" value="${eclipse.launcher}" />
+
+		</ant>
+	</target>
+
+
+
+
+
+	<target name="init">
+		<dirname file="${ant.file}" property="dltk.builder.home" />
+		<condition property="buildBranch" value="R1.0">
+			<equals arg1="${mapVersionTag}" arg2="HEAD" />
+		</condition>
+		<condition property="buildBranch" value="R0.7">
+			<equals arg1="${mapVersionTag}" arg2="R0_7_maintenance" />
+		</condition>
+
+		<touch file="${user.home}/.cvspass" />
+
+		<property file="${dltk.builder.home}/build.properties" />
+		<touch file="${user.home}/.cvspass" />
+		<ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
+		<property file="${buildDirectory}/label.properties" />
+
+		<property name="distributionCoreName" value="${dltk.builder.home}/distribution/${build.distribution}" />
+
+		<available file="${distributionCoreName}.build/build.xml" type="file" property="build_distro_target_exists" />
+		<available file="${distributionCoreName}.site/build.xml" type="file" property="site_distro_target_exists" />
+		<available file="${distributionCoreName}.tests/build.xml" type="file" property="tests_distro_target_exists" />
+		<available file="${distributionCoreName}.upload/build.xml" type="file" property="upload_distro_target_exists" />
+		<available file="${distributionCoreName}.whatisfixed/build.xml" type="file" property="whatisfixed_distro_target_exists" />
+
+
+		<!--fetch the HEAD stream of all projects if build type specified as N-->
+		<condition property="fetchTag" value="HEAD">
+			<equals arg1="${buildType}" arg2="N" />
+		</condition>
+
+		<condition property="tagMaps">
+			<equals arg1="${build.trial}" arg2="false" />
+		</condition>
+	</target>
+
+
+	
+</project>
