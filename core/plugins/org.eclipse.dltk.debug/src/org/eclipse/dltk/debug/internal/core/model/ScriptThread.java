@@ -218,9 +218,10 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	}
 
 	protected void setStackFrames() throws DbgpException {
+		List retrieveStackFrames = retrieveStackFrames();
 		synchronized (frames) {
 			frames.clear();
-			frames.addAll(retrieveStackFrames());
+			frames.addAll(retrieveStackFrames);
 		}
 	}
 
@@ -231,7 +232,9 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 			DebugEventHelper.fireSuspendEvent(this, detail);
 			
 		} else {
-			this.frames.clear();
+			synchronized( this.frames ) {
+				this.frames.clear();
+			}
 			DebugEventHelper.fireResumeEvent(this, detail);
 			DebugEventHelper.fireChangeEvent(this);
 		}
