@@ -28,6 +28,7 @@ import org.eclipse.dltk.core.search.matching.MatchLocatorParser;
 import org.eclipse.dltk.core.search.matching.PatternLocator;
 import org.eclipse.dltk.core.search.matching.PossibleMatch;
 import org.eclipse.dltk.tcl.TclKeywords;
+import org.eclipse.dltk.tcl.ast.TclModuleDeclaration;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
@@ -52,9 +53,10 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 	}
 
 	public ModuleDeclaration parse(PossibleMatch possibleMatch) {
-		ModuleDeclaration module = parser.parse(possibleMatch
+		TclModuleDeclaration module = (TclModuleDeclaration) parser.parse(possibleMatch
 				.getSourceContents().toCharArray(), null);
 		module.rebuild();
+		module.rebuildMethods();
 		return module;
 	}
 
@@ -74,6 +76,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 				MethodDeclaration method = methods[i];
 				if (method instanceof MethodDeclaration) {
 					MethodDeclaration methodDeclaration = method;
+									
 					locator.match(processMethod(methodDeclaration),
 							getNodeSet());
 					parseBodies(methodDeclaration);

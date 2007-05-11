@@ -37,15 +37,15 @@ public class ModuleDeclaration extends ASTNode {
 	// TODO: make private
 	public SourceModuleScope scope;
 
-	protected List getTypeList() {
+	public List getTypeList() {
 		return types;
 	}
 
-	protected List getFunctionList() {
+	public List getFunctionList() {
 		return functions;
 	}
 
-	protected List getVariablesList() {
+	public List getVariablesList() {
 		return variables;
 	}
 

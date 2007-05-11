@@ -20,4 +20,8 @@ public class TclModuleDeclaration extends ModuleDeclaration {
 	protected void doRebuild() {
 		TclASTBuilder.buildAST(this, getTypeList(), getFunctionList(), getVariablesList());
 	}
+
+	public void rebuildMethods() {
+		TclASTBuilder.rebuildMethods(this);
+	}
 }

@@ -95,6 +95,24 @@ public class TypeDeclaration extends Declaration {
 		setNameEnd(nameEnd);
 		this.enclosingTypeName = "";
 	}
+	public List getMethodList() {
+		if( this.fMethods == null ) {
+			initInners();
+		}
+ 		return this.fMethods;
+	}
+	public List getFieldList() {
+		if( this.fVariables == null ) {
+			initInners();
+		}
+ 		return this.fVariables;
+	}
+	public List getTypeList() {
+		if( this.fTypes == null ) {
+			initInners();
+		}
+ 		return this.fTypes;
+	}
 
 	public void setEnclosingTypeName(String name) {
 		if (name.startsWith("$")) {
