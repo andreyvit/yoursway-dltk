@@ -340,7 +340,7 @@ public class TclASTBuilder {
 						if( name.endsWith("::")) {
 							name = name.substring(0, name.length() - 2 );
 						}
-						name = name.replace("(::)+", "::");
+						name = name.replaceAll("(::)+", "::");
 						String[] split = name.split("::");
 						if( start && split.length > 2 ) {
 							module.getFunctionList().add(methodDeclaration);
