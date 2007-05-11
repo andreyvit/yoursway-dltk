@@ -12,10 +12,10 @@
 			<property name="component" value="core" />
 		</ant>
 
-		<!-- ant antfile="${buildTargets}">
+		<ant antfile="${buildTargets}">
 			<property name="component" value="core-sdk" />
 		</ant>
-		<ant antfile="${buildTargets}">
+		<!-- ant antfile="${buildTargets}">
 			<property name="component" value="core.tests" />
 			<property name="eclipseBuildFailOnError" value="false" />
 		</ant -->
