@@ -113,8 +113,8 @@ public abstract class AbstractInterpreterDebugger extends AbstractInterpreterRun
 		final String sessionId = addDebugTarget(launch, config, dbgpService);
 		final int port = dbgpService.getPort();
 
-		System.out.println("Session id: " + sessionId);
-		System.out.println("Port: " + port);
+		//System.out.println("Session id: " + sessionId);
+		//System.out.println("Port: " + port);
 
 		try {
 			boolean remoteDebugging = config.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_REMOTE, false);

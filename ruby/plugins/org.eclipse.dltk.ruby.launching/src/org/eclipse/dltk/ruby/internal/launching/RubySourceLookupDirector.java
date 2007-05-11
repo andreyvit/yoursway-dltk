@@ -52,7 +52,7 @@ public class RubySourceLookupDirector implements IPersistableSourceLocator {
 			pathname = pathname.substring(1);
 		}
 
-		System.out.println("====> " + pathname);
+		//System.out.println("====> " + pathname);
 
 		File file = new File(pathname);
 
