@@ -60,7 +60,9 @@ public class TestLanguageToolkit implements IDLTKLanguageToolkit {
 	public ISourceElementParser createSourceElementParser(
 			ISourceElementRequestor requestor,
 			IProblemReporter problemReporter, Map options) throws CoreException {
-		return new TestSourceElementParser(requestor);
+		TestSourceElementParser t = new TestSourceElementParser();
+		t.setRequestor(requestor);
+		return t;
 	}
 
 	public IStatus validateSourceModule(String name) {

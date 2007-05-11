@@ -13,6 +13,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.eclipse.dltk.core.tests.buildpath.BuildpathTests;
+import org.eclipse.dltk.core.tests.ddp.DDPTests;
 
 public class AllTests {
 
@@ -24,6 +25,7 @@ public class AllTests {
 		suite.addTest(ModelMembersTests.suite());
 		suite.addTest(BuildpathTests.suite());
 		suite.addTest(WorkingCopyTests.suite());
+		suite.addTest(DDPTests.suite());
 		// $JUnit-END$
 		return suite;
 	}

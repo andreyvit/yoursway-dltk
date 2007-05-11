@@ -24,4 +24,13 @@
    </extension>
 
 
+  <extension
+        point="org.eclipse.dltk.core.sourceElementParsers">
+     <parser
+           class="org.eclipse.dltk.core.tests.model.TestSourceElementParser"
+           nature="org.eclipse.dltk.core.tests.testnature"
+           priority="0">
+     </parser>
+  </extension>
+
 </plugin>

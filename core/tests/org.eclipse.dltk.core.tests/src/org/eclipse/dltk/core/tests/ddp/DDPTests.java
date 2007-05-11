@@ -13,13 +13,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import junit.framework.TestCase;
+import junit.framework.Test;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.NumericLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.core.tests.model.SuiteOfTestCases;
 import org.eclipse.dltk.ti.DefaultTypeInferencer;
 import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.IGoalEvaluatorFactory;
@@ -29,7 +30,15 @@ import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
-public class DDPTests extends TestCase {
+public class DDPTests extends SuiteOfTestCases {	
+
+	public DDPTests(String name) {
+		super(name);
+	}
+	
+	public static Test suite() {
+		return new Suite(DDPTests.class);
+	}
 
 	private static final class FixedAnswerGoalEvaluator extends GoalEvaluator {
 		private final IEvaluatedType answer;

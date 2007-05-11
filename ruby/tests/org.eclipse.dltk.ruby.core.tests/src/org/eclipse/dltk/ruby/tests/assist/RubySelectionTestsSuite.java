@@ -45,7 +45,11 @@ public class RubySelectionTestsSuite extends TestSuite {
 			String line = lines[i].trim();
 			int cmnt = -1;
 			if ((cmnt = line.indexOf("##")) != -1) {				
-				StringTokenizer tok = new StringTokenizer(line.substring(cmnt + 2));
+				String substring = line.substring(cmnt + 2);
+				if (substring.startsWith("#"))
+					continue;
+				StringTokenizer tok = new StringTokenizer(substring);
+				
 				int offset = Integer.parseInt(tok.nextToken()) + lineOffset;
 				int length = 0;
 				if (tok.hasMoreTokens()) {
