@@ -81,6 +81,8 @@
             <property name="cvsUser" value="${cvsUser}" />
             <property name="cvsProtocol"
                       value="${cvsProtocol}" />
+            <property name="cvsPrefix"
+                      value="${cvsPrefix}" />
             <property name="dependencyTargets"
                       value="${dltk.builder.home}/scripts/dependency/build.xml" />
             <property name="local.cache.dir"
@@ -190,6 +192,7 @@
         	<jvmarg value="-DlogExtension=${logExtension}" />
         	<jvmarg value="-DcvsUser=${cvsUser}" />
             <jvmarg value="-DcvsProtocol=${cvsProtocol}" />
+            <jvmarg value="-DcvsPrefix=${cvsPrefix}" />
             <jvmarg value="-Ddltk.builder.home=${dltk.builder.home}" />
             <jvmarg value="-Dbuild.distribution=${build.distribution}" />
             <jvmarg value="-Dcomponent=${component}" />
