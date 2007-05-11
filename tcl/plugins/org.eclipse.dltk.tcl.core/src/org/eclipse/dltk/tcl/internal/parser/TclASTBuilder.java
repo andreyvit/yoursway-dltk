@@ -265,7 +265,7 @@ public class TclASTBuilder {
 						if( name.endsWith("::")) {
 							name = name.substring(0, name.length() - 2 );
 						}
-						name = name.replace("(::)+", "::");
+						name = name.replaceAll("(::)+", "::");
 						String[] split = name.split("::");
 						methodDeclaration.setName(split[split.length - 1]);
 						TypeDeclaration type = searchCreateTypeDeclaration(unit, split, method, 0);
