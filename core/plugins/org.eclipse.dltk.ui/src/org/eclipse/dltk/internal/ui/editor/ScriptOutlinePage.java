@@ -992,7 +992,7 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 		initDragAndDrop();
 		fOutlineViewer.setContentProvider(new ChildrenProvider());
 		fOutlineViewer.setLabelProvider(new DecoratingModelLabelProvider(
-				lprovider));
+				lprovider));		
 
 		Object[] listeners = fSelectionChangedListeners.getListeners();
 		for (int i = 0; i < listeners.length; i++) {

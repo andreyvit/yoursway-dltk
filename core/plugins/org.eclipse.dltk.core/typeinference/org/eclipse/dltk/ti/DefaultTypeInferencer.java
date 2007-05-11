@@ -60,8 +60,9 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 			if (evaluator == null || (!(evaluator instanceof Class))) {
 				// throw new RuntimeException("No evaluator registered for "
 				// + goalClass.getName() + " : " + goal);
+				String className = goalClass.getName();
 				System.err.println("No evaluator registered for "
-						+ goalClass.getName() + " : " + goal + " - using Null");
+						+ className.substring(className.lastIndexOf('.')) + ": " + goal + " - using NullGoalEvaluator");
 				return new NullGoalEvaluator(goal);
 			}
 			Class evalClass = (Class) evaluator;

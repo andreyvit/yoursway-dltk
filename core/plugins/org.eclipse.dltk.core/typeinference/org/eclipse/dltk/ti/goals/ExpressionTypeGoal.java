@@ -41,4 +41,10 @@ public class ExpressionTypeGoal extends AbstractTypeGoal {
 		return super.hashCode();
 	}
 
+	public String toString() {
+		return "ExpressionTypeGoal: " + ((expression != null)?expression.toString():"null") + " context: " + ((context != null)?context.toString():"null");
+	}
+
+	
+	
 }

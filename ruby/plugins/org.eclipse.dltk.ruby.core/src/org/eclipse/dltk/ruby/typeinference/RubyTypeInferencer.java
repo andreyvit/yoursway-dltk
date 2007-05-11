@@ -13,7 +13,6 @@ import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ti.DefaultTypeInferencer;
 import org.eclipse.dltk.ti.EvaluatorStatistics;
 import org.eclipse.dltk.ti.IPruner;
-import org.eclipse.dltk.ti.TimelimitPruner;
 import org.eclipse.dltk.ti.goals.AbstractTypeGoal;
 import org.eclipse.dltk.ti.goals.IGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
@@ -36,12 +35,12 @@ public class RubyTypeInferencer extends DefaultTypeInferencer {
 
 		public boolean prune(IGoal goal, EvaluatorStatistics stat) {
 			long currentTime = System.currentTimeMillis();
+			if (timeLimit != -1 && currentTime - timeStart > timeLimit)
+				return true;
 			if (stat != null) {
-// if (stat.getSubGoalsDoneSuccessful() > 5)
-// return true;
+				if (stat.getSubGoalsDoneSuccessful() > 5)
+					return true;
 			}
-// if (currentTime - timeStart > timeLimit)
-// return true;
 			return false;
 		}
 
@@ -52,7 +51,7 @@ public class RubyTypeInferencer extends DefaultTypeInferencer {
 	}
 
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit) {
-		IEvaluatedType type = super.evaluateType(goal, new TimelimitPruner(
+		IEvaluatedType type = super.evaluateType(goal, new SimplestRubyPruner(
 				timeLimit));
 		if (type == null || type instanceof UnknownType) {
 			type = new RubyClassType("Object"); // anyway, all things in ruby

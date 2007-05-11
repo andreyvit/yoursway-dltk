@@ -153,6 +153,7 @@ public class DLTKPluginImages {
 	public static final ImageDescriptor DESC_OBJS_NAMESPACE= createManagedFromKey(T_OBJ, IMG_OBJS_NAMESPACE);
 	public static final ImageDescriptor DESC_OBJS_MODULE= createManagedFromKey(T_OBJ, IMG_OBJS_MODULE);
 	public static final ImageDescriptor DESC_OBJS_TEMPLATE= createManagedFromKey(T_OBJ, IMG_OBJS_TEMPLATE);
+	public static final ImageDescriptor DESC_OVR_ABSTRACT = createUnManaged(T_OVR, "abstract_co.gif"); //$NON-NLS-1$
 	public static final ImageDescriptor DESC_OVR_RECURSIVE = createUnManaged(T_OVR, "recursive_co.gif"); //$NON-NLS-1$
 	public static final ImageDescriptor DESC_OVR_MAX_LEVEL = createUnManaged(T_OVR, "maxlevel_co.gif"); //$NON-NLS-1$
 	public static final ImageDescriptor DESC_WIZBAN_NEWCLASS = createUnManaged(T_WIZBAN, "newclass_wiz.png"); //$NON-NLS-1$

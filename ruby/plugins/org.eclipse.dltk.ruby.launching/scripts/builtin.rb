@@ -29,8 +29,12 @@ end
 end
 
 def put_methods!(metaclass)
-	ms = metaclass.instance_methods(false)
+	i = metaclass.included_modules
 	
+	ms = metaclass.public_instance_methods(false)
+	for t in i do; ms -= t.public_instance_methods(true); end
+	
+	$data << "\t\npublic\n"
 	for i in ms do
 		put_rdoc(metaclass.name + "." + i.to_s)
 		$data << <<-"END"		
@@ -39,6 +43,42 @@ def put_methods!(metaclass)
 	
 		END
 	end
+	
+	ms = metaclass.protected_instance_methods(false)
+	for t in i do; 
+		if t.respond_to?(:protected_instance_methods) then 
+			ms -= t.protected_instance_methods(true)
+		end  
+	end
+	
+	$data << "\t\nprotected\n"
+	for i in ms do
+		put_rdoc(metaclass.name + "." + i.to_s)
+		$data << <<-"END"		
+	def #{i.to_s} (#{generateArgs(metaclass.instance_method(i).arity)})
+	end
+	
+		END
+	end
+	
+	
+	ms = metaclass.private_instance_methods(false)
+	for t in i do; 
+		if t.respond_to?(:private_instance_methods) then 
+			ms -= t.private_instance_methods(true)
+		end 		 
+	end
+	
+	$data << "\t\nprivate\n"
+	for i in ms do
+		put_rdoc(metaclass.name + "." + i.to_s)
+		$data << <<-"END"		
+	def #{i.to_s} (#{generateArgs(metaclass.instance_method(i).arity)})
+	end
+	
+		END
+	end			
+	
 end
 
 def generateArgs(arity)
@@ -61,9 +101,10 @@ def put_singleton_methods!(metaclass)
 		class << self
 		END2
 	else
-		$data << "\t\tprivate\n"
+#		$data << "\t\tprivate\n"
 	end
-	ms = (metaclass.public_methods(false) - Class.instance_methods(false)).each { |m|
+#	ms = (metaclass.public_methods(false) - Class.instance_methods(false)).each { |m|
+	ms = (metaclass.singleton_methods(false)).each { |m|
 	$data << <<-"END2"
 		def #{m.to_s} (#{generateArgs(metaclass.method(m).arity)})
 		end
@@ -126,11 +167,11 @@ def put_superclass!(metaclass)
 	END
 end
 
-def put_singleton_superclass!(metaclass)
-	$data << <<-"END"
-		#{const_for_singleton(metaclass)}.setSuperClass(#{const_for(metaclass.class)});
-	END
-end
+#def put_singleton_superclass!(metaclass)
+#	$data << <<-"END"
+#		#{const_for_singleton(metaclass)}.setSuperClass(#{const_for(metaclass.class)});
+#	END
+#end
 
 
 
@@ -247,8 +288,5 @@ def process_all
 	
 end
 
-#puts "Begin"
-#$names = (ARGV[0] == "names")
 process_all
 
-#puts "End"

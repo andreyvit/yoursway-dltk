@@ -103,7 +103,7 @@ public class GoalEngine {
 		ev.subgoalsLeft--;
 		ev.subgoalsLeft += newGoals.length;			
 		ev.totalSubgoals += newGoals.length;
-		if (state == GoalState.DONE)
+		if (state == GoalState.DONE && result != null)
 			ev.successfulSubgoals++;
 		if (ev.subgoalsLeft == 0) {
 			Object newRes = evaluator.produceResult();

@@ -13,7 +13,9 @@ import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.editor.AnnotatedImageDescriptor;
+import org.eclipse.dltk.ruby.core.IRubyConstants;
 import org.eclipse.dltk.ruby.internal.ui.RubyImages;
+import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.viewsupport.ImageImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelDecorator;
@@ -51,6 +53,11 @@ public class RubyOutlineLabelDecorator extends LabelProvider implements
 			
 			if (data != null) {
 				drawImageTopRight(data);
+			}
+			
+			if ((flags & IRubyConstants.RubyAttributeModifier) != 0) {
+				data = getImageData(DLTKPluginImages.DESC_OVR_ABSTRACT);
+				drawImageTopLeft(data);
 			}
 		}
 	}

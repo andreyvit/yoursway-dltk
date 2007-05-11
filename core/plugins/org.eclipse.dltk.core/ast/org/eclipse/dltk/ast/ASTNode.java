@@ -141,7 +141,7 @@ public abstract class ASTNode {
 	public abstract void traverse(ASTVisitor visitor) throws Exception;
 
 	public void printNode(CorePrinter output) {
-		output.println ("This node("+ this.getClass() +") doesn't support printing\n" );
+		output.println (this.getClass() + "(node doesn't support debug printing)\n" );
 	}
 	
 	protected ISourceRange getSourceRange () {

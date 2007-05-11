@@ -32,7 +32,6 @@ import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.codeassist.IAssistParser;
-import org.eclipse.dltk.codeassist.RelevanceConstants;
 import org.eclipse.dltk.codeassist.ScriptCompletionEngine;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.compiler.problem.DefaultProblem;
@@ -47,16 +46,13 @@ import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.evaluation.types.IClassType;
 import org.eclipse.dltk.internal.core.ModelElement;
-import org.eclipse.dltk.internal.core.SourceModule;
 import org.eclipse.dltk.ruby.ast.RubyBlock;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyDAssgnExpression;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeField;
-import org.eclipse.dltk.ruby.core.text.RubyContext;
 import org.eclipse.dltk.ruby.core.text.RubyKeyword;
-import org.eclipse.dltk.ruby.core.text.RubyContext.HeuristicLookupResult;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinElementInfo;
@@ -84,7 +80,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			"$-v", "$>", "$&", "$;", "$SAFE", "$PROGRAM_NAME", "$\"", "$-d",
 			"$?", "$-0", "$+", "$@", "$-a", "$VERBOSE", "$stderr", "$~", "$0",
 			"$LOAD_PATH", "$<", "$_", "$-K" };
-
+	
 	private DLTKTypeInferenceEngine inferencer;
 	private ISourceParser parser = null;
 	private MixinModel model;
@@ -214,7 +210,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				String[] keywords = RubyKeyword.findByPrefix(wordStarting);
 				for (int j = 0; j < keywords.length; j++) {
 					reportKeyword(keywords[j]);
-				}
+				}				
 			}
 
 			ModuleDeclaration moduleDeclaration = parser.parse(content

@@ -12,8 +12,10 @@ package org.eclipse.dltk.ruby.internal.core.codeassist;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
@@ -70,7 +72,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 
 	protected int actualSelectionEnd;
 
-	private List selectionElements = new ArrayList();
+	private Set selectionElements = new HashSet();
 
 	private RubySelectionParser parser = new RubySelectionParser();
 
@@ -179,8 +181,17 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 			}
 		}
 
-		return (IModelElement[]) selectionElements
-				.toArray(new IModelElement[selectionElements.size()]);
+		List resultElements = new ArrayList ();
+		
+		for (Iterator iterator = selectionElements.iterator(); iterator.hasNext();) {
+			IModelElement element = (IModelElement) iterator.next();
+			if (sourceUnit.getModelElement().getScriptProject() == 
+				element.getScriptProject())
+				resultElements.add(element);
+		}
+		
+		return (IModelElement[]) resultElements
+				.toArray(new IModelElement[resultElements.size()]);
 	}
 
 	private void selectOnColonExpression(ModuleDeclaration parsedUnit,
@@ -485,8 +496,10 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 
 				public void acceptSearchMatch(SearchMatch match)
 						throws CoreException {
-					IMethod method = (IMethod) match.getElement();
-					methods.add(method);
+					IModelElement modelElement = (IModelElement) match.getElement();
+					org.eclipse.dltk.core.ISourceModule sm = (org.eclipse.dltk.core.ISourceModule) modelElement.getAncestor(IModelElement.SOURCE_MODULE);
+					IModelElement elementAt = sm.getElementAt(match.getOffset());
+					methods.add(elementAt);
 				}
 
 			};

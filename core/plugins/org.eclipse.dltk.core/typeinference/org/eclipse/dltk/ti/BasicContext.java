@@ -50,6 +50,10 @@ public class BasicContext implements IContext, ISourceModuleContext {
 		}
 		return null;
 	}
+
+	public String toString() {
+		return "BasicContext, module " + sourceModule.getElementName();
+	}
 	
 	
 	

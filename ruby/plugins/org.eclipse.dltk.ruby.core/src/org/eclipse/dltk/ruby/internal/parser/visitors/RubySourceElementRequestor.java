@@ -345,6 +345,11 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 					}
 				}
 			}
+			
+			if (name.equals("require")) {
+				//TODO
+			}
+			
 			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 			// Arguments
