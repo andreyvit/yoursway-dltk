@@ -97,7 +97,7 @@ public class RubyThread extends PlatformObject implements IThread,
 		this.priority = priority;
 		this.session = session;
 		this.stack = new RubyStack(this);
-		this.debugger = new DbgpDebugger(session, this);
+		//this.debugger = new DbgpDebugger(this, this);
 
 		this.stepping = false; // true during steps
 		this.suspended = true;

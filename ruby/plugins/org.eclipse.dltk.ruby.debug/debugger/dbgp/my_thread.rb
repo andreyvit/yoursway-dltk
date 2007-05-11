@@ -9,16 +9,15 @@
 ###############################################################################
 
 require 'dbgp/stack'
-require 'dbgp/capturer'
 require 'dbgp/features'
 require 'dbgp/properties'
-require 'dbgp/socket_io'
-require 'dbgp/test_io'
-require 'dbgp/printer'
+
 
 def decode_uri(uri)
     CGI.unescape(uri).sub!('file:///', '')
 end
+
+SCRIPT_LINES__ = {} unless defined? SCRIPT_LINES__
 
 module XoredDebugger
 
@@ -26,8 +25,8 @@ module XoredDebugger
         #starting: State prior to execution of any code
         #stopping: State after completion of code execution. This typically happens at the end of code execution, allowing the IDE to further interact with the debugger engine (for example, to collect performance data, or use other extended commands).
         #stopped: IDE is detached from process, no further interaction is possible.
-        #running: code is currently executing. Note that this state would only be seen with async support turned on, otherwise the typical state during IDE/debugger interaction would be 'break'
-        #break: code execution is paused, for whatever reason (see below), and the IDE/debugger can pass information back and forth.
+        #running: code is currently executing. Note that this state would only be seen with async support turned on, otherwise the typical state during IDE/debugger interaction would be '\break'
+        #\break: code execution is paused, for whatever reason (see below), and the IDE/debugger can pass information back and forth.
 
         def initialize
             @state = 'starting'
@@ -53,6 +52,18 @@ module XoredDebugger
 
 class VirtualThread
 private
+    def breakpoints
+        @debugger.breakpoints
+    end
+
+    def logger
+        @debugger.logger
+    end
+
+    def capturer
+        @debugger.capturer
+    end
+
     # Init
     def init
         { 'app_id'   => 'test',
@@ -71,7 +82,7 @@ private
 
     # Feature commands
     def feature_get(name)
-        log("feature_get: #{name}")
+        logger.puts("feature_get: #{name}")
 
         { 'name'      => name, 
           'supported' => 1, 
@@ -79,7 +90,7 @@ private
     end
 
     def feature_set(name, value)
-        log("feature_set: #{name} = #{value}")
+        logger.puts("feature_set: #{name} = #{value}")
 
         @features.set(name, value) # Check types!!! (string or int)
         { 'name'    => name, 
@@ -107,14 +118,19 @@ private
         nil
     end
 
-    def stop   
-        puts 'Killing thread...'
+    def stop
+        terminate
+        nil
     end
 
     def detach
-        # Should set special variable
-        log('--> detach <--')
+        logger.puts('--> detach <--')
         nil
+    end
+
+    def break_cmd
+        @waitDepth = -1
+        nil        
     end
 
     # Context commands
@@ -176,19 +192,41 @@ private
 
 
     # Breakpoint commands
-    def set_line_breakpoint(file, line, state)
-        id = @debugger.set_line_breakpoint(file, line, state)
-        { 'state' => state, 
+    def breakpoint_set_line(file, line, state, temporary)
+        id = breakpoints.set_line_bpt(file, line, state)
+
+        { 'state'         => state, 
           'breakpoint_id' => id }
     end
+    
+    def breakpoint_set_exception(exception, state, temporary)
+        id = breakpoints.set_exception_bpt(exception, state)        
 
-    def breakpoint_remove(id)
-        @debugger.breakpoint_remove(id)
+        { 'state'         => state, 
+          'breakpoint_id' => id }        
+    end
+
+    def breakpoint_get
+        # TODO:
+        {}
+    end
+
+    def breakpoint_list
+        # TODO:
         {}
     end
 
     def breakpoint_update(id, state)
-        @debugger.breakpoint_update(id, state)
+        breakpoints.set_state(id, state)
+        
+        {}
+    end
+
+    def breakpoint_remove(id)
+        logger.puts('===> Removing breakpoint with id: ' + id.to_s + ' ' + id.class.to_s)
+        val = breakpoints.remove(id)
+        logger.puts('===> Success: ' + val.to_s)
+        
         {}
     end
 
@@ -231,9 +269,9 @@ private
         # 1 - redirect
 
         if value == 0
-            log("Disabling stdin")
+            logger.puts("Disabling stdin")
         elsif value == 1
-            log("Redirecting stdin")
+            logger.puts("Redirecting stdin")
         end
 
         { 'success' => 1 }
@@ -244,7 +282,7 @@ private
         # 1 - copy data
         # 2 - redirection
 
-        log("Configure stdout: #{value}")
+        logger.puts("Configure stdout: #{value}")
 
         { 'success' => 1 }
     end
@@ -254,13 +292,13 @@ private
         # 1 - copy data
         # 2 - redirection
 
-        log("Configure stderr: #{value}")
+        logger.puts("Configure stderr: #{value}")
 
         { 'success' => 1 }
     end
 
     def dispatch_command(command)
-        log('Dispatching command: ' + command.name)
+        logger.puts('Dispatching command: ' + command.name)
 
         data = case command.name
             # Status
@@ -283,31 +321,41 @@ private
             when 'step_out': step_out
             when 'stop': stop
             when 'detach': detach
+            when 'break': break_cmd
 
             # Breakpoint commands
             when 'breakpoint_set'
-                type = command.arg('-t')           # breakpoint type, see below for valid values [required]
-                state = command.arg('-s') == 'enabled' ? true : false           
+                type = command.arg('-t')
+                state = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false           
+                temporary = command.arg_with_default('-r', false)
 
-                #state = command.arg('-s')         # breakpoint state [optional, defaults to "enabled"]             
-                #function = command.arg('-m')      # function name [required for call or return breakpoint types]
-                #exception = command.arg('-x')     # exception name [required for exception breakpoint types]
                 #hit_value = command.arg('-h')     # hit value (hit_value) used with the hit condition to determine if should break; a value of zero indicates hit count processing is disabled for this breakpoint [optional, defaults to zero (i.e. disabled)]
                 #hit_condition = command.arg('-o') # hit condition string (hit_condition); see hit_condition documentation above; BTW 'o' stands for 'operator' [optional, defaults to '>=']
-                #is_temporary = command.arg('-r')  # Boolean value indicating if this breakpoint is temporary. [optional, defaults to false]
-                 
-                case type
-                when 'line':
-                    file = File.expand_path(decode_uri(command.arg('-f')))
 
+                case type
+                when 'line'
+                    file = File.expand_path(decode_uri(command.arg('-f')))
                     line = command.arg('-n').to_i
-                    set_line_breakpoint(file, line, state)
+
+                    breakpoint_set_line(file, line, state, temporary)
+                
+                when 'call'
+                    function = command.arg('-m')
+                
+                when 'return'
+                    function = command.arg('-m')
+
+                when 'exception'
+                    exception = command.arg('-x')
+                    breakpoint_set_exception(exception, state, temporary)
+
+                when 'conditional'
+                when 'whatch'                
                 end
 
 
             when 'breakpoint_get'
-                # TODO:
-                {}
+                breakpoint_get
 
             when 'breakpoint_update'
                 id = command.arg('-d').to_i
@@ -319,8 +367,7 @@ private
                 breakpoint_remove(id)
 
             when 'breakpoint_list'
-                # TODO:
-                {}
+                breakpoint_list
 
             # Context commands
             when 'context_names'              
@@ -336,19 +383,23 @@ private
             when 'property_get'
                 name = command.arg('-n')
                 key = command.arg('-k').to_i
-
                 property_get(name, key)
                 
             when 'property_set'
+                # TODO:
+                {}
 
             when 'property_value'
+                # TODO:
+                {}
         
             # Stack commands
             when 'stack_get'
                 depth = command.arg('-d')   
                 stack_get(depth)
                     
-            when 'stack_depth': stack_depth
+            when 'stack_depth'
+                stack_depth
 
             # Extended commands
             when 'stdin'
@@ -372,7 +423,7 @@ private
             data['id'] = command.arg('-i')
         end
 
-        log('OK')
+        logger.puts('Dispatch OK')
 
         data
     end
@@ -387,41 +438,55 @@ private
     end
 
 public
-    def initialize(thread, debugger, logger, host, port, key)
-        @thread = thread
-    
-        printer = Printer.new
-        @io = SocketIO.new(host, port, logger, printer)
-        #@io = TestIO.new(logger, printer)
-
+    def initialize(debugger, thread, io, key)
         @debugger = debugger
+        @thread = thread
+        @io = io    
         @key = key
-
+        
         @features = Features.new
         @states = States.new
+        @capturer = StdoutCapturer.new
         
         @stack = VirtualStack.new
         @stack.push(nil, nil, nil)
 
         @waitDepth = -1
+        
+        @terminated = false
+
+        @has_data = false
 
         send('init', init)
     end
 
+    def terminated?
+        @terminated
+    end
+
     def terminate
-        map = { 'status' => 'stopped',
-                'reason' => 'ok',
-                'id'     => @last_command.arg('-i') }
+        unless @terminated
+            logger.puts('Terminating thread...' + @last_command.to_s)
 
-        send(@last_command.name, map)        
+            @terminated = true
+
+            map = { 'status' => 'stopped',
+                    'reason' => 'ok',
+                    'id'     => @last_command.arg('-i') }
+
+            send(@last_command.name, map)
+        end
     end
 
-    def log(txt)
-        @debugger.log(txt)
-    end
+    def trace(event, file, line, id, binding, klass)
+        if @terminated
+            return
+        end
 
-
-    def trace(event, file, line, id, binding, klass)                  
+        if klass.to_s == 'StdoutCapturer'
+            return
+        end
+                  
         @file = File.expand_path(file)  #File.expand_path(File.join(Dir.pwd, file))
         @line = line
         @binding = binding
@@ -430,19 +495,27 @@ public
             when 'line'
                 @stack.update(@binding, @file, @line)
 
-                #@capturer.disable
-                #print "==== Captured ======\n"
-                #print @capturer.output
-                #print "====================\n"
+                
+                capturer.disable
+                #logger.puts('# Disable capture #')
+                out = capturer.output
+                unless out.empty?
+                    logger.puts('===> STDOUT: |' + out + '|')
+                    send('stdout_data', {'data' => out})
+                end
+
+                br = breakpoints.line_break?(@file, @line) 
+                logger.puts('Breakpoint: ' + br.to_s)
     
-                if (@waitDepth == -1 or
+                if (@has_data or 
+                    @waitDepth == -1 or
                     @waitDepth >= @stack.depth or
-                    @debugger.break?(@file, @line))
+                    br)
                                         
                     # == Information ==
-                    log("==>>>>>>>> Line: #{@line} from #{@file} (depth: #{@stack.depth}, waitDepth: #{@waitDepth}) <<<<<<<<==")
+                    logger.puts("==>> Line: #{@line} from #{@file} (depth: #{@stack.depth}, waitDepth: #{@waitDepth}) <<==")
 
-                    unless @last_command.nil?
+                    if (not @last_command.nil?) and (not @has_data)
                         map = { 'status' => 'break',
                                 'reason' => 'ok',
                                 'id'     => @last_command.arg('-i') }
@@ -451,11 +524,12 @@ public
                     else
                         #report status starting
                     end
+            
+                    @has_data = false
 
                     # Command handling loop
                     loop do
-                        @last_command = Command.new(receive)
-                        
+                        @last_command = Command.new(receive)                        
                         data = dispatch_command(@last_command)
     
                         unless(data.nil?)
@@ -464,9 +538,15 @@ public
                             break
                         end
                     end
-    
-                    #@capturer.enable
+                else
+                 #   if @io.has_data?
+                 #       logger.puts('===================IO HAS DATA==================')
+                 #       @has_data = true
+                 #   end
                 end
+
+                #logger.puts('# Enable capture #')
+                capturer.enable
    
             when 'call'
                 @stack.push(@binding, @file, @line)
@@ -478,6 +558,7 @@ public
             when 'end'     
             
             when 'raise'
+                logger.puts('------Raise-----')
                 # Exception handling
         end
     end

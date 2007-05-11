@@ -10,15 +10,15 @@
 package org.eclipse.dltk.debug.internal.core.model.operations;
 
 import org.eclipse.dltk.dbgp.IDbgpStatus;
-import org.eclipse.dltk.dbgp.commands.IDbgpCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.internal.DbgpStatus;
+import org.eclipse.dltk.debug.core.model.IScriptThread;
 
 public class DbgpSuspendOperation extends DbgpOperation {
 	private static final String JOB_NAME = "Suspend operation";
 
-	public DbgpSuspendOperation(IDbgpCommands commands, IResultHandler finish) throws DbgpException {
-		super(commands, JOB_NAME, finish);
+	public DbgpSuspendOperation(IScriptThread thread, IResultHandler finish) throws DbgpException {
+		super(thread, JOB_NAME, finish);
 	}
 
 	protected void process() throws DbgpException {

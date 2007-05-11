@@ -17,5 +17,6 @@ SET DBGP_RUBY_PORT=12000
 SET DBGP_RUBY_KEY=test
 SET DBGP_RUBY_SCRIPT=C:/data/programming/java/dltk/org.eclipse.dltk.ruby.debug/debugger/test.rb 
 SET DBGP_RUBY_LOG=stdout
+SET DBGP_RUBY_TEST=1
 
 ruby -Idbgp dbgp/debugger.rb

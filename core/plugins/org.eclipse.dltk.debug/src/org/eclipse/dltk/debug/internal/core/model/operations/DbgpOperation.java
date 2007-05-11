@@ -9,6 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.internal.core.model.operations;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -20,6 +23,7 @@ import org.eclipse.dltk.dbgp.commands.IDbgpCommands;
 import org.eclipse.dltk.dbgp.commands.IDbgpCoreCommands;
 import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+import org.eclipse.dltk.debug.core.model.IScriptThread;
 
 public abstract class DbgpOperation {
 	private static final boolean DEBUG = DLTKCore.DEBUG;
@@ -27,12 +31,14 @@ public abstract class DbgpOperation {
 	public interface IResultHandler {
 		void finish(IDbgpStatus status, DbgpException e);
 	}
-	
+
 	private Job job;
 
 	private IDbgpContinuationHandler continuationHandler;
 
 	private IDbgpCommands commands;
+
+	private final IScriptThread th;
 
 	protected IDbgpCoreCommands getCore() {
 		return commands.getCoreCommands();
@@ -56,14 +62,13 @@ public abstract class DbgpOperation {
 		resultHandler.finish(status, null);
 	}
 
-	protected DbgpOperation(IDbgpCommands commands, String name, IResultHandler handler) {
-		if (commands == null) {
-			throw new IllegalArgumentException();
-		}
+	protected DbgpOperation(IScriptThread thread, String name,
+			IResultHandler handler) {
+		this.th = thread;
 
 		this.resultHandler = handler;
-		
-		this.commands = commands;
+
+		this.commands = thread.getDbgpSession();
 
 		job = new Job(name) {
 			protected IStatus run(IProgressMonitor monitor) {
@@ -85,29 +90,32 @@ public abstract class DbgpOperation {
 
 		this.continuationHandler = new IDbgpContinuationHandler() {
 			public void stderrReceived(String data) {
-				//try {
-//					OutputStream err = getManagement().getStreamProxy()
-//							.getStderr();
-//					err.write(data.getBytes());
-//					err.flush();
+				try {
+					OutputStream err = th.getStreamProxy().getStderr();
+					err.write(data.getBytes());
+					err.flush();
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				if (DEBUG) {
 					System.out.println("Received (stderr): " + data);
-					
-				//} catch (IOException e) {
-					//e.printStackTrace();
-				//}
+				}
 			}
 
 			public void stdoutReceived(String data) {
-				//try {
-					//OutputStream out = getManagement().getStreamProxy()
-						//	.getStdout();
-					//out.write(data.getBytes());
-					//out.flush();
-				//} catch (IOException e) {
-					//e.printStackTrace();
-				//}
-				
-				System.out.println("Received (stdout): " + data);
+				try {
+					OutputStream out = th.getStreamProxy().getStdout();
+					out.write(data.getBytes());
+					out.flush();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				if (DEBUG) {
+					System.out.println("Received (stdout): " + data);
+				}
 			}
 		};
 	}

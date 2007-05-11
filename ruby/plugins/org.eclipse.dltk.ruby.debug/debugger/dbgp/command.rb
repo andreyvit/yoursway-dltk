@@ -27,11 +27,13 @@ module XoredDebugger
         end
 
         def initialize(command)
-            if (command =~ /(\w+)\s(.+)--(.*)/)
+            @command = command
+
+            if (@command =~ /(\w+)\s(.+)--(.*)/)
                 @name = $1
                 @args = $2
                 @data = Base64.decode64($3)
-           elsif (command =~ /(\w+)\s(.+)/)
+            elsif (@command =~ /(\w+)\s(.+)/)
                 @name = $1
                 @args = $2
                 @data = nil
@@ -55,6 +57,10 @@ module XoredDebugger
 
         def data
             @data
+        end
+
+        def to_s
+            @command
         end
     end # class Command
 

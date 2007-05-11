@@ -13,13 +13,12 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
-import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
 public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 
-	private IScriptVariable variable;
+	private ScriptVariable variable;
 
-	protected ScriptValue(IScriptVariable variable) {		
+	protected ScriptValue(ScriptVariable variable) {		
 		this.variable = variable;
 	}
 
@@ -40,7 +39,6 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 	}
 
 	public boolean isAllocated() throws DebugException {
-		// TODO: By default return true...
 		return true;
 	}
 	

@@ -11,9 +11,13 @@
 module XoredDebugger
    
     class StdoutCapturer
-        def initialize()
-            @output = ""
+        def initialize(state = false)
             @saved_stdout = $stdout
+            if state
+                enable
+            else
+                reset
+            end
         end
 
         def write(s)
@@ -21,7 +25,7 @@ module XoredDebugger
         end
 
         def enable
-            self.reset
+            reset
             $stdout = self
         end
 

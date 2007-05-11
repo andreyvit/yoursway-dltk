@@ -17,6 +17,7 @@ import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.commands.IDbgpFeatureCommands;
 import org.eclipse.dltk.dbgp.commands.IDbgpStreamCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+import org.eclipse.dltk.debug.core.model.IScriptThread;
 
 public class DbgpDebugger {
 	// Operations
@@ -34,25 +35,25 @@ public class DbgpDebugger {
 
 	private IDbgpSession session;
 
-	public DbgpDebugger(IDbgpSession session, final IDbgpDebuggerFeedback end) {
+	public DbgpDebugger(IScriptThread thread, final IDbgpDebuggerFeedback end) {
 
-		this.session = session;
+		this.session = thread.getDbgpSession();
 
-		stepIntoOperation = new DbgpStepIntoOperation(session,
+		stepIntoOperation = new DbgpStepIntoOperation(thread,
 				new DbgpOperation.IResultHandler() {
 					public void finish(IDbgpStatus status, DbgpException e) {
 						end.endStepInto(e, status);
 					}
 				});
 
-		stepOverOperation = new DbgpStepOverOperation(session,
+		stepOverOperation = new DbgpStepOverOperation(thread,
 				new DbgpOperation.IResultHandler() {
 					public void finish(IDbgpStatus status, DbgpException e) {
 						end.endStepOver(e, status);
 					}
 				});
 
-		stepReturnOperation = new DbgpStepReturnOperation(session,
+		stepReturnOperation = new DbgpStepReturnOperation(thread,
 				new DbgpOperation.IResultHandler() {
 					public void finish(IDbgpStatus status, DbgpException e) {
 						end.endStepReturn(e, status);
@@ -60,7 +61,7 @@ public class DbgpDebugger {
 				});
 
 		try {
-			suspendOperation = new DbgpSuspendOperation(session,
+			suspendOperation = new DbgpSuspendOperation(thread,
 					new DbgpOperation.IResultHandler() {
 						public void finish(IDbgpStatus status, DbgpException e) {
 							end.endSuspend(e, status);
@@ -71,14 +72,14 @@ public class DbgpDebugger {
 			e.printStackTrace();
 		}
 
-		resumeOperation = new DbgpResumeOperation(session,
+		resumeOperation = new DbgpResumeOperation(thread,
 				new DbgpOperation.IResultHandler() {
 					public void finish(IDbgpStatus status, DbgpException e) {
 						end.endResume(e, status);
 					}
 				});
 
-		terminateOperation = new DbgpTerminateOperation(session,
+		terminateOperation = new DbgpTerminateOperation(thread,
 				new DbgpOperation.IResultHandler() {
 					public void finish(IDbgpStatus status, DbgpException e) {
 						end.endTerminate(e, status);

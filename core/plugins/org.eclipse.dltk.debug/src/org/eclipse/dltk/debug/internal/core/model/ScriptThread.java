@@ -124,7 +124,6 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		processOperationEnd(execption, status, DebugEvent.STEP_END);
 	}
 	
-	
 	public ScriptThread(IScriptDebugTarget target, IDbgpSession session,
 			ScriptThreadManager manager) throws DbgpException, CoreException {
 		
@@ -145,7 +144,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		// Stepping
 		this.stepping = this.suspended;
 
-		engine = new DbgpDebugger(session, this);
+		engine = new DbgpDebugger(this, this);
 
 		if (DLTKCore.DEBUG) {
 			DbgpDebugger.printEngineInfo(engine);
@@ -153,7 +152,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 		final IDbgpExtendedCommands extended = session.getExtendedCommands();
 
-		canSuspend = engine.isSupportsAsync();
+		canSuspend = true; //  engine.isSupportsAsync();
 
 		engine.setMaxChildren(256);
 		engine.setMaxDepth(2);

@@ -35,5 +35,9 @@ x = 45
 y = 345
 z = x + y
 
-t1.join
-#t2.join
+#t1.join
+t2.join
+
+puts 'Hello, World!!!'
+
+puts 'Morda :)'

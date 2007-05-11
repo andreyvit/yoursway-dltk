@@ -31,39 +31,44 @@ class TestIO
 #           'breakpoint_set -t line -f test.rb -n 2'
 #       ]
 
-#       @commands = [
-#           'status',   
-#           'context_get',
-#           'stdin -c 1', # redirect stdin
-#           'feature_get -n supports_async',
-#           'breakpoint_set -t line -f file:///C:%5Cdata%5Cprogramming%5Cjava%5Cruntime-New_configuration%5CTest%5Ctank.rb -n 2',
-#           'status',
-#           'stack_depth',
-#           'step_into',
-#           'stack_get',
-#           'stack_get -d 0',
-#           'context_get',
-#           'run',
-#           'run'
-#       ]
+       @commands = [
+           'status',   
+           'context_get',
+           'stdin -c 1', # redirect stdin
+           'feature_get -n supports_async',
+           'breakpoint_set -t line -f file:///C:%5Cdata%5Cprogramming%5Cjava%5Cruntime-New_configuration%5CTest%5Ctank.rb -n 2',
+           'breakpoint_remove -d 1', 
+           'status',
+           'stack_depth',
+           'step_into',
+           'stack_get',
+           'stack_get -d 0',
+           'context_get',
+           'run',
+           'run'
+       ]
 
-        @commands = [
-            'status',
-            'step_over',
-            'step_over',
-            'step_over',
-            'step_over',
-            'step_over',
-            'step_over',
-            'stack_get',
-            'context_get',
-            'property_get -n tank -k 23455',
-            'step_over',
-            'status',
-            'run'
-        ]
+#        @commands = [
+#            'status',
+#            'step_over',
+#            'step_over',
+#            'step_over',
+#            'step_over',
+#            'step_over',
+#            'step_over',
+#            'stack_get',
+#            'context_get',
+#            'property_get -n tank -k 23455',
+#            'step_over',
+#            'status',
+#            'run'
+#        ]
 
 
+    end
+
+    def has_data?
+        false
     end
 
     def receive

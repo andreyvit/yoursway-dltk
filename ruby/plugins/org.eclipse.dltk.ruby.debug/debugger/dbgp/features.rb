@@ -20,7 +20,7 @@ module XoredDebugger
                 'language_version'          => ['1.8',    false], #get {version string}
                 'encoding'                  => ['UTF-8',  false], #get current encoding in use by the debugger session
                 'protocol_version'          => [1,        false], #get {for now, always 1}  
-                'supports_async'            => [0,        false], #get {for commands such as break}
+                'supports_async'            => [1,        false], #get {for commands such as break}
                 'data_encoding'             => ['base64', false], #get optional, allows to turn off the default base64 encoding of data. This should only be used for development and debugging of the debugger engines themselves, and not for general use. If implemented the value 'base64' must be supported to turn back on regular encoding. the value 'none' means no encoding is in use. all elements that use encoding must include an encoding attribute.
                 'breakpoint_languages'      => ['',       false], #get some engines may support more than one language. This feature returns a string which is a comma separated list of supported languages. If the engine does not provide this feature, then it is assumed that the engine only supports the language defined in the feature language_name. One example of this is an XSLT debugger engine which supports XSLT, XML, HTML and XHTML. An IDE may need this information to to know what types of breakpoints an engine will accept.
 

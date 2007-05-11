@@ -39,25 +39,17 @@ public class ScriptStackFrame extends ScriptDebugElement implements IScriptStack
 
 	private String name;
 
-	protected IScriptVariable[] retrieveVariables(int stackDepth, IDbgpCoreCommands core) throws DbgpException {
-
-		List properties = new ArrayList();
-
-		// TODO: handle different contexts
-		properties.addAll(core.getContextProperties(stackDepth));
-
+	protected ScriptVariable[] readVariables(int stackDepth, IDbgpCoreCommands core) throws DbgpException {
 		List variables = new ArrayList();
-		Iterator iter = properties.iterator();
-		while (iter.hasNext()) {
-			IDbgpProperty property = (IDbgpProperty) iter.next();
-			// if (property.hasChildren()) {
-			// property = core.getProperty(property.getFullName(), stackLevel
-			// .getLevel());
-			// }
+		
+		List properties = core.getContextProperties(stackDepth);
+		Iterator it = properties.iterator();
+		while (it.hasNext()) {
+			IDbgpProperty property = (IDbgpProperty) it.next();
 			variables.add(new ScriptVariable(getDebugTarget(), stackDepth, property, core));
 		}
 
-		return (IScriptVariable[]) variables.toArray(new IScriptVariable[variables.size()]);
+		return (ScriptVariable[]) variables.toArray(new ScriptVariable[variables.size()]);
 
 	}
 
@@ -70,11 +62,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements IScriptStack
 		this.thread = thread;
 		this.stackLevel = stackLevel;
 		this.name = stackLevel.getWhere();
-		// this.variables = new IScriptVariable[0]; //
-		// retrieveVariables(stackLevel.getLevel(), coreCommands);
-
-		this.variables = retrieveVariables(stackLevel.getLevel(), coreCommands);
-
+		this.variables = readVariables(stackLevel.getLevel(), coreCommands);
 		this.stackDepth = stackDepth;
 	}
 

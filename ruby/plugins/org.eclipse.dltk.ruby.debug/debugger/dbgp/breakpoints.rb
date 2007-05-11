@@ -8,61 +8,77 @@
 
 ###############################################################################
 
+require 'thread'
+
 module XoredDebugger
 
     class Breakpoints
+    private        
         @@id = 0
 
-    private
         def Breakpoints.next_id
             @@id += 1
-            @@id    
         end
 
     public
         def initialize
+            @mutex = Mutex.new
+
             @line_bps = {}
+            @exception_bps = {}
         end
 
-        def break?(file, line)
-            for bp in @line_bps.values do
-                if bp['line'] == line and bp['file'] == file and  bp['state']
-                    return true
+        def line_break?(file, line)
+            @mutex.synchronize do
+                for bp in @line_bps.values do
+                    if bp['state'] and 
+                       bp['line'] == line and 
+                       bp['file'] == file
+                        return true
+                    end
                 end
+                false
             end
-
-            false
         end
 
-        def set_line(file, line, state)
-            id = Breakpoints.next_id
-            @line_bps[id] = {
-                'id'      => id,
-                'line'    => line,
-                'file'    => file,
-                'state' => state
-            }
-            id
+        def exception_break?(exception)
+            @mutex.synchronize do
+            end
         end
 
-        def set_line_conditional(file, line, condition)
+        def set_line_bpt(file, line, state)
+            @mutex.synchronize do
+                id = Breakpoints.next_id
+                @line_bps[id] = {
+                    'id'    => id,
+                    'line'  => line,
+                    'file'  => file,
+                    'state' => state
+                }
+                id
+            end
         end
 
-        def set_call(function_name)
+        def set_exception_bpt(exception, state)
+            @mutex.synchronize do
+                id = Breakpoints.next_id
+                # TODO:
+                id
+            end
         end
-
-        def set_return(function_name)
+               
+        def set_state(id, state)
+            @mutex.synchronize do
+                @line_bps[id]['state'] = state
+            end
         end
-
-        def set_exection(exception_name)
-        end     
 
         def remove(id)
-            @line_bps.delete(id)
+            @mutex.synchronize do
+                (not @line_bps.delete(id).nil?) or (not @exception_bps.delete(id).nil?)
+            end
         end
 
-        def update(id, state)
-            @line_bps[id]['state'] = state
-        end
     end # class Breakpoints
+
 end # module XoredDebugger
