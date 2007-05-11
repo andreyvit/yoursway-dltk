@@ -255,7 +255,7 @@
         <unzip
             dest="${buildDirectory}/${buildLabel}/compilelogs"
             overwrite="true">
-            <fileset dir="${buildDirectory}/features/org.eclipse.dltk">
+            <fileset dir="${buildDirectory}/features/org.eclipse.dltk.core">
                 <include name="**/*.log.zip" />
             </fileset>
         </unzip>
