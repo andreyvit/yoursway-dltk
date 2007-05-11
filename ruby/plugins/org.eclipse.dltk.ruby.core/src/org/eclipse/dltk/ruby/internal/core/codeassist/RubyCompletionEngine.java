@@ -70,7 +70,6 @@ import org.eclipse.dltk.ti.BasicContext;
 import org.eclipse.dltk.ti.DLTKTypeInferenceEngine;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
-import org.omg.PortableServer.POAOperations;
 
 public class RubyCompletionEngine extends ScriptCompletionEngine {
 	
