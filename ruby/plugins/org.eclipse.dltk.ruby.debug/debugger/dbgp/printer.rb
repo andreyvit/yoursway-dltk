@@ -21,11 +21,10 @@ class Printer
 
 private
     def escape(text)
-        text.sub!(/&/,"&#38;")
-        text.sub!(/"/,"&#34;")
-        text.sub!(/</,"&#60;")
-        text.sub!(/>/,"&#62;")
-        text
+        text = text.gsub(/&/,"&#38;")
+        text = text.gsub(/"/,"&#34;")
+        text = text.gsub(/</,"&#60;")
+        text.gsub(/>/,"&#62;")
     end
 
     def escape_map(m)
@@ -198,6 +197,11 @@ public
     def print_stack_get(m)
         levels = ''
         m['levels'].each { |s|
+            #escape_map(s)
+
+            #puts "$$$$$$$$$$$$$$$$$$$$"
+            #p s
+
             levels += sprintf('<stack level="%d" type="%s" filename="%s" lineno="%d" cmdbegin="%s" cmdend="%s" where="%s"/>',
                 s['level'], s['type'], s['filename'], s['lineno'], s['cmdbegin'], s['cmdend'], escape(s['where']))
         }

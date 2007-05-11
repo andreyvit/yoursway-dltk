@@ -486,7 +486,7 @@ public
             return
         end
 
-        logger.puts('Klass: |' + klass.to_s + '|')
+        #logger.puts('Klass: |' + klass.to_s + '|')
         if klass.to_s.index('XoredDebugger::') == 0
             return
         end
@@ -510,12 +510,12 @@ public
                 #logger.puts('# Disable capture #')
                 out = capturer.output
                 unless out.empty?
-                    logger.puts('===> STDOUT: |' + out + '|')
+                #    logger.puts('===> STDOUT: |' + out + '|')
                     send('stdout_data', {'data' => out})
                 end
 
                 br = breakpoints.line_break?(@file, @line) 
-                logger.puts('Breakpoint: ' + br.to_s)
+                #logger.puts('Breakpoint: ' + br.to_s)
     
                 if (@has_data or 
                     @waitDepth == -1 or
@@ -569,6 +569,8 @@ public
             
             when 'raise'
                 logger.puts('------Raise-----')
+                set_trace_func nil
+                @debugger.terminate
                 # Exception handling
         end
     end
