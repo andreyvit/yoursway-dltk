@@ -97,13 +97,13 @@
         <!-- ***  change the repo info -->
         <property
             name="mapCvsRoot"
-            value=":${cvsProtocol}:${cvsUser}@${cvsServer}:${cvsRoot}" />
+            value=":${cvsProtocol}:${cvsUser}@${cvsServer}:${cvsRoot}/${cvsPrefix}" />
         <property
             name="mapVersionTag"
             value="HEAD" />
         <property
             name="cvsPackage"
-            value="${cvsPrefix}/releng.maps" />
+            value="releng.maps" />
         <echo message="${mapCvsRoot} ${mapVersionTag} " />
         <echo message="cvsPackage = ${cvsPackage} " />
 
@@ -150,7 +150,7 @@
             target="get">
             <property
                 name="dependency.properties"
-                value="${buildDirectory}/maps/${cvsPrefix}/releng.maps/dependencies.properties" />
+                value="${buildDirectory}/maps/releng.maps/dependencies.properties" />
             <property
                 name="base.install.dir"
                 value="${buildRoot}" />
