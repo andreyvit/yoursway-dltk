@@ -16,10 +16,10 @@
 			<property name="component" value="core-sdk" />
 		</ant>
 		
-		<!--ant antfile="${buildTargets}">
+		<ant antfile="${buildTargets}">
 			<property name="component" value="core.tests" />
 			<property name="eclipseBuildFailOnError" value="false" />
-		</ant -->
+		</ant>
 
 		<ant antfile="${buildTargets}">
 			<property name="component" value="ruby" />
@@ -105,11 +105,10 @@
 			<param name="corename" value="-sdk"/>
 		</antcall>
 		
-		<!--antcall target="combineArchives">
+		<antcall target="combineArchives">
 			<param name="corename" value="-Automated-Tests"/>
-		</antcall -->
-	
-		
+		</antcall>
+			
 	</target>
 	<target name="combineArchives">
 		<property name="archiveName" value="dltk${corename}-${buildLabel}.zip" />
