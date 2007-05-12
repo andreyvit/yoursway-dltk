@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 
-<title>WTP Downloads</title>
+<title>DLTK Downloads</title>
 
 
 <?php
@@ -76,9 +76,12 @@ foreach ($compileSummary->summaryItem as $summaryItem) {
         </tr>
         <tr>
                 <td>
-                <p>The Eclipse Web Tools Platform Project provides tools for Web
-                Development, and is a platform for adopters making add-on tools for
-                Web Development.</p>
+                <p>The Eclipse Dynamic Languages Toolkit Project is a tool for vendors, researchers, and end-users who 
+                rely on dynamic languages. DLTK is comprised of a set of extensible frameworks designed to reduce the 
+                complexity of building full featured development environments for dynamic languages such as PHP and Perl.
+				</p>
+				<p>Besides a set of frameworks DLTK provides exemplary Tcl, Ruby, and Python development environments ready to use out of the box.
+				</p> 
                 </td>
         </tr>
 </table>
@@ -91,38 +94,23 @@ foreach ($compileSummary->summaryItem as $summaryItem) {
                 Prerequisites</font></td>
         </tr>
         <tr>
-                <td>These are the prerequisites project packages to run the Web Tools
-                Platform. They must be downloaded and installed before WTP can be
+                <td>Eclipse Platform is the prerequisite project to run the Dynamic Languages
+                Toolkit. It$ must be downloaded and installed before DLTK can be
                 installed or used.</td>
         </tr>
         <tr>
                 <table border=0 cellspacing=1 cellpadding=1 width="90%" align="center">
                         <tr valign="top">
                         		<td width="10%"/>
-                                <td>Eclipse Platform (Platform, JDT, PDE)</td>
+                                <td>Eclipse Platform</td>
                                 <td align="right"><a href="@eclipseURL@">@eclipseFile@</a> or <a
                                         href=@eclipseBuildURL@>other platform</a></td>
-                        </tr>
-                        <tr valign="top">
-                        		<td width="10%"/>
-                                <td>Eclipse Modeling Framework (EMF, XSD InfoSet, SDO)</td>
-                                <td align="right"><a href="@emfURL@">@emfFile@</a></td>
-                        </tr>
-                        <tr valign="top">
-                        		<td width="10%"/>
-                                <td>Graphical Editing Framework (GEF)</td>
-                                <td align="right"><a href="@gefURL@">@gefFile@</a></td>
-                        </tr>
-                        <tr valign="top">
-                        		<td width="10%"/>
-                                <td>Data Tools Platform (DTP)</td>
-                                <td align="right"><a href="@dtpURL@">@dtpFile@</a></td>
                         </tr>
                 </table>
         </tr>
 </table>
 
-<!-- ***********  WTP **************  -->
+<!-- ***********  DLTK **************  -->
 <table border=0 cellspacing=2 cellpadding=2 width="100%">
         <tr>
                 <td align=left valign=top colspan="5" bgcolor="#0080C0"><font
@@ -149,12 +137,12 @@ foreach ($compileSummary->summaryItem as $summaryItem) {
                                 </td>
                                 <?php
 
-                                $zipfilename="wtp-@build@";
+                                $zipfilename="dltk-@build@";
 
                                 $filename=$zipfilename.".zip";
                                 $zipfilesize=fileSizeInMegs($filename);
                                 echo '  <td align="right" valign="top" width="10%">
-                           <a href="' . ${downloadprefix} . ${filename} . '">' . "wtp" . '</a>
+                           <a href="' . ${downloadprefix} . ${filename} . '">' . "dltk" . '</a>
                         </td>
                         <td align="right" valign="top" width="5%">
                            (' . ${zipfilesize} . 'M)
@@ -174,17 +162,17 @@ foreach ($compileSummary->summaryItem as $summaryItem) {
 
                                 <td align="left" valign="top">
                                 <p>The SDK package includes source code and developer documentation
-                                for those using WTP as a platform to build more tools, as well as
-                                everything that is in the non-SDK version.</p>
+                                for those using DLTK as a framework to build more tools or extend existing implementations, 
+                                as well as everything that is in the non-SDK version.</p>
 
                                 <?php
 
-                                $zipfilename="wtp-sdk-@build@";
+                                $zipfilename="dltk-sdk-@build@";
 
                                 $filename=$zipfilename.".zip";
                                 $zipfilesize=fileSizeInMegs($filename);
                                 echo '<td align="right" valign="top" width="10%">
-                        <a href="' . ${downloadprefix} . ${filename} . '">' . "wtp-sdk" . '</a>
+                        <a href="' . ${downloadprefix} . ${filename} . '">' . "dltk-sdk" . '</a>
                         </td>
                         <td align="right" valign="top" width="5%">
                         (' . ${zipfilesize} . 'M)
@@ -203,12 +191,12 @@ foreach ($compileSummary->summaryItem as $summaryItem) {
                                 <p>The Automated Test zip contains the unit tests.</p>
                                 <?php
 
-                                $zipfilename="wtp-Automated-Tests-@build@";
+                                $zipfilename="dltk-Automated-Tests-@build@";
 
                                 $filename=$zipfilename.".zip";
                                 $zipfilesize=fileSizeInMegs($filename);
                                 echo '<td align="right" valign="top" width="10%">
-                        <a href="' . ${downloadprefix} . ${filename} . '">' . "wtp-Automated-Tests" . '</a>
+                        <a href="' . ${downloadprefix} . ${filename} . '">' . "dltk-Automated-Tests" . '</a>
                         </td>
                         <td align="right" valign="top" width="5%">
                         (' . ${zipfilesize} . 'M)
