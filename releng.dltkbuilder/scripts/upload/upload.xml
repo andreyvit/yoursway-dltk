@@ -1,7 +1,7 @@
 <project name="upload" default="upload" basedir=".">
  
     <!-- if site-sub-dir not set by caller, assume its committers -->
-    <property name="site-sub-dir" value="dltk" />   
+    <property name="site-sub-dir" value="staging" />   
     
     <!-- = = = standard properties pattern = = = -->
     <!-- 
@@ -29,8 +29,8 @@
      
     <property name="uploadUser" value="andrey" />
     <property name="uploadPassword" value="This is not really used since ssh login is assumed (required)" />
-    <property name="uploadServer" value="us.xored.com" />
-    <property name="uploadRemoteDirectory" value="/home/data/users/${uploadUser}/downloads/technology/${site-sub-dir}/drops/${buildBranch}" />
+    <property name="uploadServer" value="gw.inetlab.com" />
+    <property name="uploadRemoteDirectory" value="/home/${uploadUser}/public_html/${site-sub-dir}/drops/${buildBranch}" />
     <!-- rsyncRootPrefix should be empty for Linux machines. -->
     <!-- But, Windows using cygwin will need something like /cygdrive/G/  -->
     <!-- for what ever drive or directory is parent of build home  -->
