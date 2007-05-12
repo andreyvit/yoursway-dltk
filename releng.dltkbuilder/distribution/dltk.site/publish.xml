@@ -1,0 +1,416 @@
+<project name="Publish Build" default="default" basedir=".">
+
+    <!-- Properties that must be passed to this script:
+        buildDirectory: Path to perform the build in.  (A working directory)
+        buildType:		Type of build (nightly, integration etc.)
+        buildId:		Build name
+        buildLabel:		<buildType>-<buildName>-<timestamp>
+    -->
+    
+    <property environment="env" />
+    
+    <property name="resultDir"
+              value="${buildDirectory}/${buildLabel}" />
+    <!--name of generated index page-->
+    <property name="indexFileName" value="index.php" />
+    
+    <property name="templateDir" value="${wtp.builder.home}/distribution/wtp.site" />
+	<property name="resultingIndex" value="${resultDir}/${indexFileName}" />
+	
+    <echo message="resultDir: ${resultDir}" />
+    <echo message="templateDir: ${templateDir}" />
+    <echo message="resultingIndex: ${resultingIndex}" />
+    
+
+
+    <target name="default">
+       	<copy overwrite="true" file="${wtp.builder.home}/distribution/wtp.site/templateFiles/${indexTemplateFilename}" tofile="${resultingIndex}" />
+        <antcall target="countFiles" />
+        <antcall target="generateCompileIndex" />
+        <antcall target="generateJUnitTestsIndex" />
+        <antcall target="getStaticFiles" />
+    </target>
+
+    <target name="generateCompileIndex" >
+
+     
+    <!--
+        <taskdef name="indexResults" classname="org.eclipse.wtp.releng.tools.ResultsSummaryGenerator" />
+        -->
+
+        <!--
+            isBuildTested:  true|false  should JUnit plugin test results be used to generate index page
+            dropTokenList:  comma separated list of strings which should be replaced by the fileName attribute settings in the testManifest.xml.
+            xmlDirectoryName:  path to directory containing JUnit plugin test results in xml format (see doc is org.eclipse.test).
+            dropDirectoryName: path to directory containing the result of the build.
+            testResultsTemplateFileName:  path to template file used to generate page with links to JUnit test results	
+            testResultsHtmlFileName:  name of file which will be generated with links to JUnit test results
+            dropHtmlFileName:  name of generated index page
+            hrefTestResultsTargetPath:  relative path from index page to directory containing JUnit html test results
+            hrefCompileLogsTargetPath:  relative path from index page directory containing compilelogs
+            testManifestFileName:	name of xml file containing descriptions of zip types and log files
+            
+            
+            
+        -->
+        <property file="${buildDirectory}/maps/releng/maps/dependencies.properties" />
+
+        <!-- create tables of test plugin compiles first -->
+        <summarizeResults isBuildTested="false"
+            		  includeAll="true"
+                      dropTokenList="${dropTokenList}"
+                      xmlDirectoryName=""
+                      dropDirectoryName="${resultDir}"
+                      testResultsTemplateFileName="${templateDir}/templateFiles/testCompileResults.php.template"
+                      testResultsHtmlFileName="testCompileResults.php"
+                      hrefTestResultsTargetPath=""
+                      hrefCompileLogsTargetPath="testcompilelogs"
+                      compileLogsDirectoryName="${resultDir}/testcompilelogs" />
+
+		<xslt 
+			basedir="${resultDir}/testcompilelogs" 
+			destdir="${resultDir}/testcompilelogs" 
+			includes="**/*.bin.xml"
+			scanincludeddirectories="true" 
+			style="compilerXMLOutputToHTML.xsl" 
+			force="true" />    	
+    	
+        <!-- create table of code plugins compiles -->
+        <summarizeResults isBuildTested="false"
+			  		  includeAll="true"
+                      dropTokenList="${dropTokenList}"
+                      xmlDirectoryName=""
+                      dropDirectoryName="${resultDir}"
+                      testResultsTemplateFileName="${templateDir}/templateFiles/compileResults.php.template"
+                      testResultsHtmlFileName="compileResults.php"
+                      hrefTestResultsTargetPath="testResults/html"
+                      hrefCompileLogsTargetPath="compilelogs"
+                      compileLogsDirectoryName="${resultDir}/compilelogs" />
+
+
+		<xslt 
+			basedir="${resultDir}/compilelogs" 
+			destdir="${resultDir}/compilelogs" 
+			includes="**/*.bin.xml"
+			scanincludeddirectories="true" 
+			style="compilerXMLOutputToHTML.xsl" 
+			force="true" />
+
+        <tstamp>
+            <format property="TODAY"
+                    pattern="MMMM d, yyyy" />
+        </tstamp>
+
+        <!--  Insert Build Type descriptor  -->
+        <antcall target="${buildType}" />
+
+        <!--  Insert Build Date  -->
+        <replace file="${resultingIndex}"
+                 token="@date@"
+                 value="${TODAY}" />
+
+        <!--  Insert Build Name  -->
+        <replace file="${resultingIndex}"
+                 token="@build@"
+                 value="${buildLabel}" />
+
+        <!--  Insert Mirror  Name  -->
+    	<!--
+        <replace file="${resultingIndex}"
+                 token="@mirror@"
+        		 value="\${downloadprefix}" />
+        -->
+                 <!-- value="${webtoolsDownloadURL}/${buildBranch}/${buildLabel}/" /> -->
+
+        <!--  Insert PreRequsites  -->
+
+        <replace file="${resultingIndex}"
+                 token="@eclipseFile@"
+                 value="${eclipse.file.linux-gtk-x86}" />
+        <replace file="${resultingIndex}"
+                 token="@eclipseURL@"
+                 value="${eclipse.url}/${eclipse.file.linux-gtk-x86}" />
+        <replace file="${resultingIndex}"
+                 token="@eclipseBuildURL@"
+                 value="${eclipse.url}" />
+        <replace file="${resultingIndex}"
+                 token="@emfFile@"
+                 value="${emf.file}" />
+        <replace file="${resultingIndex}"
+                 token="@emfURL@"
+                 value="${emf.url}/${emf.file}" />
+        <replace file="${resultingIndex}"
+                 token="@gefFile@"
+                 value="${gef.file}" />
+        <replace file="${resultingIndex}"
+                 token="@gefURL@"
+                 value="${gef.url}/${gef.file}" />
+        <replace file="${resultingIndex}"
+                 token="@jemFile@"
+                 value="${jem.file}" />
+        <replace file="${resultingIndex}"
+                 token="@jemURL@"
+                 value="${jem.url}/${jem.file}" />
+        <!-- 
+	   these token/s should not exist in maintenance stream, but 
+	   no harm done, so in the interests of keeping builder 
+	   streams in sync, we'll leave them here as place hold
+-->
+        <replace file="${resultingIndex}"
+                 token="@dtpFile@"
+                 value="${dtp.file}" />
+        <replace file="${resultingIndex}"
+                 token="@dtpURL@"
+                 value="${dtp.url}/${dtp.file}" />
+
+        <mkdir dir="${resultDir}/whatisfixed" />
+        <echo file="${resultDir}/whatisfixed/buglog.html"
+              append="true">
+            what is fixed list is not available yet!
+        </echo>
+
+        <!--  Update timestamp on file to permit overwrite through Ant copy task  -->
+        <touch file="${resultingIndex}" />
+    </target>
+    
+    <target name="generateJUnitTestsIndex" depends="checkIfTested" if="doTests">
+
+        <!--
+            isBuildTested:  true|false  should JUnit plugin test results be used to generate index page
+            dropTokenList:  comma separated list of strings which should be replaced by the fileName attribute settings in the testManifest.xml.
+            xmlDirectoryName:  path to directory containing JUnit plugin test results in xml format (see doc is org.eclipse.test).
+            dropDirectoryName: path to directory containing the result of the build.
+            testResultsTemplateFileName:  path to template file used to generate page with links to JUnit test results	
+            testResultsHtmlFileName:  name of file which will be generated with links to JUnit test results
+            dropHtmlFileName:  name of generated index page
+            hrefTestResultsTargetPath:  relative path from index page to directory containing JUnit html test results
+            hrefCompileLogsTargetPath:  relative path from index page directory containing compilelogs
+            testManifestFileName:	name of xml file containing descriptions of zip types and log files
+            
+            
+            
+        -->
+        <property file="${buildDirectory}/maps/releng/maps/dependencies.properties" />
+
+        <!-- create table of test plugin compiles first -->
+        <!-- set isBuildTested to true for the "compile only" results -->
+
+        <summarizeResults isBuildTested="true"
+                      dropTokenList="${dropTokenList}"
+                      dropDirectoryName="${resultDir}"
+            		  xmlDirectoryName="${resultDir}/testResults/xml"
+                      testResultsTemplateFileName="${templateDir}/templateFiles/testResults.php.template"
+                      testResultsHtmlFileName="testResults.php"
+                      hrefTestResultsTargetPath="testResults/html"
+                      compileLogsDirectoryName=""/>
+        
+
+        <tstamp>
+            <format property="TODAY"
+                    pattern="MMMM d, yyyy" />
+        </tstamp>
+
+        <!--  Insert Build Type descriptor  -->
+        <antcall target="${buildType}" />
+
+        <!--  Insert Build Date  -->
+        <replace file="${resultingIndex}"
+                 token="@date@"
+                 value="${TODAY}" />
+
+        <!--  Insert Build Name  -->
+        <replace file="${resultingIndex}"
+                 token="@build@"
+                 value="${buildLabel}" />
+
+        <!--  Insert Mirror  Name  -->
+        <replace file="${resultingIndex}"
+                 token="@mirror@"
+                 value="${webtoolsDownloadURL}/${buildBranch}/${buildLabel}/" />
+
+        <!--  Insert PreRequsites  -->
+
+        <replace file="${resultingIndex}"
+                 token="@eclipseFile@"
+                 value="${eclipse.file.linux-gtk-x86}" />
+        <replace file="${resultingIndex}"
+                 token="@eclipseURL@"
+                 value="${eclipse.url}/${eclipse.file.linux-gtk-x86}" />
+        <replace file="${resultingIndex}"
+                 token="@eclipseBuildURL@"
+                 value="${eclipse.url}" />
+        <replace file="${resultingIndex}"
+                 token="@emfFile@"
+                 value="${emf.file}" />
+        <replace file="${resultingIndex}"
+                 token="@emfURL@"
+                 value="${emf.url}/${emf.file}" />
+        <replace file="${resultingIndex}"
+                 token="@gefFile@"
+                 value="${gef.file}" />
+        <replace file="${resultingIndex}"
+                 token="@gefURL@"
+                 value="${gef.url}/${gef.file}" />
+        <replace file="${resultingIndex}"
+                 token="@jemFile@"
+                 value="${jem.file}" />
+        <replace file="${resultingIndex}"
+                 token="@jemURL@"
+                 value="${jem.url}/${jem.file}" />
+        <!-- 
+	   these token/s should not exist in maintenance stream, but 
+	   no harm done, so in the interests of keeping builder 
+	   streams in sync, we'll leave them here as place hold
+-->
+        <replace file="${resultingIndex}"
+                 token="@dtpFile@"
+                 value="${dtp.file}" />
+        <replace file="${resultingIndex}"
+                 token="@dtpURL@"
+                 value="${dtp.url}/${dtp.file}" />
+
+        <mkdir dir="${resultDir}/whatisfixed" />
+        <echo file="${resultDir}/whatisfixed/buglog.html"
+              append="true">
+            what is fixed list is not available yet!
+        </echo>
+
+        <!--  Update timestamp on file to permit overwrite through Ant copy task  -->
+        <touch file="${resultingIndex}" />
+    </target>
+
+
+    <target name="getStaticFiles">
+        <!--get static files required in the buildLabel directory-->
+        <copy todir="${resultDir}">
+            <fileset dir="${templateDir}/staticDropFiles" />
+        </copy>
+
+        <!--copy buildnotes from plugin directories-->
+        <mkdir dir="${resultDir}/buildnotes" />
+        <copy todir="${resultDir}/buildnotes" flatten="true">
+            <fileset dir="${buildDirectory}/plugins"
+                     includes="**/buildnotes_*.html" />
+        </copy>
+    	
+   	
+        <copy file="${templateDir}/staticDropFiles/logIndex.php" tofile="${resultDir}/testResults/consolelogs/full/logIndex.php" />
+        <copy file="${templateDir}/staticDropFiles/logIndex.php" tofile="${resultDir}/testResults/consolelogs/testLogs/logIndex.php" />
+        <copy file="${templateDir}/staticDropFiles/logIndex.php" tofile="${resultDir}/testResults/consolelogs/testSysErrorLogs/logIndex.php" />
+    	
+    	
+    </target>
+    
+    <target name="updateSite">
+        
+        
+        <!-- get our authored, tokenized site.xml file -->
+        <copy file="${wtp.builder.home}/distribution/wtp.site/templateFiles/siteWTP.xml"
+              tofile="${buildDirectory}/${buildLabel}/updateSite/site.xml" overwrite="true" failonerror="true"/>
+        <!-- get the ${buildDirectory}/finalPluginsVersions.properties, and 
+             read as properties -->
+        <!-- substitute property value for tokens -->
+        <replace file="${buildDirectory}/${buildLabel}/updateSite/site.xml"
+              propertyfile="${buildDirectory}/finalFeaturesVersions.properties"  >
+            <replacefilter token="@org.eclipse.wst@"
+                           property="org.eclipse.wst" />
+            <replacefilter token="@org.eclipse.wst.sdk@"
+                           property="org.eclipse.wst.sdk" />
+            <replacefilter token="@org.eclipse.jst@"
+                           property="org.eclipse.jst" />
+            <replacefilter token="@org.eclipse.jst.sdk@"
+                           property="org.eclipse.jst.sdk" />
+
+            <replacefilter token="@org.eclipse.jst.jsf.feature@"
+                           property="org.eclipse.jst.jsf.feature" />
+            <replacefilter token="@org.eclipse.jst.jsf_sdk.feature@"
+                           property="org.eclipse.jst.jsf_sdk.feature" />
+            <replacefilter token="@org.eclipse.jpt.feature@"
+                           property="org.eclipse.jpt.feature" />
+            <replacefilter token="@org.eclipse.jpt_sdk.feature@"
+                           property="org.eclipse.jpt_sdk.feature" />
+        </replace>
+
+    </target>
+
+    <target name="countFiles">
+        <!--	
+        	files.count is a file that should exist in the drop directory with a count of the zip files in the same directory.
+            It is required to generate a link to the build on the downloads page.
+        -->
+
+    	<countBuildFiles sourceDirectory="${resultDir}"
+                    filterString=".zip,.tar.gz"
+                    outputFile="${resultDir}/files.count" />
+
+    </target>
+
+    <!--Build type descriptors-->
+    <target name="I">
+        <replace file="${resultingIndex}"
+                 token="%wtpandprereqs%"
+                 value=" " />
+        <replace file="${resultingIndex}"
+                 token="@type@"
+                 value="Integration" />
+    </target>
+
+    <target name="S">
+        <replace file="${resultingIndex}"
+                 token="%wtpandprereqs%"
+                 value=" " />
+        <replace file="${resultingIndex}"
+                 token="@type@"
+                 value="Stable" />
+    </target>
+
+    <target name="N">
+        <replace file="${resultingIndex}"
+                 token="%wtpandprereqs%"
+                 value=" " />
+        <replace file="${resultingIndex}"
+                 token="@type@"
+                 value="Nightly" />
+    </target>
+
+    <target name="M">
+        <replace file="${resultingIndex}"
+                 token="%wtpandprereqs%"
+                 value=" " />
+        <replace file="${resultingIndex}"
+                 token="@type@"
+                 value="Maintenance" />
+    </target>
+
+    <target name="R">
+        <replace file="${resultingIndex}"
+                 token="%wtpandprereqs%"
+                 value=" " />
+        <replace file="${resultingIndex}"
+                 token="@type@"
+                 value="Release" />
+    </target>
+
+
+    <target name="T">
+        <replace file="${resultingIndex}"
+                 token="%wtpandprereqs%"
+                 value=" " />
+        <replace file="${resultingIndex}"
+                 token="@type@"
+                 value="Test" />
+    </target>
+    
+    
+    <target name="checkIfTested">
+        <echo message="isBuildTested: ${isBuildTested}" />
+        <condition property="doTests">
+            <equals arg1="${isBuildTested}"
+                    arg2="true"
+                    trim="true"
+                    casesensitive="false" />
+        </condition>
+    </target>
+    
+
+</project>

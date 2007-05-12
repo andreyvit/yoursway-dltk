@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+
+   <description>
+      The update site contains the enabling features.
+   </description>
+
+
+
+
+
+
+
+   <category-def name="Enabling Features" label="Enabling Features">
+      <description>
+         This category contains features used by several projects that enable some functionality, but which by themselves are not very interesting.
+      </description>
+   </category-def>
+
+
+
+</site>

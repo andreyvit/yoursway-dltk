@@ -1,0 +1,39 @@
+<html>
+<head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="http://dev.eclipse.org/default_style.css" type="text/css">
+</head>
+<body>
+<p><b><font face="Verdana" size="+1">Test Results are not available yet</font></b> </p>
+<table border=0 cellspacing=5 cellpadding=2 width="100%" >
+  <tr> 
+    <td align=LEFT valign=TOP colspan="3" bgcolor="#0080C0"><b><font color="#FFFFFF" face="Arial,Helvetica">Unit 
+      Tests are in progress. Results will be ready soon... </font></b></td>
+  </tr>
+</table>
+<p></p><table border="0">
+</table>
+
+<p></p>
+<table border=0 cellspacing=5 cellpadding=2 width="100%" >
+  <tr> 
+    <td align=LEFT valign=TOP colspan="3" bgcolor="#0080C0"><b><font color="#FFFFFF" face="Arial,Helvetica">Plugins 
+      containing compile errors </font></b></td>
+  </tr>
+</table>
+
+<table width="77%" border="1">
+  <tr> 
+    <td><b>Compile Logs (Jar Files)</b></td>
+    <td><b>Errors</b></td>
+	<td><b>Warnings</b></td>
+  </tr>
+  
+  %compilelogs%
+  
+</table>
+
+</body>
+</html>

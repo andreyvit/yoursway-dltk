@@ -1,0 +1,76 @@
+<html>
+<head>
+
+<?php
+        $parts = explode("/", getcwd());
+        $parts2 = explode("-", $parts[count($parts) - 1]);
+        $buildName = $parts2[1];
+
+        echo "<title>Compile Logs: Test Bundles for $buildName</title>";
+?>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<style>
+.bold, .bold TD, .bold TH, .bold TR
+{
+font-weight:bold;
+}
+.numeric, .numeric TD
+{
+text-align:right;
+padding-right:2em;
+}
+.normaltable, .normaltable TD, .normaltable TH
+{
+font-family:Bitstream Vera Sans Mono, monospace;
+font-size:0.9em;
+color:Black;
+background-color:White;
+}
+.errorltable, .errortable TD, .errortable TH
+{
+font-family:Bitstream Vera Sans Mono, monospace;
+font-size:0.9em;
+color:Black;
+background-color:Red;
+font-weight:Bold;
+}
+.warningtable, .warningtable TD, .warningtable TH
+{
+font-family:Bitstream Vera Sans Mono, monospace;
+font-size:0.9em;
+color:Black;
+background-color:khaki;
+}
+.extraWarningTable, .extraWarningTable TD, .extraWarningTable TH
+{
+font-family:Bitstream Vera Sans Mono, monospace;
+font-size:0.9em;
+color:Black;
+background-color:Yellow;
+}
+</style>
+</head>
+<body>
+
+<?php
+        echo "<h1>Compile Logs: Test Bundles for $buildName</h1>";
+?>
+
+
+<table id=tabledata align = "center" width="75%" border="1">
+  <tr>
+    <td class="bold" align="center">Compile Logs</td>
+    <td class="bold" align="center">Compile Errors</td>
+    <td class="bold" align="center">Compiler Warnings</td>
+    <td class="bold" align="center">Access Violations</td>
+    <td class="bold" align="center">Access Warnings</td>
+  </tr>
+
+  %compilelogs%
+
+</table>
+
+</body>
+</html>

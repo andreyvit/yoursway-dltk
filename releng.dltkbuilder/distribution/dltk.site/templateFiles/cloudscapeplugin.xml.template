@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="Cloudscape"
+   name="Cloudscape Plug-in"
+   version="1.0.0"
+   provider-name="">
+   <runtime>
+      <library name="derby.jar">
+         <export name="*"/>
+      </library>
+      <library name="derbynet.jar">
+         <export name="*"/>
+      </library>
+      <library name="derbytools.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+</plugin>

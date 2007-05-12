@@ -1,0 +1,62 @@
+<P>
+  <A NAME="unit"></A>
+  * Missing reference data. Build used for comparison specified in ending parenthesis.
+  <BR>green: faster, less memory
+  <BR>red: slower, more memory
+  <BR>x axis: difference between current value and baseline value as percentage
+  <BR>
+</P>
+
+<table border=0 cellspacing=5 cellpadding=2 width="100%" >
+  <tr> 
+    <td align=LEFT valign=TOP colspan="3" bgcolor="#0080C0"><b><font color="#FFFFFF" face="Arial,Helvetica">
+      Detailed performance data grouped by scenario prefix
+    </font></b></td>
+  </tr>
+</table>
+
+<?php
+  $dir = dir(".");
+  while ($anEntry = $dir->read())
+  {
+    if ($anEntry != "global.php" && substr($anEntry, strlen($anEntry) - 4) == ".php")
+    {
+      echo "<a href=\"$anEntry\">$anEntry</a><br>";
+    }
+  }
+?>
+
+<table border=0 cellspacing=5 cellpadding=2 width="100%" >
+  <tr> 
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+<table border=0 cellspacing=5 cellpadding=2 width="100%" >
+  <tr> 
+    <td align=LEFT valign=TOP colspan="3" bgcolor="#0080C0"><b><font color="#FFFFFF" face="Arial,Helvetica">
+      Performance JUnit test results for <?php echo "$buildType $buildName"; ?>
+    </font></b></td>
+  </tr>
+</table>
+
+<font color="#FFFFFF" face="Arial,Helvetica">
+<table border=1" width="100%">
+  <tr>
+    <td width="100%"><b>Tests Performed</b></td>
+  </tr>
+  <?php
+    $xmlDir = dir("../xml");
+    while ($xmlEntry = $xmlDir->read())
+    {
+      if ($xmlEntry != "." && $xmlEntry != "..")
+      {
+        $htmlEntry = substr($xmlEntry, 0, strlen($xmlEntry) - 3) . "html";
+        echo "<tr>";
+        echo "<td><a href=\"../html/$htmlEntry\">$htmlEntry</a></td>";
+        echo "</tr>";
+      }
+    }
+  ?>
+</table>
+</html>

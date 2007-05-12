@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="xsl-conversion" default="main" basedir=".">
+
+	<target name="main" description="example.bin.xml to produce example.html">
+		<xslt 
+			basedir="." 
+			destdir="." 
+			includes="*.bin.xml"
+			scanincludeddirectories="true" 
+			style="compilerXMLOutputToHTML.xsl" 
+			force="true" />
+	</target>
+</project>
