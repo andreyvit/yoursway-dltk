@@ -20,6 +20,14 @@
 			<property name="eclipseBuildFailOnError" value="false" />
 		</ant -->
 
+		<ant antfile="${buildTargets}">
+			<property name="component" value="ruby" />
+		</ant>
+
+		<ant antfile="${buildTargets}">
+			<property name="component" value="ruby-sdk" />
+		</ant>
+		
 		<!-- ant antfile="${buildTargets}">
 			<property name="component" value="wysiwyg" />
 		</ant>
