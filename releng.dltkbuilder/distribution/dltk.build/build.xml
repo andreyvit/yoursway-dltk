@@ -110,11 +110,11 @@
 			<arg line="-o -qq dltk-core${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
 		</exec>
 	
-		<!-- exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
-			<arg line="-o -qq dltk-wysiwyg${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
+			<arg line="-o -qq dltk-ruby${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
 		</exec>
 	
-		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
+		<!--exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
 			<arg line="-o -qq dltk-jsf${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
 		</exec>
 	
