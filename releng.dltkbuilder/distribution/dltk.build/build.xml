@@ -28,6 +28,14 @@
 			<property name="component" value="ruby-sdk" />
 		</ant>
 		
+		<ant antfile="${buildTargets}">
+			<property name="component" value="tcl" />
+		</ant>
+
+		<ant antfile="${buildTargets}">
+			<property name="component" value="tcl-sdk" />
+		</ant>
+
 		<!-- ant antfile="${buildTargets}">
 			<property name="component" value="wysiwyg" />
 		</ant>
@@ -113,15 +121,10 @@
 		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
 			<arg line="-o -qq dltk-ruby${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
 		</exec>
-	
-		<!--exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
-			<arg line="-o -qq dltk-jsf${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
-		</exec>
-	
+		
 		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
-			<arg line="-o -qq dltk-jpa${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
-		</exec -->
-	
+			<arg line="-o -qq dltk-tcl${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
+		</exec>
 	
 		<zip destfile="${buildDirectory}/${buildLabel}/${archiveName}" basedir="${buildDirectory}/tempforrezipping" />
 	
