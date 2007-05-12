@@ -45,7 +45,7 @@
 
 
         
-        <ant antfile="${wtp.builder.home}/scripts/build/label.xml" />
+        <ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
         <property file="${buildDirectory}/label.properties" />
 
         <echo message="chmod for ${buildDirectory}/${buildLabel}" />

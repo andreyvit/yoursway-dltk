@@ -49,7 +49,7 @@
             value="dltk-ruby-sdk-${buildLabel}.zip" />
 
         <ant
-            antfile="${wtp.builder.home}/scripts/build/buildutilities.xml"
+            antfile="${dltk.builder.home}/scripts/build/buildutilities.xml"
             target="unpackUpdateJarsAndCreateZippedPackages">
             <property
                 name="buildDirectory"
@@ -63,7 +63,7 @@
         </ant>
 
         <ant
-            antfile="${wtp.builder.home}/scripts/build/buildutilities.xml"
+            antfile="${dltk.builder.home}/scripts/build/buildutilities.xml"
             target="createChecksums">
             <property
                 name="buildDirectory"
