@@ -12,15 +12,16 @@
 			<property name="component" value="core" />
 		</ant>
 
-		<!--ant antfile="${buildTargets}">
+		<ant antfile="${buildTargets}">
 			<property name="component" value="core-sdk" />
 		</ant>
-		<ant antfile="${buildTargets}">
+		
+		<!--ant antfile="${buildTargets}">
 			<property name="component" value="core.tests" />
 			<property name="eclipseBuildFailOnError" value="false" />
 		</ant -->
 
-		<!--ant antfile="${buildTargets}">
+		<ant antfile="${buildTargets}">
 			<property name="component" value="ruby" />
 		</ant>
 
@@ -34,7 +35,7 @@
 
 		<ant antfile="${buildTargets}">
 			<property name="component" value="tcl-sdk" />
-		</ant-->
+		</ant>
 
 		<!-- ant antfile="${buildTargets}">
 			<property name="component" value="wysiwyg" />
