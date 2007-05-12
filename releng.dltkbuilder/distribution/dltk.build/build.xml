@@ -84,11 +84,11 @@
 			<param name="corename" value=""/>
 		</antcall>
 	
-		<!-- antcall target="combineArchives">
+		<antcall target="combineArchives">
 			<param name="corename" value="-sdk"/>
 		</antcall>
 		
-		<antcall target="combineArchives">
+		<!--antcall target="combineArchives">
 			<param name="corename" value="-Automated-Tests"/>
 		</antcall -->
 	
