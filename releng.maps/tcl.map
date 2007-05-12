@@ -12,4 +12,5 @@ plugin@org.eclipse.dltk.tcl.ui=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/
 plugin@org.eclipse.dltk.tcl.debug=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.debug
 plugin@org.eclipse.dltk.tcl.debug.ui=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.debug.ui
 
+plugin@org.eclipse.dltk.scriptchecker=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.scriptchecker
 plugin@org.eclipse.dltk.tcl.tclchecker=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.tclchecker
