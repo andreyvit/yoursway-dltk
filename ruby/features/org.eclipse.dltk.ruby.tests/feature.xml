@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.dltk.core.tests"
+      id="org.eclipse.dltk.ruby.tests"
       label="%featureName"
       version="1.0.0.qualifier"
       provider-name="%featureProvider">
@@ -22,25 +22,13 @@
    </url>
 
    <plugin
-         id="org.eclipse.dltk.core.tests"
+         id="org.eclipse.dltk.ruby.core.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.dltk.debug.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.dltk.ui.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.dltk.validators.core.tests"
+         id="org.eclipse.dltk.ruby.ui.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
