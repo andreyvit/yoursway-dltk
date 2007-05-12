@@ -305,7 +305,7 @@
         
         
         <!-- get our authored, tokenized site.xml file -->
-        <copy file="${dltk.builder.home}/distribution/dltk.site/templateFiles/sitedltk.xml"
+        <copy file="${dltk.builder.home}/distribution/dltk.site/templateFiles/siteDLTK.xml"
               tofile="${buildDirectory}/${buildLabel}/updateSite/site.xml" overwrite="true" failonerror="true"/>
         <!-- get the ${buildDirectory}/finalPluginsVersions.properties, and 
              read as properties -->
