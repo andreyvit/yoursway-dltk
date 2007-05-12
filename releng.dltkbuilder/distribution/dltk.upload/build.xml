@@ -1,0 +1,10 @@
+<project default="upload" basedir=".">
+
+
+    <target name="upload">
+
+        <ant antfile="${dltk.builder.home}/scripts/upload/upload.xml">
+        </ant>
+
+    </target>
+</project>
