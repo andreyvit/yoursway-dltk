@@ -14,7 +14,7 @@
     <!--name of generated index page-->
     <property name="indexFileName" value="index.php" />
     
-    <property name="templateDir" value="${wtp.builder.home}/distribution/wtp.site" />
+    <property name="templateDir" value="${dltk.builder.home}/distribution/dltk.site" />
 	<property name="resultingIndex" value="${resultDir}/${indexFileName}" />
 	
     <echo message="resultDir: ${resultDir}" />
@@ -24,7 +24,7 @@
 
 
     <target name="default">
-       	<copy overwrite="true" file="${wtp.builder.home}/distribution/wtp.site/templateFiles/${indexTemplateFilename}" tofile="${resultingIndex}" />
+       	<copy overwrite="true" file="${dltk.builder.home}/distribution/dltk.site/templateFiles/${indexTemplateFilename}" tofile="${resultingIndex}" />
         <antcall target="countFiles" />
         <antcall target="generateCompileIndex" />
         <antcall target="generateJUnitTestsIndex" />
@@ -35,7 +35,7 @@
 
      
     <!--
-        <taskdef name="indexResults" classname="org.eclipse.wtp.releng.tools.ResultsSummaryGenerator" />
+        <taskdef name="indexResults" classname="org.eclipse.dltk.releng.tools.ResultsSummaryGenerator" />
         -->
 
         <!--
@@ -305,30 +305,25 @@
         
         
         <!-- get our authored, tokenized site.xml file -->
-        <copy file="${wtp.builder.home}/distribution/wtp.site/templateFiles/siteWTP.xml"
+        <copy file="${dltk.builder.home}/distribution/dltk.site/templateFiles/sitedltk.xml"
               tofile="${buildDirectory}/${buildLabel}/updateSite/site.xml" overwrite="true" failonerror="true"/>
         <!-- get the ${buildDirectory}/finalPluginsVersions.properties, and 
              read as properties -->
         <!-- substitute property value for tokens -->
         <replace file="${buildDirectory}/${buildLabel}/updateSite/site.xml"
               propertyfile="${buildDirectory}/finalFeaturesVersions.properties"  >
-            <replacefilter token="@org.eclipse.wst@"
-                           property="org.eclipse.wst" />
-            <replacefilter token="@org.eclipse.wst.sdk@"
-                           property="org.eclipse.wst.sdk" />
-            <replacefilter token="@org.eclipse.jst@"
-                           property="org.eclipse.jst" />
-            <replacefilter token="@org.eclipse.jst.sdk@"
-                           property="org.eclipse.jst.sdk" />
-
-            <replacefilter token="@org.eclipse.jst.jsf.feature@"
-                           property="org.eclipse.jst.jsf.feature" />
-            <replacefilter token="@org.eclipse.jst.jsf_sdk.feature@"
-                           property="org.eclipse.jst.jsf_sdk.feature" />
-            <replacefilter token="@org.eclipse.jpt.feature@"
-                           property="org.eclipse.jpt.feature" />
-            <replacefilter token="@org.eclipse.jpt_sdk.feature@"
-                           property="org.eclipse.jpt_sdk.feature" />
+            <replacefilter token="@org.eclipse.dltk.core@"
+                           property="org.eclipse.dltk.core" />
+            <replacefilter token="@org.eclipse.dltk.core.sdk@"
+                           property="org.eclipse.dltk.core.sdk" />
+            <replacefilter token="@org.eclipse.dltk.ruby.sdk@"
+                           property="org.eclipse.dltk.ruby.sdk" />
+            <replacefilter token="@org.eclipse.dltk.ruby.sdk@"
+                           property="org.eclipse.dltk.ruby.sdk" />
+            <replacefilter token="@org.eclipse.dltk.tcl.sdk@"
+                           property="org.eclipse.dltk.tcl.sdk" />
+            <replacefilter token="@org.eclipse.dltk.tcl.sdk@"
+                           property="org.eclipse.dltk.tcl.sdk" />
         </replace>
 
     </target>
@@ -348,7 +343,7 @@
     <!--Build type descriptors-->
     <target name="I">
         <replace file="${resultingIndex}"
-                 token="%wtpandprereqs%"
+                 token="%dltkandprereqs%"
                  value=" " />
         <replace file="${resultingIndex}"
                  token="@type@"
@@ -357,7 +352,7 @@
 
     <target name="S">
         <replace file="${resultingIndex}"
-                 token="%wtpandprereqs%"
+                 token="%dltkandprereqs%"
                  value=" " />
         <replace file="${resultingIndex}"
                  token="@type@"
@@ -366,7 +361,7 @@
 
     <target name="N">
         <replace file="${resultingIndex}"
-                 token="%wtpandprereqs%"
+                 token="%dltkandprereqs%"
                  value=" " />
         <replace file="${resultingIndex}"
                  token="@type@"
@@ -375,7 +370,7 @@
 
     <target name="M">
         <replace file="${resultingIndex}"
-                 token="%wtpandprereqs%"
+                 token="%dltkandprereqs%"
                  value=" " />
         <replace file="${resultingIndex}"
                  token="@type@"
@@ -384,7 +379,7 @@
 
     <target name="R">
         <replace file="${resultingIndex}"
-                 token="%wtpandprereqs%"
+                 token="%dltkandprereqs%"
                  value=" " />
         <replace file="${resultingIndex}"
                  token="@type@"
@@ -394,7 +389,7 @@
 
     <target name="T">
         <replace file="${resultingIndex}"
-                 token="%wtpandprereqs%"
+                 token="%dltkandprereqs%"
                  value=" " />
         <replace file="${resultingIndex}"
                  token="@type@"

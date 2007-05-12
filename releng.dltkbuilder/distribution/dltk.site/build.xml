@@ -32,7 +32,7 @@
             <jvmarg value="-DmapVersionTag=${mapVersionTag}" />
             <jvmarg value="-Dbuild.distribution=${build.distribution}" />
             <jvmarg value="-DbuildDirectory=${buildDirectory}" />
-            <jvmarg value="-Dwtp.builder.home=${wtp.builder.home}" />
+            <jvmarg value="-Ddltk.builder.home=${dltk.builder.home}" />
             <arg value="-data" />
             <arg value="${basedir}/workspace" />
             <arg value="-application" />
@@ -48,7 +48,7 @@
     <!-- ===================================================================== -->
     <target name="publish">
         <dirname file="${ant.file}" property="component.dir" />
-        <ant antfile="${wtp.builder.home}/scripts/build/label.xml" />
+        <ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
         <property file="${buildDirectory}/label.properties" />
 
         <property name="publish.xml" value="${component.dir}/publish.xml" />
@@ -57,15 +57,15 @@
         <property name="result" value="${buildDirectory}/${buildLabel}" />
         <property name="indexTemplateFilename" value="index.html.template" />
 		
-    	<copy file="${wtp.builder.home}/distribution/wtp.site/templateFiles/${indexTemplateFilename}" tofile="${buildDirectory}/${indexFileName}" />
+    	<copy file="${dltk.builder.home}/distribution/dltk.site/templateFiles/${indexTemplateFilename}" tofile="${buildDirectory}/${indexFileName}" />
     	
         <condition property="isBuildTested" value="true">
             <available file="${buildDirectory}/${buildLabel}/testResults/html" />
         </condition>
 
         <ant antfile="${publish.xml}" dir="${component.dir}">
-            <property name="dropTokenList" value="%wtpruntime%,%wtpsdk%,%wtptest%,%wst%,%wst-sdk%,%wst-tests%,%jst-tests%,%wst-perf-tests%,%jst-perf-tests%,%jsf-runtime%,%jsf-sdk%,%jsf-tests%,%jpt-runtime%,%jpt-sdk%,%jpt-tests%" />
-            <property name="webtoolsDownloadURL" value="http://www.eclipse.org/downloads/download.php?file=/webtools/committers/drops"/>
+            <property name="dropTokenList" value="%dltkruntime%,%dltksdk%,%dltktest%,%core%,%core-sdk%,%core-tests%,%ruby-tests%,%core-perf-tests%,%ruby-perf-tests%,%tcl-runtime%,%tcl-sdk%,%tcl-tests%" />
+            <property name="webtoolsDownloadURL" value="http://www.eclipse.org/downloads/download.php?file=/technology/dltk/drops"/>
 
             <property name="buildBranch" value="${buildBranch}" />
             <property name="build.pack-all-in-one" value="${build.pack-all-in-one}"/>

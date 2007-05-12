@@ -132,8 +132,8 @@ foreach ($compileSummary->summaryItem as $summaryItem) {
 
         <tr>
                 <td align="left" valign="top" colspan="5">
-                <p>The WTP zip files includes the features and plugins from the WST,
-                JST (including JSF), and JPT projects.</p>
+                <p>The DLTK zip files includes the features and plugins from the DLTK Core,
+                Ruby, and TCL components.</p>
                 </td>
         </tr>
         <tr>

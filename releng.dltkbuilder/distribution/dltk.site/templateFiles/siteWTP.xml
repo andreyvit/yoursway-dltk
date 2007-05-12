@@ -1,53 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site pack200="true"
-mirrorsURL="http://www.eclipse.org/downloads/download.php?file=/webtools/testUpdates/site.xml&amp;format=xml"
-digestURL="http://download.eclipse.org/webtools/testUpdates/">
+mirrorsURL="http://www.eclipse.org/downloads/download.php?file=/technology/dltk/testUpdates/site.xml&amp;format=xml"
+digestURL="http://download.eclipse.org/technology/dltk/testUpdates/">
 
-   <description url="http://download.eclipse.org/webtools/declaredUpdates/index.html">
-      The update site contains the features of the of Eclipse Web Tools Project (WTP)
+   <description url="http://download.eclipse.org/technology/dltk/index.html">
+      The update site contains the features of the Eclipse Dynamic Languages Toolkit Project (DLTK)
    </description>
 
-   <feature url="features/org.eclipse.wst_@org.eclipse.wst@.jar" id="org.eclipse.wst" version="@org.eclipse.wst@">
-      <category name="Web Tools Platform (WTP)" />
+   <feature url="features/org.eclipse.dltk.core_@org.eclipse.dltk.core@.jar" id="org.eclipse.dltk.core" version="@org.eclipse.dltk.core@">
+      <category name="Dynamic Languages Toolkit (DLTK)" />
    </feature>
 
-   <feature url="features/org.eclipse.wst.sdk_@org.eclipse.wst.sdk@.jar" id="org.eclipse.wst.sdk" version="@org.eclipse.wst.sdk@">
-      <category name="Web Tools Platform (WTP)" />
+   <feature url="features/org.eclipse.dltk.core.sdk_@org.eclipse.dltk.core.sdk@.jar" id="org.eclipse.dltk.core.sdk" version="@org.eclipse.dltk.core.sdk@">
+      <category name="Dynamic Languages Toolkit (DLTK)" />
    </feature>
 
-   <feature url="features/org.eclipse.jst_@org.eclipse.jst@.jar" id="org.eclipse.jst" version="@org.eclipse.jst@">
-      <category name="Web Tools Platform (WTP)" />
+   <feature url="features/org.eclipse.dltk.ruby_@org.eclipse.dltk.ruby@.jar" id="org.eclipse.dltk.ruby" version="@org.eclipse.dltk.ruby@">
+      <category name="Dynamic Languages Toolkit (DLTK)" />
    </feature>
 
-   <feature url="features/org.eclipse.jst.sdk_@org.eclipse.jst.sdk@.jar" id="org.eclipse.jst.sdk" version="@org.eclipse.jst.sdk@">
-      <category name="Web Tools Platform (WTP)" />
+   <feature url="features/org.eclipse.dltk.ruby.sdk_@org.eclipse.dltk.ruby.sdk@.jar" id="org.eclipse.dltk.ruby.sdk" version="@org.eclipse.dltk.ruby.sdk@">
+      <category name="Dynamic Languages Toolkit (DLTK)" />
    </feature>
 
-
-
-
-
-   <feature url="features/org.eclipse.jst.jsf.feature_@org.eclipse.jst.jsf.feature@.jar" id="org.eclipse.jst.jsf.feature" version="@org.eclipse.jst.jsf.feature@">
-      <category name="Web Tools Platform (WTP)" />
+   <feature url="features/org.eclipse.dltk.tcl_@org.eclipse.dltk.tcl@.jar" id="org.eclipse.dltk.tcl" version="@org.eclipse.dltk.tcl@">
+      <category name="Dynamic Languages Toolkit (DLTK)" />
    </feature>
 
-   <feature url="features/org.eclipse.jst.jsf_sdk.feature_@org.eclipse.jst.jsf_sdk.feature@.jar" id="org.eclipse.jst.jsf_sdk.feature" version="@org.eclipse.jst.jsf_sdk.feature@">
-      <category name="Web Tools Platform (WTP)" />
+   <feature url="features/org.eclipse.dltk.tcl.sdk_@org.eclipse.dltk.tcl.sdk@.jar" id="org.eclipse.dltk.tcl.sdk" version="@org.eclipse.dltk.tcl.sdk@">
+      <category name="Dynamic Languages Toolkit (DLTK)" />
    </feature>
 
-
-   <feature url="features/org.eclipse.jpt.feature_@org.eclipse.jpt.feature@.jar" id="org.eclipse.jpt.feature" version="@org.eclipse.jpt.feature@">
-      <category name="Web Tools Platform (WTP)" />
-   </feature>
-
-   <feature url="features/org.eclipse.jpt_sdk.feature_@org.eclipse.jpt_sdk.feature@.jar" id="org.eclipse.jpt_sdk.feature" version="@org.eclipse.jpt_sdk.feature@">
-      <category name="Web Tools Platform (WTP)" />
-   </feature>
-
-
-   <category-def name="Web Tools Platform (WTP)" label="Web Tools Platform (WTP)">
+   <category-def name="Dynamic Languages Toolkit (DLTK)" label="Dynamic Languages Toolkit (DLTK)">
       <description>
-         This category contains the features of the Eclipse Web Tools Project (WTP).
+         This category contains the features of the Eclipse Dynamic Languages Toolkit Project (DLTK).
       </description>
    </category-def>
 
