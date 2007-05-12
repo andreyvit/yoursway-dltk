@@ -12,18 +12,6 @@
 
 	<target name="get">
 
-		<mkdir dir="${buildDirectory}/maps/releng/maps" />
-		<antcall target="getAndInstall">
-			<param name="groupId" value="orbitthirdpartymap" />
-			<param name="base.install.dir" value="${buildDirectory}/maps/releng/maps/" />
-		</antcall>
-		<antcall target="getAndInstall">
-			<param name="groupId" value="emf" />
-		</antcall>
-		<antcall target="getAndInstall">
-			<param name="groupId" value="gef" />
-		</antcall>
-
 		<antcall target="getAndInstall">
 			<param name="groupId" value="eclipse" />
 		</antcall>
