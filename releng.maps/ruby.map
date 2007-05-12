@@ -1,11 +1,12 @@
 !***************  DLTK RUBY CONTRIBUTION  ******************************************************** 
 
-feature@org.eclipse.dltk.ruby=HEAD,:pserver:anonymous@eclipsedltk.org:/opt/org.eclipse.dltk,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.ruby-feature
+feature@org.eclipse.dltk.ruby=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/features/org.eclipse.dltk.ruby-feature
+feature@org.eclipse.dltk.ruby.sdk=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/features/org.eclipse.dltk.ruby.sdk
 
 !*** DLTK Ruby plugins, features and fragments
 
-plugin@org.eclipse.dltk.ruby.core=HEAD,:pserver:anonymous@eclipsedltk.org:/opt/org.eclipse.dltk,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.ruby.core
-plugin@org.eclipse.dltk.ruby.launching=HEAD,:pserver:anonymous@eclipsedltk.org:/opt/org.eclipse.dltk,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.ruby.launching
-plugin@org.eclipse.dltk.ruby.debug=HEAD,:pserver:anonymous@eclipsedltk.org:/opt/org.eclipse.dltk,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.ruby.debug
-plugin@org.eclipse.dltk.ruby.ui=HEAD,:pserver:anonymous@eclipsedltk.org:/opt/org.eclipse.dltk,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.ruby.ui
-plugin@org.eclipse.dltk.ruby.debug.ui=HEAD,:pserver:anonymous@eclipsedltk.org:/opt/org.eclipse.dltk,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.ruby.debug.ui
+plugin@org.eclipse.dltk.ruby.core=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.core
+plugin@org.eclipse.dltk.ruby.launching=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.launching
+plugin@org.eclipse.dltk.ruby.debug=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.debug
+plugin@org.eclipse.dltk.ruby.ui=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.ui
+plugin@org.eclipse.dltk.ruby.debug.ui=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.debug.ui
