@@ -1,0 +1,11 @@
+dropPrefix[]=R&
+dropPrefix[]=M&
+dropPrefix[]=S&
+dropPrefix[]=I&
+dropPrefix[]=N&
+
+dropType[]=<b>R</b>eleased (In progress)&
+dropType[]=<b>M</b>aintenance (In progress)&
+dropType[]=<b>S</b>table (Milestone) (In progress)&
+dropType[]=<b>I</b>ntegration (In progress)&
+dropType[]=<b>N</b>ightly (Head) Build&

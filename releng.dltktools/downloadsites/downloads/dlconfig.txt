@@ -1,0 +1,9 @@
+dropPrefix[]=R&
+dropPrefix[]=M&
+dropPrefix[]=S&
+dropPrefix[]=I&
+
+dropType[]=<b>R</b>eleased&
+dropType[]=<b>M</b>aintenance&
+dropType[]=<b>S</b>table (Milestone)&
+dropType[]=<b>I</b>ntegration&

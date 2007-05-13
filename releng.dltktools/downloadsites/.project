@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+    <name>downloadsites</name>
+    <comment>
+        This project simply holds the primary html/php files for the
+        download sites. They are not actually "built" nor routinely
+        checked out to replace those that exist, but, it is important to
+        have them under version control, etc.
+    </comment>
+    <projects></projects>
+    <buildSpec></buildSpec>
+    <natures></natures>
+</projectDescription>
