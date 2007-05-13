@@ -2,10 +2,10 @@
 declaredStream=$1
 declaredDir=$2
 
-FROMDIR=$HOME/downloads/webtools/committers/drops
+FROMDIR=$HOME/downloads/technology/dltk/staging/drops
 FROMDIR=$FROMDIR/${declaredStream}/${declaredDir}/updateSite
 
-TODIR=$HOME/downloads/webtools/declaredUpdates
+TODIR=$HOME/downloads/technology/dltk/updates/1.0
 
 echo  "declaring update ${declaredDir} on buildstream  ${declaredStream}"
 echo  "   into ${TODIR}"
