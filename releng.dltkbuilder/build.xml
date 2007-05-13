@@ -32,6 +32,7 @@
 			<property name="buildBranch" value="${buildBranch}" />
 			<property name="build.pack-all-in-one" value="${build.pack-all-in-one}" />
 			<property name="eclipse.builder.fetch" value="${eclipse.builder.fetch}" />
+			<property name="logExtension" value="${logExtension}" />
 		</ant>
 		
 		
@@ -100,7 +101,6 @@
 		<touch file="${user.home}/.cvspass" />
 
 		<property file="${dltk.builder.home}/build.properties" />
-		<touch file="${user.home}/.cvspass" />
 		<ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
 		<property file="${buildDirectory}/label.properties" />
 
