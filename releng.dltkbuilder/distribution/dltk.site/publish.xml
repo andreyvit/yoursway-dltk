@@ -318,12 +318,12 @@
                            property="org.eclipse.dltk.core" />
             <replacefilter token="@org.eclipse.dltk.core.sdk@"
                            property="org.eclipse.dltk.core.sdk" />
+            <replacefilter token="@org.eclipse.dltk.ruby@"
+                           property="org.eclipse.dltk.ruby" />
             <replacefilter token="@org.eclipse.dltk.ruby.sdk@"
                            property="org.eclipse.dltk.ruby.sdk" />
-            <replacefilter token="@org.eclipse.dltk.ruby.sdk@"
-                           property="org.eclipse.dltk.ruby.sdk" />
-            <replacefilter token="@org.eclipse.dltk.tcl.sdk@"
-                           property="org.eclipse.dltk.tcl.sdk" />
+            <replacefilter token="@org.eclipse.dltk.tcl@"
+                           property="org.eclipse.dltk.tcl" />
             <replacefilter token="@org.eclipse.dltk.tcl.sdk@"
                            property="org.eclipse.dltk.tcl.sdk" />
         </replace>
