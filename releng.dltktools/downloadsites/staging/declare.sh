@@ -3,7 +3,7 @@ echo $1 $2
 declaredStream=$1
 declaredDir=$2
 
-FROMDIR=../committers/drops
+FROMDIR=../staging/drops
 TODIR=../downloads/drops/${declaredStream}
 FROMDIR=$FROMDIR/${declaredStream}/${declaredDir}
 echo  "declaring build ${declaredDir} on buildstream  ${declaredStream}"
@@ -13,7 +13,7 @@ echo  "   using the build from ${FROMDIR}"
 
 cp -R ${FROMDIR} ${TODIR}
 
-fromString="committers/drops/${declaredStream}/"
+fromString="staging/drops/${declaredStream}/"
 toString="downloads/drops/${declaredStream}/"
 replaceCommand="s!${fromString}!${toString}!g"
 
