@@ -1,7 +1,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="http://dev.eclipse.org/default_style.css">
-<title>Eclipse Web Tools Platform (WTP) Downloads - for Committers and
+<title>Eclipse Dynamic Languages Toolkit (DLTK) Downloads - for Committers and
 Early Testers</title>
 </head>
 <body>
@@ -39,10 +39,10 @@ $C = strcmp($QString, "test");
 
 <table border=0 cellpadding=0 width="100%">
 <tr>
-<td width="35%"><font class=indextop> Web Tools Platform<br>
+<td width="35%"><font class=indextop> Dynamic Languages Toolkit<br>
 committer downloads</font><br>
-<font class=indexsub>Latest early trial downloads from the Web Tools Platform project</font></td>
-<td width="35%" align="right"><a href="http://www.eclipse.org/webtools/main.html"><img border="0"src="wtplogonarrow.jpg" height="95" width="207"></a></td>
+<font class=indexsub>Latest early trial downloads from the Dynamic Languages Toolkit project</font></td>
+<td width="35%" align="right"><a href="http://www.eclipse.org/dltk"><img border="0"src="wtplogonarrow.jpg" height="95" width="207"></a></td>
 </tr>
 </table>
 
@@ -54,14 +54,13 @@ committer downloads</font><br>
 	<tr>
 		<td>
 		<p>This is the starting page for where you can find the latest <a
-			href="http://wiki.eclipse.org/index.php/WTP_Build_Types">continuous build</a> produced by the <a
-			href="http://www.eclipse.org/webtools/main.html">Eclipse Web Tools
-		Platform (WTP) Project</a>. Please note that each build page details
+			href="http://wiki.eclipse.org/index.php/DLTK_Build_Types">continuous build</a> produced by the <a
+			href="http://www.eclipse.org/dltk">Eclipse Dynamic Languages Toolkit (DLTK) Project</a>. Please note that each build page details
 		the pre-reqs for that particular build.</p>
 
 		<p>If you got here to this continuous-build site by accident or casual
 		browsing, please be aware that <a
-			href="http://download.eclipse.org/webtools/downloads/" target="_top">
+			href="http://download.eclipse.org/technology/dltk/downloads/" target="_top">
 		declared builds</a> are available!</p>
 		</td>
 	</tr>
