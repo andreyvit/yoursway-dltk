@@ -61,7 +61,7 @@ downloads</font><br>
 
 		<p>As an alternative to downloading zips from the build pages, our
 		released builds can be <a
-			href="http://download.eclipse.org/technology/dltk/updates/">installed via
+			href="http://wiki.eclipse.org/index.php/DLTK_Installation">installed via
 		Update Manager</a>, from an existing installation of Eclipse.</p>
 		</td>
 	</tr>
