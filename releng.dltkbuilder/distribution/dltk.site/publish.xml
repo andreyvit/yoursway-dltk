@@ -29,6 +29,7 @@
         <antcall target="generateCompileIndex" />
         <antcall target="generateJUnitTestsIndex" />
         <antcall target="getStaticFiles" />
+    	<antcall target="updateSite" />
     </target>
 
     <target name="generateCompileIndex" >
@@ -305,6 +306,7 @@
         
         
         <!-- get our authored, tokenized site.xml file -->
+    	<echo message = "Generating site.xml from: ${dltk.builder.home}/distribution/dltk.site/templateFiles/siteDLTK.xml..." />
         <copy file="${dltk.builder.home}/distribution/dltk.site/templateFiles/siteDLTK.xml"
               tofile="${buildDirectory}/${buildLabel}/updateSite/site.xml" overwrite="true" failonerror="true"/>
         <!-- get the ${buildDirectory}/finalPluginsVersions.properties, and 
@@ -325,7 +327,7 @@
             <replacefilter token="@org.eclipse.dltk.tcl.sdk@"
                            property="org.eclipse.dltk.tcl.sdk" />
         </replace>
-
+    	<echo message = "Done site.xml: ${buildDirectory}/${buildLabel}/updateSite/site.xml" />
     </target>
 
     <target name="countFiles">
