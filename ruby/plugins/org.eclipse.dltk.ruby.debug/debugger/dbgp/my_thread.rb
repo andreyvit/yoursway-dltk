@@ -472,12 +472,12 @@ public
 
             @terminated = true
 
-            unless @last_continuation_command.nil?
+            unless @command.nil?
                 map = { 'status' => 'stopped',
                         'reason' => 'ok',
-                        'id'     => @last_continuation_command.arg('-i') }
+                        'id'     => @command.arg('-i') }
 
-                send(@last_continuation_command.name, map)
+                send(@command.name, map)
             end
         end
     end
@@ -527,23 +527,26 @@ public
                                 'id'     => @last_continuation_command.arg('-i') }
 
                         send(@last_continuation_command.name, map)
+
+                        @last_continuation_command = nil
                     else
                         #report status starting
                     end
             
                     # Command handling loop
                     loop do
-                        command = Command.new(receive)                        
-                        data = dispatch_command(command)
-
-                        if ['run', 'step_into', 'step_over', 'step_out'].include?(command.name)
-                            @last_continuation_command = command
+                        @command = Command.new(receive)                        
+                        data = dispatch_command(@command)
+                                      
+                            
+                        if ['run', 'step_into', 'step_over', 'step_out'].include?(@command.name)
+                            @last_continuation_command = @command
                         end 
 
                         if data.nil?
                             break
                         else
-                            send(command.name, data)
+                            send(@command.name, data)
                         end
                     end
                 else
