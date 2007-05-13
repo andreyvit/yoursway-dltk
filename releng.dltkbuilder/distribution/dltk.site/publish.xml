@@ -54,7 +54,7 @@
             
             
         -->
-        <property file="${buildDirectory}/maps/releng/maps/dependencies.properties" />
+        <property file="${buildDirectory}/maps/org.eclipse.dltk/releng.maps/dependencies.properties" />
 
         <!-- create tables of test plugin compiles first -->
         <summarizeResults isBuildTested="false"
