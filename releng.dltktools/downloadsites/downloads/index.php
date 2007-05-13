@@ -492,16 +492,9 @@ foreach($dropType as $value) {
 					<tr>
 						<td valign="top">
 
-
-						<p><a
-							href="http://archive.eclipse.org/webtools/downloads/index.php"
-							target="_top">Archived Builds</a> are previously significant
-						builds that are no longer required, but which we keep on a
-						non-mirrored site, for historical and academic use.</p>
-
-						<p><a href="http://download.eclipse.org/webtools/committers/"
+						<!--p><a href="http://download.eclipse.org/webtools/committers/"
 							target="_top">Continuous builds</a> are also available which are for
-						committers and early testers.</p>	
+						committers and early testers.</p--> &nbsp;
 						</td>
 					</tr>
 				</tbody>
