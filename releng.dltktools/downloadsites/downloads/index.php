@@ -41,7 +41,7 @@ $C = strcmp($QString, "test");
 <td width="35%"><font class=indextop> Dynamic Languages Toolkit<br>
 downloads</font><br>
 <font class=indexsub>Latest downloads from the Dynamic Languages Toolkit Project</font></td>
-<td width="35%" align="right"><a href="http://www.eclipse.org/dltk"><img border="0"src="wtplogonarrow.jpg" height="95" width="207"></a></td>
+<td width="35%" align="right"><a href="http://www.eclipse.org/dltk"><img border="0"src="http://www.eclipse.org/images/egg-incubation.png" height="95" width="207"></a></td>
 </tr>
 </table>
 
