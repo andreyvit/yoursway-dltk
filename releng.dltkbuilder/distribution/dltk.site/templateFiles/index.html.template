@@ -114,8 +114,8 @@ foreach ($compileSummary->summaryItem as $summaryItem) {
 <table border=0 cellspacing=2 cellpadding=2 width="100%">
         <tr>
                 <td align=left valign=top colspan="5" bgcolor="#0080C0"><font
-                        face="'Bitstream Vera',Helvetica,Arial" color="#FFFFFF"> Web Tools
-                Platform Complete</font></td>
+                        face="'Bitstream Vera',Helvetica,Arial" color="#FFFFFF"> Dynamic
+                Languages Toolkit Complete</font></td>
         </tr>
 
         <tr>
@@ -129,11 +129,11 @@ foreach ($compileSummary->summaryItem as $summaryItem) {
 
 
                         <tr>
-                                <td align="left" valign="top" width="10%"><b>Web App Developers:</b></td>
+                                <td align="left" valign="top" width="10%"><b>Developers (Dynamic Language Users):</b></td>
                                 <td align="left" valign="top">
                                 <p>This non-SDK package is for most users. It includes the runnable
                                 code and end-user documentation for those using the tools to develop
-                                web applications.</p>
+                                applications with dynamic languages.</p>
                                 </td>
                                 <?php
 
