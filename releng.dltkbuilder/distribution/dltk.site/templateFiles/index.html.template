@@ -95,7 +95,7 @@ foreach ($compileSummary->summaryItem as $summaryItem) {
         </tr>
         <tr>
                 <td>Eclipse Platform is the prerequisite project to run the Dynamic Languages
-                Toolkit. It$ must be downloaded and installed before DLTK can be
+                Toolkit. It must be downloaded and installed before DLTK can be
                 installed or used.</td>
         </tr>
         <tr>
