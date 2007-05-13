@@ -104,10 +104,9 @@ for ($i = 0; $i < count($dropType); $i++) {
 }
 
 $buildBranches = array();
-$buildBranches[0]="R2.0";
-$buildBranches[1]="R1.5";
-$buildBranches[2]="R1.0";
-$buildBranches[3]="R0.7";
+$buildBranches[0]="R1.0";
+$buildBranches[1]="R0.9";
+$buildBranches[2]="R0.8";
 include 'report.php';
 include 'report2.php';
 
