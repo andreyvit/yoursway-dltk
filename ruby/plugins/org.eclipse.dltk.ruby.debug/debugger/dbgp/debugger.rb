@@ -23,7 +23,7 @@ require 'dbgp/capturer'
 
 module XoredDebugger
                
-    class Debugger
+    class MyDebugger
     private
         def add_thread(thread)
             @logger.puts('Adding thread: ' + thread.to_s)
@@ -92,6 +92,7 @@ module XoredDebugger
         end
 
         def terminate
+            @logger.puts('Debugger termination...')
             Thread.kill(@remover)
 
             @mutex.synchronize do
@@ -136,6 +137,10 @@ module XoredDebugger
     end # class Debugger
 
 
+    class Starter
+
+    def Starter.go
+
     log = ENV['DBGP_RUBY_LOG']
     logger = log.nil? ? NullLogger.new : (log == 'stdout' ? StdoutLogger.new : FileLogger.new(log))
 
@@ -158,17 +163,16 @@ module XoredDebugger
             logger.puts('Test: ' + test.to_s)
 
             # Debugger setup
-            @debugger = Debugger.new(host, port, key, logger, test)
-                    
+            @@debugger = MyDebugger.new(host, port, key, logger, test)
+            
             set_trace_func proc { |event, file, line, id, binding, klass, *rest|
-                @debugger.trace(event, file, line, id, binding, klass)
+                @@debugger.trace(event, file, line, id, binding, klass)
             }
 
             load script
-            
-            set_trace_func nil
 
-            @debugger.terminate
+            set_trace_func nil
+            @@debugger.terminate
          end
 
     rescue Exception
@@ -180,4 +184,11 @@ module XoredDebugger
     ensure
         logger.close
     end
+
+    end # go
+
+    Starter.go
+
+    end # class Starter
+
 end # module

@@ -16,7 +16,10 @@ module XoredDebugger
         end
 
         def update(binding, file, line, where)
-            pop
+            unless empty?
+                pop
+            end
+
             push(binding, file, line, where)
         end
 

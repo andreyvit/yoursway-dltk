@@ -45,7 +45,6 @@ class TestIO
            'stack_get -d 0',
            'context_get',
            'run',
-           'run'
        ]
 
 #        @commands = [

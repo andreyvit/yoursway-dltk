@@ -76,6 +76,10 @@ private
 public
     def print(command, data)
         escape_map(data)
+        
+        #puts '@@@@@ DATA @@@@@'
+        #p data
+
         self.send('print_' + command, data)
     end
 
@@ -197,11 +201,6 @@ public
     def print_stack_get(m)
         levels = ''
         m['levels'].each { |s|
-            #escape_map(s)
-
-            #puts "$$$$$$$$$$$$$$$$$$$$"
-            #p s
-
             levels += sprintf('<stack level="%d" type="%s" filename="%s" lineno="%d" cmdbegin="%s" cmdend="%s" where="%s"/>',
                 s['level'], s['type'], s['filename'], s['lineno'], s['cmdbegin'], s['cmdend'], escape(s['where']))
         }
@@ -217,7 +216,7 @@ public
     end
 
     def print_breakpoint_get(m)
-        puts "!!! NOT IMPLEMENTED !!!"
+        # TODO:
     end
 
     def print_breakpoint_update(m)
@@ -231,7 +230,7 @@ public
     end
 
     def print_breakpoint_list(m)
-        puts "!!! NOT IMPLEMENTED !!!"
+        # TODO:
     end
 end
 

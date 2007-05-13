@@ -168,6 +168,7 @@ private
             end
         } 
 
+        # Additional self property
         properties << make_property('self', @stack.eval('self'))  
 
         #for var in @stack.eval('instance_variables') do
@@ -259,7 +260,7 @@ private
         else
 
             { 'levels' => levels }
-        end     
+        end  
     end
     
     
@@ -449,10 +450,8 @@ public
         
         @features = Features.new
         @states = States.new
-        @capturer = StdoutCapturer.new
         
         @stack = VirtualStack.new
-        @stack.push(nil, nil, nil, nil)
 
         @waitDepth = -1
         
@@ -469,15 +468,17 @@ public
 
     def terminate
         unless @terminated
-            logger.puts('Terminating thread...' + @last_command.to_s)
+            logger.puts('Terminating thread...')
 
             @terminated = true
 
-            map = { 'status' => 'stopped',
-                    'reason' => 'ok',
-                    'id'     => @last_command.arg('-i') }
+            unless @last_continuation_command.nil?
+                map = { 'status' => 'stopped',
+                        'reason' => 'ok',
+                        'id'     => @last_continuation_command.arg('-i') }
 
-            send(@last_command.name, map)
+                send(@last_continuation_command.name, map)
+            end
         end
     end
 
@@ -486,12 +487,13 @@ public
             return
         end
 
-        #logger.puts('Klass: |' + klass.to_s + '|')
+        # Don't debug debugger :)
         if klass.to_s.index('XoredDebugger::') == 0
             return
         end
-
-        @where = nil
+        
+        # Get the code line 
+        @where = 'Unknown location'
         if lines = SCRIPT_LINES__[file] and lines != true
             @where = lines[line - 1].chomp
         end      
@@ -504,58 +506,52 @@ public
         case event
             when 'line'
                 @stack.update(@binding, @file, @line, @where)
-
                 
                 capturer.disable
-                #logger.puts('# Disable capture #')
                 out = capturer.output
                 unless out.empty?
-                #    logger.puts('===> STDOUT: |' + out + '|')
                     send('stdout_data', {'data' => out})
                 end
 
                 br = breakpoints.line_break?(@file, @line) 
-                #logger.puts('Breakpoint: ' + br.to_s)
     
-                if (@has_data or 
-                    @waitDepth == -1 or
+                if (@waitDepth == -1 or
                     @waitDepth >= @stack.depth or
                     br)
                                         
-                    # == Information ==
                     logger.puts("==>> Line: #{@line} from #{@file} (depth: #{@stack.depth}, waitDepth: #{@waitDepth}) <<==")
 
-                    if (not @last_command.nil?) and (not @has_data)
+                    unless @last_continuation_command.nil?
                         map = { 'status' => 'break',
                                 'reason' => 'ok',
-                                'id'     => @last_command.arg('-i') }
+                                'id'     => @last_continuation_command.arg('-i') }
 
-                        send(@last_command.name, map)
+                        send(@last_continuation_command.name, map)
                     else
                         #report status starting
                     end
             
-                    @has_data = false
-
                     # Command handling loop
                     loop do
-                        @last_command = Command.new(receive)                        
-                        data = dispatch_command(@last_command)
-    
-                        unless(data.nil?)
-                            send(@last_command.name, data)
-                        else
+                        command = Command.new(receive)                        
+                        data = dispatch_command(command)
+
+                        if ['run', 'step_into', 'step_over', 'step_out'].include?(command.name)
+                            @last_continuation_command = command
+                        end 
+
+                        if data.nil?
                             break
+                        else
+                            send(command.name, data)
                         end
                     end
                 else
                  #   if @io.has_data?
-                 #       logger.puts('===================IO HAS DATA==================')
                  #       @has_data = true
                  #   end
                 end
 
-                #logger.puts('# Enable capture #')
                 capturer.enable
    
             when 'call'
@@ -568,10 +564,8 @@ public
             when 'end'     
             
             when 'raise'
-                logger.puts('------Raise-----')
                 set_trace_func nil
                 @debugger.terminate
-                # Exception handling
         end
     end
 
