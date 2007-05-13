@@ -13,7 +13,7 @@ Early Testers</title>
 $serverName = $_SERVER["SERVER_NAME"];
 
 if (!stristr($serverName, "eclipse.org") && !stristr($serverName,"you.are.at.eclipsecon.org")) {
-  echo '<center><p>Reminder: this is <font color="#FF0000">', $serverName,'</font>  See also <a href="http://download.eclipse.org/webtools/downloads" target="_top">Live public eclipse site</a>.</center><hr />';
+  echo '<center><p>Reminder: this is <font color="#FF0000">', $serverName,'</font>  See also <a href="http://download.eclipse.org/technology/dltk/downloads" target="_top">Live public eclipse site</a>.</center><hr />';
 }
 
 if (function_exists("date_default_timezone_set")) {
@@ -487,13 +487,7 @@ foreach($dropType as $value) {
 						<td valign="top">
 
 
-						<p><a
-							href="http://archive.eclipse.org/webtools/downloads/index.php"
-							target="_top">Archived Builds</a> are previously significant
-						builds that are no longer required, but which we keep on a
-						non-mirrored site, for historical and academic use.</p>
-
-						<p><a href="http://download.eclipse.org/webtools/downloads/"
+						<p><a href="http://download.eclipse.org/technology/dltk/downloads/"
 							target="_top">Declared builds</a> are available which are for
 						end-users and adopters.</p>
 						</td>
