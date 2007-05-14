@@ -38,8 +38,8 @@ http://www.eclipse.org/legal/epl-v10.html
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://download.eclipse.org/technology/dltk/updates/"/>
-      <discovery label="%updateSiteName" url="http://download.eclipse.org/technology/dltk/updates/"/>
+      <update label="%updateSiteName" url="http://download.eclipse.org/technology/dltk/updates/1.0/"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/technology/dltk/updates/1.0/"/>
    </url>
 
    <requires>
