@@ -32,4 +32,8 @@ public class DbgpBaseCommands {
 	protected Element communicate(DbgpRequest request) throws DbgpException {
 		return communicator.communicate(request);
 	}
+	
+	protected void send(DbgpRequest request) throws DbgpException {
+		communicator.send(request);
+	}
 }

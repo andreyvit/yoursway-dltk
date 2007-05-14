@@ -45,6 +45,7 @@ public class DbgpNotificationManager extends DbgpWorkingThread implements
 	}
 
 	public DbgpNotificationManager(IDbgpDebugingEngine engine) {
+		super("DBGP - Notification Manager");
 		if (engine == null) {
 			throw new IllegalArgumentException();
 		}

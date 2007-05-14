@@ -97,7 +97,7 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 		this.notificationManager.addTerminationListener(this);
 
 		// Stream manager
-		this.streamManager = new DbgpStreamManager(engine);
+		this.streamManager = new DbgpStreamManager(engine, "DBGP - Stream manager");
 		this.streamManager.addTerminationListener(this);
 
 		// Commands

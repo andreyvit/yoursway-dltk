@@ -32,7 +32,9 @@ class TestIO
 #       ]
 
        @commands = [
+           'feature_set -n max_children -v 256',
            'status',   
+           'stack_get',
            'context_get',
            'stdin -c 1', # redirect stdin
            'feature_get -n supports_async',

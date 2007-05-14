@@ -9,9 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.internal.core.model.operations;
 
-import org.eclipse.dltk.dbgp.IDbgpStatus;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
-import org.eclipse.dltk.dbgp.internal.DbgpStatus;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 
 public class DbgpSuspendOperation extends DbgpOperation {
@@ -23,14 +21,6 @@ public class DbgpSuspendOperation extends DbgpOperation {
 
 	protected void process() throws DbgpException {
 		boolean success = getExtended().makeBreak();
-
-		IDbgpStatus status = new DbgpStatus(DbgpStatus.STATUS_BREAK,
-				DbgpStatus.REASON_OK);
-		if (!success) {
-			status = new DbgpStatus(DbgpStatus.STATUS_RUNNING,
-					DbgpStatus.REASON_ERROR);
-		}
-
-		callFinish(status);
+		//TODO: think about what to do with this status
 	}
 }

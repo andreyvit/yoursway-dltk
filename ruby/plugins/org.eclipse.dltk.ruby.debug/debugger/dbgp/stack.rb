@@ -10,6 +10,11 @@
 
 module XoredDebugger
 
+    # DBGP stack model, depth = N, zero-index is for top-level frame
+    #====================================
+    # N - 1 |  ...  | 1 | 0 |   <=  push
+    #====================================
+
     class VirtualStack
         def initialize
             @levels = []
@@ -37,11 +42,11 @@ module XoredDebugger
         end
 
         def get(index)
-            @levels[index]
+            @levels[depth - 1 - index]
         end
         
-        def eval(text)
-            Kernel.eval(text, @levels.last['binding'])
+        def eval(text, index = 0)
+            Kernel.eval(text, get(index)['binding'])
         end
 
         def depth

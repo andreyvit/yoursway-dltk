@@ -14,30 +14,26 @@ require 'io/wait'
 module XoredDebugger
 
     class SocketIO
-    
-    private
         def log_send(text)
-            unless @logger.nil?
-                @logger.puts('>>> ' + text)
-            end
+            @logger.puts('>>> ' + text)
         end
+        private :log_send
+        
 
         def log_receive(text)
-            unless @logger.nil?
-                @logger.puts('<<< ' + text)
-            end
+            @logger.puts('<<< ' + text)
         end
+        private :log_receive
 
-    public
         def initialize(host, port, logger, printer)
             @socket = TCPSocket.new(host, port)
             @logger = logger
             @printer = printer
         end
 
-
         def send(command, data)
             xml = @printer.print(command, data)
+            
             #DEBUGGER: [NUMBER] [NULL] XML(data) [NULL]
             @socket.write(xml.length.to_s)
             @socket.putc(0)
@@ -45,7 +41,6 @@ module XoredDebugger
             @socket.putc(0)
             @socket.flush
 
-            # Logging
             log_send(xml)
         end
 
@@ -59,8 +54,7 @@ module XoredDebugger
             while((ch = @socket.getc) != 0)
                 line << ch
             end
-
-            # Logging
+            
             log_receive(line)
 
             line

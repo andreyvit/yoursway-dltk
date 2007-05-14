@@ -58,4 +58,12 @@ public class DbgpDebuggingEngineCommunicator implements IDbgpCommunicator {
 			throw new DbgpIOException(e);
 		}
 	}
+
+	public void send(DbgpRequest request) throws DbgpException {
+		try {
+			sendRequest(request.toString());
+		} catch (IOException e) {
+			throw new DbgpIOException(e);
+		}
+	}
 }

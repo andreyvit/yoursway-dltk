@@ -54,10 +54,12 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 
 			boolean enabled = b.isEnabled()
 					&& getBreakpointManager().isEnabled();
+			
 			String cExpr = null;
 			if (breakpoint.isConditionalExpressionEnabled()) {
 				cExpr = breakpoint.getConditionalExpression();
 			}
+			
 			DbgpBreakpointConfig config = new DbgpBreakpointConfig(enabled, b
 					.getHitValue(), b.getHitCondition(), cExpr);
 
@@ -175,8 +177,6 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 			IScriptBreakpoint breakpoint) throws DbgpException {
 		IScriptBreakpoint b = (IScriptBreakpoint) breakpoint;
 		
-		System.out.println("DbgpBreakpointManager.removeBreakpoint()");
-
 		commands.removeBreakpoint(b.getIdentifier());
 		if (b instanceof IScriptMethodEntryBreakpoint) {
 			IScriptMethodEntryBreakpoint mr = (IScriptMethodEntryBreakpoint) b;

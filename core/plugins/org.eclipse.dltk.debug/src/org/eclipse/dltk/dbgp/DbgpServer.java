@@ -92,6 +92,8 @@ public class DbgpServer extends DbgpWorkingThread implements IDbgpServer {
 	}
 
 	public DbgpServer(int clientTimeout, int serverTimeout) {
+		super("DBGP - Server");
+		
 		this.clientTimeout = clientTimeout;
 		this.serverTimeout = serverTimeout;
 

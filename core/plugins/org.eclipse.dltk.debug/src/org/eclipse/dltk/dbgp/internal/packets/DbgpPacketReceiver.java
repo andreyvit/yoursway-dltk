@@ -127,12 +127,14 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 
 	public DbgpResponsePacket getResponsePacket(int transactionId)
 			throws InterruptedException {
-					
+				
 		return (DbgpResponsePacket) responseQueue
 				.get(new Integer(transactionId));
 	}
 
 	public DbgpPacketReceiver(InputStream input) {
+		super("DBGP - Packet receiver");
+		
 		if (input == null) {
 			throw new IllegalArgumentException();
 		}

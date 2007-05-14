@@ -51,7 +51,9 @@ public class DbgpStreamManager extends DbgpWorkingThread implements
 		}
 	}
 
-	public DbgpStreamManager(IDbgpDebugingEngine engine) {
+	public DbgpStreamManager(IDbgpDebugingEngine engine, String name) {
+		super(name);
+		
 		if (engine == null) {
 			throw new IllegalArgumentException();
 		}

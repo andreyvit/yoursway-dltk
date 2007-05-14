@@ -85,7 +85,7 @@ public abstract class DbgpOperation {
 				return Status.OK_STATUS;
 			}
 		};
-		job.setSystem(true);
+		job.setSystem(false);
 		job.setUser(false);
 
 		this.continuationHandler = new IDbgpContinuationHandler() {

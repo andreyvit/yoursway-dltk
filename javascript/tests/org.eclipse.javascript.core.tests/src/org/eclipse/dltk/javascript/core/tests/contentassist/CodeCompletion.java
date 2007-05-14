@@ -478,9 +478,11 @@ public class CodeCompletion extends TestCase {
 
 	public JavaScriptCompletionEngine createEngine(LinkedList results) {
 		ISearchableEnvironment env = new NullEnvironment();
-		JavaScriptCompletionEngine engine = new JavaScriptCompletionEngine(env,
-				new TestCompletionRequetor(results), new HashMap(), null);
-		return engine;
+		//JavaScriptCompletionEngine engine = new JavaScriptCompletionEngine(env,
+			//	new TestCompletionRequetor(results), new HashMap(), null);
+		//return engine;
+		
+		throw new Error("Unimplemented, please fix");
 	}
 	
 	private void compareNames(LinkedList results, String[] names) {

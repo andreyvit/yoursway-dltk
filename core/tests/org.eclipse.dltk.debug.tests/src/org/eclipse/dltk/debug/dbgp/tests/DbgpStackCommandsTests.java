@@ -50,6 +50,11 @@ public class DbgpStackCommandsTests extends DbgpProtocolTests {
 
 						return response;
 					}
+
+					public void send(DbgpRequest request) throws DbgpException {
+						// TODO Auto-generated method stub
+						
+					}
 				});
 
 		int depth = commands.getStackDepth();
@@ -74,6 +79,11 @@ public class DbgpStackCommandsTests extends DbgpProtocolTests {
 								.getOption("-d"));
 
 						return response;
+					}
+
+					public void send(DbgpRequest request) throws DbgpException {
+						// TODO Auto-generated method stub
+						
 					}
 				});
 		

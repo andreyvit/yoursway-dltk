@@ -79,8 +79,10 @@ module XoredDebugger
  
             @threads = {}    
 
-            @capturer = StdoutCapturer.new(true)
-            @breakpoints = Breakpoints.new 
+            @stdout_capturer = StdoutCapturer.new(true)
+            #@stderr_capturer = StderrCapturer.new(true)
+
+            @breakpoints = Breakpoints.new
             @mutex = Mutex.new 
 
             @remover = Thread.new do
@@ -111,7 +113,7 @@ module XoredDebugger
         end
 
         def capturer
-            @capturer
+            @stdout_capturer
         end
 
         # Logging
@@ -161,24 +163,24 @@ module XoredDebugger
                     logger.puts('Test: ' + test.to_s)
 
                     # Debugger setup
-                    @@debugger = MyDebugger.new(host, port, key, logger, test)
+                    debugger = MyDebugger.new(host, port, key, logger, test)
             
                     set_trace_func proc { |event, file, line, id, binding, klass, *rest|
-                        @@debugger.trace(event, file, line, id, binding, klass)
+                        debugger.trace(event, file, line, id, binding, klass)
                     }
 
+                    # Script for debug
                     load script
 
+                    # Debugger teardown
                     set_trace_func nil
-                    @@debugger.terminate
+                    debugger.terminate
                 end
 
             rescue Exception
                 logger.puts('Exception during debugging:')
-                logger.puts('Message:')
-                logger.puts($!.message)
-                logger.puts('Backtrace:')
-                logger.puts($!.backtrace.join("\n"))
+                logger.puts("\tMessage: " + $!.message)
+                logger.puts("\tBacktrace: " + $!.backtrace.join("\n"))
             ensure
                 logger.close
             end  

@@ -1,23 +1,16 @@
 package org.eclipse.dltk.javascript.internal.debug.ui;
 
-import java.util.HashMap;
-
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
-import org.eclipse.dltk.debug.internal.core.model.ScriptVariable;
 import org.eclipse.dltk.debug.ui.ScriptDebugImageDescriptor;
 import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
 import org.eclipse.dltk.internal.debug.ui.DLTKDebugImages;
-import org.eclipse.dltk.internal.ui.DLTKUIMessages;
-import org.eclipse.dltk.javascript.core.JavaScriptPlugin;
 import org.eclipse.dltk.ui.DLTKPluginImages;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -46,6 +39,10 @@ public class JavaScriptDebugModelPresentation extends
 		});
 	}
 	static ImageRegistry registry=new ImageRegistry();
+	
+	public JavaScriptDebugModelPresentation() {
+		
+	}
 
 	public Image getImage(Object element) {
 		if (element instanceof IScriptMethodEntryBreakpoint) {

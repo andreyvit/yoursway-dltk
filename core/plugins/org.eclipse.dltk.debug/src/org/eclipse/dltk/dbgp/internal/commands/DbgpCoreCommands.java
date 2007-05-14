@@ -155,7 +155,7 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 	public IDbgpStatus stop() throws DbgpException {
 		return continuationCommands.stop();
 	}
-
+	
 	public Map getTypeMap() throws DbgpException {
 		return dataTypeCommands.getTypeMap();
 	}

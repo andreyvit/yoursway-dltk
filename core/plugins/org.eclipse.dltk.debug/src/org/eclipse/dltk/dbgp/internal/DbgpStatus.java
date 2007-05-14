@@ -51,7 +51,7 @@ public class DbgpStatus implements IDbgpStatus {
 		reasonParser.put("aborted", REASON_ABORTED);
 		reasonParser.put("exception", REASON_EXCEPTION);
 	}
-	
+
 	public static IDbgpStatus parse(String status, String reason) {
 		return new DbgpStatus((Integer) statusParser.get(status),
 				(Integer) reasonParser.get(reason));
@@ -69,7 +69,7 @@ public class DbgpStatus implements IDbgpStatus {
 		if (reason == null) {
 			throw new IllegalArgumentException();
 		}
-		
+
 		this.status = status;
 		this.reason = reason;
 	}
@@ -121,5 +121,10 @@ public class DbgpStatus implements IDbgpStatus {
 
 	public int hashCode() {
 		return (status.hashCode() << 8) | reason.hashCode();
+	}
+
+	public String toString() {
+		return "Status: " + status.toString() + "; Reason: "
+				+ reason.toString();
 	}
 }

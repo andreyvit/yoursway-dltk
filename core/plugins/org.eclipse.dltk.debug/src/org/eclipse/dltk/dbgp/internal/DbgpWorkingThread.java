@@ -12,6 +12,11 @@ package org.eclipse.dltk.dbgp.internal;
 
 public abstract class DbgpWorkingThread extends DbgpTermination {
 	private Thread thread;
+	private String name;
+	
+	public DbgpWorkingThread(String name) {
+		this.name = name;
+	}
 
 	public void start() {
 		if (thread == null || !thread.isAlive()) {
@@ -26,7 +31,7 @@ public abstract class DbgpWorkingThread extends DbgpTermination {
 
 					fireObjectTerminated(null);
 				}
-			});
+			}, name);
 
 			thread.start();			
 		} else {

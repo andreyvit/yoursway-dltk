@@ -68,6 +68,11 @@ public class DbgpPropertyCommandsTests extends DbgpProtocolTests {
 
 				return response;
 			}
+
+			public void send(DbgpRequest request) throws DbgpException {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 
 		//IDbgpProperty property = commands.getPropery("my_var");
@@ -96,6 +101,11 @@ public class DbgpPropertyCommandsTests extends DbgpProtocolTests {
 				assertTrue(request.hasOption("-n"));
 
 				return response;
+			}
+
+			public void send(DbgpRequest request) throws DbgpException {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 		

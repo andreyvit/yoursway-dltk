@@ -8,7 +8,6 @@
 
 ###############################################################################
 
-#module XoredDebugger
 
     def has_children(obj)
         atomic_types = [Fixnum, String, Symbol]
@@ -25,7 +24,7 @@
               'eval_name'    => name,
               'type'         => obj.class,
               'is_cosntant'  => false,
-              'has_children' => true,
+              'has_children' => has_children(obj),
               'value'        => obj.to_s,
               'key'          => obj.object_id }
 
@@ -89,4 +88,3 @@
         x
     end
 
-#end # module

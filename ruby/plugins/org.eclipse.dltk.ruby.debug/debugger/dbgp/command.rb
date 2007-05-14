@@ -17,7 +17,7 @@ module XoredDebugger
             @arg_map = {}
             name = nil
             @args.split.each { |token|
-                if (name == nil)
+                if (name.nil?)
                     name = token
                 else
                     @arg_map[name] = token
@@ -25,6 +25,7 @@ module XoredDebugger
                 end
             }
         end
+        private :parse_args
 
         def initialize(command)
             @command = command
@@ -39,12 +40,10 @@ module XoredDebugger
                 @data = nil
             end
 
-            self.parse_args
+            parse_args
         end 
     
-        def name
-            @name
-        end
+        attr_reader :name, :data
 
         def arg_with_default(name, default)
             value = self.arg(name)
@@ -55,10 +54,7 @@ module XoredDebugger
             @arg_map[name]
         end
 
-        def data
-            @data
-        end
-
+       
         def to_s
             @command
         end

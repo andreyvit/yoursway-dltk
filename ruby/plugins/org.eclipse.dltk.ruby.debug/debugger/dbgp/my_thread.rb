@@ -130,7 +130,7 @@ private
 
     def break_cmd
         @waitDepth = -1
-        nil        
+        {'success' => true}       
     end
 
     # Context commands
@@ -146,38 +146,57 @@ private
         end
     end
 
+    LOCAL_CONTEXT_ID  = 0
+    GLOBAL_CONTEXT_ID = 1
+    CLASS_CONTEXT_ID  = 2
 
     def context_names(depth)
         { 'contexts' => [
-            {'name' => 'Local',  'id' => 0 },
-            {'name' => 'Global', 'id' => 1 },
-            {'name' => 'Class',  'id' => 2 }
+            {'name' => 'Local',  'id' => LOCAL_CONTEXT_ID },
+            {'name' => 'Global', 'id' => GLOBAL_CONTEXT_ID },
+            {'name' => 'Class',  'id' => CLASS_CONTEXT_ID }
          ] }
     end
 
     def context_get(depth, context_id)
+        contexts = [LOCAL_CONTEXT_ID, GLOBAL_CONTEXT_ID, CLASS_CONTEXT_ID]
+        unless context_id.nil?
+            contexts = [context_id]
+        end
+
         properties = []
 
-        vars = @stack.eval('local_variables')
+        # Local variables
+        if contexts.include?(LOCAL_CONTEXT_ID)   
+            vars = @stack.eval('local_variables', depth)
     
-        vars.each { |var|
-            real_var = @stack.eval(var)
+            vars.each { |var|
+                real_var = @stack.eval(var, depth)
 
-            unless real_var.nil?
-                properties << make_property(var, real_var)              
-            end
-        } 
+                unless real_var.nil?
+                    properties << make_property(var, real_var)              
+                end
+            }
+    
+            # TODO: correct this later
+            properties << make_property('self', @stack.eval('self', depth))  
+        end
 
-        # Additional self property
-        properties << make_property('self', @stack.eval('self'))  
+        # Global variables
+        if contexts.include?(GLOBAL_CONTEXT_ID)
+            vars = @stack.eval('global_variables', depth)
+            vars.each { |var|
+                properties << make_property(var)
+            } 
+        end
 
-        #for var in @stack.eval('instance_variables') do
-        #   properties << make_property(var)
-        #end
-
-        #for var in @stack.eval('global_variables') do
-        #   properties << make_property(var)
-        #end
+        # Class variables
+        if contexts.include?(CLASS_CONTEXT_ID)
+            vars = @stack.eval('instance_variables', depth)
+            vars.each { |var|
+                properties << make_property(var)
+            }
+        end
 
         { 'properties' => properties, 
           'context_id' => context_id }
@@ -191,6 +210,14 @@ private
         end
     
         { 'property' => make_property(name, obj) }
+    end
+
+    def property_set(name, depth, value)
+        # TODO: Check value type, String => "" 
+        t = name + ' = ' + value.to_s
+        logger.puts('String to evaluate: ' + t)
+        @stack.eval(t, depth)
+        { 'success' => true }
     end
 
 
@@ -239,19 +266,16 @@ private
     end
 
     def stack_get(depth = nil)
-        l = 0
         levels = []
-        
-        @stack.to_a.reverse.each { |level|
-            levels << { 'level'    => l,
+        @stack.depth.times { |i|
+            level = @stack.get(i)
+            levels << { 'level'    => i,
                         'type'     => 'source',
                         'filename' => 'file:///' + level['file'],
                         'lineno'   => level['line'],
                         'cmdbegin' => '0:0',
                         'cmdend'   => '0:0',
-                        'where'    => level['where'] }
-            l += 1
-
+                        'where'    => level['where'] }            
         }
 
         unless depth.nil?
@@ -375,12 +399,12 @@ private
 
             # Context commands
             when 'context_names'              
-                depth = command.arg_with_default('-d', @stack.depth - 1)
+                depth = command.arg_with_default('-d', '0').to_i
                 context_names(depth)
 
             when 'context_get'
-                depth = command.arg_with_default('-d', @stack.depth - 1)
-                context_id = command.arg_with_default('-c', 0)
+                depth = command.arg_with_default('-d', '0').to_i
+                context_id = command.arg_with_default('-c', '0').to_i
                 context_get(depth, context_id)
 
             # Property commands
@@ -390,8 +414,10 @@ private
                 property_get(name, key)
                 
             when 'property_set'
-                # TODO:
-                {}
+                name = command.arg('-n')
+                depth = command.arg_with_default('-d', '0').to_i
+                value = command.data
+                property_set(name, depth, value) 
 
             when 'property_value'
                 # TODO:
@@ -450,14 +476,11 @@ public
         
         @features = Features.new
         @states = States.new
-        
         @stack = VirtualStack.new
 
         @waitDepth = -1
         
         @terminated = false
-
-        @has_data = false
 
         send('init', init)
     end
@@ -487,40 +510,42 @@ public
             return
         end
 
+        capturer.disable
+        out = capturer.get
+        unless out.empty?
+            send('stdout_data', {'data' => out})
+        end
+        capturer.enable
+
         # Don't debug debugger :)
         if klass.to_s.index('XoredDebugger::') == 0
             return
         end
         
         # Get the code line 
-        @where = 'Unknown location'
+        where = 'Unknown code line'
         if lines = SCRIPT_LINES__[file] and lines != true
-            @where = lines[line - 1].chomp
+            where = lines[line - 1].chomp
         end      
         
-                  
-        @file = File.expand_path(file)  #File.expand_path(File.join(Dir.pwd, file))
-        @line = line
-        @binding = binding
+        @file = File.expand_path(file) # Absolute file path
 
         case event
             when 'line'
-                @stack.update(@binding, @file, @line, @where)
-                
                 capturer.disable
-                out = capturer.output
-                unless out.empty?
-                    send('stdout_data', {'data' => out})
-                end
 
-                br = breakpoints.line_break?(@file, @line) 
+                @stack.update(binding, @file, line, where)
+            
+                has_breakpoint = breakpoints.line_break?(@file, line) 
     
-                if (@waitDepth == -1 or
+                if (@io.has_data? or
+                    @waitDepth == -1 or
                     @waitDepth >= @stack.depth or
-                    br)
-                                        
-                    logger.puts("==>> Line: #{@line} from #{@file} (depth: #{@stack.depth}, waitDepth: #{@waitDepth}) <<==")
+                    has_breakpoint)
+                    
+                    logger.puts("==>> Line ##{line} from #{@file} <<==")
 
+                    # Break checking
                     unless @last_continuation_command.nil?
                         map = { 'status' => 'break',
                                 'reason' => 'ok',
@@ -529,19 +554,17 @@ public
                         send(@last_continuation_command.name, map)
 
                         @last_continuation_command = nil
-                    else
-                        #report status starting
                     end
-            
-                    # Command handling loop
+
+                    # Command loop
                     loop do
                         @command = Command.new(receive)                        
-                        data = dispatch_command(@command)
-                                      
                             
                         if ['run', 'step_into', 'step_over', 'step_out'].include?(@command.name)
                             @last_continuation_command = @command
-                        end 
+                        end
+
+                        data = dispatch_command(@command) 
 
                         if data.nil?
                             break
@@ -549,22 +572,21 @@ public
                             send(@command.name, data)
                         end
                     end
-                else
-                 #   if @io.has_data?
-                 #       @has_data = true
-                 #   end
                 end
 
                 capturer.enable
    
             when 'call'
-                @stack.push(@binding, @file, @line, @where)
+                @stack.push(binding, @file, line, where)
     
             when 'return'
                 @stack.pop
     
-            when 'class'    
-            when 'end'     
+            when 'class'
+                #TODO: Do something useful
+    
+            when 'end'
+                #TODO: Do something useful
             
             when 'raise'
                 set_trace_func nil
