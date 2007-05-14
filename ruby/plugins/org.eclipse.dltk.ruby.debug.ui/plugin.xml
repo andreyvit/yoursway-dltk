@@ -62,8 +62,8 @@
          point="org.eclipse.ui.console.consolePatternMatchListeners">
       <consolePatternMatchListener
             class="org.eclipse.dltk.ruby.internal.debug.ui.console.RubyConsoleTracker"
-            regex=".+rb:\d+"
-            id="org.eclipse.dltk.ruby.debug.ui.RubyConsoleTracker">
+            id="org.eclipse.dltk.ruby.debug.ui.RubyConsoleTracker"
+            regex="((\w:)?[^:]+):(\d+)">
          <enablement>
             <or>
                <test property="org.eclipse.debug.ui.processTypeTest" value="rubyInterpreter"/>

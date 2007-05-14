@@ -1147,7 +1147,7 @@ public class DLTKCore extends Plugin {
 	
 		if (ModelManager.BP_RESOLVE_VERBOSE){
 			Util.verbose(
-				"CPContainer SET  - setting container\n" + //$NON-NLS-1$
+				"BPContainer SET  - setting container\n" + //$NON-NLS-1$
 				"	container path: " + containerPath + '\n' + //$NON-NLS-1$
 				"	projects: {" +//$NON-NLS-1$
 				org.eclipse.dltk.internal.core.util.Util.toString(
@@ -1220,6 +1220,7 @@ public class DLTKCore extends Plugin {
 			}
 			IBuildpathContainer oldContainer = manager.containerGet(affectedProject, containerPath);
 			if (oldContainer == ModelManager.CONTAINER_INITIALIZATION_IN_PROGRESS) {
+				oldContainer = null;
 			}
 			if (oldContainer != null && oldContainer.equals(respectiveContainers[i])){
 				modifiedProjects[i] = null; // filter out this project - container did not change

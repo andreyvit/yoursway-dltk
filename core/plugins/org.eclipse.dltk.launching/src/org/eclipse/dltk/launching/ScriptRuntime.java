@@ -329,6 +329,9 @@ public final class ScriptRuntime {
 	 */
 	public static IInterpreterInstallType getInterpreterInstallType(String id) {
 		IInterpreterInstallType[] interpreterTypes= getInterpreterInstallTypes();
+		if( interpreterTypes == null ) {
+			return null;
+		}
 		for (int i= 0; i < interpreterTypes.length; i++) {
 			if (interpreterTypes[i] != null && interpreterTypes[i].getId().equals(id)) {
 				return interpreterTypes[i];

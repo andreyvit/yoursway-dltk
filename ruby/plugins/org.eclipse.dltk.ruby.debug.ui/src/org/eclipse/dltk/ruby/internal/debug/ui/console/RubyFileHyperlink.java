@@ -39,7 +39,7 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
- * A hyperlink from a stack trace line of the form "*(*.java:*)"
+ * A hyperlink from a stack trace line of the form "*(*.rb:*)"
  */
 public class RubyFileHyperlink implements IHyperlink {
 	
