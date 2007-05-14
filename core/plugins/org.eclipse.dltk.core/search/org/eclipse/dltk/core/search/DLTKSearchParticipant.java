@@ -117,11 +117,12 @@ public class DLTKSearchParticipant extends SearchParticipant {
 
 	public IPath[] selectMixinIndexes(SearchPattern query,
 			IDLTKSearchScope scope) {
-		if (this.indexSelector == null ||( this.indexSelector != null && this.indexSelector.mixin == false )) {
-			this.indexSelector = new IndexSelector(scope, query);
-			this.indexSelector.mixin = true;
-		}
-		return this.indexSelector.getIndexLocations();
-//		return null;
+		return selectIndexes(query, scope);
+//		if (this.indexSelector == null ||( this.indexSelector != null && this.indexSelector.mixin == false )) {
+//			this.indexSelector = new IndexSelector(scope, query);
+//			this.indexSelector.mixin = true;
+//		}
+//		return this.indexSelector.getIndexLocations();
+////		return null;
 	}
 }
