@@ -316,7 +316,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 		assertEquals(method, elements[0]);
 	}
 
-	public void _testSelectionOnMethod3_2() throws ModelException {
+	public void testSelectionOnMethod3_2() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection_on_method3.rb");
 
@@ -329,6 +329,18 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 		IMethod method = cu.getMethod("megathing");
 		assertNotNull(method);
 		assertEquals(method, elements[0]);
+	}
+	
+	public void testSelectionOnSuper() throws ModelException {
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
+				"selection_on_super.rb");
+
+		String source = cu.getSource();
+		int start = source.indexOf("super") + 1;
+
+		IModelElement[] elements = cu.codeSelect(start, 0);
+		assertNotNull(elements);
+		assertEquals(1, elements.length);
 	}
 
 	// ////

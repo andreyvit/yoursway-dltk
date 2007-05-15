@@ -45,10 +45,13 @@ import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.ruby.ast.RubyAssignment;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;
+import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
+import org.eclipse.dltk.ruby.ast.RubySuperExpression;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinElementInfo;
+import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinMethod;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
@@ -166,6 +169,9 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 				} else if (node instanceof VariableReference) {
 					selectionOnVariable(modelModule, parsedUnit,
 							(VariableReference) node);
+				} else if (node instanceof RubySuperExpression) {
+					RubySuperExpression superExpr = (RubySuperExpression) node;
+					selectOnSuper(modelModule, parsedUnit, superExpr);
 				} else {
 					CallExpression parentCall = this.getEnclosingCallNode(node);
 					if (parentCall != null) {
@@ -192,6 +198,26 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 		
 		return (IModelElement[]) resultElements
 				.toArray(new IModelElement[resultElements.size()]);
+	}
+	
+	
+
+	private void selectOnSuper(org.eclipse.dltk.core.ISourceModule modelModule,
+			ModuleDeclaration parsedUnit, RubySuperExpression superExpr) {
+		RubyClassType selfClass = RubyTypeInferencingUtils.determineSelfClass(modelModule, parsedUnit, superExpr.sourceStart());
+		MethodDeclaration enclosingMethod = ASTUtils.getEnclosingMethod(wayToNode, superExpr, false);
+		if (enclosingMethod != null) {
+			String name = enclosingMethod.getName();
+			RubyMixinClass rubyClass = RubyMixinModel.getInstance().createRubyClass(selfClass);
+			RubyMixinClass superclass = rubyClass.getSuperclass();
+			RubyMixinMethod method = superclass.getMethod(name);
+			if (method != null) {
+				IMethod[] sourceMethods = method.getSourceMethods();
+				for (int i = 0; i < sourceMethods.length; i++) {
+					this.selectionElements.add(sourceMethods[i]);
+				}
+			}
+		}
 	}
 
 	private void selectOnColonExpression(ModuleDeclaration parsedUnit,
