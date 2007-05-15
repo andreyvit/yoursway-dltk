@@ -66,35 +66,35 @@ private
 
     # Init
     def init
-        { 'app_id'   => 'test',
-          'ide_key'  => @key,
-          'session'  => 'session',
-          'thread'   => 'Thread with id = ' + @thread.object_id.to_s,
-          'parent'   => '',
-          'file_uri' => '' }
+        { :app_id   => 'test',
+          :ide_key  => @key,
+          :session  => 'session',
+          :thread   => 'Thread with id = ' + @thread.object_id.to_s,
+          :parent   => '',
+          :file_uri => '' }
     end
                          
     # Status command
     def status
-        { 'status' => @states.to_s,
-          'reason' => 'ok' }
+        { :status => @states.to_s,
+          :reason => 'ok' }
     end
 
     # Feature commands
     def feature_get(name)
         logger.puts("feature_get: #{name}")
 
-        { 'name'      => name, 
-          'supported' => 1, 
-          'value'     => @features.get(name).to_s }
+        { :name      => name, 
+          :supported => 1, 
+          :value     => @features.get(name).to_s }
     end
 
     def feature_set(name, value)
         logger.puts("feature_set: #{name} = #{value}")
 
         @features.set(name, value) # Check types!!! (string or int)
-        { 'name'    => name, 
-          'success' => 1 }
+        { :name    => name, 
+          :success => 1 }
     end
 
     # Continuation commands
@@ -130,7 +130,7 @@ private
 
     def break_cmd
         @waitDepth = -1
-        {'success' => true}       
+        { :success => true }       
     end
 
     # Context commands
@@ -151,10 +151,10 @@ private
     CLASS_CONTEXT_ID  = 2
 
     def context_names(depth)
-        { 'contexts' => [
-            {'name' => 'Local',  'id' => LOCAL_CONTEXT_ID },
-            {'name' => 'Global', 'id' => GLOBAL_CONTEXT_ID },
-            {'name' => 'Class',  'id' => CLASS_CONTEXT_ID }
+        { :contexts => [
+            { :name => 'Local',  :id => LOCAL_CONTEXT_ID },
+            { :name => 'Global', :id => GLOBAL_CONTEXT_ID },
+            { :name => 'Class',  :id => CLASS_CONTEXT_ID }
          ] }
     end
 
@@ -201,8 +201,8 @@ private
             }
         end
 
-        { 'properties' => properties, 
-          'context_id' => context_id }
+        { :properties => properties, 
+          :context_id => context_id }
     end
 
     # Property commands
@@ -212,7 +212,7 @@ private
             obj = 'Invalid key :('
         end
     
-        { 'property' => make_property(name, obj) }
+        { :property => make_property(name, obj) }
     end
 
     def property_set(name, depth, value)
@@ -225,7 +225,7 @@ private
             success = false
         end
 
-        { 'success' => success }
+        { :success => success }
     end
 
     def property_value
@@ -237,15 +237,15 @@ private
     def breakpoint_set_line(file, line, state, temporary)
         id = breakpoints.set_line_bpt(file, line, state)
 
-        { 'state'         => state, 
-          'breakpoint_id' => id }
+        { :state         => state, 
+          :breakpoint_id => id }
     end
     
     def breakpoint_set_exception(exception, state, temporary)
         id = breakpoints.set_exception_bpt(exception, state)        
 
-        { 'state'         => state, 
-          'breakpoint_id' => id }        
+        { :state         => state, 
+          :breakpoint_id => id }        
     end
 
     def breakpoint_get
@@ -265,37 +265,35 @@ private
     end
 
     def breakpoint_remove(id)
-        logger.puts('===> Removing breakpoint with id: ' + id.to_s + ' ' + id.class.to_s)
         val = breakpoints.remove(id)
-        logger.puts('===> Success: ' + val.to_s)
-        
+
         {}
     end
 
     # Stack commands
     def stack_depth
-        {'depth' => @stack.depth }
+        { :depth => @stack.depth }
     end
 
     def stack_get(depth = nil)
         levels = []
         @stack.depth.times { |i|
             level = @stack[i]
-            levels << { 'level'    => i,
-                        'type'     => 'source',
-                        'filename' => 'file:///' + level['file'],
-                        'lineno'   => level['line'],
-                        'cmdbegin' => '0:0',
-                        'cmdend'   => '0:0',
-                        'where'    => level['where'] }            
+            levels << { :level    => i,
+                        :type     => 'source',
+                        :filename => 'file:///' + level['file'],
+                        :lineno   => level['line'],
+                        :cmdbegin => '0:0',
+                        :cmdend   => '0:0',
+                        :where    => level['where'] }            
         }
 
         unless depth.nil?
             n = depth.to_i
-            { 'levels' => [levels[n]] }
+            { :levels => [levels[n]] }
         else
 
-            { 'levels' => levels }
+            { :levels => levels }
         end  
     end
     
@@ -314,7 +312,7 @@ private
             logger.puts("Redirecting stdin")
         end
 
-        { 'success' => 1 }
+        { :success => 1 }
     end
 
     def stdout_configure(value)
@@ -324,7 +322,7 @@ private
 
         logger.puts("Configure stdout: #{value}")
 
-        { 'success' => 1 }
+        { :success => 1 }
     end
 
     def stderr_configure(value)
@@ -334,7 +332,7 @@ private
 
         logger.puts("Configure stderr: #{value}")
 
-        { 'success' => 1 }
+        { :success => 1 }
     end
 
     def eval_handler(expression)
@@ -346,8 +344,8 @@ private
             success = false
         end
     
-        { 'success'  => success, 
-          'property' => property }
+        { :success  => success, 
+          :property => property }
     end
 
     def dispatch_command(command)
@@ -478,7 +476,7 @@ private
         end
 
         unless data.nil?
-            data['id'] = command.arg('-i')
+            data[:id] = command.arg('-i')
         end
 
         logger.puts('Dispatch OK')
@@ -524,9 +522,9 @@ public
             @terminated = true
 
             unless @command.nil?
-                map = { 'status' => 'stopped',
-                        'reason' => 'ok',
-                        'id'     => @command.arg('-i') }
+                map = { :status => 'stopped',
+                        :reason => 'ok',
+                        :id     => @command.arg('-i') }
 
                 send(@command.name, map)
             end
@@ -541,7 +539,7 @@ public
         capturer.disable
         out = capturer.get
         unless out.empty?
-            send('stdout_data', {'data' => out})
+            send('stdout_data', {:_data => out})
         end
         capturer.enable
 
@@ -575,9 +573,9 @@ public
 
                     # Break checking
                     unless @last_continuation_command.nil?
-                        map = { 'status' => 'break',
-                                'reason' => 'ok',
-                                'id'     => @last_continuation_command.arg('-i') }
+                        map = { :status => 'break',
+                                :reason => 'ok',
+                                :id     => @last_continuation_command.arg('-i') }
 
                         send(@last_continuation_command.name, map)
 
