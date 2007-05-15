@@ -670,7 +670,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		}
 	}
 
-	private String[] buildRunEnvironment(ILaunchConfiguration configuration)
+	protected String[] buildRunEnvironment(ILaunchConfiguration configuration)
 			throws CoreException {
 		String buildPath = createBuildPath(configuration);
 		Map systemEnv = DebugPlugin.getDefault().getLaunchManager()
