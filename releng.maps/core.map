@@ -4,14 +4,14 @@ feature@org.eclipse.dltk.core=v20070513,:pserver:anonymous@dev.eclipse.org:/cvsr
 feature@org.eclipse.dltk.core.sdk=v20070512,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/features/org.eclipse.dltk.core.sdk
 
 plugin@org.eclipse.dltk=v20070512,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk
-plugin@org.eclipse.dltk.core=v20070512,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.core
+plugin@org.eclipse.dltk.core=v20070515,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.core
 plugin@org.eclipse.dltk.console=v20070512,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.console
-plugin@org.eclipse.dltk.launching=v20070512,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.launching
-plugin@org.eclipse.dltk.debug=v20070512,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.debug
+plugin@org.eclipse.dltk.launching=v20070515,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.launching
+plugin@org.eclipse.dltk.debug=v20070515,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.debug
 
 plugin@org.eclipse.dltk.validators.core=v20070512,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.validators.core
 plugin@org.eclipse.dltk.validators.ui=v20070512,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.validators.ui
 
 plugin@org.eclipse.dltk.console.ui=v20070512,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.console.ui
-plugin@org.eclipse.dltk.ui=v20070512,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.ui
-plugin@org.eclipse.dltk.debug.ui=v20070512,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.debug.ui
+plugin@org.eclipse.dltk.ui=v20070515,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.ui
+plugin@org.eclipse.dltk.debug.ui=v20070515,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.debug.ui
