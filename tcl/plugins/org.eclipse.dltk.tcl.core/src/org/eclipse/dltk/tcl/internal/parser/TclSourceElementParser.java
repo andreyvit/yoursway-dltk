@@ -34,6 +34,7 @@ import org.eclipse.dltk.tcl.ast.TclConstants;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
+import org.eclipse.dltk.tcl.internal.parser.TclParseUtils.IProcessStatementAction;
 import org.eclipse.dltk.tcl.internal.parsers.raw.SimpleTclParser;
 
 public class TclSourceElementParser implements ISourceElementParser {
@@ -264,44 +265,13 @@ public class TclSourceElementParser implements ISourceElementParser {
 		}
 	}
 
-	/**
-	 * @deprecated
-	 * @param statement
-	 */
 	private void processIf(TclStatement statement, String namespaceName) {
 		List exprs = statement.getExpressions();
-		int len = exprs.size();
-		for (int i = 0; i < len; ++i) {
-			Expression e = (Expression) exprs.get(i);
-			if (e instanceof SimpleReference) {
-				String value = ((SimpleReference) e).getName();
-				if (value.equals("if") || value.equals("elseif")) {
-					int bi = i + 2; // Skip expression
-					while (bi < len) {
-						Expression bl = (Expression) exprs.get(bi);
-						// Check for then statement
-						if (bl instanceof SimpleReference) {
-							String thenSt = ((SimpleReference) bl).getName();
-							if (thenSt != null && thenSt.equals("then")) {
-								bi++;
-								continue;
-							}
-						} else if (bl instanceof TclBlockExpression) {
-							processBlock(bl, namespaceName);
-						}
-						break;
-					}
-					i += bi - i;
-				} else if (value.equals("else")) {
-					if (i + 1 < len) {
-						Expression bl = (Expression) exprs.get(i + 1);
-						if (bl instanceof TclBlockExpression) {
-							processBlock(bl, namespaceName);
-						}
-					}
-				}
+		TclParseUtils.processIf(exprs, namespaceName, 0, new IProcessStatementAction() {
+			public void doAction(String name, Expression bl, int beforePosition) {
+				processBlock(bl, name);
 			}
-		}
+		});
 	}
 
 	private void processBlock(Expression bl, String namespaceName) {

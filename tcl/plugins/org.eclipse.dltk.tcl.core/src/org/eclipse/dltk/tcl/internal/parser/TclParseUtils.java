@@ -483,7 +483,7 @@ public class TclParseUtils {
 						}
 						break;
 					}
-					i = bi - i;
+					i = bi - 1;
 				} else if (value.equals("else")) {
 					if (i + 1 < len) {
 						Expression bl = (Expression) exprs.get(i + 1);

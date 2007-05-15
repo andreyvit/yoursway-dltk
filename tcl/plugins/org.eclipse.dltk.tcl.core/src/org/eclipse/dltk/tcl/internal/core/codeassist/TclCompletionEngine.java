@@ -49,6 +49,7 @@ import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeyw
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnVariable;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.TclCompletionParser;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
+import org.eclipse.dltk.tcl.internal.parser.TclParseUtils.IProcessStatementAction;
 
 public class TclCompletionEngine extends ScriptCompletionEngine {
 	
@@ -903,40 +904,13 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	private void processIf(TclStatement statement, int beforePosition,
-			List choices) {
+			final List choices) {
 		List exprs = statement.getExpressions();
-		int len = exprs.size();
-		for (int i = 0; i < len; ++i) {
-			Expression e = (Expression) exprs.get(i);
-			if (e instanceof SimpleReference) {
-				String value = ((SimpleReference) e).getName();
-				if (value.equals("if") || value.equals("elseif")) {
-					int bi = i + 2; // Skip expression
-					while (bi < len) {
-						Expression bl = (Expression) exprs.get(bi);
-						// Check for then statement
-						if (bl instanceof SimpleReference) {
-							String thenSt = ((SimpleReference) bl).getName();
-							if (thenSt != null && thenSt.equals("then")) {
-								bi++;
-								continue;
-							}
-						} else if (bl instanceof TclBlockExpression) {
-							processBlock(bl, beforePosition, choices);
-						}
-						break;
-					}
-					i += bi - i + 1;
-				} else if (value.equals("else")) {
-					if (i + 1 < len) {
-						Expression bl = (Expression) exprs.get(i + 1);
-						if (bl instanceof TclBlockExpression) {
-							processBlock(bl, beforePosition, choices);
-						}
-					}
-				}
+		TclParseUtils.processIf(exprs, null, beforePosition, new IProcessStatementAction() {
+			public void doAction(String name, Expression bl, int beforePosition) {
+				processBlock(bl, beforePosition, choices);
 			}
-		}
+		});
 	}
 
 	private void checkAddVariable(List choices, String n) {
