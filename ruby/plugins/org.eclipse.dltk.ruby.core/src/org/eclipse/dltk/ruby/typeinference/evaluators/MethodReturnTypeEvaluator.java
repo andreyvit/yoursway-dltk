@@ -85,7 +85,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		if (!(instanceType instanceof RubyClassType))
 			return null;
 		
-		IEvaluatedType intrinsicMethodReturnType = checkMethodReturnType((ClassType) instanceType, methodName, typedGoal.getArguments());
+		IEvaluatedType intrinsicMethodReturnType = checkSpecialMethodReturnType((ClassType) instanceType, methodName, typedGoal.getArguments());
 		if (intrinsicMethodReturnType != null) {
 			evaluated.add(intrinsicMethodReturnType);
 			return IGoal.NO_GOALS;
@@ -157,12 +157,12 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 				if (node instanceof RubyReturnStatement) {
 					RubyReturnStatement statement = (RubyReturnStatement) node;
 					CallArgumentsList list = statement.getValue();
-					if (list.getExpressions().size() == 0) {
+					if (list.getChilds().size() == 0) {
 						MethodReturnTypeEvaluator.this.evaluated.add(new RubyClassType("NilClass"));
-					} else if (list.getExpressions().size() > 1) {
+					} else if (list.getChilds().size() > 1) {
 						MethodReturnTypeEvaluator.this.evaluated.add(new RubyClassType("Array"));
 					} else {
-						possibilities.add(list.getExpressions().get(0));				
+						possibilities.add(list.getChilds().get(0));				
 					}
 				}
 				return super.visitGeneral(node);
@@ -189,15 +189,13 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		return newGoals;
 	}
 
-	private IEvaluatedType checkMethodReturnType(ClassType instanceType,
+	private IEvaluatedType checkSpecialMethodReturnType(ClassType instanceType,
 			String methodName, IEvaluatedType[] arguments) {
+		if (methodName.equals("clone") &&  instanceType.getModelKey().endsWith(RubyMixin.INSTANCE_SUFFIX))
+			return instanceType;
 		if (instanceType == null || instanceType.getModelKey().endsWith(RubyMixin.INSTANCE_SUFFIX) || 
 				instanceType.getModelKey().endsWith(RubyMixin.VIRTUAL_SUFFIX) )
 			return null;
-//		RubyMixinClass rubyClass = RubyMixinModel.getInstance().createRubyClass((RubyClassType) instanceType);
-//		RubyMixinMethod method = rubyClass.getMethod(methodName);
-//		if (method.getSelfType().getKey().equals("Class%") && methodName.equals("new")) 
-//			return new RubyClassType (instanceType.getModelKey() + RubyMixin.INSTANCE_SUFFIX);
 		if (methodName.equals("new")) 
 			return new RubyClassType (instanceType.getModelKey() + RubyMixin.INSTANCE_SUFFIX);
 		return null;
