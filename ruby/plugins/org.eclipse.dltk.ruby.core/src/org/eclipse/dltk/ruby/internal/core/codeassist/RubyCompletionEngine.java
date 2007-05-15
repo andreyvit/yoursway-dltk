@@ -88,7 +88,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 	private ASTNode completionNode;
 
-	private final static Comparator modelElementComparator = new Comparator() {
+	private final Comparator modelElementComparator = new Comparator() {
 
 		Collator collator = Collator.getInstance(Locale.ENGLISH);
 
@@ -96,16 +96,25 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			if (arg0 instanceof IModelElement && arg1 instanceof IModelElement) {
 				IModelElement me1 = (IModelElement) arg1;
 				IModelElement me2 = (IModelElement) arg0;
-				return -collator.compare(me1.getElementName(), me2
+				int r = -collator.compare(me1.getElementName(), me2
 						.getElementName());
+				if (r == 0) {
+					// prefer elements from current module
+					if (me1.getAncestor(IModelElement.SOURCE_MODULE).equals(currentModule))
+						return 1;			
+					if (me2.getAncestor(IModelElement.SOURCE_MODULE).equals(currentModule))
+						return -1;
+				} else
+					return r;
 			}
 			return 0;
 		}
 
-	};;
+	};
+
+	private ISourceModule currentModule;;
 
 	public RubyCompletionEngine() {
-		// super(nameEnvironment, requestor, settings, dltkProject);
 		this.inferencer = new DLTKTypeInferenceEngine();
 		this.model = RubyMixinModel.getRawInstance();
 		try {
@@ -113,7 +122,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					.getSourceParser(RubyNature.NATURE_ID);
 		} catch (CoreException e) {
 			throw new RuntimeException(
-					"Failed to initialize RubyCompletionEnfine", e);
+					"Failed to initialize RubyCompletionEngine", e);
 		}
 	}
 
@@ -189,6 +198,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	public void complete(ISourceModule module, int position, int i) {
+		this.currentModule = module;
 		if (Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_BUILD).length > 0) {
 			this.requestor.completionFailure(new DefaultProblem(null,
 					"Please wait until building is ready...", 0, null,
@@ -674,16 +684,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				for (int i = 0; i < params.length; ++i) {
 					args[i] = params[i].toCharArray();
 				}
-				proposal.setParameterNames(args);
-
-				// String replacement = new String(name) + "("; //XXX!
-				// for (int i = 0; i < params.length; i++) {
-				// replacement += params[i];
-				// if (i != params.length - 1)
-				// replacement += ", ";
-				// }
-				// replacement += ")";
-				// compl = replacement.toCharArray();
+				proposal.setParameterNames(args);				
 			}
 
 			proposal.setModelElement(method);

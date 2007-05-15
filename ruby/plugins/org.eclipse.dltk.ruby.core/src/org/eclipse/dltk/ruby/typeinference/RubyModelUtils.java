@@ -234,6 +234,69 @@ public class RubyModelUtils {
 
 		return (IField[]) result.toArray(new IField[result.size()]);
 	}
+	
+	
+	private static List handleSpecialMethod(RubyMixinMethod method, RubyMixinClass selfKlass) {
+		if (method.getKey().equals("Class%{new")) {
+			RubyMixinMethod init = selfKlass.getInstanceClass()
+					.getMethod("initialize");
+			if (init != null) {
+				IMethod[] initMethods = init.getSourceMethods();
+				List result = new ArrayList ();
+				for (int i = 0; i < initMethods.length; i++) {					
+					try {
+						String[] parameters = initMethods[i].getParameters();
+						String[] parameterInitializers = initMethods[i]
+						                                             .getParameterInitializers();
+						int flags = initMethods[i].getFlags();
+						ISourceRange sourceRange = initMethods[i].getSourceRange();
+						ISourceRange nameRange = initMethods[i].getNameRange();
+						IModelElement parent = initMethods[i].getParent();
+						FakeMethod newMethod = new FakeMethod(
+								(ModelElement) parent, "new",
+								sourceRange.getOffset(), sourceRange.getLength(),
+								nameRange.getOffset(), nameRange.getLength());
+						newMethod.setParameters(parameters);
+						newMethod.setParameterInitializers(parameterInitializers);
+						newMethod.setFlags(flags);
+						String receiver = "";
+						if (parent instanceof IType) {
+							IType type = (IType) parent;
+							receiver = type.getTypeQualifiedName("::");
+						}
+						newMethod.setReceiver(receiver);
+						result.add(newMethod);
+					} catch (ModelException e) {
+						e.printStackTrace();						
+					}
+				}
+				return result;
+			}
+		}
+		return null;
+	}
+	
+	public static List getAllSourceMethods(RubyMixinMethod[] methods, RubyMixinClass selfKlass) {
+		List result = new ArrayList ();
+		for (int i = 0; i < methods.length; i++) {
+			if (selfKlass != null) {
+				List m = handleSpecialMethod(methods[i], selfKlass);
+				if (m != null) {
+					result.addAll(m);
+					continue;
+				}
+			}
+			IMethod[] sourceMethods = methods[i].getSourceMethods();			
+			for (int j = 0; j < sourceMethods.length; j++) {
+				if (sourceMethods[j] != null/*
+						&& sourceMethods[j].getElementName()
+								.startsWith(prefix)*/) {				
+					result.add(sourceMethods[j]);
+				}
+			}			
+		}
+		return result;
+	}
 
 	public static IMethod[] searchClassMethods(
 			org.eclipse.dltk.core.ISourceModule modelModule,
@@ -247,18 +310,7 @@ public class RubyModelUtils {
 			if (rubyClass != null) {
 				RubyMixinMethod[] methods = rubyClass.findMethods(prefix,
 						(prefix.length() > 0));
-				for (int i = 0; i < methods.length; i++) {
-					IMethod[] sourceMethods = methods[i].getSourceMethods();
-					if (sourceMethods != null) {
-						for (int j = 0; j < sourceMethods.length; j++) {
-							if (sourceMethods[j] != null
-									&& sourceMethods[j].getElementName()
-											.startsWith(prefix)) {
-								result.add(sourceMethods[j]);
-							}
-						}
-					}
-				}
+				result.addAll(getAllSourceMethods(methods, rubyClass));
 			}
 
 		} else if (type instanceof AmbiguousType) {

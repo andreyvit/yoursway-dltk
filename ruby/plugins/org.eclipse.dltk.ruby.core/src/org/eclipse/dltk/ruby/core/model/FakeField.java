@@ -22,7 +22,7 @@ public class FakeField extends SourceField {
 	private int offset;
 	private int length;
 	
-	public FakeField(ModelElement parent, String name,int offset,int length) {
+	public FakeField(ModelElement parent, String name, int offset, int length) {
 		super(parent, name);
 		this.offset=offset;
 		this.length=length;

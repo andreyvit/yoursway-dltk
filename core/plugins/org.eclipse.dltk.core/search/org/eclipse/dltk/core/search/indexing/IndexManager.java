@@ -21,15 +21,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.zip.CRC32;
 
+import org.eclipse.core.internal.events.BuildManager;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
@@ -50,6 +53,7 @@ import org.eclipse.dltk.core.search.index.Index;
 import org.eclipse.dltk.internal.core.DLTKProject;
 import org.eclipse.dltk.internal.core.Model;
 import org.eclipse.dltk.internal.core.ModelManager;
+import org.eclipse.dltk.internal.core.builder.ScriptBuilder;
 import org.eclipse.dltk.internal.core.search.PatternSearchJob;
 import org.eclipse.dltk.internal.core.search.processing.IJob;
 import org.eclipse.dltk.internal.core.search.processing.JobManager;
@@ -57,6 +61,7 @@ import org.eclipse.dltk.internal.core.util.Messages;
 import org.eclipse.dltk.internal.core.util.Util;
 
 public class IndexManager extends JobManager implements IIndexConstants {
+	private static final String SPECIAL_MIXIN = "#special#mixin#";
 	public SimpleLookupTable indexLocations = new SimpleLookupTable();
 	/*
 	 * key = an IPath, value = an Index
@@ -673,6 +678,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		if (workspace == null)
 			return;
+
 		Object target = Model.getTarget(workspace.getRoot(), containerPath,
 				true);
 		if (target == null) {
@@ -685,8 +691,9 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		IndexRequest request = null;
 		if (target instanceof IProject) {
 			IProject p = (IProject) target;
-			if (DLTKProject.hasScriptNature(p))
+			if (DLTKProject.hasScriptNature(p)) {
 				request = new IndexAllProject(p, this);
+			}
 		} else if (target instanceof IFolder) {
 			// request = new IndexBinaryFolder((IFolder) target, this);
 			return;

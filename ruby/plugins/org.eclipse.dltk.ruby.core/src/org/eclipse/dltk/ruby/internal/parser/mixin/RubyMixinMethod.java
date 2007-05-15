@@ -13,8 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.dltk.core.IMethod;
+import org.eclipse.dltk.core.ISourceRange;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
+import org.eclipse.dltk.internal.core.ModelElement;
+import org.eclipse.dltk.ruby.core.model.FakeMethod;
 
 public class RubyMixinMethod implements IRubyMixinElement {
 
@@ -27,12 +31,13 @@ public class RubyMixinMethod implements IRubyMixinElement {
 		this.model = model;
 		this.key = key;
 	}
-	
-	public String getName () {
+
+	public String getName() {
 		return key.substring(key.lastIndexOf(MixinModel.SEPARATOR) + 1);
 	}
-	
-	public RubyMixinMethod(RubyMixinModel model, String key, IMethod[] sourceMethods) {
+
+	public RubyMixinMethod(RubyMixinModel model, String key,
+			IMethod[] sourceMethods) {
 		super();
 		this.model = model;
 		this.key = key;
@@ -42,8 +47,8 @@ public class RubyMixinMethod implements IRubyMixinElement {
 	public String getKey() {
 		return key;
 	}
-	
-	public RubyMixinClass getSelfType () {
+
+	public RubyMixinClass getSelfType() {
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		IMixinElement parent = mixinElement.getParent();
 		if (parent == null)
@@ -51,42 +56,40 @@ public class RubyMixinMethod implements IRubyMixinElement {
 		IRubyMixinElement rubyParent = model.createRubyElement(parent);
 		if (rubyParent instanceof RubyMixinClass) {
 			return (RubyMixinClass) rubyParent;
-		}		
-		return null;	
+		}
+		return null;
 	}
-	
+
 	/**
-	 * Allows to set precalculated source methods and not use mixin 
-	 * model to find them.
+	 * Allows to set precalculated source methods and not use mixin model to
+	 * find them.
 	 */
 	public void setSourceMethods(IMethod[] sourceMethods) {
 		this.sourceMethods = sourceMethods;
 	}
 
 	/**
-	 * Returns model elements for this method. If they
-	 * were previously saved using setSourceMethods() or
-	 * constructor, then exactly they are returned. Else
-	 * mixin model are used.
+	 * Returns model elements for this method. If they were previously saved
+	 * using setSourceMethods() or constructor, then exactly they are returned.
+	 * Else mixin model are used.
 	 */
-	public IMethod[] getSourceMethods () {
+	public IMethod[] getSourceMethods() {
 		if (this.sourceMethods != null)
-			return sourceMethods;
-		List result = new ArrayList ();
+			return sourceMethods;		
+		List result = new ArrayList();
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		Object[] allObjects = mixinElement.getAllObjects();
 		for (int i = 0; i < allObjects.length; i++) {
 			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
 			if (info.getKind() == RubyMixinElementInfo.K_METHOD) {
-				result.add (info.getObject());							
-			}		
+				result.add(info.getObject());
+			}
 		}
 		return (IMethod[]) result.toArray(new IMethod[result.size()]);
 	}
-	
 
-	public RubyMixinVariable[] getFields () {
-		List result = new ArrayList ();
+	public RubyMixinVariable[] getFields() {
+		List result = new ArrayList();
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		IMixinElement[] children = mixinElement.getChildren();
 		for (int i = 0; i < children.length; i++) {
@@ -94,7 +97,8 @@ public class RubyMixinMethod implements IRubyMixinElement {
 			if (element instanceof RubyMixinVariable)
 				result.add(element);
 		}
-		return (RubyMixinVariable[]) result.toArray(new RubyMixinVariable[result.size()]);
+		return (RubyMixinVariable[]) result
+				.toArray(new RubyMixinVariable[result.size()]);
 	}
 
 }

@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.WeakHashMap;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -23,8 +24,12 @@ import org.eclipse.dltk.ruby.core.RubyNature;
 
 public class RiHelper {
 	private static RiHelper instance;
-	
+
 	private final static boolean[] busy = new boolean[] { false };
+
+	private Process process;
+
+	private WeakHashMap cache = new WeakHashMap();
 
 	public static RiHelper getInstance() {
 		if (instance == null) {
@@ -37,19 +42,23 @@ public class RiHelper {
 	protected RiHelper() {
 
 	}
-	
+
 	public String getDocFor(String keyword) {
+		Object cached = cache.get(keyword);
+		if (cached != null)
+			return (String) cached;
 		synchronized (busy) {
 			while (busy[0]) {
 				try {
-//					System.out.println("Ri is busy, waiting...");
+// System.out.println("Ri is busy, killing...");
+					process.destroy();
 					busy.wait();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 					return "";
 				}
 			}
-//			System.out.println("Fetching doc from ri...");
+// System.out.println("Fetching doc from ri...");
 			busy[0] = true;
 		}
 		IInterpreterInstall install = DLTKLaunchUtil
@@ -65,11 +74,10 @@ public class RiHelper {
 		OutputStreamWriter output = null;
 
 		String result = null;
-		
+
 		try {
 			try {
-				Process process = DebugPlugin.exec(cmdLine, null);
-
+				process = DebugPlugin.exec(cmdLine, null);
 				input = new BufferedReader(new InputStreamReader(process
 						.getInputStream()));
 
@@ -78,7 +86,7 @@ public class RiHelper {
 				while ((line = input.readLine()) != null) {
 					sb.append(line);
 					sb.append('\n');
-					
+
 				}
 
 				result = sb.toString();
@@ -98,12 +106,15 @@ public class RiHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		synchronized (busy) {
-//			System.out.println("Doc from ri successfully fetched");
+// System.out.println("Doc from ri successfully fetched");
 			busy[0] = false;
 			busy.notify();
 		}
+
+		if (result != null && result.length() > 0)
+			cache.put(keyword, result);
 
 		return result;
 	}

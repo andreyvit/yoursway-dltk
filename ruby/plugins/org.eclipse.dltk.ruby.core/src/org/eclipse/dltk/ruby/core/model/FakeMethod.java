@@ -10,9 +10,11 @@
 package org.eclipse.dltk.ruby.core.model;
 
 import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.SourceMethod;
+import org.eclipse.dltk.internal.core.SourceRange;
 
 public class FakeMethod extends SourceMethod {
 
@@ -25,6 +27,16 @@ public class FakeMethod extends SourceMethod {
 	private String[] parameterInitializers = NO_STRINGS;
 	
 	private int flags;
+
+	private int offset;
+
+	private int length;
+	
+	private boolean hasSpecialOffsets = false;
+
+	private int nameOffset;
+
+	private int nameLength;
 	
 	public String getReceiver() {
 		return receiver;
@@ -38,6 +50,27 @@ public class FakeMethod extends SourceMethod {
 		super(parent, name);
 	}
 
+	public FakeMethod(ModelElement parent, String name, int offset, int length, int nameOffset, int nameLength) {
+		super(parent, name);
+		this.offset = offset;
+		this.length = length;
+		this.nameOffset = nameOffset;
+		this.nameLength = nameLength;
+		hasSpecialOffsets = true;
+	}
+	
+	public ISourceRange getNameRange() throws ModelException {
+		if (hasSpecialOffsets)
+			return new SourceRange(nameOffset, nameLength);
+		return super.getNameRange();
+	}
+
+	public ISourceRange getSourceRange() throws ModelException {
+		if (hasSpecialOffsets)
+			return new SourceRange(offset,length);
+		return super.getSourceRange();
+	}
+	
 	public IDLTKProject getScriptProject() {		
 		return parent.getScriptProject();
 	}
