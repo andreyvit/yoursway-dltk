@@ -12,17 +12,27 @@ package org.eclipse.dltk.ruby.internal.ui.docs;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.WeakHashMap;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.launching.DLTKLaunchUtil;
 import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.eclipse.dltk.launching.IInterpreterInstallChangedListener;
+import org.eclipse.dltk.launching.PropertyChangeEvent;
+import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.dltk.ruby.core.RubyNature;
+import org.eclipse.dltk.ruby.internal.ui.RubyUI;
+import org.eclipse.dltk.utils.DeployHelper;
 
 public class RiHelper {
+	private final static String SUFFIX = "DLTKDOCEND";
+	
 	private static RiHelper instance;
 
 	private final static boolean[] busy = new boolean[] { false };
@@ -30,6 +40,30 @@ public class RiHelper {
 	private Process process;
 
 	private WeakHashMap cache = new WeakHashMap();
+
+	private InputStream inputStream;
+
+	private OutputStream outputStream;
+
+	private InputStreamReader inputReader;
+
+	IInterpreterInstallChangedListener interpreterInstallChangedListener = new IInterpreterInstallChangedListener() {
+
+		public void defaultInterpreterInstallChanged(
+				IInterpreterInstall previous, IInterpreterInstall current) {
+			if (process != null) {
+				process.destroy();
+				process = null;
+			}
+		}
+
+		public void interpreterAdded(IInterpreterInstall Interpreter) {}
+
+		public void interpreterChanged(PropertyChangeEvent event) {}
+
+		public void interpreterRemoved(IInterpreterInstall Interpreter) {}
+		
+	};
 
 	public static RiHelper getInstance() {
 		if (instance == null) {
@@ -39,83 +73,83 @@ public class RiHelper {
 		return instance;
 	}
 
-	protected RiHelper() {
-
+	protected RiHelper() {		
+		ScriptRuntime.addInterpreterInstallChangedListener(interpreterInstallChangedListener);
+	}
+	
+	private void checkProcess() {
+		boolean requireCreation = false;
+		if (process == null)
+			requireCreation = true;
+		else {
+			try {
+				process.exitValue();
+				requireCreation = true;
+			} catch (IllegalThreadStateException e) {
+				// ok, process is alive
+			}			
+		}
+		if (requireCreation) {
+			process = null;
+			IInterpreterInstall install = DLTKLaunchUtil
+			.getDefaultInterpreterInstall(RubyNature.NATURE_ID);
+			IPath deployedPath;
+			try {
+				deployedPath = DeployHelper.deploy(RubyUI.getDefault(), "support/").append("dltkri.rb");
+				String irbPath = deployedPath.toFile().getAbsolutePath();
+				process = DebugPlugin.exec(new String[] {
+						install.getInstallLocation().getAbsolutePath(),
+						irbPath
+					}, null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+			if (process != null) {
+				inputStream = process.getInputStream();
+				outputStream = process.getOutputStream();
+				inputReader = new InputStreamReader(inputStream);
+			}
+		}
 	}
 
-	public String getDocFor(String keyword) {
+	public synchronized String getDocFor(String keyword) {		
 		Object cached = cache.get(keyword);
 		if (cached != null)
 			return (String) cached;
-		synchronized (busy) {
-			while (busy[0]) {
-				try {
-// System.out.println("Ri is busy, killing...");
-					process.destroy();
-					busy.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					return "";
-				}
-			}
-// System.out.println("Fetching doc from ri...");
-			busy[0] = true;
-		}
-		IInterpreterInstall install = DLTKLaunchUtil
-				.getDefaultInterpreterInstall(RubyNature.NATURE_ID);
-
-		File interpreterPath = install.getInstallLocation();
-
-		String[] cmdLine = new String[] { interpreterPath.toString(),
-				interpreterPath.getParent() + File.separator + "ri",
-				"--format", "html", keyword };
-
-		BufferedReader input = null;
-		OutputStreamWriter output = null;
-
-		String result = null;
-
-		try {
+		
+		String result = null;			
+		
+		checkProcess();
+		
+		if (process != null) {			
 			try {
-				process = DebugPlugin.exec(cmdLine, null);
-				input = new BufferedReader(new InputStreamReader(process
-						.getInputStream()));
-
-				StringBuffer sb = new StringBuffer();
-				String line = null;
-				while ((line = input.readLine()) != null) {
-					sb.append(line);
-					sb.append('\n');
-
+				outputStream.write((keyword + "\n").getBytes());
+				outputStream.flush();
+				char data[] = new char[100000]; // 100 kb is enoght for ANY rdoc 
+				int pos = 0;
+				while (true) {
+					if (pos >= SUFFIX.length()) {
+						String suffix = String.copyValueOf(data, pos - SUFFIX.length(), SUFFIX.length());
+						if (suffix.equals(SUFFIX))
+							break;
+					}
+					int c = inputReader.read();
+					if (c < 0)
+						break;
+					data[pos++] = (char) c;
 				}
-
-				result = sb.toString();
-			} finally {
-				if (output != null) {
-					output.close();
-				}
-
-				if (input != null) {
-					input.close();
-				}
+				result = String.valueOf(data, 0, pos - SUFFIX.length());
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-
-		synchronized (busy) {
-// System.out.println("Doc from ri successfully fetched");
-			busy[0] = false;
-			busy.notify();
-		}
-
+						
 		if (result != null && result.length() > 0)
 			cache.put(keyword, result);
 
 		return result;
 	}
+	
 }

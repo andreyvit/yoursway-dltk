@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.mixin.IMixinElement;
@@ -170,6 +171,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 
 	public RubyMixinMethod[] findMethods(String prefix, boolean includeTopLevel) {
 		final List result = new ArrayList();
+		final Set names = new HashSet(); // for overload checks
 		
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		if (mixinElement == null)
@@ -179,7 +181,9 @@ public class RubyMixinClass implements IRubyMixinElement {
 			if (children[i].getLastKeySegment().startsWith(prefix)) {
 				IRubyMixinElement element = model.createRubyElement(children[i]);
 				if (element instanceof RubyMixinMethod) {
+						RubyMixinMethod rubyMixinMethod = (RubyMixinMethod) element;
 						result.add(element);
+						names.add(rubyMixinMethod.getName());
 				}
 			}
 		}
@@ -187,7 +191,12 @@ public class RubyMixinClass implements IRubyMixinElement {
 		RubyMixinClass[] included = this.getIncluded();
 		for (int i = 0; i < included.length; i++) {
 			RubyMixinMethod[] methods = included[i].findMethods(prefix, includeTopLevel);
-			result.addAll(Arrays.asList(methods));
+			for (int j = 0; j < methods.length; j++) {
+				if (!names.contains(methods[j].getName())) {
+					result.add(methods[j]);
+					names.add(methods[j].getName());
+				}
+			}
 		}
 		
 		if (!this.key.endsWith(RubyMixin.VIRTUAL_SUFFIX)) {		
@@ -197,7 +206,12 @@ public class RubyMixinClass implements IRubyMixinElement {
 				if (!superclass.getKey().equals(key)) {
 					RubyMixinMethod[] methods = superclass.findMethods(prefix,
 							includeTopLevel);
-					result.addAll(Arrays.asList(methods));
+					for (int j = 0; j < methods.length; j++) {
+						if (!names.contains(methods[j].getName())) {
+							result.add(methods[j]);
+							names.add(methods[j].getName());
+						}
+					}
 				}
 			}
 		}
