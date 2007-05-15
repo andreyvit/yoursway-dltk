@@ -32,8 +32,11 @@ public class DbgpExtendedCommands extends DbgpBaseCommands implements
 	private static final String EXPR_COMMAND = "expr";
 
 	private IDbgpProperty parseResponse(Element response) {
-		NodeList list = response.getElementsByTagName("property");
-		return DbgpXmlEntityParser.parseProperty((Element) list.item(0));
+		if (DbgpXmlParser.parseSuccess(response)) {
+			NodeList list = response.getElementsByTagName("property");
+			return DbgpXmlEntityParser.parseProperty((Element) list.item(0));
+		}
+		return null;
 	}
 
 	public DbgpExtendedCommands(IDbgpCommunicator communicator)

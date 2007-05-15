@@ -170,4 +170,8 @@ public class ScriptVariable extends ScriptDebugElement implements
 	public String getFullName() {
 		return property.getFullName();
 	}
+	
+	public String getKey() {
+		return property.getKey();
+	}
 }

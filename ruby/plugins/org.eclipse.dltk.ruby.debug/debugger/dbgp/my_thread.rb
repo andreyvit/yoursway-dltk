@@ -179,7 +179,10 @@ private
             }
     
             # TODO: correct this later
-            properties << make_property('self', @stack.eval('self', depth))  
+            self_var = @stack.eval('self', depth)
+            unless self_var.nil?
+                properties << make_property('self', self_var)  
+            end
         end
 
         # Global variables
@@ -213,11 +216,20 @@ private
     end
 
     def property_set(name, depth, value)
-        # TODO: Check value type, String => "" 
-        t = name + ' = ' + value.to_s
-        logger.puts('String to evaluate: ' + t)
-        @stack.eval(t, depth)
-        { 'success' => true }
+        success = true
+        begin
+            command = name + ' = ' + value.to_s
+            logger.puts('String to evaluate: ' + command)
+            @stack.eval(command, depth)
+        rescue Exception
+            success = false
+        end
+
+        { 'success' => success }
+    end
+
+    def property_value
+        {}
     end
 
 
@@ -268,7 +280,7 @@ private
     def stack_get(depth = nil)
         levels = []
         @stack.depth.times { |i|
-            level = @stack.get(i)
+            level = @stack[i]
             levels << { 'level'    => i,
                         'type'     => 'source',
                         'filename' => 'file:///' + level['file'],
@@ -323,6 +335,19 @@ private
         logger.puts("Configure stderr: #{value}")
 
         { 'success' => 1 }
+    end
+
+    def eval_handler(expression)
+        success = true
+        property = nil
+        begin
+            property = make_property(expression, @stack.eval(expression))        
+        rescue Exception
+            success = false
+        end
+    
+        { 'success'  => success, 
+          'property' => property }
     end
 
     def dispatch_command(command)
@@ -420,9 +445,8 @@ private
                 property_set(name, depth, value) 
 
             when 'property_value'
-                # TODO:
-                {}
-        
+                property_value                
+
             # Stack commands
             when 'stack_get'
                 depth = command.arg('-d')   
@@ -447,6 +471,10 @@ private
             when 'stderr'
                 value = command.arg('-c').to_i
                 stderr_configure(value)
+
+            when 'eval'
+                expression = command.data
+                eval_handler(expression)
         end
 
         unless data.nil?
@@ -564,7 +592,9 @@ public
                             @last_continuation_command = @command
                         end
 
-                        data = dispatch_command(@command) 
+                        data = dispatch_command(@command)
+
+                        logger.puts('Data: ' + data.inspect) 
 
                         if data.nil?
                             break

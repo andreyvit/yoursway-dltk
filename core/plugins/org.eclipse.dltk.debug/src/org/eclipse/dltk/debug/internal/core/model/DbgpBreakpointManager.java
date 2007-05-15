@@ -13,11 +13,24 @@ import java.net.URI;
 
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IBreakpointListener;
 import org.eclipse.debug.core.IBreakpointManager;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IBreakpoint;
+import org.eclipse.debug.core.model.IDebugElement;
+import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IThread;
+import org.eclipse.debug.core.model.IValue;
+import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.debug.core.model.IWatchExpressionResult;
+import org.eclipse.dltk.dbgp.IDbgpProperty;
+import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.breakpoints.DbgpBreakpointConfig;
 import org.eclipse.dltk.dbgp.commands.IDbgpBreakpointCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
@@ -25,6 +38,7 @@ import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
+import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 
 public class DbgpBreakpointManager implements IBreakpointListener {
@@ -208,23 +222,39 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 		this.threadManager = manager;
 	}
 
-	public void setupDeferredBreakpoints(IScriptThread thread)
+	public void setupDeferredBreakpoints(final IScriptThread thread)
 			throws CoreException {
-		IBreakpoint[] breakpoints = getBreakpointManager().getBreakpoints(
-				ScriptModelConstants.MODEL_ID);
+		
+		Job job = new Job("Evaluation of expression") {
+			protected IStatus run(IProgressMonitor monitor) {
+				IBreakpoint[] breakpoints = getBreakpointManager().getBreakpoints(
+						ScriptModelConstants.MODEL_ID);
 
-		for (int i = 0; i < breakpoints.length; i++) {
-			IBreakpoint breakpoint = breakpoints[i];
+				for (int i = 0; i < breakpoints.length; i++) {
+					IBreakpoint breakpoint = breakpoints[i];
 
-			if (supportsBreakpoint(breakpoint)) {
-				try {
-					addBreakpoint(getBreakpointCommands(thread),
-							(IScriptBreakpoint) breakpoint);
-				} catch (DbgpException e) {
-					breakpoint.delete();
+					if (supportsBreakpoint(breakpoint)) {
+						try {
+							addBreakpoint(getBreakpointCommands(thread),
+									(IScriptBreakpoint) breakpoint);
+						} catch (Exception e) {
+							try {
+								breakpoint.delete();
+							} catch (CoreException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						} 
+					}
 				}
+				
+				return Status.OK_STATUS;
 			}
-		}
+		};
+		
+		job.setSystem(true);
+		job.setUser(false);
+		job.schedule();
 	}
 
 	public void setupTemporaryBreakpoint(URI uri, int lineNumber)

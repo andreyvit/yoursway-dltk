@@ -51,20 +51,23 @@ module XoredDebugger
         end
 
         def print_property(m)
-            value = ''
+            if m.nil?
+                return ''
+            end
+
             children = m['children_props']
             unless children.nil?
                 value = children.collect { |p| print_property(p) }.join("\n")
-            end
-            
-            sprintf('<property name="%s" fullname="%s" type="%s" constant="%d" children="%d" encoding="base64" key="%s">%s</property>',
+                
+                sprintf('<property name="%s" fullname="%s" type="%s" constant="%d" children="%d" encoding="base64" key="%s">%s</property>',
                     m['name'], 
                     m['eval_name'], 
                     m['type'].to_s,
                     bool_to_bit(m['is_cosntant']),
                     bool_to_bit(m['has_children']), 
                     m['key'].to_s,
-                    value.empty? ? Base64.encode64(m['value']) : value)
+                    value.empty? ? Base64.encode64(m['value'].nil? ? 'nil' : m['value']) : value)
+            end
         end
 
         def print_continuation(command, m)
@@ -239,6 +242,13 @@ module XoredDebugger
         def print_breakpoint_list(m)
             # TODO:
         end
+
+        # Extended commands
+        def print_eval(m)
+            sprintf('<response command="eval" transaction_id="%d" success="%s">%s</response>',
+                m['id'], m['success'] ? '1' : '0', print_property(m['property'])) 
+        end
+
     end # class Printer
 
 end # module

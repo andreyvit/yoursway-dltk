@@ -158,5 +158,29 @@
   <extension point="org.eclipse.debug.ui.debugModelContextBindings">
 	<modelContextBinding contextId="org.eclipse.dltk.debug.ui.debugging" debugModelId="org.eclipse.dltk.debug.rubyModel"></modelContextBinding>
  </extension>
+  <extension
+        point="org.eclipse.core.runtime.adapters">
+     <factory
+           adaptableType="org.eclipse.dltk.debug.core.model.IScriptStackFrame"
+           class="org.eclipse.dltk.ruby.internal.debug.ui.RubyAdapterFactory">
+        <adapter
+              type="org.eclipse.debug.internal.ui.viewers.model.provisional.IColumnPresentationFactory">
+        </adapter>
+     </factory>
+     <factory
+           adaptableType="org.eclipse.dltk.debug.core.model.IScriptVariable"
+           class="org.eclipse.dltk.ruby.internal.debug.ui.RubyAdapterFactory">
+        <adapter
+              type="org.eclipse.debug.internal.ui.viewers.model.provisional.IElementLabelProvider">
+        </adapter>
+     </factory>
+  </extension>
+  <extension
+        point="org.eclipse.debug.core.watchExpressionDelegates">
+     <watchExpressionDelegate
+           debugModel="org.eclipse.dltk.debug.rubyModel"
+           delegateClass="org.eclipse.dltk.ruby.internal.debug.ui.RubyWatchExpressionDelegate">
+     </watchExpressionDelegate>
+  </extension>
  
 </plugin>

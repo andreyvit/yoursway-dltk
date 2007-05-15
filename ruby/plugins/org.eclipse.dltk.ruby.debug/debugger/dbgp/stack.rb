@@ -41,12 +41,12 @@ module XoredDebugger
             @levels.pop
         end
 
-        def get(index)
+        def [] (index)
             @levels[depth - 1 - index]
         end
         
         def eval(text, index = 0)
-            Kernel.eval(text, get(index)['binding'])
+            Kernel.eval(text, self[index]['binding'])
         end
 
         def depth

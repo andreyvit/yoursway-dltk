@@ -24,4 +24,6 @@ public interface IScriptVariable extends IVariable {
 	String getFullName();
 
 	IScriptVariable[] getChildren();
+	
+	String getKey();
 }
