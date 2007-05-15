@@ -26,6 +26,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchSite;
 import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.actions.CloseResourceAction;
+import org.eclipse.ui.actions.CloseUnrelatedProjectsAction;
 import org.eclipse.ui.ide.IDEActionFactory;
 
 
@@ -44,7 +45,7 @@ public class ProjectActionGroup extends ActionGroup {
 
 	private OpenProjectAction fOpenAction;
 	private CloseResourceAction fCloseAction;
-//	private CloseResourceAction fCloseUnrelatedAction;
+	private CloseResourceAction fCloseUnrelatedAction;
 
 	/**
 	 * Creates a new <code>ProjectActionGroup</code>. The group requires
@@ -62,11 +63,9 @@ public class ProjectActionGroup extends ActionGroup {
 		fCloseAction= new CloseResourceAction(shell);
 		fCloseAction.setActionDefinitionId("org.eclipse.ui.project.closeProject"); //$NON-NLS-1$
 		
-		/*
-		 * XXX: see https://bugs.eclipse.org/bugs/show_bug.cgi?id=128386
-		 */
-//		fCloseUnrelatedAction= new CloseUnrelatedProjectsAction(shell);
-//		fCloseUnrelatedAction.setActionDefinitionId("org.eclipse.ui.project.closeUnrelatedProjects"); //$NON-NLS-1$
+
+		fCloseUnrelatedAction= new CloseUnrelatedProjectsAction(shell);
+		fCloseUnrelatedAction.setActionDefinitionId("org.eclipse.ui.project.closeUnrelatedProjects"); //$NON-NLS-1$
 		
 		fOpenAction= new OpenProjectAction(fSite);
 		fOpenAction.setActionDefinitionId("org.eclipse.ui.project.openProject"); //$NON-NLS-1$
@@ -74,15 +73,15 @@ public class ProjectActionGroup extends ActionGroup {
 			IStructuredSelection s= (IStructuredSelection)selection;
 			fOpenAction.selectionChanged(s);
 			fCloseAction.selectionChanged(s);
-//			fCloseUnrelatedAction.selectionChanged(s);
+			fCloseUnrelatedAction.selectionChanged(s);
 		}
 		provider.addSelectionChangedListener(fOpenAction);
 		provider.addSelectionChangedListener(fCloseAction);
-//		provider.addSelectionChangedListener(fCloseUnrelatedAction);
+		provider.addSelectionChangedListener(fCloseUnrelatedAction);
 		IWorkspace workspace= ResourcesPlugin.getWorkspace();
 		workspace.addResourceChangeListener(fOpenAction);
 		workspace.addResourceChangeListener(fCloseAction);
-//		workspace.addResourceChangeListener(fCloseUnrelatedAction);
+		workspace.addResourceChangeListener(fCloseUnrelatedAction);
 	}
 	
 	/* (non-Javadoc)
@@ -91,7 +90,7 @@ public class ProjectActionGroup extends ActionGroup {
 	public void fillActionBars(IActionBars actionBars) {
 		super.fillActionBars(actionBars);
 		actionBars.setGlobalActionHandler(IDEActionFactory.CLOSE_PROJECT.getId(), fCloseAction);
-//		actionBars.setGlobalActionHandler(IDEActionFactory.CLOSE_UNRELATED_PROJECTS.getId(), fCloseUnrelatedAction);
+		actionBars.setGlobalActionHandler(IDEActionFactory.CLOSE_UNRELATED_PROJECTS.getId(), fCloseUnrelatedAction);
 		actionBars.setGlobalActionHandler(IDEActionFactory.OPEN_PROJECT.getId(), fOpenAction);
 	}
 	
@@ -104,8 +103,8 @@ public class ProjectActionGroup extends ActionGroup {
 			menu.appendToGroup(IContextMenuConstants.GROUP_BUILD, fOpenAction);
 		if (fCloseAction.isEnabled())
 			menu.appendToGroup(IContextMenuConstants.GROUP_BUILD, fCloseAction);
-//		if (fCloseUnrelatedAction.isEnabled() && areOnlyProjectsSelected(fCloseUnrelatedAction.getStructuredSelection()))
-//			menu.appendToGroup(IContextMenuConstants.GROUP_BUILD, fCloseUnrelatedAction);
+		if (fCloseUnrelatedAction.isEnabled() && areOnlyProjectsSelected(fCloseUnrelatedAction.getStructuredSelection()))
+			menu.appendToGroup(IContextMenuConstants.GROUP_BUILD, fCloseUnrelatedAction);
 	}
 
 	private boolean areOnlyProjectsSelected(IStructuredSelection selection) {
@@ -130,11 +129,11 @@ public class ProjectActionGroup extends ActionGroup {
 		ISelectionProvider provider= fSite.getSelectionProvider();
 		provider.removeSelectionChangedListener(fOpenAction);
 		provider.removeSelectionChangedListener(fCloseAction);
-//		provider.removeSelectionChangedListener(fCloseUnrelatedAction);
+		provider.removeSelectionChangedListener(fCloseUnrelatedAction);
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		workspace.removeResourceChangeListener(fOpenAction);
 		workspace.removeResourceChangeListener(fCloseAction);
-//		workspace.removeResourceChangeListener(fCloseUnrelatedAction);
+		workspace.removeResourceChangeListener(fCloseUnrelatedAction);
 		super.dispose();
 	}
 }

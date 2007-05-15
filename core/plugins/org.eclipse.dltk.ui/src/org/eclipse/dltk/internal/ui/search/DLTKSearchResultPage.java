@@ -10,6 +10,7 @@
 package org.eclipse.dltk.internal.ui.search;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
@@ -84,7 +85,7 @@ public class DLTKSearchResultPage extends AbstractTextSearchViewPage implements 
 	public static class DecoratorIgnoringViewerSorter extends ViewerSorter {
 
 		private final ILabelProvider fLabelProvider;
-		private Collator fNewCollator;
+		private Comparator fNewCollator;
 		
 
 		public DecoratorIgnoringViewerSorter(ILabelProvider labelProvider) {
@@ -102,26 +103,14 @@ public class DLTKSearchResultPage extends AbstractTextSearchViewPage implements 
 	            name2 = "";//$NON-NLS-1$
 	        return getNewCollator().compare(name1, name2);
 	    }
-	    
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.ViewerSorter#getCollator()
-		 */
-		public final java.text.Collator getCollator() {
-			// kept in for API compatibility
-			if (collator == null) {
-				collator= java.text.Collator.getInstance();
-			}
-			return collator;
-		}
 		
-		private final Collator getNewCollator() {
+		private final Comparator getNewCollator() {
 			if (fNewCollator == null) {
 				fNewCollator= Collator.getInstance();
 			}
 			return fNewCollator;
 		}
 	}
-
 		
 	private static final int DEFAULT_ELEMENT_LIMIT = 1000;
 	private static final String FALSE = "FALSE"; //$NON-NLS-1$

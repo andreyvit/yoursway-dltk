@@ -12,7 +12,6 @@ package org.eclipse.dltk.ui.text.completion;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IMember;
-import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ModelException;
 
 /**
@@ -23,7 +22,7 @@ public final class MethodProposalInfo extends MemberProposalInfo {
 	 * Fallback in case we can't match a generic method. The fall back is only
 	 * based on method name and number of parameters.
 	 */
-	private IMethod fFallbackMatch;
+//	private IMethod fFallbackMatch;
 
 	/**
 	 * Creates a new proposal info.

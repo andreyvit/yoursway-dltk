@@ -13,7 +13,6 @@ import java.util.Collection;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.internal.ui.dialogs.StatusInfo;
-import org.eclipse.jface.util.Assert;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 
 
@@ -47,7 +46,7 @@ public class TypedElementSelectionValidator implements ISelectionStatusValidator
 	 * @param rejectedElements A list of elements that are not accepted
 	 */
 	public TypedElementSelectionValidator(Class[] acceptedTypes, boolean allowMultipleSelection, Collection rejectedElements) {
-		Assert.isNotNull(acceptedTypes);
+		org.eclipse.core.runtime.Assert.isNotNull(acceptedTypes);
 		fAcceptedTypes= acceptedTypes;
 		fAllowMultipleSelection= allowMultipleSelection;
 		fRejectedElements= rejectedElements;

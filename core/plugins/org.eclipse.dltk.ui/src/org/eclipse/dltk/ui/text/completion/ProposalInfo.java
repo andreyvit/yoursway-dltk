@@ -24,12 +24,6 @@ import org.eclipse.dltk.ui.documentation.ScriptDocumentationAccess;
 public class ProposalInfo {
 	private boolean fScriptdocResolved = false;
 	private String fScriptdoc = null;
-	
-	private String hackMessage;
-	
-	public void setHackMessage(String message){
-		hackMessage = message;		 
-	}
 
 	protected IModelElement fElement;
 
@@ -88,15 +82,31 @@ public class ProposalInfo {
 		return null;
 	}
 
-	private String extractScriptdoc(String content) throws ModelException,
-			IOException {
-		if (content != null) {
-			//return ScriptDocumentationAccess.getHTMLContentReader(nature,
-					//content);
-		}
-
-		return null;
-	}
+//	private String extractScriptdoc(String content) throws ModelException,
+//			IOException {
+//		if (content != null && fElement != null ) {
+//			IDLTKLanguageToolkit languageToolkit = null;
+//			try {
+//				languageToolkit = DLTKLanguageManager.getLanguageToolkit(fElement);
+//			} catch (CoreException e) {
+//				if( DLTKCore.DEBUG ) {
+//					e.printStackTrace();
+//				}
+//				return null;
+//			}
+//			StringBuffer buffer = new StringBuffer();
+//			Reader reader = ScriptDocumentationAccess.getHTMLContentReader(languageToolkit.getNatureID(),
+//					content);
+//			HTMLPrinter.addParagraph(buffer, reader);
+//			if (buffer.length() > 0) {
+//				HTMLPrinter.addPageEpilog(buffer);
+//				return buffer.toString();
+//			}
+//			return null;
+//		}
+//
+//		return null;
+//	}
 
 	/**
 	 * Extracts the javadoc for the given <code>IMember</code> and returns it

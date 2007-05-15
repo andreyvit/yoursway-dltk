@@ -64,7 +64,7 @@ abstract class AbstractInfoView extends ViewPart implements ISelectionListener, 
 			| ScriptElementLabels.M_PARAMETER_TYPES | ScriptElementLabels.M_PARAMETER_NAMES | ScriptElementLabels.M_EXCEPTIONS
 			| ScriptElementLabels.F_PRE_TYPE_SIGNATURE | ScriptElementLabels.M_PRE_TYPE_PARAMETERS | ScriptElementLabels.T_TYPE_PARAMETERS
 			| ScriptElementLabels.USE_RESOLVED;
-	private final long LOCAL_VARIABLE_TITLE_FLAGS = TITLE_FLAGS & ~ScriptElementLabels.F_FULLY_QUALIFIED | ScriptElementLabels.F_POST_QUALIFIED;
+//	private final long LOCAL_VARIABLE_TITLE_FLAGS = TITLE_FLAGS & ~ScriptElementLabels.F_FULLY_QUALIFIED | ScriptElementLabels.F_POST_QUALIFIED;
 	/** ScriptElementLabels flags used for the tool tip text */
 	private static final long TOOLTIP_LABEL_FLAGS = ScriptElementLabels.DEFAULT_QUALIFIED | ScriptElementLabels.ROOT_POST_QUALIFIED
 			| ScriptElementLabels.APPEND_ROOT_PATH | ScriptElementLabels.M_PARAMETER_TYPES | ScriptElementLabels.M_PARAMETER_NAMES

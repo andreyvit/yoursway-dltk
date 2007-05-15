@@ -112,21 +112,21 @@ public class State {
 		return newState;
 	}
 
-	private static char[] readName(DataInputStream in) throws IOException {
-		int nLength = in.readInt();
-		char[] name = new char[nLength];
-		for (int j = 0; j < nLength; j++)
-			name[j] = in.readChar();
-		return name;
-	}
+//	private static char[] readName(DataInputStream in) throws IOException {
+//		int nLength = in.readInt();
+//		char[] name = new char[nLength];
+//		for (int j = 0; j < nLength; j++)
+//			name[j] = in.readChar();
+//		return name;
+//	}
 
-	private static char[][] readNames(DataInputStream in) throws IOException {
-		int length = in.readInt();
-		char[][] names = new char[length][];
-		for (int i = 0; i < length; i++)
-			names[i] = readName(in);
-		return names;
-	}
+//	private static char[][] readNames(DataInputStream in) throws IOException {
+//		int length = in.readInt();
+//		char[][] names = new char[length][];
+//		for (int i = 0; i < length; i++)
+//			names[i] = readName(in);
+//		return names;
+//	}
 
 	void tagAsNoopBuild() {
 		this.buildNumber = -1; // tag the project since it has no source
@@ -171,21 +171,21 @@ public class State {
 		}
 	}
 
-	private void writeName(char[] name, DataOutputStream out)
-			throws IOException {
-		int nLength = name.length;
-		out.writeInt(nLength);
-		for (int j = 0; j < nLength; j++)
-			out.writeChar(name[j]);
-	}
+//	private void writeName(char[] name, DataOutputStream out)
+//			throws IOException {
+//		int nLength = name.length;
+//		out.writeInt(nLength);
+//		for (int j = 0; j < nLength; j++)
+//			out.writeChar(name[j]);
+//	}
 
-	private void writeNames(char[][] names, DataOutputStream out)
-			throws IOException {
-		int length = names == null ? 0 : names.length;
-		out.writeInt(length);
-		for (int i = 0; i < length; i++)
-			writeName(names[i], out);
-	}
+//	private void writeNames(char[][] names, DataOutputStream out)
+//			throws IOException {
+//		int length = names == null ? 0 : names.length;
+//		out.writeInt(length);
+//		for (int i = 0; i < length; i++)
+//			writeName(names[i], out);
+//	}
 
 	/**
 	 * Returns a string representation of the receiver.

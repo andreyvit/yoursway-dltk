@@ -1078,7 +1078,7 @@ public class TypeHierarchy implements ITypeHierarchy, IElementChangedListener {
 			while ((b = (byte) input.read()) != SEPARATOR1 && b != -1) {
 				bytes = readUntil(input, SEPARATOR3, 1);
 				bytes[0] = b;
-				int subClass = new Integer(new String(bytes)).intValue();
+//				int subClass = new Integer(new String(bytes)).intValue();
 
 				// read super interface
 				bytes = readUntil(input, SEPARATOR1);

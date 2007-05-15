@@ -14,14 +14,13 @@ package org.eclipse.dltk.ui.editor;
 import java.util.Iterator;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.dltk.core.CorrectionEngine;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptModelMarker;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
 import org.eclipse.ui.texteditor.MarkerUtilities;
-
-
 
 public class ScriptMarkerAnnotation extends MarkerAnnotation implements IScriptAnnotation {
 
@@ -43,11 +42,8 @@ public class ScriptMarkerAnnotation extends MarkerAnnotation implements IScriptA
 	 */
 	public String[] getArguments() {
 		IMarker marker= getMarker();
-//		if (marker != null && marker.exists() && isProblem())
-//			return CorrectionEngine.getProblemArguments(marker);
-		if(DLTKCore.DEBUG) {
-			System.err.println("CorrectionEngine support for problem argumetns...");
-		}
+		if (marker != null && marker.exists() && isProblem())
+			return CorrectionEngine.getProblemArguments(marker);
 		return null;
 	}
 
@@ -64,11 +60,11 @@ public class ScriptMarkerAnnotation extends MarkerAnnotation implements IScriptA
 
 //		if (TASK_ANNOTATION_TYPE.equals(getAnnotationType())) {
 //			try {
-//				if (marker.isSubtypeOf(IJavaModelMarker.TASK_MARKER)) {
+//				if (marker.isSubtypeOf(IScriptModelMarker.TASK_MARKER)) {
 //					return IProblem.Task;
 //				}
 //			} catch (CoreException e) {
-//				JavaPlugin.log(e); // should no happen, we test for marker.exists
+//				DLTKUIPlugin.log(e); // should no happen, we test for marker.exists
 //			}
 //		}
 

@@ -125,7 +125,9 @@ public class ScriptReconcilingStrategy implements IReconcilingStrategy,
 	}
 
 	public void aboutToBeReconciled() {
-
+		if (fIsScriptReconcilingListener) {
+			fJavaReconcilingListener.aboutToBeReconciled();
+		}
 	}
 
 	public void setDocument(IDocument document) {
@@ -146,5 +148,8 @@ public class ScriptReconcilingStrategy implements IReconcilingStrategy,
 
 	public void initialReconcile() {
 		reconcile(true);
+	}
+	public void notifyListeners(boolean notify) {
+		fNotify= notify;
 	}
 }

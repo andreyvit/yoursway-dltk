@@ -39,8 +39,6 @@ import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.InterpreterStandin;
 import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.dltk.ui.PreferenceConstants;
-import org.eclipse.dltk.ui.preferences.NewDLTKProjectPreferencePage;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.wizard.WizardPage;
@@ -55,7 +53,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
 /**
@@ -214,73 +211,73 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 	 * Request a project layout.
 	 */
 	
-	private final class LayoutGroup implements Observer, SelectionListener {
-		private final SelectionButtonDialogField fStdRadio, fSrcBinRadio;
-		private final Group fGroup;
-		private final Link fPreferenceLink;
-
-		public LayoutGroup(Composite composite) {
-			fGroup = new Group(composite, SWT.NONE);
-			fGroup.setFont(composite.getFont());
-			fGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			fGroup.setLayout(initGridLayout(new GridLayout(3, false), true));
-			fGroup.setText(NewWizardMessages.ScriptProjectWizardFirstPage_LayoutGroup_title);
-			fStdRadio = new SelectionButtonDialogField(SWT.RADIO);
-			fStdRadio.setLabelText(NewWizardMessages.ScriptProjectWizardFirstPage_LayoutGroup_option_oneFolder);
-			fSrcBinRadio = new SelectionButtonDialogField(SWT.RADIO);
-			fSrcBinRadio.setLabelText(NewWizardMessages.ScriptProjectWizardFirstPage_LayoutGroup_option_separateFolders);
-			fStdRadio.doFillIntoGrid(fGroup, 3);
-			LayoutUtil.setHorizontalGrabbing(fStdRadio.getSelectionButton(null));
-			fSrcBinRadio.doFillIntoGrid(fGroup, 2);
-			fPreferenceLink = new Link(fGroup, SWT.NONE);
-			fPreferenceLink.setText(NewWizardMessages.ScriptProjectWizardFirstPage_LayoutGroup_link_description);
-			fPreferenceLink.setLayoutData(new GridData(GridData.END, GridData.END, false, false));
-			fPreferenceLink.addSelectionListener(this);
-			if (DLTKCore.DEBUG) {
-				System.err.println("TOTO: Possible language dependent code here required...");
-			}
-			boolean useSrcBin = DLTKUIPlugin.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.SRCBIN_FOLDERS_IN_NEWPROJ);
-			fSrcBinRadio.setSelection(useSrcBin);
-			fStdRadio.setSelection(!useSrcBin);
-		}
-
-		public void update(Observable o, Object arg) {
-			final boolean detect = fDetectGroup.mustDetect();
-			fStdRadio.setEnabled(!detect);
-			fSrcBinRadio.setEnabled(!detect);
-			fPreferenceLink.setEnabled(!detect);
-			fGroup.setEnabled(!detect);
-		}
-
-		public boolean isSrcBin() {
-			return fSrcBinRadio.isSelected();
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-		 */
-		public void widgetSelected(SelectionEvent e) {
-			widgetDefaultSelected(e);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
-		 */
-		public void widgetDefaultSelected(SelectionEvent e) {
-			String id = NewDLTKProjectPreferencePage.ID;
-			PreferencesUtil.createPreferenceDialogOn(getShell(), id, new String[] {
-				id
-			}, null).open();			
-			// fInterpreterEnvironmentGroup.handlePossibleJInterpreterChange();
-			if (supportInterpreter()) {
-				handlePossibleInterpreterChange();
-			}
-		}
-	}
+//	private final class LayoutGroup implements Observer, SelectionListener {
+//		private final SelectionButtonDialogField fStdRadio, fSrcBinRadio;
+//		private final Group fGroup;
+//		private final Link fPreferenceLink;
+//
+//		public LayoutGroup(Composite composite) {
+//			fGroup = new Group(composite, SWT.NONE);
+//			fGroup.setFont(composite.getFont());
+//			fGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//			fGroup.setLayout(initGridLayout(new GridLayout(3, false), true));
+//			fGroup.setText(NewWizardMessages.ScriptProjectWizardFirstPage_LayoutGroup_title);
+//			fStdRadio = new SelectionButtonDialogField(SWT.RADIO);
+//			fStdRadio.setLabelText(NewWizardMessages.ScriptProjectWizardFirstPage_LayoutGroup_option_oneFolder);
+//			fSrcBinRadio = new SelectionButtonDialogField(SWT.RADIO);
+//			fSrcBinRadio.setLabelText(NewWizardMessages.ScriptProjectWizardFirstPage_LayoutGroup_option_separateFolders);
+//			fStdRadio.doFillIntoGrid(fGroup, 3);
+//			LayoutUtil.setHorizontalGrabbing(fStdRadio.getSelectionButton(null));
+//			fSrcBinRadio.doFillIntoGrid(fGroup, 2);
+//			fPreferenceLink = new Link(fGroup, SWT.NONE);
+//			fPreferenceLink.setText(NewWizardMessages.ScriptProjectWizardFirstPage_LayoutGroup_link_description);
+//			fPreferenceLink.setLayoutData(new GridData(GridData.END, GridData.END, false, false));
+//			fPreferenceLink.addSelectionListener(this);
+//			if (DLTKCore.DEBUG) {
+//				System.err.println("TOTO: Possible language dependent code here required...");
+//			}
+//			boolean useSrcBin = DLTKUIPlugin.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.SRCBIN_FOLDERS_IN_NEWPROJ);
+//			fSrcBinRadio.setSelection(useSrcBin);
+//			fStdRadio.setSelection(!useSrcBin);
+//		}
+//
+//		public void update(Observable o, Object arg) {
+//			final boolean detect = fDetectGroup.mustDetect();
+//			fStdRadio.setEnabled(!detect);
+//			fSrcBinRadio.setEnabled(!detect);
+//			fPreferenceLink.setEnabled(!detect);
+//			fGroup.setEnabled(!detect);
+//		}
+//
+//		public boolean isSrcBin() {
+//			return fSrcBinRadio.isSelected();
+//		}
+//
+//		/*
+//		 * (non-Javadoc)
+//		 * 
+//		 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+//		 */
+//		public void widgetSelected(SelectionEvent e) {
+//			widgetDefaultSelected(e);
+//		}
+//
+//		/*
+//		 * (non-Javadoc)
+//		 * 
+//		 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
+//		 */
+//		public void widgetDefaultSelected(SelectionEvent e) {
+//			String id = NewDLTKProjectPreferencePage.ID;
+//			PreferencesUtil.createPreferenceDialogOn(getShell(), id, new String[] {
+//				id
+//			}, null).open();			
+//			// fInterpreterEnvironmentGroup.handlePossibleJInterpreterChange();
+//			if (supportInterpreter()) {
+//				handlePossibleInterpreterChange();
+//			}
+//		}
+//	}
 	
 
 	protected abstract class AbstractInterpreterGroup extends Observable implements Observer, SelectionListener, IDialogFieldListener {
@@ -674,7 +671,7 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 		fLocationGroup = new LocationGroup(composite);
 		
 		// fInterpreterEnvironmentGroup= new InterpreterEnvironmentGroup(composite);
-		ProjectWizardFirstPage.AbstractInterpreterGroup interpGroup = null;
+//		ProjectWizardFirstPage.AbstractInterpreterGroup interpGroup = null;
 		if (supportInterpreter()) {
 			createInterpreterGroup(composite);
 		}

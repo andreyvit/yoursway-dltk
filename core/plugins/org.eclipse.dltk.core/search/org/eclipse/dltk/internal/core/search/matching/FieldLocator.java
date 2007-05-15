@@ -47,7 +47,7 @@ public class FieldLocator extends PatternLocator {
 	}
 
 	public int match(ASTNode node, MatchingNodeSet nodeSet) {
-		int declarationsLevel = IMPOSSIBLE_MATCH;
+//		int declarationsLevel = IMPOSSIBLE_MATCH;
 		if (this.pattern.findReferences) {
 //			if (node instanceof ImportReference) {
 //				// With static import, we can have static method reference in

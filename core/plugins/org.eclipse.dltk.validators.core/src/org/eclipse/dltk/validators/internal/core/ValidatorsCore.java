@@ -47,7 +47,7 @@ public class ValidatorsCore extends Plugin implements IPropertyChangeListener {
 	
 	private boolean fIgnoreValidatorDefPropertyChangeEvents = false;
 
-	private boolean fBatchingChanges;
+//	private boolean fBatchingChanges;
 	
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 	
@@ -153,7 +153,7 @@ public class ValidatorsCore extends Plugin implements IPropertyChangeListener {
 			String newValue) {
 
 		// batch changes
-		fBatchingChanges = true;
+//		fBatchingChanges = true;
 		try {
 
 			String oldPrefString;
@@ -204,7 +204,7 @@ public class ValidatorsCore extends Plugin implements IPropertyChangeListener {
 			}
 		} finally {
 			// stop batch changes
-			fBatchingChanges = false;
+//			fBatchingChanges = false;
 		}
 	}
 }

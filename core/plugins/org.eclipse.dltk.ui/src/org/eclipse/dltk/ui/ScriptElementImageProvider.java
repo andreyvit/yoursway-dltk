@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IExternalSourceModule;
 import org.eclipse.dltk.core.IField;
@@ -106,9 +107,9 @@ public class ScriptElementImageProvider {
 		return fRegistry;
 	}
 
-	private static boolean showOverlayIcons(int flags) {
-		return (flags & OVERLAY_ICONS) != 0;
-	}
+	// private static boolean showOverlayIcons(int flags) {
+	// return (flags & OVERLAY_ICONS) != 0;
+	// }
 
 	private static boolean useSmallSize(int flags) {
 		return (flags & SMALL_ICONS) != 0;
@@ -161,10 +162,14 @@ public class ScriptElementImageProvider {
 					.getConfigurationElementsFor(LABELPROVIDERS_EXTENSION_POINT);
 			createProviders(elements);
 		}
-		String nature;
+		String nature = null;
 		try {
-			nature = DLTKLanguageManager.getLanguageToolkit(element)
-					.getNatureID();
+			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+					.getLanguageToolkit(element);
+			if (languageToolkit == null) {
+				return null;
+			}
+			nature = languageToolkit.getNatureID();
 		} catch (CoreException e) {
 			return null;
 		}
@@ -206,16 +211,18 @@ public class ScriptElementImageProvider {
 	 */
 	public ImageDescriptor getBaseImageDescriptor(IModelElement element,
 			int renderFlags) {
-		
-//		if (true) {
-//			return DLTKPluginImages.DESC_OBJS_UNKNOWN;
-//		}
-		
-		/*
-		 * ILabelProvider provider = getContributedLabelProvider(element); if
-		 * (provider != null) { Image img = provider.getImage(element); if (img !=
-		 * null) { return ImageDescriptor.createFromImage(img); } }
-		 */
+
+		// if (true) {
+		// return DLTKPluginImages.DESC_OBJS_UNKNOWN;
+		// }
+
+		ILabelProvider provider = getContributedLabelProvider(element);
+		if (provider != null) {
+			Image img = provider.getImage(element);
+			if (img != null) {
+				return ImageDescriptor.createFromImage(img);
+			}
+		}
 
 		try {
 			switch (element.getElementType()) {
@@ -224,21 +231,21 @@ public class ScriptElementImageProvider {
 				int flags = method.getFlags();
 				return getMethodImageDescriptor(flags);
 			}
-			
+
 			case IModelElement.FIELD: {
 				IField member = (IField) element;
 				return getFieldImageDescriptor(member.getFlags());
 			}
-			
+
 			case IModelElement.TYPE: {
 				IType type = (IType) element;
 				return getTypeImageDescriptor(type.getFlags(),
 						useLightIcons(renderFlags));
 			}
-			
+
 			case IModelElement.PACKAGE_DECLARATION:
 				return DLTKPluginImages.DESC_OBJS_PACKDECL;
-			
+
 			case IModelElement.PROJECT_FRAGMENT: {
 				IProjectFragment root = (IProjectFragment) element;
 				if (root.isExternal()) {
@@ -251,14 +258,14 @@ public class ScriptElementImageProvider {
 					return DLTKPluginImages.DESC_OBJS_PACKFRAG_ROOT;
 				}
 			}
-			
+
 			case IModelElement.SCRIPT_FOLDER:
 				return getScriptFolderIcon(element, renderFlags);
-			
+
 			case IModelElement.SOURCE_MODULE:
 				boolean external = element instanceof IExternalSourceModule;
 				return getSourceModuleIcon(element, external, renderFlags);
-			
+
 			case IModelElement.SCRIPT_PROJECT:
 				IDLTKProject jp = (IDLTKProject) element;
 				if (jp.getProject().isOpen()) {
@@ -275,19 +282,19 @@ public class ScriptElementImageProvider {
 				}
 				return DESC_OBJ_PROJECT_CLOSED;
 				// return DESC_OBJ_PROJECT;
-			
+
 			case IModelElement.SCRIPT_MODEL:
 				// return DLTKPluginImages.DESC_OBJS_JAVA_MODEL;
 				return null;
 			}
 			Assert.isTrue(false,
 					DLTKUIMessages.ScriptImageLabelprovider_assert_wrongImage);
-			
+
 			return DLTKPluginImages.DESC_OBJS_GHOST;
 		} catch (ModelException e) {
 			if (e.isDoesNotExist())
 				return DLTKPluginImages.DESC_OBJS_UNKNOWN;
-			
+
 			DLTKUIPlugin.log(e);
 			return DLTKPluginImages.DESC_OBJS_GHOST;
 		}

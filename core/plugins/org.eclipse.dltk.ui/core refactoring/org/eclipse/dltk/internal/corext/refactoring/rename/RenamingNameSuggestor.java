@@ -564,9 +564,9 @@ public class RenamingNameSuggestor {
 //		fArgumentSuffixes= readCommaSeparatedPreference(project, DLTKCore.CODEASSIST_ARGUMENT_SUFFIXES);
 	}
 
-	private String[] readCommaSeparatedPreference(IDLTKProject project, String option) {
-		String list= project.getOption(option, true);
-		return list == null ? new String[0] : list.split(","); //$NON-NLS-1$
-	}
+//	private String[] readCommaSeparatedPreference(IDLTKProject project, String option) {
+//		String list= project.getOption(option, true);
+//		return list == null ? new String[0] : list.split(","); //$NON-NLS-1$
+//	}
 
 }

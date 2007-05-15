@@ -7,7 +7,7 @@
 
 <!-- Extensions -->
 	<extension point="org.eclipse.core.runtime.adapters">
-         <factory 
+         <!--factory 
             class="" 
             adaptableType="org.eclipse.dltk.core.IModelElement">
             <adapter type="org.eclipse.debug.ui.actions.ILaunchable"/>
@@ -21,7 +21,7 @@
             class="" 
             adaptableType="org.eclipse.dltk.internal.ui.editor.ExternalStorageEditorInput">
             <adapter type="org.eclipse.debug.ui.actions.ILaunchable"/>
-         </factory>
+         </factory-->
          <factory
           adaptableType="org.eclipse.dltk.internal.ui.editor.ScriptEditor"
           class="org.eclipse.dltk.internal.debug.ui.DltkRetargettableActionAdapterFactory">
@@ -104,11 +104,22 @@
  </extension>
  <extension
        point="org.eclipse.ui.propertyPages">
+    <!-- Eclipse 3.3 fix -->
     <page
           class="org.eclipse.dltk.debug.ui.ScriptBreakpointPropertyPage"
           id="org.eclipse.dltk.debug.ui.ScriptBreakpointPropertyPage"
-          name="Breakpoint properties"
-          objectClass="org.eclipse.dltk.debug.core.model.IScriptBreakpoint"/>
+          name="Breakpoint properties">
+          <enabledWhen>
+            <or>
+               <instanceof
+                     value="org.eclipse.dltk.debug.core.model.IScriptBreakpoint">
+               </instanceof>
+               <adapt
+                     type="org.eclipse.dltk.debug.core.model.IScriptBreakpoint">
+               </adapt>
+            </or>
+         </enabledWhen>
+    </page>
  </extension>
  
     <extension

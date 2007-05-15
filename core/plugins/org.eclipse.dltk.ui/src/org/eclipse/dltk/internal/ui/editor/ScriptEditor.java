@@ -74,6 +74,7 @@ import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.IPositionUpdater;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.ITextViewerExtension2;
 import org.eclipse.jface.text.ITextViewerExtension4;
@@ -161,16 +162,16 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	protected ISavePolicy fSavePolicy = null;
 
 	/** Preference key for matching brackets */
-	protected final static String MATCHING_BRACKETS=  PreferenceConstants.EDITOR_MATCHING_BRACKETS;
+	protected final static String MATCHING_BRACKETS = PreferenceConstants.EDITOR_MATCHING_BRACKETS;
 	/** Preference key for matching brackets color */
-	protected final static String MATCHING_BRACKETS_COLOR=  PreferenceConstants.EDITOR_MATCHING_BRACKETS_COLOR;
-	
-	private ScriptEditorErrorTickUpdater fScriptEditorErrorTickUpdater;	
-	
-	public ISourceViewer getScriptSourceViewer(){
+	protected final static String MATCHING_BRACKETS_COLOR = PreferenceConstants.EDITOR_MATCHING_BRACKETS_COLOR;
+
+	private ScriptEditorErrorTickUpdater fScriptEditorErrorTickUpdater;
+
+	public ISourceViewer getScriptSourceViewer() {
 		return super.getSourceViewer();
 	}
-	
+
 	public static class BracketLevel {
 		public int fOffset;
 		public int fLength;
@@ -178,8 +179,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		public Position fFirstPosition;
 		public Position fSecondPosition;
 	}
-	
-	
+
 	public class ExitPolicy implements IExitPolicy {
 
 		public final char fExitCharacter;
@@ -188,33 +188,39 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		public final int fSize;
 
 		public ExitPolicy(char exitCharacter, char escapeCharacter, Stack stack) {
-			fExitCharacter= exitCharacter;
-			fEscapeCharacter= escapeCharacter;
-			fStack= stack;
-			fSize= fStack.size();
+			fExitCharacter = exitCharacter;
+			fEscapeCharacter = escapeCharacter;
+			fStack = stack;
+			fSize = fStack.size();
 		}
 
 		/*
-		 * @see org.eclipse.jdt.internal.ui.text.link.LinkedPositionUI.ExitPolicy#doExit(org.eclipse.jdt.internal.ui.text.link.LinkedPositionManager, org.eclipse.swt.events.VerifyEvent, int, int)
+		 * @see org.eclipse.jdt.internal.ui.text.link.LinkedPositionUI.ExitPolicy#doExit(org.eclipse.jdt.internal.ui.text.link.LinkedPositionManager,
+		 *      org.eclipse.swt.events.VerifyEvent, int, int)
 		 */
-		public ExitFlags doExit(LinkedModeModel model, VerifyEvent event, int offset, int length) {
+		public ExitFlags doExit(LinkedModeModel model, VerifyEvent event,
+				int offset, int length) {
 
 			if (fSize == fStack.size() && !isMasked(offset)) {
 				if (event.character == fExitCharacter) {
-					BracketLevel level= (BracketLevel) fStack.peek();
-					if (level.fFirstPosition.offset > offset || level.fSecondPosition.offset < offset)
+					BracketLevel level = (BracketLevel) fStack.peek();
+					if (level.fFirstPosition.offset > offset
+							|| level.fSecondPosition.offset < offset)
 						return null;
 					if (level.fSecondPosition.offset == offset && length == 0)
 						// don't enter the character if if its the closing peer
-						return new ExitFlags(ILinkedModeListener.UPDATE_CARET, false);
+						return new ExitFlags(ILinkedModeListener.UPDATE_CARET,
+								false);
 				}
-				// when entering an anonymous class between the parenthesis', we don't want
+				// when entering an anonymous class between the parenthesis', we
+				// don't want
 				// to jump after the closing parenthesis when return is pressed
 				if (event.character == SWT.CR && offset > 0) {
-					IDocument document= getSourceViewer().getDocument();
+					IDocument document = getSourceViewer().getDocument();
 					try {
 						if (document.getChar(offset - 1) == '{')
-							return new ExitFlags(ILinkedModeListener.EXIT_ALL, true);
+							return new ExitFlags(ILinkedModeListener.EXIT_ALL,
+									true);
 					} catch (BadLocationException e) {
 					}
 				}
@@ -223,7 +229,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		}
 
 		private boolean isMasked(int offset) {
-			IDocument document= getSourceViewer().getDocument();
+			IDocument document = getSourceViewer().getDocument();
 			try {
 				return fEscapeCharacter == document.getChar(offset - 1);
 			} catch (BadLocationException e) {
@@ -231,8 +237,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 			return false;
 		}
 	}
-	
-	
+
 	static class ExclusivePositionUpdater implements IPositionUpdater {
 
 		/** The position category. */
@@ -240,11 +245,12 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 
 		/**
 		 * Creates a new updater for the given <code>category</code>.
-		 *
-		 * @param category the new category.
+		 * 
+		 * @param category
+		 *            the new category.
 		 */
 		public ExclusivePositionUpdater(String category) {
-			fCategory= category;
+			fCategory = category;
 		}
 
 		/*
@@ -252,24 +258,26 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		 */
 		public void update(DocumentEvent event) {
 
-			int eventOffset= event.getOffset();
-			int eventOldLength= event.getLength();
-			int eventNewLength= event.getText() == null ? 0 : event.getText().length();
-			int deltaLength= eventNewLength - eventOldLength;
+			int eventOffset = event.getOffset();
+			int eventOldLength = event.getLength();
+			int eventNewLength = event.getText() == null ? 0 : event.getText()
+					.length();
+			int deltaLength = eventNewLength - eventOldLength;
 
 			try {
-				Position[] positions= event.getDocument().getPositions(fCategory);
+				Position[] positions = event.getDocument().getPositions(
+						fCategory);
 
-				for (int i= 0; i != positions.length; i++) {
+				for (int i = 0; i != positions.length; i++) {
 
-					Position position= positions[i];
+					Position position = positions[i];
 
 					if (position.isDeleted())
 						continue;
 
-					int offset= position.getOffset();
-					int length= position.getLength();
-					int end= offset + length;
+					int offset = position.getOffset();
+					int length = position.getLength();
+					int end = offset + length;
 
 					if (offset >= eventOffset + eventOldLength)
 						// position comes
@@ -278,18 +286,22 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 					else if (end <= eventOffset) {
 						// position comes way before change -
 						// leave alone
-					} else if (offset <= eventOffset && end >= eventOffset + eventOldLength) {
-						// event completely internal to the position - adjust length
+					} else if (offset <= eventOffset
+							&& end >= eventOffset + eventOldLength) {
+						// event completely internal to the position - adjust
+						// length
 						position.setLength(length + deltaLength);
 					} else if (offset < eventOffset) {
 						// event extends over end of position - adjust length
-						int newEnd= eventOffset;
+						int newEnd = eventOffset;
 						position.setLength(newEnd - offset);
 					} else if (end > eventOffset + eventOldLength) {
-						// event extends from before position into it - adjust offset
+						// event extends from before position into it - adjust
+						// offset
 						// and length
-						// offset becomes end of event, length adjusted accordingly
-						int newOffset= eventOffset + eventNewLength;
+						// offset becomes end of event, length adjusted
+						// accordingly
+						int newOffset = eventOffset + eventNewLength;
 						position.setOffset(newOffset);
 						position.setLength(end - newOffset);
 					} else {
@@ -304,7 +316,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 
 		/**
 		 * Returns the position category.
-		 *
+		 * 
 		 * @return the position category
 		 */
 		public String getCategory() {
@@ -312,10 +324,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		}
 
 	}
-	
-	
-	
-	
+
 	/**
 	 * Text operation code for requesting common prefix completion.
 	 */
@@ -870,24 +879,25 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		super();
 		setDocumentProvider(DLTKUIPlugin.getDefault()
 				.getSourceModuleDocumentProvider());
-		fScriptEditorErrorTickUpdater= new ScriptEditorErrorTickUpdater(this);
+		fScriptEditorErrorTickUpdater = new ScriptEditorErrorTickUpdater(this);
 	}
-	
+
 	public void dispose() {
 
-//		ISourceViewer sourceViewer= getSourceViewer();
-//		if (sourceViewer instanceof ITextViewerExtension)
-//			((ITextViewerExtension) sourceViewer).removeVerifyKeyListener(fBracketInserter);
+		// ISourceViewer sourceViewer= getSourceViewer();
+		// if (sourceViewer instanceof ITextViewerExtension)
+		// ((ITextViewerExtension)
+		// sourceViewer).removeVerifyKeyListener(fBracketInserter);
 
 		if (fScriptEditorErrorTickUpdater != null) {
 			fScriptEditorErrorTickUpdater.dispose();
-			fScriptEditorErrorTickUpdater= null;
+			fScriptEditorErrorTickUpdater = null;
 		}
 
-//		if (fCorrectionCommands != null) {
-//			fCorrectionCommands.deregisterCommands();
-//			fCorrectionCommands= null;
-//		}
+		// if (fCorrectionCommands != null) {
+		// fCorrectionCommands.deregisterCommands();
+		// fCorrectionCommands= null;
+		// }
 
 		super.dispose();
 	}
@@ -907,8 +917,8 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	 *            The editor input for which to create the preference store
 	 * @return the preference store for this editor
 	 */
-	//protected abstract IPreferenceStore createCombinedPreferenceStore(
-		//IEditorInput input);
+	// protected abstract IPreferenceStore createCombinedPreferenceStore(
+	// IEditorInput input);
 	private IPreferenceStore createCombinedPreferenceStore(IEditorInput input) {
 		List stores = new ArrayList(3);
 		IDLTKProject project = EditorUtility.getDLTKProject(input);
@@ -923,7 +933,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		return new ChainedPreferenceStore((IPreferenceStore[]) stores
 				.toArray(new IPreferenceStore[stores.size()]));
 	}
-	
+
 	protected abstract IPreferenceStore getScriptPreferenceStore();
 
 	protected abstract ScriptTextTools getTextTools();
@@ -1169,7 +1179,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 			fInformationPresenter
 					.setAnchor(AbstractInformationControlManager.ANCHOR_BOTTOM);
 			fInformationPresenter.setMargins(6, 6); // default values from
-													// AbstractInformationControlManager
+			// AbstractInformationControlManager
 			String contentType = IDocument.DEFAULT_CONTENT_TYPE;
 			fInformationPresenter.setInformationProvider(informationProvider,
 					contentType);
@@ -1250,12 +1260,15 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		setAction(IDLTKEditorActionDefinitionIds.SHOW_OUTLINE, outlineAction);
 		// PlatformUI.getWorkbench().getHelpSystem().setHelp(action,
 		// IJavaHelpContextIds.SHOW_OUTLINE_ACTION);
-		
-		action= new TextOperationAction(DLTKEditorMessages.getBundleForConstructedKeys(),"OpenHierarchy.", this, 
+
+		action = new TextOperationAction(DLTKEditorMessages
+				.getBundleForConstructedKeys(), "OpenHierarchy.", this,
 				ScriptSourceViewer.SHOW_HIERARCHY, true); //$NON-NLS-1$
-		action.setActionDefinitionId(IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY);
+		action
+				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY);
 		setAction(IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY, action);
-		//PlatformUI.getWorkbench().getHelpSystem().setHelp(action, IJavaHelpContextIds.OPEN_HIERARCHY_ACTION);
+		// PlatformUI.getWorkbench().getHelpSystem().setHelp(action,
+		// IJavaHelpContextIds.OPEN_HIERARCHY_ACTION);
 
 		action = new ContentAssistAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(), "ContentAssistProposal.", this); //$NON-NLS-1$
@@ -1289,42 +1302,46 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 
 	protected abstract FoldingActionGroup createFoldingActionGroup();
 
-	
 	/*
 	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createAnnotationRulerColumn(org.eclipse.jface.text.source.CompositeRuler)
 	 * @since 3.2
 	 */
-	protected IVerticalRulerColumn createAnnotationRulerColumn(CompositeRuler ruler) {
-		if (!getPreferenceStore().getBoolean(PreferenceConstants.EDITOR_ANNOTATION_ROLL_OVER))
+	protected IVerticalRulerColumn createAnnotationRulerColumn(
+			CompositeRuler ruler) {
+		if (!getPreferenceStore().getBoolean(
+				PreferenceConstants.EDITOR_ANNOTATION_ROLL_OVER))
 			return super.createAnnotationRulerColumn(ruler);
 
-		AnnotationRulerColumn column= new AnnotationRulerColumn(VERTICAL_RULER_WIDTH, getAnnotationAccess());
-		column.setHover(new ScriptExpandHover(ruler, getAnnotationAccess(), new IDoubleClickListener() {
+		AnnotationRulerColumn column = new AnnotationRulerColumn(
+				VERTICAL_RULER_WIDTH, getAnnotationAccess());
+		column.setHover(new ScriptExpandHover(ruler, getAnnotationAccess(),
+				new IDoubleClickListener() {
 
-			public void doubleClick(DoubleClickEvent event) {
-				// for now: just invoke ruler double click action
-				triggerAction(ITextEditorActionConstants.RULER_DOUBLE_CLICK);
-			}
-
-			private void triggerAction(String actionID) {
-				IAction action= getAction(actionID);
-				if (action != null) {
-					if (action instanceof IUpdate)
-						((IUpdate) action).update();
-					// hack to propagate line change
-					if (action instanceof ISelectionListener) {
-						((ISelectionListener)action).selectionChanged(null, null);
+					public void doubleClick(DoubleClickEvent event) {
+						// for now: just invoke ruler double click action
+						triggerAction(ITextEditorActionConstants.RULER_DOUBLE_CLICK);
 					}
-					if (action.isEnabled())
-						action.run();
-				}
-			}
 
-		}));
-		
+					private void triggerAction(String actionID) {
+						IAction action = getAction(actionID);
+						if (action != null) {
+							if (action instanceof IUpdate)
+								((IUpdate) action).update();
+							// hack to propagate line change
+							if (action instanceof ISelectionListener) {
+								((ISelectionListener) action).selectionChanged(
+										null, null);
+							}
+							if (action.isEnabled())
+								action.run();
+						}
+					}
+
+				}));
+
 		return column;
 	}
-	
+
 	/**
 	 * Returns the folding action group, or <code>null</code> if there is
 	 * none.
@@ -1357,19 +1374,19 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		getSourceViewerDecorationSupport(sourceViewer).install(
 				getPreferenceStore());
 		internalDoSetInput(input);
-		
+
 		if (fScriptEditorErrorTickUpdater != null)
-			fScriptEditorErrorTickUpdater.updateEditorImage(getInputModelElement());
+			fScriptEditorErrorTickUpdater
+					.updateEditorImage(getInputModelElement());
 	}
 
-	
 	private ScriptOutlinePage createOutlinePage() {
 		final ScriptOutlinePage page = doCreateOutlinePage();
 		fOutlineSelectionChangedListener.install(page);
 		setOutlinePageInput(page, getEditorInput());
 		return page;
 	}
-	
+
 	/**
 	 * Creates the outline page used with this editor.
 	 * 
@@ -1396,8 +1413,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		}
 	}
 
-	private void setOutlinePageInput(ScriptOutlinePage page,
-			IEditorInput input) {
+	private void setOutlinePageInput(ScriptOutlinePage page, IEditorInput input) {
 		if (page == null) {
 			return;
 		}
@@ -1602,71 +1618,95 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	 * <p>
 	 * Overrides the default implementation to handle {@link IJavaAnnotation}.
 	 * </p>
-	 *
-	 * @param offset the region offset
-	 * @param length the region length
-	 * @param forward <code>true</code> for forwards, <code>false</code> for backward
-	 * @param annotationPosition the position of the found annotation
+	 * 
+	 * @param offset
+	 *            the region offset
+	 * @param length
+	 *            the region length
+	 * @param forward
+	 *            <code>true</code> for forwards, <code>false</code> for
+	 *            backward
+	 * @param annotationPosition
+	 *            the position of the found annotation
 	 * @return the found annotation
 	 */
-	protected Annotation findAnnotation(final int offset, final int length, boolean forward, Position annotationPosition) {
+	protected Annotation findAnnotation(final int offset, final int length,
+			boolean forward, Position annotationPosition) {
 
-		Annotation nextAnnotation= null;
-		Position nextAnnotationPosition= null;
-		Annotation containingAnnotation= null;
-		Position containingAnnotationPosition= null;
-		boolean currentAnnotation= false;
+		Annotation nextAnnotation = null;
+		Position nextAnnotationPosition = null;
+		Annotation containingAnnotation = null;
+		Position containingAnnotationPosition = null;
+		boolean currentAnnotation = false;
 
-		IDocument document= getDocumentProvider().getDocument(getEditorInput());
-		int endOfDocument= document.getLength();
-		int distance= Integer.MAX_VALUE;
+		IDocument document = getDocumentProvider()
+				.getDocument(getEditorInput());
+		int endOfDocument = document.getLength();
+		int distance = Integer.MAX_VALUE;
 
-		IAnnotationModel model= getDocumentProvider().getAnnotationModel(getEditorInput());
-		Iterator e= new ScriptAnnotationIterator(model, true, true);
+		IAnnotationModel model = getDocumentProvider().getAnnotationModel(
+				getEditorInput());
+		Iterator e = new ScriptAnnotationIterator(model, true, true);
 		while (e.hasNext()) {
-			Annotation a= (Annotation) e.next();
-			if ((a instanceof IScriptAnnotation) && ((IScriptAnnotation)a).hasOverlay() || !isNavigationTarget(a))
+			Annotation a = (Annotation) e.next();
+			if ((a instanceof IScriptAnnotation)
+					&& ((IScriptAnnotation) a).hasOverlay()
+					|| !isNavigationTarget(a))
 				continue;
 
-			Position p= model.getPosition(a);
+			Position p = model.getPosition(a);
 			if (p == null)
 				continue;
 
-			if (forward && p.offset == offset || !forward && p.offset + p.getLength() == offset + length) {// || p.includes(offset)) {
-				if (containingAnnotation == null || (forward && p.length >= containingAnnotationPosition.length || !forward && p.length >= containingAnnotationPosition.length)) {
-					containingAnnotation= a;
-					containingAnnotationPosition= p;
-					currentAnnotation= p.length == length;
+			if (forward && p.offset == offset || !forward
+					&& p.offset + p.getLength() == offset + length) {// ||
+																		// p.includes(offset))
+																		// {
+				if (containingAnnotation == null
+						|| (forward
+								&& p.length >= containingAnnotationPosition.length || !forward
+								&& p.length >= containingAnnotationPosition.length)) {
+					containingAnnotation = a;
+					containingAnnotationPosition = p;
+					currentAnnotation = p.length == length;
 				}
 			} else {
-				int currentDistance= 0;
+				int currentDistance = 0;
 
 				if (forward) {
-					currentDistance= p.getOffset() - offset;
+					currentDistance = p.getOffset() - offset;
 					if (currentDistance < 0)
-						currentDistance= endOfDocument + currentDistance;
+						currentDistance = endOfDocument + currentDistance;
 
-					if (currentDistance < distance || currentDistance == distance && p.length < nextAnnotationPosition.length) {
-						distance= currentDistance;
-						nextAnnotation= a;
-						nextAnnotationPosition= p;
+					if (currentDistance < distance
+							|| currentDistance == distance
+							&& p.length < nextAnnotationPosition.length) {
+						distance = currentDistance;
+						nextAnnotation = a;
+						nextAnnotationPosition = p;
 					}
 				} else {
-					currentDistance= offset + length - (p.getOffset() + p.length);
+					currentDistance = offset + length
+							- (p.getOffset() + p.length);
 					if (currentDistance < 0)
-						currentDistance= endOfDocument + currentDistance;
+						currentDistance = endOfDocument + currentDistance;
 
-					if (currentDistance < distance || currentDistance == distance && p.length < nextAnnotationPosition.length) {
-						distance= currentDistance;
-						nextAnnotation= a;
-						nextAnnotationPosition= p;
+					if (currentDistance < distance
+							|| currentDistance == distance
+							&& p.length < nextAnnotationPosition.length) {
+						distance = currentDistance;
+						nextAnnotation = a;
+						nextAnnotationPosition = p;
 					}
 				}
 			}
 		}
-		if (containingAnnotationPosition != null && (!currentAnnotation || nextAnnotation == null)) {
-			annotationPosition.setOffset(containingAnnotationPosition.getOffset());
-			annotationPosition.setLength(containingAnnotationPosition.getLength());
+		if (containingAnnotationPosition != null
+				&& (!currentAnnotation || nextAnnotation == null)) {
+			annotationPosition.setOffset(containingAnnotationPosition
+					.getOffset());
+			annotationPosition.setLength(containingAnnotationPosition
+					.getLength());
 			return containingAnnotation;
 		}
 		if (nextAnnotationPosition != null) {
@@ -1678,19 +1718,23 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	}
 
 	/**
-	 * Returns the annotation overlapping with the given range or <code>null</code>.
-	 *
-	 * @param offset the region offset
-	 * @param length the region length
+	 * Returns the annotation overlapping with the given range or
+	 * <code>null</code>.
+	 * 
+	 * @param offset
+	 *            the region offset
+	 * @param length
+	 *            the region length
 	 * @return the found annotation or <code>null</code>
 	 * @since 3.0
 	 */
 	private Annotation getAnnotation(int offset, int length) {
-		IAnnotationModel model= getDocumentProvider().getAnnotationModel(getEditorInput());
-		Iterator e= new ScriptAnnotationIterator(model, true, false);
+		IAnnotationModel model = getDocumentProvider().getAnnotationModel(
+				getEditorInput());
+		Iterator e = new ScriptAnnotationIterator(model, true, false);
 		while (e.hasNext()) {
-			Annotation a= (Annotation) e.next();
-			Position p= model.getPosition(a);
+			Annotation a = (Annotation) e.next();
+			Position p = model.getPosition(a);
 			if (p != null && p.overlapsWith(offset, length))
 				return a;
 		}
@@ -1702,10 +1746,10 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	 * @since 3.2
 	 */
 	public Annotation gotoAnnotation(boolean forward) {
-		fSelectionChangedViaGotoAnnotation= true;
+		fSelectionChangedViaGotoAnnotation = true;
 		return super.gotoAnnotation(forward);
 	}
-	
+
 	/**
 	 * Computes and returns the source reference that includes the caret and
 	 * serves as provider for the outline page selection and the editor range
@@ -1773,8 +1817,6 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		fEditorSelectionChangedListener.install(getSelectionProvider());
 
 	}
-	
-	
 
 	/**
 	 * React to changed selection.
@@ -1789,9 +1831,20 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 				PreferenceConstants.EDITOR_SYNC_OUTLINE_ON_CURSOR_MOVE))
 			synchronizeOutlinePage(element);
 		setSelection(element, false);
-		// if (!fSelectionChangedViaGotoAnnotation)
-		// updateStatusLine();
-		// fSelectionChangedViaGotoAnnotation= false;
+		if (!fSelectionChangedViaGotoAnnotation)
+			updateStatusLine();
+		fSelectionChangedViaGotoAnnotation = false;
+	}
+	protected void updateStatusLine() {
+		ITextSelection selection= (ITextSelection) getSelectionProvider().getSelection();
+		Annotation annotation= getAnnotation(selection.getOffset(), selection.getLength());
+		setStatusLineErrorMessage(null);
+		setStatusLineMessage(null);
+		if (annotation != null) {
+			updateMarkerViews(annotation);
+			if (annotation instanceof IScriptAnnotation && ((IScriptAnnotation) annotation).isProblem())
+				setStatusLineMessage(annotation.getText());
+		}
 	}
 
 	/**
@@ -1865,10 +1918,10 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	 * 
 	 */
 	private ToggleFoldingRunner fFoldingRunner;
-	
+
 	/**
-	 * Tells whether the selection changed event is caused
-	 * by a call to {@link #gotoAnnotation(boolean)}.
+	 * Tells whether the selection changed event is caused by a call to
+	 * {@link #gotoAnnotation(boolean)}.
 	 * 
 	 */
 	private boolean fSelectionChangedViaGotoAnnotation;
@@ -2702,65 +2755,67 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 			ISourceModule unit = manager.getWorkingCopy(getEditorInput());
 
 			if (unit != null) {
-//				synchronized (unit) {
-					performSave(false, progressMonitor);
-//				}
+				// synchronized (unit) {
+				performSave(false, progressMonitor);
+				// }
 			} else
 				performSave(false, progressMonitor);
 		}
 	}
 
 	/**
-	 * Returns the signed current selection.
-	 * The length will be negative if the resulting selection
-	 * is right-to-left (RtoL).
+	 * Returns the signed current selection. The length will be negative if the
+	 * resulting selection is right-to-left (RtoL).
 	 * <p>
 	 * The selection offset is model based.
 	 * </p>
-	 *
-	 * @param sourceViewer the source viewer
-	 * @return a region denoting the current signed selection, for a resulting RtoL selections length is < 0
+	 * 
+	 * @param sourceViewer
+	 *            the source viewer
+	 * @return a region denoting the current signed selection, for a resulting
+	 *         RtoL selections length is < 0
 	 */
 	protected IRegion getSignedSelection(ISourceViewer sourceViewer) {
-		StyledText text= sourceViewer.getTextWidget();
-		Point selection= text.getSelectionRange();
+		StyledText text = sourceViewer.getTextWidget();
+		Point selection = text.getSelectionRange();
 
 		if (text.getCaretOffset() == selection.x) {
-			selection.x= selection.x + selection.y;
-			selection.y= -selection.y;
+			selection.x = selection.x + selection.y;
+			selection.y = -selection.y;
 		}
 
-		selection.x= widgetOffset2ModelOffset(sourceViewer, selection.x);
+		selection.x = widgetOffset2ModelOffset(sourceViewer, selection.x);
 
 		return new Region(selection.x, selection.y);
 	}
-	
-	protected final static char[] BRACKETS= { '{', '}', '(', ')', '[', ']'};
-	
+
+	protected final static char[] BRACKETS = { '{', '}', '(', ')', '[', ']' };
+
 	protected static boolean isBracket(char character) {
-		for (int i= 0; i != BRACKETS.length; ++i)
+		for (int i = 0; i != BRACKETS.length; ++i)
 			if (character == BRACKETS[i])
 				return true;
 		return false;
 	}
-	
-	protected static boolean isSurroundedByBrackets(IDocument document, int offset) {
+
+	protected static boolean isSurroundedByBrackets(IDocument document,
+			int offset) {
 		if (offset == 0 || offset == document.getLength())
 			return false;
 
 		try {
-			return
-				isBracket(document.getChar(offset - 1)) &&
-				isBracket(document.getChar(offset));
+			return isBracket(document.getChar(offset - 1))
+					&& isBracket(document.getChar(offset));
 
 		} catch (BadLocationException e) {
 			return false;
 		}
 	}
-	
+
 	public void gotoMatchingBracket() {
 		// Nothing to do by default
 	}
+
 	public void updatedTitleImage(Image image) {
 		setTitleImage(image);
 	}

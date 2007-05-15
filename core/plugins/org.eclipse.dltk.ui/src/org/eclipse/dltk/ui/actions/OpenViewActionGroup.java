@@ -34,7 +34,7 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 public class OpenViewActionGroup extends ActionGroup {
 
     private boolean fEditorIsOwner;
-	private boolean fIsTypeHiararchyViewerOwner;
+//	private boolean fIsTypeHiararchyViewerOwner;
     private boolean fIsCallHiararchyViewerOwner;
     
 	private ISelectionProvider fSelectionProvider;
@@ -99,7 +99,7 @@ public class OpenViewActionGroup extends ActionGroup {
 		createSiteActions(part.getSite(), selectionProvider);
 		// we do a name check here to avoid class loading. 
 		String partName= part.getClass().getName();
-		fIsTypeHiararchyViewerOwner= "org.eclipse.dltk.internal.ui.typehierarchy.TypeHierarchyViewPart".equals(partName); //$NON-NLS-1$
+//		fIsTypeHiararchyViewerOwner= "org.eclipse.dltk.internal.ui.typehierarchy.TypeHierarchyViewPart".equals(partName); //$NON-NLS-1$
 		fIsCallHiararchyViewerOwner= "org.eclipse.dltk.internal.ui.callhierarchy.CallHierarchyViewPart".equals(partName); //$NON-NLS-1$
 	}
 	

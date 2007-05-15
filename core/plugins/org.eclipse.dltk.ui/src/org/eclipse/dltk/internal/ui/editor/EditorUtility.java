@@ -138,9 +138,9 @@ public class EditorUtility {
 	public static IEditorPart openInEditor(Object inputElement, boolean activate) throws ModelException, PartInitException {
 		if (inputElement instanceof IFile)
 			return openInEditor((IFile) inputElement, activate);
+		IModelElement modelElement = (IModelElement) inputElement;
 		if (inputElement instanceof IModelElement) {
-			IModelElement element = (IModelElement)inputElement;
-			ISourceModule cu = (ISourceModule) ((IModelElement) inputElement).getAncestor(IModelElement.SOURCE_MODULE);
+			ISourceModule cu = (ISourceModule) (modelElement).getAncestor(IModelElement.SOURCE_MODULE);
 			if (cu != null && !DLTKModelUtil.isPrimary(cu)) {
 				/*
 				 * Support for non-primary working copy. Try to reveal it in the
@@ -152,7 +152,7 @@ public class EditorUtility {
 					if (editor != null) {
 						IModelElement editorCU = EditorUtility.getEditorInputModelElement(editor, false);
 						if (editorCU == cu) {
-							EditorUtility.revealInEditor(editor, (IModelElement) inputElement);
+							EditorUtility.revealInEditor(editor, modelElement);
 							return editor;
 						}
 					}
@@ -168,7 +168,7 @@ public class EditorUtility {
 		IEditorInput input = getEditorInput(inputElement);
 		if (input != null) {
 			if (inputElement instanceof IModelElement) {
-				IModelElement element = (IModelElement)inputElement;	
+				IModelElement element = modelElement;	
 				if (input != null) {
 					String editorID;
 						

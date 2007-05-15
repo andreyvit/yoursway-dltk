@@ -74,8 +74,8 @@ class AddBuiltinFolderToIndex extends IndexRequest {
 		return false;
 	}
 
-	private static String EXISTS = "OK"; //$NON-NLS-1$
-	private static String DELETED = "DELETED"; //$NON-NLS-1$
+//	private static String EXISTS = "OK"; //$NON-NLS-1$
+//	private static String DELETED = "DELETED"; //$NON-NLS-1$
 
 	public boolean execute(IProgressMonitor progressMonitor) {
 		if (this.isCancelled || progressMonitor != null

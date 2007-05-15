@@ -17,7 +17,6 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 
-
 public class BPListElementSorter extends ViewerSorter {
 	
 	private static final int SOURCE= 0;
@@ -78,7 +77,7 @@ public class BPListElementSorter extends ViewerSorter {
                 ILabelProvider lprov = (ILabelProvider) prov;
                 String name1 = lprov.getText(e1);
                 String name2 = lprov.getText(e2);
-                return collator.compare(name1, name2);
+                return getComparator().compare(name1, name2);
             }
 		}
 		return 0;

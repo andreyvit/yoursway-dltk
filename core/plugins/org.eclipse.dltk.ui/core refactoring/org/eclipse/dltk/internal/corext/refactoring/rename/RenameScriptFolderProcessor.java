@@ -450,7 +450,7 @@ public class RenameScriptFolderProcessor extends ScriptRenameProcessor implement
 	private static class PackageRenamer {
 		private final IScriptFolder fPackage;
 		private final RenameScriptFolderProcessor fProcessor;
-		private final TextChangeManager fTextChangeManager;
+//		private final TextChangeManager fTextChangeManager;
 		//private final ImportsManager fImportsManager;
 		
 		/** references to fPackage (can include star imports which also import namesake package fragments) */
@@ -473,7 +473,7 @@ public class RenameScriptFolderProcessor extends ScriptRenameProcessor implement
 		public PackageRenamer(IScriptFolder pack, RenameScriptFolderProcessor processor, TextChangeManager textChangeManager/*, ImportsManager importsManager*/) {
 			fPackage= pack;
 			fProcessor= processor;
-			fTextChangeManager= textChangeManager;
+//			fTextChangeManager= textChangeManager;
 			//fImportsManager= importsManager;
 		}
 	
@@ -540,16 +540,16 @@ public class RenameScriptFolderProcessor extends ScriptRenameProcessor implement
 			pm.done();
 		}
 		
-		private static String cutOffInnerTypes(String reference) {
-			int dotPos= reference.indexOf('.'); // cut off inner types
-			if (dotPos != -1)
-				reference= reference.substring(0, dotPos);
-			return reference;
-		}
-		
-		private String getNewPackageName() {
-			return fProcessor.getNewPackageName(fPackage.getElementName());
-		}
+//		private static String cutOffInnerTypes(String reference) {
+//			int dotPos= reference.indexOf('.'); // cut off inner types
+//			if (dotPos != -1)
+//				reference= reference.substring(0, dotPos);
+//			return reference;
+//		}
+//		
+//		private String getNewPackageName() {
+//			return fProcessor.getNewPackageName(fPackage.getElementName());
+//		}
 	}
 
 	public RefactoringStatus initialize(RefactoringArguments arguments) {

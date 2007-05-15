@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.dialogs.NewFolderDialog;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
-import org.eclipse.ui.views.navigator.ResourceSorter;
+import org.eclipse.ui.views.navigator.ResourceComparator;
 
 
 /**
@@ -183,7 +183,7 @@ public class MultipleFolderSelectionDialog extends SelectionStatusDialog impleme
 			}
 		});
 
-		fViewer.setSorter(new ResourceSorter(ResourceSorter.NAME));
+		fViewer.setComparator(new ResourceComparator(ResourceComparator.NAME));
 		if (fFilters != null) {
 			for (int i = 0; i != fFilters.size(); i++)
 				fViewer.addFilter((ViewerFilter) fFilters.get(i));

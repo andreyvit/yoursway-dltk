@@ -44,7 +44,7 @@ public class WorkingSetAwareLabelProvider extends ScriptExplorerLabelProvider {
 	 */
 	public Image getImage(Object element) {
 		if (element instanceof IWorkingSet) {
-			ImageDescriptor image= ((IWorkingSet)element).getImage();
+			ImageDescriptor image= ((IWorkingSet)element).getImageDescriptor();
 			Image result= (Image)fImages.get(image);
 			if (result == null) {
 				result= image.createImage();

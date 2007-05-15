@@ -99,14 +99,14 @@ public abstract class HierarchyBuilder {
 		if (focusType == null)
 			return;
 		// get generic type from focus type
-		IGenericType type;
-		try {
-			type = (IGenericType) ((ModelElement) focusType).getElementInfo();
-		} catch (ModelException e) {
-			// if the focus type is not present, or if cannot get workbench path
-			// we cannot create the hierarchy
-			return;
-		}
+//		IGenericType type;
+//		try {
+//			type = (IGenericType) ((ModelElement) focusType).getElementInfo();
+//		} catch (ModelException e) {
+//			// if the focus type is not present, or if cannot get workbench path
+//			// we cannot create the hierarchy
+//			return;
+//		}
 		// NB: no need to set focus type on hierarchy resolver since no other
 		// type is injected
 		// in the hierarchy resolver, thus there is no need to check that a type

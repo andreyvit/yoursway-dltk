@@ -13,5 +13,4 @@ Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.validators.core,
  org.eclipse.dltk.validators.internal.core;x-friends:="org.eclipse.dltk.validators.core.tests,org.eclipse.dltk.validators.ui"
 Bundle-Vendor: %providerName
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
 Bundle-Localization: plugin

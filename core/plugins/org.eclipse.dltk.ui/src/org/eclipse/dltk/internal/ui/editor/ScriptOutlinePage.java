@@ -26,19 +26,15 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMember;
-import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.ISourceReference;
-import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.actions.AbstractToggleLinkingAction;
-import org.eclipse.dltk.internal.ui.actions.CCPActionGroup;
 import org.eclipse.dltk.internal.ui.actions.CompositeActionGroup;
-import org.eclipse.dltk.internal.ui.actions.refactoring.RefactorActionGroup;
 import org.eclipse.dltk.internal.ui.dnd.DLTKViewerDragAdapter;
 import org.eclipse.dltk.internal.ui.dnd.DelegatingDropAdapter;
 import org.eclipse.dltk.internal.ui.scriptview.SelectionTransferDragAdapter;
@@ -62,11 +58,9 @@ import org.eclipse.dltk.ui.viewsupport.StatusBarUpdater;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.ITextSelection;
@@ -100,7 +94,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionContext;
 import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.model.IWorkbenchAdapter;
@@ -135,7 +128,7 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 	 */
 	protected class ChildrenProvider implements ITreeContentProvider {
 
-		private Object[] NO_CLASS = new Object[] { new NoClassElement() };
+//		private Object[] NO_CLASS = new Object[] { new NoClassElement() };
 		private ElementChangedListener fListener;
 
 		public void dispose() {
@@ -841,7 +834,7 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 	/** A flag to show contents of top level type only */
 	// private boolean fTopLevelTypeOnly;
 	private IModelElement fInput;
-	private String fContextMenuID;
+//	private String fContextMenuID;
 	private Menu fMenu;
 	protected ScriptOutlineViewer fOutlineViewer;
 	private ScriptEditor fEditor;
@@ -880,7 +873,7 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 
 		Assert.isNotNull(editor);
 
-		fContextMenuID = "#CompilationUnitOutlinerContext";// contextMenuID;
+//		fContextMenuID = "#CompilationUnitOutlinerContext";// contextMenuID;
 		fEditor = editor;
 		fStore = store;
 

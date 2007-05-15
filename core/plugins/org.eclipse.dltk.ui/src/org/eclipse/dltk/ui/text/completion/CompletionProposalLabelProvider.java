@@ -30,7 +30,7 @@ public abstract class CompletionProposalLabelProvider {
 	/**
 	 * The completion context.
 	 */
-	private CompletionContext fContext;
+//	private CompletionContext fContext;
 
 	/**
 	 * Creates a new label provider.
@@ -383,6 +383,6 @@ public abstract class CompletionProposalLabelProvider {
 	 * 
 	 */
 	void setContext(CompletionContext context) {
-		fContext = context;
+//		fContext = context;
 	}
 }

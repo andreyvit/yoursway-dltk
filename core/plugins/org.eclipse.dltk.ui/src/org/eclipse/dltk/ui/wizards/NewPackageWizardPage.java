@@ -15,7 +15,6 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -214,7 +213,7 @@ public abstract class NewPackageWizardPage extends NewContainerWizardPage {
 		if (root != null && root.getScriptProject().exists()) {
 			IScriptFolder pack = root.getScriptFolder(packName);
 			try {
-				IPath rootPath = root.getPath();
+//				IPath rootPath = root.getPath();
 				if (pack.exists()) {
 					if (pack.containsScriptResources() || !pack.hasSubfolders()) {
 						status

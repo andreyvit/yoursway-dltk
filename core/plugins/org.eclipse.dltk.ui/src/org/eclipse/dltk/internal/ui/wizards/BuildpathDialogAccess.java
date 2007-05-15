@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
-import org.eclipse.ui.views.navigator.ResourceSorter;
+import org.eclipse.ui.views.navigator.ResourceComparator;
 
 
 /**
@@ -161,7 +161,7 @@ public final class BuildpathDialogAccess {
 		dialog.setMessage(NewWizardMessages.BuildPathDialogAccess_ZIPArchiveDialog_edit_description); 
 		dialog.addFilter(new ArchiveFileFilter(usedJars, true));
 		dialog.setInput(root);
-		dialog.setSorter(new ResourceSorter(ResourceSorter.NAME));
+		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 		dialog.setInitialSelection(existing);
 
 		if (dialog.open() == Window.OK) {
@@ -207,7 +207,7 @@ public final class BuildpathDialogAccess {
 		dialog.setMessage(NewWizardMessages.BuildPathDialogAccess_ZIPArchiveDialog_new_description); 
 		dialog.addFilter(new ArchiveFileFilter(usedJars, true));
 		dialog.setInput(root);
-		dialog.setSorter(new ResourceSorter(ResourceSorter.NAME));
+		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 		dialog.setInitialSelection(focus);
 
 		if (dialog.open() == Window.OK) {

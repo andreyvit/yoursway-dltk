@@ -9,9 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui.actions;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.internal.ui.actions.ActionMessages;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.TableViewer;
 
  

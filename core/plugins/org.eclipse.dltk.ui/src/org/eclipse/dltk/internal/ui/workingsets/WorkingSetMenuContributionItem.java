@@ -55,7 +55,7 @@ public class WorkingSetMenuContributionItem extends ContributionItem {
 		
 		mi.setText("&" + fId + " " + name);  //$NON-NLS-1$  //$NON-NLS-2$
 		if (fImage == null) {
-			ImageDescriptor imageDescriptor= fWorkingSet.getImage();
+			ImageDescriptor imageDescriptor= fWorkingSet.getImageDescriptor();
 			if (imageDescriptor != null)
 				fImage= imageDescriptor.createImage();
 		}

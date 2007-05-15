@@ -313,23 +313,24 @@ public class LibrariesWorkbookPage extends BuildPathBasePage {
 		if (elements.size() == 1) {
 			final Object object = elements.get(0);
 			if (object instanceof BPListElement) {
-				final BPListElement element = (BPListElement) object;
-				final IBuildpathEntry entry = element.getBuildpathEntry();
-				// if (JarImportWizard.isValidBuildPathEntry(entry)) {
-				// final IDLTKProject project= element.getDLTKProject();
-				// if (project != null) {
-				// try {
-				// final IProjectFragment[] roots=
-				// project.getProjectFragments();
-				// for (int index= 0; index < roots.length; index++) {
-				// if (entry.equals(roots[index].getRawBuildpathEntry()))
-				// return roots[index];
-				// }
-				// } catch (ModelException exception) {
-				// DLTKUIPlugin.log(exception);
-				// }
-				// }
-				// }
+//				final BPListElement element = (BPListElement) object;
+//				final IBuildpathEntry entry = element.getBuildpathEntry();
+//				if (JarImportWizard.isValidBuildPathEntry(entry)) {
+//					final IDLTKProject project = element.getDLTKProject();
+//					if (project != null) {
+//						try {
+//							final IProjectFragment[] roots = project
+//									.getProjectFragments();
+//							for (int index = 0; index < roots.length; index++) {
+//								if (entry.equals(roots[index]
+//										.getRawBuildpathEntry()))
+//									return roots[index];
+//							}
+//						} catch (ModelException exception) {
+//							DLTKUIPlugin.log(exception);
+//						}
+//					}
+//				}
 			}
 		}
 		return null;
@@ -614,10 +615,10 @@ public class LibrariesWorkbookPage extends BuildPathBasePage {
 			IPath[] selected = BuildpathDialogAccess.chooseExtSourceFolderEntries(getShell(), fCurrJProject.getPath(),
 					getUsedContainers(existing));
 			if (selected != null) {
-				IWorkspaceRoot root = fCurrJProject.getProject().getWorkspace().getRoot();
+//				IWorkspaceRoot root = fCurrJProject.getProject().getWorkspace().getRoot();
 				ArrayList res = new ArrayList();
 				for (int i = 0; i < selected.length; i++) {
-					IPath curr = selected[i];
+//					IPath curr = selected[i];
 					res.add(new BPListElement(fCurrJProject, IBuildpathEntry.BPE_LIBRARY, selected[i], null, true));																	
 				}
 				return (BPListElement[]) res.toArray(new BPListElement[res.size()]);

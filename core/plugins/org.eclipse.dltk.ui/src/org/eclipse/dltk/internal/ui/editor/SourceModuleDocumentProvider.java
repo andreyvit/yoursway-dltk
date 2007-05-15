@@ -159,9 +159,9 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 				return IAnnotationAccessExtension.DEFAULT_LAYER + 1;
 		}
 
-		private static Image fgQuickFixImage;
-		private static Image fgQuickFixErrorImage;
-		private static boolean fgQuickFixImagesInitialized = false;
+//		private static Image fgQuickFixImage;
+//		private static Image fgQuickFixErrorImage;
+//		private static boolean fgQuickFixImagesInitialized = false;
 
 		private ISourceModule fSourceModule;
 		private List fOverlaids;
@@ -231,10 +231,10 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 			}
 		}
 
-		private boolean indicateQuixFixableProblems() {
-			return DLTKUIPlugin.getDefault().getPreferenceStore().getBoolean(
-					PreferenceConstants.EDITOR_CORRECTION_INDICATION);
-		}
+//		private boolean indicateQuixFixableProblems() {
+//			return DLTKUIPlugin.getDefault().getPreferenceStore().getBoolean(
+//					PreferenceConstants.EDITOR_CORRECTION_INDICATION);
+//		}
 
 		/*
 		 * @see Annotation#paint

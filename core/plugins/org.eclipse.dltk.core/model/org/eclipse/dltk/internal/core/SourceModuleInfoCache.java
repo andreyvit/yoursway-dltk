@@ -38,7 +38,7 @@ public class SourceModuleInfoCache implements ISourceModuleInfoCache {
 	public SourceModuleInfoCache() {
 		// set the size of the caches in function of the maximum amount of
 		// memory available
-		long maxMemory = Runtime.getRuntime().freeMemory();
+//		long maxMemory = Runtime.getRuntime().freeMemory();
 		// if max memory is infinite, set the ratio to 4d which corresponds to
 		// the 256MB that Eclipse defaults to
 		// (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=111299)

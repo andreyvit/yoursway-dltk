@@ -11,7 +11,6 @@ package org.eclipse.dltk.core.search.indexing;
 
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
-import org.eclipse.dltk.compiler.ISourceElementRequestor.MethodInfo;
 import org.eclipse.dltk.core.DLTKCore;
 
 /**
@@ -156,9 +155,6 @@ public class SourceIndexerRequestor implements ISourceElementRequestor,
 		this.pushTypeName(typeInfo.name.toCharArray());
 	}
 
-	/**
-	 * @see ISourceElementRequestor#enterConstructor(MethodInfo)
-	 */
 	public void enterConstructor(MethodInfo methodInfo) {
 		this.indexer.addConstructorDeclaration(methodInfo.name,
 				methodInfo.parameterNames, methodInfo.exceptionTypes);

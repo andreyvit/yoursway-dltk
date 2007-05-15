@@ -555,17 +555,17 @@ public class ReorgPolicyFactory {
 			return (ISourceModule) destination.getAncestor(IModelElement.SOURCE_MODULE);
 		}
 
-		private static ISourceModule getEnclosingCu(IModelElement destination) {
-			if (destination instanceof ISourceModule)
-				return (ISourceModule) destination;
-			return (ISourceModule)destination.getAncestor(IModelElement.SOURCE_MODULE);
-		}
-
-		private static IType getEnclosingType(IModelElement destination) {
-			if (destination instanceof IType)
-				return (IType) destination;
-			return (IType)destination.getAncestor(IModelElement.TYPE);
-		}
+//		private static ISourceModule getEnclosingCu(IModelElement destination) {
+//			if (destination instanceof ISourceModule)
+//				return (ISourceModule) destination;
+//			return (ISourceModule)destination.getAncestor(IModelElement.SOURCE_MODULE);
+//		}
+//
+//		private static IType getEnclosingType(IModelElement destination) {
+//			if (destination instanceof IType)
+//				return (IType) destination;
+//			return (IType)destination.getAncestor(IModelElement.TYPE);
+//		}
 		
 		public boolean canEnable() throws ModelException {
 			if (! super.canEnable()) return false;
@@ -1136,15 +1136,15 @@ public class ReorgPolicyFactory {
 			}
 			IPath newPath = destination.getResource().getFullPath().append(newName);
 			if (newName == null || ( tk != null && tk.validateSourcePackage( newPath ) )){
-				INewNameQuery nameQuery;
-				if (newName == null)
-					nameQuery= copyQueries.createNullQuery();
-				else
-					nameQuery= copyQueries.createNewPackageNameQuery(pack, newName);
-				//return new CopyPackageChange(pack, destination, nameQuery);
-				if (DLTKCore.DEBUG) {
-					System.err.println("TODO:return new CopyPackageChange(pack, destination, nameQuery);");
-				}
+//				INewNameQuery nameQuery;
+//				if (newName == null)
+//					nameQuery= copyQueries.createNullQuery();
+//				else
+//					nameQuery= copyQueries.createNewPackageNameQuery(pack, newName);
+//				//return new CopyPackageChange(pack, destination, nameQuery);
+//				if (DLTKCore.DEBUG) {
+//					System.err.println("TODO:return new CopyPackageChange(pack, destination, nameQuery);");
+//				}
 				throw new RuntimeException("return new CopyPackageChange(pack, destination, nameQuery);");
 				//return null;
 			} else {
@@ -1614,10 +1614,10 @@ public class ReorgPolicyFactory {
 				if (! fUpdateReferences)
 					return new TextChangeManager();
 			
-				IScriptFolder packageDest= getDestinationAsScriptFolder();
-				if (DLTKCore.DEBUG) {
-					System.err.println("TODO: ReorgPolicyFactory Add MoveCuUpdateCreator support..");
-				}
+//				IScriptFolder packageDest= getDestinationAsScriptFolder();
+//				if (DLTKCore.DEBUG) {
+//					System.err.println("TODO: ReorgPolicyFactory Add MoveCuUpdateCreator support..");
+//				}
 //				if (packageDest != null){			
 //					MoveCuUpdateCreator creator= new MoveCuUpdateCreator(getCus(), packageDest);
 //					return creator.createChangeManager(new SubProgressMonitor(pm, 1), status);

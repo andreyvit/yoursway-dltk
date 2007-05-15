@@ -237,7 +237,7 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 			ISearchableEnvironment searchableEnvironment = project
 					.newSearchableNameEnvironment(unitsToLookInside);
 			this.nameLookup = searchableEnvironment.getNameLookup();
-			Map options = project.getOptions(true);
+//			Map options = project.getOptions(true);
 			// disable task tags to speed up parsing
 			// options.put(DLTKCore.COMPILER_TASK_TAGS, ""); //$NON-NLS-1$
 			//this.hierarchyResolver = new HierarchyResolver(

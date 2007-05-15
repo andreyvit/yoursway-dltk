@@ -20,7 +20,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IBreakpointManager;
 import org.eclipse.debug.core.IBreakpointsListener;
 import org.eclipse.debug.core.model.IBreakpoint;
-import org.eclipse.debug.internal.ui.DebugUIPlugin;
+import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.ui.util.ExceptionHandler;
 import org.eclipse.jface.action.IAction;
@@ -77,7 +77,7 @@ public abstract class BreakpointToggleAction implements IObjectActionDelegate, I
 					try {
 						action.setChecked(getToggleState((IScriptBreakpoint) breakpoint));
 					} catch (CoreException e) {
-						DebugUIPlugin.log(e);
+						DLTKDebugPlugin.log(e);
 					}
 				}
 			}

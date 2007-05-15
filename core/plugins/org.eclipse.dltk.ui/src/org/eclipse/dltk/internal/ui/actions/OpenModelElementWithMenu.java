@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
@@ -36,10 +37,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
-import org.eclipse.ui.internal.WorkbenchPage;
-import org.eclipse.ui.internal.ide.DialogUtil;
-import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
-import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.part.FileEditorInput;
 
 import com.ibm.icu.text.Collator;
@@ -57,6 +54,9 @@ import com.ibm.icu.text.Collator;
  * </p>
  */
 public class OpenModelElementWithMenu extends ContributionItem {
+	
+	public static final String DEFAULT_TEXT_EDITOR_ID = "org.eclipse.ui.DefaultTextEditor"; //$NON-NLS-1$
+	
     private IWorkbenchPage page;
 
     private IAdaptable element;
@@ -231,7 +231,7 @@ public class OpenModelElementWithMenu extends ContributionItem {
         
 
         IEditorDescriptor defaultEditor = registry
-                .findEditor(IDEWorkbenchPlugin.DEFAULT_TEXT_EDITOR_ID); // may be null
+                .findEditor(DEFAULT_TEXT_EDITOR_ID); // may be null
         IEditorDescriptor preferredEditor = getDefaultEditor (); // may be null
         
         Object[] editors = registry.getEditors(file.getName(), IDE.getContentType(file));
@@ -332,13 +332,16 @@ public class OpenModelElementWithMenu extends ContributionItem {
         try {
             String editorId = editor == null ? IEditorRegistry.SYSTEM_EXTERNAL_EDITOR_ID
                     : editor.getId();
-            ((WorkbenchPage) page).openEditor(new FileEditorInput(file), editorId, true, MATCH_BOTH);
+            ((IWorkbenchPage) page).openEditor(new FileEditorInput(file), editorId, true, MATCH_BOTH);
             // only remember the default editor if the open succeeds
             IDE.setDefaultEditor(file, editorId);
         } catch (PartInitException e) {
-            DialogUtil.openError(page.getWorkbenchWindow().getShell(),
-                    IDEWorkbenchMessages.OpenWithMenu_dialogTitle,
-                    e.getMessage(), e);
+        	if(DLTKCore.DEBUG ) {
+        		e.printStackTrace();
+        	}
+//            DialogUtil.openError(page.getWorkbenchWindow().getShell(),
+//                    ActionMessages.OpenWithMenu_dialogTitle,
+//                    e.getMessage(), e);
         }
     }
 
@@ -355,7 +358,7 @@ public class OpenModelElementWithMenu extends ContributionItem {
     	}
         final MenuItem menuItem = new MenuItem(menu, SWT.RADIO);
         menuItem.setSelection(desc == null);
-        menuItem.setText(IDEWorkbenchMessages.DefaultEditorDescription_name);
+        menuItem.setText(ActionMessages.DefaultEditorDescription_name);
 
         Listener listener = new Listener() {
             public void handleEvent(Event event) {
@@ -367,9 +370,12 @@ public class OpenModelElementWithMenu extends ContributionItem {
                         	IEditorDescriptor desc = IDE.getEditorDescriptor(file);
                             page.openEditor(new FileEditorInput(file), desc.getId(), true, MATCH_BOTH);
                         } catch (PartInitException e) {
-                            DialogUtil.openError(page.getWorkbenchWindow()
-                                    .getShell(), IDEWorkbenchMessages.OpenWithMenu_dialogTitle,
-                                    e.getMessage(), e);
+                        	if(DLTKCore.DEBUG) {
+                        		e.printStackTrace();
+                        	}
+//                            DialogUtil.openError(page.getWorkbenchWindow()
+//                                    .getShell(), IDEWorkbenchMessages.OpenWithMenu_dialogTitle,
+//                                    e.getMessage(), e);
                         }
                     }
                     break;

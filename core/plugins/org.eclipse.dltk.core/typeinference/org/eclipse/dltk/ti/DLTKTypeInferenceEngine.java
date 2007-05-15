@@ -26,6 +26,7 @@ import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class DLTKTypeInferenceEngine implements ITypeInferencer {
 	
+	private static final String NATURE = "nature";
 	private static final String TYPE_EVALUATORS = "org.eclipse.dltk.core.typeEvaluators";
 	private final static Map evaluatorsByNatures = new HashMap();
 	
@@ -39,14 +40,14 @@ public class DLTKTypeInferenceEngine implements ITypeInferencer {
 					.getConfigurationElements();
 			IConfigurationElement myElement = elements[0];
 			try {
-				String nature = myElement.getAttribute("nature");
+				String nature = myElement.getAttribute(NATURE);
 				List list = (List) evaluatorsByNatures.get(nature);
 				if (list == null) {
 					list = new ArrayList ();
 					evaluatorsByNatures.put(nature, list);
 				}
-				ITypeInferencer resolver = (ITypeInferencer) myElement
-						.createExecutableExtension("evaluator");
+//				ITypeInferencer resolver = (ITypeInferencer) myElement
+//						.createExecutableExtension("evaluator");
 //				resolvers.add(resolver);
 //				list.add(resolver);
 				list.add(myElement);

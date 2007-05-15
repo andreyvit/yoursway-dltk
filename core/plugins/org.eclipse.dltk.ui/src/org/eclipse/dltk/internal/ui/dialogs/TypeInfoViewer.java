@@ -221,7 +221,7 @@ public class TypeInfoViewer {
 		private String[] fInstallLocations;
 		private String[] fVMNames;
 
-		private boolean fFullyQualifyDuplicates;
+//		private boolean fFullyQualifyDuplicates;
 		
 		public TypeInfoLabelProvider(ITypeInfoImageProvider extension) {
 			fProviderExtension= extension;
@@ -236,7 +236,7 @@ public class TypeInfoViewer {
 			
 		}
 		public void setFullyQualifyDuplicates(boolean value) {
-			fFullyQualifyDuplicates= value;
+//			fFullyQualifyDuplicates= value;
 		}
 		private void processVMInstallType(IInterpreterInstallType installType, List locations, List labels) {
 			if (installType != null) {
@@ -341,9 +341,9 @@ public class TypeInfoViewer {
 			return result.toString();
 		}
 		
-		private boolean isInnerType(TypeNameMatch match) {
-			return match.getTypeQualifiedName().indexOf('.') != -1;
-		}
+//		private boolean isInnerType(TypeNameMatch match) {
+//			return match.getTypeQualifiedName().indexOf('.') != -1;
+//		}
 		
 		public ImageDescriptor getImageDescriptor(Object element) {
 			TypeNameMatch type= (TypeNameMatch)element;

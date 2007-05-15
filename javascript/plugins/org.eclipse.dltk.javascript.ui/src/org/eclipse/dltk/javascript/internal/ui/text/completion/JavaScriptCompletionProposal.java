@@ -22,7 +22,6 @@ public class JavaScriptCompletionProposal extends ScriptCompletionProposal {
 				displayString, relevance);
 		;
 		ProposalInfo proposalInfo = new ProposalInfo(null);
-		proposalInfo.setHackMessage("<h1>Fuck</h1>");
 		this.setProposalInfo(proposalInfo);
 	}
 
@@ -32,7 +31,6 @@ public class JavaScriptCompletionProposal extends ScriptCompletionProposal {
 		super(replacementString, replacementOffset, replacementLength, image,
 				displayString, relevance, isInDoc);
 		ProposalInfo proposalInfo = new ProposalInfo(null);
-		proposalInfo.setHackMessage("<h1>Fuck</h1>");
 		this.setProposalInfo(proposalInfo);
 	}
 

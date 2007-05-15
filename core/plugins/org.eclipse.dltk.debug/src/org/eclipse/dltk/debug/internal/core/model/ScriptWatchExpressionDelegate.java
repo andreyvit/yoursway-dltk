@@ -30,7 +30,6 @@ import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
-import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
 public class ScriptWatchExpressionDelegate implements IWatchExpressionDelegate, IWatchExpressionResult {
 

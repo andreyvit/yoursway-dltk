@@ -78,7 +78,7 @@ public abstract class ScriptOutlineInformationControl extends
 	private boolean fShowOnlyMainType;
 	private LexicalSortingAction fLexicalSortingAction;
 	private SortByDefiningTypeAction fSortByDefiningTypeAction;
-	private ShowOnlyMainTypeAction fShowOnlyMainTypeAction;
+//	private ShowOnlyMainTypeAction fShowOnlyMainTypeAction;
 	private Map fTypeHierarchies = new HashMap();
 
 	/**
@@ -299,62 +299,6 @@ public abstract class ScriptOutlineInformationControl extends
 		public void dispose() {
 			super.dispose();
 			fTypeHierarchies.clear();
-		}
-	}
-
-	private class ShowOnlyMainTypeAction extends Action {
-
-		private static final String STORE_GO_INTO_TOP_LEVEL_TYPE_CHECKED = "GoIntoTopLevelTypeAction.isChecked"; //$NON-NLS-1$
-
-		private TreeViewer fOutlineViewer;
-
-		private ShowOnlyMainTypeAction(TreeViewer outlineViewer) {
-			super(
-					TextMessages.ScriptOutlineInformationControl_GoIntoTopLevelType_label,
-					IAction.AS_CHECK_BOX);
-			setToolTipText(TextMessages.ScriptOutlineInformationControl_GoIntoTopLevelType_tooltip);
-			setDescription(TextMessages.ScriptOutlineInformationControl_GoIntoTopLevelType_description);
-
-			DLTKPluginImages.setLocalImageDescriptors(this,
-					"gointo_toplevel_type.gif"); //$NON-NLS-1$
-
-			// PlatformUI.getWorkbench().getHelpSystem().setHelp(this,
-			// IJavaHelpContextIds.GO_INTO_TOP_LEVEL_TYPE_ACTION);
-			System.err.println("TODO: add help support here");
-
-			fOutlineViewer = outlineViewer;
-
-			boolean showclass = getDialogSettings().getBoolean(
-					STORE_GO_INTO_TOP_LEVEL_TYPE_CHECKED);
-			setTopLevelTypeOnly(showclass);
-		}
-
-		/*
-		 * @see org.eclipse.jface.action.Action#run()
-		 */
-		public void run() {
-			setTopLevelTypeOnly(!fShowOnlyMainType);
-		}
-
-		private void setTopLevelTypeOnly(boolean show) {
-			fShowOnlyMainType = show;
-			setChecked(show);
-
-			Tree tree = fOutlineViewer.getTree();
-			tree.setRedraw(false);
-
-			fOutlineViewer.refresh(false);
-			if (!fShowOnlyMainType)
-				fOutlineViewer.expandToLevel(2);
-
-			// reveal selection
-			Object selectedElement = getSelectedElement();
-			if (selectedElement != null)
-				fOutlineViewer.reveal(selectedElement);
-
-			tree.setRedraw(true);
-
-			getDialogSettings().put(STORE_GO_INTO_TOP_LEVEL_TYPE_CHECKED, show);
 		}
 	}
 

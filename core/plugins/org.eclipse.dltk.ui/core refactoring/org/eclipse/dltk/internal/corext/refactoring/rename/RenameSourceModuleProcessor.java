@@ -127,7 +127,7 @@ public class RenameSourceModuleProcessor extends ScriptRenameProcessor implement
 	
 	public RefactoringStatus checkNewElementName(String newName) throws CoreException {
 		Assert.isNotNull(newName, "new name"); //$NON-NLS-1$
-		String typeName= removeFileNameExtension(newName);
+//		String typeName= removeFileNameExtension(newName);
 		if (DLTKCore.DEBUG) {
 			System.err.println("TODO: Add correct name cheking here...");
 		}

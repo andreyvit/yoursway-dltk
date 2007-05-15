@@ -34,7 +34,6 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.refactoring.RefactoringCoreMessages;
 import org.eclipse.dltk.internal.corext.refactoring.util.ModelElementUtil;
@@ -144,7 +143,7 @@ public class ReorgUtils {
 //					return RefactoringCoreMessages.ReorgUtils_16; 
 				return RefactoringCoreMessages.ReorgUtils_17; 
 			case IModelElement.TYPE:
-				IType type= (IType)element;				
+//				IType type= (IType)element;				
 				return RefactoringCoreMessages.ReorgUtils_18; 
 			default:
 				Assert.isTrue(false);
@@ -175,8 +174,8 @@ public class ReorgUtils {
 			case IModelElement.PROJECT_FRAGMENT:
 				return new String[]{element.getElementName()};
 			case IModelElement.TYPE:
-				IType type= (IType)element;
-				String name= type.getElementName();
+//				IType type= (IType)element;
+//				String name= type.getElementName();
 				return new String[]{element.getElementName()};
 			default:
 				Assert.isTrue(false);

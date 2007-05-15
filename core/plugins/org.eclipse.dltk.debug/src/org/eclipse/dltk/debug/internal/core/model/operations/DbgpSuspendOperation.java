@@ -20,7 +20,7 @@ public class DbgpSuspendOperation extends DbgpOperation {
 	}
 
 	protected void process() throws DbgpException {
-		boolean success = getExtended().makeBreak();
+		/*boolean success = */getExtended().makeBreak();
 		//TODO: think about what to do with this status
 	}
 }

@@ -9,7 +9,14 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.ui.typehierarchy;
 
+import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.search.IDLTKSearchConstants;
+import org.eclipse.dltk.core.search.SearchEngine;
+import org.eclipse.dltk.internal.ui.dialogs.TypeSelectionDialog2;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Refocuses the type hierarchy on a type selection from a all types dialog.

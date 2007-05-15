@@ -17,7 +17,6 @@ import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.IWorkingCopyProvider;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -116,7 +115,7 @@ public class MethodsContentProvider implements IStructuredContentProvider, IWork
 	 * @see IContentProvider#inputChanged
 	 */
 	public void inputChanged(Viewer input, Object oldInput, Object newInput) {
-		Assert.isTrue(input instanceof TableViewer);
+		org.eclipse.core.runtime.Assert.isTrue(input instanceof TableViewer);
 	
 		fViewer= (TableViewer) input;
 	}

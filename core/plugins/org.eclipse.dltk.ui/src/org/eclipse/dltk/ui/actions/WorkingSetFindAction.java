@@ -9,11 +9,11 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui.actions;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
-import org.eclipse.jface.util.Assert;
 import org.eclipse.ui.IWorkbenchSite;
 
 

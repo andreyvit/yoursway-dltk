@@ -34,7 +34,7 @@ public abstract class LazyScriptCompletionProposal extends
 	private boolean fContextInformationComputed;
 	private boolean fProposalInfoComputed;
 	private boolean fTriggerCharactersComputed;
-	private boolean fSortStringComputed;
+//	private boolean fSortStringComputed;
 	private boolean fRelevanceComputed;
 
 	/**
@@ -359,7 +359,7 @@ public abstract class LazyScriptCompletionProposal extends
 	}
 
 	protected final void setSortString(String string) {
-		fSortStringComputed = true;
+//		fSortStringComputed = true;
 		super.setSortString(string);
 	}
 }

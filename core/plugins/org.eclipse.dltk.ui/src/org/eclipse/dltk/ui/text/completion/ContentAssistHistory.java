@@ -15,7 +15,6 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -308,14 +307,14 @@ public final class ContentAssistHistory {
 	private static final int DEFAULT_TRACKED_LHS= 100;
 	private static final int DEFAULT_TRACKED_RHS= 10;
 	
-	private static final Set UNCACHEABLE;
+//	private static final Set UNCACHEABLE;
 	static {
-		Set uncacheable= new HashSet();
-		uncacheable.add("java.lang.Object"); //$NON-NLS-1$
-		uncacheable.add("java.lang.Comparable"); //$NON-NLS-1$
-		uncacheable.add("java.io.Serializable"); //$NON-NLS-1$
-		uncacheable.add("java.io.Externalizable"); //$NON-NLS-1$
-		UNCACHEABLE= Collections.unmodifiableSet(uncacheable);
+//		Set uncacheable= new HashSet();
+//		uncacheable.add("java.lang.Object"); //$NON-NLS-1$
+//		uncacheable.add("java.lang.Comparable"); //$NON-NLS-1$
+//		uncacheable.add("java.io.Serializable"); //$NON-NLS-1$
+//		uncacheable.add("java.io.Externalizable"); //$NON-NLS-1$
+//		UNCACHEABLE= Collections.unmodifiableSet(uncacheable);
 	}
 	
 	private final LinkedHashMap/*<IType, MRUSet<IType>>*/ fLHSCache;
@@ -410,14 +409,14 @@ public final class ContentAssistHistory {
 		return Collections.unmodifiableMap(map);
 	}
 	
-	private void rememberInternal(IType lhs, IType rhs) throws ModelException {
-		if (isCacheableLHS(lhs))
-			getCache(lhs.getFullyQualifiedName()).add(rhs.getFullyQualifiedName());
-	}
+//	private void rememberInternal(IType lhs, IType rhs) throws ModelException {
+//		if (isCacheableLHS(lhs))
+//			getCache(lhs.getFullyQualifiedName()).add(rhs.getFullyQualifiedName());
+//	}
 
-	private boolean isCacheableLHS(IType type) throws ModelException {
-		return !UNCACHEABLE.contains(type.getFullyQualifiedName());
-	}
+//	private boolean isCacheableLHS(IType type) throws ModelException {
+//		return !UNCACHEABLE.contains(type.getFullyQualifiedName());
+//	}
 	
 	private boolean isCacheableRHS(IType type) throws ModelException {
 		if (DLTKCore.DEBUG) {

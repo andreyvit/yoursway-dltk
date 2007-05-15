@@ -535,22 +535,23 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 	private void acceptPotentialMethodDeclaration(CompletionProposal proposal) {
 		if (fSourceModule == null)
 			return;
-		String prefix = String.valueOf(proposal.getName());
-		int completionStart = proposal.getReplaceStart();
-		int completionEnd = proposal.getReplaceEnd();
-		int relevance = computeRelevance(proposal);
+//		String prefix = String.valueOf(proposal.getName());
+//		int completionStart = proposal.getReplaceStart();
+//		int completionEnd = proposal.getReplaceEnd();
+//		int relevance = computeRelevance(proposal);
 		try {
 			IModelElement element = fSourceModule.getElementAt(proposal
 					.getCompletionLocation() + 1);
 			if (element != null) {
 				IType type = (IType) element.getAncestor(IModelElement.TYPE);
 				if (type != null) {
-					// GetterSetterCompletionProposal.evaluateProposals(type,
-					// prefix, completionStart, completionEnd - completionStart,
-					// relevance + 1, fSuggestedMethodNames, fJavaProposals);
-					// MethodCompletionProposal.evaluateProposals(type, prefix,
-					// completionStart, completionEnd - completionStart,
-					// relevance, fSuggestedMethodNames, fJavaProposals);
+//					 GetterSetterCompletionProposal.evaluateProposals(type,
+//							prefix, completionStart, completionEnd
+//									- completionStart, relevance + 1,
+//							fSuggestedMethodNames, fJavaProposals);
+//					MethodCompletionProposal.evaluateProposals(type, prefix,
+//							completionStart, completionEnd - completionStart,
+//							relevance, fSuggestedMethodNames, fJavaProposals);
 					if (DLTKCore.DEBUG) {
 						System.out
 								.println("TODO: Add method completion proposal support here...");
@@ -597,7 +598,7 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 		Image image = getImage(getLabelProvider().createFieldImageDescriptor(
 				proposal));
 		int relevance = computeRelevance(proposal);
-		CompletionContext context = getContext();
+//		CompletionContext context = getContext();
 		ScriptCompletionProposal scriptProposal = createScriptCompletionProposal(
 				completion, start, length, image, label, relevance, /*
 																	 * context

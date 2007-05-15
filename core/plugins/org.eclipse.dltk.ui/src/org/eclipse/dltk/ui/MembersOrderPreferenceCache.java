@@ -25,8 +25,8 @@ public class MembersOrderPreferenceCache implements IPropertyChangeListener {
 	public static final int FIELDS_INDEX= 3;	
 	public static final int N_CATEGORIES= FIELDS_INDEX + 1;
 		
-	private static final int DEFAULT_INDEX= 0;
-	private static final int N_VISIBILITIES= DEFAULT_INDEX + 1;	
+//	private static final int DEFAULT_INDEX= 0;
+//	private static final int N_VISIBILITIES= DEFAULT_INDEX + 1;	
 	
 	private int[] fCategoryOffsets= null;
 	

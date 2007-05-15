@@ -25,7 +25,7 @@ public abstract class MemberProposalInfo extends ProposalInfo {
 	protected final CompletionProposal fProposal;
 
 	// cache filled lazily
-	private boolean fModelElementResolved = false;
+//	private boolean fModelElementResolved = false;
 
 	/**
 	 * Creates a new proposal info.
@@ -59,7 +59,7 @@ public abstract class MemberProposalInfo extends ProposalInfo {
 	}
 	
 	public void setModelElement(IModelElement element) {
-		fModelElementResolved = true;
+//		fModelElementResolved = true;
 		fElement = element;
 	}
 }

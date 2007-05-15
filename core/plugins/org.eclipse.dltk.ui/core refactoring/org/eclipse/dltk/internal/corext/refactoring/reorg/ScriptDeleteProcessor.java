@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
+import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -33,7 +34,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKProject;
-import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -192,7 +192,7 @@ public final class ScriptDeleteProcessor extends DeleteProcessor implements ICom
 		IResource[] javaResources= ReorgUtils.getResources(fScriptElements);
 		result.merge(RefactoringStatus.create(Resources.checkInSync(ReorgUtils.getNotNulls(javaResources))));
 		for (int i= 0; i < fScriptElements.length; i++) {
-			IModelElement element= fScriptElements[i];
+//			IModelElement element= fScriptElements[i];
 //			if (element instanceof IType && ((IType)element).isAnonymous()) {
 //				// work around for bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=44450
 //				// result.addFatalError("Currently, there isn't any support to delete an anonymous type.");
@@ -285,7 +285,7 @@ public final class ScriptDeleteProcessor extends DeleteProcessor implements ICom
 	private void checkDirtyFile(RefactoringStatus result, IFile file) {
 		if (file == null || !file.exists())
 			return;
-		ITextFileBuffer buffer= FileBuffers.getTextFileBufferManager().getTextFileBuffer(file.getFullPath());
+		ITextFileBuffer buffer= FileBuffers.getTextFileBufferManager().getTextFileBuffer(file.getFullPath(), LocationKind.NORMALIZE);
 		if (buffer != null && buffer.isDirty()) {
 			if (buffer.isStateValidated() && buffer.isSynchronized()) {
 				result.addWarning(Messages.format(
@@ -600,14 +600,14 @@ public final class ScriptDeleteProcessor extends DeleteProcessor implements ICom
 		fScriptElements= ReorgUtils.setMinus(fScriptElements, elementsToNotDelete);
 	}
 
-	private static IField[] getFields(IModelElement[] elements){
-		List fields= new ArrayList(3);
-		for (int i= 0; i < elements.length; i++) {
-			if (elements[i] instanceof IField)
-				fields.add(elements[i]);
-		}
-		return (IField[]) fields.toArray(new IField[fields.size()]);
-	}
+//	private static IField[] getFields(IModelElement[] elements){
+//		List fields= new ArrayList(3);
+//		for (int i= 0; i < elements.length; i++) {
+//			if (elements[i] instanceof IField)
+//				fields.add(elements[i]);
+//		}
+//		return (IField[]) fields.toArray(new IField[fields.size()]);
+//	}
 
 	//----------- read-only confirmation business ------
 	private void confirmDeletingReadOnly() throws CoreException {

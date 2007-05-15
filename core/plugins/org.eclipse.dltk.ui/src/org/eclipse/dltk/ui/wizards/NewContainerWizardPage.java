@@ -489,7 +489,7 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
 				getShell(), labelProvider, provider);
 		
-		dialog.setSorter(new ModelElementSorter());
+		dialog.setComparator(new ModelElementSorter());
 		dialog
 				.setTitle(NewWizardMessages.NewContainerWizardPage_ChooseSourceContainerDialog_title);
 		dialog

@@ -13,7 +13,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.IDbgpService;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
@@ -22,7 +21,7 @@ import org.eclipse.dltk.debug.internal.core.model.ScriptDebugTarget;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 
 public abstract class AbstractInterpreterDebugger extends AbstractInterpreterRunner {
-	private static final boolean DEBUG = DLTKCore.DEBUG;
+//	private static final boolean DEBUG = DLTKCore.DEBUG;
 
 	protected static final int DEFAULT_WAITING_TIMEOUT = 1000 * 1000;
 

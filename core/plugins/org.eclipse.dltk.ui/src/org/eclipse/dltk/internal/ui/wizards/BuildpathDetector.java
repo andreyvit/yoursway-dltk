@@ -123,17 +123,17 @@ public class BuildpathDetector implements IResourceProxyVisitor {
 		}
 	}
 
-	private IPath findInSourceFolders(IPath path) {
-		Iterator iter = fSourceFolders.keySet().iterator();
-		while (iter.hasNext()) {
-			Object key = iter.next();
-			List cus = (List) fSourceFolders.get(key);
-			if (cus.contains(path)) {
-				return (IPath) key;
-			}
-		}
-		return null;
-	}
+//	private IPath findInSourceFolders(IPath path) {
+//		Iterator iter = fSourceFolders.keySet().iterator();
+//		while (iter.hasNext()) {
+//			Object key = iter.next();
+//			List cus = (List) fSourceFolders.get(key);
+//			if (cus.contains(path)) {
+//				return (IPath) key;
+//			}
+//		}
+//		return null;
+//	}
 
 	private void detectLibraries(ArrayList cpEntries) {
 		ArrayList res = new ArrayList();
@@ -170,25 +170,25 @@ public class BuildpathDetector implements IResourceProxyVisitor {
 		Collections.sort(res, new CPSorter());
 		resEntries.addAll(res);
 	}
-	private void addToMap(HashMap map, IPath folderPath, IPath relPath) {
-		List list = (List) map.get(folderPath);
-		if (list == null) {
-			list = new ArrayList(50);
-			map.put(folderPath, list);
-		}
-		list.add(relPath);
-	}
-
-	private IPath getFolderPath(IPath packPath, IPath relpath) {
-		int remainingSegments = packPath.segmentCount() - relpath.segmentCount();
-		if (remainingSegments >= 0) {
-			IPath common = packPath.removeFirstSegments(remainingSegments);
-			if (common.equals(relpath)) {
-				return packPath.uptoSegment(remainingSegments);
-			}
-		}
-		return null;
-	}
+//	private void addToMap(HashMap map, IPath folderPath, IPath relPath) {
+//		List list = (List) map.get(folderPath);
+//		if (list == null) {
+//			list = new ArrayList(50);
+//			map.put(folderPath, list);
+//		}
+//		list.add(relPath);
+//	}
+//
+//	private IPath getFolderPath(IPath packPath, IPath relpath) {
+//		int remainingSegments = packPath.segmentCount() - relpath.segmentCount();
+//		if (remainingSegments >= 0) {
+//			IPath common = packPath.removeFirstSegments(remainingSegments);
+//			if (common.equals(relpath)) {
+//				return packPath.uptoSegment(remainingSegments);
+//			}
+//		}
+//		return null;
+//	}
 
 	private boolean hasExtension(String name, String ext) {
 		return name.endsWith(ext) && (ext.length() != name.length());

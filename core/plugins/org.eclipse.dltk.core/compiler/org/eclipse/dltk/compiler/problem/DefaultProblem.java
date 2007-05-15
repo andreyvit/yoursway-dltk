@@ -19,7 +19,7 @@ public class DefaultProblem extends CategorizedProblem {
 
 	private int id;
 
-	private int startPosition, endPosition, line, column ;
+	private int startPosition, endPosition, line, column;
 
 	private int severity;
 
@@ -215,6 +215,9 @@ public class DefaultProblem extends CategorizedProblem {
 	 */
 	public String getMessage() {
 		return this.message;
+	}
+	public int getColumn() {
+		return this.column;
 	}
 
 	/**

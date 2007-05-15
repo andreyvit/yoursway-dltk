@@ -30,12 +30,8 @@ import org.eclipse.dltk.core.ISourceModuleInfoCache;
 import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.core.builder.IScriptBuilder;
 import org.eclipse.dltk.core.mixin.IMixinParser;
-import org.eclipse.dltk.core.search.IDLTKSearchConstants;
-import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchParticipant;
-import org.eclipse.dltk.core.search.SearchPattern;
-import org.eclipse.dltk.core.search.TypeNameRequestor;
 import org.eclipse.dltk.core.search.index.Index;
 import org.eclipse.dltk.core.search.indexing.IndexManager;
 import org.eclipse.dltk.core.search.indexing.InternalSearchDocument;
@@ -74,7 +70,7 @@ public class MixinBuilder implements IScriptBuilder {
 			return null;
 		}
 		Map indexes = new HashMap();
-		Map imons = new HashMap();
+//		Map imons = new HashMap();
 		Index mixinIndex = null;
 		ReadWriteMonitor imon = null;
 		try {
@@ -200,24 +196,24 @@ public class MixinBuilder implements IScriptBuilder {
 		return null;
 	}
 
-	private void waitUntilIndexReady(IDLTKLanguageToolkit toolkit, IProgressMonitor monitor) {
-		// dummy query for waiting until the indexes are ready
-		SearchEngine engine = new SearchEngine();
-		IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit);
-		try {
-			engine.searchAllTypeNames(null, "!@$#!@".toCharArray(),
-					SearchPattern.R_PATTERN_MATCH
-							| SearchPattern.R_CASE_SENSITIVE,
-					IDLTKSearchConstants.TYPE, scope, new TypeNameRequestor() {
-						public void acceptType(int modifiers,
-								char[] packageName, char[] simpleTypeName,
-								char[][] enclosingTypeNames, String path) {
-						}
-					}, IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, monitor);
-		} catch (CoreException e) {
-		}
-
-	}
+//	private void waitUntilIndexReady(IDLTKLanguageToolkit toolkit, IProgressMonitor monitor) {
+//		// dummy query for waiting until the indexes are ready
+//		SearchEngine engine = new SearchEngine();
+//		IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit);
+//		try {
+//			engine.searchAllTypeNames(null, "!@$#!@".toCharArray(),
+//					SearchPattern.R_PATTERN_MATCH
+//							| SearchPattern.R_CASE_SENSITIVE,
+//					IDLTKSearchConstants.TYPE, scope, new TypeNameRequestor() {
+//						public void acceptType(int modifiers,
+//								char[] packageName, char[] simpleTypeName,
+//								char[][] enclosingTypeNames, String path) {
+//						}
+//					}, IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, monitor);
+//		} catch (CoreException e) {
+//		}
+//
+//	}
 	private static MixinBuilder builder = new MixinBuilder();
 	public static MixinBuilder getDefault() {
 		return builder;

@@ -9,14 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.ui.actions.refactoring;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IMember;
-import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.refactoring.reorg.ReorgMoveAction;
@@ -147,34 +140,34 @@ public class MoveAction extends SelectionDispatchAction{
 		}
 	}	
 
-	private static IMember[] getSelectedMembers(IStructuredSelection selection){
-		if (selection.isEmpty())
-			return null;
-		
-		for  (Iterator iter= selection.iterator(); iter.hasNext(); ) {
-			if (! (iter.next() instanceof IMember))
-				return null;
-		}
-		return convertToMemberArray(selection.toArray());
-	}
+//	private static IMember[] getSelectedMembers(IStructuredSelection selection){
+//		if (selection.isEmpty())
+//			return null;
+//		
+//		for  (Iterator iter= selection.iterator(); iter.hasNext(); ) {
+//			if (! (iter.next() instanceof IMember))
+//				return null;
+//		}
+//		return convertToMemberArray(selection.toArray());
+//	}
 
-	private static IMember[] convertToMemberArray(Object[] obj) {
-		if (obj == null)
-			return null;
-		Set memberSet= new HashSet();
-		memberSet.addAll(Arrays.asList(obj));
-		return (IMember[]) memberSet.toArray(new IMember[memberSet.size()]);
-	}	
+//	private static IMember[] convertToMemberArray(Object[] obj) {
+//		if (obj == null)
+//			return null;
+//		Set memberSet= new HashSet();
+//		memberSet.addAll(Arrays.asList(obj));
+//		return (IMember[]) memberSet.toArray(new IMember[memberSet.size()]);
+//	}	
 
-	private static IMethod getSingleSelectedMethod(IStructuredSelection selection) {
-		if (selection.isEmpty() || selection.size() != 1) 
-			return null;
-		
-		Object first= selection.getFirstElement();
-		if (! (first instanceof IMethod))
-			return null;
-		return (IMethod) first;
-	}
+//	private static IMethod getSingleSelectedMethod(IStructuredSelection selection) {
+//		if (selection.isEmpty() || selection.size() != 1) 
+//			return null;
+//		
+//		Object first= selection.getFirstElement();
+//		if (! (first instanceof IMethod))
+//			return null;
+//		return (IMethod) first;
+//	}
 	
 
 	private boolean tryReorgMove(ITextSelection selection) throws ModelException{

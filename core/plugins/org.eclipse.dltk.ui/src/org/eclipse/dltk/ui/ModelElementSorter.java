@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui;
 
+import java.util.Comparator;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -303,20 +305,7 @@ public class ModelElementSorter extends ViewerSorter {
 		return Integer.MAX_VALUE;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.viewers.ViewerSorter#getCollator()
-	 */
-	public final java.text.Collator getCollator() {
-		// kept in for API compatibility
-		if (collator == null) {
-			collator = java.text.Collator.getInstance();
-		}
-		return collator;
-	}
-
-	private final Collator getNewCollator() {
+	private final Comparator getNewCollator() {
 		if (fNewCollator == null) {
 			fNewCollator = Collator.getInstance();
 		}

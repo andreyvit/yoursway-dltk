@@ -151,29 +151,29 @@ public class TypeInfoFilter {
 //		}
 	}
 	
-	/*
-	 * Transforms o.e.j  to o*.e*.j*
-	 */
-	private String evaluatePackagePattern(String s) {
-		StringBuffer buf= new StringBuffer();
-		boolean hasWildCard= false;
-		for (int i= 0; i < s.length(); i++) {
-			char ch= s.charAt(i);
-			if (ch == '.') {
-				if (!hasWildCard) {
-					buf.append('*');
-				}
-				hasWildCard= false;
-			} else if (ch == '*' || ch =='?') {
-				hasWildCard= true;
-			}
-			buf.append(ch);
-		}
-		if (!hasWildCard) {
-			buf.append('*');
-		}
-		return buf.toString();
-	}
+//	/*
+//	 * Transforms o.e.j  to o*.e*.j*
+//	 */
+//	private String evaluatePackagePattern(String s) {
+//		StringBuffer buf= new StringBuffer();
+//		boolean hasWildCard= false;
+//		for (int i= 0; i < s.length(); i++) {
+//			char ch= s.charAt(i);
+//			if (ch == '.') {
+//				if (!hasWildCard) {
+//					buf.append('*');
+//				}
+//				hasWildCard= false;
+//			} else if (ch == '*' || ch =='?') {
+//				hasWildCard= true;
+//			}
+//			buf.append(ch);
+//		}
+//		if (!hasWildCard) {
+//			buf.append('*');
+//		}
+//		return buf.toString();
+//	}
 
 	public String getText() {
 		return fText;

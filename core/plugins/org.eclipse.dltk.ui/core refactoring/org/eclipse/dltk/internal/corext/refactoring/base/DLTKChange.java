@@ -12,6 +12,7 @@ package org.eclipse.dltk.internal.corext.refactoring.base;
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
+import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -259,6 +260,6 @@ public abstract class DLTKChange extends Change {
 	
 	private static ITextFileBuffer getBuffer(IFile file) {
 		ITextFileBufferManager manager= FileBuffers.getTextFileBufferManager();
-		return manager.getTextFileBuffer(file.getFullPath());
+		return manager.getTextFileBuffer(file.getFullPath(), LocationKind.NORMALIZE);
 	}
 }

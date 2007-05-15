@@ -40,7 +40,7 @@ public class DLTKPluginImages {
 	private static final String T_ELCL = "elcl16"; //$NON-NLS-1$
 	private static final String T_DLCL = "dlcl16"; //$NON-NLS-1$
 	private static final String T_ETOOL = "etool16"; //$NON-NLS-1$
-	private static final String T_EVIEW = "eview16"; //$NON-NLS-1$
+//	private static final String T_EVIEW = "eview16"; //$NON-NLS-1$
 	
 	public static final String TERMINATE_CONSOLE = NAME_PREFIX + "term_sbook.gif"; //$NON-NLS-1$
 	

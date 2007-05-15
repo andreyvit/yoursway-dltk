@@ -356,7 +356,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	/**
 	 * Indicates whether parameter names have been computed.
 	 */
-	private boolean parameterNamesComputed = false;
+//	private boolean parameterNamesComputed = false;
 
 	private IModelElement modelElement;
 
@@ -879,7 +879,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 */
 	public void setParameterNames(char[][] parameterNames) {
 		this.parameterNames = parameterNames;
-		this.parameterNamesComputed = true;
+//		this.parameterNamesComputed = true;
 	}
 
 	public String toString() {

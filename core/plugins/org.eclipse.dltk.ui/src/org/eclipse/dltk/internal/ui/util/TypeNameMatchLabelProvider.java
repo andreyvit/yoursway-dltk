@@ -31,7 +31,7 @@ public class TypeNameMatchLabelProvider extends LabelProvider {
 	
 	private static final Image CLASS_ICON= DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_CLASS);
 	private static final Image ANNOTATION_ICON= DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_ANNOTATION);
-	private static final Image INTERFACE_ICON= DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_INTERFACE);
+//	private static final Image INTERFACE_ICON= DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_INTERFACE);
 	private static final Image PKG_ICON= DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_PACKAGE);
 	
 	private int fFlags;

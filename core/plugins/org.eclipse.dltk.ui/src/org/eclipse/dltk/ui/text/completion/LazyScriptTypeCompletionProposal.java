@@ -30,14 +30,14 @@ public abstract class LazyScriptTypeCompletionProposal extends
 
 	protected final ISourceModule fSourceModule;
 
-	private String fQualifiedName;
+//	private String fQualifiedName;
 	private String fSimpleName;
 
 	public LazyScriptTypeCompletionProposal(CompletionProposal proposal,
 			ScriptContentAssistInvocationContext context) {
 		super(proposal, context);
 		fSourceModule = context.getSourceModule();
-		fQualifiedName = null;
+//		fQualifiedName = null;
 	}
 
 	public final String getQualifiedTypeName() {
@@ -204,8 +204,8 @@ public abstract class LazyScriptTypeCompletionProposal extends
 	}
 
 	private boolean isDocProcessingEnabled() {
-		IDLTKProject project = fSourceModule.getScriptProject();
-		boolean processJavadoc;
+//		IDLTKProject project = fSourceModule.getScriptProject();
+//		boolean processJavadoc;
 		if (DLTKCore.DEBUG) {
 			System.out.println("TODO: Add documentation support.");
 		}

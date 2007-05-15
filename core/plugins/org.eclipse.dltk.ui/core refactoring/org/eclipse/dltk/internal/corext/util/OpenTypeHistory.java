@@ -21,6 +21,7 @@ import java.util.Map;
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
+import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.resources.IResource;
@@ -362,7 +363,7 @@ public class OpenTypeHistory extends History {
 		IResource resource= cu.getResource(); 
 		if( resource != null ) {
 			ITextFileBufferManager manager= FileBuffers.getTextFileBufferManager();
-			ITextFileBuffer textFileBuffer= manager.getTextFileBuffer(resource.getFullPath());
+			ITextFileBuffer textFileBuffer= manager.getTextFileBuffer(resource.getFullPath(), LocationKind.NORMALIZE);
 			if (textFileBuffer != null) {
 				return textFileBuffer.isDirty();
 			}

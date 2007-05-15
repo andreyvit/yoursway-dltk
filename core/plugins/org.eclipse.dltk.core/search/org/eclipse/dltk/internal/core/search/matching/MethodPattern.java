@@ -87,7 +87,7 @@ public class MethodPattern extends DLTKSearchPattern implements IIndexConstants 
 			char[] declaringSimpleName, IMethod method, int matchRule) {
 		this(findDeclarations, findReferences, selector, declaringQualification, declaringSimpleName, method==null?null:method.getDeclaringType(), matchRule);
 		// Get unique key for parameterized constructors
-		String genericDeclaringTypeSignature = null;
+//		String genericDeclaringTypeSignature = null;
 		// String genericSignature = null;
 		// String key;
 		methodParameters = true;

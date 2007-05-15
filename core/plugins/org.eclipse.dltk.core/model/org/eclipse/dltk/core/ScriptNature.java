@@ -14,12 +14,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.internal.core.Model;
-import org.eclipse.dltk.internal.core.ModelManager;
 
 public class ScriptNature implements IProjectNature {
 	private IProject project;
-	private Model parent;
+//	private Model parent;
 	/**
 	 * Configure the project with Java nature.
 	 */
@@ -122,7 +120,7 @@ public class ScriptNature implements IProjectNature {
 	public void setProject(IProject project) {
 
 		this.project = project;
-		this.parent = ModelManager.getModelManager().getModel();
+//		this.parent = ModelManager.getModelManager().getModel();
 	}
 	public IProject getProject() {
 		return this.project;

@@ -362,4 +362,6 @@ public final class ActionMessages extends NLS {
 	public static String GenerateBuildPathActionGroup_update_zip_text;
 	public static String GenerateBuildPathActionGroup_update_zip_description;
 	public static String GenerateBuildPathActionGroup_update_zip_tooltip;
+	
+	public static String OpenWithMenu_dialogTitle;
 }

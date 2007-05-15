@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UTFDataFormatException;
 import java.net.URI;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
@@ -211,6 +212,39 @@ public class Util {
 			}
 		}
 		return args.toString();
+	}
+	
+	public static String[] getProblemArgumentsFromMarker(String argumentsString){
+		if (argumentsString == null) return null;
+		int index = argumentsString.indexOf(':');
+		if(index == -1)
+			return null;
+		
+		int length = argumentsString.length();
+		int numberOfArg;
+		try{
+			numberOfArg = Integer.parseInt(argumentsString.substring(0 , index));
+		} catch (NumberFormatException e) {
+			return null;
+		}
+		argumentsString = argumentsString.substring(index + 1, length);
+		
+		String[] args = new String[length];
+		int count = 0;
+		
+		StringTokenizer tokenizer = new StringTokenizer(argumentsString, ARGUMENTS_DELIMITER);
+		while(tokenizer.hasMoreTokens()) {
+			String argument = tokenizer.nextToken();
+			if(argument.equals(EMPTY_ARGUMENT))
+				argument = "";  //$NON-NLS-1$
+			args[count++] = argument;
+		}
+		
+		if(count != numberOfArg)
+			return null;
+		
+		System.arraycopy(args, 0, args = new String[count], 0, count);
+		return args;
 	}
 
 	/**

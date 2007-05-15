@@ -22,11 +22,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ElementChangedEvent;
@@ -81,20 +78,20 @@ public class MixinModel {
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(changedListener);
 	}
 
-	private static void waitForAutoBuild() {
-		boolean wasInterrupted = false;
-		do {
-			try {
-				Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD,
-						null);
-				wasInterrupted = false;
-			} catch (OperationCanceledException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				wasInterrupted = true;
-			}
-		} while (wasInterrupted);
-	}
+//	private static void waitForAutoBuild() {
+//		boolean wasInterrupted = false;
+//		do {
+//			try {
+//				Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD,
+//						null);
+//				wasInterrupted = false;
+//			} catch (OperationCanceledException e) {
+//				e.printStackTrace();
+//			} catch (InterruptedException e) {
+//				wasInterrupted = true;
+//			}
+//		} while (wasInterrupted);
+//	}
 
 	public IMixinElement get(String key) {
 		// waitForAutoBuild();
@@ -316,7 +313,7 @@ public class MixinModel {
 		public void resourceChanged(IResourceChangeEvent event) {
 			int eventType = event.getType();
 			IResource resource = event.getResource();
-			IResourceDelta delta = event.getDelta();
+//			IResourceDelta delta = event.getDelta();
 
 			switch (eventType) {
 			case IResourceChangeEvent.PRE_DELETE:

@@ -18,8 +18,10 @@ import java.util.Set;
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
+import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourceAttributes;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -171,12 +173,12 @@ public class DocumentAdapter implements IBuffer, IDocumentListener {
 	private void initialize() {
 		ITextFileBufferManager manager= FileBuffers.getTextFileBufferManager();
 		try {
-			manager.connect(fPath, new NullProgressMonitor());
-			fTextFileBuffer= manager.getTextFileBuffer(fPath);
+			manager.connect(fPath, LocationKind.NORMALIZE, new NullProgressMonitor());
+			fTextFileBuffer= manager.getTextFileBuffer(fPath, LocationKind.NORMALIZE);
 			fDocument= fTextFileBuffer.getDocument();
 		} catch (CoreException x) {
 			fStatus= x.getStatus();
-			fDocument= manager.createEmptyDocument(fPath);
+			fDocument= manager.createEmptyDocument(fPath, LocationKind.NORMALIZE);
 			if (fDocument instanceof ISynchronizable)
 				((ISynchronizable)fDocument).setLockObject(new Object());
 		}
@@ -252,7 +254,7 @@ public class DocumentAdapter implements IBuffer, IDocumentListener {
 		if (fTextFileBuffer != null) {
 			ITextFileBufferManager manager= FileBuffers.getTextFileBufferManager();
 			try {
-				manager.disconnect(fTextFileBuffer.getLocation(), new NullProgressMonitor());
+				manager.disconnect(fTextFileBuffer.getLocation(), LocationKind.NORMALIZE,  new NullProgressMonitor());
 			} catch (CoreException x) {
 				// ignore
 			}
@@ -340,7 +342,8 @@ public class DocumentAdapter implements IBuffer, IDocumentListener {
 	 */
 	public boolean isReadOnly() {
 		IResource resource= getUnderlyingResource();
-		return resource == null ? true : resource.isReadOnly();
+		ResourceAttributes resourceAttributes = resource.getResourceAttributes();
+		return resource == null ? true : resourceAttributes.isReadOnly() ;
 	}
 
 	/*

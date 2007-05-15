@@ -187,9 +187,9 @@ public class AddValidatorDialog extends StatusDialog {
 	}
 
 
-	private IValidatorType getValidatorType() {
-		return fSelectedValidatorType;
-	}
+//	private IValidatorType getValidatorType() {
+//		return fSelectedValidatorType;
+//	}
 	
 
 	private IStatus validateValidatorName() {
@@ -261,9 +261,9 @@ public class AddValidatorDialog extends StatusDialog {
 		fStati[0]= status;
 	}
 	
-	private void setValidatorLocationStatus(IStatus status) {
-		fStati[1]= status;
-	}
+//	private void setValidatorLocationStatus(IStatus status) {
+//		fStati[1]= status;
+//	}
 	
 	protected IStatus getSystemLibraryStatus() {
 		return fStati[3];

@@ -133,17 +133,16 @@ public class OrLocator extends PatternLocator {
 			int length, MatchLocator locator) {
 		PatternLocator closestPattern = null;
 		int level = ACCURATE_MATCH;
-//		for (int i = 0, pl = this.patternLocators.length; i < pl; i++) {
-//			PatternLocator patternLocator = this.patternLocators[i];
-//			int newLevel = patternLocator.referenceType() == 0 ? IMPOSSIBLE_MATCH
-//					: patternLocator.resolveLevel(reference);
-//			if (newLevel > level) {
-//				closestPattern = patternLocator;
-//				if (newLevel == ACCURATE_MATCH)
-//					break;
-//				level = newLevel;
-//			}
-//		}
+		for (int i = 0, pl = this.patternLocators.length; i < pl; i++) {
+			PatternLocator patternLocator = this.patternLocators[i];
+			int newLevel = patternLocator.resolveLevel(reference);
+			if (newLevel > level) {
+				closestPattern = patternLocator;
+				if (newLevel == ACCURATE_MATCH)
+					break;
+				level = newLevel;
+			}
+		}
 		if (closestPattern != null) {
 			return closestPattern.newDeclarationMatch(reference, element,
 					accuracy, length, locator);

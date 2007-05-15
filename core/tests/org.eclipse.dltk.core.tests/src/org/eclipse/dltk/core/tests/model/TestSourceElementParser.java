@@ -19,7 +19,7 @@ public class TestSourceElementParser implements ISourceElementParser {
 
 	private ISourceElementRequestor requestor;
 
-	TestSourceElementParser() {
+	public TestSourceElementParser() {
 
 	}
 
@@ -50,7 +50,5 @@ public class TestSourceElementParser implements ISourceElementParser {
 	}
 
 	public void setReporter(IProblemReporter reporter) {
-		// TODO Auto-generated method stub
-
 	}
 }
