@@ -50,7 +50,7 @@ public class RubyTypeInferencer extends DefaultTypeInferencer {
 		super(new RubyEvaluatorFactory());
 	}
 
-	public IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit) {
+	public synchronized IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit) {
 		IEvaluatedType type = super.evaluateType(goal, new SimplestRubyPruner(
 				timeLimit));
 		if (type == null || type instanceof UnknownType) {
@@ -60,7 +60,7 @@ public class RubyTypeInferencer extends DefaultTypeInferencer {
 		return type;
 	}
 
-	public Object evaluateGoal(IGoal goal, IPruner pruner) {
+	public synchronized Object evaluateGoal(IGoal goal, IPruner pruner) {
 		return super.evaluateGoal(goal, pruner);
 	}
 

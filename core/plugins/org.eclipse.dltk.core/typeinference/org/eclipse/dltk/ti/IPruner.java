@@ -15,6 +15,7 @@ import org.eclipse.dltk.ti.goals.IGoal;
 /**
  * Pruner is thing, that can prune some goals from working queue.
  * It could be time limits, goals count or more complex criterias. 
+ * Pruners are created per every evaluation.
  */
 public interface IPruner {
 	

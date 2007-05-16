@@ -9,12 +9,16 @@
  *******************************************************************************/
 package org.eclipse.dltk.ti;
 
+/**
+ * @deprecated use IEvaluationStatisticsRequestor
+ */
 public class EvaluatorStatistics {
 
 	private int totalSubGoalsRequested;
 	private long timeRunning;
 	private int subGoalsDone;
 	private int subGoalsDoneSuccessful;
+	
 	public EvaluatorStatistics(int totalSubGoalsRequested, long timeRunning,
 			int subGoalsDone, int subGoalsDoneSuccessful) {
 		super();

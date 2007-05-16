@@ -9,8 +9,11 @@
  *******************************************************************************/
 package org.eclipse.dltk.ti;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
@@ -20,21 +23,11 @@ import org.eclipse.dltk.ti.goals.IGoal;
  * Main working class for type inference. Purpose of this class is simple:
  * evaluate goals and manage their dependencies of subgoals. Also this
  * class allows pruning: before evaluating every goal(except root goal) could
- * be pruned by provided prunner. 
+ * be pruned by provided prunner.
+ * 
+ * This class isn't thread safe. 
  */
-public class GoalEngine {
-	
-//	private final static boolean TRACE_GOALS = Boolean
-//	.valueOf(
-//			Platform
-//					.getDebugOption("org.eclipse.dltk.core/typeInferencing/traceGoals"))
-//	.booleanValue();
-//	
-//	private final static boolean SHOW_STATISTICS = Boolean
-//	.valueOf(
-//			Platform
-//					.getDebugOption("org.eclipse.dltk.core/typeInferencing/showStatistics"))
-//	.booleanValue();
+public class GoalEngine {	
 	
 	private final IGoalEvaluatorFactory evaluatorFactory;
 	
@@ -42,14 +35,14 @@ public class GoalEngine {
 	private final HashMap goalStates = new HashMap ();
 	private final HashMap evaluatorStates = new HashMap();
 		
-	private class EvalutorState {
+	private class EvaluatorState {
 		public long timeCreated;
 		public int totalSubgoals;
-		public int successfulSubgoals;
-		
+		public int successfulSubgoals;		
 		public int subgoalsLeft;
+		public List subgoals = new ArrayList ();
 
-		public EvalutorState(int subgoalsLeft) {
+		public EvaluatorState(int subgoalsLeft) {
 			this.subgoalsLeft = subgoalsLeft;
 			this.timeCreated = System.currentTimeMillis();
 			totalSubgoals = subgoalsLeft;
@@ -85,6 +78,14 @@ public class GoalEngine {
 		goalStates.put(goal, es);
 	}
 	
+	private EvaluatorState getEvaluatorState (GoalEvaluator evaluator) {
+		return (EvaluatorState) evaluatorStates.get(evaluator);
+	}
+	
+	private void putEvaluatorState(GoalEvaluator evaluator, EvaluatorState state) {
+		evaluatorStates.put(evaluator, state);
+	}
+	
 	private void notifyEvaluator (GoalEvaluator evaluator, IGoal subGoal) {
 		GoalEvaluationState subGoalState = (GoalEvaluationState) goalStates.get(subGoal);
 		Object result = subGoalState.result;
@@ -97,12 +98,13 @@ public class GoalEngine {
 		if (newGoals == null)
 			newGoals = IGoal.NO_GOALS;
 		for (int i = 0; i < newGoals.length; i++) {
-			workingQueue.add(new WorkingPair(newGoals[i], evaluator));
+			workingQueue.add(new WorkingPair(newGoals[i], evaluator));			
 		}
-		EvalutorState ev = (EvalutorState) evaluatorStates.get(evaluator);
+		EvaluatorState ev = getEvaluatorState(evaluator);
 		ev.subgoalsLeft--;
 		ev.subgoalsLeft += newGoals.length;			
 		ev.totalSubgoals += newGoals.length;
+		ev.subgoals.addAll(Arrays.asList(newGoals));
 		if (state == GoalState.DONE && result != null)
 			ev.successfulSubgoals++;
 		if (ev.subgoalsLeft == 0) {
@@ -117,14 +119,16 @@ public class GoalEngine {
 	}
 	
 	private EvaluatorStatistics getEvaluatorStatistics (GoalEvaluator evaluator) {
-		EvalutorState ev = (EvalutorState) evaluatorStates.get(evaluator);
+		EvaluatorState ev = getEvaluatorState(evaluator);
 		if (ev == null)
 			return null;
 		long currentTime = System.currentTimeMillis();
-		return new EvaluatorStatistics(ev.totalSubgoals,currentTime - ev.timeCreated,ev.totalSubgoals - ev.subgoalsLeft,ev.successfulSubgoals);
+		return new EvaluatorStatistics(ev.totalSubgoals,
+				currentTime - ev.timeCreated,
+				ev.totalSubgoals - ev.subgoalsLeft,
+				ev.successfulSubgoals);
 	}
-	
-	
+		
 	public Object evaluateGoal(IGoal rootGoal, IPruner pruner) {
 		reset();
 		if (pruner != null)
@@ -146,7 +150,6 @@ public class GoalEngine {
 				} else {
 					GoalEvaluator evaluator = evaluatorFactory.createEvaluator(pair.goal);
 					Assert.isNotNull(evaluator);
-//					System.out.println("Evaluating " + pair.goal + " with a " + evaluator);
 					IGoal[] newGoals = evaluator.init();
 					if (newGoals == null)
 						newGoals = IGoal.NO_GOALS;						
@@ -154,7 +157,9 @@ public class GoalEngine {
 						for (int i = 0; i < newGoals.length; i++) {
 							workingQueue.add(new WorkingPair(newGoals[i], evaluator));
 						}
-						evaluatorStates.put(evaluator, new EvalutorState(newGoals.length));
+						EvaluatorState evaluatorState = new EvaluatorState(newGoals.length);
+						evaluatorState.subgoals.add(Arrays.asList(newGoals));
+						putEvaluatorState(evaluator, evaluatorState);
 						storeGoal(pair.goal, GoalState.WAITING, null, pair.creator);
 					} else {
 						Object result = evaluator.produceResult();
@@ -166,27 +171,7 @@ public class GoalEngine {
 			}			
 		}		
 		GoalEvaluationState s = (GoalEvaluationState) goalStates.get(rootGoal);
-//		
-//		if (TRACE_GOALS || SHOW_STATISTICS)
-//			System.out.println("Root goal done: " + rootGoal.toString()
-//					+ ", answer is "
-//					+ String.valueOf(lastObtainedSubgoalResult)
-//					+ (timeLimitCondition ? " [time limit exceeded]" : ""));
-//		if (SHOW_STATISTICS) {
-//			System.out.println("Time spent:             "
-//					+ (System.currentTimeMillis() - endTime + timeLimit)
-//					+ " ms");
-//			System.out
-//					.println("Total goals requested:  " + totalGoalsRequested);
-//			System.out.println("Total goals calculated: "
-//					+ totalGoalsCalculated);
-//			System.out.println("Total cache hits:       " + cacheHits);
-//			System.out.println("Maximal stack size:     " + maxStackSize);
-//			System.out
-//					.println("Cached goal answers:    " + answersCache.size());
-//			System.out.println();
-//		}
-//		
+
 		Assert.isTrue(s.state == GoalState.DONE);
 		return s.result;
 	}
