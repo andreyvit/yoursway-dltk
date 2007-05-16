@@ -12,13 +12,13 @@ package org.eclipse.dltk.validators.core.tests;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.validators.core.IValidator;
 import org.eclipse.dltk.validators.core.IValidatorType;
 import org.eclipse.dltk.validators.internal.core.ValidatorDefinitionsContainer;
 import org.eclipse.dltk.validators.internal.core.ValidatorManager;
-
-import junit.framework.TestCase;
 
 public class ValidatorContainerTests extends TestCase {
 	public void testValidatorContainer001() throws Exception {

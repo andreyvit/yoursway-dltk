@@ -5,7 +5,6 @@ import org.eclipse.debug.internal.ui.viewers.model.provisional.IColumnPresentati
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IElementLabelProvider;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
-import org.eclipse.jface.viewers.ILabelProvider;
 
 public class RubyAdapterFactory implements IAdapterFactory {
 

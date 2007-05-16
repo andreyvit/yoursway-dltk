@@ -23,7 +23,6 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.core.search.matching.PatternLocator;
 import org.eclipse.dltk.tcl.ast.TclModuleDeclaration;
 import org.eclipse.dltk.tcl.ast.TclNamespaceDeclaration;
 import org.eclipse.dltk.tcl.ast.TclStatement;

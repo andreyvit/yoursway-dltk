@@ -37,6 +37,7 @@ import java.io.StringReader;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.jruby.ast.Node;
 import org.jruby.common.NullWarnings;
+import org.jruby.lexer.yacc.ISourcePosition;
 import org.jruby.lexer.yacc.LexerSource;
 import org.jruby.lexer.yacc.SyntaxException;
 import org.jruby.parser.DefaultRubyParser;
@@ -73,7 +74,7 @@ public class DLTKRubyParser {
 
 		try {
 			parser = RubyParserPool.getInstance().borrowParser();
-			parser.setWarnings(new NullWarnings());
+			parser.setWarnings(warnings);
 
 			LexerSource lexerSource = LexerSource.getSource(file, content);
 			result = parser.parse(configuration, lexerSource);
@@ -82,11 +83,18 @@ public class DLTKRubyParser {
 			}
 			success = true;
 		} catch (SyntaxException e) {
-			StringBuffer buffer = new StringBuffer(100);
-			buffer.append(e.getPosition().getFile()).append(':');
-			buffer.append(e.getPosition().getEndLine()).append(": ");
-			buffer.append(e.getMessage());
-			warnings.error(e.getPosition(), e.getMessage());
+//			StringBuffer buffer = new StringBuffer(100);
+//			buffer.append(e.getPosition().getFile()).append(':');
+//			buffer.append(e.getPosition().getEndLine()).append(": ");
+//			buffer.append(e.getMessage());
+			
+			ISourcePosition position = e.getPosition();
+			if( position.getStartOffset() == position.getEndOffset()) {
+				if( position.getStartOffset() > 0 ) {
+					position.adjustStartOffset(-1);
+				}
+			}
+			warnings.error(position, e.getMessage());
 		} finally {
 			RubyParserPool.getInstance().returnParser(parser);
 		}

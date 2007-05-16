@@ -13,12 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.dltk.core.IMethod;
-import org.eclipse.dltk.core.ISourceRange;
-import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
-import org.eclipse.dltk.internal.core.ModelElement;
-import org.eclipse.dltk.ruby.core.model.FakeMethod;
 
 public class RubyMixinMethod implements IRubyMixinElement {
 

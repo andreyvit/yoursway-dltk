@@ -11,10 +11,6 @@ package org.eclipse.dltk.validators.core.tests;
 
 import java.io.IOException;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.dltk.compiler.problem.IProblemReporter;
-import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.validators.core.AbstractValidatorType;
 import org.eclipse.dltk.validators.core.IValidator;
 import org.w3c.dom.Element;

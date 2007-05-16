@@ -11,10 +11,7 @@ package org.eclipse.dltk.javascript.internal.ui.templates;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
@@ -22,11 +19,7 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.compiler.problem.IProblem;
-import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.internal.javascript.parser.JavaScriptSourceParser;
-import org.eclipse.dltk.javascript.internal.ui.formatting.JavaScriptFormattingConstants;
 import org.eclipse.dltk.javascript.internal.ui.formatting.OldCodeFormatter;
 import org.eclipse.dltk.ui.templates.ScriptTemplateContext;
 import org.eclipse.jface.text.BadLocationException;
@@ -36,8 +29,6 @@ import org.eclipse.jface.text.templates.Template;
 import org.eclipse.jface.text.templates.TemplateBuffer;
 import org.eclipse.jface.text.templates.TemplateContextType;
 import org.eclipse.jface.text.templates.TemplateException;
-
-import com.xored.org.mozilla.javascript.ObjToIntMap.Iterator;
 
 public class JavaScriptTemplateContext extends ScriptTemplateContext {
 
