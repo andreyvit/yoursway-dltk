@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
+import org.eclipse.dltk.ti.statistics.IEvaluationStatisticsRequestor;
 
 /**
  * Main working class for type inference. Purpose of this class is simple:
@@ -34,6 +35,8 @@ public class GoalEngine {
 	private final LinkedList workingQueue = new LinkedList();
 	private final HashMap goalStates = new HashMap ();
 	private final HashMap evaluatorStates = new HashMap();
+	
+	private IEvaluationStatisticsRequestor statisticsRequestor;
 		
 	private class EvaluatorState {
 		public long timeCreated;
@@ -128,8 +131,13 @@ public class GoalEngine {
 				ev.totalSubgoals - ev.subgoalsLeft,
 				ev.successfulSubgoals);
 	}
-		
+	
 	public Object evaluateGoal(IGoal rootGoal, IPruner pruner) {
+		return evaluateGoal(rootGoal, pruner, null);
+	}
+	
+	public Object evaluateGoal(IGoal rootGoal, IPruner pruner, IEvaluationStatisticsRequestor statisticsRequestor) {
+		this.statisticsRequestor = statisticsRequestor;
 		reset();
 		if (pruner != null)
 			pruner.init();

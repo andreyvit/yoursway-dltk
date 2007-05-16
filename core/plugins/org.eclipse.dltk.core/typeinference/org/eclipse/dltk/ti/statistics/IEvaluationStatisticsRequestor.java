@@ -33,7 +33,7 @@ public interface IEvaluationStatisticsRequestor {
 	 * @param subgoals subgoals, that this evalutor posted
 	 * @param time time, that evaluator spent in init() method
 	 */
-	void evaluatorInitialized (GoalEvaluator evaluator, IGoal subgoals, long time);	
+	void evaluatorInitialized (GoalEvaluator evaluator, IGoal[] subgoals, long time);	
 	
 	/**
 	 * Called, when evaluator accepted subgoal result, i.e. subGoalDone called
@@ -41,7 +41,7 @@ public interface IEvaluationStatisticsRequestor {
 	 * @param subgoals
 	 * @param time
 	 */
-	void evaluatorReceivedResult (GoalEvaluator evaluator, IGoal finishedGoal, IGoal subgoals, long time);
+	void evaluatorReceivedResult (GoalEvaluator evaluator, IGoal finishedGoal, IGoal[] newSubgoals, long time);
 	
 	/**
 	 * Called, when evaluator finally produced a result
