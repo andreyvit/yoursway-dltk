@@ -26,7 +26,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-public class DltkToggleBreakpointAdapter implements IToggleBreakpointsTarget {
+public class ScriptToggleBreakpointAdapter implements IToggleBreakpointsTarget {
 	
 	protected ITextEditor getPartEditor(IWorkbenchPart part) {
 		if (part instanceof ITextEditor) {
@@ -47,7 +47,7 @@ public class DltkToggleBreakpointAdapter implements IToggleBreakpointsTarget {
 		return null;
 	}
 
-	public DltkToggleBreakpointAdapter() {
+	public ScriptToggleBreakpointAdapter() {
 
 	}
 

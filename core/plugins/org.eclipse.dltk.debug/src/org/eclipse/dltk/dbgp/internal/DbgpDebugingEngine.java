@@ -14,13 +14,14 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import org.eclipse.dltk.dbgp.internal.packets.DbgpLogger;
+import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.dltk.dbgp.IDbgpRawListener;
 import org.eclipse.dltk.dbgp.internal.packets.DbgpNotifyPacket;
 import org.eclipse.dltk.dbgp.internal.packets.DbgpPacketReceiver;
 import org.eclipse.dltk.dbgp.internal.packets.DbgpPacketSender;
 import org.eclipse.dltk.dbgp.internal.packets.DbgpResponsePacket;
 import org.eclipse.dltk.dbgp.internal.packets.DbgpStreamPacket;
-import org.eclipse.dltk.dbgp.internal.packets.IDbgpLogger;
+import org.eclipse.dltk.dbgp.internal.packets.IDbgpRawLogger;
 
 public class DbgpDebugingEngine extends DbgpTermination implements
 		IDbgpDebugingEngine, IDbgpTerminationListener {
@@ -32,16 +33,18 @@ public class DbgpDebugingEngine extends DbgpTermination implements
 
 	private Object terminatedLock = new Object();
 	private boolean terminated = false;
-	
-	private IDbgpLogger logger = new DbgpLogger();
 
 	public DbgpDebugingEngine(Socket socket) throws IOException {
 		this.socket = socket;
 
 		receiver = new DbgpPacketReceiver(new BufferedInputStream(socket
 				.getInputStream()));
-		
-		receiver.setLogger(logger);
+
+		receiver.setLogger(new IDbgpRawLogger() {
+			public void log(String output) {
+				firePacketReceived(output);
+			}
+		});
 
 		receiver.addTerminationListener(this);
 
@@ -49,8 +52,12 @@ public class DbgpDebugingEngine extends DbgpTermination implements
 
 		sender = new DbgpPacketSender(new BufferedOutputStream(socket
 				.getOutputStream()));
-		
-		sender.setLogger(logger);
+
+		sender.setLogger(new IDbgpRawLogger() {
+			public void log(String output) {
+				firePacketSent(output);
+			}
+		});
 	}
 
 	public DbgpStreamPacket getStreamPacket() throws IOException,
@@ -111,5 +118,31 @@ public class DbgpDebugingEngine extends DbgpTermination implements
 		}
 
 		fireObjectTerminated(e);
+	}
+
+	private ListenerList listeners = new ListenerList();
+
+	protected void firePacketReceived(String content) {
+		Object[] list = listeners.getListeners();
+
+		for (int i = 0; i < list.length; ++i) {
+			((IDbgpRawListener) list[i]).dbgpPacketReceived(content);
+		}
+	}
+
+	protected void firePacketSent(String content) {
+		Object[] list = listeners.getListeners();
+
+		for (int i = 0; i < list.length; ++i) {
+			((IDbgpRawListener) list[i]).dbgpPacketSent(content);
+		}
+	}
+
+	public void addRawListener(IDbgpRawListener listener) {
+		listeners.add(listener);
+	}
+
+	public void removeRawListenr(IDbgpRawListener listener) {
+		listeners.remove(listener);
 	}
 }

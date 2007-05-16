@@ -22,6 +22,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.dltk.internal.debug.ui.ImageDescriptorRegistry;
+import org.eclipse.dltk.internal.debug.ui.ScriptDebugLogManager;
 import org.eclipse.dltk.internal.debug.ui.ScriptDebugOptionsManager;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.preference.IPreferenceNode;
@@ -53,12 +54,11 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 
 	// Map of InterpreterInstallTypeIDs to IConfigurationElements
 	protected Map fInterpreterInstallTypePageMap;
-	
+
 	/**
-	 * Whether this plugin is in the process of shutting
-	 * down.
+	 * Whether this plugin is in the process of shutting down.
 	 */
-	private boolean fShuttingDown= false;
+	private boolean fShuttingDown = false;
 
 	// private Object fUtilPresentation;
 
@@ -82,6 +82,7 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 		ILaunchManager launchManager = DebugPlugin.getDefault()
 				.getLaunchManager();
 		launchManager.addLaunchListener(DebugConsoleManager.getInstance());
+		launchManager.addLaunchListener(ScriptDebugLogManager.getInstance());
 
 		ScriptDebugOptionsManager.getDefault().startup();
 	}
@@ -89,26 +90,29 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		try {
 			setShuttingDown(true);
+
 			ScriptDebugOptionsManager.getDefault().shutdown();
+
 			ILaunchManager launchManager = DebugPlugin.getDefault()
 					.getLaunchManager();
 			launchManager.removeLaunchListener(DebugConsoleManager
+					.getInstance());
+			launchManager.removeLaunchListener(ScriptDebugLogManager
 					.getInstance());
 		} finally {
 			super.stop(context);
 		}
 	}
+
 	/**
-	 * Returns whether this plug-in is in the process of
-	 * being shutdown.
-	 *
-	 * @return whether this plug-in is in the process of
-	 *  being shutdown
+	 * Returns whether this plug-in is in the process of being shutdown.
+	 * 
+	 * @return whether this plug-in is in the process of being shutdown
 	 */
 	public boolean isShuttingDown() {
 		return fShuttingDown;
 	}
-	
+
 	private void setShuttingDown(boolean value) {
 		this.fShuttingDown = value;
 	}

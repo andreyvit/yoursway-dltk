@@ -11,7 +11,7 @@ package org.eclipse.dltk.ruby.internal.debug.ui.interpreters;
 
 
 import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterLibraryBlock;
-import org.eclipse.dltk.internal.debug.ui.interpreters.AddDLTKInterpreterDialog;
+import org.eclipse.dltk.internal.debug.ui.interpreters.AddScriptInterpreterDialog;
 import org.eclipse.dltk.internal.debug.ui.interpreters.LibraryLabelProvider;
 import org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugUIPlugin;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -27,7 +27,7 @@ public class RubyInterpreterLibraryBlock extends AbstractInterpreterLibraryBlock
 	 */
 	protected static final String DIALOG_SETTINGS_PREFIX = "RubyInterpreterLibraryBlock"; //$NON-NLS-1$
 
-	public RubyInterpreterLibraryBlock(AddDLTKInterpreterDialog d) {
+	public RubyInterpreterLibraryBlock(AddScriptInterpreterDialog d) {
 	    super(d);
 	}
 	protected IBaseLabelProvider getLabelProvider() {

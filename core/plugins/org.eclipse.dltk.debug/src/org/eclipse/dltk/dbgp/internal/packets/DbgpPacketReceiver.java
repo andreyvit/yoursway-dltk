@@ -82,7 +82,7 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 
 	private InputStream input;
 
-	private IDbgpLogger logger;
+	private IDbgpRawLogger logger;
 
 	protected void workingCycle() throws Exception {
 		
@@ -90,7 +90,7 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 			DbgpRawPacket packet = DbgpRawPacket.readPacket(input);
 
 			if (logger != null) {
-				logger.logInput(packet.toString());
+				logger.log(packet.toString());
 			}
 
 			addDocument(packet.getParsedXml());
@@ -145,7 +145,7 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 		this.responseQueue = new SyncMap();
 	}
 
-	public void setLogger(IDbgpLogger logger) {
+	public void setLogger(IDbgpRawLogger logger) {
 		this.logger = logger;
 	}
 }

@@ -12,6 +12,7 @@ package org.eclipse.dltk.dbgp.internal;
 import java.io.IOException;
 
 import org.eclipse.dltk.dbgp.IDbgpNotificationManager;
+import org.eclipse.dltk.dbgp.IDbgpRawListener;
 import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.IDbgpSessionInfo;
 import org.eclipse.dltk.dbgp.commands.IDbgpCoreCommands;
@@ -59,17 +60,14 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 	}
 
 	private void waitTerminatedImpl(Object object) throws InterruptedException {
-		// System.out.println("-- Waiting engine");
 		if (object != engine) {
 			engine.waitTerminated();
 		}
 
-		// System.out.println("-- Waiting streamManager");
 		if (object != streamManager) {
 			streamManager.waitTerminated();
 		}
 
-		// System.out.println("-- Waiting notificationManager");
 		if (object != notificationManager) {
 			notificationManager.waitTerminated();
 		}
@@ -84,8 +82,8 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 		this.engine = engine;
 
 		try {
-			info = DbgpXmlEntityParser.parseSession(engine.getResponsePacket(
-					-1).getContent());
+			info = DbgpXmlEntityParser.parseSession(engine
+					.getResponsePacket(-1).getContent());
 		} catch (InterruptedException e) {
 		}
 
@@ -97,7 +95,8 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 		this.notificationManager.addTerminationListener(this);
 
 		// Stream manager
-		this.streamManager = new DbgpStreamManager(engine, "DBGP - Stream manager");
+		this.streamManager = new DbgpStreamManager(engine,
+				"DBGP - Stream manager");
 		this.streamManager.addTerminationListener(this);
 
 		// Commands
@@ -183,5 +182,14 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 		}
 
 		fireObjectTerminated(e);
+	}
+
+	public void addRawListener(IDbgpRawListener listener) {
+		engine.addRawListener(listener);
+
+	}
+
+	public void removeRawListenr(IDbgpRawListener listener) {
+		engine.addRawListener(listener);
 	}
 }

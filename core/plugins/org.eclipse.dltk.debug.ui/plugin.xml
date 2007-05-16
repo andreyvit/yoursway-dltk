@@ -147,19 +147,19 @@
  <extension
        point="org.eclipse.debug.core.statusHandlers">
     <statusHandler
-          class="org.eclipse.dltk.internal.debug.ui.DbgpServiceNotAvailableStatusHandler"
+          class="org.eclipse.dltk.internal.debug.ui.handlers.DbgpServiceNotAvailableStatusHandler"
           code="200"
           id="org.eclipse.dltk.internal.debug.ui.DbgpServiceNotAvailableStatusHandler"
           plugin="org.eclipse.dltk.launching">
     </statusHandler>
     <statusHandler
-          class="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotStartedStatusHandler"
+          class="org.eclipse.dltk.internal.debug.ui.handlers.DebuggingEngineNotStartedStatusHandler"
           code="201"
           id="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotStartedStatusHandler"
           plugin="org.eclipse.dltk.launching">
     </statusHandler>
     <statusHandler
-          class="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotConnectedStatusHandler"
+          class="org.eclipse.dltk.internal.debug.ui.handlers.DebuggingEngineNotConnectedStatusHandler"
           code="202"
           id="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotConnectedStatusHandler"
           plugin="org.eclipse.dltk.launching">
@@ -179,6 +179,14 @@
           id="org.eclipse.dltk.preferences.debug"
           name="Debugging">
     </page>
+ </extension>
+ <extension
+       point="org.eclipse.ui.views">
+    <view
+          class="org.eclipse.dltk.internal.debug.ui.ScriptDebugLogView"
+          id="org.eclipse.dltk.debug.ui.dbgpLogView"
+          name="Script Debug Log">
+    </view>
  </extension>
  
 </plugin>

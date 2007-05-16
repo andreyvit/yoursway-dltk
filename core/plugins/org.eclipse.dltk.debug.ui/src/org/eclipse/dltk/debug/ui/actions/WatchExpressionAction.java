@@ -16,6 +16,7 @@ import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IWatchExpression;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
+import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
@@ -24,7 +25,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 
 public class WatchExpressionAction implements IEditorActionDelegate {
 	private ITextSelection fSelection;
@@ -48,18 +48,21 @@ public class WatchExpressionAction implements IEditorActionDelegate {
 	}
 
 	private void showExpressionsView() {
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
-		IViewPart part = page.findView(IDebugUIConstants.ID_EXPRESSION_VIEW);
-		if (part == null) {
-			try {
-				page.showView(IDebugUIConstants.ID_EXPRESSION_VIEW);
-			} catch (PartInitException e) {
-			}
-		} else {
-			page.bringToTop(part);
-		}
+		IWorkbenchPage page = DLTKDebugUIPlugin.getActivePage();
 
+		if (page != null) {
+			IViewPart part = page
+					.findView(IDebugUIConstants.ID_EXPRESSION_VIEW);
+			if (part == null) {
+				try {
+					page.showView(IDebugUIConstants.ID_EXPRESSION_VIEW);
+				} catch (PartInitException e) {
+					DLTKDebugUIPlugin.log(e);
+				}
+			} else {
+				page.bringToTop(part);
+			}
+		}
 	}
 
 	private void createExpression(String variable) {
@@ -68,14 +71,18 @@ public class WatchExpressionAction implements IEditorActionDelegate {
 
 		DebugPlugin.getDefault().getExpressionManager().addExpression(
 				expression);
+		
 		IAdaptable object = DebugUITools.getDebugContext();
+		
 		IDebugElement context = null;
 		if (object instanceof IDebugElement) {
 			context = (IDebugElement) object;
 		} else if (object instanceof ILaunch) {
 			context = ((ILaunch) object).getDebugTarget();
 		}
+		
 		expression.setExpressionContext(context);
+		
 		showExpressionsView();
 	}
 }

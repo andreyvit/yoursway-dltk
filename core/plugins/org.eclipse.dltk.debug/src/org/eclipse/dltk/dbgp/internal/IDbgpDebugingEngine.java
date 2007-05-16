@@ -11,6 +11,7 @@ package org.eclipse.dltk.dbgp.internal;
 
 import java.io.IOException;
 
+import org.eclipse.dltk.dbgp.IDbgpRawListener;
 import org.eclipse.dltk.dbgp.internal.packets.DbgpNotifyPacket;
 import org.eclipse.dltk.dbgp.internal.packets.DbgpResponsePacket;
 import org.eclipse.dltk.dbgp.internal.packets.DbgpStreamPacket;
@@ -26,4 +27,9 @@ public interface IDbgpDebugingEngine extends IDbgpTermination {
 	DbgpNotifyPacket getNotifyPacket() throws IOException, InterruptedException;
 
 	DbgpStreamPacket getStreamPacket() throws IOException, InterruptedException;
+
+	// Listeners
+	void addRawListener(IDbgpRawListener listener);
+
+	void removeRawListenr(IDbgpRawListener listener);
 }

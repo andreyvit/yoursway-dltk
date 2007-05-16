@@ -15,7 +15,7 @@ import java.io.OutputStream;
 public class DbgpPacketSender {
 	private OutputStream output;
 
-	private IDbgpLogger logger;
+	private IDbgpRawLogger logger;
 
 	public DbgpPacketSender(OutputStream output) {
 		if (output == null) {
@@ -31,7 +31,7 @@ public class DbgpPacketSender {
 		}
 
 		if (logger != null) {
-			logger.logOutput(command);
+			logger.log(command);
 		}
 
 		output.write(command.getBytes("ASCII"));
@@ -39,7 +39,7 @@ public class DbgpPacketSender {
 		output.flush();
 	}
 
-	public void setLogger(IDbgpLogger logger) {
+	public void setLogger(IDbgpRawLogger logger) {
 		this.logger = logger;
 	}
 }

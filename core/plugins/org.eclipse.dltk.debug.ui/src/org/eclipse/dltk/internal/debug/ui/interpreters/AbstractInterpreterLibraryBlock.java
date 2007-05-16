@@ -72,9 +72,9 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 	private Button fAddButton;
 	protected Button fDefaultButton;
 
-	protected AddDLTKInterpreterDialog fDialog;
+	protected AddScriptInterpreterDialog fDialog;
 
-    protected AbstractInterpreterLibraryBlock(AddDLTKInterpreterDialog dialog)
+    protected AbstractInterpreterLibraryBlock(AddScriptInterpreterDialog dialog)
     {
         this.fDialog = dialog;
     }

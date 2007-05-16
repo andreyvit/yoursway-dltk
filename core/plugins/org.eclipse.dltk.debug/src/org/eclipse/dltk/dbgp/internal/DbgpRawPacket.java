@@ -91,6 +91,6 @@ public class DbgpRawPacket {
 	}
 
 	public String toString() {
-		return "DbgpPacket (" + size + ") " + xml;
+		return "DbgpPacket (" + size + " bytes) " + xml;
 	}
 }

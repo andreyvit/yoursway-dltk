@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 
-public abstract class AddDLTKInterpreterDialog extends StatusDialog {
+public abstract class AddScriptInterpreterDialog extends StatusDialog {
 	
 	private IAddInterpreterDialogRequestor fRequestor;
 	
@@ -70,7 +70,7 @@ public abstract class AddDLTKInterpreterDialog extends StatusDialog {
 		return true;
 	}
 		
-	public AddDLTKInterpreterDialog(IAddInterpreterDialogRequestor requestor, Shell shell,
+	public AddScriptInterpreterDialog(IAddInterpreterDialogRequestor requestor, Shell shell,
 			IInterpreterInstallType[] interpreterInstallTypes, IInterpreterInstall editedInterpreter) {
 		super(shell);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
@@ -148,7 +148,7 @@ public abstract class AddDLTKInterpreterDialog extends StatusDialog {
 //		return new File(fInterpreterPath.getText()).getAbsoluteFile();
 //	}
 		
-	protected abstract AbstractInterpreterLibraryBlock createLibraryBlock(AddDLTKInterpreterDialog dialog);
+	protected abstract AbstractInterpreterLibraryBlock createLibraryBlock(AddScriptInterpreterDialog dialog);
 	protected Control createDialogArea(Composite ancestor) {
 		createDialogFields();
 		Composite parent = (Composite)super.createDialogArea(ancestor);

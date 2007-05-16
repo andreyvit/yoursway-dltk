@@ -46,6 +46,10 @@ module XoredDebugger
         def wrap(xml)
             '<?xml version="1.0" encoding="UTF-8"?>' + xml
         end
+
+        def cdata(s)
+            sprintf('<![CDATA[%s]]>', s)
+        end
         
 
         def print_property(m)
@@ -67,7 +71,7 @@ module XoredDebugger
                 bool_to_bit(m[:is_cosntant]),
                 bool_to_bit(m[:has_children]), 
                 m[:key].to_s,
-                value.empty? ? Base64.encode64(m[:_value].nil? ? 'nil' : m[:_value]) : value)
+                value.empty? ? cdata(Base64.encode64(m[:_value].nil? ? 'nil' : m[:_value])) : value)
         end
 
         def print_continuation(command, m)
@@ -94,7 +98,7 @@ module XoredDebugger
         # Feature commands
         def print_feature_get(m)
             sprintf('<response command="feature_get" feature_name="%s" supported="%d" transaction_id="%d">%s</response>',
-                m[:name], m[:supported], m[:id], Base64.encode64(m[:value]))
+                m[:name], m[:supported], m[:id], cdata(Base64.encode64(m[:value])))
         end
 
         def print_feature_set(m)
@@ -188,7 +192,7 @@ module XoredDebugger
         # Data
         def print_stream_data(command, m)
             sprintf('<stream type="%s">%s</stream>',
-                command, Base64.encode64(m[:_data]))
+                command, cdata(Base64.encode64(m[:_data])))
         end
         private :print_stream_data
 

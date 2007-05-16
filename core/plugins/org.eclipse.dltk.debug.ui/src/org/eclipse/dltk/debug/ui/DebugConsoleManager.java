@@ -45,31 +45,6 @@ public class DebugConsoleManager implements ILaunchListener {
 		}
 
 		return true;
-
-		// try {
-		// ILaunchConfiguration configuration = launch
-		// .getLaunchConfiguration();
-		//
-		// final String natureId = configuration.getAttribute(
-		// IDLTKLaunchConfigurationConstants.ATTR_NATURE,
-		// (String) null);
-		//
-		// if (natureId == null) {
-		// return false;
-		// }
-		//
-		// String capture = configuration.getAttribute(
-		// DebugPlugin.ATTR_CAPTURE_OUTPUT, (String) null);
-		//
-		// if (capture == null) {
-		// return false;
-		// }
-		//			
-		// } catch (CoreException e) {
-		// return false;
-		// }
-		//
-		// return true;
 	}
 
 	protected IOConsole createConsole(String name) {

@@ -24,7 +24,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-public class DltkRunToLineAdapter implements IRunToLineTarget {
+public class ScriptRunToLineAdapter implements IRunToLineTarget {
 
 	protected ITextEditor getPartEditor(IWorkbenchPart part) {
 		if (part instanceof ITextEditor) {
@@ -45,7 +45,7 @@ public class DltkRunToLineAdapter implements IRunToLineTarget {
 		return null;
 	}
 
-	public DltkRunToLineAdapter() {
+	public ScriptRunToLineAdapter() {
 
 	}
 

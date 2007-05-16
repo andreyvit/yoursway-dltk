@@ -11,7 +11,7 @@ package org.eclipse.dltk.tcl.internal.debug.ui.interpreters;
 
 
 import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterLibraryBlock;
-import org.eclipse.dltk.internal.debug.ui.interpreters.AddDLTKInterpreterDialog;
+import org.eclipse.dltk.internal.debug.ui.interpreters.AddScriptInterpreterDialog;
 import org.eclipse.dltk.internal.debug.ui.interpreters.LibraryLabelProvider;
 import org.eclipse.dltk.tcl.internal.debug.ui.TclDebugUIPlugin;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -23,7 +23,7 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
  */
 public class TclInterpreterLibraryBlock extends AbstractInterpreterLibraryBlock {
 
-	public TclInterpreterLibraryBlock(AddDLTKInterpreterDialog d) {
+	public TclInterpreterLibraryBlock(AddScriptInterpreterDialog d) {
 		super(d);
 	}
 

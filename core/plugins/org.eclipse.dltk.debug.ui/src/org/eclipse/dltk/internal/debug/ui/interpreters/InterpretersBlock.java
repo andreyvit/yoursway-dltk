@@ -931,7 +931,7 @@ public abstract class InterpretersBlock implements IAddInterpreterDialogRequesto
 	
 	abstract protected String getCurrentNature();
 
-	protected abstract AddDLTKInterpreterDialog createInterpreterDialog(IInterpreterInstall standin);
+	protected abstract AddScriptInterpreterDialog createInterpreterDialog(IInterpreterInstall standin);
 
 	protected void copyInterpreter() {
 	    IStructuredSelection selection = (IStructuredSelection) fInterpreterList.getSelection();
@@ -944,7 +944,7 @@ public abstract class InterpretersBlock implements IAddInterpreterDialogRequesto
 	        // duplicate & add Interpreter
 	        InterpreterStandin standin = new InterpreterStandin(selectedInterpreter, createUniqueId(selectedInterpreter.getInterpreterInstallType()));
 	        standin.setName(generateName(selectedInterpreter.getName()));            
-	        AddDLTKInterpreterDialog dialog = createInterpreterDialog(standin);
+	        AddScriptInterpreterDialog dialog = createInterpreterDialog(standin);
 	        dialog.setTitle(InterpretersMessages.InstalledInterpretersBlock_18);
 	        if (dialog.open() != Window.OK) {
 	            return;
@@ -960,7 +960,7 @@ public abstract class InterpretersBlock implements IAddInterpreterDialogRequesto
 	 * Bring up a dialog that lets the user create a new Interpreter definition.
 	 */
 	protected void addInterpreter() {
-		AddDLTKInterpreterDialog dialog= createInterpreterDialog(null);
+		AddScriptInterpreterDialog dialog= createInterpreterDialog(null);
 		dialog.setTitle(InterpretersMessages.InstalledInterpretersBlock_7); 
 		if (dialog.open() != Window.OK) {
 			return;
@@ -975,7 +975,7 @@ public abstract class InterpretersBlock implements IAddInterpreterDialogRequesto
 			return;
 		}
 	
-		AddDLTKInterpreterDialog dialog= createInterpreterDialog(Interpreter);
+		AddScriptInterpreterDialog dialog= createInterpreterDialog(Interpreter);
 		dialog.setTitle(InterpretersMessages.InstalledInterpretersBlock_8); 
 		if (dialog.open() != Window.OK) {
 			return;

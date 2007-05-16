@@ -49,8 +49,6 @@ public class DbgpServer extends DbgpWorkingThread implements IDbgpServer {
 			while (true) {
 				Socket client = server.accept();
 				
-				//System.out.println("Client connected!");				
-
 				client.setSoTimeout(clientTimeout);
 
 				DbgpDebugingEngine dbgpDebugingEngine = new DbgpDebugingEngine(
