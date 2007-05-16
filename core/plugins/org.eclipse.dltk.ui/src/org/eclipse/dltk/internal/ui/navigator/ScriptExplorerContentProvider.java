@@ -578,7 +578,7 @@ public abstract class ScriptExplorerContentProvider extends
 		return false;
 	}
 
-	private void postRefresh(Object root, int relation, Object affectedElement) {
+	protected void postRefresh(Object root, int relation, Object affectedElement) {
 		// JFace doesn't refresh when object isn't part of the viewer
 		// Therefore move the refresh start down to the viewer's input
 		if (isParent(root, fInput))
