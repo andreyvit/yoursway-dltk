@@ -16,7 +16,7 @@ module XoredDebugger
 
         def close
         end
-    end
+    end  # class NullLogger
 
     class StdoutLogger
         def puts(str)
@@ -25,7 +25,7 @@ module XoredDebugger
 
         def close
         end
-    end
+    end # class StdoutLogger
 
     class FileLogger
         def initialize(filename)
@@ -42,4 +42,4 @@ module XoredDebugger
         end
     end # class FileLogger
 
-end # module
+end # module XoredDebugger

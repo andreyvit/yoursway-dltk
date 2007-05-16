@@ -13,17 +13,15 @@ require 'thread'
 
 require 'dbgp/breakpoints'
 require 'dbgp/command'
-require 'dbgp/logging'
-require 'dbgp/my_thread'
 require 'dbgp/socket_io'
 require 'dbgp/test_io'
 require 'dbgp/printer'
 require 'dbgp/capturer'
-
+require 'dbgp/ruby_thread'
 
 module XoredDebugger
                
-    class MyDebugger
+    class RubyDebugger
     private
         def add_thread(thread)
             @logger.puts('Adding thread: ' + thread.to_s)
@@ -32,7 +30,7 @@ module XoredDebugger
 
             io = @test ? TestIO.new(@logger, printer) : SocketIO.new(@host, @port, @logger, printer)
 
-            @threads[thread] = VirtualThread.new(self, thread, io, @key)
+            @threads[thread] = RubyThread.new(self, thread, io, @key)
         end 
 
         def remove_thread(thread)
@@ -136,57 +134,6 @@ module XoredDebugger
             thread = @threads[Thread.current]
             thread.trace(event, file, line, id, binding, klass)
         end 
-    end # class Debugger
-
-
-    class Starter
-        def Starter.go
-            log = ENV['DBGP_RUBY_LOG']
-            logger = log.nil? ? NullLogger.new : (log == 'stdout' ? StdoutLogger.new : FileLogger.new(log))
-
-            host   = ENV['DBGP_RUBY_HOST']
-            port   = ENV['DBGP_RUBY_PORT'].to_i
-            key    = ENV['DBGP_RUBY_KEY']
-            script = ENV['DBGP_RUBY_SCRIPT']
-            test   = ENV['DBGP_RUBY_TEST']
-            test   = test.nil? ? false : test == '1' ? true : false
-
-            begin
-                if (host.nil? or port == 0 or key.nil? or script.nil?)
-                    logger.puts('Invalid debugger params')
-                else
-                    logger.puts('Debugging session on ' + Time.new.to_s)
-                    logger.puts('Host: ' + host.to_s)
-                    logger.puts('Port: ' + port.to_s)
-                    logger.puts('Key: ' + key.to_s)
-                    logger.puts('Script: ' + script.to_s)
-                    logger.puts('Test: ' + test.to_s)
-
-                    # Debugger setup
-                    debugger = MyDebugger.new(host, port, key, logger, test)
-            
-                    set_trace_func proc { |event, file, line, id, binding, klass, *rest|
-                        debugger.trace(event, file, line, id, binding, klass)
-                    }
-
-                    # Script for debug
-                    load script
-
-                    # Debugger teardown
-                    set_trace_func nil
-                    debugger.terminate
-                end
-
-            rescue Exception
-                logger.puts('Exception during debugging:')
-                logger.puts("\tMessage: " + $!.message)
-                logger.puts("\tBacktrace: " + $!.backtrace.join("\n"))
-            ensure
-                logger.close
-            end  
-        end # go
-    end # class Starter
-
-    Starter.go
+    end # class RubyDebugger
 
 end # module

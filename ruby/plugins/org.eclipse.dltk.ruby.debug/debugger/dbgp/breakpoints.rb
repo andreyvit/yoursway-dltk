@@ -12,6 +12,9 @@ require 'thread'
 
 module XoredDebugger
 
+    #
+    # N.B. Stores absolute path names
+    #
     class Breakpoints
     private        
         @@id = 0
@@ -20,7 +23,7 @@ module XoredDebugger
             @@id += 1
         end
 
-    public
+    public 
         def initialize
             @mutex = Mutex.new
 
@@ -31,9 +34,7 @@ module XoredDebugger
         def line_break?(file, line)
             @mutex.synchronize do
                 for bp in @line_bps.values do
-                    if bp['state'] and 
-                       bp['line'] == line and 
-                       bp['file'] == file
+                    if bp[:state] and bp[:line] == line and bp[:file] == file
                         return true
                     end
                 end
@@ -50,10 +51,10 @@ module XoredDebugger
             @mutex.synchronize do
                 id = Breakpoints.next_id
                 @line_bps[id] = {
-                    'id'    => id,
-                    'line'  => line,
-                    'file'  => file,
-                    'state' => state
+                    :id    => id,
+                    :line  => line,
+                    :file  => file,
+                    :state => state
                 }
                 id
             end
@@ -69,7 +70,7 @@ module XoredDebugger
                
         def set_state(id, state)
             @mutex.synchronize do
-                @line_bps[id]['state'] = state
+                @line_bps[id][:state] = state
             end
         end
 

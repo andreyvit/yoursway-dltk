@@ -169,7 +169,7 @@ module XoredDebugger
         # Stream commands
         def print_stream(stream, m)
             sprintf('<response command="%s" success="%d" transaction_id="%d"/>',
-                stream, m[:success], m[:id])
+                stream, bool_to_bit(m[:success]), m[:id])
         end
         private :print_stream
 

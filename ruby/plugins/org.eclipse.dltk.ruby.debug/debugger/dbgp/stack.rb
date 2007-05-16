@@ -15,7 +15,7 @@ module XoredDebugger
     # N - 1 |  ...  | 1 | 0 |   <=  push
     #====================================
 
-    class VirtualStack
+    class Stack
         def initialize
             @levels = []
         end
@@ -61,6 +61,6 @@ module XoredDebugger
             @levels
         end
 
-    end # VirtualStack
+    end # Stack
 
 end # module

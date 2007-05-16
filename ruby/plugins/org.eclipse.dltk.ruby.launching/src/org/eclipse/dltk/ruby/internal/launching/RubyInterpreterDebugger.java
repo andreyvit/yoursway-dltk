@@ -27,7 +27,7 @@ import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
 
 public class RubyInterpreterDebugger extends AbstractInterpreterDebugger {
 	private static final String DEBUGGER_DBGP_DIR = "dbgp";
-	private static final String DEBUGGER_SCRIPT = "debugger.rb";
+	private static final String DEBUGGER_SCRIPT = "runner.rb";
 
 	private static final String RUBY_HOST_VAR = "DBGP_RUBY_HOST";
 	private static final String RUBY_PORT_VAR = "DBGP_RUBY_PORT";
