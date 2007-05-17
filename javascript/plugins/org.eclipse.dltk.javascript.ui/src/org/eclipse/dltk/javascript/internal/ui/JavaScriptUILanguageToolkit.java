@@ -14,6 +14,7 @@ import org.eclipse.dltk.javascript.core.IJavaScriptConstants;
 import org.eclipse.dltk.javascript.core.JavaScriptLanguageToolkit;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.ScriptElementLabels;
+import org.eclipse.dltk.ui.viewsupport.ScriptUILabelProvider;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -44,5 +45,9 @@ public class JavaScriptUILanguageToolkit implements IDLTKUILanguageToolkit {
 
 	public String getInterpreterContainerID() {
 		return "org.eclipse.dltk.javascript.launching.INTERPRETER_CONTAINER";
+	}
+
+	public ScriptUILabelProvider createScripUILabelProvider() {
+		return null;
 	}
 }

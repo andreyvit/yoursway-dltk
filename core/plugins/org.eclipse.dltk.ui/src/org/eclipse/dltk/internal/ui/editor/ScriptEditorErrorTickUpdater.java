@@ -13,6 +13,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.ProblemsLabelDecorator;
 import org.eclipse.dltk.ui.ScriptElementImageProvider;
@@ -35,7 +36,10 @@ public class ScriptEditorErrorTickUpdater implements IProblemChangedListener {
 	public ScriptEditorErrorTickUpdater(ScriptEditor editor) {
 		Assert.isNotNull(editor);
 		fScriptEditor= editor;
-		fLabelProvider=  new ScriptUILabelProvider(0, ScriptElementImageProvider.SMALL_ICONS);
+//		fLabelProvider=  new ScriptUILabelProvider(0, ScriptElementImageProvider.SMALL_ICONS);
+		fLabelProvider = DLTKUILanguageManager.createLabelProvider(editor.getLanguageToolkit().getNatureID());
+		fLabelProvider.setTextFlags(0);
+		fLabelProvider.setImageFlags(ScriptElementImageProvider.SMALL_ICONS);
 		fLabelProvider.addLabelDecorator(new ProblemsLabelDecorator(null));
 		DLTKUIPlugin.getDefault().getProblemMarkerManager().addListener(this);
 	}

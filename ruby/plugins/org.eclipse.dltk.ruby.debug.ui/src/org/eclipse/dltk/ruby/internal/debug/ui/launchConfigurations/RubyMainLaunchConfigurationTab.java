@@ -15,6 +15,7 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.debug.ui.launchConfigurations.MainLaunchConfigurationTab;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
+import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.swt.graphics.Image;
 
@@ -43,6 +44,10 @@ public class RubyMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
 	 */
 	public Image getImage() {
 		return DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_CLASS);
+	}
+
+	protected String getNatureID() {
+		return RubyNature.NATURE_ID;
 	}
 
 }

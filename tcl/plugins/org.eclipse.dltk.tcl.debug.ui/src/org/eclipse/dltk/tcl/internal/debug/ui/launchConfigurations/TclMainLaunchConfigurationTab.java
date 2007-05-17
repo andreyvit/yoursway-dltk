@@ -15,6 +15,7 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.debug.ui.launchConfigurations.MainLaunchConfigurationTab;
 import org.eclipse.dltk.tcl.core.TclLanguageToolkit;
+import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.swt.graphics.Image;
 
@@ -42,5 +43,9 @@ public class TclMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
 
 	public Image getImage() {
 		return DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_CLASS);
+	}
+
+	protected String getNatureID() {
+		return TclNature.NATURE_ID;
 	}
 }

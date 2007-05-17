@@ -16,6 +16,7 @@ import org.eclipse.dltk.ruby.core.IRubyConstants;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.ScriptElementLabels;
+import org.eclipse.dltk.ui.viewsupport.ScriptUILabelProvider;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -79,5 +80,7 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 	public String getInterpreterContainerID() {
 		return "org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER";
 	}
-
+	public ScriptUILabelProvider createScripUILabelProvider() {
+		return null;
+	}
 }

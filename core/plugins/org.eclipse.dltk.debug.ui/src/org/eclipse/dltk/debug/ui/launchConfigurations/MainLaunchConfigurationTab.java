@@ -27,6 +27,7 @@ import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.ui.DLTKUIStatus;
 import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.viewsupport.ScriptUILabelProvider;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -98,7 +99,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	 * @return
 	 */
 	private IDLTKProject chooseProject() {
-		ILabelProvider labelProvider = new ScriptUILabelProvider();
+		ILabelProvider labelProvider = DLTKUILanguageManager.createLabelProvider(getNatureID());
 		ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(), labelProvider);
 		dialog.setTitle(DLTKLaunchConfigurationsMessages.mainTab_chooseProject_title);
 		dialog.setMessage(DLTKLaunchConfigurationsMessages.mainTab_chooseProject_message);
@@ -174,6 +175,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	protected abstract boolean validateProject(IDLTKProject project);
 
 	protected abstract String getLanguageName();
+	protected abstract String getNatureID();
 
 	/**
 	 * Show a dialog that lets the user select a project. This in turn provides

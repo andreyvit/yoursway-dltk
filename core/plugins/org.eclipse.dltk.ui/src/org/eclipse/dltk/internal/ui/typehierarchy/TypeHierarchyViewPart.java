@@ -253,6 +253,7 @@ public class TypeHierarchyViewPart extends ViewPart implements ITypeHierarchyVie
 		
 		fFocusOnTypeAction= new FocusOnTypeAction(this);
 		
+		//TODO: DLTK: Please fix this to support DLTKLanguageManager.createScriptUILabelProvider()
 		fPaneLabelProvider= new ScriptUILabelProvider();
 
 		fFocusOnSelectionAction= new FocusOnSelectionAction(this);	

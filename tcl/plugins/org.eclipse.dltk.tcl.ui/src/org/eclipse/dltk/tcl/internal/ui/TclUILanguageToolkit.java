@@ -15,6 +15,7 @@ import org.eclipse.dltk.tcl.core.TclConstants;
 import org.eclipse.dltk.tcl.core.TclLanguageToolkit;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.ScriptElementLabels;
+import org.eclipse.dltk.ui.viewsupport.ScriptUILabelProvider;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -79,5 +80,8 @@ public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
 	}
 	public String getInterpreterContainerID() {
 		return "org.eclipse.dltk.tcl.launching.INTERPRETER_CONTAINER";
+	}
+	public ScriptUILabelProvider createScripUILabelProvider() {
+		return null;
 	}
 }

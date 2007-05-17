@@ -144,6 +144,9 @@ public class TypeNameMatchRequestorWrapper implements
 					.toString();
 			this.packageHandles = new HashtableOfArrayToObject(5);
 		}
+		if( !resourcePath.startsWith(this.lastPkgFragmentRootPath)) {
+			return null;
+		}
 		// create handle
 		resourcePath = resourcePath.substring(this.lastPkgFragmentRootPath
 				.length() + 1);
