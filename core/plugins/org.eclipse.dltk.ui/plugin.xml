@@ -666,6 +666,87 @@
             categoryId="org.eclipse.ui.category.navigate"
             id="org.eclipse.dltk.ui.navigate.open.type">
       </command>
+      <!-- navigate -->
+      <command
+            name="%ActionDefinition.gotoNextMember.name"
+            description="%ActionDefinition.gotoNextMember.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.goto.next.member">
+      </command>
+      <command
+            name="%ActionDefinition.gotoPreviousMember.name"
+            description="%ActionDefinition.gotoPreviousMember.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.goto.previous.member">
+      </command>
+      <command
+            name="%ActionDefinition.gotoMatchingBracket.name"
+            description="%ActionDefinition.gotoMatchingBracket.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.goto.matching.bracket">
+      </command>
+      <command
+            name="%ActionDefinition.show.outline.name"
+            description="%ActionDefinition.show.outline.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.show.outline">
+      </command>
+      <command
+            name="%ActionDefinition.open.hierarchy.name"
+            description="%ActionDefinition.open.hierarchy.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.open.hierarchy">
+      </command>
+      <command
+            name="%ActionDefinition.open.structure.name"
+            description="%ActionDefinition.open.structure.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.navigate.script.open.structure">
+      </command>
+      <command
+            name="%ActionDefinition.openType.name"
+            description="%ActionDefinition.openType.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.navigate.open.type">
+      </command>
+      <command
+            name="%ActionDefinition.openTypeInHierarchy.name"
+            description="%ActionDefinition.openTypeInHierarchy.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.navigate.open.type.in.hierarchy">
+      </command>
+      <command
+            name="%ActionDefinition.openEditor.name"
+            description="%ActionDefinition.openEditor.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.open.editor">
+      </command>
+      <command
+            name="%ActionDefinition.openSuperImplementation.name"
+            description="%ActionDefinition.openSuperImplementation.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.open.super.implementation">
+      </command>
+     
+      <command
+            name="%ActionDefinition.openTypeHierarchy.name"
+            description="%ActionDefinition.openTypeHierarchy.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.open.type.hierarchy">
+      </command>
+      <command
+            name="%ActionDefinition.openCallHierarchy.name"
+            description="%ActionDefinition.openCallHierarchy.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.edit.text.script.open.call.hierarchy">
+      </command>
+      
+      <command
+            name="%ActionDefinition.gotoType.name"
+            description="%ActionDefinition.gotoType.description"
+            categoryId="org.eclipse.ui.category.navigate"
+            id="org.eclipse.dltk.ui.navigate.gototype">
+      </command>
  </extension>
 
 	<!-- the parameterized content assist action and keybindings for our contributed computers -->

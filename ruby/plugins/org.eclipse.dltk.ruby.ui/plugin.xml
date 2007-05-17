@@ -66,7 +66,7 @@
        <page
 	          class="org.eclipse.dltk.ruby.internal.ui.preferences.RubyGlobalPreferencesPage"
 	          id="org.eclipse.dltk.ruby.preferences"
-	          name="DLTK &gt; Ruby"/>
+	          name="Ruby"/>
 		<page
 	          category="org.eclipse.dltk.ruby.preferences"
 	          class="org.eclipse.dltk.ruby.internal.ui.preferences.RubyEditorPreferencesPage"

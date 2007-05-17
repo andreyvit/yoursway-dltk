@@ -100,6 +100,10 @@ public class BuildpathContainerDescriptor {
 		return fConfigElement.getAttribute(ATT_NATURE );
 	}
 
+	public boolean canEdit(IBuildpathEntry entry, String defid) {
+		String id = fConfigElement.getAttribute(ATT_ID);
+		return id.equals(defid);
+	}
 	public boolean canEdit(IBuildpathEntry entry) {
 		String id = fConfigElement.getAttribute(ATT_ID);
 		if (entry.getEntryKind() == IBuildpathEntry.BPE_CONTAINER) {
@@ -142,5 +146,4 @@ public class BuildpathContainerDescriptor {
 		}
 		return (BuildpathContainerDescriptor[]) containers.toArray(new BuildpathContainerDescriptor[containers.size()]);
 	}
-
 }

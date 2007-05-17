@@ -10,12 +10,17 @@
 package org.eclipse.dltk.internal.ui.wizards.buildpath;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPage;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPageExtension;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPageExtension2;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
+import org.eclipse.dltk.launching.ScriptRuntime;
+import org.eclipse.dltk.ui.DLTKUILanguageManager;
+import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.util.ExceptionHandler;
 import org.eclipse.dltk.ui.util.PixelConverter;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -23,10 +28,8 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
-
-
 /**
-  */
+ */
 public class BuildpathContainerWizard extends Wizard {
 
 	private BuildpathContainerDescriptor fPageDesc;
@@ -36,66 +39,75 @@ public class BuildpathContainerWizard extends Wizard {
 	private IBuildpathContainerPage fContainerPage;
 	private IDLTKProject fCurrProject;
 	private IBuildpathEntry[] fCurrBuildpath;
-	
+
 	private BuildpathContainerSelectionPage fSelectionWizardPage;
 
 	/**
 	 * Constructor for BuildpathContainerWizard.
 	 */
-	public BuildpathContainerWizard(IBuildpathEntry entryToEdit, IDLTKProject currProject, IBuildpathEntry[] currEntries) {
+	public BuildpathContainerWizard(IBuildpathEntry entryToEdit,
+			IDLTKProject currProject, IBuildpathEntry[] currEntries) {
 		this(entryToEdit, null, currProject, currEntries);
 	}
-	
+
 	/**
 	 * Constructor for BuildpathContainerWizard.
 	 */
-	public BuildpathContainerWizard(BuildpathContainerDescriptor pageDesc, IDLTKProject currProject, IBuildpathEntry[] currEntries) {
-		this(null, pageDesc, currProject, currEntries);	
+	public BuildpathContainerWizard(BuildpathContainerDescriptor pageDesc,
+			IDLTKProject currProject, IBuildpathEntry[] currEntries) {
+		this(null, pageDesc, currProject, currEntries);
 	}
 
-	private BuildpathContainerWizard(IBuildpathEntry entryToEdit, BuildpathContainerDescriptor pageDesc, IDLTKProject currProject, IBuildpathEntry[] currEntries) {
-		fEntryToEdit= entryToEdit;
-		fPageDesc= pageDesc;
-		fNewEntries= null;
-		
-		fCurrProject= currProject;
-		fCurrBuildpath= currEntries;
-		
+	private BuildpathContainerWizard(IBuildpathEntry entryToEdit,
+			BuildpathContainerDescriptor pageDesc, IDLTKProject currProject,
+			IBuildpathEntry[] currEntries) {
+		fEntryToEdit = entryToEdit;
+		fPageDesc = pageDesc;
+		fNewEntries = null;
+
+		fCurrProject = currProject;
+		fCurrBuildpath = currEntries;
+
 		String title;
 		if (entryToEdit == null) {
-			title= NewWizardMessages.BuildpathContainerWizard_new_title; 
+			title = NewWizardMessages.BuildpathContainerWizard_new_title;
 		} else {
-			title= NewWizardMessages.BuildpathContainerWizard_edit_title; 
+			title = NewWizardMessages.BuildpathContainerWizard_edit_title;
 		}
 		setWindowTitle(title);
 	}
-	
+
 	/**
 	 * @deprecated use getNewEntries()
 	 */
 	public IBuildpathEntry getNewEntry() {
-		IBuildpathEntry[] entries= getNewEntries();
+		IBuildpathEntry[] entries = getNewEntries();
 		if (entries != null) {
 			return entries[0];
 		}
 		return null;
 	}
-	
+
 	public IBuildpathEntry[] getNewEntries() {
 		return fNewEntries;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see IWizard#performFinish()
 	 */
 	public boolean performFinish() {
 		if (fContainerPage != null) {
 			if (fContainerPage.finish()) {
-				if (fEntryToEdit == null && fContainerPage instanceof IBuildpathContainerPageExtension2) {
-					fNewEntries= ((IBuildpathContainerPageExtension2) fContainerPage).getNewContainers();
+				if (fEntryToEdit == null
+						&& fContainerPage instanceof IBuildpathContainerPageExtension2) {
+					fNewEntries = ((IBuildpathContainerPageExtension2) fContainerPage)
+							.getNewContainers();
 				} else {
-					IBuildpathEntry entry= fContainerPage.getSelection();
-					fNewEntries= (entry != null) ? new IBuildpathEntry[] { entry } : null;
+					IBuildpathEntry entry = fContainerPage.getSelection();
+					fNewEntries = (entry != null) ? new IBuildpathEntry[] { entry }
+							: null;
 				}
 				return true;
 			}
@@ -103,84 +115,126 @@ public class BuildpathContainerWizard extends Wizard {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see IWizard#addPages()
 	 */
 	public void addPages() {
 		if (fPageDesc != null) {
-			fContainerPage= getContainerPage(fPageDesc);
-			addPage(fContainerPage);			
-		} else if (fEntryToEdit == null) { // new entry: show selection page as first page
-			BuildpathContainerDescriptor[] containers= BuildpathContainerDescriptor.getDescriptors(fCurrProject);
+			fContainerPage = getContainerPage(fPageDesc);
+			addPage(fContainerPage);
+		} else if (fEntryToEdit == null) { // new entry: show selection page as
+			// first page
+			BuildpathContainerDescriptor[] containers = BuildpathContainerDescriptor
+					.getDescriptors(fCurrProject);
 
-			fSelectionWizardPage= new BuildpathContainerSelectionPage(containers);
+			fSelectionWizardPage = new BuildpathContainerSelectionPage(
+					containers);
 			addPage(fSelectionWizardPage);
 
 			// add as dummy, will not be shown
-			fContainerPage= new BuildpathContainerDefaultPage();
+			fContainerPage = new BuildpathContainerDefaultPage();
 			addPage(fContainerPage);
 		} else { // fPageDesc == null && fEntryToEdit != null
-			BuildpathContainerDescriptor[] containers= BuildpathContainerDescriptor.getDescriptors();
-			BuildpathContainerDescriptor descriptor= findDescriptorPage(containers, fEntryToEdit);
-			fContainerPage= getContainerPage(descriptor);
-			addPage(fContainerPage);				
+			BuildpathContainerDescriptor[] containers = BuildpathContainerDescriptor
+					.getDescriptors();
+
+			String type = fEntryToEdit.getPath().segment(0);
+			if (type.equals(ScriptRuntime.INTERPRETER_CONTAINER)) {
+				try {
+					IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
+							.getLanguageToolkit(this.fCurrProject);
+					if (toolkit != null) {
+						String interpreterContainerID = toolkit
+								.getInterpreterContainerID();
+						BuildpathContainerDescriptor descriptor = findDescriptorPage(
+								containers, fEntryToEdit,
+								interpreterContainerID);
+						fContainerPage = getContainerPage(descriptor);
+						addPage(fContainerPage);
+					}
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
+			} else {
+				BuildpathContainerDescriptor descriptor = findDescriptorPage(
+						containers, fEntryToEdit);
+				fContainerPage = getContainerPage(descriptor);
+				addPage(fContainerPage);
+			}
 		}
 		super.addPages();
 	}
-	
-	private IBuildpathContainerPage getContainerPage(BuildpathContainerDescriptor pageDesc) {
-		IBuildpathContainerPage containerPage= null;
+
+	private IBuildpathContainerPage getContainerPage(
+			BuildpathContainerDescriptor pageDesc) {
+		IBuildpathContainerPage containerPage = null;
 		if (pageDesc != null) {
-			IBuildpathContainerPage page= pageDesc.getPage();
+			IBuildpathContainerPage page = pageDesc.getPage();
 			if (page != null) {
-				return page; // if page is already created, avoid double initialization
+				return page; // if page is already created, avoid double
+				// initialization
 			}
 			try {
-				containerPage= pageDesc.createPage();
+				containerPage = pageDesc.createPage();
 			} catch (CoreException e) {
 				handlePageCreationFailed(e);
-				containerPage= null;
+				containerPage = null;
 			}
 		}
 
-		if (containerPage == null)	{
-			containerPage= new BuildpathContainerDefaultPage();
+		if (containerPage == null) {
+			containerPage = new BuildpathContainerDefaultPage();
 			if (pageDesc != null) {
 				pageDesc.setPage(containerPage); // avoid creation next time
 			}
 		}
 
 		if (containerPage instanceof IBuildpathContainerPageExtension) {
-			((IBuildpathContainerPageExtension) containerPage).initialize(fCurrProject, fCurrBuildpath);
+			((IBuildpathContainerPageExtension) containerPage).initialize(
+					fCurrProject, fCurrBuildpath);
 		}
 
 		containerPage.setSelection(fEntryToEdit);
 		containerPage.setWizard(this);
 		return containerPage;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see IWizard#getNextPage(IWizardPage)
 	 */
 	public IWizardPage getNextPage(IWizardPage page) {
 		if (page == fSelectionWizardPage) {
 
-			BuildpathContainerDescriptor selected= fSelectionWizardPage.getSelected();
-			fContainerPage= getContainerPage(selected);
-			
+			BuildpathContainerDescriptor selected = fSelectionWizardPage
+					.getSelected();
+			fContainerPage = getContainerPage(selected);
+
 			return fContainerPage;
 		}
 		return super.getNextPage(page);
 	}
-	
+
 	private void handlePageCreationFailed(CoreException e) {
-		String title= NewWizardMessages.BuildpathContainerWizard_pagecreationerror_title; 
-		String message= NewWizardMessages.BuildpathContainerWizard_pagecreationerror_message; 
+		String title = NewWizardMessages.BuildpathContainerWizard_pagecreationerror_title;
+		String message = NewWizardMessages.BuildpathContainerWizard_pagecreationerror_message;
 		ExceptionHandler.handle(e, getShell(), title, message);
 	}
-	
-	
-	private BuildpathContainerDescriptor findDescriptorPage(BuildpathContainerDescriptor[] containers, IBuildpathEntry entry) {
+
+	private BuildpathContainerDescriptor findDescriptorPage(
+			BuildpathContainerDescriptor[] containers, IBuildpathEntry entry, String id) {
+		for (int i = 0; i < containers.length; i++) {
+			if (containers[i].canEdit(entry, id)) {
+				return containers[i];
+			}
+		}
+		return null;
+	}
+	private BuildpathContainerDescriptor findDescriptorPage(
+			BuildpathContainerDescriptor[] containers, IBuildpathEntry entry) {
 		for (int i = 0; i < containers.length; i++) {
 			if (containers[i].canEdit(entry)) {
 				return containers[i];
@@ -188,21 +242,26 @@ public class BuildpathContainerWizard extends Wizard {
 		}
 		return null;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.Wizard#dispose()
 	 */
 	public void dispose() {
 		if (fSelectionWizardPage != null) {
-			BuildpathContainerDescriptor[] descriptors= fSelectionWizardPage.getContainers();
-			for (int i= 0; i < descriptors.length; i++) {
+			BuildpathContainerDescriptor[] descriptors = fSelectionWizardPage
+					.getContainers();
+			for (int i = 0; i < descriptors.length; i++) {
 				descriptors[i].dispose();
 			}
 		}
 		super.dispose();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see IWizard#canFinish()
 	 */
 	public boolean canFinish() {
@@ -216,13 +275,14 @@ public class BuildpathContainerWizard extends Wizard {
 		}
 		return false;
 	}
-	
+
 	public static int openWizard(Shell shell, BuildpathContainerWizard wizard) {
-		WizardDialog dialog= new WizardDialog(shell, wizard);
-		PixelConverter converter= new PixelConverter(shell);
-		dialog.setMinimumPageSize(converter.convertWidthInCharsToPixels(70), converter.convertHeightInCharsToPixels(20));
+		WizardDialog dialog = new WizardDialog(shell, wizard);
+		PixelConverter converter = new PixelConverter(shell);
+		dialog.setMinimumPageSize(converter.convertWidthInCharsToPixels(70),
+				converter.convertHeightInCharsToPixels(20));
 		dialog.create();
 		return dialog.open();
 	}
-	
+
 }

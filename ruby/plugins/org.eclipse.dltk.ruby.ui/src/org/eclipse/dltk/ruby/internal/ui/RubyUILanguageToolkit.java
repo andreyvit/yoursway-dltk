@@ -76,5 +76,8 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 	public String getEditorID(Object inputElement) {
 		return "org.eclipse.dltk.ruby.ui.editor.RubyEditor";
 	}
+	public String getInterpreterContainerID() {
+		return "org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER";
+	}
 
 }

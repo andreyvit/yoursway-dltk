@@ -228,7 +228,7 @@
 	    <page	          
 	          class="org.eclipse.dltk.javascript.internal.ui.preferences.JavascriptGlobalPreferencesPage"
 	          id="org.eclipse.dltk.javascript.ui.javascript"
-	          name="DLTK &gt; Javascript"/>
+	          name="Javascript"/>
 	    <page
 	          category="org.eclipse.dltk.javascript.ui.javascript"
 	          class="org.eclipse.dltk.javascript.internal.ui.preferences.JavascriptEditorPreferencesPage"

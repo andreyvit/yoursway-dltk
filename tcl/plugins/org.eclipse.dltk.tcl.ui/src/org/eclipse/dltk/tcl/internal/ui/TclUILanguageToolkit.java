@@ -77,5 +77,7 @@ public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
 	public String getEditorID(Object inputElement) {
 		return "org.eclipse.dltk.tcl.ui.editor.TclEditor";
 	}
-
+	public String getInterpreterContainerID() {
+		return "org.eclipse.dltk.tcl.launching.INTERPRETER_CONTAINER";
+	}
 }

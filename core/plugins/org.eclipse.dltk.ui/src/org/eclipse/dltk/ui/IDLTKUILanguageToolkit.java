@@ -25,4 +25,6 @@ public interface IDLTKUILanguageToolkit {
 	String getPartitioningID();
 	
 	String getEditorID(Object inputElement);
+
+	String getInterpreterContainerID();
 }

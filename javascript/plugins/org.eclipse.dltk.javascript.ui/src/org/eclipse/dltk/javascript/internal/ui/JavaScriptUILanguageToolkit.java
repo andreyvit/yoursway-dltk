@@ -41,4 +41,8 @@ public class JavaScriptUILanguageToolkit implements IDLTKUILanguageToolkit {
 	public String getPartitioningID() {
 		return IJavaScriptConstants.JS_PARTITIONING;
 	}
+
+	public String getInterpreterContainerID() {
+		return "org.eclipse.dltk.javascript.launching.INTERPRETER_CONTAINER";
+	}
 }
