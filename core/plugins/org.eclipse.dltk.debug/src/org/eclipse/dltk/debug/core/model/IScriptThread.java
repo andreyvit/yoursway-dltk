@@ -10,6 +10,7 @@
 package org.eclipse.dltk.debug.core.model;
 
 import org.eclipse.debug.core.model.IThread;
+import org.eclipse.debug.core.model.IWatchExpressionListener;
 import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.debug.internal.core.model.IScriptThreadStreamProxy;
 
@@ -28,4 +29,6 @@ public interface IScriptThread extends IThread  /*, IFilteredStep */{
 	IDbgpSession getDbgpSession();
 
 	IScriptThreadStreamProxy getStreamProxy();
+	
+	void evaluateExpression(String expression, IWatchExpressionListener listener);
 }

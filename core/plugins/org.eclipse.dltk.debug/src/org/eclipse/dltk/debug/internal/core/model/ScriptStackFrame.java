@@ -10,9 +10,6 @@
 package org.eclipse.dltk.debug.internal.core.model;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
@@ -27,9 +24,8 @@ import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
-public class ScriptStackFrame extends ScriptDebugElement implements IScriptStackFrame {
-
-	private int stackDepth;
+public class ScriptStackFrame extends ScriptDebugElement implements
+		IScriptStackFrame {
 
 	private IScriptThread thread;
 
@@ -37,33 +33,27 @@ public class ScriptStackFrame extends ScriptDebugElement implements IScriptStack
 
 	private IScriptVariable[] variables;
 
-	private String name;
+	protected ScriptVariable[] readVariables(int stackDepth,
+			IDbgpCoreCommands core) throws DbgpException {
 
-	protected ScriptVariable[] readVariables(int stackDepth, IDbgpCoreCommands core) throws DbgpException {
-		List variables = new ArrayList();
-		
-		List properties = core.getContextProperties(stackDepth);
-		Iterator it = properties.iterator();
-		while (it.hasNext()) {
-			IDbgpProperty property = (IDbgpProperty) it.next();
-			variables.add(new ScriptVariable(getDebugTarget(), stackDepth, property, core));
+		IDbgpProperty[] properties = core.getContextProperties(stackDepth);
+
+		ScriptVariable[] variables = new ScriptVariable[properties.length];
+
+		for (int i = 0; i < properties.length; ++i) {
+			variables[i] = new ScriptVariable(this, properties[i]);
 		}
 
-		return (ScriptVariable[]) variables.toArray(new ScriptVariable[variables.size()]);
-
+		return variables;
 	}
 
-	public ScriptStackFrame(IScriptThread thread, IDbgpStackLevel stackLevel, IDbgpCoreCommands coreCommands, int stackDepth) throws DbgpException {
-
-		if (thread == null || stackLevel == null || coreCommands == null) {
-			throw new IllegalArgumentException("thread cannot be null");
-		}
+	public ScriptStackFrame(IScriptThread thread, IDbgpStackLevel stackLevel)
+			throws DbgpException {
 
 		this.thread = thread;
 		this.stackLevel = stackLevel;
-		this.name = stackLevel.getWhere();
-		this.variables = readVariables(stackLevel.getLevel(), coreCommands);
-		this.stackDepth = stackDepth;
+		this.variables = readVariables(stackLevel.getLevel(), thread
+				.getDbgpSession().getCoreCommands());
 	}
 
 	public URI getFileName() {
@@ -83,14 +73,21 @@ public class ScriptStackFrame extends ScriptDebugElement implements IScriptStack
 	}
 
 	public String getName() throws DebugException {
-		if (name == null || name.length() == 0)
+		String where = stackLevel.getWhere();
+
+		if (where == null || where.length() == 0) {
 			return "Stack Frame, level = " + stackLevel.getLevel();
-		else
-			return name + "(" + stackLevel.getFileURI() + ")";
+		} else {
+			return where + "(" + stackLevel.getFileURI() + ")";
+		}
+	}
+
+	public boolean hasRegisterGroups() throws DebugException {
+		return false;
 	}
 
 	public IRegisterGroup[] getRegisterGroups() throws DebugException {
-		return null;
+		return new IRegisterGroup[0];
 	}
 
 	public IThread getThread() {
@@ -106,11 +103,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements IScriptStack
 	}
 
 	public IVariable[] getVariables() throws DebugException {
-		return variables;
-	}
-
-	public boolean hasRegisterGroups() throws DebugException {
-		return false;
+		return (IVariable[])variables.clone();
 	}
 
 	// IStep
@@ -176,25 +169,26 @@ public class ScriptStackFrame extends ScriptDebugElement implements IScriptStack
 		thread.terminate();
 	}
 
+	// IDebugElement
+	public IDebugTarget getDebugTarget() {
+		return thread.getDebugTarget();
+	}
+
+	public IScriptVariable findVariable(String varName) throws DebugException {
+		for (int i = 0; i < variables.length; i++) {
+			if (variables[i].getName().equals(varName))
+				return variables[i];
+		}
+		return null;
+	}
+
+	public int getLevel() {
+		return stackLevel.getLevel();
+	}
+
 	public boolean equals(Object obj) {
 		if (obj instanceof ScriptStackFrame) {
-			ScriptStackFrame sf = (ScriptStackFrame) obj;
-
-			if (stackLevel.getLineNumber() != sf.stackLevel.getLineNumber()) {
-				return false;
-			}
-
-			if (variables.length != sf.variables.length) {
-				return false;
-			}
-
-			for (int i = 0; i < variables.length; ++i) {
-				if (!variables[i].equals(sf.variables[i])) {
-					return false;
-				}
-			}
-
-			return true;
+			return stackLevel.equals(((ScriptStackFrame) obj).stackLevel);
 		}
 
 		return false;
@@ -205,19 +199,6 @@ public class ScriptStackFrame extends ScriptDebugElement implements IScriptStack
 	}
 
 	public String toString() {
-		return "Stack frame (level: " + (stackDepth - stackLevel.getLevel()) + ")";
-	}
-
-	public IScriptVariable findVariable(String varName) throws DebugException {
-		for (int a = 0; a < variables.length; a++) {
-			if (variables[a].getName().equals(varName))
-				return variables[a];
-		}
-		return null;
-	}
-
-	// IDebugElement
-	public IDebugTarget getDebugTarget() {
-		return thread.getDebugTarget();
+		return "Stack frame (level: " + stackLevel.getLevel() + ")";
 	}
 }

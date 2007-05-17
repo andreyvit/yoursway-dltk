@@ -14,8 +14,6 @@ import java.net.URI;
 public interface IDbgpStackLevel {
 	int getLevel();
 
-	int getType();
-
 	int getLineNumber();
 
 	int getLineBegin();

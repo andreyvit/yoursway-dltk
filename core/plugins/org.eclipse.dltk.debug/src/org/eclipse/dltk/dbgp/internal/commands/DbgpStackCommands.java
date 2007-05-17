@@ -36,14 +36,18 @@ public class DbgpStackCommands extends DbgpBaseCommands implements
 		return Integer.parseInt(response.getAttribute(ATTR_DEPTH));
 	}
 
-	protected List parseStackLevels(Element response) throws DbgpException {
+	protected IDbgpStackLevel[] parseStackLevels(Element response)
+			throws DbgpException {
 		List list = new ArrayList();
+
 		NodeList nodes = response.getElementsByTagName(TAG_STACK);
 		for (int i = 0; i < nodes.getLength(); ++i) {
 			list.add(DbgpXmlEntityParser.parseStackLevel((Element) nodes
 					.item(i)));
 		}
-		return list;
+
+		return (IDbgpStackLevel[]) list
+				.toArray(new IDbgpStackLevel[list.size()]);
 	}
 
 	public DbgpStackCommands(IDbgpCommunicator communicator) {
@@ -57,11 +61,16 @@ public class DbgpStackCommands extends DbgpBaseCommands implements
 	public IDbgpStackLevel getStackLevel(int stackDepth) throws DbgpException {
 		DbgpRequest request = createRequest(STACK_GET_COMMAND);
 		request.addOption("-d", stackDepth);
-		List list = parseStackLevels(communicate(request));
-		return (IDbgpStackLevel) list.get(0);
+		IDbgpStackLevel[] levels = parseStackLevels(communicate(request));
+
+		if (levels.length < 1) {
+			return null;
+		}
+
+		return levels[0];
 	}
 
-	public List getStackLevels() throws DbgpException {
+	public IDbgpStackLevel[] getStackLevels() throws DbgpException {
 		return parseStackLevels(communicate(createRequest(STACK_GET_COMMAND)));
 	}
 }

@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.dltk.dbgp.IDbgpProperty;
 import org.eclipse.dltk.dbgp.commands.IDbgpContextCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.internal.DbgpRequest;
@@ -55,25 +56,22 @@ public class DbgpContextCommands extends DbgpBaseCommands implements
 		return map;
 	}
 
-	protected List parseContextPropertiesResponse(Element response)
+	protected IDbgpProperty[] parseContextPropertiesResponse(Element response)
 			throws DbgpException {
 		NodeList properties = response.getChildNodes();
 
 		List list = new ArrayList();
 		for (int i = 0; i < properties.getLength(); ++i) {
-			
-			Node item = properties
-					.item(i);
-			if (item instanceof Element)
-			{
-			if (item.getNodeName().equals(TAG_PROPERTY))
-			{
-			list.add(DbgpXmlEntityParser.parseProperty((Element) item));
-			}
+
+			Node item = properties.item(i);
+			if (item instanceof Element) {
+				if (item.getNodeName().equals(TAG_PROPERTY)) {
+					list.add(DbgpXmlEntityParser.parseProperty((Element) item));
+				}
 			}
 		}
 
-		return list;
+		return (IDbgpProperty[]) list.toArray(new IDbgpProperty[list.size()]);
 	}
 
 	public Map getContextNames(int stackDepth) throws DbgpException {
@@ -82,13 +80,14 @@ public class DbgpContextCommands extends DbgpBaseCommands implements
 		return parseContextNamesResponse(communicate(request));
 	}
 
-	public List getContextProperties(int stackDepth) throws DbgpException {
+	public IDbgpProperty[] getContextProperties(int stackDepth)
+			throws DbgpException {
 		DbgpRequest request = createRequest(CONTEXT_GET);
 		request.addOption("-d", stackDepth);
 		return parseContextPropertiesResponse(communicate(request));
 	}
 
-	public List getContextProperties(int stackDepth, int contextId)
+	public IDbgpProperty[] getContextProperties(int stackDepth, int contextId)
 			throws DbgpException {
 		DbgpRequest request = createRequest(CONTEXT_GET);
 		request.addOption("-d", stackDepth);

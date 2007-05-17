@@ -34,7 +34,7 @@ public class JavaLocalApplicationLaunchConfigurationDelegate extends
 			dbgpService = DLTKDebugPlugin.getDefault().createDbgpService(port,
 					port + 1);
 			
-			IScriptDebugTarget target = new ScriptDebugTarget("org.eclipse.dltk.debug.core.model", dbgpService,
+			IScriptDebugTarget target = new ScriptDebugTarget("org.eclipse.dltk.debug.javascriptModel", dbgpService,
 					"hello", launch,null);
 			IOConsole cs=new IOConsole("aa",null);
 			ConsoleScriptDebugTargetStreamManager manager = new ConsoleScriptDebugTargetStreamManager(

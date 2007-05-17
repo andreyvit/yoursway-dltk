@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class DbgpPacketSender {
+	private Object lock = new Object();
+
 	private OutputStream output;
 
 	private IDbgpRawLogger logger;
@@ -25,21 +27,19 @@ public class DbgpPacketSender {
 		this.output = output;
 	}
 
-	public void sendCommand(String command) throws IOException {
-		if (command == null) {
-			throw new IllegalArgumentException();
-		}
+	public void setLogger(IDbgpRawLogger logger) {
+		this.logger = logger;
+	}
 
+	public void sendCommand(String command) throws IOException {
 		if (logger != null) {
 			logger.log(command);
 		}
 
-		output.write(command.getBytes("ASCII"));
-		output.write(0);
-		output.flush();
-	}
-
-	public void setLogger(IDbgpRawLogger logger) {
-		this.logger = logger;
+		synchronized (lock) {
+			output.write(command.getBytes("ASCII"));
+			output.write(0);
+			output.flush();
+		}
 	}
 }

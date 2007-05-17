@@ -29,6 +29,7 @@ public class RubyAdapterFactory implements IAdapterFactory {
 	}
 
 	public Class[] getAdapterList() {
-		return new Class[] { IColumnPresentationFactory.class };
+		return new Class[] { IColumnPresentationFactory.class,
+				IElementLabelProvider.class };
 	}
 }

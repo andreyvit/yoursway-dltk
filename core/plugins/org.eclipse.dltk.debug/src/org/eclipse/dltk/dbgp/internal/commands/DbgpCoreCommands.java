@@ -181,7 +181,7 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		return stackCommands.getStackLevel(stackDepth);
 	}
 
-	public List getStackLevels() throws DbgpException {
+	public IDbgpStackLevel[] getStackLevels() throws DbgpException {
 		return stackCommands.getStackLevels();
 	}
 
@@ -193,11 +193,11 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		return contextCommands.getContextNames(stackDepth);
 	}
 
-	public List getContextProperties(int stackDepth) throws DbgpException {
+	public IDbgpProperty[] getContextProperties(int stackDepth) throws DbgpException {
 		return contextCommands.getContextProperties(stackDepth);
 	}
 
-	public List getContextProperties(int stackDepth, int contextId)
+	public IDbgpProperty[] getContextProperties(int stackDepth, int contextId)
 			throws DbgpException {
 		return contextCommands.getContextProperties(stackDepth, contextId);
 	}

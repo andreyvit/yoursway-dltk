@@ -25,21 +25,19 @@ public class DbgpStackLevel implements IDbgpStackLevel {
 
 	private URI fileUri;
 
-	private int type;
-
 	private String where;
 
-	public DbgpStackLevel(URI fileUri,String where, int level, int lineNumber,
+	public DbgpStackLevel(URI fileUri, String where, int level, int lineNumber,
 			int lineBegin, int lineEnd) {
 		this.fileUri = fileUri;
 		this.level = level;
 		this.lineNumber = lineNumber;
 		this.lineBegin = lineBegin;
 		this.lineEnd = lineEnd;
-		this.where=where;
+		this.where = where;
 	}
-	
-	public String getWhere(){
+
+	public String getWhere() {
 		return where;
 	}
 
@@ -59,10 +57,6 @@ public class DbgpStackLevel implements IDbgpStackLevel {
 		return lineEnd;
 	}
 
-	public int getType() {
-		return type;
-	}
-
 	public URI getFileURI() {
 		return fileUri;
 	}
@@ -74,22 +68,22 @@ public class DbgpStackLevel implements IDbgpStackLevel {
 
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
+		int result = 1;
 		result = prime * result + ((fileUri == null) ? 0 : fileUri.hashCode());
 		result = prime * result + level;
 		result = prime * result + lineBegin;
 		result = prime * result + lineEnd;
 		result = prime * result + lineNumber;
-		result = prime * result + type;
+		result = prime * result + ((where == null) ? 0 : where.hashCode());
 		return result;
 	}
 
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof DbgpStackLevel))
 			return false;
 		final DbgpStackLevel other = (DbgpStackLevel) obj;
 		if (fileUri == null) {
@@ -105,7 +99,10 @@ public class DbgpStackLevel implements IDbgpStackLevel {
 			return false;
 		if (lineNumber != other.lineNumber)
 			return false;
-		if (type != other.type)
+		if (where == null) {
+			if (other.where != null)
+				return false;
+		} else if (!where.equals(other.where))
 			return false;
 		return true;
 	}

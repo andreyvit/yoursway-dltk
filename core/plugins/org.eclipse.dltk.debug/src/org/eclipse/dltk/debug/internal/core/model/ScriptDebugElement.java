@@ -22,7 +22,8 @@ import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptDebugElement;
 
-public abstract class ScriptDebugElement extends PlatformObject implements IScriptDebugElement {
+public abstract class ScriptDebugElement extends PlatformObject implements
+		IScriptDebugElement {
 
 	public ILaunch getLaunch() {
 		return getDebugTarget().getLaunch();
@@ -43,18 +44,27 @@ public abstract class ScriptDebugElement extends PlatformObject implements IScri
 	}
 
 	protected void abort(String message, Throwable e) throws DebugException {
-		throw new DebugException(new Status(IStatus.ERROR, DLTKDebugPlugin.PLUGIN_ID, DebugPlugin.INTERNAL_ERROR, message, e));
+		throw new DebugException(new Status(IStatus.ERROR,
+				DLTKDebugPlugin.PLUGIN_ID, DebugPlugin.INTERNAL_ERROR, message,
+				e));
 	}
 
-	protected DebugException makeNotSupported(String message, Throwable e) throws DebugException {
-		return new DebugException(new Status(IStatus.ERROR, DLTKDebugPlugin.PLUGIN_ID, DebugException.NOT_SUPPORTED, message, e));
+	protected DebugException makeNotSupported(String message, Throwable e)
+			throws DebugException {
+		return new DebugException(new Status(IStatus.ERROR,
+				DLTKDebugPlugin.PLUGIN_ID, DebugException.NOT_SUPPORTED,
+				message, e));
 	}
 
 	protected DebugException wrapDbgpException(String message, DbgpException e) {
-		return new DebugException(new Status(IStatus.ERROR, DebugPlugin.getUniqueIdentifier(), DebugException.INTERNAL_ERROR, message, e));
+		return new DebugException(new Status(IStatus.ERROR, DebugPlugin
+				.getUniqueIdentifier(), DebugException.INTERNAL_ERROR, message,
+				e));
 	}
 
 	protected DebugException wrapIOException(String message, IOException e) {
-		return new DebugException(new Status(IStatus.ERROR, DebugPlugin.getUniqueIdentifier(), DebugException.INTERNAL_ERROR, message, e));
+		return new DebugException(new Status(IStatus.ERROR, DebugPlugin
+				.getUniqueIdentifier(), DebugException.INTERNAL_ERROR, message,
+				e));
 	}
 }

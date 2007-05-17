@@ -12,30 +12,34 @@ package org.eclipse.dltk.debug.internal.core.model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IStackFrame;
+import org.eclipse.debug.core.model.IWatchExpressionListener;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.dbgp.IDbgpNotification;
 import org.eclipse.dltk.dbgp.IDbgpNotificationListener;
+import org.eclipse.dltk.dbgp.IDbgpProperty;
 import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.IDbgpStatus;
-import org.eclipse.dltk.dbgp.commands.IDbgpCoreCommands;
 import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
+import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.internal.core.model.operations.DbgpDebugger;
 import org.eclipse.dltk.debug.internal.core.model.operations.IDbgpDebuggerFeedback;
 
 public class ScriptThread extends ScriptDebugElement implements IScriptThread,
-	IThreadManagement, IDbgpDebuggerFeedback {
+		IThreadManagement, IDbgpDebuggerFeedback {
 
 	private boolean canSuspend;
 
@@ -43,13 +47,10 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	private IScriptThreadStreamProxy streamProxy;
 
-	// Access to frames should be synchronized
-	private List frames = new ArrayList();
-
-	private String name;
+	private ScriptStack stack;
 
 	private DbgpDebugger engine;
-		
+
 	// Session
 	private IDbgpSession session;
 
@@ -59,25 +60,12 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	private volatile boolean suspended;
 
 	private volatile boolean terminated;
-	
+
 	private IScriptDebugTarget target;
 
 	// Stop
 	private IDbgpStatus stopDebugger() throws DbgpException {
 		return session.getCoreCommands().stop();
-	}
-
-	// Stack frames
-	private List retrieveStackFrames() throws DbgpException {
-		IDbgpCoreCommands core = session.getCoreCommands();
-
-		int stackDepth = core.getStackDepth();
-		List frames = new ArrayList(stackDepth);
-		for (int i = 0; i < stackDepth; ++i) {
-			frames.add(new ScriptStackFrame(this, core.getStackLevel(i), core, stackDepth));
-		}
-
-		return frames;
 	}
 
 	protected void processOperationEnd(DbgpException exception,
@@ -88,19 +76,20 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 			}
 
 			if (status.isBreak()) {
-				setStackFrames();
+				stack.update();
+
 				setSuspended(true, suspendDetail);
 			} else if (status.isStopping()) {
 				// Stop
 				if (stopDebugger().isStopped()) {
 					setTerminated();
 				}
-			} else if (status.isStopped()) {				
+			} else if (status.isStopped()) {
 				setTerminated();
 			}
 		} catch (DbgpException e) {
 			try {
-				streamProxy.getStdout().write(e.getMessage().getBytes());				
+				streamProxy.getStdout().write(e.getMessage().getBytes());
 				setTerminated();
 			} catch (IOException e1) {
 				// TODO: log properly
@@ -123,19 +112,17 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		stepping = false;
 		processOperationEnd(execption, status, DebugEvent.STEP_END);
 	}
-	
+
 	public ScriptThread(IScriptDebugTarget target, IDbgpSession session,
 			ScriptThreadManager manager) throws DbgpException, CoreException {
-		
+
 		this.target = target;
-		
 
 		this.manager = manager;
 
 		this.streamProxy = target.getStreamManager().makeThreadStreamProxy();
 
 		this.session = session;
-		this.name = session.getInfo().getThreadId();
 
 		// Initial states
 		this.suspended = true;
@@ -152,7 +139,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 		final IDbgpExtendedCommands extended = session.getExtendedCommands();
 
-		canSuspend = true; //  engine.isSupportsAsync();
+		canSuspend = true; // engine.isSupportsAsync();
 
 		engine.setMaxChildren(256);
 		engine.setMaxDepth(2);
@@ -181,20 +168,17 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 						}
 					}
 				});
+
+		this.stack = new ScriptStack(this);
 	}
 
 	public boolean hasStackFrames() throws DebugException {
-		synchronized (frames) {
-			return !frames.isEmpty();
-		}
+		return stack.hasFrames();
 	}
 
 	// IThread
-	public IStackFrame[] getStackFrames() throws DebugException {	
-		synchronized (frames) {
-			return (IStackFrame[]) frames
-					.toArray(new IStackFrame[frames.size()]);
-		}
+	public IStackFrame[] getStackFrames() throws DebugException {
+		return stack.getFrames();
 	}
 
 	public int getPriority() throws DebugException {
@@ -210,31 +194,19 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	}
 
 	public String getName() throws DebugException {
-		return name;
+		return session.getInfo().getThreadId();
 	}
 
 	public IBreakpoint[] getBreakpoints() {
 		return new IBreakpoint[0];
 	}
 
-	protected void setStackFrames() throws DbgpException {
-		List retrieveStackFrames = retrieveStackFrames();
-		synchronized (frames) {
-			frames.clear();
-			frames.addAll(retrieveStackFrames);
-		}
-	}
-
 	protected void setSuspended(boolean value, int detail) {
 		suspended = value;
 		if (value) {
-			
 			DebugEventHelper.fireSuspendEvent(this, detail);
-			
+
 		} else {
-			synchronized( this.frames ) {
-				this.frames.clear();
-			}
 			DebugEventHelper.fireResumeEvent(this, detail);
 			DebugEventHelper.fireChangeEvent(this);
 		}
@@ -277,7 +249,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	public void resume() throws DebugException {
 		setSuspended(false, DebugEvent.CLIENT_REQUEST);
-		
+
 		engine.resume();
 	}
 
@@ -364,5 +336,48 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	public IDebugTarget getDebugTarget() {
 		return target.getDebugTarget();
+	}
+
+	public void evaluateExpression(final String expression,
+			final IWatchExpressionListener listener) {
+
+		//DebugEventHelper.fireResumeEvent(this, DebugEvent.EVALUATION);
+
+		Job job = new Job("Evaluation of \"" + expression + "\"") {
+			protected IStatus run(IProgressMonitor monitor) {
+				if (getDebugTarget().isTerminated()) {
+					return Status.OK_STATUS;
+				}
+
+				ScriptWatchExpressionResult result = null;
+
+				try {
+					IDbgpProperty property = session.getExtendedCommands()
+							.evaluate(expression);
+
+					//DebugEventHelper.fireSuspendEvent(ScriptThread.this,
+						//	DebugEvent.EVALUATION);
+
+					if (property != null) {
+						IScriptVariable variable = new ScriptVariable(
+								getDebugTarget(), session, property);
+						result = new ScriptWatchExpressionResult(expression,
+								variable);
+					}
+
+				} catch (DbgpException e) {
+					result = new ScriptWatchExpressionResult(expression,
+							new String[] { e.getMessage() });
+				}
+
+				listener.watchEvaluationFinished(result);
+
+				return Status.OK_STATUS;
+			}
+		};
+
+		job.setSystem(true);
+		job.setUser(false);
+		job.schedule();
 	}
 }

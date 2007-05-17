@@ -22,8 +22,6 @@ public interface IDbgpProperty {
 
 	String getValue();
 
-	void setValue(String value);
-
 	boolean isConstant();
 
 	boolean hasChildren();

@@ -66,10 +66,6 @@ public class DbgpProperty implements IDbgpProperty {
 		return value;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
-	}
-
 	public int getSize() {
 		return size;
 	}

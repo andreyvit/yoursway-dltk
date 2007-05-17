@@ -108,12 +108,7 @@
          </perspective>
 	</shortcut>
 	</extension>
-   <extension
-         point="org.eclipse.debug.ui.debugModelPresentations">
-      <debugModelPresentation
-            class="org.eclipse.dltk.javascript.internal.debug.ui.JavaScriptDebugModelPresentation"
-            id="org.eclipse.dltk.debug.core.model"/>
-   </extension>
+   
     <extension
        point="org.eclipse.ui.popupMenus">
       <objectContribution
@@ -288,5 +283,23 @@
  
  
  
- <!--- javascript console ui -->
+ <extension
+         point="org.eclipse.debug.ui.debugModelPresentations">
+      <debugModelPresentation
+            class="org.eclipse.dltk.javascript.internal.debug.ui.JavaScriptDebugModelPresentation"
+            id="org.eclipse.dltk.debug.javascriptModel"/>
+   </extension>
+   
+   <extension
+        point="org.eclipse.debug.core.watchExpressionDelegates">
+     <watchExpressionDelegate
+           debugModel="org.eclipse.dltk.debug.javascriptModel"
+           delegateClass="org.eclipse.dltk.debug.internal.core.model.ScriptWatchExpressionDelegate">
+     </watchExpressionDelegate>
+  </extension>
+  
+  <extension point="org.eclipse.debug.ui.debugModelContextBindings">
+    <modelContextBinding contextId="org.eclipse.dltk.debug.ui.debugging" debugModelId="org.eclipse.dltk.debug.javascriptModel"/>
+ </extension>
+   
 </plugin>

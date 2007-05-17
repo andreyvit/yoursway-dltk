@@ -39,6 +39,7 @@ import org.eclipse.ui.part.FileEditorInput;
 
 public abstract class ScriptDebugModelPresentation extends LabelProvider
 		implements IDebugModelPresentation {
+
 	public static class ExternalFileEditorInput implements IPathEditorInput,
 			ILocationProvider {
 		private File file;
@@ -144,6 +145,23 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		return breakpoint.toString();
 	}
 
+	protected String getWatchExpressionText(IWatchExpression exp) {
+		String text = exp.getExpressionText() + " Error !";
+		try {
+			if (!exp.hasErrors()) {
+				text = exp.getExpressionText();
+				IValue value = exp.getValue();
+				if (value != null) {
+					text += " = " + value.getValueString();
+				}
+			}
+		} catch (DebugException e) {
+			// TODO: log exception
+		}
+
+		return text;
+	}
+
 	public final String getText(Object element) {
 		if (element instanceof IScriptBreakpoint) {
 			return getBreakpointText((IScriptBreakpoint) element);
@@ -155,10 +173,8 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			return getVariableText((IScriptVariable) element);
 		} else if (element instanceof IScriptValue) {
 			return getValueText((IScriptValue) element);
-		}
-		else if (element instanceof IWatchExpression){
-			IWatchExpression exp=(IWatchExpression) element;
-			return exp.getExpressionText();
+		} else if (element instanceof IWatchExpression) {
+			return getWatchExpressionText((IWatchExpression) element);
 		}
 
 		return element.toString();

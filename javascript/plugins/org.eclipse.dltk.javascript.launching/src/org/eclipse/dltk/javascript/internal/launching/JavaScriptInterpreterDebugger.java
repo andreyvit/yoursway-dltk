@@ -130,6 +130,6 @@ public class JavaScriptInterpreterDebugger extends AbstractInterpreterDebugger {
 	}
 
 	protected String getDebugModelIdentidier() {
-		return "org.eclipse.dltk.debug.core.model";
+		return "org.eclipse.dltk.debug.javascriptModel";
 	}
 }

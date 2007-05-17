@@ -12,8 +12,6 @@ import org.eclipse.dltk.debug.core.model.IScriptVariable;
 public class RubyVariableLabelProvider extends VariableLabelProvider implements
 		IPropertyChangeListener {
 
-	// public static JDIModelPresentation fLabelProvider = new
-	// JDIModelPresentation();
 	/**
 	 * Map of view id to qualified name setting
 	 */

@@ -217,7 +217,9 @@ module XoredDebugger
         end
 
         # Property commands
-        def property_get(name, key)
+        def property_get(name, depth, key)
+            # TODO: name, depth usage
+                                     
             obj = ObjectSpace._id2ref(key)
             if obj.nil?
                 obj = 'Invalid key :('
@@ -451,8 +453,9 @@ module XoredDebugger
                 # Property commands
                 when 'property_get'
                     name = command.arg('-n')
+                    depth =  command.arg_with_default('-d', '0').to_i
                     key = command.arg('-k').to_i
-                    property_get(name, key)
+                    property_get(name, depth, key)
                     
                 when 'property_set'
                     name = command.arg('-n')

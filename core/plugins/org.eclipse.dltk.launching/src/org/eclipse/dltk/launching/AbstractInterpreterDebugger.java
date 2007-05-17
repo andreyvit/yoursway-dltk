@@ -85,7 +85,7 @@ public abstract class AbstractInterpreterDebugger extends AbstractInterpreterRun
 		// dbgpService);
 		// launch.addDebugTarget(target);
 
-		IScriptDebugTarget target = new ScriptDebugTarget(getDebugModelIdentidier(), dbgpService, sessionId, launch, null);
+		IScriptDebugTarget target =  new ScriptDebugTarget(getDebugModelIdentidier(), dbgpService, sessionId, launch, null);
 		launch.addDebugTarget(target);
 
 		return sessionId;

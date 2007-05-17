@@ -44,13 +44,12 @@ public class RubyStackFrame extends PlatformObject implements IStackFrame {
 
 		synchronized (session) {
 
-			List properties = session.getCoreCommands().getContextProperties(
-					level.getLevel());
+			IDbgpProperty[] properties = session.getCoreCommands()
+					.getContextProperties(level.getLevel());
+
 			List variables = new ArrayList();
-			Iterator it = properties.iterator();
-			while (it.hasNext()) {
-				IDbgpProperty property = (IDbgpProperty) it.next();
-				variables.add(new RubyVariable(this, property));
+			for (int i = 0; i < properties.length; ++i) {
+				variables.add(new RubyVariable(this, properties[i]));
 			}
 
 			return (RubyVariable[]) variables
@@ -60,19 +59,19 @@ public class RubyStackFrame extends PlatformObject implements IStackFrame {
 
 	protected void checkVariables() {
 		try {
-			//if (dirty) {
-				System.out.println("== Updating variables ==");
-				RubyVariable[] newVariables = readVariables();
-				//RubyVariableUpdater.update(variables, newVariables);
-				
-				List list = Arrays.asList(newVariables);
-				
-				
-				//Collections.shuffle(list);
-								
-				variables = (RubyVariable[])list.toArray(new RubyVariable[list.size()]);
-				//dirty = false;
-			//}
+			// if (dirty) {
+			System.out.println("== Updating variables ==");
+			RubyVariable[] newVariables = readVariables();
+			// RubyVariableUpdater.update(variables, newVariables);
+
+			List list = Arrays.asList(newVariables);
+
+			// Collections.shuffle(list);
+
+			variables = (RubyVariable[]) list.toArray(new RubyVariable[list
+					.size()]);
+			// dirty = false;
+			// }
 		} catch (DebugException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -131,8 +130,9 @@ public class RubyStackFrame extends PlatformObject implements IStackFrame {
 	}
 
 	public IVariable[] getVariables() throws DebugException {
-		System.out.println("@@@@@@@@@@@@@@@@@ RubyStackFrame.getVariables() @@@@@@@@@@@@@@@@@@");
-		
+		System.out
+				.println("@@@@@@@@@@@@@@@@@ RubyStackFrame.getVariables() @@@@@@@@@@@@@@@@@@");
+
 		checkVariables();
 
 		return (RubyVariable[]) variables.clone();
@@ -247,6 +247,6 @@ public class RubyStackFrame extends PlatformObject implements IStackFrame {
 
 	public String toString() {
 		return name + " [line: " + Integer.toString(level.getLineNumber())
-				+ "; hash: " + super.hashCode() + "]" ;
+				+ "; hash: " + super.hashCode() + "]";
 	}
 }

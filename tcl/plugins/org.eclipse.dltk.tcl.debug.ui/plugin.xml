@@ -75,12 +75,7 @@
          </perspective>
 	</shortcut>
 	</extension>
-   <extension
-         point="org.eclipse.debug.ui.debugModelPresentations">
-      <debugModelPresentation
-            class="org.eclipse.dltk.tcl.internal.debug.ui.TclDebugModelPresentation"
-            id="org.eclipse.dltk.debug.tclModel"/>
-   </extension>
+   
     <extension
        point="org.eclipse.ui.popupMenus">
       <objectContribution
@@ -250,6 +245,22 @@
  <!--- Tcl console ui -->
  
  <extension point="org.eclipse.debug.ui.debugModelContextBindings">
-	<modelContextBinding contextId="org.eclipse.dltk.debug.ui.debugging" debugModelId="org.eclipse.dltk.debug.tclModel"></modelContextBinding>
+	<modelContextBinding contextId="org.eclipse.dltk.debug.ui.debugging" debugModelId="org.eclipse.dltk.debug.tclModel"/>
  </extension>
+ 
+ <extension
+         point="org.eclipse.debug.ui.debugModelPresentations">
+      <debugModelPresentation
+            class="org.eclipse.dltk.tcl.internal.debug.ui.TclDebugModelPresentation"
+            id="org.eclipse.dltk.debug.tclModel"/>
+   </extension>
+   
+   <extension
+        point="org.eclipse.debug.core.watchExpressionDelegates">
+     <watchExpressionDelegate
+           debugModel="org.eclipse.dltk.debug.tclModel"
+           delegateClass="org.eclipse.dltk.debug.internal.core.model.ScriptWatchExpressionDelegate">
+     </watchExpressionDelegate>
+  </extension>
+ 
 </plugin>

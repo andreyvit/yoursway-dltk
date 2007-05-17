@@ -23,15 +23,11 @@ public class RubyStack {
 
 	protected RubyStackFrame[] readFrames() throws Exception {
 		IDbgpSession session = thread.getSession();
-		
+
 		IDbgpStackLevel[] levels = null;
-		
+
 		synchronized (session) {
-					
-		
-		List temp = session.getCoreCommands().getStackLevels();
-		levels = (IDbgpStackLevel[]) temp
-				.toArray(new IDbgpStackLevel[temp.size()]);
+			levels = session.getCoreCommands().getStackLevels();
 		}
 
 		List newFrames = new ArrayList();
