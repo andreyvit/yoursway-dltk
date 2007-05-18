@@ -9,6 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui.preferences;
 
+import java.util.ArrayList;
+
+import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
@@ -17,12 +20,34 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 
-public class DebuggingConfigurationBlock extends AbstractConfigurationBlock {
+public class ScriptDebugConfigurationBlock extends AbstractConfigurationBlock {
 
-	public DebuggingConfigurationBlock(OverlayPreferenceStore store,
+	private OverlayPreferenceStore.OverlayKey[] createOverlayStoreKeys() {
+
+		ArrayList overlayKeys = new ArrayList();
+
+		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
+				OverlayPreferenceStore.BOOLEAN,
+				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL));
+		
+		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
+				OverlayPreferenceStore.BOOLEAN,
+				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS));
+
+		OverlayPreferenceStore.OverlayKey[] keys = new OverlayPreferenceStore.OverlayKey[overlayKeys
+				.size()];
+		overlayKeys.toArray(keys);
+		return keys;
+
+	}
+
+	public ScriptDebugConfigurationBlock(OverlayPreferenceStore store,
 			PreferencePage mainPreferencePage) {
 		super(store, mainPreferencePage);
+
+		store.addKeys(createOverlayStoreKeys());
 	}
 
 	private Control createSettingsGroup(Composite composite) {
@@ -37,6 +62,24 @@ public class DebuggingConfigurationBlock extends AbstractConfigurationBlock {
 		return composite;
 	}
 
+	private Control createVariablesGroup(Composite parent) {
+		Group group = new Group(parent, SWT.NONE);
+
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		group.setLayout(layout);
+
+		String label = "Show Global Variables";
+		addCheckBox(group, label,
+				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL, 0);
+
+		label = "Show Class Variables";
+		addCheckBox(group, label,
+				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS, 0);
+
+		return parent;
+	}
+
 	public Control createControl(Composite parent) {
 		initializeDialogUnits(parent);
 
@@ -44,12 +87,10 @@ public class DebuggingConfigurationBlock extends AbstractConfigurationBlock {
 		control.setLayout(new GridLayout());
 
 		createSettingsGroup(control);
+		createVariablesGroup(control);
 
 		return control;
+
 	}
-	
-	public void performOk() {
-		// TODO Auto-generated method stub
-		super.performOk();
-	}
+
 }

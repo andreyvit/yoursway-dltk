@@ -28,17 +28,23 @@
               :_value       => get_string(obj),
               :key          => obj.object_id }
 
-        x[:children_props] = obj.instance_variables.collect { |var|
-            real_var = obj.instance_variable_get(var)
+        if x[:has_children]
+            children = obj.instance_variables.collect { |var|
+                real_var = obj.instance_variable_get(var)
 
-            { :name         => var,
-              :eval_name    => var,
-              :type         => real_var.class,
-              :is_constant  => false,
-              :has_children => has_children(real_var),
-              :_value       => get_string(real_var),
-              :key          => real_var.object_id }
-        }
+                { :name         => var,
+                  :eval_name    => var,
+                  :type         => real_var.class,
+                  :is_constant  => false,
+                  :has_children => has_children(real_var),
+                  :_value       => get_string(real_var),
+                  :key          => real_var.object_id }
+            }
+           
+            x[:num_children] = children.length
+            x[:children_props] = children
+        end
+
         x
     end
 
@@ -52,7 +58,7 @@
               :key          => array.object_id }
         
         index = 0
-        x[:children_props] = array.collect { |value|
+        children = array.collect { |value|
         n = sprintf('%s[%d]', name, index)
             index += 1
             { :name         => n,
@@ -62,7 +68,10 @@
               :has_children => has_children(value),
               :_value       => get_string(value),
               :key          => value.object_id }
-        }       
+        }
+
+        x[:num_children] = children.length
+        x[:children_props] = children       
         x
     end
 
@@ -75,7 +84,7 @@
               :_value       => '{...}',
               :key          => hash.object_id }
 
-        x[:children_props] = hash.collect { |key, value|
+        children = hash.collect { |key, value|
             n = sprintf("%s['%s']", name, key.to_s)
             { :name         => n,
               :eval_name    => n,
@@ -85,6 +94,9 @@
               :_value       => get_string(value),
               :key          => value.object_id }
         }
+
+        x[:num_children] = children.length
+        x[:children_props] = children
         x
     end
 

@@ -9,17 +9,18 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui.preferences;
 
-import org.eclipse.dltk.ui.DLTKUIPlugin;
+import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
+import org.eclipse.dltk.internal.ui.text.PreferencesAdapter;
 import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPreferencePage;
 import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 
-public class DebuggingPreferences extends
+public class ScriptDebugPreferencePage extends
 		AbstractConfigurationBlockPreferencePage {
 
 	protected IPreferenceConfigurationBlock createConfigurationBlock(
 			OverlayPreferenceStore overlayPreferenceStore) {
-		return new DebuggingConfigurationBlock(overlayPreferenceStore, this);
+		return new ScriptDebugConfigurationBlock(overlayPreferenceStore, this);
 	}
 
 	protected String getHelpId() {
@@ -31,6 +32,13 @@ public class DebuggingPreferences extends
 	}
 
 	protected void setPreferenceStore() {
-		setPreferenceStore(DLTKUIPlugin.getDefault().getPreferenceStore());
+		setPreferenceStore(new PreferencesAdapter(DLTKDebugPlugin.getDefault()
+				.getPluginPreferences()));
+	}
+	
+	public boolean performOk() {
+		super.performOk();
+		DLTKDebugPlugin.getDefault().savePluginPreferences();
+		return true;
 	}
 }

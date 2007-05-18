@@ -32,6 +32,7 @@ class TestIO
 #       ]
 
        @commands = [
+           'context_get -c 1',
            'feature_set -n max_children -v 256',
            'status',   
            'stack_get',

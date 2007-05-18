@@ -15,6 +15,10 @@ import org.eclipse.dltk.dbgp.IDbgpProperty;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 
 public interface IDbgpContextCommands {
+	int LOCAL_CONTEXT_ID = 0;
+	int GLOBAL_CONTEXT_ID = 1;
+	int CLASS_CONTEXT_ID = 2;
+
 	Map getContextNames(int stackDepth) throws DbgpException;
 
 	IDbgpProperty[] getContextProperties(int stackDepth) throws DbgpException;

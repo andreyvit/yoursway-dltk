@@ -20,10 +20,7 @@ import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
-public class ScriptVariable extends ScriptDebugElement implements
-		IScriptVariable {
-
-	private IDebugTarget target;
+public class ScriptVariable extends AbstractScriptVariable {
 
 	private IDbgpSession session;
 
@@ -62,26 +59,21 @@ public class ScriptVariable extends ScriptDebugElement implements
 		if (frame != null)
 			return new ScriptVariable(frame, property);
 		else
-			return new ScriptVariable(target, session, property);
+			return new ScriptVariable(getDebugTarget(), session, property);
 	}
 
 	public ScriptVariable(IScriptStackFrame frame, IDbgpProperty property) {
+		super(frame.getDebugTarget());
 		this.frame = frame;
-		this.target = frame.getDebugTarget();
 		this.session = ((IScriptThread) frame.getThread()).getDbgpSession();
 		this.property = property;
 	}
 
 	public ScriptVariable(IDebugTarget target, IDbgpSession session,
 			IDbgpProperty property) {
-		this.frame = null;
-		this.target = target;
+		super(target);
 		this.session = session;
 		this.property = property;
-	}
-
-	public IDebugTarget getDebugTarget() {
-		return target;
 	}
 
 	public String getName() throws DebugException {
@@ -90,10 +82,6 @@ public class ScriptVariable extends ScriptDebugElement implements
 
 	public String getReferenceTypeName() throws DebugException {
 		return property.getType();
-	}
-
-	public IValue getValue() throws DebugException {
-		return new ScriptValue(this);
 	}
 
 	public boolean hasValueChanged() throws DebugException {
@@ -133,7 +121,10 @@ public class ScriptVariable extends ScriptDebugElement implements
 	}
 
 	public boolean hasChildren() {
-		return property.hasChildren();
+		boolean shouldHas = property.hasChildren();
+		int count = property.getChildrenCount();
+
+		return count == -1 ? shouldHas : shouldHas && count > 0;
 	}
 
 	public boolean isConstant() {

@@ -29,8 +29,8 @@ module XoredDebugger
                 }
             elsif data.class == Hash
                 data.each { |k, v|
-                    unless (k.class == String or k.class == Symbol) and k.to_s.match('_.*')
-                        data[k] = escape_data(v)    
+                    if (k.class == String or k.class == Symbol) and k.to_s.match('^_.*$').nil?
+                        data[k] = escape_data(v)
                     end
                 }
             else
@@ -64,13 +64,14 @@ module XoredDebugger
                 value = children.collect { |p| print_property(p) }.join("\n")
             end
                 
-            sprintf('<property name="%s" fullname="%s" type="%s" constant="%d" children="%d" encoding="base64" key="%s">%s</property>',
+            sprintf('<property name="%s" fullname="%s" type="%s" constant="%d" children="%d" encoding="base64" key="%s" %s>%s</property>',
                 m[:name], 
                 m[:eval_name], 
                 m[:type].to_s,
                 bool_to_bit(m[:is_cosntant]),
                 bool_to_bit(m[:has_children]), 
                 m[:key].to_s,
+                m[:num_children].nil? ? '' : 'numchildren="' + m[:num_children].to_s + '"',
                 value.empty? ? cdata(Base64.encode64(m[:_value].nil? ? 'nil' : m[:_value])) : value)
         end
 
@@ -192,7 +193,7 @@ module XoredDebugger
         # Data
         def print_stream_data(command, m)
             sprintf('<stream type="%s">%s</stream>',
-                command, cdata(Base64.encode64(m[:_data])))
+                command, cdata(Base64.encode64(m[:_data].nil? ? 'nil' : m[:_data])))
         end
         private :print_stream_data
 

@@ -65,6 +65,12 @@
             name="org.eclipse.debug.core.id.methodExit">
       </attribute>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.dltk.debug.core.DLTKDebugPluginPreferenceInitializer">
+      </initializer>
+   </extension>
    
       
 </plugin>

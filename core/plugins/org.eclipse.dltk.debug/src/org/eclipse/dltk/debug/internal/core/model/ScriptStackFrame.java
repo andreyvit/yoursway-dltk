@@ -10,7 +10,12 @@
 package org.eclipse.dltk.debug.internal.core.model;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+import org.eclipse.core.runtime.Preferences;
+import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IRegisterGroup;
@@ -18,14 +23,16 @@ import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.dltk.dbgp.IDbgpProperty;
 import org.eclipse.dltk.dbgp.IDbgpStackLevel;
-import org.eclipse.dltk.dbgp.commands.IDbgpCoreCommands;
+import org.eclipse.dltk.dbgp.commands.IDbgpContextCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
+import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
 public class ScriptStackFrame extends ScriptDebugElement implements
-		IScriptStackFrame {
+		IScriptStackFrame, Preferences.IPropertyChangeListener {
 
 	private IScriptThread thread;
 
@@ -33,27 +40,89 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 
 	private IScriptVariable[] variables;
 
-	protected ScriptVariable[] readVariables(int stackDepth,
-			IDbgpCoreCommands core) throws DbgpException {
+	protected static IScriptVariable[] readVariables(
+			ScriptStackFrame parentFrame, int contextId,
+			IDbgpContextCommands commands) throws DbgpException {
 
-		IDbgpProperty[] properties = core.getContextProperties(stackDepth);
+		IDbgpProperty[] properties = commands.getContextProperties(parentFrame
+				.getLevel(), contextId);
 
-		ScriptVariable[] variables = new ScriptVariable[properties.length];
+		IScriptVariable[] variables = new IScriptVariable[properties.length];
 
 		for (int i = 0; i < properties.length; ++i) {
-			variables[i] = new ScriptVariable(this, properties[i]);
+			variables[i] = new ScriptVariable(parentFrame, properties[i]);
 		}
 
 		return variables;
 	}
 
+	protected IScriptVariable[] readAllVariables() throws DbgpException {
+		IDbgpContextCommands commands = thread.getDbgpSession()
+				.getCoreCommands();
+
+		Map names = commands.getContextNames(getLevel());
+
+		final Integer localId = new Integer(
+				IDbgpContextCommands.LOCAL_CONTEXT_ID);
+		final Integer globalId = new Integer(
+				IDbgpContextCommands.GLOBAL_CONTEXT_ID);
+		final Integer classId = new Integer(
+				IDbgpContextCommands.CLASS_CONTEXT_ID);
+
+		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
+		boolean showLocal = prefs
+				.getBoolean(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL);
+		boolean showGlobal = prefs
+				.getBoolean(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL);
+		boolean showClass = prefs
+				.getBoolean(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS);
+
+		ScriptVariableContainer all = new ScriptVariableContainer();
+
+		if (showLocal && names.containsKey(localId)) {
+			all.add(readVariables(this, localId.intValue(), commands));
+		}
+
+		if (showGlobal && names.containsKey(globalId)) {
+			all.add(readVariables(this, globalId.intValue(), commands));
+		}
+
+		if (showClass && names.containsKey(classId)) {
+			all.add(new ScriptVariableWrapper(getDebugTarget(), "SELF",
+					readVariables(this, classId.intValue(), commands)));
+		}
+
+		return all.get();
+	}
+
+	private static class ScriptVariableContainer {
+		private List list = new ArrayList();
+
+		public void add(IScriptVariable variable) {
+			list.add(variable);
+		}
+
+		public void add(IScriptVariable[] variables) {
+			for (int i = 0; i < variables.length; ++i) {
+				list.add(variables[i]);
+			}
+		}
+
+		public IScriptVariable[] get() {
+			return (IScriptVariable[]) list.toArray(new IScriptVariable[list
+					.size()]);
+		}
+	}
+
 	public ScriptStackFrame(IScriptThread thread, IDbgpStackLevel stackLevel)
 			throws DbgpException {
 
+		//DLTKDebugPlugin.getDefault().getPluginPreferences()
+			//	.addPropertyChangeListener(this);
+
 		this.thread = thread;
 		this.stackLevel = stackLevel;
-		this.variables = readVariables(stackLevel.getLevel(), thread
-				.getDbgpSession().getCoreCommands());
+		this.variables = readAllVariables();
 	}
 
 	public URI getFileName() {
@@ -103,7 +172,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public IVariable[] getVariables() throws DebugException {
-		return (IVariable[])variables.clone();
+		return (IVariable[]) variables.clone();
 	}
 
 	// IStep
@@ -200,5 +269,14 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 
 	public String toString() {
 		return "Stack frame (level: " + stackLevel.getLevel() + ")";
+	}
+
+	public void propertyChange(PropertyChangeEvent event) {
+		String name = event.getProperty();
+		if (name
+				.startsWith(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_PREFIX)) {
+			//DebugEventHelper.fireChangeEvent(this);
+		}
+
 	}
 }

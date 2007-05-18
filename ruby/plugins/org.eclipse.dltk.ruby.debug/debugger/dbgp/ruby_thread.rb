@@ -173,22 +173,28 @@ module XoredDebugger
             contexts = [LOCAL_CONTEXT_ID, GLOBAL_CONTEXT_ID, CLASS_CONTEXT_ID]
             unless context_id.nil?
                 contexts = [context_id]
+            end            
+
+            def make_props(exp, depth, ignore_nil = false)
+                vars = @stack.eval(exp, depth)
+
+                props = []
+                vars.each { |var|
+                    real_var = @stack.eval(var, depth)
+                                  
+                    unless real_var.nil? and ignore_nil
+                        props << make_property(var, real_var)
+                    end
+                }
+                props                
             end
 
             properties = []
 
             # Local variables
             if contexts.include?(LOCAL_CONTEXT_ID)   
-                vars = @stack.eval('local_variables', depth)
-        
-                vars.each { |var|
-                    real_var = @stack.eval(var, depth)
-
-                    unless real_var.nil?
-                        properties << make_property(var, real_var)              
-                    end
-                }
-        
+                properties += make_props('local_variables', depth, true)        
+                        
                 # TODO: correct this later
                 self_var = @stack.eval('self', depth)
                 unless self_var.nil?
@@ -198,18 +204,12 @@ module XoredDebugger
 
             # Global variables
             if contexts.include?(GLOBAL_CONTEXT_ID)
-                vars = @stack.eval('global_variables', depth)
-                vars.each { |var|
-                    properties << make_property(var)
-                } 
+                properties += make_props('global_variables', depth)
             end
 
             # Class variables
             if contexts.include?(CLASS_CONTEXT_ID)
-                vars = @stack.eval('instance_variables', depth)
-                vars.each { |var|
-                    properties << make_property(var)
-                }
+                properties += make_props('instance_variables', depth)
             end
 
             { :properties => properties, 

@@ -259,7 +259,7 @@
         point="org.eclipse.debug.core.watchExpressionDelegates">
      <watchExpressionDelegate
            debugModel="org.eclipse.dltk.debug.tclModel"
-           delegateClass="org.eclipse.dltk.debug.internal.core.model.ScriptWatchExpressionDelegate">
+           delegateClass="org.eclipse.dltk.tcl.internal.debug.ui.TclWatchExpressionDelegate">
      </watchExpressionDelegate>
   </extension>
  

@@ -13,12 +13,13 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
+import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
 public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 
-	private ScriptVariable variable;
+	private IScriptVariable variable;
 
-	protected ScriptValue(ScriptVariable variable) {		
+	protected ScriptValue(IScriptVariable variable) {		
 		this.variable = variable;
 	}
 

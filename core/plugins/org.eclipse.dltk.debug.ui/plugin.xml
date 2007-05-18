@@ -106,7 +106,7 @@
        point="org.eclipse.ui.propertyPages">
     <!-- Eclipse 3.3 fix -->
     <page
-          class="org.eclipse.dltk.debug.ui.ScriptBreakpointPropertyPage"
+          class="org.eclipse.dltk.debug.ui.breakpoints.ScriptBreakpointPropertyPage"
           id="org.eclipse.dltk.debug.ui.ScriptBreakpointPropertyPage"
           name="Breakpoint properties">
           <enabledWhen>
@@ -165,7 +165,7 @@
           plugin="org.eclipse.dltk.launching">
     </statusHandler>    
     <statusHandler
-            class="org.eclipse.dltk.internal.debug.ui.NoDefaultInterpreterStatusHandler"
+            class="org.eclipse.dltk.internal.debug.ui.handlers.NoDefaultInterpreterStatusHandler"
             code="167"
             id="org.eclipse.dltk.internal.debug.ui.NoDefaultInterpreterStatusHandler"
             plugin="org.eclipse.dltk.launching">
@@ -175,7 +175,7 @@
        point="org.eclipse.ui.preferencePages">
     <page
           category="org.eclipse.dltk.preferences"
-          class="org.eclipse.dltk.debug.ui.preferences.DebuggingPreferences"
+          class="org.eclipse.dltk.debug.ui.preferences.ScriptDebugPreferencePage"
           id="org.eclipse.dltk.preferences.debug"
           name="Debugging">
     </page>
@@ -188,5 +188,38 @@
           name="Script Debug Log">
     </view>
  </extension>
- 
+   
+   <extension
+         point="org.eclipse.ui.viewActions">
+         
+         <viewContribution
+            targetID="org.eclipse.debug.ui.VariableView"
+            id="org.eclipse.jdt.debug.ui.VariableViewActions">
+         <action
+               class="org.eclipse.dltk.debug.ui.ToggleShowGlobalVariablesActionDelegate"
+               id="org.eclipse.jdt.debug.ui.variableViewActions.ShowStatic"
+               label="%ShowGlobalVarsAction.label"
+               menubarPath="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu/scriptPart"
+               style="toggle"
+               tooltip="%ShowGlobalVarsAction.tooltip">
+         </action>
+         <action
+               class="org.eclipse.dltk.debug.ui.ToggleShowClassVariablesActionDelegate"
+               id="org.eclipse.jdt.debug.ui.variableViewActions.ShowStatic"
+               label="%ShowClassVarsAction.label"
+               menubarPath="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu/scriptPart"
+               style="toggle"
+               tooltip="%ShowClasssVarsAction.tooltip">
+         </action>
+         <menu
+               id="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu"
+               label="%VariablesViewScriptSubmenu.label"
+               path="scriptActions">
+            <groupMarker name="org.eclipse.dltk.debug.ui.scriptPart"/>
+         </menu>
+      </viewContribution>
+   </extension>
+
+
+
 </plugin>

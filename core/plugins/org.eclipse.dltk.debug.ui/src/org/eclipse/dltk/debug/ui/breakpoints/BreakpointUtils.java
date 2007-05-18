@@ -7,7 +7,7 @@
  *
  
  *******************************************************************************/
-package org.eclipse.dltk.debug.ui;
+package org.eclipse.dltk.debug.ui.breakpoints;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;

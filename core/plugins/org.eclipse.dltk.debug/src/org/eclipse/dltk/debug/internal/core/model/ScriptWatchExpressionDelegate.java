@@ -27,12 +27,16 @@ public class ScriptWatchExpressionDelegate implements IWatchExpressionDelegate {
 		return null;
 	}
 
-	public void evaluateExpression(final String expression,
+	public void evaluateExpression(String expression,
 			IDebugElement context, IWatchExpressionListener listener) {
 
 		IScriptThread thread = getScriptThread(context);
 		if (thread != null) {
-			thread.evaluateExpression(expression, listener);
+			thread.evaluateExpression(prepareExpression(expression), listener);
 		}
+	}
+
+	protected String prepareExpression(String expression) {
+		return expression;
 	}
 }
