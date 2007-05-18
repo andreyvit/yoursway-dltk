@@ -124,7 +124,11 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	}
 
 	public String getVariableText(IScriptVariable variable) {
-		return variable.toString();
+		if (variable.hasChildren()) {
+			return variable.getFullName();
+		} else {
+			return variable.getFullName() + " = " + variable.getValueString();
+		}
 	}
 
 	protected String getValueText(IScriptValue value) {
@@ -145,13 +149,13 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		return breakpoint.toString();
 	}
 
-	protected String getWatchExpressionText(IWatchExpression exp) {
-		String text = exp.getExpressionText() + " Error !";
+	protected String getWatchExpressionText(IWatchExpression expression) {
+		String text = expression.getExpressionText() + " = Error !";
 		try {
-			if (!exp.hasErrors()) {
-				text = exp.getExpressionText();
-				IValue value = exp.getValue();
-				if (value != null) {
+			if (!expression.hasErrors()) {
+				text = expression.getExpressionText();
+				IValue value = expression.getValue();
+				if (value != null && !value.hasVariables()) {
 					text += " = " + value.getValueString();
 				}
 			}

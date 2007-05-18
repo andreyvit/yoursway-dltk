@@ -6,6 +6,7 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.debug.ui.launchConfigurations.MainLaunchConfigurationTab;
 import org.eclipse.dltk.javascript.core.JavaScriptLanguageToolkit;
+import org.eclipse.dltk.javascript.core.JavaScriptNature;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.swt.graphics.Image;
 
@@ -29,6 +30,10 @@ public class JavaScriptMainLaunchConfigurationTab extends MainLaunchConfiguratio
 
 	protected String getLanguageName() {
 		return "JavaScript";
+	}
+	
+	protected String getNatureID() {
+		return JavaScriptNature.NATURE_ID;
 	}
 
 	public Image getImage() {

@@ -28,7 +28,10 @@
           id="org.eclipse.dltk.ruby.debug.ui.launchShortcut"
           label="Ruby Script"
           modes="run, debug">
-		<perspective id="org.eclipse.dltk.ruby.ui.RubyPerspective"/> 
+		<perspective id="org.eclipse.dltk.ruby.ui.RubyPerspective"/>
+         <perspective
+               id="org.eclipse.debug.ui.DebugPerspective">
+         </perspective> 
         <contextualLaunch>
            <enablement>
              <with variable="selection">
@@ -41,9 +44,6 @@
                </with>
            </enablement>
   		 </contextualLaunch>
-         <perspective
-               id="org.eclipse.debug.ui.DebugPerspective">
-         </perspective>
 	</shortcut>
 	</extension>
 	
