@@ -41,6 +41,8 @@ import org.eclipse.dltk.debug.internal.core.model.operations.IDbgpDebuggerFeedba
 public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		IThreadManagement, IDbgpDebuggerFeedback {
 
+	private static final IStackFrame[] NO_STACK_FRAMES = new IStackFrame[0];
+
 	private boolean canSuspend;
 
 	private ScriptThreadManager manager;
@@ -178,6 +180,10 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	// IThread
 	public IStackFrame[] getStackFrames() throws DebugException {
+		if (!isSuspended()) {
+			return NO_STACK_FRAMES;
+		}
+
 		return stack.getFrames();
 	}
 
@@ -341,7 +347,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	public void evaluateExpression(final String expression,
 			final IWatchExpressionListener listener) {
 
-		//DebugEventHelper.fireResumeEvent(this, DebugEvent.EVALUATION);
+		// DebugEventHelper.fireResumeEvent(this, DebugEvent.EVALUATION);
 
 		Job job = new Job("Evaluation of \"" + expression + "\"") {
 			protected IStatus run(IProgressMonitor monitor) {
@@ -355,8 +361,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 					IDbgpProperty property = session.getExtendedCommands()
 							.evaluate(expression);
 
-					//DebugEventHelper.fireSuspendEvent(ScriptThread.this,
-						//	DebugEvent.EVALUATION);
+					// DebugEventHelper.fireSuspendEvent(ScriptThread.this,
+					// DebugEvent.EVALUATION);
 
 					if (property != null) {
 						IScriptVariable variable = new ScriptVariable(
