@@ -1087,7 +1087,7 @@ public class ModelManager implements ISaveParticipant {
 			};
 			processSavedState.setSystem(true);
 			processSavedState.setPriority(Job.SHORT); // process asap
-			processSavedState.schedule();
+			processSavedState.schedule();			
 		} catch (RuntimeException e) {
 			shutdown();
 			throw e;

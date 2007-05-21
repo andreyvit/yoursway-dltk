@@ -39,7 +39,10 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.dltk.ast.expressions.NilLiteral;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
@@ -48,7 +51,11 @@ import org.eclipse.dltk.launching.LibraryLocation;
 import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
+import org.eclipse.swt.custom.BusyIndicator;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.progress.UIJob;
 import org.osgi.framework.Bundle;
 
 /**
@@ -326,14 +333,18 @@ public abstract class AbstractInterpreterInstallType implements
 	 * run the interpreter library lookup in a
 	 * <code>ProgressMonitorDialog</code>
 	 */
-	protected void runLibraryLookup(IRunnableWithProgress runnable)
+	protected void runLibraryLookup(final IRunnableWithProgress runnable)
 			throws InvocationTargetException, InterruptedException {
 
 		ProgressMonitorDialog progress = new ProgressMonitorDialog(null);
-
-		try {
-			progress.run(true, false, runnable);
-		} catch (SWTException ex) {
+		Display current = Display.getCurrent();
+		if (current != null) {
+			try {
+				progress.run(true, false, runnable);			
+			} catch (SWTException ex) {			
+				runnable.run(new NullProgressMonitor());
+			}
+		} else {
 			runnable.run(new NullProgressMonitor());
 		}
 	}
@@ -401,10 +412,15 @@ public abstract class AbstractInterpreterInstallType implements
 				Process process = null;
 				String cmdLine[] = null;
 				try {
-					monitor.setTaskName(InterpreterMessages.statusFetchingLibs);
+					monitor.beginTask(InterpreterMessages.statusFetchingLibs, 1);
 					if (monitor.isCanceled()) {
 						return;
 					}
+//					try {
+//						Thread.sleep(5000);
+//					} catch (InterruptedException e1) {
+//						e1.printStackTrace();
+//					}
 
 					String[] env = extractEnvironment();
 					File pathFile = createPathFile();
@@ -446,19 +462,18 @@ public abstract class AbstractInterpreterInstallType implements
 		};
 	}
 
-	public LibraryLocation[] getDefaultLibraryLocations(
-			final File installLocation) {
+	public synchronized LibraryLocation[] getDefaultLibraryLocations(final File installLocation) {
 		if (fCachedLocations.containsKey(installLocation)) {
 			return (LibraryLocation[]) fCachedLocations.get(installLocation);
 		}
 
 		final ArrayList locations = new ArrayList();
 
-		IRunnableWithProgress runnable = createLookupRunnable(installLocation,
-				locations);
-
+		final IRunnableWithProgress runnable = createLookupRunnable(installLocation,
+				locations);		
+				
 		try {
-			runLibraryLookup(runnable);
+			runLibraryLookup(runnable);			
 		} catch (InvocationTargetException e) {
 			getLog().log(
 					createStatus(IStatus.ERROR,

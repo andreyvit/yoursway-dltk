@@ -55,7 +55,8 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 					.hasNext();) {
 				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
 						.next();
-				t.evaluationStarted(rootGoal);
+				if (t != null)
+					t.evaluationStarted(rootGoal);
 			}
 		}
 
@@ -65,7 +66,8 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 					.hasNext();) {
 				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
 						.next();
-				t.evaluatorInitialized(evaluator, subgoals, time);
+				if (t != null)
+					t.evaluatorInitialized(evaluator, subgoals, time);
 			}
 		}
 
@@ -75,7 +77,8 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 					.hasNext();) {
 				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
 						.next();
-				t.evaluatorProducedResult(evaluator, result, time);
+				if (t != null)
+					t.evaluatorProducedResult(evaluator, result, time);
 			}
 
 		}
@@ -86,7 +89,8 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 					.hasNext();) {
 				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
 						.next();
-				t.evaluatorReceivedResult(evaluator, finishedGoal, newSubgoals,
+				if (t != null)
+					t.evaluatorReceivedResult(evaluator, finishedGoal, newSubgoals,
 						time);
 			}
 		}
@@ -96,7 +100,8 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 					.hasNext();) {
 				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
 						.next();
-				t.goalEvaluatorAssigned(goal, evaluator);
+				if (t != null)
+					t.goalEvaluatorAssigned(goal, evaluator);
 			}
 		}
 
@@ -106,7 +111,8 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 					.hasNext();) {
 				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
 						.next();
-				t.goalStateChanged(goal, state, oldState);
+				if (t != null)
+					t.goalStateChanged(goal, state, oldState);
 			}
 		}
 

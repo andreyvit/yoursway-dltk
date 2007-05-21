@@ -10,7 +10,7 @@ import org.eclipse.dltk.ti.GoalState;
 import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
 
-class GoalEvaluationStatistics {
+public class GoalEvaluationStatistics {
 	private IGoal goal;
 	private GoalEvaluator evaluator;
 	private GoalState state;

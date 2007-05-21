@@ -1,6 +1,7 @@
 package org.eclipse.dltk.ti.statistics;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.dltk.ti.GoalState;
@@ -11,11 +12,21 @@ import org.eclipse.dltk.ti.goals.IGoal;
  * Records all evaluation tree including evaluation times
  *
  */
-public class GoalEvalutationRecorder implements IEvaluationStatisticsRequestor {
+public class GoalEvalutationRecorder implements IEvaluationStatisticsRequestor  {
 
 	private IGoal rootRoal;
-	private Map goalStats;
+	private Map goalStats =  new HashMap();
 
+	public GoalEvalutationRecorder duplicate() {
+		GoalEvalutationRecorder n = new GoalEvalutationRecorder();
+		n.rootRoal = rootRoal;
+		for (Iterator iterator = goalStats.keySet().iterator(); iterator.hasNext();) {
+			Object k = (Object) iterator.next();
+			n.goalStats.put(k, goalStats.get(k));
+		}
+		return n;
+	}
+	
 	public void evaluationStarted(IGoal rootGoal) {
 		reset();
 		this.rootRoal = rootGoal;
@@ -108,4 +119,8 @@ public class GoalEvalutationRecorder implements IEvaluationStatisticsRequestor {
 		return rootRoal;
 	}
 
+	public GoalEvaluationStatistics getStatisticsForGoal (IGoal g) {
+		return (GoalEvaluationStatistics)this.goalStats.get(g);
+	}
+	
 }

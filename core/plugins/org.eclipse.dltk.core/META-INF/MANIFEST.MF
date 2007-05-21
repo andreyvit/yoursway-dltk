@@ -48,6 +48,7 @@ Export-Package: org.eclipse.dltk.ast,
  org.eclipse.dltk.internal.core.util;x-friends:="org.eclipse.dltk.validators.core",
  org.eclipse.dltk.ti,
  org.eclipse.dltk.ti.goals,
+ org.eclipse.dltk.ti.statistics,
  org.eclipse.dltk.ti.types,
  org.eclipse.dltk.utils
 Bundle-ClassPath: .

@@ -11,6 +11,7 @@ package org.eclipse.dltk.internal.launching;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -45,11 +46,13 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallChangedListener;
+import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.IRuntimeBuildpathEntry2;
 import org.eclipse.dltk.launching.InterpreterStandin;
 import org.eclipse.dltk.launching.LaunchingMessages;
@@ -280,6 +283,30 @@ public class DLTKLaunchingPlugin extends Plugin implements
 		// IResourceChangeEvent.PRE_BUILD);
 		// DebugPlugin.getDefault().getLaunchManager().addLaunchListener(this);
 		// DebugPlugin.getDefault().addDebugEventListener(this);
+		
+		// prefetch library locations
+		Job libPrefetch = new Job("Inializing DLTK launching") {
+
+			protected IStatus run(IProgressMonitor monitor) {
+				IInterpreterInstallType[] installTypes = ScriptRuntime.getInterpreterInstallTypes();
+				monitor.beginTask("Fetching default interpreter library locations", installTypes.length);
+				for (int i = 0; i < installTypes.length; i++) {
+					IInterpreterInstall[] installs = installTypes[i].getInterpreterInstalls();
+					for (int j = 0; j < installs.length; j++) {
+						File path = installs[j].getInstallLocation();
+						installTypes[i].getDefaultLibraryLocations(path);			
+					}
+					monitor.worked(1);
+				}
+				monitor.done();
+				return Status.OK_STATUS;
+			}
+			
+		};
+		
+		libPrefetch.schedule();
+		
+		
 	}
 
 	/**

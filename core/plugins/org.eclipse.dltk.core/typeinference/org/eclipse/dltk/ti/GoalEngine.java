@@ -79,6 +79,7 @@ public class GoalEngine {
 		es.state = state;
 		es.creator = creator;
 		goalStates.put(goal, es);
+		this.statisticsRequestor.goalStateChanged(goal, state, null); //TODO: add old state
 	}
 	
 	private EvaluatorState getEvaluatorState (GoalEvaluator evaluator) {
@@ -90,6 +91,8 @@ public class GoalEngine {
 	}
 	
 	private void notifyEvaluator (GoalEvaluator evaluator, IGoal subGoal) {
+		long t = 0;
+		
 		GoalEvaluationState subGoalState = (GoalEvaluationState) goalStates.get(subGoal);
 		Object result = subGoalState.result;
 		GoalState state = subGoalState.state;
@@ -97,7 +100,9 @@ public class GoalEngine {
 		if (state == GoalState.WAITING)
 			state = GoalState.RECURSIVE;
 		
+		t = System.currentTimeMillis();
 		IGoal[] newGoals = evaluator.subGoalDone(subGoal, result, state);
+		statisticsRequestor.evaluatorReceivedResult(evaluator, subGoal, newGoals, System.currentTimeMillis() - t);
 		if (newGoals == null)
 			newGoals = IGoal.NO_GOALS;
 		for (int i = 0; i < newGoals.length; i++) {
@@ -111,7 +116,9 @@ public class GoalEngine {
 		if (state == GoalState.DONE && result != null)
 			ev.successfulSubgoals++;
 		if (ev.subgoalsLeft == 0) {
+			t = System.currentTimeMillis();
 			Object newRes = evaluator.produceResult();
+			statisticsRequestor.evaluatorProducedResult(evaluator, result, System.currentTimeMillis() - t);
 			GoalEvaluationState st = (GoalEvaluationState) goalStates.get(evaluator.getGoal());
 			Assert.isNotNull(st);
 			st.state = GoalState.DONE;
@@ -137,11 +144,29 @@ public class GoalEngine {
 	}
 	
 	public Object evaluateGoal(IGoal rootGoal, IPruner pruner, IEvaluationStatisticsRequestor statisticsRequestor) {
-		this.statisticsRequestor = statisticsRequestor;
+		long time = 0;
+		
+		if (statisticsRequestor == null) {
+			statisticsRequestor = new IEvaluationStatisticsRequestor() {
+				public void evaluationStarted(IGoal rootGoal) {}
+				public void evaluatorInitialized(GoalEvaluator evaluator,
+						IGoal[] subgoals, long time) {}
+				public void evaluatorProducedResult(GoalEvaluator evaluator,
+						Object result, long time) {}
+				public void evaluatorReceivedResult(GoalEvaluator evaluator,
+						IGoal finishedGoal, IGoal[] newSubgoals, long time) {}
+				public void goalEvaluatorAssigned(IGoal goal,
+						GoalEvaluator evaluator) {}
+				public void goalStateChanged(IGoal goal, GoalState state,
+						GoalState oldState) {}			
+			};
+		}
+		this.statisticsRequestor = statisticsRequestor;		
 		reset();
 		if (pruner != null)
 			pruner.init();
 		workingQueue.add(new WorkingPair(rootGoal, null));
+		statisticsRequestor.evaluationStarted(rootGoal);
 		while (!workingQueue.isEmpty()) {
 			WorkingPair pair = (WorkingPair) workingQueue.getFirst();
 			workingQueue.removeFirst();
@@ -158,9 +183,12 @@ public class GoalEngine {
 				} else {
 					GoalEvaluator evaluator = evaluatorFactory.createEvaluator(pair.goal);
 					Assert.isNotNull(evaluator);
+					statisticsRequestor.goalEvaluatorAssigned(pair.goal, evaluator);
+					time = System.currentTimeMillis();
 					IGoal[] newGoals = evaluator.init();
 					if (newGoals == null)
 						newGoals = IGoal.NO_GOALS;						
+					statisticsRequestor.evaluatorInitialized(evaluator, newGoals, System.currentTimeMillis() - time);
 					if (newGoals.length > 0) {
 						for (int i = 0; i < newGoals.length; i++) {
 							workingQueue.add(new WorkingPair(newGoals[i], evaluator));
@@ -170,7 +198,9 @@ public class GoalEngine {
 						putEvaluatorState(evaluator, evaluatorState);
 						storeGoal(pair.goal, GoalState.WAITING, null, pair.creator);
 					} else {
+						time = System.currentTimeMillis();
 						Object result = evaluator.produceResult();
+						statisticsRequestor.evaluatorProducedResult(evaluator, result, System.currentTimeMillis() - time);
 						storeGoal(pair.goal, GoalState.DONE, result, pair.creator);
 						if (pair.creator != null)
 							notifyEvaluator(pair.creator, pair.goal);

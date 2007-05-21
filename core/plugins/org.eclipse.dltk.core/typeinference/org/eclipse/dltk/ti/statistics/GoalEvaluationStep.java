@@ -3,7 +3,7 @@
  */
 package org.eclipse.dltk.ti.statistics;
 
-class GoalEvaluationStep {
+public class GoalEvaluationStep {
 	public final static int INIT = 0;
 	public final static int DEFAULT = 1;
 	public final static int RESULT = 2;

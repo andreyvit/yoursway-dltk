@@ -11,12 +11,33 @@ package org.eclipse.dltk.ti;
 
 public interface GoalState {
 	
-	public final static GoalState DONE = new GoalState () {};
+	public final static GoalState DONE = new GoalState () {
+
+		public String toString() {
+			return "DONE";
+		}
+		
+	};
 	
-	public final static GoalState WAITING = new GoalState () {};
+	public final static GoalState WAITING = new GoalState () {
+		public String toString() {
+			return "WAITING";
+		}
+		
+	};
 	
-	public final static GoalState PRUNED = new GoalState () {};
+	public final static GoalState PRUNED = new GoalState () {
+		public String toString() {
+			return "PRUNED";
+		}
+		
+	};
 	
-	public final static GoalState RECURSIVE = new GoalState () {};
+	public final static GoalState RECURSIVE = new GoalState () {
+		public String toString() {
+			return "RECURSIVE";
+		}
+		
+	};
 
 }
