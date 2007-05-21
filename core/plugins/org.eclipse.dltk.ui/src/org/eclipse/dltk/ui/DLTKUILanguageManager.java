@@ -14,8 +14,6 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.internal.core.ClassBasedDLTKExtensionManager;
 import org.eclipse.dltk.ui.viewsupport.ScriptUILabelProvider;
 
-import com.sun.net.ssl.internal.ssl.Provider;
-
 public class DLTKUILanguageManager extends ClassBasedDLTKExtensionManager {
 	private static DLTKUILanguageManager instance = new DLTKUILanguageManager();
 	private final static String LANGUAGE_EXTPOINT = DLTKUIPlugin.PLUGIN_ID

@@ -9,8 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.dbgp.internal;
 
-import java.util.List;
-
 import org.eclipse.dltk.dbgp.IDbgpProperty;
 
 public class DbgpProperty implements IDbgpProperty {

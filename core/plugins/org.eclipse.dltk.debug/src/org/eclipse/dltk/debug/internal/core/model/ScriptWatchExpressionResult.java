@@ -42,7 +42,7 @@ public class ScriptWatchExpressionResult implements IWatchExpressionResult {
 	}
 
 	public String getExpressionText() {
-		return "test"; //expression;
+		return expression;
 	}
 
 	public IValue getValue() {

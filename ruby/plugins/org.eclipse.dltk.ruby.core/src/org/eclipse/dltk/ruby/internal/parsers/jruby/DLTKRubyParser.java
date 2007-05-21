@@ -36,7 +36,6 @@ import java.io.StringReader;
 
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.jruby.ast.Node;
-import org.jruby.common.NullWarnings;
 import org.jruby.lexer.yacc.ISourcePosition;
 import org.jruby.lexer.yacc.LexerSource;
 import org.jruby.lexer.yacc.SyntaxException;

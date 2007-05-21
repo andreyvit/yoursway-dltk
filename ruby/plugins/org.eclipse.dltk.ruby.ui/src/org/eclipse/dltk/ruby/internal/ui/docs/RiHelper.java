@@ -9,13 +9,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.docs;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.util.WeakHashMap;
 
 import org.eclipse.core.runtime.CoreException;

@@ -11,13 +11,14 @@
 require 'cgi'
 require 'thread'
 
-require 'dbgp/breakpoints'
+
 require 'dbgp/command'
 require 'dbgp/socket_io'
 require 'dbgp/test_io'
 require 'dbgp/printer'
 require 'dbgp/capturer'
 require 'dbgp/ruby_thread'
+require 'dbgp/ruby_breakpoints'
 
 module XoredDebugger
                

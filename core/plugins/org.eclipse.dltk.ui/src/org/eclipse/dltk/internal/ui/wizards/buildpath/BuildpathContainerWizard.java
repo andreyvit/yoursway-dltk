@@ -10,10 +10,8 @@
 package org.eclipse.dltk.internal.ui.wizards.buildpath;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
-import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPage;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPageExtension;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPageExtension2;
