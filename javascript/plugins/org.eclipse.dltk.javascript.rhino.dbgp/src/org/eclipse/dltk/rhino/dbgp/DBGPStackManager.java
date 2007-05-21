@@ -131,13 +131,13 @@ public class DBGPStackManager {
 		this.notify();
 	}
 
-	public synchronized void stepOver() {
-		getStackFrame(0).setSuspend(true);
+	public synchronized void stepOver() {		
 		if (this.getStackDepth() > 1) {
+			getStackFrame(0).setSuspend(true);
 			getStackFrame(1).setSuspend(true);
-		}
-		this.needSuspend = false;
-		this.notify();
+			this.needSuspend = false;
+			this.notify();
+		}				
 	}
 
 	public synchronized void stepIn() {

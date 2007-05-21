@@ -33,7 +33,7 @@ public class ScriptVariableWrapper extends AbstractScriptVariable {
 	}
 
 	public String getValueString() {
-		return null;
+		return "";
 	}
 
 	public boolean hasChildren() {

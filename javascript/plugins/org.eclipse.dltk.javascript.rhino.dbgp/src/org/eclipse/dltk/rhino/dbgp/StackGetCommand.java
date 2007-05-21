@@ -22,23 +22,22 @@ final class StackGetCommand extends DBGPDebugger.Command {
 	}
 
 	void parseAndExecute(String command, final HashMap options) {
-		int level = Integer.parseInt((String) options.get("-d"));
+		String string = (String) options.get("-d");
+		int level=-1;
+		if (string!=null){
+			level = Integer.parseInt(string);	
+		}		
 		StringBuffer stack = new StringBuffer();
 		if (this.debugger.cmanager.getStackDepth() >= level) {
-			DBGPDebugFrame stackFrame = this.debugger.cmanager.getStackFrame(level);
-
-			stack.append("<stack level=\""
-					+ level
-					+ "\"\r\n"
-					+ "           type=\"file\"\r\n"
-					+ "           filename=\""
-					+ new File(stackFrame.getSourceName()).toURI()
-							.toASCIIString() + "\"\r\n"
-					+ "           lineno=\""
-					+ (stackFrame.getLineNumber() + 1) + "\"\r\n"
-					+ "           where=\"" + stackFrame.getWhere()
-					+ "\"\r\n" + "           cmdbegin=\"1:0\"\r\n"
-					+ "           cmdend=\"" + "1" + ":10\"/>");
+			if (level==-1){
+				for (int a=0;a<this.debugger.cmanager.getStackDepth();a++){
+					appendLevel(a, stack);
+				}
+			}
+			else{
+			
+			appendLevel(level, stack);
+			}
 			this.debugger.printResponse("<response command=\"stack_get\"\r\n" + "\r\n"
 					+ "          transaction_id=\"" + options.get("-i")
 					+ "\">\r\n" +
@@ -46,5 +45,21 @@ final class StackGetCommand extends DBGPDebugger.Command {
 					stack + "</response>\r\n" + "");
 		}
 
+	}
+
+	private void appendLevel(int level, StringBuffer stack) {
+		DBGPDebugFrame stackFrame = this.debugger.cmanager.getStackFrame(level);
+		stack.append("<stack level=\""
+				+ level
+				+ "\"\r\n"
+				+ "           type=\"file\"\r\n"
+				+ "           filename=\""
+				+ new File(stackFrame.getSourceName()).toURI()
+						.toASCIIString() + "\"\r\n"
+				+ "           lineno=\""
+				+ (stackFrame.getLineNumber() + 1) + "\"\r\n"
+				+ "           where=\"" + stackFrame.getWhere()
+				+ "\"\r\n" + "           cmdbegin=\"1:0\"\r\n"
+				+ "           cmdend=\"" + "1" + ":10\"/>");
 	}
 }

@@ -25,6 +25,14 @@ public class UncknownReference implements IReference {
 	private int offset;
 	private int length;
 	
+	public int getOffset() {
+		return offset;
+	}
+	
+	public int getLength(){
+		return length;
+	}
+
 	public UncknownReference(String paramOrVarName, boolean childIsh) {
 		this.name = paramOrVarName;
 		this.childIsh = childIsh;

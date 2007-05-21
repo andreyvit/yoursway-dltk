@@ -96,26 +96,26 @@ public class ScriptRuntime {
 
     public final static Class
         ContextClass
-            = Kit.classOrNull("org.mozilla.javascript.Context"),
+            = Kit.classOrNull("com.xored.org.mozilla.javascript.Context"),
         ContextFactoryClass
-            = Kit.classOrNull("org.mozilla.javascript.ContextFactory"),
+            = Kit.classOrNull("com.xored.org.mozilla.javascript.ContextFactory"),
         FunctionClass
-            = Kit.classOrNull("org.mozilla.javascript.Function"),
+            = Kit.classOrNull("com.xored.org.mozilla.javascript.Function"),
         ScriptableClass
-            = Kit.classOrNull("org.mozilla.javascript.Scriptable"),
+            = Kit.classOrNull("com.xored.org.mozilla.javascript.Scriptable"),
         ScriptableObjectClass
-            = Kit.classOrNull("org.mozilla.javascript.ScriptableObject");
+            = Kit.classOrNull("com.xored.org.mozilla.javascript.ScriptableObject");
 
     private static final String
-        XML_INIT_CLASS = "org.mozilla.javascript.xmlimpl.XMLLibImpl";
+        XML_INIT_CLASS = "com.xored.org.mozilla.javascript.xmlimpl.XMLLibImpl";
 
     private static final String[] lazilyNames = {
-        "RegExp",        "org.mozilla.javascript.regexp.NativeRegExp",
-        "Packages",      "org.mozilla.javascript.NativeJavaTopPackage",
-        "java",          "org.mozilla.javascript.NativeJavaTopPackage",
-        "getClass",      "org.mozilla.javascript.NativeJavaTopPackage",
-        "JavaAdapter",   "org.mozilla.javascript.JavaAdapter",
-        "JavaImporter",  "org.mozilla.javascript.ImporterTopLevel",
+        "RegExp",        "com.xored.org.mozilla.javascript.regexp.NativeRegExp",
+        "Packages",      "com.xored.org.mozilla.javascript.NativeJavaTopPackage",
+        "java",          "com.xored.org.mozilla.javascript.NativeJavaTopPackage",
+        "getClass",      "com.xored.org.mozilla.javascript.NativeJavaTopPackage",
+        "JavaAdapter",   "com.xored.org.mozilla.javascript.JavaAdapter",
+        "JavaImporter",  "com.xored.org.mozilla.javascript.ImporterTopLevel",
         "XML",           XML_INIT_CLASS,
         "XMLList",       XML_INIT_CLASS,
         "Namespace",     XML_INIT_CLASS,
@@ -2714,7 +2714,7 @@ public class ScriptRuntime {
     // ------------------
 
     public static ScriptableObject getGlobal(Context cx) {
-        final String GLOBAL_CLASS = "org.mozilla.javascript.tools.shell.Global";
+        final String GLOBAL_CLASS = "com.xored.org.mozilla.javascript.tools.shell.Global";
         Class globalClass = Kit.classOrNull(GLOBAL_CLASS);
         if (globalClass != null) {
             try {

@@ -10,6 +10,7 @@
 package org.eclipse.dltk.internal.javascript.parser;
 
 import java.io.CharArrayReader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,15 +21,20 @@ import java.util.Set;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
+import org.eclipse.dltk.compiler.ISourceElementRequestor.FieldInfo;
 import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.core.ISourceElementParser;
+import org.eclipse.dltk.core.ISourceReference;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.internal.javascript.reference.resolvers.ReferenceResolverContext;
+import org.eclipse.dltk.internal.javascript.typeinference.ContextReference;
 import org.eclipse.dltk.internal.javascript.typeinference.HostCollection;
 import org.eclipse.dltk.internal.javascript.typeinference.IReference;
 import org.eclipse.dltk.internal.javascript.typeinference.TypeInferencer;
+import org.eclipse.dltk.internal.javascript.typeinference.UncknownReference;
 
 import com.xored.org.mozilla.javascript.CompilerEnvirons;
 import com.xored.org.mozilla.javascript.ErrorReporter;
@@ -51,13 +57,17 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 	 * @param enveronment
 	 */
 
-	public JavaScriptSourceElementParser(/*ISourceElementRequestor requestor,
-			IProblemReporter problemReporter*/) {
-//		this.fRequestor = requestor;
-//		this.fReporter = problemReporter;
+	public JavaScriptSourceElementParser(/*
+											 * ISourceElementRequestor
+											 * requestor, IProblemReporter
+											 * problemReporter
+											 */) {
+// this.fRequestor = requestor;
+// this.fReporter = problemReporter;
 	}
 
-	public ModuleDeclaration parseSourceModule(char[] contents, ISourceModuleInfo info ) {
+	public ModuleDeclaration parseSourceModule(char[] contents,
+			ISourceModuleInfo info) {
 		String content = new String(contents);
 		CompilerEnvirons cenv = new CompilerEnvirons();
 		ErrorReporter reporter = new ErrorReporter() {
@@ -101,23 +111,24 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 
 			ScriptOrFnNode parse = parser.parse(new CharArrayReader(contents),
 					"", 0);
-			TypeInferencer interferencer = new TypeInferencer(null,new ReferenceResolverContext(null,new HashMap()));
+			TypeInferencer interferencer = new TypeInferencer(null,
+					new ReferenceResolverContext(null, new HashMap()));
 			interferencer.setRequestor(fRequestor);
 			interferencer.doInterferencing(parse, Integer.MAX_VALUE);
 
 			fRequestor.enterModule();
-			processNode(parse);
 			HostCollection collection = interferencer.getCollection();
+			processNode(parse, collection);
+
 			// elements/
 			moduleDeclaration.setCollection(collection);
 			Collection sm = (Collection) collection.getReferences().values();
 			Iterator i = sm.iterator();
 			while (i.hasNext()) {
 				Object next = i.next();
-				if (next instanceof IReference)
-				{
-				IReference ref = (IReference) next;
-				reportRef(ref, null, 0);
+				if (next instanceof IReference) {
+					IReference ref = (IReference) next;
+					reportRef(ref, null, 0);
 				}
 			}
 			Map ms = interferencer.getFunctionMap();
@@ -135,10 +146,12 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 
 		return moduleDeclaration;
 	}
-	private HashSet reportedRefs=new HashSet();
+
+	private HashSet reportedRefs = new HashSet();
 
 	private void reportRef(IReference ref, String sma, int level) {
-		if (reportedRefs.contains(ref))return;
+		if (reportedRefs.contains(ref))
+			return;
 		reportedRefs.add(ref);
 		Set sm = ref.getChilds(false);
 		String key = ref.getName();
@@ -147,20 +160,23 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 		Iterator i = sm.iterator();
 		while (i.hasNext()) {
 			Object next = i.next();
-			if (next instanceof IReference)
-			{
-			IReference refa = (IReference) next;
-			reportRef(refa, key, level + 1);
+			if (next instanceof IReference) {
+				IReference refa = (IReference) next;
+				reportRef(refa, key, level + 1);
 			}
 		}
 		// contibuting field to index
 		fRequestor.acceptFieldReference((key).toCharArray(), 0);
 	}
 
-	private void processNode(ScriptOrFnNode parse) {
+	private void processNode(ScriptOrFnNode parse, HostCollection collection) {
+
 		for (int a = 0; a < parse.getFunctionCount(); a++) {
 			FunctionNode functionNode = parse.getFunctionNode(a);
 			functionNode.getFunctionName();
+
+			HostCollection function = collection != null ? collection
+					.getFunction(functionNode) : null;
 			ISourceElementRequestor.MethodInfo methodInfo = new ISourceElementRequestor.MethodInfo();
 			String functionName = functionNode.getFunctionName();
 
@@ -177,7 +193,7 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 			methodInfo.nameSourceStart = functionNode.nameStart;
 			methodInfo.nameSourceEnd = functionNode.nameEnd;
 			fRequestor.enterMethod(methodInfo);
-			processNode(functionNode);
+			processNode(functionNode, function);
 			fRequestor.exitMethod(functionNode.getEncodedSourceEnd());
 		}
 		String[] paramsAndVars = parse.getParamAndVarNames();
@@ -199,6 +215,42 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 			fieldInfo.nameSourceEnd = p.start + fieldInfo.name.length();
 			fieldInfo.declarationStart = p.start;
 			fRequestor.enterField(fieldInfo);
+			if (collection != null) {
+				IReference reference = collection.getReference(fieldInfo.name);
+				Set childs = reference.getChilds(false);
+				Iterator it = childs.iterator();
+				while (it.hasNext()) {
+					Object o = it.next();
+					if (o instanceof IReference) {
+						IReference ref = (IReference) o;
+						if (ref instanceof UncknownReference) {
+							UncknownReference uref = (UncknownReference) ref;
+							ISourceElementRequestor.FieldInfo fieldInfo1 = new ISourceElementRequestor.FieldInfo();
+							fieldInfo1.name = ref.getName();
+							fieldInfo1.nameSourceStart = uref.getOffset();
+							fieldInfo1.nameSourceEnd = uref.getOffset()
+									+ uref.getLength() - 1;
+							fieldInfo1.declarationStart = uref.getOffset();
+							fRequestor.enterField(fieldInfo1);
+							fRequestor.exitField(uref.getOffset()
+									+ uref.getLength());
+						}
+					}
+					if (o instanceof ContextReference) {
+						ContextReference rr = (ContextReference) o;
+						ISourceElementRequestor.MethodInfo methodInfo = new ISourceElementRequestor.MethodInfo();
+						methodInfo.name = rr.getName();
+						methodInfo.parameterNames = new String[0];
+						methodInfo.declarationStart = rr.getPosition();
+						methodInfo.nameSourceStart = rr.getPosition();
+						methodInfo.nameSourceEnd = rr.getPosition()
+								+ rr.getLength() - 1;
+						fRequestor.enterMethod(methodInfo);
+						fRequestor
+								.exitMethod(rr.getPosition() + rr.getLength());
+					}
+				}
+			}
 			fRequestor.exitField(fieldInfo.nameSourceEnd);
 		}
 	}

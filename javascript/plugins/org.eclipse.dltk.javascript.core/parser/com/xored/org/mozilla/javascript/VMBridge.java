@@ -39,6 +39,7 @@
 
 package com.xored.org.mozilla.javascript;
 
+
 public abstract class VMBridge
 {
 
@@ -46,24 +47,8 @@ public abstract class VMBridge
 
     private static VMBridge makeInstance()
     {
-        for (int i = 0; i != 3; ++i) {
-            String className;
-            if (i == 0) {
-                className = "org.mozilla.javascript.VMBridge_custom";
-            } else if (i == 1) {
-                className = "org.mozilla.javascript.jdk13.VMBridge_jdk13";
-            } else {
-                className = "org.mozilla.javascript.jdk11.VMBridge_jdk11";
-            }
-            Class cl = Kit.classOrNull(className);
-            if (cl != null) {
-                VMBridge bridge = (VMBridge)Kit.newInstanceOrNull(cl);
-                if (bridge != null) {
-                    return bridge;
-                }
-            }
-        }
-        throw new IllegalStateException("Failed to create VMBridge instance");
+		return new VMBridge_jdk13();
+    	
     }
 
     /**

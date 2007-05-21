@@ -39,4 +39,6 @@ public class JavaScriptMainLaunchConfigurationTab extends MainLaunchConfiguratio
 	public Image getImage() {
 		return DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_CLASS);
 	}
+
+	
 }

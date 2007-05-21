@@ -30,7 +30,7 @@ public class JavaScriptMixinModel {
 		this.model = new MixinModel(JavaScriptLanguageToolkit.getDefault());
 	}
 
-	public static JavaScriptMixinModel getInstance() {
+	public static synchronized JavaScriptMixinModel getInstance() {
 		if (instance == null)
 			instance = new JavaScriptMixinModel();
 		return instance;

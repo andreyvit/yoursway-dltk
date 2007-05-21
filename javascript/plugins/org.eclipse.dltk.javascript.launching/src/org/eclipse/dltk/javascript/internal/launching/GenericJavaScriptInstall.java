@@ -7,6 +7,14 @@ import org.eclipse.dltk.launching.IInterpreterRunner;
 
 public class GenericJavaScriptInstall extends AbstractInterpreterInstall {
 
+	public String getBuiltinModuleContent(String name) {
+		return BuiltinsResolver.init;
+	}
+
+	public String[] getBuiltinModules() {
+		return new String[]{"builtins.js"};
+	}
+
 	public GenericJavaScriptInstall(IInterpreterInstallType type, String id) {
 		super(type, id);
 	}
@@ -17,8 +25,6 @@ public class GenericJavaScriptInstall extends AbstractInterpreterInstall {
 		} else if (mode.equals(ILaunchManager.DEBUG_MODE)) {
 			return new JavaScriptInterpreterDebugger(this);
 		} 
-		
-		//TODO: possible throw exception
 		return null;
 	}
 }

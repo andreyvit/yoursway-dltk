@@ -410,8 +410,7 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 						try {
 							arguments = method.getParameters();
 						} catch (ModelException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							
 						}
 						if (arguments != null && arguments.length > 0) {
 							char[][] args = new char[arguments.length][];

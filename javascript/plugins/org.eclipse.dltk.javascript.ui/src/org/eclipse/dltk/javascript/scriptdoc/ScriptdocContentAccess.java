@@ -190,8 +190,9 @@ public class ScriptdocContentAccess {
 		if (buf == null) {
 			return null; // no source attachment found
 		}
-		
+		try{
 		ISourceRange javadocRange= getJavadocRange(member);
+		
 		if (javadocRange != null) {
 			JavaDocCommentReader reader= new JavaDocCommentReader(buf, javadocRange.getOffset(), javadocRange.getOffset() + javadocRange.getLength() - 1);
 			if (!containsOnlyInheritDoc(reader, javadocRange.getLength())) {
@@ -203,7 +204,9 @@ public class ScriptdocContentAccess {
 		if (allowInherited && (member.getElementType() == IModelElement.METHOD)) {
 			return findDocInHierarchy((IMethod) member);
 		}
-		
+		}catch (ModelException e) {
+			return null;
+		}
 		return null;
 	}
 

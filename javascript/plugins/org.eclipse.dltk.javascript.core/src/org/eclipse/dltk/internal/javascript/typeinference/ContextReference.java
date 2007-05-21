@@ -23,6 +23,24 @@ public final class ContextReference implements IReference {
 	
 	private final HostCollection function;
 	private final String key;
+	private int position;
+	private int length;
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
 
 	ContextReference(HostCollection function, String key) {
 		this.function = function;
@@ -71,6 +89,7 @@ public final class ContextReference implements IReference {
 	}
 	
 	public void setLocationInformation(ModelElement mo, int position, int length) {
-		
+		this.position=position;
+		this.length=length;
 	}
 }

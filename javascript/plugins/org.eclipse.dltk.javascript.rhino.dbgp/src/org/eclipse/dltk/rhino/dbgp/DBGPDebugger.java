@@ -65,6 +65,7 @@ public class DBGPDebugger extends Thread implements Debugger, Observer {
 		strategies.put("stdout", new StdOutCommand(this));
 		strategies.put("stderr", new StdErrCommand(this));
 		strategies.put("run", new RunCommand(this));
+		strategies.put("context_names", new ContextNamesCommand(this));
 		strategies.put("stop", new StopCommand(this));
 		strategies.put("step_over", new StepOverCommand(this));
 		strategies.put("step_into", new StepIntoCommand(this));
@@ -191,7 +192,10 @@ public class DBGPDebugger extends Thread implements Debugger, Observer {
 					{
 						String commandId = buf.substring(0, indexOf);
 						Command object = (Command) strategies.get(commandId);
-
+						if (object==null){
+							System.err.println(commandId);
+							continue;
+						}
 						HashMap options = new HashMap();
 
 						String result = buf.substring(indexOf + 1);

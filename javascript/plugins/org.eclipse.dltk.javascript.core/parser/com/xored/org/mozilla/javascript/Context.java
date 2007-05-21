@@ -283,8 +283,8 @@ public class Context
      */
     public static Context getCurrentContext()
     {
-        //Object helper = VMBridge.instance.getThreadContextHelper();
-        return null;//VMBridge.instance.getContext(helper);
+        Object helper = VMBridge.instance.getThreadContextHelper();
+        return VMBridge.instance.getContext(helper);
     }
 
     /**
@@ -571,11 +571,11 @@ public class Context
     public static void addContextListener(ContextListener listener)
     {
         // Special workaround for the debugger
-        String DBG = "org.mozilla.javascript.tools.debugger.Main";
+        String DBG = "com.xored.org.mozilla.javascript.tools.debugger.Main";
         if (DBG.equals(listener.getClass().getName())) {
             Class cl = listener.getClass();
             Class factoryClass = Kit.classOrNull(
-                "org.mozilla.javascript.ContextFactory");
+                "com.xored.org.mozilla.javascript.ContextFactory");
             Class[] sig = { factoryClass };
             Object[] args = { ContextFactory.getGlobal() };
             try {
@@ -2300,7 +2300,7 @@ public class Context
     }
 
     private static Class codegenClass = Kit.classOrNull(
-                             "org.mozilla.javascript.optimizer.Codegen");
+                             "com.xored.org.mozilla.javascript.optimizer.Codegen");
 
     private Interpreter createCompiler()
     {
@@ -2369,7 +2369,7 @@ public class Context
     {
         if (regExpProxy == null) {
             Class cl = Kit.classOrNull(
-                          "org.mozilla.javascript.regexp.RegExpImpl");
+                          "com.xored.org.mozilla.javascript.regexp.RegExpImpl");
             if (cl != null) {
                 regExpProxy = (RegExpProxy)Kit.newInstanceOrNull(cl);
             }

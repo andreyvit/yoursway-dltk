@@ -2153,7 +2153,7 @@ public class Interpreter
     static String getPatchedStack(RhinoException ex,
                                   String nativeStackTrace)
     {
-        String tag = "org.mozilla.javascript.Interpreter.interpretLoop";
+        String tag = "com.xored.org.mozilla.javascript.Interpreter.interpretLoop";
         StringBuffer sb = new StringBuffer(nativeStackTrace.length() + 1000);
         String lineSeparator = System.getProperty("line.separator");
 

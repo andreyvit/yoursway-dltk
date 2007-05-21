@@ -18,18 +18,20 @@ import org.eclipse.ui.IEditorInput;
 public class JavaScriptDebugModelPresentation extends
 		ScriptDebugModelPresentation {
 	private static final String JS_EDITOR_ID = "org.eclipse.dltk.javascript.ui.editor.JavascriptEditor";
+	static ImageRegistry registry =new ImageRegistry(Display.getDefault());
 
 	static {
 		Display.getDefault().syncExec(new Runnable() {
 
 			public void run() {
+				
 				DLTKPluginImages
 						.get(DLTKDebugImages.IMG_OBJS_CONTENDED_MONITOR);
 			}
 
 		});
 	}
-	static ImageRegistry registry = new ImageRegistry();
+	
 
 	public JavaScriptDebugModelPresentation() {
 
