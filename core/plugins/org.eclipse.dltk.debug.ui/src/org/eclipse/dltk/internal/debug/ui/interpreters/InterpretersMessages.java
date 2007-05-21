@@ -14,6 +14,7 @@ import org.eclipse.osgi.util.NLS;
 public class InterpretersMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.dltk.internal.debug.ui.interpreters.InterpretersMessages";//$NON-NLS-1$
 	public static String addInterpreterDialog_InterpreterEnvironmentName;
+	public static String InterpretersBlock_0;
 	public static String InterpretersPreferencePage_1;
 	public static String InterpretersPreferencePage_2;
 	public static String InstalledInterpretersBlock_15;

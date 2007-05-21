@@ -596,21 +596,26 @@ public abstract class InterpretersBlock implements IAddInterpreterDialogRequesto
 		}
 		
 		// search
-		//final File rootDir = new File(path);
 		final List locations = new ArrayList();
 		final List types = new ArrayList();
 
 		IRunnableWithProgress r = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) {
 				monitor.beginTask(InterpretersMessages.InstalledInterpretersBlock_11, IProgressMonitor.UNKNOWN); 
-				//search(rootDir, locations, types, exstingLocations, monitor, -1);
 				searchFast(locations, types, exstingLocations, monitor);
 				monitor.done();
 			}
 		};
 		
 		try {
-            ProgressMonitorDialog progress = new ProgressMonitorDialog(getShell());
+            ProgressMonitorDialog progress = new ProgressMonitorDialog(getShell()) {
+
+				protected void createCancelButton(Composite parent) {
+					super.createCancelButton(parent);
+					cancel.setText(InterpretersMessages.InterpretersBlock_0);
+				}
+            	
+            };
             progress.run(true, true, r);
 		} catch (InvocationTargetException e) {
 			DLTKDebugUIPlugin.log(e);
@@ -619,8 +624,7 @@ public abstract class InterpretersBlock implements IAddInterpreterDialogRequesto
 			return;
 		}
 		
-		if (locations.isEmpty()) {
-			//MessageDialog.openInformation(getShell(), InterpretersMessages.InstalledInterpreterEnvironmentsBlock_12, MessageFormat.format(InterpretersMessages.InstalledInterpreterEnvironmentsBlock_13, new String[]{path})); // 
+		if (locations.isEmpty()) { 
 			MessageDialog.openInformation(getShell(), InterpretersMessages.InstalledInterpretersBlock_12, InterpretersMessages.InstalledInterpretersBlock_113); //
 		} else {
 			iter = locations.iterator();
@@ -664,7 +668,7 @@ public abstract class InterpretersBlock implements IAddInterpreterDialogRequesto
 		Set varNames = systemEnv.keySet();
 		for (Iterator iter = varNames.iterator(); iter.hasNext();) {
 			String var = (String) iter.next();
-			if (var.compareToIgnoreCase("path") == 0) {
+			if (var.compareToIgnoreCase("path") == 0) { //$NON-NLS-1$
 				pName = var;
 				break;
 			}
@@ -677,12 +681,12 @@ public abstract class InterpretersBlock implements IAddInterpreterDialogRequesto
 		
 		//split path
 		if (Platform.getOS().equals(Platform.OS_WIN32)) { 
-			String[] res = path.split(";");
+			String[] res = path.split(";"); //$NON-NLS-1$
 			for (int i = 0; i < res.length; i++) {
 				folders.add(Path.fromOSString(res[i]));
 			}
 		} else {
-			String[] res = path.split(":");
+			String[] res = path.split(":"); //$NON-NLS-1$
 			for (int i = 0; i < res.length; i++) {
 				folders.add(Path.fromOSString(res[i]));
 			}

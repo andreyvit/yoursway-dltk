@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.core.search;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.core.DLTKCore;
@@ -144,7 +145,8 @@ public class TypeNameMatchRequestorWrapper implements
 					.toString();
 			this.packageHandles = new HashtableOfArrayToObject(5);
 		}
-		if( !resourcePath.startsWith(this.lastPkgFragmentRootPath)) {
+		IPath resourcePath2 = new Path(resourcePath);
+		if( !resourcePath2.toString().startsWith(this.lastPkgFragmentRootPath)) {
 			return null;
 		}
 		// create handle
