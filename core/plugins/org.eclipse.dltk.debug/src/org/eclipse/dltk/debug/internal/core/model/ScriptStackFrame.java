@@ -36,7 +36,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 
 	private IScriptThread thread;
 
-	private IDbgpStackLevel stackLevel;
+	private IDbgpStackLevel level;
 
 	private IScriptVariable[] variables;
 
@@ -117,16 +117,16 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	public ScriptStackFrame(IScriptThread thread, IDbgpStackLevel stackLevel)
 			throws DbgpException {
 
-		//DLTKDebugPlugin.getDefault().getPluginPreferences()
-			//	.addPropertyChangeListener(this);
+		// DLTKDebugPlugin.getDefault().getPluginPreferences()
+		// .addPropertyChangeListener(this);
 
 		this.thread = thread;
-		this.stackLevel = stackLevel;
+		this.level = stackLevel;
 		this.variables = readAllVariables();
 	}
 
 	public URI getFileName() {
-		return stackLevel.getFileURI();
+		return level.getFileURI();
 	}
 
 	public int getCharStart() throws DebugException {
@@ -138,17 +138,19 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public int getLineNumber() throws DebugException {
-		return stackLevel.getLineNumber();
+		return level.getLineNumber();
 	}
 
 	public String getName() throws DebugException {
-		String where = stackLevel.getWhere();
+		String name = level.getWhere();
 
-		if (where == null || where.length() == 0) {
-			return "Stack Frame, level = " + stackLevel.getLevel();
-		} else {
-			return where + "(" + stackLevel.getFileURI() + ")";
+		if (name == null || name.length() == 0) {
+			name = "Frame #" + level.getLevel();
 		}
+
+		name += " (" + level.getFileURI().getPath() + ")";
+
+		return name;
 	}
 
 	public boolean hasRegisterGroups() throws DebugException {
@@ -252,31 +254,35 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public int getLevel() {
-		return stackLevel.getLevel();
+		return level.getLevel();
 	}
 
 	public boolean equals(Object obj) {
 		if (obj instanceof ScriptStackFrame) {
-			return stackLevel.equals(((ScriptStackFrame) obj).stackLevel);
+			return level.equals(((ScriptStackFrame) obj).level);
 		}
 
 		return false;
 	}
 
 	public int hashCode() {
-		return stackLevel.hashCode();
+		return level.hashCode();
 	}
 
 	public String toString() {
-		return "Stack frame (level: " + stackLevel.getLevel() + ")";
+		return "Stack frame #" + level.getLevel() + ")";
 	}
 
 	public void propertyChange(PropertyChangeEvent event) {
 		String name = event.getProperty();
 		if (name
 				.startsWith(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_PREFIX)) {
-			//DebugEventHelper.fireChangeEvent(this);
+			// DebugEventHelper.fireChangeEvent(this);
 		}
 
+	}
+
+	public String getSourceString() {
+		return level.getWhere();
 	}
 }

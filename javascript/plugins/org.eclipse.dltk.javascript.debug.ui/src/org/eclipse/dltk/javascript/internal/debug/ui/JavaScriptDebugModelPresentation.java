@@ -5,7 +5,6 @@ import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
-import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.ui.ScriptDebugImageDescriptor;
 import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
@@ -20,14 +19,6 @@ public class JavaScriptDebugModelPresentation extends
 		ScriptDebugModelPresentation {
 	private static final String JS_EDITOR_ID = "org.eclipse.dltk.javascript.ui.editor.JavascriptEditor";
 
-	private static final String MAIN_THREAD_NAME = "Main thread";
-
-	protected String getThreadText(IScriptThread thread) {
-		return MAIN_THREAD_NAME;
-	}
-
-	
-
 	static {
 		Display.getDefault().syncExec(new Runnable() {
 
@@ -38,37 +29,49 @@ public class JavaScriptDebugModelPresentation extends
 
 		});
 	}
-	static ImageRegistry registry=new ImageRegistry();
-	
+	static ImageRegistry registry = new ImageRegistry();
+
 	public JavaScriptDebugModelPresentation() {
-		
+
 	}
 
 	public Image getImage(Object element) {
 		if (element instanceof IScriptMethodEntryBreakpoint) {
 			IScriptMethodEntryBreakpoint ll = (IScriptMethodEntryBreakpoint) element;
-			int flags=0;
-			if (ll.shouldBreakOnEntry())flags|=ScriptDebugImageDescriptor.ENTRY;
-			if (ll.shouldBreakOnExit())flags|=ScriptDebugImageDescriptor.EXIT;
+			int flags = 0;
+			if (ll.shouldBreakOnEntry())
+				flags |= ScriptDebugImageDescriptor.ENTRY;
+			if (ll.shouldBreakOnExit())
+				flags |= ScriptDebugImageDescriptor.EXIT;
 			try {
-				if (flags==0)return DebugUITools.getImage(IDebugUIConstants.IMG_OBJS_BREAKPOINT_DISABLED);		
-				if (ll.isEnabled())
-				{
-					String key=flags+"enabled";
-					Image image=registry.get(key);
-					if (image==null){
-						registry.put(key,new ScriptDebugImageDescriptor(DebugUITools.getImageDescriptor(IDebugUIConstants.IMG_OBJS_BREAKPOINT), 
-								flags));
+				if (flags == 0)
+					return DebugUITools
+							.getImage(IDebugUIConstants.IMG_OBJS_BREAKPOINT_DISABLED);
+				if (ll.isEnabled()) {
+					String key = flags + "enabled";
+					Image image = registry.get(key);
+					if (image == null) {
+						registry
+								.put(
+										key,
+										new ScriptDebugImageDescriptor(
+												DebugUITools
+														.getImageDescriptor(IDebugUIConstants.IMG_OBJS_BREAKPOINT),
+												flags));
 						return registry.get(key);
 					}
 					return image;
-				}
-				else{
-					String key=flags+"disabled";
-					Image image=registry.get(key);
-					if (image==null){
-						registry.put(key,new ScriptDebugImageDescriptor(DebugUITools.getImageDescriptor(IDebugUIConstants.IMG_OBJS_BREAKPOINT_DISABLED), 
-								flags));
+				} else {
+					String key = flags + "disabled";
+					Image image = registry.get(key);
+					if (image == null) {
+						registry
+								.put(
+										key,
+										new ScriptDebugImageDescriptor(
+												DebugUITools
+														.getImageDescriptor(IDebugUIConstants.IMG_OBJS_BREAKPOINT_DISABLED),
+												flags));
 						return registry.get(key);
 					}
 					return image;

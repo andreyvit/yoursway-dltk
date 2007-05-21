@@ -40,6 +40,9 @@ import org.eclipse.ui.part.FileEditorInput;
 public abstract class ScriptDebugModelPresentation extends LabelProvider
 		implements IDebugModelPresentation {
 
+	private static final String SUSPENDED_LABEL = "suspended";
+	private static final String RUNNING_LABEL = "running";
+
 	public static class ExternalFileEditorInput implements IPathEditorInput,
 			ILocationProvider {
 		private File file;
@@ -111,6 +114,15 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	}
 
 	protected String getThreadText(IScriptThread thread) {
+		try {
+			return thread.getName() + " ("
+					+ (thread.isSuspended() ? SUSPENDED_LABEL : RUNNING_LABEL)
+					+ ")";
+
+		} catch (DebugException e) {
+			DLTKDebugUIPlugin.log(e);
+		}
+
 		return thread.toString();
 	}
 
@@ -119,8 +131,9 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			return stackFrame.getName();
 		} catch (DebugException e) {
 			DLTKDebugUIPlugin.log(e);
-			return stackFrame.toString();
 		}
+
+		return stackFrame.toString();
 	}
 
 	public String getVariableText(IScriptVariable variable) {
@@ -132,6 +145,12 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	}
 
 	protected String getValueText(IScriptValue value) {
+		try {
+			return value.getValueString();
+		} catch (DebugException e) {
+			DLTKDebugUIPlugin.log(e);
+		}
+
 		return value.toString();
 	}
 
@@ -150,7 +169,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	}
 
 	protected String getWatchExpressionText(IWatchExpression expression) {
-		String text = expression.getExpressionText() + " = Error !";
+		String text = expression.getExpressionText() + " = Error!";
 		try {
 			if (!expression.hasErrors()) {
 				text = expression.getExpressionText();
@@ -160,7 +179,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 				}
 			}
 		} catch (DebugException e) {
-			// TODO: log exception
+			DLTKDebugUIPlugin.log(e);
 		}
 
 		return text;
@@ -189,7 +208,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		try {
 			detail = value.getValueString();
 		} catch (DebugException e) {
-			// Nothing to do
+			DLTKDebugUIPlugin.log(e);
 		}
 		listener.detailComputed(value, detail);
 	}

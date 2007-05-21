@@ -13,6 +13,9 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IStackFrame;
 
 public interface IScriptStackFrame extends IStackFrame {
+	String getSourceString();
+	
 	int getLevel();
+		
 	IScriptVariable findVariable(String varName) throws DebugException;
 }

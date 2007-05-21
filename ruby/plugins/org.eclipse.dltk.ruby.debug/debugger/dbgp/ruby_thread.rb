@@ -75,12 +75,20 @@ module XoredDebugger
             @debugger.capturer
         end
 
+
+        def thread_label
+            label = @thread == Thread.main ? 'Main thread' : 'Thread'
+            label += ' id=' + @thread.object_id.to_s
+            label += ', priority=' + @thread.priority.to_s
+        end
+
+
         # Init
         def init(key, file_uri)
             { :app_id   => 'test',
               :ide_key  => key,
               :session  => 'session',
-              :thread   => 'Thread with id = ' + @thread.object_id.to_s,
+              :thread   => thread_label,
               :parent   => '',
               :file_uri => file_uri }
         end
