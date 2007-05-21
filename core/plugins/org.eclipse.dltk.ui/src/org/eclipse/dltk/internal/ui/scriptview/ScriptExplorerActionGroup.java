@@ -197,6 +197,7 @@ class ScriptExplorerActionGroup extends CompositeActionGroup {
 	}
 	
 	/* package */ void fillViewMenu(IMenuManager menu) {
+		menu.add(new Separator());
 		menu.add(fToggleLinkingAction);
 
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));

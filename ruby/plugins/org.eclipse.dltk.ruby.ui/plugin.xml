@@ -4,13 +4,14 @@
 	 <extension
 	     point="org.eclipse.ui.editors">
 	  <editor
-	        class="org.eclipse.dltk.ruby.internal.ui.editor.RubyEditor"
-	        contributorClass="org.eclipse.dltk.internal.ui.editor.SourceModuleEditorActionContributor"
-	        default="true"
-	        extensions="rb"
-	        icon="icons/ruby_obj.gif"
-	        id="org.eclipse.dltk.ruby.ui.editor.RubyEditor"
-	        name="DLTK Ruby Editor"/>
+         class="org.eclipse.dltk.ruby.internal.ui.editor.RubyEditor"
+         contributorClass="org.eclipse.dltk.internal.ui.editor.SourceModuleEditorActionContributor"
+         default="true"
+         extensions="rb"
+         icon="icons/ruby_obj.gif"
+         id="org.eclipse.dltk.ruby.ui.editor.RubyEditor"
+         name="DLTK Ruby Editor">
+   </editor>
 	        
 	         
 	        

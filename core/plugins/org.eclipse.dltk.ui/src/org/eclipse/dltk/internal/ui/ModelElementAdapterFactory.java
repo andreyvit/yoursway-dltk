@@ -33,17 +33,18 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.ResourcePropertySource;
 import org.eclipse.ui.views.tasklist.ITaskListResourceAdapter;
 
-
 /**
  * Implements basic UI support for Script elements. Implements handle to
  * persistent support for Script elements.
  */
-public class ModelElementAdapterFactory implements IAdapterFactory, IContributorResourceAdapter, IContributorResourceAdapter2 {
-	private static Class[] PROPERTIES = new Class[] {
-			IPropertySource.class, IResource.class, IWorkbenchAdapter.class, IResourceLocator.class, IPersistableElement.class,
-			IContributorResourceAdapter.class, IContributorResourceAdapter2.class, ITaskListResourceAdapter.class,
-			IContainmentAdapter.class
-	};
+public class ModelElementAdapterFactory implements IAdapterFactory,
+		IContributorResourceAdapter, IContributorResourceAdapter2 {
+	private static Class[] PROPERTIES = new Class[] { IPropertySource.class,
+			IResource.class, IWorkbenchAdapter.class, IResourceLocator.class,
+			IPersistableElement.class, IContributorResourceAdapter.class,
+			IContributorResourceAdapter2.class, ITaskListResourceAdapter.class,
+			IContainmentAdapter.class/*, IHistoryPageSource.class */};
+
 	/*
 	 * Do not use real type since this would cause the Search plug-in to be
 	 * loaded.
@@ -60,7 +61,7 @@ public class ModelElementAdapterFactory implements IAdapterFactory, IContributor
 
 	public Object getAdapter(Object element, Class key) {
 		updateLazyLoadedAdapters();
-		IModelElement script= getModelElement(element);
+		IModelElement script = getModelElement(element);
 		if (IPropertySource.class.equals(key)) {
 			return getProperties(script);
 		}
@@ -68,9 +69,11 @@ public class ModelElementAdapterFactory implements IAdapterFactory, IContributor
 			return getResource(script);
 		}
 		if (DLTKCore.DEBUG_SCOPES) {
-			System.err.println("Add search scope computer support in ModelElementAdapterFactory");
+			System.err
+					.println("Add search scope computer support in ModelElementAdapterFactory");
 		}
-		if (fSearchPageScoreComputer != null && ISearchPageScoreComputer.class.equals(key)) {
+		if (fSearchPageScoreComputer != null
+				&& ISearchPageScoreComputer.class.equals(key)) {
 			return fSearchPageScoreComputer;
 		}
 		if (IWorkbenchAdapter.class.equals(key)) {
@@ -94,6 +97,10 @@ public class ModelElementAdapterFactory implements IAdapterFactory, IContributor
 		if (IContainmentAdapter.class.equals(key)) {
 			return getScriptElementContainmentAdapter();
 		}
+		//if (IHistoryPageSource.class.equals(key)
+		//		&& JavaElementHistoryPageSource.hasEdition(java)) {
+		//	return JavaElementHistoryPageSource.getInstance();
+		//}
 		return null;
 	}
 
@@ -102,31 +109,32 @@ public class ModelElementAdapterFactory implements IAdapterFactory, IContributor
 		// the
 		// corresponding resource
 		switch (element.getElementType()) {
-			case IModelElement.TYPE:
-				// top level types behave like the CU
-				IModelElement parent = element.getParent();
-				if (parent instanceof ISourceModule) {
-					return ((ISourceModule) parent).getPrimary().getResource();
-				}
-				return null;
-			case IModelElement.SOURCE_MODULE:
-				return ((ISourceModule) element).getPrimary().getResource();			
-			case IModelElement.PROJECT_FRAGMENT:
-				// test if in a archive
-				IProjectFragment root = (IProjectFragment) element.getAncestor(IModelElement.PROJECT_FRAGMENT);
-				if (DLTKCore.DEBUG_SCOPES) {
-					System.err.println("Check for archives");
-				}
-				if (!root.isArchive()) {
-					return element.getResource();
-				}
-				return null;
-			case IModelElement.SCRIPT_FOLDER:
-			case IModelElement.SCRIPT_PROJECT:
-			case IModelElement.SCRIPT_MODEL:
+		case IModelElement.TYPE:
+			// top level types behave like the CU
+			IModelElement parent = element.getParent();
+			if (parent instanceof ISourceModule) {
+				return ((ISourceModule) parent).getPrimary().getResource();
+			}
+			return null;
+		case IModelElement.SOURCE_MODULE:
+			return ((ISourceModule) element).getPrimary().getResource();
+		case IModelElement.PROJECT_FRAGMENT:
+			// test if in a archive
+			IProjectFragment root = (IProjectFragment) element
+					.getAncestor(IModelElement.PROJECT_FRAGMENT);
+			if (DLTKCore.DEBUG_SCOPES) {
+				System.err.println("Check for archives");
+			}
+			if (!root.isArchive()) {
 				return element.getResource();
-			default:
-				return null;
+			}
+			return null;
+		case IModelElement.SCRIPT_FOLDER:
+		case IModelElement.SCRIPT_PROJECT:
+		case IModelElement.SCRIPT_MODEL:
+			return element.getResource();
+		default:
+			return null;
 		}
 	}
 
@@ -146,17 +154,14 @@ public class ModelElementAdapterFactory implements IAdapterFactory, IContributor
 
 	private IModelElement getModelElement(Object element) {
 		if (element instanceof IModelElement)
-			return (IModelElement) element;		
+			return (IModelElement) element;
 		return null;
 	}
 
 	private IPropertySource getProperties(IModelElement element) {
 		IResource resource = getResource(element);
-		if (DLTKCore.DEBUG_SCOPES) {
-			System.err.println("ModelElementAdapterFactory add to getPrperties model elemen properties...");
-		}
-//		if (resource == null)
-//			return new ScriptElementProperties(element);
+		if (resource == null)
+			return new ScriptElementProperties(element);
 		if (resource.getType() == IResource.FILE)
 			return new FilePropertySource((IFile) resource);
 		return new ResourcePropertySource(resource);
@@ -166,7 +171,8 @@ public class ModelElementAdapterFactory implements IAdapterFactory, IContributor
 		if (DLTKCore.DEBUG_SCOPES) {
 			System.err.println("Add search page scope compiler");
 		}
-		if (fSearchPageScoreComputer == null && SearchUtil.isSearchPlugInActivated())
+		if (fSearchPageScoreComputer == null
+				&& SearchUtil.isSearchPlugInActivated())
 			createSearchPageScoreComputer();
 	}
 
@@ -175,11 +181,12 @@ public class ModelElementAdapterFactory implements IAdapterFactory, IContributor
 			System.err.println("Add search page scope compiler");
 		}
 		fSearchPageScoreComputer = new DLTKSearchPageScoreComputer();
-		PROPERTIES = new Class[] {
-				IPropertySource.class, IResource.class, ISearchPageScoreComputer.class, IWorkbenchAdapter.class, IResourceLocator.class,
-				IPersistableElement.class, IProject.class, IContributorResourceAdapter.class, IContributorResourceAdapter2.class,
-				ITaskListResourceAdapter.class, IContainmentAdapter.class
-		};
+		PROPERTIES = new Class[] { IPropertySource.class, IResource.class,
+				ISearchPageScoreComputer.class, IWorkbenchAdapter.class,
+				IResourceLocator.class, IPersistableElement.class,
+				IProject.class, IContributorResourceAdapter.class,
+				IContributorResourceAdapter2.class,
+				ITaskListResourceAdapter.class, IContainmentAdapter.class };
 	}
 
 	private static IResourceLocator getResourceLocator() {
@@ -195,11 +202,12 @@ public class ModelElementAdapterFactory implements IAdapterFactory, IContributor
 	}
 
 	private static ITaskListResourceAdapter getTaskListAdapter() {
-//		if (fgTaskListAdapter == null)
-//			fgTaskListAdapter = new ScriptTaskListAdapter();
-//		return fgTaskListAdapter;
+		// if (fgTaskListAdapter == null)
+		// fgTaskListAdapter = new ScriptTaskListAdapter();
+		// return fgTaskListAdapter;
 		if (DLTKCore.DEBUG_SCOPES) {
-			System.err.println("Add Task list adaptor to ModelElementAdapterFactory");
+			System.err
+					.println("Add Task list adaptor to ModelElementAdapterFactory");
 		}
 		return null;
 	}
