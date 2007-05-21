@@ -83,15 +83,20 @@ public class BuiltinsResolver {
 		try {
 			ScriptableObject construct = (ScriptableObject) c.construct(enter,
 					c, new Object[] {});
-
+			if (construct!=null)
+			{
 			Scriptable classPrototype = ScriptableObject.getClassPrototype(c,
 					construct.getClassName());
 			Object[] elements = construct.getAllIds();
 			appendObjects(buf, construct, elements);
-			Object[] members = ((ScriptableObject) c).getAllIds();
-			appendObjects(buf, (ScriptableObject) c, members);
 			Object[] cpObjects = ScriptableObject.getPropertyIds(construct);
 			appendObjects(buf, (ScriptableObject) classPrototype, cpObjects);
+			}
+			Object[] members = ((ScriptableObject) c).getAllIds();
+			appendObjects(buf, (ScriptableObject) c, members);
+			
+			
+			
 		} catch (Exception e) {
 		}
 		;

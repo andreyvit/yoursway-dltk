@@ -4,9 +4,55 @@
 <template 
 	context="javascriptUniversalTemplateContextType" 
 	description="%defTemplate1.description" 
-	id="org.eclipse.dltk.ruby.ui.templates.func1" 
+	id="org.eclipse.dltk.javascript.ui.templates.func1" 
 	name="function">function ${funcName}(${args}){ 
   	${cursor}
   	}</template>
+  	
+<template id="org.eclipse.dltk.javascript.ui.templates.javascript.do" name="do" description="do-while" context="javascriptUniversalTemplateContextType" enabled="true" deleted="false" autoinsert="true">do {
+	${line_selection}${cursor}
+} while (${condition});</template>
+<template id="org.eclipse.dltk.javascript.ui.templates.javascript.for" name="for" description="Simple loop" context="javascriptUniversalTemplateContextType" enabled="true" deleted="false" autoinsert="true">for(var ${index}=0; ${index}&lt;${array}.length; ${index}++) {
+	${line_selection}${cursor}
+}</template>
+<template id="org.eclipse.dltk.javascript.ui.templates.javascript.function" name="function" description="simple function with comment" context="javascriptUniversalTemplateContextType" enabled="true" deleted="false" autoinsert="true">/**
+ * ${name}
+ * @param {${type}} ${param} 
+ */
+ function ${name}(${param}) {
+ 	${cursor}
+ }</template>
+<template id="org.eclipse.dltk.javascript.ui.templates.javascript.ifelse" name="ifelse" description="if - else " context="javascriptUniversalTemplateContextType" enabled="true" deleted="false" autoinsert="true">if (${condition}) {
+	${cursor}
+} else {
+	
+}
+</template>
+<template id="org.eclipse.dltk.javascript.ui.templates.javascript.switch" name="switch" description="switch" context="javascriptUniversalTemplateContextType" enabled="true" deleted="false" autoinsert="true">switch (${key}) {
+	case ${value}:
+		${cursor}
+		break;
 
+	default:
+		break;
+}
+</template>
+<template id="org.eclipse.dltk.javascript.ui.templates.javascript.try" name="try" description="try catch" context="javascriptUniversalTemplateContextType" enabled="true" deleted="false" autoinsert="true">try {
+	${line_selection}${cursor}
+} catch (e) {
+	// TODO: handle exception
+}</template>
+<template id="org.eclipse.dltk.javascript.ui.templates.javascript.while" name="while" description="while loop" context="javascriptUniversalTemplateContextType" enabled="true" deleted="false" autoinsert="true">while (${condition}) {
+	${line_selection}${cursor}
+}</template>
+<template id="org.eclipse.dltk.javascript.ui.templates.javascript.exdojo" name="extends_dojo" description="Extend object dojo style" context="javascriptUniversalTemplateContextType" enabled="true" deleted="false" autoinsert="true">dojo.lang.extend(${base}, {
+    ${methodName}: function (${param}) {
+    	${cursor}
+    }
+});</template>
+<template id="org.eclipse.dltk.javascript.ui.templates.javascript.exproto" name="extends_prototype" description="Extend object prototype.js style" context="javascriptUniversalTemplateContextType" enabled="true" deleted="false" autoinsert="true">${ClassName}.prototype = (new ${Base}()).extend({
+  ${methodName}: function(${param}) {
+  	${cursor}
+  },
+});</template>
 </templates>
