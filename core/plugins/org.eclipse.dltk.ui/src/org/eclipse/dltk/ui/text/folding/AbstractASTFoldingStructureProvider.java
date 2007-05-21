@@ -18,6 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
@@ -190,6 +191,7 @@ public abstract class AbstractASTFoldingStructureProvider implements IFoldingStr
 	protected static final class ScriptProjectionAnnotation extends ProjectionAnnotation {
 		private boolean fIsComment;
 		private SourceRangeStamp stamp;
+		private IModelElement element;
 
 		/**
 		 * Creates a new projection annotation.
@@ -202,11 +204,17 @@ public abstract class AbstractASTFoldingStructureProvider implements IFoldingStr
 		 * @param isComment
 		 *            <code>true</code> for a foldable comment,
 		 *            <code>false</code> for a foldable code element
+		 * @param position 
 		 */
-		public ScriptProjectionAnnotation(boolean isCollapsed, boolean isComment, SourceRangeStamp codeStamp) {
+		public ScriptProjectionAnnotation(boolean isCollapsed, boolean isComment, SourceRangeStamp codeStamp, IModelElement element) {
 			super(isCollapsed);
 			fIsComment = isComment;
 			stamp = codeStamp;
+			this.element=element
+			;
+		}
+		public IModelElement getElement(){
+			return element;
 		}
 
 		boolean isComment() {
@@ -722,10 +730,11 @@ public abstract class AbstractASTFoldingStructureProvider implements IFoldingStr
 										normalized.getOffset()
 												+ normalized.getLength())
 								.hashCode();
+						IModelElement element=null;
 						ctx.addProjectionRange(new ScriptProjectionAnnotation(
 								initiallyCollapseComments(ctx), true,
 								new SourceRangeStamp(hash, normalized
-										.getLength())), position);
+										.getLength()),element), position);
 					}
 				}
 			}
@@ -733,11 +742,16 @@ public abstract class AbstractASTFoldingStructureProvider implements IFoldingStr
 		// 2. Compute blocks regions
 		CodeBlock[] blockRegions = getCodeBlocks(contents);
 		for (int i = 0; i < blockRegions.length; i++) {
-			if (!mayCollapse(blockRegions[i].statement, ctx))
+			CodeBlock codeBlock = blockRegions[i];
+			if (!mayCollapse(codeBlock.statement, ctx))
 				continue;
-			boolean collapseCode = initiallyCollapse(blockRegions[i].statement,
+			if (codeBlock.statement instanceof TypeDeclaration){
+				
+			}
+			
+			boolean collapseCode = initiallyCollapse(codeBlock.statement,
 					ctx);
-			IRegion reg = blockRegions[i].region;
+			IRegion reg = codeBlock.region;
 			// code
 			boolean multiline = false;
 			try {
@@ -754,9 +768,10 @@ public abstract class AbstractASTFoldingStructureProvider implements IFoldingStr
 						int hash = contents.substring(normalized.getOffset(),					
 								normalized.getOffset() + normalized.getLength())
 								.hashCode();
+						IModelElement element=null;
 						ctx.addProjectionRange(new ScriptProjectionAnnotation(
 								collapseCode, false, new SourceRangeStamp(hash,
-							normalized.getLength())), position);
+							normalized.getLength()),element), position);
 					} catch (StringIndexOutOfBoundsException e) {
 						e.printStackTrace();
 				}
@@ -1082,6 +1097,28 @@ public abstract class AbstractASTFoldingStructureProvider implements IFoldingStr
 	 */
 	private void removeDocumentStuff(Document document) {
 		document.setDocumentPartitioner(getPartition(), null);
+	}
+	
+	public void expandElements(final IModelElement[] array){
+		modifyFiltered(new Filter(){
+
+			public boolean match(ScriptProjectionAnnotation annotation) {
+				IModelElement element = annotation.getElement();
+				if (element==null)return false;
+				for (int a=0;a<array.length;a++){
+					IModelElement e=array[a];
+					if (e.equals(element)){
+						return true;
+					}
+				}
+				return false;
+			}
+			
+		}, true);
+	}
+
+	public void collapseElements(IModelElement[] modelElements){
+		
 	}
 
 	private ITypedRegion getRegion(IDocument d, int offset) throws BadLocationException {

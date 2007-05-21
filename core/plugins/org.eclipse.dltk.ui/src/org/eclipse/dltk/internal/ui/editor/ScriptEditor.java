@@ -1434,6 +1434,8 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 
 		if (required == IFoldingStructureProvider.class)
 			return fProjectionModelUpdater;
+		if (required == IFoldingStructureProviderExtension.class)
+			return fProjectionModelUpdater;
 
 		if (fProjectionSupport != null) {
 			Object adapter = fProjectionSupport.getAdapter(getSourceViewer(),
