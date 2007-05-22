@@ -85,8 +85,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		List arguments = new ArrayList();
 
 		addArgument(constructProgramString(config), arguments);
-		addArguments(combineInterpreterArgs(config, interpreterInstance),
-				arguments);
+		addArguments(combineInterpreterArgs(config, interpreterInstance), arguments);
 		addArgument(config.getScriptToLaunch(), arguments);
 		addArguments(config.getProgramArguments(), arguments);
 
@@ -216,22 +215,24 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	protected String[] combineInterpreterArgs(
 			InterpreterRunnerConfiguration configuration,
 			IInterpreterInstall InterpreterInstall) {
-		String[] launchInterpreterArgs = configuration
-				.getInterpreterArguments();
-		String[] InterpreterInterpreterArgs = InterpreterInstall
-				.getInterpreterArguments();
-		if (InterpreterInterpreterArgs == null
-				|| InterpreterInterpreterArgs.length == 0) {
+		
+		String[] launchInterpreterArgs = configuration.getInterpreterArguments();		
+		
+		String[] installInterpreterArgs = InterpreterInstall.getInterpreterArguments();
+		
+		if (installInterpreterArgs == null || installInterpreterArgs.length == 0) {
 			return launchInterpreterArgs;
 		}
+		
 		String[] allInterpreterArgs = new String[launchInterpreterArgs.length
-				+ InterpreterInterpreterArgs.length];
+		                                         + installInterpreterArgs.length];
 		System.arraycopy(launchInterpreterArgs, 0, allInterpreterArgs, 0,
 				launchInterpreterArgs.length);
 		System
-				.arraycopy(InterpreterInterpreterArgs, 0, allInterpreterArgs,
+				.arraycopy(installInterpreterArgs, 0, allInterpreterArgs,
 						launchInterpreterArgs.length,
-						InterpreterInterpreterArgs.length);
+						installInterpreterArgs.length);
+		
 		return allInterpreterArgs;
 	}
 
@@ -273,6 +274,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		ILaunchConfiguration configuration = launch.getLaunchConfiguration();
 		
 		if (configuration != null) {
+			// TODO: redesign
 			boolean useDltk = configuration.getAttribute(
 					IDLTKLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT,
 					false);			
@@ -284,8 +286,6 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 			}
 		}
 
-		String[] envp = config.getEnvironment();
-
 		subMonitor.worked(1);
 
 		// check for cancellation
@@ -296,9 +296,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		subMonitor
 				.subTask(LaunchingMessages.StandardInterpreterRunner_Starting___3);
 
-		Process p = null;
-		File workingDir = getWorkingDir(config);
-		p = exec(cmdLine, workingDir, envp);
+		Process p = exec(cmdLine, getWorkingDir(config), config.getEnvironment());
 		if (p == null) {
 			return;
 		}
@@ -311,14 +309,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		IProcess process = newProcess(launch, p, renderProcessLabel(cmdLine),
 				getDefaultProcessMap());
 		process.setAttribute(IProcess.ATTR_CMDLINE, renderCommandLine(cmdLine));
-
-		// XXX: is this still applicable, everything else has it commented out
-		// IStreamListener errorParser = getErrorParser(config.getProject());
-		// if (errorParser != null) {
-		// process.getStreamsProxy().getErrorStreamMonitor().addListener(
-		// errorParser);
-		// }
-
+		
 		subMonitor.worked(1);
 		subMonitor.done();
 	}

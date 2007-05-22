@@ -11,6 +11,9 @@
          icon="icons/ruby_obj.gif"
          id="org.eclipse.dltk.ruby.ui.editor.RubyEditor"
          name="DLTK Ruby Editor">
+      <contentTypeBinding
+            contentTypeId="org.eclipse.dltk.rubyContentType">
+      </contentTypeBinding>
    </editor>
 	        
 	         

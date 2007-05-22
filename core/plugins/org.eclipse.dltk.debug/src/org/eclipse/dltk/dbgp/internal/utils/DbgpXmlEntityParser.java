@@ -114,7 +114,7 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		}
 
 		// Children count
-		int childrenCount = 0;
+		int childrenCount = -1;
 		if (property.hasAttribute(ATTR_NUMCHILDREN)) {
 			childrenCount = Integer.parseInt(property
 					.getAttribute(ATTR_NUMCHILDREN));

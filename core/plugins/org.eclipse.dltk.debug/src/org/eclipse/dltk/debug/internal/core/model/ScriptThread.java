@@ -192,11 +192,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	}
 
 	public IStackFrame getTopStackFrame() throws DebugException {
-		if (hasStackFrames()) {
-			return getStackFrames()[0];
-		}
-
-		return null;
+		return stack.getTopFrame();
 	}
 
 	public String getName() throws DebugException {

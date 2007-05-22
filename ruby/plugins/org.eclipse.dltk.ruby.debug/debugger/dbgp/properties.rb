@@ -18,7 +18,7 @@
         has_children(obj) ? '' : obj.to_s        
     end
 
-
+    
     def prepare_object(name, obj)
         x = { :name         => name,
               :eval_name    => name,
@@ -33,7 +33,7 @@
                 real_var = obj.instance_variable_get(var)
 
                 { :name         => var,
-                  :eval_name    => var,
+                  :eval_name    => sprintf('%s.%s', name, var),
                   :type         => real_var.class,
                   :is_constant  => false,
                   :has_children => has_children(real_var),
@@ -57,17 +57,17 @@
               :_value       => '[...]',
               :key          => array.object_id }
         
-        index = 0
+        index = -1
         children = array.collect { |value|
-        n = sprintf('%s[%d]', name, index)
             index += 1
-            { :name         => n,
-              :eval_name    => n,
+                        
+            { :name         => sprintf('[%d]', index),
+              :eval_name    => sprintf('%s[%d]', name, index),
               :type         => value.class,
               :is_constant  => false,
               :has_children => has_children(value),
               :_value       => get_string(value),
-              :key          => value.object_id }
+              :key          => value.object_id }            
         }
 
         x[:num_children] = children.length
@@ -85,9 +85,8 @@
               :key          => hash.object_id }
 
         children = hash.collect { |key, value|
-            n = sprintf("%s['%s']", name, key.to_s)
-            { :name         => n,
-              :eval_name    => n,
+            { :name         => sprintf("[%s]", key.inspect),
+              :eval_name    => sprintf("%s[%s]", name, key.inspect),
               :type         => value.class,
               :is_constant  => false,
               :has_children => has_children(value),

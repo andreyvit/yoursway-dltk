@@ -59,20 +59,21 @@ module XoredDebugger
 
             children = m[:children_props]
 
-            value = ''
+            children_str = ''
             unless children.nil?
-                value = children.collect { |p| print_property(p) }.join("\n")
+                children_str = children.collect { |p| print_property(p) }.join("\n")
             end
                 
-            sprintf('<property name="%s" fullname="%s" type="%s" constant="%d" children="%d" encoding="base64" key="%s" %s>%s</property>',
+            sprintf('<property name="%s" fullname="%s" type="%s" constant="%d" children="%d" encoding="base64" key="%s" %s>%s%s</property>',
                 m[:name], 
                 m[:eval_name], 
                 m[:type].to_s,
                 bool_to_bit(m[:is_cosntant]),
                 bool_to_bit(m[:has_children]), 
                 m[:key].to_s,
-                m[:num_children].nil? ? '' : 'numchildren="' + m[:num_children].to_s + '"',
-                value.empty? ? cdata(Base64.encode64(m[:_value].nil? ? 'nil' : m[:_value])) : value)
+                m[:num_children].nil? ? '' : 'numchildren="' + m[:num_children].to_s + '"',                
+                cdata(Base64.encode64(m[:_value].nil? ? 'nil' : m[:_value])),
+                children_str)
         end
 
         def print_continuation(command, m)

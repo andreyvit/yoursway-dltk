@@ -30,9 +30,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.variables.VariablesPlugin;
-import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
@@ -59,12 +57,7 @@ import com.ibm.icu.text.MessageFormat;
  * 
  */
 public abstract class AbstractScriptLaunchConfigurationDelegate extends
-		LaunchConfigurationDelegate implements IDebugEventSetListener {
-
-	public void handleDebugEvents(DebugEvent[] events) {
-		// TODO Auto-generated method stub
-
-	}
+		LaunchConfigurationDelegate {
 
 	/**
 	 * A list of prerequisite projects ordered by their build order.
@@ -415,8 +408,8 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 * @exception CoreException
 	 *                if unable to retrieve the attribute
 	 */
-	public static IDLTKProject getScriptProject(ILaunchConfiguration configuration)
-			throws CoreException {
+	public static IDLTKProject getScriptProject(
+			ILaunchConfiguration configuration) throws CoreException {
 		String projectName = getScriptProjectName(configuration);
 		if (projectName != null) {
 			projectName = projectName.trim();
@@ -463,14 +456,14 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 */
 	public String getMainScriptName(ILaunchConfiguration configuration)
 			throws CoreException {
-		String mainType = configuration.getAttribute(
+		String script = configuration.getAttribute(
 				IDLTKLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
 				(String) null);
-		if (mainType == null) {
+		if (script == null) {
 			return null;
 		}
 		return VariablesPlugin.getDefault().getStringVariableManager()
-				.performStringSubstitution(mainType);
+				.performStringSubstitution(script);
 	}
 
 	/**
@@ -510,6 +503,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		String arguments = configuration.getAttribute(
 				IDLTKLaunchConfigurationConstants.ATTR_INTERPRETER_ARGUMENTS,
 				""); //$NON-NLS-1$
+
 		String args = VariablesPlugin.getDefault().getStringVariableManager()
 				.performStringSubstitution(arguments);
 		return args;
@@ -573,237 +567,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		}
 		return null;
 	}
-
-	/**
-	 * Verifies a main script name is specified by the given launch
-	 * configuration, and returns the script type name.
-	 * 
-	 * @param configuration
-	 *            launch configuration
-	 * @return the main type name specified by the given launch configuration
-	 * @exception CoreException
-	 *                if unable to retrieve the attribute or the attribute is
-	 *                unspecified
-	 */
-	public String verifyMainScriptName(ILaunchConfiguration configuration)
-			throws CoreException {
-		String name = getMainScriptName(configuration);
-		if (name == null) {
-			abort(
-					LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_Main_type_not_specified_11,
-					null,
-					IDLTKLaunchConfigurationConstants.ERR_UNSPECIFIED_MAIN_SCRIPT);
-		}
-		return name;
-	}
-
-	public void launch(ILaunchConfiguration configuration, String mode,
-			ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		try {
-			monitor = getMonitor(monitor);
-
-			monitor.beginTask(MessageFormat.format("{0}...",
-					new String[] { configuration.getName() }), 3);
-
-			// check for cancellation
-			if (monitor.isCanceled()) {
-				return;
-			}
-
-			monitor
-					.subTask(LaunchingMessages.ScriptLaunchConfigurationDelegate_Verifying_launch_attributes____1);
-
-			String mainScriptName = correctScriptPath(configuration);
-			IInterpreterRunner runner = getInterpreterRunner(configuration,
-					mode);
-
-			String workingDir = getWorkingDir(configuration);
-			IProject project = getScriptProject(configuration).getProject();
-
-			// Environment variables
-			String[] envp = buildRunEnvironment(configuration);
-
-			// Interpreter-specific attributes
-			Map InterpreterAttributesMap = getInterpreterSpecificAttributesMap(configuration);			
-			
-			// Create Interpreter config
-			InterpreterRunnerConfiguration runConfig = new InterpreterRunnerConfiguration(
-					project.getLocation().toPortableString()
-					+ Path.SEPARATOR + mainScriptName);
-
-			runConfig.setEnvironment(envp);
-			runConfig.setWorkingDirectory(workingDir);
-			runConfig
-					.setInterpreterSpecificAttributesMap(InterpreterAttributesMap);
-			
-			// set the interpreter and program run arguments
-			setRunArguments(runConfig, configuration);
-
-			// check for cancellation
-			if (monitor.isCanceled()) {
-				return;
-			}
-
-			// done the verification phase
-			monitor.worked(1);
-
-			// Launch the configuration - 1 unit of work
-			runner.run(runConfig, launch, monitor);
-
-			// check for cancellation
-			if (monitor.isCanceled()) {
-				return;
-			}
-		} catch (CoreException e) {
-			// consult status handler if there is one
-			IStatus status = e.getStatus();
-			IStatusHandler handler = DebugPlugin.getDefault().getStatusHandler(
-					status);
-
-			if (handler == null) {
-				throw e;
-			}
-			
-			handler.handleStatus(status, this);
-		} finally {
-			monitor.done();
-		}
-	}
-
-	protected String[] buildRunEnvironment(ILaunchConfiguration configuration)
-			throws CoreException {
-		String buildPath = createBuildPath(configuration);
-		Map systemEnv = DebugPlugin.getDefault().getLaunchManager()
-				.getNativeEnvironmentCasePreserved();
-
-		boolean displayFixed = false; // for linux: preserve $DISPLAY
-		boolean systemRootFixed = false; // for windows: preserve //
-		// SystemRoot
-
-		String[] envp = getEnvironment(configuration);
-		String envLibName = getEnvironmentLibName();
-
-		ArrayList envList = new ArrayList();
-
-		// require all envirinment variables to run correctly on linux.
-		Iterator sysI = systemEnv.keySet().iterator();
-		while (sysI.hasNext()) {
-			String key = (String) sysI.next();
-			// System.out.println("Adding:" + key + " environment variable...");
-			envList.add(key + "=" + systemEnv.get(key));
-			if (key.equals(envLibName)) {
-				buildPath += "" + Path.DEVICE_SEPARATOR + systemEnv.get(key);
-			}
-		}
-
-		// append = so checks below will pass
-		envLibName += "=";
-
-		if (envp != null) {
-			// exclude TCLLIBPATH from environment for future insertion
-			for (int i = 0; i < envp.length; i++) {
-				if (envp[i].startsWith("SystemRoot="))
-					systemRootFixed = true;
-				if (envp[i].startsWith("DISPLAY="))
-					displayFixed = true;
-				if (envp[i].startsWith(envLibName))
-					continue;
-				envList.add(envp[i]);
-			}
-		}
-
-		if (!systemRootFixed && systemEnv.get("SystemRoot") != null)
-			envList.add("SystemRoot=" + systemEnv.get("SystemRoot"));
-
-		if (!displayFixed && systemEnv.get("DISPLAY") != null)
-			envList.add("DISPLAY=" + systemEnv.get("DISPLAY"));
-
-		envList.add(envLibName + buildPath);
-
-		envp = (String[]) envList.toArray(new String[envList.size()]);
-		return envp;
-	}
-
-	/**
-	 * returns the name of the environment variable used to set the interpreter
-	 * library path
-	 */
-	protected abstract String getEnvironmentLibName();
-
-	/**
-	 * set the interpreter run arguments
-	 */
-	private void setRunArguments(InterpreterRunnerConfiguration runConfig,
-			ILaunchConfiguration configuration) throws CoreException {
-		String pgmArgs = getProgramArguments(configuration);
-		String InterpreterArgs = getInterpreterArguments(configuration);
-		ExecutionArguments execArgs = new ExecutionArguments(InterpreterArgs,
-				pgmArgs);
-
-		runConfig.setProgramArguments(execArgs.getScriptArgumentsArray());
-		runConfig.setInterpreterArguments(execArgs
-				.getInterpreterArgumentsArray());
-	}
-
-	private String getWorkingDir(ILaunchConfiguration configuration)
-			throws CoreException {
-		File workingDir = verifyWorkingDirectory(configuration);
-		String workingDirName = null;
-		if (workingDir != null) {
-			workingDirName = workingDir.getAbsolutePath();
-		}
-		return workingDirName;
-	}
-
-	private String createBuildPath(ILaunchConfiguration configuration)
-			throws CoreException {
-		String[] buildpath = getBuildpath(configuration);
-		String[] bootpath = getBootpath(configuration);
-
-		// Build lib path
-		ArrayList libPaths = new ArrayList();
-		for (int i = 0; i < buildpath.length; i++) {
-			libPaths.add(new Path(buildpath[i]));
-		}
-
-		if (bootpath != null) // it may be null, if bootpath is standart
-			for (int i = 0; i < bootpath.length; i++) {
-				libPaths.add(new Path(bootpath[i]));
-			}
-
-		StringBuffer buf = new StringBuffer();
-		for (Iterator iter = libPaths.iterator(); iter.hasNext();) {
-			IPath ipath = (IPath) iter.next();
-			appendLibraryPathToString(buf, ipath, iter != libPaths.iterator());
-		}
-		String libPath = buf.toString();
-		return libPath;
-	}
-
-	protected void appendLibraryPathToString(StringBuffer buf, IPath path,
-			boolean notLast) {
-		buf.append(path.toOSString());
-		if (notLast) {
-			buf.append(Path.DEVICE_SEPARATOR);
-		}
-	}
-
-	private String correctScriptPath(ILaunchConfiguration configuration)
-			throws CoreException {
-		// first verify the script
-		String mainScriptName = verifyMainScriptName(configuration);
-
-		// now convert to correct path
-		/*
-		 * IPath path = Path.fromPortableString(mainScriptName); IWorkspaceRoot
-		 * root = ResourcesPlugin.getWorkspace().getRoot();
-		 * 
-		 * return
-		 * root.getRawLocation().append(path).makeAbsolute().toOSString();
-		 */
-		return mainScriptName;
-	}
-
+	
 	/**
 	 * Verifies the working directory specified by the given launch
 	 * configuration exists, and returns the working directory, or
@@ -871,6 +635,225 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Verifies a main script name is specified by the given launch
+	 * configuration, and returns the script type name.
+	 * 
+	 * @param configuration
+	 *            launch configuration
+	 * @return the main type name specified by the given launch configuration
+	 * @exception CoreException
+	 *                if unable to retrieve the attribute or the attribute is
+	 *                unspecified
+	 */
+	public String verifyMainScriptName(ILaunchConfiguration configuration)
+			throws CoreException {
+		String name = getMainScriptName(configuration);
+		if (name == null) {
+			abort(
+					LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_Main_type_not_specified_11,
+					null,
+					IDLTKLaunchConfigurationConstants.ERR_UNSPECIFIED_MAIN_SCRIPT);
+		}
+		return name;
+	}
+
+	protected String getScriptLaunchPath(ILaunchConfiguration configuration) throws CoreException {
+		String mainScriptName = correctScriptPath(configuration);
+		IProject project = getScriptProject(configuration).getProject();
+		
+		return project.getLocation().toPortableString() + Path.SEPARATOR
+		+ mainScriptName;
+	}
+	
+	public void launch(ILaunchConfiguration configuration, String mode,
+			ILaunch launch, IProgressMonitor monitor) throws CoreException {
+		try {
+			monitor = getMonitor(monitor);
+
+			monitor.beginTask(MessageFormat.format("{0}...",
+					new String[] { configuration.getName() }), 3);
+
+			if (monitor.isCanceled()) {
+				return;
+			}
+
+			monitor.subTask(LaunchingMessages.ScriptLaunchConfigurationDelegate_Verifying_launch_attributes____1);
+		
+			// IInterpreterRunner
+			IInterpreterRunner runner = getInterpreterRunner(configuration, mode);
+
+			// InterpreterRunnerConfiguration
+			InterpreterRunnerConfiguration runConfig = new InterpreterRunnerConfiguration(
+					getScriptLaunchPath(configuration));
+
+			// Environment
+			runConfig.setEnvironment(buildRunEnvironment(configuration));
+			
+			// Working directory
+			runConfig.setWorkingDirectory(getWorkingDir(configuration));
+			
+			// Interpreter specific attributes
+			runConfig.setInterpreterSpecificAttributesMap(getInterpreterSpecificAttributesMap(configuration));
+
+			// Program and Interpreter arguments
+			final String programArgs = getProgramArguments(configuration);
+			final String interpreterArgs = getInterpreterArguments(configuration);
+			ExecutionArguments execArgs = new ExecutionArguments(interpreterArgs, programArgs);
+
+			runConfig.setProgramArguments(execArgs.getScriptArgumentsArray());
+			runConfig.setInterpreterArguments(execArgs.getInterpreterArgumentsArray());
+
+			if (monitor.isCanceled()) {
+				return;
+			}
+
+			// done the verification phase
+			monitor.worked(1);
+
+			// Launch the configuration - 1 unit of work
+			runner.run(runConfig, launch, monitor);
+
+			if (monitor.isCanceled()) {
+				return;
+			}
+		} catch (CoreException e) {
+			// consult status handler if there is one
+			IStatus status = e.getStatus();
+			IStatusHandler handler = DebugPlugin.getDefault().getStatusHandler(
+					status);
+
+			if (handler == null) {
+				throw e;
+			}
+
+			handler.handleStatus(status, this);
+		} finally {
+			monitor.done();
+		}
+	}
+
+	protected String[] buildRunEnvironment(ILaunchConfiguration configuration)
+			throws CoreException {
+		String buildPath = createBuildPath(configuration);
+		Map systemEnv = DebugPlugin.getDefault().getLaunchManager()
+				.getNativeEnvironmentCasePreserved();
+
+		boolean displayFixed = false; // for linux: preserve $DISPLAY
+		boolean systemRootFixed = false; // for windows: preserve //
+		// SystemRoot
+
+		String[] envp = getEnvironment(configuration);
+		String envLibName = getEnvironmentLibName();
+
+		ArrayList envList = new ArrayList();
+
+		// require all envirinment variables to run correctly on linux.
+		Iterator sysI = systemEnv.keySet().iterator();
+		while (sysI.hasNext()) {
+			String key = (String) sysI.next();
+			// System.out.println("Adding:" + key + " environment variable...");
+			envList.add(key + "=" + systemEnv.get(key));
+			if (key.equals(envLibName)) {
+				buildPath += "" + Path.DEVICE_SEPARATOR + systemEnv.get(key);
+			}
+		}
+
+		// append = so checks below will pass
+		envLibName += "=";
+
+		if (envp != null) {
+			// exclude TCLLIBPATH from environment for future insertion
+			for (int i = 0; i < envp.length; i++) {
+				if (envp[i].startsWith("SystemRoot="))
+					systemRootFixed = true;
+				if (envp[i].startsWith("DISPLAY="))
+					displayFixed = true;
+				if (envp[i].startsWith(envLibName))
+					continue;
+				envList.add(envp[i]);
+			}
+		}
+
+		if (!systemRootFixed && systemEnv.get("SystemRoot") != null)
+			envList.add("SystemRoot=" + systemEnv.get("SystemRoot"));
+
+		if (!displayFixed && systemEnv.get("DISPLAY") != null)
+			envList.add("DISPLAY=" + systemEnv.get("DISPLAY"));
+
+		envList.add(envLibName + buildPath);
+
+		envp = (String[]) envList.toArray(new String[envList.size()]);
+		return envp;
+	}
+
+	/**
+	 * returns the name of the environment variable used to set the interpreter
+	 * library path
+	 */
+	protected abstract String getEnvironmentLibName();
+
+	
+
+	private String getWorkingDir(ILaunchConfiguration configuration)
+			throws CoreException {
+		File workingDir = verifyWorkingDirectory(configuration);
+		String workingDirName = null;
+		if (workingDir != null) {
+			workingDirName = workingDir.getAbsolutePath();
+		}
+		return workingDirName;
+	}
+
+	private String createBuildPath(ILaunchConfiguration configuration)
+			throws CoreException {
+		String[] buildpath = getBuildpath(configuration);
+		String[] bootpath = getBootpath(configuration);
+
+		// Build lib path
+		ArrayList libPaths = new ArrayList();
+		for (int i = 0; i < buildpath.length; i++) {
+			libPaths.add(new Path(buildpath[i]));
+		}
+
+		if (bootpath != null) // it may be null, if bootpath is standart
+			for (int i = 0; i < bootpath.length; i++) {
+				libPaths.add(new Path(bootpath[i]));
+			}
+
+		StringBuffer buf = new StringBuffer();
+		for (Iterator iter = libPaths.iterator(); iter.hasNext();) {
+			IPath ipath = (IPath) iter.next();
+			appendLibraryPathToString(buf, ipath, iter != libPaths.iterator());
+		}
+		String libPath = buf.toString();
+		return libPath;
+	}
+
+	protected void appendLibraryPathToString(StringBuffer buf, IPath path,
+			boolean notLast) {
+		buf.append(path.toOSString());
+		if (notLast) {
+			buf.append(Path.DEVICE_SEPARATOR);
+		}
+	}
+
+	private String correctScriptPath(ILaunchConfiguration configuration)
+			throws CoreException {
+		// first verify the script
+		String mainScriptName = verifyMainScriptName(configuration);
+
+		// now convert to correct path
+		/*
+		 * IPath path = Path.fromPortableString(mainScriptName); IWorkspaceRoot
+		 * root = ResourcesPlugin.getWorkspace().getRoot();
+		 * 
+		 * return
+		 * root.getRawLocation().append(path).makeAbsolute().toOSString();
+		 */
+		return mainScriptName;
 	}
 
 	/*

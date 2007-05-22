@@ -54,6 +54,7 @@ public class ScriptStack {
 	}
 
 	public ScriptStackFrame getTopFrame() {
-		return hasFrames() ? frames[0] : null;
+		ScriptStackFrame[] frames = getFrames();
+		return frames.length > 0 ? frames[0] : null;
 	}
 }

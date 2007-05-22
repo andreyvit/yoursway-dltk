@@ -137,21 +137,21 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	}
 
 	public String getVariableText(IScriptVariable variable) {
-		try{
-		if (variable.hasChildren()) {
-			return variable.getName();
-		} else {
-			
-			String valueString = variable.getValueString();
-			if (valueString.length()>0)
-			{
-			return variable.getName() + " = " + valueString;
+		try {
+			String name = variable.getName();
+
+			if (!variable.hasChildren()) {
+				String value = variable.getValueString();
+				if (value != null && value.length() > 0) {
+					return name + " = " + value;
+				}
 			}
-			return variable.getName();
+
+			return name;
+		} catch (DebugException e) {
+			DLTKDebugUIPlugin.log(e);
 		}
-		}catch (DebugException e) {
-			DLTKDebugUIPlugin.log(e);	
-		}
+
 		return variable.toString();
 	}
 
@@ -217,7 +217,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	public void computeDetail(IValue value, IValueDetailListener listener) {
 		String detail = "";
 		try {
-			detail = value.getValueString();			
+			detail = value.getValueString();
 		} catch (DebugException e) {
 			DLTKDebugUIPlugin.log(e);
 		}

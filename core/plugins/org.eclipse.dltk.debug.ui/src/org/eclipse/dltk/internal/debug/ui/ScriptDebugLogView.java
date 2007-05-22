@@ -53,11 +53,21 @@ public class ScriptDebugLogView extends ViewPart {
 	}
 
 	private IAction copyAction;
+	private IAction clearAction;
 
 	public void createActions() {
 		copyAction = new Action("Copy") {
 			public void run() {
 				viewer.doOperation(TextViewer.COPY);
+			}
+		};
+
+		clearAction = new Action("Clear") {
+			public void run() {
+				try {
+					document.replace(0, document.getLength(), "");
+				} catch (BadLocationException e) {
+				}
 			}
 		};
 	}
@@ -68,8 +78,10 @@ public class ScriptDebugLogView extends ViewPart {
 	}
 
 	private void createToolbar() {
-		IToolBarManager manager = getViewSite().getActionBars().getToolBarManager();
+		IToolBarManager manager = getViewSite().getActionBars()
+				.getToolBarManager();
 		manager.add(copyAction);
+		manager.add(clearAction);
 	}
 
 	private void createContextMenu() {
@@ -92,5 +104,6 @@ public class ScriptDebugLogView extends ViewPart {
 
 	private void fillContextMenu(IMenuManager manager) {
 		manager.add(copyAction);
+		manager.add(clearAction);
 	}
 }
