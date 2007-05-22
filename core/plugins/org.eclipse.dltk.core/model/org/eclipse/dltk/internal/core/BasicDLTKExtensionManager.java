@@ -33,6 +33,7 @@ public class BasicDLTKExtensionManager {
 	private Map extensions;
 
 	private String extensionPoint = null;
+	protected String identifier = NATURE_ATTR;
 
 	public static class ElementInfo {
 		int level;
@@ -43,12 +44,12 @@ public class BasicDLTKExtensionManager {
 			this.config = config;
 		}
 
-		protected IConfigurationElement getConfig() {
+		public IConfigurationElement getConfig() {
 			return this.config;
 		}
 	}
 
-	protected BasicDLTKExtensionManager(String extensionPoint) {
+	public BasicDLTKExtensionManager(String extensionPoint) {
 		this.extensionPoint = extensionPoint;
 		Assert.isNotNull(this.extensionPoint);
 	}
@@ -63,7 +64,7 @@ public class BasicDLTKExtensionManager {
 				.getConfigurationElementsFor(this.extensionPoint);
 
 		for (int i = 0; i < cfg.length; i++) {
-			String nature = cfg[i].getAttribute(NATURE_ATTR);
+			String nature = cfg[i].getAttribute(this.identifier);
 			ElementInfo oldInfo = (ElementInfo) extensions.get(nature);
 			if (oldInfo != null) {
 				int lev = getLevel(cfg[i]);

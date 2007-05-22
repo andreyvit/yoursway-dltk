@@ -23,6 +23,7 @@ import org.eclipse.dltk.internal.ui.model.DLTKElementResourceMapping;
 import org.eclipse.dltk.internal.ui.search.DLTKSearchPageScoreComputer;
 import org.eclipse.dltk.internal.ui.search.SearchUtil;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
+import org.eclipse.ui.IActionFilter;
 import org.eclipse.ui.IContainmentAdapter;
 import org.eclipse.ui.IContributorResourceAdapter;
 import org.eclipse.ui.IPersistableElement;
@@ -43,7 +44,7 @@ public class ModelElementAdapterFactory implements IAdapterFactory,
 			IResource.class, IWorkbenchAdapter.class, IResourceLocator.class,
 			IPersistableElement.class, IContributorResourceAdapter.class,
 			IContributorResourceAdapter2.class, ITaskListResourceAdapter.class,
-			IContainmentAdapter.class/*, IHistoryPageSource.class */};
+			IContainmentAdapter.class/*, IHistoryPageSource.class */, IActionFilter.class};
 
 	/*
 	 * Do not use real type since this would cause the Search plug-in to be
@@ -61,12 +62,12 @@ public class ModelElementAdapterFactory implements IAdapterFactory,
 
 	public Object getAdapter(Object element, Class key) {
 		updateLazyLoadedAdapters();
-		IModelElement script = getModelElement(element);
+		IModelElement modelElement = getModelElement(element);
 		if (IPropertySource.class.equals(key)) {
-			return getProperties(script);
+			return getProperties(modelElement);
 		}
 		if (IResource.class.equals(key)) {
-			return getResource(script);
+			return getResource(modelElement);
 		}
 		if (DLTKCore.DEBUG_SCOPES) {
 			System.err
@@ -83,7 +84,7 @@ public class ModelElementAdapterFactory implements IAdapterFactory,
 			return getResourceLocator();
 		}
 		if (IPersistableElement.class.equals(key)) {
-			return new PersistableModelElementFactory(script);
+			return new PersistableModelElementFactory(modelElement);
 		}
 		if (IContributorResourceAdapter.class.equals(key)) {
 			return this;
@@ -96,6 +97,9 @@ public class ModelElementAdapterFactory implements IAdapterFactory,
 		}
 		if (IContainmentAdapter.class.equals(key)) {
 			return getScriptElementContainmentAdapter();
+		}
+		if( IActionFilter.class.equals(key) ) {
+			return new ModelElementActionFilterAdapter();
 		}
 		//if (IHistoryPageSource.class.equals(key)
 		//		&& JavaElementHistoryPageSource.hasEdition(java)) {
@@ -186,7 +190,7 @@ public class ModelElementAdapterFactory implements IAdapterFactory,
 				IResourceLocator.class, IPersistableElement.class,
 				IProject.class, IContributorResourceAdapter.class,
 				IContributorResourceAdapter2.class,
-				ITaskListResourceAdapter.class, IContainmentAdapter.class };
+				ITaskListResourceAdapter.class, IContainmentAdapter.class, IActionFilter.class };
 	}
 
 	private static IResourceLocator getResourceLocator() {

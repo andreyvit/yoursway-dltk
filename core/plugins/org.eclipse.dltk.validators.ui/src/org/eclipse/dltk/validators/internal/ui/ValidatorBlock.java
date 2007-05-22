@@ -458,7 +458,11 @@ public class ValidatorBlock implements ISelectionProvider,
 				if ((e1 instanceof IValidator) && (e2 instanceof IValidator)) {
 					IValidator left = (IValidator) e1;
 					IValidator right = (IValidator) e2;
-					return left.getName().compareToIgnoreCase(right.getName());
+					String name = left.getName();
+					if( name == null ) {
+						return 0;
+					}
+					return name.compareToIgnoreCase(right.getName());
 				}
 				return super.compare(viewer, e1, e2);
 			}

@@ -40,6 +40,12 @@
                label="Remove all validator markers"
                menubarPath="org.eclipse.dltk.validators.ui.menu/top">
          </action>
+         <visibility>
+            <objectState
+                  name="org.eclipse.dltk.validators.ui.visibility"
+                  value="true">
+            </objectState>
+         </visibility>
       </objectContribution>
    </extension>
    <extension
@@ -49,6 +55,13 @@
             id="org.eclipse.dltk.validators.ui.validatorsConsolePageParticipant">
          <enablement></enablement>
       </consolePageParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.ui.actionFilterTester">
+      <actionFilterTester
+            class="org.eclipse.dltk.validators.internal.ui.ValidatorsVisibilityTester"
+            id="org.eclipse.dltk.validators.ui.visibility">
+      </actionFilterTester>
    </extension>
 
 </plugin>

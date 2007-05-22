@@ -25,7 +25,7 @@ public class RubyLaunchConfigurationDelegate extends
 	}
 
 	protected String getEnvironmentLibName() {
-		return "RUBYLIB";
+        return "RUBYLIB";
 	}
 
 	protected String getCharsetInterpreterFlag(String charset) {
@@ -38,7 +38,7 @@ public class RubyLaunchConfigurationDelegate extends
 		}
 
 		return "-KA";
-	}
+    }
 
 	public String getInterpreterArguments(ILaunchConfiguration configuration)
 			throws CoreException {
@@ -51,7 +51,7 @@ public class RubyLaunchConfigurationDelegate extends
 			IFile file = (IFile) resource;
 			String charset = file.getCharset();
 			if (args.indexOf("-K") == -1) {
-				args += getCharsetInterpreterFlag(charset);
+				args += " " + getCharsetInterpreterFlag(charset) + " ";
 			}
 		}
 

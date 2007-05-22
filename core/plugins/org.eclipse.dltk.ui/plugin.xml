@@ -8,6 +8,7 @@
    <extension-point id="editorTextHovers" name="%editorTextHovers" schema="schema/editorTextHovers.exsd"/>
    <extension-point id="scriptDocumentationProviders" name="Script documentation providers" schema="schema/scriptDocumentationProviders.exsd"/>
    <extension-point id="language" name="DLTK UI Language Toolkit" schema="schema/language.exsd"/>
+   <extension-point id="actionFilterTester" name="actionFilterTester" schema="schema/actionFilterTester.exsd"/>
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer class="org.eclipse.dltk.internal.ui.preferences.PreferenceInitializer"/>      
@@ -43,6 +44,9 @@
             <adapter type="org.eclipse.ui.views.tasklist.ITaskListResourceAdapter"/>
             
             <adapter type="org.eclipse.dltk.internal.ui.IResourceLocator"/>
+            <adapter
+                  type="org.eclipse.ui.IActionFilter">
+            </adapter>
       </factory>
       <factory 
             class="org.eclipse.dltk.internal.ui.ResourceAdapterFactory" 
