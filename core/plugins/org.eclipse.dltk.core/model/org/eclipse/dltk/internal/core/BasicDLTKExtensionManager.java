@@ -33,7 +33,14 @@ public class BasicDLTKExtensionManager {
 	private Map extensions;
 
 	private String extensionPoint = null;
-	protected String identifier = NATURE_ATTR;
+	private String identifier = NATURE_ATTR;
+	
+	protected void setIdentifierValue(String identifier ) {
+		this.identifier = identifier;
+		if( this.extensions != null ) {
+			this.extensions = null;
+		}
+	}
 
 	public static class ElementInfo {
 		int level;

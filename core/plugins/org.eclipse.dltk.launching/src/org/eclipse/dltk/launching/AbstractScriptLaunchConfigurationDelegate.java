@@ -797,7 +797,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 
 	
 
-	private String getWorkingDir(ILaunchConfiguration configuration)
+	protected String getWorkingDir(ILaunchConfiguration configuration)
 			throws CoreException {
 		File workingDir = verifyWorkingDirectory(configuration);
 		String workingDirName = null;

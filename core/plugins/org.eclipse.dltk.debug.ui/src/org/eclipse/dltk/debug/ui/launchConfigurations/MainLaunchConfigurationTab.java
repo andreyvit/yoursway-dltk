@@ -238,7 +238,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	 * @param config
 	 *            the configuration we are editing
 	 */
-	private void updateProjectFromConfig(ILaunchConfiguration config) {
+	protected void updateProjectFromConfig(ILaunchConfiguration config) {
 		String projectName = EMPTY_STRING;
 		try {
 			projectName = config.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_PROJECT_NAME, EMPTY_STRING);

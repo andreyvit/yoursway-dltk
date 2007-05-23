@@ -13,7 +13,7 @@ public class ModelElementActionFilterAdapter implements IActionFilter {
 		private static final String CLASS_ATTR = "class";
 		public IdBasedExtensionManager(String extension) {
 			super(extension);
-			this.identifier = "id";
+			setIdentifierValue("id");
 		}
 		public IActionFilterTester getObject(String id) throws CoreException {
 			ElementInfo ext = this.getElementInfo(id);
