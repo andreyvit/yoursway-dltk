@@ -151,6 +151,10 @@ public class ScriptConsoleManager implements ILaunchListener {
 			final ILaunchConfiguration configuration = launch
 					.getLaunchConfiguration();
 			
+			if (configuration == null){
+				return;
+			}
+			
 			final String natureId = configuration.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_NATURE, (String)null);
 			
 			if (natureId == null){
