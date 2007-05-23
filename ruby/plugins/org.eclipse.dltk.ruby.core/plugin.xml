@@ -86,12 +86,8 @@
            describer="org.eclipse.dltk.ruby.core.RubyContentDescriber"
            file-extensions="rb"
            id="org.eclipse.dltk.rubyContentType"
-           name="Ruby content type"
-           priority="high">
-        <property
-              default="org.eclipse.dltk.ruby.ui.editor.RubyEditor"
-              name="editorId">
-        </property>
+           name="%rubyContentType"
+           priority="high">       
      </content-type>
   </extension>
 </plugin>

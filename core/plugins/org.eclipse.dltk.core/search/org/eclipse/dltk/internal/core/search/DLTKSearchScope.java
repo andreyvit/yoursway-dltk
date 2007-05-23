@@ -580,8 +580,8 @@ public class DLTKSearchScope extends AbstractSearchScope {
 	 */
 	public AccessRuleSet getAccessRuleSet(String relativePath,
 			String containerPath) {
-		if( containerPath.startsWith(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY.toString())) {
-			containerPath = IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY.toString();
+		if( containerPath.startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY.toString())) {
+			containerPath = IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY.toString();
 		}
 		int index = indexOf(containerPath, relativePath);
 		if (index == -1) {
@@ -677,7 +677,7 @@ public class DLTKSearchScope extends AbstractSearchScope {
 		int separatorIndex = resourcePathString
 				.indexOf(FILE_ENTRY_SEPARATOR);
 		boolean isZIPFile = separatorIndex != -1;
-		boolean isBuiltin = resourcePathString.startsWith(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY.toString());
+		boolean isBuiltin = resourcePathString.startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY.toString());
 		if (isZIPFile) {
 			// internal or external jar (case 3, 4, or 5)
 			String zipPath = resourcePathString.substring(0, separatorIndex);

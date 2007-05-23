@@ -605,7 +605,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 			// requestingProject);
 			return;
 		}
-		else if( target == null && path.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY)) {
+		else if( target == null && path.equals(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY)) {
 			request = new AddBuiltinFolderToIndex(path, requestingProject, this );
 		}
 		// check if the same request is not already in the queue

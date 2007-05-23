@@ -155,6 +155,9 @@
             icon="icons/tcl_obj.gif"
             id="org.eclipse.dltk.tcl.ui.editor.TclEditor"
             name="DLTK Tcl Editor">
+         <contentTypeBinding
+               contentTypeId="org.eclipse.dltk.tclContentType">
+         </contentTypeBinding>
       </editor>
    </extension>
  <extension

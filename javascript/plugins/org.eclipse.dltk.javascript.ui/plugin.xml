@@ -10,7 +10,11 @@
             extensions="js"
             icon="icons/sourceEditor.gif"
             id="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor"
-            name="DLTK Javascript Editor"/>
+            name="DLTK Javascript Editor">
+         <contentTypeBinding
+               contentTypeId="org.eclipse.dltk.javascriptContentType">
+         </contentTypeBinding>
+      </editor>
    </extension>   
    <extension point="org.eclipse.core.runtime.preferences">
         <initializer class="org.eclipse.dltk.javascript.internal.ui.JavaScriptUIPreferenceInitializer"/>

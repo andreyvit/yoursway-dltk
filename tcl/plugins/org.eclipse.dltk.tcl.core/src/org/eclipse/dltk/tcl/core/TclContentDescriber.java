@@ -1,4 +1,4 @@
-package org.eclipse.dltk.ruby.core;
+package org.eclipse.dltk.tcl.core;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,7 +8,7 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.ITextContentDescriber;
 
-public class RubyContentDescriber implements ITextContentDescriber {
+public class TclContentDescriber implements ITextContentDescriber {
 
 	public int describe(Reader contents, IContentDescription description)
 			throws IOException {
@@ -24,3 +24,4 @@ public class RubyContentDescriber implements ITextContentDescriber {
 		return null;
 	}
 }
+	

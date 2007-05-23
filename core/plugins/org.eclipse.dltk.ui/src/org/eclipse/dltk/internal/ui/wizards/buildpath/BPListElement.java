@@ -189,7 +189,7 @@ public class BPListElement
 				return DLTKCore.newSourceEntry( fPath, inclusionPattern, exclusionPattern, extraAttributes );
 			case IBuildpathEntry.BPE_LIBRARY: {				
 				IAccessRule[] accesRules = ( IAccessRule[] )getAttribute( ACCESSRULES );
-				if( fPath.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY)) {
+				if( fPath.equals(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY)) {
 					return DLTKCore.newBuiltinEntry( fPath,  accesRules, extraAttributes, new IPath[0], BuildpathEntry.INCLUDE_ALL, isExported( ), fExternal );
 				}
 				else {

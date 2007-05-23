@@ -715,7 +715,7 @@ public class SearchEngine {
 				if( documentPath.startsWith(SPECIAL_MIXIN)) {
 					documentPath = documentPath.substring(SPECIAL_MIXIN.length());
 				}
-				String s = IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY.toString();
+				String s = IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY.toString();
 				if( documentPath.indexOf(s) != -1) {
 					documentPath = documentPath.substring(documentPath.indexOf(s));
 				}

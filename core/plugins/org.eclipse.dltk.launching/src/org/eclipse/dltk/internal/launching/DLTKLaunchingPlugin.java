@@ -46,7 +46,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
@@ -305,8 +304,6 @@ public class DLTKLaunchingPlugin extends Plugin implements
 		};
 		
 		libPrefetch.schedule();
-		
-		
 	}
 
 	/**

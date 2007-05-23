@@ -277,7 +277,7 @@ public class IndexSelector {
 		// add builtin indexes
 		IPath path = projectsAndArchives;
 //		if (!mixin) {
-			if (!path.equals(IBuildpathEntry.BUILDIN_EXTERNAL_ENTRY)) {
+			if (!path.equals(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY)) {
 				DLTKProject project = (DLTKProject) getScriptProject(path,
 						model);
 				if (project != null) {
