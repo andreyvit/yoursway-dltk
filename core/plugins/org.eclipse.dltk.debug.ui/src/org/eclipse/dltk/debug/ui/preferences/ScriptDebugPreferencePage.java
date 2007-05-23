@@ -28,14 +28,14 @@ public class ScriptDebugPreferencePage extends
 	}
 
 	protected void setDescription() {
-		setDescription("Common debugger parameters");
+		setDescription("General debugging parameters for all script languages");
 	}
 
 	protected void setPreferenceStore() {
 		setPreferenceStore(new PreferencesAdapter(DLTKDebugPlugin.getDefault()
 				.getPluginPreferences()));
 	}
-	
+
 	public boolean performOk() {
 		super.performOk();
 		DLTKDebugPlugin.getDefault().savePluginPreferences();

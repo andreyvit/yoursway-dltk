@@ -12,11 +12,11 @@ package org.eclipse.dltk.debug.ui.preferences;
 import java.util.ArrayList;
 
 import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
-import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -30,8 +30,20 @@ public class ScriptDebugConfigurationBlock extends AbstractConfigurationBlock {
 
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
 				OverlayPreferenceStore.BOOLEAN,
+				DebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE));
+
+		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
+				OverlayPreferenceStore.BOOLEAN,
+				DebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING));
+
+		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
+				OverlayPreferenceStore.BOOLEAN,
+				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL));
+
+		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
+				OverlayPreferenceStore.BOOLEAN,
 				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL));
-		
+
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
 				OverlayPreferenceStore.BOOLEAN,
 				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS));
@@ -50,26 +62,38 @@ public class ScriptDebugConfigurationBlock extends AbstractConfigurationBlock {
 		store.addKeys(createOverlayStoreKeys());
 	}
 
-	private Control createSettingsGroup(Composite composite) {
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
-		composite.setLayout(layout);
+	private Control createSettingsGroup(Composite parent) {
+		Group group = new Group(parent, SWT.NONE);
+		group.setText("General options");
+		group.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+		GridLayout layout = new GridLayout(2, false);
+		group.setLayout(layout);
 
 		String label = "Break on first line";
-		addCheckBox(composite, label,
-				PreferenceConstants.EDITOR_SMART_HOME_END, 0);
+		addCheckBox(group, label,
+				DebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE, 0);
 
-		return composite;
+		label = "Enable DBGP logging";
+		addCheckBox(group, label,
+				DebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING, 0);
+
+		return group;
 	}
 
 	private Control createVariablesGroup(Composite parent) {
 		Group group = new Group(parent, SWT.NONE);
+		group.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		group.setText("Variables");
 
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
+		GridLayout layout = new GridLayout(2, false);
 		group.setLayout(layout);
 
-		String label = "Show Global Variables";
+		String label = "Show Local Variables";
+		addCheckBox(group, label,
+				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL, 0);
+
+		label = "Show Global Variables";
 		addCheckBox(group, label,
 				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL, 0);
 
@@ -77,20 +101,21 @@ public class ScriptDebugConfigurationBlock extends AbstractConfigurationBlock {
 		addCheckBox(group, label,
 				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS, 0);
 
-		return parent;
+		return group;
 	}
 
 	public Control createControl(Composite parent) {
 		initializeDialogUnits(parent);
 
 		Composite control = new Composite(parent, SWT.NONE);
-		control.setLayout(new GridLayout());
+
+		GridLayout layout = new GridLayout(1, false);
+
+		control.setLayout(layout);
 
 		createSettingsGroup(control);
 		createVariablesGroup(control);
 
 		return control;
-
 	}
-
 }

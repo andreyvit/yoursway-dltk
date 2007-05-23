@@ -14,6 +14,8 @@ public class DebugPreferenceConstants {
 	public static final int DBGP_AVAILABLE_PORT = -1;
 
 	public static final String PREF_DBGP_BREAK_ON_FIRST_LINE = "dbgp_break_on_first_line";
+	
+	public static final String PREF_DBGP_ENABLE_LOGGING = "dbgp_enable_logging";
 
 	public static final String PREF_DBGP_PORT = "dbgp_port";
 
