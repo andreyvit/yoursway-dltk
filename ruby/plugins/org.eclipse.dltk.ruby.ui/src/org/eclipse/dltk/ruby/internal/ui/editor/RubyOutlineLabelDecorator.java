@@ -11,6 +11,7 @@ package org.eclipse.dltk.ruby.internal.ui.editor;
 
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.core.IMember;
+import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.editor.AnnotatedImageDescriptor;
 import org.eclipse.dltk.ruby.core.IRubyConstants;
@@ -59,6 +60,12 @@ public class RubyOutlineLabelDecorator extends LabelProvider implements
 				data = getImageData(DLTKPluginImages.DESC_OVR_ABSTRACT);
 				drawImageTopLeft(data);
 			}
+			
+			if ((flags & IRubyConstants.RubyAliasModifier) != 0) {
+				data = getImageData(DLTKPluginImages.DESC_OVR_CALLER);
+				drawImageTopLeft(data);
+			}
+			
 		}
 	}
 
@@ -66,6 +73,18 @@ public class RubyOutlineLabelDecorator extends LabelProvider implements
 	}
 
 	public String decorateText(String text, Object element) {
+		if (element instanceof IMethod) {
+			IMethod method = (IMethod) element;
+			try {
+				if ((method.getFlags() & IRubyConstants.RubyAliasModifier) != 0) {
+					String oldName = method.getParameters()[0];
+					return method.getElementName();// + " [alias for " + oldName + "]";
+				}
+			} catch (ModelException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return text;
 	}
 

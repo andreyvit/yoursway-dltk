@@ -359,12 +359,13 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 			if (!oldValue.startsWith("$")) {
 				String newValue = alias.getNewValue();
 				ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
-				//TODO: add corrent arguments insertion
+
 				mi.name = newValue;
 				mi.modifiers = IRubyConstants.RubyAliasModifier;
 				mi.nameSourceStart = alias.sourceStart();
 				mi.nameSourceEnd = alias.sourceEnd() - 1;
 				mi.declarationStart = alias.sourceStart();
+				mi.parameterNames = new String[] { oldValue };
 
 				fRequestor.enterMethod(mi);
 				fRequestor.exitMethod(alias.sourceEnd());
