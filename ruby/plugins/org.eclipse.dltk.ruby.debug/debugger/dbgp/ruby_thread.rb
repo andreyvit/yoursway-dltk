@@ -25,7 +25,7 @@ end
 # path -> uri
 #
 def path_to_uri(path)
-   'file:///' + CGI.escape(path)
+   'file:///' + CGI.escape(path).gsub('+', '%20')
 end
 
 SCRIPT_LINES__ = {} unless defined? SCRIPT_LINES__
