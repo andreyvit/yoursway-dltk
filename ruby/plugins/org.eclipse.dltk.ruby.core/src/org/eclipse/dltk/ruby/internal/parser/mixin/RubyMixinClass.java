@@ -185,6 +185,15 @@ public class RubyMixinClass implements IRubyMixinElement {
 						result.add(element);
 						names.add(rubyMixinMethod.getName());
 				}
+				if (element instanceof RubyMixinAlias) {
+					RubyMixinAlias alias = (RubyMixinAlias) element;
+					IRubyMixinElement oldElement = alias.getOldElement();
+					if (oldElement instanceof RubyMixinMethod) {
+						AliasedRubyMixinMethod a = new AliasedRubyMixinMethod(model, alias);
+						result.add(a);
+						names.add(a.getName());
+					}
+				}
 			}
 		}
 		
@@ -224,7 +233,17 @@ public class RubyMixinClass implements IRubyMixinElement {
 		String possibleKey = key + MixinModel.SEPARATOR + name;
 		IMixinElement mixinElement = model.getRawModel().get(possibleKey);
 		if (mixinElement != null) {
-			return (RubyMixinMethod) model.createRubyElement(mixinElement);
+			IRubyMixinElement element = model.createRubyElement(mixinElement);
+			if (element instanceof RubyMixinMethod) {
+				return (RubyMixinMethod) element;
+			} 
+			if (element instanceof RubyMixinAlias) {
+				RubyMixinAlias alias = (RubyMixinAlias) element;
+				IRubyMixinElement oldElement = alias.getOldElement();
+				if (oldElement instanceof RubyMixinMethod) {
+					return new AliasedRubyMixinMethod(model, alias);					
+				}
+			}
 		}
 		
 		RubyMixinClass[] included = this.getIncluded();

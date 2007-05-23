@@ -19,7 +19,7 @@ import org.eclipse.dltk.core.mixin.MixinModel;
 public class RubyMixinMethod implements IRubyMixinElement {
 
 	private final String key;
-	private final RubyMixinModel model;
+	protected final RubyMixinModel model;
 	private IMethod[] sourceMethods;
 
 	public RubyMixinMethod(RubyMixinModel model, String key) {
@@ -72,6 +72,10 @@ public class RubyMixinMethod implements IRubyMixinElement {
 	public IMethod[] getSourceMethods() {
 		if (this.sourceMethods != null)
 			return sourceMethods;		
+		return RubyMixinMethod.getSourceMethods(model, key);
+	}
+	
+	protected static IMethod[] getSourceMethods (RubyMixinModel model, String key) {
 		List result = new ArrayList();
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		Object[] allObjects = mixinElement.getAllObjects();
@@ -84,7 +88,7 @@ public class RubyMixinMethod implements IRubyMixinElement {
 		return (IMethod[]) result.toArray(new IMethod[result.size()]);
 	}
 
-	public RubyMixinVariable[] getFields() {
+	public RubyMixinVariable[] getVariables() {
 		List result = new ArrayList();
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		IMixinElement[] children = mixinElement.getChildren();

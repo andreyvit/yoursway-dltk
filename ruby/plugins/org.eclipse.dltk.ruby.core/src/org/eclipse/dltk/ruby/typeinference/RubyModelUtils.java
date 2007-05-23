@@ -204,7 +204,7 @@ public class RubyModelUtils {
 				if (innerElement instanceof RubyMixinMethod) {
 					RubyMixinMethod method = (RubyMixinMethod) innerElement;
 					selfClass = method.getSelfType();
-					RubyMixinVariable[] fields2 = method.getFields();
+					RubyMixinVariable[] fields2 = method.getVariables();
 					addVariablesFrom(fields2, prefix, result);
 				} else if (innerElement instanceof RubyMixinClass) {
 					selfClass = (RubyMixinClass) innerElement;

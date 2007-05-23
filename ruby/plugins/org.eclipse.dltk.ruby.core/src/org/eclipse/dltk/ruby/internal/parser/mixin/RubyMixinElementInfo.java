@@ -28,6 +28,8 @@ public class RubyMixinElementInfo {
 	public static final int K_VIRTUAL = 5;
 	
 	public static final int K_SUPER = 6;
+	
+	public static final int K_ALIAS = 7;
 
 	private int kind = 0;
 	private Object object = null;

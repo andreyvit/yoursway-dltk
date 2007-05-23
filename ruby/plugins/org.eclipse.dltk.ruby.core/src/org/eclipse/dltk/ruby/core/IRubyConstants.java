@@ -13,5 +13,6 @@ import org.eclipse.dltk.ast.Modifiers;
 
 public interface IRubyConstants {
 	public final static String RUBY_PARTITIONING = "__ruby_partitioning";
-	int RubyAttributeModifier = Modifiers.USER_MODIFIER*2;
+	public static final int RubyAttributeModifier = Modifiers.USER_MODIFIER*2;
+	public static final int RubyAliasModifier = Modifiers.USER_MODIFIER*4;
 }

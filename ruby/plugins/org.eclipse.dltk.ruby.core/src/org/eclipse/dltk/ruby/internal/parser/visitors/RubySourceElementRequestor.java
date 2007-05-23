@@ -21,11 +21,9 @@ import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.PositionInformation;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.expressions.BooleanLiteral;
 import org.eclipse.dltk.ast.expressions.CallArgumentsList;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
@@ -33,11 +31,10 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.ruby.ast.RubyAliasExpression;
 import org.eclipse.dltk.ruby.ast.RubyAssignment;
-import org.eclipse.dltk.ruby.ast.RubyCallArgument;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyConstantDeclaration;
-import org.eclipse.dltk.ruby.ast.RubySymbolReference;
 import org.eclipse.dltk.ruby.core.IRubyConstants;
 
 public class RubySourceElementRequestor extends SourceElementRequestVisitor {
@@ -269,88 +266,45 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 			// CallExpression handling
 			CallExpression callExpression = (CallExpression) expression;
 
-			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			// Only for expermintal purposes!!!
 			String name = callExpression.getName();
 
-			if (isAttrLike(name)) {
-				CallArgumentsList list = callExpression.getArgs();
-				List expr = list.getChilds();
-				Iterator it = expr.iterator();
-				boolean create_reader = false;
-				boolean create_writer = false;
-				if (name.equals(ATTR_READER)) {
-					create_reader = true;
-				} else if (name.equals(ATTR_WRITER)) {
-					create_writer = true;
-				} else if (name.equals(ATTR_ACCESSOR)) {
-					create_reader = true;
-					create_writer = true;
-				} else if (name.equals(ATTR)) {
-					create_reader = true;
-					if (expr.size() > 0) {
-						ASTNode node = (ASTNode) expr.get(expr.size() - 1);
-						if( node instanceof RubyCallArgument ) {
-							node = ((RubyCallArgument)node).getValue();
-						}
-						if (node instanceof BooleanLiteral) {
-							BooleanLiteral lit = (BooleanLiteral) node;
-							create_writer = lit.boolValue();
-						}
-					}
+			if (RubyAttributeHandler.isAttributeCreationCall(callExpression)) {
+				RubyAttributeHandler info = new RubyAttributeHandler(
+						callExpression);
+				List readers = info.getReaders();
+				for (Iterator iterator = readers.iterator(); iterator.hasNext();) {
+					ASTNode n = (ASTNode) iterator.next();
+					String attr = RubyAttributeHandler.getText(n);
+					ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
+					mi.name = attr;
+					mi.modifiers = IRubyConstants.RubyAttributeModifier;
+					mi.nameSourceStart = n.sourceStart();
+					mi.nameSourceEnd = n.sourceEnd() - 1;
+					mi.declarationStart = n.sourceStart();
 
+					fRequestor.enterMethod(mi);
+					fRequestor.exitMethod(n.sourceEnd());
 				}
-				// List args = new ArrayList();
-				while (it.hasNext()) {
-					ASTNode sr = (ASTNode) it.next();
-					if (!(sr instanceof RubyCallArgument)) {
-						continue;
-					}
-					sr = ((RubyCallArgument) sr).getValue();
-					if (sr == null) {
-						continue;
-					}
-					String attr = null;
-					if (sr instanceof RubySymbolReference) {
-						attr = ((RubySymbolReference) sr).getName();
-					} else if (sr instanceof StringLiteral) {
-						attr = ((StringLiteral) sr).getValue();
-					}
-					if (attr == null) {
-						continue;
-					}
-					ASTNode rubySymbolReference = ((ASTNode) sr);
-					if (create_reader) {
-						ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
-						mi.name = attr;
-						mi.modifiers = IRubyConstants.RubyAttributeModifier;
-						mi.nameSourceStart = rubySymbolReference.sourceStart();
-						mi.nameSourceEnd = rubySymbolReference.sourceEnd() - 1;
-						mi.declarationStart = rubySymbolReference.sourceStart();
+				List writers = info.getWriters();
+				for (Iterator iterator = writers.iterator(); iterator.hasNext();) {
+					ASTNode n = (ASTNode) iterator.next();
+					String attr = RubyAttributeHandler.getText(n);
+					ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
+					mi.parameterNames = new String[] { VALUE };
+					mi.name = attr + "=";
+					mi.modifiers = IRubyConstants.RubyAttributeModifier;
+					mi.nameSourceStart = n.sourceStart();
+					mi.nameSourceEnd = n.sourceEnd() - 1;
+					mi.declarationStart = n.sourceStart();
 
-						fRequestor.enterMethod(mi);
-						fRequestor.exitMethod(rubySymbolReference.sourceEnd());
-					}
-					if (create_writer) {
-						ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
-						mi.parameterNames = new String[] { VALUE };
-						mi.name = attr + "=";
-						mi.modifiers = IRubyConstants.RubyAttributeModifier;
-						mi.nameSourceStart = rubySymbolReference.sourceStart();
-						mi.nameSourceEnd = rubySymbolReference.sourceEnd() - 1;
-						mi.declarationStart = rubySymbolReference.sourceStart();
-
-						fRequestor.enterMethod(mi);
-						fRequestor.exitMethod(rubySymbolReference.sourceEnd());
-					}
+					fRequestor.enterMethod(mi);
+					fRequestor.exitMethod(n.sourceEnd());
 				}
 			}
-			
+
 			if (name.equals("require")) {
-				//TODO
+				// TODO
 			}
-			
-			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 			// Arguments
 			int argsCount = 0;
@@ -399,6 +353,22 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 			fRequestor.enterField(info);
 			fRequestor.exitField(constName.sourceEnd() - 1);
+		} else if (expression instanceof RubyAliasExpression) {
+			RubyAliasExpression alias = (RubyAliasExpression) expression;
+			String oldValue = alias.getOldValue();
+			if (!oldValue.startsWith("$")) {
+				String newValue = alias.getNewValue();
+				ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
+				//TODO: add corrent arguments insertion
+				mi.name = newValue;
+				mi.modifiers = IRubyConstants.RubyAliasModifier;
+				mi.nameSourceStart = alias.sourceStart();
+				mi.nameSourceEnd = alias.sourceEnd() - 1;
+				mi.declarationStart = alias.sourceStart();
+
+				fRequestor.enterMethod(mi);
+				fRequestor.exitMethod(alias.sourceEnd());
+			}
 		}
 
 		return true;

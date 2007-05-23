@@ -222,10 +222,11 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					reportKeyword(keywords[j]);
 				}				
 			}
+			
 
 			ModuleDeclaration moduleDeclaration = parser.parse(content
 					.toCharArray(), null);
-
+			
 			if (afterDollar(content, position)) {
 				completeGlobalVar((org.eclipse.dltk.core.ISourceModule) module,
 						moduleDeclaration, "$", position);

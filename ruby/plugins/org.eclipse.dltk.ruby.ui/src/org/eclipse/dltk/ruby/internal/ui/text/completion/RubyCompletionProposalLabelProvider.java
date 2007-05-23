@@ -28,12 +28,12 @@ public class RubyCompletionProposalLabelProvider extends
 		nameBuffer.append('(');
 		appendUnboundedParameterList(nameBuffer, methodProposal);
 		nameBuffer.append(')');
-		
-		
+
 		IMethod method = (IMethod) methodProposal.getModelElement();
 		nameBuffer.append(" - ");
-		if (method instanceof FakeMethod) {
-			nameBuffer.append(((FakeMethod)method).getReceiver());
+		if (method instanceof FakeMethod
+				&& ((FakeMethod) method).getReceiver() != null) {
+			nameBuffer.append(((FakeMethod) method).getReceiver());
 		} else {
 			IModelElement parent = method.getParent();
 			if (parent instanceof IType) {
@@ -58,11 +58,13 @@ public class RubyCompletionProposalLabelProvider extends
 		nameBuffer.append('(');
 		appendUnboundedParameterList(nameBuffer, methodProposal);
 		nameBuffer.append(")"); //$NON-NLS-1$
-		
+
 		IMethod method = (IMethod) methodProposal.getModelElement();
 		nameBuffer.append(" - ");
-		if (method instanceof FakeMethod) {
-			nameBuffer.append(((FakeMethod)method).getReceiver());
+		if (method instanceof FakeMethod
+				&& ((FakeMethod) method).getReceiver() != null) {
+			String receiver = ((FakeMethod) method).getReceiver();
+			nameBuffer.append(receiver);
 		} else {
 			IModelElement parent = method.getParent();
 			if (parent instanceof IType) {
@@ -75,25 +77,24 @@ public class RubyCompletionProposalLabelProvider extends
 
 		return nameBuffer.toString();
 	}
-	
+
 	protected String createTypeProposalLabel(CompletionProposal typeProposal) {
 		StringBuffer nameBuffer = new StringBuffer();
 
 		nameBuffer.append(typeProposal.getName());
 
-		
 		IType type = (IType) typeProposal.getModelElement();
 		nameBuffer.append(" - ");
 		IModelElement parent = type.getParent();
 		if (parent instanceof IType) {
 			IType type2 = (IType) parent;
-			nameBuffer.append(type2.getElementName()); //XXX, fqn may be better idea
+			nameBuffer.append(type2.getElementName()); // XXX, fqn may be
+			// better idea
 		} else {
 			nameBuffer.append(parent.getElementName());
 		}
-		
+
 		return nameBuffer.toString();
 	}
-	
-	
+
 }

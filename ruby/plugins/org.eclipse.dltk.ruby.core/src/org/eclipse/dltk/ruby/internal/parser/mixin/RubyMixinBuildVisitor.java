@@ -10,6 +10,8 @@
 package org.eclipse.dltk.ruby.internal.parser.mixin;
 
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
 
 import org.eclipse.core.runtime.Assert;
@@ -24,6 +26,7 @@ import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
+import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -34,6 +37,7 @@ import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
 import org.eclipse.dltk.internal.core.ModelElement;
+import org.eclipse.dltk.ruby.ast.RubyAliasExpression;
 import org.eclipse.dltk.ruby.ast.RubyAssignment;
 import org.eclipse.dltk.ruby.ast.RubyCallArgument;
 import org.eclipse.dltk.ruby.ast.RubyClassDeclaration;
@@ -43,7 +47,10 @@ import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
 import org.eclipse.dltk.ruby.ast.RubySelfReference;
 import org.eclipse.dltk.ruby.ast.RubySingletonClassDeclaration;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
+import org.eclipse.dltk.ruby.core.IRubyConstants;
 import org.eclipse.dltk.ruby.core.model.FakeField;
+import org.eclipse.dltk.ruby.core.model.FakeMethod;
+import org.eclipse.dltk.ruby.internal.parser.visitors.RubyAttributeHandler;
 
 public class RubyMixinBuildVisitor extends ASTVisitor {
 
@@ -397,16 +404,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 				scope.reportVariable(name, obj);
 			}
 		} else if (s instanceof CallExpression) {
-			CallExpression call = (CallExpression) s;
-			if (call.getReceiver() == null && call.getName().equals("include")) {
-				ASTNode expr = (ASTNode) call.getArgs().getExpressions().get(0);
-				if (expr instanceof RubyCallArgument)
-					expr = ((RubyCallArgument) expr).getValue();
-				Scope scope = peekScope();
-				String incl = evaluateClassKey(expr);
-				if (incl != null)
-					scope.reportInclude(incl);
-			}
+			visit((CallExpression) s);
 		} else if (s instanceof RubyConstantDeclaration) {
 			RubyConstantDeclaration constantDeclaration = (RubyConstantDeclaration) s;
 			SimpleReference name2 = constantDeclaration.getName();
@@ -429,6 +427,57 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			scope.reportVariable(name, obj);
 			if (closeScope)
 				this.scopes.pop();
+		} else if (s instanceof RubyAliasExpression) {
+			RubyAliasExpression alias = (RubyAliasExpression) s;
+			String oldValue = alias.getOldValue();
+			if (!oldValue.startsWith("$")) {
+				String newValue = alias.getNewValue();
+				String nkey = peekScope().reportMethod(newValue, null);
+				report(nkey, new RubyMixinElementInfo(
+						RubyMixinElementInfo.K_ALIAS, alias));
+			}
+		}
+		return true;
+	}
+
+	public boolean visit(CallExpression call) throws Exception {
+		if (call.getReceiver() == null && call.getName().equals("include")) {
+			ASTNode expr = (ASTNode) call.getArgs().getChilds().get(0);
+			if (expr instanceof RubyCallArgument)
+				expr = ((RubyCallArgument) expr).getValue();
+			Scope scope = peekScope();
+			String incl = evaluateClassKey(expr);
+			if (incl != null)
+				scope.reportInclude(incl);
+			return false;
+		} else if (RubyAttributeHandler.isAttributeCreationCall(call)
+				&& sourceModule != null) {
+			Scope scope = peekScope();
+			RubyAttributeHandler info = new RubyAttributeHandler(call);
+			List readers = info.getReaders();
+			for (Iterator iterator = readers.iterator(); iterator.hasNext();) {
+				ASTNode n = (ASTNode) iterator.next();
+				String attr = RubyAttributeHandler.getText(n);
+				if (attr == null)
+					continue;
+				FakeMethod fakeMethod = new FakeMethod(
+						(ModelElement) sourceModule, attr, n.sourceStart(),
+						attr.length(), n.sourceStart(), attr.length());
+				scope.reportMethod(attr, fakeMethod);
+			}
+			List writers = info.getWriters();
+			for (Iterator iterator = writers.iterator(); iterator.hasNext();) {
+				ASTNode n = (ASTNode) iterator.next();
+				String attr = RubyAttributeHandler.getText(n);
+				if (attr == null)
+					continue;
+				FakeMethod fakeMethod = new FakeMethod(
+						(ModelElement) sourceModule, attr + "=", n
+								.sourceStart(), attr.length(), n.sourceStart(),
+						attr.length());
+				scope.reportMethod(attr + "=", fakeMethod);
+			}
+			return false;
 		}
 		return true;
 	}
@@ -436,10 +485,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	public boolean visit(TypeDeclaration decl) throws Exception {
 		IType obj = null;
 		if (moduleAvailable) {
-// System.out.println();
 			IModelElement elementFor = findModelElementFor(decl);
-// if (!(elementFor instanceof IType))
-// System.out.println();
 			obj = (IType) elementFor;
 		}
 		boolean module = (decl.getModifiers() & Modifiers.AccModule) != 0;
@@ -491,8 +537,9 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 					SuperclassReferenceInfo ref = new SuperclassReferenceInfo(
 							s, this.module, sourceModule);
 					Scope scope = peekScope();
-					report(scope.getKey() + INSTANCE_SUFFIX, new RubyMixinElementInfo(
-							RubyMixinElementInfo.K_SUPER, ref));
+					report(scope.getKey() + INSTANCE_SUFFIX,
+							new RubyMixinElementInfo(
+									RubyMixinElementInfo.K_SUPER, ref));
 				}
 			}
 			return true;
@@ -513,12 +560,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		info.object = object;
 		if (requestor != null) {
 			requestor.reportElement(info);
-			// if (DLTKCore.DEBUG_INDEX) {
 // System.out.println("Mixin reported: " + key);
-
-			// }
-// if (key.startsWith("Object"))
-// System.out.println("######################## Object key reported: " + key);
 		}
 		allReportedKeys.add(key);
 		return key;
@@ -579,7 +621,6 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 				} else if (nodes[i] instanceof MethodDeclaration) {
 					visitor.visit((MethodDeclaration) nodes[i]);
 				} else {
-// Statement s = (Statement) nodes[i];
 					visitor.visit(nodes[i]);
 				}
 			} catch (Exception e) {

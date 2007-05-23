@@ -12,6 +12,7 @@ package org.eclipse.dltk.ruby.internal.parser.mixin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
+import org.eclipse.dltk.ruby.ast.RubyAliasExpression;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 
@@ -68,7 +69,7 @@ public class RubyMixinModel {
 			return null;
 		for (int i = 0; i < objects.length; i++) {
 			RubyMixinElementInfo obj = (RubyMixinElementInfo) objects[i];
-			if (obj == null)
+			if (obj == null || obj.getObject() == null)
 				continue;
 			switch (obj.getKind()) {
 				case RubyMixinElementInfo.K_CLASS:
@@ -76,8 +77,10 @@ public class RubyMixinModel {
 					return new RubyMixinClass(this, element.getKey(), false);
 				case RubyMixinElementInfo.K_MODULE:
 					return new RubyMixinClass(this, element.getKey(), true);
-				case RubyMixinElementInfo.K_METHOD:
+				case RubyMixinElementInfo.K_METHOD:					
 					return new RubyMixinMethod(this, element.getKey());
+				case RubyMixinElementInfo.K_ALIAS:					
+					return new RubyMixinAlias(this, element.getKey());
 				case RubyMixinElementInfo.K_VARIABLE:
 					return new RubyMixinVariable(this, element.getKey());
 			}						

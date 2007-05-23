@@ -258,4 +258,12 @@ public class RubySyntaxUtils {
 		}
 	}
 	
+	public static boolean isRubyOperator(String op) {
+		for (int i = 0; i < operatorMethods.length; i++) {
+			if (op.equals(operatorMethods[i]))
+				return true;
+		}
+		return false;
+	}
+	
 }
