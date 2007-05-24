@@ -43,7 +43,7 @@
                class="org.eclipse.dltk.debug.ui.actions.EntryToggleAction"
                menubarPath="emptyBreakpointGroup"
                enablesFor="+"
-               id="org.eclipse.jdt.debug.ui.actions.EntryToggle">
+               id="org.eclipse.dltk.debug.ui.actions.EntryToggle">
          </action>
          <action
                label="%exitAction.label"
@@ -52,7 +52,7 @@
                class="org.eclipse.dltk.debug.ui.actions.ExitToggleAction"
                menubarPath="emptyBreakpointGroup"
                enablesFor="+"
-               id="org.eclipse.jdt.debug.ui.actions.ExitToggle">
+               id="org.eclipse.dltk.debug.ui.actions.ExitToggle">
          </action>
       </objectContribution>
       <objectContribution
@@ -60,10 +60,9 @@
             id="org.eclipse.dltk.debug.ScriptBreakpointActions">                
          <action
                class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesAction"
-               definitionId="org.eclipse.jdt.debug.ui.breakpoint.properties"
                enablesFor="1"
                helpContextId="breakpoint_properties_action_context"
-               id="org.eclipse.jdt.debug.ui.actions.JavaBreakpointProperties"
+               id="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointProperties"
                label="%ScriptBreakpointProperties.label"
                menubarPath="additions">
          </action>
@@ -194,10 +193,10 @@
          
          <viewContribution
             targetID="org.eclipse.debug.ui.VariableView"
-            id="org.eclipse.jdt.debug.ui.VariableViewActions">
+            id="org.eclipse.dltk.debug.ui.VariableViewActions">
          <action
                class="org.eclipse.dltk.debug.ui.ToggleShowGlobalVariablesActionDelegate"
-               id="org.eclipse.jdt.debug.ui.variableViewActions.ShowStatic"
+               id="org.eclipse.dltk.debug.ui.variableViewActions.ShowStatic"
                label="%ShowGlobalVarsAction.label"
                menubarPath="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu/scriptPart"
                style="toggle"
@@ -205,7 +204,7 @@
          </action>
          <action
                class="org.eclipse.dltk.debug.ui.ToggleShowClassVariablesActionDelegate"
-               id="org.eclipse.jdt.debug.ui.variableViewActions.ShowStatic"
+               id="org.eclipse.dltk.debug.ui.variableViewActions.ShowStatic"
                label="%ShowClassVarsAction.label"
                menubarPath="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu/scriptPart"
                style="toggle"
@@ -219,7 +218,4 @@
          </menu>
       </viewContribution>
    </extension>
-
-
-
-</plugin>
+  </plugin>
