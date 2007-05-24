@@ -13,6 +13,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.ruby.core.RubyNature;
@@ -24,8 +26,22 @@ public class RubyLaunchConfigurationDelegate extends
 		return RubyNature.NATURE_ID;
 	}
 
-	protected String getEnvironmentLibName() {
-        return "RUBYLIB";
+	protected String createNativeBuildPath(IPath[] paths) {
+		StringBuffer sb = new StringBuffer();
+
+		char separator = Platform.getOS().equals(Platform.OS_WIN32) ? ';' : ':';
+
+		for (int i = 0; i < paths.length; ++i) {
+			IPath path = paths[i];
+
+			sb.append(path.toOSString());
+
+			if (i < paths.length - 1) {
+				sb.append(separator);
+			}
+		}
+
+		return sb.toString();
 	}
 
 	protected String getCharsetInterpreterFlag(String charset) {
@@ -38,12 +54,13 @@ public class RubyLaunchConfigurationDelegate extends
 		}
 
 		return "-KA";
-    }
+	}
 
 	public String getInterpreterArguments(ILaunchConfiguration configuration)
 			throws CoreException {
 		String args = super.getInterpreterArguments(configuration);
 
+		// Encoding
 		IProject project = getScriptProject(configuration).getProject();
 		IResource resource = project
 				.findMember(getMainScriptName(configuration));
@@ -54,6 +71,9 @@ public class RubyLaunchConfigurationDelegate extends
 				args += " " + getCharsetInterpreterFlag(charset) + " ";
 			}
 		}
+
+		// Library path
+		args += " -I" + createBuildPath(configuration);
 
 		return args;
 	}

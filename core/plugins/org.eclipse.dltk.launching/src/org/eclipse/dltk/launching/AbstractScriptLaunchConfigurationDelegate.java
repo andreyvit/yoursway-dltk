@@ -567,7 +567,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Verifies the working directory specified by the given launch
 	 * configuration exists, and returns the working directory, or
@@ -660,14 +660,15 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		return name;
 	}
 
-	protected String getScriptLaunchPath(ILaunchConfiguration configuration) throws CoreException {
+	protected String getScriptLaunchPath(ILaunchConfiguration configuration)
+			throws CoreException {
 		String mainScriptName = correctScriptPath(configuration);
 		IProject project = getScriptProject(configuration).getProject();
-		
+
 		return project.getLocation().toPortableString() + Path.SEPARATOR
-		+ mainScriptName;
+				+ mainScriptName;
 	}
-	
+
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		try {
@@ -680,10 +681,12 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 				return;
 			}
 
-			monitor.subTask(LaunchingMessages.ScriptLaunchConfigurationDelegate_Verifying_launch_attributes____1);
-		
+			monitor
+					.subTask(LaunchingMessages.ScriptLaunchConfigurationDelegate_Verifying_launch_attributes____1);
+
 			// IInterpreterRunner
-			IInterpreterRunner runner = getInterpreterRunner(configuration, mode);
+			IInterpreterRunner runner = getInterpreterRunner(configuration,
+					mode);
 
 			// InterpreterRunnerConfiguration
 			InterpreterRunnerConfiguration runConfig = new InterpreterRunnerConfiguration(
@@ -691,20 +694,23 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 
 			// Environment
 			runConfig.setEnvironment(buildRunEnvironment(configuration));
-			
+
 			// Working directory
 			runConfig.setWorkingDirectory(getWorkingDir(configuration));
-			
+
 			// Interpreter specific attributes
-			runConfig.setInterpreterSpecificAttributesMap(getInterpreterSpecificAttributesMap(configuration));
+			runConfig
+					.setInterpreterSpecificAttributesMap(getInterpreterSpecificAttributesMap(configuration));
 
 			// Program and Interpreter arguments
 			final String programArgs = getProgramArguments(configuration);
 			final String interpreterArgs = getInterpreterArguments(configuration);
-			ExecutionArguments execArgs = new ExecutionArguments(interpreterArgs, programArgs);
+			ExecutionArguments execArgs = new ExecutionArguments(
+					interpreterArgs, programArgs);
 
 			runConfig.setProgramArguments(execArgs.getScriptArgumentsArray());
-			runConfig.setInterpreterArguments(execArgs.getInterpreterArgumentsArray());
+			runConfig.setInterpreterArguments(execArgs
+					.getInterpreterArgumentsArray());
 
 			if (monitor.isCanceled()) {
 				return;
@@ -737,65 +743,21 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 
 	protected String[] buildRunEnvironment(ILaunchConfiguration configuration)
 			throws CoreException {
-		String buildPath = createBuildPath(configuration);
 		Map systemEnv = DebugPlugin.getDefault().getLaunchManager()
 				.getNativeEnvironmentCasePreserved();
 
-		boolean displayFixed = false; // for linux: preserve $DISPLAY
-		boolean systemRootFixed = false; // for windows: preserve //
-		// SystemRoot
+		List variables = new ArrayList();
 
-		String[] envp = getEnvironment(configuration);
-		String envLibName = getEnvironmentLibName();
+		Iterator it = systemEnv.keySet().iterator();
+		while (it.hasNext()) {
+			Object key = it.next();
+			Object value = systemEnv.get(key);
 
-		ArrayList envList = new ArrayList();
-
-		// require all envirinment variables to run correctly on linux.
-		Iterator sysI = systemEnv.keySet().iterator();
-		while (sysI.hasNext()) {
-			String key = (String) sysI.next();
-			// System.out.println("Adding:" + key + " environment variable...");
-			envList.add(key + "=" + systemEnv.get(key));
-			if (key.equals(envLibName)) {
-				buildPath += "" + Path.DEVICE_SEPARATOR + systemEnv.get(key);
-			}
+			variables.add(key + "=" + value);
 		}
 
-		// append = so checks below will pass
-		envLibName += "=";
-
-		if (envp != null) {
-			// exclude TCLLIBPATH from environment for future insertion
-			for (int i = 0; i < envp.length; i++) {
-				if (envp[i].startsWith("SystemRoot="))
-					systemRootFixed = true;
-				if (envp[i].startsWith("DISPLAY="))
-					displayFixed = true;
-				if (envp[i].startsWith(envLibName))
-					continue;
-				envList.add(envp[i]);
-			}
-		}
-
-		if (!systemRootFixed && systemEnv.get("SystemRoot") != null)
-			envList.add("SystemRoot=" + systemEnv.get("SystemRoot"));
-
-		if (!displayFixed && systemEnv.get("DISPLAY") != null)
-			envList.add("DISPLAY=" + systemEnv.get("DISPLAY"));
-
-		envList.add(envLibName + buildPath);
-
-		envp = (String[]) envList.toArray(new String[envList.size()]);
-		return envp;
+		return (String[]) variables.toArray(new String[variables.size()]);
 	}
-
-	/**
-	 * returns the name of the environment variable used to set the interpreter
-	 * library path
-	 */
-	protected abstract String getEnvironmentLibName();
-
-	
 
 	protected String getWorkingDir(ILaunchConfiguration configuration)
 			throws CoreException {
@@ -807,37 +769,39 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		return workingDirName;
 	}
 
-	private String createBuildPath(ILaunchConfiguration configuration)
+	protected String createBuildPath(ILaunchConfiguration configuration)
 			throws CoreException {
+		List paths = new ArrayList();
+
+		// Buildpath
 		String[] buildpath = getBuildpath(configuration);
-		String[] bootpath = getBootpath(configuration);
-
-		// Build lib path
-		ArrayList libPaths = new ArrayList();
 		for (int i = 0; i < buildpath.length; i++) {
-			libPaths.add(new Path(buildpath[i]));
+			paths.add(new Path(buildpath[i]));
 		}
 
-		if (bootpath != null) // it may be null, if bootpath is standart
+		// Bootpath
+		String[] bootpath = getBootpath(configuration);
+		if (bootpath != null) {
+			// it may be null, if bootpath is standard
 			for (int i = 0; i < bootpath.length; i++) {
-				libPaths.add(new Path(bootpath[i]));
+				paths.add(new Path(bootpath[i]));
 			}
-
-		StringBuffer buf = new StringBuffer();
-		for (Iterator iter = libPaths.iterator(); iter.hasNext();) {
-			IPath ipath = (IPath) iter.next();
-			appendLibraryPathToString(buf, ipath, iter != libPaths.iterator());
 		}
-		String libPath = buf.toString();
-		return libPath;
+
+		return createNativeBuildPath((IPath[]) paths.toArray(new IPath[paths
+				.size()]));
 	}
 
-	protected void appendLibraryPathToString(StringBuffer buf, IPath path,
-			boolean notLast) {
-		buf.append(path.toOSString());
-		if (notLast) {
-			buf.append(Path.DEVICE_SEPARATOR);
+	protected String createNativeBuildPath(IPath[] paths) {
+		//TODO: refactor this
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < paths.length; ++i) {
+			sb.append(paths[i].toOSString());
+			if (i < paths.length - 1) {
+				sb.append(Path.DEVICE_SEPARATOR);
+			}
 		}
+		return sb.toString();
 	}
 
 	private String correctScriptPath(ILaunchConfiguration configuration)
@@ -856,34 +820,17 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		return mainScriptName;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.debug.core.model.LaunchConfigurationDelegate#getBuildOrder(org.eclipse.debug.core.ILaunchConfiguration,
-	 *      java.lang.String)
-	 */
 	protected IProject[] getBuildOrder(ILaunchConfiguration configuration,
 			String mode) throws CoreException {
 		return fOrderedProjects;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.debug.core.model.LaunchConfigurationDelegate#getProjectsForProblemSearch(org.eclipse.debug.core.ILaunchConfiguration,
-	 *      java.lang.String)
-	 */
 	protected IProject[] getProjectsForProblemSearch(
 			ILaunchConfiguration configuration, String mode)
 			throws CoreException {
 		return fOrderedProjects;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.debug.core.model.LaunchConfigurationDelegate#isLaunchProblem(org.eclipse.core.resources.IMarker)
-	 */
 	protected boolean isLaunchProblem(IMarker problemMarker)
 			throws CoreException {
 		return super.isLaunchProblem(problemMarker)
