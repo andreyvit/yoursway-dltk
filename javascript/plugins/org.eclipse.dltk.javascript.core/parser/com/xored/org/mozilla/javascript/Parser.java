@@ -1549,19 +1549,27 @@ public class Parser
         return nf.createName("err"); // Only reached on error.  Try to continue.
 
     }
+    
+    private IXMLCallback cb;
+    public void setXMLCallback(IXMLCallback callback){
+    	this.cb=callback;
+    }
 
     private Node xmlInitializer() throws IOException
     {
+    	int offset=ts.getCursor();
         int tt = ts.getFirstXMLToken();
         if (tt != Token.XML && tt != Token.XMLEND) {
             reportError("msg.syntax");
             return null;
         }
+        
 
         /* Make a NEW node to append to. */
         Node pnXML = nf.createPositionedLeaf(Token.NEW,ts.getCursor());
 
         String xml = ts.getString();
+        if (cb!=null)cb.xmlTokenStart(offset,xml,ts.getCursor());
         boolean fAnonymous = xml.trim().startsWith("<>");
 
         Node pn = nf.createName(fAnonymous ? "XMLList" : "XML");

@@ -57,7 +57,7 @@ import java.io.Reader;
  * @author Brendan Eich
  */
 
-class TokenStream {
+public class TokenStream {
 	/*
 	 * For chars - because we need something out-of-range to check. (And
 	 * checking EOF by exception is annoying.) Note distinction from EOF token
@@ -65,7 +65,7 @@ class TokenStream {
 	 */
 	private final static int EOF_CHAR = -1;
 
-	TokenStream(Parser parser, Reader sourceReader, String sourceString,
+	public TokenStream(Parser parser, Reader sourceReader, String sourceString,
 			int lineno) {
 		this.parser = parser;
 
@@ -1241,6 +1241,10 @@ class TokenStream {
 				default:
 					addToString(c);
 					break;
+				case '\r':
+				case '\n':
+					addToString(c);
+					break;
 				}
 			}
 		}
@@ -1474,7 +1478,7 @@ class TokenStream {
 	}
 
 	final int getCursor() {
-		return offset;
+		return offset-ungetCursor;
 	}
 
 	private int offset;

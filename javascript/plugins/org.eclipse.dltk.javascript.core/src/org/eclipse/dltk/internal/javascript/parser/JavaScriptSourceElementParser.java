@@ -78,7 +78,7 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 					if (fReporter != null)
 						fReporter.reportProblem(new DefaultProblem(arg1, arg0,
 								0, new String[] {}, ProblemSeverities.Error,
-								arg4 - arg3.length(), arg4, arg2));
+								arg4 - (arg3!=null?arg3.length():0), arg4, arg2));
 				} catch (CoreException e) {
 					e.printStackTrace();
 				}
