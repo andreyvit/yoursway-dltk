@@ -61,7 +61,6 @@ public class TclSourceViewerConfiguration extends
 
 	public String[] getIndentPrefixes(ISourceViewer sourceViewer,
 			String contentType) {
-		// TODO: what's a shit this method returns?
 		return new String[] { "\t", "    " }; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 

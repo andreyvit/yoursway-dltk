@@ -1,28 +1,21 @@
-# Print the contents of a global array on stdout.
-#
-# RCS: @(#) $Id: PreviewFile.txt,v 1.1 2007/02/22 08:40:13 asobolev Exp $
-#
-# Copyright (c) 1991-1993 The Regents of the University of California.
-# Copyright (c) 1994 Sun Microsystems, Inc.
-#
-# See the file "license.terms" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+###############################################################################
+# Copyright (c) 2005, 2007 IBM Corporation and others.
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v1.0
+# which accompanies this distribution, and is available at
+# http://www.eclipse.org/legal/epl-v10.html
 #
 
-proc parray {a {pattern *}} {
-    upvar 1 $a array
-    if {![array exists array]} {
-        error "\"$a\" isn't an array"
-    }
-    set maxl 0
-    foreach name [lsort [array names array $pattern]] {
-        if {[string length $name] > $maxl} {
-            set maxl [string length $name]
-        }
-    }
-    set maxl [expr {$maxl + [string length $a] + 2}]
-    foreach name [lsort [array names array $pattern]] {
-        set nameString [format %s(%s) $a $name]
-        puts stdout [format "%-*s = %s" $maxl $nameString $array($name)]
-    }
+###############################################################################
+
+namespace eval myNamespace {
+	proc myproc ( a { b 20 } } {
+		upvar 1 $a array
+		s = [string length $a]
+		puts $array
+		set t 2.4
+		set s "Alfa"
+		return [expr { s + b }]
+	}
 }
+
