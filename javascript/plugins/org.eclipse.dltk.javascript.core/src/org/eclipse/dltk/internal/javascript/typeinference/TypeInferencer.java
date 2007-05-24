@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.javascript.typeinference;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,9 +23,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.javascript.reference.resolvers.ReferenceResolverContext;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import com.xored.org.mozilla.javascript.FunctionNode;
 import com.xored.org.mozilla.javascript.Node;
@@ -39,13 +48,14 @@ final class TransparentRef implements IReference {
 	private final Node node;
 
 	ReferenceResolverContext cs;
-	
-	TransparentRef(IReference evaluateReference, Node objID, String fieldId,ModelElement parent,ReferenceResolverContext cs) {
+
+	TransparentRef(IReference evaluateReference, Node objID, String fieldId,
+			ModelElement parent, ReferenceResolverContext cs) {
 		this.evaluateReference = evaluateReference;
 		this.fieldId = fieldId;
 		this.node = objID;
-		this.parent=parent;
-		this.cs=cs;
+		this.parent = parent;
+		this.cs = cs;
 	}
 
 	public IReference getChild(String key, boolean resolveLocals) {
@@ -74,11 +84,11 @@ final class TransparentRef implements IReference {
 	}
 
 	ModelElement parent;
-	
-	public void patchRef(HostCollection collection) {		
+
+	public void patchRef(HostCollection collection) {
 		Set s = evaluateReference.getChilds(false);
 		IReference queryElement = TypeInferencer.internalEvaluate(collection,
-				getName(), node,parent, cs);
+				getName(), node, parent, cs);
 
 		if (queryElement != null && queryElement != this)
 			this.evaluateReference = queryElement;
@@ -86,7 +96,8 @@ final class TransparentRef implements IReference {
 		// TODO REVIEW IT;
 		while (it.hasNext()) {
 			Object next = it.next();
-			if (!(next instanceof IReference))continue;
+			if (!(next instanceof IReference))
+				continue;
 			IReference r = (IReference) next;
 			evaluateReference.setChild(r.getName(), r);
 		}
@@ -104,94 +115,89 @@ final class TransparentRef implements IReference {
 		evaluateReference.setPrototype(ref);
 	}
 
-	
 	int length;
 	int location;
-	
-	
+
 	public void addModelElements(Collection toAdd) {
-		if (parent!=null)
-		toAdd.add(new FakeField( parent,getName(),location,length));
+		if (parent != null)
+			toAdd.add(new FakeField(parent, getName(), location, length));
 	}
 
 	public void setLocationInformation(ModelElement mo, int position, int length) {
-		this.parent=mo;
-		this.location=position;
-		this.length=length;
+		this.parent = mo;
+		this.location = position;
+		this.length = length;
 	}
-
 
 }
 
 public class TypeInferencer {
 
 	private ReferenceResolverContext cs;
-	public TypeInferencer(ModelElement owner,ReferenceResolverContext cs){
-		this.module=owner;
-		this.cs=cs;
+
+	public TypeInferencer(ModelElement owner, ReferenceResolverContext cs) {
+		this.module = owner;
+		this.cs = cs;
 	}
-	
+
 	private final class TypeInferencerSwitch extends NodeSwitch {
 
 		private TypeInferencerSwitch(ScriptOrFnNode module, int position) {
 			super(module, position);
 		}
-		
-		
+
 		public Object processNewNode(Node node, Object arg) {
-			try{
+			try {
 				Node firstChild = node.getFirstChild();
 				String objId = getObjId(firstChild.getNext());
 				String call = getObjId(firstChild);
-				if (call==null)return super.processNewNode(node, arg);
+				if (call == null)
+					return super.processNewNode(node, arg);
 				int length = call.length();
 				int indexOf = call.indexOf('.');
-				if (indexOf!=-1)call=call.substring(indexOf+1);
-				if (requestor!=null){
-					if (call!=null) {
-						if (firstChild.getPosition()!=0)
-						{
-						requestor.acceptMethodReference(
-								call.toCharArray(), 
-								0, 
-								firstChild.getPosition()-length, 
-								firstChild.getPosition()-1);
+				if (indexOf != -1)
+					call = call.substring(indexOf + 1);
+				if (requestor != null) {
+					if (call != null) {
+						if (firstChild.getPosition() != 0) {
+							requestor.acceptMethodReference(call.toCharArray(),
+									0, firstChild.getPosition() - length,
+									firstChild.getPosition() - 1);
 						}
 					}
 				}
-				}catch (Throwable e){					
+			} catch (Throwable e) {
 			}
 			return super.processScriptNode(node, arg);
 		}
+
 		public Object processCall(Node node, Object arg) {
-			try{				
-			Node firstChild = node.getFirstChild();
-			String objId = getObjId(firstChild.getNext());
-			String call = getObjId(firstChild);
-			if (call==null)return super.processNewNode(node, arg);
-			int length = call.length();
-			int indexOf = call.indexOf('.');
-			if (indexOf!=-1)call=call.substring(indexOf+1);
-			cs.processCall(call,objId);
-			if (requestor!=null){
-				if (call!=null) {
-					if (firstChild.getPosition()!=0)
-					{
-					int start = firstChild.getPosition()-length;
-					int end = firstChild.getPosition()-1;
-					if (start<0){
-						System.out.println("AA");
-					}
-					requestor.acceptMethodReference(
-							call.toCharArray(), 
-							0, 
-							start, 
-							end);
+			try {
+				Node firstChild = node.getFirstChild();
+				String objId = getObjId(firstChild.getNext());
+				String call = getObjId(firstChild);
+				if (call == null)
+					return super.processNewNode(node, arg);
+				int length = call.length();
+				int indexOf = call.indexOf('.');
+				if (indexOf != -1)
+					call = call.substring(indexOf + 1);
+				cs.processCall(call, objId);
+				if (requestor != null) {
+					if (call != null) {
+						if (firstChild.getPosition() != 0) {
+							int start = firstChild.getPosition() - length;
+							int end = firstChild.getPosition() - 1;
+							if (start < 0) {
+								System.out.println("AA");
+							}
+							requestor.acceptMethodReference(call.toCharArray(),
+									0, start, end);
+						}
 					}
 				}
-			}
-			}catch (Throwable e){
-				
+			} catch (Throwable e) {
+
 			}
 			return super.processCall(node, arg);
 		}
@@ -205,7 +211,7 @@ public class TypeInferencer {
 				String string;
 				string = getObjId(node.getFirstChild()) + "[]";
 				collection.write(string, evaluateReference(string, node
-						.getLastChild(),cs));
+						.getLastChild(), cs));
 			}
 			return arg;
 		}
@@ -228,9 +234,10 @@ public class TypeInferencer {
 			return processScriptNode;
 
 		}
-		
+
 		public Object processReturn(Node node, Object arg) {
-			IReference r=evaluateReference("!!!returnValue", node.getFirstChild(),cs);
+			IReference r = evaluateReference("!!!returnValue", node
+					.getFirstChild(), cs);
 			collection.setReference("!!!returnValue", r);
 			return arg;
 		}
@@ -308,68 +315,68 @@ public class TypeInferencer {
 		}
 
 		public Object processFunction(Node node, Object arg) {
-			ScriptOrFnNode oldC=context;
+			ScriptOrFnNode oldC = context;
 			String sn = node.getString();
 			if (sn.length() > 0)
 				for (int a = 0; a < context.getFunctionCount(); a++) {
 					FunctionNode functionNode = context.getFunctionNode(a);
-					
-					
+
 					String name = functionNode.getFunctionName();
 					if (name != null)
 						if (name.equals(sn)) {
-							context=functionNode;
-							internalProcessFunctionNode(arg, functionNode,node);
+							context = functionNode;
+							internalProcessFunctionNode(arg, functionNode, node);
 							break;
 						}
 
 				}
-			else{
-				int index=node.getIntProp(Node.FUNCTION_PROP,-1);
+			else {
+				int index = node.getIntProp(Node.FUNCTION_PROP, -1);
 				FunctionNode functionNode = context.getFunctionNode(index);
-				context=functionNode;
-				internalProcessFunctionNode(arg, functionNode,node);
+				context = functionNode;
+				internalProcessFunctionNode(arg, functionNode, node);
 			}
-			context=oldC;
+			context = oldC;
 			return null;
 		}
-		
-		LinkedList functionContexts=new LinkedList();
-		
+
+		LinkedList functionContexts = new LinkedList();
+
 		private void internalProcessFunctionNode(Object arg,
-				FunctionNode functionNode,Node function) {
+				FunctionNode functionNode, Node function) {
 			if (functionNode.getEncodedSourceStart() >= position)
 				throw new PositionReachedException(context);
 			HostCollection parent = collection;
 			functionContexts.addLast(collection);
 			contexts.push(parent);
-			
-			collection = new HostCollection((HostCollection) functionContexts.getFirst());
-			
+
+			collection = new HostCollection((HostCollection) functionContexts
+					.getFirst());
+
 			collection.setType(HostCollection.FUNCTION);
 			collection.setName(functionNode.getFunctionName());
 			for (int am = 0; am < functionNode.getParamCount(); am++) {
-				String paramOrVarName = functionNode
-						.getParamOrVarName(am);
-				UncknownReference uncknownReference = new UncknownReference(paramOrVarName,
-						false);
-				uncknownReference.setLocationInformation(module, functionNode.nameStart,functionNode.getFunctionName().length());
-				collection.write(paramOrVarName,
-						uncknownReference);
+				String paramOrVarName = functionNode.getParamOrVarName(am);
+				UncknownReference uncknownReference = new UncknownReference(
+						paramOrVarName, false);
+				uncknownReference.setLocationInformation(module,
+						functionNode.nameStart, functionNode.getFunctionName()
+								.length());
+				collection.write(paramOrVarName, uncknownReference);
 			}
 			processScriptNode(functionNode.getFirstChild(), arg);
-			functionNodes.put(new Integer(functionNode.getEncodedSourceStart()), collection);
-			
+			functionNodes.put(
+					new Integer(functionNode.getEncodedSourceStart()),
+					collection);
+
 			if (functionNode.getEncodedSourceEnd() >= position)
 				throw new PositionReachedException(functionNode);
 			HostCollection pop = (HostCollection) contexts.pop();
 			pop.recordFunction(function, collection);
 			collection = pop;
-			
+
 			functionContexts.removeLast();
 		}
-		
-		
 
 		public Object processVarDeclaration(Node node, Object arg) {
 			Node firstChild = node.getFirstChild();
@@ -377,16 +384,17 @@ public class TypeInferencer {
 			while (firstChild != null) {
 				final String key = getKey(firstChild);
 				IReference evaluateReference = evaluateReference(key,
-						firstChild.getFirstChild(),cs);
+						firstChild.getFirstChild(), cs);
 				if (evaluateReference == null) {
 					evaluateReference = new UncknownReference(key, false);
 				}
-				evaluateReference.setLocationInformation(module,firstChild.getPosition(),key.length());
+				evaluateReference.setLocationInformation(module, firstChild
+						.getPosition(), key.length());
 				collection.write(key, evaluateReference);
-				
+
 				firstChild = firstChild.getNext();
 			}
-			
+
 			return processScriptNode;
 		}
 
@@ -398,8 +406,8 @@ public class TypeInferencer {
 			Node id = node.getFirstChild().getNext();
 			Object processScriptNode = processScriptNode(node, arg);
 			final String fieldId = getKey(id);
-			internalSetProp(node, objId, fieldId);			
-			return processScriptNode;			
+			internalSetProp(node, objId, fieldId);
+			return processScriptNode;
 		}
 
 		public Object processDelProp(Node node, Object arg) {
@@ -411,8 +419,8 @@ public class TypeInferencer {
 				Node id = node.getFirstChild().getNext();
 				final String fieldId = getKey(id);
 				IReference queryElement = collection.queryElement(objId, false);
-				if (queryElement!=null)
-				queryElement.recordDelete(fieldId);
+				if (queryElement != null)
+					queryElement.recordDelete(fieldId);
 			}
 			System.out.println(objId);
 			return null;
@@ -421,7 +429,7 @@ public class TypeInferencer {
 		private void internalSetProp(Node node, String objId,
 				final String fieldId) {
 			final IReference evaluateReference = evaluateReference(fieldId,
-					node.getLastChild(),cs);
+					node.getLastChild(), cs);
 
 			int pos = objId.indexOf('.');
 			String rootName = pos == -1 ? objId : objId.substring(0, pos);
@@ -429,7 +437,8 @@ public class TypeInferencer {
 					.getReferenceNoParentContext(rootName);
 			if (root == null) {
 				root = new UncknownReference(rootName, true);
-				root.setLocationInformation(module,node.getPosition(),fieldId.length());
+				root.setLocationInformation(module, node.getPosition(), fieldId
+						.length());
 				HostCollection parent = collection.getParent();
 				if (parent == null) {
 					collection.setReference(rootName, root);
@@ -442,7 +451,7 @@ public class TypeInferencer {
 						collection.setReference(rootName, root);
 				}
 			}
-			pos += 1;			
+			pos += 1;
 			while (pos != 0) {
 				int p1 = objId.indexOf('.', pos);
 				String field;
@@ -453,17 +462,19 @@ public class TypeInferencer {
 				IReference child = root.getChild(field, false);
 				if (child == null) {
 					child = new UncknownReference(field, true);
-					
-					child.setLocationInformation(module,node.getPosition(),fieldId.length());
+
+					child.setLocationInformation(module, node.getPosition(),
+							fieldId.length());
 					root.setChild(field, child);
 				}
 				root = child;
 				pos = p1 + 1;
 			}
 			TransparentRef transparentRef = new TransparentRef(
-					evaluateReference, node.getLastChild(), fieldId,module,cs);
+					evaluateReference, node.getLastChild(), fieldId, module, cs);
 			collection.addTransparent(transparentRef);
-			transparentRef.setLocationInformation(module,node.getPosition(),fieldId.length());
+			transparentRef.setLocationInformation(module, node.getPosition(),
+					fieldId.length());
 			root.setChild(fieldId, transparentRef);
 		}
 
@@ -539,15 +550,16 @@ public class TypeInferencer {
 			String key = getKey(node.getFirstChild());
 			Node lastChild = node.getLastChild();
 			Object processScriptNode = processScriptNode(node, arg);
-			IReference evaluateReference = evaluateReference(key, lastChild,cs);
-			evaluateReference.setLocationInformation(module,node.getFirstChild().getPosition(),key.length());
-			collection.write(key, evaluateReference);			
-			return processScriptNode;			
+			IReference evaluateReference = evaluateReference(key, lastChild, cs);
+			evaluateReference.setLocationInformation(module, node
+					.getFirstChild().getPosition(), key.length());
+			collection.write(key, evaluateReference);
+			return processScriptNode;
 		}
 	}
 
 	Stack contexts = new Stack();
-	Map functionNodes=new HashMap();
+	Map functionNodes = new HashMap();
 	HostCollection collection = new HostCollection(null);
 	ModelElement module;
 
@@ -555,23 +567,25 @@ public class TypeInferencer {
 		return collection;
 	}
 
-	public IReference evaluateReference(String key, Node expression,ReferenceResolverContext cs) {
+	public IReference evaluateReference(String key, Node expression,
+			ReferenceResolverContext cs) {
 		IReference internalEvaluate = internalEvaluate(collection, key,
-				expression,module, cs);
+				expression, module, cs);
 		if (internalEvaluate == null)
 			return new UncknownReference(key, false);
 		return internalEvaluate;
 	}
 
 	static IReference internalEvaluate(HostCollection collection, String key,
-			Node expression,ModelElement parent, ReferenceResolverContext cs) {
+			Node expression, ModelElement parent, ReferenceResolverContext cs) {
 		if (expression == null)
 			return null;
 		int type = expression.getType();
 
 		switch (type) {
 		case Token.EXPR_RESULT:
-			return internalEvaluate(collection, key, expression.getFirstChild(),parent, cs);
+			return internalEvaluate(collection, key,
+					expression.getFirstChild(), parent, cs);
 		case Token.NUMBER:
 			return ReferenceFactory.createNumberReference(key, expression
 					.getDouble());
@@ -583,13 +597,13 @@ public class TypeInferencer {
 		case Token.FALSE:
 			return ReferenceFactory.createBooleanReference(key, false);
 		case Token.OBJECTLIT:
-			return createObjectLiteral(collection, key, expression,parent,cs);
+			return createObjectLiteral(collection, key, expression, parent, cs);
 		case Token.CALL:
-			return createCallResult(collection, key, expression,cs);
+			return createCallResult(collection, key, expression, cs);
 		case Token.FUNCTION:
 			return createNewFunctionReference(collection, key, expression);
 		case Token.NEW:
-			return createNewObjectRefernce(collection, key, expression,cs);
+			return createNewObjectRefernce(collection, key, expression, cs);
 		case Token.NAME:
 
 		case Token.GETELEM:
@@ -603,9 +617,9 @@ public class TypeInferencer {
 	}
 
 	private static IReference createNewFunctionReference(
-			HostCollection collection2, final String key, Node expression) {		
+			HostCollection collection2, final String key, Node expression) {
 		final HostCollection function = collection2.getFunction(expression);
-		if (function==null){
+		if (function == null) {
 			return null;
 		}
 		return new ContextReference(function, key);
@@ -617,47 +631,110 @@ public class TypeInferencer {
 		String id = getObjId(nm);
 		if (id == null)
 			return null;
-		CallResultReference ref = new CallResultReference(collection2, key, id,cs);
+		CallResultReference ref = new CallResultReference(collection2, key, id,
+				cs);
 		OrReferenceWriteSecond ws = new OrReferenceWriteSecond(ref,
 				new UncknownReference(key, false));
 		return ws;
 	}
 
 	private static IReference createNewObjectRefernce(
-			HostCollection collection2, String key, Node expression,ReferenceResolverContext cs) {
+			HostCollection collection2, String key, Node expression,
+			ReferenceResolverContext cs) {
 		Node nm = expression.getFirstChild();
 		String id = getObjId(nm);
 		if (id == null)
 			return null;
-		NewReference ref = new NewReference(key, id,cs);
+		NewReference ref = new NewReference(key, id, cs);
+		UncknownReference uncknownReference = new UncknownReference(key, false);
+		if (id.equals("XML")) {
+			String string = expression.getLastChild().getString();
+			modifyReferenceXML(uncknownReference, string);
+			
+		}
 		OrReferenceWriteSecond ws = new OrReferenceWriteSecond(ref,
-				new UncknownReference(key, false));
+				uncknownReference);
 		return ws;
+
+	}
+
+	static SAXParser parser;
+
+	static {
+		try {
+			parser = SAXParserFactory.newInstance().newSAXParser();
+		} catch (ParserConfigurationException e) {
+			throw new LinkageError();
+		} catch (SAXException e) {
+			throw new LinkageError();
+		}
+	}
+
+	private static void modifyReferenceXML(final UncknownReference uncknownReference,
+			String string) {
+		try {
+			parser.parse(new ByteArrayInputStream(string.getBytes()),
+					new DefaultHandler() {
+
+						UncknownReference curReference=uncknownReference;
+						Stack stack=new Stack();
+				
+						public void endElement(String uri, String localName,
+								String name) throws SAXException {
+							curReference=(UncknownReference) stack.pop();
+						}
+
+						public void startElement(String uri, String localName,
+								String name, Attributes attributes)
+								throws SAXException {
+							UncknownReference uncknownReference2 = new UncknownReference(name,true);
+							curReference.setChild(name, uncknownReference2);
+							int length = attributes.getLength();
+							for (int a=0;a<length;a++){
+								String val="@"+attributes.getQName(a);
+								UncknownReference uncknownReference3 = new UncknownReference(val,true);
+								curReference.setChild(val, uncknownReference3);
+							}
+							curReference=uncknownReference2;
+							stack.push(curReference);
+						}
+
+					});
+		} catch (SAXException e) {
+
+		} catch (IOException e) {
+
+		}
 	}
 
 	private static IReference createObjectLiteral(HostCollection col,
-			String key, Node expression,ModelElement parent,ReferenceResolverContext cs) {
+			String key, Node expression, ModelElement parent,
+			ReferenceResolverContext cs) {
 		Object[] ids = (Object[]) expression.getProp(Node.OBJECT_IDS_PROP);
-		ArrayList positions=(ArrayList) expression.getProp(Node.DESCENDANTS_FLAG);
+		ArrayList positions = (ArrayList) expression
+				.getProp(Node.DESCENDANTS_FLAG);
 		Node child = expression.getFirstChild();
 		UncknownReference uRef = new UncknownReference(key, false);
 		for (int a = 0; a < ids.length; a++) {
-			if (ids[a] instanceof String)
-			{
-			String name = (String) ids[a];
-			IReference internalEvaluate = internalEvaluate(col, name, child,parent, cs);
-			if (internalEvaluate == null)
-				internalEvaluate = new UncknownReference(name, false);
-			internalEvaluate.setLocationInformation(parent, ((Integer)positions.get(a)).intValue()-name.length()-1,name.length());
-			uRef.setChild(name, internalEvaluate);
-			child = child.getNext();
+			if (ids[a] instanceof String) {
+				String name = (String) ids[a];
+				IReference internalEvaluate = internalEvaluate(col, name,
+						child, parent, cs);
+				if (internalEvaluate == null)
+					internalEvaluate = new UncknownReference(name, false);
+				internalEvaluate.setLocationInformation(parent,
+						((Integer) positions.get(a)).intValue() - name.length()
+								- 1, name.length());
+				uRef.setChild(name, internalEvaluate);
+				child = child.getNext();
 			}
 		}
 		return uRef;
 	}
 
 	public static String getObjId(Node id) {
-		if (id==null)return "";
+		if (id == null)
+			return "";
 		switch (id.getType()) {
 		case Token.GETPROP: {
 			Node n = id.getFirstChild();
@@ -681,9 +758,9 @@ public class TypeInferencer {
 	}
 
 	public static String getKey(Node id) {
-		try{
-		return id.getString();
-		}catch (ClassCastException e){
+		try {
+			return id.getString();
+		} catch (ClassCastException e) {
 			return "";
 		} finally {
 		}
@@ -692,16 +769,17 @@ public class TypeInferencer {
 	public HostCollection doInterferencing(ScriptOrFnNode node, int tillPosition) {
 		HostCollection hostCollection = new HostCollection(null);
 		NodeSwitch sw = new TypeInferencerSwitch(node, tillPosition);
-		sw.doAction(node, hostCollection);		
+		sw.doAction(node, hostCollection);
 		return hostCollection;
 	}
 
 	public Map getFunctionMap() {
-		return functionNodes;		
+		return functionNodes;
 	}
 
 	ISourceElementRequestor requestor;
+
 	public void setRequestor(ISourceElementRequestor requestor) {
-		this.requestor=requestor;
+		this.requestor = requestor;
 	}
 }
