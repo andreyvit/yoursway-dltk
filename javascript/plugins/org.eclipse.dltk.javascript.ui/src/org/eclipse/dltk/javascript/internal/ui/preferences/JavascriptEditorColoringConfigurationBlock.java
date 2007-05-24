@@ -56,12 +56,24 @@ public class JavascriptEditorColoringConfigurationBlock extends
 			{ PreferencesMessages.DLTKEditorPreferencePage_function_colors,
 				JavascriptPreferenceConstants.EDITOR_FUNCTION_DEFINITION_COLOR, sCoreCategory },
 					
-/*			{ PreferencesMessages.DLTKEditorPreferencePage_variables,
-								JavascriptPreferenceConstants.EDITOR_VARIABLE_COLOR, sCoreCategory }*/ };
+			{ "XML Tag Name",JavascriptPreferenceConstants.EDITOR_XML_TAG_NAME_COLOR
+								, "XML"}
+			,	
+			{ "XML Attribute Name",JavascriptPreferenceConstants.EDITOR_XML_ATTR_NAME_COLOR
+				, "XML"},
+			{ "XML Comment",JavascriptPreferenceConstants.EDITOR_XML_COMMENT_COLOR
+				, "XML"},
+//			{ "XML Area Background color",JavascriptPreferenceConstants.EDITOR_XML_BODY_ALL
+//					, "XML"},			
+		};
 	
 
 	public JavascriptEditorColoringConfigurationBlock(OverlayPreferenceStore store) {
 		super(store);
+	}
+	
+	protected String[] getCategories(){
+		return new String[]{sCoreCategory,sDocumentationCategory,sCommentsCategory,"XML"};
 	}
 
 	protected String[][] getSyntaxColorListModel() {

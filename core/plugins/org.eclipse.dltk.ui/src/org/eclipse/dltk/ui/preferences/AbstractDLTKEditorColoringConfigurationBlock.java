@@ -236,6 +236,10 @@ public abstract class AbstractDLTKEditorColoringConfigurationBlock extends
 	 * 
 	 *
 	 */
+	protected String[] getCategories(){
+		return new String[]{sCoreCategory,sDocumentationCategory,sCommentsCategory};
+	}
+	
 	private class ColorListContentProvider implements ITreeContentProvider {
 
 		/*
@@ -243,16 +247,12 @@ public abstract class AbstractDLTKEditorColoringConfigurationBlock extends
 		 */
 		public Object[] getElements(Object inputElement) {
 			List categorys = new ArrayList();
-			if( getElementsForCategory(sCoreCategory).length > 0 ) {
-				categorys.add(sCoreCategory);
-			}
-			if( getElementsForCategory(sDocumentationCategory).length > 0 ) {
-				categorys.add(sDocumentationCategory);
-			}
-			if( getElementsForCategory(sCommentsCategory).length > 0 ) {
-				categorys.add(sCommentsCategory);
-			}
-			
+			String[] cats=getCategories();
+			for (int a=0;a<cats.length;a++){
+				if( getElementsForCategory(cats[a]).length > 0 ) {
+					categorys.add(cats[a]);
+				}	
+			}						
 			return categorys.toArray();
 		}
 

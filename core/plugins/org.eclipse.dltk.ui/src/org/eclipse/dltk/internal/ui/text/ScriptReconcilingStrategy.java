@@ -53,6 +53,9 @@ public class ScriptReconcilingStrategy implements IReconcilingStrategy,
 				.getSourceModuleDocumentProvider();
 		
 		fIsScriptReconcilingListener= fEditor instanceof IScriptReconcilingListener;
+		if (fIsScriptReconcilingListener){
+			fJavaReconcilingListener=(IScriptReconcilingListener) fEditor;	
+		}
 	}
 	
 	private IProblemRequestorExtension getProblemRequestorExtension() {

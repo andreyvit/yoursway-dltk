@@ -39,6 +39,7 @@ import org.eclipse.dltk.internal.ui.editor.selectionaction.GoToNextPreviousMembe
 import org.eclipse.dltk.internal.ui.text.DLTKWordIterator;
 import org.eclipse.dltk.internal.ui.text.DocumentCharacterIterator;
 import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
+import org.eclipse.dltk.internal.ui.text.IScriptReconcilingListener;
 import org.eclipse.dltk.internal.ui.text.hover.ScriptExpandHover;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
@@ -156,7 +157,8 @@ import org.osgi.service.prefs.BackingStoreException;
 
 import com.ibm.icu.text.BreakIterator;
 
-public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
+public abstract class ScriptEditor extends AbstractDecoratedTextEditor
+		implements IScriptReconcilingListener {
 
 	/** The editor's save policy */
 	protected ISavePolicy fSavePolicy = null;
@@ -898,7 +900,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 		// fCorrectionCommands.deregisterCommands();
 		// fCorrectionCommands= null;
 		// }
-
+		uninstallSemanticHighlighting();
 		super.dispose();
 	}
 
@@ -936,7 +938,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 
 	protected abstract IPreferenceStore getScriptPreferenceStore();
 
-	protected abstract ScriptTextTools getTextTools();
+	public abstract ScriptTextTools getTextTools();
 
 	protected abstract void connectPartitioningToElement(IEditorInput input,
 			IDocument document);
@@ -1662,8 +1664,8 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 
 			if (forward && p.offset == offset || !forward
 					&& p.offset + p.getLength() == offset + length) {// ||
-																		// p.includes(offset))
-																		// {
+				// p.includes(offset))
+				// {
 				if (containingAnnotation == null
 						|| (forward
 								&& p.length >= containingAnnotationPosition.length || !forward
@@ -1817,7 +1819,8 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 
 		fEditorSelectionChangedListener = new EditorSelectionChangedListener();
 		fEditorSelectionChangedListener.install(getSelectionProvider());
-
+		if (true)
+			installSemanticHighlighting();
 	}
 
 	/**
@@ -1837,14 +1840,18 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 			updateStatusLine();
 		fSelectionChangedViaGotoAnnotation = false;
 	}
+
 	protected void updateStatusLine() {
-		ITextSelection selection= (ITextSelection) getSelectionProvider().getSelection();
-		Annotation annotation= getAnnotation(selection.getOffset(), selection.getLength());
+		ITextSelection selection = (ITextSelection) getSelectionProvider()
+				.getSelection();
+		Annotation annotation = getAnnotation(selection.getOffset(), selection
+				.getLength());
 		setStatusLineErrorMessage(null);
 		setStatusLineMessage(null);
 		if (annotation != null) {
 			updateMarkerViews(annotation);
-			if (annotation instanceof IScriptAnnotation && ((IScriptAnnotation) annotation).isProblem())
+			if (annotation instanceof IScriptAnnotation
+					&& ((IScriptAnnotation) annotation).isProblem())
 				setStatusLineMessage(annotation.getText());
 		}
 	}
@@ -1855,7 +1862,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 	 * @return the model element wrapped by this editors input.
 	 * 
 	 */
-	protected IModelElement getInputModelElement() {
+	public IModelElement getInputModelElement() {
 		return EditorUtility.getEditorInputModelElement(this, false);
 	}
 
@@ -2820,5 +2827,93 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor {
 
 	public void updatedTitleImage(Image image) {
 		setTitleImage(image);
+	}
+
+	private ListenerList fReconcilingListeners = new ListenerList(
+			ListenerList.IDENTITY);
+
+	public void aboutToBeReconciled() {
+
+		// Notify AST provider
+		// JavaPlugin.getDefault().getASTProvider().aboutToBeReconciled(getInputJavaElement());
+
+		// Notify listeners
+		Object[] listeners = fReconcilingListeners.getListeners();
+		for (int i = 0, length = listeners.length; i < length; ++i)
+			((IScriptReconcilingListener) listeners[i]).aboutToBeReconciled();
+	}
+
+	/*
+	 * @see org.eclipse.jdt.internal.ui.text.java.IJavaReconcilingListener#reconciled(CompilationUnit,
+	 *      boolean, IProgressMonitor)
+	 * @since 3.0
+	 */
+	public void reconciled(ISourceModule ast, boolean forced,
+			IProgressMonitor progressMonitor) {
+
+		// see: https://bugs.eclipse.org/bugs/show_bug.cgi?id=58245
+		// JavaPlugin javaPlugin= JavaPlugin.getDefault();
+// if (javaPlugin == null)
+// return;
+//		
+// // Always notify AST provider
+// javaPlugin.getASTProvider().reconciled(ast, getInputJavaElement(),
+// progressMonitor);
+
+		// Notify listeners
+		Object[] listeners = fReconcilingListeners.getListeners();
+		for (int i = 0, length = listeners.length; i < length; ++i)
+			((IScriptReconcilingListener) listeners[i]).reconciled(ast, forced,
+					progressMonitor);
+
+		// Update Java Outline page selection
+		if (!forced && !progressMonitor.isCanceled()) {
+			Shell shell = getSite().getShell();
+			if (shell != null && !shell.isDisposed()) {
+				shell.getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						selectionChanged();
+					}
+				});
+			}
+		}
+	}
+
+	public void addReconcileListener(
+			IScriptReconcilingListener semanticHighlightingReconciler) {
+
+		synchronized (fReconcilingListeners) {
+			fReconcilingListeners.add(semanticHighlightingReconciler);
+		}
+	}
+
+	public void removeReconcileListener(
+			IScriptReconcilingListener semanticHighlightingReconciler) {
+		synchronized (fReconcilingListeners) {
+			fReconcilingListeners.remove(semanticHighlightingReconciler);
+		}
+	}
+
+	protected SemanticHighlightingManager fSemanticManager;
+
+	private void installSemanticHighlighting() {
+		if (fSemanticManager == null) {
+			fSemanticManager = new SemanticHighlightingManager();
+			fSemanticManager.install(this,
+					(ScriptSourceViewer) getSourceViewer(), getTextTools()
+							.getColorManager(), getPreferenceStore());
+		}
+	}
+
+	/**
+	 * Uninstall Semantic Highlighting.
+	 * 
+	 * @since 3.0
+	 */
+	private void uninstallSemanticHighlighting() {
+		if (fSemanticManager != null) {
+			fSemanticManager.uninstall();
+			fSemanticManager = null;
+		}
 	}
 }

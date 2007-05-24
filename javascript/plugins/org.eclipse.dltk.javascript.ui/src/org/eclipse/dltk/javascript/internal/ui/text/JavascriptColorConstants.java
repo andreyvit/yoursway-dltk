@@ -51,5 +51,13 @@ public final class JavascriptColorConstants {
 	 */
 	public static final String JS_FUNCTION_DEFINITION = DLTKColorConstants.DLTK_FUNCTION_DEFINITION;
 
+	public static final String JS_XML_TAG_NAME = "XML_TAG_NAME";
+
+	public static final String JS_XML_ATTR_NAME = "XML_ATTR_NAME";
+	
+	public static final String JS_XML_COMMENT_NAME = "XML_COMMENT_NAME";
+	
+	public static final String JS_XML_ALL = "XML_ALL";
+
 	
 }

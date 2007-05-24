@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.internal.ui.text;
 
+import org.eclipse.dltk.internal.ui.editor.semantic.highlighting.PositionUpdater;
+import org.eclipse.dltk.internal.ui.editor.semantic.highlighting.SemanticHighlighting;
 import org.eclipse.dltk.tcl.ui.text.TclPartitions;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.ScriptTextTools;
@@ -40,6 +42,16 @@ public class TclTextTools extends ScriptTextTools {
 	
 	public IPartitionTokenScanner getPartitionScanner() {
 		return fPartitionScanner;
+	}
+
+
+	public SemanticHighlighting[] getSemanticHighlightings() {
+		return new SemanticHighlighting[0];
+	}
+
+
+	public PositionUpdater getSemanticPositionUpdater() {
+		return null;
 	}
 
 }

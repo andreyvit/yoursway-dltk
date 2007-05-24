@@ -174,7 +174,7 @@ public class JavaScriptEditor extends ScriptEditor {
 		return JavaScriptUI.getDefault().getPreferenceStore();
 	}
 
-	protected ScriptTextTools getTextTools() {
+	public ScriptTextTools getTextTools() {
 		return JavaScriptUI.getDefault().getTextTools();
 	}
 

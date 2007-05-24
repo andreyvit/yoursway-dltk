@@ -52,7 +52,7 @@ public class RubyEditor extends ScriptEditor {
 		return RubyUI.getDefault().getPreferenceStore();
 	}
 
-	protected ScriptTextTools getTextTools() {
+	public ScriptTextTools getTextTools() {
 		return RubyUI.getDefault().getTextTools();
 	}
 

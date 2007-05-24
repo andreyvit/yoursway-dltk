@@ -9,6 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui.text;
 
+import org.eclipse.dltk.internal.ui.editor.semantic.highlighting.Highlighting;
+import org.eclipse.dltk.internal.ui.editor.semantic.highlighting.PositionUpdater;
+import org.eclipse.dltk.internal.ui.editor.semantic.highlighting.SemanticHighlighting;
 import org.eclipse.dltk.internal.ui.text.DLTKColorManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
@@ -109,4 +112,11 @@ public abstract class ScriptTextTools {
 			document.setDocumentPartitioner(partitioner);
 		}
 	}
+	
+	public abstract SemanticHighlighting[] getSemanticHighlightings();
+
+	public abstract PositionUpdater getSemanticPositionUpdater();
+	
+
+	
 }

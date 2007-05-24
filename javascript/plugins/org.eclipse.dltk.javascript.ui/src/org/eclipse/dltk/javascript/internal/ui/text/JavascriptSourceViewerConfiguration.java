@@ -17,6 +17,7 @@ import org.eclipse.dltk.javascript.ui.text.IJavaScriptPartitions;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.text.AbstractScriptScanner;
 import org.eclipse.dltk.ui.text.IColorManager;
+import org.eclipse.dltk.ui.text.ScriptPresentationReconciler;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.SingleTokenScriptScanner;
 import org.eclipse.dltk.ui.text.completion.ContentAssistProcessor;
@@ -166,7 +167,7 @@ public class JavascriptSourceViewerConfiguration extends
 	
 	public IPresentationReconciler getPresentationReconciler(
 			ISourceViewer sourceViewer) {
-		PresentationReconciler reconciler = new PresentationReconciler();
+		ScriptPresentationReconciler reconciler = new ScriptPresentationReconciler();
 		reconciler
 				.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
 

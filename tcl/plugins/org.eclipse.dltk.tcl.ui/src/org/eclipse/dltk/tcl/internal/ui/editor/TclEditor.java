@@ -131,7 +131,7 @@ public class TclEditor extends ScriptEditor {
 		return TclUI.getDefault().getPreferenceStore(); 
 	}
 	
-	protected ScriptTextTools getTextTools() {
+	public ScriptTextTools getTextTools() {
 		return TclUI.getDefault().getTextTools();
 	}
 

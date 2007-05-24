@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.text;
 
+import org.eclipse.dltk.internal.ui.editor.semantic.highlighting.PositionUpdater;
+import org.eclipse.dltk.internal.ui.editor.semantic.highlighting.SemanticHighlighting;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -38,5 +40,13 @@ public class RubyTextTools extends ScriptTextTools {
 
 	public IPartitionTokenScanner getPartitionScanner() {
 		return fPartitionScanner;
+	}
+
+	public SemanticHighlighting[] getSemanticHighlightings() {
+		return new SemanticHighlighting[0];
+	}
+
+	public PositionUpdater getSemanticPositionUpdater() {
+		return null;
 	}
 }
