@@ -92,7 +92,7 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 							vmConfig.setProgramArguments(new String[] { config
 									.getScriptToLaunch(),host,""+port,sessionId });
 							ILaunch launchr = new Launch(launch.getLaunchConfiguration(),
-									ILaunchManager.RUN_MODE, null);
+									ILaunchManager.DEBUG_MODE, null);
 							vmRunner.run(vmConfig, launchr, null);
 							IDebugTarget[] debugTargets = launchr.getDebugTargets();
 							for (int a=0;a<debugTargets.length;a++){
