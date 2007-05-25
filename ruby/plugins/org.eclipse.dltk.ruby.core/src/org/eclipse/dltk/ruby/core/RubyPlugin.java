@@ -153,9 +153,9 @@ public class RubyPlugin extends Plugin {
 					monitor == null ? null : new SubProgressMonitor(monitor, 49) // 49% of the time is spent in the dummy search
 				);
 				
-				String[] searchMixinPatterns = SearchEngine.searchMixinPatterns("$*", RubyLanguageToolkit.getDefault());
+				/*String[] searchMixinPatterns = SearchEngine.searchMixinPatterns("$*", RubyLanguageToolkit.getDefault());
 				ISourceModule[] searchMixinSources = SearchEngine.searchMixinSources("$*", RubyLanguageToolkit.getDefault());
-				System.out.println("ruby initialized 0==" + searchMixinPatterns.length + "," + searchMixinSources.length);
+				System.out.println("ruby initialized 0==" + searchMixinPatterns.length + "," + searchMixinSources.length);*/
 				
 			} catch (ModelException e) {
 				// /search failed: ignore
