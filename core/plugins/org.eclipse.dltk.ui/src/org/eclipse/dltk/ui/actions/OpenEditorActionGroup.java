@@ -31,7 +31,6 @@ import org.eclipse.ui.IWorkbenchSite;
 import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.actions.OpenWithMenu;
 
-
 /**
  * Action group that adds the actions opening a new editor to the context menu
  * and the action bar's navigate menu.

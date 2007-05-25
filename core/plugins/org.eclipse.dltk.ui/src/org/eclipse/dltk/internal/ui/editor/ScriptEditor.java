@@ -1001,8 +1001,8 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 	 * @see AbstractTextEditor#editorContextMenuAboutToShow
 	 */
 	public void editorContextMenuAboutToShow(IMenuManager menu) {
-
 		super.editorContextMenuAboutToShow(menu);
+
 		menu.insertAfter(IContextMenuConstants.GROUP_OPEN, new GroupMarker(
 				IContextMenuConstants.GROUP_SHOW));
 
@@ -1012,12 +1012,32 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		fContextMenuGroup.fillContextMenu(menu);
 		fContextMenuGroup.setContext(null);
 
-		// Quick views
+		// Show outline
 		IAction action = getAction(IDLTKEditorActionDefinitionIds.SHOW_OUTLINE);
 		menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, action);
-		// action= getAction(IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY);
-		// menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, action);
 
+		// Open hierarchy
+		action = getAction(IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY);
+		menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, action);
+
+		// Source group
+		MenuManager sourceMenu = new MenuManager("Source");
+		action = getAction("Comment");
+		if (action != null) {
+			sourceMenu.add(action); //$NON-NLS-1$
+		}
+
+		action = getAction("Uncomment");
+		if (action != null) {
+			sourceMenu.add(action); //$NON-NLS-1$
+		}
+
+		action = getAction("ToggleComment");
+		if (action != null) {
+			sourceMenu.add(action); //$NON-NLS-1$
+		}
+
+		menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, sourceMenu);
 	}
 
 	/**
@@ -1224,11 +1244,26 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 	protected void createActions() {
 		super.createActions();
 
-		ActionGroup oeg, ovg, dsg;
-		fActionGroups = new CompositeActionGroup(new ActionGroup[] {
-				oeg = new OpenEditorActionGroup(this),
-				ovg = new OpenViewActionGroup(this),
-				dsg = new DLTKSearchActionGroup(this) });
+		ActionGroup oeg = new OpenEditorActionGroup(this);
+		ActionGroup ovg = new OpenViewActionGroup(this);
+		ActionGroup dsg = new DLTKSearchActionGroup(this);
+
+		setAction("xxx", new Action() {
+			public String getDescription() {
+				return "This is my action";
+			}
+
+			public String getId() {
+				return "xxx";
+			}
+
+			public String getText() {
+				return "This is my text";
+			}
+		});
+
+		fActionGroups = new CompositeActionGroup(new ActionGroup[] { oeg, ovg,
+				dsg });
 
 		// fSelectionHistory= new SelectionHistory(this);
 
@@ -1238,16 +1273,16 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		fFoldingGroup = createFoldingActionGroup();
 
 		ResourceAction resAction = new TextOperationAction(DLTKEditorMessages
-				.getBundleForConstructedKeys(),
-				"ShowDocumentaion.", this, ISourceViewer.INFORMATION, true); //$NON-NLS-1$
+				.getBundleForConstructedKeys(), "ShowDocumentaion.", this,
+				ISourceViewer.INFORMATION, true);
+
 		resAction = new InformationDispatchAction(DLTKEditorMessages
-				.getBundleForConstructedKeys(),
-				"ShowDocumentation.", (TextOperationAction) resAction); //$NON-NLS-1$
+				.getBundleForConstructedKeys(), "ShowDocumentation.",
+				(TextOperationAction) resAction);
+
 		resAction
 				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SHOW_DOCUMENTATION);
-		setAction("ShowDocumentation", resAction); //$NON-NLS-1$
-		// PlatformUI.getWorkbench().getHelpSystem().setHelp(resAction,
-		// IJavaHelpContextIds.SHOW_JAVADOC_ACTION);
+		setAction("ShowDocumentation", resAction);
 
 		Action action = new GotoMatchingBracketAction(this);
 		action
@@ -1260,18 +1295,15 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		outlineAction
 				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SHOW_OUTLINE);
 		setAction(IDLTKEditorActionDefinitionIds.SHOW_OUTLINE, outlineAction);
-		// PlatformUI.getWorkbench().getHelpSystem().setHelp(action,
-		// IJavaHelpContextIds.SHOW_OUTLINE_ACTION);
 
 		action = new TextOperationAction(DLTKEditorMessages
-				.getBundleForConstructedKeys(), "OpenHierarchy.", this,
-				ScriptSourceViewer.SHOW_HIERARCHY, true); //$NON-NLS-1$
+				.getBundleForConstructedKeys(),
+				"OpenHierarchy.", this, ScriptSourceViewer.SHOW_HIERARCHY, true); //$NON-NLS-1$
 		action
 				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY);
 		setAction(IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY, action);
-		// PlatformUI.getWorkbench().getHelpSystem().setHelp(action,
-		// IJavaHelpContextIds.OPEN_HIERARCHY_ACTION);
 
+		// ContentAssistProposal
 		action = new ContentAssistAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(), "ContentAssistProposal.", this); //$NON-NLS-1$
 		action
@@ -1279,6 +1311,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		setAction("ContentAssistProposal", action); //$NON-NLS-1$
 		markAsStateDependentAction("ContentAssistProposal", true); //$NON-NLS-1$
 
+		// ContentAssistContextInformation
 		action = new TextOperationAction(
 				DLTKEditorMessages.getBundleForConstructedKeys(),
 				"ContentAssistContextInformation.", this, ISourceViewer.CONTENTASSIST_CONTEXT_INFORMATION); //$NON-NLS-1$
@@ -1287,15 +1320,18 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		setAction("ContentAssistContextInformation", action); //$NON-NLS-1$
 		markAsStateDependentAction("ContentAssistContextInformation", true); //$NON-NLS-1$
 
+		// GroupEdit
 		ActionGroup rg = new RefactorActionGroup(this,
 				ITextEditorActionConstants.GROUP_EDIT);
 		fActionGroups.addGroup(rg);
 
+		// GoToNextMember
 		action = GoToNextPreviousMemberAction.newGoToNextMemberAction(this);
 		action
 				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.GOTO_NEXT_MEMBER);
 		setAction(GoToNextPreviousMemberAction.NEXT_MEMBER, action);
 
+		// GoToPreviousMember
 		action = GoToNextPreviousMemberAction.newGoToPreviousMemberAction(this);
 		action
 				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.GOTO_PREVIOUS_MEMBER);

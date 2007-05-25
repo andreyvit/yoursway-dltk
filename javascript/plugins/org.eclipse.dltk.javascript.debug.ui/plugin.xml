@@ -125,11 +125,11 @@
     <viewerContribution
           id="org.eclipse.dltk.javascript.debug.ui.viewerContribution1"
           targetID="#JavascriptEditorContext">
-       <action
+       <!--action
              class="org.eclipse.dltk.debug.ui.actions.WatchExpressionAction"
              id="org.eclipse.dltk.javascript.debug.ui.WatchExpressionAction"
              label="%WatchVariable"
-             menubarPath="additions"/>
+             menubarPath="additions"/-->
        <action
             id="org.eclipse.dltk.javascript.console.ui.internal.actions.PasteToTclConsoleAction" 
             label="%TclConsole.Actions.PasteToTclConsole"
