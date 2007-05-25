@@ -265,4 +265,14 @@
           translations="templates/templates.properties">
     </include>
  </extension>
-</plugin>
+ 
+ <extension
+       point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension
+          targetID="org.eclipse.dltk.ruby.ui.RubyPerspective">
+       <actionSet
+             id="org.eclipse.debug.ui.breakpointActionSet">
+       </actionSet>
+    </perspectiveExtension>
+ </extension>
+ </plugin>
