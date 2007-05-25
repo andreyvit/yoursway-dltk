@@ -11,9 +11,11 @@ package org.eclipse.dltk.internal.debug.ui.interpreters;
 
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -24,6 +26,8 @@ import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.LibraryLocation;
 import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -132,20 +136,35 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 
 		return comp;
 	}
-
+	
 	/**
 	 * The "default" button has been toggled
 	 */
 	public void restoreDefaultLibraries()  {
-		LibraryLocation[] libs = null;
-		File installLocation = getHomeDirectory();
+		final LibraryLocation[][] libs = new LibraryLocation[][] { null};
+		final File installLocation = getHomeDirectory();
 		if (installLocation == null) {
-			libs = new LibraryLocation[0];
+			libs[0] = new LibraryLocation[0];
 		} else {
-			libs = getInterpreterInstallType().getDefaultLibraryLocations(installLocation);
+			ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
+			try {
+				dialog.run(false, false, new IRunnableWithProgress() {
+
+					public void run(IProgressMonitor monitor)
+							throws InvocationTargetException, InterruptedException {
+						libs[0] = getInterpreterInstallType().getDefaultLibraryLocations(installLocation);					
+					}
+					
+				});
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
 		}
 		if (libs != null)
-			fLibraryContentProvider.setLibraries(libs);
+			fLibraryContentProvider.setLibraries(libs[0]);
 		update();
 	}
 	/**

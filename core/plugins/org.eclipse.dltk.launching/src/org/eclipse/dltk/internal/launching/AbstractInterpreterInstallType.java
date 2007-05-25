@@ -336,7 +336,7 @@ public abstract class AbstractInterpreterInstallType implements
 	protected void runLibraryLookup(final IRunnableWithProgress runnable)
 			throws InvocationTargetException, InterruptedException {
 
-		ProgressMonitorDialog progress = new ProgressMonitorDialog(null);
+		/*ProgressMonitorDialog progress = new ProgressMonitorDialog(null);
 		Display current = Display.getCurrent();
 		if (current != null) {
 			try {
@@ -346,7 +346,8 @@ public abstract class AbstractInterpreterInstallType implements
 			}
 		} else {
 			runnable.run(new NullProgressMonitor());
-		}
+		}*/
+		runnable.run(new NullProgressMonitor());
 	}
 
 	protected abstract String getPluginId();

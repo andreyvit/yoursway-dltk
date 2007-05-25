@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
@@ -172,8 +173,10 @@ public abstract class ScriptCompletionProposalComputer implements
 		try {
 			IModelElement element = sourceModule.getElementAt(offset);
 			if (element != null) {
-				System.out.println("========= Model element: "
-						+ element.getClass());
+				if (DLTKCore.DEBUG_COMPLETION) {
+					System.out.println("========= Model element: "
+							+ element.getClass());
+				}
 			}
 
 			sourceModule.codeComplete(offset, collector);

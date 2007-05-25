@@ -287,22 +287,19 @@ public class DLTKLaunchingPlugin extends Plugin implements
 		Job libPrefetch = new Job("Inializing DLTK launching") {
 
 			protected IStatus run(IProgressMonitor monitor) {
-				IInterpreterInstallType[] installTypes = ScriptRuntime.getInterpreterInstallTypes();
-				monitor.beginTask("Fetching default interpreter library locations", installTypes.length);
+				IInterpreterInstallType[] installTypes = ScriptRuntime.getInterpreterInstallTypes();				
 				for (int i = 0; i < installTypes.length; i++) {
 					IInterpreterInstall[] installs = installTypes[i].getInterpreterInstalls();
 					for (int j = 0; j < installs.length; j++) {
 						File path = installs[j].getInstallLocation();
 						installTypes[i].getDefaultLibraryLocations(path);			
-					}
-					monitor.worked(1);
+					}					
 				}
-				monitor.done();
 				return Status.OK_STATUS;
 			}
 			
 		};
-		
+		libPrefetch.setSystem(true);
 		libPrefetch.schedule();
 	}
 
