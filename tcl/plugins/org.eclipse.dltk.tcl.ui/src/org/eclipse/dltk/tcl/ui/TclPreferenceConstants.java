@@ -402,7 +402,7 @@ public class TclPreferenceConstants extends PreferenceConstants {
 				TclPreferenceConstants.EDITOR_VARIABLE_COLOR,
 				new RGB(200, 0, 0));
 
-		store.setDefault(TclPreferenceConstants.DOC_MAN_PAGES_LOCATIONS, "");
+		store.setDefault(TclPreferenceConstants.DOC_MAN_PAGES_LOCATIONS, "<manPages></manPages>");
 
 		store.setDefault(
 				TclPreferenceConstants.EDITOR_SINGLE_LINE_COMMENT_BOLD, false);

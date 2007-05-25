@@ -145,6 +145,7 @@ public class DLTKPluginImages {
 	public static final ImageDescriptor DESC_OBJS_OUTPUT_FOLDER_ATTRIB = createUnManaged(T_OBJ, "output_folder_attrib.gif"); //$NON-NLS-1$
 	public static final ImageDescriptor DESC_OBJS_SOURCE_ATTACH_ATTRIB = createUnManaged(T_OBJ, "source_attach_attrib.gif"); //$NON-NLS-1$
 	public static final ImageDescriptor DESC_OBJS_JAVADOC_LOCATION_ATTRIB = createUnManaged(T_OBJ, "javadoc_location_attrib.gif"); //$NON-NLS-1$
+	public static final ImageDescriptor DESC_OBJS_INFO_OBJ = createUnManaged(T_OBJ, "info_obj.gif"); //$NON-NLS-1$
 	
 	public static final ImageDescriptor DESC_OBJS_ACCESSRULES_ATTRIB = createManagedFromKey(T_OBJ, IMG_OBJS_ACCESSRULES_ATTRIB);
 	public static final ImageDescriptor DESC_OBJS_NATIVE_LIB_PATH_ATTRIB = createUnManaged(T_OBJ, "native_lib_path_attrib.gif"); //$NON-NLS-1$

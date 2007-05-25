@@ -9,34 +9,55 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.internal.ui.documentation;
 
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.dltk.tcl.core.TclPlugin;
 import org.eclipse.dltk.tcl.ui.TclPreferenceConstants;
-import org.eclipse.dltk.ui.viewsupport.StorageLabelProvider;
-import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.dltk.ui.DLTKPluginImages;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -45,230 +66,240 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
- 
 /**
  * Control used to edit the libraries associated with a Interpreter install
  */
-public class ManPagesLocationsBlock implements SelectionListener, ISelectionChangedListener {
-	
+public class ManPagesLocationsBlock implements SelectionListener,
+		ISelectionChangedListener {
+
 	/**
 	 * Attribute name for the last path used to open a file/directory chooser
 	 * dialog.
 	 */
 	protected static final String LAST_PATH_SETTING = "LAST_PATH_SETTING"; //$NON-NLS-1$
-	
+
 	/**
 	 * the prefix for dialog setting pertaining to this block
 	 */
 	protected static final String DIALOG_SETTINGS_PREFIX = "ManPagesLocationsBlock"; //$NON-NLS-1$
-	
+
 	protected boolean fInCallback = false;
-	
+
 	protected File fHome;
-	
-	//widgets
-	protected ListViewer fLocationsViewer;
-	private Button fUpButton;
-	private Button fDownButton;
+
+	// widgets
+	protected TreeViewer fLocationsViewer;
+	private Button fClearButton;
 	private Button fRemoveButton;
 	private Button fAddButton;
 	protected Button fDefaultButton;
 
 	private ManLocationsContentProvider fLocationsContentProvider;
-	
+
 	private PreferencePage fPage;
-	
+
 	private IPreferenceStore fStore;
-	
+
 	public ManPagesLocationsBlock(IPreferenceStore store, PreferencePage page) {
 		fPage = page;
 		fStore = store;
 	}
-	
-	protected IBaseLabelProvider getLabelProvider () {
-		return new StorageLabelProvider();
+
+	protected IBaseLabelProvider getLabelProvider() {
+		return new LabelProvider() {
+
+			public Image getImage(Object element) {
+				if (element instanceof ManPageFolder) {
+					return DLTKPluginImages.DESC_OBJS_LIBRARY.createImage();
+				}
+				return DLTKPluginImages.DESC_OBJS_INFO_OBJ.createImage();
+			}
+
+			public String getText(Object element) {
+				if (element instanceof ManPageFolder) {
+					ManPageFolder folder = (ManPageFolder) element;
+					return folder.getPath();
+				}
+				return super.getText(element);
+			}
+
+		};
 	}
+
+	private List folders = null;
+
+	private String getFoldersAsXML() {
+		if (folders == null)
+			return null;
+
+		// Create the Document and the top-level node
+		DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuilder;
+		try {
+			docBuilder = dfactory.newDocumentBuilder();
+		} catch (ParserConfigurationException e1) {
+			e1.printStackTrace();
+			return null;
+		}
+		Document doc = docBuilder.newDocument();
+
+		Element topElement = doc.createElement("manPages");		
+		doc.appendChild(topElement);
+
+		for (Iterator iterator = folders.iterator(); iterator.hasNext();) {
+			ManPageFolder f = (ManPageFolder) iterator.next();
+			Element location = doc.createElement("location");
+			topElement.appendChild(location);			
+			location.setAttribute("path", f.getPath());
+			for (Iterator iterator2 = f.getPages().keySet().iterator(); iterator2
+					.hasNext();) {
+				String name = (String) iterator2.next();
+				String file = (String) f.getPages().get(name);
+				Element page = doc.createElement("page");
+				location.appendChild(page);
+				page.setAttribute("keyword", name);
+				page.setAttribute("file", file);
+			}
+		}
+
 		
-	private class ManLocationsContentProvider implements IStructuredContentProvider {
-		
-		private Viewer fViewer;
-		
-		private File[] fLocations = new File[0];
+		ByteArrayOutputStream s = new ByteArrayOutputStream();
+
+		try {
+			TransformerFactory factory = TransformerFactory.newInstance();
+			Transformer transformer;
+			transformer = factory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
+
+			DOMSource source = new DOMSource(doc);
+			StreamResult outputTarget = new StreamResult(s);
+			transformer.transform(source, outputTarget);
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		}
+
+		String result = null;
+		try {
+			result = s.toString("UTF8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return result; //$NON-NLS-1$
+	}
+
+	
+
+	private class ManLocationsContentProvider implements ITreeContentProvider {
+
+		public Object[] getChildren(Object parentElement) {
+			if (parentElement instanceof ManPageFolder) {
+				ManPageFolder folder = (ManPageFolder) parentElement;
+				String[] ch = new String[folder.getPages().size()];
+				int i = 0;
+				for (Iterator iterator = folder.getPages().keySet().iterator(); iterator
+						.hasNext();) {
+					String kw = (String) iterator.next();
+					String file = (String) folder.getPages().get(kw);
+					ch[i++] = kw + " (" + file + ")";
+				}
+				return ch;
+			}
+			return new Object[0];
+		}
+
+		public Object getParent(Object element) {
+			return null;
+		}
+
+		public boolean hasChildren(Object element) {
+			if (element instanceof ManPageFolder)
+				return true;
+			return false;
+		}
 
 		public Object[] getElements(Object inputElement) {
-			return fLocations;
+			if (folders == null)
+				return new Object[0];
+			return folders.toArray(new Object[folders.size()]);
 		}
 
 		public void dispose() {
 		}
 
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-			fViewer = viewer;
-		}
-		
-		public void setLocations (File[] locs) {
-			fLocations = new File[locs.length];
-			for (int i = 0; i < locs.length; i++) {
-				fLocations[i] = new File(locs[i].getAbsolutePath());
-			}
-			fViewer.refresh();
 		}
 
-		public File[] getLocations() {
-			return fLocations;
-		}
-		
-		/**
-		 * Returns the list of locations in the given selection. 
-		 */
-		private Set getSelectedLocations(IStructuredSelection selection) {
-			Set locs= new HashSet();
-			for (Iterator iter= selection.iterator(); iter.hasNext();) {
-				Object element= iter.next();
-				if (element instanceof File) {
-					locs.add(element);
-				}
-			}
-			return locs;
-		}
-		
-		/**
-		 * Move the locations of the given selection up.
-		 */
-		public void up(IStructuredSelection selection) {
-			Set locations= getSelectedLocations(selection);
-			for (int i= 0; i < fLocations.length - 1; i++) {
-				if (locations.contains(fLocations[i + 1])) {
-					File temp= fLocations[i];
-					fLocations[i]= fLocations[i + 1];
-					fLocations[i + 1]= temp;
-				}
-			}
-			fViewer.refresh();
-			fViewer.setSelection(selection);
-		}
-
-		/**
-		 * Move the locations of the given selection down.
-		 */
-		public void down(IStructuredSelection selection) {
-			Set locations= getSelectedLocations(selection);
-			for (int i= fLocations.length - 1; i > 0; i--) {
-				if (locations.contains(fLocations[i - 1])) {
-					File temp= fLocations[i];
-					fLocations[i]= fLocations[i - 1];
-					fLocations[i - 1]= temp;
-				}
-			}
-			fViewer.refresh();
-			fViewer.setSelection(selection);
-		}
-
-		/**
-		 * Remove the locations contained in the given selection.
-		 */
-		public void remove(IStructuredSelection selection) {
-			List newLocations = new ArrayList();
-			for (int i = 0; i < fLocations.length; i++) {
-				newLocations.add(fLocations[i]);
-			}
-			Iterator iterator = selection.iterator();
-			while (iterator.hasNext()) {
-				Object element = iterator.next();
-				if (element instanceof File) {
-					newLocations.remove(element);
-				} 
-			}
-			fLocations = (File[]) newLocations.toArray(new File[newLocations.size()]);
-			fViewer.refresh();
-		}
-		
-		/**
-		 * Add the given locations before the selection, or after the existing locations
-		 * if the selection is empty.
-		 */
-		public void add(File[] locs, IStructuredSelection selection) {
-			List newLocations = new ArrayList(fLocations.length + locs.length);
-			for (int i = 0; i < fLocations.length; i++) {
-				newLocations.add(fLocations[i]);
-			}
-			List toAdd = new ArrayList(locs.length);
-			for (int i = 0; i < locs.length; i++) {
-				toAdd.add(new File(locs[i].getAbsolutePath()));
-			}
-			if (selection.isEmpty()) {
-				newLocations.addAll(toAdd);
-			} else {
-				Object element= selection.getFirstElement();
-				File firstLoc = (File) element;			 
-				int index = newLocations.indexOf(firstLoc);
-				newLocations.addAll(index, toAdd);
-			}
-			fLocations= (File[]) newLocations.toArray(new File[newLocations.size()]);
-			fViewer.refresh();
-			fViewer.setSelection(new StructuredSelection(locs), true);
-		}
-		
 	};
-	
+
 	/**
 	 * Creates and returns the source lookup control.
 	 * 
-	 * @param parent the parent widget of this control
+	 * @param parent
+	 *            the parent widget of this control
 	 */
 	public Control createControl(Composite parent) {
 		Font font = parent.getFont();
-		
+
 		Composite comp = new Composite(parent, SWT.NONE);
 		GridLayout topLayout = new GridLayout();
 		topLayout.numColumns = 2;
 		topLayout.marginHeight = 0;
 		topLayout.marginWidth = 0;
-		comp.setLayout(topLayout);		
+		comp.setLayout(topLayout);
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		comp.setLayoutData(gd);
-		
-		fLocationsViewer= new ListViewer(comp);
+
+		fLocationsViewer = new TreeViewer(comp);
 		gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = 6;
 		fLocationsViewer.getControl().setLayoutData(gd);
-		fLocationsContentProvider= new ManLocationsContentProvider();
+		fLocationsContentProvider = new ManLocationsContentProvider();
 		fLocationsViewer.setContentProvider(fLocationsContentProvider);
 		fLocationsViewer.setLabelProvider(getLabelProvider());
 		fLocationsViewer.setInput(this);
 		fLocationsViewer.addSelectionChangedListener(this);
-		
+
 		Composite pathButtonComp = new Composite(comp, SWT.NONE);
 		GridLayout pathButtonLayout = new GridLayout();
 		pathButtonLayout.marginHeight = 0;
 		pathButtonLayout.marginWidth = 0;
 		pathButtonComp.setLayout(pathButtonLayout);
-		gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING | GridData.HORIZONTAL_ALIGN_FILL);
+		gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING
+				| GridData.HORIZONTAL_ALIGN_FILL);
 		pathButtonComp.setLayoutData(gd);
 		pathButtonComp.setFont(font);
-		
-		fAddButton= createPushButton(pathButtonComp, "Add");
+
+		fAddButton = createPushButton(pathButtonComp, "Add folder...");
 		fAddButton.addSelectionListener(this);
-		
-		fRemoveButton= createPushButton(pathButtonComp, "Remove");
+
+		fRemoveButton = createPushButton(pathButtonComp, "Remove");
 		fRemoveButton.addSelectionListener(this);
-		
-		fUpButton= createPushButton(pathButtonComp, "Up");
-		fUpButton.addSelectionListener(this);
-		
-		fDownButton= createPushButton(pathButtonComp, "Down");
-		fDownButton.addSelectionListener(this);
-		
+
+		fClearButton = createPushButton(pathButtonComp, "Remove All");
+		fClearButton.addSelectionListener(this);
+
 		return comp;
 	}
 
-	
 	/**
-	 * Creates and returns a button 
+	 * Creates and returns a button
 	 * 
-	 * @param parent parent widget
-	 * @param label label
+	 * @param parent
+	 *            parent widget
+	 * @param label
+	 *            label
 	 * @return Button
 	 */
 	protected Button createPushButton(Composite parent, String label) {
@@ -276,62 +307,55 @@ public class ManPagesLocationsBlock implements SelectionListener, ISelectionChan
 		button.setFont(parent.getFont());
 		button.setText(label);
 		setButtonLayoutData(button);
-		return button;	
+		return button;
 	}
-	
-	protected void setButtonLayoutData(Button button) {						
+
+	protected void setButtonLayoutData(Button button) {
 		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-		int widthHint = 100;
+		int widthHint = 80;
 		Point minSize = button.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
 		data.widthHint = Math.max(widthHint, minSize.x);
 		button.setLayoutData(data);
 	}
-	
+
 	/**
-	 * Create some empty space 
+	 * Create some empty space
 	 */
 	protected void createVerticalSpacer(Composite comp, int colSpan) {
 		Label label = new Label(comp, SWT.NONE);
 		GridData gd = new GridData();
 		gd.horizontalSpan = colSpan;
 		label.setLayoutData(gd);
-	}	
-	
+	}
+
 	/**
-	 * Updates buttons and status based on current libraries
+	 * Updates buttons and status based on current mans
 	 */
 	public void update() {
 		updateButtons();
-		IStatus status = Status.OK_STATUS;
-		
-		File[] locs = fLocationsContentProvider.getLocations();
-		for (int i = 0; i < locs.length; i++) {
-			IStatus st = validateLocation (locs[i]);
-			if (!st.isOK()) {
-				status = st;
-				break;
+
+		if (folders != null) {
+			for (Iterator iterator = folders.iterator(); iterator.hasNext();) {
+				ManPageFolder v = (ManPageFolder) iterator.next();
+				if (!v.verify()) {
+					iterator.remove();
+				}
 			}
 		}
-		
+
 		fLocationsViewer.refresh();
-				
-		updatePageStatus (status);
+
+		updatePageStatus(Status.OK_STATUS);
 	}
-	
-	public void setDefaults () {
-		String res = fStore.getDefaultString(TclPreferenceConstants.DOC_MAN_PAGES_LOCATIONS);
+
+	public void setDefaults() {
+		String res = fStore
+				.getDefaultString(TclPreferenceConstants.DOC_MAN_PAGES_LOCATIONS);
 		fStore.setValue(TclPreferenceConstants.DOC_MAN_PAGES_LOCATIONS, res);
 		initialize();
 	}
-	
-	protected IStatus validateLocation (File location) {
-		if (location.isDirectory())
-			return Status.OK_STATUS;
-		else
-			return new Status(Status.ERROR, TclPlugin.PLUGIN_ID, 0, "Location should be a directory!", null);
-	}
-	
-	protected void updatePageStatus (IStatus status) {
+
+	protected void updatePageStatus(IStatus status) {
 		if (fPage == null)
 			return;
 		fPage.setValid(status.isOK());
@@ -340,89 +364,175 @@ public class ManPagesLocationsBlock implements SelectionListener, ISelectionChan
 		else
 			fPage.setErrorMessage(null);
 	}
-	
-	public void initialize () {
-		String value = fStore.getString(TclPreferenceConstants.DOC_MAN_PAGES_LOCATIONS);
-		String[] names = value.split(">");
-		ArrayList files = new ArrayList (names.length);
-		for (int i = 0; i < names.length; i++) {			
-			if (names[i].trim().length() == 0)
-				continue;
-			File f = new File (names[i]);
-			files.add(f);
- 		}
-		fLocationsContentProvider.setLocations((File[])files.toArray(new File[files.size()]));
+
+	public void initialize() {
+		String value = fStore
+				.getString(TclPreferenceConstants.DOC_MAN_PAGES_LOCATIONS);
+		try {
+			this.folders = ManPageFolder.readXML(value);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		update();
 	}
-	
+
 	/**
 	 * Saves settings
 	 */
-	public void performApply() {		
-		File[] locs = fLocationsContentProvider.getLocations();
-		StringBuffer buf = new StringBuffer();
-		for (int i = 0; i < locs.length; i++) {
-			buf.append(locs[i].getAbsolutePath());
-			buf.append(">");
-		}
-		String value = buf.toString();
-		fStore.setValue(TclPreferenceConstants.DOC_MAN_PAGES_LOCATIONS, value);
-	}	
-	
-	/* (non-Javadoc)
+	public void performApply() {
+		String xml = this.getFoldersAsXML();
+		if (xml != null)
+			fStore
+					.setValue(TclPreferenceConstants.DOC_MAN_PAGES_LOCATIONS,
+							xml);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
 	 */
 	public void widgetSelected(SelectionEvent e) {
-		Object source= e.getSource();
-		if (source == fUpButton) {
-			fLocationsContentProvider.up((IStructuredSelection) fLocationsViewer.getSelection());
-		} else if (source == fDownButton) {
-			fLocationsContentProvider.down((IStructuredSelection) fLocationsViewer.getSelection());
+		Object source = e.getSource();
+		if (source == fClearButton) {
+			folders.clear();
 		} else if (source == fRemoveButton) {
-			fLocationsContentProvider.remove((IStructuredSelection) fLocationsViewer.getSelection());
+			IStructuredSelection selection = (IStructuredSelection) fLocationsViewer
+					.getSelection();
+			Object[] array = selection.toArray();
+			for (int i = 0; i < array.length; i++) {
+				if (array[i] instanceof ManPageFolder) {
+					for (Iterator iterator = folders.iterator(); iterator
+							.hasNext();) {
+						ManPageFolder f = (ManPageFolder) iterator.next();
+						if (f == array[i]) {
+							iterator.remove();
+							break;
+						}
+					}
+				}
+			}
 		} else if (source == fAddButton) {
-			add((IStructuredSelection) fLocationsViewer.getSelection());
-		} 
-		
+			add();
+		}
+
 		update();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
 	 */
-	public void widgetDefaultSelected(SelectionEvent e) {}
-
-	
-	private void add(IStructuredSelection selection) { 
-		File locs = add();
-		if (locs == null)
-			return;
-		fLocationsContentProvider.add(new File[] {locs}, selection);
-		update ();
+	public void widgetDefaultSelected(SelectionEvent e) {
 	}
-	
+
 	/**
 	 * Open the file selection dialog, and add the return locations.
 	 */
-	protected File add() {
-		DirectoryDialog dialog = new DirectoryDialog(fLocationsViewer.getControl().getShell());
-		dialog.setMessage("Select directory directly containing .html files with man pages");
+	protected void add() {
+		DirectoryDialog dialog = new DirectoryDialog(fLocationsViewer
+				.getControl().getShell());
+		dialog.setMessage("Select directory to search into");
 		String result = dialog.open();
-		if (result != null) {;
-			File file = new File(result);
-			if (file != null) {
-				if (!validateLocation(file).isOK()) {
-					ErrorDialog errDlg = new ErrorDialog(fLocationsViewer.getControl().getShell(), "Error", "It is not correct location", validateLocation(file), 0);
-					errDlg.open();
-					return null;
+		if (result != null) {
+			final File file = new File(result);
+			if (this.folders == null)
+				this.folders = new ArrayList();
+			if (file != null && file.isDirectory()) {
+				ProgressMonitorDialog dialog2 = new ProgressMonitorDialog(null);
+				try {
+					dialog2.run(true, true, new IRunnableWithProgress() {
+						public void run(IProgressMonitor monitor) {
+							monitor.beginTask("Searching for man pages", 1);
+							performSearch(file);
+							monitor.done();
+						}
+
+					});
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-				return file;
+
 			}
 		}
-		return null;
 	}
 
-	/* (non-Javadoc)
+	private void performSearch(File dir) {
+		if (!dir.isDirectory())
+			return;
+
+		String name = dir.getName();
+
+		if (name.equals("TkLib") || name.equals("TclLib")
+				|| name.equals("Keywords") || name.equals("UserCmd"))
+			return;
+
+		File[] childs = dir.listFiles(new FileFilter() {
+
+			public boolean accept(File file) {
+				if (file.isDirectory())
+					return true;
+				if (file.getName().startsWith("contents.htm"))
+					return true;
+				return false;
+			}
+
+		});
+		for (int i = 0; i < childs.length; i++) {
+			if (childs[i].isDirectory()) {
+				performSearch(childs[i]);
+			}
+			if (childs[i].getName().startsWith("contents.htm")) {				
+				ManPageFolder folder = new ManPageFolder(dir.getAbsolutePath());
+				parseContentsFile(childs[i], folder);
+				if (folder.getPages().size() > 0 && !folders.contains(folder)) {					
+					this.folders.add(folder);
+				}
+			}
+		}
+	}
+
+	private void parseContentsFile(File c, ManPageFolder folder) {
+		FileReader reader;
+		try {
+			reader = new FileReader(c);
+		} catch (FileNotFoundException e) {
+			return;
+		}
+		StringBuffer buf = new StringBuffer();
+		while (true) {
+			char cbuf[] = new char[1024];
+			try {
+				int read = reader.read(cbuf);
+				if (read >= 0) {
+					buf.append(cbuf, 0, read);
+				} else
+					break;
+			} catch (IOException e) {
+				break;
+			}
+		}
+		String result = buf.toString();
+		Pattern pattern = Pattern.compile(
+				"<a\\s+href=\"([a-zA-Z_0-9]+\\.html?)\"\\s*>(\\w+)</a>",
+				Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(result);
+		while (matcher.find()) {
+			String file = matcher.group(1);
+			if (file.equalsIgnoreCase("Copyright.htm"))
+				continue;
+			String word = matcher.group(2);
+			folder.addPage(word, file);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.SelectionChangedEvent)
 	 */
 	public void selectionChanged(SelectionChangedEvent event) {
@@ -433,32 +543,26 @@ public class ManPagesLocationsBlock implements SelectionListener, ISelectionChan
 	 * Refresh the enable/disable state for the buttons.
 	 */
 	private void updateButtons() {
-		IStructuredSelection selection = (IStructuredSelection) fLocationsViewer.getSelection();
-		fRemoveButton.setEnabled(!selection.isEmpty());
-		boolean enableUp = true, 
-				enableDown = true;
-		Object[] libraries = fLocationsContentProvider.getElements(null);
-		if (selection.isEmpty() || libraries.length == 0) {
-			enableUp = false;
-			enableDown = false;
-		} else {
-			Object first = libraries[0];
-			Object last = libraries[libraries.length - 1];
-			for (Iterator iter= selection.iterator(); iter.hasNext();) {
-				Object element= iter.next();
-				Object lib;
-				lib = element;
-				if (lib == first) {
-					enableUp = false;
-				}
-				if (lib == last) {
-					enableDown = false;
-				}
-			}
-		}
-		fUpButton.setEnabled(enableUp);
-		fDownButton.setEnabled(enableDown);		
-	}
-	
+		fClearButton.setEnabled(folders != null && folders.size() > 0);
+		IStructuredSelection selection = (IStructuredSelection) fLocationsViewer
+				.getSelection();
 		
+		boolean canRemove = true;
+		if (folders == null)
+			canRemove = false;
+		else {
+			List list = selection.toList();
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Object o = (Object) iterator.next();
+				if (!folders.contains(o))
+					canRemove = false;
+				break;				
+			}
+			if (selection.isEmpty())
+				canRemove = false;
+		}
+		
+		fRemoveButton.setEnabled(canRemove);		
+	}
+
 }

@@ -11,6 +11,7 @@ package org.eclipse.dltk.core.search;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -703,7 +704,7 @@ public class SearchEngine {
 		this.basicEngine.searchDeclarationsOfSentMessages(enclosingElement, requestor, monitor);
 	}
 	
-	public static ISourceModule[] searchMixinSources(String key, IDLTKLanguageToolkit toolkit ) {
+	public static ISourceModule[] searchMixinSources(String key, IDLTKLanguageToolkit toolkit, final Set keys ) {
 		final IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit); 
 		// Index requestor
 		final HandleFactory factory = new HandleFactory();
@@ -722,6 +723,13 @@ public class SearchEngine {
 				Openable createOpenable = factory.createOpenable(documentPath, scope);
 				if( createOpenable instanceof ISourceModule ) {
 					modules.add(createOpenable);
+				}
+				
+				if (keys != null) {
+					String val = new String( indexRecord.getIndexKey() );
+					if (!keys.contains(val)) {
+						keys.add(val);
+					}
 				}
 				
 				return true;
@@ -745,6 +753,10 @@ public class SearchEngine {
 				IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
 			null);	
 		return (ISourceModule[])modules.toArray(new ISourceModule[modules.size()]);
+	}
+	
+	public static ISourceModule[] searchMixinSources(String key, IDLTKLanguageToolkit toolkit ) {
+		return searchMixinSources(key, toolkit, null);
 	}
 	
 	public static String[] searchMixinPatterns(String key, IDLTKLanguageToolkit toolkit) {

@@ -35,6 +35,9 @@ public class RubyUI extends AbstractUIPlugin {
 
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		
+		new InitializeAfterLoadJob().schedule();
+		
 	}
 
 	public void stop(BundleContext context) throws Exception {

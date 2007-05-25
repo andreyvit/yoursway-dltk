@@ -10,21 +10,29 @@
 package org.eclipse.dltk.tcl.internal.ui.documentation;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.tcl.internal.ui.TclUI;
 import org.eclipse.dltk.tcl.ui.TclPreferenceConstants;
 import org.eclipse.dltk.ui.documentation.IScriptDocumentationProvider;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 
 public class TclManPagesDocumentationProvider implements
 		IScriptDocumentationProvider {
 
-	private IManPagesLocation[] locations;
-
-	private int oldHash = -1;
+	private List folders = null;
 
 	public Reader getInfo(IMember element, boolean lookIntoParents,
 			boolean lookIntoExternal) {
@@ -32,35 +40,51 @@ public class TclManPagesDocumentationProvider implements
 	}
 
 	public Reader getInfo(String content) {
-		initalizeLocations();
-		for (int i = 0; i < locations.length; i++) {
-			IManPagesLocation loc = locations[i];
-			Reader reader = loc.getHtmlInfo(content);
-			if (reader != null) { // TODO: what if several results there are?
-				return reader;
+		initalizeLocations(false);
+
+		if (folders != null) {
+			for (Iterator iterator = folders.iterator(); iterator.hasNext();) {
+				ManPageFolder f = (ManPageFolder) iterator.next();
+				HashMap pages = f.getPages();
+				String ans = (String) pages.get(content);
+				if (ans != null) {
+					IPath filePath = new Path(f.getPath()).append(ans);
+					File file = filePath.toFile();
+					if (file != null && file.isFile()) {
+						try {
+							return new FileReader(file);
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						}
+					}
+					break;
+				}
 			}
 		}
+
 		return null;
 	}
 
-	private void initalizeLocations() {
+	private void initalizeLocations(boolean force) {
+		if (!force && this.folders != null)
+			return;
+
+		TclUI.getDefault().getPreferenceStore().addPropertyChangeListener(
+				new IPropertyChangeListener() {
+
+					public void propertyChange(PropertyChangeEvent event) {
+						initalizeLocations(true);
+					}
+
+				});
+
 		String value = TclUI.getDefault().getPreferenceStore().getString(
 				TclPreferenceConstants.DOC_MAN_PAGES_LOCATIONS);
-		
-		if (locations == null || value.hashCode() != oldHash) {
-			oldHash = value.hashCode();
-			final String[] locs = value.split(">");
 
-			final List list = new ArrayList();
-			for (int i = 0; i < locs.length; i++) {
-				File file = new File(locs[i].trim());
-				if (file.isDirectory()) {
-					list.add(new HtmlManPagesLocation(file));
-				}
-			}
-
-			locations = (IManPagesLocation[]) list
-					.toArray(new IManPagesLocation[list.size()]);
+		try {
+			this.folders = ManPageFolder.readXML(value);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

@@ -27,9 +27,17 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.dltk.core.search.IDLTKSearchConstants;
+import org.eclipse.dltk.core.search.IDLTKSearchScope;
+import org.eclipse.dltk.core.search.SearchEngine;
+import org.eclipse.dltk.core.search.SearchPattern;
+import org.eclipse.dltk.core.search.TypeNameRequestor;
 import org.eclipse.dltk.internal.core.BatchOperation;
 import org.eclipse.dltk.internal.core.BuildpathAccessRule;
 import org.eclipse.dltk.internal.core.BuildpathAttribute;
@@ -40,7 +48,9 @@ import org.eclipse.dltk.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.dltk.internal.core.Model;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.Region;
+import org.eclipse.dltk.internal.core.builder.State;
 import org.eclipse.dltk.internal.core.util.MementoTokenizer;
+import org.eclipse.dltk.internal.core.util.Messages;
 import org.eclipse.dltk.internal.core.util.Util;
 import org.osgi.framework.BundleContext;
 
@@ -1530,4 +1540,5 @@ public class DLTKCore extends Plugin {
 	public static IRegion newRegion() {
 		return new Region();
 	}
+	
 }

@@ -47,7 +47,7 @@ import org.eclipse.dltk.internal.core.mixin.MixinManager;
 public class MixinModel {
 	public static final String SEPARATOR = "" + IIndexConstants.SEPARATOR;
 	private MixinCache cache = null;
-	
+
 	/**
 	 * Contains map of source modules to mixin elemens.
 	 */
@@ -58,7 +58,7 @@ public class MixinModel {
 
 	private ISourceModule currentModule;
 	private Set modulesToReparse = new HashSet(); // list of modules required
-													// to be reparsed.
+	// to be reparsed.
 	public long removes = 1;
 	double ratio = 2000;
 
@@ -70,33 +70,35 @@ public class MixinModel {
 		this.cache = new MixinCache(
 				(int) (ModelCache.DEFAULT_ROOT_SIZE * ratio));
 		DLTKCore.addElementChangedListener(changedListener);
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(changedListener);
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(
+				changedListener);
 	}
 
 	public void stop() {
 		DLTKCore.removeElementChangedListener(changedListener);
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(changedListener);
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(
+				changedListener);
 	}
 
-//	private static void waitForAutoBuild() {
-//		boolean wasInterrupted = false;
-//		do {
-//			try {
-//				Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD,
-//						null);
-//				wasInterrupted = false;
-//			} catch (OperationCanceledException e) {
-//				e.printStackTrace();
-//			} catch (InterruptedException e) {
-//				wasInterrupted = true;
-//			}
-//		} while (wasInterrupted);
-//	}
+// private static void waitForAutoBuild() {
+// boolean wasInterrupted = false;
+// do {
+// try {
+// Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD,
+// null);
+// wasInterrupted = false;
+// } catch (OperationCanceledException e) {
+// e.printStackTrace();
+// } catch (InterruptedException e) {
+// wasInterrupted = true;
+// }
+// } while (wasInterrupted);
+// }
 
 	public IMixinElement get(String key) {
 		// waitForAutoBuild();
 		if (DLTKCore.VERBOSE) {
-//		System.out.println("$$$ MixinModel.get() key=" + key);
+// System.out.println("$$$ MixinModel.get() key=" + key);
 		}
 		if (notExistKeysCache.contains(key)) {
 			return null;
@@ -125,8 +127,36 @@ public class MixinModel {
 		return null;
 	}
 
+	public IMixinElement[] find(String pattern) {
+		HashSet set = new HashSet();
+
+		ISourceModule[] containedModules = SearchEngine.searchMixinSources(
+				pattern, toolkit, set);
+		
+		if (containedModules.length == 0) {
+			return new IMixinElement[0];
+		}
+		
+		for (int i = 0; i < containedModules.length; ++i) {
+			reportModule(containedModules[i]);
+		}
+
+		IMixinElement[] result = new IMixinElement[set.size()];
+
+		int i = 0;
+		for (Iterator iterator = set.iterator(); iterator.hasNext();) {
+			String key = (String) iterator.next();
+			MixinElement element = getCreateEmpty(key);
+			markElementAsFinal(element);
+			result[i++] = element;
+			existKeysCache.add(key);
+		}
+
+		return result;
+	}
+
 	public String[] findKeys(String pattern) {
-//		System.out.println("$$$ MixinModel.findKeys() pattern=" + pattern);
+// System.out.println("$$$ MixinModel.findKeys() pattern=" + pattern);
 		return SearchEngine.searchMixinPatterns(pattern, toolkit);
 	}
 
@@ -170,7 +200,7 @@ public class MixinModel {
 		if (element.isFinal()) {
 			return;
 		}
-		ISourceModule[] containedModules = findModules(element);
+		ISourceModule[] containedModules = findModules(element.getKey());
 		if (containedModules.length == 0) {
 			synchronized (cache) {
 				cache.remove(element);
@@ -195,7 +225,7 @@ public class MixinModel {
 
 	public synchronized void reportModule(ISourceModule sourceModule) {
 		// if (DLTKCore.VERBOSE) {
-//		System.out.println("Filling ratio:" + this.cache.fillingRatio());
+// System.out.println("Filling ratio:" + this.cache.fillingRatio());
 		// this.cache.printStats();
 		// }
 		if (!this.elementToMixinCache.containsKey(sourceModule)) {
@@ -243,12 +273,12 @@ public class MixinModel {
 	 * @param element
 	 * @return
 	 */
-	private ISourceModule[] findModules(MixinElement element) {
-//		long start = System.currentTimeMillis();
+	private ISourceModule[] findModules(String key) {
+// long start = System.currentTimeMillis();
 		ISourceModule[] searchMixinSources = SearchEngine.searchMixinSources(
-				element.getKey(), toolkit);
-//		long end = System.currentTimeMillis();
-//		System.out.println("findModules:" + Long.toString(end - start));
+				key, toolkit);
+// long end = System.currentTimeMillis();
+// System.out.println("findModules:" + Long.toString(end - start));
 		return searchMixinSources;
 	}
 
@@ -313,7 +343,7 @@ public class MixinModel {
 		public void resourceChanged(IResourceChangeEvent event) {
 			int eventType = event.getType();
 			IResource resource = event.getResource();
-//			IResourceDelta delta = event.getDelta();
+// IResourceDelta delta = event.getDelta();
 
 			switch (eventType) {
 			case IResourceChangeEvent.PRE_DELETE:
@@ -322,19 +352,21 @@ public class MixinModel {
 								.hasScriptNature((IProject) resource)) {
 					// remove all resources with given project from model.
 					List toRemove = new ArrayList();
-					synchronized( elementToMixinCache ) {
+					synchronized (elementToMixinCache) {
 						IProject project = (IProject) resource;
-						for (Iterator iterator = elementToMixinCache.keySet().iterator(); iterator
-								.hasNext();) {
-							ISourceModule module = (ISourceModule) iterator.next();
-							IDLTKProject dltkProject = module.getScriptProject();
-							if( dltkProject != null ) {
+						for (Iterator iterator = elementToMixinCache.keySet()
+								.iterator(); iterator.hasNext();) {
+							ISourceModule module = (ISourceModule) iterator
+									.next();
+							IDLTKProject dltkProject = module
+									.getScriptProject();
+							if (dltkProject != null) {
 								IProject prj = dltkProject.getProject();
-								if( ( prj != null && prj.equals(project) ) || prj == null ) {
+								if ((prj != null && prj.equals(project))
+										|| prj == null) {
 									toRemove.add(module);
 								}
-							}
-							else {
+							} else {
 								toRemove.add(module);
 							}
 						}

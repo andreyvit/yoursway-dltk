@@ -323,11 +323,14 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			ModuleDeclaration moduleDeclaration, String prefix, int position) {
 		int relevance = 424242;
 		this.setSourceRange(position - prefix.length(), position);
-		String[] findKeys = RubyMixinModel.getRawInstance().findKeys(
-				prefix + "*");
-		for (int i = 0; i < findKeys.length; i++) {
+		
+		IMixinElement[] elements = RubyMixinModel.getRawInstance().find(prefix + "*");
+		
+//		String[] findKeys = RubyMixinModel.getRawInstance().findKeys(
+//				prefix + "*");
+		for (int i = 0; i < elements.length; i++) {
 			IRubyMixinElement rubyElement = RubyMixinModel.getInstance()
-					.createRubyElement(findKeys[i]);
+					.createRubyElement(elements[i]);
 			if (rubyElement instanceof RubyMixinVariable) {
 				RubyMixinVariable variable = (RubyMixinVariable) rubyElement;
 				IField[] sourceFields = variable.getSourceFields();
