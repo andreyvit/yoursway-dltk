@@ -53,6 +53,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -266,6 +267,7 @@ public class ManPagesLocationsBlock implements SelectionListener,
 		gd.heightHint = 6;
 		fLocationsViewer.getControl().setLayoutData(gd);
 		fLocationsContentProvider = new ManLocationsContentProvider();
+		fLocationsViewer.setSorter(new ViewerSorter());
 		fLocationsViewer.setContentProvider(fLocationsContentProvider);
 		fLocationsViewer.setLabelProvider(getLabelProvider());
 		fLocationsViewer.setInput(this);
