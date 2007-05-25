@@ -34,7 +34,9 @@ public class RubyLaunchConfigurationDelegate extends
 		for (int i = 0; i < paths.length; ++i) {
 			IPath path = paths[i];
 
+			sb.append('"');
 			sb.append(path.toOSString());
+			sb.append('"');
 
 			if (i < paths.length - 1) {
 				sb.append(separator);
