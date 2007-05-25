@@ -81,10 +81,6 @@ public abstract class AbstractInterpreterDebugger extends AbstractInterpreterRun
 			sessionId = generateSessionId();
 		}
 
-		// RubyDebugTarget target = new RubyDebugTarget(launch, null, sessionId,
-		// dbgpService);
-		// launch.addDebugTarget(target);
-
 		IScriptDebugTarget target =  new ScriptDebugTarget(getDebugModelIdentidier(), dbgpService, sessionId, launch, null);
 		launch.addDebugTarget(target);
 
@@ -112,9 +108,6 @@ public abstract class AbstractInterpreterDebugger extends AbstractInterpreterRun
 		final String sessionId = addDebugTarget(launch, config, dbgpService);
 		final int port = dbgpService.getPort();
 
-		//System.out.println("Session id: " + sessionId);
-		//System.out.println("Port: " + port);
-
 		try {
 			boolean remoteDebugging = config.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_REMOTE, false);
 
@@ -122,10 +115,6 @@ public abstract class AbstractInterpreterDebugger extends AbstractInterpreterRun
 			final String host = "127.0.0.1";
 
 			final String[] commandLine = getCommandLine(sessionId, host, port, configuration);
-
-			// if (DEBUG) {
-			System.out.println(renderCommandLine(commandLine));
-			// }
 
 			if (!remoteDebugging) {
 				// Start local debugging engine

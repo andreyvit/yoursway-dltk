@@ -16,6 +16,8 @@ import org.eclipse.debug.core.model.ITerminate;
 import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.IDbgpThreadAcceptor;
 import org.eclipse.dltk.debug.internal.core.model.DebugEventHelper;
+import org.eclipse.dltk.debug.internal.core.model.ScriptDebugTarget;
+import org.eclipse.dltk.debug.internal.core.model.ScriptThread;
 
 public class RubyThreadManager implements ISuspendResume, ITerminate,
 		IDbgpThreadAcceptor {
@@ -29,24 +31,24 @@ public class RubyThreadManager implements ISuspendResume, ITerminate,
 
 	private int state;
 
-	private RubyThread[] threads;
+	private ScriptThread[] threads;
 
-	private RubyDebugTarget debugTarget;
+	private ScriptDebugTarget debugTarget;
 
 	private void destroy() {
 		state = TERMINATED;
-		debugTarget.destroy();
+//		debugTarget.destroy();
 	}
 
-	private void addThread(RubyThread thread) {
-		RubyThread[] newThreads = new RubyThread[threads.length + 1];
+	private void addThread(ScriptThread thread) {
+		ScriptThread[] newThreads = new ScriptThread[threads.length + 1];
 		System.arraycopy(threads, 0, newThreads, 0, threads.length);
 		newThreads[threads.length] = thread;
 		threads = newThreads;
 	}
 
-	private void removeThread(RubyThread thread) {
-		RubyThread[] newThreads = new RubyThread[threads.length - 1];
+	private void removeThread(ScriptThread thread) {
+		ScriptThread[] newThreads = new ScriptThread[threads.length - 1];
 		for (int i = 0, j = 0; i < threads.length; ++i) {
 			if (threads[i] != thread) {
 				newThreads[j++] = threads[i];
@@ -56,12 +58,12 @@ public class RubyThreadManager implements ISuspendResume, ITerminate,
 	}
 
 	protected void createThread(IDbgpSession session) {
-		RubyThread thread = new RubyThread(this, "My Thread", 0, session);
+		ScriptThread thread = null; //new ScriptThread(this, "My Thread", 0, session);
 		addThread(thread);
 		DebugEventHelper.fireCreateEvent(thread);
 	}
 
-	public void terminateThread(RubyThread thread) {
+	public void terminateThread(ScriptThread thread) {
 		synchronized (lock) {
 			removeThread(thread);
 			DebugEventHelper.fireTerminateEvent(thread);
@@ -72,19 +74,19 @@ public class RubyThreadManager implements ISuspendResume, ITerminate,
 		}
 	}
 
-	public RubyThreadManager(RubyDebugTarget debugTarget) {
+	public RubyThreadManager(ScriptDebugTarget debugTarget) {
 		this.debugTarget = debugTarget;
 		this.state = WAITING;
-		this.threads = new RubyThread[0];
+		this.threads = new ScriptThread[0];
 	}
 	
-	public RubyDebugTarget getDebugTarget() {
+	public ScriptDebugTarget getDebugTarget() {
 		return debugTarget;
 	}
 
-	public RubyThread[] getThreads() {
+	public ScriptThread[] getThreads() {
 		synchronized (lock) {
-			return (RubyThread[]) threads.clone();
+			return (ScriptThread[]) threads.clone();
 		}
 	}
 
@@ -153,7 +155,7 @@ public class RubyThreadManager implements ISuspendResume, ITerminate,
 				Assert.isTrue(hasThreads());
 
 				for (int i = 0; i < threads.length; ++i) {
-					RubyThread thread = threads[i];
+					ScriptThread thread = threads[i];
 					if (thread.canResume()) {
 						thread.resume();
 					}
@@ -168,7 +170,7 @@ public class RubyThreadManager implements ISuspendResume, ITerminate,
 				Assert.isTrue(hasThreads());
 
 				for (int i = 0; i < threads.length; ++i) {
-					RubyThread thread = threads[i];
+					ScriptThread thread = threads[i];
 					if (thread.canSuspend()) {
 						thread.suspend();
 					}
@@ -199,7 +201,7 @@ public class RubyThreadManager implements ISuspendResume, ITerminate,
 			} else if (state == ACCEPTING) {
 				state = TERMINATING;
 
-				RubyThread[] temp = getThreads();
+				ScriptThread[] temp = getThreads();
 				for (int i = 0; i < temp.length; ++i) {
 					temp[i].terminate();
 				}

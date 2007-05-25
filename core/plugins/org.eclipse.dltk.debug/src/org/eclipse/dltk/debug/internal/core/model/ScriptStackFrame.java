@@ -10,12 +10,12 @@
 package org.eclipse.dltk.debug.internal.core.model;
 
 import java.net.URI;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Preferences;
-import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IRegisterGroup;
@@ -32,7 +32,9 @@ import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
 public class ScriptStackFrame extends ScriptDebugElement implements
-		IScriptStackFrame, Preferences.IPropertyChangeListener {
+		IScriptStackFrame {
+
+	private static final String STACK_FRAME_LABEL = "Stack frame #{0}";
 
 	private IScriptThread thread;
 
@@ -116,10 +118,6 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 
 	public ScriptStackFrame(IScriptThread thread, IDbgpStackLevel stackLevel)
 			throws DbgpException {
-
-		// DLTKDebugPlugin.getDefault().getPluginPreferences()
-		// .addPropertyChangeListener(this);
-
 		this.thread = thread;
 		this.level = stackLevel;
 		this.variables = readAllVariables();
@@ -142,10 +140,10 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public String getName() throws DebugException {
-		String name = level.getWhere();
+		String name = level.getWhere().trim();
 
 		if (name == null || name.length() == 0) {
-			name = "Frame #" + level.getLevel();
+			name = toString();
 		}
 
 		name += " (" + level.getFileURI().getPath() + ")";
@@ -270,16 +268,9 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public String toString() {
-		return "Stack frame #" + level.getLevel() + ")";
-	}
 
-	public void propertyChange(PropertyChangeEvent event) {
-		String name = event.getProperty();
-		if (name
-				.startsWith(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_PREFIX)) {
-			// DebugEventHelper.fireChangeEvent(this);
-		}
-
+		return MessageFormat.format(STACK_FRAME_LABEL,
+				new Object[] { new Integer(level.getLevel()) });
 	}
 
 	public String getSourceString() {

@@ -223,9 +223,13 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	}
 
 	public void computeDetail(IValue value, IValueDetailListener listener) {
-		String detail = "";
+		String detail = "Can't compute detail";
 		try {
-			detail = value.getValueString();
+			if (value.hasVariables()) {
+				detail = value.getReferenceTypeName();
+			} else {
+				detail = value.getValueString();
+			}			
 		} catch (DebugException e) {
 			DLTKDebugUIPlugin.log(e);
 		}

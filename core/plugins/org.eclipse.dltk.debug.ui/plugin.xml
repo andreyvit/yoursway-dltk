@@ -95,10 +95,18 @@
                label="%RunMenu.label"
                path="additions"
                id="org.eclipse.ui.run">
-            <separator
-                  name="dltkGroup">
+            <separator 
+            	name="dltkGroup">
             </separator>
-         </menu>  
+         </menu>
+                 
+         <action
+               class="org.eclipse.dltk.internal.debug.ui.actions.WatchAction"
+               enablesFor="+"
+               id="org.eclipse.dltk.debug.ui.Watch"
+               label="Watch!!!!"
+               menubarPath="org.eclipse.ui.run/dltkGroup">           
+         </action>
        </actionSet>
  </extension>
  <extension

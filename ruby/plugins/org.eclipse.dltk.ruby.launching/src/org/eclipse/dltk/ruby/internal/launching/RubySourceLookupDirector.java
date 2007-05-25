@@ -24,7 +24,6 @@ import org.eclipse.debug.core.model.IPersistableSourceLocator;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.internal.core.model.ScriptStackFrame;
-import org.eclipse.dltk.ruby.debug.model.RubyStackFrame;
 
 public class RubySourceLookupDirector implements IPersistableSourceLocator {
 
@@ -34,10 +33,7 @@ public class RubySourceLookupDirector implements IPersistableSourceLocator {
 	public Object getSourceElement(IStackFrame stackFrame) {
 		// Transition code, will be removed later
 		URI uri = null;
-		if (stackFrame instanceof RubyStackFrame) {
-			RubyStackFrame sf = (RubyStackFrame) stackFrame;
-			uri = sf.getFile();
-		} else if (stackFrame instanceof IScriptStackFrame) {
+		if (stackFrame instanceof IScriptStackFrame) {
 			ScriptStackFrame sf = (ScriptStackFrame) stackFrame;
 			uri = sf.getFileName();
 		}
@@ -52,11 +48,12 @@ public class RubySourceLookupDirector implements IPersistableSourceLocator {
 			pathname = pathname.substring(1);
 		}
 
-		//System.out.println("====> " + pathname);
+		// System.out.println("====> " + pathname);
 
 		File file = new File(pathname);
 
-		IContainer container = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(new Path(file.getParent()));
+		IContainer container = ResourcesPlugin.getWorkspace().getRoot()
+				.getContainerForLocation(new Path(file.getParent()));
 
 		if (container != null) {
 			IResource resource = container.findMember(file.getName());
@@ -75,7 +72,8 @@ public class RubySourceLookupDirector implements IPersistableSourceLocator {
 		return null;
 	}
 
-	public void initializeDefaults(ILaunchConfiguration configuration) throws CoreException {
+	public void initializeDefaults(ILaunchConfiguration configuration)
+			throws CoreException {
 
 	}
 

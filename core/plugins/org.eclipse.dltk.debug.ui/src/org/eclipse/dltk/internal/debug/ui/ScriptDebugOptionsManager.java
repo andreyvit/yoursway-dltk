@@ -34,7 +34,7 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 
 public class ScriptDebugOptionsManager implements IDebugEventSetListener,
-		IPropertyChangeListener, IScriptBreakpointListener, ILaunchListener,
+		IPropertyChangeListener, IScriptBreakpointListener , ILaunchListener,
 		IBreakpointsListener {
 
 	private static ScriptDebugOptionsManager fgOptionsManager;

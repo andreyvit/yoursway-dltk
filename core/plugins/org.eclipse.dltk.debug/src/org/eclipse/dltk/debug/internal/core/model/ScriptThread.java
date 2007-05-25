@@ -42,6 +42,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		IThreadManagement, IDbgpDebuggerFeedback {
 
 	private static final IStackFrame[] NO_STACK_FRAMES = new IStackFrame[0];
+	
+	private int suspendCount;
 
 	private boolean canSuspend;
 
@@ -117,14 +119,17 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	public ScriptThread(IScriptDebugTarget target, IDbgpSession session,
 			ScriptThreadManager manager) throws DbgpException, CoreException {
-
+		
 		this.target = target;
 
 		this.manager = manager;
-
+				
 		this.streamProxy = target.getStreamManager().makeThreadStreamProxy();
 
 		this.session = session;
+		
+		// Suspend count
+		this.suspendCount = 0;
 
 		// Initial states
 		this.suspended = true;
@@ -206,6 +211,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	protected void setSuspended(boolean value, int detail) {
 		suspended = value;
 		if (value) {
+			++suspendCount;
 			DebugEventHelper.fireSuspendEvent(this, detail);
 
 		} else {
