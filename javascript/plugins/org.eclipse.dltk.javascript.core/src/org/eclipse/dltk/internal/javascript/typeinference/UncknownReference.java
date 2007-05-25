@@ -20,29 +20,30 @@ public class UncknownReference implements IReference {
 
 	private String name;
 	private final boolean childIsh;
-	
+
 	protected ModelElement parent;
 	private int offset;
 	private int length;
-	
+
 	public int getOffset() {
 		return offset;
 	}
-	
-	public int getLength(){
+
+	public int getLength() {
 		return length;
 	}
 
 	public UncknownReference(String paramOrVarName, boolean childIsh) {
 		this.name = paramOrVarName;
 		this.childIsh = childIsh;
-		
+
 	}
-	
-	public void setLocationInformation(ModelElement parent,int offset,int length){
-		this.parent=parent;
-		this.length=length;
-		this.offset=offset;
+
+	public void setLocationInformation(ModelElement parent, int offset,
+			int length) {
+		this.parent = parent;
+		this.length = length;
+		this.offset = offset;
 	}
 
 	public Set getChilds(boolean resolveLocals) {
@@ -97,9 +98,12 @@ public class UncknownReference implements IReference {
 	}
 
 	public void addModelElements(Collection toAdd) {
-		if (parent!=null)
-		toAdd.add(new FakeField( parent,name,offset,length));
+		if (parent != null)
+			toAdd.add(new FakeField(parent, name, offset, length));
 	}
-	
+
+	public boolean isFunctionRef() {
+		return false;
+	}
 
 }

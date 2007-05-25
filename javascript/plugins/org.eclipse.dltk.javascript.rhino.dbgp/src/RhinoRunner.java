@@ -6,11 +6,13 @@ import java.net.UnknownHostException;
 
 import org.eclipse.dltk.rhino.dbgp.DBGPDebugger;
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.Scriptable;
 
 public class RhinoRunner {
 
 	public static void main(String[] args) {
+		
 		Context cx = Context.enter();
 		if (args.length > 1) {
 			String host = args[1];

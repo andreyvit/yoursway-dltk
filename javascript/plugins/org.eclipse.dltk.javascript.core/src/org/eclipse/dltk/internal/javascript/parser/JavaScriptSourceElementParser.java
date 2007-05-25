@@ -10,7 +10,6 @@
 package org.eclipse.dltk.internal.javascript.parser;
 
 import java.io.CharArrayReader;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,13 +20,10 @@ import java.util.Set;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
-import org.eclipse.dltk.compiler.ISourceElementRequestor.FieldInfo;
 import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.core.ISourceElementParser;
-import org.eclipse.dltk.core.ISourceReference;
-import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.internal.javascript.reference.resolvers.ReferenceResolverContext;
 import org.eclipse.dltk.internal.javascript.typeinference.ContextReference;
@@ -58,10 +54,10 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 	 */
 
 	public JavaScriptSourceElementParser(/*
-											 * ISourceElementRequestor
-											 * requestor, IProblemReporter
-											 * problemReporter
-											 */) {
+	 * ISourceElementRequestor
+	 * requestor, IProblemReporter
+	 * problemReporter
+	 */) {
 // this.fRequestor = requestor;
 // this.fReporter = problemReporter;
 	}
@@ -78,7 +74,8 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 					if (fReporter != null)
 						fReporter.reportProblem(new DefaultProblem(arg1, arg0,
 								0, new String[] {}, ProblemSeverities.Error,
-								arg4 - (arg3!=null?arg3.length():0), arg4, arg2));
+								arg4 - (arg3 != null ? arg3.length() : 0),
+								arg4, arg2));
 				} catch (CoreException e) {
 					e.printStackTrace();
 				}
@@ -217,6 +214,8 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 			fRequestor.enterField(fieldInfo);
 			if (collection != null) {
 				IReference reference = collection.getReference(fieldInfo.name);
+				if (reference == null)
+					continue;
 				Set childs = reference.getChilds(false);
 				Iterator it = childs.iterator();
 				while (it.hasNext()) {

@@ -42,9 +42,9 @@ public final class ReferenceResolverContext {
 	public boolean resolveLocals() {
 		return false;
 	}
-	
-	public Set resolveGlobals(String id){
-		HashSet sm=new HashSet();
+
+	public Set resolveGlobals(String id) {
+		HashSet sm = new HashSet();
 		for (int a = 0; a < resolvers.size(); a++) {
 			IReferenceResolver res = (IReferenceResolver) resolvers.get(a);
 			Set result = res.resolveGlobals(id);
@@ -52,21 +52,21 @@ public final class ReferenceResolverContext {
 		}
 		return sm;
 	}
-	
-	public void init(){
+
+	public void init() {
 		for (int a = 0; a < resolvers.size(); a++) {
 			IReferenceResolver res = (IReferenceResolver) resolvers.get(a);
 			res.init(this);
 		}
 	}
-	
 
 	public Set resolveChilds(IResolvableReference abstractCallResultReference) {
 		for (int a = 0; a < resolvers.size(); a++) {
 			IReferenceResolver res = (IReferenceResolver) resolvers.get(a);
 			Set result = res.getChilds(abstractCallResultReference);
 			if (result != null) {
-				return result;
+				if (!result.isEmpty())
+					return result;
 			}
 		}
 		return new HashSet();
@@ -75,17 +75,17 @@ public final class ReferenceResolverContext {
 	public void processCall(String call, String objId) {
 		for (int a = 0; a < resolvers.size(); a++) {
 			IReferenceResolver res = (IReferenceResolver) resolvers.get(a);
-			res.processCall(call,objId);
+			res.processCall(call, objId);
 		}
 	}
 
 	private HostCollection collection;
-	
-	public HostCollection getHostCollection(){
+
+	public HostCollection getHostCollection() {
 		return collection;
 	}
-	
+
 	public void setHostCollection(HostCollection collection) {
-		this.collection=collection;
+		this.collection = collection;
 	}
 }

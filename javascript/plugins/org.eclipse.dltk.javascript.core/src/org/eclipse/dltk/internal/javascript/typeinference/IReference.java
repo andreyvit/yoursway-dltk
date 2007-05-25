@@ -52,4 +52,6 @@ public interface IReference {
 
 	public void setLocationInformation(ModelElement mo, int position, int length);
 
+	public boolean isFunctionRef();
+
 }

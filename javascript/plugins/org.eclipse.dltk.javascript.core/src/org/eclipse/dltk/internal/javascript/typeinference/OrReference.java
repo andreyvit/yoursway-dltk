@@ -19,41 +19,43 @@ public class OrReference implements IReference {
 
 	protected final IReference one;
 	protected final IReference second;
-	
 
 	public OrReference(IReference one, IReference second) {
 		super();
 		this.one = one;
 		this.second = second;
 	}
-	
+
 	public Set getChilds(boolean resolveLocals) {
-		if (entered)return new HashSet();
-		entered=true;
+		if (entered)
+			return new HashSet();
+		entered = true;
 		Set set = one.getChilds(resolveLocals);
 		set.addAll(second.getChilds(resolveLocals));
-		entered=false;
+		entered = false;
 		return set;
 	}
 
 	public String getName() {
-		return  one.getName();
+		return one.getName();
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		if (entered)return result;
-		entered=true;
+		if (entered)
+			return result;
+		entered = true;
 		result = prime * result + ((one == null) ? 0 : one.hashCode());
 		result = prime * result + ((second == null) ? 0 : second.hashCode());
-		entered=false;
+		entered = false;
 		return result;
 	}
 
 	public boolean equals(Object obj) {
-		if (entered)return false;
-		
+		if (entered)
+			return false;
+
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -74,13 +76,15 @@ public class OrReference implements IReference {
 		return true;
 	}
 
-	boolean entered=false;
+	boolean entered = false;
+
 	public IReference getChild(String key, boolean resolveLocals) {
-		if (entered)return null;
-		entered=true;		
+		if (entered)
+			return null;
+		entered = true;
 		IReference child = one.getChild(key, resolveLocals);
 		IReference child2 = second.getChild(key, resolveLocals);
-		entered=false;
+		entered = false;
 		if (child == null)
 			return child2;
 		if (child2 == null)
@@ -94,19 +98,21 @@ public class OrReference implements IReference {
 	}
 
 	public boolean isChildishReference() {
-		return one.isChildishReference()||second.isChildishReference();
+		return one.isChildishReference() || second.isChildishReference();
 	}
 
 	public void recordDelete(String fieldId) {
-		
+
 	}
 
 	public IReference getPrototype(boolean resolveLocals) {
 		IReference prototype = one.getPrototype(false);
 		IReference prototype2 = second.getPrototype(false);
-		if (prototype==null)return prototype2;
-		if (prototype2==null)return prototype;
-		return new OrReference(prototype,prototype2);
+		if (prototype == null)
+			return prototype2;
+		if (prototype2 == null)
+			return prototype;
+		return new OrReference(prototype, prototype2);
 	}
 
 	public void setPrototype(IReference ref) {
@@ -124,5 +130,8 @@ public class OrReference implements IReference {
 		second.setLocationInformation(mo, position, length);
 	}
 
+	public boolean isFunctionRef() {
+		return one.isFunctionRef() || second.isFunctionRef();
+	}
 
 }

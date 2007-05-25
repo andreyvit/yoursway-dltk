@@ -129,6 +129,10 @@ final class TransparentRef implements IReference {
 		this.length = length;
 	}
 
+	public boolean isFunctionRef() {
+		return evaluateReference.isFunctionRef();
+	}
+
 }
 
 public class TypeInferencer {
@@ -586,16 +590,27 @@ public class TypeInferencer {
 		case Token.EXPR_RESULT:
 			return internalEvaluate(collection, key,
 					expression.getFirstChild(), parent, cs);
-		case Token.NUMBER:
-			return ReferenceFactory.createNumberReference(key, expression
-					.getDouble());
-		case Token.STRING:
-			return ReferenceFactory.createStringReference(key, expression
-					.getString());
+		case Token.NUMBER: {
+			NewReference newReference = new NewReference(key, "Number", cs);
+			UncknownReference uncknownReference = new UncknownReference(key,
+					false);
+			return new OrReferenceWriteSecond(newReference, uncknownReference);
+		}
+// return ReferenceFactory.createNumberReference(key, expression
+// .getDouble());
+		case Token.STRING: {
+			NewReference newReference = new NewReference(key, "String", cs);
+			UncknownReference uncknownReference = new UncknownReference(key,
+					false);
+			return new OrReferenceWriteSecond(newReference, uncknownReference);
+		}
 		case Token.TRUE:
-			return ReferenceFactory.createBooleanReference(key, true);
-		case Token.FALSE:
-			return ReferenceFactory.createBooleanReference(key, false);
+		case Token.FALSE: {
+			NewReference newReference = new NewReference(key, "Boolean", cs);
+			UncknownReference uncknownReference = new UncknownReference(key,
+					false);
+			return new OrReferenceWriteSecond(newReference, uncknownReference);
+		}
 		case Token.OBJECTLIT:
 			return createObjectLiteral(collection, key, expression, parent, cs);
 		case Token.CALL:
@@ -648,9 +663,11 @@ public class TypeInferencer {
 		NewReference ref = new NewReference(key, id, cs);
 		UncknownReference uncknownReference = new UncknownReference(key, false);
 		if (id.equals("XML")) {
-			String string = expression.getLastChild().getString();
-			modifyReferenceXML(uncknownReference, string);
-			
+			try {
+				String string = expression.getLastChild().getString();
+				modifyReferenceXML(uncknownReference, string);
+			} catch (ClassCastException e) {
+			}
 		}
 		OrReferenceWriteSecond ws = new OrReferenceWriteSecond(ref,
 				uncknownReference);
@@ -670,33 +687,46 @@ public class TypeInferencer {
 		}
 	}
 
-	private static void modifyReferenceXML(final UncknownReference uncknownReference,
-			String string) {
+	private static void modifyReferenceXML(
+			final UncknownReference uncknownReference, String string) {
 		try {
 			parser.parse(new ByteArrayInputStream(string.getBytes()),
 					new DefaultHandler() {
 
-						UncknownReference curReference=uncknownReference;
-						Stack stack=new Stack();
-				
+						boolean has = false;
+						UncknownReference curReference = uncknownReference;
+						Stack stack = new Stack();
+
 						public void endElement(String uri, String localName,
 								String name) throws SAXException {
-							curReference=(UncknownReference) stack.pop();
+							if (!stack.isEmpty())
+								curReference = (UncknownReference) stack.pop();
 						}
 
 						public void startElement(String uri, String localName,
 								String name, Attributes attributes)
 								throws SAXException {
-							UncknownReference uncknownReference2 = new UncknownReference(name,true);
-							curReference.setChild(name, uncknownReference2);
+							UncknownReference uncknownReference2 = new UncknownReference(
+									name, true);
+
 							int length = attributes.getLength();
-							for (int a=0;a<length;a++){
-								String val="@"+attributes.getQName(a);
-								UncknownReference uncknownReference3 = new UncknownReference(val,true);
+							if (has) {
+								curReference.setChild(name, uncknownReference2);
+								curReference = uncknownReference2;
+								stack.push(curReference);
+							}
+							for (int a = 0; a < length; a++) {
+								String val = "@" + attributes.getQName(a);
+								UncknownReference uncknownReference3 = new UncknownReference(
+										val, true);
 								curReference.setChild(val, uncknownReference3);
 							}
-							curReference=uncknownReference2;
-							stack.push(curReference);
+// if (has) {
+// curReference.setChild(name, uncknownReference2);
+// curReference = uncknownReference2;
+// stack.push(curReference);
+// }
+							has = true;
 						}
 
 					});

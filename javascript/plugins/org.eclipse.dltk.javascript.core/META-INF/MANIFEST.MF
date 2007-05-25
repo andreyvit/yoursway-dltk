@@ -7,7 +7,8 @@ Bundle-Vendor: XORED
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.dltk.core,
- org.eclipse.jface.text
+ org.eclipse.jface.text,
+ org.apache.xmlbeans
 Bundle-Activator: org.eclipse.dltk.javascript.core.JavaScriptPlugin
 Export-Package: com.xored.org.mozilla.javascript,
  org.eclipse.dltk.internal.javascript.parser,

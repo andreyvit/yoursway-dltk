@@ -20,7 +20,7 @@ import java.util.Set;
 import org.eclipse.dltk.internal.core.ModelElement;
 
 public final class ContextReference implements IReference {
-	
+
 	private final HostCollection function;
 	private final String key;
 	private int position;
@@ -52,7 +52,8 @@ public final class ContextReference implements IReference {
 	}
 
 	public Set getChilds(boolean resolveLocals) {
-		if (!resolveLocals)return new HashSet();
+		if (!resolveLocals)
+			return new HashSet();
 		Map references = function.getReferences();
 		Collection values = references.values();
 		HashSet hashSet = new HashSet(values);
@@ -73,23 +74,27 @@ public final class ContextReference implements IReference {
 	}
 
 	public void recordDelete(String fieldId) {
-		
+
 	}
 
 	public void setChild(String key, IReference ref) {
-		
+
 	}
 
 	public void setPrototype(IReference ref) {
-		
+
 	}
 
 	public void addModelElements(Collection toAdd) {
-		
+
 	}
-	
+
 	public void setLocationInformation(ModelElement mo, int position, int length) {
-		this.position=position;
-		this.length=length;
+		this.position = position;
+		this.length = length;
+	}
+
+	public boolean isFunctionRef() {
+		return true;
 	}
 }

@@ -43,11 +43,15 @@ public class ResolverManager {
 		resolvers.toArray(registredResolvers);
 	}
 
-	public static ReferenceResolverContext createResolverContext(ISourceModule module,Map settings) {
-		ReferenceResolverContext cm = new ReferenceResolverContext(module,settings);
+	public static ReferenceResolverContext createResolverContext(
+			ISourceModule module, Map settings) {
+		ReferenceResolverContext cm = new ReferenceResolverContext(module,
+				settings);
 		for (int a = 0; a < registredResolvers.length; a++) {
 			IReferenceResolver create = registredResolvers[a].create();
-			if (create.canResolve(module)) {
+			if (create instanceof SourceBasedResolver) {
+				cm.resolvers.add(0, create);
+			} else if (create.canResolve(module)) {
 				cm.resolvers.add(create);
 			}
 		}

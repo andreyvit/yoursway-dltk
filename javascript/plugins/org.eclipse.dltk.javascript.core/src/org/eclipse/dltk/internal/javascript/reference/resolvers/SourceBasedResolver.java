@@ -109,6 +109,7 @@ public class SourceBasedResolver implements IReferenceResolver,
 					ASTNode node = fr.getNode();
 					if (node instanceof FunctionDeclarationReference) {
 						FunctionDeclarationReference funcRef = (FunctionDeclarationReference) node;
+
 						result.add(funcRef);
 					}
 				}
@@ -170,29 +171,34 @@ public class SourceBasedResolver implements IReferenceResolver,
 						.getDefaultSearchParticipant() }, scope, requestor,
 				null);
 	}
-	
+
 	public Set resolveGlobals(String id) {
-		JavaScriptMixinModel m=JavaScriptMixinModel.getInstance();
-		String key = IIndexConstants.SEPARATOR+ id.replace('.',IIndexConstants.SEPARATOR);
+		JavaScriptMixinModel m = JavaScriptMixinModel.getInstance();
+		String key = IIndexConstants.SEPARATOR
+				+ id.replace('.', IIndexConstants.SEPARATOR);
 		String[] findElements = m.findElements(key);
-		HashSet result=new HashSet();
-		for (int a=0;a<findElements.length;a++){
-			IMixinElement mixinElement = m.getRawInstance().get(findElements[a]);
-			if (mixinElement==null)continue;
-			String keye= mixinElement.getKey().substring(key.length());
-			if (keye.indexOf(IIndexConstants.SEPARATOR)!=-1)continue;
-			if (mixinElement==null)continue;			
+		HashSet result = new HashSet();
+		for (int a = 0; a < findElements.length; a++) {
+			IMixinElement mixinElement = m.getRawInstance()
+					.get(findElements[a]);
+			if (mixinElement == null)
+				continue;
+			String keye = mixinElement.getKey().substring(key.length());
+			if (keye.indexOf(IIndexConstants.SEPARATOR) != -1)
+				continue;
+			if (mixinElement == null)
+				continue;
 			Object[] allObjects = mixinElement.getAllObjects();
-			
-			for (int i=0;i<allObjects.length;i++){
+
+			for (int i = 0; i < allObjects.length; i++) {
 				result.add(allObjects[i]);
 			}
 		}
 		return result;
 	}
-	
+
 	public void processCall(String call, String objId) {
-	
+
 	}
 
 	public void init() {

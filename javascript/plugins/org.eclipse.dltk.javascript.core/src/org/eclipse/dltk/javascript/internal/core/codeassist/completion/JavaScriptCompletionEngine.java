@@ -58,9 +58,12 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 		this.useEngine = useEngine;
 	}
 
-	public JavaScriptCompletionEngine(/*ISearchableEnvironment nameEnvironment,
-			CompletionRequestor requestor, Map settings,
-			IDLTKProject dltkProject*/) {
+	public JavaScriptCompletionEngine(/*
+	 * ISearchableEnvironment
+	 * nameEnvironment, CompletionRequestor
+	 * requestor, Map settings, IDLTKProject
+	 * dltkProject
+	 */) {
 	}
 
 	protected int getEndOfEmptyToken() {
@@ -127,13 +130,15 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 
 			ArrayList methods = new ArrayList();
 			ArrayList fields = new ArrayList();
-			
+
 			for (int a = 0; a < findElements.length; a++) {
 				String string = findElements[a];
-				if (string.lastIndexOf(MixinModel.SEPARATOR)>0)continue;
+				if (string.lastIndexOf(MixinModel.SEPARATOR) > 0)
+					continue;
 				IMixinElement mixinElement = instance.getRawInstance().get(
 						string);
-				if (mixinElement==null)continue;
+				if (mixinElement == null)
+					continue;
 				Object[] allObjects = mixinElement.getAllObjects();
 				if (allObjects.length > 0) {
 					for (int i = 0; i < allObjects.length; i++) {
@@ -145,19 +150,17 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 								methods.add(el);
 							} else if (elementType == IModelElement.FIELD) {
 								String elementName = el.getElementName();
-								if (!completedNames.contains(elementName))
-								{
-								fields.add(elementName.toCharArray());
-								completedNames.add(elementName);
+								if (!completedNames.contains(elementName)) {
+									fields.add(elementName.toCharArray());
+									completedNames.add(elementName);
 								}
 							}
 						} else if (object == null) {
-							String lastKeySegment = mixinElement.getLastKeySegment();
-							if (!completedNames.contains(lastKeySegment))
-							{
-							fields.add(lastKeySegment
-									.toCharArray());
-							completedNames.add(lastKeySegment);
+							String lastKeySegment = mixinElement
+									.getLastKeySegment();
+							if (!completedNames.contains(lastKeySegment)) {
+								fields.add(lastKeySegment.toCharArray());
+								completedNames.add(lastKeySegment);
 							}
 						}
 					}
@@ -202,16 +205,16 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 		}
 		ReferenceResolverContext createResolverContext = buildContext;
 		Set resolveGlobals = Collections.EMPTY_SET;
-		//createResolverContext.resolveGlobals(calculator
-			//	.getCompletion());
+		// createResolverContext.resolveGlobals(calculator
+		// .getCompletion());
 		it = resolveGlobals.iterator();
 		while (it.hasNext()) {
-			Object o=it.next();
-			if (o instanceof IReference)
-			{
-			IReference r = (IReference) o;
-			if (completedNames.contains(r.getName()))continue;
-			names.put(r.getName(), r);
+			Object o = it.next();
+			if (o instanceof IReference) {
+				IReference r = (IReference) o;
+				if (completedNames.contains(r.getName()))
+					continue;
+				names.put(r.getName(), r);
 			}
 		}
 		names.remove("!!!returnValue");
@@ -286,10 +289,10 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 					.getCorePart() + '.');
 			Iterator it = resolveGlobals.iterator();
 			while (it.hasNext()) {
-				Object o=it.next();
-				if (o instanceof IReference){
-				IReference r = (IReference) o;
-				dubR.put(r.getName(), r);
+				Object o = it.next();
+				if (o instanceof IReference) {
+					IReference r = (IReference) o;
+					dubR.put(r.getName(), r);
 				}
 			}
 			long currentTimeMillis = System.currentTimeMillis();
@@ -300,7 +303,21 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 			System.out.println(findElements.length);
 		}
 		completeFromMap(position, completionPart, dubR);
-
+		HashMap functions = new HashMap();
+		for (iterator = dubR.keySet().iterator(); iterator.hasNext();) {
+			Object key = iterator.next();
+			Object next = dubR.get(key);
+			if (next instanceof IReference) {
+				IReference name = (IReference) next;
+				if (name.isFunctionRef()) {
+					functions.put(key, name);
+				}
+			}
+		}
+		for (iterator = functions.keySet().iterator(); iterator.hasNext();) {
+			Object key = iterator.next();
+			dubR.remove(key);
+		}
 		char[][] choices = new char[dubR.size() + searchResults.size()][];
 		int ia = 0;
 		for (iterator = dubR.values().iterator(); iterator.hasNext();) {
@@ -318,7 +335,18 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 		}
 		findElements(completionPart.toCharArray(), choices, true, false,
 				CompletionProposal.FIELD_REF);
-
+		choices = new char[functions.size()][];
+		ia = 0;
+		for (iterator = functions.values().iterator(); iterator.hasNext();) {
+			Object next = iterator.next();
+			if (next instanceof IReference) {
+				IReference name = (IReference) next;
+				String refa = name.getName();
+				choices[ia++] = refa.toCharArray();
+			}
+		}
+		findElements(completionPart.toCharArray(), choices, true, false,
+				CompletionProposal.METHOD_REF);
 	}
 
 	private void completeFromMap(int position, String completionPart,
@@ -410,7 +438,7 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 						try {
 							arguments = method.getParameters();
 						} catch (ModelException e) {
-							
+
 						}
 						if (arguments != null && arguments.length > 0) {
 							char[][] args = new char[arguments.length][];
