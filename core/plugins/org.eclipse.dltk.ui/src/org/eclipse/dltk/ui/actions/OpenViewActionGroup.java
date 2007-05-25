@@ -142,7 +142,7 @@ public class OpenViewActionGroup extends ActionGroup {
 //		part.setAction("OpenTypeHierarchy", fOpenTypeHierarchy); //$NON-NLS-1$
 		if( !disableCallHierarcy ) {
 			fOpenCallHierarchy= new OpenCallHierarchyAction(part);
-			fOpenCallHierarchy.setActionDefinitionId(IDLTKEditorActionDefinitionIds.OPEN_CALL_HIERARCHY);
+			fOpenCallHierarchy.setActionDefinitionId(IScriptEditorActionDefinitionIds.OPEN_CALL_HIERARCHY);
 			part.setAction("OpenCallHierarchy", fOpenCallHierarchy); //$NON-NLS-1$
 		}
 
@@ -164,7 +164,7 @@ public class OpenViewActionGroup extends ActionGroup {
 
 		if( !disableCallHierarcy ) {
 			fOpenCallHierarchy= new OpenCallHierarchyAction(site);
-			fOpenCallHierarchy.setActionDefinitionId(IDLTKEditorActionDefinitionIds.OPEN_CALL_HIERARCHY);
+			fOpenCallHierarchy.setActionDefinitionId(IScriptEditorActionDefinitionIds.OPEN_CALL_HIERARCHY);
 			fOpenCallHierarchy.setSpecialSelectionProvider(specialProvider);
 		}
 

@@ -25,7 +25,7 @@ import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.IContextMenuConstants;
 import org.eclipse.dltk.ui.actions.DLTKActionConstants;
-import org.eclipse.dltk.ui.actions.IDLTKEditorActionDefinitionIds;
+import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
 import org.eclipse.dltk.ui.actions.SelectionDispatchAction;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -216,11 +216,11 @@ public class RefactorActionGroup extends ActionGroup {
 		ISelection selection= provider.getSelection();
 		
 		fRenameAction= new RenameAction(editor);
-		initAction(fRenameAction, selection, IDLTKEditorActionDefinitionIds.RENAME_ELEMENT);
+		initAction(fRenameAction, selection, IScriptEditorActionDefinitionIds.RENAME_ELEMENT);
 		editor.setAction("RenameElement", fRenameAction); //$NON-NLS-1$
 //		
 		fMoveAction= new MoveAction(editor);
-		initAction(fMoveAction, selection, IDLTKEditorActionDefinitionIds.MOVE_ELEMENT);
+		initAction(fMoveAction, selection, IScriptEditorActionDefinitionIds.MOVE_ELEMENT);
 		editor.setAction("MoveElement", fMoveAction); //$NON-NLS-1$
 //				
 //		fModifyParametersAction= new ModifyParametersAction(editor);
@@ -320,10 +320,10 @@ public class RefactorActionGroup extends ActionGroup {
 		ISelection selection= provider.getSelection();
 		
 		fMoveAction= new MoveAction(site);
-		initUpdatingAction(fMoveAction, provider, selection, IDLTKEditorActionDefinitionIds.MOVE_ELEMENT);
+		initUpdatingAction(fMoveAction, provider, selection, IScriptEditorActionDefinitionIds.MOVE_ELEMENT);
 //		
 		fRenameAction= new RenameAction(site);
-		initUpdatingAction(fRenameAction, provider, selection, IDLTKEditorActionDefinitionIds.RENAME_ELEMENT);
+		initUpdatingAction(fRenameAction, provider, selection, IScriptEditorActionDefinitionIds.RENAME_ELEMENT);
 //		
 //		fModifyParametersAction= new ModifyParametersAction(fSite);
 //		initUpdatingAction(fModifyParametersAction, provider, selection, IScriptEditorActionDefinitionIds.MODIFY_METHOD_PARAMETERS);

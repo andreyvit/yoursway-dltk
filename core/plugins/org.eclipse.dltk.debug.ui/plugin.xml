@@ -124,12 +124,13 @@
     <extension
          point="org.eclipse.ui.contexts">
       <context
-            name="Script Debugging"
-            description="Context available during script debugging"
+            name="%DebuggingScriptContext.label"
+            description="%DebuggingScriptContext.description"
             id="org.eclipse.dltk.debug.ui.debugging"
             parentId="org.eclipse.debug.ui.debugging">
       </context>
    </extension>
+   
  <extension
        point="org.eclipse.ui.perspectiveExtensions">
     <perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">

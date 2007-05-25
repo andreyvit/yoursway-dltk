@@ -156,7 +156,7 @@ public class ScriptVariable extends AbstractScriptVariable {
 		return property.getFullName();
 	}
 
-	public String getKey() {
+	public String getId() {
 		return property.getKey();
 	}
 }

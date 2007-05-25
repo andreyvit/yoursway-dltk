@@ -10,14 +10,13 @@
 
 
     def has_children(obj)
-        atomic_types = [Fixnum, String, Symbol]
+        atomic_types = [NilClass, Fixnum, String, Symbol]
         not atomic_types.include?(obj.class)
     end
 
     def get_string(obj)
-        has_children(obj) ? '' : obj.to_s        
+        obj.nil? ? 'nil' : (has_children(obj) ? '' : obj.to_s)
     end
-
     
     def prepare_object(name, obj)
         x = { :name         => name,
@@ -98,4 +97,3 @@
         x[:children_props] = children
         x
     end
-

@@ -28,7 +28,7 @@ import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.IWorkingCopyManager;
 import org.eclipse.dltk.ui.PreferenceConstants;
-import org.eclipse.dltk.ui.actions.IDLTKEditorActionDefinitionIds;
+import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
 import org.eclipse.dltk.ui.text.hover.IScriptEditorTextHover;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
@@ -198,7 +198,7 @@ public abstract class AbstractScriptEditorTextHover implements IScriptEditorText
 		if (fBindingService == null || !getPreferenceStore().getBoolean(PreferenceConstants.EDITOR_SHOW_TEXT_HOVER_AFFORDANCE))
 			return null;
 
-		String keySequence= fBindingService.getBestActiveBindingFormattedFor(IDLTKEditorActionDefinitionIds.SHOW_DOCUMENTATION);
+		String keySequence= fBindingService.getBestActiveBindingFormattedFor(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
 		if (keySequence == null)
 			return null;
 		

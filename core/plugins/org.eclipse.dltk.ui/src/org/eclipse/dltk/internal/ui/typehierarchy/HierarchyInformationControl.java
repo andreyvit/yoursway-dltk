@@ -26,7 +26,7 @@ import org.eclipse.dltk.internal.ui.typehierarchy.TraditionalHierarchyViewer.Tra
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.ProblemsLabelDecorator;
 import org.eclipse.dltk.ui.ScriptElementLabels;
-import org.eclipse.dltk.ui.actions.IDLTKEditorActionDefinitionIds;
+import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -64,7 +64,7 @@ public abstract class HierarchyInformationControl extends AbstractInformationCon
 	private IPreferenceStore fPreferenceStore;
 
 	public HierarchyInformationControl(Shell parent, int shellStyle, int treeStyle) {
-		super(parent, shellStyle, treeStyle, IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY, true);
+		super(parent, shellStyle, treeStyle, IScriptEditorActionDefinitionIds.OPEN_HIERARCHY, true);
 		fOtherExpandedElements= null;
 		fDoFilter= true;
 		fMethodOverrideTester= null;

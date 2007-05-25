@@ -81,28 +81,28 @@ public class DeclarationsSearchGroup extends ActionGroup {
 				return toolkit;
 			}
 		};
-		fFindDeclarationsAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_WORKSPACE);
+		fFindDeclarationsAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_WORKSPACE);
 
 		fFindDeclarationsInProjectAction = new FindDeclarationsInProjectAction(site) {
 			protected IDLTKLanguageToolkit getLanguageToolkit() {
 				return toolkit;
 			}
 		};
-		fFindDeclarationsInProjectAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_PROJECTS);
+		fFindDeclarationsInProjectAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_PROJECTS);
 
 		fFindDeclarationsInHierarchyAction = new FindDeclarationsInHierarchyAction(site) {
 			protected IDLTKLanguageToolkit getLanguageToolkit() {
 				return toolkit;
 			}
 		};
-		fFindDeclarationsInHierarchyAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_HIERARCHY);
+		fFindDeclarationsInHierarchyAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_HIERARCHY);
 
 		fFindDeclarationsInWorkingSetAction = new FindDeclarationsInWorkingSetAction(site) {
 			protected IDLTKLanguageToolkit getLanguageToolkit() {
 				return toolkit;
 			}
 		};
-		fFindDeclarationsInWorkingSetAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_WORKING_SET);
+		fFindDeclarationsInWorkingSetAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_WORKING_SET);
 
 		// register the actions as selection listeners
 		ISelectionProvider provider = fSite.getSelectionProvider();
@@ -131,7 +131,7 @@ public class DeclarationsSearchGroup extends ActionGroup {
 				return toolkit;
 			}
 		};
-		fFindDeclarationsAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_WORKSPACE);
+		fFindDeclarationsAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_WORKSPACE);
 		fEditor.setAction("SearchDeclarationsInWorkspace", fFindDeclarationsAction); //$NON-NLS-1$
 
 		fFindDeclarationsInProjectAction = new FindDeclarationsInProjectAction(fEditor) {
@@ -139,7 +139,7 @@ public class DeclarationsSearchGroup extends ActionGroup {
 				return toolkit;
 			}
 		};
-		fFindDeclarationsInProjectAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_PROJECTS);
+		fFindDeclarationsInProjectAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_PROJECTS);
 		fEditor.setAction("SearchDeclarationsInProjects", fFindDeclarationsInProjectAction); //$NON-NLS-1$
 
 		fFindDeclarationsInHierarchyAction = new FindDeclarationsInHierarchyAction(fEditor) {
@@ -147,7 +147,7 @@ public class DeclarationsSearchGroup extends ActionGroup {
 				return toolkit;
 			}
 		};
-		fFindDeclarationsInHierarchyAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_HIERARCHY);
+		fFindDeclarationsInHierarchyAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_HIERARCHY);
 		fEditor.setAction("SearchDeclarationsInHierarchy", fFindDeclarationsInHierarchyAction); //$NON-NLS-1$
 
 		fFindDeclarationsInWorkingSetAction = new FindDeclarationsInWorkingSetAction(fEditor) {
@@ -155,7 +155,7 @@ public class DeclarationsSearchGroup extends ActionGroup {
 				return toolkit;
 			}
 		};
-		fFindDeclarationsInWorkingSetAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_WORKING_SET);
+		fFindDeclarationsInWorkingSetAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_DECLARATIONS_IN_WORKING_SET);
 		fEditor.setAction("SearchDeclarationsInWorkingSet", fFindDeclarationsInWorkingSetAction); //$NON-NLS-1$
 	}
 

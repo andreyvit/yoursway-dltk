@@ -82,28 +82,28 @@ public class ReferencesSearchGroup extends ActionGroup {
 				return toolkit;
 			}
 		};
-		fFindReferencesAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_REFERENCES_IN_WORKSPACE);
+		fFindReferencesAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_REFERENCES_IN_WORKSPACE);
 
 		fFindReferencesInProjectAction = new FindReferencesInProjectAction(site) {
 			protected IDLTKLanguageToolkit getLanguageToolkit() {
 				return toolkit;
 			}
 		};
-		fFindReferencesInProjectAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_REFERENCES_IN_PROJECT);
+		fFindReferencesInProjectAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_REFERENCES_IN_PROJECT);
 
 		fFindReferencesInHierarchyAction = new FindReferencesInHierarchyAction(site) {
 			protected IDLTKLanguageToolkit getLanguageToolkit() {
 				return toolkit;
 			}
 		};
-		fFindReferencesInHierarchyAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_REFERENCES_IN_HIERARCHY);
+		fFindReferencesInHierarchyAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_REFERENCES_IN_HIERARCHY);
 
 		fFindReferencesInWorkingSetAction = new FindReferencesInWorkingSetAction(site) {
 			protected IDLTKLanguageToolkit getLanguageToolkit() {
 				return toolkit;
 			}
 		};
-		fFindReferencesInWorkingSetAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_REFERENCES_IN_WORKING_SET);
+		fFindReferencesInWorkingSetAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_REFERENCES_IN_WORKING_SET);
 
 		// register the actions as selection listeners
 		ISelectionProvider provider = fSite.getSelectionProvider();
@@ -133,7 +133,7 @@ public class ReferencesSearchGroup extends ActionGroup {
 				return toolkit;
 			}
 		};
-		fFindReferencesAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_REFERENCES_IN_WORKSPACE);
+		fFindReferencesAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_REFERENCES_IN_WORKSPACE);
 		fEditor.setAction("SearchReferencesInWorkspace", fFindReferencesAction); //$NON-NLS-1$
 
 		fFindReferencesInProjectAction = new FindReferencesInProjectAction(fEditor) {
@@ -141,7 +141,7 @@ public class ReferencesSearchGroup extends ActionGroup {
 				return toolkit;
 			}
 		};
-		fFindReferencesInProjectAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_REFERENCES_IN_PROJECT);
+		fFindReferencesInProjectAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_REFERENCES_IN_PROJECT);
 		fEditor.setAction("SearchReferencesInProject", fFindReferencesInProjectAction); //$NON-NLS-1$
 
 		fFindReferencesInHierarchyAction = new FindReferencesInHierarchyAction(fEditor) {
@@ -149,7 +149,7 @@ public class ReferencesSearchGroup extends ActionGroup {
 				return toolkit;
 			}
 		};
-		fFindReferencesInHierarchyAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_REFERENCES_IN_HIERARCHY);
+		fFindReferencesInHierarchyAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_REFERENCES_IN_HIERARCHY);
 		fEditor.setAction("SearchReferencesInHierarchy", fFindReferencesInHierarchyAction); //$NON-NLS-1$
 
 		fFindReferencesInWorkingSetAction = new FindReferencesInWorkingSetAction(fEditor) {
@@ -157,7 +157,7 @@ public class ReferencesSearchGroup extends ActionGroup {
 				return toolkit;
 			}
 		};
-		fFindReferencesInWorkingSetAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SEARCH_REFERENCES_IN_WORKING_SET);
+		fFindReferencesInWorkingSetAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.SEARCH_REFERENCES_IN_WORKING_SET);
 		fEditor.setAction("SearchReferencesInWorkingSet", fFindReferencesInWorkingSetAction); //$NON-NLS-1$
 	}
 

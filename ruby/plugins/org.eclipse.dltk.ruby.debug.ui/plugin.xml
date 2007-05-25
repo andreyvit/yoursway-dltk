@@ -101,8 +101,7 @@
             name="Ruby Interpreter Libraries"
             nature="org.eclipse.dltk.ruby.core.nature"/>
    </extension>
-       
-   
+          
    <extension
          point="org.eclipse.ui.editorActions">
       <editorContribution

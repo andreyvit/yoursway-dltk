@@ -30,7 +30,7 @@ import org.eclipse.dltk.javascript.ui.actions.GenerateActionGroup;
 import org.eclipse.dltk.javascript.ui.actions.IndentAction;
 import org.eclipse.dltk.javascript.ui.actions.RemoveBlockCommentAction;
 import org.eclipse.dltk.javascript.ui.text.IJavaScriptPartitions;
-import org.eclipse.dltk.ui.actions.IDLTKEditorActionDefinitionIds;
+import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
 import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.dltk.ui.text.folding.IFoldingStructureProvider;
 import org.eclipse.jface.action.Action;
@@ -308,21 +308,21 @@ public class JavaScriptEditor extends ScriptEditor {
 		Action action = new TextOperationAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(),
 				"Comment.", this, ITextOperationTarget.PREFIX); //$NON-NLS-1$
-		action.setActionDefinitionId(IDLTKEditorActionDefinitionIds.COMMENT);
+		action.setActionDefinitionId(IScriptEditorActionDefinitionIds.COMMENT);
 		setAction("Comment", action); //$NON-NLS-1$
 		markAsStateDependentAction("Comment", true); //$NON-NLS-1$
 
 		action = new TextOperationAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(),
 				"Uncomment.", this, ITextOperationTarget.STRIP_PREFIX); //$NON-NLS-1$
-		action.setActionDefinitionId(IDLTKEditorActionDefinitionIds.UNCOMMENT);
+		action.setActionDefinitionId(IScriptEditorActionDefinitionIds.UNCOMMENT);
 		setAction("Uncomment", action); //$NON-NLS-1$
 		markAsStateDependentAction("Uncomment", true); //$NON-NLS-1$
 
 		action = new ToggleCommentAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(), "ToggleComment.", this); //$NON-NLS-1$
 		action
-				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.TOGGLE_COMMENT);
+				.setActionDefinitionId(IScriptEditorActionDefinitionIds.TOGGLE_COMMENT);
 		setAction("ToggleComment", action); //$NON-NLS-1$
 		markAsStateDependentAction("ToggleComment", true); //$NON-NLS-1$
 		ISourceViewer sourceViewer = getSourceViewer();
@@ -331,7 +331,7 @@ public class JavaScriptEditor extends ScriptEditor {
 		action = new TextOperationAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(),
 				"Format.", this, ISourceViewer.FORMAT); //$NON-NLS-1$
-		action.setActionDefinitionId(IDLTKEditorActionDefinitionIds.FORMAT);
+		action.setActionDefinitionId(IScriptEditorActionDefinitionIds.FORMAT);
 		setAction("Format", action); //$NON-NLS-1$
 		markAsStateDependentAction("Format", true); //$NON-NLS-1$
 		markAsSelectionDependentAction("Format", true); //$NON-NLS-1$
@@ -340,14 +340,14 @@ public class JavaScriptEditor extends ScriptEditor {
 
 		action = new FormatElementAction();
 		action
-				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.QUICK_FORMAT);
+				.setActionDefinitionId(IScriptEditorActionDefinitionIds.QUICK_FORMAT);
 		setAction("QuickFormat", action); //$NON-NLS-1$
 		markAsStateDependentAction("QuickFormat", true); //$NON-NLS-1$
 
 		action = new AddBlockCommentAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(), "AddBlockComment.", this); //$NON-NLS-1$
 		action
-				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.ADD_BLOCK_COMMENT);
+				.setActionDefinitionId(IScriptEditorActionDefinitionIds.ADD_BLOCK_COMMENT);
 		setAction("AddBlockComment", action); //$NON-NLS-1$
 		markAsStateDependentAction("AddBlockComment", true); //$NON-NLS-1$
 		markAsSelectionDependentAction("AddBlockComment", true); //$NON-NLS-1$
@@ -357,7 +357,7 @@ public class JavaScriptEditor extends ScriptEditor {
 		action = new RemoveBlockCommentAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(), "RemoveBlockComment.", this); //$NON-NLS-1$
 		action
-				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.REMOVE_BLOCK_COMMENT);
+				.setActionDefinitionId(IScriptEditorActionDefinitionIds.REMOVE_BLOCK_COMMENT);
 		setAction("RemoveBlockComment", action); //$NON-NLS-1$
 		markAsStateDependentAction("RemoveBlockComment", true); //$NON-NLS-1$
 		markAsSelectionDependentAction("RemoveBlockComment", true); //$NON-NLS-1$
@@ -366,7 +366,7 @@ public class JavaScriptEditor extends ScriptEditor {
 
 		action = new IndentAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(), "Indent.", this, false); //$NON-NLS-1$
-		action.setActionDefinitionId(IDLTKEditorActionDefinitionIds.INDENT);
+		action.setActionDefinitionId(IScriptEditorActionDefinitionIds.INDENT);
 		setAction("Indent", action); //$NON-NLS-1$
 		markAsStateDependentAction("Indent", true); //$NON-NLS-1$
 		markAsSelectionDependentAction("Indent", true); //$NON-NLS-1$

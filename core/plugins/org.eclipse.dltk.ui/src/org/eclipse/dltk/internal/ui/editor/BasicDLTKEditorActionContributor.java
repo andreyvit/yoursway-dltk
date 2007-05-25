@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 import org.eclipse.dltk.internal.ui.actions.FoldingActionGroup;
 import org.eclipse.dltk.internal.ui.editor.selectionaction.GoToNextPreviousMemberAction;
 import org.eclipse.dltk.ui.actions.DLTKActionConstants;
-import org.eclipse.dltk.ui.actions.IDLTKEditorActionDefinitionIds;
+import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IStatusLineManager;
@@ -57,24 +57,24 @@ public class BasicDLTKEditorActionContributor extends BasicTextEditorActionContr
 		ResourceBundle b= DLTKEditorMessages.getBundleForConstructedKeys();
 		
 		fRetargetShowScriptDoc= new RetargetAction(DLTKActionConstants.SHOW_DOCUMENTAION, DLTKEditorMessages.ShowScriptDoc_label);
-		fRetargetShowScriptDoc.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SHOW_DOCUMENTATION);
+		fRetargetShowScriptDoc.setActionDefinitionId(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
 		markAsPartListener(fRetargetShowScriptDoc);
 		fShowScriptDoc= new RetargetTextEditorAction(b, "ShowDocumentation."); //$NON-NLS-1$
-		fShowScriptDoc.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SHOW_DOCUMENTATION);
+		fShowScriptDoc.setActionDefinitionId(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
 		
 		fGotoMatchingBracket= new RetargetTextEditorAction(b, "GotoMatchingBracket."); //$NON-NLS-1$
-		fGotoMatchingBracket.setActionDefinitionId(IDLTKEditorActionDefinitionIds.GOTO_MATCHING_BRACKET);
+		fGotoMatchingBracket.setActionDefinitionId(IScriptEditorActionDefinitionIds.GOTO_MATCHING_BRACKET);
 		
 		fShowOutline= new RetargetTextEditorAction(DLTKEditorMessages.getBundleForConstructedKeys(), "ShowOutline."); //$NON-NLS-1$
-		fShowOutline.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SHOW_OUTLINE);
+		fShowOutline.setActionDefinitionId(IScriptEditorActionDefinitionIds.SHOW_OUTLINE);
 		
 		fOpenHierarchy= new RetargetTextEditorAction(DLTKEditorMessages.getBundleForConstructedKeys(), "OpenHierarchy."); //$NON-NLS-1$
-		fOpenHierarchy.setActionDefinitionId(IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY);
+		fOpenHierarchy.setActionDefinitionId(IScriptEditorActionDefinitionIds.OPEN_HIERARCHY);
 
 		fGotoNextMemberAction= new RetargetTextEditorAction(b, "GotoNextMember."); //$NON-NLS-1$
-		fGotoNextMemberAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.GOTO_NEXT_MEMBER);
+		fGotoNextMemberAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.GOTO_NEXT_MEMBER);
 		fGotoPreviousMemberAction= new RetargetTextEditorAction(b, "GotoPreviousMember."); //$NON-NLS-1$
-		fGotoPreviousMemberAction.setActionDefinitionId(IDLTKEditorActionDefinitionIds.GOTO_PREVIOUS_MEMBER);
+		fGotoPreviousMemberAction.setActionDefinitionId(IScriptEditorActionDefinitionIds.GOTO_PREVIOUS_MEMBER);
 		
 	}
 
@@ -127,8 +127,8 @@ public class BasicDLTKEditorActionContributor extends BasicTextEditorActionContr
 		if (part instanceof ITextEditor)
 			textEditor= (ITextEditor)part;
 		
-		fShowOutline.setAction(getAction(textEditor, IDLTKEditorActionDefinitionIds.SHOW_OUTLINE));
-		fOpenHierarchy.setAction(getAction(textEditor, IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY));
+		fShowOutline.setAction(getAction(textEditor, IScriptEditorActionDefinitionIds.SHOW_OUTLINE));
+		fOpenHierarchy.setAction(getAction(textEditor, IScriptEditorActionDefinitionIds.OPEN_HIERARCHY));
 		fGotoMatchingBracket.setAction(getAction(textEditor, GotoMatchingBracketAction.GOTO_MATCHING_BRACKET));
 		
 		fGotoNextMemberAction.setAction(getAction(textEditor, GoToNextPreviousMemberAction.NEXT_MEMBER));

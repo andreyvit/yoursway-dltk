@@ -92,7 +92,7 @@ public class RubyVariableLabelProvider extends VariableLabelProvider implements
 	protected String getColumnText(IVariable variable, IValue value,
 			IPresentationContext context, String columnId) throws CoreException {
 		if (RubyVariableColumnPresentation.COLUMN_INSTANCE_ID.equals(columnId)) {
-			String key = ((IScriptVariable)variable).getKey();
+			String key = ((IScriptVariable)variable).getId();
 			return key;
 		}
 		return super.getColumnText(variable, value, context, columnId);

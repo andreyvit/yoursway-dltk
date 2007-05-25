@@ -48,7 +48,7 @@ import org.eclipse.dltk.ui.IWorkingCopyManager;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.PreferencesAdapter;
 import org.eclipse.dltk.ui.actions.DLTKSearchActionGroup;
-import org.eclipse.dltk.ui.actions.IDLTKEditorActionDefinitionIds;
+import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
 import org.eclipse.dltk.ui.actions.OpenEditorActionGroup;
 import org.eclipse.dltk.ui.actions.OpenViewActionGroup;
 import org.eclipse.dltk.ui.editor.IScriptAnnotation;
@@ -1013,11 +1013,11 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		fContextMenuGroup.setContext(null);
 
 		// Show outline
-		IAction action = getAction(IDLTKEditorActionDefinitionIds.SHOW_OUTLINE);
+		IAction action = getAction(IScriptEditorActionDefinitionIds.SHOW_OUTLINE);
 		menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, action);
 
 		// Open hierarchy
-		action = getAction(IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY);
+		action = getAction(IScriptEditorActionDefinitionIds.OPEN_HIERARCHY);
 		menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, action);
 
 		// Source group
@@ -1281,27 +1281,27 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 				(TextOperationAction) resAction);
 
 		resAction
-				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SHOW_DOCUMENTATION);
+				.setActionDefinitionId(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
 		setAction("ShowDocumentation", resAction);
 
 		Action action = new GotoMatchingBracketAction(this);
 		action
-				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.GOTO_MATCHING_BRACKET);
+				.setActionDefinitionId(IScriptEditorActionDefinitionIds.GOTO_MATCHING_BRACKET);
 		setAction(GotoMatchingBracketAction.GOTO_MATCHING_BRACKET, action);
 
 		Action outlineAction = new TextOperationAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(), "ShowOutline.", this,
 				ScriptSourceViewer.SHOW_OUTLINE, true); //$NON-NLS-1$
 		outlineAction
-				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.SHOW_OUTLINE);
-		setAction(IDLTKEditorActionDefinitionIds.SHOW_OUTLINE, outlineAction);
+				.setActionDefinitionId(IScriptEditorActionDefinitionIds.SHOW_OUTLINE);
+		setAction(IScriptEditorActionDefinitionIds.SHOW_OUTLINE, outlineAction);
 
 		action = new TextOperationAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(),
 				"OpenHierarchy.", this, ScriptSourceViewer.SHOW_HIERARCHY, true); //$NON-NLS-1$
 		action
-				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY);
-		setAction(IDLTKEditorActionDefinitionIds.OPEN_HIERARCHY, action);
+				.setActionDefinitionId(IScriptEditorActionDefinitionIds.OPEN_HIERARCHY);
+		setAction(IScriptEditorActionDefinitionIds.OPEN_HIERARCHY, action);
 
 		// ContentAssistProposal
 		action = new ContentAssistAction(DLTKEditorMessages
@@ -1328,13 +1328,13 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		// GoToNextMember
 		action = GoToNextPreviousMemberAction.newGoToNextMemberAction(this);
 		action
-				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.GOTO_NEXT_MEMBER);
+				.setActionDefinitionId(IScriptEditorActionDefinitionIds.GOTO_NEXT_MEMBER);
 		setAction(GoToNextPreviousMemberAction.NEXT_MEMBER, action);
 
 		// GoToPreviousMember
 		action = GoToNextPreviousMemberAction.newGoToPreviousMemberAction(this);
 		action
-				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.GOTO_PREVIOUS_MEMBER);
+				.setActionDefinitionId(IScriptEditorActionDefinitionIds.GOTO_PREVIOUS_MEMBER);
 		setAction(GoToNextPreviousMemberAction.PREVIOUS_MEMBER, action);
 	}
 

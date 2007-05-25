@@ -20,7 +20,7 @@ import org.eclipse.dltk.internal.ui.text.hover.EditorTextHoverDescriptor;
 import org.eclipse.dltk.internal.ui.text.hover.EditorTextHoverProxy;
 import org.eclipse.dltk.internal.ui.text.hover.ScriptInformationProvider;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.dltk.ui.actions.IDLTKEditorActionDefinitionIds;
+import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.AbstractInformationControlManager;
@@ -121,11 +121,11 @@ public abstract class ScriptSourceViewerConfiguration extends
 		if (doCodeResolve)
 			presenter = new InformationPresenter(
 					getOutlinePresenterControlCreator(sourceViewer,
-							IDLTKEditorActionDefinitionIds.OPEN_STRUCTURE));
+							IScriptEditorActionDefinitionIds.OPEN_STRUCTURE));
 		else
 			presenter = new InformationPresenter(
 					getOutlinePresenterControlCreator(sourceViewer,
-							IDLTKEditorActionDefinitionIds.SHOW_OUTLINE));
+							IScriptEditorActionDefinitionIds.SHOW_OUTLINE));
 		presenter
 				.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
 		presenter.setAnchor(AbstractInformationControlManager.ANCHOR_GLOBAL);

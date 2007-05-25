@@ -23,7 +23,7 @@ import org.eclipse.dltk.tcl.internal.ui.text.folding.TclFoldingStructureProvider
 import org.eclipse.dltk.tcl.ui.TclPreferenceConstants;
 import org.eclipse.dltk.tcl.ui.text.TclPartitions;
 import org.eclipse.dltk.ui.PreferenceConstants;
-import org.eclipse.dltk.ui.actions.IDLTKEditorActionDefinitionIds;
+import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
 import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.dltk.ui.text.folding.IFoldingStructureProvider;
 import org.eclipse.jface.action.Action;
@@ -78,7 +78,7 @@ public class TclEditor extends ScriptEditor {
 		Action action = new TextOperationAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(),
 				"Comment.", this, ITextOperationTarget.PREFIX); //$NON-NLS-1$
-		action.setActionDefinitionId(IDLTKEditorActionDefinitionIds.COMMENT);
+		action.setActionDefinitionId(IScriptEditorActionDefinitionIds.COMMENT);
 		setAction("Comment", action); //$NON-NLS-1$
 		markAsStateDependentAction("Comment", true); //$NON-NLS-1$
 
@@ -86,7 +86,7 @@ public class TclEditor extends ScriptEditor {
 		action = new TextOperationAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(),
 				"Uncomment.", this, ITextOperationTarget.STRIP_PREFIX); //$NON-NLS-1$
-		action.setActionDefinitionId(IDLTKEditorActionDefinitionIds.UNCOMMENT);
+		action.setActionDefinitionId(IScriptEditorActionDefinitionIds.UNCOMMENT);
 		setAction("Uncomment", action); //$NON-NLS-1$
 		markAsStateDependentAction("Uncomment", true); //$NON-NLS-1$
 
@@ -94,7 +94,7 @@ public class TclEditor extends ScriptEditor {
 		action = new ToggleCommentAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(), "ToggleComment.", this); //$NON-NLS-1$
 		action
-				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.TOGGLE_COMMENT);
+				.setActionDefinitionId(IScriptEditorActionDefinitionIds.TOGGLE_COMMENT);
 		setAction("ToggleComment", action); //$NON-NLS-1$
 		markAsStateDependentAction("ToggleComment", true); //$NON-NLS-1$
 		configureToggleCommentAction();

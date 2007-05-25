@@ -29,10 +29,10 @@ module XoredDebugger
         end
 
         def push(binding, file, line, where)
-            level = { 'binding' => binding, 
-                      'file'    => file, 
-                      'line'    => line,
-                      'where'   => where }
+            level = { :binding => binding, 
+                      :file    => file, 
+                      :line    => line,
+                      :where   => where }
 
             @levels.push(level)
         end
@@ -46,7 +46,8 @@ module XoredDebugger
         end
         
         def eval(text, index = 0)
-            Kernel.eval(text, self[index]['binding'])
+            level = self[index]
+            Kernel.eval(text, level[:binding], level[:file], level[:line])
         end
 
         def depth

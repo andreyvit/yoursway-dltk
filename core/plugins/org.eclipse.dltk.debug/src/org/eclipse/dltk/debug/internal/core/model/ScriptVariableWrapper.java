@@ -24,7 +24,7 @@ public class ScriptVariableWrapper extends AbstractScriptVariable {
 		return name;
 	}
 
-	public String getKey() {
+	public String getId() {
 		return null;
 	}
 

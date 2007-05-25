@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
 import org.eclipse.dltk.ui.PreferenceConstants;
-import org.eclipse.dltk.ui.actions.IDLTKEditorActionDefinitionIds;
+import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -178,7 +178,7 @@ public class FoldingActionGroup extends ActionGroup {
 			}
 		};
 		fCollapseMembers
-				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.FOLDING_COLLAPSE_MEMBERS);
+				.setActionDefinitionId(IScriptEditorActionDefinitionIds.FOLDING_COLLAPSE_MEMBERS);
 		editor.setAction("FoldingCollapseMembers", fCollapseMembers); //$NON-NLS-1$
 
 		fCollapseComments = new FoldingAction(FoldingMessages
@@ -191,7 +191,7 @@ public class FoldingActionGroup extends ActionGroup {
 			}
 		};
 		fCollapseComments
-				.setActionDefinitionId(IDLTKEditorActionDefinitionIds.FOLDING_COLLAPSE_COMMENTS);
+				.setActionDefinitionId(IScriptEditorActionDefinitionIds.FOLDING_COLLAPSE_COMMENTS);
 		editor.setAction("FoldingCollapseComments", fCollapseComments); //$NON-NLS-1$
 	}
 

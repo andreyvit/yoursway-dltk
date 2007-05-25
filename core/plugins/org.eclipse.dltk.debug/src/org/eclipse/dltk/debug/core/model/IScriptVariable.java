@@ -21,7 +21,7 @@ public interface IScriptVariable extends IVariable {
 
 	String getValueString();
 
-	String getKey();
+	String getId();
 
 	boolean hasChildren();
 

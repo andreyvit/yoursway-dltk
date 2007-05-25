@@ -50,4 +50,8 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 	public IDebugTarget getDebugTarget() {
 		return variable.getDebugTarget();
 	}
+	
+	public String getReferenceId() {
+		return variable.getId();
+	}
 }

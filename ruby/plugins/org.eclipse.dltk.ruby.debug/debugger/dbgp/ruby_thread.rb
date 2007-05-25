@@ -183,14 +183,13 @@ module XoredDebugger
                 contexts = [context_id]
             end            
 
-            def make_props(exp, depth, ignore_nil = false)
+            def make_props(exp, depth, type)
                 vars = @stack.eval(exp, depth)
 
                 props = []
-                vars.each { |var|
-                    real_var = @stack.eval(var, depth)
-                                  
-                    unless real_var.nil? and ignore_nil
+                vars.each { |var|                    
+                    if  @stack.eval("defined?(#{var})", depth) == type
+                        real_var = @stack.eval(var, depth)
                         props << make_property(var, real_var)
                     end
                 }
@@ -201,7 +200,7 @@ module XoredDebugger
 
             # Local variables
             if contexts.include?(LOCAL_CONTEXT_ID)   
-                properties += make_props('local_variables', depth, true)        
+                properties += make_props('local_variables', depth, 'local-variable')        
                         
                 # TODO: correct this later
                 self_var = @stack.eval('self', depth)
@@ -212,12 +211,12 @@ module XoredDebugger
 
             # Global variables
             if contexts.include?(GLOBAL_CONTEXT_ID)
-                properties += make_props('global_variables', depth)
+                properties += make_props('global_variables', depth, 'global-variable')
             end
 
             # Class variables
             if contexts.include?(CLASS_CONTEXT_ID)
-                properties += make_props('instance_variables', depth)
+                properties += make_props('instance_variables', depth, 'instance-variable')
             end
 
             { :properties => properties, 
@@ -302,11 +301,11 @@ module XoredDebugger
                 level = @stack[i]
                 levels << { :level    => i,
                             :type     => 'source',
-                            :filename => path_to_uri(level['file']),
-                            :lineno   => level['line'],
+                            :filename => path_to_uri(level[:file]),
+                            :lineno   => level[:line],
                             :cmdbegin => '0:0',
                             :cmdend   => '0:0',
-                            :where    => level['where'] }            
+                            :where    => level[:where] }            
             }
 
             unless depth.nil?
@@ -573,6 +572,7 @@ module XoredDebugger
             
             # Absolute path
             @file = File.expand_path(file) # Absolute file path
+            @line = line
 
             unless @started
                 send('init', init(@key, @file))

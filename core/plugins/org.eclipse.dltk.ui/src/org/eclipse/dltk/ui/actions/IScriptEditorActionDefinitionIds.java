@@ -20,7 +20,7 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
  * 
 	 *
  */
-public interface IDLTKEditorActionDefinitionIds extends ITextEditorActionDefinitionIds {
+public interface IScriptEditorActionDefinitionIds extends ITextEditorActionDefinitionIds {
 
 	// edit
 

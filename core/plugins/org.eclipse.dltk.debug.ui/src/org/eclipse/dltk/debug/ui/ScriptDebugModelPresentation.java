@@ -173,7 +173,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 						+ "]";
 			}
 		} catch (CoreException e) {
-			// Nothing to do
+			DLTKDebugUIPlugin.log(e);
 		}
 
 		return breakpoint.toString();
@@ -184,9 +184,17 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		try {
 			if (!expression.hasErrors()) {
 				text = expression.getExpressionText();
-				IValue value = expression.getValue();
-				if (value != null && !value.hasVariables()) {
-					text += " = " + value.getValueString();
+				IScriptValue value = (IScriptValue) expression.getValue();
+				if (value != null) {
+					if (value.hasVariables()) {
+						text += " = " + value.getReferenceTypeName();
+						String id = value.getReferenceId();
+						if (id != null) {
+							text += " (id = " + id + ")";
+						}
+					} else {
+						text += " = " + value.getValueString();
+					}
 				}
 			}
 		} catch (DebugException e) {
