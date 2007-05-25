@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.ti.goals.AbstractTypeGoal;
 import org.eclipse.dltk.ti.goals.FieldReferencesGoal;
 import org.eclipse.dltk.ti.goals.FieldReferencesGoalEvaluator;
@@ -135,9 +136,11 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 				// throw new RuntimeException("No evaluator registered for "
 				// + goalClass.getName() + " : " + goal);
 				String className = goalClass.getName();
-				System.err.println("No evaluator registered for "
-						+ className.substring(className.lastIndexOf('.'))
-						+ ": " + goal + " - using NullGoalEvaluator");
+				if (DLTKCore.DEBUG) {
+					System.err.println("No evaluator registered for "
+							+ className.substring(className.lastIndexOf('.'))
+							+ ": " + goal + " - using NullGoalEvaluator");
+				}
 				return new NullGoalEvaluator(goal);
 			}
 			Class evalClass = (Class) evaluator;
