@@ -33,38 +33,39 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
-
 
 public abstract class NewSourceModulePage extends NewContainerWizardPage {
 
 	private static final String FILE = "NewSourceModulePage.file";
 
 	private IStatus sourceMoudleStatus;
-	
-	private IScriptFolder currScriptFolder;
-	
-	// Label + 'filename'
+
+	private IScriptFolder currentScriptFolder;
+
 	private StringDialogField fileDialogField;
 
 	private IStatus fileChanged() {
 		StatusInfo status = new StatusInfo();
 
-		String fileName = getFileName();
-		
-		if (fileName.length() == 0){
-			status.setError("Cannot be empty"); 
-		} else if (currScriptFolder != null){
-			ISourceModule module = currScriptFolder.getSourceModule(fileName);
-			if (module.exists()){
-				status.setError("Module already exists");
-			}			
+		if (getFileText().length() == 0) {
+			status.setError("Cannot be empty");
+		} else {
+			if (currentScriptFolder != null) {
+				ISourceModule module = currentScriptFolder
+						.getSourceModule(getFileName());
+				if (module.exists()) {
+					status.setError("File already exists");
+				}
+			}
 		}
-				
+
 		return status;
 	}
-	
+
 	/**
 	 * The wizard owning this page is responsible for calling this method with
 	 * the current selection. The selection is used to initialize the fields of
@@ -77,13 +78,11 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 		IModelElement element = getInitialScriptElement(selection);
 
 		initContainerPage(element);
-			
+
 		updateStatus(new IStatus[] { containerStatus, fileChanged() });
 	}
 
 	protected void createFileControls(Composite parent, int nColumns) {
-
-		// fileDialogField
 		fileDialogField.doFillIntoGrid(parent, nColumns - 1);
 		Text text = fileDialogField.getTextControl(null);
 		LayoutUtil.setWidthHint(text, getMaxFieldWidth());
@@ -91,16 +90,6 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 		DialogField.createEmptySpace(parent);
 	}
 
-	/**
-	 * @return page's title
-	 */
-	protected abstract String getPageTitle ();
-	
-	/**
-	 * @return pages's description
-	 */
-	protected abstract String getPageDescription ();
-	
 	public NewSourceModulePage() {
 		super("wizardPage");
 		setTitle(getPageTitle());
@@ -122,35 +111,45 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 	protected void handleFieldChanged(String fieldName) {
 		super.handleFieldChanged(fieldName);
 		if (fieldName == CONTAINER) {
-			IProjectFragment fragment = getProjectFragment(); 
+			IProjectFragment fragment = getProjectFragment();
 			if (fragment != null)
-				currScriptFolder = fragment.getScriptFolder("");			
+				currentScriptFolder = fragment.getScriptFolder("");
 			else
-				currScriptFolder = null;
+				currentScriptFolder = null;
 			sourceMoudleStatus = fileChanged();
 		}
-		// do status line update
-		updateStatus(new IStatus[] { containerStatus, sourceMoudleStatus});
-	}
-	
-	
 
-	public void createFile(IProgressMonitor monitor) throws CoreException,
-			InterruptedException {
+		updateStatus(new IStatus[] { containerStatus, sourceMoudleStatus });
+	}
+
+	public ISourceModule createFile(IProgressMonitor monitor)
+			throws CoreException, InterruptedException {
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
 
 		String fileName = getFileName();
-				
-		ISourceModule module = currScriptFolder.createSourceModule(fileName, "", true, monitor);
 
-		if (monitor.isCanceled()) {
-			throw new InterruptedException();
+		final ISourceModule module = currentScriptFolder.createSourceModule(fileName,
+				getFileContent(), true, monitor);
+
+		if (module != null) {
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					try {
+						EditorUtility.openInEditor(module);
+					} catch (PartInitException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ModelException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
 		}
-		
-		if (module != null)
-			EditorUtility.openInEditor(module);
+
+		return module;
 	}
 
 	public void createControl(Composite parent) {
@@ -170,41 +169,42 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 		createFileControls(composite, nColumns);
 
 		setControl(composite);
-
 		Dialog.applyDialogFont(composite);
-
-		// TODO: Add help support here
-		// PlatformUI.getWorkbench().getHelpSystem().setHelp(composite,
-		// IScriptHelpContextIds.NEW_PACKAGE_WIZARD_PAGE);
 	}
 
-	public String getFileText() {
+	protected String getFileText() {
 		return fileDialogField.getText();
 	}
-	
-	protected String getFileExtension () {
-		String[] exts;
+
+	protected String getFileName() {
+		final String fileText = getFileText();
+
+		String[] extensions = getFileExtensions();
+		for (int i = 0; i < extensions.length; ++i) {
+			String extension = extensions[i];
+			if (extension.length() > 0 && fileText.endsWith("." + extension)) {
+				return fileText;
+			}
+		}
+
+		return fileText + "." + extensions[0];
+	}
+
+	// TODO: correct this
+	protected String[] getFileExtensions() {
 		try {
-			exts = DLTKLanguageManager.getLanguageToolkit(getRequiredNature()).getLanguageFileExtensions();
-			if (exts != null && exts.length > 0)
-				return exts[0];
+			return DLTKLanguageManager.getLanguageToolkit(getRequiredNature())
+					.getLanguageFileExtensions();
 		} catch (CoreException e) {
-		}		
-		return null;
+		}
+
+		return new String[] { "" };
 	}
-	
-	public String getFileName() {
-		String str = getFileText();
-		if (str.indexOf('.') == -1)
-			str += "." + getFileExtension ();
-		return str;
-	}
-	
-	protected abstract String getRequiredNature();
-	
+
 	protected IScriptFolder chooseScriptFolder() {
 		ILabelProvider labelProvider = new ModelElementLabelProvider(
 				ModelElementLabelProvider.SHOW_DEFAULT);
+
 		ElementListSelectionDialog dialog = new ElementListSelectionDialog(
 				getShell(), labelProvider);
 
@@ -213,10 +213,10 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 		dialog.setMessage("Select Script Folder message");
 		dialog.setEmptyListMessage("Empty List message");
 
-		IProjectFragment f = getProjectFragment();
-		if (f != null) {
+		IProjectFragment projectFragment = getProjectFragment();
+		if (projectFragment != null) {
 			try {
-				dialog.setElements(f.getChildren());
+				dialog.setElements(projectFragment.getChildren());
 			} catch (ModelException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -225,8 +225,8 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 
 		dialog.setHelpAvailable(false);
 
-		if (currScriptFolder != null) {
-			dialog.setInitialSelections(new Object[] { currScriptFolder });
+		if (currentScriptFolder != null) {
+			dialog.setInitialSelections(new Object[] { currentScriptFolder });
 		}
 
 		if (dialog.open() == Window.OK) {
@@ -238,15 +238,23 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 
 		return null;
 	}
-	
+
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		if (visible) {
 			setFocus();
 		}
 	}
-	
+
 	protected void setFocus() {
 		fileDialogField.setFocus();
+	}
+
+	protected abstract String getPageTitle();
+
+	protected abstract String getPageDescription();
+
+	protected String getFileContent() {
+		return "";
 	}
 }

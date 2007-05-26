@@ -37,15 +37,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
-public class RubyProjectCreationWizard extends NewElementWizard implements INewWizard, IExecutableExtension {
+public class RubyNewProjectWizard extends NewElementWizard implements INewWizard, IExecutableExtension {
+	public static final String WIZARD_ID = "org.eclipse.dltk.ruby.wizards.newproject";
+	
 	private ProjectWizardFirstPage fFirstPage;
 	private ProjectWizardSecondPage fSecondPage;
 	private IConfigurationElement fConfigElement;
 
-	public RubyProjectCreationWizard() {
+	public RubyNewProjectWizard() {
 		setDefaultPageImageDescriptor(RubyImages.DESC_WIZBAN_PROJECT_CREATION);
 		setDialogSettings(DLTKUIPlugin.getDefault().getDialogSettings());
-		setWindowTitle(RubyWizardMessages.ProjectCreationWizard_title);
+		setWindowTitle(RubyWizardMessages.NewProjectWizard_title);
 	}
 
 	public void addPages() {
@@ -97,8 +99,8 @@ public class RubyProjectCreationWizard extends NewElementWizard implements INewW
 		};
 		
 		// First page
-		fFirstPage.setTitle(RubyWizardMessages.ProjectCreationWizardFirstPage_title);
-		fFirstPage.setDescription(RubyWizardMessages.ProjectCreationWizardFirstPage_description);
+		fFirstPage.setTitle(RubyWizardMessages.NewProjectFirstPage_title);
+		fFirstPage.setDescription(RubyWizardMessages.NewProjectFirstPage_description);
 		addPage(fFirstPage);
 
 		// Second page

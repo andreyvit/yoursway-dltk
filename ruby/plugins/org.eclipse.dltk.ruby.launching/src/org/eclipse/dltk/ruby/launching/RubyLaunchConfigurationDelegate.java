@@ -75,7 +75,7 @@ public class RubyLaunchConfigurationDelegate extends
 		}
 
 		// Library path
-		args += " -I" + createBuildPath(configuration);
+		//args += " -I" + createBuildPath(configuration);
 
 		return args;
 	}

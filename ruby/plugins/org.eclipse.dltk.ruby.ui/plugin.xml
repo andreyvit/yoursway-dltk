@@ -38,29 +38,39 @@
       </category>
       <wizard
             category="org.eclipse.dltk.ruby.ui"
-            class="org.eclipse.dltk.ruby.internal.ui.wizards.RubyProjectCreationWizard"
+            class="org.eclipse.dltk.ruby.internal.ui.wizards.RubyNewProjectWizard"
             finalPerspective="org.eclipse.dltk.ruby.ui.RubyPerspective"
             icon="icons/ruby_16_16.gif"
-            id="org.eclipse.dltk.ruby.internal.ui.wizards.RubyProjectWizard"
-            name="Ruby Project"
+            id="org.eclipse.dltk.ruby.wizards.newproject"
+            name="%NewProjectWizard.name"
             preferredPerspectives="org.eclipse.dltk.ruby.ui.RubyPerspective"
             project="true">
-         <description>
-            Creates new Ruby Project.
-         </description>
-      </wizard>
-      
+         <description>%NewProjectWizard.description</description>
+      </wizard>      
       <wizard
              category="org.eclipse.dltk.ruby.ui"
-             class="org.eclipse.dltk.ruby.internal.ui.wizards.RubyFileCreationWizard"
+             class="org.eclipse.dltk.ruby.internal.ui.wizards.RubyNewFileWizard"
              icon="icons/ruby_obj.gif"
-             id="org.eclipse.dltk.ruby.internal.ui.wizards.RubyFileCreationWizard"
-             name="%NewRubyFile.label">
-          <description>
-          	Creates new Ruby Source File.
-          </description>
+             id="org.eclipse.dltk.ruby.wizards.newfile"
+             name="%NewFileWizard.name">
+          <description>%NewFileWizard.description</description>
        </wizard>
-      
+       <wizard
+             category="org.eclipse.dltk.ruby.ui"
+             class="org.eclipse.dltk.ruby.internal.ui.wizards.RubyNewClassWizard"
+             icon="icons/ruby_obj.gif"
+             id="org.eclipse.dltk.ruby.wizards.newclass"
+             name="%NewClassWizard.name">
+          <description>%NewClassWizard.description</description>
+       </wizard>
+       <wizard
+             category="org.eclipse.dltk.ruby.ui"
+             class="org.eclipse.dltk.ruby.internal.ui.wizards.RubyNewModuleWizard"
+             icon="icons/ruby_obj.gif"
+             id="org.eclipse.dltk.ruby.wizards.newmodule"
+             name="%NewModuleWizard.name">
+          <description>%NewModuleWizard.description</description>
+       </wizard>
 	</extension>
     <extension point="org.eclipse.core.runtime.preferences">
         <initializer class="org.eclipse.dltk.ruby.internal.ui.RubyUIPreferenceInitializer"/>

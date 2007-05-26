@@ -19,13 +19,25 @@ public final class RubyWizardMessages extends NLS {
 	}
 
 	// Project creation wizard
-	public static String ProjectCreationWizard_title;
-	public static String ProjectCreationWizardFirstPage_title;
-	public static String ProjectCreationWizardFirstPage_description;
+	public static String NewProjectWizard_title;
+	public static String NewProjectFirstPage_title;
+	public static String NewProjectFirstPage_description;
 
-	// File creation wizard
-	public static String FileCreationWizard_title;
-
+	// File
+	public static String NewFileWizard_title;
+	public static String NewFilePage_title;
+	public static String NewFilePage_description;
+	
+	// Class	
+	public static String NewClassWizard_title;
+	public static String NewClassPage_title;
+	public static String NewClassPage_description;
+	
+	// Pages
+	public static String NewModuleWizard_title;
+	public static String NewModulePage_title;
+	public static String NewModulePage_description;
+	
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, RubyWizardMessages.class);
 	}

@@ -23,7 +23,7 @@ public class JavaScriptFileCreationWizard extends NewSourceModuleWizard {
 		setWindowTitle(JavascriptWizardMessages.FileCreationWizard_title);
 	}
 
-	protected NewSourceModulePage newNewSourceModulePage() {
+	protected NewSourceModulePage createNewSourceModulePage() {
 		return new NewSourceModulePage() {
 
 			protected String getRequiredNature() {

@@ -15,7 +15,7 @@ import org.eclipse.dltk.ui.wizards.NewSourceModuleWizard;
 public class TclFileCreationWizard extends NewSourceModuleWizard {
 	public static final String ID_WIZARD = "org.eclipse.dltk.tcl.internal.ui.wizards.TclFileCreationWizard";
 	
-	protected NewSourceModulePage newNewSourceModulePage() {
+	protected NewSourceModulePage createNewSourceModulePage() {
 		return new TclFileCreationPage();
 	}
 }

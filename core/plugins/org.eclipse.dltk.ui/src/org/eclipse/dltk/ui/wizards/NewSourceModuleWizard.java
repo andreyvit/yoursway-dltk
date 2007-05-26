@@ -9,74 +9,33 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui.wizards;
 
-import java.io.ByteArrayInputStream;
-
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.jface.viewers.IStructuredSelection;
 
 public abstract class NewSourceModuleWizard extends NewElementWizard {
 
 	private NewSourceModulePage page;
 
-	private String filename;
-
 	private ISourceModule module;
 
-	public NewSourceModuleWizard() {
-	}
-	
-	protected abstract NewSourceModulePage newNewSourceModulePage();
-	
+	protected abstract NewSourceModulePage createNewSourceModulePage();
+
 	public void addPages() {
-		page = newNewSourceModulePage();
-		addPage(page);
+		super.addPages();
+
+		page = createNewSourceModulePage();
 		page.init(getSelection());
+		addPage(page);
 	}
 
 	public IModelElement getCreatedElement() {
 		return module;
 	}
 
-	public boolean performFinish() {
-		// TODO: add correct behaviour
-
-		try {
-			page.createFile(null);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		return true;
-
-	}
-
 	protected void finishPage(IProgressMonitor monitor)
 			throws InterruptedException, CoreException {
-
-		IStructuredSelection selection = getSelection();
-		Object element = selection.getFirstElement();
-
-		if (element instanceof IModelElement) {
-
-			IModelElement modelElement = (IModelElement) element;
-			IResource res = modelElement.getResource();
-
-			if (res instanceof IContainer) {
-				IContainer container = (IContainer) res;
-				IFile file = container.getFile(new Path(filename));
-				ByteArrayInputStream stream = new ByteArrayInputStream(
-						new byte[] {});
-				file.create(stream, false, null);
-			}
-		}
+		module = page.createFile(monitor);
 	}
 }

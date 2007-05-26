@@ -178,58 +178,58 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 	 */
 	protected IModelElement getInitialScriptElement(
 			IStructuredSelection selection) {
-		IModelElement jelem = null;
+		IModelElement scriptElement = null;
+		
+		// Check selection
 		if (selection != null && !selection.isEmpty()) {
 			Object selectedElement = selection.getFirstElement();
+			// Check for adapters
 			if (selectedElement instanceof IAdaptable) {
 				IAdaptable adaptable = (IAdaptable) selectedElement;
-				jelem = (IModelElement) adaptable
-						.getAdapter(IModelElement.class);
-				if (jelem == null) {
-					IResource resource = (IResource) adaptable
-							.getAdapter(IResource.class);
-					if (resource != null
-							&& resource.getType() != IResource.ROOT) {
-						while (jelem == null
-								&& resource.getType() != IResource.PROJECT) {
+				scriptElement = (IModelElement) adaptable.getAdapter(IModelElement.class);
+				if (scriptElement == null) {
+					IResource resource = (IResource) adaptable.getAdapter(IResource.class);
+					if (resource != null && resource.getType() != IResource.ROOT) {
+						while (scriptElement == null && resource.getType() != IResource.PROJECT) {
 							resource = resource.getParent();
-							jelem = (IModelElement) resource
-									.getAdapter(IModelElement.class);
+							scriptElement = (IModelElement) resource.getAdapter(IModelElement.class);
 						}
-						if (jelem == null) {
-							jelem = DLTKCore.create(resource); // script
-																// project
+						
+						if (scriptElement == null) {
+							scriptElement = DLTKCore.create(resource);															
 						}
 					}
 				}
 			}
 		}
-		if (jelem == null) {
+		
+		// Check view
+		if (scriptElement == null) {
 			IWorkbenchPart part = DLTKUIPlugin.getActivePage().getActivePart();
 			if (part instanceof ContentOutline) {
 				part = DLTKUIPlugin.getActivePage().getActiveEditor();
 			}
+			
 			if (part instanceof IViewPartInputProvider) {
-				Object elem = ((IViewPartInputProvider) part)
-						.getViewPartInput();
-				if (elem instanceof IModelElement) {
-					jelem = (IModelElement) elem;
+				Object provider = ((IViewPartInputProvider) part).getViewPartInput();
+				if (provider instanceof IModelElement) {
+					scriptElement = (IModelElement) provider;
 				}
 			}
 		}
-		if (jelem == null
-				|| jelem.getElementType() == IModelElement.SCRIPT_MODEL) {
+		
+		if (scriptElement == null || scriptElement.getElementType() == IModelElement.SCRIPT_MODEL) {
 			try {
-				IDLTKProject[] projects = DLTKCore.create(getWorkspaceRoot())
-						.getScriptProjects();
+				IDLTKProject[] projects = DLTKCore.create(getWorkspaceRoot()).getScriptProjects();
 				if (projects.length == 1) {
-					jelem = projects[0];
+					scriptElement = projects[0];
 				}
 			} catch (ModelException e) {
 				DLTKUIPlugin.log(e);
 			}
 		}
-		return jelem;
+		
+		return scriptElement;
 	}
 	
 	/**
@@ -270,7 +270,6 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 	}
 
 	private void containerChangeControlPressed(DialogField field) {
-		// take the current jproject as init element of the dialog
 		IScriptFolder root = chooseContainer();
 		if (root != null) {
 			setScriptFolder(root, true);
@@ -301,8 +300,7 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 		currRoot = null;
 		String str = getScriptFolderText();
 		if (str.length() == 0) {
-			status
-					.setError(NewWizardMessages.NewContainerWizardPage_error_EnterContainerName);
+			status.setError(NewWizardMessages.NewContainerWizardPage_error_EnterContainerName);
 			return status;
 		}
 		IPath path = new Path(str);
@@ -319,8 +317,8 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 											proj.getFullPath().toString()));
 					return status;
 				}
-				IDLTKProject jproject = DLTKCore.create(proj);
-			
+				
+				IDLTKProject jproject = DLTKCore.create(proj);			
 				if (resType == IResource.PROJECT)
 					currRoot = jproject.getProjectFragment(res).getScriptFolder("");
 				else {
@@ -408,7 +406,7 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 				IProjectFragment[] roots = project.getProjectFragments();
 				for (int i = 0; i < roots.length; i++) {
 					if (roots[i].getKind() == IProjectFragment.K_SOURCE) {
-						return roots[i];					
+						return roots[i];				
 					}
 				}
 			}
