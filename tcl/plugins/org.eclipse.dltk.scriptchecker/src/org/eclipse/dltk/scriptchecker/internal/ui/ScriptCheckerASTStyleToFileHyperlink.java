@@ -12,39 +12,30 @@ package org.eclipse.dltk.scriptchecker.internal.ui;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.dltk.scriptchecker.internal.core.ScriptCheckerPlugin;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.ui.IEditorDescriptor;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.console.IHyperlink;
 import org.eclipse.ui.console.TextConsole;
-import org.eclipse.ui.ide.IDE;
-import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
  * A hyperlink from a stack trace line of the form "(file "*.*")"
  */
-public class ScriptCheckerSyntaxHyperlink extends ScriptCheckerGenericHyperlink {
+public class ScriptCheckerASTStyleToFileHyperlink extends
+		ScriptCheckerGenericHyperlink {
+	static final Pattern astStylePattern = Pattern
+			.compile("((\\w:)?[^:]+):(\\d+):(.*):\\s*\\((.*)\\)(.*)");
 
-	public ScriptCheckerSyntaxHyperlink(TextConsole console) {
+	public ScriptCheckerASTStyleToFileHyperlink(TextConsole console) {
 		super(console);
 	}
 
 	protected String getFileName(String linkText) throws CoreException {
-		Pattern p = Pattern.compile("((\\w:)?[^:]+):(\\d+)\\s+\\((\\w+)\\)\\s+(.*)");
-		Matcher m = p.matcher(linkText);
+
+		Matcher m = astStylePattern.matcher(linkText);
 		if (m.find()) {
 			String name = m.group(1);
 			return name;
@@ -53,21 +44,46 @@ public class ScriptCheckerSyntaxHyperlink extends ScriptCheckerGenericHyperlink 
 				IStatus.ERROR,
 				ScriptCheckerPlugin.PLUGIN_ID,
 				0,
-				"Error"/*ConsoleMessages.TclFileHyperlink_Unable_to_parse_type_name_from_hyperlink__5*/,
+				"Error"/* ConsoleMessages.TclFileHyperlink_Unable_to_parse_type_name_from_hyperlink__5 */,
 				null);
 		throw new CoreException(status);
 	}
 
 	protected int getLineNumber(String linkText) throws CoreException {
-		Pattern p = Pattern.compile("((\\w:)?[^:]+):(\\d+)\\s+\\((\\w+)\\)\\s+(.*)");
-		Matcher m = p.matcher(linkText);
+
+		Matcher m = astStylePattern.matcher(linkText);
 		if (m.find()) {
 			String lineText = m.group(3);
 			try {
 				return Integer.parseInt(lineText);
 			} catch (NumberFormatException e) {
+
 			}
 		}
 		throw new CoreException(Status.CANCEL_STATUS);
+	}
+
+	public int computeOffset(int offset, int length, TextConsole console) {
+		return offset;
+	}
+
+	public int computeLength(int offset, int length, TextConsole console) {
+		String linkText = null;
+
+		IDocument document = console.getDocument();
+		try {
+			int lineNumber = document.getLineOfOffset(offset);
+			IRegion lineInformation = document.getLineInformation(lineNumber);
+			int lineOffset = lineInformation.getOffset();
+			linkText = document.get(lineOffset, lineInformation.getLength());
+		} catch (BadLocationException e) {
+			return length;
+		}
+		Matcher m = astStylePattern.matcher(linkText);
+		if (m.find()) {
+			int len = m.start(3);
+			return len;
+		}
+		return length;
 	}
 }

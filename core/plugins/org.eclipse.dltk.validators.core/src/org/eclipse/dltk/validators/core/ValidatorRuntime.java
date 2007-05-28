@@ -160,7 +160,7 @@ public final class ValidatorRuntime {
 		if (validatorXMLString.length() > 0) {
 			try {
 				ByteArrayInputStream inputStream = new ByteArrayInputStream(
-						validatorXMLString.getBytes());
+						validatorXMLString.getBytes("UTF8"));
 				ValidatorDefinitionsContainer.parseXMLIntoContainer(
 						inputStream, interpreterDefs);
 				return false;
@@ -261,7 +261,7 @@ public final class ValidatorRuntime {
 		fgValidatorListeners.remove(listener);
 	}
 
-	public static void fireInterpreterChanged(IValidator validator) {
+	public static void fireValidatorChanged(IValidator validator) {
 		Object[] listeners = fgValidatorListeners.getListeners();
 		for (int i = 0; i < listeners.length; i++) {
 			IValidatorChangedListener listener = (IValidatorChangedListener) listeners[i];
@@ -381,7 +381,7 @@ public final class ValidatorRuntime {
 			return null;
 		}
 
-		public IStatus execute(IValidator validator, IResource o,
+	  	public IStatus execute(IValidator validator, IResource o,
 				OutputStream out) {
 			validator.clean(o);
 			return null;

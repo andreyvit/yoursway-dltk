@@ -76,9 +76,6 @@ public class ValidatorMessages extends NLS {
 	public static String statusFetchingLibs;
 	public static String AddValidatorDialog_iArgs;
 	
-
-	
-	
 	private ValidatorMessages() {
 	// dont instatiate
 	}

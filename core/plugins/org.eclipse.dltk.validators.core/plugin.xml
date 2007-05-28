@@ -9,5 +9,13 @@
             nature="#">
       </builder>
    </extension>
+   <extension
+         point="org.eclipse.dltk.validators.core.validator">
+      <validatorType
+            class="org.eclipse.dltk.validators.internal.core.externalchecker.ExternalCheckerType"
+            id="org.eclipse.dltk.validators.core.externalChecker"
+            nature="#">
+      </validatorType>
+   </extension>
 
 </plugin>

@@ -21,6 +21,9 @@
       <validatorConsoleTracker
             class="org.eclipse.dltk.scriptchecker.internal.ui.ScriptCheckerSyntaxConsoleTracker">
       </validatorConsoleTracker>
+      <validatorConsoleTracker
+            class="org.eclipse.dltk.scriptchecker.internal.ui.ScriptCheckerSyntaxASTStyleConsoleTracker">
+      </validatorConsoleTracker>
    </extension>
    <extension
          id="scriptcheckerproblem"

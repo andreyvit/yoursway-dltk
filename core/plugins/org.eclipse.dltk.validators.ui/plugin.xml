@@ -63,5 +63,12 @@
             id="org.eclipse.dltk.validators.ui.visibility">
       </actionFilterTester>
    </extension>
+   <extension
+         point="org.eclipse.dltk.validators.ui.validatorConfigPage">
+      <validatorConfigPage
+            class="org.eclipse.dltk.validators.internal.ui.eternalchecker.ExternalCheckerConfigurationPage"
+            id="org.eclipse.dltk.validators.core.externalChecker">
+      </validatorConfigPage>
+   </extension>
 
 </plugin>

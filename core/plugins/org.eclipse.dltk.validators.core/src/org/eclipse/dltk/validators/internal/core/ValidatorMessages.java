@@ -20,9 +20,4 @@ public class ValidatorMessages extends NLS {
 		// load message values from bundle file
 		NLS.initializeMessages(BUNDLE_NAME, ValidatorMessages.class);
 	}
-
-
-
-
-
 }

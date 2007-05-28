@@ -180,7 +180,7 @@ public class ValidatorsCore extends Plugin implements IPropertyChangeListener {
 				newPrefString = newValue;
 			}
 
-			// Generate the previous Interpreters
+			// Generate the previous Validators
 			ValidatorDefinitionsContainer oldResults = getValidatorDefinitions(oldPrefString);
 
 			// Generate the current
@@ -191,7 +191,7 @@ public class ValidatorsCore extends Plugin implements IPropertyChangeListener {
 			List current = newResults.getValidatorList();
 			deleted.removeAll(current);
 
-			// Dispose deleted Interpreters. The 'disposeInterpreterInstall'
+			// Dispose deleted Validators. The 'disposeInterpreterInstall'
 			// method fires notification of the
 			// deletion.
 			Iterator deletedIterator = deleted.iterator();
@@ -202,6 +202,13 @@ public class ValidatorsCore extends Plugin implements IPropertyChangeListener {
 						.disposeValidator(
 								deletedValidatorStandin.getID());
 			}
+			
+//			Iterator currentIterator = current.iterator();
+//			
+//			while(currentIterator.hasNext()){
+//				IValidator currentValidatorStandin = (IValidator) currentIterator.next();
+//				currentValidatorStandin.getValidatorType().createValidator(currentValidatorStandin.getID());
+//			}
 		} finally {
 			// stop batch changes
 //			fBatchingChanges = false;

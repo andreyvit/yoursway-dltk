@@ -6,13 +6,12 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.dltk.validators.internal.ui.ValidatorsUI
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.dltk.validators.core,
  org.eclipse.dltk.ui,
  org.eclipse.dltk.core,
  org.eclipse.core.resources,
- org.eclipse.ui.console
+ org.eclipse.ui.console,
+ org.eclipse.dltk.validators.core
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.validators
 Bundle-Vendor: %providerName
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
 Bundle-Localization: plugin

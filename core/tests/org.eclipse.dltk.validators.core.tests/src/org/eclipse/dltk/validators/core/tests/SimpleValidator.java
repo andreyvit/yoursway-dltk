@@ -32,11 +32,15 @@ public class SimpleValidator extends AbstractValidator {
 	}
 	protected SimpleValidator(String id, Element element, IValidatorType type) throws IOException {
 		super(id, null, type);
+		this.loadFrom(element);
+	}
+	protected void loadFrom(Element element ) {
+		super.loadFrom(element);
 		this.value = element.getAttribute("simple_value");
 		this.valid =  (new Boolean(element.getAttribute("simple_valid"))).booleanValue();
 	}
-
 	public void storeTo(Document doc, Element element) {
+		super.storeTo(doc, element);
 		element.setAttribute("simple_value", this.value);
 		element.setAttribute("simple_valid", Boolean.toString(this.valid));
 	}
@@ -55,10 +59,8 @@ public class SimpleValidator extends AbstractValidator {
 		return this.valid;
 	}
 	public void clean(ISourceModule module) {
-		// TODO Auto-generated method stub
 		
 	}
 	public void clean(IResource resource) {
-		// TODO Auto-generated method stub
 	}
 }

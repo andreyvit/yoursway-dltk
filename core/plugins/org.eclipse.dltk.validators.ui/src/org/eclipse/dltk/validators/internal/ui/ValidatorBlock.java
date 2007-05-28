@@ -1,4 +1,4 @@
-/*******************************************************************************
+ /*******************************************************************************
  * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -186,7 +186,6 @@ public class ValidatorBlock implements ISelectionProvider,
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
 	 */
 	public ISelection getSelection() {
@@ -556,8 +555,12 @@ public class ValidatorBlock implements ISelectionProvider,
 	 */
 	public boolean isDuplicateName(String name) {
 		for (int i = 0; i < fValidator.size(); i++) {
-			IValidator Interpreter = (IValidator) fValidator.get(i);
-			if (Interpreter.getName().equals(name)) {
+			IValidator validator = (IValidator) fValidator.get(i);
+			String validatorName = validator.getName();
+			if( validatorName == null ) {
+				return true;
+			}
+			if (validatorName.equals(name)) {
 				return true;
 			}
 		}

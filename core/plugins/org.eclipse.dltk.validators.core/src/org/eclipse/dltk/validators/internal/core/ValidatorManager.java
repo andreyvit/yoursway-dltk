@@ -134,7 +134,9 @@ public class ValidatorManager {
 			String nature = (String)iterator.next();
 			IValidatorType[] b = getValidators(nature);
 			for( int i = 0; i < b.length; ++i ) {
-				result.add(b[i]);
+				if( !result.contains(b[i])) {
+					result.add(b[i]);
+				}
 			}
 		}
 		return (IValidatorType[])result.toArray(new IValidatorType[result.size()]);

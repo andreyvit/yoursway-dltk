@@ -84,7 +84,7 @@ public class ScriptChecker extends AbstractValidator {
 			return new int[] { start, end };
 		}
 	}
-	
+
 	private void setDefaults() {
 		this.noStyle = false;
 		this.noSyntax = false;
@@ -116,8 +116,10 @@ public class ScriptChecker extends AbstractValidator {
 		super.loadFrom(element);
 		initialized = true;
 		this.path = new Path(element.getAttribute(PATH));
-		this.noStyle = (new Boolean(element.getAttribute(NO_STYLE))).booleanValue();
-		this.noSyntax = (new Boolean(element.getAttribute(NO_SYNTAX))).booleanValue();
+		this.noStyle = (new Boolean(element.getAttribute(NO_STYLE)))
+				.booleanValue();
+		this.noSyntax = (new Boolean(element.getAttribute(NO_SYNTAX)))
+				.booleanValue();
 		this.severity = element.getAttribute(SEVERITY);
 		this.arguments = element.getAttribute(ARGUMENTS);
 	}
@@ -134,13 +136,15 @@ public class ScriptChecker extends AbstractValidator {
 	public IStatus validate(IResource resource, OutputStream console) {
 		return Status.OK_STATUS;
 	}
+
 	public IStatus validate(ISourceModule module, OutputStream console) {
 		IResource resource = module.getResource();
-		if( resource == null ) {
+		if (resource == null) {
 			return Status.CANCEL_STATUS;
 		}
 		try {
-			resource.deleteMarkers(ScriptCheckerMarker.PROBLEM_ID, true, IResource.DEPTH_INFINITE);
+			resource.deleteMarkers(ScriptCheckerMarker.PROBLEM_ID, true,
+					IResource.DEPTH_INFINITE);
 		} catch (CoreException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -151,7 +155,7 @@ public class ScriptChecker extends AbstractValidator {
 		String[] sArgs = args.split("::");
 		for (int i = 0; i < sArgs.length; i++) {
 			cmd.add(sArgs[i]);
-		}		
+		}
 
 		String[] cmdLine = (String[]) cmd.toArray(new String[cmd.size()]);
 
@@ -212,17 +216,18 @@ public class ScriptChecker extends AbstractValidator {
 				try {
 					int[] bounds = model.getBounds(problem.getLineNumber());
 					if (problem.getDescription().indexOf("error") == -1) {
-						reportWarningProblem(resource, problem, bounds[0], bounds[1]);
+						reportWarningProblem(resource, problem, bounds[0],
+								bounds[1]);
 					} else {
-						reportErrorProblem(resource, problem, bounds[0], bounds[1]);
+						reportErrorProblem(resource, problem, bounds[0],
+								bounds[1]);
 					}
 				} catch (CoreException e) {
-					if( DLTKCore.DEBUG ) {
+					if (DLTKCore.DEBUG) {
 						e.printStackTrace();
 					}
-				}
-				catch(ArrayIndexOutOfBoundsException e ) {
-					if( DLTKCore.DEBUG ) {
+				} catch (ArrayIndexOutOfBoundsException e) {
+					if (DLTKCore.DEBUG) {
 						e.printStackTrace();
 					}
 				}
@@ -242,7 +247,7 @@ public class ScriptChecker extends AbstractValidator {
 		int lineNumber = Integer.parseInt(matcher.group(3));
 		String message = matcher.group(4);
 
-		return new ScriptCheckerProblem(file, lineNumber-1, message);
+		return new ScriptCheckerProblem(file, lineNumber - 1, message);
 	}
 
 	protected static IMarker reportErrorProblem(IResource resource,
@@ -266,15 +271,16 @@ public class ScriptChecker extends AbstractValidator {
 	private String processArguments(IResource resource) {
 		String path = resource.getLocation().makeAbsolute().toOSString();
 		String arguments = this.arguments;
-		if( arguments.indexOf("--")==-1) {
+		if (arguments.indexOf("--") == -1) {
 			arguments = "-- " + arguments;
 		}
-		String user = replaceSequence(arguments.replaceAll("\t", "::").replaceAll(" ", "::"), 'f', path);
+		String user = replaceSequence(arguments.replaceAll("\t", "::")
+				.replaceAll(" ", "::"), 'f', path);
 		String result = "";
-		if( this.noStyle ) {
+		if (this.noStyle) {
 			result = result + "::-no_style";
 		}
-		if( this.noSyntax ) {
+		if (this.noSyntax) {
 			result = result + "::-no_syntax";
 		}
 		result = result + "::-severity::" + this.severity.toLowerCase();
@@ -283,13 +289,13 @@ public class ScriptChecker extends AbstractValidator {
 
 	private String replaceSequence(String from, char pattern, String value) {
 		StringBuffer buffer = new StringBuffer();
-		for( int i = 0; i < from.length(); ++i ) {
+		for (int i = 0; i < from.length(); ++i) {
 			char c = from.charAt(i);
-			if( c == '%' && i < from.length() - 1 && from.charAt(i + 1) == pattern ) {
+			if (c == '%' && i < from.length() - 1
+					&& from.charAt(i + 1) == pattern) {
 				buffer.append(value);
 				i++;
-			}
-			else {
+			} else {
 				buffer.append(c);
 			}
 		}
@@ -359,9 +365,9 @@ public class ScriptChecker extends AbstractValidator {
 		try {
 			ScriptCheckerMarker.clearMarkers(resource);
 		} catch (CoreException e) {
-			if( DLTKCore.DEBUG ) {
+			if (DLTKCore.DEBUG) {
 				e.printStackTrace();
 			}
-		}		
+		}
 	}
 }

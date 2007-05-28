@@ -61,7 +61,7 @@ public class AddValidatorDialog extends StatusDialog {
 			fStati[i]= new StatusInfo();
 		}
 		
-		fValidatorTypes= validatorTypes;
+		fValidatorTypes= validatorTypes;  
 		fSelectedValidatorType= editedValidator != null ? editedValidator.getValidatorType() : validatorTypes[0];
 		
 		fEditedValidator = editedValidator;
@@ -99,7 +99,7 @@ public class AddValidatorDialog extends StatusDialog {
 			}
 		});
 	}
-	
+	 
 	protected String getValidatorName() {
 		return fValidatorName.getText();
 	}
@@ -111,6 +111,11 @@ public class AddValidatorDialog extends StatusDialog {
 		
 		fValidatorTypeCombo.doFillIntoGrid(parent, 3);
 		((GridData)fValidatorTypeCombo.getComboControl(null).getLayoutData()).widthHint= convertWidthInCharsToPixels(50);
+		((GridData)fValidatorTypeCombo.getComboControl(null).getLayoutData()).grabExcessHorizontalSpace = true;
+		
+		
+		//((GridData)fValidatorName.getLabelControl(null).getLayoutData()).grabExcessHorizontalSpace = true;
+
 		
 		fValidatorName.doFillIntoGrid(parent, 3);
 		
@@ -177,7 +182,6 @@ public class AddValidatorDialog extends StatusDialog {
 		fValidatorTypeCombo.setItems(getValidatorTypeNames());
 		if (fEditedValidator == null) {
 			fValidatorName.setText(""); //$NON-NLS-1$
-			
 		} else {
 			fValidatorTypeCombo.setEnabled(false);
 			fValidatorName.setText(fEditedValidator.getName());
@@ -186,12 +190,10 @@ public class AddValidatorDialog extends StatusDialog {
 		updateStatusLine();
 	}
 
-
-//	private IValidatorType getValidatorType() {
-//		return fSelectedValidatorType;
-//	}
+	private IValidatorType getValidatorType() {
+		return fSelectedValidatorType;
+	}
 	
-
 	private IStatus validateValidatorName() {
 		StatusInfo status= new StatusInfo();
 		String name= fValidatorName.getText();
