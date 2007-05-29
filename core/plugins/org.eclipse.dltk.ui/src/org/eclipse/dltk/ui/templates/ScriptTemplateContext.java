@@ -40,26 +40,27 @@ public class ScriptTemplateContext extends DocumentTemplateContext {
 	}
 
 	protected static String calculateIndent(IDocument document, int offset) {
-		String indent = "";
-
 		try {
-			IRegion line = document.getLineInformationOfOffset(offset);
+			IRegion region = document.getLineInformationOfOffset(offset);
+			String indent = document.get(region.getOffset(), offset
+					- region.getOffset());
 
-			String s = document.get(line.getOffset(), line.getLength());
-
-			if (s.length() > 0) {
-				int index = 0;
-				while (index < s.length() && !Character.isJavaIdentifierPart(s.charAt(index))) {
-					++index;
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < indent.length(); ++i) {
+				char ch = indent.charAt(i);
+				if (ch != ' ' && ch != '\t') {
+					sb.append(' ');
+				} else {
+					sb.append(ch);
 				}
-				indent = s.substring(0, index);
 			}
 
+			return sb.toString();
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
 
-		return indent;
+		return "";
 	}
 
 	public TemplateBuffer evaluate(Template template)
@@ -82,7 +83,7 @@ public class ScriptTemplateContext extends DocumentTemplateContext {
 				buffer.append(indentTo);
 				buffer.append(lines[i]);
 			}
-			
+
 			template = new Template(template.getName(), template
 					.getDescription(), template.getContextTypeId(), buffer
 					.toString(), template.isAutoInsertable());
