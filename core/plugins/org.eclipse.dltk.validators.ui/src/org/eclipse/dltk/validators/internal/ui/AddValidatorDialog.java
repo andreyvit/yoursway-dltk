@@ -296,7 +296,16 @@ public class AddValidatorDialog extends StatusDialog {
 		super.okPressed();
 	}
 	
+	
+	protected void cancelPressed() {
+		// TODO Auto-generated method stub
+		super.cancelPressed();
+	}
+
 	private void doOkPressed() {
+		if( this.fConfigurationPage != null ) {
+			this.fConfigurationPage.applyChanges();
+		}
 		if (fEditedValidator == null) {
 //			IValidator Validator = fSelectedValidatorType.createValidator( createUniqueId(fSelectedValidatorType));
 			IValidator validator = getCreateValidator();
