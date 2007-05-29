@@ -22,4 +22,11 @@ public abstract class ValidatorConfigurationPage {
 	}
 	public abstract void applyChanges();
 	public abstract void createControl( Composite parent, int columns );
+	
+	/**
+	 * Called from new validator dialog, to switch configurations.
+	 */
+	public void dispose() {
+		
+	}
 }

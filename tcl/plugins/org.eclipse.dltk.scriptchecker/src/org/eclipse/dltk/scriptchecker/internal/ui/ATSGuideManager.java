@@ -32,6 +32,7 @@ public class ATSGuideManager implements IPropertyChangeListener {
 	private static final String URI = "uri";
 	private static final String PATTERN = "pattern";
 	private static final String GUIDE = "guide";
+	private static final String REGEXP = "regexp";
 	private static final String ATSGUIDES = "atsguides";
 	private final static String GUIDE_PREFERENCE = ScriptCheckerPlugin.PLUGIN_ID
 			+ ".astguide";
@@ -41,6 +42,7 @@ public class ATSGuideManager implements IPropertyChangeListener {
 	public static class GuideNode {
 		private String uri;
 		private String pattern;
+		private boolean regexp;
 
 		public GuideNode() {
 		}
@@ -84,6 +86,13 @@ public class ATSGuideManager implements IPropertyChangeListener {
 			return this.pattern.hashCode();
 		}
 
+		public boolean isRegexp() {
+			return this.regexp;
+		}
+		public void setRegexp(boolean value) {
+			this.regexp = value;
+		}
+
 	}
 
 	private ATSGuideManager() {
@@ -120,6 +129,7 @@ public class ATSGuideManager implements IPropertyChangeListener {
 						if (element.getNodeName().equalsIgnoreCase(GUIDE)) {
 							String pattern = element.getAttribute(PATTERN);
 							String uri = element.getAttribute(URI);
+							boolean regexp = new Boolean( element.getAttribute(REGEXP) ).booleanValue();
 							addedElements.add(addGuide(pattern, uri));
 						}
 					}

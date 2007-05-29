@@ -1,5 +1,7 @@
 package org.eclipse.dltk.validators.internal.ui.eternalchecker;
 
+import org.eclipse.dltk.validators.internal.ui.ValidatorBlock;
+import org.eclipse.dltk.validators.internal.ui.ValidatorsUI;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;

@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -188,7 +189,9 @@ public class ExternalChecker extends AbstractValidator {
 	public IStatus validate(IResource resource, OutputStream console) {
 		return Status.OK_STATUS;
 	}
-	
+	public void setRules(Vector rules) {
+		this.rules = rules;
+	}
 	public IStatus validate(ISourceModule module, OutputStream console) {
 		IResource resource = module.getResource();
 		if( resource == null ) {

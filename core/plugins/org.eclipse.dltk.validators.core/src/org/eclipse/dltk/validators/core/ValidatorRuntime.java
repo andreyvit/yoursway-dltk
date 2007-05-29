@@ -35,6 +35,7 @@ import org.eclipse.dltk.validators.internal.core.ListenerList;
 import org.eclipse.dltk.validators.internal.core.ValidatorDefinitionsContainer;
 import org.eclipse.dltk.validators.internal.core.ValidatorManager;
 import org.eclipse.dltk.validators.internal.core.ValidatorsCore;
+import org.eclipse.dltk.validators.internal.core.externalchecker.MarkerInfo;
 
 public final class ValidatorRuntime {
 
@@ -55,6 +56,7 @@ public final class ValidatorRuntime {
 	// private static ThreadLocal fgEntryCount = new ThreadLocal(); // Integers
 
 	private static Set fgContributedValidators = new HashSet();
+	private static List markerList = new ArrayList();
 
 	private ValidatorRuntime() {
 	}
@@ -160,7 +162,7 @@ public final class ValidatorRuntime {
 		if (validatorXMLString.length() > 0) {
 			try {
 				ByteArrayInputStream inputStream = new ByteArrayInputStream(
-						validatorXMLString.getBytes("UTF8"));
+						validatorXMLString.getBytes("UTF-8"));
 				ValidatorDefinitionsContainer.parseXMLIntoContainer(
 						inputStream, interpreterDefs);
 				return false;
@@ -355,6 +357,7 @@ public final class ValidatorRuntime {
 			List elements, List resources) {
 		IValidator[] activeValidators = getValidValidators();
 		process(stream, elements, resources, activeValidators, processValidate);
+		
 	}
 
 	private interface IProcessAction {

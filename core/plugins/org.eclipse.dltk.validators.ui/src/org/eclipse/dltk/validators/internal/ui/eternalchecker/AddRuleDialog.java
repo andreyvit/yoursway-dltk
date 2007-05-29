@@ -15,8 +15,6 @@ public class AddRuleDialog extends StatusDialog {
 	
 	public AddRuleDialog(Shell shell){
 		super(shell);
-		
-		System.out.println("Dialog created");
 	}
 	
 	public void create(){

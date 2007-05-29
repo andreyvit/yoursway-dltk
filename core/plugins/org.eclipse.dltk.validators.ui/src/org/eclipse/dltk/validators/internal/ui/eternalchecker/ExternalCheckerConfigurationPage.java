@@ -1,51 +1,41 @@
 package org.eclipse.dltk.validators.internal.ui.eternalchecker;
 
-import org.eclipse.dltk.internal.ui.util.SWTUtil;
-import org.eclipse.dltk.internal.ui.util.TableLayoutComposite;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.StringDialogField;
-import org.eclipse.dltk.ui.util.PixelConverter;
 import org.eclipse.dltk.validators.ValidatorConfigurationPage;
 import org.eclipse.dltk.validators.internal.core.externalchecker.ExternalChecker;
-import org.eclipse.dltk.validators.internal.ui.ValidatorMessages;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.ICheckStateListener;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.dltk.validators.internal.core.externalchecker.Rule;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Text;
 
 public class ExternalCheckerConfigurationPage extends
 		ValidatorConfigurationPage {
 
 	private StringDialogField fArguments;
 	private StringDialogField fCommannd;
-	protected CheckboxTableViewer fValidatorList;
 	private Table fTable;
-	private Button addRuleButtton;
-	private StringDialogField fSyntax;
-	private StringDialogField fSyntax2;
+	private TableViewer tableViewer;
+	private Button addRule;
+	private Button delRule;
+	private RulesList rulesList = new RulesList();
 	
-	
-	public class RuleContentProvider{
-		
+	public RulesList getRulesList(){
+		return rulesList;
 	}
+	
+	private String[] columnNames = new String[] {"RULES"};
 	
 	public ExternalCheckerConfigurationPage() {
 	}
@@ -53,96 +43,58 @@ public class ExternalCheckerConfigurationPage extends
 	public void applyChanges() {
 		ExternalChecker externalChecker = getExtrenalChecker();
     	externalChecker.setArguments(this.fArguments.getText());
-		externalChecker.setCommand(this.fCommannd.getText());
+		externalChecker.setCommand(this.fCommannd.getText());	
+		externalChecker.setRules(rulesList.getRules());
 	
 	}
 
 	public void createControl(final Composite ancestor, int columns ) {
 		createFields();
-	
+		
 		Composite parent = new Composite(ancestor, SWT.NULL);
 		GridLayout layout = (GridLayout)ancestor.getLayout();
-	//	GridLayout layout = new GridLayout();
-	//	layout.numColumns = columns;
-	//	layout.marginHeight = 0;
-	//	layout.marginWidth = 0;
-
-		Font font = ancestor.getFont();
-//		parent.setFont(font);
-		parent.setLayout(layout);
-
-		GridData data =new GridData();
-
-		Label tableLabel = new Label(parent, SWT.NONE);
-		tableLabel.setText(ValidatorMessages.InstalledValidatorBlock_15);
-		data.horizontalSpan = 3;
 		
-		tableLabel.setLayoutData(data);
-		tableLabel.setFont(font);
-
-		PixelConverter conv = new PixelConverter(parent);
-		data = new GridData(GridData.FILL_BOTH);
-		data.widthHint = conv.convertWidthInCharsToPixels(50);
-		TableLayoutComposite tblComposite = new TableLayoutComposite(parent,
-				SWT.NONE);
-		tblComposite.setLayoutData(data);
-		fTable = new Table(tblComposite, SWT.CHECK | SWT.BORDER | SWT.MULTI
-				| SWT.FULL_SELECTION);
-
-		data = new GridData(GridData.FILL_BOTH);
-		data.widthHint = 450;
-		fTable.setLayoutData(data);
-		fTable.setFont(font);
-
-		fTable.setHeaderVisible(true);
-		fTable.setLinesVisible(true);
-
-		TableColumn column1 = new TableColumn(fTable, SWT.NULL);
-		column1.setText("Hello");
-		column1.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-			}
-		});
-
+		this.fCommannd.doFillIntoGrid(ancestor,columns);
+		this.fArguments.doFillIntoGrid(ancestor, columns);
+		fTable = new Table(ancestor, SWT.BORDER|SWT.MULTI);
+		fTable.setLayout(layout);
+    	fTable.setLinesVisible(true);
+    	TableColumn col = new TableColumn(fTable, SWT.LEFT);
+		col.setWidth(200);
 	
-		fValidatorList = new CheckboxTableViewer(fTable);
-	//	fValidatorList.setLabelProvider(new ValidatorLabelProvider());
-	//	fValidatorList.setContentProvider(new ValidatorContentProvider());
-		fValidatorList.addCheckStateListener(new ICheckStateListener() {
-			public void checkStateChanged(CheckStateChangedEvent event) {
-			}
-		});
+		tableViewer = new TableViewer(fTable);
+		tableViewer.setColumnProperties(columnNames);
+		CellEditor[] editors = new CellEditor[columnNames.length];
 		
-	
-		fValidatorList
-				.addSelectionChangedListener(new ISelectionChangedListener() {
-					public void selectionChanged(SelectionChangedEvent evt) {
-					}
-				});
-		fValidatorList.addDoubleClickListener(new IDoubleClickListener() {
-			public void doubleClick(DoubleClickEvent e) {
-			}
-		});
-		fTable.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent event) {
-			}
-		});
-		
-		addRuleButtton = SWTUtil.createPushButton(ancestor,"AddRule" ,null);
-		addRuleButtton.addListener(SWT.Selection, new Listener(){
-			public void handleEvent(Event ev){
-				addRule(new Composite(ancestor, SWT.NULL));
-			}
-			
-		});
-		
-	//	this.fCommannd.doFillIntoGrid(parent, columns);
-///		this.fArguments.doFillIntoGrid(parent, columns);
-	
-		this.fSyntax.doFillIntoGrid(parent, columns);
-		this.fSyntax2.doFillIntoGrid(parent, columns);
-		
-//		updateValuesFrom();
+		TextCellEditor textEditor = new TextCellEditor(fTable);
+        ((Text) textEditor.getControl()).setTextLimit(60);
+        editors[0] = textEditor;
+        tableViewer.setCellEditors(editors);
+        tableViewer.setCellModifier(new RuleCelllModifier(this));
+        
+        tableViewer.setContentProvider(new RulesContentProvider());
+        tableViewer.setLabelProvider(new RulesLabelProvider());
+        tableViewer.setInput(rulesList);
+        
+        addRule = new Button(ancestor, SWT.PUSH);
+        addRule.setText("Add Rule");
+        addRule.addSelectionListener(new SelectionAdapter(){
+        	public void widgetSelected(SelectionEvent ev){
+        		rulesList.addRule();
+        	}
+        });
+        
+        delRule = new Button(ancestor, SWT.PUSH);
+        delRule.setText("Delete Rule");
+        delRule.addSelectionListener(new SelectionAdapter(){
+        	public void widgetSelected(SelectionEvent ev){
+        		Rule rule = (Rule)((IStructuredSelection)tableViewer.getSelection()).getFirstElement();
+        		if(rule!=null)
+        			rulesList.removeRule(rule);
+        	}
+        });
+        
+        updateValuesFrom();
 	}
 	private ExternalChecker getExtrenalChecker() {
 		return (ExternalChecker)getValidator();
@@ -152,7 +104,11 @@ public class ExternalCheckerConfigurationPage extends
 		ExternalChecker externalChecker = getExtrenalChecker();
 			this.fArguments.setText(externalChecker.getArguments());
 			this.fCommannd.setText(externalChecker.getCommand());
-		
+	//		this.rulesList = new RulesList();
+	//		for(int i=0; i<externalChecker.getNRules(); i++){
+	//			rulesList.addRule(externalChecker.getRule(i));;
+	//		}
+			
 	}
 
 //	private void createLabel(Composite parent, String content, int columns) {
@@ -188,20 +144,41 @@ public class ExternalCheckerConfigurationPage extends
 //		});
 //	}
 	private void createFields() {
-		this.fSyntax = new StringDialogField();
-		this.fSyntax.setLabelText("Syntaz");
-		
-		this.fSyntax2 = new StringDialogField();
-		this.fSyntax2.setLabelText("Syntaz");
-		
 		this.fCommannd = new StringDialogField();
 		this.fCommannd.setLabelText("command to run checker");
 		this.fArguments = new StringDialogField();
-		this.fArguments.setLabelText("Arguments");
+		this.fArguments.setLabelText("Arguments");	
+	
+	
 	}
 	
-	public  void addRule(Control control){
-		
-		AddRuleDialog addDialog = new AddRuleDialog(control.getShell());
+	public class RulesContentProvider implements IStructuredContentProvider, IRulesListViewer {
+
+		public Object[] getElements(Object inputElement) {
+			return rulesList.getRules().toArray(); 
+		}
+
+		public void dispose() {
+			rulesList.removeChangeListener(this);
+		}
+
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+			  if (newInput != null)
+	              ((RulesList) newInput).addChangeListener(this);
+	          if (oldInput != null)
+	              ((RulesList) oldInput).removeChangeListener(this);
+		}
+
+		public void addRule(Rule r) {
+			tableViewer.add(r);
+		}
+
+		public void removeRule(Rule r) {
+			tableViewer.remove(r);
+		}
+
+		public void updateRule(Rule r) {
+			tableViewer.update(r, null);
+		}
 	}
 }

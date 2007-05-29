@@ -321,4 +321,9 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 
 	protected void validateScriptCheckerPath() {
 	}
+
+	public void dispose() {
+		super.dispose();
+	}
+	
 }

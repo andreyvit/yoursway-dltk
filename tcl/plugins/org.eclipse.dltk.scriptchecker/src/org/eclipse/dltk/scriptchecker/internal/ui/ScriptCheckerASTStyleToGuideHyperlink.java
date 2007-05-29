@@ -9,9 +9,13 @@
  *******************************************************************************/
 package org.eclipse.dltk.scriptchecker.internal.ui;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
@@ -23,6 +27,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.browser.IWebBrowser;
+import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.console.IHyperlink;
 import org.eclipse.ui.console.TextConsole;
 
@@ -68,12 +76,19 @@ public class ScriptCheckerASTStyleToGuideHyperlink implements IHyperlink {
 			GuideNode[] guides = ATSGuideManager.getInstance().getGuides();
 			for (int i = 0; i < guides.length; i++) {
 				if( guide.equals( guides[i].getPattern() ) ) {
-					Shell shell = new Shell();
-					shell.setText("Guideline for: " + guide);
-					shell.setLayout(new FillLayout());
-					Browser b = new Browser(shell, SWT.NONE);
-					b.setUrl(guides[i].getUri());
-					shell.open();
+					IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
+					try {
+						IWebBrowser browser = browserSupport.createBrowser(null);
+						browser.openURL(new URL( guides[i].getUri() ));
+					} catch (PartInitException e) {
+						if( DLTKCore.DEBUG ) {
+							e.printStackTrace();
+						}
+					} catch (MalformedURLException e) {
+						if( DLTKCore.DEBUG ) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 		}

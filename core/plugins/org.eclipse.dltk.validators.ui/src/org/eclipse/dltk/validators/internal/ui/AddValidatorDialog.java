@@ -10,6 +10,9 @@
 package org.eclipse.dltk.validators.internal.ui;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -21,6 +24,8 @@ import org.eclipse.dltk.internal.ui.wizards.dialogfields.StringDialogField;
 import org.eclipse.dltk.validators.ValidatorConfigurationPage;
 import org.eclipse.dltk.validators.core.IValidator;
 import org.eclipse.dltk.validators.core.IValidatorType;
+import org.eclipse.dltk.validators.core.ValidatorRuntime;
+import org.eclipse.dltk.validators.internal.core.ValidatorsCore;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.StatusDialog;
 import org.eclipse.swt.SWT;
@@ -48,7 +53,12 @@ public class AddValidatorDialog extends StatusDialog {
 	private IStatus[] fStati;
 	private int fPrevIndex = -1;
 	
-	ValidatorConfigurationPage fConfigurationPage;
+	private Map createValidatorMap = new HashMap();
+	
+	private ValidatorConfigurationPage fConfigurationPage = null;
+	
+	private Composite configPage = null;
+	private Composite ancestor;
 	
 		
 	public AddValidatorDialog(IAddValidatorDialogRequestor requestor, Shell shell,
@@ -105,6 +115,7 @@ public class AddValidatorDialog extends StatusDialog {
 	}
 		
 	protected Control createDialogArea(Composite ancestor) {
+		this.ancestor = ancestor;
 		createDialogFields();
 		Composite parent = (Composite)super.createDialogArea(ancestor);
 		((GridLayout)parent.getLayout()).numColumns= 3;
@@ -124,23 +135,65 @@ public class AddValidatorDialog extends StatusDialog {
 			if( this.fEditedValidator.getName().equals(this.fEditedValidator.getValidatorType().getName())) {
 					
 			}
-			try {
-				fConfigurationPage = ValidatorConfigurationPageManager.getConfigurationPage(fEditedValidator.getValidatorType().getID());
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
-			if( fConfigurationPage != null ) {
-				this.fConfigurationPage.setValidator(this.fEditedValidator);
-				this.fConfigurationPage.createControl(parent, 3);
-			}
+			recreateConfigPage(parent);
 		}
+		else {
+			// We need to specify special parent, to be able to destroy it.
+//			configPage = (Composite)super.createDialogArea(parent);
+			configPage = new Composite(parent, SWT.NONE);
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 3;
+			configPage.setLayout(layout);
+			applyDialogFont(configPage);
+			GridData data = new GridData(SWT.FILL,SWT.FILL, true, true);
+			data.horizontalSpan = 3;
+			configPage.setLayoutData(data);
+//			recreateConfigPage(configPage);
+		}
+//		}
 		
 		initializeFields();
 		createFieldListeners();
 		applyDialogFont(parent);
 		return parent;
 	}
+
+	private void recreateConfigPage(Composite parent) {
+		if( fConfigurationPage != null ) {
+			fConfigurationPage.dispose();
+		}
+		try {
+			String id = null;
+			if( fEditedValidator != null ) {
+				id = fEditedValidator.getValidatorType().getID();
+			}
+			else {
+				id = this.getValidatorType().getID();
+			}
+			fConfigurationPage = ValidatorConfigurationPageManager.getConfigurationPage(id);
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		if( fConfigurationPage != null ) {
+			this.fConfigurationPage.setValidator(getCreateValidator());
+			this.fConfigurationPage.createControl(parent, 3);
+		}
+	}
 	
+	private IValidator getCreateValidator() {
+		if( this.configPage == null) {
+			return this.fEditedValidator;
+		}
+		if( this.createValidatorMap.containsKey(fSelectedValidatorType) ) {
+			return (IValidator) this.createValidatorMap.get(fSelectedValidatorType);
+		}
+		else {
+			IValidator validator = fSelectedValidatorType.createValidator( createUniqueId(fSelectedValidatorType));
+			this.createValidatorMap.put(fSelectedValidatorType, validator);
+			return validator;
+		}
+	}
+
 	private void updateValidatorType() {
 		int selIndex= fValidatorTypeCombo.getSelectionIndex();
 		if (selIndex == fPrevIndex) {
@@ -151,6 +204,22 @@ public class AddValidatorDialog extends StatusDialog {
 			fSelectedValidatorType= fValidatorTypes[selIndex];
 		}
 //		setValidatorLocationStatus(validateValidatorLocation());
+		if( configPage != null ) {
+			this.fEditedValidator = null;
+			//We dispose all children and recreate config control
+			Control[] children = configPage.getChildren();
+			for (int i = 0; i < children.length; i++) {
+				children[i].dispose();
+			}
+			recreateConfigPage(configPage);
+			this.configPage.redraw();
+			this.configPage.layout(true, true);
+//			this.configPage.setSize(this.configPage.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+//			this.ancestor.setSize(this.ancestor.computeSize(400, 300));
+			this.ancestor.getShell().setSize(this.ancestor.getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT));
+			this.ancestor.layout(true, true);
+			this.ancestor.getShell().layout(true, true);
+		}
 	
 		updateStatusLine();
 	}	
@@ -229,12 +298,27 @@ public class AddValidatorDialog extends StatusDialog {
 	
 	private void doOkPressed() {
 		if (fEditedValidator == null) {
-			IValidator Validator = fSelectedValidatorType.createValidator( createUniqueId(fSelectedValidatorType));
-			setFieldValuesToValidator(Validator);
-			fRequestor.validatorAdded(Validator);
+//			IValidator Validator = fSelectedValidatorType.createValidator( createUniqueId(fSelectedValidatorType));
+			IValidator validator = getCreateValidator();
+			setFieldValuesToValidator(validator);
+			fRequestor.validatorAdded(validator);
+//			removeValidators();
 		} else {
 			setFieldValuesToValidator(fEditedValidator);
 		}
+	}
+
+	public void removeValidators() {
+		Iterator iterator = this.createValidatorMap.keySet().iterator();
+		while( iterator.hasNext()) {
+			Object next = iterator.next();
+			IValidatorType type = (IValidatorType)next;
+			if( !type.equals(fSelectedValidatorType)) {
+				IValidator v = (IValidator) createValidatorMap.get(type);
+				type.disposeValidator(v.getID());
+			}
+		}
+		this.createValidatorMap.clear();
 	}
 	
 	private String createUniqueId(IValidatorType ValidatorType) {

@@ -796,7 +796,11 @@ public class ValidatorBlock implements ISelectionProvider,
 				ValidatorRuntime.getPossibleValidatorTypes(), null);
 		dialog.setTitle(ValidatorMessages.InstalledValidatorBlock_7);
 		if (dialog.open() != Window.OK) {
+			dialog.removeValidators();
 			return;
+		}
+		else {
+			dialog.removeValidators();
 		}
 		fValidatorList.refresh();
 	}
