@@ -720,7 +720,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			monitor.worked(1);
 
 			// Launch the configuration - 1 unit of work
-			runner.run(runConfig, launch, monitor);
+			runRunner(configuration, runner, runConfig, launch, monitor);
 
 			if (monitor.isCanceled()) {
 				return;
@@ -739,6 +739,12 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		} finally {
 			monitor.done();
 		}
+	}
+	
+	protected void runRunner(ILaunchConfiguration configuration, IInterpreterRunner runner,
+			InterpreterRunnerConfiguration runnerConfiguration, ILaunch launch,
+			IProgressMonitor monitor) throws CoreException {
+		runner.run(runnerConfiguration, launch, monitor);
 	}
 
 	protected String[] buildRunEnvironment(ILaunchConfiguration configuration)

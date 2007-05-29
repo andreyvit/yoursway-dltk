@@ -97,7 +97,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	 * 
 	 * @return
 	 */
-	private IDLTKProject chooseProject() {
+	protected IDLTKProject chooseProject() {
 		ILabelProvider labelProvider = DLTKUILanguageManager.createLabelProvider(getNatureID());
 		ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(), labelProvider);
 		dialog.setTitle(DLTKLaunchConfigurationsMessages.mainTab_chooseProject_title);
