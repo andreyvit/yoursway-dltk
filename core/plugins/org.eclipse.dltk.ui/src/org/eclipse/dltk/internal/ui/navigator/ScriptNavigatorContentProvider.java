@@ -91,7 +91,16 @@ public class ScriptNavigatorContentProvider extends
 	public Object getParent(Object element) {
 		Object parent = super.getParent(element);
 		if (parent instanceof IScriptModel) {
-			return getViewerInput() != null ? fRealInput : parent;
+//			return getViewerInput() != null ? fRealInput : parent;
+			if (getViewerInput() != null) {
+				if (fRealInput != element)
+					return fRealInput;
+				else
+					return null;
+			}
+			else {
+				return parent;
+			}
 		}
 		return parent;
 	}

@@ -122,7 +122,7 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 		fControl = parent;
 		createFields();
 
-		createBrowseButton(parent, columns);
+		createPathBrowse(parent, columns);
 		this.fArguments.doFillIntoGrid(parent, columns);
 		createLabel(
 				parent,
@@ -269,7 +269,7 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 		l.setLayoutData(gd);
 	}
 
-	private void createBrowseButton(final Composite parent, int columns) {
+	private void createPathBrowse(final Composite parent, int columns) {
 		this.fPath.doFillIntoGrid(parent, columns - 1);
 		Text path = this.fPath.getTextControl(parent);
 		GridData gd = new GridData();

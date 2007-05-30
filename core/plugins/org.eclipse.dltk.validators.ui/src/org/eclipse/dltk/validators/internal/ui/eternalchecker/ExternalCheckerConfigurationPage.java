@@ -22,6 +22,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -31,7 +32,7 @@ public class ExternalCheckerConfigurationPage extends
 		ValidatorConfigurationPage {
 
 	private StringDialogField fArguments;
-	private StringDialogField fCommannd;
+	private StringDialogField fPath;
 	
 	private Text tArguments;
 	private Text tCommand;
@@ -56,14 +57,40 @@ public class ExternalCheckerConfigurationPage extends
 	public void applyChanges() {
 		ExternalChecker externalChecker = getExtrenalChecker();
     	externalChecker.setArguments(this.fArguments.getText());
-		externalChecker.setCommand(this.fCommannd.getText());	
+		externalChecker.setCommand(this.fPath.getText());	
 		externalChecker.setRules(rulesList.getRules());
 	
 	}
 
+	private void createPathBrowse(final Composite parent, int columns) {
+		this.fPath.doFillIntoGrid(parent, columns - 1);
+		Text path = this.fPath.getTextControl(parent);
+		GridData gd = new GridData();
+		gd.horizontalAlignment = GridData.FILL;
+		gd.grabExcessHorizontalSpace = true;
+		gd.horizontalSpan = columns - 2;
+		path.setLayoutData(gd);
+		// Browse
+		Button browse = new Button(parent, SWT.PUSH);
+		browse.setText("Browse...");
+		gd = new GridData(GridData.END);
+		gd.horizontalSpan = 1;
+		browse.setLayoutData(gd);
+
+		browse.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog dialog = new FileDialog(parent.getShell(), SWT.OPEN);
+				String file = dialog.open();
+				if (file != null) {
+					fPath.setText(file);
+				}
+			}
+		});
+	}
 	public void createControl(final Composite ancestor, int columns ) {
 		createFields();
-		this.fCommannd.doFillIntoGrid(ancestor, columns);
+		
+		this.createPathBrowse(ancestor, columns);
 		this.fArguments.doFillIntoGrid(ancestor, columns);
 		this.rulesList.getRules().clear();
 
@@ -154,7 +181,7 @@ public class ExternalCheckerConfigurationPage extends
 	private void updateValuesFrom() {
 		ExternalChecker externalChecker = getExtrenalChecker();
 			this.fArguments.setText(externalChecker.getArguments());
-			this.fCommannd.setText(externalChecker.getCommand());
+			this.fPath.setText(externalChecker.getCommand());
 			this.rulesList.getRules().clear();
 			for(int i=0; i <externalChecker.getNRules(); i++){
 				Rule r= (Rule)externalChecker.getRule(i);
@@ -165,8 +192,8 @@ public class ExternalCheckerConfigurationPage extends
 	}
 
 	private void createFields() {
-		this.fCommannd = new StringDialogField();
-		this.fCommannd.setLabelText("Command to run checker:");
+		this.fPath = new StringDialogField();
+		this.fPath.setLabelText("Command to run checker:");
 		this.fArguments = new StringDialogField();
 		this.fArguments.setLabelText("Checker arguments:");	
 	

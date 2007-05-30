@@ -143,11 +143,11 @@ public class ScriptChecker extends AbstractValidator {
 			return Status.CANCEL_STATUS;
 		}
 		try {
-			resource.deleteMarkers(ScriptCheckerMarker.PROBLEM_ID, true,
-					IResource.DEPTH_INFINITE);
-		} catch (CoreException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			ScriptCheckerMarker.clearMarkers(resource);
+		} catch (CoreException e2) {
+			if( DLTKCore.DEBUG ) {
+				e2.printStackTrace();
+			}
 		}
 		String args = processArguments(resource);
 		List cmd = new ArrayList();

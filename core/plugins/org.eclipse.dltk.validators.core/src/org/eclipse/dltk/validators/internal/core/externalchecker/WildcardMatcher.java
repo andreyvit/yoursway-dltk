@@ -125,7 +125,8 @@ public class WildcardMatcher {
 	}
 	
 	public static WildcardToken parseFilename(String string){
-		String sfilename = "[^.]*[.][^.\\s]*";
+		//String sfilename = "[^.]*[.][^.\\s]*";
+		String sfilename = "((\\w:)?.+)";
 		Pattern pfilename = Pattern.compile(sfilename);
 		Matcher filematcher = pfilename.matcher(string);
 		

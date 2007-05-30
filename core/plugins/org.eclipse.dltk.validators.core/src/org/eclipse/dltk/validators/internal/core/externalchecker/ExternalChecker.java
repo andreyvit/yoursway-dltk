@@ -1,6 +1,7 @@
 package org.eclipse.dltk.validators.internal.core.externalchecker;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -14,8 +15,11 @@ import java.util.Vector;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.validators.core.AbstractValidator;
 import org.eclipse.dltk.validators.core.IValidatorType;
@@ -91,7 +95,7 @@ public class ExternalChecker extends AbstractValidator {
 				
 			}
         		catch(Exception x){
-        			System.out.println(x.toString());
+//        			System.out.println(x.toString());
         			return null;
 			}
 			return new ExternalCheckerProblem(rule.getType(), tlist);
@@ -231,7 +235,9 @@ public class ExternalChecker extends AbstractValidator {
 		
 			String line = null;
 			while ((line = input.readLine()) != null) {
-				console.write((line+ "\n").getBytes());
+				if( console != null ) {
+					console.write((line+ "\n").getBytes());
+				}
 				lines.add(line);
 			}
 			
@@ -306,6 +312,26 @@ public class ExternalChecker extends AbstractValidator {
 	}
 		
 	public boolean isValidatorValid(){
+		IPath path = new Path(this.commmand);
+		File file = new File(path.toOSString());
+
+		if (!file.exists()) {
+			return false;
+		}
+
 		return true;
+	}
+	public void clean(ISourceModule module) {
+		clean(module.getResource());
+	}
+
+	public void clean(IResource resource) {
+		try {
+			ExternalCheckerMarker.clearMarkers(resource);
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

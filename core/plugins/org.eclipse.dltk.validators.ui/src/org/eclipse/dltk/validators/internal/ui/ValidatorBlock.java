@@ -1,11 +1,11 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.validators.internal.ui;
 
@@ -187,6 +187,7 @@ public class ValidatorBlock implements ISelectionProvider,
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
 	 */
 	public ISelection getSelection() {
@@ -212,14 +213,14 @@ public class ValidatorBlock implements ISelectionProvider,
 		if (selection instanceof IStructuredSelection) {
 			if (!selection.equals(fPrevSelection)) {
 				fPrevSelection = selection;
-//				Object interp = ((IStructuredSelection) selection)
-//						.getFirstElement();
-//				if (interp == null) {
-//					fValidatorList.setCheckedElements(new Object[0]);
-//				} else {
-//					fValidatorList.setCheckedElements(new Object[] { interp });
-//					fValidatorList.reveal(interp);
-//				}
+// Object interp = ((IStructuredSelection) selection)
+// .getFirstElement();
+// if (interp == null) {
+// fValidatorList.setCheckedElements(new Object[0]);
+// } else {
+// fValidatorList.setCheckedElements(new Object[] { interp });
+// fValidatorList.reveal(interp);
+// }
 				fireSelectionChanged();
 			}
 		}
@@ -305,11 +306,11 @@ public class ValidatorBlock implements ISelectionProvider,
 		fValidatorList.setContentProvider(new ValidatorContentProvider());
 		fValidatorList.addCheckStateListener(new ICheckStateListener() {
 			public void checkStateChanged(CheckStateChangedEvent event) {
-				IValidator validator = (IValidator)event.getElement();
+				IValidator validator = (IValidator) event.getElement();
 				validator.setActive(event.getChecked());
 			}
 		});
-		
+
 		// by default, sort by name
 		sortByName();
 
@@ -407,15 +408,15 @@ public class ValidatorBlock implements ISelectionProvider,
 		enableButtons();
 		fAddButton.setEnabled(ValidatorRuntime
 				.getValidatorTypes(/* getCurrentNature() */).length > 0);
-	
+
 		this.edit = createPushButton(buttons, "Edit");
-		edit.addListener(SWT.Selection, new Listener(){
-			
-			public void handleEvent(Event ev){
+		edit.addListener(SWT.Selection, new Listener() {
+
+			public void handleEvent(Event ev) {
 				editWildcards();
 			}
 		});
-	
+
 	}
 
 	/**
@@ -430,10 +431,11 @@ public class ValidatorBlock implements ISelectionProvider,
 			listener.selectionChanged(event);
 		}
 	}
-	
-	private void editWildcards(){
-		
-		ConfigureWildcardsDialog dialog = new ConfigureWildcardsDialog(getShell());
+
+	private void editWildcards() {
+
+		ConfigureWildcardsDialog dialog = new ConfigureWildcardsDialog(
+				getShell());
 		if (dialog.open() != Window.OK) {
 			return;
 		}
@@ -476,7 +478,7 @@ public class ValidatorBlock implements ISelectionProvider,
 					IValidator left = (IValidator) e1;
 					IValidator right = (IValidator) e2;
 					String name = left.getName();
-					if( name == null ) {
+					if (name == null) {
 						return 0;
 					}
 					return name.compareToIgnoreCase(right.getName());
@@ -495,12 +497,12 @@ public class ValidatorBlock implements ISelectionProvider,
 		IStructuredSelection selection = (IStructuredSelection) fValidatorList
 				.getSelection();
 		int selectionCount = selection.size();
-		
+
 		boolean addEnabled = true;
 		boolean editEnabled = selectionCount == 1;
 		boolean removeEnabled = true;
 		boolean copyEnabled = selectionCount > 0;
-		
+
 		if (selectionCount > 0) {
 			Iterator iterator = selection.iterator();
 			while (iterator.hasNext()) {
@@ -547,7 +549,7 @@ public class ValidatorBlock implements ISelectionProvider,
 		fValidator.clear();
 		List active = new ArrayList();
 		for (int i = 0; i < validators.length; i++) {
-			if( validators[i].isActive()) {
+			if (validators[i].isActive()) {
 				active.add(validators[i]);
 			}
 			fValidator.add(validators[i]);
@@ -575,7 +577,7 @@ public class ValidatorBlock implements ISelectionProvider,
 		for (int i = 0; i < fValidator.size(); i++) {
 			IValidator validator = (IValidator) fValidator.get(i);
 			String validatorName = validator.getName();
-			if( validatorName == null ) {
+			if (validatorName == null) {
 				return true;
 			}
 			if (validatorName.equals(name)) {
@@ -814,11 +816,10 @@ public class ValidatorBlock implements ISelectionProvider,
 				ValidatorRuntime.getPossibleValidatorTypes(), null);
 		dialog.setTitle(ValidatorMessages.InstalledValidatorBlock_7);
 		if (dialog.open() != Window.OK) {
-			dialog.removeValidators();
+			dialog.removeValidators(true);
 			return;
-		}
-		else {
-			dialog.removeValidators();
+		} else {
+			dialog.removeValidators(false);
 		}
 		fValidatorList.refresh();
 	}

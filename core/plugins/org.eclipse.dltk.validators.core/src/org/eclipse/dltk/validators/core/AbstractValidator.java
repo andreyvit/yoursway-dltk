@@ -49,24 +49,17 @@ public abstract class AbstractValidator implements IValidator {
 	}
 
 	public void clean(IResource resource) {
-		// TODO Auto-generated method stub
-		
 	}
 	public void clean(ISourceModule module) {
-		// TODO Auto-generated method stub
-		
 	}
 	public boolean isValidatorValid() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public IStatus validate(IResource resource, OutputStream console) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	public IStatus validate(ISourceModule module, OutputStream console) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	public IValidatorType getValidatorType() {
