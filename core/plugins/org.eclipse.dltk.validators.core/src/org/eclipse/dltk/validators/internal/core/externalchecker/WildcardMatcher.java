@@ -15,11 +15,11 @@ public class WildcardMatcher {
 		
 		for(int i=0; i<tokens.size(); i++){
 			WildcardToken tok = (WildcardToken)(tokens.get(i));
-			StringBuilder sb_spaces = new StringBuilder(s.substring(start));
+			StringBuffer sb_spaces = new StringBuffer(s.substring(start));
 			String workingcopy = sb_spaces.toString();
 			int spaces = omitSpaces(workingcopy); 
 			start = start + spaces;
-			StringBuilder sb_nospaces = new StringBuilder(s.substring(start));
+			StringBuffer sb_nospaces = new StringBuffer(s.substring(start));
 			
 			
 			if(tok.getType()=="string"){

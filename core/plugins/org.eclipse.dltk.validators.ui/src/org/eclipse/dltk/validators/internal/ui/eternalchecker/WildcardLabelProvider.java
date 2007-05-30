@@ -14,7 +14,7 @@ public class WildcardLabelProvider extends LabelProvider implements ITableLabelP
 	public String getColumnText(Object element, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return (new StringBuilder(((CustomWildcard)element).getLetter())).toString();
+			return new String(new char[]{ ((CustomWildcard)element).getLetter() });
 		case 1:
 			return ((CustomWildcard)element).getSpattern();
 		default:

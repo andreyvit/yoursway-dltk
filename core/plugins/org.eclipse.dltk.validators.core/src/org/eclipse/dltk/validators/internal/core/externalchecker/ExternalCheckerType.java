@@ -9,12 +9,8 @@ import org.w3c.dom.Element;
 public class ExternalCheckerType extends AbstractValidatorType {
 
 	public final String ID = "org.eclipse.dltk.validators.core.externalChecker";
-	private ExternalChecker checker;
 
 	public ExternalCheckerType() {
-// this.checker = new ExternalChecker(ID, this);
-// this.checker.setName("External Checker");
-// this.validators.put(ID, checker);
 	}
 
 	public IValidator createValidator(String id) {
@@ -31,7 +27,7 @@ public class ExternalCheckerType extends AbstractValidatorType {
 		validators.put(id, externalChecker);
 		return externalChecker;
 	}
-	
+
 	public String getID() {
 		return ID;
 	}

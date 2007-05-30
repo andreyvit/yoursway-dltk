@@ -214,7 +214,7 @@ public class ExternalChecker extends AbstractValidator {
 		String com = this.commmand;
 		String args= this.processArguments(resource);
 		
-		StringBuilder sb = new StringBuilder();
+		StringBuffer sb = new StringBuffer();
 		sb.append(com);
 		sb.append(" ");
 		sb.append(args);

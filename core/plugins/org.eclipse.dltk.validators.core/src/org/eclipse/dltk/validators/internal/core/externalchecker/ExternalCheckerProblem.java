@@ -24,7 +24,7 @@ public class ExternalCheckerProblem {
 	}
 	
 	public String getDescription() {
-		StringBuilder sb = new StringBuilder();
+		StringBuffer sb = new StringBuffer();
 		
 		for (int i=0; i< tokens.size(); i++){
 			sb.append(((WildcardToken)tokens.get(i)).getValue());
