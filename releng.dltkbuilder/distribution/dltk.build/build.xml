@@ -106,7 +106,7 @@
 		</antcall>
 		
 		<antcall target="combineArchives">
-			<param name="corename" value="-Automated-Tests"/>
+			<param name="corename" value="-Automated_Tests"/>
 		</antcall>
 			
 	</target>

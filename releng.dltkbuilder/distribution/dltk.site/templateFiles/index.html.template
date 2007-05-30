@@ -191,12 +191,12 @@ foreach ($compileSummary->summaryItem as $summaryItem) {
                                 <p>The Automated Test zip contains the unit tests.</p>
                                 <?php
 
-                                $zipfilename="dltk-Automated-Tests-@build@";
+                                $zipfilename="dltk-Automated_Tests-@build@-incubation";
 
                                 $filename=$zipfilename.".zip";
                                 $zipfilesize=fileSizeInMegs($filename);
                                 echo '<td align="right" valign="top" width="10%">
-                        <a href="' . ${downloadprefix} . ${filename} . '">' . "dltk-Automated-Tests" . '</a>
+                        <a href="' . ${downloadprefix} . ${filename} . '">' . "dltk-Automated_Tests" . '</a>
                         </td>
                         <td align="right" valign="top" width="5%">
                         (' . ${zipfilesize} . 'M)
