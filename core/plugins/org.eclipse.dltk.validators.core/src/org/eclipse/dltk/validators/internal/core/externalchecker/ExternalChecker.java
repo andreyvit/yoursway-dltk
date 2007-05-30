@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.ISourceModule;
@@ -21,54 +21,35 @@ import org.eclipse.dltk.validators.core.AbstractValidator;
 import org.eclipse.dltk.validators.core.IValidatorType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
 
 
 public class ExternalChecker extends AbstractValidator {
 	
-	//private IPath path;
-	private String path;
 	private String arguments;
 	private String commmand;
-	private String syntax;
-	private Pattern pattern;
-	private String error;
 	boolean initialized = false;
-	private static final String PATH = "path";
 	private static final String ARGUMENTS = "arguments";
-	private static final String SYNTAX = "syntax";
 	private static final String COMMAND = "command";
-	private static final String ERROR = "error";
 	private List rules = new ArrayList(); 
-	
-	private static String spatternSyntax = "((\\w:)?[^:]+):(\\d+)\\s+(.*)";
-	private static Pattern patternSyntax = Pattern.compile(spatternSyntax);
-	
+
+
 	public void setCommand(String text){
 		this.commmand = text;
 	}
 	
-	public void setError(String err){
-		error = err;
+	public void  setRules(Vector list){
+		rules.clear();
+		for(int i=0; i<list.size(); i++){
+			rules.add(((Rule)list.get(i)));
+		}
 	}
-	
-	public String getError(){
-		return error;
-	}
-
 	
 	public String getCommand(){
 		return commmand;
 	}
 	
-	public void setSyntax(String s){
-		this.syntax = s;
-		this.pattern = Pattern.compile(s);
-		
-	}
-	
-	public String getSyntax(){
-		return syntax;
-	}
 	
 	private static class ExternalCheckerCodeModel {
 		private String[] codeLines;
@@ -99,36 +80,35 @@ public class ExternalChecker extends AbstractValidator {
 			return new int[] { start, end };
 		}
 	}
-	public static ExternalCheckerProblem parseProblem(String problem) {
-		Matcher matcher = patternSyntax.matcher(problem);
-
-		if (!matcher.find())
-			return null;
-
-		String file = matcher.group(1);
-		int lineNumber = Integer.parseInt(matcher.group(3));
-		String message = matcher.group(4);
-
-		return new ExternalCheckerProblem(file, lineNumber-1, message);
+	public ExternalCheckerProblem parseProblem(String problem) {
+	
+		for(int i = 0; i<rules.size(); i++){
+			Rule rule = (Rule)this.rules.get(i);
+			String wcard = rule.getDescription();
+			List tlist = null;
+			try{
+				tlist  = WildcardMatcher.match(wcard, problem);
+				
+			}
+        		catch(Exception x){
+        			System.out.println(x.toString());
+        			return null;
+			}
+			return new ExternalCheckerProblem(rule.getType(), tlist);
+		}
+		return null;
 	}
 	
 	public ExternalChecker(String id, String name, IValidatorType type)	{
 		super(id, name, type);
-	//	this.path = new Path("");
-		this.path = "";
-		this.arguments = "";
+		this.arguments = "%f";
 		this.commmand = "";
-		this.syntax = "";
-		this.error = "";
+
 	}
 	protected ExternalChecker(String id, IValidatorType type) {
 		super(id, null, type);
-		//this.path = new Path("");
-		this.path = "";
-		this.arguments = "";
+		this.arguments = "%f";
 		this.commmand = "";
-		this.syntax = "";
-		this.error="";
 	}
 	
 	protected ExternalChecker(String id, Element element, IValidatorType type)
@@ -143,19 +123,54 @@ public class ExternalChecker extends AbstractValidator {
 		}
 		super.loadFrom(element);
 		initialized = true;
-	//	this.path = new Path(element.getAttribute(PATH));
 		this.commmand = new String(element.getAttribute(COMMAND));
 		this.arguments = element.getAttribute(ARGUMENTS);
-		this.error = element.getAttribute(ERROR);
-	//	this..rules.add(element.)
-		
-	
+
+		NodeList nodes = element.getChildNodes();
+		rules.clear();
+		for(int i=0; i<nodes.getLength(); i++)
+		{
+			if(nodes.item(i).getNodeName()=="rule"){
+				NamedNodeMap map = nodes.item(i).getAttributes();
+				String ruletext = map.getNamedItem("TEXT").getNodeValue();
+				String ruletype = map.getNamedItem("TYPE").getNodeValue();
+				Rule r = new Rule(ruletext, ruletype);
+				rules.add(r);
+			}
+		}
 	}
 	public void storeTo(Document doc, Element element) {
 		super.storeTo(doc, element);
-	//	element.setAttribute(PATH, this.path.toOSString()); //$NON-NLS-1$
 		element.setAttribute(ARGUMENTS, this.arguments);
 		element.setAttribute(COMMAND, this.commmand);
+	
+		for (int i=0; i< rules.size(); i++)
+		{
+			Element elem = doc.createElement("rule");
+			elem.setAttribute("TEXT", ((Rule)rules.get(i)).getDescription());
+			elem.setAttribute("TYPE", ((Rule)rules.get(i)).getType());
+			element.appendChild(elem);
+		}
+		
+	}
+	
+	
+	protected static IMarker reportErrorProblem(IResource resource,
+			ExternalCheckerProblem problem, int start, int end)
+			throws CoreException {
+
+		return ExternalCheckerMarker.setMarker(resource, problem.getLineNumber(),
+				start, end, problem.getDescription(), IMarker.SEVERITY_ERROR,
+				IMarker.PRIORITY_NORMAL);
+	}
+
+	protected static IMarker reportWarningProblem(IResource resource,
+			ExternalCheckerProblem problem, int start, int end)
+			throws CoreException {
+
+		return ExternalCheckerMarker.setMarker(resource, problem.getLineNumber(),
+				start, end, problem.getDescription(), IMarker.SEVERITY_WARNING,
+				IMarker.PRIORITY_NORMAL);
 	}
 
 	public void setPath(String path) {
@@ -170,17 +185,11 @@ public class ExternalChecker extends AbstractValidator {
 			e.printStackTrace();
 		}
 		
-		this.path = s;
 	}
 	
 	public void setArguments(String arguments) {
 		initialized = true;
 		this.arguments = arguments;
-	}
-
-	public String getPath() {
-		return this.path;
-
 	}
 	
 	public String getArguments() {
@@ -189,36 +198,22 @@ public class ExternalChecker extends AbstractValidator {
 	public IStatus validate(IResource resource, OutputStream console) {
 		return Status.OK_STATUS;
 	}
-	public void setRules(Vector rules) {
-		this.rules = rules;
-	}
+	
 	public IStatus validate(ISourceModule module, OutputStream console) {
 		IResource resource = module.getResource();
 		if( resource == null ) {
 			return Status.CANCEL_STATUS;
 		}
-		//String args = processArguments(resource);
-	//	List cmd = new ArrayList();
-	//	cmd.add(this.path.toOSString());
-//		cmd.add(this.path);
-	//	String[] sArgs = args.split("::");
-	///	for (int i = 0; i < sArgs.length; i++) {
-	//		cmd.add(sArgs[i]);
-	//	}		
-
-	//	String[] cmdLine = (String[]) cmd.toArray(new String[cmd.size()]);
-
+	
 		List lines = new ArrayList();
 		String filepath = resource.getLocation().makeAbsolute().toOSString();
 		String com = this.commmand;
-		String wcard = this.error;
+		String args= this.processArguments(resource);
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(com);
 		sb.append(" ");
-		sb.append("\"");;
-		sb.append(filepath);
-		sb.append("\"");
+		sb.append(args);
 		
 		String extcom = new String(sb);
 		
@@ -236,47 +231,28 @@ public class ExternalChecker extends AbstractValidator {
 		
 			String line = null;
 			while ((line = input.readLine()) != null) {
+				console.write((line+ "\n").getBytes());
 				lines.add(line);
-			//	Matcher matcher = pattern.matcher(line);
-				
-		//		while(matcher.find()){
-		//			if (console != null) {
-	    //					console.write((line + "\n").getBytes());
-		//			}
 			}
 			
-			for (Iterator it = lines.iterator(); it.hasNext();){
-				
-				String outputline = (String)it.next();
-			//	outputline = "Error: C:\\hello.jpg line 67";
-				try	{
-					List tlist  = WildcardMatcher.match(wcard, outputline);
-					for (Iterator iter = tlist.iterator(); iter.hasNext();){
-						String cline = iter.toString();
-						console.write((cline+"\n").getBytes());
-					}
-					
-				}
-				catch(WildcardException x){
-					
-				}
-				
-			}
-			
-			
-		//	}
-			
-/*			String content = "";
+			String content = "";
 			content = module.getSource();
 			ExternalCheckerCodeModel model = new ExternalCheckerCodeModel(content);
+			
 			for (Iterator iterator = lines.iterator(); iterator.hasNext();) {
 				String line1 = (String) iterator.next();
 				ExternalCheckerProblem problem = parseProblem(line1);
 				if (problem != null) {
 					int[] bounds = model.getBounds(problem.getLineNumber());
+					if(problem.getType().indexOf("Error")!= -1){
+						reportErrorProblem(resource, problem, bounds[0], bounds[1]);
+					}
+					else if(problem.getType().indexOf("Warning")!=- 1){
+						reportWarningProblem(resource, problem, bounds[0], bounds[1]);
+					}
 				}
 
-			}*/
+			}
 		}
 			
 		catch(Exception e){
@@ -285,24 +261,41 @@ public class ExternalChecker extends AbstractValidator {
 		return Status.OK_STATUS;
 	}
 	
-/*	private String processArguments(IResource resource) {
+	public void setNewRule(Rule s){
+		rules.add(s);
+	}
+	
+	public  Rule getRule(int index){
+		if(index < rules.size())
+			return (Rule)rules.get(index);
+		return null;
+	}
+	
+	public int getNRules(){
+		return rules.size();
+	}
+	
+	private String processArguments(IResource resource) {
 		String path = resource.getLocation().makeAbsolute().toOSString();
 		String arguments = this.arguments;
-		if( arguments.indexOf("--")==-1) {
-			arguments = "-- " + arguments;
-		}
-		String user = replaceSequence(arguments.replaceAll("\t", "::").replaceAll(" ", "::"), 'f', path);
+		String user = replaceSequence(arguments, 'f', path);
 		String result = "";
-		
-		return result + "::" + user;
-	}*/
+		return result + " " + user;
+	}
 
-	/*private String replaceSequence(String from, char pattern, String value) {
+	private String replaceSequence(String from, char pattern, String value) {
+		boolean append_braces = false;
 		StringBuffer buffer = new StringBuffer();
+		if(pattern== 'f')
+			append_braces = true;
 		for( int i = 0; i < from.length(); ++i ) {
 			char c = from.charAt(i);
 			if( c == '%' && i < from.length() - 1 && from.charAt(i + 1) == pattern ) {
+				if(append_braces)
+					buffer.append("\"");
 				buffer.append(value);
+				if(append_braces)
+					buffer.append("\"");
 				i++;
 			}
 			else {
@@ -310,7 +303,8 @@ public class ExternalChecker extends AbstractValidator {
 			}
 		}
 		return buffer.toString();
-	}*/
+	}
+		
 	public boolean isValidatorValid(){
 		return true;
 	}

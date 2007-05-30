@@ -9,24 +9,19 @@
  *******************************************************************************/
 package org.eclipse.dltk.scriptchecker.internal.ui;
 
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.xml.transform.TransformerException;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.internal.ui.dialogs.StatusInfo;
-import org.eclipse.dltk.internal.ui.wizards.dialogfields.ComboDialogField;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.IDialogFieldListener;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.SelectionButtonDialogField;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.StringDialogField;
 import org.eclipse.dltk.scriptchecker.internal.ui.ATSGuideManager.GuideNode;
-import org.eclipse.dltk.validators.ValidatorConfigurationPage;
-import org.eclipse.dltk.validators.core.IValidator;
 import org.eclipse.dltk.validators.core.IValidatorType;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.StatusDialog;
@@ -91,13 +86,13 @@ public class AddGuideDialog extends StatusDialog {
 
 		fPattern.setDialogFieldListener(new IDialogFieldListener() {
 			public void dialogFieldChanged(DialogField field) {
-				setPaternStatus(validate());
+				setPatternStatus(validate());
 				updateStatusLine();
 			}
 		});
 		fURI.setDialogFieldListener(new IDialogFieldListener() {
 			public void dialogFieldChanged(DialogField field) {
-				setPaternStatus(validate());
+				setPatternStatus(validate());
 				updateStatusLine();
 			}
 		});
@@ -153,7 +148,7 @@ public class AddGuideDialog extends StatusDialog {
 			fURI.setText(fNode.getUri());
 			fRegularExpression.setEnabled(fNode.isRegexp());
 		}
-		setPaternStatus(validate());
+		setPatternStatus(validate());
 		updateStatusLine();
 	}
 
@@ -202,7 +197,7 @@ public class AddGuideDialog extends StatusDialog {
 		if (fNode == null) {
 // fRequestor.validatorAdded(Validator);
 			ATSGuideManager.getInstance().addGuide(fPattern.getText(),
-					fURI.getText());
+					fURI.getText(), fRegularExpression.isSelected());
 			try {
 				ATSGuideManager.getInstance().save();
 			} catch (TransformerException e) {
@@ -215,7 +210,7 @@ public class AddGuideDialog extends StatusDialog {
 		}
 	}
 
-	private void setPaternStatus(IStatus status) {
+	private void setPatternStatus(IStatus status) {
 		fStati[0] = status;
 	}
 
@@ -253,7 +248,7 @@ public class AddGuideDialog extends StatusDialog {
 	 * @return String
 	 */
 	protected String getDialogSettingsSectionName() {
-		return "ADD_Validator_DIALOG_SECTION"; //$NON-NLS-1$
+		return "ADD_Guide_DIALOG_SECTION"; //$NON-NLS-1$
 	}
 
 	/*

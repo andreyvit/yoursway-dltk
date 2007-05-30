@@ -11,9 +11,11 @@ public class RulesList {
 	
 	private Vector rules = new Vector();
 	private Set changeListeners = new HashSet();
+	private String[] types = {"Error", "Warning"};
+	
 	
 	public void addRule(){
-		Rule r = new Rule("New Rule");
+		Rule r = new Rule("Put rule here...", "Error");
 		rules.add(r);
 		Iterator iterator = changeListeners.iterator();
 		while(iterator.hasNext()){
@@ -38,8 +40,7 @@ public class RulesList {
 			((IRulesListViewer) iterator.next()).updateRule(r);
 	}
 	
-	public  void addRule(String s){
-		Rule r = new Rule(s);
+	public  void addRule(Rule r){
 		rules.add(r);
 		Iterator iterator = changeListeners.iterator();
 		while(iterator.hasNext()){
@@ -52,5 +53,9 @@ public class RulesList {
 		Iterator iterator = changeListeners.iterator();
 		while (iterator.hasNext())
 			((IRulesListViewer) iterator.next()).removeRule(task);
+	}
+	
+	public  String[] getTypes(){
+		return types;
 	}
 }

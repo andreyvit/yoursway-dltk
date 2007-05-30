@@ -1,11 +1,7 @@
 package org.eclipse.dltk.validators.internal.core.externalchecker;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.*; 
+import java.util.*;
+import java.util.regex.*;
 
 
 public class WildcardMatcher {
@@ -44,7 +40,7 @@ public class WildcardMatcher {
 				if (newstring ==null){
 					throw new WildcardException();
 				}
-				start = start + (((IPath)newstring.getValue())).toOSString().length();
+				start = start +  ((String)newstring.getValue()).length();
 				tokenList.add(newstring);
 			}
 			
@@ -54,7 +50,19 @@ public class WildcardMatcher {
 				if (newstring ==null){
 					throw new WildcardException();
 				}
-				start = start + (((Integer)newstring.getValue())).toString().length();
+				start = start + ((newstring.getValue())).toString().length();	
+				newstring.setValue(((newstring.getValue())).toString());
+				tokenList.add(newstring);
+			}
+			
+			if(tok.getType()=="wcard" && tok.getValue()=="message")
+			{
+				WildcardToken newstring = parseMessage(sb_nospaces.toString());
+				if (newstring ==null){
+					throw new WildcardException();
+				}
+				start = start + ((newstring.getValue())).toString().length();	
+				newstring.setValue((newstring.getValue().toString()));
 				tokenList.add(newstring);
 			}
 			
@@ -123,13 +131,26 @@ public class WildcardMatcher {
 		
 		if(filematcher.find()&& filematcher.start()==0){
 			IPath path = new Path(filematcher.group());
-			return new WildcardToken("path", path);
+			return new WildcardToken("path", path.toOSString());
 		}	
 		return null;
 	}
 	
 	public static WildcardToken parseLineNumber(String string){
-		return new WildcardToken("linenumber", Integer.decode(string));
+		
+		String sn = "[0-9]+";
+		Pattern pn = Pattern.compile(sn);
+		Matcher nmr = pn.matcher(string);
+		
+		if(nmr.find()&& nmr.start()==0){
+			String number = new String(nmr.group());
+			return new WildcardToken("linenumber", number);
+		}	
+		return null;
+	 }
+	
+	public static WildcardToken parseMessage(String string){
+		return new WildcardToken("message", string);
 		     
 	}
 	
@@ -145,10 +166,12 @@ public class WildcardMatcher {
 	{
 		int spaces = 0;
 		int j = 0;
-		while(Character.isWhitespace(s.charAt(j))){
-			spaces++;
-			j++;
-		}
+		
+		if(s.length()>0)	
+			while(Character.isWhitespace(s.charAt(j))){
+				spaces++;
+				j++;
+			}
 		return spaces;
 	}
 }

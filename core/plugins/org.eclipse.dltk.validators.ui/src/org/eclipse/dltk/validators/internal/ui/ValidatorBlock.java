@@ -92,6 +92,7 @@ public class ValidatorBlock implements ISelectionProvider,
 	private Button fRemoveButton;
 	private Button fEditButton;
 	private Button fCopyButton;
+	private Button edit;
 	// private Button fSearchButton;
 
 	// index of column used for sorting
@@ -406,6 +407,15 @@ public class ValidatorBlock implements ISelectionProvider,
 		enableButtons();
 		fAddButton.setEnabled(ValidatorRuntime
 				.getValidatorTypes(/* getCurrentNature() */).length > 0);
+	
+		this.edit = createPushButton(buttons, "Edit");
+		edit.addListener(SWT.Selection, new Listener(){
+			
+			public void handleEvent(Event ev){
+				editWildcards();
+			}
+		});
+	
 	}
 
 	/**
@@ -418,6 +428,14 @@ public class ValidatorBlock implements ISelectionProvider,
 		for (int i = 0; i < listeners.length; i++) {
 			ISelectionChangedListener listener = (ISelectionChangedListener) listeners[i];
 			listener.selectionChanged(event);
+		}
+	}
+	
+	private void editWildcards(){
+		
+		ConfigureWildcardsDialog dialog = new ConfigureWildcardsDialog(getShell());
+		if (dialog.open() != Window.OK) {
+			return;
 		}
 	}
 

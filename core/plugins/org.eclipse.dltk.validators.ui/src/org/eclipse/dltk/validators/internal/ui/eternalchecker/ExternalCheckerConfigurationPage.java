@@ -1,10 +1,15 @@
 package org.eclipse.dltk.validators.internal.ui.eternalchecker;
 
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.StringDialogField;
 import org.eclipse.dltk.validators.ValidatorConfigurationPage;
 import org.eclipse.dltk.validators.internal.core.externalchecker.ExternalChecker;
 import org.eclipse.dltk.validators.internal.core.externalchecker.Rule;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -13,9 +18,11 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
@@ -25,17 +32,23 @@ public class ExternalCheckerConfigurationPage extends
 
 	private StringDialogField fArguments;
 	private StringDialogField fCommannd;
+	
+	private Text tArguments;
+	private Text tCommand;
+	
 	private Table fTable;
 	private TableViewer tableViewer;
 	private Button addRule;
 	private Button delRule;
 	private RulesList rulesList = new RulesList();
 	
+	private final String TYPES 			= "TYPES";
+	
 	public RulesList getRulesList(){
 		return rulesList;
 	}
 	
-	private String[] columnNames = new String[] {"RULES"};
+	private String[] columnNames = new String[] {"RULES", "TYPES"};
 	
 	public ExternalCheckerConfigurationPage() {
 	}
@@ -50,17 +63,39 @@ public class ExternalCheckerConfigurationPage extends
 
 	public void createControl(final Composite ancestor, int columns ) {
 		createFields();
-		
-		Composite parent = new Composite(ancestor, SWT.NULL);
-		GridLayout layout = (GridLayout)ancestor.getLayout();
-		
-		this.fCommannd.doFillIntoGrid(ancestor,columns);
+		this.fCommannd.doFillIntoGrid(ancestor, columns);
 		this.fArguments.doFillIntoGrid(ancestor, columns);
-		fTable = new Table(ancestor, SWT.BORDER|SWT.MULTI);
-		fTable.setLayout(layout);
-    	fTable.setLinesVisible(true);
-    	TableColumn col = new TableColumn(fTable, SWT.LEFT);
-		col.setWidth(200);
+		this.rulesList.getRules().clear();
+
+//		GridLayout layout = (GridLayout)ancestor.getLayout();    		
+	  	
+    	Group group = new Group(ancestor, SWT.NONE);
+    	group.setText("Pattern rules");
+    	GridData data = new GridData(SWT.FILL, SWT.FILL, true, true );
+    	data.horizontalSpan = columns;
+    	group.setLayoutData(data);
+    	GridLayout layout = new GridLayout(2, false);
+    	group.setLayout(layout);
+    	
+	    fTable =new Table(group, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | 
+				SWT.FULL_SELECTION | SWT.HIDE_SELECTION);
+	    data = new GridData(SWT.FILL, SWT.FILL, true, true );
+	    data.widthHint = 300;
+	    data.heightHint = 100;
+    	fTable.setLayoutData(data);
+		
+//        fTable.setLayout(layout);
+	    fTable.setLinesVisible(true);
+    	fTable.setHeaderVisible(true);
+//    	fTable.setSize(500, 500);
+    	
+    	TableColumn col1 = new TableColumn(fTable, SWT.LEFT, 0);
+		col1.setWidth(200);
+		col1.setText("Output rule");
+		
+		TableColumn col2 = new TableColumn(fTable, SWT.LEFT, 1);
+		col2.setWidth(100);
+		col2.setText("Type");
 	
 		tableViewer = new TableViewer(fTable);
 		tableViewer.setColumnProperties(columnNames);
@@ -69,14 +104,29 @@ public class ExternalCheckerConfigurationPage extends
 		TextCellEditor textEditor = new TextCellEditor(fTable);
         ((Text) textEditor.getControl()).setTextLimit(60);
         editors[0] = textEditor;
+        
+        ComboBoxCellEditor comboEditor = new ComboBoxCellEditor(fTable, rulesList.getTypes(), SWT.READ_ONLY);
+        editors[1] = comboEditor;
+        
+        
         tableViewer.setCellEditors(editors);
+       
         tableViewer.setCellModifier(new RuleCelllModifier(this));
         
         tableViewer.setContentProvider(new RulesContentProvider());
         tableViewer.setLabelProvider(new RulesLabelProvider());
         tableViewer.setInput(rulesList);
         
-        addRule = new Button(ancestor, SWT.PUSH);
+        Composite buttons = new Composite( group, SWT.NONE );
+        buttons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+		layout = new GridLayout();
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+        buttons.setLayout(layout);
+        data = new GridData(SWT.FILL, SWT.NONE, false, false );
+        data.verticalAlignment = SWT.TOP;
+        addRule = new Button(buttons, SWT.PUSH);
+        addRule.setLayoutData(data);
         addRule.setText("Add Rule");
         addRule.addSelectionListener(new SelectionAdapter(){
         	public void widgetSelected(SelectionEvent ev){
@@ -84,7 +134,8 @@ public class ExternalCheckerConfigurationPage extends
         	}
         });
         
-        delRule = new Button(ancestor, SWT.PUSH);
+        delRule = new Button(buttons, SWT.PUSH);
+        delRule.setLayoutData(data);
         delRule.setText("Delete Rule");
         delRule.addSelectionListener(new SelectionAdapter(){
         	public void widgetSelected(SelectionEvent ev){
@@ -94,7 +145,7 @@ public class ExternalCheckerConfigurationPage extends
         	}
         });
         
-        updateValuesFrom();
+        updateValuesFrom(); 
 	}
 	private ExternalChecker getExtrenalChecker() {
 		return (ExternalChecker)getValidator();
@@ -104,50 +155,20 @@ public class ExternalCheckerConfigurationPage extends
 		ExternalChecker externalChecker = getExtrenalChecker();
 			this.fArguments.setText(externalChecker.getArguments());
 			this.fCommannd.setText(externalChecker.getCommand());
-	//		this.rulesList = new RulesList();
-	//		for(int i=0; i<externalChecker.getNRules(); i++){
-	//			rulesList.addRule(externalChecker.getRule(i));;
-	//		}
+			this.rulesList.getRules().clear();
+			for(int i=0; i <externalChecker.getNRules(); i++){
+				Rule r= (Rule)externalChecker.getRule(i);
+				rulesList.addRule(r);
+			}
 			
+	
 	}
 
-//	private void createLabel(Composite parent, String content, int columns) {
-//		Label l = new Label( parent, SWT.None );
-//		l.setText(content);
-//		GridData gd= new GridData();
-//		gd.horizontalAlignment= GridData.FILL;
-//		gd.grabExcessHorizontalSpace= true;
-//		gd.horizontalSpan= columns;
-//		l.setLayoutData(gd);
-//	}
-
-//	private void createBrowseButton(final Composite parent, int columns ) {/
-//		GridData gd= new GridData();
-//		gd.horizontalAlignment= GridData.FILL;
-//		gd.grabExcessHorizontalSpace= true;
-//		gd.horizontalSpan= columns - 2;
-		
-//		Button browse = new Button(parent, SWT.PUSH);
-//		browse.setText("Browse...");
-//		gd= new GridData(GridData.END);
-//		gd.horizontalSpan = 1;
-//		browse.setLayoutData(gd);
-
-//		browse.addSelectionListener(new SelectionAdapter() {
-//			public void widgetSelected(SelectionEvent e) {
-//				FileDialog dialog = new FileDialog(parent.getShell(), SWT.OPEN);
-//				String file = dialog.open();
-//				if (file != null) {
-////					fPath.setText(file);
-//				}
-//			}
-//		});
-//	}
 	private void createFields() {
 		this.fCommannd = new StringDialogField();
-		this.fCommannd.setLabelText("command to run checker");
+		this.fCommannd.setLabelText("Command to run checker:");
 		this.fArguments = new StringDialogField();
-		this.fArguments.setLabelText("Arguments");	
+		this.fArguments.setLabelText("Checker arguments:");	
 	
 	
 	}
@@ -180,5 +201,17 @@ public class ExternalCheckerConfigurationPage extends
 		public void updateRule(Rule r) {
 			tableViewer.update(r, null);
 		}
+		
+	
+	}
+	public List getColumnNames() {
+		return Arrays.asList(columnNames);
+	}
+	
+	public String[] getChoices(String property) {
+		if (TYPES.equals(property))
+			return rulesList.getTypes();  // The ExampleTaskList knows about the choice of owners
+		else
+			return new String[]{};
 	}
 }

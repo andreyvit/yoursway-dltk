@@ -11,7 +11,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -47,9 +46,10 @@ public class ATSGuideManager implements IPropertyChangeListener {
 		public GuideNode() {
 		}
 
-		public GuideNode(String pattern, String uri) {
+		public GuideNode(String pattern, String uri, boolean regexp) {
 			this.pattern = pattern;
 			this.uri = uri;
+			this.regexp = regexp;
 		}
 
 		public String getUri() {
@@ -130,7 +130,7 @@ public class ATSGuideManager implements IPropertyChangeListener {
 							String pattern = element.getAttribute(PATTERN);
 							String uri = element.getAttribute(URI);
 							boolean regexp = new Boolean( element.getAttribute(REGEXP) ).booleanValue();
-							addedElements.add(addGuide(pattern, uri));
+							addedElements.add(addGuide(pattern, uri, regexp));
 						}
 					}
 				}
@@ -144,8 +144,8 @@ public class ATSGuideManager implements IPropertyChangeListener {
 		}
 	}
 
-	public synchronized GuideNode addGuide(String pattern, String uri) {
-		GuideNode guide = new GuideNode(pattern, uri);
+	public synchronized GuideNode addGuide(String pattern, String uri, boolean regexp) {
+		GuideNode guide = new GuideNode(pattern, uri, regexp);
 		if (!this.fGuides.contains(guide)) {
 			fGuides.add(guide);
 			return guide;
@@ -206,6 +206,7 @@ public class ATSGuideManager implements IPropertyChangeListener {
 			Element e = doc.createElement(GUIDE);
 			e.setAttribute(URI, nodes[i].getUri());
 			e.setAttribute(PATTERN, nodes[i].getPattern());
+			e.setAttribute(REGEXP, Boolean.toString(nodes[i].isRegexp()));
 			config.appendChild(e);
 		}
 		

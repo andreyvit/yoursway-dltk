@@ -1,25 +1,42 @@
 package org.eclipse.dltk.validators.internal.core.externalchecker;
 
+import java.util.List;
+
 public class ExternalCheckerProblem {
-	private String source;
 
-	private int lineNumber;
-	private String description;
-	public ExternalCheckerProblem(String source, int lineNumber, String message) {
-		this.source = source;
-		this.lineNumber = lineNumber;
-		this.description = message;
+	private String type;
+	private List tokens; 
+	
+	public ExternalCheckerProblem(String type, List tokens){
+		this.type = type;
+		this.tokens = tokens;
 	}
-
-	public String getFile() {
-		return source;
-	}
-
+		
 	public int getLineNumber() {
-		return lineNumber;
+		for(int i=0; i<tokens.size(); i++){
+			WildcardToken wtok = (WildcardToken)tokens.get(i);
+			String wtype = wtok.getType();
+			if(wtype=="linenumber"){			
+				return Integer.parseInt((String)(wtok.getValue()));
+			}
+		}
+		return 0;
 	}
 	
 	public String getDescription() {
-		return description;
+		StringBuilder sb = new StringBuilder();
+		
+		for (int i=0; i< tokens.size(); i++){
+			sb.append(((WildcardToken)tokens.get(i)).getValue());
+		}
+		return sb.toString();
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getType() {
+		return type;
 	}
 }
