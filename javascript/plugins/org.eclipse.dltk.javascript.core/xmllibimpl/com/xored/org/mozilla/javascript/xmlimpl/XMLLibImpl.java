@@ -40,9 +40,6 @@ package com.xored.org.mozilla.javascript.xmlimpl;
 
 import java.io.Serializable;
 
-import org.apache.xmlbeans.XmlCursor;
-import org.apache.xmlbeans.XmlObject;
-
 import com.xored.org.mozilla.javascript.Context;
 import com.xored.org.mozilla.javascript.EcmaError;
 import com.xored.org.mozilla.javascript.Kit;

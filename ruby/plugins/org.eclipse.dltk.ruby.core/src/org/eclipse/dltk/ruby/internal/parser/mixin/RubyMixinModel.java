@@ -12,7 +12,6 @@ package org.eclipse.dltk.ruby.internal.parser.mixin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
-import org.eclipse.dltk.ruby.ast.RubyAliasExpression;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 

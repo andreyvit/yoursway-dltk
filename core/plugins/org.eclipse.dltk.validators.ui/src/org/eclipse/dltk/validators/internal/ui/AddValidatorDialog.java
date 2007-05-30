@@ -24,8 +24,6 @@ import org.eclipse.dltk.internal.ui.wizards.dialogfields.StringDialogField;
 import org.eclipse.dltk.validators.ValidatorConfigurationPage;
 import org.eclipse.dltk.validators.core.IValidator;
 import org.eclipse.dltk.validators.core.IValidatorType;
-import org.eclipse.dltk.validators.core.ValidatorRuntime;
-import org.eclipse.dltk.validators.internal.core.ValidatorsCore;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.StatusDialog;
 import org.eclipse.swt.SWT;

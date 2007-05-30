@@ -1,6 +1,5 @@
 package org.eclipse.dltk.internal.ui.editor.semantic.highlighting;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.dltk.core.ISourceModule;

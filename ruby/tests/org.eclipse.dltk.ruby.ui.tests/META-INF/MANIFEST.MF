@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: DLTK Ruby UI Tests
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.dltk.ruby.ui.tests
 Bundle-Version: 0.9.0
 Bundle-Localization: plugin
@@ -16,3 +16,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.ruby.core
 Bundle-Activator: org.eclipse.dltk.ruby.ui.tests.internal.RubyUITestsPlugin
 Eclipse-LazyStart: true
+Bundle-Vendor: %pluginProvider

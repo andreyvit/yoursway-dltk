@@ -35,7 +35,6 @@ import org.eclipse.dltk.validators.internal.core.ListenerList;
 import org.eclipse.dltk.validators.internal.core.ValidatorDefinitionsContainer;
 import org.eclipse.dltk.validators.internal.core.ValidatorManager;
 import org.eclipse.dltk.validators.internal.core.ValidatorsCore;
-import org.eclipse.dltk.validators.internal.core.externalchecker.MarkerInfo;
 
 public final class ValidatorRuntime {
 

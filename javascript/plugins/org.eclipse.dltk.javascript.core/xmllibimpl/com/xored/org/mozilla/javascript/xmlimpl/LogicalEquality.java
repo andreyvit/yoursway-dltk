@@ -38,9 +38,9 @@
 
 package com.xored.org.mozilla.javascript.xmlimpl;
 
-import org.apache.xmlbeans.XmlCursor;
-
-import java.util.*;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeMap;
 
 
 public class LogicalEquality

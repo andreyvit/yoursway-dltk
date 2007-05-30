@@ -1,7 +1,11 @@
 package org.eclipse.dltk.validators.internal.core.externalchecker;
-import org.eclipse.core.runtime.*; 
-import java.util.*;
-import java.util.regex.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 
 
 public class WildcardMatcher {

@@ -42,8 +42,6 @@ package com.xored.org.mozilla.javascript.xmlimpl;
 
 import java.util.Vector;
 
-import org.apache.xmlbeans.XmlCursor;
-
 import com.xored.org.mozilla.javascript.Callable;
 import com.xored.org.mozilla.javascript.Context;
 import com.xored.org.mozilla.javascript.Function;
