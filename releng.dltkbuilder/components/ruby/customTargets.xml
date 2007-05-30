@@ -34,7 +34,7 @@
     <target name="assemble.org.eclipse.dltk.ruby">
         <property
             name="archiveName"
-            value="dltk-ruby-${buildLabel}.zip" />
+            value="dltk-ruby-${buildLabel}-incubation.zip" />
         <ant
             antfile="${assembleScriptName}"
             dir="${buildDirectory}" />
@@ -46,7 +46,7 @@
     <target name="postPackage">
         <property
             name="archiveName"
-            value="dltk-ruby-${buildLabel}.zip" />
+            value="dltk-ruby-${buildLabel}-incubation.zip" />
 
         <ant
             antfile="${dltk.builder.home}/scripts/build/buildutilities.xml"

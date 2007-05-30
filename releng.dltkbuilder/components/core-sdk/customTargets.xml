@@ -34,7 +34,7 @@
     <target name="assemble.org.eclipse.dltk.core.sdk">
         <property
             name="archiveName"
-            value="dltk-core-sdk-${buildLabel}.zip" />
+            value="dltk-core-sdk-${buildLabel}-incubation.zip" />
         <ant
             antfile="${assembleScriptName}"
             dir="${buildDirectory}" />
@@ -46,7 +46,7 @@
 
         <property
             name="archiveName"
-            value="dltk-core-sdk-${buildLabel}.zip" />
+            value="dltk-core-sdk-${buildLabel}-incubation.zip" />
 
         <ant
             antfile="${dltk.builder.home}/scripts/build/buildutilities.xml"

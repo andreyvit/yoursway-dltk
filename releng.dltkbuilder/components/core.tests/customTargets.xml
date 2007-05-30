@@ -35,7 +35,7 @@
     <target name="assemble.org.eclipse.dltk.core.tests">
         <property
             name="archiveName"
-            value="dltk-core-Automated-Tests-${buildLabel}.zip" />
+            value="dltk-core-Automated_Tests-${buildLabel}-incubation.zip" />
         <ant
             antfile="${assembleScriptName}"
             dir="${buildDirectory}" />
@@ -47,7 +47,7 @@
     <target name="postPackage">
         <property
             name="archiveName"
-            value="dltk-core-Automated-Tests-${buildLabel}.zip" />
+            value="dltk-core-Automated_Tests-${buildLabel}-incubation.zip" />
 
         <ant
             antfile="${dltk.builder.home}/scripts/build/buildutilities.xml"

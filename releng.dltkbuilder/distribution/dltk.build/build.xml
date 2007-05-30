@@ -115,15 +115,15 @@
 		<delete dir="${buildDirectory}/tempforrezipping" failonerror="false"/>
 		
 		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
-			<arg line="-o -qq dltk-core${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
+			<arg line="-o -qq dltk-core${corename}-${buildLabel}-incubation.zip -d ${buildDirectory}/tempforrezipping" />
 		</exec>
 	
 		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
-			<arg line="-o -qq dltk-ruby${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
+			<arg line="-o -qq dltk-ruby${corename}-${buildLabel}-incubation.zip -d ${buildDirectory}/tempforrezipping" />
 		</exec>
 		
 		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
-			<arg line="-o -qq dltk-tcl${corename}-${buildLabel}.zip -d ${buildDirectory}/tempforrezipping" />
+			<arg line="-o -qq dltk-tcl${corename}-${buildLabel}-incubation.zip -d ${buildDirectory}/tempforrezipping" />
 		</exec>
 	
 		<zip destfile="${buildDirectory}/${buildLabel}/${archiveName}" basedir="${buildDirectory}/tempforrezipping" />

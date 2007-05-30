@@ -34,7 +34,7 @@
     <target name="assemble.org.eclipse.dltk.tcl">
         <property
             name="archiveName"
-            value="dltk-tcl-${buildLabel}.zip" />
+            value="dltk-tcl-${buildLabel}-incubation.zip" />
         <ant
             antfile="${assembleScriptName}"
             dir="${buildDirectory}" />
@@ -46,7 +46,7 @@
     <target name="postPackage">
         <property
             name="archiveName"
-            value="dltk-tcl-${buildLabel}.zip" />
+            value="dltk-tcl-${buildLabel}-incubation.zip" />
 
         <ant
             antfile="${dltk.builder.home}/scripts/build/buildutilities.xml"
