@@ -200,7 +200,7 @@ public class ScriptToggleBreakpointAdapter implements IToggleBreakpointsTarget {
 					e.printStackTrace();
 				}
 			}
-			return ta.contains("=");
+			return ta.indexOf("=") != -1;
 		}
 		return true;
 	}

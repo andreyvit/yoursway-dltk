@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
+   <extension-point id="debuggingEngine" name="Debugging Engine" schema="schema/debuggingEngine.exsd"/>
    <extension
          point="org.eclipse.debug.core.breakpoints">
       <breakpoint

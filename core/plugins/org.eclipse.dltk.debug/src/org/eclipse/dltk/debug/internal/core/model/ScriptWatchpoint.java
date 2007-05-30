@@ -54,12 +54,13 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 	}
 
 	public boolean isAccess() throws CoreException {
-		return Boolean.parseBoolean(getMarker().getAttribute(ACCESS, "true"));
+		return (new Boolean(getMarker().getAttribute(ACCESS, "true")))
+				.booleanValue();
 	}
 
 	public boolean isModification() throws CoreException {
-		return Boolean.parseBoolean(getMarker().getAttribute(MODIFICATION,
-				"true"));
+		return (new Boolean(getMarker().getAttribute(MODIFICATION, "true")))
+				.booleanValue();
 	}
 
 	public void setAccess(boolean access) throws CoreException {
