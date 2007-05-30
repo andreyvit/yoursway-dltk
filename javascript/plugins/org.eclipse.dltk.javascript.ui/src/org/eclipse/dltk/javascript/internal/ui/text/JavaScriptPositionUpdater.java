@@ -62,7 +62,7 @@ final class JavaScriptPositionUpdater extends PositionUpdater {
 					public void xmlTokenStart(int offset, String tagName,
 							int cursor) {
 						int i = cursor - offset + 1;
-						{
+						if (tagName.length() != i) {
 							StringBuffer copy = new StringBuffer();
 							for (int a = 0; a < tagName.length(); a++) {
 								char c = tagName.charAt(a);
