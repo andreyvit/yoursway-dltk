@@ -6,12 +6,10 @@ public class SimpleDebuggineEngineFactory implements
 		IDebuggingEngineRunnerFactory {
 
 	public SimpleDebuggineEngineFactory() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public IDebuggingEngineRunner createDebuggingEngineRunner() {
-		// TODO Auto-generated method stub
-		return null;
+		return new SimpleDebuggingEngineRunner();
 	}
 
 }

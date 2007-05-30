@@ -1,5 +1,6 @@
 package org.eclipse.dltk.debug.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +49,12 @@ public class DebuggingEngineManager {
 				IDebuggingEngine engine = new DebuggingEngine(id, natureId,
 						name, description, priority, factory);
 
-				natureToEnginesMap.put(natureId, engine);
+				List engines = (List) natureToEnginesMap.get(natureId);
+				if (engines == null) {
+					natureToEnginesMap.put(natureId, new ArrayList());
+				}
+
+				((List) natureToEnginesMap.get(natureId)).add(engine);
 			}
 		} catch (CoreException e) {
 			e.printStackTrace();
@@ -80,14 +86,16 @@ public class DebuggingEngineManager {
 
 			final String natureId = main.getAttribute(NATURE_ID);
 
-			for (int j = 0; j < elements.length; j++) {
-				IConfigurationElement element = elements[j];
-				String name = element.getName();
+			IConfigurationElement[] innerElements = main.getChildren();
+
+			for (int j = 0; j < innerElements.length; j++) {
+				IConfigurationElement innerElement = innerElements[j];
+				String name = innerElement.getName();
 
 				if (name.equals("engine")) {
-					addEngine(natureId, element);
+					addEngine(natureId, innerElement);
 				} else if (name.equals("selector")) {
-					addSelector(natureId, element);
+					addSelector(natureId, innerElement);
 				}
 			}
 		}

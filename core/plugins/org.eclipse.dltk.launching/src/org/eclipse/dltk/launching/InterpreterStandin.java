@@ -113,5 +113,8 @@ public class InterpreterStandin extends AbstractInterpreterInstall {
 		return null;
 	}
 		
+	public String getNatureId() {
+		return null;
+	}
 
 }

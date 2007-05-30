@@ -13,6 +13,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.launching.AbstractInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.IInterpreterRunner;
+import org.eclipse.dltk.tcl.core.TclNature;
 
 public class GenericTclInstall extends AbstractInterpreterInstall {
 
@@ -29,5 +30,9 @@ public class GenericTclInstall extends AbstractInterpreterInstall {
 		
 		//TODO: possible throw exception
 		return null;
+	}
+	
+	public String getNatureId() {
+		return TclNature.NATURE_ID;
 	}
 }

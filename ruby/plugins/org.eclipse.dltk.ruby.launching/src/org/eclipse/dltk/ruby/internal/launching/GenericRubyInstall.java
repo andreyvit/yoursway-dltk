@@ -23,10 +23,13 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.launching.AbstractInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.IInterpreterRunner;
+import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
 import org.eclipse.dltk.utils.DeployHelper;
 
 public class GenericRubyInstall extends AbstractInterpreterInstall {	
+	
+	
 	public class BuiltinsHelper {
 		public BuiltinsHelper() {
 
@@ -91,11 +94,18 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 	}
 
 	public IInterpreterRunner getInterpreterRunner(String mode) {
+		IInterpreterRunner runner = super.getInterpreterRunner(mode);
+		if (runner != null) {
+			return runner;
+		}
+		
 		if (mode.equals(ILaunchManager.RUN_MODE)) {
 			return new RubyInterpreterRunner(this);
-		} else if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			return new RubyInterpreterDebugger(this);
-		}
+		} 
+		
+		//else if (mode.equals(ILaunchManager.DEBUG_MODE)) {
+			//return new RubyInterpreterDebugger(this);
+		//}
 
 		return null;
 	}
@@ -136,5 +146,9 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 		if (sources == null)
 			initialize();
 		return (String[]) sources.keySet().toArray(new String[sources.size()]);
+	}
+	
+	public String getNatureId() {
+		return RubyNature.NATURE_ID;
 	}
 }

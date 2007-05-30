@@ -16,6 +16,8 @@ import org.eclipse.dltk.core.IBuiltinModuleProvider;
 public interface IInterpreterInstall extends IBuiltinModuleProvider {
 	// Runner
 	IInterpreterRunner getInterpreterRunner(String mode);
+	
+	String getNatureId();
 
 	// Id
 	String getId();

@@ -14,6 +14,9 @@ import java.io.File;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.dltk.debug.core.DebuggingEngineManager;
+import org.eclipse.dltk.debug.core.IDebuggingEngine;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 
 /**
@@ -82,7 +85,7 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 
 	public File getInstallLocation() {
 		return fInstallLocation;
-	}	
+	}
 
 	public void setInstallLocation(File installLocation) {
 		if (!installLocation.equals(fInstallLocation)) {
@@ -225,13 +228,30 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 		throw new CoreException(new Status(IStatus.ERROR, DLTKLaunchingPlugin
 				.getUniqueIdentifier(), code, message, exception));
 	}
-	
+
 	// IBuiltinModuleProvider
 	public String[] getBuiltinModules() {
 		return null;
 	}
-	
-	public String getBuiltinModuleContent( String name ) {
+
+	public String getBuiltinModuleContent(String name) {
+		return null;
+	}
+
+	public IInterpreterRunner getInterpreterRunner(String mode) {
+		// Handle debug mode
+		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
+			final String natureId = getNatureId();
+			DebuggingEngineManager manager = DebuggingEngineManager
+					.getInstance();
+			IDebuggingEngine engine = manager
+					.getSelectedDebuggineEngine(natureId);
+
+			if (engine != null) {
+				return new DebuggingEngineRunner(this, engine);
+			}
+		}
+
 		return null;
 	}
 }

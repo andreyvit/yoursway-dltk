@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.dltk.javascript.core.JavaScriptNature;
 import org.eclipse.dltk.launching.AbstractInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.IInterpreterRunner;
@@ -47,5 +48,9 @@ public class GenericJavaScriptInstall extends AbstractInterpreterInstall {
 			return new JavaScriptInterpreterDebugger(this);
 		}
 		return null;
+	}
+	
+	public String getNatureId() {
+		return JavaScriptNature.NATURE_ID;
 	}
 }
