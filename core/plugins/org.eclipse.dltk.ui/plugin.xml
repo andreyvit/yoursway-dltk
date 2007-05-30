@@ -169,6 +169,8 @@
           name="DLTK"/>
  </extension>
    
+  <!--
+   
  <extension
        point="org.eclipse.ui.navigator.viewer">
     <viewer viewerId="org.eclipse.ui.navigator.ProjectExplorer"/>
@@ -197,17 +199,11 @@
           icon="icons/full/tcl.gif"
           id="org.eclipse.dltk.ui.scriptContent"
           labelProvider="org.eclipse.dltk.internal.ui.navigator.ScriptNavigatorLabelProvider"
-          name="DLTK Script content"
+          name="DLTK Script Elements"
           priority="high">			
           
           <triggerPoints>
 				<or>
-					<!--adapt
-							type="org.eclipse.core.resources.IProject" >
-						<test
-							property="org.eclipse.core.resources.projectNature"
-							value="org.eclipse.dltk.core.tclnature" />
-					</adapt-->
 					<instanceof
 							value="org.eclipse.core.resources.IWorkspaceRoot" />
 					<instanceof
@@ -343,12 +339,12 @@
 			policy="InvokeAlwaysRegardlessOfSuppressedExt"
 			suppressedExtensionId="org.eclipse.ui.navigator.resourceContent"/> 
 			
-		    <!--actionProvider
+		    <actionProvider
            		class="org.eclipse.dltk.internal.ui.navigator.ScriptEditActionProvider"
            		id="org.eclipse.dltk.actions.ui.navigator.ScriptEditActionProvider"
            		overrides="org.eclipse.ui.navigator.resources.actions.EditActions">
-			</actionProvider-->		
-			<!-- Menu Shortcut Actions for Wizards -->              
+			</actionProvider>		
+			              
     </navigatorContent>
    		<commonFilter
 		        activeByDefault="false"
@@ -388,6 +384,9 @@
 		        description="%HideReferencedLibraries.description"
 		        id="org.eclipse.dltk.script.ui.filters.HideReferencedLibraries"/>   
  </extension>
+ 
+ -->
+ 
  <extension
        point="org.eclipse.core.runtime.preferences">
     <initializer class="org.eclipse.dltk.internal.ui.DLTKUIPreferenceInitializer"/>
