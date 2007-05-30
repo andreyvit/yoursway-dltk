@@ -441,7 +441,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	}
 
 	public boolean visit(CallExpression call) throws Exception {
-		if (call.getReceiver() == null && call.getName().equals("include")) {
+		if (call.getReceiver() == null && call.getName().equals("include") && call.getArgs().getChilds().size() > 0) {
 			ASTNode expr = (ASTNode) call.getArgs().getChilds().get(0);
 			if (expr instanceof RubyCallArgument)
 				expr = ((RubyCallArgument) expr).getValue();
