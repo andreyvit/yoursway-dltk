@@ -15,8 +15,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
+import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.ruby.core.RubyNature;
 
 public class RubyLaunchConfigurationDelegate extends
@@ -26,24 +28,18 @@ public class RubyLaunchConfigurationDelegate extends
 		return RubyNature.NATURE_ID;
 	}
 
-	protected String createNativeBuildPath(IPath[] paths) {
-		StringBuffer sb = new StringBuffer();
+	protected String getCharset(ILaunchConfiguration configuration)
+			throws CoreException {
+		IProject project = getScriptProject(configuration).getProject();
+		IResource resource = project
+				.findMember(getMainScriptName(configuration));
 
-		char separator = Platform.getOS().equals(Platform.OS_WIN32) ? ';' : ':';
-
-		for (int i = 0; i < paths.length; ++i) {
-			IPath path = paths[i];
-
-			sb.append('"');
-			sb.append(path.toOSString());
-			sb.append('"');
-
-			if (i < paths.length - 1) {
-				sb.append(separator);
-			}
+		if (resource instanceof IFile) {
+			IFile file = (IFile) resource;
+			return file.getCharset();
 		}
 
-		return sb.toString();
+		return null;
 	}
 
 	protected String getCharsetInterpreterFlag(String charset) {
@@ -58,25 +54,47 @@ public class RubyLaunchConfigurationDelegate extends
 		return "-KA";
 	}
 
-	public String getInterpreterArguments(ILaunchConfiguration configuration)
-			throws CoreException {
-		String args = super.getInterpreterArguments(configuration);
+	protected void addEncodingInterpreterArg(InterpreterConfig config,
+			ILaunchConfiguration configuration) throws CoreException {
+		if (!config.hasInterpreterArgWithRegex("-K.*")) {
+			String charset = getCharset(configuration);
+			if (charset != null) {
+				config.addInterpreterArg(getCharsetInterpreterFlag(charset));
+			}
+		}
+	}
 
-		// Encoding
-		IProject project = getScriptProject(configuration).getProject();
-		IResource resource = project
-				.findMember(getMainScriptName(configuration));
-		if (resource instanceof IFile) {
-			IFile file = (IFile) resource;
-			String charset = file.getCharset();
-			if (args.indexOf("-K") == -1) {
-				args += " " + getCharsetInterpreterFlag(charset) + " ";
+	protected void addIncludePathInterpreterArg(
+			InterpreterConfig config, ILaunchConfiguration configuration)
+			throws CoreException {
+		IPath[] paths = createBuildPath(configuration);
+
+		char separator = Platform.getOS().equals(Platform.OS_WIN32) ? ';' : ':';
+
+		StringBuffer sb = new StringBuffer("-I");
+		for (int i = 0; i < paths.length; ++i) {
+			sb.append('"');
+			sb.append(paths[i].toOSString());
+			sb.append('"');
+
+			if (i < paths.length - 1) {
+				sb.append(separator);
 			}
 		}
 
-		// Library path
-		//args += " -I" + createBuildPath(configuration);
+		config.addInterpreterArg(sb.toString());
+	}
 
-		return args;
+	protected InterpreterConfig createInterpreterConfiguration(
+			ILaunchConfiguration configuration, ILaunch launch)
+			throws CoreException {
+
+		InterpreterConfig config = super.createInterpreterConfiguration(
+				configuration, launch);
+
+		addEncodingInterpreterArg(config, configuration);
+		addIncludePathInterpreterArg(config, configuration);
+
+		return config;
 	}
 }

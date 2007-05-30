@@ -14,28 +14,36 @@ import java.io.File;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
 
 public interface IInterpreterInstall extends IBuiltinModuleProvider {
+	// Runner
 	IInterpreterRunner getInterpreterRunner(String mode);
 
+	// Id
 	String getId();
 
+	// Name
 	String getName();
 
 	void setName(String name);
 
+	// Install location
 	File getInstallLocation();	
 
 	void setInstallLocation(File installLocation);
 
+	// Type
 	IInterpreterInstallType getInterpreterInstallType();
 
+	// Library locations
 	LibraryLocation[] getLibraryLocations();
 
 	void setLibraryLocations(LibraryLocation[] locations);
 
+	// Arguments
 	public String[] getInterpreterArguments();
 
 	void setInterpreterArguments(String[] InterpreterArgs);
 
+	// Arguments
 	String getInterpreterArgs();
 
 	void setInterpreterArgs(String InterpreterArgs);

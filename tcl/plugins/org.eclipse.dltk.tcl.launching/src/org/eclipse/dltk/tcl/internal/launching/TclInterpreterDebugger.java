@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.launching.AbstractInterpreterDebugger;
 import org.eclipse.dltk.launching.IInterpreterInstall;
-import org.eclipse.dltk.launching.InterpreterRunnerConfiguration;
+import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.tcl.internal.debug.TclDebugPreferences;
 import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
 
@@ -46,8 +46,9 @@ public class TclInterpreterDebugger extends AbstractInterpreterDebugger {
 		super(install);
 	}
 
-	protected String[] getCommandLine(String sessionId, String host, int port, InterpreterRunnerConfiguration configuration) throws CoreException {
-		final String shell = constructProgramString(configuration);
+	protected String[] getCommandLine(InterpreterConfig configuration,
+			String sessionId, String host, int port) throws CoreException {
+		final String shell = constructProgramString();
 
 		List list = new ArrayList();
 
@@ -61,13 +62,9 @@ public class TclInterpreterDebugger extends AbstractInterpreterDebugger {
 		list.add(IDE_KEY);
 		list.add(sessionId);
 		list.add(SCRIPT_KEY);
-		list.add(configuration.getScriptToLaunch());
+		list.add(configuration.getScriptFile().toString());
 		list.add(ARGS_SEPARATOR);
-
-		String[] args = configuration.getProgramArguments();
-		for (int i = 0; i < args.length; ++i) {
-			list.add(args[i]);
-		}
+		list.addAll(configuration.getScriptArgs());
 
 		return (String[]) list.toArray(new String[list.size()]);
 	}

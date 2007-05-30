@@ -14,31 +14,16 @@ import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.ruby.launching.IRubyLaunchConfigurationConstants;
 import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
 
+public class RubyInterpreterRunner extends AbstractInterpreterRunner {
+	public RubyInterpreterRunner(IInterpreterInstall InterpreterInstance) {
+		super(InterpreterInstance);
+	}
 
-public class RubyInterpreterRunner extends AbstractInterpreterRunner
-{
-    //~ Constructors
+	protected String getPluginId() {
+		return RubyLaunchingPlugin.getUniqueIdentifier();
+	}
 
-    public RubyInterpreterRunner(IInterpreterInstall InterpreterInstance)
-    {
-        super(InterpreterInstance);
-    }
-
-    //~ Methods
-
-    /*
-     * @see InterpreterRunner#getPluginIdentifier()
-     */
-    protected String getPluginId()
-    {
-        return RubyLaunchingPlugin.getUniqueIdentifier();
-    }
-
-    /*
-     * @see org.eclipse.dltk.launching.AbstractInterpreterRunner#getProcessType()
-     */
-    protected String getProcessType()
-    {
-        return IRubyLaunchConfigurationConstants.ID_RUBY_PROCESS_TYPE;
-    }
+	protected String getProcessType() {
+		return IRubyLaunchConfigurationConstants.ID_RUBY_PROCESS_TYPE;
+	}
 }

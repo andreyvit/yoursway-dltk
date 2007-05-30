@@ -12,7 +12,6 @@ package org.eclipse.dltk.launching;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -188,20 +187,17 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 */
 	public String[] getBuildpath(ILaunchConfiguration configuration)
 			throws CoreException {
+
+		// Get entries
 		IRuntimeBuildpathEntry[] entries = ScriptRuntime
 				.computeUnresolvedRuntimeBuildpath(configuration);
 		entries = ScriptRuntime.resolveRuntimeBuildpath(entries, configuration);
-		List userEntries = new ArrayList(entries.length);
-		Set set = new HashSet(entries.length);
+
+		// Get USER_ENTRY
+		Set userEntries = new HashSet();
 		for (int i = 0; i < entries.length; i++) {
 			if (entries[i].getBuildpathProperty() == IRuntimeBuildpathEntry.USER_ENTRY) {
-				String location = entries[i].getLocation();
-				if (location != null) {
-					if (!set.contains(location)) {
-						userEntries.add(location);
-						set.add(location);
-					}
-				}
+				userEntries.add(entries[i].getLocation());
 			}
 		}
 		return (String[]) userEntries.toArray(new String[userEntries.size()]);
@@ -249,6 +245,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 				}
 			}
 		}
+
 		if (empty) {
 			return new String[0];
 		} else if (allStandard) {
@@ -395,8 +392,6 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		return bootpathInfo;
 	}
 
-	abstract public String getLanguageId();
-
 	/**
 	 * Returns the Script project specified by the given launch configuration,
 	 * or <code>null</code> if none.
@@ -478,12 +473,14 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 * @exception CoreException
 	 *                if unable to retrieve the attribute
 	 */
-	public String getProgramArguments(ILaunchConfiguration configuration)
+	public String[] getScriptArguments(ILaunchConfiguration configuration)
 			throws CoreException {
 		String arguments = configuration.getAttribute(
 				IDLTKLaunchConfigurationConstants.ATTR_SCRIPT_ARGUMENTS, ""); //$NON-NLS-1$
-		return VariablesPlugin.getDefault().getStringVariableManager()
+		String args = VariablesPlugin.getDefault().getStringVariableManager()
 				.performStringSubstitution(arguments);
+
+		return DebugPlugin.parseArguments(args);
 	}
 
 	/**
@@ -498,15 +495,16 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 * @exception CoreException
 	 *                if unable to retrieve the attribute
 	 */
-	public String getInterpreterArguments(ILaunchConfiguration configuration)
-			throws CoreException {
+	protected final String[] getInterpreterArguments(
+			ILaunchConfiguration configuration) throws CoreException {
 		String arguments = configuration.getAttribute(
 				IDLTKLaunchConfigurationConstants.ATTR_INTERPRETER_ARGUMENTS,
 				""); //$NON-NLS-1$
 
 		String args = VariablesPlugin.getDefault().getStringVariableManager()
 				.performStringSubstitution(arguments);
-		return args;
+
+		return DebugPlugin.parseArguments(args);
 	}
 
 	/**
@@ -660,13 +658,44 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		return name;
 	}
 
+	// Project path + script path
 	protected String getScriptLaunchPath(ILaunchConfiguration configuration)
 			throws CoreException {
-		String mainScriptName = correctScriptPath(configuration);
+		String mainScriptName = verifyMainScriptName(configuration);
 		IProject project = getScriptProject(configuration).getProject();
 
 		return project.getLocation().toPortableString() + Path.SEPARATOR
 				+ mainScriptName;
+	}
+
+	// Should be overriden in for any language
+	protected InterpreterConfig createInterpreterConfiguration(
+			ILaunchConfiguration configuration, ILaunch launch)
+			throws CoreException {
+
+		// Validation already included
+		final File mainScript = new File(getScriptLaunchPath(configuration));
+		final File workingDirectory = getWorkingDirectory(configuration);
+
+		InterpreterConfig config = new InterpreterConfig(
+				mainScript, workingDirectory);
+
+		// Script arguments
+		String[] scriptArgs = getScriptArguments(configuration);
+		config.addScriptArgs(scriptArgs);
+
+		// Interpreter argument
+		String[] interpreterArgs = getInterpreterArguments(configuration);
+		config.addInterpreterArgs(interpreterArgs);
+
+		// Environment
+		config.addEnvVars(DebugPlugin.getDefault().getLaunchManager()
+				.getNativeEnvironmentCasePreserved());
+
+		// TODO:
+		// getInterpreterSpecificAttributesMap(configuration)
+
+		return config;
 	}
 
 	public void launch(ILaunchConfiguration configuration, String mode,
@@ -685,32 +714,8 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 					.subTask(LaunchingMessages.ScriptLaunchConfigurationDelegate_Verifying_launch_attributes____1);
 
 			// IInterpreterRunner
-			IInterpreterRunner runner = getInterpreterRunner(configuration,
-					mode);
-
-			// InterpreterRunnerConfiguration
-			InterpreterRunnerConfiguration runConfig = new InterpreterRunnerConfiguration(
-					getScriptLaunchPath(configuration));
-
-			// Environment
-			runConfig.setEnvironment(buildRunEnvironment(configuration));
-
-			// Working directory
-			runConfig.setWorkingDirectory(getWorkingDir(configuration));
-
-			// Interpreter specific attributes
-			runConfig
-					.setInterpreterSpecificAttributesMap(getInterpreterSpecificAttributesMap(configuration));
-
-			// Program and Interpreter arguments
-			final String programArgs = getProgramArguments(configuration);
-			final String interpreterArgs = getInterpreterArguments(configuration);
-			ExecutionArguments execArgs = new ExecutionArguments(
-					interpreterArgs, programArgs);
-
-			runConfig.setProgramArguments(execArgs.getScriptArgumentsArray());
-			runConfig.setInterpreterArguments(execArgs
-					.getInterpreterArgumentsArray());
+			InterpreterConfig config = createInterpreterConfiguration(
+					configuration, launch);
 
 			if (monitor.isCanceled()) {
 				return;
@@ -720,7 +725,10 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			monitor.worked(1);
 
 			// Launch the configuration - 1 unit of work
-			runRunner(configuration, runner, runConfig, launch, monitor);
+			IInterpreterRunner runner = getInterpreterRunner(configuration,
+					mode);
+
+			runRunner(configuration, runner, config, launch, monitor);
 
 			if (monitor.isCanceled()) {
 				return;
@@ -740,29 +748,11 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			monitor.done();
 		}
 	}
-	
-	protected void runRunner(ILaunchConfiguration configuration, IInterpreterRunner runner,
-			InterpreterRunnerConfiguration runnerConfiguration, ILaunch launch,
-			IProgressMonitor monitor) throws CoreException {
-		runner.run(runnerConfiguration, launch, monitor);
-	}
 
-	protected String[] buildRunEnvironment(ILaunchConfiguration configuration)
-			throws CoreException {
-		Map systemEnv = DebugPlugin.getDefault().getLaunchManager()
-				.getNativeEnvironmentCasePreserved();
-
-		List variables = new ArrayList();
-
-		Iterator it = systemEnv.keySet().iterator();
-		while (it.hasNext()) {
-			Object key = it.next();
-			Object value = systemEnv.get(key);
-
-			variables.add(key + "=" + value);
-		}
-
-		return (String[]) variables.toArray(new String[variables.size()]);
+	protected void runRunner(ILaunchConfiguration configuration,
+			IInterpreterRunner runner, InterpreterConfig config,
+			ILaunch launch, IProgressMonitor monitor) throws CoreException {
+		runner.run(config, launch, monitor);
 	}
 
 	protected String getWorkingDir(ILaunchConfiguration configuration)
@@ -775,7 +765,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		return workingDirName;
 	}
 
-	protected String createBuildPath(ILaunchConfiguration configuration)
+	protected IPath[] createBuildPath(ILaunchConfiguration configuration)
 			throws CoreException {
 		List paths = new ArrayList();
 
@@ -794,12 +784,11 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			}
 		}
 
-		return createNativeBuildPath((IPath[]) paths.toArray(new IPath[paths
-				.size()]));
+		return (IPath[]) paths.toArray(new IPath[paths.size()]);
 	}
 
 	protected String createNativeBuildPath(IPath[] paths) {
-		//TODO: refactor this
+		// TODO: refactor this
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < paths.length; ++i) {
 			sb.append(paths[i].toOSString());
@@ -808,22 +797,6 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			}
 		}
 		return sb.toString();
-	}
-
-	private String correctScriptPath(ILaunchConfiguration configuration)
-			throws CoreException {
-		// first verify the script
-		String mainScriptName = verifyMainScriptName(configuration);
-
-		// now convert to correct path
-		/*
-		 * IPath path = Path.fromPortableString(mainScriptName); IWorkspaceRoot
-		 * root = ResourcesPlugin.getWorkspace().getRoot();
-		 * 
-		 * return
-		 * root.getRawLocation().append(path).makeAbsolute().toOSString();
-		 */
-		return mainScriptName;
 	}
 
 	protected IProject[] getBuildOrder(ILaunchConfiguration configuration,
@@ -844,35 +817,26 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 						IScriptModelMarker.DLTK_MODEL_PROBLEM_MARKER);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate2#preLaunchCheck(org.eclipse.debug.core.ILaunchConfiguration,
-	 *      java.lang.String, org.eclipse.core.runtime.IProgressMonitor)
-	 */
 	public boolean preLaunchCheck(ILaunchConfiguration configuration,
 			String mode, IProgressMonitor monitor) throws CoreException {
-		// build project list
+
 		if (monitor != null) {
 			monitor
 					.subTask(LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_20);
 		}
+
 		fOrderedProjects = null;
 		IDLTKProject scriptProject = ScriptRuntime
 				.getDLTKProject(configuration);
+
 		if (scriptProject != null) {
 			fOrderedProjects = computeReferencedBuildOrder(new IProject[] { scriptProject
 					.getProject() });
 		}
-		// do generic launch checks
+
 		return super.preLaunchCheck(configuration, mode, monitor);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.debug.core.model.LaunchConfigurationDelegate#getBreakpoints(org.eclipse.debug.core.ILaunchConfiguration)
-	 */
 	protected IBreakpoint[] getBreakpoints(ILaunchConfiguration configuration) {
 		// TODO
 		return new IBreakpoint[] {};
@@ -897,6 +861,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			throws CoreException {
 		IInterpreterInstall install = verifyInterpreterInstall(configuration);
 		IInterpreterRunner runner = install.getInterpreterRunner(mode);
+
 		if (runner == null) {
 			abort(
 					MessageFormat
@@ -906,6 +871,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 					null,
 					IDLTKLaunchConfigurationConstants.ERR_INTERPRETER_RUNNER_DOES_NOT_EXIST);
 		}
+
 		return runner;
 	}
 
@@ -982,4 +948,5 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		return monitor;
 	}
 
+	abstract public String getLanguageId();
 }

@@ -34,10 +34,9 @@ public class DLTKLaunchUtil {
 			String scriptPath, String[] args, String mode) throws CoreException {
 		ILaunch launch = new Launch(null, ILaunchManager.RUN_MODE, null);
 
-		InterpreterRunnerConfiguration config = new InterpreterRunnerConfiguration(
-				scriptPath);
-		config.setProgramArguments(args);
-
+		InterpreterConfig config = new InterpreterConfig();
+		config.addScriptArgs(args);
+		
 		IInterpreterRunner runner = install.getInterpreterRunner(mode);
 		runner.run(config, launch, null);
 

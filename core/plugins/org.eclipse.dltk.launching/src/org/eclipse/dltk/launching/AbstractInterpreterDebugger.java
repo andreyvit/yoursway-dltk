@@ -86,15 +86,15 @@ public abstract class AbstractInterpreterDebugger extends AbstractInterpreterRun
 
 		return sessionId;
 	}
+	
+	public void run(InterpreterConfig config, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 
-	public void run(InterpreterRunnerConfiguration configuration, ILaunch launch, IProgressMonitor monitor) throws CoreException {
-
-		final ILaunchConfiguration config = launch.getLaunchConfiguration();
+		final ILaunchConfiguration configuration = launch.getLaunchConfiguration();
 
 		IDbgpService dbgpService = null;
 
 		try {
-			int port = config.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_PORT, -1);
+			int port = configuration.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_PORT, -1);
 
 			if (port == -1) {
 				dbgpService = DLTKDebugPlugin.getDefault().createDbgpService();
@@ -105,29 +105,29 @@ public abstract class AbstractInterpreterDebugger extends AbstractInterpreterRun
 			abort(DLTKLaunchingPlugin.ID_PLUGIN, "Dbgp service not available", null, DLTKLaunchingPlugin.DBGP_SERVICE_NOT_AVAILABLE);
 		}
 
-		final String sessionId = addDebugTarget(launch, config, dbgpService);
+		final String sessionId = addDebugTarget(launch, configuration, dbgpService);
 		final int port = dbgpService.getPort();
 
 		try {
-			boolean remoteDebugging = config.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_REMOTE, false);
+			boolean remoteDebugging = configuration.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_REMOTE, false);
 
 			// Starting debugging
 			final String host = "127.0.0.1";
 
-			final String[] commandLine = getCommandLine(sessionId, host, port, configuration);
+			final String[] commandLine = getCommandLine(config, sessionId, host, port);
 
 			if (!remoteDebugging) {
 				// Start local debugging engine
 				sleep(DEFAULT_PAUSE);
 
 				try {
-					exec(commandLine, getWorkingDir(configuration), configuration.getEnvironment());
+					exec(commandLine, config.getWorkingDirectory(), config.getEnvironmentAsStrings());
 				} catch (CoreException e) {
 					abort(DLTKLaunchingPlugin.ID_PLUGIN, "Debugging engine not started", null, DLTKLaunchingPlugin.DEBUGGING_ENGINE_NOT_STARTED);
 				}
 			}
 
-			int waitingTimeout = config.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT, DEFAULT_WAITING_TIMEOUT);
+			int waitingTimeout = configuration.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT, DEFAULT_WAITING_TIMEOUT);
 
 			ScriptDebugTargetWaiter waiter = new ScriptDebugTargetWaiter((IScriptDebugTarget) launch.getDebugTarget());
 
@@ -149,7 +149,7 @@ public abstract class AbstractInterpreterDebugger extends AbstractInterpreterRun
 		// Happy debugging :)
 	}
 
-	protected abstract String[] getCommandLine(String sessionId, String host, int port, InterpreterRunnerConfiguration configuration) throws CoreException;
+	protected abstract String[] getCommandLine(InterpreterConfig config, String sessionId, String host, int port) throws CoreException;
 
 	protected abstract String getDebugModelIdentidier();			
 }

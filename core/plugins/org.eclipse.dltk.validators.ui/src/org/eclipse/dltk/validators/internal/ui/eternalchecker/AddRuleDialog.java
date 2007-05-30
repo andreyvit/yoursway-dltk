@@ -7,8 +7,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import sun.text.normalizer.CharTrie.FriendAgent;
-
 public class AddRuleDialog extends StatusDialog {
 	
 	private StringDialogField fRule;

@@ -35,7 +35,7 @@ import org.eclipse.dltk.javascript.launching.JavaScriptLaunchingPlugin;
 import org.eclipse.dltk.launching.AbstractInterpreterRunner;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.launching.IInterpreterInstall;
-import org.eclipse.dltk.launching.InterpreterRunnerConfiguration;
+import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IVMInstall;
@@ -46,12 +46,12 @@ import org.osgi.framework.Bundle;
 
 public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 
-	public void run(InterpreterRunnerConfiguration config, ILaunch launch,
+	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
 		doRun(config, launch,"","","");
 	}
 
-	protected static void doRun(InterpreterRunnerConfiguration config, ILaunch launch, String host, String port, String sessionId)
+	protected static void doRun(InterpreterConfig config, ILaunch launch, String host, String port, String sessionId)
 			throws CoreException {
 		IDLTKProject proj = AbstractScriptLaunchConfigurationDelegate
 				.getScriptProject(launch.getLaunchConfiguration());
@@ -90,7 +90,7 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 							VMRunnerConfiguration vmConfig = new VMRunnerConfiguration(
 									"RhinoRunner", newClassPath);
 							vmConfig.setProgramArguments(new String[] { config
-									.getScriptToLaunch(),host,""+port,sessionId });
+									.getScriptFile().toString(),host,""+port,sessionId });
 							ILaunch launchr = new Launch(launch.getLaunchConfiguration(),
 									ILaunchManager.DEBUG_MODE, null);
 							vmRunner.run(vmConfig, launchr, null);
@@ -117,7 +117,7 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 	}
 
 	protected String constructProgramString(
-			InterpreterRunnerConfiguration config) throws CoreException {
+			InterpreterConfig config) throws CoreException {
 
 		return "";
 	}
