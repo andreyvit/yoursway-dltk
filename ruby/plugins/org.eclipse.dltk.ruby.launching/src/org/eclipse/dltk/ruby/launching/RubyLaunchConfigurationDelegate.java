@@ -64,19 +64,16 @@ public class RubyLaunchConfigurationDelegate extends
 		}
 	}
 
-	protected void addIncludePathInterpreterArg(
-			InterpreterConfig config, ILaunchConfiguration configuration)
-			throws CoreException {
+	protected void addIncludePathInterpreterArg(InterpreterConfig config,
+			ILaunchConfiguration configuration) throws CoreException {
 		IPath[] paths = createBuildPath(configuration);
 
 		char separator = Platform.getOS().equals(Platform.OS_WIN32) ? ';' : ':';
 
 		StringBuffer sb = new StringBuffer("-I");
 		for (int i = 0; i < paths.length; ++i) {
-			sb.append('"');
-			sb.append(paths[i].toOSString());
-			sb.append('"');
 
+			sb.append(paths[i].toOSString());
 			if (i < paths.length - 1) {
 				sb.append(separator);
 			}
