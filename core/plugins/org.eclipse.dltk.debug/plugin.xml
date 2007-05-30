@@ -8,6 +8,11 @@
             class="org.eclipse.dltk.debug.internal.core.model.ScriptMethodEntryBreakpoint"
             id="org.eclipse.dltk.debug.internal.core.model.ScriptMethodEntryBreakpoint">
       </breakpoint>
+      <breakpoint
+            class="org.eclipse.dltk.debug.internal.core.model.ScriptWatchpoint"
+            id="org.eclipse.dltk.debug.internal.core.model.ScriptWatchPoint"
+            markerType="org.eclipse.dltk.debug.scriptWatchPointMarker">
+      </breakpoint>
    </extension>
    <extension
          id="scriptBreakpointMarker"
@@ -70,6 +75,20 @@
       <initializer
             class="org.eclipse.dltk.debug.core.DLTKDebugPluginPreferenceInitializer">
       </initializer>
+   </extension>
+   <extension
+         id="scriptWatchPointMarker"
+         name="Script WathPoint"
+         point="org.eclipse.core.resources.markers">
+      <persistent
+            value="true">
+      </persistent>
+      <super
+            type="org.eclipse.debug.core.lineBreakpointMarker">
+      </super>
+      <super
+            type="org.eclipse.dltk.debug.scriptBreakpointMarker">
+      </super>
    </extension>
    
       

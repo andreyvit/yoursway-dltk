@@ -27,8 +27,8 @@ public class ScriptLineBreakpoint extends ScriptBreakpoint implements
 
 	public static URI makeUri(IResource resource) {
 		try {
-			return new URI("file", "///" + resource.getLocation().toOSString(),
-					null);
+			return new URI("file", "///"
+					+ resource.getLocation().toPortableString(), null);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 			return null;
@@ -63,7 +63,8 @@ public class ScriptLineBreakpoint extends ScriptBreakpoint implements
 						getModelIdentifier(), true, lineNumber, charStart,
 						charEnd);
 
-				setMarker(ScriptMarkerFactory.makeMarker(resource, attributes,getMarkerID()));
+				setMarker(ScriptMarkerFactory.makeMarker(resource, attributes,
+						getMarkerID()));
 				ensureMarker().setAttributes(attributes);
 
 				register(add);
@@ -72,7 +73,8 @@ public class ScriptLineBreakpoint extends ScriptBreakpoint implements
 
 		run(getMarkerRule(resource), wr);
 	}
-	protected String getMarkerID(){
+
+	protected String getMarkerID() {
 		return ScriptMarkerFactory.MARKER_ID;
 	}
 
@@ -100,5 +102,4 @@ public class ScriptLineBreakpoint extends ScriptBreakpoint implements
 		}
 	}
 
-	
 }

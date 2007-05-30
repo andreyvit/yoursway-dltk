@@ -5,8 +5,6 @@ package org.eclipse.dltk.rhino.dbgp;
 
 import java.util.HashMap;
 
-import org.eclipse.dltk.rhino.dbgp.DBGPDebugger.Command;
-
 final class StepOverCommand extends DBGPDebugger.Command {
 	/**
 	 * 
@@ -27,6 +25,9 @@ final class StepOverCommand extends DBGPDebugger.Command {
 			this.debugger.cmanager.stepOver();
 		} else {
 			synchronized (this.debugger) {
+				while (!this.debugger.isInited) {
+					Thread.yield();
+				}
 				this.debugger.notify();
 			}
 			this.debugger.cmanager.resume();

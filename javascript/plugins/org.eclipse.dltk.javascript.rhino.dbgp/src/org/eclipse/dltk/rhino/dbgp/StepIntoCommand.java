@@ -5,8 +5,6 @@ package org.eclipse.dltk.rhino.dbgp;
 
 import java.util.HashMap;
 
-import org.eclipse.dltk.rhino.dbgp.DBGPDebugger.Command;
-
 final class StepIntoCommand extends DBGPDebugger.Command {
 	/**
 	 * 
@@ -23,6 +21,16 @@ final class StepIntoCommand extends DBGPDebugger.Command {
 	void parseAndExecute(String command, HashMap options) {
 		Object tid = options.get("-i");
 		this.debugger.runTransctionId = (String) tid;
-		this.debugger.cmanager.stepIn();
+		if (this.debugger.cmanager.getStackDepth() > 0) {
+			this.debugger.cmanager.stepIn();
+		} else {
+			while (!this.debugger.isInited) {
+				Thread.yield();
+			}
+			synchronized (this.debugger) {
+				this.debugger.notify();
+			}
+			this.debugger.cmanager.resume();
+		}
 	}
 }

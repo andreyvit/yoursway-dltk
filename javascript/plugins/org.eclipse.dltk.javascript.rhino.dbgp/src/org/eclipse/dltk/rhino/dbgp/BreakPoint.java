@@ -16,25 +16,40 @@ public class BreakPoint {
 	protected boolean isTemporary = false;
 	protected int hitValue = 0;
 	protected int hitCondition = 0;
-	protected	   int currentHitCount=0;
+	protected int currentHitCount = 0;
 	protected String expression;
 	protected boolean isExitBreakpoint;
 	protected String method;
 	protected boolean isReturn;
+	protected boolean isWatch;
+
+	protected boolean isModification;
+
+	protected boolean isAccess;
 
 	protected BreakPoint(HashMap options) {
-		
-		if (options.get("-t").equals("return")){
-			method=(String) options.get("-m");
-			this.isReturn=true;
+
+		if (options.get("-t").equals("return")) {
+			method = (String) options.get("-m");
+			this.isReturn = true;
 		}
-		try {
-			this.file = new File(new URI((String) options.get("-f")))
-					.getAbsolutePath().replace('\\', '/');
-		} catch (URISyntaxException e) {
-			throw new RuntimeException();
+		if (options.get("-t").equals("watch")) {
+			this.isWatch = true;
 		}
-		this.line = Integer.parseInt((String) options.get("-n")) - 1;
+		if (true) {
+			try {
+				this.file = new File(new URI((String) options.get("-f")))
+						.getAbsolutePath();
+			} catch (URISyntaxException e) {
+				throw new RuntimeException();
+			}
+
+			this.line = Integer.parseInt((String) options.get("-n")) - 1;
+		} else {
+			this.file = "";
+			this.line = -1;
+		}
+
 		String tm = (String) options.get("-r");
 		if (tm != null) {
 			isTemporary = tm.equals("1");
@@ -46,28 +61,33 @@ public class BreakPoint {
 		String hitCondition = (String) options.get("-o");
 		setHitCondition(hitCondition);
 		expression = (String) options.get("--");
-		String disable=(String) options.get("-s");
-		if (disable.equals("disabled")){
+		String disable = (String) options.get("-s");
+		if (disable.equals("disabled")) {
 			this.setEnabled(false);
 		}
-		if (expression!=null) 
-		{
-			expression=Base64Helper.decodeString(expression);			
+		if (expression != null) {
+			expression = Base64Helper.decodeString(expression);
 		}
+		if (isWatch) {
+			this.isModification = expression.charAt(expression.length() - 1) == '1';
+			this.isAccess = expression.charAt(expression.length() - 2) == '1';
+			this.expression = expression.substring(0, expression.length() - 2);
+		}
+
 		this.id = last_id++;
 	}
 
-	protected void setHitCondition(String hitCondition) {		
+	protected void setHitCondition(String hitCondition) {
 		if (hitCondition != null) {
-			if (hitCondition.equals(">=")){
-				this.hitCondition = 1;	
+			if (hitCondition.equals(">=")) {
+				this.hitCondition = 1;
 			}
-			if (hitCondition.equals("==")){
-				this.hitCondition = 2;	
+			if (hitCondition.equals("==")) {
+				this.hitCondition = 2;
 			}
-			if (hitCondition.equals("%")){
-				this.hitCondition = 3;	
-			}			
+			if (hitCondition.equals("%")) {
+				this.hitCondition = 3;
+			}
 		}
 	}
 
@@ -101,7 +121,7 @@ public class BreakPoint {
 		return enabled;
 	}
 
-	protected void setEnabled(boolean enabled) {		
-		this.enabled = enabled;		
+	protected void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

@@ -89,7 +89,7 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 		}
 	}
 
-	public IThread[] getThreads() {		
+	public IThread[] getThreads() {
 		synchronized (threads) {
 			return (IThread[]) threads.toArray(new IThread[threads.size()]);
 		}
@@ -118,8 +118,8 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 				DebugEventHelper.fireCreateEvent(thread);
 
 				// Auto start
-				thread.resume();
-				//thread.stepInto();
+				// thread.resume();
+				thread.stepInto();
 			} catch (Exception e) {
 				DLTKDebugPlugin.log(e);
 			}
@@ -132,8 +132,8 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 
 	public void terminateThread(IScriptThread thread) {
 		synchronized (threads) {
-			threads.remove(thread);				
-			DebugEventHelper.fireTerminateEvent(thread);			
+			threads.remove(thread);
+			DebugEventHelper.fireTerminateEvent(thread);
 			if (!hasThreads()) {
 				fireAllThreadsTerminated();
 			}
@@ -184,7 +184,7 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 			}
 			waitingForThreads = false;
 
-		}		
+		}
 	}
 
 	public boolean canResume() {

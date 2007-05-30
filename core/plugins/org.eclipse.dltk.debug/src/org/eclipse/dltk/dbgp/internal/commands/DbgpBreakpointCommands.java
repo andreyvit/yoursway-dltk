@@ -99,7 +99,7 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 				request.addOption("-o", info.getHitConditionString());
 			}
 			String conditionExpression = info.getConditionExpression();
-			if (conditionExpression!=null){
+			if (conditionExpression != null) {
 				request.setData(conditionExpression);
 			}
 		}
@@ -127,10 +127,10 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 				info);
 	}
 
-	public String setReturnBreakpoint(URI uri, String function, DbgpBreakpointConfig info)
-			throws DbgpException {
-		return setBreakpoint(RETURN_BREAKPOINT, uri, new Integer(-1), function, null,
-				null, info);
+	public String setReturnBreakpoint(URI uri, String function,
+			DbgpBreakpointConfig info) throws DbgpException {
+		return setBreakpoint(RETURN_BREAKPOINT, uri, new Integer(-1), function,
+				null, null, info);
 	}
 
 	public String setExceptionBreakpoint(String exception,
@@ -145,10 +145,10 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 				lineNumber), null, null, expression, info);
 	}
 
-	public String setWatchBreakpoint(String expression,
-			DbgpBreakpointConfig info) throws DbgpException {
-		return setBreakpoint(WATCH_BREAKPOINT, null, null, null, null,
-				expression, info);
+	public String setWatchBreakpoint(String expression, URI uri,
+			int lineNumber, DbgpBreakpointConfig info) throws DbgpException {
+		return setBreakpoint(WATCH_BREAKPOINT, uri, new Integer(lineNumber),
+				null, null, expression, info);
 	}
 
 	public IDbgpBreakpoint getBreakpoint(String id) throws DbgpException {
@@ -164,7 +164,7 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 		if (id == null) {
 			return;
 		}
-		
+
 		DbgpRequest request = createRequest(BREAKPOINT_REMOVE_COMMAND);
 		request.addOption("-d", id);
 		communicate(request);
@@ -186,7 +186,7 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 		// not sure that this is correct but it looks that this is possible
 		// TODO review it
 		String conditionExpression = config.getConditionExpression();
-		if (conditionExpression!=null){
+		if (conditionExpression != null) {
 			request.setData(conditionExpression);
 		}
 		communicate(request);

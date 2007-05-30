@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui.breakpoints;
 
+import java.util.HashMap;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
@@ -32,17 +34,19 @@ public class BreakpointUtils {
 				int start = line.getOffset();
 				int end = start + line.getLength() - 1;
 
-				/*ILineBreakpoint b = */ScriptDebugModel.createLineBreakpoint(
-						resource, lineNumber, start, end, 0, true, null);
+				/* ILineBreakpoint b = */ScriptDebugModel
+						.createLineBreakpoint(resource, lineNumber, start, end,
+								0, true, null);
 			} catch (BadLocationException e) {
-				if( DLTKCore.DEBUG ) {
+				if (DLTKCore.DEBUG) {
 					e.printStackTrace();
 				}
 			}
 		}
 	}
 
-	public static void addMethodEntryBreakpoint(ITextEditor textEditor, int lineNumber,String methodName,String methodSignature)
+	public static void addMethodEntryBreakpoint(ITextEditor textEditor,
+			int lineNumber, String methodName, String methodSignature)
 			throws CoreException {
 		IDocument document = textEditor.getDocumentProvider().getDocument(
 				textEditor.getEditorInput());
@@ -54,10 +58,35 @@ public class BreakpointUtils {
 				IRegion line = document.getLineInformation(lineNumber - 1);
 				int start = line.getOffset();
 				int end = start + line.getLength() - 1;
-				/*ILineBreakpoint b = */ScriptDebugModel.createMethodEntryBreakpoint(
-						resource, lineNumber, start, end, 0, true, null,methodName,methodSignature);
+				/* ILineBreakpoint b = */ScriptDebugModel
+						.createMethodEntryBreakpoint(resource, lineNumber,
+								start, end, 0, true, null, methodName,
+								methodSignature);
 			} catch (BadLocationException e) {
-				if( DLTKCore.DEBUG ) {
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public static void addWatchPoint(ITextEditor textEditor, int lineNumber,
+			String fieldName) throws CoreException {
+		IDocument document = textEditor.getDocumentProvider().getDocument(
+				textEditor.getEditorInput());
+
+		IResource resource = (IResource) textEditor.getEditorInput()
+				.getAdapter(IResource.class);
+		if (resource != null) {
+			try {
+				IRegion line = document.getLineInformation(lineNumber - 1);
+				int start = line.getOffset();
+				int end = start + line.getLength() - 1;
+				/* ILineBreakpoint b = */ScriptDebugModel.createWatchPoint(
+						resource, lineNumber, start, end, new HashMap(),
+						fieldName);
+			} catch (BadLocationException e) {
+				if (DLTKCore.DEBUG) {
 					e.printStackTrace();
 				}
 			}

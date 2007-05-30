@@ -6,13 +6,12 @@ import java.net.UnknownHostException;
 
 import org.eclipse.dltk.rhino.dbgp.DBGPDebugger;
 import org.mozilla.javascript.Context;
-import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.Scriptable;
 
 public class RhinoRunner {
 
 	public static void main(String[] args) {
-		
+
 		Context cx = Context.enter();
 		if (args.length > 1) {
 			String host = args[1];
@@ -29,12 +28,19 @@ public class RhinoRunner {
 				Scriptable scope = cx.initStandardObjects();
 				synchronized (debugger) {
 					try {
+						debugger.isInited = true;
 						debugger.wait();
 					} catch (InterruptedException e) {
 						throw new IllegalStateException();
 					}
 				}
 				try {
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					cx.setGeneratingDebug(true);
 					cx.setOptimizationLevel(-1);
 					cx.evaluateReader(scope, new FileReader(args[0]), args[0],

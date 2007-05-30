@@ -27,7 +27,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 public class ScriptToggleBreakpointAdapter implements IToggleBreakpointsTarget {
-	
+
 	protected ITextEditor getPartEditor(IWorkbenchPart part) {
 		if (part instanceof ITextEditor) {
 			return (ITextEditor) part;
@@ -55,9 +55,9 @@ public class ScriptToggleBreakpointAdapter implements IToggleBreakpointsTarget {
 			throws CoreException {
 		if (selection instanceof ITextSelection) {
 
-			ITextSelection textSelection = (ITextSelection) selection;			
-			int lineNumber = textSelection.getStartLine() + 1; //one based
-				
+			ITextSelection textSelection = (ITextSelection) selection;
+			int lineNumber = textSelection.getStartLine() + 1; // one based
+
 			IResource resource = getPartResource(part);
 
 			if (resource != null) {
@@ -76,29 +76,37 @@ public class ScriptToggleBreakpointAdapter implements IToggleBreakpointsTarget {
 					}
 				}
 				ITextEditor partEditor = getPartEditor(part);
-				if (partEditor instanceof ScriptEditor){
-					ScriptEditor ed=(ScriptEditor) partEditor;
+				if (partEditor instanceof ScriptEditor) {
+					ScriptEditor ed = (ScriptEditor) partEditor;
 					IRegion lineInformation;
 					try {
-						lineInformation = ed.getScriptSourceViewer().getDocument().getLineInformation(lineNumber-1);
-						String string = ed.getScriptSourceViewer().getDocument().get(lineInformation.getOffset(), lineInformation.getLength());
+						lineInformation = ed.getScriptSourceViewer()
+								.getDocument().getLineInformation(
+										lineNumber - 1);
+						String string = ed.getScriptSourceViewer()
+								.getDocument().get(lineInformation.getOffset(),
+										lineInformation.getLength());
 						int contains = string.indexOf("function");
-						if (contains!=-1){
-							string=string.substring(contains+"function".length()).trim();
-							int apos=string.indexOf('(');
-							if (apos>=0)string=string.substring(0,apos).trim();
-							BreakpointUtils.addMethodEntryBreakpoint(partEditor, lineNumber,string,string);
+						if (contains != -1) {
+							string = string.substring(
+									contains + "function".length()).trim();
+							int apos = string.indexOf('(');
+							if (apos >= 0)
+								string = string.substring(0, apos).trim();
+							BreakpointUtils.addMethodEntryBreakpoint(
+									partEditor, lineNumber, string, string);
 							return;
-						}
-						else BreakpointUtils.addLineBreakpoint(partEditor, lineNumber);
+						} else
+							BreakpointUtils.addLineBreakpoint(partEditor,
+									lineNumber);
 					} catch (BadLocationException e) {
 						DLTKDebugPlugin.log(e);
 						return;
-					}																	
-				}				
-				else BreakpointUtils.addLineBreakpoint(partEditor, lineNumber);
+					}
+				} else
+					BreakpointUtils.addLineBreakpoint(partEditor, lineNumber);
 			}
-		} 
+		}
 	}
 
 	public boolean canToggleLineBreakpoints(IWorkbenchPart part,
@@ -117,10 +125,83 @@ public class ScriptToggleBreakpointAdapter implements IToggleBreakpointsTarget {
 
 	public void toggleWatchpoints(IWorkbenchPart part, ISelection selection)
 			throws CoreException {
+		if (selection instanceof ITextSelection) {
+
+			ITextSelection textSelection = (ITextSelection) selection;
+			int lineNumber = textSelection.getStartLine() + 1; // one based
+
+			IResource resource = getPartResource(part);
+
+			if (resource != null) {
+				IBreakpoint[] breakpoints = DebugPlugin.getDefault()
+						.getBreakpointManager().getBreakpoints(
+								ScriptModelConstants.MODEL_ID);
+
+				for (int i = 0; i < breakpoints.length; i++) {
+					IBreakpoint breakpoint = breakpoints[i];
+					if (resource.equals(breakpoint.getMarker().getResource())) {
+						if (((ILineBreakpoint) breakpoint).getLineNumber() == lineNumber) {
+							// delete existing breakpoint
+							breakpoint.delete();
+							return;
+						}
+					}
+				}
+				ITextEditor partEditor = getPartEditor(part);
+				if (partEditor instanceof ScriptEditor) {
+					ScriptEditor ed = (ScriptEditor) partEditor;
+					IRegion lineInformation;
+					try {
+						lineInformation = ed.getScriptSourceViewer()
+								.getDocument().getLineInformation(
+										lineNumber - 1);
+						String string = ed.getScriptSourceViewer()
+								.getDocument().get(lineInformation.getOffset(),
+										lineInformation.getLength());
+						int indexOf = string.indexOf('=');
+						string = string.substring(0, indexOf);
+						indexOf = string.lastIndexOf('.') + 1;
+						if (indexOf != -1)
+							string = string.substring(indexOf);
+						indexOf = string.lastIndexOf(' ' + 1);
+						if (indexOf != -1)
+							string = string.substring(indexOf).trim();
+						BreakpointUtils.addWatchPoint(partEditor, lineNumber,
+								string);
+					} catch (BadLocationException e) {
+						DLTKDebugPlugin.log(e);
+						return;
+					}
+				} else
+					BreakpointUtils.addWatchPoint(partEditor, lineNumber,
+							"Hello");
+			}
+		}
 	}
 
 	public boolean canToggleWatchpoints(IWorkbenchPart part,
 			ISelection selection) {
-		return false;
+		if (selection instanceof ITextSelection) {
+			ITextSelection ts = (ITextSelection) selection;
+			int startLine = ts.getStartLine();
+			String ta = ts.getText();
+			if (part instanceof ScriptEditor) {
+				ScriptEditor ed = (ScriptEditor) part;
+				try {
+					IRegion lineInformation = ed.getScriptSourceViewer()
+							.getDocument()
+							.getLineInformation(ts.getStartLine());
+					String string = ed.getScriptSourceViewer().getDocument()
+							.get(lineInformation.getOffset(),
+									lineInformation.getLength());
+					return string.indexOf('=') > -1;
+				} catch (BadLocationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			return ta.contains("=");
+		}
+		return true;
 	}
 }

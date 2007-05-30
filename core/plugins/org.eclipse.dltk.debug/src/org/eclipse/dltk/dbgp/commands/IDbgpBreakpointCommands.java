@@ -23,8 +23,8 @@ public interface IDbgpBreakpointCommands {
 	String setCallBreakpoint(String function, DbgpBreakpointConfig config)
 			throws DbgpException;
 
-	String setReturnBreakpoint(URI uri, String function, DbgpBreakpointConfig config)
-			throws DbgpException;
+	String setReturnBreakpoint(URI uri, String function,
+			DbgpBreakpointConfig config) throws DbgpException;
 
 	String setExceptionBreakpoint(String exception, DbgpBreakpointConfig config)
 			throws DbgpException;
@@ -32,8 +32,8 @@ public interface IDbgpBreakpointCommands {
 	String setConditionalBreakpoint(URI uri, int lineNumber, String expression,
 			DbgpBreakpointConfig config) throws DbgpException;
 
-	String setWatchBreakpoint(String expression, DbgpBreakpointConfig config)
-			throws DbgpException;
+	String setWatchBreakpoint(String expression, URI uri, int ln,
+			DbgpBreakpointConfig config) throws DbgpException;
 
 	IDbgpBreakpoint getBreakpoint(String id) throws DbgpException;
 

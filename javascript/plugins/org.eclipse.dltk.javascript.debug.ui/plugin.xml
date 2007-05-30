@@ -140,7 +140,15 @@
     <viewerContribution
           id="org.eclipse.dltk.javascript.debug.ui.viewerContribution3"
           targetID="#JavascriptRulerContext">
-
+		<action
+             actionID="RulerDoubleClick1"
+             class="org.eclipse.dltk.debug.ui.actions.RulerToggleWatchPointActionDelegate"
+             icon="icons/jwatch_obj.gif"
+             id="javascript.doubleClickWatchPointAction"
+             label="Toggle Watchpoint"
+             menubarPath="debug"
+             style="push">
+       </action>
          <action
                label="%EnableDisableBreakpoint.label"
 			   id="org.eclipse.dltk.javascript.ui.actions.RulerEnableDisableBreakpointActionDelegate"
@@ -160,6 +168,7 @@
              id="org.eclipse.dltk.javascript.debug.ui.ScriptBreakpointPropertiesRulerActionDelegate"
              label="%BreakpointProperties.label"
              menubarPath="additions"/>
+       
     </viewerContribution>    
  </extension>
 	
@@ -240,6 +249,7 @@
              style="push"
              actionID="RulerDoubleClick"
              id="javascript.doubleClickBreakpointAction"/>
+         
             
       </editorContribution>   
  </extension>

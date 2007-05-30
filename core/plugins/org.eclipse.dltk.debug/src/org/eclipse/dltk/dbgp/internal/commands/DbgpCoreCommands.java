@@ -113,14 +113,15 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		return breakpointCommands.setLineBreakpoint(uri, lineNumber, info);
 	}
 
-	public String setReturnBreakpoint(URI uri,String function, DbgpBreakpointConfig info)
-			throws DbgpException {
-		return breakpointCommands.setReturnBreakpoint(uri,function, info);
+	public String setReturnBreakpoint(URI uri, String function,
+			DbgpBreakpointConfig info) throws DbgpException {
+		return breakpointCommands.setReturnBreakpoint(uri, function, info);
 	}
 
-	public String setWatchBreakpoint(String expression,
+	public String setWatchBreakpoint(String expression, URI uri, int line,
 			DbgpBreakpointConfig info) throws DbgpException {
-		return breakpointCommands.setWatchBreakpoint(expression, info);
+		return breakpointCommands.setWatchBreakpoint(expression, uri, line,
+				info);
 	}
 
 	public void updateBreakpoint(String id, DbgpBreakpointConfig config)
@@ -155,7 +156,7 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 	public IDbgpStatus stop() throws DbgpException {
 		return continuationCommands.stop();
 	}
-	
+
 	public Map getTypeMap() throws DbgpException {
 		return dataTypeCommands.getTypeMap();
 	}
@@ -193,7 +194,8 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		return contextCommands.getContextNames(stackDepth);
 	}
 
-	public IDbgpProperty[] getContextProperties(int stackDepth) throws DbgpException {
+	public IDbgpProperty[] getContextProperties(int stackDepth)
+			throws DbgpException {
 		return contextCommands.getContextProperties(stackDepth);
 	}
 
@@ -224,8 +226,9 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		return propertyCommands.getProperty(name, stackDepth, contextId);
 	}
 
-	public IDbgpProperty getProperty(String name, int stackDepth, int contextId,
-			String dataType, String dataPage) throws DbgpException {
+	public IDbgpProperty getProperty(String name, int stackDepth,
+			int contextId, String dataType, String dataPage)
+			throws DbgpException {
 		return propertyCommands.getProperty(name, stackDepth, contextId,
 				dataType, dataPage);
 	}

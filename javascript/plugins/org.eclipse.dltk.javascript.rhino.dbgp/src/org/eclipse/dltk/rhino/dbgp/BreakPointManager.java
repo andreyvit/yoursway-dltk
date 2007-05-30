@@ -6,7 +6,8 @@ public class BreakPointManager {
 
 	private HashMap fileMap = new HashMap();
 	private HashMap ids = new HashMap();
-	private HashMap names=new HashMap();
+	private HashMap names = new HashMap();
+	private HashMap watchpoints = new HashMap();
 
 	public void removeBreakPoint(String id) {
 		BreakPoint object = (BreakPoint) ids.get(id);
@@ -15,8 +16,12 @@ public class BreakPointManager {
 	}
 
 	public final void addBreakPoint(BreakPoint point) {
-		if (point.isReturn){
+		if (point.isReturn) {
 			names.put(point.method, point);
+		}
+
+		if (point.isWatch) {
+			watchpoints.put(point.expression, point);
 		}
 		HashMap object = (HashMap) fileMap.get(point.file);
 		if (object == null) {
@@ -27,9 +32,17 @@ public class BreakPointManager {
 		ids.put("p" + point.id, point);
 	}
 
+	public BreakPoint getWatchPoint(String prop) {
+		return (BreakPoint) watchpoints.get(prop);
+	}
+
 	public void removeBreakPoint(BreakPoint point) {
-		if (point.isReturn){
+		if (point.isReturn) {
 			names.remove(point.method);
+		}
+		if (point.isWatch) {
+
+			watchpoints.remove(point.expression);
 		}
 		HashMap object = (HashMap) fileMap.get(point.file);
 		if (object == null) {
@@ -39,8 +52,9 @@ public class BreakPointManager {
 	}
 
 	public BreakPoint hit(String sourcePath, int lineNumber) {
+
 		HashMap q = (HashMap) fileMap.get(sourcePath);
-		
+
 		if (q == null)
 			return null;
 		Integer lnNumber = new Integer(lineNumber);
@@ -50,7 +64,7 @@ public class BreakPointManager {
 			return null;
 		point.currentHitCount++;
 		if (point.hitValue > 0) {
-			
+
 			if (point.hitCondition == 1) {
 				if (point.hitValue >= point.currentHitCount)
 					return null;
@@ -71,19 +85,16 @@ public class BreakPointManager {
 
 	public void updateBreakpoint(String id, String newState, String newLine,
 			String hitValue, String hitCondition, String condexpression) {
-		BreakPoint p = (BreakPoint) ids.get(id);		
+		BreakPoint p = (BreakPoint) ids.get(id);
 		if (p != null) {
 			if (newState != null) {
-				newState=newState.trim();
-				
-				if (newState.equals("enabled"))
-				{
-					
+				newState = newState.trim();
+
+				if (newState.equals("enabled")) {
+
 					p.setEnabled(true);
-				}
-				else if (newState.equals("disabled"))
-				{
-					
+				} else if (newState.equals("disabled")) {
+
 					p.setEnabled(false);
 				}
 			}
@@ -104,13 +115,15 @@ public class BreakPointManager {
 			if (hitCondition != null) {
 				p.setHitCondition(hitCondition);
 			}
-			p.expression = condexpression;
+			if (!p.isWatch) {
+				p.expression = condexpression;
+			}
 
 		}
 	}
 
 	public BreakPoint hitExit(String sn) {
-		
+
 		return (BreakPoint) names.get(sn);
 	}
 

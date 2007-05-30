@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.WeakHashMap;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
@@ -15,13 +16,16 @@ import org.mozilla.javascript.NativeJavaArray;
 import org.mozilla.javascript.NativeJavaClass;
 import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Undefined;
 import org.mozilla.javascript.UniqueTag;
 import org.mozilla.javascript.debug.DebugFrame;
 import org.mozilla.javascript.debug.DebuggableScript;
 import org.mozilla.javascript.debug.Debugger;
+import org.mozilla.javascript.debug.IDeguggerWithWatchPoints;
 
-public class DBGPDebugger extends Thread implements Debugger, Observer {
+public class DBGPDebugger extends Thread implements Debugger, Observer,
+		IDeguggerWithWatchPoints {
 
 	private Socket socket;
 	private PrintStream out;
@@ -41,6 +45,7 @@ public class DBGPDebugger extends Thread implements Debugger, Observer {
 	}
 
 	DBGPStackManager cmanager;
+	public boolean isInited;
 
 	public DBGPDebugger(Socket socket, String file, String string, Context ct)
 			throws IOException {
@@ -192,7 +197,7 @@ public class DBGPDebugger extends Thread implements Debugger, Observer {
 					{
 						String commandId = buf.substring(0, indexOf);
 						Command object = (Command) strategies.get(commandId);
-						if (object==null){
+						if (object == null) {
 							System.err.println(commandId);
 							continue;
 						}
@@ -242,5 +247,60 @@ public class DBGPDebugger extends Thread implements Debugger, Observer {
 				+ " reason=\"ok\"" + " transaction_id=\"" + runTransctionId
 				+ "\">\r\n" + "</response>\r\n" + "");
 		System.exit(0);
+	}
+
+	public void access(String property, ScriptableObject object) {
+		BreakPoint watchPoint = cmanager.getManager().getWatchPoint(property);
+		if (watchPoint != null) {
+			if (watchPoint.enabled)
+				if (watchPoint.isAccess) {
+					String wkey = watchPoint.file + watchPoint.line;
+					String s = (String) cache.get(object);
+					if ((s != null) && (s.equals(wkey))) {
+						cmanager.getObserver().update(null, this);
+						synchronized (this) {
+							try {
+								this.wait();
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+		}
+	}
+
+	WeakHashMap cache = new WeakHashMap();
+
+	public void modification(String property, ScriptableObject object) {
+		BreakPoint watchPoint = cmanager.getManager().getWatchPoint(property);
+
+		if (watchPoint != null) {
+			if (watchPoint.enabled) {
+				String sn = cmanager.getStackFrame(0).getSourceName();
+				int ln = cmanager.getStackFrame(0).getLineNumber();
+				String key = sn + ln;
+				String wkey = watchPoint.file + watchPoint.line;
+				if (key.equals(wkey)) {
+					cache.put(object, wkey);
+				}
+				if (watchPoint.isModification) {
+					Object object2 = cache.get(object);
+					if (object2 != null)
+						if (object2.equals(wkey)) {
+
+							cmanager.getObserver().update(null, this);
+							synchronized (this.cmanager) {
+								try {
+									this.cmanager.wait();
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+							}
+						}
+				}
+			}
+		}
 	}
 }

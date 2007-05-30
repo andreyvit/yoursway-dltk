@@ -6,6 +6,7 @@ import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
+import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
 import org.eclipse.dltk.debug.ui.ScriptDebugImageDescriptor;
 import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
 import org.eclipse.dltk.internal.debug.ui.DLTKDebugImages;
@@ -18,26 +19,38 @@ import org.eclipse.ui.IEditorInput;
 public class JavaScriptDebugModelPresentation extends
 		ScriptDebugModelPresentation {
 	private static final String JS_EDITOR_ID = "org.eclipse.dltk.javascript.ui.editor.JavascriptEditor";
-	static ImageRegistry registry =new ImageRegistry(Display.getDefault());
+	static ImageRegistry registry = new ImageRegistry(Display.getDefault());
 
 	static {
 		Display.getDefault().syncExec(new Runnable() {
 
 			public void run() {
-				
+
 				DLTKPluginImages
 						.get(DLTKDebugImages.IMG_OBJS_CONTENDED_MONITOR);
 			}
 
 		});
 	}
-	
 
 	public JavaScriptDebugModelPresentation() {
 
 	}
 
 	public Image getImage(Object element) {
+		if (element instanceof IScriptWatchPoint) {
+			IScriptWatchPoint w = (IScriptWatchPoint) element;
+			try {
+				if (w.isEnabled()) {
+					return DebugUITools
+							.getImage(IDebugUIConstants.IMG_OBJS_WATCHPOINT);
+				}
+			} catch (CoreException e) {
+				DLTKDebugPlugin.log(e);
+			}
+			return DebugUITools
+					.getImage(IDebugUIConstants.IMG_OBJS_WATCHPOINT_DISABLED);
+		}
 		if (element instanceof IScriptMethodEntryBreakpoint) {
 			IScriptMethodEntryBreakpoint ll = (IScriptMethodEntryBreakpoint) element;
 			int flags = 0;

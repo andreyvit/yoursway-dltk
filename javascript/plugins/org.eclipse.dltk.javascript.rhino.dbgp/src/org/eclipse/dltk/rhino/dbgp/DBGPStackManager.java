@@ -1,6 +1,7 @@
 package org.eclipse.dltk.rhino.dbgp;
 
 import java.util.ArrayList;
+import java.util.Observer;
 import java.util.WeakHashMap;
 
 import org.mozilla.javascript.Context;
@@ -16,6 +17,10 @@ public class DBGPStackManager {
 	private DBGPDebugger observer;
 
 	private BreakPointManager manager = new BreakPointManager();
+
+	public BreakPointManager getManager() {
+		return manager;
+	}
 
 	private DBGPStackManager() {
 	}
@@ -46,11 +51,11 @@ public class DBGPStackManager {
 			}
 		}
 		String sn = debugFrame.getWhere();
-		
-		if (sn != null) {			
+
+		if (sn != null) {
 			BreakPoint hit = manager.hitExit(sn);
-			if (hit!=null)			
-			checkBreakpoint(debugFrame, hit);
+			if (hit != null)
+				checkBreakpoint(debugFrame, hit);
 		}
 		stack.remove(debugFrame);
 
@@ -65,7 +70,7 @@ public class DBGPStackManager {
 	}
 
 	private void checkBreakpoint(DBGPDebugFrame frame, BreakPoint hit) {
-		
+
 		if (hit != null) {
 			if (hit.isEnabled()) {
 				if (hit.expression != null) {
@@ -131,13 +136,13 @@ public class DBGPStackManager {
 		this.notify();
 	}
 
-	public synchronized void stepOver() {		
+	public synchronized void stepOver() {
 		if (this.getStackDepth() > 1) {
 			getStackFrame(0).setSuspend(true);
 			getStackFrame(1).setSuspend(true);
 			this.needSuspend = false;
-			this.notify();
-		}				
+		}
+		this.notify();
 	}
 
 	public synchronized void stepIn() {
@@ -162,5 +167,9 @@ public class DBGPStackManager {
 			String hitValue, String hitCondition, String condExpr) {
 		this.manager.updateBreakpoint(id, newState, newLine, hitValue,
 				hitCondition, condExpr);
+	}
+
+	public Observer getObserver() {
+		return observer;
 	}
 }
