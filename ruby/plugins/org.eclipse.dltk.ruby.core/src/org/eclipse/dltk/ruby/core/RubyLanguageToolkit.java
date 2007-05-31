@@ -84,7 +84,7 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	}
 
 	public IStatus validateSourceModule(IPath resource) {
-		if( resource.toString().startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY.toString())) {
+		if( resource.toString().startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
 			return IModelStatus.VERIFIED_OK;
 		}
 		return validateSourceModule(resource.lastSegment());

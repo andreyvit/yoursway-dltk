@@ -44,6 +44,8 @@ import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.SourceModule;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
 
+import sun.org.mozilla.javascript.internal.ScriptRuntime;
+
 public class MixinBuilder implements IScriptBuilder {
 	public IStatus[] buildResources(IDLTKProject project, List resources, IProgressMonitor monitor) {
 		return null;
@@ -77,8 +79,6 @@ public class MixinBuilder implements IScriptBuilder {
 //			waitUntilIndexReady(toolkit);
 			IPath fullPath = project.getProject().getFullPath();
 			
-		
-			
 			mixinIndex = manager.getSpecialIndex("mixin",  /*project.getProject()*/ fullPath.toString(), fullPath.toOSString() );
 			imon = mixinIndex.monitor;
 			imon.enterWrite();
@@ -92,7 +92,7 @@ public class MixinBuilder implements IScriptBuilder {
 				
 				IProjectFragment projectFragment = (IProjectFragment)element.getAncestor(IModelElement.PROJECT_FRAGMENT);
 				IPath containerPath = project.getPath();
-				if( projectFragment instanceof ExternalProjectFragment ) {
+				if( projectFragment instanceof ExternalProjectFragment || projectFragment instanceof BuiltinProjectFragment ) {
 					IPath path = projectFragment.getPath();
 					if( indexes.containsKey(path)) {
 						currentIndex = (Index)indexes.get(path);
@@ -109,21 +109,6 @@ public class MixinBuilder implements IScriptBuilder {
 							containerPath = path;
 						}
 					}
-				}
-				else if( projectFragment instanceof BuiltinProjectFragment ) {
-					IPath path = projectFragment.getPath();
-//					if( indexes.containsKey(path)) {
-//						currentIndex = (Index)indexes.get(path);
-					containerPath = path;
-//					}
-//					else {
-//						Index index = manager.getSpecialIndex("mixin", path.toString(), path.toOSString() );
-//						if( index != null ) {
-////							currentIndex = index;
-//							indexes.put(path, index);
-//							containerPath = path.removeLastSegments(1);
-//						}
-//					}
 				}
 				
 				char[] source = element.getSourceAsCharArray();

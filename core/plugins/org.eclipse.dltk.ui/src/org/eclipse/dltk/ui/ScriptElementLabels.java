@@ -758,7 +758,7 @@ public class ScriptElementLabels {
 		if (root.isArchive())
 			getArchiveLabel(root, flags, buf);
 		else {
-			if( root.getPath().toString().startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY.toString())) {
+			if( root.getPath().toString().startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
 				buf.append(BUILTINS_FRAGMENT);
 			}
 			else if (root.isExternal()) {

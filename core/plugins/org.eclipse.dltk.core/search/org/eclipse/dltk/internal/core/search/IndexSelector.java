@@ -275,18 +275,28 @@ public class IndexSelector {
 		// checkSpecialCase(manager, locations, prjPath);
 		locations.add(manager.computeIndexLocation(new Path(prjPath)));
 		// add builtin indexes
-		IPath path = projectsAndArchives;
-//		if (!mixin) {
-			if (!path.equals(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY)) {
-				DLTKProject project = (DLTKProject) getScriptProject(path,
-						model);
-				if (project != null) {
-					IPath p = new Path("#special#builtin#")
-							.append(projectsAndArchives);
-					locations.add(manager.computeIndexLocation(p));
-				}
-			}
-//		}
+//		IPath path = projectsAndArchives;
+////		if (!mixin) {
+//			if (!path.toString().startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
+//				DLTKProject project = (DLTKProject) getScriptProject(path,
+//						model);
+//				if (project != null) {
+//					IPath p = new Path("#special#builtin#")
+//							.append(projectsAndArchives);
+//					locations.add(manager.computeIndexLocation(p));
+//				}
+//			}
+//			else {
+//				path = path.removeFirstSegments(1);
+//				DLTKProject project = (DLTKProject) getScriptProject(path,
+//						model);
+//				if (project != null) {
+//					IPath p = new Path("#special#builtin#")
+//							.append(projectsAndArchives);
+//					locations.add(manager.computeIndexLocation(p));
+//				}
+//			}
+////		}
 	}
 
 //	private void checkSpecialCase(IndexManager manager, SimpleSet locations,

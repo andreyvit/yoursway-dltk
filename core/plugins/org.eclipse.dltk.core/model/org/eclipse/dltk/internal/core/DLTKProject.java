@@ -207,7 +207,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 */
 	public IProjectFragment getProjectFragment(IPath path) {
 		boolean isBuiltin = path.toString().startsWith(
-				IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY.toString());
+				IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR);
 		if (!path.isAbsolute() && !isBuiltin) {
 			path = getPath().append(path);
 		}
@@ -785,10 +785,9 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			if (referringEntry != null && !resolvedEntry.isExported())
 				return;
 			if (checkExistency) {
-				if (entryPath.equals(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY)
+				if (entryPath.toString().startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)
 						&& BuiltinProjectFragment.isSupported(this)) {
-					root = new BuiltinProjectFragment(entryPath.append("/")
-							.append(this.getPath()), this);
+					root = new BuiltinProjectFragment(entryPath, this);
 					break;
 				}
 				Object target = Model.getTarget(workspaceRoot, entryPath,

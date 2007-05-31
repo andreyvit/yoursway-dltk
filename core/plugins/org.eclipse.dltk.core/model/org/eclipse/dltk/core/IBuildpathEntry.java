@@ -40,6 +40,7 @@ public interface IBuildpathEntry {
 	int BPE_CONTAINER = 5;
 
 	IPath BUILTIN_EXTERNAL_ENTRY = new Path("#special#builtin#");
+	String BUILTIN_EXTERNAL_ENTRY_STR = "#special#builtin#";
 	
 	/**
 	 * Returns whether the access rules of the project's exported entries should be combined with this entry's access rules.

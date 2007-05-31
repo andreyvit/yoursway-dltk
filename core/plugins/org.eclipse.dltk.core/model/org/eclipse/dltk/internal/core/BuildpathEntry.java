@@ -1139,7 +1139,7 @@ public class BuildpathEntry implements IBuildpathEntry {
 			break;
 		// library entry check
 		case IBuildpathEntry.BPE_LIBRARY:
-			if( path.equals(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY)) {
+			if( path.toString().startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
 				break;
 			}
 			if (path != null && path.isAbsolute() && !path.isEmpty()) {

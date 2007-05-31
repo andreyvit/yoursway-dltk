@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.util.SimpleLookupTable;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
@@ -85,9 +86,12 @@ class AddBuiltinFolderToIndex extends IndexRequest {
 			return true; // nothing to do
 
 		/* ensure no concurrent write access to index */
-		IPath fullPath = project.getProject().getFullPath();
-		String cfp = fullPath.toString();
-		Index index = this.manager.getSpecialIndex("builtin", cfp, containerPath.toOSString() + fullPath.toString() );
+//		IPath fullPath = project.getProject().getFullPath();
+		String cfp = containerPath.toString();
+		if( cfp.startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
+			cfp = cfp.substring(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR.length());
+		}
+		Index index = this.manager.getSpecialIndex("builtin", cfp, containerPath.toOSString() );
 		if (index == null) {
 			if (JobManager.VERBOSE)
 				org.eclipse.dltk.internal.core.util.Util
@@ -118,7 +122,7 @@ class AddBuiltinFolderToIndex extends IndexRequest {
 			long initialTime = System.currentTimeMillis();
 			
 			SearchParticipant participant = SearchEngine
-					.getDefaultSearchParticipant();
+				 	.getDefaultSearchParticipant();
 			
 			visit(null, scriptProject, parser, requestor, indexManager, container,
 					true, participant, index);

@@ -199,7 +199,7 @@ public class BPListLabelProvider extends LabelProvider
 	public String getCPListElementText( BPListElement cpentry ) {
 
 		IPath path = cpentry.getPath( );
-		if( path.equals(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY)) {
+		if( path.toString().startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
 			return ScriptElementLabels.BUILTINS_FRAGMENT;
 		}
 		switch( cpentry.getEntryKind( ) ) {

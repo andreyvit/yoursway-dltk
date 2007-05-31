@@ -158,7 +158,7 @@ public class InterpreterContainer implements IBuildpathContainer {
 		// Add builtin entry.
 		{
 			IBuildpathAttribute[] attributes = new IBuildpathAttribute[0];
-			entries.add(DLTKCore.newBuiltinEntry(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY, EMPTY_RULES, attributes, BuildpathEntry.INCLUDE_ALL, new IPath[0], false, true ));
+			entries.add(DLTKCore.newBuiltinEntry(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY.append(interpreter.getInstallLocation().getAbsolutePath()), EMPTY_RULES, attributes, BuildpathEntry.INCLUDE_ALL, new IPath[0], false, true ));
 		}
 		return (IBuildpathEntry[]) entries.toArray(new IBuildpathEntry[entries.size()]);
 	}

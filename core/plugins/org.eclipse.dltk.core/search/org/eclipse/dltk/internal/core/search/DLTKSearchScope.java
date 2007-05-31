@@ -580,9 +580,9 @@ public class DLTKSearchScope extends AbstractSearchScope {
 	 */
 	public AccessRuleSet getAccessRuleSet(String relativePath,
 			String containerPath) {
-		if( containerPath.startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY.toString())) {
-			containerPath = IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY.toString();
-		}
+//		if( containerPath.startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
+//			containerPath = IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR + relativePath;
+//		}
 		int index = indexOf(containerPath, relativePath);
 		if (index == -1) {
 			// this search scope does not enclose given path
@@ -677,7 +677,7 @@ public class DLTKSearchScope extends AbstractSearchScope {
 		int separatorIndex = resourcePathString
 				.indexOf(FILE_ENTRY_SEPARATOR);
 		boolean isZIPFile = separatorIndex != -1;
-		boolean isBuiltin = resourcePathString.startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY.toString());
+		boolean isBuiltin = resourcePathString.startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR);
 		if (isZIPFile) {
 			// internal or external jar (case 3, 4, or 5)
 			String zipPath = resourcePathString.substring(0, separatorIndex);
@@ -700,7 +700,7 @@ public class DLTKSearchScope extends AbstractSearchScope {
 							.getProjectFragment(this.containerPaths[index]);
 				}
 				if( isBuiltin ) {
-					return project.getProjectFragment(this.containerPaths[index] + "/" + projectPath);
+					return project.getProjectFragment(this.containerPaths[index]);
 				}
 				Object target = Model.getTarget(ResourcesPlugin
 						.getWorkspace().getRoot(), new Path(
