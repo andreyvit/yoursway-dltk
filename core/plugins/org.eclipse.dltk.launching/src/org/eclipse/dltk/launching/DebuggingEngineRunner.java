@@ -143,6 +143,7 @@ public class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			sleep(DEFAULT_PAUSE);
 
 			try {
+				newConfig.setProperty("NO_PROCESS", "true");
 				super.run(newConfig, launch, monitor);
 			} catch (CoreException e) {
 				abort(DLTKLaunchingPlugin.ID_PLUGIN,

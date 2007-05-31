@@ -211,6 +211,10 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		String[] cmdLine = getRealCommandLine(config, launch);
 		Process p = exec(cmdLine, getRealWorkingDirectory(config, launch),
 				getRealEnvironment(config, launch));
+		
+		if (config.getProperty("NO_PROCESS") != null) {
+			return;
+		}
 
 		if (p == null) {
 			return;
