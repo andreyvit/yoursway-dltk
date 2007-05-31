@@ -28,4 +28,18 @@
            name="Ruby files source locator">
      </sourceLocator>
   </extension>
+  <extension
+        point="org.eclipse.dltk.launching.debuggingEngine">
+     <engineContribution
+           natureId="org.eclipse.dltk.ruby.core.nature">
+        <engine
+              class="org.eclipse.dltk.ruby.internal.launching.debug.BasicDebuggerConfigModifierFactory"
+              description="Very simple debugger"
+              id="org.eclipse.dltk.ruby.launching.SimpleRubyDebugger"
+              modelId="org.eclipse.dltk.debug.rubyModel"
+              name="Simple debugger"
+              priority="0">
+        </engine>
+     </engineContribution>
+  </extension>
 </plugin>

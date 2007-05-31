@@ -78,8 +78,15 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.dltk.debug.core.IDebuggingEngineRunnerFactory"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.dltk.launching.IInterpreterConfigModifierFactory"/>
                </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="modelId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
             </annotation>
          </attribute>
       </complexType>
@@ -93,7 +100,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.dltk.debug.core.IDebuggingEngineSelector"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.dltk.launching.debug.IDebuggingEngineSelector"/>
                </appInfo>
             </annotation>
          </attribute>

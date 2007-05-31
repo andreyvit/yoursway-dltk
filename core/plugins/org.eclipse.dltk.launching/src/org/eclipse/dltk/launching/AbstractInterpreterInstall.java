@@ -15,9 +15,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.dltk.debug.core.DebuggingEngineManager;
-import org.eclipse.dltk.debug.core.IDebuggingEngine;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
+import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
+import org.eclipse.dltk.launching.debug.IDebuggingEngine;
 
 /**
  * Abstract implementation of a interpreter install.

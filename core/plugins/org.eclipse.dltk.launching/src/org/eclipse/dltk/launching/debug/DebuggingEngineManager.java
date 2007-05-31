@@ -1,4 +1,4 @@
-package org.eclipse.dltk.debug.core;
+package org.eclipse.dltk.launching.debug;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +10,11 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
+import org.eclipse.dltk.internal.launching.debug.DebuggingEngine;
+import org.eclipse.dltk.internal.launching.debug.PriorityBasedDebuggingEngineSelector;
+import org.eclipse.dltk.launching.IInterpreterConfigModifier;
+import org.eclipse.dltk.launching.IInterpreterConfigModifierFactory;
 
 public class DebuggingEngineManager {
 	private static DebuggingEngineManager instance;
@@ -25,10 +30,11 @@ public class DebuggingEngineManager {
 	private Map natureToEnginesMap;
 	private Map natureToSelectorMap;
 
-	private static final String DEBUGGING_ENGINE_EXT_POINT = DLTKDebugPlugin.PLUGIN_ID
+	private static final String DEBUGGING_ENGINE_EXT_POINT = DLTKLaunchingPlugin.ID_PLUGIN
 			+ ".debuggingEngine";
 
 	private static final String ID = "id";
+	private static final String MODEL_ID = "modelId";
 	private static final String NATURE_ID = "natureId";
 	private static final String NAME = "name";
 	private static final String DESCRIPTION = "description";
@@ -37,16 +43,17 @@ public class DebuggingEngineManager {
 
 	private void addEngine(String natureId, IConfigurationElement element) {
 		final String id = element.getAttribute(ID);
+		final String modelId = element.getAttribute(MODEL_ID);
 		final String name = element.getAttribute(NAME);
 		final String description = element.getAttribute(DESCRIPTION);
 		final int priority = Integer.parseInt(element.getAttribute(PRIORITY));
 
 		try {
 			Object object = element.createExecutableExtension(CLASS);
-			if (object instanceof IDebuggingEngineRunnerFactory) {
-				IDebuggingEngineRunnerFactory factory = (IDebuggingEngineRunnerFactory) object;
+			if (object instanceof IInterpreterConfigModifierFactory ) {
+				IInterpreterConfigModifierFactory factory = (IInterpreterConfigModifierFactory) object;
 
-				IDebuggingEngine engine = new DebuggingEngine(id, natureId,
+				IDebuggingEngine engine = new DebuggingEngine(id, modelId, natureId,
 						name, description, priority, factory);
 
 				List engines = (List) natureToEnginesMap.get(natureId);

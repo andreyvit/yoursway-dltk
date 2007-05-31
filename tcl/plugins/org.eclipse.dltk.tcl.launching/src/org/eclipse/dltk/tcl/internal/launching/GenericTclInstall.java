@@ -22,16 +22,23 @@ public class GenericTclInstall extends AbstractInterpreterInstall {
 	}
 
 	public IInterpreterRunner getInterpreterRunner(String mode) {
+		// IInterpreterRunner runner = super.getInterpreterRunner(mode);
+
+		// if (runner != null) {
+		// return runner;
+		// }
+
 		if (mode.equals(ILaunchManager.RUN_MODE)) {
 			return new TclInterpreterRunner(this);
 		} else if (mode.equals(ILaunchManager.DEBUG_MODE)) {
 			return new TclInterpreterDebugger(this);
-		} 
-		
-		//TODO: possible throw exception
+		}
+
+		// TODO: possible throw exception and handle it by status like: No
+		// runner
 		return null;
 	}
-	
+
 	public String getNatureId() {
 		return TclNature.NATURE_ID;
 	}

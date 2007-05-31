@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
 
 import com.ibm.icu.text.DateFormat;
@@ -171,19 +170,6 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	}
 
 	/**
-	 * Combines and returns Interpreter arguments specified by the runner
-	 * configuration, with those specified by the Interpreter install, if any.
-	 * 
-	 * @param configuration
-	 *            runner configuration
-	 * @param InterpreterInstall
-	 *            Interpreter install
-	 * @return combined Interpreter arguments specified by the runner
-	 *         configuration and Interpreter install
-	 * 
-	 */
-
-	/**
 	 * Returns the working directory to use for the launched Interpreter, or
 	 * <code>null</code> if the working directory is to be inherited from the
 	 * current process.
@@ -197,27 +183,20 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
 		IProgressMonitor subMonitor = getSubMonitor(monitor);
-		
-		String[] interpreterArgs = interpreterInstall.getInterpreterArguments();
-		// TODO: combine with interpreter args
-		
-		String[] cmdLine = config.renderCommandLine(interpreterInstall
-				.getInstallLocation().toString());
 
-		ILaunchConfiguration configuration = launch.getLaunchConfiguration();
-
-	//	if (configuration != null) {
-			// TODO: redesign
-			// boolean useDltk = configuration.getAttribute(
-			// IDLTKLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT,
-			// false);
-// if (useDltk) {
-// String id = configuration.getAttribute(
-// IDLTKLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID,
-// (String) null);
-// cmdLine = alterCommandLine(cmdLine, id);
-// }
-		//}
+		// ILaunchConfiguration configuration = launch.getLaunchConfiguration();
+		// if (configuration != null) {
+		// TODO: redesign
+		// boolean useDltk = configuration.getAttribute(
+		// IDLTKLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT,
+		// false);
+		// if (useDltk) {
+		// String id = configuration.getAttribute(
+		// IDLTKLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID,
+		// (String) null);
+		// cmdLine = alterCommandLine(cmdLine, id);
+		// }
+		// }
 
 		subMonitor.worked(1);
 
@@ -229,9 +208,10 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		subMonitor
 				.subTask(LaunchingMessages.StandardInterpreterRunner_Starting___3);
 
-		Process p = exec(cmdLine, config.getWorkingDirectory(), config
-				.getEnvironmentAsStrings());
-		
+		String[] cmdLine = getRealCommandLine(config, launch);
+		Process p = exec(cmdLine, getRealWorkingDirectory(config, launch),
+				getRealEnvironment(config, launch));
+
 		if (p == null) {
 			return;
 		}
@@ -249,6 +229,28 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 
 		subMonitor.worked(1);
 		subMonitor.done();
+	}
+
+	protected String[] getRealCommandLine(InterpreterConfig config,
+			ILaunch launch) throws CoreException {
+		String[] interpreterArgs = interpreterInstall.getInterpreterArguments();
+		
+		String exe = (String)config.getProperty("OVERRIDE_EXE");
+		if (exe == null) {
+			exe = constructProgramString();
+		}
+
+		return config.renderCommandLine(exe);
+	}
+
+	protected File getRealWorkingDirectory(InterpreterConfig config,
+			ILaunch launch) throws CoreException {
+		return config.getWorkingDirectory();
+	}
+
+	protected String[] getRealEnvironment(InterpreterConfig config,
+			ILaunch launch) throws CoreException {
+		return config.getEnvironmentAsStrings();
 	}
 
 	private static IProgressMonitor getSubMonitor(IProgressMonitor monitor) {

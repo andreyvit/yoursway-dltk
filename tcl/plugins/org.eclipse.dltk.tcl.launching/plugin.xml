@@ -48,6 +48,20 @@
            id="tclSourceLocator"
            name="org.eclipse.dltk.tcl.launching.tclSourceLocator"/>
   </extension>
+  <extension
+        point="org.eclipse.dltk.launching.debuggingEngine">
+     <engineContribution
+           natureId="org.eclipse.dltk.tcl.core.nature">
+        <engine
+              class="org.eclipse.dltk.tcl.launching.debug.ActiveStateDebuggerConfigModifierFactory"
+              description="ActiveState Tcl Debugger"
+              id="org.eclipse.dltk.tcl."
+              modelId="org.eclipse.dltk.debug.tclModel"
+              name="Tcl Debugger (from ActiveState)"
+              priority="0">
+        </engine>
+     </engineContribution>
+  </extension>
   
 
 

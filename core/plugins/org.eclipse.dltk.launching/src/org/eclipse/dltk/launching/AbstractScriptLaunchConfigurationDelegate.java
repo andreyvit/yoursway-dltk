@@ -669,7 +669,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	}
 
 	// Should be overriden in for any language
-	protected InterpreterConfig createInterpreterConfiguration(
+	protected InterpreterConfig createInterpreterConfig(
 			ILaunchConfiguration configuration, ILaunch launch)
 			throws CoreException {
 
@@ -692,9 +692,6 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		config.addEnvVars(DebugPlugin.getDefault().getLaunchManager()
 				.getNativeEnvironmentCasePreserved());
 
-		// TODO:
-		// getInterpreterSpecificAttributesMap(configuration)
-
 		return config;
 	}
 
@@ -714,7 +711,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 					.subTask(LaunchingMessages.ScriptLaunchConfigurationDelegate_Verifying_launch_attributes____1);
 
 			// IInterpreterRunner
-			InterpreterConfig config = createInterpreterConfiguration(
+			InterpreterConfig config = createInterpreterConfig(
 					configuration, launch);
 
 			if (monitor.isCanceled()) {

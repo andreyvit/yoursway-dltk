@@ -56,7 +56,7 @@ public class RubyLaunchConfigurationDelegate extends
 
 	protected void addEncodingInterpreterArg(InterpreterConfig config,
 			ILaunchConfiguration configuration) throws CoreException {
-		if (!config.hasInterpreterArgWithRegex("-K.*")) {
+		if (!config.hasMatchedInterpreterArg("-K.*")) {
 			String charset = getCharset(configuration);
 			if (charset != null) {
 				config.addInterpreterArg(getCharsetInterpreterFlag(charset));
@@ -82,11 +82,11 @@ public class RubyLaunchConfigurationDelegate extends
 		config.addInterpreterArg(sb.toString());
 	}
 
-	protected InterpreterConfig createInterpreterConfiguration(
+	protected InterpreterConfig createInterpreterConfig(
 			ILaunchConfiguration configuration, ILaunch launch)
 			throws CoreException {
 
-		InterpreterConfig config = super.createInterpreterConfiguration(
+		InterpreterConfig config = super.createInterpreterConfig(
 				configuration, launch);
 
 		addEncodingInterpreterArg(config, configuration);
@@ -95,3 +95,5 @@ public class RubyLaunchConfigurationDelegate extends
 		return config;
 	}
 }
+
+

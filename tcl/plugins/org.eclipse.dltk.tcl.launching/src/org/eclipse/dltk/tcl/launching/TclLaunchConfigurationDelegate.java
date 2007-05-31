@@ -63,10 +63,10 @@ public class TclLaunchConfigurationDelegate extends
 		 */
 	}
 
-	protected InterpreterConfig createInterpreterConfiguration(
+	protected InterpreterConfig createInterpreterConfig(
 			ILaunchConfiguration configuration, ILaunch launch)
 			throws CoreException {
-		InterpreterConfig config = super.createInterpreterConfiguration(
+		InterpreterConfig config = super.createInterpreterConfig(
 				configuration, launch);
 
 		addLibpathEnvVar(config, configuration);

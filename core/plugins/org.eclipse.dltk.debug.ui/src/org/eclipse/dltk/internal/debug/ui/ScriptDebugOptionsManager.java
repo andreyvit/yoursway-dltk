@@ -102,6 +102,7 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 				}
 			}
 		};
+		
 		try {
 			ResourcesPlugin.getWorkspace().run(runnable, null, 0, null);
 		} catch (CoreException e) {

@@ -8,6 +8,7 @@
    <extension-point id="runtimeBuildpathEntries" name="%runtimeBuildpathEntries" schema="schema/runtimeBuildpathEntries.exsd"/>
    <extension-point id="interpreterInstallTypes" name="%interpreterInstallTypes" schema="schema/interpreterInstallTypes.exsd"/>
    <extension-point id="interpreterInstalls" name="%interpreterInstalls" schema="schema/interpreterInstalls.exsd"/>
+   <extension-point id="debuggingEngine" name="Debugging Engine" schema="schema/debuggingEngine.exsd"/>
 
   <extension
         point="org.eclipse.dltk.launching.runtimeBuildpathEntryResolvers">
