@@ -24,7 +24,8 @@ import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.templates.TemplateCompletionProcessor;
 
-public class JavaScriptTypeCompletionProposalComputer extends ScriptCompletionProposalComputer {
+public class JavaScriptTypeCompletionProposalComputer extends
+		ScriptCompletionProposalComputer {
 
 	public JavaScriptTypeCompletionProposalComputer() {
 	}
@@ -34,7 +35,7 @@ public class JavaScriptTypeCompletionProposalComputer extends ScriptCompletionPr
 		List types = super.computeCompletionProposals(context, monitor);
 		return types;
 	}
-	
+
 	protected TemplateCompletionProcessor createTemplateProposalComputer(
 			ScriptContentAssistInvocationContext context) {
 		return new JavaScriptTemplateCompletionProcessor(context);
@@ -45,7 +46,8 @@ public class JavaScriptTypeCompletionProposalComputer extends ScriptCompletionPr
 		System.out.println("Offset: " + context.getInvocationOffset());
 
 		if (DLTKCore.DEBUG) {
-			System.out.println("TclTypeCompletionProposalComputer.computeContextInformation()");
+			System.out
+					.println("TclTypeCompletionProposalComputer.computeContextInformation()");
 		}
 		// if (context instanceof ScriptContentAssistInvocationContext) {
 		// ScriptContentAssistInvocationContext scriptContext=
@@ -67,13 +69,18 @@ public class JavaScriptTypeCompletionProposalComputer extends ScriptCompletionPr
 
 		List list = new ArrayList();
 		while (iter.hasNext()) {
-			IScriptCompletionProposal proposal = (IScriptCompletionProposal) iter.next();
-			IContextInformation contextInformation = proposal.getContextInformation();
-			if (contextInformation==null){
+			Object next = iter.next();
+			if (!(next instanceof IScriptCompletionProposal))
+				continue;
+			IScriptCompletionProposal proposal = (IScriptCompletionProposal) next;
+			IContextInformation contextInformation = proposal
+					.getContextInformation();
+			if (contextInformation == null) {
 				continue;
 			}
 			if (DLTKCore.DEBUG) {
-				System.out.println("Proposal: " + proposal + ", info: " + contextInformation.getInformationDisplayString());
+				System.out.println("Proposal: " + proposal + ", info: "
+						+ contextInformation.getInformationDisplayString());
 			}
 			list.add(contextInformation);
 		}
@@ -85,16 +92,17 @@ public class JavaScriptTypeCompletionProposalComputer extends ScriptCompletionPr
 	}
 
 	public void sessionEnded() {
-		
+
 	}
 
 	public void sessionStarted() {
-		
+
 	}
 
 	protected ScriptCompletionProposalCollector createCollector(
 			ScriptContentAssistInvocationContext context) {
-		return new JavaScriptCompletionProposalCollector(context.getSourceModule());
+		return new JavaScriptCompletionProposalCollector(context
+				.getSourceModule());
 	}
 
 }

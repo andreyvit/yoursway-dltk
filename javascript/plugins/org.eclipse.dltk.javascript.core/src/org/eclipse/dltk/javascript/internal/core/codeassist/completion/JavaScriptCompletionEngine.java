@@ -59,11 +59,11 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	public JavaScriptCompletionEngine(/*
-	 * ISearchableEnvironment
-	 * nameEnvironment, CompletionRequestor
-	 * requestor, Map settings, IDLTKProject
-	 * dltkProject
-	 */) {
+										 * ISearchableEnvironment
+										 * nameEnvironment, CompletionRequestor
+										 * requestor, Map settings, IDLTKProject
+										 * dltkProject
+										 */) {
 	}
 
 	protected int getEndOfEmptyToken() {
@@ -204,17 +204,17 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 			names.put(name, rfs.get(name));
 		}
 		ReferenceResolverContext createResolverContext = buildContext;
-		Set resolveGlobals = Collections.EMPTY_SET;
-		// createResolverContext.resolveGlobals(calculator
-		// .getCompletion());
+		Set resolveGlobals = createResolverContext.resolveGlobals(calculator
+				.getCompletion());
 		it = resolveGlobals.iterator();
+		HashSet classes = new HashSet();
 		while (it.hasNext()) {
 			Object o = it.next();
 			if (o instanceof IReference) {
 				IReference r = (IReference) o;
-				if (completedNames.contains(r.getName()))
-					continue;
-				names.put(r.getName(), r);
+				if (!completedNames.contains(r.getName())) {
+					classes.add(r);
+				}
 			}
 		}
 		names.remove("!!!returnValue");
@@ -227,6 +227,14 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 			ia++;
 		}
 		findLocalVariables(token, choices, true, false);
+		choices = new char[classes.size()][];
+		ia = 0;
+		for (Iterator iterator = classes.iterator(); iterator.hasNext();) {
+			IReference name = (IReference) iterator.next();
+			choices[ia] = name.getName().toCharArray();
+			ia++;
+		}
+		findElements(token, choices, true, false, CompletionProposal.TYPE_REF);
 	}
 
 	private void doCompletionOnMember(ReferenceResolverContext buildContext,

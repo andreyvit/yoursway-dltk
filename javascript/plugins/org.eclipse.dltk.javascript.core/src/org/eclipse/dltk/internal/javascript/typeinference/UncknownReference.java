@@ -20,6 +20,7 @@ public class UncknownReference implements IReference {
 
 	private String name;
 	private final boolean childIsh;
+	boolean fRef;
 
 	protected ModelElement parent;
 	private int offset;
@@ -103,7 +104,11 @@ public class UncknownReference implements IReference {
 	}
 
 	public boolean isFunctionRef() {
-		return false;
+		return fRef;
+	}
+
+	public void setFunctionRef() {
+		fRef = true;
 	}
 
 }
