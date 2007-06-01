@@ -22,6 +22,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.validators.core.AbstractValidator;
 import org.eclipse.dltk.validators.core.IValidatorType;
+import org.eclipse.dltk.validators.internal.core.ValidatorsCore;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -29,12 +30,14 @@ import org.w3c.dom.NodeList;
 
 public class ExternalChecker extends AbstractValidator {
 
+	private static final String EXTENSIONS = "scriptPattrn";
 	private String arguments;
 	private IPath commmand;
 	boolean initialized = false;
 	private static final String ARGUMENTS = "arguments";
 	private static final String COMMAND = "command";
 	private List rules = new ArrayList();
+	private String extensions;
 
 	public void setCommand(String text) {
 		this.commmand = new Path(text);
@@ -110,7 +113,7 @@ public class ExternalChecker extends AbstractValidator {
 		super(id, name, type);
 		this.arguments = "%f";
 		this.commmand = new Path("");
-
+		this.extensions = "*";
 	}
 
 	protected ExternalChecker(String id, IValidatorType type) {
@@ -133,6 +136,7 @@ public class ExternalChecker extends AbstractValidator {
 		initialized = true;
 		this.commmand = new Path((element.getAttribute(COMMAND)));
 		this.arguments = element.getAttribute(ARGUMENTS);
+		this.extensions = element.getAttribute(EXTENSIONS);
 
 		NodeList nodes = element.getChildNodes();
 		rules.clear();
@@ -151,6 +155,7 @@ public class ExternalChecker extends AbstractValidator {
 		super.storeTo(doc, element);
 		element.setAttribute(ARGUMENTS, this.arguments);
 		element.setAttribute(COMMAND, this.commmand.toOSString());
+		element.setAttribute(EXTENSIONS, this.extensions);
 
 		for (int i = 0; i < rules.size(); i++) {
 			Element elem = doc.createElement("rule");
@@ -194,10 +199,24 @@ public class ExternalChecker extends AbstractValidator {
 
 	public IStatus validate(ISourceModule module, OutputStream console) {
 		
-		
+		String elementName = module.getElementName();
+		String[] split = this.extensions.split(";");
+		boolean found = false;
+		for (int i = 0; i < split.length; i++) {
+			if( elementName.endsWith(split[i]) || split[i].equals("*") ) {
+				found = true;
+				break;
+			}
+		}
+		if( this.extensions.equals("")) {
+			found = true;
+		}
+		if( !found ) {
+			return Status.OK_STATUS;
+		}
 		IResource resource = module.getResource();
 		if (resource == null) {
-			return Status.CANCEL_STATUS;
+			return new Status(IStatus.ERROR, ValidatorsCore.PLUGIN_ID, "SourceModule resource is null");
 		}
 		
 		try {
@@ -342,5 +361,13 @@ public class ExternalChecker extends AbstractValidator {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public String getExtensions() {
+		return extensions;
+	}
+
+	public void setExtensions(String scriptPattern) {
+		this.extensions = scriptPattern;
 	}
 }

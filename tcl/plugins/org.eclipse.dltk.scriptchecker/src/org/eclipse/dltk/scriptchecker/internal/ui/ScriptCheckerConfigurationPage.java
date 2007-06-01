@@ -53,6 +53,12 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 	private StringDialogField fArguments;
 	private SelectionButtonDialogField fStyle;
 	private SelectionButtonDialogField fSyntax;
+	
+	private SelectionButtonDialogField fReferences;
+	private SelectionButtonDialogField fReport;
+	private SelectionButtonDialogField fDiffs;
+	private SelectionButtonDialogField fSummary;
+	
 	private ComboDialogField fSeverity;
 
 	private Table fTable;
@@ -74,6 +80,10 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 		scriptChecker.setSeverity(this.fSeverity.getText());
 		scriptChecker.setStyle(this.fStyle.isSelected());
 		scriptChecker.setSyntax(this.fSyntax.isSelected());
+		scriptChecker.setDiffs( this.fDiffs.isSelected());
+		scriptChecker.setReferences( this.fReferences.isSelected());
+		scriptChecker.setSummary( this.fSummary.isSelected());
+		scriptChecker.setReport( this.fReport.isSelected());
 	}
 
 	class ATSStyleContentProvider implements IStructuredContentProvider {
@@ -155,6 +165,10 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 		this.fSeverity.doFillIntoGrid(options, 2);
 		this.fStyle.doFillIntoGrid(options, 2);
 		this.fSyntax.doFillIntoGrid(options, 2);
+		this.fReferences.doFillIntoGrid(options, 2);
+		this.fDiffs.doFillIntoGrid(options, 2);
+		this.fSummary.doFillIntoGrid(options, 2);
+		this.fReport.doFillIntoGrid(options, 2);
 	}
 
 	private void createATSStyle(final Composite parent, int columns) {
@@ -289,6 +303,10 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 		this.fStyle.setSelection(scriptChecker.isStyle());
 		this.fSyntax.setSelection(scriptChecker.isSyntax());
 		this.fSeverity.selectItem(scriptChecker.getSeverity());
+		this.fDiffs.setSelection(scriptChecker.isDiffs());
+		this.fReferences.setSelection(scriptChecker.isReferences());
+		this.fReport.setSelection(scriptChecker.isReport());
+		this.fSummary.setSelection(scriptChecker.isSummary());
 	}
 
 	private void createLabel(Composite parent, String content, int columns) {
@@ -349,6 +367,18 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 		this.fSeverity = new ComboDialogField(SWT.DROP_DOWN | SWT.READ_ONLY);
 		this.fSeverity.setLabelText("Severity");
 		this.fSeverity.setItems(SEVERITY);
+		
+		this.fDiffs = new SelectionButtonDialogField(SWT.CHECK);
+		this.fDiffs.setLabelText("Diffs");
+		
+		this.fReport = new SelectionButtonDialogField(SWT.CHECK);
+		this.fReport.setLabelText("Report");
+		
+		this.fReferences = new SelectionButtonDialogField(SWT.CHECK);
+		this.fReferences.setLabelText("References");
+		
+		this.fSummary = new SelectionButtonDialogField(SWT.CHECK);
+		this.fSummary.setLabelText("Summary");
 	}
 
 	protected void validateScriptCheckerPath() {

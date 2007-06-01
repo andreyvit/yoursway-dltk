@@ -43,6 +43,12 @@ public class ScriptChecker extends AbstractValidator {
 	private static final String NO_SYNTAX = "noCheck";
 	private static final String PATH = "path";
 	private static final String ARGUMENTS = "arguments";
+	
+	private static final String DIFFS = "diffs";
+	private static final String REFERENCES = "references";
+	private static final String REPORT = "report";
+	private static final String SUMMARY = "summary";
+	
 	public static final String[] SEVERITY_VALUES = new String[] { "Mandatory",
 			"Desirable", "Optional" };
 	private IPath path;
@@ -50,6 +56,11 @@ public class ScriptChecker extends AbstractValidator {
 	private boolean noSyntax;
 	private String severity;
 	private String arguments;
+	private boolean diffs;
+	private boolean references;
+	private boolean report;
+	private boolean summary;
+	
 	boolean initialized = false;
 
 	private static String spatternSyntax = "((\\w:)?[^:]+):(\\d+)\\s+(.*)";
@@ -91,6 +102,10 @@ public class ScriptChecker extends AbstractValidator {
 		this.severity = SEVERITY_VALUES[1];
 		this.arguments = "-- %f";
 		this.path = new Path("script_checker");
+		this.diffs = false;
+		this.summary = false;
+		this.references = false;
+		this.report = false;
 	}
 
 	protected ScriptChecker(String id, IValidatorType type) {
@@ -122,6 +137,11 @@ public class ScriptChecker extends AbstractValidator {
 				.booleanValue();
 		this.severity = element.getAttribute(SEVERITY);
 		this.arguments = element.getAttribute(ARGUMENTS);
+		
+		this.diffs = (new Boolean(element.getAttribute(DIFFS))).booleanValue();
+		this.references = (new Boolean(element.getAttribute(REFERENCES))).booleanValue();
+		this.report = (new Boolean(element.getAttribute(REPORT))).booleanValue();
+		this.summary = (new Boolean(element.getAttribute(SUMMARY))).booleanValue();
 	}
 
 	public void storeTo(Document doc, Element element) {
@@ -131,6 +151,10 @@ public class ScriptChecker extends AbstractValidator {
 		element.setAttribute(NO_SYNTAX, Boolean.toString(this.noSyntax));
 		element.setAttribute(SEVERITY, this.severity);
 		element.setAttribute(ARGUMENTS, this.arguments);
+		element.setAttribute(DIFFS, Boolean.toString(this.diffs));
+		element.setAttribute(REFERENCES, Boolean.toString(this.references));
+		element.setAttribute(REPORT, Boolean.toString(this.report));
+		element.setAttribute(SUMMARY, Boolean.toString(this.summary));
 	}
 
 	public IStatus validate(IResource resource, OutputStream console) {
@@ -283,6 +307,18 @@ public class ScriptChecker extends AbstractValidator {
 		if (this.noSyntax) {
 			result = result + "::-no_syntax";
 		}
+		if (this.references) {
+			result = result + "::-references";
+		}
+		if (this.diffs) {
+			result = result + "::-diffs";
+		}
+		if (this.report) {
+			result = result + "::-report";
+		}
+		if (this.summary) {
+			result = result + "::-summary";
+		}
 		result = result + "::-severity::" + this.severity.toLowerCase();
 		return result + "::" + user;
 	}
@@ -369,5 +405,35 @@ public class ScriptChecker extends AbstractValidator {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void setDiffs(boolean selected) {
+		this.diffs = selected;
+	}
+	public void setReferences(boolean selected) {
+		this.references = selected;
+	}
+
+	public boolean isDiffs() {
+		return diffs;
+	}
+
+	public boolean isReferences() {
+		return references;
+	}
+
+	public boolean isReport() {
+		return report;
+	}
+
+	public boolean isSummary() {
+		return summary;
+	}
+
+	public void setSummary(boolean selected) {
+		this.summary = selected;
+	}
+	public void setReport(boolean selected) {
+		this.report = selected;
 	}
 }

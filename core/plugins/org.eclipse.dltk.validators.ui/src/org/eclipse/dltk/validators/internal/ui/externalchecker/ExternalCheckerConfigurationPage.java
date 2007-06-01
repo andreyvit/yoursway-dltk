@@ -1,6 +1,5 @@
 package org.eclipse.dltk.validators.internal.ui.externalchecker;
 
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,29 +33,31 @@ public class ExternalCheckerConfigurationPage extends
 
 	private StringDialogField fArguments;
 	private StringDialogField fPath;
-	
+	private StringDialogField fExtensions;
+
 	private Table fTable;
 	private TableViewer tableViewer;
 	private Button addRule;
 	private Button delRule;
 	private RulesList rulesList = new RulesList();
-	
-	private final String TYPES 			= "TYPES";
-	
-	public RulesList getRulesList(){
+
+	private final String TYPES = "TYPES";
+
+	public RulesList getRulesList() {
 		return rulesList;
 	}
-	
-	private String[] columnNames = new String[] {"RULES", "TYPES"};
-	
+
+	private String[] columnNames = new String[] { "RULES", "TYPES" };
+
 	public ExternalCheckerConfigurationPage() {
 	}
 
 	public void applyChanges() {
 		ExternalChecker externalChecker = getExtrenalChecker();
-    	externalChecker.setArguments(this.fArguments.getText());
-		externalChecker.setCommand(this.fPath.getText());	
+		externalChecker.setArguments(this.fArguments.getText());
+		externalChecker.setCommand(this.fPath.getText());
 		externalChecker.setRules(rulesList.getRules());
+		externalChecker.setExtensions(this.fExtensions.getText());
 	}
 
 	private void createPathBrowse(final Composite parent, int columns) {
@@ -84,133 +85,148 @@ public class ExternalCheckerConfigurationPage extends
 			}
 		});
 	}
-	public void createControl(final Composite ancestor, int columns ) {
+
+	public void createControl(final Composite ancestor, int columns) {
 		createFields();
-		
+
 		this.createPathBrowse(ancestor, columns);
 		this.fArguments.doFillIntoGrid(ancestor, columns);
+		this.fExtensions.doFillIntoGrid(ancestor, columns);
+		Label label = new Label(ancestor, SWT.WRAP);
+		label.setText("Comma separated list of extensions");
+		GridData data = new GridData(SWT.FILL, SWT.FILL, false, false);
+		data.horizontalSpan = columns;
+		data.minimumWidth = 100;
+		data.widthHint = 100;
+		label.setLayoutData(data);
 		this.rulesList.getRules().clear();
 
-//		GridLayout layout = (GridLayout)ancestor.getLayout();    		
-	  	
-    	Group group = new Group(ancestor, SWT.NONE);
-    	group.setText("Pattern rules");
-    	GridData data = new GridData(SWT.FILL, SWT.FILL, true, true );
-    	data.horizontalSpan = columns;
-    	group.setLayoutData(data);
-    	GridLayout layout = new GridLayout(2, false);
-    	group.setLayout(layout);
-    	
-    	Label label = new Label( ancestor, SWT.WRAP  );
-    	label.setText("Pattern is regular expression.\nYou must specify %f for filename, %n for line number and %m for message.\n");
-    	data = new GridData(SWT.FILL, SWT.FILL, false, false );
-    	data.horizontalSpan = columns;
-    	data.minimumWidth = 100;
-    	data.widthHint = 100;
-    	label.setLayoutData(data);
-//    	label.
-//    	label.setSize(label.computeSize(100, SWT.DEFAULT));
-    	
-	    fTable =new Table(group, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | 
-				SWT.FULL_SELECTION | SWT.HIDE_SELECTION);
-	    data = new GridData(SWT.FILL, SWT.FILL, true, true );
-	    data.widthHint = 300;
-	    data.heightHint = 100;
-    	fTable.setLayoutData(data);
-		
-//        fTable.setLayout(layout);
-	    fTable.setLinesVisible(true);
-    	fTable.setHeaderVisible(true);
-//    	fTable.setSize(500, 500);
-    	
-    	TableColumn col1 = new TableColumn(fTable, SWT.LEFT, 0);
+// GridLayout layout = (GridLayout)ancestor.getLayout();
+
+		Group group = new Group(ancestor, SWT.NONE);
+		group.setText("Pattern rules");
+		data = new GridData(SWT.FILL, SWT.FILL, true, true);
+		data.horizontalSpan = columns;
+		group.setLayoutData(data);
+		GridLayout layout = new GridLayout(2, false);
+		group.setLayout(layout);
+
+		label = new Label(ancestor, SWT.WRAP);
+		label
+				.setText("Pattern is regular expression.\nYou must specify %f for filename, %n for line number and %m for message.\n");
+		data = new GridData(SWT.FILL, SWT.FILL, false, false);
+		data.horizontalSpan = columns;
+		data.minimumWidth = 100;
+		data.widthHint = 100;
+		label.setLayoutData(data);
+// label.
+// label.setSize(label.computeSize(100, SWT.DEFAULT));
+
+		fTable = new Table(group, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL
+				| SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.HIDE_SELECTION);
+		data = new GridData(SWT.FILL, SWT.FILL, true, true);
+		data.widthHint = 300;
+		data.heightHint = 100;
+		fTable.setLayoutData(data);
+
+// fTable.setLayout(layout);
+		fTable.setLinesVisible(true);
+		fTable.setHeaderVisible(true);
+// fTable.setSize(500, 500);
+
+		TableColumn col1 = new TableColumn(fTable, SWT.LEFT, 0);
 		col1.setWidth(200);
 		col1.setText("Output rule");
-		
+
 		TableColumn col2 = new TableColumn(fTable, SWT.LEFT, 1);
 		col2.setWidth(100);
 		col2.setText("Type");
-	
+
 		tableViewer = new TableViewer(fTable);
 		tableViewer.setColumnProperties(columnNames);
 		CellEditor[] editors = new CellEditor[columnNames.length];
-		
+
 		TextCellEditor textEditor = new TextCellEditor(fTable);
-        ((Text) textEditor.getControl()).setTextLimit(60);
-        editors[0] = textEditor;
-        
-        ComboBoxCellEditor comboEditor = new ComboBoxCellEditor(fTable, rulesList.getTypes(), SWT.READ_ONLY);
-        editors[1] = comboEditor;
-        
-        
-        tableViewer.setCellEditors(editors);
-       
-        tableViewer.setCellModifier(new RuleCelllModifier(this));
-        
-        tableViewer.setContentProvider(new RulesContentProvider());
-        tableViewer.setLabelProvider(new RulesLabelProvider());
-        tableViewer.setInput(rulesList);
-        
-        Composite buttons = new Composite( group, SWT.NONE );
-        buttons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+		((Text) textEditor.getControl()).setTextLimit(60);
+		editors[0] = textEditor;
+
+		ComboBoxCellEditor comboEditor = new ComboBoxCellEditor(fTable,
+				rulesList.getTypes(), SWT.READ_ONLY);
+		editors[1] = comboEditor;
+
+		tableViewer.setCellEditors(editors);
+
+		tableViewer.setCellModifier(new RuleCelllModifier(this));
+
+		tableViewer.setContentProvider(new RulesContentProvider());
+		tableViewer.setLabelProvider(new RulesLabelProvider());
+		tableViewer.setInput(rulesList);
+
+		Composite buttons = new Composite(group, SWT.NONE);
+		buttons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
 		layout = new GridLayout();
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
-        buttons.setLayout(layout);
-        data = new GridData(SWT.FILL, SWT.NONE, false, false );
-        data.verticalAlignment = SWT.TOP;
-        addRule = new Button(buttons, SWT.PUSH);
-        addRule.setLayoutData(data);
-        addRule.setText("Add Rule");
-        addRule.addSelectionListener(new SelectionAdapter(){
-        	public void widgetSelected(SelectionEvent ev){
-        		rulesList.addRule();
-        	}
-        });
-        
-        delRule = new Button(buttons, SWT.PUSH);
-        delRule.setLayoutData(data);
-        delRule.setText("Delete Rule");
-        delRule.addSelectionListener(new SelectionAdapter(){
-        	public void widgetSelected(SelectionEvent ev){
-        		Rule rule = (Rule)((IStructuredSelection)tableViewer.getSelection()).getFirstElement();
-        		if(rule!=null)
-        			rulesList.removeRule(rule);
-        	}
-        });
-        
-        updateValuesFrom(); 
+		buttons.setLayout(layout);
+		data = new GridData(SWT.FILL, SWT.NONE, false, false);
+		data.verticalAlignment = SWT.TOP;
+		addRule = new Button(buttons, SWT.PUSH);
+		addRule.setLayoutData(data);
+		addRule.setText("Add Rule");
+		addRule.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent ev) {
+				rulesList.addRule();
+			}
+		});
+
+		delRule = new Button(buttons, SWT.PUSH);
+		delRule.setLayoutData(data);
+		delRule.setText("Delete Rule");
+		delRule.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent ev) {
+				Rule rule = (Rule) ((IStructuredSelection) tableViewer
+						.getSelection()).getFirstElement();
+				if (rule != null)
+					rulesList.removeRule(rule);
+			}
+		});
+
+		updateValuesFrom();
 	}
+
 	private ExternalChecker getExtrenalChecker() {
-		return (ExternalChecker)getValidator();
-	
+		return (ExternalChecker) getValidator();
+
 	}
+
 	private void updateValuesFrom() {
 		ExternalChecker externalChecker = getExtrenalChecker();
-			this.fArguments.setText(externalChecker.getArguments());
+		this.fArguments.setText(externalChecker.getArguments());
 
-			this.fPath.setText(externalChecker.getCommand().toOSString());
+		this.fPath.setText(externalChecker.getCommand().toOSString());
+		this.fExtensions.setText(externalChecker.getExtensions());
 
-			this.rulesList.getRules().clear();
-			for(int i=0; i <externalChecker.getNRules(); i++){
-				Rule r= (Rule)externalChecker.getRule(i);
-				rulesList.addRule(r);
-			}
+		this.rulesList.getRules().clear();
+		for (int i = 0; i < externalChecker.getNRules(); i++) {
+			Rule r = (Rule) externalChecker.getRule(i);
+			rulesList.addRule(r);
+		}
 	}
 
 	private void createFields() {
 		this.fPath = new StringDialogField();
 		this.fPath.setLabelText("Command to run checker:");
 		this.fArguments = new StringDialogField();
-		this.fArguments.setLabelText("Checker arguments:");	
-	
-	
+		this.fArguments.setLabelText("Checker arguments:");
+		this.fExtensions = new StringDialogField();
+		this.fExtensions.setLabelText("Filename extensions:");
 	}
-	
-	public class RulesContentProvider implements IStructuredContentProvider, IRulesListViewer {
+
+	public class RulesContentProvider implements IStructuredContentProvider,
+			IRulesListViewer {
 
 		public Object[] getElements(Object inputElement) {
-			return rulesList.getRules().toArray(); 
+			return rulesList.getRules().toArray();
 		}
 
 		public void dispose() {
@@ -218,10 +234,10 @@ public class ExternalCheckerConfigurationPage extends
 		}
 
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-			  if (newInput != null)
-	              ((RulesList) newInput).addChangeListener(this);
-	          if (oldInput != null)
-	              ((RulesList) oldInput).removeChangeListener(this);
+			if (newInput != null)
+				((RulesList) newInput).addChangeListener(this);
+			if (oldInput != null)
+				((RulesList) oldInput).removeChangeListener(this);
 		}
 
 		public void addRule(Rule r) {
@@ -236,17 +252,18 @@ public class ExternalCheckerConfigurationPage extends
 		public void updateRule(Rule r) {
 			tableViewer.update(r, null);
 		}
-		
-	
+
 	}
+
 	public List getColumnNames() {
 		return Arrays.asList(columnNames);
 	}
-	
+
 	public String[] getChoices(String property) {
 		if (TYPES.equals(property))
-			return rulesList.getTypes();  // The ExampleTaskList knows about the choice of owners
+			return rulesList.getTypes(); // The ExampleTaskList knows about
+		// the choice of owners
 		else
-			return new String[]{};
+			return new String[] {};
 	}
 }
