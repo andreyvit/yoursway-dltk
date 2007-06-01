@@ -268,6 +268,7 @@ public abstract class InterpretersBlock implements IAddInterpreterDialogRequesto
 				sortByName();
 			}
 		});
+		column1.setWidth(conv.convertWidthInCharsToPixels(40));
 	
 		TableColumn column2= new TableColumn(fTable, SWT.NULL);
 		column2.setText(InterpretersMessages.InstalledInterpretersBlock_2); 
@@ -276,6 +277,7 @@ public abstract class InterpretersBlock implements IAddInterpreterDialogRequesto
 				sortByType();
 			}
 		});
+		column2.setWidth(conv.convertWidthInCharsToPixels(60));
 		
 		TableColumn column3= new TableColumn(fTable, SWT.NULL);
 		column3.setText(InterpretersMessages.InstalledInterpretersBlock_1); 
@@ -284,6 +286,7 @@ public abstract class InterpretersBlock implements IAddInterpreterDialogRequesto
 				sortByLocation();
 			}
 		});
+		column3.setWidth(conv.convertWidthInCharsToPixels(40));
 
 		fInterpreterList= new CheckboxTableViewer(fTable);			
 		fInterpreterList.setLabelProvider(new InterpreterLabelProvider());
