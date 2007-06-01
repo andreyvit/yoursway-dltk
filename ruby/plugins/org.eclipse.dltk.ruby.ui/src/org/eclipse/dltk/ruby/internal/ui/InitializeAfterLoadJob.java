@@ -11,6 +11,8 @@ import org.eclipse.ui.progress.UIJob;
 
 public class InitializeAfterLoadJob extends UIJob {
 	
+	
+	
 	private final class RealJob extends Job {
 		public RealJob(String name) {
 			super(name);
@@ -22,8 +24,10 @@ public class InitializeAfterLoadJob extends UIJob {
 				RubyUI.initializeAfterLoad(new SubProgressMonitor(monitor, 4));
 			} catch (CoreException e) {
 				RubyPlugin.log(e);
+				RubyPlugin.initialized = true;
 				return e.getStatus();
 			}
+			RubyPlugin.initialized = true;
 			return new Status(IStatus.OK, RubyPlugin.PLUGIN_ID, IStatus.OK, "", null); //$NON-NLS-1$
 		}
 		public boolean belongsTo(Object family) {
@@ -36,6 +40,7 @@ public class InitializeAfterLoadJob extends UIJob {
 		setSystem(true);
 	}
 	public IStatus runInUIThread(IProgressMonitor monitor) {
+		RubyPlugin.initialized = false;
 		Job job = new RealJob("Initializing DLTK Ruby");
 		job.setPriority(Job.SHORT);
 		job.schedule();

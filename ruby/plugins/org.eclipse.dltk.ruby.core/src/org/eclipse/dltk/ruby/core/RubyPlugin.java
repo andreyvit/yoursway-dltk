@@ -40,11 +40,14 @@ public class RubyPlugin extends Plugin {
 	// The shared instance
 	private static RubyPlugin plugin;
 	
+	public static boolean initialized = false;
+	
 	/**
 	 * The constructor
 	 */
 	public RubyPlugin() {
 		plugin = this;
+		initialized = false;
 	}
 
 	/*

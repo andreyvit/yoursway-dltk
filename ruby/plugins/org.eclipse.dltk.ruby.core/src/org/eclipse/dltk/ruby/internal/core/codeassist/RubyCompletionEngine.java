@@ -205,6 +205,12 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					IStatus.WARNING, startPosition, endPosition, -1));
 			return;
 		}		
+		if (!RubyPlugin.initialized) {
+			this.requestor.completionFailure(new DefaultProblem(null,
+					"Please wait while DLTK Ruby being initialized...", 0, null,
+					IStatus.WARNING, startPosition, endPosition, -1));
+			return;
+		}		
 		
 		
 
