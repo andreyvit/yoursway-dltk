@@ -474,7 +474,7 @@ public abstract class AbstractInterpreterInstallType implements
 		return libs;
 	}
 
-	private IStatus createStatus(int severity, String message,
+	protected IStatus createStatus(int severity, String message,
 			Throwable throwable) {
 		return new Status(severity, getPluginId(), 0, message, throwable);
 	}

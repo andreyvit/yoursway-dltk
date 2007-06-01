@@ -9,6 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.dltk.ruby.internal.ui.docs.RiHelper;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyTextTools;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -60,5 +63,9 @@ public class RubyUI extends AbstractUIPlugin {
 		}
 
 		return fRubyTextTools;
+	}
+	
+	public static void initializeAfterLoad(IProgressMonitor monitor) throws CoreException {
+		RiHelper.getInstance().getDocFor("Object");
 	}
 }

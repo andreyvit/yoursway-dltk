@@ -152,13 +152,12 @@ public class RubyPlugin extends Plugin {
 					monitor == null ? null : new SubProgressMonitor(monitor, 49) // 49% of the time is spent in the dummy search
 				);
 				
-				String[] mainClasses = new String[] {"Object", "String", "Fixnum", "Array", "Regexp"};
+				String[] mainClasses = new String[] {"Object", "String", "Fixnum", "Array", "Regexp", "Class", "Kernel"};
 				for (int i = 0; i < mainClasses.length; i++) {
 					RubyMixinModel.getInstance().createRubyElement(mainClasses[i]);
 					RubyMixinModel.getInstance().createRubyElement(mainClasses[i] + "%");
 					monitor.worked(10);				
-				}
-				
+				}				
 				RubyMixinModel.getRawInstance().find("$*");
 				monitor.worked(10);								
 			} catch (ModelException e) {
