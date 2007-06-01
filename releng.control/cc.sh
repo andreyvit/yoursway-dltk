@@ -8,7 +8,7 @@ then
    source ${BUILD_HOME}/releng.control/commonComputedVariables.shsource  
 fi
 
-port="7000"
+port="3001"
 webport="3000"
 # its ok for these to be trivial, just used to prevent 
 # accidental use, no real security needed. 
