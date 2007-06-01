@@ -63,7 +63,7 @@ public class RubyLaunchConfigurationDelegate extends
 			}
 		}
 	}
-
+	
 	protected void addIncludePathInterpreterArg(InterpreterConfig config,
 			ILaunchConfiguration configuration) throws CoreException {
 		IPath[] paths = createBuildPath(configuration);
@@ -81,6 +81,11 @@ public class RubyLaunchConfigurationDelegate extends
 
 		config.addInterpreterArg(sb.toString());
 	}
+	
+	protected void addStreamSync(InterpreterConfig config, ILaunchConfiguration configuration) {
+		config.addInterpreterArg("-e");
+		config.addInterpreterArg("STDOUT.sync=true;STDERR.sync=true;load($0=ARGV.shift)");
+	}
 
 	protected InterpreterConfig createInterpreterConfig(
 			ILaunchConfiguration configuration, ILaunch launch)
@@ -91,6 +96,7 @@ public class RubyLaunchConfigurationDelegate extends
 
 		addEncodingInterpreterArg(config, configuration);
 		addIncludePathInterpreterArg(config, configuration);
+		addStreamSync(config, configuration);
 
 		return config;
 	}
