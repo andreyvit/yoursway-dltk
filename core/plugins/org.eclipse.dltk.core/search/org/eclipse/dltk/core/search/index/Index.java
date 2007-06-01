@@ -12,6 +12,7 @@ package org.eclipse.dltk.core.search.index;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.compiler.util.HashtableOfObject;
 import org.eclipse.dltk.compiler.util.SimpleSet;
@@ -105,6 +106,21 @@ public class Index {
 		this.diskIndex = new DiskIndex(fileName);
 		this.diskIndex.initialize(reuseExistingFile);
 	}
+	
+	protected Index (String fileName, String containerPath) {
+		this.containerPath = containerPath;
+		this.monitor = new ReadWriteMonitor();
+	}
+	
+	/*public static Index smartCreateIndex (String fileName, String containerPath,
+			boolean reuseExistingFile) throws IOException {
+		if (containerPath.startsWith("#special#builtin#")) {
+			return new MixinIndex(fileName, containerPath, reuseExistingFile);
+		} else {
+			return new Index(fileName, containerPath, reuseExistingFile);
+		}
+			
+	}*/
 
 	public void addIndexEntry(char[] category, char[] key,
 			String containerRelativePath) {
@@ -212,6 +228,9 @@ public class Index {
 		if (!hasChanged())
 			return;
 
+		if (DLTKCore.DEBUG_INDEX) {
+			System.out.println("Index for " + this.containerPath + " (" + new Path(diskIndex.fileName).lastSegment() + ") saved");		
+		}
 		int numberOfChanges = this.memoryIndex.docsToReferences.elementSize;
 		this.diskIndex = this.diskIndex.mergeWith(this.memoryIndex);
 		this.memoryIndex = new MemoryIndex();

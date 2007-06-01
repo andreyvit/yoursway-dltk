@@ -30,7 +30,6 @@ import org.eclipse.dltk.internal.core.util.Messages;
 import org.eclipse.dltk.internal.core.util.SimpleWordSet;
 import org.eclipse.dltk.internal.core.util.Util;
 
-
 public class DiskIndex {
 
 	String fileName;
@@ -44,7 +43,7 @@ public class DiskIndex {
 	private int[] chunkOffsets;
 
 	private int documentReferenceSize; // 1, 2 or more bytes... depends on # of
-										// document names
+	// document names
 
 	private int startOfCategoryTables;
 
@@ -55,9 +54,9 @@ public class DiskIndex {
 	private String[][] cachedChunks; // decompressed chunks of document names
 
 	private HashtableOfObject categoryTables; // category name ->
-												// HashtableOfObject(words ->
-												// int[] of document #'s) or
-												// offset if not read yet
+	// HashtableOfObject(words ->
+	// int[] of document #'s) or
+	// offset if not read yet
 
 	private char[] cachedCategoryName;
 
@@ -193,7 +192,7 @@ public class DiskIndex {
 			for (int i = 0, l = categories.length; i < l; i++) {
 				HashtableOfObject wordsToDocNumbers = readCategoryTable(
 						categories[i], true); // cache if key is null since
-												// its a definite match
+				// its a definite match
 				if (wordsToDocNumbers != null) {
 					char[][] words = wordsToDocNumbers.keyTable;
 					if (results == null)
@@ -288,7 +287,7 @@ public class DiskIndex {
 			for (int i = 0, l = referenceTables.length; i < l; i++)
 				if (referenceTables[i] != null)
 					indexedDocuments.put(docNames[i], null); // remember each
-																// new document
+			// new document
 
 			String[] newDocNames = new String[indexedDocuments.elementSize];
 			int count = 0;
@@ -328,10 +327,10 @@ public class DiskIndex {
 				}
 				if (referenceTables[i] != null)
 					indexedDocuments.put(docName, null); // remember each new
-															// document, skip
-															// deleted documents
-															// which were never
-															// saved
+				// document, skip
+				// deleted documents
+				// which were never
+				// saved
 			}
 		}
 
@@ -344,23 +343,23 @@ public class DiskIndex {
 			for (int i = 0; i < onDiskLength; i++)
 				if (positions[i] >= RE_INDEXED)
 					newDocNames[count++] = onDiskNames[i]; // keep each
-															// unchanged
-															// document
+			// unchanged
+			// document
 			Object[] added = indexedDocuments.keyTable;
 			for (int i = 0, l = added.length; i < l; i++)
 				if (added[i] != null)
 					newDocNames[count++] = (String) added[i]; // add each new
-																// document
+			// document
 			Util.sort(newDocNames);
 			for (int i = 0, l = newDocNames.length; i < l; i++)
 				if (indexedDocuments.containsKey(newDocNames[i]))
 					indexedDocuments.put(newDocNames[i], new Integer(i)); // remember
-																			// the
-																			// position
-																			// for
-																			// each
-																			// new
-																			// document
+			// the
+			// position
+			// for
+			// each
+			// new
+			// document
 		}
 
 		// need to be able to look up an old position (ref# from a ref[]) and
@@ -378,25 +377,25 @@ public class DiskIndex {
 				String newName = newDocNames[++count];
 				if (newName.equals(onDiskNames[i])) {
 					indexedDocuments.put(newName, new Integer(count)); // the
-																		// reindexed
-																		// docName
-																		// that
-																		// was
-																		// at
-																		// position
-																		// i is
-																		// now
-																		// at
-																		// position
-																		// count
+					// reindexed
+					// docName
+					// that
+					// was
+					// at
+					// position
+					// i is
+					// now
+					// at
+					// position
+					// count
 					i++;
 				}
 				break;
 			default:
 				if (newDocNames[++count].equals(onDiskNames[i]))
 					positions[i++] = count; // the unchanged docName that was at
-											// position i is now at position
-											// count
+				// position i is now at position
+				// count
 			}
 		}
 		return newDocNames;
@@ -456,7 +455,7 @@ public class DiskIndex {
 
 					this.headerInfoOffset = file.readInt();
 					if (this.headerInfoOffset > 0) // file is empty if its not
-													// set
+						// set
 						readHeaderInfo(file);
 				} finally {
 					file.close();
@@ -489,8 +488,8 @@ public class DiskIndex {
 	private void initializeFrom(DiskIndex diskIndex, File newIndexFile)
 			throws IOException {
 		if (newIndexFile.exists() && !newIndexFile.delete()) { // delete the
-																// temporary
-																// index file
+			// temporary
+			// index file
 			if (DEBUG)
 				System.out
 						.println("initializeFrom - Failed to delete temp index " + this.fileName); //$NON-NLS-1$
@@ -548,14 +547,14 @@ public class DiskIndex {
 					for (int j = 0; j < length; j++) {
 						int pos = positions[oldDocNumbers[j]];
 						if (pos > RE_INDEXED) // forget any reference to a
-												// document which was deleted or
-												// re_indexed
+							// document which was deleted or
+							// re_indexed
 							mappedNumbers[count++] = pos;
 					}
 					if (count < length) {
 						if (count == 0)
 							continue nextWord; // skip words which no longer
-												// have any references
+						// have any references
 						System.arraycopy(mappedNumbers, 0,
 								mappedNumbers = new int[count], 0, count);
 					}
@@ -577,7 +576,7 @@ public class DiskIndex {
 				}
 			}
 			onDisk.categoryTables.put(categoryName, null); // flush cached
-															// table
+			// table
 		}
 		writeCategoryTable(categoryName, wordsToDocs, stream);
 	}
@@ -588,22 +587,22 @@ public class DiskIndex {
 		String[] docNames = readAllDocumentNames();
 		int previousLength = docNames.length;
 		int[] positions = new int[previousLength]; // keeps track of the
-													// position of each document
-													// in the new sorted
-													// docNames
+		// position of each document
+		// in the new sorted
+		// docNames
 		SimpleLookupTable indexedDocuments = new SimpleLookupTable(3); // for
-																		// each
-																		// new/changed
-																		// document
-																		// in
-																		// the
-																		// memoryIndex
+		// each
+		// new/changed
+		// document
+		// in
+		// the
+		// memoryIndex
 		docNames = computeDocumentNames(docNames, positions, indexedDocuments,
 				memoryIndex);
 		if (docNames.length == 0) {
 			if (previousLength == 0)
 				return this; // nothing to do... memory index contained
-								// deleted documents that had never been saved
+			// deleted documents that had never been saved
 
 			// index is now empty since all the saved documents were removed
 			DiskIndex newDiskIndex = new DiskIndex(this.fileName);
@@ -715,7 +714,7 @@ public class DiskIndex {
 					.get(categoryName);
 			if (cachedTable != null) {
 				if (readDocNumbers) { // must cache remaining document number
-										// arrays
+					// arrays
 					Object[] arrayOffsets = cachedTable.valueTable;
 					for (int i = 0, l = arrayOffsets.length; i < l; i++)
 						if (arrayOffsets[i] instanceof Integer)
@@ -769,16 +768,16 @@ public class DiskIndex {
 				// the offset to the array (written prior to the table)
 				if (arrayOffset <= 0) {
 					categoryTable.put(word, new int[] { -arrayOffset }); // store
-																			// 1
-																			// element
-																			// array
-																			// by
-																			// negating
-																			// documentNumber
+					// 1
+					// element
+					// array
+					// by
+					// negating
+					// documentNumber
 				} else if (arrayOffset < largeArraySize) {
 					categoryTable.put(word, readDocumentArray(stream,
 							arrayOffset)); // read in-lined array providing
-											// size
+					// size
 				} else {
 					arrayOffset = stream.readInt(); // read actual offset
 					if (readDocNumbers) {
@@ -789,11 +788,11 @@ public class DiskIndex {
 						matchingWords[count++] = word;
 					}
 					categoryTable.put(word, new Integer(arrayOffset)); // offset
-																		// to
-																		// array
-																		// in
-																		// the
-																		// file
+					// to
+					// array
+					// in
+					// the
+					// file
 				}
 			}
 			this.categoryTables.put(categoryName, categoryTable);
@@ -828,10 +827,10 @@ public class DiskIndex {
 		docNames[index++] = current;
 		for (int i = 1; i < size; i++) {
 			int start = stream.readUnsignedByte(); // number of identical
-													// characters at the
-													// beginning
+			// characters at the
+			// beginning
 			int end = stream.readUnsignedByte(); // number of identical
-													// characters at the end
+			// characters at the end
 			String next = stream.readUTF();
 			if (start > 0) {
 				if (end > 0) {
@@ -937,10 +936,10 @@ public class DiskIndex {
 		this.categoryOffsets = new HashtableOfIntValues(size);
 		for (int i = 0; i < size; i++)
 			this.categoryOffsets.put(Util.readUTF(file), file.readInt()); // cache
-																			// offset
-																			// to
-																			// category
-																			// table
+		// offset
+		// to
+		// category
+		// table
 		this.categoryTables = new HashtableOfObject(3);
 	}
 
@@ -987,7 +986,7 @@ public class DiskIndex {
 		}
 		this.documentReferenceSize = size <= 0x7F ? 1
 				: (size <= 0x7FFF ? 2 : 4); // number of bytes used to encode a
-											// reference
+		// reference
 
 		this.chunkOffsets = new int[this.numberOfChunks];
 		int lastIndex = this.numberOfChunks - 1;
@@ -1004,8 +1003,8 @@ public class DiskIndex {
 				int len2 = next.length();
 				int max = len1 < len2 ? len1 : len2;
 				int start = 0; // number of identical characters at the
-								// beginning (also the index of first character
-								// that is different)
+				// beginning (also the index of first character
+				// that is different)
 				while (current.charAt(start) == next.charAt(start)) {
 					start++;
 					if (max == start)
@@ -1077,9 +1076,9 @@ public class DiskIndex {
 		}
 
 		this.categoryOffsets.put(categoryName, stream.size()); // remember the
-																// offset to the
-																// start of the
-																// table
+		// offset to the
+		// start of the
+		// table
 		this.categoryTables.put(categoryName, null); // flush cached table
 		stream.writeInt(wordsToDocs.elementSize);
 		char[][] words = wordsToDocs.keyTable;
@@ -1091,21 +1090,21 @@ public class DiskIndex {
 					int[] documentNumbers = (int[]) o;
 					if (documentNumbers.length == 1)
 						stream.writeInt(-documentNumbers[0]); // store an
-																// array of 1
-																// element by
-																// negating the
-																// documentNumber
-																// (can be zero)
+					// array of 1
+					// element by
+					// negating the
+					// documentNumber
+					// (can be zero)
 					else
 						writeDocumentNumbers(documentNumbers, stream);
 				} else {
 					stream.writeInt(largeArraySize); // mark to identify that
-														// an offset follows
+					// an offset follows
 					stream.writeInt(((Integer) o).intValue()); // offset in the
-																// file of the
-																// array of
-																// document
-																// numbers
+					// file of the
+					// array of
+					// document
+					// numbers
 				}
 			}
 		}
@@ -1163,10 +1162,10 @@ public class DiskIndex {
 			RandomAccessFile file = new RandomAccessFile(this.fileName, "rw"); //$NON-NLS-1$
 			try {
 				file.seek(this.headerInfoOffset); // offset to position in
-													// header
+				// header
 				file.writeInt(offsetToHeader);
 				this.headerInfoOffset = offsetToHeader; // update to reflect the
-														// correct offset
+				// correct offset
 			} finally {
 				file.close();
 			}

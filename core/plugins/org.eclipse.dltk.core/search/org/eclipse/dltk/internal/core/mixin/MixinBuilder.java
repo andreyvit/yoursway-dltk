@@ -44,8 +44,6 @@ import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.SourceModule;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
 
-import sun.org.mozilla.javascript.internal.ScriptRuntime;
-
 public class MixinBuilder implements IScriptBuilder {
 	public IStatus[] buildResources(IDLTKProject project, List resources, IProgressMonitor monitor) {
 		return null;
@@ -110,6 +108,7 @@ public class MixinBuilder implements IScriptBuilder {
 						}
 					}
 				}
+				
 				
 				char[] source = element.getSourceAsCharArray();
 				SearchParticipant participant = SearchEngine

@@ -47,6 +47,7 @@ import org.eclipse.dltk.core.search.SearchDocument;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.index.Index;
+import org.eclipse.dltk.core.search.index.MixinIndex;
 import org.eclipse.dltk.internal.core.DLTKProject;
 import org.eclipse.dltk.internal.core.Model;
 import org.eclipse.dltk.internal.core.ModelManager;
@@ -57,7 +58,7 @@ import org.eclipse.dltk.internal.core.util.Messages;
 import org.eclipse.dltk.internal.core.util.Util;
 
 public class IndexManager extends JobManager implements IIndexConstants {
-	private static final String SPECIAL_MIXIN = "#special#mixin#";
+
 	public SimpleLookupTable indexLocations = new SimpleLookupTable();
 	/*
 	 * key = an IPath, value = an Index
@@ -244,7 +245,8 @@ public class IndexManager extends JobManager implements IIndexConstants {
 			e.printStackTrace();
 		}
 		if (toolkit != null) {
-			return DLTKLanguageManager.createSourceRequestor(toolkit.getNatureID());
+			return DLTKLanguageManager.createSourceRequestor(toolkit
+					.getNatureID());
 		}
 		return null;
 	}
@@ -252,7 +254,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	public ISourceElementParser getSourceElementParser(IDLTKProject project,
 			ISourceElementRequestor requestor) {
 		// disable task tags to speed up parsing
-//		Map options = project.getOptions(true);
+// Map options = project.getOptions(true);
 		// options.put(DLTKCore.COMPILER_TASK_TAGS, ""); //$NON-NLS-1$
 		IDLTKLanguageToolkit toolkit = null;
 		try {
@@ -264,7 +266,8 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		if (toolkit != null) {
 			ISourceElementParser parser = null;
 			try {
-				parser = DLTKLanguageManager.getSourceElementParser(toolkit.getNatureID());
+				parser = DLTKLanguageManager.getSourceElementParser(toolkit
+						.getNatureID());
 				parser.setRequestor(requestor);
 			} catch (CoreException e) {
 			}
@@ -295,10 +298,15 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	 * @param id
 	 * @return
 	 */
-	public synchronized Index getSpecialIndex(String id, String path, String containerPath/*, IProject project*/ ) {
-//		String containerPath = project.getFullPath().toOSString();
-//		String path = project.getFullPath();
-		String indexLocation = computeIndexLocation(new Path("#special#" + id + "#" + path));
+	public synchronized Index getSpecialIndex(String id, String path,
+			String containerPath/* , IProject project */) {
+// String containerPath = project.getFullPath().toOSString();
+// String path = project.getFullPath();
+
+		boolean mixin = id.equals("mixin");
+
+		String indexLocation = computeIndexLocation(new Path("#special#" + id
+				+ "#" + path));
 
 		Index index = (Index) indexes.get(indexLocation);
 
@@ -313,10 +321,17 @@ public class IndexManager extends JobManager implements IIndexConstants {
 				// to avoid creating a new empty
 				// index if file is missing
 				try {
-					index = new Index(indexLocation, containerPath, true /*
-																 * reuse index
-																 * file
-																 */);
+					if (mixin)
+						index = new MixinIndex(indexLocation, containerPath,
+								true
+						/* reuse index file */
+						);
+					else
+						index = new Index(indexLocation, containerPath, true /*
+																				 * reuse
+																				 * index
+																				 * file
+																				 */);
 					indexes.put(indexLocation, index);
 					return index;
 				} catch (IOException e) {
@@ -343,10 +358,21 @@ public class IndexManager extends JobManager implements IIndexConstants {
 				if (VERBOSE)
 					Util
 							.verbose("-> create empty index: " + indexLocation + " path: " + id); //$NON-NLS-1$ //$NON-NLS-2$
-				index = new Index(indexLocation, containerPath, false /*
-															 * do not reuse
-															 * index file
-															 */);
+
+				if (mixin)
+					index = new MixinIndex(indexLocation, containerPath, false
+					/*
+					 * do not reuse index file
+					 */
+					);
+				else
+					index = new Index(indexLocation, containerPath, false /*
+																			 * do
+																			 * not
+																			 * reuse
+																			 * index
+																			 * file
+																			 */);
 				indexes.put(indexLocation, index);
 				return index;
 			} catch (IOException e) {
@@ -376,6 +402,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	public synchronized Index getIndex(IPath containerPath,
 			String indexLocation, boolean reuseExistingFile,
 			boolean createIfMissing) {
+		boolean mixin = containerPath.toString().startsWith("#special#mixin#");
 		// Path is already canonical per construction
 		Index index = (Index) indexes.get(indexLocation);
 		if (index == null) {
@@ -399,10 +426,18 @@ public class IndexManager extends JobManager implements IIndexConstants {
 					// to avoid creating a new empty
 					// index if file is missing
 					try {
-						index = new Index(indexLocation, containerPathString,
-								true /*
-										 * reuse index file
-										 */);
+						if (mixin)
+							index = new MixinIndex(indexLocation,
+									containerPathString, true /*
+																 * reuse index
+																 * file
+																 */);
+						else
+							index = new Index(indexLocation,
+									containerPathString, true /*
+																 * reuse index
+																 * file
+																 */);
 						indexes.put(indexLocation, index);
 						return index;
 					} catch (IOException e) {
@@ -437,13 +472,17 @@ public class IndexManager extends JobManager implements IIndexConstants {
 					if (VERBOSE)
 						Util
 								.verbose("-> create empty index: " + indexLocation + " path: " + containerPathString); //$NON-NLS-1$ //$NON-NLS-2$
-					index = new Index(indexLocation, containerPathString, false /*
-																				 * do
-																				 * not
-																				 * reuse
-																				 * index
-																				 * file
-																				 */);
+					if (mixin)
+						index = new MixinIndex(indexLocation,
+								containerPathString, false /*
+															 * do not reuse
+															 * index file
+															 */);
+					else
+						index = new Index(indexLocation, containerPathString,
+								false /*
+										 * do not reuse index file
+										 */);
 					indexes.put(indexLocation, index);
 					return index;
 				} catch (IOException e) {
@@ -604,9 +643,10 @@ public class IndexManager extends JobManager implements IIndexConstants {
 			// request = new IndexContainerFolder((IContainer) target, this,
 			// requestingProject);
 			return;
-		}
-		else if( target == null && path.toString().startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
-			request = new AddBuiltinFolderToIndex(path, requestingProject, this );
+		} else if (target == null
+				&& path.toString().startsWith(
+						IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
+			request = new AddBuiltinFolderToIndex(path, requestingProject, this);
 		}
 		// check if the same request is not already in the queue
 		// TODO: Uncheck this. After adding some library indexing.
@@ -710,6 +750,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	 * Warning: Does not check whether index is consistent (not being used)
 	 */
 	public synchronized Index recreateIndex(IPath containerPath) {
+		boolean mixin = containerPath.toString().startsWith("#special#mixin#");
 		// only called to over write an existing cached index...
 		String containerPathString = containerPath.getDevice() == null ? containerPath
 				.toString()
@@ -722,11 +763,19 @@ public class IndexManager extends JobManager implements IIndexConstants {
 			if (VERBOSE)
 				Util
 						.verbose("-> recreating index: " + indexLocation + " for path: " + containerPathString); //$NON-NLS-1$ //$NON-NLS-2$
-			index = new Index(indexLocation, containerPathString, false /*
-																		 * reuse
-																		 * index
-																		 * file
-																		 */);
+			if (mixin)
+				index = new MixinIndex(indexLocation, containerPathString,
+						false /*
+								 * reuse index file
+								 */);
+			else
+				index = new Index(indexLocation, containerPathString, false /*
+																			 * do
+																			 * not
+																			 * reuse
+																			 * index
+																			 * file
+																			 */);
 			this.indexes.put(indexLocation, index);
 			index.monitor = monitor;
 			return index;
@@ -899,7 +948,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		ArrayList toSave = new ArrayList();
 		synchronized (this) {
 			for (Iterator iter = this.indexes.values().iterator(); iter
-			.hasNext();) {
+					.hasNext();) {
 				Object o = iter.next();
 				if (o instanceof Index)
 					toSave.add(o);

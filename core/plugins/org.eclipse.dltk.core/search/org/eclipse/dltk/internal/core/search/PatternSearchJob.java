@@ -120,9 +120,11 @@ public class PatternSearchJob implements IJob {
 																		 * none
 																		 */);
 			}
-			if (index != null)
+			if (index != null) {
+//				index.setDiskIndexCaching(this.pattern instanceof MixinPattern);
 				indexes[count++] = index; // only consider indexes which are
 											// ready
+			}
 		}
 		if (count == length)
 			this.areIndexesReady = true;

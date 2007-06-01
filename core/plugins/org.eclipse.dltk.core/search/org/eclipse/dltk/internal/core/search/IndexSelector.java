@@ -24,6 +24,7 @@ import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.core.ArchiveProjectFragment;
 import org.eclipse.dltk.internal.core.DLTKProject;
 import org.eclipse.dltk.internal.core.ModelManager;
+import org.eclipse.dltk.internal.core.search.matching.MixinPattern;
 
 /**
  * Selects the indexes that correspond to projects in a given search scope and
@@ -159,15 +160,22 @@ public class IndexSelector {
 		 * ((IDLTKProject)focus).getProject().getFullPath().toString();
 		 * checkSpecialCase(manager, locations, prjPath); }
 		 */
+		
+		boolean mix = false;//this.pattern instanceof MixinPattern;
+		
 		IScriptModel model = ModelManager.getModelManager().getModel();
 		if (focus == null) {
 			for (int i = 0; i < projectsAndArchives.length; i++) {
 //				if (!mixin) {
+				
+				if (!mix) {				
 					locations.add(manager
 							.computeIndexLocation(projectsAndArchives[i]));
+				} 
 //				}
 
-				checkSpecial(projectsAndArchives[i], manager, locations, model);
+					checkSpecial(projectsAndArchives[i], manager, locations, model);
+				
 			}
 		} else {
 			try {
@@ -196,10 +204,13 @@ public class IndexSelector {
 						visitedProjects.add(project);
 						if (canSeeFocus(focus, project, focusEntries)) {
 //							if (!mixin) {
+							if (!mix) {
 								locations.add(manager
 										.computeIndexLocation(path));
+							} 
 //							}
-							checkSpecial(path, manager, locations, model);
+								checkSpecial(path, manager, locations, model);
+							
 							projectsCanSeeFocus[projectIndex++] = project;
 						}
 					} else {
@@ -219,9 +230,11 @@ public class IndexSelector {
 							IPath path = entry.getPath();
 							if (archivesToCheck.includes(path)) {
 //								if (!mixin) {
+								if (!mix) {
 									locations.add(manager
 											.computeIndexLocation(entry
 													.getPath()));
+								}
 //								}
 								archivesToCheck.remove(path);
 							}
@@ -245,9 +258,11 @@ public class IndexSelector {
 									IPath path = entry.getPath();
 									if (archivesToCheck.includes(path)) {
 //										if (!mixin) {
+										if (!mix) {
 											locations.add(manager
 													.computeIndexLocation(entry
 															.getPath()));
+										}
 //										}
 										archivesToCheck.remove(path);
 									}
