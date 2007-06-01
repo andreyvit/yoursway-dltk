@@ -45,6 +45,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.xmlbeans.XmlCursor;
+import org.apache.xmlbeans.XmlException;
+import org.apache.xmlbeans.XmlObject;
+import org.apache.xmlbeans.XmlOptions;
+import org.apache.xmlbeans.XmlCursor.TokenType;
+import org.apache.xmlbeans.XmlCursor.XmlBookmark;
+
 import com.xored.org.mozilla.javascript.Context;
 import com.xored.org.mozilla.javascript.ObjArray;
 import com.xored.org.mozilla.javascript.ScriptRuntime;

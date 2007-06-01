@@ -42,6 +42,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.xmlbeans.XmlCursor;
+
 
 public class LogicalEquality
 {

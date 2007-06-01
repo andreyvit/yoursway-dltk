@@ -44,6 +44,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.xmlbeans.XmlCursor;
+
 import com.xored.org.mozilla.javascript.ObjArray;
 
 class NamespaceHelper

@@ -111,15 +111,14 @@ public class LaunchingMessages extends NLS {
 	public static String ProjectFragmentSourceContainerTypeDelegate_8;
 
 	static {
-		// load message values from bundle file
 		NLS.initializeMessages(BUNDLE_NAME, LaunchingMessages.class);
 	}
 
-	public static String StandardInterpreterRunner_Starting___3;
-	public static String StandardInterpreterRunner__0____1___2;
-	public static String StandardInterpreterRunner_Unable_to_locate_executable_for__0__1;
+	public static String StandardInterpreterRunner_Starting;
+	public static String StandardInterpreterRunner;
+	public static String StandardInterpreterRunner_Unable_to_locate_executable_for;
 	
-	public static String StandardInterpreterRunner_Launching_Interpreter____1;
+	public static String StandardInterpreterRunner_Launching_Interpreter;
 	
 	public static String NoDefaultInterpreterStatusHandler_title;
 	public static String NoDefaultInterpreterStatusHandler_message;

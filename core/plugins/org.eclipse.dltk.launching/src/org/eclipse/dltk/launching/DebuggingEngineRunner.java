@@ -2,6 +2,7 @@ package org.eclipse.dltk.launching;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
@@ -120,6 +121,9 @@ public class DebuggingEngineRunner extends AbstractInterpreterRunner {
 
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
+		
+		// Disabling the output of the debugging engine process
+		launch.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, "false");
 
 		try {
 			final ILaunchConfiguration configuration = launch
@@ -143,7 +147,6 @@ public class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			sleep(DEFAULT_PAUSE);
 
 			try {
-				newConfig.setProperty("NO_PROCESS", "true");
 				super.run(newConfig, launch, monitor);
 			} catch (CoreException e) {
 				abort(DLTKLaunchingPlugin.ID_PLUGIN,

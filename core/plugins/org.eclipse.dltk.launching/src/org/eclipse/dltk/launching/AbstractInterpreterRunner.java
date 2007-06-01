@@ -10,6 +10,7 @@
 package org.eclipse.dltk.launching;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,10 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.core.model.IStreamsProxy;
+import org.eclipse.debug.core.model.IStreamsProxy2;
+import org.eclipse.debug.internal.core.OutputStreamMonitor;
+import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 
 import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.MessageFormat;
@@ -54,7 +59,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 			abort(
 					MessageFormat
 							.format(
-									LaunchingMessages.StandardInterpreterRunner_Unable_to_locate_executable_for__0__1,
+									LaunchingMessages.StandardInterpreterRunner_Unable_to_locate_executable_for,
 									new String[] { interpreterInstall.getName() }),
 					null, IDLTKLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
 		}
@@ -62,7 +67,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	}
 
 	public static String renderProcessLabel(String[] commandLine) {
-		String format = LaunchingMessages.StandardInterpreterRunner__0____1___2;
+		String format = LaunchingMessages.StandardInterpreterRunner;
 		String timestamp = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
 				DateFormat.MEDIUM).format(new Date(System.currentTimeMillis()));
 		return MessageFormat.format(format, new String[] { commandLine[0],
@@ -206,15 +211,11 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		}
 
 		subMonitor
-				.subTask(LaunchingMessages.StandardInterpreterRunner_Starting___3);
+				.subTask(LaunchingMessages.StandardInterpreterRunner_Starting);
 
 		String[] cmdLine = getRealCommandLine(config, launch);
 		Process p = exec(cmdLine, getRealWorkingDirectory(config, launch),
 				getRealEnvironment(config, launch));
-		
-		if (config.getProperty("NO_PROCESS") != null) {
-			return;
-		}
 
 		if (p == null) {
 			return;
@@ -224,12 +225,14 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 			p.destroy();
 			return;
 		}
+		
+		launch.setAttribute(DLTKLaunchingPlugin.LAUNCH_COMMAND_LINE,
+				renderCommandLine(cmdLine));
 
 		String label = renderProcessLabel(cmdLine);
 
 		IProcess process = newProcess(launch, p, label, getDefaultProcessMap());
-
-		process.setAttribute(IProcess.ATTR_CMDLINE, label);
+		process.setAttribute(IProcess.ATTR_CMDLINE, renderCommandLine(cmdLine));
 
 		subMonitor.worked(1);
 		subMonitor.done();
@@ -238,8 +241,8 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	protected String[] getRealCommandLine(InterpreterConfig config,
 			ILaunch launch) throws CoreException {
 		String[] interpreterArgs = interpreterInstall.getInterpreterArguments();
-		
-		String exe = (String)config.getProperty("OVERRIDE_EXE");
+
+		String exe = (String) config.getProperty("OVERRIDE_EXE");
 		if (exe == null) {
 			exe = constructProgramString();
 		}
@@ -265,7 +268,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		IProgressMonitor subMonitor = new SubProgressMonitor(monitor, 1);
 		subMonitor
 				.beginTask(
-						LaunchingMessages.StandardInterpreterRunner_Launching_Interpreter____1,
+						LaunchingMessages.StandardInterpreterRunner_Launching_Interpreter,
 						2);
 
 		subMonitor

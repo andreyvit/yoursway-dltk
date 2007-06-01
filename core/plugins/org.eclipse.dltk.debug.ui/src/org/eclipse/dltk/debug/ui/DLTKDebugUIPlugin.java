@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,10 +21,13 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.dltk.internal.debug.ui.ImageDescriptorRegistry;
 import org.eclipse.dltk.internal.debug.ui.ScriptDebugLogManager;
 import org.eclipse.dltk.internal.debug.ui.ScriptDebugOptionsManager;
+import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.IPreferencePage;
@@ -36,6 +40,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsoleListener;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -85,6 +91,43 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 		launchManager.addLaunchListener(ScriptDebugLogManager.getInstance());
 
 		ScriptDebugOptionsManager.getDefault().startup();
+
+		// Special listener that prints command line on the console
+		// TODO: add user preferences
+		ConsolePlugin.getDefault().getConsoleManager().addConsoleListener(
+				new IConsoleListener() {
+					public void consolesAdded(
+							org.eclipse.ui.console.IConsole[] consoles) {
+						for (int i = 0; i < consoles.length; ++i) {
+							if (consoles[i] instanceof org.eclipse.debug.ui.console.IConsole) {
+								org.eclipse.debug.ui.console.IConsole console = (org.eclipse.debug.ui.console.IConsole) consoles[i];
+								org.eclipse.ui.console.IOConsoleOutputStream stream = console
+										.getStream(IDebugUIConstants.ID_STANDARD_OUTPUT_STREAM);
+								if (stream != null) {
+									String cmdLine = console
+											.getProcess()
+											.getLaunch()
+											.getAttribute(
+													DLTKLaunchingPlugin.LAUNCH_COMMAND_LINE);
+
+									if (cmdLine != null) {
+										try {
+											stream.write(cmdLine.trim());
+											stream.write("\n");
+											stream.flush();
+										} catch (IOException e) {
+											DLTKDebugUIPlugin.log(e);
+										}
+									}
+								}
+							}
+						}
+					}
+
+					public void consolesRemoved(
+							org.eclipse.ui.console.IConsole[] consoles) {
+					}
+				});
 	}
 
 	public void stop(BundleContext context) throws Exception {

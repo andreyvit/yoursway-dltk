@@ -65,6 +65,7 @@ import com.ibm.icu.text.MessageFormat;
 public class DLTKLaunchingPlugin extends Plugin implements
 		Preferences.IPropertyChangeListener, IInterpreterInstallChangedListener {
 	
+	
 	public static final int DBGP_SERVICE_NOT_AVAILABLE = 200;
 	
 	public static final int DEBUGGING_ENGINE_NOT_STARTED = 201;
@@ -74,6 +75,8 @@ public class DLTKLaunchingPlugin extends Plugin implements
 	public final static String ID_PLUGIN = "org.eclipse.dltk.launching";
 
 	public static final String ID_EXTENSION_POINT_RUNTIME_BUILDPATH_ENTRIES = "runtimeBuildpathEntries"; //$NON-NLS-1$
+	
+	public static final String LAUNCH_COMMAND_LINE = ID_PLUGIN + ".LAUNCH_COMMAND_LINE";
 
 	/**
 	 * Runtime buildpath extensions
