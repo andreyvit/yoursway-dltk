@@ -2,6 +2,7 @@ package org.eclipse.dltk.launching.debug;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -49,11 +50,11 @@ public class DebuggingEngineManager {
 
 		try {
 			Object object = element.createExecutableExtension(CLASS);
-			if (object instanceof IInterpreterRunnerFactory ) {
+			if (object instanceof IInterpreterRunnerFactory) {
 				IInterpreterRunnerFactory factory = (IInterpreterRunnerFactory) object;
 
-				IDebuggingEngine engine = new DebuggingEngine(id, modelId, natureId,
-						name, description, priority, factory);
+				IDebuggingEngine engine = new DebuggingEngine(id, modelId,
+						natureId, name, description, priority, factory);
 
 				List engines = (List) natureToEnginesMap.get(natureId);
 				if (engines == null) {
@@ -126,6 +127,18 @@ public class DebuggingEngineManager {
 		}
 
 		return NO_ENGINES;
+	}
+
+	public IDebuggingEngine getDebuggingEngine(String natureId, String id) {
+		Iterator it = ((List) natureToEnginesMap.get(natureId)).iterator();
+		while (it.hasNext()) {
+			IDebuggingEngine engine = (IDebuggingEngine) it.next();
+			if (engine.getId().equals(id)) {
+				return engine;
+			}
+		}
+
+		return null;
 	}
 
 	public IDebuggingEngine getSelectedDebuggineEngine(String natureId) {

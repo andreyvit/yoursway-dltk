@@ -80,6 +80,12 @@
             class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterPreferencePage"
             id="org.eclipse.dltk.ruby.preferences.interpreters"
             name="Interpreters"/>
+            
+      <page
+            category="org.eclipse.dltk.ruby.preferences"
+            class="org.eclipse.dltk.ruby.internal.debug.ui.preferences.RubyDebugPreferencePage"
+            id="org.eclipse.dltk.ruby.preferences.debug"
+            name="Debug"/>
    </extension>
    <extension
          point="org.eclipse.ui.actionSetPartAssociations">

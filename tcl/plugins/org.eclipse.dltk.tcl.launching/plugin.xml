@@ -54,10 +54,10 @@
            natureId="org.eclipse.dltk.tcl.core.nature">
         <engine
               class="org.eclipse.dltk.tcl.launching.debug.ActiveStateDebuggerRunnerFactory"
-              description="ActiveState Tcl Debugger"
+              description="%ActiveStateDebuggingEngine.description"
               id="org.eclipse.dltk.tcl."
               modelId="org.eclipse.dltk.debug.tclModel"
-              name="Tcl Debugger (from ActiveState)"
+              name="%ActiveStateDebuggingEngine.name"
               priority="0">
         </engine>
      </engineContribution>
