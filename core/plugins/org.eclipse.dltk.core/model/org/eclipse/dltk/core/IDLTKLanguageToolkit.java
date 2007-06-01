@@ -21,7 +21,7 @@ public interface IDLTKLanguageToolkit {
 	 */
 
 	IStatus validateSourceModule(IResource resource);
-
+	
 	IStatus validateSourceModule(IPath path);
 
 	IStatus validateSourceModuleName(String name);

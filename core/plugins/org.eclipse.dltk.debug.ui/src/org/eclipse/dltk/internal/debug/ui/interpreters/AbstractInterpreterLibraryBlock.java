@@ -231,12 +231,12 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 	/**
 	 * Saves settings in the given working copy
 	 */
-	public void performApply(IInterpreterInstall Interpreter) {
+	public void performApply(IInterpreterInstall install) {
 		if (isDefaultLocations()) {
-			Interpreter.setLibraryLocations(null);
+			install.setLibraryLocations(null);
 		} else {
 			LibraryLocation[] libs = fLibraryContentProvider.getLibraries();
-			Interpreter.setLibraryLocations(libs);
+			install.setLibraryLocations(libs);
 		}
 	}
 

@@ -70,39 +70,36 @@ public abstract class AbstractInterpreterInstallType implements
 
 	private static HashMap fCachedLocations = new HashMap();
 
-	/**
-	 * Constructs a new Interpreter install type.
-	 */
 	protected AbstractInterpreterInstallType() {
 		fInterpreters = new ArrayList(10);
 	}
 
 	public IInterpreterInstall[] getInterpreterInstalls() {
-		IInterpreterInstall[] Interpreters = new IInterpreterInstall[fInterpreters
-				.size()];
-		return (IInterpreterInstall[]) fInterpreters.toArray(Interpreters);
+		return (IInterpreterInstall[]) fInterpreters
+				.toArray(new IInterpreterInstall[fInterpreters.size()]);
 	}
 
 	public void disposeInterpreterInstall(String id) {
-		for (int i = 0; i < fInterpreters.size(); i++) {
-			IInterpreterInstall Interpreter = (IInterpreterInstall) fInterpreters
-					.get(i);
-			if (Interpreter.getId().equals(id)) {
-				fInterpreters.remove(i);
-				ScriptRuntime.fireInterpreterRemoved(Interpreter);
+		Iterator it = fInterpreters.iterator();
+		while (it.hasNext()) {
+			IInterpreterInstall install = (IInterpreterInstall) it.next();
+			if (install.getId().equals(id)) {
+				it.remove();
+				ScriptRuntime.fireInterpreterRemoved(install);
 				return;
 			}
 		}
 	}
 
 	public IInterpreterInstall findInterpreterInstall(String id) {
-		for (int i = 0; i < fInterpreters.size(); i++) {
-			IInterpreterInstall Interpreter = (IInterpreterInstall) fInterpreters
-					.get(i);
-			if (Interpreter.getId().equals(id)) {
-				return Interpreter;
+		Iterator it = fInterpreters.iterator();
+		while (it.hasNext()) {
+			IInterpreterInstall install = (IInterpreterInstall) it.next();
+			if (install.getId().equals(id)) {
+				return install;
 			}
 		}
+
 		return null;
 	}
 
@@ -113,9 +110,10 @@ public abstract class AbstractInterpreterInstallType implements
 			throw new IllegalArgumentException(MessageFormat.format(format,
 					new String[] { id }));
 		}
-		IInterpreterInstall Interpreter = doCreateInterpreterInstall(id);
-		fInterpreters.add(Interpreter);
-		return Interpreter;
+
+		IInterpreterInstall install = doCreateInterpreterInstall(id);
+		fInterpreters.add(install);
+		return install;
 	}
 
 	/**
@@ -162,22 +160,22 @@ public abstract class AbstractInterpreterInstallType implements
 	}
 
 	public IInterpreterInstall findInterpreterInstallByName(String name) {
-		for (int i = 0; i < fInterpreters.size(); i++) {
-			IInterpreterInstall Interpreter = (IInterpreterInstall) fInterpreters
-					.get(i);
-			if (Interpreter.getName().equals(name)) {
-				return Interpreter;
+		Iterator it = fInterpreters.iterator();
+		while (it.hasNext()) {
+			IInterpreterInstall install = (IInterpreterInstall) it.next();
+			if (install.getName().equals(name)) {
+				return install;
 			}
 		}
+
 		return null;
 	}
 
-	protected void storeFile(File dest, URL url) throws IOException {
+	protected static void storeFile(File dest, URL url) throws IOException {
 		InputStream input = null;
 		OutputStream output = null;
 		try {
 			input = new BufferedInputStream(url.openStream());
-
 			output = new BufferedOutputStream(new FileOutputStream(dest));
 
 			// Simple copy
@@ -199,21 +197,17 @@ public abstract class AbstractInterpreterInstallType implements
 	protected String[] extractEnvironment() {
 		Map systemEnv = DebugPlugin.getDefault().getLaunchManager()
 				.getNativeEnvironmentCasePreserved();
-		// make sure that $auto_path is clean
-		// convert to String[]
 
 		filterEnvironment(systemEnv);
 
-		Iterator iter = systemEnv.entrySet().iterator();
-		List strings = new ArrayList(systemEnv.size());
-		while (iter.hasNext()) {
-			Map.Entry entry = (Map.Entry) iter.next();
-			StringBuffer buffer = new StringBuffer((String) entry.getKey());
-			buffer.append('=').append((String) entry.getValue());
-			strings.add(buffer.toString());
+		List list = new ArrayList();
+		Iterator it = systemEnv.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry entry = (Map.Entry) it.next();
+			list.add(entry.getKey() + "=" + entry.getValue());
 		}
-		String[] envp = (String[]) strings.toArray(new String[strings.size()]);
-		return envp;
+
+		return (String[]) list.toArray(new String[list.size()]);
 	}
 
 	/**
@@ -227,7 +221,7 @@ public abstract class AbstractInterpreterInstallType implements
 	 *            system environment
 	 */
 	protected void filterEnvironment(Map environment) {
-		// empty impl
+		// Nothing to do
 	}
 
 	protected File storeToMetadata(Bundle bundle, String name, String path)
@@ -327,17 +321,13 @@ public abstract class AbstractInterpreterInstallType implements
 	protected void runLibraryLookup(final IRunnableWithProgress runnable)
 			throws InvocationTargetException, InterruptedException {
 
-		/*ProgressMonitorDialog progress = new ProgressMonitorDialog(null);
-		Display current = Display.getCurrent();
-		if (current != null) {
-			try {
-				progress.run(true, false, runnable);			
-			} catch (SWTException ex) {			
-				runnable.run(new NullProgressMonitor());
-			}
-		} else {
-			runnable.run(new NullProgressMonitor());
-		}*/
+		/*
+		 * ProgressMonitorDialog progress = new ProgressMonitorDialog(null);
+		 * Display current = Display.getCurrent(); if (current != null) { try {
+		 * progress.run(true, false, runnable); } catch (SWTException ex) {
+		 * runnable.run(new NullProgressMonitor()); } } else { runnable.run(new
+		 * NullProgressMonitor()); }
+		 */
 		runnable.run(new NullProgressMonitor());
 	}
 
@@ -404,15 +394,12 @@ public abstract class AbstractInterpreterInstallType implements
 				Process process = null;
 				String cmdLine[] = null;
 				try {
-					monitor.beginTask(InterpreterMessages.statusFetchingLibs, 1);
+					monitor
+							.beginTask(InterpreterMessages.statusFetchingLibs,
+									1);
 					if (monitor.isCanceled()) {
 						return;
 					}
-//					try {
-//						Thread.sleep(5000);
-//					} catch (InterruptedException e1) {
-//						e1.printStackTrace();
-//					}
 
 					String[] env = extractEnvironment();
 					File pathFile = createPathFile();
@@ -424,18 +411,20 @@ public abstract class AbstractInterpreterInstallType implements
 						if (process != null) {
 							String result = readPathsFromProcess(monitor,
 									process);
-							if (result == null)
+							if (result == null) {
 								throw new IOException(
 										"null result from process");
+							}
+							
 							String[] paths = parsePaths(result);
 
 							IPath path = new Path(pathFile.getCanonicalPath())
 									.removeLastSegments(1);
 
 							fillLocationsExceptOne(locations, paths, path);
-							process.destroy();
 						}
 					} catch (CoreException e) {
+						//TODO: handle
 					}
 
 				} catch (IOException e) {
@@ -454,26 +443,27 @@ public abstract class AbstractInterpreterInstallType implements
 		};
 	}
 
-	public synchronized LibraryLocation[] getDefaultLibraryLocations(final File installLocation) {
+	public synchronized LibraryLocation[] getDefaultLibraryLocations(
+			final File installLocation) {
 		if (fCachedLocations.containsKey(installLocation)) {
 			return (LibraryLocation[]) fCachedLocations.get(installLocation);
 		}
 
 		final ArrayList locations = new ArrayList();
 
-		final IRunnableWithProgress runnable = createLookupRunnable(installLocation,
-				locations);		
-				
+		final IRunnableWithProgress runnable = createLookupRunnable(
+				installLocation, locations);
+
 		try {
-			runLibraryLookup(runnable);			
+			runLibraryLookup(runnable);
 		} catch (InvocationTargetException e) {
 			getLog().log(
 					createStatus(IStatus.ERROR,
-							"Error to get default librarys:", e));
+							"Error to get default libraries:", e));
 		} catch (InterruptedException e) {
 			getLog().log(
 					createStatus(IStatus.ERROR,
-							"Error to get default librarys:", e));
+							"Error to get default libraries:", e));
 		}
 
 		LibraryLocation[] libs = correctLocations(locations);

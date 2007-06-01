@@ -16,34 +16,39 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.core.IDLTKProject;
 
 /**
- * Interace called from script builder to builde selected resource.
+ * Interface called from script builder to build the selected resource.
  * 
  * @author Haiodo
  * 
  */
 public interface IScriptBuilder {
 	/**
-	 * Called for earch resource required to builde.
-	 * Only resorces with specified project nature are here.
+	 * Called for each resource required to build. Only resources with specified
+	 * project nature are here.
+	 * 
 	 * @return
 	 */
-	IStatus[] buildResources( IDLTKProject project, List resources, IProgressMonitor monitor );
-	
+	IStatus[] buildResources(IDLTKProject project, List resources,
+			IProgressMonitor monitor);
+
 	/**
-	 * Called for earch resource required to builde.
-	 * Only resorces with specified project nature are here.
+	 * Called for each resource required to build. Only resources with
+	 * specified project nature are here.
+	 * 
 	 * @return
 	 */
-	IStatus[] buildModelElements( IDLTKProject project, List elements, IProgressMonitor monitor );
+	IStatus[] buildModelElements(IDLTKProject project, List elements,
+			IProgressMonitor monitor);
 
 	/**
 	 * Return all dependencies for selected resource. Should also return all
 	 * dependencies of returned elements.
 	 * 
 	 * For example if c depends on b and b depends on a, and we ask for
-	 * dependenies or a, then b and c should be returned.
+	 * dependencies or a, then b and c should be returned.
 	 * 
-	 * Resources should be checked for type. Because different kind of resource could be here.
+	 * Resources should be checked for type. Because different kind of resource
+	 * could be here.
 	 * 
 	 * @param resource
 	 * @return null, if no dependencies are found. Should not return elements
