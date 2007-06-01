@@ -32,8 +32,6 @@ public class RiHelper {
 	
 	private static RiHelper instance;
 
-	private final static boolean[] busy = new boolean[] { false };
-
 	private Process process;
 
 	private WeakHashMap cache = new WeakHashMap();
@@ -90,23 +88,25 @@ public class RiHelper {
 			process = null;
 			IInterpreterInstall install = DLTKLaunchUtil
 			.getDefaultInterpreterInstall(RubyNature.NATURE_ID);
-			IPath deployedPath;
-			try {
-				deployedPath = DeployHelper.deploy(RubyUI.getDefault(), "support/").append("dltkri.rb");
-				String irbPath = deployedPath.toFile().getAbsolutePath();
-				process = DebugPlugin.exec(new String[] {
-						install.getInstallLocation().getAbsolutePath(),
-						irbPath
-					}, null);
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
-			if (process != null) {
-				inputStream = process.getInputStream();
-				outputStream = process.getOutputStream();
-				inputReader = new InputStreamReader(inputStream);
+			if (install != null) {
+				IPath deployedPath;
+				try {
+					deployedPath = DeployHelper.deploy(RubyUI.getDefault(), "support/").append("dltkri.rb");
+					String irbPath = deployedPath.toFile().getAbsolutePath();
+					process = DebugPlugin.exec(new String[] {
+							install.getInstallLocation().getAbsolutePath(),
+							irbPath
+						}, null);
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
+				if (process != null) {
+					inputStream = process.getInputStream();
+					outputStream = process.getOutputStream();
+					inputReader = new InputStreamReader(inputStream);
+				}
 			}
 		}
 	}
@@ -134,7 +134,7 @@ public class RiHelper {
 					}
 					int c = inputReader.read();
 					if (c < 0)
-						break;
+						break;					
 					data[pos++] = (char) c;
 				}
 				result = String.valueOf(data, 0, pos - SUFFIX.length());
