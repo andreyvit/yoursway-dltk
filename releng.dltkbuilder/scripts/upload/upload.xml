@@ -27,9 +27,9 @@
     <property name="build.upload" value="true" />
 
      
-    <property name="uploadUser" value="andrey" />
+    <property name="uploadUser" value="releng" />
     <property name="uploadPassword" value="This is not really used since ssh login is assumed (required)" />
-    <property name="uploadServer" value="gw.inetlab.com" />
+    <property name="uploadServer" value="dltk.eclipse.org" />
     <property name="uploadRemoteDirectory" value="/home/${uploadUser}/public_html/${site-sub-dir}/drops/${buildBranch}" />
     <!-- rsyncRootPrefix should be empty for Linux machines. -->
     <!-- But, Windows using cygwin will need something like /cygdrive/G/  -->
