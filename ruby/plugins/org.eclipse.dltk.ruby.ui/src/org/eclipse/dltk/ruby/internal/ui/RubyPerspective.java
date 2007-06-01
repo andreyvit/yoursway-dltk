@@ -20,6 +20,8 @@ import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.progress.IProgressConstants;
 
 public class RubyPerspective implements IPerspectiveFactory {
+	
+	public static final String PERSPECTIVE_ID = "org.eclipse.dltk.ruby.ui.RubyPerspective";
 
 	public void createInitialLayout(IPageLayout layout) {
 		addFolders(layout);
@@ -27,6 +29,7 @@ public class RubyPerspective implements IPerspectiveFactory {
 		addViews(layout);
 		addShowViewShortcuts(layout);
 		addNewWizardShortcuts(layout);
+		addPerspectiveShotcuts(layout);
 	}
 	
 	protected void addFolders(IPageLayout layout) {
@@ -72,5 +75,9 @@ public class RubyPerspective implements IPerspectiveFactory {
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder");//$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file");//$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.editors.wizards.UntitledTextFileWizard");//$NON-NLS-1$
+	}
+	
+	protected void addPerspectiveShotcuts(IPageLayout layout) {
+		layout.addPerspectiveShortcut("org.eclipse.debug.ui.DebugPerspective");
 	}
 }
