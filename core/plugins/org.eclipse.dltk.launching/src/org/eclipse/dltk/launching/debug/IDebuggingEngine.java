@@ -1,7 +1,5 @@
 package org.eclipse.dltk.launching.debug;
 
-import java.io.File;
-
 import org.eclipse.dltk.launching.IInterpreterConfigModifier;
 
 public interface IDebuggingEngine {

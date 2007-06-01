@@ -24,7 +24,6 @@ import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.core.ArchiveProjectFragment;
 import org.eclipse.dltk.internal.core.DLTKProject;
 import org.eclipse.dltk.internal.core.ModelManager;
-import org.eclipse.dltk.internal.core.search.matching.MixinPattern;
 
 /**
  * Selects the indexes that correspond to projects in a given search scope and
