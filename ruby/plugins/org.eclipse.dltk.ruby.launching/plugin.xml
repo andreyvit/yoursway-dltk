@@ -33,7 +33,7 @@
      <engineContribution
            natureId="org.eclipse.dltk.ruby.core.nature">
         <engine
-              class="org.eclipse.dltk.ruby.internal.launching.debug.BasicDebuggerConfigModifierFactory"
+              class="org.eclipse.dltk.ruby.internal.launching.debug.RubyBasicDebuggerRunnerFactory"
               description="Very simple debugger"
               id="org.eclipse.dltk.ruby.launching.SimpleRubyDebugger"
               modelId="org.eclipse.dltk.debug.rubyModel"

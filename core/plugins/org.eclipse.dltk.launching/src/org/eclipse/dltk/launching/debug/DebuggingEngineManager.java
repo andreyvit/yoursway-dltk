@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.launching.debug.DebuggingEngine;
 import org.eclipse.dltk.internal.launching.debug.PriorityBasedDebuggingEngineSelector;
-import org.eclipse.dltk.launching.IInterpreterConfigModifierFactory;
+import org.eclipse.dltk.launching.IInterpreterRunnerFactory;
 
 public class DebuggingEngineManager {
 	private static DebuggingEngineManager instance;
@@ -49,8 +49,8 @@ public class DebuggingEngineManager {
 
 		try {
 			Object object = element.createExecutableExtension(CLASS);
-			if (object instanceof IInterpreterConfigModifierFactory ) {
-				IInterpreterConfigModifierFactory factory = (IInterpreterConfigModifierFactory) object;
+			if (object instanceof IInterpreterRunnerFactory ) {
+				IInterpreterRunnerFactory factory = (IInterpreterRunnerFactory) object;
 
 				IDebuggingEngine engine = new DebuggingEngine(id, modelId, natureId,
 						name, description, priority, factory);

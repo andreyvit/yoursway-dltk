@@ -12,14 +12,11 @@ import org.eclipse.dltk.debug.core.model.IScriptDebugTargetListener;
 import org.eclipse.dltk.debug.internal.core.model.ScriptDebugTarget;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.launching.debug.DbgpConstants;
-import org.eclipse.dltk.launching.debug.IDebuggingEngine;
 
-public class DebuggingEngineRunner extends AbstractInterpreterRunner {
+public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 	protected static final int DEFAULT_WAITING_TIMEOUT = 1000 * 1000;
 
 	protected static final int DEFAULT_PAUSE = 500;
-
-	private IDebuggingEngine engine;
 
 	private static void sleep(long millis) {
 		try {
@@ -84,20 +81,13 @@ public class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			ILaunchConfiguration configuration, IDbgpService dbgpService,
 			String sessionId) throws CoreException {
 
-		IScriptDebugTarget target = new ScriptDebugTarget(engine.getModelId(),
+		IScriptDebugTarget target = new ScriptDebugTarget(getModelId(),
 				dbgpService, sessionId, launch, null);
 		launch.addDebugTarget(target);
 	}
 
-	public DebuggingEngineRunner(IInterpreterInstall install,
-			IDebuggingEngine engine) {
+	public DebuggingEngineRunner(IInterpreterInstall install) {
 		super(install);
-
-		if (engine == null) {
-			throw new IllegalArgumentException();
-		}
-
-		this.engine = engine;
 	}
 
 	protected IDbgpService createDebuggingService(
@@ -119,9 +109,28 @@ public class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		return null;
 	}
 
+	protected InterpreterConfig alterConfig(String exe, InterpreterConfig config)
+			throws CoreException {
+		return config;
+	}
+
+	protected void initialize(InterpreterConfig config, ILaunch launch,
+			ILaunchConfiguration configuration) throws CoreException {
+		final IDbgpService service = createDebuggingService(configuration);
+		final String sessionId = getSessionId(configuration);
+		addDebugTarget(launch, configuration, service, sessionId);
+
+		final int port = service.getPort();
+		final String host = "127.0.0.1";
+
+		config.setProperty(DbgpConstants.HOST_PROP, host);
+		config.setProperty(DbgpConstants.PORT_PROP, Integer.toString(port));
+		config.setProperty(DbgpConstants.SESSION_ID_PROP, sessionId);
+	}
+
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
-		
+
 		// Disabling the output of the debugging engine process
 		launch.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, "false");
 
@@ -129,30 +138,30 @@ public class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			final ILaunchConfiguration configuration = launch
 					.getLaunchConfiguration();
 
-			final IDbgpService service = createDebuggingService(configuration);
-			final String sessionId = getSessionId(configuration);
+			initialize(config, launch, configuration);
 
-			addDebugTarget(launch, configuration, service, sessionId);
-
-			final int port = service.getPort();
-			final String host = "127.0.0.1";
-
-			config.setProperty(DbgpConstants.HOST_PROP, host);
-			config.setProperty(DbgpConstants.PORT_PROP, Integer.toString(port));
-			config.setProperty(DbgpConstants.SESSION_ID_PROP, sessionId);
-
-			InterpreterConfig newConfig = engine.getConfigModifier().modify(
-					constructProgramString(), config);
+			InterpreterConfig newConfig = alterConfig(constructProgramString(),
+					config);
 
 			sleep(DEFAULT_PAUSE);
 
 			try {
-				super.run(newConfig, launch, monitor);
+				String exe = (String) newConfig.getProperty("OVERRIDE_EXE");
+
+				if (exe != null) {
+					String[] cmdLine = newConfig.renderCommandLine(exe);
+					rawRun(launch, cmdLine, newConfig.getWorkingDirectory(),
+							newConfig.getEnvironmentAsStrings());
+				} else {
+					super.run(newConfig, launch, monitor);
+				}
 			} catch (CoreException e) {
 				abort(DLTKLaunchingPlugin.ID_PLUGIN,
 						"Debugging engine not started", null,
 						DLTKLaunchingPlugin.DEBUGGING_ENGINE_NOT_STARTED);
 			}
+
+			// Waiting
 
 			int waitingTimeout = configuration
 					.getAttribute(
@@ -174,4 +183,6 @@ public class DebuggingEngineRunner extends AbstractInterpreterRunner {
 
 		// Happy debugging :)
 	}
+
+	protected abstract String getModelId();
 }

@@ -36,6 +36,7 @@ import org.eclipse.dltk.launching.AbstractInterpreterRunner;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
+import org.eclipse.dltk.launching.debug.DbgpConstants;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IVMInstall;
@@ -48,11 +49,29 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
-		doRun(config, launch,"","","");
+		doRunImpl(config, launch);
 	}
 
-	protected static void doRun(InterpreterConfig config, ILaunch launch, String host, String port, String sessionId)
+	public static void doRunImpl(InterpreterConfig config, ILaunch launch)
 			throws CoreException {
+		
+		String host = (String) config.getProperty(DbgpConstants.HOST_PROP);
+		if (host == null) {
+			host = "";
+		}
+		
+		String port = (String) config.getProperty(DbgpConstants.PORT_PROP);
+		if (port == null) {
+			port = "";
+		}
+		
+		String sessionId = (String) config
+				.getProperty(DbgpConstants.SESSION_ID_PROP);
+		
+		if (sessionId == null) {
+			sessionId = "";
+		}
+		
 		IDLTKProject proj = AbstractScriptLaunchConfigurationDelegate
 				.getScriptProject(launch.getLaunchConfiguration());
 		IJavaProject myJavaProject = JavaCore.create(proj.getProject());

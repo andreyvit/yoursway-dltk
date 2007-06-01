@@ -53,7 +53,7 @@
      <engineContribution
            natureId="org.eclipse.dltk.tcl.core.nature">
         <engine
-              class="org.eclipse.dltk.tcl.launching.debug.ActiveStateDebuggerConfigModifierFactory"
+              class="org.eclipse.dltk.tcl.launching.debug.ActiveStateDebuggerRunnerFactory"
               description="ActiveState Tcl Debugger"
               id="org.eclipse.dltk.tcl."
               modelId="org.eclipse.dltk.debug.tclModel"

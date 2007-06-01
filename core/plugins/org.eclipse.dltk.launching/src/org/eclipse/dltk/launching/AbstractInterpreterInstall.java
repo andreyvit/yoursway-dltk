@@ -248,7 +248,7 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 					.getSelectedDebuggineEngine(natureId);
 
 			if (engine != null) {
-				return new DebuggingEngineRunner(this, engine);
+				return engine.getRunner(this);
 			}
 		}
 

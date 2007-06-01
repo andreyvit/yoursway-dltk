@@ -10,7 +10,6 @@
 package org.eclipse.dltk.launching;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +23,6 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.debug.core.model.IStreamsProxy;
-import org.eclipse.debug.core.model.IStreamsProxy2;
-import org.eclipse.debug.internal.core.OutputStreamMonitor;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 
 import com.ibm.icu.text.DateFormat;
@@ -185,6 +181,26 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	 *                does not exist or is not a directory
 	 */
 
+	protected void rawRun(ILaunch launch, String[] cmdLine,
+			File workingDirectory, String[] environment) throws CoreException {
+		Process p = exec(cmdLine, workingDirectory, environment);
+
+		if (p == null) {
+			return;
+		}
+
+		final String cmdLineLabel = renderCommandLine(cmdLine);
+		final String processLabel = renderProcessLabel(cmdLine);
+
+		launch.setAttribute(DLTKLaunchingPlugin.LAUNCH_COMMAND_LINE,
+				cmdLineLabel);
+
+		IProcess process = newProcess(launch, p, processLabel,
+				getDefaultProcessMap());
+		process.setAttribute(IProcess.ATTR_CMDLINE, cmdLineLabel);
+
+	}
+
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
 		IProgressMonitor subMonitor = getSubMonitor(monitor);
@@ -213,51 +229,16 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		subMonitor
 				.subTask(LaunchingMessages.StandardInterpreterRunner_Starting);
 
-		String[] cmdLine = getRealCommandLine(config, launch);
-		Process p = exec(cmdLine, getRealWorkingDirectory(config, launch),
-				getRealEnvironment(config, launch));
-
-		if (p == null) {
-			return;
-		}
-
-		if (subMonitor.isCanceled()) {
-			p.destroy();
-			return;
+		String[] interpreterArgs = interpreterInstall.getInterpreterArguments();
+		if (interpreterArgs != null) {
+			config.addInterpreterArgs(interpreterArgs);
 		}
 		
-		launch.setAttribute(DLTKLaunchingPlugin.LAUNCH_COMMAND_LINE,
-				renderCommandLine(cmdLine));
-
-		String label = renderProcessLabel(cmdLine);
-
-		IProcess process = newProcess(launch, p, label, getDefaultProcessMap());
-		process.setAttribute(IProcess.ATTR_CMDLINE, renderCommandLine(cmdLine));
+		rawRun(launch, config.renderCommandLine(constructProgramString()), config
+				.getWorkingDirectory(), config.getEnvironmentAsStrings());
 
 		subMonitor.worked(1);
 		subMonitor.done();
-	}
-
-	protected String[] getRealCommandLine(InterpreterConfig config,
-			ILaunch launch) throws CoreException {
-		String[] interpreterArgs = interpreterInstall.getInterpreterArguments();
-
-		String exe = (String) config.getProperty("OVERRIDE_EXE");
-		if (exe == null) {
-			exe = constructProgramString();
-		}
-
-		return config.renderCommandLine(exe);
-	}
-
-	protected File getRealWorkingDirectory(InterpreterConfig config,
-			ILaunch launch) throws CoreException {
-		return config.getWorkingDirectory();
-	}
-
-	protected String[] getRealEnvironment(InterpreterConfig config,
-			ILaunch launch) throws CoreException {
-		return config.getEnvironmentAsStrings();
 	}
 
 	private static IProgressMonitor getSubMonitor(IProgressMonitor monitor) {

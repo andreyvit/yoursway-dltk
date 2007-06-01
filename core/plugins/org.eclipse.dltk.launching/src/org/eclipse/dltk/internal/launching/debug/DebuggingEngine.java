@@ -1,7 +1,9 @@
 package org.eclipse.dltk.internal.launching.debug;
 
 import org.eclipse.dltk.launching.IInterpreterConfigModifier;
-import org.eclipse.dltk.launching.IInterpreterConfigModifierFactory;
+import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.eclipse.dltk.launching.IInterpreterRunnerFactory;
+import org.eclipse.dltk.launching.IInterpreterRunner;
 import org.eclipse.dltk.launching.debug.IDebuggingEngine;
 
 public class DebuggingEngine implements IDebuggingEngine {
@@ -12,11 +14,11 @@ public class DebuggingEngine implements IDebuggingEngine {
 	private String name;
 	private String description;
 	private int priority;
-	private IInterpreterConfigModifierFactory factory;
+	private IInterpreterRunnerFactory factory;
 
 	public DebuggingEngine(String id, String modelId, String natureId, String name,
 			String description, int priority,
-			IInterpreterConfigModifierFactory factory) {
+			IInterpreterRunnerFactory factory) {
 		super();
 		this.id = id;
 		this.modelId = modelId;
@@ -51,7 +53,7 @@ public class DebuggingEngine implements IDebuggingEngine {
 		return priority;
 	}
 
-	public IInterpreterConfigModifier getConfigModifier() {
-		return factory.createInterpreterConfigModifier();
-	}
+	public IInterpreterRunner getRunner(IInterpreterInstall install) {
+		return factory.createRunner(install);
+	}	
 }

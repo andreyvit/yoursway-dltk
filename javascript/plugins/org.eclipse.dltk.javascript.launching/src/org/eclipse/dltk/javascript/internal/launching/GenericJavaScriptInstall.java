@@ -42,14 +42,21 @@ public class GenericJavaScriptInstall extends AbstractInterpreterInstall {
 	}
 
 	public IInterpreterRunner getInterpreterRunner(String mode) {
+		IInterpreterRunner runner = super.getInterpreterRunner(mode);
+		if (runner != null) {
+			return runner;
+		}
+
 		if (mode.equals(ILaunchManager.RUN_MODE)) {
 			return new JavaScriptInterpreterRunner(this);
-		} else if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			return new JavaScriptInterpreterDebugger(this);
 		}
+		/*
+		 * else if (mode.equals(ILaunchManager.DEBUG_MODE)) { return new
+		 * JavaScriptInterpreterDebugger(this); }
+		 */
 		return null;
 	}
-	
+
 	public String getNatureId() {
 		return JavaScriptNature.NATURE_ID;
 	}

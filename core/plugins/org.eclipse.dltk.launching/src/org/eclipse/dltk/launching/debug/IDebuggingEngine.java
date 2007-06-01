@@ -1,6 +1,7 @@
 package org.eclipse.dltk.launching.debug;
 
-import org.eclipse.dltk.launching.IInterpreterConfigModifier;
+import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.eclipse.dltk.launching.IInterpreterRunner;
 
 public interface IDebuggingEngine {
 	String getId();
@@ -15,5 +16,5 @@ public interface IDebuggingEngine {
 
 	int getPriority();
 
-	IInterpreterConfigModifier getConfigModifier();
+	IInterpreterRunner getRunner(IInterpreterInstall install);
 }

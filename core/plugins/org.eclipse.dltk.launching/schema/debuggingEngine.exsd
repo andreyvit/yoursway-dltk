@@ -72,21 +72,21 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="modelId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
          <attribute name="class" type="string">
             <annotation>
                <documentation>
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.dltk.launching.IInterpreterConfigModifierFactory"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.dltk.launching.IInterpreterRunnerFactory"/>
                </appInfo>
-            </annotation>
-         </attribute>
-         <attribute name="modelId" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
             </annotation>
          </attribute>
       </complexType>

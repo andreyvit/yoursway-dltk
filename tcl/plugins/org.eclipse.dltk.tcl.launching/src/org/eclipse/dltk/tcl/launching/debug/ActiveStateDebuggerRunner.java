@@ -5,14 +5,14 @@ import java.io.File;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.dltk.launching.IInterpreterConfigModifier;
+import org.eclipse.dltk.launching.DebuggingEngineRunner;
+import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.debug.DbgpConstants;
 import org.eclipse.dltk.tcl.internal.debug.TclDebugPreferences;
 import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
 
-public class ActiveStateDebuggerConfigModifier implements
-		IInterpreterConfigModifier {
+public class ActiveStateDebuggerRunner extends DebuggingEngineRunner {
 	private static final String HOST_KEY = "-host-ide";
 	private static final String PORT_KEY = "-port-ide";
 	private static final String SHELL_KEY = "-app-shell";
@@ -30,10 +30,11 @@ public class ActiveStateDebuggerConfigModifier implements
 		return engine;
 	}
 
-	public ActiveStateDebuggerConfigModifier() {
+	public ActiveStateDebuggerRunner(IInterpreterInstall install) {
+		super(install);
 	}
 
-	public InterpreterConfig modify(String exe, InterpreterConfig config)
+	protected InterpreterConfig alterConfig(String exe, InterpreterConfig config)
 			throws CoreException {
 		String host = (String) config.getProperty(DbgpConstants.HOST_PROP);
 		String port = (String) config.getProperty(DbgpConstants.PORT_PROP);
@@ -42,8 +43,16 @@ public class ActiveStateDebuggerConfigModifier implements
 
 		InterpreterConfig newConfig = new InterpreterConfig();
 
+		// Environment
+		newConfig.addEnvVars(config.getEnvVars());
+
+		// Working directory
+		newConfig.setWorkingDirectory(config.getWorkingDirectory());
+
+		// Additional property
 		newConfig.setProperty("OVERRIDE_EXE", getEngine().toString());
 
+		// Interperter args
 		newConfig.addInterpreterArg(HOST_KEY);
 		newConfig.addInterpreterArg(host);
 
@@ -58,11 +67,17 @@ public class ActiveStateDebuggerConfigModifier implements
 
 		newConfig.addInterpreterArg(SCRIPT_KEY);
 
+		// Script file
 		newConfig.setScriptFile(config.getScriptFile());
 
+		// Script args
 		newConfig.addScriptArg(ARGS_SEPARATOR);
 		newConfig.addScriptArgs(config.getScriptArgs());
 
 		return newConfig;
+	}
+
+	protected String getModelId() {
+		return "org.eclipse.dltk.debug.tclModel";
 	}
 }
