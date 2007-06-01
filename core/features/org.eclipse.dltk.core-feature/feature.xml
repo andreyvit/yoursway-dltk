@@ -24,12 +24,12 @@ http://www.eclipse.org/legal/epl-v10.html
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://download.eclipse.org/technology/dltk/updates/1.0/"/>
-      <discovery label="%updateSiteName" url="http://download.eclipse.org/technology/dltk/updates/1.0/"/>
+      <update label="%updateSiteName" url="http://download.eclipse.org/technology/dltk/updates/"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/technology/dltk/updates/"/>
    </url>
 
    <requires>
-      <import plugin="org.eclipse.core.runtime" version="3.3.0" match="compatible"/>
+      <import feature="org.eclipse.platform" version="3.3.0" match="compatible"/>
    </requires>
 
    <plugin
