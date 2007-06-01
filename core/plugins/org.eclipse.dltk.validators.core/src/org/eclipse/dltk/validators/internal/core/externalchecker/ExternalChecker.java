@@ -279,7 +279,7 @@ public class ExternalChecker extends AbstractValidator {
 				String line1 = (String) iterator.next();
 				ExternalCheckerProblem problem = parseProblem(line1);
 				if (problem != null) {
-					int[] bounds = model.getBounds(problem.getLineNumber());
+					int[] bounds = model.getBounds(problem.getLineNumber()-1);
 					if (problem.getType().indexOf("Error") != -1) {
 						reportErrorProblem(resource, problem, bounds[0],
 								bounds[1]);

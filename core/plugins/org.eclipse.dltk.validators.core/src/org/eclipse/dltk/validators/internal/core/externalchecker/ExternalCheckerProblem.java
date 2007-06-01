@@ -6,10 +6,12 @@ public class ExternalCheckerProblem {
 	private String type;
 	private String message;
 	private int line;
+	private String filename;
 	
-	public ExternalCheckerProblem(String type, String message, int line){
+	public ExternalCheckerProblem(String type, String message, int line, String filename){
 		this.type = type;
 		this.message = message;
+		this.setFilename(filename);
 		
 		if(line>=0){
 			this.line = line;
@@ -32,5 +34,13 @@ public class ExternalCheckerProblem {
 
 	public String getType() {
 		return type;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	public String getFilename() {
+		return filename;
 	}
 }

@@ -15,6 +15,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -82,5 +84,17 @@ public class ValidatorsUI extends AbstractUIPlugin {
 			registry.put(key, descriptor);
 		}
 		return descriptor;
+	}
+	
+	public static IWorkbenchWindow getActiveWorkbenchWindow() {
+		return getDefault().getWorkbench().getActiveWorkbenchWindow();
+	}
+	
+	public static IWorkbenchPage getActivePage() {
+		IWorkbenchWindow w = getActiveWorkbenchWindow();
+		if (w != null) {
+			return w.getActivePage();
+		}
+		return null;
 	}
 }

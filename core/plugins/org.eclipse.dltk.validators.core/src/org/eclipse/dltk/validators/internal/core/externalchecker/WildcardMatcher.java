@@ -56,7 +56,7 @@ public class WildcardMatcher {
 				message = input;
 			}
 			ExternalCheckerProblem problem = new ExternalCheckerProblem(pattern
-					.getType(), message, lineNumber);
+					.getType(), message, lineNumber, fileName);
 			return problem;
 		}
 		return null;
@@ -112,7 +112,7 @@ public class WildcardMatcher {
 
 		status = UNDEFINED;
 		StringBuffer sb = new StringBuffer();
-		sb.append(".*");
+//		sb.append(".*");
 		for (int i = 0; i < input.length(); i++) {
 			char c = input.charAt(i);
 			if (c != '%') {

@@ -76,5 +76,11 @@
             id="org.eclipse.dltk.validators.core.externalChecker">
       </validatorConfigPage>
    </extension>
+   <extension
+         point="org.eclipse.dltk.validators.ui.validatorConsoleTracker">
+      <validatorConsoleTracker
+            class="org.eclipse.dltk.validators.internal.ui.externalchecker.ExternalCheckerConsoleTracker">
+      </validatorConsoleTracker>
+   </extension>
 
 </plugin>
