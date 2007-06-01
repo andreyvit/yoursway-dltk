@@ -279,7 +279,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 			final int firstTargetLineHome = AutoEditUtils.findEndOfWhiteSpace(d, firstLineStart,
 					firstTargetLineEnd);
 
-			final boolean reindentFirstInsertedLine = (pasteOffset < firstTargetLineHome);
+			final boolean reindentFirstInsertedLine = (pasteOffset <= firstTargetLineHome);
 			int firstSourceIndentedLineIndex;
 			final int targetLineIndexToCalculateCommonIndentationFor;
 			if (reindentFirstInsertedLine) {

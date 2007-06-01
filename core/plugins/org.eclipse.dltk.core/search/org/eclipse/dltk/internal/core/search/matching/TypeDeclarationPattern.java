@@ -175,7 +175,10 @@ public class TypeDeclarationPattern extends DLTKSearchPattern implements IIndexC
 		if (this.secondary) {
 			last -= 2;
 		}
-		this.modifiers = key[last - 1] + (key[last] << 16);
+		if (last > 0)
+			this.modifiers = key[last - 1] + (key[last] << 16);
+		else
+			this.modifiers = 0;
 		decodeModifiers();
 		// Retrieve enclosing type names
 		start = slash + 1;
