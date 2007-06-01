@@ -1,4 +1,4 @@
-package org.eclipse.dltk.validators.internal.ui;
+package org.eclipse.dltk.validators.internal.ui.externalchecker;
 
 import org.eclipse.dltk.validators.core.IValidator;
 

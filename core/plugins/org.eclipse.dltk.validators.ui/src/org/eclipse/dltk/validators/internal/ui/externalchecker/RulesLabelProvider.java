@@ -1,4 +1,4 @@
-package org.eclipse.dltk.validators.internal.ui.eternalchecker;
+package org.eclipse.dltk.validators.internal.ui.externalchecker;
 
 import org.eclipse.dltk.validators.internal.core.externalchecker.Rule;
 import org.eclipse.jface.viewers.ITableLabelProvider;

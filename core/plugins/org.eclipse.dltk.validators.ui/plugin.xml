@@ -13,7 +13,7 @@
       </page>
       <page
             category="org.eclipse.dltk.preferences.validators"
-            class="org.eclipse.dltk.validators.internal.ui.ExternalCheckerRulesPreferencePage"
+            class="org.eclipse.dltk.validators.internal.ui.externalchecker.ExternalCheckerRulesPreferencePage"
             id="org.eclipse.dltk.validators.ui.externalchecker"
             name="External Checker rules">
       </page>
@@ -72,7 +72,7 @@
    <extension
          point="org.eclipse.dltk.validators.ui.validatorConfigPage">
       <validatorConfigPage
-            class="org.eclipse.dltk.validators.internal.ui.eternalchecker.ExternalCheckerConfigurationPage"
+            class="org.eclipse.dltk.validators.internal.ui.externalchecker.ExternalCheckerConfigurationPage"
             id="org.eclipse.dltk.validators.core.externalChecker">
       </validatorConfigPage>
    </extension>

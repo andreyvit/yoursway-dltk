@@ -1,4 +1,4 @@
-package org.eclipse.dltk.validators.internal.ui.eternalchecker;
+package org.eclipse.dltk.validators.internal.ui.externalchecker;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -14,13 +14,14 @@ public class CustomWildcardsList {
 	
 	
 	public void addWcard(){
-		CustomWildcard r = new CustomWildcard('x', "Enter your pattern here");
+		CustomWildcard r = new CustomWildcard("x", "Enter pattern...", "Enter description...");
 		wcards.add(r);
 		Iterator iterator = changeListeners.iterator();
 		while(iterator.hasNext()){
 			((IWildcardListViewer)iterator.next()).addWildcard(r);
 		}
 	}
+		
 	public void removeChangeListener(IWildcardListViewer viewer) {
 		changeListeners.remove(viewer);
 	}
@@ -54,5 +55,19 @@ public class CustomWildcardsList {
 			((IWildcardListViewer) iterator.next()).removeWildcard(task);
 	}
 	
+	public void  removeAll(){
+		for(int i=0; i<this.wcards.size(); i++){
+			CustomWildcard task = (CustomWildcard)wcards.get(i);
+			Iterator iterator = changeListeners.iterator();
+			while (iterator.hasNext())
+				((IWildcardListViewer) iterator.next()).removeWildcard(task);
+		}
+		wcards.clear();
+		
+	}
+
+	public CustomWildcard[] getWildcards() {
+		return (CustomWildcard[]) this.wcards.toArray(new CustomWildcard[this.wcards.size()]);
+	}
 
 }

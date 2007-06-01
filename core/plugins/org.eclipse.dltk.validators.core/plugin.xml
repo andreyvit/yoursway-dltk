@@ -31,5 +31,11 @@
             value="true">
       </persistent>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.dltk.validators.internal.core.externalchecker.WildcardsPreferenceInitializer">
+      </initializer>
+   </extension>
 
 </plugin>

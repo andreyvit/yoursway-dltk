@@ -1,4 +1,4 @@
-package org.eclipse.dltk.validators.internal.ui.eternalchecker;
+package org.eclipse.dltk.validators.internal.ui.externalchecker;
 
 
 import java.util.Arrays;
@@ -34,9 +34,6 @@ public class ExternalCheckerConfigurationPage extends
 	private StringDialogField fArguments;
 	private StringDialogField fPath;
 	
-	private Text tArguments;
-	private Text tCommand;
-	
 	private Table fTable;
 	private TableViewer tableViewer;
 	private Button addRule;
@@ -59,7 +56,6 @@ public class ExternalCheckerConfigurationPage extends
     	externalChecker.setArguments(this.fArguments.getText());
 		externalChecker.setCommand(this.fPath.getText());	
 		externalChecker.setRules(rulesList.getRules());
-	
 	}
 
 	private void createPathBrowse(final Composite parent, int columns) {
@@ -181,14 +177,14 @@ public class ExternalCheckerConfigurationPage extends
 	private void updateValuesFrom() {
 		ExternalChecker externalChecker = getExtrenalChecker();
 			this.fArguments.setText(externalChecker.getArguments());
-			this.fPath.setText(externalChecker.getCommand());
+
+			this.fPath.setText(externalChecker.getCommand().toOSString());
+
 			this.rulesList.getRules().clear();
 			for(int i=0; i <externalChecker.getNRules(); i++){
 				Rule r= (Rule)externalChecker.getRule(i);
 				rulesList.addRule(r);
 			}
-			
-	
 	}
 
 	private void createFields() {

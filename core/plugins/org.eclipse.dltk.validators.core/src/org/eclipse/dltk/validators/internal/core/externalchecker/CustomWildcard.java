@@ -2,17 +2,19 @@ package org.eclipse.dltk.validators.internal.core.externalchecker;
 
 public class CustomWildcard {
 
-	private char letter;
+	private String letter;
 	private String spattern;
+	private String description;
 	
-	public CustomWildcard(char l, String s){
-		this.letter = l;
-		this.spattern = s;
+	public CustomWildcard(String letter, String pattern, String description){
+		this.letter = letter;
+		this.spattern = pattern;
+		this.description = description;
 	}
-	public void setLetter(char letter) {
+	public void setLetter(String letter) {
 		this.letter = letter;
 	}
-	public char getLetter() {
+	public String getLetter() {
 		return letter;
 	}
 	public void setSpattern(String spattern) {
@@ -20,6 +22,12 @@ public class CustomWildcard {
 	}
 	public String getSpattern() {
 		return spattern;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getDescription() {
+		return description;
 	}
 
 }

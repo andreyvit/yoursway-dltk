@@ -1,4 +1,4 @@
-package org.eclipse.dltk.validators.internal.ui.eternalchecker;
+package org.eclipse.dltk.validators.internal.ui.externalchecker;
 
 import java.util.HashSet;
 import java.util.Iterator;

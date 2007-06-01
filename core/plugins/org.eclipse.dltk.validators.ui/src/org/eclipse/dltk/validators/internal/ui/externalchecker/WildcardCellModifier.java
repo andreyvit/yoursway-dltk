@@ -1,15 +1,15 @@
-package org.eclipse.dltk.validators.internal.ui.eternalchecker;
+package org.eclipse.dltk.validators.internal.ui.externalchecker;
 
 import org.eclipse.dltk.validators.internal.core.externalchecker.CustomWildcard;
-import org.eclipse.dltk.validators.internal.ui.ConfigureWildcardsDialog;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.swt.widgets.TableItem;
 
 public class WildcardCellModifier implements ICellModifier {
 
-	ConfigureWildcardsDialog dialog;
+	ExternalCheckerRulesBlock dialog;
 	
-	public WildcardCellModifier(ConfigureWildcardsDialog d){
+	public WildcardCellModifier(ExternalCheckerRulesBlock
+			d){
 		super();
 		this.dialog = d;
 	}
@@ -25,10 +25,15 @@ public class WildcardCellModifier implements ICellModifier {
 		CustomWildcard wcard = (CustomWildcard) element;
 		switch (index) {
 		case 0:
-			result = new Character( wcard.getLetter() ); 
+			result = new StringBuilder(wcard.getLetter()).toString(); 
 			break;
 		case 1:
 			result = wcard.getSpattern();
+			break;
+		case 2:
+			result = wcard.getDescription();
+			break;
+		
 		default:
 			break;
 		}
@@ -47,7 +52,7 @@ public class WildcardCellModifier implements ICellModifier {
 		switch(index){
 			case 0:
 				valueString = ((String) value).trim();
-				task.setLetter(valueString.charAt(0));
+				task.setLetter(valueString);
 				dialog.getWlist().wcardChanged(task);
 				break;
 		

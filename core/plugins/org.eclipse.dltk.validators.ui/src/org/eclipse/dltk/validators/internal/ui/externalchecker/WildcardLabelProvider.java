@@ -1,4 +1,4 @@
-package org.eclipse.dltk.validators.internal.ui.eternalchecker;
+package org.eclipse.dltk.validators.internal.ui.externalchecker;
 
 import org.eclipse.dltk.validators.internal.core.externalchecker.CustomWildcard;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -14,9 +14,11 @@ public class WildcardLabelProvider extends LabelProvider implements ITableLabelP
 	public String getColumnText(Object element, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return new String(new char[]{ ((CustomWildcard)element).getLetter() });
+			return ((CustomWildcard)element).getLetter();
 		case 1:
 			return ((CustomWildcard)element).getSpattern();
+		case 2:
+			return ((CustomWildcard)element).getDescription();
 		default:
 			return null;
 		}

@@ -1,4 +1,4 @@
-package org.eclipse.dltk.validators.internal.ui.eternalchecker;
+package org.eclipse.dltk.validators.internal.ui.externalchecker;
 
 import org.eclipse.dltk.validators.internal.core.externalchecker.Rule;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.TableItem;
 public class RuleCelllModifier implements ICellModifier {
 
 	private ExternalCheckerConfigurationPage page;
-	private String[] columnNames;
+//	private String[] columnNames;
 	
 	public RuleCelllModifier (ExternalCheckerConfigurationPage page) {
 		super();

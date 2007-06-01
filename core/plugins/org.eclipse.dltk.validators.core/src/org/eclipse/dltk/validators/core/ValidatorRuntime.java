@@ -55,7 +55,7 @@ public final class ValidatorRuntime {
 	// private static ThreadLocal fgEntryCount = new ThreadLocal(); // Integers
 
 	private static Set fgContributedValidators = new HashSet();
-	private static List markerList = new ArrayList();
+//	private static List markerList = new ArrayList();
 
 	private ValidatorRuntime() {
 	}
