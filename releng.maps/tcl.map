@@ -1,9 +1,9 @@
 
 ! Tcl Development Tools (DLTK)
 !
-! $Id: tcl.map,v 1.21 2007/06/01 10:01:30 asobolev Exp $ 
+! $Id: tcl.map,v 1.22 2007/06/01 10:05:57 asobolev Exp $ 
 
-feature@org.eclipse.dltk.tcl=v20070530d,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl-feature
+feature@org.eclipse.dltk.tcl=v20070601,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl-feature
 feature@org.eclipse.dltk.tcl.sdk=v20070530b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl.sdk
 
 plugin@org.eclipse.dltk.tcl=v20070530c,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl
