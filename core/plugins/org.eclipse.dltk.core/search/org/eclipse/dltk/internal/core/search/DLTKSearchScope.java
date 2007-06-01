@@ -465,7 +465,8 @@ public class DLTKSearchScope extends AbstractSearchScope {
 	 */
 	private boolean encloses(String enclosingPath, String path, int index) {
 		// normalize given path as it can come from outside
-		path = normalize(path);
+		enclosingPath = (new Path(enclosingPath)).toString();
+		path = new Path( normalize(path) ).toString();
 		IPath realPath = new Path(path);
 		if( this.toolkit.validateSourceModule(realPath).getSeverity() !=  IStatus.OK ) {
 			return false;

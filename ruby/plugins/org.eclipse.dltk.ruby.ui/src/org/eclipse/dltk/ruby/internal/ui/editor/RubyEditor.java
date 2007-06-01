@@ -39,8 +39,11 @@ public class RubyEditor extends ScriptEditor {
 	public static final String EDITOR_ID = "org.eclipse.dltk.ruby.ui.editor.RubyEditor";
 
 	public static final String EDITOR_CONTEXT = "#RubyEditorContext";
-	
+
 	public static final String RULER_CONTEXT = "#RubyRulerContext";
+
+	private org.eclipse.dltk.internal.ui.editor.BracketInserter fBracketInserter = new RubyBracketInserter(
+			this);
 
 	protected void initializeEditor() {
 		super.initializeEditor();
@@ -116,7 +119,8 @@ public class RubyEditor extends ScriptEditor {
 		action = new TextOperationAction(DLTKEditorMessages
 				.getBundleForConstructedKeys(),
 				"Uncomment.", this, ITextOperationTarget.STRIP_PREFIX); //$NON-NLS-1$
-		action.setActionDefinitionId(IScriptEditorActionDefinitionIds.UNCOMMENT);
+		action
+				.setActionDefinitionId(IScriptEditorActionDefinitionIds.UNCOMMENT);
 		setAction("Uncomment", action); //$NON-NLS-1$
 		markAsStateDependentAction("Uncomment", true); //$NON-NLS-1$
 
@@ -131,8 +135,9 @@ public class RubyEditor extends ScriptEditor {
 		SourceViewerConfiguration configuration = getSourceViewerConfiguration();
 		((ToggleCommentAction) action).configure(sourceViewer, configuration);
 	}
-	
+
 	private static ListenerList doSetInputListeners = new ListenerList();
+
 	public static void addListener(IRubyEditorListener listener) {
 		doSetInputListeners.add(listener);
 	}
@@ -150,10 +155,11 @@ public class RubyEditor extends ScriptEditor {
 			}
 		}
 	}
+
 	protected void doSetInput(IEditorInput input) throws CoreException {
 		super.doSetInput(input);
 		IModelElement element = getInputModelElement();
-		if( element != null ) {
+		if (element != null) {
 			notifyDoSetInput(element);
 		}
 	}

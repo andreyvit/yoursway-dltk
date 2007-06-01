@@ -93,7 +93,15 @@ public class MixinIndex extends Index {
 
 	public EntryResult[] query(char[][] categories, char[] key, int matchRule)
 			throws IOException {
-
+		boolean found = false;
+		for (int i = 0; i < categories.length; i++) {
+			if (CharOperation.equals(categories[i], IIndexConstants.MIXIN)) {
+				found = true;
+			}
+		}
+		if (!found)
+			return new EntryResult[0];
+		
 		HashtableOfObject results = new HashtableOfObject(10);
 
 		performQuery(key, matchRule, results);

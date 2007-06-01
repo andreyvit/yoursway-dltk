@@ -204,7 +204,9 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					"Please wait until building is ready...", 0, null,
 					IStatus.WARNING, startPosition, endPosition, -1));
 			return;
-		}
+		}		
+		
+		
 
 		completedNames.clear();
 		this.actualCompletionPosition = position;
