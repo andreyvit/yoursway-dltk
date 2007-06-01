@@ -570,7 +570,28 @@ public class AutoEditUtils {
 		return length;
 	}
 
+	/**
+     * Determine if the given offset is right before the end-of-line
+     * character(s) on the given line. Also returns true if the given offset
+     * is equal to the <code>endOffset</code>. 
+     * 
+     * @param document
+     *            the document that determines the set of legal line delimiter
+     *            strings
+     * @param offset
+     *            the offset to check
+     * @param endOffset
+     *            the offset right after the end of the line containing
+     *            <code>offset</code>, should equal the value that would be
+     *            returned from
+     *            <code>document.getLineOffset(document.getLineOfOffset(offset)) +
+     * document.getLineLength(document.getLineOfOffset(offset))</code>.
+     * @return
+     * @throws BadLocationException
+     */
 	public static boolean atEndOfLine(IDocument document, int offset, int endOffset) throws BadLocationException {
+	    if (offset == endOffset)
+	        return true;
 		int maxDelta = getMaximumLineDelimiterLength(document);
 		if (offset + maxDelta < endOffset)
 			return false;
