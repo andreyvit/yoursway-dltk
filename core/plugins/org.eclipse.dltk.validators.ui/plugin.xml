@@ -11,12 +11,12 @@
             id="org.eclipse.dltk.preferences.validators"
             name="Validators">
       </page>
-      <page
+      <!--page
             category="org.eclipse.dltk.preferences.validators"
             class="org.eclipse.dltk.validators.internal.ui.externalchecker.ExternalCheckerRulesPreferencePage"
             id="org.eclipse.dltk.validators.ui.externalchecker"
             name="External Checker rules">
-      </page>
+      </page-->
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">

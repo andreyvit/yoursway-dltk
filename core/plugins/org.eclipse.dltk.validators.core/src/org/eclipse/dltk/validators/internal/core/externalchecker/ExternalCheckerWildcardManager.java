@@ -33,7 +33,7 @@ public class ExternalCheckerWildcardManager {
 
 	public static String getDefaultWildcards() {
 		CustomWildcard[] wildcards = {
-				new CustomWildcard("f", "(\\w:)?.+", "File name"),
+				new CustomWildcard("f", "[\\w]?:?.+", "File name"),
 				new CustomWildcard("m", ".*", "Message"),
 				new CustomWildcard("n", "[0-9]+", "Line number") };
 		return rulesToXML(wildcards);

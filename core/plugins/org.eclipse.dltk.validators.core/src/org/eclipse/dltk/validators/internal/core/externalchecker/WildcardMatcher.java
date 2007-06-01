@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.dltk.core.DLTKCore;
-
 public class WildcardMatcher {
 
 	private List tokenList = new ArrayList();
@@ -24,26 +22,41 @@ public class WildcardMatcher {
 		Matcher matcher = pat.matcher(input);
 
 		if (matcher.matches()) {
-			int linenumber;
-			int inndex = getIndexOfLineNumber();
-			if (inndex >= 0) {
-				for (int i = 0; i <= matcher.groupCount(); i++) {
-					if (matcher.group(i) == null) {
-						inndex++;
+			String fileName = null;
+			int lineNumber = -1;
+			String message = "";
+			Pattern lPattern = Pattern.compile(this.getPattern('n', wcards));
+			Pattern mPattern = Pattern.compile(this.getPattern('m', wcards));
+			Pattern fPattern = Pattern.compile(this.getPattern('f', wcards));
+			for (int i = 1; i <= matcher.groupCount(); i++) {
+				if (matcher.group(i) != null) {
+					String group = matcher.group(i);
+					Matcher lMatch = lPattern.matcher(group);
+					if (lMatch.find()) {
+						lineNumber = new Integer(lMatch.group()).intValue();
+						continue;
+					}
+
+					Matcher fMatch = fPattern.matcher(group);
+					if (fMatch.find()) {
+						if (fileName == null) {
+							fileName = fMatch.group();
+							continue;
+						}
+					}
+
+					Matcher mMatch = mPattern.matcher(group);
+					if (mMatch.find()) {
+						message = mMatch.group();
+						continue;
 					}
 				}
-				String strlinenumber = matcher.group(inndex + 1);
-				if (DLTKCore.DEBUG) {
-					for (int i = 0; i <= matcher.groupCount(); i++) {
-						System.out.println(matcher.group(i));
-					}
-				}
-				linenumber = Integer.parseInt(strlinenumber);
-			} else {
-				linenumber = -1;
+			}
+			if( message == null ) {
+				message = input;
 			}
 			ExternalCheckerProblem problem = new ExternalCheckerProblem(pattern
-					.getType(), input, linenumber);
+					.getType(), message, lineNumber);
 			return problem;
 		}
 		return null;
@@ -99,25 +112,29 @@ public class WildcardMatcher {
 
 		status = UNDEFINED;
 		StringBuffer sb = new StringBuffer();
+		sb.append(".*");
 		for (int i = 0; i < input.length(); i++) {
 			char c = input.charAt(i);
 			if (c != '%') {
 				if (status == UNDEFINED) {
 					status = IN_STRING;
-					sb.append("(");
+// sb.append("(");
 				}
 				if (Character.isWhitespace(c)) {
-					sb.append("\\s");
+					sb.append("[\\s]+");
 				} else {
 					sb.append(c);
 				}
 			} else {
 				if (status == IN_STRING) {
-					sb.append(")");
+// sb.append(")");
 
 				}
 
 				String pattern = getPattern(input.charAt(i + 1), wcards);
+				if (pattern == null) {
+					pattern = "";
+				}
 				sb.append("(");
 				sb.append(pattern);
 				sb.append(")");
@@ -128,6 +145,7 @@ public class WildcardMatcher {
 		if (status == IN_STRING) {
 			sb.append(")");
 		}
+		sb.append(".*");
 		return sb.toString();
 	}
 

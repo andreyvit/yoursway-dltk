@@ -15,7 +15,7 @@ public class RulesList {
 	
 	
 	public void addRule(){
-		Rule r = new Rule("Put rule here...", "Error");
+		Rule r = new Rule("%f:%n:%m", "Error");
 		rules.add(r);
 		Iterator iterator = changeListeners.iterator();
 		while(iterator.hasNext()){

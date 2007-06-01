@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
@@ -99,6 +100,16 @@ public class ExternalCheckerConfigurationPage extends
     	group.setLayoutData(data);
     	GridLayout layout = new GridLayout(2, false);
     	group.setLayout(layout);
+    	
+    	Label label = new Label( ancestor, SWT.WRAP  );
+    	label.setText("Pattern is regular expression.\nYou must specify %f for filename, %n for line number and %m for message.\n");
+    	data = new GridData(SWT.FILL, SWT.FILL, false, false );
+    	data.horizontalSpan = columns;
+    	data.minimumWidth = 100;
+    	data.widthHint = 100;
+    	label.setLayoutData(data);
+//    	label.
+//    	label.setSize(label.computeSize(100, SWT.DEFAULT));
     	
 	    fTable =new Table(group, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | 
 				SWT.FULL_SELECTION | SWT.HIDE_SELECTION);
@@ -215,6 +226,7 @@ public class ExternalCheckerConfigurationPage extends
 
 		public void addRule(Rule r) {
 			tableViewer.add(r);
+			tableViewer.editElement(r, 0);
 		}
 
 		public void removeRule(Rule r) {

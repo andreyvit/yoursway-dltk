@@ -1,6 +1,7 @@
 package org.eclipse.dltk.validators.internal.core.externalchecker;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -69,6 +70,9 @@ public class ExternalChecker extends AbstractValidator {
 		}
 
 		public int[] getBounds(int lineNumber) {
+			if( codeLines.length <= lineNumber ) {
+				return new int[] {0, 1};
+			}
 			String codeLine = codeLines[lineNumber];
 			String trimmedCodeLine = codeLine.trim();
 
@@ -81,21 +85,22 @@ public class ExternalChecker extends AbstractValidator {
 	}
 
 	public ExternalCheckerProblem parseProblem(String problem) {
-
+		List wlist = ExternalCheckerWildcardManager.loadCustomWildcards();
 		for (int i = 0; i < rules.size(); i++) {
 			Rule rule = (Rule) this.rules.get(i);
 			// String wcard = rule.getDescription();
 // List tlist = null;
-			List wlist = ExternalCheckerWildcardManager.loadCustomWildcards();
 			try {
 				WildcardMatcher wmatcher = new WildcardMatcher(wlist);
 				ExternalCheckerProblem cproblem = wmatcher.match(rule, problem);
-				return cproblem;
+				if(cproblem != null) {
+					return cproblem;
+				}
 			} catch (Exception x) {
-				if( DLTKCore.DEBUG ) {
+				if (DLTKCore.DEBUG) {
 					System.out.println(x.toString());
 				}
-				return null;
+				continue;
 			}
 		}
 		return null;
@@ -188,9 +193,19 @@ public class ExternalChecker extends AbstractValidator {
 	}
 
 	public IStatus validate(ISourceModule module, OutputStream console) {
+		
+		
 		IResource resource = module.getResource();
 		if (resource == null) {
 			return Status.CANCEL_STATUS;
+		}
+		
+		try {
+			ExternalCheckerMarker.clearMarkers(resource);
+		} catch (CoreException e2) {
+			if( DLTKCore.DEBUG ) {
+				e2.printStackTrace();
+			}
 		}
 
 		List lines = new ArrayList();
@@ -204,7 +219,6 @@ public class ExternalChecker extends AbstractValidator {
 		for (int i = 0; i < sArgs.length; i++) {
 			coms.add(sArgs[i]);
 		}
-
 
 		// StringBuilder sb = new StringBuilder();
 		// /sb.append(com);
@@ -255,12 +269,11 @@ public class ExternalChecker extends AbstractValidator {
 								bounds[1]);
 					}
 				}
-
 			}
 		}
 
 		catch (Exception e) {
-			if( DLTKCore.DEBUG ) {
+			if (DLTKCore.DEBUG) {
 				System.out.println(e.toString());
 			}
 		}
@@ -284,7 +297,7 @@ public class ExternalChecker extends AbstractValidator {
 	private String processArguments(IResource resource) {
 		String path = resource.getLocation().makeAbsolute().toOSString();
 		String arguments = this.arguments;
-		
+
 		String user = replaceSequence(arguments.replaceAll("\t", "::")
 				.replaceAll(" ", "::"), 'f', path);
 		String result = "";
@@ -292,19 +305,12 @@ public class ExternalChecker extends AbstractValidator {
 	}
 
 	private String replaceSequence(String from, char pattern, String value) {
-// / boolean append_braces = false;
 		StringBuffer buffer = new StringBuffer();
-// if(pattern== 'f')
-// append_braces = true;
 		for (int i = 0; i < from.length(); ++i) {
 			char c = from.charAt(i);
 			if (c == '%' && i < from.length() - 1
 					&& from.charAt(i + 1) == pattern) {
-				// if(append_braces)
-				// buffer.append("\"");
 				buffer.append(value);
-// if(append_braces)
-// buffer.append("\"");
 				i++;
 			} else {
 				buffer.append(c);
@@ -314,13 +320,27 @@ public class ExternalChecker extends AbstractValidator {
 	}
 
 	public boolean isValidatorValid() {
-		// IPath path = new Path(this.commmand);
-		// File file = new File(path.toOSString());
+		IPath path = this.commmand;
+		File file = new File(path.toOSString());
 
-// if (!file.exists()) {
-// return false;
-// }
+		if (!file.exists()) {
+			return false;
+		}
 
 		return true;
+	}
+
+	public void clean(ISourceModule module) {
+		clean(module.getResource());
+	}
+
+	public void clean(IResource resource) {
+		try {
+			ExternalCheckerMarker.clearMarkers(resource);
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
