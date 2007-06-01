@@ -177,10 +177,133 @@
                     value="S" />
                 <property
                     name="buildId"
-                    value="1.0M7" />
+                    value="1.0M1" />
                 <property
                     name="buildBranch"
                     value="R1.0" />
+                <property
+                    name="checkoutprojectname"
+                    value="${project.name}" />
+
+                <property
+                    name="mapVersionTag"
+                    value="HEAD" />
+                <property
+                    name="build.distribution"
+                    value="dltk" />
+                <property
+                    name="build.pack-all-in-one"
+                    value="true" />
+
+            </ant>
+        </schedule>
+
+
+    </project>
+
+    <project name="dltk-R0.9-I">
+        <!-- Defines where cruise looks for changes, to decide whether to run the build -->
+        <modificationset quietperiod="120">
+            <cvs module="${env.CVS_RELENG}" />
+
+        </modificationset>
+
+        <schedule interval="${time.oneHour}">
+            <ant
+                antscript="${env.BUILD_HOME}/releng.control/ant.sh"
+                buildfile="cc_project_build.xml"
+                target="Build"
+                useQuiet="false"
+                useLogger="false"
+                savelogdir="${logDir}"
+                usedebug="false"
+                antworkingdir="${env.BUILD_HOME}/releng.control">
+                <property
+                    name="buildType"
+                    value="I" />
+                <property
+                    name="buildBranch"
+                    value="R0.9" />
+                <property
+                    name="checkoutprojectname"
+                    value="${project.name}" />
+
+                <property
+                    name="mapVersionTag"
+                    value="HEAD" />
+                <property
+                    name="build.distribution"
+                    value="dltk" />
+
+
+            </ant>
+        </schedule>
+
+    </project>
+
+
+    <project name="dltk-R0.9-N">
+
+        <schedule interval="${time.VeryVeryLongTime}">
+            <ant
+                antscript="${env.BUILD_HOME}/releng.control/ant.sh"
+                buildfile="cc_project_build.xml"
+                target="Build"
+                useQuiet="false"
+                useLogger="false"
+                savelogdir="${logDir}"
+                usedebug="false"
+                antworkingdir="${env.BUILD_HOME}/releng.control">
+                <property
+                    name="buildType"
+                    value="N" />
+                <!-- in this context, buildBranch is simply a label -->
+                <property
+                    name="buildBranch"
+                    value="R0.9" />
+                <property
+                    name="mapVersionTag"
+                    value="HEAD" />
+                <property
+                    name="build.distribution"
+                    value="dltk" />
+                <property
+                    name="build.trial"
+                    value="true" />
+
+
+            </ant>
+        </schedule>
+
+    </project>
+
+
+    <project name="dltk-R0.9-S">
+        <!-- Defines where cruise looks for changes, to decide whether to run the build -->
+        <modificationset quietperiod="120">
+            <cvs module="${env.CVS_RELENG}" />
+
+        </modificationset>
+
+        <schedule interval="${time.VeryVeryLongTime}">
+            <ant
+                antscript="${env.BUILD_HOME}/releng.control/ant.sh"
+                buildfile="cc_project_build.xml"
+                target="Build"
+                useQuiet="false"
+                useLogger="false"
+                savelogdir="${logDir}"
+                usedebug="false"
+                antworkingdir="${env.BUILD_HOME}/releng.control">
+                <property
+                    name="buildType"
+                    value="S" />
+                <property
+                    name="buildId"
+                    value="0.9RC2a" />
+                <property
+                    name="buildBranch"
+                    value="R0.9" />
                 <property
                     name="checkoutprojectname"
                     value="${project.name}" />

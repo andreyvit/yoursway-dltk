@@ -27,7 +27,7 @@
     	if running "standalone", we make this simplifying assumption.
     -->
     <property name="build.distribution" value="dltk" />
-    <property name="buildBranch" value="R1.0" />
+    <property name="buildBranch" value="R0.9" />
     <property name="buildType" value="I" />
     <property name="checkoutprojectname" value="${build.distribution}-${buildBranch}-${buildType}" />
 

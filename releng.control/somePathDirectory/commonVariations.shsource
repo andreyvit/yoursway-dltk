@@ -9,7 +9,7 @@
 # then the bash "include source" function will find that version
 # first, instead of the "standard" eclipse ppc one.
 
-export BUILD_HOME=/home/shared/webtools
+export BUILD_HOME=/home/releng
 
 export DISPLAY=127.0.0.1:0
 
@@ -31,6 +31,6 @@ export LOCAL_BUILD_PROPERTIES_DIR=${BUILD_HOME}/localBuildProperties
 export STANDARD_PROPERTIES_DIR=${BUILD_HOME}/releng.control/standardMachineProperties
 
 export BUILD_BUILDMASTER_EMAIL=andrey@xored.com
-export BUILD_RESULT_URL=http://gw.inetlab.com:7777/cruisecontrol/buildresults
-export BUILD_TOADDRESS=andrey@xored.com
+export BUILD_RESULT_URL=http://dltk.eclipse.org:3000/cruisecontrol/buildresults
+export BUILD_TOADDRESS=dltk-dev@eclipse.org
 
