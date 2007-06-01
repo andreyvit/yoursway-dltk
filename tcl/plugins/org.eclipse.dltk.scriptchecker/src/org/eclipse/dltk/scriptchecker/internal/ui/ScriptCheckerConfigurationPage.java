@@ -59,6 +59,7 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 	private TableViewer fTableViewer;
 
 	private Button fAddButton;
+	private Button fEditButton;
 	private Button fRemoveButton;
 
 	private Composite fControl;
@@ -98,6 +99,8 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 					return node.getPattern();
 				case 1:
 					return node.getUri();
+				case 2:
+					return Boolean.toString(node.isRegexp());
 				}
 			}
 			return element.toString();
@@ -159,7 +162,7 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.horizontalSpan = columns;
 		data.heightHint = 200;
-		data.widthHint = 200;
+		data.widthHint = 300;
 		data.minimumWidth = 100;
 		atsStyle.setLayoutData(data);
 		atsStyle.setText("Guidelines");
@@ -173,7 +176,7 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 				| SWT.FULL_SELECTION);
 
 		data = new GridData(GridData.FILL_BOTH);
-		data.widthHint = 450;
+		data.widthHint = 550;
 		fTable.setLayoutData(data);
 		fTable.setFont(font);
 
@@ -181,12 +184,16 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 		fTable.setLinesVisible(true);
 
 		TableColumn column1 = new TableColumn(fTable, SWT.NULL);
-		column1.setText("ID");
-		column1.setWidth(50);
+		column1.setText("Pattern");
+		column1.setWidth(55	);
 
 		TableColumn column2 = new TableColumn(fTable, SWT.NULL);
-		column2.setText("Page source");
+		column2.setText("URI");
 		column2.setWidth(100);
+		
+		TableColumn column3 = new TableColumn(fTable, SWT.NULL);
+		column3.setText("Regexp");
+		column3.setWidth(50);
 
 		fTableViewer = new TableViewer(fTable);
 
@@ -205,6 +212,12 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 		fAddButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event evt) {
 				addGuide();
+			}
+		});
+		fEditButton = createPushButton(buttons, "Edit");
+		fEditButton.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event evt) {
+				editGuide();
 			}
 		});
 
@@ -237,13 +250,32 @@ public class ScriptCheckerConfigurationPage extends ValidatorConfigurationPage {
 	protected void addGuide() {
 		AddGuideDialog dialog = new AddGuideDialog(fControl.getShell(), null);
 
-		dialog.setTitle("Add ats style guide");
+		dialog.setTitle("Add ATSStyle guide rule");
 		if (dialog.open() != Window.OK) {
 			return;
 		}
 		ATSGuideManager.getInstance().load();
 // ATSGuideManager.getInstance().addGuide("S9.1", "http://guide0");
 		this.fTableViewer.refresh();
+	}
+	protected void editGuide() {
+		ISelection selection = this.fTableViewer.getSelection();
+		GuideNode node = null;
+		if( selection instanceof IStructuredSelection) {
+			Object guide = ((IStructuredSelection)selection).getFirstElement();
+			if( guide instanceof GuideNode ) {
+				node = (GuideNode) guide;
+			}
+		}
+		AddGuideDialog dialog = new AddGuideDialog(fControl.getShell(), node);
+
+		dialog.setTitle("Edit ATSStyle guide rule");
+		if (dialog.open() != Window.OK) {
+			return;
+		}
+		ATSGuideManager.getInstance().load();
+// ATSGuideManager.getInstance().addGuide("S9.1", "http://guide0");
+		this.fTableViewer.refresh(true);
 	}
 
 	private ScriptChecker getScriptChecker() {

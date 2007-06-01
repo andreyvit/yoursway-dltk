@@ -68,21 +68,41 @@ public class ScriptCheckerASTStyleToGuideHyperlink implements IHyperlink {
 		if (guide != null) {
 			GuideNode[] guides = ATSGuideManager.getInstance().getGuides();
 			for (int i = 0; i < guides.length; i++) {
-				if( guide.equals( guides[i].getPattern() ) ) {
-					IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
-					try {
-						IWebBrowser browser = browserSupport.createBrowser(null);
-						browser.openURL(new URL( guides[i].getUri() ));
-					} catch (PartInitException e) {
-						if( DLTKCore.DEBUG ) {
-							e.printStackTrace();
+				if( !guides[i].isRegexp() && guide.equals( guides[i].getPattern() ) ) {
+					String uri = guides[i].getUri();
+					executeBrowser(uri);
+				}
+				else if( guides[i].isRegexp() ) {
+					String pattern = guides[i].getPattern();
+					Pattern p = Pattern.compile(pattern);
+					Matcher matcher = p.matcher(guide);
+					if( matcher.find() ) {
+						String uri = guides[i].getUri();
+						int pos = uri.indexOf("%s");
+						if( pos != -1 ) {
+							String p1 = uri.substring(0, pos);
+							String p2 = uri.substring(pos + 2, uri.length());
+							uri = p1 + guide + p2;
 						}
-					} catch (MalformedURLException e) {
-						if( DLTKCore.DEBUG ) {
-							e.printStackTrace();
-						}
+						executeBrowser(uri);
 					}
 				}
+			}
+		}
+	}
+
+	private void executeBrowser(String uri) {
+		try {
+			IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
+			IWebBrowser browser = browserSupport.createBrowser(null);	
+			browser.openURL(new URL( uri ));
+		} catch (PartInitException e) {
+			if( DLTKCore.DEBUG ) {
+				e.printStackTrace();
+			}
+		} catch (MalformedURLException e) {
+			if( DLTKCore.DEBUG ) {
+				e.printStackTrace();
 			}
 		}
 	}

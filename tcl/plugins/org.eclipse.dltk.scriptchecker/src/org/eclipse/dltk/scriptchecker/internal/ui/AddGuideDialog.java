@@ -52,7 +52,7 @@ public class AddGuideDialog extends StatusDialog {
 	public AddGuideDialog(Shell shell, GuideNode node) {
 		super(shell);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
-// fRequestor= requestor;
+		// fRequestor= requestor;
 		fStati = new IStatus[5];
 		for (int i = 0; i < fStati.length; i++) {
 			fStati[i] = new StatusInfo();
@@ -146,7 +146,7 @@ public class AddGuideDialog extends StatusDialog {
 		} else {
 			fPattern.setText(fNode.getPattern());
 			fURI.setText(fNode.getUri());
-			fRegularExpression.setEnabled(fNode.isRegexp());
+			fRegularExpression.setSelection(fNode.isRegexp());
 		}
 		setPatternStatus(validate());
 		updateStatusLine();
@@ -161,7 +161,7 @@ public class AddGuideDialog extends StatusDialog {
 			status.setInfo("Please enter pattern and URI");
 		} else {
 			try {
-				URI u = new URI(uri);
+				URI u = new URI(uri.replaceAll("%s", "s"));
 			} catch (URISyntaxException e) {
 				status.setError("Please specify correct URI");
 			}
@@ -198,15 +198,18 @@ public class AddGuideDialog extends StatusDialog {
 // fRequestor.validatorAdded(Validator);
 			ATSGuideManager.getInstance().addGuide(fPattern.getText(),
 					fURI.getText(), fRegularExpression.isSelected());
-			try {
-				ATSGuideManager.getInstance().save();
-			} catch (TransformerException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
+		}
+		else {
+			this.fNode.setPattern(this.fPattern.getText());
+			this.fNode.setUri(this.fURI.getText());
+			this.fNode.setRegexp(this.fRegularExpression.isSelected());
+		}
+		try {
+			ATSGuideManager.getInstance().save();
+		} catch (TransformerException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
 			}
-		} else {
-// setFieldValuesToValidator(fNode);
 		}
 	}
 
