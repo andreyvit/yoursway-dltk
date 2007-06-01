@@ -23,6 +23,7 @@ import org.eclipse.dltk.ui.text.IColorManager;
 import org.eclipse.dltk.ui.text.ScriptPresentationReconciler;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.SingleTokenScriptScanner;
+import org.eclipse.dltk.ui.text.util.AutoEditUtils;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.AbstractInformationControlManager;
 import org.eclipse.jface.text.DefaultInformationControl;
@@ -72,8 +73,8 @@ public class RubySourceViewerConfiguration extends
 
 	public String[] getIndentPrefixes(ISourceViewer sourceViewer,
 			String contentType) {
-		// XXX: what happens here?.. why " " ?
-		return new String[] { "\t", "    " };
+		RubyPreferenceInterpreter prefs = new RubyPreferenceInterpreter(this.fPreferenceStore);
+		return new String[] { "\t", AutoEditUtils.getNSpaces(prefs.getIndentSize()) };
 	}
 
 	public int getTabWidth(ISourceViewer sourceViewer) {

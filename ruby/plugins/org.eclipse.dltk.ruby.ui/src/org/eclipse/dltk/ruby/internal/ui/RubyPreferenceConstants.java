@@ -392,7 +392,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 		store.setDefault( PreferenceConstants.EDITOR_SMART_PASTE, true);
 		store.setDefault( PreferenceConstants.EDITOR_SMART_HOME_END, true);
 		store.setDefault( PreferenceConstants.EDITOR_SUB_WORD_NAVIGATION, true);		
-		store.setDefault( PreferenceConstants.EDITOR_TAB_WIDTH, 8);
+		store.setDefault( PreferenceConstants.EDITOR_TAB_WIDTH, 4);
 		store.setDefault( PreferenceConstants.EDITOR_SYNC_OUTLINE_ON_CURSOR_MOVE, true);
 		
 		// folding

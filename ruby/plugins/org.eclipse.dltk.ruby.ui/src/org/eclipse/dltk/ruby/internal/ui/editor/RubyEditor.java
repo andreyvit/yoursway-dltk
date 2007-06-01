@@ -40,7 +40,7 @@ public class RubyEditor extends ScriptEditor {
 
 	public static final String EDITOR_CONTEXT = "#RubyEditorContext";
 	
-	public static final String RULER_CONTEXT = "#TclRulerContext";
+	public static final String RULER_CONTEXT = "#RubyRulerContext";
 
 	protected void initializeEditor() {
 		super.initializeEditor();

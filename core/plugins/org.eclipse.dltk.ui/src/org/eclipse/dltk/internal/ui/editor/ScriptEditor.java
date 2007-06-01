@@ -1248,20 +1248,6 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		ActionGroup ovg = new OpenViewActionGroup(this);
 		ActionGroup dsg = new DLTKSearchActionGroup(this);
 
-		setAction("xxx", new Action() {
-			public String getDescription() {
-				return "This is my action";
-			}
-
-			public String getId() {
-				return "xxx";
-			}
-
-			public String getText() {
-				return "This is my text";
-			}
-		});
-
 		fActionGroups = new CompositeActionGroup(new ActionGroup[] { oeg, ovg,
 				dsg });
 
@@ -2160,6 +2146,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 							.equals(property)
 					|| CodeFormatterConstants.FORMATTER_TAB_CHAR
 							.equals(property)) {
+				updateIndentPrefixes();
 				StyledText textWidget = sourceViewer.getTextWidget();
 				int tabWidth = getSourceViewerConfiguration().getTabWidth(
 						sourceViewer);
