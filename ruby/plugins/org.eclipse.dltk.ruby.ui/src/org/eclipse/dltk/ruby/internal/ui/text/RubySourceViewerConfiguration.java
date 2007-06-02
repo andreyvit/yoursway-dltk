@@ -10,6 +10,7 @@
 package org.eclipse.dltk.ruby.internal.ui.text;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.dltk.core.IRegion;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
@@ -26,7 +27,9 @@ import org.eclipse.dltk.ui.text.SingleTokenScriptScanner;
 import org.eclipse.dltk.ui.text.util.AutoEditUtils;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.AbstractInformationControlManager;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DefaultInformationControl;
+import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
@@ -213,12 +216,24 @@ public class RubySourceViewerConfiguration extends
 		return presenter;
 	}
 	
+	protected boolean isNewLine(IDocument doc, String text) {
+		String[] delims = doc.getLegalLineDelimiters();
+		for(int i = 0; i < delims.length; ++i) {
+			if (delims[i].equals(text)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	
 	public IAutoEditStrategy[] getAutoEditStrategies(
 			ISourceViewer sourceViewer, String contentType) {
 		// // TODO: check contentType. think, do we really need it? :)
 		String partitioning = getConfiguredDocumentPartitioning(sourceViewer);
 		return new IAutoEditStrategy[] { new RubyAutoEditStrategy(
-				fPreferenceStore, partitioning) };
+			fPreferenceStore, partitioning) };
 	}
 
 	protected IInformationControlCreator getOutlinePresenterControlCreator(

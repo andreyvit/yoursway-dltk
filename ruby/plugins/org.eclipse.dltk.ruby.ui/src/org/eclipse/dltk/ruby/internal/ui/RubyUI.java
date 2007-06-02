@@ -39,8 +39,7 @@ public class RubyUI extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		
-		new InitializeAfterLoadJob().schedule();
-		
+		(new InitializeAfterLoadJob()).schedule();
 	}
 
 	public void stop(BundleContext context) throws Exception {
@@ -48,11 +47,6 @@ public class RubyUI extends AbstractUIPlugin {
 		super.stop(context);
 	}
 
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
 	public static RubyUI getDefault() {
 		return plugin;
 	}

@@ -65,7 +65,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Configures DLTK Editor hover preferences.
  */
-public class DLTKEditorHoverConfigurationBlock implements IPreferenceConfigurationBlock {
+public class ScriptEditorHoverConfigurationBlock implements IPreferenceConfigurationBlock {
 
 	private static final String DELIMITER= PreferencesMessages.DLTKEditorHoverConfigurationBlock_delimiter; 
 
@@ -87,7 +87,7 @@ public class DLTKEditorHoverConfigurationBlock implements IPreferenceConfigurati
 	}
 	
 	
-	private class DLTKEditorTextHoverDescriptorLabelProvider implements ITableLabelProvider {
+	private class ScriptEditorTextHoverDescriptorLabelProvider implements ITableLabelProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {
 			return null;
@@ -125,7 +125,7 @@ public class DLTKEditorHoverConfigurationBlock implements IPreferenceConfigurati
 	}
 	
 	
-	private class DLTKEditorTextHoverDescriptorContentProvider implements IStructuredContentProvider {
+	private class ScriptEditorTextHoverDescriptorContentProvider implements IStructuredContentProvider {
 		
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 			// Do nothing since the viewer listens to resource deltas
@@ -171,7 +171,7 @@ public class DLTKEditorHoverConfigurationBlock implements IPreferenceConfigurati
 	};
 	
 
-	public DLTKEditorHoverConfigurationBlock(PreferencePage mainPreferencePage, OverlayPreferenceStore store) {
+	public ScriptEditorHoverConfigurationBlock(PreferencePage mainPreferencePage, OverlayPreferenceStore store) {
 		Assert.isNotNull(mainPreferencePage);
 		Assert.isNotNull(store);
 		fMainPreferencePage= mainPreferencePage;
@@ -263,8 +263,8 @@ public class DLTKEditorHoverConfigurationBlock implements IPreferenceConfigurati
 
 		fHoverTableViewer= new CheckboxTableViewer(fHoverTable);
 		fHoverTableViewer.setUseHashlookup(true);
-		fHoverTableViewer.setContentProvider(new DLTKEditorTextHoverDescriptorContentProvider());
-		fHoverTableViewer.setLabelProvider(new DLTKEditorTextHoverDescriptorLabelProvider());
+		fHoverTableViewer.setContentProvider(new ScriptEditorTextHoverDescriptorContentProvider());
+		fHoverTableViewer.setLabelProvider(new ScriptEditorTextHoverDescriptorLabelProvider());
 		
 		((CheckboxTableViewer)fHoverTableViewer).addCheckStateListener(new ICheckStateListener() {
 			/*

@@ -37,7 +37,7 @@ import org.eclipse.ui.texteditor.RetargetTextEditorAction;
 /**
  * Common base class for action contributors for Script editors.
  */
-public class BasicDLTKEditorActionContributor extends BasicTextEditorActionContributor {
+public class BasicScriptEditorActionContributor extends BasicTextEditorActionContributor {
 
 	private List fPartListeners= new ArrayList();
 
@@ -51,7 +51,7 @@ public class BasicDLTKEditorActionContributor extends BasicTextEditorActionContr
 	private RetargetTextEditorAction fGotoNextMemberAction;
 	private RetargetTextEditorAction fGotoPreviousMemberAction;
 
-	public BasicDLTKEditorActionContributor() {
+	public BasicScriptEditorActionContributor() {
 		super();
 		
 		ResourceBundle b= DLTKEditorMessages.getBundleForConstructedKeys();

@@ -18,7 +18,7 @@ import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
 import org.eclipse.dltk.ruby.internal.ui.editor.RubyDocumentSetupParticipant;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
 import org.eclipse.dltk.ruby.ui.preferences.RubyPreferencesMessages;
-import org.eclipse.dltk.ui.preferences.AbstractDLTKEditorColoringConfigurationBlock;
+import org.eclipse.dltk.ui.preferences.AbstractScriptEditorColoringConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 import org.eclipse.dltk.ui.preferences.PreferencesMessages;
@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 public class RubyEditorColoringConfigurationBlock extends
-		AbstractDLTKEditorColoringConfigurationBlock implements
+		AbstractScriptEditorColoringConfigurationBlock implements
 		IPreferenceConfigurationBlock {
 	
 	private static final String PREVIEW_FILE_NAME = "PreviewFile.txt";

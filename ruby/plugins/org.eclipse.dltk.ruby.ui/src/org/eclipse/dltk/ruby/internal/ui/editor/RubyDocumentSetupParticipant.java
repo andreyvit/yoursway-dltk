@@ -16,12 +16,13 @@ import org.eclipse.dltk.ruby.internal.ui.text.RubyTextTools;
 import org.eclipse.jface.text.IDocument;
 
 /**
- * The document setup participant for Python.
+ * The document setup participant for Ruby.
  */
 public class RubyDocumentSetupParticipant implements
 		IDocumentSetupParticipant {
 
 	public RubyDocumentSetupParticipant() {
+		
 	}
 
 	public void setup(IDocument document) {

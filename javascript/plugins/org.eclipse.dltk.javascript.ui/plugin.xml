@@ -8,7 +8,7 @@
             contributorClass="org.eclipse.dltk.internal.ui.editor.SourceModuleEditorActionContributor"
             default="true"
             extensions="js"
-            icon="icons/sourceEditor.gif"
+            icon="icons/obj16/sourceEditor.gif"
             id="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor"
             name="DLTK Javascript Editor">
          <contentTypeBinding
@@ -26,7 +26,7 @@
             class="org.eclipse.dltk.javascript.internal.ui.search.JavaScriptSearchPage"
             enabled="true"
             extensions="tcl:90, exp:90"
-            icon="/icons/jsearch_obj.gif"
+            icon="/icons/obj16/jsearch_obj.gif"
             id="org.eclipse.dltk.ui.TCLSearchPage"
             label="%DLTKSearchPage.label"
             showScopeSection="true"
@@ -203,7 +203,7 @@
             category="org.eclipse.dltk.javascript.ui"
             class="org.eclipse.dltk.javascript.internal.ui.wizards.JavascriptProjectCreationWizard"
             finalPerspective="org.eclipse.dltk.javascript.ui.JavascriptPerspective"
-            icon="icons/full/ctool16/newjscript_wiz.gif"
+            icon="icons/ctool16/newjscript_wiz.gif"
             id="org.eclipse.dltk.javascript.internal.ui.wizards.JavascriptProjectWizard"
             name="Javascript Project"
             preferredPerspectives="org.eclipse.dltk.javascript.ui.JavascriptPerspective"
@@ -215,7 +215,7 @@
        <wizard
              category="org.eclipse.dltk.javascript.ui"
              class="org.eclipse.dltk.javascript.internal.ui.wizards.JavaScriptFileCreationWizard"
-             icon="icons/full/ctool16/newjscript_wiz.gif"
+             icon="icons/ctool16/newjscript_wiz.gif"
              id="org.eclipse.dltk.ruby.internal.ui.wizards.JavascriptFileCreationWizard"
              name="%NewJsFile.label">
           <description>
@@ -264,7 +264,7 @@
        point="org.eclipse.ui.perspectives">
     <perspective
           class="org.eclipse.dltk.javascript.ui.JavascriptPerspective"
-          icon="icons/javascript.gif"
+          icon="icons/eview16/javascript_persp.gif"
           id="org.eclipse.dltk.javascript.ui.JavascriptPerspective"
           name="%JavascriptPerspectiveName"/>
  </extension>

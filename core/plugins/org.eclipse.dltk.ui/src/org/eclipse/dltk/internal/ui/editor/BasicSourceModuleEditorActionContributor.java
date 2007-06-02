@@ -37,7 +37,7 @@ import org.eclipse.ui.texteditor.RetargetTextEditorAction;
 
 
 
-public class BasicSourceModuleEditorActionContributor extends BasicDLTKEditorActionContributor {
+public class BasicSourceModuleEditorActionContributor extends BasicScriptEditorActionContributor {
 
 	/**
 	 * A menu listener that can remove itself from the menu it listens to.

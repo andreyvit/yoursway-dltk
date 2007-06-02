@@ -30,7 +30,7 @@
             class="org.eclipse.dltk.tcl.internal.ui.search.TclSearchPage"
             enabled="true"
             extensions="tcl:90, exp:90"
-            icon="/icons/jsearch_obj.gif"
+            icon="/icons/obj16/jsearch_obj.gif"
             id="org.eclipse.dltk.ui.TCLSearchPage"
             label="%DLTKSearchPage.label"
             showScopeSection="true"
@@ -41,7 +41,7 @@
        point="org.eclipse.ui.perspectives">
     <perspective
           class="org.eclipse.dltk.tcl.ui.TclPerspective"
-          icon="icons/tcl.gif"
+          icon="icons/eview16/tcl_persp.gif"
           id="org.eclipse.dltk.tcl.ui.TclPerspective"
           name="%TclPerspectiveName"/>
  </extension>
@@ -107,7 +107,7 @@
             category="org.eclipse.dltk.tcl.ui"
             class="org.eclipse.dltk.tcl.internal.ui.wizards.TclProjectCreationWizard"
             finalPerspective="org.eclipse.dltk.tcl.ui.TclPerspective"
-            icon="icons/tcl.gif"
+            icon="icons/eview16/tcl_persp.gif"
             id="org.eclipse.dltk.tcl.internal.ui.wizards.TclProjectWizard"
             name="Tcl Project"
             preferredPerspectives="org.eclipse.dltk.tcl.ui.TclPerspective"
@@ -118,7 +118,7 @@
       </wizard>
       <wizard
             name="%NewSourceFolderCreationWizard.label"
-            icon="/icons/newpackfolder_wiz.gif"
+            icon="/icons/etool16/newpackfolder_wiz.gif"
             category="org.eclipse.dltk.tcl.ui"
             class="org.eclipse.dltk.ui.wizards.NewSourceFolderCreationWizard"
             id="org.eclipse.dltk.tcl.ui.wizards.NewSourceFolderCreationWizard">
@@ -128,7 +128,7 @@
       </wizard>
        <wizard
             name="%NewTCLPackage.label"
-            icon="icons/newpack_wiz.gif"
+            icon="icons/etool16/newpack_wiz.gif"
             category="org.eclipse.dltk.tcl.ui"
             class="org.eclipse.dltk.tcl.internal.ui.wizards.TclPackageCreationWizard"
             id="org.eclipse.dltk.tcl.ui.wizards.NewPackageCreationWizard">
@@ -139,7 +139,7 @@
        <wizard
              category="org.eclipse.dltk.tcl.ui"
              class="org.eclipse.dltk.tcl.internal.ui.wizards.TclFileCreationWizard"
-             icon="icons/tcl.gif"
+             icon="icons/eview16/tcl_persp.gif"
              id="org.eclipse.dltk.tcl.internal.ui.wizards.TclFileCreationWizard"
              name="%NewTclFile.label">
           <description/>
@@ -152,7 +152,7 @@
             contributorClass="org.eclipse.dltk.internal.ui.editor.SourceModuleEditorActionContributor"
             default="true"
             extensions="tcl,exp"
-            icon="icons/tcl_obj.gif"
+            icon="icons/obj16/tcl_obj.gif"
             id="org.eclipse.dltk.tcl.ui.editor.TclEditor"
             name="DLTK Tcl Editor">
          <contentTypeBinding
@@ -241,24 +241,24 @@
     <view
           category="org.eclipse.dltk.tcl.ui"
           class="org.eclipse.dltk.tcl.internal.ui.navigation.NamespacesView"
-          icon="icons/tcl_obj.gif"
+          icon="icons/obj16/tcl_obj.gif"
           id="org.eclipse.dltk.tcl.internal.ui.navigation.NamespacesView"
           name="%TclNamespacesView"/>
     <view
           category="org.eclipse.dltk.tcl.ui"
           class="org.eclipse.dltk.tcl.internal.ui.navigation.FunctionsView"
-          icon="icons/tcl_obj.gif"
+          icon="icons/obj16/tcl_obj.gif"
           id="org.eclipse.dltk.tcl.internal.ui.navigation.FunctionsView"
           name="%TclFunctionsView"/>
     <view
           category="org.eclipse.dltk.tcl.ui"
           class="org.eclipse.dltk.tcl.internal.ui.navigation.PackagesView"
-          icon="icons/tcl_obj.gif"
+          icon="icons/obj16/tcl_obj.gif"
           id="org.eclipse.dltk.tcl.internal.ui.navigation.PackagesView"
           name="%TclPackagesView"/> 
     <view
             name="%TclDocumentationView"
-            icon="$nl$/icons/javadoc.gif"
+            icon="icons/etool16/javadoc.gif"
             category="org.eclipse.dltk.tcl.ui"
             class="org.eclipse.dltk.tcl.internal.ui.infoviews.TclDocumentationView"
             id="org.eclipse.dltk.tcl.ui.TclDocumentationView">
@@ -328,7 +328,7 @@
          <action
             class="org.eclipse.dltk.tcl.internal.ui.actions.TclOpenTypeAction"
             definitionId="org.eclipse.dltk.tcl.ui.navigate.open.type"
-            icon="icons/opentype.gif"
+            icon="icons/etool16/opentype.gif"
             id="openType"
             label="%OpenTypeAction.label"
             menubarPath="navigate/open.ext2"

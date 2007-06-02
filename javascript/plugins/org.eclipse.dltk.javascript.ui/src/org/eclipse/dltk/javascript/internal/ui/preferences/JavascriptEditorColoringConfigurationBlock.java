@@ -18,7 +18,7 @@ import org.eclipse.dltk.javascript.internal.ui.editor.JavaScriptDocumentSetupPar
 import org.eclipse.dltk.javascript.internal.ui.text.SimpleJavascriptSourceViewerConfiguration;
 import org.eclipse.dltk.javascript.ui.JavascriptPreferenceConstants;
 import org.eclipse.dltk.javascript.ui.text.IJavaScriptPartitions;
-import org.eclipse.dltk.ui.preferences.AbstractDLTKEditorColoringConfigurationBlock;
+import org.eclipse.dltk.ui.preferences.AbstractScriptEditorColoringConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 import org.eclipse.dltk.ui.preferences.PreferencesMessages;
@@ -34,7 +34,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 
 public class JavascriptEditorColoringConfigurationBlock extends
-		AbstractDLTKEditorColoringConfigurationBlock implements
+		AbstractScriptEditorColoringConfigurationBlock implements
 		IPreferenceConfigurationBlock {
 	
 	private static final String PREVIEW_FILE_NAME = "PreviewFile.txt";

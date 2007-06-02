@@ -30,26 +30,19 @@ import org.eclipse.swt.events.VerifyEvent;
 
 public abstract class BracketInserter implements VerifyKeyListener, ILinkedModeListener {
 
-	/**
-	 * 
-	 */
-	protected final ScriptEditor scriptEditor;
-
-	/**
-	 * @param scriptEditor
-	 */
-	protected BracketInserter(ScriptEditor scriptEditor) {
-		this.scriptEditor = scriptEditor;
-		CATEGORY= this.scriptEditor.toString();
-		fUpdater = new ScriptEditor.ExclusivePositionUpdater(CATEGORY);
-	}
-
+	protected final ScriptEditor editor;
 	protected boolean fCloseBrackets = true;
 	protected boolean fCloseStrings = true;
 	protected boolean fCloseAngularBrackets = true;
 	protected final String CATEGORY ;
 	protected IPositionUpdater fUpdater;
 	protected Stack fBracketLevelStack = new Stack();
+
+	protected BracketInserter(ScriptEditor editor) {
+		this.editor = editor;
+		CATEGORY= this.editor.toString();
+		fUpdater = new ScriptEditor.ExclusivePositionUpdater(CATEGORY);
+	}
 
 	public void setCloseBracketsEnabled(boolean enabled) {
 		fCloseBrackets = enabled;
@@ -107,24 +100,18 @@ public abstract class BracketInserter implements VerifyKeyListener, ILinkedModeL
 		}
 	}
 
-	/*
-	 * @see org.eclipse.swt.custom.VerifyKeyListener#verifyKey(org.eclipse.swt.events.VerifyEvent)
-	 */
 	public abstract void verifyKey(VerifyEvent event) ;
 
-	/*
-	 * @see org.eclipse.jface.text.link.ILinkedModeListener#left(org.eclipse.jface.text.link.LinkedModeModel,
-	 *      int)
-	 */
 	public void left(LinkedModeModel environment, int flags) {
 
 		final BracketLevel level = (BracketLevel) fBracketLevelStack.pop();
 
-		if (flags != ILinkedModeListener.EXTERNAL_MODIFICATION)
+		if (flags != ILinkedModeListener.EXTERNAL_MODIFICATION) {
 			return;
+		}
 
 		// remove brackets
-		final ISourceViewer sourceViewer = this.scriptEditor
+		final ISourceViewer sourceViewer = this.editor
 				.getScriptSourceViewer();
 		final IDocument document = sourceViewer.getDocument();
 		if (document instanceof IDocumentExtension) {
@@ -158,16 +145,9 @@ public abstract class BracketInserter implements VerifyKeyListener, ILinkedModeL
 		}
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.link.ILinkedModeListener#suspend(org.eclipse.jface.text.link.LinkedModeModel)
-	 */
 	public void suspend(LinkedModeModel environment) {
 	}
 
-	/*
-	 * @see org.eclipse.jface.text.link.ILinkedModeListener#resume(org.eclipse.jface.text.link.LinkedModeModel,
-	 *      int)
-	 */
 	public void resume(LinkedModeModel environment, int flags) {
 	}
 }

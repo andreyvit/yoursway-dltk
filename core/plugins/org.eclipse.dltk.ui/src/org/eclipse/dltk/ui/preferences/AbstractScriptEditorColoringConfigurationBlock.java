@@ -62,9 +62,9 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
  * Configures Editor hover preferences.
- * TODO: We need to add suport for user categories here...
+ * TODO: We need to add support for user categories here...
  */
-public abstract class AbstractDLTKEditorColoringConfigurationBlock extends
+public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 		AbstractConfigurationBlock {
 
 	/**
@@ -407,7 +407,7 @@ public abstract class AbstractDLTKEditorColoringConfigurationBlock extends
 		return elements.toArray();
 	}
 
-	public AbstractDLTKEditorColoringConfigurationBlock(
+	public AbstractScriptEditorColoringConfigurationBlock(
 			OverlayPreferenceStore store) {
 		super(store);
 

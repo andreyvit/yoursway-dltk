@@ -12,7 +12,7 @@ package org.eclipse.dltk.tcl.internal.ui.preferences;
 
 import org.eclipse.dltk.tcl.internal.ui.TclUI;
 import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPreferencePage;
-import org.eclipse.dltk.ui.preferences.DLTKEditorHoverConfigurationBlock;
+import org.eclipse.dltk.ui.preferences.ScriptEditorHoverConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 import org.eclipse.dltk.ui.preferences.PreferencesMessages;
@@ -65,6 +65,6 @@ public class TclEditorHoverPreferencePage extends AbstractConfigurationBlockPref
 	 * @see org.eclipse.ui.internal.editors.text.AbstractConfigureationBlockPreferencePage#createConfigurationBlock(org.eclipse.ui.internal.editors.text.OverlayPreferenceStore)
 	 */
 	protected IPreferenceConfigurationBlock createConfigurationBlock(OverlayPreferenceStore overlayPreferenceStore) {
-		return new DLTKEditorHoverConfigurationBlock(this, overlayPreferenceStore);
+		return new ScriptEditorHoverConfigurationBlock(this, overlayPreferenceStore);
 	}
 }

@@ -113,8 +113,9 @@ public class RiHelper {
 
 	public synchronized String getDocFor(String keyword) {		
 		Object cached = cache.get(keyword);
-		if (cached != null)
+		if (cached != null) {
 			return (String) cached;
+		}
 		
 		String result = null;			
 		
@@ -124,17 +125,21 @@ public class RiHelper {
 			try {
 				outputStream.write((keyword + "\n").getBytes());
 				outputStream.flush();
-				char data[] = new char[100000]; // 100 kb is enoght for ANY rdoc 
+				
+				// TODO: Please, use StringBuffer, 100 kb - very bad solution
+				char data[] = new char[100000]; // 100 kb is enough for ANY rdoc 
 				int pos = 0;
 				while (true) {
 					if (pos >= SUFFIX.length()) {
 						String suffix = String.copyValueOf(data, pos - SUFFIX.length(), SUFFIX.length());
-						if (suffix.equals(SUFFIX))
+						if (suffix.equals(SUFFIX)) {
 							break;
+						}
 					}
 					int c = inputReader.read();
-					if (c < 0)
-						break;					
+					if (c < 0) {
+						break;	
+					}
 					data[pos++] = (char) c;
 				}
 				result = String.valueOf(data, 0, pos - SUFFIX.length());
@@ -143,8 +148,9 @@ public class RiHelper {
 			}
 		}
 						
-		if (result != null && result.length() > 0)
+		if (result != null && result.length() > 0) {
 			cache.put(keyword, result);
+		}
 
 		return result;
 	}

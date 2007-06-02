@@ -23,5 +23,4 @@ public class RubyUIPreferenceInitializer extends
 		EditorsUI.useQuickDiffPreferencePage(store);
 		RubyPreferenceConstants.initializeDefaultValues(store);
 	}
-
 }

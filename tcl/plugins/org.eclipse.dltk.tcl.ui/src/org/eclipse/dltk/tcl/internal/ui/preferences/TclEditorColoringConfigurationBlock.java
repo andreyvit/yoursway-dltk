@@ -18,7 +18,7 @@ import org.eclipse.dltk.tcl.internal.ui.editor.TclDocumentSetupParticipant;
 import org.eclipse.dltk.tcl.internal.ui.text.SimpleTclSourceViewerConfiguration;
 import org.eclipse.dltk.tcl.ui.TclPreferenceConstants;
 import org.eclipse.dltk.tcl.ui.text.TclPartitions;
-import org.eclipse.dltk.ui.preferences.AbstractDLTKEditorColoringConfigurationBlock;
+import org.eclipse.dltk.ui.preferences.AbstractScriptEditorColoringConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 import org.eclipse.dltk.ui.preferences.PreferencesMessages;
@@ -34,7 +34,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 
 public class TclEditorColoringConfigurationBlock extends
-		AbstractDLTKEditorColoringConfigurationBlock implements
+		AbstractScriptEditorColoringConfigurationBlock implements
 		IPreferenceConfigurationBlock {
 	
 	private static final String PREVIEW_FILE_NAME = "PreviewFile.txt";

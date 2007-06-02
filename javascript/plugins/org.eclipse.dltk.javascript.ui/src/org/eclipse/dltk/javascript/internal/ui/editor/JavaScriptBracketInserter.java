@@ -42,7 +42,7 @@ public class JavaScriptBracketInserter extends BracketInserter {
 
 		// early pruning to slow down normal typing as little as possible
 		if (!event.doit
-				|| this.scriptEditor.getInsertMode() != ScriptEditor.SMART_INSERT)
+				|| this.editor.getInsertMode() != ScriptEditor.SMART_INSERT)
 			return;
 		switch (event.character) {
 		case '(':
@@ -55,7 +55,7 @@ public class JavaScriptBracketInserter extends BracketInserter {
 			return;
 		}
 
-		final ISourceViewer sourceViewer = this.scriptEditor
+		final ISourceViewer sourceViewer = this.editor
 				.getScriptSourceViewer();
 		IDocument document = sourceViewer.getDocument();
 
@@ -125,7 +125,7 @@ public class JavaScriptBracketInserter extends BracketInserter {
 			if (!IDocument.DEFAULT_CONTENT_TYPE.equals(partition.getType()))
 				return;
 
-			if (!this.scriptEditor.validateEditorInputState())
+			if (!this.editor.validateEditorInputState())
 				return;
 
 			final char character = event.character;
@@ -163,7 +163,7 @@ public class JavaScriptBracketInserter extends BracketInserter {
 
 			level.fUI = new EditorLinkedModeUI(model, sourceViewer);
 			level.fUI.setSimpleMode(true);
-			level.fUI.setExitPolicy(this.scriptEditor.new ExitPolicy(
+			level.fUI.setExitPolicy(this.editor.new ExitPolicy(
 					closingCharacter, getEscapeCharacter(closingCharacter),
 					fBracketLevelStack));
 			level.fUI.setExitPosition(sourceViewer, offset + 2, 0,
