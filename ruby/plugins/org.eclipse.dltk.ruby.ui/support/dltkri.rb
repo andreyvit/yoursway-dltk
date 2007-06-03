@@ -8,16 +8,16 @@ while true do
 	s = STDIN.gets.chop!
 	begin		
 		ri.get_info_for(s)		
-		STDOUT.puts "DLTKDOCEND"
+		STDOUT.puts "\nDLTKDOCEND"
 		STDOUT.flush
 	rescue RiError => e		
 		STDOUT.puts "#{e}"
-		STDOUT.puts "DLTKDOCEND"
+		STDOUT.puts "\nDLTKDOCEND"
 		STDOUT.flush		
 		next
 	end
 end
 
 STDOUT.puts "/bye"
-STDOUT.puts "DLTKDOCEND"
+STDOUT.puts "\nDLTKDOCEND"
 STDOUT.flush

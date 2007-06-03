@@ -39,7 +39,7 @@ public class InterpreterConfig {
 	public InterpreterConfig(File scriptFile, File workingDirectory) {
 		this();
 
-		if (scriptFile == null || workingDirectory == null) {
+		if (scriptFile == null) {
 			throw new IllegalArgumentException();
 		}
 
@@ -60,10 +60,6 @@ public class InterpreterConfig {
 	}
 
 	public void setScriptFile(File file) {
-		if (file == null) {
-			throw new IllegalArgumentException();
-		}
-
 		this.scriptFile = file;
 	}
 
@@ -73,10 +69,6 @@ public class InterpreterConfig {
 	}
 
 	public void setWorkingDirectory(File directory) {
-		if (directory == null) {
-			throw new IllegalArgumentException();
-		}
-
 		this.workingDirectory = directory;
 	}
 

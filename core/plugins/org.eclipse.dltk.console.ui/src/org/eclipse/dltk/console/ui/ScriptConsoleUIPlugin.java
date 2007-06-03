@@ -66,16 +66,6 @@ public class ScriptConsoleUIPlugin extends AbstractUIPlugin {
 		manager.closeAll();
 	}
 
-	public ImageDescriptor getImageDescriptor(String key) {
-		ImageRegistry registry = getImageRegistry();
-		return registry.getDescriptor(key);
-	}
-
-	public Image getImage(String key) {
-		ImageRegistry registry = getImageRegistry();
-		return registry.get(key);
-	}
-
 	/**
 	 * Returns the shared instance
 	 * 
@@ -85,15 +75,24 @@ public class ScriptConsoleUIPlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	protected void initializeImageRegistry(ImageRegistry registry) {
-		String[][] images = new String[][] {
-				{ "icons/save.gif", ScriptConsoleUIConstants.SAVE_SESSION_ICON },
-				{ "icons/terminate.gif",
-						ScriptConsoleUIConstants.TERMINATE_ICON } };
+	private static final String[][] IMAGES = new String[][] {
+			{ "icons/elcl16/save.gif",
+					ScriptConsoleUIConstants.SAVE_SESSION_ICON },
+			{ "icons/elcl16/terminate.gif",
+					ScriptConsoleUIConstants.TERMINATE_ICON } };
 
-		for (int i = 0; i < images.length; ++i) {
-			URL url = getDefault().getBundle().getEntry(images[i][0]);
-			registry.put(images[i][1], ImageDescriptor.createFromURL(url));
+	protected void initializeImageRegistry(ImageRegistry registry) {
+		for (int i = 0; i < IMAGES.length; ++i) {
+			URL url = getDefault().getBundle().getEntry(IMAGES[i][0]);
+			registry.put(IMAGES[i][1], ImageDescriptor.createFromURL(url));
 		}
+	}
+
+	public ImageDescriptor getImageDescriptor(String key) {
+		return getImageRegistry().getDescriptor(key);
+	}
+
+	public Image getImage(String key) {
+		return getImageRegistry().get(key);
 	}
 }

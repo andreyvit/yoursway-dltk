@@ -16,7 +16,6 @@ import org.eclipse.dltk.console.ui.ScriptConsoleUIPlugin;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-
 public class CloseScriptConsoleAction extends Action {
 
 	private ScriptConsole console;
@@ -26,7 +25,7 @@ public class CloseScriptConsoleAction extends Action {
 		this.console = console;
 
 		setText(text);
-		setToolTipText(tooltip);		
+		setToolTipText(tooltip);
 	}
 
 	public void run() {

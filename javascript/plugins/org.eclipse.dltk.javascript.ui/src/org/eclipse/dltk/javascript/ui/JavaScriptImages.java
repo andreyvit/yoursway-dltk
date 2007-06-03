@@ -11,7 +11,6 @@ package org.eclipse.dltk.javascript.ui;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
-import org.eclipse.dltk.ui.ImageUtil;
 import org.eclipse.dltk.ui.PluginImagesHelper;
 import org.eclipse.jface.resource.ImageDescriptor;
 
@@ -20,5 +19,5 @@ public class JavaScriptImages {
 			.getBundle(), new Path("/icons/"));
 
 	public static final ImageDescriptor DESC_WIZBAN_PROJECT_CREATION = helper
-			.createUnManaged(ImageUtil.T_WIZBAN, "newjscriptfile_wiz.gif");
+			.createUnManaged(PluginImagesHelper.T_WIZBAN, "newjscriptfile_wiz.gif");
 }

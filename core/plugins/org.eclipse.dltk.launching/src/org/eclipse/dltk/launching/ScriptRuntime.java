@@ -360,17 +360,18 @@ public final class ScriptRuntime {
 	 *         id is registered.
 	 */
 	public static IInterpreterInstallType getInterpreterInstallType(String id) {
-		IInterpreterInstallType[] interpreterTypes = getInterpreterInstallTypes();
-		if (interpreterTypes == null) {
+		IInterpreterInstallType[] installTypes = getInterpreterInstallTypes();
+		if (installTypes == null) {
 			return null;
 		}
 
-		for (int i = 0; i < interpreterTypes.length; i++) {
-			IInterpreterInstallType type = interpreterTypes[i];
+		for (int i = 0; i < installTypes.length; i++) {
+			IInterpreterInstallType type = installTypes[i];
 			if (type != null && type.getId().equals(id)) {
 				return type;
 			}
 		}
+		
 		return null;
 	}
 
@@ -435,8 +436,8 @@ public final class ScriptRuntime {
 	 * 
 	 * @return Returns the default Interpreter.
 	 */
-	public static IInterpreterInstall getDefaultInterpreterInstall(String nature) {
-		IInterpreterInstall install = getInterpreterFromCompositeId(getDefaultInterpreterId(nature));
+	public static IInterpreterInstall getDefaultInterpreterInstall(String natureId) {
+		IInterpreterInstall install = getInterpreterFromCompositeId(getDefaultInterpreterId(natureId));
 		if (install != null && install.getInstallLocation().exists()) {
 			return install;
 		}
@@ -452,7 +453,7 @@ public final class ScriptRuntime {
 			initializeInterpreters();
 		}
 
-		return getInterpreterFromCompositeId(getDefaultInterpreterId(nature));
+		return getInterpreterFromCompositeId(getDefaultInterpreterId(natureId));
 	}
 
 	/**

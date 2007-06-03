@@ -28,16 +28,16 @@ public class TclPerspective implements IPerspectiveFactory {
 	private static final String NEW_FILE_WIZARD = "org.eclipse.ui.wizards.new.file"; //$NON-NLS-1$
 
 	private static final String NEW_UNTITLED_TEXT_FILE_WIZARD = "org.eclipse.ui.editors.wizards.UntitledTextFileWizard"; //$NON-NLS-1$
-	
+
 	public static final String ID_NEW_SOURCE_WIZARD = "org.eclipse.dltk.tcl.ui.wizards.NewSourceFolderCreationWizard";
 
 	protected void addNewWizardShortcuts(IPageLayout layout) {
 		layout.addNewWizardShortcut(TclProjectCreationWizard.ID_WIZARD);
 		layout.addNewWizardShortcut(TclFileCreationWizard.ID_WIZARD);
-		
+
 		layout.addNewWizardShortcut(ID_NEW_SOURCE_WIZARD);
 		layout.addNewWizardShortcut(NewPackageCreationWizard.ID_WIZARD);
-		
+
 		layout.addNewWizardShortcut(NEW_FOLDER_WIZARD);
 		layout.addNewWizardShortcut(NEW_FILE_WIZARD);
 		layout.addNewWizardShortcut(NEW_UNTITLED_TEXT_FILE_WIZARD);
@@ -92,11 +92,16 @@ public class TclPerspective implements IPerspectiveFactory {
 		outputFolder.addPlaceholder(IProgressConstants.PROGRESS_VIEW_ID);
 	}
 
+	protected void addPerspectiveShotcuts(IPageLayout layout) {
+		layout.addPerspectiveShortcut("org.eclipse.debug.ui.DebugPerspective");
+	}
+
 	public void createInitialLayout(IPageLayout layout) {
 		createFolders(layout);
 		addViews(layout);
 		addActionSets(layout);
 		addShowViewShortcuts(layout);
 		addNewWizardShortcuts(layout);
+		addPerspectiveShotcuts(layout);
 	}
 }

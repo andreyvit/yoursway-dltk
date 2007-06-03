@@ -9,56 +9,28 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.docs;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.WeakHashMap;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.dltk.launching.DLTKLaunchUtil;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallChangedListener;
 import org.eclipse.dltk.launching.PropertyChangeEvent;
+import org.eclipse.dltk.launching.ScriptLaunchUtil;
 import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.dltk.utils.DeployHelper;
 
 public class RiHelper {
-	private final static String SUFFIX = "DLTKDOCEND";
-	
+	private final static String DOC_TERMINATION_LINE = "DLTKDOCEND";
+
 	private static RiHelper instance;
-
-	private Process process;
-
-	private WeakHashMap cache = new WeakHashMap();
-
-	private InputStream inputStream;
-
-	private OutputStream outputStream;
-
-	private InputStreamReader inputReader;
-
-	IInterpreterInstallChangedListener interpreterInstallChangedListener = new IInterpreterInstallChangedListener() {
-
-		public void defaultInterpreterInstallChanged(
-				IInterpreterInstall previous, IInterpreterInstall current) {
-			if (process != null) {
-				process.destroy();
-				process = null;
-			}
-		}
-
-		public void interpreterAdded(IInterpreterInstall Interpreter) {}
-
-		public void interpreterChanged(PropertyChangeEvent event) {}
-
-		public void interpreterRemoved(IInterpreterInstall Interpreter) {}
-		
-	};
 
 	public static RiHelper getInstance() {
 		if (instance == null) {
@@ -68,91 +40,116 @@ public class RiHelper {
 		return instance;
 	}
 
-	protected RiHelper() {		
-		ScriptRuntime.addInterpreterInstallChangedListener(interpreterInstallChangedListener);
-	}
-	
-	private void checkProcess() {
-		boolean requireCreation = false;
-		if (process == null)
-			requireCreation = true;
-		else {
-			try {
-				process.exitValue();
-				requireCreation = true;
-			} catch (IllegalThreadStateException e) {
-				// ok, process is alive
-			}			
+	private WeakHashMap cache = new WeakHashMap();
+
+	private Process riProcess;
+	private OutputStreamWriter writer;
+	private BufferedReader reader;
+
+	protected static boolean isTerminated(Process process) {
+		try {
+			process.exitValue();
+			return true;
+		} catch (IllegalThreadStateException e) {
+			return false;
 		}
-		if (requireCreation) {
-			process = null;
-			IInterpreterInstall install = DLTKLaunchUtil
-			.getDefaultInterpreterInstall(RubyNature.NATURE_ID);
-			if (install != null) {
-				IPath deployedPath;
+	}
+
+	protected synchronized void runRiProcess() throws CoreException,
+			IOException {
+		IInterpreterInstall install = ScriptLaunchUtil
+				.getDefaultInterpreterInstall(RubyNature.NATURE_ID);
+
+		if (install == null) {
+			throw new CoreException(Status.CANCEL_STATUS);
+		}
+
+		File script = DeployHelper.deploy(RubyUI.getDefault(), "support/")
+				.append("dltkri.rb").toFile();
+		riProcess = ScriptLaunchUtil.runScriptWithInterpreter(install
+				.getInstallLocation().getAbsolutePath(), script, null, null,
+				null);
+
+		writer = new OutputStreamWriter(riProcess.getOutputStream());
+		reader = new BufferedReader(new InputStreamReader(riProcess
+				.getInputStream()));
+	}
+
+	protected synchronized void destroyRiProcess() {
+		if (riProcess != null) {
+			riProcess.destroy();
+			riProcess = null;
+		}
+	}
+
+	protected String loadRiDoc(String keyword) throws IOException {
+		// Write
+		writer.write(keyword + "\n");
+		writer.flush();
+
+		// Read
+		StringBuffer sb = new StringBuffer();
+		do {
+			String line = reader.readLine();
+			if (line == null || line.equals(DOC_TERMINATION_LINE)) {
+				break;
+			}
+
+			sb.append(line);
+
+		} while (true);
+
+		return sb.toString();
+	}
+
+	private boolean checkRiProcess() {
+		if (riProcess == null || isTerminated(riProcess)) {
+			try {
+				runRiProcess();
+			} catch (Exception e) {
+				// TODO: log exception
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	protected RiHelper() {
+		ScriptRuntime
+				.addInterpreterInstallChangedListener(new IInterpreterInstallChangedListener() {
+					public void defaultInterpreterInstallChanged(
+							IInterpreterInstall previous,
+							IInterpreterInstall current) {
+						destroyRiProcess();
+					}
+
+					public void interpreterAdded(IInterpreterInstall Interpreter) {
+					}
+
+					public void interpreterChanged(PropertyChangeEvent event) {
+					}
+
+					public void interpreterRemoved(
+							IInterpreterInstall Interpreter) {
+					}
+				});
+	}
+
+	public synchronized String getDocFor(String keyword) {
+		String doc = (String) cache.get(keyword);
+
+		if (doc == null) {
+			if (checkRiProcess()) {
 				try {
-					deployedPath = DeployHelper.deploy(RubyUI.getDefault(), "support/").append("dltkri.rb");
-					String irbPath = deployedPath.toFile().getAbsolutePath();
-					process = DebugPlugin.exec(new String[] {
-							install.getInstallLocation().getAbsolutePath(),
-							irbPath
-						}, null);
+					doc = loadRiDoc(keyword);
+					cache.put(keyword, doc);
 				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (CoreException e) {
-					e.printStackTrace();
-				}
-				if (process != null) {
-					inputStream = process.getInputStream();
-					outputStream = process.getOutputStream();
-					inputReader = new InputStreamReader(inputStream);
+					destroyRiProcess();
 				}
 			}
 		}
-	}
 
-	public synchronized String getDocFor(String keyword) {		
-		Object cached = cache.get(keyword);
-		if (cached != null) {
-			return (String) cached;
-		}
-		
-		String result = null;			
-		
-		checkProcess();
-		
-		if (process != null) {			
-			try {
-				outputStream.write((keyword + "\n").getBytes());
-				outputStream.flush();
-				
-				// TODO: Please, use StringBuffer, 100 kb - very bad solution
-				char data[] = new char[100000]; // 100 kb is enough for ANY rdoc 
-				int pos = 0;
-				while (true) {
-					if (pos >= SUFFIX.length()) {
-						String suffix = String.copyValueOf(data, pos - SUFFIX.length(), SUFFIX.length());
-						if (suffix.equals(SUFFIX)) {
-							break;
-						}
-					}
-					int c = inputReader.read();
-					if (c < 0) {
-						break;	
-					}
-					data[pos++] = (char) c;
-				}
-				result = String.valueOf(data, 0, pos - SUFFIX.length());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-						
-		if (result != null && result.length() > 0) {
-			cache.put(keyword, result);
-		}
-
-		return result;
+		return doc;
 	}
-	
 }
