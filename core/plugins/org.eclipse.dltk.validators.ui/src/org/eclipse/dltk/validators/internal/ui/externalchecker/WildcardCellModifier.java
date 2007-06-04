@@ -25,8 +25,6 @@ public class WildcardCellModifier implements ICellModifier {
 		CustomWildcard wcard = (CustomWildcard) element;
 		switch (index) {
 		case 0:
-			//TODO: Max, what the hell is this???
-			//result = new StringBuilder(wcard.getLetter()).toString(); 
 			result = wcard.getLetter(); 
 			break;
 		case 1:
