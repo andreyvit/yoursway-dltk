@@ -35,11 +35,14 @@
         <engine
               class="org.eclipse.dltk.ruby.internal.launching.debug.RubyBasicDebuggerRunnerFactory"
               description="%BasicDebuggingEngine.description"
-              id="org.eclipse.dltk.ruby.launching.SimpleRubyDebugger"
+              id="org.eclipse.dltk.ruby.launching.BasicRubyDebugger"
               modelId="org.eclipse.dltk.debug.rubyModel"
               name="%BasicDebuggingEngine.name"
               priority="0">
         </engine>
+        <selector
+              class="org.eclipse.dltk.ruby.internal.launching.debug.RubyDebuggingEngineSelector">
+        </selector>
      </engineContribution>
   </extension>
 </plugin>

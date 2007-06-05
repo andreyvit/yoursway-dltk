@@ -142,12 +142,24 @@ public class DebuggingEngineManager {
 	}
 
 	public IDebuggingEngine getSelectedDebuggineEngine(String natureId) {
-		IDebuggingEngineSelector selector = (IDebuggingEngineSelector) natureToSelectorMap
-				.get(natureId);
-		if (selector == null) {
-			selector = defaultSelector;
+		IDebuggingEngine[] engines = getDebuggingEngines(natureId);
+
+		IDebuggingEngine engine = null;
+
+		if (engines.length > 0) {
+			IDebuggingEngineSelector selector = (IDebuggingEngineSelector) natureToSelectorMap
+					.get(natureId);
+
+			if (selector != null) {
+				engine = selector.select(engines);
+				if (engine == null) {
+					engine = defaultSelector.select(engines);
+				}
+			} else {
+				engine = defaultSelector.select(engines);
+			}
 		}
 
-		return selector.select(getDebuggingEngines(natureId));
+		return engine;
 	}
 }

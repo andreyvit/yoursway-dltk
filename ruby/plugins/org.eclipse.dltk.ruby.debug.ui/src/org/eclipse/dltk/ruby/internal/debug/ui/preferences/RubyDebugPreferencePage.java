@@ -4,6 +4,7 @@ import org.eclipse.core.runtime.Preferences;
 import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
 import org.eclipse.dltk.launching.debug.IDebuggingEngine;
 import org.eclipse.dltk.ruby.core.RubyNature;
+import org.eclipse.dltk.ruby.internal.launching.debug.RubyDebuggingConstants;
 import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -27,7 +28,7 @@ public class RubyDebugPreferencePage extends PreferencePage implements
 
 	private ComboViewer allEngines;
 	private Label description;
-	
+
 	protected IDebuggingEngine getSelectedDebuggineEngine() {
 		IStructuredSelection selection = (IStructuredSelection) allEngines
 				.getSelection();
@@ -37,12 +38,18 @@ public class RubyDebugPreferencePage extends PreferencePage implements
 
 		return null;
 	}
-	
+
+	protected void setSelectedDebuggingEngine(IDebuggingEngine engine) {
+		if (engine != null) {
+			allEngines.setSelection(new StructuredSelection(engine));
+		}
+	}
+
 	protected void updateDescription(String text) {
 		description.setText(text);
 	}
 
-	protected void createXXX(Composite parent, Object data) {
+	protected void createEngineSelector(Composite parent, Object data) {
 		Group group = new Group(parent, SWT.NONE);
 		group.setFont(parent.getFont());
 		group.setText("Debugging Engine");
@@ -52,8 +59,8 @@ public class RubyDebugPreferencePage extends PreferencePage implements
 		group.setLayout(layout);
 
 		// Name
-		Label label = new Label(group, SWT.NONE);
-		label.setText("Name:");
+		Label nameLabel = new Label(group, SWT.NONE);
+		nameLabel.setText("Select:");
 
 		allEngines = new ComboViewer(group);
 		allEngines.setLabelProvider(new LabelProvider() {
@@ -67,17 +74,16 @@ public class RubyDebugPreferencePage extends PreferencePage implements
 
 		allEngines.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
-				updateDescription(getSelectedDebuggineEngine()
-						.getDescription());
+				updateDescription(getSelectedDebuggineEngine().getDescription());
 			}
 		});
 
 		// Description
-		Label label2 = new Label(group, SWT.NONE);
-		label2.setText("Description:");
+		Label descriptionLabel = new Label(group, SWT.NONE);
+		descriptionLabel.setText("Description:");
 
 		this.description = new Label(group, SWT.NONE);
-		this.description.setText("dfdf");
+		this.description.setText("");
 		this.description.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true));
 	}
@@ -95,8 +101,8 @@ public class RubyDebugPreferencePage extends PreferencePage implements
 		GridLayout layout = new GridLayout(1, false);
 		top.setLayout(layout);
 
-		createXXX(top, makeGridData());
-		
+		createEngineSelector(top, makeGridData());
+
 		initializeValues();
 
 		return top;
@@ -105,11 +111,16 @@ public class RubyDebugPreferencePage extends PreferencePage implements
 	protected void initializeValues() {
 		Preferences prefs = RubyLaunchingPlugin.getDefault()
 				.getPluginPreferences();
-		IDebuggingEngine engine = DebuggingEngineManager.getInstance()
-				.getDebuggingEngine(RubyNature.NATURE_ID,
-						prefs.getString("engine"));
+		String engineId = prefs
+				.getString(RubyDebuggingConstants.DEBUGGING_ENGINE_ID);
 
-		allEngines.setSelection(new StructuredSelection(engine));
+		if (engineId != null) {
+
+			IDebuggingEngine engine = DebuggingEngineManager.getInstance()
+					.getDebuggingEngine(RubyNature.NATURE_ID, engineId);
+
+			setSelectedDebuggingEngine(engine);
+		}
 	}
 
 	public void init(IWorkbench workbench) {
@@ -119,8 +130,16 @@ public class RubyDebugPreferencePage extends PreferencePage implements
 	public boolean performOk() {
 		Preferences prefs = RubyLaunchingPlugin.getDefault()
 				.getPluginPreferences();
-		prefs.setValue("engine", getSelectedDebuggineEngine().getId());
+
+		IDebuggingEngine engine = getSelectedDebuggineEngine();
+
+		if (engine != null) {
+			prefs.setValue(RubyDebuggingConstants.DEBUGGING_ENGINE_ID, engine
+					.getId());
+		}
+
 		RubyLaunchingPlugin.getDefault().savePluginPreferences();
+
 		return true;
 	}
 }
