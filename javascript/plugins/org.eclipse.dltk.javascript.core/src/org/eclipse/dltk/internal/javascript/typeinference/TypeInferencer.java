@@ -483,7 +483,7 @@ public class TypeInferencer {
 		}
 
 		public Object processLeaveWidth(Node node, Object arg) {
-			// TODO REMOVE THIS SHIT LATER
+			// TODO REMOVE THIS LATER
 
 			if (node.getPosition() >= position)
 				throw new PositionReachedException(null);
