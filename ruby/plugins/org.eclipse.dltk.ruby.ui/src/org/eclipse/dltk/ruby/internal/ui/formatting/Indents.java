@@ -20,8 +20,7 @@ public class Indents {
     
     /**
      * Returns the tab width as configured in the given map.
-     * @param options the map to get the formatter settings from. Use {@link org.eclipse.jdt.core.IJavaProject#getOptions(boolean)} to
-     * get the most current project options.
+     * @param options the map to get the formatter settings from.
      * @return the tab width
      */
     public static int getTabWidth(Map options) {
@@ -33,8 +32,7 @@ public class Indents {
     
     /**
      * Returns the tab width as configured in the given map.
-     * @param options the map to get the formatter settings from. Use {@link org.eclipse.jdt.core.IJavaProject#getOptions(boolean)} to
-     * get the most current project options.
+     * @param options the map to get the formatter settings from.
      * @return the indent width
      */
     public static int getIndentWidth(Map options) {
@@ -82,8 +80,7 @@ public class Indents {
      * formatter preferences.
      * 
      * @param indentationUnits the number of indentation units to generate
-     * @param options the options to get the formatter settings from. Use {@link org.eclipse.jdt.core.IJavaProject#getOptions(boolean)} to
-     * get the most current project options.
+     * @param options the options to get the formatter settings from.
      * @return the indent string
      */
     public static String createIndentString(int indentationUnits, Map options) {

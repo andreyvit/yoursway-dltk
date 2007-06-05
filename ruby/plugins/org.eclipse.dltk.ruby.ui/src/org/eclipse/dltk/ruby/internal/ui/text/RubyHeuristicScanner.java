@@ -1,5 +1,4 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -86,9 +85,6 @@ public final class RubyHeuristicScanner implements Symbols {
 	 * Stops upon a non-whitespace (as defined by {@link Character#isWhitespace(char)}) character.
 	 */
 	private static class NonWhitespace extends RubyHeuristicScanner.StopCondition {
-		/*
-		 * @see org.eclipse.jdt.internal.ui.text.RubyHeuristicScanner.StopCondition#stop(char)
-		 */
 		public boolean stop(char ch, int position, boolean forward) {
 			return !Character.isWhitespace(ch);
 		}
@@ -100,16 +96,10 @@ public final class RubyHeuristicScanner implements Symbols {
 	 * @see RubyHeuristicScanner.NonWhitespace
 	 */
 	private final class NonWhitespaceDefaultPartition extends RubyHeuristicScanner.NonWhitespace {
-		/*
-		 * @see org.eclipse.jdt.internal.ui.text.RubyHeuristicScanner.StopCondition#stop(char)
-		 */
 		public boolean stop(char ch, int position, boolean forward) {
 			return super.stop(ch, position, true) && isDefaultPartition(position);
 		}
 
-		/*
-		 * @see org.eclipse.jdt.internal.ui.text.RubyHeuristicScanner.StopCondition#nextPosition(int, boolean)
-		 */
 		public int nextPosition(int position, boolean forward) {
 			ITypedRegion partition= getPartition(position);
 			if (fPartition.equals(partition.getType()))
@@ -132,9 +122,6 @@ public final class RubyHeuristicScanner implements Symbols {
 	 * Stops upon a non-java identifier (as defined by {@link Character#isJavaIdentifierPart(char)}) character.
 	 */
 	private static class NonJavaIdentifierPart extends RubyHeuristicScanner.StopCondition {
-		/*
-		 * @see org.eclipse.jdt.internal.ui.text.RubyHeuristicScanner.StopCondition#stop(char)
-		 */
 		public boolean stop(char ch, int position, boolean forward) {
 			return !Character.isJavaIdentifierPart(ch);
 		}
@@ -146,16 +133,10 @@ public final class RubyHeuristicScanner implements Symbols {
 	 * @see RubyHeuristicScanner.NonJavaIdentifierPart
 	 */
 	private final class NonJavaIdentifierPartDefaultPartition extends RubyHeuristicScanner.NonJavaIdentifierPart {
-		/*
-		 * @see org.eclipse.jdt.internal.ui.text.RubyHeuristicScanner.StopCondition#stop(char)
-		 */
 		public boolean stop(char ch, int position, boolean forward) {
 			return super.stop(ch, position, true) || !isDefaultPartition(position);
 		}
 
-		/*
-		 * @see org.eclipse.jdt.internal.ui.text.RubyHeuristicScanner.StopCondition#nextPosition(int, boolean)
-		 */
 		public int nextPosition(int position, boolean forward) {
 			ITypedRegion partition= getPartition(position);
 			if (fPartition.equals(partition.getType()))
@@ -199,16 +180,10 @@ public final class RubyHeuristicScanner implements Symbols {
 			Arrays.sort(chars);
 		}
 
-		/*
-		 * @see org.eclipse.jdt.internal.ui.text.RubyHeuristicScanner.StopCondition#stop(char, int)
-		 */
 		public boolean stop(char ch, int position, boolean forward) {
 			return Arrays.binarySearch(fChars, ch) >= 0 && isDefaultPartition(position);
 		}
 
-		/*
-		 * @see org.eclipse.jdt.internal.ui.text.RubyHeuristicScanner.StopCondition#nextPosition(int, boolean)
-		 */
 		public int nextPosition(int position, boolean forward) {
 			ITypedRegion partition= getPartition(position);
 			if (fPartition.equals(partition.getType()))

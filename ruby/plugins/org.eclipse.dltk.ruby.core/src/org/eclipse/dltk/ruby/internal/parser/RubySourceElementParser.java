@@ -31,14 +31,6 @@ public class RubySourceElementParser implements ISourceElementParser {
 	private ISourceElementRequestor fRequestor = null;
 	private IProblemReporter problemReporter;
 
-	/**
-	 * Python lexer handler helper.
-	 * 
-	 * @param problemReporter
-	 * 
-	 * @param enveronment
-	 */
-
 	public RubySourceElementParser(/*ISourceElementRequestor requestor,
 			IProblemReporter problemReporter*/) {
 //		this.fRequestor = requestor;

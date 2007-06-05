@@ -28,13 +28,6 @@ public class DefaultCodeFormatterConstants {
     public static final String MIXED = "mixed"; //$NON-NLS-1$
 
     /**
-     * <pre>
-     *            FORMATTER / Option to specify the equivalent number of spaces that represents one indentation 
-     *                - option id:         &quot;org.rubypeople.rdt.core.formatter.indentation.size&quot;
-     *                - possible values:   &quot;&lt;n&gt;&quot;, where n is zero or a positive integer
-     *                - default:           &quot;4&quot;
-     * </pre>
-     * 
      * <p>
      * This option is used only if the tab char is set to MIXED.
      * </p>

@@ -95,9 +95,7 @@ public class RubyTypeHierarchyEngine {
 		public void cancel() {
 			fStop= true;
 		}
-		/* (non-Javadoc)
-		 * @see org.eclipse.jdt.core.search.TypeNameMatchRequestor#acceptTypeNameMatch(org.eclipse.jdt.core.search.TypeNameMatch)
-		 */
+
 		public void acceptTypeNameMatch(TypeNameMatch match) {
 			if (fStop)
 				return;

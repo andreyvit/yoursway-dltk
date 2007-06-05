@@ -56,7 +56,7 @@ public class JavascriptPerspective implements IPerspectiveFactory  {
 		
 		// new actions - Javascript project creation wizard org.eclipse.dltk.ruby.internal.ui.wizards.JavascriptFileCreationWizard
 		layout.addNewWizardShortcut("org.eclipse.dltk.javascript.internal.ui.wizards.JavascriptProjectWizard"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("org.eclipse.dltk.ruby.internal.ui.wizards.JavascriptFileCreationWizard"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("org.eclipse.dltk.javascript.internal.ui.wizards.JavaScriptFileCreationWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder");//$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file");//$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.editors.wizards.UntitledTextFileWizard");//$NON-NLS-1$

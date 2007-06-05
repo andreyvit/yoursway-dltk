@@ -39,7 +39,7 @@ public abstract class CodeFormatter {
     public static final int K_CLASS_BODY_DECLARATIONS = 0x04;
     
     /**
-     * Kind used to format a ruby script
+     * Kind used to format a java script
      */
     public static final int K_JAVA_SCRIPT = 0x08;
 

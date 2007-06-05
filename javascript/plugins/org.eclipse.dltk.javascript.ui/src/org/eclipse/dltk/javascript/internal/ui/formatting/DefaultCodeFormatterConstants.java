@@ -21,9 +21,6 @@ public class DefaultCodeFormatterConstants {
      * </pre>
      * 
      * @since 0.8.0
-     * @see RubyCore#TAB
-     * @see RubyCore#SPACE
-     * @see #FORMATTER_TAB_CHAR
      */
     public static final String MIXED = "mixed"; //$NON-NLS-1$
 

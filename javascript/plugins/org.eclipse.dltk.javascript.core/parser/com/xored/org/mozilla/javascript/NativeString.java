@@ -688,9 +688,6 @@ final class NativeString extends IdScriptableObject
         return target.substring((int)begin, (int)end);
     }
 
-    /*
-     * Python-esque sequence operations.
-     */
     private static String js_concat(String target, Object[] args) {
         int N = args.length;
         if (N == 0) { return target; }

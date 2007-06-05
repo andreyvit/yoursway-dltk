@@ -216,7 +216,7 @@
              category="org.eclipse.dltk.javascript.ui"
              class="org.eclipse.dltk.javascript.internal.ui.wizards.JavaScriptFileCreationWizard"
              icon="icons/ctool16/newjscript_wiz.gif"
-             id="org.eclipse.dltk.ruby.internal.ui.wizards.JavascriptFileCreationWizard"
+             id="org.eclipse.dltk.javascript.internal.ui.wizards.JavaScriptFileCreationWizard"
              name="%NewJsFile.label">
           <description>
           	Creates new JavaScript Source File.
