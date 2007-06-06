@@ -20,6 +20,7 @@ import org.eclipse.dltk.internal.ui.editor.ScriptOutlinePage;
 import org.eclipse.dltk.internal.ui.editor.ToggleCommentAction;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
+import org.eclipse.dltk.ruby.internal.ui.text.RubyPairMatcher;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
 import org.eclipse.dltk.ruby.internal.ui.text.folding.RubyFoldingStructureProvider;
 import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
@@ -30,9 +31,12 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.jface.text.ITextOperationTarget;
+import org.eclipse.jface.text.ITextViewerExtension;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
 import org.eclipse.ui.texteditor.TextOperationAction;
 
 public class RubyEditor extends ScriptEditor {
@@ -44,6 +48,9 @@ public class RubyEditor extends ScriptEditor {
 
 	private org.eclipse.dltk.internal.ui.editor.BracketInserter fBracketInserter = new RubyBracketInserter(
 			this);
+
+	private RubyPairMatcher bracketMatcher = new RubyPairMatcher("{}[]()"
+			.toCharArray());
 
 	protected void initializeEditor() {
 		super.initializeEditor();
@@ -89,6 +96,7 @@ public class RubyEditor extends ScriptEditor {
 		return new FoldingActionGroup(this, getViewer(), RubyUI.getDefault()
 				.getPreferenceStore());
 	}
+	
 
 	public String getEditorId() {
 		return EDITOR_ID;
@@ -135,6 +143,23 @@ public class RubyEditor extends ScriptEditor {
 		SourceViewerConfiguration configuration = getSourceViewerConfiguration();
 		((ToggleCommentAction) action).configure(sourceViewer, configuration);
 	}
+	
+	public void createPartControl(Composite parent) {
+		super.createPartControl(parent);
+
+		boolean closeBrackets = true;
+		boolean closeStrings = true;
+		boolean closeAngularBrackets = false;
+
+		fBracketInserter.setCloseBracketsEnabled(closeBrackets);
+		fBracketInserter.setCloseStringsEnabled(closeStrings);
+		fBracketInserter.setCloseAngularBracketsEnabled(closeAngularBrackets);
+
+		ISourceViewer sourceViewer = getSourceViewer();
+		if (sourceViewer instanceof ITextViewerExtension)
+			((ITextViewerExtension) sourceViewer)
+					.prependVerifyKeyListener(fBracketInserter);
+	}
 
 	private static ListenerList doSetInputListeners = new ListenerList();
 
@@ -163,4 +188,22 @@ public class RubyEditor extends ScriptEditor {
 			notifyDoSetInput(element);
 		}
 	}
+	
+	public void dispose() {
+		ISourceViewer sourceViewer = getSourceViewer();
+		if (sourceViewer instanceof ITextViewerExtension)
+			((ITextViewerExtension) sourceViewer)
+					.removeVerifyKeyListener(fBracketInserter);
+		super.dispose();
+	}
+	
+	protected void configureSourceViewerDecorationSupport(
+			SourceViewerDecorationSupport support) {
+		support.setCharacterPairMatcher(bracketMatcher);
+		support.setMatchingCharacterPainterPreferenceKeys(MATCHING_BRACKETS,
+				MATCHING_BRACKETS_COLOR);
+
+		super.configureSourceViewerDecorationSupport(support);
+	}
+	
 }

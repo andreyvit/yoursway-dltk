@@ -426,16 +426,16 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 			reindent(d, c);
 			break;
 		case '}':
-		case ']':
-		case ')':
+//		case ']':
+//		case ')':
 			reindent(d, c);
 			autoClose(d, c);
 			break;
-		case '\"':
-		case '\'':
-		case '(':
+//		case '\"':
+//		case '\'':
+//		case '(':
 		case '{':
-		case '[':
+//		case '[':
 			autoClose(d, c);
 			break;
 		case '\t':
