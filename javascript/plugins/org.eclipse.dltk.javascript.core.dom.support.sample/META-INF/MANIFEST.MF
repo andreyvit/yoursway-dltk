@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Sample Plug-in
+Bundle-SymbolicName: org.eclipse.dltk.javascript.core.dom.support.sample;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.eclipse.dltk.javascript.core.dom.support.sample.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.dltk.javascript.core,
+ org.eclipse.dltk.javascript.core.dom.support,
+ org.eclipse.dltk.javascript.rhino,
+ org.eclipse.dltk.core
+Eclipse-LazyStart: true
