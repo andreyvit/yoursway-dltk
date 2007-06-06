@@ -54,4 +54,7 @@ public interface IReference {
 
 	public boolean isFunctionRef();
 
+	public boolean isLocal();
+
+	public void setLocal(boolean local);
 }

@@ -40,6 +40,7 @@ import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.internal.javascript.reference.resolvers.ReferenceResolverContext;
 import org.eclipse.dltk.internal.javascript.reference.resolvers.SelfCompletingReference;
 import org.eclipse.dltk.internal.javascript.typeinference.HostCollection;
+import org.eclipse.dltk.internal.javascript.typeinference.IClassReference;
 import org.eclipse.dltk.internal.javascript.typeinference.IReference;
 import org.eclipse.dltk.javascript.core.JavaScriptKeywords;
 import org.eclipse.dltk.javascript.internal.core.codeassist.AssitUtils;
@@ -59,11 +60,11 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	public JavaScriptCompletionEngine(/*
-										 * ISearchableEnvironment
-										 * nameEnvironment, CompletionRequestor
-										 * requestor, Map settings, IDLTKProject
-										 * dltkProject
-										 */) {
+	 * ISearchableEnvironment
+	 * nameEnvironment, CompletionRequestor
+	 * requestor, Map settings, IDLTKProject
+	 * dltkProject
+	 */) {
 	}
 
 	protected int getEndOfEmptyToken() {
@@ -90,12 +91,19 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 		this.requestor.beginReporting();
 		String content = cu.getSourceContents();
 
-		if (position > 0)
+		if (position > 0) {
 			if (content.charAt(position - 1) == '.') {
 				// special case;
 				content = content.substring(0, position) + " \n\r e"
 						+ content.substring(position);
 			}
+			if (position > 0)
+				if (content.charAt(position - 1) == '=') {
+					// special case;
+					content = content.substring(0, position) + " \n\r e"
+							+ content.substring(position);
+				}
+		}
 		calculator = new PositionCalculator(content, position, false);
 		char[] fileName2 = cu.getFileName();
 		ReferenceResolverContext buildContext = AssitUtils.buildContext(
@@ -208,12 +216,20 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 				.getCompletion());
 		it = resolveGlobals.iterator();
 		HashSet classes = new HashSet();
+		HashSet functions = new HashSet();
 		while (it.hasNext()) {
 			Object o = it.next();
 			if (o instanceof IReference) {
 				IReference r = (IReference) o;
 				if (!completedNames.contains(r.getName())) {
-					classes.add(r);
+					if (r instanceof IClassReference)
+						classes.add(r);
+					else {
+						if (r.isFunctionRef())
+							functions.add(r);
+						else
+							names.put(r.getName(), r);
+					}
 				}
 			}
 		}
@@ -235,6 +251,14 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 			ia++;
 		}
 		findElements(token, choices, true, false, CompletionProposal.TYPE_REF);
+		choices = new char[functions.size()][];
+		ia = 0;
+		for (Iterator iterator = functions.iterator(); iterator.hasNext();) {
+			IReference name = (IReference) iterator.next();
+			choices[ia] = name.getName().toCharArray();
+			ia++;
+		}
+		findElements(token, choices, true, false, CompletionProposal.METHOD_REF);
 	}
 
 	private void doCompletionOnMember(ReferenceResolverContext buildContext,

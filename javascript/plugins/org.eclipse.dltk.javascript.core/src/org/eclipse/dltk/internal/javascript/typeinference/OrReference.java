@@ -134,4 +134,13 @@ public class OrReference implements IReference {
 		return one.isFunctionRef() || second.isFunctionRef();
 	}
 
+	public boolean isLocal() {
+		return one.isLocal() || second.isLocal();
+	}
+
+	public void setLocal(boolean local) {
+		one.setLocal(local);
+		second.setLocal(local);
+	}
+
 }

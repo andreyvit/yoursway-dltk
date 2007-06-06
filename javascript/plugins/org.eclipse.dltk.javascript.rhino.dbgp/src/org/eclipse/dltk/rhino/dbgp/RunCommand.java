@@ -21,7 +21,6 @@ final class RunCommand extends DBGPDebugger.Command {
 	void parseAndExecute(String command, HashMap options) {
 		String object = (String) options.get("-i");
 		this.debugger.runTransctionId = object;
-		System.out.println("Running");
 		while (!this.debugger.isInited) {
 			Thread.yield();
 		}

@@ -19,10 +19,10 @@ import org.eclipse.dltk.internal.javascript.reference.resolvers.IResolvableRefer
 import org.eclipse.dltk.internal.javascript.reference.resolvers.ReferenceResolverContext;
 
 public abstract class AbstractCallResultReference implements IReference,
-		IDoNotReportChilds , IResolvableReference{
+		IDoNotReportChilds, IResolvableReference {
 
 	public Set getChildsNoGlobalOp() {
-		return hashSet==null?new HashSet():hashSet;
+		return hashSet == null ? new HashSet() : hashSet;
 	}
 
 	private String name;
@@ -30,14 +30,18 @@ public abstract class AbstractCallResultReference implements IReference,
 	private Set hashSet;
 
 	private String id;
-	
+
 	private ReferenceResolverContext cs;
 
+	boolean local;
+
 	public IReference getChild(String key, boolean resolveLocals) {
-		if (!resolveLocals)return null;
+		if (!resolveLocals)
+			return null;
 		if (hashSet == null)
 			getChilds(resolveLocals);
-		if (hashSet==null)return null;
+		if (hashSet == null)
+			return null;
 		Iterator i = hashSet.iterator();
 		while (i.hasNext()) {
 			IReference r = (IReference) i.next();
@@ -47,20 +51,22 @@ public abstract class AbstractCallResultReference implements IReference,
 		return null;
 	}
 
-	public IReference getPrototype(boolean resolveLocals){
+	public IReference getPrototype(boolean resolveLocals) {
 		return this.getChild("prototype", resolveLocals);
 	}
 
 	private static HashSet searchIds = new HashSet();
 
 	public Set getChilds(boolean resolveLocals) {
-		if (!resolveLocals)return new HashSet();
-		if (searchIds.contains(id)) return new HashSet();
+		if (!resolveLocals)
+			return new HashSet();
+		if (searchIds.contains(id))
+			return new HashSet();
 		if (this.hashSet != null)
 			return hashSet;
-		try {			
+		try {
 			searchIds.add(id);
-			internalGetChilds(resolveLocals);		
+			internalGetChilds(resolveLocals);
 		} finally {
 			searchIds.remove(id);
 		}
@@ -68,22 +74,21 @@ public abstract class AbstractCallResultReference implements IReference,
 	}
 
 	private void internalGetChilds(boolean resolveLocals) {
-		this.hashSet=cs.resolveChilds(this);
+		this.hashSet = cs.resolveChilds(this);
 	}
 
 	public abstract String getResultId();
 
-	
 	public String getName() {
 		return name;
 	}
 
-	
-	public AbstractCallResultReference(String name, String id2,ReferenceResolverContext cs) {
+	public AbstractCallResultReference(String name, String id2,
+			ReferenceResolverContext cs) {
 		super();
 		this.name = name;
 		this.id = id2;
-		this.cs=cs;
+		this.cs = cs;
 	}
 
 	public boolean isChildishReference() {
@@ -98,15 +103,24 @@ public abstract class AbstractCallResultReference implements IReference,
 
 	public void setPrototype(IReference ref) {
 	}
-	
+
 	public void addModelElements(Collection toAdd) {
-		
+
 	}
+
 	public void setLocationInformation(ModelElement mo, int position, int length) {
-		
+
 	}
 
 	public String getId() {
 		return id;
+	}
+
+	public boolean isLocal() {
+		return local;
+	}
+
+	public void setLocal(boolean local) {
+		this.local = local;
 	}
 }

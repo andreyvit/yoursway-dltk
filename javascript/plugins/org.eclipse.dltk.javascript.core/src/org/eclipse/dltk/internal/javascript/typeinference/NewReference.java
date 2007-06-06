@@ -25,4 +25,5 @@ public class NewReference extends AbstractCallResultReference {
 	public boolean isFunctionRef() {
 		return false;
 	}
+
 }

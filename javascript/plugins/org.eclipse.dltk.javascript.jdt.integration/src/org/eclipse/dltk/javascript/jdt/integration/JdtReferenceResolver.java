@@ -23,6 +23,7 @@ import org.eclipse.dltk.internal.javascript.reference.resolvers.IResolvableRefer
 import org.eclipse.dltk.internal.javascript.reference.resolvers.ReferenceResolverContext;
 import org.eclipse.dltk.internal.javascript.typeinference.AbstractCallResultReference;
 import org.eclipse.dltk.internal.javascript.typeinference.CallResultReference;
+import org.eclipse.dltk.internal.javascript.typeinference.IClassReference;
 import org.eclipse.dltk.internal.javascript.typeinference.IReference;
 import org.eclipse.dltk.internal.javascript.typeinference.NewReference;
 import org.eclipse.dltk.internal.javascript.typeinference.UncknownReference;
@@ -31,6 +32,7 @@ import org.eclipse.jdt.core.CompletionRequestor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.eval.IEvaluationContext;
@@ -43,6 +45,13 @@ import org.eclipse.jdt.core.search.SearchRequestor;
 
 public class JdtReferenceResolver implements IExecutableExtension,
 		IReferenceResolver {
+
+	private static final class ClassRef extends UncknownReference implements
+			IClassReference {
+		private ClassRef(String paramOrVarName, boolean childIsh) {
+			super(paramOrVarName, childIsh);
+		}
+	}
 
 	private static final String PACKAGES = "Packages.";
 	ArrayList imports = new ArrayList();
@@ -61,7 +70,7 @@ public class JdtReferenceResolver implements IExecutableExtension,
 		return JavaCore.create(pr).exists();
 	}
 
-	public Set getChilds(IResolvableReference ref) {
+	public Set getChilds(final IResolvableReference ref) {
 		if (ref instanceof AbstractCallResultReference) {
 			final AbstractCallResultReference cm = (AbstractCallResultReference) ref;
 			if (cm instanceof NewReference) {
@@ -91,8 +100,13 @@ public class JdtReferenceResolver implements IExecutableExtension,
 
 											if (element instanceof IMethod) {
 												IMethod m = (IMethod) element;
-												IMethod[] ts = m
-														.getDeclaringType()
+												IType declaringType = m
+														.getDeclaringType();
+												if (!declaringType
+														.getElementName()
+														.equals(cm.getId()))
+													return;
+												IMethod[] ts = declaringType
 														.getMethods();
 												for (int a = 0; a < ts.length; a++) {
 													String string = "jsFunction_";
@@ -137,7 +151,6 @@ public class JdtReferenceResolver implements IExecutableExtension,
 														result.add(r);
 													}
 												}
-
 											}
 										}
 
@@ -219,7 +232,7 @@ public class JdtReferenceResolver implements IExecutableExtension,
 											String elementName = m
 													.getDeclaringType()
 													.getElementName();
-											IReference r = new UncknownReference(
+											IReference r = new ClassRef(
 													elementName, true);
 											result.add(r);
 										}
@@ -230,6 +243,8 @@ public class JdtReferenceResolver implements IExecutableExtension,
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			if (result.size() > 0)
+				return result;
 			try {
 				context.codeComplete(sm, sm.length(),
 						new CompletionRequestor() {

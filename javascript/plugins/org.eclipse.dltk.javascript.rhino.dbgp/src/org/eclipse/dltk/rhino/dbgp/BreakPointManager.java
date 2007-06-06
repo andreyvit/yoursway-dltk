@@ -1,6 +1,8 @@
 package org.eclipse.dltk.rhino.dbgp;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class BreakPointManager {
 
@@ -21,7 +23,13 @@ public class BreakPointManager {
 		}
 
 		if (point.isWatch) {
-			watchpoints.put(point.expression, point);
+			ArrayList object = (ArrayList) watchpoints.get(point.expression);
+			if (object == null) {
+				object = new ArrayList();
+				watchpoints.put(point.expression, object);
+			}
+			object.add(point);
+
 		}
 		HashMap object = (HashMap) fileMap.get(point.file);
 		if (object == null) {
@@ -30,10 +38,6 @@ public class BreakPointManager {
 		}
 		object.put(new Integer(point.line), point);
 		ids.put("p" + point.id, point);
-	}
-
-	public BreakPoint getWatchPoint(String prop) {
-		return (BreakPoint) watchpoints.get(prop);
 	}
 
 	public void removeBreakPoint(BreakPoint point) {
@@ -125,6 +129,10 @@ public class BreakPointManager {
 	public BreakPoint hitExit(String sn) {
 
 		return (BreakPoint) names.get(sn);
+	}
+
+	public List getWatchPoints(String property) {
+		return (List) watchpoints.get(property);
 	}
 
 }

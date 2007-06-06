@@ -133,6 +133,14 @@ final class TransparentRef implements IReference {
 		return evaluateReference.isFunctionRef();
 	}
 
+	public boolean isLocal() {
+		return evaluateReference.isLocal();
+	}
+
+	public void setLocal(boolean local) {
+		evaluateReference.setLocal(true);
+	}
+
 }
 
 public class TypeInferencer {
@@ -376,6 +384,16 @@ public class TypeInferencer {
 			if (functionNode.getEncodedSourceEnd() >= position)
 				throw new PositionReachedException(functionNode);
 			HostCollection pop = (HostCollection) contexts.pop();
+			Iterator i = collection.getReferences().values().iterator();
+			while (i.hasNext()) {
+				Object o = i.next();
+				if (o instanceof IReference) {
+					IReference rf = (IReference) o;
+					if (!rf.isLocal()) {
+						pop.write(rf.getName(), rf);
+					}
+				}
+			}
 			pop.recordFunction(function, collection);
 			collection = pop;
 
@@ -394,8 +412,8 @@ public class TypeInferencer {
 				}
 				evaluateReference.setLocationInformation(module, firstChild
 						.getPosition(), key.length());
+				evaluateReference.setLocal(true);
 				collection.write(key, evaluateReference);
-
 				firstChild = firstChild.getNext();
 			}
 
@@ -479,11 +497,14 @@ public class TypeInferencer {
 			collection.addTransparent(transparentRef);
 			transparentRef.setLocationInformation(module, node.getPosition(),
 					fieldId.length());
+			if (root.getName().equals("this")) {
+				collection.add(transparentRef.getName(), transparentRef);
+			}
 			root.setChild(fieldId, transparentRef);
 		}
 
 		public Object processLeaveWidth(Node node, Object arg) {
-			// TODO REMOVE THIS LATER
+			// TODO REMOVE THIS SHIT LATER
 
 			if (node.getPosition() >= position)
 				throw new PositionReachedException(null);

@@ -23,6 +23,7 @@ public final class ContextReference implements IReference {
 
 	private final HostCollection function;
 	private final String key;
+	private boolean local;
 	private int position;
 	private int length;
 
@@ -96,5 +97,13 @@ public final class ContextReference implements IReference {
 
 	public boolean isFunctionRef() {
 		return true;
+	}
+
+	public boolean isLocal() {
+		return this.local;
+	}
+
+	public void setLocal(boolean local) {
+		this.local = local;
 	}
 }

@@ -21,6 +21,7 @@ public class UncknownReference implements IReference {
 	private String name;
 	private final boolean childIsh;
 	boolean fRef;
+	boolean local;
 
 	protected ModelElement parent;
 	private int offset;
@@ -109,6 +110,14 @@ public class UncknownReference implements IReference {
 
 	public void setFunctionRef() {
 		fRef = true;
+	}
+
+	public boolean isLocal() {
+		return local;
+	}
+
+	public void setLocal(boolean local) {
+		this.local = local;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.Array;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -250,55 +251,68 @@ public class DBGPDebugger extends Thread implements Debugger, Observer,
 	}
 
 	public void access(String property, ScriptableObject object) {
-		BreakPoint watchPoint = cmanager.getManager().getWatchPoint(property);
-		if (watchPoint != null) {
-			if (watchPoint.enabled)
-				if (watchPoint.isAccess) {
-					String wkey = watchPoint.file + watchPoint.line;
-					String s = (String) cache.get(object);
-					if ((s != null) && (s.equals(wkey))) {
-						cmanager.getObserver().update(null, this);
-						synchronized (this) {
-							try {
-								this.wait();
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+		ArrayList list = (ArrayList) cmanager.getManager().getWatchPoints(
+				property);
+		if (list != null) {
+			int size = list.size();
+			for (int a = 0; a < size; a++) {
+				BreakPoint watchPoint = (BreakPoint) list.get(a);
+				if (watchPoint != null) {
+					if (watchPoint.enabled)
+						if (watchPoint.isAccess) {
+							String wkey = watchPoint.file + watchPoint.line;
+							String s = (String) cache.get(object);
+							if ((s != null) && (s.equals(wkey))) {
+								cmanager.getObserver().update(null, this);
+								synchronized (this) {
+									try {
+										this.wait();
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
 							}
 						}
-					}
 				}
+			}
 		}
 	}
 
 	WeakHashMap cache = new WeakHashMap();
 
 	public void modification(String property, ScriptableObject object) {
-		BreakPoint watchPoint = cmanager.getManager().getWatchPoint(property);
-
-		if (watchPoint != null) {
-			if (watchPoint.enabled) {
-				String sn = cmanager.getStackFrame(0).getSourceName();
-				int ln = cmanager.getStackFrame(0).getLineNumber();
-				String key = sn + ln;
-				String wkey = watchPoint.file + watchPoint.line;
-				if (key.equals(wkey)) {
-					cache.put(object, wkey);
-				}
-				if (watchPoint.isModification) {
-					Object object2 = cache.get(object);
-					if (object2 != null)
-						if (object2.equals(wkey)) {
-
-							cmanager.getObserver().update(null, this);
-							synchronized (this.cmanager) {
-								try {
-									this.cmanager.wait();
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-							}
+		ArrayList list = (ArrayList) cmanager.getManager().getWatchPoints(
+				property);
+		if (list != null) {
+			int size = list.size();
+			for (int a = 0; a < size; a++) {
+				BreakPoint watchPoint = (BreakPoint) list.get(a);
+				if (watchPoint != null) {
+					if (watchPoint.enabled) {
+						String sn = cmanager.getStackFrame(0).getSourceName();
+						int ln = cmanager.getStackFrame(0).getLineNumber();
+						String key = sn + ln;
+						String wkey = watchPoint.file + watchPoint.line;
+						if (key.equals(wkey)) {
+							cache.put(object, wkey);
 						}
+						if (watchPoint.isModification) {
+							Object object2 = cache.get(object);
+							if (object2 != null)
+								if (object2.equals(wkey)) {
+
+									cmanager.getObserver().update(null, this);
+									synchronized (this.cmanager) {
+										try {
+											this.cmanager.wait();
+										} catch (InterruptedException e) {
+											e.printStackTrace();
+										}
+									}
+								}
+						}
+					}
 				}
 			}
 		}
