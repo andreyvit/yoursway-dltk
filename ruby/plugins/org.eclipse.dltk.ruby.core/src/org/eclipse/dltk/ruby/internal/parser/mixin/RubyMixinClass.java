@@ -18,6 +18,7 @@ import java.util.Set;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
+import org.eclipse.dltk.ruby.typeinference.IMixinSearchRequestor;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ti.BasicContext;
 import org.eclipse.dltk.ti.DLTKTypeInferenceEngine;
@@ -83,9 +84,9 @@ public class RubyMixinClass implements IRubyMixinElement {
 			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
 			if (info == null)
 				continue;
-			if (info.getKind() == RubyMixinElementInfo.K_CLASS ||
-					info.getKind() == RubyMixinElementInfo.K_MODULE) {
-				result.add (info.getObject());							
+			if (info.getKind() == RubyMixinElementInfo.K_CLASS
+					|| info.getKind() == RubyMixinElementInfo.K_MODULE) {
+				result.add(info.getObject());
 			}
 		}
 		return (IType[]) result.toArray(new IType[result.size()]);
@@ -98,33 +99,36 @@ public class RubyMixinClass implements IRubyMixinElement {
 		if (mixinElement == null)
 			return null;
 		Object[] allObjects = mixinElement.getAllObjects();
-//		IType type = null;
+// IType type = null;
 		for (int i = 0; i < allObjects.length; i++) {
 			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
-			if( info == null ) {
+			if (info == null) {
 				continue;
 			}
-//			if (info.getKind() == RubyMixinElementInfo.K_CLASS) {
-//				type = (IType) info.getObject();
-//				if (type == null)
-//					continue;
-//				String key = RubyModelUtils.evaluateSuperClass(type);
-//				if (key == null)
-//					continue;
-//				if (!this.isMeta())
-//					key = key + RubyMixin.INSTANCE_SUFFIX;
-//				RubyMixinClass s = (RubyMixinClass) model.createRubyElement(key);
-//				return s;				
-//			}
+// if (info.getKind() == RubyMixinElementInfo.K_CLASS) {
+// type = (IType) info.getObject();
+// if (type == null)
+// continue;
+// String key = RubyModelUtils.evaluateSuperClass(type);
+// if (key == null)
+// continue;
+// if (!this.isMeta())
+// key = key + RubyMixin.INSTANCE_SUFFIX;
+// RubyMixinClass s = (RubyMixinClass) model.createRubyElement(key);
+// return s;
+// }
 			if (info.getKind() == RubyMixinElementInfo.K_SUPER) {
-				SuperclassReferenceInfo sinfo = (SuperclassReferenceInfo) info.getObject();
-				BasicContext c = new BasicContext(sinfo.getModule(), sinfo.getDecl());
-				ExpressionTypeGoal g = new ExpressionTypeGoal(c, sinfo.getNode());
+				SuperclassReferenceInfo sinfo = (SuperclassReferenceInfo) info
+						.getObject();
+				BasicContext c = new BasicContext(sinfo.getModule(), sinfo
+						.getDecl());
+				ExpressionTypeGoal g = new ExpressionTypeGoal(c, sinfo
+						.getNode());
 				DLTKTypeInferenceEngine engine = new DLTKTypeInferenceEngine();
 				IEvaluatedType type2 = engine.evaluateType(g, 500);
 				if (type2 instanceof RubyClassType) {
 					RubyClassType rubyClassType = (RubyClassType) type2;
-					String key =  rubyClassType.getModelKey();
+					String key = rubyClassType.getModelKey();
 					if (!this.isMeta())
 						key = key + RubyMixin.INSTANCE_SUFFIX;
 					return (RubyMixinClass) model.createRubyElement(key);
@@ -139,92 +143,106 @@ public class RubyMixinClass implements IRubyMixinElement {
 		if (!this.isMeta())
 			key = key + RubyMixin.INSTANCE_SUFFIX;
 		RubyMixinClass s = (RubyMixinClass) model.createRubyElement(key);
-		return s;				
+		return s;
 	}
-	
-	public RubyMixinClass[] getIncluded () {
-		List result = new ArrayList ();
-		HashSet names = new HashSet ();
+
+	public RubyMixinClass[] getIncluded() {
+		List result = new ArrayList();
+		HashSet names = new HashSet();
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		if (mixinElement == null)
 			return new RubyMixinClass[0];
 		Object[] allObjects = mixinElement.getAllObjects();
 		for (int i = 0; i < allObjects.length; i++) {
 			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
-			if( info == null ) {
+			if (info == null) {
 				continue;
 			}
-			if(info.getKind() == RubyMixinElementInfo.K_INCLUDE) {
+			if (info.getKind() == RubyMixinElementInfo.K_INCLUDE) {
 				String inclKey = (String) info.getObject();
 				if (!names.contains(inclKey)) {
 					names.add(inclKey);
-					if (/*!this.isMeta() && */!inclKey.endsWith(RubyMixin.INSTANCE_SUFFIX))
+					if (/* !this.isMeta() && */!inclKey
+							.endsWith(RubyMixin.INSTANCE_SUFFIX))
 						inclKey += RubyMixin.INSTANCE_SUFFIX;
-					IRubyMixinElement element = model.createRubyElement(inclKey);
+					IRubyMixinElement element = model
+							.createRubyElement(inclKey);
 					if (element instanceof RubyMixinClass)
 						result.add(element);
 				}
 			}
-		}		
-		return (RubyMixinClass[]) result.toArray(new RubyMixinClass[result.size()]);
+		}
+		return (RubyMixinClass[]) result.toArray(new RubyMixinClass[result
+				.size()]);
 	}
 
-	public RubyMixinMethod[] findMethods(String prefix, boolean includeTopLevel) {
-		final List result = new ArrayList();
-		final Set names = new HashSet(); // for overload checks
-		
+	public void findMethods(String prefix, boolean includeTopLevel,
+			IMixinSearchRequestor requestor) {
+
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		if (mixinElement == null)
-			return new RubyMixinMethod[0];
+			return;
 		IMixinElement[] children = mixinElement.getChildren();
 		for (int i = 0; i < children.length; i++) {
 			if (children[i].getLastKeySegment().startsWith(prefix)) {
-				IRubyMixinElement element = model.createRubyElement(children[i]);
+				IRubyMixinElement element = model
+						.createRubyElement(children[i]);
 				if (element instanceof RubyMixinMethod) {
-						RubyMixinMethod rubyMixinMethod = (RubyMixinMethod) element;
-						result.add(element);
-						names.add(rubyMixinMethod.getName());
+					requestor.acceptResult(element);
 				}
 				if (element instanceof RubyMixinAlias) {
 					RubyMixinAlias alias = (RubyMixinAlias) element;
 					IRubyMixinElement oldElement = alias.getOldElement();
 					if (oldElement instanceof RubyMixinMethod) {
-						AliasedRubyMixinMethod a = new AliasedRubyMixinMethod(model, alias);
-						result.add(a);
-						names.add(a.getName());
-					}
-				}
-			}
-		}
-		
-		RubyMixinClass[] included = this.getIncluded();
-		for (int i = 0; i < included.length; i++) {
-			RubyMixinMethod[] methods = included[i].findMethods(prefix, includeTopLevel);
-			for (int j = 0; j < methods.length; j++) {
-				if (!names.contains(methods[j].getName())) {
-					result.add(methods[j]);
-					names.add(methods[j].getName());
-				}
-			}
-		}
-		
-		if (!this.key.endsWith(RubyMixin.VIRTUAL_SUFFIX)) {		
-			RubyMixinClass superclass = getSuperclass();
-			if (superclass != null) {
-				
-				if (!superclass.getKey().equals(key)) {
-					RubyMixinMethod[] methods = superclass.findMethods(prefix,
-							includeTopLevel);
-					for (int j = 0; j < methods.length; j++) {
-						if (!names.contains(methods[j].getName())) {
-							result.add(methods[j]);
-							names.add(methods[j].getName());
-						}
+						AliasedRubyMixinMethod a = new AliasedRubyMixinMethod(
+								model, alias);
+						requestor.acceptResult(a);
 					}
 				}
 			}
 		}
 
+		RubyMixinClass[] included = this.getIncluded();
+		for (int i = 0; i < included.length; i++) {
+			RubyMixinMethod[] methods = included[i].findMethods(prefix,
+					includeTopLevel);
+			for (int j = 0; j < methods.length; j++) {
+				requestor.acceptResult(methods[j]);
+			}
+		}
+
+		if (!this.key.endsWith(RubyMixin.VIRTUAL_SUFFIX)) {
+			RubyMixinClass superclass = getSuperclass();
+			if (superclass != null) {
+
+				if (!superclass.getKey().equals(key)) {
+					RubyMixinMethod[] methods = superclass.findMethods(prefix,
+							includeTopLevel);
+					for (int j = 0; j < methods.length; j++) {
+						requestor.acceptResult(methods[j]);
+					}
+				}
+			}
+		}
+
+	}
+
+	public RubyMixinMethod[] findMethods(String prefix, boolean includeTopLevel) {
+		final List result = new ArrayList();
+		final Set names = new HashSet(); // for overload checks
+		this.findMethods(prefix, includeTopLevel, new IMixinSearchRequestor() {
+
+			public void acceptResult(IRubyMixinElement element) {
+				if (element instanceof RubyMixinMethod) {
+					RubyMixinMethod method = (RubyMixinMethod) element;
+					if (!names.contains(method.getName())) {
+						result.add(method);
+						names.add(method.getName());
+					}
+				}
+			}
+
+		});
 		return (RubyMixinMethod[]) result.toArray(new RubyMixinMethod[result
 				.size()]);
 	}
@@ -236,23 +254,23 @@ public class RubyMixinClass implements IRubyMixinElement {
 			IRubyMixinElement element = model.createRubyElement(mixinElement);
 			if (element instanceof RubyMixinMethod) {
 				return (RubyMixinMethod) element;
-			} 
+			}
 			if (element instanceof RubyMixinAlias) {
 				RubyMixinAlias alias = (RubyMixinAlias) element;
 				IRubyMixinElement oldElement = alias.getOldElement();
 				if (oldElement instanceof RubyMixinMethod) {
-					return new AliasedRubyMixinMethod(model, alias);					
+					return new AliasedRubyMixinMethod(model, alias);
 				}
 			}
 		}
-		
+
 		RubyMixinClass[] included = this.getIncluded();
 		for (int i = 0; i < included.length; i++) {
 			RubyMixinMethod method = included[i].getMethod(name);
 			if (method != null)
 				return method;
 		}
-		
+
 		// search superclass
 		// if (!this.key.equals("Object") && !this.key.equals("Object%")) {
 		RubyMixinClass superclass = getSuperclass();
@@ -288,13 +306,14 @@ public class RubyMixinClass implements IRubyMixinElement {
 				result.add(element);
 		}
 		RubyMixinClass superclass = getSuperclass();
-		if (superclass != null && superclass.key != "Object" && superclass.key != "Object%") {
+		if (superclass != null && superclass.key != "Object"
+				&& superclass.key != "Object%") {
 			if (superclass.getKey().equals(key))
 				return null;
-			 RubyMixinVariable[] superFields = superclass.getFields();
-			 result.addAll(Arrays.asList(superFields));
+			RubyMixinVariable[] superFields = superclass.getFields();
+			result.addAll(Arrays.asList(superFields));
 		}
-		
+
 		return (RubyMixinVariable[]) result
 				.toArray(new RubyMixinVariable[result.size()]);
 	}

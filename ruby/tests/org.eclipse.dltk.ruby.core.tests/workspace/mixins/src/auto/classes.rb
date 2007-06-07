@@ -35,3 +35,9 @@ end
 ## get XYZ{Wow{Subwow
 
 
+module MegaModule
+	def megamethod
+	end
+end
+
+## get MegaModule{megamethod

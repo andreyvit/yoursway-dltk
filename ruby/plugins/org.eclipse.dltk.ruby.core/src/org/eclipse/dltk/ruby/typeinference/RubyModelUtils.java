@@ -235,7 +235,12 @@ public class RubyModelUtils {
 		return (IField[]) result.toArray(new IField[result.size()]);
 	}
 	
-	
+	/**
+	 * Handling for "new" method
+	 * @param method
+	 * @param selfKlass
+	 * @return
+	 */
 	private static List handleSpecialMethod(RubyMixinMethod method, RubyMixinClass selfKlass) {
 		if (method.getKey().equals("Class%{new")) {
 			RubyMixinMethod init = selfKlass.getInstanceClass()
@@ -348,7 +353,7 @@ public class RubyModelUtils {
 		}
 	}
 
-	public static IMethod[] getVirtualMethods(VariableReference receiver,
+	public static IMethod[] getSingletonMethods(VariableReference receiver,
 			ModuleDeclaration parsedUnit, ISourceModule modelModule,
 			String methodName) {
 		IMethod[] res = null;

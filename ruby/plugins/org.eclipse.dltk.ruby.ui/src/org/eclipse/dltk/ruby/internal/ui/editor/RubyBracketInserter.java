@@ -38,8 +38,7 @@ public class RubyBracketInserter extends BracketInserter {
 		super(scriptEditor);
 	}
 
-	public void verifyKey(VerifyEvent event) {
-
+	public void verifyKey(VerifyEvent event) {		
 		// early pruning to slow down normal typing as little as possible
 		if (!event.doit
 				|| this.editor.getInsertMode() != ScriptEditor.SMART_INSERT)

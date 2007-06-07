@@ -74,6 +74,7 @@ public class DLTKTypeInferenceEngine implements ITypeInferencer {
 					continue;
 				}
 //				ITypeInferencer ti = (ITypeInferencer) iterator.next();
+				System.out.println();
 				IEvaluatedType type = ti.evaluateType(goal, time);
 				if (type != null && !(type instanceof UnknownType)) //TODO
 					return type;

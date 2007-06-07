@@ -494,7 +494,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 			availableMethods = RubyModelUtils.searchClassMethods(modelModule,
 					parsedUnit, type, methodName);
 			if (receiver instanceof VariableReference) {
-				availableMethods2 = RubyModelUtils.getVirtualMethods(
+				availableMethods2 = RubyModelUtils.getSingletonMethods(
 						(VariableReference) receiver, parsedUnit, modelModule,
 						methodName);
 			}

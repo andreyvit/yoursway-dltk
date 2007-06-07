@@ -158,8 +158,16 @@ public abstract class ScriptLaunchShortcut implements ILaunchShortcut {
 			candidateConfigs = new ArrayList(configs.length);
 			for (int i = 0; i < configs.length; i++) {
 				ILaunchConfiguration config = configs[i];
-				if (config.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME, "").equals(script.getProjectRelativePath().toString())) { //$NON-NLS-1$
-						candidateConfigs.add(config);
+				if (config
+						.getAttribute(
+								IDLTKLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
+								"").equals(script.getProjectRelativePath().toString())
+								&&
+								config
+								.getAttribute(
+										IDLTKLaunchConfigurationConstants.ATTR_PROJECT_NAME,
+										"").equals(script.getProject().getName())) { //$NON-NLS-1$
+					candidateConfigs.add(config);
 				}
 			}
 		} catch (CoreException e) {

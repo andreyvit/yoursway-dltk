@@ -306,19 +306,7 @@ public class RubyTypeInferencingUtils {
 	}
 
 	public static ModuleDeclaration parseSource(ISourceModule module) {
-		// JRubySourceParser parser = new JRubySourceParser(null);
-		// try {
-		// return parser.parse(module.getSource());
-		// } catch (ModelException e) {
-		// RubyPlugin.log(e);
-		// return null;
-		// }
 		return RubySourceElementParser.parseModule(module);
-	}
-
-	public static RubyClassType getMetaType(RubyClassType type) {
-		// TODO
-		return type;
 	}
 
 	public static IEvaluatedType getAmbiguousMetaType(IEvaluatedType receiver) {
@@ -421,7 +409,7 @@ public class RubyTypeInferencingUtils {
 			}
 		}
 
-		public List getConds() {
+		public List getConditionalAssignments() {
 			return conds;
 		}
 
@@ -477,7 +465,7 @@ public class RubyTypeInferencingUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		List conds = visitor.getConds();
+		List conds = visitor.getConditionalAssignments();
 		RubyAssignment[] c = (RubyAssignment[]) conds.toArray(new RubyAssignment[conds.size()]);
 		return new LocalVariableInfo(scopes[i], c, visitor.getLast());
 		

@@ -413,7 +413,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 			c.text = c.text + indent;
 		} catch (BadLocationException e) {
 			super.customizeDocumentCommand(document, c);
-		}
+		}		
 	}
 
 	private void handeSingleCharacterTyped(IDocument d, DocumentCommand c) {

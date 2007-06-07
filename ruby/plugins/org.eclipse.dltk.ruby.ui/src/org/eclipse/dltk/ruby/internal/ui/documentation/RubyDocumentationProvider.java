@@ -173,7 +173,7 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 			if (0 != (method.getFlags() & Modifiers.AccStatic))
 				divider = "::";
 			else
-				divider = "#";
+				divider = ".";
 		} catch (ModelException e) {
 			e.printStackTrace();
 			return null;
@@ -252,6 +252,7 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 					enabled = false;
 				} else if (str.startsWith("#++")) {
 					enabled = true;
+					continue;
 				}
 				if (!enabled)
 					continue;
