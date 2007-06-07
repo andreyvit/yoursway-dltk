@@ -18,6 +18,7 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.ast.references.TypeReference;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.core.search.matching.MatchLocatorParser;
@@ -183,6 +184,13 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 							 * call.getArgs())
 							 */call,
 							getNodeSet());
+			if( call.getName().equals("new")) {
+				ASTNode receiver = call.getReceiver();
+				if( receiver instanceof ConstantReference ) {
+					TypeReference ref = new TypeReference(receiver.sourceStart(), receiver.sourceEnd(), ((ConstantReference)receiver).getName());
+					locator.match(ref, getNodeSet());
+				}
+			}
 		} else if (node instanceof RubyAssignment) {
 			// Assignment handling (this is static variable assignment.)
 

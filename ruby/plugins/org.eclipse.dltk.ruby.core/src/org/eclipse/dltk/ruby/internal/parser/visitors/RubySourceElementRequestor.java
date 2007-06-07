@@ -39,6 +39,7 @@ import org.eclipse.dltk.ruby.core.IRubyConstants;
 
 public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
+	private static final String NEW_CALL = "new";
 	private static final String ATTR = "attr";
 	private static final String VALUE = "value";
 	private static final String ATTR_ACCESSOR = "attr_accessor";
@@ -328,6 +329,12 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 			// Accept
 			fRequestor.acceptMethodReference(callExpression.getName()
 					.toCharArray(), argsCount, start, end);
+			if( callExpression.getName().equals(NEW_CALL)) {
+				ASTNode receiver = callExpression.getReceiver();
+				if( receiver instanceof ConstantReference ) {
+					fRequestor.acceptTypeReference(((ConstantReference)receiver).getName().toCharArray(), receiver.sourceStart());
+				}
+			}
 		} else if (expression instanceof VariableReference) {
 			// VariableReference handling
 			VariableReference variableReference = (VariableReference) expression;
