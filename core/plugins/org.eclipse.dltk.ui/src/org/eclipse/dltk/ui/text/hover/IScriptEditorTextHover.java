@@ -40,6 +40,5 @@ public interface IScriptEditorTextHover extends ITextHover {
 	 * Sets the preference store from which hover can get settings.
 	 */
 	void setPreferenceStore(IPreferenceStore store);
-
 }
 

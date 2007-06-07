@@ -18,12 +18,20 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugElement;
+import org.eclipse.debug.core.model.IDebugTarget;
+import org.eclipse.debug.core.model.IStepFilters;
+import org.eclipse.debug.core.model.ITerminate;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptDebugElement;
+import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 
 public abstract class ScriptDebugElement extends PlatformObject implements
 		IScriptDebugElement {
+
+	protected IScriptDebugTarget getScriptDebugTarget() {
+		return (IScriptDebugTarget) getDebugTarget();
+	}
 
 	public ILaunch getLaunch() {
 		return getDebugTarget().getLaunch();
@@ -37,9 +45,28 @@ public abstract class ScriptDebugElement extends PlatformObject implements
 		if (adapter == IDebugElement.class) {
 			return this;
 		}
+
+		/* Not implemented currently
+		 * 
+		 * if (adapter == IStepFilters.class) { return getDebugTarget(); }
+		 */
+
+		if (adapter == IDebugTarget.class) {
+			return getDebugTarget();
+		}
+
+		if (adapter == ITerminate.class) {
+			return getDebugTarget();
+		}
+
+		if (adapter == IScriptDebugTarget.class) {
+			return getScriptDebugTarget();
+		}
+
 		if (adapter == ILaunch.class) {
 			return getLaunch();
 		}
+
 		return super.getAdapter(adapter);
 	}
 

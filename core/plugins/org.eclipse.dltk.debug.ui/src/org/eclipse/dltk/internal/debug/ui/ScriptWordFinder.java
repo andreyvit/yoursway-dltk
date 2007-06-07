@@ -8,67 +8,69 @@
  
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.ui;
- 
+
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 
 /**
- * Contains a static helper method to search documents for the 'word' that encloses the current
- * selection.
+ * Contains a static helper method to search documents for the 'word' that
+ * encloses the current selection.
  */
 public class ScriptWordFinder {
-	
+
 	/**
-	 * Returns the IRegion containing the java identifier ("word") enclosing the specified offset or 
-	 * <code>null</code> if the document or offset is invalid.  Checks characters before and after the 
-	 * offset to see if they are allowed java identifier characters until a separator character (period,
+	 * Returns the IRegion containing the script identifier ("word") enclosing
+	 * the specified offset or <code>null</code> if the document or offset is
+	 * invalid. Checks characters before and after the offset to see if they are
+	 * allowed script identifier characters until a separator character (period,
 	 * space, etc) is found.
 	 * 
-	 * @param document The document to search
-	 * @param offset The offset to start looking for the word
+	 * @param document
+	 *            The document to search
+	 * @param offset
+	 *            The offset to start looking for the word
 	 * @return IRegion containing the word or <code>null</code>
 	 */
 	public static IRegion findWord(IDocument document, int offset) {
-		
-		if (document == null){
+
+		if (document == null) {
 			return null;
 		}
-		
-		int start= -2;
-		int end= -1;
-		
-		
+
+		int start = -2;
+		int end = -1;
+
 		try {
-			
-			int pos= offset;
+
+			int pos = offset;
 			char c;
-			
+
 			while (pos >= 0) {
-				c= document.getChar(pos);
-				if (!Character.isJavaIdentifierPart(c)&&c!='.')
+				c = document.getChar(pos);
+				if (!Character.isJavaIdentifierPart(c) && c != '.')
 					break;
 				--pos;
 			}
-			
-			start= pos;
-			
-			pos= offset;
-			int length= document.getLength();
-			
+
+			start = pos;
+
+			pos = offset;
+			int length = document.getLength();
+
 			while (pos < length) {
-				c= document.getChar(pos);
+				c = document.getChar(pos);
 				if (!Character.isJavaIdentifierPart(c))
 					break;
 				++pos;
 			}
-			
-			end= pos;
-			
+
+			end = pos;
+
 		} catch (BadLocationException x) {
 		}
-		
+
 		if (start >= -1 && end > -1) {
 			if (start == offset && end == offset)
 				return new Region(offset, 0);
@@ -77,7 +79,7 @@ public class ScriptWordFinder {
 			else
 				return new Region(start + 1, end - start - 1);
 		}
-		
+
 		return null;
 	}
 }

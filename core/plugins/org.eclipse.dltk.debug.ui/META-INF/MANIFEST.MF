@@ -27,5 +27,6 @@ Export-Package: org.eclipse.dltk.debug.ui,
  org.eclipse.dltk.debug.ui.launchConfigurations,
  org.eclipse.dltk.debug.ui.messages,
  org.eclipse.dltk.internal.debug.ui,
+ org.eclipse.dltk.internal.debug.ui.actions,
  org.eclipse.dltk.internal.debug.ui.interpreters,
  org.eclipse.dltk.internal.debug.ui.launcher

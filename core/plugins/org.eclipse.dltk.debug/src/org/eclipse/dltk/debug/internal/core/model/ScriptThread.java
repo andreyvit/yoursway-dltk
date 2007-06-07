@@ -24,6 +24,7 @@ import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IWatchExpressionListener;
+import org.eclipse.debug.core.model.IWatchExpressionResult;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.dbgp.IDbgpNotification;
 import org.eclipse.dltk.dbgp.IDbgpNotificationListener;
@@ -42,7 +43,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		IThreadManagement, IDbgpDebuggerFeedback {
 
 	private static final IStackFrame[] NO_STACK_FRAMES = new IStackFrame[0];
-	
+
 	private int suspendCount;
 
 	private boolean canSuspend;
@@ -119,15 +120,15 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	public ScriptThread(IScriptDebugTarget target, IDbgpSession session,
 			ScriptThreadManager manager) throws DbgpException, CoreException {
-		
+
 		this.target = target;
 
 		this.manager = manager;
-				
+
 		this.streamProxy = target.getStreamManager().makeThreadStreamProxy();
 
 		this.session = session;
-		
+
 		// Suspend count
 		this.suspendCount = 0;
 
@@ -346,7 +347,31 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		return target.getDebugTarget();
 	}
 
-	public void evaluateExpression(final String expression,
+	public IWatchExpressionResult syncEvaluateExpression(String expression) {
+		ScriptWatchExpressionResult result = null;
+
+		try {
+			IDbgpProperty property = session.getExtendedCommands().evaluate(
+					expression);
+
+			// DebugEventHelper.fireSuspendEvent(ScriptThread.this,
+			// DebugEvent.EVALUATION);
+
+			if (property != null) {
+				IScriptVariable variable = new ScriptVariable(getDebugTarget(),
+						session, property);
+				result = new ScriptWatchExpressionResult(expression, variable);
+			}
+
+		} catch (DbgpException e) {
+			result = new ScriptWatchExpressionResult(expression,
+					new String[] { e.getMessage() });
+		}
+
+		return result;
+	}
+
+	public void asyncEvaluateExpression(final String expression,
 			final IWatchExpressionListener listener) {
 
 		// DebugEventHelper.fireResumeEvent(this, DebugEvent.EVALUATION);
@@ -357,28 +382,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 					return Status.OK_STATUS;
 				}
 
-				ScriptWatchExpressionResult result = null;
-
-				try {
-					IDbgpProperty property = session.getExtendedCommands()
-							.evaluate(expression);
-
-					// DebugEventHelper.fireSuspendEvent(ScriptThread.this,
-					// DebugEvent.EVALUATION);
-
-					if (property != null) {
-						IScriptVariable variable = new ScriptVariable(
-								getDebugTarget(), session, property);
-						result = new ScriptWatchExpressionResult(expression,
-								variable);
-					}
-
-				} catch (DbgpException e) {
-					result = new ScriptWatchExpressionResult(expression,
-							new String[] { e.getMessage() });
-				}
-
-				listener.watchEvaluationFinished(result);
+				listener
+						.watchEvaluationFinished(syncEvaluateExpression(expression));
 
 				return Status.OK_STATUS;
 			}

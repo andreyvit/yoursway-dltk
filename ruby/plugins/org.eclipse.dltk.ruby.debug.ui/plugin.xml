@@ -175,5 +175,40 @@
             id="org.eclipse.dltk.debug.rubyModel">
       </debugModelPresentation>
    </extension>
+  <extension
+        point="org.eclipse.ui.popupMenus">
+       <viewerContribution
+            targetID="#RubyEditorContext"
+            id="org.eclipse.dltk.debug.ui.CUPopupActions">
+         <visibility>
+            <and>
+               <systemProperty
+                     name="org.eclipse.dltk.debug.ui.debuggerActive"
+                     value="true">
+               </systemProperty>
+               <objectClass
+                     name="org.eclipse.jface.text.ITextSelection">
+               </objectClass>
+            </and>
+         </visibility>        
+       <action
+               label="%Watch.label"
+               icon="$nl$/icons/full/etool16/watch_exp.gif"
+               class="org.eclipse.dltk.internal.debug.ui.actions.ScriptWatchAction"
+               menubarPath="additions"
+               id="org.eclipse.dltk.debug.ui.cuPopup.Watch">
+       </action>
+       </viewerContribution>
+  </extension>
+  
+   <extension
+         point="org.eclipse.dltk.ui.editorTextHovers">
+      <hover
+            label="Ruby text hover"
+            description="Ruby variable hover"
+            class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugHover"
+            id="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugHover">
+      </hover>
+   </extension>
  
 </plugin>

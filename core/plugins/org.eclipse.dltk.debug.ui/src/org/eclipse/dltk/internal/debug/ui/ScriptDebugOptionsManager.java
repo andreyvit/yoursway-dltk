@@ -129,6 +129,8 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 		DebugPlugin debugPlugin = DebugPlugin.getDefault();
 		debugPlugin.getLaunchManager().addLaunchListener(this);
 		debugPlugin.getBreakpointManager().addBreakpointListener(this);
+		
+		ScriptEvaluationContextManager.startup();
 	}
 
 	public void shutdown() {

@@ -32,7 +32,7 @@ public class ScriptWatchExpressionDelegate implements IWatchExpressionDelegate {
 
 		IScriptThread thread = getScriptThread(context);
 		if (thread != null) {
-			thread.evaluateExpression(prepareExpression(expression), listener);
+			thread.asyncEvaluateExpression(prepareExpression(expression), listener);
 		}
 	}
 

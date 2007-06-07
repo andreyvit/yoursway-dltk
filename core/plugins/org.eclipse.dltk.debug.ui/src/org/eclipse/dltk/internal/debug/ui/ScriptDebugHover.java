@@ -11,11 +11,18 @@ package org.eclipse.dltk.internal.debug.ui;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.debug.core.model.IWatchExpressionResult;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.dltk.core.ICodeAssist;
+import org.eclipse.dltk.core.IField;
+import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
+import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
+import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
@@ -31,7 +38,9 @@ import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHoverExtension;
 import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.jface.text.Region;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -42,23 +51,28 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 
 	private IEditorPart fEditor;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jdt.ui.text.Script.hover.IJavaEditorTextHover#setEditor(org.eclipse.ui.IEditorPart)
-	 */
 	public void setEditor(IEditorPart editor) {
 		fEditor = editor;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.text.ITextHover#getHoverRegion(org.eclipse.jface.text.ITextViewer,
-	 *      int)
-	 */
-	public IRegion getHoverRegion(ITextViewer textViewer, int offset) {
-		return ScriptWordFinder.findWord(textViewer.getDocument(), offset);
+	public IRegion getHoverRegion(final ITextViewer textViewer, int offset) {
+		System.out.println("ScriptDebugHover.getHoverRegion()");
+		final IRegion[] result = new IRegion[] { ScriptWordFinder.findWord(
+				textViewer.getDocument(), offset) };
+		textViewer.getTextWidget().getDisplay().syncExec(new Runnable() {
+
+			public void run() {
+				Point selection = textViewer.getSelectedRange();
+				int off = selection.x;
+				int len = selection.y;
+
+				if (len > 0) {
+					result[0] = new Region(off, len);
+				}
+			}
+		});
+
+		return result[0];
 	}
 
 	/**
@@ -77,12 +91,6 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.text.ITextHover#getHoverInfo(org.eclipse.jface.text.ITextViewer,
-	 *      org.eclipse.jface.text.IRegion)
-	 */
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
 		IScriptStackFrame frame = getFrame();
 		if (frame != null) {
@@ -93,6 +101,20 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 				try {
 					String variableName = document.get(hoverRegion.getOffset(),
 							hoverRegion.getLength());
+					
+				
+					IWatchExpressionResult result = ((IScriptThread)frame.getThread()).syncEvaluateExpression(variableName);
+					
+					if (true) {
+						try {
+							return getVariableText(result.getValue());
+						} catch (DebugException e) {
+							return "<p><pre>Can't evaluate expression!</p></pre>";
+						}
+					}
+					
+					
+
 					if (hoverRegion.getOffset() > 0) {
 						IRegion hoverRegion2 = getHoverRegion(textViewer,
 								hoverRegion.getOffset());
@@ -100,6 +122,9 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 						variableName = document.get(hoverRegion2.getOffset(),
 								hoverRegion2.getLength());
 					}
+					
+					
+
 					if (variableName.equals("this")) { //$NON-NLS-1$
 						IScriptVariable variable = null;
 						try {
@@ -116,6 +141,7 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 					return null;
 				}
 			}
+
 			ICodeAssist codeAssist = null;
 			if (fEditor != null) {
 				IEditorInput input = fEditor.getEditorInput();
@@ -125,159 +151,36 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 					codeAssist = ((ICodeAssist) element);
 				}
 			}
-			if (codeAssist != null) {
-				return getRemoteHoverInfo(frame, textViewer, hoverRegion);
+			/*
+			 * if (codeAssist != null) { return getRemoteHoverInfo(frame,
+			 * textViewer, hoverRegion); }
+			 */
+
+			IModelElement[] resolve = null;
+			try {
+				resolve = codeAssist.codeSelect(hoverRegion.getOffset(),
+						hoverRegion.getLength());
+			} catch (ModelException e1) {
+				resolve = new IModelElement[0];
 			}
 
-			// IJavaElement[] resolve = null;
-			// try {
-			// resolve = codeAssist.codeSelect(hoverRegion.getOffset(), 0);
-			// } catch (JavaModelException e1) {
-			// resolve = new IJavaElement[0];
-			// }
-			// try {
-			// for (int i = 0; i < resolve.length; i++) {
-			// IJavaElement javaElement = resolve[i];
-			// if (javaElement instanceof IField) {
-			// IField field = (IField) javaElement;
-			// IJavaVariable variable = null;
-			// IJavaDebugTarget debugTarget = (IJavaDebugTarget) frame
-			// .getDebugTarget();
-			// if (Flags.isStatic(field.getFlags())) {
-			// IJavaType[] javaTypes = debugTarget
-			// .getJavaTypes(field.getDeclaringType()
-			// .getFullyQualifiedName());
-			// if (javaTypes != null) {
-			// for (int j = 0; j < javaTypes.length; j++) {
-			// IJavaType type = javaTypes[j];
-			// if (type instanceof IJavaReferenceType) {
-			// IJavaReferenceType referenceType = (IJavaReferenceType) type;
-			// variable = referenceType.getField(field
-			// .getElementName());
-			// }
-			// if (variable != null) {
-			// break;
-			// }
-			// }
-			// }
-			// if (variable == null) {
-			// // the class is not loaded yet, but may be an
-			// // in-lined primitive constant
-			// Object constant = field.getConstant();
-			// if (constant != null) {
-			// IJavaValue value = null;
-			// if (constant instanceof Integer) {
-			// value = debugTarget
-			// .newValue(((Integer) constant)
-			// .intValue());
-			// } else if (constant instanceof Byte) {
-			// value = debugTarget
-			// .newValue(((Byte) constant)
-			// .byteValue());
-			// } else if (constant instanceof Boolean) {
-			// value = debugTarget
-			// .newValue(((Boolean) constant)
-			// .booleanValue());
-			// } else if (constant instanceof Character) {
-			// value = debugTarget
-			// .newValue(((Character) constant)
-			// .charValue());
-			// } else if (constant instanceof Double) {
-			// value = debugTarget
-			// .newValue(((Double) constant)
-			// .doubleValue());
-			// } else if (constant instanceof Float) {
-			// value = debugTarget
-			// .newValue(((Float) constant)
-			// .floatValue());
-			// } else if (constant instanceof Long) {
-			// value = debugTarget
-			// .newValue(((Long) constant)
-			// .longValue());
-			// } else if (constant instanceof Short) {
-			// value = debugTarget
-			// .newValue(((Short) constant)
-			// .shortValue());
-			// } else if (constant instanceof String) {
-			// value = debugTarget
-			// .newValue((String) constant);
-			// }
-			// if (value != null) {
-			// variable = new JDIPlaceholderVariable(
-			// field.getElementName(), value);
-			// }
-			// }
-			// if (variable == null) {
-			// return null; // class not loaded yet and
-			// // not a constant
-			// }
-			// }
-			// } else {
-			// if (!frame.isStatic()) {
-			// String typeSignature = Signature
-			// .createTypeSignature(field
-			// .getDeclaringType()
-			// .getFullyQualifiedName(), true);
-			// typeSignature = typeSignature.replace('.', '/');
-			// variable = frame.getThis().getField(
-			// field.getElementName(), typeSignature);
-			// }
-			// }
-			// if (variable != null) {
-			// return getVariableText(variable);
-			// }
-			// break;
-			// }
-			// if (javaElement instanceof ILocalVariable) {
-			// ILocalVariable var = (ILocalVariable) javaElement;
-			// IJavaElement parent = var.getParent();
-			// while (!(parent instanceof IMethod) && parent != null) {
-			// parent = parent.getParent();
-			// }
-			// if (parent instanceof IMethod) {
-			// IMethod method = (IMethod) parent;
-			// boolean equal = false;
-			// if (method.isBinary()) {
-			// // compare resolved signatures
-			// if (method.getSignature().equals(
-			// frame.getSignature())) {
-			// equal = true;
-			// }
-			// } else {
-			// // compare unresolved signatures
-			// if (((frame.isConstructor() && method
-			// .isConstructor()) || frame
-			// .getMethodName().equals(
-			// method.getElementName()))
-			// && frame
-			// .getDeclaringTypeName()
-			// .endsWith(
-			// method
-			// .getDeclaringType()
-			// .getElementName())
-			// && frame.getArgumentTypeNames().size() == method
-			// .getNumberOfParameters()) {
-			// equal = true;
-			// }
-			// }
-			// if (equal) {
-			// return generateHoverForLocal(frame, var
-			// .getElementName());
-			// }
-			// }
-			// break;
-			// }
-			// }
-			// } catch (CoreException e) {
-			// DLTKDebugPlugin.log(e);
-			// }
+			for (int i = 0; i < resolve.length; i++) {
+				IModelElement scriptElement = resolve[i];
+				System.out.println("Element: " + scriptElement.getClass());
+				if (scriptElement instanceof IField) {
+					IField field = (IField) scriptElement;
+					IScriptVariable variable = null;
+					IScriptDebugTarget debugTarget = (IScriptDebugTarget) frame
+							.getDebugTarget();
+				}
+			}
 		}
 		return null;
 	}
 
 	/**
 	 * Generate hover info via a variable search, if the Script element is not
-	 * avilable.
+	 * available.
 	 */
 	private String getRemoteHoverInfo(IScriptStackFrame frame,
 			ITextViewer textViewer, IRegion hoverRegion) {
@@ -349,6 +252,20 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 		return variableText;
 	}
 
+	private String getVariableText(IValue value) throws DebugException {
+		StringBuffer buffer = new StringBuffer();
+		ScriptDebugModelPresentation modelPresentation = getModelPresentation();
+		buffer.append("<p><pre>"); //$NON-NLS-1$
+		buffer.append(replaceHTMLChars(value.getValueString()));
+		buffer.append("</pre></p>"); //$NON-NLS-1$
+		modelPresentation.dispose();
+		if (buffer.length() > 0) {
+			return buffer.toString();
+		}
+		return null;
+	}
+	
+	
 	/**
 	 * Returns HTML text for the given variable
 	 */
@@ -398,11 +315,6 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 	}
 
 	/**
-	 * Returns a configured model presentation for use displaying variables.
-	 */
-	protected abstract ScriptDebugModelPresentation getModelPresentation();
-
-	/**
 	 * Returns the value of this filters preference (on/off) for the given view.
 	 * 
 	 * @param part
@@ -421,11 +333,6 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 		return value;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.text.ITextHoverExtension#getHoverControlCreator()
-	 */
 	public IInformationControlCreator getHoverControlCreator() {
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
@@ -435,4 +342,9 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 			}
 		};
 	}
+
+	/**
+	 * Returns a configured model presentation for use displaying variables.
+	 */
+	protected abstract ScriptDebugModelPresentation getModelPresentation();
 }
