@@ -216,6 +216,7 @@
          point="org.eclipse.ui.console.consoleFactories">
       <consoleFactory
             class="org.eclipse.dltk.tcl.internal.console.ui.TclConsoleFactory"
+            icon="icons/obj16/console_obj.gif"
             label="%TclConsole.Console"/>
    </extension>   
    <extension

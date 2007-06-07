@@ -40,7 +40,7 @@
             category="org.eclipse.dltk.ruby.ui"
             class="org.eclipse.dltk.ruby.internal.ui.wizards.RubyNewProjectWizard"
             finalPerspective="org.eclipse.dltk.ruby.ui.RubyPerspective"
-            icon="icons/eview16/ruby_persp.gif"
+            icon="$nl$/icons/etool16/newprj_wiz.gif"
             id="org.eclipse.dltk.ruby.wizards.newproject"
             name="%NewProjectWizard.name"
             preferredPerspectives="org.eclipse.dltk.ruby.ui.RubyPerspective"
@@ -50,7 +50,7 @@
       <wizard
              category="org.eclipse.dltk.ruby.ui"
              class="org.eclipse.dltk.ruby.internal.ui.wizards.RubyNewFileWizard"
-             icon="icons/obj16/ruby_obj.gif"
+             icon="$nl$/icons/etool16/newfile_wiz.gif"
              id="org.eclipse.dltk.ruby.wizards.newfile"
              name="%NewFileWizard.name">
           <description>%NewFileWizard.description</description>
@@ -58,7 +58,7 @@
        <wizard
              category="org.eclipse.dltk.ruby.ui"
              class="org.eclipse.dltk.ruby.internal.ui.wizards.RubyNewClassWizard"
-             icon="icons/obj16/ruby_obj.gif"
+             icon="$nl$/icons/etool16/newclass_wiz.gif"
              id="org.eclipse.dltk.ruby.wizards.newclass"
              name="%NewClassWizard.name">
           <description>%NewClassWizard.description</description>
@@ -66,7 +66,7 @@
        <wizard
              category="org.eclipse.dltk.ruby.ui"
              class="org.eclipse.dltk.ruby.internal.ui.wizards.RubyNewModuleWizard"
-             icon="icons/obj16/ruby_obj.gif"
+             icon="$nl$/icons/etool16/newmodule_wiz.gif"
              id="org.eclipse.dltk.ruby.wizards.newmodule"
              name="%NewModuleWizard.name">
           <description>%NewModuleWizard.description</description>
@@ -102,7 +102,7 @@
     <extension point="org.eclipse.ui.views">
     <view
             name="%RubyDocumentationView"
-            icon="$nl$/icons/ruby_16_16.gif"
+            icon="$nl$/icons/obj16/rubydoc.gif"
             category="org.eclipse.dltk.ruby.ui"
             class="org.eclipse.dltk.ruby.internal.ui.infoviews.RubyDocumentationView"
             id="org.eclipse.dltk.ruby.ui.RubyDocumentationView">
@@ -232,7 +232,7 @@
             class="org.eclipse.dltk.ruby.internal.ui.search.RubySearchPage"
             enabled="true"
             extensions="rb:90"
-            icon="/icons/obj16/jsearch_obj.gif"
+            icon="$nl$/icons/obj16/search_obj.gif"
             id="org.eclipse.dltk.ui.RubySearchPage"
             label="%DLTKSearchPage.label"
             showScopeSection="true"

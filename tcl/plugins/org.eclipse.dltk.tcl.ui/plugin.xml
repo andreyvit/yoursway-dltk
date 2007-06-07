@@ -30,7 +30,7 @@
             class="org.eclipse.dltk.tcl.internal.ui.search.TclSearchPage"
             enabled="true"
             extensions="tcl:90, exp:90"
-            icon="/icons/obj16/jsearch_obj.gif"
+            icon="$nl$/icons/obj16/search_obj.gif"
             id="org.eclipse.dltk.ui.TCLSearchPage"
             label="%DLTKSearchPage.label"
             showScopeSection="true"
@@ -107,7 +107,7 @@
             category="org.eclipse.dltk.tcl.ui"
             class="org.eclipse.dltk.tcl.internal.ui.wizards.TclProjectCreationWizard"
             finalPerspective="org.eclipse.dltk.tcl.ui.TclPerspective"
-            icon="icons/eview16/tcl_persp.gif"
+            icon="$nl$/icons/etool16/newprj_wiz.gif"
             id="org.eclipse.dltk.tcl.internal.ui.wizards.TclProjectWizard"
             name="Tcl Project"
             preferredPerspectives="org.eclipse.dltk.tcl.ui.TclPerspective"
@@ -139,7 +139,7 @@
        <wizard
              category="org.eclipse.dltk.tcl.ui"
              class="org.eclipse.dltk.tcl.internal.ui.wizards.TclFileCreationWizard"
-             icon="icons/eview16/tcl_persp.gif"
+             icon="$nl$/icons/etool16/newfile_wiz.gif"
              id="org.eclipse.dltk.tcl.internal.ui.wizards.TclFileCreationWizard"
              name="%NewTclFile.label">
           <description/>

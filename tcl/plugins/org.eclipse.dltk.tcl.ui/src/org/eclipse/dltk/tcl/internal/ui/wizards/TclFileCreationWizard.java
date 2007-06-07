@@ -9,12 +9,21 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.internal.ui.wizards;
 
+import org.eclipse.dltk.tcl.internal.ui.TclImages;
+import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.wizards.NewSourceModulePage;
 import org.eclipse.dltk.ui.wizards.NewSourceModuleWizard;
 
 public class TclFileCreationWizard extends NewSourceModuleWizard {
 	public static final String ID_WIZARD = "org.eclipse.dltk.tcl.internal.ui.wizards.TclFileCreationWizard";
-	
+
+	public TclFileCreationWizard() {
+		setDefaultPageImageDescriptor(TclImages.DESC_WIZBAN_FILE_CREATION);
+		setDialogSettings(DLTKUIPlugin.getDefault().getDialogSettings());
+		// setWindowTitle(TclWizardMessages.NewFileWizard_title);
+		setWindowTitle("Create Tcl File");
+	}
+
 	protected NewSourceModulePage createNewSourceModulePage() {
 		return new TclFileCreationPage();
 	}
