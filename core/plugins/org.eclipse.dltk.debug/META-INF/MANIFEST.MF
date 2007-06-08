@@ -24,7 +24,8 @@ Export-Package: org.eclipse.dltk.dbgp,
  org.eclipse.dltk.dbgp.internal.packets;x-friends:="org.eclipse.dltk.debug.tests",
  org.eclipse.dltk.dbgp.internal.utils;x-friends:="org.eclipse.dltk.debug.tests",
  org.eclipse.dltk.debug.core,
+ org.eclipse.dltk.debug.core.eval,
  org.eclipse.dltk.debug.core.model,
- org.eclipse.dltk.debug.internal.core.model,
- org.eclipse.dltk.debug.internal.core.model.operations
+ org.eclipse.dltk.internal.debug.core.model,
+ org.eclipse.dltk.internal.debug.core.model.operations
 

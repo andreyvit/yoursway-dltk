@@ -18,7 +18,7 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.ISuspendResume;
 import org.eclipse.debug.ui.actions.IRunToLineTarget;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
-import org.eclipse.dltk.debug.internal.core.model.ScriptLineBreakpoint;
+import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchPart;

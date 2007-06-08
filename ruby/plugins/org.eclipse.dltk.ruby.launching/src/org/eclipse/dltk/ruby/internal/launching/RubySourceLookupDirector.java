@@ -23,7 +23,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IPersistableSourceLocator;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
-import org.eclipse.dltk.debug.internal.core.model.ScriptStackFrame;
+import org.eclipse.dltk.internal.debug.core.model.ScriptStackFrame;
 
 public class RubySourceLookupDirector implements IPersistableSourceLocator {
 

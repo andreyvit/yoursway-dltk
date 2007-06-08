@@ -14,7 +14,7 @@ import java.util.HashMap;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.debug.internal.core.model.ScriptDebugModel;
+import org.eclipse.dltk.internal.debug.core.model.ScriptDebugModel;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;

@@ -1,7 +1,6 @@
 package org.eclipse.dltk.internal.debug.ui.actions;
 
 import org.eclipse.debug.ui.DebugPopup;
-import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Point;
@@ -17,7 +16,8 @@ public class PopupScriptDisplayAction  extends ScriptDisplayAction {
 		private String message;
 		
         public DisplayPopup(String message, Shell shell, Point anchor) {
-            super(shell, anchor, ACTION_DEFINITION_ID);
+        	// TODO: add real commandId
+            super(shell, anchor, null);
             
             this.message = message;
         }
@@ -54,30 +54,23 @@ public class PopupScriptDisplayAction  extends ScriptDisplayAction {
         }
     }
 
-	public static final String ACTION_DEFINITION_ID = "org.eclipse.jdt.debug.ui.commands.Display"; //$NON-NLS-1$
-
-    private String snippet;
-    private String resultString;
-
     public PopupScriptDisplayAction() {
         super();
     }
 
-    private void showPopup(StyledText textWidget) {
-        DebugPopup displayPopup = new DisplayPopup(resultString, getShell(), getPopupAnchor(textWidget));
+    private void showPopup(StyledText textWidget, String message) {
+        DebugPopup displayPopup = new DisplayPopup(message, getShell(), getPopupAnchor(textWidget));
         displayPopup.open();
     }
 
-    protected void displayStringResult(String currentSnippet, String currentResultString) {
+    protected void displayStringResult(String currentSnippet, final String currentResultString) {
         IWorkbenchPart part = getPart();
 
         final StyledText textWidget = getStyledText(part);
         if (textWidget != null) {
-            snippet = currentSnippet;
-            resultString = currentResultString;
             Display.getDefault().asyncExec(new Runnable() {
                 public void run() {
-                    showPopup(textWidget);
+                    showPopup(textWidget, currentResultString);
                 }
             });
             

@@ -12,7 +12,7 @@ package org.eclipse.dltk.debug.core.model;
 import java.net.URI;
 
 import org.eclipse.debug.core.model.IDebugTarget;
-import org.eclipse.dltk.debug.internal.core.model.IScriptDebugTargetStreamManager;
+import org.eclipse.dltk.internal.debug.core.model.IScriptDebugTargetStreamManager;
 
 public interface IScriptDebugTarget extends IDebugTarget {
 	boolean isInitialized();

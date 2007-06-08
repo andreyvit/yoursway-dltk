@@ -18,4 +18,6 @@ public interface IScriptStackFrame extends IStackFrame {
 	int getLevel();
 		
 	IScriptVariable findVariable(String varName) throws DebugException;
+	
+	IScriptThread getScriptThread();
 }

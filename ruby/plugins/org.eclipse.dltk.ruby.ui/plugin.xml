@@ -196,6 +196,24 @@
          </action>
       </actionSet>
   </extension>
+  
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="%RubySearchActionSet.label"
+            description="%RubySearchActionSet.description"
+            visible="false"
+            id="org.eclipse.dltk.ruby.ui.SearchActionSet">
+         <action
+               label="%OpenRubySearchPageAction.label"
+               icon="$nl$/icons/obj16/search_obj.gif"
+               class="org.eclipse.dltk.ruby.internal.ui.actions.OpenRubySearchPageAction"
+               menubarPath="org.eclipse.search.menu/dialogGroup"
+               id="org.eclipse.dltk.ruby.ui.actions.OpenRubySearchPage">
+         </action>
+  </actionSet>
+ </extension>
+  
  <extension
        point="org.eclipse.ui.commands">
        <command
@@ -298,6 +316,21 @@
           nature="org.eclipse.dltk.ruby.core.nature"/>
  </extension>
  
+  <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.ruby.ui.SearchActionSet">
+         <!--part
+               id="org.eclipse.jdt.ui.PackageExplorer">
+         </part-->
+         <part
+               id="org.eclipse.dltk.ruby.ui.editor.RubyEditor">
+         </part>
+         <part
+               id="org.eclipse.search.SearchResultView">
+         </part>
+      </actionSetPartAssociation>
+   </extension>
   
 <!--Action Sets -->
  </plugin>

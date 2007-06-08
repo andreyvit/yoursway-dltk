@@ -13,7 +13,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
-import org.eclipse.debug.core.model.IWatchExpressionResult;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.dltk.core.ICodeAssist;
 import org.eclipse.dltk.core.IField;
@@ -22,7 +21,6 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
-import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
@@ -103,16 +101,16 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 							hoverRegion.getLength());
 					
 				
-					IWatchExpressionResult result = ((IScriptThread)frame.getThread()).syncEvaluateExpression(variableName);
-					
-					if (true) {
-						try {
-							return getVariableText(result.getValue());
-						} catch (DebugException e) {
-							return "<p><pre>Can't evaluate expression!</p></pre>";
-						}
-					}
-					
+//					IWatchExpressionResult result = ((IScriptThread)frame.getThread()).syncEvaluateExpression(variableName);
+//					
+//					if (true) {
+//						try {
+//							return getVariableText(result.getValue());
+//						} catch (DebugException e) {
+//							return "<p><pre>Can't evaluate expression!</p></pre>";
+//						}
+//					}
+//					
 					
 
 					if (hoverRegion.getOffset() > 0) {

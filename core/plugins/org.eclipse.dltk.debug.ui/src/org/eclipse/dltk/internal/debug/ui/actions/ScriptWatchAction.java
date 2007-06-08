@@ -13,7 +13,7 @@ import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
-public class ScriptWatchAction extends CommonEvaluationAction {
+public class ScriptWatchAction extends ScriptEvaluationAction {
 	private void createWatchExpression(String snippet) {
 		IWatchExpression expression = DebugPlugin.getDefault()
 				.getExpressionManager().newWatchExpression(snippet);

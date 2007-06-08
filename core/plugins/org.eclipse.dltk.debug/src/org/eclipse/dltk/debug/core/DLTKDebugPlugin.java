@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.dltk.debug.internal.core.model.DbgpService;
+import org.eclipse.dltk.internal.debug.core.model.DbgpService;
 import org.osgi.framework.BundleContext;
 
 public class DLTKDebugPlugin extends Plugin {

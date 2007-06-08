@@ -208,9 +208,32 @@
                </and>
             </enablement>
          </action-->
+         <action
+               id="org.eclipse.dltk.debug.ui.actions.Display"
+               hoverIcon="$nl$/icons/full/etool16/disp_sbook.gif"
+               class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptDisplayAction"
+               definitionId="org.eclipse.jdt.debug.ui.commands.Display"
+               disabledIcon="$nl$/icons/full/dtool16/disp_sbook.gif"
+               icon="$nl$/icons/full/etool16/disp_sbook.gif"
+               label="%Display.label"
+               helpContextId="display_action_context"
+               menubarPath="org.eclipse.ui.run/scriptGroup">
+            <enablement>
+               <and>
+                 <systemProperty
+                       name="org.eclipse.dltk.debug.ui.debuggerActive"
+                       value="true">
+                 </systemProperty>
+                  <objectClass
+                        name="org.eclipse.jface.text.ITextSelection">
+                  </objectClass>
+               </and>
+            </enablement>
+         </action>
+         
          
          <action
-               class="org.eclipse.dltk.internal.debug.ui.actions.PopupInspectAction"
+               class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptInspectAction"
                definitionId="org.eclipse.dltk.debug.ui.commands.Inspect"
                disabledIcon="$nl$/icons/full/dtool16/insp_sbook.gif"
                hoverIcon="$nl$/icons/full/etool16/insp_sbook.gif"

@@ -12,8 +12,8 @@ package org.eclipse.dltk.debug.ui;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.eclipse.dltk.debug.internal.core.model.IScriptDebugTargetStreamManager;
-import org.eclipse.dltk.debug.internal.core.model.IScriptThreadStreamProxy;
+import org.eclipse.dltk.internal.debug.core.model.IScriptDebugTargetStreamManager;
+import org.eclipse.dltk.internal.debug.core.model.IScriptThreadStreamProxy;
 import org.eclipse.ui.console.IOConsole;
 
 

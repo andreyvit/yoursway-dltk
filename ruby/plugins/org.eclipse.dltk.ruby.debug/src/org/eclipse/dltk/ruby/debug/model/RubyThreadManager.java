@@ -15,9 +15,9 @@ import org.eclipse.debug.core.model.ISuspendResume;
 import org.eclipse.debug.core.model.ITerminate;
 import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.IDbgpThreadAcceptor;
-import org.eclipse.dltk.debug.internal.core.model.DebugEventHelper;
-import org.eclipse.dltk.debug.internal.core.model.ScriptDebugTarget;
-import org.eclipse.dltk.debug.internal.core.model.ScriptThread;
+import org.eclipse.dltk.internal.debug.core.model.DebugEventHelper;
+import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
+import org.eclipse.dltk.internal.debug.core.model.ScriptThread;
 
 public class RubyThreadManager implements ISuspendResume, ITerminate,
 		IDbgpThreadAcceptor {

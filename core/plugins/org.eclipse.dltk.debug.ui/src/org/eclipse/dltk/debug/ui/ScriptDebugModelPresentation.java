@@ -17,9 +17,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.model.IErrorReportingExpression;
+import org.eclipse.debug.core.model.IExpression;
 import org.eclipse.debug.core.model.ILineBreakpoint;
 import org.eclipse.debug.core.model.IValue;
-import org.eclipse.debug.core.model.IWatchExpression;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
@@ -179,22 +180,27 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		return breakpoint.toString();
 	}
 
-	protected String getWatchExpressionText(IWatchExpression expression) {
+	protected String getExpressionText(IExpression expression) {
 		String text = expression.getExpressionText() + " = Error!";
 		try {
-			if (!expression.hasErrors()) {
-				text = expression.getExpressionText();
-				IScriptValue value = (IScriptValue) expression.getValue();
-				if (value != null) {
-					if (value.hasVariables()) {
-						text += " = " + value.getReferenceTypeName();
-						String id = value.getReferenceId();
-						if (id != null) {
-							text += " (id = " + id + ")";
-						}
-					} else {
-						text += " = " + value.getValueString();
+			if (expression instanceof IErrorReportingExpression) {
+				IErrorReportingExpression exp = (IErrorReportingExpression) expression;
+				if (exp.hasErrors()) {
+					return text;
+				}
+			}
+
+			text = expression.getExpressionText();
+			IScriptValue value = (IScriptValue) expression.getValue();
+			if (value != null) {
+				if (value.hasVariables()) {
+					text += " = " + value.getReferenceTypeName();
+					String id = value.getReferenceId();
+					if (id != null) {
+						text += " (id = " + id + ")";
 					}
+				} else {
+					text += " = " + value.getValueString();
 				}
 			}
 		} catch (DebugException e) {
@@ -215,8 +221,8 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			return getVariableText((IScriptVariable) element);
 		} else if (element instanceof IScriptValue) {
 			return getValueText((IScriptValue) element);
-		} else if (element instanceof IWatchExpression) {
-			return getWatchExpressionText((IWatchExpression) element);
+		} else if (element instanceof IExpression) {
+			return getExpressionText((IExpression) element);
 		}
 
 		return element.toString();
@@ -229,7 +235,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 				detail = value.getReferenceTypeName();
 			} else {
 				detail = value.getValueString();
-			}			
+			}
 		} catch (DebugException e) {
 			DLTKDebugUIPlugin.log(e);
 		}

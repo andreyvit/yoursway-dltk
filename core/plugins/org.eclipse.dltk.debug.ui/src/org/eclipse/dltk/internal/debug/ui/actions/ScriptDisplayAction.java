@@ -5,17 +5,15 @@ import java.text.MessageFormat;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.IValueDetailListener;
+import org.eclipse.dltk.debug.core.eval.IScriptEvaluationResult;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IWorkbenchPart;
 
-/**
- * Displays the result of an evaluation in the display view
- */
-public abstract class ScriptDisplayAction extends CommonEvaluationAction {
+public abstract class ScriptDisplayAction extends ScriptEvaluationAction {
 	public static String trimDisplayResult(String result) {
 		int max = DebugUITools.getPreferenceStore().getInt(
 				IDebugUIConstants.PREF_MAX_DETAIL_LENGTH);
@@ -25,9 +23,9 @@ public abstract class ScriptDisplayAction extends CommonEvaluationAction {
 		return result;
 	}
 
-	protected void displayResult(final IScriptEvaluationResult evaluationResult) {
+	protected void displayResult(final IScriptEvaluationResult result) {
 		// Errors
-		if (evaluationResult.hasErrors()) {
+		if (result.hasErrors()) {
 			final Display display = DLTKDebugUIPlugin.getStandardDisplay();
 			display.asyncExec(new Runnable() {
 				public void run() {
@@ -35,20 +33,21 @@ public abstract class ScriptDisplayAction extends CommonEvaluationAction {
 						return;
 					}
 
-					reportErrors(evaluationResult);
+					reportErrors(result);
 					evaluationCleanup();
 				}
 			});
 			return;
 		}
 
-		final String snippet = evaluationResult.getSnippet();
-		IScriptValue resultValue = evaluationResult.getValue();
-
+		final String snippet = result.getSnippet();
+		IScriptValue resultValue = result.getValue();
 
 		try {
 			final String resultString = resultValue.getValueString();
-			getDebugModelPresentation().computeDetail(resultValue,
+			IDebugModelPresentation presentation = getDebugModelPresentation(result
+					.getThread().getModelIdentifier()); 
+			presentation.computeDetail(resultValue,
 					new IValueDetailListener() {
 						public void detailComputed(IValue value, String result) {
 							displayStringResult(snippet, MessageFormat.format(
@@ -56,6 +55,8 @@ public abstract class ScriptDisplayAction extends CommonEvaluationAction {
 											trimDisplayResult(result) }));
 						}
 					});
+			
+			presentation.dispose();
 		} catch (DebugException x) {
 			displayStringResult(snippet, getExceptionMessage(x));
 		}

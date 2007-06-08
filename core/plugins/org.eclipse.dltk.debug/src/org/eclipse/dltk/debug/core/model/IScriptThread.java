@@ -10,10 +10,9 @@
 package org.eclipse.dltk.debug.core.model;
 
 import org.eclipse.debug.core.model.IThread;
-import org.eclipse.debug.core.model.IWatchExpressionListener;
-import org.eclipse.debug.core.model.IWatchExpressionResult;
 import org.eclipse.dltk.dbgp.IDbgpSession;
-import org.eclipse.dltk.debug.internal.core.model.IScriptThreadStreamProxy;
+import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
+import org.eclipse.dltk.internal.debug.core.model.IScriptThreadStreamProxy;
 
 /**
  * A thread in a Script virtual machine.
@@ -32,7 +31,12 @@ public interface IScriptThread extends IThread  /*, IFilteredStep */{
 	IScriptThreadStreamProxy getStreamProxy();
 	
 	// Expression evaluation
-	IWatchExpressionResult syncEvaluateExpression(String expression);	
+	//IWatchExpressionResult syncEvaluateExpression(String expression);	
 	
-	void asyncEvaluateExpression(String expression, IWatchExpressionListener listener);
+	//void asyncEvaluateExpression(String expression, IWatchExpressionListener listener);
+	
+	IScriptEvaluationEngine getEvaluationEngine();
+	
+	
+	IScriptDebugTarget getScriptDebugTarget();
 }
