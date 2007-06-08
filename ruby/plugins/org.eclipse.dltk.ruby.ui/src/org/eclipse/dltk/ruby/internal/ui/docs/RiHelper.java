@@ -79,6 +79,9 @@ public class RiHelper {
 		if (riProcess != null) {
 			riProcess.destroy();
 			riProcess = null;
+	
+			// Cache should be cleared if we change interpreter
+			cache.clear();
 		}
 	}
 

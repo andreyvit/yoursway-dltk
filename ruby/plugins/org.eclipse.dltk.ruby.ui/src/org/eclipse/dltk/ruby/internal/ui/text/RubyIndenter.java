@@ -288,4 +288,5 @@ public class RubyIndenter {
 		return forciblyCalculateLineIndent(document, lineIndex, lineStart, line, -1);
 	}
 	
+	
 }

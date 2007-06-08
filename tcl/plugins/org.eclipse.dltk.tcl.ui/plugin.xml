@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
+   
+	<extension
+      id="org.eclipse.dltk.tcl.ui.editor.DocumentSetupParticipant"
+      name="%documentSetupParticipantName"
+      point="org.eclipse.core.filebuffers.documentSetup">
+		<participant
+        class="org.eclipse.dltk.tcl.internal.ui.editor.TclDocumentSetupParticipant">
+   		</participant>
+</extension>
  <extension
        point="org.eclipse.core.runtime.adapters">
     <factory
@@ -13,15 +22,6 @@
     <extension point="org.eclipse.core.runtime.preferences">
         <initializer class="org.eclipse.dltk.tcl.internal.ui.TclUIPreferenceInitializer"/>
     </extension>
-   
-	<extension
-      id="org.eclipse.dltk.tcl.ui.editor.DocumentSetupParticipant"
-      name="%documentSetupParticipantName"
-      point="org.eclipse.core.filebuffers.documentSetup">
-		<participant
-        class="org.eclipse.dltk.tcl.internal.ui.editor.TclDocumentSetupParticipant">
-   		</participant>
-</extension>
   
  <extension
          point="org.eclipse.search.searchPages">
@@ -32,18 +32,28 @@
             extensions="tcl:90, exp:90"
             icon="$nl$/icons/obj16/search_obj.gif"
             id="org.eclipse.dltk.ui.TCLSearchPage"
-            label="%DLTKSearchPage.label"
+            label="%TclSearchPage.label"
             showScopeSection="true"
             sizeHint="460,160">
       </page>
    </extension>
+  
+  <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            name="%TclEditContext.name"
+            description="%TclEditContext.description"
+            parentId="org.eclipse.dltk.ui.scriptEditorScope"
+            id="org.eclipse.dltk.ui.tclEditorScope">
+      </context>
+  </extension>
  <extension
        point="org.eclipse.ui.perspectives">
     <perspective
           class="org.eclipse.dltk.tcl.ui.TclPerspective"
-          icon="icons/eview16/tcl_persp.gif"
+          icon="$nl$/icons/eview16/tcl_persp.gif"
           id="org.eclipse.dltk.tcl.ui.TclPerspective"
-          name="%TclPerspectiveName"/>
+          name="%TclPerspective.name"/>
  </extension>
  
  <extension
@@ -100,7 +110,7 @@
          point="org.eclipse.ui.newWizards">
       <category
             id="org.eclipse.dltk.tcl.ui"
-            name="%TCLWizardCategory"
+            name="%TclWizardsCategory.name"
             >
       </category>
       <wizard
@@ -152,56 +162,65 @@
             contributorClass="org.eclipse.dltk.internal.ui.editor.SourceModuleEditorActionContributor"
             default="true"
             extensions="tcl,exp"
-            icon="icons/obj16/tcl_obj.gif"
+            icon="$nl$/icons/obj16/tcl_obj.gif"
             id="org.eclipse.dltk.tcl.ui.editor.TclEditor"
-            name="DLTK Tcl Editor">
+            name="%TclEditor.name">
          <contentTypeBinding
                contentTypeId="org.eclipse.dltk.tclContentType">
          </contentTypeBinding>
       </editor>
    </extension>
+ 
+ <extension
+       point="org.eclipse.ui.editors.templates">
+    <contextType
+          class="org.eclipse.dltk.tcl.internal.ui.templates.TclUniversalTemplateContextType"
+          id="tclUniversalTemplateContextType"
+          name="%TclTemplateContext.name">
+    </contextType>    
+ </extension>
  <extension
        point="org.eclipse.ui.preferencePages">
        
     <page          
           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclGlobalPreferencesPage"
           id="org.eclipse.dltk.tcl.preferences"
-          name="%TclPreferencePage"/>
+          name="%TclPreferencePage.name"/>
     <page
           category="org.eclipse.dltk.tcl.preferences"
           class="org.eclipse.dltk.tcl.internal.ui.preferences.ManPagesPreferencePage"
           id="org.eclipse.dltk.tcl.preferences.mans"
-          name="%TclManPagesPreferencePage"/>
+          name="%TclManPagesPreferencePage.name"/>
     <page
            category="org.eclipse.dltk.tcl.preferences"
            class="org.eclipse.dltk.tcl.internal.ui.templates.TclTemplatePreferencePage"
            id="org.eclipse.dltk.tcl.preferences.templates"
-           name="%TclCodeTemplatesPreferencePage"/>        
+           name="%TclCodeTemplatesPreferencePage.name"/>        
     <page
           category="org.eclipse.dltk.tcl.preferences"
           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclEditorPreferencesPage"
           id="org.eclipse.dltk.tcl.preferences.editor"
-          name="%TclEditorPreferencePage"/>
+          name="%TclEditorPreferencePage.name"/>
     <page
           category="org.eclipse.dltk.tcl.preferences.editor"
           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclEditorSyntaxColoringPreferencePage"
           id="org.eclipse.dltk.tcl.preferences.editor.syntaxcoloring"
-          name="%TclEditorSyntaxColoringPreferencePage"/>
+          name="%TclEditorSyntaxColoringPreferencePage.name"/>
     <page
           category="org.eclipse.dltk.tcl.preferences.editor"
           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclEditorHoverPreferencePage"
           id="org.eclipse.dltk.tcl.preferences.editor.hovers"
-          name="%TclEditorHoversPreferencePage"/>    
+          name="%TclEditorHoversPreferencePage.name"/>    
     <page
           category="org.eclipse.dltk.tcl.preferences.editor"
           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclSmartTypingPreferencePage"
           id="org.eclipse.dltk.tcl.preferences.editor.smarttyping"
-          name="%TclEditorTypingPreferencePage"/>          
+          name="%TclEditorTypingPreferencePage.name"/>          
     <page
           category="org.eclipse.dltk.tcl.preferences.editor"
           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclFoldingPreferencePage"
           id="org.eclipse.dltk.tcl.preferences.editor.folding"
-          name="%TclEditorFoldingPreferencePage"/>
+          name="%TclEditorFoldingPreferencePage.name"/>
           
  </extension>
  <extension
@@ -209,7 +228,7 @@
     <page
           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclBuildPathPropertyPage"
           id="org.eclipse.dltk.tcl.ui.BuildpathProperties"
-          name="Tcl Build Path"
+          name="%TclBuildPathPropertyPage.name"
           objectClass="org.eclipse.core.resources.IProject">
        <filter
              name="nature"
@@ -219,7 +238,7 @@
     <page
           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclBuildPathPropertyPage"
           id="org.eclipse.dltk.tcl.ui.BuildpathProperties"
-          name="Tcl Build Path"
+          name="%TclBuildPathPropertyPage.name"
           objectClass="org.eclipse.dltk.core.IDLTKProject">
        <filter
              name="nature"
@@ -228,96 +247,38 @@
     </page>    
  </extension>
  <extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
-         <part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"/>
-         <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
-      </actionSetPartAssociation>
- </extension>
-<!-- Code completion -->
- <extension
-       point="org.eclipse.ui.views">
+       point="org.eclipse.ui.views">        
+    <category
+            id="org.eclipse.dltk.tcl.ui"
+            name="%TclViewsCategory.name"
+            >
+    </category>
     <view
           category="org.eclipse.dltk.tcl.ui"
           class="org.eclipse.dltk.tcl.internal.ui.navigation.NamespacesView"
           icon="icons/obj16/tcl_obj.gif"
           id="org.eclipse.dltk.tcl.internal.ui.navigation.NamespacesView"
-          name="%TclNamespacesView"/>
+          name="%TclNamespacesView.name"/>
     <view
           category="org.eclipse.dltk.tcl.ui"
           class="org.eclipse.dltk.tcl.internal.ui.navigation.FunctionsView"
           icon="icons/obj16/tcl_obj.gif"
           id="org.eclipse.dltk.tcl.internal.ui.navigation.FunctionsView"
-          name="%TclFunctionsView"/>
+          name="%TclFunctionsView.name"/>
     <view
           category="org.eclipse.dltk.tcl.ui"
           class="org.eclipse.dltk.tcl.internal.ui.navigation.PackagesView"
           icon="icons/obj16/tcl_obj.gif"
           id="org.eclipse.dltk.tcl.internal.ui.navigation.PackagesView"
-          name="%TclPackagesView"/> 
+          name="%TclPackagesView.name"/> 
     <view
-            name="%TclDocumentationView"
-            icon="icons/etool16/javadoc.gif"
+            name="%TclDocumentationView.name"
+            icon="$nl$/icons/obj16/tcldoc.gif"
             category="org.eclipse.dltk.tcl.ui"
             class="org.eclipse.dltk.tcl.internal.ui.infoviews.TclDocumentationView"
             id="org.eclipse.dltk.tcl.ui.TclDocumentationView">
-      </view>        
-    <category
-            id="org.eclipse.dltk.tcl.ui"
-            name="DLTK Tcl"
-            >
-    </category>          
+      </view>          
  </extension>
- 
-  <extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.dltk.ui.A_OpenActionSet">
-         <part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"/>
-	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
-      </actionSetPartAssociation>
-  </extension>
-  
-   <extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.dltk.ui.CodingActionSet">
-         <part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"/>
-	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
-      </actionSetPartAssociation>
-  </extension>
-  
-  <extension
-         point="org.eclipse.ui.contexts">
-      <context
-            name="%context.editingTclSource.name"
-            description="%context.editingTclSource.description"
-            parentId="org.eclipse.dltk.ui.scriptEditorScope"
-            id="org.eclipse.dltk.ui.tclEditorScope">
-      </context>
-  </extension> 
-	<extension
-		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
-		id="TclScriptTypeCompletionProposalComputer">
-		<scriptCompletionProposalComputer 
-			class="org.eclipse.dltk.tcl.internal.ui.text.completion.TclTypeCompletionProposalComputer"
-			categoryId="org.eclipse.dltk.ui.scriptTypeProposalCategory"
-			toolkitId="org.eclipse.dltk.tcl.core.nature">
-			<partition type="__dftl_partition_content_type"/>
-		</scriptCompletionProposalComputer>		
-	</extension>
-	<extension
-		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
-		id="TclScriptNoTypeCompletionProposalComputer">
-		<scriptCompletionProposalComputer
-	        categoryId="org.eclipse.dltk.ui.scriptNoTypeProposalCategory"
-    	    class="org.eclipse.dltk.tcl.internal.ui.text.completion.TclNoTypeCompletionProposalComputer"
-	        toolkitId="org.eclipse.dltk.tcl.core.nature">
-			<partition type="__dftl_partition_content_type"/>
-   <partition type="__tcl_string"/>
-		</scriptCompletionProposalComputer>
-	</extension>
  <extension
       point="org.eclipse.ui.actionSets">
       <actionSet
@@ -338,6 +299,24 @@
       </actionSet>
   </extension>
  <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"/>
+         <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.ui.A_OpenActionSet">
+         <part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"/>
+	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.ui.CodingActionSet">
+         <part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"/>
+	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
+      </actionSetPartAssociation>
+ </extension>
+ <extension
        point="org.eclipse.ui.bindings">
          <key
             sequence="M1+M2+T"
@@ -348,12 +327,33 @@
  <extension
        point="org.eclipse.ui.commands">
        <command
-            name="%ActionDefinition.openType.name"
-            description="%ActionDefinition.openType.description"
+            name="%ActionDefinition.OpenType.name"
+            description="%ActionDefinition.OpenType.description"
             categoryId="org.eclipse.ui.category.navigate"
             id="org.eclipse.dltk.tcl.ui.navigate.open.type">
          </command>
  </extension>
+	<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="TclScriptNoTypeCompletionProposalComputer">
+		<scriptCompletionProposalComputer
+	        categoryId="org.eclipse.dltk.ui.scriptNoTypeProposalCategory"
+    	    class="org.eclipse.dltk.tcl.internal.ui.text.completion.TclNoTypeCompletionProposalComputer"
+	        toolkitId="org.eclipse.dltk.tcl.core.nature">
+			<partition type="__dftl_partition_content_type"/>
+   <partition type="__tcl_string"/>
+		</scriptCompletionProposalComputer>
+	</extension> 
+	<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="TclScriptTypeCompletionProposalComputer">
+		<scriptCompletionProposalComputer 
+			class="org.eclipse.dltk.tcl.internal.ui.text.completion.TclTypeCompletionProposalComputer"
+			categoryId="org.eclipse.dltk.ui.scriptTypeProposalCategory"
+			toolkitId="org.eclipse.dltk.tcl.core.nature">
+			<partition type="__dftl_partition_content_type"/>
+		</scriptCompletionProposalComputer>		
+	</extension>
   <extension
         point="org.eclipse.dltk.ui.scriptDocumentationProviders">
      <provider
@@ -370,15 +370,6 @@
     <language
           class="org.eclipse.dltk.tcl.internal.ui.TclUILanguageToolkit"
           nature="org.eclipse.dltk.tcl.core.nature"/>
- </extension>
- 
- <extension
-       point="org.eclipse.ui.editors.templates">
-    <contextType
-          class="org.eclipse.dltk.tcl.internal.ui.templates.TclUniversalTemplateContextType"
-          id="tclUniversalTemplateContextType"
-          name="%TclTemplateContext">
-    </contextType>    
  </extension>       
    
    

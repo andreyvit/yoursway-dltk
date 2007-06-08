@@ -18,11 +18,10 @@ import org.eclipse.jface.text.IDocument;
 /**
  * The document setup participant for Ruby.
  */
-public class RubyDocumentSetupParticipant implements
-		IDocumentSetupParticipant {
+public class RubyDocumentSetupParticipant implements IDocumentSetupParticipant {
 
 	public RubyDocumentSetupParticipant() {
-		
+
 	}
 
 	public void setup(IDocument document) {
