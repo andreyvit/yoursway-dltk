@@ -16,6 +16,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
 public class RubyImages {
 	private static final PluginImagesHelper helper = new PluginImagesHelper(
 			RubyUI.getDefault().getBundle(), new Path("/icons"));
+	
+	public static final ImageDescriptor PROJECT_DECARATOR = helper
+			.createUnManaged(PluginImagesHelper.T_OVR, "ruby_ovr.gif");
 
 	public static final ImageDescriptor DESC_WIZBAN_PROJECT_CREATION = helper
 			.createUnManaged(PluginImagesHelper.T_WIZBAN,

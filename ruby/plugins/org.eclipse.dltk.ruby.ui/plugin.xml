@@ -225,6 +225,25 @@
               sequence="M1+M2+H"/> 
  </extension>
  
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            adaptable="false"
+            location="TOP_LEFT"
+            lightweight="true"
+            label="%RubyProjectDecorator.name"
+            state="true"
+            class="org.eclipse.dltk.ruby.internal.ui.RubyProjectDecorator"
+            id="org.eclipse.dltk.ruby.projectdecorator">
+         <enablement>
+           <or>
+            <objectClass name="org.eclipse.core.resources.IProject"/>
+            <objectClass name="org.eclipse.dltk.core.IDLTKProject"/>
+           </or>
+         </enablement>
+      </decorator>
+   </extension>
+ 
  <extension
        point="org.eclipse.ui.propertyPages">
     <page
@@ -278,6 +297,7 @@
           class="org.eclipse.dltk.ruby.internal.ui.RubyUILanguageToolkit"
           nature="org.eclipse.dltk.ruby.core.nature"/>
  </extension>
+ 
   
 <!--Action Sets -->
  </plugin>
