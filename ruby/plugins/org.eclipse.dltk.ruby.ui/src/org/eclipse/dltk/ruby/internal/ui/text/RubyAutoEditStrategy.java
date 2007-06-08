@@ -410,8 +410,19 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 			String line = document.get(c.offset, lineStart + lineLength - c.offset);
 			String indent = indenter.forciblyCalculateLineIndent(document, lineIndex + 1,
 					lineStart, line, c.offset);
-			c.text = c.text + indent;
+			if (line.trim().equals("}") && c.offset  >= 0 && document.getChar(c.offset -1) == '{') {
+				StringBuffer buf = new StringBuffer(c.text);
+				buf.append(indent);
+				buf.append(this.prefs.getIndent());
+				c.shiftsCaret = false;
+				c.caretOffset = c.offset + buf.length();				
+				buf.append('\n'); 
+				buf.append(indent);
+				c.text = buf.toString();				
+			} else
+				c.text = c.text + indent;
 		} catch (BadLocationException e) {
+			e.printStackTrace();		
 			super.customizeDocumentCommand(document, c);
 		}		
 	}

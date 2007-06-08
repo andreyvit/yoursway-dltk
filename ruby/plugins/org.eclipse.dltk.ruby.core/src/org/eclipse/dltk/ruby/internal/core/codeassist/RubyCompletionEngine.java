@@ -798,6 +798,10 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			proposal.setName(name);
 			proposal.setCompletion(elementName.toCharArray());
 			// proposal.setFlags(Flags.AccDefault);
+			try {
+				proposal.setFlags(type.getFlags());
+			} catch (ModelException e) {
+			}
 			proposal.setReplaceRange(this.startPosition - this.offset,
 					this.endPosition - this.offset);
 			proposal.setRelevance(relevance);

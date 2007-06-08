@@ -109,7 +109,7 @@ public class RubyBracketInserter extends BracketInserter {
 				if (!fCloseStrings || nextToken == Symbols.TokenIDENT
 						|| prevToken == Symbols.TokenIDENT || next != null
 						&& next.length() > 1 || previous != null
-						&& previous.length() > 1)
+						&& (previous.length() > 1 || previous.charAt(0)== event.character))
 					return;
 				break;
 
@@ -124,7 +124,7 @@ public class RubyBracketInserter extends BracketInserter {
 
 			if (!this.editor.validateEditorInputState())
 				return;
-
+			
 			final char character = event.character;
 			final char closingCharacter = getPeerCharacter(character);
 			final StringBuffer buffer = new StringBuffer();

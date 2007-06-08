@@ -208,8 +208,12 @@ public class RubyIndenter {
 		String unindentedLine = line.substring(lineIndent.length());
 		
 		int braceIndex = TextUtilities.startsWith(CLOSING_BRACES, unindentedLine);
-		if (braceIndex >= 0)
-			return handleClosingBrace(document, lineOffset, braceIndex);
+		if (braceIndex >= 0) {
+			if (prevLineRightLimit > 0)
+				return handleClosingBrace(document, prevLineRightLimit - 1, braceIndex);
+			else
+				return handleClosingBrace(document, lineOffset, braceIndex);
+		}
 		
 		if (TextUtilities.startsWith(JAVADOC_NOINDENT_TAGS, unindentedLine) != -1)
 			return "";

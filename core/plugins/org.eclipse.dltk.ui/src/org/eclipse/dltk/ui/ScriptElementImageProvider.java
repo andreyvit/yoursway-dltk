@@ -339,7 +339,7 @@ public class ScriptElementImageProvider {
 			boolean useLightIcons) {
 		if (useLightIcons) {
 			return DLTKPluginImages.DESC_OBJS_CLASSALT;
-		}
+		}	
 
 		return getClassImageDescriptor(flags);
 	}

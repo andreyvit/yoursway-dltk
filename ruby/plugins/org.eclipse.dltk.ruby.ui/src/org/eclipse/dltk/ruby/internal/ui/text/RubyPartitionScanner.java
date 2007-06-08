@@ -64,7 +64,7 @@ public class RubyPartitionScanner extends RuleBasedPartitionScanner {
 	}
 
 	public int getOffsetForLaterContextLookup() {
-		return fOffset;
+		return fOffset;		
 	}
 
 	public RubyContext getCurrentContext() {
