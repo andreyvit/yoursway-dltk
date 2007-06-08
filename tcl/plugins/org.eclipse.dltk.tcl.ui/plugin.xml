@@ -323,7 +323,26 @@
             commandId="org.eclipse.dltk.tcl.ui.navigate.open.type"
             contextId="org.eclipse.dltk.ui.tclEditorScope"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>       
- </extension>
+ </extension>       
+ 
+ <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            adaptable="false"
+            location="TOP_LEFT"
+            lightweight="true"
+            label="%TclProjectDecorator.name"
+            state="true"
+            class="org.eclipse.dltk.tcl.internal.ui.TclProjectDecorator"
+            id="org.eclipse.dltk.tcl.decorators.projectdecorator">
+         <enablement>
+           <or>
+            <objectClass name="org.eclipse.core.resources.IProject"/>
+            <objectClass name="org.eclipse.dltk.core.IDLTKProject"/>
+           </or>
+         </enablement>
+      </decorator>
+   </extension>
  <extension
        point="org.eclipse.ui.commands">
        <command
@@ -370,7 +389,7 @@
     <language
           class="org.eclipse.dltk.tcl.internal.ui.TclUILanguageToolkit"
           nature="org.eclipse.dltk.tcl.core.nature"/>
- </extension>       
+ </extension>
    
    
    <!-- <extension
