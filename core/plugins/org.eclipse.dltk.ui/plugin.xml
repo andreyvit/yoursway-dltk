@@ -9,6 +9,11 @@
    <extension-point id="scriptDocumentationProviders" name="Script documentation providers" schema="schema/scriptDocumentationProviders.exsd"/>
    <extension-point id="language" name="DLTK UI Language Toolkit" schema="schema/language.exsd"/>
    <extension-point id="actionFilterTester" name="actionFilterTester" schema="schema/actionFilterTester.exsd"/>
+ 
+ <extension
+       point="org.eclipse.core.runtime.preferences">
+    <initializer class="org.eclipse.dltk.internal.ui.DLTKUIPreferenceInitializer"/>
+ </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer class="org.eclipse.dltk.internal.ui.preferences.PreferenceInitializer"/>      
@@ -387,11 +392,6 @@
  
  -->
  
- <extension
-       point="org.eclipse.core.runtime.preferences">
-    <initializer class="org.eclipse.dltk.internal.ui.DLTKUIPreferenceInitializer"/>
- </extension>
- 
  <!-- =========================================================================== -->
 <!-- Script Working Set                                                            -->
 <!-- =========================================================================== -->
@@ -420,140 +420,6 @@
    <!-- =========================================================================== -->
 <!-- Filter Support                                                              -->
 <!-- =========================================================================== -->
-   <extension
-         point="org.eclipse.dltk.ui.dltkElementFilters">
-<!-- Script Explorer -->
-      <filter
-            targetId="org.eclipse.dltk.ui.ScriptExplorer"
-            name="%HideSystemFiles.label"
-            enabled="true"
-            description="%HideSystemFiles.description"
-            pattern=".*">
-      </filter>
-      <filter
-            targetId="org.eclipse.dltk.ui.ScriptExplorer"
-            name="%HideEmptyPackages.label"
-            enabled="false"
-            description="%HideEmptyPackages.description"
-            class="org.eclipse.dltk.internal.ui.filters.EmptyPackageFilter"
-            id="org.eclipse.dltk.internal.ui.PackageExplorer.EmptyPackageFilter">
-      </filter>
-      <filter
-            targetId="org.eclipse.dltk.ui.ScriptExplorer"
-            name="%HideEmptyInnerPackages.label"
-            enabled="true"
-            description="%HideEmptyInnerPackages.description"
-            class="org.eclipse.dltk.internal.ui.filters.EmptyInnerPackageFilter"
-            id="org.eclipse.dltk.internal.ui.PackageExplorer.EmptyInnerPackageFilter">
-      </filter>
-      <filter
-            targetId="org.eclipse.dltk.ui.ScriptExplorer"
-            name="%HideNonScriptElements.label"
-            enabled="false"
-            description="%HideNonScriptElements.description"
-            class="org.eclipse.dltk.internal.ui.filters.NonScriptElementFilter"
-            id="org.eclipse.dltk.ui.ScriptExplorer.NonScriptElementFilter">
-      </filter>
-      <filter
-            targetId="org.eclipse.dltk.ui.ScriptExplorer"
-            name="%HideReferencedLibraries.label"
-            enabled="false"
-            description="%HideReferencedLibraries.description"
-            class="org.eclipse.dltk.internal.ui.filters.LibraryFilter"
-            id="org.eclipse.dltk.ui.ScriptExplorer.LibraryFilter">
-      </filter>
-      <filter
-            targetId="org.eclipse.dltk.ui.ScriptExplorer"
-            name="%HideContainedLibraries.label"
-            enabled="false"
-            description="%HideContainedLibraries.description"
-            class="org.eclipse.dltk.internal.ui.filters.ContainedLibraryFilter"
-            id="org.eclipse.dltk.ui.ScriptExplorer.ContainedLibraryFilter">
-      </filter>
-      <filter
-            targetId="org.eclipse.dltk.ui.ScriptExplorer"
-            name="%HideScriptFiles.label"
-            enabled="false"
-            description="%HideScriptFiles.description"
-            class="org.eclipse.dltk.internal.ui.filters.ScriptFileFilter"
-            id="org.eclipse.dltk.ui.ScriptExplorer.SMFileFilter">
-      </filter>      
-      <filter
-            targetId="org.eclipse.dltk.ui.ScriptExplorer"
-            name="%HideNonScriptProjects.label"
-            enabled="false"
-            description="%HideNonScriptProjects.description"
-            class="org.eclipse.dltk.internal.ui.filters.NonScriptProjectsFilter"
-            id="org.eclipse.dltk.ui.ScriptExplorer.NonScriptProjectsFilter">
-      </filter>
-      <filter
-            targetId="org.eclipse.dltk.ui.ScriptExplorer"
-            name="%HideNonSharedProjects.label"
-            enabled="false"
-            description="%HideNonSharedProjects.description"
-            class="org.eclipse.dltk.internal.ui.filters.NonSharedProjectFilter"
-            id="org.eclipse.dltk.ui.ScriptExplorer.NonSharedProjectsFilter">
-      </filter>
-      <filter
-            targetId="org.eclipse.dltk.ui.ScriptExplorer"
-            name="%HideClosedProjects.label"
-            enabled="false"
-            description="%HideClosedProjects.description"
-            class="org.eclipse.dltk.internal.ui.filters.ClosedProjectFilter"
-            id="org.eclipse.dltk.ui.ScriptExplorer.ClosedProjectsFilter">
-      </filter>
-      <filter
-            targetId="org.eclipse.dltk.ui.ScriptExplorer"
-            name="%HideFields.label"
-            enabled="false"
-            description="%HideFields.description"
-            class="org.eclipse.dltk.internal.ui.filters.FieldsFilter"
-            id="org.eclipse.dltk.ui.ScriptExplorer.FieldsFilter">
-      </filter>
-    </extension>
-    
-    
-<!-- Refactoring contributions -->    
-   <extension
-         point="org.eclipse.ltk.core.refactoring.refactoringContributions">
-      <contribution
-            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameResourceRefactoringContribution"
-            id="org.eclipse.dltk.ui.rename.resource"/>
-      <contribution
-            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameSourceModuleRefactoringContribution"
-            id="org.eclipse.dltk.ui.rename.sourcemodule"/>
-      <contribution
-            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameDLTKProjectRefactoringContribution"
-            id="org.eclipse.dltk.ui.rename.script.project"/>
-      <contribution
-            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameScriptFolderRefactoringContribution"
-            id="org.eclipse.dltk.ui.rename.script.folder"/>
-      <contribution
-            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameSourceFolderRefactoringContribution"
-            id="org.eclipse.dltk.ui.rename.source.folder"/>
-   </extension>
-
-<!-- Code completion -->
-   <extension
-		point="org.eclipse.dltk.ui.scriptCompletionProposalSorters">
-		<proposalSorter
-			id="org.eclipse.dltk.ui.AlphabeticSorter"
-			name="%AlphabeticSorter.name"
-			class="org.eclipse.dltk.ui.text.completion.AlphabeticSorter"/>
-		<proposalSorter
-			id="org.eclipse.dltk.ui.RelevanceSorter"
-			name="%RelevanceSorter.name"
-			class="org.eclipse.dltk.ui.text.completion.RelevanceSorter"/>
-	</extension>
-<!-- content assist processors - do not change their order -->  
-
-	<extension
-		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
-		id="scriptTypeProposalCategory"
-		name="%ScriptTypesCategory">
-		<proposalCategory
-			icon="/icons/full/elcl16/scripttypeassist_co.gif"/>
-	</extension>
 	<extension
 		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
 		id="scriptNoTypeProposalCategory"
@@ -567,13 +433,6 @@
 		name="%DefaultProposalCategory">
 		<proposalCategory/>
 	</extension>
-	<!--extension
-		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
-		id="templateProposalCategory"
-		name="%TemplateProposalCategory">
-		<proposalCategory
-			icon="/icons/full/elcl16/templateprop_co.gif"/>
-	</extension-->
 	<extension
 		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
 		id="textProposalCategory"
@@ -751,8 +610,6 @@
             id="org.eclipse.dltk.ui.navigate.gototype">
       </command>
  </extension>
-
-	<!-- the parameterized content assist action and keybindings for our contributed computers -->
 	<extension
 		point="org.eclipse.ui.commands">
 		<command
@@ -771,10 +628,10 @@
  <extension
        point="org.eclipse.ui.actionSets">
         <actionSet
-            label="%CodingActionSet.label"
-            description="%CodingActionSet.description"
+            label="%ScriptCodingActionSet.label"
+            description="%ScriptCodingActionSet.description"
             visible="false"
-            id="org.eclipse.dltk.ui.CodingActionSet">
+            id="org.eclipse.dltk.ui.ScriptCodingActionSet">
 <!-- =========================================================================== -->
 <!-- Refactoring Menu                                                            -->
 <!-- =========================================================================== -->       
@@ -877,11 +734,6 @@
          </action>
       </actionSet>
  </extension>
- 
- <!-- with an A_                                                                -->
-<!-- the open action set is contributed before the CodeActionSet we prefix it  -->
-<!-- Action sets are contributed after they have been sorted. To enfore that   -->
-<!-- Begin Java Open action contributions  -->
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
@@ -1007,10 +859,120 @@
             commandId="org.eclipse.dltk.ui.navigate.open.type"
             contextId="org.eclipse.dltk.ui.scriptEditorScope"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>-->        
-	</extension>         
-	
-	
-	<!-- Note: Do not change the sequence of those hover contributions -->
+	</extension>
+   <extension
+         point="org.eclipse.dltk.ui.dltkElementFilters">
+<!-- Script Explorer -->
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideSystemFiles.label"
+            enabled="true"
+            description="%HideSystemFiles.description"
+            pattern=".*">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideEmptyPackages.label"
+            enabled="false"
+            description="%HideEmptyPackages.description"
+            class="org.eclipse.dltk.internal.ui.filters.EmptyPackageFilter"
+            id="org.eclipse.dltk.internal.ui.PackageExplorer.EmptyPackageFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideEmptyInnerPackages.label"
+            enabled="true"
+            description="%HideEmptyInnerPackages.description"
+            class="org.eclipse.dltk.internal.ui.filters.EmptyInnerPackageFilter"
+            id="org.eclipse.dltk.internal.ui.PackageExplorer.EmptyInnerPackageFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideNonScriptElements.label"
+            enabled="false"
+            description="%HideNonScriptElements.description"
+            class="org.eclipse.dltk.internal.ui.filters.NonScriptElementFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.NonScriptElementFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideReferencedLibraries.label"
+            enabled="false"
+            description="%HideReferencedLibraries.description"
+            class="org.eclipse.dltk.internal.ui.filters.LibraryFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.LibraryFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideContainedLibraries.label"
+            enabled="false"
+            description="%HideContainedLibraries.description"
+            class="org.eclipse.dltk.internal.ui.filters.ContainedLibraryFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.ContainedLibraryFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideScriptFiles.label"
+            enabled="false"
+            description="%HideScriptFiles.description"
+            class="org.eclipse.dltk.internal.ui.filters.ScriptFileFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.SMFileFilter">
+      </filter>      
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideNonScriptProjects.label"
+            enabled="false"
+            description="%HideNonScriptProjects.description"
+            class="org.eclipse.dltk.internal.ui.filters.NonScriptProjectsFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.NonScriptProjectsFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideNonSharedProjects.label"
+            enabled="false"
+            description="%HideNonSharedProjects.description"
+            class="org.eclipse.dltk.internal.ui.filters.NonSharedProjectFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.NonSharedProjectsFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideClosedProjects.label"
+            enabled="false"
+            description="%HideClosedProjects.description"
+            class="org.eclipse.dltk.internal.ui.filters.ClosedProjectFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.ClosedProjectsFilter">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideFields.label"
+            enabled="false"
+            description="%HideFields.description"
+            class="org.eclipse.dltk.internal.ui.filters.FieldsFilter"
+            id="org.eclipse.dltk.ui.ScriptExplorer.FieldsFilter">
+      </filter>
+    </extension>
+    
+    
+<!-- Refactoring contributions -->  
+   <extension
+    	id="DLTKSearchResultPage"
+        point="org.eclipse.search.searchResultViewPages">
+		<viewPage
+			id="org.eclipse.dltk.ui.DLTKSearchResultPage"
+			searchResultClass="org.eclipse.dltk.internal.ui.search.DLTKSearchResult"
+			class="org.eclipse.dltk.internal.ui.search.DLTKSearchResultPage">
+		</viewPage>
+   </extension>
+
+<!-- Code completion -->  
+
+	<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="scriptTypeProposalCategory"
+		name="%ScriptTypesCategory">
+		<proposalCategory
+			icon="/icons/full/elcl16/scripttypeassist_co.gif"/>
+	</extension>
    <extension
          point="org.eclipse.dltk.ui.editorTextHovers">
       <hover
@@ -1040,18 +1002,32 @@
             id="org.eclipse.dltk.ui.AnnotationHover">
       </hover>
    </extension>
-<!-- =========================================================================== -->
-<!-- Call Hierarchy                                                              -->
-<!-- =========================================================================== -->  
    <extension
-    	id="DLTKSearchResultPage"
-        point="org.eclipse.search.searchResultViewPages">
-		<viewPage
-			id="org.eclipse.dltk.ui.DLTKSearchResultPage"
-			searchResultClass="org.eclipse.dltk.internal.ui.search.DLTKSearchResult"
-			class="org.eclipse.dltk.internal.ui.search.DLTKSearchResultPage">
-		</viewPage>
-   </extension>
+		point="org.eclipse.dltk.ui.scriptCompletionProposalSorters">
+		<proposalSorter
+			id="org.eclipse.dltk.ui.AlphabeticSorter"
+			name="%AlphabeticSorter.name"
+			class="org.eclipse.dltk.ui.text.completion.AlphabeticSorter"/>
+		<proposalSorter
+			id="org.eclipse.dltk.ui.RelevanceSorter"
+			name="%RelevanceSorter.name"
+			class="org.eclipse.dltk.ui.text.completion.RelevanceSorter"/>
+	</extension>
+<!-- content assist processors - do not change their order -->
+	<!--extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="templateProposalCategory"
+		name="%TemplateProposalCategory">
+		<proposalCategory
+			icon="/icons/full/elcl16/templateprop_co.gif"/>
+	</extension-->
+
+	<!-- the parameterized content assist action and keybindings for our contributed computers -->
+ 
+ <!-- with an A_                                                                -->
+<!-- the open action set is contributed before the CodeActionSet we prefix it  -->
+<!-- Action sets are contributed after they have been sorted. To enfore that   -->
+<!-- Begin Java Open action contributions  -->
    <extension
          point="org.eclipse.ui.editors.templates">
    </extension>
@@ -1317,6 +1293,47 @@
                id="org.eclipse.dltk.ui.actions.ReferencesInWorkspace">
          </action>
       </actionSet>
-   </extension>   
+   </extension>         
+	
+	
+	<!-- Note: Do not change the sequence of those hover contributions -->
+<!-- =========================================================================== -->
+<!-- Call Hierarchy                                                              -->
+<!-- =========================================================================== -->    
+   <extension
+         point="org.eclipse.ltk.core.refactoring.refactoringContributions">
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameResourceRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.resource"/>
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameSourceModuleRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.sourcemodule"/>
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameDLTKProjectRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.script.project"/>
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameScriptFolderRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.script.folder"/>
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameSourceFolderRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.source.folder"/>
+   </extension>
+   
+   
+   <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.ui.A_OpenActionSet">
+	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.ui.ScriptCodingActionSet">
+	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
+      </actionSetPartAssociation>
+ </extension>   
    
 </plugin>

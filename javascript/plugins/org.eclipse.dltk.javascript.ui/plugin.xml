@@ -283,32 +283,7 @@
     </page>    
  
  </extension>
- 
- <extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.dltk.ui.CodingActionSet">
-         <part id="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor"/>
-	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
-      </actionSetPartAssociation>
- </extension>
- <extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.dltk.javascript.ui.CodingActionSet">
-         <part id="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor"/>
-	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
-      </actionSetPartAssociation>
- </extension>
- <extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
-         <part
-               id="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor">
-         </part>
-	 </actionSetPartAssociation>
- </extension> 
+  
  <extension
          point="org.eclipse.ui.commands">
          <command
@@ -389,6 +364,33 @@
           file="templates/templates.xml"
           translations="templates/templates.properties">
     </include>
+ </extension>
+ 
+ 
+ 
+ 
+ <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      
+ </extension> 
+ 
+ <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.javascript.ui.CodingActionSet">
+         <part id="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor"/>
+	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
+      </actionSetPartAssociation>   
+         
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.ui.ScriptCodingActionSet">
+         <part id="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor"/>
+      </actionSetPartAssociation>    
+        
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part id="org.eclipse.dltk.javascript.ui.editor.JavascriptEditor"/>
+	  </actionSetPartAssociation>  
  </extension>
  
   

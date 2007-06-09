@@ -15,18 +15,13 @@ import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.editors.text.EditorsUI;
 
-
 public class DLTKUIPreferenceInitializer extends AbstractPreferenceInitializer {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-	 */
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = DLTKUIPlugin.getDefault().getPreferenceStore();
-		
+
 		EditorsUI.useAnnotationsPreferencePage(store);
 		EditorsUI.useQuickDiffPreferencePage(store);
 		PreferenceConstants.initializeDefaultValues(store);
-	}	
-	
+	}
 }

@@ -109,7 +109,23 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 	private IPropertyChangeListener fPropertyListener;
 	/** Annotation model listener added to all created CU annotation models */
 	private GlobalAnnotationModelListener fGlobalAnnotationModelListener;
-
+	
+	
+	public boolean isReadOnly(Object element) {
+		// TODO Auto-generated method stub
+		//return super.isReadOnly(element);
+		
+	String value = System.getProperty("org.eclipse.dltk.debug.ui.debuggerActive");
+		if (value != null && value.equals("true")) {
+			return true;
+		}
+		
+		
+		return super.isReadOnly(element);
+	}
+	
+	
+	
 	/**
 	 * Annotation representing an <code>IProblem</code>.
 	 */

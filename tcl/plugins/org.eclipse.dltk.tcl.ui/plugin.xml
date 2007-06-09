@@ -29,9 +29,9 @@
             canSearchEnclosingProjects="true"
             class="org.eclipse.dltk.tcl.internal.ui.search.TclSearchPage"
             enabled="true"
-            extensions="tcl:90, exp:90"
+            extensions="tcl:90, exp:30"
             icon="$nl$/icons/obj16/search_obj.gif"
-            id="org.eclipse.dltk.ui.TCLSearchPage"
+            id="org.eclipse.dltk.ui.TclSearchPage"
             label="%TclSearchPage.label"
             showScopeSection="true"
             sizeHint="460,160">
@@ -298,24 +298,30 @@
          </action>
       </actionSet>
   </extension>
- <extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
-         <part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"/>
-         <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
-      </actionSetPartAssociation>
-      <actionSetPartAssociation
-            targetID="org.eclipse.dltk.ui.A_OpenActionSet">
-         <part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"/>
-	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
-      </actionSetPartAssociation>
-      <actionSetPartAssociation
-            targetID="org.eclipse.dltk.ui.CodingActionSet">
-         <part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"/>
-	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
-      </actionSetPartAssociation>
+  
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="%TclSearchActionSet.label"
+            description="%TclSearchActionSet.description"
+            visible="false"
+            id="org.eclipse.dltk.tcl.ui.SearchActionSet">
+         <menu
+               label="%SearchMenu.label"
+               path="navigate"
+               id="org.eclipse.search.menu">
+			   <groupMarker name="dialogTclGroup"/>
+         </menu>   
+         <action
+               label="%OpenTclSearchPageAction.label"
+               icon="$nl$/icons/obj16/search_obj.gif"
+               class="org.eclipse.dltk.tcl.internal.ui.actions.OpenTclSearchPageAction"
+               menubarPath="org.eclipse.search.menu/dialogTclGroup"
+               id="org.eclipse.dltk.tcl.ui.actions.OpenTclSearchPage">
+         </action>
+  </actionSet>
  </extension>
+ 
  <extension
        point="org.eclipse.ui.bindings">
          <key
@@ -351,6 +357,23 @@
             categoryId="org.eclipse.ui.category.navigate"
             id="org.eclipse.dltk.tcl.ui.navigate.open.type">
          </command>
+ </extension>
+  
+  
+ <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.ui.A_OpenActionSet">
+         <part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.ui.ScriptCodingActionSet">
+         <part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"/>
+      </actionSetPartAssociation>
  </extension>
 	<extension
 		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
@@ -390,6 +413,22 @@
           class="org.eclipse.dltk.tcl.internal.ui.TclUILanguageToolkit"
           nature="org.eclipse.dltk.tcl.core.nature"/>
  </extension>
+   
+    <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.tcl.ui.SearchActionSet">
+         <part
+               id="org.eclipse.dltk.ui.ScriptExplorer">
+         </part>
+         <part
+               id="org.eclipse.dltk.tcl.ui.editor.TclEditor">
+         </part>
+         <part
+               id="org.eclipse.search.SearchResultView">
+         </part>
+      </actionSetPartAssociation>
+   </extension>   
    
    
    <!-- <extension

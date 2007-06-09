@@ -17,7 +17,7 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
 public class DLTKSearchPageScoreComputer implements ISearchPageScoreComputer {
 
 	public int computeScore(String id, Object element) {
-		if (!DLTKSearchPage.EXTENSION_POINT_ID.equals(id))
+		if (!ScriptSearchPage.EXTENSION_POINT_ID.equals(id))
 			// Can't decide
 			return ISearchPageScoreComputer.UNKNOWN;
 		

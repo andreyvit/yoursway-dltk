@@ -204,11 +204,19 @@
             description="%RubySearchActionSet.description"
             visible="false"
             id="org.eclipse.dltk.ruby.ui.SearchActionSet">
+         
+         <menu
+               label="%SearchMenu.label"
+               path="navigate"
+               id="org.eclipse.search.menu">
+			   <groupMarker name="dialogRubyGroup"/>
+         </menu>   
+            
          <action
                label="%OpenRubySearchPageAction.label"
                icon="$nl$/icons/obj16/search_obj.gif"
                class="org.eclipse.dltk.ruby.internal.ui.actions.OpenRubySearchPageAction"
-               menubarPath="org.eclipse.search.menu/dialogGroup"
+               menubarPath="org.eclipse.search.menu/dialogRubyGroup"
                id="org.eclipse.dltk.ruby.ui.actions.OpenRubySearchPage">
          </action>
   </actionSet>
@@ -320,9 +328,9 @@
          point="org.eclipse.ui.actionSetPartAssociations">
       <actionSetPartAssociation
             targetID="org.eclipse.dltk.ruby.ui.SearchActionSet">
-         <!--part
-               id="org.eclipse.jdt.ui.PackageExplorer">
-         </part-->
+         <part
+               id="org.eclipse.dltk.ui.ScriptExplorer">
+         </part>
          <part
                id="org.eclipse.dltk.ruby.ui.editor.RubyEditor">
          </part>
@@ -331,6 +339,24 @@
          </part>
       </actionSetPartAssociation>
    </extension>
+   
+   
+   <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part id="org.eclipse.dltk.ruby.ui.editor.RubyEditor"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.ui.A_OpenActionSet">
+         <part id="org.eclipse.dltk.ruby.ui.editor.RubyEditor"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.ui.ScriptCodingActionSet">
+         <part id="org.eclipse.dltk.ruby.ui.editor.RubyEditor"/>
+      </actionSetPartAssociation>
+ </extension>
+ 
   
 <!--Action Sets -->
  </plugin>

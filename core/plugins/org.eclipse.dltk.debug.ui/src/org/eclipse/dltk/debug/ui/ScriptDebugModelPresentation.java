@@ -74,8 +74,9 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		}
 
 		public Object getAdapter(Class adapter) {
-			if (ILocationProvider.class.equals(adapter))
+			if (ILocationProvider.class.equals(adapter)) {
 				return this;
+			}
 
 			return Platform.getAdapterManager().getAdapter(this, adapter);
 		}

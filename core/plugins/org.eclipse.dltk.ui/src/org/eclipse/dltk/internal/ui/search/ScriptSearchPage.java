@@ -61,7 +61,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 
 
-public abstract class DLTKSearchPage extends DialogPage implements ISearchPage, IDLTKSearchConstants {
+public abstract class ScriptSearchPage extends DialogPage implements ISearchPage, IDLTKSearchConstants {
 	
 	private static class SearchPatternData {
 		private int searchFor;
@@ -235,7 +235,7 @@ public abstract class DLTKSearchPage extends DialogPage implements ISearchPage, 
 
 	private Button fIncludeInterpreterEnvironmentCheckbox; 
 
-	public DLTKSearchPage() {
+	public ScriptSearchPage() {
 		fPreviousSearchPatterns= new ArrayList();
 	}
 	

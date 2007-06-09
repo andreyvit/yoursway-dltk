@@ -33,13 +33,13 @@ public class SearchParticipantsExtensionPoint {
 	private static SearchParticipantsExtensionPoint fgInstance;
 
 	public boolean hasAnyParticipants() {
-		return Platform.getExtensionRegistry().getConfigurationElementsFor(DLTKSearchPage.PARTICIPANT_EXTENSION_POINT).length > 0;
+		return Platform.getExtensionRegistry().getConfigurationElementsFor(ScriptSearchPage.PARTICIPANT_EXTENSION_POINT).length > 0;
 	}
 
 	private synchronized Set getAllParticipants() {
 		if (fActiveParticipants != null)
 			return fActiveParticipants;
-		IConfigurationElement[] allParticipants= Platform.getExtensionRegistry().getConfigurationElementsFor(DLTKSearchPage.PARTICIPANT_EXTENSION_POINT);
+		IConfigurationElement[] allParticipants= Platform.getExtensionRegistry().getConfigurationElementsFor(ScriptSearchPage.PARTICIPANT_EXTENSION_POINT);
 		fActiveParticipants= new HashSet(allParticipants.length);
 		for (int i= 0; i < allParticipants.length; i++) {
 			SearchParticipantDescriptor descriptor= new SearchParticipantDescriptor(allParticipants[i]);
