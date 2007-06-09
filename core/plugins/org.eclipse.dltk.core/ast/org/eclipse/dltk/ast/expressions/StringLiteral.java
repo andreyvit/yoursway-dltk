@@ -44,6 +44,10 @@ public class StringLiteral extends Literal {
 		this.fLiteralValue = value;
 	}
 
+	public StringLiteral(int sourceStart, DLTKToken dltk, String string) {
+		this(sourceStart, dltk.getColumn(), string);
+	}
+
 	/**
 	 * Return kind.
 	 */
