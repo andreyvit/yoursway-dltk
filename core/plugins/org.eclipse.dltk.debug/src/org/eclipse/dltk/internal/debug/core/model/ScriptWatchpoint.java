@@ -28,9 +28,9 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 	private static final String MODIFICATION = ScriptLineBreakpoint.ID
 			+ ".modification";
 
-	public ScriptWatchpoint(IResource resource, int lineNumber, int start,
+	public ScriptWatchpoint(String debugModelId, IResource resource, int lineNumber, int start,
 			int end, Map attributes, String fieldName) throws CoreException {
-		super(resource, lineNumber, start, end, end, true, attributes);
+		super(debugModelId, resource, lineNumber, start, end, end, true, attributes);
 		this.setFieldName(fieldName);
 	}
 

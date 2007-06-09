@@ -33,8 +33,6 @@ import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
 
 public class DbgpBreakpointManager implements IBreakpointListener {
-	private ScriptThreadManager threadManager;
-
 	protected static IBreakpointManager getBreakpointManager() {
 		return DebugPlugin.getDefault().getBreakpointManager();
 	}
@@ -213,6 +211,8 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 					(IScriptBreakpoint) breakpoint);
 		}
 	}
+	
+	private ScriptThreadManager threadManager;
 
 	public DbgpBreakpointManager(ScriptThreadManager manager) {
 		if (manager == null) {
@@ -225,10 +225,10 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 	public void setupDeferredBreakpoints(final IScriptThread thread)
 			throws CoreException {
 
-		Job job = new Job("Evaluation of expression") {
+		Job job = new Job("Setting up deffered breakpoints") {
 			protected IStatus run(IProgressMonitor monitor) {
 				IBreakpoint[] breakpoints = getBreakpointManager()
-						.getBreakpoints(ScriptModelConstants.MODEL_ID);
+						.getBreakpoints(thread.getModelIdentifier());
 
 				for (int i = 0; i < breakpoints.length; i++) {
 					IBreakpoint breakpoint = breakpoints[i];
@@ -238,12 +238,7 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 							addBreakpoint(getBreakpointCommands(thread),
 									(IScriptBreakpoint) breakpoint);
 						} catch (Exception e) {
-							try {
-								breakpoint.delete();
-							} catch (CoreException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
+							
 						}
 					}
 				}

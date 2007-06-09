@@ -30,52 +30,60 @@ public class ScriptLineBreakpoint extends ScriptBreakpoint implements
 			return new URI("file", "///"
 					+ resource.getLocation().toPortableString(), null);
 		} catch (URISyntaxException e) {
+			// TODO: log exception
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	protected void addScriptLineBreakpointAttributes(Map attributes,
-			String modelIdentifier, boolean enabled, int lineNumber,
-			int charStart, int charEnd) {
-		attributes.put(IBreakpoint.ID, modelIdentifier);
+	protected static void addAttributes(Map attributes, String debugModelId,
+			boolean enabled, int lineNumber, int charStart, int charEnd) {
+		attributes.put(IBreakpoint.ID, debugModelId);
 		attributes.put(IBreakpoint.ENABLED, Boolean.valueOf(enabled));
 		attributes.put(IMarker.LINE_NUMBER, new Integer(lineNumber));
 		attributes.put(IMarker.CHAR_START, new Integer(charStart));
 		attributes.put(IMarker.CHAR_END, new Integer(charEnd));
 	}
 
+	protected String getMarkerID() {
+		return ScriptMarkerFactory.LINE_BREAKPOINT_MARKER_ID;
+	}
+
 	public ScriptLineBreakpoint() {
 
 	}
 
-	public String getModelIdentifier() {
-		return ScriptModelConstants.MODEL_ID;
-	}
-
-	public ScriptLineBreakpoint(final IResource resource, final int lineNumber,
+	public ScriptLineBreakpoint(final String debugModelId,
+			final IResource resource, final int lineNumber,
 			final int charStart, final int charEnd, final int hitCount,
 			final boolean add, final Map attributes) throws DebugException {
 
-		IWorkspaceRunnable wr = new IWorkspaceRunnable() {
+		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {
-				addScriptLineBreakpointAttributes(attributes,
-						getModelIdentifier(), true, lineNumber, charStart,
-						charEnd);
+				addAttributes(attributes, debugModelId, true, lineNumber,
+						charStart, charEnd);
 
 				setMarker(ScriptMarkerFactory.makeMarker(resource, attributes,
 						getMarkerID()));
+
 				ensureMarker().setAttributes(attributes);
 
 				register(add);
 			}
 		};
 
-		run(getMarkerRule(resource), wr);
+		run(getMarkerRule(resource), runnable);
 	}
 
-	protected String getMarkerID() {
-		return ScriptMarkerFactory.MARKER_ID;
+	// IBreakpoint
+	public String getModelIdentifier() {
+		try {
+			return ensureMarker().getAttribute(IBreakpoint.ID, null);
+		} catch (DebugException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	// ILineBreakpoint
@@ -97,9 +105,9 @@ public class ScriptLineBreakpoint extends ScriptBreakpoint implements
 		try {
 			return makeUri(ensureMarker().getResource());
 		} catch (DebugException e) {
+			// TODO: log exception
 			e.printStackTrace();
 			return null;
 		}
 	}
-
 }

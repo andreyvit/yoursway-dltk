@@ -14,6 +14,7 @@ import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
+import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
 import org.eclipse.dltk.internal.debug.core.model.ScriptVariable;
 
 public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
@@ -24,7 +25,7 @@ public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
 	}
 
 	public IScriptDebugTarget getScriptDebugTarget() {
-		return thread.getScriptDebugTarget();
+		return (ScriptDebugTarget) thread.getDebugTarget();
 	}
 
 	public IScriptEvaluationResult syncEvaluate(String snippet,

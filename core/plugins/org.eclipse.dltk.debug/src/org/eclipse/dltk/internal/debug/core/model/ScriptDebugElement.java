@@ -28,7 +28,7 @@ import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 public abstract class ScriptDebugElement extends PlatformObject implements
 		IScriptDebugElement {
 
-	protected IScriptDebugTarget getScriptDebugTarget() {
+	public IScriptDebugTarget getScriptDebugTarget() {
 		return (IScriptDebugTarget) getDebugTarget();
 	}
 

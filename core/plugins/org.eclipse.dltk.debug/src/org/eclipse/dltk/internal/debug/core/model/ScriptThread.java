@@ -340,66 +340,14 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	public IDebugTarget getDebugTarget() {
 		return target.getDebugTarget();
 	}
-	
-	public IScriptDebugTarget getScriptDebugTarget() {
-		return (IScriptDebugTarget) getDebugTarget();
-	}
 
-	/*
-	public IWatchExpressionResult syncEvaluateExpression(String expression) {
-		ScriptWatchExpressionResult result = null;
-
-		try {
-			IDbgpProperty property = session.getExtendedCommands().evaluate(
-					expression);
-
-			// DebugEventHelper.fireSuspendEvent(ScriptThread.this,
-			// DebugEvent.EVALUATION);
-
-			if (property != null) {
-				IScriptVariable variable = new ScriptVariable(getDebugTarget(),
-						session, property);
-				result = new ScriptWatchExpressionResult(expression, variable);
-			}
-
-		} catch (DbgpException e) {
-			result = new ScriptWatchExpressionResult(expression,
-					new String[] { e.getMessage() });
-		}
-
-		return result;
-	}
-
-	public void asyncEvaluateExpression(final String expression,
-			final IWatchExpressionListener listener) {
-
-		// DebugEventHelper.fireResumeEvent(this, DebugEvent.EVALUATION);
-
-		Job job = new Job("Evaluation of \"" + expression + "\"") {
-			protected IStatus run(IProgressMonitor monitor) {
-				if (getDebugTarget().isTerminated()) {
-					return Status.OK_STATUS;
-				}
-
-				listener
-						.watchEvaluationFinished(syncEvaluateExpression(expression));
-
-				return Status.OK_STATUS;
-			}
-		};
-
-		job.setSystem(true);
-		job.setUser(false);
-		job.schedule();
-	}*/
-	
 	private IScriptEvaluationEngine evalEngine;
-	
+
 	public IScriptEvaluationEngine getEvaluationEngine() {
 		if (evalEngine == null) {
 			evalEngine = new ScriptEvaluationEngine(this);
 		}
-		
+
 		return evalEngine;
 	}
 }

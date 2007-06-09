@@ -26,9 +26,9 @@ public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
 
 	}
 
-	public ScriptMethodEntryBreakpoint(IResource resource, int lineNumber, int charStart, int charEnd, int hitCount, boolean register, Map attributes, String methodName2, String methodSignature2)
+	public ScriptMethodEntryBreakpoint(String debugModelId, IResource resource, int lineNumber, int charStart, int charEnd, int hitCount, boolean register, Map attributes, String methodName2, String methodSignature2)
 			throws DebugException {
-		super(resource, lineNumber, charStart, charEnd, hitCount, register, attributes);
+		super(debugModelId, resource, lineNumber, charStart, charEnd, hitCount, register, attributes);
 		try {
 			getMarker().setAttribute(METHOD_NAME, methodName2);
 			getMarker().setAttribute(METHOD_SIGNATURE, methodSignature2);

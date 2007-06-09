@@ -16,7 +16,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
 public class ScriptMarkerFactory {
-	public static final String MARKER_ID = "org.eclipse.dltk.debug.scriptLineBreakpointMarker";
+	public static final String LINE_BREAKPOINT_MARKER_ID = "org.eclipse.dltk.debug.scriptLineBreakpointMarker";
 	public static final String METHOD_ENTRY_MARKER_ID = "org.eclipse.dltk.debug.scriptMethodEntryBreakpointMarker";
 	public static final String WATCHPOINT_MARKER_ID = "org.eclipse.dltk.debug.scriptWatchPointMarker";
 

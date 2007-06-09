@@ -15,5 +15,5 @@ public class ScriptModelConstants {
 	}
 
 	// TODO: should remove this, only used for breakpoints
-	public static final String MODEL_ID = "org.eclipse.dltk.debug.core.model";
+	//public static final String MODEL_ID = "org.eclipse.dltk.debug.core.model";
 }

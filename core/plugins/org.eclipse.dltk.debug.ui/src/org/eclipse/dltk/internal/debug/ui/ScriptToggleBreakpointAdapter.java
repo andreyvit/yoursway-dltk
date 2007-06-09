@@ -17,7 +17,6 @@ import org.eclipse.debug.core.model.ILineBreakpoint;
 import org.eclipse.debug.ui.actions.IToggleBreakpointsTarget;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.ui.breakpoints.BreakpointUtils;
-import org.eclipse.dltk.internal.debug.core.model.ScriptModelConstants;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
@@ -61,10 +60,10 @@ public class ScriptToggleBreakpointAdapter implements IToggleBreakpointsTarget {
 			IResource resource = getPartResource(part);
 
 			if (resource != null) {
+				// TODO: optimize
 				IBreakpoint[] breakpoints = DebugPlugin.getDefault()
-						.getBreakpointManager().getBreakpoints(
-								ScriptModelConstants.MODEL_ID);
-
+						.getBreakpointManager().getBreakpoints();
+						
 				for (int i = 0; i < breakpoints.length; i++) {
 					IBreakpoint breakpoint = breakpoints[i];
 					if (resource.equals(breakpoint.getMarker().getResource())) {
@@ -133,9 +132,9 @@ public class ScriptToggleBreakpointAdapter implements IToggleBreakpointsTarget {
 			IResource resource = getPartResource(part);
 
 			if (resource != null) {
+				// TODO: optimize
 				IBreakpoint[] breakpoints = DebugPlugin.getDefault()
-						.getBreakpointManager().getBreakpoints(
-								ScriptModelConstants.MODEL_ID);
+						.getBreakpointManager().getBreakpoints();
 
 				for (int i = 0; i < breakpoints.length; i++) {
 					IBreakpoint breakpoint = breakpoints[i];

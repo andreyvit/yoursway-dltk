@@ -19,15 +19,6 @@ import org.eclipse.debug.core.model.IWatchpoint;
  * suspend execution when its field is accessed. If a watchpoint is a
  * modification watchpoint, it will suspend execution when its field is
  * modified.
- * <p>
- * Clients are not intended to implement this interface.
- * </p>
- * <p>
- * Since 3.1, <code>IJavaWatchpoint</code> also implements
- * {@link org.eclipse.debug.core.model.IWatchpoint}.
- * </p>
- * 
- * @since 2.0
  */
 public interface IScriptWatchPoint extends IScriptLineBreakpoint, IWatchpoint {
 	/**

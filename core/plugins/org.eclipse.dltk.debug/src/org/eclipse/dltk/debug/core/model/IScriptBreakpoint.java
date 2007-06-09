@@ -14,11 +14,11 @@ import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
 
 public interface IScriptBreakpoint extends IBreakpoint {
-	final int HIT_CONDITION_GREATER = IDbgpBreakpoint.HIT_CONDITION_GREATER;
+	int HIT_CONDITION_GREATER = IDbgpBreakpoint.HIT_CONDITION_GREATER;
 
-	final int HIT_CONDITION_EQUAL = IDbgpBreakpoint.HIT_CONDITION_EQUAL;
+	int HIT_CONDITION_EQUAL = IDbgpBreakpoint.HIT_CONDITION_EQUAL;
 
-	final int HIT_CONDITION_MULTIPLE = IDbgpBreakpoint.HIT_CONDITION_MULTIPLE;
+	int HIT_CONDITION_MULTIPLE = IDbgpBreakpoint.HIT_CONDITION_MULTIPLE;
 
 	// Identifier
 	String getIdentifier();
@@ -40,14 +40,13 @@ public interface IScriptBreakpoint extends IBreakpoint {
 
 	// Resource name
 	String getResourceName();
-	
+
+	// Conditional expression
 	String getConditionalExpression();
-	
-	public void setConditionalExpression(String id) throws CoreException ;
-		
-	
+
+	public void setConditionalExpression(String id) throws CoreException;
+
 	boolean isConditionalExpressionEnabled();
-	
-	void    setConditionalExpressionEnabled(boolean enabled) throws CoreException;
-	
+
+	void setConditionalExpressionEnabled(boolean enabled) throws CoreException;
 }

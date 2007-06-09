@@ -14,10 +14,18 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
 
 public class ScriptDebugModel {
+	protected static String getDenbugModelId(IResource resource) {
+		final String natureId = DLTKLanguageManager.findToolkit(resource)
+				.getNatureID();
+		return ScriptDebugManager.getInstance().getDebugModelByNature(natureId);
+	}
+
 	public static IScriptLineBreakpoint createLineBreakpoint(
 			IResource resource, int lineNumber, int charStart, int charEnd,
 			int hitCount, boolean register, Map attributes)
@@ -27,8 +35,8 @@ public class ScriptDebugModel {
 			attributes = new HashMap(10);
 		}
 
-		return new ScriptLineBreakpoint(resource, lineNumber, charStart,
-				charEnd, hitCount, register, attributes);
+		return new ScriptLineBreakpoint(getDenbugModelId(resource), resource,
+				lineNumber, charStart, charEnd, hitCount, register, attributes);
 	}
 
 	public static IScriptLineBreakpoint createMethodEntryBreakpoint(
@@ -40,15 +48,17 @@ public class ScriptDebugModel {
 			attributes = new HashMap(10);
 		}
 
-		return new ScriptMethodEntryBreakpoint(resource, lineNumber, charStart,
-				charEnd, hitCount, register, attributes, methodName,
-				methodSignature);
+		// String debugModelId = null; // TODO
+
+		return new ScriptMethodEntryBreakpoint(getDenbugModelId(resource),
+				resource, lineNumber, charStart, charEnd, hitCount, register,
+				attributes, methodName, methodSignature);
 	}
 
 	public static IScriptWatchPoint createWatchPoint(IResource resource,
 			int lineNumber, int start, int end, Map attributes, String fieldName)
 			throws CoreException {
-		return new ScriptWatchpoint(resource, lineNumber, start, end,
-				attributes, fieldName);
+		return new ScriptWatchpoint(getDenbugModelId(resource), resource,
+				lineNumber, start, end, attributes, fieldName);
 	}
 }

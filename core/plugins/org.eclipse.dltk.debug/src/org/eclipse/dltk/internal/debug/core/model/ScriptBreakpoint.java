@@ -40,6 +40,7 @@ public abstract class ScriptBreakpoint extends Breakpoint implements
 		getMarker().setAttribute(BREAKPOINT_ID, id);
 	}
 
+	// ConditinalExpression
 	public String getConditionalExpression() {
 		return getMarker().getAttribute(EXPRESSION_ID, null);
 	}
