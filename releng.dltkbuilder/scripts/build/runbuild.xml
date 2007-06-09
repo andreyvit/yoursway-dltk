@@ -145,6 +145,9 @@
         <condition property="buildBranch" value="R1.0">
             <equals arg1="${mapVersionTag}" arg2="HEAD" />
         </condition>
+        <condition property="buildBranch" value="R0.9">
+            <equals arg1="${mapVersionTag}" arg2="HEAD" />
+        </condition>
         <condition property="buildBranch" value="R0.7">
             <equals arg1="${mapVersionTag}"
                     arg2="R0_7_maintenance" />
