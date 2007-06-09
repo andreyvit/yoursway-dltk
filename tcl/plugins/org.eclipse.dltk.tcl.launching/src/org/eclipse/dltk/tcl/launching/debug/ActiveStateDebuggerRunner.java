@@ -76,8 +76,4 @@ public class ActiveStateDebuggerRunner extends DebuggingEngineRunner {
 
 		return newConfig;
 	}
-
-	protected String getModelId() {
-		return "org.eclipse.dltk.debug.tclModel";
-	}
 }

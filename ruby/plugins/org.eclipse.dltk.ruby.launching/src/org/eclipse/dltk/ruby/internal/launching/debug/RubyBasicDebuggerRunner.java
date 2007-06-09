@@ -13,7 +13,7 @@ import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.debug.DbgpConstants;
 import org.eclipse.dltk.ruby.debug.RubyDebugPlugin;
 
-public class RubyBasicDebuggerRunner  extends DebuggingEngineRunner {
+public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 	private static final String RUBY_HOST_VAR = "DBGP_RUBY_HOST";
 	private static final String RUBY_PORT_VAR = "DBGP_RUBY_PORT";
 	private static final String RUBY_KEY_VAR = "DBGP_RUBY_KEY";
@@ -26,6 +26,7 @@ public class RubyBasicDebuggerRunner  extends DebuggingEngineRunner {
 	private boolean logging;
 
 	protected String getLogFilename() {
+		// TODO:customize log file name, may be to preferences
 		return RubyDebugPlugin.getDefault().getStateLocation().append(
 				"debug_log.txt").toOSString();
 	}
@@ -37,16 +38,17 @@ public class RubyBasicDebuggerRunner  extends DebuggingEngineRunner {
 			throw new CoreException(new Status(IStatus.ERROR,
 					RubyDebugPlugin.PLUGIN_ID, "Can't deploy debugger source",
 					e));
-		}		
+		}
 	}
-	
+
 	public RubyBasicDebuggerRunner(IInterpreterInstall install) {
 		super(install);
 
 		this.logging = true;
 	}
 
-	protected InterpreterConfig alterConfig(String exe, InterpreterConfig config) throws CoreException {
+	protected InterpreterConfig alterConfig(String exe, InterpreterConfig config)
+			throws CoreException {
 		// Get debugger source location
 		final IPath sourceLocation = deploy();
 
@@ -89,8 +91,4 @@ public class RubyBasicDebuggerRunner  extends DebuggingEngineRunner {
 
 		return newConfig;
 	}
-
-	protected String getModelId() {
-		return "org.eclipse.dltk.debug.rubyModel";
-	}
-}	
+}

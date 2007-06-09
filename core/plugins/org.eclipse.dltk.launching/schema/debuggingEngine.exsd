@@ -72,13 +72,6 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="modelId" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
          <attribute name="class" type="string">
             <annotation>
                <documentation>

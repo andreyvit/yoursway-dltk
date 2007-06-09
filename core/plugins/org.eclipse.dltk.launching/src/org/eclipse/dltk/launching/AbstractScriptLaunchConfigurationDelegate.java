@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -677,8 +678,8 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		final File mainScript = new File(getScriptLaunchPath(configuration));
 		final File workingDirectory = getWorkingDirectory(configuration);
 
-		InterpreterConfig config = new InterpreterConfig(
-				mainScript, workingDirectory);
+		InterpreterConfig config = new InterpreterConfig(mainScript,
+				workingDirectory);
 
 		// Script arguments
 		String[] scriptArgs = getScriptArguments(configuration);
@@ -697,39 +698,36 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
+
 		try {
-			monitor = getMonitor(monitor);
-
-			monitor.beginTask(MessageFormat.format("{0}...",
-					new String[] { configuration.getName() }), 3);
-
+			monitor.beginTask(configuration.getName() + " ...", 3);
 			if (monitor.isCanceled()) {
 				return;
 			}
 
-			monitor
-					.subTask(LaunchingMessages.ScriptLaunchConfigurationDelegate_Verifying_launch_attributes____1);
-
-			// IInterpreterRunner
-			InterpreterConfig config = createInterpreterConfig(
-					configuration, launch);
-
+			// Getting InterpreterConfig
+			InterpreterConfig config = createInterpreterConfig(configuration,
+					launch);
 			if (monitor.isCanceled()) {
 				return;
 			}
-
-			// done the verification phase
 			monitor.worked(1);
 
-			// Launch the configuration - 1 unit of work
+			// Getting IInterpreterRunner
 			IInterpreterRunner runner = getInterpreterRunner(configuration,
 					mode);
-
-			runRunner(configuration, runner, config, launch, monitor);
-
 			if (monitor.isCanceled()) {
 				return;
 			}
+			monitor.worked(1);
+
+			// Real run
+			runRunner(configuration, runner, config, launch,
+					new SubProgressMonitor(monitor, 1));
+
 		} catch (CoreException e) {
 			// consult status handler if there is one
 			IStatus status = e.getStatus();
@@ -935,14 +933,6 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			return p.getLocation().toFile();
 		}
 		return null;
-	}
-
-	private IProgressMonitor getMonitor(IProgressMonitor monitor) {
-		if (monitor == null) {
-			return new NullProgressMonitor();
-		}
-
-		return monitor;
 	}
 
 	abstract public String getLanguageId();

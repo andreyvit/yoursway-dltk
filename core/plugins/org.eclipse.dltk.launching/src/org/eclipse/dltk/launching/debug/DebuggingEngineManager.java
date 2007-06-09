@@ -34,7 +34,6 @@ public class DebuggingEngineManager {
 			+ ".debuggingEngine";
 
 	private static final String ID = "id";
-	private static final String MODEL_ID = "modelId";
 	private static final String NATURE_ID = "natureId";
 	private static final String NAME = "name";
 	private static final String DESCRIPTION = "description";
@@ -43,7 +42,6 @@ public class DebuggingEngineManager {
 
 	private void addEngine(String natureId, IConfigurationElement element) {
 		final String id = element.getAttribute(ID);
-		final String modelId = element.getAttribute(MODEL_ID);
 		final String name = element.getAttribute(NAME);
 		final String description = element.getAttribute(DESCRIPTION);
 		final int priority = Integer.parseInt(element.getAttribute(PRIORITY));
@@ -53,8 +51,7 @@ public class DebuggingEngineManager {
 			if (object instanceof IInterpreterRunnerFactory) {
 				IInterpreterRunnerFactory factory = (IInterpreterRunnerFactory) object;
 
-				IDebuggingEngine engine = new DebuggingEngine(id, modelId,
-						natureId, name, description, priority, factory);
+				IDebuggingEngine engine = new DebuggingEngine(id, natureId, name, description, priority, factory);
 
 				List engines = (List) natureToEnginesMap.get(natureId);
 				if (engines == null) {

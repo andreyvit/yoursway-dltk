@@ -7,6 +7,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.IDbgpService;
+import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTargetListener;
 import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
@@ -81,7 +82,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			ILaunchConfiguration configuration, IDbgpService dbgpService,
 			String sessionId) throws CoreException {
 
-		IScriptDebugTarget target = new ScriptDebugTarget(getModelId(),
+		IScriptDebugTarget target = new ScriptDebugTarget(getDebugModelId(),
 				dbgpService, sessionId, launch, null);
 		launch.addDebugTarget(target);
 	}
@@ -184,5 +185,8 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		// Happy debugging :)
 	}
 
-	protected abstract String getModelId();
+	protected String getDebugModelId() {
+		return ScriptDebugManager.getInstance().getDebugModelByNature(
+				getInstall().getNatureId());
+	}
 }

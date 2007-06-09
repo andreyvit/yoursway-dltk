@@ -71,7 +71,6 @@
         <engine
               class="org.eclipse.dltk.internal.launching.debug.JavaScriptAndJDTDebuggerRunnerFactory"
               id="org.eclipse.dltk.javascript.launching.engine1"
-              modelId="org.eclipse.dltk.debug.javascriptModel"
               name="JavaScript &amp; JDT Debugger"
               priority="0">
         </engine>

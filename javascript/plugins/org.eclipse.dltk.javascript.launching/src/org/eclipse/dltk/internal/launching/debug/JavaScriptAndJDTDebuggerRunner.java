@@ -15,7 +15,7 @@ public class JavaScriptAndJDTDebuggerRunner extends DebuggingEngineRunner {
 		super(install);
 	}
 
-	protected String getModelId() {
+	protected String getDebugModelId() {
 		return "org.eclipse.dltk.debug.javascriptModel";
 	}
 

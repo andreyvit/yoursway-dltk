@@ -56,7 +56,6 @@
               class="org.eclipse.dltk.tcl.launching.debug.ActiveStateDebuggerRunnerFactory"
               description="%ActiveStateDebuggingEngine.description"
               id="org.eclipse.dltk.tcl."
-              modelId="org.eclipse.dltk.debug.tclModel"
               name="%ActiveStateDebuggingEngine.name"
               priority="0">
         </engine>

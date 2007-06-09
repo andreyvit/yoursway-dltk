@@ -39,6 +39,10 @@ import com.ibm.icu.text.MessageFormat;
  */
 public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	private IInterpreterInstall interpreterInstall;
+	
+	protected IInterpreterInstall getInstall() {
+		return interpreterInstall;
+	}
 
 	/**
 	 * Construct and return a String containing the full path of a interpreter
@@ -183,6 +187,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 
 	protected void rawRun(ILaunch launch, String[] cmdLine,
 			File workingDirectory, String[] environment) throws CoreException {
+
 		Process p = exec(cmdLine, workingDirectory, environment);
 
 		if (p == null) {
@@ -203,59 +208,42 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
-		IProgressMonitor subMonitor = getSubMonitor(monitor);
 
-		// ILaunchConfiguration configuration = launch.getLaunchConfiguration();
-		// if (configuration != null) {
-		// TODO: redesign
-		// boolean useDltk = configuration.getAttribute(
-		// IDLTKLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT,
-		// false);
-		// if (useDltk) {
-		// String id = configuration.getAttribute(
-		// IDLTKLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID,
-		// (String) null);
-		// cmdLine = alterCommandLine(cmdLine, id);
-		// }
-		// }
-
-		subMonitor.worked(1);
-
-		// check for cancellation
-		if (subMonitor.isCanceled()) {
-			return;
-		}
-
-		subMonitor
-				.subTask(LaunchingMessages.StandardInterpreterRunner_Starting);
-
-		String[] interpreterArgs = interpreterInstall.getInterpreterArguments();
-		if (interpreterArgs != null) {
-			config.addInterpreterArgs(interpreterArgs);
-		}
-		
-		rawRun(launch, config.renderCommandLine(constructProgramString()), config
-				.getWorkingDirectory(), config.getEnvironmentAsStrings());
-
-		subMonitor.worked(1);
-		subMonitor.done();
-	}
-
-	private static IProgressMonitor getSubMonitor(IProgressMonitor monitor) {
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
 
-		IProgressMonitor subMonitor = new SubProgressMonitor(monitor, 1);
-		subMonitor
-				.beginTask(
-						LaunchingMessages.StandardInterpreterRunner_Launching_Interpreter,
-						2);
+		try {
+			monitor.beginTask("Launching...", 5);
+			if (monitor.isCanceled()) {
+				return;
+			}
 
-		subMonitor
-				.subTask(LaunchingMessages.StandardInterpreterRunner_Constructing_command_line____2);
+			// Interpreter arguments
+			monitor.subTask("Getting interpreter args");
+			String[] interpreterArgs = interpreterInstall
+					.getInterpreterArguments();
+			if (interpreterArgs != null) {
+				config.addInterpreterArgs(interpreterArgs);
+			}
+			if (monitor.isCanceled()) {
+				return;
+			}
+			monitor.worked(1);
 
-		return subMonitor;
+			// Running
+			monitor.subTask("Running");
+			rawRun(launch, config.renderCommandLine(constructProgramString()),
+					config.getWorkingDirectory(), config
+							.getEnvironmentAsStrings());
+			monitor.worked(4);
+
+		} finally {
+			monitor.done();
+		}
+
+		// TODO: Handling of
+		// IDLTKLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT
 	}
 
 	protected abstract String getPluginId();
