@@ -16,7 +16,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class DLTKCorePreferences extends
+public class ScriptCorePreferencePage extends
 		AbstractConfigurationBlockPreferencePage {
 
 	private static class GlobalConfigurationBlock extends
@@ -45,7 +45,7 @@ public class DLTKCorePreferences extends
 	}
 
 	protected void setDescription() {
-		setDescription("DLTK Core preferences");
+		setDescription(""); // TODO: add description or some useful information
 	}
 
 	protected void setPreferenceStore() {

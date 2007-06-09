@@ -8,7 +8,16 @@
    <extension-point id="editorTextHovers" name="%editorTextHovers" schema="schema/editorTextHovers.exsd"/>
    <extension-point id="scriptDocumentationProviders" name="Script documentation providers" schema="schema/scriptDocumentationProviders.exsd"/>
    <extension-point id="language" name="DLTK UI Language Toolkit" schema="schema/language.exsd"/>
-   <extension-point id="actionFilterTester" name="actionFilterTester" schema="schema/actionFilterTester.exsd"/>
+   <extension-point id="actionFilterTester" name="actionFilterTester" schema="schema/actionFilterTester.exsd"/>  
+   <extension
+    	id="DLTKSearchResultPage"
+        point="org.eclipse.search.searchResultViewPages">
+		<viewPage
+			id="org.eclipse.dltk.ui.DLTKSearchResultPage"
+			searchResultClass="org.eclipse.dltk.internal.ui.search.DLTKSearchResult"
+			class="org.eclipse.dltk.internal.ui.search.DLTKSearchResultPage">
+		</viewPage>
+   </extension>
  
  <extension
        point="org.eclipse.core.runtime.preferences">
@@ -141,38 +150,37 @@
      <markerAttributeGrouping markerType="org.eclipse.dltk.core.buildpath_problem"
         defaultGroupingEntry="org.eclipse.dltk.ui.category.buildpath"/>
    </extension> 
-   
-<!-- NAVIAGTOR Extension-->
 
-<extension
-       point="org.eclipse.ui.views">
-    
-    <view
-          name="%ScriptExplorerViewName"
-          icon="icons/full/eview16/package.gif"
-          category="org.eclipse.dltk.ui.main"
-          class="org.eclipse.dltk.internal.ui.scriptview.ScriptExplorerPart"
-          id="org.eclipse.dltk.ui.ScriptExplorer">
-      </view>
-      
-      <view
-            name="%CallHierarchyViewName"
-            icon="icons/full/eview16/call_hierarchy.gif"
-            category="org.eclipse.dltk.ui.main"
-            class="org.eclipse.dltk.internal.ui.callhierarchy.CallHierarchyViewPart"
-            id="org.eclipse.dltk.callhierarchy.view">
-      </view>
-       <view
-            name="%typeHierarchyName"
-            icon="/icons/full/eview16/class_hi.gif"
-            category="org.eclipse.dltk.ui.main"
-            class="org.eclipse.dltk.internal.ui.typehierarchy.TypeHierarchyViewPart"
-            id="org.eclipse.dltk.ui.TypeHierarchy">
-      </view>      
-    <category
-          id="org.eclipse.dltk.ui.main"
-          name="DLTK"/>
- </extension>
+	<extension
+	       point="org.eclipse.ui.views">
+		<category
+			id="org.eclipse.dltk.ui.main"
+			name="%MainScriptViewCategory.name"/>
+	
+	    <view
+	          name="%ScriptExplorerView.name"
+	          icon="$nl$/icons/full/eview16/package.gif"
+	          category="org.eclipse.dltk.ui.main"
+	          class="org.eclipse.dltk.internal.ui.scriptview.ScriptExplorerPart"
+	          id="org.eclipse.dltk.ui.ScriptExplorer">
+	    </view>
+	    <view
+		  	name="%CallHierarchyView.name"
+		  	icon="$nl$/icons/full/eview16/call_hierarchy.gif"
+		  	category="org.eclipse.dltk.ui.main"
+		  	class="org.eclipse.dltk.internal.ui.callhierarchy.CallHierarchyViewPart"
+		  	id="org.eclipse.dltk.callhierarchy.view">
+	    </view>
+	    <view
+			name="%TypeHierarchy.name"
+			icon="$nl$/icons/full/eview16/class_hi.gif"
+			category="org.eclipse.dltk.ui.main"
+			class="org.eclipse.dltk.internal.ui.typehierarchy.TypeHierarchyViewPart"
+			id="org.eclipse.dltk.ui.TypeHierarchy">
+	    </view>   
+	 </extension>
+   
+ <!-- NAVIAGTOR Extension-->  
    
   <!--
    
@@ -426,19 +434,6 @@
 		name="%ScriptProposalCategory">
 		<proposalCategory
 			icon="/icons/full/elcl16/scriptassist_co.gif"/>
-	</extension>
-	<extension
-		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
-		id="defaultProposalCategory"
-		name="%DefaultProposalCategory">
-		<proposalCategory/>
-	</extension>
-	<extension
-		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
-		id="textProposalCategory"
-		name="%TextProposalCategory">
-		<proposalCategory
-			icon="/icons/full/elcl16/wordassist_co.gif"/>
 	</extension>
  <extension
        point="org.eclipse.ui.commands">
@@ -859,6 +854,21 @@
             commandId="org.eclipse.dltk.ui.navigate.open.type"
             contextId="org.eclipse.dltk.ui.scriptEditorScope"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>-->        
+	</extension>  
+
+	<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="scriptTypeProposalCategory"
+		name="%ScriptTypesCategory">
+		<proposalCategory
+			icon="/icons/full/elcl16/scripttypeassist_co.gif"/>
+	</extension>
+	<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="textProposalCategory"
+		name="%TextProposalCategory">
+		<proposalCategory
+			icon="/icons/full/elcl16/wordassist_co.gif"/>
 	</extension>
    <extension
          point="org.eclipse.dltk.ui.dltkElementFilters">
@@ -951,28 +961,6 @@
             id="org.eclipse.dltk.ui.ScriptExplorer.FieldsFilter">
       </filter>
     </extension>
-    
-    
-<!-- Refactoring contributions -->  
-   <extension
-    	id="DLTKSearchResultPage"
-        point="org.eclipse.search.searchResultViewPages">
-		<viewPage
-			id="org.eclipse.dltk.ui.DLTKSearchResultPage"
-			searchResultClass="org.eclipse.dltk.internal.ui.search.DLTKSearchResult"
-			class="org.eclipse.dltk.internal.ui.search.DLTKSearchResultPage">
-		</viewPage>
-   </extension>
-
-<!-- Code completion -->  
-
-	<extension
-		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
-		id="scriptTypeProposalCategory"
-		name="%ScriptTypesCategory">
-		<proposalCategory
-			icon="/icons/full/elcl16/scripttypeassist_co.gif"/>
-	</extension>
    <extension
          point="org.eclipse.dltk.ui.editorTextHovers">
       <hover
@@ -1013,6 +1001,42 @@
 			name="%RelevanceSorter.name"
 			class="org.eclipse.dltk.ui.text.completion.RelevanceSorter"/>
 	</extension>
+	<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="defaultProposalCategory"
+		name="%DefaultProposalCategory">
+		<proposalCategory/>
+	</extension>
+   
+   
+   <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.ui.A_OpenActionSet">
+	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
+      </actionSetPartAssociation>
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.ui.ScriptCodingActionSet">
+	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
+      </actionSetPartAssociation>
+ </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.eclipse.dltk.ui.preferences.ScriptCorePreferencePage"
+            id="org.eclipse.dltk.preferences"
+            name="%MainScriptPreferencePage.name">
+      </page>
+   </extension>
+    
+    
+<!-- Refactoring contributions -->
+
+<!-- Code completion -->
 <!-- content assist processors - do not change their order -->
 	<!--extension
 		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
@@ -1030,14 +1054,30 @@
 <!-- Begin Java Open action contributions  -->
    <extension
          point="org.eclipse.ui.editors.templates">
-   </extension>
+   </extension>         
+	
+	
+	<!-- Note: Do not change the sequence of those hover contributions -->
+<!-- =========================================================================== -->
+<!-- Call Hierarchy                                                              -->
+<!-- =========================================================================== -->    
    <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            class="org.eclipse.dltk.ui.preferences.DLTKCorePreferences"
-            id="org.eclipse.dltk.preferences"
-            name="DLTK">
-      </page>
+         point="org.eclipse.ltk.core.refactoring.refactoringContributions">
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameResourceRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.resource"/>
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameSourceModuleRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.sourcemodule"/>
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameDLTKProjectRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.script.project"/>
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameScriptFolderRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.script.folder"/>
+      <contribution
+            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameSourceFolderRefactoringContribution"
+            id="org.eclipse.dltk.ui.rename.source.folder"/>
    </extension>         
    
    
@@ -1293,47 +1333,6 @@
                id="org.eclipse.dltk.ui.actions.ReferencesInWorkspace">
          </action>
       </actionSet>
-   </extension>         
-	
-	
-	<!-- Note: Do not change the sequence of those hover contributions -->
-<!-- =========================================================================== -->
-<!-- Call Hierarchy                                                              -->
-<!-- =========================================================================== -->    
-   <extension
-         point="org.eclipse.ltk.core.refactoring.refactoringContributions">
-      <contribution
-            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameResourceRefactoringContribution"
-            id="org.eclipse.dltk.ui.rename.resource"/>
-      <contribution
-            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameSourceModuleRefactoringContribution"
-            id="org.eclipse.dltk.ui.rename.sourcemodule"/>
-      <contribution
-            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameDLTKProjectRefactoringContribution"
-            id="org.eclipse.dltk.ui.rename.script.project"/>
-      <contribution
-            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameScriptFolderRefactoringContribution"
-            id="org.eclipse.dltk.ui.rename.script.folder"/>
-      <contribution
-            class="org.eclipse.dltk.internal.corext.refactoring.scripting.RenameSourceFolderRefactoringContribution"
-            id="org.eclipse.dltk.ui.rename.source.folder"/>
-   </extension>
-   
-   
-   <extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
-         <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
-      </actionSetPartAssociation>
-      <actionSetPartAssociation
-            targetID="org.eclipse.dltk.ui.A_OpenActionSet">
-	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
-      </actionSetPartAssociation>
-      <actionSetPartAssociation
-            targetID="org.eclipse.dltk.ui.ScriptCodingActionSet">
-	     <part id="org.eclipse.dltk.ui.ScriptExplorer"/>
-      </actionSetPartAssociation>
- </extension>   
+   </extension>   
    
 </plugin>
