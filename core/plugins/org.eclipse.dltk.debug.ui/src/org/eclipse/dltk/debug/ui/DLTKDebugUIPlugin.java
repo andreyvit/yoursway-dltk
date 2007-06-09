@@ -110,13 +110,13 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 													DLTKLaunchingPlugin.LAUNCH_COMMAND_LINE);
 
 									if (cmdLine != null) {
-										try {
+										/*try {
 											stream.write(cmdLine.trim());
 											stream.write("\n");
 											stream.flush();
 										} catch (IOException e) {
 											DLTKDebugUIPlugin.log(e);
-										}
+										}*/
 									}
 								}
 							}
