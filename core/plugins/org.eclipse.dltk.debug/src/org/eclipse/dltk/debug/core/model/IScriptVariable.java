@@ -16,17 +16,14 @@ public interface IScriptVariable extends IVariable {
 	boolean isConstant();
 
 	String getFullName();
-
-	String getTypeString();
-
+	
 	String getValueString();
 
 	String getId();
 
 	boolean hasChildren();
 
-	// TODO: remove
-	boolean shouldHasChildren();
-
 	IScriptVariable[] getChildren() throws DebugException;
+	
+	IScriptType getType();
 }

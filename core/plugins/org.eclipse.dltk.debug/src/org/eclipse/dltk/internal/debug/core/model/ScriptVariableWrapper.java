@@ -3,6 +3,7 @@ package org.eclipse.dltk.internal.debug.core.model;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IValue;
+import org.eclipse.dltk.debug.core.model.IScriptType;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
 public class ScriptVariableWrapper extends AbstractScriptVariable {
@@ -26,10 +27,6 @@ public class ScriptVariableWrapper extends AbstractScriptVariable {
 
 	public String getId() {
 		return null;
-	}
-
-	public String getTypeString() {
-		return "getTypeString";
 	}
 
 	public String getValueString() {
@@ -78,5 +75,9 @@ public class ScriptVariableWrapper extends AbstractScriptVariable {
 
 	public boolean shouldHasChildren() {
 		return false;
+	}
+
+	public IScriptType getType() {
+		return new ScriptType("getType");
 	}
 }

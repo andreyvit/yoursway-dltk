@@ -10,7 +10,7 @@
 package org.eclipse.dltk.ti.types;
 
 /**
- * Represents type as some user class (possibly built-in class, like in Ruby).
+ * Represents type as some user class
  * Each such class should be presented inside a DLTK MixinModel.
  */
 public abstract class ClassType implements IEvaluatedType {

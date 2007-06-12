@@ -99,7 +99,7 @@ public class JavaScriptDebugModelPresentation extends
 		// TODO Auto-generated method stub
 		if (element instanceof IScriptVariable) {
 			IScriptVariable v = (IScriptVariable) element;
-			String typeString = v.getTypeString();
+			String typeString = v.getType().getName();
 			if (typeString.equals("function"))
 				return DLTKPluginImages
 						.get(DLTKPluginImages.IMG_METHOD_PRIVATE);

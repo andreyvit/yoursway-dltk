@@ -194,9 +194,10 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			text = expression.getExpressionText();
 			IScriptValue value = (IScriptValue) expression.getValue();
 			if (value != null) {
-				if (value.shouldHasVariables()) {
+				// Check value type
+				if (value.hasVariables()) {
 					text += " = " + value.getReferenceTypeName();
-					String id = value.getReferenceId();
+					String id = value.getInstanceId();
 					if (id != null) {
 						text += " (id = " + id + ")";
 					}

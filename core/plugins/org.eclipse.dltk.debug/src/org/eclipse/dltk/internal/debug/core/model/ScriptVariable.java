@@ -18,6 +18,7 @@ import org.eclipse.dltk.dbgp.commands.IDbgpCoreCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
+import org.eclipse.dltk.debug.core.model.IScriptType;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
 public class ScriptVariable extends AbstractScriptVariable {
@@ -82,7 +83,7 @@ public class ScriptVariable extends AbstractScriptVariable {
 	}
 
 	public String getReferenceTypeName() throws DebugException {
-		return property.getType();
+		return getType().getName();
 	}
 
 	public boolean hasValueChanged() throws DebugException {
@@ -145,10 +146,6 @@ public class ScriptVariable extends AbstractScriptVariable {
 		}
 	}
 
-	public String getTypeString() {
-		return property.getType();
-	}
-
 	public String getValueString() {
 		return assignedValue != null ? assignedValue : property.getValue();
 	}
@@ -163,5 +160,9 @@ public class ScriptVariable extends AbstractScriptVariable {
 
 	public String getId() {
 		return property.getKey();
+	}
+
+	public IScriptType getType() {
+		return new ScriptType(property.getType());
 	}
 }

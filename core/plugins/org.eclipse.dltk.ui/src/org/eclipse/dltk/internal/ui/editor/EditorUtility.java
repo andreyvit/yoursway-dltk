@@ -177,26 +177,6 @@ public class EditorUtility {
 
 					String editorId = null;
 
-					/*IResource resource = ((IModelElement) inputElement)
-							.getResource();
-					if (resource instanceof IFile) {
-						IFile file = (IFile) resource;
-
-						try {
-							IContentDescription description = file
-									.getContentDescription();
-							if (description != null) {
-								editorId = (String) description
-										.getProperty(new QualifiedName(
-												"org.eclipse.dltk.ruby.core",
-												"editorId"));
-
-							}
-						} catch (CoreException e) {
-
-						}
-					}*/
-
 					if (editorId == null) { // Transitional code
 						if (input != null) {
 							try {

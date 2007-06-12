@@ -12,6 +12,7 @@ package org.eclipse.dltk.internal.debug.core.model;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.dltk.debug.core.model.IScriptType;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
@@ -24,7 +25,7 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 	}
 
 	public String getReferenceTypeName() throws DebugException {
-		return variable.getTypeString();
+		return getType().getName();
 	}
 
 	public String getValueString() throws DebugException {
@@ -51,11 +52,11 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 		return variable.getDebugTarget();
 	}
 
-	public String getReferenceId() {
+	public String getInstanceId() {
 		return variable.getId();
 	}
 
-	public boolean shouldHasVariables() {
-		return variable.shouldHasChildren();
+	public IScriptType getType() {
+		return variable.getType();
 	}
 }

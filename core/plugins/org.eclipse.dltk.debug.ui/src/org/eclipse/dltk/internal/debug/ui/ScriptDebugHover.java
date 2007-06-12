@@ -11,21 +11,22 @@ package org.eclipse.dltk.internal.debug.ui;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.dltk.core.ICodeAssist;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
+import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
+import org.eclipse.dltk.debug.core.eval.IScriptEvaluationResult;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
+import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
-import org.eclipse.dltk.internal.ui.text.ScriptWordFinder;
 import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
+import org.eclipse.dltk.internal.ui.text.ScriptWordFinder;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.text.hover.IScriptEditorTextHover;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -37,9 +38,7 @@ import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHoverExtension;
 import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.Region;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -48,30 +47,14 @@ import org.eclipse.ui.editors.text.EditorsUI;
 public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 		ITextHoverExtension {
 
-	private IEditorPart fEditor;
+	private IEditorPart editor;
 
 	public void setEditor(IEditorPart editor) {
-		fEditor = editor;
+		this.editor = editor;
 	}
 
 	public IRegion getHoverRegion(final ITextViewer textViewer, int offset) {
-		System.out.println("ScriptDebugHover.getHoverRegion()");
-		final IRegion[] result = new IRegion[] { ScriptWordFinder.findWord(
-				textViewer.getDocument(), offset) };
-		textViewer.getTextWidget().getDisplay().syncExec(new Runnable() {
-
-			public void run() {
-				Point selection = textViewer.getSelectedRange();
-				int off = selection.x;
-				int len = selection.y;
-
-				if (len > 0) {
-					result[0] = new Region(off, len);
-				}
-			}
-		});
-
-		return result[0];
+		return ScriptWordFinder.findWord(textViewer.getDocument(), offset);
 	}
 
 	/**
@@ -93,48 +76,41 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
 		IScriptStackFrame frame = getFrame();
 		if (frame != null) {
-			// first check for 'this' - code resolve does not resolve Script
-			// elements for 'this'
 			IDocument document = textViewer.getDocument();
+
 			if (document != null) {
 				try {
-					String variableName = document.get(hoverRegion.getOffset(),
+					String snippet = document.get(hoverRegion.getOffset(),
 							hoverRegion.getLength());
-					
-				
-//					IWatchExpressionResult result = ((IScriptThread)frame.getThread()).syncEvaluateExpression(variableName);
-//					
-//					if (true) {
-//						try {
-//							return getVariableText(result.getValue());
-//						} catch (DebugException e) {
-//							return "<p><pre>Can't evaluate expression!</p></pre>";
-//						}
-//					}
-//					
-					
 
-					if (hoverRegion.getOffset() > 0) {
-						IRegion hoverRegion2 = getHoverRegion(textViewer,
-								hoverRegion.getOffset());
-						hoverRegion = hoverRegion2;
-						variableName = document.get(hoverRegion2.getOffset(),
-								hoverRegion2.getLength());
-					}
-					
-					
+					/*
+					 * if (hoverRegion.getOffset() > 0) { IRegion hoverRegion2 =
+					 * getHoverRegion(textViewer, hoverRegion.getOffset());
+					 * hoverRegion = hoverRegion2; variableName =
+					 * document.get(hoverRegion2.getOffset(),
+					 * hoverRegion2.getLength()); }
+					 */
 
-					if (variableName.equals("this")) { //$NON-NLS-1$
-						IScriptVariable variable = null;
-						try {
-							variable = frame.findVariable(variableName);
-						} catch (DebugException e) {
-							DLTKDebugPlugin.log(e);
-						}
+					try {
+						// Try to find variable
+						IScriptVariable variable = frame.findVariable(snippet
+								.trim());
 						if (variable != null) {
-							String vs = variable.getValueString();
-							return getVariableText(variable) + "=" + vs;
+							return getVariableText(variable);
 						}
+
+						// Try to evaluate
+						IScriptEvaluationEngine engine = ((IScriptThread) frame
+								.getThread()).getEvaluationEngine();
+						IScriptEvaluationResult result = engine.syncEvaluate(
+								snippet, null);
+
+						if (result != null) {
+							return getResultText(result);
+						}
+					} catch (DebugException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
 				} catch (BadLocationException e) {
 					return null;
@@ -142,14 +118,15 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 			}
 
 			ICodeAssist codeAssist = null;
-			if (fEditor != null) {
-				IEditorInput input = fEditor.getEditorInput();
+			if (editor != null) {
+				IEditorInput input = editor.getEditorInput();
 				Object element = DLTKUIPlugin.getDefault()
 						.getWorkingCopyManager().getWorkingCopy(input);
 				if (element instanceof ICodeAssist) {
 					codeAssist = ((ICodeAssist) element);
 				}
 			}
+
 			/*
 			 * if (codeAssist != null) { return getRemoteHoverInfo(frame,
 			 * textViewer, hoverRegion); }
@@ -174,112 +151,64 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 				}
 			}
 		}
+
 		return null;
 	}
 
-	/**
-	 * Generate hover info via a variable search, if the Script element is not
-	 * available.
+	/*
+	 * private String getRemoteHoverInfo(IScriptStackFrame frame, ITextViewer
+	 * textViewer, IRegion hoverRegion) { if (frame != null) { try { IDocument
+	 * document = textViewer.getDocument(); if (document != null) { String
+	 * variableName = document.get(hoverRegion.getOffset(),
+	 * hoverRegion.getLength()); String generateHoverForLocal =
+	 * generateHoverForLocal(frame, variableName); if (generateHoverForLocal ==
+	 * null) { if (!variableName.startsWith("this")) { variableName = "this." +
+	 * variableName; generateHoverForLocal = generateHoverForLocal( frame,
+	 * variableName); } } return generateHoverForLocal; } } catch
+	 * (BadLocationException x) { } } return null; }
 	 */
-	private String getRemoteHoverInfo(IScriptStackFrame frame,
-			ITextViewer textViewer, IRegion hoverRegion) {
-		if (frame != null) {
-			try {
-				IDocument document = textViewer.getDocument();
-				if (document != null) {
-					String variableName = document.get(hoverRegion.getOffset(),
-							hoverRegion.getLength());
-					String generateHoverForLocal = generateHoverForLocal(frame,
-							variableName);
-					if (generateHoverForLocal == null) {
-						if (!variableName.startsWith("this")) {
-							variableName = "this." + variableName;
-							generateHoverForLocal = generateHoverForLocal(
-									frame, variableName);
-						}
-					}
-					return generateHoverForLocal;
-				}
-			} catch (BadLocationException x) {
-			}
-		}
-		return null;
+
+	/*
+	 * private String generateHoverForLocal(IScriptStackFrame frame, String
+	 * varName) { String variableText = null; IScriptVariable variable = null;
+	 * int iip = varName.indexOf('.'); if (iip != -1) try { String vn =
+	 * varName.substring(0, iip); IScriptVariable findVariable =
+	 * frame.findVariable(vn); while (iip != -1) {
+	 * 
+	 * String name = varName.substring(iip + 1); int pos = name.indexOf('.'); if
+	 * (pos != -1) { varName = name; name = name.substring(0, pos); } iip = pos;
+	 * if (findVariable == null) return null; IScriptVariable[] children =
+	 * findVariable.getChildren(); for (int a = 0; a < children.length; a++) {
+	 * if (children[a].getName().equals(name)) { findVariable = children[a]; } } }
+	 * return getVariableText(findVariable) + "=" +
+	 * findVariable.getValueString(); } catch (DebugException e) {
+	 * DLTKDebugPlugin.log(e); return null; } try { variable =
+	 * frame.findVariable(varName); } catch (DebugException e) {
+	 * DLTKDebugPlugin.log(e); } if (variable != null) { variableText =
+	 * getVariableText(variable) + "=" + variable.getValueString(); } return
+	 * variableText; }
+	 */
+
+	protected String getResultText(IScriptEvaluationResult result)
+			throws DebugException {
+		return prepareHtml(result.getSnippet() + " = "
+				+ result.getValue().getValueString());
 	}
 
-	private String generateHoverForLocal(IScriptStackFrame frame, String varName) {
-		String variableText = null;
-		IScriptVariable variable = null;
-		int iip = varName.indexOf('.');
-		if (iip != -1)
-			try {
-				String vn = varName.substring(0, iip);
-				IScriptVariable findVariable = frame.findVariable(vn);
-				while (iip != -1) {
-
-					String name = varName.substring(iip + 1);
-					int pos = name.indexOf('.');
-					if (pos != -1) {
-						varName = name;
-						name = name.substring(0, pos);
-
-					}
-					iip = pos;
-					if (findVariable == null)
-						return null;
-					IScriptVariable[] children = findVariable.getChildren();
-					for (int a = 0; a < children.length; a++) {
-						if (children[a].getName().equals(name)) {
-							findVariable = children[a];
-						}
-					}
-				}
-				return getVariableText(findVariable) + "="
-						+ findVariable.getValueString();
-			} catch (DebugException e) {
-				DLTKDebugPlugin.log(e);
-				return null;
-			}
-		try {
-			variable = frame.findVariable(varName);
-		} catch (DebugException e) {
-			DLTKDebugPlugin.log(e);
-		}
-		if (variable != null) {
-			variableText = getVariableText(variable) + "="
-					+ variable.getValueString();
-		}
-		return variableText;
+	protected String getVariableText(IVariable variable) throws DebugException {
+		return prepareHtml(variable.getName() + " = "
+				+ variable.getValue().getValueString());
 	}
 
-	private String getVariableText(IValue value) throws DebugException {
+	protected String prepareHtml(String text) {
 		StringBuffer buffer = new StringBuffer();
-		ScriptDebugModelPresentation modelPresentation = getModelPresentation();
 		buffer.append("<p><pre>"); //$NON-NLS-1$
-		buffer.append(replaceHTMLChars(value.getValueString()));
+		buffer.append(replaceHTMLChars(text));
 		buffer.append("</pre></p>"); //$NON-NLS-1$
-		modelPresentation.dispose();
 		if (buffer.length() > 0) {
 			return buffer.toString();
 		}
-		return null;
-	}
-	
-	
-	/**
-	 * Returns HTML text for the given variable
-	 */
-	private String getVariableText(IVariable variable) {
-		StringBuffer buffer = new StringBuffer();
-		ScriptDebugModelPresentation modelPresentation = getModelPresentation();
-		buffer.append("<p><pre>"); //$NON-NLS-1$
-		String variableText = modelPresentation
-				.getVariableText((IScriptVariable) variable);
-		buffer.append(replaceHTMLChars(variableText));
-		buffer.append("</pre></p>"); //$NON-NLS-1$
-		modelPresentation.dispose();
-		if (buffer.length() > 0) {
-			return buffer.toString();
-		}
+
 		return null;
 	}
 

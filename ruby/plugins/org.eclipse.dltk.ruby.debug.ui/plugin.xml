@@ -204,8 +204,8 @@
    <extension
          point="org.eclipse.dltk.ui.editorTextHovers">
       <hover
-            label="Ruby text hover"
-            description="Ruby variable hover"
+            label="%RubyDebugHover.label"
+            description="%RubyDebugHover.description"
             class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugHover"
             id="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugHover">
       </hover>

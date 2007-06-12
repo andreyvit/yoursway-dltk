@@ -15,47 +15,27 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.ui.IEditorPart;
 
-
-
 public class ScriptTypeHover implements IScriptEditorTextHover {
 
-	//private IEditorTextHover fProblemHover;
 	private IScriptEditorTextHover fDocumentationHover;
 
 	public ScriptTypeHover() {
-		//fProblemHover= new ProblemHover();
-		fDocumentationHover= new DocumentationHover();
+		fDocumentationHover = new DocumentationHover();
 	}
 
-	/*
-	 * @see IJavaEditorTextHover#setEditor(IEditorPart)
-	 */
 	public void setEditor(IEditorPart editor) {
-		//fProblemHover.setEditor(editor);
 		fDocumentationHover.setEditor(editor);
 	}
-	
+
 	public void setPreferenceStore(IPreferenceStore store) {
 		fDocumentationHover.setPreferenceStore(store);
 	}
 
-	/*
-	 * @see ITextHover#getHoverRegion(ITextViewer, int)
-	 */
 	public IRegion getHoverRegion(ITextViewer textViewer, int offset) {
 		return fDocumentationHover.getHoverRegion(textViewer, offset);
 	}
 
-	/*
-	 * @see ITextHover#getHoverInfo(ITextViewer, IRegion)
-	 */
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
-		/*String hoverInfo= fProblemHover.getHoverInfo(textViewer, hoverRegion);
-		if (hoverInfo != null)
-			return hoverInfo;*/
-
 		return fDocumentationHover.getHoverInfo(textViewer, hoverRegion);
 	}
-
-	
 }

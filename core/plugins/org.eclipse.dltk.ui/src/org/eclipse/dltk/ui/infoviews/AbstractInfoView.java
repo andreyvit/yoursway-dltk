@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
-import org.eclipse.dltk.internal.ui.text.GenericWordFinder;
+import org.eclipse.dltk.internal.ui.text.ScriptWordFinder;
 import org.eclipse.dltk.internal.ui.util.SelectionUtil;
 import org.eclipse.dltk.ui.IContextMenuConstants;
 import org.eclipse.dltk.ui.ScriptElementLabels;
@@ -52,23 +52,35 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 
-
 /**
  * Abstract class for views which show information for a given element.
  * 
-	 *
+ * 
  */
-abstract class AbstractInfoView extends ViewPart implements ISelectionListener, IMenuListener, IPropertyChangeListener {
+abstract class AbstractInfoView extends ViewPart implements ISelectionListener,
+		IMenuListener, IPropertyChangeListener {
 	/** ScriptElementLabels flags used for the title */
-	private final long TITLE_FLAGS = ScriptElementLabels.ALL_FULLY_QUALIFIED | ScriptElementLabels.M_PRE_RETURNTYPE
-			| ScriptElementLabels.M_PARAMETER_TYPES | ScriptElementLabels.M_PARAMETER_NAMES | ScriptElementLabels.M_EXCEPTIONS
-			| ScriptElementLabels.F_PRE_TYPE_SIGNATURE | ScriptElementLabels.M_PRE_TYPE_PARAMETERS | ScriptElementLabels.T_TYPE_PARAMETERS
+	private final long TITLE_FLAGS = ScriptElementLabels.ALL_FULLY_QUALIFIED
+			| ScriptElementLabels.M_PRE_RETURNTYPE
+			| ScriptElementLabels.M_PARAMETER_TYPES
+			| ScriptElementLabels.M_PARAMETER_NAMES
+			| ScriptElementLabels.M_EXCEPTIONS
+			| ScriptElementLabels.F_PRE_TYPE_SIGNATURE
+			| ScriptElementLabels.M_PRE_TYPE_PARAMETERS
+			| ScriptElementLabels.T_TYPE_PARAMETERS
 			| ScriptElementLabels.USE_RESOLVED;
-//	private final long LOCAL_VARIABLE_TITLE_FLAGS = TITLE_FLAGS & ~ScriptElementLabels.F_FULLY_QUALIFIED | ScriptElementLabels.F_POST_QUALIFIED;
+// private final long LOCAL_VARIABLE_TITLE_FLAGS = TITLE_FLAGS &
+// ~ScriptElementLabels.F_FULLY_QUALIFIED |
+// ScriptElementLabels.F_POST_QUALIFIED;
 	/** ScriptElementLabels flags used for the tool tip text */
-	private static final long TOOLTIP_LABEL_FLAGS = ScriptElementLabels.DEFAULT_QUALIFIED | ScriptElementLabels.ROOT_POST_QUALIFIED
-			| ScriptElementLabels.APPEND_ROOT_PATH | ScriptElementLabels.M_PARAMETER_TYPES | ScriptElementLabels.M_PARAMETER_NAMES
-			| ScriptElementLabels.M_APP_RETURNTYPE | ScriptElementLabels.M_EXCEPTIONS | ScriptElementLabels.F_APP_TYPE_SIGNATURE
+	private static final long TOOLTIP_LABEL_FLAGS = ScriptElementLabels.DEFAULT_QUALIFIED
+			| ScriptElementLabels.ROOT_POST_QUALIFIED
+			| ScriptElementLabels.APPEND_ROOT_PATH
+			| ScriptElementLabels.M_PARAMETER_TYPES
+			| ScriptElementLabels.M_PARAMETER_NAMES
+			| ScriptElementLabels.M_APP_RETURNTYPE
+			| ScriptElementLabels.M_EXCEPTIONS
+			| ScriptElementLabels.F_APP_TYPE_SIGNATURE
 			| ScriptElementLabels.T_TYPE_PARAMETERS;
 	/*
 	 * @see IPartListener2
@@ -93,15 +105,20 @@ abstract class AbstractInfoView extends ViewPart implements ISelectionListener, 
 				computeAndSetInput(ref.getPart(false));
 		}
 
-		public void partActivated(IWorkbenchPartReference ref) {}
+		public void partActivated(IWorkbenchPartReference ref) {
+		}
 
-		public void partBroughtToTop(IWorkbenchPartReference ref) {}
+		public void partBroughtToTop(IWorkbenchPartReference ref) {
+		}
 
-		public void partClosed(IWorkbenchPartReference ref) {}
+		public void partClosed(IWorkbenchPartReference ref) {
+		}
 
-		public void partDeactivated(IWorkbenchPartReference ref) {}
+		public void partDeactivated(IWorkbenchPartReference ref) {
+		}
 
-		public void partOpened(IWorkbenchPartReference ref) {}
+		public void partOpened(IWorkbenchPartReference ref) {
+		}
 	};
 	/** The current input. */
 	protected Object fCurrentViewInput;
@@ -114,7 +131,7 @@ abstract class AbstractInfoView extends ViewPart implements ISelectionListener, 
 	/**
 	 * Background color.
 	 * 
-	 *
+	 * 
 	 */
 	private Color fBackgroundColor;
 	private RGB fBackgroundColorRGB;
@@ -173,7 +190,7 @@ abstract class AbstractInfoView extends ViewPart implements ISelectionListener, 
 	 * Returns the context ID for the Help system
 	 * 
 	 * @return the string used as ID for the Help context
-	 *
+	 * 
 	 */
 	abstract protected String getHelpContextId();
 
@@ -183,11 +200,13 @@ abstract class AbstractInfoView extends ViewPart implements ISelectionListener, 
 	public final void createPartControl(Composite parent) {
 		internalCreatePartControl(parent);
 		inititalizeColors();
-		getSite().getWorkbenchWindow().getPartService().addPartListener(fPartListener);
+		getSite().getWorkbenchWindow().getPartService().addPartListener(
+				fPartListener);
 		createContextMenu();
 		createActions();
 		fillActionBars(getViewSite().getActionBars());
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(), getHelpContextId());
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(),
+				getHelpContextId());
 	}
 
 	/**
@@ -267,10 +286,12 @@ abstract class AbstractInfoView extends ViewPart implements ISelectionListener, 
 		IAction action;
 		action = getCopyToClipboardAction();
 		if (action != null)
-			actionBars.setGlobalActionHandler(ActionFactory.COPY.getId(), action);
+			actionBars.setGlobalActionHandler(ActionFactory.COPY.getId(),
+					action);
 		action = getSelectAllAction();
 		if (action != null)
-			actionBars.setGlobalActionHandler(ActionFactory.SELECT_ALL.getId(), action);
+			actionBars.setGlobalActionHandler(ActionFactory.SELECT_ALL.getId(),
+					action);
 	}
 
 	/**
@@ -285,7 +306,7 @@ abstract class AbstractInfoView extends ViewPart implements ISelectionListener, 
 	protected void fillToolBar(IToolBarManager tbm) {
 		tbm.add(fGotoInputAction);
 	}
-	
+
 	private void inititalizeColors() {
 		if (getSite().getShell().isDisposed())
 			return;
@@ -311,7 +332,7 @@ abstract class AbstractInfoView extends ViewPart implements ISelectionListener, 
 	 * The preference key for the background color.
 	 * 
 	 * @return the background color key
-	 *
+	 * 
 	 */
 	abstract protected String getBackgroundColorKey();
 
@@ -354,24 +375,30 @@ abstract class AbstractInfoView extends ViewPart implements ISelectionListener, 
 	 *            the current selection from the part that provides the input
 	 * @return <code>true</code> if the new input should be ignored
 	 */
-	protected boolean isIgnoringNewInput(Object je, IWorkbenchPart part, ISelection selection) {
-		return fCurrentViewInput != null && fCurrentViewInput.equals(je) && je != null;
+	protected boolean isIgnoringNewInput(Object je, IWorkbenchPart part,
+			ISelection selection) {
+		return fCurrentViewInput != null && fCurrentViewInput.equals(je)
+				&& je != null;
 	}
 
 	/**
 	 * Finds and returns the Script element selected in the given part.
 	 * 
 	 * @param part
-	 *            the workbench part for which to find the selected Script element
+	 *            the workbench part for which to find the selected Script
+	 *            element
 	 * @param selection
 	 *            the selection
 	 * @return the selected Script element
 	 */
-	protected IModelElement findSelectedModelElement(IWorkbenchPart part, ISelection selection) {
+	protected IModelElement findSelectedModelElement(IWorkbenchPart part,
+			ISelection selection) {
 		Object element;
 		try {
-			if (part instanceof ScriptEditor && selection instanceof ITextSelection) {
-				IModelElement[] elements = TextSelectionConverter.codeResolve((ScriptEditor) part, (ITextSelection) selection);
+			if (part instanceof ScriptEditor
+					&& selection instanceof ITextSelection) {
+				IModelElement[] elements = TextSelectionConverter.codeResolve(
+						(ScriptEditor) part, (ITextSelection) selection);
 				if (elements != null && elements.length > 0)
 					return elements[0];
 				else
@@ -400,18 +427,19 @@ abstract class AbstractInfoView extends ViewPart implements ISelectionListener, 
 			return null;
 		IModelElement je = null;
 		if (element instanceof IAdaptable)
-			je = (IModelElement) ((IAdaptable) element).getAdapter(IModelElement.class);
+			je = (IModelElement) ((IAdaptable) element)
+					.getAdapter(IModelElement.class);
 		return je;
 	}
 
-	
 	/*
 	 * @see IWorkbenchPart#dispose()
 	 */
 	final public void dispose() {
 		// cancel possible running computation
 		fComputeCount++;
-		getSite().getWorkbenchWindow().getPartService().removePartListener(fPartListener);
+		getSite().getWorkbenchWindow().getPartService().removePartListener(
+				fPartListener);
 		ISelectionProvider provider = getSelectionProvider();
 		if (provider != null)
 			provider.removeSelectionChangedListener(fCopyToClipboardAction);
@@ -450,26 +478,33 @@ abstract class AbstractInfoView extends ViewPart implements ISelectionListener, 
 					return;
 				IModelElement je = findSelectedModelElement(part, selection);
 				Object tmp = null;
-				if (je != null) {					
+				if (je != null) {
 					tmp = je;
 				} else {
-					if (part instanceof ScriptEditor && selection instanceof ITextSelection) {						
-						IRegion reg = GenericWordFinder.findWord(((ScriptEditor)part).getViewer().getDocument(), ((ITextSelection)selection).getOffset());
+					if (part instanceof ScriptEditor
+							&& selection instanceof ITextSelection) {
+						IRegion reg = ScriptWordFinder
+								.findWord(((ScriptEditor) part).getViewer()
+										.getDocument(),
+										((ITextSelection) selection)
+												.getOffset());
 						if (reg != null) {
 							try {
-								tmp = ((ScriptEditor)part).getViewer().getDocument().get(reg.getOffset(), reg.getLength());
+								tmp = ((ScriptEditor) part).getViewer()
+										.getDocument().get(reg.getOffset(),
+												reg.getLength());
 							} catch (BadLocationException e) {
 								tmp = null;
 							}
 						}
-					}					
+					}
 				}
-				
+
 				final Object src = tmp;
-				
+
 				if (isIgnoringNewInput(src, part, selection))
 					return;
-				
+
 				// The actual computation
 				final Object input = computeInput(src);
 				if (input == null)
@@ -485,13 +520,14 @@ abstract class AbstractInfoView extends ViewPart implements ISelectionListener, 
 					 * @see java.lang.Runnable#run()
 					 */
 					public void run() {
-						if (fComputeCount != currentCount || getViewSite().getShell().isDisposed())
+						if (fComputeCount != currentCount
+								|| getViewSite().getShell().isDisposed())
 							return;
 						fCurrentViewInput = src;
 						doSetInput(input);
 					}
 				});
-				
+
 			}
 		};
 		thread.setDaemon(true);
@@ -503,14 +539,16 @@ abstract class AbstractInfoView extends ViewPart implements ISelectionListener, 
 		setInput(input);
 		Object in = getInput();
 		fGotoInputAction.setEnabled(in instanceof IModelElement);
-		long flags = TITLE_FLAGS;		
+		long flags = TITLE_FLAGS;
 		if (in instanceof IModelElement) {
-			IModelElement me = (IModelElement)in;
-			setContentDescription(ScriptElementLabels.getDefault().getElementLabel(me, flags));
-			setTitleToolTip(ScriptElementLabels.getDefault().getElementLabel(me, TOOLTIP_LABEL_FLAGS));
+			IModelElement me = (IModelElement) in;
+			setContentDescription(ScriptElementLabels.getDefault()
+					.getElementLabel(me, flags));
+			setTitleToolTip(ScriptElementLabels.getDefault().getElementLabel(
+					me, TOOLTIP_LABEL_FLAGS));
 		} else {
 			setContentDescription(in.toString());
 			setTitleToolTip(in.toString());
-		}			
+		}
 	}
 }

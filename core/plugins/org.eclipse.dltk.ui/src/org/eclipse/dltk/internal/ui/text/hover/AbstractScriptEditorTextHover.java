@@ -23,8 +23,8 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
-import org.eclipse.dltk.internal.ui.text.GenericWordFinder;
 import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
+import org.eclipse.dltk.internal.ui.text.ScriptWordFinder;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.IWorkingCopyManager;
 import org.eclipse.dltk.ui.PreferenceConstants;
@@ -38,7 +38,9 @@ import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHoverExtension;
 import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.jface.text.Region;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -46,29 +48,27 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.keys.IBindingService;
 import org.osgi.framework.Bundle;
 
-
 /**
  * Abstract class for providing hover information for Script elements.
- *
-	 *
  */
-public abstract class AbstractScriptEditorTextHover implements IScriptEditorTextHover, ITextHoverExtension {
+public abstract class AbstractScriptEditorTextHover implements
+		IScriptEditorTextHover, ITextHoverExtension {
 
 	/**
 	 * The style sheet (css).
-	 *
 	 */
 	private static String fgStyleSheet;
 	private IEditorPart fEditor;
 	private IPreferenceStore fStore;
-	
+
 	private IBindingService fBindingService;
 	{
-		fBindingService= (IBindingService)PlatformUI.getWorkbench().getAdapter(IBindingService.class);
+		fBindingService = (IBindingService) PlatformUI.getWorkbench()
+				.getAdapter(IBindingService.class);
 	}
-	
+
 	public void setPreferenceStore(IPreferenceStore store) {
-		fStore = store;	
+		fStore = store;
 	}
 
 	/**
@@ -78,11 +78,8 @@ public abstract class AbstractScriptEditorTextHover implements IScriptEditorText
 		return fStore;
 	}
 
-	/*
-	 * @see IJavaEditorTextHover#setEditor(IEditorPart)
-	 */
 	public void setEditor(IEditorPart editor) {
-		fEditor= editor;
+		fEditor = editor;
 	}
 
 	protected IEditorPart getEditor() {
@@ -91,54 +88,75 @@ public abstract class AbstractScriptEditorTextHover implements IScriptEditorText
 
 	protected ICodeAssist getCodeAssist() {
 		if (fEditor != null) {
-			IEditorInput input= fEditor.getEditorInput();
-			
-			IWorkingCopyManager manager= DLTKUIPlugin.getDefault().getWorkingCopyManager();
+			IEditorInput input = fEditor.getEditorInput();
+
+			IWorkingCopyManager manager = DLTKUIPlugin.getDefault()
+					.getWorkingCopyManager();
 			return manager.getWorkingCopy(input, false);
 		}
 
 		return null;
 	}
 
-	/*
-	 * @see ITextHover#getHoverRegion(ITextViewer, int)
-	 */
-	public IRegion getHoverRegion(ITextViewer textViewer, int offset) {
-		return GenericWordFinder.findWord(textViewer.getDocument(), offset);
+	public IRegion getHoverRegion(final ITextViewer textViewer, int offset) {
+
+		final IRegion[] result = new IRegion[] { ScriptWordFinder.findWord(
+				textViewer.getDocument(), offset) };
+
+		textViewer.getTextWidget().getDisplay().syncExec(new Runnable() {
+			public void run() {
+				Point selection = textViewer.getSelectedRange();
+				int off = selection.x;
+				int len = selection.y;
+
+				if (len > 0) {
+					result[0] = new Region(off, len);
+				}
+			}
+		});
+
+		return result[0];
+		// return ScriptWordFinder.findWord(textViewer.getDocument(), offset);
 	}
 
-	/*
-	 * @see ITextHover#getHoverInfo(ITextViewer, IRegion)
-	 */
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
-		
+
 		String nature = null;
 		try {
-			IModelElement inputModelElement = EditorUtility.getEditorInputModelElement(this.fEditor, false);
-			nature = DLTKLanguageManager.getLanguageToolkit(inputModelElement).getNatureID();			
+			IModelElement inputModelElement = EditorUtility
+					.getEditorInputModelElement(this.fEditor, false);
+			nature = DLTKLanguageManager.getLanguageToolkit(inputModelElement)
+					.getNatureID();
 		} catch (CoreException e) {
 			return null;
 		}
-		if (nature == null)
+		if (nature == null) {
 			return null;
+		}
 
-		ICodeAssist resolve= getCodeAssist();
+		ICodeAssist resolve = getCodeAssist();
 		if (resolve != null) {
 			try {
 				String content = null;
 				try {
-					content = textViewer.getDocument().get(hoverRegion.getOffset(), hoverRegion.getLength());
-				} catch (BadLocationException e) {					
+					content = textViewer.getDocument().get(
+							hoverRegion.getOffset(), hoverRegion.getLength());
+				} catch (BadLocationException e) {
 				}
-				IModelElement[] result= resolve.codeSelect(hoverRegion.getOffset(), hoverRegion.getLength());
-				if (result == null)
-					return null;
 
-				int nResults= result.length; 
-				
+				IModelElement[] result = resolve.codeSelect(hoverRegion
+						.getOffset(), hoverRegion.getLength());
+
+				if (result == null) {
+					return null;
+				}
+
+				int nResults = result.length;
+
 				if (nResults == 0) {
-					if (content != null) 
-						return getHoverInfo (nature, content);
+					if (content != null) {
+						return getHoverInfo(nature, content);
+					}
 					return null;
 				}
 
@@ -153,86 +171,93 @@ public abstract class AbstractScriptEditorTextHover implements IScriptEditorText
 
 	/**
 	 * Provides hover information for the given Script elements.
-	 *
-	 * @param modelElements the Script elements for which to provide hover information
+	 * 
+	 * @param modelElements
+	 *            the Script elements for which to provide hover information
 	 * @return the hover information string
-	 *
+	 * 
 	 */
 	protected String getHoverInfo(String nature, IModelElement[] modelElements) {
 		return null;
 	}
-	
+
 	/**
 	 * Provides hover information for the keyword.
-	 *
-	 * @param content text of the keyword
+	 * 
+	 * @param content
+	 *            text of the keyword
 	 * @return the hover information string
-	 *
+	 * 
 	 */
 	protected String getHoverInfo(String nature, String content) {
 		return null;
 	}
 
-	/*
-	 * @see ITextHoverExtension#getHoverControlCreator()
-	 *
-	 */
 	public IInformationControlCreator getHoverControlCreator() {
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
-				return new DefaultInformationControl(parent, SWT.NONE, new HTMLTextPresenter(true), getTooltipAffordanceString());
+				return new DefaultInformationControl(parent, SWT.NONE,
+						new HTMLTextPresenter(true),
+						getTooltipAffordanceString());
 			}
 		};
 	}
 
 	/**
 	 * Returns the tool tip affordance string.
-	 *
-	 * @return the affordance string or <code>null</code> if disabled or no key binding is defined
-	 *
+	 * 
+	 * @return the affordance string or <code>null</code> if disabled or no
+	 *         key binding is defined
+	 * 
 	 */
-	protected String getTooltipAffordanceString() {		
-		if( this.getPreferenceStore() == null ) {			
+	protected String getTooltipAffordanceString() {
+		if (this.getPreferenceStore() == null) {
 			return "{0}";
 		}
-		if (fBindingService == null || !getPreferenceStore().getBoolean(PreferenceConstants.EDITOR_SHOW_TEXT_HOVER_AFFORDANCE))
+		if (fBindingService == null
+				|| !getPreferenceStore().getBoolean(
+						PreferenceConstants.EDITOR_SHOW_TEXT_HOVER_AFFORDANCE))
 			return null;
 
-		String keySequence= fBindingService.getBestActiveBindingFormattedFor(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
+		String keySequence = fBindingService
+				.getBestActiveBindingFormattedFor(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
 		if (keySequence == null)
 			return null;
-		
-		return Messages.format(ScriptHoverMessages.ScriptTextHover_makeStickyHint, keySequence == null ? "" : keySequence); //$NON-NLS-1$
+
+		return Messages.format(
+				ScriptHoverMessages.ScriptTextHover_makeStickyHint,
+				keySequence == null ? "" : keySequence); //$NON-NLS-1$
 	}
 
 	/**
 	 * Returns the style sheet.
-	 *
-	 *
+	 * 
+	 * 
 	 */
 	protected static String getStyleSheet() {
 		if (fgStyleSheet == null) {
-			Bundle bundle= Platform.getBundle(DLTKUIPlugin.getPluginId());
-			URL styleSheetURL= bundle.getEntry("/DocumentationHoverStyleSheet.css"); //$NON-NLS-1$
+			Bundle bundle = Platform.getBundle(DLTKUIPlugin.getPluginId());
+			URL styleSheetURL = bundle
+					.getEntry("/DocumentationHoverStyleSheet.css"); //$NON-NLS-1$
 			if (styleSheetURL != null) {
 				try {
-					styleSheetURL= FileLocator.toFileURL(styleSheetURL);
-					BufferedReader reader= new BufferedReader(new InputStreamReader(styleSheetURL.openStream()));
-					StringBuffer buffer= new StringBuffer(200);
-					String line= reader.readLine();
+					styleSheetURL = FileLocator.toFileURL(styleSheetURL);
+					BufferedReader reader = new BufferedReader(
+							new InputStreamReader(styleSheetURL.openStream()));
+					StringBuffer buffer = new StringBuffer(200);
+					String line = reader.readLine();
 					while (line != null) {
 						buffer.append(line);
 						buffer.append('\n');
-						line= reader.readLine();
+						line = reader.readLine();
 					}
-					fgStyleSheet= buffer.toString();
+					fgStyleSheet = buffer.toString();
 				} catch (IOException ex) {
 					DLTKUIPlugin.log(ex);
-					fgStyleSheet= ""; //$NON-NLS-1$
+					fgStyleSheet = ""; //$NON-NLS-1$
 				}
 			}
 		}
 		return fgStyleSheet;
 	}
-	
 }

@@ -33,27 +33,27 @@ import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.AnnotationPreference;
 import org.eclipse.ui.texteditor.DefaultMarkerAnnotationAccess;
 
-
 /**
  * Abstract super class for annotation hovers.
- *
+ * 
  */
-public abstract class AbstractAnnotationHover extends AbstractScriptEditorTextHover {
+public abstract class AbstractAnnotationHover extends
+		AbstractScriptEditorTextHover {
 
-	private IPreferenceStore fStore= DLTKUIPlugin.getDefault().getPreferenceStore();
-	private DefaultMarkerAnnotationAccess fAnnotationAccess= new DefaultMarkerAnnotationAccess();
+	private IPreferenceStore fStore = DLTKUIPlugin.getDefault()
+			.getPreferenceStore();
+	private DefaultMarkerAnnotationAccess fAnnotationAccess = new DefaultMarkerAnnotationAccess();
 	private boolean fAllAnnotations;
 
-
 	public AbstractAnnotationHover(boolean allAnnotations) {
-		fAllAnnotations= allAnnotations;
+		fAllAnnotations = allAnnotations;
 	}
 
 	/*
 	 * Formats a message as HTML text.
 	 */
 	private String formatMessage(String message) {
-		StringBuffer buffer= new StringBuffer();
+		StringBuffer buffer = new StringBuffer();
 		HTMLPrinter.insertPageProlog(buffer, 0, getStyleSheet());
 		buffer.append(HTMLPrinter.convertToHTMLContent(message));
 		HTMLPrinter.addPageEpilog(buffer);
@@ -66,37 +66,50 @@ public abstract class AbstractAnnotationHover extends AbstractScriptEditorTextHo
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
 		IPath path;
 		IAnnotationModel model;
+
 		if (textViewer instanceof ISourceViewer) {
-			path= null;
-			model= ((ISourceViewer)textViewer).getAnnotationModel();
+			path = null;
+			model = ((ISourceViewer) textViewer).getAnnotationModel();
 		} else {
 			// Get annotation model from file buffer manager
-			path= getEditorInputPath();
-			model= getAnnotationModel(path);
+			path = getEditorInputPath();
+			model = getAnnotationModel(path);
 		}
-		if (model == null)
+
+		if (model == null) {
 			return null;
+		}
 
 		try {
-			Iterator e= new ScriptAnnotationIterator(model, true, fAllAnnotations);
-			int layer= -1;
-			String message= null;
+			Iterator e = new ScriptAnnotationIterator(model, true,
+					fAllAnnotations);
+			int layer = -1;
+			String message = null;
 			while (e.hasNext()) {
-				Annotation a= (Annotation) e.next();
+				Annotation a = (Annotation) e.next();
 
-				AnnotationPreference preference= getAnnotationPreference(a);
-				if (preference == null || !(preference.getTextPreferenceKey() != null && fStore.getBoolean(preference.getTextPreferenceKey()) || (preference.getHighlightPreferenceKey() != null && fStore.getBoolean(preference.getHighlightPreferenceKey()))))
+				AnnotationPreference preference = getAnnotationPreference(a);
+				if (preference == null
+						|| !(preference.getTextPreferenceKey() != null
+								&& fStore.getBoolean(preference
+										.getTextPreferenceKey()) || (preference
+								.getHighlightPreferenceKey() != null && fStore
+								.getBoolean(preference
+										.getHighlightPreferenceKey()))))
 					continue;
 
-				Position p= model.getPosition(a);
+				Position p = model.getPosition(a);
 
-				int l= fAnnotationAccess.getLayer(a);
+				int l = fAnnotationAccess.getLayer(a);
 
-				if (l > layer && p != null && p.overlapsWith(hoverRegion.getOffset(), hoverRegion.getLength())) {
-					String msg= a.getText();
+				if (l > layer
+						&& p != null
+						&& p.overlapsWith(hoverRegion.getOffset(), hoverRegion
+								.getLength())) {
+					String msg = a.getText();
 					if (msg != null && msg.trim().length() > 0) {
-						message= msg;
-						layer= l;
+						message = msg;
+						layer = l;
 					}
 				}
 			}
@@ -106,7 +119,8 @@ public abstract class AbstractAnnotationHover extends AbstractScriptEditorTextHo
 		} finally {
 			try {
 				if (path != null) {
-					ITextFileBufferManager manager= FileBuffers.getTextFileBufferManager();
+					ITextFileBufferManager manager = FileBuffers
+							.getTextFileBufferManager();
 					manager.disconnect(path, LocationKind.NORMALIZE, null);
 				}
 			} catch (CoreException ex) {
@@ -121,10 +135,10 @@ public abstract class AbstractAnnotationHover extends AbstractScriptEditorTextHo
 		if (getEditor() == null)
 			return null;
 
-		IEditorInput input= getEditor().getEditorInput();
+		IEditorInput input = getEditor().getEditorInput();
 		if (input instanceof IStorageEditorInput) {
 			try {
-				return ((IStorageEditorInput)input).getStorage().getFullPath();
+				return ((IStorageEditorInput) input).getStorage().getFullPath();
 			} catch (CoreException ex) {
 				DLTKUIPlugin.log(ex.getStatus());
 			}
@@ -136,7 +150,7 @@ public abstract class AbstractAnnotationHover extends AbstractScriptEditorTextHo
 		if (path == null)
 			return null;
 
-		ITextFileBufferManager manager= FileBuffers.getTextFileBufferManager();
+		ITextFileBufferManager manager = FileBuffers.getTextFileBufferManager();
 		try {
 			manager.connect(path, LocationKind.NORMALIZE, null);
 		} catch (CoreException ex) {
@@ -144,9 +158,10 @@ public abstract class AbstractAnnotationHover extends AbstractScriptEditorTextHo
 			return null;
 		}
 
-		IAnnotationModel model= null;
+		IAnnotationModel model = null;
 		try {
-			model= manager.getTextFileBuffer(path,LocationKind.NORMALIZE).getAnnotationModel();
+			model = manager.getTextFileBuffer(path, LocationKind.NORMALIZE)
+					.getAnnotationModel();
 			return model;
 		} finally {
 			if (model == null) {
@@ -161,14 +176,17 @@ public abstract class AbstractAnnotationHover extends AbstractScriptEditorTextHo
 
 	/**
 	 * Returns the annotation preference for the given annotation.
-	 *
-	 * @param annotation the annotation
+	 * 
+	 * @param annotation
+	 *            the annotation
 	 * @return the annotation preference or <code>null</code> if none
 	 */
 	private AnnotationPreference getAnnotationPreference(Annotation annotation) {
-
-		if (annotation.isMarkedDeleted())
+		if (annotation.isMarkedDeleted()) {
 			return null;
-		return EditorsUI.getAnnotationPreferenceLookup().getAnnotationPreference(annotation);
+		}
+		
+		return EditorsUI.getAnnotationPreferenceLookup()
+				.getAnnotationPreference(annotation);
 	}
 }

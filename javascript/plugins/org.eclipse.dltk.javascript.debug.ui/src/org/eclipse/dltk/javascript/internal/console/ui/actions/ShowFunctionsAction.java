@@ -26,20 +26,14 @@ public class ShowFunctionsAction extends ViewFilterAction {
 		super();
 	}
 
-	/**
-	 * @see ViewFilterAction#getPreferenceKey()
-	 */
 	protected String getPreferenceKey() {
 		return "show_functions"; 
 	}
 	
-	/**
-	 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
-	 */
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
 		if (element instanceof IScriptVariable) {
 			IScriptVariable variable = (IScriptVariable)element;
-			return !variable.getTypeString().equals("function"); 
+			return !variable.getType().getName().equals("function"); 
 		}
 		return true;
 	}	

@@ -15,8 +15,7 @@ import org.eclipse.core.runtime.IStatus;
 
 /**
  * Represents a particular type of interpreter for which there may be
- * any number of interpreter installations. An example of a interpreter type
- * is the standard TCL from ActiveState. 
+ * any number of interpreter installations.
  * <p>
  * This interface is intended to be implemented by clients that contribute
  * to the <code>"org.eclipse.dltk.launching.interpreterType"</code> extension point.
