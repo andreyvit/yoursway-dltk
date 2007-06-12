@@ -44,7 +44,7 @@ import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.ILaunchGroup;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.dltk.internal.ui.util.SWTUtil;
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -589,7 +589,7 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 		boolean dltkOutput = false;
 
 		try {
-			dltkOutput = configuration.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT, false);
+			dltkOutput = configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT, false);
 
 			outputToConsole = configuration.getAttribute(
 					IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true);
@@ -929,7 +929,7 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT,
 					(String) null);
 
-			configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID, Long.toString(System
+			configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID, Long.toString(System
 					.currentTimeMillis()));
 			
 			try {
@@ -944,7 +944,7 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 			useDltk = true;
 		} 
 		
-		configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT, useDltk);
+		configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT, useDltk);
 
 		// Last option
 		if (captureOutput) {

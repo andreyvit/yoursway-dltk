@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui.actions;
 
- 
 import java.util.Iterator;
 
 import org.eclipse.core.runtime.CoreException;
@@ -20,33 +19,26 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 
 public class ExitToggleAction extends BreakpointToggleAction {
 
-	/**
-	 * @see BreakpointToggleAction#getToggleState(IScriptBreakpoint)
-	 */
-	protected boolean getToggleState(IScriptBreakpoint breakpoint) throws CoreException {
-		return ((IScriptMethodEntryBreakpoint)breakpoint).shouldBreakOnExit();
+	protected boolean getToggleState(IScriptBreakpoint breakpoint)
+			throws CoreException {
+		return ((IScriptMethodEntryBreakpoint) breakpoint).shouldBreakOnExit();
 	}
 
-	/**
-	 * @see BreakpointToggleAction#doAction(IScriptBreakpoint)
-	 */
 	public void doAction(IScriptBreakpoint breakpoint) throws CoreException {
-		((IScriptMethodEntryBreakpoint)breakpoint).setBreakOnExit(!((IScriptMethodEntryBreakpoint)breakpoint).shouldBreakOnExit());
+		((IScriptMethodEntryBreakpoint) breakpoint)
+				.setBreakOnExit(!((IScriptMethodEntryBreakpoint) breakpoint)
+						.shouldBreakOnExit());
 	}
 
-	/**
-	 * @see BreakpointToggleAction#isEnabledFor(IStructuredSelection)
-	 */
 	public boolean isEnabledFor(IStructuredSelection selection) {
-		Iterator iter= selection.iterator();
+		Iterator iter = selection.iterator();
 		while (iter.hasNext()) {
 			Object element = iter.next();
 			if (!(element instanceof IScriptMethodEntryBreakpoint)) {
 				return false;
 			}
-			
+
 		}
 		return true;
 	}
 }
-

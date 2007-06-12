@@ -18,7 +18,7 @@ import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.actions.ControlAccessibleListener;
 import org.eclipse.dltk.debug.ui.launchConfigurations.CommonScriptLaunchTab;
 import org.eclipse.dltk.debug.ui.messages.DLTKLaunchMessages;
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -92,7 +92,7 @@ public class InterpreterArgumentsBlock extends CommonScriptLaunchTab {
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#setDefaults(ILaunchConfigurationWorkingCopy)
 	 */
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_INTERPRETER_ARGUMENTS, (String)null);		
+		configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_INTERPRETER_ARGUMENTS, (String)null);		
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class InterpreterArgumentsBlock extends CommonScriptLaunchTab {
 	 */
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
-			fInterpreterArgumentsText.setText(configuration.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_INTERPRETER_ARGUMENTS, "")); //$NON-NLS-1$
+			fInterpreterArgumentsText.setText(configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_INTERPRETER_ARGUMENTS, "")); //$NON-NLS-1$
 		} catch (CoreException e) {
 			setErrorMessage(DLTKLaunchMessages.InterpreterArgumentsTab_Exception_occurred_reading_configuration___15 + e.getStatus().getMessage()); 
 			DLTKDebugUIPlugin.log(e);			
@@ -111,7 +111,7 @@ public class InterpreterArgumentsBlock extends CommonScriptLaunchTab {
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#performApply(ILaunchConfigurationWorkingCopy)
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_INTERPRETER_ARGUMENTS, getAttributeValueFrom(fInterpreterArgumentsText));
+		configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_INTERPRETER_ARGUMENTS, getAttributeValueFrom(fInterpreterArgumentsText));
 	}
 
 	/**

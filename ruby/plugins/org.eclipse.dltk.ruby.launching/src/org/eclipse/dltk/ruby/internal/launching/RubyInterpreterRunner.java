@@ -11,7 +11,7 @@ package org.eclipse.dltk.ruby.internal.launching;
 
 import org.eclipse.dltk.launching.AbstractInterpreterRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
-import org.eclipse.dltk.ruby.launching.IRubyLaunchConfigurationConstants;
+import org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationConstants;
 import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
 
 public class RubyInterpreterRunner extends AbstractInterpreterRunner {
@@ -24,6 +24,6 @@ public class RubyInterpreterRunner extends AbstractInterpreterRunner {
 	}
 
 	protected String getProcessType() {
-		return IRubyLaunchConfigurationConstants.ID_RUBY_PROCESS_TYPE;
+		return RubyLaunchConfigurationConstants.ID_RUBY_PROCESS_TYPE;
 	}
 }

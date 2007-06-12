@@ -28,7 +28,7 @@ import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.messages.DLTKLaunchMessages;
 import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterComboBlock;
 import org.eclipse.dltk.internal.debug.ui.interpreters.InterpreterDescriptor;
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.dltk.ui.DLTKPluginImages;
@@ -48,7 +48,6 @@ import org.eclipse.swt.widgets.Control;
  * <p>
  * This class may be instantiated. This class is not intended to be subclassed.
  * </p>
-	 *
  */
 
 public abstract class InterpreterTab extends CommonScriptLaunchTab {
@@ -179,22 +178,22 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 	 * @see ILaunchConfigurationTab#performApply(ILaunchConfigurationWorkingCopy)
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_NATURE, getNature());
+		configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE, getNature());
 		if (fInterpreterBlock.isDefaultInterpreter()) {
-			configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_CONTAINER_PATH, (String)null);
+			configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH, (String)null);
 		} else {
 			IPath containerPath = fInterpreterBlock.getPath();
 			String portablePath = null;
 			if (containerPath != null) {
 				portablePath = containerPath.toPortableString();
 			}
-			configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_CONTAINER_PATH, portablePath);
+			configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH, portablePath);
 		}
 	
 		// Handle any attributes in the Interpreter-specific area
 		ILaunchConfigurationTab dynamicTab = getDynamicTab();
 		if (dynamicTab == null) {
-			configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_INTERPRETER_INSTALL_TYPE_SPECIFIC_ATTRS_MAP, (Map)null);
+			configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_INTERPRETER_INSTALL_TYPE_SPECIFIC_ATTRS_MAP, (Map)null);
 		} else {
 			dynamicTab.performApply(configuration);
 		}
@@ -237,7 +236,7 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 
 	protected void updateInterpreterFromConfig(ILaunchConfiguration config) {
 		try {
-			String path = config.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_CONTAINER_PATH, (String)null);
+			String path = config.getAttribute(ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH, (String)null);
 			if (path != null) {
 				fInterpreterBlock.setPath(Path.fromPortableString(path));
 				return;
@@ -265,7 +264,7 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 			}
 			if (!fIsInitializing) {
 				if (wc != null) {
-					wc.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_INTERPRETER_INSTALL_TYPE_SPECIFIC_ATTRS_MAP, (Map)null);
+					wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_INTERPRETER_INSTALL_TYPE_SPECIFIC_ATTRS_MAP, (Map)null);
 				}
 			}
 		} else {
@@ -425,7 +424,7 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 	protected IDLTKProject getDLTKProject() {
 		if (getLaunchConfiguration() != null) {
 			try {
-				String name = getLaunchConfiguration().getAttribute(IDLTKLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);
+				String name = getLaunchConfiguration().getAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);
 				if (name != null && name.length() > 0) {
 					IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 					if (project.exists()) { 

@@ -25,7 +25,7 @@ import org.eclipse.dltk.debug.ui.IDLTKDebugUIConstants;
 import org.eclipse.dltk.debug.ui.actions.ControlAccessibleListener;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.ui.util.SWTUtil;
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.InterpreterStandin;
@@ -171,7 +171,7 @@ public abstract class AbstractInterpreterComboBlock {
 						if (fInterpreters.isEmpty()) {
 							setStatus (new Status(IStatus.ERROR, 
 									DLTKLaunchingPlugin.getUniqueIdentifier(), 
-									IDLTKLaunchConfigurationConstants.ERR_NO_DEFAULT_INTERPRETER_INSTALL, 
+									ScriptLaunchConfigurationConstants.ERR_NO_DEFAULT_INTERPRETER_INSTALL, 
 									InterpretersMessages.InterpretersComboBlock_0, 
 									null));
 						} else {
@@ -203,7 +203,7 @@ public abstract class AbstractInterpreterComboBlock {
 					if (fInterpreters.isEmpty()) {
 						setStatus (new Status(IStatus.ERROR, 
 								DLTKLaunchingPlugin.getUniqueIdentifier(), 
-								IDLTKLaunchConfigurationConstants.ERR_NO_DEFAULT_INTERPRETER_INSTALL, 
+								ScriptLaunchConfigurationConstants.ERR_NO_DEFAULT_INTERPRETER_INSTALL, 
 								InterpretersMessages.InterpretersComboBlock_0, 
 								null));
 					} else {
@@ -243,7 +243,7 @@ public abstract class AbstractInterpreterComboBlock {
 		if (fInterpreters.isEmpty()) {			
 			setStatus (new Status(IStatus.ERROR, 
 					DLTKLaunchingPlugin.getUniqueIdentifier(), 
-					IDLTKLaunchConfigurationConstants.ERR_NO_DEFAULT_INTERPRETER_INSTALL, 
+					ScriptLaunchConfigurationConstants.ERR_NO_DEFAULT_INTERPRETER_INSTALL, 
 					InterpretersMessages.InterpretersComboBlock_0, 
 					null));
 		} else {
@@ -442,7 +442,7 @@ public abstract class AbstractInterpreterComboBlock {
 		if (fInterpreters.isEmpty()) {			
 			setStatus (new Status(IStatus.ERROR, 
 					DLTKLaunchingPlugin.getUniqueIdentifier(), 
-					IDLTKLaunchConfigurationConstants.ERR_NO_DEFAULT_INTERPRETER_INSTALL, 
+					ScriptLaunchConfigurationConstants.ERR_NO_DEFAULT_INTERPRETER_INSTALL, 
 					InterpretersMessages.InterpretersComboBlock_0, 
 					null));
 		} else {
@@ -489,7 +489,7 @@ public abstract class AbstractInterpreterComboBlock {
 		if (fInterpreters.isEmpty()) {			
 			setStatus (new Status(IStatus.ERROR, 
 					DLTKLaunchingPlugin.getUniqueIdentifier(), 
-					IDLTKLaunchConfigurationConstants.ERR_NO_DEFAULT_INTERPRETER_INSTALL, 
+					ScriptLaunchConfigurationConstants.ERR_NO_DEFAULT_INTERPRETER_INSTALL, 
 					InterpretersMessages.InterpretersComboBlock_0, 
 					null));
 		} else {

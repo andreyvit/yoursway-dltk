@@ -113,7 +113,7 @@ public class DebugImageDescriptor extends CompositeImageDescriptor {
 	}
 
 	private ImageData getImageData(String imageDescriptorKey) {
-		return DLTKDebugImages.getImageDescriptor(imageDescriptorKey)
+		return ScriptDebugImages.getImageDescriptor(imageDescriptorKey)
 				.getImageData();
 	}
 
@@ -128,52 +128,52 @@ public class DebugImageDescriptor extends CompositeImageDescriptor {
 		if ((flags & IS_OUT_OF_SYNCH) != 0) {
 			x = getSize().x;
 			y = 0;
-			data = getImageData(DLTKDebugImages.IMG_OVR_OUT_OF_SYNCH);
+			data = getImageData(ScriptDebugImages.IMG_OVR_OUT_OF_SYNCH);
 			x -= data.width;
 			drawImage(data, x, y);
 		} else if ((flags & MAY_BE_OUT_OF_SYNCH) != 0) {
 			x = getSize().x;
 			y = 0;
-			data = getImageData(DLTKDebugImages.IMG_OVR_MAY_BE_OUT_OF_SYNCH);
+			data = getImageData(ScriptDebugImages.IMG_OVR_MAY_BE_OUT_OF_SYNCH);
 			x -= data.width;
 			drawImage(data, x, y);
 		} else if ((flags & SYNCHRONIZED) != 0) {
 			x = getSize().x;
 			y = 0;
-			data = getImageData(DLTKDebugImages.IMG_OVR_SYNCHRONIZED);
+			data = getImageData(ScriptDebugImages.IMG_OVR_SYNCHRONIZED);
 			x -= data.width;
 			drawImage(data, x, y);
 		} else {
 			if ((flags & IN_DEADLOCK) != 0) {
 				x = 0;
 				y = 0;
-				data = getImageData(DLTKDebugImages.IMG_OVR_IN_DEADLOCK);
+				data = getImageData(ScriptDebugImages.IMG_OVR_IN_DEADLOCK);
 				drawImage(data, x, y);
 			}
 			if ((flags & OWNED_MONITOR) != 0) {
 				x = getSize().x;
 				y = getSize().y;
-				data = getImageData(DLTKDebugImages.IMG_OVR_OWNED);
+				data = getImageData(ScriptDebugImages.IMG_OVR_OWNED);
 				x -= data.width;
 				y -= data.height;
 				drawImage(data, x, y);
 			} else if ((flags & CONTENTED_MONITOR) != 0) {
 				x = getSize().x;
 				y = getSize().y;
-				data = getImageData(DLTKDebugImages.IMG_OVR_IN_CONTENTION);
+				data = getImageData(ScriptDebugImages.IMG_OVR_IN_CONTENTION);
 				x -= data.width;
 				y -= data.height;
 				drawImage(data, x, y);
 			} else if ((flags & OWNS_MONITOR) != 0) {
 				x = getSize().x;
 				y = 0;
-				data = getImageData(DLTKDebugImages.IMG_OVR_OWNS_MONITOR);
+				data = getImageData(ScriptDebugImages.IMG_OVR_OWNS_MONITOR);
 				x -= data.width;
 				drawImage(data, x, y);
 			} else if ((flags & IN_CONTENTION_FOR_MONITOR) != 0) {
 				x = getSize().x;
 				y = 0;
-				data = getImageData(DLTKDebugImages.IMG_OVR_IN_CONTENTION_FOR_MONITOR);
+				data = getImageData(ScriptDebugImages.IMG_OVR_IN_CONTENTION_FOR_MONITOR);
 				x -= data.width;
 				drawImage(data, x, y);
 			} else {
@@ -191,9 +191,9 @@ public class DebugImageDescriptor extends CompositeImageDescriptor {
 			x = 0;
 			y = getSize().y;
 			if ((flags & ENABLED) != 0) {
-				data = getImageData(DLTKDebugImages.IMG_OVR_BREAKPOINT_INSTALLED);
+				data = getImageData(ScriptDebugImages.IMG_OVR_BREAKPOINT_INSTALLED);
 			} else {
-				data = getImageData(DLTKDebugImages.IMG_OVR_BREAKPOINT_INSTALLED_DISABLED);
+				data = getImageData(ScriptDebugImages.IMG_OVR_BREAKPOINT_INSTALLED_DISABLED);
 			}
 
 			y -= data.height;
@@ -201,9 +201,9 @@ public class DebugImageDescriptor extends CompositeImageDescriptor {
 		}
 		if ((flags & CAUGHT) != 0) {
 			if ((flags & ENABLED) != 0) {
-				data = getImageData(DLTKDebugImages.IMG_OVR_CAUGHT_BREAKPOINT);
+				data = getImageData(ScriptDebugImages.IMG_OVR_CAUGHT_BREAKPOINT);
 			} else {
-				data = getImageData(DLTKDebugImages.IMG_OVR_CAUGHT_BREAKPOINT_DISABLED);
+				data = getImageData(ScriptDebugImages.IMG_OVR_CAUGHT_BREAKPOINT_DISABLED);
 			}
 			x = 0;
 			y = 0;
@@ -211,9 +211,9 @@ public class DebugImageDescriptor extends CompositeImageDescriptor {
 		}
 		if ((flags & UNCAUGHT) != 0) {
 			if ((flags & ENABLED) != 0) {
-				data = getImageData(DLTKDebugImages.IMG_OVR_UNCAUGHT_BREAKPOINT);
+				data = getImageData(ScriptDebugImages.IMG_OVR_UNCAUGHT_BREAKPOINT);
 			} else {
-				data = getImageData(DLTKDebugImages.IMG_OVR_UNCAUGHT_BREAKPOINT_DISABLED);
+				data = getImageData(ScriptDebugImages.IMG_OVR_UNCAUGHT_BREAKPOINT_DISABLED);
 			}
 			x = data.width;
 			y = data.height;
@@ -221,9 +221,9 @@ public class DebugImageDescriptor extends CompositeImageDescriptor {
 		}
 		if ((flags & SCOPED) != 0) {
 			if ((flags & ENABLED) != 0) {
-				data = getImageData(DLTKDebugImages.IMG_OVR_SCOPED_BREAKPOINT);
+				data = getImageData(ScriptDebugImages.IMG_OVR_SCOPED_BREAKPOINT);
 			} else {
-				data = getImageData(DLTKDebugImages.IMG_OVR_SCOPED_BREAKPOINT_DISABLED);
+				data = getImageData(ScriptDebugImages.IMG_OVR_SCOPED_BREAKPOINT_DISABLED);
 			}
 			x = 0;
 			y = getSize().y;
@@ -232,9 +232,9 @@ public class DebugImageDescriptor extends CompositeImageDescriptor {
 		}
 		if ((flags & CONDITIONAL) != 0) {
 			if ((flags & ENABLED) != 0) {
-				data = getImageData(DLTKDebugImages.IMG_OVR_CONDITIONAL_BREAKPOINT);
+				data = getImageData(ScriptDebugImages.IMG_OVR_CONDITIONAL_BREAKPOINT);
 			} else {
-				data = getImageData(DLTKDebugImages.IMG_OVR_CONDITIONAL_BREAKPOINT_DISABLED);
+				data = getImageData(ScriptDebugImages.IMG_OVR_CONDITIONAL_BREAKPOINT_DISABLED);
 			}
 			x = 0;
 			y = 0;
@@ -244,9 +244,9 @@ public class DebugImageDescriptor extends CompositeImageDescriptor {
 			x = getSize().x;
 			y = 0;
 			if ((flags & ENABLED) != 0) {
-				data = getImageData(DLTKDebugImages.IMG_OVR_METHOD_BREAKPOINT_ENTRY);
+				data = getImageData(ScriptDebugImages.IMG_OVR_METHOD_BREAKPOINT_ENTRY);
 			} else {
-				data = getImageData(DLTKDebugImages.IMG_OVR_METHOD_BREAKPOINT_ENTRY_DISABLED);
+				data = getImageData(ScriptDebugImages.IMG_OVR_METHOD_BREAKPOINT_ENTRY_DISABLED);
 			}
 			x -= data.width;
 			drawImage(data, x, y);
@@ -255,9 +255,9 @@ public class DebugImageDescriptor extends CompositeImageDescriptor {
 			x = getSize().x;
 			y = getSize().y;
 			if ((flags & ENABLED) != 0) {
-				data = getImageData(DLTKDebugImages.IMG_OVR_METHOD_BREAKPOINT_EXIT);
+				data = getImageData(ScriptDebugImages.IMG_OVR_METHOD_BREAKPOINT_EXIT);
 			} else {
-				data = getImageData(DLTKDebugImages.IMG_OVR_METHOD_BREAKPOINT_EXIT_DISABLED);
+				data = getImageData(ScriptDebugImages.IMG_OVR_METHOD_BREAKPOINT_EXIT_DISABLED);
 			}
 			x -= data.width;
 			y -= data.height;

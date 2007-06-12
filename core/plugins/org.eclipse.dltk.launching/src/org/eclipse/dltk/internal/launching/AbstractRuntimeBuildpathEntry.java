@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IRuntimeBuildpathEntry;
 import org.eclipse.dltk.launching.IRuntimeBuildpathEntry2;
 import org.w3c.dom.Document;
@@ -81,7 +81,7 @@ public abstract class AbstractRuntimeBuildpathEntry extends PlatformObject imple
 	 * @throws CoreException
 	 */
 	protected void abort(String message, Throwable exception) throws CoreException {
-		IStatus status = new Status(IStatus.ERROR, DLTKLaunchingPlugin.getUniqueIdentifier(), IDLTKLaunchConfigurationConstants.ERR_INTERNAL_ERROR, message, exception);
+		IStatus status = new Status(IStatus.ERROR, DLTKLaunchingPlugin.getUniqueIdentifier(), ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR, message, exception);
 		throw new CoreException(status);
 	}
 

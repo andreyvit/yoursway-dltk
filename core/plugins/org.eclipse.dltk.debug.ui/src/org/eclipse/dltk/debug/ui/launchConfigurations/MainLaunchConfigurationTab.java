@@ -26,7 +26,7 @@ import org.eclipse.dltk.debug.ui.messages.DLTKLaunchConfigurationsMessages;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.ui.DLTKUIStatus;
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -241,7 +241,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	protected void updateProjectFromConfig(ILaunchConfiguration config) {
 		String projectName = EMPTY_STRING;
 		try {
-			projectName = config.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_PROJECT_NAME, EMPTY_STRING);
+			projectName = config.getAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, EMPTY_STRING);
 		}// end try
 		catch (CoreException ce) {
 			DLTKLaunchingPlugin.log(ce);
@@ -316,7 +316,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	protected void updateMainModuleFromConfig(ILaunchConfiguration config) {
 		String mainModuleName = EMPTY_STRING;
 		try {
-			mainModuleName = config.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME, EMPTY_STRING);
+			mainModuleName = config.getAttribute(ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME, EMPTY_STRING);
 		}// end try
 		catch (CoreException ce) {
 			DLTKLaunchingPlugin.log(ce);
@@ -346,8 +346,8 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		String mainModule = fMainText.getText().trim();
 		String project = fProjText.getText().trim();
-		configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME, mainModule);
-		configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_PROJECT_NAME, project);
+		configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME, mainModule);
+		configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, project);
 	}
 
 	protected boolean validateProject() {

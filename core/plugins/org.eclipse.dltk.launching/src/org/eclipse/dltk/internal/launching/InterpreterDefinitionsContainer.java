@@ -441,7 +441,7 @@ public class InterpreterDefinitionsContainer {
 			Element element = doc.createElement("libraryLocation"); //$NON-NLS-1$
 			element
 					.setAttribute(
-							"libraryPath", locations[i].getSystemLibraryPath().toString()); //$NON-NLS-1$
+							"libraryPath", locations[i].getLibraryPath().toString()); //$NON-NLS-1$
 			root.appendChild(element);
 		}
 		return root;

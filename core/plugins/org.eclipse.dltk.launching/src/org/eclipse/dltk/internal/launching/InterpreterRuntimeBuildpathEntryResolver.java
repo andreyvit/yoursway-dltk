@@ -22,7 +22,7 @@ import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IRuntimeBuildpathEntry;
 import org.eclipse.dltk.launching.IRuntimeBuildpathEntryResolver;
@@ -42,7 +42,7 @@ public class InterpreterRuntimeBuildpathEntryResolver implements IRuntimeBuildpa
 	 * @see IRuntimeBuildpathEntryResolver#resolveRuntimeBuildpathEntry(IRuntimeBuildpathEntry, ILaunchConfiguration)
 	 */
 	public IRuntimeBuildpathEntry[] resolveRuntimeBuildpathEntry(IRuntimeBuildpathEntry entry, ILaunchConfiguration configuration) throws CoreException {
-		String nature = configuration.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_NATURE, (String)null);
+		String nature = configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE, (String)null);
 		IInterpreterInstall InterpreterEnvironment = null;
 		if (entry.getType() == IRuntimeBuildpathEntry.CONTAINER && entry.getPath().segmentCount() > 1) {
 			// a specific Interpreter
@@ -98,7 +98,7 @@ public class InterpreterRuntimeBuildpathEntryResolver implements IRuntimeBuildpa
 		} 
 		List resolvedEntries = new ArrayList(libs.length);
 		for (int i = 0; i < libs.length; i++) {
-			IPath systemLibraryPath = libs[i].getSystemLibraryPath();
+			IPath systemLibraryPath = libs[i].getLibraryPath();
 			if (systemLibraryPath.toFile().exists()) {
 				resolvedEntries.add(resolveLibraryLocation(Interpreter, libs[i], kind));
 			}
@@ -122,7 +122,7 @@ public class InterpreterRuntimeBuildpathEntryResolver implements IRuntimeBuildpa
 		for (int i = 0; i < defaultLibs.length; i++) {
 			LibraryLocation def = defaultLibs[i];
 			LibraryLocation lib = libs[i];
-			if (!def.getSystemLibraryPath().equals(lib.getSystemLibraryPath())) {
+			if (!def.getLibraryPath().equals(lib.getLibraryPath())) {
 				return false;
 			}
 		}
@@ -162,7 +162,7 @@ public class InterpreterRuntimeBuildpathEntryResolver implements IRuntimeBuildpa
 	 *
 	 */
 	private IRuntimeBuildpathEntry resolveLibraryLocation(IInterpreterInstall Interpreter, LibraryLocation location, int kind) {
-		IPath libraryPath = location.getSystemLibraryPath();					
+		IPath libraryPath = location.getLibraryPath();					
 		IBuildpathAttribute[] attributes  = new IBuildpathAttribute[0];
 		IBuildpathEntry bpe = DLTKCore.newLibraryEntry(libraryPath, EMPTY_RULES, attributes, false, false);
 		IRuntimeBuildpathEntry resolved = new RuntimeBuildpathEntry(bpe);

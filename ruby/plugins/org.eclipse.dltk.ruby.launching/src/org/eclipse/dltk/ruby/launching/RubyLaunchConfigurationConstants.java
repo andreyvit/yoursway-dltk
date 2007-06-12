@@ -7,12 +7,18 @@
  *
  
  *******************************************************************************/
-package org.eclipse.dltk.ruby.core;
+package org.eclipse.dltk.ruby.launching;
 
-import org.eclipse.dltk.ast.Modifiers;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 
-public interface IRubyConstants {
-	public final static String RUBY_PARTITIONING = "__ruby_partitioning";
-	public static final int RubyAttributeModifier = Modifiers.USER_MODIFIER*2;
-	public static final int RubyAliasModifier = Modifiers.USER_MODIFIER*4;
+public class RubyLaunchConfigurationConstants extends
+		ScriptLaunchConfigurationConstants {
+
+	protected RubyLaunchConfigurationConstants() {
+
+	}
+
+	public static final String ID_RUBY_SCRIPT = "org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationType"; //$NON-NLS-1$
+
+	public static final String ID_RUBY_PROCESS_TYPE = "rubyInterpreter"; //$NON-NLS-1$
 }

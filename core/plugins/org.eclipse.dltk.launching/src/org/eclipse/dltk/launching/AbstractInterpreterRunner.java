@@ -61,7 +61,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 							.format(
 									LaunchingMessages.StandardInterpreterRunner_Unable_to_locate_executable_for,
 									new String[] { interpreterInstall.getName() }),
-					null, IDLTKLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
+					null, ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
 		}
 		return exe.getAbsolutePath();
 	}
@@ -140,7 +140,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	}
 
 	protected String getProcessType() {
-		return IDLTKLaunchConfigurationConstants.ID_SCRIPT_PROCESS_TYPE;
+		return ScriptLaunchConfigurationConstants.ID_SCRIPT_PROCESS_TYPE;
 	}
 
 	protected AbstractInterpreterRunner(IInterpreterInstall install) {
@@ -169,7 +169,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		if (process == null) {
 			p.destroy();
 			abort(LaunchingMessages.AbstractInterpreterRunner_0, null,
-					IDLTKLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
+					ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
 		}
 		return process;
 	}

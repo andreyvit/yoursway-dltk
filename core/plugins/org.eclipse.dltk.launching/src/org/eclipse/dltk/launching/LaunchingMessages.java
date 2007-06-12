@@ -11,6 +11,7 @@ package org.eclipse.dltk.launching;
 
 import org.eclipse.osgi.util.NLS;
 
+// TODO: move to internal package
 public class LaunchingMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.dltk.launching.LaunchingMessages";//$NON-NLS-1$
 	

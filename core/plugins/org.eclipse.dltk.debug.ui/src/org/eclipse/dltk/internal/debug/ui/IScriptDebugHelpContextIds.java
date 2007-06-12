@@ -20,7 +20,7 @@ import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
  * </p>
  * 
  */
-public interface IDLTKDebugHelpContextIds {
+public interface IScriptDebugHelpContextIds {
 	
 	public static final String PREFIX= DLTKDebugUIPlugin.PLUGIN_ID + '.';
 

@@ -282,7 +282,7 @@ public abstract class AbstractInterpreterInstallType implements
 			LibraryLocation l = (LibraryLocation) iter.next();
 			String res;
 			try {
-				File f = l.getSystemLibraryPath().toFile();
+				File f = l.getLibraryPath().toFile();
 				if (f != null)
 					res = f.getCanonicalPath();
 				else

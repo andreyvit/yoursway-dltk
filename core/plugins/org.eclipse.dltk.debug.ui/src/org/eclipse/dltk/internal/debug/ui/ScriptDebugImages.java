@@ -25,9 +25,12 @@ import org.osgi.framework.Bundle;
 
 /**
  * Bundle of most images used by the debug plug-in. DLTK note: used icons are
- * marked with a comment TODO: delete unused icons
+ * marked with a comment 
+ * 
+ * TODO: delete unused icons
+ * 
  */
-public class DLTKDebugImages {
+public class ScriptDebugImages {
 
 	private static String ICONS_PATH = "$nl$/icons/full/"; //$NON-NLS-1$
 

@@ -22,7 +22,7 @@ import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.InterpreterStandin;
@@ -143,7 +143,7 @@ public class InterpreterContainerInitializer extends
 			IStatus status = new Status(
 					IStatus.ERROR,
 					DLTKLaunchingPlugin.getUniqueIdentifier(),
-					IDLTKLaunchConfigurationConstants.ERR_INTERPRETER_INSTALL_DOES_NOT_EXIST,
+					ScriptLaunchConfigurationConstants.ERR_INTERPRETER_INSTALL_DOES_NOT_EXIST,
 					MessageFormat
 							.format(
 									LaunchingMessages.InterpreterEnvironmentContainerInitializer_InterpreterEnvironment_referenced_by_classpath_container__0__does_not_exist__1,
@@ -165,7 +165,7 @@ public class InterpreterContainerInitializer extends
 					IStatus status = new Status(
 							IStatus.ERROR,
 							DLTKLaunchingPlugin.getUniqueIdentifier(),
-							IDLTKLaunchConfigurationConstants.ERR_INTERNAL_ERROR,
+							ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR,
 							MessageFormat
 									.format(
 											LaunchingMessages.InterpreterEnvironmentContainerInitializer_Buildpath_entry__0__does_not_refer_to_an_existing_library__2,
@@ -177,7 +177,7 @@ public class InterpreterContainerInitializer extends
 				IStatus status = new Status(
 						IStatus.ERROR,
 						DLTKLaunchingPlugin.getUniqueIdentifier(),
-						IDLTKLaunchConfigurationConstants.ERR_INTERNAL_ERROR,
+						ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR,
 						MessageFormat
 								.format(
 										LaunchingMessages.InterpreterEnvironmentContainerInitializer_Buildpath_entry__0__does_not_refer_to_a_library__3,

@@ -30,7 +30,7 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.dltk.console.ScriptConsoleServer;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKProject;
-import org.eclipse.dltk.javascript.launching.IJavaScriptLaunchConfigurationConstants;
+import org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.javascript.launching.JavaScriptLaunchingPlugin;
 import org.eclipse.dltk.launching.AbstractInterpreterRunner;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
@@ -170,7 +170,7 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 	}
 
 	protected String getProcessType() {
-		return IJavaScriptLaunchConfigurationConstants.ID_JAVASCRIPT_PROCESS_TYPE;
+		return JavaScriptLaunchConfigurationConstants.ID_JAVASCRIPT_PROCESS_TYPE;
 	}
 
 	protected String getPluginId() {

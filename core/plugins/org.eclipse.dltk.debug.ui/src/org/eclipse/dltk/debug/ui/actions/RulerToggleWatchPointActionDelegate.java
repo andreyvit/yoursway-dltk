@@ -84,24 +84,12 @@ public class RulerToggleWatchPointActionDelegate extends
 	private IEditorPart fEditor = null;
 	private ToggleWatchPointAction fDelegate = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.texteditor.AbstractRulerActionDelegate#createAction(org.eclipse.ui.texteditor.ITextEditor,
-	 *      org.eclipse.jface.text.source.IVerticalRulerInfo)
-	 */
 	protected IAction createAction(ITextEditor editor,
 			IVerticalRulerInfo rulerInfo) {
 		fDelegate = new ToggleWatchPointAction(editor, null, rulerInfo);
 		return fDelegate;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IEditorActionDelegate#setActiveEditor(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.ui.IEditorPart)
-	 */
 	public void setActiveEditor(IAction callerAction, IEditorPart targetEditor) {
 		if (fEditor != null) {
 			if (fDelegate != null) {
@@ -113,19 +101,9 @@ public class RulerToggleWatchPointActionDelegate extends
 		super.setActiveEditor(callerAction, targetEditor);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate2#init(org.eclipse.jface.action.IAction)
-	 */
 	public void init(IAction action) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate2#dispose()
-	 */
 	public void dispose() {
 		if (fDelegate != null) {
 			fDelegate.dispose();
@@ -134,12 +112,6 @@ public class RulerToggleWatchPointActionDelegate extends
 		fEditor = null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate2#runWithEvent(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.swt.widgets.Event)
-	 */
 	public void runWithEvent(IAction action, Event event) {
 		run(action);
 	}

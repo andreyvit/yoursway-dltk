@@ -12,7 +12,7 @@ package org.eclipse.dltk.ruby.internal.debug.ui.launcher;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.dltk.internal.debug.ui.launcher.ScriptLaunchShortcut;
 import org.eclipse.dltk.ruby.core.RubyNature;
-import org.eclipse.dltk.ruby.launching.IRubyLaunchConfigurationConstants;
+import org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationConstants;
 
 
 public class RubyLaunchShortcut extends ScriptLaunchShortcut {
@@ -23,7 +23,7 @@ public class RubyLaunchShortcut extends ScriptLaunchShortcut {
 	 * @return the type of configuration this shortcut is applicable to
 	 */
 	protected ILaunchConfigurationType getConfigurationType() { //abstract in future
-		return getLaunchManager().getLaunchConfigurationType(IRubyLaunchConfigurationConstants.ID_RUBY_SCRIPT);
+		return getLaunchManager().getLaunchConfigurationType(RubyLaunchConfigurationConstants.ID_RUBY_SCRIPT);
 	}
 
     /*

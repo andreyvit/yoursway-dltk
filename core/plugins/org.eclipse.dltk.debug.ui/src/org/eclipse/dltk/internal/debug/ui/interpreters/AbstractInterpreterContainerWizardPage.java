@@ -17,7 +17,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IStatusHandler;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.internal.debug.ui.DLTKDebugImages;
+import org.eclipse.dltk.internal.debug.ui.ScriptDebugImages;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPage;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -137,7 +137,7 @@ public abstract class AbstractInterpreterContainerWizardPage extends WizardPage 
 	 * @see org.eclipse.jface.dialogs.IDialogPage#getImage()
 	 */
 	public Image getImage() {
-		return DLTKDebugImages.get(DLTKDebugImages.IMG_WIZBAN_LIBRARY);
+		return ScriptDebugImages.get(ScriptDebugImages.IMG_WIZBAN_LIBRARY);
 	}
 
 

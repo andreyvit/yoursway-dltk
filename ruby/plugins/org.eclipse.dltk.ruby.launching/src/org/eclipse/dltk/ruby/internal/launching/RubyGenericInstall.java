@@ -27,7 +27,7 @@ import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
 import org.eclipse.dltk.utils.DeployHelper;
 
-public class GenericRubyInstall extends AbstractInterpreterInstall {
+public class RubyGenericInstall extends AbstractInterpreterInstall {
 
 	public class BuiltinsHelper {
 		public BuiltinsHelper() {
@@ -47,7 +47,7 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 			}
 
 			String[] cmdLine = new String[] {
-					GenericRubyInstall.this.getInstallLocation()
+					RubyGenericInstall.this.getInstallLocation()
 							.getAbsolutePath(), builder.getAbsolutePath(),
 					command };
 
@@ -89,7 +89,7 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 		}
 	}
 
-	public GenericRubyInstall(IInterpreterInstallType type, String id) {
+	public RubyGenericInstall(IInterpreterInstallType type, String id) {
 		super(type, id);
 	}
 
@@ -102,10 +102,6 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 		if (mode.equals(ILaunchManager.RUN_MODE)) {
 			return new RubyInterpreterRunner(this);
 		}
-
-		// else if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-		// return new RubyInterpreterDebugger(this);
-		// }
 
 		return null;
 	}
@@ -149,6 +145,7 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 		if (sources == null) {
 			initialize();
 		}
+		
 		return (String[]) sources.keySet().toArray(new String[sources.size()]);
 	}
 

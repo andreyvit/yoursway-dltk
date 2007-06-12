@@ -19,26 +19,17 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 
 public class EntryToggleAction extends BreakpointToggleAction {
 
-	/**
-	 * @see BreakpointToggleAction#getToggleState(IScriptBreakpoint)
-	 */
 	protected boolean getToggleState(IScriptBreakpoint breakpoint)
 			throws CoreException {
 		return ((IScriptMethodEntryBreakpoint) breakpoint).shouldBreakOnEntry();
 	}
 
-	/**
-	 * @see BreakpointToggleAction#doAction(IScriptBreakpoint)
-	 */
 	public void doAction(IScriptBreakpoint breakpoint) throws CoreException {
 		((IScriptMethodEntryBreakpoint) breakpoint)
 				.setBreakOnEntry(!((IScriptMethodEntryBreakpoint) breakpoint)
 						.shouldBreakOnEntry());
 	}
 
-	/**
-	 * @see BreakpointToggleAction#isEnabledFor(IStructuredSelection)
-	 */
 	public boolean isEnabledFor(IStructuredSelection selection) {
 		Iterator iter = selection.iterator();
 		while (iter.hasNext()) {

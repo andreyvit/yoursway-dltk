@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.dltk.launching.interpreterInstallTypes">
           <interpreterInstallType
-            class="org.eclipse.dltk.ruby.internal.launching.GenericRubyInstallType"
+            class="org.eclipse.dltk.ruby.internal.launching.RubyGenericInstallType"
             id="org.eclipse.dltk.internal.debug.ui.launcher.GenericRubyInstallType">
       </interpreterInstallType>   
    </extension>

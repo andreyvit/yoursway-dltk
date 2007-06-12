@@ -7,21 +7,18 @@
  *
  
  *******************************************************************************/
-package org.eclipse.dltk.ruby.internal.launching;
+package org.eclipse.dltk.ruby.core;
 
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.dltk.ast.Modifiers;
 
-public class RubyInterpreterMessages extends NLS {
+public class RubyConstants {
+	protected RubyConstants() {
 
-	private static final String BUNDLE_NAME = "org.eclipse.dltk.ruby.internal.launching.RubyInterpreterMessages";//$NON-NLS-1$
-
-	private RubyInterpreterMessages() {
-		// dont instatiate
 	}
 
-	static {
-		// load message values from bundle file
-		NLS.initializeMessages(BUNDLE_NAME, RubyInterpreterMessages.class);
-	}
+	public final static String RUBY_PARTITIONING = "__ruby_partitioning";
 
+	public static final int RubyAttributeModifier = Modifiers.USER_MODIFIER * 2;
+	
+	public static final int RubyAliasModifier = Modifiers.USER_MODIFIER * 4;
 }

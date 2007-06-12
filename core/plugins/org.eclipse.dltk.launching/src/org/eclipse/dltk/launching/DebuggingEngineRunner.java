@@ -68,7 +68,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 	protected String getSessionId(ILaunchConfiguration configuration)
 			throws CoreException {
 		String id = configuration.getAttribute(
-				IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
+				ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
 				(String) null);
 
 		if (id == null) {
@@ -95,7 +95,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			ILaunchConfiguration configuration) throws CoreException {
 		try {
 			int port = configuration.getAttribute(
-					IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_PORT, -1);
+					ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_PORT, -1);
 
 			if (port == -1) {
 				return DLTKDebugPlugin.getDefault().createDbgpService();
@@ -166,7 +166,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 
 			int waitingTimeout = configuration
 					.getAttribute(
-							IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
+							ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
 							DEFAULT_WAITING_TIMEOUT);
 
 			ScriptDebugTargetWaiter waiter = new ScriptDebugTargetWaiter(

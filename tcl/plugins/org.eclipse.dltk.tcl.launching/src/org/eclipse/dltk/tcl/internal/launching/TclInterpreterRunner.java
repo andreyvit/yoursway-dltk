@@ -13,7 +13,7 @@ import org.eclipse.dltk.console.ScriptConsoleServer;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.launching.AbstractInterpreterRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
-import org.eclipse.dltk.tcl.launching.ITclLaunchConfigurationConstants;
+import org.eclipse.dltk.tcl.launching.TclLaunchConfigurationConstants;
 import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
 
 public class TclInterpreterRunner extends AbstractInterpreterRunner {
@@ -46,6 +46,6 @@ public class TclInterpreterRunner extends AbstractInterpreterRunner {
 	}
 
 	protected String getProcessType() {
-		return ITclLaunchConfigurationConstants.ID_TCL_PROCESS_TYPE;
+		return TclLaunchConfigurationConstants.ID_TCL_PROCESS_TYPE;
 	}
 }

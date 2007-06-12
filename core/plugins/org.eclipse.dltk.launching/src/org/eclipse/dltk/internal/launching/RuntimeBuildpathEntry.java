@@ -31,7 +31,7 @@ import org.eclipse.dltk.core.BuildpathContainerInitializer;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IRuntimeBuildpathEntry;
 import org.eclipse.dltk.launching.LaunchingMessages;
 import org.w3c.dom.Document;
@@ -192,7 +192,7 @@ public class RuntimeBuildpathEntry implements IRuntimeBuildpathEntry {
 	 * Throws an internal error exception
 	 */
 	protected void abort(String message, Throwable e)	throws CoreException {
-		IStatus s = new Status(IStatus.ERROR, DLTKLaunchingPlugin.getUniqueIdentifier(), IDLTKLaunchConfigurationConstants.ERR_INTERNAL_ERROR, message, e);
+		IStatus s = new Status(IStatus.ERROR, DLTKLaunchingPlugin.getUniqueIdentifier(), ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR, message, e);
 		throw new CoreException(s);		
 	}
 
@@ -238,7 +238,7 @@ public class RuntimeBuildpathEntry implements IRuntimeBuildpathEntry {
 		try {
 			doc = DLTKLaunchingPlugin.getDocument();
 		} catch (ParserConfigurationException e) {
-			IStatus status = new Status(IStatus.ERROR, DLTKLaunchingPlugin.getUniqueIdentifier(), IDLTKLaunchConfigurationConstants.ERR_INTERNAL_ERROR, LaunchingMessages.RuntimeBuildpathEntry_An_exception_occurred_generating_runtime_classpath_memento_8, e); 
+			IStatus status = new Status(IStatus.ERROR, DLTKLaunchingPlugin.getUniqueIdentifier(), ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR, LaunchingMessages.RuntimeBuildpathEntry_An_exception_occurred_generating_runtime_classpath_memento_8, e); 
 			throw new CoreException(status);
 		}
 		Element node = doc.createElement("runtimeBuildpathEntry"); //$NON-NLS-1$
@@ -267,10 +267,10 @@ public class RuntimeBuildpathEntry implements IRuntimeBuildpathEntry {
 		try {
 			return DLTKLaunchingPlugin.serializeDocument(doc);
 		} catch (IOException e) {
-			IStatus status = new Status(IStatus.ERROR, DLTKLaunchingPlugin.getUniqueIdentifier(), IDLTKLaunchConfigurationConstants.ERR_INTERNAL_ERROR, LaunchingMessages.RuntimeBuildpathEntry_An_exception_occurred_generating_runtime_classpath_memento_8, e); 
+			IStatus status = new Status(IStatus.ERROR, DLTKLaunchingPlugin.getUniqueIdentifier(), ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR, LaunchingMessages.RuntimeBuildpathEntry_An_exception_occurred_generating_runtime_classpath_memento_8, e); 
 			throw new CoreException(status);
 		} catch (TransformerException e) {
-			IStatus status = new Status(IStatus.ERROR, DLTKLaunchingPlugin.getUniqueIdentifier(), IDLTKLaunchConfigurationConstants.ERR_INTERNAL_ERROR, LaunchingMessages.RuntimeBuildpathEntry_An_exception_occurred_generating_runtime_classpath_memento_8, e); 
+			IStatus status = new Status(IStatus.ERROR, DLTKLaunchingPlugin.getUniqueIdentifier(), ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR, LaunchingMessages.RuntimeBuildpathEntry_An_exception_occurred_generating_runtime_classpath_memento_8, e); 
 			throw new CoreException(status);
 		}
 	}

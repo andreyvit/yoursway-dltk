@@ -106,7 +106,7 @@ public class InterpreterContainer implements IBuildpathContainer {
 		List entries = new ArrayList(libs.length);
 		List rawEntries = new ArrayList (libs.length);
 		for (int i = 0; i < libs.length; i++) {
-			IPath entryPath = libs[i].getSystemLibraryPath();
+			IPath entryPath = libs[i].getLibraryPath();
 		
 			if (!entryPath.isEmpty()) {
 				
@@ -128,7 +128,7 @@ public class InterpreterContainer implements IBuildpathContainer {
 				IBuildpathAttribute[] attributes = new IBuildpathAttribute[0];
 				ArrayList excluded = new ArrayList(); // paths to exclude
 				for (int j = 0; j < libs.length; j++) {
-					IPath otherPath = libs[j].getSystemLibraryPath();
+					IPath otherPath = libs[j].getLibraryPath();
 					if (otherPath.isEmpty())
 						continue;
 					//resolve symlink

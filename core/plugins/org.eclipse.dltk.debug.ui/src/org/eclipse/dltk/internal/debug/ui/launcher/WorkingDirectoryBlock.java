@@ -28,7 +28,7 @@ import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.debug.ui.launchConfigurations.CommonScriptLaunchTab;
 import org.eclipse.dltk.debug.ui.messages.DLTKLaunchMessages;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -284,7 +284,7 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 		try {
 			ILaunchConfiguration config = getLaunchConfiguration();
 			if (config != null) {
-				String projectName = config.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_PROJECT_NAME, "");
+				String projectName = config.getAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, "");
 				if (!projectName.equals("")) {
 					IDLTKProject project = DLTKCore.create(getWorkspaceRoot()).getScriptProject(projectName);
 					if (project != null) {
@@ -338,7 +338,7 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#setDefaults(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
 	 */
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
-		config.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, (String)null);
+		config.setAttribute(ScriptLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, (String)null);
 	}
 
 	/* (non-Javadoc)
@@ -347,7 +347,7 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		setLaunchConfiguration(configuration);
 		try {			
-			String wd = configuration.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, (String)null);
+			String wd = configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, (String)null);
 			setDefaultWorkingDir();
 			if (wd != null) {
 				setOtherWorkingDirectoryText(wd);
@@ -364,10 +364,10 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		if(fUseDefaultDirButton.getSelection()) {
-			configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, (String)null);
+			configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, (String)null);
 		}//end if
 		else {
-			configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, getWorkingDirectoryText());
+			configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, getWorkingDirectoryText());
 		}//end else
 	}//end performApply
 	

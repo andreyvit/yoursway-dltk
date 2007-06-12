@@ -32,7 +32,7 @@ public final class LibraryStandin {
 	 * Creates a new library standin on the given library location.
 	 */	
 	public LibraryStandin(LibraryLocation libraryLocation) {
-		fSystemLibrary= libraryLocation.getSystemLibraryPath();
+		fSystemLibrary= libraryLocation.getLibraryPath();
 	}		
 		
 	/**

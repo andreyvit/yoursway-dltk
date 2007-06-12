@@ -113,7 +113,7 @@ public class BuildpathContainerTests extends AbstractDebugTest {
 		for (int i = 0; i < newLibs.length; i++) {
 			LibraryLocation location = newLibs[i];
 			LibraryLocation origi = originalLibs[i];
-			assertEquals("Library should be the eqaual", origi.getSystemLibraryPath().toFile(), location.getSystemLibraryPath().toFile());
+			assertEquals("Library should be the eqaual", origi.getLibraryPath().toFile(), location.getLibraryPath().toFile());
 		} 
 	}
 }

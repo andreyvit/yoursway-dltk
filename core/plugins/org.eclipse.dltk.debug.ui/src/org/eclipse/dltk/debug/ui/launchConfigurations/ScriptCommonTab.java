@@ -18,7 +18,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-public class DLTKCommonTab extends CommonTab {
+public class ScriptCommonTab extends CommonTab {
 	
 	public void createControl(Composite parent) {
 		super.createControl(parent);

@@ -19,7 +19,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptModel;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.IDLTKDebugUIConstants;
-import org.eclipse.dltk.internal.debug.ui.IDLTKDebugHelpContextIds;
+import org.eclipse.dltk.internal.debug.ui.IScriptDebugHelpContextIds;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.LibraryLocation;
 import org.eclipse.dltk.launching.ScriptRuntime;
@@ -115,9 +115,9 @@ public abstract class InterpreterPreferencePage extends PreferencePage implement
 		control.setLayoutData(data);
 		
 		fInterpretersBlock.restoreColumnSettings(DLTKDebugUIPlugin.getDefault().getDialogSettings(), 
-				IDLTKDebugHelpContextIds.INTERPRETER_PREFERENCE_PAGE);
+				IScriptDebugHelpContextIds.INTERPRETER_PREFERENCE_PAGE);
 						
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(ancestor, IDLTKDebugHelpContextIds.INTERPRETER_PREFERENCE_PAGE);		
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(ancestor, IScriptDebugHelpContextIds.INTERPRETER_PREFERENCE_PAGE);		
 		initDefaultInterpreter();
 		fInterpretersBlock.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -158,7 +158,7 @@ public abstract class InterpreterPreferencePage extends PreferencePage implement
 		
 		// save column widths
 		IDialogSettings settings = DLTKDebugUIPlugin.getDefault().getDialogSettings();
-		fInterpretersBlock.saveColumnSettings(settings, IDLTKDebugHelpContextIds.INTERPRETER_PREFERENCE_PAGE);
+		fInterpretersBlock.saveColumnSettings(settings, IScriptDebugHelpContextIds.INTERPRETER_PREFERENCE_PAGE);
 		
 		return super.performOk();
 	}	
@@ -178,7 +178,7 @@ public abstract class InterpreterPreferencePage extends PreferencePage implement
 			LibraryLocation[] locations= ScriptRuntime.getLibraryLocations(Interpreter);
 			boolean exist = true;
 			for (int i = 0; i < locations.length; i++) {
-				exist = exist && new File(locations[i].getSystemLibraryPath().toOSString()).exists();
+				exist = exist && new File(locations[i].getLibraryPath().toOSString()).exists();
 			}
 			
 			// If all library locations exist, check the corresponding entry in the list,

@@ -9,11 +9,16 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.launching;
 
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 
-public interface ITclLaunchConfigurationConstants extends IDLTKLaunchConfigurationConstants {
-	//id of configuration type
-	public static final String ID_TCL_SCRIPT = "org.eclipse.dltk.tcl.launching.TCLLaunchConfigurationType";
+public class TclLaunchConfigurationConstants extends
+		ScriptLaunchConfigurationConstants {
 	
-	public static final String ID_TCL_PROCESS_TYPE  = "tclInterpreter";
+	protected TclLaunchConfigurationConstants() {
+		
+	}
+	
+	public static final String ID_TCL_SCRIPT = "org.eclipse.dltk.tcl.launching.TCLLaunchConfigurationType"; //$NON-NLS-1$
+
+	public static final String ID_TCL_PROCESS_TYPE = "tclInterpreter"; //$NON-NLS-1$
 }

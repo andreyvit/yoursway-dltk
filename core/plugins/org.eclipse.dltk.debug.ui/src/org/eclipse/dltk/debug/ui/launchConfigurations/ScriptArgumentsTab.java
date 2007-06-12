@@ -17,11 +17,11 @@ import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.dltk.debug.ui.actions.ControlAccessibleListener;
 import org.eclipse.dltk.debug.ui.messages.DLTKLaunchMessages;
-import org.eclipse.dltk.internal.debug.ui.DLTKDebugImages;
+import org.eclipse.dltk.internal.debug.ui.ScriptDebugImages;
 import org.eclipse.dltk.internal.debug.ui.launcher.InterpreterArgumentsBlock;
 import org.eclipse.dltk.internal.debug.ui.launcher.WorkingDirectoryBlock;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -160,7 +160,7 @@ public class ScriptArgumentsTab extends CommonScriptLaunchTab {
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#setDefaults(ILaunchConfigurationWorkingCopy)
 	 */
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
-		config.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_SCRIPT_ARGUMENTS, (String)null);
+		config.setAttribute(ScriptLaunchConfigurationConstants.ATTR_SCRIPT_ARGUMENTS, (String)null);
 		if (fInterpreterArgumentsBlock != null)
 			fInterpreterArgumentsBlock.setDefaults(config);
 		fWorkingDirectoryBlock.setDefaults(config);
@@ -171,7 +171,7 @@ public class ScriptArgumentsTab extends CommonScriptLaunchTab {
 	 */
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
-			fPrgmArgumentsText.setText(configuration.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_SCRIPT_ARGUMENTS, "")); //$NON-NLS-1$
+			fPrgmArgumentsText.setText(configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_SCRIPT_ARGUMENTS, "")); //$NON-NLS-1$
 			if (fInterpreterArgumentsBlock != null)
 				fInterpreterArgumentsBlock.initializeFrom(configuration);
 			fWorkingDirectoryBlock.initializeFrom(configuration);
@@ -185,7 +185,7 @@ public class ScriptArgumentsTab extends CommonScriptLaunchTab {
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#performApply(ILaunchConfigurationWorkingCopy)
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(IDLTKLaunchConfigurationConstants.ATTR_SCRIPT_ARGUMENTS, 
+		configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_SCRIPT_ARGUMENTS, 
 				getAttributeValueFrom(fPrgmArgumentsText));
 		if (fInterpreterArgumentsBlock != null)
 			fInterpreterArgumentsBlock.performApply(configuration);
@@ -247,7 +247,7 @@ public class ScriptArgumentsTab extends CommonScriptLaunchTab {
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getImage()
 	 */
 	public Image getImage() {
-		return DLTKDebugImages.get(DLTKDebugImages.IMG_VIEW_ARGUMENTS_TAB);
+		return ScriptDebugImages.get(ScriptDebugImages.IMG_VIEW_ARGUMENTS_TAB);
 	}	
 
 	/* (non-Javadoc)

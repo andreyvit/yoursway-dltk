@@ -4,7 +4,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -138,14 +138,14 @@ public class JavaScriptRemoteTab extends AbstractLaunchConfigurationTab {
 		try {
 			// Port
 			int port = configuration.getAttribute(
-					IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_PORT, -1);
+					ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_PORT, -1);
 
 			setPort(port != -1 ? port : DEFAULT_PORT);
 
 			// Session id
 			String sessionId = configuration
 					.getAttribute(
-							IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
+							ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
 							(String) null);
 
 			setSessionId(sessionId != null ? sessionId : DEFAULT_SESSION_ID);
@@ -153,7 +153,7 @@ public class JavaScriptRemoteTab extends AbstractLaunchConfigurationTab {
 			// Timeout
 			int timeout = configuration
 					.getAttribute(
-							IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
+							ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
 							-1);
 			setTimeout(timeout != -1 ? timeout : DEFAULT_TIMEOUT);
 		} catch (CoreException e) {
@@ -166,21 +166,21 @@ public class JavaScriptRemoteTab extends AbstractLaunchConfigurationTab {
 			setErrorMessage(null);
 
 			configuration.setAttribute(
-					IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_REMOTE,
+					ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_REMOTE,
 					true);
 
 			configuration.setAttribute(
-					IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_PORT,
+					ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_PORT,
 					getPort());
 
 			configuration
 					.setAttribute(
-							IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
+							ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
 							getSessionId());
 
 			configuration
 					.setAttribute(
-							IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
+							ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
 							getTimeout());
 		} catch (NumberFormatException e) {
 			setErrorMessage("Should be a number instead of string");
@@ -189,16 +189,16 @@ public class JavaScriptRemoteTab extends AbstractLaunchConfigurationTab {
 
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(
-				IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_PORT,
+				ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_PORT,
 				DEFAULT_PORT);
 
 		configuration.setAttribute(
-				IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
+				ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
 				DEFAULT_SESSION_ID);
 
 		configuration
 				.setAttribute(
-						IDLTKLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
+						ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
 						DEFAULT_TIMEOUT);
 	}
 }

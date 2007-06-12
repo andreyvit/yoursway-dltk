@@ -566,7 +566,7 @@ public final class ScriptRuntime {
 	public static IDLTKProject getDLTKProject(ILaunchConfiguration configuration)
 			throws CoreException {
 		String projectName = configuration.getAttribute(
-				IDLTKLaunchConfigurationConstants.ATTR_PROJECT_NAME,
+				ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 				(String) null);
 		if ((projectName == null) || (projectName.trim().length() < 1)) {
 			return null;
@@ -577,7 +577,7 @@ public final class ScriptRuntime {
 				&& !scriptProject.getProject().isOpen()) {
 			abort(MessageFormat.format(LaunchingMessages.ScriptRuntime_28,
 					new String[] { configuration.getName(), projectName }),
-					IDLTKLaunchConfigurationConstants.ERR_PROJECT_CLOSED, null);
+					ScriptLaunchConfigurationConstants.ERR_PROJECT_CLOSED, null);
 		}
 		if ((scriptProject == null) || !scriptProject.exists()) {
 			abort(
@@ -586,7 +586,7 @@ public final class ScriptRuntime {
 									LaunchingMessages.ScriptRuntime_Launch_configuration__0__references_non_existing_project__1___1,
 									new String[] { configuration.getName(),
 											projectName }),
-					IDLTKLaunchConfigurationConstants.ERR_NOT_A_SCRIPT_PROJECT,
+					ScriptLaunchConfigurationConstants.ERR_NOT_A_SCRIPT_PROJECT,
 					null);
 		}
 		return scriptProject;
@@ -623,9 +623,9 @@ public final class ScriptRuntime {
 			ILaunchConfiguration configuration) throws CoreException {
 		// get field ATTR_NATURE from launch configuration
 		String nature = configuration.getAttribute(
-				IDLTKLaunchConfigurationConstants.ATTR_NATURE, (String) null);
+				ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE, (String) null);
 		String containerPath = configuration.getAttribute(
-				IDLTKLaunchConfigurationConstants.ATTR_CONTAINER_PATH,
+				ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH,
 				(String) null);
 		if (containerPath == null) {
 			IDLTKProject proj = getDLTKProject(configuration);
@@ -653,7 +653,7 @@ public final class ScriptRuntime {
 		if (nature == null) {
 			abort(
 					LaunchingMessages.ScriptRuntime_notDefaultInterpreter,
-					IDLTKLaunchConfigurationConstants.ERR_NO_DEFAULT_INTERPRETER_INSTALL,
+					ScriptLaunchConfigurationConstants.ERR_NO_DEFAULT_INTERPRETER_INSTALL,
 					null);
 		}
 		// OR extract project nature from it's name (what about several
@@ -662,7 +662,7 @@ public final class ScriptRuntime {
 		if (res == null) {
 			abort(
 					LaunchingMessages.ScriptRuntime_notDefaultInterpreter,
-					IDLTKLaunchConfigurationConstants.ERR_NO_DEFAULT_INTERPRETER_INSTALL,
+					ScriptLaunchConfigurationConstants.ERR_NO_DEFAULT_INTERPRETER_INSTALL,
 					null);
 		}
 		return res;
@@ -679,7 +679,7 @@ public final class ScriptRuntime {
 	 */
 	private static void abort(String message, Throwable exception)
 			throws CoreException {
-		abort(message, IDLTKLaunchConfigurationConstants.ERR_INTERNAL_ERROR,
+		abort(message, ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR,
 				exception);
 	}
 
@@ -863,7 +863,7 @@ public final class ScriptRuntime {
 		List existingDefaultLocations = new ArrayList();
 		for (int i = 0; i < defaultLocations.length; ++i) {
 			LibraryLocation location = defaultLocations[i];
-			File file = location.getSystemLibraryPath().toFile();
+			File file = location.getLibraryPath().toFile();
 			if (file.exists()) {
 				existingDefaultLocations.add(location);
 			}
@@ -1009,7 +1009,7 @@ public final class ScriptRuntime {
 	public static IRuntimeBuildpathEntry computeInterpreterEntry(
 			ILaunchConfiguration configuration) throws CoreException {
 		String containerAttr = configuration.getAttribute(
-				IDLTKLaunchConfigurationConstants.ATTR_CONTAINER_PATH,
+				ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH,
 				(String) null);
 		IPath containerPath = null;
 		if (containerAttr == null) {
@@ -2037,7 +2037,7 @@ public final class ScriptRuntime {
 	public static IRuntimeBuildpathProvider getBuildpathProvider(
 			ILaunchConfiguration configuration) throws CoreException {
 		String providerId = configuration.getAttribute(
-				IDLTKLaunchConfigurationConstants.ATTR_BUILDPATH_PROVIDER,
+				ScriptLaunchConfigurationConstants.ATTR_BUILDPATH_PROVIDER,
 				(String) null);
 		IRuntimeBuildpathProvider provider = null;
 		if (providerId == null) {

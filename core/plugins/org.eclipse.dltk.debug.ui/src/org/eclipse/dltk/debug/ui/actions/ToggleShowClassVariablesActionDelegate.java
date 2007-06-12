@@ -1,4 +1,4 @@
-package org.eclipse.dltk.debug.ui;
+package org.eclipse.dltk.debug.ui.actions;
 
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;

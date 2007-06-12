@@ -28,7 +28,7 @@ import org.eclipse.dltk.core.IDLTKProject;
  */
 public class StandardBuildpathProvider implements IRuntimeBuildpathProvider {
 	public IRuntimeBuildpathEntry[] computeUnresolvedBuildpath(ILaunchConfiguration configuration) throws CoreException {
-		boolean useDefault = configuration.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_DEFAULT_BUILDPATH, true);
+		boolean useDefault = configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_DEFAULT_BUILDPATH, true);
 		if (useDefault) {
 			IDLTKProject proj = ScriptRuntime.getDLTKProject(configuration);
 			IRuntimeBuildpathEntry InterpreterEnvironmentEntry = ScriptRuntime.computeInterpreterEntry(configuration);
@@ -56,7 +56,7 @@ public class StandardBuildpathProvider implements IRuntimeBuildpathProvider {
 			return entries;
 		}
 		// recover persisted buildpath
-		return recoverRuntimePath(configuration, IDLTKLaunchConfigurationConstants.ATTR_BUILDPATH);
+		return recoverRuntimePath(configuration, ScriptLaunchConfigurationConstants.ATTR_BUILDPATH);
 	}
 	
 	public IRuntimeBuildpathEntry[] resolveBuildpath(IRuntimeBuildpathEntry[] entries, ILaunchConfiguration configuration) throws CoreException {

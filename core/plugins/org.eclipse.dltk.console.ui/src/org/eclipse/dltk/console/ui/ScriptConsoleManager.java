@@ -26,7 +26,7 @@ import org.eclipse.debug.core.ILaunchListener;
 import org.eclipse.dltk.console.IScriptInterpreter;
 import org.eclipse.dltk.console.ScriptConsoleServer;
 import org.eclipse.dltk.console.ScriptInterpreterManager;
-import org.eclipse.dltk.launching.IDLTKLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -155,19 +155,19 @@ public class ScriptConsoleManager implements ILaunchListener {
 				return;
 			}
 			
-			final String natureId = configuration.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_NATURE, (String)null);
+			final String natureId = configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE, (String)null);
 			
 			if (natureId == null){
 				return;
 			}
 			
-			boolean useDltk = configuration.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT, false);
+			boolean useDltk = configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT, false);
 
 			if (!useDltk) {
 				return;
 			}
 
-			final String consoleId = configuration.getAttribute(IDLTKLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID,
+			final String consoleId = configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID,
 					(String) null);
 
 			final IScriptConsoleFactory factory = findScriptConsoleFactory(natureId);

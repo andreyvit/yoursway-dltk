@@ -48,7 +48,8 @@ public class RubyKeyword {
 		,"case", "when", "begin", "ensure", "module", "for", "then", "do", "and", "or", "not"
 		,"rescue", "return", "break", "next", "yield", "defined?", "super", "def", "undef", "alias", "class"
 		,"end", "self", "false", "true", "retry", "nil", "redo", "BEGIN", "END", "__LINE__", "__FILE__",
-		"sub", "sub!", "gsub", "gsub!", "scan", "index", "match" };
+		"sub", "sub!", "gsub", "gsub!", "scan", "index", "match", "require" };
+	
 	private static Map sKeywordContext = new HashMap();
 	static {
 		sKeywordContext.put("if", RubyContext.EXPRESSION_START);

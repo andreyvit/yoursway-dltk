@@ -12,7 +12,7 @@ package org.eclipse.dltk.launching;
 import org.eclipse.core.runtime.IPath;
 
 public class LibraryLocation {
-	private IPath fSystemLibrary;
+	private IPath libraryPath;
 
 	/**
 	 * Creates a new library location.
@@ -29,7 +29,7 @@ public class LibraryLocation {
 			throw new IllegalArgumentException();
 		}
 
-		fSystemLibrary = libraryPath;
+		this.libraryPath = libraryPath;
 	}
 
 	/**
@@ -37,20 +37,21 @@ public class LibraryLocation {
 	 * 
 	 * @return The InterpreterEnvironment library archive location.
 	 */
-	public IPath getSystemLibraryPath() {
-		return fSystemLibrary;
+	public IPath getLibraryPath() {
+		return libraryPath;
 	}
 
 	public boolean equals(Object obj) {
 		if (obj instanceof LibraryLocation) {
-			LibraryLocation lib = (LibraryLocation) obj;
-			return getSystemLibraryPath().equals(lib.getSystemLibraryPath());
+			return getLibraryPath().equals(
+					((LibraryLocation) obj).getLibraryPath());
 		}
+
 		return false;
 	}
 
 	public int hashCode() {
-		return getSystemLibraryPath().hashCode();
+		return getLibraryPath().hashCode();
 	}
 
 	/**

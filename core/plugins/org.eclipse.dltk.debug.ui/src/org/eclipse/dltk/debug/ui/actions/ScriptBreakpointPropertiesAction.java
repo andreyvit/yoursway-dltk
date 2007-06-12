@@ -26,7 +26,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.dialogs.PropertyDialogAction;
 
 /**
- * Presents the standard properties dialog to configure the attributes of a Java
+ * Presents the standard properties dialog to configure the attributes of a Script
  * Breakpoint.
  */
 public class ScriptBreakpointPropertiesAction implements IObjectActionDelegate {
@@ -34,9 +34,6 @@ public class ScriptBreakpointPropertiesAction implements IObjectActionDelegate {
 	private IWorkbenchPart fPart;
 	private IScriptBreakpoint fBreakpoint;
 
-	/**
-	 * @see IActionDelegate#run(IAction)
-	 */
 	public void run(IAction action) {
 		IShellProvider provider;
 		if (fPart != null) {

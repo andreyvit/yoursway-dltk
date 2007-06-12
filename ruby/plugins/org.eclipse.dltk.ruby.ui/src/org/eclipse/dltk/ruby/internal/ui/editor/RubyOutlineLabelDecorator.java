@@ -14,7 +14,7 @@ import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.editor.AnnotatedImageDescriptor;
-import org.eclipse.dltk.ruby.core.IRubyConstants;
+import org.eclipse.dltk.ruby.core.RubyConstants;
 import org.eclipse.dltk.ruby.internal.ui.RubyImages;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.viewsupport.ImageImageDescriptor;
@@ -56,12 +56,12 @@ public class RubyOutlineLabelDecorator extends LabelProvider implements
 				drawImageTopRight(data);
 			}
 			
-			if ((flags & IRubyConstants.RubyAttributeModifier) != 0) {
+			if ((flags & RubyConstants.RubyAttributeModifier) != 0) {
 				data = getImageData(DLTKPluginImages.DESC_OVR_ABSTRACT);
 				drawImageTopLeft(data);
 			}
 			
-			if ((flags & IRubyConstants.RubyAliasModifier) != 0) {
+			if ((flags & RubyConstants.RubyAliasModifier) != 0) {
 				data = getImageData(DLTKPluginImages.DESC_OVR_CALLER);
 				drawImageTopLeft(data);
 			}
@@ -76,7 +76,7 @@ public class RubyOutlineLabelDecorator extends LabelProvider implements
 		if (element instanceof IMethod) {
 			IMethod method = (IMethod) element;
 			try {
-				if ((method.getFlags() & IRubyConstants.RubyAliasModifier) != 0) {
+				if ((method.getFlags() & RubyConstants.RubyAliasModifier) != 0) {
 					String oldName = method.getParameters()[0];
 					return method.getElementName();// + " [alias for " + oldName + "]";
 				}

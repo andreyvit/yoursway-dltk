@@ -262,7 +262,7 @@ public class TypeInfoViewer {
 		private void processLibraryLocation(LibraryLocation[] libLocations, String label) {
 			for (int l= 0; l < libLocations.length; l++) {
 				LibraryLocation location= libLocations[l];
-				fLib2Name.put(location.getSystemLibraryPath().toString(), label);
+				fLib2Name.put(location.getLibraryPath().toString(), label);
 			}
 		}
 		private String getFormattedLabel(String name) {

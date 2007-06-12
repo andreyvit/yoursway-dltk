@@ -22,7 +22,7 @@ import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
 import org.osgi.framework.Bundle;
 
-public class GenericRubyInstallType extends AbstractInterpreterInstallType {
+public class RubyGenericInstallType extends AbstractInterpreterInstallType {
 
 	private static String[] interpreterNames = { "ruby" };
 
@@ -43,7 +43,7 @@ public class GenericRubyInstallType extends AbstractInterpreterInstallType {
 	}
 
 	protected IInterpreterInstall doCreateInterpreterInstall(String id) {
-		return new GenericRubyInstall(this, id);
+		return new RubyGenericInstall(this, id);
 	}
 
 	protected File createPathFile() throws IOException {

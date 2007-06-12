@@ -393,7 +393,7 @@
             targetID="org.eclipse.debug.ui.VariableView"
             id="org.eclipse.dltk.debug.ui.VariableViewActions">
          <action
-               class="org.eclipse.dltk.debug.ui.ToggleShowGlobalVariablesActionDelegate"
+               class="org.eclipse.dltk.debug.ui.actions.ToggleShowGlobalVariablesActionDelegate"
                id="org.eclipse.dltk.debug.ui.variableViewActions.ShowStatic"
                label="%ShowGlobalVarsAction.label"
                menubarPath="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu/scriptPart"
@@ -401,7 +401,7 @@
                tooltip="%ShowGlobalVarsAction.tooltip">
          </action>
          <action
-               class="org.eclipse.dltk.debug.ui.ToggleShowClassVariablesActionDelegate"
+               class="org.eclipse.dltk.debug.ui.actions.ToggleShowClassVariablesActionDelegate"
                id="org.eclipse.dltk.debug.ui.variableViewActions.ShowStatic"
                label="%ShowClassVarsAction.label"
                menubarPath="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu/scriptPart"

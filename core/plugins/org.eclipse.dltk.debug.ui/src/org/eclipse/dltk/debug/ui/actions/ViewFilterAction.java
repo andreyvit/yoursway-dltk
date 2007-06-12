@@ -24,9 +24,6 @@ import org.eclipse.ui.IActionDelegate2;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
-/**
- * 
- */
 public abstract class ViewFilterAction extends ViewerFilter implements
 		IViewActionDelegate, IActionDelegate2 {
 
@@ -36,30 +33,18 @@ public abstract class ViewFilterAction extends ViewerFilter implements
 
 	class Updater implements IPropertyChangeListener {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
-		 */
 		public void propertyChange(PropertyChangeEvent event) {
 			if (event.getProperty().equals(getPreferenceKey())
 					|| event.getProperty().equals(getCompositeKey())) {
 				fAction.setChecked(getPreferenceValue());
 			}
-
 		}
-
 	}
 
 	public ViewFilterAction() {
 		super();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IViewActionDelegate#init(org.eclipse.ui.IViewPart)
-	 */
 	public void init(IViewPart view) {
 		fView = view;
 		fAction.setChecked(getPreferenceValue());
@@ -67,39 +52,18 @@ public abstract class ViewFilterAction extends ViewerFilter implements
 		getPreferenceStore().addPropertyChangeListener(fListener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate2#init(org.eclipse.jface.action.IAction)
-	 */
 	public void init(IAction action) {
 		fAction = action;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate2#dispose()
-	 */
 	public void dispose() {
 		getPreferenceStore().removePropertyChangeListener(fListener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate2#runWithEvent(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.swt.widgets.Event)
-	 */
 	public void runWithEvent(IAction action, Event event) {
 		run(action);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-	 */
 	public void run(IAction action) {
 		StructuredViewer viewer = getStructuredViewer();
 		ViewerFilter[] filters = viewer.getFilters();
@@ -127,12 +91,6 @@ public abstract class ViewFilterAction extends ViewerFilter implements
 		store.setValue(key, action.isChecked());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.jface.viewers.ISelection)
-	 */
 	public void selectionChanged(IAction action, ISelection selection) {
 	}
 

@@ -9,7 +9,7 @@ import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
 import org.eclipse.dltk.debug.ui.ScriptDebugImageDescriptor;
 import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
-import org.eclipse.dltk.internal.debug.ui.DLTKDebugImages;
+import org.eclipse.dltk.internal.debug.ui.ScriptDebugImages;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
@@ -27,7 +27,7 @@ public class JavaScriptDebugModelPresentation extends
 			public void run() {
 
 				DLTKPluginImages
-						.get(DLTKDebugImages.IMG_OBJS_CONTENDED_MONITOR);
+						.get(ScriptDebugImages.IMG_OBJS_CONTENDED_MONITOR);
 			}
 
 		});
@@ -115,8 +115,8 @@ public class JavaScriptDebugModelPresentation extends
 			if (fullName.indexOf('.') >= 0 || (fullName.equals("this")))
 				return DLTKPluginImages.get(DLTKPluginImages.IMG_METHOD_PUBLIC);
 			else
-				return DLTKDebugImages
-						.get(DLTKDebugImages.IMG_OBJS_LOCAL_VARIABLE);
+				return ScriptDebugImages
+						.get(ScriptDebugImages.IMG_OBJS_LOCAL_VARIABLE);
 		}
 		return super.getImage(element);
 	}

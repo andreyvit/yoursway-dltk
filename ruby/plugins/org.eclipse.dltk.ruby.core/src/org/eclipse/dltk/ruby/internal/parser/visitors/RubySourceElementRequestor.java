@@ -35,7 +35,7 @@ import org.eclipse.dltk.ruby.ast.RubyAliasExpression;
 import org.eclipse.dltk.ruby.ast.RubyAssignment;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyConstantDeclaration;
-import org.eclipse.dltk.ruby.core.IRubyConstants;
+import org.eclipse.dltk.ruby.core.RubyConstants;
 
 public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
@@ -278,7 +278,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 					String attr = RubyAttributeHandler.getText(n);
 					ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
 					mi.name = attr;
-					mi.modifiers = IRubyConstants.RubyAttributeModifier;
+					mi.modifiers = RubyConstants.RubyAttributeModifier;
 					mi.nameSourceStart = n.sourceStart();
 					mi.nameSourceEnd = n.sourceEnd() - 1;
 					mi.declarationStart = n.sourceStart();
@@ -293,7 +293,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 					ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
 					mi.parameterNames = new String[] { VALUE };
 					mi.name = attr + "=";
-					mi.modifiers = IRubyConstants.RubyAttributeModifier;
+					mi.modifiers = RubyConstants.RubyAttributeModifier;
 					mi.nameSourceStart = n.sourceStart();
 					mi.nameSourceEnd = n.sourceEnd() - 1;
 					mi.declarationStart = n.sourceStart();
@@ -368,7 +368,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 				ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
 
 				mi.name = newValue;
-				mi.modifiers = IRubyConstants.RubyAliasModifier;
+				mi.modifiers = RubyConstants.RubyAliasModifier;
 				mi.nameSourceStart = alias.sourceStart();
 				mi.nameSourceEnd = alias.sourceEnd() - 1;
 				mi.declarationStart = alias.sourceStart();

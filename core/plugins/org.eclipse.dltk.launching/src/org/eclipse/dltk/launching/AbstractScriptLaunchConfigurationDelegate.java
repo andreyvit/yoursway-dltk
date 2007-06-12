@@ -53,8 +53,6 @@ import com.ibm.icu.text.MessageFormat;
  * Clients implementing Script launch configuration delegates should subclass
  * this class.
  * </p>
- * 
- * 
  */
 public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		LaunchConfigurationDelegate {
@@ -129,7 +127,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			abort(
 					LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_The_specified_InterpreterEnvironment_installation_does_not_exist_4,
 					null,
-					IDLTKLaunchConfigurationConstants.ERR_INTERPRETER_INSTALL_DOES_NOT_EXIST);
+					ScriptLaunchConfigurationConstants.ERR_INTERPRETER_INSTALL_DOES_NOT_EXIST);
 
 		}
 		File location = Interpreter.getInstallLocation();
@@ -140,7 +138,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 									LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_InterpreterEnvironment_home_directory_not_specified_for__0__5,
 									new String[] { Interpreter.getName() }),
 					null,
-					IDLTKLaunchConfigurationConstants.ERR_INTERPRETER_INSTALL_DOES_NOT_EXIST);
+					ScriptLaunchConfigurationConstants.ERR_INTERPRETER_INSTALL_DOES_NOT_EXIST);
 		}
 		if (!location.exists()) {
 			abort(
@@ -150,7 +148,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 									new String[] { Interpreter.getName(),
 											location.getAbsolutePath() }),
 					null,
-					IDLTKLaunchConfigurationConstants.ERR_INTERPRETER_INSTALL_DOES_NOT_EXIST);
+					ScriptLaunchConfigurationConstants.ERR_INTERPRETER_INSTALL_DOES_NOT_EXIST);
 		}
 		return Interpreter;
 	}
@@ -169,7 +167,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	public String getDebugConnectorId(ILaunchConfiguration configuration)
 			throws CoreException {
 		return configuration.getAttribute(
-				IDLTKLaunchConfigurationConstants.ATTR_DEBUG_CONNECTOR,
+				ScriptLaunchConfigurationConstants.ATTR_DEBUG_CONNECTOR,
 				(String) null);
 	}
 
@@ -435,7 +433,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	public static String getScriptProjectName(ILaunchConfiguration configuration)
 			throws CoreException {
 		return configuration.getAttribute(
-				IDLTKLaunchConfigurationConstants.ATTR_PROJECT_NAME,
+				ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 				(String) null);
 	}
 
@@ -453,7 +451,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	public String getMainScriptName(ILaunchConfiguration configuration)
 			throws CoreException {
 		String script = configuration.getAttribute(
-				IDLTKLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
+				ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
 				(String) null);
 		if (script == null) {
 			return null;
@@ -477,7 +475,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	public String[] getScriptArguments(ILaunchConfiguration configuration)
 			throws CoreException {
 		String arguments = configuration.getAttribute(
-				IDLTKLaunchConfigurationConstants.ATTR_SCRIPT_ARGUMENTS, ""); //$NON-NLS-1$
+				ScriptLaunchConfigurationConstants.ATTR_SCRIPT_ARGUMENTS, ""); //$NON-NLS-1$
 		String args = VariablesPlugin.getDefault().getStringVariableManager()
 				.performStringSubstitution(arguments);
 
@@ -499,7 +497,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	protected final String[] getInterpreterArguments(
 			ILaunchConfiguration configuration) throws CoreException {
 		String arguments = configuration.getAttribute(
-				IDLTKLaunchConfigurationConstants.ATTR_INTERPRETER_ARGUMENTS,
+				ScriptLaunchConfigurationConstants.ATTR_INTERPRETER_ARGUMENTS,
 				""); //$NON-NLS-1$
 
 		String args = VariablesPlugin.getDefault().getStringVariableManager()
@@ -522,7 +520,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			ILaunchConfiguration configuration) throws CoreException {
 		Map map = configuration
 				.getAttribute(
-						IDLTKLaunchConfigurationConstants.ATTR_INTERPRETER_INSTALL_TYPE_SPECIFIC_ATTRS_MAP,
+						ScriptLaunchConfigurationConstants.ATTR_INTERPRETER_INSTALL_TYPE_SPECIFIC_ATTRS_MAP,
 						(Map) null);
 		return map;
 	}
@@ -557,7 +555,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	public IPath getWorkingDirectoryPath(ILaunchConfiguration configuration)
 			throws CoreException {
 		String path = configuration.getAttribute(
-				IDLTKLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY,
+				ScriptLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY,
 				(String) null);
 		if (path != null) {
 			path = VariablesPlugin.getDefault().getStringVariableManager()
@@ -592,7 +590,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 											LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_Working_directory_does_not_exist___0__12,
 											new String[] { dir.toString() }),
 							null,
-							IDLTKLaunchConfigurationConstants.ERR_WORKING_DIRECTORY_DOES_NOT_EXIST);
+							ScriptLaunchConfigurationConstants.ERR_WORKING_DIRECTORY_DOES_NOT_EXIST);
 				}
 				return dir;
 			}
@@ -617,7 +615,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 										LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_Working_directory_does_not_exist___0__12,
 										new String[] { path.toString() }),
 						null,
-						IDLTKLaunchConfigurationConstants.ERR_WORKING_DIRECTORY_DOES_NOT_EXIST);
+						ScriptLaunchConfigurationConstants.ERR_WORKING_DIRECTORY_DOES_NOT_EXIST);
 			} else {
 				IResource res = ResourcesPlugin.getWorkspace().getRoot()
 						.findMember(path);
@@ -630,7 +628,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 										LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_Working_directory_does_not_exist___0__12,
 										new String[] { path.toString() }),
 						null,
-						IDLTKLaunchConfigurationConstants.ERR_WORKING_DIRECTORY_DOES_NOT_EXIST);
+						ScriptLaunchConfigurationConstants.ERR_WORKING_DIRECTORY_DOES_NOT_EXIST);
 			}
 		}
 		return null;
@@ -654,7 +652,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			abort(
 					LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_Main_type_not_specified_11,
 					null,
-					IDLTKLaunchConfigurationConstants.ERR_UNSPECIFIED_MAIN_SCRIPT);
+					ScriptLaunchConfigurationConstants.ERR_UNSPECIFIED_MAIN_SCRIPT);
 		}
 		return name;
 	}
@@ -864,7 +862,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 									LaunchingMessages.ScriptLaunchConfigurationDelegate_0,
 									new String[] { install.getName(), mode }),
 					null,
-					IDLTKLaunchConfigurationConstants.ERR_INTERPRETER_RUNNER_DOES_NOT_EXIST);
+					ScriptLaunchConfigurationConstants.ERR_INTERPRETER_RUNNER_DOES_NOT_EXIST);
 		}
 
 		return runner;
