@@ -14,7 +14,7 @@ import org.eclipse.dltk.dbgp.breakpoints.IDbgpWatchBreakpoint;
 public class DbgpWatchBreakpoint extends DbgpBreakpoint implements
 		IDbgpWatchBreakpoint {
 
-	private String expression;
+	private final String expression;
 
 	public DbgpWatchBreakpoint(String id, boolean enabled, int hitValue,
 			int hitCount, String hitCondition, String expression) {

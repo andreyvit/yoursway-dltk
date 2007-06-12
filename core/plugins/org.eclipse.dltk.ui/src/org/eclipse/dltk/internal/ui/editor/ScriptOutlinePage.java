@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IElementChangedListener;
@@ -48,7 +48,7 @@ import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.ScriptElementLabels;
 import org.eclipse.dltk.ui.ProblemsLabelDecorator.ProblemsLabelChangedEvent;
 import org.eclipse.dltk.ui.actions.CustomFiltersActionGroup;
-import org.eclipse.dltk.ui.actions.DLTKSearchActionGroup;
+import org.eclipse.dltk.ui.actions.SearchActionGroup;
 import org.eclipse.dltk.ui.actions.MemberFilterActionGroup;
 import org.eclipse.dltk.ui.actions.OpenViewActionGroup;
 import org.eclipse.dltk.ui.viewsupport.AppearanceAwareLabelProvider;
@@ -1030,7 +1030,7 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 				/*
 				 * new RefactorActionGroup( this),
 				 */
-				new DLTKSearchActionGroup(this, toolkit) });
+				new SearchActionGroup(this, toolkit) });
 
 		// register global actions
 		IActionBars actionBars = site.getActionBars();
@@ -1380,7 +1380,7 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 		if (fInput != null) {
 			ISourceModule cu = (ISourceModule) fInput
 					.getAncestor(IModelElement.SOURCE_MODULE);
-			if (cu != null && !DLTKModelUtil.isPrimary(cu))
+			if (cu != null && !ScriptModelUtil.isPrimary(cu))
 				provider = new EmptySelectionProvider();
 		}
 		site.setSelectionProvider(provider);

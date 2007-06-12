@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.dbgp.internal.packets;
 
-
 public interface IDbgpRawLogger {
 	void log(String output);
 }

@@ -6,8 +6,8 @@ import org.eclipse.debug.core.model.IValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
 public class ScriptVariableWrapper extends AbstractScriptVariable {
-	private String name;
-	private IScriptVariable[] children;
+	private final String name;
+	private final IScriptVariable[] children;
 
 	public ScriptVariableWrapper(IDebugTarget target, String name,
 			IScriptVariable[] children) {
@@ -73,6 +73,10 @@ public class ScriptVariableWrapper extends AbstractScriptVariable {
 	}
 
 	public boolean verifyValue(IValue value) throws DebugException {
+		return false;
+	}
+
+	public boolean shouldHasChildren() {
 		return false;
 	}
 }

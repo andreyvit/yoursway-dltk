@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti.goals;
 
@@ -25,10 +25,9 @@ public class FieldReferencesGoalEvaluator extends SearchBasedGoalEvaluator {
 				IDLTKSearchConstants.REFERENCES, SearchPattern.R_EXACT_MATCH);
 	}
 
-	protected IGoal createVerificationGoal(PossiblePosition pos) {		
-		return new FieldPositionVerificationGoal(
-				this.getGoal().getContext(), (FieldReferencesGoal) this
-						.getGoal(), pos);
+	protected IGoal createVerificationGoal(PossiblePosition pos) {
+		return new FieldPositionVerificationGoal(this.getGoal().getContext(),
+				(FieldReferencesGoal) this.getGoal(), pos);
 	}
 
 }

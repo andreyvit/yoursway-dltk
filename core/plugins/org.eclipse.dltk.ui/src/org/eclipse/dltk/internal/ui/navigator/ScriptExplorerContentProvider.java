@@ -22,7 +22,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
@@ -315,7 +315,7 @@ public abstract class ScriptExplorerContentProvider extends
 		}
 		if (elementType == IModelElement.SOURCE_MODULE) {
 			ISourceModule cu = (ISourceModule) element;
-			if (!DLTKModelUtil.isPrimary(cu)) {
+			if (!ScriptModelUtil.isPrimary(cu)) {
 				return;
 			}
 			if (!getProvideMembers() && cu.isWorkingCopy()

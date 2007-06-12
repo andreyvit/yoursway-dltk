@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.ISourceModule;
@@ -155,7 +155,7 @@ public class OpenAction extends SelectionDispatchAction {
 	private boolean isProcessable() {
 		if (fEditor != null) {
 			IModelElement je= EditorUtility.getEditorInputModelElement(fEditor, false);
-			if (je instanceof ISourceModule && !DLTKModelUtil.isPrimary((ISourceModule)je))
+			if (je instanceof ISourceModule && !ScriptModelUtil.isPrimary((ISourceModule)je))
 				return true; // can process non-primary working copies
 		}
 		return ActionUtil.isProcessable(getShell(), fEditor);

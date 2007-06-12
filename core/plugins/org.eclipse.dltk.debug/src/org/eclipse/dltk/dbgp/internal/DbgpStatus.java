@@ -57,9 +57,9 @@ public class DbgpStatus implements IDbgpStatus {
 				(Integer) reasonParser.get(reason));
 	}
 
-	private Integer status;
+	private final Integer status;
 
-	private Integer reason;
+	private final Integer reason;
 
 	public DbgpStatus(Integer status, Integer reason) {
 		if (status == null) {

@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti;
 
@@ -41,9 +41,11 @@ public class BasicContext implements IContext, ISourceModuleContext {
 	public String getLangNature() {
 		if (sourceModule != null) {
 			try {
-				IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager.getLanguageToolkit(sourceModule);
-				if (languageToolkit != null)
+				IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+						.getLanguageToolkit(sourceModule);
+				if (languageToolkit != null) {
 					return languageToolkit.getNatureID();
+				}
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
@@ -54,7 +56,4 @@ public class BasicContext implements IContext, ISourceModuleContext {
 	public String toString() {
 		return "BasicContext, module " + sourceModule.getElementName();
 	}
-	
-	
-	
 }

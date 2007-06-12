@@ -20,7 +20,7 @@ import org.eclipse.dltk.debug.core.model.IScriptThread;
 
 public class ScriptWatchExpressionDelegate implements IWatchExpressionDelegate {
 	private static class ListenerAdpater implements IScriptEvaluationListener {
-		private IWatchExpressionListener listener;
+		private final IWatchExpressionListener listener;
 
 		public ListenerAdpater(IWatchExpressionListener listener) {
 			this.listener = listener;

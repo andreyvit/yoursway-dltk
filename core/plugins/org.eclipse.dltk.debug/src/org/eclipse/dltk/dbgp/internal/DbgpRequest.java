@@ -16,9 +16,9 @@ import java.util.Map;
 import org.eclipse.dltk.dbgp.internal.utils.Base64Helper;
 
 public class DbgpRequest {
-	private Map options;
+	private final Map options;
 
-	private String command;
+	private final String command;
 
 	private String data;
 
@@ -36,7 +36,7 @@ public class DbgpRequest {
 	}
 
 	public void addOption(String optionName, Object optionValue) {
-		if (optionValue == null) {			
+		if (optionValue == null) {
 			throw new IllegalArgumentException();
 		}
 

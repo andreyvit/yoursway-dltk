@@ -5,13 +5,11 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti.types;
 
-
-public class RecursionTypeCall implements IEvaluatedType
-{
+public class RecursionTypeCall implements IEvaluatedType {
 
 	public static final IEvaluatedType INSTANCE = new RecursionTypeCall();
 
@@ -21,8 +19,8 @@ public class RecursionTypeCall implements IEvaluatedType
 	 */
 	private RecursionTypeCall() {
 	}
-	
-	public String getTypeName( ) {
+
+	public String getTypeName() {
 
 		return "recursion type call";
 	}

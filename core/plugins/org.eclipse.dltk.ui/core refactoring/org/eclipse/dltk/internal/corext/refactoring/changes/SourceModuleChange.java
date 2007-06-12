@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.text.IDocument;
@@ -80,7 +80,7 @@ public class SourceModuleChange extends TextFileChange {
 		} finally {
 			if (!isDocumentAcquired()) {
 				if (fCUnit.isWorkingCopy())
-					DLTKModelUtil.reconcile(fCUnit);
+					ScriptModelUtil.reconcile(fCUnit);
 				else
 					fCUnit.makeConsistent(pm);
 			}

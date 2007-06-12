@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.ui.typehierarchy;
 
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ITypeHierarchy;
@@ -135,9 +135,9 @@ public abstract class AbstractHierarchyViewerSorter extends ViewerSorter {
 	
 
 	private int compareInHierarchy(IType def1, IType def2) {
-		if (DLTKModelUtil.isSuperType(getHierarchy(def1), def2, def1)) {
+		if (ScriptModelUtil.isSuperType(getHierarchy(def1), def2, def1)) {
 			return 1;
-		} else if (DLTKModelUtil.isSuperType(getHierarchy(def2), def1, def2)) {
+		} else if (ScriptModelUtil.isSuperType(getHierarchy(def2), def1, def2)) {
 			return -1;
 		}
 		

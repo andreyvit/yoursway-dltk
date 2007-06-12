@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -160,7 +160,7 @@ public class NewNameQueries implements INewNameQueries {
 			public String isValid(String newText) {
 				if (newText == null || "".equals(newText)) //$NON-NLS-1$
 					return INVALID_NAME_NO_MESSAGE;
-				String newCuName= DLTKModelUtil.getRenamedCUName(cu, newText);
+				String newCuName= ScriptModelUtil.getRenamedCUName(cu, newText);
 				IDLTKLanguageToolkit toolkit = null;
 				try {
 					toolkit = DLTKLanguageManager.getLanguageToolkit(cu);

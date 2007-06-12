@@ -31,7 +31,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
@@ -424,7 +424,7 @@ public class NewSourceFolderWizardPage extends NewElementWizardPage {
 			IPath currPath= curr.getPath();
 			if (curr.getEntryKind() == IBuildpathEntry.BPE_SOURCE && currPath.isPrefixOf(entryPath)) {
 				IPath[] exclusionFilters= curr.getExclusionPatterns();
-				if (!DLTKModelUtil.isExcludedPath(entryPath, exclusionFilters)) {
+				if (!ScriptModelUtil.isExcludedPath(entryPath, exclusionFilters)) {
 					IPath pathToExclude= entryPath.removeFirstSegments(currPath.segmentCount()).addTrailingSeparator();
 					IPath[] newExclusionFilters= new IPath[exclusionFilters.length + 1];
 					System.arraycopy(exclusionFilters, 0, newExclusionFilters, 0, exclusionFilters.length);

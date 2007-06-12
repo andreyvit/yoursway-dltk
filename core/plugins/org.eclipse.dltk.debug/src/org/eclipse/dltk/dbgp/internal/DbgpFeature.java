@@ -12,11 +12,11 @@ package org.eclipse.dltk.dbgp.internal;
 import org.eclipse.dltk.dbgp.IDbgpFeature;
 
 public class DbgpFeature implements IDbgpFeature {
-	private boolean supported;
+	private final boolean supported;
 
-	private String name;
+	private final String name;
 
-	private String value;
+	private final String value;
 
 	public DbgpFeature(boolean supported, String name, String value) {
 		this.supported = supported;

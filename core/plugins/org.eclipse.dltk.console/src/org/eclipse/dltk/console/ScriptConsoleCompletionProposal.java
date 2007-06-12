@@ -10,13 +10,14 @@
 package org.eclipse.dltk.console;
 
 public class ScriptConsoleCompletionProposal {
-	private String insert;
+	private final String insert;
 
-	private String display;
+	private final String display;
 
-	private String type;
+	private final String type;
 
-	public ScriptConsoleCompletionProposal(String insert, String display, String type) {
+	public ScriptConsoleCompletionProposal(String insert, String display,
+			String type) {
 		this.insert = insert;
 		this.display = display;
 		this.type = type;

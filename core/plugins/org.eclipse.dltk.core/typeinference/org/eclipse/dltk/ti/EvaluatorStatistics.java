@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti;
 
@@ -18,7 +18,7 @@ public class EvaluatorStatistics {
 	private long timeRunning;
 	private int subGoalsDone;
 	private int subGoalsDoneSuccessful;
-	
+
 	public EvaluatorStatistics(int totalSubGoalsRequested, long timeRunning,
 			int subGoalsDone, int subGoalsDoneSuccessful) {
 		super();
@@ -27,19 +27,21 @@ public class EvaluatorStatistics {
 		this.subGoalsDone = subGoalsDone;
 		this.subGoalsDoneSuccessful = subGoalsDoneSuccessful;
 	}
+
 	public int getTotalSubGoalsRequested() {
 		return totalSubGoalsRequested;
 	}
+
 	public long getTimeRunning() {
 		return timeRunning;
 	}
+
 	public int getSubGoalsDone() {
 		return subGoalsDone;
 	}
+
 	public int getSubGoalsDoneSuccessful() {
 		return subGoalsDoneSuccessful;
 	}
-
-	
 
 }

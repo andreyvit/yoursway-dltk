@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti;
 
@@ -34,17 +34,17 @@ import org.eclipse.dltk.ti.types.IEvaluatedType;
  * Default DLTK type inferencing implementation, that uses ideas of
  * demand-driven analisys with a subgoal pruning (see GoalEngine class).Type
  * evaluation becomes a root goal for a GoalEngine.
- * 
+ *
  * <p>
  * Cause this class is common, it doesn't provide lots of evaluators. Only
  * FieldReferencesGoalEvaluator and MethodCallsGoalEvaluator registered. Please,
  * look for their javadocs for more info.
- * 
+ *
  * <p>
  * User can register evaluators via registerEvaluator() method. Also user are
  * able to provide custom evaluators factory, it will have higher priority, than
  * evaluators, registered via registerEvaluator() method.
- * 
+ *
  */
 public class DefaultTypeInferencer implements ITypeInferencer {
 
@@ -56,8 +56,9 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 					.hasNext();) {
 				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
 						.next();
-				if (t != null)
+				if (t != null) {
 					t.evaluationStarted(rootGoal);
+				}
 			}
 		}
 
@@ -67,8 +68,9 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 					.hasNext();) {
 				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
 						.next();
-				if (t != null)
+				if (t != null) {
 					t.evaluatorInitialized(evaluator, subgoals, time);
+				}
 			}
 		}
 
@@ -78,8 +80,9 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 					.hasNext();) {
 				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
 						.next();
-				if (t != null)
+				if (t != null) {
 					t.evaluatorProducedResult(evaluator, result, time);
+				}
 			}
 
 		}
@@ -90,9 +93,10 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 					.hasNext();) {
 				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
 						.next();
-				if (t != null)
-					t.evaluatorReceivedResult(evaluator, finishedGoal, newSubgoals,
-						time);
+				if (t != null) {
+					t.evaluatorReceivedResult(evaluator, finishedGoal,
+							newSubgoals, time);
+				}
 			}
 		}
 
@@ -101,8 +105,9 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 					.hasNext();) {
 				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
 						.next();
-				if (t != null)
+				if (t != null) {
 					t.goalEvaluatorAssigned(goal, evaluator);
+				}
 			}
 		}
 
@@ -112,8 +117,9 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 					.hasNext();) {
 				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
 						.next();
-				if (t != null)
+				if (t != null) {
 					t.goalStateChanged(goal, state, oldState);
+				}
 			}
 		}
 
@@ -199,7 +205,7 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.dltk.ti.ITypeInferencer#evaluateType(org.eclipse.dltk.ti.AbstractTypeGoal,
 	 *      long)
 	 */
@@ -210,7 +216,7 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.dltk.ti.ITypeInferencer#evaluateType(org.eclipse.dltk.ti.AbstractTypeGoal)
 	 */
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal, IPruner pruner) {

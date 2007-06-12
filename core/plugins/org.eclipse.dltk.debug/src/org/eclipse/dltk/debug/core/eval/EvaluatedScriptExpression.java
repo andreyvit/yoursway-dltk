@@ -7,7 +7,8 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IErrorReportingExpression;
 import org.eclipse.debug.core.model.IValue;
 
-public class EvaluatedScriptExpression extends PlatformObject implements IErrorReportingExpression {
+public class EvaluatedScriptExpression extends PlatformObject implements
+		IErrorReportingExpression {
 	public static String[] getErrorMessages(IScriptEvaluationResult result) {
 		if (result == null) {
 			return new String[0];
@@ -23,7 +24,7 @@ public class EvaluatedScriptExpression extends PlatformObject implements IErrorR
 		return new String[0];
 	}
 
-	private IScriptEvaluationResult result;
+	private final IScriptEvaluationResult result;
 
 	public EvaluatedScriptExpression(IScriptEvaluationResult result) {
 		if (result == null) {
@@ -60,7 +61,7 @@ public class EvaluatedScriptExpression extends PlatformObject implements IErrorR
 	public String getModelIdentifier() {
 		return getDebugTarget().getModelIdentifier();
 	}
-	
+
 	public void dispose() {
 
 	}

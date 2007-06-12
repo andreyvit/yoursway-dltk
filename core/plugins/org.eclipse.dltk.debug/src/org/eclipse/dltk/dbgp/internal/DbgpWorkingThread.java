@@ -9,11 +9,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.dbgp.internal;
 
-
 public abstract class DbgpWorkingThread extends DbgpTermination {
 	private Thread thread;
-	private String name;
-	
+	private final String name;
+
 	public DbgpWorkingThread(String name) {
 		this.name = name;
 	}
@@ -33,7 +32,7 @@ public abstract class DbgpWorkingThread extends DbgpTermination {
 				}
 			}, name);
 
-			thread.start();			
+			thread.start();
 		} else {
 			throw new IllegalStateException("Thread already started");
 		}
@@ -44,7 +43,7 @@ public abstract class DbgpWorkingThread extends DbgpTermination {
 		thread.interrupt();
 	}
 
-	public void waitTerminated() throws InterruptedException {	
+	public void waitTerminated() throws InterruptedException {
 		thread.join();
 	}
 

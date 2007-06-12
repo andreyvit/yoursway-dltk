@@ -7,16 +7,22 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
 
-public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements IScriptMethodEntryBreakpoint {
+public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
+		IScriptMethodEntryBreakpoint {
 
-	private static final String METHOD_NAME = ScriptLineBreakpoint.ID + ".methodName";
-	private static final String METHOD_SIGNATURE = ScriptLineBreakpoint.ID + ".methodSignature";
+	private static final String METHOD_NAME = ScriptLineBreakpoint.ID
+			+ ".methodName";
+	private static final String METHOD_SIGNATURE = ScriptLineBreakpoint.ID
+			+ ".methodSignature";
 
-	private static final String SECONDARY_ID = ScriptLineBreakpoint.ID + ".secondaryId";
+	private static final String SECONDARY_ID = ScriptLineBreakpoint.ID
+			+ ".secondaryId";
 
-	private static final String BREAK_ON_ENTRY = ScriptLineBreakpoint.ID + ".methodEntry";
+	private static final String BREAK_ON_ENTRY = ScriptLineBreakpoint.ID
+			+ ".methodEntry";
 
-	private static final String BREAK_ON_EXIT = ScriptLineBreakpoint.ID + ".methodExit";
+	private static final String BREAK_ON_EXIT = ScriptLineBreakpoint.ID
+			+ ".methodExit";
 
 	protected String getMarkerID() {
 		return ScriptMarkerFactory.METHOD_ENTRY_MARKER_ID;
@@ -26,9 +32,12 @@ public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
 
 	}
 
-	public ScriptMethodEntryBreakpoint(String debugModelId, IResource resource, int lineNumber, int charStart, int charEnd, int hitCount, boolean register, Map attributes, String methodName2, String methodSignature2)
-			throws DebugException {
-		super(debugModelId, resource, lineNumber, charStart, charEnd, hitCount, register, attributes);
+	public ScriptMethodEntryBreakpoint(String debugModelId, IResource resource,
+			int lineNumber, int charStart, int charEnd, int hitCount,
+			boolean register, Map attributes, String methodName2,
+			String methodSignature2) throws DebugException {
+		super(debugModelId, resource, lineNumber, charStart, charEnd, hitCount,
+				register, attributes);
 		try {
 			getMarker().setAttribute(METHOD_NAME, methodName2);
 			getMarker().setAttribute(METHOD_SIGNATURE, methodSignature2);

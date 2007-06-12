@@ -40,18 +40,18 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	private int suspendCount;
 
-	private boolean canSuspend;
+	private final boolean canSuspend;
 
-	private ScriptThreadManager manager;
+	private final ScriptThreadManager manager;
 
-	private IScriptThreadStreamProxy streamProxy;
+	private final IScriptThreadStreamProxy streamProxy;
 
-	private ScriptStack stack;
+	private final ScriptStack stack;
 
-	private DbgpDebugger engine;
+	private final DbgpDebugger engine;
 
 	// Session
-	private IDbgpSession session;
+	private final IDbgpSession session;
 
 	// State variables
 	private volatile boolean stepping;
@@ -60,7 +60,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	private volatile boolean terminated;
 
-	private IScriptDebugTarget target;
+	private final IScriptDebugTarget target;
 
 	// Stop
 	private IDbgpStatus stopDebugger() throws DbgpException {
@@ -155,7 +155,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 		session.getNotificationManager().addNotificationListener(
 				new IDbgpNotificationListener() {
-					private BufferedReader reader = new BufferedReader(
+					private final BufferedReader reader = new BufferedReader(
 							new InputStreamReader(getStreamProxy().getStdin()));
 
 					public void dbgpNotify(IDbgpNotification notification) {

@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -265,7 +265,7 @@ public class ModelElementSorter extends ViewerSorter {
 			// non resolvable - return null
 			return null;
 		}
-		return DLTKModelUtil.getProjectFragment((IModelElement) element);
+		return ScriptModelUtil.getProjectFragment((IModelElement) element);
 	}
 
 	private String getNonScriptElementLabel(Viewer viewer, Object element) {

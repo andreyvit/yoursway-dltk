@@ -5,21 +5,19 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 /**
- * 
+ *
  */
 package org.eclipse.dltk.ti;
 
 import org.eclipse.dltk.ti.goals.IGoal;
 
 public class TimelimitPruner implements IPruner {
-	
+
 	private long timeStart;
 	private final long timeLimit;
-	
-	
 
 	public TimelimitPruner(long timeLimit) {
 		super();
@@ -27,13 +25,14 @@ public class TimelimitPruner implements IPruner {
 	}
 
 	public void init() {
-		this.timeStart = System.currentTimeMillis();			
+		this.timeStart = System.currentTimeMillis();
 	}
 
-	public boolean prune(IGoal goal, EvaluatorStatistics stat) {	
-		if (timeLimit > 0 && System.currentTimeMillis() - timeStart > timeLimit)
+	public boolean prune(IGoal goal, EvaluatorStatistics stat) {
+		if (timeLimit > 0 && System.currentTimeMillis() - timeStart > timeLimit) {
 			return true;
+		}
 		return false;
 	}
-	
+
 }

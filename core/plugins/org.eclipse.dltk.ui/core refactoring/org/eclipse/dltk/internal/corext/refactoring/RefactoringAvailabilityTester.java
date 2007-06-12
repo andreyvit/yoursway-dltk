@@ -15,7 +15,7 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
@@ -76,7 +76,7 @@ public final class RefactoringAvailabilityTester {
 			return false;
 		if (!unit.exists())
 			return false;
-		if (!DLTKModelUtil.isPrimary(unit))
+		if (!ScriptModelUtil.isPrimary(unit))
 			return false;
 		if (unit.isReadOnly())
 			return false;

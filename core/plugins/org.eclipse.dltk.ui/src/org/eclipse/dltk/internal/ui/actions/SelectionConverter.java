@@ -14,7 +14,7 @@ import java.util.Iterator;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.ICodeAssist;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
@@ -184,7 +184,7 @@ public class SelectionConverter {
 		}
 			if (input instanceof ICodeAssist) {
 				if (input instanceof ISourceModule) {
-					DLTKModelUtil.reconcile((ISourceModule) input);
+					ScriptModelUtil.reconcile((ISourceModule) input);
 				}
 				IModelElement[] elements= ((ICodeAssist)input).codeSelect(selection.getOffset(), selection.getLength());
 				if (elements != null && elements.length > 0)
@@ -196,7 +196,7 @@ public class SelectionConverter {
 	public static IModelElement getElementAtOffset(IModelElement input, ITextSelection selection) throws ModelException {
 		if (input instanceof ISourceModule) {
 			ISourceModule cunit= (ISourceModule) input;
-			DLTKModelUtil.reconcile(cunit);
+			ScriptModelUtil.reconcile(cunit);
 			IModelElement ref= cunit.getElementAt(selection.getOffset());
 			if (ref == null)
 				return input;
@@ -225,7 +225,7 @@ public class SelectionConverter {
 		IModelElement atOffset= null;
 		if (input instanceof ISourceModule) {
 			ISourceModule cunit= (ISourceModule)input;
-			DLTKModelUtil.reconcile(cunit);
+			ScriptModelUtil.reconcile(cunit);
 			atOffset= cunit.getElementAt(selection.getOffset());
 		} else {
 			return null;

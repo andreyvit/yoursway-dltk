@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.ui.refactoring.actions;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -58,7 +58,7 @@ public class RenameModelElementAction extends SelectionDispatchAction {
 			}
 		} catch (ModelException e) {
 			// http://bugs.eclipse.org/bugs/show_bug.cgi?id=19253
-			if (DLTKModelUtil.isExceptionToBeLogged(e)){
+			if (ScriptModelUtil.isExceptionToBeLogged(e)){
 				DLTKUIPlugin.log(e);
 			}
 		} catch (CoreException e) {
@@ -134,7 +134,7 @@ public class RenameModelElementAction extends SelectionDispatchAction {
 
 			return isRenameAvailable(element);
 		} catch (ModelException e) {
-			if (DLTKModelUtil.isExceptionToBeLogged(e))
+			if (ScriptModelUtil.isExceptionToBeLogged(e))
 				DLTKUIPlugin.log(e);
 		} catch (CoreException e) {
 			DLTKUIPlugin.log(e);

@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti;
 
@@ -25,16 +25,16 @@ import org.eclipse.dltk.ti.goals.AbstractTypeGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class DLTKTypeInferenceEngine implements ITypeInferencer {
-	
+
 	private static final String NATURE = "nature";
 	private static final String TYPE_EVALUATORS = "org.eclipse.dltk.core.typeEvaluators";
 	private final static Map evaluatorsByNatures = new HashMap();
-	
-	static {		
+
+	static {
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry()
 				.getExtensionPoint(TYPE_EVALUATORS);
 		IExtension[] ext = extensionPoint.getExtensions();
-//		ArrayList resolvers = new ArrayList();
+// ArrayList resolvers = new ArrayList();
 		for (int a = 0; a < ext.length; a++) {
 			IConfigurationElement[] elements = ext[a]
 					.getConfigurationElements();
@@ -43,21 +43,21 @@ public class DLTKTypeInferenceEngine implements ITypeInferencer {
 				String nature = myElement.getAttribute(NATURE);
 				List list = (List) evaluatorsByNatures.get(nature);
 				if (list == null) {
-					list = new ArrayList ();
+					list = new ArrayList();
 					evaluatorsByNatures.put(nature, list);
 				}
-//				ITypeInferencer resolver = (ITypeInferencer) myElement
-//						.createExecutableExtension("evaluator");
-//				resolvers.add(resolver);
-//				list.add(resolver);
+// ITypeInferencer resolver = (ITypeInferencer) myElement
+// .createExecutableExtension("evaluator");
+// resolvers.add(resolver);
+// list.add(resolver);
 				list.add(myElement);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
-	public DLTKTypeInferenceEngine() {		
+
+	public DLTKTypeInferenceEngine() {
 	}
 
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal, int time) {
@@ -65,19 +65,22 @@ public class DLTKTypeInferenceEngine implements ITypeInferencer {
 		List list = (List) evaluatorsByNatures.get(nature);
 		if (list != null) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-				IConfigurationElement element =  (IConfigurationElement) iterator.next();
+				IConfigurationElement element = (IConfigurationElement) iterator
+						.next();
 				ITypeInferencer ti;
 				try {
-					ti = (ITypeInferencer) element.createExecutableExtension("evaluator");
+					ti = (ITypeInferencer) element
+							.createExecutableExtension("evaluator");
 				} catch (CoreException e) {
 					e.printStackTrace();
 					continue;
 				}
-//				ITypeInferencer ti = (ITypeInferencer) iterator.next();
+// ITypeInferencer ti = (ITypeInferencer) iterator.next();
 				System.out.println();
 				IEvaluatedType type = ti.evaluateType(goal, time);
-				if (type != null && !(type instanceof UnknownType)) //TODO
+				if (type != null && !(type instanceof UnknownType)) {
 					return type;
+				}
 			}
 		}
 		return null;

@@ -14,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IModelElement;
@@ -157,7 +157,7 @@ public abstract class FindAction extends SelectionDispatchAction {
 		try {					
 			types= cu.getTypes();
 		} catch (ModelException ex) {
-			if (DLTKModelUtil.isExceptionToBeLogged(ex))
+			if (ScriptModelUtil.isExceptionToBeLogged(ex))
 				ExceptionHandler.log(ex, SearchMessages.DLTKElementAction_error_open_message); 
 			if (silent)
 				return RETURN_WITHOUT_BEEP;

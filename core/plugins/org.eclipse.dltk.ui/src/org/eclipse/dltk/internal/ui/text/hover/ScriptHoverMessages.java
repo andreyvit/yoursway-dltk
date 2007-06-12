@@ -14,11 +14,11 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Helper class to get NLSed messages.
  */
-final class DLTKHoverMessages extends NLS {
+final class ScriptHoverMessages extends NLS {
 
-	private static final String BUNDLE_NAME= DLTKHoverMessages.class.getName();
+	private static final String BUNDLE_NAME= ScriptHoverMessages.class.getName();
 
-	private DLTKHoverMessages() {
+	private ScriptHoverMessages() {
 		// Do not instantiate
 	}
 
@@ -29,6 +29,6 @@ final class DLTKHoverMessages extends NLS {
 	public static String NLSStringHover_NLSStringHover_missingKeyWarning;
 
 	static {
-		NLS.initializeMessages(BUNDLE_NAME, DLTKHoverMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, ScriptHoverMessages.class);
 	}
 }

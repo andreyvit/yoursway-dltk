@@ -16,7 +16,7 @@ import org.w3c.dom.Element;
 
 public class DbgpBaseCommands {
 
-	private IDbgpCommunicator communicator;
+	private final IDbgpCommunicator communicator;
 
 	public DbgpBaseCommands(IDbgpCommunicator communicator) {
 		this.communicator = communicator;

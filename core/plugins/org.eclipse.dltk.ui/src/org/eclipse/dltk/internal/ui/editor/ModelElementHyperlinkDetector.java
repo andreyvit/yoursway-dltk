@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.ICodeAssist;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.internal.ui.text.DLTKWordFinder;
+import org.eclipse.dltk.internal.ui.text.ScriptWordFinder;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -62,7 +62,7 @@ public class ModelElementHyperlinkDetector implements IHyperlinkDetector {
 
 		try {
 			IDocument document= fTextEditor.getDocumentProvider().getDocument(fTextEditor.getEditorInput());
-			IRegion wordRegion= DLTKWordFinder.findWord(document, offset);
+			IRegion wordRegion= ScriptWordFinder.findWord(document, offset);
 			if (wordRegion == null)
 				return null;
 			

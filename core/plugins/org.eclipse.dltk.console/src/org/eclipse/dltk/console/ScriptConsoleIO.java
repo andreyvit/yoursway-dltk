@@ -19,11 +19,11 @@ public class ScriptConsoleIO implements IScriptConsoleIO {
 
 	private static final String SHELL = "shell";
 
-	private InputStream input;
+	private final InputStream input;
 
-	private OutputStream output;
+	private final OutputStream output;
 
-	private String id;
+	private final String id;
 
 	protected static void logInterpreterResponse(String response) {
 		System.out.println("interpreter: " + response);

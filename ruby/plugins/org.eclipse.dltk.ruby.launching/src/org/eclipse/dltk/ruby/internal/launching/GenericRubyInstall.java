@@ -27,20 +27,20 @@ import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
 import org.eclipse.dltk.utils.DeployHelper;
 
-public class GenericRubyInstall extends AbstractInterpreterInstall {	
-	
-	
+public class GenericRubyInstall extends AbstractInterpreterInstall {
+
 	public class BuiltinsHelper {
 		public BuiltinsHelper() {
 
 		}
 
-		public String execute(String command) {			
+		public String execute(String command) {
 			File builder = null;
 			try {
-				IPath path = DeployHelper.deploy(RubyLaunchingPlugin.getDefault(), "scripts");
-				builder = path.append("builtin.rb").toFile();				
-				
+				IPath path = DeployHelper.deploy(RubyLaunchingPlugin
+						.getDefault(), "scripts");
+				builder = path.append("builtin.rb").toFile();
+
 			} catch (IOException e1) {
 				e1.printStackTrace();
 				return null;
@@ -98,14 +98,14 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 		if (runner != null) {
 			return runner;
 		}
-		
+
 		if (mode.equals(ILaunchManager.RUN_MODE)) {
 			return new RubyInterpreterRunner(this);
-		} 
-		
-		//else if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			//return new RubyInterpreterDebugger(this);
-		//}
+		}
+
+		// else if (mode.equals(ILaunchManager.DEBUG_MODE)) {
+		// return new RubyInterpreterDebugger(this);
+		// }
 
 		return null;
 	}
@@ -125,29 +125,33 @@ public class GenericRubyInstall extends AbstractInterpreterInstall {
 			String filename = content.substring(pos + prefixLength, nl).trim();
 			String data = "";
 			pos = content.indexOf(prefix, nl + 1);
-			if (pos != -1)
+			if (pos != -1) {
 				data = content.substring(nl + 1, pos);
-			else
+			} else {
 				data = content.substring(nl + 1);
+			}
 			String prev = (String) sources.get(filename);
-			if (prev != null)
+			if (prev != null) {
 				data = prev + data;
+			}
 			sources.put(filename, data);
 		}
 	}
 
 	public String getBuiltinModuleContent(String name) {
-		if (sources == null)
+		if (sources == null) {
 			initialize();
+		}
 		return (String) sources.get(name);
 	}
 
 	public String[] getBuiltinModules() {
-		if (sources == null)
+		if (sources == null) {
 			initialize();
+		}
 		return (String[]) sources.keySet().toArray(new String[sources.size()]);
 	}
-	
+
 	public String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}

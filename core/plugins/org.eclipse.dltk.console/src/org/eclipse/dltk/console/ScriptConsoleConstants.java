@@ -10,7 +10,8 @@
 package org.eclipse.dltk.console;
 
 public final class ScriptConsoleConstants {
-	private ScriptConsoleConstants() {	}
+	private ScriptConsoleConstants() {
+	}
 
 	public static final String SCRIPT_GROUP = "scriptGroup";
 

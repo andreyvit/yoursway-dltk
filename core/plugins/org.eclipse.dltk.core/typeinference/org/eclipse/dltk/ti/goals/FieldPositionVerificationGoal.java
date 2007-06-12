@@ -5,17 +5,17 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti.goals;
 
 import org.eclipse.dltk.ti.IContext;
 
 /**
- * Task of this goal is to verify given possible position as a
- * real position, where given field were read or changed.
- * 
- * As result, object of ItemReference or null should be returned. 
+ * Task of this goal is to verify given possible position as a real position,
+ * where given field were read or changed.
+ *
+ * As result, object of ItemReference or null should be returned.
  */
 public class FieldPositionVerificationGoal extends AbstractGoal {
 

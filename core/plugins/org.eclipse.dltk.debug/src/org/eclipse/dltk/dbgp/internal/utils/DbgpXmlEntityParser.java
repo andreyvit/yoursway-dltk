@@ -171,7 +171,7 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		return new DbgpProperty(name, fullName, type, value, size,
 				childrenCount, hasChildren, constant, key,
 				(IDbgpProperty[]) availableChildren
-				.toArray(new IDbgpProperty[availableChildren.size()]));
+						.toArray(new IDbgpProperty[availableChildren.size()]));
 	}
 
 	public static IDbgpStatus parseStatus(Element element)

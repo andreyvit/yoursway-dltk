@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti.goals;
 
@@ -26,9 +26,8 @@ public class MethodCallsGoalEvaluator extends SearchBasedGoalEvaluator {
 	}
 
 	protected IGoal createVerificationGoal(PossiblePosition pos) {
-		MethodCallVerificationGoal g = new MethodCallVerificationGoal(
-				this.getGoal().getContext(), (MethodCallsGoal) this
-						.getGoal(), pos);
+		MethodCallVerificationGoal g = new MethodCallVerificationGoal(this
+				.getGoal().getContext(), (MethodCallsGoal) this.getGoal(), pos);
 		return g;
 	}
 

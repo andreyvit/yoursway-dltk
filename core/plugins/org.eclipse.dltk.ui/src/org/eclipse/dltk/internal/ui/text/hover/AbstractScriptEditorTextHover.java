@@ -202,7 +202,7 @@ public abstract class AbstractScriptEditorTextHover implements IScriptEditorText
 		if (keySequence == null)
 			return null;
 		
-		return Messages.format(DLTKHoverMessages.ScriptTextHover_makeStickyHint, keySequence == null ? "" : keySequence); //$NON-NLS-1$
+		return Messages.format(ScriptHoverMessages.ScriptTextHover_makeStickyHint, keySequence == null ? "" : keySequence); //$NON-NLS-1$
 	}
 
 	/**

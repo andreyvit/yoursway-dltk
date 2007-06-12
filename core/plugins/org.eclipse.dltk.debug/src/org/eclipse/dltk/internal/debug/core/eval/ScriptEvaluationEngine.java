@@ -18,7 +18,7 @@ import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
 import org.eclipse.dltk.internal.debug.core.model.ScriptVariable;
 
 public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
-	private IScriptThread thread;
+	private final IScriptThread thread;
 
 	public ScriptEvaluationEngine(IScriptThread thread) {
 		this.thread = thread;

@@ -7,7 +7,7 @@ import org.eclipse.dltk.debug.core.eval.IScriptEvaluationResult;
 
 public class ScriptWatchExpressionResult implements IWatchExpressionResult {
 
-	private IScriptEvaluationResult result;
+	private final IScriptEvaluationResult result;
 
 	public ScriptWatchExpressionResult(IScriptEvaluationResult result) {
 		this.result = result;

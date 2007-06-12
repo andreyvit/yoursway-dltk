@@ -12,15 +12,15 @@ package org.eclipse.dltk.dbgp.internal.breakpoints;
 import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
 
 public class DbgpBreakpoint implements IDbgpBreakpoint {
-	private String id;
+	private final String id;
 
-	private boolean enabled;
+	private final boolean enabled;
 
-	private int hitValue;
+	private final int hitValue;
 
-	private int hitCount;
+	private final int hitCount;
 
-	private int hitCondition;
+	private final int hitCondition;
 
 	protected int convertHitCondition(String s) {
 		if (">=".equals(s)) {

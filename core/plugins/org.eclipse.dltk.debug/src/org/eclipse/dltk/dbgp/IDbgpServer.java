@@ -11,7 +11,7 @@ package org.eclipse.dltk.dbgp;
 
 public interface IDbgpServer {
 	final int DEFAULT_DBGP_PORT = 9000;
-	
+
 	// Timeout
 	int getClientTimeout();
 
@@ -29,7 +29,8 @@ public interface IDbgpServer {
 	int getPort() throws DbgpServerException;
 
 	// Acceptors
-	void registerAcceptor(String id, IDbgpThreadAcceptor acceptor) throws DbgpServerException;
+	void registerAcceptor(String id, IDbgpThreadAcceptor acceptor)
+			throws DbgpServerException;
 
 	IDbgpThreadAcceptor unregisterAcceptor(String id);
 }

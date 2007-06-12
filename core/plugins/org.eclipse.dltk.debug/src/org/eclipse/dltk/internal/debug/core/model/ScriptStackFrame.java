@@ -36,11 +36,11 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 
 	private static final String STACK_FRAME_LABEL = "Stack frame #{0}";
 
-	private IScriptThread thread;
+	private final IScriptThread thread;
 
-	private IDbgpStackLevel level;
+	private final IDbgpStackLevel level;
 
-	private IScriptVariable[] variables;
+	private final IScriptVariable[] variables;
 
 	protected static IScriptVariable[] readVariables(
 			ScriptStackFrame parentFrame, int contextId,
@@ -98,7 +98,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	private static class ScriptVariableContainer {
-		private List list = new ArrayList();
+		private final List list = new ArrayList();
 
 		public void add(IScriptVariable variable) {
 			list.add(variable);
@@ -245,8 +245,9 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 
 	public IScriptVariable findVariable(String varName) throws DebugException {
 		for (int i = 0; i < variables.length; i++) {
-			if (variables[i].getName().equals(varName))
+			if (variables[i].getName().equals(varName)) {
 				return variables[i];
+			}
 		}
 		return null;
 	}
@@ -276,8 +277,8 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	public String getSourceString() {
 		return level.getWhere();
 	}
-	
+
 	public IScriptThread getScriptThread() {
-		return (IScriptThread)getThread();
+		return (IScriptThread) getThread();
 	}
 }

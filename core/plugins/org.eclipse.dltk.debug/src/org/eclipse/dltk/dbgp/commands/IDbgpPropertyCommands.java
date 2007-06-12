@@ -26,8 +26,9 @@ public interface IDbgpPropertyCommands {
 	 * provided by the debugger engine.
 	 */
 
-	IDbgpProperty getPropertyByKey(String name, String key) throws DbgpException;
-	
+	IDbgpProperty getPropertyByKey(String name, String key)
+			throws DbgpException;
+
 	IDbgpProperty getProperty(String name) throws DbgpException;
 
 	IDbgpProperty getProperty(String name, int stackDepth) throws DbgpException;

@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.ui.IWorkingCopyManager;
 import org.eclipse.ui.IEditorInput;
@@ -85,7 +85,7 @@ public class WorkingCopyManager implements IWorkingCopyManager {
 		ISourceModule unit= fMap == null ? null : (ISourceModule) fMap.get(input);
 		if (unit == null)
 			unit= fDocumentProvider.getWorkingCopy(input);
-		if (unit != null && (!primaryOnly || DLTKModelUtil.isPrimary(unit)))
+		if (unit != null && (!primaryOnly || ScriptModelUtil.isPrimary(unit)))
 			return unit;
 		return null;
 	}

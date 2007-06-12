@@ -15,6 +15,6 @@ import org.w3c.dom.Element;
 
 public interface IDbgpCommunicator {
 	Element communicate(DbgpRequest request) throws DbgpException;
-	
+
 	void send(DbgpRequest request) throws DbgpException;
 }

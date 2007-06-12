@@ -15,9 +15,9 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class SocketScriptConsoleIO implements IScriptConsoleIO {
-	private Socket socket;
+	private final Socket socket;
 
-	private IScriptConsoleIO io;
+	private final IScriptConsoleIO io;
 
 	public SocketScriptConsoleIO(Socket socket) throws IOException {
 		this.socket = socket;

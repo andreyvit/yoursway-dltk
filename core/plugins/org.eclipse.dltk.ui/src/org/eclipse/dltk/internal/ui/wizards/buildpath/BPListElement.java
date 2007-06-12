@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.util.Util;
 import org.eclipse.dltk.core.BuildpathContainerInitializer;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
@@ -287,7 +287,7 @@ public class BPListElement
 	private boolean addFilter( IPath path, String key ) {
 
 		IPath[] exclusionFilters = ( IPath[] )getAttribute( key );
-		if( !DLTKModelUtil.isExcludedPath( path, exclusionFilters ) ) {
+		if( !ScriptModelUtil.isExcludedPath( path, exclusionFilters ) ) {
 			IPath pathToExclude = path.removeFirstSegments( getPath( ).segmentCount( ) ).addTrailingSeparator( );
 			IPath[] newExclusionFilters = new IPath [ exclusionFilters.length + 1 ];
 			System.arraycopy( exclusionFilters, 0, newExclusionFilters, 0, exclusionFilters.length );
@@ -302,7 +302,7 @@ public class BPListElement
 
 		IPath[] exclusionFilters = ( IPath[] )getAttribute( key );
 		IPath pathToExclude = path.removeFirstSegments( getPath( ).segmentCount( ) ).addTrailingSeparator( );
-		if( DLTKModelUtil.isExcludedPath( pathToExclude, exclusionFilters ) ) {
+		if( ScriptModelUtil.isExcludedPath( pathToExclude, exclusionFilters ) ) {
 
 			List l = new ArrayList( Arrays.asList( exclusionFilters ) );
 			l.remove( pathToExclude );

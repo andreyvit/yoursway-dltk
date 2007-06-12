@@ -13,9 +13,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class DbgpPacketSender {
-	private Object lock = new Object();
+	private final Object lock = new Object();
 
-	private OutputStream output;
+	private final OutputStream output;
 
 	private IDbgpRawLogger logger;
 

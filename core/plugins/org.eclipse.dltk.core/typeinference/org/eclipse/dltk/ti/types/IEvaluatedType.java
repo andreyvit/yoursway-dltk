@@ -5,18 +5,16 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti.types;
 
 public interface IEvaluatedType {
-	
-	public String getTypeName();
-	
+
+	String getTypeName();
+
 	/**
-	 * Returns <code>true</code> if it is subtype of a given
-	 * type 
+	 * Returns <code>true</code> if it is subtype of a given type
 	 */
-	public boolean subtypeOf(IEvaluatedType type);
-	
+	boolean subtypeOf(IEvaluatedType type);
 }

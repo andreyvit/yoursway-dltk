@@ -25,7 +25,7 @@ import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.references.VariableReference;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.mixin.IMixinElement;
@@ -76,7 +76,7 @@ public class RubyTypeInferencingUtils {
 
 		};
 
-		DLTKModelUtil.searchTypeDeclarations(module.getScriptProject(), prefix
+		ScriptModelUtil.searchTypeDeclarations(module.getScriptProject(), prefix
 				+ "*", requestor);
 
 		return (IType[]) types.toArray(new IType[types.size()]);

@@ -54,7 +54,7 @@ public class ScriptExpandHover extends AnnotationExpandHover {
 	private static class NoBreakpointAnnotation extends Annotation implements IAnnotationPresentation {
 
 		public NoBreakpointAnnotation() {
-			super(NO_BREAKPOINT_ANNOTATION, false, DLTKHoverMessages.NoBreakpointAnnotation_addBreakpoint);
+			super(NO_BREAKPOINT_ANNOTATION, false, ScriptHoverMessages.NoBreakpointAnnotation_addBreakpoint);
 		}
 
 		/*

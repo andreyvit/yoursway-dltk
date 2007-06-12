@@ -30,7 +30,7 @@ import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.ScriptSelectionEngine;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -363,7 +363,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 				unqualifiedName = expr.getName();
 			}
 			if (unqualifiedName != null) {
-				DLTKModelUtil.searchTypeDeclarations(modelModule
+				ScriptModelUtil.searchTypeDeclarations(modelModule
 						.getScriptProject(), unqualifiedName, requestor);
 			}
 		}
@@ -528,7 +528,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 				}
 
 			};
-			DLTKModelUtil.searchMethodDeclarations(modelModule
+			ScriptModelUtil.searchMethodDeclarations(modelModule
 					.getScriptProject(), methodName, requestor);
 			availableMethods = (IMethod[]) methods.toArray(new IMethod[methods
 					.size()]);

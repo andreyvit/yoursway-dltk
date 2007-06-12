@@ -12,7 +12,7 @@ package org.eclipse.dltk.internal.ui.typehierarchy;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -74,7 +74,7 @@ public abstract class TypeHierarchyContentProvider implements ITreeContentProvid
 		IType filterType= filterMethod.getDeclaringType();
 		ITypeHierarchy hierarchy= fTypeHierarchy.getHierarchy();
 		
-		boolean filterOverrides= DLTKModelUtil.isSuperType(hierarchy, typeToFindIn, filterType);
+		boolean filterOverrides= ScriptModelUtil.isSuperType(hierarchy, typeToFindIn, filterType);
 		IType focusType= filterOverrides ? filterType : typeToFindIn;
 		
 		if (fMethodOverrideTester == null || !fMethodOverrideTester.getFocusType().equals(focusType)) {

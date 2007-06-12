@@ -13,7 +13,7 @@ import org.eclipse.dltk.dbgp.breakpoints.IDbgpConditionalBreakpoint;
 
 public class DbgpConditionalBreakpoint extends DbgpBreakpoint implements
 		IDbgpConditionalBreakpoint {
-	private String expression;
+	private final String expression;
 
 	public DbgpConditionalBreakpoint(String id, boolean enabled, int hitValue,
 			int hitCount, String hitCondition, String expression) {

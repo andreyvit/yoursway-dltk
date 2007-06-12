@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.dbgp;
 
-
 public interface IDbgpProperty {
 
 	String getName();
@@ -29,6 +28,6 @@ public interface IDbgpProperty {
 	int getChildrenCount();
 
 	IDbgpProperty[] getAvailableChildren();
-	
+
 	String getKey();
 }

@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.corext.refactoring.reorg;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.mapping.ResourceMapping;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
@@ -31,7 +31,7 @@ public class MonitoringNewNameQueries implements INewNameQueries {
 		return new INewNameQuery() {
 			public String getNewName() {
 				String result= fDelegate.createNewSourceModuleNameQuery(cu, initialSuggestedName).getNewName();
-				String newName= DLTKModelUtil.getRenamedCUName(cu, result);
+				String newName= ScriptModelUtil.getRenamedCUName(cu, result);
 				fExecutionLog.setNewName(cu, newName);
 				ResourceMapping mapping= DLTKElementResourceMapping.create(cu);
 				if (mapping != null) {

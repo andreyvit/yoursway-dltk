@@ -25,13 +25,13 @@ import org.eclipse.dltk.dbgp.internal.packets.IDbgpRawLogger;
 
 public class DbgpDebugingEngine extends DbgpTermination implements
 		IDbgpDebugingEngine, IDbgpTerminationListener {
-	private Socket socket;
+	private final Socket socket;
 
-	private DbgpPacketReceiver receiver;
+	private final DbgpPacketReceiver receiver;
 
-	private DbgpPacketSender sender;
+	private final DbgpPacketSender sender;
 
-	private Object terminatedLock = new Object();
+	private final Object terminatedLock = new Object();
 	private boolean terminated = false;
 
 	public DbgpDebugingEngine(Socket socket) throws IOException {
@@ -120,7 +120,7 @@ public class DbgpDebugingEngine extends DbgpTermination implements
 		fireObjectTerminated(e);
 	}
 
-	private ListenerList listeners = new ListenerList();
+	private final ListenerList listeners = new ListenerList();
 
 	protected void firePacketReceived(String content) {
 		Object[] list = listeners.getListeners();

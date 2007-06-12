@@ -5,25 +5,24 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.evaluation.types;
 
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
-public class UnknownType implements IEvaluatedType
-{
+public class UnknownType implements IEvaluatedType {
 
 	public static final IEvaluatedType INSTANCE = new UnknownType();
-	
+
 	/**
 	 * The constructor is private so that we can rely on comparing with
 	 * <code>INSTANCE</code>.
 	 */
 	private UnknownType() {
 	}
-	
-	public String getTypeName( ) {
+
+	public String getTypeName() {
 		return "unknown";
 	}
 

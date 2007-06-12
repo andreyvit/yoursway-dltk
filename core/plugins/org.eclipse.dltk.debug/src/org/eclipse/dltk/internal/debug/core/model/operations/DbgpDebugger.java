@@ -21,19 +21,19 @@ import org.eclipse.dltk.debug.core.model.IScriptThread;
 
 public class DbgpDebugger {
 	// Operations
-	private DbgpStepIntoOperation stepIntoOperation;
+	private final DbgpStepIntoOperation stepIntoOperation;
 
-	private DbgpStepOverOperation stepOverOperation;
+	private final DbgpStepOverOperation stepOverOperation;
 
-	private DbgpStepReturnOperation stepReturnOperation;
+	private final DbgpStepReturnOperation stepReturnOperation;
 
 	private DbgpSuspendOperation suspendOperation;
 
-	private DbgpResumeOperation resumeOperation;
+	private final DbgpResumeOperation resumeOperation;
 
-	private DbgpTerminateOperation terminateOperation;
+	private final DbgpTerminateOperation terminateOperation;
 
-	private IDbgpSession session;
+	private final IDbgpSession session;
 
 	public DbgpDebugger(IScriptThread thread, final IDbgpDebuggerFeedback end) {
 

@@ -20,7 +20,7 @@ import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
 
-public class DLTKModelUtil {
+public class ScriptModelUtil {
 	/**
 	 * Force a reconcile of a compilation unit.
 	 * 

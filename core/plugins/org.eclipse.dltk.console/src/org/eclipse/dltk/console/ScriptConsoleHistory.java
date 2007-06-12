@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScriptConsoleHistory {
-	private List lines;
+	private final List lines;
 
 	private int currLine;
 
-	public ScriptConsoleHistory () {
+	public ScriptConsoleHistory() {
 		this.lines = new ArrayList();
 		this.lines.add("");
 		this.currLine = 0;
@@ -28,8 +28,9 @@ public class ScriptConsoleHistory {
 	}
 
 	public void commit() {
-		if (get().length() == 0)
+		if (get().length() == 0) {
 			return;
+		}
 
 		lines.set(lines.size() - 1, get());
 

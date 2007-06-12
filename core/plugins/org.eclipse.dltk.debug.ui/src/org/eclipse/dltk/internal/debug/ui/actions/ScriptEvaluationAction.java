@@ -19,7 +19,7 @@ import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.internal.debug.ui.ScriptEvaluationContextManager;
-import org.eclipse.dltk.internal.debug.ui.ScriptWordFinder;
+import org.eclipse.dltk.internal.ui.text.ScriptWordFinder;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -96,7 +96,7 @@ public class ScriptEvaluationAction implements IWorkbenchWindowActionDelegate,
 					ITextEditor textEditor = (ITextEditor) editor;
 					IDocument doc = textEditor.getDocumentProvider()
 							.getDocument(editor.getEditorInput());
-					region = ScriptWordFinder.findWord(doc, selection
+					region =  ScriptWordFinder.findWord(doc, selection
 							.getOffset());
 					if (region != null) {
 						try {

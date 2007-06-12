@@ -13,9 +13,9 @@
 package org.eclipse.dltk.console;
 
 public class ScriptConsolePrompt {
-	private String newCommand;
+	private final String newCommand;
 
-	private String continueCommand;
+	private final String continueCommand;
 
 	private boolean mode;
 

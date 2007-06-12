@@ -31,7 +31,7 @@ public class DbgpContinuationCommands extends DbgpBaseCommands implements
 
 	private static final String DETACH_COMMAND = "detach";
 
-	private IDbgpStreamManager manager;
+	private final IDbgpStreamManager manager;
 
 	protected IDbgpStatus execCommandWithHandler(String command,
 			IDbgpContinuationHandler handler) throws DbgpException {

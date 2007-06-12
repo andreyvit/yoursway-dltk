@@ -15,12 +15,13 @@ import org.eclipse.dltk.debug.core.model.IScriptThread;
 public class DbgpSuspendOperation extends DbgpOperation {
 	private static final String JOB_NAME = "Suspend operation";
 
-	public DbgpSuspendOperation(IScriptThread thread, IResultHandler finish) throws DbgpException {
+	public DbgpSuspendOperation(IScriptThread thread, IResultHandler finish)
+			throws DbgpException {
 		super(thread, JOB_NAME, finish);
 	}
 
 	protected void process() throws DbgpException {
-		/*boolean success = */getExtended().makeBreak();
-		//TODO: think about what to do with this status
+		/* boolean success = */getExtended().makeBreak();
+		// TODO: think about what to do with this status
 	}
 }

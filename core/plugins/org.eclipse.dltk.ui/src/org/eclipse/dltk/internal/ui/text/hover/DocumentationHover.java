@@ -165,7 +165,7 @@ public class DocumentationHover extends AbstractScriptEditorTextHover implements
 					
 					// Provide hint why there's no doc
 					if (reader == null) {
-						reader= new StringReader(DLTKHoverMessages.ScriptdocHover_noAttachedInformation);
+						reader= new StringReader(ScriptHoverMessages.ScriptdocHover_noAttachedInformation);
 					}
 					
 				} catch (ModelException ex) {

@@ -10,7 +10,7 @@
 package org.eclipse.dltk.dbgp;
 
 public class DbgpServerException extends Exception {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	public DbgpServerException() {

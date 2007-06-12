@@ -17,7 +17,6 @@ import org.eclipse.dltk.dbgp.internal.utils.DbgpXmlParser;
 import org.w3c.dom.Document;
 
 public class DbgpRawPacket {
-	
 
 	protected static int readPacketSize(InputStream input) throws IOException {
 		StringBuffer sb = new StringBuffer();
@@ -25,7 +24,7 @@ public class DbgpRawPacket {
 		int b = -1;
 		while (true) {
 			b = input.read();
-			
+
 			if (b == -1) {
 				throw new IOException();
 			}
@@ -33,7 +32,7 @@ public class DbgpRawPacket {
 			if (b == 0) {
 				break;
 			}
-			
+
 			sb.append((char) b);
 		}
 
@@ -69,9 +68,9 @@ public class DbgpRawPacket {
 		return new DbgpRawPacket(size, xml);
 	}
 
-	private int size;
+	private final int size;
 
-	private String xml;
+	private final String xml;
 
 	protected DbgpRawPacket(int size, String xml) {
 		this.size = size;

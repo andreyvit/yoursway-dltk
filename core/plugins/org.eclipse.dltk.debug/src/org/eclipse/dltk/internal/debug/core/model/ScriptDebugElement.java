@@ -45,7 +45,8 @@ public abstract class ScriptDebugElement extends PlatformObject implements
 			return this;
 		}
 
-		/* Not implemented currently
+		/*
+		 * Not implemented currently
 		 * 
 		 * if (adapter == IStepFilters.class) { return getDebugTarget(); }
 		 */

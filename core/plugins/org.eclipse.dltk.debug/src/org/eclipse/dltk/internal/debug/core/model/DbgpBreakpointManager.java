@@ -123,7 +123,7 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 		boolean enabled = breakpoint.isEnabled()
 				&& getBreakpointManager().isEnabled();
 
-		IScriptBreakpoint b = (IScriptBreakpoint) breakpoint;
+		IScriptBreakpoint b = breakpoint;
 
 		int hitValue = b.getHitValue();
 		int hitCondition = b.getHitCondition();
@@ -134,8 +134,9 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 		DbgpBreakpointConfig config = new DbgpBreakpointConfig(enabled,
 				hitValue, hitCondition, cExpr);
 
-		if (b.getIdentifier() != null)
+		if (b.getIdentifier() != null) {
 			commands.updateBreakpoint(b.getIdentifier(), config);
+		}
 		if (b instanceof IScriptMethodEntryBreakpoint) {
 			IScriptMethodEntryBreakpoint ba = (IScriptMethodEntryBreakpoint) b;
 			String secondaryId = ba.getSecondaryId();
@@ -143,8 +144,9 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 				if (!ba.shouldBreakOnExit()) {
 					commands.removeBreakpoint(secondaryId);
 					ba.setSecondaryId(null);
-				} else
+				} else {
 					commands.updateBreakpoint(secondaryId, config);
+				}
 			} else if (ba.shouldBreakOnExit()) {
 				String id = commands.setReturnBreakpoint(ba.getResourceURI(),
 						ba.getMethodName(), config);
@@ -187,7 +189,7 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 
 	protected static void removeBreakpoint(IDbgpBreakpointCommands commands,
 			IScriptBreakpoint breakpoint) throws DbgpException {
-		IScriptBreakpoint b = (IScriptBreakpoint) breakpoint;
+		IScriptBreakpoint b = breakpoint;
 
 		commands.removeBreakpoint(b.getIdentifier());
 		if (b instanceof IScriptMethodEntryBreakpoint) {
@@ -211,8 +213,8 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 					(IScriptBreakpoint) breakpoint);
 		}
 	}
-	
-	private ScriptThreadManager threadManager;
+
+	private final ScriptThreadManager threadManager;
 
 	public DbgpBreakpointManager(ScriptThreadManager manager) {
 		if (manager == null) {
@@ -238,7 +240,7 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 							addBreakpoint(getBreakpointCommands(thread),
 									(IScriptBreakpoint) breakpoint);
 						} catch (Exception e) {
-							
+
 						}
 					}
 				}

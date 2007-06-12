@@ -21,7 +21,7 @@ import org.w3c.dom.Element;
 
 public class DbgpDebuggingEngineCommunicator implements IDbgpCommunicator {
 
-	private IDbgpDebugingEngine engine;
+	private final IDbgpDebugingEngine engine;
 
 	private void sendRequest(String command) throws IOException {
 		engine.sendCommand(command);

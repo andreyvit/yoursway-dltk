@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IMember;
@@ -47,7 +47,7 @@ import org.eclipse.dltk.ui.IContextMenuConstants;
 import org.eclipse.dltk.ui.IWorkingCopyManager;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.PreferencesAdapter;
-import org.eclipse.dltk.ui.actions.DLTKSearchActionGroup;
+import org.eclipse.dltk.ui.actions.SearchActionGroup;
 import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
 import org.eclipse.dltk.ui.actions.OpenEditorActionGroup;
 import org.eclipse.dltk.ui.actions.OpenViewActionGroup;
@@ -1246,7 +1246,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 
 		ActionGroup oeg = new OpenEditorActionGroup(this);
 		ActionGroup ovg = new OpenViewActionGroup(this);
-		ActionGroup dsg = new DLTKSearchActionGroup(this);
+		ActionGroup dsg = new SearchActionGroup(this);
 
 		fActionGroups = new CompositeActionGroup(new ActionGroup[] { oeg, ovg,
 				dsg });
@@ -1929,7 +1929,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		if (unit != null) {
 			try {
 				if (reconcile) {
-					DLTKModelUtil.reconcile(unit);
+					ScriptModelUtil.reconcile(unit);
 					return unit.getElementAt(offset);
 				} else if (unit.isConsistent())
 					return unit.getElementAt(offset);

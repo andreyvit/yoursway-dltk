@@ -25,5 +25,7 @@ public interface IScriptVariable extends IVariable {
 
 	boolean hasChildren();
 
+	boolean shouldHasChildren();
+
 	IScriptVariable[] getChildren() throws DebugException;
 }

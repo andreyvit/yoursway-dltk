@@ -36,25 +36,25 @@ import org.eclipse.dltk.dbgp.internal.managers.IDbgpStreamManager;
 
 public class DbgpCoreCommands implements IDbgpCoreCommands {
 
-	private IDbgpFeatureCommands featureCommands;
+	private final IDbgpFeatureCommands featureCommands;
 
-	private IDbgpStatusCommands statusCommands;
+	private final IDbgpStatusCommands statusCommands;
 
-	private IDbgpBreakpointCommands breakpointCommands;
+	private final IDbgpBreakpointCommands breakpointCommands;
 
-	private IDbgpSourceCommands sourceCommands;
+	private final IDbgpSourceCommands sourceCommands;
 
-	private IDbgpContextCommands contextCommands;
+	private final IDbgpContextCommands contextCommands;
 
-	private IDbgpStatckCommands stackCommands;
+	private final IDbgpStatckCommands stackCommands;
 
-	private IDbgpContinuationCommands continuationCommands;
+	private final IDbgpContinuationCommands continuationCommands;
 
-	private IDbgpStreamCommands streamCommands;
+	private final IDbgpStreamCommands streamCommands;
 
-	private IDbgpDataTypeCommands dataTypeCommands;
+	private final IDbgpDataTypeCommands dataTypeCommands;
 
-	private IDbgpPropertyCommands propertyCommands;
+	private final IDbgpPropertyCommands propertyCommands;
 
 	public DbgpCoreCommands(IDbgpCommunicator communicator,
 			IDbgpStreamManager streamManager) {

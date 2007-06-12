@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui.infoviews;
 
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.ICodeAssist;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
@@ -75,7 +75,7 @@ class TextSelectionConverter {
 				if (input instanceof ISourceModule) {
 					ISourceModule cunit= (ISourceModule)input;
 					if (cunit.isWorkingCopy())
-						DLTKModelUtil.reconcile(cunit);
+						ScriptModelUtil.reconcile(cunit);
 				}
 				IModelElement[] elements= ((ICodeAssist)input).codeSelect(selection.getOffset(), selection.getLength());
 				if (elements != null && elements.length > 0)
@@ -88,7 +88,7 @@ class TextSelectionConverter {
 		if (input instanceof ISourceModule) {
 			ISourceModule cunit= (ISourceModule)input;
 			if (cunit.isWorkingCopy())
-				DLTKModelUtil.reconcile(cunit);
+				ScriptModelUtil.reconcile(cunit);
 			IModelElement ref= cunit.getElementAt(selection.getOffset());
 			if (ref == null)
 				return input;

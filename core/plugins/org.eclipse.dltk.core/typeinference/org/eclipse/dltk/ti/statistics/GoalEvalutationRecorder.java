@@ -12,21 +12,22 @@ import org.eclipse.dltk.ti.goals.IGoal;
  * Records all evaluation tree including evaluation times
  *
  */
-public class GoalEvalutationRecorder implements IEvaluationStatisticsRequestor  {
+public class GoalEvalutationRecorder implements IEvaluationStatisticsRequestor {
 
 	private IGoal rootRoal;
-	private Map goalStats =  new HashMap();
+	private Map goalStats = new HashMap();
 
 	public GoalEvalutationRecorder duplicate() {
 		GoalEvalutationRecorder n = new GoalEvalutationRecorder();
 		n.rootRoal = rootRoal;
-		for (Iterator iterator = goalStats.keySet().iterator(); iterator.hasNext();) {
-			Object k = (Object) iterator.next();
+		for (Iterator iterator = goalStats.keySet().iterator(); iterator
+				.hasNext();) {
+			Object k = iterator.next();
 			n.goalStats.put(k, goalStats.get(k));
 		}
 		return n;
 	}
-	
+
 	public void evaluationStarted(IGoal rootGoal) {
 		reset();
 		this.rootRoal = rootGoal;
@@ -82,10 +83,11 @@ public class GoalEvalutationRecorder implements IEvaluationStatisticsRequestor  
 		if (stat != null) {
 			GoalEvaluationStep step = new GoalEvaluationStep(kind);
 			step.setTime(time);
-			if (subgoals != null)
+			if (subgoals != null) {
 				step
 						.setSubgoalsStats(createEmptyGoalStatistics(stat,
 								subgoals));
+			}
 			step.setResult(result);
 			stat.getSteps().add(step);
 			return stat;
@@ -119,8 +121,8 @@ public class GoalEvalutationRecorder implements IEvaluationStatisticsRequestor  
 		return rootRoal;
 	}
 
-	public GoalEvaluationStatistics getStatisticsForGoal (IGoal g) {
-		return (GoalEvaluationStatistics)this.goalStats.get(g);
+	public GoalEvaluationStatistics getStatisticsForGoal(IGoal g) {
+		return (GoalEvaluationStatistics) this.goalStats.get(g);
 	}
-	
+
 }

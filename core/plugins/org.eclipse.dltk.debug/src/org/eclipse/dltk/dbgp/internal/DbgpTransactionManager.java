@@ -16,7 +16,7 @@ public class DbgpTransactionManager {
 		return instance;
 	}
 
-	private Object lock = new Object();
+	private final Object lock = new Object();
 
 	private int id;
 

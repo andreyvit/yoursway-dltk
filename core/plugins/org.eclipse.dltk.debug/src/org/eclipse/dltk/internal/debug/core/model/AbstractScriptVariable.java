@@ -7,7 +7,7 @@ import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
 public abstract class AbstractScriptVariable extends ScriptDebugElement
 		implements IScriptVariable {
-	private IDebugTarget target;
+	private final IDebugTarget target;
 
 	private IValue value;
 

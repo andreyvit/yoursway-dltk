@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.ui.text.hover;
 
 
 import org.eclipse.dltk.internal.ui.BrowserInformationControl;
-import org.eclipse.dltk.internal.ui.text.DLTKWordFinder;
+import org.eclipse.dltk.internal.ui.text.ScriptWordFinder;
 import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
 import org.eclipse.dltk.ui.text.hover.IScriptEditorTextHover;
 import org.eclipse.jface.text.DefaultInformationControl;
@@ -96,7 +96,7 @@ public class ScriptInformationProvider implements IInformationProvider, IInforma
 				if (fCurrentPerspective == null || fCurrentPerspective != perspectiveId) {
 					fCurrentPerspective= perspectiveId;
 
-					fImplementation= new DLTKTypeHover();
+					fImplementation= new ScriptTypeHover();
 					fImplementation.setEditor(fEditor);
 				}
 			}
@@ -106,7 +106,7 @@ public class ScriptInformationProvider implements IInformationProvider, IInforma
 	public IRegion getSubject(ITextViewer textViewer, int offset) {
 
 		if (textViewer != null)
-			return DLTKWordFinder.findWord(textViewer.getDocument(), offset);
+			return ScriptWordFinder.findWord(textViewer.getDocument(), offset);
 
 		return null;
 	}

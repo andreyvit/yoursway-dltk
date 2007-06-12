@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.refactoring.RefactoringAvailabilityTester;
@@ -58,7 +58,7 @@ public class ReorgMoveAction extends SelectionDispatchAction {
 			} catch (ModelException e) {
 				// no ui here - this happens on selection changes
 				// http://bugs.eclipse.org/bugs/show_bug.cgi?id=19253
-				if (DLTKModelUtil.isExceptionToBeLogged(e))
+				if (ScriptModelUtil.isExceptionToBeLogged(e))
 					DLTKUIPlugin.log(e);
 				setEnabled(false);
 			}

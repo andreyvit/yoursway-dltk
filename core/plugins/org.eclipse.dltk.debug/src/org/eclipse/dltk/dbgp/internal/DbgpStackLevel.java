@@ -15,17 +15,17 @@ import org.eclipse.dltk.dbgp.IDbgpStackLevel;
 
 public class DbgpStackLevel implements IDbgpStackLevel {
 
-	private int level;
+	private final int level;
 
-	private int lineNumber;
+	private final int lineNumber;
 
-	private int lineBegin;
+	private final int lineBegin;
 
-	private int lineEnd;
+	private final int lineEnd;
 
-	private URI fileUri;
+	private final URI fileUri;
 
-	private String where;
+	private final String where;
 
 	public DbgpStackLevel(URI fileUri, String where, int level, int lineNumber,
 			int lineBegin, int lineEnd) {
@@ -79,31 +79,42 @@ public class DbgpStackLevel implements IDbgpStackLevel {
 	}
 
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (!(obj instanceof DbgpStackLevel))
+		}
+		if (!(obj instanceof DbgpStackLevel)) {
 			return false;
+		}
 		final DbgpStackLevel other = (DbgpStackLevel) obj;
 		if (fileUri == null) {
-			if (other.fileUri != null)
+			if (other.fileUri != null) {
 				return false;
-		} else if (!fileUri.equals(other.fileUri))
+			}
+		} else if (!fileUri.equals(other.fileUri)) {
 			return false;
-		if (level != other.level)
+		}
+		if (level != other.level) {
 			return false;
-		if (lineBegin != other.lineBegin)
+		}
+		if (lineBegin != other.lineBegin) {
 			return false;
-		if (lineEnd != other.lineEnd)
+		}
+		if (lineEnd != other.lineEnd) {
 			return false;
-		if (lineNumber != other.lineNumber)
+		}
+		if (lineNumber != other.lineNumber) {
 			return false;
+		}
 		if (where == null) {
-			if (other.where != null)
+			if (other.where != null) {
 				return false;
-		} else if (!where.equals(other.where))
+			}
+		} else if (!where.equals(other.where)) {
 			return false;
+		}
 		return true;
 	}
 }

@@ -27,22 +27,22 @@ import org.eclipse.dltk.dbgp.internal.utils.DbgpXmlEntityParser;
 
 public class DbgpSession extends DbgpTermination implements IDbgpSession,
 		IDbgpTerminationListener {
-	private IDbgpDebugingEngine engine;
+	private final IDbgpDebugingEngine engine;
 
-	private IDbgpCoreCommands coreCommands;
+	private final IDbgpCoreCommands coreCommands;
 
-	private IDbgpExtendedCommands extendedCommands;
+	private final IDbgpExtendedCommands extendedCommands;
 
-	private DbgpNotificationManager notificationManager;
+	private final DbgpNotificationManager notificationManager;
 
-	private DbgpStreamManager streamManager;
+	private final DbgpStreamManager streamManager;
 
 	private IDbgpSessionInfo info;
 
-	private Object terminatingLock = new Object();
+	private final Object terminatingLock = new Object();
 	private boolean terminating = false;
 
-	private Object terminatedLock = new Object();
+	private final Object terminatedLock = new Object();
 	private boolean terminated = false;
 
 	private void requestTerminateImpl(Object object) {

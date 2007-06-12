@@ -59,7 +59,7 @@ public class RubySourceLookupDirector implements IPersistableSourceLocator {
 			IResource resource = container.findMember(file.getName());
 
 			if (resource instanceof IFile) {
-				return (IFile) resource;
+				return resource;
 			}
 		} else {
 			return file;

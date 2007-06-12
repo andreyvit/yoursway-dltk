@@ -48,7 +48,7 @@ public class ScriptElementProvider implements IInformationProvider, IInformation
 	 */
 	public IRegion getSubject(ITextViewer textViewer, int offset) {
 		if (textViewer != null && fEditor != null) {
-			IRegion region= DLTKWordFinder.findWord(textViewer.getDocument(), offset);
+			IRegion region= ScriptWordFinder.findWord(textViewer.getDocument(), offset);
 			if (region != null)
 				return region;
 			else

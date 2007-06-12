@@ -28,9 +28,9 @@ public class ScriptConsoleServer implements Runnable {
 		return instance;
 	}
 
-	private int port;
+	private final int port;
 
-	private Map handlers;
+	private final Map handlers;
 
 	protected ScriptConsoleServer(int port) {
 		this.port = port;
@@ -45,7 +45,7 @@ public class ScriptConsoleServer implements Runnable {
 		register(id, request);
 		return id;
 	}
-	
+
 	public void register(String id, ConsoleRequest request) {
 		synchronized (handlers) {
 			handlers.put(id, request);
@@ -56,7 +56,7 @@ public class ScriptConsoleServer implements Runnable {
 	public int getPort() {
 		return port;
 	}
-		
+
 	public void run() {
 		try {
 			ServerSocket server = new ServerSocket(port);

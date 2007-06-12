@@ -15,7 +15,7 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -99,7 +99,7 @@ public class ConfigureBuildPathAction extends Action implements ISelectionChange
 	private IProject getProjectFromSelectedElement(Object firstElement) {
 		if (firstElement instanceof IModelElement) {
 			IModelElement element= (IModelElement) firstElement;
-			IProjectFragment root= DLTKModelUtil.getProjectFragment(element);
+			IProjectFragment root= ScriptModelUtil.getProjectFragment(element);
 						
 			if (root != null && root != element && root.isArchive()) {
 				return null;

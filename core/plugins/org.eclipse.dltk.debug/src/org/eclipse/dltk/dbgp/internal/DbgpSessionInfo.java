@@ -14,19 +14,19 @@ import java.net.URI;
 import org.eclipse.dltk.dbgp.IDbgpSessionInfo;
 
 public class DbgpSessionInfo implements IDbgpSessionInfo {
-	private String appId;
+	private final String appId;
 
-	private String ideKey;
+	private final String ideKey;
 
-	private String session;
+	private final String session;
 
-	private String threadId;
+	private final String threadId;
 
-	private String parentId;
+	private final String parentId;
 
-	private String language;
+	private final String language;
 
-	private URI fileUri;
+	private final URI fileUri;
 
 	public DbgpSessionInfo(String appId, String ideKey, String session,
 			String threadId, String parentId, String language, URI fileUri) {

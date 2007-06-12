@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti.goals;
 
@@ -25,7 +25,8 @@ public class MethodReturnTypeGoal extends AbstractTypeGoal {
 		return arguments;
 	}
 
-	public MethodReturnTypeGoal(InstanceContext context, String methodName, IEvaluatedType[] arguments) {
+	public MethodReturnTypeGoal(InstanceContext context, String methodName,
+			IEvaluatedType[] arguments) {
 		super(context);
 		this.methodName = methodName;
 		this.arguments = arguments;

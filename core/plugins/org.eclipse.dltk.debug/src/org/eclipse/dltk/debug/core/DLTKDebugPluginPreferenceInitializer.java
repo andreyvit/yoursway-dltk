@@ -22,7 +22,7 @@ public class DLTKDebugPluginPreferenceInitializer extends
 
 		prefs.setDefault(DebugPreferenceConstants.PREF_DBGP_CONNECTION_TIMEOUT,
 				10000);
-		
+
 		prefs.setDefault(DebugPreferenceConstants.PREF_DBGP_RESPONSE_TIMEOUT,
 				10000);
 

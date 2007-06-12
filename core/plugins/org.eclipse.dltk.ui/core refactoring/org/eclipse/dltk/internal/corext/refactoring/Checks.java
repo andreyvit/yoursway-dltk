@@ -16,7 +16,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -78,7 +78,7 @@ public class Checks {
 		return !definingProject.equals(occurringProject);
 	}
 	public static RefactoringStatus checkSourceModuleNewName(ISourceModule cu, String newName) {
-		String newCUName= DLTKModelUtil.getRenamedCUName(cu, newName);
+		String newCUName= ScriptModelUtil.getRenamedCUName(cu, newName);
 		if (resourceExists(RenameResourceChange.renamedResourcePath(ResourceUtil.getResource(cu).getFullPath(), newCUName)))
 			return RefactoringStatus.createFatalErrorStatus(Messages.format(RefactoringCoreMessages.Checks_cu_name_used, newName));
 		else

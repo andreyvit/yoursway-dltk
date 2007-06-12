@@ -23,10 +23,8 @@ import org.eclipse.dltk.core.IModelElement;
 
 /**
  * Script-aware model provider.
- * 
-	 *
  */
-public final class DLTKModelProvider extends ModelProvider {
+public final class ScriptModelProvider extends ModelProvider {
 
 	/** The model provider id */
 	public static final String DLTK_MODEL_PROVIDER_ID= "org.eclipse.dltk.ui.modelProvider"; //$NON-NLS-1$
@@ -60,7 +58,7 @@ public final class DLTKModelProvider extends ModelProvider {
 	/**
 	 * Creates a newscriptmodel provider.
 	 */
-	public DLTKModelProvider() {
+	public ScriptModelProvider() {
 		// Used by the runtime
 	}
 

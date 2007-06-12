@@ -13,4 +13,6 @@ import org.eclipse.debug.core.model.IValue;
 
 public interface IScriptValue extends IValue {
 	String getReferenceId();
+
+	boolean shouldHasVariables();
 }

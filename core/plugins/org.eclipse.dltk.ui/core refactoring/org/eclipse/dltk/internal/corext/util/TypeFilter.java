@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.corext.util;
 
 import java.util.StringTokenizer;
 
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.search.TypeNameMatch;
 import org.eclipse.dltk.internal.ui.util.StringMatcher;
@@ -48,7 +48,7 @@ public class TypeFilter implements IPropertyChangeListener {
 	
 	public boolean isFiltered(IType type) {
 		if( hasFilters()) {
-			return filter(DLTKModelUtil.getFullyQualifiedName(type));
+			return filter(ScriptModelUtil.getFullyQualifiedName(type));
 		}
 		return false;
 	}

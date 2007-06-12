@@ -5,14 +5,14 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 /**
- * 
+ *
  */
 package org.eclipse.dltk.ti;
 
 public class RecursionGoalException extends RuntimeException {
 
-	private static final long serialVersionUID = 7566850930386548002L;		
+	private static final long serialVersionUID = 7566850930386548002L;
 }

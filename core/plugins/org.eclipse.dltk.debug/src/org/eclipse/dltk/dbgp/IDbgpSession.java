@@ -16,7 +16,7 @@ public interface IDbgpSession extends IDbgpCommands, IDbgpTermination {
 	IDbgpSessionInfo getInfo();
 
 	IDbgpNotificationManager getNotificationManager();
-	
+
 	// Listeners
 	void addRawListener(IDbgpRawListener listener);
 

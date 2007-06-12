@@ -14,9 +14,9 @@ public class DbgpStreamPacket {
 
 	private static final String STDOUT = "stdout";
 
-	private String type;
+	private final String type;
 
-	private String content;
+	private final String content;
 
 	public DbgpStreamPacket(String type, String content) {
 		if (!STDERR.equalsIgnoreCase(type) && !STDOUT.equalsIgnoreCase(type)) {

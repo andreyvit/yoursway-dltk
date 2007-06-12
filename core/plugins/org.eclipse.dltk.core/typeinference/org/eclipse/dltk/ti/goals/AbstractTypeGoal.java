@@ -5,16 +5,14 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti.goals;
 
 import org.eclipse.dltk.ti.IContext;
 
 public class AbstractTypeGoal extends AbstractGoal {
-
 	public AbstractTypeGoal(IContext context) {
 		super(context);
 	}
-
 }

@@ -13,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.internal.corext.refactoring.RefactoringAvailabilityTester;
@@ -59,7 +59,7 @@ public class CutAction extends SelectionDispatchAction{
 			} catch (CoreException e) {
 				// no ui here - this happens on selection changes
 				// http://bugs.eclipse.org/bugs/show_bug.cgi?id=19253
-				if (DLTKModelUtil.isExceptionToBeLogged(e))
+				if (ScriptModelUtil.isExceptionToBeLogged(e))
 					DLTKUIPlugin.log(e);
 				setEnabled(false);
 			}

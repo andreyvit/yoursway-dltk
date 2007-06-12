@@ -9,9 +9,9 @@ import org.eclipse.dltk.debug.core.model.IScriptVariable;
 public class ScriptEvaluationResult implements IScriptEvaluationResult {
 	private static final String[] NO_MESSAGES = new String[0];
 
-	private IScriptThread thread;
-	private String snippet;
-	private IScriptVariable variable;
+	private final IScriptThread thread;
+	private final String snippet;
+	private final IScriptVariable variable;
 
 	public ScriptEvaluationResult(IScriptThread thread, String snippet,
 			IScriptVariable variable) {

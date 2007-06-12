@@ -32,11 +32,11 @@ public abstract class DbgpOperation {
 		void finish(IDbgpStatus status, DbgpException e);
 	}
 
-	private Job job;
+	private final Job job;
 
-	private IDbgpContinuationHandler continuationHandler;
+	private final IDbgpContinuationHandler continuationHandler;
 
-	private IDbgpCommands commands;
+	private final IDbgpCommands commands;
 
 	private final IScriptThread th;
 
@@ -52,7 +52,7 @@ public abstract class DbgpOperation {
 		return continuationHandler;
 	}
 
-	private IResultHandler resultHandler;
+	private final IResultHandler resultHandler;
 
 	protected void callFinish(IDbgpStatus status) {
 		if (DEBUG) {

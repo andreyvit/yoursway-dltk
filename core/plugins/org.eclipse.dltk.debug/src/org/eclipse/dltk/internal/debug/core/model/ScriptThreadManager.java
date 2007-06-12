@@ -48,13 +48,14 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 		}
 	}
 
-	private ListenerList listeners = new ListenerList(ListenerList.IDENTITY);
+	private final ListenerList listeners = new ListenerList(
+			ListenerList.IDENTITY);
 
-	private List threads = new ArrayList();
+	private final List threads = new ArrayList();
 
 	private volatile boolean waitingForThreads = true;
 
-	private ScriptDebugTarget target;
+	private final ScriptDebugTarget target;
 
 	protected void fireThreadAccepted(IScriptThread thread, boolean first) {
 		Object[] list = listeners.getListeners();

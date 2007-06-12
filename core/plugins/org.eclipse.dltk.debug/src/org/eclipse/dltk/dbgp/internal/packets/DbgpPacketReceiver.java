@@ -21,7 +21,7 @@ import org.w3c.dom.Element;
 
 public class DbgpPacketReceiver extends DbgpWorkingThread {
 	private static class SyncMap {
-		private HashMap map;
+		private final HashMap map;
 
 		public SyncMap() {
 			map = new HashMap();
@@ -36,17 +36,17 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 			while (!map.containsKey(key)) {
 				wait();
 			}
-			
-			return map.remove(key);			
+
+			return map.remove(key);
 		}
-		
+
 		public synchronized int size() {
 			return map.size();
 		}
 	}
 
 	private static class SyncQueue {
-		private LinkedList queue;
+		private final LinkedList queue;
 
 		public SyncQueue() {
 			this.queue = new LinkedList();
@@ -74,18 +74,18 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 
 	private static final String NOTIFY_TAG = "notify";
 
-	private SyncMap responseQueue;
+	private final SyncMap responseQueue;
 
-	private SyncQueue notifyQueue;
+	private final SyncQueue notifyQueue;
 
-	private SyncQueue streamQueue;
+	private final SyncQueue streamQueue;
 
-	private InputStream input;
+	private final InputStream input;
 
 	private IDbgpRawLogger logger;
 
 	protected void workingCycle() throws Exception {
-		
+
 		while (!Thread.interrupted()) {
 			DbgpRawPacket packet = DbgpRawPacket.readPacket(input);
 
@@ -95,7 +95,7 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 
 			addDocument(packet.getParsedXml());
 		}
-		
+
 	}
 
 	protected void addDocument(Document doc) {
@@ -127,14 +127,14 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 
 	public DbgpResponsePacket getResponsePacket(int transactionId)
 			throws InterruptedException {
-				
+
 		return (DbgpResponsePacket) responseQueue
 				.get(new Integer(transactionId));
 	}
 
 	public DbgpPacketReceiver(InputStream input) {
 		super("DBGP - Packet receiver");
-		
+
 		if (input == null) {
 			throw new IllegalArgumentException();
 		}

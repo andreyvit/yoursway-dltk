@@ -23,7 +23,7 @@ public class ScriptDebugManager {
 		return instance;
 	}
 
-	private HashMap natureToModelMap;
+	private final HashMap natureToModelMap;
 
 	private void loadExtenstionPoints() {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();

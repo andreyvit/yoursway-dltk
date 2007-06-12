@@ -6,7 +6,7 @@ import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 
 public class FailedScriptEvaluationResult implements IScriptEvaluationResult {
-	private String snippet;
+	private final String snippet;
 	private DebugException exception;
 	private String[] messages;
 
@@ -19,8 +19,9 @@ public class FailedScriptEvaluationResult implements IScriptEvaluationResult {
 		this.snippet = snippet;
 		this.messages = messages;
 	}
-	
-	public FailedScriptEvaluationResult(String snippet, DebugException exception, String[] messages) {
+
+	public FailedScriptEvaluationResult(String snippet,
+			DebugException exception, String[] messages) {
 		this.snippet = snippet;
 		this.exception = exception;
 		this.messages = messages;
@@ -33,10 +34,10 @@ public class FailedScriptEvaluationResult implements IScriptEvaluationResult {
 	public String[] getErrorMessages() {
 		if (messages != null) {
 			return messages;
-		} else if (exception != null ){
+		} else if (exception != null) {
 			return new String[] { exception.getMessage() };
 		}
-		
+
 		return new String[0];
 	}
 

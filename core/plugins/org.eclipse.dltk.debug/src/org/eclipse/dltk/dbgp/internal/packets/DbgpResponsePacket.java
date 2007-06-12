@@ -12,7 +12,7 @@ package org.eclipse.dltk.dbgp.internal.packets;
 import org.w3c.dom.Element;
 
 public class DbgpResponsePacket extends DbgpPacket {
-	private int transactionId;
+	private final int transactionId;
 
 	public DbgpResponsePacket(Element element, int transactionId) {
 		super(element);

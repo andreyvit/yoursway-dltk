@@ -17,7 +17,7 @@ import com.ibm.icu.text.BreakIterator;
 
 
 /**
- * Ascriptbreak iterator. It returns all breaks, including before and after
+ * A script break iterator. It returns all breaks, including before and after
  * whitespace, and it returns all camel case breaks.
  * <p>
  * A line break may be any of "\n", "\r", "\r\n", "\n\r".
@@ -25,7 +25,7 @@ import com.ibm.icu.text.BreakIterator;
  *
 	 *
  */
-public class DLTKBreakIterator extends BreakIterator {
+public class ScriptBreakIterator extends BreakIterator {
 
 	/**
 	 * A run of common characters.
@@ -209,7 +209,7 @@ public class DLTKBreakIterator extends BreakIterator {
 	/**
 	 * Creates a new break iterator.
 	 */
-	public DLTKBreakIterator() {
+	public ScriptBreakIterator() {
 		fIterator= BreakIterator.getWordInstance();
 		fIndex= fIterator.current();
 	}

@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti;
 
@@ -13,8 +13,5 @@ import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
 
 public interface IGoalEvaluatorFactory {
-	
-	public GoalEvaluator createEvaluator(IGoal goal);
-	
-		
+	GoalEvaluator createEvaluator(IGoal goal);
 }

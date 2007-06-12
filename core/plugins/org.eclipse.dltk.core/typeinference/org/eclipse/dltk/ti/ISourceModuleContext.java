@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti;
 
@@ -13,9 +13,7 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.ISourceModule;
 
 public interface ISourceModuleContext {
+	ModuleDeclaration getRootNode();
 
-	public abstract ModuleDeclaration getRootNode();
-
-	public abstract ISourceModule getSourceModule();
-
+	ISourceModule getSourceModule();
 }

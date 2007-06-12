@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti;
 
@@ -17,12 +17,14 @@ public class InstanceContext extends BasicContext implements IInstanceContext {
 
 	private final IEvaluatedType instanceType;
 
-	public InstanceContext(ISourceModule sourceModule, ModuleDeclaration rootNode, IEvaluatedType instanceType) {
+	public InstanceContext(ISourceModule sourceModule,
+			ModuleDeclaration rootNode, IEvaluatedType instanceType) {
 		super(sourceModule, rootNode);
 		this.instanceType = instanceType;
 	}
-	
-	public InstanceContext(ISourceModuleContext parent, IEvaluatedType instanceType) {
+
+	public InstanceContext(ISourceModuleContext parent,
+			IEvaluatedType instanceType) {
 		super(parent);
 		this.instanceType = instanceType;
 	}

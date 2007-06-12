@@ -12,7 +12,7 @@ package org.eclipse.dltk.dbgp.internal;
 import org.eclipse.core.runtime.ListenerList;
 
 public abstract class DbgpTermination implements IDbgpTermination {
-	private ListenerList listeners = new ListenerList();
+	private final ListenerList listeners = new ListenerList();
 
 	protected void fireObjectTerminated(final Exception e) {
 		Thread thread = new Thread(new Runnable() {

@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -133,7 +133,7 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 			//TODO: I think this piece of code is a mess, please fix it 
 			try {
 				if (initRoot == null) {
-					IProjectFragment fragment = DLTKModelUtil.getProjectFragment(elem);
+					IProjectFragment fragment = ScriptModelUtil.getProjectFragment(elem);
 					if (fragment != null && fragment.getKind() == IProjectFragment.K_SOURCE &&
 							!fragment.isExternal() )
 						initRoot = fragment.getScriptFolder("");

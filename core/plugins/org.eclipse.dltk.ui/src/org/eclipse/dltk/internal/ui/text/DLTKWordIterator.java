@@ -28,7 +28,7 @@ public class DLTKWordIterator extends BreakIterator {
 	 * The underlyingscriptbreak iterator. It returns all breaks, including
 	 * before and after every whitespace.
 	 */
-	private DLTKBreakIterator fIterator;
+	private ScriptBreakIterator fIterator;
 	/** The current index for the stateful operations. */
 	private int fIndex;
 
@@ -36,7 +36,7 @@ public class DLTKWordIterator extends BreakIterator {
 	 * Creates a new word iterator.
 	 */
 	public DLTKWordIterator() {
-		fIterator= new DLTKBreakIterator();
+		fIterator= new ScriptBreakIterator();
 		first();
 	}
 

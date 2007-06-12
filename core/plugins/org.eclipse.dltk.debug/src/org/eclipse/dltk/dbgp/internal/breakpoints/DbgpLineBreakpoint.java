@@ -13,9 +13,9 @@ import org.eclipse.dltk.dbgp.breakpoints.IDbgpLineBreakpoint;
 
 public class DbgpLineBreakpoint extends DbgpBreakpoint implements
 		IDbgpLineBreakpoint {
-	private String fileName;
+	private final String fileName;
 
-	private int lineNumber;
+	private final int lineNumber;
 
 	public DbgpLineBreakpoint(String id, boolean enabled, int hitValue,
 			int hitCount, String hitCondition, String fileName, int lineNumber) {

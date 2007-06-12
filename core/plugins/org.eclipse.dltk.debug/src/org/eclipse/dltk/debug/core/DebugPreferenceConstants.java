@@ -14,7 +14,7 @@ public class DebugPreferenceConstants {
 	public static final int DBGP_AVAILABLE_PORT = -1;
 
 	public static final String PREF_DBGP_BREAK_ON_FIRST_LINE = "dbgp_break_on_first_line";
-	
+
 	public static final String PREF_DBGP_ENABLE_LOGGING = "dbgp_enable_logging";
 
 	public static final String PREF_DBGP_PORT = "dbgp_port";
@@ -24,10 +24,13 @@ public class DebugPreferenceConstants {
 	public static final String PREF_DBGP_RESPONSE_TIMEOUT = "dbgp_response_timeout";
 
 	public static final String PREF_DBGP_SHOW_SCOPE_PREFIX = "dbgp_show_scope_";
-	
-	public static final String PREF_DBGP_SHOW_SCOPE_LOCAL = PREF_DBGP_SHOW_SCOPE_PREFIX + "local";
 
-	public static final String PREF_DBGP_SHOW_SCOPE_GLOBAL = PREF_DBGP_SHOW_SCOPE_PREFIX + "global";
+	public static final String PREF_DBGP_SHOW_SCOPE_LOCAL = PREF_DBGP_SHOW_SCOPE_PREFIX
+			+ "local";
 
-	public static final String PREF_DBGP_SHOW_SCOPE_CLASS = PREF_DBGP_SHOW_SCOPE_PREFIX + "class";
+	public static final String PREF_DBGP_SHOW_SCOPE_GLOBAL = PREF_DBGP_SHOW_SCOPE_PREFIX
+			+ "global";
+
+	public static final String PREF_DBGP_SHOW_SCOPE_CLASS = PREF_DBGP_SHOW_SCOPE_PREFIX
+			+ "class";
 }

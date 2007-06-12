@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IElementChangedListener;
@@ -219,7 +219,7 @@ public class TypeHierarchyLifeCycle implements ITypeHierarchyChangedListener, IE
 				break;
 			case IModelElement.SOURCE_MODULE:
 				ISourceModule cu= (ISourceModule)element;
-				if (!DLTKModelUtil.isPrimary(cu)) {
+				if (!ScriptModelUtil.isPrimary(cu)) {
 					return;
 				}
 				

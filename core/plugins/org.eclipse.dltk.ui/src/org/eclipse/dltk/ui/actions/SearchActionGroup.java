@@ -34,9 +34,8 @@ import org.eclipse.ui.texteditor.ITextEditorActionConstants;
  * This class may be instantiated; it is not intended to be subclassed.
  * </p>
  * 
-	 *
  */
-public class DLTKSearchActionGroup extends ActionGroup {
+public class SearchActionGroup extends ActionGroup {
 
 	private ScriptEditor fEditor;
 
@@ -56,7 +55,7 @@ public class DLTKSearchActionGroup extends ActionGroup {
 	 * @param part the view part that owns this action group
 	 * @param toolkit 
 	 */
-	public DLTKSearchActionGroup(IViewPart part, IDLTKLanguageToolkit toolkit) {
+	public SearchActionGroup(IViewPart part, IDLTKLanguageToolkit toolkit) {
 		this(part.getViewSite(), toolkit);
 	}
 	
@@ -67,7 +66,7 @@ public class DLTKSearchActionGroup extends ActionGroup {
 	 * 
 	 * @param page the page that owns this action group
 	 */
-	public DLTKSearchActionGroup(Page page, IDLTKLanguageToolkit toolkit) {
+	public SearchActionGroup(Page page, IDLTKLanguageToolkit toolkit) {
 		this(page.getSite(), toolkit);
 	}
 
@@ -75,7 +74,7 @@ public class DLTKSearchActionGroup extends ActionGroup {
 	 * Note: This constructor is for internal use only. Clients should not call this constructor.
 	 * @param editor the Script editor
 	 */
-	public DLTKSearchActionGroup(ScriptEditor editor) {
+	public SearchActionGroup(ScriptEditor editor) {
 		fEditor= editor;
 		
 		fReferencesGroup= new ReferencesSearchGroup(fEditor, fEditor.getLanguageToolkit());
@@ -86,7 +85,7 @@ public class DLTKSearchActionGroup extends ActionGroup {
 		//fOccurrencesGroup= new OccurrencesSearchGroup(fEditor);
 	}
 
-	private DLTKSearchActionGroup(IWorkbenchSite site, IDLTKLanguageToolkit toolkit) {
+	private SearchActionGroup(IWorkbenchSite site, IDLTKLanguageToolkit toolkit) {
 		fReferencesGroup= new ReferencesSearchGroup(site, toolkit);
 		//fReadAccessGroup= new ReadReferencesSearchGroup(site);
 		//fWriteAccessGroup= new WriteReferencesSearchGroup(site);

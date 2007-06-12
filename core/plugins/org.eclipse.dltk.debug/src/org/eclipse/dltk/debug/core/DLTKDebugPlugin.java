@@ -39,8 +39,8 @@ public class DLTKDebugPlugin extends Plugin {
 
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
-		
-		//TODO: stop
+
+		// TODO: stop
 	}
 
 	public IDbgpService createDbgpService() throws Exception {
@@ -50,8 +50,9 @@ public class DLTKDebugPlugin extends Plugin {
 	public IDbgpService creaeDbgpService(int port) throws Exception {
 		return DbgpService.getService(port);
 	}
-	
-	public IDbgpService createDbgpService(int portBegin, int portEnd) throws Exception {
+
+	public IDbgpService createDbgpService(int portBegin, int portEnd)
+			throws Exception {
 		return DbgpService.getService(portBegin, portEnd);
 	}
 

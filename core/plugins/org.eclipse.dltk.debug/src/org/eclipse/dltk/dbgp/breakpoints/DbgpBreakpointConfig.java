@@ -20,35 +20,36 @@ public class DbgpBreakpointConfig {
 	private static final String HIT_CONDITION_EQUAL = "==";
 	private static final String HIT_CONDITION_MULTIPLE = "%";
 
-	private boolean enabled;
+	private final boolean enabled;
 
-	private boolean temporary;
+	private final boolean temporary;
 
-	private int hitValue;
+	private final int hitValue;
 
-	private int hitCondition;
-	
-	private String conditionExpression;
+	private final int hitCondition;
+
+	private final String conditionExpression;
 
 	public String getConditionExpression() {
 		return conditionExpression;
 	}
 
 	public DbgpBreakpointConfig(boolean enabled) {
-		this(enabled, -1, -1,null);
-	}
-
-	public DbgpBreakpointConfig(boolean enabled, int hitValue, int hitCondition,String conString) {
-		this(enabled, hitValue, hitCondition, false,conString);
+		this(enabled, -1, -1, null);
 	}
 
 	public DbgpBreakpointConfig(boolean enabled, int hitValue,
-			int hitCondition, boolean temporary,String conString) {
+			int hitCondition, String conString) {
+		this(enabled, hitValue, hitCondition, false, conString);
+	}
+
+	public DbgpBreakpointConfig(boolean enabled, int hitValue,
+			int hitCondition, boolean temporary, String conString) {
 		this.enabled = enabled;
 		this.hitValue = hitValue;
 		this.hitCondition = hitCondition;
 		this.temporary = temporary;
-		this.conditionExpression=conString;
+		this.conditionExpression = conString;
 	}
 
 	public boolean isEnabled() {

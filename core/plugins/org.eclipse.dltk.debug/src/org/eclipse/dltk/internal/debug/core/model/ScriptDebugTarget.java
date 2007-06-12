@@ -37,30 +37,30 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	private static final int THREAD_TERMINATION_TIMEOUT = 5000; // 5 seconds
 
-	private ListenerList listeners;
+	private final ListenerList listeners;
 
 	private IScriptDebugTargetStreamManager manager;
 
-	private IProcess process;
+	private final IProcess process;
 
-	private ILaunch launch;
+	private final ILaunch launch;
 
 	private String name;
 
 	private boolean disconnected;
 
-	private ScriptThreadManager threadManager;
+	private final ScriptThreadManager threadManager;
 
-	private DbgpBreakpointManager breakpointManager;
+	private final DbgpBreakpointManager breakpointManager;
 
-	private IDbgpService dbgpService;
-	private String dbgpId;
-	
-	private String mondelId;
+	private final IDbgpService dbgpService;
+	private final String dbgpId;
 
-	public ScriptDebugTarget(String modelId, IDbgpService dbgpService, String id,
-			ILaunch launch, IProcess process) throws CoreException {
-		
+	private final String mondelId;
+
+	public ScriptDebugTarget(String modelId, IDbgpService dbgpService,
+			String id, ILaunch launch, IProcess process) throws CoreException {
+
 		this.mondelId = modelId;
 
 		this.listeners = new ListenerList();
@@ -90,9 +90,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	public String getModelIdentifier() {
-		return mondelId;	
+		return mondelId;
 	}
-	
+
 	public ILaunch getLaunch() {
 		return launch;
 	}
@@ -106,7 +106,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		return threadManager.hasThreads();
 	}
 
-	public IThread[] getThreads() throws DebugException {		
+	public IThread[] getThreads() throws DebugException {
 		return threadManager.getThreads();
 	}
 
@@ -140,24 +140,23 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 			}
 			if (threadManager.isTerminated()) {
 				return true;
-			}			
+			}
 		}
 		return false;
 	}
 
 	public void terminate() throws DebugException {
-		dbgpService.unregisterAcceptor(dbgpId);		
-		dbgpService.shutdown();				
+		dbgpService.unregisterAcceptor(dbgpId);
+		dbgpService.shutdown();
 		threadManager.terminate();
 		if (waitTermianted()) {
-			
+
 			threadManager.removeListener(this);
 			DebugPlugin.getDefault().getBreakpointManager()
-					.removeBreakpointListener(this);			
-			DebugEventHelper.fireTerminateEvent(this);			
+					.removeBreakpointListener(this);
+			DebugEventHelper.fireTerminateEvent(this);
 		}
-		
-		
+
 	}
 
 	// ISuspendResume
@@ -250,7 +249,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 			breakpointManager.setupDeferredBreakpoints(thread);
 		} catch (CoreException e) {
 			// TODO: log exception
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 
 		if (first) {
@@ -302,5 +301,4 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		listeners.remove(listener);
 	}
 
-	
 }

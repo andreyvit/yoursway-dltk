@@ -50,7 +50,7 @@ public class GenericRubyInstallType extends AbstractInterpreterInstallType {
 		Bundle bundle = RubyLaunchingPlugin.getDefault().getBundle();
 		return storeToMetadata(bundle, "path.rb", "scripts/path.rb");
 	}
-	
+
 	protected String getBuildPathDelimeter() {
 		return ";:";
 	}
@@ -70,8 +70,6 @@ public class GenericRubyInstallType extends AbstractInterpreterInstallType {
 		}
 		return super.validateInstallLocation(installLocation);
 	}
-	
-	
 
 	protected ILog getLog() {
 		return RubyLaunchingPlugin.getDefault().getLog();

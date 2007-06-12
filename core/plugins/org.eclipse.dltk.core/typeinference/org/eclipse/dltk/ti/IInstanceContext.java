@@ -5,14 +5,12 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti;
 
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public interface IInstanceContext {
-
-	public abstract IEvaluatedType getInstanceType();
-
+	IEvaluatedType getInstanceType();
 }

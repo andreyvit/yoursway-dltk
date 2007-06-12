@@ -38,7 +38,7 @@ public interface IDbgpContinuationCommands {
 	// network connection from the IDE (and debugger engine if required in multi
 	// request apache processes).
 	IDbgpStatus stop() throws DbgpException;
-	
+
 	// (optional): stops interaction with the debugger engine. Once this command
 	// is executed, the IDE will no longer be able to communicate with the
 	// debugger engine. This does not end execution of the script as does the

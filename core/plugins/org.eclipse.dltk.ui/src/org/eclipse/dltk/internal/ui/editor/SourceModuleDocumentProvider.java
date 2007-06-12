@@ -40,7 +40,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.dltk.compiler.problem.CategorizedProblem;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IBuffer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
@@ -1093,7 +1093,7 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 					.setIsHandlingTemporaryProblems(isHandlingTemporaryProblems());
 		}
 
-		if (DLTKModelUtil.isPrimary(original))
+		if (ScriptModelUtil.isPrimary(original))
 			original.becomeWorkingCopy(requestor, getProgressMonitor());
 		cuInfo.fCopy = original;
 
@@ -1165,7 +1165,7 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 
 			// Delegate handling of non-primary SourceModules
 			ISourceModule cu = ((SourceModuleInfo) info).fCopy;
-			if (cu != null && !DLTKModelUtil.isPrimary(cu))
+			if (cu != null && !ScriptModelUtil.isPrimary(cu))
 				return super.createSaveOperation(element, document, overwrite);
 
 			if (info.fTextFileBuffer.getDocument() != document) {
@@ -1469,7 +1469,7 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 			}
 
 			if (!isModifiable(element))
-				DLTKModelUtil.reconcile(cu);
+				ScriptModelUtil.reconcile(cu);
 
 			return cu;
 		} catch (CoreException ex) {

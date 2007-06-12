@@ -7,7 +7,7 @@ import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 public class ScriptStack {
 	private ScriptStackFrame[] frames;
 
-	private ScriptThread thread;
+	private final ScriptThread thread;
 
 	protected ScriptStackFrame[] readFrames(IDbgpStatckCommands commands)
 			throws DbgpException {

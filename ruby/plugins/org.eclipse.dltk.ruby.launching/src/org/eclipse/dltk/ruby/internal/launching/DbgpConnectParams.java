@@ -1,10 +1,10 @@
 package org.eclipse.dltk.ruby.internal.launching;
 
 public class DbgpConnectParams {
-	private String host;
-	private int port;
-	private String key;
-		
+	private final String host;
+	private final int port;
+	private final String key;
+
 	public DbgpConnectParams(String host, int port, String key) {
 		super();
 		this.host = host;
@@ -15,11 +15,11 @@ public class DbgpConnectParams {
 	public String getHost() {
 		return host;
 	}
-	
+
 	public int getPort() {
 		return port;
 	}
-	
+
 	public String getKey() {
 		return key;
 	}

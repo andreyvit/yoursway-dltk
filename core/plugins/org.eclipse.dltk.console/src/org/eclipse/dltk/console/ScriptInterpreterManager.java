@@ -18,14 +18,15 @@ import org.eclipse.core.runtime.Platform;
 
 public class ScriptInterpreterManager {
 	private static ScriptInterpreterManager instance;
-	
-	protected IScriptInterpreter findScriptInterpreter(String natureId) throws CoreException {
+
+	protected IScriptInterpreter findScriptInterpreter(String natureId)
+			throws CoreException {
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 		IExtensionPoint ep = reg
 				.getExtensionPoint(ScriptConsoleConstants.SCRIPT_INTERPRETER_EP);
-				
+
 		IExtension[] extensions = ep.getExtensions();
-		
+
 		for (int i = 0; i < extensions.length; i++) {
 			IExtension ext = extensions[i];
 			IConfigurationElement[] ce = ext.getConfigurationElements();
@@ -43,7 +44,7 @@ public class ScriptInterpreterManager {
 				}
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -55,13 +56,13 @@ public class ScriptInterpreterManager {
 		return instance;
 	}
 
-	public IScriptInterpreter createInterpreter(String natureId) {						
+	public IScriptInterpreter createInterpreter(String natureId) {
 		try {
 			return findScriptInterpreter(natureId);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 }

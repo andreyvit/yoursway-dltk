@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti.goals;
 
@@ -26,8 +26,9 @@ public class ExpressionTypeGoal extends AbstractTypeGoal {
 	}
 
 	public boolean equals(Object obj) {
-		if (obj == this)
+		if (obj == this) {
 			return true;
+		}
 		if (obj instanceof ExpressionTypeGoal) {
 			ExpressionTypeGoal goal = (ExpressionTypeGoal) obj;
 			return expression == goal.expression;
@@ -36,15 +37,17 @@ public class ExpressionTypeGoal extends AbstractTypeGoal {
 	}
 
 	public int hashCode() {
-		if (expression != null)
+		if (expression != null) {
 			return expression.hashCode();
+		}
 		return super.hashCode();
 	}
 
 	public String toString() {
-		return "ExpressionTypeGoal: " + ((expression != null)?expression.toString():"null") + " context: " + ((context != null)?context.toString():"null");
+		return "ExpressionTypeGoal: "
+				+ ((expression != null) ? expression.toString() : "null")
+				+ " context: "
+				+ ((context != null) ? context.toString() : "null");
 	}
 
-	
-	
 }

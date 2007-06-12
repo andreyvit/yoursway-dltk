@@ -23,7 +23,7 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 	private static final String DEBUGGER_DBGP_DIR = "dbgp";
 	private static final String DEBUGGER_SCRIPT = "runner.rb";
 
-	private boolean logging;
+	private final boolean logging;
 
 	protected String getLogFilename() {
 		// TODO:customize log file name, may be to preferences

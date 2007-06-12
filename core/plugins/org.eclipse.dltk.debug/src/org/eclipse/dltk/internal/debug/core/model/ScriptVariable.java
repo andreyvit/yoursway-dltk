@@ -22,11 +22,11 @@ import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
 public class ScriptVariable extends AbstractScriptVariable {
 
-	private IDbgpSession session;
+	private final IDbgpSession session;
 
 	private IScriptStackFrame frame;
 
-	private IDbgpProperty property;
+	private final IDbgpProperty property;
 
 	private String assignedValue;
 
@@ -56,10 +56,11 @@ public class ScriptVariable extends AbstractScriptVariable {
 	}
 
 	protected ScriptVariable createChildVariable(IDbgpProperty property) {
-		if (frame != null)
+		if (frame != null) {
 			return new ScriptVariable(frame, property);
-		else
+		} else {
 			return new ScriptVariable(getDebugTarget(), session, property);
+		}
 	}
 
 	public ScriptVariable(IScriptStackFrame frame, IDbgpProperty property) {
@@ -120,8 +121,12 @@ public class ScriptVariable extends AbstractScriptVariable {
 		return verifyValue(value.getValueString());
 	}
 
+	public boolean shouldHasChildren() {
+		return property.hasChildren();
+	}
+
 	public boolean hasChildren() {
-		boolean shouldHas = property.hasChildren();
+		boolean shouldHas = shouldHasChildren();
 		int count = property.getChildrenCount();
 
 		return count == -1 ? shouldHas : shouldHas && count > 0;

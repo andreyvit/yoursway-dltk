@@ -26,7 +26,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IMethod;
@@ -83,7 +83,7 @@ public class ReorgUtils {
 		// the editor if we have a primary working copy.
 		if (cu.equals(wc))
 			return false;
-		IModelElement wcElement= DLTKModelUtil.findInSourceModule(wc, elem);
+		IModelElement wcElement= ScriptModelUtil.findInSourceModule(wc, elem);
 		return wcElement == null || ! wcElement.exists();
 	}
 	public static String getName(IModelElement element) throws ModelException {

@@ -14,7 +14,8 @@ import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 
 public abstract class DbgpStepOperation extends DbgpOperation {
-	public DbgpStepOperation(IScriptThread thread, String name, IResultHandler finish) {
+	public DbgpStepOperation(IScriptThread thread, String name,
+			IResultHandler finish) {
 		super(thread, name, finish);
 	}
 

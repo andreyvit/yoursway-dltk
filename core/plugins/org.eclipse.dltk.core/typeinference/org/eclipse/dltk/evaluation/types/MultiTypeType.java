@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.evaluation.types;
 
@@ -15,52 +15,51 @@ import java.util.List;
 
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
+public class MultiTypeType implements IEvaluatedType {
+	private List/* <IEvaluatedType> */fTypes = new ArrayList/* <IEvaluatedType> */();
 
-public class MultiTypeType implements IEvaluatedType
-{	
-	private List/*<IEvaluatedType>*/ fTypes = new ArrayList/*<IEvaluatedType>*/();
-	
 	public MultiTypeType() {
-		
+
 	}
-	
+
 	/**
 	 * Add using equal.
 	 */
-	public void addType( IEvaluatedType type ) {
+	public void addType(IEvaluatedType type) {
 		Iterator i = fTypes.iterator();
-		while( i.hasNext() ) {
-			IEvaluatedType ltype = (IEvaluatedType)i.next();
-			if( ltype.equals(type) ) {
+		while (i.hasNext()) {
+			IEvaluatedType ltype = (IEvaluatedType) i.next();
+			if (ltype.equals(type)) {
 				return;
 			}
 		}
-		fTypes.add( type );
+		fTypes.add(type);
 	}
-	public String getTypeName( ) {
+
+	public String getTypeName() {
 		String names = "";
 		Iterator i = fTypes.iterator();
-		while( i.hasNext() ) {
-			IEvaluatedType type = (IEvaluatedType)i.next();
+		while (i.hasNext()) {
+			IEvaluatedType type = (IEvaluatedType) i.next();
 			names += type.getTypeName() + " ";
 		}
 		return "multitype:" + names;
 	}
-	
-	public List/*< IEvaluatedType >*/ getTypes() {
+
+	public List/* < IEvaluatedType > */getTypes() {
 		return this.fTypes;
 	}
 
-	public int size( ) {
-		if( this.fTypes != null ) {
+	public int size() {
+		if (this.fTypes != null) {
 			return this.fTypes.size();
 		}
 		return 0;
 	}
 
-	public IEvaluatedType get( int i ) {
-		if( this.fTypes != null ) {
-			return (IEvaluatedType)this.fTypes.get( i );
+	public IEvaluatedType get(int i) {
+		if (this.fTypes != null) {
+			return (IEvaluatedType) this.fTypes.get(i);
 		}
 		return null;
 	}

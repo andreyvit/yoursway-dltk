@@ -22,10 +22,10 @@ import org.eclipse.dltk.dbgp.internal.DbgpSession;
 import org.eclipse.dltk.dbgp.internal.DbgpWorkingThread;
 
 public class DbgpServer extends DbgpWorkingThread implements IDbgpServer {
-	private int clientTimeout;
-	private int serverTimeout;
+	private final int clientTimeout;
+	private final int serverTimeout;
 
-	private Map acceptors;
+	private final Map acceptors;
 
 	private ServerSocket server;
 
@@ -43,12 +43,12 @@ public class DbgpServer extends DbgpWorkingThread implements IDbgpServer {
 	}
 
 	protected void workingCycle() throws Exception, IOException {
-		
+
 		try {
-			
+
 			while (true) {
 				Socket client = server.accept();
-				
+
 				client.setSoTimeout(clientTimeout);
 
 				DbgpDebugingEngine dbgpDebugingEngine = new DbgpDebugingEngine(
@@ -68,7 +68,7 @@ public class DbgpServer extends DbgpWorkingThread implements IDbgpServer {
 			}
 		} finally {
 			server.close();
-			
+
 			acceptNotAvailable();
 		}
 	}
@@ -91,7 +91,7 @@ public class DbgpServer extends DbgpWorkingThread implements IDbgpServer {
 
 	public DbgpServer(int clientTimeout, int serverTimeout) {
 		super("DBGP - Server");
-		
+
 		this.clientTimeout = clientTimeout;
 		this.serverTimeout = serverTimeout;
 

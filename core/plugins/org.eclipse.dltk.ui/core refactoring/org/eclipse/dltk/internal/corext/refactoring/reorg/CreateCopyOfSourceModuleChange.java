@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.corext.refactoring.nls.changes.CreateTextFileChange;
 import org.eclipse.dltk.internal.corext.refactoring.util.ResourceUtil;
@@ -88,7 +88,7 @@ public class CreateCopyOfSourceModuleChange extends CreateTextFileChange {
 	}
 
 	private IPath constructNewPath(String newTypeName) {
-		String newCUName= DLTKModelUtil.getRenamedCUName(fOldCu, newTypeName);
+		String newCUName= ScriptModelUtil.getRenamedCUName(fOldCu, newTypeName);
 		return ResourceUtil.getResource(fOldCu).getParent().getFullPath().append(newCUName);
 	}
 

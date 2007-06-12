@@ -14,7 +14,7 @@ import org.eclipse.dltk.dbgp.breakpoints.IDbgpExceptionBreakpoint;
 public class DbgpExceptionBreakpoint extends DbgpBreakpoint implements
 		IDbgpExceptionBreakpoint {
 
-	private String exception;
+	private final String exception;
 
 	public DbgpExceptionBreakpoint(String id, boolean enabled, int hitValue,
 			int hitCount, String hitCondition, String exception) {

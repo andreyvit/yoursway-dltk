@@ -17,9 +17,9 @@ import org.eclipse.dltk.dbgp.internal.packets.DbgpStreamPacket;
 
 public class DbgpStreamManager extends DbgpWorkingThread implements
 		IDbgpStreamManager {
-	private ListenerList listeners = new ListenerList();
+	private final ListenerList listeners = new ListenerList();
 
-	private IDbgpDebugingEngine engine;
+	private final IDbgpDebugingEngine engine;
 
 	protected void fireStderrReceived(String data) {
 		Object[] list = listeners.getListeners();
@@ -53,7 +53,7 @@ public class DbgpStreamManager extends DbgpWorkingThread implements
 
 	public DbgpStreamManager(IDbgpDebugingEngine engine, String name) {
 		super(name);
-		
+
 		if (engine == null) {
 			throw new IllegalArgumentException();
 		}

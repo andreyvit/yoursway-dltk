@@ -18,9 +18,8 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
- * Resource mapping for thescriptmodel provider.
+ * Resource mapping for the script model provider.
  * 
-	 *
  */
 public final class DLTKResourceMapping extends ResourceMapping {
 
@@ -28,7 +27,7 @@ public final class DLTKResourceMapping extends ResourceMapping {
 	private final IResource fResource;
 
 	/**
-	 * Creates a newscriptresource mapping.
+	 * Creates a new script resource mapping.
 	 * 
 	 * @param resource
 	 *            the resource to map
@@ -49,7 +48,7 @@ public final class DLTKResourceMapping extends ResourceMapping {
 	 * {@inheritDoc}
 	 */
 	public String getModelProviderId() {
-		return DLTKModelProvider.DLTK_MODEL_PROVIDER_ID;
+		return ScriptModelProvider.DLTK_MODEL_PROVIDER_ID;
 	}
 
 	/**

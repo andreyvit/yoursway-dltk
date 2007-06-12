@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.swt.widgets.Composite;
@@ -75,7 +75,7 @@ public abstract class BuildPathBasePage {
 	
 	private static boolean addToExclusions(IPath entryPath, BPListElement curr) {
 		IPath[] exclusionFilters= (IPath[]) curr.getAttribute(BPListElement.EXCLUSION);
-		if (!DLTKModelUtil.isExcludedPath(entryPath, exclusionFilters)) {
+		if (!ScriptModelUtil.isExcludedPath(entryPath, exclusionFilters)) {
 			IPath pathToExclude= entryPath.removeFirstSegments(curr.getPath().segmentCount()).addTrailingSeparator();
 			IPath[] newExclusionFilters= new IPath[exclusionFilters.length + 1];
 			System.arraycopy(exclusionFilters, 0, newExclusionFilters, 0, exclusionFilters.length);

@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti.goals;
 
@@ -29,10 +29,10 @@ import org.eclipse.dltk.ti.IContext;
 import org.eclipse.dltk.ti.ISourceModuleContext;
 
 public abstract class SearchBasedGoalEvaluator extends GoalEvaluator {
-	
+
 	private List possiblePositionsGoals = new ArrayList();
 	private List references = new ArrayList();
-		
+
 	private SearchRequestor requestor = new SearchRequestor() {
 
 		public void acceptSearchMatch(SearchMatch match) throws CoreException {
@@ -40,37 +40,39 @@ public abstract class SearchBasedGoalEvaluator extends GoalEvaluator {
 			if (match instanceof FieldReferenceMatch) {
 				FieldReferenceMatch match2 = (FieldReferenceMatch) match;
 				node = match2.getNode();
-			}						
+			}
 			if (match instanceof MethodReferenceMatch) {
 				MethodReferenceMatch match2 = (MethodReferenceMatch) match;
 				node = match2.getNode();
 			}
 			PossiblePosition pos = new PossiblePosition(match.getResource(),
 					match.getOffset(), match.getLength(), node);
-			possiblePositionsGoals.add(createVerificationGoal(pos));			
+			possiblePositionsGoals.add(createVerificationGoal(pos));
 		}
-		
+
 	};
-		
+
 	public SearchBasedGoalEvaluator(IGoal goal) {
 		super(goal);
 	}
 
-
-	public IGoal[] init() {	
+	public IGoal[] init() {
 		IGoal goal = getGoal();
 		IDLTKProject project = null;
 		IContext context = goal.getContext();
 		if (context instanceof ISourceModuleContext) {
-			ISourceModuleContext basicContext = (ISourceModuleContext) goal.getContext();
+			ISourceModuleContext basicContext = (ISourceModuleContext) goal
+					.getContext();
 			project = basicContext.getSourceModule().getScriptProject();
-		} 
-		if (project == null)
+		}
+		if (project == null) {
 			return null;
-		IDLTKSearchScope scope = SearchEngine.createSearchScope(new IModelElement[] {project});
+		}
+		IDLTKSearchScope scope = SearchEngine
+				.createSearchScope(new IModelElement[] { project });
 		SearchPattern pattern = createSearchPattern();
 		SearchEngine engine = new SearchEngine();
-	
+
 		try {
 			engine.search(pattern, new SearchParticipant[] { SearchEngine
 					.getDefaultSearchParticipant() }, scope, requestor, null);
@@ -79,7 +81,8 @@ public abstract class SearchBasedGoalEvaluator extends GoalEvaluator {
 			return IGoal.NO_GOALS;
 		}
 
-		return (IGoal[]) possiblePositionsGoals.toArray(new IGoal[possiblePositionsGoals.size()]);
+		return (IGoal[]) possiblePositionsGoals
+				.toArray(new IGoal[possiblePositionsGoals.size()]);
 	}
 
 	public IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state) {
@@ -92,8 +95,9 @@ public abstract class SearchBasedGoalEvaluator extends GoalEvaluator {
 	public Object produceResult() {
 		return references.toArray(new ItemReference[references.size()]);
 	}
-	
-	protected abstract SearchPattern createSearchPattern ();
-	protected abstract IGoal createVerificationGoal (PossiblePosition pos);
+
+	protected abstract SearchPattern createSearchPattern();
+
+	protected abstract IGoal createVerificationGoal(PossiblePosition pos);
 
 }

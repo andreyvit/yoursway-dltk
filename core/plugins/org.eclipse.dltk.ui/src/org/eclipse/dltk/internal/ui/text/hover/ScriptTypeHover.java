@@ -17,12 +17,12 @@ import org.eclipse.ui.IEditorPart;
 
 
 
-public class DLTKTypeHover implements IScriptEditorTextHover {
+public class ScriptTypeHover implements IScriptEditorTextHover {
 
 	//private IEditorTextHover fProblemHover;
 	private IScriptEditorTextHover fDocumentationHover;
 
-	public DLTKTypeHover() {
+	public ScriptTypeHover() {
 		//fProblemHover= new ProblemHover();
 		fDocumentationHover= new DocumentationHover();
 	}

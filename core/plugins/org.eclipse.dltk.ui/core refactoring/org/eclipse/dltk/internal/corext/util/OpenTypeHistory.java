@@ -32,7 +32,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
@@ -118,7 +118,7 @@ public class OpenTypeHistory extends History {
 					return processChildrenDelta(delta);
 				case IModelElement.SOURCE_MODULE:
 					// Not the primary compilation unit. Ignore it 
-					if (!DLTKModelUtil.isPrimary((ISourceModule) elem)) {
+					if (!ScriptModelUtil.isPrimary((ISourceModule) elem)) {
 						return false;
 					}
 

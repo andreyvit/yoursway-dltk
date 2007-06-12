@@ -73,7 +73,7 @@ public abstract class DLTKElementResourceMapping extends ResourceMapping {
 	}
 	
 	public String getModelProviderId() {
-		return DLTKModelProvider.DLTK_MODEL_PROVIDER_ID;
+		return ScriptModelProvider.DLTK_MODEL_PROVIDER_ID;
 	}
 	
 	public boolean contains(ResourceMapping mapping) {
@@ -288,7 +288,7 @@ public abstract class DLTKElementResourceMapping extends ResourceMapping {
 		}
 		
 		public String getModelProviderId() {
-			return DLTKModelProvider.DLTK_MODEL_PROVIDER_ID;
+			return ScriptModelProvider.DLTK_MODEL_PROVIDER_ID;
 		}
 	}
 	

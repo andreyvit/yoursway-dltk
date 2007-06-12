@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.ui.refactoring.reorg;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.internal.corext.refactoring.RefactoringAvailabilityTester;
 import org.eclipse.dltk.internal.corext.refactoring.RefactoringExecutionStarter;
 import org.eclipse.dltk.internal.corext.refactoring.reorg.ReorgUtils;
@@ -58,7 +58,7 @@ public class DeleteAction extends SelectionDispatchAction {
 		} catch (CoreException e) {
 			//no ui here - this happens on selection changes
 			// http://bugs.eclipse.org/bugs/show_bug.cgi?id=19253
-			if (DLTKModelUtil.isExceptionToBeLogged(e))
+			if (ScriptModelUtil.isExceptionToBeLogged(e))
 				DLTKUIPlugin.log(e);
 			setEnabled(false);
 		}

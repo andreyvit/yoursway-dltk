@@ -13,25 +13,25 @@ import org.eclipse.dltk.dbgp.IDbgpProperty;
 
 public class DbgpProperty implements IDbgpProperty {
 
-	private String name;
+	private final String name;
 
-	private String fullName;
+	private final String fullName;
 
-	private String type;
+	private final String type;
 
-	private String value;
+	private final String value;
 
-	private boolean constant;
+	private final boolean constant;
 
-	private int size;
+	private final int size;
 
-	private int childrenCount;
+	private final int childrenCount;
 
-	private IDbgpProperty[] availableChildren;
+	private final IDbgpProperty[] availableChildren;
 
-	private boolean hasChildren;
+	private final boolean hasChildren;
 
-	private String key;
+	private final String key;
 
 	public DbgpProperty(String name, String fullName, String type,
 			String value, int size, int childrenCount, boolean hasChildren,

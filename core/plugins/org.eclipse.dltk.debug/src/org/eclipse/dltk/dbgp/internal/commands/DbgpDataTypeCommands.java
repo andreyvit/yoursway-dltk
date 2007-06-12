@@ -27,7 +27,7 @@ public class DbgpDataTypeCommands extends DbgpBaseCommands implements
 
 	private static final String TAG_MAP = "map";
 
-	private Map converter;
+	private final Map converter;
 
 	private Integer typeToInteger(String type) {
 		return (Integer) converter.get(type);

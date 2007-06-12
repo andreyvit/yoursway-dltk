@@ -95,7 +95,7 @@ public class DbgpDebuggingEngineException extends DbgpException {
 
 	public static final int UNKNOWN_ERROR = 999;
 
-	private int code;
+	private final int code;
 
 	public DbgpDebuggingEngineException(int code) {
 		this.code = code;

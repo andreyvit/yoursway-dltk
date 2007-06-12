@@ -18,10 +18,10 @@ import org.osgi.framework.BundleContext;
 public class ScriptConsolePlugin extends Plugin {
 
 	public static final String PLUGIN_ID = "org.eclipse.dltk.console"; //$NON-NLS-1$
-	
-	//The shared instance.
+
+	// The shared instance.
 	private static ScriptConsolePlugin plugin;
-	
+
 	/**
 	 * The constructor.
 	 */
@@ -49,8 +49,5 @@ public class ScriptConsolePlugin extends Plugin {
 	 */
 	public static ScriptConsolePlugin getDefault() {
 		return plugin;
-	}	
+	}
 }
-	
-
-

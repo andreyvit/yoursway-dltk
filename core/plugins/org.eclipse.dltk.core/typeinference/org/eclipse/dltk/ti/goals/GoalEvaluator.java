@@ -5,14 +5,14 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti.goals;
 
 import org.eclipse.dltk.ti.GoalState;
 
 /**
- * Abstact goal evaluator. 
+ * Abstract goal evaluator.
  */
 public abstract class GoalEvaluator {
 
@@ -28,22 +28,28 @@ public abstract class GoalEvaluator {
 
 	/**
 	 * Called first time to fetch primary subgoals.
+	 *
 	 * @return array of required subgoals or <code>IGoal.NO_GOALS</code>
 	 */
 	public abstract IGoal[] init();
 
-	
 	/**
 	 * Called when some subgoal are done.
-	 * @param subgoal completed subgoal
-	 * @param result result of that subgoal
-	 * @param state final state of subgoal (DONE, PRUNED or RECURSION)
+	 *
+	 * @param subgoal
+	 *            completed subgoal
+	 * @param result
+	 *            result of that subgoal
+	 * @param state
+	 *            final state of subgoal (DONE, PRUNED or RECURSION)
 	 * @return array of new required subgoals or <code>IGoal.NO_GOALS</code>
-	 */	
-	public abstract IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state);
+	 */
+	public abstract IGoal[] subGoalDone(IGoal subgoal, Object result,
+			GoalState state);
 
 	/**
 	 * Called when all posted subgoals are done
+	 *
 	 * @return result of evaluation this goal
 	 */
 	public abstract Object produceResult();

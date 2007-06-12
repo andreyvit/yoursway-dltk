@@ -17,9 +17,9 @@ import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
 public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 
-	private IScriptVariable variable;
+	private final IScriptVariable variable;
 
-	protected ScriptValue(IScriptVariable variable) {		
+	protected ScriptValue(IScriptVariable variable) {
 		this.variable = variable;
 	}
 
@@ -42,16 +42,20 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 	public boolean isAllocated() throws DebugException {
 		return true;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return variable.getValueString();
 	}
 
 	public IDebugTarget getDebugTarget() {
 		return variable.getDebugTarget();
 	}
-	
+
 	public String getReferenceId() {
 		return variable.getId();
+	}
+
+	public boolean shouldHasVariables() {
+		return variable.shouldHasChildren();
 	}
 }

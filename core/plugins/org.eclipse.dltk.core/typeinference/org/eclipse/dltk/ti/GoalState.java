@@ -5,39 +5,33 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ti;
 
 public interface GoalState {
-	
-	public final static GoalState DONE = new GoalState () {
 
+	final static GoalState DONE = new GoalState() {
 		public String toString() {
 			return "DONE";
 		}
-		
 	};
-	
-	public final static GoalState WAITING = new GoalState () {
+
+	final static GoalState WAITING = new GoalState() {
 		public String toString() {
 			return "WAITING";
 		}
-		
 	};
-	
-	public final static GoalState PRUNED = new GoalState () {
+
+	final static GoalState PRUNED = new GoalState() {
 		public String toString() {
 			return "PRUNED";
 		}
-		
 	};
-	
-	public final static GoalState RECURSIVE = new GoalState () {
+
+	final static GoalState RECURSIVE = new GoalState() {
 		public String toString() {
 			return "RECURSIVE";
 		}
-		
 	};
-
 }

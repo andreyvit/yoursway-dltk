@@ -13,9 +13,9 @@ import org.eclipse.dltk.dbgp.IDbgpNotification;
 import org.w3c.dom.Element;
 
 public class DbgpNotification implements IDbgpNotification {
-	private Element body;
+	private final Element body;
 
-	private String name;
+	private final String name;
 
 	public DbgpNotification(String name, Element body) {
 		this.body = body;

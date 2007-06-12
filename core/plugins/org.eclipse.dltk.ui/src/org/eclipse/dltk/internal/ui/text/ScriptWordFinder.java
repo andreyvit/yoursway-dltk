@@ -15,7 +15,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 
-public class DLTKWordFinder {
+public class ScriptWordFinder {
 	
 	public static IRegion findWord(IDocument document, int offset) {
 

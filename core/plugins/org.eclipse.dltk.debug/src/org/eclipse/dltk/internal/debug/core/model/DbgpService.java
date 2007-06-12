@@ -44,7 +44,7 @@ public class DbgpService implements IDbgpService {
 	}
 
 	// Instance
-	private IDbgpServer server;
+	private final IDbgpServer server;
 
 	protected DbgpService(int port) throws DbgpServerException {
 		this.server = new DbgpServer(CLIENT_TIMEOUT, SERVER_TIMEOUT);

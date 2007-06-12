@@ -18,7 +18,7 @@ import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IField;
@@ -175,6 +175,6 @@ public class ModelElementUtil {
 	}
 
 	public static String createFieldSignature(IField field) {
-		return DLTKModelUtil.getFullyQualifiedName(field.getDeclaringType()) + IScriptFolder.PACKAGE_DELIMITER + field.getElementName(); 
+		return ScriptModelUtil.getFullyQualifiedName(field.getDeclaringType()) + IScriptFolder.PACKAGE_DELIMITER + field.getElementName(); 
 	}
 }

@@ -23,7 +23,7 @@ import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKModelUtil;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IExternalSourceModule;
 import org.eclipse.dltk.core.IForeignElement;
@@ -148,7 +148,7 @@ public class EditorUtility {
 			IModelElement modelElement = (IModelElement) inputElement;
 			ISourceModule cu = (ISourceModule) (modelElement)
 					.getAncestor(IModelElement.SOURCE_MODULE);
-			if (cu != null && !DLTKModelUtil.isPrimary(cu)) {
+			if (cu != null && !ScriptModelUtil.isPrimary(cu)) {
 				/*
 				 * Support for non-primary working copy. Try to reveal it in the
 				 * active editor.
