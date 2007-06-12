@@ -1,5 +1,7 @@
 package org.eclipse.dltk.internal.debug.core.eval;
 
+import java.util.WeakHashMap;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -20,18 +22,29 @@ import org.eclipse.dltk.internal.debug.core.model.ScriptVariable;
 public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
 	private final IScriptThread thread;
 
-	public ScriptEvaluationEngine(IScriptThread thread) {
-		this.thread = thread;
+	private int count;
+	private final WeakHashMap cache;
+
+	protected void putToCache(String snippet, IScriptEvaluationResult result) {
+		if (result != null) {
+			cache.put(snippet, result);
+		}
 	}
 
-	public IScriptDebugTarget getScriptDebugTarget() {
-		return (ScriptDebugTarget) thread.getDebugTarget();
+	protected IScriptEvaluationResult getFromCache(String snippet) {
+		int newCount = thread.getSuspendCount();
+		if (count != newCount) {
+			cache.clear();
+			count = newCount;
+			return null;
+		}
+
+		return (IScriptEvaluationResult) cache.get(snippet);
 	}
 
-	public IScriptEvaluationResult syncEvaluate(String snippet,
+	private IScriptEvaluationResult evaluate(String snippet,
 			IScriptStackFrame frame) {
 		IScriptEvaluationResult result = null;
-
 		try {
 			IDbgpSession session = thread.getDbgpSession();
 
@@ -44,6 +57,7 @@ public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
 
 				result = new ScriptEvaluationResult(thread, snippet, variable);
 			} else {
+				// TODO: localize
 				result = new FailedScriptEvaluationResult(snippet,
 						new String[] { "Can't evaluate" });
 			}
@@ -57,9 +71,35 @@ public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
 		return result;
 	}
 
+	public ScriptEvaluationEngine(IScriptThread thread) {
+		this.thread = thread;
+		this.count = thread.getSuspendCount();
+		this.cache = new WeakHashMap();
+	}
+
+	public IScriptDebugTarget getScriptDebugTarget() {
+		return (ScriptDebugTarget) thread.getDebugTarget();
+	}
+
+	public IScriptEvaluationResult syncEvaluate(String snippet,
+			IScriptStackFrame frame) {
+		synchronized (cache) {
+			IScriptEvaluationResult result = getFromCache(snippet);
+
+			if (result == null) {
+				result = evaluate(snippet, frame);
+			}
+
+			putToCache(snippet, result);
+
+			return result;
+		}
+	}
+
 	public void asyncEvaluate(final String snippet,
 			final IScriptStackFrame frame,
 			final IScriptEvaluationListener listener) {
+		// TODO: localize
 		Job job = new Job("Evaluation of \"" + snippet + "\"") {
 			protected IStatus run(IProgressMonitor monitor) {
 				if (getScriptDebugTarget().isTerminated()) {

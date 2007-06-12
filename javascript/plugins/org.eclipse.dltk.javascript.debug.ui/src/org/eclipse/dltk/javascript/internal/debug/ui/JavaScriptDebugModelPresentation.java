@@ -111,7 +111,7 @@ public class JavaScriptDebugModelPresentation extends
 			if (typeString.equals("javaarray"))
 				return DLTKPluginImages
 						.get(DLTKPluginImages.IMG_METHOD_DEFAULT);
-			String fullName = v.getFullName();
+			String fullName = v.getEvalName();
 			if (fullName.indexOf('.') >= 0 || (fullName.equals("this")))
 				return DLTKPluginImages.get(DLTKPluginImages.IMG_METHOD_PUBLIC);
 			else

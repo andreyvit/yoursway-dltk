@@ -48,7 +48,7 @@ public class DbgpProperty implements IDbgpProperty {
 		this.key = key;
 	}
 
-	public String getFullName() {
+	public String getEvalName() {
 		return fullName;
 	}
 

@@ -10,10 +10,9 @@
 package org.eclipse.dltk.dbgp;
 
 public interface IDbgpProperty {
-
 	String getName();
 
-	String getFullName();
+	String getEvalName();
 
 	String getType();
 

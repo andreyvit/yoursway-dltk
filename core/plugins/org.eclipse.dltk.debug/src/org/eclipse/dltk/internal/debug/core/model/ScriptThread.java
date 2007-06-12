@@ -350,4 +350,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 		return evalEngine;
 	}
+	
+	public int getSuspendCount() {
+		return suspendCount;
+	}
 }

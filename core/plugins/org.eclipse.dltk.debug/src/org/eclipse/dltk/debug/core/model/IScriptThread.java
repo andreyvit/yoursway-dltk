@@ -22,4 +22,6 @@ public interface IScriptThread extends IThread /* , IFilteredStep */{
 	IScriptThreadStreamProxy getStreamProxy();
 
 	IScriptEvaluationEngine getEvaluationEngine();
+	
+	int getSuspendCount();
 }

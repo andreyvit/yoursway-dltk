@@ -39,11 +39,11 @@ public class ScriptVariable extends AbstractScriptVariable {
 
 		if (key != null) {
 			p = core
-					.getPropertyByKey(property.getFullName(), property.getKey());
+					.getPropertyByKey(property.getEvalName(), property.getKey());
 		} else if (frame != null) {
-			p = core.getProperty(property.getFullName(), frame.getLevel());
+			p = core.getProperty(property.getEvalName(), frame.getLevel());
 		} else {
-			p = core.getProperty(property.getFullName());
+			p = core.getProperty(property.getEvalName());
 		}
 
 		IDbgpProperty[] properties = p.getAvailableChildren();
@@ -94,7 +94,7 @@ public class ScriptVariable extends AbstractScriptVariable {
 		try {
 			if (frame != null) {
 				if (session.getCoreCommands().setProperty(
-						property.getFullName(), frame.getLevel(), expression)) {
+						property.getEvalName(), frame.getLevel(), expression)) {
 					DebugEventHelper.fireChangeEvent(this);
 				}
 
@@ -151,11 +151,11 @@ public class ScriptVariable extends AbstractScriptVariable {
 	}
 
 	public String toString() {
-		return getFullName();
+		return getEvalName();
 	}
 
-	public String getFullName() {
-		return property.getFullName();
+	public String getEvalName() {
+		return property.getEvalName();
 	}
 
 	public String getId() {

@@ -21,7 +21,7 @@ public class ScriptVariableWrapper extends AbstractScriptVariable {
 		return (IScriptVariable[]) children.clone();
 	}
 
-	public String getFullName() {
+	public String getEvalName() {
 		return name;
 	}
 
