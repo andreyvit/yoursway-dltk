@@ -1,6 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
-<plugin>      
+<plugin>
+	
+	<extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.debug.ui.launchActionSet">
+         <part
+               id="org.eclipse.dltk.ruby.ui.editor.RubyEditor">
+         </part>
+      </actionSetPartAssociation>
+   </extension>  
+
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+		    category="org.eclipse.dltk.ruby.preferences"
+            class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterPreferencePage"
+            id="org.eclipse.dltk.ruby.preferences.interpreters"
+            name="Interpreters"/>
+            
+      <page
+            category="org.eclipse.dltk.ruby.preferences"
+            class="org.eclipse.dltk.ruby.internal.debug.ui.preferences.RubyDebugPreferencePage"
+            id="org.eclipse.dltk.ruby.preferences.debug"
+            name="Debug"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.debug.ui.launchActionSet">
+         <part
+               id="org.eclipse.dltk.ui.ScriptExplorer">
+         </part>
+         <part
+               id="org.eclipse.dltk.ruby.ui.editor.RubyEditor">
+         </part>
+      </actionSetPartAssociation>
+   </extension>
+ 
+ 
+ 
+  <extension point="org.eclipse.debug.ui.debugModelContextBindings">
+	<modelContextBinding contextId="org.eclipse.dltk.debug.ui.debugging" debugModelId="org.eclipse.dltk.debug.rubyModel"/>
+</extension>
+  
+  <extension
+        point="org.eclipse.debug.core.watchExpressionDelegates">
+     <watchExpressionDelegate
+           debugModel="org.eclipse.dltk.debug.rubyModel"
+           delegateClass="org.eclipse.dltk.internal.debug.core.model.ScriptWatchExpressionDelegate">
+     </watchExpressionDelegate>
+  </extension>   
+   <extension
+         point="org.eclipse.dltk.ui.buildpathContainerPage">
+      <buildpathContainerPath
+            class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterContainerWizardPage"
+            id="org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER"
+            name="Ruby Interpreter Libraries"
+            nature="org.eclipse.dltk.ruby.core.nature"/>
+   </extension>
+
+
+<extension
+         point="org.eclipse.ui.console.consolePatternMatchListeners">
+      <consolePatternMatchListener
+            class="org.eclipse.dltk.ruby.internal.debug.ui.console.RubyConsoleTracker"
+            id="org.eclipse.dltk.ruby.debug.ui.RubyConsoleTracker"
+            regex="((\w:)?[^:]+):(\d+)">
+         <enablement>
+            <or>
+               <test property="org.eclipse.debug.ui.processTypeTest" value="rubyInterpreter"/>
+            </or>
+         </enablement>
+      </consolePatternMatchListener>
+     
+   </extension>      
    <extension
 	point="org.eclipse.debug.ui.launchConfigurationTypeImages">
  		<launchConfigurationTypeImage
@@ -46,67 +121,6 @@
   		 </contextualLaunch>
 	</shortcut>
 	</extension>
-	
-	<extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.debug.ui.launchActionSet">
-         <part
-               id="org.eclipse.dltk.ruby.ui.editor.RubyEditor">
-         </part>
-      </actionSetPartAssociation>
-   </extension>
-
-
-<extension
-         point="org.eclipse.ui.console.consolePatternMatchListeners">
-      <consolePatternMatchListener
-            class="org.eclipse.dltk.ruby.internal.debug.ui.console.RubyConsoleTracker"
-            id="org.eclipse.dltk.ruby.debug.ui.RubyConsoleTracker"
-            regex="((\w:)?[^:]+):(\d+)">
-         <enablement>
-            <or>
-               <test property="org.eclipse.debug.ui.processTypeTest" value="rubyInterpreter"/>
-            </or>
-         </enablement>
-      </consolePatternMatchListener>
-     
-   </extension>  
-
-   <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-		    category="org.eclipse.dltk.ruby.preferences"
-            class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterPreferencePage"
-            id="org.eclipse.dltk.ruby.preferences.interpreters"
-            name="Interpreters"/>
-            
-      <page
-            category="org.eclipse.dltk.ruby.preferences"
-            class="org.eclipse.dltk.ruby.internal.debug.ui.preferences.RubyDebugPreferencePage"
-            id="org.eclipse.dltk.ruby.preferences.debug"
-            name="Debug"/>
-   </extension>
-   <extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.debug.ui.launchActionSet">
-         <part
-               id="org.eclipse.dltk.ui.ScriptExplorer">
-         </part>
-         <part
-               id="org.eclipse.dltk.ruby.ui.editor.RubyEditor">
-         </part>
-      </actionSetPartAssociation>
-   </extension>   
-   <extension
-         point="org.eclipse.dltk.ui.buildpathContainerPage">
-      <buildpathContainerPath
-            class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterContainerWizardPage"
-            id="org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER"
-            name="Ruby Interpreter Libraries"
-            nature="org.eclipse.dltk.ruby.core.nature"/>
-   </extension>
           
    <extension
          point="org.eclipse.ui.editorActions">
@@ -126,8 +140,6 @@
  
   <extension
        point="org.eclipse.ui.popupMenus">
-         
-                      
     <viewerContribution
           id="org.eclipse.dltk.ruby.debug.ui.rulerContribution"
           targetID="#RubyRulerContext">
@@ -151,33 +163,8 @@
              id="org.eclipse.dltk.ruby.debug.ui.ScriptBreakpointPropertiesRulerActionDelegate"
              label="%BreakpointProperties.label"
              menubarPath="additions"/>
-    </viewerContribution>    
- </extension>
- 
- 
- 
-  <extension point="org.eclipse.debug.ui.debugModelContextBindings">
-	<modelContextBinding contextId="org.eclipse.dltk.debug.ui.debugging" debugModelId="org.eclipse.dltk.debug.rubyModel"/>
-</extension>
-  
-  <extension
-        point="org.eclipse.debug.core.watchExpressionDelegates">
-     <watchExpressionDelegate
-           debugModel="org.eclipse.dltk.debug.rubyModel"
-           delegateClass="org.eclipse.dltk.internal.debug.core.model.ScriptWatchExpressionDelegate">
-     </watchExpressionDelegate>
-  </extension>
-  
-  <extension
-         point="org.eclipse.debug.ui.debugModelPresentations">
-      <debugModelPresentation
-            class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugModelPresentation"
-            id="org.eclipse.dltk.debug.rubyModel">
-      </debugModelPresentation>
-   </extension>
-  <extension
-        point="org.eclipse.ui.popupMenus">
-       <viewerContribution
+    </viewerContribution>
+    <viewerContribution
             targetID="#RubyEditorContext"
             id="org.eclipse.dltk.debug.ui.CUPopupActions">
          <visibility>
@@ -192,14 +179,30 @@
             </and>
          </visibility>        
        <action
-               label="%Watch.label"
-               icon="$nl$/icons/full/etool16/watch_exp.gif"
+               label="%ScriptWatch.label"
+               icon="$nl$/icons/etool16/watch_exp.gif"
                class="org.eclipse.dltk.internal.debug.ui.actions.ScriptWatchAction"
                menubarPath="additions"
-               id="org.eclipse.dltk.debug.ui.cuPopup.Watch">
+               id="org.eclipse.dltk.ruby.debug.ui.ScriptWatch">
        </action>
-       </viewerContribution>
-  </extension>
+       <action
+               label="%ScriptInspect.label"
+               icon="$nl$/icons/etool16/insp_sbook.gif"
+               definitionId="org.eclipse.dlkt.debug.ui.commands.ScriptInspect"
+               class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptInspectAction"
+               menubarPath="additions"
+               id="org.eclipse.dltk.ruby.debug.ui.ScriptInspect">
+         </action>
+         <action
+               label="%ScriptDisplay.label"
+               icon="$nl$/icons/etool16/disp_sbook.gif"
+               definitionId="org.eclipse.dlkt.debug.ui.commands.ScriptDisplay"
+               class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptDisplayAction"
+               menubarPath="additions"
+               id="org.eclipse.dltk.ruby.debug.ui.ScriptDisplay">
+         </action>
+       </viewerContribution>    
+ </extension>
   
    <extension
          point="org.eclipse.dltk.ui.editorTextHovers">
@@ -209,6 +212,14 @@
             class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugHover"
             id="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugHover">
       </hover>
+   </extension>
+  
+  <extension
+         point="org.eclipse.debug.ui.debugModelPresentations">
+      <debugModelPresentation
+            class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugModelPresentation"
+            id="org.eclipse.dltk.debug.rubyModel">
+      </debugModelPresentation>
    </extension>
  
 </plugin>

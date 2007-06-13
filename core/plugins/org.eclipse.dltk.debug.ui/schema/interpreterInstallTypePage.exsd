@@ -64,7 +64,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.eclipse.debug.ui.ILaunchConfigurationTab"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.debug.ui.ILaunchConfigurationTab"/>
                </appInfo>
             </annotation>
          </attribute>

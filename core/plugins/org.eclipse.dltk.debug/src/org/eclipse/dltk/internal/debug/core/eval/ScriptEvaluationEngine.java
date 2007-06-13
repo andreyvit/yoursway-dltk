@@ -58,14 +58,14 @@ public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
 				result = new ScriptEvaluationResult(thread, snippet, variable);
 			} else {
 				// TODO: localize
-				result = new FailedScriptEvaluationResult(snippet,
+				result = new FailedScriptEvaluationResult(thread, snippet,
 						new String[] { "Can't evaluate" });
 			}
 
 		} catch (DbgpException e) {
 			// TODO: improve
-			result = new FailedScriptEvaluationResult(snippet, new String[] { e
-					.getMessage() });
+			result = new FailedScriptEvaluationResult(thread, snippet,
+					new String[] { e.getMessage() });
 		}
 
 		return result;

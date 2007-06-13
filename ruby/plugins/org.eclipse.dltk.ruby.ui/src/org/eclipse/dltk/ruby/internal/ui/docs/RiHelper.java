@@ -45,6 +45,7 @@ public class RiHelper {
 	private Process riProcess;
 	private OutputStreamWriter writer;
 	private BufferedReader reader;
+	private BufferedReader errorReader;
 
 	protected static boolean isTerminated(Process process) {
 		try {
@@ -73,24 +74,33 @@ public class RiHelper {
 		writer = new OutputStreamWriter(riProcess.getOutputStream());
 		reader = new BufferedReader(new InputStreamReader(riProcess
 				.getInputStream()));
+		errorReader = new BufferedReader(new InputStreamReader(riProcess
+				.getErrorStream()));
 	}
 
 	protected synchronized void destroyRiProcess() {
 		if (riProcess != null) {
 			riProcess.destroy();
 			riProcess = null;
-	
+
 			// Cache should be cleared if we change interpreter
 			cache.clear();
 		}
 	}
 
-	protected String loadRiDoc(String keyword) throws IOException {
-		// Write
-		writer.write(keyword + "\n");
-		writer.flush();
+	protected String readStderr() throws IOException {
+		StringBuffer sb = new StringBuffer();
+		String errorLine = null;
+		while ((errorLine = errorReader.readLine()) != null) {
+			sb.append(errorLine);
+			sb.append("\n");
+		}
+		String error = sb.toString().trim();
 
-		// Read
+		return error.length() > 0 ? error : null;
+	}
+
+	protected String readStdout() throws IOException {
 		StringBuffer sb = new StringBuffer();
 		do {
 			String line = reader.readLine();
@@ -103,6 +113,18 @@ public class RiHelper {
 		} while (true);
 
 		return sb.toString();
+	}
+
+	protected String loadRiDoc(String keyword) throws IOException {
+		// Write
+		writer.write(keyword + "\n");
+		writer.flush();
+
+		// Stderr
+		// TODO: checking error!
+
+		// Stdout
+		return readStdout();
 	}
 
 	private boolean checkRiProcess() {

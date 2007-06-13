@@ -19,6 +19,7 @@ import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.internal.debug.ui.ScriptEvaluationContextManager;
+import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
 import org.eclipse.dltk.internal.ui.text.ScriptWordFinder;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -38,9 +39,11 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorActionDelegate;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -51,7 +54,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 public class ScriptEvaluationAction implements IWorkbenchWindowActionDelegate,
-		IObjectActionDelegate, IPartListener, IScriptEvaluationListener {
+		IObjectActionDelegate, IPartListener, IScriptEvaluationListener,
+		IEditorActionDelegate, IViewActionDelegate {
 
 	private static class ObjectResolver {
 		private IWorkbenchPart part;
@@ -96,7 +100,7 @@ public class ScriptEvaluationAction implements IWorkbenchWindowActionDelegate,
 					ITextEditor textEditor = (ITextEditor) editor;
 					IDocument doc = textEditor.getDocumentProvider()
 							.getDocument(editor.getEditorInput());
-					region =  ScriptWordFinder.findWord(doc, selection
+					region = ScriptWordFinder.findWord(doc, selection
 							.getOffset());
 					if (region != null) {
 						try {
@@ -166,15 +170,10 @@ public class ScriptEvaluationAction implements IWorkbenchWindowActionDelegate,
 	private Object selectedObject;
 	private boolean evaluation;
 
-	protected static IDebugModelPresentation getDebugModelPresentation(String identifier) {
-			return DebugUITools.newDebugModelPresentation(identifier);
+	protected static IDebugModelPresentation getDebugModelPresentation(
+			String identifier) {
+		return DebugUITools.newDebugModelPresentation(identifier);
 	}
-
-	/*private void disposeDebugModelPresentation() {
-		if (presentation != null) {
-			presentation.dispose();
-		}
-	}*/
 
 	private void setWindow(IWorkbenchWindow window) {
 		this.window = window;
@@ -189,7 +188,7 @@ public class ScriptEvaluationAction implements IWorkbenchWindowActionDelegate,
 	}
 
 	protected IWorkbenchPart getPart() {
-		return this.part;
+		return this.editor != null ? this.editor : this.part;
 	}
 
 	private void setAction(IAction action) {
@@ -221,6 +220,16 @@ public class ScriptEvaluationAction implements IWorkbenchWindowActionDelegate,
 		// setTargetPart(fNewTargetPart);
 	}
 
+	private ScriptEditor editor;
+
+	private void setEditor(ScriptEditor editor) {
+		this.editor = editor;
+	}
+
+	protected ScriptEditor getEditor() {
+		return this.editor;
+	}
+
 	// IWorkbenchWindowActionDelegate
 	public void init(IWorkbenchWindow window) {
 		setWindow(window);
@@ -235,7 +244,7 @@ public class ScriptEvaluationAction implements IWorkbenchWindowActionDelegate,
 	}
 
 	public void dispose() {
-		//disposeDebugModelPresentation();
+		// disposeDebugModelPresentation();
 
 		IWorkbenchWindow window = getWindow();
 		if (window != null) {
@@ -248,7 +257,6 @@ public class ScriptEvaluationAction implements IWorkbenchWindowActionDelegate,
 		setAction(action);
 		setPart(targetPart);
 		update();
-
 	}
 
 	// IActionDelegate
@@ -496,5 +504,15 @@ public class ScriptEvaluationAction implements IWorkbenchWindowActionDelegate,
 
 	protected void displayResult(IScriptEvaluationResult result) {
 		// Nothing by default
+	}
+
+	// IEditorActionDelegate
+	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
+		setEditor((ScriptEditor) targetEditor);
+	}
+
+	// IViewActionDelegate
+	public void init(IViewPart view) {
+		setPart(view);
 	}
 }

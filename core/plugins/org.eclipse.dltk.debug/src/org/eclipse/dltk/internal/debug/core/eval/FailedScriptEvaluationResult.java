@@ -6,22 +6,28 @@ import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 
 public class FailedScriptEvaluationResult implements IScriptEvaluationResult {
+	private final IScriptThread thread;
 	private final String snippet;
 	private DebugException exception;
 	private String[] messages;
 
-	public FailedScriptEvaluationResult(String snippet, DebugException exception) {
+	public FailedScriptEvaluationResult(IScriptThread thread, String snippet,
+			DebugException exception) {
+		this.thread = thread;
 		this.snippet = snippet;
 		this.exception = exception;
 	}
 
-	public FailedScriptEvaluationResult(String snippet, String[] messages) {
+	public FailedScriptEvaluationResult(IScriptThread thread, String snippet,
+			String[] messages) {
+		this.thread = thread;
 		this.snippet = snippet;
 		this.messages = messages;
 	}
 
-	public FailedScriptEvaluationResult(String snippet,
+	public FailedScriptEvaluationResult(IScriptThread thread, String snippet,
 			DebugException exception, String[] messages) {
+		this.thread = thread;
 		this.snippet = snippet;
 		this.exception = exception;
 		this.messages = messages;
@@ -50,7 +56,7 @@ public class FailedScriptEvaluationResult implements IScriptEvaluationResult {
 	}
 
 	public IScriptThread getThread() {
-		return null;
+		return thread;
 	}
 
 	public IScriptValue getValue() {
