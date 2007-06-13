@@ -38,6 +38,14 @@
          </part>
       </actionSetPartAssociation>
    </extension>
+  
+  <extension
+         point="org.eclipse.debug.ui.debugModelPresentations">
+      <debugModelPresentation
+            class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugModelPresentation"
+            id="org.eclipse.dltk.debug.rubyModel">
+      </debugModelPresentation>
+   </extension>
  
  
  
@@ -51,15 +59,7 @@
            debugModel="org.eclipse.dltk.debug.rubyModel"
            delegateClass="org.eclipse.dltk.internal.debug.core.model.ScriptWatchExpressionDelegate">
      </watchExpressionDelegate>
-  </extension>   
-   <extension
-         point="org.eclipse.dltk.ui.buildpathContainerPage">
-      <buildpathContainerPath
-            class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterContainerWizardPage"
-            id="org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER"
-            name="Ruby Interpreter Libraries"
-            nature="org.eclipse.dltk.ruby.core.nature"/>
-   </extension>
+  </extension>
 
 
 <extension
@@ -99,25 +99,40 @@
    <extension point="org.eclipse.debug.ui.launchShortcuts">
     <shortcut
           class="org.eclipse.dltk.ruby.internal.debug.ui.launcher.RubyLaunchShortcut"
+          description="%RubyLaunchShortcut.description"
           icon="icons/ruby.gif"
           id="org.eclipse.dltk.ruby.debug.ui.launchShortcut"
-          label="Ruby Script"
+          label="%RubyLaunchShortcut.name"
           modes="run, debug">
-		<perspective id="org.eclipse.dltk.ruby.ui.RubyPerspective"/>
-         <perspective
-               id="org.eclipse.debug.ui.DebugPerspective">
-         </perspective> 
+        <description
+              description="%RubyLaunchShortcut.runDescription"
+              mode="run">
+        </description>
+        <description
+              description="%RubyLaunchShortcut.debugDescription"
+              mode="debug">
+        </description> 
         <contextualLaunch>
            <enablement>
              <with variable="selection">
                <count value="1"/>
                <iterate>
                 <or>
-           	     <test property="org.eclipse.dltk.launching.hasProjectNature" args="org.eclipse.dltk.ruby.core.nature"/>           	  
+           	     <test
+                       args="org.eclipse.dltk.ruby.core.nature"
+                       property="org.eclipse.dltk.launching.hasProjectNature"/>           	  
                	</or>
                </iterate>
                </with>
            </enablement>
+           <contextLabel
+                 label="%RubyLaunchShortcut.runName"
+                 mode="run">
+           </contextLabel>
+           <contextLabel
+                 label="%RubyLaunchShortcut.debugName"
+                 mode="debug">
+           </contextLabel>
   		 </contextualLaunch>
 	</shortcut>
 	</extension>
@@ -212,14 +227,43 @@
             class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugHover"
             id="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugHover">
       </hover>
+   </extension>   
+   <extension
+         point="org.eclipse.dltk.ui.buildpathContainerPage">
+      <buildpathContainerPath
+            class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterContainerWizardPage"
+            id="org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER"
+            name="Ruby Interpreter Libraries"
+            nature="org.eclipse.dltk.ruby.core.nature"/>
    </extension>
-  
-  <extension
-         point="org.eclipse.debug.ui.debugModelPresentations">
-      <debugModelPresentation
-            class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugModelPresentation"
-            id="org.eclipse.dltk.debug.rubyModel">
-      </debugModelPresentation>
-   </extension>
+   
+    <extension point="org.eclipse.ui.commands">
+      <command
+            name="%ActionDefinition.RunRubyScript.name"
+            description="%ActionDefinition.RunRubyScript.description"
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="org.eclipse.dltk.ruby.debug.ui.launchShortcut.run">
+      </command>
+      <command
+            name="%ActionDefinition.DebugRubyScript.name"
+            description="%ActionDefinition.DebugRubyScript.description"
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="org.eclipse.dltk.ruby.debug.ui.launchShortcut.debug">
+      </command>
+      
+      <keyBinding
+            keySequence="M3+M2+X Z"
+            contextId="org.eclipse.ui.globalScope"
+            commandId="org.eclipse.dltk.ruby.debug.ui.launchShortcut.run"
+            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </keyBinding>
+      <keyBinding
+            keySequence="M3+M2+D Z"
+            contextId="org.eclipse.ui.globalScope"
+            commandId="org.eclipse.dltk.ruby.debug.ui.launchShortcut.debug"
+            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </keyBinding>
+   </extension>      
+   
  
 </plugin>

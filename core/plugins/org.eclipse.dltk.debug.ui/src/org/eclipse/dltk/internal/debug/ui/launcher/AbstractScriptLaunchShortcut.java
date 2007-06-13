@@ -50,7 +50,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-public abstract class ScriptLaunchShortcut implements ILaunchShortcut {
+public abstract class AbstractScriptLaunchShortcut implements ILaunchShortcut {
 	public void launch(ISelection selection, String mode) {
 		if (selection instanceof IStructuredSelection) {
 			searchAndLaunch(((IStructuredSelection) selection).toArray(), mode,
@@ -215,7 +215,7 @@ public abstract class ScriptLaunchShortcut implements ILaunchShortcut {
 		return null;
 	}
 
-	protected abstract String getNature();
+	protected abstract String getNatureId();
 
 	protected ILaunchConfiguration createConfiguration(IResource script) {
 		ILaunchConfiguration config = null;
@@ -228,7 +228,7 @@ public abstract class ScriptLaunchShortcut implements ILaunchShortcut {
 									script.getName()));
 			wc.setAttribute(
 					ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE,
-					getNature());
+					getNatureId());
 			wc.setAttribute(
 					ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 					script.getProject().getName());

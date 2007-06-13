@@ -10,20 +10,17 @@
 package org.eclipse.dltk.tcl.internal.debug.ui.launcher;
 
 import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.dltk.internal.debug.ui.launcher.ScriptLaunchShortcut;
+import org.eclipse.dltk.internal.debug.ui.launcher.AbstractScriptLaunchShortcut;
 import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.launching.TclLaunchConfigurationConstants;
 
-public class TclLaunchShortcut extends ScriptLaunchShortcut {
-
-	// TODO: abstract in future
+public class TclLaunchShortcut extends AbstractScriptLaunchShortcut {
 	protected ILaunchConfigurationType getConfigurationType() {
 		return getLaunchManager().getLaunchConfigurationType(
 				TclLaunchConfigurationConstants.ID_TCL_SCRIPT);
 	}
 
-	protected String getNature() {
+	protected String getNatureId() {
 		return TclNature.NATURE_ID;
 	}
-
 }
