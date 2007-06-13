@@ -658,6 +658,17 @@ public class MixinModel {
 			// }
 		}
 	}
+	
+	public void makeAllModuleElementsFinal(ISourceModule module) {
+		if (this.elementToMixinCache.containsKey(module)) {
+			List elements = (List) this.elementToMixinCache.get(module);
+			for (int i = 0; i < elements.size(); ++i) {
+				removes++;
+				MixinElement mixin = (MixinElement) elements.get(i);
+				mixin.bFinal = true;
+			}
+		}
+	}
 
 	public void makeAllElementsFinalIfNoCacheRemoves() {
 		if (removes != 0) {
