@@ -66,4 +66,12 @@
            priority="high">       
      </content-type>
   </extension>
+   <extension
+         point="org.eclipse.dltk.core.sourceParsers">
+      <parser
+            class="org.eclipse.dltk.tcl.internal.parser.TclSourceParser"
+            nature="org.eclipse.dltk.tcl.core.nature"
+            priority="0">
+      </parser>
+   </extension>
 </plugin>
