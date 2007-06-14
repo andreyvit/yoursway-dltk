@@ -11,13 +11,12 @@ package org.eclipse.dltk.debug.core.model;
 
 import java.net.URI;
 
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.dltk.internal.debug.core.model.IScriptDebugTargetStreamManager;
 
 public interface IScriptDebugTarget extends IDebugTarget {
 	boolean isInitialized();
-
-	void runToLine(URI uri, int lineNumber);
 
 	// Listener
 	void addListener(IScriptDebugTargetListener listener);
@@ -33,4 +32,7 @@ public interface IScriptDebugTarget extends IDebugTarget {
 	void setStreamManager(IScriptDebugTargetStreamManager manager);
 
 	IScriptDebugTargetStreamManager getStreamManager();
+
+	// Run to line
+	void runToLine(URI uri, int lineNumber) throws DebugException;
 }

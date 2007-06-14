@@ -10,7 +10,6 @@
 package org.eclipse.dltk.dbgp.internal.commands;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.dltk.dbgp.IDbgpContinuationHandler;
@@ -84,7 +83,7 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		return breakpointCommands.getBreakpoint(id);
 	}
 
-	public List getBreakpoints() throws DbgpException {
+	public IDbgpBreakpoint[] getBreakpoints() throws DbgpException {
 		return breakpointCommands.getBreakpoints();
 	}
 
@@ -97,10 +96,15 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		return breakpointCommands.setCallBreakpoint(function, info);
 	}
 
+	public String setConditionalBreakpoint(URI uri, DbgpBreakpointConfig info)
+			throws DbgpException {
+		return breakpointCommands.setConditionalBreakpoint(uri, info);
+	}
+
 	public String setConditionalBreakpoint(URI uri, int lineNumber,
-			String expression, DbgpBreakpointConfig info) throws DbgpException {
+			DbgpBreakpointConfig info) throws DbgpException {
 		return breakpointCommands.setConditionalBreakpoint(uri, lineNumber,
-				expression, info);
+				info);
 	}
 
 	public String setExceptionBreakpoint(String exception,
@@ -118,10 +122,9 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		return breakpointCommands.setReturnBreakpoint(uri, function, info);
 	}
 
-	public String setWatchBreakpoint(String expression, URI uri, int line,
+	public String setWatchBreakpoint(URI uri, int line,
 			DbgpBreakpointConfig info) throws DbgpException {
-		return breakpointCommands.setWatchBreakpoint(expression, uri, line,
-				info);
+		return breakpointCommands.setWatchBreakpoint(uri, line, info);
 	}
 
 	public void updateBreakpoint(String id, DbgpBreakpointConfig config)

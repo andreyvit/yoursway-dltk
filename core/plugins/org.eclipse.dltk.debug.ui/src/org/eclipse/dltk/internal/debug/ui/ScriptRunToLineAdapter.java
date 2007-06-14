@@ -58,21 +58,18 @@ public class ScriptRunToLineAdapter implements IRunToLineTarget {
 			ISuspendResume target) throws CoreException {
 
 		if (selection instanceof ITextSelection) {
-			ITextSelection textSelection = (ITextSelection) selection;
-
-			IResource resource = getPartResource(part);
-
-			URI uri = ScriptLineBreakpoint.makeUri(resource);
-
+			final ITextSelection textSelection = (ITextSelection) selection;
+			final IResource resource = getPartResource(part);
+			final URI uri = ScriptLineBreakpoint.makeUri(resource);
 			int lineNumber = textSelection.getStartLine() + 1; // one based
 
 			if (target instanceof IDebugElement) {
 				IDebugTarget debugTarget = ((IDebugElement) target)
 						.getDebugTarget();
+				
 				if (debugTarget instanceof IScriptDebugTarget) {
 					((IScriptDebugTarget) debugTarget).runToLine(uri,
-							lineNumber);
-					target.resume();
+							lineNumber);					
 				}
 			}
 		}

@@ -49,7 +49,7 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 
 	final String WATCH_BREAKPOINT = "watch";
 
-	protected List parseBreakpointsResponse(Element response) {
+	protected IDbgpBreakpoint[] parseBreakpointsResponse(Element response) {
 		List list = new ArrayList();
 
 		NodeList breakpoints = response.getElementsByTagName(BREAKPOINT_TAG);
@@ -58,7 +58,8 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 					.item(i)));
 		}
 
-		return list;
+		return (IDbgpBreakpoint[]) list
+				.toArray(new IDbgpBreakpoint[list.size()]);
 	}
 
 	protected String parseSetBreakpointResponse(Element response)
@@ -67,8 +68,8 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 	}
 
 	protected String setBreakpoint(String type, URI uri, Integer lineNumber,
-			String function, String exception, String expression,
-			DbgpBreakpointConfig info) throws DbgpException {
+			String function, String exception, DbgpBreakpointConfig info)
+			throws DbgpException {
 
 		DbgpRequest request = createRequest(BREAKPOINT_SET_COMMAND);
 		request.addOption("-t", type);
@@ -89,23 +90,19 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 			request.addOption("-x", exception);
 		}
 
-		// TODO: expression handling
-
 		if (info != null) {
 			request.addOption("-s", info.getStateString());
 			request.addOption("-r", info.getTemporaryString());
+
 			if (info.getHitValue() != -1 && info.getHitCondition() != -1) {
 				request.addOption("-h", info.getHitValue());
 				request.addOption("-o", info.getHitConditionString());
 			}
-			String conditionExpression = info.getConditionExpression();
-			if (conditionExpression != null) {
-				request.setData(conditionExpression);
-			}
-		}
 
-		if (expression != null) {
-			request.setData(expression);
+			String expression = info.getExpression();
+			if (expression != null) {
+				request.setData(expression);
+			}
 		}
 
 		return parseSetBreakpointResponse(communicate(request));
@@ -118,37 +115,42 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 	public String setLineBreakpoint(URI uri, int lineNumber,
 			DbgpBreakpointConfig info) throws DbgpException {
 		return setBreakpoint(LINE_BREAKPOINT, uri, new Integer(lineNumber),
-				null, null, null, info);
+				null, null, info);
 	}
 
 	public String setCallBreakpoint(String function, DbgpBreakpointConfig info)
 			throws DbgpException {
-		return setBreakpoint(CALL_BREAKPOINT, null, null, function, null, null,
-				info);
+		return setBreakpoint(CALL_BREAKPOINT, null, null, function, null, info);
 	}
 
 	public String setReturnBreakpoint(URI uri, String function,
 			DbgpBreakpointConfig info) throws DbgpException {
 		return setBreakpoint(RETURN_BREAKPOINT, uri, new Integer(-1), function,
-				null, null, info);
+				null, info);
 	}
 
 	public String setExceptionBreakpoint(String exception,
 			DbgpBreakpointConfig info) throws DbgpException {
 		return setBreakpoint(EXCEPTION_BREAKPOINT, null, null, null, exception,
-				null, info);
+				info);
+	}
+
+	public String setConditionalBreakpoint(URI uri, DbgpBreakpointConfig info)
+			throws DbgpException {
+		return setBreakpoint(CONDITIONAL_BREAKPOINT, uri, null, null, null,
+				info);
 	}
 
 	public String setConditionalBreakpoint(URI uri, int lineNumber,
-			String expression, DbgpBreakpointConfig info) throws DbgpException {
+			DbgpBreakpointConfig info) throws DbgpException {
 		return setBreakpoint(CONDITIONAL_BREAKPOINT, uri, new Integer(
-				lineNumber), null, null, expression, info);
+				lineNumber), null, null, info);
 	}
 
-	public String setWatchBreakpoint(String expression, URI uri,
-			int lineNumber, DbgpBreakpointConfig info) throws DbgpException {
-		return setBreakpoint(WATCH_BREAKPOINT, uri, new Integer(lineNumber),
-				null, null, expression, info);
+	public String setWatchBreakpoint(URI uri, int line,
+			DbgpBreakpointConfig info) throws DbgpException {
+		return setBreakpoint(WATCH_BREAKPOINT, uri, new Integer(line), null,
+				null, info);
 	}
 
 	public IDbgpBreakpoint getBreakpoint(String id) throws DbgpException {
@@ -185,14 +187,14 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 		}
 		// not sure that this is correct but it looks that this is possible
 		// TODO review it
-		String conditionExpression = config.getConditionExpression();
+		String conditionExpression = config.getExpression();
 		if (conditionExpression != null) {
 			request.setData(conditionExpression);
 		}
 		communicate(request);
 	}
 
-	public List getBreakpoints() throws DbgpException {
+	public IDbgpBreakpoint[] getBreakpoints() throws DbgpException {
 		return parseBreakpointsResponse(communicate(createRequest(BREAKPOINT_LIST_COMMAND)));
 	}
 }

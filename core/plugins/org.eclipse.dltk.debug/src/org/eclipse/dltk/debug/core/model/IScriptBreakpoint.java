@@ -21,32 +21,29 @@ public interface IScriptBreakpoint extends IBreakpoint {
 	int HIT_CONDITION_MULTIPLE = IDbgpBreakpoint.HIT_CONDITION_MULTIPLE;
 
 	// Identifier
-	String getIdentifier();
+	String getIdentifier() throws CoreException;
 
 	void setIdentifier(String id) throws CoreException;
 
-	// Hit count (-1 if not available)
-	int getHitCount();
-
 	// Hit value
-	int getHitValue();
+	int getHitValue() throws CoreException;
 
 	void setHitValue(int count) throws CoreException;
 
-	// Hit count
-	int getHitCondition();
+	// Hit condition
+	int getHitCondition() throws CoreException;
 
 	void setHitCondition(int condition) throws CoreException;
 
 	// Resource name
-	String getResourceName();
+	String getResourceName() throws CoreException;
 
-	// Conditional expression
-	String getConditionalExpression();
+	// Expressions
+	String getExpression() throws CoreException;
 
-	public void setConditionalExpression(String id) throws CoreException;
+	void setExpression(String id) throws CoreException;
 
-	boolean isConditionalExpressionEnabled();
+	boolean getExpressionState() throws CoreException;
 
-	void setConditionalExpressionEnabled(boolean enabled) throws CoreException;
+	void setExpressionState(boolean state) throws CoreException;
 }

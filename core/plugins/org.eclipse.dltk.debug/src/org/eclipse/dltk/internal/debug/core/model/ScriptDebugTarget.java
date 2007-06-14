@@ -12,20 +12,30 @@
  */
 package org.eclipse.dltk.internal.debug.core.model;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.core.runtime.Preferences;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
-import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
+import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.IDbgpService;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTargetListener;
@@ -58,8 +68,63 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	private final String mondelId;
 
+	private static int findFirstNonEmptyScriptLine(IFile file)
+			throws CoreException {
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new InputStreamReader(file
+					.getContents(), file.getCharset()));
+
+			int lineNumber = 1;
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				if (line.length() > 0) {
+					break;
+				}
+
+				++lineNumber;
+			}
+
+			return lineNumber;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+
+		return -1;
+	}
+
+	private URI scriptUri;
+	private int scriptNonEmptyLine = -1;
+
+	private void setupScriptParameters(ILaunchConfiguration configuration)
+			throws CoreException {
+		String projectName = configuration.getAttribute("project",
+				(String) null);
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
+				projectName);
+
+		String scriptName = configuration.getAttribute("mainScript",
+				(String) null);
+		IResource resource = project.findMember(scriptName);
+
+		if (resource instanceof IFile) {
+			scriptUri = ScriptLineBreakpoint.makeUri((IFile) resource);
+			scriptNonEmptyLine = findFirstNonEmptyScriptLine((IFile) resource);
+		}
+	}
+
 	public ScriptDebugTarget(String modelId, IDbgpService dbgpService,
 			String id, ILaunch launch, IProcess process) throws CoreException {
+
+		setupScriptParameters(launch.getLaunchConfiguration());
 
 		this.mondelId = modelId;
 
@@ -75,12 +140,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 		this.disconnected = false;
 
-		breakpointManager = new DbgpBreakpointManager(this.threadManager);
+		this.breakpointManager = new DbgpBreakpointManager(this);
 
 		this.threadManager.addListener(this);
-
-		DebugPlugin.getDefault().getBreakpointManager().addBreakpointListener(
-				this);
 
 		DebugEventHelper.fireCreateEvent(this);
 	}
@@ -112,10 +174,6 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	public String getName() throws DebugException {
 		return name;
-	}
-
-	public boolean supportsBreakpoint(IBreakpoint breakpoint) {
-		return DbgpBreakpointManager.supportsBreakpoint(breakpoint);
 	}
 
 	// ITerminate
@@ -156,7 +214,6 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 					.removeBreakpointListener(this);
 			DebugEventHelper.fireTerminateEvent(this);
 		}
-
 	}
 
 	// ISuspendResume
@@ -245,14 +302,22 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	// IDbgpThreadManagerListener
 	public void threadAccepted(IScriptThread thread, boolean first) {
-		try {
-			breakpointManager.setupDeferredBreakpoints(thread);
-		} catch (CoreException e) {
-			// TODO: log exception
-			// e.printStackTrace();
-		}
-
 		if (first) {
+
+			Preferences prefs = DLTKDebugPlugin.getDefault()
+					.getPluginPreferences();
+			boolean breakOnFirstLine = prefs
+					.getBoolean(DebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
+
+			if (breakOnFirstLine && scriptUri != null
+					&& scriptNonEmptyLine != -1) {
+				breakpointManager.setBreakpointUntilFirstSuspend(scriptUri,
+						scriptNonEmptyLine);
+			}
+
+			breakpointManager.setupDeferredBreakpoints();
+			DebugPlugin.getDefault().getBreakpointManager()
+					.addBreakpointListener(this);
 			// DebugEventHelper.fireCreateEvent(this);
 			fireTargetInitialized();
 		}
@@ -272,14 +337,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	// IScriptDebugTarget
-	public void runToLine(URI uri, int lineNumber) {
-		try {
-			breakpointManager.setupTemporaryBreakpoint(uri, lineNumber);
-		} catch (DbgpException e) {
-			e.printStackTrace();
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+	public void runToLine(URI uri, int lineNumber) throws DebugException {
+		breakpointManager.setBreakpointUntilFirstSuspend(uri, lineNumber);
+		resume();
 	}
 
 	public boolean isInitialized() {
@@ -301,4 +361,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		listeners.remove(listener);
 	}
 
+	public boolean supportsBreakpoint(IBreakpoint breakpoint) {
+		return breakpointManager.supportsBreakpoint(breakpoint);
+	}
 }

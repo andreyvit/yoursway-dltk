@@ -26,9 +26,9 @@ public interface IScriptMethodEntryBreakpoint extends IScriptLineBreakpoint {
 
 	void setBreakOnExit(boolean value) throws CoreException;
 
-	boolean shouldBreakOnEntry();
+	boolean breakOnEntry();
 
-	boolean shouldBreakOnExit();
+	boolean breakOnExit();
 
 	// Secondary identifiers
 	String getSecondaryId();

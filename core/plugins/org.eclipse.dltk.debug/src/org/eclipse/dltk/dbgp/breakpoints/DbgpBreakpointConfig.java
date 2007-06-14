@@ -20,18 +20,19 @@ public class DbgpBreakpointConfig {
 	private static final String HIT_CONDITION_EQUAL = "==";
 	private static final String HIT_CONDITION_MULTIPLE = "%";
 
-	private final boolean enabled;
+	private boolean enabled;
 
-	private final boolean temporary;
+	private boolean temporary;
 
-	private final int hitValue;
+	private int hitValue;
 
-	private final int hitCondition;
+	private int hitCondition;
 
-	private final String conditionExpression;
+	private String expression;
 
-	public String getConditionExpression() {
-		return conditionExpression;
+	// Constructors
+	public DbgpBreakpointConfig() {
+		this(true);
 	}
 
 	public DbgpBreakpointConfig(boolean enabled) {
@@ -39,35 +40,65 @@ public class DbgpBreakpointConfig {
 	}
 
 	public DbgpBreakpointConfig(boolean enabled, int hitValue,
-			int hitCondition, String conString) {
-		this(enabled, hitValue, hitCondition, false, conString);
+			int hitCondition, String expression) {
+		this(enabled, hitValue, hitCondition, false, expression);
 	}
 
 	public DbgpBreakpointConfig(boolean enabled, int hitValue,
-			int hitCondition, boolean temporary, String conString) {
+			int hitCondition, boolean temporary, String expression) {
 		this.enabled = enabled;
 		this.hitValue = hitValue;
 		this.hitCondition = hitCondition;
 		this.temporary = temporary;
-		this.conditionExpression = conString;
+		this.expression = expression;
 	}
 
+	// Enabled
 	public boolean isEnabled() {
 		return enabled;
 	}
 
+	public void setEnabled(boolean value) {
+		this.enabled = value;
+	}
+
+	// Temporary
 	public boolean isTemporary() {
 		return temporary;
 	}
 
+	public void setTemporary(boolean value) {
+		this.temporary = value;
+	}
+
+	// Hit value
 	public int getHitValue() {
 		return hitValue;
 	}
 
+	public void setHitValue(int hitValue) {
+		this.hitValue = hitValue;
+	}
+
+	// Hit condition
 	public int getHitCondition() {
 		return hitCondition;
 	}
 
+	public void setHitCondition(int hitCondition) {
+		this.hitCondition = hitCondition;
+	}
+
+	// Expression
+	public String getExpression() {
+		return expression;
+	}
+
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
+
+	// Strings
 	public String getTemporaryString() {
 		return temporary ? TEMPORARY_TRUE : TEMPORARY_FALSE;
 	}

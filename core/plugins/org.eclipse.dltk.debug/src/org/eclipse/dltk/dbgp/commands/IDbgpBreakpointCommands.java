@@ -10,37 +10,51 @@
 package org.eclipse.dltk.dbgp.commands;
 
 import java.net.URI;
-import java.util.List;
 
 import org.eclipse.dltk.dbgp.breakpoints.DbgpBreakpointConfig;
 import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 
 public interface IDbgpBreakpointCommands {
+	// Line breakpoint
 	String setLineBreakpoint(URI uri, int lineNumber,
 			DbgpBreakpointConfig config) throws DbgpException;
 
+	// Call breakpoint
 	String setCallBreakpoint(String function, DbgpBreakpointConfig config)
 			throws DbgpException;
 
+	// Return breakpoint
 	String setReturnBreakpoint(URI uri, String function,
 			DbgpBreakpointConfig config) throws DbgpException;
 
+	// Exception breakpoint
 	String setExceptionBreakpoint(String exception, DbgpBreakpointConfig config)
 			throws DbgpException;
 
-	String setConditionalBreakpoint(URI uri, int lineNumber, String expression,
+	// Conditional breakpoint
+	// String setConditionalBreakpoint(URI uri, int lineNumber,
+	// DbgpBreakpointConfig config) throws DbgpException;
+
+	String setConditionalBreakpoint(URI uri, int lineNumber,
 			DbgpBreakpointConfig config) throws DbgpException;
 
-	String setWatchBreakpoint(String expression, URI uri, int ln,
+	String setConditionalBreakpoint(URI uri, DbgpBreakpointConfig config)
+			throws DbgpException;
+
+	// Watch breakpoint
+	String setWatchBreakpoint(URI uri, int line,
 			DbgpBreakpointConfig config) throws DbgpException;
 
-	IDbgpBreakpoint getBreakpoint(String id) throws DbgpException;
-
+	// Remove
 	void removeBreakpoint(String id) throws DbgpException;
 
+	// Update
 	void updateBreakpoint(String id, DbgpBreakpointConfig config)
 			throws DbgpException;
 
-	List getBreakpoints() throws DbgpException;
+	// Get
+	IDbgpBreakpoint getBreakpoint(String id) throws DbgpException;
+
+	IDbgpBreakpoint[] getBreakpoints() throws DbgpException;
 }

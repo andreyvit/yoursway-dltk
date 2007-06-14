@@ -18,75 +18,71 @@ public abstract class ScriptBreakpoint extends Breakpoint implements
 		IScriptBreakpoint {
 	public static final String BREAKPOINT = "org.eclipse.dltk.script_breakpoint";
 
-	private static final String BREAKPOINT_ID = BREAKPOINT + ".id";
+	private static final String ID = BREAKPOINT + ".id";
 
-	private static final String EXPRESSION_ID = BREAKPOINT + ".expression";
+	private static final String EXPRESSION = BREAKPOINT + ".expression";
 
-	private static final String COND_EXPRESSION_ENABLED_ID = BREAKPOINT
-			+ ".expression.enabled";
+	private static final String EXPRESSION_STATE = EXPRESSION + ".state";
 
-	private static final String BREAKPOINT_HIT_VALUE = BREAKPOINT
-			+ ".hit_value";
+	private static final String HIT_VALUE = BREAKPOINT + ".hit_value";
 
-	private static final String BREAKPOINT_HIT_CONDITION = BREAKPOINT
-			+ ".hit_condition";
+	private static final String HIT_CONDITION = BREAKPOINT + ".hit_condition";
 
 	// Identifier
-	public String getIdentifier() {
-		return getMarker().getAttribute(BREAKPOINT_ID, null);
+	public String getIdentifier() throws CoreException {
+		return ensureMarker().getAttribute(ID, null);
 	}
 
 	public void setIdentifier(String id) throws CoreException {
-		getMarker().setAttribute(BREAKPOINT_ID, id);
-	}
-
-	// ConditinalExpression
-	public String getConditionalExpression() {
-		return getMarker().getAttribute(EXPRESSION_ID, null);
-	}
-
-	public boolean isConditionalExpressionEnabled() {
-		return getMarker().getAttribute(COND_EXPRESSION_ENABLED_ID, "false")
-				.equals("true");
-	}
-
-	public void setConditionalExpression(String id) throws CoreException {
-		getMarker().setAttribute(EXPRESSION_ID, id);
-	}
-
-	public void setConditionalExpressionEnabled(boolean enabled)
-			throws CoreException {
-		getMarker().setAttribute(COND_EXPRESSION_ENABLED_ID, enabled + "");
-	}
-
-	// Hit count
-	public int getHitCount() {
-		return -1;
+		setAttribute(ID, id);
 	}
 
 	// Hit value
-	public int getHitValue() {
-		return Integer.parseInt(getMarker().getAttribute(BREAKPOINT_HIT_VALUE,
-				"-1"));
+	public int getHitValue() throws CoreException {
+		return Integer.parseInt(ensureMarker().getAttribute(HIT_VALUE, "-1"));
 	}
 
-	public void setHitValue(int count) throws CoreException {
-		setAttribute(BREAKPOINT_HIT_VALUE, Integer.toString(count));
+	public void setHitValue(int hitValue) throws CoreException {
+		if (getHitValue() != hitValue) {
+			setAttribute(HIT_VALUE, Integer.toString(hitValue));
+		}
 	}
 
 	// Hit condition
-	public int getHitCondition() {
-		return Integer.parseInt(getMarker().getAttribute(
-				BREAKPOINT_HIT_CONDITION, "-1"));
+	public int getHitCondition() throws CoreException {
+		return Integer.parseInt(ensureMarker()
+				.getAttribute(HIT_CONDITION, "-1"));
 	}
 
 	public void setHitCondition(int condition) throws CoreException {
-		setAttribute(BREAKPOINT_HIT_CONDITION, Integer.toString(condition));
+		if (getHitCondition() != condition) {
+			setAttribute(HIT_CONDITION, Integer.toString(condition));
+		}
 	}
 
 	// Resource name
-	public String getResourceName() {
-		return getMarker().getResource().getName();
+	public String getResourceName() throws CoreException {
+		return ensureMarker().getResource().getName();
+	}
+
+	// Expression
+	public String getExpression() throws CoreException {
+		return ensureMarker().getAttribute(EXPRESSION, null);
+	}
+
+	public void setExpression(String expression) throws CoreException {
+		ensureMarker().setAttribute(EXPRESSION, expression);
+	}
+
+	public boolean getExpressionState() throws CoreException {
+		return (new Boolean(ensureMarker().getAttribute(EXPRESSION_STATE,
+				"false")).booleanValue());
+	}
+
+	public void setExpressionState(boolean state) throws CoreException {
+		if (getExpressionState() != state) {
+			setAttribute(EXPRESSION_STATE, state);
+		}
 	}
 
 	/**

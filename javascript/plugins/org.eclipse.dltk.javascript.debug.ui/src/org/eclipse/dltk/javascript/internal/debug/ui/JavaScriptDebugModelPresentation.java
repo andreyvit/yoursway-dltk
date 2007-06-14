@@ -54,9 +54,9 @@ public class JavaScriptDebugModelPresentation extends
 		if (element instanceof IScriptMethodEntryBreakpoint) {
 			IScriptMethodEntryBreakpoint ll = (IScriptMethodEntryBreakpoint) element;
 			int flags = 0;
-			if (ll.shouldBreakOnEntry())
+			if (ll.breakOnEntry())
 				flags |= ScriptDebugImageDescriptor.ENTRY;
-			if (ll.shouldBreakOnExit())
+			if (ll.breakOnExit())
 				flags |= ScriptDebugImageDescriptor.EXIT;
 			try {
 				if (flags == 0)

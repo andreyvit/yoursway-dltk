@@ -592,32 +592,9 @@ module XoredDebugger
                 return
             end
 
-            case event
-                when 'line'
-                    capturer.disable
+   # Command loop
+        if @last_continuation_command.nil?
 
-                    @stack.update(binding, @file, line, where)
-                
-                    if (@io.has_data? or
-                        @waitDepth == -1 or
-                        @waitDepth >= @stack.depth or
-                        breakpoints.line_break?(@file, line))
-                        
-                        logger.puts("==>> Line ##{line} from #{@file} <<==")
-
-                        # Break checking
-                        unless @last_continuation_command.nil?
-
-                            map = { :status => 'break',
-                                    :reason => 'ok',
-                                    :id     => @last_continuation_command.arg('-i') }
-
-                            send(@last_continuation_command.name, map)
-
-                            @last_continuation_command = nil
-                        end
-
-                        # Command loop
                         loop do
                             @command = Command.new(receive)                        
                                 
@@ -635,6 +612,35 @@ module XoredDebugger
                                 send(@command.name, data)
                             end
                         end
+        end
+
+            case event
+                when 'line'
+                    capturer.disable
+
+                    @stack.update(binding, @file, line, where)
+
+                    br_break = breakpoints.line_break?(@file, line)
+                    logger.puts("%%%%%%% Line: #{line}, br: #{br_break}")
+                
+                    if (@io.has_data? or
+                        @waitDepth == -1 or
+                        @waitDepth >= @stack.depth or
+                        br_break)
+                        
+                        logger.puts("==>> Line ##{line} from #{@file} <<==")
+
+                        # Break checking
+                        unless @last_continuation_command.nil?
+
+                            map = { :status => 'break',
+                                    :reason => 'ok',
+                                    :id     => @last_continuation_command.arg('-i') }
+
+                            send(@last_continuation_command.name, map)
+
+                            @last_continuation_command = nil
+                        end                     
                     end
 
                     capturer.enable

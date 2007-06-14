@@ -13,187 +13,136 @@ import java.net.URI;
 
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.debug.core.DebugEvent;
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IBreakpointListener;
 import org.eclipse.debug.core.IBreakpointManager;
+import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.model.IBreakpoint;
-import org.eclipse.debug.core.model.IThread;
 import org.eclipse.dltk.dbgp.breakpoints.DbgpBreakpointConfig;
 import org.eclipse.dltk.dbgp.commands.IDbgpBreakpointCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
+import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
 
 public class DbgpBreakpointManager implements IBreakpointListener {
+	// Utility methods
 	protected static IBreakpointManager getBreakpointManager() {
 		return DebugPlugin.getDefault().getBreakpointManager();
 	}
 
-	private static IDbgpBreakpointCommands getBreakpointCommands(
-			IScriptThread thread) {
-		return thread.getDbgpSession().getCoreCommands();
-	}
-
-	public static boolean supportsBreakpoint(IBreakpoint breakpoint) {
-		if (breakpoint instanceof IScriptBreakpoint) {
-			return true;
-		}
-		return false;
-	}
-
+	// Adding, removing, updating
 	protected static void addBreakpoint(IDbgpBreakpointCommands commands,
 			IScriptBreakpoint breakpoint) throws CoreException, DbgpException {
 
 		if (breakpoint instanceof IScriptLineBreakpoint) {
-			IScriptLineBreakpoint b = (IScriptLineBreakpoint) breakpoint;
+			IScriptLineBreakpoint lineBreakpoint = (IScriptLineBreakpoint) breakpoint;
 
-			boolean enabled = b.isEnabled()
+			// Enabled
+			boolean enabled = lineBreakpoint.isEnabled()
 					&& getBreakpointManager().isEnabled();
 
-			String cExpr = null;
-			if (breakpoint.isConditionalExpressionEnabled()) {
-				cExpr = breakpoint.getConditionalExpression();
+			DbgpBreakpointConfig config = new DbgpBreakpointConfig(enabled);
+
+			// Hit value
+			config.setHitValue(lineBreakpoint.getHitValue());
+
+			// Hit condition
+			config.setHitCondition(lineBreakpoint.getHitCondition());
+
+			// Expression
+			if (breakpoint.getExpressionState()) {
+				config.setExpression(breakpoint.getExpression());
 			}
 
-			DbgpBreakpointConfig config = new DbgpBreakpointConfig(enabled, b
-					.getHitValue(), b.getHitCondition(), cExpr);
+			if (lineBreakpoint instanceof IScriptMethodEntryBreakpoint) {
+				IScriptMethodEntryBreakpoint entryBreakpoint = (IScriptMethodEntryBreakpoint) lineBreakpoint;
 
-			if (b instanceof IScriptMethodEntryBreakpoint) {
-				IScriptMethodEntryBreakpoint me = (IScriptMethodEntryBreakpoint) b;
-				if (me.shouldBreakOnEntry()) {
-					String id = commands.setLineBreakpoint(b.getResourceURI(),
-							b.getLineNumber(), config);
-					b.setIdentifier(id);
+				if (entryBreakpoint.breakOnEntry()) {
+					String id = commands.setLineBreakpoint(lineBreakpoint
+							.getResourceURI(), lineBreakpoint.getLineNumber(),
+							config);
+					lineBreakpoint.setIdentifier(id);
 				}
-				if (me.shouldBreakOnExit()) {
-					String id = commands.setReturnBreakpoint(
-							b.getResourceURI(), me.getMethodName(), config);
-					me.setSecondaryId(id);
+
+				if (entryBreakpoint.breakOnExit()) {
+					String id = commands.setReturnBreakpoint(lineBreakpoint
+							.getResourceURI(), entryBreakpoint.getMethodName(),
+							config);
+					entryBreakpoint.setSecondaryId(id);
 				}
 			} else {
 				if (breakpoint instanceof IScriptWatchPoint) {
-					IScriptWatchPoint wb = (IScriptWatchPoint) breakpoint;
-					String setWatchBreakpoint = commands.setWatchBreakpoint(wb
-							.getFieldName()
-							+ (wb.isAccess() ? '1' : '0')
-							+ (wb.isModification() ? '1' : '0'), b
-							.getResourceURI(), b.getLineNumber(), config);
-					wb.setIdentifier(setWatchBreakpoint);
+					IScriptWatchPoint watchPoint = (IScriptWatchPoint) breakpoint;
+
+					String exp = watchPoint.getFieldName()
+							+ (watchPoint.isAccess() ? '1' : '0')
+							+ (watchPoint.isModification() ? '1' : '0');
+
+					config.setExpression(exp);
+
+					String id = commands.setWatchBreakpoint(lineBreakpoint
+							.getResourceURI(), lineBreakpoint.getLineNumber(),
+							config);
+					watchPoint.setIdentifier(id);
 					return;
+
 				} else {
-					String id = commands.setLineBreakpoint(b.getResourceURI(),
-							b.getLineNumber(), config);
-					b.setIdentifier(id);
+					String id = commands.setLineBreakpoint(lineBreakpoint
+							.getResourceURI(), lineBreakpoint.getLineNumber(),
+							config);
+					lineBreakpoint.setIdentifier(id);
 				}
-			}
-
-			// TODO: why?
-			b.setHitValue(config.getHitValue());
-			b.setHitCondition(config.getHitCondition());
-		}
-	}
-
-	protected void addBreakpoint(IBreakpoint breakpoint) throws CoreException {
-		if (!supportsBreakpoint(breakpoint)) {
-			return;
-		}
-
-		IThread[] threads = threadManager.getThreads();
-		for (int i = 0; i < threads.length; ++i) {
-			try {
-				addBreakpoint(
-						getBreakpointCommands((IScriptThread) threads[i]),
-						(IScriptBreakpoint) breakpoint);
-			} catch (DbgpException e) {
-				breakpoint.delete();
 			}
 		}
 	}
 
 	protected static void changeBreakpoint(IDbgpBreakpointCommands commands,
 			IScriptBreakpoint breakpoint) throws DbgpException, CoreException {
-		boolean enabled = breakpoint.isEnabled()
-				&& getBreakpointManager().isEnabled();
-
-		IScriptBreakpoint b = breakpoint;
-
-		int hitValue = b.getHitValue();
-		int hitCondition = b.getHitCondition();
-		String cExpr = null;
-		if (breakpoint.isConditionalExpressionEnabled()) {
-			cExpr = breakpoint.getConditionalExpression();
-		}
-		DbgpBreakpointConfig config = new DbgpBreakpointConfig(enabled,
-				hitValue, hitCondition, cExpr);
-
-		if (b.getIdentifier() != null) {
-			commands.updateBreakpoint(b.getIdentifier(), config);
-		}
-		if (b instanceof IScriptMethodEntryBreakpoint) {
-			IScriptMethodEntryBreakpoint ba = (IScriptMethodEntryBreakpoint) b;
-			String secondaryId = ba.getSecondaryId();
-			if (secondaryId != null) {
-				if (!ba.shouldBreakOnExit()) {
-					commands.removeBreakpoint(secondaryId);
-					ba.setSecondaryId(null);
-				} else {
-					commands.updateBreakpoint(secondaryId, config);
-				}
-			} else if (ba.shouldBreakOnExit()) {
-				String id = commands.setReturnBreakpoint(ba.getResourceURI(),
-						ba.getMethodName(), config);
-				ba.setSecondaryId(id);
-			}
-			if (!ba.shouldBreakOnEntry()) {
-				String identifier = ba.getIdentifier();
-				if (identifier != null) {
-					commands.removeBreakpoint(identifier);
-					ba.setIdentifier(null);
-				}
-			} else {
-				String identifier = ba.getIdentifier();
-				if (identifier == null) {
-					String id = commands.setLineBreakpoint(ba.getResourceURI(),
-							ba.getLineNumber(), config);
-					ba.setIdentifier(id);
-				}
-			}
-		}
-	}
-
-	protected void changeBreakpoint(IBreakpoint breakpoint)
-			throws CoreException {
-		if (!supportsBreakpoint(breakpoint)) {
-			return;
-		}
-
-		IThread[] threads = threadManager.getThreads();
-		for (int i = 0; i < threads.length; ++i) {
-			try {
-				changeBreakpoint(
-						getBreakpointCommands((IScriptThread) threads[i]),
-						(IScriptBreakpoint) breakpoint);
-			} catch (DbgpException e) {
-				breakpoint.delete();
-			}
-		}
+		/*
+		 * boolean enabled = breakpoint.isEnabled() &&
+		 * getBreakpointManager().isEnabled();
+		 * 
+		 * IScriptBreakpoint b = breakpoint;
+		 * 
+		 * int hitValue = b.getHitValue(); int hitCondition =
+		 * b.getHitCondition(); String cExpr = null; if
+		 * (breakpoint.isConditionalExpressionEnabled()) { cExpr =
+		 * breakpoint.getConditionalExpression(); } DbgpBreakpointConfig config =
+		 * new DbgpBreakpointConfig(enabled, hitValue, hitCondition, cExpr);
+		 * 
+		 * if (b.getIdentifier() != null) {
+		 * commands.updateBreakpoint(b.getIdentifier(), config); } if (b
+		 * instanceof IScriptMethodEntryBreakpoint) {
+		 * IScriptMethodEntryBreakpoint ba = (IScriptMethodEntryBreakpoint) b;
+		 * String secondaryId = ba.getSecondaryId(); if (secondaryId != null) {
+		 * if (!ba.breakOnExit()) { commands.removeBreakpoint(secondaryId);
+		 * ba.setSecondaryId(null); } else {
+		 * commands.updateBreakpoint(secondaryId, config); } } else if
+		 * (ba.breakOnExit()) { String id =
+		 * commands.setReturnBreakpoint(ba.getResourceURI(), ba.getMethodName(),
+		 * config); ba.setSecondaryId(id); } if (!ba.breakOnEntry()) { String
+		 * identifier = ba.getIdentifier(); if (identifier != null) {
+		 * commands.removeBreakpoint(identifier); ba.setIdentifier(null); } }
+		 * else { String identifier = ba.getIdentifier(); if (identifier ==
+		 * null) { String id = commands.setLineBreakpoint(ba.getResourceURI(),
+		 * ba.getLineNumber(), config); ba.setIdentifier(id); } } }
+		 */
 	}
 
 	protected static void removeBreakpoint(IDbgpBreakpointCommands commands,
-			IScriptBreakpoint breakpoint) throws DbgpException {
-		IScriptBreakpoint b = breakpoint;
+			IScriptBreakpoint breakpoint) throws DbgpException, CoreException {
 
-		commands.removeBreakpoint(b.getIdentifier());
-		if (b instanceof IScriptMethodEntryBreakpoint) {
-			IScriptMethodEntryBreakpoint mr = (IScriptMethodEntryBreakpoint) b;
+		commands.removeBreakpoint(breakpoint.getIdentifier());
+
+		if (breakpoint instanceof IScriptMethodEntryBreakpoint) {
+			IScriptMethodEntryBreakpoint mr = (IScriptMethodEntryBreakpoint) breakpoint;
 			String secondaryId = mr.getSecondaryId();
 			if (secondaryId != null) {
 				commands.removeBreakpoint(secondaryId);
@@ -201,77 +150,139 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 		}
 	}
 
+	// DebugTarget
+	private final IScriptDebugTarget target;
+
+	// Add, remove, update to debug target
+	protected void addBreakpoint(IBreakpoint breakpoint) throws CoreException,
+			DbgpException {
+		IScriptThread[] threads = (IScriptThread[]) target.getThreads();
+
+		if (threads.length > 0) {
+			if (supportsBreakpoint(breakpoint)) {
+				addBreakpoint(threads[0].getDbgpSession().getCoreCommands(),
+						(IScriptBreakpoint) breakpoint);
+			}
+		}
+	}
+
+	protected void changeBreakpoint(IBreakpoint breakpoint)
+			throws CoreException, DbgpException {
+		IScriptThread[] threads = (IScriptThread[]) target.getThreads();
+		if (threads.length > 0) {
+			if (supportsBreakpoint(breakpoint)) {
+				changeBreakpoint(threads[0].getDbgpSession().getCoreCommands(),
+						(IScriptBreakpoint) breakpoint);
+			}
+		}
+	}
+
 	protected void removeBreakpoint(IBreakpoint breakpoint)
-			throws DbgpException {
-		if (!supportsBreakpoint(breakpoint)) {
-			return;
-		}
-
-		IThread[] threads = threadManager.getThreads();
-		for (int i = 0; i < threads.length; ++i) {
-			removeBreakpoint(getBreakpointCommands((IScriptThread) threads[i]),
-					(IScriptBreakpoint) breakpoint);
+			throws CoreException, DbgpException {
+		IScriptThread[] threads = (IScriptThread[]) target.getThreads();
+		if (threads.length > 0) {
+			if (supportsBreakpoint(breakpoint)) {
+				removeBreakpoint(threads[0].getDbgpSession().getCoreCommands(),
+						(IScriptBreakpoint) breakpoint);
+			}
 		}
 	}
 
-	private final ScriptThreadManager threadManager;
-
-	public DbgpBreakpointManager(ScriptThreadManager manager) {
-		if (manager == null) {
-			throw new IllegalArgumentException();
-		}
-
-		this.threadManager = manager;
+	public DbgpBreakpointManager(IScriptDebugTarget target) {
+		this.target = target;
 	}
 
-	public void setupDeferredBreakpoints(final IScriptThread thread)
-			throws CoreException {
+	public boolean supportsBreakpoint(IBreakpoint breakpoint) {
+		if (breakpoint instanceof IScriptBreakpoint) {
+			final String modelId = target.getModelIdentifier();
+			final String breakpointModelId = breakpoint.getModelIdentifier();
 
-		Job job = new Job("Setting up deffered breakpoints") {
-			protected IStatus run(IProgressMonitor monitor) {
-				IBreakpoint[] breakpoints = getBreakpointManager()
-						.getBreakpoints(thread.getModelIdentifier());
+			return breakpointModelId.equals(modelId);
+		}
 
-				for (int i = 0; i < breakpoints.length; i++) {
-					IBreakpoint breakpoint = breakpoints[i];
+		return false;
+	}
 
-					if (supportsBreakpoint(breakpoint)) {
-						try {
-							addBreakpoint(getBreakpointCommands(thread),
-									(IScriptBreakpoint) breakpoint);
-						} catch (Exception e) {
+	public void setupDeferredBreakpoints() {
+		IBreakpoint[] breakpoints = getBreakpointManager().getBreakpoints(
+				target.getModelIdentifier());
 
+		for (int i = 0; i < breakpoints.length; i++) {
+			try {
+				addBreakpoint(breakpoints[i]);
+			} catch (Exception e) {
+				// TODO: log
+				e.printStackTrace();
+			}
+		}
+	}
+
+	// Simple breakpoint management
+	public String addBreakpoint(URI uri, int line) {
+		try {
+			IScriptThread[] threads = (IScriptThread[]) target.getThreads();
+			if (threads.length > 0) {
+				IScriptThread thread = threads[0];
+
+				DbgpBreakpointConfig config = new DbgpBreakpointConfig(true);
+
+				return thread.getDbgpSession().getCoreCommands()
+						.setLineBreakpoint(uri, line, config);
+			}
+
+		} catch (DebugException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DbgpException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public void removeBreakpoint(String id) {
+		try {
+			IScriptThread[] threads = (IScriptThread[]) target.getThreads();
+			if (threads.length > 0) {
+				IScriptThread thread = threads[0];
+
+				DbgpBreakpointConfig config = new DbgpBreakpointConfig(true);
+
+				thread.getDbgpSession().getCoreCommands().removeBreakpoint(id);
+			}
+		} catch (DebugException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DbgpException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void setBreakpointUntilFirstSuspend(URI uri, int line) {
+		final String tempId = addBreakpoint(uri, line);
+
+		DebugPlugin.getDefault().addDebugEventListener(
+				new IDebugEventSetListener() {
+					public void handleDebugEvents(DebugEvent[] events) {
+						for (int i = 0; i < events.length; ++i) {
+							DebugEvent event = events[i];
+							if (event.getKind() == DebugEvent.SUSPEND) {
+								removeBreakpoint(tempId);
+								DebugPlugin.getDefault()
+										.removeDebugEventListener(this);
+							}
 						}
 					}
-				}
-
-				return Status.OK_STATUS;
-			}
-		};
-
-		job.setSystem(true);
-		job.setUser(false);
-		job.schedule();
-	}
-
-	public void setupTemporaryBreakpoint(URI uri, int lineNumber)
-			throws DbgpException, CoreException {
-
-		DbgpBreakpointConfig config = new DbgpBreakpointConfig(true, -1, -1,
-				true, null);
-
-		IThread[] threads = threadManager.getThreads();
-		for (int i = 0; i < threads.length; ++i) {
-			IDbgpBreakpointCommands commands = getBreakpointCommands((IScriptThread) threads[i]);
-			commands.setLineBreakpoint(uri, lineNumber, config);
-		}
+				});
 	}
 
 	// IBreakpointListener
 	public void breakpointAdded(IBreakpoint breakpoint) {
 		try {
 			addBreakpoint(breakpoint);
-		} catch (CoreException e) {
+		} catch (Exception e) {
 			DLTKDebugPlugin.log(e);
 		}
 	}
@@ -279,7 +290,7 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 	public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta) {
 		try {
 			changeBreakpoint(breakpoint);
-		} catch (CoreException e) {
+		} catch (Exception e) {
 			DLTKDebugPlugin.log(e);
 		}
 	}
@@ -287,7 +298,7 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 	public void breakpointRemoved(IBreakpoint breakpoint, IMarkerDelta delta) {
 		try {
 			removeBreakpoint(breakpoint);
-		} catch (DbgpException e) {
+		} catch (Exception e) {
 			DLTKDebugPlugin.log(e);
 		}
 	}

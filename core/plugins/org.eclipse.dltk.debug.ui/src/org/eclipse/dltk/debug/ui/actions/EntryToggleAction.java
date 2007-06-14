@@ -21,13 +21,13 @@ public class EntryToggleAction extends BreakpointToggleAction {
 
 	protected boolean getToggleState(IScriptBreakpoint breakpoint)
 			throws CoreException {
-		return ((IScriptMethodEntryBreakpoint) breakpoint).shouldBreakOnEntry();
+		return ((IScriptMethodEntryBreakpoint) breakpoint).breakOnEntry();
 	}
 
 	public void doAction(IScriptBreakpoint breakpoint) throws CoreException {
 		((IScriptMethodEntryBreakpoint) breakpoint)
 				.setBreakOnEntry(!((IScriptMethodEntryBreakpoint) breakpoint)
-						.shouldBreakOnEntry());
+						.breakOnEntry());
 	}
 
 	public boolean isEnabledFor(IStructuredSelection selection) {

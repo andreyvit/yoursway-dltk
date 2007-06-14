@@ -99,11 +99,9 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 			createLabel(labelComposite, "File:");
 			createLabel(labelComposite, resourceName);
 
-			// Hit count
-			int hitCount = breakpoint.getHitCount();
+			// Hit count, TODO: add support
 			createLabel(labelComposite, "Hit count:");
-			createLabel(labelComposite, hitCount == -1 ? "Not available"
-					: Integer.toString(hitCount));
+			createLabel(labelComposite, "Not available");
 
 		}
 
@@ -131,65 +129,70 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 	}
 
 	protected void createHitCountEditor(Composite parent) {
-		IScriptBreakpoint breakpoint = getBreakpoint();
-		if (!(breakpoint instanceof IScriptWatchPoint)) {
-			int hitCount = breakpoint.getHitValue();
+		try {
+			IScriptBreakpoint breakpoint = getBreakpoint();
+			if (!(breakpoint instanceof IScriptWatchPoint)) {
+				int hitCount = breakpoint.getHitValue();
 
-			// Hit composite
-			Composite hitComposite = createComposite(parent, 1);
-			hitCountButton = createCheckButton(hitComposite,
-					"Enable hit checking");
+				// Hit composite
+				Composite hitComposite = createComposite(parent, 1);
+				hitCountButton = createCheckButton(hitComposite,
+						"Enable hit checking");
 
-			// Hit count
-			Composite hitCountComposite = createComposite(hitComposite, 2);
-			createLabel(hitCountComposite, "Hit count:");
-			hitCountText = new Text(hitCountComposite, SWT.BORDER);
-			hitCountText.setLayoutData(new GridData());
-			if (hitCount <= 0)
-				hitCountButton.setSelection(false);
-			else
-				hitCountButton.setSelection(true);
+				// Hit count
+				Composite hitCountComposite = createComposite(hitComposite, 2);
+				createLabel(hitCountComposite, "Hit count:");
+				hitCountText = new Text(hitCountComposite, SWT.BORDER);
+				hitCountText.setLayoutData(new GridData());
+				if (hitCount <= 0)
+					hitCountButton.setSelection(false);
+				else
+					hitCountButton.setSelection(true);
 
-			if (hitCount > 0) {
-				hitCountText.setText(Integer.toString(hitCount));
-			}
-
-			// Hit condition
-			Composite hitConditionComposite = createComposite(hitComposite, 2);
-
-			createLabel(hitConditionComposite, "Hit condition:");
-			hitConditionCombo = new Combo(hitConditionComposite, SWT.DROP_DOWN
-					| SWT.READ_ONLY);
-
-			hitConditionCombo.add("greater",
-					IScriptBreakpoint.HIT_CONDITION_GREATER);
-
-			hitConditionCombo.add("equal",
-					IScriptBreakpoint.HIT_CONDITION_EQUAL);
-
-			hitConditionCombo.add("multiple",
-					IScriptBreakpoint.HIT_CONDITION_MULTIPLE);
-			boolean enabled = hitCountButton.getSelection();
-			hitConditionCombo.setEnabled(enabled);
-			hitCountText.setEnabled(enabled);
-			hitCountButton.addSelectionListener(new SelectionAdapter() {
-
-				public void widgetSelected(SelectionEvent e) {
-					boolean enabled = hitCountButton.getSelection();
-					hitConditionCombo.setEnabled(enabled);
-					hitCountText.setEnabled(enabled);
+				if (hitCount > 0) {
+					hitCountText.setText(Integer.toString(hitCount));
 				}
 
-			});
-			int hitCondition = breakpoint.getHitCondition();
+				// Hit condition
+				Composite hitConditionComposite = createComposite(hitComposite, 2);
 
-			if (hitCondition > 0) {
-				hitConditionCombo.select(hitCondition);
-			} else {
-				hitConditionCombo
-						.select(IScriptBreakpoint.HIT_CONDITION_GREATER);
+				createLabel(hitConditionComposite, "Hit condition:");
+				hitConditionCombo = new Combo(hitConditionComposite, SWT.DROP_DOWN
+						| SWT.READ_ONLY);
+
+				hitConditionCombo.add("greater",
+						IScriptBreakpoint.HIT_CONDITION_GREATER);
+
+				hitConditionCombo.add("equal",
+						IScriptBreakpoint.HIT_CONDITION_EQUAL);
+
+				hitConditionCombo.add("multiple",
+						IScriptBreakpoint.HIT_CONDITION_MULTIPLE);
+				boolean enabled = hitCountButton.getSelection();
+				hitConditionCombo.setEnabled(enabled);
+				hitCountText.setEnabled(enabled);
+				hitCountButton.addSelectionListener(new SelectionAdapter() {
+
+					public void widgetSelected(SelectionEvent e) {
+						boolean enabled = hitCountButton.getSelection();
+						hitConditionCombo.setEnabled(enabled);
+						hitCountText.setEnabled(enabled);
+					}
+
+				});
+				int hitCondition = breakpoint.getHitCondition();
+
+				if (hitCondition > 0) {
+					hitConditionCombo.select(hitCondition);
+				} else {
+					hitConditionCombo
+							.select(IScriptBreakpoint.HIT_CONDITION_GREATER);
+				}
+
 			}
-
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -220,8 +223,8 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 					"Suspend on Method entry");
 			method_exit = createCheckButton(createComposite,
 					"Suspend on Method exit");
-			method_entry.setSelection(ee.shouldBreakOnEntry());
-			method_exit.setSelection(ee.shouldBreakOnExit());
+			method_entry.setSelection(ee.breakOnEntry());
+			method_exit.setSelection(ee.breakOnExit());
 		}
 		if (breakpoint instanceof IScriptWatchPoint) {
 			IScriptWatchPoint ee = (IScriptWatchPoint) breakpoint;
@@ -242,37 +245,41 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 	}
 
 	private void createConditionExpression(Composite mainComposite) {
-		if (!(getBreakpoint() instanceof IScriptWatchPoint)) {
-			Group gr = new Group(mainComposite, SWT.NONE);
-			gr.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			gr.setLayout(new GridLayout(1, false));
-			enableConditionExpression = new Button(gr, SWT.CHECK);
-			enableConditionExpression.setText("Enable Condition");
-			conditionExpressionText = new Text(gr, SWT.WRAP | SWT.MULTI
-					| SWT.BORDER);
-			conditionExpressionText.setLayoutData(new GridData(SWT.FILL,
-					SWT.FILL, true, true));
-			IScriptBreakpoint breakpoint = getBreakpoint();
-			boolean conditionalExpressionEnabled = breakpoint
-					.isConditionalExpressionEnabled();
-			enableConditionExpression
-					.setSelection(conditionalExpressionEnabled);
-			conditionExpressionText.setEnabled(conditionalExpressionEnabled);
-			String conditionalExpression = breakpoint
-					.getConditionalExpression();
-			enableConditionExpression
-					.addSelectionListener(new SelectionAdapter() {
+		try {
+			if (!(getBreakpoint() instanceof IScriptWatchPoint)) {
+				Group gr = new Group(mainComposite, SWT.NONE);
+				gr.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+				gr.setLayout(new GridLayout(1, false));
+				enableConditionExpression = new Button(gr, SWT.CHECK);
+				enableConditionExpression.setText("Enable Condition");
+				conditionExpressionText = new Text(gr, SWT.WRAP | SWT.MULTI
+						| SWT.BORDER);
+				conditionExpressionText.setLayoutData(new GridData(SWT.FILL,
+						SWT.FILL, true, true));
+				IScriptBreakpoint breakpoint = getBreakpoint();
+				boolean conditionalExpressionEnabled = breakpoint
+						.getExpressionState();
+				enableConditionExpression
+						.setSelection(conditionalExpressionEnabled);
+				conditionExpressionText
+						.setEnabled(conditionalExpressionEnabled);
+				String conditionalExpression = breakpoint.getExpression();
+				enableConditionExpression
+						.addSelectionListener(new SelectionAdapter() {
 
-						public void widgetSelected(SelectionEvent e) {
-							conditionExpressionText
-									.setEnabled(enableConditionExpression
-											.getSelection());
-						}
+							public void widgetSelected(SelectionEvent e) {
+								conditionExpressionText
+										.setEnabled(enableConditionExpression
+												.getSelection());
+							}
 
-					});
-			if (conditionalExpression != null) {
-				conditionExpressionText.setText(conditionalExpression);
+						});
+				if (conditionalExpression != null) {
+					conditionExpressionText.setText(conditionalExpression);
+				}
 			}
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 	}
 
@@ -376,10 +383,9 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 			if (this.enableConditionExpression != null) {
 				boolean selection = this.enableConditionExpression
 						.getSelection();
-				breakpoint.setConditionalExpressionEnabled(selection);
+				breakpoint.setExpressionState(selection);
 				breakpoint
-						.setConditionalExpression(this.conditionExpressionText
-								.getText());
+						.setExpression(this.conditionExpressionText.getText());
 			}
 		} catch (CoreException e) {
 			e.printStackTrace();

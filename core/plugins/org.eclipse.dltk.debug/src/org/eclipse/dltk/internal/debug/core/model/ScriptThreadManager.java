@@ -90,9 +90,9 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 		}
 	}
 
-	public IThread[] getThreads() {
+	public IScriptThread[] getThreads() {
 		synchronized (threads) {
-			return (IThread[]) threads.toArray(new IThread[threads.size()]);
+			return (IScriptThread[]) threads.toArray(new IScriptThread[threads.size()]);
 		}
 	}
 
@@ -119,8 +119,7 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 				DebugEventHelper.fireCreateEvent(thread);
 
 				// Auto start
-				// thread.resume();
-				thread.stepInto();
+				thread.resume();
 			} catch (Exception e) {
 				DLTKDebugPlugin.log(e);
 			}

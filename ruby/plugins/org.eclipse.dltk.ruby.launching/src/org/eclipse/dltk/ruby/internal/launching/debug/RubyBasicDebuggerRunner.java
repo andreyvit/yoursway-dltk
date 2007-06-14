@@ -86,7 +86,7 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 		newConfig.addEnvVar(RUBY_SCRIPT_VAR, config.getScriptFile().toString());
 
 		if (logging) {
-			config.addEnvVar(RUBY_LOG_VAR, getLogFilename());
+			newConfig.addEnvVar(RUBY_LOG_VAR, getLogFilename());
 		}
 
 		return newConfig;

@@ -50,12 +50,12 @@ public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
 		return getMarker().getAttribute(METHOD_NAME, "");
 	}
 
-	public boolean shouldBreakOnEntry() {
+	public boolean breakOnEntry() {
 		String attribute = getMarker().getAttribute(BREAK_ON_ENTRY, "true");
 		return (new Boolean(attribute)).booleanValue();
 	}
 
-	public boolean shouldBreakOnExit() {
+	public boolean breakOnExit() {
 		String attribute = getMarker().getAttribute(BREAK_ON_EXIT, "true");
 		return (new Boolean(attribute)).booleanValue();
 	}
