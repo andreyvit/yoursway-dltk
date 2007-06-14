@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.dltk.launching.interpreterInstallTypes">
-          <interpreterInstallType
-            class="org.eclipse.dltk.tcl.internal.launching.GenericTclInstallType"
-            id="org.eclipse.dltk.internal.debug.ui.launcher.GenericTclInstallType">
-      </interpreterInstallType>   
-   </extension>
-  
-   <extension
-         point="org.eclipse.dltk.console.scriptInterpreter">
-      <scriptInterpreter
-            class="org.eclipse.dltk.tcl.console.TclInterpreter"
-            natureID="org.eclipse.dltk.tcl.core.nature"/>
-   </extension>
   
   <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
@@ -22,7 +8,7 @@
                delegate="org.eclipse.dltk.tcl.launching.TclLaunchConfigurationDelegate"
                id="org.eclipse.dltk.tcl.launching.TCLLaunchConfigurationType"
                modes="run,debug"
-               name="TCL Script"
+               name="%TclLaunchConfigurationType.name"
                public="true"
                sourceLocatorId="tclSourceLocator"
                sourcePathComputerId="tclSourcePathComputer">
@@ -61,6 +47,20 @@
         </engine>
      </engineContribution>
   </extension>
+  
+   <extension
+         point="org.eclipse.dltk.console.scriptInterpreter">
+      <scriptInterpreter
+            class="org.eclipse.dltk.tcl.console.TclInterpreter"
+            natureID="org.eclipse.dltk.tcl.core.nature"/>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.launching.interpreterInstallTypes">
+          <interpreterInstallType
+            class="org.eclipse.dltk.tcl.internal.launching.GenericTclInstallType"
+            id="org.eclipse.dltk.internal.debug.ui.launcher.GenericTclInstallType">
+      </interpreterInstallType>   
+   </extension>
   
 
 

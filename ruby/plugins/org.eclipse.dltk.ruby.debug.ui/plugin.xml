@@ -1,269 +1,231 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-	
-	<extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.debug.ui.launchActionSet">
-         <part
-               id="org.eclipse.dltk.ruby.ui.editor.RubyEditor">
-         </part>
-      </actionSetPartAssociation>
-   </extension>  
-
-   <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-		    category="org.eclipse.dltk.ruby.preferences"
-            class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterPreferencePage"
-            id="org.eclipse.dltk.ruby.preferences.interpreters"
-            name="Interpreters"/>
-            
-      <page
-            category="org.eclipse.dltk.ruby.preferences"
-            class="org.eclipse.dltk.ruby.internal.debug.ui.preferences.RubyDebugPreferencePage"
-            id="org.eclipse.dltk.ruby.preferences.debug"
-            name="Debug"/>
-   </extension>
-   <extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.debug.ui.launchActionSet">
-         <part
-               id="org.eclipse.dltk.ui.ScriptExplorer">
-         </part>
-         <part
-               id="org.eclipse.dltk.ruby.ui.editor.RubyEditor">
-         </part>
-      </actionSetPartAssociation>
-   </extension>
-  
-  <extension
-         point="org.eclipse.debug.ui.debugModelPresentations">
-      <debugModelPresentation
-            class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugModelPresentation"
-            id="org.eclipse.dltk.debug.rubyModel">
-      </debugModelPresentation>
-   </extension>
- 
- 
- 
-  <extension point="org.eclipse.debug.ui.debugModelContextBindings">
-	<modelContextBinding contextId="org.eclipse.dltk.debug.ui.debugging" debugModelId="org.eclipse.dltk.debug.rubyModel"/>
-</extension>
-  
-  <extension
-        point="org.eclipse.debug.core.watchExpressionDelegates">
-     <watchExpressionDelegate
-           debugModel="org.eclipse.dltk.debug.rubyModel"
-           delegateClass="org.eclipse.dltk.internal.debug.core.model.ScriptWatchExpressionDelegate">
-     </watchExpressionDelegate>
-  </extension>
-
-
-<extension
-         point="org.eclipse.ui.console.consolePatternMatchListeners">
-      <consolePatternMatchListener
-            class="org.eclipse.dltk.ruby.internal.debug.ui.console.RubyConsoleTracker"
-            id="org.eclipse.dltk.ruby.debug.ui.RubyConsoleTracker"
-            regex="((\w:)?[^:]+):(\d+)">
-         <enablement>
-            <or>
-               <test property="org.eclipse.debug.ui.processTypeTest" value="rubyInterpreter"/>
-            </or>
-         </enablement>
-      </consolePatternMatchListener>
-     
-   </extension>      
-   <extension
-	point="org.eclipse.debug.ui.launchConfigurationTypeImages">
- 		<launchConfigurationTypeImage
-			icon="icons/ruby.gif"
-			configTypeID="org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationType"
-			id="org.eclipse.dltk.ruby.debug.ui.launchConfigurationTypeImage.localTCLScript">
-		</launchConfigurationTypeImage>
-   </extension>
-   
-  
-   <extension
-         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-      <launchConfigurationTabGroup
-            type="org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationType"
-            class="org.eclipse.dltk.ruby.internal.debug.ui.launchConfigurations.RubyTabGroup"
-            id="org.eclipse.dltk.ruby.debug.ui.RubyTabGroup">
-      </launchConfigurationTabGroup>
-   </extension>
-   
-  
-   <extension point="org.eclipse.debug.ui.launchShortcuts">
-    <shortcut
-          class="org.eclipse.dltk.ruby.internal.debug.ui.launcher.RubyLaunchShortcut"
-          description="%RubyLaunchShortcut.description"
-          icon="icons/ruby.gif"
-          id="org.eclipse.dltk.ruby.debug.ui.launchShortcut"
-          label="%RubyLaunchShortcut.name"
-          modes="run, debug">
-        <description
-              description="%RubyLaunchShortcut.runDescription"
-              mode="run">
-        </description>
-        <description
-              description="%RubyLaunchShortcut.debugDescription"
-              mode="debug">
-        </description> 
-        <contextualLaunch>
-           <enablement>
-             <with variable="selection">
-               <count value="1"/>
-               <iterate>
-                <or>
-           	     <test
-                       args="org.eclipse.dltk.ruby.core.nature"
-                       property="org.eclipse.dltk.launching.hasProjectNature"/>           	  
-               	</or>
-               </iterate>
-               </with>
-           </enablement>
-           <contextLabel
-                 label="%RubyLaunchShortcut.runName"
-                 mode="run">
-           </contextLabel>
-           <contextLabel
-                 label="%RubyLaunchShortcut.debugName"
-                 mode="debug">
-           </contextLabel>
-  		 </contextualLaunch>
-	</shortcut>
+	<extension point="org.eclipse.ui.commands">
+		<command name="%ActionDefinition.RunRubyScript.name"
+			description="%ActionDefinition.RunRubyScript.description"
+			categoryId="org.eclipse.debug.ui.category.run"
+			id="org.eclipse.dltk.ruby.debug.ui.launchShortcut.run">
+		</command>
+		<command name="%ActionDefinition.DebugRubyScript.name"
+			description="%ActionDefinition.DebugRubyScript.description"
+			categoryId="org.eclipse.debug.ui.category.run"
+			id="org.eclipse.dltk.ruby.debug.ui.launchShortcut.debug">
+		</command>
 	</extension>
-          
-   <extension
-         point="org.eclipse.ui.editorActions">
-      <editorContribution
-            targetID="org.eclipse.dltk.ruby.ui.editor.RubyEditor"
-            id="org.eclipse.dltk.ruby.ui.editor.RubyEditor.BreakpointRulerActions">
-          
-         <action
-             label="Toogle Breakpoint (label not used)"
-             class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
-             style="push"
-             actionID="RulerDoubleClick"
-             id="RubyEditor.doubleClickBreakpointAction"/>
-            
-      </editorContribution>   
- </extension>
- 
-  <extension
-       point="org.eclipse.ui.popupMenus">
-    <viewerContribution
-          id="org.eclipse.dltk.ruby.debug.ui.rulerContribution"
-          targetID="#RubyRulerContext">
+	
+	<extension point="org.eclipse.ui.bindings">
+		<key
+			commandId="org.eclipse.dltk.ruby.debug.ui.launchShortcut.run"
+			contextId="org.eclipse.ui.globalScope"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			sequence="M3+M2+X Z">
+		</key>
+		<key
+			commandId="org.eclipse.dltk.ruby.debug.ui.launchShortcut.debug"
+			contextId="org.eclipse.ui.globalScope"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			sequence="M3+M2+D Z">
+		</key>
+	</extension>
 
-         <action
-               label="%EnableDisableBreakpoint.label"
-			   id="org.eclipse.dltk.ruby.ui.actions.RulerEnableDisableBreakpointActionDelegate"
-               class="org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"               
-               menubarPath="debug">
-          </action>
-         
-         <action
-         	   label="%ToggleBreakpoint.label"
-         	   id="org.eclipse.dltk.ruby.ui.actions.RulerToggleBreakpointActionDelegate"
-               class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"                           
-               menubarPath="debug">
-         </action>        
-       
-       <action
-             class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesRulerActionDelegate"
-             id="org.eclipse.dltk.ruby.debug.ui.ScriptBreakpointPropertiesRulerActionDelegate"
-             label="%BreakpointProperties.label"
-             menubarPath="additions"/>
-    </viewerContribution>
-    <viewerContribution
-            targetID="#RubyEditorContext"
-            id="org.eclipse.dltk.debug.ui.CUPopupActions">
-         <visibility>
-            <and>
-               <systemProperty
-                     name="org.eclipse.dltk.debug.ui.debuggerActive"
-                     value="true">
-               </systemProperty>
-               <objectClass
-                     name="org.eclipse.jface.text.ITextSelection">
-               </objectClass>
-            </and>
-         </visibility>        
-       <action
-               label="%ScriptWatch.label"
-               icon="$nl$/icons/etool16/watch_exp.gif"
-               class="org.eclipse.dltk.internal.debug.ui.actions.ScriptWatchAction"
-               menubarPath="additions"
-               id="org.eclipse.dltk.ruby.debug.ui.ScriptWatch">
-       </action>
-       <action
-               label="%ScriptInspect.label"
-               icon="$nl$/icons/etool16/insp_sbook.gif"
-               definitionId="org.eclipse.dlkt.debug.ui.commands.ScriptInspect"
-               class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptInspectAction"
-               menubarPath="additions"
-               id="org.eclipse.dltk.ruby.debug.ui.ScriptInspect">
-         </action>
-         <action
-               label="%ScriptDisplay.label"
-               icon="$nl$/icons/etool16/disp_sbook.gif"
-               definitionId="org.eclipse.dlkt.debug.ui.commands.ScriptDisplay"
-               class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptDisplayAction"
-               menubarPath="additions"
-               id="org.eclipse.dltk.ruby.debug.ui.ScriptDisplay">
-         </action>
-       </viewerContribution>    
- </extension>
-  
-   <extension
-         point="org.eclipse.dltk.ui.editorTextHovers">
-      <hover
-            label="%RubyDebugHover.label"
-            description="%RubyDebugHover.description"
-            class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugHover"
-            id="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugHover">
-      </hover>
-   </extension>   
-   <extension
-         point="org.eclipse.dltk.ui.buildpathContainerPage">
-      <buildpathContainerPath
-            class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterContainerWizardPage"
-            id="org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER"
-            name="Ruby Interpreter Libraries"
-            nature="org.eclipse.dltk.ruby.core.nature"/>
-   </extension>
-   
-    <extension point="org.eclipse.ui.commands">
-      <command
-            name="%ActionDefinition.RunRubyScript.name"
-            description="%ActionDefinition.RunRubyScript.description"
-            categoryId="org.eclipse.debug.ui.category.run"
-            id="org.eclipse.dltk.ruby.debug.ui.launchShortcut.run">
-      </command>
-      <command
-            name="%ActionDefinition.DebugRubyScript.name"
-            description="%ActionDefinition.DebugRubyScript.description"
-            categoryId="org.eclipse.debug.ui.category.run"
-            id="org.eclipse.dltk.ruby.debug.ui.launchShortcut.debug">
-      </command>
-      
-      <keyBinding
-            keySequence="M3+M2+X Z"
-            contextId="org.eclipse.ui.globalScope"
-            commandId="org.eclipse.dltk.ruby.debug.ui.launchShortcut.run"
-            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </keyBinding>
-      <keyBinding
-            keySequence="M3+M2+D Z"
-            contextId="org.eclipse.ui.globalScope"
-            commandId="org.eclipse.dltk.ruby.debug.ui.launchShortcut.debug"
-            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </keyBinding>
-   </extension>      
-   
- 
+	<extension point="org.eclipse.ui.editorActions">
+		<editorContribution
+			targetID="org.eclipse.dltk.ruby.ui.editor.RubyEditor"
+			id="org.eclipse.dltk.ruby.ui.editor.RubyEditor.BreakpointRulerActions">
+
+			<action label="Toogle Breakpoint (label not used)"
+				class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+				style="push" actionID="RulerDoubleClick"
+				id="RubyEditor.doubleClickBreakpointAction" />
+		</editorContribution>
+	</extension>
+
+	<extension point="org.eclipse.ui.popupMenus">
+		<viewerContribution
+			id="org.eclipse.dltk.ruby.debug.ui.rulerContribution"
+			targetID="#RubyRulerContext">
+
+			<action label="%EnableDisableBreakpoint.label"
+				id="org.eclipse.dltk.ruby.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+				class="org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+				menubarPath="debug">
+			</action>
+
+			<action label="%ToggleBreakpoint.label"
+				id="org.eclipse.dltk.ruby.ui.actions.RulerToggleBreakpointActionDelegate"
+				class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+				menubarPath="debug">
+			</action>
+
+			<action
+				class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesRulerActionDelegate"
+				id="org.eclipse.dltk.ruby.debug.ui.ScriptBreakpointPropertiesRulerActionDelegate"
+				label="%BreakpointProperties.label" menubarPath="additions" />
+		</viewerContribution>
+		
+		<viewerContribution targetID="#RubyEditorContext"
+			id="org.eclipse.dltk.debug.ui.DebugPopupActions">
+			<visibility>
+				<and>
+					<systemProperty
+						name="org.eclipse.dltk.debug.ui.debuggerActive" value="true">
+					</systemProperty>
+					<objectClass
+						name="org.eclipse.jface.text.ITextSelection">
+					</objectClass>
+				</and>
+			</visibility>
+			<action label="%ScriptWatch.label"
+				icon="$nl$/icons/etool16/watch_exp.gif"
+				class="org.eclipse.dltk.internal.debug.ui.actions.ScriptWatchAction"
+				menubarPath="additions"
+				id="org.eclipse.dltk.ruby.debug.ui.ScriptWatch">
+			</action>
+			<action label="%ScriptInspect.label"
+				icon="$nl$/icons/etool16/insp_sbook.gif"
+				definitionId="org.eclipse.dlkt.debug.ui.commands.ScriptInspect"
+				class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptInspectAction"
+				menubarPath="additions"
+				id="org.eclipse.dltk.ruby.debug.ui.ScriptInspect">
+			</action>
+			<action label="%ScriptDisplay.label"
+				icon="$nl$/icons/etool16/disp_sbook.gif"
+				definitionId="org.eclipse.dlkt.debug.ui.commands.ScriptDisplay"
+				class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptDisplayAction"
+				menubarPath="additions"
+				id="org.eclipse.dltk.ruby.debug.ui.ScriptDisplay">
+			</action>
+		</viewerContribution>
+	</extension>
+	
+	<extension point="org.eclipse.ui.actionSetPartAssociations">
+		<actionSetPartAssociation
+			targetID="org.eclipse.debug.ui.launchActionSet">
+			<part id="org.eclipse.dltk.ruby.ui.editor.RubyEditor" />
+		</actionSetPartAssociation>
+		<actionSetPartAssociation
+			targetID="org.eclipse.debug.ui.launchActionSet">
+			<part id="org.eclipse.dltk.ui.ScriptExplorer" />
+			<part id="org.eclipse.dltk.ruby.ui.editor.RubyEditor" />
+		</actionSetPartAssociation>
+	</extension>
+
+	<extension point="org.eclipse.ui.preferencePages">
+		<page category="org.eclipse.dltk.ruby.preferences"
+			class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterPreferencePage"
+			id="org.eclipse.dltk.ruby.preferences.interpreters"
+			name="Interpreters" />
+
+		<page category="org.eclipse.dltk.ruby.preferences"
+			class="org.eclipse.dltk.ruby.internal.debug.ui.preferences.RubyDebugPreferencePage"
+			id="org.eclipse.dltk.ruby.preferences.debug" name="Debug" />
+	</extension>
+
+	<extension
+		point="org.eclipse.ui.console.consolePatternMatchListeners">
+		<consolePatternMatchListener
+			class="org.eclipse.dltk.ruby.internal.debug.ui.console.RubyConsoleTracker"
+			id="org.eclipse.dltk.ruby.debug.ui.RubyConsoleTracker"
+			regex="((\w:)?[^:]+):(\d+)">
+			<enablement>
+				<or>
+					<test
+						property="org.eclipse.debug.ui.processTypeTest"
+						value="rubyInterpreter" />
+				</or>
+			</enablement>
+		</consolePatternMatchListener>
+	</extension>
+
+	<extension point="org.eclipse.debug.ui.debugModelPresentations">
+		<debugModelPresentation
+			class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugModelPresentation"
+			id="org.eclipse.dltk.debug.rubyModel">
+		</debugModelPresentation>
+	</extension>
+
+	<extension point="org.eclipse.debug.ui.debugModelContextBindings">
+		<modelContextBinding
+			contextId="org.eclipse.dltk.debug.ui.debugging"
+			debugModelId="org.eclipse.dltk.debug.rubyModel" />
+	</extension>
+
+	<extension
+		point="org.eclipse.debug.core.watchExpressionDelegates">
+		<watchExpressionDelegate
+			debugModel="org.eclipse.dltk.debug.rubyModel"
+			delegateClass="org.eclipse.dltk.internal.debug.core.model.ScriptWatchExpressionDelegate">
+		</watchExpressionDelegate>
+	</extension>
+
+	<extension
+		point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+		<launchConfigurationTypeImage icon="icons/obj16/ruby_obj.gif"
+			configTypeID="org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationType"
+			id="org.eclipse.dltk.ruby.debug.ui.launchConfigurationTypeImage">
+		</launchConfigurationTypeImage>
+	</extension>
+
+	<extension
+		point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+		<launchConfigurationTabGroup
+			class="org.eclipse.dltk.ruby.internal.debug.ui.launchConfigurations.RubyTabGroup"
+			description="%RubyTabGroup.description"
+			id="org.eclipse.dltk.ruby.debug.ui.RubyTabGroup"
+			type="org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationType">
+		</launchConfigurationTabGroup>
+	</extension>
+
+	<extension point="org.eclipse.debug.ui.launchShortcuts">
+		<shortcut
+			class="org.eclipse.dltk.ruby.internal.debug.ui.launcher.RubyLaunchShortcut"
+			description="%RubyLaunchShortcut.description"
+			icon="icons/obj16/ruby_obj.gif"
+			id="org.eclipse.dltk.ruby.debug.ui.launchShortcut"
+			label="%RubyLaunchShortcut.name" modes="run, debug">
+			<description
+				description="%RubyLaunchShortcut.runDescription" mode="run">
+			</description>
+			<description
+				description="%RubyLaunchShortcut.debugDescription" mode="debug">
+			</description>
+			<contextualLaunch>
+				<enablement>
+					<with variable="selection">
+						<count value="1" />
+						<iterate>
+							<or>
+								<test
+									args="org.eclipse.dltk.ruby.core.nature"
+									property="org.eclipse.dltk.launching.hasProjectNature" />
+							</or>
+						</iterate>
+					</with>
+				</enablement>
+				<contextLabel label="%RubyLaunchShortcut.runName"
+					mode="run">
+				</contextLabel>
+				<contextLabel label="%RubyLaunchShortcut.debugName"
+					mode="debug">
+				</contextLabel>
+			</contextualLaunch>
+		</shortcut>
+	</extension>
+
+	<extension point="org.eclipse.dltk.ui.editorTextHovers">
+		<hover label="%RubyDebugHover.label"
+			description="%RubyDebugHover.description"
+			class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugHover"
+			id="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugHover">
+		</hover>
+	</extension>
+
+	<extension point="org.eclipse.dltk.ui.buildpathContainerPage">
+		<buildpathContainerPath
+			class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterContainerWizardPage"
+			id="org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER"
+			name="Ruby Interpreter Libraries"
+			nature="org.eclipse.dltk.ruby.core.nature" />
+	</extension>
 </plugin>
