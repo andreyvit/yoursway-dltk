@@ -28,7 +28,7 @@ public class TestSourceElementParser implements ISourceElementParser {
 //	}
 
 	public ModuleDeclaration parseSourceModule(char[] contents,
-			ISourceModuleInfo astCashe) {
+			ISourceModuleInfo astCashe, char[] filename) {
 		requestor.enterModule();
 		ISourceElementRequestor.TypeInfo ti = new ISourceElementRequestor.TypeInfo();
 		ti.name = "Class1";

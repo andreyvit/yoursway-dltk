@@ -158,7 +158,8 @@ public class JavascriptFoldingStructureProvider extends AbstractASTFoldingStruct
 
 	private CodeBlock[] computeBlockRanges(final int offset, String contents) {
 		JavaScriptSourceParser pp = new JavaScriptSourceParser();
-		ModuleDeclaration md = pp.parse(contents.toCharArray(), null);
+		//TODO: Add support of filename if needed complex paser support.
+		ModuleDeclaration md = pp.parse(null, contents.toCharArray(), null);
 		final List result = new ArrayList();
 		ASTVisitor visitor = new ASTVisitor(){
 			public boolean visit(MethodDeclaration s) throws Exception {										

@@ -9,11 +9,25 @@
  *******************************************************************************/
 package org.eclipse.dltk.compiler.problem;
 
+import java.util.Arrays;
+
 import org.eclipse.dltk.compiler.util.Messages;
 import org.eclipse.dltk.compiler.util.Util;
 import org.eclipse.dltk.core.DLTKCore;
 
 public class DefaultProblem extends CategorizedProblem {
+
+	private static int hashCode(Object[] array) {
+		final int prime = 31;
+		if (array == null)
+			return 0;
+		int result = 1;
+		for (int index = 0; index < array.length; index++) {
+			result = prime * result
+					+ (array[index] == null ? 0 : array[index].hashCode());
+		}
+		return result;
+	}
 
 	private String fileName;
 
@@ -53,7 +67,29 @@ public class DefaultProblem extends CategorizedProblem {
 
 		this(originatingFileName, message, id, stringArguments, severity, startPosition, endPosition, line, 0);
 	}
+	
+	
 
+//	public boolean equals(Object obj) {
+//		if( !(obj instanceof DefaultProblem ) ) {
+//			return false;
+//		}
+//		DefaultProblem p = (DefaultProblem) obj;
+//		if( this.line != p.line ) {
+//			return false;
+//		}
+//		if( this.startPosition != p.startPosition ) {
+//			return false;
+//		}
+//		if( this.endPosition != p.endPosition ) {
+//			return false;
+//		}
+//		if( this.message != null && !this.message.equals(p.message)) {
+//			return false;
+//		}
+//		return super.equals(obj);
+//	}
+	
 	public String errorReportSource(char[] unitSource) {
 		return errorReportSource(unitSource, 0);
 	}
@@ -321,5 +357,54 @@ public class DefaultProblem extends CategorizedProblem {
 					s += " " + this.arguments[i]; //$NON-NLS-1$
 		}
 		return s;
+	}
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + DefaultProblem.hashCode(arguments);
+		result = prime * result + column;
+		result = prime * result + endPosition;
+		result = prime * result
+				+ ((fileName == null) ? 0 : fileName.hashCode());
+		result = prime * result + id;
+		result = prime * result + line;
+		result = prime * result + ((message == null) ? 0 : message.hashCode());
+		result = prime * result + severity;
+		result = prime * result + startPosition;
+		return result;
+	}
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final DefaultProblem other = (DefaultProblem) obj;
+		if (!Arrays.equals(arguments, other.arguments))
+			return false;
+		if (column != other.column)
+			return false;
+		if (endPosition != other.endPosition)
+			return false;
+		if (fileName == null) {
+			if (other.fileName != null)
+				return false;
+		} else if (!fileName.equals(other.fileName))
+			return false;
+		if (id != other.id)
+			return false;
+		if (line != other.line)
+			return false;
+		if (message == null) {
+			if (other.message != null)
+				return false;
+		} else if (!message.equals(other.message))
+			return false;
+		if (severity != other.severity)
+			return false;
+		if (startPosition != other.startPosition)
+			return false;
+		return true;
 	}
 }

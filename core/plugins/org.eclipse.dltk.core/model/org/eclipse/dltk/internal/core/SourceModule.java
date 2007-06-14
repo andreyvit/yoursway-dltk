@@ -180,7 +180,7 @@ public class SourceModule extends Openable implements ISourceModule, org.eclipse
 			ISourceModuleInfoCache sourceModuleInfoCache = ModelManager.getModelManager().getSourceModuleInfoCache();
 //			sourceModuleInfoCache.remove(this);
 			ISourceModuleInfo mifo = sourceModuleInfoCache.get(this);
-			parser.parseSourceModule(contents, mifo);
+			parser.parseSourceModule(contents, mifo, this.getPath().toString().toCharArray());
 //			if( mifo.isEmpty()) {
 //				sourceModuleInfoCache.remove(this);
 //			}

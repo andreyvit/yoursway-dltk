@@ -37,9 +37,9 @@ public class RubySourceElementParser implements ISourceElementParser {
 //		this.problemReporter = problemReporter;
 	}
 
-	public ModuleDeclaration parseSourceModule(char[] contents, ISourceModuleInfo astCashe) {
+	public ModuleDeclaration parseSourceModule(char[] contents, ISourceModuleInfo astCashe, char[] filename) {
 
-		ModuleDeclaration moduleDeclaration = parseModule(astCashe, contents, this.problemReporter);
+		ModuleDeclaration moduleDeclaration = parseModule(astCashe, contents, this.problemReporter, filename);
 
 		RubySourceElementRequestor requestor = new RubySourceElementRequestor(
 				this.fRequestor);
@@ -56,7 +56,7 @@ public class RubySourceElementParser implements ISourceElementParser {
 	}
 
 	public static ModuleDeclaration parseModule(ISourceModuleInfo astCache,
-			char[] content, IProblemReporter problemReporter ) {
+			char[] content, IProblemReporter problemReporter, char[] filename ) {
 		ModuleDeclaration moduleDeclaration = null;
 		if( astCache != null ) {
 			moduleDeclaration = (ModuleDeclaration)astCache.get(AST);
@@ -69,7 +69,7 @@ public class RubySourceElementParser implements ISourceElementParser {
 				e.printStackTrace();
 			}
 			if( sourceParser != null ) {
-				moduleDeclaration = sourceParser.parse(content, problemReporter);
+				moduleDeclaration = sourceParser.parse(filename, content, problemReporter);
 				if( moduleDeclaration != null && astCache != null ) {
 					astCache.put(AST, moduleDeclaration );
 				}
@@ -85,7 +85,7 @@ public class RubySourceElementParser implements ISourceElementParser {
 	public static ModuleDeclaration parseModule(ISourceModule module) {
 		ISourceModuleInfoCache sourceModuleInfoCache = ModelManager.getModelManager().getSourceModuleInfoCache();
 		try {
-			return parseModule(sourceModuleInfoCache.get(module), module.getSourceAsCharArray(), null);
+			return parseModule(sourceModuleInfoCache.get(module), module.getSourceAsCharArray(), null, null);
 		} catch (ModelException e) {
 			if( DLTKCore.DEBUG ) {
 				e.printStackTrace();

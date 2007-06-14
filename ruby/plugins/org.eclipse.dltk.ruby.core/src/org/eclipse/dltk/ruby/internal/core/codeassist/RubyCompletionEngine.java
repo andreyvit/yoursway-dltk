@@ -249,8 +249,8 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				}
 			}
 
-			ModuleDeclaration moduleDeclaration = parser.parse(content
-					.toCharArray(), null);
+			ModuleDeclaration moduleDeclaration = parser.parse(module.getFileName(), content
+							.toCharArray(), null);
 
 			if (afterDollar(content, position)) {
 				completeGlobalVar((org.eclipse.dltk.core.ISourceModule) module,

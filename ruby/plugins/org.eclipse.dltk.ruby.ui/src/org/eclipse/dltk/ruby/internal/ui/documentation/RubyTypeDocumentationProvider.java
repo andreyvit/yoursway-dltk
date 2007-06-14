@@ -32,7 +32,7 @@ public class RubyTypeDocumentationProvider implements
 			try {
 				ModuleDeclaration unit = DLTKLanguageManager.getSourceParser(
 						RubyNature.NATURE_ID).parse(
-						module.getSourceAsCharArray(), null);
+						module.getPath().toString().toCharArray(), module.getSourceAsCharArray(), null);
 				ISourceRange sourceRange = element.getSourceRange();
 				ASTNode minimalNode = ASTUtils.findMinimalNode(unit,
 						sourceRange.getOffset(), sourceRange.getOffset()

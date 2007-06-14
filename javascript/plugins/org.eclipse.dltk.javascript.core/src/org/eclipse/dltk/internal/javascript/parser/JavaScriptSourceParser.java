@@ -161,7 +161,7 @@ public class JavaScriptSourceParser implements IExecutableExtension,
 
 	}
 
-	public ModuleDeclaration parse(char[] content, IProblemReporter r) {
+	public ModuleDeclaration parse(char[] fileName, char[] content, IProblemReporter r) {
 		JavaScriptModuleDeclaration moduleDeclaration = new JavaScriptModuleDeclaration(content
 				.length);
 		

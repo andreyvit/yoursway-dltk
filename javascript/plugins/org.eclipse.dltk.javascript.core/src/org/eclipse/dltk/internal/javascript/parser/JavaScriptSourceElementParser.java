@@ -63,7 +63,7 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 	}
 
 	public ModuleDeclaration parseSourceModule(char[] contents,
-			ISourceModuleInfo info) {
+			ISourceModuleInfo info, char[] filename) {
 		String content = new String(contents);
 		CompilerEnvirons cenv = new CompilerEnvirons();
 		ErrorReporter reporter = new ErrorReporter() {

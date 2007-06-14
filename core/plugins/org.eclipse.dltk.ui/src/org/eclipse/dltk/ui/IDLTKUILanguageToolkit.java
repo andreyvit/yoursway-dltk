@@ -10,6 +10,7 @@
 package org.eclipse.dltk.ui;
 
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.ui.viewsupport.ScriptUILabelProvider;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -29,4 +30,7 @@ public interface IDLTKUILanguageToolkit {
 	String getEditorID(Object inputElement);
 
 	String getInterpreterContainerID();
+	
+	// Per module script explorer show childrens way.
+	boolean getProvideMembers(ISourceModule element);
 }

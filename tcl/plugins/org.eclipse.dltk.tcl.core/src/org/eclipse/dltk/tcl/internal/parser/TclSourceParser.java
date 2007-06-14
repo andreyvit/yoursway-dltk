@@ -35,8 +35,7 @@ import org.eclipse.dltk.tcl.internal.parsers.raw.TclWord;
 
 public class TclSourceParser implements ISourceParser {
 	private int currentPosition = 0;
-
-	public ModuleDeclaration parse(char[] content0, IProblemReporter reporter) {
+	public ModuleDeclaration parse(char[] fileName, char[] content0, IProblemReporter reporter) {
 		String content = new String(content0);
 		// System.out.println("TclSourceParser.parse() " +
 		// System.currentTimeMillis());
@@ -78,9 +77,11 @@ public class TclSourceParser implements ISourceParser {
 				} else if (o instanceof BracesSubstitution) {
 					BracesSubstitution bs = (BracesSubstitution) o;
 
-					exprs.add(new TclBlockExpression(currentPosition
+					TclBlockExpression tclBlockExpression = new TclBlockExpression(currentPosition
 							+ bs.getStart(), currentPosition + bs.getEnd() + 1,
-							wordText));
+							wordText);
+					tclBlockExpression.setFilename(fileName);
+					exprs.add(tclBlockExpression);
 				} else if (o instanceof CommandSubstitution
 						&& (word.getContents().size() == 1)) {
 					CommandSubstitution bs = (CommandSubstitution) o;

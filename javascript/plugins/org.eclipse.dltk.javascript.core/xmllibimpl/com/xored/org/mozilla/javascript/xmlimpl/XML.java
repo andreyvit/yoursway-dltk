@@ -282,7 +282,7 @@ class XML extends XMLObjectImpl {
 		}
 
 		try {
-			xo = XmlObject.Factory.parse(frag, options);
+			xo = XmlObject.Factory.parse(null, frag, options);
 
 			// Apply the default namespace
 			Context cx = Context.getCurrentContext();

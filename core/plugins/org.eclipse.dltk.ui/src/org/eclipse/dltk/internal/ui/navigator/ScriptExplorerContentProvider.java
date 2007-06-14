@@ -318,7 +318,7 @@ public abstract class ScriptExplorerContentProvider extends
 			if (!ScriptModelUtil.isPrimary(cu)) {
 				return;
 			}
-			if (!getProvideMembers() && cu.isWorkingCopy()
+			if (!getProvideMembers(element) && cu.isWorkingCopy()
 					&& kind == IModelElementDelta.CHANGED) {
 				return;
 			}

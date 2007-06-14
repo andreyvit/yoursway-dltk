@@ -47,7 +47,7 @@ public class RubyParserTests extends AbstractModelTests {
 				}
 			}
 			ISourceParser parser = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
-			ModuleDeclaration module = parser.parse(buffer.toString().toCharArray(), null);
+			ModuleDeclaration module = parser.parse(name.toCharArray(), buffer.toString().toCharArray(), null);
 			CorePrinter printer = new CorePrinter(System.out, true);
 			module.printNode(printer);
 			printer.close();

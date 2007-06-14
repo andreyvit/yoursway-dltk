@@ -320,7 +320,8 @@
        point="org.eclipse.dltk.ui.language">
     <language
           class="org.eclipse.dltk.ruby.internal.ui.RubyUILanguageToolkit"
-          nature="org.eclipse.dltk.ruby.core.nature"/>
+          nature="org.eclipse.dltk.ruby.core.nature"
+          priority="0"/>
  </extension>
  
   <extension

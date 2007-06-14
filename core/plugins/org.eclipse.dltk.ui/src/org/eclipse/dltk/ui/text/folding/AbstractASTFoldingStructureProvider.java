@@ -1039,7 +1039,7 @@ public abstract class AbstractASTFoldingStructureProvider implements IFoldingStr
     protected CodeBlock[] getCodeBlocks(String code, int offset)
     {
         ISourceParser parser = getSourceParser();
-        ModuleDeclaration decl = parser.parse(code.toCharArray(), null);
+        ModuleDeclaration decl = parser.parse(null, code.toCharArray(), null);
 
         FoldingASTVisitor visitor = getFoldingVisitor(offset);
 

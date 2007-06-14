@@ -21,9 +21,11 @@ import java.util.zip.ZipFile;
 
 import junit.framework.TestCase;
 
+import org.eclipse.dltk.ast.declarations.ISourceParser;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
+import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.core.tests.model.Activator;
-import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 
 
 
@@ -234,8 +236,8 @@ public class AllParseTests extends TestCase
 								
 			String content = getContents(scriptsZip.getInputStream(entry));
 			
-			TclSourceParser parser = new TclSourceParser();
-			parser.parse(content.toCharArray(), null);
+			ISourceParser parser = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+			parser.parse(null, content.toCharArray(), null);
 
 		} finally {
 			if (input != null) {

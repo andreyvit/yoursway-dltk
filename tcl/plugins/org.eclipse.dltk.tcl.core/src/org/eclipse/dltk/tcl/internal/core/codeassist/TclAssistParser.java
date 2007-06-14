@@ -13,11 +13,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.compiler.env.ISourceModule;
+import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.tcl.TclKeywords;
+import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 
 public abstract class TclAssistParser implements IAssistParser {
@@ -29,11 +33,21 @@ public abstract class TclAssistParser implements IAssistParser {
 
 	protected static final int EXEC_EXPRESSION = TclKeywords.EXEC_EXPRESSION;
 
-	protected TclSourceParser parser = new TclSourceParser();
+	protected TclSourceParser parser = null;
 
 	protected ModuleDeclaration module;
 
 	protected ASTNode assistNodeParent = null;
+	
+	public TclAssistParser() {
+		try {
+			this.parser = (TclSourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+		} catch (CoreException e) {
+			if( DLTKCore.DEBUG ) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public ASTNode getAssistNodeParent() {
 		return assistNodeParent;
@@ -78,8 +92,8 @@ public abstract class TclAssistParser implements IAssistParser {
 	}
 
 	public ModuleDeclaration parse(ISourceModule sourceUnit) {
-		ModuleDeclaration module = this.parser.parse(sourceUnit
-				.getSourceContents().toCharArray(), null);
+		ModuleDeclaration module = this.parser.parse(sourceUnit.getFileName(), sourceUnit
+						.getSourceContents().toCharArray(), null);
 		module.rebuild();
 
 		TclASTUtil.extendStatements(module, sourceUnit.getSourceContents());

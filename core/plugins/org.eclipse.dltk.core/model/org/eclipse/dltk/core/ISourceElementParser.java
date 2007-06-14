@@ -18,12 +18,12 @@ public interface ISourceElementParser {
 
 	/**
 	 * Parses selected contens with ast creation.
-	 * 
 	 * @param astCashe
 	 *            TODO
+	 * @param filename TODO
 	 */
 	ModuleDeclaration parseSourceModule(char[] contents,
-			ISourceModuleInfo astCashe);
+			ISourceModuleInfo astCashe, char[] filename);
 
 	void setRequestor(ISourceElementRequestor requestor);
 

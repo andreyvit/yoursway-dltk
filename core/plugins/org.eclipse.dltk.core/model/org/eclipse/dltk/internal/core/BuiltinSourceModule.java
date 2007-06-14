@@ -116,7 +116,7 @@ public class BuiltinSourceModule extends Openable implements IExternalSourceModu
 //			sourceModuleInfoCache.remove(this);
 //			parser.parseSourceModule(contents, sourceModuleInfoCache.get(this));
 			ISourceModuleInfo mifo = sourceModuleInfoCache.get(this);
-			parser.parseSourceModule(contents, mifo);
+			parser.parseSourceModule(contents, mifo, this.getPath().toString().toCharArray());
 //			if( mifo.isEmpty()) {
 //				sourceModuleInfoCache.remove(this);
 //			}

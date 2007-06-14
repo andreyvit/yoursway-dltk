@@ -232,7 +232,7 @@ public class ASTUtils {
 			cs = module.getSourceAsCharArray();
 			ISourceParser sourceParser = DLTKLanguageManager
 					.getSourceParser(RubyNature.NATURE_ID);
-			ModuleDeclaration declaration = sourceParser.parse(cs, null);
+			ModuleDeclaration declaration = sourceParser.parse(module.getPath().toString().toCharArray(), cs, null);
 			return declaration;
 		} catch (ModelException e) {
 			e.printStackTrace();

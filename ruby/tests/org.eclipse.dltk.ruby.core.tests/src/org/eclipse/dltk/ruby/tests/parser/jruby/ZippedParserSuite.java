@@ -39,6 +39,7 @@ public class ZippedParserSuite extends TestSuite {
 			Enumeration entries = zipFile.entries();
 			while (entries.hasMoreElements()) {
 				ZipEntry entry = (ZipEntry) entries.nextElement();
+				final String fileName = entry.getName();
 				final String content = loadContent(zipFile
 						.getInputStream(entry));
 
@@ -51,7 +52,7 @@ public class ZippedParserSuite extends TestSuite {
 					protected void runTest() throws Throwable {
 						JRubySourceParser.setSilentState(false);
 						ISourceParser parser = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
-						ModuleDeclaration module = parser.parse(content.toCharArray(), null);
+						ModuleDeclaration module = parser.parse(fileName.toCharArray(), content.toCharArray(), null);
 						assertNotNull(module);
 					}
 

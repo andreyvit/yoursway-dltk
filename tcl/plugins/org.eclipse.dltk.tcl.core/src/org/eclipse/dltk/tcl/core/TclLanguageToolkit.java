@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.internal.core.util.Messages;
 
@@ -119,6 +120,9 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 		return false;
 	}
 
+	public IStatus validateSourceModule(IModelElement parent, String name) {
+		return validateSourceModuleName(name);
+	}
 	public IStatus validateSourceModuleName(String name) {
 		if (name == null) {
 			return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,

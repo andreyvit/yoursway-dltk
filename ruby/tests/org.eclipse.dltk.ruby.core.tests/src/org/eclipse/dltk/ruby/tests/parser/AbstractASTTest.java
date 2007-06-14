@@ -70,7 +70,7 @@ public abstract class AbstractASTTest extends AbstractModelTests {
 			e.printStackTrace();
 			return null;
 		}
-		return parser.parse(content.toCharArray(), problems);
+		return parser.parse(null, content.toCharArray(), problems);
 	}
 
 	protected ASTNode getNodeAt(ASTNode root, final int start, final int end)

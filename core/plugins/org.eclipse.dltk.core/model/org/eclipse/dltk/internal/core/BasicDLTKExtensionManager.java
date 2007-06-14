@@ -34,10 +34,10 @@ public class BasicDLTKExtensionManager {
 
 	private String extensionPoint = null;
 	private String identifier = NATURE_ATTR;
-	
-	protected void setIdentifierValue(String identifier ) {
+
+	protected void setIdentifierValue(String identifier) {
 		this.identifier = identifier;
-		if( this.extensions != null ) {
+		if (this.extensions != null) {
 			this.extensions = null;
 		}
 	}
@@ -46,6 +46,7 @@ public class BasicDLTKExtensionManager {
 		int level;
 		protected IConfigurationElement config;
 		public Object object;
+		public ElementInfo oldInfo;
 
 		protected ElementInfo(IConfigurationElement config) {
 			this.config = config;
@@ -76,13 +77,38 @@ public class BasicDLTKExtensionManager {
 			if (oldInfo != null) {
 				int lev = getLevel(cfg[i]);
 				if (lev <= oldInfo.level) {
+					ElementInfo e = oldInfo;
+					ElementInfo nInfo = createNewInfo(cfg[i], null);
+					while (e != null) {
+						if (e.oldInfo == null) {
+							e.oldInfo = nInfo;
+							break;
+						}
+						else {
+							if( nInfo.level < e.oldInfo.level) {
+								e = e.oldInfo;
+							}
+							else {
+								nInfo.oldInfo = e.oldInfo;
+								e.oldInfo = nInfo;
+								break;
+							}
+						}
+					}
 					continue;
 				}
 			}
-			ElementInfo info = createInfo(cfg[i]);
-			info.level = getLevel(info.config);
+			ElementInfo info = createNewInfo(cfg[i], oldInfo);
 			extensions.put(nature, info);
 		}
+	}
+
+	private ElementInfo createNewInfo(IConfigurationElement cfg,
+			ElementInfo oldInfo) {
+		ElementInfo info = createInfo(cfg);
+		info.level = getLevel(info.config);
+		info.oldInfo = oldInfo;
+		return info;
 	}
 
 	protected ElementInfo getElementInfo(String nature) {
@@ -119,8 +145,7 @@ public class BasicDLTKExtensionManager {
 		return new ElementInfo(config);
 	}
 
-	public String findScriptNature(IProject project)
-			throws CoreException {
+	public String findScriptNature(IProject project) throws CoreException {
 		try {
 			String[] natureIds = project.getDescription().getNatureIds();
 			for (int i = 0; i < natureIds.length; i++) {

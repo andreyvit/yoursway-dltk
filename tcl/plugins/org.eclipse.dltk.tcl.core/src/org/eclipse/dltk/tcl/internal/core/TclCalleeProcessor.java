@@ -164,7 +164,7 @@ public class TclCalleeProcessor implements ICalleeProcessor {
 			CaleeSourceElementRequestor requestor = new CaleeSourceElementRequestor();
 			ISourceElementParser parser = DLTKLanguageManager.getSourceElementParser(TclNature.NATURE_ID);
 			parser.setRequestor(requestor);
-			parser.parseSourceModule(methodSource.toCharArray(), null);
+			parser.parseSourceModule(methodSource.toCharArray(), null, method.getSourceModule().getPath().toString().toCharArray());
 
 			return fSearchResults;
 		} catch (ModelException e) {

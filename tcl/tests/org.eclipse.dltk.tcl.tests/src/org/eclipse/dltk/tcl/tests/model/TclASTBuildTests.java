@@ -12,9 +12,12 @@ package org.eclipse.dltk.tcl.tests.model;
 import junit.framework.Test;
 
 import org.eclipse.core.runtime.Path;
+import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
+import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 import org.eclipse.dltk.tcl.tests.TclTestsPlugin;
 import org.eclipse.dltk.utils.CorePrinter;
@@ -45,8 +48,8 @@ public class TclASTBuildTests extends AbstractModelTests
 		
 		String source = module.getSource();
 		
-		TclSourceParser parser = new TclSourceParser();
-		ModuleDeclaration decl = parser.parse(source.toCharArray(), null);
+		ISourceParser parser = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+		ModuleDeclaration decl = parser.parse(null, source.toCharArray(), null);
 		CorePrinter printer = new CorePrinter(System.out, true);
 		decl.printNode(printer);
 		

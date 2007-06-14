@@ -11,6 +11,7 @@ package org.eclipse.dltk.tcl.internal.ui;
 
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.tcl.core.TclConstants;
 import org.eclipse.dltk.tcl.core.TclLanguageToolkit;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
@@ -83,5 +84,8 @@ public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
 	}
 	public ScriptUILabelProvider createScripUILabelProvider() {
 		return null;
+	}
+	public boolean getProvideMembers(ISourceModule element) {
+		return true;
 	}
 }

@@ -153,7 +153,7 @@ public class RenameSourceModuleProcessor extends ScriptRenameProcessor implement
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
-		if ( tk != null && tk.validateSourceModuleName(getNewElementName()).getSeverity() == IStatus.ERROR)
+		if ( tk != null && tk.validateSourceModule(parent,getNewElementName()).getSeverity() == IStatus.ERROR)
 			return fCu; //??
 		return pack.getSourceModule(getNewElementName());
 	}

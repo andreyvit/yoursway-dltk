@@ -13,14 +13,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
+import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -75,8 +79,16 @@ public final class TclPairMatcher implements ICharacterPairMatcher {
 	}
 
 	private PairBlock[] computePairRanges(int offset, String contents) {
-		TclSourceParser pp = new TclSourceParser();
-		ModuleDeclaration md = pp.parse(contents.toCharArray(), null);
+		ISourceParser pp = null;
+		try {
+			pp = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+		} catch (CoreException e1) {
+			if(DLTKCore.DEBUG ) {
+				e1.printStackTrace();
+			}
+			return new PairBlock[0];
+		}
+		ModuleDeclaration md = pp.parse(null, contents.toCharArray(), null);
 		if (md == null) {
 			return new PairBlock[0];
 		}

@@ -31,6 +31,7 @@ import org.eclipse.dltk.core.ICalleeProcessor;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IMethod;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceElementParser;
@@ -175,5 +176,9 @@ public class TestLanguageToolkit implements IDLTKLanguageToolkit {
 	public String getLanguageName()
 	{
 		return "Test";
+	}
+
+	public IStatus validateSourceModule(IModelElement parent, String name) {
+		return validateSourceModule(name);
 	}
 }

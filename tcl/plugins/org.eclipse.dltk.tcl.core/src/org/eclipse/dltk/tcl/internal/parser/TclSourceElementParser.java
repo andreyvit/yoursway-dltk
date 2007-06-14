@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
@@ -27,6 +28,7 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.tcl.TclKeywords;
@@ -34,6 +36,7 @@ import org.eclipse.dltk.tcl.ast.TclConstants;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
+import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils.IProcessStatementAction;
 import org.eclipse.dltk.tcl.internal.parsers.raw.SimpleTclParser;
 
@@ -65,15 +68,23 @@ public class TclSourceElementParser implements ISourceElementParser {
 	private static int counter = 0;
 
 	public ModuleDeclaration parseSourceModule(char[] contents,
-			ISourceModuleInfo astCashe) {
+			ISourceModuleInfo astCashe, char[] filename) {
 
 		// System.out.println("TclSourceElementParser.parseSourceModule() "
 		// + (counter++));
 
 		// TODO: Add correct visitor like model builder for TCL.
-		TclSourceParser sourceParser = new TclSourceParser();
+		TclSourceParser sourceParser = null;
+		try {
+			sourceParser = (TclSourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+		} catch (CoreException e1) {
+			if( DLTKCore.DEBUG ) {
+				e1.printStackTrace();
+			}
+			return null;
+		}
 		ModuleDeclaration moduleDeclaration = sourceParser.parse(
-				contents, null);
+				null, contents, null);
 		moduleDeclaration.disableRebuild();
 		List statements = moduleDeclaration.getStatements();
 		try {

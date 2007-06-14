@@ -168,8 +168,8 @@ public class NewNameQueries implements INewNameQueries {
 					e.printStackTrace();
 				}
 				IStatus status= new Status(IStatus.ERROR, DLTKUIPlugin.PLUGIN_ID, 0, "Not Script Project",null);
-				if( toolkit != null ) {					
-					status = toolkit.validateSourceModuleName(newCuName);					
+				if( toolkit != null ) {	
+					status = toolkit.validateSourceModule(cu, newCuName);					
 				}
 				if (status.getSeverity() == IStatus.ERROR)
 					return status.getMessage();

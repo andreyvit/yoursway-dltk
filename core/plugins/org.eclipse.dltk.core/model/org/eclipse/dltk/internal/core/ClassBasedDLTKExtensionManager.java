@@ -12,6 +12,7 @@ package org.eclipse.dltk.internal.core;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.core.IModelElement;
 
 public class ClassBasedDLTKExtensionManager extends
@@ -61,5 +62,13 @@ public class ClassBasedDLTKExtensionManager extends
 			}
 		}
 		return null;
+	}
+
+	public Object getObjectLower(String natureID) throws CoreException {
+		ElementInfo ext = this.getElementInfo(natureID);
+		if( ext.oldInfo == null ) {
+			return null;
+		}
+		return getInitObject(ext.oldInfo);
 	}
 }

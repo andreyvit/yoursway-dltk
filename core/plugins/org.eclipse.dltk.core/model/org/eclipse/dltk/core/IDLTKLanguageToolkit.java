@@ -24,7 +24,7 @@ public interface IDLTKLanguageToolkit {
 	
 	IStatus validateSourceModule(IPath path);
 
-	IStatus validateSourceModuleName(String name);
+	IStatus validateSourceModule(IModelElement parent, String name);
 
 	boolean validateSourcePackage(IPath path);
 

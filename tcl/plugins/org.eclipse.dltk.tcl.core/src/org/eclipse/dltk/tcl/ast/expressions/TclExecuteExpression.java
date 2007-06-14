@@ -9,18 +9,23 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.ast.expressions;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.tcl.ast.TclConstants;
+import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 
 public class TclExecuteExpression extends Expression {
 	private String fExceuteContent;
-
+	private char[] fileName = null;
 	public TclExecuteExpression(int start, int end, String content) {
 		setStart(start);
 		setEnd(end);
@@ -60,9 +65,17 @@ public class TclExecuteExpression extends Expression {
 		String content = fExceuteContent.substring(1,
 				fExceuteContent.length() - 1);
 
-		TclSourceParser parser = new TclSourceParser();
+		TclSourceParser parser = null;
+		try {
+			parser = (TclSourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+		} catch (CoreException e) {
+			if( DLTKCore.DEBUG ) {
+				e.printStackTrace();
+			}
+			return new ArrayList();
+		}
 		parser.setCurrentPosition(startFrom);
-		ModuleDeclaration module = parser.parse(content.toCharArray(), null);
+		ModuleDeclaration module = parser.parse(null, content.toCharArray(), null);
 		return module.getStatements();
 	}
 

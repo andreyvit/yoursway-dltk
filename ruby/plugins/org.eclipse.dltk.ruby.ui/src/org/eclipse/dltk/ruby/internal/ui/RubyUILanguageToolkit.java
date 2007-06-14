@@ -11,6 +11,7 @@ package org.eclipse.dltk.ruby.internal.ui;
 
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.ruby.core.RubyConstants;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
@@ -82,5 +83,8 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 	}
 	public ScriptUILabelProvider createScripUILabelProvider() {
 		return null;
+	}
+	public boolean getProvideMembers(ISourceModule element) {
+		return true;
 	}
 }

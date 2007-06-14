@@ -51,12 +51,12 @@ public class JavaScriptMatchLocatorParser extends MatchLocatorParser implements
 		if (parent instanceof ISourceModule){
 			ISourceModule m=(ISourceModule) parent;
 			try {
-				return parser.parse(m.getSourceAsCharArray(), null);
+				return parser.parse(m.getPath().toOSString().toCharArray(), m.getSourceAsCharArray(), null);
 			} catch (ModelException e) {
 
 			}
 		}
-		return parser.parse(possibleMatch.getSourceContents().toCharArray(), null);
+		return parser.parse(possibleMatch.getFileName(), possibleMatch.getSourceContents().toCharArray(), null);
 	}
 
 	public void parseBodies(ModuleDeclaration unit) {

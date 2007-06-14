@@ -102,7 +102,7 @@ public abstract class ASTNode {
 	private int sourceEnd;
 
 	protected ASTNode() {
-		this(0, -1);
+		this(0, 0);
 	}
 
 	protected ASTNode(int start, int end) {
@@ -116,7 +116,7 @@ public abstract class ASTNode {
 		if (tokenValue != null) {
 			this.sourceEnd = this.sourceStart + tokenValue.length();
 		} else {
-			this.sourceEnd = -1;
+			this.sourceEnd = this.sourceStart;
 		}
 	}
 	

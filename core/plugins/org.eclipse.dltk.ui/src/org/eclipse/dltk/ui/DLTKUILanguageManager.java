@@ -10,6 +10,7 @@
 package org.eclipse.dltk.ui;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.internal.core.ClassBasedDLTKExtensionManager;
 import org.eclipse.dltk.ui.viewsupport.ScriptUILabelProvider;
@@ -61,5 +62,16 @@ public class DLTKUILanguageManager extends ClassBasedDLTKExtensionManager {
 			}
 		}
 		return new ScriptUILabelProvider();
+	}
+
+	public static IDLTKUILanguageToolkit getLanguageToolkitLower(String natureId) {
+		try {
+			return (IDLTKUILanguageToolkit) instance.getObjectLower(natureId);
+		} catch (CoreException e) {
+			if( DLTKCore.DEBUG ) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 }

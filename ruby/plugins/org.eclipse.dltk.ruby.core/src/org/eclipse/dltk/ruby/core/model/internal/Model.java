@@ -51,7 +51,7 @@ public class Model implements IModel {
 		if (result == null && caching != ASTCaching.CACHED_ONLY) {
 			try {
 				ISourceParser parser = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
-				result = parser.parse(sourceModule.getSourceAsCharArray(), null);
+				result = parser.parse(sourceModule.getPath().toString().toCharArray(), sourceModule.getSourceAsCharArray(), null);
 			} catch (ModelException e) {
 				RubyPlugin.log(e);
 				result = null;

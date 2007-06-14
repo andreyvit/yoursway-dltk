@@ -170,7 +170,7 @@ public class RubyCalleeProcessor implements ICalleeProcessor {
 			parser.setRequestor(requestor);
 			
 //			parser.parseModule(null, methodSource, null );
-			parser.parseSourceModule(methodSource.toCharArray(), null);
+			parser.parseSourceModule(methodSource.toCharArray(), null, method.getSourceModule().getPath().toString().toCharArray());
 
 			return fSearchResults;
 		} catch (ModelException e) {

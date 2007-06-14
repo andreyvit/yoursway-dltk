@@ -90,7 +90,7 @@ public class SourceIndexer extends AbstractIndexer {
 			if (source == null || name == null)
 				return; // could not retrieve document info (e.g. resource was
 			// discarded)
-			parser.parseSourceModule(source, null);
+			parser.parseSourceModule(source, null, name);
 
 		} else { // This is for external documents
 			if (parser == null || requestor == null) {
@@ -126,7 +126,7 @@ public class SourceIndexer extends AbstractIndexer {
 			if (source == null || name == null)
 				return; // could not retrieve document info (e.g. resource was
 			// discarded)
-			parser.parseSourceModule(source, null);
+			parser.parseSourceModule(source, null, name);
 
 			long ended = (new Date()).getTime();
 

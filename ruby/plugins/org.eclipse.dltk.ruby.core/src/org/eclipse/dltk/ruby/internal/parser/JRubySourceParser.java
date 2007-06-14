@@ -203,7 +203,7 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 		return new RubyASTBuildVisitor(module, content);
 	}
 
-	public ModuleDeclaration parse(char[] content, IProblemReporter reporter) {
+	public ModuleDeclaration parse(char[] fileName, char[] content, IProblemReporter reporter) {
 		this.problemReporter = reporter;
 		try {
 			DLTKRubyParser parser = new DLTKRubyParser();
@@ -274,7 +274,7 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 	}
 
 	public ModuleDeclaration parse(String source) {
-		return this.parse(source.toCharArray(), null);
+		return this.parse(null, source.toCharArray(), null);
 	}
 
 }

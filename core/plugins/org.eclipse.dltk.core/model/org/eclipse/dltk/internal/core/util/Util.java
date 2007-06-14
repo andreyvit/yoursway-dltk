@@ -616,7 +616,7 @@ public class Util {
 			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
 					.getLanguageToolkit(parent);
 			if (toolkit != null) {
-				return toolkit.validateSourceModuleName(name).getSeverity() != IStatus.ERROR;
+				return toolkit.validateSourceModule(parent, name).getSeverity() != IStatus.ERROR;
 			} else {
 				return false;
 			}

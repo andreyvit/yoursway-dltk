@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.internal.core.util.Messages;
 
@@ -70,6 +71,10 @@ public class JavaScriptLanguageToolkit implements IDLTKLanguageToolkit {
 
 	public IStatus validateSourceModule(IPath resource) {
 		return validateSourceModule(resource.lastSegment());
+	}
+	
+	public IStatus validateSourceModule(IModelElement parent, String str) {
+		return validateSourceModule(str);
 	}
 
 	public IStatus validateSourceModuleName(String str) {

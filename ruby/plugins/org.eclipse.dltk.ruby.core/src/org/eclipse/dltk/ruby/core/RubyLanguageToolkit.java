@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.internal.core.util.Messages;
 
@@ -44,11 +45,11 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	}
 
 
-	private String getRubyExtension() {
+	public String getRubyExtension() {
 		return "rb";
 	}
 
-	private boolean isRubyLikeFileName(String name) {
+	protected boolean isRubyLikeFileName(String name) {
 		if (name.endsWith("." + getRubyExtension())) {
 			return true;
 		}
@@ -90,6 +91,9 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 		return validateSourceModule(resource.lastSegment());
 	}
 
+	public IStatus validateSourceModule(IModelElement parent, String str) {
+		return validateSourceModule(str);
+	}
 	public IStatus validateSourceModuleName(String str) {
 		return validateSourceModule(str);
 	}

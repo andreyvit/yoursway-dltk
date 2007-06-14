@@ -62,7 +62,7 @@ public class ParserSuite extends TestSuite {
 					String output = loadOutput(cleanPath + ".exp", map);
 										
 					ISourceParser parser = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
-					ModuleDeclaration module = parser.parse(input.toCharArray(), null);
+					ModuleDeclaration module = parser.parse((cleanPath + ".rb").toCharArray(), input.toCharArray(), null);
 					assertNotNull(module);
 					
 					AST2StringVisitor vis = new AST2StringVisitor();

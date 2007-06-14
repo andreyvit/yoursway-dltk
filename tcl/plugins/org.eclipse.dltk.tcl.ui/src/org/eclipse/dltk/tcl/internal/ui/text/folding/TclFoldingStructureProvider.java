@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ISourceParser;
@@ -20,8 +21,11 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
+import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 import org.eclipse.dltk.tcl.internal.ui.TclUI;
 import org.eclipse.dltk.tcl.internal.ui.text.TclPartitionScanner;
@@ -57,8 +61,16 @@ public class TclFoldingStructureProvider extends AbstractASTFoldingStructureProv
          * if an ASTVisitor implementation is created for this, just override getFoldingVisitor()
          * and remove this method
          */
-        TclSourceParser pp = new TclSourceParser();
-        ModuleDeclaration md = pp.parse(code.toCharArray(), null);
+        TclSourceParser pp = null;
+		try {
+			pp = (TclSourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+		} catch (CoreException e1) {
+			if( DLTKCore.DEBUG ) {
+				e1.printStackTrace();
+			}
+			return new CodeBlock[0];
+		}
+        ModuleDeclaration md = pp.parse(null, code.toCharArray(), null);
         List statements = md.getStatements();
         if (statements == null) { return new CodeBlock[0]; }
 
@@ -150,7 +162,14 @@ public class TclFoldingStructureProvider extends AbstractASTFoldingStructureProv
      */
     protected ISourceParser getSourceParser()
     {
-        return new TclSourceParser();
+        try {
+			return DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+		} catch (CoreException e) {
+			if( DLTKCore.DEBUG ) {
+				e.printStackTrace();
+			}
+		}
+		return null;
     }
 
     /*
