@@ -138,7 +138,7 @@ public class ModelManager implements ISaveParticipant {
 		}
 	};
 	/*
-	 * A HashSet that contains the IDLTKProject whose buildpath is being
+	 * A HashSet that contains the IScriptProject whose buildpath is being
 	 * resolved.
 	 */
 	private ThreadLocal buildpathsBeingResolved = new ThreadLocal();
@@ -1446,17 +1446,17 @@ public class ModelManager implements ISaveParticipant {
 			IProject project = projects[i];
 			if (!DLTKLanguageManager.hasScriptNature(project))
 				continue;
-			ScriptProject dltkProject = new ScriptProject(project, getModel());
+			ScriptProject scriptProject = new ScriptProject(project, getModel());
 			HashSet paths = null;
-			IBuildpathEntry[] rawBuildpath = dltkProject.getRawBuildpath();
+			IBuildpathEntry[] rawBuildpath = scriptProject.getRawBuildpath();
 			for (int j = 0, length2 = rawBuildpath.length; j < length2; j++) {
 				IBuildpathEntry entry = rawBuildpath[j];
 				IPath path = entry.getPath();
 				if (entry.getEntryKind() == IBuildpathEntry.BPE_CONTAINER
-						&& containerGet(dltkProject, path) == null) {
+						&& containerGet(scriptProject, path) == null) {
 					if (paths == null) {
 						paths = new HashSet();
-						allContainerPaths.put(dltkProject, paths);
+						allContainerPaths.put(scriptProject, paths);
 					}
 					paths.add(path);
 				}
@@ -1481,7 +1481,7 @@ public class ModelManager implements ISaveParticipant {
 				public void run(IProgressMonitor monitor) throws CoreException {
 					Set keys = allContainerPaths.keySet();
 					int length = keys.size();
-					IScriptProject[] dltkProjects = new IScriptProject[length]; // clone
+					IScriptProject[] scriptProjects = new IScriptProject[length]; // clone
 					// as
 					// the
 					// following
@@ -1490,11 +1490,11 @@ public class ModelManager implements ISaveParticipant {
 					// a
 					// side
 					// effect
-					keys.toArray(dltkProjects);
+					keys.toArray(scriptProjects);
 					for (int i = 0; i < length; i++) {
-						IScriptProject dltkProject = dltkProjects[i];
+						IScriptProject scriptProject = scriptProjects[i];
 						HashSet pathSet = (HashSet) allContainerPaths
-								.get(dltkProject);
+								.get(scriptProject);
 						if (pathSet == null)
 							continue;
 						int length2 = pathSet.size();
@@ -1503,7 +1503,7 @@ public class ModelManager implements ISaveParticipant {
 						// have a side effect
 						for (int j = 0; j < length2; j++) {
 							IPath path = paths[j];
-							initializeContainer(dltkProject, path);
+							initializeContainer(scriptProject, path);
 						}
 					}
 				}

@@ -58,7 +58,7 @@ public class ExcludeOperation extends BuildpathModifierOperation {
         fException= null;
         try {
             List modelElements= getSelectedElements();
-            IScriptProject project= fInformationProvider.getDLTKProject();
+            IScriptProject project= fInformationProvider.getScriptProject();
             result= exclude(modelElements, project, monitor);
         } catch (CoreException e) {
             fException= e;

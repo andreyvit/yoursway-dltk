@@ -263,7 +263,7 @@
          <enablement>
            <or>
             <objectClass name="org.eclipse.core.resources.IProject"/>
-            <objectClass name="org.eclipse.dltk.core.IDLTKProject"/>
+            <objectClass name="org.eclipse.dltk.core.IScriptProject"/>
            </or>
          </enablement>
       </decorator>
@@ -285,7 +285,7 @@
           class="org.eclipse.dltk.ruby.internal.ui.preferences.RubyBuildPathPropertyPage"
           id="org.eclipse.dltk.ruby.ui.BuildpathProperties"
           name="%RubyBuildPathPropertyPage.name"
-          objectClass="org.eclipse.dltk.core.IDLTKProject">
+          objectClass="org.eclipse.dltk.core.IScriptProject">
        <filter
              name="nature"
              value="org.eclipse.dltk.ruby.core.nature"/>

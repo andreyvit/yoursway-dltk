@@ -58,7 +58,7 @@ public class IncludeOperation extends BuildpathModifierOperation {
         fException= null;
         try {
             List elements= getSelectedElements();
-            IScriptProject project= fInformationProvider.getDLTKProject();
+            IScriptProject project= fInformationProvider.getScriptProject();
             result= include(elements, project, monitor);
         } catch (CoreException e) {
             fException= e;
@@ -84,7 +84,7 @@ public class IncludeOperation extends BuildpathModifierOperation {
 	public boolean isValid(List elements, int[] types) throws ModelException {
 	    if (elements.size() == 0)
 	        return false;
-	    IScriptProject project= fInformationProvider.getDLTKProject();
+	    IScriptProject project= fInformationProvider.getScriptProject();
 	    for(int i= 0; i < elements.size(); i++) {
 	        Object element= elements.get(i);
 	        switch (types[i]) {

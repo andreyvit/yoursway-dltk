@@ -91,14 +91,14 @@ public class SourceContainerWorkbookPage extends BuildPathBasePage {
 	
 	private static AddSourceFolderWizard newSourceFolderWizard(BPListElement element, List/*<BPListElement>*/ existingElements, boolean newFolder) {
 		BPListElement[] existing= (BPListElement[])existingElements.toArray(new BPListElement[existingElements.size()]);
-		AddSourceFolderWizard wizard= new AddSourceFolderWizard(existing, element, false, newFolder, newFolder, newFolder?BPListElement.isProjectSourceFolder(existing, element.getDLTKProject()):false, newFolder);
+		AddSourceFolderWizard wizard= new AddSourceFolderWizard(existing, element, false, newFolder, newFolder, newFolder?BPListElement.isProjectSourceFolder(existing, element.getScriptProject()):false, newFolder);
 		wizard.setDoFlushChange(false);
 		return wizard;
 	}
 	
 	private static AddSourceFolderWizard newLinkedSourceFolderWizard(BPListElement element, List/*<BPListElement>*/ existingElements, boolean newFolder) {
 		BPListElement[] existing= (BPListElement[])existingElements.toArray(new BPListElement[existingElements.size()]);
-		AddSourceFolderWizard wizard= new AddSourceFolderWizard(existing, element, true, newFolder, newFolder, newFolder?BPListElement.isProjectSourceFolder(existing, element.getDLTKProject()):false, newFolder);
+		AddSourceFolderWizard wizard= new AddSourceFolderWizard(existing, element, true, newFolder, newFolder, newFolder?BPListElement.isProjectSourceFolder(existing, element.getScriptProject()):false, newFolder);
 		wizard.setDoFlushChange(false);
 		return wizard;
 	}
@@ -453,7 +453,7 @@ public class SourceContainerWorkbookPage extends BuildPathBasePage {
 		Object elem= selElements.get(0);
 		if (elem instanceof BPListElement) {
 			BPListElement cp= ((BPListElement)elem);
-			if (cp.getPath().equals(cp.getDLTKProject().getPath()))
+			if (cp.getPath().equals(cp.getScriptProject().getPath()))
 				return false;
 			
 			return true;

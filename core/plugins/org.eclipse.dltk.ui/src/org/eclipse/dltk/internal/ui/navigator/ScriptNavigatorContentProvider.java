@@ -247,7 +247,7 @@ public class ScriptNavigatorContentProvider extends
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof IScriptModel) {
 			try {
-				return getDLTKProjects((IScriptModel) parentElement);
+				return getScriptProjects((IScriptModel) parentElement);
 			} catch (ModelException e) {
 				return NO_CHILDREN;
 			}

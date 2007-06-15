@@ -38,7 +38,7 @@ public class ModelTclTests extends AbstractModelTests
 	public void testModel00_() throws Exception
 	{
 		String prj = "model0";
-		//IDLTKProject project = setUpScriptProject( prj );
+		//IScriptProject project = setUpScriptProject( prj );
 		
 		ISourceModule module = this.getSourceModule( prj, "", new Path("X.tcl") );
 		
@@ -61,7 +61,7 @@ public class ModelTclTests extends AbstractModelTests
 	public void testModel01() throws Exception
 	{
 		String prj = "model1";
-		//IDLTKProject project = setUpScriptProject( prj );
+		//IScriptProject project = setUpScriptProject( prj );
 		
 		ISourceModule module = this.getSourceModule( prj, "", new Path("X.tcl") );
 		

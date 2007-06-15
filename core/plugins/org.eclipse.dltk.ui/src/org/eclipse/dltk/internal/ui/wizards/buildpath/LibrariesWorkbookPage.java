@@ -316,7 +316,7 @@ public class LibrariesWorkbookPage extends BuildPathBasePage {
 //				final BPListElement element = (BPListElement) object;
 //				final IBuildpathEntry entry = element.getBuildpathEntry();
 //				if (JarImportWizard.isValidBuildPathEntry(entry)) {
-//					final IDLTKProject project = element.getDLTKProject();
+//					final IScriptProject project = element.getScriptProject();
 //					if (project != null) {
 //						try {
 //							final IProjectFragment[] roots = project

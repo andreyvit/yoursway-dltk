@@ -58,7 +58,7 @@ import org.eclipse.ui.part.ISetSelectionTarget;
 public class AddFolderToBuildpathAction extends Action implements ISelectionChangedListener {
 
 	private final IWorkbenchSite fSite;
-	private final List fSelectedElements; //IDLTKProject || IPackageFrament || IFolder
+	private final List fSelectedElements; //IScriptProject || IPackageFrament || IFolder
 
 	public AddFolderToBuildpathAction(IWorkbenchSite site) {
 		super(NewWizardMessages.NewSourceContainerWorkbookPage_ToolBar_AddSelSFToCP_label, DLTKPluginImages.DESC_OBJS_PACKFRAG_ROOT);

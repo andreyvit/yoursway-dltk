@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Control;
  * project creation wizards. The page shows UI to configure the project with a script 
  * build path and output location. On finish the page will also configure the script nature.
  * <p>
- * This is a replacement for <code>NewDLTKProjectWizardPage</code> with a cleaner API.
+ * This is a replacement for <code>NewScriptProjectWizardPage</code> with a cleaner API.
  * </p>
  * <p>
  * Clients may instantiate or subclass.
@@ -159,7 +159,7 @@ public abstract class CapabilityConfigurationPage extends NewElementWizardPage {
 	 * 
 	 * @return the managed script project or <code>null</code>
 	 */	
-	public IScriptProject getDLTKProject() {
+	public IScriptProject getScriptProject() {
 		return fScriptProject;
 	}	
 	
@@ -174,7 +174,7 @@ public abstract class CapabilityConfigurationPage extends NewElementWizardPage {
 	 * @return the runnable that creates the new script project
 	 */		
 	public IRunnableWithProgress getRunnable() {
-		if (getDLTKProject() != null) {
+		if (getScriptProject() != null) {
 			return new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 					try {
@@ -221,9 +221,9 @@ public abstract class CapabilityConfigurationPage extends NewElementWizardPage {
 		monitor.beginTask(NewWizardMessages.ScriptCapabilityConfigurationPage_op_desc_Script, nSteps); 
 		
 		try {
-			IProject project= getDLTKProject().getProject();
+			IProject project= getScriptProject().getProject();
 			BuildpathsBlock.addScriptNature(project, new SubProgressMonitor(monitor, 1), getScriptNature());
-			getBuildPathsBlock().configureDLTKProject(new SubProgressMonitor(monitor, 5));
+			getBuildPathsBlock().configureScriptProject(new SubProgressMonitor(monitor, 5));
 		} catch (OperationCanceledException e) {
 			throw new InterruptedException();
 		} finally {

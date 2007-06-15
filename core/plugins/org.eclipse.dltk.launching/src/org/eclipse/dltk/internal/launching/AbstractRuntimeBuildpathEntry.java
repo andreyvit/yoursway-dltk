@@ -175,7 +175,7 @@ public abstract class AbstractRuntimeBuildpathEntry extends PlatformObject imple
 	/* (non-Javadoc)
 	 * @see org.eclipse.dltk.launching.IRuntimeBuildpathEntry#getScriptProject()
 	 */
-	public IScriptProject getDLTKProject() {
+	public IScriptProject getScriptProject() {
 		return fProject;
 	}
 	
@@ -184,7 +184,7 @@ public abstract class AbstractRuntimeBuildpathEntry extends PlatformObject imple
 	 * 
 	 * @param scriptProject
 	 */
-	protected void setDLTKProject(IScriptProject sProject) {
+	protected void setScriptProject(IScriptProject sProject) {
 		fProject = sProject;
 	}
 }

@@ -36,9 +36,9 @@ public class JavaScriptCompletionProcessor extends ScriptCompletionProcessor {
 
 	public JavaScriptCompletionProcessor(IEditorPart editor,
 			ContentAssistant contentAssistant, String defaultContentType,
-			IScriptProject dltkProject, IResource resource) {
+			IScriptProject scriptProject, IResource resource) {
 		super(editor, contentAssistant, defaultContentType);
-		this.project=dltkProject;
+		this.project=scriptProject;
 		this.resource=resource;
 	}
 

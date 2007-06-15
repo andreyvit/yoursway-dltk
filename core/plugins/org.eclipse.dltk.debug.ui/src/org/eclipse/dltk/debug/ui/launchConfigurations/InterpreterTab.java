@@ -389,7 +389,7 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 		return new InterpreterDescriptor() {
 
 			public String getDescription() {
-				IScriptProject project = getDLTKProject();
+				IScriptProject project = getScriptProject();
 				String name = DLTKLaunchMessages.InterpreterTab_7; 
 				if (project == null) {					
 					IInterpreterInstall Interpreter = null;
@@ -421,7 +421,7 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 	 * 
 	 * @returnscriptproject or <code>null</code>
 	 */
-	protected IScriptProject getDLTKProject() {
+	protected IScriptProject getScriptProject() {
 		if (getLaunchConfiguration() != null) {
 			try {
 				String name = getLaunchConfiguration().getAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);

@@ -60,7 +60,7 @@ public class AddSelectedSourceFolderOperation extends BuildpathModifierOperation
         fException= null;
         try {
             List elements= getSelectedElements();
-            IScriptProject project= fInformationProvider.getDLTKProject();            
+            IScriptProject project= fInformationProvider.getScriptProject();            
             result= addToBuildpath(elements, project, monitor);
         } catch (CoreException e) {
             fException= e;

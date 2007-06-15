@@ -238,7 +238,7 @@ public final class PreferencesMessages extends NLS {
 	
 //	public static String DLTKdocConfigurationPropertyPage_IsProjectFragment_description;
 //	public static String DLTKdocConfigurationPropertyPage_IsIncorrectElement_description;
-//	public static String DLTKdocConfigurationPropertyPage_IsDLTKProject_description;
+//	public static String DLTKdocConfigurationPropertyPage_IsScriptProject_description;
 //	public static String DLTKdocConfigurationBlock_browse_folder_button;
 //	public static String DLTKdocConfigurationBlock_error_notafolder;
 //	public static String DLTKdocConfigurationBlock_warning_packagelistnotfound;

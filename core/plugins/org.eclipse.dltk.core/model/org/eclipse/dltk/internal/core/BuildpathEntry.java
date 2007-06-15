@@ -931,7 +931,7 @@ public class BuildpathEntry implements IBuildpathEntry {
 	 * the buildpath setting will not complete).
 	 * <p>
 	 * 
-	 * @param dltkProject
+	 * @param scriptProject
 	 *            the given script project
 	 * @param rawBuildpath
 	 *            a given buildpath
@@ -939,11 +939,11 @@ public class BuildpathEntry implements IBuildpathEntry {
 	 *         if the given buildpath are correct, otherwise a status object
 	 *         indicating what is wrong with the buildpath
 	 */
-	public static IModelStatus validateBuildpath(IScriptProject dltkProject, IBuildpathEntry[] rawBuildpath) {
+	public static IModelStatus validateBuildpath(IScriptProject scriptProject, IBuildpathEntry[] rawBuildpath) {
 		// TODO implement
-		IProject project = dltkProject.getProject();
+		IProject project = scriptProject.getProject();
 		IPath projectPath = project.getFullPath();
-		String projectName = dltkProject.getElementName();
+		String projectName = scriptProject.getElementName();
 		// tolerate null path, it will be reset to default
 		if (rawBuildpath == null) {
 			return ModelStatus.VERIFIED_OK;
@@ -951,19 +951,19 @@ public class BuildpathEntry implements IBuildpathEntry {
 		// retrieve resolved buildpath
 		IBuildpathEntry[] buildpath;
 		try {
-			buildpath = ((ScriptProject)dltkProject).getResolvedBuildpath(rawBuildpath,true/*ignore pb*/, false/*no marker*/, null /*no reverse map*/);
+			buildpath = ((ScriptProject)scriptProject).getResolvedBuildpath(rawBuildpath,true/*ignore pb*/, false/*no marker*/, null /*no reverse map*/);
 		} catch (ModelException e) {
 			return e.getModelStatus();
 		}
 		int length = buildpath.length;
 		//int sourceEntryCount = 0;
-		boolean disableExclusionPatterns = DLTKCore.DISABLED.equals(dltkProject.getOption(
+		boolean disableExclusionPatterns = DLTKCore.DISABLED.equals(scriptProject.getOption(
 				DLTKCore.CORE_ENABLE_BUILDPATH_EXCLUSION_PATTERNS, true));
 		for (int i = 0; i < length; i++) {
 			IBuildpathEntry resolvedEntry = buildpath[i];
 			if (disableExclusionPatterns
 					&& ((resolvedEntry.getInclusionPatterns() != null && resolvedEntry.getInclusionPatterns().length > 0) || (resolvedEntry.getExclusionPatterns() != null && resolvedEntry.getExclusionPatterns().length > 0))) {
-				return new ModelStatus(IModelStatusConstants.DISABLED_BP_EXCLUSION_PATTERNS, dltkProject, resolvedEntry.getPath());
+				return new ModelStatus(IModelStatusConstants.DISABLED_BP_EXCLUSION_PATTERNS, scriptProject, resolvedEntry.getPath());
 			}
 		}
 		HashSet pathes = new HashSet(length);

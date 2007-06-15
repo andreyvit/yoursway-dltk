@@ -51,7 +51,7 @@ public class CreateFolderOperation extends BuildpathModifierOperation {
 	 */
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 		CreateLocalSourceFolderAction action= new CreateLocalSourceFolderAction();
-		action.selectionChanged(new StructuredSelection(fCPInformationProvider.getDLTKProject()));
+		action.selectionChanged(new StructuredSelection(fCPInformationProvider.getScriptProject()));
 		action.run();
 		IProjectFragment createdElement= (IProjectFragment)action.getCreatedElement();
 		if (createdElement == null) {

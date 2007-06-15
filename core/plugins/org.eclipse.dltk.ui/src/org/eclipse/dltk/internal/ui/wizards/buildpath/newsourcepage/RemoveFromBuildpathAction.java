@@ -52,7 +52,7 @@ import org.eclipse.ui.part.ISetSelectionTarget;
 
 public class RemoveFromBuildpathAction extends Action implements ISelectionChangedListener {
 	private final IWorkbenchSite fSite;
-	private List fSelectedElements; // IPackageFramgentRoot || IDLTKProject ||
+	private List fSelectedElements; // IPackageFramgentRoot || IScriptProject ||
 									// BuildpathContainer iff isEnabled()
 
 	public RemoveFromBuildpathAction(IWorkbenchSite site) {

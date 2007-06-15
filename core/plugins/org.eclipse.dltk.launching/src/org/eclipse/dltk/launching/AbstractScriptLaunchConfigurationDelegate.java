@@ -820,7 +820,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 
 		fOrderedProjects = null;
 		IScriptProject scriptProject = ScriptRuntime
-				.getDLTKProject(configuration);
+				.getScriptProject(configuration);
 
 		if (scriptProject != null) {
 			fOrderedProjects = computeReferencedBuildOrder(new IProject[] { scriptProject

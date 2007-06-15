@@ -42,7 +42,7 @@ public class TclASTBuildTests extends AbstractModelTests
 	
 	public void testBuildExtendedAST001() throws Exception {
 		String prj = "prj1";
-		//IDLTKProject project = setUpScriptProject( prj );
+		//IScriptProject project = setUpScriptProject( prj );
 		
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("module0.tcl") );
 		

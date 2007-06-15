@@ -814,7 +814,7 @@ public class NewProjectWizardOperationTest extends TestCase implements IBuildpat
                 return new StructuredSelection(list);
             }
 
-            public IScriptProject getDLTKProject() {
+            public IScriptProject getScriptProject() {
                 return fProject;
             }
 
@@ -857,7 +857,7 @@ public class NewProjectWizardOperationTest extends TestCase implements IBuildpat
     }
     
     private IScriptProject createProject() throws CoreException, InvocationTargetException {
-        fProject= ScriptProjectHelper.createDLTKProject("Dummy project");
+        fProject= ScriptProjectHelper.createScriptProject("Dummy project");
         IPath srcPath= new Path("src");
         IPath normalFolderPath= new Path("NormalFolder");
         IPath packagePath= srcPath.append("pack1");
@@ -908,7 +908,7 @@ public class NewProjectWizardOperationTest extends TestCase implements IBuildpat
                 return new StructuredSelection(list);
             }
 
-            public IScriptProject getDLTKProject() {
+            public IScriptProject getScriptProject() {
                 return fProject;
             }
 
@@ -958,7 +958,7 @@ public class NewProjectWizardOperationTest extends TestCase implements IBuildpat
                 return new StructuredSelection(list);
             }
 
-            public IScriptProject getDLTKProject() {
+            public IScriptProject getScriptProject() {
                 return fProject;
             }
 
@@ -1076,23 +1076,14 @@ public class NewProjectWizardOperationTest extends TestCase implements IBuildpat
         return new StructuredSelection(fSelection);
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.dltk.internal.corext.buildpath.IBuildpathInformationProvider#getScriptProject()
-     */
-    public IScriptProject getDLTKProject() {
+    public IScriptProject getScriptProject() {
         return fProject;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.dltk.internal.corext.buildpath.IBuildpathInformationProvider#getInclusionExclusionQuery()
-     */
     public IInclusionExclusionQuery getInclusionExclusionQuery() throws ModelException {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.dltk.internal.corext.buildpath.IBuildpathInformationProvider#getLinkFolderQuery()
-     */
     public ILinkToQuery getLinkFolderQuery() throws ModelException {
         return null;
     }

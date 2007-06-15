@@ -25,17 +25,17 @@ public class LogicalPackage extends PlatformObject {
 
 	private Set fPackages;
 	private String fName;
-	private IScriptProject fDLTKProject;
+	private IScriptProject fScriptProject;
 
 	public LogicalPackage(IScriptFolder fragment){
 		fPackages= new HashSet();
-		fDLTKProject= fragment.getScriptProject();
+		fScriptProject= fragment.getScriptProject();
 		add(fragment);
 		fName= fragment.getElementName();
 	}
 
-	public IScriptProject getDLTKProject(){
-		return fDLTKProject;
+	public IScriptProject getScriptProject(){
+		return fScriptProject;
 	}
 
 	public IScriptFolder[] getFragments(){
@@ -43,7 +43,7 @@ public class LogicalPackage extends PlatformObject {
 	}
 
 	public void add(IScriptFolder fragment){
-		Assert.isTrue(fragment != null && fDLTKProject.equals(fragment.getScriptProject()));
+		Assert.isTrue(fragment != null && fScriptProject.equals(fragment.getScriptProject()));
 		fPackages.add(fragment);
 	}
 
@@ -76,7 +76,7 @@ public class LogicalPackage extends PlatformObject {
 		if(fragment==null)
 			return false;
 
-		if(fDLTKProject.equals(fragment.getScriptProject())){
+		if(fScriptProject.equals(fragment.getScriptProject())){
 			return fName.equals(fragment.getElementName());
 		}
 
@@ -88,7 +88,7 @@ public class LogicalPackage extends PlatformObject {
 			return false;
 
 		LogicalPackage lp= (LogicalPackage)o;
-		if (!fDLTKProject.equals(lp.getDLTKProject()))
+		if (!fScriptProject.equals(lp.getScriptProject()))
 			return false;
 
 		IScriptFolder[] fragments= lp.getFragments();
@@ -111,7 +111,7 @@ public class LogicalPackage extends PlatformObject {
 	 */
 	public int hashCode() {
 		IScriptFolder[] fragments= getFragments();
-		return fDLTKProject.hashCode() + getHash(fragments, fragments.length-1);
+		return fScriptProject.hashCode() + getHash(fragments, fragments.length-1);
 	}
 
 	private int getHash(IScriptFolder[] fragments, int index) {

@@ -358,10 +358,10 @@ public class MixinModel {
 								.iterator(); iterator.hasNext();) {
 							ISourceModule module = (ISourceModule) iterator
 									.next();
-							IScriptProject dltkProject = module
+							IScriptProject scriptProject = module
 									.getScriptProject();
-							if (dltkProject != null) {
-								IProject prj = dltkProject.getProject();
+							if (scriptProject != null) {
+								IProject prj = scriptProject.getProject();
 								if ((prj != null && prj.equals(project))
 										|| prj == null) {
 									toRemove.add(module);

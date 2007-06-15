@@ -51,7 +51,7 @@ public abstract class BuildPathWizard extends NewElementWizard {
 	 */
 	protected void finishPage(IProgressMonitor monitor) throws InterruptedException, CoreException {
 		if (fDoFlushChange) {
-			IScriptProject scriptProject= getEntryToEdit().getDLTKProject();
+			IScriptProject scriptProject= getEntryToEdit().getScriptProject();
 			
 			BuildpathsBlock.flush(getExistingEntries(), scriptProject, monitor);
 			

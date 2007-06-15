@@ -65,7 +65,7 @@ public class PackageExplorerShowInTests extends TestCase {
 	}
 	
 	protected void tearDown() throws Exception {
-		//DLTKProjectHelper.clear(fJProject, ProjectTestSetup.getDefaultBuildpath());
+		//ScriptProjectHelper.clear(fJProject, ProjectTestSetup.getDefaultBuildpath());
 		fPage.hideView(fPackageExplorer);
 		fPage= null;
 		fPackageExplorer= null;

@@ -181,7 +181,7 @@ public class ContentProviderTests2 extends TestCase{
 			ScriptProjectHelper.setAutoBuilding(false);
 		
 		//create project
-		fJProject3= ScriptProjectHelper.createDLTKProject("TestProject3"); //$NON-NLS-1$ 
+		fJProject3= ScriptProjectHelper.createScriptProject("TestProject3"); //$NON-NLS-1$ 
 		assertNotNull("project3 null", fJProject3); //$NON-NLS-1$
 		
 		Object[] resource= fJProject3.getForeignResources();

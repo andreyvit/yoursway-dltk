@@ -49,7 +49,7 @@ public class State {
 		this.scriptProjectName = scriptBuilder.currentProject.getName();
 		
 //		if( DLTKLanguageManager.hasScriptNature(scriptBuilder.currentProject)) {
-//			IDLTKProject project = DLTKCore.create(scriptBuilder.currentProject);
+//			IScriptProject project = DLTKCore.create(scriptBuilder.currentProject);
 //			try {
 //				IProjectFragment[] projectFragments = project.getProjectFragments();
 //				for (int i = 0; i < projectFragments.length; i++) {

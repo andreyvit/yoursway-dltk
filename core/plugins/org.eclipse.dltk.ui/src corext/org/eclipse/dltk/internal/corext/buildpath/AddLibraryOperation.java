@@ -54,7 +54,7 @@ public class AddLibraryOperation extends BuildpathModifierOperation {
         List result= null;
         fException= null;
         try {
-            IScriptProject project= fInformationProvider.getDLTKProject();
+            IScriptProject project= fInformationProvider.getScriptProject();
             IAddLibrariesQuery query= fInformationProvider.getLibrariesQuery();
             result= addLibraries(query, project, monitor);
         } catch (CoreException e) {

@@ -17,7 +17,7 @@ import org.eclipse.dltk.core.IScriptProject;
 
 
 /**
- * An adapter factory for IDLTKProjects.
+ * An adapter factory for IScriptProjects.
  */
 public class ScriptProjectAdapterFactory implements IAdapterFactory {
 	
@@ -31,8 +31,8 @@ public class ScriptProjectAdapterFactory implements IAdapterFactory {
 	
 	public Object getAdapter(Object element, Class key) {
 		if (IProject.class.equals(key)) {
-			IScriptProject dltkProject= (IScriptProject)element;
-			return dltkProject.getProject();
+			IScriptProject scriptProject= (IScriptProject)element;
+			return scriptProject.getProject();
 		} 
 		return null; 
 	}

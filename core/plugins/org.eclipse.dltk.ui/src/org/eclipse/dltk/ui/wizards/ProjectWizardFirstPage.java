@@ -268,7 +268,7 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 //		 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
 //		 */
 //		public void widgetDefaultSelected(SelectionEvent e) {
-//			String id = NewDLTKProjectPreferencePage.ID;
+//			String id = NewScriptProjectPreferencePage.ID;
 //			PreferencesUtil.createPreferenceDialogOn(getShell(), id, new String[] {
 //				id
 //			}, null).open();			
@@ -454,7 +454,7 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 	// //TODO: Add
 	// static {
 	// if (DLTKCore.DEBUG) {
-	// System.err.println("TODO: Add to DLTKProjectWizardFirstPage");
+	// System.err.println("TODO: Add to ScriptProjectWizardFirstPage");
 	// }
 	// }
 	/**

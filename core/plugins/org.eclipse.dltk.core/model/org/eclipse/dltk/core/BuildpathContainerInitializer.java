@@ -8,11 +8,11 @@
  
  *     IBM Corporation - added support for requesting updates of a particular
  *                       container for generic container operations.
- * 						 - canUpdateBuildpathContainer(IPath, IDLTKProject)
- * 						 - requestBuildpathContainerUpdate(IPath, IDLTKProject, IBuildpathContainer)
+ * 						 - canUpdateBuildpathContainer(IPath, IScriptProject)
+ * 						 - requestBuildpathContainerUpdate(IPath, IScriptProject, IBuildpathContainer)
  *     IBM Corporation - allow initializers to provide a readable description
  *                       of a container reference, ahead of actual resolution.
- * 						 - getDescription(IPath, IDLTKProject)
+ * 						 - getDescription(IPath, IScriptProject)
  *******************************************************************************/
 package org.eclipse.dltk.core;
 
@@ -63,7 +63,7 @@ public abstract class BuildpathContainerInitializer {
      * corresponding container using <code>DLTKCore#setBuildpathContainer</code>.
      * <p>
      * A container initialization can be indirectly performed while attempting to resolve a project
-     * buildpath using <code>IDLTKProject#getResolvedBuildpath(</code>; or directly when using
+     * buildpath using <code>IScriptProject#getResolvedBuildpath(</code>; or directly when using
      * <code>DLTKCore#getBuildpathContainer</code>. During the initialization process, any attempt
      * to further obtain the same container will simply return <code>null</code> so as to avoid an
      * infinite regression of initializations.
@@ -133,7 +133,7 @@ public abstract class BuildpathContainerInitializer {
 	 * <p>
 	 * IMPORTANT: In reaction to receiving an update request, a container initializer will update the corresponding
 	 * container definition (after reconciling changes) at its earliest convenience, using 
-	 * <code>DLTKCore#setBuildpathContainer(IPath, IDLTKProject[], IBuildpathContainer[], IProgressMonitor)</code>. 
+	 * <code>DLTKCore#setBuildpathContainer(IPath, IScriptProject[], IBuildpathContainer[], IProgressMonitor)</code>. 
 	 * Until it does so, the update will not be reflected in the Script language Model.
 	 * <p>
 	 * In order to anticipate whether the container initializer allows to update its containers, the predicate

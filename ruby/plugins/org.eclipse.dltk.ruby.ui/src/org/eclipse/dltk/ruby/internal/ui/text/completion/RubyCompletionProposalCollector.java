@@ -64,10 +64,10 @@ public class RubyCompletionProposalCollector extends
 	}
 
 	protected ScriptCompletionProposal createOverrideCompletionProposal(
-			IScriptProject dltkProject, ISourceModule compilationUnit,
+			IScriptProject scriptProject, ISourceModule compilationUnit,
 			String name, String[] paramTypes, int start, int length,
 			String displayName, String completionProposal) {
-		return new RubyOverrideCompletionProposal(dltkProject, compilationUnit,
+		return new RubyOverrideCompletionProposal(scriptProject, compilationUnit,
 				name, paramTypes, start, length, displayName,
 				completionProposal);
 	}

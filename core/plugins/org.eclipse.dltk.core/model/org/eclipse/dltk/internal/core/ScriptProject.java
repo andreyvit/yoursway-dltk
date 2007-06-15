@@ -2125,7 +2125,7 @@ public class ScriptProject extends Openable implements IScriptProject {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrint("DLTKProject:" + getElementName());
+		output.formatPrint("ScriptProject:" + getElementName());
 		output.indent();
 		try {
 			IModelElement modelElements[] = this.getChildren();
@@ -2675,7 +2675,7 @@ public class ScriptProject extends Openable implements IScriptProject {
 	}
 
 	/*
-	 * @see IDLTKProject
+	 * @see IScriptProject
 	 */
 	public boolean isOnBuildpath(IResource resource) {
 		IPath exactPath = resource.getFullPath();

@@ -70,7 +70,7 @@ public class EditorUtility {
 	 *            the editor input
 	 * @return the corresponding DLTK project
 	 */
-	public static IScriptProject getDLTKProject(IEditorInput input) {
+	public static IScriptProject getScriptProject(IEditorInput input) {
 		IScriptProject dProject = null;
 		if (input instanceof IFileEditorInput) {
 			IProject project = ((IFileEditorInput) input).getFile()

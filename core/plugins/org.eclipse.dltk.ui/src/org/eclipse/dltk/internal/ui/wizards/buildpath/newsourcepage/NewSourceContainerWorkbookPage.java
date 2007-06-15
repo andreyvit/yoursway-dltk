@@ -52,7 +52,7 @@ public class NewSourceContainerWorkbookPage extends BuildPathBasePage implements
     private HintTextGroup fHintTextGroup;
     private DialogPackageExplorer fPackageExplorer;    
 	
-	private IScriptProject fDLTKProject;
+	private IScriptProject fScriptProject;
 
 	final private IPreferenceStore fStore;
 
@@ -88,13 +88,13 @@ public class NewSourceContainerWorkbookPage extends BuildPathBasePage implements
      * Must be called before initializing the 
      * controls using <code>getControl(Composite)</code>.
      * 
-     * @param DLTKProject the current script project
+     * @param scriptProject the current script project
      */
-    public void init(IScriptProject DLTKProject) {
-		fDLTKProject= DLTKProject;
-        fHintTextGroup.setDLTKProject(DLTKProject);
+    public void init(IScriptProject scriptProject) {
+		fScriptProject= scriptProject;
+        fHintTextGroup.setScriptProject(scriptProject);
         
-        fPackageExplorer.setInput(DLTKProject);
+        fPackageExplorer.setInput(scriptProject);
 		
 //		boolean useFolderOutputs= false;
 //		List cpelements= fBuildpathList.getElements();		
@@ -107,7 +107,7 @@ public class NewSourceContainerWorkbookPage extends BuildPathBasePage implements
      * 
      * Before calling this method, make sure to have 
      * initialized this instance with a script project 
-     * using <code>init(IDLTKProject)</code>.
+     * using <code>init(IScriptProject)</code>.
      * 
      * @param parent the parent composite
      * @return composite containing controls
@@ -234,7 +234,7 @@ public class NewSourceContainerWorkbookPage extends BuildPathBasePage implements
     public List getSelection() {
         List selectedList= new ArrayList();
         
-        IScriptProject project= fHintTextGroup.getDLTKProject();
+        IScriptProject project= fHintTextGroup.getScriptProject();
         try {
             List list= fHintTextGroup.getSelection().toList();
             List existingEntries= BuildpathModifier.getExistingEntries(project);
@@ -292,7 +292,7 @@ public class NewSourceContainerWorkbookPage extends BuildPathBasePage implements
             entries[i]= entry.getBuildpathEntry(); 
         }
         try {
-			fDLTKProject.setRawBuildpath(entries, null);
+			fScriptProject.setRawBuildpath(entries, null);
             fPackageExplorer.refresh();
         } catch (ModelException e) {
             DLTKUIPlugin.log(e);

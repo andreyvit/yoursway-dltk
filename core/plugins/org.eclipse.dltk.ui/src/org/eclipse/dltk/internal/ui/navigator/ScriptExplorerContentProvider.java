@@ -144,8 +144,8 @@ public abstract class ScriptExplorerContentProvider extends
 		try {
 			if (parentElement instanceof IScriptModel)
 				return concatenate(
-						getDLTKProjects((IScriptModel) parentElement),
-						getNonDLTKProjects((IScriptModel) parentElement));
+						getScriptProjects((IScriptModel) parentElement),
+						getNonScriptProjects((IScriptModel) parentElement));
 			if (parentElement instanceof BuildPathContainer)
 				return getContainerProjectFragments((BuildPathContainer) parentElement);
 			if (parentElement instanceof IProject)
@@ -203,7 +203,7 @@ public abstract class ScriptExplorerContentProvider extends
 		return container.getChildren(container);
 	}
 
-	private Object[] getNonDLTKProjects(IScriptModel model)
+	private Object[] getNonScriptProjects(IScriptModel model)
 			throws ModelException {
 		return model.getForeignResources();
 	}

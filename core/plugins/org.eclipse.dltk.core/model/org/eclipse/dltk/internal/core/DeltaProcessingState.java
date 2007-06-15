@@ -90,7 +90,7 @@ public class DeltaProcessingState implements IResourceChangeListener {
 	 * Used when an IPath corresponds to more than one root */
 	public HashMap oldOtherRoots = new HashMap();
 		
-	/* A table from IDLTKProject to IDLTKProject[] (the list of direct dependent of the key) */
+	/* A table from IScriptProject to IScriptProject[] (the list of direct dependent of the key) */
 	public HashMap projectDependencies = new HashMap();
 
 	/* Whether the roots tables should be recomputed */
@@ -102,11 +102,11 @@ public class DeltaProcessingState implements IResourceChangeListener {
 	/* A table from file system absoulte path (String) to timestamp (Long) */
 	public Hashtable externalTimeStamps;
 	
-	/* A table from DLTKProject to BuildpathValidation */
+	/* A table from ScriptProject to BuildpathValidation */
 	private HashMap buildpathValidations = new HashMap();
 
 	
-	/* A table from DLTKProject to ProjectReferenceChange */
+	/* A table from ScriptProject to ProjectReferenceChange */
 	private HashMap projectReferenceChanges= new HashMap();
 
 	public HashMap projectUpdates = new HashMap();
@@ -197,7 +197,7 @@ public class DeltaProcessingState implements IResourceChangeListener {
 	 * Workaround for bug 15168 circular errors not reported  
 	 * This is a cache of the projects before any project addition/deletion has started.
 	 */
-	private HashSet dltkProjectNamesCache;
+	private HashSet scriptProjectNamesCache;
 	
 	/*
 	 * Need to clone defensively the listener information, in case some listener is reacting to some notification iteration by adding/changing/removing
@@ -500,24 +500,24 @@ public class DeltaProcessingState implements IResourceChangeListener {
 	 * has started.
 	 */
 	public synchronized HashSet getOldScriptProjectNames() {
-		if (this.dltkProjectNamesCache == null) {
+		if (this.scriptProjectNamesCache == null) {
 			HashSet result = new HashSet();
 			IScriptProject[] projects;
 			try {
 				projects = ModelManager.getModelManager().getModel().getScriptProjects();
 			} catch (ModelException e) {
-				return this.dltkProjectNamesCache;
+				return this.scriptProjectNamesCache;
 			}
 			for (int i = 0, length = projects.length; i < length; i++) {
 				IScriptProject project = projects[i];
 				result.add(project.getElementName());
 			}
-			return this.dltkProjectNamesCache = result;
+			return this.scriptProjectNamesCache = result;
 		}
-		return this.dltkProjectNamesCache;
+		return this.scriptProjectNamesCache;
 	}
 	public synchronized void resetOldScriptProjectNames() {
-		this.dltkProjectNamesCache = null;
+		this.scriptProjectNamesCache = null;
 	}
 	private File getTimeStampsFile() {
 		return DLTKCore.getDefault().getStateLocation().append("externalLibsTimeStamps").toFile(); //$NON-NLS-1$

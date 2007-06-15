@@ -193,7 +193,7 @@ public abstract class ScriptContentAssistInvocationContext extends
 //			if (context != null) {
 //				char[][] expectedTypes = context.getExpectedTypesSignatures();
 //				if (expectedTypes != null && expectedTypes.length > 0) {
-//					IDLTKProject project = getSourceModule().getScriptProject();
+//					IScriptProject project = getSourceModule().getScriptProject();
 //					if (project != null) {
 //						try {
 //							fType = project.findType(SignatureUtil

@@ -54,7 +54,7 @@ public class AddExternalArchivesOperation extends BuildpathModifierOperation {
         List result= null;
         fException= null;
         try {
-            IScriptProject project= fInformationProvider.getDLTKProject();
+            IScriptProject project= fInformationProvider.getScriptProject();
             IAddArchivesQuery query= fInformationProvider.getExternalArchivesQuery();
             result= addExternalArchives(query, project, monitor);
         } catch (CoreException e) {

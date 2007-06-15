@@ -28,7 +28,7 @@
       <initializer class="org.eclipse.dltk.internal.ui.preferences.PreferenceInitializer"/>      
       <page name="%buildPathPrefName"
 			category="org.eclipse.dltk.preferences.DLTKBasePreferencePage"
-			class="org.eclipse.dltk.internal.ui.preferences.NewDLTKProjectPreferencePage"
+			class="org.eclipse.dltk.internal.ui.preferences.NewScriptProjectPreferencePage"
 			id="org.eclipse.dltk.ui.preferences.BuildPathPreferencePage">
 		<keywordReference id="org.eclipse.dltk.ui.buildpathoptions"/>
       </page>  
@@ -36,7 +36,7 @@
    <extension
          point="org.eclipse.core.runtime.adapters">
       <factory
-            adaptableType="org.eclipse.dltk.core.IDLTKProject"
+            adaptableType="org.eclipse.dltk.core.IScriptProject"
             class="org.eclipse.dltk.internal.ui.ScriptProjectAdapterFactory">
          <adapter type="org.eclipse.core.resources.IProject"/>
       </factory>
@@ -226,7 +226,7 @@
 					<instanceof
 							value="org.eclipse.core.resources.IStorage" />
 					<instanceof
-							value="org.eclipse.dltk.core.IDLTKProject" />
+							value="org.eclipse.dltk.core.IScriptProject" />
 					<instanceof
 							value="org.eclipse.dltk.core.IModelElement" />
 					<instanceof
@@ -251,7 +251,7 @@
 					<instanceof
 							value="org.eclipse.core.resources.IStorage" />
 					<instanceof
-							value="org.eclipse.dltk.core.IDLTKProject" />
+							value="org.eclipse.dltk.core.IScriptProject" />
 					<instanceof
 							value="org.eclipse.dltk.core.IModelElement" />
 					<instanceof
@@ -280,7 +280,7 @@
 					<instanceof
 							value="org.eclipse.core.resources.IStorage" />
 					<instanceof
-							value="org.eclipse.dltk.core.IDLTKProject" />
+							value="org.eclipse.dltk.core.IScriptProject" />
 					<instanceof
 							value="org.eclipse.dltk.core.IModelElement" />
 					<instanceof
@@ -314,7 +314,7 @@
 						<adapt type="org.eclipse.core.resources.IFile" />	
 						<adapt type="org.eclipse.core.resources.IFolder" />
 						<adapt type="org.eclipse.dltk.internal.core.ScriptFolder" />
-						<adapt type="org.eclipse.dltk.core.IDLTKProject" />
+						<adapt type="org.eclipse.dltk.core.IScriptProject" />
 	         			<adapt type="org.eclipse.core.resources.IProject" /> 
 	               		<adapt type="org.eclipse.core.resources.IWorkspaceRoot" />	
 					</or>
@@ -328,7 +328,7 @@
 						<adapt type="org.eclipse.core.resources.IFile" />							
 						<adapt type="org.eclipse.core.resources.IFolder" />
 						<adapt type="org.eclipse.dltk.internal.core.ScriptFolder" />
-						<adapt type="org.eclipse.dltk.core.IDLTKProject" />
+						<adapt type="org.eclipse.dltk.core.IScriptProject" />
 	         			<adapt type="org.eclipse.core.resources.IProject" /> 
 	               		<adapt type="org.eclipse.core.resources.IWorkspaceRoot" />	
 					</or>
@@ -339,11 +339,11 @@
               	id="org.eclipse.ui.navigator.resources.eDropAdapter">
            		<possibleDropTargets>
               		<or>
-	              		<adapt type="org.eclipse.dltk.core.IDLTKProject"/>
+	              		<adapt type="org.eclipse.dltk.core.IScriptProject"/>
                  		<adapt type="org.eclipse.core.resources.IProject"/>
                  		<adapt type="org.eclipse.core.resources.IFolder"/>
                  		<adapt type="org.eclipse.core.resources.IFile"/>
-                 		<adapt type="org.eclipse.dltk.core.IDLTKProject"/>
+                 		<adapt type="org.eclipse.dltk.core.IScriptProject"/>
               		</or>
            		</possibleDropTargets>
         	</dropAssistant>

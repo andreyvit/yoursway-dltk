@@ -92,7 +92,7 @@ public class EditFiltersOperation extends BuildpathModifierOperation {
 	public boolean isValid(List elements, int[] types) throws ModelException {
 		if (elements.size() != 1)
 			return false;
-		IScriptProject project= fInformationProvider.getDLTKProject();
+		IScriptProject project= fInformationProvider.getScriptProject();
 		Object element= elements.get(0);
 		
 		if (element instanceof IScriptProject) {

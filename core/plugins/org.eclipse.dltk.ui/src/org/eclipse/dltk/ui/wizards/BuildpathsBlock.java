@@ -110,7 +110,7 @@ public abstract class BuildpathsBlock {
 	private StringButtonDialogField fBuildPathDialogField;
 	private StatusInfo fPathStatus;
 	private StatusInfo fBuildPathStatus;
-	private IScriptProject fCurrJProject;
+	private IScriptProject fCurrScriptProject;
 	private IStatusChangeListener fContext;
 	private Control fSWTWidget;
 	private TabFolder fTabFolder;
@@ -165,7 +165,7 @@ public abstract class BuildpathsBlock {
 		fBuildPathDialogField.setLabelText(NewWizardMessages.BuildPathsBlock_buildpath_label);
 		fBuildPathStatus = new StatusInfo();
 		fPathStatus = new StatusInfo();
-		fCurrJProject = null;
+		fCurrScriptProject = null;
 	}
 
 	protected abstract boolean supportZips();
@@ -217,10 +217,10 @@ public abstract class BuildpathsBlock {
 		item.setImage(cpoImage);
 		item.setData(ordpage);
 		item.setControl(ordpage.getControl(folder));
-		if (fCurrJProject != null) {
-			fSourceContainerPage.init(fCurrJProject);
-			fLibrariesPage.init(fCurrJProject);
-			fProjectsPage.init(fCurrJProject);
+		if (fCurrScriptProject != null) {
+			fSourceContainerPage.init(fCurrScriptProject);
+			fLibrariesPage.init(fCurrScriptProject);
+			fProjectsPage.init(fCurrScriptProject);
 		}
 		folder.setSelection(fPageIndex);
 		fCurrPage = (BuildPathBasePage) folder.getItem(fPageIndex).getData();
@@ -260,14 +260,14 @@ public abstract class BuildpathsBlock {
 	 *            buildpath entries of the existing project
 	 */
 	public void init(IScriptProject jproject, IBuildpathEntry[] buildpathEntries) {
-		fCurrJProject = jproject;
+		fCurrScriptProject = jproject;
 		boolean projectExists = false;
 		List newBuildpath = null;
-		IProject project = fCurrJProject.getProject();
+		IProject project = fCurrScriptProject.getProject();
 		projectExists = (project.exists() && project.getFile(".buildpath").exists()); //$NON-NLS-1$
 		if (projectExists) {
 			if (buildpathEntries == null) {
-				buildpathEntries = fCurrJProject.readRawBuildpath();
+				buildpathEntries = fCurrScriptProject.readRawBuildpath();
 			}
 		}
 		if (buildpathEntries != null) {
@@ -313,9 +313,9 @@ public abstract class BuildpathsBlock {
 		fBuildPathDialogField.refresh();
 		fBuildPathList.refresh();
 		if (fSourceContainerPage != null) {
-			fSourceContainerPage.init(fCurrJProject);
-			fProjectsPage.init(fCurrJProject);
-			fLibrariesPage.init(fCurrJProject);
+			fSourceContainerPage.init(fCurrScriptProject);
+			fProjectsPage.init(fCurrScriptProject);
+			fLibrariesPage.init(fCurrScriptProject);
 		}
 		doStatusLineUpdate();
 	}
@@ -337,12 +337,12 @@ public abstract class BuildpathsBlock {
 	}
 
 	public boolean hasChangesInBuildpathFile() {
-		IFile file = fCurrJProject.getProject().getFile(".buildpath"); //$NON-NLS-1$
+		IFile file = fCurrScriptProject.getProject().getFile(".buildpath"); //$NON-NLS-1$
 		return fFileTimeStamp != file.getModificationStamp();
 	}
 
 	public void initializeTimeStamps() {
-		IFile file = fCurrJProject.getProject().getFile(".buildpath"); //$NON-NLS-1$
+		IFile file = fCurrScriptProject.getProject().getFile(".buildpath"); //$NON-NLS-1$
 		fFileTimeStamp = file.getModificationStamp();
 		fUserSettingsTimeStamp = getEncodedSettings();
 	}
@@ -351,7 +351,7 @@ public abstract class BuildpathsBlock {
 		ArrayList newBuildpath = new ArrayList();
 		for (int i = 0; i < buildpathEntries.length; i++) {
 			IBuildpathEntry curr = buildpathEntries[i];
-			newBuildpath.add(BPListElement.createFromExisting(curr, fCurrJProject));
+			newBuildpath.add(BPListElement.createFromExisting(curr, fCurrScriptProject));
 		}
 		return newBuildpath;
 	}
@@ -362,8 +362,8 @@ public abstract class BuildpathsBlock {
 	 *         <code>null<code> if the page has not
 	 * been initialized.
 	 */
-	public IScriptProject getDLTKProject() {
-		return fCurrJProject;
+	public IScriptProject getScriptProject() {
+		return fCurrScriptProject;
 	}
 
 	/**
@@ -502,7 +502,7 @@ public abstract class BuildpathsBlock {
 			BPListElement currElement = (BPListElement) elements.get(i);
 			entries[i] = currElement.getBuildpathEntry();
 		}
-		IModelStatus status = BuildpathEntry.validateBuildpath(fCurrJProject, entries);
+		IModelStatus status = BuildpathEntry.validateBuildpath(fCurrScriptProject, entries);
 		if (!status.isOK()) {
 			fBuildPathStatus.setError(status.getMessage());
 			return;
@@ -560,8 +560,8 @@ public abstract class BuildpathsBlock {
 		}
 	}
 
-	public void configureDLTKProject(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
-		flush(fBuildPathList.getElements(), getDLTKProject(), monitor);
+	public void configureScriptProject(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
+		flush(fBuildPathList.getElements(), getScriptProject(), monitor);
 		initializeTimeStamps();
 		updateUI();
 	}
@@ -730,7 +730,7 @@ public abstract class BuildpathsBlock {
 		ISelectionStatusValidator validator = new TypedElementSelectionValidator(acceptedClasses, false);
 		IProject[] allProjects = fWorkspaceRoot.getProjects();
 		ArrayList rejectedElements = new ArrayList(allProjects.length);
-		IProject currProject = fCurrJProject.getProject();
+		IProject currProject = fCurrScriptProject.getProject();
 		for (int i = 0; i < allProjects.length; i++) {
 			if (!allProjects[i].equals(currProject)) {
 				rejectedElements.add(allProjects[i]);
@@ -823,7 +823,7 @@ public abstract class BuildpathsBlock {
 			fTabFolder.setSelection(pageIndex);
 			Object page = fTabFolder.getItem(pageIndex).getData();
 			if (page instanceof LibrariesWorkbookPage) {
-				BPListElement element = BPListElement.createFromExisting(entry, fCurrJProject);
+				BPListElement element = BPListElement.createFromExisting(entry, fCurrScriptProject);
 				((LibrariesWorkbookPage) page).addElement(element);
 			}
 		}

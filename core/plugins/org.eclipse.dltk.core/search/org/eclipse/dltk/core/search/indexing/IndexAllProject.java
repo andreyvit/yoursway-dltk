@@ -61,8 +61,8 @@ public class IndexAllProject extends IndexRequest {
 		ReadWriteMonitor monitor = null;
 		try {
 			// Get source folder entries. Libraries are done as a separate job
-			ScriptProject dltkProject = (ScriptProject)DLTKCore.create(this.project);
-			IBuildpathEntry[] entries = dltkProject.getRawBuildpath(false, false);
+			ScriptProject scriptProject = (ScriptProject)DLTKCore.create(this.project);
+			IBuildpathEntry[] entries = scriptProject.getRawBuildpath(false, false);
 			int length = entries.length;
 			IBuildpathEntry[] sourceEntries = new IBuildpathEntry[length];
 			int sourceEntriesNumber = 0;
@@ -72,7 +72,7 @@ public class IndexAllProject extends IndexRequest {
 					sourceEntries[sourceEntriesNumber++] = entry;
 			}
 			if (sourceEntriesNumber == 0) {
-				IPath projectPath = dltkProject.getPath();
+				IPath projectPath = scriptProject.getPath();
 				for (int i = 0; i < length; i++) {
 					IBuildpathEntry entry = entries[i];
 					if (entry.getEntryKind() == IBuildpathEntry.BPE_LIBRARY && entry.getPath().equals(projectPath)) {
@@ -130,9 +130,9 @@ public class IndexAllProject extends IndexRequest {
 									switch(proxy.getType()) {
 										case IResource.FILE:
 											//if (org.eclipse.dltk.internal.core.util.Util.isValidSourceModuleName(parent, proxy.getName())) {
-											IScriptProject dltkProject = DLTKCore.create(project);
+											IScriptProject scriptProject = DLTKCore.create(project);
 											IFile file = (IFile) proxy.requestResource();
-											if(org.eclipse.dltk.internal.core.util.Util.isValidSourceModule(dltkProject, file)) {
+											if(org.eclipse.dltk.internal.core.util.Util.isValidSourceModule(scriptProject, file)) {
 												if (exclusionPatterns != null || inclusionPatterns != null)
 													if (Util.isExcluded(file, inclusionPatterns, exclusionPatterns))
 														return false;
@@ -158,9 +158,9 @@ public class IndexAllProject extends IndexRequest {
 									if (isCancelled) return false;
 									switch(proxy.getType()) {
 										case IResource.FILE :
-											IScriptProject dltkProject = DLTKCore.create(project);
+											IScriptProject scriptProject = DLTKCore.create(project);
 											IFile file = (IFile) proxy.requestResource();
-											if(org.eclipse.dltk.internal.core.util.Util.isValidSourceModule(dltkProject, file)) {												
+											if(org.eclipse.dltk.internal.core.util.Util.isValidSourceModule(scriptProject, file)) {												
 												URI location = file.getLocationURI();
 												if (location == null) return false;
 												if (exclusionPatterns != null || inclusionPatterns != null)
@@ -188,8 +188,8 @@ public class IndexAllProject extends IndexRequest {
 				}
 			}
 			
-			ISourceElementParser parser = this.manager.getSourceElementParser(dltkProject, null/*requestor will be set by indexer*/);
-			SourceIndexerRequestor requestor = this.manager.getSourceRequestor(dltkProject);
+			ISourceElementParser parser = this.manager.getSourceElementParser(scriptProject, null/*requestor will be set by indexer*/);
+			SourceIndexerRequestor requestor = this.manager.getSourceRequestor(scriptProject);
 			Object[] names = indexedFileNames.keyTable;
 			Object[] values = indexedFileNames.valueTable;
 			for (int i = 0, namesLength = names.length; i < namesLength; i++) {
@@ -202,7 +202,7 @@ public class IndexAllProject extends IndexRequest {
 						if (value == DELETED)
 							this.manager.remove(name, this.containerPath);
 						else {
-							IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(dltkProject);
+							IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(scriptProject);
 							this.manager.addSource((IFile) value, this.containerPath, parser, requestor, toolkit );
 						}
 					}

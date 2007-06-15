@@ -192,7 +192,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 			vChildren.add(pkg);
 		}
 		try {
-			ScriptProject dltkProject = (ScriptProject) getScriptProject();
+			ScriptProject scriptProject = (ScriptProject) getScriptProject();
 			ModelManager manager = ModelManager.getModelManager();
 			IResource[] members = folder.members();
 			boolean hasIncluded = isIncluded;
@@ -203,7 +203,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 					case IResource.FOLDER:
 						// TODO check is folder is valid for a package
 						if (Util.isValidFolderNameForPackage(memberName)) {
-							if (dltkProject.contains(member)) {
+							if (scriptProject.contains(member)) {
 								IPath newPath = path.append(manager.intern(memberName));
 								boolean isMemberIncluded = !Util.isExcluded(member, inclusionPatterns, exclusionPatterns);
 								computeFolderChildren((IFolder) member, isMemberIncluded, newPath, vChildren, inclusionPatterns,
@@ -289,7 +289,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrint("DLTKProject fragment:" + getPath().toOSString());
+		output.formatPrint("ScriptProject fragment:" + getPath().toOSString());
 		output.indent();
 		try {
 			IModelElement modelElements[] = this.getChildren();

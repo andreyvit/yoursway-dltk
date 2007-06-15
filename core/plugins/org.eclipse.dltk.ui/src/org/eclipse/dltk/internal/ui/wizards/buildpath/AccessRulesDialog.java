@@ -237,7 +237,7 @@ public class AccessRulesDialog extends StatusDialog {
 		switch (fCurrElement.getEntryKind()) {
 			case IBuildpathEntry.BPE_CONTAINER:
 				try {
-					name= ScriptElementLabels.getDefault().getContainerEntryLabel(fCurrElement.getPath(), fCurrElement.getDLTKProject());
+					name= ScriptElementLabels.getDefault().getContainerEntryLabel(fCurrElement.getPath(), fCurrElement.getScriptProject());
 				} catch (ModelException e) {
 				}
 				desc= NewWizardMessages.AccessRulesDialog_container_description;

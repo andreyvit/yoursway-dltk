@@ -556,14 +556,14 @@ public final class ScriptRuntime {
 	}
 
 	/**
-	 * Return the <code>IDLTKProject</code> referenced in the specified
+	 * Return the <code>IScriptProject</code> referenced in the specified
 	 * configuration or <code>null</code> if none.
 	 * 
 	 * @exception CoreException
 	 *                if the referenced Script project does not exist
 	 * 
 	 */
-	public static IScriptProject getDLTKProject(ILaunchConfiguration configuration)
+	public static IScriptProject getScriptProject(ILaunchConfiguration configuration)
 			throws CoreException {
 		String projectName = configuration.getAttribute(
 				ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
@@ -628,7 +628,7 @@ public final class ScriptRuntime {
 				ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH,
 				(String) null);
 		if (containerPath == null) {
-			IScriptProject proj = getDLTKProject(configuration);
+			IScriptProject proj = getScriptProject(configuration);
 			if (proj != null) {
 				IInterpreterInstall install = getInterpreterInstall(proj);
 				if (install != null) {
@@ -1014,7 +1014,7 @@ public final class ScriptRuntime {
 		IPath containerPath = null;
 		if (containerAttr == null) {
 			// default interpreter for the launch configuration
-			IScriptProject proj = getDLTKProject(configuration);
+			IScriptProject proj = getScriptProject(configuration);
 			if (proj == null) {
 				containerPath = newDefaultInterpreterContainerPath();
 			} else {
@@ -1914,7 +1914,7 @@ public final class ScriptRuntime {
 		IBuildpathEntry cpe = DLTKCore.newContainerEntry(path);
 		RuntimeBuildpathEntry entry = new RuntimeBuildpathEntry(cpe,
 				buildpathProperty);
-		entry.setDLTKProject(project);
+		entry.setScriptProject(project);
 		return entry;
 	}
 
@@ -2060,10 +2060,10 @@ public final class ScriptRuntime {
 	private static IRuntimeBuildpathEntry[] computeDefaultContainerEntries(
 			IRuntimeBuildpathEntry entry, ILaunchConfiguration config)
 			throws CoreException {
-		IScriptProject project = entry.getDLTKProject();
+		IScriptProject project = entry.getScriptProject();
 
 		if (project == null) {
-			project = getDLTKProject(config);
+			project = getScriptProject(config);
 		}
 		return computeDefaultContainerEntries(entry, project);
 	}

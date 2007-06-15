@@ -93,11 +93,11 @@ public class BuildpathContainerTests extends AbstractDebugTest {
 		assertEquals("Libraries should be same size as buildpath entries", originalLibs.length, originalEntries.length);
 		
 		// ensure we can update
-		assertTrue("Initializer will not accept update", initializer.canUpdateBuildpathContainer(containerPath, getDLTKProject()));
+		assertTrue("Initializer will not accept update", initializer.canUpdateBuildpathContainer(containerPath, getScriptProject()));
 		
 		// update to an empty set of libs
 		FakeContainer fakeContainer = new FakeContainer();
-		initializer.requestBuildpathContainerUpdate(containerPath, getDLTKProject(), fakeContainer);
+		initializer.requestBuildpathContainerUpdate(containerPath, getScriptProject(), fakeContainer);
 		
 		// ensure the library locations are now empty on the new Interpreter
 		LibraryLocation[] newLibs = ScriptRuntime.getLibraryLocations(newInterpreter);
@@ -105,7 +105,7 @@ public class BuildpathContainerTests extends AbstractDebugTest {
 		
 		// re-set to original libs
 		fakeContainer.setEntries(originalEntries);
-		initializer.requestBuildpathContainerUpdate(containerPath, getDLTKProject(), fakeContainer);
+		initializer.requestBuildpathContainerUpdate(containerPath, getScriptProject(), fakeContainer);
 		
 		// ensure libs are restored
 		newLibs = ScriptRuntime.getLibraryLocations(newInterpreter);

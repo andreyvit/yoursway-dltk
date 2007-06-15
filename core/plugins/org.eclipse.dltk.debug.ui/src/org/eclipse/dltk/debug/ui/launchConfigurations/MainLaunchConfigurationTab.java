@@ -153,7 +153,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	}
 
 	/**
-	 * Return the IDLTKProject corresponding to the project name in the project
+	 * Return the IScriptProject corresponding to the project name in the project
 	 * name text field, or null if the text does not match a project name.
 	 */
 	protected IScriptProject getProject() {

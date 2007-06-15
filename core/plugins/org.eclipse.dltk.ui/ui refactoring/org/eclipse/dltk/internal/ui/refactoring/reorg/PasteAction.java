@@ -208,13 +208,13 @@ public class PasteAction extends SelectionDispatchAction{
 //    private static class TextPaster extends Paster {
 //
 //		private static class CuParser {
-//			private final IDLTKProject fScriptProject;
+//			private final IScriptProject fScriptProject;
 //			private final String fText;
 //			
 //			private String fTypeName;
 //			private String fPackageName;
 //
-//			public CuParser(IDLTKProject scriptProject, String text) {
+//			public CuParser(IScriptProject scriptProject, String text) {
 //				fScriptProject= scriptProject;
 //				fText= text;
 //			}
@@ -305,7 +305,7 @@ public class PasteAction extends SelectionDispatchAction{
 //			
 //			switch (destination.getElementType()) {
 //				case IModelElement.JAVA_PROJECT :
-//					IProjectFragment[] ProjectFragments= ((IDLTKProject) destination).getProjectFragments();
+//					IProjectFragment[] ProjectFragments= ((IScriptProject) destination).getProjectFragments();
 //					for (int i= 0; i < ProjectFragments.length; i++) {
 //						IProjectFragment ProjectFragment= ProjectFragments[i];
 //						if (ProjectFragment.getKind() == IProjectFragment.K_SOURCE) {

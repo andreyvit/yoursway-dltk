@@ -411,7 +411,7 @@ public abstract class Openable extends ModelElement implements IOpenable,
 					IModelStatusConstants.READ_ONLY, this));
 		}
 		IBuffer buf = getBuffer();
-		if (buf != null) { // some Openables (like a DLTKProject) don't have a
+		if (buf != null) { // some Openables (like a ScriptProject) don't have a
 							// buffer
 			buf.save(pm, force);
 			this.makeConsistent(pm); // update the element info of this

@@ -84,7 +84,7 @@ public class CreateMultipleSourceFoldersDialog extends TrayDialog {
 		}
 	}
 
-	private final IScriptProject fDLTKProject;
+	private final IScriptProject fScriptProject;
 	private final BPListElement[] fExistingElements;	
 	private final HashSet fRemovedElements;
 	private final HashSet fModifiedElements;
@@ -93,7 +93,7 @@ public class CreateMultipleSourceFoldersDialog extends TrayDialog {
 
 	public CreateMultipleSourceFoldersDialog(final IScriptProject scriptProject, final BPListElement[] existingElements, Shell shell) {
 		super(shell);
-		fDLTKProject= scriptProject;
+		fScriptProject= scriptProject;
 		fExistingElements= existingElements;		
 		fRemovedElements= new HashSet();
 		fModifiedElements= new HashSet();
@@ -103,7 +103,7 @@ public class CreateMultipleSourceFoldersDialog extends TrayDialog {
 		for (int i= 0; i < existingElements.length; i++) {
 			BPListElement cur= existingElements[i];
 			if (cur.getResource() == null || !cur.getResource().exists()) {
-				addFakeFolder(fDLTKProject.getProject(), cur);
+				addFakeFolder(fScriptProject.getProject(), cur);
 			}
 		}
 	}
@@ -114,7 +114,7 @@ public class CreateMultipleSourceFoldersDialog extends TrayDialog {
 
 		IProject[] allProjects= ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		ArrayList rejectedElements= new ArrayList(allProjects.length);
-		IProject currProject= fDLTKProject.getProject();
+		IProject currProject= fScriptProject.getProject();
 		for (int i= 0; i < allProjects.length; i++) {
 			if (!allProjects[i].equals(currProject)) {
 				rejectedElements.add(allProjects[i]);
@@ -141,7 +141,7 @@ public class CreateMultipleSourceFoldersDialog extends TrayDialog {
 			
 			protected Object createFolder(final IContainer container) {
 				final Object[] result= new Object[1];
-				final BPListElement newElement= new BPListElement(fDLTKProject, IBuildpathEntry.BPE_SOURCE, false);
+				final BPListElement newElement= new BPListElement(fScriptProject, IBuildpathEntry.BPE_SOURCE, false);
 				final AddSourceFolderWizard wizard= newSourceFolderWizard(newElement, fExistingElements, container);
 				AbstractOpenWizardAction action= new AbstractOpenWizardAction() {
 					protected INewWizard createWizard() throws CoreException {
@@ -152,7 +152,7 @@ public class CreateMultipleSourceFoldersDialog extends TrayDialog {
 					public void propertyChange(PropertyChangeEvent event) {
 						if (event.getProperty().equals(IAction.RESULT)) {
 							if (event.getNewValue().equals(Boolean.TRUE)) {
-								result[0]= addFakeFolder(fDLTKProject.getProject(), newElement);
+								result[0]= addFakeFolder(fScriptProject.getProject(), newElement);
 							} else {
 								wizard.cancel();
 							}
@@ -167,14 +167,14 @@ public class CreateMultipleSourceFoldersDialog extends TrayDialog {
 		dialog.setTitle(title);
 		dialog.setMessage(message);
 		dialog.addFilter(filter);
-		dialog.setInput(fDLTKProject.getProject().getParent());
-		dialog.setInitialFocus(fDLTKProject.getProject());
+		dialog.setInput(fScriptProject.getProject().getParent());
+		dialog.setInitialFocus(fScriptProject.getProject());
 
 		if (dialog.open() == Window.OK) {
 			Object[] elements= dialog.getResult();	
 			for (int i= 0; i < elements.length; i++) {
 				IResource res= (IResource)elements[i];
-				fInsertedElements.add(new BPListElement(fDLTKProject, IBuildpathEntry.BPE_SOURCE, res.getFullPath(), res, false));
+				fInsertedElements.add(new BPListElement(fScriptProject, IBuildpathEntry.BPE_SOURCE, res.getFullPath(), res, false));
 			}
 
 			if (fExistingElements.length == 1) {							
@@ -235,7 +235,7 @@ public class CreateMultipleSourceFoldersDialog extends TrayDialog {
 	
 	private IFolder addFakeFolder(final IContainer container, final BPListElement element) {
 		IFolder result;
-		IPath projectPath= fDLTKProject.getPath();
+		IPath projectPath= fScriptProject.getPath();
 		IPath path= element.getPath();
 		if (projectPath.isPrefixOf(path)) {
 			path= path.removeFirstSegments(projectPath.segmentCount());

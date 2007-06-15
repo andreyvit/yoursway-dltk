@@ -762,9 +762,9 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 	/**
 	 * Sets the class path of the script project.
 	 */
-	public void setBuildpath(IScriptProject dltkProject, IBuildpathEntry[] buildpath) {
+	public void setBuildpath(IScriptProject scriptProject, IBuildpathEntry[] buildpath) {
 		try {
-			dltkProject.setRawBuildpath(buildpath, null);
+			scriptProject.setRawBuildpath(buildpath, null);
 		} catch (ModelException e) {
 			assertTrue("failed to set buildpath", false);
 		}

@@ -84,7 +84,7 @@ public class ExclusionInclusionEntryDialog extends StatusDialog {
 		}
 		
 		
-		IWorkspaceRoot root= entryToEdit.getDLTKProject().getProject().getWorkspace().getRoot();
+		IWorkspaceRoot root= entryToEdit.getScriptProject().getProject().getWorkspace().getRoot();
 		IResource res= root.findMember(entryToEdit.getPath());
 		if (res instanceof IContainer) {
 			fCurrSourceFolder= (IContainer) res;

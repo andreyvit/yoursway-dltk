@@ -99,7 +99,7 @@ public class NewTclProjectWizardPage extends NewElementWizardPage {
 	 * Sets the default buildpath to be used for the new Script project.
 	 * <p>
 	 * The caller of this method is responsible for creating the buildpath entries 
-	 * for the <code>IDLTKProject</code> that corresponds to the created project.
+	 * for the <code>IScriptProject</code> that corresponds to the created project.
 	 * The caller is responsible for creating any new folders that might be mentioned
 	 * on the buildpath.
 	 * </p>
@@ -219,7 +219,7 @@ public class NewTclProjectWizardPage extends NewElementWizardPage {
 	}
 	
 	private boolean isNewProjectHandle() {
-		IProject oldProject= fBuildPathsBlock.getDLTKProject().getProject();
+		IProject oldProject= fBuildPathsBlock.getScriptProject().getProject();
 		return !oldProject.equals(getProjectHandle());
 	}
 	
@@ -266,7 +266,7 @@ public class NewTclProjectWizardPage extends NewElementWizardPage {
 						locationPath != null ? URIUtil.toURI(locationPath) : null, 
 						new SubProgressMonitor(monitor, 2));
 					TclBuildPathsBlock.addScriptNature(getProjectHandle(), new SubProgressMonitor(monitor, 2), TCL_NATURE );
-					fBuildPathsBlock.configureDLTKProject(new SubProgressMonitor(monitor, 6));
+					fBuildPathsBlock.configureScriptProject(new SubProgressMonitor(monitor, 6));
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} catch (OperationCanceledException e) {

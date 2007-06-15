@@ -30,7 +30,7 @@ public class AddSourceFolderWizard extends BuildPathWizard {
 	public AddSourceFolderWizard(BPListElement[] existingEntries, BPListElement newEntry,  
 			boolean linkedMode, boolean canCommitConflict, 
 			boolean allowConflict, boolean allowRemoveProjectFolder, boolean allowAddExclusionPatterns) {
-		this(existingEntries, newEntry, linkedMode, canCommitConflict, allowConflict, allowRemoveProjectFolder, allowAddExclusionPatterns, newEntry.getDLTKProject().getProject());
+		this(existingEntries, newEntry, linkedMode, canCommitConflict, allowConflict, allowRemoveProjectFolder, allowAddExclusionPatterns, newEntry.getScriptProject().getProject());
 	}
 	
 	public AddSourceFolderWizard(BPListElement[] existingEntries, BPListElement newEntry,  

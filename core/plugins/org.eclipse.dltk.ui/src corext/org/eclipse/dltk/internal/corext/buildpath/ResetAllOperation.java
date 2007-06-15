@@ -52,7 +52,7 @@ public class ResetAllOperation extends BuildpathModifierOperation {
     public void run(IProgressMonitor monitor) throws InvocationTargetException {
         fException= null;
         try {
-            fInformationProvider.getDLTKProject().setRawBuildpath(fEntries, monitor);
+            fInformationProvider.getScriptProject().setRawBuildpath(fEntries, monitor);
             fInformationProvider.deleteCreatedResources();
             fEntries= null;
         } catch (CoreException e) {
@@ -77,7 +77,7 @@ public class ResetAllOperation extends BuildpathModifierOperation {
      * @throws ModelException 
      */
     public boolean isValid(List elements, int[] types) throws ModelException {
-        IScriptProject project= fInformationProvider.getDLTKProject();
+        IScriptProject project= fInformationProvider.getScriptProject();
         if (project == null)
             return false;
         if (fEntries == null) {

@@ -60,6 +60,8 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 			if (breakpoint.getExpressionState()) {
 				config.setExpression(breakpoint.getExpression());
 			}
+			
+			// IScriptMethodEntryBreakpoint
 
 			if (lineBreakpoint instanceof IScriptMethodEntryBreakpoint) {
 				IScriptMethodEntryBreakpoint entryBreakpoint = (IScriptMethodEntryBreakpoint) lineBreakpoint;

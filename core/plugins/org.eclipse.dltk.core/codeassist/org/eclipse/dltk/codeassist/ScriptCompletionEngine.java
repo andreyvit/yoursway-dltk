@@ -33,7 +33,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 		ICompletionEngine {
 	protected static boolean DEBUG = DLTKCore.DEBUG_COMPLETION;
 
-	protected IScriptProject dltkProject;
+	protected IScriptProject scriptProject;
 
 	// Accpets completion proposals
 	protected CompletionRequestor requestor;
@@ -53,10 +53,10 @@ public abstract class ScriptCompletionEngine extends Engine implements
 
 	public ScriptCompletionEngine(/*ISearchableEnvironment nameEnvironment,
 			CompletionRequestor requestor, Map settings,
-			IDLTKProject dltkProject*/) {
+			IScriptProject scriptProject*/) {
 		super(null);
 		
-//		this.dltkProject = dltkProject;
+//		this.scriptProject = scriptProject;
 //		this.requestor = requestor;
 //		this.nameEnvironment = nameEnvironment;
 //		this.lookupEnvironment = new LookupEnvironment(this, nameEnvironment);
@@ -561,7 +561,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 	}
 
 	public void setProject(IScriptProject project) {
-		this.dltkProject = project;
+		this.scriptProject = project;
 	}
 
 	public void setRequestor(CompletionRequestor requestor) {

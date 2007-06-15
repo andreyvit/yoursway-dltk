@@ -79,7 +79,7 @@ public interface IBuildpathContainer {
 	 * <li>{@link DLTKCore#newProjectEntry(IPath, boolean)} and variants</li>
 	 * <li>{@link DLTKCore#create(org.eclipse.core.resources.IWorkspaceRoot)}</li>
 	 * <li>{@link DLTKCore#create(org.eclipse.core.resources.IProject)}</li>
-	 * <li>{@link IScriptModel#getDLTKProjects()}</li>
+	 * <li>{@link IScriptModel#getScriptProjects()}</li>
 	 * <li>{@link IScriptProject#getRawbuildpath()}</li>
 	 * <li>{@link IScriptProject#readRawbuildpath()}</li>
 	 * <li>{@link IScriptProject#getOutputLocation()}</li>

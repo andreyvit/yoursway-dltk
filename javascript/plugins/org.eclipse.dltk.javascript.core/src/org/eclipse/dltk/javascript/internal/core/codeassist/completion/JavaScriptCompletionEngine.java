@@ -62,8 +62,8 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 	public JavaScriptCompletionEngine(/*
 	 * ISearchableEnvironment
 	 * nameEnvironment, CompletionRequestor
-	 * requestor, Map settings, IDLTKProject
-	 * dltkProject
+	 * requestor, Map settings, IScriptProject
+	 * scriptProject
 	 */) {
 	}
 

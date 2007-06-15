@@ -52,17 +52,17 @@ public class SourceIndexer extends AbstractIndexer {
 		if (!this.document.isExternal()) {
 			IProject project = ResourcesPlugin.getWorkspace().getRoot()
 					.getProject(path.segment(0));
-			IScriptProject dltkProject = DLTKCore.create(project);
+			IScriptProject scriptProject = DLTKCore.create(project);
 
 			if (requestor == null) {
 				requestor = ModelManager.getModelManager().indexManager
-						.getSourceRequestor(dltkProject);
+						.getSourceRequestor(scriptProject);
 			}
 			requestor.setIndexer(this);
 
 			if (parser == null) {
 				parser = ModelManager.getModelManager().indexManager
-						.getSourceElementParser(dltkProject, requestor);
+						.getSourceElementParser(scriptProject, requestor);
 			} else {
 				parser.setRequestor(requestor);
 			}
@@ -95,7 +95,7 @@ public class SourceIndexer extends AbstractIndexer {
 		} else { // This is for external documents
 			if (parser == null || requestor == null) {
 				// parser =
-				// ModelManager.getModelManager().indexManager.getSourceElementParser(dltkProject,
+				// ModelManager.getModelManager().indexManager.getSourceElementParser(scriptProject,
 				// requestor);
 				if (DLTKCore.DEBUG) {
 					System.err

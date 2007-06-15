@@ -41,7 +41,7 @@ public interface IModelElement extends IAdaptable {
 
 	/**
 	 * Constant representing a script project.
-	 * An element with this type can be safely cast to <code>IDLTKProject</code>.
+	 * An element with this type can be safely cast to <code>IScriptProject</code>.
 	 */
 	int SCRIPT_PROJECT = 2;
 

@@ -60,7 +60,7 @@ public class RemoveFromBuildpathOperation extends BuildpathModifierOperation {
         List result= null;
         fException= null;
         try {
-            result= removeFromBuildpath(fInformationProvider.getRemoveLinkedFolderQuery(), getSelectedElements(), fInformationProvider.getDLTKProject(), monitor);
+            result= removeFromBuildpath(fInformationProvider.getRemoveLinkedFolderQuery(), getSelectedElements(), fInformationProvider.getScriptProject(), monitor);
         } catch (CoreException e) {
             fException= e;
             result= null;
@@ -85,7 +85,7 @@ public class RemoveFromBuildpathOperation extends BuildpathModifierOperation {
     public boolean isValid(List elements, int[] types) throws ModelException {
         if (elements.size() == 0)
             return false;
-        IScriptProject project= fInformationProvider.getDLTKProject();
+        IScriptProject project= fInformationProvider.getScriptProject();
         Iterator iterator= elements.iterator();
         while (iterator.hasNext()) {
             Object element= iterator.next();

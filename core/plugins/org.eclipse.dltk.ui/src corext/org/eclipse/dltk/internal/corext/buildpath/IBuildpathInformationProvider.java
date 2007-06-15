@@ -75,7 +75,7 @@ public interface IBuildpathInformationProvider {
      * <li>RESET</li>
      * <li>CREATE_OUTPUT</li>
      */
-    public void handleResult(List resultElements, CoreException exception, int operationType);
+    void handleResult(List resultElements, CoreException exception, int operationType);
     
     /**
      * Method to retrieve the current list of selected elements of the provider, this is 
@@ -88,14 +88,14 @@ public interface IBuildpathInformationProvider {
      * @return the current list of selected elements from the provider, must not be 
      * <code>null</code>
      */
-    public IStructuredSelection getSelection();
+    IStructuredSelection getSelection();
     
     /**
      * Method to retrieve the script project from the provider.
      * 
      * @return the current script project, must not be <code>null</code>
      */
-    public IScriptProject getDLTKProject();           
+    IScriptProject getScriptProject();           
     /**
      * Method to retrieve an <code>IInclusionExclusionQuery</code> from 
      * the provider.
@@ -106,7 +106,7 @@ public interface IBuildpathInformationProvider {
      * 
      * @see BuildpathModifierQueries#getDefaultInclusionExclusionQuery(Shell)
      */
-    public IInclusionExclusionQuery getInclusionExclusionQuery() throws ModelException;
+    IInclusionExclusionQuery getInclusionExclusionQuery() throws ModelException;
        
     
     /**
@@ -119,7 +119,7 @@ public interface IBuildpathInformationProvider {
      * 
      * @see BuildpathModifierQueries#getDefaultCreateFolderQuery(Shell, IScriptProject)
      */
-    public ILinkToQuery getLinkFolderQuery() throws ModelException;
+    ILinkToQuery getLinkFolderQuery() throws ModelException;
     
     /**
      * Method to retrieve an <code>IRemoveLinkedFolderQuery</code> from 
@@ -131,7 +131,7 @@ public interface IBuildpathInformationProvider {
      * 
      * @see BuildpathModifierQueries#getDefaultRemoveLinkedFolderQuery(Shell)
      */
-    public IRemoveLinkedFolderQuery getRemoveLinkedFolderQuery() throws ModelException;
+    IRemoveLinkedFolderQuery getRemoveLinkedFolderQuery() throws ModelException;
     
     /**
      * Method to retrieve an <code>IAddArchivesQuery</code> from 
@@ -143,7 +143,7 @@ public interface IBuildpathInformationProvider {
      * 
      * @see BuildpathModifierQueries#getDefaultArchivesQuery(Shell)
      */
-    public IAddArchivesQuery getExternalArchivesQuery() throws ModelException;
+    IAddArchivesQuery getExternalArchivesQuery() throws ModelException;
     
     /**
      * Method to retrieve an <code>IAddLibrariesQuery</code> from 
@@ -155,7 +155,7 @@ public interface IBuildpathInformationProvider {
      * 
      * @see BuildpathModifierQueries#getDefaultLibrariesQuery(Shell)
      */
-    public IAddLibrariesQuery getLibrariesQuery() throws ModelException;
+    IAddLibrariesQuery getLibrariesQuery() throws ModelException;
 
     /**
      * Method to retrieve an <code>ICreateFolderQuery</code> from 
@@ -167,7 +167,7 @@ public interface IBuildpathInformationProvider {
      * 
      * @see BuildpathModifierQueries#getDefaultCreateFolderQuery(Shell, IScriptProject)
      */
-	public ICreateFolderQuery getCreateFolderQuery() throws ModelException;
+	ICreateFolderQuery getCreateFolderQuery() throws ModelException;
     
     /**
      * Delete all newly created folders and files.
@@ -177,5 +177,5 @@ public interface IBuildpathInformationProvider {
      * created and therefore is also able to remove 
      * all of them.
      */
-    public void deleteCreatedResources();
+    void deleteCreatedResources();
 }

@@ -923,7 +923,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 	// IEditorInput input);
 	private IPreferenceStore createCombinedPreferenceStore(IEditorInput input) {
 		List stores = new ArrayList(3);
-		IScriptProject project = EditorUtility.getDLTKProject(input);
+		IScriptProject project = EditorUtility.getScriptProject(input);
 		if (project != null) {
 			stores.add(new EclipsePreferencesAdapter(new ProjectScope(project
 					.getProject()), DLTKCore.PLUGIN_ID));

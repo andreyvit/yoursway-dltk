@@ -57,11 +57,11 @@ public class DefaultProjectBuildpathEntry extends AbstractRuntimeBuildpathEntry 
 	 * @param project Script project
 	 */
 	public DefaultProjectBuildpathEntry(IScriptProject project) {
-		setDLTKProject(project);
+		setScriptProject(project);
 	}
 		
 	protected void buildMemento(Document document, Element memento) throws CoreException {
-		memento.setAttribute("project", getDLTKProject().getElementName()); //$NON-NLS-1$
+		memento.setAttribute("project", getScriptProject().getElementName()); //$NON-NLS-1$
 		memento.setAttribute("exportedEntriesOnly", Boolean.toString(fExportedEntriesOnly)); //$NON-NLS-1$
 	}
 		
@@ -71,7 +71,7 @@ public class DefaultProjectBuildpathEntry extends AbstractRuntimeBuildpathEntry 
 			abort(LaunchingMessages.DefaultProjectBuildpathEntry_3, null); 
 		}		
 		IScriptProject project = DLTKCore.create(ResourcesPlugin.getWorkspace().getRoot().getProject(name));
-		setDLTKProject(project);
+		setScriptProject(project);
 		name = memento.getAttribute("exportedEntriesOnly"); //$NON-NLS-1$
 		if (name == null) {
 			fExportedEntriesOnly = false;
@@ -89,7 +89,7 @@ public class DefaultProjectBuildpathEntry extends AbstractRuntimeBuildpathEntry 
 	}
 	
 	protected IProject getProject() {
-		return getDLTKProject().getProject();
+		return getScriptProject().getProject();
 	}
 		
 	public String getLocation() {
@@ -105,7 +105,7 @@ public class DefaultProjectBuildpathEntry extends AbstractRuntimeBuildpathEntry 
 	}
 
 	public IRuntimeBuildpathEntry[] getRuntimeBuildpathEntries(ILaunchConfiguration configuration) throws CoreException {
-		IBuildpathEntry entry = DLTKCore.newProjectEntry(getDLTKProject().getProject().getFullPath());
+		IBuildpathEntry entry = DLTKCore.newProjectEntry(getScriptProject().getProject().getFullPath());
 		List buildpathEntries = new ArrayList(5);
 		List expanding = new ArrayList(5);
 		expandProject(entry, buildpathEntries, expanding);
@@ -169,7 +169,7 @@ public class DefaultProjectBuildpathEntry extends AbstractRuntimeBuildpathEntry 
 				// add exported entires, as configured
 				if (buildpathEntry.isExported()) {
 					unexpandedPath.add(buildpathEntry);
-				} else if (!isExportedEntriesOnly() || project.equals(getDLTKProject())) {
+				} else if (!isExportedEntriesOnly() || project.equals(getScriptProject())) {
 					// add non exported entries from root project or if we are including all entries
 					unexpandedPath.add(buildpathEntry);
 				}
@@ -224,7 +224,7 @@ public class DefaultProjectBuildpathEntry extends AbstractRuntimeBuildpathEntry 
 										if (initializer2 == null) {
 											id2 = re.getPath().segment(0);
 										} else {
-											IScriptProject context = re.getDLTKProject();
+											IScriptProject context = re.getScriptProject();
 											if (context == null) {
 												context = project;
 											}
@@ -263,9 +263,9 @@ public class DefaultProjectBuildpathEntry extends AbstractRuntimeBuildpathEntry 
 	
 	public String getName() {
 		if (isExportedEntriesOnly()) {
-			return MessageFormat.format(LaunchingMessages.DefaultProjectBuildpathEntry_2, new String[] {getDLTKProject().getElementName()});
+			return MessageFormat.format(LaunchingMessages.DefaultProjectBuildpathEntry_2, new String[] {getScriptProject().getElementName()});
 		}
-		return MessageFormat.format(LaunchingMessages.DefaultProjectBuildpathEntry_4, new String[] {getDLTKProject().getElementName()}); 
+		return MessageFormat.format(LaunchingMessages.DefaultProjectBuildpathEntry_4, new String[] {getScriptProject().getElementName()}); 
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
@@ -273,7 +273,7 @@ public class DefaultProjectBuildpathEntry extends AbstractRuntimeBuildpathEntry 
 	public boolean equals(Object obj) {
 		if (obj instanceof DefaultProjectBuildpathEntry) {
 			DefaultProjectBuildpathEntry entry = (DefaultProjectBuildpathEntry) obj;
-			return entry.getDLTKProject().equals(getDLTKProject()) &&
+			return entry.getScriptProject().equals(getScriptProject()) &&
 				entry.isExportedEntriesOnly() == isExportedEntriesOnly();
 		}
 		return false;
@@ -282,7 +282,7 @@ public class DefaultProjectBuildpathEntry extends AbstractRuntimeBuildpathEntry 
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return getDLTKProject().hashCode();
+		return getScriptProject().hashCode();
 	}
 	
 	/**

@@ -77,7 +77,7 @@ public abstract class ProjectWizardSecondPage extends CapabilityConfigurationPag
 	private Boolean fIsAutobuild;
 
 	/**
-	 * Constructor for DLTKProjectWizardSecondPage.
+	 * Constructor for ScriptProjectWizardSecondPage.
 	 */
 	public ProjectWizardSecondPage(ProjectWizardFirstPage mainPage) {
 		fFirstPage= mainPage;
@@ -356,7 +356,7 @@ public abstract class ProjectWizardSecondPage extends CapabilityConfigurationPag
 				}
 //				String compliance= fFirstPage.getCompilerCompliance();
 //				if (compliance != null) {
-//					IDLTKProject project= DLTKCore.create(fCurrProject);
+//					IScriptProject project= DLTKCore.create(fCurrProject);
 //					Map options= project.getOptions(false);
 //					ModelUtil.setCompilanceOptions(options, compliance);
 //					project.setOptions(options);

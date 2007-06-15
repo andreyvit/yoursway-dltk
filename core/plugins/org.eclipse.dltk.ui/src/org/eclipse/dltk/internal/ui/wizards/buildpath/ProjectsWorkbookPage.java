@@ -388,7 +388,7 @@ public class ProjectsWorkbookPage extends BuildPathBasePage {
 			}
 			Object[] selectArr= selectable.toArray();
 			new ModelElementSorter().sort(null, selectArr);
-			IScriptProject project = elem.getDLTKProject();
+			IScriptProject project = elem.getScriptProject();
 			ScriptUILabelProvider labelProvider = DLTKUILanguageManager.createLabelProvider(project);
 			ListSelectionDialog dialog= new ListSelectionDialog(getShell(), Arrays.asList(selectArr), new ArrayContentProvider(), labelProvider, NewWizardMessages.ProjectsWorkbookPage_chooseProjects_message); 
 			dialog.setTitle(NewWizardMessages.ProjectsWorkbookPage_chooseProjects_title); 

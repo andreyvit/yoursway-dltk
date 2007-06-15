@@ -132,10 +132,10 @@ public class JavaScriptCompletionProposalCollector extends
 	}
 	
 	protected ScriptCompletionProposal createOverrideCompletionProposal(
-			IScriptProject dltkProject, ISourceModule compilationUnit,
+			IScriptProject scriptProject, ISourceModule compilationUnit,
 			String name, String[] paramTypes, int start, int length,
 			String displayName, String completionProposal) {
-		return new JavaScriptOverrideCompletionProposal(dltkProject,
+		return new JavaScriptOverrideCompletionProposal(scriptProject,
 				compilationUnit, name, paramTypes, start, length, displayName,
 				completionProposal);
 	}

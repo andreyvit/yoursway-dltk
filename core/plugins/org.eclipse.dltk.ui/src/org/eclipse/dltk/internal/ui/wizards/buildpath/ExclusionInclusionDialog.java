@@ -85,7 +85,7 @@ public class ExclusionInclusionDialog extends StatusDialog {
 
 		setTitle(NewWizardMessages.ExclusionInclusionDialog_title); 
 
-		fCurrProject= entryToEdit.getDLTKProject().getProject();
+		fCurrProject= entryToEdit.getScriptProject().getProject();
 		IWorkspaceRoot root= fCurrProject.getWorkspace().getRoot();
 		IResource res= root.findMember(entryToEdit.getPath());
 		if (res instanceof IContainer) {

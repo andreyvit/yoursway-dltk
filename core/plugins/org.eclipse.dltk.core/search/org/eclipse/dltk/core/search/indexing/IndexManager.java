@@ -237,10 +237,10 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		}
 	}
 
-	public SourceIndexerRequestor getSourceRequestor(IScriptProject dltkProject) {
+	public SourceIndexerRequestor getSourceRequestor(IScriptProject scriptProject) {
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(dltkProject);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(scriptProject);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}

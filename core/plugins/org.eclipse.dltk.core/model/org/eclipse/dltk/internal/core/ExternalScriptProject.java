@@ -29,7 +29,7 @@ public class ExternalScriptProject extends ScriptProject {
 		try {
 			getPerProjectInfo().rawBuildpath = rawBuildpath;
 		} catch (ModelException e) {
-			// getPerProjectInfo() never throws ModelException for an ExternalDLTKProject
+			// getPerProjectInfo() never throws ModelException for an ExternalScriptProject
 		}
 	}
 	

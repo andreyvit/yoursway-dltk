@@ -281,38 +281,38 @@ public class ModelStatus extends Status implements IModelStatus, IModelStatusCon
 				return Messages.bind(Messages.status_noLocalContents, getPath().toString());
 
 			case BP_CONTAINER_PATH_UNBOUND:
-				ScriptProject dltkProject = (ScriptProject) elements[0];
+				ScriptProject scriptProject = (ScriptProject) elements[0];
 				BuildpathContainerInitializer initializer = DLTKCore.getBuildpathContainerInitializer(this.path.segment(0));
 				String description = null;
 				if (initializer != null)
-					description = initializer.getDescription(this.path, dltkProject);
+					description = initializer.getDescription(this.path, scriptProject);
 				if (description == null)
 					description = path.makeRelative().toString();
-				return Messages.bind(Messages.buildpath_unboundContainerPath, new String[] { description, dltkProject.getElementName() });
+				return Messages.bind(Messages.buildpath_unboundContainerPath, new String[] { description, scriptProject.getElementName() });
 
 			case INVALID_BP_CONTAINER_ENTRY:
-				dltkProject = (ScriptProject) elements[0];
+				scriptProject = (ScriptProject) elements[0];
 				IBuildpathContainer container = null;
 				description = null;
 				try {
-					container = DLTKCore.getBuildpathContainer(path, dltkProject);
+					container = DLTKCore.getBuildpathContainer(path, scriptProject);
 				} catch (ModelException e) {
 					// project doesn't exist: ignore
 				}
 				if (container == null) {
 					initializer = DLTKCore.getBuildpathContainerInitializer(path.segment(0));
 					if (initializer != null)
-						description = initializer.getDescription(path, dltkProject);
+						description = initializer.getDescription(path, scriptProject);
 				} else {
 					description = container.getDescription();
 				}
 				if (description == null)
 					description = path.makeRelative().toString();
-				return Messages.bind(Messages.buildpath_invalidContainer, new String[] { description, dltkProject.getElementName() });
+				return Messages.bind(Messages.buildpath_invalidContainer, new String[] { description, scriptProject.getElementName() });
 
 			case BUILDPATH_CYCLE:
-				dltkProject = (ScriptProject) elements[0];
-				return Messages.bind(Messages.buildpath_cycle, dltkProject.getElementName());
+				scriptProject = (ScriptProject) elements[0];
+				return Messages.bind(Messages.buildpath_cycle, scriptProject.getElementName());
 
 			}
 			if (string != null) {

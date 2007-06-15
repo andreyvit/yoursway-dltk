@@ -445,7 +445,7 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 
 	/**
 	 * Returns the compilation unit that the receiver operates on, or
-	 * <code>null</code> if the <code>IDLTKProject</code> constructor was
+	 * <code>null</code> if the <code>IScriptProject</code> constructor was
 	 * used to create the receiver.
 	 * 
 	 * @return the compilation unit that the receiver operates on, or

@@ -59,7 +59,7 @@ public class AddSelectedLibraryOperation extends BuildpathModifierOperation {
         fException= null;
         try {
             List elements= getSelectedElements();
-            IScriptProject project= fInformationProvider.getDLTKProject();
+            IScriptProject project= fInformationProvider.getScriptProject();
             result= addLibraryEntries(elements, project, monitor);
         } catch (CoreException e) {
             fException= e;

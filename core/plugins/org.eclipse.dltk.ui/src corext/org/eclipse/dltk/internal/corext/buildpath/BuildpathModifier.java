@@ -169,7 +169,7 @@ public class BuildpathModifier {
 	 * source folder and update build folder
 	 * @param monitor progress monitor, can be <code>null</code> 
 	 * @return returns a list of elements of type <code>IProjectFragment</code> or 
-	 * <code>IDLTKProject</code> that have been added to the build path or an 
+	 * <code>IScriptProject</code> that have been added to the build path or an 
 	 * empty list if the operation was aborted
 	 * @throws CoreException 
 	 * @throws OperationCanceledException 
@@ -357,7 +357,7 @@ public class BuildpathModifier {
 	 * 
 	 * @param query query to remove unused linked folders from the project
 	 * @param elements a list of elements to be removed from the build path. An element 
-	 * must either be of type <code>IDLTKProject</code>, <code>IProjectFragment</code> or 
+	 * must either be of type <code>IScriptProject</code>, <code>IProjectFragment</code> or 
 	 * <code>BuildPathContainer</code>
 	 * @param project the script project
 	 * @param monitor progress monitor, can be <code>null</code> 
@@ -607,7 +607,7 @@ public class BuildpathModifier {
 	 * passed <code>IInclusionExclusionQuery</code>.
 	 * 
 	 * @param element the script element to edit the filters on. Must be either of
-	 * type <code>IDLTKProject</code> or <code>IProjectFragment</code>.
+	 * type <code>IScriptProject</code> or <code>IProjectFragment</code>.
 	 * @param project the script project
 	 * @param monitor progress monitor, can be <code>null</code>
 	 * @return returns the edited script element or <code>null</code> if the operation was
@@ -637,12 +637,12 @@ public class BuildpathModifier {
 
 	/**
 	 * Reset a list of elements. The elements can be either of type 
-	 * <li><code>IDLTKProject</code></li>
+	 * <li><code>IScriptProject</code></li>
 	 * <li><code>IProjectFragment</code></li>
 	 * <li><code>BPListElementAttribute</code></li><br>
 	 * 
 	 * Depending on the element, resetting performs two different operations:
-	 * <li>On <code>IDLTKProject</code> or <code>IProjectFragment</code>, the 
+	 * <li>On <code>IScriptProject</code> or <code>IProjectFragment</code>, the 
 	 * inclusion and exclusion filters are reset. Only entries in the filters that 
 	 * correspond to either source folders or output folders will not be 
 	 * removed (to prevent damage on the project layout)</li>
@@ -652,7 +652,7 @@ public class BuildpathModifier {
 	 * @param project the script project
 	 * @param monitor progress monitor, can be <code>null</code>
 	 * @return a list of elements representing the elements on which 'reset' was called. 
-	 * They can either be of type <code>BPListElement</code>, <code>IDLTKProject</code> or 
+	 * They can either be of type <code>BPListElement</code>, <code>IScriptProject</code> or 
 	 * <code>IProjectFragment</code>
 	 */
 	protected List reset(List elements, IScriptProject project, IProgressMonitor monitor) throws ModelException {
@@ -927,7 +927,7 @@ public class BuildpathModifier {
 	
 
 	/**
-	 * Check whether the <code>IDLTKProject</code>
+	 * Check whether the <code>IScriptProject</code>
 	 * is a source folder 
 	 * 
 	 * @param project the project to test

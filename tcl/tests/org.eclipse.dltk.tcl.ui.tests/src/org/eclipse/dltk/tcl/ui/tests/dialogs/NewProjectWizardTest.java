@@ -929,7 +929,7 @@ public class NewProjectWizardTest extends TestCase {
                 return new StructuredSelection(list);
             }
 
-            public IScriptProject getDLTKProject() {
+            public IScriptProject getScriptProject() {
                 return fProject;
             }
 

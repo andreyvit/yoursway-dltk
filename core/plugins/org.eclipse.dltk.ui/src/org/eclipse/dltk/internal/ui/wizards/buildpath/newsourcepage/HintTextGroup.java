@@ -142,7 +142,7 @@ public final class HintTextGroup implements IBuildpathInformationProvider, IPack
      * 
      * @param jProject thescriptproject to work on
      */
-    public void setDLTKProject(IScriptProject jProject) {
+    public void setScriptProject(IScriptProject jProject) {
         fCurrJProject= jProject;
     }
     
@@ -250,9 +250,9 @@ public final class HintTextGroup implements IBuildpathInformationProvider, IPack
     /**
      * Returns the script project.
      * 
-     * @see IBuildpathInformationProvider#getDLTKProject()
+     * @see IBuildpathInformationProvider#getScriptProject()
      */
-    public IScriptProject getDLTKProject() {
+    public IScriptProject getScriptProject() {
         return fCurrJProject;
     }
     
@@ -348,7 +348,7 @@ public final class HintTextGroup implements IBuildpathInformationProvider, IPack
      */
     private void handleAddToCP(List result) {
         try {
-            if (containsDLTKProject(result)) {
+            if (containsScriptProject(result)) {
                 fPackageExplorer.setSelection(result);
                 fActionGroup.refresh(new DialogExplorerActionContext(result, fCurrJProject));
             }
@@ -362,7 +362,7 @@ public final class HintTextGroup implements IBuildpathInformationProvider, IPack
     /**
      * Handle removing from Buildpath. The goup area is rebuilt if 
      * either <code>forceRebuild</code> is <code>true</code> or 
-     * the result contains one element of type <code>IDLTKProject</code>.
+     * the result contains one element of type <code>IScriptProject</code>.
      * 
      * @param result the result to be selected in the explorer
      * @param forceRebuild <code>true</code> if the hint text group must 
@@ -371,7 +371,7 @@ public final class HintTextGroup implements IBuildpathInformationProvider, IPack
     private void handleRemoveFromBP(List result, boolean forceRebuild) {
         fPackageExplorer.setSelection(result);
         try {
-            if (forceRebuild || containsDLTKProject(result)) {
+            if (forceRebuild || containsScriptProject(result)) {
                 fActionGroup.refresh(new DialogExplorerActionContext(result, fCurrJProject));
             }
         } catch (ModelException e) {
@@ -393,13 +393,13 @@ public final class HintTextGroup implements IBuildpathInformationProvider, IPack
     
     /**
      * Find out whether the list contains one element of 
-     * type <code>IDLTKProject</code>
+     * type <code>IScriptProject</code>
      * 
      * @param elements the list to be examined
      * @return <code>true</code> if the list contains one element of 
-     * type <code>IDLTKProject</code>, <code>false</code> otherwise
+     * type <code>IScriptProject</code>, <code>false</code> otherwise
      */
-    private boolean containsDLTKProject(List elements) {
+    private boolean containsScriptProject(List elements) {
         for(int i= 0; i < elements.size(); i++) {
             if (elements.get(i) instanceof IScriptProject)
                 return true;

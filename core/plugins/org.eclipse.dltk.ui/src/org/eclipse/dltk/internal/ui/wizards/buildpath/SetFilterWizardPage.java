@@ -72,7 +72,7 @@ public class SetFilterWizardPage extends NewElementWizardPage {
 		setDescription(NewWizardMessages.ExclusionInclusionDialog_description2);
 		
 		fCurrElement= entryToEdit;
-		fCurrProject= entryToEdit.getDLTKProject().getProject();
+		fCurrProject= entryToEdit.getScriptProject().getProject();
 		IWorkspaceRoot root= fCurrProject.getWorkspace().getRoot();
 		IResource res= root.findMember(entryToEdit.getPath());
 		if (res instanceof IContainer) {
@@ -193,7 +193,7 @@ public class SetFilterWizardPage extends NewElementWizardPage {
 	private void updateStatus() {
 		fCurrElement.setAttribute(BPListElement.INCLUSION, getInclusionPattern());
 		fCurrElement.setAttribute(BPListElement.EXCLUSION, getExclusionPattern());
-		IModelStatus status= BuildpathEntry.validateBuildpath(fCurrElement.getDLTKProject(), 
+		IModelStatus status= BuildpathEntry.validateBuildpath(fCurrElement.getScriptProject(), 
 				BPListElement.convertToBuildpathEntries(fExistingEntries));
 		if (!status.isOK()) {
 			StatusInfo statusInfo= new StatusInfo();

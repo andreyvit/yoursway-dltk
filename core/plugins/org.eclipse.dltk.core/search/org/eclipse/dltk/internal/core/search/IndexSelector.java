@@ -44,7 +44,7 @@ public class IndexSelector {
 
 	/**
 	 * Returns whether elements of the given project or jar can see the given
-	 * focus (an IDLTKProject or a JarScriptFolderRot) either because the
+	 * focus (an IScriptProject or a JarScriptFolderRot) either because the
 	 * focus is part of the project or the jar, or because it is accessible
 	 * throught the project's classpath
 	 */
@@ -153,10 +153,10 @@ public class IndexSelector {
 		/*
 		 * if( focus != null && focus.getElementType() ==
 		 * IModelElement.SCRIPT_PROJECT ) { String prjPath = "#special#mixin:" +
-		 * ((IDLTKProject)focus).getProject().getFullPath().toString();
+		 * ((IScriptProject)focus).getProject().getFullPath().toString();
 		 * checkSpecialCase(manager, locations, prjPath); // builtin index file
 		 * prjPath = "#special#builtin:" +
-		 * ((IDLTKProject)focus).getProject().getFullPath().toString();
+		 * ((IScriptProject)focus).getProject().getFullPath().toString();
 		 * checkSpecialCase(manager, locations, prjPath); }
 		 */
 		
@@ -292,7 +292,7 @@ public class IndexSelector {
 //		IPath path = projectsAndArchives;
 ////		if (!mixin) {
 //			if (!path.toString().startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
-//				DLTKProject project = (DLTKProject) getScriptProject(path,
+//				ScriptProject project = (ScriptProject) getScriptProject(path,
 //						model);
 //				if (project != null) {
 //					IPath p = new Path("#special#builtin#")
@@ -302,7 +302,7 @@ public class IndexSelector {
 //			}
 //			else {
 //				path = path.removeFirstSegments(1);
-//				DLTKProject project = (DLTKProject) getScriptProject(path,
+//				ScriptProject project = (ScriptProject) getScriptProject(path,
 //						model);
 //				if (project != null) {
 //					IPath p = new Path("#special#builtin#")

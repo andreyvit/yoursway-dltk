@@ -241,5 +241,5 @@ public interface IRuntimeBuildpathEntry {
 	 * or <code>null</code> if none
 	 *
 	 */
-	public IScriptProject getDLTKProject();
+	public IScriptProject getScriptProject();
 }

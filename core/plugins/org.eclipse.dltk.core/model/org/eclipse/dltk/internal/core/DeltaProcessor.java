@@ -220,7 +220,7 @@ public class DeltaProcessor {
 	private HashSet refreshedElements;
 
 	/*
-	 * A table from IDLTKProject to an array of IProjectFragment. This table
+	 * A table from IScriptProject to an array of IProjectFragment. This table
 	 * contains the pkg fragment roots of the project that are being deleted.
 	 */
 	public Map removedRoots;
@@ -298,9 +298,9 @@ public class DeltaProcessor {
 	 * Adds the given project and its dependents to the list of the roots to
 	 * refresh.
 	 */
-	private void addToRootsToRefreshWithDependents(IScriptProject dltkProject) {
-		this.rootsToRefresh.add(dltkProject);
-		this.addDependentProjects(dltkProject, this.state.projectDependencies,
+	private void addToRootsToRefreshWithDependents(IScriptProject scriptProject) {
+		this.rootsToRefresh.add(scriptProject);
+		this.addDependentProjects(scriptProject, this.state.projectDependencies,
 				this.rootsToRefresh);
 	}
 
@@ -328,8 +328,8 @@ public class DeltaProcessor {
 				final IProject[] projectsToTouch = new IProject[length];
 				for (int i = 0; i < length; i++) {
 					IModelElementDelta delta = projectDeltas[i];
-					ScriptProject dltkProject = (ScriptProject) delta.getElement();
-					projectsToTouch[i] = dltkProject.getProject();
+					ScriptProject scriptProject = (ScriptProject) delta.getElement();
+					projectsToTouch[i] = scriptProject.getProject();
 				}
 				// touch the projects to force them to be recompiled while
 				// taking the workspace lock
@@ -390,23 +390,23 @@ public class DeltaProcessor {
 			// projectsBeingDeleted
 			// - if the project is closed, it has already lost its script nature
 			IProject project = (IProject) resource;
-			ScriptProject dltkProject = (ScriptProject) DLTKCore.create(project);
+			ScriptProject scriptProject = (ScriptProject) DLTKCore.create(project);
 			switch (delta.getKind()) {
 			case IResourceDelta.ADDED:
 				this.manager.batchContainerInitializations = true;
 
 				// remember project and its dependents
-				this.addToRootsToRefreshWithDependents(dltkProject);
+				this.addToRootsToRefreshWithDependents(scriptProject);
 
 				// workaround for bug 15168 circular errors not reported
 				if (DLTKLanguageManager.hasScriptNature(project)) {
-					this.addToParentInfo(dltkProject);
+					this.addToParentInfo(scriptProject);
 
 					// ensure project references are updated (see
 					// https://bugs.eclipse.org/bugs/show_bug.cgi?id=121569)
 					try {
 						this.state
-								.updateProjectReferences(dltkProject,
+								.updateProjectReferences(scriptProject,
 										null/* no old buildpath */, null/*
 																		 * compute
 																		 * new
@@ -430,66 +430,66 @@ public class DeltaProcessor {
 
 					// project opened or closed: remember project and its
 					// dependents
-					this.addToRootsToRefreshWithDependents(dltkProject);
+					this.addToRootsToRefreshWithDependents(scriptProject);
 
 					// workaround for bug 15168 circular errors not reported
 					if (project.isOpen()) {
 						if (DLTKLanguageManager.hasScriptNature(project)) {
-							this.addToParentInfo(dltkProject);
-							// readRawBuildpath(dltkProject);
+							this.addToParentInfo(scriptProject);
+							// readRawBuildpath(scriptProject);
 							// ensure project references are updated
-							checkProjectReferenceChange(project, dltkProject);
+							checkProjectReferenceChange(project, scriptProject);
 						}
 					} else {
 						try {
-							dltkProject.close();
+							scriptProject.close();
 						} catch (ModelException e) {
 							// script project doesn't exist: ignore
 						}
-						this.removeFromParentInfo(dltkProject);
-						this.manager.removePerProjectInfo(dltkProject);
-						this.manager.containerRemove(dltkProject);
+						this.removeFromParentInfo(scriptProject);
+						this.manager.removePerProjectInfo(scriptProject);
+						this.manager.containerRemove(scriptProject);
 					}
 					this.state.rootsAreStale = true;
 				} else if ((delta.getFlags() & IResourceDelta.DESCRIPTION) != 0) {
-					boolean wasDLTKProject = this.state.findProject(project
+					boolean wasScriptProject = this.state.findProject(project
 							.getName()) != null;
-					boolean isDLTKProject = DLTKLanguageManager
+					boolean isScriptProject = DLTKLanguageManager
 							.hasScriptNature(project);
-					if (wasDLTKProject != isDLTKProject) {
+					if (wasScriptProject != isScriptProject) {
 						this.manager.batchContainerInitializations = true;
 
 						// script nature added or removed: remember project and
 						// its dependents
-						this.addToRootsToRefreshWithDependents(dltkProject);
+						this.addToRootsToRefreshWithDependents(scriptProject);
 
 						// workaround for bug 15168 circular errors not reported
-						if (isDLTKProject) {
-							this.addToParentInfo(dltkProject);
-							// readRawClasspath(dltkProject);
+						if (isScriptProject) {
+							this.addToParentInfo(scriptProject);
+							// readRawClasspath(scriptProject);
 							// ensure project references are updated (see
 							// https://bugs.eclipse.org/bugs/show_bug.cgi?id=172666)
-							checkProjectReferenceChange(project, dltkProject);
+							checkProjectReferenceChange(project, scriptProject);
 						} else {
 							// remove buildpath cache so that initializeRoots()
 							// will not consider the project has a buildpath
-							this.manager.removePerProjectInfo(dltkProject);
+							this.manager.removePerProjectInfo(scriptProject);
 							// remove container cache for this project
-							this.manager.containerRemove(dltkProject);
+							this.manager.containerRemove(scriptProject);
 							// close project
 							try {
-								dltkProject.close();
+								scriptProject.close();
 							} catch (ModelException e) {
 								// script project doesn't exist: ignore
 							}
-							this.removeFromParentInfo(dltkProject);
+							this.removeFromParentInfo(scriptProject);
 						}
 						this.state.rootsAreStale = true;
 					} else {
 						// in case the project was removed then added then
 						// changed (see bug 19799)
-						if (isDLTKProject) { // need nature check - 18698
-							this.addToParentInfo(dltkProject);
+						if (isScriptProject) { // need nature check - 18698
+							this.addToParentInfo(scriptProject);
 							children = delta.getAffectedChildren();
 						}
 					}
@@ -501,7 +501,7 @@ public class DeltaProcessor {
 						// check
 						// -
 						// 18698
-						this.addToParentInfo(dltkProject);
+						this.addToParentInfo(scriptProject);
 						children = delta.getAffectedChildren();
 					}
 				}
@@ -512,16 +512,16 @@ public class DeltaProcessor {
 
 				// remove buildpath cache so that initializeRoots() will not
 				// consider the project has a buildpath
-				this.manager.removePerProjectInfo(dltkProject);
+				this.manager.removePerProjectInfo(scriptProject);
 				// remove container cache for this project
-				this.manager.containerRemove(dltkProject);
+				this.manager.containerRemove(scriptProject);
 
 				this.state.rootsAreStale = true;
 				break;
 			}
 
 			// in all cases, refresh the external jars for this project
-			addForRefresh(dltkProject);
+			addForRefresh(scriptProject);
 
 			break;
 		case IResource.FILE:
@@ -550,14 +550,14 @@ public class DeltaProcessor {
 					}
 					// fall through
 				case IResourceDelta.ADDED:
-					dltkProject = (ScriptProject) DLTKCore.create(file
+					scriptProject = (ScriptProject) DLTKCore.create(file
 							.getProject());
 
 					// force to (re)read the .buildpath file
 					// try {
-					// dltkProject.getPerProjectInfo().readAndCacheClasspath(
-					// dltkProject);
-					// dltkProject.r
+					// scriptProject.getPerProjectInfo().readAndCacheClasspath(
+					// scriptProject);
+					// scriptProject.r
 					// } catch (ModelException e){
 					// // project doesn't exist
 					// return;
@@ -794,8 +794,8 @@ public class DeltaProcessor {
 				archivePathsToRefresh.add(element.getPath());
 				break;
 			case IModelElement.SCRIPT_PROJECT:
-				ScriptProject dltkProject = (ScriptProject) element;
-				if (!DLTKLanguageManager.hasScriptNature(dltkProject
+				ScriptProject scriptProject = (ScriptProject) element;
+				if (!DLTKLanguageManager.hasScriptNature(scriptProject
 						.getProject())) {
 					// project is not accessible or has lost its script
 					// nature
@@ -803,7 +803,7 @@ public class DeltaProcessor {
 				}
 				IBuildpathEntry[] buildpath;
 				try {
-					buildpath = dltkProject.getResolvedBuildpath();
+					buildpath = scriptProject.getResolvedBuildpath();
 					for (int j = 0, cpLength = buildpath.length; j < cpLength; j++) {
 						if (buildpath[j].getEntryKind() == IBuildpathEntry.BPE_LIBRARY) {
 							archivePathsToRefresh.add(buildpath[j].getPath());
@@ -825,9 +825,9 @@ public class DeltaProcessor {
 						// nature
 						continue;
 					}
-					dltkProject = (ScriptProject) DLTKCore.create(project);
+					scriptProject = (ScriptProject) DLTKCore.create(project);
 					try {
-						buildpath = dltkProject.getResolvedBuildpath();
+						buildpath = scriptProject.getResolvedBuildpath();
 					} catch (ModelException e2) {
 						// project doesn't exist -> ignore
 						continue;
@@ -854,10 +854,10 @@ public class DeltaProcessor {
 				// project is not accessible or has lost its Script nature
 				continue;
 			}
-			ScriptProject dltkProject = (ScriptProject) DLTKCore.create(project);
+			ScriptProject scriptProject = (ScriptProject) DLTKCore.create(project);
 			IBuildpathEntry[] entries;
 			try {
-				entries = dltkProject.getResolvedBuildpath();
+				entries = scriptProject.getResolvedBuildpath();
 			} catch (ModelException e1) {
 				// project does not exist -> ignore
 				continue;
@@ -941,7 +941,7 @@ public class DeltaProcessor {
 					status = (String) externalArchivesStatus.get(entryPath);
 					if (status != null) {
 						if (status == EXTERNAL_ZIP_ADDED) {
-							ProjectFragment root = (ProjectFragment) dltkProject
+							ProjectFragment root = (ProjectFragment) scriptProject
 									.getProjectFragment(entryPath.toString());
 							if (VERBOSE) {
 								System.out
@@ -950,7 +950,7 @@ public class DeltaProcessor {
 							elementAdded(root, null, null);
 							hasDelta = true;
 						} else if (status == EXTERNAL_ZIP_CHANGED) {
-							ProjectFragment root = (ProjectFragment) dltkProject
+							ProjectFragment root = (ProjectFragment) scriptProject
 									.getProjectFragment(entryPath.toString());
 							if (VERBOSE) {
 								System.out
@@ -959,7 +959,7 @@ public class DeltaProcessor {
 							contentChanged(root);
 							hasDelta = true;
 						} else if (status == EXTERNAL_ZIP_REMOVED) {
-							ProjectFragment root = (ProjectFragment) dltkProject
+							ProjectFragment root = (ProjectFragment) scriptProject
 									.getProjectFragment(entryPath.toString());
 							if (VERBOSE) {
 								System.out
@@ -993,19 +993,19 @@ public class DeltaProcessor {
 			// deleted without interferences from the index manager
 			this.manager.indexManager.discardJobs(project.getName());
 
-			ScriptProject dltkProject = (ScriptProject) DLTKCore.create(project);
+			ScriptProject scriptProject = (ScriptProject) DLTKCore.create(project);
 
 			// remember roots of this project
 			if (this.removedRoots == null) {
 				this.removedRoots = new HashMap();
 			}
-			if (dltkProject.isOpen()) {
-				this.removedRoots.put(dltkProject, dltkProject
+			if (scriptProject.isOpen()) {
+				this.removedRoots.put(scriptProject, scriptProject
 						.getProjectFragments());
 			} else {
 				// compute roots without opening project
-				this.removedRoots.put(dltkProject, dltkProject
-						.computeProjectFragments(dltkProject
+				this.removedRoots.put(scriptProject, scriptProject
+						.computeProjectFragments(scriptProject
 								.getResolvedBuildpath(
 										true/* ignoreUnresolvedEntry */, false/*
 																				 * don't
@@ -1016,15 +1016,15 @@ public class DeltaProcessor {
 													 */), false, null /* no reverse map */));
 			}
 
-			dltkProject.close();
+			scriptProject.close();
 
 			// workaround for bug 15168 circular errors not reported
 			this.state.getOldScriptProjectNames(); // foce list to be computed
 
-			this.removeFromParentInfo(dltkProject);
+			this.removeFromParentInfo(scriptProject);
 
 			// remove preferences from per project info
-			this.manager.resetProjectPreferences(dltkProject);
+			this.manager.resetProjectPreferences(scriptProject);
 		} catch (ModelException e) {
 			// script project doesn't exist: ignore
 		}
@@ -1310,9 +1310,9 @@ public class DeltaProcessor {
 			}
 			// String fileName = res.getName();
 			IProject project = res.getProject();
-			IScriptProject dltkProject = DLTKCore.create(project);
-			if (dltkProject != null
-					&& Util.isValidSourceModule(dltkProject, res)) {
+			IScriptProject scriptProject = DLTKCore.create(project);
+			if (scriptProject != null
+					&& Util.isValidSourceModule(scriptProject, res)) {
 				return IModelElement.SOURCE_MODULE;
 			} else if (this.rootInfo(res.getFullPath(), kind) != null) {
 				// case of proj=src=bin and resource is a jar file on the
@@ -2211,8 +2211,8 @@ public class DeltaProcessor {
 	// if ((delta.getFlags() & IResourceDelta.OPEN) != 0) {
 	// // project opened or closed
 	// if (isDylanProject) {
-	// DLTKProject dltkProject = (DLTKProject) DLTKCore.create(project);
-	// this.state.addBuildpathValidation(dltkProject); // in
+	// ScriptProject scriptProject = (ScriptProject) DLTKCore.create(project);
+	// this.state.addBuildpathValidation(scriptProject); // in
 	// // case
 	// // .buildpath
 	// // got
@@ -2222,12 +2222,12 @@ public class DeltaProcessor {
 	// }
 	// affectedProjects.add(project.getFullPath());
 	// } else if ((delta.getFlags() & IResourceDelta.DESCRIPTION) != 0) {
-	// boolean wasDLTKProject = this.state.findProject(project.getName()) !=
+	// boolean wasScriptProject = this.state.findProject(project.getName()) !=
 	// null;
-	// if (wasDLTKProject != isDylanProject) {
+	// if (wasScriptProject != isDylanProject) {
 	// // project gained or lost script nature
-	// DLTKProject dltkProject = (DLTKProject) DLTKCore.create(project);
-	// this.state.addBuildpathValidation(dltkProject); // add/remove
+	// ScriptProject scriptProject = (ScriptProject) DLTKCore.create(project);
+	// this.state.addBuildpathValidation(scriptProject); // add/remove
 	// // buildpath
 	// // markers
 	// affectedProjects.add(project.getFullPath());
@@ -2242,10 +2242,10 @@ public class DeltaProcessor {
 	// case IResource.FILE:
 	// /* check buildpath file change */
 	// IFile file = (IFile) resource;
-	// if (file.getName().equals(DLTKProject.BUILDPATH_FILENAME)) {
-	// DLTKProject dltkProject = (DLTKProject)
+	// if (file.getName().equals(ScriptProject.BUILDPATH_FILENAME)) {
+	// ScriptProject scriptProject = (ScriptProject)
 	// DLTKCore.create(file.getProject());
-	// this.state.addBuildpathValidation(dltkProject);
+	// this.state.addBuildpathValidation(scriptProject);
 	// affectedProjects.add(file.getProject().getFullPath());
 	// break;
 	// }
@@ -2277,10 +2277,10 @@ public class DeltaProcessor {
 	// int length = projects.length;
 	// for (int i = 0; i < length; i++) {
 	// IProject project = projects[i];
-	// DLTKProject dltkProject = (DLTKProject) DLTKCore.create(project);
+	// ScriptProject scriptProject = (ScriptProject) DLTKCore.create(project);
 	// try {
 	// IPath projectPath = project.getFullPath();
-	// IBuildpathEntry[] buildpath = dltkProject.getResolvedBuildpath(); //
+	// IBuildpathEntry[] buildpath = scriptProject.getResolvedBuildpath(); //
 	// allowed
 	// /*
 	// * to reuse model cache
@@ -2290,7 +2290,7 @@ public class DeltaProcessor {
 	// switch (entry.getEntryKind()) {
 	// case IBuildpathEntry.BPE_PROJECT:
 	// if (affectedProjects.contains(entry.getPath())) {
-	// this.state.addBuildpathValidation(dltkProject);
+	// this.state.addBuildpathValidation(scriptProject);
 	// needCycleValidation = true;
 	// }
 	// break;
@@ -2303,7 +2303,7 @@ public class DeltaProcessor {
 	// * if library contained in another project
 	// */
 	// && affectedProjects.contains(libProjectPath)) {
-	// this.state.addBuildpathValidation(dltkProject);
+	// this.state.addBuildpathValidation(scriptProject);
 	// }
 	// break;
 	// }
@@ -2720,9 +2720,9 @@ public class DeltaProcessor {
 //					// dependents
 //					affectedProjects.add(project.getFullPath());
 //					if (isScriptProject) {
-//						DLTKProject dltkProject = (DLTKProject) DLTKCore
+//						ScriptProject scriptProject = (ScriptProject) DLTKCore
 //								.create(project);
-//						dltkProject.updateBuildpathMarkers(preferredBuildpaths); // in
+//						scriptProject.updateBuildpathMarkers(preferredBuildpaths); // in
 //						// case
 //						// .buildpath
 //						// got
@@ -2738,9 +2738,9 @@ public class DeltaProcessor {
 //						// related obsolete markers
 //						affectedProjects.add(project.getFullPath());
 //						// flush buildpath markers
-//						DLTKProject dltkProject = (DLTKProject) DLTKCore
+//						ScriptProject scriptProject = (ScriptProject) DLTKCore
 //								.create(project);
-//						dltkProject.flushBuildpathProblemMarkers(true, // flush
+//						scriptProject.flushBuildpathProblemMarkers(true, // flush
 //								// cycle
 //								// markers
 //								true // flush buildpath format markers
@@ -2752,9 +2752,9 @@ public class DeltaProcessor {
 //				} else if (isScriptProject) {
 //					// check if all entries exist
 //					try {
-//						DLTKProject dltkProject = (DLTKProject) DLTKCore
+//						ScriptProject scriptProject = (ScriptProject) DLTKCore
 //								.create(project);
-//						dltkProject.getResolvedBuildpath(
+//						scriptProject.getResolvedBuildpath(
 //								true/* ignoreUnresolvedEntry */,
 //								true/* generateMarkerOnError */, false/*
 //																		 * don't
@@ -2773,11 +2773,11 @@ public class DeltaProcessor {
 //		case IResource.FILE:
 //			/* check buildpath file change */
 //			IFile file = (IFile) resource;
-//			if (file.getName().equals(DLTKProject.BUILDPATH_FILENAME)) {
+//			if (file.getName().equals(ScriptProject.BUILDPATH_FILENAME)) {
 //				affectedProjects.add(file.getProject().getFullPath());
-//				DLTKProject dltkProject = (DLTKProject) DLTKCore.create(file
+//				ScriptProject scriptProject = (ScriptProject) DLTKCore.create(file
 //						.getProject());
-//				dltkProject.updateBuildpathMarkers(preferredBuildpaths);
+//				scriptProject.updateBuildpathMarkers(preferredBuildpaths);
 //				break;
 //			}
 //			// /* check custom preference file change */
@@ -2822,14 +2822,14 @@ public class DeltaProcessor {
 //			int length = projects.length;
 //			for (int i = 0; i < length; i++) {
 //				IProject project = projects[i];
-//				DLTKProject dltkProject = (DLTKProject) DLTKCore
+//				ScriptProject scriptProject = (ScriptProject) DLTKCore
 //						.create(project);
-//				if (preferredBuildpaths.get(dltkProject) == null) { // not
+//				if (preferredBuildpaths.get(scriptProject) == null) { // not
 //					// already
 //					// updated
 //					try {
 //						IPath projectPath = project.getFullPath();
-//						IBuildpathEntry[] buildpath = dltkProject
+//						IBuildpathEntry[] buildpath = scriptProject
 //								.getResolvedBuildpath(
 //										true/* ignoreUnresolvedEntry */,
 //										false/* don't generateMarkerOnError */,
@@ -2846,7 +2846,7 @@ public class DeltaProcessor {
 //							switch (entry.getEntryKind()) {
 //							case IBuildpathEntry.BPE_PROJECT:
 //								if (affectedProjects.contains(entry.getPath())) {
-//									dltkProject.updateBuildpathMarkers(null);
+//									scriptProject.updateBuildpathMarkers(null);
 //								}
 //								break;
 //							case IBuildpathEntry.BPE_LIBRARY:
@@ -2862,7 +2862,7 @@ public class DeltaProcessor {
 //										// project
 //										&& affectedProjects
 //												.contains(libProjectPath)) {
-//									dltkProject.updateBuildpathMarkers(null);
+//									scriptProject.updateBuildpathMarkers(null);
 //								}
 //								break;
 //							}
@@ -2885,7 +2885,7 @@ public class DeltaProcessor {
 //				}
 //			}
 //			try {
-//				DLTKProject.updateAllCycleMarkers(preferredBuildpaths);
+//				ScriptProject.updateAllCycleMarkers(preferredBuildpaths);
 //			} catch (ModelException e) {
 //				// project no longer exist
 //			}

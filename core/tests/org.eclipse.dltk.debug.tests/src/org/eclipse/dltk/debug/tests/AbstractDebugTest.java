@@ -60,8 +60,8 @@ public abstract class AbstractDebugTest extends TestCase {
 	 * 
 	 * @return the test project
 	 */
-	protected IScriptProject getDLTKProject() {
-		return getDLTKProject("DebugTests");
+	protected IScriptProject getScriptProject() {
+		return getScriptProject("DebugTests");
 	}
 	
 	/**
@@ -70,7 +70,7 @@ public abstract class AbstractDebugTest extends TestCase {
 	 * @param name project name
 	 * @return the Script project with the given name
 	 */
-	protected IScriptProject getDLTKProject(String name) {
+	protected IScriptProject getScriptProject(String name) {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 		return DLTKCore.create(project);
 	}

@@ -46,7 +46,7 @@
             adaptable="false"
             id="org.eclipse.dltk.tcl.tclchecker.builder.enableTclChecker"
             nameFilter="*"
-            objectClass="org.eclipse.dltk.core.IDLTKProject">
+            objectClass="org.eclipse.dltk.core.IScriptProject">
          <visibility>
          <and>
             <not>
@@ -70,7 +70,7 @@
             adaptable="false"
             id="org.eclipse.dltk.tcl.tclchecker.builder.disableTclChecker"
             nameFilter="*"
-            objectClass="org.eclipse.dltk.core.IDLTKProject">
+            objectClass="org.eclipse.dltk.core.IScriptProject">
          <visibility>
          	<and>
             <objectState

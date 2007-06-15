@@ -138,7 +138,7 @@ public abstract class BuildpathModifierOperation extends BuildpathModifier imple
         List selectedElements= getSelectedElements();
         int[] types= new int[selectedElements.size()];
         for(int i= 0; i < types.length; i++) {
-            types[i]= DialogPackageExplorerActionGroup.getType(selectedElements.get(i), fInformationProvider.getDLTKProject());
+            types[i]= DialogPackageExplorerActionGroup.getType(selectedElements.get(i), fInformationProvider.getScriptProject());
         }
 		return isValid(selectedElements, types);
 	}

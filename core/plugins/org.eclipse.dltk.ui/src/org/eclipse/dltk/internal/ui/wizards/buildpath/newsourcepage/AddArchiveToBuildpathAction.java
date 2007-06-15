@@ -52,7 +52,7 @@ import org.eclipse.ui.part.ISetSelectionTarget;
 public class AddArchiveToBuildpathAction extends Action implements ISelectionChangedListener {
 
 	private final IWorkbenchSite fSite;
-	private IScriptProject fDLTKProject;
+	private IScriptProject fScriptProject;
 
 	public AddArchiveToBuildpathAction(IWorkbenchSite site) {
 		super(NewWizardMessages.NewSourceContainerWorkbookPage_ToolBar_AddZIPCP_label, DLTKPluginImages.DESC_OBJS_EXTJAR);
@@ -72,7 +72,7 @@ public class AddArchiveToBuildpathAction extends Action implements ISelectionCha
 			final IRunnableWithProgress runnable= new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 					try {
-						List result= addExternalArchives(selected == null?new IPath[0]:selected, fDLTKProject, monitor);
+						List result= addExternalArchives(selected == null?new IPath[0]:selected, fScriptProject, monitor);
 						if (result != null && result.size() > 0)
 							selectAndReveal(new StructuredSelection(result));
 					} catch (CoreException e) {
@@ -144,13 +144,13 @@ public class AddArchiveToBuildpathAction extends Action implements ISelectionCha
 		if (!(first instanceof IScriptProject))
 			return false;
 
-		fDLTKProject= (IScriptProject)first;
-		if( fDLTKProject == null || !fDLTKProject.exists() ) {
+		fScriptProject= (IScriptProject)first;
+		if( fScriptProject == null || !fScriptProject.exists() ) {
 			return false;
 		}
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(fDLTKProject);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(fScriptProject);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}

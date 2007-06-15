@@ -30,7 +30,7 @@ public class StandardBuildpathProvider implements IRuntimeBuildpathProvider {
 	public IRuntimeBuildpathEntry[] computeUnresolvedBuildpath(ILaunchConfiguration configuration) throws CoreException {
 		boolean useDefault = configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_DEFAULT_BUILDPATH, true);
 		if (useDefault) {
-			IScriptProject proj = ScriptRuntime.getDLTKProject(configuration);
+			IScriptProject proj = ScriptRuntime.getScriptProject(configuration);
 			IRuntimeBuildpathEntry InterpreterEnvironmentEntry = ScriptRuntime.computeInterpreterEntry(configuration);
 			if (proj == null) {
 				//no project - use default libraries

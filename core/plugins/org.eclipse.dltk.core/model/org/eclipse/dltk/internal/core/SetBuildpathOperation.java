@@ -39,7 +39,7 @@ import org.eclipse.dltk.internal.core.util.Util;
 
 
 /**
- * This operation sets an <code>IDLTKProject</code>'s buildpath.
+ * This operation sets an <code>IScriptProject</code>'s buildpath.
  * 
  * @see IScriptProject
  */

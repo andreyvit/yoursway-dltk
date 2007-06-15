@@ -56,8 +56,8 @@ public class TclCompletionProposalCollector extends ScriptCompletionProposalColl
 		return new TclScriptCompletionProposal(displayString, replaceStart, length, image, displayString, i, isInDoc);
 	}
 	
-	protected ScriptCompletionProposal createOverrideCompletionProposal(IScriptProject dltkProject, ISourceModule compilationUnit, String name, String[] paramTypes, int start, int length, String displayName, String completionProposal) {
-		return new TclOverrideCompletionProposal(dltkProject, compilationUnit, name, paramTypes, start, length, displayName, completionProposal );
+	protected ScriptCompletionProposal createOverrideCompletionProposal(IScriptProject scriptProject, ISourceModule compilationUnit, String name, String[] paramTypes, int start, int length, String displayName, String completionProposal) {
+		return new TclOverrideCompletionProposal(scriptProject, compilationUnit, name, paramTypes, start, length, displayName, completionProposal );
 	}
 	
 	protected IScriptCompletionProposal createKeywordProposal(CompletionProposal proposal) {

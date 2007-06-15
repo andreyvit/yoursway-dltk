@@ -51,7 +51,7 @@ public class ProjectTestSetup extends TestSetup {
 		
 		fAutobuilding = ScriptProjectHelper.setAutoBuilding(false);
 		
-		fJProject= ScriptProjectHelper.createDLTKProject(PROJECT_NAME);		
+		fJProject= ScriptProjectHelper.createScriptProject(PROJECT_NAME);		
 		
 		TestOptions.initializeProjectOptions(fJProject);
 		

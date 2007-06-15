@@ -168,7 +168,7 @@ public class RuntimeBuildpathEntry implements IRuntimeBuildpathEntry {
 				break;
 		}	
 		
-		String name = root.getAttribute("dltkProject"); //$NON-NLS-1$
+		String name = root.getAttribute("scriptProject"); //$NON-NLS-1$
 		if (isEmpty(name)) {
 			fProject = null;
 		} else {
@@ -261,8 +261,8 @@ public class RuntimeBuildpathEntry implements IRuntimeBuildpathEntry {
 				node.setAttribute("containerPath", getPath().toString()); //$NON-NLS-1$
 				break;
 		}		
-		if (getDLTKProject() != null) {
-			node.setAttribute("dltkProject", getDLTKProject().getElementName()); //$NON-NLS-1$
+		if (getScriptProject() != null) {
+			node.setAttribute("scriptProject", getScriptProject().getElementName()); //$NON-NLS-1$
 		}
 		try {
 			return DLTKLaunchingPlugin.serializeDocument(doc);
@@ -409,8 +409,8 @@ public class RuntimeBuildpathEntry implements IRuntimeBuildpathEntry {
 				if (getType() == IRuntimeBuildpathEntry.CONTAINER) {
 					String id = getPath().segment(0);
 					BuildpathContainerInitializer initializer = DLTKCore.getBuildpathContainerInitializer(id);
-					IScriptProject scriptProject1 = getDLTKProject();
-					IScriptProject scriptProject2 = r.getDLTKProject();
+					IScriptProject scriptProject1 = getScriptProject();
+					IScriptProject scriptProject2 = r.getScriptProject();
 					if (initializer == null || scriptProject1 == null || scriptProject2 == null) {
 						// containers are equal if their ID is equal by default
 						return getPath().equals(r.getPath());
@@ -473,7 +473,7 @@ public class RuntimeBuildpathEntry implements IRuntimeBuildpathEntry {
 		
 	}
 	
-	public IScriptProject getDLTKProject() {
+	public IScriptProject getScriptProject() {
 		return fProject;
 	}
 	
@@ -482,7 +482,7 @@ public class RuntimeBuildpathEntry implements IRuntimeBuildpathEntry {
 	 * 
 	 * @param project Script project
 	 */
-	public void setDLTKProject(IScriptProject project) {
+	public void setScriptProject(IScriptProject project) {
 		fProject = project;
 	}
 

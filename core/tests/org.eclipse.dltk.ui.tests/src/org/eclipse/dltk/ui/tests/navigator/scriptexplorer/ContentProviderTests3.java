@@ -281,8 +281,8 @@ public class ContentProviderTests3 extends TestCase {
 		if (fEnableAutoBuildAfterTesting)
 			ScriptProjectHelper.setAutoBuilding(false);
 
-		fJProject1= ScriptProjectHelper.createDLTKProject("TestProject1");//$NON-NLS-1$
-		fJProject2= ScriptProjectHelper.createDLTKProject("TestProject2");//$NON-NLS-1$
+		fJProject1= ScriptProjectHelper.createScriptProject("TestProject1");//$NON-NLS-1$
+		fJProject2= ScriptProjectHelper.createScriptProject("TestProject2");//$NON-NLS-1$
 		
 		assertNotNull("project1 null", fJProject1);//$NON-NLS-1$
 		assertNotNull("project2 null", fJProject2);//$NON-NLS-1$
@@ -338,7 +338,7 @@ public class ContentProviderTests3 extends TestCase {
 //
 //		//set up project #2: file system structure with in a source folder
 //
-//		DLTKProjectHelper.addVariableEntry(fJProject2, new Path("InterpreterEnvironment_LIB_TEST"), null, null);//$NON-NLS-1$
+//		ScriptProjectHelper.addVariableEntry(fJProject2, new Path("InterpreterEnvironment_LIB_TEST"), null, null);//$NON-NLS-1$
 
 		fRoot1= ScriptProjectHelper.addSourceContainer(fJProject2, "src1");//$NON-NLS-1$
 		fPack1= fRoot1.createScriptFolder("pack1", true, null);//$NON-NLS-1$

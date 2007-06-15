@@ -56,7 +56,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 	private TclCompletionParser parser;
 
 	public TclCompletionEngine(/*ISearchableEnvironment environment,
-			CompletionRequestor requestor, Map options, IDLTKProject project*/) {
+			CompletionRequestor requestor, Map options, IScriptProject project*/) {
 //		super(environment, requestor, options, project);
 		this.parser = new TclCompletionParser();
 	}
@@ -286,7 +286,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		};
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(this.dltkProject);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(this.scriptProject);
 		} catch (CoreException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -691,7 +691,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		};
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(this.dltkProject);
+			toolkit = DLTKLanguageManager.getLanguageToolkit(this.scriptProject);
 		} catch (CoreException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

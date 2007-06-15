@@ -235,13 +235,13 @@ public class BPListLabelProvider extends LabelProvider
 				return path.lastSegment( );
 			case IBuildpathEntry.BPE_CONTAINER:
 				try {
-					IBuildpathContainer container = DLTKCore.getBuildpathContainer( path, cpentry.getDLTKProject( ) );
+					IBuildpathContainer container = DLTKCore.getBuildpathContainer( path, cpentry.getScriptProject( ) );
 					if( container != null ) {
 						return container.getDescription( );
 					}
 					BuildpathContainerInitializer initializer = DLTKCore.getBuildpathContainerInitializer( path.segment( 0 ) );
 					if( initializer != null ) {
-						String description = initializer.getDescription( path, cpentry.getDLTKProject( ) );
+						String description = initializer.getDescription( path, cpentry.getScriptProject( ) );
 						return Messages.format( NewWizardMessages.CPListLabelProvider_unbound_library, description );
 					}
 				}

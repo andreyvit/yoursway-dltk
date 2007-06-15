@@ -73,7 +73,7 @@ import org.eclipse.ui.actions.ActionContext;
 public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
     
     public static class DialogExplorerActionContext extends ActionContext {
-        private IScriptProject fDLTKProject;
+        private IScriptProject fScriptProject;
         private List fSelectedElements;
 
         /**
@@ -87,7 +87,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
          */
         public DialogExplorerActionContext(ISelection selection, IScriptProject jProject) {
             super(null);
-            fDLTKProject= jProject;
+            fScriptProject= jProject;
             fSelectedElements= ((IStructuredSelection)selection).toList();
             IStructuredSelection structuredSelection= new StructuredSelection(new Object[] {fSelectedElements, jProject});
             super.setSelection(structuredSelection);
@@ -104,14 +104,14 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
          */
         public DialogExplorerActionContext(List selectedElements, IScriptProject jProject) {
             super(null);
-            fDLTKProject= jProject;
+            fScriptProject= jProject;
             fSelectedElements= selectedElements;
             IStructuredSelection structuredSelection= new StructuredSelection(new Object[] {fSelectedElements, jProject});
             super.setSelection(structuredSelection);
         }
         
-        public IScriptProject getDLTKProject() {
-            return fDLTKProject;
+        public IScriptProject getScriptProject() {
+            return fScriptProject;
         }
         
         public List getSelectedElements() {
@@ -322,7 +322,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
         if (context == null) // can happen when disposing
             return;
         List selectedElements= context.getSelectedElements();
-        IScriptProject project= context.getDLTKProject();
+        IScriptProject project= context.getScriptProject();
         
         int type= MULTI;
         if (selectedElements.size() == 0) {
@@ -390,7 +390,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
         if (context == null) // can happen when disposing
             return;
         List selectedElements= context.getSelectedElements();
-        IScriptProject project= context.getDLTKProject();
+        IScriptProject project= context.getScriptProject();
         
         int type= MULTI;
         if (selectedElements.size() == 0) {

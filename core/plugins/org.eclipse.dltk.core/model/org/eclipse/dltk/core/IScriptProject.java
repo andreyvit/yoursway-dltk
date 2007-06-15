@@ -20,10 +20,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public interface IScriptProject extends IModelElement, IOpenable, IParent {
 
 	/**
-	 * Returns the <code>IProject</code> on which this <code>IDLTKProject</code>
+	 * Returns the <code>IProject</code> on which this <code>IScriptProject</code>
 	 * was created. This is handle-only method.
 	 * 
-	 * @return the <code>IProject</code> on which this <code>IDLTKProject</code>
+	 * @return the <code>IProject</code> on which this <code>IScriptProject</code>
 	 * was created
 	 */
 	IProject getProject();

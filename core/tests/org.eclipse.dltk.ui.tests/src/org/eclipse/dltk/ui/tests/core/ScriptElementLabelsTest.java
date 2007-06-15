@@ -36,7 +36,7 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 	}*/
 
 	protected void setUp() throws Exception {
-		fJProject1 = ScriptProjectHelper.createDLTKProject(PROJECT_NAME);
+		fJProject1 = ScriptProjectHelper.createScriptProject(PROJECT_NAME);
 	}
 
 

@@ -23,7 +23,7 @@ public interface IInternalRefactoringProcessorIds {
 	 * elements from the clipboard. The copy processor loads the following participants,
 	 * depending on the type of the element that gets copied:
 	 * <ul>
-	 *   <li><code>IDLTKProject</code>: no participants are loaded.</li>
+	 *   <li><code>IScriptProject</code>: no participants are loaded.</li>
 	 *   <li><code>IProjectFragment</code>: participants registered for copying 
 	 *       <code>IProjectFragment</code> and <code>ResourceMapping</code>.</li>
 	 *   <li><code>IScriptFolder</code>: participants registered for copying 

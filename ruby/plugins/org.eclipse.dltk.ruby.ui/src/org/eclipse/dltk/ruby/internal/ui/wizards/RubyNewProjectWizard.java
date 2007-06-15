@@ -128,7 +128,7 @@ public class RubyNewProjectWizard extends NewElementWizard implements INewWizard
 		boolean res = super.performFinish();
 		if (res) {
 			BasicNewProjectResourceWizard.updatePerspective(fConfigElement);
-			selectAndReveal(fSecondPage.getDLTKProject().getProject());
+			selectAndReveal(fSecondPage.getScriptProject().getProject());
 		}
 		return res;
 	}

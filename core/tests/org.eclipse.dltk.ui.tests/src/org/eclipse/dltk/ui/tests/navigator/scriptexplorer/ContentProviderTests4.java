@@ -184,7 +184,7 @@ public class ContentProviderTests4 extends TestCase{
 			ScriptProjectHelper.setAutoBuilding(false);
 		
 		//create project
-		fJProject3 = ScriptProjectHelper.createDLTKProject("TestProject3");//$NON-NLS-1$
+		fJProject3 = ScriptProjectHelper.createScriptProject("TestProject3");//$NON-NLS-1$
 		assertNotNull("project3 null", fJProject3);//$NON-NLS-1$
 
 		Object[] resource = fJProject3.getForeignResources();
@@ -202,7 +202,7 @@ public class ContentProviderTests4 extends TestCase{
 		assertNotNull(fFile2);
 
 		//add rt.jar
-//		jdk= DLTKProjectHelper.addVariableRTJar(fJProject3, "InterpreterEnvironment_LIB_TEST", null, null);//$NON-NLS-1$
+//		jdk= ScriptProjectHelper.addVariableRTJar(fJProject3, "InterpreterEnvironment_LIB_TEST", null, null);//$NON-NLS-1$
 //		assertTrue("jdk not found", jdk != null);//$NON-NLS-1$
 		
 		//create the ProjectFragment that represents the project as source folder

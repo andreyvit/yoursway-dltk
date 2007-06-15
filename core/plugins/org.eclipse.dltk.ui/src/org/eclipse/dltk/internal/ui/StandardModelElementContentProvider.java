@@ -52,7 +52,7 @@ import org.eclipse.jface.viewers.Viewer;
  * )
  *  Script project (
  * <code>
- * IDLTKProject
+ * IScriptProject
  * </code>
  * )
  *  package fragment root (
@@ -187,7 +187,7 @@ public class StandardModelElementContentProvider implements
 			return NO_CHILDREN;
 		try {
 			if (element instanceof IScriptModel)
-				return getDLTKProjects((IScriptModel) element);
+				return getScriptProjects((IScriptModel) element);
 			if (element instanceof IScriptProject)
 				return getProjectFragments((IScriptProject) element);
 			if (element instanceof IProjectFragment)
@@ -322,8 +322,8 @@ public class StandardModelElementContentProvider implements
 	 * Note: This method is for internal use only. Clients should not call this
 	 * method.
 	 */
-	protected Object[] getDLTKProjects(IScriptModel jm) throws ModelException {
-		return jm.getScriptProjects();
+	protected Object[] getScriptProjects(IScriptModel model) throws ModelException {
+		return model.getScriptProjects(); 
 	}
 
 	private Object[] getFolderContents(IScriptFolder fragment)
@@ -339,10 +339,10 @@ public class StandardModelElementContentProvider implements
 	private Object[] getResources(IFolder folder) {
 		try {
 			IResource[] members = folder.members();
-			IScriptProject dltkProject = DLTKCore.create(folder.getProject());
-			if (dltkProject == null || !dltkProject.exists())
+			IScriptProject scriptProject = DLTKCore.create(folder.getProject());
+			if (scriptProject == null || !scriptProject.exists())
 				return members;
-			boolean isFolderOnBuildpath = dltkProject.isOnBuildpath(folder);
+			boolean isFolderOnBuildpath = scriptProject.isOnBuildpath(folder);
 			List nonScriptResources = new ArrayList();
 			// Can be on buildpath but as a member of non-java resource folder
 			for (int i = 0; i < members.length; i++) {
@@ -352,10 +352,10 @@ public class StandardModelElementContentProvider implements
 				// We therefore exclude model elements from the list
 				// of non-script resources.
 				if (isFolderOnBuildpath) {
-					if (dltkProject.findProjectFragment(member.getFullPath()) == null) {
+					if (scriptProject.findProjectFragment(member.getFullPath()) == null) {
 						nonScriptResources.add(member);
 					}
-				} else if (!dltkProject.isOnBuildpath(member)) {
+				} else if (!scriptProject.isOnBuildpath(member)) {
 					nonScriptResources.add(member);
 				}
 			}
@@ -466,10 +466,6 @@ public class StandardModelElementContentProvider implements
 		System.arraycopy(a1, 0, res, 0, a1Len);
 		System.arraycopy(a2, 0, res, a1Len, a2Len);
 		return res;
-	}
-
-	protected Object[] getScriptProjects(IScriptModel jm) throws ModelException {
-		return jm.getScriptProjects();
 	}
 
 	protected Object skipProjectProjectFragment(IProjectFragment root) {

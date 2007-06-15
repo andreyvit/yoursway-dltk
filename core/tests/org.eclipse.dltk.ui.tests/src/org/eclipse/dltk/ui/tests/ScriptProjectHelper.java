@@ -47,7 +47,7 @@ import org.eclipse.ui.wizards.datatransfer.ZipFileStructureProvider;
 
 
 /**
- * Helper methods to set up a IDLTKProject.
+ * Helper methods to set up a IScriptProject.
  */
 public class ScriptProjectHelper {
 	
@@ -63,7 +63,7 @@ public class ScriptProjectHelper {
 		}	
 	}		
 	/**
-	 * Adds a source container to a IDLTKProject.
+	 * Adds a source container to a IScriptProject.
 	 * @param jproject The parent project
 	 * @param containerName The name of the new source container
 	 * @param inclusionFilters Inclusion filters to set
@@ -107,7 +107,7 @@ public class ScriptProjectHelper {
 	}
 	
 	/**
-	 * Adds a source container to a IDLTKProject.
+	 * Adds a source container to a IScriptProject.
 	 * @param jproject The parent project
 	 * @param containerName The name of the new source container
 	 * @return The handle to the new source container
@@ -118,7 +118,7 @@ public class ScriptProjectHelper {
 	}
 
 	/**
-	 * Adds a source container to a IDLTKProject.
+	 * Adds a source container to a IScriptProject.
 	 * @param jproject The parent project
 	 * @param containerName The name of the new source container
 	 * @param exclusionFilters Exclusion filters to set
@@ -130,13 +130,13 @@ public class ScriptProjectHelper {
 	}
 	
 	/**
-	 * Creates a IDLTKProject.
+	 * Creates a IScriptProject.
 	 * @param projectName The name of the project
 	 * @param binFolderName Name of the output folder
 	 * @return Returns the script project handle
 	 * @throws CoreException Project creation failed
 	 */	
-	public static IScriptProject createDLTKProject(String projectName) throws CoreException {
+	public static IScriptProject createScriptProject(String projectName) throws CoreException {
 		IWorkspaceRoot root= ResourcesPlugin.getWorkspace().getRoot();
 		IProject project= root.getProject(projectName);
 		
@@ -199,7 +199,7 @@ public class ScriptProjectHelper {
 	}
 
 	/**
-	 * Adds a library entry with source attachment to a IDLTKProject.
+	 * Adds a library entry with source attachment to a IScriptProject.
 	 * @param jproject The parent project
 	 * @param path The path of the library to add
 	 * @param sourceAttachPath The source attachment path

@@ -94,7 +94,7 @@ public class ProjectReferenceChange {
 	
 		} catch(CoreException e){
 			//TODO: DLTK: External project support
-//			if (!ExternalDLTKProject.EXTERNAL_PROJECT_NAME.equals(this.project.getElementName()))
+//			if (!ExternalScriptProject.EXTERNAL_PROJECT_NAME.equals(this.project.getElementName()))
 //				throw new ModelException(e);
 		}
 	}

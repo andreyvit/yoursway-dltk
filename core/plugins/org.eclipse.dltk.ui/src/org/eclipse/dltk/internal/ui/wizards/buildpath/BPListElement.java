@@ -486,9 +486,9 @@ public class BPListElement
 	/**
 	 * Gets the project.
 	 * 
-	 * @return Returns a IDLTKProject
+	 * @return Returns a IScriptProject
 	 */
-	public IScriptProject getDLTKProject( ) {
+	public IScriptProject getScriptProject( ) {
 
 		return fProject;
 	}

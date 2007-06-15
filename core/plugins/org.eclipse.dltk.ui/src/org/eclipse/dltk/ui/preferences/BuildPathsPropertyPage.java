@@ -72,7 +72,7 @@ public abstract class BuildPathsPropertyPage extends PropertyPage implements ISt
 		
 		IProject project= getProject();
 		Control result;
-		if (project == null || !isDLTKProject(project)) {
+		if (project == null || !isScriptProject(project)) {
 			result= createWithoutScript(parent);
 		} else if (!project.isOpen()) {
 			result= createForClosedProject(parent);
@@ -188,7 +188,7 @@ public abstract class BuildPathsPropertyPage extends PropertyPage implements ISt
 		return null;
 	}
 	
-	private boolean isDLTKProject(IProject proj) {		
+	private boolean isScriptProject(IProject proj) {		
 		return DLTKLanguageManager.hasScriptNature(proj);		
 	}
 	
@@ -201,7 +201,7 @@ public abstract class BuildPathsPropertyPage extends PropertyPage implements ISt
 			if (fBuildPathsBlock.hasChangesInDialog()) {
 				IWorkspaceRunnable runnable= new IWorkspaceRunnable() {
 					public void run(IProgressMonitor monitor)	throws CoreException, OperationCanceledException {
-						fBuildPathsBlock.configureDLTKProject(monitor);
+						fBuildPathsBlock.configureScriptProject(monitor);
 					}
 				};
 				WorkbenchRunnableAdapter op= new WorkbenchRunnableAdapter(runnable);

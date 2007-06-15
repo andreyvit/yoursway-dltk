@@ -239,7 +239,7 @@
           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclBuildPathPropertyPage"
           id="org.eclipse.dltk.tcl.ui.BuildpathProperties"
           name="%TclBuildPathPropertyPage.name"
-          objectClass="org.eclipse.dltk.core.IDLTKProject">
+          objectClass="org.eclipse.dltk.core.IScriptProject">
        <filter
              name="nature"
              value="org.eclipse.dltk.tcl.core.nature"/>
@@ -344,7 +344,7 @@
          <enablement>
            <or>
             <objectClass name="org.eclipse.core.resources.IProject"/>
-            <objectClass name="org.eclipse.dltk.core.IDLTKProject"/>
+            <objectClass name="org.eclipse.dltk.core.IScriptProject"/>
            </or>
          </enablement>
       </decorator>

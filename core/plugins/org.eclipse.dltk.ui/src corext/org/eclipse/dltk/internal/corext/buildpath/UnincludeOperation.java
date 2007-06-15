@@ -57,7 +57,7 @@ public class UnincludeOperation extends BuildpathModifierOperation {
         fException= null;
         try {
             List elements= getSelectedElements();
-            IScriptProject project= fInformationProvider.getDLTKProject();
+            IScriptProject project= fInformationProvider.getScriptProject();
             result= unInclude(elements, project, monitor);
         } catch (CoreException e) {
             fException= e;

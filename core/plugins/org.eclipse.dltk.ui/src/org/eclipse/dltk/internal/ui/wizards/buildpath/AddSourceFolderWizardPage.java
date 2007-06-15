@@ -235,7 +235,7 @@ public class AddSourceFolderWizardPage extends NewElementWizardPage {
 		fOrginalPath= newElement.getPath();
 		if (fOrginalPath == null) {
 			if (linkedMode) {
-				setDescription(Messages.format(NewWizardMessages.NewFolderDialog_createIn, newElement.getDLTKProject().getElementName()));
+				setDescription(Messages.format(NewWizardMessages.NewFolderDialog_createIn, newElement.getScriptProject().getElementName()));
 			} else {
 				setDescription(Messages.format(NewWizardMessages.AddSourceFolderWizardPage_description, fParent.getFullPath().toString()));
 			}
@@ -257,7 +257,7 @@ public class AddSourceFolderWizardPage extends NewElementWizardPage {
 		} else {
 			setFolderDialogText(fNewElement.getPath());
 		}
-		fRootDialogField.setEnabled(fNewElement.getDLTKProject() != null);
+		fRootDialogField.setEnabled(fNewElement.getScriptProject() != null);
 		
 		int buttonStyle= SWT.CHECK;
 		if ((fAllowConflict && fAllowAddExclusionPatterns) ||
@@ -381,7 +381,7 @@ public class AddSourceFolderWizardPage extends NewElementWizardPage {
 	}
 
 	private StatusInfo updateRootStatus() {		
-		IScriptProject scriptProject= fNewElement.getDLTKProject();		
+		IScriptProject scriptProject= fNewElement.getScriptProject();		
 		IProject project= scriptProject.getProject();		
 		
 		StatusInfo pathNameStatus= validatePathName(fRootDialogField.getText(), fParent);
@@ -529,7 +529,7 @@ public class AddSourceFolderWizardPage extends NewElementWizardPage {
 		if (oldPath == null)
 			return;
 		
-		IPath projPath= fNewElement.getDLTKProject().getProject().getFullPath();
+		IPath projPath= fNewElement.getScriptProject().getProject().getFullPath();
 		if (projPath.isPrefixOf(oldPath)) {
 			oldPath= oldPath.removeFirstSegments(projPath.segmentCount()).addTrailingSeparator();
 		}
@@ -580,7 +580,7 @@ public class AddSourceFolderWizardPage extends NewElementWizardPage {
 		IWorkspace workspace= DLTKUIPlugin.getWorkspace();
 		IPath path= Path.fromOSString(fLinkFields.fLinkLocation.getText());
 
-		IFolder folder= fNewElement.getDLTKProject().getProject().getFolder(new Path(folderName));
+		IFolder folder= fNewElement.getScriptProject().getProject().getFolder(new Path(folderName));
 		IStatus locationStatus= workspace.validateLinkLocation(folder, path);
 		if (locationStatus.matches(IStatus.ERROR))
 			return locationStatus;
@@ -680,7 +680,7 @@ public class AddSourceFolderWizardPage extends NewElementWizardPage {
 		ILabelProvider lp= new WorkbenchLabelProvider();
 		ITreeContentProvider cp= new WorkbenchContentProvider();
 
-		IProject currProject= fNewElement.getDLTKProject().getProject();
+		IProject currProject= fNewElement.getScriptProject().getProject();
 
 		ElementTreeSelectionDialog dialog= new ElementTreeSelectionDialog(getShell(), lp, cp) {
 			protected Control createDialogArea(Composite parent) {

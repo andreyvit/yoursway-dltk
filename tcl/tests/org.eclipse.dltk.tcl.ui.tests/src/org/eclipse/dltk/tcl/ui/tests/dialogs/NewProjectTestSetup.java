@@ -37,7 +37,7 @@ public class NewProjectTestSetup extends TestSetup {
     public static final String WORKSPACE_PROJECT_SRC= "WorkspaceProjectWithSourceAndInFolder";
     
     public static IScriptProject getProject(String projectName) throws CoreException {
-        return ScriptProjectHelper.createDLTKProject(projectName);
+        return ScriptProjectHelper.createScriptProject(projectName);
     }
     
 //    public static IBuildpathEntry[] getDefaultBuildpath() {

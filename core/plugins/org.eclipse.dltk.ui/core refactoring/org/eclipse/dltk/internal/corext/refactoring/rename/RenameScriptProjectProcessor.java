@@ -53,7 +53,7 @@ public class RenameScriptProjectProcessor extends ScriptRenameProcessor implemen
 	private IScriptProject fProject;
 	private boolean fUpdateReferences;
 
-	public static final String IDENTIFIER= "org.eclipse.dltk.ui.renameDLTKProjectProcessor"; //$NON-NLS-1$
+	public static final String IDENTIFIER= "org.eclipse.dltk.ui.renameScriptProjectProcessor"; //$NON-NLS-1$
 
 	/**
 	 * Creates a new renamescriptproject processor.

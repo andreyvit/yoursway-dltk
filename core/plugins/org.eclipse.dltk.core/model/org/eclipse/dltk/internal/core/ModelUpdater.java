@@ -69,7 +69,7 @@ public class ModelUpdater {
 
 		int elementType = element.getElementType();
 		if (elementType == IModelElement.SCRIPT_PROJECT) {
-			// project add is handled by DLTKProject.configure() because
+			// project add is handled by ScriptProject.configure() because
 			// when a project is created, it does not yet have a script nature
 			addToParentInfo(element);
 			this.projectsToUpdate.add(element);

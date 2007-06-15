@@ -205,9 +205,9 @@ public class ProjectFragmentProvider implements IPropertyChangeListener {
 //				IModelElement element= DLTKCore.create(folder);
 //				if (element instanceof IScriptFolder) {
 					IProject project = folder.getProject();
-					IScriptProject dltkProject= DLTKCore.create(project);
-					if (dltkProject != null) {
-						if (dltkProject.isOnBuildpath(folder))
+					IScriptProject scriptProject= DLTKCore.create(project);
+					if (scriptProject != null) {
+						if (scriptProject.isOnBuildpath(folder))
 							list.add(folder);	
 					}
 //				} 
