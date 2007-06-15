@@ -11,7 +11,7 @@ package org.eclipse.dltk.ruby.internal.ui.text.completion;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.ui.text.completion.ScriptTypeCompletionProposal;
 import org.eclipse.jface.text.BadLocationException;
@@ -24,11 +24,11 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 
 public class RubyOverrideCompletionProposal extends ScriptTypeCompletionProposal implements ICompletionProposalExtension4 {
 
-	private IDLTKProject fDTLKProject;
+	private IScriptProject fDTLKProject;
 	private String fMethodName;
 	private String[] fParamTypes;
 
-	public RubyOverrideCompletionProposal(IDLTKProject jproject, ISourceModule cu, String methodName, String[] paramTypes, int start, int length, String displayName, String completionProposal) {
+	public RubyOverrideCompletionProposal(IScriptProject jproject, ISourceModule cu, String methodName, String[] paramTypes, int start, int length, String displayName, String completionProposal) {
 		super(completionProposal, cu, start, length, null, displayName, 0);
 		Assert.isNotNull(jproject);
 		Assert.isNotNull(methodName);

@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.dltk.tcl.internal.ui.preferences.TclBuildPathsBlock;
 import org.eclipse.dltk.ui.util.BusyIndicatorRunnableContext;
@@ -99,7 +99,7 @@ public class NewTclProjectWizardPage extends NewElementWizardPage {
 	 * Sets the default buildpath to be used for the new Script project.
 	 * <p>
 	 * The caller of this method is responsible for creating the buildpath entries 
-	 * for the <code>IScriptProject</code> that corresponds to the created project.
+	 * for the <code>IDLTKProject</code> that corresponds to the created project.
 	 * The caller is responsible for creating any new folders that might be mentioned
 	 * on the buildpath.
 	 * </p>
@@ -164,7 +164,7 @@ public class NewTclProjectWizardPage extends NewElementWizardPage {
 	 * @return the Script project handle
 	 * @see #getProjectHandle()
 	 */	
-	public IDLTKProject getNewScriptProject() {
+	public IScriptProject getNewScriptProject() {
 		return DLTKCore.create(getProjectHandle());
 	}	
 

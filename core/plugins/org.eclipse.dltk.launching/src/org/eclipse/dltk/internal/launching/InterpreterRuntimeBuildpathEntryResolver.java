@@ -21,7 +21,7 @@ import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IRuntimeBuildpathEntry;
@@ -58,7 +58,7 @@ public class InterpreterRuntimeBuildpathEntryResolver implements IRuntimeBuildpa
 		return resolveLibraryLocations(InterpreterEnvironment, entry.getBuildpathProperty());
 	}
 	
-	private String getNatureFromProject (IDLTKProject project) {
+	private String getNatureFromProject (IScriptProject project) {
 		try {
 			return DLTKLanguageManager.getLanguageToolkit(project).getNatureID();			
 		} catch (CoreException e) {
@@ -70,7 +70,7 @@ public class InterpreterRuntimeBuildpathEntryResolver implements IRuntimeBuildpa
 	/**
 	 * @see IRuntimeBuildpathEntryResolver#resolveRuntimeBuildpathEntry(IRuntimeBuildpathEntry, IScriptProject)
 	 */
-	public IRuntimeBuildpathEntry[] resolveRuntimeBuildpathEntry(IRuntimeBuildpathEntry entry, IDLTKProject project) throws CoreException {
+	public IRuntimeBuildpathEntry[] resolveRuntimeBuildpathEntry(IRuntimeBuildpathEntry entry, IScriptProject project) throws CoreException {
 		IInterpreterInstall InterpreterEnvironment = null;
 		if (entry.getType() == IRuntimeBuildpathEntry.CONTAINER && entry.getPath().segmentCount() > 1) {
 			// a specific Interpreter

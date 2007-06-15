@@ -73,7 +73,7 @@ public class CommitWorkingCopyOperation extends ModelOperation {
 			beginTask(Messages.workingCopy_commit, 2); 
 			SourceModule workingCopy = getSourceModule();
 			
-			if (ExternalDLTKProject.EXTERNAL_PROJECT_NAME.equals(workingCopy.getScriptProject().getElementName())) {
+			if (ExternalScriptProject.EXTERNAL_PROJECT_NAME.equals(workingCopy.getScriptProject().getElementName())) {
 				// case of a working copy without a resource
 				workingCopy.getBuffer().save(this.progressMonitor, this.force);
 				return;

@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.ui.wizards.buildpath;
 
 import java.util.List;
 
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.LayoutUtil;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.ListDialogField;
@@ -65,7 +65,7 @@ public class BuildpathOrderingWorkbookPage extends BuildPathBasePage {
 		return true;
 	}
 	
-	public void init(IDLTKProject scriptProject) {
+	public void init(IScriptProject scriptProject) {
 	}
 
 }

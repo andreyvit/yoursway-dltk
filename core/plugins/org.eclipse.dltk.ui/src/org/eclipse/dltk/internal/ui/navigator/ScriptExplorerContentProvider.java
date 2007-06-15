@@ -25,7 +25,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
@@ -157,8 +157,8 @@ public abstract class ScriptExplorerContentProvider extends
 			} else {
 				children = super.getChildren(parentElement);
 			}
-			if (parentElement instanceof IDLTKProject) {
-				IDLTKProject project = (IDLTKProject) parentElement;
+			if (parentElement instanceof IScriptProject) {
+				IScriptProject project = (IScriptProject) parentElement;
 				return rootsAndContainers(project, children);
 			} else
 				return children;
@@ -167,7 +167,7 @@ public abstract class ScriptExplorerContentProvider extends
 		}
 	}
 
-	private Object[] rootsAndContainers(IDLTKProject project, Object[] roots)
+	private Object[] rootsAndContainers(IScriptProject project, Object[] roots)
 			throws ModelException {
 		List result = new ArrayList(roots.length);
 		Set containers = new HashSet(roots.length);
@@ -222,7 +222,7 @@ public abstract class ScriptExplorerContentProvider extends
 		//
 		if (element instanceof IProjectFragment) {
 			IProjectFragment root = (IProjectFragment) element;
-			IDLTKProject project = root.getScriptProject();
+			IScriptProject project = root.getScriptProject();
 			try {
 				IBuildpathEntry[] entries = project.getRawBuildpath();
 				for (int i = 0; i < entries.length; i++) {
@@ -299,7 +299,7 @@ public abstract class ScriptExplorerContentProvider extends
 		int elementType = element.getElementType();
 		if (elementType != IModelElement.SCRIPT_MODEL
 				&& elementType != IModelElement.SCRIPT_PROJECT) {
-			IDLTKProject proj = element.getScriptProject();
+			IScriptProject proj = element.getScriptProject();
 			if (proj == null || !proj.getProject().isOpen()) // TODO: Not
 				/*
 				 * needed if parent already did the 'open' check!
@@ -461,7 +461,7 @@ public abstract class ScriptExplorerContentProvider extends
 	}
 
 	private boolean isOnBuildpath(ISourceModule element) {
-		IDLTKProject project = element.getScriptProject();
+		IScriptProject project = element.getScriptProject();
 		if (project == null || !project.exists())
 			return false;
 		return project.isOnBuildpath(element);

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
@@ -92,10 +92,10 @@ public class EditFiltersOperation extends BuildpathModifierOperation {
 	public boolean isValid(List elements, int[] types) throws ModelException {
 		if (elements.size() != 1)
 			return false;
-		IDLTKProject project= fInformationProvider.getDLTKProject();
+		IScriptProject project= fInformationProvider.getDLTKProject();
 		Object element= elements.get(0);
 		
-		if (element instanceof IDLTKProject) {
+		if (element instanceof IScriptProject) {
 			if (isSourceFolder(project))
 				return true;
 		} else if (element instanceof IProjectFragment) {

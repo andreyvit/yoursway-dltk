@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
@@ -27,7 +27,7 @@ import org.eclipse.dltk.internal.corext.buildpath.BuildpathModifier;
 import org.eclipse.dltk.internal.corext.buildpath.IBuildpathInformationProvider;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.BPListElement;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.newsourcepage.BuildpathModifierQueries;
-import org.eclipse.dltk.ui.tests.DLTKProjectHelper;
+import org.eclipse.dltk.ui.tests.ScriptProjectHelper;
 
 
 public class NewEmptyProjectWizardTest extends NewProjectWizardTest {
@@ -237,7 +237,7 @@ public class NewEmptyProjectWizardTest extends NewProjectWizardTest {
         IPath[] paths= getPaths();
         assertFalse(contains(fProject.getPath(), paths, null));
         
-        IDLTKProject project= (IDLTKProject)executeOperation(IBuildpathInformationProvider.ADD_SEL_SF_TO_BP, fProject, null, null);
+        IScriptProject project= (IScriptProject)executeOperation(IBuildpathInformationProvider.ADD_SEL_SF_TO_BP, fProject, null, null);
         
         paths= getPaths();
         assertTrue(contains(fProject.getPath(), paths, null));
@@ -389,7 +389,7 @@ public class NewEmptyProjectWizardTest extends NewProjectWizardTest {
         // create root parent for zip file
         IProjectFragment parentRoot= createFragmentRootAndKeepProjAsRoot();
         IPath libraryPath= parentRoot.getPath().append("archive.zip");
-        IProjectFragment root= DLTKProjectHelper.addLibrary(fProject, libraryPath);
+        IProjectFragment root= ScriptProjectHelper.addLibrary(fProject, libraryPath);
         assertFalse(BuildpathModifier.getBuildpathEntryFor(root.getPath(), fProject, IBuildpathEntry.BPE_LIBRARY) == null);
         
         // after creation, the zip file is on the buildpath --> remove it first
@@ -411,7 +411,7 @@ public class NewEmptyProjectWizardTest extends NewProjectWizardTest {
         // create root parent for zip file
         IProjectFragment parentRoot= BuildpathModifier.getFragmentRoot(fProject.getUnderlyingResource(), fProject, null);
         IPath libraryPath= parentRoot.getPath().append("archive.zip");
-        IProjectFragment root= DLTKProjectHelper.addLibrary(fProject, libraryPath);
+        IProjectFragment root= ScriptProjectHelper.addLibrary(fProject, libraryPath);
         assertFalse(BuildpathModifier.getBuildpathEntryFor(root.getPath(), fProject, IBuildpathEntry.BPE_LIBRARY) == null);
         assertTrue(root.getParent().equals(fProject));
         
@@ -434,7 +434,7 @@ public class NewEmptyProjectWizardTest extends NewProjectWizardTest {
         // create root parent for zip file
         IProjectFragment parentRoot= BuildpathModifier.getFragmentRoot(fProject.getUnderlyingResource(), fProject, null);
         IPath libraryPath= parentRoot.getPath().append("archive.zip");
-        IProjectFragment root= DLTKProjectHelper.addLibrary(fProject, libraryPath);
+        IProjectFragment root= ScriptProjectHelper.addLibrary(fProject, libraryPath);
         assertFalse(BuildpathModifier.getBuildpathEntryFor(root.getPath(), fProject, IBuildpathEntry.BPE_LIBRARY) == null);
         assertTrue(root.getParent().equals(fProject));
         
@@ -462,7 +462,7 @@ public class NewEmptyProjectWizardTest extends NewProjectWizardTest {
         // create root parent for zip file
         IProjectFragment parentRoot= createFragmentRootAndKeepProjAsRoot();
         IPath libraryPath= parentRoot.getPath().append("archive.zip");
-        IProjectFragment root= DLTKProjectHelper.addLibrary(fProject, libraryPath);
+        IProjectFragment root= ScriptProjectHelper.addLibrary(fProject, libraryPath);
         assertFalse(BuildpathModifier.getBuildpathEntryFor(root.getPath(), fProject, IBuildpathEntry.BPE_LIBRARY) == null);
         
         // after creation, the zip file is on the buildpath --> remove it first
@@ -484,7 +484,7 @@ public class NewEmptyProjectWizardTest extends NewProjectWizardTest {
         // create root parent for zip file
         IProjectFragment parentRoot= BuildpathModifier.getFragmentRoot(fProject.getUnderlyingResource(), fProject, null);
         IPath libraryPath= parentRoot.getPath().append("archive.zip");
-        IProjectFragment root= DLTKProjectHelper.addLibrary(fProject, libraryPath);
+        IProjectFragment root= ScriptProjectHelper.addLibrary(fProject, libraryPath);
         assertFalse(BuildpathModifier.getBuildpathEntryFor(root.getPath(), fProject, IBuildpathEntry.BPE_LIBRARY) == null);
         assertTrue(root.getParent().equals(fProject));
         
@@ -507,7 +507,7 @@ public class NewEmptyProjectWizardTest extends NewProjectWizardTest {
         // create root parent for zip file
         IProjectFragment parentRoot= BuildpathModifier.getFragmentRoot(fProject.getUnderlyingResource(), fProject, null);
         IPath libraryPath= parentRoot.getPath().append("archive.zip");
-        IProjectFragment root= DLTKProjectHelper.addLibrary(fProject, libraryPath);
+        IProjectFragment root= ScriptProjectHelper.addLibrary(fProject, libraryPath);
         assertFalse(BuildpathModifier.getBuildpathEntryFor(root.getPath(), fProject, IBuildpathEntry.BPE_LIBRARY) == null);
         assertTrue(root.getParent().equals(fProject));
         
@@ -822,7 +822,7 @@ public class NewEmptyProjectWizardTest extends NewProjectWizardTest {
             }
             
         };
-        IDLTKProject jProject= (IDLTKProject)executeOperation(IBuildpathInformationProvider.EDIT_FILTERS, fProject, null, query);
+        IScriptProject jProject= (IScriptProject)executeOperation(IBuildpathInformationProvider.EDIT_FILTERS, fProject, null, query);
         assertTrue(jProject.equals(fProject));
         
         root= getProjectRoot(fProject.getUnderlyingResource());

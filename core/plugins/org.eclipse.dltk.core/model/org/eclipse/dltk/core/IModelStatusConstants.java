@@ -224,7 +224,7 @@ public interface IModelStatusConstants {
 	 * Status constant indicating that an inclusion or an exclusion pattern got specified
 	 * on a buildpath source entry, though it was explicitely disabled 
 	 * according to its project preference settings.
-	 * @see org.eclipse.dltk.core.IDLTKProject#getOptions(boolean)
+	 * @see org.eclipse.dltk.core.IScriptProject#getOptions(boolean)
 	 *
 	 */
 	public static final int DISABLED_BP_EXCLUSION_PATTERNS = 1002;

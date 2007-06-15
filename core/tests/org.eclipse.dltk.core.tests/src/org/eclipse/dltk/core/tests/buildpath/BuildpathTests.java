@@ -31,7 +31,7 @@ import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IModelMarker;
@@ -45,7 +45,7 @@ import org.eclipse.dltk.core.tests.model.ModifyingResourceTests;
 import org.eclipse.dltk.core.tests.util.Util;
 import org.eclipse.dltk.internal.core.ArchiveProjectFragment;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.utils.CorePrinter;
 
 
@@ -111,7 +111,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 
 	private void assertEncodeDecodeEntry(String projectName, String expectedEncoded,
 			IBuildpathEntry entry) {
-		IDLTKProject project = getScriptProject(projectName);
+		IScriptProject project = getScriptProject(projectName);
 		String encoded = project.encodeBuildpathEntry(entry);
 		assertSourceEquals("Unexpected encoded entry", expectedEncoded, encoded);
 		IBuildpathEntry decoded = project.decodeBuildpathEntry(encoded);
@@ -154,7 +154,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 		file.mkdirs();
 		return file;
 	}
-	protected int numberOfCycleMarkers(IDLTKProject scriptProject) throws CoreException {
+	protected int numberOfCycleMarkers(IScriptProject scriptProject) throws CoreException {
 		IMarker[] markers = scriptProject.getProject().findMarkers(IModelMarker.BUILDPATH_PROBLEM_MARKER, false, IResource.DEPTH_ZERO);
 		int result = 0;
 		for (int i = 0, length = markers.length; i < length; i++) {
@@ -177,7 +177,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	}
 
 	public void test001() throws ModelException {
-		DLTKProject project = (DLTKProject) getScriptProject(BUILDPATH_PRJ_0);
+		ScriptProject project = (ScriptProject) getScriptProject(BUILDPATH_PRJ_0);
 		assertNotNull(project);
 		IBuildpathEntry entrys[] = project.getRawBuildpath();
 		assertEquals(3, entrys.length);
@@ -211,8 +211,8 @@ public class BuildpathTests extends ModifyingResourceTests {
 	}
 
 	public void test002() throws ModelException {
-		DLTKProject project = (DLTKProject) getScriptProject(BUILDPATH_PRJ_0);
-		DLTKProject project2 = (DLTKProject) getScriptProject(BUILDPATH_PRJ_1);
+		ScriptProject project = (ScriptProject) getScriptProject(BUILDPATH_PRJ_0);
+		ScriptProject project2 = (ScriptProject) getScriptProject(BUILDPATH_PRJ_1);
 		assertNotNull(project);
 		IProjectFragment fragments[] = project.getProjectFragments();
 		IBuildpathEntry entrys[] = project.getResolvedBuildpath();
@@ -232,8 +232,8 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 * @throws ModelException
 	 */
 	public void test003() throws ModelException {
-		DLTKProject project = (DLTKProject) getScriptProject(BUILDPATH_PRJ_0);
-		DLTKProject project2 = (DLTKProject) getScriptProject(BUILDPATH_PRJ_1);
+		ScriptProject project = (ScriptProject) getScriptProject(BUILDPATH_PRJ_0);
+		ScriptProject project2 = (ScriptProject) getScriptProject(BUILDPATH_PRJ_1);
 		assertNotNull(project);
 		IProjectFragment fragments[] = project.getProjectFragments();
 		IBuildpathEntry entrys[] = project.getResolvedBuildpath();
@@ -253,7 +253,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */
 	public void test004() throws Exception {
 		setUpScriptProject(BUILDPATH_PRJ_2);
-		IDLTKProject project = (IDLTKProject) getScriptProject(BUILDPATH_PRJ_2);
+		IScriptProject project = (IScriptProject) getScriptProject(BUILDPATH_PRJ_2);
 		assertNotNull(project);
 		IBuildpathEntry entrys[] = project.getRawBuildpath();
 		assertEquals(1, entrys.length);
@@ -266,7 +266,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 		
 		System.out.println("Model:");
 		CorePrinter printer = new CorePrinter(System.out);
-		((DLTKProject)project).printNode(printer);
+		((ScriptProject)project).printNode(printer);
 		printer.flush();
 		
 		deleteProject(BUILDPATH_PRJ_2);		
@@ -281,7 +281,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 			URL url = ModelTestsPlugin.getDefault().getBundle().getEntry("workspace/Buildpath3");
 			URL res = FileLocator.resolve(url);
 			String filePath = res.getFile();			
-			IDLTKProject proj = this.createScriptProject("P", TEST_NATURE, new String[] { "src" });
+			IScriptProject proj = this.createScriptProject("P", TEST_NATURE, new String[] { "src" });
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length + 1];
@@ -298,7 +298,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 			
 			System.out.println("Model:");
 			CorePrinter printer = new CorePrinter(System.out, true);
-			((DLTKProject)proj).printNode(printer);
+			((ScriptProject)proj).printNode(printer);
 			printer.flush();
 		} finally {
 			this.deleteProject("P");			
@@ -310,7 +310,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 			URL url = ModelTestsPlugin.getDefault().getBundle().getEntry("/workspace/Buildpath3");
 			URL res = FileLocator.resolve(url);			
 			String filePath = res.getFile();			
-			IDLTKProject proj = this.createScriptProject("P", TEST_NATURE, new String[] { "src" });
+			IScriptProject proj = this.createScriptProject("P", TEST_NATURE, new String[] { "src" });
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length + 1];
@@ -328,7 +328,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 			
 			System.out.println("Model:");
 			CorePrinter printer = new CorePrinter(System.out, true);
-			((DLTKProject)proj).printNode(printer);
+			((ScriptProject)proj).printNode(printer);
 			printer.flush();
 		} finally {
 			this.deleteProject("P");			
@@ -377,13 +377,13 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */
 	public void testEmptyContainer() throws CoreException {
 		try {
-			IDLTKProject proj = createScriptProject("P", TEST_NATURE, null);
+			IScriptProject proj = createScriptProject("P", TEST_NATURE, null);
 
 			startDeltas();
 
 			// create container
 			DLTKCore.setBuildpathContainer(new Path("container/default"),
-					new IDLTKProject[] { proj }, new IBuildpathContainer[] { new TestContainer(
+					new IScriptProject[] { proj }, new IBuildpathContainer[] { new TestContainer(
 							new Path("container/default"), new IBuildpathEntry[] {}) }, null);
 
 			// set P's Buildpath with this container
@@ -406,7 +406,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	public void testInvalidSourceFolder() throws CoreException {
 		try {
 			createScriptProject("P1i", TEST_NATURE, new String[]{""});
-			IDLTKProject proj = createScriptProject("P2i", TEST_NATURE,
+			IScriptProject proj = createScriptProject("P2i", TEST_NATURE,
 					new String[]{""}, new String[] { "/P1i/src1/src2" });
 			assertMarkers("Unexpected markers",
 					"Project P2i is missing required source folder: \'/P1i/src1/src2\'", proj);
@@ -421,7 +421,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */
 	public void testBuildpathValidation01() throws CoreException {
 		try {
-			IDLTKProject proj = this.createScriptProject("P", TEST_NATURE, new String[] { "src" });
+			IScriptProject proj = this.createScriptProject("P", TEST_NATURE, new String[] { "src" });
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length + 1];
@@ -438,7 +438,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	}	
 	public void testBuildpathLibraryValidation01() throws CoreException {
 		try {
-			IDLTKProject proj = this.createScriptProject("Pv0", TEST_NATURE, new String[] { "src" });
+			IScriptProject proj = this.createScriptProject("Pv0", TEST_NATURE, new String[] { "src" });
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length + 1];
@@ -459,7 +459,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */
 	public void testBuildpathValidation02() throws CoreException {
 		try {
-			IDLTKProject proj = this.createScriptProject("P", TEST_NATURE, new String[] { "src" });
+			IScriptProject proj = this.createScriptProject("P", TEST_NATURE, new String[] { "src" });
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length + 1];
@@ -480,7 +480,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */ 
 	public void testBuildpathValidation03() throws CoreException {
 		try {
-			IDLTKProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {"src"});
+			IScriptProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {"src"});
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 		
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length+1];
@@ -500,15 +500,15 @@ public class BuildpathTests extends ModifyingResourceTests {
 
 	public void testBuildpathValidation05() throws CoreException {
 
-		IDLTKProject[] p = null;
+		IScriptProject[] p = null;
 		try {
 
-			p = new IDLTKProject[] {
+			p = new IScriptProject[] {
 					this.createScriptProject("P0v", TEST_NATURE, new String[] { "src0", "src1" }),
 					this.createScriptProject("P1v", TEST_NATURE, new String[] { "src1" }), };
 
 			DLTKCore.setBuildpathContainer(new Path("container/default"),
-					new IDLTKProject[] { p[0] }, new IBuildpathContainer[] { new TestContainer(
+					new IScriptProject[] { p[0] }, new IBuildpathContainer[] { new TestContainer(
 							new Path("container/default"), new IBuildpathEntry[] { DLTKCore
 									.newSourceEntry(new Path("/P0v/src0")) }) }, null);
 
@@ -535,10 +535,10 @@ public class BuildpathTests extends ModifyingResourceTests {
 	}
 	public void testBuildpathValidation06() throws CoreException {
 		
-		IDLTKProject[] p = null;
+		IScriptProject[] p = null;
 		try {
 
-			p = new IDLTKProject[]{
+			p = new IScriptProject[]{
 				this.createScriptProject("P0", TEST_NATURE, new String[] {"src"} ),
 			};
 
@@ -563,7 +563,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */ 
 	public void testBuildpathValidation07() throws CoreException {
 		try {
-			IDLTKProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {"src"} );
+			IScriptProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {"src"} );
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 		
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length+1];
@@ -586,7 +586,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */ 
 	public void testBuildpathValidation08() throws CoreException {
 		try {
-			IDLTKProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {});
+			IScriptProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {});
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 		
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length+1];
@@ -609,7 +609,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */ 
 	public void testBuildpathValidation15() throws CoreException {
 		try {
-			IDLTKProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {"src"} );
+			IScriptProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {"src"} );
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 		
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length+1];
@@ -630,7 +630,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */
 	public void testBuildpathValidation21() throws CoreException {
 		try {
-			IDLTKProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {});
+			IScriptProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {});
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 		
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length+1];
@@ -656,7 +656,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */
 	public void testBuildpathValidation23() throws CoreException {
 		try {
-			IDLTKProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {});
+			IScriptProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {});
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 		
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length+2];
@@ -679,7 +679,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */ 
 	public void testBuildpathValidation34() throws CoreException {
 		try {
-			IDLTKProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {"src"});
+			IScriptProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {"src"});
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 		
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length+1];
@@ -701,7 +701,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */ 
 	public void testBuildpathValidation36() throws CoreException {
 		try {
-			IDLTKProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {"src"});
+			IScriptProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {"src"});
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 		
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length+1];
@@ -722,7 +722,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */
 	public void testBuildpathValidation37() throws CoreException {
 		try {
-			IDLTKProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {} );
+			IScriptProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {} );
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 		
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length+1];
@@ -748,7 +748,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */ 
 	public void testBuildpathValidation42() throws CoreException {
 		try {
-			IDLTKProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {"src"});
+			IScriptProject proj =  this.createScriptProject("P", TEST_NATURE, new String[] {"src"});
 			proj.setOption(DLTKCore.CORE_ENABLE_BUILDPATH_EXCLUSION_PATTERNS, DLTKCore.DISABLED);
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 		
@@ -772,7 +772,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */
 	public void testBuildpathWithDuplicateEntries() throws CoreException {
 		try {
-			IDLTKProject project =  this.createScriptProject("P", TEST_NATURE, new String[] {"src"});
+			IScriptProject project =  this.createScriptProject("P", TEST_NATURE, new String[] {"src"});
 			IBuildpathEntry[] cp= project.getRawBuildpath();
 			IBuildpathEntry[] newCp= new IBuildpathEntry[cp.length *2];
 			System.arraycopy(cp, 0, newCp, 0, cp.length);
@@ -794,7 +794,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */
 	public void testBuildpathWithNonExistentProjectEntry() throws CoreException {
 		try {
-			IDLTKProject project= this.createScriptProject("P", TEST_NATURE, new String[] {"src"});
+			IScriptProject project= this.createScriptProject("P", TEST_NATURE, new String[] {"src"});
 			IBuildpathEntry[] originalPath= project.getRawBuildpath();
 			IProjectFragment[] originalRoots= project.getProjectFragments();
 		
@@ -828,7 +828,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 */
 	public void testBuildpathWithNonExistentSourceEntry() throws CoreException {
 		try {
-			IDLTKProject project= this.createScriptProject("P", TEST_NATURE, new String[] {"src"});
+			IScriptProject project= this.createScriptProject("P", TEST_NATURE, new String[] {"src"});
 			IBuildpathEntry[] originalPath= project.getRawBuildpath();
 			IProjectFragment[] originalRoots= project.getProjectFragments();
 
@@ -861,12 +861,12 @@ public class BuildpathTests extends ModifyingResourceTests {
 	public void testCycleReport() throws CoreException {
 
 		try {
-			IDLTKProject p1 = this.createScriptProject("p1_", TEST_NATURE, new String[] {""} );
-			IDLTKProject p2 = this.createScriptProject("p2_", TEST_NATURE, new String[] {""} );
-			IDLTKProject p3 = this.createScriptProject("p3_", TEST_NATURE, new String[] {""},  new String[] {"/p2_"} );
+			IScriptProject p1 = this.createScriptProject("p1_", TEST_NATURE, new String[] {""} );
+			IScriptProject p2 = this.createScriptProject("p2_", TEST_NATURE, new String[] {""} );
+			IScriptProject p3 = this.createScriptProject("p3_", TEST_NATURE, new String[] {""},  new String[] {"/p2_"} );
 		
 			// Ensure no cycle reported
-			IDLTKProject[] projects = { p1, p2, p3 };
+			IScriptProject[] projects = { p1, p2, p3 };
 			int cycleMarkerCount = 0;
 			for (int i = 0; i < projects.length; i++){
 				cycleMarkerCount += this.numberOfCycleMarkers(projects[i]);
@@ -908,7 +908,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 * and a delta with removed roots.
 	 */
 	public void testEmptyBuildpath() throws CoreException {
-		IDLTKProject project = this.createScriptProject("P", TEST_NATURE, new String[] {""} );
+		IScriptProject project = this.createScriptProject("P", TEST_NATURE, new String[] {""} );
 		try {
 			startDeltas();
 			setBuildpath(project, new IBuildpathEntry[] {});
@@ -951,7 +951,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 	 * Tests the cross project Buildpath setting
 	 */
 	public void testBuildpathCrossProject() throws CoreException {
-		IDLTKProject project = this.createScriptProject("P1c", TEST_NATURE, new String[] {""} );
+		IScriptProject project = this.createScriptProject("P1c", TEST_NATURE, new String[] {""} );
 		this.createScriptProject("P2c", TEST_NATURE, new String[] {});
 		try {
 			startDeltas();

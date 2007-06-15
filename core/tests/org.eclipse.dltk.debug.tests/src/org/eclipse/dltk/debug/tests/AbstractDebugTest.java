@@ -17,7 +17,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IBreakpointManager;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.util.SafeRunnable;
 
@@ -28,7 +28,7 @@ public abstract class AbstractDebugTest extends TestCase {
 	
 	public static final int DEFAULT_TIMEOUT = 30000;
 	
-	public static IDLTKProject fScriptProject;
+	public static IScriptProject fScriptProject;
 	
 	/**
 	 * Returns the launch manager
@@ -60,7 +60,7 @@ public abstract class AbstractDebugTest extends TestCase {
 	 * 
 	 * @return the test project
 	 */
-	protected IDLTKProject getDLTKProject() {
+	protected IScriptProject getDLTKProject() {
 		return getDLTKProject("DebugTests");
 	}
 	
@@ -70,7 +70,7 @@ public abstract class AbstractDebugTest extends TestCase {
 	 * @param name project name
 	 * @return the Script project with the given name
 	 */
-	protected IDLTKProject getDLTKProject(String name) {
+	protected IScriptProject getDLTKProject(String name) {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 		return DLTKCore.create(project);
 	}

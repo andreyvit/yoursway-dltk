@@ -10,11 +10,11 @@
 package org.eclipse.dltk.internal.core;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 
 
 class ExternalProjectFragmentInfo extends ProjectFragmentInfo {
-	public Object[] getForeignResources(IDLTKProject scriptProject, IResource resource, ProjectFragment fragment) {
+	public Object[] getForeignResources(IScriptProject scriptProject, IResource resource, ProjectFragment fragment) {
 		return getForeignResources();
 	}
 	public Object[] getForeignResources() {

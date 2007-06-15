@@ -43,7 +43,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IBuffer;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProblemRequestor;
 import org.eclipse.dltk.core.IScriptModel;
@@ -1438,7 +1438,7 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 			};
 
 			IBuildpathEntry[] cpEntries = null;
-			IDLTKProject jp = findScriptProject(storagePath);
+			IScriptProject jp = findScriptProject(storagePath);
 			if (jp != null)
 				cpEntries = jp.getResolvedBuildpath(true);
 
@@ -1486,14 +1486,14 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 	 * @return the matching script project or <code>null</code>
 	 * 
 	 */
-	private IDLTKProject findScriptProject(IPath path) {
+	private IScriptProject findScriptProject(IPath path) {
 		if (path == null)
 			return null;
 
 		String[] pathSegments = path.segments();
 		IScriptModel model = DLTKCore.create(DLTKUIPlugin.getWorkspace()
 				.getRoot());
-		IDLTKProject[] projects;
+		IScriptProject[] projects;
 		try {
 			projects = model.getScriptProjects();
 		} catch (ModelException e) {

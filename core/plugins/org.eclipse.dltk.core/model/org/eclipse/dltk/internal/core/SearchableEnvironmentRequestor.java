@@ -12,7 +12,7 @@ package org.eclipse.dltk.internal.core;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.IType;
@@ -37,7 +37,7 @@ class SearchableEnvironmentRequestor extends ModelElementRequestor {
 	 */
 	protected ISourceModule unitToSkip;
 
-	protected IDLTKProject project;
+	protected IScriptProject project;
 
 	protected NameLookup nameLookup;
 
@@ -62,7 +62,7 @@ class SearchableEnvironmentRequestor extends ModelElementRequestor {
 	 * <code>unitToSkip</code>.
 	 */
 	public SearchableEnvironmentRequestor(ISearchRequestor requestor,
-			ISourceModule unitToSkip, IDLTKProject project,
+			ISourceModule unitToSkip, IScriptProject project,
 			NameLookup nameLookup) {
 		this.requestor = requestor;
 		this.unitToSkip = unitToSkip;

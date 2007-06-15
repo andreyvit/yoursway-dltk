@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.newsourcepage.DialogPackageExplorerActionGroup;
@@ -57,7 +57,7 @@ public class ResetOperation extends BuildpathModifierOperation {
         fException= null;
         try {
             List selection= getSelectedElements();
-            IDLTKProject project= fInformationProvider.getDLTKProject();
+            IScriptProject project= fInformationProvider.getDLTKProject();
             result= reset(selection, project, monitor);
         } catch (CoreException e) {
             fException= e;
@@ -83,7 +83,7 @@ public class ResetOperation extends BuildpathModifierOperation {
     public boolean isValid(List elements, int[] types) throws ModelException {
         if (elements.size() == 0)
             return false;
-        IDLTKProject project= fInformationProvider.getDLTKProject();
+        IScriptProject project= fInformationProvider.getDLTKProject();
         boolean hasResetableFragmentRoot= false;
         boolean hasOutputFolder= false;
         boolean hasResetableProject= false;
@@ -115,7 +115,7 @@ public class ResetOperation extends BuildpathModifierOperation {
      * <code>false</code> otherwise
      * @throws ModelException
      */
-    private boolean isValidProject(IDLTKProject project) throws ModelException {
+    private boolean isValidProject(IScriptProject project) throws ModelException {
         if (project.isOnBuildpath(project)) {
             IBuildpathEntry entry= BuildpathModifier.getBuildpathEntryFor(project.getPath(), project, IBuildpathEntry.BPE_SOURCE);
             if (entry.getInclusionPatterns().length != 0 || entry.getExclusionPatterns().length != 0)

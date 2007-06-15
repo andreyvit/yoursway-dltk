@@ -15,7 +15,7 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IRuntimeBuildpathEntry;
 import org.eclipse.dltk.launching.IRuntimeBuildpathEntry2;
@@ -41,7 +41,7 @@ public class DefaultEntryResolver implements IRuntimeBuildpathEntryResolver {
 		return (IRuntimeBuildpathEntry[]) resolved.toArray(new IRuntimeBuildpathEntry[resolved.size()]);
 	}
 	
-	public IRuntimeBuildpathEntry[] resolveRuntimeBuildpathEntry(IRuntimeBuildpathEntry entry, IDLTKProject project) throws CoreException {
+	public IRuntimeBuildpathEntry[] resolveRuntimeBuildpathEntry(IRuntimeBuildpathEntry entry, IScriptProject project) throws CoreException {
 		IRuntimeBuildpathEntry2 entry2 = (IRuntimeBuildpathEntry2)entry;
 		IRuntimeBuildpathEntry[] entries = entry2.getRuntimeBuildpathEntries(null);
 		List resolved = new ArrayList();

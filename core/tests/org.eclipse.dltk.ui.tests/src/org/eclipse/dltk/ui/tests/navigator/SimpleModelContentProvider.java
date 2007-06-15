@@ -13,7 +13,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ModelException;
@@ -31,7 +31,7 @@ public class SimpleModelContentProvider implements ITreeContentProvider {
 		}
 		else if(element instanceof IProject ) {
 			if(DLTKLanguageManager.hasScriptNature((IProject)element)) {
-				IDLTKProject project = DLTKCore.create((IProject)element);
+				IScriptProject project = DLTKCore.create((IProject)element);
 				try {
 					return project.getChildren();
 				} catch (ModelException e) {

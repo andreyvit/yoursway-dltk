@@ -12,7 +12,7 @@ package org.eclipse.dltk.ruby.internal.ui;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyColorConstants;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.PreferenceConstants;
-import org.eclipse.dltk.ui.preferences.NewDLTKProjectPreferencePage;
+import org.eclipse.dltk.ui.preferences.NewScriptProjectPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.graphics.RGB;
@@ -406,7 +406,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 		store.setDefault (CodeFormatterConstants.FORMATTER_TAB_SIZE, "4");
 		store.setDefault (CodeFormatterConstants.FORMATTER_INDENTATION_SIZE, "4");
 		
-		NewDLTKProjectPreferencePage.initDefaults(store);
+		NewScriptProjectPreferencePage.initDefaults(store);
 		
 		store.setDefault(PreferenceConstants.APPEARANCE_COMPRESS_PACKAGE_NAMES, false);
 		store.setDefault(PreferenceConstants.APPEARANCE_METHOD_RETURNTYPE, false);

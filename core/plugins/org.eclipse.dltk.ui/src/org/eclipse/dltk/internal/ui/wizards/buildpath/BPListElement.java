@@ -29,7 +29,7 @@ import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.launching.ScriptRuntime;
@@ -49,7 +49,7 @@ public class BPListElement
 
 	 public static final String NATIVE_LIB_PATH= ScriptRuntime.BUILDPATH_ATTR_LIBRARY_PATH_ENTRY;
 
-	private IDLTKProject fProject;
+	private IScriptProject fProject;
 
 	private int fEntryKind;
 
@@ -71,22 +71,22 @@ public class BPListElement
 
 	private IPath fLinkTarget, fOrginalLinkTarget;
 
-	public BPListElement( IDLTKProject project, int entryKind, IPath path, IResource res, boolean external ) {
+	public BPListElement( IScriptProject project, int entryKind, IPath path, IResource res, boolean external ) {
 
 		this( null, project, entryKind, path, res, external );
 	}
 
-	public BPListElement( Object parent, IDLTKProject project, int entryKind, IPath path, IResource res, boolean external ) {
+	public BPListElement( Object parent, IScriptProject project, int entryKind, IPath path, IResource res, boolean external ) {
 
 		this( parent, project, entryKind, path, res, null, external );
 	}
 
-	public BPListElement( IDLTKProject project, int entryKind, boolean external ) {
+	public BPListElement( IScriptProject project, int entryKind, boolean external ) {
 
 		this( null, project, entryKind, null, null, external );
 	}
 
-	public BPListElement( Object parent, IDLTKProject project, int entryKind, IPath path, IResource res, IPath linkTarget, boolean external ) {
+	public BPListElement( Object parent, IScriptProject project, int entryKind, IPath path, IResource res, IPath linkTarget, boolean external ) {
 
 		fProject = project;
 
@@ -488,17 +488,17 @@ public class BPListElement
 	 * 
 	 * @return Returns a IDLTKProject
 	 */
-	public IDLTKProject getDLTKProject( ) {
+	public IScriptProject getDLTKProject( ) {
 
 		return fProject;
 	}
 
-	public static BPListElement createFromExisting( IBuildpathEntry curr, IDLTKProject project ) {
+	public static BPListElement createFromExisting( IBuildpathEntry curr, IScriptProject project ) {
 
 		return createFromExisting( null, curr, project );
 	}
 
-	public static BPListElement createFromExisting( Object parent, IBuildpathEntry curr, IDLTKProject project ) {
+	public static BPListElement createFromExisting( Object parent, IBuildpathEntry curr, IScriptProject project ) {
 
 		IPath path = curr.getPath( );
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace( ).getRoot( );
@@ -725,7 +725,7 @@ public class BPListElement
 		return result;
 	}
 
-	public static BPListElement[] createFromExisting( IDLTKProject project ) throws ModelException {
+	public static BPListElement[] createFromExisting( IScriptProject project ) throws ModelException {
 
 		IBuildpathEntry[] rawBuildpath = project.getRawBuildpath( );
 		BPListElement[] result = new BPListElement [ rawBuildpath.length ];
@@ -735,7 +735,7 @@ public class BPListElement
 		return result;
 	}
 
-	public static boolean isProjectSourceFolder( BPListElement[] existing, IDLTKProject project ) {
+	public static boolean isProjectSourceFolder( BPListElement[] existing, IScriptProject project ) {
 
 		IPath projPath = project.getProject( ).getFullPath( );
 		for( int i = 0; i < existing.length; i++ ) {

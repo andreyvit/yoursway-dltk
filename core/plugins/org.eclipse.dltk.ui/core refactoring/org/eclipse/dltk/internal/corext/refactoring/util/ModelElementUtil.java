@@ -20,7 +20,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IMethod;
@@ -70,20 +70,20 @@ public class ModelElementUtil {
 	 * Returns an array of projects that have the specified root on their
 	 * buildpaths.
 	 */
-	public static IDLTKProject[] getReferencingProjects(IProjectFragment root) throws ModelException {
+	public static IScriptProject[] getReferencingProjects(IProjectFragment root) throws ModelException {
 		IBuildpathEntry cpe = root.getRawBuildpathEntry();
-		IDLTKProject myProject = root.getScriptProject();
-		IDLTKProject[] allScriptProjects = DLTKCore.create(ResourcesPlugin.getWorkspace().getRoot()).getScriptProjects();
+		IScriptProject myProject = root.getScriptProject();
+		IScriptProject[] allScriptProjects = DLTKCore.create(ResourcesPlugin.getWorkspace().getRoot()).getScriptProjects();
 		List result = new ArrayList(allScriptProjects.length);
 		for (int i = 0; i < allScriptProjects.length; i++) {
-			IDLTKProject project = allScriptProjects[i];
+			IScriptProject project = allScriptProjects[i];
 			if (project.equals(myProject))
 				continue;
 			IProjectFragment[] roots = project.findProjectFragments(cpe);
 			if (roots.length > 0)
 				result.add(project);
 		}
-		return (IDLTKProject[]) result.toArray(new IDLTKProject[result.size()]);
+		return (IScriptProject[]) result.toArray(new IScriptProject[result.size()]);
 	}
 
 	public static IMember[] merge(IMember[] a1, IMember[] a2) {

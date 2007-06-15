@@ -42,7 +42,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptModel;
@@ -90,7 +90,7 @@ public class DeltaProcessingState implements IResourceChangeListener {
 	 * Used when an IPath corresponds to more than one root */
 	public HashMap oldOtherRoots = new HashMap();
 		
-	/* A table from IScriptProject to IScriptProject[] (the list of direct dependent of the key) */
+	/* A table from IDLTKProject to IDLTKProject[] (the list of direct dependent of the key) */
 	public HashMap projectDependencies = new HashMap();
 
 	/* Whether the roots tables should be recomputed */
@@ -112,7 +112,7 @@ public class DeltaProcessingState implements IResourceChangeListener {
 	public HashMap projectUpdates = new HashMap();
 
 	public static class ProjectUpdateInfo {
-		DLTKProject project;
+		ScriptProject project;
 		IBuildpathEntry[] oldResolvedPath;
 		IBuildpathEntry[] newResolvedPath;
 		IBuildpathEntry[] newRawPath;
@@ -188,7 +188,7 @@ public class DeltaProcessingState implements IResourceChangeListener {
 				projectResource.setDescription(description, null);
 		
 			} catch(CoreException e){
-				if (!ExternalDLTKProject.EXTERNAL_PROJECT_NAME.equals(this.project.getElementName()))
+				if (!ExternalScriptProject.EXTERNAL_PROJECT_NAME.equals(this.project.getElementName()))
 					throw new ModelException(e);
 			}
 		}
@@ -252,7 +252,7 @@ public class DeltaProcessingState implements IResourceChangeListener {
 		return deltaProcessor;
 	}
 
-	public synchronized BuildpathValidation addBuildpathValidation(DLTKProject project) {
+	public synchronized BuildpathValidation addBuildpathValidation(ScriptProject project) {
 		BuildpathValidation validation = (BuildpathValidation) this.buildpathValidations.get(project);
 		if (validation == null) {
 			validation = new BuildpathValidation(project);
@@ -260,7 +260,7 @@ public class DeltaProcessingState implements IResourceChangeListener {
 	    }
 		return validation;
 	}
-	public synchronized void addProjectReferenceChange(DLTKProject project, IBuildpathEntry[] oldResolvedBuildpath) {
+	public synchronized void addProjectReferenceChange(ScriptProject project, IBuildpathEntry[] oldResolvedBuildpath) {
 		ProjectReferenceChange change = (ProjectReferenceChange) this.projectReferenceChanges.get(project);
 		if (change == null) {
 			change = new ProjectReferenceChange(project, oldResolvedBuildpath);
@@ -292,7 +292,7 @@ public class DeltaProcessingState implements IResourceChangeListener {
 				newProjectDependencies = new HashMap();
 		
 				IScriptModel model = ModelManager.getModelManager().getModel();
-				IDLTKProject[] projects;
+				IScriptProject[] projects;
 				try {
 					projects = model.getScriptProjects();
 				} catch (ModelException e) {
@@ -300,7 +300,7 @@ public class DeltaProcessingState implements IResourceChangeListener {
 					return;
 				}
 				for (int i = 0, length = projects.length; i < length; i++) {
-					DLTKProject project = (DLTKProject) projects[i];
+					ScriptProject project = (ScriptProject) projects[i];
 					IBuildpathEntry[] buildpath;
 					try {
 						buildpath = project.getResolvedBuildpath();
@@ -311,13 +311,13 @@ public class DeltaProcessingState implements IResourceChangeListener {
 					for (int j= 0, buildpathLength = buildpath.length; j < buildpathLength; j++) {
 						IBuildpathEntry entry = buildpath[j];
 						if (entry.getEntryKind() == IBuildpathEntry.BPE_PROJECT) {
-							IDLTKProject key = model.getScriptProject(entry.getPath().segment(0)); // TODO (jerome) reuse handle
-							IDLTKProject[] dependents = (IDLTKProject[]) newProjectDependencies.get(key);
+							IScriptProject key = model.getScriptProject(entry.getPath().segment(0)); // TODO (jerome) reuse handle
+							IScriptProject[] dependents = (IScriptProject[]) newProjectDependencies.get(key);
 							if (dependents == null) {
-								dependents = new IDLTKProject[] {project};
+								dependents = new IScriptProject[] {project};
 							} else {
 								int dependentsLength = dependents.length;
-								System.arraycopy(dependents, 0, dependents = new IDLTKProject[dependentsLength+1], 0, dependentsLength);
+								System.arraycopy(dependents, 0, dependents = new IScriptProject[dependentsLength+1], 0, dependentsLength);
 								dependents[dependentsLength] = project;
 							}
 							newProjectDependencies.put(key, dependents);
@@ -488,7 +488,7 @@ public class DeltaProcessingState implements IResourceChangeListener {
 		return this.externalTimeStamps;
 	}
 	
-	public IDLTKProject findProject(String name) {
+	public IScriptProject findProject(String name) {
 		if (getOldScriptProjectNames().contains(name))
 			return ModelManager.getModelManager().getModel().getScriptProject(name);
 		return null;
@@ -502,14 +502,14 @@ public class DeltaProcessingState implements IResourceChangeListener {
 	public synchronized HashSet getOldScriptProjectNames() {
 		if (this.dltkProjectNamesCache == null) {
 			HashSet result = new HashSet();
-			IDLTKProject[] projects;
+			IScriptProject[] projects;
 			try {
 				projects = ModelManager.getModelManager().getModel().getScriptProjects();
 			} catch (ModelException e) {
 				return this.dltkProjectNamesCache;
 			}
 			for (int i = 0, length = projects.length; i < length; i++) {
-				IDLTKProject project = projects[i];
+				IScriptProject project = projects[i];
 				result.add(project.getElementName());
 			}
 			return this.dltkProjectNamesCache = result;
@@ -589,7 +589,7 @@ public class DeltaProcessingState implements IResourceChangeListener {
 			}
 		}
 	}
-	public void updateProjectReferences(DLTKProject project, IBuildpathEntry[] oldResolvedPath, IBuildpathEntry[] newResolvedPath, IBuildpathEntry[] newRawPath, boolean canChangeResources) throws ModelException {
+	public void updateProjectReferences(ScriptProject project, IBuildpathEntry[] oldResolvedPath, IBuildpathEntry[] newResolvedPath, IBuildpathEntry[] newRawPath, boolean canChangeResources) throws ModelException {
 		ProjectUpdateInfo info;
 		synchronized (this) {
 			info = (ProjectUpdateInfo) (canChangeResources ? this.projectUpdates.remove(project) /*remove possibly awaiting one*/ : this.projectUpdates.get(project));

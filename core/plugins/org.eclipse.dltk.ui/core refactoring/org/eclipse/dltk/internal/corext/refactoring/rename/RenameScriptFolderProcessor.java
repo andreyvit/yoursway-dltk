@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -400,7 +400,7 @@ public class RenameScriptFolderProcessor extends ScriptRenameProcessor implement
 			monitor.beginTask(RefactoringCoreMessages.RenamePackageRefactoring_creating_change, 1);
 			final Map arguments= new HashMap();
 			String project= null;
-			IDLTKProject scriptProject= fPackage.getScriptProject();
+			IScriptProject scriptProject= fPackage.getScriptProject();
 			if (scriptProject != null)
 				project= scriptProject.getElementName();
 			final int flags= ScriptRefactoringDescriptor.ARCHIVE_IMPORTABLE | ScriptRefactoringDescriptor.ARCHIVE_REFACTORABLE | RefactoringDescriptor.STRUCTURAL_CHANGE | RefactoringDescriptor.MULTI_CHANGE;

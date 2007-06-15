@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ScriptModelUtil;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -319,13 +319,13 @@ public class ModelElementSorter extends ViewerSorter {
 						&& ((IScriptFolder) e1).getParent().getResource() instanceof IProject && cat2 == PROJECTFRAGMENT)
 				|| (cat1 == PROJECTFRAGMENT && cat2 == SCRIPTFOLDER && ((IScriptFolder) e2)
 						.getParent().getResource() instanceof IProject)) {
-			IDLTKProject p1 = getScriptProject(e1);
+			IScriptProject p1 = getScriptProject(e1);
 			return p1 != null && p1.equals(getScriptProject(e2));
 		}
 		return false;
 	}
 
-	private IDLTKProject getScriptProject(Object element) {
+	private IScriptProject getScriptProject(Object element) {
 		if (element instanceof IModelElement) {
 			return ((IModelElement) element).getScriptProject();
 		} else if (element instanceof BuildPathContainer) {

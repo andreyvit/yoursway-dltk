@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.corext.refactoring.reorg;
 
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 
 /**
@@ -20,5 +20,5 @@ import org.eclipse.dltk.core.IProjectFragment;
  */
 public interface IProjectFragmentManipulationQuery {
 	
-	public boolean confirmManipulation(IProjectFragment root, IDLTKProject[] referencingProjects);
+	public boolean confirmManipulation(IProjectFragment root, IScriptProject[] referencingProjects);
 }

@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
@@ -51,7 +51,7 @@ public abstract class BuildPathWizard extends NewElementWizard {
 	 */
 	protected void finishPage(IProgressMonitor monitor) throws InterruptedException, CoreException {
 		if (fDoFlushChange) {
-			IDLTKProject scriptProject= getEntryToEdit().getDLTKProject();
+			IScriptProject scriptProject= getEntryToEdit().getDLTKProject();
 			
 			BuildpathsBlock.flush(getExistingEntries(), scriptProject, monitor);
 			

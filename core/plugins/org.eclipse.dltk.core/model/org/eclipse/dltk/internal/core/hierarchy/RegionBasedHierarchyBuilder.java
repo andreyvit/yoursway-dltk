@@ -16,7 +16,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -24,7 +24,7 @@ import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.Openable;
 
@@ -79,7 +79,7 @@ private void createTypeHierarchyBasedOnRegion(HashMap allOpenablesInRegion, IPro
 	Iterator javaProjects = allOpenablesInRegion.entrySet().iterator();
 	while (javaProjects.hasNext()) {
 		Map.Entry entry = (Map.Entry) javaProjects.next();  
-		DLTKProject project = (DLTKProject) entry.getKey();
+		ScriptProject project = (ScriptProject) entry.getKey();
 		ArrayList allOpenables = (ArrayList) entry.getValue();
 		Openable[] openables = new Openable[allOpenables.size()];
 		allOpenables.toArray(openables);
@@ -112,7 +112,7 @@ private void createTypeHierarchyBasedOnRegion(HashMap allOpenablesInRegion, IPro
 			if (monitor != null) monitor.beginTask("", length); //$NON-NLS-1$
 			for (int i = 0; i <length; i++) {
 				IModelElement root = roots[i];
-				IDLTKProject javaProject = root.getScriptProject();
+				IScriptProject javaProject = root.getScriptProject();
 				ArrayList openables = (ArrayList) allOpenables.get(javaProject);
 				if (openables == null) {
 					openables = new ArrayList();
@@ -120,7 +120,7 @@ private void createTypeHierarchyBasedOnRegion(HashMap allOpenablesInRegion, IPro
 				}
 				switch (root.getElementType()) {
 					case IModelElement.SCRIPT_PROJECT :
-						injectAllOpenablesForJavaProject((IDLTKProject) root, openables);
+						injectAllOpenablesForJavaProject((IScriptProject) root, openables);
 						break;
 					case IModelElement.PROJECT_FRAGMENT :
 						injectAllOpenablesForPackageFragmentRoot((IProjectFragment) root, openables);
@@ -151,11 +151,11 @@ private void createTypeHierarchyBasedOnRegion(HashMap allOpenablesInRegion, IPro
 	 * list.
 	 */
 	private void injectAllOpenablesForJavaProject(
-		IDLTKProject project,
+		IScriptProject project,
 		ArrayList openables) {
 		try {
 			IProjectFragment[] devPathRoots =
-				((DLTKProject) project).getProjectFragments();
+				((ScriptProject) project).getProjectFragments();
 			if (devPathRoots == null) {
 				return;
 			}

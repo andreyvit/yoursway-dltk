@@ -14,7 +14,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.util.Util;
@@ -40,7 +40,7 @@ class ProjectFragmentInfo extends OpenableElementInfo {
 		foreignResources = resources;
 	}
 
-	public Object[] getForeignResources(IDLTKProject scriptProject, IResource resource, ProjectFragment fragment) {
+	public Object[] getForeignResources(IScriptProject scriptProject, IResource resource, ProjectFragment fragment) {
 		Object[] nonScriptResources = this.foreignResources;
 		if (nonScriptResources == null) {
 			nonScriptResources = this.computeForeignResources(scriptProject, resource, fragment);
@@ -49,7 +49,7 @@ class ProjectFragmentInfo extends OpenableElementInfo {
 		return nonScriptResources;
 	}
 
-	private Object[] computeForeignResources(IDLTKProject scriptProject, IResource underlyingResource, ProjectFragment handle) {
+	private Object[] computeForeignResources(IScriptProject scriptProject, IResource underlyingResource, ProjectFragment handle) {
 		Object[] nonScriptResources = NO_NON_SCRIPT_RESOURCES;
 		try {
 			// the underlying resource may be a folder or a project (in the case that the project folder
@@ -57,7 +57,7 @@ class ProjectFragmentInfo extends OpenableElementInfo {
 			if (underlyingResource.getType() == IResource.FOLDER || underlyingResource.getType() == IResource.PROJECT) {
 				nonScriptResources = 
 					computeFolderForeignResources(
-						(DLTKProject)scriptProject, 
+						(ScriptProject)scriptProject, 
 						(IContainer) underlyingResource,  
 						handle.fullInclusionPatternChars(),
 						handle.fullExclusionPatternChars());
@@ -68,7 +68,7 @@ class ProjectFragmentInfo extends OpenableElementInfo {
 		return nonScriptResources;
 	}
 
-	public static Object[] computeFolderForeignResources(DLTKProject project, IContainer folder, char[][] inclusionPatterns, char[][] exclusionPatterns) throws ModelException {		
+	public static Object[] computeFolderForeignResources(ScriptProject project, IContainer folder, char[][] inclusionPatterns, char[][] exclusionPatterns) throws ModelException {		
 			Object[] nonScriptResources = new IResource[5];
 			int nonScriptResourcesCounter = 0;
 			try {

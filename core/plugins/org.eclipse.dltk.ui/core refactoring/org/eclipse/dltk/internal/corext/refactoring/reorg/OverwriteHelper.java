@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -190,8 +190,8 @@ class OverwriteHelper {
 	}
 	
 	private boolean canOverwrite(IProjectFragment root) {
-		Assert.isTrue(fDestination instanceof IDLTKProject);
-		IDLTKProject destination= (IDLTKProject)fDestination;
+		Assert.isTrue(fDestination instanceof IScriptProject);
+		IScriptProject destination= (IScriptProject)fDestination;
 		IFolder conflict= destination.getProject().getFolder(root.getElementName());
 		try {
 			return !destination.equals(root.getParent()) && conflict.exists() &&  conflict.members().length > 0;

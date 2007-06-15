@@ -14,7 +14,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.PlatformObject;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IScriptFolder;
 
 /**
@@ -25,7 +25,7 @@ public class LogicalPackage extends PlatformObject {
 
 	private Set fPackages;
 	private String fName;
-	private IDLTKProject fDLTKProject;
+	private IScriptProject fDLTKProject;
 
 	public LogicalPackage(IScriptFolder fragment){
 		fPackages= new HashSet();
@@ -34,7 +34,7 @@ public class LogicalPackage extends PlatformObject {
 		fName= fragment.getElementName();
 	}
 
-	public IDLTKProject getDLTKProject(){
+	public IScriptProject getDLTKProject(){
 		return fDLTKProject;
 	}
 

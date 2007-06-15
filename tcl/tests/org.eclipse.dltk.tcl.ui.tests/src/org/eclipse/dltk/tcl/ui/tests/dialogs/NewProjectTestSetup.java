@@ -22,11 +22,11 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.util.CoreUtility;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.dltk.ui.tests.DLTKProjectHelper;
+import org.eclipse.dltk.ui.tests.ScriptProjectHelper;
 import org.eclipse.dltk.ui.tests.TestOptions;
 
 
@@ -36,8 +36,8 @@ public class NewProjectTestSetup extends TestSetup {
     public static final String WORKSPACE_PROJECT= "WorkspaceProject";
     public static final String WORKSPACE_PROJECT_SRC= "WorkspaceProjectWithSourceAndInFolder";
     
-    public static IDLTKProject getProject(String projectName) throws CoreException {
-        return DLTKProjectHelper.createDLTKProject(projectName);
+    public static IScriptProject getProject(String projectName) throws CoreException {
+        return ScriptProjectHelper.createDLTKProject(projectName);
     }
     
 //    public static IBuildpathEntry[] getDefaultBuildpath() {
@@ -45,22 +45,22 @@ public class NewProjectTestSetup extends TestSetup {
 //    	return null;
 //    }
     
-    private IDLTKProject fWorkspaceProject;
-    private IDLTKProject fWorkspaceProjectWithSrc;
-    private IDLTKProject fExternalProject;
+    private IScriptProject fWorkspaceProject;
+    private IScriptProject fWorkspaceProjectWithSrc;
+    private IScriptProject fExternalProject;
 
     private boolean fAutobuilding;
     
     public NewProjectTestSetup(Test test) {
         super(test);
         try {
-            fAutobuilding= DLTKProjectHelper.setAutoBuilding(false);
+            fAutobuilding= ScriptProjectHelper.setAutoBuilding(false);
         } catch (CoreException e) {
             DLTKUIPlugin.log(e);
         }
     }
     
-    public IDLTKProject getProject(IDLTKProject currentProject) throws CoreException {
+    public IScriptProject getProject(IScriptProject currentProject) throws CoreException {
         String name= currentProject.getElementName();
         currentProject.getProject().delete(true, null);
         if (name.equals(WORKSPACE_PROJECT))
@@ -70,7 +70,7 @@ public class NewProjectTestSetup extends TestSetup {
         return null;
     }
     
-    public IDLTKProject getWorkspaceProject() {
+    public IScriptProject getWorkspaceProject() {
         try {
             fWorkspaceProject= getProject(WORKSPACE_PROJECT);
             List cpEntries= new ArrayList();
@@ -87,7 +87,7 @@ public class NewProjectTestSetup extends TestSetup {
         return fWorkspaceProject;
     }
     
-    public IDLTKProject getWorkspaceProjectWithSrc() {
+    public IScriptProject getWorkspaceProjectWithSrc() {
         try {
             fWorkspaceProjectWithSrc= getProject(WORKSPACE_PROJECT_SRC);
             createWithSrcAndBinFolder(fWorkspaceProjectWithSrc);
@@ -97,7 +97,7 @@ public class NewProjectTestSetup extends TestSetup {
         return fWorkspaceProjectWithSrc;
     }
     
-    public IDLTKProject getExternalProject() throws CoreException {
+    public IScriptProject getExternalProject() throws CoreException {
         return fExternalProject;
     }
     /* (non-Javadoc)
@@ -112,15 +112,15 @@ public class NewProjectTestSetup extends TestSetup {
 
     protected void tearDown() throws Exception {
         if (fWorkspaceProject != null && fWorkspaceProject.exists())
-            DLTKProjectHelper.delete(fWorkspaceProject);
+            ScriptProjectHelper.delete(fWorkspaceProject);
         if (fWorkspaceProjectWithSrc != null && fWorkspaceProjectWithSrc.exists())
-            DLTKProjectHelper.delete(fWorkspaceProjectWithSrc);
+            ScriptProjectHelper.delete(fWorkspaceProjectWithSrc);
         if (fExternalProject != null && fExternalProject.exists())
-            DLTKProjectHelper.delete(fExternalProject);
-        DLTKProjectHelper.setAutoBuilding(fAutobuilding);
+            ScriptProjectHelper.delete(fExternalProject);
+        ScriptProjectHelper.setAutoBuilding(fAutobuilding);
     }
     
-    private void createWithSrcAndBinFolder(IDLTKProject project) {
+    private void createWithSrcAndBinFolder(IScriptProject project) {
         IPath srcPath= new Path("src");
         try {
             if (srcPath.segmentCount() > 0) {

@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IRuntimeBuildpathEntry;
 import org.eclipse.dltk.launching.IRuntimeBuildpathEntry2;
@@ -39,7 +39,7 @@ public abstract class AbstractRuntimeBuildpathEntry extends PlatformObject imple
 	/**
 	 * Associated Script project, or <code>null</code>
 	 */
-	private IDLTKProject fProject;
+	private IScriptProject fProject;
 	
 	/* (non-Javadoc)
 	 * 
@@ -175,7 +175,7 @@ public abstract class AbstractRuntimeBuildpathEntry extends PlatformObject imple
 	/* (non-Javadoc)
 	 * @see org.eclipse.dltk.launching.IRuntimeBuildpathEntry#getScriptProject()
 	 */
-	public IDLTKProject getDLTKProject() {
+	public IScriptProject getDLTKProject() {
 		return fProject;
 	}
 	
@@ -184,7 +184,7 @@ public abstract class AbstractRuntimeBuildpathEntry extends PlatformObject imple
 	 * 
 	 * @param scriptProject
 	 */
-	protected void setDLTKProject(IDLTKProject sProject) {
+	protected void setDLTKProject(IScriptProject sProject) {
 		fProject = sProject;
 	}
 }

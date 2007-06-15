@@ -58,7 +58,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * The page for defaults for classpath entries in newscriptprojects.
  * See PreferenceConstants to access or change these values through public API.
  */
-public abstract class NewDLTKProjectPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
+public abstract class NewScriptProjectPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
 	public static final String ID= "com.xore.dltk.ui.preferences.BuildPathPreferencePage"; //$NON-NLS-1$
 	
@@ -185,7 +185,7 @@ public abstract class NewDLTKProjectPreferencePage extends PreferencePage implem
 
 	private Label fSrcFolderNameLabel;
 
-	public NewDLTKProjectPreferencePage() {
+	public NewScriptProjectPreferencePage() {
 		super();
 		setPreferenceStore(DLTKUIPlugin.getDefault().getPreferenceStore());
 		setDescription(PreferencesMessages.NewScriptProjectPreferencePage_description); 

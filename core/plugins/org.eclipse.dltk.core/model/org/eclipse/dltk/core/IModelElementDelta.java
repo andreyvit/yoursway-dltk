@@ -88,13 +88,13 @@ public interface IModelElementDelta {
 	
 	/**
 	 * Change flag indicating that the underlying <code>IProject</code> has been
-	 * opened. This flag is only valid if the element is an <code>IScriptProject</code>. 
+	 * opened. This flag is only valid if the element is an <code>IDLTKProject</code>. 
 	 */
 	public int F_OPENED = 0x000200;
 	
 	/**
 	 * Change flag indicating that the underlying <code>IProject</code> has been
-	 * closed. This flag is only valid if the element is an <code>IScriptProject</code>. 
+	 * closed. This flag is only valid if the element is an <code>IDLTKProject</code>. 
 	 */
 	public int F_CLOSED = 0x000400;
 	
@@ -135,7 +135,7 @@ public interface IModelElementDelta {
 	
 	/**
 	 * Change flag indicating that the raw buildpath of a project has changed. 
-	 * This flag is only valid if the element is an <code>IScriptProject</code>.
+	 * This flag is only valid if the element is an <code>IDLTKProject</code>.
 	 */
 	public int F_BUILDPATH_CHANGED = 0x20000;
 	

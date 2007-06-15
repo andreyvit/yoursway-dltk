@@ -51,7 +51,7 @@ import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelMarker;
 import org.eclipse.dltk.core.IModelStatus;
@@ -76,7 +76,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class DLTKProject extends Openable implements IDLTKProject {
+public class ScriptProject extends Openable implements IScriptProject {
 	/**
 	 * Name of file containing project buildpath
 	 */
@@ -104,7 +104,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 */
 	protected IProject project;
 
-	public DLTKProject(IProject project, ModelElement parent) {
+	public ScriptProject(IProject project, ModelElement parent) {
 		super(parent);
 		this.project = project;
 	}
@@ -124,16 +124,10 @@ public class DLTKProject extends Openable implements IDLTKProject {
 				.getFolder(path));
 	}
 
-	/**
-	 * @see IDLTKProject#getProject()
-	 */
 	public IProject getProject() {
 		return this.project;
 	}
 
-	/**
-	 * @see IDLTKProject
-	 */
 	public IProjectFragment getProjectFragment(IResource resource) {
 		switch (resource.getType()) {
 		case IResource.FILE:
@@ -169,9 +163,6 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		return null;
 	}
 
-	/**
-	 * @see IDLTKProject
-	 */
 	public IProjectFragment getProjectFragment(String path) {
 		return getProjectFragment(canonicalizedPath(new Path(path)));
 	}
@@ -477,9 +468,6 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		);
 	}
 
-	/**
-	 * @see IScriptProject
-	 */
 	public IBuildpathEntry[] getResolvedBuildpath(
 			boolean ignoreUnresolvedEntry, boolean generateMarkerOnError)
 			throws ModelException {
@@ -594,8 +582,8 @@ public class DLTKProject extends Openable implements IDLTKProject {
 						// project
 						// (23977)
 						IProject projRsc = (IProject) member;
-						if (DLTKProject.hasScriptNature(projRsc)) {
-							DLTKProject scriptProject = (DLTKProject) DLTKCore
+						if (ScriptProject.hasScriptNature(projRsc)) {
+							ScriptProject scriptProject = (ScriptProject) DLTKCore
 									.create(projRsc);
 							scriptProject.computeExpandedBuildpath(
 									combinedEntry, ignoreUnresolvedVariable,
@@ -833,7 +821,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 				 */
 				IProject requiredProjectRsc = (IProject) member;
 				rootIDs.add(rootID);
-				DLTKProject requiredProject = (DLTKProject) DLTKCore
+				ScriptProject requiredProject = (ScriptProject) DLTKCore
 						.create(requiredProjectRsc);
 				requiredProject
 						.computeProjectFragments(
@@ -1048,9 +1036,6 @@ public class DLTKProject extends Openable implements IDLTKProject {
 																		 */));
 	}
 
-	/**
-	 * @see IScriptProject
-	 */
 	public IBuildpathEntry[] getRawBuildpath() throws ModelException {
 		// Do not create marker but log problems while getting raw buildpath
 		return getRawBuildpath(false, true);
@@ -1397,7 +1382,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 * 
 	 * @param key
 	 *            String
-	 * @see ScriptProject#setSharedProperty(String, String)
+	 * @see IScriptProject#setSharedProperty(String, String)
 	 * @return String
 	 * @throws CoreException
 	 */
@@ -1457,9 +1442,6 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		return property;
 	}
 
-	/**
-	 * @see IScriptProject
-	 */
 	public IProjectFragment[] getProjectFragments() throws ModelException {
 		Object[] children;
 		int length;
@@ -1500,7 +1482,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		}
 		// actual file saving
 		try {
-			setSharedProperty(DLTKProject.BUILDPATH_FILENAME, encodeBuildpath(
+			setSharedProperty(ScriptProject.BUILDPATH_FILENAME, encodeBuildpath(
 					newBuildpath, true, unknownElements));
 			return true;
 		} catch (CoreException e) {
@@ -1525,7 +1507,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	 *            String
 	 * @param value
 	 *            String
-	 * @see ScriptProject#getSharedProperty(String key)
+	 * @see IScriptProject#getSharedProperty(String key)
 	 * @throws CoreException
 	 */
 	public void setSharedProperty(String key, String value)
@@ -1700,13 +1682,13 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 		IProject[] rscProjects = workspaceRoot.getProjects();
 		int length = rscProjects.length;
-		DLTKProject[] projects = new DLTKProject[length];
+		ScriptProject[] projects = new ScriptProject[length];
 		HashSet cycleParticipants = new HashSet();
 		HashSet traversed = new HashSet();
 		// compute cycle participants
 		ArrayList prereqChain = new ArrayList();
 		for (int i = 0; i < length; i++) {
-			DLTKProject project = (projects[i] = (DLTKProject) DLTKCore
+			ScriptProject project = (projects[i] = (ScriptProject) DLTKCore
 					.create(rscProjects[i]));
 			if (!traversed.contains(project.getPath())) {
 				prereqChain.clear();
@@ -1715,7 +1697,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			}
 		}
 		for (int i = 0; i < length; i++) {
-			DLTKProject project = projects[i];
+			ScriptProject project = projects[i];
 			if (project != null) {
 				if (cycleParticipants.contains(project.getPath())) {
 					IMarker cycleMarker = project.getCycleMarker();
@@ -1963,7 +1945,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			public void removed(IEclipsePreferences.NodeChangeEvent event) {
 				if (event.getChild() == eclipsePreferences) {
 					ModelManager.getModelManager().resetProjectPreferences(
-							DLTKProject.this);
+							ScriptProject.this);
 				}
 			}
 		};
@@ -1974,7 +1956,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			public void preferenceChange(
 					IEclipsePreferences.PreferenceChangeEvent event) {
 				ModelManager.getModelManager().resetProjectOptions(
-						DLTKProject.this);
+						ScriptProject.this);
 			}
 		};
 		eclipsePreferences.addPreferenceChangeListener(preferenceListener);
@@ -2061,7 +2043,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 									.findMember(prereqProjectPath);
 							if (member != null
 									&& member.getType() == IResource.PROJECT) {
-								DLTKProject scriptProject = (DLTKProject) DLTKCore
+								ScriptProject scriptProject = (ScriptProject) DLTKCore
 										.create((IProject) member);
 								scriptProject.updateCycleParticipants(
 										prereqChain, cycleParticipants,
@@ -2089,9 +2071,9 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-		if (!(o instanceof DLTKProject))
+		if (!(o instanceof ScriptProject))
 			return false;
-		DLTKProject other = (DLTKProject) o;
+		ScriptProject other = (ScriptProject) o;
 		return this.project.equals(other.getProject());
 	}
 
@@ -2170,7 +2152,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	public IBuildpathEntry[] readFileEntriesWithException(Map unknownElements)
 			throws CoreException, IOException, AssertionFailedException {
 		String xmlBuildpath;
-		IFile rscFile = this.project.getFile(DLTKProject.BUILDPATH_FILENAME);
+		IFile rscFile = this.project.getFile(ScriptProject.BUILDPATH_FILENAME);
 		if (rscFile.exists()) {
 			byte[] bytes = Util.getResourceContentsAsByteArray(rscFile);
 			try {
@@ -2246,14 +2228,14 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 		IProject[] rscProjects = workspaceRoot.getProjects();
 		int length = rscProjects.length;
-		DLTKProject[] projects = new DLTKProject[length];
+		ScriptProject[] projects = new ScriptProject[length];
 		HashSet cycleParticipants = new HashSet();
 		HashSet traversed = new HashSet();
 		// compute cycle participants
 		ArrayList prereqChain = new ArrayList();
 		for (int i = 0; i < length; i++) {
 			if (DLTKLanguageManager.hasScriptNature(rscProjects[i])) {
-				DLTKProject project = (projects[i] = (DLTKProject) DLTKCore
+				ScriptProject project = (projects[i] = (ScriptProject) DLTKCore
 						.create(rscProjects[i]));
 				if (!traversed.contains(project.getPath())) {
 					prereqChain.clear();
@@ -2266,7 +2248,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		// System.out.println("updateAllCycleMarkers: " +
 		// (System.currentTimeMillis() - start) + " ms");
 		for (int i = 0; i < length; i++) {
-			DLTKProject project = projects[i];
+			ScriptProject project = projects[i];
 			if (project != null) {
 				if (cycleParticipants.contains(project.getPath())) {
 					IMarker cycleMarker = project.getCycleMarker();
@@ -2303,14 +2285,14 @@ public class DLTKProject extends Openable implements IDLTKProject {
 
 	// Search operations
 	/**
-	 * @see IDLTKProject
+	 * @see IScriptProject
 	 */
 	public IModelElement findElement(IPath path) throws ModelException {
 		return findElement(path, DefaultWorkingCopyOwner.PRIMARY);
 	}
 
 	/**
-	 * @see IDLTKProject
+	 * @see IScriptProject
 	 */
 	public IModelElement findElement(IPath path, WorkingCopyOwner owner)
 			throws ModelException {
@@ -2397,10 +2379,10 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	}
 
 	/**
-	 * @see IDLTKProject
+	 * @see IScriptProject
 	 */
 	public IScriptFolder findScriptFolder(IPath path) throws ModelException {
-		return findScriptFolder0(DLTKProject.canonicalizedPath(path));
+		return findScriptFolder0(ScriptProject.canonicalizedPath(path));
 	}
 
 	/*
@@ -2414,11 +2396,11 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	}
 
 	/**
-	 * @see IDLTKProject
+	 * @see IScriptProject
 	 */
 	public IProjectFragment findProjectFragment(IPath path)
 			throws ModelException {
-		return findProjectFragment0(DLTKProject.canonicalizedPath(path));
+		return findProjectFragment0(ScriptProject.canonicalizedPath(path));
 	}
 
 	/*
@@ -2440,7 +2422,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	}
 
 	/**
-	 * @see IDLTKProject
+	 * @see IScriptProject
 	 */
 	public IProjectFragment[] findProjectFragments(IBuildpathEntry entry) {
 		try {
@@ -2465,14 +2447,14 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	}
 
 	/**
-	 * @see IDLTKProject#findType(String)
+	 * @see IScriptProject#findType(String)
 	 */
 	public IType findType(String fullyQualifiedName) throws ModelException {
 		return findType(fullyQualifiedName, DefaultWorkingCopyOwner.PRIMARY);
 	}
 
 	/**
-	 * @see IDLTKProject#findType(String, IProgressMonitor)
+	 * @see IScriptProject#findType(String, IProgressMonitor)
 	 */
 	public IType findType(String fullyQualifiedName,
 			IProgressMonitor progressMonitor) throws ModelException {
@@ -2493,7 +2475,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	}
 
 	/**
-	 * @see IDLTKProject#findType(String, String)
+	 * @see IScriptProject#findType(String, String)
 	 */
 	public IType findType(String packageName, String typeQualifiedName)
 			throws ModelException {
@@ -2502,7 +2484,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	}
 
 	/**
-	 * @see IDLTKProject#findType(String, String, IProgressMonitor)
+	 * @see IScriptProject#findType(String, String, IProgressMonitor)
 	 */
 	public IType findType(String packageName, String typeQualifiedName,
 			IProgressMonitor progressMonitor) throws ModelException {
@@ -2523,7 +2505,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	}
 
 	/**
-	 * @see IDLTKProject#findType(String, String, WorkingCopyOwner)
+	 * @see IScriptProject#findType(String, String, WorkingCopyOwner)
 	 */
 	public IType findType(String packageName, String typeQualifiedName,
 			WorkingCopyOwner owner) throws ModelException {
@@ -2534,7 +2516,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 	}
 
 	/**
-	 * @see IDLTKProject#findType(String, String, WorkingCopyOwner,
+	 * @see IScriptProject#findType(String, String, WorkingCopyOwner,
 	 *      IProgressMonitor)
 	 */
 	public IType findType(String packageName, String typeQualifiedName,
@@ -2546,9 +2528,6 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		return null;
 	}
 
-	/**
-	 * @see IDLTKProject#findType(String, WorkingCopyOwner)
-	 */
 	public IType findType(String fullyQualifiedName, WorkingCopyOwner owner)
 			throws ModelException {
 		if (DLTKCore.DEBUG) {
@@ -2557,9 +2536,6 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		return null;
 	}
 
-	/**
-	 * @see IDLTKProject#findType(String, WorkingCopyOwner, IProgressMonitor)
-	 */
 	public IType findType(String fullyQualifiedName, WorkingCopyOwner owner,
 			IProgressMonitor progressMonitor) throws ModelException {
 		if (DLTKCore.DEBUG) {
@@ -2568,16 +2544,13 @@ public class DLTKProject extends Openable implements IDLTKProject {
 		return null;
 	}
 
-	/**
-	 * @see IDLTKProject
-	 */
 	public IBuildpathEntry[] readRawBuildpath() {
 		// Read buildpath file without creating markers nor logging problems
 		IBuildpathEntry[] buildpath = readFileEntries(null/*
 															 * not interested in
 															 * unknown elements
 															 */);
-		if (buildpath == DLTKProject.INVALID_BUILDPATH)
+		if (buildpath == ScriptProject.INVALID_BUILDPATH)
 			return defaultBuildpath();
 		return buildpath;
 	}
@@ -2594,20 +2567,20 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			Util
 					.log(
 							e,
-							"Exception while reading " + getPath().append(DLTKProject.BUILDPATH_FILENAME)); //$NON-NLS-1$
-			return DLTKProject.INVALID_BUILDPATH;
+							"Exception while reading " + getPath().append(ScriptProject.BUILDPATH_FILENAME)); //$NON-NLS-1$
+			return ScriptProject.INVALID_BUILDPATH;
 		} catch (IOException e) {
 			Util
 					.log(
 							e,
-							"Exception while reading " + getPath().append(DLTKProject.BUILDPATH_FILENAME)); //$NON-NLS-1$
-			return DLTKProject.INVALID_BUILDPATH;
+							"Exception while reading " + getPath().append(ScriptProject.BUILDPATH_FILENAME)); //$NON-NLS-1$
+			return ScriptProject.INVALID_BUILDPATH;
 		} catch (AssertionFailedException e) {
 			Util
 					.log(
 							e,
-							"Exception while reading " + getPath().append(DLTKProject.BUILDPATH_FILENAME)); //$NON-NLS-1$
-			return DLTKProject.INVALID_BUILDPATH;
+							"Exception while reading " + getPath().append(ScriptProject.BUILDPATH_FILENAME)); //$NON-NLS-1$
+			return ScriptProject.INVALID_BUILDPATH;
 		}
 	}
 
@@ -3043,7 +3016,7 @@ public class DLTKProject extends Openable implements IDLTKProject {
 			if (!wasSuccessful) {
 				try {
 					this.getPerProjectInfo().updateBuildpathInformation(
-							DLTKProject.INVALID_BUILDPATH);
+							ScriptProject.INVALID_BUILDPATH);
 					updateProjectFragments();
 				} catch (ModelException e) {
 					// ignore

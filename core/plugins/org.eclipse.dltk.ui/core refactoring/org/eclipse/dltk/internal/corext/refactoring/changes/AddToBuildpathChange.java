@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.internal.corext.refactoring.RefactoringCoreMessages;
@@ -32,15 +32,15 @@ import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 
 public class AddToBuildpathChange extends DLTKChange {
 	
-	private IDLTKProject fProjectHandle;
+	private IScriptProject fProjectHandle;
 	private IBuildpathEntry fEntryToAdd;
 	
-	public AddToBuildpathChange(IDLTKProject project, IBuildpathEntry entryToAdd) {
+	public AddToBuildpathChange(IScriptProject project, IBuildpathEntry entryToAdd) {
 		fProjectHandle= project;
 		fEntryToAdd= entryToAdd;
 	}
 	
-	public AddToBuildpathChange(IDLTKProject project, String sourceFolderName){
+	public AddToBuildpathChange(IScriptProject project, String sourceFolderName){
 		this(project, DLTKCore.newSourceEntry(project.getPath().append(sourceFolderName)));
 	}
 	
@@ -49,11 +49,11 @@ public class AddToBuildpathChange extends DLTKChange {
 	 * @param project
 	 * @param newProjectEntry (must be absolute <code>IPath</code>)
 	 */
-	public AddToBuildpathChange(IDLTKProject project, IPath newProjectEntry){
+	public AddToBuildpathChange(IScriptProject project, IPath newProjectEntry){
 		this(project, DLTKCore.newProjectEntry(newProjectEntry));
 	}
 	
-	public AddToBuildpathChange(IDLTKProject project, int entryKind, IPath path){
+	public AddToBuildpathChange(IScriptProject project, int entryKind, IPath path){
 		this(project, createNewBuildpathEntry(entryKind, path));
 	}
 
@@ -77,7 +77,7 @@ public class AddToBuildpathChange extends DLTKChange {
 	}
 	
 	public boolean validateBuildpath() throws ModelException {
-		IDLTKProject scriptProject= getScriptProject();		
+		IScriptProject scriptProject= getScriptProject();		
 		IBuildpathEntry[] newClasspathEntries= getNewBuildpathEntries();
 		return BuildpathEntry.validateBuildpath(scriptProject, newClasspathEntries).isOK();
 	}
@@ -106,7 +106,7 @@ public class AddToBuildpathChange extends DLTKChange {
 		}
 	}
 	
-	private IDLTKProject getScriptProject(){
+	private IScriptProject getScriptProject(){
 		return fProjectHandle;
 	}
 

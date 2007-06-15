@@ -11,7 +11,7 @@ package org.eclipse.dltk.tcl.internal.ui.text.completion;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.ui.text.completion.ScriptTypeCompletionProposal;
 import org.eclipse.jface.text.BadLocationException;
@@ -26,7 +26,7 @@ public class TclOverrideCompletionProposal extends ScriptTypeCompletionProposal
 
 	private String methodName;
 
-	public TclOverrideCompletionProposal(IDLTKProject project,
+	public TclOverrideCompletionProposal(IScriptProject project,
 			ISourceModule cu, String methodName, String[] paramTypes,
 			int start, int length, String displayName, String completionProposal) {
 		super(completionProposal, cu, start, length, null, displayName, 0);

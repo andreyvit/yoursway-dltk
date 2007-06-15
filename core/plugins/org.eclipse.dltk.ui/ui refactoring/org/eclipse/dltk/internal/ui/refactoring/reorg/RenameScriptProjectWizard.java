@@ -14,9 +14,9 @@ import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.ltk.core.refactoring.Refactoring;
 
 
-public class RenameDLTKProjectWizard extends RenameRefactoringWizard {
+public class RenameScriptProjectWizard extends RenameRefactoringWizard {
 	
-	public RenameDLTKProjectWizard(Refactoring refactoring) {
+	public RenameScriptProjectWizard(Refactoring refactoring) {
 		super(refactoring,
 			RefactoringMessages.RenameScriptProject_defaultPageTitle, 
 			RefactoringMessages.RenameScriptProject_inputPage_description, 

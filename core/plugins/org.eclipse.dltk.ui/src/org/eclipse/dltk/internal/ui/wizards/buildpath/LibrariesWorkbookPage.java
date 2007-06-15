@@ -31,7 +31,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.compiler.util.Util;
 import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.ui.actions.WorkbenchRunnableAdapter;
@@ -61,7 +61,7 @@ import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
 public class LibrariesWorkbookPage extends BuildPathBasePage {
 	private ListDialogField fBuildPathList;
-	private IDLTKProject fCurrJProject;
+	private IScriptProject fCurrJProject;
 	private TreeListDialogField fLibrariesList;
 	private Control fSWTControl;
 	private final IWorkbenchPreferenceContainer fPageContainer;
@@ -128,7 +128,7 @@ public class LibrariesWorkbookPage extends BuildPathBasePage {
 		fLibrariesList.setViewerSorter(new BPListElementSorter());
 	}
 
-	public void init(IDLTKProject jproject) {
+	public void init(IScriptProject jproject) {
 		fCurrJProject = jproject;
 		updateLibrariesList();
 	}
@@ -477,7 +477,7 @@ public class LibrariesWorkbookPage extends BuildPathBasePage {
 		}
 	}
 
-	private void updateContainerEntry(final IBuildpathEntry newEntry, final String[] changedAttributes, final IDLTKProject jproject,
+	private void updateContainerEntry(final IBuildpathEntry newEntry, final String[] changedAttributes, final IScriptProject jproject,
 			final IPath containerPath) {
 		try {
 			IWorkspaceRunnable runnable = new IWorkspaceRunnable() {

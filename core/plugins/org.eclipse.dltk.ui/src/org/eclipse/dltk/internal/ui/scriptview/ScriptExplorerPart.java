@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.PerformanceStats;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -267,7 +267,7 @@ public class ScriptExplorerPart extends ViewPart
 		}
 		
 		protected boolean evaluateExpandableWithFilters(Object parent) {
-			if (parent instanceof IDLTKProject
+			if (parent instanceof IScriptProject
 					|| parent instanceof ISourceModule
 					|| parent instanceof BuildPathContainer) {
 				return false;
@@ -342,8 +342,8 @@ public class ScriptExplorerPart extends ViewPart
 			boolean changed= false;
 			for (Iterator iter= is.iterator(); iter.hasNext();) {
 				Object element= iter.next();
-				if (element instanceof IDLTKProject) {
-					IProject project= ((IDLTKProject)element).getProject();
+				if (element instanceof IScriptProject) {
+					IProject project= ((IScriptProject)element).getProject();
 					if (!project.isOpen() && project.exists()) {
 						ns.add(project);
 						changed= true;
@@ -351,7 +351,7 @@ public class ScriptExplorerPart extends ViewPart
 				} else if (element instanceof IProject) {
 					IProject project= (IProject)element;
 					if (project.isOpen()) {
-						IDLTKProject jProject= DLTKCore.create(project);
+						IScriptProject jProject= DLTKCore.create(project);
 						if (jProject != null && jProject.exists())
 							ns.add(jProject);
 							changed= true;
@@ -1355,7 +1355,7 @@ public class ScriptExplorerPart extends ViewPart
 	}
 	
 	private boolean isOnBuildpath(IFile file) {
-		IDLTKProject jproject= DLTKCore.create(file.getProject());
+		IScriptProject jproject= DLTKCore.create(file.getProject());
 		return jproject.isOnBuildpath(file);
 	}
 

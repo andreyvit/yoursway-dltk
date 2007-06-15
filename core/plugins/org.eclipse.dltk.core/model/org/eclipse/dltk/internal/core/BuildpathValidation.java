@@ -23,9 +23,9 @@ import org.eclipse.dltk.core.ModelException;
  */
 public class BuildpathValidation {
 	
-	private DLTKProject project;
+	private ScriptProject project;
 	
-	public BuildpathValidation(DLTKProject project) {
+	public BuildpathValidation(ScriptProject project) {
 		this.project = project;
 	}
 	
@@ -64,7 +64,7 @@ public class BuildpathValidation {
 		// update resolved buildpath problems
 		this.project.flushBuildpathProblemMarkers(false/*cycle*/, false/*format*/);
 		
-		if (rawBuildpath != DLTKProject.INVALID_BUILDPATH ) {
+		if (rawBuildpath != ScriptProject.INVALID_BUILDPATH ) {
 		 	for (int i = 0; i < rawBuildpath.length; i++) {
 				status = BuildpathEntry.validateBuildpathEntry(this.project, rawBuildpath[i],  true /*recurse in container*/);
 				if (!status.isOK()) {

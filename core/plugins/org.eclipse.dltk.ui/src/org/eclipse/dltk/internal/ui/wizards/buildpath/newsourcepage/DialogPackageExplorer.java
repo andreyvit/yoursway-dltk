@@ -17,7 +17,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ModelException;
@@ -112,8 +112,8 @@ public abstract class DialogPackageExplorer implements IMenuListener, ISelection
                             return Messages.format(NewWizardMessages.DialogPackageExplorer_LabelProvider_MultiExcluded, new Object[] {text, new Integer(excluded)}); 
                     }
                 }
-                if (element instanceof IDLTKProject) {
-                    IDLTKProject project= (IDLTKProject)element;
+                if (element instanceof IScriptProject) {
+                    IScriptProject project= (IScriptProject)element;
                     if (project.exists() && project.isOnBuildpath(project)) {
                         IProjectFragment root= project.findProjectFragment(project.getPath());
                         if (BuildpathModifier.filtersSet(root)) {
@@ -145,8 +145,8 @@ public abstract class DialogPackageExplorer implements IMenuListener, ISelection
                     if (root.exists() && BuildpathModifier.filtersSet(root))
                         return getBlueColor();
                 }
-                if (element instanceof IDLTKProject) {
-                    IDLTKProject project= (IDLTKProject)element;
+                if (element instanceof IScriptProject) {
+                    IScriptProject project= (IScriptProject)element;
                     if (project.exists() && project.isOnBuildpath(project)) {
                         IProjectFragment root= project.findProjectFragment(project.getPath());
                         if (root != null && BuildpathModifier.filtersSet(root))
@@ -247,9 +247,9 @@ public abstract class DialogPackageExplorer implements IMenuListener, ISelection
     private IStructuredSelection fCurrentSelection;
     
     /** The current script project
-     * @see #setInput(IDLTKProject)
+     * @see #setInput(IScriptProject)
      */
-    private IDLTKProject fCurrJProject;
+    private IScriptProject fCurrJProject;
     
     public DialogPackageExplorer() {
         fActionGroup= null;
@@ -342,7 +342,7 @@ public abstract class DialogPackageExplorer implements IMenuListener, ISelection
      * 
      * @param project the project to be displayed
      */
-    public void setInput(IDLTKProject project) {
+    public void setInput(IScriptProject project) {
         fCurrJProject= project;
         fPackageViewer.setInput(new Object());
         IStructuredSelection selection= new StructuredSelection(project);
@@ -376,7 +376,7 @@ public abstract class DialogPackageExplorer implements IMenuListener, ISelection
         fPackageViewer.setSelection(selection, true);
         fPackageViewer.getTree().setFocus();
         
-        if (elements.size() == 1 && elements.get(0) instanceof IDLTKProject)
+        if (elements.size() == 1 && elements.get(0) instanceof IScriptProject)
             fPackageViewer.expandToLevel(elements.get(0), 1);
     }
     

@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.internal.corext.refactoring.RefactoringAvailabilityTester;
 import org.eclipse.dltk.internal.corext.refactoring.RefactoringCoreMessages;
@@ -45,12 +45,12 @@ import org.eclipse.ltk.core.refactoring.participants.RefactoringArguments;
 import org.eclipse.ltk.core.refactoring.participants.RenameArguments;
 
 
-public class RenameDLTKProjectProcessor extends ScriptRenameProcessor implements IReferenceUpdating {
+public class RenameScriptProjectProcessor extends ScriptRenameProcessor implements IReferenceUpdating {
 
 	private static final String ID_RENAME_SCRIPT_PROJECT= "org.eclipse.dltk.ui.rename.script.project"; //$NON-NLS-1$
 	private static final String ATTRIBUTE_REFERENCES= "references"; //$NON-NLS-1$
 	
-	private IDLTKProject fProject;
+	private IScriptProject fProject;
 	private boolean fUpdateReferences;
 
 	public static final String IDENTIFIER= "org.eclipse.dltk.ui.renameDLTKProjectProcessor"; //$NON-NLS-1$
@@ -59,7 +59,7 @@ public class RenameDLTKProjectProcessor extends ScriptRenameProcessor implements
 	 * Creates a new renamescriptproject processor.
 	 * @param project thescriptproject, or <code>null</code> if invoked by scripting
 	 */
-	public RenameDLTKProjectProcessor(IDLTKProject project) {
+	public RenameScriptProjectProcessor(IScriptProject project) {
 		fProject= project;
 		if (fProject != null)
 			setNewElementName(fProject.getElementName());
@@ -184,7 +184,7 @@ public class RenameDLTKProjectProcessor extends ScriptRenameProcessor implements
 			final String description= Messages.format(RefactoringCoreMessages.RenameScriptProjectProcessor_descriptor_description_short, fProject.getElementName());
 			final String header= Messages.format(RefactoringCoreMessages.RenameScriptProjectChange_descriptor_description, new String[] { fProject.getElementName(), getNewElementName()});
 			final String comment= new ScriptRefactoringDescriptorComment(this, header).asString();
-			final ScriptRefactoringDescriptor descriptor= new ScriptRefactoringDescriptor(RenameDLTKProjectProcessor.ID_RENAME_SCRIPT_PROJECT, null, description, comment, arguments, RefactoringDescriptor.STRUCTURAL_CHANGE | RefactoringDescriptor.MULTI_CHANGE | RefactoringDescriptor.BREAKING_CHANGE);
+			final ScriptRefactoringDescriptor descriptor= new ScriptRefactoringDescriptor(RenameScriptProjectProcessor.ID_RENAME_SCRIPT_PROJECT, null, description, comment, arguments, RefactoringDescriptor.STRUCTURAL_CHANGE | RefactoringDescriptor.MULTI_CHANGE | RefactoringDescriptor.BREAKING_CHANGE);
 			arguments.put(ScriptRefactoringDescriptor.ATTRIBUTE_INPUT, descriptor.elementToHandle(fProject));
 			arguments.put(ScriptRefactoringDescriptor.ATTRIBUTE_NAME, getNewElementName());
 			arguments.put(ATTRIBUTE_REFERENCES, Boolean.valueOf(fUpdateReferences).toString());
@@ -203,7 +203,7 @@ public class RenameDLTKProjectProcessor extends ScriptRenameProcessor implements
 				if (element == null || !element.exists() || element.getElementType() != IModelElement.SCRIPT_PROJECT)
 					return ScriptableRefactoring.createInputFatalStatus(element, getRefactoring().getName(), ID_RENAME_SCRIPT_PROJECT);
 				else
-					fProject= (IDLTKProject) element;
+					fProject= (IScriptProject) element;
 			} else
 				return RefactoringStatus.createFatalErrorStatus(Messages.format(RefactoringCoreMessages.InitializableRefactoring_argument_not_exist, ScriptRefactoringDescriptor.ATTRIBUTE_INPUT));
 			final String name= extended.getAttribute(ScriptRefactoringDescriptor.ATTRIBUTE_NAME);

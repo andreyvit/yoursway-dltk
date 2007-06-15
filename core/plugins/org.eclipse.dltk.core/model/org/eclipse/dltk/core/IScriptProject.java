@@ -17,13 +17,13 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 
-public interface IDLTKProject extends IModelElement, IOpenable, IParent {
+public interface IScriptProject extends IModelElement, IOpenable, IParent {
 
 	/**
-	 * Returns the <code>IProject</code> on which this <code>IScriptProject</code>
+	 * Returns the <code>IProject</code> on which this <code>IDLTKProject</code>
 	 * was created. This is handle-only method.
 	 * 
-	 * @return the <code>IProject</code> on which this <code>IScriptProject</code>
+	 * @return the <code>IProject</code> on which this <code>IDLTKProject</code>
 	 * was created
 	 */
 	IProject getProject();

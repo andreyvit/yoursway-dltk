@@ -31,7 +31,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IOpenable;
@@ -455,9 +455,9 @@ public class ReorgPolicyFactory {
 				return (IScriptFolder) scriptDest;
 			if (scriptDest instanceof IProjectFragment)
 				return ((IProjectFragment) scriptDest).getScriptFolder(""); //$NON-NLS-1$
-			if (scriptDest instanceof IDLTKProject) {
+			if (scriptDest instanceof IScriptProject) {
 				try {
-					IProjectFragment root= ReorgUtils.getCorrespondingProjectFragment((IDLTKProject)scriptDest);
+					IProjectFragment root= ReorgUtils.getCorrespondingProjectFragment((IScriptProject)scriptDest);
 					if (root != null)
 						return root.getScriptFolder("");  //$NON-NLS-1$
 				} catch (ModelException e) {
@@ -704,7 +704,7 @@ public class ReorgPolicyFactory {
 				return RefactoringStatus.createFatalErrorStatus(RefactoringCoreMessages.ReorgPolicyFactory_cannot1); 
 			if (modelElement instanceof IScriptModel)
 				return RefactoringStatus.createFatalErrorStatus(RefactoringCoreMessages.ReorgPolicyFactory_jmodel); 
-			if (! (modelElement instanceof IDLTKProject || modelElement instanceof IProjectFragment))
+			if (! (modelElement instanceof IScriptProject || modelElement instanceof IProjectFragment))
 				return RefactoringStatus.createFatalErrorStatus(RefactoringCoreMessages.ReorgPolicyFactory_src2proj); 
 			if (modelElement.isReadOnly())
 				return RefactoringStatus.createFatalErrorStatus(RefactoringCoreMessages.ReorgPolicyFactory_src2writable); 
@@ -714,11 +714,11 @@ public class ReorgPolicyFactory {
 			return new RefactoringStatus();
 		}
 	
-		protected IDLTKProject getDestinationScriptProject(){
+		protected IScriptProject getDestinationScriptProject(){
 			return getDestinationAsScriptProject(getScriptElementDestination());
 		}
 	
-		private IDLTKProject getDestinationAsScriptProject(IModelElement modelElementDestination) {
+		private IScriptProject getDestinationAsScriptProject(IModelElement modelElementDestination) {
 			if (modelElementDestination == null)
 				return null;
 			else
@@ -737,7 +737,7 @@ public class ReorgPolicyFactory {
 		private void confirmOverwritting(IReorgQueries reorgQueries) {
 			OverwriteHelper oh= new OverwriteHelper();
 			oh.setProjectFragments(fProjectFragments);
-			IDLTKProject scriptProject= getDestinationScriptProject();
+			IScriptProject scriptProject= getDestinationScriptProject();
 			oh.confirmOverwritting(reorgQueries, scriptProject);
 			fProjectFragments= oh.getProjectFragmentsWithoutUnconfirmedOnes();
 		}
@@ -821,8 +821,8 @@ public class ReorgPolicyFactory {
 					return (IProjectFragment) pack.getParent();
 			}
 
-			if (modelElement instanceof IDLTKProject)
-				return ReorgUtils.getCorrespondingProjectFragment((IDLTKProject) modelElement);				
+			if (modelElement instanceof IScriptProject)
+				return ReorgUtils.getCorrespondingProjectFragment((IScriptProject) modelElement);				
 			return null;
 		}
 		
@@ -1062,7 +1062,7 @@ public class ReorgPolicyFactory {
 			pm.beginTask("", roots.length); //$NON-NLS-1$
 			CompositeChange composite= new DynamicValidationStateChange(RefactoringCoreMessages.ReorgPolicy_copy_source_folder); 
 			composite.markAsSynthetic();
-			IDLTKProject destination= getDestinationScriptProject();
+			IScriptProject destination= getDestinationScriptProject();
 			Assert.isNotNull(destination);
 			for (int i= 0; i < roots.length; i++) {
 				composite.add(createChange(roots[i], destination, nameProposer, copyQueries));
@@ -1072,7 +1072,7 @@ public class ReorgPolicyFactory {
 			return composite;
 		}
 		
-		private Change createChange(IProjectFragment root, IDLTKProject destination, NewNameProposer nameProposer, INewNameQueries copyQueries) {
+		private Change createChange(IProjectFragment root, IScriptProject destination, NewNameProposer nameProposer, INewNameQueries copyQueries) {
 			IResource res= root.getResource();
 			IProject destinationProject= destination.getProject();
 			String newName= nameProposer.createNewName(res, destinationProject);
@@ -1281,7 +1281,7 @@ public class ReorgPolicyFactory {
 				return fModifications;
 			
 			fModifications= new MoveModifications();
-			IDLTKProject destination= getDestinationScriptProject();
+			IScriptProject destination= getDestinationScriptProject();
 			boolean updateReferences= canUpdateReferences() && getUpdateReferences();
 			if (destination != null) {
 				IProjectFragment[] roots= getProjectFragments();
@@ -1297,7 +1297,7 @@ public class ReorgPolicyFactory {
 			pm.beginTask("", roots.length); //$NON-NLS-1$
 			CompositeChange composite= new DynamicValidationStateChange(RefactoringCoreMessages.ReorgPolicy_move_source_folder); 
 			composite.markAsSynthetic();
-			IDLTKProject destination= getDestinationScriptProject();
+			IScriptProject destination= getDestinationScriptProject();
 			Assert.isNotNull(destination);
 			for (int i= 0; i < roots.length; i++) {
 				composite.add(createChange(roots[i], destination));
@@ -1311,7 +1311,7 @@ public class ReorgPolicyFactory {
 			return null;
 		}
 
-		private Change createChange(IProjectFragment root, IDLTKProject destination) {
+		private Change createChange(IProjectFragment root, IScriptProject destination) {
 			///XXX fix the query
 			return new MoveProjectFragmentChange(root, destination.getProject(), null);
 		}
@@ -1320,13 +1320,13 @@ public class ReorgPolicyFactory {
 			RefactoringStatus superStatus= super.verifyDestination(modelElement);
 			if (superStatus.hasFatalError())
 				return superStatus;
-			IDLTKProject scriptProject= getDestinationScriptProject();
+			IScriptProject scriptProject= getDestinationScriptProject();
 			if (isParentOfAny(scriptProject, getProjectFragments()))
 				return RefactoringStatus.createFatalErrorStatus(RefactoringCoreMessages.ReorgPolicyFactory_element2parent); 
 			return superStatus;
 		}
 
-		private static boolean isParentOfAny(IDLTKProject scriptProject, IProjectFragment[] roots) {
+		private static boolean isParentOfAny(IScriptProject scriptProject, IProjectFragment[] roots) {
 			for (int i= 0; i < roots.length; i++) {
 				if (ReorgUtils.isParentInWorkspaceOrOnDisk(roots[i], scriptProject)) return true;
 			}

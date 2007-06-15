@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 
 /**
  * Interface called from script builder to build the selected resource.
@@ -28,7 +28,7 @@ public interface IScriptBuilder {
 	 * 
 	 * @return
 	 */
-	IStatus[] buildResources(IDLTKProject project, List resources,
+	IStatus[] buildResources(IScriptProject project, List resources,
 			IProgressMonitor monitor);
 
 	/**
@@ -37,7 +37,7 @@ public interface IScriptBuilder {
 	 * 
 	 * @return
 	 */
-	IStatus[] buildModelElements(IDLTKProject project, List elements,
+	IStatus[] buildModelElements(IScriptProject project, List elements,
 			IProgressMonitor monitor);
 
 	/**
@@ -54,5 +54,5 @@ public interface IScriptBuilder {
 	 * @return null, if no dependencies are found. Should not return elements
 	 *         from resources list.
 	 */
-	List getDependencies(IDLTKProject project, List resources);
+	List getDependencies(IScriptProject project, List resources);
 }

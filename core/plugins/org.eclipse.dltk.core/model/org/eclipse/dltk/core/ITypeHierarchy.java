@@ -242,7 +242,7 @@ public interface ITypeHierarchy {
 
 	/**
 	 * Stores the type hierarchy in an output stream. This stored hierarchy can
-	 * be load by IType#loadTypeHierachy(IScriptProject, InputStream,
+	 * be load by IType#loadTypeHierachy(IDLTKProject, InputStream,
 	 * IProgressMonitor). Listeners of this hierarchy are not stored.
 	 * 
 	 * Only hierarchies created by the following methods can be store:

@@ -41,7 +41,7 @@ import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.ModelException;
@@ -302,7 +302,7 @@ public class Util {
 	 * null, returns the line separator for the workspace. If still null, return
 	 * the system line separator.
 	 */
-	public static String getLineSeparator(String text, IDLTKProject project) {
+	public static String getLineSeparator(String text, IScriptProject project) {
 		String lineSeparator = null;
 		// line delimiter in given text
 		if (text != null && text.length() != 0) {

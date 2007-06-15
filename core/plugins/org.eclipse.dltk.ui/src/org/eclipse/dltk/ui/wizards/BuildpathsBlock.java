@@ -32,7 +32,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.internal.corext.util.Messages;
@@ -110,7 +110,7 @@ public abstract class BuildpathsBlock {
 	private StringButtonDialogField fBuildPathDialogField;
 	private StatusInfo fPathStatus;
 	private StatusInfo fBuildPathStatus;
-	private IDLTKProject fCurrJProject;
+	private IScriptProject fCurrJProject;
 	private IStatusChangeListener fContext;
 	private Control fSWTWidget;
 	private TabFolder fTabFolder;
@@ -259,7 +259,7 @@ public abstract class BuildpathsBlock {
 	 *            or - if the project is an existing script project - the
 	 *            buildpath entries of the existing project
 	 */
-	public void init(IDLTKProject jproject, IBuildpathEntry[] buildpathEntries) {
+	public void init(IScriptProject jproject, IBuildpathEntry[] buildpathEntries) {
 		fCurrJProject = jproject;
 		boolean projectExists = false;
 		List newBuildpath = null;
@@ -362,7 +362,7 @@ public abstract class BuildpathsBlock {
 	 *         <code>null<code> if the page has not
 	 * been initialized.
 	 */
-	public IDLTKProject getDLTKProject() {
+	public IScriptProject getDLTKProject() {
 		return fCurrJProject;
 	}
 
@@ -388,7 +388,7 @@ public abstract class BuildpathsBlock {
 	// -------- evaluate default settings --------
 	protected abstract IPreferenceStore getPreferenceStore();
 
-	private List getDefaultBuildpath(IDLTKProject jproj) {
+	private List getDefaultBuildpath(IScriptProject jproj) {
 		List list = new ArrayList();
 		IResource srcFolder;
 		IPreferenceStore store = getPreferenceStore();
@@ -570,7 +570,7 @@ public abstract class BuildpathsBlock {
 	 * Creates the script project and sets the configured build path and output
 	 * location. If the project already exists only build paths are updated.
 	 */
-	public static void flush(List buildpathEntries, IDLTKProject javaProject, IProgressMonitor monitor) throws CoreException,
+	public static void flush(List buildpathEntries, IScriptProject javaProject, IProgressMonitor monitor) throws CoreException,
 			OperationCanceledException {
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();

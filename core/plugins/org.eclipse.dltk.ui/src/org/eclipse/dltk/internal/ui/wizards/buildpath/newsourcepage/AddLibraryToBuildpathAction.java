@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.buildpath.BuildpathModifier;
 import org.eclipse.dltk.internal.ui.actions.WorkbenchRunnableAdapter;
@@ -55,7 +55,7 @@ import org.eclipse.ui.part.ISetSelectionTarget;
 
 public class AddLibraryToBuildpathAction extends Action implements ISelectionChangedListener {
 
-	private IDLTKProject fSelectedProject;
+	private IScriptProject fSelectedProject;
 	private final IWorkbenchSite fSite;
 
 	public AddLibraryToBuildpathAction(IWorkbenchSite site) {
@@ -68,7 +68,7 @@ public class AddLibraryToBuildpathAction extends Action implements ISelectionCha
 	 * {@inheritDoc}
 	 */
 	public void run() {
-		final IDLTKProject project= fSelectedProject;
+		final IScriptProject project= fSelectedProject;
 
 		Shell shell= fSite.getShell();
 		if (shell == null) {
@@ -179,8 +179,8 @@ public class AddLibraryToBuildpathAction extends Action implements ISelectionCha
 	}
 
 	public boolean canHandle(IStructuredSelection selection) {
-		if (selection.size() == 1 && selection.getFirstElement() instanceof IDLTKProject) {
-			fSelectedProject= (IDLTKProject)selection.getFirstElement();
+		if (selection.size() == 1 && selection.getFirstElement() instanceof IScriptProject) {
+			fSelectedProject= (IScriptProject)selection.getFirstElement();
 			return true;
 		}
 		return false;

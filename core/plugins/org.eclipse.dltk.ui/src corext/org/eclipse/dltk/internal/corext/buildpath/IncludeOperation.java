@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
@@ -58,7 +58,7 @@ public class IncludeOperation extends BuildpathModifierOperation {
         fException= null;
         try {
             List elements= getSelectedElements();
-            IDLTKProject project= fInformationProvider.getDLTKProject();
+            IScriptProject project= fInformationProvider.getDLTKProject();
             result= include(elements, project, monitor);
         } catch (CoreException e) {
             fException= e;
@@ -84,7 +84,7 @@ public class IncludeOperation extends BuildpathModifierOperation {
 	public boolean isValid(List elements, int[] types) throws ModelException {
 	    if (elements.size() == 0)
 	        return false;
-	    IDLTKProject project= fInformationProvider.getDLTKProject();
+	    IScriptProject project= fInformationProvider.getDLTKProject();
 	    for(int i= 0; i < elements.size(); i++) {
 	        Object element= elements.get(i);
 	        switch (types[i]) {
@@ -109,7 +109,7 @@ public class IncludeOperation extends BuildpathModifierOperation {
      * false</code> otherwise
      * @throws ModelException
      */
-	private boolean isValidFolder(IResource resource, IDLTKProject project) throws ModelException {
+	private boolean isValidFolder(IResource resource, IScriptProject project) throws ModelException {
 		if (project.isOnBuildpath(project) && resource.getProjectRelativePath().segmentCount() == 1) {
 			IProjectFragment root1= BuildpathModifier.getFragmentRoot(resource, project, null);
 			IProjectFragment root2= BuildpathModifier.getFragmentRoot(project.getResource(), project, null);

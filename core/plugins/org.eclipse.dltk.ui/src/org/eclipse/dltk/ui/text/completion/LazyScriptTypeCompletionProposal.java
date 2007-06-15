@@ -11,7 +11,7 @@ package org.eclipse.dltk.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
@@ -252,7 +252,7 @@ public abstract class LazyScriptTypeCompletionProposal extends
 
 	protected ProposalInfo computeProposalInfo() {
 		if (fSourceModule != null) {
-			IDLTKProject project = fSourceModule.getScriptProject();
+			IScriptProject project = fSourceModule.getScriptProject();
 			if (project != null)
 				return new TypeProposalInfo(project, fProposal);
 		}

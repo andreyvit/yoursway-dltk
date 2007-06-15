@@ -29,7 +29,7 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.dltk.console.ScriptConsoleServer;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.javascript.launching.JavaScriptLaunchingPlugin;
 import org.eclipse.dltk.launching.AbstractInterpreterRunner;
@@ -72,7 +72,7 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 			sessionId = "";
 		}
 		
-		IDLTKProject proj = AbstractScriptLaunchConfigurationDelegate
+		IScriptProject proj = AbstractScriptLaunchConfigurationDelegate
 				.getScriptProject(launch.getLaunchConfiguration());
 		IJavaProject myJavaProject = JavaCore.create(proj.getProject());
 		IVMInstall vmInstall = JavaRuntime.getVMInstall(myJavaProject);

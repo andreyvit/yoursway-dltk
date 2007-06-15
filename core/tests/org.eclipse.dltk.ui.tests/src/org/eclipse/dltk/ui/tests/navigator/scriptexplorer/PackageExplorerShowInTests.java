@@ -16,14 +16,14 @@ import junit.framework.TestSuite;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.ui.scriptview.ScriptExplorerPart;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.dltk.ui.tests.DLTKProjectHelper;
+import org.eclipse.dltk.ui.tests.ScriptProjectHelper;
 import org.eclipse.dltk.ui.tests.core.ProjectTestSetup;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -53,7 +53,7 @@ public class PackageExplorerShowInTests extends TestCase {
 		return new ProjectTestSetup(someTest);
 	}
 	
-	private IDLTKProject fJProject;
+	private IScriptProject fJProject;
 	private ScriptExplorerPart fPackageExplorer;
 	private IWorkbenchPage fPage;
 	
@@ -76,7 +76,7 @@ public class PackageExplorerShowInTests extends TestCase {
 	
 	
 	public void testCU() throws Exception {
-		IProjectFragment sourceFolder= DLTKProjectHelper.addSourceContainer(fJProject, "src");
+		IProjectFragment sourceFolder= ScriptProjectHelper.addSourceContainer(fJProject, "src");
 		IScriptFolder pack= sourceFolder.createScriptFolder("p", true, null);
 		ISourceModule cu= pack.createSourceModule("A.txt", "package p;\nclass A {\n\n}", true, null);
 		IStructuredSelection selection= (IStructuredSelection) fPackageExplorer.convertSelection(new StructuredSelection(cu));
@@ -86,7 +86,7 @@ public class PackageExplorerShowInTests extends TestCase {
 	}
 	
 	public void testCUAdaptedCU() throws Exception {
-		IProjectFragment sourceFolder= DLTKProjectHelper.addSourceContainer(fJProject, "src");
+		IProjectFragment sourceFolder= ScriptProjectHelper.addSourceContainer(fJProject, "src");
 		IScriptFolder pack= sourceFolder.createScriptFolder("p", true, null);
 		final ISourceModule cu= pack.createSourceModule("A.txt", "package p;\nclass A {\n\n}", true, null);
 		
@@ -106,7 +106,7 @@ public class PackageExplorerShowInTests extends TestCase {
 	
 	
 	public void testCUAdaptedResource() throws Exception {
-		IProjectFragment sourceFolder= DLTKProjectHelper.addSourceContainer(fJProject, "src");
+		IProjectFragment sourceFolder= ScriptProjectHelper.addSourceContainer(fJProject, "src");
 		IScriptFolder pack= sourceFolder.createScriptFolder("p", true, null);
 		final ISourceModule cu= pack.createSourceModule("A.txt", "package p;\nclass A {\n\n}", true, null);
 		

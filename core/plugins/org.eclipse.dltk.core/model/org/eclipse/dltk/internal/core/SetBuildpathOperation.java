@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.dltk.compiler.util.ObjectVector;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IModelStatus;
@@ -39,7 +39,7 @@ import org.eclipse.dltk.internal.core.util.Util;
 
 
 /**
- * This operation sets an <code>IScriptProject</code>'s buildpath.
+ * This operation sets an <code>IDLTKProject</code>'s buildpath.
  * 
  * @see IScriptProject
  */
@@ -59,7 +59,7 @@ public class SetBuildpathOperation extends ModelOperation {
 
 	boolean needSave;
 
-	DLTKProject project;
+	ScriptProject project;
 
 	boolean identicalRoots;
 
@@ -73,7 +73,7 @@ public class SetBuildpathOperation extends ModelOperation {
 	/**
 	 * When executed, this operation sets the buildpath of the given project.
 	 */
-	public SetBuildpathOperation(DLTKProject project, IBuildpathEntry[] oldResolvedPath, IBuildpathEntry[] newRawPath, boolean canChangeResource, boolean needValidation, boolean needSave) {
+	public SetBuildpathOperation(ScriptProject project, IBuildpathEntry[] oldResolvedPath, IBuildpathEntry[] newRawPath, boolean canChangeResource, boolean needValidation, boolean needSave) {
 
 		super(new IModelElement[] { project });
 		this.oldResolvedPath = oldResolvedPath;
@@ -622,11 +622,11 @@ public class SetBuildpathOperation extends ModelOperation {
 
 		try {
 			IScriptModel model = ModelManager.getModelManager().getModel();
-			IDLTKProject initialProject = this.project;
-			IDLTKProject[] projects = model.getScriptProjects();
+			IScriptProject initialProject = this.project;
+			IScriptProject[] projects = model.getScriptProjects();
 			for (int i = 0, projectCount = projects.length; i < projectCount; i++) {
 				try {
-					final DLTKProject affectedProject = (DLTKProject) projects[i];
+					final ScriptProject affectedProject = (ScriptProject) projects[i];
 					if (affectedProject.equals(initialProject))
 						continue; // skip itself
 					if (!affectedProject.isOpen())
@@ -699,7 +699,7 @@ public class SetBuildpathOperation extends ModelOperation {
 			}
 
 			public void run() throws ModelException {
-				DLTKProject.updateAllCycleMarkers(null);
+				ScriptProject.updateAllCycleMarkers(null);
 			}
 		}, REMOVEALL_APPEND);
 	}

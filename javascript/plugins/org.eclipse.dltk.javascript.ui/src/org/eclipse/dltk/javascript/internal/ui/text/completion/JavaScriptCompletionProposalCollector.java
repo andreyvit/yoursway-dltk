@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.CompletionProposal;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.javascript.typeinference.IReference;
@@ -132,7 +132,7 @@ public class JavaScriptCompletionProposalCollector extends
 	}
 	
 	protected ScriptCompletionProposal createOverrideCompletionProposal(
-			IDLTKProject dltkProject, ISourceModule compilationUnit,
+			IScriptProject dltkProject, ISourceModule compilationUnit,
 			String name, String[] paramTypes, int start, int length,
 			String displayName, String completionProposal) {
 		return new JavaScriptOverrideCompletionProposal(dltkProject,

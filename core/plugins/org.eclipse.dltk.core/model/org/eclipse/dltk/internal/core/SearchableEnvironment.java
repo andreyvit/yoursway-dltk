@@ -29,7 +29,7 @@ public class SearchableEnvironment implements ISearchableEnvironment {
 	
 	protected org.eclipse.dltk.core.ISourceModule[] workingCopies;
 	
-	protected DLTKProject project;
+	protected ScriptProject project;
 	
 	protected IDLTKSearchScope searchScope;
 	
@@ -38,7 +38,7 @@ public class SearchableEnvironment implements ISearchableEnvironment {
 	/**
 	 * Creates a SearchableEnvironment on the given project
 	 */
-	public SearchableEnvironment(DLTKProject project,
+	public SearchableEnvironment(ScriptProject project,
 			org.eclipse.dltk.core.ISourceModule[] workingCopies)
 			throws ModelException {
 		
@@ -65,7 +65,7 @@ public class SearchableEnvironment implements ISearchableEnvironment {
 	/**
 	 * Creates a SearchableEnvironment on the given project
 	 */
-	public SearchableEnvironment(DLTKProject project, WorkingCopyOwner owner)
+	public SearchableEnvironment(ScriptProject project, WorkingCopyOwner owner)
 			throws ModelException {
 		this(project, owner == null ? null : ModelManager.getModelManager()
 				.getWorkingCopies(owner, true)); // add primary WCs

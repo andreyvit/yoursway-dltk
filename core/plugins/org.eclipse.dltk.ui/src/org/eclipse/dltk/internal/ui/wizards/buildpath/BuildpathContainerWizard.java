@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.ui.wizards.buildpath;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPage;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPageExtension;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPageExtension2;
@@ -35,7 +35,7 @@ public class BuildpathContainerWizard extends Wizard {
 
 	private IBuildpathEntry[] fNewEntries;
 	private IBuildpathContainerPage fContainerPage;
-	private IDLTKProject fCurrProject;
+	private IScriptProject fCurrProject;
 	private IBuildpathEntry[] fCurrBuildpath;
 
 	private BuildpathContainerSelectionPage fSelectionWizardPage;
@@ -44,7 +44,7 @@ public class BuildpathContainerWizard extends Wizard {
 	 * Constructor for BuildpathContainerWizard.
 	 */
 	public BuildpathContainerWizard(IBuildpathEntry entryToEdit,
-			IDLTKProject currProject, IBuildpathEntry[] currEntries) {
+			IScriptProject currProject, IBuildpathEntry[] currEntries) {
 		this(entryToEdit, null, currProject, currEntries);
 	}
 
@@ -52,12 +52,12 @@ public class BuildpathContainerWizard extends Wizard {
 	 * Constructor for BuildpathContainerWizard.
 	 */
 	public BuildpathContainerWizard(BuildpathContainerDescriptor pageDesc,
-			IDLTKProject currProject, IBuildpathEntry[] currEntries) {
+			IScriptProject currProject, IBuildpathEntry[] currEntries) {
 		this(null, pageDesc, currProject, currEntries);
 	}
 
 	private BuildpathContainerWizard(IBuildpathEntry entryToEdit,
-			BuildpathContainerDescriptor pageDesc, IDLTKProject currProject,
+			BuildpathContainerDescriptor pageDesc, IScriptProject currProject,
 			IBuildpathEntry[] currEntries) {
 		fEntryToEdit = entryToEdit;
 		fPageDesc = pageDesc;

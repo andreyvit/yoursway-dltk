@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IParent;
@@ -52,7 +52,7 @@ import org.eclipse.jface.viewers.Viewer;
  * )
  *  Script project (
  * <code>
- * IScriptProject
+ * IDLTKProject
  * </code>
  * )
  *  package fragment root (
@@ -188,8 +188,8 @@ public class StandardModelElementContentProvider implements
 		try {
 			if (element instanceof IScriptModel)
 				return getDLTKProjects((IScriptModel) element);
-			if (element instanceof IDLTKProject)
-				return getProjectFragments((IDLTKProject) element);
+			if (element instanceof IScriptProject)
+				return getProjectFragments((IScriptProject) element);
 			if (element instanceof IProjectFragment)
 				return getScriptFolders((IProjectFragment) element);
 			if (element instanceof IScriptFolder)
@@ -222,8 +222,8 @@ public class StandardModelElementContentProvider implements
 			if (element instanceof ISourceModule || element instanceof IFile)
 				return false;
 		}
-		if (element instanceof IDLTKProject) {
-			IDLTKProject jp = (IDLTKProject) element;
+		if (element instanceof IScriptProject) {
+			IScriptProject jp = (IScriptProject) element;
 			if (!jp.getProject().isOpen()) {
 				return false;
 			}
@@ -285,7 +285,7 @@ public class StandardModelElementContentProvider implements
 	 * Note: This method is for internal use only. Clients should not call this
 	 * method.
 	 */
-	protected Object[] getProjectFragments(IDLTKProject project)
+	protected Object[] getProjectFragments(IScriptProject project)
 			throws ModelException {
 		if (!project.getProject().isOpen())
 			return NO_CHILDREN;
@@ -339,7 +339,7 @@ public class StandardModelElementContentProvider implements
 	private Object[] getResources(IFolder folder) {
 		try {
 			IResource[] members = folder.members();
-			IDLTKProject dltkProject = DLTKCore.create(folder.getProject());
+			IScriptProject dltkProject = DLTKCore.create(folder.getProject());
 			if (dltkProject == null || !dltkProject.exists())
 				return members;
 			boolean isFolderOnBuildpath = dltkProject.isOnBuildpath(folder);
@@ -407,7 +407,7 @@ public class StandardModelElementContentProvider implements
 	 * method.
 	 */
 	protected boolean isProjectProjectFragment(IProjectFragment root) {
-		IDLTKProject scriptProject = root.getScriptProject();
+		IScriptProject scriptProject = root.getScriptProject();
 		return scriptProject != null
 				&& scriptProject.getPath().equals(root.getPath());
 	}

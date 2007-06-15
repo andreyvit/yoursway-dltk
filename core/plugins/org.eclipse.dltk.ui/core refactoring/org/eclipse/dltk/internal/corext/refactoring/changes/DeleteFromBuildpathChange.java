@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.internal.corext.refactoring.RefactoringCoreMessages;
 import org.eclipse.dltk.internal.corext.refactoring.base.DLTKChange;
@@ -35,7 +35,7 @@ public class DeleteFromBuildpathChange extends DLTKChange {
 		this(root.getPath(), root.getScriptProject());
 	}
 	
-	DeleteFromBuildpathChange(IPath pathToDelete, IDLTKProject project){
+	DeleteFromBuildpathChange(IPath pathToDelete, IScriptProject project){
 		Assert.isNotNull(pathToDelete);
 		fPathToDelete= pathToDelete;
 		fProjectHandle= project.getHandleIdentifier();
@@ -48,7 +48,7 @@ public class DeleteFromBuildpathChange extends DLTKChange {
 	public Change perform(IProgressMonitor pm)	throws CoreException {
 		pm.beginTask(getName(), 1);
 		try{
-			IDLTKProject project= getScriptProject();
+			IScriptProject project= getScriptProject();
 			IBuildpathEntry[] cp= project.getRawBuildpath();
 			IBuildpathEntry[] newCp= new IBuildpathEntry[cp.length-1];
 			int i= 0; 
@@ -88,8 +88,8 @@ public class DeleteFromBuildpathChange extends DLTKChange {
 		fPath= entry.getPath();		
 	}
 	
-	private IDLTKProject getScriptProject(){
-		return (IDLTKProject)DLTKCore.create(fProjectHandle);
+	private IScriptProject getScriptProject(){
+		return (IScriptProject)DLTKCore.create(fProjectHandle);
 	}
 	
 	public String getName() {

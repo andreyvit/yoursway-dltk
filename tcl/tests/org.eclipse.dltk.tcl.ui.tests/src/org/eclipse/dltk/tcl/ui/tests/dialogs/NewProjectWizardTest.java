@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -58,7 +58,7 @@ import org.eclipse.dltk.internal.ui.wizards.buildpath.newsourcepage.BuildpathMod
 import org.eclipse.dltk.internal.ui.wizards.buildpath.newsourcepage.BuildpathModifierQueries.ICreateFolderQuery;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.newsourcepage.BuildpathModifierQueries.ILinkToQuery;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.newsourcepage.BuildpathModifierQueries.IRemoveLinkedFolderQuery;
-import org.eclipse.dltk.ui.tests.DLTKProjectHelper;
+import org.eclipse.dltk.ui.tests.ScriptProjectHelper;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
@@ -67,7 +67,7 @@ public class NewProjectWizardTest extends TestCase {
 	
     private static final Class THIS= NewProjectWizardTest.class;
     
-    protected IDLTKProject fProject;
+    protected IScriptProject fProject;
     protected static NewProjectTestSetup fTestSetup;
     protected String fNormalFolder= "NormalFolder";
     protected String fSubFolder= "SubFolder";
@@ -344,7 +344,7 @@ public class NewProjectWizardTest extends TestCase {
         assertTrue(fProject.findScriptFolder(normalFolder.getFullPath()) == null);
         assertTrue(fProject.findScriptFolder(fragment.getPath()) == null);
         
-        IDLTKProject project= (IDLTKProject)executeOperation(IBuildpathInformationProvider.ADD_SEL_SF_TO_BP, fProject,  null, null);
+        IScriptProject project= (IScriptProject)executeOperation(IBuildpathInformationProvider.ADD_SEL_SF_TO_BP, fProject,  null, null);
         assertTrue(project.equals(fProject));
         
         // project is on buildpath
@@ -435,7 +435,7 @@ public class NewProjectWizardTest extends TestCase {
         assertFalse(fProject.findScriptFolder(normalFolder.getFullPath()) == null);
         assertFalse(fProject.findScriptFolder(fragment.getPath()) == null);
         
-        IDLTKProject jProject= (IDLTKProject)executeOperation(IBuildpathInformationProvider.REMOVE_FROM_BP, fProject, null, null);
+        IScriptProject jProject= (IScriptProject)executeOperation(IBuildpathInformationProvider.REMOVE_FROM_BP, fProject, null, null);
         
         assertTrue(jProject.equals(fProject));
         assertTrue(BuildpathModifier.getBuildpathEntryFor(fProject.getPath(), fProject, IBuildpathEntry.BPE_SOURCE) == null);
@@ -561,7 +561,7 @@ public class NewProjectWizardTest extends TestCase {
         IPath srcPath= new Path("src2");
         IProjectFragment parentRoot= addToBuildpath(srcPath);
         IPath libraryPath= parentRoot.getPath().append("archive.zip");
-        IProjectFragment root= DLTKProjectHelper.addLibrary(fProject, libraryPath);
+        IProjectFragment root= ScriptProjectHelper.addLibrary(fProject, libraryPath);
         assertFalse(BuildpathModifier.getBuildpathEntryFor(root.getPath(), fProject, IBuildpathEntry.BPE_LIBRARY) == null);
         executeOperation(IBuildpathInformationProvider.REMOVE_FROM_BP, root, null, null);
         //assertTrue(zipFile.getFileExtension().equals("zip"));
@@ -575,7 +575,7 @@ public class NewProjectWizardTest extends TestCase {
         IPath srcPath= new Path("src2");
         IProjectFragment parentRoot= addToBuildpath(srcPath);
         IPath libraryPath= parentRoot.getPath().append("archive.zip");
-        IProjectFragment root= DLTKProjectHelper.addLibrary(fProject, libraryPath);
+        IProjectFragment root= ScriptProjectHelper.addLibrary(fProject, libraryPath);
         assertFalse(BuildpathModifier.getBuildpathEntryFor(root.getPath(), fProject, IBuildpathEntry.BPE_LIBRARY) == null);
         executeOperation(IBuildpathInformationProvider.REMOVE_FROM_BP, root, null, null);
         //zipFile.create(null, false, null);
@@ -599,7 +599,7 @@ public class NewProjectWizardTest extends TestCase {
         assertFalse(BuildpathModifier.getBuildpathEntryFor(entry.getPath(), fProject, IBuildpathEntry.BPE_CONTAINER) == null);
         
         BuildPathContainer container= new BuildPathContainer(fProject, entry);
-        IDLTKProject project= (IDLTKProject) executeOperation(IBuildpathInformationProvider.REMOVE_FROM_BP, container, null, null);
+        IScriptProject project= (IScriptProject) executeOperation(IBuildpathInformationProvider.REMOVE_FROM_BP, container, null, null);
         assertTrue(project.equals(fProject));
         assertTrue(BuildpathModifier.getBuildpathEntryFor(entry.getPath(), fProject, IBuildpathEntry.BPE_CONTAINER) == null);
         
@@ -929,7 +929,7 @@ public class NewProjectWizardTest extends TestCase {
                 return new StructuredSelection(list);
             }
 
-            public IDLTKProject getDLTKProject() {
+            public IScriptProject getDLTKProject() {
                 return fProject;
             }
 
@@ -948,7 +948,7 @@ public class NewProjectWizardTest extends TestCase {
             public IAddLibrariesQuery getLibrariesQuery() throws ModelException {
                 return new IAddLibrariesQuery() {
 
-                    public IBuildpathEntry[] doQuery(IDLTKProject project, IBuildpathEntry[] entries) {
+                    public IBuildpathEntry[] doQuery(IScriptProject project, IBuildpathEntry[] entries) {
                         return new IBuildpathEntry[] {(IBuildpathEntry)selection};
                     }
                     

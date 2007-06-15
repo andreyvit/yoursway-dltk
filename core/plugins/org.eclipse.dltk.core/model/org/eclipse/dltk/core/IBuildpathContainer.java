@@ -80,10 +80,10 @@ public interface IBuildpathContainer {
 	 * <li>{@link DLTKCore#create(org.eclipse.core.resources.IWorkspaceRoot)}</li>
 	 * <li>{@link DLTKCore#create(org.eclipse.core.resources.IProject)}</li>
 	 * <li>{@link IScriptModel#getDLTKProjects()}</li>
-	 * <li>{@link IDLTKProject#getRawbuildpath()}</li>
-	 * <li>{@link IDLTKProject#readRawbuildpath()}</li>
-	 * <li>{@link IDLTKProject#getOutputLocation()}</li>
-	 * <li>{@link IDLTKProject#readOutputLocation()}</li>
+	 * <li>{@link IScriptProject#getRawbuildpath()}</li>
+	 * <li>{@link IScriptProject#readRawbuildpath()}</li>
+	 * <li>{@link IScriptProject#getOutputLocation()}</li>
+	 * <li>{@link IScriptProject#readOutputLocation()}</li>
 	 * <li>script element operations marked as "handle-only"</li>
 	 * </ul>
 	 * The effects of using other script model APIs are unspecified.

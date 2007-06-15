@@ -13,7 +13,7 @@ import java.util.Map;
 
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.CompletionRequestor;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 
 public interface ICompletionEngine {
@@ -25,5 +25,5 @@ public interface ICompletionEngine {
 
 	void setOptions(Map options);
 
-	void setProject(IDLTKProject project);
+	void setProject(IScriptProject project);
 }

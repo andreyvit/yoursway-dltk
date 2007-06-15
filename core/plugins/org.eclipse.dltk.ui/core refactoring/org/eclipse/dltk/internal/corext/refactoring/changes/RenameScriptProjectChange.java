@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.refactoring.AbstractModelElementRenameChange;
 import org.eclipse.dltk.internal.corext.refactoring.RefactoringCoreMessages;
@@ -33,7 +33,7 @@ public final class RenameScriptProjectChange extends AbstractModelElementRenameC
 
 	private boolean fUpdateReferences;
 
-	public RenameScriptProjectChange(RefactoringDescriptor descriptor, IDLTKProject project, String newName, String comment, boolean updateReferences) {
+	public RenameScriptProjectChange(RefactoringDescriptor descriptor, IScriptProject project, String newName, String comment, boolean updateReferences) {
 		this(descriptor, project.getPath(), project.getElementName(), newName, comment, IResource.NULL_STAMP, updateReferences);
 		Assert.isTrue(!project.isReadOnly(), "should not be read only"); //$NON-NLS-1$
 	}
@@ -71,8 +71,8 @@ public final class RenameScriptProjectChange extends AbstractModelElementRenameC
 		}
 	}
 
-	private IDLTKProject getScriptProject() {
-		return (IDLTKProject) getModifiedElement();
+	private IScriptProject getScriptProject() {
+		return (IScriptProject) getModifiedElement();
 	}
 
 	public String getName() {
@@ -80,7 +80,7 @@ public final class RenameScriptProjectChange extends AbstractModelElementRenameC
 	}
 
 	private IProject getProject() {
-		IDLTKProject jp= getScriptProject();
+		IScriptProject jp= getScriptProject();
 		if (jp == null)
 			return null;
 		return jp.getProject();
@@ -98,7 +98,7 @@ public final class RenameScriptProjectChange extends AbstractModelElementRenameC
 		return isValid(pm, DIRTY);
 	}
 
-	private void modifyBuildpath(IDLTKProject referencingProject, IProgressMonitor pm) throws ModelException {
+	private void modifyBuildpath(IScriptProject referencingProject, IProgressMonitor pm) throws ModelException {
 		pm.beginTask("", 1); //$NON-NLS-1$
 		IBuildpathEntry[] oldEntries= referencingProject.getRawBuildpath();
 		IBuildpathEntry[] newEntries= new IBuildpathEntry[oldEntries.length];
@@ -116,7 +116,7 @@ public final class RenameScriptProjectChange extends AbstractModelElementRenameC
 		IProject[] referencing= getProject().getReferencingProjects();
 		pm.beginTask(RefactoringCoreMessages.RenameScriptProjectChange_update, referencing.length);
 		for (int i= 0; i < referencing.length; i++) {
-			IDLTKProject jp= DLTKCore.create(referencing[i]);
+			IScriptProject jp= DLTKCore.create(referencing[i]);
 			if (jp != null && jp.exists()) {
 				modifyBuildpath(jp, new SubProgressMonitor(pm, 1));
 			} else {

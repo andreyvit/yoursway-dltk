@@ -29,7 +29,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
@@ -44,7 +44,7 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.ModelStatus;
 import org.eclipse.dltk.internal.core.Openable;
@@ -86,7 +86,7 @@ public class TypeHierarchy implements ITypeHierarchy, IElementChangedListener {
 	 * the context for determining a classpath and namelookup rules. Possibly
 	 * null.
 	 */
-	protected IDLTKProject project;
+	protected IScriptProject project;
 	/**
 	 * The type the hierarchy was specifically computed for, possibly null.
 	 */
@@ -163,7 +163,7 @@ public class TypeHierarchy implements ITypeHierarchy, IElementChangedListener {
 	 * Creates a TypeHierarchy on the given type.
 	 */
 	public TypeHierarchy(IType type, ISourceModule[] workingCopies,
-			IDLTKProject project, boolean computeSubtypes) {
+			IScriptProject project, boolean computeSubtypes) {
 		this(type, workingCopies, SearchEngine
 				.createSearchScope(new IModelElement[] { project }),
 				computeSubtypes);
@@ -210,7 +210,7 @@ public class TypeHierarchy implements ITypeHierarchy, IElementChangedListener {
 			}
 			IScriptFolder pkg = type.getScriptFolder();
 			this.packageRegion.add(pkg);
-			IDLTKProject declaringProject = type.getScriptProject();
+			IScriptProject declaringProject = type.getScriptProject();
 			if (declaringProject != null) {
 				this.projectRegion.add(declaringProject);
 			}
@@ -784,7 +784,7 @@ public class TypeHierarchy implements ITypeHierarchy, IElementChangedListener {
 			try {
 				// if the added project is on the classpath, then the hierarchy
 				// has changed
-				IBuildpathEntry[] classpath = ((DLTKProject) this.javaProject())
+				IBuildpathEntry[] classpath = ((ScriptProject) this.javaProject())
 						.getExpandedBuildpath(false);
 				for (int i = 0; i < classpath.length; i++) {
 					if (classpath[i].getEntryKind() == IBuildpathEntry.BPE_PROJECT
@@ -795,7 +795,7 @@ public class TypeHierarchy implements ITypeHierarchy, IElementChangedListener {
 				if (this.focusType != null) {
 					// if the hierarchy's project is on the added project
 					// classpath, then the hierarchy has changed
-					classpath = ((DLTKProject) element)
+					classpath = ((ScriptProject) element)
 							.getExpandedBuildpath(true);
 					IPath hierarchyProject = javaProject().getPath();
 					for (int i = 0; i < classpath.length; i++) {
@@ -815,7 +815,7 @@ public class TypeHierarchy implements ITypeHierarchy, IElementChangedListener {
 			// then the type hierarchy has changed
 			IModelElement[] pkgs = this.packageRegion.getElements();
 			for (int i = 0; i < pkgs.length; i++) {
-				IDLTKProject javaProject = pkgs[i].getScriptProject();
+				IScriptProject javaProject = pkgs[i].getScriptProject();
 				if (javaProject != null && javaProject.equals(element)) {
 					return true;
 				}
@@ -870,7 +870,7 @@ public class TypeHierarchy implements ITypeHierarchy, IElementChangedListener {
 					IPath rootPath = root.getPath();
 					IModelElement[] elements = this.projectRegion.getElements();
 					for (int i = 0; i < elements.length; i++) {
-						DLTKProject javaProject = (DLTKProject) elements[i];
+						ScriptProject javaProject = (ScriptProject) elements[i];
 						try {
 							IBuildpathEntry[] classpath = javaProject
 									.getResolvedBuildpath();
@@ -938,7 +938,7 @@ public class TypeHierarchy implements ITypeHierarchy, IElementChangedListener {
 	/**
 	 * Returns the java project this hierarchy was created in.
 	 */
-	public IDLTKProject javaProject() {
+	public IScriptProject javaProject() {
 		return this.focusType.getScriptProject();
 	}
 
@@ -992,7 +992,7 @@ public class TypeHierarchy implements ITypeHierarchy, IElementChangedListener {
 			// read project
 			bytes = readUntil(input, SEPARATOR1);
 			if (bytes.length > 0) {
-				typeHierarchy.project = (IDLTKProject) DLTKCore
+				typeHierarchy.project = (IScriptProject) DLTKCore
 						.create(new String(bytes));
 				typeHierarchy.scope = SearchEngine
 						.createSearchScope(new IModelElement[] { typeHierarchy.project });

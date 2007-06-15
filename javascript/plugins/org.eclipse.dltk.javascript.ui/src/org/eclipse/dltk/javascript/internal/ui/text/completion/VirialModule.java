@@ -23,7 +23,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuffer;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -33,7 +33,7 @@ import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.ProjectFragment;
 import org.eclipse.dltk.internal.core.ScriptFolder;
@@ -48,8 +48,8 @@ public class VirialModule extends ModelElement implements ISourceModule,
 	private IResource    resource;
 	private String contents;
 
-	public  VirialModule(IDLTKProject parent,IResource res,String contents) throws IllegalArgumentException {
-		super(new ScriptFolder(new ProjectFragment(parent.getResource(),(DLTKProject)parent){},new Path("")){			
+	public  VirialModule(IScriptProject parent,IResource res,String contents) throws IllegalArgumentException {
+		super(new ScriptFolder(new ProjectFragment(parent.getResource(),(ScriptProject)parent){},new Path("")){			
 		});
 		this.resource=res;
 		this.contents=contents;
@@ -310,7 +310,7 @@ public class VirialModule extends ModelElement implements ISourceModule,
 	public void codeComplete(int offset, CompletionRequestor requestor)
 			throws ModelException {
 
-		DLTKProject project = (DLTKProject) getScriptProject();
+		ScriptProject project = (ScriptProject) getScriptProject();
 		// TODO. Add searchable environment support.
 		SearchableEnvironment environment = (SearchableEnvironment)project.newSearchableNameEnvironment(new org.eclipse.dltk.core.ISourceModule[] { this });
 		IDLTKLanguageToolkit toolkit = null;

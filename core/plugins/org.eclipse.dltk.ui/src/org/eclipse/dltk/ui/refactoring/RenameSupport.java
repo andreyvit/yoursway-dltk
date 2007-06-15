@@ -12,11 +12,11 @@ package org.eclipse.dltk.ui.refactoring;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.internal.corext.refactoring.rename.RenameDLTKProjectProcessor;
+import org.eclipse.dltk.internal.corext.refactoring.rename.RenameScriptProjectProcessor;
 import org.eclipse.dltk.internal.corext.refactoring.rename.RenameScriptFolderProcessor;
 import org.eclipse.dltk.internal.corext.refactoring.rename.RenameSourceFolderProcessor;
 import org.eclipse.dltk.internal.corext.refactoring.rename.RenameSourceModuleProcessor;
@@ -61,8 +61,8 @@ public class RenameSupport {
 	 * @throws CoreException if an unexpected error occurred while creating
 	 * the {@link RenameSupport}.
 	 */
-	public static RenameSupport create(IDLTKProject project, String newName, int flags) throws CoreException {
-		ScriptRenameProcessor processor= new RenameDLTKProjectProcessor(project);
+	public static RenameSupport create(IScriptProject project, String newName, int flags) throws CoreException {
+		ScriptRenameProcessor processor= new RenameScriptProjectProcessor(project);
 		return new RenameSupport(processor, newName, flags);
 	}
 	

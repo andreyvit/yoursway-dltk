@@ -34,7 +34,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.internal.corext.util.Messages;
@@ -381,7 +381,7 @@ public class AddSourceFolderWizardPage extends NewElementWizardPage {
 	}
 
 	private StatusInfo updateRootStatus() {		
-		IDLTKProject scriptProject= fNewElement.getDLTKProject();		
+		IScriptProject scriptProject= fNewElement.getDLTKProject();		
 		IProject project= scriptProject.getProject();		
 		
 		StatusInfo pathNameStatus= validatePathName(fRootDialogField.getText(), fParent);

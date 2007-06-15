@@ -10,7 +10,7 @@
 package org.eclipse.dltk.ui.tests.navigator.scriptexplorer;
 
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -86,7 +86,7 @@ public class TestDelta implements IModelElementDelta {
 		IModelElement root= frag.getParent();
 		TestDelta rootDelta= new TestDelta(IModelElementDelta.CHANGED, root);
 
-		IDLTKProject proj= root.getScriptProject();
+		IScriptProject proj= root.getScriptProject();
 		TestDelta projectDelta= new TestDelta(IModelElementDelta.CHANGED, proj);
 
 		IScriptModel model= proj.getModel();

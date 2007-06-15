@@ -17,7 +17,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModule;
@@ -52,7 +52,7 @@ public class SourceIndexer extends AbstractIndexer {
 		if (!this.document.isExternal()) {
 			IProject project = ResourcesPlugin.getWorkspace().getRoot()
 					.getProject(path.segment(0));
-			IDLTKProject dltkProject = DLTKCore.create(project);
+			IScriptProject dltkProject = DLTKCore.create(project);
 
 			if (requestor == null) {
 				requestor = ModelManager.getModelManager().indexManager

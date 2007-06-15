@@ -21,7 +21,7 @@ import org.eclipse.dltk.ast.ASTCaching;
 import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ISourceModule;
@@ -35,11 +35,11 @@ import org.eclipse.dltk.ruby.core.model.IModel;
 
 public class Model implements IModel {
 	
-	private final IDLTKProject project;
+	private final IScriptProject project;
 	
 	private final Map sourceModulesToASTs = new WeakHashMap();
 
-	public Model(IDLTKProject project) {
+	public Model(IScriptProject project) {
 		this.project = project;
 	}
 

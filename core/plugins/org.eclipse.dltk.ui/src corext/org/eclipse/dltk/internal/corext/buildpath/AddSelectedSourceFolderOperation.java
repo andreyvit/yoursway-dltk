@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.util.Messages;
@@ -60,7 +60,7 @@ public class AddSelectedSourceFolderOperation extends BuildpathModifierOperation
         fException= null;
         try {
             List elements= getSelectedElements();
-            IDLTKProject project= fInformationProvider.getDLTKProject();            
+            IScriptProject project= fInformationProvider.getDLTKProject();            
             result= addToBuildpath(elements, project, monitor);
         } catch (CoreException e) {
             fException= e;
@@ -89,7 +89,7 @@ public class AddSelectedSourceFolderOperation extends BuildpathModifierOperation
         for (int i= 0; i < elements.size(); i++) {
         	Object object= elements.get(i);
             switch (types[i]) {
-                case DialogPackageExplorerActionGroup.SCRIPT_PROJECT: if (isSourceFolder((IDLTKProject) object)) return false; break;
+                case DialogPackageExplorerActionGroup.SCRIPT_PROJECT: if (isSourceFolder((IScriptProject) object)) return false; break;
                 case DialogPackageExplorerActionGroup.PACKAGE_FRAGMENT: break; // is ok
                 case DialogPackageExplorerActionGroup.INCLUDED_FOLDER: break; // is ok
                 case DialogPackageExplorerActionGroup.FOLDER: break; // is ok

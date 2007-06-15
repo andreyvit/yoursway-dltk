@@ -49,7 +49,7 @@ import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IScriptModel;
 import org.eclipse.dltk.internal.launching.CompositeId;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
@@ -299,7 +299,7 @@ public final class ScriptRuntime {
 		}
 	}
 
-	private static String getNatureFromProject(IDLTKProject project) {
+	private static String getNatureFromProject(IScriptProject project) {
 		try {
 			return DLTKLanguageManager.getLanguageToolkit(project)
 					.getNatureID();
@@ -322,7 +322,7 @@ public final class ScriptRuntime {
 	 * @throws CoreException
 	 *             if unable to determine the project's interpreter install
 	 */
-	public static IInterpreterInstall getInterpreterInstall(IDLTKProject project)
+	public static IInterpreterInstall getInterpreterInstall(IScriptProject project)
 			throws CoreException {
 		// check the buildpath
 		IInterpreterInstall interpreter = null;
@@ -556,14 +556,14 @@ public final class ScriptRuntime {
 	}
 
 	/**
-	 * Return the <code>IScriptProject</code> referenced in the specified
+	 * Return the <code>IDLTKProject</code> referenced in the specified
 	 * configuration or <code>null</code> if none.
 	 * 
 	 * @exception CoreException
 	 *                if the referenced Script project does not exist
 	 * 
 	 */
-	public static IDLTKProject getDLTKProject(ILaunchConfiguration configuration)
+	public static IScriptProject getDLTKProject(ILaunchConfiguration configuration)
 			throws CoreException {
 		String projectName = configuration.getAttribute(
 				ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
@@ -571,7 +571,7 @@ public final class ScriptRuntime {
 		if ((projectName == null) || (projectName.trim().length() < 1)) {
 			return null;
 		}
-		IDLTKProject scriptProject = getScriptModel().getScriptProject(
+		IScriptProject scriptProject = getScriptModel().getScriptProject(
 				projectName);
 		if (scriptProject != null && scriptProject.getProject().exists()
 				&& !scriptProject.getProject().isOpen()) {
@@ -628,7 +628,7 @@ public final class ScriptRuntime {
 				ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH,
 				(String) null);
 		if (containerPath == null) {
-			IDLTKProject proj = getDLTKProject(configuration);
+			IScriptProject proj = getDLTKProject(configuration);
 			if (proj != null) {
 				IInterpreterInstall install = getInterpreterInstall(proj);
 				if (install != null) {
@@ -1014,7 +1014,7 @@ public final class ScriptRuntime {
 		IPath containerPath = null;
 		if (containerAttr == null) {
 			// default interpreter for the launch configuration
-			IDLTKProject proj = getDLTKProject(configuration);
+			IScriptProject proj = getDLTKProject(configuration);
 			if (proj == null) {
 				containerPath = newDefaultInterpreterContainerPath();
 			} else {
@@ -1045,7 +1045,7 @@ public final class ScriptRuntime {
 	 * 
 	 */
 	public static IRuntimeBuildpathEntry computeInterpreterEntry(
-			IDLTKProject project) throws CoreException {
+			IScriptProject project) throws CoreException {
 		IBuildpathEntry[] rawBuildpath = project.getRawBuildpath();
 		IRuntimeBuildpathEntryResolver2 resolver = null;
 		for (int i = 0; i < rawBuildpath.length; i++) {
@@ -1317,7 +1317,7 @@ public final class ScriptRuntime {
 	 * @see org.eclipse.dltk.core.IBuildpathAttribute
 	 * @see ScriptRuntime#BUILDPATH_ATTR_LIBRARY_PATH_ENTRY
 	 */
-	public static String[] computeScriptLibraryPath(IDLTKProject project,
+	public static String[] computeScriptLibraryPath(IScriptProject project,
 			boolean requiredProjects) throws CoreException {
 		Set visited = new HashSet();
 		List entries = new ArrayList();
@@ -1364,7 +1364,7 @@ public final class ScriptRuntime {
 	 *             if unable to gather buildpath entries
 	 * 
 	 */
-	private static void gatherScriptLibraryPathEntries(IDLTKProject project,
+	private static void gatherScriptLibraryPathEntries(IScriptProject project,
 			boolean requiredProjects, Set visited, List entries)
 			throws CoreException {
 		if (visited.contains(project)) {
@@ -1381,7 +1381,7 @@ public final class ScriptRuntime {
 				String projectName = entry.getPath().segment(0);
 				IProject p = root.getProject(projectName);
 				if (p.exists()) {
-					IDLTKProject requiredProject = DLTKCore.create(p);
+					IScriptProject requiredProject = DLTKCore.create(p);
 					if (requiredProject != null) {
 						gatherScriptLibraryPathEntries(requiredProject,
 								requiredProjects, visited, entries);
@@ -1409,7 +1409,7 @@ public final class ScriptRuntime {
 	 * 
 	 */
 	private static IBuildpathEntry[] processScriptLibraryPathEntries(
-			IDLTKProject project, boolean collectRequired,
+			IScriptProject project, boolean collectRequired,
 			IBuildpathEntry[] buildpathEntries, List entries)
 			throws CoreException {
 		List req = null;
@@ -1822,7 +1822,7 @@ public final class ScriptRuntime {
 	 * 
 	 */
 	public static IRuntimeBuildpathEntry newDefaultProjectBuildpathEntry(
-			IDLTKProject project) {
+			IScriptProject project) {
 		return new DefaultProjectBuildpathEntry(project);
 	}
 
@@ -1835,7 +1835,7 @@ public final class ScriptRuntime {
 	 * 
 	 */
 	public static IRuntimeBuildpathEntry newProjectRuntimeBuildpathEntry(
-			IDLTKProject project) {
+			IScriptProject project) {
 		IBuildpathEntry cpe = DLTKCore.newProjectEntry(project.getProject()
 				.getFullPath());
 		return newRuntimeBuildpathEntry(cpe);
@@ -1909,7 +1909,7 @@ public final class ScriptRuntime {
 	 * 
 	 */
 	public static IRuntimeBuildpathEntry newRuntimeContainerBuildpathEntry(
-			IPath path, int buildpathProperty, IDLTKProject project)
+			IPath path, int buildpathProperty, IScriptProject project)
 			throws CoreException {
 		IBuildpathEntry cpe = DLTKCore.newContainerEntry(path);
 		RuntimeBuildpathEntry entry = new RuntimeBuildpathEntry(cpe,
@@ -1990,7 +1990,7 @@ public final class ScriptRuntime {
 	 * 
 	 */
 	public static IRuntimeBuildpathEntry[] computeUnresolvedRuntimeBuildpath(
-			IDLTKProject project) throws CoreException {
+			IScriptProject project) throws CoreException {
 		IBuildpathEntry[] entries = project.getRawBuildpath();
 		List buildpathEntries = new ArrayList(3);
 		for (int i = 0; i < entries.length; i++) {
@@ -2060,7 +2060,7 @@ public final class ScriptRuntime {
 	private static IRuntimeBuildpathEntry[] computeDefaultContainerEntries(
 			IRuntimeBuildpathEntry entry, ILaunchConfiguration config)
 			throws CoreException {
-		IDLTKProject project = entry.getDLTKProject();
+		IScriptProject project = entry.getDLTKProject();
 
 		if (project == null) {
 			project = getDLTKProject(config);
@@ -2073,7 +2073,7 @@ public final class ScriptRuntime {
 	 * Script model.
 	 */
 	private static IRuntimeBuildpathEntry[] computeDefaultContainerEntries(
-			IRuntimeBuildpathEntry entry, IDLTKProject project)
+			IRuntimeBuildpathEntry entry, IScriptProject project)
 			throws CoreException {
 		if (project == null || entry == null) {
 			// cannot resolve without entry or project context
@@ -2121,7 +2121,7 @@ public final class ScriptRuntime {
 				if (cpe.getEntryKind() == IBuildpathEntry.BPE_PROJECT) {
 					IProject p = ResourcesPlugin.getWorkspace().getRoot()
 							.getProject(cpe.getPath().segment(0));
-					IDLTKProject jp = DLTKCore.create(p);
+					IScriptProject jp = DLTKCore.create(p);
 					if (!projects.contains(jp)) {
 						projects.add(jp);
 						IRuntimeBuildpathEntry buildpath = newDefaultProjectBuildpathEntry(jp);
@@ -2245,7 +2245,7 @@ public final class ScriptRuntime {
 	 * 
 	 */
 	public static IRuntimeBuildpathEntry[] resolveRuntimeBuildpathEntry(
-			IRuntimeBuildpathEntry entry, IDLTKProject project)
+			IRuntimeBuildpathEntry entry, IScriptProject project)
 			throws CoreException {
 		switch (entry.getType()) {
 		case IRuntimeBuildpathEntry.CONTAINER:
@@ -2339,7 +2339,7 @@ public final class ScriptRuntime {
 	 * @throws CoreException
 	 *             if unable to compute the default buildpath
 	 */
-	public static String[] computeDefaultRuntimeClassPath(IDLTKProject jproject)
+	public static String[] computeDefaultRuntimeClassPath(IScriptProject jproject)
 			throws CoreException {
 		IRuntimeBuildpathEntry[] unresolved = computeUnresolvedRuntimeBuildpath(jproject);
 		// 1. remove bootpath entries

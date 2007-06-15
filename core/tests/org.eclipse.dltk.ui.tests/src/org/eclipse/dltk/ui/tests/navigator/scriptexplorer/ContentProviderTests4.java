@@ -22,12 +22,12 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ui.tests.DLTKProjectHelper;
+import org.eclipse.dltk.ui.tests.ScriptProjectHelper;
 import org.eclipse.dltk.ui.tests.DLTKUITestsPlugin;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.ui.IViewPart;
@@ -64,7 +64,7 @@ public class ContentProviderTests4 extends TestCase{
 	private ITreeContentProvider fProvider;
 	
 	private IScriptFolder fPack5;
-	private IDLTKProject fJProject3;
+	private IScriptProject fJProject3;
 	private IScriptFolder fPack6;
 	private IProjectFragment fInternalRoot1;
 	private IScriptFolder fA;
@@ -181,10 +181,10 @@ public class ContentProviderTests4 extends TestCase{
 		IWorkspaceDescription workspaceDesc= fWorkspace.getDescription();
 		fEnableAutoBuildAfterTesting= workspaceDesc.isAutoBuilding();
 		if (fEnableAutoBuildAfterTesting)
-			DLTKProjectHelper.setAutoBuilding(false);
+			ScriptProjectHelper.setAutoBuilding(false);
 		
 		//create project
-		fJProject3 = DLTKProjectHelper.createDLTKProject("TestProject3");//$NON-NLS-1$
+		fJProject3 = ScriptProjectHelper.createDLTKProject("TestProject3");//$NON-NLS-1$
 		assertNotNull("project3 null", fJProject3);//$NON-NLS-1$
 
 		Object[] resource = fJProject3.getForeignResources();
@@ -206,7 +206,7 @@ public class ContentProviderTests4 extends TestCase{
 //		assertTrue("jdk not found", jdk != null);//$NON-NLS-1$
 		
 		//create the ProjectFragment that represents the project as source folder
-		fRoot1= DLTKProjectHelper.addSourceContainer(fJProject3, "");//$NON-NLS-1$
+		fRoot1= ScriptProjectHelper.addSourceContainer(fJProject3, "");//$NON-NLS-1$
 		assertNotNull("getting default package", fRoot1);//$NON-NLS-1$
 		
 		fDefaultPackage= fRoot1.createScriptFolder("",true,null);//$NON-NLS-1$
@@ -216,7 +216,7 @@ public class ContentProviderTests4 extends TestCase{
 		//add an internal jar
 		myInternalLibArchive = DLTKUITestsPlugin.getDefault().getFileInPlugin(new Path("testresources/myinternallib.zip"));//$NON-NLS-1$
 		assertTrue("lib not found", myInternalLibArchive != null && myInternalLibArchive.exists()); //$NON-NLS-1$
-		fInternalRoot1= DLTKProjectHelper.addLibraryWithImport(fJProject3, Path.fromOSString(myInternalLibArchive.getPath()));
+		fInternalRoot1= ScriptProjectHelper.addLibraryWithImport(fJProject3, Path.fromOSString(myInternalLibArchive.getPath()));
 	
 		//create internal ScriptFolders
 		fA= fInternalRoot1.getScriptFolder("a");//$NON-NLS-1$
@@ -274,11 +274,11 @@ public class ContentProviderTests4 extends TestCase{
 	protected void tearDown() throws Exception {
 	   
 		fInternalRoot1.close();
-		DLTKProjectHelper.delete(fJProject3);
+		ScriptProjectHelper.delete(fJProject3);
 		page.hideView(fMyPart);
 		
 		if (fEnableAutoBuildAfterTesting)
-			DLTKProjectHelper.setAutoBuilding(true);
+			ScriptProjectHelper.setAutoBuilding(true);
 		
 		super.tearDown();
 	}

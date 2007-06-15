@@ -12,7 +12,7 @@ package org.eclipse.dltk.internal.ui.refactoring.actions;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ScriptModelUtil;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -167,7 +167,7 @@ public class RenameModelElementAction extends SelectionDispatchAction {
 		}
 		switch (element.getElementType()) {
 			case IModelElement.SCRIPT_PROJECT:
-				return RefactoringAvailabilityTester.isRenameAvailable((IDLTKProject) element);
+				return RefactoringAvailabilityTester.isRenameAvailable((IScriptProject) element);
 			case IModelElement.PROJECT_FRAGMENT:
 				return RefactoringAvailabilityTester.isRenameAvailable((IProjectFragment) element);
 			case IModelElement.SCRIPT_FOLDER:

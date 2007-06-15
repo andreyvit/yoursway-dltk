@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.ui.actions;
 
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.ui.IContextMenuConstants;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
@@ -124,6 +124,6 @@ public class BuildActionGroup extends ActionGroup {
 		IStructuredSelection selection= (IStructuredSelection)s;
 		if (selection.size() != 1)
 			return false;
-		return selection.getFirstElement() instanceof IDLTKProject;
+		return selection.getFirstElement() instanceof IScriptProject;
 	}
 }

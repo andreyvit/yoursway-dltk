@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.internal.corext.buildpath.BuildpathModifier;
 import org.eclipse.dltk.internal.ui.wizards.BuildpathDialogAccess;
@@ -52,7 +52,7 @@ import org.eclipse.ui.part.ISetSelectionTarget;
 public class AddArchiveToBuildpathAction extends Action implements ISelectionChangedListener {
 
 	private final IWorkbenchSite fSite;
-	private IDLTKProject fDLTKProject;
+	private IScriptProject fDLTKProject;
 
 	public AddArchiveToBuildpathAction(IWorkbenchSite site) {
 		super(NewWizardMessages.NewSourceContainerWorkbookPage_ToolBar_AddZIPCP_label, DLTKPluginImages.DESC_OBJS_EXTJAR);
@@ -91,7 +91,7 @@ public class AddArchiveToBuildpathAction extends Action implements ISelectionCha
 		}
 	}
 
-	protected List addExternalArchives(IPath[] archivePaths, IDLTKProject project, IProgressMonitor monitor) throws CoreException {
+	protected List addExternalArchives(IPath[] archivePaths, IScriptProject project, IProgressMonitor monitor) throws CoreException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		List addedEntries= new ArrayList();
@@ -141,10 +141,10 @@ public class AddArchiveToBuildpathAction extends Action implements ISelectionCha
 			return false;
 
 		Object first= selection.getFirstElement();
-		if (!(first instanceof IDLTKProject))
+		if (!(first instanceof IScriptProject))
 			return false;
 
-		fDLTKProject= (IDLTKProject)first;
+		fDLTKProject= (IScriptProject)first;
 		if( fDLTKProject == null || !fDLTKProject.exists() ) {
 			return false;
 		}

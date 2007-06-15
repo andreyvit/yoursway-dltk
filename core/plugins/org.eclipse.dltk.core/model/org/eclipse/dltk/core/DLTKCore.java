@@ -35,7 +35,7 @@ import org.eclipse.dltk.internal.core.BuildpathAccessRule;
 import org.eclipse.dltk.internal.core.BuildpathAttribute;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.internal.core.DLTKCorePreferenceInitializer;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.dltk.internal.core.Model;
 import org.eclipse.dltk.internal.core.ModelManager;
@@ -400,7 +400,7 @@ public class DLTKCore extends Plugin {
 	 * @return the Dylan project corresponding to the given project, null if the
 	 *         given project is null
 	 */
-	public static IDLTKProject create(IProject project) {
+	public static IScriptProject create(IProject project) {
 		if (project == null) {
 			return null;
 		}
@@ -724,7 +724,7 @@ public class DLTKCore extends Plugin {
 	 * 	segments
 	 * @return a new container buildpath entry
 	 * 
-	 * @see DLTKCore#getBuildpathContainer(IPath, IDLTKProject)
+	 * @see DLTKCore#getBuildpathContainer(IPath, IScriptProject)
 	 *
 	 */
 	public static IBuildpathEntry newContainerEntry(IPath containerPath) {
@@ -747,8 +747,8 @@ public class DLTKCore extends Plugin {
 	 *    projects in addition to the output location
 	 * @return a new container buildpath entry
 	 * 
-	 * @see DLTKCore#getBuildpathContainer(IPath, IDLTKProject)
-	 * @see DLTKCore#setBuildpathContainer(IPath, IDLTKProject[], IBuildpathContainer[], IProgressMonitor)
+	 * @see DLTKCore#getBuildpathContainer(IPath, IScriptProject)
+	 * @see DLTKCore#setBuildpathContainer(IPath, IScriptProject[], IBuildpathContainer[], IProgressMonitor)
 	 *
 	 */
 	public static IBuildpathEntry newContainerEntry(IPath containerPath, boolean isExported) {
@@ -812,8 +812,8 @@ public class DLTKCore extends Plugin {
 	 *    projects in addition to the output location
 	 * @return a new container buildpath entry
 	 * 
-	 * @see DLTKCore#getBuildpathContainer(IPath, IDLTKProject)
-	 * @see DLTKCore#setBuildpathContainer(IPath, IDLTKProject[], IBuildpathContainer[], IProgressMonitor)
+	 * @see DLTKCore#getBuildpathContainer(IPath, IScriptProject)
+	 * @see DLTKCore#setBuildpathContainer(IPath, IScriptProject[], IBuildpathContainer[], IProgressMonitor)
 	 * @see DLTKCore#newContainerEntry(IPath, boolean)
 	 * @see DLTKCore#newAccessRule(IPath, int)
 	 *
@@ -1019,10 +1019,10 @@ public class DLTKCore extends Plugin {
 	 * 
 	 * @see buildpathContainerInitializer
 	 * @see IBuildpathContainer
-	 * @see #setbuildpathContainer(IPath, IDLTKProject[], IBuildpathContainer[], IProgressMonitor)
+	 * @see #setbuildpathContainer(IPath, IScriptProject[], IBuildpathContainer[], IProgressMonitor)
 	 *
 	 */
-	public static IBuildpathContainer getBuildpathContainer(IPath containerPath, IDLTKProject project) throws ModelException{
+	public static IBuildpathContainer getBuildpathContainer(IPath containerPath, IScriptProject project) throws ModelException{
 		ModelManager manager = ModelManager.getModelManager();
 		IBuildpathContainer container = manager.getBuildpathContainer(containerPath, project);
 		if (container == ModelManager.CONTAINER_INITIALIZATION_IN_PROGRESS) {
@@ -1135,11 +1135,11 @@ public class DLTKCore extends Plugin {
 	 * @param monitor a monitor to report progress
 	 * @throws ModelException
 	 * @see BuildpathContainerInitializer
-	 * @see #getBuildpathContainer(IPath, IDLTKProject)
+	 * @see #getBuildpathContainer(IPath, IScriptProject)
 	 * @see IBuildpathContainer
 	 *
 	 */
-	public static void setBuildpathContainer(final IPath containerPath, IDLTKProject[] affectedProjects, IBuildpathContainer[] respectiveContainers, IProgressMonitor monitor) throws ModelException {
+	public static void setBuildpathContainer(final IPath containerPath, IScriptProject[] affectedProjects, IBuildpathContainer[] respectiveContainers, IProgressMonitor monitor) throws ModelException {
 
 		if (affectedProjects.length != respectiveContainers.length) Assert.isTrue(false, "Projects and containers collections should have the same size"); //$NON-NLS-1$
 	
@@ -1153,7 +1153,7 @@ public class DLTKCore extends Plugin {
 				org.eclipse.dltk.internal.core.util.Util.toString(
 					affectedProjects, 
 					new org.eclipse.dltk.internal.core.util.Util.Displayable(){ 
-						public String displayString(Object o) { return ((IDLTKProject) o).getElementName(); }
+						public String displayString(Object o) { return ((IScriptProject) o).getElementName(); }
 					}) +
 				"}\n	values: {\n"  +//$NON-NLS-1$
 				org.eclipse.dltk.internal.core.util.Util.toString(
@@ -1189,8 +1189,8 @@ public class DLTKCore extends Plugin {
 			return;
 
 		final int projectLength = affectedProjects.length;	
-		final IDLTKProject[] modifiedProjects;
-		System.arraycopy(affectedProjects, 0, modifiedProjects = new IDLTKProject[projectLength], 0, projectLength);
+		final IScriptProject[] modifiedProjects;
+		System.arraycopy(affectedProjects, 0, modifiedProjects = new IScriptProject[projectLength], 0, projectLength);
 		final IBuildpathEntry[][] oldResolvedPaths = new IBuildpathEntry[projectLength][];
 			
 		// filter out unmodified project containers
@@ -1199,11 +1199,11 @@ public class DLTKCore extends Plugin {
 	
 			if (monitor != null && monitor.isCanceled()) return;
 	
-			DLTKProject affectedProject = (DLTKProject) affectedProjects[i];
+			ScriptProject affectedProject = (ScriptProject) affectedProjects[i];
 			IBuildpathContainer newContainer = respectiveContainers[i];
 			if (newContainer == null) newContainer = ModelManager.CONTAINER_INITIALIZATION_IN_PROGRESS; // 30920 - prevent infinite loop
 			boolean found = false;
-			if (DLTKProject.hasScriptNature(affectedProject.getProject())){
+			if (ScriptProject.hasScriptNature(affectedProject.getProject())){
 				IBuildpathEntry[] rawClasspath = affectedProject.getRawBuildpath();
 				for (int j = 0, cpLength = rawClasspath.length; j <cpLength; j++) {
 					IBuildpathEntry entry = rawClasspath[j];
@@ -1242,7 +1242,7 @@ public class DLTKCore extends Plugin {
 		
 						if (progressMonitor != null && progressMonitor.isCanceled()) return;
 		
-						DLTKProject affectedProject = (DLTKProject)modifiedProjects[i];
+						ScriptProject affectedProject = (ScriptProject)modifiedProjects[i];
 						if (affectedProject == null) continue; // was filtered out
 						
 						if (ModelManager.BP_RESOLVE_VERBOSE){
@@ -1377,7 +1377,7 @@ public class DLTKCore extends Plugin {
 	 * Note that on non-Windows platform, a path <code>"/some/lib.zip"</code> is ambiguous. 
 	 * It can be a path to an external ZIP (its file system path being <code>"/some/lib.jar"</code>) 
 	 * or it can be a path to an internal ZIP (<code>"some"</code> being a project in the workspace).
-	 * Such an ambiguity is solved when the buildpath entry is used (e.g. in {@link IDLTKProject#getProjectFragments()}).
+	 * Such an ambiguity is solved when the buildpath entry is used (e.g. in {@link IScriptProject#getProjectFragments()}).
 	 * If the resource <code>"lib.jar"</code> exists in project <code>"some"</code>, then it is considered an
 	 * internal ZIP. Otherwise it is an external ZIP.
 	 * <p>Also note that this operation does not attempt to validate or access the 
@@ -1428,7 +1428,7 @@ public class DLTKCore extends Plugin {
 		return new BuildpathEntry(
 			IProjectFragment.K_BINARY,
 			IBuildpathEntry.BPE_LIBRARY,
-			DLTKProject.canonicalizedPath(path),
+			ScriptProject.canonicalizedPath(path),
 			isExported,
 			BuildpathEntry.INCLUDE_ALL, // inclusion patterns
 			BuildpathEntry.EXCLUDE_NONE, // exclusion patterns		
@@ -1450,7 +1450,7 @@ public class DLTKCore extends Plugin {
 		return new BuildpathEntry(
 			IProjectFragment.K_BINARY,
 			IBuildpathEntry.BPE_LIBRARY,
-			DLTKProject.canonicalizedPath(path),
+			ScriptProject.canonicalizedPath(path),
 			isExported,
 			include, // inclusion patterns
 			exclude, // exclusion patterns		

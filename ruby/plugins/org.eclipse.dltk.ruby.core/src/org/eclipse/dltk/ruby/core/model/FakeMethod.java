@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.model;
 
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.ModelElement;
@@ -71,7 +71,7 @@ public class FakeMethod extends SourceMethod {
 		return super.getSourceRange();
 	}
 	
-	public IDLTKProject getScriptProject() {		
+	public IScriptProject getScriptProject() {		
 		return parent.getScriptProject();
 	}
 

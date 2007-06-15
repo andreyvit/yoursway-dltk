@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
@@ -923,7 +923,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 	// IEditorInput input);
 	private IPreferenceStore createCombinedPreferenceStore(IEditorInput input) {
 		List stores = new ArrayList(3);
-		IDLTKProject project = EditorUtility.getDLTKProject(input);
+		IScriptProject project = EditorUtility.getDLTKProject(input);
 		if (project != null) {
 			stores.add(new EclipsePreferencesAdapter(new ProjectScope(project
 					.getProject()), DLTKCore.PLUGIN_ID));

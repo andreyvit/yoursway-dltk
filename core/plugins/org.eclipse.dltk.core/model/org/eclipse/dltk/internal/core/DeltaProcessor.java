@@ -39,7 +39,7 @@ import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
@@ -65,11 +65,11 @@ public class DeltaProcessor {
 		char[][] inclusionPatterns;
 		char[][] exclusionPatterns;
 		IPath rootPath;
-		DLTKProject project;
+		ScriptProject project;
 		int entryKind;
 		IProjectFragment root;
 
-		RootInfo(DLTKProject project, IPath rootPath,
+		RootInfo(ScriptProject project, IPath rootPath,
 				char[][] inclusionPatterns, char[][] exclusionPatterns,
 				int entryKind) {
 			this.project = project;
@@ -251,14 +251,14 @@ public class DeltaProcessor {
 	 * Adds the dependents of the given project to the list of the projects to
 	 * update.
 	 */
-	private void addDependentProjects(IDLTKProject project,
+	private void addDependentProjects(IScriptProject project,
 			HashMap projectDependencies, HashSet result) {
-		IDLTKProject[] dependents = (IDLTKProject[]) projectDependencies
+		IScriptProject[] dependents = (IScriptProject[]) projectDependencies
 				.get(project);
 		if (dependents == null)
 			return;
 		for (int i = 0, length = dependents.length; i < length; i++) {
-			IDLTKProject dependent = dependents[i];
+			IScriptProject dependent = dependents[i];
 			if (result.contains(dependent))
 				continue; // no need to go further as the project is already
 			// known
@@ -298,7 +298,7 @@ public class DeltaProcessor {
 	 * Adds the given project and its dependents to the list of the roots to
 	 * refresh.
 	 */
-	private void addToRootsToRefreshWithDependents(IDLTKProject dltkProject) {
+	private void addToRootsToRefreshWithDependents(IScriptProject dltkProject) {
 		this.rootsToRefresh.add(dltkProject);
 		this.addDependentProjects(dltkProject, this.state.projectDependencies,
 				this.rootsToRefresh);
@@ -328,7 +328,7 @@ public class DeltaProcessor {
 				final IProject[] projectsToTouch = new IProject[length];
 				for (int i = 0; i < length; i++) {
 					IModelElementDelta delta = projectDeltas[i];
-					DLTKProject dltkProject = (DLTKProject) delta.getElement();
+					ScriptProject dltkProject = (ScriptProject) delta.getElement();
 					projectsToTouch[i] = dltkProject.getProject();
 				}
 				// touch the projects to force them to be recompiled while
@@ -390,7 +390,7 @@ public class DeltaProcessor {
 			// projectsBeingDeleted
 			// - if the project is closed, it has already lost its script nature
 			IProject project = (IProject) resource;
-			DLTKProject dltkProject = (DLTKProject) DLTKCore.create(project);
+			ScriptProject dltkProject = (ScriptProject) DLTKCore.create(project);
 			switch (delta.getKind()) {
 			case IResourceDelta.ADDED:
 				this.manager.batchContainerInitializations = true;
@@ -527,7 +527,7 @@ public class DeltaProcessor {
 		case IResource.FILE:
 			IFile file = (IFile) resource;
 			/* buildpath file change */
-			if (file.getName().equals(DLTKProject.BUILDPATH_FILENAME)) {
+			if (file.getName().equals(ScriptProject.BUILDPATH_FILENAME)) {
 				this.manager.batchContainerInitializations = true;
 				switch (delta.getKind()) {
 				case IResourceDelta.CHANGED:
@@ -550,7 +550,7 @@ public class DeltaProcessor {
 					}
 					// fall through
 				case IResourceDelta.ADDED:
-					dltkProject = (DLTKProject) DLTKCore.create(file
+					dltkProject = (ScriptProject) DLTKCore.create(file
 							.getProject());
 
 					// force to (re)read the .buildpath file
@@ -577,7 +577,7 @@ public class DeltaProcessor {
 	}
 
 	private void checkProjectReferenceChange(IProject project,
-			DLTKProject javaProject) {
+			ScriptProject javaProject) {
 		// BuildpathChange change = (BuildpathChange) this.buildpathChanges
 		// .get(project);
 		this.state.addProjectReferenceChange(javaProject, /* change == null ? */
@@ -656,7 +656,7 @@ public class DeltaProcessor {
 				this.popUntilPrefixOf(path);
 				if (this.currentElement != null
 						&& this.currentElement.getElementType() == IModelElement.SCRIPT_PROJECT
-						&& ((IDLTKProject) this.currentElement).getProject()
+						&& ((IScriptProject) this.currentElement).getProject()
 								.equals(resource)) {
 					return this.currentElement;
 				}
@@ -702,7 +702,7 @@ public class DeltaProcessor {
 							.getProjectFragment();
 					if (root == null) {
 						element = DLTKCore.create(resource);
-					} else if (((DLTKProject) root.getScriptProject())
+					} else if (((ScriptProject) root.getScriptProject())
 							.contains(resource)) {
 						// create package handle
 						IPath pkgPath = path.removeFirstSegments(root.getPath()
@@ -794,7 +794,7 @@ public class DeltaProcessor {
 				archivePathsToRefresh.add(element.getPath());
 				break;
 			case IModelElement.SCRIPT_PROJECT:
-				DLTKProject dltkProject = (DLTKProject) element;
+				ScriptProject dltkProject = (ScriptProject) element;
 				if (!DLTKLanguageManager.hasScriptNature(dltkProject
 						.getProject())) {
 					// project is not accessible or has lost its script
@@ -825,7 +825,7 @@ public class DeltaProcessor {
 						// nature
 						continue;
 					}
-					dltkProject = (DLTKProject) DLTKCore.create(project);
+					dltkProject = (ScriptProject) DLTKCore.create(project);
 					try {
 						buildpath = dltkProject.getResolvedBuildpath();
 					} catch (ModelException e2) {
@@ -854,7 +854,7 @@ public class DeltaProcessor {
 				// project is not accessible or has lost its Script nature
 				continue;
 			}
-			DLTKProject dltkProject = (DLTKProject) DLTKCore.create(project);
+			ScriptProject dltkProject = (ScriptProject) DLTKCore.create(project);
 			IBuildpathEntry[] entries;
 			try {
 				entries = dltkProject.getResolvedBuildpath();
@@ -993,7 +993,7 @@ public class DeltaProcessor {
 			// deleted without interferences from the index manager
 			this.manager.indexManager.discardJobs(project.getName());
 
-			DLTKProject dltkProject = (DLTKProject) DLTKCore.create(project);
+			ScriptProject dltkProject = (ScriptProject) DLTKCore.create(project);
 
 			// remember roots of this project
 			if (this.removedRoots == null) {
@@ -1148,7 +1148,7 @@ public class DeltaProcessor {
 				// when a root is added, and is on the buildpath, the
 				// project
 				// must be updated
-				DLTKProject project = (DLTKProject) element.getScriptProject();
+				ScriptProject project = (ScriptProject) element.getScriptProject();
 				// refresh pkg fragment roots and caches of the project (and
 				// its
 				// dependents)
@@ -1157,7 +1157,7 @@ public class DeltaProcessor {
 				break;
 			case IModelElement.SCRIPT_FOLDER:
 				// reset project's package fragment cache
-				project = (DLTKProject) element.getScriptProject();
+				project = (ScriptProject) element.getScriptProject();
 				this.projectCachesToReset.add(project);
 				break;
 			}
@@ -1242,7 +1242,7 @@ public class DeltaProcessor {
 			this.projectCachesToReset.add(element);
 			break;
 		case IModelElement.PROJECT_FRAGMENT:
-			DLTKProject project = (DLTKProject) element.getScriptProject();
+			ScriptProject project = (ScriptProject) element.getScriptProject();
 			// refresh pkg fragment roots and caches of the project (and its
 			// dependents)
 			this.rootsToRefresh.add(project);
@@ -1250,7 +1250,7 @@ public class DeltaProcessor {
 			break;
 		case IModelElement.SCRIPT_FOLDER:
 			// reset package fragment cache
-			project = (DLTKProject) element.getScriptProject();
+			project = (ScriptProject) element.getScriptProject();
 			this.projectCachesToReset.add(project);
 			break;
 		}
@@ -1310,7 +1310,7 @@ public class DeltaProcessor {
 			}
 			// String fileName = res.getName();
 			IProject project = res.getProject();
-			IDLTKProject dltkProject = DLTKCore.create(project);
+			IScriptProject dltkProject = DLTKCore.create(project);
 			if (dltkProject != null
 					&& Util.isValidSourceModule(dltkProject, res)) {
 				return IModelElement.SOURCE_MODULE;
@@ -1628,7 +1628,7 @@ public class DeltaProcessor {
 			case IModelElement.SCRIPT_PROJECT:
 				((ProjectElementInfo) info).setForeignResources(null);
 				// if a package fragment root is the project, clear it too
-				DLTKProject project = (DLTKProject) element;
+				ScriptProject project = (ScriptProject) element;
 				ProjectFragment projectRoot = (ProjectFragment) project
 						.getProjectFragment(project.getProject());
 				if (projectRoot.isOpen()) {
@@ -1780,14 +1780,14 @@ public class DeltaProcessor {
 		HashMap projectDepencies = this.state.projectDependencies;
 		HashSet affectedDependents = new HashSet();
 		while (iterator.hasNext()) {
-			DLTKProject project = (DLTKProject) iterator.next();
+			ScriptProject project = (ScriptProject) iterator.next();
 			project.resetCaches();
 			addDependentProjects(project, projectDepencies, affectedDependents);
 		}
 		// reset caches of dependent projects
 		iterator = affectedDependents.iterator();
 		while (iterator.hasNext()) {
-			DLTKProject project = (DLTKProject) iterator.next();
+			ScriptProject project = (ScriptProject) iterator.next();
 			project.resetCaches();
 		}
 	}
@@ -1798,7 +1798,7 @@ public class DeltaProcessor {
 	private void refreshProjectFragments() {
 		Iterator iterator = this.rootsToRefresh.iterator();
 		while (iterator.hasNext()) {
-			DLTKProject project = (DLTKProject) iterator.next();
+			ScriptProject project = (ScriptProject) iterator.next();
 			project.updateProjectFragments();
 		}
 	}
@@ -1951,7 +1951,7 @@ public class DeltaProcessor {
 				// update all cycle markers since the project references changes
 				// may have affected cycles
 				try {
-					DLTKProject.validateCycles(null);
+					ScriptProject.validateCycles(null);
 				} catch (ModelException e) {
 					// a project no longer exists
 				}
@@ -2164,7 +2164,7 @@ public class DeltaProcessor {
 				// directly under a project
 				// attach orphan children
 				IProject rscProject = res.getProject();
-				DLTKProject adoptiveProject = (DLTKProject) DLTKCore
+				ScriptProject adoptiveProject = (ScriptProject) DLTKCore
 						.create(rscProject);
 				if (adoptiveProject != null
 						&& DLTKLanguageManager.hasScriptNature(rscProject)) { // delta

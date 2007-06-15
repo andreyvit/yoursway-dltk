@@ -22,7 +22,7 @@ import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchParticipant;
@@ -33,7 +33,7 @@ import org.eclipse.dltk.internal.core.search.processing.JobManager;
 
 class AddBuiltinFolderToIndex extends IndexRequest {
 	IProject project;
-	IDLTKProject scriptProject;
+	IScriptProject scriptProject;
 
 	public AddBuiltinFolderToIndex(IPath folderPath, IProject project,
 			IndexManager manager) {
@@ -148,7 +148,7 @@ class AddBuiltinFolderToIndex extends IndexRequest {
 		return true;
 	}
 
-	private void visit(SimpleLookupTable table, IDLTKProject project, ISourceElementParser parser, SourceIndexerRequestor requestor, IndexManager indexManager,
+	private void visit(SimpleLookupTable table, IScriptProject project, ISourceElementParser parser, SourceIndexerRequestor requestor, IndexManager indexManager,
 			IPath container, boolean operation, SearchParticipant participant, Index index) {
 		
 		IDLTKLanguageToolkit toolkit = null;

@@ -24,7 +24,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -53,13 +53,13 @@ public class BuiltinProjectFragment extends ProjectFragment {
 	 * Maps folder names and source module names.
 	 */
 
-	protected BuiltinProjectFragment(IPath path, DLTKProject project) {
+	protected BuiltinProjectFragment(IPath path, ScriptProject project) {
 		super(null, project);
 		this.fPath = path;
 		builtinProvider = getBuiltinProvider(project);
 	}
 
-	public static IBuiltinModuleProvider getBuiltinProvider(IDLTKProject project) {
+	public static IBuiltinModuleProvider getBuiltinProvider(IScriptProject project) {
 		try {
 			IBuildpathEntry[] entries = project.getRawBuildpath();
 			IPath containerPath = null;
@@ -90,7 +90,7 @@ public class BuiltinProjectFragment extends ProjectFragment {
 		return null;
 	}
 
-	public static boolean isSupported(IDLTKProject project) {
+	public static boolean isSupported(IScriptProject project) {
 		IBuiltinModuleProvider prov = getBuiltinProvider(project);
 		return prov != null && prov.getBuiltinModules() != null;
 	}
@@ -270,7 +270,7 @@ public class BuiltinProjectFragment extends ProjectFragment {
 	 */
 	public IBuildpathEntry getRawBuildpathEntry() throws ModelException {
 		IBuildpathEntry rawEntry = null;
-		DLTKProject project = (DLTKProject) this.getScriptProject();
+		ScriptProject project = (ScriptProject) this.getScriptProject();
 		project.getResolvedBuildpath(true/*ignoreUnresolvedEntry*/, false/*don't generateMarkerOnError*/, false/*don't returnResolutionInProgress*/); // force the reverse rawEntry cache to be populated
 										// be populated
 		Map resolvedPathToRawEntries = project.getPerProjectInfo().resolvedPathToRawEntries;

@@ -32,7 +32,7 @@ import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -444,7 +444,7 @@ public class BuildpathEntry implements IBuildpathEntry {
 		return contentKind;
 	}
 
-	public static IBuildpathEntry elementDecode(Element element, IDLTKProject project, Map unknownElements) {
+	public static IBuildpathEntry elementDecode(Element element, IScriptProject project, Map unknownElements) {
 		IPath projectPath = project.getProject().getFullPath();
 		NamedNodeMap attributes = element.getAttributes();
 		NodeList children = element.getChildNodes();
@@ -633,7 +633,7 @@ public class BuildpathEntry implements IBuildpathEntry {
 		return null;
 	}
 
-	private static void decodeUnknownNode(Node node, StringBuffer buffer, IDLTKProject project) {
+	private static void decodeUnknownNode(Node node, StringBuffer buffer, IScriptProject project) {
 		ByteArrayOutputStream s = new ByteArrayOutputStream();
 		OutputStreamWriter writer;
 		try {
@@ -939,7 +939,7 @@ public class BuildpathEntry implements IBuildpathEntry {
 	 *         if the given buildpath are correct, otherwise a status object
 	 *         indicating what is wrong with the buildpath
 	 */
-	public static IModelStatus validateBuildpath(IDLTKProject dltkProject, IBuildpathEntry[] rawBuildpath) {
+	public static IModelStatus validateBuildpath(IScriptProject dltkProject, IBuildpathEntry[] rawBuildpath) {
 		// TODO implement
 		IProject project = dltkProject.getProject();
 		IPath projectPath = project.getFullPath();
@@ -951,7 +951,7 @@ public class BuildpathEntry implements IBuildpathEntry {
 		// retrieve resolved buildpath
 		IBuildpathEntry[] buildpath;
 		try {
-			buildpath = ((DLTKProject)dltkProject).getResolvedBuildpath(rawBuildpath,true/*ignore pb*/, false/*no marker*/, null /*no reverse map*/);
+			buildpath = ((ScriptProject)dltkProject).getResolvedBuildpath(rawBuildpath,true/*ignore pb*/, false/*no marker*/, null /*no reverse map*/);
 		} catch (ModelException e) {
 			return e.getModelStatus();
 		}
@@ -1071,7 +1071,7 @@ public class BuildpathEntry implements IBuildpathEntry {
 	 *         entry if any, a status object with code <code>IStatus.OK</code>
 	 *         if the entry is fine
 	 */
-	public static IModelStatus validateBuildpathEntry(IDLTKProject project, IBuildpathEntry entry, boolean recurseInContainers) {
+	public static IModelStatus validateBuildpathEntry(IScriptProject project, IBuildpathEntry entry, boolean recurseInContainers) {
 		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 		IPath path = entry.getPath();
 		// Build some common strings for status message

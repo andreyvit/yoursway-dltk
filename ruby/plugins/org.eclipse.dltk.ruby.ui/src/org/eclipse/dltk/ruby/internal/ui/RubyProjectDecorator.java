@@ -2,7 +2,7 @@ package org.eclipse.dltk.ruby.internal.ui;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
@@ -13,8 +13,8 @@ public class RubyProjectDecorator extends LabelProvider implements
 
 	public void decorate(Object element, IDecoration decoration) {
 		IProject project = null;
-		if (element instanceof IDLTKProject) {
-			project = ((IDLTKProject) element).getProject();
+		if (element instanceof IScriptProject) {
+			project = ((IScriptProject) element).getProject();
 		} else if (element instanceof IProject) {
 			project = (IProject) element;
 		}

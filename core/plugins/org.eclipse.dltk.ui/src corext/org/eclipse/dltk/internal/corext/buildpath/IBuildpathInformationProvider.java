@@ -13,7 +13,7 @@ package org.eclipse.dltk.internal.corext.buildpath;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.newsourcepage.BuildpathModifierQueries;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.newsourcepage.BuildpathModifierQueries.IAddArchivesQuery;
@@ -95,7 +95,7 @@ public interface IBuildpathInformationProvider {
      * 
      * @return the current script project, must not be <code>null</code>
      */
-    public IDLTKProject getDLTKProject();           
+    public IScriptProject getDLTKProject();           
     /**
      * Method to retrieve an <code>IInclusionExclusionQuery</code> from 
      * the provider.
@@ -117,7 +117,7 @@ public interface IBuildpathInformationProvider {
      * <code>null</code>
      * @throws ModelException
      * 
-     * @see BuildpathModifierQueries#getDefaultCreateFolderQuery(Shell, IDLTKProject)
+     * @see BuildpathModifierQueries#getDefaultCreateFolderQuery(Shell, IScriptProject)
      */
     public ILinkToQuery getLinkFolderQuery() throws ModelException;
     
@@ -165,7 +165,7 @@ public interface IBuildpathInformationProvider {
      * <code>null</code>
      * @throws ModelException
      * 
-     * @see BuildpathModifierQueries#getDefaultCreateFolderQuery(Shell, IDLTKProject)
+     * @see BuildpathModifierQueries#getDefaultCreateFolderQuery(Shell, IScriptProject)
      */
 	public ICreateFolderQuery getCreateFolderQuery() throws ModelException;
     

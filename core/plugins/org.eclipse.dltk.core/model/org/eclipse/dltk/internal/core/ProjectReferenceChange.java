@@ -24,10 +24,10 @@ import org.eclipse.dltk.internal.core.util.Util;
 
 public class ProjectReferenceChange {
 	
-	private DLTKProject project;
+	private ScriptProject project;
 	private IBuildpathEntry[] oldResolvedBuildpath;
 	
-	public ProjectReferenceChange(DLTKProject project, IBuildpathEntry[] oldResolvedBuildpath) {
+	public ProjectReferenceChange(ScriptProject project, IBuildpathEntry[] oldResolvedBuildpath) {
 		this.project = project;
 		this.oldResolvedBuildpath = oldResolvedBuildpath;
 	}

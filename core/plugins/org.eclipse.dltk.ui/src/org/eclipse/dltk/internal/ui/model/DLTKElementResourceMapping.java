@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -99,7 +99,7 @@ public abstract class DLTKElementResourceMapping extends ResourceMapping {
 			return fModel;
 		}
 		public IProject[] getProjects() {
-			IDLTKProject[] projects= null;
+			IScriptProject[] projects= null;
 			try {
 				projects= fModel.getScriptProjects();
 			} catch (ModelException e) {
@@ -113,7 +113,7 @@ public abstract class DLTKElementResourceMapping extends ResourceMapping {
 			return result;
 		}
 		public ResourceTraversal[] getTraversals(ResourceMappingContext context, IProgressMonitor monitor) throws CoreException {
-			IDLTKProject[] projects= fModel.getScriptProjects();
+			IScriptProject[] projects= fModel.getScriptProjects();
 			ResourceTraversal[] result= new ResourceTraversal[projects.length];
 			for (int i= 0; i < projects.length; i++) {
 				result[i]= new ResourceTraversal(new IResource[] {projects[i].getProject()}, IResource.DEPTH_INFINITE, 0);
@@ -123,8 +123,8 @@ public abstract class DLTKElementResourceMapping extends ResourceMapping {
 	}
 	
 	private static final class ScriptProjectResourceMapping extends DLTKElementResourceMapping {
-		private final IDLTKProject fProject;
-		private ScriptProjectResourceMapping(IDLTKProject project) {
+		private final IScriptProject fProject;
+		private ScriptProjectResourceMapping(IScriptProject project) {
 			Assert.isNotNull(project);
 			fProject= project;
 		}
@@ -303,7 +303,7 @@ public abstract class DLTKElementResourceMapping extends ResourceMapping {
 			case IModelElement.PROJECT_FRAGMENT:
 				return create((IProjectFragment)element);
 			case IModelElement.SCRIPT_PROJECT:
-				return create((IDLTKProject)element);
+				return create((IScriptProject)element);
 			case IModelElement.SCRIPT_MODEL:
 				return create((IScriptModel)element);
 			default:
@@ -316,7 +316,7 @@ public abstract class DLTKElementResourceMapping extends ResourceMapping {
 		return new ScriptModelResourceMapping(model);
 	}
 	
-	public static ResourceMapping create(final IDLTKProject project) {
+	public static ResourceMapping create(final IScriptProject project) {
 		return new ScriptProjectResourceMapping(project);
 	}
 	

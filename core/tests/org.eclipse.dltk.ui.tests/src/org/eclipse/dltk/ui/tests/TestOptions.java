@@ -14,7 +14,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -39,7 +39,7 @@ public class TestOptions {
 		IPreferenceStore store= DLTKUIPlugin.getDefault().getPreferenceStore();		
 	}
 	
-	public static void initializeProjectOptions(IDLTKProject project) {
+	public static void initializeProjectOptions(IScriptProject project) {
 		Map options= new HashMap();		
 		project.setOptions(options);
 	}

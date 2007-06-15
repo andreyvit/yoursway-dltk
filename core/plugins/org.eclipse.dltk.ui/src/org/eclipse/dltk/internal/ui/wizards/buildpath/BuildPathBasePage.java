@@ -16,7 +16,7 @@ import java.util.Set;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -103,7 +103,7 @@ public abstract class BuildPathBasePage {
 		return true;
 	}
 
-	public abstract void init(IDLTKProject scriptProject);
+	public abstract void init(IScriptProject scriptProject);
 
 	public abstract Control getControl(Composite parent);
 	

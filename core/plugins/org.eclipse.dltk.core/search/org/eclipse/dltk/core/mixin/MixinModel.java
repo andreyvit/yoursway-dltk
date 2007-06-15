@@ -28,7 +28,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
@@ -358,7 +358,7 @@ public class MixinModel {
 								.iterator(); iterator.hasNext();) {
 							ISourceModule module = (ISourceModule) iterator
 									.next();
-							IDLTKProject dltkProject = module
+							IScriptProject dltkProject = module
 									.getScriptProject();
 							if (dltkProject != null) {
 								IProject prj = dltkProject.getProject();

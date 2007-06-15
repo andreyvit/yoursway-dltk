@@ -12,7 +12,7 @@ package org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.debug.ui.launchConfigurations.MainLaunchConfigurationTab;
 import org.eclipse.dltk.tcl.core.TclLanguageToolkit;
 import org.eclipse.dltk.tcl.core.TclNature;
@@ -21,7 +21,7 @@ import org.eclipse.swt.graphics.Image;
 
 public class TclMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
 
-	protected boolean validateProject(IDLTKProject project) {
+	protected boolean validateProject(IScriptProject project) {
 		if (project == null)
 			return false;
 

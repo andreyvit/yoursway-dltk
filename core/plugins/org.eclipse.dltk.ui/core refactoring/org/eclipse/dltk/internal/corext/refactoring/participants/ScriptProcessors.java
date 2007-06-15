@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IModelElement;
 
@@ -28,7 +28,7 @@ public class ScriptProcessors {
 			// IMember member= (IMember)element;
 
 		}
-		IDLTKProject project = element.getScriptProject();
+		IScriptProject project = element.getScriptProject();
 		return ResourceProcessors.computeAffectedNatures(project.getProject());
 	}
 

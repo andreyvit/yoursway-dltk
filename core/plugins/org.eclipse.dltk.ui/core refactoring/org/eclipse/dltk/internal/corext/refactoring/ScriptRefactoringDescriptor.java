@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.internal.corext.refactoring.tagging.IScriptableRefactoring;
@@ -141,7 +141,7 @@ public final class ScriptRefactoringDescriptor extends RefactoringDescriptor {
 	 */
 	public static String elementToHandle(final String project, final IModelElement element) {
 		final String handle= element.getHandleIdentifier();
-		if (project != null && !(element instanceof IDLTKProject)) {
+		if (project != null && !(element instanceof IScriptProject)) {
 			final String id= element.getScriptProject().getHandleIdentifier();
 			return handle.substring(id.length());
 		}
@@ -201,7 +201,7 @@ public final class ScriptRefactoringDescriptor extends RefactoringDescriptor {
 		else
 			element= DLTKCore.create(handle);
 		if (element == null && project != null) {
-			final IDLTKProject scriptProject= DLTKCore.create(ResourcesPlugin.getWorkspace().getRoot()).getScriptProject(project);
+			final IScriptProject scriptProject= DLTKCore.create(ResourcesPlugin.getWorkspace().getRoot()).getScriptProject(project);
 			final String identifier= scriptProject.getHandleIdentifier();
 			if (owner != null)
 				element= DLTKCore.create(identifier + handle, owner);

@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.ui.filters;
 
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.team.core.RepositoryProvider;
@@ -32,8 +32,8 @@ public class NonSharedProjectFilter extends ViewerFilter {
 		if (element instanceof IProject)
 			return isSharedProject((IProject)element);
 		
-		if (element instanceof IDLTKProject)
-			return isSharedProject(((IDLTKProject)element).getProject());
+		if (element instanceof IScriptProject)
+			return isSharedProject(((IScriptProject)element).getProject());
 
 		return true;
 	}

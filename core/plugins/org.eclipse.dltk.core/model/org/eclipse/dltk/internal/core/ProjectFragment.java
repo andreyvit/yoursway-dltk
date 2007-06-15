@@ -46,7 +46,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	 * Constructs a project fragment which is the root of the directory
 	 * hierarchy.
 	 */
-	protected ProjectFragment(IResource resource, DLTKProject project) {
+	protected ProjectFragment(IResource resource, ScriptProject project) {
 		super(project);
 		this.resource = resource;
 	}
@@ -127,7 +127,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 		IPath path = this.getPath();
 		try {
 			// check project fragment on buildpath of its project
-			DLTKProject project = (DLTKProject) getScriptProject();
+			ScriptProject project = (ScriptProject) getScriptProject();
 			IBuildpathEntry[] buildpath = project.getResolvedBuildpath();
 			for (int i = 0, length = buildpath.length; i < length; i++) {
 				IBuildpathEntry entry = buildpath[i];
@@ -192,7 +192,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 			vChildren.add(pkg);
 		}
 		try {
-			DLTKProject dltkProject = (DLTKProject) getScriptProject();
+			ScriptProject dltkProject = (ScriptProject) getScriptProject();
 			ModelManager manager = ModelManager.getModelManager();
 			IResource[] members = folder.members();
 			boolean hasIncluded = isIncluded;
@@ -360,7 +360,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	 */
 	public IBuildpathEntry getRawBuildpathEntry() throws ModelException {
 		IBuildpathEntry rawEntry = null;
-		DLTKProject project = (DLTKProject) this.getScriptProject();
+		ScriptProject project = (ScriptProject) this.getScriptProject();
 		project.getResolvedBuildpath(true/*ignoreUnresolvedEntry*/, false/*don't generateMarkerOnError*/, false/*don't returnResolutionInProgress*/); // force the reverse rawEntry cache to be populated
 										// be populated
 		Map resolvedPathToRawEntries = project.getPerProjectInfo().resolvedPathToRawEntries;

@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.actions.WorkbenchRunnableAdapter;
 import org.eclipse.dltk.ui.actions.SelectionDispatchAction;
 import org.eclipse.dltk.ui.util.ExceptionHandler;
@@ -195,8 +195,8 @@ public abstract class OpenCloseWorkingSetAction extends SelectionDispatchAction 
 			IProject project= null;
 			if (element instanceof IProject) {
 				project= (IProject)element;
-			} else if (element instanceof IDLTKProject) {
-				project= ((IDLTKProject)element).getProject();
+			} else if (element instanceof IScriptProject) {
+				project= ((IScriptProject)element).getProject();
 			}
 			if (project != null && validate(project))
 				result.add(project);

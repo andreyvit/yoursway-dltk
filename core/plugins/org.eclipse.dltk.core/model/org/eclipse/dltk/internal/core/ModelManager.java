@@ -74,7 +74,7 @@ import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IParent;
@@ -138,7 +138,7 @@ public class ModelManager implements ISaveParticipant {
 		}
 	};
 	/*
-	 * A HashSet that contains the IScriptProject whose buildpath is being
+	 * A HashSet that contains the IDLTKProject whose buildpath is being
 	 * resolved.
 	 */
 	private ThreadLocal buildpathsBeingResolved = new ThreadLocal();
@@ -531,7 +531,7 @@ public class ModelManager implements ISaveParticipant {
 	 * Creating a model element has the side effect of creating and opening all
 	 * of the element's parents if they are not yet open.
 	 */
-	public static IModelElement create(IFile file, IDLTKProject project) {
+	public static IModelElement create(IFile file, IScriptProject project) {
 		if (file == null) {
 			return null;
 		}
@@ -549,7 +549,7 @@ public class ModelManager implements ISaveParticipant {
 	 * Creating an element has the side effect of creating and opening all of
 	 * the element's parents if they are not yet open.
 	 */
-	public static IModelElement create(IResource resource, IDLTKProject project) {
+	public static IModelElement create(IResource resource, IScriptProject project) {
 		if (resource == null) {
 			return null;
 		}
@@ -568,7 +568,7 @@ public class ModelManager implements ISaveParticipant {
 		}
 	}
 
-	public static IModelElement create(IFolder folder, IDLTKProject project) {
+	public static IModelElement create(IFolder folder, IScriptProject project) {
 		if (folder == null) {
 			return null;
 		}
@@ -579,7 +579,7 @@ public class ModelManager implements ISaveParticipant {
 			if (element == null) {
 				// walk all projects and find one that have the given folder on
 				// its buildpath
-				IDLTKProject[] projects;
+				IScriptProject[] projects;
 				try {
 					projects = ModelManager.getModelManager().getModel()
 							.getScriptProjects();
@@ -605,7 +605,7 @@ public class ModelManager implements ISaveParticipant {
 	 * recognize the source module.
 	 */
 	public static ISourceModule createSourceModuleFrom(IFile file,
-			IDLTKProject project) {
+			IScriptProject project) {
 		if (file == null)
 			return null;
 		if (project == null) {
@@ -632,10 +632,10 @@ public class ModelManager implements ISaveParticipant {
 	 * given resource is not on the buildpath of the given project.
 	 */
 	public static IModelElement determineIfOnBuildpath(IResource resource,
-			IDLTKProject project) {
+			IScriptProject project) {
 		IPath resourcePath = resource.getFullPath();
 		try {
-			IBuildpathEntry[] entries = ((DLTKProject) project)
+			IBuildpathEntry[] entries = ((ScriptProject) project)
 					.getResolvedBuildpath();
 			for (int i = 0; i < entries.length; i++) {
 				IBuildpathEntry entry = entries[i];
@@ -648,7 +648,7 @@ public class ModelManager implements ISaveParticipant {
 					// given we have a resource child of the root, it cannot
 					// be
 					// a ZIP fragment
-					ProjectFragment root = (ProjectFragment) ((DLTKProject) project)
+					ProjectFragment root = (ProjectFragment) ((ScriptProject) project)
 							.getFolderProjectFragment(rootPath);
 					if (root == null)
 						return null;
@@ -914,7 +914,7 @@ public class ModelManager implements ISaveParticipant {
 	/*
 	 * Reset project options stored in info cache.
 	 */
-	public void resetProjectOptions(DLTKProject scriptProject) {
+	public void resetProjectOptions(ScriptProject scriptProject) {
 		synchronized (this.perProjectInfos) { // use the perProjectInfo
 			// collection as its own lock
 			IProject project = scriptProject.getProject();
@@ -928,7 +928,7 @@ public class ModelManager implements ISaveParticipant {
 	/*
 	 * Reset project preferences stored in info cache.
 	 */
-	public void resetProjectPreferences(DLTKProject scriptProject) {
+	public void resetProjectPreferences(ScriptProject scriptProject) {
 		synchronized (this.perProjectInfos) { // use the perProjectInfo
 			// collection as its own lock
 			IProject project = scriptProject.getProject();
@@ -939,7 +939,7 @@ public class ModelManager implements ISaveParticipant {
 		}
 	}
 
-	public void setBuildpathBeingResolved(IDLTKProject project,
+	public void setBuildpathBeingResolved(IScriptProject project,
 			boolean buildpathIsResolved) {
 		if (buildpathIsResolved) {
 			getBuildpathBeingResolved().add(project);
@@ -957,7 +957,7 @@ public class ModelManager implements ISaveParticipant {
 		return result;
 	}
 
-	public boolean isBuildpathBeingResolved(IDLTKProject project) {
+	public boolean isBuildpathBeingResolved(IScriptProject project) {
 		return getBuildpathBeingResolved().contains(project);
 	}
 
@@ -1160,7 +1160,7 @@ public class ModelManager implements ISaveParticipant {
 		if (index > 0) {
 			String projectName = propertyName.substring(containerPrefixLength,
 					index).trim();
-			IDLTKProject project = getModelManager().getModel()
+			IScriptProject project = getModelManager().getModel()
 					.getScriptProject(projectName);
 			IPath containerPath = new Path(propertyName.substring(index + 1)
 					.trim());
@@ -1169,7 +1169,7 @@ public class ModelManager implements ISaveParticipant {
 		}
 	}
 
-	private static void recreatePersistedContainer(final IDLTKProject project,
+	private static void recreatePersistedContainer(final IScriptProject project,
 			final IPath containerPath, String containerString,
 			boolean addToContainerValues) {
 		if (!project.getProject().isAccessible())
@@ -1179,7 +1179,7 @@ public class ModelManager implements ISaveParticipant {
 		} else {
 			IBuildpathEntry[] entries;
 			try {
-				entries = ((DLTKProject) project).decodeBuildpath(
+				entries = ((ScriptProject) project).decodeBuildpath(
 						containerString, null/*
 												 * not interested in unknown
 												 * elements
@@ -1189,9 +1189,9 @@ public class ModelManager implements ISaveParticipant {
 						.log(
 								e,
 								"Could not recreate persisted container: \n" + containerString); //$NON-NLS-1$
-				entries = DLTKProject.INVALID_BUILDPATH;
+				entries = ScriptProject.INVALID_BUILDPATH;
 			}
-			if (entries != DLTKProject.INVALID_BUILDPATH) {
+			if (entries != ScriptProject.INVALID_BUILDPATH) {
 				final IBuildpathEntry[] containerEntries = entries;
 				IBuildpathContainer container = new IBuildpathContainer() {
 					public IBuildpathEntry[] getBuildpathEntries() {
@@ -1291,7 +1291,7 @@ public class ModelManager implements ISaveParticipant {
 		}
 	}
 
-	public void removePerProjectInfo(DLTKProject scriptProject) {
+	public void removePerProjectInfo(ScriptProject scriptProject) {
 		synchronized (this.perProjectInfos) { // use the perProjectInfo
 			// collection as its own lock
 			IProject project = scriptProject.getProject();
@@ -1377,7 +1377,7 @@ public class ModelManager implements ISaveParticipant {
 	}
 
 	public IBuildpathContainer getBuildpathContainer(IPath containerPath,
-			IDLTKProject project) throws ModelException {
+			IScriptProject project) throws ModelException {
 		IBuildpathContainer container = containerGet(project, containerPath);
 		if (container == null) {
 			if (this.batchContainerInitializations) {
@@ -1392,7 +1392,7 @@ public class ModelManager implements ISaveParticipant {
 		return container;
 	}
 
-	public synchronized IBuildpathContainer containerGet(IDLTKProject project,
+	public synchronized IBuildpathContainer containerGet(IScriptProject project,
 			IPath containerPath) {
 		// check initialization in progress first
 		HashSet projectInitializations = containerInitializationInProgress(project);
@@ -1412,7 +1412,7 @@ public class ModelManager implements ISaveParticipant {
 	 * Returns the set of container paths for the given project that are being
 	 * initialized in the current thread.
 	 */
-	private HashSet containerInitializationInProgress(IDLTKProject project) {
+	private HashSet containerInitializationInProgress(IScriptProject project) {
 		Map initializations = (Map) this.containerInitializationInProgress
 				.get();
 		if (initializations == null) {
@@ -1431,7 +1431,7 @@ public class ModelManager implements ISaveParticipant {
 	 * Initialize all container at the same time as the given container. Return
 	 * the container for the given path and project.
 	 */
-	private IBuildpathContainer initializeAllContainers(IDLTKProject scriptProjectToInit, IPath containerToInit) throws ModelException {
+	private IBuildpathContainer initializeAllContainers(IScriptProject scriptProjectToInit, IPath containerToInit) throws ModelException {
 		/*
 		 * if (BP_RESOLVE_VERBOSE) { Util.verbose( "CPContainer INIT - batching
 		 * containers initialization\n" + //$NON-NLS-1$ " project to init: " +
@@ -1446,7 +1446,7 @@ public class ModelManager implements ISaveParticipant {
 			IProject project = projects[i];
 			if (!DLTKLanguageManager.hasScriptNature(project))
 				continue;
-			DLTKProject dltkProject = new DLTKProject(project, getModel());
+			ScriptProject dltkProject = new ScriptProject(project, getModel());
 			HashSet paths = null;
 			IBuildpathEntry[] rawBuildpath = dltkProject.getRawBuildpath();
 			for (int j = 0, length2 = rawBuildpath.length; j < length2; j++) {
@@ -1481,7 +1481,7 @@ public class ModelManager implements ISaveParticipant {
 				public void run(IProgressMonitor monitor) throws CoreException {
 					Set keys = allContainerPaths.keySet();
 					int length = keys.size();
-					IDLTKProject[] dltkProjects = new IDLTKProject[length]; // clone
+					IScriptProject[] dltkProjects = new IScriptProject[length]; // clone
 					// as
 					// the
 					// following
@@ -1492,7 +1492,7 @@ public class ModelManager implements ISaveParticipant {
 					// effect
 					keys.toArray(dltkProjects);
 					for (int i = 0; i < length; i++) {
-						IDLTKProject dltkProject = dltkProjects[i];
+						IScriptProject dltkProject = dltkProjects[i];
 						HashSet pathSet = (HashSet) allContainerPaths
 								.get(dltkProject);
 						if (pathSet == null)
@@ -1535,7 +1535,7 @@ public class ModelManager implements ISaveParticipant {
 		return containerGet(scriptProjectToInit, containerToInit);
 	}
 
-	IBuildpathContainer initializeContainer(IDLTKProject project,
+	IBuildpathContainer initializeContainer(IScriptProject project,
 			IPath containerPath) throws ModelException {
 		IBuildpathContainer container = null;
 		final BuildpathContainerInitializer initializer = DLTKCore
@@ -1652,7 +1652,7 @@ public class ModelManager implements ISaveParticipant {
 	 * caches.
 	 */
 	public IBuildpathContainer getPreviousSessionContainer(IPath containerPath,
-			IDLTKProject project) {
+			IScriptProject project) {
 		Map previousContainerValues = (Map) this.previousSessionContainers
 				.get(project);
 		if (previousContainerValues != null) {
@@ -1688,7 +1688,7 @@ public class ModelManager implements ISaveParticipant {
 		return null; // break cycle if none found
 	}
 
-	public synchronized void containerPut(IDLTKProject project,
+	public synchronized void containerPut(IScriptProject project,
 			IPath containerPath, IBuildpathContainer container) {
 		// set/unset the initialization in progress
 		if (container == CONTAINER_INITIALIZATION_IN_PROGRESS) {
@@ -1723,7 +1723,7 @@ public class ModelManager implements ISaveParticipant {
 	 * The given project is being removed. Remove all containers for this
 	 * project from the cache.
 	 */
-	public synchronized void containerRemove(IDLTKProject project) {
+	public synchronized void containerRemove(IScriptProject project) {
 		Map initializations = (Map) this.containerInitializationInProgress
 				.get();
 		if (initializations != null) {
@@ -1732,7 +1732,7 @@ public class ModelManager implements ISaveParticipant {
 		this.containers.remove(project);
 	}
 
-	private void containerRemoveInitializationInProgress(IDLTKProject project,
+	private void containerRemoveInitializationInProgress(IScriptProject project,
 			IPath containerPath) {
 		HashSet projectInitializations = containerInitializationInProgress(project);
 		projectInitializations.remove(containerPath);
@@ -1748,7 +1748,7 @@ public class ModelManager implements ISaveParticipant {
 	 * time with the same entries as on shutdown.
 	 */
 	public boolean containerPutIfInitializingWithSameEntries(
-			IPath containerPath, IDLTKProject[] projects,
+			IPath containerPath, IScriptProject[] projects,
 			IBuildpathContainer[] respectiveContainers) {
 		int projectLength = projects.length;
 		if (projectLength != 1)
@@ -1756,7 +1756,7 @@ public class ModelManager implements ISaveParticipant {
 		final IBuildpathContainer container = respectiveContainers[0];
 		if (container == null)
 			return false;
-		IDLTKProject project = projects[0];
+		IScriptProject project = projects[0];
 		if (!containerInitializationInProgress(project).contains(containerPath))
 			return false;
 		IBuildpathContainer previousSessionContainer = getPreviousSessionContainer(
@@ -1785,7 +1785,7 @@ public class ModelManager implements ISaveParticipant {
 							+ //$NON-NLS-1$
 							Util.toString(projects, new Util.Displayable() {
 								public String displayString(Object o) {
-									return ((IDLTKProject) o).getElementName();
+									return ((IScriptProject) o).getElementName();
 								}
 							})
 							+ "}\n	values on previous session: {\n" + //$NON-NLS-1$
@@ -1970,7 +1970,7 @@ public class ModelManager implements ISaveParticipant {
 		}
 		IProject savedProject = context.getProject();
 		if (savedProject != null) {
-			if (!DLTKProject.hasScriptNature(savedProject))
+			if (!ScriptProject.hasScriptNature(savedProject))
 				return; // ignore
 			PerProjectInfo info = getPerProjectInfo(savedProject, true /*
 																		 * create
@@ -2089,11 +2089,11 @@ public class ModelManager implements ISaveParticipant {
 			new ContainersSaveHelper(out).save();
 			// old code retained for performance comparisons
 			// containers
-			IDLTKProject[] projects = getModel().getScriptProjects();
+			IScriptProject[] projects = getModel().getScriptProjects();
 			int length = projects.length;
 			out.writeInt(length);
 			for (int i = 0; i < length; i++) {
-				IDLTKProject project = projects[i];
+				IScriptProject project = projects[i];
 				// clone while iterating (see
 				// https://bugs.eclipse.org/bugs/show_bug.cgi?id=59638)
 				Map projectContainers = containerClone(project);
@@ -2121,7 +2121,7 @@ public class ModelManager implements ISaveParticipant {
 						if (container != null) {
 							IBuildpathEntry[] entries = container
 									.getBuildpathEntries();
-							containerString = ((DLTKProject) project)
+							containerString = ((ScriptProject) project)
 									.encodeBuildpath(entries, false, null/*
 																			 * not
 																			 * interested
@@ -2252,7 +2252,7 @@ public class ModelManager implements ISaveParticipant {
 			}
 		}
 
-		private void saveContainers(IDLTKProject project, Map containerMap)
+		private void saveContainers(IScriptProject project, Map containerMap)
 				throws IOException {
 			saveInt(containerMap.size());
 			for (Iterator i = containerMap.entrySet().iterator(); i.hasNext();) {
@@ -2309,12 +2309,12 @@ public class ModelManager implements ISaveParticipant {
 				savePath(paths[i]);
 		}
 
-		private void saveProjects(IDLTKProject[] projects) throws IOException,
+		private void saveProjects(IScriptProject[] projects) throws IOException,
 				ModelException {
 			int count = projects.length;
 			saveInt(count);
 			for (int i = 0; i < count; ++i) {
-				IDLTKProject project = projects[i];
+				IScriptProject project = projects[i];
 				saveString(project.getElementName());
 				Map containerMap = (Map) ModelManager.this.containers
 						.get(project);
@@ -2335,7 +2335,7 @@ public class ModelManager implements ISaveParticipant {
 		}
 	}
 
-	private synchronized Map containerClone(IDLTKProject project) {
+	private synchronized Map containerClone(IScriptProject project) {
 		Map originalProjectContainers = (Map) this.containers.get(project);
 		if (originalProjectContainers == null)
 			return null;
@@ -2410,9 +2410,9 @@ public class ModelManager implements ISaveParticipant {
 			IBuildpathContainer {
 		private final IPath containerPath;
 		private final IBuildpathEntry[] entries;
-		private final IDLTKProject project;
+		private final IScriptProject project;
 
-		PersistedBuildpathContainer(IDLTKProject project, IPath containerPath,
+		PersistedBuildpathContainer(IScriptProject project, IPath containerPath,
 				IBuildpathEntry[] entries) {
 			super();
 			this.containerPath = containerPath;
@@ -2547,7 +2547,7 @@ public class ModelManager implements ISaveParticipant {
 			return entry;
 		}
 
-		private void loadContainers(IDLTKProject project) throws IOException {
+		private void loadContainers(IScriptProject project) throws IOException {
 			boolean projectIsAccessible = project.getProject().isAccessible();
 			int count = loadInt();
 			for (int i = 0; i < count; ++i) {
@@ -2658,7 +2658,7 @@ public class ModelManager implements ISaveParticipant {
 			String containerID = containerIDs[i];
 			Iterator projectIterator = this.containers.keySet().iterator();
 			while (projectIterator.hasNext()) {
-				IDLTKProject project = (IDLTKProject) projectIterator.next();
+				IScriptProject project = (IScriptProject) projectIterator.next();
 				Map projectContainers = (Map) this.containers.get(project);
 				if (projectContainers != null) {
 					Iterator containerIterator = projectContainers.keySet()

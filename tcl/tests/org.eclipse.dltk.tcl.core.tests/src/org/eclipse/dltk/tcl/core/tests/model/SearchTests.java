@@ -12,7 +12,7 @@ package org.eclipse.dltk.tcl.core.tests.model;
 import java.util.List;
 
 import org.eclipse.core.runtime.Path;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -292,7 +292,7 @@ public class SearchTests extends AbstractDLTKSearchTests implements IDLTKSearchC
 	}
 	public void testVariableDeclaration03() throws Exception {
 		up();
-		IDLTKProject project = getScriptProject(TCLSEARCH);
+		IScriptProject project = getScriptProject(TCLSEARCH);
 
 		List sources = searchSourceOnly(
 			"*", 

@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ISourceModule;
@@ -45,15 +45,15 @@ import org.eclipse.dltk.internal.core.SourceModule;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
 
 public class MixinBuilder implements IScriptBuilder {
-	public IStatus[] buildResources(IDLTKProject project, List resources, IProgressMonitor monitor) {
+	public IStatus[] buildResources(IScriptProject project, List resources, IProgressMonitor monitor) {
 		return null;
 	}
 
-	public List getDependencies(IDLTKProject project, List resources) {
+	public List getDependencies(IScriptProject project, List resources) {
 		return null;
 	}
 
-	public IStatus[] buildModelElements(IDLTKProject project, List elements,
+	public IStatus[] buildModelElements(IScriptProject project, List elements,
 			IProgressMonitor monitor) {
 		IndexManager manager = ModelManager.getModelManager().getIndexManager();
 		

@@ -95,7 +95,7 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 
 	public ICompletionEngine createCompletionEngine(
 			ISearchableEnvironment environment, CompletionRequestor requestor,
-			Map options, IDLTKProject project) {
+			Map options, IScriptProject project) {
 		return null;
 	}
 

@@ -737,7 +737,7 @@ public abstract class ModelOperation implements IWorkspaceRunnable, IProgressMon
 					switch (element.getElementType()) {
 						case IModelElement.PROJECT_FRAGMENT:
 						case IModelElement.SCRIPT_FOLDER:
-							((DLTKProject) element.getScriptProject()).resetCaches();
+							((ScriptProject) element.getScriptProject()).resetCaches();
 							break;
 					}
 				}

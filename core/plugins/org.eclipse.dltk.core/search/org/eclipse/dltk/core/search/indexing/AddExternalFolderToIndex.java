@@ -21,7 +21,7 @@ import org.eclipse.dltk.compiler.util.SimpleLookupTable;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.SearchEngine;
@@ -104,7 +104,7 @@ class AddExternalFolderToIndex extends IndexRequest {
 			monitor.enterRead(); // ask permission to read
 			final IPath container = this.containerPath;
 			final IndexManager indexManager = this.manager;
-			final IDLTKProject project = DLTKCore.create(this.project);
+			final IScriptProject project = DLTKCore.create(this.project);
 			final ISourceElementParser parser = indexManager.getSourceElementParser(project, null/*
 																									 * requestor
 																									 * will
@@ -186,7 +186,7 @@ class AddExternalFolderToIndex extends IndexRequest {
 		return true;
 	}
 
-	private void visit(SimpleLookupTable table, IDLTKProject project, File folder, ISourceElementParser parser, SourceIndexerRequestor requestor, IndexManager indexManager,
+	private void visit(SimpleLookupTable table, IScriptProject project, File folder, ISourceElementParser parser, SourceIndexerRequestor requestor, IndexManager indexManager,
 			IPath container, boolean operation, SearchParticipant participant, Index index) {
 		
 		IDLTKLanguageToolkit toolkit = null;

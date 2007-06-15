@@ -19,7 +19,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.tcl.internal.ui.TclUI;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -122,7 +122,7 @@ public class NewTCLProjectWizardTest extends TestCase {
 				fWizardPage.getRunnable());
 		op.run(null);
 
-		IDLTKProject jproj = fWizardPage.getNewScriptProject();
+		IScriptProject jproj = fWizardPage.getNewScriptProject();
 
 		assertEquals("a", jproj.getProject(), project);
 
@@ -147,7 +147,7 @@ public class NewTCLProjectWizardTest extends TestCase {
 				fWizardPage.getRunnable());
 		op.run(null);
 
-		IDLTKProject jproj = fWizardPage.getNewScriptProject();
+		IScriptProject jproj = fWizardPage.getNewScriptProject();
 
 		assertEquals("a", jproj.getProject(), otherProject);
 
@@ -205,7 +205,7 @@ public class NewTCLProjectWizardTest extends TestCase {
 				fWizardPage.getRunnable());
 		op.run(null);
 
-		IDLTKProject jproj = fWizardPage.getNewScriptProject();
+		IScriptProject jproj = fWizardPage.getNewScriptProject();
 
 		assertEquals("a", jproj.getProject(), project);
 
@@ -262,7 +262,7 @@ public class NewTCLProjectWizardTest extends TestCase {
 				fWizardPage.getRunnable());
 		op1.run(null);
 
-		IDLTKProject jproj = fWizardPage.getNewScriptProject();
+		IScriptProject jproj = fWizardPage.getNewScriptProject();
 
 		IBuildpathEntry[] buildpath1 = jproj.getRawBuildpath();
 		assertUserBuildPath(project, buildpath1);

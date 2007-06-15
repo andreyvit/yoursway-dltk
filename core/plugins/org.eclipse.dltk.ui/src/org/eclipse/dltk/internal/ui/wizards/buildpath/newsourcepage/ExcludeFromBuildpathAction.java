@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -66,7 +66,7 @@ public class ExcludeFromBuildpathAction extends Action implements ISelectionChan
 	 * {@inheritDoc}
 	 */
 	public void run() {
-		final IDLTKProject project;
+		final IScriptProject project;
 		Object object = fSelectedElements.get(0);
 		if (object instanceof ISourceModule) {
 			project = ((ISourceModule) object).getScriptProject();
@@ -95,7 +95,7 @@ public class ExcludeFromBuildpathAction extends Action implements ISelectionChan
 		}
 	}
 
-	private List exclude(List modelElements, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	private List exclude(List modelElements, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor = new NullProgressMonitor();
 		try {

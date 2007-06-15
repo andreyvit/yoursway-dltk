@@ -10,7 +10,7 @@
 package org.eclipse.dltk.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionProposal;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 
 
 
@@ -25,7 +25,7 @@ public final class TypeProposalInfo extends MemberProposalInfo {
 	 * @param project thescriptproject to reference when resolving types
 	 * @param proposal the proposal to generate information for
 	 */
-	public TypeProposalInfo(IDLTKProject project, CompletionProposal proposal) {
+	public TypeProposalInfo(IScriptProject project, CompletionProposal proposal) {
 		super(project, proposal);
 	}
 }

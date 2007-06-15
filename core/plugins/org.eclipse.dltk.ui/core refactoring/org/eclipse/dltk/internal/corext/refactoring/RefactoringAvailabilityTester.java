@@ -16,7 +16,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.ScriptModelUtil;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -83,7 +83,7 @@ public final class RefactoringAvailabilityTester {
 		return true;
 	}
 
-	public static boolean isRenameAvailable(final IDLTKProject project) throws ModelException {
+	public static boolean isRenameAvailable(final IScriptProject project) throws ModelException {
 		if (project == null)
 			return false;
 		if (!Checks.isAvailable(project))
@@ -162,7 +162,7 @@ public final class RefactoringAvailabilityTester {
 	public static boolean isDeleteAvailable(final IModelElement element) throws ModelException {
 		if (!element.exists())
 			return false;
-		if (element instanceof IScriptModel || element instanceof IDLTKProject)
+		if (element instanceof IScriptModel || element instanceof IScriptProject)
 			return false;
 		if (element.getParent() != null && element.getParent().isReadOnly())
 			return false;

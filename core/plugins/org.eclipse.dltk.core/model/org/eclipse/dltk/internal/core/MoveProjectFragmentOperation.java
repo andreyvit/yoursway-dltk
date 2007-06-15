@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptModel;
@@ -31,7 +31,7 @@ public class MoveProjectFragmentOperation extends CopyProjectFragmentOperation {
 	 * Renames the buildpath entries equal to the given path in the given project.
 	 * If an entry with the destination path already existed, remove it.
 	 */
-	protected void renameEntryInBuildpath(IPath rootPath, IDLTKProject project) throws ModelException {
+	protected void renameEntryInBuildpath(IPath rootPath, IScriptProject project) throws ModelException {
 			
 		IBuildpathEntry[] buildpath = project.getRawBuildpath();
 		IBuildpathEntry[] newBuildpath = null;
@@ -138,7 +138,7 @@ public class MoveProjectFragmentOperation extends CopyProjectFragmentOperation {
 		}
 		
 		// update refering projects buildpath excluding orignating project
-		IDLTKProject originatingProject = root.getScriptProject();
+		IScriptProject originatingProject = root.getScriptProject();
 		if ((this.updateModelFlags & IProjectFragment.OTHER_REFERRING_PROJECTS_BUILDPATH) != 0) {
 			updateReferringProjectBuildpaths(rootEntry.getPath(), originatingProject);
 		}
@@ -239,11 +239,11 @@ public class MoveProjectFragmentOperation extends CopyProjectFragmentOperation {
 	/*
 	 * Renames the buildpath entries equal to the given path in all Script projects.
 	 */
-	protected void updateReferringProjectBuildpaths(IPath rootPath, IDLTKProject projectOfRoot) throws ModelException {
+	protected void updateReferringProjectBuildpaths(IPath rootPath, IScriptProject projectOfRoot) throws ModelException {
 		IScriptModel model = this.getModel();
-		IDLTKProject[] projects = model.getScriptProjects();
+		IScriptProject[] projects = model.getScriptProjects();
 		for (int i = 0, length = projects.length; i < length; i++) {
-			IDLTKProject project = projects[i];
+			IScriptProject project = projects[i];
 			if (project.equals(projectOfRoot)) continue;
 			renameEntryInBuildpath(rootPath, project);
 		}
@@ -251,7 +251,7 @@ public class MoveProjectFragmentOperation extends CopyProjectFragmentOperation {
 	/*
 	 * Removes the buildpath entry equal to the given path from the given project's buildpath.
 	 */
-	protected void removeEntryFromBuildpath(IPath rootPath, IDLTKProject project) throws ModelException {
+	protected void removeEntryFromBuildpath(IPath rootPath, IScriptProject project) throws ModelException {
 		
 		IBuildpathEntry[] buildpath = project.getRawBuildpath();
 		IBuildpathEntry[] newBuildpath = null;

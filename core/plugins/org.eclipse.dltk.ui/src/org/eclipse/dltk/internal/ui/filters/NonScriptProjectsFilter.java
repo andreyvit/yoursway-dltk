@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.ui.filters;
 
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
@@ -25,7 +25,7 @@ public class NonScriptProjectsFilter extends ViewerFilter {
 	 * @see ViewerFilter
 	 */
 	public boolean select(Viewer viewer, Object parent, Object element) {
-		if (element instanceof IDLTKProject)
+		if (element instanceof IScriptProject)
 			return true;
 		else if (element instanceof IProject)
 			return !((IProject)element).isOpen();

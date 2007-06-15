@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.newsourcepage.DialogPackageExplorerActionGroup;
@@ -54,7 +54,7 @@ public class AddExternalArchivesOperation extends BuildpathModifierOperation {
         List result= null;
         fException= null;
         try {
-            IDLTKProject project= fInformationProvider.getDLTKProject();
+            IScriptProject project= fInformationProvider.getDLTKProject();
             IAddArchivesQuery query= fInformationProvider.getExternalArchivesQuery();
             result= addExternalArchives(query, project, monitor);
         } catch (CoreException e) {

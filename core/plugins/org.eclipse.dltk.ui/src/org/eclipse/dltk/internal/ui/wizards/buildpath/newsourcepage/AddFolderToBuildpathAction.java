@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.internal.corext.buildpath.BuildpathModifier;
@@ -58,7 +58,7 @@ import org.eclipse.ui.part.ISetSelectionTarget;
 public class AddFolderToBuildpathAction extends Action implements ISelectionChangedListener {
 
 	private final IWorkbenchSite fSite;
-	private final List fSelectedElements; //IScriptProject || IPackageFrament || IFolder
+	private final List fSelectedElements; //IDLTKProject || IPackageFrament || IFolder
 
 	public AddFolderToBuildpathAction(IWorkbenchSite site) {
 		super(NewWizardMessages.NewSourceContainerWorkbookPage_ToolBar_AddSelSFToCP_label, DLTKPluginImages.DESC_OBJS_PACKFRAG_ROOT);
@@ -72,10 +72,10 @@ public class AddFolderToBuildpathAction extends Action implements ISelectionChan
 	 */
 	public void run() {
 
-		final IDLTKProject project;
+		final IScriptProject project;
 		Object object= fSelectedElements.get(0);
-		if (object instanceof IDLTKProject) {
-			project= (IDLTKProject)object;
+		if (object instanceof IScriptProject) {
+			project= (IScriptProject)object;
 		} else if (object instanceof IScriptFolder) {
 			project= ((IScriptFolder)object).getScriptProject();
 		} else {
@@ -86,7 +86,7 @@ public class AddFolderToBuildpathAction extends Action implements ISelectionChan
 		}
 
 		final boolean removeProjectFromBuildpath;					
-		if (fSelectedElements.size() == 1 && fSelectedElements.get(0) instanceof IDLTKProject //if only the project should be added, then the query does not need to be executed 
+		if (fSelectedElements.size() == 1 && fSelectedElements.get(0) instanceof IScriptProject //if only the project should be added, then the query does not need to be executed 
 				) {
 			removeProjectFromBuildpath = true;
 		} else {
@@ -115,7 +115,7 @@ public class AddFolderToBuildpathAction extends Action implements ISelectionChan
 		}
 	}
 
-	private List addToBuildpath(List elements, IDLTKProject project, boolean removeProjectFromBuildpath, IProgressMonitor monitor) throws OperationCanceledException, CoreException {
+	private List addToBuildpath(List elements, IScriptProject project, boolean removeProjectFromBuildpath, IProgressMonitor monitor) throws OperationCanceledException, CoreException {
 		if (!DLTKLanguageManager.hasScriptNature(project.getProject())) {
 			StatusInfo rootStatus= new StatusInfo();
 			rootStatus.setError(NewWizardMessages.BuildpathModifier_Error_NoNatures); 
@@ -191,8 +191,8 @@ public class AddFolderToBuildpathAction extends Action implements ISelectionChan
 			for (Iterator iter= elements.iterator(); iter.hasNext();) {
 				Object element= iter.next();
 				fSelectedElements.add(element);
-				if (element instanceof IDLTKProject) {
-					if (BuildpathModifier.isSourceFolder((IDLTKProject)element))
+				if (element instanceof IScriptProject) {
+					if (BuildpathModifier.isSourceFolder((IScriptProject)element))
 						return false;
 				} else if (element instanceof IScriptFolder) {
 					int type= DialogPackageExplorerActionGroup.getType(element, ((IScriptFolder)element).getScriptProject());
@@ -200,7 +200,7 @@ public class AddFolderToBuildpathAction extends Action implements ISelectionChan
 						return false;
 				} else if (element instanceof IFolder) {
 					IProject project= ((IFolder)element).getProject();
-					IDLTKProject scriptProject= DLTKCore.create(project);
+					IScriptProject scriptProject= DLTKCore.create(project);
 					if (scriptProject == null || !scriptProject.exists())
 						return false;
 				} else {

@@ -21,7 +21,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ElementChangedEvent;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
@@ -137,9 +137,9 @@ public class ScriptWorkingSetUpdater implements IWorkingSetUpdater, IElementChan
 		int flags= delta.getFlags();
 		if (type == IModelElement.SCRIPT_PROJECT && kind == IModelElementDelta.CHANGED) {
 			if (index != -1 && (flags & IModelElementDelta.F_CLOSED) != 0) {
-				result.set(index, ((IDLTKProject)jElement).getProject());
+				result.set(index, ((IScriptProject)jElement).getProject());
 			} else if ((flags & IModelElementDelta.F_OPENED) != 0) {
-				index= result.indexOf(((IDLTKProject)jElement).getProject());
+				index= result.indexOf(((IScriptProject)jElement).getProject());
 				if (index != -1)
 					result.set(index, jElement);
 			}
@@ -214,7 +214,7 @@ public class ScriptWorkingSetUpdater implements IWorkingSetUpdater, IElementChan
 				// under a project only remove the element if the parent
 				// project is open. Otherwise we would remove all elements
 				// in closed projects.
-				if (jElement instanceof IDLTKProject) {
+				if (jElement instanceof IScriptProject) {
 					remove= !jElement.exists();
 				} else {
 					IProject project= jElement.getScriptProject().getProject();

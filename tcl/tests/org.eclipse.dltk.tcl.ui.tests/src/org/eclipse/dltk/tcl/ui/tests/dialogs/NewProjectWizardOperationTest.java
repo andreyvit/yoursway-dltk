@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
@@ -45,7 +45,7 @@ import org.eclipse.dltk.internal.ui.wizards.buildpath.newsourcepage.BuildpathMod
 import org.eclipse.dltk.internal.ui.wizards.buildpath.newsourcepage.BuildpathModifierQueries.ILinkToQuery;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.newsourcepage.BuildpathModifierQueries.IRemoveLinkedFolderQuery;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.newsourcepage.DialogPackageExplorerActionGroup.DialogExplorerActionContext;
-import org.eclipse.dltk.ui.tests.DLTKProjectHelper;
+import org.eclipse.dltk.ui.tests.ScriptProjectHelper;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
@@ -55,7 +55,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 public class NewProjectWizardOperationTest extends TestCase implements IBuildpathInformationProvider {
     
     public static final Class THIS= NewProjectWizardOperationTest.class;
-    protected IDLTKProject fProject;
+    protected IScriptProject fProject;
     protected DialogPackageExplorerActionGroup fActionGroup;
     protected List fSelection;
     protected Object[] fItems;
@@ -814,7 +814,7 @@ public class NewProjectWizardOperationTest extends TestCase implements IBuildpat
                 return new StructuredSelection(list);
             }
 
-            public IDLTKProject getDLTKProject() {
+            public IScriptProject getDLTKProject() {
                 return fProject;
             }
 
@@ -856,8 +856,8 @@ public class NewProjectWizardOperationTest extends TestCase implements IBuildpat
         reset();
     }
     
-    private IDLTKProject createProject() throws CoreException, InvocationTargetException {
-        fProject= DLTKProjectHelper.createDLTKProject("Dummy project");
+    private IScriptProject createProject() throws CoreException, InvocationTargetException {
+        fProject= ScriptProjectHelper.createDLTKProject("Dummy project");
         IPath srcPath= new Path("src");
         IPath normalFolderPath= new Path("NormalFolder");
         IPath packagePath= srcPath.append("pack1");
@@ -887,7 +887,7 @@ public class NewProjectWizardOperationTest extends TestCase implements IBuildpat
         IScriptFolder defaultPack= root.getScriptFolder("");
         
         IPath libraryPath= root.getPath().append("archive.zip");
-        final IProjectFragment zipRoot= DLTKProjectHelper.addLibrary(fProject, libraryPath);
+        final IProjectFragment zipRoot= ScriptProjectHelper.addLibrary(fProject, libraryPath);
         assertFalse(BuildpathModifier.getBuildpathEntryFor(zipRoot.getPath(), fProject, IBuildpathEntry.BPE_LIBRARY) == null);               
         
         // two compilation units A and B in 'package'
@@ -908,7 +908,7 @@ public class NewProjectWizardOperationTest extends TestCase implements IBuildpat
                 return new StructuredSelection(list);
             }
 
-            public IDLTKProject getDLTKProject() {
+            public IScriptProject getDLTKProject() {
                 return fProject;
             }
 
@@ -958,7 +958,7 @@ public class NewProjectWizardOperationTest extends TestCase implements IBuildpat
                 return new StructuredSelection(list);
             }
 
-            public IDLTKProject getDLTKProject() {
+            public IScriptProject getDLTKProject() {
                 return fProject;
             }
 
@@ -1079,7 +1079,7 @@ public class NewProjectWizardOperationTest extends TestCase implements IBuildpat
     /* (non-Javadoc)
      * @see org.eclipse.dltk.internal.corext.buildpath.IBuildpathInformationProvider#getScriptProject()
      */
-    public IDLTKProject getDLTKProject() {
+    public IScriptProject getDLTKProject() {
         return fProject;
     }
 

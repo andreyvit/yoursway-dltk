@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.util.SimpleSet;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptModel;
 import org.eclipse.dltk.core.ModelException;
@@ -22,7 +22,7 @@ import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.indexing.IndexManager;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.core.ArchiveProjectFragment;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.ModelManager;
 
 /**
@@ -44,7 +44,7 @@ public class IndexSelector {
 
 	/**
 	 * Returns whether elements of the given project or jar can see the given
-	 * focus (an IScriptProject or a JarScriptFolderRot) either because the
+	 * focus (an IDLTKProject or a JarScriptFolderRot) either because the
 	 * focus is part of the project or the jar, or because it is accessible
 	 * throught the project's classpath
 	 */
@@ -53,23 +53,23 @@ public class IndexSelector {
 		try {
 			IBuildpathEntry[] focusEntries = null;
 			if (isPolymorphicSearch) {
-				DLTKProject focusProject = focus instanceof ArchiveProjectFragment ? (DLTKProject) focus
+				ScriptProject focusProject = focus instanceof ArchiveProjectFragment ? (ScriptProject) focus
 						.getParent()
-						: (DLTKProject) focus;
+						: (ScriptProject) focus;
 				focusEntries = focusProject.getExpandedBuildpath(true);
 			}
 			IScriptModel model = focus.getModel();
-			IDLTKProject project = getScriptProject(projectOrArchivePath, model);
+			IScriptProject project = getScriptProject(projectOrArchivePath, model);
 			if (project != null)
-				return canSeeFocus(focus, (DLTKProject) project, focusEntries);
+				return canSeeFocus(focus, (ScriptProject) project, focusEntries);
 			// projectOrJarPath is a jar
 			// it can see the focus only if it is on the buildpath of a project
 			// projectOrArchivePath is a archive
 			// it can see the focus only if it is on the classpath of a project
 			// that can see the focus
-			IDLTKProject[] allProjects = model.getScriptProjects();
+			IScriptProject[] allProjects = model.getScriptProjects();
 			for (int i = 0, length = allProjects.length; i < length; i++) {
-				DLTKProject otherProject = (DLTKProject) allProjects[i];
+				ScriptProject otherProject = (ScriptProject) allProjects[i];
 				IBuildpathEntry[] entries = otherProject.getResolvedBuildpath(
 						true/* ignoreUnresolvedEntry */,
 						false/* don't generateMarkerOnError */, false/*
@@ -91,7 +91,7 @@ public class IndexSelector {
 	}
 
 	public static boolean canSeeFocus(IModelElement focus,
-			DLTKProject scriptProject,
+			ScriptProject scriptProject,
 			IBuildpathEntry[] focusEntriesForPolymorphicSearch) {
 		try {
 			if (focus.equals(scriptProject))
@@ -120,7 +120,7 @@ public class IndexSelector {
 				return false;
 			}
 			// look for dependent projects
-			IPath focusPath = ((DLTKProject) focus).getProject().getFullPath();
+			IPath focusPath = ((ScriptProject) focus).getProject().getFullPath();
 			IBuildpathEntry[] entries = scriptProject
 					.getExpandedBuildpath(true);
 			for (int i = 0, length = entries.length; i < length; i++) {
@@ -182,22 +182,22 @@ public class IndexSelector {
 				// then walk those projects looking for the archives from
 				// projectsAndArchives
 				int length = projectsAndArchives.length;
-				DLTKProject[] projectsCanSeeFocus = new DLTKProject[length];
+				ScriptProject[] projectsCanSeeFocus = new ScriptProject[length];
 				SimpleSet visitedProjects = new SimpleSet(length);
 				int projectIndex = 0;
 				SimpleSet archivesToCheck = new SimpleSet(length);
 				IBuildpathEntry[] focusEntries = null;
 				if (this.pattern != null
 						&& MatchLocator.isPolymorphicSearch(this.pattern)) { // isPolymorphicSearch
-					DLTKProject focusProject = focus instanceof ArchiveProjectFragment ? (DLTKProject) focus
+					ScriptProject focusProject = focus instanceof ArchiveProjectFragment ? (ScriptProject) focus
 							.getParent()
-							: (DLTKProject) focus;
+							: (ScriptProject) focus;
 					focusEntries = focusProject.getExpandedBuildpath(true);
 				}
 
 				for (int i = 0; i < length; i++) {
 					IPath path = projectsAndArchives[i];
-					DLTKProject project = (DLTKProject) getScriptProject(path,
+					ScriptProject project = (ScriptProject) getScriptProject(path,
 							model);
 					if (project != null) {
 						visitedProjects.add(project);
@@ -244,10 +244,10 @@ public class IndexSelector {
 				// including one of the projects that references them, so scan
 				// all projects that have not been visited
 				if (archivesToCheck.elementSize > 0) {
-					IDLTKProject[] allProjects = model.getScriptProjects();
+					IScriptProject[] allProjects = model.getScriptProjects();
 					for (int i = 0, l = allProjects.length; i < l
 							&& archivesToCheck.elementSize > 0; i++) {
-						DLTKProject project = (DLTKProject) allProjects[i];
+						ScriptProject project = (ScriptProject) allProjects[i];
 						if (!visitedProjects.includes(project)) {
 							IBuildpathEntry[] entries = project
 									.getResolvedBuildpath();
@@ -338,8 +338,8 @@ public class IndexSelector {
 	 * Returns thescriptproject that corresponds to the given path. Returns null
 	 * if the path doesn't correspond to a project.
 	 */
-	private static IDLTKProject getScriptProject(IPath path, IScriptModel model) {
-		IDLTKProject project = model.getScriptProject(path.lastSegment());
+	private static IScriptProject getScriptProject(IPath path, IScriptModel model) {
+		IScriptProject project = model.getScriptProject(path.lastSegment());
 		if (project.exists()) {
 			return project;
 		}

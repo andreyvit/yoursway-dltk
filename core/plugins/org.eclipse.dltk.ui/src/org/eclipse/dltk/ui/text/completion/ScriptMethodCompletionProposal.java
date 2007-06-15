@@ -10,7 +10,7 @@
 package org.eclipse.dltk.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionProposal;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -179,7 +179,7 @@ public class ScriptMethodCompletionProposal extends
 	}
 
 	protected ProposalInfo computeProposalInfo() {
-		IDLTKProject project = fInvocationContext.getProject();
+		IScriptProject project = fInvocationContext.getProject();
 		if (project != null)
 			return new MethodProposalInfo(project, fProposal);
 		return super.computeProposalInfo();

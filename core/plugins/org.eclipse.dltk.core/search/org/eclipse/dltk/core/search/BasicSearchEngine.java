@@ -39,7 +39,7 @@ import org.eclipse.dltk.core.search.indexing.IndexManager;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.compiler.env.AccessRestriction;
 import org.eclipse.dltk.internal.compiler.env.AccessRuleSet;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.SourceModule;
@@ -169,8 +169,8 @@ public class BasicSearchEngine {
 			IModelElement element = elements[i];
 			if (element != null) {
 				try {
-					if (element instanceof DLTKProject) {
-						scope.add((DLTKProject)element, includeMask, visitedProjects);
+					if (element instanceof ScriptProject) {
+						scope.add((ScriptProject)element, includeMask, visitedProjects);
 					} else {
 						scope.add(element);
 					}

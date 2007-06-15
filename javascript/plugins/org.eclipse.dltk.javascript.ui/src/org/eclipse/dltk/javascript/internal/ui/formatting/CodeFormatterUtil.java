@@ -13,7 +13,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.BadPositionCategoryException;
@@ -35,7 +35,7 @@ public class CodeFormatterUtil {
 	 *        <code>null</code> if the workspace default should be used
 	 * @return the indent string
 	 */
-	public static String createIndentString(int indentationUnits, IDLTKProject project) {
+	public static String createIndentString(int indentationUnits, IScriptProject project) {
 		Map options= project != null ? project.getOptions(true) : DLTKCore.getOptions();
 		throw new UnsupportedOperationException();
 		//return  new OldCodeFormatter(options).createIndentationString(indentationUnits);
@@ -49,7 +49,7 @@ public class CodeFormatterUtil {
 	 *        and the workspace default should be used
 	 * @return The tab width
 	 */
-	public static int getTabWidth(IDLTKProject project) {
+	public static int getTabWidth(IScriptProject project) {
 		/*
 		 * If the tab-char is SPACE, FORMATTER_INDENTATION_SIZE is not used
 		 * by the core formatter.
@@ -73,7 +73,7 @@ public class CodeFormatterUtil {
 	 * @return the indent width
 	 * @since 3.1
 	 */
-	public static int getIndentWidth(IDLTKProject project) {
+	public static int getIndentWidth(IScriptProject project) {
 		String key;
 		if (DefaultCodeFormatterConstants.MIXED.equals(getCoreOption(project, DefaultCodeFormatterConstants.FORMATTER_TAB_CHAR)))
 			key= DefaultCodeFormatterConstants.FORMATTER_INDENTATION_SIZE;
@@ -93,7 +93,7 @@ public class CodeFormatterUtil {
 	 * @return the value of the preference
 	 * @since 3.1
 	 */
-	private static String getCoreOption(IDLTKProject project, String key) {
+	private static String getCoreOption(IScriptProject project, String key) {
 		if (project == null)
 			return DLTKCore.getOption(key);
 		return project.getOption(key, true);
@@ -111,7 +111,7 @@ public class CodeFormatterUtil {
 	 * @return the value of the preference
 	 * @since 3.1
 	 */
-	private static int getCoreOption(IDLTKProject project, String key, int def) {
+	private static int getCoreOption(IScriptProject project, String key, int def) {
 		try {
 			return Integer.parseInt(getCoreOption(project, key));
 		} catch (NumberFormatException e) {

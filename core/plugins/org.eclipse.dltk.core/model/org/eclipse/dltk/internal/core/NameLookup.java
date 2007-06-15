@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -50,7 +50,7 @@ import org.eclipse.dltk.internal.core.util.Util;
  * which start with <code>find*</code> are intended to be convenience methods for quickly
  * finding an element within another element; for instance, for finding a class within a
  * package.  The other set of methods all begin with <code>seek*</code>.  These methods
- * do comprehensive searches of the <code>IScriptProject</code> returning hits
+ * do comprehensive searches of the <code>IDLTKProject</code> returning hits
  * in real time through an <code>IModelElementRequestor</code>.
  *
  */
@@ -279,7 +279,7 @@ public class NameLookup {
 	 * Returns the <code>ISourceModule</code> which defines the type
 	 * named <code>qualifiedTypeName</code>, or <code>null</code> if
 	 * none exists. The domain of the search is bounded by the classpath
-	 * of the <code>IScriptProject</code> this <code>NameLookup</code> was
+	 * of the <code>IDLTKProject</code> this <code>NameLookup</code> was
 	 * obtained from.
 	 * <p>
 	 * The name must be fully qualified (eg "java.lang.Object", "java.util.Hashtable$Entry")
@@ -343,7 +343,7 @@ public class NameLookup {
 	/**
 	 * Returns the package fragment whose path matches the given
 	 * (absolute) path, or <code>null</code> if none exist. The domain of
-	 * the search is bounded by the buildpath of the <code>IScriptProject</code>
+	 * the search is bounded by the buildpath of the <code>IDLTKProject</code>
 	 * this <code>NameLookup</code> was obtained from.
 	 * The path can be:
 	 * 	- internal to the workbench: "/Project/src"
@@ -397,7 +397,7 @@ public class NameLookup {
 					return (IScriptFolder) fromFactory;
 				case IModelElement.SCRIPT_PROJECT:
 					// default package in a default root
-					DLTKProject project = (DLTKProject) fromFactory;
+					ScriptProject project = (ScriptProject) fromFactory;
 					try {
 						IBuildpathEntry entry = project.getBuildpathEntryFor(path);
 						if (entry != null) {
@@ -545,7 +545,7 @@ public class NameLookup {
 		IType type = null;
 		int length= packages.length;
 		HashSet projects = null;
-		IDLTKProject scriptProject = null;
+		IScriptProject scriptProject = null;
 		Answer suggestedAnswer = null;
 		for (int i= 0; i < length; i++) {
 			type = findType(typeName, packages[i], partialMatch, acceptFlags);
@@ -745,7 +745,7 @@ public class NameLookup {
 	 * Notifies the given requestor of all package fragments with the
 	 * given name. Checks the requestor at regular intervals to see if the
 	 * requestor has canceled. The domain of
-	 * the search is bounded by the <code>IScriptProject</code>
+	 * the search is bounded by the <code>IDLTKProject</code>
 	 * this <code>NameLookup</code> was obtained from.
 	 *
 	 * @param partialMatch partial name matches qualify when <code>true</code>;

@@ -281,7 +281,7 @@ public class ModelStatus extends Status implements IModelStatus, IModelStatusCon
 				return Messages.bind(Messages.status_noLocalContents, getPath().toString());
 
 			case BP_CONTAINER_PATH_UNBOUND:
-				DLTKProject dltkProject = (DLTKProject) elements[0];
+				ScriptProject dltkProject = (ScriptProject) elements[0];
 				BuildpathContainerInitializer initializer = DLTKCore.getBuildpathContainerInitializer(this.path.segment(0));
 				String description = null;
 				if (initializer != null)
@@ -291,7 +291,7 @@ public class ModelStatus extends Status implements IModelStatus, IModelStatusCon
 				return Messages.bind(Messages.buildpath_unboundContainerPath, new String[] { description, dltkProject.getElementName() });
 
 			case INVALID_BP_CONTAINER_ENTRY:
-				dltkProject = (DLTKProject) elements[0];
+				dltkProject = (ScriptProject) elements[0];
 				IBuildpathContainer container = null;
 				description = null;
 				try {
@@ -311,7 +311,7 @@ public class ModelStatus extends Status implements IModelStatus, IModelStatusCon
 				return Messages.bind(Messages.buildpath_invalidContainer, new String[] { description, dltkProject.getElementName() });
 
 			case BUILDPATH_CYCLE:
-				dltkProject = (DLTKProject) elements[0];
+				dltkProject = (ScriptProject) elements[0];
 				return Messages.bind(Messages.buildpath_cycle, dltkProject.getElementName());
 
 			}

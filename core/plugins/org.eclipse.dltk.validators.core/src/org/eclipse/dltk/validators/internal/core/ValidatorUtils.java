@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementVisitor;
 import org.eclipse.dltk.core.IParent;
@@ -133,7 +133,7 @@ public class ValidatorUtils {
 		if( !DLTKLanguageManager.hasScriptNature(project)) {
 			return null; // Lets pass not script projects. 
 		}
-		IDLTKProject scriptProject = DLTKCore.create(project);
+		IScriptProject scriptProject = DLTKCore.create(project);
 		IDLTKSearchScope scope = SearchEngine
 		.createSearchScope(new IModelElement[] { scriptProject });
 		

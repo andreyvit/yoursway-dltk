@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.CharOperation;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -49,7 +49,7 @@ import org.eclipse.dltk.internal.core.util.Util;
 public class AbstractDLTKSearchTests extends AbstractModelTests implements IDLTKSearchConstants {
 
 	public static List JAVA_SEARCH_SUITES = null;
-	protected static IDLTKProject SCRIPT_PROJECT;
+	protected static IScriptProject SCRIPT_PROJECT;
 	protected static boolean COPY_DIRS = true;
 	protected static int EXACT_RULE = SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE;
 	protected static int EQUIVALENT_RULE = EXACT_RULE | SearchPattern.R_EQUIVALENT_MATCH;
@@ -398,7 +398,7 @@ public class AbstractDLTKSearchTests extends AbstractModelTests implements IDLTK
 		}
 	}
 	protected IDLTKSearchScope getSearchScope(String project) {
-		return SearchEngine.createSearchScope(new IDLTKProject[] {getScriptProject(project)});
+		return SearchEngine.createSearchScope(new IScriptProject[] {getScriptProject(project)});
 	}
 	protected IDLTKSearchScope getSearchScope(IModelElement element ) {
 		return SearchEngine.createSearchScope(new IModelElement[] {element});

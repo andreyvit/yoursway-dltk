@@ -24,7 +24,7 @@ public class ScriptFolderInfo extends OpenableElementInfo {
 	public Object[] getForeignResources(IResource resource, ProjectFragment projectFragment) {
 		if (this.foreignResources == null) {
 			try {
-				this.foreignResources = ProjectFragmentInfo.computeFolderForeignResources((DLTKProject) projectFragment.getScriptProject(),
+				this.foreignResources = ProjectFragmentInfo.computeFolderForeignResources((ScriptProject) projectFragment.getScriptProject(),
 						(IContainer) resource, projectFragment.fullInclusionPatternChars(), projectFragment.fullExclusionPatternChars());
 			} catch (ModelException e) {
 				// root doesn't exist: consider package has no nonScriptResources

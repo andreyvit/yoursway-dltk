@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.ui.scriptview;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -58,7 +58,7 @@ class FileTransferDropAdapter extends DLTKViewerDropAdapter implements TransferD
 		event.detail= DND.DROP_NONE;
 		
 		boolean isScriptFolder= target instanceof IScriptFolder;
-		boolean isScriptProject= target instanceof IDLTKProject;
+		boolean isScriptProject= target instanceof IScriptProject;
 		boolean isProjectFragment= target instanceof IProjectFragment;
 		boolean isContainer= target instanceof IContainer;
 		

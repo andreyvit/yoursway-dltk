@@ -10,7 +10,7 @@
 package org.eclipse.dltk.internal.ui.wizards;
 
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 
 
 /**
@@ -33,6 +33,6 @@ public interface IBuildpathContainerPageExtension {
 	 * @param currentEntries The class path entries currently selected to be set as the projects buildpath. This can also
 	 * include the entry to be edited.
 	 */
-	public void initialize(IDLTKProject project, IBuildpathEntry[] currentEntries);
+	public void initialize(IScriptProject project, IBuildpathEntry[] currentEntries);
 
 }

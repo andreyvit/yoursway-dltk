@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.internal.ui.actions.WorkbenchRunnableAdapter;
 import org.eclipse.dltk.internal.ui.dialogs.StatusUtil;
@@ -181,8 +181,8 @@ public abstract class BuildPathsPropertyPage extends PropertyPage implements ISt
 		IAdaptable adaptable= getElement();
 		if (adaptable != null) {
 			IModelElement elem= (IModelElement) adaptable.getAdapter(IModelElement.class);
-			if (elem instanceof IDLTKProject) {
-				return ((IDLTKProject) elem).getProject();
+			if (elem instanceof IScriptProject) {
+				return ((IScriptProject) elem).getProject();
 			}
 		}
 		return null;

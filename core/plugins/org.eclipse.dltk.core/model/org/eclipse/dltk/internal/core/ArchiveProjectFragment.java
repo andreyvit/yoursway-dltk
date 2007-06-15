@@ -37,12 +37,12 @@ public class ArchiveProjectFragment extends ProjectFragment {
 	 */
 	protected final IPath zipPath;
 
-	protected ArchiveProjectFragment(IResource resource, DLTKProject project) {
+	protected ArchiveProjectFragment(IResource resource, ScriptProject project) {
 		super(resource, project);
 		zipPath = resource.getFullPath();
 	}
 
-	protected ArchiveProjectFragment(IPath path, DLTKProject project) {
+	protected ArchiveProjectFragment(IPath path, ScriptProject project) {
 		super(null, project);
 		zipPath = path;
 	}

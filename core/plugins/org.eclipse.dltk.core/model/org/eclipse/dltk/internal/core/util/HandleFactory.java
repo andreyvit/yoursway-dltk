@@ -23,7 +23,7 @@ import org.eclipse.dltk.compiler.env.lookup.Scope;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -31,7 +31,7 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.internal.compiler.lookup.TypeScope;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.Model;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.Openable;
@@ -177,7 +177,7 @@ public class HandleFactory {
 			//  e.g. org.eclipse.swt.win32/ws/win32/swt.jar 
 			//        is NOT on the classpath of org.eclipse.swt.win32
 			IFile archiveFile = (IFile)target;
-			DLTKProject scriptProject = (DLTKProject) this.model.getScriptProject(archiveFile);
+			ScriptProject scriptProject = (ScriptProject) this.model.getScriptProject(archiveFile);
 			IBuildpathEntry[] classpathEntries;
 			try {
 				classpathEntries = scriptProject.getResolvedBuildpath();
@@ -192,11 +192,11 @@ public class HandleFactory {
 		}
 		
 		// walk projects in the scope and find the first one that has the given archive path in its classpath
-		IDLTKProject[] projects;
+		IScriptProject[] projects;
 		if (scope != null) {
 			IPath[] enclosingProjectsAndArchives = scope.enclosingProjectsAndZips();
 			int length = enclosingProjectsAndArchives.length;
-			projects = new IDLTKProject[length];
+			projects = new IScriptProject[length];
 			int index = 0;
 			for (int i = 0; i < length; i++) {
 				IPath path = enclosingProjectsAndArchives[i];
@@ -205,7 +205,7 @@ public class HandleFactory {
 				}
 			}
 			if (index < length) {
-				System.arraycopy(projects, 0, projects = new IDLTKProject[index], 0, index);
+				System.arraycopy(projects, 0, projects = new IScriptProject[index], 0, index);
 			}
 			IProjectFragment root = getArchiveFolder(archivePath, target, projects);
 			if (root != null) {
@@ -226,10 +226,10 @@ public class HandleFactory {
 	private IProjectFragment getArchiveFolder(
 		IPath archivePath,
 		Object target,
-		IDLTKProject[] projects) {
+		IScriptProject[] projects) {
 		for (int i= 0, projectCount= projects.length; i < projectCount; i++) {
 			try {
-				DLTKProject scriptProject= (DLTKProject)projects[i];
+				ScriptProject scriptProject= (ScriptProject)projects[i];
 				IBuildpathEntry[] classpathEntries= scriptProject.getResolvedBuildpath(true/*ignoreUnresolvedEntry*/, false/*don't generateMarkerOnError*/, false/*don't returnResolutionInProgress*/);
 				for (int j= 0, entryCount= classpathEntries.length; j < entryCount; j++) {
 					if (classpathEntries[j].getPath().equals(archivePath)) {
@@ -261,7 +261,7 @@ public class HandleFactory {
 				IProject project = projects[i];
 				if (!project.isAccessible() 
 					|| !DLTKLanguageManager.hasScriptNature(project)) continue;
-				IDLTKProject scriptProject= this.model.getScriptProject(project);
+				IScriptProject scriptProject= this.model.getScriptProject(project);
 				IProjectFragment[] roots= scriptProject.getProjectFragments();
 				for (int j= 0, rootCount= roots.length; j < rootCount; j++) {
 					ProjectFragment root= (ProjectFragment)roots[j];

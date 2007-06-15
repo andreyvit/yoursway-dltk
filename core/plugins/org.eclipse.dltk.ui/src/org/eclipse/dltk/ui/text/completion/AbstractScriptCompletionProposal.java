@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.BrowserInformationControl;
@@ -723,7 +723,7 @@ public abstract class AbstractScriptCompletionProposal implements
 	 * 
 	 */
 	protected boolean isCamelCaseMatching() {
-		IDLTKProject project = getProject();
+		IScriptProject project = getProject();
 		String value;
 		if (project == null)
 			value = DLTKCore.getOption(DLTKCore.CODEASSIST_CAMEL_CASE_MATCH);
@@ -734,7 +734,7 @@ public abstract class AbstractScriptCompletionProposal implements
 		return DLTKCore.ENABLED.equals(value);
 	}
 
-	private IDLTKProject getProject() {
+	private IScriptProject getProject() {
 		// TODO Auto-generated method stub
 		return null;
 	}

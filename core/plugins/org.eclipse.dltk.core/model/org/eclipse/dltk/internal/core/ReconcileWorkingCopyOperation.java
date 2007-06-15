@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IModelStatusConstants;
@@ -87,7 +87,7 @@ public class ReconcileWorkingCopyOperation extends ModelOperation {
 			// Mixin source index operation required.
 
 			List elements = new ArrayList();
-			IDLTKProject project = workingCopy.getScriptProject();
+			IScriptProject project = workingCopy.getScriptProject();
 			elements.add(workingCopy);
 			MixinBuilder.getDefault().buildModelElements(project, elements,
 					new NullProgressMonitor());

@@ -77,14 +77,14 @@ class ProjectElementInfo extends OpenableElementInfo {
 		this.foreignResources = resources;
 	}
 
-	public Object[] getForeignResources(DLTKProject project) {		
+	public Object[] getForeignResources(ScriptProject project) {		
 			if (this.foreignResources == null) {
 				this.foreignResources = computeForeignResources(project);
 			}
 			return this.foreignResources;
 		}
 
-	private Object[] computeForeignResources(DLTKProject project) {
+	private Object[] computeForeignResources(ScriptProject project) {
 		
 		// determine if src == project and/or if bin == project
 		IPath projectPath = project.getProject().getFullPath();
@@ -207,11 +207,11 @@ class ProjectElementInfo extends OpenableElementInfo {
 	 * The given project is assumed to be the handle of this info.
 	 * This name lookup first looks in the given working copies.
 	 */
-	NameLookup newNameLookup(DLTKProject project, ISourceModule[] workingCopies) {
+	NameLookup newNameLookup(ScriptProject project, ISourceModule[] workingCopies) {
 		ProjectCache cache = getProjectCache(project);
 		return new NameLookup(cache.allProjectFragmentCache, cache.allPkgFragmentsCache, cache.isPackageCache, workingCopies, cache.rootToResolvedEntries);
 	}
-	ProjectCache getProjectCache(DLTKProject project) {
+	ProjectCache getProjectCache(ScriptProject project) {
 		ProjectCache cache = this.projectCache;
 		if (cache == null) {
 			IProjectFragment[] roots;

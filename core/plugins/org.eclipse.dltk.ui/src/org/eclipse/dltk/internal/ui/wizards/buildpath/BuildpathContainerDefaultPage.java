@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.dialogs.StatusInfo;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPage;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPageExtension;
@@ -114,7 +114,7 @@ public class BuildpathContainerDefaultPage extends NewElementWizardPage implemen
 		return DLTKCore.newContainerEntry(new Path(fEntryField.getText()));
 	}
 		
-	public void initialize(IDLTKProject project, IBuildpathEntry[] currentEntries) {
+	public void initialize(IScriptProject project, IBuildpathEntry[] currentEntries) {
 		for (int i= 0; i < currentEntries.length; i++) {
 			IBuildpathEntry curr= currentEntries[i];
 			if (curr.getEntryKind() == IBuildpathEntry.BPE_CONTAINER) {

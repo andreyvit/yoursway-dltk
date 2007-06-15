@@ -10,7 +10,7 @@
 package org.eclipse.dltk.tcl.internal.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionProposal;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.ui.text.completion.CompletionProposalLabelProvider;
 import org.eclipse.dltk.ui.text.completion.IScriptCompletionProposal;
@@ -56,7 +56,7 @@ public class TclCompletionProposalCollector extends ScriptCompletionProposalColl
 		return new TclScriptCompletionProposal(displayString, replaceStart, length, image, displayString, i, isInDoc);
 	}
 	
-	protected ScriptCompletionProposal createOverrideCompletionProposal(IDLTKProject dltkProject, ISourceModule compilationUnit, String name, String[] paramTypes, int start, int length, String displayName, String completionProposal) {
+	protected ScriptCompletionProposal createOverrideCompletionProposal(IScriptProject dltkProject, ISourceModule compilationUnit, String name, String[] paramTypes, int start, int length, String displayName, String completionProposal) {
 		return new TclOverrideCompletionProposal(dltkProject, compilationUnit, name, paramTypes, start, length, displayName, completionProposal );
 	}
 	

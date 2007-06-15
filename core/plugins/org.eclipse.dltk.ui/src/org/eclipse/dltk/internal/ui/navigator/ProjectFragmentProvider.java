@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ElementChangedEvent;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -67,7 +67,7 @@ public class ProjectFragmentProvider implements IPropertyChangeListener {
 	
 				switch (type) {
 					case IModelElement.SCRIPT_PROJECT: {
-						IDLTKProject project= (IDLTKProject) iModelElement;
+						IScriptProject project= (IScriptProject) iModelElement;
 						
 						IProjectFragment root= project.findProjectFragment(project.getPath());
 						if (root != null) {
@@ -205,7 +205,7 @@ public class ProjectFragmentProvider implements IPropertyChangeListener {
 //				IModelElement element= DLTKCore.create(folder);
 //				if (element instanceof IScriptFolder) {
 					IProject project = folder.getProject();
-					IDLTKProject dltkProject= DLTKCore.create(project);
+					IScriptProject dltkProject= DLTKCore.create(project);
 					if (dltkProject != null) {
 						if (dltkProject.isOnBuildpath(folder))
 							list.add(folder);	

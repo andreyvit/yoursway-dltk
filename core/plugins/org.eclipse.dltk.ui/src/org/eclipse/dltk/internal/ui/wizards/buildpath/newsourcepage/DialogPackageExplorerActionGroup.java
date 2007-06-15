@@ -17,7 +17,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -73,7 +73,7 @@ import org.eclipse.ui.actions.ActionContext;
 public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
     
     public static class DialogExplorerActionContext extends ActionContext {
-        private IDLTKProject fDLTKProject;
+        private IScriptProject fDLTKProject;
         private List fSelectedElements;
 
         /**
@@ -85,7 +85,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
          * @param selection the current selection
          * @param jProject the element's script project
          */
-        public DialogExplorerActionContext(ISelection selection, IDLTKProject jProject) {
+        public DialogExplorerActionContext(ISelection selection, IScriptProject jProject) {
             super(null);
             fDLTKProject= jProject;
             fSelectedElements= ((IStructuredSelection)selection).toList();
@@ -102,7 +102,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
          * @param selectedElements a list of currently selected elements
          * @param jProject the element's script project
          */
-        public DialogExplorerActionContext(List selectedElements, IDLTKProject jProject) {
+        public DialogExplorerActionContext(List selectedElements, IScriptProject jProject) {
             super(null);
             fDLTKProject= jProject;
             fSelectedElements= selectedElements;
@@ -110,7 +110,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
             super.setSelection(structuredSelection);
         }
         
-        public IDLTKProject getDLTKProject() {
+        public IScriptProject getDLTKProject() {
             return fDLTKProject;
         }
         
@@ -322,7 +322,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
         if (context == null) // can happen when disposing
             return;
         List selectedElements= context.getSelectedElements();
-        IDLTKProject project= context.getDLTKProject();
+        IScriptProject project= context.getDLTKProject();
         
         int type= MULTI;
         if (selectedElements.size() == 0) {
@@ -390,7 +390,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
         if (context == null) // can happen when disposing
             return;
         List selectedElements= context.getSelectedElements();
-        IDLTKProject project= context.getDLTKProject();
+        IScriptProject project= context.getDLTKProject();
         
         int type= MULTI;
         if (selectedElements.size() == 0) {
@@ -435,7 +435,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
      * @param type the type of the selected element(s)
      * @throws ModelException
      */
-    private void internalSetContext(List selectedElements, IDLTKProject project, int type) throws ModelException {
+    private void internalSetContext(List selectedElements, IScriptProject project, int type) throws ModelException {
         fLastType= type;
         List availableActions= getAvailableActions(selectedElements, project);
         BuildpathModifierAction[] actions= new BuildpathModifierAction[availableActions.size()];
@@ -465,7 +465,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
      * <code>false</code> otherwise.
      * @throws ModelException 
      */
-    private boolean identicalTypes(List elements, IDLTKProject project) throws ModelException {
+    private boolean identicalTypes(List elements, IScriptProject project) throws ModelException {
 		if (elements.size() == 0) {
 			return false;
 		}
@@ -541,8 +541,8 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
      * PackageExplorerActionGroup.FILE<br>
      * @throws ModelException 
      */
-    public static int getType(Object obj, IDLTKProject project) throws ModelException {
-            if (obj instanceof IDLTKProject)
+    public static int getType(Object obj, IScriptProject project) throws ModelException {
+            if (obj instanceof IScriptProject)
                 return SCRIPT_PROJECT;
             if (obj instanceof BuildPathContainer)
                 return CONTAINER;
@@ -588,7 +588,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
      * PackageExplorerActionGroup.EXCLUDED_FOLDER;<br>
      * @throws ModelException 
      */
-    private static int getFolderType(IFolder folder, IDLTKProject project) throws ModelException {
+    private static int getFolderType(IFolder folder, IScriptProject project) throws ModelException {
         IContainer folderParent= folder.getParent();
 		if (folderParent.getFullPath().equals(project.getPath()))
             return FOLDER;
@@ -611,7 +611,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
      * PackageExplorerActionGroup.FILE
      * @throws ModelException 
      */
-    private static int getFileType(IFile file, IDLTKProject project) throws ModelException {
+    private static int getFileType(IFile file, IScriptProject project) throws ModelException {
         if (BuildpathModifier.isArchive(file, project))
             return ARCHIVE;
         if (DLTKCore.DEBUG) {
@@ -649,7 +649,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
      * @return a list of <code>BuildpathModifierAction</code>s
      * @throws ModelException
      */
-    private List getAvailableActions(List selectedElements, IDLTKProject project) throws ModelException {
+    private List getAvailableActions(List selectedElements, IScriptProject project) throws ModelException {
 		if (project == null || !project.exists()) {
 			return new ArrayList();
 		}

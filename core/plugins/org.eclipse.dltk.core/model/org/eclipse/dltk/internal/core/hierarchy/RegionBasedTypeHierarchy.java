@@ -12,7 +12,7 @@ package org.eclipse.dltk.internal.core.hierarchy;
 import java.util.ArrayList;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IOpenable;
@@ -55,7 +55,7 @@ public RegionBasedTypeHierarchy(IRegion region, ISourceModule[] workingCopies, I
 					// if they are contained in the region
 					// (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=146615)
 					try {
-						IProjectFragment[] roots = ((IDLTKProject) element).getProjectFragments();
+						IProjectFragment[] roots = ((IScriptProject) element).getProjectFragments();
 						for (int i = 0, length = roots.length; i < length; i++) {
 							if (roots[i].isArchive() && !fRootElements.contains(roots[i]))
 								fRootElements.add(roots[i]);
@@ -119,7 +119,7 @@ protected boolean isAffectedByOpenable(IModelElementDelta delta, IModelElement e
 /**
  * Returns the java project this hierarchy was created in.
  */
-public IDLTKProject javaProject() {
+public IScriptProject javaProject() {
 	return this.project;
 }
 public void pruneDeadBranches() {

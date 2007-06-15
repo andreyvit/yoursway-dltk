@@ -21,7 +21,7 @@ import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.NameLookup;
 import org.eclipse.dltk.internal.core.Openable;
@@ -57,7 +57,7 @@ public abstract class HierarchyBuilder {
 	public HierarchyBuilder(TypeHierarchy hierarchy) throws ModelException {
 
 		this.hierarchy = hierarchy;
-		DLTKProject project = (DLTKProject) hierarchy.javaProject();
+		ScriptProject project = (ScriptProject) hierarchy.javaProject();
 
 		IType focusType = hierarchy.getType();
 		org.eclipse.dltk.core.ISourceModule unitToLookInside = focusType == null ? null

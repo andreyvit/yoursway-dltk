@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.refactoring.base.DLTKChange;
@@ -115,7 +115,7 @@ abstract class ProjectFragmentReorgChange extends DLTKChange {
 		if (fUpdateBuildpathQuery == null)
 			return replace | originating | destination;
 
-		IDLTKProject[] referencingProjects= ModelElementUtil.getReferencingProjects(getRoot());
+		IScriptProject[] referencingProjects= ModelElementUtil.getReferencingProjects(getRoot());
 		if (referencingProjects.length == 0)
 			return replace | originating | destination;
 

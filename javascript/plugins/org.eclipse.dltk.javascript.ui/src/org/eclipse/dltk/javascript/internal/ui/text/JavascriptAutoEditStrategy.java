@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.compiler.InvalidInputException;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
 import org.eclipse.dltk.javascript.scriptdoc.IScanner;
 import org.eclipse.dltk.javascript.scriptdoc.ITerminalSymbols;
@@ -68,7 +68,7 @@ public class JavascriptAutoEditStrategy extends DefaultIndentLineAutoEditStrateg
 	private boolean fIsSmartMode;
 
 	private String fPartitioning;
-	final IDLTKProject fProject;
+	final IScriptProject fProject;
 	private static IScanner fgScanner= new PublicScanner(false, false, false, 3, null, null, false);
 
 	/**
@@ -77,7 +77,7 @@ public class JavascriptAutoEditStrategy extends DefaultIndentLineAutoEditStrateg
 	 * @param partitioning the document partitioning
 	 * @param project the project to get formatting preferences from, or null to use default preferences
 	 */
-	public JavascriptAutoEditStrategy(String partitioning, IDLTKProject project) {
+	public JavascriptAutoEditStrategy(String partitioning, IScriptProject project) {
 		fPartitioning= partitioning;
 		fProject= project;
 		this.prefs=new JsPreferenceInterpreter(JavaScriptUI.getDefault().getPreferenceStore());

@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.corext.buildpath.BuildpathModifier;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.DialogField;
@@ -111,7 +111,7 @@ public class SourceContainerWorkbookPage extends BuildPathBasePage {
 	}
 
 	private ListDialogField fBuildpathList;
-	private IDLTKProject fCurrJProject;
+	private IScriptProject fCurrJProject;
 	
 	private Control fSWTControl;
 	private TreeListDialogField fFoldersList;	
@@ -146,7 +146,7 @@ public class SourceContainerWorkbookPage extends BuildPathBasePage {
 		fFoldersList.enableButton(IDX_EDIT, false);		
 	}
 	
-	public void init(IDLTKProject jproject) {
+	public void init(IScriptProject jproject) {
 		fCurrJProject= jproject;	
 		updateFoldersList();
 	}

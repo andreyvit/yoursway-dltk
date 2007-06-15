@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
@@ -32,7 +32,7 @@ import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.BPListElement;
-import org.eclipse.dltk.ui.tests.DLTKProjectHelper;
+import org.eclipse.dltk.ui.tests.ScriptProjectHelper;
 import org.eclipse.dltk.ui.tests.DLTKUITestsPlugin;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.ui.IViewPart;
@@ -58,8 +58,8 @@ public class ContentProviderTests1 extends TestCase {
 		return suite;
 	}
 
-	private IDLTKProject fJProject1;
-	private IDLTKProject fJProject2;
+	private IScriptProject fJProject1;
+	private IScriptProject fJProject2;
 	
 	private IProjectFragment fRoot1;
 	private IScriptFolder fPack1;
@@ -318,12 +318,12 @@ public class ContentProviderTests1 extends TestCase {
 		IWorkspaceDescription workspaceDesc= fWorkspace.getDescription();
 		fEnableAutoBuildAfterTesting= workspaceDesc.isAutoBuilding();
 		if (fEnableAutoBuildAfterTesting)
-			DLTKProjectHelper.setAutoBuilding(false);
+			ScriptProjectHelper.setAutoBuilding(false);
 		
 		assertNotNull(fWorkspace);	
 		
-		fJProject1= DLTKProjectHelper.createDLTKProject("TestProject1");//$NON-NLS-1$
-		fJProject2= DLTKProjectHelper.createDLTKProject("TestProject2");//$NON-NLS-1$
+		fJProject1= ScriptProjectHelper.createDLTKProject("TestProject1");//$NON-NLS-1$
+		fJProject2= ScriptProjectHelper.createDLTKProject("TestProject2");//$NON-NLS-1$
 		
 		assertNotNull("project1 null", fJProject1);//$NON-NLS-1$
 		assertNotNull("project2 null", fJProject2);//$NON-NLS-1$
@@ -344,10 +344,10 @@ public class ContentProviderTests1 extends TestCase {
 		assertNotNull(fFile1);
 		assertNotNull(fFile2);
 				
-		java.io.File junitSrcArchive= DLTKUITestsPlugin.getDefault().getFileInPlugin(DLTKProjectHelper.JUNIT_SRC_381);
+		java.io.File junitSrcArchive= DLTKUITestsPlugin.getDefault().getFileInPlugin(ScriptProjectHelper.JUNIT_SRC_381);
 		assertTrue("junit src not found", junitSrcArchive != null && junitSrcArchive.exists());//$NON-NLS-1$
 
-		fArchiveFragmentRoot= DLTKProjectHelper.addSourceContainerWithImport(fJProject1, "src", junitSrcArchive, DLTKProjectHelper.JUNIT_SRC_ENCODING);//$NON-NLS-1$
+		fArchiveFragmentRoot= ScriptProjectHelper.addSourceContainerWithImport(fJProject1, "src", junitSrcArchive, ScriptProjectHelper.JUNIT_SRC_ENCODING);//$NON-NLS-1$
 		assertTrue("Unable to create zipfile archive",fArchiveFragmentRoot.exists());//$NON-NLS-1$
 		
 		fPackJunit= fArchiveFragmentRoot.getScriptFolder("junit");//$NON-NLS-1$
@@ -370,7 +370,7 @@ public class ContentProviderTests1 extends TestCase {
 
 	//	DLTKProjectHelper.addVariableEntry(fJProject2, new Path("InterpreterEnvironment_LIB_TEST"), null, null);
 
-		fRoot1= DLTKProjectHelper.addSourceContainer(fJProject2, "src1");//$NON-NLS-1$
+		fRoot1= ScriptProjectHelper.addSourceContainer(fJProject2, "src1");//$NON-NLS-1$
 		fPack1= fRoot1.createScriptFolder("pack1", true, null);//$NON-NLS-1$
 		fPack2= fRoot1.createScriptFolder("pack2", true, null);//$NON-NLS-1$
 		fPack3= fRoot1.createScriptFolder("pack3",true,null);//$NON-NLS-1$
@@ -416,12 +416,12 @@ public class ContentProviderTests1 extends TestCase {
 	protected void tearDown() throws Exception {
 		fArchiveFragmentRoot.close();
 			
-		DLTKProjectHelper.delete(fJProject1);
-		DLTKProjectHelper.delete(fJProject2);
+		ScriptProjectHelper.delete(fJProject1);
+		ScriptProjectHelper.delete(fJProject2);
 		page.hideView(fMyPart);
 		
 		if (fEnableAutoBuildAfterTesting)
-			DLTKProjectHelper.setAutoBuilding(true);
+			ScriptProjectHelper.setAutoBuilding(true);
 		
 		super.tearDown();
 	}

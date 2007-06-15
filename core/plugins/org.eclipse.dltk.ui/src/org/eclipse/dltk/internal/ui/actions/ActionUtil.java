@@ -13,7 +13,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -76,7 +76,7 @@ public class ActionUtil {
         //fix for bug http://dev.eclipse.org/bugs/show_bug.cgi?id=20051
         if (element.getElementType() == IModelElement.SCRIPT_PROJECT)
             return true;
-		IDLTKProject project= element.getScriptProject();
+		IScriptProject project= element.getScriptProject();
 		if (!project.isOnBuildpath(element))
 			return false;
 		IProject resourceProject= project.getProject();

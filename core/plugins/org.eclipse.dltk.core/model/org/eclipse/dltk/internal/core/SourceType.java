@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -363,13 +363,13 @@ public class SourceType extends NamedMember implements IType {
 	/**
 	 * @see IType
 	 */
-	public ITypeHierarchy newTypeHierarchy(IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	public ITypeHierarchy newTypeHierarchy(IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		return newTypeHierarchy(project, DefaultWorkingCopyOwner.PRIMARY, monitor);
 	}
 	/**
 	 * @see IType#newTypeHierarchy(IJavaProject, WorkingCopyOwner, IProgressMonitor)
 	 */
-	public ITypeHierarchy newTypeHierarchy(IDLTKProject project, WorkingCopyOwner owner, IProgressMonitor monitor) throws ModelException {
+	public ITypeHierarchy newTypeHierarchy(IScriptProject project, WorkingCopyOwner owner, IProgressMonitor monitor) throws ModelException {
 		if (project == null) {
 			throw new IllegalArgumentException(Messages.hierarchy_nullProject); 
 		}

@@ -14,7 +14,7 @@ package org.eclipse.dltk.javascript.scriptdoc;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.text.DocumentCharacterIterator;
 import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
 import org.eclipse.dltk.javascript.internal.ui.text.JsPreferenceInterpreter;
@@ -65,7 +65,7 @@ public final class JavaIndenter {
 		final boolean prefHasGenerics;
 		final String prefTabChar;
 		
-		private final IDLTKProject fProject;
+		private final IScriptProject fProject;
 
 		/**
 		 * Returns <code>true</code> if the class is used outside the workbench,
@@ -94,7 +94,7 @@ public final class JavaIndenter {
 			return this.fProject.getOption(key, true);
 		}
 		
-		CorePrefs(IDLTKProject project) {
+		CorePrefs(IScriptProject project) {
 			this.fProject= project;
 			if (isStandalone()) {
 				prefUseTabs= true;
@@ -169,7 +169,7 @@ public final class JavaIndenter {
 		
 		
 		
-		public  int getTabWidth(IDLTKProject project) {
+		public  int getTabWidth(IScriptProject project) {
 			/*
 			 * If the tab-char is SPACE, FORMATTER_INDENTATION_SIZE is not used
 			 * by the core formatter.
@@ -184,7 +184,7 @@ public final class JavaIndenter {
 			return getTabWidth(this.fProject);
 		}
 		
-		public int getIndentWidth(IDLTKProject project) {
+		public int getIndentWidth(IScriptProject project) {
 			return prefs.getIndentSize();
 		}
 
@@ -443,7 +443,7 @@ public final class JavaIndenter {
 	 * @param javaAutoIndentStrategy TODO
 	 * @since 3.1
 	 */
-	public JavaIndenter(IDocument document, JavaHeuristicScanner scanner, IDLTKProject project) {
+	public JavaIndenter(IDocument document, JavaHeuristicScanner scanner, IScriptProject project) {
 		Assert.isNotNull(document);
 		Assert.isNotNull(scanner);
 		fDocument= document;

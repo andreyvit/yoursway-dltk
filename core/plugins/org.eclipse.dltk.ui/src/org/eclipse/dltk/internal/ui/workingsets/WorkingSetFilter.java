@@ -14,7 +14,7 @@ import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ISourceModule;
@@ -143,7 +143,7 @@ public class WorkingSetFilter extends ViewerFilter {
 						if (scopeElement.getElementType() == IModelElement.SCRIPT_PROJECT && searchedElement.getElementType() == IModelElement.PROJECT_FRAGMENT) {
 							IProjectFragment pkgRoot= (IProjectFragment)searchedElement;
 							if (pkgRoot.isExternal() && pkgRoot.isArchive()) {
-								if (((IDLTKProject)scopeElement).isOnBuildpath(searchedElement))
+								if (((IScriptProject)scopeElement).isOnBuildpath(searchedElement))
 									return true;
 						}
 						}

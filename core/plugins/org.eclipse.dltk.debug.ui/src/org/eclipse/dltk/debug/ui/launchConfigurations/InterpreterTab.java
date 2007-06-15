@@ -23,7 +23,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.messages.DLTKLaunchMessages;
 import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterComboBlock;
@@ -389,7 +389,7 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 		return new InterpreterDescriptor() {
 
 			public String getDescription() {
-				IDLTKProject project = getDLTKProject();
+				IScriptProject project = getDLTKProject();
 				String name = DLTKLaunchMessages.InterpreterTab_7; 
 				if (project == null) {					
 					IInterpreterInstall Interpreter = null;
@@ -421,7 +421,7 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 	 * 
 	 * @returnscriptproject or <code>null</code>
 	 */
-	protected IDLTKProject getDLTKProject() {
+	protected IScriptProject getDLTKProject() {
 		if (getLaunchConfiguration() != null) {
 			try {
 				String name = getLaunchConfiguration().getAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);

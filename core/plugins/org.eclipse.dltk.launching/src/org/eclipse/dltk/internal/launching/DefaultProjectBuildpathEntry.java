@@ -23,7 +23,7 @@ import org.eclipse.dltk.core.BuildpathContainerInitializer;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.launching.IRuntimeBuildpathEntry;
 import org.eclipse.dltk.launching.LaunchingMessages;
 import org.eclipse.dltk.launching.ScriptRuntime;
@@ -56,7 +56,7 @@ public class DefaultProjectBuildpathEntry extends AbstractRuntimeBuildpathEntry 
 	 * 
 	 * @param project Script project
 	 */
-	public DefaultProjectBuildpathEntry(IDLTKProject project) {
+	public DefaultProjectBuildpathEntry(IScriptProject project) {
 		setDLTKProject(project);
 	}
 		
@@ -70,7 +70,7 @@ public class DefaultProjectBuildpathEntry extends AbstractRuntimeBuildpathEntry 
 		if (name == null) {
 			abort(LaunchingMessages.DefaultProjectBuildpathEntry_3, null); 
 		}		
-		IDLTKProject project = DLTKCore.create(ResourcesPlugin.getWorkspace().getRoot().getProject(name));
+		IScriptProject project = DLTKCore.create(ResourcesPlugin.getWorkspace().getRoot().getProject(name));
 		setDLTKProject(project);
 		name = memento.getAttribute("exportedEntriesOnly"); //$NON-NLS-1$
 		if (name == null) {
@@ -151,7 +151,7 @@ public class DefaultProjectBuildpathEntry extends AbstractRuntimeBuildpathEntry 
 			expandedPath.add(projectEntry);
 			return;
 		}
-		IDLTKProject project = (IDLTKProject)DLTKCore.create(res);
+		IScriptProject project = (IScriptProject)DLTKCore.create(res);
 		if (project == null || !project.getProject().isOpen() || !project.exists()) {
 			// add project entry and return
 			expandedPath.add(projectEntry);
@@ -224,7 +224,7 @@ public class DefaultProjectBuildpathEntry extends AbstractRuntimeBuildpathEntry 
 										if (initializer2 == null) {
 											id2 = re.getPath().segment(0);
 										} else {
-											IDLTKProject context = re.getDLTKProject();
+											IScriptProject context = re.getDLTKProject();
 											if (context == null) {
 												context = project;
 											}

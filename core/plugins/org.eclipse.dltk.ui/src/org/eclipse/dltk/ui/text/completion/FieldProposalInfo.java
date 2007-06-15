@@ -10,7 +10,7 @@
 package org.eclipse.dltk.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionProposal;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 
 /**
  * Proposal info that computes the javadoc lazily when it is queried.
@@ -26,7 +26,7 @@ public final class FieldProposalInfo extends MemberProposalInfo {
 	 * @param proposal
 	 *            the proposal to generate information for
 	 */
-	public FieldProposalInfo(IDLTKProject project, CompletionProposal proposal) {
+	public FieldProposalInfo(IScriptProject project, CompletionProposal proposal) {
 		super(project, proposal);
 	}
 }

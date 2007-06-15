@@ -46,7 +46,7 @@ public class ExternalProjectFragment extends ProjectFragment {
 	protected final boolean fReadOnly;
 	protected final boolean fOnlyScriptResources;
 
-	protected ExternalProjectFragment(IPath path, DLTKProject project, boolean isReadOnly, boolean onlyScriptResources) {
+	protected ExternalProjectFragment(IPath path, ScriptProject project, boolean isReadOnly, boolean onlyScriptResources) {
 		super(null, project);
 		this.fPath = path;
 		this.fReadOnly = isReadOnly;

@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.buildpath.BuildpathModifier;
@@ -67,10 +67,10 @@ public class RemoveFromBuildpathAction extends Action implements ISelectionChang
 	 */
 	public void run() {
 		try {
-			final IDLTKProject project;
+			final IScriptProject project;
 			Object object = fSelectedElements.get(0);
-			if (object instanceof IDLTKProject) {
-				project = (IDLTKProject) object;
+			if (object instanceof IScriptProject) {
+				project = (IScriptProject) object;
 			} else if (object instanceof IProjectFragment) {
 				IProjectFragment root = (IProjectFragment) object;
 				project = root.getScriptProject();
@@ -126,15 +126,15 @@ public class RemoveFromBuildpathAction extends Action implements ISelectionChang
 		}
 	}
 
-	private List removeFromBuildpath(List elements, IDLTKProject project, IProgressMonitor monitor) throws CoreException {
+	private List removeFromBuildpath(List elements, IScriptProject project, IProgressMonitor monitor) throws CoreException {
 		try {
 			monitor.beginTask(NewWizardMessages.BuildpathModifier_Monitor_RemoveFromBuildpath, elements.size() + 1);
 			List existingEntries = BuildpathModifier.getExistingEntries(project);
 			List result = new ArrayList();
 			for (int i = 0; i < elements.size(); i++) {
 				Object element = elements.get(i);
-				if (element instanceof IDLTKProject) {
-					Object res = BuildpathModifier.removeFromBuildpath((IDLTKProject) element, existingEntries, new SubProgressMonitor(
+				if (element instanceof IScriptProject) {
+					Object res = BuildpathModifier.removeFromBuildpath((IScriptProject) element, existingEntries, new SubProgressMonitor(
 							monitor, 1));
 					result.add(res);
 				} else if (element instanceof IProjectFragment) {
@@ -208,10 +208,10 @@ public class RemoveFromBuildpathAction extends Action implements ISelectionChang
 			for (Iterator iter = elements.iterator(); iter.hasNext();) {
 				Object element = iter.next();
 				fSelectedElements.add(element);
-				if (!(element instanceof IProjectFragment || element instanceof IDLTKProject || element instanceof BuildPathContainer))
+				if (!(element instanceof IProjectFragment || element instanceof IScriptProject || element instanceof BuildPathContainer))
 					return false;
-				if (element instanceof IDLTKProject) {
-					IDLTKProject project = (IDLTKProject) element;
+				if (element instanceof IScriptProject) {
+					IScriptProject project = (IScriptProject) element;
 					if (!BuildpathModifier.isSourceFolder(project))
 						return false;
 				} else if (element instanceof IProjectFragment) {

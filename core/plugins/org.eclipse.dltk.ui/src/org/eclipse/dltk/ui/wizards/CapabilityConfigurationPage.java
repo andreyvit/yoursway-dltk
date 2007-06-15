@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
 import org.eclipse.jface.dialogs.Dialog;
@@ -51,7 +51,7 @@ public abstract class CapabilityConfigurationPage extends NewElementWizardPage {
 
 	private static final String PAGE_NAME= "DLTKCapabilityConfigurationPage"; //$NON-NLS-1$
 	
-	private IDLTKProject fScriptProject;
+	private IScriptProject fScriptProject;
 	private BuildpathsBlock fBuildPathsBlock;
 	
 	/**
@@ -59,7 +59,7 @@ public abstract class CapabilityConfigurationPage extends NewElementWizardPage {
 	 * It contains UI to configure a the buildpath and the output folder.
 	 * 
 	 * <p>
-	 * After constructing, a call to {@link #init(IDLTKProject, IPath, IBuildpathEntry[], boolean)} is required.
+	 * After constructing, a call to {@link #init(IScriptProject, IPath, IBuildpathEntry[], boolean)} is required.
 	 * </p>
 	 */	
 	public CapabilityConfigurationPage() {
@@ -117,7 +117,7 @@ public abstract class CapabilityConfigurationPage extends NewElementWizardPage {
 	 * @param defaultsOverrideExistingBuildpath If set to <code>true</code>, an existing '.buildpath' file is ignored. If set to <code>false</code>
 	 * the given default buildpath and output location is only used if no '.buildpath' exists.
 	 */
-	public void init(IDLTKProject jproject, IBuildpathEntry[] defaultEntries, boolean defaultsOverrideExistingBuildpath) {
+	public void init(IScriptProject jproject, IBuildpathEntry[] defaultEntries, boolean defaultsOverrideExistingBuildpath) {
 		if (!defaultsOverrideExistingBuildpath && jproject.exists() && jproject.getProject().getFile(".buildpath").exists()) { //$NON-NLS-1$			
 			defaultEntries= null;
 		}
@@ -154,12 +154,12 @@ public abstract class CapabilityConfigurationPage extends NewElementWizardPage {
 	}
 	
 	/**
-	 * Returns the DLTK project that was passed in {@link #init(IDLTKProject, IPath, IBuildpathEntry[], boolean)} or <code>null</code> if the 
+	 * Returns the DLTK project that was passed in {@link #init(IScriptProject, IPath, IBuildpathEntry[], boolean)} or <code>null</code> if the 
 	 * page has not been initialized yet.
 	 * 
 	 * @return the managed script project or <code>null</code>
 	 */	
-	public IDLTKProject getDLTKProject() {
+	public IScriptProject getDLTKProject() {
 		return fScriptProject;
 	}	
 	

@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.ui.refactoring.reorg;
 
-import org.eclipse.dltk.internal.corext.refactoring.rename.RenameDLTKProjectProcessor;
+import org.eclipse.dltk.internal.corext.refactoring.rename.RenameScriptProjectProcessor;
 import org.eclipse.dltk.internal.corext.refactoring.rename.RenameResourceProcessor;
 import org.eclipse.dltk.internal.corext.refactoring.rename.RenameScriptFolderProcessor;
 import org.eclipse.dltk.internal.corext.refactoring.rename.RenameSourceFolderProcessor;
@@ -26,7 +26,7 @@ public class RenameUserInterfaceManager extends UserInterfaceManager {
 	private RenameUserInterfaceManager() {
 		put(RenameResourceProcessor.class, RenameUserInterfaceStarter.class, RenameResourceWizard.class);
 //		
-		put(RenameDLTKProjectProcessor.class, RenameUserInterfaceStarter.class, RenameDLTKProjectWizard.class);
+		put(RenameScriptProjectProcessor.class, RenameUserInterfaceStarter.class, RenameScriptProjectWizard.class);
 		put(RenameSourceFolderProcessor.class, RenameUserInterfaceStarter.class, RenameSourceFolderWizard.class);
 		put(RenameScriptFolderProcessor.class, RenameUserInterfaceStarter.class, RenameScriptFolderWizard.class);
 		put(RenameSourceModuleProcessor.class, RenameUserInterfaceStarter.class, RenameSourceModuleWizard.class);

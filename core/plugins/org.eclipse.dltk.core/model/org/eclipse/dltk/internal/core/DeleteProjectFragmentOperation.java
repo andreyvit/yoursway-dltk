@@ -19,7 +19,7 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -111,11 +111,11 @@ public class DeleteProjectFragmentOperation extends ModelOperation {
 	/*
 	 * Deletes the buildpath entries equals to the given rootPath from all Script projects.
 	 */
-	protected void updateReferringProjectBuildpaths(IPath rootPath, IDLTKProject projectOfRoot, Map oldRoots) throws ModelException {
+	protected void updateReferringProjectBuildpaths(IPath rootPath, IScriptProject projectOfRoot, Map oldRoots) throws ModelException {
 		IScriptModel model = this.getModel();
-		IDLTKProject[] projects = model.getScriptProjects();
+		IScriptProject[] projects = model.getScriptProjects();
 		for (int i = 0, length = projects.length; i < length; i++) {
-			IDLTKProject project = projects[i];
+			IScriptProject project = projects[i];
 			if (project.equals(projectOfRoot)) continue;
 			updateProjectBuildpath(rootPath, project, oldRoots);
 		}
@@ -124,7 +124,7 @@ public class DeleteProjectFragmentOperation extends ModelOperation {
 	/*
 	 * Deletes the buildpath entries equals to the given rootPath from the given project.
 	 */
-	protected void updateProjectBuildpath(IPath rootPath, IDLTKProject project, Map oldRoots) throws ModelException {
+	protected void updateProjectBuildpath(IPath rootPath, IScriptProject project, Map oldRoots) throws ModelException {
 		// remember old roots
 		oldRoots.put(project, project.getProjectFragments());
 		

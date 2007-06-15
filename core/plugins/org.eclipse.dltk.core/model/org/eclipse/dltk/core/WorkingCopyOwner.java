@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.internal.core.BufferManager;
 import org.eclipse.dltk.internal.core.DefaultWorkingCopyOwner;
-import org.eclipse.dltk.internal.core.ExternalDLTKProject;
+import org.eclipse.dltk.internal.core.ExternalScriptProject;
 import org.eclipse.dltk.internal.core.ScriptFolder;
 import org.eclipse.dltk.internal.core.SourceModule;
 
@@ -112,7 +112,7 @@ public abstract class WorkingCopyOwner {
 	 *
 	 */
 	public final ISourceModule newWorkingCopy(String name, IBuildpathEntry[] buildpath, IProblemRequestor problemRequestor, IProgressMonitor monitor) throws ModelException {
-		ExternalDLTKProject project = new ExternalDLTKProject(buildpath);
+		ExternalScriptProject project = new ExternalScriptProject(buildpath);
 		IProjectFragment fragment = project.getProjectFragment(Path.EMPTY);
 		IScriptFolder parent = fragment.getScriptFolder(IProjectFragment.DEFAULT_SCRIPT_FOLDER_NAME);
 		SourceModule result = new SourceModule((ScriptFolder) parent, name, this);

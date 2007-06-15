@@ -65,7 +65,7 @@ public class ScriptModelUtil {
 		return null;
 	}
 
-	public static void searchTypeDeclarations(IDLTKProject project,
+	public static void searchTypeDeclarations(IScriptProject project,
 			String patternString, TypeNameMatchRequestor requestor) {
 		IDLTKSearchScope scope = SearchEngine
 			.createSearchScope(new IModelElement[] { project });
@@ -81,7 +81,7 @@ public class ScriptModelUtil {
 		}
 	}
 
-	public static void searchMethodDeclarations(IDLTKProject project,
+	public static void searchMethodDeclarations(IScriptProject project,
 			String patternString, SearchRequestor requestor) {
 		
 		IDLTKSearchScope scope = SearchEngine

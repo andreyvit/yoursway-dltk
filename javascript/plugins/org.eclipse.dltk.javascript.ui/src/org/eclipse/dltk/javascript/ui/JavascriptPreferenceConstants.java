@@ -12,7 +12,7 @@ package org.eclipse.dltk.javascript.ui;
 import org.eclipse.dltk.javascript.internal.ui.text.JavascriptColorConstants;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.PreferenceConstants;
-import org.eclipse.dltk.ui.preferences.NewDLTKProjectPreferencePage;
+import org.eclipse.dltk.ui.preferences.NewScriptProjectPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.graphics.RGB;
@@ -430,7 +430,7 @@ public class JavascriptPreferenceConstants extends PreferenceConstants {
 				.setDefault(CodeFormatterConstants.FORMATTER_INDENTATION_SIZE,
 						"4");
 
-		NewDLTKProjectPreferencePage.initDefaults(store);
+		NewScriptProjectPreferencePage.initDefaults(store);
 
 		store.setDefault(PreferenceConstants.APPEARANCE_COMPRESS_PACKAGE_NAMES,
 				false);

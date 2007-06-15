@@ -33,9 +33,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.tests.model.ModelTestsPlugin;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
@@ -49,7 +49,7 @@ import org.eclipse.ui.wizards.datatransfer.ZipFileStructureProvider;
 /**
  * Helper methods to set up a IDLTKProject.
  */
-public class DLTKProjectHelper {
+public class ScriptProjectHelper {
 	
 	private static final int MAX_RETRY= 5;
 	
@@ -71,7 +71,7 @@ public class DLTKProjectHelper {
 	 * @return The handle to the new source container
 	 * @throws CoreException Creation failed
 	 */				
-	public static IProjectFragment addSourceContainer(IDLTKProject jproject, String containerName, IPath[] inclusionFilters, IPath[] exclusionFilters) throws CoreException {
+	public static IProjectFragment addSourceContainer(IScriptProject jproject, String containerName, IPath[] inclusionFilters, IPath[] exclusionFilters) throws CoreException {
 		IProject project= jproject.getProject();
 		IContainer container= null;
 		if (containerName == null || containerName.length() == 0) {
@@ -92,7 +92,7 @@ public class DLTKProjectHelper {
 		return root;
 	}
 	
-	public static void addToBuildpath(IDLTKProject jproject, IBuildpathEntry cpe) throws ModelException {
+	public static void addToBuildpath(IScriptProject jproject, IBuildpathEntry cpe) throws ModelException {
 		IBuildpathEntry[] oldEntries= jproject.getRawBuildpath();
 		for (int i= 0; i < oldEntries.length; i++) {
 			if (oldEntries[i].equals(cpe)) {
@@ -113,7 +113,7 @@ public class DLTKProjectHelper {
 	 * @return The handle to the new source container
 	 * @throws CoreException Creation failed
 	 */		
-	public static IProjectFragment addSourceContainer(IDLTKProject jproject, String containerName) throws CoreException {
+	public static IProjectFragment addSourceContainer(IScriptProject jproject, String containerName) throws CoreException {
 		return addSourceContainer(jproject, containerName, new Path[0]);
 	}
 
@@ -125,7 +125,7 @@ public class DLTKProjectHelper {
 	 * @return The handle to the new source container
 	 * @throws CoreException Creation failed
 	 */		
-	public static IProjectFragment addSourceContainer(IDLTKProject jproject, String containerName, IPath[] exclusionFilters) throws CoreException {
+	public static IProjectFragment addSourceContainer(IScriptProject jproject, String containerName, IPath[] exclusionFilters) throws CoreException {
 		return addSourceContainer(jproject, containerName, new Path[0], exclusionFilters);
 	}
 	
@@ -136,7 +136,7 @@ public class DLTKProjectHelper {
 	 * @return Returns the script project handle
 	 * @throws CoreException Project creation failed
 	 */	
-	public static IDLTKProject createDLTKProject(String projectName) throws CoreException {
+	public static IScriptProject createDLTKProject(String projectName) throws CoreException {
 		IWorkspaceRoot root= ResourcesPlugin.getWorkspace().getRoot();
 		IProject project= root.getProject(projectName);
 		
@@ -155,7 +155,7 @@ public class DLTKProjectHelper {
 			project.open(null);
 		}
 		
-		IDLTKProject jproject= DLTKCore.create(project);
+		IScriptProject jproject= DLTKCore.create(project);
 		
 		jproject.setRawBuildpath(new IBuildpathEntry[0], null);
 				
@@ -174,8 +174,8 @@ public class DLTKProjectHelper {
 		IWorkspaceRunnable runnable= new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {
 				//performDummySearch();
-				if (elem instanceof IDLTKProject) {
-					IDLTKProject jproject= (IDLTKProject) elem;
+				if (elem instanceof IScriptProject) {
+					IScriptProject jproject= (IScriptProject) elem;
 					jproject.setRawBuildpath(new IBuildpathEntry[0], null);
 				}
 				for (int i= 0; i < MAX_RETRY; i++) {
@@ -199,7 +199,7 @@ public class DLTKProjectHelper {
 	}
 
 	/**
-	 * Adds a library entry with source attachment to a IScriptProject.
+	 * Adds a library entry with source attachment to a IDLTKProject.
 	 * @param jproject The parent project
 	 * @param path The path of the library to add
 	 * @param sourceAttachPath The source attachment path
@@ -207,15 +207,15 @@ public class DLTKProjectHelper {
 	 * @return The handle of the created root
 	 * @throws ScriptModelException 
 	 */			
-	public static IProjectFragment addLibrary(IDLTKProject jproject, IPath path) throws ModelException {
+	public static IProjectFragment addLibrary(IScriptProject jproject, IPath path) throws ModelException {
 		IBuildpathEntry cpe= DLTKCore.newLibraryEntry(path);
 		addToBuildpath(jproject, cpe);
 		return jproject.getProjectFragment(path.toString());
 	}
-	public static IProjectFragment addSourceContainerWithImport(IDLTKProject jproject, String containerName, File zipFile, String containerEncoding) throws InvocationTargetException, CoreException, IOException {
+	public static IProjectFragment addSourceContainerWithImport(IScriptProject jproject, String containerName, File zipFile, String containerEncoding) throws InvocationTargetException, CoreException, IOException {
 		return addSourceContainerWithImport(jproject, containerName, zipFile, containerEncoding, new Path[0]);
 	}
-	public static IProjectFragment addSourceContainerWithImport(IDLTKProject jproject, String containerName, File zipFile, String containerEncoding, IPath[] exclusionFilters) throws InvocationTargetException, CoreException, IOException {
+	public static IProjectFragment addSourceContainerWithImport(IScriptProject jproject, String containerName, File zipFile, String containerEncoding, IPath[] exclusionFilters) throws InvocationTargetException, CoreException, IOException {
 		ZipFile file= new ZipFile(zipFile);
 		try {
 			IProjectFragment root= addSourceContainer(jproject, containerName, exclusionFilters);
@@ -237,7 +237,7 @@ public class DLTKProjectHelper {
 			// should not happen
 		}
 	}
-	public static IProjectFragment addLibraryWithImport(IDLTKProject jproject, IPath archivePath) throws IOException, CoreException {
+	public static IProjectFragment addLibraryWithImport(IScriptProject jproject, IPath archivePath) throws IOException, CoreException {
 		IProject project= jproject.getProject();
 		IFile newFile= project.getFile(archivePath.lastSegment());
 		InputStream inputStream= null;

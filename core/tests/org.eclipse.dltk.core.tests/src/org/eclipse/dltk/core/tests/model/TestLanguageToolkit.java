@@ -29,7 +29,7 @@ import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.ICallProcessor;
 import org.eclipse.dltk.core.ICalleeProcessor;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
@@ -89,7 +89,7 @@ public class TestLanguageToolkit implements IDLTKLanguageToolkit {
 
 	public ICompletionEngine createCompletionEngine(
 			ISearchableEnvironment environment, CompletionRequestor requestor,
-			Map options, IDLTKProject project) {
+			Map options, IScriptProject project) {
 		// TODO Auto-generated method stub
 		return null;
 	}

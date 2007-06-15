@@ -13,7 +13,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.wizards.BuildpathDialogAccess;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.BPListElement;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.ExclusionInclusionDialog;
@@ -196,7 +196,7 @@ public class BuildpathModifierQueries {
          * @return Returns the selected buildpath container entries or an empty if the query has
          * been cancelled by the user.
          */
-        public IBuildpathEntry[] doQuery(final IDLTKProject project, final IBuildpathEntry[] entries);
+        public IBuildpathEntry[] doQuery(final IScriptProject project, final IBuildpathEntry[] entries);
     }
 
     /**
@@ -254,7 +254,7 @@ public class BuildpathModifierQueries {
      * @see BuildpathModifierQueries.ICreateFolderQuery
      * @see LinkFolderDialog
      */
-    public static ILinkToQuery getDefaultLinkQuery(final Shell shell, final IDLTKProject project, final IPath desiredOutputLocation) {
+    public static ILinkToQuery getDefaultLinkQuery(final Shell shell, final IScriptProject project, final IPath desiredOutputLocation) {
         return new ILinkToQuery() {
             protected IFolder fFolder;
             
@@ -349,7 +349,7 @@ public class BuildpathModifierQueries {
     public static IAddLibrariesQuery getDefaultLibrariesQuery(final Shell shell) {
         return new IAddLibrariesQuery() {
 
-            public IBuildpathEntry[] doQuery(final IDLTKProject project, final IBuildpathEntry[] entries) {
+            public IBuildpathEntry[] doQuery(final IScriptProject project, final IBuildpathEntry[] entries) {
                 final IBuildpathEntry[][] selected= {null};
                 Display.getDefault().syncExec(new Runnable() {
                     public void run() {
@@ -371,7 +371,7 @@ public class BuildpathModifierQueries {
      * @param project the script project to create the source folder for
      * @return returns the query
      */
-	public static ICreateFolderQuery getDefaultCreateFolderQuery(final Shell shell, final IDLTKProject project) {
+	public static ICreateFolderQuery getDefaultCreateFolderQuery(final Shell shell, final IScriptProject project) {
 		return new ICreateFolderQuery() {
 
 			private IFolder fNewFolder;

@@ -26,7 +26,7 @@ import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
@@ -35,7 +35,7 @@ import org.eclipse.dltk.core.IScriptModel;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.compiler.env.AccessRuleSet;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.ExternalProjectFragment;
 import org.eclipse.dltk.internal.core.Model;
 import org.eclipse.dltk.internal.core.ModelElement;
@@ -105,7 +105,7 @@ public class DLTKSearchScope extends AbstractSearchScope {
 	 * 
 	 * @see #add(ScriptProject, IPath, int, HashSet, IClasspathEntry)
 	 */
-	public void add(DLTKProject project, int includeMask, HashSet visitedProject)
+	public void add(ScriptProject project, int includeMask, HashSet visitedProject)
 			throws ModelException {
 		add(project, null, includeMask, visitedProject, null);
 	}
@@ -130,7 +130,7 @@ public class DLTKSearchScope extends AbstractSearchScope {
 	 * @throws ModelException
 	 *             May happen while getting script model info
 	 */
-	void add(DLTKProject scriptProject, IPath pathToAdd, int includeMask,
+	void add(ScriptProject scriptProject, IPath pathToAdd, int includeMask,
 			HashSet visitedProjects, IBuildpathEntry referringEntry)
 			throws ModelException {
 		IProject project = scriptProject.getProject();
@@ -211,7 +211,7 @@ public class DLTKSearchScope extends AbstractSearchScope {
 				if ((includeMask & REFERENCED_PROJECTS) != 0) {
 					IPath path = entry.getPath();
 					if (pathToAdd == null || pathToAdd.equals(path)) {
-						add((DLTKProject) model.getScriptProject(entry
+						add((ScriptProject) model.getScriptProject(entry
 								.getPath().lastSegment()), null, includeMask,
 								visitedProjects, cpEntry);
 					}
@@ -255,7 +255,7 @@ public class DLTKSearchScope extends AbstractSearchScope {
 			// a workspace scope should be used
 			break;
 		case IModelElement.SCRIPT_PROJECT:
-			add((DLTKProject) element, null, includeMask, new HashSet(2), null);
+			add((ScriptProject) element, null, includeMask, new HashSet(2), null);
 			break;
 		case IModelElement.PROJECT_FRAGMENT:
 			IProjectFragment root = (IProjectFragment) element;
@@ -642,7 +642,7 @@ public class DLTKSearchScope extends AbstractSearchScope {
 				IPath path = null;
 				switch (element.getElementType()) {
 				case IModelElement.SCRIPT_PROJECT:
-					path = ((IDLTKProject) element).getProject().getFullPath();
+					path = ((IScriptProject) element).getProject().getFullPath();
 				case IModelElement.PROJECT_FRAGMENT:
 					if (path == null) {
 						path = ((IProjectFragment) element).getPath();
@@ -694,7 +694,7 @@ public class DLTKSearchScope extends AbstractSearchScope {
 			String projectPath = idx == -1 ? null : (String) this.projectPaths
 					.get(idx);
 			if (projectPath != null) {
-				IDLTKProject project = DLTKCore.create(ResourcesPlugin
+				IScriptProject project = DLTKCore.create(ResourcesPlugin
 						.getWorkspace().getRoot().getProject(projectPath));
 				if (isZIPFile) {
 					return project

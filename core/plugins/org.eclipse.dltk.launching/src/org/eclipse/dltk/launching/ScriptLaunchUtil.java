@@ -19,7 +19,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 
 public class ScriptLaunchUtil {
 	// Create file with script content
@@ -93,7 +93,7 @@ public class ScriptLaunchUtil {
 	}
 
 	public static IInterpreterInstall getProjectInterpreterInstall(
-			IDLTKProject project) throws CoreException {
+			IScriptProject project) throws CoreException {
 		return ScriptRuntime.getInterpreterInstall(project);
 	}
 
@@ -117,7 +117,7 @@ public class ScriptLaunchUtil {
 	}
 
 	// Run by interpreter form project
-	public static ILaunch runScript(IDLTKProject project,
+	public static ILaunch runScript(IScriptProject project,
 			InterpreterConfig config, IProgressMonitor monitor)
 			throws CoreException {
 		return runScript(getProjectInterpreterInstall(project), config, monitor);

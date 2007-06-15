@@ -16,24 +16,24 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.builder.IScriptBuilder;
 
 public class JavaScriptBuilder implements IScriptBuilder ,IExecutableExtension{
 
-	public IStatus[] buildModelElements(IDLTKProject project, List elements,
+	public IStatus[] buildModelElements(IScriptProject project, List elements,
 			IProgressMonitor monitor) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IStatus[] buildResources(IDLTKProject project, List resources,
+	public IStatus[] buildResources(IScriptProject project, List resources,
 			IProgressMonitor monitor) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List getDependencies(IDLTKProject project, List resources) {
+	public List getDependencies(IScriptProject project, List resources) {
 		// TODO Auto-generated method stub
 		return null;
 	}

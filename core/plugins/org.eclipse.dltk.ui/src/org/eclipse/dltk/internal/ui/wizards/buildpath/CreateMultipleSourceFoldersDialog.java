@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.dltk.internal.ui.wizards.TypedViewerFilter;
 import org.eclipse.dltk.ui.actions.AbstractOpenWizardAction;
@@ -84,14 +84,14 @@ public class CreateMultipleSourceFoldersDialog extends TrayDialog {
 		}
 	}
 
-	private final IDLTKProject fDLTKProject;
+	private final IScriptProject fDLTKProject;
 	private final BPListElement[] fExistingElements;	
 	private final HashSet fRemovedElements;
 	private final HashSet fModifiedElements;
 	private final HashSet fInsertedElements;
 	private final Hashtable fNonExistingFolders;
 
-	public CreateMultipleSourceFoldersDialog(final IDLTKProject scriptProject, final BPListElement[] existingElements, Shell shell) {
+	public CreateMultipleSourceFoldersDialog(final IScriptProject scriptProject, final BPListElement[] existingElements, Shell shell) {
 		super(shell);
 		fDLTKProject= scriptProject;
 		fExistingElements= existingElements;		

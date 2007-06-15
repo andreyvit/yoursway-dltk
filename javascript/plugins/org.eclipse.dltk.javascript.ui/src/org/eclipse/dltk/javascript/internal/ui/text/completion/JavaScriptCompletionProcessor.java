@@ -11,7 +11,7 @@ package org.eclipse.dltk.javascript.internal.ui.text.completion;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.dltk.core.CompletionContext;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.javascript.core.JavaScriptNature;
 import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
@@ -36,14 +36,14 @@ public class JavaScriptCompletionProcessor extends ScriptCompletionProcessor {
 
 	public JavaScriptCompletionProcessor(IEditorPart editor,
 			ContentAssistant contentAssistant, String defaultContentType,
-			IDLTKProject dltkProject, IResource resource) {
+			IScriptProject dltkProject, IResource resource) {
 		super(editor, contentAssistant, defaultContentType);
 		this.project=dltkProject;
 		this.resource=resource;
 	}
 
 	private String fakeModuleContext;
-	private IDLTKProject project;
+	private IScriptProject project;
 	private IResource resource;
 
 	protected IPreferenceStore getPreferenceStore() {
@@ -74,7 +74,7 @@ public class JavaScriptCompletionProcessor extends ScriptCompletionProcessor {
 					return new CompletionContext();
 				}
 
-				public IDLTKProject getProject() {
+				public IScriptProject getProject() {
 					return project;
 				}
 

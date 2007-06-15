@@ -26,7 +26,7 @@ import org.eclipse.core.resources.mapping.IResourceChangeDescriptionFactory;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -63,7 +63,7 @@ public class RenameModifications extends RefactoringModifications {
 		add(resource, args, null);
 	}
 
-	public void rename(IDLTKProject project, RenameArguments args) {
+	public void rename(IScriptProject project, RenameArguments args) {
 		add(project, args, null);
 		IProject rProject= project.getProject();
 		if (rProject != null) {

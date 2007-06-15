@@ -23,7 +23,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.IElementComparer;
@@ -149,7 +149,7 @@ public class WorkingSetModel {
 			for (int i= 0; i < elements.length; i++) {
 				IAdaptable element= elements[i];
 				addElement(element, ws);
-				if (!(element instanceof IProject) && !(element instanceof IDLTKProject)) {
+				if (!(element instanceof IProject) && !(element instanceof IScriptProject)) {
 					fNonProjectTopLevelElements.add(element);
 				}
 			}

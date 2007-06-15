@@ -10,7 +10,7 @@
 package org.eclipse.dltk.ruby.internal.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionProposal;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.ui.text.completion.CompletionProposalLabelProvider;
 import org.eclipse.dltk.ui.text.completion.IScriptCompletionProposal;
@@ -64,7 +64,7 @@ public class RubyCompletionProposalCollector extends
 	}
 
 	protected ScriptCompletionProposal createOverrideCompletionProposal(
-			IDLTKProject dltkProject, ISourceModule compilationUnit,
+			IScriptProject dltkProject, ISourceModule compilationUnit,
 			String name, String[] paramTypes, int start, int length,
 			String displayName, String completionProposal) {
 		return new RubyOverrideCompletionProposal(dltkProject, compilationUnit,

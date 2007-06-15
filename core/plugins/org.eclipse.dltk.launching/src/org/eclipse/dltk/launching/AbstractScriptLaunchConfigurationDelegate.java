@@ -38,7 +38,7 @@ import org.eclipse.debug.core.IStatusHandler;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IScriptModelMarker;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.launching.InterpreterRuntimeBuildpathEntryResolver;
@@ -402,7 +402,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 * @exception CoreException
 	 *                if unable to retrieve the attribute
 	 */
-	public static IDLTKProject getScriptProject(
+	public static IScriptProject getScriptProject(
 			ILaunchConfiguration configuration) throws CoreException {
 		String projectName = getScriptProjectName(configuration);
 		if (projectName != null) {
@@ -410,7 +410,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			if (projectName.length() > 0) {
 				IProject project = ResourcesPlugin.getWorkspace().getRoot()
 						.getProject(projectName);
-				IDLTKProject scriptProject = DLTKCore.create(project);
+				IScriptProject scriptProject = DLTKCore.create(project);
 				if (scriptProject != null && scriptProject.exists()) {
 					return scriptProject;
 				}
@@ -819,7 +819,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		}
 
 		fOrderedProjects = null;
-		IDLTKProject scriptProject = ScriptRuntime
+		IScriptProject scriptProject = ScriptRuntime
 				.getDLTKProject(configuration);
 
 		if (scriptProject != null) {
@@ -900,7 +900,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 */
 	public String[] getScriptLibraryPath(ILaunchConfiguration configuration)
 			throws CoreException {
-		IDLTKProject project = getScriptProject(configuration);
+		IScriptProject project = getScriptProject(configuration);
 		if (project != null) {
 			String[] paths = ScriptRuntime.computeScriptLibraryPath(project,
 					true);
@@ -925,7 +925,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	protected File getDefaultWorkingDirectory(ILaunchConfiguration configuration)
 			throws CoreException {
 		// default working directory is the project if this config has a project
-		IDLTKProject jp = getScriptProject(configuration);
+		IScriptProject jp = getScriptProject(configuration);
 		if (jp != null) {
 			IProject p = jp.getProject();
 			return p.getLocation().toFile();

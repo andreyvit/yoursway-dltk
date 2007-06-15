@@ -13,7 +13,7 @@ package org.eclipse.dltk.launching;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 
 
 /**
@@ -83,7 +83,7 @@ public interface IRuntimeBuildpathEntryResolver {
 	 * @return resolved entries (zero or more)
 	 * @exception CoreException if unable to resolve the entry  
 	 */
-	public IRuntimeBuildpathEntry[] resolveRuntimeBuildpathEntry(IRuntimeBuildpathEntry entry, IDLTKProject project) throws CoreException;	
+	public IRuntimeBuildpathEntry[] resolveRuntimeBuildpathEntry(IRuntimeBuildpathEntry entry, IScriptProject project) throws CoreException;	
 	
 	/**
 	 * Returns a Interpreter install associated with the given buildpath entry,

@@ -26,7 +26,7 @@ import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
@@ -34,7 +34,7 @@ import org.eclipse.dltk.internal.ui.scriptview.ScriptExplorerPart;
 import org.eclipse.dltk.internal.ui.util.CoreUtility;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.PreferenceConstants;
-import org.eclipse.dltk.ui.tests.DLTKProjectHelper;
+import org.eclipse.dltk.ui.tests.ScriptProjectHelper;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
@@ -58,7 +58,7 @@ public class ContentProviderTests5 extends TestCase{
 	private boolean fEnableAutoBuildAfterTesting;
 	private ITreeContentProvider fProvider;
 
-	private IDLTKProject fJProject;
+	private IScriptProject fJProject;
 	private IFile fDotBuildpath;
 	private IFile fDotProject;
 	
@@ -78,10 +78,10 @@ public class ContentProviderTests5 extends TestCase{
 		IWorkspaceDescription workspaceDesc= workspace.getDescription();
 		fEnableAutoBuildAfterTesting= workspaceDesc.isAutoBuilding();
 		if (fEnableAutoBuildAfterTesting)
-			DLTKProjectHelper.setAutoBuilding(false);
+			ScriptProjectHelper.setAutoBuilding(false);
 		
 		//create project
-		fJProject= DLTKProjectHelper.createDLTKProject("TestProject");
+		fJProject= ScriptProjectHelper.createDLTKProject("TestProject");
 		assertNotNull(fJProject);
 
 		Object[] resource = fJProject.getForeignResources();
@@ -125,10 +125,10 @@ public class ContentProviderTests5 extends TestCase{
 	
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		DLTKProjectHelper.delete(fJProject);
+		ScriptProjectHelper.delete(fJProject);
 		
 		if (fEnableAutoBuildAfterTesting)
-			DLTKProjectHelper.setAutoBuilding(true);
+			ScriptProjectHelper.setAutoBuilding(true);
 	}
 	
 	private ByteArrayInputStream asInputStream(String string) throws UnsupportedEncodingException {
@@ -138,7 +138,7 @@ public class ContentProviderTests5 extends TestCase{
 	public void testProjectSource1() throws Exception { //bug 35851, 66694
 		IPath[] inclusionFilters= {new Path("**"), new Path("excl/incl/")};
 		IPath[] exclusionFilters= {new Path("excl/*"), new Path("x/*.txt"), new Path("y/")};
-		IProjectFragment root= DLTKProjectHelper.addSourceContainer(fJProject, "", inclusionFilters, exclusionFilters); 
+		IProjectFragment root= ScriptProjectHelper.addSourceContainer(fJProject, "", inclusionFilters, exclusionFilters); 
 		
 		IScriptFolder defaultPackage= root.createScriptFolder("", true, null); 
 		
@@ -190,8 +190,8 @@ public class ContentProviderTests5 extends TestCase{
 //		<BuildpathEntry kind="src" path="src/a-b/a/b"/>
 		IPath[] inclusionFilters= {};
 		IPath[] exclusionFilters= {new Path("a-b/a/b/")};
-		IProjectFragment src= DLTKProjectHelper.addSourceContainer(fJProject, "src", inclusionFilters, exclusionFilters); 
-		IProjectFragment srcabab= DLTKProjectHelper.addSourceContainer(fJProject, "src/a-b/a/b", new IPath[0], new IPath[0]);
+		IProjectFragment src= ScriptProjectHelper.addSourceContainer(fJProject, "src", inclusionFilters, exclusionFilters); 
+		IProjectFragment srcabab= ScriptProjectHelper.addSourceContainer(fJProject, "src/a-b/a/b", new IPath[0], new IPath[0]);
 		
 		IScriptFolder defaultSrc= src.createScriptFolder("", true, null);
 		IScriptFolder p= src.createScriptFolder("p", true, null);
@@ -224,7 +224,7 @@ public class ContentProviderTests5 extends TestCase{
 //		<BuildpathEntry including="a/b/c/" excluding="a/b/c/d/" kind="src" path="src2"/>
 		IPath[] inclusionFilters= {new Path("a/b/c/")};
 		IPath[] exclusionFilters= {new Path("a/b/c/d/")};
-		IProjectFragment src= DLTKProjectHelper.addSourceContainer(fJProject, "src", inclusionFilters, exclusionFilters); 
+		IProjectFragment src= ScriptProjectHelper.addSourceContainer(fJProject, "src", inclusionFilters, exclusionFilters); 
 		
 		IScriptFolder abc= src.createScriptFolder("a/b/c", true, null);
 		ISourceModule x= abc.createSourceModule("X.txt", "", true, null);

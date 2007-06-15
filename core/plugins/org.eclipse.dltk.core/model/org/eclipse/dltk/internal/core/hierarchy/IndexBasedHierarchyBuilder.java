@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.compiler.util.HashtableOfObject;
 import org.eclipse.dltk.compiler.util.HashtableOfObjectToInt;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ISearchableEnvironment;
@@ -39,7 +39,7 @@ import org.eclipse.dltk.core.search.indexing.IIndexConstants;
 import org.eclipse.dltk.core.search.indexing.IndexManager;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.compiler.env.AccessRuleSet;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.IPathRequestor;
 import org.eclipse.dltk.internal.core.Member;
 import org.eclipse.dltk.internal.core.ModelManager;
@@ -170,7 +170,7 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 		}
 	}
 
-	private void buildForProject(DLTKProject project,
+	private void buildForProject(ScriptProject project,
 			ArrayList potentialSubtypes,
 			org.eclipse.dltk.core.ISourceModule[] workingCopies,
 			HashSet localTypes, IProgressMonitor monitor) throws ModelException {
@@ -333,7 +333,7 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 		try {
 			// create element infos for subtypes
 			HandleFactory factory = new HandleFactory();
-			IDLTKProject currentProject = null;
+			IScriptProject currentProject = null;
 			if (monitor != null)
 				monitor
 						.beginTask("", length * 2 /*
@@ -363,13 +363,13 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 							continue; // match is outside classpath
 					}
 
-					IDLTKProject project = handle.getScriptProject();
+					IScriptProject project = handle.getScriptProject();
 					if (currentProject == null) {
 						currentProject = project;
 						potentialSubtypes = new ArrayList(5);
 					} else if (!currentProject.equals(project)) {
 						// build current project
-						this.buildForProject((DLTKProject) currentProject,
+						this.buildForProject((ScriptProject) currentProject,
 								potentialSubtypes, workingCopies, localTypes,
 								monitor);
 						currentProject = project;
@@ -389,7 +389,7 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 					currentProject = focusType.getScriptProject();
 					potentialSubtypes.add(focusType.getSourceModule());
 				}
-				this.buildForProject((DLTKProject) currentProject,
+				this.buildForProject((ScriptProject) currentProject,
 						potentialSubtypes, workingCopies, localTypes, monitor);
 			} catch (ModelException e) {
 				// ignore
@@ -403,7 +403,7 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 					potentialSubtypes = new ArrayList();
 					potentialSubtypes.add(focusType.getSourceModule());
 					
-					this.buildForProject((DLTKProject) currentProject,
+					this.buildForProject((ScriptProject) currentProject,
 							potentialSubtypes, workingCopies, localTypes,
 							monitor);
 				} catch (ModelException e) {

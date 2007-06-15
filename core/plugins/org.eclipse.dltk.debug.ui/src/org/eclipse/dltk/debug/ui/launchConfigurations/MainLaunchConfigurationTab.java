@@ -18,7 +18,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptModel;
 import org.eclipse.dltk.core.ModelException;
@@ -64,7 +64,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 		public void modifyText(ModifyEvent e) {
 			setErrorMessage(null);
 			if (e.getSource() == fProjText) {
-				IDLTKProject proj = getProject();
+				IScriptProject proj = getProject();
 				if (proj != null) {
 					if (!validateProject(proj))
 						setErrorMessage(DLTKLaunchConfigurationsMessages.error_notAValidProject);
@@ -97,7 +97,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	 * 
 	 * @return
 	 */
-	protected IDLTKProject chooseProject() {
+	protected IScriptProject chooseProject() {
 		ILabelProvider labelProvider = DLTKUILanguageManager.createLabelProvider(getNatureID());
 		ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(), labelProvider);
 		dialog.setTitle(DLTKLaunchConfigurationsMessages.mainTab_chooseProject_title);
@@ -108,14 +108,14 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 		catch (ModelException jme) {
 			DLTKLaunchingPlugin.log(jme);
 		}
-		IDLTKProject project = getProject();
+		IScriptProject project = getProject();
 		if (project != null) {
 			dialog.setInitialSelections(new Object[] {
 				project
 			});
 		}// end if
 		if (dialog.open() == Window.OK) {
-			return (IDLTKProject) dialog.getFirstResult();
+			return (IScriptProject) dialog.getFirstResult();
 		}// end if
 		return null;
 	}
@@ -156,7 +156,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	 * Return the IDLTKProject corresponding to the project name in the project
 	 * name text field, or null if the text does not match a project name.
 	 */
-	protected IDLTKProject getProject() {
+	protected IScriptProject getProject() {
 		String projectName = fProjText.getText().trim();
 		if (projectName.length() < 1) {
 			return null;
@@ -171,7 +171,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 		return ResourcesPlugin.getWorkspace().getRoot();
 	}
 
-	protected abstract boolean validateProject(IDLTKProject project);
+	protected abstract boolean validateProject(IScriptProject project);
 
 	protected abstract String getLanguageName();
 	protected abstract String getNatureID();
@@ -182,7 +182,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	 * constraining the search for main types to the specified project.
 	 */
 	protected void handleProjectButtonSelected() {
-		IDLTKProject project = chooseProject();
+		IScriptProject project = chooseProject();
 		if (project == null)
 			return;
 		if (!validateProject(project)) {
@@ -217,7 +217,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 					IEditorInput editorInput = editor.getEditorInput();
 					if (editorInput != null) {
 						IModelElement me = DLTKUIPlugin.getEditorInputModelElement(editorInput);
-						IDLTKProject project = me.getScriptProject();
+						IScriptProject project = me.getScriptProject();
 						if (project != null && validateProject(project)) {
 							String projectName = project.getProject().getName();
 							String scriptName =  me.getResource().getProjectRelativePath().toPortableString();//me.getResource().getLocation().toPortableString(); /*me.getResource().getFullPath().toPortableString();*/
@@ -294,7 +294,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 				new WorkbenchContentProvider());
 		dialog.setTitle(DLTKLaunchConfigurationsMessages.mainTab_searchButton_title);
 		dialog.setMessage(DLTKLaunchConfigurationsMessages.mainTab_searchButton_message);
-		IDLTKProject proj = getProject();
+		IScriptProject proj = getProject();
 		if (proj == null)
 			return;
 		dialog.setInput(proj.getProject());
@@ -356,7 +356,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 			setErrorMessage(DLTKLaunchConfigurationsMessages.error_selectProject);
 			return false;
 		}
-		IDLTKProject proj = getScriptModel().getScriptProject(projectName);
+		IScriptProject proj = getScriptModel().getScriptProject(projectName);
 		if (proj == null || !validateProject(proj)) {
 			setErrorMessage(DLTKLaunchConfigurationsMessages.error_notAValidProject);
 			return false;

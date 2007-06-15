@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
 
@@ -77,7 +77,7 @@ public class ResetAllOperation extends BuildpathModifierOperation {
      * @throws ModelException 
      */
     public boolean isValid(List elements, int[] types) throws ModelException {
-        IDLTKProject project= fInformationProvider.getDLTKProject();
+        IScriptProject project= fInformationProvider.getDLTKProject();
         if (project == null)
             return false;
         if (fEntries == null) {

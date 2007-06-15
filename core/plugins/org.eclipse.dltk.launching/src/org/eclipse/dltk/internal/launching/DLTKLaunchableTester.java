@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 
@@ -93,7 +93,7 @@ public class DLTKLaunchableTester extends PropertyTester {
 	 */
 	private boolean hasItemOnBuildPath(IModelElement element, Object[] args) {
 		if (element != null && args != null) {
-			IDLTKProject project = element.getScriptProject();
+			IScriptProject project = element.getScriptProject();
 			Set searched = new HashSet();
 			searched.add(project);
 			return hasItemsOnBuildPath(project, searched, args);
@@ -101,7 +101,7 @@ public class DLTKLaunchableTester extends PropertyTester {
 		return false;
 	}
 
-	private boolean hasItemsOnBuildPath(IDLTKProject project, Set searched, Object[] args) {
+	private boolean hasItemsOnBuildPath(IScriptProject project, Set searched, Object[] args) {
 		try {
 			List projects = new ArrayList();
 			if (project != null && project.exists()) {
@@ -118,7 +118,7 @@ public class DLTKLaunchableTester extends PropertyTester {
 					if (entry.getEntryKind() == IBuildpathEntry.BPE_PROJECT) {
 						String name = entry.getPath().lastSegment();
 						IProject dep = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
-						IDLTKProject scriptProject = DLTKCore.create(dep);
+						IScriptProject scriptProject = DLTKCore.create(dep);
 						if (!searched.contains(scriptProject)) {
 							projects.add(scriptProject);
 						}
@@ -128,7 +128,7 @@ public class DLTKLaunchableTester extends PropertyTester {
 			// search referenced projects
 			Iterator iterator = projects.iterator();
 			while (iterator.hasNext()) {
-				IDLTKProject jp = (IDLTKProject) iterator.next();
+				IScriptProject jp = (IScriptProject) iterator.next();
 				searched.add(jp);
 				if (hasItemsOnBuildPath(jp, searched, args)) {
 					return true;

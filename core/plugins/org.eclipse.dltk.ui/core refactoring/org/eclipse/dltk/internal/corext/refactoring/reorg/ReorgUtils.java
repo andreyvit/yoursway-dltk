@@ -27,7 +27,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ScriptModelUtil;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -53,7 +53,7 @@ public class ReorgUtils {
 		return true;
 	}
 	public static boolean isProject(Object element){
-		return (element instanceof IDLTKProject) || (element instanceof IProject);
+		return (element instanceof IScriptProject) || (element instanceof IProject);
 	}
 
 	public static boolean isInsideSourceModule(IModelElement element) {
@@ -380,7 +380,7 @@ public class ReorgUtils {
 	public static boolean canBeDestinationForLinkedResources(IModelElement modelElement) {
 		if (modelElement instanceof IProjectFragment){
 			return isProjectFragmentCorrespondingToProject((IProjectFragment)modelElement);
-		} else if (modelElement instanceof IDLTKProject){
+		} else if (modelElement instanceof IScriptProject){
 			return true;//XXX ???
 		} else return false;
 	}
@@ -436,7 +436,7 @@ public class ReorgUtils {
 		Set result= getResourcesOfType(resources, IResource.FOLDER);
 		return (IFolder[]) result.toArray(new IFolder[result.size()]);
 	}
-	public static IProjectFragment getCorrespondingProjectFragment(IDLTKProject p) throws ModelException {
+	public static IProjectFragment getCorrespondingProjectFragment(IScriptProject p) throws ModelException {
 		IProjectFragment[] roots= p.getProjectFragments();
 		for (int i= 0; i < roots.length; i++) {
 			if (isProjectFragmentCorrespondingToProject(roots[i]))
@@ -458,7 +458,7 @@ public class ReorgUtils {
 		}
 		return false;
 	}
-	public static boolean isProjectFragment(IDLTKProject scriptProject) throws ModelException{
+	public static boolean isProjectFragment(IScriptProject scriptProject) throws ModelException{
 		return getCorrespondingProjectFragment(scriptProject) != null;
 	}
 	public static boolean areEqualInWorkspaceOrOnDisk(IResource r1, IResource r2){
@@ -485,7 +485,7 @@ public class ReorgUtils {
 		return isParentInWorkspaceOrOnDisk(packageResource, packageRootResource);
 	}
 
-	public static boolean isParentInWorkspaceOrOnDisk(IProjectFragment root, IDLTKProject scriptProject){
+	public static boolean isParentInWorkspaceOrOnDisk(IProjectFragment root, IScriptProject scriptProject){
 		if (root == null)
 			return false;		
 		IModelElement rootParent= root.getParent();

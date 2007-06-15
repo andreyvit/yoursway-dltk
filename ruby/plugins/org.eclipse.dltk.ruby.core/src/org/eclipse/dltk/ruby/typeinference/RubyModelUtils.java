@@ -22,7 +22,7 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -565,7 +565,7 @@ public class RubyModelUtils {
 		return (IField[]) result.toArray(new IField[result.size()]);
 	}
 
-	public static IMethod[] findTopLevelMethods(IDLTKProject project,
+	public static IMethod[] findTopLevelMethods(IScriptProject project,
 			String namePattern) {
 		final List result = new ArrayList();
 		SearchRequestor requestor = new SearchRequestor() {

@@ -48,7 +48,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallChangedListener;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
@@ -535,13 +535,13 @@ public class DLTKLaunchingPlugin extends Plugin implements
 	 * 
 	 * @param monitor
 	 */
-	public void rebind(IProgressMonitor monitor, IDLTKProject[] projects, Map renamedContainerIds)
+	public void rebind(IProgressMonitor monitor, IScriptProject[] projects, Map renamedContainerIds)
 			throws CoreException {
 		monitor.worked(1);
 	
 		// re-bind all container entries
 		for (int i = 0; i < projects.length; i++) {
-			IDLTKProject project = projects[i];
+			IScriptProject project = projects[i];
 			IBuildpathEntry[] entries = project.getRawBuildpath();
 			boolean replace = false;
 			for (int j = 0; j < entries.length; j++) {
@@ -662,7 +662,7 @@ public class DLTKLaunchingPlugin extends Plugin implements
 		protected void doit(IProgressMonitor monitor) throws CoreException {
 			IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 				public void run(IProgressMonitor monitor1) throws CoreException {
-					IDLTKProject[] projects = DLTKCore.create(
+					IScriptProject[] projects = DLTKCore.create(
 							ResourcesPlugin.getWorkspace().getRoot())
 							.getScriptProjects();
 					monitor1.beginTask(LaunchingMessages.LaunchingPlugin_0,

@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.DialogField;
@@ -51,7 +51,7 @@ public class ProjectsWorkbookPage extends BuildPathBasePage {
 	private final int IDX_REMOVE= 3;
 	
 	private ListDialogField fBuildpathList;
-	private IDLTKProject fCurrJProject;
+	private IScriptProject fCurrJProject;
 	
 	private TreeListDialogField fProjectsList;
 	
@@ -83,11 +83,11 @@ public class ProjectsWorkbookPage extends BuildPathBasePage {
 		fProjectsList.setViewerSorter(new BPListElementSorter());
 	}
 	
-	public void init(IDLTKProject jproject) {
+	public void init(IScriptProject jproject) {
 		updateProjectsList(jproject);
 	}
 		
-	private void updateProjectsList(IDLTKProject currJProject) {
+	private void updateProjectsList(IScriptProject currJProject) {
 		// add the projects-cpentries that are already on the class path
 		List cpelements= fBuildpathList.getElements();
 		
@@ -383,12 +383,12 @@ public class ProjectsWorkbookPage extends BuildPathBasePage {
 			List elements= fProjectsList.getElements();
 			for (int i= 0; i < elements.size(); i++) {
 				BPListElement curr= (BPListElement) elements.get(0);
-				IDLTKProject proj= (IDLTKProject) DLTKCore.create(curr.getResource());
+				IScriptProject proj= (IScriptProject) DLTKCore.create(curr.getResource());
 				selectable.remove(proj);
 			}
 			Object[] selectArr= selectable.toArray();
 			new ModelElementSorter().sort(null, selectArr);
-			IDLTKProject project = elem.getDLTKProject();
+			IScriptProject project = elem.getDLTKProject();
 			ScriptUILabelProvider labelProvider = DLTKUILanguageManager.createLabelProvider(project);
 			ListSelectionDialog dialog= new ListSelectionDialog(getShell(), Arrays.asList(selectArr), new ArrayContentProvider(), labelProvider, NewWizardMessages.ProjectsWorkbookPage_chooseProjects_message); 
 			dialog.setTitle(NewWizardMessages.ProjectsWorkbookPage_chooseProjects_title); 
@@ -397,7 +397,7 @@ public class ProjectsWorkbookPage extends BuildPathBasePage {
 				Object[] result= dialog.getResult();
 				BPListElement[] cpElements= new BPListElement[result.length];
 				for (int i= 0; i < result.length; i++) {
-					IDLTKProject curr= (IDLTKProject) result[i];
+					IScriptProject curr= (IScriptProject) result[i];
 					cpElements[i]= new BPListElement(fCurrJProject, IBuildpathEntry.BPE_PROJECT, curr.getPath(), curr.getResource(), false);
 				}
 				return cpElements;

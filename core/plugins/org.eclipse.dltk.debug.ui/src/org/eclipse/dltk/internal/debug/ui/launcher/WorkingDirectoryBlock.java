@@ -24,7 +24,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.debug.ui.launchConfigurations.CommonScriptLaunchTab;
 import org.eclipse.dltk.debug.ui.messages.DLTKLaunchMessages;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
@@ -286,7 +286,7 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 			if (config != null) {
 				String projectName = config.getAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, "");
 				if (!projectName.equals("")) {
-					IDLTKProject project = DLTKCore.create(getWorkspaceRoot()).getScriptProject(projectName);
+					IScriptProject project = DLTKCore.create(getWorkspaceRoot()).getScriptProject(projectName);
 					if (project != null) {
 						setDefaultWorkingDirectoryText("${workspace_loc:" + project.getPath().makeRelative().toOSString() + "}");  //$NON-NLS-1$//$NON-NLS-2$
 						return;

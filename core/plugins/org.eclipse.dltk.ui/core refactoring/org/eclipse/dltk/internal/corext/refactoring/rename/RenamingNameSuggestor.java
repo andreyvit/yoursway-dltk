@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.text.DLTKWordIterator;
 
 import com.ibm.icu.text.BreakIterator;
@@ -171,7 +171,7 @@ public class RenamingNameSuggestor {
 		resetPrefixes();
 	}
 
-	public String suggestNewFieldName(IDLTKProject project, String oldFieldName, boolean isStatic, String oldTypeName, String newTypeName) {
+	public String suggestNewFieldName(IScriptProject project, String oldFieldName, boolean isStatic, String oldTypeName, String newTypeName) {
 
 		initializePrefixesAndSuffixes(project);
 
@@ -181,7 +181,7 @@ public class RenamingNameSuggestor {
 			return suggestNewVariableName(fFieldPrefixes, fFieldSuffixes, oldFieldName, oldTypeName, newTypeName);
 	}
 
-	public String suggestNewLocalName(IDLTKProject project, String oldLocalName, boolean isArgument, String oldTypeName, String newTypeName) {
+	public String suggestNewLocalName(IScriptProject project, String oldLocalName, boolean isArgument, String oldTypeName, String newTypeName) {
 
 		initializePrefixesAndSuffixes(project);
 
@@ -550,7 +550,7 @@ public class RenamingNameSuggestor {
 		fArgumentSuffixes= empty;
 	}
 
-	private void initializePrefixesAndSuffixes(IDLTKProject project) {
+	private void initializePrefixesAndSuffixes(IScriptProject project) {
 		if (DLTKCore.DEBUG) {
 			System.err.println("Add code assist code here...");
 		}

@@ -11,13 +11,13 @@ package org.eclipse.dltk.internal.core;
 import java.io.Writer;
 
 import org.eclipse.dltk.compiler.util.GenericXMLWriter;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.core.util.Util;
 
 
 class XMLWriter extends GenericXMLWriter {
 
-	public XMLWriter(Writer writer, IDLTKProject project, boolean printXmlVersion) {
+	public XMLWriter(Writer writer, IScriptProject project, boolean printXmlVersion) {
 		super(writer, Util.getLineSeparator((String) null, project), printXmlVersion);
 	}
 }

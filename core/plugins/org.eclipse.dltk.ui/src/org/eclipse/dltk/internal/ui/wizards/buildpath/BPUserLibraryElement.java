@@ -19,7 +19,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 
 
 public class BPUserLibraryElement {
@@ -58,7 +58,7 @@ public class BPUserLibraryElement {
 	private List fChildren;
 	private boolean fIsSystemLibrary;
 
-	public BPUserLibraryElement(String name, IBuildpathContainer container, IDLTKProject project) {
+	public BPUserLibraryElement(String name, IBuildpathContainer container, IScriptProject project) {
 		fName= name;
 		fChildren= new ArrayList();
 		if (container != null) {

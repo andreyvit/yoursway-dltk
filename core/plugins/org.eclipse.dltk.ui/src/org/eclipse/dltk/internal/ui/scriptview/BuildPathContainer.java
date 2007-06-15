@@ -22,7 +22,7 @@ import org.eclipse.dltk.core.BuildpathContainerInitializer;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ModelException;
@@ -39,7 +39,7 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
  * Representation of class path containers in Script UI.
  */
 public class BuildPathContainer implements IAdaptable, IWorkbenchAdapter {
-	private IDLTKProject fProject;
+	private IScriptProject fProject;
 	private IBuildpathEntry fBuildPathEntry;
 	private IBuildpathContainer fContainer;
 
@@ -83,7 +83,7 @@ public class BuildPathContainer implements IAdaptable, IWorkbenchAdapter {
 		}
 	}
 
-	public BuildPathContainer(IDLTKProject parent, IBuildpathEntry entry) {
+	public BuildPathContainer(IScriptProject parent, IBuildpathEntry entry) {
 		fProject= parent;
 		fBuildPathEntry= entry;
 		try {
@@ -184,7 +184,7 @@ public class BuildPathContainer implements IAdaptable, IWorkbenchAdapter {
 		return getScriptProject();
 	}
 
-	public IDLTKProject getScriptProject() {
+	public IScriptProject getScriptProject() {
 		return fProject;
 	}
 	
@@ -192,7 +192,7 @@ public class BuildPathContainer implements IAdaptable, IWorkbenchAdapter {
 		return fBuildPathEntry;
 	}
 	
-	public static boolean contains(IDLTKProject project, IBuildpathEntry entry, IProjectFragment root) {
+	public static boolean contains(IScriptProject project, IBuildpathEntry entry, IProjectFragment root) {
 		IProjectFragment[] roots= project.findProjectFragments(entry);
 		for (int i= 0; i < roots.length; i++) {
 			if (roots[i].equals(root))

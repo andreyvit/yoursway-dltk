@@ -26,7 +26,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptModel;
 import org.eclipse.dltk.core.ModelException;
@@ -66,7 +66,7 @@ public class Model extends Openable implements IScriptModel {
 		int index = 0;
 		for (int i = 0; i < length; i++) {
 			IProject project = projects[i];
-			if (DLTKProject.hasScriptNature(project)) {
+			if (ScriptProject.hasScriptNature(project)) {
 				children[index++] = getScriptProject(project);
 			}
 		}
@@ -131,14 +131,14 @@ public class Model extends Openable implements IScriptModel {
 	 *                if the given resource is not one of an IProject, IFolder,
 	 *                or IFile.
 	 */
-	public IDLTKProject getScriptProject(IResource resource) {
+	public IScriptProject getScriptProject(IResource resource) {
 		switch (resource.getType()) {
 		case IResource.FOLDER:
-			return new DLTKProject(((IFolder) resource).getProject(), this);
+			return new ScriptProject(((IFolder) resource).getProject(), this);
 		case IResource.FILE:
-			return new DLTKProject(((IFile) resource).getProject(), this);
+			return new ScriptProject(((IFile) resource).getProject(), this);
 		case IResource.PROJECT:
-			return new DLTKProject((IProject) resource, this);
+			return new ScriptProject((IProject) resource, this);
 		default:
 			throw new IllegalArgumentException(
 					"invalid resource for the project");
@@ -148,17 +148,17 @@ public class Model extends Openable implements IScriptModel {
 	/**
 	 * @see IScriptModel
 	 */
-	public IDLTKProject getScriptProject(String projectName) {
-		return new DLTKProject(ResourcesPlugin.getWorkspace().getRoot()
+	public IScriptProject getScriptProject(String projectName) {
+		return new ScriptProject(ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(projectName), this);
 	}
 
 	/**
 	 * @see IScriptModel
 	 */
-	public IDLTKProject[] getScriptProjects() throws ModelException {
+	public IScriptProject[] getScriptProjects() throws ModelException {
 		ArrayList list = getChildrenOfType(SCRIPT_PROJECT);
-		IDLTKProject[] array = new IDLTKProject[list.size()];
+		IScriptProject[] array = new IScriptProject[list.size()];
 		list.toArray(array);
 		return array;
 	}
@@ -303,14 +303,14 @@ public class Model extends Openable implements IScriptModel {
 			return true;
 		}
 		// file or folder
-		IDLTKProject[] projects;
+		IScriptProject[] projects;
 		try {
 			projects = this.getScriptProjects();
 		} catch (ModelException e) {
 			return false;
 		}
 		for (int i = 0, length = projects.length; i < length; i++) {
-			DLTKProject project = (DLTKProject) projects[i];
+			ScriptProject project = (ScriptProject) projects[i];
 			if (!project.contains(resource)) {
 				return false;
 			}

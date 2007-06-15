@@ -16,7 +16,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.dltk.core.ScriptModelUtil;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.internal.ui.scriptview.BuildPathContainer;
@@ -104,7 +104,7 @@ public class ConfigureBuildPathAction extends Action implements ISelectionChange
 			if (root != null && root != element && root.isArchive()) {
 				return null;
 			}
-			IDLTKProject project= element.getScriptProject();
+			IScriptProject project= element.getScriptProject();
 			if (project != null) {
 				return project.getProject();
 			}

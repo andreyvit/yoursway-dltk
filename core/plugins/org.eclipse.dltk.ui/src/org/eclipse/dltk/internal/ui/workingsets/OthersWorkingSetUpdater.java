@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ElementChangedEvent;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
@@ -97,10 +97,10 @@ public class OthersWorkingSetUpdater implements IWorkingSetUpdater {
 				int flags= delta.getFlags();
 				if (kind == IModelElementDelta.CHANGED) {
 					if (index != -1 && (flags & IModelElementDelta.F_CLOSED) != 0) {
-						elements.set(index, ((IDLTKProject)jElement).getProject());
+						elements.set(index, ((IScriptProject)jElement).getProject());
 						fWorkingSet.setElements((IAdaptable[])elements.toArray(new IAdaptable[elements.size()]));
 					} else if ((flags & IModelElementDelta.F_OPENED) != 0) {
-						index= elements.indexOf(((IDLTKProject)jElement).getProject());
+						index= elements.indexOf(((IScriptProject)jElement).getProject());
 						if (index != -1) {
 							elements.set(index, jElement);
 							fWorkingSet.setElements((IAdaptable[])elements.toArray(new IAdaptable[elements.size()]));
@@ -186,7 +186,7 @@ public class OthersWorkingSetUpdater implements IWorkingSetUpdater {
 		}
 		IScriptModel model= DLTKCore.create(ResourcesPlugin.getWorkspace().getRoot());
 		try {
-			IDLTKProject[] jProjects= model.getScriptProjects();
+			IScriptProject[] jProjects= model.getScriptProjects();
 			for (int i= 0; i < jProjects.length; i++) {
 				if (!projects.contains(jProjects[i].getProject()))
 					result.add(jProjects[i]);

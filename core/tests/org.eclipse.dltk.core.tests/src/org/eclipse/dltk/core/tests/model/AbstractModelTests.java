@@ -44,7 +44,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
@@ -242,7 +242,7 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 		return fileBytes;
 	}
 
-	protected IDLTKProject setUpScriptProject(final String projectName) throws CoreException, IOException {
+	protected IScriptProject setUpScriptProject(final String projectName) throws CoreException, IOException {
 		// copy files in project from source workspace to target workspace
 		String sourceWorkspacePath = getSourceWorkspacePath();
 		String targetWorkspacePath = getWorkspaceRoot().getLocation().toFile().getCanonicalPath();
@@ -257,7 +257,7 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 			}
 		};
 		getWorkspace().run(populate, null);
-		IDLTKProject scriptProject = DLTKCore.create(project);
+		IScriptProject scriptProject = DLTKCore.create(project);
 		return scriptProject;
 	}
 
@@ -322,7 +322,7 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 	 */
 	public IProjectFragment getProjectFragment(String projectName, String fragmentPath) throws ModelException {
 
-		IDLTKProject project = getScriptProject(projectName);
+		IScriptProject project = getScriptProject(projectName);
 		if (project == null) {
 			return null;
 		}
@@ -353,7 +353,7 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 	 * Returns the script Project with the given name in this test suite's
 	 * model. This is a convenience method.
 	 */
-	public IDLTKProject getScriptProject(String name) {
+	public IScriptProject getScriptProject(String name) {
 		IProject project = getProject(name);
 		return DLTKCore.create(project);
 	}
@@ -427,7 +427,7 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 	 * Creates a script project with the given source folders an output
 	 * location. Add those on the project's buildpath.
 	 */
-	protected IDLTKProject createScriptProject(String projectName, String[] natures, String[] sourceFolders) throws CoreException {
+	protected IScriptProject createScriptProject(String projectName, String[] natures, String[] sourceFolders) throws CoreException {
 		return createScriptProject(projectName, natures, sourceFolders, null);
 	}
 
@@ -435,12 +435,12 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 	 * Creates a script project with the given source folders an output
 	 * location. Add those on the project's buildpath.
 	 */
-	protected IDLTKProject createScriptProject(
+	protected IScriptProject createScriptProject(
 			final String projectName, 
 			final String[] natures, 
 			final String[] sourceFolders, 
 			final String[] projects) throws CoreException {
-		final IDLTKProject[] result = new IDLTKProject[1];
+		final IScriptProject[] result = new IScriptProject[1];
 		IWorkspaceRunnable create = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {
 				// create project
@@ -494,7 +494,7 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 								false);
 				}
 				// set buildpath and output location
-				IDLTKProject scriptProject = DLTKCore.create(project);
+				IScriptProject scriptProject = DLTKCore.create(project);
 				scriptProject.setRawBuildpath(entries, null);
 
 				result[0] = scriptProject;
@@ -725,7 +725,7 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 		assertEquals(message, expected, actual);
 	}
 
-	protected void assertMarkers(String message, String expectedMarkers, IDLTKProject project) throws CoreException {
+	protected void assertMarkers(String message, String expectedMarkers, IScriptProject project) throws CoreException {
 		IMarker[] markers = project.getProject().findMarkers(IScriptModelMarker.BUILDPATH_PROBLEM_MARKER, false, IResource.DEPTH_ZERO);
 		sortMarkers(markers);
 		assertMarkers(message, expectedMarkers, markers);
@@ -762,7 +762,7 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 	/**
 	 * Sets the class path of the script project.
 	 */
-	public void setBuildpath(IDLTKProject dltkProject, IBuildpathEntry[] buildpath) {
+	public void setBuildpath(IScriptProject dltkProject, IBuildpathEntry[] buildpath) {
 		try {
 			dltkProject.setRawBuildpath(buildpath, null);
 		} catch (ModelException e) {

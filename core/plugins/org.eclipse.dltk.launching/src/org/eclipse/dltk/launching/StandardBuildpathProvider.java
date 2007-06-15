@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 
 
 /**
@@ -30,7 +30,7 @@ public class StandardBuildpathProvider implements IRuntimeBuildpathProvider {
 	public IRuntimeBuildpathEntry[] computeUnresolvedBuildpath(ILaunchConfiguration configuration) throws CoreException {
 		boolean useDefault = configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_DEFAULT_BUILDPATH, true);
 		if (useDefault) {
-			IDLTKProject proj = ScriptRuntime.getDLTKProject(configuration);
+			IScriptProject proj = ScriptRuntime.getDLTKProject(configuration);
 			IRuntimeBuildpathEntry InterpreterEnvironmentEntry = ScriptRuntime.computeInterpreterEntry(configuration);
 			if (proj == null) {
 				//no project - use default libraries

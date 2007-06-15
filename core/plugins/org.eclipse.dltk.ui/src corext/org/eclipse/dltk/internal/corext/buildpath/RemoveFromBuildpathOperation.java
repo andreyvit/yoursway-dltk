@@ -17,7 +17,7 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ModelException;
@@ -85,13 +85,13 @@ public class RemoveFromBuildpathOperation extends BuildpathModifierOperation {
     public boolean isValid(List elements, int[] types) throws ModelException {
         if (elements.size() == 0)
             return false;
-        IDLTKProject project= fInformationProvider.getDLTKProject();
+        IScriptProject project= fInformationProvider.getDLTKProject();
         Iterator iterator= elements.iterator();
         while (iterator.hasNext()) {
             Object element= iterator.next();
-            if (!(element instanceof IProjectFragment || element instanceof IDLTKProject || element instanceof BuildPathContainer))
+            if (!(element instanceof IProjectFragment || element instanceof IScriptProject || element instanceof BuildPathContainer))
                 return false;
-            if (element instanceof IDLTKProject) {
+            if (element instanceof IScriptProject) {
                 if (!isSourceFolder(project))
                     return false;
             } else if (element instanceof IProjectFragment) {

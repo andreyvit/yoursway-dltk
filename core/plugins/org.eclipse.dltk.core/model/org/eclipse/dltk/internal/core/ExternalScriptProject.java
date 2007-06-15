@@ -17,14 +17,14 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 
 
-public class ExternalDLTKProject extends DLTKProject {
+public class ExternalScriptProject extends ScriptProject {
 	
 	/*
 	 * Note this name can be surfaced in the UI (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=128258)
 	 */
 	public static final String EXTERNAL_PROJECT_NAME = " "; //$NON-NLS-1$
 
-	public ExternalDLTKProject(IBuildpathEntry[] rawBuildpath) {
+	public ExternalScriptProject(IBuildpathEntry[] rawBuildpath) {
 		super(ResourcesPlugin.getWorkspace().getRoot().getProject(EXTERNAL_PROJECT_NAME), ModelManager.getModelManager().getModel());
 		try {
 			getPerProjectInfo().rawBuildpath = rawBuildpath;

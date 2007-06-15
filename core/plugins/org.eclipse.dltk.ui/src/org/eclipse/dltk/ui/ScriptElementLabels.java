@@ -19,7 +19,7 @@ import org.eclipse.dltk.core.BuildpathContainerInitializer;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -339,7 +339,7 @@ public class ScriptElementLabels {
 			return sInstanceO;
 		}
 		public String getContainerEntryLabel(IPath containerPath,
-				IDLTKProject project) throws ModelException {
+				IScriptProject project) throws ModelException {
 			
 			return getLabels(project).getContainerEntryLabel(containerPath, project);
 		}
@@ -474,7 +474,7 @@ public class ScriptElementLabels {
 		int type = element.getElementType();
 		IProjectFragment root = null;
 
-		IDLTKProject project = element.getScriptProject();
+		IScriptProject project = element.getScriptProject();
 
 		if (type != IModelElement.SCRIPT_MODEL && type != IModelElement.SCRIPT_PROJECT && type != IModelElement.PROJECT_FRAGMENT) {
 			IResource resource = element.getResource();
@@ -592,7 +592,7 @@ public class ScriptElementLabels {
 
 	protected void getTypeLabel(IType type, long flags, StringBuffer buf) {
 
-		IDLTKProject project = type.getScriptProject();
+		IScriptProject project = type.getScriptProject();
 
 		if (getFlag(flags, T_FULLY_QUALIFIED)) {
 			IResource resource = type.getResource();
@@ -938,7 +938,7 @@ public class ScriptElementLabels {
 	 * @throws ModelException
 	 *             Thrown when the resolving of the container failed.
 	 */
-	public  String getContainerEntryLabel(IPath containerPath, IDLTKProject project) throws ModelException {
+	public  String getContainerEntryLabel(IPath containerPath, IScriptProject project) throws ModelException {
 		IBuildpathContainer container = DLTKCore.getBuildpathContainer(containerPath, project);
 		if (container != null) {
 			return container.getDescription();

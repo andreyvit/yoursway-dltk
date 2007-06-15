@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.BuildpathContainerInitializer;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IRuntimeBuildpathEntry;
 import org.eclipse.dltk.launching.LaunchingMessages;
@@ -63,7 +63,7 @@ public class RuntimeBuildpathEntry implements IRuntimeBuildpathEntry {
 	/**
 	 * Associated Script project, or <code>null</code>
 	 */
-	private IDLTKProject fProject = null;
+	private IScriptProject fProject = null;
 	
 	/**
 	 * The path if the entry was invalid and fBuildpathEntry is null
@@ -361,7 +361,7 @@ public class RuntimeBuildpathEntry implements IRuntimeBuildpathEntry {
 		IPath path = null;
 		switch (getType()) {
 			case PROJECT :
-				IDLTKProject pro = (IDLTKProject) DLTKCore.create(getResource());
+				IScriptProject pro = (IScriptProject) DLTKCore.create(getResource());
 				if (pro != null) {
 					path = pro.getPath();
 				}
@@ -409,8 +409,8 @@ public class RuntimeBuildpathEntry implements IRuntimeBuildpathEntry {
 				if (getType() == IRuntimeBuildpathEntry.CONTAINER) {
 					String id = getPath().segment(0);
 					BuildpathContainerInitializer initializer = DLTKCore.getBuildpathContainerInitializer(id);
-					IDLTKProject scriptProject1 = getDLTKProject();
-					IDLTKProject scriptProject2 = r.getDLTKProject();
+					IScriptProject scriptProject1 = getDLTKProject();
+					IScriptProject scriptProject2 = r.getDLTKProject();
 					if (initializer == null || scriptProject1 == null || scriptProject2 == null) {
 						// containers are equal if their ID is equal by default
 						return getPath().equals(r.getPath());
@@ -473,7 +473,7 @@ public class RuntimeBuildpathEntry implements IRuntimeBuildpathEntry {
 		
 	}
 	
-	public IDLTKProject getDLTKProject() {
+	public IScriptProject getDLTKProject() {
 		return fProject;
 	}
 	
@@ -482,7 +482,7 @@ public class RuntimeBuildpathEntry implements IRuntimeBuildpathEntry {
 	 * 
 	 * @param project Script project
 	 */
-	public void setDLTKProject(IDLTKProject project) {
+	public void setDLTKProject(IScriptProject project) {
 		fProject = project;
 	}
 

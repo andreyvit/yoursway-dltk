@@ -22,7 +22,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.buildpath.IBuildpathInformationProvider;
@@ -95,7 +95,7 @@ public final class HintTextGroup implements IBuildpathInformationProvider, IPack
     private DialogPackageExplorerActionGroup fActionGroup;
     private DialogPackageExplorer fPackageExplorer;
     private IRunnableContext fRunnableContext;
-    private IDLTKProject fCurrJProject;
+    private IScriptProject fCurrJProject;
     private List fNewFolders;    
     private HashMap fImageMap;
     
@@ -142,7 +142,7 @@ public final class HintTextGroup implements IBuildpathInformationProvider, IPack
      * 
      * @param jProject thescriptproject to work on
      */
-    public void setDLTKProject(IDLTKProject jProject) {
+    public void setDLTKProject(IScriptProject jProject) {
         fCurrJProject= jProject;
     }
     
@@ -252,7 +252,7 @@ public final class HintTextGroup implements IBuildpathInformationProvider, IPack
      * 
      * @see IBuildpathInformationProvider#getDLTKProject()
      */
-    public IDLTKProject getDLTKProject() {
+    public IScriptProject getDLTKProject() {
         return fCurrJProject;
     }
     
@@ -401,7 +401,7 @@ public final class HintTextGroup implements IBuildpathInformationProvider, IPack
      */
     private boolean containsDLTKProject(List elements) {
         for(int i= 0; i < elements.size(); i++) {
-            if (elements.get(i) instanceof IDLTKProject)
+            if (elements.get(i) instanceof IScriptProject)
                 return true;
         }
         return false;
@@ -420,7 +420,7 @@ public final class HintTextGroup implements IBuildpathInformationProvider, IPack
     /**
      * Return an <code>ILinkToQuery</code>.
      * 
-     * @see BuildpathModifierQueries#getDefaultLinkQuery(Shell, IDLTKProject, IPath)
+     * @see BuildpathModifierQueries#getDefaultLinkQuery(Shell, IScriptProject, IPath)
      * @see IBuildpathInformationProvider#getLinkFolderQuery()
      */
     public ILinkToQuery getLinkFolderQuery() throws ModelException {
@@ -430,7 +430,7 @@ public final class HintTextGroup implements IBuildpathInformationProvider, IPack
     /**
      * Return an <code>IFolderCreationQuery</code>.
      * 
-     * @see BuildpathModifierQueries#getDefaultCreateFolderQuery(Shell, IDLTKProject)
+     * @see BuildpathModifierQueries#getDefaultCreateFolderQuery(Shell, IScriptProject)
      * @see IBuildpathInformationProvider#getCreateFolderQuery()
      */
 	public ICreateFolderQuery getCreateFolderQuery() throws ModelException {

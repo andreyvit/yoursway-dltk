@@ -11,7 +11,7 @@ package org.eclipse.dltk.ui.text.completion;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.CompletionProposal;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 
@@ -21,7 +21,7 @@ import org.eclipse.dltk.core.ModelException;
  */
 public abstract class MemberProposalInfo extends ProposalInfo {
 	// configuration
-	protected final IDLTKProject fScriptProject;
+	protected final IScriptProject fScriptProject;
 	protected final CompletionProposal fProposal;
 
 	// cache filled lazily
@@ -35,7 +35,7 @@ public abstract class MemberProposalInfo extends ProposalInfo {
 	 * @param proposal
 	 *            the proposal to generate information for
 	 */
-	public MemberProposalInfo(IDLTKProject project, CompletionProposal proposal) {
+	public MemberProposalInfo(IScriptProject project, CompletionProposal proposal) {
 		Assert.isNotNull(project);
 		Assert.isNotNull(proposal);
 		fScriptProject = project;

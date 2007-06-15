@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
@@ -58,7 +58,7 @@ public class ExcludeOperation extends BuildpathModifierOperation {
         fException= null;
         try {
             List modelElements= getSelectedElements();
-            IDLTKProject project= fInformationProvider.getDLTKProject();
+            IScriptProject project= fInformationProvider.getDLTKProject();
             result= exclude(modelElements, project, monitor);
         } catch (CoreException e) {
             fException= e;

@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ScriptModelUtil;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -139,7 +139,7 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 						initRoot = fragment.getScriptFolder("");
 					
 					if (initRoot == null) {
-						IDLTKProject project = elem.getScriptProject();
+						IScriptProject project = elem.getScriptProject();
 						if (project != null) {
 							initRoot = null;
 							if (project.exists()) {
@@ -220,7 +220,7 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 		
 		if (scriptElement == null || scriptElement.getElementType() == IModelElement.SCRIPT_MODEL) {
 			try {
-				IDLTKProject[] projects = DLTKCore.create(getWorkspaceRoot()).getScriptProjects();
+				IScriptProject[] projects = DLTKCore.create(getWorkspaceRoot()).getScriptProjects();
 				if (projects.length == 1) {
 					scriptElement = projects[0];
 				}
@@ -318,7 +318,7 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 					return status;
 				}
 				
-				IDLTKProject jproject = DLTKCore.create(proj);			
+				IScriptProject jproject = DLTKCore.create(proj);			
 				if (resType == IResource.PROJECT)
 					currRoot = jproject.getProjectFragment(res).getScriptFolder("");
 				else {
@@ -400,7 +400,7 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 		IProjectFragment fragment = (IProjectFragment)currRoot.getAncestor(IModelElement.PROJECT_FRAGMENT);
 		if (fragment != null)
 			return fragment;
-		IDLTKProject project = currRoot.getScriptProject();
+		IScriptProject project = currRoot.getScriptProject();
 		try {
 			if (project.exists()) {
 				IProjectFragment[] roots = project.getProjectFragments();
@@ -463,7 +463,7 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 	protected IScriptFolder chooseContainer() {
 		IModelElement initElement = getProjectFragment();
 		Class[] acceptedClasses = new Class[] { IScriptModel.class,
-				IScriptFolder.class, IDLTKProject.class, IProjectFragment.class };
+				IScriptFolder.class, IScriptProject.class, IProjectFragment.class };
 
 		ViewerFilter filter = new TypedViewerFilter(acceptedClasses) {
 			public boolean select(Viewer viewer, Object parent, Object element) {
@@ -498,8 +498,8 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 		dialog.setHelpAvailable(false);
 		if (dialog.open() == Window.OK) {
 			Object element = dialog.getFirstResult();
-			if (element instanceof IDLTKProject) {				
-				IDLTKProject jproject = (IDLTKProject) element;
+			if (element instanceof IScriptProject) {				
+				IScriptProject jproject = (IScriptProject) element;
 				return jproject.getProjectFragment(jproject.getResource()).getScriptFolder("");				
 			} else if (element instanceof IScriptFolder) {
 				return (IScriptFolder) element;

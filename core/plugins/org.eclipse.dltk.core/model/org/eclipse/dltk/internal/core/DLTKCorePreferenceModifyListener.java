@@ -62,7 +62,7 @@ public class DLTKCorePreferenceModifyListener extends PreferenceModifyListener {
 		int index = propertyName.indexOf('|', PREFIX_LENGTH);
 		if (index > 0) {
 			final String projectName = propertyName.substring(PREFIX_LENGTH, index).trim();
-			DLTKProject project = (DLTKProject) scriptModel.getScriptProject(projectName);
+			ScriptProject project = (ScriptProject) scriptModel.getScriptProject(projectName);
 			if (project.getProject().isAccessible()) {
 				return true;
 			}

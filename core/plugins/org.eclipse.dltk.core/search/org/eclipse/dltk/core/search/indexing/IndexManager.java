@@ -38,7 +38,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.BasicSearchEngine;
@@ -48,7 +48,7 @@ import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.index.Index;
 import org.eclipse.dltk.core.search.index.MixinIndex;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.Model;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.search.PatternSearchJob;
@@ -237,7 +237,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		}
 	}
 
-	public SourceIndexerRequestor getSourceRequestor(IDLTKProject dltkProject) {
+	public SourceIndexerRequestor getSourceRequestor(IScriptProject dltkProject) {
 		IDLTKLanguageToolkit toolkit = null;
 		try {
 			toolkit = DLTKLanguageManager.getLanguageToolkit(dltkProject);
@@ -251,7 +251,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		return null;
 	}
 
-	public ISourceElementParser getSourceElementParser(IDLTKProject project,
+	public ISourceElementParser getSourceElementParser(IScriptProject project,
 			ISourceElementRequestor requestor) {
 		// disable task tags to speed up parsing
 // Map options = project.getOptions(true);
@@ -588,7 +588,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		// determine the new children
 		try {
 			Model model = ModelManager.getModelManager().getModel();
-			DLTKProject scriptProject = (DLTKProject) model
+			ScriptProject scriptProject = (ScriptProject) model
 					.getScriptProject(project);
 			// only consider immediate libraries - each project will do the same
 			// NOTE: force to resolve CP variables before calling indexer -
@@ -659,7 +659,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	/**
 	 * Index the content of the given source folder.
 	 */
-	public void indexSourceFolder(DLTKProject scriptProject,
+	public void indexSourceFolder(ScriptProject scriptProject,
 			IPath sourceFolder, char[][] inclusionPatterns,
 			char[][] exclusionPatterns) {
 		IProject project = scriptProject.getProject();
@@ -727,7 +727,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		IndexRequest request = null;
 		if (target instanceof IProject) {
 			IProject p = (IProject) target;
-			if (DLTKProject.hasScriptNature(p)) {
+			if (ScriptProject.hasScriptNature(p)) {
 				request = new IndexAllProject(p, this);
 			}
 		} else if (target instanceof IFolder) {
@@ -881,7 +881,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	/**
 	 * Remove the content of the given source folder from the index.
 	 */
-	public void removeSourceFolderFromIndex(DLTKProject scriptProject,
+	public void removeSourceFolderFromIndex(ScriptProject scriptProject,
 			IPath sourceFolder, char[][] inclusionPatterns,
 			char[][] exclusionPatterns) {
 		IProject project = scriptProject.getProject();

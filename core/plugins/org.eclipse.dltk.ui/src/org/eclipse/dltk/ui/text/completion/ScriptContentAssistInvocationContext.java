@@ -10,7 +10,7 @@
 package org.eclipse.dltk.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionContext;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
@@ -100,7 +100,7 @@ public abstract class ScriptContentAssistInvocationContext extends
 	 * 
 	 * @return the currentscriptproject, possibly <code>null</code>
 	 */
-	public IDLTKProject getProject() {
+	public IScriptProject getProject() {
 		ISourceModule unit = getSourceModule();
 		return unit == null ? null : unit.getScriptProject();
 	}

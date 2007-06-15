@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
@@ -59,7 +59,7 @@ public class AddSelectedLibraryOperation extends BuildpathModifierOperation {
         fException= null;
         try {
             List elements= getSelectedElements();
-            IDLTKProject project= fInformationProvider.getDLTKProject();
+            IScriptProject project= fInformationProvider.getDLTKProject();
             result= addLibraryEntries(elements, project, monitor);
         } catch (CoreException e) {
             fException= e;

@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.core;
 
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IModelStatusConstants;
@@ -69,7 +69,7 @@ public CreateTypeHierarchyOperation(IType element, ISourceModule[] workingCopies
  * Constructs an operation to create a type hierarchy for the
  * given type and working copies.
  */
-public CreateTypeHierarchyOperation(IType element, ISourceModule[] workingCopies, IDLTKProject project, boolean computeSubtypes) {
+public CreateTypeHierarchyOperation(IType element, ISourceModule[] workingCopies, IScriptProject project, boolean computeSubtypes) {
 	super(element);
 	ISourceModule[] copies;
 	if (workingCopies != null) {
@@ -115,7 +115,7 @@ public IModelStatus verify() {
 	if (elementToProcess != null && !elementToProcess.exists()) {
 		return new ModelStatus(IModelStatusConstants.ELEMENT_DOES_NOT_EXIST, elementToProcess);
 	}
-	IDLTKProject project = this.typeHierarchy.javaProject();
+	IScriptProject project = this.typeHierarchy.javaProject();
 	if (project != null && !project.exists()) {
 		return new ModelStatus(IModelStatusConstants.ELEMENT_DOES_NOT_EXIST, project);
 	}

@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.ElementChangedEvent;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
@@ -129,7 +129,7 @@ public class TypeHierarchyLifeCycle implements ITypeHierarchyChangedListener, IE
 			IRegion region= DLTKCore.newRegion();
 			if (element.getElementType() == IModelElement.SCRIPT_PROJECT) {
 				// for projects only add the contained source folders
-				IProjectFragment[] roots= ((IDLTKProject) element).getProjectFragments();
+				IProjectFragment[] roots= ((IScriptProject) element).getProjectFragments();
 				for (int i= 0; i < roots.length; i++) {
 					if (!roots[i].isExternal()) {
 						region.add(roots[i]);
@@ -147,7 +147,7 @@ public class TypeHierarchyLifeCycle implements ITypeHierarchyChangedListener, IE
 			} else {
 				region.add(element);
 			}
-			IDLTKProject jproject= element.getScriptProject();
+			IScriptProject jproject= element.getScriptProject();
 			return jproject.newTypeHierarchy(region, pm);
 		}
 	}

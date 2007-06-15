@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ScriptModelUtil;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ISourceModule;
@@ -57,7 +57,7 @@ public class Checks {
 		// the Script project is now cheating regarding its children so we shouldn't
 		// call isStructureKnown if the project isn't open.
 		// see bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=52474
-		if (!(modelElement instanceof IDLTKProject) && !modelElement.isStructureKnown())
+		if (!(modelElement instanceof IScriptProject) && !modelElement.isStructureKnown())
 			return false;
 		if (DLTKCore.DEBUG) {
 			System.err.println("Add binary modules support.");

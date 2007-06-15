@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.refactoring.RefactoringCoreMessages;
@@ -77,7 +77,7 @@ public class DeleteProjectFragmentChange extends AbstractDeleteChange {
 			return true;
 		if (fUpdateClasspathQuery == null)
 			return true;
-		IDLTKProject[] referencingProjects= ModelElementUtil.getReferencingProjects(getRoot());
+		IScriptProject[] referencingProjects= ModelElementUtil.getReferencingProjects(getRoot());
 		if (referencingProjects.length == 0)
 			return true;
 		return fUpdateClasspathQuery.confirmManipulation(getRoot(), referencingProjects);

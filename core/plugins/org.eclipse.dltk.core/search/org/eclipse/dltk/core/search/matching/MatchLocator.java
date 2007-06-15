@@ -34,7 +34,7 @@ import org.eclipse.dltk.compiler.util.SimpleLookupTable;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IMethod;
@@ -67,7 +67,7 @@ import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
 import org.eclipse.dltk.internal.compiler.lookup.SourceModuleScope;
 import org.eclipse.dltk.internal.core.ArchiveProjectFragment;
 import org.eclipse.dltk.internal.core.BuiltinSourceModule;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.ModelManager;
@@ -250,7 +250,7 @@ public class MatchLocator implements ITypeRequestor {
 		if (copies == null)
 			return new HashMap();
 		if (focus != null) {
-			while (!(focus instanceof IDLTKProject)
+			while (!(focus instanceof IScriptProject)
 					&& !(focus instanceof ArchiveProjectFragment)) {
 				focus = focus.getParent();
 			}
@@ -313,7 +313,7 @@ public class MatchLocator implements ITypeRequestor {
 	}
 
 	public static IModelElement getProjectOrArchive(IModelElement element) {
-		while (!(element instanceof IDLTKProject)
+		while (!(element instanceof IScriptProject)
 				&& !(element instanceof ArchiveProjectFragment)) {
 			element = element.getParent();
 		}
@@ -526,7 +526,7 @@ public class MatchLocator implements ITypeRequestor {
 	 * Create a new parser for the given project, as well as a lookup
 	 * environment.
 	 */
-	public void initialize(DLTKProject project, int possibleMatchSize)
+	public void initialize(ScriptProject project, int possibleMatchSize)
 			throws ModelException {
 		// clean up name environment only if there are several possible match as
 		// it is
@@ -582,7 +582,7 @@ public class MatchLocator implements ITypeRequestor {
 		this.matchesToProcess = new PossibleMatch[possibleMatchSize];
 	}
 
-	protected void locateMatches(DLTKProject scriptProject,
+	protected void locateMatches(ScriptProject scriptProject,
 			PossibleMatch[] possibleMatches, int start, int length)
 			throws CoreException {
 		initialize(scriptProject, length);
@@ -649,7 +649,7 @@ public class MatchLocator implements ITypeRequestor {
 	/**
 	 * Locate the matches amongst the possible matches.
 	 */
-	protected void locateMatches(DLTKProject scriptProject,
+	protected void locateMatches(ScriptProject scriptProject,
 			PossibleMatchSet matchSet, int expected) throws CoreException {
 		PossibleMatch[] possibleMatches = matchSet
 				.getPossibleMatches(scriptProject.getProjectFragments());
@@ -716,7 +716,7 @@ public class MatchLocator implements ITypeRequestor {
 			// initialize pattern for polymorphic search (ie. method reference
 			// pattern)
 			this.patternLocator.initializePolymorphicSearch(this);
-			DLTKProject previousScriptProject = null;
+			ScriptProject previousScriptProject = null;
 			PossibleMatchSet matchSet = new PossibleMatchSet();
 			Util.sort(searchDocuments, new Util.Comparer() {
 				public int compare(Object a, Object b) {
@@ -766,7 +766,7 @@ public class MatchLocator implements ITypeRequestor {
 				// create new parser and lookup environment if this is a new
 				// project
 				IResource resource = null;
-				DLTKProject scriptProject = (DLTKProject) openable
+				ScriptProject scriptProject = (ScriptProject) openable
 						.getScriptProject();
 				resource = workingCopy != null ? workingCopy.getResource()
 						: openable.getResource();
@@ -899,7 +899,7 @@ public class MatchLocator implements ITypeRequestor {
 				// create new parser and lookup environment if this is a new
 				// project
 				IResource resource = null;
-				DLTKProject scriptProject = (DLTKProject) openable
+				ScriptProject scriptProject = (ScriptProject) openable
 						.getScriptProject();
 				resource = workingCopy != null ? workingCopy.getResource()
 						: openable.getResource();

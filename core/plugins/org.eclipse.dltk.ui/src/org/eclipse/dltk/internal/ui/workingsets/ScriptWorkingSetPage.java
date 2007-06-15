@@ -19,7 +19,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -430,7 +430,7 @@ public class ScriptWorkingSetPage extends WizardPage implements IWorkingSetPage 
 							elements[i]= project;
 					}
 					if (element instanceof IModelElement) {
-						IDLTKProject jProject= ((IModelElement)element).getScriptProject();
+						IScriptProject jProject= ((IModelElement)element).getScriptProject();
 						if (jProject != null && !jProject.getProject().isAccessible()) 
 							elements[i]= jProject.getProject();
 					}
@@ -450,7 +450,7 @@ public class ScriptWorkingSetPage extends WizardPage implements IWorkingSetPage 
 	
 	private boolean isExpandable(Object element) {
 		return (
-			element instanceof IDLTKProject
+			element instanceof IScriptProject
 			||
 			element instanceof IProjectFragment
 			||

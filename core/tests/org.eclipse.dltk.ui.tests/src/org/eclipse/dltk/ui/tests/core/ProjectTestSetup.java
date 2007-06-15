@@ -16,8 +16,8 @@ import junit.framework.Test;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
-import org.eclipse.dltk.ui.tests.DLTKProjectHelper;
+import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.dltk.ui.tests.ScriptProjectHelper;
 import org.eclipse.dltk.ui.tests.TestOptions;
 
 
@@ -25,12 +25,12 @@ public class ProjectTestSetup extends TestSetup {
 
 	public static final String PROJECT_NAME= "TestSetupProject";
 	
-	public static IDLTKProject getProject() {
+	public static IScriptProject getProject() {
 		IProject project= ResourcesPlugin.getWorkspace().getRoot().getProject(PROJECT_NAME);
 		return  DLTKCore.create(project);
 	}
 		
-	private IDLTKProject fJProject;
+	private IScriptProject fJProject;
 
 	private boolean fAutobuilding;
 	
@@ -44,14 +44,14 @@ public class ProjectTestSetup extends TestSetup {
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		IDLTKProject project= getProject();
+		IScriptProject project= getProject();
 		if (project.exists()) { // allow nesting of ProjectTestSetups
 			return;
 		}
 		
-		fAutobuilding = DLTKProjectHelper.setAutoBuilding(false);
+		fAutobuilding = ScriptProjectHelper.setAutoBuilding(false);
 		
-		fJProject= DLTKProjectHelper.createDLTKProject(PROJECT_NAME);		
+		fJProject= ScriptProjectHelper.createDLTKProject(PROJECT_NAME);		
 		
 		TestOptions.initializeProjectOptions(fJProject);
 		
@@ -65,8 +65,8 @@ public class ProjectTestSetup extends TestSetup {
 	 */
 	protected void tearDown() throws Exception {
 		if (fJProject != null) {
-			DLTKProjectHelper.delete(fJProject);
-			DLTKProjectHelper.setAutoBuilding(fAutobuilding);
+			ScriptProjectHelper.delete(fJProject);
+			ScriptProjectHelper.setAutoBuilding(fAutobuilding);
 		}
 	}
 

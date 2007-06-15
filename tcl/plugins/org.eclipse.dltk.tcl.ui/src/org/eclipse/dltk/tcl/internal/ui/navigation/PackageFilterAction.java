@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.dltk.compiler.env.ISourceMethod;
 import org.eclipse.dltk.compiler.env.ISourceType;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IPackageDeclaration;
 import org.eclipse.dltk.core.IParent;
@@ -138,7 +138,7 @@ class PackageFilterAction extends Action {
 		IPackageDeclaration result = null;
 		try {
 			for (;;) {
-				if (element == null || element instanceof IDLTKProject)
+				if (element == null || element instanceof IScriptProject)
 					break;
 				IModelElement parentElement = element.getParent();
 				IParent parent = (IParent) parentElement;
@@ -267,7 +267,7 @@ class PackageFilterAction extends Action {
 				for (int i = 0; i < projects.length; ++i) {
 					try {
 						if (projects[i].hasNature(TclNature.NATURE_ID)) {
-							IDLTKProject project = DLTKCore.create(projects[i]);
+							IScriptProject project = DLTKCore.create(projects[i]);
 							if (project != null) {
 								addElements(project);
 							}

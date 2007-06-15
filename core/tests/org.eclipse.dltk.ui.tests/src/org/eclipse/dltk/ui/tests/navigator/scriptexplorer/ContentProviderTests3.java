@@ -23,14 +23,14 @@ import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.ElementChangedEvent;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ui.tests.DLTKProjectHelper;
+import org.eclipse.dltk.ui.tests.ScriptProjectHelper;
 import org.eclipse.dltk.ui.tests.DLTKUITestsPlugin;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.ui.IViewPart;
@@ -56,8 +56,8 @@ public class ContentProviderTests3 extends TestCase {
 	}
 
 
-	private IDLTKProject fJProject1;
-	private IDLTKProject fJProject2;
+	private IScriptProject fJProject1;
+	private IScriptProject fJProject2;
 	
 	private IProjectFragment fRoot1;
 	private IScriptFolder fPack1;
@@ -279,10 +279,10 @@ public class ContentProviderTests3 extends TestCase {
 		IWorkspaceDescription workspaceDesc= fWorkspace.getDescription();
 		fEnableAutoBuildAfterTesting= workspaceDesc.isAutoBuilding();
 		if (fEnableAutoBuildAfterTesting)
-			DLTKProjectHelper.setAutoBuilding(false);
+			ScriptProjectHelper.setAutoBuilding(false);
 
-		fJProject1= DLTKProjectHelper.createDLTKProject("TestProject1");//$NON-NLS-1$
-		fJProject2= DLTKProjectHelper.createDLTKProject("TestProject2");//$NON-NLS-1$
+		fJProject1= ScriptProjectHelper.createDLTKProject("TestProject1");//$NON-NLS-1$
+		fJProject2= ScriptProjectHelper.createDLTKProject("TestProject2");//$NON-NLS-1$
 		
 		assertNotNull("project1 null", fJProject1);//$NON-NLS-1$
 		assertNotNull("project2 null", fJProject2);//$NON-NLS-1$
@@ -301,11 +301,11 @@ public class ContentProviderTests3 extends TestCase {
 		assertNotNull(fFile1);
 		assertNotNull(fFile2);
 
-		File junitSrcArchive= DLTKUITestsPlugin.getDefault().getFileInPlugin(DLTKProjectHelper.JUNIT_SRC_381);
+		File junitSrcArchive= DLTKUITestsPlugin.getDefault().getFileInPlugin(ScriptProjectHelper.JUNIT_SRC_381);
 		
 		assertTrue("junit src not found", junitSrcArchive != null && junitSrcArchive.exists());//$NON-NLS-1$
 
-		fArchiveFragmentRoot= DLTKProjectHelper.addSourceContainerWithImport(fJProject1, "src", junitSrcArchive, DLTKProjectHelper.JUNIT_SRC_ENCODING);//$NON-NLS-1$
+		fArchiveFragmentRoot= ScriptProjectHelper.addSourceContainerWithImport(fJProject1, "src", junitSrcArchive, ScriptProjectHelper.JUNIT_SRC_ENCODING);//$NON-NLS-1$
 		
 		fPackJunit= fArchiveFragmentRoot.getScriptFolder("junit");//$NON-NLS-1$
 		fPackJunitSamples= fArchiveFragmentRoot.getScriptFolder("junit/samples");//$NON-NLS-1$
@@ -332,15 +332,15 @@ public class ContentProviderTests3 extends TestCase {
 		fCUMoneyBag= fPackJunitSamplesMoney.getSourceModule("MoneyBag.java").getResource();//$NON-NLS-1$
 		fCUMoneyTest= fPackJunitSamplesMoney.getSourceModule("MoneyTest.java").getResource();//$NON-NLS-1$
 		
-		File mylibArchive= DLTKUITestsPlugin.getDefault().getFileInPlugin(DLTKProjectHelper.MYLIB);
+		File mylibArchive= DLTKUITestsPlugin.getDefault().getFileInPlugin(ScriptProjectHelper.MYLIB);
 		assertTrue("lib not found", mylibArchive != null && mylibArchive.exists());//$NON-NLS-1$
-		DLTKProjectHelper.addLibraryWithImport(fJProject1, Path.fromOSString(mylibArchive.getPath()));
+		ScriptProjectHelper.addLibraryWithImport(fJProject1, Path.fromOSString(mylibArchive.getPath()));
 //
 //		//set up project #2: file system structure with in a source folder
 //
 //		DLTKProjectHelper.addVariableEntry(fJProject2, new Path("InterpreterEnvironment_LIB_TEST"), null, null);//$NON-NLS-1$
 
-		fRoot1= DLTKProjectHelper.addSourceContainer(fJProject2, "src1");//$NON-NLS-1$
+		fRoot1= ScriptProjectHelper.addSourceContainer(fJProject2, "src1");//$NON-NLS-1$
 		fPack1= fRoot1.createScriptFolder("pack1", true, null);//$NON-NLS-1$
 		fPack2= fRoot1.createScriptFolder("pack2", true, null);//$NON-NLS-1$
 		fPack3= fRoot1.createScriptFolder("pack3",true,null);//$NON-NLS-1$
@@ -391,12 +391,12 @@ public class ContentProviderTests3 extends TestCase {
 	 */
 	protected void tearDown() throws Exception {
 		fArchiveFragmentRoot.close();
-		DLTKProjectHelper.delete(fJProject1);
-		DLTKProjectHelper.delete(fJProject2);
+		ScriptProjectHelper.delete(fJProject1);
+		ScriptProjectHelper.delete(fJProject2);
 		page.hideView(fMyPart);
 		
 		if (fEnableAutoBuildAfterTesting)
-			DLTKProjectHelper.setAutoBuilding(true);
+			ScriptProjectHelper.setAutoBuilding(true);
 		
 		super.tearDown();
 	}

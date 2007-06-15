@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.internal.corext.refactoring.RefactoringAvailabilityTester;
 import org.eclipse.dltk.internal.corext.refactoring.RefactoringCoreMessages;
@@ -128,7 +128,7 @@ public class RenameSourceFolderProcessor extends ScriptRenameProcessor {
 		if (result.hasFatalError())
 			return result;
 			
-		IDLTKProject project= fSourceFolder.getScriptProject();
+		IScriptProject project= fSourceFolder.getScriptProject();
 		IPath p= project.getProject().getFullPath().append(newName);
 		if (project.findProjectFragment(p) != null)
 			return RefactoringStatus.createFatalErrorStatus(RefactoringCoreMessages.RenameSourceFolderRefactoring_already_exists); 

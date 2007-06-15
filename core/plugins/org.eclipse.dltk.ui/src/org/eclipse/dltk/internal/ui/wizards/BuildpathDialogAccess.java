@@ -21,7 +21,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.IUIConstants;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.ArchiveFileFilter;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.BuildpathContainerWizard;
@@ -77,7 +77,7 @@ public final class BuildpathDialogAccess {
 	 * @return Returns the configured buildpath container entry or <code>null</code> if the dialog has
 	 * been canceled by the user.
 	 */
-	public static IBuildpathEntry configureContainerEntry(Shell shell, IBuildpathEntry initialEntry, IDLTKProject project, IBuildpathEntry[] currentBuildpath) {
+	public static IBuildpathEntry configureContainerEntry(Shell shell, IBuildpathEntry initialEntry, IScriptProject project, IBuildpathEntry[] currentBuildpath) {
 		if (initialEntry == null || currentBuildpath == null) {
 			throw new IllegalArgumentException();
 		}
@@ -108,7 +108,7 @@ public final class BuildpathDialogAccess {
 	 * @return Returns the selected buildpath container entries or <code>null</code> if the dialog has
 	 * been canceled by the user.
 	 */
-	public static IBuildpathEntry[] chooseContainerEntries(Shell shell, IDLTKProject project, IBuildpathEntry[] currentBuildpath) {
+	public static IBuildpathEntry[] chooseContainerEntries(Shell shell, IScriptProject project, IBuildpathEntry[] currentBuildpath) {
 		if (currentBuildpath == null) {
 			throw new IllegalArgumentException();
 		}

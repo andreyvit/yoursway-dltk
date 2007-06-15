@@ -87,8 +87,8 @@ public abstract class BuildpathContainerInitializer {
 	 * correct functioning of the Script language model, the implementation should use
 	 * only the following Script language model APIs:
 	 * <ul>
-	 * <li>{@link DLTKCore#setBuildpathContainer(IPath, IDLTKProject[], IBuildpathContainer[], org.eclipse.core.runtime.IProgressMonitor)}</li>
-	 * <li>{@link DLTKCore#getBuildpathContainer(IPath, IDLTKProject)}</li>
+	 * <li>{@link DLTKCore#setBuildpathContainer(IPath, IScriptProject[], IBuildpathContainer[], org.eclipse.core.runtime.IProgressMonitor)}</li>
+	 * <li>{@link DLTKCore#getBuildpathContainer(IPath, IScriptProject)}</li>
 	 * <li>{@link DLTKCore#create(org.eclipse.core.resources.IWorkspaceRoot)}</li>
 	 * <li>{@link DLTKCore#create(org.eclipse.core.resources.IProject)}</li>
 	 * <li>{@link IScript languageModel#getScript languageProjects()}</li>
@@ -103,11 +103,11 @@ public abstract class BuildpathContainerInitializer {
      *    This allows generic containers to be bound with project specific values.
      * @throws CoreException if an exception occurs during the initialization
      * 
-     * @see DLTKCore#getBuildpathContainer(IPath, IDLTKProject)
-     * @see DLTKCore#setBuildpathContainer(IPath, IDLTKProject[], IBuildpathContainer[], org.eclipse.core.runtime.IProgressMonitor)
+     * @see DLTKCore#getBuildpathContainer(IPath, IScriptProject)
+     * @see DLTKCore#setBuildpathContainer(IPath, IScriptProject[], IBuildpathContainer[], org.eclipse.core.runtime.IProgressMonitor)
      * @see IBuildpathContainer
      */
-    public abstract void initialize(IPath containerPath, IDLTKProject project) throws CoreException;
+    public abstract void initialize(IPath containerPath, IScriptProject project) throws CoreException;
     
     /**
      * Returns <code>true</code> if this container initializer can be requested to perform updates 
@@ -119,7 +119,7 @@ public abstract class BuildpathContainerInitializer {
      * @return returns <code>true</code> if the container can be updated
 	 *
      */
-    public boolean canUpdateBuildpathContainer(IPath containerPath, IDLTKProject project) {
+    public boolean canUpdateBuildpathContainer(IPath containerPath, IScriptProject project) {
     	
 		// By default, buildpath container initializers do not accept updating containers
     	return false; 
@@ -143,11 +143,11 @@ public abstract class BuildpathContainerInitializer {
      * @param project the project for which the container is to be updated
 	 * @param containerSuggestion a suggestion to update the corresponding container definition
 	 * @throws CoreException when <code>DLTKCore#setBuildpathContainer</code> would throw any.
-	 * @see DLTKCore#setBuildpathContainer(IPath, IDLTKProject[], IBuildpathContainer[], org.eclipse.core.runtime.IProgressMonitor)
-	 * @see BuildpathContainerInitializer#canUpdateBuildpathContainer(IPath, IDLTKProject)
+	 * @see DLTKCore#setBuildpathContainer(IPath, IScriptProject[], IBuildpathContainer[], org.eclipse.core.runtime.IProgressMonitor)
+	 * @see BuildpathContainerInitializer#canUpdateBuildpathContainer(IPath, IScriptProject)
 	 *
 	 */
-    public void requestBuildpathContainerUpdate(IPath containerPath, IDLTKProject project, IBuildpathContainer containerSuggestion) throws CoreException {
+    public void requestBuildpathContainerUpdate(IPath containerPath, IScriptProject project, IBuildpathContainer containerSuggestion) throws CoreException {
 
 		// By default, buildpath container initializers do not accept updating containers
     }
@@ -163,7 +163,7 @@ public abstract class BuildpathContainerInitializer {
 	 * @return a string description of the container
 	 *
 	 */    
-    public String getDescription(IPath containerPath, IDLTKProject project) {
+    public String getDescription(IPath containerPath, IScriptProject project) {
     	
     	// By default, a container path is the only available description
     	return containerPath.makeRelative().toString();
@@ -182,7 +182,7 @@ public abstract class BuildpathContainerInitializer {
 	 * @return returns an Object identifying the container for comparison
 	 *
 	 */
-	public Object getComparisonID(IPath containerPath, IDLTKProject project) {
+	public Object getComparisonID(IPath containerPath, IScriptProject project) {
 
 		// By default, containers are identical if they have the same containerPath first segment,
 		// but this may be refined by other container initializer implementations.

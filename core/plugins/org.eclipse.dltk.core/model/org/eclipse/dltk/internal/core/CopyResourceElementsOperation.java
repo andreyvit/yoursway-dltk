@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IModelStatus;
@@ -200,7 +200,7 @@ public class CopyResourceElementsOperation extends MultiOperation {
 	 * creating it and putting it in <code>fDeltasPerProject</code> if it does
 	 * not exist yet.
 	 */
-	private ModelElementDelta getDeltaFor(IDLTKProject scriptProject) {
+	private ModelElementDelta getDeltaFor(IScriptProject scriptProject) {
 		ModelElementDelta delta = (ModelElementDelta) deltasPerProject.get(scriptProject);
 		if (delta == null) {
 			delta = new ModelElementDelta(scriptProject);
@@ -235,9 +235,9 @@ public class CopyResourceElementsOperation extends MultiOperation {
 	protected void prepareDeltas(IModelElement sourceElement, IModelElement destinationElement, boolean isMove) {
 		if (Util.isExcluded(sourceElement) || Util.isExcluded(destinationElement))
 			return;
-		IDLTKProject destProject = destinationElement.getScriptProject();
+		IScriptProject destProject = destinationElement.getScriptProject();
 		if (isMove) {
-			IDLTKProject sourceProject = sourceElement.getScriptProject();
+			IScriptProject sourceProject = sourceElement.getScriptProject();
 			getDeltaFor(sourceProject).movedFrom(sourceElement, destinationElement);
 			getDeltaFor(destProject).movedTo(destinationElement, sourceElement);
 		} else {
@@ -599,9 +599,9 @@ public class CopyResourceElementsOperation extends MultiOperation {
 			// workaround for bug
 			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=24505
 			if (isEmpty && isMove() && !(Util.isExcluded(source) || Util.isExcluded(newFrag))) {
-				IDLTKProject sourceProject = source.getScriptProject();
+				IScriptProject sourceProject = source.getScriptProject();
 				getDeltaFor(sourceProject).movedFrom(source, newFrag);
-				IDLTKProject destProject = newFrag.getScriptProject();
+				IScriptProject destProject = newFrag.getScriptProject();
 				getDeltaFor(destProject).movedTo(newFrag, source);
 			}
 		} catch (ModelException e) {

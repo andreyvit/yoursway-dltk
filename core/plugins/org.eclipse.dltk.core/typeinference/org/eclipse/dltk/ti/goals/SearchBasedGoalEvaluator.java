@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.search.FieldReferenceMatch;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
@@ -58,7 +58,7 @@ public abstract class SearchBasedGoalEvaluator extends GoalEvaluator {
 
 	public IGoal[] init() {
 		IGoal goal = getGoal();
-		IDLTKProject project = null;
+		IScriptProject project = null;
 		IContext context = goal.getContext();
 		if (context instanceof ISourceModuleContext) {
 			ISourceModuleContext basicContext = (ISourceModuleContext) goal

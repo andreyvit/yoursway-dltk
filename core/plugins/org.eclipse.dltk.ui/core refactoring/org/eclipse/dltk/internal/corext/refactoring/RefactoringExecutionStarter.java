@@ -13,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -69,7 +69,7 @@ public final class RefactoringExecutionStarter {
 	private static RenameSupport createRenameSupport(IModelElement element, String newName, int flags) throws CoreException {
 		switch (element.getElementType()) {
 			case IModelElement.SCRIPT_PROJECT:
-				return RenameSupport.create((IDLTKProject) element, newName, flags);
+				return RenameSupport.create((IScriptProject) element, newName, flags);
 			case IModelElement.PROJECT_FRAGMENT:
 				return RenameSupport.create((IProjectFragment) element, newName);
 			case IModelElement.SCRIPT_FOLDER:

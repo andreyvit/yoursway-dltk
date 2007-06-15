@@ -10,23 +10,20 @@
 package org.eclipse.dltk.internal.corext.refactoring.scripting;
 
 import org.eclipse.dltk.internal.corext.refactoring.ScriptRefactoringContribution;
-import org.eclipse.dltk.internal.corext.refactoring.rename.RenameDLTKProjectProcessor;
+import org.eclipse.dltk.internal.corext.refactoring.rename.RenameScriptProjectProcessor;
 import org.eclipse.dltk.internal.corext.refactoring.rename.ScriptRenameRefactoring;
 import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringDescriptor;
 
-
 /**
  * Refactoring contribution for the renamescriptproject refactoring.
  * 
-	 *
  */
-public final class RenameDLTKProjectRefactoringContribution extends ScriptRefactoringContribution {
+public final class RenameScriptProjectRefactoringContribution extends
+		ScriptRefactoringContribution {
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Refactoring createRefactoring(final RefactoringDescriptor descriptor) {
-		return new ScriptRenameRefactoring(new RenameDLTKProjectProcessor(null));
+		return new ScriptRenameRefactoring(new RenameScriptProjectProcessor(
+				null));
 	}
 }

@@ -337,7 +337,7 @@ public interface IType extends IMember {
 	 * this type, all of its supertypes, and all its subtypes 
 	 * in the context of the given project
 	 */
-	ITypeHierarchy newTypeHierarchy(IDLTKProject project, IProgressMonitor monitor) throws ModelException;
+	ITypeHierarchy newTypeHierarchy(IScriptProject project, IProgressMonitor monitor) throws ModelException;
 	
 	/**
 	 * Creates and returns a type hierarchy for this type containing
@@ -360,7 +360,7 @@ public interface IType extends IMember {
 	 * this type, all of its supertypes, and all its subtypes 
 	 * in the context of the given project
 	 */
-	ITypeHierarchy newTypeHierarchy(IDLTKProject project, WorkingCopyOwner owner, IProgressMonitor monitor) throws ModelException;
+	ITypeHierarchy newTypeHierarchy(IScriptProject project, WorkingCopyOwner owner, IProgressMonitor monitor) throws ModelException;
 
 	/**
 	 * Creates and returns a type hierarchy for this type containing

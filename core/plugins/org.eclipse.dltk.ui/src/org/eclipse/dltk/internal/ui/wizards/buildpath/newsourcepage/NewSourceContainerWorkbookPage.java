@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.buildpath.BuildpathModifier;
@@ -52,7 +52,7 @@ public class NewSourceContainerWorkbookPage extends BuildPathBasePage implements
     private HintTextGroup fHintTextGroup;
     private DialogPackageExplorer fPackageExplorer;    
 	
-	private IDLTKProject fDLTKProject;
+	private IScriptProject fDLTKProject;
 
 	final private IPreferenceStore fStore;
 
@@ -90,7 +90,7 @@ public class NewSourceContainerWorkbookPage extends BuildPathBasePage implements
      * 
      * @param DLTKProject the current script project
      */
-    public void init(IDLTKProject DLTKProject) {
+    public void init(IScriptProject DLTKProject) {
 		fDLTKProject= DLTKProject;
         fHintTextGroup.setDLTKProject(DLTKProject);
         
@@ -112,7 +112,7 @@ public class NewSourceContainerWorkbookPage extends BuildPathBasePage implements
      * @param parent the parent composite
      * @return composite containing controls
      * 
-     * @see #init(IDLTKProject)
+     * @see #init(IScriptProject)
      */
     public Control getControl(Composite parent) {
         final int[] sashWeight= {60};
@@ -234,7 +234,7 @@ public class NewSourceContainerWorkbookPage extends BuildPathBasePage implements
     public List getSelection() {
         List selectedList= new ArrayList();
         
-        IDLTKProject project= fHintTextGroup.getDLTKProject();
+        IScriptProject project= fHintTextGroup.getDLTKProject();
         try {
             List list= fHintTextGroup.getSelection().toList();
             List existingEntries= BuildpathModifier.getExistingEntries(project);
@@ -246,7 +246,7 @@ public class NewSourceContainerWorkbookPage extends BuildPathBasePage implements
                     BPListElement cpElement= BuildpathModifier.getBuildpathEntry(existingEntries, element); 
                     selectedList.add(cpElement);
                 }
-                else if (obj instanceof IDLTKProject) {
+                else if (obj instanceof IScriptProject) {
                     IBuildpathEntry entry= BuildpathModifier.getBuildpathEntryFor(project.getPath(), project, IBuildpathEntry.BPE_SOURCE);
                     if (entry == null)
                         continue;

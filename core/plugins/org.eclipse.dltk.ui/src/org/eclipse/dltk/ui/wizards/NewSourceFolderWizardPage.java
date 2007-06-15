@@ -33,7 +33,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -84,7 +84,7 @@ public class NewSourceFolderWizardPage extends NewElementWizardPage {
 	
 	private IWorkspaceRoot fWorkspaceRoot;
 	
-	private IDLTKProject fCurrJProject;
+	private IScriptProject fCurrJProject;
 	private IBuildpathEntry[] fEntries;
 	
 	private IBuildpathEntry[] fNewEntries;
@@ -144,7 +144,7 @@ public class NewSourceFolderWizardPage extends NewElementWizardPage {
 				projPath= proj.getFullPath().makeRelative().toString();
 			}	
 		} else if (selectedElement instanceof IModelElement) {
-			IDLTKProject jproject= ((IModelElement)selectedElement).getScriptProject();
+			IScriptProject jproject= ((IModelElement)selectedElement).getScriptProject();
 			if (jproject != null) {
 				projPath= jproject.getProject().getFullPath().makeRelative().toString();
 			}
@@ -242,7 +242,7 @@ public class NewSourceFolderWizardPage extends NewElementWizardPage {
 				fRootDialogField.setText(path.toString());
 			}
 		} else if (field == fProjectField) {
-			IDLTKProject jproject= chooseProject();
+			IScriptProject jproject= chooseProject();
 			if (jproject != null) {
 				IPath path= jproject.getProject().getFullPath().makeRelative();
 				fProjectField.setText(path.toString());
@@ -504,13 +504,13 @@ public class NewSourceFolderWizardPage extends NewElementWizardPage {
 		return null;		
 	}
 	
-	private IDLTKProject chooseProject() {
-		IDLTKProject[] projects;
+	private IScriptProject chooseProject() {
+		IScriptProject[] projects;
 		try {
 			projects= DLTKCore.create(fWorkspaceRoot).getScriptProjects();
 		} catch (ModelException e) {
 			DLTKUIPlugin.log(e);
-			projects= new IDLTKProject[0];
+			projects= new IScriptProject[0];
 		}
 		
 		ILabelProvider labelProvider= new ModelElementLabelProvider(ModelElementLabelProvider.SHOW_DEFAULT);
@@ -521,7 +521,7 @@ public class NewSourceFolderWizardPage extends NewElementWizardPage {
 		dialog.setInitialSelections(new Object[] { fCurrJProject });
 		dialog.setHelpAvailable(false);
 		if (dialog.open() == Window.OK) {			
-			return (IDLTKProject) dialog.getFirstResult();
+			return (IScriptProject) dialog.getFirstResult();
 		}			
 		return null;		
 	}

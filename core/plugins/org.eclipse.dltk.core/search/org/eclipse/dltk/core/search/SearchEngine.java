@@ -128,7 +128,7 @@ public class SearchEngine {
 	 * The Script elements resulting from a search with this scope will
 	 * be children of the given elements.
 	 * <p>
-	 * If an element is an IScriptProject, then the project's source folders, 
+	 * If an element is an IDLTKProject, then the project's source folders, 
 	 * its jars (external and internal) and its referenced projects (with their source 
 	 * folders and jars, recursively) will be included.
 	 * If an element is an IProjectFragment, then only the package fragments of 
@@ -152,7 +152,7 @@ public class SearchEngine {
 	 * The Script elements resulting from a search with this scope will
 	 * be children of the given elements.
 	 * 
-	 * If an element is an IScriptProject, then the project's source folders, 
+	 * If an element is an IDLTKProject, then the project's source folders, 
 	 * its jars (external and internal) and - if specified - its referenced projects 
 	 * (with their source folders and jars, recursively) will be included.
 	 * If an element is an IProjectFragment, then only the package fragments of 
@@ -176,7 +176,7 @@ public class SearchEngine {
 	 * The Script elements resulting from a search with this scope will
 	 * be children of the given elements.
 	 * 
-	 * If an element is an IScriptProject, then it includes:
+	 * If an element is an IDLTKProject, then it includes:
 	 * - its source folders if IJavaSearchScope.SOURCES is specified, 
 	 * - its application libraries (internal and external jars, class folders that are on the raw buildpath, 
 	 *   or the ones that are coming from a buildpath path variable,

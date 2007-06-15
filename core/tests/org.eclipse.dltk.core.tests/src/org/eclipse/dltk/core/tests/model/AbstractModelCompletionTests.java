@@ -15,7 +15,7 @@ import java.util.List;
 import junit.framework.ComparisonFailure;
 
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
@@ -24,7 +24,7 @@ import org.eclipse.dltk.core.WorkingCopyOwner;
 
 public abstract class AbstractModelCompletionTests extends AbstractModelTests {
 	public static List COMPLETION_SUITES = null;
-	protected static IDLTKProject PROJECT;
+	protected static IScriptProject PROJECT;
 	protected class CompletionResult {
 		public String proposals;
 		public String context;

@@ -44,7 +44,7 @@ import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.internal.core.BuiltinProjectFragment;
 import org.eclipse.dltk.internal.core.BuiltinSourceModule;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.ExternalProjectFragment;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
 import org.eclipse.dltk.internal.core.ModelManager;
@@ -54,7 +54,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 	public static final boolean DEBUG = DLTKCore.DEBUG_SCRIPT_BUILDER;
 
 	public IProject currentProject = null;
-	DLTKProject scriptProject = null;
+	ScriptProject scriptProject = null;
 	State lastState;
 
 	class ResourceVisitor implements IResourceDeltaVisitor, IResourceVisitor {
@@ -150,7 +150,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		if (!DLTKLanguageManager.hasScriptNature(this.currentProject)) {
 			return null;
 		}
-		this.scriptProject = (DLTKProject) DLTKCore.create(currentProject);
+		this.scriptProject = (ScriptProject) DLTKCore.create(currentProject);
 
 		if (currentProject == null || !currentProject.isAccessible())
 			return new IProject[0];
@@ -200,7 +200,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 					// considered
 					// too
 					if (((BuildpathEntry) entry).isOptional()
-							&& !DLTKProject.hasScriptNature(p)) // except if
+							&& !ScriptProject.hasScriptNature(p)) // except if
 						// entry is
 						// optional
 						p = null;

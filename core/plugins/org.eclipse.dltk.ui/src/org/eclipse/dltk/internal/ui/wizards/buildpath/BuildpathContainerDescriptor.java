@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.util.CoreUtility;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPage;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
@@ -117,7 +117,7 @@ public class BuildpathContainerDescriptor {
 		return getDescriptors(null);
 	}
 
-	public static BuildpathContainerDescriptor[] getDescriptors(IDLTKProject proj) {
+	public static BuildpathContainerDescriptor[] getDescriptors(IScriptProject proj) {
 		ArrayList containers= new ArrayList();
 		
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(DLTKUIPlugin.PLUGIN_ID, ATT_EXTENSION);

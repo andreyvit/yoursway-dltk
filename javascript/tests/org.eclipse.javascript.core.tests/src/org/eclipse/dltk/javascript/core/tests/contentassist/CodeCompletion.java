@@ -19,7 +19,7 @@ import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.IBuffer;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -252,7 +252,7 @@ public class CodeCompletion extends TestCase {
 			return null;
 		}
 
-		public IDLTKProject getScriptProject() {
+		public IScriptProject getScriptProject() {
 			// TODO Auto-generated method stub
 			return null;
 		}

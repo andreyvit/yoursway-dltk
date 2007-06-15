@@ -21,7 +21,7 @@ import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
@@ -39,9 +39,9 @@ public class InterpreterContainerInitializer extends
 		BuildpathContainerInitializer {
 
 	/**
-	 * @see BuildpathContainerInitializer#initialize(IPath, IDLTKProject)
+	 * @see BuildpathContainerInitializer#initialize(IPath, IScriptProject)
 	 */
-	public void initialize(IPath containerPath, IDLTKProject project)
+	public void initialize(IPath containerPath, IScriptProject project)
 			throws CoreException {
 		int size = containerPath.segmentCount();
 		if (size > 0) {
@@ -55,7 +55,7 @@ public class InterpreterContainerInitializer extends
 					container = new InterpreterContainer(interp, containerPath);
 				}
 				DLTKCore.setBuildpathContainer(containerPath,
-						new IDLTKProject[] { project },
+						new IScriptProject[] { project },
 						new IBuildpathContainer[] { container }, null);
 			}
 		}
@@ -106,7 +106,7 @@ public class InterpreterContainerInitializer extends
 	 * 
 	 */
 	public boolean canUpdateBuildpathContainer(IPath containerPath,
-			IDLTKProject project) {
+			IScriptProject project) {
 		if (containerPath != null && containerPath.segmentCount() > 0) {
 			if (ScriptRuntime.INTERPRETER_CONTAINER.equals(containerPath
 					.segment(0))) {
@@ -121,7 +121,7 @@ public class InterpreterContainerInitializer extends
 		return false;
 	}
 
-	private String getNatureFromProject(IDLTKProject project) {
+	private String getNatureFromProject(IScriptProject project) {
 		try {
 			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
 					.getLanguageToolkit(project);
@@ -135,7 +135,7 @@ public class InterpreterContainerInitializer extends
 	}
 
 	public void requestBuildpathContainerUpdate(IPath containerPath,
-			IDLTKProject project, IBuildpathContainer containerSuggestion)
+			IScriptProject project, IBuildpathContainer containerSuggestion)
 			throws CoreException {
 		IInterpreterInstall Interpreter = resolveInterpreter(
 				getNatureFromProject(project), containerPath);
@@ -192,7 +192,7 @@ public class InterpreterContainerInitializer extends
 		ScriptRuntime.saveInterpreterConfiguration();
 	}
 
-	public String getDescription(IPath containerPath, IDLTKProject project) {
+	public String getDescription(IPath containerPath, IScriptProject project) {
 		String tag = null;
 		if (containerPath.segmentCount() > 2) {
 			tag = getInterpreterName(containerPath);

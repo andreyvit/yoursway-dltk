@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.buildpath.BuildpathModifier;
@@ -65,7 +65,7 @@ public class IncludeToBuildpathAction extends Action implements ISelectionChange
 	 */
 	public void run() {
 		IResource resource= (IResource)fSelectedElements.get(0);
-		final IDLTKProject project= DLTKCore.create(resource.getProject());
+		final IScriptProject project= DLTKCore.create(resource.getProject());
 
 		try {
 			final IRunnableWithProgress runnable= new IRunnableWithProgress() {
@@ -89,7 +89,7 @@ public class IncludeToBuildpathAction extends Action implements ISelectionChange
 		}
 	}
 
-	protected List unExclude(List elements, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	protected List unExclude(List elements, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -136,7 +136,7 @@ public class IncludeToBuildpathAction extends Action implements ISelectionChange
 				fSelectedElements.add(element);
 				if (element instanceof IResource) {
 					IResource resource= (IResource)element;
-					IDLTKProject project= DLTKCore.create(resource.getProject());
+					IScriptProject project= DLTKCore.create(resource.getProject());
 					if (project == null || !project.exists())
 						return false;
 

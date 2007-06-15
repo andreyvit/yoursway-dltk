@@ -443,7 +443,7 @@ public abstract class Openable extends ModelElement implements IOpenable,
 					IModelStatusConstants.INDEX_OUT_OF_BOUNDS));
 		}
 		
-		DLTKProject project = (DLTKProject) getScriptProject();
+		ScriptProject project = (ScriptProject) getScriptProject();
 
 		//TODO: Add searchable environment support.
 		SearchableEnvironment environment = project
@@ -505,7 +505,7 @@ public abstract class Openable extends ModelElement implements IOpenable,
 			org.eclipse.dltk.compiler.env.ISourceModule cu, int offset,
 			int length, WorkingCopyOwner owner) throws ModelException {
 
-		DLTKProject project = (DLTKProject) getScriptProject();
+		ScriptProject project = (ScriptProject) getScriptProject();
 		SearchableEnvironment environment = null;
 		try {
 			environment = project.newSearchableNameEnvironment(owner);

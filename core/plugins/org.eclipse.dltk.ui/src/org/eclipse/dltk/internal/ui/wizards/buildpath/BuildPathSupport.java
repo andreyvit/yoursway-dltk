@@ -21,7 +21,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
@@ -82,7 +82,7 @@ public class BuildPathSupport {
 	 * @param monitor The progress monitor to use
 	 * @throws CoreException
 	 */
-	public static void modifyBuildpathEntry(Shell shell, IBuildpathEntry newEntry, String[] changedAttributes, IDLTKProject jproject, IPath containerPath, IProgressMonitor monitor) throws CoreException {
+	public static void modifyBuildpathEntry(Shell shell, IBuildpathEntry newEntry, String[] changedAttributes, IScriptProject jproject, IPath containerPath, IProgressMonitor monitor) throws CoreException {
 		if (containerPath != null) {
 			updateContainerBuildpath(jproject, containerPath, newEntry, changedAttributes, monitor);
 		} else {
@@ -100,11 +100,11 @@ public class BuildPathSupport {
 	 * @param monitor The progress monitor to use
 	 * @throws CoreException
 	 */
-	public static void modifyBuildpathEntry(Shell shell, IBuildpathEntry newEntry, IDLTKProject jproject, IPath containerPath, IProgressMonitor monitor) throws CoreException {
+	public static void modifyBuildpathEntry(Shell shell, IBuildpathEntry newEntry, IScriptProject jproject, IPath containerPath, IProgressMonitor monitor) throws CoreException {
 		modifyBuildpathEntry(shell, newEntry, null, jproject, containerPath, monitor);
 	}
 
-	private static void updateContainerBuildpath(IDLTKProject jproject, IPath containerPath, IBuildpathEntry newEntry, String[] changedAttributes, IProgressMonitor monitor) throws CoreException {
+	private static void updateContainerBuildpath(IScriptProject jproject, IPath containerPath, IBuildpathEntry newEntry, String[] changedAttributes, IProgressMonitor monitor) throws CoreException {
 		IBuildpathContainer container= DLTKCore.getBuildpathContainer(containerPath, jproject);
 		if (container == null) {
 			throw new CoreException(new Status(IStatus.ERROR, DLTKUIPlugin.PLUGIN_ID, IStatus.ERROR, "Container " + containerPath + " cannot be resolved", null));  //$NON-NLS-1$//$NON-NLS-2$
@@ -123,7 +123,7 @@ public class BuildPathSupport {
 		monitor.worked(1);
 	}
 
-	private static IBuildpathEntry getUpdatedEntry(IBuildpathEntry currEntry, IBuildpathEntry updatedEntry, String[] updatedAttributes, IDLTKProject jproject) {
+	private static IBuildpathEntry getUpdatedEntry(IBuildpathEntry currEntry, IBuildpathEntry updatedEntry, String[] updatedAttributes, IScriptProject jproject) {
 		if (updatedAttributes == null) {
 			return updatedEntry; // used updated entry 'as is'
 		}
@@ -143,7 +143,7 @@ public class BuildPathSupport {
 	 * @param newEntries The updated entries
 	 * @throws CoreException
 	 */
-	public static void requestContainerUpdate(IDLTKProject jproject, IBuildpathContainer container, IBuildpathEntry[] newEntries) throws CoreException {
+	public static void requestContainerUpdate(IScriptProject jproject, IBuildpathContainer container, IBuildpathEntry[] newEntries) throws CoreException {
 		IPath containerPath= container.getPath();
 		IBuildpathContainer updatedContainer= new UpdatedBuildpathContainer(container, newEntries);
 		BuildpathContainerInitializer initializer= DLTKCore.getBuildpathContainerInitializer(containerPath.segment(0));
@@ -157,7 +157,7 @@ public class BuildPathSupport {
 		}
 	}
 
-	private static void updateProjectBuildpath(Shell shell, IDLTKProject jproject, IBuildpathEntry newEntry, String[] changedAttributes, IProgressMonitor monitor) throws ModelException {
+	private static void updateProjectBuildpath(Shell shell, IScriptProject jproject, IBuildpathEntry newEntry, String[] changedAttributes, IProgressMonitor monitor) throws ModelException {
 		IBuildpathEntry[] oldBuildpath= jproject.getRawBuildpath();
 		int nEntries= oldBuildpath.length;
 		ArrayList newEntries= new ArrayList(nEntries + 1);

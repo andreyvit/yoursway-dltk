@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ScriptModelUtil;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IExternalSourceModule;
 import org.eclipse.dltk.core.IForeignElement;
 import org.eclipse.dltk.core.IMember;
@@ -70,8 +70,8 @@ public class EditorUtility {
 	 *            the editor input
 	 * @return the corresponding DLTK project
 	 */
-	public static IDLTKProject getDLTKProject(IEditorInput input) {
-		IDLTKProject dProject = null;
+	public static IScriptProject getDLTKProject(IEditorInput input) {
+		IScriptProject dProject = null;
 		if (input instanceof IFileEditorInput) {
 			IProject project = ((IFileEditorInput) input).getFile()
 					.getProject();
@@ -84,7 +84,7 @@ public class EditorUtility {
 			IModelElement element = (IModelElement) input
 					.getAdapter(IModelElement.class);
 			if (element != null) {
-				IDLTKProject project = element.getScriptProject();
+				IScriptProject project = element.getScriptProject();
 				if (project != null && project.exists()) {
 					return project;
 				}

@@ -13,12 +13,12 @@ import java.util.HashSet;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.compiler.env.AccessRuleSet;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.ModelManager;
 
 
@@ -87,12 +87,12 @@ public class DLTKWorkspaceScope extends DLTKSearchScope {
 	public void initialize(int size) {
 		super.initialize(size);
 		try {
-			IDLTKProject[] projects = ModelManager.getModelManager().getModel()
+			IScriptProject[] projects = ModelManager.getModelManager().getModel()
 					.getScriptProjects();
 			for (int i = 0, length = projects.length; i < length; i++) {
 				int includeMask = SOURCES | APPLICATION_LIBRARIES
 						| SYSTEM_LIBRARIES;
-				add((DLTKProject) projects[i], null, includeMask, new HashSet(
+				add((ScriptProject) projects[i], null, includeMask, new HashSet(
 						length * 2, 1), null);
 			}
 		} catch (ModelException ignored) {

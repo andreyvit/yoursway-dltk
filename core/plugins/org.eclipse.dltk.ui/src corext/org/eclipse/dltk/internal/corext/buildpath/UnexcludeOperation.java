@@ -17,7 +17,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
@@ -59,7 +59,7 @@ public class UnexcludeOperation extends BuildpathModifierOperation {
         fException= null;
 		try {
 			List resources= getSelectedElements();
-			IDLTKProject project= fInformationProvider.getDLTKProject();
+			IScriptProject project= fInformationProvider.getDLTKProject();
 			result= unExclude(resources, project, monitor);
 		} catch (CoreException e) {
 			fException= e;
@@ -85,7 +85,7 @@ public class UnexcludeOperation extends BuildpathModifierOperation {
 	public boolean isValid(List elements, int[] types) throws ModelException {
 	    if (elements.size() == 0)
 	        return false;
-	    IDLTKProject project= fInformationProvider.getDLTKProject();
+	    IScriptProject project= fInformationProvider.getDLTKProject();
 	    for(int i= 0; i < elements.size(); i++) {
 	        Object element= elements.get(i);
 	        switch (types[i]) {
@@ -107,7 +107,7 @@ public class UnexcludeOperation extends BuildpathModifierOperation {
 	 * false</code> otherwise
 	 * @throws ModelException
 	 */
-	private boolean isValidFolder(IResource resource, IDLTKProject project) throws ModelException {
+	private boolean isValidFolder(IResource resource, IScriptProject project) throws ModelException {
 		return BuildpathModifier.isExcluded(resource, project);
 	}
 
@@ -120,7 +120,7 @@ public class UnexcludeOperation extends BuildpathModifierOperation {
 	 * false</code> otherwise
 	 * @throws ModelException
 	 */
-	private boolean isValidExcludedFolder(IResource resource, IDLTKProject project) throws ModelException {
+	private boolean isValidExcludedFolder(IResource resource, IScriptProject project) throws ModelException {
 		return BuildpathModifier.isExcluded(resource, project);
 	}
 
@@ -133,7 +133,7 @@ public class UnexcludeOperation extends BuildpathModifierOperation {
 	 * false</code> otherwise
 	 * @throws ModelException
 	 */
-	private boolean isValidExcludedFile(IFile file, IDLTKProject project) throws ModelException {
+	private boolean isValidExcludedFile(IFile file, IScriptProject project) throws ModelException {
 		return BuildpathModifier.isExcluded(file, project);
 	}
 

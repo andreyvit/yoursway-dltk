@@ -13,13 +13,13 @@ package org.eclipse.dltk.internal.ui;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 
 
 /**
  * An adapter factory for IDLTKProjects.
  */
-public class DLTKProjectAdapterFactory implements IAdapterFactory {
+public class ScriptProjectAdapterFactory implements IAdapterFactory {
 	
 	private static Class[] PROPERTIES= new Class[] {
 		IProject.class,
@@ -31,7 +31,7 @@ public class DLTKProjectAdapterFactory implements IAdapterFactory {
 	
 	public Object getAdapter(Object element, Class key) {
 		if (IProject.class.equals(key)) {
-			IDLTKProject dltkProject= (IDLTKProject)element;
+			IScriptProject dltkProject= (IScriptProject)element;
 			return dltkProject.getProject();
 		} 
 		return null; 

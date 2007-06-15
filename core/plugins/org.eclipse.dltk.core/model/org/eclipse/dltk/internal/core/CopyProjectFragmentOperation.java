@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -142,7 +142,7 @@ public class CopyProjectFragmentOperation extends ModelOperation {
 	protected void addEntryToBuildpath(IBuildpathEntry rootEntry, IWorkspaceRoot workspaceRoot) throws ModelException {
 		
 		IProject destProject = workspaceRoot.getProject(this.destination.segment(0));
-		IDLTKProject jProject = DLTKCore.create(destProject);
+		IScriptProject jProject = DLTKCore.create(destProject);
 		IBuildpathEntry[] buildpath = jProject.getRawBuildpath();
 		int length = buildpath.length;
 		IBuildpathEntry[] newBuildpath;
@@ -235,7 +235,7 @@ public class CopyProjectFragmentOperation extends ModelOperation {
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(destProjectName);
 			if (DLTKLanguageManager.hasScriptNature(project)) {
 				try {
-					IDLTKProject destProject = DLTKCore.create(project);
+					IScriptProject destProject = DLTKCore.create(project);
 					IBuildpathEntry[] destBuildpath = destProject.getRawBuildpath();
 					boolean foundSibling = false;
 					boolean foundExistingEntry = false;

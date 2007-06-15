@@ -22,7 +22,7 @@ public interface IScriptModel extends IModelElement, IParent, IOpenable {
 	 * @param name the name of the script project
 	 * @return the script project with the given name
 	 */
-	IDLTKProject getScriptProject(String name);
+	IScriptProject getScriptProject(String name);
 	/**
 	 * Returns the script projects in this model, or an empty array if there
 	 * are none.
@@ -31,7 +31,7 @@ public interface IScriptModel extends IModelElement, IParent, IOpenable {
 	 * are none
 	 * @exception ModelException if this request fails.
 	 */
-	IDLTKProject[] getScriptProjects() throws ModelException;
+	IScriptProject[] getScriptProjects() throws ModelException;
 	
 	/**
 	 * Deletes the given elements, forcing the operation if necessary and specified.

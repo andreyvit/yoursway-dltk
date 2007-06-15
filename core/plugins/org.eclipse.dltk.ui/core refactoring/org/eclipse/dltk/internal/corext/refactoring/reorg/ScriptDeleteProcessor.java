@@ -33,7 +33,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -485,7 +485,7 @@ public final class ScriptDeleteProcessor extends DeleteProcessor implements ICom
 			if (! (resource instanceof IFile))
 				continue;
 		
-			IDLTKProject project= DLTKCore.create(resource.getProject());
+			IScriptProject project= DLTKCore.create(resource.getProject());
 			if (project == null || ! project.exists())
 				continue;
 			IProjectFragment root= project.findProjectFragment(resource.getFullPath());

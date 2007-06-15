@@ -12,7 +12,7 @@ package org.eclipse.dltk.tcl.ui;
 import org.eclipse.dltk.tcl.internal.ui.text.TclColorConstants;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.PreferenceConstants;
-import org.eclipse.dltk.ui.preferences.NewDLTKProjectPreferencePage;
+import org.eclipse.dltk.ui.preferences.NewScriptProjectPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.graphics.RGB;
@@ -453,7 +453,7 @@ public class TclPreferenceConstants extends PreferenceConstants {
 						"4");
 
 		// do more complicated stuff
-		NewDLTKProjectPreferencePage.initDefaults(store);
+		NewScriptProjectPreferencePage.initDefaults(store);
 
 		store.setDefault(PreferenceConstants.APPEARANCE_COMPRESS_PACKAGE_NAMES,
 				false);

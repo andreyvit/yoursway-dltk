@@ -20,7 +20,7 @@ import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IAccessRule;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.ISearchableEnvironment;
@@ -33,7 +33,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 		ICompletionEngine {
 	protected static boolean DEBUG = DLTKCore.DEBUG_COMPLETION;
 
-	protected IDLTKProject dltkProject;
+	protected IScriptProject dltkProject;
 
 	// Accpets completion proposals
 	protected CompletionRequestor requestor;
@@ -560,7 +560,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 	public void setOptions(Map options) {
 	}
 
-	public void setProject(IDLTKProject project) {
+	public void setProject(IScriptProject project) {
 		this.dltkProject = project;
 	}
 

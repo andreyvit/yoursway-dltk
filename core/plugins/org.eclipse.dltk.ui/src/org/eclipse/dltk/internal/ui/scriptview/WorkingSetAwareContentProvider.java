@@ -21,7 +21,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptModel;
 import org.eclipse.dltk.internal.ui.navigator.ScriptExplorerContentProvider;
@@ -96,7 +96,7 @@ public abstract class WorkingSetAwareContentProvider extends ScriptExplorerConte
 			} else if (element instanceof IResource) {
 				IProject project= ((IResource)element).getProject();
 				add= project == null || project.isOpen();
-			} else if (element instanceof IDLTKProject) {
+			} else if (element instanceof IScriptProject) {
 				add= true;
 			} else if (element instanceof IModelElement) {
 				IProject project= getProject((IModelElement)element);
@@ -108,7 +108,7 @@ public abstract class WorkingSetAwareContentProvider extends ScriptExplorerConte
 				} else {
 					IProject project= (IProject)element.getAdapter(IProject.class);
 					if (project != null && project.exists()) {
-						IDLTKProject jp= DLTKCore.create(project);
+						IScriptProject jp= DLTKCore.create(project);
 						if (jp != null && jp.exists()) {
 							result.add(jp);
 						} else {
@@ -130,7 +130,7 @@ public abstract class WorkingSetAwareContentProvider extends ScriptExplorerConte
 	private IProject getProject(IModelElement element) {
 		if (element == null)
 			return null;
-		IDLTKProject project= element.getScriptProject();
+		IScriptProject project= element.getScriptProject();
 		if (project == null)
 			return null;
 		return project.getProject();

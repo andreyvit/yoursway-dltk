@@ -9,14 +9,14 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui.tests.core;
 
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
 import org.eclipse.dltk.ui.ScriptElementLabels;
-import org.eclipse.dltk.ui.tests.DLTKProjectHelper;
+import org.eclipse.dltk.ui.tests.ScriptProjectHelper;
 import org.eclipse.dltk.ui.tests.StringAsserts;
 
 public class ScriptElementLabelsTest extends AbstractModelTests {
@@ -25,7 +25,7 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 	
 	//private static final Class THIS= ScriptElementLabelsTest.class;
 	
-	private IDLTKProject fJProject1;
+	private IScriptProject fJProject1;
 
 	public ScriptElementLabelsTest(String name) {	
 		super (PROJECT_NAME, name);
@@ -36,7 +36,7 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 	}*/
 
 	protected void setUp() throws Exception {
-		fJProject1 = DLTKProjectHelper.createDLTKProject(PROJECT_NAME);
+		fJProject1 = ScriptProjectHelper.createDLTKProject(PROJECT_NAME);
 	}
 
 
@@ -52,7 +52,7 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 	public void testTypeLabelOuter() throws Exception {
 	
 		
-		IProjectFragment sourceFolder= DLTKProjectHelper.addSourceContainer(fJProject1, "src");
+		IProjectFragment sourceFolder= ScriptProjectHelper.addSourceContainer(fJProject1, "src");
 		//
 		IScriptFolder pack1= sourceFolder.getScriptFolder(""); //sourceFolder.createScriptFolder("org.test", false, null);
 		
@@ -82,7 +82,7 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 	
 	public void testTypeLabelInner() throws Exception {
 		
-		IProjectFragment sourceFolder= DLTKProjectHelper.addSourceContainer(fJProject1, "src");
+		IProjectFragment sourceFolder= ScriptProjectHelper.addSourceContainer(fJProject1, "src");
 		
 		IScriptFolder pack1= sourceFolder.getScriptFolder("");
 		
@@ -120,7 +120,7 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 	
 	public void testTypeLabelLocal() throws Exception {
 		
-		IProjectFragment sourceFolder= DLTKProjectHelper.addSourceContainer(fJProject1, "src");
+		IProjectFragment sourceFolder= ScriptProjectHelper.addSourceContainer(fJProject1, "src");
 		
 		IScriptFolder pack1= sourceFolder.createScriptFolder("", false, null);
 		

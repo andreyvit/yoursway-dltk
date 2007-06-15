@@ -27,11 +27,11 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.search.index.Index;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
-import org.eclipse.dltk.internal.core.DLTKProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.search.processing.JobManager;
 import org.eclipse.dltk.internal.core.util.Util;
 
@@ -61,7 +61,7 @@ public class IndexAllProject extends IndexRequest {
 		ReadWriteMonitor monitor = null;
 		try {
 			// Get source folder entries. Libraries are done as a separate job
-			DLTKProject dltkProject = (DLTKProject)DLTKCore.create(this.project);
+			ScriptProject dltkProject = (ScriptProject)DLTKCore.create(this.project);
 			IBuildpathEntry[] entries = dltkProject.getRawBuildpath(false, false);
 			int length = entries.length;
 			IBuildpathEntry[] sourceEntries = new IBuildpathEntry[length];
@@ -130,7 +130,7 @@ public class IndexAllProject extends IndexRequest {
 									switch(proxy.getType()) {
 										case IResource.FILE:
 											//if (org.eclipse.dltk.internal.core.util.Util.isValidSourceModuleName(parent, proxy.getName())) {
-											IDLTKProject dltkProject = DLTKCore.create(project);
+											IScriptProject dltkProject = DLTKCore.create(project);
 											IFile file = (IFile) proxy.requestResource();
 											if(org.eclipse.dltk.internal.core.util.Util.isValidSourceModule(dltkProject, file)) {
 												if (exclusionPatterns != null || inclusionPatterns != null)
@@ -158,7 +158,7 @@ public class IndexAllProject extends IndexRequest {
 									if (isCancelled) return false;
 									switch(proxy.getType()) {
 										case IResource.FILE :
-											IDLTKProject dltkProject = DLTKCore.create(project);
+											IScriptProject dltkProject = DLTKCore.create(project);
 											IFile file = (IFile) proxy.requestResource();
 											if(org.eclipse.dltk.internal.core.util.Util.isValidSourceModule(dltkProject, file)) {												
 												URI location = file.getLocationURI();

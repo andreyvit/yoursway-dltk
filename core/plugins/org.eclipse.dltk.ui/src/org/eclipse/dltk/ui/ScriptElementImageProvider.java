@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IExternalSourceModule;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
@@ -267,7 +267,7 @@ public class ScriptElementImageProvider {
 				return getSourceModuleIcon(element, external, renderFlags);
 
 			case IModelElement.SCRIPT_PROJECT:
-				IDLTKProject jp = (IDLTKProject) element;
+				IScriptProject jp = (IScriptProject) element;
 				if (jp.getProject().isOpen()) {
 					IProject project = jp.getProject();
 					IWorkbenchAdapter adapter = (IWorkbenchAdapter) project

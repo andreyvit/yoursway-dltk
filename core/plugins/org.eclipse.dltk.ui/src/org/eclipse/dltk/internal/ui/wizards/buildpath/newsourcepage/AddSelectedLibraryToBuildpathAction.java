@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.internal.corext.buildpath.BuildpathModifier;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
@@ -72,7 +72,7 @@ public class AddSelectedLibraryToBuildpathAction extends Action implements ISele
 			final IRunnableWithProgress runnable= new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 					try {
-				        IDLTKProject project= DLTKCore.create(files[0].getProject());
+				        IScriptProject project= DLTKCore.create(files[0].getProject());
 				        List result= addLibraryEntries(files, project, monitor);
 						selectAndReveal(new StructuredSelection(result));
 					} catch (CoreException e) {
@@ -91,7 +91,7 @@ public class AddSelectedLibraryToBuildpathAction extends Action implements ISele
 		}
 	}
 	
-	private List addLibraryEntries(IFile[] resources, IDLTKProject project, IProgressMonitor monitor) throws CoreException {
+	private List addLibraryEntries(IFile[] resources, IScriptProject project, IProgressMonitor monitor) throws CoreException {
 		List addedEntries= new ArrayList();
 		try {
 			monitor.beginTask(NewWizardMessages.BuildpathModifier_Monitor_AddToBuildpath, 4); 
@@ -148,7 +148,7 @@ public class AddSelectedLibraryToBuildpathAction extends Action implements ISele
 				Object element= iter.next();
 				if (element instanceof IFile) {
 					IFile file= (IFile)element;
-					IDLTKProject project= DLTKCore.create(file.getProject());
+					IScriptProject project= DLTKCore.create(file.getProject());
 					if (project == null)
 						return null;
 					

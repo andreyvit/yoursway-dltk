@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.core;
 
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.ModelException;
@@ -28,9 +28,9 @@ public class DiscardWorkingCopyOperation extends ModelOperation {
 		ModelManager manager = ModelManager.getModelManager();
 		int useCount = manager.discardPerWorkingCopyInfo(workingCopy);
 		if (useCount == 0) {
-			IDLTKProject scriptProject = workingCopy.getScriptProject();
-			if (ExternalDLTKProject.EXTERNAL_PROJECT_NAME.equals(scriptProject.getElementName())) {
-				manager.removePerProjectInfo((DLTKProject) scriptProject);
+			IScriptProject scriptProject = workingCopy.getScriptProject();
+			if (ExternalScriptProject.EXTERNAL_PROJECT_NAME.equals(scriptProject.getElementName())) {
+				manager.removePerProjectInfo((ScriptProject) scriptProject);
 				manager.containerRemove(scriptProject);
 			}
 			if (!workingCopy.isPrimary()) {

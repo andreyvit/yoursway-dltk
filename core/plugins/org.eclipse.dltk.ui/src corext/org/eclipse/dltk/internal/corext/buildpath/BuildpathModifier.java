@@ -35,7 +35,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -101,7 +101,7 @@ public class BuildpathModifier {
 	 * the linked source folder
 	 * @throws CoreException
 	 */
-	protected List createLinkedSourceFolder(ILinkToQuery query, IDLTKProject project, IProgressMonitor monitor) throws CoreException {
+	protected List createLinkedSourceFolder(ILinkToQuery query, IScriptProject project, IProgressMonitor monitor) throws CoreException {
 		if (query.doQuery()) {
 			IFolder folder= query.getCreatedFolder();
 			if (folder != null) {
@@ -136,7 +136,7 @@ public class BuildpathModifier {
 	 * @see BuildpathModifierQueries.ICreateFolderQuery
 	 * @see BuildpathModifierQueries.OutputFolderQuery
 	 */
-	protected List createFolder(ICreateFolderQuery folderQuery, IDLTKProject project, IProgressMonitor monitor) throws OperationCanceledException, CoreException {
+	protected List createFolder(ICreateFolderQuery folderQuery, IScriptProject project, IProgressMonitor monitor) throws OperationCanceledException, CoreException {
 		if (folderQuery.doQuery()) {
 			IFolder folder= folderQuery.getCreatedFolder();
 			if (folder != null) {
@@ -175,7 +175,7 @@ public class BuildpathModifier {
 	 * @throws OperationCanceledException 
 	 * @see BuildpathModifierQueries.OutputFolderQuery
 	 */
-	protected List addToBuildpath(List elements, IDLTKProject project, IProgressMonitor monitor) throws OperationCanceledException, CoreException {
+	protected List addToBuildpath(List elements, IScriptProject project, IProgressMonitor monitor) throws OperationCanceledException, CoreException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -242,7 +242,7 @@ public class BuildpathModifier {
 	 * 
 	 * @see IAddArchivesQuery
 	 */
-	protected List addExternalArchives(IAddArchivesQuery query, IDLTKProject project, IProgressMonitor monitor) throws CoreException {
+	protected List addExternalArchives(IAddArchivesQuery query, IScriptProject project, IProgressMonitor monitor) throws CoreException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		IPath[] selected= query.doQuery();
@@ -289,7 +289,7 @@ public class BuildpathModifier {
 	 * 
 	 * @see IAddArchivesQuery
 	 */
-	protected List addLibraries(IAddLibrariesQuery query, IDLTKProject project, IProgressMonitor monitor) throws CoreException {
+	protected List addLibraries(IAddLibrariesQuery query, IScriptProject project, IProgressMonitor monitor) throws CoreException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		IBuildpathEntry[] selected= query.doQuery(project, project.getRawBuildpath());
@@ -319,7 +319,7 @@ public class BuildpathModifier {
 		return new ArrayList();
 	}
 	
-	protected List addLibraryEntries(List resources, IDLTKProject project, IProgressMonitor monitor) throws CoreException {
+	protected List addLibraryEntries(List resources, IScriptProject project, IProgressMonitor monitor) throws CoreException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		List addedEntries= new ArrayList();
@@ -366,7 +366,7 @@ public class BuildpathModifier {
 	 * @throws CoreException 
 	 * @throws OperationCanceledException 
 	 */
-	protected List removeFromBuildpath(IRemoveLinkedFolderQuery query, List elements, IDLTKProject project, IProgressMonitor monitor) throws CoreException {
+	protected List removeFromBuildpath(IRemoveLinkedFolderQuery query, List elements, IScriptProject project, IProgressMonitor monitor) throws CoreException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -378,7 +378,7 @@ public class BuildpathModifier {
 			for (int i= 0; i < elements.size(); i++) {
 				Object element= elements.get(i);
 				Object res= null;
-				if (element instanceof IDLTKProject) {
+				if (element instanceof IScriptProject) {
 					res= removeFromBuildpath(project, existingEntries, new SubProgressMonitor(monitor, 1));
 				} else {
 					if (element instanceof IProjectFragment) {
@@ -446,9 +446,9 @@ public class BuildpathModifier {
 	 * @return a list of <code>IModelElement</code>s corresponding to the included ones.
 	 * @throws ModelException
 	 * 
-	 * @see #exclude(List, IDLTKProject, IProgressMonitor)
+	 * @see #exclude(List, IScriptProject, IProgressMonitor)
 	 */
-	protected List include(List elements, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	protected List include(List elements, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -494,7 +494,7 @@ public class BuildpathModifier {
 	 * @return list of objects representing the excluded elements
 	 * @throws ModelException
 	 */
-	protected List exclude(List scriptElements, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	protected List exclude(List scriptElements, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -535,9 +535,9 @@ public class BuildpathModifier {
 	 * @return a list of elements representing unexcluded elements 
 	 * @throws ModelException
 	 * 
-	 * @see #include(List, IDLTKProject, IProgressMonitor)
+	 * @see #include(List, IScriptProject, IProgressMonitor)
 	 */
-	protected List unInclude(List scriptElements, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	protected List unInclude(List scriptElements, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -575,10 +575,10 @@ public class BuildpathModifier {
 	 * @return an object representing the unexcluded element 
 	 * @throws ModelException
 	 * 
-	 * @see #exclude(List, IDLTKProject, IProgressMonitor)
-	 * @see #unExclude(List, IDLTKProject, IProgressMonitor)
+	 * @see #exclude(List, IScriptProject, IProgressMonitor)
+	 * @see #unExclude(List, IScriptProject, IProgressMonitor)
 	 */
-	protected List unExclude(List elements, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	protected List unExclude(List elements, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -614,7 +614,7 @@ public class BuildpathModifier {
 	 * cancelled
 	 * @throws ModelException
 	 */
-	protected IModelElement editFilters(IModelElement element, IDLTKProject project, IInclusionExclusionQuery query, IProgressMonitor monitor) throws ModelException {
+	protected IModelElement editFilters(IModelElement element, IScriptProject project, IInclusionExclusionQuery query, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -655,7 +655,7 @@ public class BuildpathModifier {
 	 * They can either be of type <code>BPListElement</code>, <code>IDLTKProject</code> or 
 	 * <code>IProjectFragment</code>
 	 */
-	protected List reset(List elements, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	protected List reset(List elements, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -667,7 +667,7 @@ public class BuildpathModifier {
 				if (element instanceof IModelElement) {
 					IModelElement scriptElement= (IModelElement) element;
 					IProjectFragment root;
-					if (element instanceof IDLTKProject)
+					if (element instanceof IScriptProject)
 						root= project.getProjectFragment(project.getResource());
 					else
 						root= (IProjectFragment) element;
@@ -697,7 +697,7 @@ public class BuildpathModifier {
 	 * build path entries of the project
 	 * @throws ModelException
 	 */
-	public static List getExistingEntries(IDLTKProject project) throws ModelException {
+	public static List getExistingEntries(IScriptProject project) throws ModelException {
 		IBuildpathEntry[] buildpathEntries= project.getRawBuildpath();
 		ArrayList newBuildPath= new ArrayList();
 		for (int i= 0; i < buildpathEntries.length; i++) {
@@ -760,7 +760,7 @@ public class BuildpathModifier {
 	 * @return resolved fragment root
 	 * @throws ModelException
 	 */
-	public static IProjectFragment getFragmentRoot(IResource resource, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	public static IProjectFragment getFragmentRoot(IResource resource, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		IModelElement scriptElem= null;
@@ -778,7 +778,7 @@ public class BuildpathModifier {
 			if (container == null)
 				return null;
 		} while (scriptElem == null || !(scriptElem instanceof IProjectFragment));
-		if (scriptElem instanceof IDLTKProject)
+		if (scriptElem instanceof IScriptProject)
 			scriptElem= project.getProjectFragment(project.getResource());
 		return (IProjectFragment) scriptElem;
 	}
@@ -795,7 +795,7 @@ public class BuildpathModifier {
 	 * is no such entry
 	 * @throws ModelException
 	 */
-	public static IBuildpathEntry getBuildpathEntryFor(IPath path, IDLTKProject project, int entryKind) throws ModelException {
+	public static IBuildpathEntry getBuildpathEntryFor(IPath path, IScriptProject project, int entryKind) throws ModelException {
 		IBuildpathEntry[] entries= project.getRawBuildpath();
 		for (int i= 0; i < entries.length; i++) {
 			IBuildpathEntry entry= entries[i];
@@ -829,7 +829,7 @@ public class BuildpathModifier {
 	 * <code>false</code> otherwise.
 	 * @throws ModelException 
 	 */
-	public static boolean isIncluded(IModelElement selection, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	public static boolean isIncluded(IModelElement selection, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -853,7 +853,7 @@ public class BuildpathModifier {
 	 * false</code> otherwise
 	 * @throws ModelException
 	 */
-	public static boolean isExcluded(IResource resource, IDLTKProject project) throws ModelException {
+	public static boolean isExcluded(IResource resource, IScriptProject project) throws ModelException {
 		IProjectFragment root= getFragmentRoot(resource, project, null);
 		if (root == null)
 			return false;
@@ -874,7 +874,7 @@ public class BuildpathModifier {
 	 * <code>false</code> otherwise
 	 * @throws ModelException
 	 */
-	public static boolean parentExcluded(IResource resource, IDLTKProject project) throws ModelException {
+	public static boolean parentExcluded(IResource resource, IScriptProject project) throws ModelException {
 		if (resource.getFullPath().equals(project.getPath()))
 			return false;
 		IProjectFragment root= getFragmentRoot(resource, project, null);
@@ -934,7 +934,7 @@ public class BuildpathModifier {
 	 * @return <code>true</code> if <code>project</code> is a source folder
 	 * <code>false</code> otherwise.
 	 */
-	public static boolean isSourceFolder(IDLTKProject project) throws ModelException {
+	public static boolean isSourceFolder(IScriptProject project) throws ModelException {
 		return BuildpathModifier.getBuildpathEntryFor(project.getPath(), project, IBuildpathEntry.BPE_SOURCE) != null;
 	}
 	
@@ -957,7 +957,7 @@ public class BuildpathModifier {
 	 * <code>false</code> otherwise.
 	 * @throws ModelException 
 	 */
-	public static boolean includeFiltersEmpty(IResource resource, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	public static boolean includeFiltersEmpty(IResource resource, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -1006,7 +1006,7 @@ public class BuildpathModifier {
 	 * @throws CoreException 
 	 * @throws OperationCanceledException 
 	 */
-	public static BPListElement addToBuildpath(IResource resource, List existingEntries, List newEntries, IDLTKProject project, IProgressMonitor monitor) throws OperationCanceledException, CoreException {
+	public static BPListElement addToBuildpath(IResource resource, List existingEntries, List newEntries, IScriptProject project, IProgressMonitor monitor) throws OperationCanceledException, CoreException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -1028,7 +1028,7 @@ public class BuildpathModifier {
 	 * otherwise
 	 * @throws ModelException
 	 */
-	public static boolean isArchive(IFile file, IDLTKProject project) throws ModelException {
+	public static boolean isArchive(IFile file, IScriptProject project) throws ModelException {
 		if (!ArchiveFileFilter.isArchivePath(file.getFullPath()))
 			return false;
 		if (project != null && project.exists() && (project.findProjectFragment(file.getFullPath()) == null))
@@ -1046,7 +1046,7 @@ public class BuildpathModifier {
 	 * @throws CoreException 
 	 * @throws OperationCanceledException 
 	 */
-	public static BPListElement addToBuildpath(IModelElement scriptElement, List existingEntries, List newEntries, IDLTKProject project, IProgressMonitor monitor) throws OperationCanceledException, CoreException {
+	public static BPListElement addToBuildpath(IModelElement scriptElement, List existingEntries, List newEntries, IScriptProject project, IProgressMonitor monitor) throws OperationCanceledException, CoreException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -1068,7 +1068,7 @@ public class BuildpathModifier {
 	 * @return returns the script project
 	 * @throws CoreException
 	 */
-	public static IDLTKProject removeFromBuildpath(IDLTKProject project, List existingEntries, IProgressMonitor monitor) throws CoreException {
+	public static IScriptProject removeFromBuildpath(IScriptProject project, List existingEntries, IProgressMonitor monitor) throws CoreException {
 		BPListElement elem= getListElement(project.getPath(), existingEntries);
 		if (elem != null) {
 			existingEntries.remove(elem);
@@ -1087,7 +1087,7 @@ public class BuildpathModifier {
 	 * @return returns the <code>IResource</code> that has been removed from the build path; 
 	 * is of type <code>IFile</code> if the root was an archive, otherwise <code>IFolder</code> or <code>null<code> for external archives.
 	 */
-	public static IResource removeFromBuildpath(IProjectFragment root, List existingEntries, IDLTKProject project, IProgressMonitor monitor) throws CoreException {
+	public static IResource removeFromBuildpath(IProjectFragment root, List existingEntries, IScriptProject project, IProgressMonitor monitor) throws CoreException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -1111,7 +1111,7 @@ public class BuildpathModifier {
 	 * entries of the project.
 	 * @return returns a <code>List</code> of <code>BPListElement</code> of modified elements, not null.
 	 */
-	public static List removeFilters(IPath path, IDLTKProject project, List existingEntries) {
+	public static List removeFilters(IPath path, IScriptProject project, List existingEntries) {
 		if (path == null)
 			return Collections.EMPTY_LIST;
 		
@@ -1172,9 +1172,9 @@ public class BuildpathModifier {
 	 *
 	 * @throws ModelException
 	 * 
-	 * @see #exclude(List, IDLTKProject, IProgressMonitor)
+	 * @see #exclude(List, IScriptProject, IProgressMonitor)
 	 */
-	private void include(IResource resource, BPListElement entry, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	private void include(IResource resource, BPListElement entry, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -1209,7 +1209,7 @@ public class BuildpathModifier {
 	 * @return a <code>IResource</code> corresponding to the excluded element
 	 * @throws ModelException 
 	 */
-	private static IResource exclude(String name, IPath fullPath, BPListElement entry, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	private static IResource exclude(String name, IPath fullPath, BPListElement entry, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		IResource result;
@@ -1251,7 +1251,7 @@ public class BuildpathModifier {
 	 * @param project the script project
 	 * @param monitor progress monitor, can be <code>null</code>
 	 */
-	public static void exclude(IPath path, List existingEntries, List newEntries, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	public static void exclude(IPath path, List existingEntries, List newEntries, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -1295,7 +1295,7 @@ public class BuildpathModifier {
 	 * @return the resulting <code>IResource<code>
 	 * @throws ModelException
 	 */
-	public static IResource exclude(IModelElement scriptElement, BPListElement entry, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	public static IResource exclude(IModelElement scriptElement, BPListElement entry, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -1322,9 +1322,9 @@ public class BuildpathModifier {
 	 * @param monitor progress monitor, can be <code>null</code>
 	 * @throws ModelException
 	 * 
-	 * @see #include(List, IDLTKProject, IProgressMonitor)
+	 * @see #include(List, IScriptProject, IProgressMonitor)
 	 */
-	private void unInclude(IModelElement scriptElement, BPListElement entry, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	private void unInclude(IModelElement scriptElement, BPListElement entry, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -1355,9 +1355,9 @@ public class BuildpathModifier {
 	 * @param monitor progress monitor, can be <code>null</code>
 	 * @throws ModelException
 	 * 
-	 * @see #exclude(List, IDLTKProject, IProgressMonitor)
+	 * @see #exclude(List, IScriptProject, IProgressMonitor)
 	 */
-	public static void unExclude(IResource resource, BPListElement entry, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	public static void unExclude(IResource resource, BPListElement entry, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -1381,7 +1381,7 @@ public class BuildpathModifier {
 	 * @param monitor progress monitor, can be <code>null</code>
 	 * @throws ModelException
 	 */
-	private void resetFilters(IModelElement element, BPListElement entry, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	private void resetFilters(IModelElement element, BPListElement entry, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -1448,7 +1448,7 @@ public class BuildpathModifier {
 	 * @param monitor progress monitor, can be <code>null</code>
 	 * @throws ModelException in case that validation for the new entries fails
 	 */
-	private void updateBuildpath(List newEntries, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	private void updateBuildpath(List newEntries, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -1465,7 +1465,7 @@ public class BuildpathModifier {
 		}
 	}
 	
-	public static void commitBuildPath(List newEntries, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	public static void commitBuildPath(List newEntries, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		try {
@@ -1493,7 +1493,7 @@ public class BuildpathModifier {
 	 * @param project the script project
 	 * @return a list of elements corresponding to the passed entries.
 	 */
-	public static List getCorrespondingElements(List entries, IDLTKProject project) {
+	public static List getCorrespondingElements(List entries, IScriptProject project) {
 		List result= new ArrayList();
 		for (int i= 0; i < entries.size(); i++) {
 			Object element= entries.get(i);
@@ -1525,7 +1525,7 @@ public class BuildpathModifier {
 	 * @return the resource matching to the path. Can be
 	 * either an <code>IFile</code> or an <code>IFolder</code>.
 	 */
-	private static IResource getResource(IPath path, IDLTKProject project) {
+	private static IResource getResource(IPath path, IScriptProject project) {
 		return project.getProject().getWorkspace().getRoot().findMember(path);
 	}
 
@@ -1631,7 +1631,7 @@ public class BuildpathModifier {
 	 * of <code>path</code> and which are on the build path
 	 * @throws ModelException
 	 */
-	private List getFoldersOnBP(IPath path, IDLTKProject project, IProgressMonitor monitor) throws ModelException {
+	private List getFoldersOnBP(IPath path, IScriptProject project, IProgressMonitor monitor) throws ModelException {
 		if (monitor == null)
 			monitor= new NullProgressMonitor();
 		List srcFolders= new ArrayList();
@@ -1670,7 +1670,7 @@ public class BuildpathModifier {
 	 * @param monitor a progress monitor, can be <code>null</code>
 	 * @throws CoreException in case that validation on one of the new entries fails
 	 */
-	public static void setNewEntry(List existingEntries, List newEntries, IDLTKProject project, IProgressMonitor monitor) throws CoreException {
+	public static void setNewEntry(List existingEntries, List newEntries, IScriptProject project, IProgressMonitor monitor) throws CoreException {
 		try {
 			monitor.beginTask(NewWizardMessages.BuildpathModifier_Monitor_SetNewEntry, existingEntries.size()); 
 			for (int i= 0; i < newEntries.size(); i++) {
@@ -1711,7 +1711,7 @@ public class BuildpathModifier {
 	 * @param project the script project
 	 * @throws CoreException in case that validation fails
 	 */
-	private static void validateAndAddEntry(BPListElement entry, List existingEntries, IDLTKProject project) throws CoreException {
+	private static void validateAndAddEntry(BPListElement entry, List existingEntries, IScriptProject project) throws CoreException {
 		IPath path= entry.getPath();
 		//IPath projPath= project.getProject().getFullPath();
 		IWorkspaceRoot workspaceRoot= ResourcesPlugin.getWorkspace().getRoot();
@@ -1804,7 +1804,7 @@ public class BuildpathModifier {
 		}
 	}
 
-	private static boolean isExternalArchiveOrLibrary(BPListElement entry, IDLTKProject project) {
+	private static boolean isExternalArchiveOrLibrary(BPListElement entry, IScriptProject project) {
 		if (entry.getEntryKind() == IBuildpathEntry.BPE_LIBRARY || entry.getEntryKind() == IBuildpathEntry.BPE_CONTAINER) {
 			if (entry.getResource() instanceof IFolder) {
 				return false;
@@ -1835,8 +1835,8 @@ public class BuildpathModifier {
 	 * 
 	 * @param newEntries
 	 * 
-	 * @see #addToBuildpath(List, IDLTKProject, OutputFolderQuery, IProgressMonitor)
-	 * @see #removeFromBuildpath(IRemoveLinkedFolderQuery, List, IDLTKProject, IProgressMonitor)
+	 * @see #addToBuildpath(List, IScriptProject, OutputFolderQuery, IProgressMonitor)
+	 * @see #removeFromBuildpath(IRemoveLinkedFolderQuery, List, IScriptProject, IProgressMonitor)
 	 */
 	private void fireEvent(List newEntries) {
 		if (fListener != null)

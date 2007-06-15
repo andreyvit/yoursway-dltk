@@ -14,7 +14,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 
 
 /**
@@ -241,5 +241,5 @@ public interface IRuntimeBuildpathEntry {
 	 * or <code>null</code> if none
 	 *
 	 */
-	public IDLTKProject getDLTKProject();
+	public IScriptProject getDLTKProject();
 }

@@ -24,7 +24,7 @@ import org.eclipse.dltk.core.CompletionContext;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
@@ -83,7 +83,7 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 
 	private final ISourceModule fSourceModule;
 
-	private final IDLTKProject fScriptProject;
+	private final IScriptProject fScriptProject;
 
 	private int fUserReplacementLength;
 
@@ -135,11 +135,11 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 	 *            the project that the result collector will operate on, or
 	 *            <code>null</code>
 	 */
-	public ScriptCompletionProposalCollector(IDLTKProject project) {
+	public ScriptCompletionProposalCollector(IScriptProject project) {
 		this(project, null);
 	}
 
-	protected ScriptCompletionProposalCollector(IDLTKProject project, ISourceModule cu) {
+	protected ScriptCompletionProposalCollector(IScriptProject project, ISourceModule cu) {
 		fScriptProject = project;
 		fSourceModule = cu;
 		fUserReplacementLength = -1;
@@ -445,7 +445,7 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 
 	/**
 	 * Returns the compilation unit that the receiver operates on, or
-	 * <code>null</code> if the <code>IScriptProject</code> constructor was
+	 * <code>null</code> if the <code>IDLTKProject</code> constructor was
 	 * used to create the receiver.
 	 * 
 	 * @return the compilation unit that the receiver operates on, or
@@ -584,7 +584,7 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 			String displayString, int i, boolean isInDoc);
 
 	protected abstract ScriptCompletionProposal createOverrideCompletionProposal(
-			IDLTKProject scriptProject, ISourceModule compilationUnit,
+			IScriptProject scriptProject, ISourceModule compilationUnit,
 			String name, String[] paramTypes, int start, int length,
 			String label, String string);
 

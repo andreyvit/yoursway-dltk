@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ModelException;
@@ -122,7 +122,7 @@ public class GenerateBuildPathActionGroup extends ActionGroup {
     private abstract static class CreateSourceFolderAction extends OpenBuildPathWizardAction {
 
 		private AddSourceFolderWizard fAddSourceFolderWizard;
-		private IDLTKProject fSelectedProject;
+		private IScriptProject fSelectedProject;
 		private final boolean fIsLinked;
 		
 		public CreateSourceFolderAction(boolean isLinked) {
@@ -144,8 +144,8 @@ public class GenerateBuildPathActionGroup extends ActionGroup {
 		 * {@inheritDoc}
 		 */
 		public boolean selectionChanged(IStructuredSelection selection) {
-			if (selection.size() == 1 && selection.getFirstElement() instanceof IDLTKProject) {
-				fSelectedProject= (IDLTKProject)selection.getFirstElement();
+			if (selection.size() == 1 && selection.getFirstElement() instanceof IScriptProject) {
+				fSelectedProject= (IScriptProject)selection.getFirstElement();
 				return true;
 			}
 			return false;
@@ -185,7 +185,7 @@ public class GenerateBuildPathActionGroup extends ActionGroup {
     
     public static class EditFilterAction extends OpenBuildPathWizardAction {
     	
-    	private IDLTKProject fSelectedProject;
+    	private IScriptProject fSelectedProject;
     	private IModelElement fSelectedElement;
 		private EditFilterWizard fEditFilterWizard;
     	
@@ -216,8 +216,8 @@ public class GenerateBuildPathActionGroup extends ActionGroup {
 			
 			try {
 				Object element= selection.getFirstElement();
-				if (element instanceof IDLTKProject) {
-					IDLTKProject project= (IDLTKProject)element;	
+				if (element instanceof IScriptProject) {
+					IScriptProject project= (IScriptProject)element;	
 					if (BuildpathModifier.isSourceFolder(project)) {
 						fSelectedProject= project;
 						fSelectedElement= (IModelElement)element;
@@ -225,7 +225,7 @@ public class GenerateBuildPathActionGroup extends ActionGroup {
 					}
 				} else if (element instanceof IProjectFragment) {
 					IProjectFragment ProjectFragment= ((IProjectFragment) element);
-					IDLTKProject project= ProjectFragment.getScriptProject();
+					IScriptProject project= ProjectFragment.getScriptProject();
 					if (ProjectFragment.getKind() == IProjectFragment.K_SOURCE && project != null) {
 						fSelectedProject= project;
 						fSelectedElement= (IModelElement)element;

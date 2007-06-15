@@ -24,7 +24,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ModelException;
@@ -583,7 +583,7 @@ public class PasteAction extends SelectionDispatchAction{
 				
 		private boolean canPasteFilesOn(Object target) {
 			boolean isScriptFolder= target instanceof IProjectFragment;
-			boolean isScriptProject= target instanceof IDLTKProject;
+			boolean isScriptProject= target instanceof IScriptProject;
 			boolean isProjectFragment= target instanceof IProjectFragment;
 			boolean isContainer= target instanceof IContainer;
 			

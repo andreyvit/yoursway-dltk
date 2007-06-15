@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
 import org.eclipse.dltk.javascript.internal.ui.formatting.DefaultCodeFormatterConstants;
@@ -408,7 +408,7 @@ public class IndentAction extends TextEditorAction {
 	 * @since 3.1
 	 */
 	private String getCoreFormatterOption(String key) {
-		IDLTKProject project= getJavaProject();
+		IScriptProject project= getJavaProject();
 		if (project == null)
 			return DLTKCore.getOption(key);
 		return project.getOption(key, true);
@@ -439,7 +439,7 @@ public class IndentAction extends TextEditorAction {
 	 *         <code>null</code> if it cannot be found
 	 * @since 3.1
 	 */
-	private IDLTKProject getJavaProject() {
+	private IScriptProject getJavaProject() {
 		ITextEditor editor= getTextEditor();
 		if (editor == null)
 			return null;

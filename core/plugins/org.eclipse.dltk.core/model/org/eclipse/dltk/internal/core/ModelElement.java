@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.PlatformObject;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementVisitor;
@@ -346,10 +346,10 @@ public abstract class ModelElement extends PlatformObject implements
 	/**
 	 * @see IModelElement
 	 */
-	public IDLTKProject getScriptProject() {
+	public IScriptProject getScriptProject() {
 		IModelElement current = this;
 		do {
-			if (current instanceof IDLTKProject) return (IDLTKProject) current;
+			if (current instanceof IScriptProject) return (IScriptProject) current;
 		} while ((current = current.getParent()) != null);
 		return null;
 	}

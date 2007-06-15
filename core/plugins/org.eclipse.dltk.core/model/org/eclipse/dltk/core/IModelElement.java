@@ -41,7 +41,7 @@ public interface IModelElement extends IAdaptable {
 
 	/**
 	 * Constant representing a script project.
-	 * An element with this type can be safely cast to <code>IScriptProject</code>.
+	 * An element with this type can be safely cast to <code>IDLTKProject</code>.
 	 */
 	int SCRIPT_PROJECT = 2;
 
@@ -221,7 +221,7 @@ public interface IModelElement extends IAdaptable {
 	 * @return the containing Script project, or <code>null</code> if this element is
 	 *   not contained in a Script project
 	 */
-	IDLTKProject getScriptProject();
+	IScriptProject getScriptProject();
 
 	/**
 	 * Returns the smallest underlying resource that contains

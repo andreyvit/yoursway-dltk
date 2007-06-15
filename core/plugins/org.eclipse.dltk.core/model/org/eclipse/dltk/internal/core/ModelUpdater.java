@@ -13,7 +13,7 @@ package org.eclipse.dltk.internal.core;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -95,7 +95,7 @@ public class ModelUpdater {
 				break;
 			case IModelElement.SCRIPT_FOLDER :
 				// get rid of package fragment cache
-				DLTKProject project = (DLTKProject) element.getScriptProject();
+				ScriptProject project = (ScriptProject) element.getScriptProject();
 				project.resetCaches();
 				break;
 		}
@@ -133,7 +133,7 @@ public class ModelUpdater {
 				break;
 			case IModelElement.SCRIPT_PROJECT :
 				ModelManager manager = ModelManager.getModelManager();
-				DLTKProject scriptProject = (DLTKProject) element;
+				ScriptProject scriptProject = (ScriptProject) element;
 				manager.removePerProjectInfo(scriptProject);
 				manager.containerRemove(scriptProject);
 				break;
@@ -142,7 +142,7 @@ public class ModelUpdater {
 				break;
 			case IModelElement.SCRIPT_FOLDER :
 				// get rid of package fragment cache
-				DLTKProject project = (DLTKProject) element.getScriptProject();
+				ScriptProject project = (ScriptProject) element.getScriptProject();
 				project.resetCaches();
 				break;
 		}
@@ -165,7 +165,7 @@ public class ModelUpdater {
 			// update package fragment roots of projects that were affected
 			Iterator iterator = this.projectsToUpdate.iterator();
 			while (iterator.hasNext()) {
-				DLTKProject project = (DLTKProject) iterator.next();
+				ScriptProject project = (ScriptProject) iterator.next();
 				project.updateProjectFragments();
 			}
 		} finally {
@@ -201,14 +201,14 @@ public class ModelUpdater {
 	protected void traverseDelta(
 		IModelElementDelta delta,
 		IProjectFragment root,
-		IDLTKProject project) {
+		IScriptProject project) {
 
 		boolean processChildren = true;
 
 		Openable element = (Openable) delta.getElement();
 		switch (element.getElementType()) {
 			case IModelElement.SCRIPT_PROJECT :
-				project = (IDLTKProject) element;
+				project = (IScriptProject) element;
 				break;
 			case IModelElement.PROJECT_FRAGMENT :
 				root = (IProjectFragment) element;

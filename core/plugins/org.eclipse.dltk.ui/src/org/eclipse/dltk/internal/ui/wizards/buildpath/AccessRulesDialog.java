@@ -15,7 +15,7 @@ import java.util.List;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IDLTKProject;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
@@ -56,7 +56,7 @@ public class AccessRulesDialog extends StatusDialog {
 	private final SelectionButtonDialogField fCombineRulesCheckbox;
 	private final BPListElement fCurrElement;
 	
-	private final IDLTKProject fProject;
+	private final IScriptProject fProject;
 	private final boolean fParentCanSwitchPage;
 	
 	private static final int IDX_ADD= 0;
@@ -66,7 +66,7 @@ public class AccessRulesDialog extends StatusDialog {
 	private static final int IDX_REMOVE= 6;
 
 	
-	public AccessRulesDialog(Shell parent, BPListElement entryToEdit, IDLTKProject project, boolean parentCanSwitchPage) {
+	public AccessRulesDialog(Shell parent, BPListElement entryToEdit, IScriptProject project, boolean parentCanSwitchPage) {
 		super(parent);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 		
