@@ -11,25 +11,32 @@ package org.eclipse.dltk.ui;
 
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
+import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.dltk.ui.viewsupport.ScriptUILabelProvider;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 public interface IDLTKUILanguageToolkit {
 	ScriptElementLabels getScriptElementLabels();
+
 	ScriptUILabelProvider createScripUILabelProvider();
+	
+	IDLTKLanguageToolkit getCoreToolkit();
 
 	IPreferenceStore getPreferenceStore();
 
-	IDLTKLanguageToolkit getCoreToolkit();
-
 	IDialogSettings getDialogSettings();
-	
-	String getPartitioningID();
-	
-	String getEditorID(Object inputElement);
 
-	String getInterpreterContainerID();
+	String getPartitioningId();
+
+	String getEditorId(Object inputElement);
+
+	String getInterpreterContainerId();
+	
+	ScriptTextTools getTextTools();
+	
+	ScriptSourceViewerConfiguration createSourceViwerConfiguration();
 	
 	// Per module script explorer show childrens way.
 	boolean getProvideMembers(ISourceModule element);

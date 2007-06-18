@@ -19,45 +19,39 @@ public class DLTKUILanguageManager extends ClassBasedDLTKExtensionManager {
 	private static DLTKUILanguageManager instance = new DLTKUILanguageManager();
 	private final static String LANGUAGE_EXTPOINT = DLTKUIPlugin.PLUGIN_ID
 			+ ".language";
-	
+
 	private DLTKUILanguageManager() {
 		super(LANGUAGE_EXTPOINT);
 	}
 
-	public static IDLTKUILanguageToolkit getLanguageToolkit(String natureId)
-			throws CoreException {
+	public static IDLTKUILanguageToolkit getLanguageToolkit(String natureId) {
 		return (IDLTKUILanguageToolkit) instance.getObject(natureId);
 	}
 
-	public static IDLTKUILanguageToolkit getLanguageToolkit(IModelElement element)
-			throws CoreException {
+	public static IDLTKUILanguageToolkit getLanguageToolkit(
+			IModelElement element) {
 		return (IDLTKUILanguageToolkit) instance.getObject(element);
 	}
-	public static ScriptUILabelProvider createLabelProvider(IModelElement element ) {
-		IDLTKUILanguageToolkit languageToolkit = null;
-		try {
-			languageToolkit = getLanguageToolkit(element);
-		} catch (CoreException e) {
-//			e.printStackTrace();
-		}
-		if( languageToolkit != null ) {
-			ScriptUILabelProvider provider = languageToolkit.createScripUILabelProvider();
-			if( provider != null ) {
+
+	public static ScriptUILabelProvider createLabelProvider(
+			IModelElement element) {
+		IDLTKUILanguageToolkit languageToolkit = getLanguageToolkit(element);
+		if (languageToolkit != null) {
+			ScriptUILabelProvider provider = languageToolkit
+					.createScripUILabelProvider();
+			if (provider != null) {
 				return provider;
 			}
 		}
 		return new ScriptUILabelProvider();
 	}
-	public static ScriptUILabelProvider createLabelProvider( String nature ) {
-		IDLTKUILanguageToolkit languageToolkit = null;
-		try {
-			languageToolkit = getLanguageToolkit(nature);
-		} catch (CoreException e) {
-//			e.printStackTrace();
-		}
-		if( languageToolkit != null ) {
-			ScriptUILabelProvider provider = languageToolkit.createScripUILabelProvider();
-			if( provider != null ) {
+
+	public static ScriptUILabelProvider createLabelProvider(String nature) {
+		IDLTKUILanguageToolkit languageToolkit = getLanguageToolkit(nature);
+		if (languageToolkit != null) {
+			ScriptUILabelProvider provider = languageToolkit
+					.createScripUILabelProvider();
+			if (provider != null) {
 				return provider;
 			}
 		}
@@ -65,13 +59,6 @@ public class DLTKUILanguageManager extends ClassBasedDLTKExtensionManager {
 	}
 
 	public static IDLTKUILanguageToolkit getLanguageToolkitLower(String natureId) {
-		try {
-			return (IDLTKUILanguageToolkit) instance.getObjectLower(natureId);
-		} catch (CoreException e) {
-			if( DLTKCore.DEBUG ) {
-				e.printStackTrace();
-			}
-		}
-		return null;
+		return (IDLTKUILanguageToolkit) instance.getObjectLower(natureId);
 	}
 }

@@ -29,11 +29,10 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.IUpdate;
 
-
 /**
  * Action to run content assist on a specific proposal category.
  * 
-	 *
+ * 
  */
 final class SpecificContentAssistAction extends Action implements IUpdate {
 	/**
@@ -96,8 +95,10 @@ final class SpecificContentAssistAction extends Action implements IUpdate {
 	private boolean computeEnablement(ITextEditor editor) {
 		if (editor == null)
 			return false;
-		ITextOperationTarget target = (ITextOperationTarget) editor.getAdapter(ITextOperationTarget.class);
-		boolean hasContentAssist = target != null && target.canDoOperation(ISourceViewer.CONTENTASSIST_PROPOSALS);
+		ITextOperationTarget target = (ITextOperationTarget) editor
+				.getAdapter(ITextOperationTarget.class);
+		boolean hasContentAssist = target != null
+				&& target.canDoOperation(ISourceViewer.CONTENTASSIST_PROPOSALS);
 		if (!hasContentAssist)
 			return false;
 		ISelection selection = editor.getSelectionProvider().getSelection();
@@ -121,21 +122,19 @@ final class SpecificContentAssistAction extends Action implements IUpdate {
 			return false;
 		String contentType;
 		String partitioning = null;
-		IModelElement modelElement = EditorUtility.getEditorInputModelElement(this.fEditor, false);
+		IModelElement modelElement = EditorUtility.getEditorInputModelElement(
+				this.fEditor, false);
 		if (modelElement != null) {
-			try {
-				IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager.getLanguageToolkit(modelElement);
-				if (toolkit != null) {
-					partitioning = toolkit.getPartitioningID();
-				}
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace(); //XXX: always fail on standalone files
+			IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
+					.getLanguageToolkit(modelElement);
+			if (toolkit != null) {
+				partitioning = toolkit.getPartitioningId();
 			}
 		}
 		if (partitioning != null) {
 			try {
-				contentType = TextUtilities.getContentType(document, partitioning, offset, true);
+				contentType = TextUtilities.getContentType(document,
+						partitioning, offset, true);
 			} catch (BadLocationException x) {
 				return false;
 			}

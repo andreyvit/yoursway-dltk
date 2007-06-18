@@ -140,20 +140,15 @@ public class BuildpathContainerWizard extends Wizard {
 
 			String type = fEntryToEdit.getPath().segment(0);
 			if (type.equals(ScriptRuntime.INTERPRETER_CONTAINER)) {
-				try {
-					IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
-							.getLanguageToolkit(this.fCurrProject);
-					if (toolkit != null) {
-						String interpreterContainerID = toolkit
-								.getInterpreterContainerID();
-						BuildpathContainerDescriptor descriptor = findDescriptorPage(
-								containers, fEntryToEdit,
-								interpreterContainerID);
-						fContainerPage = getContainerPage(descriptor);
-						addPage(fContainerPage);
-					}
-				} catch (CoreException e) {
-					e.printStackTrace();
+				IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
+						.getLanguageToolkit(this.fCurrProject);
+				if (toolkit != null) {
+					String interpreterContainerID = toolkit
+							.getInterpreterContainerId();
+					BuildpathContainerDescriptor descriptor = findDescriptorPage(
+							containers, fEntryToEdit, interpreterContainerID);
+					fContainerPage = getContainerPage(descriptor);
+					addPage(fContainerPage);
 				}
 			} else {
 				BuildpathContainerDescriptor descriptor = findDescriptorPage(
@@ -223,7 +218,8 @@ public class BuildpathContainerWizard extends Wizard {
 	}
 
 	private BuildpathContainerDescriptor findDescriptorPage(
-			BuildpathContainerDescriptor[] containers, IBuildpathEntry entry, String id) {
+			BuildpathContainerDescriptor[] containers, IBuildpathEntry entry,
+			String id) {
 		for (int i = 0; i < containers.length; i++) {
 			if (containers[i].canEdit(entry, id)) {
 				return containers[i];
@@ -231,6 +227,7 @@ public class BuildpathContainerWizard extends Wizard {
 		}
 		return null;
 	}
+
 	private BuildpathContainerDescriptor findDescriptorPage(
 			BuildpathContainerDescriptor[] containers, IBuildpathEntry entry) {
 		for (int i = 0; i < containers.length; i++) {

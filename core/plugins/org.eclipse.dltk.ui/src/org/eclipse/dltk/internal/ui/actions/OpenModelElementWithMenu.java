@@ -198,14 +198,10 @@ public class OpenModelElementWithMenu extends ContributionItem {
     	IEditorDescriptor desc = null;
     	IModelElement elem = getModelElement();
         if (elem != null) {
-        	String editorID = null;
-			try {
-				IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager.getLanguageToolkit(elem);
-				editorID = toolkit.getEditorID(elem);				
-			} catch (CoreException e) {				
-			}
-			if (editorID != null) {
-				desc = registry.findEditor(editorID);
+        	IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager.getLanguageToolkit(elem);
+        	String editorId = toolkit.getEditorId(elem);				
+			if (editorId != null) {
+				desc = registry.findEditor(editorId);
 			}
         }
         if (desc != null)

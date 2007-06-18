@@ -6,6 +6,7 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
@@ -13,6 +14,7 @@ import org.eclipse.jface.text.TextViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
 
 public class ScriptDebugLogView extends ViewPart {
@@ -55,14 +57,17 @@ public class ScriptDebugLogView extends ViewPart {
 	private IAction copyAction;
 	private IAction clearAction;
 
+	private final String COPY_ACTION_NAME = "Copy";
+	private final String CLEAR_ACTION_NAME = "Clear";
+
 	public void createActions() {
-		copyAction = new Action("Copy") {
+		copyAction = new Action(COPY_ACTION_NAME) {
 			public void run() {
 				viewer.doOperation(TextViewer.COPY);
 			}
 		};
 
-		clearAction = new Action("Clear") {
+		clearAction = new Action(CLEAR_ACTION_NAME) {
 			public void run() {
 				try {
 					document.replace(0, document.getLength(), "");
@@ -75,6 +80,7 @@ public class ScriptDebugLogView extends ViewPart {
 	private void createMenu() {
 		IMenuManager manager = getViewSite().getActionBars().getMenuManager();
 		manager.add(copyAction);
+		manager.add(clearAction);
 	}
 
 	private void createToolbar() {
@@ -104,6 +110,7 @@ public class ScriptDebugLogView extends ViewPart {
 
 	private void fillContextMenu(IMenuManager manager) {
 		manager.add(copyAction);
-		manager.add(clearAction);
+		manager.add(clearAction);		
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 }

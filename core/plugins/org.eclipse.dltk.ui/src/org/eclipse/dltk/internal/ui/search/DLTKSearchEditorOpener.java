@@ -37,36 +37,36 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 
-
 public class DLTKSearchEditorOpener {
 
 	private static class ReusedEditorWatcher implements IPartListener {
-		
+
 		private IEditorPart fReusedEditor;
 		private IPartService fPartService;
-		
+
 		public ReusedEditorWatcher() {
-			fReusedEditor= null;
-			fPartService= null;
+			fReusedEditor = null;
+			fPartService = null;
 		}
-		
+
 		public IEditorPart getReusedEditor() {
 			return fReusedEditor;
 		}
-		
+
 		public void initialize(IEditorPart editor) {
 			if (fReusedEditor != null) {
 				fPartService.removePartListener(this);
 			}
-			fReusedEditor= editor;
+			fReusedEditor = editor;
 			if (editor != null) {
-				fPartService= editor.getSite().getWorkbenchWindow().getPartService();
+				fPartService = editor.getSite().getWorkbenchWindow()
+						.getPartService();
 				fPartService.addPartListener(this);
 			} else {
-				fPartService= null;
+				fPartService = null;
 			}
 		}
-		
+
 		public void partOpened(IWorkbenchPart part) {
 		}
 
@@ -85,20 +85,21 @@ public class DLTKSearchEditorOpener {
 		public void partBroughtToTop(IWorkbenchPart part) {
 		}
 	}
-	
+
 	private ReusedEditorWatcher fReusedEditorWatcher;
 
-
-	public IEditorPart openElement(Object element) throws PartInitException, ModelException {
-		IWorkbenchPage wbPage= DLTKUIPlugin.getActivePage();
+	public IEditorPart openElement(Object element) throws PartInitException,
+			ModelException {
+		IWorkbenchPage wbPage = DLTKUIPlugin.getActivePage();
 		if (NewSearchUI.reuseEditor())
 			return showWithReuse(element, wbPage);
 		else
 			return showWithoutReuse(element, wbPage);
 	}
-		
-	public IEditorPart openMatch(Match match) throws PartInitException, ModelException {
-		Object element= getElementToOpen(match);
+
+	public IEditorPart openMatch(Match match) throws PartInitException,
+			ModelException {
+		Object element = getElementToOpen(match);
 		return openElement(element);
 	}
 
@@ -106,29 +107,32 @@ public class DLTKSearchEditorOpener {
 		return match.getElement();
 	}
 
-	private IEditorPart showWithoutReuse(Object element, IWorkbenchPage wbPage) throws PartInitException, ModelException {
+	private IEditorPart showWithoutReuse(Object element, IWorkbenchPage wbPage)
+			throws PartInitException, ModelException {
 		return EditorUtility.openInEditor(element, false);
 	}
 
-	private IEditorPart showWithReuse(Object element, IWorkbenchPage wbPage) throws ModelException, PartInitException {
-		if( element instanceof IModelElement ) {
-			IModelElement module = ((IModelElement)element).getAncestor(IModelElement.SOURCE_MODULE);
-			if( module instanceof ExternalSourceModule ) {
-				String editorID= getEditorID((ExternalSourceModule)module);
-				return showInEditor(wbPage, new ExternalStorageEditorInput((ExternalSourceModule)module), editorID);
-			}
-			else if( module instanceof SourceModule ) {
-				String editorID= getEditorID((SourceModule)module);
-				IFile file= getFile(element);
+	private IEditorPart showWithReuse(Object element, IWorkbenchPage wbPage)
+			throws ModelException, PartInitException {
+		if (element instanceof IModelElement) {
+			IModelElement module = ((IModelElement) element)
+					.getAncestor(IModelElement.SOURCE_MODULE);
+			if (module instanceof ExternalSourceModule) {
+				String editorID = getEditorID((ExternalSourceModule) module);
+				return showInEditor(wbPage, new ExternalStorageEditorInput(
+						(ExternalSourceModule) module), editorID);
+			} else if (module instanceof SourceModule) {
+				String editorID = getEditorID((SourceModule) module);
+				IFile file = getFile(element);
 				return showInEditor(wbPage, new FileEditorInput(file), editorID);
 			}
 		}
-		
-		IFile file= getFile(element);
+
+		IFile file = getFile(element);
 		if (file != null) {
-			String editorID= getEditorID(file);
+			String editorID = getEditorID(file);
 			return showInEditor(wbPage, new FileEditorInput(file), editorID);
-		} 
+		}
 		return null;
 	}
 
@@ -136,8 +140,9 @@ public class DLTKSearchEditorOpener {
 		if (element instanceof IFile)
 			return (IFile) element;
 		if (element instanceof IModelElement) {
-			IModelElement jElement= (IModelElement) element;
-			ISourceModule cu= (ISourceModule) jElement.getAncestor(IModelElement.SOURCE_MODULE);
+			IModelElement jElement = (IModelElement) element;
+			ISourceModule cu = (ISourceModule) jElement
+					.getAncestor(IModelElement.SOURCE_MODULE);
 			if (cu != null) {
 				return (IFile) cu.getCorrespondingResource();
 			}
@@ -146,36 +151,42 @@ public class DLTKSearchEditorOpener {
 	}
 
 	private String getEditorID(IFile file) throws PartInitException {
-		IEditorDescriptor desc= null;
+		IEditorDescriptor desc = null;
 		if (desc == null)
-			return DLTKUIPlugin.getDefault().getWorkbench().getEditorRegistry().findEditor(IEditorRegistry.SYSTEM_EXTERNAL_EDITOR_ID).getId();
+			return DLTKUIPlugin.getDefault().getWorkbench().getEditorRegistry()
+					.findEditor(IEditorRegistry.SYSTEM_EXTERNAL_EDITOR_ID)
+					.getId();
 		else
 			return desc.getId();
 	}
+
 	private String getEditorID(IModelElement module) throws PartInitException {
-		String editorID = null;
-		IEditorDescriptor desc= null;
-		try {
-			IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager.getLanguageToolkit(module); 
-			editorID = toolkit.getEditorID(module);
-		} catch (CoreException e) {				
+		IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
+				.getLanguageToolkit(module);
+		String editorId = toolkit.getEditorId(module);
+
+		IEditorDescriptor desc = null;
+		if (editorId != null) {
+			desc = DLTKUIPlugin.getDefault().getWorkbench().getEditorRegistry()
+					.findEditor(editorId);
 		}
-		if (editorID != null) {
-			desc = DLTKUIPlugin.getDefault().getWorkbench().getEditorRegistry().findEditor(editorID);
-		}		
-		
-		if (desc == null)
-			return DLTKUIPlugin.getDefault().getWorkbench().getEditorRegistry().findEditor(IEditorRegistry.SYSTEM_EXTERNAL_EDITOR_ID).getId();
-		else
+
+		if (desc == null) {
+			return DLTKUIPlugin.getDefault().getWorkbench().getEditorRegistry()
+					.findEditor(IEditorRegistry.SYSTEM_EXTERNAL_EDITOR_ID)
+					.getId();
+		} else {
 			return desc.getId();
+		}
 	}
 
 	private boolean isPinned(IEditorPart editor) {
 		if (editor == null)
 			return false;
 
-		IEditorReference[] editorRefs= editor.getEditorSite().getPage().getEditorReferences();
-		int i= 0;
+		IEditorReference[] editorRefs = editor.getEditorSite().getPage()
+				.getEditorReferences();
+		int i = 0;
 		while (i < editorRefs.length) {
 			if (editor.equals(editorRefs[i].getEditor(false)))
 				return editorRefs[i].isPinned();
@@ -184,22 +195,25 @@ public class DLTKSearchEditorOpener {
 		return false;
 	}
 
-	private IEditorPart showInEditor(IWorkbenchPage page, IEditorInput input, String editorId) {
-		IEditorPart editor= page.findEditor(input);
+	private IEditorPart showInEditor(IWorkbenchPage page, IEditorInput input,
+			String editorId) {
+		IEditorPart editor = page.findEditor(input);
 		if (editor != null)
 			page.bringToTop(editor);
 		else {
-			IEditorPart reusedEditor= getReusedEditor();
-			boolean isOpen= false;
+			IEditorPart reusedEditor = getReusedEditor();
+			boolean isOpen = false;
 			if (reusedEditor != null) {
-				IEditorReference[] parts= page.getEditorReferences();
-				int i= 0;
+				IEditorReference[] parts = page.getEditorReferences();
+				int i = 0;
 				while (!isOpen && i < parts.length)
-					isOpen= reusedEditor == parts[i++].getEditor(false);
+					isOpen = reusedEditor == parts[i++].getEditor(false);
 			}
 
-			boolean canBeReused= isOpen && !reusedEditor.isDirty() && !isPinned(reusedEditor);
-			boolean showsSameInputType= reusedEditor != null && reusedEditor.getSite().getId().equals(editorId);
+			boolean canBeReused = isOpen && !reusedEditor.isDirty()
+					&& !isPinned(reusedEditor);
+			boolean showsSameInputType = reusedEditor != null
+					&& reusedEditor.getSite().getId().equals(editorId);
 			if (canBeReused && !showsSameInputType) {
 				page.closeEditor(reusedEditor, false);
 				setReusedEditor(null);
@@ -208,16 +222,19 @@ public class DLTKSearchEditorOpener {
 			if (canBeReused && showsSameInputType) {
 				((IReusableEditor) reusedEditor).setInput(input);
 				page.bringToTop(reusedEditor);
-				editor= reusedEditor;
+				editor = reusedEditor;
 			} else {
 				try {
-					editor= page.openEditor(input, editorId, false);
+					editor = page.openEditor(input, editorId, false);
 					if (editor instanceof IReusableEditor)
 						setReusedEditor(editor);
 					else
 						setReusedEditor(null);
 				} catch (PartInitException ex) {
-					MessageDialog.openError(DLTKUIPlugin.getActiveWorkbenchShell(), SearchMessages.Search_Error_openEditor_title, SearchMessages.Search_Error_openEditor_message); 
+					MessageDialog.openError(DLTKUIPlugin
+							.getActiveWorkbenchShell(),
+							SearchMessages.Search_Error_openEditor_title,
+							SearchMessages.Search_Error_openEditor_message);
 					return null;
 				}
 			}
@@ -226,14 +243,14 @@ public class DLTKSearchEditorOpener {
 	}
 
 	private IEditorPart getReusedEditor() {
-		if (fReusedEditorWatcher != null) 
+		if (fReusedEditorWatcher != null)
 			return fReusedEditorWatcher.getReusedEditor();
 		return null;
 	}
-	
+
 	private void setReusedEditor(IEditorPart editor) {
 		if (fReusedEditorWatcher == null) {
-			fReusedEditorWatcher= new ReusedEditorWatcher();
+			fReusedEditorWatcher = new ReusedEditorWatcher();
 		}
 		fReusedEditorWatcher.initialize(editor);
 	}

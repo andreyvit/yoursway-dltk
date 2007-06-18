@@ -12,11 +12,9 @@ package org.eclipse.dltk.internal.core;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.core.IModelElement;
 
-public class ClassBasedDLTKExtensionManager extends
-		BasicDLTKExtensionManager {
+public class ClassBasedDLTKExtensionManager extends BasicDLTKExtensionManager {
 
 	private static final String CLASS_ATTR = "class";
 
@@ -24,32 +22,35 @@ public class ClassBasedDLTKExtensionManager extends
 		super(extensionPoint);
 	}
 
-	public Object getObject(String natureId) throws CoreException {
-		ElementInfo ext = this.getElementInfo(natureId);
-
-		return getInitObject(ext);
+	public Object getObject(String natureId) {
+		return getInitObject(getElementInfo(natureId));
 	}
 
-	public Object getInitObject(ElementInfo ext) throws CoreException {
-		if (ext != null) {
-			if (ext.object != null) {
-				return ext.object;
-			}
+	public Object getInitObject(ElementInfo ext) {
+		try {
+			if (ext != null) {
+				if (ext.object != null) {
+					return ext.object;
+				}
 
-			IConfigurationElement cfg = (IConfigurationElement) ext.config;
-			Object object = createObject(cfg);
-			ext.object = object;
-			return object;
+				IConfigurationElement cfg = (IConfigurationElement) ext.config;
+				Object object = createObject(cfg);
+				ext.object = object;
+				return object;
+			}
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return null;
 	}
 
-	protected Object createObject(IConfigurationElement cfg) throws CoreException {
+	protected Object createObject(IConfigurationElement cfg)
+			throws CoreException {
 		return cfg.createExecutableExtension(CLASS_ATTR);
 	}
 
-	public Object getObject(
-			IModelElement element) throws CoreException {
+	public Object getObject(IModelElement element) {
 		if (element.getElementType() == IModelElement.SCRIPT_MODEL) {
 			return null;
 		}
@@ -64,9 +65,9 @@ public class ClassBasedDLTKExtensionManager extends
 		return null;
 	}
 
-	public Object getObjectLower(String natureID) throws CoreException {
+	public Object getObjectLower(String natureID) {
 		ElementInfo ext = this.getElementInfo(natureID);
-		if( ext.oldInfo == null ) {
+		if (ext.oldInfo == null) {
 			return null;
 		}
 		return getInitObject(ext.oldInfo);

@@ -13,8 +13,11 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.javascript.core.IJavaScriptConstants;
 import org.eclipse.dltk.javascript.core.JavaScriptLanguageToolkit;
+import org.eclipse.dltk.javascript.internal.ui.text.SimpleJavascriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.ScriptElementLabels;
+import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
+import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.dltk.ui.viewsupport.ScriptUILabelProvider;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -37,14 +40,14 @@ public class JavaScriptUILanguageToolkit implements IDLTKUILanguageToolkit {
 	public IDialogSettings getDialogSettings() {
 		return JavaScriptUI.getDefault().getDialogSettings();
 	}
-	public String getEditorID(Object inputElement) {
+	public String getEditorId(Object inputElement) {
 		return "org.eclipse.dltk.javascript.ui.editor.JavascriptEditor";
 	}
-	public String getPartitioningID() {
+	public String getPartitioningId() {
 		return IJavaScriptConstants.JS_PARTITIONING;
 	}
 
-	public String getInterpreterContainerID() {
+	public String getInterpreterContainerId() {
 		return "org.eclipse.dltk.javascript.launching.INTERPRETER_CONTAINER";
 	}
 
@@ -54,5 +57,15 @@ public class JavaScriptUILanguageToolkit implements IDLTKUILanguageToolkit {
 
 	public boolean getProvideMembers(ISourceModule element) {
 		return true;
+	}
+	
+	public ScriptTextTools getTextTools() {
+		return JavaScriptUI.getDefault().getTextTools();
+	}
+	
+	public ScriptSourceViewerConfiguration createSourceViwerConfiguration() {
+		return new SimpleJavascriptSourceViewerConfiguration(getTextTools()
+				.getColorManager(), getPreferenceStore(), null,
+				getPartitioningId(), false);
 	}
 }

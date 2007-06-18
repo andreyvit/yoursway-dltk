@@ -24,6 +24,7 @@ public class ScriptDebugManager {
 	}
 
 	private final HashMap natureToModelMap;
+	private final HashMap modelToNatureMap;
 
 	private void loadExtenstionPoints() {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
@@ -43,6 +44,7 @@ public class ScriptDebugManager {
 
 				if (natureId != null && debugModelId != null) {
 					natureToModelMap.put(natureId, debugModelId);
+					modelToNatureMap.put(debugModelId, natureId);
 				}
 			}
 		}
@@ -50,11 +52,16 @@ public class ScriptDebugManager {
 
 	protected ScriptDebugManager() {
 		natureToModelMap = new HashMap();
+		modelToNatureMap = new HashMap();
 
 		loadExtenstionPoints();
 	}
 
 	public String getDebugModelByNature(String natureId) {
 		return (String) natureToModelMap.get(natureId);
+	}
+
+	public String getNatureByModel(String debugModelId) {
+		return (String) modelToNatureMap.get(debugModelId);
 	}
 }

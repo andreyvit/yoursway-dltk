@@ -18,11 +18,17 @@ public class NewInstanceClassBasedDLTKExtensionManager extends
 	public NewInstanceClassBasedDLTKExtensionManager(String extensionPoint) {
 		super(extensionPoint);
 	}
-	public Object getInitObject(ElementInfo ext) throws CoreException {
-		if (ext != null) {
-			IConfigurationElement cfg = (IConfigurationElement) ext.config;
-			Object object = createObject(cfg);
-			return object;
+
+	public Object getInitObject(ElementInfo ext) {
+		try {
+			if (ext != null) {
+				IConfigurationElement cfg = (IConfigurationElement) ext.config;
+				Object object = createObject(cfg);
+				return object;
+			}
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return null;
 	}

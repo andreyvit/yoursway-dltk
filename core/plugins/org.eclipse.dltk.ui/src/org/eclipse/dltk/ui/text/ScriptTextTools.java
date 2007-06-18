@@ -27,8 +27,8 @@ public abstract class ScriptTextTools {
 
 	private String[] fLegalContentTypes;
 
-	protected ScriptTextTools(String defaultPartitioning, String[] legalContentTypes,
-			boolean autoDisposeOnDisplayDispose) {
+	protected ScriptTextTools(String defaultPartitioning,
+			String[] legalContentTypes, boolean autoDisposeOnDisplayDispose) {
 		fDefaultPartitioning = defaultPartitioning;
 		fLegalContentTypes = legalContentTypes;
 		fColorManager = new DLTKColorManager(autoDisposeOnDisplayDispose);
@@ -103,7 +103,7 @@ public abstract class ScriptTextTools {
 	 */
 	public void setupDocumentPartitioner(IDocument document, String partitioning) {
 		IDocumentPartitioner partitioner = createDocumentPartitioner();
-		partitioner.connect(document); 
+		partitioner.connect(document);
 		if (document instanceof IDocumentExtension3) {
 			IDocumentExtension3 extension3 = (IDocumentExtension3) document;
 			extension3.setDocumentPartitioner(partitioning, partitioner);
@@ -111,11 +111,8 @@ public abstract class ScriptTextTools {
 			document.setDocumentPartitioner(partitioner);
 		}
 	}
-	
+
 	public abstract SemanticHighlighting[] getSemanticHighlightings();
 
 	public abstract PositionUpdater getSemanticPositionUpdater();
-	
-
-	
 }

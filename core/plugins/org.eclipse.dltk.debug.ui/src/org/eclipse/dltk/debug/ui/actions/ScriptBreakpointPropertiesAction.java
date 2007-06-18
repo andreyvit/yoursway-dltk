@@ -20,24 +20,23 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.dialogs.PropertyDialogAction;
 
 /**
- * Presents the standard properties dialog to configure the attributes of a Script
- * Breakpoint.
+ * Presents the standard properties dialog to configure the attributes of a
+ * Script Breakpoint.
  */
 public class ScriptBreakpointPropertiesAction implements IObjectActionDelegate {
 
-	private IWorkbenchPart fPart;
-	private IScriptBreakpoint fBreakpoint;
+	private IWorkbenchPart part;
+	private IScriptBreakpoint breakpoint;
 
 	public void run(IAction action) {
 		IShellProvider provider;
-		if (fPart != null) {
-			provider = fPart.getSite();
+		if (part != null) {
+			provider = part.getSite();
 		} else {
 			provider = new IShellProvider() {
 				public Shell getShell() {
@@ -45,6 +44,7 @@ public class ScriptBreakpointPropertiesAction implements IObjectActionDelegate {
 				}
 			};
 		}
+		
 		PropertyDialogAction propertyAction = new PropertyDialogAction(
 				provider, new ISelectionProvider() {
 					public void addSelectionChangedListener(
@@ -52,7 +52,7 @@ public class ScriptBreakpointPropertiesAction implements IObjectActionDelegate {
 					}
 
 					public ISelection getSelection() {
-						return new StructuredSelection(fBreakpoint);
+						return new StructuredSelection(breakpoint);
 					}
 
 					public void removeSelectionChangedListener(
@@ -65,9 +65,6 @@ public class ScriptBreakpointPropertiesAction implements IObjectActionDelegate {
 		propertyAction.run();
 	}
 
-	/**
-	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
-	 */
 	public void selectionChanged(IAction action, ISelection selection) {
 		if (selection instanceof IStructuredSelection) {
 			IStructuredSelection ss = (IStructuredSelection) selection;
@@ -81,19 +78,11 @@ public class ScriptBreakpointPropertiesAction implements IObjectActionDelegate {
 		}
 	}
 
-	/**
-	 * Allows the underlying breakpoint for the properties page to be set
-	 * 
-	 * @param breakpoint
-	 */
 	public void setBreakpoint(IScriptBreakpoint breakpoint) {
-		fBreakpoint = breakpoint;
+		this.breakpoint = breakpoint;
 	}
 
-	/**
-	 * @see IObjectActionDelegate#setActivePart(IAction, IWorkbenchPart)
-	 */
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-		fPart = targetPart;
+		part = targetPart;
 	}
 }

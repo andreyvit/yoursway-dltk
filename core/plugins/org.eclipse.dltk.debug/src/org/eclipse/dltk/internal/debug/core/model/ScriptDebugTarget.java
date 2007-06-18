@@ -61,7 +61,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	private final ScriptThreadManager threadManager;
 
-	private final DbgpBreakpointManager breakpointManager;
+	private final ScriptBreakpointManager breakpointManager;
 
 	private final IDbgpService dbgpService;
 	private final String dbgpId;
@@ -140,7 +140,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 		this.disconnected = false;
 
-		this.breakpointManager = new DbgpBreakpointManager(this);
+		this.breakpointManager = new ScriptBreakpointManager(this);
 
 		this.threadManager.addListener(this);
 

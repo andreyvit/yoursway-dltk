@@ -13,7 +13,6 @@ import org.eclipse.dltk.ruby.core.RubyConstants;
 import org.eclipse.jface.text.IDocument;
 
 public final class RubyPartitions {
-
 	public static final String RUBY_PARTITIONING = RubyConstants.RUBY_PARTITIONING;
 
 	public static final String RUBY_COMMENT = "__ruby_comment";

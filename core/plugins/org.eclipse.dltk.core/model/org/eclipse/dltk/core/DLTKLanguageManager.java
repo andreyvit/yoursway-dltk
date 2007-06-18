@@ -81,38 +81,26 @@ public class DLTKLanguageManager {
 			Object object) {
 		ElementInfo[] elementInfos = instance.getElementInfos();
 		for (int j = 0; j < elementInfos.length; j++) {
-			try {
-				IDLTKLanguageToolkit toolkit = (IDLTKLanguageToolkit) instance
-						.getInitObject(elementInfos[j]);
-				if (object instanceof IResource) {
-					if (toolkit.validateSourceModule((IResource) object)
-							.getSeverity() == Status.OK) {
-						return toolkit;
-					}
-				} else if (object instanceof IPath) {
-					if (toolkit.validateSourceModule((IPath) object)
-							.getSeverity() == Status.OK) {
-						return toolkit;
-					}
-				} else {
-					return null;
+			IDLTKLanguageToolkit toolkit = (IDLTKLanguageToolkit) instance
+					.getInitObject(elementInfos[j]);
+			if (object instanceof IResource) {
+				if (toolkit.validateSourceModule((IResource) object)
+						.getSeverity() == Status.OK) {
+					return toolkit;
 				}
-			} catch (CoreException ex) {
-				if (DLTKCore.DEBUG) {
-					ex.printStackTrace();
+			} else if (object instanceof IPath) {
+				if (toolkit.validateSourceModule((IPath) object).getSeverity() == Status.OK) {
+					return toolkit;
 				}
+			} else {
+				return null;
 			}
 		}
 		return null;
 	}
 
 	public static boolean hasScriptNature(IProject project) {
-		try {
-			return instance.findScriptNature(project) != null;
-		} catch (CoreException e) {
-			// not existent or closed
-			return false;
-		}
+		return instance.findScriptNature(project) != null;
 	}
 
 	public static IDLTKLanguageToolkit getLanguageToolkit(IModelElement element)
@@ -189,7 +177,7 @@ public class DLTKLanguageManager {
 	 * Return source parser witch is one level lower from top. If this is only
 	 * one source parser for selected ature then return null.
 	 * 
-	 * */
+	 */
 	public static ISourceParser getSourceParserLower(String natureID)
 			throws CoreException {
 		return (ISourceParser) sourceParsersManager.getObjectLower(natureID);
@@ -207,16 +195,8 @@ public class DLTKLanguageManager {
 		return new DLTKSearchParticipant();
 	}
 
-	private static ISearchFactory getSearchFactory(String natureID) {
-		ISearchFactory factory = null;
-		try {
-			factory = (ISearchFactory) searchManager.getObject(natureID);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
-		return factory;
+	private static ISearchFactory getSearchFactory(String natureId) {
+		return (ISearchFactory) searchManager.getObject(natureId);
 	}
 
 	public static MatchLocator createMatchLocator(String natureID,
@@ -265,17 +245,8 @@ public class DLTKLanguageManager {
 		return null;
 	}
 
-	private static ICallHierarchyFactory getCallHierarchyFactory(String natureID) {
-		ICallHierarchyFactory factory = null;
-		try {
-			factory = (ICallHierarchyFactory) callHierarchyManager
-					.getObject(natureID);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
-		return factory;
+	private static ICallHierarchyFactory getCallHierarchyFactory(String natureId) {
+		return (ICallHierarchyFactory) callHierarchyManager.getObject(natureId);
 	}
 
 	public static ICallProcessor createCallProcessor(String natureID) {

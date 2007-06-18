@@ -11,7 +11,6 @@
 package org.eclipse.dltk.debug.core.model;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IWatchpoint;
 
 /**
@@ -29,16 +28,5 @@ public interface IScriptWatchPoint extends IScriptLineBreakpoint, IWatchpoint {
 	 *                if unable to access the property on this breakpoint's
 	 *                underlying marker
 	 */
-	public String getFieldName() throws CoreException;
-
-	/**
-	 * Returns whether this breakpoint last suspended in this target due to an
-	 * access (<code>true</code>) or modification (<code>false</code>).
-	 * 
-	 * @return <code>true</code> if this watchpoint last suspended the given
-	 *         target due to a field access; <code>false</code> if this
-	 *         watchpoint last suspended the given target due to a modification
-	 *         access or if this watchpoint hasn't suspended the given target.
-	 */
-	public boolean isAccessSuspend(IDebugTarget target);
+	String getFieldName() throws CoreException;
 }

@@ -29,9 +29,8 @@ import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
-import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
 
-public class DbgpBreakpointManager implements IBreakpointListener {
+public class ScriptBreakpointManager implements IBreakpointListener {
 	// Utility methods
 	protected static IBreakpointManager getBreakpointManager() {
 		return DebugPlugin.getDefault().getBreakpointManager();
@@ -60,82 +59,103 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 			if (breakpoint.getExpressionState()) {
 				config.setExpression(breakpoint.getExpression());
 			}
-			
+
 			// IScriptMethodEntryBreakpoint
 
-			if (lineBreakpoint instanceof IScriptMethodEntryBreakpoint) {
-				IScriptMethodEntryBreakpoint entryBreakpoint = (IScriptMethodEntryBreakpoint) lineBreakpoint;
+			/*
+			 * if (lineBreakpoint instanceof IScriptMethodEntryBreakpoint) {
+			 * IScriptMethodEntryBreakpoint entryBreakpoint =
+			 * (IScriptMethodEntryBreakpoint) lineBreakpoint;
+			 * 
+			 * if (entryBreakpoint.breakOnEntry()) { String id =
+			 * commands.setLineBreakpoint(lineBreakpoint .getResourceURI(),
+			 * lineBreakpoint.getLineNumber(), config);
+			 * lineBreakpoint.setIdentifier(id); }
+			 * 
+			 * if (entryBreakpoint.breakOnExit()) { String id =
+			 * commands.setReturnBreakpoint(lineBreakpoint .getResourceURI(),
+			 * entryBreakpoint.getMethodName(), config);
+			 * entryBreakpoint.setSecondaryId(id); } }
+			 */
 
-				if (entryBreakpoint.breakOnEntry()) {
-					String id = commands.setLineBreakpoint(lineBreakpoint
-							.getResourceURI(), lineBreakpoint.getLineNumber(),
-							config);
-					lineBreakpoint.setIdentifier(id);
-				}
+			/*
+			 * if (breakpoint instanceof IScriptWatchPoint) { IScriptWatchPoint
+			 * watchPoint = (IScriptWatchPoint) breakpoint;
+			 * 
+			 * String exp = watchPoint.getFieldName() + (watchPoint.isAccess() ?
+			 * '1' : '0') + (watchPoint.isModification() ? '1' : '0');
+			 * 
+			 * config.setExpression(exp);
+			 * 
+			 * String id = commands.setWatchBreakpoint(lineBreakpoint
+			 * .getResourceURI(), lineBreakpoint.getLineNumber(), config);
+			 * watchPoint.setIdentifier(id); return;
+			 *  } else {
+			 *  }
+			 */
 
-				if (entryBreakpoint.breakOnExit()) {
-					String id = commands.setReturnBreakpoint(lineBreakpoint
-							.getResourceURI(), entryBreakpoint.getMethodName(),
-							config);
-					entryBreakpoint.setSecondaryId(id);
-				}
-			} else {
-				if (breakpoint instanceof IScriptWatchPoint) {
-					IScriptWatchPoint watchPoint = (IScriptWatchPoint) breakpoint;
-
-					String exp = watchPoint.getFieldName()
-							+ (watchPoint.isAccess() ? '1' : '0')
-							+ (watchPoint.isModification() ? '1' : '0');
-
-					config.setExpression(exp);
-
-					String id = commands.setWatchBreakpoint(lineBreakpoint
-							.getResourceURI(), lineBreakpoint.getLineNumber(),
-							config);
-					watchPoint.setIdentifier(id);
-					return;
-
-				} else {
-					String id = commands.setLineBreakpoint(lineBreakpoint
-							.getResourceURI(), lineBreakpoint.getLineNumber(),
-							config);
-					lineBreakpoint.setIdentifier(id);
-				}
-			}
+			// Identifier
+			final String id = commands.setLineBreakpoint(lineBreakpoint
+					.getResourceURI(), lineBreakpoint.getLineNumber(), config);
+			lineBreakpoint.setIdentifier(id);
 		}
 	}
 
 	protected static void changeBreakpoint(IDbgpBreakpointCommands commands,
 			IScriptBreakpoint breakpoint) throws DbgpException, CoreException {
+		
+		final String id = breakpoint.getIdentifier();
+
+		final boolean enabled = breakpoint.isEnabled()
+				&& getBreakpointManager().isEnabled();
+
+		final int hitValue = breakpoint.getHitValue();
+		final int hitCondition = breakpoint.getHitCondition();
+		
+		String expression = null;
+		if (breakpoint.getExpressionState()) {
+			expression = breakpoint.getExpression();
+		}
+		DbgpBreakpointConfig config = new DbgpBreakpointConfig(enabled,
+				hitValue, hitCondition, expression);
+		
+		// Update
+		commands.updateBreakpoint(id, config);
+		
+
 		/*
-		 * boolean enabled = breakpoint.isEnabled() &&
-		 * getBreakpointManager().isEnabled();
-		 * 
-		 * IScriptBreakpoint b = breakpoint;
-		 * 
-		 * int hitValue = b.getHitValue(); int hitCondition =
-		 * b.getHitCondition(); String cExpr = null; if
-		 * (breakpoint.isConditionalExpressionEnabled()) { cExpr =
-		 * breakpoint.getConditionalExpression(); } DbgpBreakpointConfig config =
-		 * new DbgpBreakpointConfig(enabled, hitValue, hitCondition, cExpr);
-		 * 
-		 * if (b.getIdentifier() != null) {
-		 * commands.updateBreakpoint(b.getIdentifier(), config); } if (b
-		 * instanceof IScriptMethodEntryBreakpoint) {
-		 * IScriptMethodEntryBreakpoint ba = (IScriptMethodEntryBreakpoint) b;
-		 * String secondaryId = ba.getSecondaryId(); if (secondaryId != null) {
-		 * if (!ba.breakOnExit()) { commands.removeBreakpoint(secondaryId);
-		 * ba.setSecondaryId(null); } else {
-		 * commands.updateBreakpoint(secondaryId, config); } } else if
-		 * (ba.breakOnExit()) { String id =
-		 * commands.setReturnBreakpoint(ba.getResourceURI(), ba.getMethodName(),
-		 * config); ba.setSecondaryId(id); } if (!ba.breakOnEntry()) { String
-		 * identifier = ba.getIdentifier(); if (identifier != null) {
-		 * commands.removeBreakpoint(identifier); ba.setIdentifier(null); } }
-		 * else { String identifier = ba.getIdentifier(); if (identifier ==
-		 * null) { String id = commands.setLineBreakpoint(ba.getResourceURI(),
-		 * ba.getLineNumber(), config); ba.setIdentifier(id); } } }
-		 */
+		if (b instanceof IScriptMethodEntryBreakpoint) {
+			IScriptMethodEntryBreakpoint ba = (IScriptMethodEntryBreakpoint) b;
+			String secondaryId = ba.getSecondaryId();
+			if (secondaryId != null) {
+				if (!ba.breakOnExit()) {
+					commands.removeBreakpoint(secondaryId);
+					ba.setSecondaryId(null);
+				} else {
+					commands.updateBreakpoint(secondaryId, config);
+				}
+			} else if (ba.breakOnExit()) {
+				String id = commands.setReturnBreakpoint(ba.getResourceURI(),
+						ba.getMethodName(), config);
+				ba.setSecondaryId(id);
+			}
+			if (!ba.breakOnEntry()) {
+				String identifier = ba.getIdentifier();
+				if (identifier != null) {
+					commands.removeBreakpoint(identifier);
+					ba.setIdentifier(null);
+				}
+			} else {
+				String identifier = ba.getIdentifier();
+				if (identifier == null) {
+					String id = commands.setLineBreakpoint(ba.getResourceURI(),
+							ba.getLineNumber(), config);
+					ba.setIdentifier(id);
+				}
+			}
+		}
+		*/
+
 	}
 
 	protected static void removeBreakpoint(IDbgpBreakpointCommands commands,
@@ -190,7 +210,7 @@ public class DbgpBreakpointManager implements IBreakpointListener {
 		}
 	}
 
-	public DbgpBreakpointManager(IScriptDebugTarget target) {
+	public ScriptBreakpointManager(IScriptDebugTarget target) {
 		this.target = target;
 	}
 

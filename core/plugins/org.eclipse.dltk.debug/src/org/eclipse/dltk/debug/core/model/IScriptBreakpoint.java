@@ -41,7 +41,7 @@ public interface IScriptBreakpoint extends IBreakpoint {
 	// Expressions
 	String getExpression() throws CoreException;
 
-	void setExpression(String id) throws CoreException;
+	void setExpression(String expression) throws CoreException;
 
 	boolean getExpressionState() throws CoreException;
 

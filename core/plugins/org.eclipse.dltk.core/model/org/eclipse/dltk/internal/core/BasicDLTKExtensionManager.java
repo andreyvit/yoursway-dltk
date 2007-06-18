@@ -30,6 +30,7 @@ public class BasicDLTKExtensionManager {
 	public final static String PRIORITY_ATTR = "priority";
 
 	private final static String NATURE_ATTR = "nature";
+
 	private Map extensions;
 
 	private String extensionPoint = null;
@@ -83,12 +84,10 @@ public class BasicDLTKExtensionManager {
 						if (e.oldInfo == null) {
 							e.oldInfo = nInfo;
 							break;
-						}
-						else {
-							if( nInfo.level < e.oldInfo.level) {
+						} else {
+							if (nInfo.level < e.oldInfo.level) {
 								e = e.oldInfo;
-							}
-							else {
+							} else {
 								nInfo.oldInfo = e.oldInfo;
 								e.oldInfo = nInfo;
 								break;
@@ -145,7 +144,7 @@ public class BasicDLTKExtensionManager {
 		return new ElementInfo(config);
 	}
 
-	public String findScriptNature(IProject project) throws CoreException {
+	public String findScriptNature(IProject project) {
 		try {
 			String[] natureIds = project.getDescription().getNatureIds();
 			for (int i = 0; i < natureIds.length; i++) {

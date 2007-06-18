@@ -179,13 +179,9 @@ public class EditorUtility {
 
 					if (editorId == null) { // Transitional code
 						if (input != null) {
-							try {
-								IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
-										.getLanguageToolkit((IModelElement) inputElement);
-								editorId = toolkit.getEditorID(inputElement);
-							} catch (CoreException e) {
-								return null;
-							}
+							IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
+									.getLanguageToolkit((IModelElement) inputElement);
+							editorId = toolkit.getEditorId(inputElement);
 						}
 					}
 

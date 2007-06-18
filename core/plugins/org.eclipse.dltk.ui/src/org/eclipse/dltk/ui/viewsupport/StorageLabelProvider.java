@@ -28,18 +28,15 @@ import org.eclipse.ui.IFileEditorMapping;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
-
-public class StorageLabelProvider extends LabelProvider
-{
+public class StorageLabelProvider extends LabelProvider {
 	private IEditorRegistry fEditorRegistry = null;
 
 	private Map fImageMap = new HashMap(10);
 
 	private Image fDefaultImage;
 
-	private IEditorRegistry getEditorRegistry()
-	{
-		if( fEditorRegistry == null )
+	private IEditorRegistry getEditorRegistry() {
+		if (fEditorRegistry == null)
 			fEditorRegistry = PlatformUI.getWorkbench().getEditorRegistry();
 		return fEditorRegistry;
 	}
@@ -49,14 +46,12 @@ public class StorageLabelProvider extends LabelProvider
 	 * 
 	 * @see ILabelProvider#getImage
 	 */
-	public Image getImage(Object element)
-	{
-		if( element instanceof ISourceModule) {
-			return getImageForEntry((ISourceModule)element);
-		} else if( element instanceof IStorage ) {
-			return getImageForEntry((IStorage) element);		
+	public Image getImage(Object element) {
+		if (element instanceof ISourceModule) {
+			return getImageForEntry((ISourceModule) element);
+		} else if (element instanceof IStorage) {
+			return getImageForEntry((IStorage) element);
 		}
-		
 
 		return super.getImage(element);
 	}
@@ -66,9 +61,8 @@ public class StorageLabelProvider extends LabelProvider
 	 * 
 	 * @see ILabelProvider#getText
 	 */
-	public String getText(Object element)
-	{
-		if( element instanceof IStorage )
+	public String getText(Object element) {
+		if (element instanceof IStorage)
 			return ((IStorage) element).getName();
 
 		return super.getText(element);
@@ -79,11 +73,10 @@ public class StorageLabelProvider extends LabelProvider
 	 * 
 	 * @see IBaseLabelProvider#dispose
 	 */
-	public void dispose()
-	{
-		if( fImageMap != null ) {
+	public void dispose() {
+		if (fImageMap != null) {
 			Iterator each = fImageMap.values().iterator();
-			while( each.hasNext() ) {
+			while (each.hasNext()) {
 				Image image = (Image) each.next();
 				image.dispose();
 			}
@@ -93,123 +86,121 @@ public class StorageLabelProvider extends LabelProvider
 	}
 
 	/*
-	 * Gets and caches an image for a ArchiveEntryFile. The image for a ArchiveEntryFile
-	 * is retrieved from the EditorRegistry.
+	 * Gets and caches an image for a ArchiveEntryFile. The image for a
+	 * ArchiveEntryFile is retrieved from the EditorRegistry.
 	 */
-	private Image getImageForEntry(IStorage element)
-	{				
-		if( fImageMap == null )
+	private Image getImageForEntry(IStorage element) {
+		if (fImageMap == null)
 			return getDefaultImage();
 
-		if( element == null || element.getName() == null )
+		if (element == null || element.getName() == null)
 			return getDefaultImage();
 
 		// Try to find icon for full name
 		String name = element.getName();
 		Image image = (Image) fImageMap.get(name);
-		if( image != null )
+		if (image != null)
 			return image;
-		IFileEditorMapping[] mappings = getEditorRegistry().getFileEditorMappings();
+		IFileEditorMapping[] mappings = getEditorRegistry()
+				.getFileEditorMappings();
 		int i = 0;
-		while( i < mappings.length ) {
-			if( mappings[i].getLabel().equals(name) )
+		while (i < mappings.length) {
+			if (mappings[i].getLabel().equals(name))
 				break;
 			i++;
 		}
 		String key = name;
-		if( i == mappings.length ) {
+		if (i == mappings.length) {
 			// Try to find icon for extension
 			IPath path = element.getFullPath();
-			if( path == null )
+			if (path == null)
 				return getDefaultImage();
 			key = path.getFileExtension();
-//			if( key == null )
-//				return getDefaultImage();
-			if( key != null ) {
+// if( key == null )
+// return getDefaultImage();
+			if (key != null) {
 				image = (Image) fImageMap.get(key);
-				if( image != null )
+				if (image != null)
 					return image;
 			}
 		}
 
 		// Get the image from the editor registry
 		ImageDescriptor desc = null;
-		
+
 		// Use DLTK Based editor images for all editors.
 		IEditorDescriptor[] descs = getEditorRegistry().getEditors(name);
-		for(int e = 0; e < descs.length; ++e ) {
+		for (int e = 0; e < descs.length; ++e) {
 			String id = descs[e].getId();
-			if( id.indexOf("dltk") > 0 ) {
+			if (id.indexOf("dltk") > 0) {
 				desc = descs[e].getImageDescriptor();
 			}
 		}
-		
-		if( desc == null ) {		
+
+		if (desc == null) {
 			desc = getEditorRegistry().getImageDescriptor(name);
 		}
-		
+
 		image = desc.createImage();
 
 		fImageMap.put(key, image);
 
 		return image;
 	}
-	
-	private Image getImageForEntry(ISourceModule element)
-	{
-		if( fImageMap == null )
+
+	private Image getImageForEntry(ISourceModule element) {
+		if (fImageMap == null)
 			return getDefaultImage();
 
-		if( element == null || element.getElementName() == null )
+		if (element == null || element.getElementName() == null)
 			return getDefaultImage();
 
 		// Try to find icon for full name
 		String name = element.getElementName();
 		Image image = (Image) fImageMap.get(name);
-		if( image != null )
+		if (image != null)
 			return image;
-		IFileEditorMapping[] mappings = getEditorRegistry().getFileEditorMappings();
+		IFileEditorMapping[] mappings = getEditorRegistry()
+				.getFileEditorMappings();
 		int i = 0;
-		while( i < mappings.length ) {
-			if( mappings[i].getLabel().equals(name) )
+		while (i < mappings.length) {
+			if (mappings[i].getLabel().equals(name))
 				break;
 			i++;
 		}
 		String key = name;
-		if( i == mappings.length ) {
+		if (i == mappings.length) {
 			// Try to find icon for extension
 			IPath path = element.getPath();
-			if( path == null )
+			if (path == null)
 				return getDefaultImage();
 			key = path.getFileExtension();
-//			if( key == null )
-//				return getDefaultImage();
-			if( key != null ) {
+// if( key == null )
+// return getDefaultImage();
+			if (key != null) {
 				image = (Image) fImageMap.get(key);
-				if( image != null )
+				if (image != null)
 					return image;
-			}			
+			}
 		}
 
 		// Get the image from the editor registry
-		//		ImageDescriptor desc = getEditorRegistry().getImageDescriptor(name);
-		//		 Get the image from the editor registry
+		// ImageDescriptor desc = getEditorRegistry().getImageDescriptor(name);
+		// Get the image from the editor registry
 		ImageDescriptor desc = null;
 		// Use DLTK Based editor images for all editors.
-		try {
-			IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager.getLanguageToolkit(element);
-			if( toolkit == null ) {
-				return null;
-			}
-			String editorID = toolkit.getEditorID(element);
-			IEditorDescriptor ed = getEditorRegistry().findEditor(editorID);
-			if (ed != null) {
-				desc = ed.getImageDescriptor();
-			}
-		} catch (CoreException e1) {
+		IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
+				.getLanguageToolkit(element);
+		if (toolkit == null) {
+			return null;
 		}
-		
-		if( desc == null ) {		
+		String editorID = toolkit.getEditorId(element);
+		IEditorDescriptor ed = getEditorRegistry().findEditor(editorID);
+		if (ed != null) {
+			desc = ed.getImageDescriptor();
+		}
+
+		if (desc == null) {
 			desc = getEditorRegistry().getImageDescriptor(name);
 		}
 		image = desc.createImage();
@@ -219,10 +210,10 @@ public class StorageLabelProvider extends LabelProvider
 		return image;
 	}
 
-	private Image getDefaultImage()
-	{
-		if( fDefaultImage == null )
-			fDefaultImage = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
+	private Image getDefaultImage() {
+		if (fDefaultImage == null)
+			fDefaultImage = PlatformUI.getWorkbench().getSharedImages()
+					.getImage(ISharedImages.IMG_OBJ_FILE);
 		return fDefaultImage;
 	}
 }

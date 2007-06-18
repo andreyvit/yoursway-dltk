@@ -15,44 +15,54 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.ruby.core.RubyConstants;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
+import org.eclipse.dltk.ruby.internal.ui.editor.RubyEditor;
+import org.eclipse.dltk.ruby.internal.ui.preferences.SimpleRubySourceViewerConfiguration;
+import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
+import org.eclipse.dltk.ruby.internal.ui.text.RubyTextTools;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.ScriptElementLabels;
+import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
+import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.dltk.ui.viewsupport.ScriptUILabelProvider;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.swt.dnd.TextTransfer;
 
 public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 	private static ScriptElementLabels sInstance = new ScriptElementLabels() {
-		public void getElementLabel(IModelElement element, long flags, StringBuffer buf) {
+		public void getElementLabel(IModelElement element, long flags,
+				StringBuffer buf) {
 			StringBuffer buffer = new StringBuffer(60);
 			super.getElementLabel(element, flags, buffer);
 			String s = buffer.toString();
-			if( s != null && !s.startsWith(element.getElementName())) {
-				if( s.indexOf('$') != -1 ) {
-					s = s.replaceAll("\\$",".");
+			if (s != null && !s.startsWith(element.getElementName())) {
+				if (s.indexOf('$') != -1) {
+					s = s.replaceAll("\\$", ".");
 				}
 			}
 			buf.append(s);
 		}
+
 		protected void getTypeLabel(IType type, long flags, StringBuffer buf) {
 			StringBuffer buffer = new StringBuffer(60);
 			super.getTypeLabel(type, flags, buffer);
 			String s = buffer.toString();
-			if( s.indexOf('$') != -1 ) {
-				s = s.replaceAll("\\$","::");
+			if (s.indexOf('$') != -1) {
+				s = s.replaceAll("\\$", "::");
 			}
 			buf.append(s);
 		}
 
 		protected char getTypeDelimiter() {
 			return '$';
-		}	
+		}
 	};
-	
+
 	private static RubyUILanguageToolkit sToolkit = null;
-	
+
 	public static IDLTKUILanguageToolkit getInstance() {
-		if( sToolkit == null ) {
+		if (sToolkit == null) {
 			sToolkit = new RubyUILanguageToolkit();
 		}
 		return sToolkit;
@@ -69,22 +79,38 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 	public IDLTKLanguageToolkit getCoreToolkit() {
 		return RubyLanguageToolkit.getDefault();
 	}
+
 	public IDialogSettings getDialogSettings() {
 		return RubyUI.getDefault().getDialogSettings();
 	}
-	public String getPartitioningID() {
+
+	public String getPartitioningId() {
 		return RubyConstants.RUBY_PARTITIONING;
 	}
-	public String getEditorID(Object inputElement) {
-		return "org.eclipse.dltk.ruby.ui.editor.RubyEditor";
+
+	public String getEditorId(Object inputElement) {
+		return RubyEditor.EDITOR_ID;
 	}
-	public String getInterpreterContainerID() {
+
+	public String getInterpreterContainerId() {
 		return "org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER";
 	}
+
 	public ScriptUILabelProvider createScripUILabelProvider() {
 		return null;
 	}
+
 	public boolean getProvideMembers(ISourceModule element) {
 		return true;
+	}
+
+	public ScriptTextTools getTextTools() {
+		return RubyUI.getDefault().getTextTools();
+	}
+
+	public ScriptSourceViewerConfiguration createSourceViwerConfiguration() {
+		return new SimpleRubySourceViewerConfiguration(getTextTools()
+				.getColorManager(), getPreferenceStore(), null,
+				getPartitioningId(), false);
 	}
 }

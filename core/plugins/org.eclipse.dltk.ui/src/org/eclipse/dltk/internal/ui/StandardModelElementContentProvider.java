@@ -116,22 +116,20 @@ public class StandardModelElementContentProvider implements
 	/**
 	 * Returns whether members are provided when asking for a compilation units
 	 * or class file for its children.
-	 * @param element 
+	 * 
+	 * @param element
 	 * 
 	 * @return <code>true</code> if the content provider provides members;
 	 *         otherwise <code>false</code> is returned
 	 */
 	public boolean getProvideMembers(Object element) {
-		if( element instanceof ISourceModule ) {
-			try {
-				IDLTKUILanguageToolkit languageToolkit = DLTKUILanguageManager.getLanguageToolkit((ISourceModule)element);
-				if( languageToolkit != null ) {
-					return fProvideMembers && languageToolkit.getProvideMembers((ISourceModule)element);
-				}
-			} catch (CoreException e) {
-				if( DLTKCore.DEBUG ) {
-					e.printStackTrace();
-				}
+		if (element instanceof ISourceModule) {
+			IDLTKUILanguageToolkit languageToolkit = DLTKUILanguageManager
+					.getLanguageToolkit((ISourceModule) element);
+			if (languageToolkit != null) {
+				return fProvideMembers
+						&& languageToolkit
+								.getProvideMembers((ISourceModule) element);
 			}
 		}
 		return fProvideMembers;
@@ -196,7 +194,8 @@ public class StandardModelElementContentProvider implements
 				return getFolderContents((IScriptFolder) element);
 			if (element instanceof IFolder)
 				return getResources((IFolder) element);
-			if (getProvideMembers(element) && element instanceof ISourceReference
+			if (getProvideMembers(element)
+					&& element instanceof ISourceReference
 					&& element instanceof IParent) {
 				return ((IParent) element).getChildren();
 			}
@@ -274,7 +273,8 @@ public class StandardModelElementContentProvider implements
 			}
 			newFragments.add(fragments[i]);
 		}
-		fragments = (IModelElement[]) newFragments.toArray(new IModelElement[newFragments.size()]);
+		fragments = (IModelElement[]) newFragments
+				.toArray(new IModelElement[newFragments.size()]);
 		Object[] nonScriptResources = root.getForeignResources();
 		if (nonScriptResources == null)
 			return fragments;
@@ -322,8 +322,9 @@ public class StandardModelElementContentProvider implements
 	 * Note: This method is for internal use only. Clients should not call this
 	 * method.
 	 */
-	protected Object[] getScriptProjects(IScriptModel model) throws ModelException {
-		return model.getScriptProjects(); 
+	protected Object[] getScriptProjects(IScriptModel model)
+			throws ModelException {
+		return model.getScriptProjects();
 	}
 
 	private Object[] getFolderContents(IScriptFolder fragment)

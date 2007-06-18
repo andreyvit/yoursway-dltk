@@ -14,7 +14,6 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
 
 public class ScriptWatchpoint extends ScriptLineBreakpoint implements
@@ -43,12 +42,8 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 		return getMarker().getAttribute(FIELD_NAME, "");
 	}
 
-	public void setFieldName(String str) throws CoreException {
-		getMarker().setAttribute(FIELD_NAME, str);
-	}
-
-	public boolean isAccessSuspend(IDebugTarget target) {
-		return false;
+	public void setFieldName(String name) throws CoreException {
+		getMarker().setAttribute(FIELD_NAME, name);
 	}
 
 	protected String getMarkerID() {
@@ -80,5 +75,4 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 	public boolean supportsModification() {
 		return true;
 	}
-
 }
