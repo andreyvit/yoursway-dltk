@@ -127,7 +127,7 @@
 		<consolePatternMatchListener
 			class="org.eclipse.dltk.ruby.internal.debug.ui.console.RubyConsoleTracker"
 			id="org.eclipse.dltk.ruby.debug.ui.RubyConsoleTracker"
-			regex="((\w:)?[^:]+):(\d+)">
+			regex="(\w?:?[^(:|\n)]+):([\d]+)">
 			<enablement>
 				<or>
 					<test
