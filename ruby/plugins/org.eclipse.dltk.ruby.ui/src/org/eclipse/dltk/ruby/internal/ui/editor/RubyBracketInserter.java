@@ -107,18 +107,19 @@ public class RubyBracketInserter extends BracketInserter {
 			case '\'':
 			case '"':
 				if (!fCloseStrings || nextToken == Symbols.TokenIDENT
-						|| prevToken == Symbols.TokenIDENT || next != null
+						/*|| prevToken == Symbols.TokenIDENT*/ || next != null
 						&& next.length() > 1 || previous != null
-						&& (previous.length() > 1 || previous.charAt(0)== event.character))
+						&& (previous.length() > 1 && previous.charAt(0)== event.character))
 					return;
 				break;
 
 			default:
 				return;
-			}
+			}					
 
+			int correctedOffset = (document.getLength() == offset)?offset - 1:offset;
 			ITypedRegion partition = TextUtilities.getPartition(document,
-					RubyPartitions.RUBY_PARTITIONING, offset, true);
+					RubyPartitions.RUBY_PARTITIONING, correctedOffset, true);
 			if (!IDocument.DEFAULT_CONTENT_TYPE.equals(partition.getType()))
 				return;
 

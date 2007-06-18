@@ -19,6 +19,7 @@ import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
+import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 
 public class RubyPartitionScanner extends RuleBasedPartitionScanner {
@@ -48,9 +49,9 @@ public class RubyPartitionScanner extends RuleBasedPartitionScanner {
 
 		rules.add(new EndOfLineRule("#", comment));
 
-		rules.add(new MultiLineRule("\'", "\'", string, '\\'));
+		rules.add(new MultiLineRule("\'", "\'", string, '\\', true));
 
-		rules.add(new MultiLineRule("\"", "\"", string, '\\'));
+		rules.add(new MultiLineRule("\"", "\"", string, '\\', true));
 
 		rules.add(new RubyPercentStringRule(string, false));
 

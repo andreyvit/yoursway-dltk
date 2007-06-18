@@ -317,13 +317,13 @@ public abstract class PatternLocator implements IIndexConstants {
 		int offset = reference.sourceStart();
 		switch (referenceType) {
 			case IModelElement.TYPE:
-				match = locator.newTypeReferenceMatch(element, accuracy, offset, reference.sourceEnd() - offset + 1, reference);
+				match = locator.newTypeReferenceMatch(element, accuracy, offset, reference.sourceEnd() - offset , reference);
 				break;
 			case IModelElement.FIELD:
-				match = locator.newFieldReferenceMatch(element, accuracy, offset, reference.sourceEnd() - offset + 1, reference);
+				match = locator.newFieldReferenceMatch(element, accuracy, offset, reference.sourceEnd() - offset, reference);
 				break;
 			case IModelElement.METHOD:
-				match = locator.newMethodReferenceMatch(element, accuracy, offset, reference.sourceEnd() - offset + 1, false, false, reference);
+				match = locator.newMethodReferenceMatch(element, accuracy, offset, reference.sourceEnd() - offset, false, false, reference);
 				break;
 		}
 		if (match != null) {
