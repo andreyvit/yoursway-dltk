@@ -27,17 +27,21 @@ import org.eclipse.debug.core.ILaunchListener;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpointListener;
+import org.eclipse.dltk.debug.core.model.IScriptDebugElement;
+import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
+import org.eclipse.dltk.internal.debug.core.model.ScriptBreakpoint;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 
 public class ScriptDebugOptionsManager implements IDebugEventSetListener,
-		IPropertyChangeListener, IScriptBreakpointListener , ILaunchListener,
+		IPropertyChangeListener, IScriptBreakpointListener, ILaunchListener,
 		IBreakpointsListener {
 
-	private static ScriptDebugOptionsManager fgOptionsManager;
+	private static ScriptDebugOptionsManager instance;
 
 	/**
 	 * A label provider
@@ -46,6 +50,33 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 			.newDebugModelPresentation();
 
 	public void handleDebugEvents(DebugEvent[] events) {
+		for (int i = 0; i < events.length; ++i) {
+			DebugEvent event = events[i];
+			if (event.getKind() == DebugEvent.SUSPEND) {
+				Object source = event.getSource();
+				if (source instanceof IScriptThread) {
+					IScriptThread thread = (IScriptThread) source;
+					IBreakpoint[] breakpoints = thread.getBreakpoints();
+					for (int j = 0; j < breakpoints.length; ++j) {
+						IBreakpoint breakpoint = breakpoints[j];
+						if (breakpoint instanceof IScriptBreakpoint) {
+							IScriptBreakpoint scriptBreakpoint = (IScriptBreakpoint) breakpoint;
+							try {
+								String id = scriptBreakpoint.getIdentifier();
+								IDbgpBreakpoint br = thread.getDbgpBreakpoint(id);
+								int hitCount = br.getHitCount();
+								scriptBreakpoint.setHitCount(hitCount);
+							} catch (CoreException e) {
+								// TODO: log exception
+								e.printStackTrace();
+							}
+						}
+					}
+					
+					updateBreakpointMessages(breakpoints);
+				}
+			}
+		}
 	}
 
 	public void launchAdded(ILaunch launch) {
@@ -98,11 +129,12 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 						String info = fLabelProvider.getText(breakpoint);
 						breakpoint.getMarker().setAttribute(IMarker.MESSAGE,
 								info);
+
 					}
 				}
 			}
 		};
-		
+
 		try {
 			ResourcesPlugin.getWorkspace().run(runnable, null, 0, null);
 		} catch (CoreException e) {
@@ -112,24 +144,23 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 
 	public void breakpointsRemoved(IBreakpoint[] breakpoints,
 			IMarkerDelta[] deltas) {
-		if (DLTKCore.DEBUG) {
-			System.out.println("Removed breakpoints.");
-		}
 	}
 
 	public static ScriptDebugOptionsManager getDefault() {
-		if (fgOptionsManager == null) {
-			fgOptionsManager = new ScriptDebugOptionsManager();
+		if (instance == null) {
+			instance = new ScriptDebugOptionsManager();
 		}
-		return fgOptionsManager;
+
+		return instance;
 	}
 
 	public void startup() {
 		// lazy initialization will occur on the first launch
 		DebugPlugin debugPlugin = DebugPlugin.getDefault();
+		debugPlugin.addDebugEventListener(this);
 		debugPlugin.getLaunchManager().addLaunchListener(this);
 		debugPlugin.getBreakpointManager().addBreakpointListener(this);
-		
+
 		ScriptEvaluationContextManager.startup();
 	}
 
@@ -149,7 +180,6 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 	}
 
 	public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
-		// TODO Auto-generated method stub
-		System.out.println("Propety changed.");
+		// TODO:
 	}
 }

@@ -11,6 +11,7 @@ package org.eclipse.dltk.debug.core.model;
 
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.dltk.dbgp.IDbgpSession;
+import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
 import org.eclipse.dltk.internal.debug.core.model.IScriptThreadStreamProxy;
 
@@ -18,6 +19,8 @@ public interface IScriptThread extends IThread /* , IFilteredStep */{
 	int ERR_THREAD_NOT_SUSPENDED = -3;
 
 	IDbgpSession getDbgpSession();
+	
+	IDbgpBreakpoint getDbgpBreakpoint(String id);
 
 	IScriptThreadStreamProxy getStreamProxy();
 

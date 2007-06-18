@@ -14,6 +14,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
@@ -27,6 +28,8 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -55,8 +58,8 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 	private Button enableExpressionButton;
 
 	// Other
-	private Button method_entry;
-	private Button method_exit;
+	private Button breakOnEntryButton;
+	private Button breakOnExitButton;
 
 	// Simple access methods
 	protected boolean getBreakointEnableState() {
@@ -65,6 +68,10 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 	protected boolean getEnabledHitChecking() {
 		return hitCountCheckingButton.getSelection();
+	}
+
+	protected void setEnabledHitChecking(boolean state) {
+		hitCountCheckingButton.setSelection(state);
 	}
 
 	// Hit value & condition
@@ -86,7 +93,7 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 				.getText()) : -1;
 	}
 
-	// Expresion
+	// Expression
 	protected void setExpression(String expression) {
 		expressionViewer.getDocument().set(expression);
 	}
@@ -148,8 +155,8 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 		createLabel(labelComposite, breakpoint.getClass().getName());
 
 		// Script language
-		createLabel(labelComposite, "Script Language:");
-		createLabel(labelComposite, breakpoint.getModelIdentifier());
+		createLabel(labelComposite, "Language:");
+		createLabel(labelComposite, DLTKLanguageManager.getLanguageToolkit(getNatureId()).getLanguageName());
 
 		// Resource name
 		String resourceName = breakpoint.getResourceName();
@@ -160,7 +167,10 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 		// Hit count
 		createLabel(labelComposite, "Hit count:");
-		createLabel(labelComposite, "Not available"); // retreive hit count
+		int hitCount = breakpoint.getHitCount();
+		createLabel(labelComposite,
+				hitCount == -1 ? "N/A (available during debugging)" : Integer
+						.toString(hitCount));
 		// from debugging engine
 
 		createTypeSpecificLabels(labelComposite);
@@ -192,9 +202,11 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 	}
 
 	// Changable breakpoint information
-	protected void createEnabledButton(Composite parent) throws CoreException {
-		enabledBreakpointButton = createCheckButton(parent, "&Enabled");
-		enabledBreakpointButton.setSelection(getBreakpoint().isEnabled());
+	protected void createButtons(Composite parent) throws CoreException {
+		Composite buttonsComposite = createComposite(parent, 1);
+
+		enabledBreakpointButton = createCheckButton(buttonsComposite,
+				"&Enabled");
 	}
 
 	protected void createHitCountEditor(Composite parent) {
@@ -223,12 +235,24 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 		hitConditionCombo.add("multiple (%)",
 				IScriptBreakpoint.HIT_CONDITION_MULTIPLE);
 
+		hitConditionCombo.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				updateControlsState();
+			}
+		});
+
 		hitConditionCombo.setData(new GridData());
 
 		// Hit value
 		hitValueText = new Text(hitCountComposite, SWT.BORDER);
 		hitValueText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
 				false));
+
+		hitValueText.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				updateControlsState();
+			}
+		});
 
 		createLabel(hitCountComposite, "hits");
 	}
@@ -249,12 +273,8 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 		expressionViewer = new ScriptSourceViewer(group, null, null, false,
 				SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL, null);
 
-		ScriptDebugManager manager = ScriptDebugManager.getInstance();
-		String natureId = manager.getNatureByModel(getBreakpoint()
-				.getModelIdentifier());
-
 		IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
-				.getLanguageToolkit(natureId);
+				.getLanguageToolkit(getNatureId());
 
 		IDocument document = new Document();
 
@@ -265,7 +285,6 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 				.createSourceViwerConfiguration();
 
 		expressionViewer.configure(config);
-		expressionViewer.setEditable(true);
 		expressionViewer.setDocument(document);
 
 		expressionViewer.getControl().setLayoutData(
@@ -279,24 +298,24 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 		if (breakpoint instanceof IScriptMethodEntryBreakpoint) {
 			IScriptMethodEntryBreakpoint ee = (IScriptMethodEntryBreakpoint) breakpoint;
 			Composite createComposite = createComposite(mainComposite, 4);
-			method_entry = createCheckButton(createComposite,
+			breakOnEntryButton = createCheckButton(createComposite,
 					"Suspend on Method entry");
-			method_exit = createCheckButton(createComposite,
+			breakOnExitButton = createCheckButton(createComposite,
 					"Suspend on Method exit");
-			method_entry.setSelection(ee.breakOnEntry());
-			method_exit.setSelection(ee.breakOnExit());
+			breakOnEntryButton.setSelection(ee.breakOnEntry());
+			breakOnExitButton.setSelection(ee.breakOnExit());
 		}
 
 		if (breakpoint instanceof IScriptWatchPoint) {
 			IScriptWatchPoint ee = (IScriptWatchPoint) breakpoint;
 			Composite createComposite = createComposite(mainComposite, 4);
-			method_entry = createCheckButton(createComposite,
+			breakOnEntryButton = createCheckButton(createComposite,
 					"Suspend on Access");
-			method_exit = createCheckButton(createComposite,
+			breakOnExitButton = createCheckButton(createComposite,
 					"Suspend on Modification");
 			try {
-				method_entry.setSelection(ee.isAccess());
-				method_exit.setSelection(ee.isModification());
+				breakOnEntryButton.setSelection(ee.isAccess());
+				breakOnExitButton.setSelection(ee.isModification());
 			} catch (CoreException e) {
 				DebugPlugin.log(e);
 			}
@@ -307,13 +326,18 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 		return (IScriptBreakpoint) getElement();
 	}
 
+	protected String getNatureId() {
+		ScriptDebugManager manager = ScriptDebugManager.getInstance();
+		return manager.getNatureByModel(getBreakpoint().getModelIdentifier());
+	}
+
 	protected Control createContents(Composite parent) {
 		noDefaultAndApplyButton();
 		Composite composite = createComposite(parent, 1);
 
 		try {
 			createLabels(composite);
-			createEnabledButton(composite);
+			createButtons(composite);
 			createHitCountEditor(composite);
 			createExpressionEditor(composite);
 			createTypeSpecificExtensions(composite);
@@ -321,39 +345,35 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 		}
 
-		setValid(true);
+		try {
+			loadValues();
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		updateControlsState();
 
 		return composite;
 	}
 
-	protected void updateControlsState() {
-		// Hit count editor
-
-		boolean hitChecking = hitCountCheckingButton.getSelection();
-		hitConditionCombo.setEnabled(hitChecking);
-		hitValueText.setEnabled(hitChecking);
-
-		boolean expressionEnabled = enableExpressionButton.getSelection();
-		Control control = expressionViewer.getControl();
-
-		control.setEnabled(expressionEnabled);
-	}
-
 	protected void loadValues() throws CoreException {
 		IScriptBreakpoint breakpoint = getBreakpoint();
 
-		// breakpoint.isEnabled();
+		// Enabled
+		enabledBreakpointButton.setSelection(breakpoint.isEnabled());
 
+		// Hit conditions
 		final int hitValue = breakpoint.getHitValue();
 		if (hitValue != -1) {
 			setHitValue(hitValue);
 			setHitCondition(breakpoint.getHitCondition());
+			setEnabledHitChecking(true);
 		} else {
-
+			setEnabledHitChecking(false);
 		}
 
+		// Expression
 		setExpressionState(breakpoint.getExpressionState());
 		setExpression(breakpoint.getExpression());
 	}
@@ -370,6 +390,42 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 		breakpoint.setHitCondition(getHitCondition());
 	}
 
+	protected void updateControlsState() {
+		// Hit count
+		boolean hitChecking = hitCountCheckingButton.getSelection();
+		hitConditionCombo.setEnabled(hitChecking);
+		hitValueText.setEnabled(hitChecking);
+
+		// Expression
+		boolean expressionEnabled = enableExpressionButton.getSelection();
+		Control control = expressionViewer.getControl();
+		control.setEnabled(expressionEnabled);
+
+		validateValues();
+	}
+
+	protected void validateValues() {
+		boolean valid = true;
+		String errorMessage = null;
+
+		if (getEnabledHitChecking()) {
+			try {
+				getHitValue();
+			} catch (NumberFormatException e) {
+				valid = false;
+				errorMessage = "Specify right number of hits";
+			}
+
+			if (getHitCondition() == -1) {
+				valid = false;
+				errorMessage = "Select condition";
+			}
+		}
+
+		setValid(valid);
+		setErrorMessage(errorMessage);
+	}
+
 	public boolean performOk() {
 		try {
 			ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
@@ -379,7 +435,6 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 							.fireBreakpointChanged(getBreakpoint());
 				}
 			}, null, 0, null);
-
 		} catch (CoreException e) {
 			// TODO: log exception
 		}

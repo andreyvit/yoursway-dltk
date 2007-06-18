@@ -25,6 +25,12 @@ public interface IScriptBreakpoint extends IBreakpoint {
 
 	void setIdentifier(String id) throws CoreException;
 
+	// Hit count (returns effective hit count during debugging or -1 if not
+	// available)
+	int getHitCount() throws CoreException;
+	
+	void setHitCount(int value) throws CoreException;
+
 	// Hit value
 	int getHitValue() throws CoreException;
 

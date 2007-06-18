@@ -156,10 +156,11 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 	public IDbgpBreakpoint getBreakpoint(String id) throws DbgpException {
 		DbgpRequest request = createRequest(BREAKPOINT_GET_COMMAND);
 		request.addOption("-d", id);
-		// List list = parseBreakpointsResponse(communicate(request));
-		// return (IDbgpBreakpoint) list.get(0);
-		// return null;
-		throw new Error("Not implemeneted");
+		IDbgpBreakpoint[] breakpoints = parseBreakpointsResponse(communicate(request));
+		if (breakpoints.length > 0) {
+			return breakpoints[0];
+		}
+		return null;
 	}
 
 	public void removeBreakpoint(String id) throws DbgpException {

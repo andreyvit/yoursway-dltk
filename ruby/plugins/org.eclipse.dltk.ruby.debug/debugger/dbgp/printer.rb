@@ -76,6 +76,18 @@ module XoredDebugger
                 children_str)
         end
 
+        def print_breakpoint(m)
+            sprintf('<breakpoint id="%d" type="%s" state="%s" filename="%s" hit_count="%d" hit_value="%d" hit_condition="%s" lineno="%d"/>',
+                m[:breakpoint_id], 
+				m[:type], 
+				m[:state], 
+				m[:filename], 
+				m[:hit_count], 
+				m[:hit_value], 
+				m[:hit_condition], 
+				m[:lineno])
+        end
+
         def print_continuation(command, m)
             sprintf('<response command="%s" status="%s" reason="%s" transaction_id="%d"/>',
                 command, m[:status], m[:reason], m[:id])
@@ -230,7 +242,8 @@ module XoredDebugger
         end
 
         def print_breakpoint_get(m)
-            # TODO:
+            sprintf('<response command="breakpoint_get" transaction_id="%d">%s</response>',
+            m[:id], print_breakpoint(m[:breakpoint]))
         end
 
         def print_breakpoint_update(m)

@@ -254,9 +254,9 @@ module XoredDebugger
 
 
         # Breakpoint commands
-        def breakpoint_set_line(file, line, state, temporary)
-            id = breakpoints.set_line_bpt(file, line, state)
-
+        def breakpoint_set_line(file, line, state, temporary, hit_value, hit_condition)
+            id = breakpoints.set_line_bpt(file, line, state, temporary, hit_value, hit_condition)
+			logger.puts("BR_ID: " + id.to_s)
             { :state         => state, 
               :breakpoint_id => id }
         end
@@ -268,9 +268,18 @@ module XoredDebugger
               :breakpoint_id => id }        
         end
 
-        def breakpoint_get
-            # TODO:
-            {}
+        def breakpoint_get(id)
+			b = breakpoints[id]
+		 			  
+		    { :breakpoint => 
+				{ :breakpoint_id => id,
+                  :type => 'line',
+			      :state => b.state,
+			      :filename => b.file,			  
+			      :hit_count => b.hit_count,
+			      :hit_value => b.hit_value,
+			      :hit_condition => b.hit_condition,
+			      :lineno => b.line } }
         end
 
         def breakpoint_list
@@ -399,21 +408,18 @@ module XoredDebugger
                 when 'break': break_cmd
 
                 # Breakpoint commands
-                when 'breakpoint_set'
+                when 'breakpoint_set'				
                     type = command.arg('-t')
-                    state = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false           
-                    temporary = command.arg_with_default('-r', false)
-
-                    # TODO:
-                    #hit_value = command.arg('-h')     # hit value (hit_value) used with the hit condition to determine if should break; a value of zero indicates hit count processing is disabled for this breakpoint [optional, defaults to zero (i.e. disabled)]
-                    #hit_condition = command.arg('-o') # hit condition string (hit_condition); see hit_condition documentation above; BTW 'o' stands for 'operator' [optional, defaults to '>=']
-
+                    state = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false					
+					temporary = command.arg_with_default('-r', false)
+					hit_value = command.arg_with_default('-h', 1).to_i
+					hit_condition = command.arg_with_default('-o', '>=')
+					
                     case type
                     when 'line'
                         file = File.expand_path(uri_to_path(command.arg('-f')))
                         line = command.arg('-n').to_i
-
-                        breakpoint_set_line(file, line, state, temporary)
+                        breakpoint_set_line(file, line, state, temporary, hit_value, hit_condition)
                     
                     when 'call'
                         function = command.arg('-m')
@@ -431,9 +437,9 @@ module XoredDebugger
                         # TODO:
                     end
 
-
                 when 'breakpoint_get'
-                    breakpoint_get
+				    id = command.arg('-d').to_i
+                    breakpoint_get(id)
 
                 when 'breakpoint_update'
                     id = command.arg('-d').to_i
@@ -592,26 +598,27 @@ module XoredDebugger
                 return
             end
 
-   # Command loop
+		# Command loop
         if @last_continuation_command.nil?
 
-                        loop do
-                            @command = Command.new(receive)                        
-                                
-                            if ['run', 'step_into', 'step_over', 'step_out'].include?(@command.name)
-                                @last_continuation_command = @command
-                            end
+		loop do
+			@command = Command.new(receive)                        
+				
+			if ['run', 'step_into', 'step_over', 'step_out'].include?(@command.name)
+				@last_continuation_command = @command
+			end
 
-                            data = dispatch_command(@command)
+			data = dispatch_command(@command)
 
-                            logger.puts('Data: ' + data.inspect) 
+			logger.puts('Data: ' + data.inspect) 
 
-                            if data.nil?
-                                break
-                            else
-                                send(@command.name, data)
-                            end
-                        end
+			if data.nil?
+				break
+			else
+				send(@command.name, data)
+			end
+		end
+		
         end
 
             case event

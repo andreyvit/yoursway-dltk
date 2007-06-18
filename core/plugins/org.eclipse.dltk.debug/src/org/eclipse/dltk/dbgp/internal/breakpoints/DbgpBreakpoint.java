@@ -15,11 +15,14 @@ public class DbgpBreakpoint implements IDbgpBreakpoint {
 	private final String id;
 
 	private final boolean enabled;
+	
+	// Number of breakpoint hits
+	private final int hitCount;	
 
+	// Hit value for hit condition
 	private final int hitValue;
 
-	private final int hitCount;
-
+	// Hit condition
 	private final int hitCondition;
 
 	protected int convertHitCondition(String s) {

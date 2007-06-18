@@ -41,10 +41,10 @@ module XoredDebugger
             @state and case @hit_condition
                 when COND_GREATER_OR_EQUALS
                     @hit_count >= @hit_value
-     
-                    @hit_count == @hit_value
- 
-                    @hit_count % @hit_value    
+				when COND_EQUALS
+					@hit_count == @hit_value
+				when COND_MULTIPLE
+                    (@hit_count % @hit_value) == 0
                 else
                     false
             end
@@ -61,14 +61,16 @@ module XoredDebugger
     # N.B. Stores absolute path names
     #
     class LineBreakpoint < Breakpoint
-        def initialize(id, file, line, state = true, temporary = false)
-            super(id, state, temporary)
-            @file = file
-            @line = line            
-        end
+      	def initialize(id, file, line, state = true, temporary = false, hit_value = 1, hit_condition = COND_GREATER_OR_EQUALS)
+			super(id, state, temporary, hit_value, hit_condition)
+			@file = file
+            @line = line
+		end
+		
+		attr_reader :line, :file
 
         def hit(file, line)
-            super () and @file == file and @line == line
+            @file == file and @line == line and super ()
         end
 
         attr_reader :file, :line
@@ -81,7 +83,7 @@ module XoredDebugger
         end
 
         def hit(exception)
-            super () and @exception == exception
+            @exception == exception and super ()
         end
     end # class ExceptionBreakpoint
                    
@@ -101,15 +103,20 @@ module XoredDebugger
             @line_bps = {}
             @exception_bps = {}
         end
+		
+		def [] (id)
+			 @line_bps[id]
+		end
 
         def line_break?(file, line)
             @mutex.synchronize do
+				result = false
                 for bp in @line_bps.values do
                     if bp.hit(file, line)
-                        return true
+                        result = true
                     end
                 end
-                false
+                result
             end
         end
 
@@ -118,10 +125,10 @@ module XoredDebugger
             end
         end
 
-        def set_line_bpt(file, line, state)
+        def set_line_bpt(file, line, state, temporary, hit_value, hit_condition)
             @mutex.synchronize do
                 id = Breakpoints.next_id
-                @line_bps[id] = LineBreakpoint.new(id, file, line, state)
+                @line_bps[id] = LineBreakpoint.new(id, file, line, state, temporary, hit_value, hit_condition)
                 id
             end
         end

@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IStackFrame;
@@ -24,6 +25,7 @@ import org.eclipse.dltk.dbgp.IDbgpNotification;
 import org.eclipse.dltk.dbgp.IDbgpNotificationListener;
 import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.IDbgpStatus;
+import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
 import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
@@ -200,7 +202,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	}
 
 	public IBreakpoint[] getBreakpoints() {
-		return new IBreakpoint[0];
+		return DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(
+				getModelIdentifier());
 	}
 
 	protected void setSuspended(boolean value, int detail) {
@@ -328,6 +331,17 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	public IDbgpSession getDbgpSession() {
 		return session;
 	}
+	
+	public IDbgpBreakpoint getDbgpBreakpoint(String id) {
+		try {
+			return session.getCoreCommands().getBreakpoint(id);
+		} catch (DbgpException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 
 	public IScriptThreadStreamProxy getStreamProxy() {
 		return streamProxy;
@@ -350,7 +364,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 		return evalEngine;
 	}
-	
+
 	public int getSuspendCount() {
 		return suspendCount;
 	}

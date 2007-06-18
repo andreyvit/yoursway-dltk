@@ -20,6 +20,8 @@ public abstract class ScriptBreakpoint extends Breakpoint implements
 
 	private static final String ID = BREAKPOINT + ".id";
 
+	private static final String HIT_COUNT = BREAKPOINT + ".hit_count";
+
 	private static final String EXPRESSION = BREAKPOINT + ".expression";
 
 	private static final String EXPRESSION_STATE = EXPRESSION + ".state";
@@ -37,26 +39,34 @@ public abstract class ScriptBreakpoint extends Breakpoint implements
 		setAttribute(ID, id);
 	}
 
+	// Hit count
+	public int getHitCount() throws CoreException {
+		return ensureMarker().getAttribute(HIT_COUNT, -1);
+	}
+
+	public void setHitCount(int value) throws CoreException {
+		ensureMarker().setAttribute(HIT_COUNT, value);
+	}
+
 	// Hit value
 	public int getHitValue() throws CoreException {
-		return Integer.parseInt(ensureMarker().getAttribute(HIT_VALUE, "-1"));
+		return ensureMarker().getAttribute(HIT_VALUE, -1);
 	}
 
 	public void setHitValue(int hitValue) throws CoreException {
 		if (getHitValue() != hitValue) {
-			setAttribute(HIT_VALUE, Integer.toString(hitValue));
+			setAttribute(HIT_VALUE, hitValue);
 		}
 	}
 
 	// Hit condition
 	public int getHitCondition() throws CoreException {
-		return Integer.parseInt(ensureMarker()
-				.getAttribute(HIT_CONDITION, "-1"));
+		return ensureMarker().getAttribute(HIT_CONDITION, -1);
 	}
 
 	public void setHitCondition(int condition) throws CoreException {
 		if (getHitCondition() != condition) {
-			setAttribute(HIT_CONDITION, Integer.toString(condition));
+			setAttribute(HIT_CONDITION, condition);
 		}
 	}
 
@@ -75,8 +85,7 @@ public abstract class ScriptBreakpoint extends Breakpoint implements
 	}
 
 	public boolean getExpressionState() throws CoreException {
-		return (new Boolean(ensureMarker().getAttribute(EXPRESSION_STATE,
-				"false")).booleanValue());
+		return ensureMarker().getAttribute(EXPRESSION_STATE, false);
 	}
 
 	public void setExpressionState(boolean state) throws CoreException {

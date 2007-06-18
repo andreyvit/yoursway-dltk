@@ -169,11 +169,19 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 
 	protected String getBreakpointText(IScriptBreakpoint breakpoint) {
 		try {
+			StringBuffer sb = new StringBuffer();
 			if (breakpoint instanceof IScriptLineBreakpoint) {
 				IScriptLineBreakpoint b = (IScriptLineBreakpoint) breakpoint;
-				return b.getResourceName() + " [line: " + b.getLineNumber()
-						+ "]";
+				sb.append(b.getResourceName());
+				sb.append("[line: " + b.getLineNumber() + "]");
+
+				int hitCount = b.getHitCount();
+				if (hitCount != -1) {
+					sb.append(", " + hitCount + " hits");
+				}
 			}
+
+			return sb.toString();
 		} catch (CoreException e) {
 			DLTKDebugUIPlugin.log(e);
 		}

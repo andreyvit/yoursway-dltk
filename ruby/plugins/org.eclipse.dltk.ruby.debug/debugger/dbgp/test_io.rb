@@ -39,7 +39,8 @@ class TestIO
            'context_get',
            'stdin -c 1', # redirect stdin
            'feature_get -n supports_async',
-           'breakpoint_set -t line -f file:///C:%5Cdata%5Cprogramming%5Cjava%5Cruntime-New_configuration%5CTest%5Ctank.rb -n 2',
+           'breakpoint_set -t line -f -o == -h 32 file:///C:%5Cdata%5Cprogramming%5Cjava%5Cruntime-New_configuration%5CTest%5Ctank.rb -n 2',
+           'breakpoint_get -d 1',
            'breakpoint_remove -d 1', 
            'status',
            'stack_depth',
