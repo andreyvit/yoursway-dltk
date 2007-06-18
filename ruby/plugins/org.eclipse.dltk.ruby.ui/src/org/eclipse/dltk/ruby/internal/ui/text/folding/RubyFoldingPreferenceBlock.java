@@ -98,7 +98,7 @@ public class RubyFoldingPreferenceBlock extends AbstractConfigurationBlock imple
 			gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING | GridData.HORIZONTAL_ALIGN_FILL);
 			pathButtonComp.setLayoutData(gd);
 			pathButtonComp.setFont(font);
-			fAddButton = createPushButton(pathButtonComp, RubyFoldingMessages.TclFoldingPreferenceBlock_0);
+			fAddButton = createPushButton(pathButtonComp, RubyFoldingMessages.RubyFoldingPreferenceBlock_0);
 			fAddButton.addSelectionListener(new SelectionListener() {
 				public void widgetDefaultSelected(SelectionEvent e) {}
 
@@ -107,17 +107,17 @@ public class RubyFoldingPreferenceBlock extends AbstractConfigurationBlock imple
 						public String isValid(String newText) {
 							if (newText.trim().length() > 0 && newText.matches("[_a-zA-Z]*")) //$NON-NLS-1$
 								return null;							
-							return RubyFoldingMessages.TclFoldingPreferenceBlock_2;
+							return RubyFoldingMessages.RubyFoldingPreferenceBlock_2;
 						}
 					};
-					InputDialog dlg = new InputDialog(null, RubyFoldingMessages.TclFoldingPreferenceBlock_3, RubyFoldingMessages.TclFoldingPreferenceBlock_4, "", validator); //$NON-NLS-3$
+					InputDialog dlg = new InputDialog(null, RubyFoldingMessages.RubyFoldingPreferenceBlock_3, RubyFoldingMessages.RubyFoldingPreferenceBlock_4, "", validator); //$NON-NLS-3$
 					if (dlg.open() == InputDialog.OK) {
 						fList.add(dlg.getValue());
 						save();
 					}
 				}
 			});
-			fRemoveButton = createPushButton(pathButtonComp, RubyFoldingMessages.TclFoldingPreferenceBlock_6);
+			fRemoveButton = createPushButton(pathButtonComp, RubyFoldingMessages.RubyFoldingPreferenceBlock_6);
 			fRemoveButton.addSelectionListener(new SelectionListener() {
 				public void widgetDefaultSelected(SelectionEvent e) {}
 
@@ -207,7 +207,7 @@ public class RubyFoldingPreferenceBlock extends AbstractConfigurationBlock imple
 		inner.setLayout(layout);
 		
 		
-		Composite blockFolding = createSubsection(inner, null, RubyFoldingMessages.TclFoldingPreferenceBlock_10);
+		Composite blockFolding = createSubsection(inner, null, RubyFoldingMessages.RubyFoldingPreferenceBlock_10);
 		blockFolding.setLayout(new GridLayout());		
 		
 		IInputValidator val = new IInputValidator () {
@@ -232,13 +232,13 @@ public class RubyFoldingPreferenceBlock extends AbstractConfigurationBlock imple
 		addLabelledTextField(blockFolding, "Minimal amount of lines to be folded(>=2):", 
 				PreferenceConstants.EDITOR_FOLDING_LINES_LIMIT, 3, 1, true, val);
 		
-		Composite commentFolding = createSubsection(inner, null, RubyFoldingMessages.TclFoldingPreferenceBlock_14);
+		Composite commentFolding = createSubsection(inner, null, RubyFoldingMessages.RubyFoldingPreferenceBlock_14);
 		commentFolding.setLayout(new GridLayout());
 		
-		addCheckBox(commentFolding, RubyFoldingMessages.TclFoldingPreferenceBlock_15,
+		addCheckBox(commentFolding, RubyFoldingMessages.RubyFoldingPreferenceBlock_15,
 				PreferenceConstants.EDITOR_COMMENTS_FOLDING_ENABLED, 0);
 		
-		Composite initialFolding = createSubsection(inner, null, RubyFoldingMessages.TclFoldingPreferenceBlock_16);
+		Composite initialFolding = createSubsection(inner, null, RubyFoldingMessages.RubyFoldingPreferenceBlock_16);
 		initialFolding.setLayout(new GridLayout());
 				
 		return inner;

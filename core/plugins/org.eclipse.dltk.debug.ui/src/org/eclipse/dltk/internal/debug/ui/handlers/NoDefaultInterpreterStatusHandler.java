@@ -9,11 +9,15 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.ui.handlers;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.IStatusHandler;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.launching.LaunchingMessages;
+import org.eclipse.dltk.ui.DLTKUILanguageManager;
+import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.ui.dialogs.PreferencesUtil;
@@ -43,24 +47,12 @@ public class NoDefaultInterpreterStatusHandler implements IStatusHandler {
 
 	protected void showInterpreterPreferencePage(String natureId) {
 		String preferencePageId = null;
-
-		// !!!!!!!!!!!!!!!!!!!!
-		// TODO: fix
-		// This is temporary solution. It should be changed to something like
-		// Extension Point
-		// Another possible solution is LanguageToolkit or UI language toolkit
-		// !!!!!!!!!!!!!!!!!!!!
-		if (natureId.indexOf("ruby") != -1) {
-			preferencePageId = "org.eclipse.dltk.ruby.preferences.interpreters";
-		} else if (natureId.indexOf("tcl") != -1) {
-			preferencePageId = "org.eclipse.dltk.tcl.preferences.interpreters";
-		} else if (natureId.indexOf("python") != -1) {
-			preferencePageId = "org.eclipse.dltk.python.preferences.interpreters";
+		IDLTKUILanguageToolkit languageToolkit = null;
+		languageToolkit = DLTKUILanguageManager.getLanguageToolkit(natureId);
+		if( languageToolkit == null ) {
+			return;
 		}
-		else if (natureId.indexOf("javascript") != -1) {
-			preferencePageId = "org.eclipse.dltk.debug.ui.JavaScriptInterpreters";
-		}
-		// !!!!!!!!!!!!!!!!!!!!!
+		preferencePageId = languageToolkit.getInterpreterPreferencePage();
 
 		if (preferencePageId != null) {
 			PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(

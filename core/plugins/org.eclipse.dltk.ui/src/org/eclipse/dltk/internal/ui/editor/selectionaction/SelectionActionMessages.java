@@ -26,12 +26,6 @@ final class SelectionActionMessages extends NLS {
 
 	public static String StructureSelect_error_title;
 	public static String StructureSelect_error_message;
-	public static String StructureSelectNext_label;
-	public static String StructureSelectNext_tooltip;
-	public static String StructureSelectNext_description;
-	public static String StructureSelectPrevious_label;
-	public static String StructureSelectPrevious_tooltip;
-	public static String StructureSelectPrevious_description;
 	public static String StructureSelectEnclosing_label;
 	public static String StructureSelectEnclosing_tooltip;
 	public static String StructureSelectEnclosing_description;

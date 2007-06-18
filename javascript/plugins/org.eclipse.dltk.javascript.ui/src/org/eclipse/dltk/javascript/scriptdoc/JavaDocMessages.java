@@ -20,7 +20,7 @@ final class JavaDocMessages extends NLS {
 		// Do not instantiate
 	}
 
-	public static String CompletionEvaluator_default_package;
+//	public static String CompletionEvaluator_default_package;
 	public static String JavaDoc2HTMLTextReader_parameters_section;
 	public static String JavaDoc2HTMLTextReader_returns_section;
 	public static String JavaDoc2HTMLTextReader_throws_section;

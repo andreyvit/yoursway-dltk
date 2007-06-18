@@ -80,11 +80,11 @@ class TclSmartTypingConfigurationBlock extends AbstractConfigurationBlock {
 		Composite composite = createSubsection(
 				control,
 				null,
-				PreferencesMessages.TCLSmartTypingConfigurationBlock_autoclose_title);
+				TclPreferencesMessages.TCLSmartTypingConfigurationBlock_autoclose_title);
 		addAutoclosingSection(composite);
 
 		composite = createSubsection(control, null,
-				PreferencesMessages.TCLSmartTypingConfigurationBlock_tabs_title);
+				TclPreferencesMessages.TCLSmartTypingConfigurationBlock_tabs_title);
 		addTabSection(composite);
 
 		composite = createSubsection(control, null,
@@ -100,12 +100,12 @@ class TclSmartTypingConfigurationBlock extends AbstractConfigurationBlock {
 
 		String label = null;
 		
-		label = PreferencesMessages.TCLSmartTypingConfigurationBlock_smartPaste_simple;
+		label = TclPreferencesMessages.TCLSmartTypingConfigurationBlock_smartPaste_simple;
 		addRadioButton(composite, label,
 				TclPreferenceConstants.EDITOR_SMART_PASTE_MODE,
 				TclPreferenceConstants.EDITOR_SMART_PASTE_MODE_SIMPLE);
 		
-		label = PreferencesMessages.TCLSmartTypingConfigurationBlock_smartPaste_full;
+		label = TclPreferencesMessages.TCLSmartTypingConfigurationBlock_smartPaste_full;
 		addRadioButton(composite, label,
 				TclPreferenceConstants.EDITOR_SMART_PASTE_MODE,
 				TclPreferenceConstants.EDITOR_SMART_PASTE_MODE_FULL);
@@ -117,7 +117,7 @@ class TclSmartTypingConfigurationBlock extends AbstractConfigurationBlock {
 		composite.setLayout(layout);
 
 		String label;
-		label = PreferencesMessages.TCLSmartTypingConfigurationBlock_typing_smartTab;
+		label = TclPreferencesMessages.TCLSmartTypingConfigurationBlock_typing_smartTab;
 		addCheckBox(composite, label, TclPreferenceConstants.EDITOR_SMART_TAB,
 				0);
 
@@ -131,15 +131,15 @@ class TclSmartTypingConfigurationBlock extends AbstractConfigurationBlock {
 
 		String label;
 
-		label = PreferencesMessages.TCLSmartTypingConfigurationBlock_closeStrings;
+		label = TclPreferencesMessages.TCLSmartTypingConfigurationBlock_closeStrings;
 		addCheckBox(composite, label,
 				TclPreferenceConstants.EDITOR_CLOSE_STRINGS, 0);
 
-		label = PreferencesMessages.TCLSmartTypingConfigurationBlock_closeBrackets;
+		label = TclPreferencesMessages.TCLSmartTypingConfigurationBlock_closeBrackets;
 		addCheckBox(composite, label,
 				TclPreferenceConstants.EDITOR_CLOSE_BRACKETS, 0);
 
-		label = PreferencesMessages.TCLSmartTypingConfigurationBlock_closeBraces;
+		label = TclPreferencesMessages.TCLSmartTypingConfigurationBlock_closeBraces;
 		addCheckBox(composite, label,
 				TclPreferenceConstants.EDITOR_CLOSE_BRACES, 0);
 	}

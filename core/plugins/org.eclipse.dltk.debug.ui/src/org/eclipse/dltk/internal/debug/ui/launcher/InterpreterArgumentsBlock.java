@@ -55,7 +55,7 @@ public class InterpreterArgumentsBlock extends CommonScriptLaunchTab {
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		group.setLayoutData(gd);
 		group.setFont(font);
-		group.setText(DLTKLaunchMessages.InterpreterArgumentsTab_Interpreter_ar_guments__6); 
+		group.setText(DLTKLaunchMessages.InterpreterArgumentsTab_Interpreter_ar_guments); 
 		
 		fInterpreterArgumentsText = new Text(group, SWT.MULTI | SWT.WRAP| SWT.BORDER | SWT.V_SCROLL);
 		gd = new GridData(GridData.FILL_BOTH);
@@ -70,7 +70,7 @@ public class InterpreterArgumentsBlock extends CommonScriptLaunchTab {
 		});	
 		ControlAccessibleListener.addListener(fInterpreterArgumentsText, group.getText());
 				
-		fPgrmArgVariableButton = createPushButton(group, DLTKLaunchMessages.InterpreterArgumentsBlock_4, null);
+		fPgrmArgVariableButton = createPushButton(group, DLTKLaunchMessages.InterpreterArgumentsBlock, null);
 		fPgrmArgVariableButton.setFont(font);
 		fPgrmArgVariableButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
 		fPgrmArgVariableButton.addSelectionListener(new SelectionListener() {
@@ -102,7 +102,7 @@ public class InterpreterArgumentsBlock extends CommonScriptLaunchTab {
 		try {
 			fInterpreterArgumentsText.setText(configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_INTERPRETER_ARGUMENTS, "")); //$NON-NLS-1$
 		} catch (CoreException e) {
-			setErrorMessage(DLTKLaunchMessages.InterpreterArgumentsTab_Exception_occurred_reading_configuration___15 + e.getStatus().getMessage()); 
+			setErrorMessage(DLTKLaunchMessages.InterpreterArgumentsTab_Exception_occurred_reading_configuration + e.getStatus().getMessage()); 
 			DLTKDebugUIPlugin.log(e);			
 		}
 	}

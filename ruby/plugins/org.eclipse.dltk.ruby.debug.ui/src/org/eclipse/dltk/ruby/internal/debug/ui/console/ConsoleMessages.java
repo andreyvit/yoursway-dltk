@@ -16,8 +16,6 @@ public class ConsoleMessages extends NLS {
 
     public static String RubyFileHyperlink_Information_1;
     public static String RubyFileHyperlink_Error;
-	public static String ScriptStackTraceConsoleFactory_0;
-	public static String ScriptStackTraceConsole_0;
 	public static String RubyFileHyperlink_Source_not_found_for__0__2;
 	public static String RubyFileHyperlink_An_exception_occurred_while_following_link__3;
 	public static String RubyFileHyperlink_Unable_to_parse_type_name_from_hyperlink__5;

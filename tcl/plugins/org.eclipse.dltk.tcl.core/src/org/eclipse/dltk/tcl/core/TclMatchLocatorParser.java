@@ -30,7 +30,7 @@ import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.core.search.matching.MatchLocatorParser;
 import org.eclipse.dltk.core.search.matching.PatternLocator;
 import org.eclipse.dltk.core.search.matching.PossibleMatch;
-import org.eclipse.dltk.tcl.TclKeywords;
+import org.eclipse.dltk.tcl.TclKeywordsManager;
 import org.eclipse.dltk.tcl.ast.TclModuleDeclaration;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
@@ -41,7 +41,7 @@ import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 public class TclMatchLocatorParser extends MatchLocatorParser {
 	private TclSourceParser parser;
 
-	private static String[] kw = TclKeywords.getKeywords();
+	private static String[] kw = TclKeywordsManager.getKeywords();
 
 	private static Map kwMap = new HashMap();
 	static {

@@ -68,4 +68,8 @@ public class JavaScriptUILanguageToolkit implements IDLTKUILanguageToolkit {
 				.getColorManager(), getPreferenceStore(), null,
 				getPartitioningId(), false);
 	}
+
+	public String getInterpreterPreferencePage() {
+		return "org.eclipse.dltk.debug.ui.JavaScriptInterpreters";
+	}
 }

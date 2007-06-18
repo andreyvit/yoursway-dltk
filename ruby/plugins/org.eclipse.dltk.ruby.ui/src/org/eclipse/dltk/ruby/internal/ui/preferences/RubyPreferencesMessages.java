@@ -6,27 +6,24 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  
+ *     John Kaplan, johnkaplantech@gmail.com - 108071 [code templates] template for body of newly created class
  *******************************************************************************/
-package org.eclipse.dltk.internal.ui.text.hover;
+package org.eclipse.dltk.ruby.internal.ui.preferences;
 
 import org.eclipse.osgi.util.NLS;
 
-/**
- * Helper class to get NLSed messages.
- */
-final class ScriptHoverMessages extends NLS {
+public final class RubyPreferencesMessages extends NLS {
 
-	private static final String BUNDLE_NAME= ScriptHoverMessages.class.getName();
+	private static final String BUNDLE_NAME= "org.eclipse.dltk.ui.preferences.PythonPreferencesMessages";//$NON-NLS-1$
 
-	private ScriptHoverMessages() {
+	private RubyPreferencesMessages() {
 		// Do not instantiate
 	}
-
-	public static String ScriptdocHover_noAttachedInformation;
-	public static String ScriptTextHover_makeStickyHint;
-	public static String NoBreakpointAnnotation_addBreakpoint;
+	
+	
+	public static String DLTKEditorPreferencePage_general;
 
 	static {
-		NLS.initializeMessages(BUNDLE_NAME, ScriptHoverMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, RubyPreferencesMessages.class);
 	}
 }

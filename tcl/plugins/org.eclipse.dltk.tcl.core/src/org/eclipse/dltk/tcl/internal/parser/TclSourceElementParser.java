@@ -31,7 +31,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
-import org.eclipse.dltk.tcl.TclKeywords;
+import org.eclipse.dltk.tcl.TclKeywordsManager;
 import org.eclipse.dltk.tcl.ast.TclConstants;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
@@ -51,7 +51,7 @@ public class TclSourceElementParser implements ISourceElementParser {
 
 	private Stack namespacesLevel = new Stack();
 
-	private static String[] kw = TclKeywords.getKeywords();
+	private static String[] kw = TclKeywordsManager.getKeywords();
 	private static Map kwMap = new HashMap();
 
 	static {

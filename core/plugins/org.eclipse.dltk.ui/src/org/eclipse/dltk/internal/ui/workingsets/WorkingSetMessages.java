@@ -32,8 +32,6 @@ public final class WorkingSetMessages extends NLS {
 	public static String ScriptWorkingSetPage_warning_workingSetExists;
 	public static String ScriptWorkingSetPage_warning_resourceMustBeChecked;
 	public static String ScriptWorkingSetPage_warning_nameWhitespace;
-	public static String ScriptWorkingSetPage_projectClosedDialog_message;
-	public static String ScriptWorkingSetPage_projectClosedDialog_title;
 	public static String ScriptWorkingSetPage_selectAll_label;
 	public static String ScriptWorkingSetPage_selectAll_toolTip;
 	public static String ScriptWorkingSetPage_deselectAll_label;
@@ -54,8 +52,7 @@ public final class WorkingSetMessages extends NLS {
 	public static String ViewActionGroup_show_label;
 	public static String ViewActionGroup_projects_label;
 	public static String ViewActionGroup_workingSets_label;
-	
-	public static String WorkingSetModel_histroy_name;
+
 	public static String WorkingSetModel_others_name;
 	
 	public static String WorkingSetConfigurationDialog_title;

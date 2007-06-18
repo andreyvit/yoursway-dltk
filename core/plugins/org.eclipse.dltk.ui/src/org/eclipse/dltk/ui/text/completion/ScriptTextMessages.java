@@ -31,13 +31,6 @@ final public class ScriptTextMessages extends NLS {
 	public static String ContentAssistProcessor_all_disabled_message;
 	public static String ContentAssistProcessor_all_disabled_preference_link;
 	public static String ContentAssistProcessor_all_disabled_title;
-	public static String ExperimentalProposal_error_msg;
-	public static String ParameterGuessingProposal_error_msg;
-	public static String ProposalInfo_more_to_come;
-	public static String GetterSetterCompletionProposal_getter_label;
-	public static String GetterSetterCompletionProposal_setter_label;
-	public static String MethodCompletionProposal_constructor_label;
-	public static String MethodCompletionProposal_method_label;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, ScriptTextMessages.class);
@@ -66,6 +59,4 @@ final public class ScriptTextMessages extends NLS {
 	public static String ContentAssistHistory_serialize_error;
 	public static String ContentAssistHistory_deserialize_error;
 	public static String ProposalSorterHandle_blame;
-	
-	public static String ResultCollector_overridingmethod;
 }

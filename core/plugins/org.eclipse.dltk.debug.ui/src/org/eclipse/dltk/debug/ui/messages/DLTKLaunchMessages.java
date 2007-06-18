@@ -35,9 +35,9 @@ public class DLTKLaunchMessages extends NLS {
 	public static String InterpreterTab_7;
 	public static String InterpreterTab_8;
 	public static String InterpreterTab_9;
-	public static String InterpreterArgumentsTab_Interpreter_ar_guments__6;
-	public static String InterpreterArgumentsBlock_4;
-	public static String InterpreterArgumentsTab_Exception_occurred_reading_configuration___15;
+	public static String InterpreterArgumentsTab_Interpreter_ar_guments;
+	public static String InterpreterArgumentsBlock;
+	public static String InterpreterArgumentsTab_Exception_occurred_reading_configuration;
 	public static String InterpreterArgumentsBlock_Interpreter_Arguments;
 
 	private DLTKLaunchMessages() {

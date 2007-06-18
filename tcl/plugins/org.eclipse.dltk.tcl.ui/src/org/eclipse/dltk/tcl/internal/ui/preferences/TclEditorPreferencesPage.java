@@ -35,7 +35,7 @@ public class TclEditorPreferencesPage extends
 	 * @see org.eclipse.ui.internal.editors.text.AbstractConfigurationBlockPreferencePage#setDescription()
 	 */
 	protected void setDescription() {
-		String description = PreferencesMessages.TCLEditorPreferencePage_general;
+		String description = org.eclipse.dltk.tcl.internal.ui.preferences.TclPreferencesMessages.TCLEditorPreferencePage_general;
 		setDescription(description);
 	}
 

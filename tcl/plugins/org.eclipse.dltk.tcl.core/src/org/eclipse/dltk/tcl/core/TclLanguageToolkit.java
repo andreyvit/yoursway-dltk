@@ -31,17 +31,17 @@ import org.eclipse.dltk.internal.core.util.Messages;
 
 
 public class TclLanguageToolkit implements IDLTKLanguageToolkit {
-	private static String[] patterns = {
+	protected static String[] patterns = {
 			"#!/usr/bin/tclsh",
 			"#!/usr/bin/expect",
 			"# ;;; Local Variable: \\*\\*\\*\\s*\r*\n# ;;; mode: tcl \\*\\*\\*\\s*\r*\n# ;;; End: \\*\\*\\*",
 			"#!/bin/sh\\s*\r*\n#.*\\\\s*\r*\nexec .*tclsh .*",
 			"#!/bin/sh\\s*\r*\n#.*\\\\s*\r*\nexec .*expect .*",
 			"#!/bin/sh\\s*\r*\n#.*\\\\s*\r*\nexec .*wish.*"};
-	private static IDLTKLanguageToolkit sInstance = new TclLanguageToolkit();
+	protected static IDLTKLanguageToolkit sInstance = new TclLanguageToolkit();
 
 	public String[] getLanguageFileExtensions() {
-		return new String[] {"tcl", "exp"};
+		return new String[] {"tcl", "exp", "test"};
 	}
 
 	private IStatus isTclHeadered(File file) {

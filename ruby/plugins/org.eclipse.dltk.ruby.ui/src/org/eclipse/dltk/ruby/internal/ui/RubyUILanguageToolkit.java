@@ -113,4 +113,8 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 				.getColorManager(), getPreferenceStore(), null,
 				getPartitioningId(), false);
 	}
+
+	public String getInterpreterPreferencePage() {
+		return "org.eclipse.dltk.ruby.preferences.interpreters";
+	}
 }

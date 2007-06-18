@@ -22,7 +22,7 @@ import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.internal.core.util.Messages;
 
 public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
-	private static RubyLanguageToolkit sToolkit = new RubyLanguageToolkit();
+	protected static RubyLanguageToolkit sToolkit = new RubyLanguageToolkit();
 
 	public RubyLanguageToolkit() {
 

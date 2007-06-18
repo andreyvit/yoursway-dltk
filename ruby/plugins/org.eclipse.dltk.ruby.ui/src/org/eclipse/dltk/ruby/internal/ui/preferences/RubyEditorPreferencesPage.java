@@ -15,7 +15,6 @@ import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPreferencePage;
 import org.eclipse.dltk.ui.preferences.EditorConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
-import org.eclipse.dltk.ui.preferences.PreferencesMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
@@ -34,7 +33,7 @@ public class RubyEditorPreferencesPage extends
 	 * @see org.eclipse.ui.internal.editors.text.AbstractConfigurationBlockPreferencePage#setDescription()
 	 */
 	protected void setDescription() {
-		String description = PreferencesMessages.PythonEditorPreferencePage_general;
+		String description 	= RubyPreferencesMessages.DLTKEditorPreferencePage_general;
 		setDescription(description);
 	}
 

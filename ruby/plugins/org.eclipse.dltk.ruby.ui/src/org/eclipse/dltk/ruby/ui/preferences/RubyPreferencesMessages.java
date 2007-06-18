@@ -18,8 +18,6 @@ public final class RubyPreferencesMessages extends NLS {
 	
 	public static String RubyEditorPreferencePage_rubyDoc;
 	public static String RubyEditorPreferencePage_rubyDocTopic;
-
-	public static String RubyVariablesCategory;
 	
 	public static String RubyClassVariable;
 	public static String RubyInstanceVariable;

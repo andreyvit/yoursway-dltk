@@ -12,7 +12,7 @@ package org.eclipse.dltk.tcl.internal.ui.text;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.dltk.tcl.TclKeywords;
+import org.eclipse.dltk.tcl.TclKeywordsManager;
 import org.eclipse.dltk.tcl.internal.ui.rules.TclCommentRule;
 import org.eclipse.dltk.tcl.internal.ui.rules.TclFloatNumberRule;
 import org.eclipse.dltk.tcl.internal.ui.rules.TclVariableRule;
@@ -63,7 +63,7 @@ public class TclCodeScanner extends AbstractScriptScanner {
 		
 		// Add word rule for keywords, types, and constants.
 		WordRule wordRule = new WordRule(new TclWordDetector(), other);
-		String[] keywords = TclKeywords.getKeywords();
+		String[] keywords = TclKeywordsManager.getKeywords();
 		for( int i = 0; i < keywords.length; i++ ) {
 			wordRule.addWord(keywords[i], keyword);
 		}

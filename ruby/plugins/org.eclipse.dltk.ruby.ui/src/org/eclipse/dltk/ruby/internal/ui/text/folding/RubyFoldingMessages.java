@@ -25,22 +25,14 @@ public final class RubyFoldingMessages extends NLS {
 		NLS.initializeMessages(BUNDLE_NAME, RubyFoldingMessages.class);
 	}
 
-
-
-	public static String DefaultFoldingPreferenceBlock_headers;
-	public static String DefaultFoldingPreferenceBlock_innerTypes;
-	public static String DefaultFoldingPreferenceBlock_methods;
-	public static String TclFoldingPreferenceBlock_0;
-	public static String TclFoldingPreferenceBlock_10;
-	public static String TclFoldingPreferenceBlock_11;
-	public static String TclFoldingPreferenceBlock_12;
-	public static String TclFoldingPreferenceBlock_13;
-	public static String TclFoldingPreferenceBlock_14;
-	public static String TclFoldingPreferenceBlock_15;
-	public static String TclFoldingPreferenceBlock_16;
-	public static String TclFoldingPreferenceBlock_2;
-	public static String TclFoldingPreferenceBlock_3;
-	public static String TclFoldingPreferenceBlock_4;
-	public static String TclFoldingPreferenceBlock_6;
+	public static String RubyFoldingPreferenceBlock_0;
+	public static String RubyFoldingPreferenceBlock_10;
+	public static String RubyFoldingPreferenceBlock_14;
+	public static String RubyFoldingPreferenceBlock_15;
+	public static String RubyFoldingPreferenceBlock_16;
+	public static String RubyFoldingPreferenceBlock_2;
+	public static String RubyFoldingPreferenceBlock_3;
+	public static String RubyFoldingPreferenceBlock_4;
+	public static String RubyFoldingPreferenceBlock_6;
 
 }

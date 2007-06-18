@@ -13,7 +13,6 @@ import org.eclipse.dltk.tcl.internal.ui.TclUI;
 import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPreferencePage;
 import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
-import org.eclipse.dltk.ui.preferences.PreferencesMessages;
 
 public class TclGlobalPreferencesPage extends AbstractConfigurationBlockPreferencePage {
 
@@ -28,7 +27,7 @@ public class TclGlobalPreferencesPage extends AbstractConfigurationBlockPreferen
 	}
 
 	protected void setDescription() {
-		String description = PreferencesMessages.TCLGlobalPreferencePage_description;
+		String description = org.eclipse.dltk.tcl.internal.ui.preferences.TclPreferencesMessages.TCLGlobalPreferencePage_description;
 		setDescription(description);
 	}
 

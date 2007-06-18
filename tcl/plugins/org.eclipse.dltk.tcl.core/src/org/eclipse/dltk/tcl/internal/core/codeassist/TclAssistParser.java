@@ -20,18 +20,18 @@ import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.tcl.TclKeywords;
+import org.eclipse.dltk.tcl.ITclKeywords;
 import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 
 public abstract class TclAssistParser implements IAssistParser {
-	protected static final int MODULE = TclKeywords.MODULE;
+	protected static final int MODULE = ITclKeywords.MODULE;
 
-	protected static final int NAMESPACE = TclKeywords.NAMESPACE;
+	protected static final int NAMESPACE = ITclKeywords.NAMESPACE;
 
-	protected static final int FUNCTION = TclKeywords.FUNCTION;
+	protected static final int FUNCTION = ITclKeywords.FUNCTION;
 
-	protected static final int EXEC_EXPRESSION = TclKeywords.EXEC_EXPRESSION;
+	protected static final int EXEC_EXPRESSION = ITclKeywords.EXEC_EXPRESSION;
 
 	protected TclSourceParser parser = null;
 

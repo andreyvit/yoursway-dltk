@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

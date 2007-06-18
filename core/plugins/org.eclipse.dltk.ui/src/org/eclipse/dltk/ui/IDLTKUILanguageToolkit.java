@@ -40,4 +40,6 @@ public interface IDLTKUILanguageToolkit {
 	
 	// Per module script explorer show childrens way.
 	boolean getProvideMembers(ISourceModule element);
+	
+	String getInterpreterPreferencePage();
 }

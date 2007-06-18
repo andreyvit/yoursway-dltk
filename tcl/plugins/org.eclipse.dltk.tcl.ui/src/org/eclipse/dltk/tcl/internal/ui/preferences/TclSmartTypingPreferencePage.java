@@ -15,7 +15,6 @@ import org.eclipse.dltk.tcl.internal.ui.TclUI;
 import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPreferencePage;
 import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
-import org.eclipse.dltk.ui.preferences.PreferencesMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
@@ -30,7 +29,7 @@ public final class TclSmartTypingPreferencePage extends AbstractConfigurationBlo
 	 * @see org.eclipse.ui.internal.editors.text.AbstractConfigurationBlockPreferencePage#setDescription()
 	 */
 	protected void setDescription() {
-		String description= PreferencesMessages.TCLSmartTypingConfigurationBlock_typing_tabTitle; 
+		String description= org.eclipse.dltk.tcl.internal.ui.preferences.TclPreferencesMessages.TCLSmartTypingConfigurationBlock_typing_tabTitle; 
 		setDescription(description);
 	}
 	

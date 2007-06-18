@@ -743,13 +743,13 @@
                menubarPath="navigate/open.ext"
                id="org.eclipse.dltk.ui.actions.OpenCallHierarchy">
          </action>
-         <action
+         <!--action
                definitionId="org.eclipse.dltk.ui.edit.text.script.open.type.hierarchy"
                label="%OpenTypeHierarchyAction.label"
                retarget="true"
                menubarPath="navigate/open.ext"
                id="org.eclipse.dltk.ui.actions.OpenTypeHierarchy">
-         </action>
+         </action-->
          <action
                definitionId="org.eclipse.dltk.ui.edit.text.script.open.editor"
                label="%OpenAction.label"

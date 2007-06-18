@@ -41,8 +41,6 @@ public final class TypeHierarchyMessages extends NLS {
 	public static String FocusOnTypeAction_label;
 	public static String FocusOnTypeAction_tooltip;
 	public static String FocusOnTypeAction_description;
-	public static String FocusOnTypeAction_dialog_title;
-	public static String FocusOnTypeAction_dialog_message;
 	public static String HistoryDropDownAction_tooltip;
 	public static String HistoryAction_description;
 	public static String HistoryAction_tooltip;

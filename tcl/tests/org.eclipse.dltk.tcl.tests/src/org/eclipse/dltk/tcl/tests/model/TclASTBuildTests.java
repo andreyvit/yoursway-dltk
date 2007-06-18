@@ -18,7 +18,6 @@ import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
 import org.eclipse.dltk.tcl.core.TclNature;
-import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 import org.eclipse.dltk.tcl.tests.TclTestsPlugin;
 import org.eclipse.dltk.utils.CorePrinter;
 

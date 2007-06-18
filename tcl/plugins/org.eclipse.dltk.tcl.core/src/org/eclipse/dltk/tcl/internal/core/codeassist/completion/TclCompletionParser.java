@@ -20,7 +20,7 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.codeassist.complete.CompletionNodeFound;
-import org.eclipse.dltk.tcl.TclKeywords;
+import org.eclipse.dltk.tcl.TclKeywordsManager;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
@@ -259,7 +259,7 @@ public class TclCompletionParser extends TclAssistParser {
 	}
 
 	private String[] checkKeywords(String completionToken, int type) {
-		String[] keywords = TclKeywords.getKeywords(type);
+		String[] keywords = TclKeywordsManager.getKeywords(type);
 		// TODO: Possible require cases.
 		if (type == MODULE || type == FUNCTION || type == NAMESPACE
 				|| type == EXEC_EXPRESSION) { 

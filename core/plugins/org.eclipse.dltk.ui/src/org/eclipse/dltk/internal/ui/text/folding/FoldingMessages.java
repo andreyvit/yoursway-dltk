@@ -23,12 +23,12 @@ public final class FoldingMessages extends NLS {
 	}
 
 	public static String DefaultFoldingPreferenceBlock_title;
-	public static String DefaultFoldingPreferenceBlock_comments;
-	public static String DefaultFoldingPreferenceBlock_innerTypes;
-	public static String DefaultFoldingPreferenceBlock_methods;
-	public static String DefaultFoldingPreferenceBlock_imports;
-	public static String DefaultFoldingPreferenceBlock_headers;
-	public static String EmptyFoldingPreferenceBlock_emptyCaption;
+//	public static String DefaultFoldingPreferenceBlock_comments;
+//	public static String DefaultFoldingPreferenceBlock_innerTypes;
+//	public static String DefaultFoldingPreferenceBlock_methods;
+//	public static String DefaultFoldingPreferenceBlock_imports;
+//	public static String DefaultFoldingPreferenceBlock_headers;
+//	public static String EmptyFoldingPreferenceBlock_emptyCaption;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, FoldingMessages.class);

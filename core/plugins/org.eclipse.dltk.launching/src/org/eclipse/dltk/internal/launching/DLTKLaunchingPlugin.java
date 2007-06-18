@@ -64,19 +64,19 @@ import com.ibm.icu.text.MessageFormat;
 
 public class DLTKLaunchingPlugin extends Plugin implements
 		Preferences.IPropertyChangeListener, IInterpreterInstallChangedListener {
-	
-	
+
 	public static final int DBGP_SERVICE_NOT_AVAILABLE = 200;
-	
+
 	public static final int DEBUGGING_ENGINE_NOT_STARTED = 201;
-	
+
 	public static final int DEBUGGING_ENGINE_NOT_CONNECTED = 202;
-	
+
 	public final static String ID_PLUGIN = "org.eclipse.dltk.launching";
 
 	public static final String ID_EXTENSION_POINT_RUNTIME_BUILDPATH_ENTRIES = "runtimeBuildpathEntries"; //$NON-NLS-1$
-	
-	public static final String LAUNCH_COMMAND_LINE = ID_PLUGIN + ".LAUNCH_COMMAND_LINE";
+
+	public static final String LAUNCH_COMMAND_LINE = ID_PLUGIN
+			+ ".LAUNCH_COMMAND_LINE";
 
 	/**
 	 * Runtime buildpath extensions
@@ -97,7 +97,7 @@ public class DLTKLaunchingPlugin extends Plugin implements
 	private static DocumentBuilder fgXMLParser = null;
 
 	private static DLTKLaunchingPlugin fgLaunchingPlugin;
-	
+
 	public DLTKLaunchingPlugin() {
 		super();
 		fgLaunchingPlugin = this;
@@ -222,8 +222,7 @@ public class DLTKLaunchingPlugin extends Plugin implements
 		IConfigurationElement config = (IConfigurationElement) fBuildpathEntryExtensions
 				.get(id);
 		if (config == null) {
-			abort(MessageFormat.format(
-					LaunchingMessages.LaunchingPlugin_32,
+			abort(MessageFormat.format(LaunchingMessages.LaunchingPlugin_32,
 					new String[] { id }), null);
 		}
 		return (IRuntimeBuildpathEntry2) config
@@ -245,7 +244,7 @@ public class DLTKLaunchingPlugin extends Plugin implements
 					configs[i].getAttribute("id"), configs[i]); //$NON-NLS-1$
 		}
 	}
-	
+
 	/**
 	 * @see Plugin#start(BundleContext)
 	 */
@@ -285,22 +284,26 @@ public class DLTKLaunchingPlugin extends Plugin implements
 		// IResourceChangeEvent.PRE_BUILD);
 		// DebugPlugin.getDefault().getLaunchManager().addLaunchListener(this);
 		// DebugPlugin.getDefault().addDebugEventListener(this);
-		
+
 		// prefetch library locations
 		Job libPrefetch = new Job("Inializing DLTK launching") {
 
 			protected IStatus run(IProgressMonitor monitor) {
-				IInterpreterInstallType[] installTypes = ScriptRuntime.getInterpreterInstallTypes();				
+				IInterpreterInstallType[] installTypes = ScriptRuntime
+						.getInterpreterInstallTypes();
 				for (int i = 0; i < installTypes.length; i++) {
-					IInterpreterInstall[] installs = installTypes[i].getInterpreterInstalls();
-					for (int j = 0; j < installs.length; j++) {
-						File path = installs[j].getInstallLocation();
-						installTypes[i].getDefaultLibraryLocations(path);			
-					}					
+					IInterpreterInstall[] installs = installTypes[i]
+							.getInterpreterInstalls();
+					if (installs != null) {
+						for (int j = 0; j < installs.length; j++) {
+							File path = installs[j].getInstallLocation();
+							installTypes[i].getDefaultLibraryLocations(path);
+						}
+					}
 				}
 				return Status.OK_STATUS;
 			}
-			
+
 		};
 		libPrefetch.setSystem(true);
 		libPrefetch.schedule();
@@ -535,10 +538,10 @@ public class DLTKLaunchingPlugin extends Plugin implements
 	 * 
 	 * @param monitor
 	 */
-	public void rebind(IProgressMonitor monitor, IScriptProject[] projects, Map renamedContainerIds)
-			throws CoreException {
+	public void rebind(IProgressMonitor monitor, IScriptProject[] projects,
+			Map renamedContainerIds) throws CoreException {
 		monitor.worked(1);
-	
+
 		// re-bind all container entries
 		for (int i = 0; i < projects.length; i++) {
 			IScriptProject project = projects[i];
@@ -586,7 +589,7 @@ public class DLTKLaunchingPlugin extends Plugin implements
 			}
 			monitor.worked(1);
 		}
-	
+
 	}
 
 	/**

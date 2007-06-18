@@ -101,4 +101,8 @@ public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
 				.getColorManager(), getPreferenceStore(), null,
 				getPartitioningId(), false);
 	}
+
+	public String getInterpreterPreferencePage() {
+		return "org.eclipse.dltk.tcl.preferences.interpreters";
+	}
 }

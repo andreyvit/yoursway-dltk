@@ -85,7 +85,7 @@ public class BuildpathDetector implements IResourceProxyVisitor {
 	 */
 	private void detectBuildpath(IProgressMonitor monitor) throws CoreException {
 		try {
-			monitor.beginTask(NewWizardMessages.ClassPathDetector_operation_description, 4);
+			monitor.beginTask("Buildpath detecting...", 4);
 			fMonitor = monitor;
 			fProject.accept(this, IResource.NONE);
 			monitor.worked(1);
