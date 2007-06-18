@@ -10,6 +10,7 @@
 package org.eclipse.dltk.ruby.internal.debug.ui.console;
 
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.console.IHyperlink;
 import org.eclipse.ui.console.IPatternMatchListenerDelegate;
 import org.eclipse.ui.console.PatternMatchEvent;
@@ -50,8 +51,13 @@ public class RubyConsoleTracker implements IPatternMatchListenerDelegate {
         try {
             int offset = event.getOffset();
             int length = event.getLength();
+            IDocument document = getConsole().getDocument();
+            String text = document.get(offset, length);
+            if( text.indexOf("from -e") != -1) {
+            	return;
+            }
             IHyperlink link = new RubyFileHyperlink(fConsole);
-            fConsole.addHyperlink(link, offset, length);   
+            fConsole.addHyperlink(link, offset, length);
         } catch (BadLocationException e) {
         }
     }
