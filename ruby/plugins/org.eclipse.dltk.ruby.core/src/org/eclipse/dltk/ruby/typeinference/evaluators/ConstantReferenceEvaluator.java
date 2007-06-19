@@ -13,8 +13,8 @@ import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinElementInfo;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 import org.eclipse.dltk.ruby.typeinference.ConstantTypeGoal;
+import org.eclipse.dltk.ruby.typeinference.DefaultRubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
-import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.RubyTypeInferencingUtils;
 import org.eclipse.dltk.ruby.typeinference.goals.NonTypeConstantTypeGoal;
 import org.eclipse.dltk.ti.GoalState;
@@ -34,7 +34,7 @@ public class ConstantReferenceEvaluator extends GoalEvaluator {
 	}
 
 	private ConstantTypeGoal getTypedGoal() {
-		return (ConstantTypeGoal) RubyEvaluatorFactory.translateGoal(goal);
+		return (ConstantTypeGoal) DefaultRubyEvaluatorFactory.translateGoal(goal);
 	}
 
 	private ISourceModuleContext getTypedContext() {

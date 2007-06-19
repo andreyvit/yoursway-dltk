@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
+   <extension-point id="goalEvaluatorFactories" name="Ruby Evaluator Factories" schema="schema/org.eclipse.dltk.ruby.core.goalEvaluatorFactories.exsd"/>
  <extension
          id="nature"
          point="org.eclipse.core.resources.natures"
@@ -89,5 +90,12 @@
            name="%rubyContentType"
            priority="high">       
      </content-type>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.ruby.core.goalEvaluatorFactories">
+     <factory
+           class="org.eclipse.dltk.ruby.typeinference.DefaultRubyEvaluatorFactory"
+           priority="1">
+     </factory>
   </extension>
 </plugin>

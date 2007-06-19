@@ -15,6 +15,7 @@ import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinElementInfo;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
+import org.eclipse.dltk.ruby.typeinference.DefaultRubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 import org.eclipse.dltk.ruby.typeinference.RubyEvaluatorFactory;
 import org.eclipse.dltk.ruby.typeinference.goals.ColonExpressionGoal;
@@ -40,7 +41,7 @@ public class ColonExpressionEvaluator extends GoalEvaluator {
 	}
 
 	private ColonExpressionGoal getTypedGoal() {
-		return (ColonExpressionGoal) RubyEvaluatorFactory
+		return (ColonExpressionGoal) DefaultRubyEvaluatorFactory
 				.translateGoal(this.goal);
 	}
 
