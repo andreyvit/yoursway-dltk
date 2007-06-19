@@ -61,7 +61,7 @@ public class JavaScriptLanguageToolkit implements IDLTKLanguageToolkit {
 		return true;
 	}
 
-	public String getNatureID() {
+	public String getNatureId() {
 		return JavaScriptNature.NATURE_ID;
 	}
 

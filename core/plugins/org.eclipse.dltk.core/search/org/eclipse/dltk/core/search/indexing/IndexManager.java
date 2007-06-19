@@ -246,7 +246,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		}
 		if (toolkit != null) {
 			return DLTKLanguageManager.createSourceRequestor(toolkit
-					.getNatureID());
+					.getNatureId());
 		}
 		return null;
 	}
@@ -267,7 +267,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 			ISourceElementParser parser = null;
 			try {
 				parser = DLTKLanguageManager.getSourceElementParser(toolkit
-						.getNatureID());
+						.getNatureId());
 				parser.setRequestor(requestor);
 			} catch (CoreException e) {
 			}

@@ -169,7 +169,7 @@ public class ScriptElementImageProvider {
 			if (languageToolkit == null) {
 				return null;
 			}
-			nature = languageToolkit.getNatureID();
+			nature = languageToolkit.getNatureId();
 		} catch (CoreException e) {
 			return null;
 		}

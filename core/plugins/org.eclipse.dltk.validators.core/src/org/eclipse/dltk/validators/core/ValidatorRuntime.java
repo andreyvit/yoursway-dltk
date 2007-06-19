@@ -417,7 +417,7 @@ public final class ValidatorRuntime {
 					for (int i = 0; i < activeValidators.length; i++) {
 						IValidator v = activeValidators[i];
 						String nature = v.getValidatorType().getNature();
-						if (toolkit.getNatureID().equals(nature)
+						if (toolkit.getNatureId().equals(nature)
 								|| nature.equals("#")) {
 
 							// IStatus e = v.validate(module, stream);

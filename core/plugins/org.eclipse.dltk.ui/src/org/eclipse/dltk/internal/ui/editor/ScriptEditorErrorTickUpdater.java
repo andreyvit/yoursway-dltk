@@ -37,7 +37,7 @@ public class ScriptEditorErrorTickUpdater implements IProblemChangedListener {
 		Assert.isNotNull(editor);
 		fScriptEditor= editor;
 //		fLabelProvider=  new ScriptUILabelProvider(0, ScriptElementImageProvider.SMALL_ICONS);
-		fLabelProvider = DLTKUILanguageManager.createLabelProvider(editor.getLanguageToolkit().getNatureID());
+		fLabelProvider = DLTKUILanguageManager.createLabelProvider(editor.getLanguageToolkit().getNatureId());
 		fLabelProvider.setTextFlags(0);
 		fLabelProvider.setImageFlags(ScriptElementImageProvider.SMALL_ICONS);
 		fLabelProvider.addLabelDecorator(new ProblemsLabelDecorator(null));

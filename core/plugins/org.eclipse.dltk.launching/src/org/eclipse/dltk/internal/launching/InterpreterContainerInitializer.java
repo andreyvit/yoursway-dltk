@@ -126,7 +126,7 @@ public class InterpreterContainerInitializer extends
 			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
 					.getLanguageToolkit(project);
 			if (languageToolkit != null) {
-				return languageToolkit.getNatureID();
+				return languageToolkit.getNatureId();
 			}
 		} catch (CoreException e) {
 			DLTKLaunchingPlugin.log(e);

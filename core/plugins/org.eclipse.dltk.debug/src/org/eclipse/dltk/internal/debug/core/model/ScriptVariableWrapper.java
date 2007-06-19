@@ -78,6 +78,6 @@ public class ScriptVariableWrapper extends AbstractScriptVariable {
 	}
 
 	public IScriptType getType() {
-		return new ScriptType("getType");
+		return new AtomicScriptType("getType");
 	}
 }

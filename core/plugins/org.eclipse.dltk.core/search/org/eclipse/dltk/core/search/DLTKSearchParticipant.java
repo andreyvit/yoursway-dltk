@@ -100,7 +100,7 @@ public class DLTKSearchParticipant extends SearchParticipant {
 	protected MatchLocator createMatchLocator(SearchPattern pattern, SearchRequestor requestor, IDLTKSearchScope scope, SubProgressMonitor monitor) {
 		IDLTKLanguageToolkit toolkit = scope.getLanguageToolkit();
 		if( toolkit != null ) {
-			MatchLocator locator = DLTKLanguageManager.createMatchLocator(toolkit.getNatureID(), pattern, requestor, scope, monitor == null ? null: new SubProgressMonitor(monitor, 95));
+			MatchLocator locator = DLTKLanguageManager.createMatchLocator(toolkit.getNatureId(), pattern, requestor, scope, monitor == null ? null: new SubProgressMonitor(monitor, 95));
 			if( locator != null ) {
 				return locator;
 			}

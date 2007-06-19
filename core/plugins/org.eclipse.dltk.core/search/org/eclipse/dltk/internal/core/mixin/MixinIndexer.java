@@ -38,7 +38,7 @@ public class MixinIndexer extends AbstractIndexer {
 			return;
 		}
 		try {
-			IMixinParser parser = MixinManager.getMixinParser(toolkit.getNatureID());
+			IMixinParser parser = MixinManager.getMixinParser(toolkit.getNatureId());
 			if( parser != null ) {
 				parser.setRequirestor(this.requestor);
 //				System.out.println("Mixins: indexing " + this.document.getPath());

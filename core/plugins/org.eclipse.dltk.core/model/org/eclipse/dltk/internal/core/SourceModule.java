@@ -167,13 +167,13 @@ public class SourceModule extends Openable implements ISourceModule, org.eclipse
 //				problemReporter = toolkit
 //						.createProblemReporter(resource, toolkit
 //								.createProblemFactory());
-				IProblemFactory factory = DLTKLanguageManager.getProblemFactory(toolkit.getNatureID());
+				IProblemFactory factory = DLTKLanguageManager.getProblemFactory(toolkit.getNatureId());
 				problemReporter = factory.createReporter(resource);
 			}
 
 			//problemReporter.reportTestProblem();
 
-			ISourceElementParser parser = DLTKLanguageManager.getSourceElementParser(toolkit.getNatureID());
+			ISourceElementParser parser = DLTKLanguageManager.getSourceElementParser(toolkit.getNatureId());
 			parser.setRequestor(requestor);
 			parser.setReporter(problemReporter);
 

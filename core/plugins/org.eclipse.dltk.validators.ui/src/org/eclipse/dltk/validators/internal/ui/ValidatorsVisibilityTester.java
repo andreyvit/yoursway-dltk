@@ -19,7 +19,7 @@ public class ValidatorsVisibilityTester implements IActionFilterTester {
 			try {
 				IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager.getLanguageToolkit((IModelElement)target);
 				if( languageToolkit != null ) {
-					IValidatorType[] validatorTypes = ValidatorRuntime.getValidatorTypes(languageToolkit.getNatureID());
+					IValidatorType[] validatorTypes = ValidatorRuntime.getValidatorTypes(languageToolkit.getNatureId());
 					if( validatorTypes != null && validatorTypes.length > 0 ) {
 						return true;
 					}

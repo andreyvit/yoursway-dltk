@@ -93,7 +93,7 @@ class CalleeMethodWrapper extends MethodWrapper {
 				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(getMember());
 				if (toolkit != null) {
 					IDLTKSearchScope scope = CallHierarchy.getDefault().getSearchScope(toolkit);
-					ICalleeProcessor processor = DLTKLanguageManager.createCalleeProcessor(toolkit.getNatureID(), (IMethod) getMember(), progressMonitor, scope);
+					ICalleeProcessor processor = DLTKLanguageManager.createCalleeProcessor(toolkit.getNatureId(), (IMethod) getMember(), progressMonitor, scope);
 					if (processor != null) {
 						Map result = processor.doOperation();
 						if (result != null) {

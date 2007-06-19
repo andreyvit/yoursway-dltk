@@ -195,7 +195,7 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 		return false;
 	}
 	
-	public String getNatureID() {
+	public String getNatureId() {
 		return TclNature.NATURE_ID;
 	}
 

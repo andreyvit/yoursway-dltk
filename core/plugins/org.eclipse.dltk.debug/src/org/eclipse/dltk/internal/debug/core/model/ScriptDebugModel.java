@@ -22,7 +22,7 @@ import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
 public class ScriptDebugModel {
 	protected static String getDenbugModelId(IResource resource) {
 		final String natureId = DLTKLanguageManager.findToolkit(resource)
-				.getNatureID();
+				.getNatureId();
 		return ScriptDebugManager.getInstance().getDebugModelByNature(natureId);
 	}
 

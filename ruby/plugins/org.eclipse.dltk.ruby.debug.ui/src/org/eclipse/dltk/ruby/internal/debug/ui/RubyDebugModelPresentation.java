@@ -9,6 +9,15 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.debug.ui;
 
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.model.IValue;
+import org.eclipse.debug.ui.IValueDetailListener;
+import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
+import org.eclipse.dltk.debug.core.eval.IScriptEvaluationListener;
+import org.eclipse.dltk.debug.core.eval.IScriptEvaluationResult;
+import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
+import org.eclipse.dltk.debug.core.model.IScriptThread;
+import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
 import org.eclipse.ui.IEditorInput;
 
@@ -17,5 +26,41 @@ public class RubyDebugModelPresentation extends ScriptDebugModelPresentation {
 
 	public String getEditorId(IEditorInput input, Object element) {
 		return RUBY_EDITOR_ID;
+	}
+
+	public void computeDetail(final IValue value,
+			final IValueDetailListener listener) {
+
+		IScriptThread thread = getEvaluationThread((IScriptDebugTarget) value
+				.getDebugTarget());
+
+		if (thread != null) {
+			IScriptEvaluationEngine engine = thread.getEvaluationEngine();
+
+			engine.asyncEvaluate("(" + ((IScriptValue) value).getEvalName()
+					+ ").to_s", null, new IScriptEvaluationListener() {
+				public void evaluationComplete(IScriptEvaluationResult result) {
+					if (result != null) {
+						listener.detailComputed(value, result.getValue()
+								.toString());
+					} else {
+						try {
+							listener.detailComputed(value, value
+									.getValueString());
+						} catch (DebugException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			});
+		} else {
+			try {
+				listener.detailComputed(value, value.getValueString());
+			} catch (DebugException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

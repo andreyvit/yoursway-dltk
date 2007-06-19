@@ -69,7 +69,7 @@ class CallerMethodWrapper extends MethodWrapper {
 			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(el);
 			boolean isWorkspaceScope = SearchEngine.createWorkspaceScope(toolkit).equals(defaultSearchScope);
 
-			ICallProcessor processor = DLTKLanguageManager.createCallProcessor(toolkit.getNatureID());
+			ICallProcessor processor = DLTKLanguageManager.createCallProcessor(toolkit.getNatureId());
 			if (processor == null) {
 				return fSearchResults.getCallers();
 			}

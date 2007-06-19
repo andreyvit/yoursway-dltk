@@ -16,6 +16,7 @@ import org.eclipse.dltk.dbgp.IDbgpProperty;
 import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.commands.IDbgpCoreCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+import org.eclipse.dltk.debug.core.model.IScriptDebugTypeFactory;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptType;
@@ -30,6 +31,8 @@ public class ScriptVariable extends AbstractScriptVariable {
 	private final IDbgpProperty property;
 
 	private String assignedValue;
+
+	private IScriptType type;
 
 	protected ScriptVariable[] readChildrenVariables(IDbgpCoreCommands core)
 			throws DbgpException {
@@ -102,6 +105,7 @@ public class ScriptVariable extends AbstractScriptVariable {
 			}
 
 		} catch (DbgpException e) {
+			// TODO: localize
 			throw wrapDbgpException("Can't assign variable", e);
 		}
 	}
@@ -122,12 +126,8 @@ public class ScriptVariable extends AbstractScriptVariable {
 		return verifyValue(value.getValueString());
 	}
 
-	public boolean shouldHasChildren() {
-		return property.hasChildren();
-	}
-
 	public boolean hasChildren() {
-		boolean shouldHas = shouldHasChildren();
+		boolean shouldHas = property.hasChildren();
 		int count = property.getChildrenCount();
 
 		return count == -1 ? shouldHas : shouldHas && count > 0;
@@ -163,6 +163,13 @@ public class ScriptVariable extends AbstractScriptVariable {
 	}
 
 	public IScriptType getType() {
-		return new ScriptType(property.getType());
+		if (type == null) {
+			IScriptDebugTypeFactory factory = ScriptDebugTypeManager
+					.getInstance().getScriptDebugTypeFactory(
+							getModelIdentifier());
+			type = factory.buildType(property.getType());
+		}
+
+		return type;
 	}
 }

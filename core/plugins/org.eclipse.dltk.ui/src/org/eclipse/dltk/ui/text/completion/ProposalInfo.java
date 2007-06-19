@@ -138,7 +138,7 @@ public class ProposalInfo {
 		String nature = null;
 		try {
 			nature = DLTKLanguageManager.getLanguageToolkit(member)
-					.getNatureID();
+					.getNatureId();
 		} catch (CoreException e) {
 			return null;
 		}

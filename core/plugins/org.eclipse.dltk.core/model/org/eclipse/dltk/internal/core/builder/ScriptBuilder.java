@@ -364,7 +364,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		try {
 			toolkit = DLTKLanguageManager.getLanguageToolkit(scriptProject);
 			IScriptBuilder[] builders = ScriptBuilderManager
-					.getScriptBuilders(toolkit.getNatureID());
+					.getScriptBuilders(toolkit.getNatureId());
 
 			if (builders != null) {
 				for (int k = 0; k < builders.length; k++) {

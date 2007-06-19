@@ -338,7 +338,7 @@ public abstract class ElementsView extends ViewPart {
 		synchronized public void addElement(IModelElement element) {
 			try {
 				IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager.getLanguageToolkit(element);
-				if( !languageToolkit.getNatureID().equals(TclLanguageToolkit.getDefault().getNatureID())) {
+				if( !languageToolkit.getNatureId().equals(TclLanguageToolkit.getDefault().getNatureId())) {
 					return;
 				}
 			} catch (CoreException e) {
@@ -474,7 +474,7 @@ public abstract class ElementsView extends ViewPart {
 	private void removeElements(IModelElement element) {
 		try {
 			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager.getLanguageToolkit(element);
-			if( !languageToolkit.getNatureID().equals(TclLanguageToolkit.getDefault().getNatureID())) {
+			if( !languageToolkit.getNatureId().equals(TclLanguageToolkit.getDefault().getNatureId())) {
 				return;
 			}
 		} catch (CoreException e) {

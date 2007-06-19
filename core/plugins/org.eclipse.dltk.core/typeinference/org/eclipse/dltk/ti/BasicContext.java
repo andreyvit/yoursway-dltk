@@ -44,7 +44,7 @@ public class BasicContext implements IContext, ISourceModuleContext {
 				IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
 						.getLanguageToolkit(sourceModule);
 				if (languageToolkit != null) {
-					return languageToolkit.getNatureID();
+					return languageToolkit.getNatureId();
 				}
 			} catch (CoreException e) {
 				e.printStackTrace();

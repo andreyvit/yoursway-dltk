@@ -64,7 +64,7 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 		return true;
 	}
 
-	public String getNatureID() {
+	public String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
 

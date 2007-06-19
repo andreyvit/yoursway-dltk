@@ -60,7 +60,7 @@ public class InterpreterRuntimeBuildpathEntryResolver implements IRuntimeBuildpa
 	
 	private String getNatureFromProject (IScriptProject project) {
 		try {
-			return DLTKLanguageManager.getLanguageToolkit(project).getNatureID();			
+			return DLTKLanguageManager.getLanguageToolkit(project).getNatureId();			
 		} catch (CoreException e) {
 			DLTKLaunchingPlugin.log(e);
 		}

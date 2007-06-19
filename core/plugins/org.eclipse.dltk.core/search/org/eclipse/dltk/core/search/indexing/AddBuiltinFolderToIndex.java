@@ -48,7 +48,7 @@ class AddBuiltinFolderToIndex extends IndexRequest {
 		try {
 			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
 					.getLanguageToolkit(scriptProject);
-			return languageToolkit.getNatureID().hashCode();
+			return languageToolkit.getNatureId().hashCode();
 		} catch (CoreException e) {
 			return -1;
 		}
@@ -61,8 +61,8 @@ class AddBuiltinFolderToIndex extends IndexRequest {
 						.getLanguageToolkit(scriptProject);
 				IDLTKLanguageToolkit languageToolki2 = DLTKLanguageManager
 						.getLanguageToolkit(((AddBuiltinFolderToIndex) o).scriptProject);
-				if (languageToolkit.getNatureID().equals(
-						languageToolki2.getNatureID())) {
+				if (languageToolkit.getNatureId().equals(
+						languageToolki2.getNatureId())) {
 					return true;
 				}
 			} catch (CoreException e) {

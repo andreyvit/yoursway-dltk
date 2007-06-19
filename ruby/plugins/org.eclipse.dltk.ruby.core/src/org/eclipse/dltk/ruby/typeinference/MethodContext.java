@@ -71,7 +71,7 @@ public class MethodContext implements IContext, IArgumentsContext, IInstanceCont
 			try {
 				IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager.getLanguageToolkit(sourceModule);
 				if (languageToolkit != null)
-					return languageToolkit.getNatureID();
+					return languageToolkit.getNatureId();
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}

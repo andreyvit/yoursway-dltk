@@ -572,7 +572,7 @@ public class MatchLocator implements ITypeRequestor {
 					IModelStatusConstants.INVALID_PROJECT, project,
 					"Language Toolkit not found on project"));
 		}
-		this.parser = DLTKLanguageManager.createMatchParser(tk.getNatureID(), this);
+		this.parser = DLTKLanguageManager.createMatchParser(tk.getNatureId(), this);
 
 		// remember project's name lookup
 		this.nameLookup = searchableEnvironment.getNameLookup();

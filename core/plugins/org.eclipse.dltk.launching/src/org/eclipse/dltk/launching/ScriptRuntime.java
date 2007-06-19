@@ -302,7 +302,7 @@ public final class ScriptRuntime {
 	private static String getNatureFromProject(IScriptProject project) {
 		try {
 			return DLTKLanguageManager.getLanguageToolkit(project)
-					.getNatureID();
+					.getNatureId();
 		} catch (Exception e) {
 			DLTKLaunchingPlugin.log(e);
 		}

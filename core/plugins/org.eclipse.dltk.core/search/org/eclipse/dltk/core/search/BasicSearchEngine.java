@@ -1190,7 +1190,7 @@ public class BasicSearchEngine {
 			e.printStackTrace();
 		}
 		if( toolkit != null ) {
-			DLTKSearchParticipant par = DLTKLanguageManager.createSearchParticipant(toolkit.getNatureID());
+			DLTKSearchParticipant par = DLTKLanguageManager.createSearchParticipant(toolkit.getNatureId());
 			if(par != null ) {
 				return par;
 			}

@@ -15,4 +15,6 @@ public interface IScriptValue extends IValue {
 	String getInstanceId();
 	
 	IScriptType getType();
+	
+	String getEvalName();
 }

@@ -20,21 +20,25 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IErrorReportingExpression;
 import org.eclipse.debug.core.model.IExpression;
 import org.eclipse.debug.core.model.ILineBreakpoint;
+import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
+import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
+import org.eclipse.dltk.internal.debug.ui.ScriptEvaluationContextManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IPersistableElement;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.editors.text.ILocationProvider;
 import org.eclipse.ui.part.FileEditorInput;
 
@@ -115,6 +119,10 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		}
 	}
 
+	protected String getDebugTargetText(IScriptDebugTarget target) {
+		return target.toString();
+	}
+
 	protected String getThreadText(IScriptThread thread) {
 		try {
 			return thread.getName() + " ("
@@ -157,16 +165,6 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		return variable.toString();
 	}
 
-	protected String getValueText(IScriptValue value) {
-		try {
-			return value.getValueString();
-		} catch (DebugException e) {
-			DLTKDebugUIPlugin.log(e);
-		}
-
-		return value.toString();
-	}
-
 	protected String getBreakpointText(IScriptBreakpoint breakpoint) {
 		try {
 			StringBuffer sb = new StringBuffer();
@@ -190,38 +188,31 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	}
 
 	protected String getExpressionText(IExpression expression) {
-		String text = expression.getExpressionText() + " = Error!";
+		final String expressionText = expression.getExpressionText();
+
 		try {
 			if (expression instanceof IErrorReportingExpression) {
-				IErrorReportingExpression exp = (IErrorReportingExpression) expression;
-				if (exp.hasErrors()) {
-					return text;
+				IErrorReportingExpression errorExpression = (IErrorReportingExpression) expression;
+				if (errorExpression.hasErrors()) {
+					return expressionText;
 				}
 			}
 
-			text = expression.getExpressionText();
 			IScriptValue value = (IScriptValue) expression.getValue();
 			if (value != null) {
-				// Check value type
-				if (value.hasVariables()) {
-					text += " = " + value.getReferenceTypeName();
-					String id = value.getInstanceId();
-					if (id != null) {
-						text += " (id = " + id + ")";
-					}
-				} else {
-					text += " = " + value.getValueString();
-				}
+				return expressionText + " = " + value.getValueString();
 			}
 		} catch (DebugException e) {
 			DLTKDebugUIPlugin.log(e);
 		}
 
-		return text;
+		return expressionText;
 	}
 
 	public final String getText(Object element) {
-		if (element instanceof IScriptBreakpoint) {
+		if (element instanceof IScriptDebugTarget) {
+			return getDebugTargetText((IScriptDebugTarget) element);
+		} else if (element instanceof IScriptBreakpoint) {
 			return getBreakpointText((IScriptBreakpoint) element);
 		} else if (element instanceof IScriptThread) {
 			return getThreadText((IScriptThread) element);
@@ -229,27 +220,19 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			return getStackFrameText((IScriptStackFrame) element);
 		} else if (element instanceof IScriptVariable) {
 			return getVariableText((IScriptVariable) element);
-		} else if (element instanceof IScriptValue) {
-			return getValueText((IScriptValue) element);
 		} else if (element instanceof IExpression) {
 			return getExpressionText((IExpression) element);
 		}
 
-		return element.toString();
+		return null;
 	}
 
 	public void computeDetail(IValue value, IValueDetailListener listener) {
-		String detail = "Can't compute detail";
 		try {
-			if (value.hasVariables()) {
-				detail = value.getReferenceTypeName();
-			} else {
-				detail = value.getValueString();
-			}
+			listener.detailComputed(value, value.getValueString());
 		} catch (DebugException e) {
-			DLTKDebugUIPlugin.log(e);
+			e.printStackTrace();
 		}
-		listener.detailComputed(value, detail);
 	}
 
 	public void setAttribute(String attribute, Object value) {
@@ -272,4 +255,35 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	}
 
 	public abstract String getEditorId(IEditorInput input, Object element);
+
+	public static IScriptThread getEvaluationThread(IScriptDebugTarget target) {
+		IScriptThread thread = null;
+
+		IScriptStackFrame frame = ScriptEvaluationContextManager
+				.getEvaluationContext((IWorkbenchWindow) null);
+		if (frame != null) {
+			thread = (IScriptThread) frame.getThread();
+		}
+
+		if (thread != null
+				&& (!thread.getDebugTarget().equals(target) || (!thread
+						.isSuspended()))) {
+			thread = null; // can only use suspended threads in the same target
+		}
+		if (thread == null) {
+			try {
+				// Find first suspended thread
+				IThread[] threads = target.getThreads();
+				for (int i = 0; i < threads.length; i++) {
+					if (threads[i].isSuspended()) {
+						thread = (IScriptThread) threads[i];
+						break;
+					}
+				}
+			} catch (DebugException e) {
+				DLTKDebugUIPlugin.log(e);
+			}
+		}
+		return thread;
+	}
 }

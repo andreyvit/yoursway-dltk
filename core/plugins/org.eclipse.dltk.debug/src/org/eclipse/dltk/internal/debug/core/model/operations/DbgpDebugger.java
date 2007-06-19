@@ -308,6 +308,7 @@ public class DbgpDebugger {
 	}
 
 	public static void printEngineInfo(DbgpDebugger d) throws DbgpException {
+		// TODO: to debug log
 		System.out.println(IDbgpFeatureCommands.LANGUAGE_SUPPORTS_THREADS
 				+ ": " + d.isSupportsThreads());
 		System.out.println(IDbgpFeatureCommands.LANGUAGE_NAME + ": "

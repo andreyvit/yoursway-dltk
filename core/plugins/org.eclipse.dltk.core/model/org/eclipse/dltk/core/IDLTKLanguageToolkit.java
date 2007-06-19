@@ -34,7 +34,7 @@ public interface IDLTKLanguageToolkit {
 	
 	boolean languageSupportZIPBuildpath();
 
-	String getNatureID();
+	String getNatureId();
 
 	String getDelimeterReplacerString();
 	

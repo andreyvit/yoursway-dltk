@@ -43,23 +43,19 @@ public abstract class ScriptDisplayAction extends ScriptEvaluationAction {
 		final String snippet = result.getSnippet();
 		IScriptValue resultValue = result.getValue();
 
-		try {
-			final String resultString = resultValue.getValueString();
-			IDebugModelPresentation presentation = getDebugModelPresentation(result
-					.getThread().getModelIdentifier()); 
-			presentation.computeDetail(resultValue,
-					new IValueDetailListener() {
-						public void detailComputed(IValue value, String result) {
-							displayStringResult(snippet, MessageFormat.format(
-									"{0} {1}", new Object[] { resultString,
-											trimDisplayResult(result) }));
-						}
-					});
-			
-			presentation.dispose();
-		} catch (DebugException x) {
-			displayStringResult(snippet, getExceptionMessage(x));
-		}
+		final String typeName = resultValue.getType().getName();
+
+		IDebugModelPresentation presentation = getDebugModelPresentation(result
+				.getThread().getModelIdentifier());
+		presentation.computeDetail(resultValue, new IValueDetailListener() {
+			public void detailComputed(IValue value, String result) {
+				displayStringResult(snippet, MessageFormat.format("({0}) {1}",
+						new Object[] { typeName, trimDisplayResult(result) }));
+			}
+		});
+
+		presentation.dispose();
+		// displayStringResult(snippet, getExceptionMessage(x));
 	}
 
 	// Real display of results

@@ -29,6 +29,18 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 	}
 
 	public String getValueString() throws DebugException {
+		IScriptType type = getType();
+
+		if (!type.isAtomic()) {
+			StringBuffer sb = new StringBuffer();
+			sb.append(type.getName());
+			String id = getInstanceId();
+			if (id != null) {
+				sb.append(" (id = " + id + ")");
+			}
+			return sb.toString();
+		}
+
 		return variable.getValueString();
 	}
 
@@ -58,5 +70,9 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 
 	public IScriptType getType() {
 		return variable.getType();
+	}
+	
+	public String getEvalName() {
+		return variable.getEvalName();
 	}
 }

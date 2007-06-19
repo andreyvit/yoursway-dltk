@@ -61,7 +61,7 @@ public class MixinBuilder implements IScriptBuilder {
 		IMixinParser parser = null;
 		try {
 			toolkit = DLTKLanguageManager.getLanguageToolkit(project);
-			parser = MixinManager.getMixinParser(toolkit.getNatureID());
+			parser = MixinManager.getMixinParser(toolkit.getNatureId());
 		} catch (CoreException e1) {
 			e1.printStackTrace();
 		}

@@ -83,7 +83,7 @@ public class TestLanguageToolkit implements IDLTKLanguageToolkit {
 		return true;
 	}
 
-	public String getNatureID() {
+	public String getNatureId() {
 		return ModelTestsPlugin.TEST_NATURE;
 	}
 
