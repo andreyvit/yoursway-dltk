@@ -150,10 +150,6 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 		Composite labelComposite = createComposite(parent, 2);
 
-		// Type
-		createLabel(labelComposite, "Type:");
-		createLabel(labelComposite, breakpoint.getClass().getName());
-
 		// Script language
 		createLabel(labelComposite, "Language:");
 		createLabel(labelComposite, DLTKLanguageManager.getLanguageToolkit(getNatureId()).getLanguageName());
@@ -178,30 +174,10 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 	protected void createTypeSpecificLabels(Composite parent)
 			throws CoreException {
-		IScriptBreakpoint breakpoint = getBreakpoint();
-
-		// IScriptLineBreakpoint
-		if (breakpoint instanceof IScriptLineBreakpoint) {
-			IScriptLineBreakpoint lineBreakpoint = (IScriptLineBreakpoint) breakpoint;
-
-			// Line number
-			int lineNumber = lineBreakpoint.getLineNumber();
-			createLabel(parent, "Line Number:");
-			createLabel(parent, Integer.toString(lineNumber));
-		}
-
-		// IScriptWatchPoint
-		if (breakpoint instanceof IScriptWatchPoint) {
-			IScriptWatchPoint watchPoint = (IScriptWatchPoint) breakpoint;
-			createLabel(parent, "Watch field:");
-			createLabel(parent, watchPoint.getFieldName());
-		}
-
-		// Other types... IScriptExceptionBreakpoint for example
-
+		// Nothing to do here
 	}
 
-	// Changable breakpoint information
+	// Breakpoint information
 	protected void createButtons(Composite parent) throws CoreException {
 		Composite buttonsComposite = createComposite(parent, 1);
 

@@ -25,12 +25,14 @@ import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchListener;
 import org.eclipse.debug.core.model.IBreakpoint;
+import org.eclipse.debug.internal.core.BreakpointManager;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpointListener;
 import org.eclipse.dltk.debug.core.model.IScriptDebugElement;
+import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.internal.debug.core.model.ScriptBreakpoint;
@@ -43,36 +45,63 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 
 	private static ScriptDebugOptionsManager instance;
 
-	/**
-	 * A label provider
-	 */
 	private static ILabelProvider fLabelProvider = DebugUITools
 			.newDebugModelPresentation();
+
+	protected void updateBreakpointHitCounts(IBreakpoint[] breakpoints,
+			IScriptThread thread) {
+		for (int j = 0; j < breakpoints.length; ++j) {
+			IBreakpoint breakpoint = breakpoints[j];
+			if (breakpoint instanceof IScriptBreakpoint) {
+				IScriptBreakpoint scriptBreakpoint = (IScriptBreakpoint) breakpoint;
+				try {
+					String id = scriptBreakpoint.getIdentifier();
+					IDbgpBreakpoint br = thread.getDbgpBreakpoint(id);
+					int hitCount = br.getHitCount();
+					scriptBreakpoint.setHitCount(hitCount);
+				} catch (CoreException e) {
+					// TODO: log exception
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	protected void updateBreakpoinHitCountsToDefualt(IBreakpoint[] breakpoints) {
+		for (int j = 0; j < breakpoints.length; ++j) {
+			IBreakpoint breakpoint = breakpoints[j];
+			if (breakpoint instanceof IScriptBreakpoint) {
+				try {
+					((IScriptBreakpoint) breakpoint).setHitCount(-1);
+				} catch (CoreException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
 	public void handleDebugEvents(DebugEvent[] events) {
 		for (int i = 0; i < events.length; ++i) {
 			DebugEvent event = events[i];
-			if (event.getKind() == DebugEvent.SUSPEND) {
-				Object source = event.getSource();
+			final int kind = event.getKind();
+			final Object source = event.getSource();
+			if (kind == DebugEvent.SUSPEND) {
 				if (source instanceof IScriptThread) {
 					IScriptThread thread = (IScriptThread) source;
 					IBreakpoint[] breakpoints = thread.getBreakpoints();
-					for (int j = 0; j < breakpoints.length; ++j) {
-						IBreakpoint breakpoint = breakpoints[j];
-						if (breakpoint instanceof IScriptBreakpoint) {
-							IScriptBreakpoint scriptBreakpoint = (IScriptBreakpoint) breakpoint;
-							try {
-								String id = scriptBreakpoint.getIdentifier();
-								IDbgpBreakpoint br = thread.getDbgpBreakpoint(id);
-								int hitCount = br.getHitCount();
-								scriptBreakpoint.setHitCount(hitCount);
-							} catch (CoreException e) {
-								// TODO: log exception
-								e.printStackTrace();
-							}
-						}
-					}
-					
+					updateBreakpointHitCounts(breakpoints, thread);
+					updateBreakpointMessages(breakpoints);
+				}
+			} else if (kind == DebugEvent.TERMINATE) {
+				if (source instanceof IScriptDebugTarget) {
+					final String debugModelId = ((IScriptDebugTarget) source)
+							.getModelIdentifier();
+					IBreakpoint[] breakpoints = DebugPlugin.getDefault()
+							.getBreakpointManager()
+							.getBreakpoints(debugModelId);
+
+					updateBreakpoinHitCountsToDefualt(breakpoints);
 					updateBreakpointMessages(breakpoints);
 				}
 			}

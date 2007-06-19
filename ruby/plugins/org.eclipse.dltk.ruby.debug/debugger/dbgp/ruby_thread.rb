@@ -183,15 +183,13 @@ module XoredDebugger
                 contexts = [context_id]
             end            
 
-            def make_props(exp, depth, type)
+            def make_props(exp, depth)
                 vars = @stack.eval(exp, depth)
 
                 props = []
                 vars.each { |var|                    
-                    if  @stack.eval("defined?(#{var})", depth) == type
-                        real_var = @stack.eval(var, depth)
-                        props << make_property(var, real_var)
-                    end
+                    real_var = @stack.eval(var, depth)
+                    props << make_property(var, real_var)
                 }
                 props                
             end
@@ -200,7 +198,7 @@ module XoredDebugger
 
             # Local variables
             if contexts.include?(LOCAL_CONTEXT_ID)   
-                properties += make_props('local_variables', depth, 'local-variable')        
+                properties += make_props('local_variables', depth)        
                         
                 # TODO: correct this later
                 self_var = @stack.eval('self', depth)
@@ -211,12 +209,12 @@ module XoredDebugger
 
             # Global variables
             if contexts.include?(GLOBAL_CONTEXT_ID)
-                properties += make_props('global_variables', depth, 'global-variable')
+                properties += make_props('global_variables', depth)
             end
 
             # Class variables
             if contexts.include?(CLASS_CONTEXT_ID)
-                properties += make_props('instance_variables', depth, 'instance-variable')
+                properties += make_props('instance_variables', depth)
             end
 
             { :properties => properties, 
@@ -564,6 +562,28 @@ module XoredDebugger
                 end
             end
         end
+		
+		def command_loop
+		     if @last_continuation_command.nil?
+				loop do
+					@command = Command.new(receive)                        
+						
+					if ['run', 'step_into', 'step_over', 'step_out'].include?(@command.name)
+						@last_continuation_command = @command
+					end
+
+					data = dispatch_command(@command)
+
+					logger.puts('Data: ' + data.inspect)
+
+					if data.nil?
+						break
+					else
+						send(@command.name, data)
+					end
+				end		
+			end
+		end
 
         def trace(event, file, line, id, binding, klass)
             if @terminated
@@ -598,28 +618,7 @@ module XoredDebugger
                 return
             end
 
-		# Command loop
-        if @last_continuation_command.nil?
-
-		loop do
-			@command = Command.new(receive)                        
-				
-			if ['run', 'step_into', 'step_over', 'step_out'].include?(@command.name)
-				@last_continuation_command = @command
-			end
-
-			data = dispatch_command(@command)
-
-			logger.puts('Data: ' + data.inspect) 
-
-			if data.nil?
-				break
-			else
-				send(@command.name, data)
-			end
-		end
-		
-        end
+			command_loop
 
             case event
                 when 'line'
@@ -628,7 +627,7 @@ module XoredDebugger
                     @stack.update(binding, @file, line, where)
 
                     br_break = breakpoints.line_break?(@file, line)
-                    logger.puts("%%%%%%% Line: #{line}, br: #{br_break}")
+                    logger.puts("Breakpoint test result: line : #{line}, break: #{br_break}")
                 
                     if (@io.has_data? or
                         @waitDepth == -1 or
@@ -639,19 +638,19 @@ module XoredDebugger
 
                         # Break checking
                         unless @last_continuation_command.nil?
-
                             map = { :status => 'break',
                                     :reason => 'ok',
                                     :id     => @last_continuation_command.arg('-i') }
 
                             send(@last_continuation_command.name, map)
-
+							
                             @last_continuation_command = nil
-                        end                     
+                        end
+
+						command_loop						
                     end
 
                     capturer.enable
-       
                 when 'call'
                     @stack.push(binding, @file, line, where)
         
@@ -674,5 +673,4 @@ module XoredDebugger
             'Thread [' + @thread.object_id.to_s + ']'
         end
     end # class RubyThread
-
 end # module

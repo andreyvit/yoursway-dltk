@@ -324,16 +324,31 @@
        point="org.eclipse.ui.propertyPages">
     <!-- Eclipse 3.3 fix -->
     <page
-          class="org.eclipse.dltk.debug.ui.breakpoints.ScriptBreakpointPropertyPage"
-          id="org.eclipse.dltk.debug.ui.ScriptBreakpointPropertyPage"
-          name="Breakpoint properties">
+          class="org.eclipse.dltk.debug.ui.breakpoints.ScriptLineBreakpointPropertyPage"
+          id="org.eclipse.dltk.debug.ui.breakpoints.ScriptLineBreakpointPropertyPage"
+          name="Script Line Breakpoint">
           <enabledWhen>
             <or>
                <instanceof
-                     value="org.eclipse.dltk.debug.core.model.IScriptBreakpoint">
+                     value="org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint">
                </instanceof>
                <adapt
-                     type="org.eclipse.dltk.debug.core.model.IScriptBreakpoint">
+                     type="org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint">
+               </adapt>
+            </or>
+         </enabledWhen>
+    </page>
+    <page
+          class="org.eclipse.dltk.debug.ui.breakpoints.ScriptWatchPointPropertyPage"
+          id="org.eclipse.dltk.debug.ui.breakpoints.ScriptWatchPointPropertyPage"
+          name="Script Watchpoint">
+            <enabledWhen>
+            <or>
+               <instanceof
+                     value="org.eclipse.dltk.debug.core.model.IScriptWatchPoint">
+               </instanceof>
+               <adapt
+                     type="org.eclipse.dltk.debug.core.model.IScriptWatchPoint">
                </adapt>
             </or>
          </enabledWhen>
