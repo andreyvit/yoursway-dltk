@@ -34,7 +34,7 @@
 			targetID="org.eclipse.dltk.ruby.ui.editor.RubyEditor"
 			id="org.eclipse.dltk.ruby.ui.editor.RubyEditor.BreakpointRulerActions">
 
-			<action label="Toogle Breakpoint (label not used)"
+			<action label="%ToggleBreakpoint.label"
 				class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
 				style="push" actionID="RulerDoubleClick"
 				id="RubyEditor.doubleClickBreakpointAction" />
@@ -61,7 +61,8 @@
 			<action
 				class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesRulerActionDelegate"
 				id="org.eclipse.dltk.ruby.debug.ui.ScriptBreakpointPropertiesRulerActionDelegate"
-				label="%BreakpointProperties.label" menubarPath="additions" />
+				label="%BreakpointProperties.label" 
+				menubarPath="group.properties" />
 		</viewerContribution>
 		
 		<viewerContribution targetID="#RubyEditorContext"

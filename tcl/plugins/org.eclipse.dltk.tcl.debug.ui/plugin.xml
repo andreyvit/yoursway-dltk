@@ -61,7 +61,7 @@
 			</action>
 		</viewerContribution>
 		<viewerContribution
-			id="org.eclipse.dltk.tcl.debug.ui.viewerContribution3"
+			id="org.eclipse.dltk.tcl.debug.ui.rulerContribution"
 			targetID="#TclRulerContext">
 
 			<action label="%EnableDisableBreakpoint.label"
@@ -79,7 +79,8 @@
 			<action
 				class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesRulerActionDelegate"
 				id="org.eclipse.dltk.tcl.debug.ui.ScriptBreakpointPropertiesRulerActionDelegate"
-				label="%BreakpointProperties.label" menubarPath="additions" />
+				label="%BreakpointProperties.label" 
+				menubarPath="group.properties" />
 		</viewerContribution>
 	</extension>
 

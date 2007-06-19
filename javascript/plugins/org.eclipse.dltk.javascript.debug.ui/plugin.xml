@@ -138,7 +138,7 @@
          </action>
     </viewerContribution>    
     <viewerContribution
-          id="org.eclipse.dltk.javascript.debug.ui.viewerContribution3"
+          id="org.eclipse.dltk.javascript.debug.ui.rulerContribution"
           targetID="#JavascriptRulerContext">
 		<action
              actionID="RulerDoubleClick1"
@@ -167,7 +167,7 @@
              class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesRulerActionDelegate"
              id="org.eclipse.dltk.javascript.debug.ui.ScriptBreakpointPropertiesRulerActionDelegate"
              label="%BreakpointProperties.label"
-             menubarPath="additions"/>
+             menubarPath="group.properties"/>
        
     </viewerContribution>    
  </extension>

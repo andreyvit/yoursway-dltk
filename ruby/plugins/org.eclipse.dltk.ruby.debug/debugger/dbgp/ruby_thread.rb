@@ -252,8 +252,8 @@ module XoredDebugger
 
 
         # Breakpoint commands
-        def breakpoint_set_line(file, line, state, temporary, hit_value, hit_condition)
-            id = breakpoints.set_line_bpt(file, line, state, temporary, hit_value, hit_condition)
+        def breakpoint_set_line(file, line, state, temporary, expression, hit_value, hit_condition)
+            id = breakpoints.set_line_bpt(file, line, state, temporary, expression, hit_value, hit_condition)
 			logger.puts("BR_ID: " + id.to_s)
             { :state         => state, 
               :breakpoint_id => id }
@@ -285,8 +285,8 @@ module XoredDebugger
             {}
         end
 
-        def breakpoint_update(id, state)
-            breakpoints.set_state(id, state)
+        def breakpoint_update(id, state, temporary, expression, hit_value, hit_condition)
+            breakpoints.update(id, state, temporary, expression, hit_value, hit_condition)
             
             {}
         end
@@ -408,16 +408,20 @@ module XoredDebugger
                 # Breakpoint commands
                 when 'breakpoint_set'				
                     type = command.arg('-t')
-                    state = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false					
+                    
+					state = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false					
 					temporary = command.arg_with_default('-r', false)
 					hit_value = command.arg_with_default('-h', 1).to_i
 					hit_condition = command.arg_with_default('-o', '>=')
+					expression = command.data
+					
+					logger.puts("### Expression: " + expression.to_s)
 					
                     case type
                     when 'line'
                         file = File.expand_path(uri_to_path(command.arg('-f')))
                         line = command.arg('-n').to_i
-                        breakpoint_set_line(file, line, state, temporary, hit_value, hit_condition)
+                        breakpoint_set_line(file, line, state, temporary, expression, hit_value, hit_condition)
                     
                     when 'call'
                         function = command.arg('-m')
@@ -441,8 +445,15 @@ module XoredDebugger
 
                 when 'breakpoint_update'
                     id = command.arg('-d').to_i
-                    state = command.arg('-s') == 'enabled' ? true : false
-                    breakpoint_update(id, state)
+					state = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false
+					temporary = command.arg_with_default('-r', false)
+					hit_value = command.arg_with_default('-h', 1).to_i
+					hit_condition = command.arg_with_default('-o', '>=')
+					expression = command.data
+					
+					logger.puts("### Expression: " + expression.to_s)
+                    
+					breakpoint_update(id, state, temporary, expression, hit_value, hit_condition)
                 
                 when 'breakpoint_remove'
                     id = command.arg('-d').to_i
@@ -626,7 +637,7 @@ module XoredDebugger
 
                     @stack.update(binding, @file, line, where)
 
-                    br_break = breakpoints.line_break?(@file, line)
+                    br_break = breakpoints.line_break?(@stack, @file, line)
                     logger.puts("Breakpoint test result: line : #{line}, break: #{br_break}")
                 
                     if (@io.has_data? or
