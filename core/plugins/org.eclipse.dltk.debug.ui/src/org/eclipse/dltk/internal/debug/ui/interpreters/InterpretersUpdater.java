@@ -45,7 +45,7 @@ public class InterpretersUpdater {
 		fOriginalInterpreters = new InterpreterDefinitionsContainer();
 		IInterpreterInstall def = null;
 		
-		String natures[] = ScriptRuntime.getInterpreterNatures();
+		String[] natures = ScriptRuntime.getInterpreterNatures();
 		for (int i = 0; i < natures.length; i++) {
 			def = ScriptRuntime.getDefaultInterpreterInstall(natures[i]);
 			

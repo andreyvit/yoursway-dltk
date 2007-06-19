@@ -291,8 +291,8 @@ public abstract class AbstractScriptLaunchShortcut implements ILaunchShortcut {
 						list.add(object);
 				} else if (object instanceof IContainer) {
 					IContainer f = (IContainer) object;
-					IResource mem[] = f.members();
-					IResource res[] = getScriptResources(mem, pm);
+					IResource[] mem = f.members();
+					IResource[] res = getScriptResources(mem, pm);
 					for (int j = 0; j < res.length; j++) {
 						list.add(res[j]);
 					}
@@ -305,7 +305,7 @@ public abstract class AbstractScriptLaunchShortcut implements ILaunchShortcut {
 							list.add(res);
 					} else if (elem instanceof IParent) {
 						IParent proj = (IParent) elem;
-						IResource res[] = getScriptResources(
+						IResource[] res = getScriptResources(
 								proj.getChildren(), pm);
 						for (int j = 0; j < res.length; j++) {
 							list.add(res[j]);

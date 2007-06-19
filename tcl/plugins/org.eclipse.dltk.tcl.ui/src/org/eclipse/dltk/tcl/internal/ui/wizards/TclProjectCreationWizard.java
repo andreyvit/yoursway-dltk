@@ -91,7 +91,7 @@ public class TclProjectCreationWizard extends NewElementWizard implements
 			}
 
 			protected IInterpreterInstall getInterpreter() {
-				return fInterpreterGroup.getSelectedJInterpreter();
+				return fInterpreterGroup.getSelectedInterpreter();
 			}
 
 			protected void handlePossibleInterpreterChange() {

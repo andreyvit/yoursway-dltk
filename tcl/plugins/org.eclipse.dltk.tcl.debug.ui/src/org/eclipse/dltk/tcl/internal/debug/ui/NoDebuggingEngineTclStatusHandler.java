@@ -17,7 +17,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
-public class NoDebuggingEgineTclStatusHandler implements IStatusHandler {
+public class NoDebuggingEngineTclStatusHandler implements IStatusHandler {
 
 	private static final String TCL_DEBUG_PREFERENCES_ID = "org.eclipse.dltk.tcl.preferences.debug";
 

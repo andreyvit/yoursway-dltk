@@ -292,12 +292,18 @@ public class DLTKLaunchingPlugin extends Plugin implements
 				IInterpreterInstallType[] installTypes = ScriptRuntime
 						.getInterpreterInstallTypes();
 				for (int i = 0; i < installTypes.length; i++) {
-					IInterpreterInstall[] installs = installTypes[i]
-							.getInterpreterInstalls();
-					if (installs != null) {
-						for (int j = 0; j < installs.length; j++) {
-							File path = installs[j].getInstallLocation();
-							installTypes[i].getDefaultLibraryLocations(path);
+					if (installTypes[i] != null) {
+						IInterpreterInstall[] installs = installTypes[i]
+								.getInterpreterInstalls();
+						if (installs != null) {
+							for (int j = 0; j < installs.length; j++) {
+								if (installs[j] != null) {
+									File path = installs[j]
+											.getInstallLocation();
+									installTypes[i]
+											.getDefaultLibraryLocations(path);
+								}
+							}
 						}
 					}
 				}
@@ -437,7 +443,7 @@ public class DLTKLaunchingPlugin extends Plugin implements
 			// set the new default Interpreter installs. This will fire a
 			// 'defaultInterpreterChanged',
 			// if it in fact changed
-			String newDefaultId[] = newResults
+			String[] newDefaultId = newResults
 					.getDefaultInterpreterInstallCompositeID();
 			for (int i = 0; i < newDefaultId.length; i++) {
 				if (newDefaultId[i] != null) {

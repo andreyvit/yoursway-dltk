@@ -71,7 +71,7 @@ public abstract class AbstractInterpreterInstallType implements
 	private static HashMap fCachedLocations = new HashMap();
 
 	protected AbstractInterpreterInstallType() {
-		fInterpreters = new ArrayList(10);
+		fInterpreters = new ArrayList();
 	}
 
 	public IInterpreterInstall[] getInterpreterInstalls() {
@@ -392,7 +392,7 @@ public abstract class AbstractInterpreterInstallType implements
 		return new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) {
 				Process process = null;
-				String cmdLine[] = null;
+				String[] cmdLine = null;
 				try {
 					monitor
 							.beginTask(InterpreterMessages.statusFetchingLibs,

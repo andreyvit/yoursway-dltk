@@ -287,7 +287,7 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 		private final Group fGroup;
 		private String[] fComplianceLabels;
 		private final Link fPreferenceLink;
-		private IInterpreterInstall[] fInstalledJInterpreters;
+		private IInterpreterInstall[] fInstalledInterpreters;
 		
 		public AbstractInterpreterGroup(Composite composite) {
 			fGroup= new Group(composite, SWT.NONE);
@@ -337,12 +337,12 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 				}
 			}
 			
-			fInstalledJInterpreters= getWorkspaceInterpeters();
+			fInstalledInterpreters= getWorkspaceInterpeters();
 			
 			selectionIndex= -1;//find new index
-			fComplianceLabels= new String[fInstalledJInterpreters.length];
-			for (int i= 0; i < fInstalledJInterpreters.length; i++) {
-				fComplianceLabels[i]= fInstalledJInterpreters[i].getName();
+			fComplianceLabels= new String[fInstalledInterpreters.length];
+			for (int i= 0; i < fInstalledInterpreters.length; i++) {
+				fComplianceLabels[i]= fInstalledInterpreters[i].getName();
 				if (selectedItem != null && fComplianceLabels[i].equals(selectedItem)) {
 					selectionIndex= i;
 				}				
@@ -353,7 +353,7 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 			} else {
 				fInterpreterEnvironmentCombo.selectItem(selectedItem);
 			}		
-			interpretersPresent = (fInstalledJInterpreters.length > 0);
+			interpretersPresent = (fInstalledInterpreters.length > 0);
 		}
 		
 		private IInterpreterInstall[] getWorkspaceInterpeters() {
@@ -437,11 +437,11 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 			return fUseProjectInterpreterEnvironment.isSelected();
 		}
 		
-		public IInterpreterInstall getSelectedJInterpreter() {
+		public IInterpreterInstall getSelectedInterpreter() {
 			if (fUseProjectInterpreterEnvironment.isSelected()) {
 				int index= fInterpreterEnvironmentCombo.getSelectionIndex();
 				if (index >= 0 && index < fComplianceLabels.length) { // paranoia
-					return fInstalledJInterpreters[index];
+					return fInstalledInterpreters[index];
 				}
 			}
 			return null;
@@ -449,14 +449,6 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 				
 	}	
 	
-	
-	//	
-	// //TODO: Add
-	// static {
-	// if (DLTKCore.DEBUG) {
-	// System.err.println("TODO: Add to ScriptProjectWizardFirstPage");
-	// }
-	// }
 	/**
 	 * Show a warning when the project location contains files.
 	 */

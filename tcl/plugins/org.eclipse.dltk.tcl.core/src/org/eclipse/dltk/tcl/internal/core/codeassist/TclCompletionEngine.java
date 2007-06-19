@@ -455,7 +455,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 							String p1 = name.substring(0, i1);
 							String p2 = prefix.substring(0, i2);
 							if (p1.startsWith(p2)) {
-								System.out.println("#");
+//								System.out.println("#");
 								String nn = prefix.substring(i2 + 2);
 								if (!methodNames.contains(nn) /*
 																 * &&

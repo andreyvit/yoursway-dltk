@@ -14,11 +14,20 @@ import org.eclipse.dltk.console.ScriptConsolePrompt;
 import org.eclipse.dltk.console.ui.IScriptConsoleFactory;
 import org.eclipse.dltk.console.ui.ScriptConsole;
 import org.eclipse.dltk.console.ui.ScriptConsoleFactoryBase;
+import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
+import org.eclipse.dltk.launching.LaunchingMessages;
+import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.dltk.tcl.console.TclConsoleConstants;
 import org.eclipse.dltk.tcl.console.TclConsoleUtil;
 import org.eclipse.dltk.tcl.console.TclInterpreter;
+import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.internal.debug.ui.TclDebugUIPlugin;
+import org.eclipse.dltk.ui.DLTKUILanguageManager;
+import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceDialog;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
 public class TclConsoleFactory extends ScriptConsoleFactoryBase implements
@@ -39,12 +48,47 @@ public class TclConsoleFactory extends ScriptConsoleFactoryBase implements
 		console.setPrompt(makeInvitation());
 		return console;
 	}
+	protected void showInterpreterPreferencePage(String natureId) {
+		String preferencePageId = null;
+		IDLTKUILanguageToolkit languageToolkit = null;
+		languageToolkit = DLTKUILanguageManager.getLanguageToolkit(natureId);
+		if( languageToolkit == null ) {
+			return;
+		}
+		preferencePageId = languageToolkit.getInterpreterPreferencePage();
 
+		if (preferencePageId != null) {
+			PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(
+					null, preferencePageId, null, null);
+			dialog.open();
+		}
+	}
+	private void showQuestion() {
+		final boolean result[] = new boolean[] { false };
+		DLTKDebugUIPlugin.getStandardDisplay().syncExec(new Runnable() {
+			public void run() {
+				String title = LaunchingMessages.NoDefaultInterpreterStatusHandler_title;
+				String message = LaunchingMessages.NoDefaultInterpreterStatusHandler_message;
+				result[0] = (MessageDialog.openQuestion(DLTKDebugUIPlugin
+						.getActiveWorkbenchShell(), title, message));
+				if (result[0]) {
+					showInterpreterPreferencePage(TclNature.NATURE_ID);
+				}
+			}
+		});
+	}
 	private TclConsole createConsoleInstance(IScriptInterpreter interpreter, String id) {
 		if (interpreter == null) {
 			try {
 				id = "default";
 				interpreter = new TclInterpreter();
+				
+				if( ScriptRuntime.getDefaultInterpreterInstall(TclNature.NATURE_ID) == null ) {
+					showQuestion();
+					if( ScriptRuntime.getDefaultInterpreterInstall(TclNature.NATURE_ID) == null ) {
+						return null;
+					}
+				}
 				TclConsoleUtil
 						.runDefaultTclInterpreter((TclInterpreter) interpreter);
 			} catch (Exception e) {

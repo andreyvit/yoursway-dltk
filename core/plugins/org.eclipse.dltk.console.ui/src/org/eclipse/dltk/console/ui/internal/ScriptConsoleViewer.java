@@ -140,21 +140,6 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 			}
 		}
 
-		protected void printString(String str) {
-			for (int i = 0; i < str.length(); ++i) {
-				char ch = str.charAt(i);
-				if (ch == '\r') {
-					System.out.print("\\r");
-				} else if (ch == '\n') {
-					System.out.print("\\n");
-				} else {
-					System.out.print(ch);
-				}
-			}
-
-			System.out.print('\n');
-		}
-
 		protected void proccessAddition(int offset, String text) {
 			try {
 				String delim = getDelimeter();
