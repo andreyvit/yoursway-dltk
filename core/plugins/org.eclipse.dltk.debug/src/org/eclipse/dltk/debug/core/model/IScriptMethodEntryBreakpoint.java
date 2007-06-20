@@ -17,21 +17,21 @@ import org.eclipse.core.runtime.CoreException;
  * a method when entered.
  */
 public interface IScriptMethodEntryBreakpoint extends IScriptLineBreakpoint {
-
 	// Method name
 	String getMethodName() throws CoreException;
 
-	// Break conditions
+	// Break on entry
+	boolean breakOnEntry() throws CoreException;
+	
 	void setBreakOnEntry(boolean value) throws CoreException;
 
+	// Break on exit
+	boolean breakOnExit() throws CoreException;
+	
 	void setBreakOnExit(boolean value) throws CoreException;
 
-	boolean breakOnEntry();
-
-	boolean breakOnExit();
-
-	// Secondary identifiers
-	String getSecondaryId();
+	// Secondary id
+	String getSecondaryId() throws CoreException;
 
 	void setSecondaryId(String id) throws CoreException;
 }

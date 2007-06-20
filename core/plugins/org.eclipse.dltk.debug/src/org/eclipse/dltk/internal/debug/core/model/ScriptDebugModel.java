@@ -41,8 +41,8 @@ public class ScriptDebugModel {
 
 	public static IScriptLineBreakpoint createMethodEntryBreakpoint(
 			IResource resource, int lineNumber, int charStart, int charEnd,
-			int hitCount, boolean register, Map attributes, String methodName,
-			String methodSignature) throws CoreException {
+			int hitCount, boolean register, Map attributes, String methodName)
+			throws CoreException {
 
 		if (attributes == null) {
 			attributes = new HashMap(10);
@@ -52,7 +52,7 @@ public class ScriptDebugModel {
 
 		return new ScriptMethodEntryBreakpoint(getDenbugModelId(resource),
 				resource, lineNumber, charStart, charEnd, hitCount, register,
-				attributes, methodName, methodSignature);
+				attributes, methodName);
 	}
 
 	public static IScriptWatchPoint createWatchPoint(IResource resource,

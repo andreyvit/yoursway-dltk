@@ -36,7 +36,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 
 	private static final String STACK_FRAME_LABEL = "Stack frame #{0}";
 
-	private final IScriptThread thread;
+	private IScriptThread thread;
 
 	private final IDbgpStackLevel level;
 

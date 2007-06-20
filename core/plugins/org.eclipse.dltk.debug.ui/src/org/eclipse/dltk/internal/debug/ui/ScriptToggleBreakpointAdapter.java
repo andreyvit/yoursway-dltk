@@ -63,7 +63,7 @@ public class ScriptToggleBreakpointAdapter implements IToggleBreakpointsTarget {
 				// TODO: optimize
 				IBreakpoint[] breakpoints = DebugPlugin.getDefault()
 						.getBreakpointManager().getBreakpoints();
-						
+
 				for (int i = 0; i < breakpoints.length; i++) {
 					IBreakpoint breakpoint = breakpoints[i];
 					if (resource.equals(breakpoint.getMarker().getResource())) {
@@ -93,7 +93,7 @@ public class ScriptToggleBreakpointAdapter implements IToggleBreakpointsTarget {
 							if (apos >= 0)
 								string = string.substring(0, apos).trim();
 							BreakpointUtils.addMethodEntryBreakpoint(
-									partEditor, lineNumber, string, string);
+									partEditor, lineNumber, string);
 							return;
 						} else
 							BreakpointUtils.addLineBreakpoint(partEditor,

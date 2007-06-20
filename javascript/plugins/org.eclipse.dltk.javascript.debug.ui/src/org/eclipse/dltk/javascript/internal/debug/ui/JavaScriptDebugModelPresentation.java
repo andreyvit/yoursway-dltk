@@ -56,11 +56,13 @@ public class JavaScriptDebugModelPresentation extends
 		if (breakpoint instanceof IScriptMethodEntryBreakpoint) {
 			IScriptMethodEntryBreakpoint ll = (IScriptMethodEntryBreakpoint) breakpoint;
 			int flags = 0;
-			if (ll.breakOnEntry())
-				flags |= ScriptDebugImageDescriptor.ENTRY;
-			if (ll.breakOnExit())
-				flags |= ScriptDebugImageDescriptor.EXIT;
+
 			try {
+				if (ll.breakOnEntry())
+					flags |= ScriptDebugImageDescriptor.ENTRY;
+				if (ll.breakOnExit())
+					flags |= ScriptDebugImageDescriptor.EXIT;
+
 				if (flags == 0)
 					return DebugUITools
 							.getImage(IDebugUIConstants.IMG_OBJS_BREAKPOINT_DISABLED);
@@ -99,7 +101,7 @@ public class JavaScriptDebugModelPresentation extends
 			}
 		}
 
-		return super.getImage(breakpoint);
+		return null;
 	}
 
 	protected Image getVariableImage(IScriptVariable variable) {

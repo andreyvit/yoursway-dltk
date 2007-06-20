@@ -17,9 +17,6 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
-import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
-import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
-import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
@@ -148,7 +145,8 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 		// Script language
 		createLabel(labelComposite, "Language:");
-		createLabel(labelComposite, DLTKLanguageManager.getLanguageToolkit(getNatureId()).getLanguageName());
+		createLabel(labelComposite, DLTKLanguageManager.getLanguageToolkit(
+				getNatureId()).getLanguageName());
 
 		// Resource name
 		String resourceName = breakpoint.getResourceName();
@@ -179,6 +177,12 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 		enabledBreakpointButton = createCheckButton(buttonsComposite,
 				"&Enabled");
+		
+		createTypeSpecificButtons(buttonsComposite);
+	}
+
+	protected void createTypeSpecificButtons(Composite parent) {
+
 	}
 
 	protected void createHitCountEditor(Composite parent) {
@@ -265,7 +269,7 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 	}
 
 	private void createTypeSpecificExtensions(Composite mainComposite) {
-		
+
 	}
 
 	protected IScriptBreakpoint getBreakpoint() {
@@ -274,7 +278,8 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 	protected String getNatureId() {
 		ScriptDebugManager manager = ScriptDebugManager.getInstance();
-		return manager.getNatureByDebugModel(getBreakpoint().getModelIdentifier());
+		return manager.getNatureByDebugModel(getBreakpoint()
+				.getModelIdentifier());
 	}
 
 	protected Control createContents(Composite parent) {

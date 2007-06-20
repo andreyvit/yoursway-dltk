@@ -353,6 +353,21 @@
             </or>
          </enabledWhen>
     </page>
+    <page
+          class="org.eclipse.dltk.debug.ui.breakpoints.ScriptMethodBreakpointPropertyPage"
+          id="org.eclipse.dltk.debug.ui.breakpoints.ScriptMethodBreakpointPropertyPage"
+          name="Script Method Breakpoint">
+            <enabledWhen>
+            <or>
+               <instanceof
+                     value="org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint">
+               </instanceof>
+               <adapt
+                     type="org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint">
+               </adapt>
+            </or>
+         </enabledWhen>
+    </page>
  </extension>
  
     <extension

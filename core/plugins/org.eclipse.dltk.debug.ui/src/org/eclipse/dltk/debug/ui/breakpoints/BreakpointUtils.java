@@ -46,8 +46,7 @@ public class BreakpointUtils {
 	}
 
 	public static void addMethodEntryBreakpoint(ITextEditor textEditor,
-			int lineNumber, String methodName, String methodSignature)
-			throws CoreException {
+			int lineNumber, String methodName) throws CoreException {
 		IDocument document = textEditor.getDocumentProvider().getDocument(
 				textEditor.getEditorInput());
 
@@ -60,8 +59,7 @@ public class BreakpointUtils {
 				int end = start + line.getLength() - 1;
 				/* ILineBreakpoint b = */ScriptDebugModel
 						.createMethodEntryBreakpoint(resource, lineNumber,
-								start, end, 0, true, null, methodName,
-								methodSignature);
+								start, end, 0, true, null, methodName);
 			} catch (BadLocationException e) {
 				if (DLTKCore.DEBUG) {
 					e.printStackTrace();
