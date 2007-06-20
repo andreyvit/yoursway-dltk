@@ -26,7 +26,6 @@ import org.eclipse.dltk.launching.debug.IDebuggingEngine;
  * </p>
  */
 public abstract class AbstractInterpreterInstall implements IInterpreterInstall {
-
 	private IInterpreterInstallType fType;
 	private String fId;
 	private String fName;

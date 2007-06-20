@@ -57,10 +57,6 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 	private SourceViewer expressionViewer;
 	private Button enableExpressionButton;
 
-	// Other
-	private Button breakOnEntryButton;
-	private Button breakOnExitButton;
-
 	// Simple access methods
 	protected boolean getBreakointEnableState() {
 		return enabledBreakpointButton.getSelection();
@@ -269,33 +265,7 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 	}
 
 	private void createTypeSpecificExtensions(Composite mainComposite) {
-		IScriptBreakpoint breakpoint = getBreakpoint();
-
-		if (breakpoint instanceof IScriptMethodEntryBreakpoint) {
-			IScriptMethodEntryBreakpoint ee = (IScriptMethodEntryBreakpoint) breakpoint;
-			Composite createComposite = createComposite(mainComposite, 4);
-			breakOnEntryButton = createCheckButton(createComposite,
-					"Suspend on Method entry");
-			breakOnExitButton = createCheckButton(createComposite,
-					"Suspend on Method exit");
-			breakOnEntryButton.setSelection(ee.breakOnEntry());
-			breakOnExitButton.setSelection(ee.breakOnExit());
-		}
-
-		if (breakpoint instanceof IScriptWatchPoint) {
-			IScriptWatchPoint ee = (IScriptWatchPoint) breakpoint;
-			Composite createComposite = createComposite(mainComposite, 4);
-			breakOnEntryButton = createCheckButton(createComposite,
-					"Suspend on Access");
-			breakOnExitButton = createCheckButton(createComposite,
-					"Suspend on Modification");
-			try {
-				breakOnEntryButton.setSelection(ee.isAccess());
-				breakOnExitButton.setSelection(ee.isModification());
-			} catch (CoreException e) {
-				DebugPlugin.log(e);
-			}
-		}
+		
 	}
 
 	protected IScriptBreakpoint getBreakpoint() {

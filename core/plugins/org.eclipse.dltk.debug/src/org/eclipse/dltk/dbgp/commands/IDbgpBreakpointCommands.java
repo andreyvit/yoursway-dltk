@@ -32,10 +32,6 @@ public interface IDbgpBreakpointCommands {
 	String setExceptionBreakpoint(String exception, DbgpBreakpointConfig config)
 			throws DbgpException;
 
-	// Conditional breakpoint
-	// String setConditionalBreakpoint(URI uri, int lineNumber,
-	// DbgpBreakpointConfig config) throws DbgpException;
-
 	String setConditionalBreakpoint(URI uri, int lineNumber,
 			DbgpBreakpointConfig config) throws DbgpException;
 
