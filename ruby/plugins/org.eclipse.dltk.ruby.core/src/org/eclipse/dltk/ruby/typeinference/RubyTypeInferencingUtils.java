@@ -137,26 +137,6 @@ public class RubyTypeInferencingUtils {
 		return RubyMixinBuildVisitor.restoreScopesByNodes(allStaticScopes);
 	}
 
-//	public static LocalVariableInfo findLocalVariable(
-//			ModuleDeclaration rootNode, final int requestedOffset,
-//			String varName) {
-//		ASTNode[] staticScopes = getAllStaticScopes(rootNode, requestedOffset);
-//		int end = staticScopes.length;
-//		for (int start = end - 1; start >= 0; start--) {
-//			ASTNode currentScope = staticScopes[start];
-//			if (!isRootLocalScope(currentScope))
-//				continue;
-//			ASTNode nextScope = (end < staticScopes.length ? staticScopes[end]
-//					: null);
-//			RubyAssignment[] assignments = findLocalVariableAssignments(
-//					currentScope, nextScope, varName);
-//			if (assignments.length > 0) {
-//				return new LocalVariableInfo(currentScope, assignments);
-//			}
-//		}
-//		return null;
-//	}
-
 	public static RubyClassType determineSelfClass(IContext context,
 			int keyOffset) {
 		if (context instanceof IInstanceContext) {
@@ -199,40 +179,6 @@ public class RubyTypeInferencingUtils {
 			}
 		}
 		return null;
-		// ClassInfo[] infos = resolveClassScopes(sourceModule, rootNode, new
-		// int[] { keyOffset });
-		// RubyClassType result;
-		// if (infos.length == 0)
-		// result = RubyClassType.OBJECT_CLASS;
-		// else
-		// result = (RubyClassType) infos[infos.length - 1].getEvaluatedType();
-		// ASTNode[] staticScopes = getAllStaticScopes(rootNode, keyOffset);
-		// MethodDeclaration method = null;
-		// for (int i = staticScopes.length - 1; i >= 0; i--)
-		// if (staticScopes[i] instanceof MethodDeclaration) {
-		// method = (MethodDeclaration) staticScopes[i];
-		// break;
-		// } else if (staticScopes[i] instanceof TypeDeclaration)
-		// break;
-		// RubyClassType metaType = getMetaType(result);
-		// if (method != null) {
-		// if (method instanceof RubySingletonMethodDeclaration) {
-		// RubySingletonMethodDeclaration declaration =
-		// (RubySingletonMethodDeclaration) method;
-		// Expression receiver = declaration.getReceiver();
-		// if (receiver instanceof SelfReference)
-		// return metaType; // static method
-		// if (receiver instanceof SimpleReference)
-		// if (((SimpleReference)
-		// receiver).getName().equals(result.getUnqualifiedName()))
-		// return metaType; // singleton method of our metaclass
-		// // TODO: handle singleton method of another class
-		// //return RubyMetaClassType.OBJECT_METATYPE;
-		// return new RubyClassType("Object%");
-		// }
-		// return result;
-		// }
-		// return metaType;
 	}
 
 	public static RubyAssignment[] findLocalVariableAssignments(
