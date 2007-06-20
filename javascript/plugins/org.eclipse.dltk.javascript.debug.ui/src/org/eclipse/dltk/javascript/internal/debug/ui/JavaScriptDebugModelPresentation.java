@@ -4,6 +4,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
+import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
@@ -19,6 +20,7 @@ import org.eclipse.ui.IEditorInput;
 public class JavaScriptDebugModelPresentation extends
 		ScriptDebugModelPresentation {
 	private static final String JS_EDITOR_ID = "org.eclipse.dltk.javascript.ui.editor.JavascriptEditor";
+
 	static ImageRegistry registry = new ImageRegistry(Display.getDefault());
 
 	static {
@@ -37,9 +39,9 @@ public class JavaScriptDebugModelPresentation extends
 
 	}
 
-	public Image getImage(Object element) {
-		if (element instanceof IScriptWatchPoint) {
-			IScriptWatchPoint w = (IScriptWatchPoint) element;
+	protected Image getBreakpointImage(IScriptBreakpoint breakpoint) {
+		if (breakpoint instanceof IScriptWatchPoint) {
+			IScriptWatchPoint w = (IScriptWatchPoint) breakpoint;
 			try {
 				if (w.isEnabled()) {
 					return DebugUITools
@@ -51,8 +53,8 @@ public class JavaScriptDebugModelPresentation extends
 			return DebugUITools
 					.getImage(IDebugUIConstants.IMG_OBJS_WATCHPOINT_DISABLED);
 		}
-		if (element instanceof IScriptMethodEntryBreakpoint) {
-			IScriptMethodEntryBreakpoint ll = (IScriptMethodEntryBreakpoint) element;
+		if (breakpoint instanceof IScriptMethodEntryBreakpoint) {
+			IScriptMethodEntryBreakpoint ll = (IScriptMethodEntryBreakpoint) breakpoint;
 			int flags = 0;
 			if (ll.breakOnEntry())
 				flags |= ScriptDebugImageDescriptor.ENTRY;
@@ -93,32 +95,30 @@ public class JavaScriptDebugModelPresentation extends
 				}
 			} catch (CoreException e) {
 				DLTKDebugPlugin.log(e);
-				return super.getImage(element);
+
 			}
 		}
-		// TODO Auto-generated method stub
-		if (element instanceof IScriptVariable) {
-			IScriptVariable v = (IScriptVariable) element;
-			String typeString = v.getType().getName();
-			if (typeString.equals("function"))
-				return DLTKPluginImages
-						.get(DLTKPluginImages.IMG_METHOD_PRIVATE);
-			if (typeString.equals("javaclass"))
-				return DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_CLASS);
-			if (typeString.equals("javaobject"))
-				return DLTKPluginImages
-						.get(DLTKPluginImages.IMG_METHOD_PROTECTED);
-			if (typeString.equals("javaarray"))
-				return DLTKPluginImages
-						.get(DLTKPluginImages.IMG_METHOD_DEFAULT);
-			String fullName = v.getEvalName();
-			if (fullName.indexOf('.') >= 0 || (fullName.equals("this")))
-				return DLTKPluginImages.get(DLTKPluginImages.IMG_METHOD_PUBLIC);
-			else
-				return ScriptDebugImages
-						.get(ScriptDebugImages.IMG_OBJS_LOCAL_VARIABLE);
-		}
-		return super.getImage(element);
+
+		return super.getImage(breakpoint);
+	}
+
+	protected Image getVariableImage(IScriptVariable variable) {
+		IScriptVariable v = variable;
+		String typeString = v.getType().getName();
+		if (typeString.equals("function"))
+			return DLTKPluginImages.get(DLTKPluginImages.IMG_METHOD_PRIVATE);
+		if (typeString.equals("javaclass"))
+			return DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_CLASS);
+		if (typeString.equals("javaobject"))
+			return DLTKPluginImages.get(DLTKPluginImages.IMG_METHOD_PROTECTED);
+		if (typeString.equals("javaarray"))
+			return DLTKPluginImages.get(DLTKPluginImages.IMG_METHOD_DEFAULT);
+		String fullName = v.getEvalName();
+		if (fullName.indexOf('.') >= 0 || (fullName.equals("this")))
+			return DLTKPluginImages.get(DLTKPluginImages.IMG_METHOD_PUBLIC);
+		else
+			return ScriptDebugImages
+					.get(ScriptDebugImages.IMG_OBJS_LOCAL_VARIABLE);
 	}
 
 	public String getEditorId(IEditorInput input, Object element) {

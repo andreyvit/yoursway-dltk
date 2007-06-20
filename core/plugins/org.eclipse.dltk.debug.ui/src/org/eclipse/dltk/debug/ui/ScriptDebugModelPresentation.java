@@ -31,6 +31,7 @@ import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
+import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
 import org.eclipse.dltk.internal.debug.ui.ScriptEvaluationContextManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -47,6 +48,37 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 
 	private static final String SUSPENDED_LABEL = "suspended";
 	private static final String RUNNING_LABEL = "running";
+
+	public static IScriptThread getEvaluationThread(IScriptDebugTarget target) {
+		IScriptThread thread = null;
+
+		IScriptStackFrame frame = ScriptEvaluationContextManager
+				.getEvaluationContext((IWorkbenchWindow) null);
+		if (frame != null) {
+			thread = (IScriptThread) frame.getThread();
+		}
+
+		if (thread != null
+				&& (!thread.getDebugTarget().equals(target) || (!thread
+						.isSuspended()))) {
+			thread = null; // can only use suspended threads in the same target
+		}
+		if (thread == null) {
+			try {
+				// Find first suspended thread
+				IThread[] threads = target.getThreads();
+				for (int i = 0; i < threads.length; i++) {
+					if (threads[i].isSuspended()) {
+						thread = (IScriptThread) threads[i];
+						break;
+					}
+				}
+			} catch (DebugException e) {
+				DLTKDebugUIPlugin.log(e);
+			}
+		}
+		return thread;
+	}
 
 	public static class ExternalFileEditorInput implements IPathEditorInput,
 			ILocationProvider {
@@ -123,6 +155,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		return target.toString();
 	}
 
+	// Text
 	protected String getThreadText(IScriptThread thread) {
 		try {
 			return thread.getName() + " ("
@@ -168,6 +201,8 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	protected String getBreakpointText(IScriptBreakpoint breakpoint) {
 		try {
 			StringBuffer sb = new StringBuffer();
+
+			// IScriptLineBreakpoint
 			if (breakpoint instanceof IScriptLineBreakpoint) {
 				IScriptLineBreakpoint b = (IScriptLineBreakpoint) breakpoint;
 				sb.append(b.getResourceName());
@@ -177,6 +212,11 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 				if (hitCount != -1) {
 					sb.append(", " + hitCount + " hits");
 				}
+			}
+
+			// IScriptWatchPoint
+			if (breakpoint instanceof IScriptWatchPoint) {
+
 			}
 
 			return sb.toString();
@@ -227,6 +267,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		return null;
 	}
 
+	// Details
 	public void computeDetail(IValue value, IValueDetailListener listener) {
 		try {
 			listener.detailComputed(value, value.getValueString());
@@ -238,10 +279,38 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	public void setAttribute(String attribute, Object value) {
 	}
 
-	public Image getImage(Object element) {
+	// Images
+	protected Image getBreakpointImage(IScriptBreakpoint breakpoint) {
 		return null;
 	}
 
+	protected Image getVariableImage(IScriptVariable variable) {
+		return null;
+	}
+
+	protected Image getThreadImage(IScriptThread thread) {
+		return null;
+	}
+
+	protected Image getStackFrameImage(IScriptStackFrame frame) {
+		return null;
+	}
+
+	public Image getImage(Object element) {
+		if (element instanceof IScriptBreakpoint) {
+			return getBreakpointImage((IScriptBreakpoint) element);
+		} else if (element instanceof IScriptVariable) {
+			return getVariableImage((IScriptVariable) element);
+		} else if (element instanceof IScriptThread) {
+			return getThreadImage((IScriptThread) element);
+		} else if (element instanceof IScriptStackFrame) {
+			return getStackFrameImage((IScriptStackFrame) element);
+		}
+
+		return null;
+	}
+
+	// Editor
 	public IEditorInput getEditorInput(Object element) {
 		if (element instanceof File) {
 			return new ExternalFileEditorInput((File) element);
@@ -255,35 +324,4 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	}
 
 	public abstract String getEditorId(IEditorInput input, Object element);
-
-	public static IScriptThread getEvaluationThread(IScriptDebugTarget target) {
-		IScriptThread thread = null;
-
-		IScriptStackFrame frame = ScriptEvaluationContextManager
-				.getEvaluationContext((IWorkbenchWindow) null);
-		if (frame != null) {
-			thread = (IScriptThread) frame.getThread();
-		}
-
-		if (thread != null
-				&& (!thread.getDebugTarget().equals(target) || (!thread
-						.isSuspended()))) {
-			thread = null; // can only use suspended threads in the same target
-		}
-		if (thread == null) {
-			try {
-				// Find first suspended thread
-				IThread[] threads = target.getThreads();
-				for (int i = 0; i < threads.length; i++) {
-					if (threads[i].isSuspended()) {
-						thread = (IScriptThread) threads[i];
-						break;
-					}
-				}
-			} catch (DebugException e) {
-				DLTKDebugUIPlugin.log(e);
-			}
-		}
-		return thread;
-	}
 }
