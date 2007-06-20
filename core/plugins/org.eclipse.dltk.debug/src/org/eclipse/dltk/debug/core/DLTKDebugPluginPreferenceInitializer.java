@@ -33,6 +33,6 @@ public class DLTKDebugPluginPreferenceInitializer extends
 				false);
 
 		prefs.setDefault(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS,
-				true);
+				false);
 	}
 }
