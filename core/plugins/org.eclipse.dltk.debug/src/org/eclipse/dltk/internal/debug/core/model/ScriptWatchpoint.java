@@ -28,10 +28,9 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 			+ ".modification";
 
 	public ScriptWatchpoint(String debugModelId, IResource resource,
-			int lineNumber, int start, int end, Map attributes, String fieldName)
+			int lineNumber, int start, int end, String fieldName)
 			throws CoreException {
-		super(debugModelId, resource, lineNumber, start, end, end, true,
-				attributes);
+		super(debugModelId, resource, lineNumber, start, end, end, true);
 		this.setFieldName(fieldName);
 	}
 
@@ -46,7 +45,7 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 		getMarker().setAttribute(FIELD_NAME, name);
 	}
 
-	protected String getMarkerID() {
+	protected String getMarkerId() {
 		return ScriptMarkerFactory.WATCHPOINT_MARKER_ID;
 	}
 

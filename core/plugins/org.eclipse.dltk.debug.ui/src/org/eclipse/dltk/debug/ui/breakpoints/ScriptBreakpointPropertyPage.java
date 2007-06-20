@@ -177,7 +177,7 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 		enabledBreakpointButton = createCheckButton(buttonsComposite,
 				"&Enabled");
-		
+
 		createTypeSpecificButtons(buttonsComposite);
 	}
 
@@ -268,10 +268,6 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 	}
 
-	private void createTypeSpecificExtensions(Composite mainComposite) {
-
-	}
-
 	protected IScriptBreakpoint getBreakpoint() {
 		return (IScriptBreakpoint) getElement();
 	}
@@ -289,23 +285,30 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 		try {
 			createLabels(composite);
 			createButtons(composite);
-			createHitCountEditor(composite);
-			createExpressionEditor(composite);
-			createTypeSpecificExtensions(composite);
-		} catch (CoreException e) {
 
-		}
+			if (hasHitCountEditor()) {
+				createHitCountEditor(composite);
+			}
 
-		try {
+			if (hasExpressionEditor()) {
+				createExpressionEditor(composite);
+			}
+
 			loadValues();
+			updateControlsState();
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// TODO: log exception
 		}
-
-		updateControlsState();
 
 		return composite;
+	}
+
+	protected boolean hasHitCountEditor() {
+		return true;
+	}
+
+	protected boolean hasExpressionEditor() {
+		return true;
 	}
 
 	protected void loadValues() throws CoreException {
@@ -315,18 +318,23 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 		enabledBreakpointButton.setSelection(breakpoint.isEnabled());
 
 		// Hit conditions
-		final int hitValue = breakpoint.getHitValue();
-		if (hitValue != -1) {
-			setHitValue(hitValue);
-			setHitCondition(breakpoint.getHitCondition());
-			setEnabledHitChecking(true);
-		} else {
-			setEnabledHitChecking(false);
+		if (hasHitCountEditor()) {
+
+			final int hitValue = breakpoint.getHitValue();
+			if (hitValue != -1) {
+				setHitValue(hitValue);
+				setHitCondition(breakpoint.getHitCondition());
+				setEnabledHitChecking(true);
+			} else {
+				setEnabledHitChecking(false);
+			}
 		}
 
 		// Expression
-		setExpressionState(breakpoint.getExpressionState());
-		setExpression(breakpoint.getExpression());
+		if (hasExpressionEditor()) {
+			setExpressionState(breakpoint.getExpressionState());
+			setExpression(breakpoint.getExpression());
+		}
 	}
 
 	protected void saveValues() throws CoreException {
@@ -334,23 +342,31 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 		breakpoint.setEnabled(getBreakointEnableState());
 
-		breakpoint.setExpression(getExpression());
-		breakpoint.setExpressionState(getExpressionState());
+		if (hasHitCountEditor()) {
+			breakpoint.setHitValue(getHitValue());
+			breakpoint.setHitCondition(getHitCondition());
+		}
 
-		breakpoint.setHitValue(getHitValue());
-		breakpoint.setHitCondition(getHitCondition());
+		if (hasExpressionEditor()) {
+			breakpoint.setExpression(getExpression());
+			breakpoint.setExpressionState(getExpressionState());
+		}
 	}
 
 	protected void updateControlsState() {
 		// Hit count
-		boolean hitChecking = hitCountCheckingButton.getSelection();
-		hitConditionCombo.setEnabled(hitChecking);
-		hitValueText.setEnabled(hitChecking);
+		if (hasHitCountEditor()) {
+			boolean hitChecking = hitCountCheckingButton.getSelection();
+			hitConditionCombo.setEnabled(hitChecking);
+			hitValueText.setEnabled(hitChecking);
+		}
 
 		// Expression
-		boolean expressionEnabled = enableExpressionButton.getSelection();
-		Control control = expressionViewer.getControl();
-		control.setEnabled(expressionEnabled);
+		if (hasExpressionEditor()) {
+			boolean expressionEnabled = enableExpressionButton.getSelection();
+			Control control = expressionViewer.getControl();
+			control.setEnabled(expressionEnabled);
+		}
 
 		validateValues();
 	}
@@ -359,17 +375,19 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 		boolean valid = true;
 		String errorMessage = null;
 
-		if (getEnabledHitChecking()) {
-			try {
-				getHitValue();
-			} catch (NumberFormatException e) {
-				valid = false;
-				errorMessage = "Specify right number of hits";
-			}
+		if (hasHitCountEditor()) {
+			if (getEnabledHitChecking()) {
+				try {
+					getHitValue();
+				} catch (NumberFormatException e) {
+					valid = false;
+					errorMessage = "Enter correct number of hits";
+				}
 
-			if (getHitCondition() == -1) {
-				valid = false;
-				errorMessage = "Select condition";
+				if (getHitCondition() == -1) {
+					valid = false;
+					errorMessage = "Select condition";
+				}
 			}
 		}
 

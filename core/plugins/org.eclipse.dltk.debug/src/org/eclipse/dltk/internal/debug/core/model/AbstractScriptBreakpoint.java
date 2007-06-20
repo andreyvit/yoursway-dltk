@@ -9,16 +9,23 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Map;
+
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.model.Breakpoint;
+import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 
-public abstract class ScriptBreakpoint extends Breakpoint implements
+public abstract class AbstractScriptBreakpoint extends Breakpoint implements
 		IScriptBreakpoint {
 	public static final String BREAKPOINT = "org.eclipse.dltk.script_breakpoint";
 
-	private static final String ID = BREAKPOINT + ".id";
+	private static final String IDENTIFIER = BREAKPOINT + ".id";
 
 	private static final String HIT_COUNT = BREAKPOINT + ".hit_count";
 
@@ -30,13 +37,44 @@ public abstract class ScriptBreakpoint extends Breakpoint implements
 
 	private static final String HIT_CONDITION = BREAKPOINT + ".hit_condition";
 
+	public static URI makeUri(IResource resource) {
+		try {
+			return new URI("file", "///"
+					+ resource.getLocation().toPortableString(), null);
+		} catch (URISyntaxException e) {
+			// TODO: log exception
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	protected void addScriptBreakpointAttributes(Map attributes,
+			String debugModelId, boolean enabled) {
+		attributes.put(IBreakpoint.ID, debugModelId);
+		attributes.put(IBreakpoint.ENABLED, new Boolean(enabled));
+	}
+
+	public AbstractScriptBreakpoint() {
+
+	}
+
+	public String getModelIdentifier() {
+		try {
+			return ensureMarker().getAttribute(IBreakpoint.ID, null);
+		} catch (DebugException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	// Identifier
 	public String getIdentifier() throws CoreException {
-		return ensureMarker().getAttribute(ID, null);
+		return ensureMarker().getAttribute(IDENTIFIER, null);
 	}
 
 	public void setIdentifier(String id) throws CoreException {
-		setAttribute(ID, id);
+		setAttribute(IDENTIFIER, id);
 	}
 
 	// Hit count

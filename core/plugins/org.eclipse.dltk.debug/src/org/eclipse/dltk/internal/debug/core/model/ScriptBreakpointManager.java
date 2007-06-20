@@ -59,6 +59,12 @@ public class ScriptBreakpointManager implements IBreakpointListener {
 		return config;
 	}
 
+	protected static String makeWatchpointExpression(
+			IScriptWatchPoint watchpoint) throws CoreException {
+		return watchpoint.getFieldName() + (watchpoint.isAccess() ? '1' : '0')
+				+ (watchpoint.isModification() ? '1' : '0');
+	}
+
 	// Adding, removing, updating
 	protected static void addBreakpoint(IDbgpBreakpointCommands commands,
 			IScriptBreakpoint breakpoint) throws CoreException, DbgpException {
@@ -70,14 +76,28 @@ public class ScriptBreakpointManager implements IBreakpointListener {
 		if (breakpoint instanceof IScriptWatchPoint) {
 			IScriptWatchPoint watchpoint = (IScriptWatchPoint) breakpoint;
 
-			final String exp = watchpoint.getFieldName()
-					+ (watchpoint.isAccess() ? '1' : '0')
-					+ (watchpoint.isModification() ? '1' : '0');
-
-			config.setExpression(exp);
+			config.setExpression(makeWatchpointExpression(watchpoint));
 
 			id = commands.setWatchBreakpoint(watchpoint.getResourceURI(),
 					watchpoint.getLineNumber(), config);
+		} else if (breakpoint instanceof IScriptMethodEntryBreakpoint) {
+			IScriptMethodEntryBreakpoint entryBreakpoint = (IScriptMethodEntryBreakpoint) breakpoint;
+
+			if (entryBreakpoint.breakOnExit()) {
+				final String exitId = commands.setReturnBreakpoint(
+						entryBreakpoint.getResourceURI(), entryBreakpoint
+								.getMethodName(), config);
+
+				entryBreakpoint.setExitBreakpointId(exitId);
+			}
+
+			if (entryBreakpoint.breakOnEntry()) {
+				final String entryId = commands.setLineBreakpoint(
+						entryBreakpoint.getResourceURI(), entryBreakpoint
+								.getLineNumber(), config);
+
+				entryBreakpoint.setEntryBreakpointId(entryId);
+			}
 		} else if (breakpoint instanceof IScriptLineBreakpoint) {
 			IScriptLineBreakpoint lineBreakpoint = (IScriptLineBreakpoint) breakpoint;
 
@@ -87,53 +107,66 @@ public class ScriptBreakpointManager implements IBreakpointListener {
 
 		// Identifier
 		breakpoint.setIdentifier(id);
-
-		// IScriptMethodEntryBreakpoint
-
-		/*
-		 * if (lineBreakpoint instanceof IScriptMethodEntryBreakpoint) {
-		 * IScriptMethodEntryBreakpoint entryBreakpoint =
-		 * (IScriptMethodEntryBreakpoint) lineBreakpoint;
-		 * 
-		 * if (entryBreakpoint.breakOnEntry()) { String id =
-		 * commands.setLineBreakpoint(lineBreakpoint .getResourceURI(),
-		 * lineBreakpoint.getLineNumber(), config);
-		 * lineBreakpoint.setIdentifier(id); }
-		 * 
-		 * if (entryBreakpoint.breakOnExit()) { String id =
-		 * commands.setReturnBreakpoint(lineBreakpoint .getResourceURI(),
-		 * entryBreakpoint.getMethodName(), config);
-		 * entryBreakpoint.setSecondaryId(id); } }
-		 */
 	}
 
 	protected static void changeBreakpoint(IDbgpBreakpointCommands commands,
 			IScriptBreakpoint breakpoint) throws DbgpException, CoreException {
 
-		final String id = breakpoint.getIdentifier();
+		if (breakpoint instanceof IScriptMethodEntryBreakpoint) {
+			DbgpBreakpointConfig config = createBreakpointConfig(breakpoint);
+			IScriptMethodEntryBreakpoint entryBreakpoint = (IScriptMethodEntryBreakpoint) breakpoint;
 
-		DbgpBreakpointConfig config = createBreakpointConfig(breakpoint);
+			String entryId = null;
+			if (entryBreakpoint.breakOnEntry()) {
+				if (entryId == null) {
+					// Create entry breakpoint
+					entryId = commands.setLineBreakpoint(entryBreakpoint
+							.getResourceURI(), entryBreakpoint.getLineNumber(),
+							config);
+					entryBreakpoint.setEntryBreakpointId(entryId);
+				} else {
+					// Update entry breakpoint
+					commands.updateBreakpoint(entryId, config);
+				}
+			} else {
+				if (entryId != null) {
+					// Remove existing entry breakpoint
+					commands.removeBreakpoint(entryId);
+					entryBreakpoint.setEntryBreakpointId(null);
+				}
+			}
 
-		// Update
-		commands.updateBreakpoint(id, config);
+			String exitId = null;
+			if (entryBreakpoint.breakOnExit()) {
+				if (exitId == null) {
+					// Create exit breakpoint
+					exitId = commands.setReturnBreakpoint(entryBreakpoint
+							.getResourceURI(), entryBreakpoint.getMethodName(),
+							config);
+					entryBreakpoint.setExitBreakpointId(exitId);
+				} else {
+					// Update exit breakpoint
+					commands.updateBreakpoint(exitId, config);
+				}
+			} else {
+				if (exitId != null) {
+					// Remove exit breakpoint
+					commands.removeBreakpoint(exitId);
+					entryBreakpoint.setExitBreakpointId(null);
+				}
+			}
+		} else {
+			// All other breakpoints
+			final String id = breakpoint.getIdentifier();
+			final DbgpBreakpointConfig config = createBreakpointConfig(breakpoint);
 
-		/*
-		 * if (b instanceof IScriptMethodEntryBreakpoint) {
-		 * IScriptMethodEntryBreakpoint ba = (IScriptMethodEntryBreakpoint) b;
-		 * String secondaryId = ba.getSecondaryId(); if (secondaryId != null) {
-		 * if (!ba.breakOnExit()) { commands.removeBreakpoint(secondaryId);
-		 * ba.setSecondaryId(null); } else {
-		 * commands.updateBreakpoint(secondaryId, config); } } else if
-		 * (ba.breakOnExit()) { String id =
-		 * commands.setReturnBreakpoint(ba.getResourceURI(), ba.getMethodName(),
-		 * config); ba.setSecondaryId(id); } if (!ba.breakOnEntry()) { String
-		 * identifier = ba.getIdentifier(); if (identifier != null) {
-		 * commands.removeBreakpoint(identifier); ba.setIdentifier(null); } }
-		 * else { String identifier = ba.getIdentifier(); if (identifier ==
-		 * null) { String id = commands.setLineBreakpoint(ba.getResourceURI(),
-		 * ba.getLineNumber(), config); ba.setIdentifier(id); } } }
-		 */
+			if (breakpoint instanceof IScriptWatchPoint) {
+				config
+						.setExpression(makeWatchpointExpression((IScriptWatchPoint) breakpoint));
+			}
 
+			commands.updateBreakpoint(id, config);
+		}
 	}
 
 	protected static void removeBreakpoint(IDbgpBreakpointCommands commands,
@@ -142,10 +175,16 @@ public class ScriptBreakpointManager implements IBreakpointListener {
 		commands.removeBreakpoint(breakpoint.getIdentifier());
 
 		if (breakpoint instanceof IScriptMethodEntryBreakpoint) {
-			IScriptMethodEntryBreakpoint mr = (IScriptMethodEntryBreakpoint) breakpoint;
-			String secondaryId = mr.getSecondaryId();
-			if (secondaryId != null) {
-				commands.removeBreakpoint(secondaryId);
+			IScriptMethodEntryBreakpoint entryBreakpoint = (IScriptMethodEntryBreakpoint) breakpoint;
+
+			final String entryId = entryBreakpoint.getEntryBreakpointId();
+			if (entryId != null) {
+				commands.removeBreakpoint(entryId);
+			}
+
+			final String exitId = entryBreakpoint.getExitBreakpointId();
+			if (exitId != null) {
+				commands.removeBreakpoint(exitId);
 			}
 		}
 	}

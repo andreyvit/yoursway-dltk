@@ -25,6 +25,10 @@ public class ScriptWatchPointPropertyPage extends ScriptBreakpointPropertyPage {
 		createLabel(parent, watchPoint.getFieldName());
 	}
 
+	protected boolean hasExpressionEditor() {
+		return false;
+	}
+
 	protected void createTypeSpecificButtons(Composite parent) {
 		suspendOnAccessButton = createCheckButton(parent, "Suspend on Access");
 		suspendOnModificationButton = createCheckButton(parent,
@@ -41,7 +45,7 @@ public class ScriptWatchPointPropertyPage extends ScriptBreakpointPropertyPage {
 
 	protected void saveValues() throws CoreException {
 		super.saveValues();
-		
+
 		IScriptWatchPoint watchpoint = (IScriptWatchPoint) getBreakpoint();
 		watchpoint.setAccess(suspendOnAccessButton.getSelection());
 		watchpoint.setModification(suspendOnModificationButton.getSelection());

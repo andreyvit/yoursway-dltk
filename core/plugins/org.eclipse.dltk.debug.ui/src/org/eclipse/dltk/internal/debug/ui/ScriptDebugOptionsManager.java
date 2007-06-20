@@ -35,7 +35,7 @@ import org.eclipse.dltk.debug.core.model.IScriptDebugElement;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
-import org.eclipse.dltk.internal.debug.core.model.ScriptBreakpoint;
+import org.eclipse.dltk.internal.debug.core.model.AbstractScriptBreakpoint;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 

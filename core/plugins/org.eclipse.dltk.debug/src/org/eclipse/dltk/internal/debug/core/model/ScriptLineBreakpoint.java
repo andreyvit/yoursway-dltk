@@ -10,7 +10,7 @@
 package org.eclipse.dltk.internal.debug.core.model;
 
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
@@ -19,34 +19,20 @@ import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
 
-public class ScriptLineBreakpoint extends ScriptBreakpoint implements
+public class ScriptLineBreakpoint extends AbstractScriptBreakpoint implements
 		IScriptLineBreakpoint {
 
-	public static URI makeUri(IResource resource) {
-		try {
-			return new URI("file", "///"
-					+ resource.getLocation().toPortableString(), null);
-		} catch (URISyntaxException e) {
-			// TODO: log exception
-			e.printStackTrace();
-			return null;
-		}
+	protected String getMarkerId() {
+		return ScriptMarkerFactory.LINE_BREAKPOINT_MARKER_ID;
 	}
 
-	protected static void addAttributes(Map attributes, String debugModelId,
-			boolean enabled, int lineNumber, int charStart, int charEnd) {
-		attributes.put(IBreakpoint.ID, debugModelId);
-		attributes.put(IBreakpoint.ENABLED, Boolean.valueOf(enabled));
+	protected void addLineBreakpointAttributes(Map attributes, int lineNumber,
+			int charStart, int charEnd) {
 		attributes.put(IMarker.LINE_NUMBER, new Integer(lineNumber));
 		attributes.put(IMarker.CHAR_START, new Integer(charStart));
 		attributes.put(IMarker.CHAR_END, new Integer(charEnd));
-	}
-
-	protected String getMarkerID() {
-		return ScriptMarkerFactory.LINE_BREAKPOINT_MARKER_ID;
 	}
 
 	public ScriptLineBreakpoint() {
@@ -56,34 +42,28 @@ public class ScriptLineBreakpoint extends ScriptBreakpoint implements
 	public ScriptLineBreakpoint(final String debugModelId,
 			final IResource resource, final int lineNumber,
 			final int charStart, final int charEnd, final int hitCount,
-			final boolean add, final Map attributes) throws DebugException {
+			final boolean add) throws DebugException {
 
-		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
+		final Map attributes = new HashMap();
+
+		IWorkspaceRunnable wr = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {
-				addAttributes(attributes, debugModelId, true, lineNumber,
-						charStart, charEnd);
+				// create the marker
+				setMarker(resource.createMarker(getMarkerId()));
 
-				setMarker(ScriptMarkerFactory.makeMarker(resource, attributes,
-						getMarkerID()));
+				// add attributes
+				addScriptBreakpointAttributes(attributes, debugModelId, true);
+				addLineBreakpointAttributes(attributes, lineNumber, charStart,
+						charEnd);
 
+				// set attributes
 				ensureMarker().setAttributes(attributes);
 
+				// add to breakpoint manager if requested
 				register(add);
 			}
 		};
-
-		run(getMarkerRule(resource), runnable);
-	}
-
-	// IBreakpoint
-	public String getModelIdentifier() {
-		try {
-			return ensureMarker().getAttribute(IBreakpoint.ID, null);
-		} catch (DebugException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+		run(getMarkerRule(resource), wr);
 	}
 
 	// ILineBreakpoint

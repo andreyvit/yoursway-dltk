@@ -19,10 +19,12 @@ public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
 	private static final String BREAK_ON_EXIT = ScriptLineBreakpoint.ID
 			+ ".methodExit";
 
-	private static final String SECONDARY_ID = ScriptLineBreakpoint.ID
-			+ ".secondaryId";
+	private static final String ENTRY_ID = ScriptLineBreakpoint.ID
+			+ ".entryBrId";
 
-	protected String getMarkerID() {
+	private static final String EXIT_ID = ScriptLineBreakpoint.ID + ".exitBrId";
+
+	protected String getMarkerId() {
 		return ScriptMarkerFactory.METHOD_ENTRY_MARKER_ID;
 	}
 
@@ -32,11 +34,12 @@ public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
 
 	public ScriptMethodEntryBreakpoint(String debugModelId, IResource resource,
 			int lineNumber, int charStart, int charEnd, int hitCount,
-			boolean register, Map attributes, String methodName)
+			boolean register, String methodName)
 			throws DebugException {
 
 		super(debugModelId, resource, lineNumber, charStart, charEnd, hitCount,
-				register, attributes);
+				register);
+		
 		try {
 			ensureMarker().setAttribute(METHOD_NAME, methodName);
 		} catch (CoreException e) {
@@ -67,12 +70,21 @@ public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
 		ensureMarker().setAttribute(BREAK_ON_EXIT, value);
 	}
 
-	// Secondary id
-	public String getSecondaryId() throws CoreException {
-		return ensureMarker().getAttribute(SECONDARY_ID, null);
+	// Entry breakpoint id
+	public String getEntryBreakpointId() throws CoreException {
+		return ensureMarker().getAttribute(ENTRY_ID, null);
 	}
 
-	public void setSecondaryId(String id) throws CoreException {
-		ensureMarker().setAttribute(SECONDARY_ID, id);
+	public void setEntryBreakpointId(String id) throws CoreException {
+		ensureMarker().setAttribute(ENTRY_ID, id);
+	}
+
+	// Exit breakpoint id
+	public String getExitBreakpointId() throws CoreException {
+		return ensureMarker().getAttribute(EXIT_ID, null);
+	}
+
+	public void setExitBreakpointId(String id) throws CoreException {
+		ensureMarker().setAttribute(EXIT_ID, id);
 	}
 }

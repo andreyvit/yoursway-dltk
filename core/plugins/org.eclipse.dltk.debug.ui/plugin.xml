@@ -322,7 +322,6 @@
  
  <extension
        point="org.eclipse.ui.propertyPages">
-    <!-- Eclipse 3.3 fix -->
     <page
           class="org.eclipse.dltk.debug.ui.breakpoints.ScriptLineBreakpointPropertyPage"
           id="org.eclipse.dltk.debug.ui.breakpoints.ScriptLineBreakpointPropertyPage"
@@ -334,7 +333,7 @@
                </instanceof>
                <adapt
                      type="org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint">
-               </adapt>
+               </adapt>              
             </or>
          </enabledWhen>
     </page>
@@ -342,14 +341,14 @@
           class="org.eclipse.dltk.debug.ui.breakpoints.ScriptWatchPointPropertyPage"
           id="org.eclipse.dltk.debug.ui.breakpoints.ScriptWatchPointPropertyPage"
           name="Script Watchpoint">
-            <enabledWhen>
+          <enabledWhen>
             <or>
                <instanceof
                      value="org.eclipse.dltk.debug.core.model.IScriptWatchPoint">
                </instanceof>
                <adapt
                      type="org.eclipse.dltk.debug.core.model.IScriptWatchPoint">
-               </adapt>
+               </adapt>              
             </or>
          </enabledWhen>
     </page>
@@ -357,14 +356,14 @@
           class="org.eclipse.dltk.debug.ui.breakpoints.ScriptMethodBreakpointPropertyPage"
           id="org.eclipse.dltk.debug.ui.breakpoints.ScriptMethodBreakpointPropertyPage"
           name="Script Method Breakpoint">
-            <enabledWhen>
+          <enabledWhen>
             <or>
                <instanceof
                      value="org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint">
                </instanceof>
                <adapt
                      type="org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint">
-               </adapt>
+               </adapt>              
             </or>
          </enabledWhen>
     </page>

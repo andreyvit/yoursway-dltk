@@ -9,8 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui.breakpoints;
 
-import java.util.HashMap;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
@@ -81,8 +79,7 @@ public class BreakpointUtils {
 				int start = line.getOffset();
 				int end = start + line.getLength() - 1;
 				/* ILineBreakpoint b = */ScriptDebugModel.createWatchPoint(
-						resource, lineNumber, start, end, new HashMap(),
-						fieldName);
+						resource, lineNumber, start, end, fieldName);
 			} catch (BadLocationException e) {
 				if (DLTKCore.DEBUG) {
 					e.printStackTrace();

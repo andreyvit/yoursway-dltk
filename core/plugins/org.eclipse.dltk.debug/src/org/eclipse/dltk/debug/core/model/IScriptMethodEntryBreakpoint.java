@@ -30,8 +30,13 @@ public interface IScriptMethodEntryBreakpoint extends IScriptLineBreakpoint {
 	
 	void setBreakOnExit(boolean value) throws CoreException;
 
-	// Secondary id
-	String getSecondaryId() throws CoreException;
+	// Entry breakpoint id
+	String getEntryBreakpointId() throws CoreException;
 
-	void setSecondaryId(String id) throws CoreException;
+	void setEntryBreakpointId(String id) throws CoreException;
+	
+	// Exit breakpoint id
+	String getExitBreakpointId() throws CoreException;
+
+	void setExitBreakpointId(String id) throws CoreException;
 }
