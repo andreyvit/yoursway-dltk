@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.debug.core.breakpoints">
-      <breakpoint
-            class="org.eclipse.dltk.debug.core.ScriptBreakPoint"
-            id="org.eclipse.dltk.tcl.debug.scriptBreakpoint"
-            markerType="org.eclipse.dltk.tcl.debug.breakpoint1"/>
-   </extension>
    
    <extension
          point="org.eclipse.dltk.debug.scriptDebugModel">
       <debugModel
             debugModelId="org.eclipse.dltk.debug.tclModel"
-            natureId="org.eclipse.dltk.tcl.core.nature">
+            natureId="org.eclipse.dltk.tcl.core.nature"
+            typeFactory="org.eclipse.dltk.tcl.internal.debug.TclTypeFactory">
       </debugModel>
    </extension>
 </plugin>

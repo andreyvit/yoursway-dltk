@@ -1,5 +1,5 @@
 package org.eclipse.dltk.debug.core.model;
 
-public interface IScriptDebugTypeFactory {
+public interface IScriptTypeFactory {
 	IScriptType buildType(String type);
 }

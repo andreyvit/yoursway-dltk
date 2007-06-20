@@ -304,7 +304,7 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 	protected String getNatureId() {
 		ScriptDebugManager manager = ScriptDebugManager.getInstance();
-		return manager.getNatureByModel(getBreakpoint().getModelIdentifier());
+		return manager.getNatureByDebugModel(getBreakpoint().getModelIdentifier());
 	}
 
 	protected Control createContents(Composite parent) {

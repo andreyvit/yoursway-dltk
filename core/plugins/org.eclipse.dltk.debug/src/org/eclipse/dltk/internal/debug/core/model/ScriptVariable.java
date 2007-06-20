@@ -16,7 +16,9 @@ import org.eclipse.dltk.dbgp.IDbgpProperty;
 import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.commands.IDbgpCoreCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
-import org.eclipse.dltk.debug.core.model.IScriptDebugTypeFactory;
+import org.eclipse.dltk.debug.core.ScriptDebugManager;
+import org.eclipse.dltk.debug.core.model.AtomicScriptType;
+import org.eclipse.dltk.debug.core.model.IScriptTypeFactory;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptType;
@@ -164,10 +166,13 @@ public class ScriptVariable extends AbstractScriptVariable {
 
 	public IScriptType getType() {
 		if (type == null) {
-			IScriptDebugTypeFactory factory = ScriptDebugTypeManager
-					.getInstance().getScriptDebugTypeFactory(
-							getModelIdentifier());
-			type = factory.buildType(property.getType());
+			IScriptTypeFactory factory = ScriptDebugManager.getInstance()
+					.getTypeFactoryByDebugModel(getModelIdentifier());
+			if (factory != null) {
+				type = factory.buildType(property.getType());
+			} else {
+				type = new AtomicScriptType(property.getType());
+			}
 		}
 
 		return type;
