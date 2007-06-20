@@ -7,10 +7,10 @@ import org.eclipse.dltk.debug.core.model.IScriptTypeFactory;
 
 public class RubyTypeFactory implements IScriptTypeFactory {
 	private static final String[] atomicTypes = { "NilClass", "Fixnum",
-			"String", "TrueClass", "FalseClass" };
-	
+			"String", "TrueClass", "FalseClass", "Integer", "Bignum" };
+
 	public RubyTypeFactory() {
-		
+
 	}
 
 	public IScriptType buildType(String type) {

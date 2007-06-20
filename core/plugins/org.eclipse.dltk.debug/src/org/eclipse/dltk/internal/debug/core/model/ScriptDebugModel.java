@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IResource;

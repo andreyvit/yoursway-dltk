@@ -285,9 +285,6 @@ public class ScriptBreakpointManager implements IBreakpointListener {
 			IScriptThread[] threads = (IScriptThread[]) target.getThreads();
 			if (threads.length > 0) {
 				IScriptThread thread = threads[0];
-
-				DbgpBreakpointConfig config = new DbgpBreakpointConfig(true);
-
 				thread.getDbgpSession().getCoreCommands().removeBreakpoint(id);
 			}
 		} catch (DebugException e) {

@@ -1,7 +1,5 @@
 package org.eclipse.dltk.internal.debug.core.model;
 
-import java.util.Map;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugException;
