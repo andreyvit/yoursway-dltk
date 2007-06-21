@@ -223,6 +223,13 @@ public class RubyMixinClass implements IRubyMixinElement {
 					}
 				}
 			}
+		} else {
+			String stdKey = this.key.substring(0, key.length() - RubyMixin.VIRTUAL_SUFFIX.length());
+			IRubyMixinElement realElement = model.createRubyElement(stdKey);
+			if (realElement instanceof RubyMixinClass) {
+				RubyMixinClass rubyMixinClass = (RubyMixinClass) realElement;
+				rubyMixinClass.findMethods(prefix, includeTopLevel, requestor);
+			}
 		}
 
 	}

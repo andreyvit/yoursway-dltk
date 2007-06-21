@@ -122,7 +122,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			else {
 				if (info.getKind() == RubyMixinElementInfo.K_VIRTUAL)
 					return report(name, info);
-				return null; // no top-level vars
+				return name; // no top-level vars
 			}
 		}
 
@@ -506,10 +506,13 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			} else if (receiver instanceof VariableReference) {
 				VariableReference ref = (VariableReference) receiver;
 				Scope scope = peekScope();
-				String key = scope.reportVariable(ref.getName()
-						+ VIRTUAL_SUFFIX, null);
-				scopes.push(new MetaClassScope(decl, key));
-				return true;
+				String key = scope.reportVariable(ref.getName(), null);
+				if (key != null) {
+					key += VIRTUAL_SUFFIX;
+					report(key, new RubyMixinElementInfo(RubyMixinElementInfo.K_VIRTUAL, obj));				
+					scopes.push(new MetaClassScope(decl, key));
+					return true;
+				}
 			} else {
 				// TODO: add common method for singletons resolving
 			}

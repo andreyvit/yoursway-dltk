@@ -30,13 +30,13 @@ import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.ScriptSelectionEngine;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchRequestor;
@@ -229,7 +229,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 		IGoal[] init = evaluator.init();
 		if (init == null || init.length == 0) {
 			 // should never be here
-			System.err.println("Why did ColonExpressionEvaluator evaluated so fast?");
+			//System.err.println("Why did ColonExpressionEvaluator evaluated so fast?");
 		} else {
 			IEvaluatedType leftType = inferencer.evaluateType((AbstractTypeGoal) init[0], -1);
 			IGoal[] goals = evaluator.subGoalDone(init[0], leftType, GoalState.DONE);
@@ -532,9 +532,9 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 					.getScriptProject(), methodName, requestor);
 			availableMethods = (IMethod[]) methods.toArray(new IMethod[methods
 					.size()]);
-			if (availableMethods.length > 0)
-				System.out
-						.println("RubySelectionEngine.selectOnMethod() used global search");
+//			if (availableMethods.length > 0)
+//				System.out
+//						.println("RubySelectionEngine.selectOnMethod() used global search");
 		}
 
 		if (availableMethods != null) {
