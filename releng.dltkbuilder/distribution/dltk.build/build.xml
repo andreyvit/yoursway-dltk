@@ -111,7 +111,7 @@
 			
 	</target>
 	<target name="combineArchives">
-		<property name="archiveName" value="dltk${corename}-${buildLabel}.zip" />
+		<property name="archiveName" value="dltk${corename}-${buildLabel}-incubation.zip" />
 		<delete dir="${buildDirectory}/tempforrezipping" failonerror="false"/>
 		
 		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">

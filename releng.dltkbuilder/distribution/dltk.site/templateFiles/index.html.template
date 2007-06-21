@@ -137,7 +137,7 @@ foreach ($compileSummary->summaryItem as $summaryItem) {
                                 </td>
                                 <?php
 
-                                $zipfilename="dltk-@build@";
+                                $zipfilename="dltk-@build@-incubation";
 
                                 $filename=$zipfilename.".zip";
                                 $zipfilesize=fileSizeInMegs($filename);
@@ -167,7 +167,7 @@ foreach ($compileSummary->summaryItem as $summaryItem) {
 
                                 <?php
 
-                                $zipfilename="dltk-sdk-@build@";
+                                $zipfilename="dltk-sdk-@build@-incubation";
 
                                 $filename=$zipfilename.".zip";
                                 $zipfilesize=fileSizeInMegs($filename);
