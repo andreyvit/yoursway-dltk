@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
-import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
+import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 
 public class ScriptDebugModel {
 	protected static String getDenbugModelId(IResource resource) {
@@ -44,7 +44,7 @@ public class ScriptDebugModel {
 				methodName);
 	}
 
-	public static IScriptWatchPoint createWatchPoint(IResource resource,
+	public static IScriptWatchpoint createWatchPoint(IResource resource,
 			int lineNumber, int start, int end, String fieldName)
 			throws CoreException {
 		return new ScriptWatchpoint(getDenbugModelId(resource), resource,

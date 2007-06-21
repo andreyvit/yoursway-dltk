@@ -19,7 +19,7 @@ import org.eclipse.debug.core.model.IWatchpoint;
  * modification watchpoint, it will suspend execution when its field is
  * modified.
  */
-public interface IScriptWatchPoint extends IScriptLineBreakpoint, IWatchpoint {
+public interface IScriptWatchpoint extends IScriptLineBreakpoint, IWatchpoint {
 	/**
 	 * Returns the name of the field associated with this watchpoint
 	 * 

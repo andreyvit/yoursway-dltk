@@ -16,11 +16,12 @@ public class ScriptMethodBreakpointPropertyPage extends
 	}
 
 	protected void createTypeSpecificButtons(Composite parent) {
-		setTitle("Script Mrthod Breakpoint");
+		setTitle(BreakpointMessages.MethodBreakpointTitle);
 
 		breakOnEntryButton = createCheckButton(parent,
-				"Suspend on Method entry");
-		breakOnExitButton = createCheckButton(parent, "Suspend on Method exit");
+				BreakpointMessages.SuspendOnMethodEntryLabel);
+		breakOnExitButton = createCheckButton(parent,
+				BreakpointMessages.SuspendOnMethodExitLabel);
 	}
 
 	protected void loadValues() throws CoreException {

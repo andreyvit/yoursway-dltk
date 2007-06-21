@@ -12,10 +12,10 @@ package org.eclipse.dltk.internal.debug.core.model;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
+import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 
 public class ScriptWatchpoint extends ScriptLineBreakpoint implements
-		IScriptWatchPoint {
+		IScriptWatchpoint {
 
 	private static final String FIELD_NAME = ScriptLineBreakpoint.ID
 			+ ".fieldName";

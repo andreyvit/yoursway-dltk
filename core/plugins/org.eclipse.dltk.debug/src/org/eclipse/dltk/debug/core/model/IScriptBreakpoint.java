@@ -14,7 +14,7 @@ import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
 
 public interface IScriptBreakpoint extends IBreakpoint {
-	int HIT_CONDITION_GREATER = IDbgpBreakpoint.HIT_CONDITION_GREATER;
+	int HIT_CONDITION_GREATER_OR_EQUAL = IDbgpBreakpoint.HIT_CONDITION_GREATER_OR_EQUAL;
 
 	int HIT_CONDITION_EQUAL = IDbgpBreakpoint.HIT_CONDITION_EQUAL;
 

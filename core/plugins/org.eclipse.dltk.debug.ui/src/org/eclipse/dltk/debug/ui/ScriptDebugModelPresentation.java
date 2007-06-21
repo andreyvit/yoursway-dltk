@@ -31,7 +31,7 @@ import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
-import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
+import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 import org.eclipse.dltk.internal.debug.ui.ScriptEvaluationContextManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -215,7 +215,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			}
 
 			// IScriptWatchPoint
-			if (breakpoint instanceof IScriptWatchPoint) {
+			if (breakpoint instanceof IScriptWatchpoint) {
 
 			}
 

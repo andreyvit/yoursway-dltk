@@ -338,16 +338,16 @@
          </enabledWhen>
     </page>
     <page
-          class="org.eclipse.dltk.debug.ui.breakpoints.ScriptWatchPointPropertyPage"
-          id="org.eclipse.dltk.debug.ui.breakpoints.ScriptWatchPointPropertyPage"
+          class="org.eclipse.dltk.debug.ui.breakpoints.ScriptWatchpointPropertyPage"
+          id="org.eclipse.dltk.debug.ui.breakpoints.ScriptWatchpointPropertyPage"
           name="Script Watchpoint">
           <enabledWhen>
             <or>
                <instanceof
-                     value="org.eclipse.dltk.debug.core.model.IScriptWatchPoint">
+                     value="org.eclipse.dltk.debug.core.model.IScriptWatchpoint">
                </instanceof>
                <adapt
-                     type="org.eclipse.dltk.debug.core.model.IScriptWatchPoint">
+                     type="org.eclipse.dltk.debug.core.model.IScriptWatchpoint">
                </adapt>              
             </or>
          </enabledWhen>

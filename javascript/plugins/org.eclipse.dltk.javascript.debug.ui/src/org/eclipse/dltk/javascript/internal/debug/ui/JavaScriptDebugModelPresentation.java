@@ -7,7 +7,7 @@ import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
-import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
+import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 import org.eclipse.dltk.debug.ui.ScriptDebugImageDescriptor;
 import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
 import org.eclipse.dltk.internal.debug.ui.ScriptDebugImages;
@@ -40,8 +40,8 @@ public class JavaScriptDebugModelPresentation extends
 	}
 
 	protected Image getBreakpointImage(IScriptBreakpoint breakpoint) {
-		if (breakpoint instanceof IScriptWatchPoint) {
-			IScriptWatchPoint w = (IScriptWatchPoint) breakpoint;
+		if (breakpoint instanceof IScriptWatchpoint) {
+			IScriptWatchpoint w = (IScriptWatchpoint) breakpoint;
 			try {
 				if (w.isEnabled()) {
 					return DebugUITools

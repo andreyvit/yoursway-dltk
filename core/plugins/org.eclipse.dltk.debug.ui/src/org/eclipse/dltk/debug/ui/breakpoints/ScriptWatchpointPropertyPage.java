@@ -1,27 +1,27 @@
 package org.eclipse.dltk.debug.ui.breakpoints;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
+import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-public class ScriptWatchPointPropertyPage extends ScriptBreakpointPropertyPage {
+public class ScriptWatchpointPropertyPage extends ScriptBreakpointPropertyPage {
 
 	private Button suspendOnAccessButton;
 	private Button suspendOnModificationButton;
 
-	public ScriptWatchPointPropertyPage() {
+	public ScriptWatchpointPropertyPage() {
 
 	}
 
 	protected void createTypeSpecificLabels(Composite parent)
 			throws CoreException {
-		setTitle("Script Watch Breakpoint");
+		setTitle(BreakpointMessages.WatchpointTitle);
 
-		IScriptWatchPoint watchPoint = (IScriptWatchPoint) getBreakpoint();
+		IScriptWatchpoint watchPoint = (IScriptWatchpoint) getBreakpoint();
 
 		// Watch field
-		createLabel(parent, "Watch field:");
+		createLabel(parent, BreakpointMessages.WatchFieldLabel);
 		createLabel(parent, watchPoint.getFieldName());
 	}
 
@@ -30,15 +30,16 @@ public class ScriptWatchPointPropertyPage extends ScriptBreakpointPropertyPage {
 	}
 
 	protected void createTypeSpecificButtons(Composite parent) {
-		suspendOnAccessButton = createCheckButton(parent, "Suspend on Access");
+		suspendOnAccessButton = createCheckButton(parent,
+				BreakpointMessages.SuspendOnAccessLabel);
 		suspendOnModificationButton = createCheckButton(parent,
-				"Suspend on Modification");
+				BreakpointMessages.SuspendOnModificationLabel);
 	}
 
 	protected void loadValues() throws CoreException {
 		super.loadValues();
 
-		IScriptWatchPoint watchpoint = (IScriptWatchPoint) getBreakpoint();
+		IScriptWatchpoint watchpoint = (IScriptWatchpoint) getBreakpoint();
 		suspendOnAccessButton.setSelection(watchpoint.isAccess());
 		suspendOnModificationButton.setSelection(watchpoint.isModification());
 	}
@@ -46,7 +47,7 @@ public class ScriptWatchPointPropertyPage extends ScriptBreakpointPropertyPage {
 	protected void saveValues() throws CoreException {
 		super.saveValues();
 
-		IScriptWatchPoint watchpoint = (IScriptWatchPoint) getBreakpoint();
+		IScriptWatchpoint watchpoint = (IScriptWatchpoint) getBreakpoint();
 		watchpoint.setAccess(suspendOnAccessButton.getSelection());
 		watchpoint.setModification(suspendOnModificationButton.getSelection());
 	}

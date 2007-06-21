@@ -110,7 +110,7 @@ public class DbgpBreakpointConfig {
 	public String getHitConditionString() {
 		if (hitCondition == IDbgpBreakpoint.HIT_CONDITION_EQUAL) {
 			return HIT_CONDITION_EQUAL;
-		} else if (hitCondition == IDbgpBreakpoint.HIT_CONDITION_GREATER) {
+		} else if (hitCondition == IDbgpBreakpoint.HIT_CONDITION_GREATER_OR_EQUAL) {
 			return HIT_CONDITION_GREATER;
 		} else if (hitCondition == IDbgpBreakpoint.HIT_CONDITION_MULTIPLE) {
 			return HIT_CONDITION_MULTIPLE;

@@ -27,7 +27,7 @@ public class DbgpBreakpoint implements IDbgpBreakpoint {
 
 	protected int convertHitCondition(String s) {
 		if (">=".equals(s)) {
-			return HIT_CONDITION_GREATER;
+			return HIT_CONDITION_GREATER_OR_EQUAL;
 		} else if ("==".equals(s)) {
 			return HIT_CONDITION_EQUAL;
 		} else if ("%".equals(s)) {

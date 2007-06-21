@@ -29,7 +29,7 @@ import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
-import org.eclipse.dltk.debug.core.model.IScriptWatchPoint;
+import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 
 public class ScriptBreakpointManager implements IBreakpointListener {
 	// Utility methods
@@ -60,7 +60,7 @@ public class ScriptBreakpointManager implements IBreakpointListener {
 	}
 
 	protected static String makeWatchpointExpression(
-			IScriptWatchPoint watchpoint) throws CoreException {
+			IScriptWatchpoint watchpoint) throws CoreException {
 		return watchpoint.getFieldName() + (watchpoint.isAccess() ? '1' : '0')
 				+ (watchpoint.isModification() ? '1' : '0');
 	}
@@ -73,8 +73,8 @@ public class ScriptBreakpointManager implements IBreakpointListener {
 
 		String id = null;
 		// Type specific
-		if (breakpoint instanceof IScriptWatchPoint) {
-			IScriptWatchPoint watchpoint = (IScriptWatchPoint) breakpoint;
+		if (breakpoint instanceof IScriptWatchpoint) {
+			IScriptWatchpoint watchpoint = (IScriptWatchpoint) breakpoint;
 
 			config.setExpression(makeWatchpointExpression(watchpoint));
 
@@ -160,9 +160,9 @@ public class ScriptBreakpointManager implements IBreakpointListener {
 			final String id = breakpoint.getIdentifier();
 			final DbgpBreakpointConfig config = createBreakpointConfig(breakpoint);
 
-			if (breakpoint instanceof IScriptWatchPoint) {
+			if (breakpoint instanceof IScriptWatchpoint) {
 				config
-						.setExpression(makeWatchpointExpression((IScriptWatchPoint) breakpoint));
+						.setExpression(makeWatchpointExpression((IScriptWatchpoint) breakpoint));
 			}
 
 			commands.updateBreakpoint(id, config);

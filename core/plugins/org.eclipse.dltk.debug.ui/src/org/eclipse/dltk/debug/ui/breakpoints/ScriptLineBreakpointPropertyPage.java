@@ -12,13 +12,13 @@ public class ScriptLineBreakpointPropertyPage extends
 
 	protected void createTypeSpecificLabels(Composite parent)
 			throws CoreException {
-		setTitle("Script Line Breakpoint");
+		setTitle(BreakpointMessages.LineBreakpointTitle);
 		
 		IScriptLineBreakpoint breakpoint = (IScriptLineBreakpoint) getBreakpoint();
 
 		// Line number
 		int lineNumber = breakpoint.getLineNumber();
-		createLabel(parent, "Line Number:");
+		createLabel(parent, BreakpointMessages.LineNumberLabel);
 		createLabel(parent, Integer.toString(lineNumber));
 	}
 }

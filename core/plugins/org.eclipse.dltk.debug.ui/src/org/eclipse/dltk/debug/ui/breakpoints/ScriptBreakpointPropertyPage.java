@@ -144,23 +144,23 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 		Composite labelComposite = createComposite(parent, 2);
 
 		// Script language
-		createLabel(labelComposite, "Language:");
+		createLabel(labelComposite, BreakpointMessages.LanguageLabel);
 		createLabel(labelComposite, DLTKLanguageManager.getLanguageToolkit(
 				getNatureId()).getLanguageName());
 
 		// Resource name
 		String resourceName = breakpoint.getResourceName();
 		if (resourceName != null) {
-			createLabel(labelComposite, "File:");
+			createLabel(labelComposite, BreakpointMessages.FileLabel);
 			createLabel(labelComposite, resourceName);
 		}
 
 		// Hit count
-		createLabel(labelComposite, "Hit count:");
+		createLabel(labelComposite, BreakpointMessages.HitCountLabel);
 		int hitCount = breakpoint.getHitCount();
 		createLabel(labelComposite,
-				hitCount == -1 ? "N/A (available during debugging)" : Integer
-						.toString(hitCount));
+				hitCount == -1 ? BreakpointMessages.HitCountNotAvailableMessage
+						: Integer.toString(hitCount));
 		// from debugging engine
 
 		createTypeSpecificLabels(labelComposite);
@@ -176,7 +176,7 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 		Composite buttonsComposite = createComposite(parent, 1);
 
 		enabledBreakpointButton = createCheckButton(buttonsComposite,
-				"&Enabled");
+				BreakpointMessages.EnabledLabel);
 
 		createTypeSpecificButtons(buttonsComposite);
 	}
@@ -190,7 +190,7 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 		// Hit count checking
 		hitCountCheckingButton = createCheckButton(hitCountComposite,
-				"Break when hit count");
+				BreakpointMessages.BreakWhenHitCountLabel);
 
 		hitCountCheckingButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -198,18 +198,20 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 			}
 		});
 
-		hitConditionCombo = new Combo(hitCountComposite, SWT.DROP_DOWN
-				| SWT.READ_ONLY);
+		hitConditionCombo = new Combo(hitCountComposite, SWT.READ_ONLY);
 
 		// Hit condition
-		hitConditionCombo.add("greater (>=)",
-				IScriptBreakpoint.HIT_CONDITION_GREATER);
+		hitConditionCombo.add(BreakpointMessages.HitConditionGreaterOrEqual,
+				IScriptBreakpoint.HIT_CONDITION_GREATER_OR_EQUAL);
 
-		hitConditionCombo.add("equal (==)",
+		hitConditionCombo.add(BreakpointMessages.HitConditionEqual,
 				IScriptBreakpoint.HIT_CONDITION_EQUAL);
 
-		hitConditionCombo.add("multiple (%)",
+		hitConditionCombo.add(BreakpointMessages.HitConditionMultiple,
 				IScriptBreakpoint.HIT_CONDITION_MULTIPLE);
+
+		hitConditionCombo
+				.select(IScriptBreakpoint.HIT_CONDITION_GREATER_OR_EQUAL);
 
 		hitConditionCombo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -230,7 +232,7 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 			}
 		});
 
-		createLabel(hitCountComposite, "hits");
+		createLabel(hitCountComposite, BreakpointMessages.HitsLabel);
 	}
 
 	protected void createExpressionEditor(Composite parent) {
@@ -239,7 +241,7 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		enableExpressionButton = new Button(group, SWT.CHECK);
-		enableExpressionButton.setText("Enable Condition");
+		enableExpressionButton.setText(BreakpointMessages.UseConditionLabel);
 		enableExpressionButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				updateControlsState();
@@ -381,12 +383,7 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 					getHitValue();
 				} catch (NumberFormatException e) {
 					valid = false;
-					errorMessage = "Enter correct number of hits";
-				}
-
-				if (getHitCondition() == -1) {
-					valid = false;
-					errorMessage = "Select condition";
+					errorMessage = BreakpointMessages.InvalidNumberOfHits;
 				}
 			}
 		}
