@@ -50,10 +50,13 @@ public class RubyEditorColoringConfigurationBlock extends
 					
 			{ PreferencesMessages.DLTKEditorPreferencePage_keywords,
 				RubyPreferenceConstants.EDITOR_KEYWORD_COLOR, sCoreCategory },
+                                
+	                { PreferencesMessages.DLTKEditorPreferencePage_returnKeyword,
+                                RubyPreferenceConstants.EDITOR_KEYWORD_RETURN_COLOR, sCoreCategory },
 
 			{ PreferencesMessages.DLTKEditorPreferencePage_strings,
 				RubyPreferenceConstants.EDITOR_STRING_COLOR, sCoreCategory },
-
+				
 			{ PreferencesMessages.DLTKEditorPreferencePage_numbers,
 				RubyPreferenceConstants.EDITOR_NUMBER_COLOR, sCoreCategory },							
 				

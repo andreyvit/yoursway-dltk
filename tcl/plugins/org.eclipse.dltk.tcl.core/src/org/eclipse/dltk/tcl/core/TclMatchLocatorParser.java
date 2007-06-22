@@ -16,6 +16,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
+import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
@@ -36,10 +37,9 @@ import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
-import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 
 public class TclMatchLocatorParser extends MatchLocatorParser {
-	private TclSourceParser parser;
+	private ISourceParser parser;
 
 	private static String[] kw = TclKeywordsManager.getKeywords();
 
@@ -53,7 +53,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 	public TclMatchLocatorParser(MatchLocator locator) {
 		super(locator);
 		try {
-			parser = (TclSourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+			parser = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
 		} catch (CoreException e) {
 			if( DLTKCore.DEBUG ) {
 				e.printStackTrace();

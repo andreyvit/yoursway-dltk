@@ -46,6 +46,9 @@ public class TclEditorColoringConfigurationBlock extends
 			{ PreferencesMessages.DLTKEditorPreferencePage_keywords,
 					TclPreferenceConstants.EDITOR_KEYWORD_COLOR, sCoreCategory },
 
+                        { PreferencesMessages.DLTKEditorPreferencePage_returnKeyword,
+                                        TclPreferenceConstants.EDITOR_KEYWORD_RETURN_COLOR, sCoreCategory },
+					
 			{ PreferencesMessages.DLTKEditorPreferencePage_strings,
 					TclPreferenceConstants.EDITOR_STRING_COLOR, sCoreCategory },
 

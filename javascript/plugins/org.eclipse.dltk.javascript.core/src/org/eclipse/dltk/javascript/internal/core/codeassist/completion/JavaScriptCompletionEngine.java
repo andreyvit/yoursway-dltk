@@ -86,7 +86,7 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 	AssitUtils.PositionCalculator calculator;;
 
 	public void complete(ISourceModule cu, int position, int i) {
-		System.out.println("Completion position:" + position);
+//		System.out.println("Completion position:" + position);
 		this.actualCompletionPosition = position;
 		this.requestor.beginReporting();
 		String content = cu.getSourceContents();
@@ -113,7 +113,7 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 
 		String startPart = calculator.getCompletion();
 		this.setSourceRange(position - startPart.length(), position);
-		System.out.println(startPart);
+//		System.out.println(startPart);
 		if (calculator.isMember()) {
 			doCompletionOnMember(buildContext, cu, position, content, position,
 					collection);

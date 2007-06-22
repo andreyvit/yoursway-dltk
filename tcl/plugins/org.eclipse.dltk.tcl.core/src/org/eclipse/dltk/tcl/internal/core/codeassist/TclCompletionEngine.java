@@ -42,7 +42,6 @@ import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
-import org.eclipse.dltk.tcl.ast.TclModuleDeclaration;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordOrFunction;
@@ -79,7 +78,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			this.fileName = sourceModule.getFileName();
 			this.actualCompletionPosition = completionPosition;
 			this.offset = pos;
-			TclModuleDeclaration parsedUnit = (TclModuleDeclaration) this.parser
+			ModuleDeclaration parsedUnit = (ModuleDeclaration) this.parser
 					.parse(sourceModule);
 			
 			if (parsedUnit != null) {

@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.compiler.env.ISourceModule;
@@ -22,7 +23,6 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.tcl.ITclKeywords;
 import org.eclipse.dltk.tcl.core.TclNature;
-import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 
 public abstract class TclAssistParser implements IAssistParser {
 	protected static final int MODULE = ITclKeywords.MODULE;
@@ -33,7 +33,7 @@ public abstract class TclAssistParser implements IAssistParser {
 
 	protected static final int EXEC_EXPRESSION = ITclKeywords.EXEC_EXPRESSION;
 
-	protected TclSourceParser parser = null;
+	protected ISourceParser parser = null;
 
 	protected ModuleDeclaration module;
 
@@ -41,7 +41,7 @@ public abstract class TclAssistParser implements IAssistParser {
 	
 	public TclAssistParser() {
 		try {
-			this.parser = (TclSourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+			this.parser = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
 		} catch (CoreException e) {
 			if( DLTKCore.DEBUG ) {
 				e.printStackTrace();

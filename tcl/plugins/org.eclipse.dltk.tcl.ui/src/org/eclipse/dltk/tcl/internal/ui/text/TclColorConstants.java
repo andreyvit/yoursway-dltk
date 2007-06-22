@@ -41,6 +41,11 @@ public final class TclColorConstants {
 	 */
 	public static final String TCL_KEYWORD = DLTKColorConstants.DLTK_KEYWORD;
 
+       /**
+         * The color key for TCL 'return' keyword (value <code>"tcl_return"</code>).
+         */
+        public static final String TCL_KEYWORD_RETURN = DLTKColorConstants.DLTK_KEYWORD_RETURN; //$NON-NLS-1$  
+	
 	/**
 	 * The color key for TCL code (value <code>"tcl_default"</code>).
 	 */

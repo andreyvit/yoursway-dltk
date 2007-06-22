@@ -40,7 +40,6 @@ import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.internal.codeassist.select.SelectionNodeFound;
-import org.eclipse.dltk.tcl.ast.TclModuleDeclaration;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
@@ -98,7 +97,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		}
 		
 		try {
-			TclModuleDeclaration parsedUnit = (TclModuleDeclaration) this.parser
+			ModuleDeclaration parsedUnit = (ModuleDeclaration) this.parser
 					.parse(sourceUnit);
 			if (parsedUnit != null) {
 				try {

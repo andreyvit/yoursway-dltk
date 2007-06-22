@@ -26,7 +26,6 @@ import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.core.TclNature;
-import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 import org.eclipse.dltk.tcl.internal.ui.TclUI;
 import org.eclipse.dltk.tcl.internal.ui.text.TclPartitionScanner;
 import org.eclipse.dltk.tcl.ui.TclPreferenceConstants;
@@ -61,9 +60,9 @@ public class TclFoldingStructureProvider extends AbstractASTFoldingStructureProv
          * if an ASTVisitor implementation is created for this, just override getFoldingVisitor()
          * and remove this method
          */
-        TclSourceParser pp = null;
+        ISourceParser pp = null;
 		try {
-			pp = (TclSourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+			pp = (ISourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
 		} catch (CoreException e1) {
 			if( DLTKCore.DEBUG ) {
 				e1.printStackTrace();

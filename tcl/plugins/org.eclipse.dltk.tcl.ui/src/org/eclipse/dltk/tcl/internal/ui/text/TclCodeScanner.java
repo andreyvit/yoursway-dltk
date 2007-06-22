@@ -16,6 +16,7 @@ import org.eclipse.dltk.tcl.TclKeywordsManager;
 import org.eclipse.dltk.tcl.internal.ui.rules.TclCommentRule;
 import org.eclipse.dltk.tcl.internal.ui.rules.TclFloatNumberRule;
 import org.eclipse.dltk.tcl.internal.ui.rules.TclVariableRule;
+import org.eclipse.dltk.tcl.ui.TclPreferenceConstants;
 import org.eclipse.dltk.ui.text.AbstractScriptScanner;
 import org.eclipse.dltk.ui.text.IColorManager;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -30,9 +31,12 @@ public class TclCodeScanner extends AbstractScriptScanner {
 		TclColorConstants.TCL_SINGLE_LINE_COMMENT,
 		TclColorConstants.TCL_DEFAULT,
 		TclColorConstants.TCL_KEYWORD,
+		TclColorConstants.TCL_KEYWORD_RETURN,
 		TclColorConstants.TCL_NUMBER,
 		TclColorConstants.TCL_VARIABLE,
 	};
+	
+	private static String returnKeyword = "return";
 	
 	public TclCodeScanner(IColorManager manager, IPreferenceStore store) {
 		super(manager, store);
@@ -67,6 +71,10 @@ public class TclCodeScanner extends AbstractScriptScanner {
 		for( int i = 0; i < keywords.length; i++ ) {
 			wordRule.addWord(keywords[i], keyword);
 		}
+	        
+		IToken returnToken = getToken(TclPreferenceConstants.EDITOR_KEYWORD_RETURN_COLOR);
+	        wordRule.addWord(returnKeyword, returnToken);
+		
 		rules.add(wordRule);
 
 		setDefaultReturnToken(other);

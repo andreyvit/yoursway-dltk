@@ -20,6 +20,7 @@ import java.util.Stack;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
+import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
@@ -74,9 +75,9 @@ public class TclSourceElementParser implements ISourceElementParser {
 		// + (counter++));
 
 		// TODO: Add correct visitor like model builder for TCL.
-		TclSourceParser sourceParser = null;
+		ISourceParser sourceParser = null;
 		try {
-			sourceParser = (TclSourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+			sourceParser = (ISourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
 		} catch (CoreException e1) {
 			if( DLTKCore.DEBUG ) {
 				e1.printStackTrace();

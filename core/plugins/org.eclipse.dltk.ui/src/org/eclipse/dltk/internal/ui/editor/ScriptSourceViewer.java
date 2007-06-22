@@ -143,7 +143,7 @@ public class ScriptSourceViewer extends ProjectionViewer implements
 		// it's ok to use instance preferences here as subclasses replace
 		// with project dependent versions (see
 		// SourceModuleEditor.AdaptedSourceViewer)
-		System.err.println("ScriptSourceViewer: TODO: Add CommentFormattingContext here...");
+//		System.err.println("ScriptSourceViewer: TODO: Add CommentFormattingContext here...");
 //		IFormattingContext context = new CommentFormattingContext();
 //		Map map = new HashMap(DLTKCore.getOptions());
 //		context.setProperty(FormattingContextProperties.CONTEXT_PREFERENCES,
