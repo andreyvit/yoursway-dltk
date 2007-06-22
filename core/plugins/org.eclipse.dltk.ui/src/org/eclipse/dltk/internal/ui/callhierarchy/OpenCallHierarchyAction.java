@@ -221,7 +221,7 @@ public class OpenCallHierarchyAction extends SelectionDispatchAction {
             getShell().getDisplay().beep();
             return;
         }
-        CallHierarchyUI.open(elements, getSite().getWorkbenchWindow(), fEditor.getCallHierarchyID());
+        CallHierarchyUI.open(elements, getSite().getWorkbenchWindow(), getCallHierarchyID());
     }
     
     private static IStatus compileCandidates(List result, IModelElement elem) {
@@ -236,5 +236,8 @@ public class OpenCallHierarchyAction extends SelectionDispatchAction {
     
     private static IStatus createStatus(String message) {
         return new Status(IStatus.INFO, DLTKUIPlugin.getPluginId(), IDLTKStatusConstants.INTERNAL_ERROR, message, null);
-    }           
+    }         
+    public String getCallHierarchyID() {
+    	return "org.eclipse.dltk.callhierarchy.view";
+    }
 }
