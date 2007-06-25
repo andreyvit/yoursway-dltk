@@ -79,13 +79,13 @@ module XoredDebugger
         def print_breakpoint(m)
             sprintf('<breakpoint id="%d" type="%s" state="%s" filename="%s" hit_count="%d" hit_value="%d" hit_condition="%s" lineno="%d"/>',
                 m[:breakpoint_id], 
-				m[:type], 
-				m[:state], 
-				m[:filename], 
-				m[:hit_count], 
-				m[:hit_value], 
-				m[:hit_condition], 
-				m[:lineno])
+                m[:type], 
+                m[:state], 
+                m[:filename], 
+                m[:hit_count], 
+                m[:hit_value], 
+                m[:hit_condition], 
+                m[:lineno])
         end
 
         def print_continuation(command, m)
@@ -111,8 +111,10 @@ module XoredDebugger
 
         # Feature commands
         def print_feature_get(m)
-            sprintf('<response command="feature_get" feature_name="%s" supported="%d" transaction_id="%d">%s</response>',
-                m[:name], m[:supported], m[:id], cdata(Base64.encode64(m[:value])))
+            value = m[:value]
+
+            sprintf('<response command="feature_get" feature_name="%s" supported="%s" transaction_id="%d">%s</response>',
+                m[:name], m[:supported] ? '1' : '0', m[:id], value.nil? ? '' : cdata(Base64.encode64(value)))
         end
 
         def print_feature_set(m)

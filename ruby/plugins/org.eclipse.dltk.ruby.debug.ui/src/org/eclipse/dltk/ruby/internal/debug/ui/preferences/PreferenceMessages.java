@@ -10,4 +10,8 @@ public class PreferenceMessages {
 	}
 	
 	public static String DebuggingEngine;
+	
+	public static String NameLabel;
+	
+	public static String DescriptionLabel;
 }

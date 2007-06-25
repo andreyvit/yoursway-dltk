@@ -40,6 +40,9 @@ public class DebuggingEngineManager {
 	private static final String PRIORITY = "priority";
 	private static final String CLASS = "class";
 
+	private static final String ENGINE_TAG = "engine";
+	private static final String SELECTOR_TAG = "selector";
+
 	private void addEngine(String natureId, IConfigurationElement element) {
 		final String id = element.getAttribute(ID);
 		final String name = element.getAttribute(NAME);
@@ -51,7 +54,8 @@ public class DebuggingEngineManager {
 			if (object instanceof IInterpreterRunnerFactory) {
 				IInterpreterRunnerFactory factory = (IInterpreterRunnerFactory) object;
 
-				IDebuggingEngine engine = new DebuggingEngine(id, natureId, name, description, priority, factory);
+				IDebuggingEngine engine = new DebuggingEngine(id, natureId,
+						name, description, priority, factory);
 
 				List engines = (List) natureToEnginesMap.get(natureId);
 				if (engines == null) {
@@ -96,9 +100,9 @@ public class DebuggingEngineManager {
 				IConfigurationElement innerElement = innerElements[j];
 				String name = innerElement.getName();
 
-				if (name.equals("engine")) {
+				if (name.equals(ENGINE_TAG)) {
 					addEngine(natureId, innerElement);
-				} else if (name.equals("selector")) {
+				} else if (name.equals(SELECTOR_TAG)) {
 					addSelector(natureId, innerElement);
 				}
 			}

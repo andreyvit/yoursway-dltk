@@ -103,9 +103,11 @@ module XoredDebugger
         def feature_get(name)
             logger.puts("feature_get: #{name}")
 
+            supported = @features.supported?(name)
+
             { :name      => name, 
-              :supported => 1, 
-              :value     => @features.get(name).to_s }
+              :supported => supported, 
+              :value     => supported ? @features.get(name).to_s : nil }
         end
 
         def feature_set(name, value)
@@ -254,7 +256,7 @@ module XoredDebugger
         # Breakpoint commands
         def breakpoint_set_line(file, line, state, temporary, expression, hit_value, hit_condition)
             id = breakpoints.set_line_bpt(file, line, state, temporary, expression, hit_value, hit_condition)
-			logger.puts("BR_ID: " + id.to_s)
+            logger.puts("BR_ID: " + id.to_s)
             { :state         => state, 
               :breakpoint_id => id }
         end
@@ -267,17 +269,17 @@ module XoredDebugger
         end
 
         def breakpoint_get(id)
-			b = breakpoints[id]
-		 			  
-		    { :breakpoint => 
-				{ :breakpoint_id => id,
+            b = breakpoints[id]
+                      
+            { :breakpoint => 
+                { :breakpoint_id => id,
                   :type => 'line',
-			      :state => b.state,
-			      :filename => b.file,			  
-			      :hit_count => b.hit_count,
-			      :hit_value => b.hit_value,
-			      :hit_condition => b.hit_condition,
-			      :lineno => b.line } }
+                  :state => b.state,
+                  :filename => b.file,            
+                  :hit_count => b.hit_count,
+                  :hit_value => b.hit_value,
+                  :hit_condition => b.hit_condition,
+                  :lineno => b.line } }
         end
 
         def breakpoint_list
@@ -406,17 +408,17 @@ module XoredDebugger
                 when 'break': break_cmd
 
                 # Breakpoint commands
-                when 'breakpoint_set'				
+                when 'breakpoint_set'               
                     type = command.arg('-t')
                     
-					state = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false					
-					temporary = command.arg_with_default('-r', false)
-					hit_value = command.arg_with_default('-h', 1).to_i
-					hit_condition = command.arg_with_default('-o', '>=')
-					expression = command.data
-					
-					logger.puts("### Expression: " + expression.to_s)
-					
+                    state = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false                   
+                    temporary = command.arg_with_default('-r', false)
+                    hit_value = command.arg_with_default('-h', 1).to_i
+                    hit_condition = command.arg_with_default('-o', '>=')
+                    expression = command.data
+                    
+                    logger.puts("### Expression: " + expression.to_s)
+                    
                     case type
                     when 'line'
                         file = File.expand_path(uri_to_path(command.arg('-f')))
@@ -440,20 +442,20 @@ module XoredDebugger
                     end
 
                 when 'breakpoint_get'
-				    id = command.arg('-d').to_i
+                    id = command.arg('-d').to_i
                     breakpoint_get(id)
 
                 when 'breakpoint_update'
                     id = command.arg('-d').to_i
-					state = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false
-					temporary = command.arg_with_default('-r', false)
-					hit_value = command.arg_with_default('-h', 1).to_i
-					hit_condition = command.arg_with_default('-o', '>=')
-					expression = command.data
-					
-					logger.puts("### Expression: " + expression.to_s)
+                    state = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false
+                    temporary = command.arg_with_default('-r', false)
+                    hit_value = command.arg_with_default('-h', 1).to_i
+                    hit_condition = command.arg_with_default('-o', '>=')
+                    expression = command.data
                     
-					breakpoint_update(id, state, temporary, expression, hit_value, hit_condition)
+                    logger.puts("### Expression: " + expression.to_s)
+                    
+                    breakpoint_update(id, state, temporary, expression, hit_value, hit_condition)
                 
                 when 'breakpoint_remove'
                     id = command.arg('-d').to_i
@@ -573,28 +575,28 @@ module XoredDebugger
                 end
             end
         end
-		
-		def command_loop
-		     if @last_continuation_command.nil?
-				loop do
-					@command = Command.new(receive)                        
-						
-					if ['run', 'step_into', 'step_over', 'step_out'].include?(@command.name)
-						@last_continuation_command = @command
-					end
+        
+        def command_loop
+             if @last_continuation_command.nil?
+                loop do
+                    @command = Command.new(receive)                        
+                        
+                    if ['run', 'step_into', 'step_over', 'step_out'].include?(@command.name)
+                        @last_continuation_command = @command
+                    end
 
-					data = dispatch_command(@command)
+                    data = dispatch_command(@command)
 
-					logger.puts('Data: ' + data.inspect)
+                    logger.puts('Data: ' + data.inspect)
 
-					if data.nil?
-						break
-					else
-						send(@command.name, data)
-					end
-				end		
-			end
-		end
+                    if data.nil?
+                        break
+                    else
+                        send(@command.name, data)
+                    end
+                end     
+            end
+        end
 
         def trace(event, file, line, id, binding, klass)
             if @terminated
@@ -629,7 +631,7 @@ module XoredDebugger
                 return
             end
 
-			command_loop
+            command_loop
 
             case event
                 when 'line'
@@ -654,11 +656,11 @@ module XoredDebugger
                                     :id     => @last_continuation_command.arg('-i') }
 
                             send(@last_continuation_command.name, map)
-							
+                            
                             @last_continuation_command = nil
                         end
 
-						command_loop						
+                        command_loop                        
                     end
 
                     capturer.enable

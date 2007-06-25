@@ -46,23 +46,25 @@ public class RubyDebugPreferencePage extends PreferencePage implements
 	}
 
 	protected void updateDescription(String text) {
-		description.setText(text);
+		description.setText(PreferenceMessages.DescriptionLabel + " " + text);
 	}
 
 	protected void createEngineSelector(Composite parent, Object data) {
 		Group group = new Group(parent, SWT.NONE);
 		group.setFont(parent.getFont());
-		group.setText(PreferenceMessages.DebuggingEngine);		
 		group.setLayoutData(data);
+		group.setText(PreferenceMessages.DebuggingEngine);
 
-		GridLayout layout = new GridLayout(2, false);
+		GridLayout layout = new GridLayout(1, false);
 		group.setLayout(layout);
 
 		// Name
 		Label nameLabel = new Label(group, SWT.NONE);
-		nameLabel.setText("Select:");
+		nameLabel.setText(PreferenceMessages.NameLabel);
 
 		allEngines = new ComboViewer(group);
+		allEngines.getCombo().setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true));
 		allEngines.setLabelProvider(new LabelProvider() {
 			public String getText(Object element) {
 				return ((IDebuggingEngine) element).getName();
@@ -79,9 +81,6 @@ public class RubyDebugPreferencePage extends PreferencePage implements
 		});
 
 		// Description
-		Label descriptionLabel = new Label(group, SWT.NONE);
-		descriptionLabel.setText("Description:");
-
 		this.description = new Label(group, SWT.NONE);
 		this.description.setText("");
 		this.description.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
@@ -109,15 +108,26 @@ public class RubyDebugPreferencePage extends PreferencePage implements
 	}
 
 	protected void initializeValues() {
+		DebuggingEngineManager manager = DebuggingEngineManager.getInstance();
+
 		Preferences prefs = RubyLaunchingPlugin.getDefault()
 				.getPluginPreferences();
+
 		String engineId = prefs
 				.getString(RubyDebuggingConstants.DEBUGGING_ENGINE_ID);
 
-		if (engineId != null) {
+		if (engineId.equals("")) {
+			// Engine not selected (for example, first launch)
+			IDebuggingEngine engine = manager
+					.getSelectedDebuggineEngine(RubyNature.NATURE_ID);
+			if (engine != null) {
+				engineId = engine.getId();
+			}
+		}
 
-			IDebuggingEngine engine = DebuggingEngineManager.getInstance()
-					.getDebuggingEngine(RubyNature.NATURE_ID, engineId);
+		if (!engineId.equals("")) {
+			IDebuggingEngine engine = manager.getDebuggingEngine(
+					RubyNature.NATURE_ID, engineId);
 
 			setSelectedDebuggingEngine(engine);
 		}

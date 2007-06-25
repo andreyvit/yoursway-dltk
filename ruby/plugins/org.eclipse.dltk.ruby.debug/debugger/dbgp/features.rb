@@ -34,7 +34,11 @@ module XoredDebugger
             
                 'show_hidden' => [0, true], # get|set [0|1] This feature can get set by the IDE if it wants to have more detailed internal information on properties (eg. private members of classes, etc.) Zero means that hidden members are not shown to the IDE.
                 'notify_ok'   => [0, true] # get|set [0|1] See section 8.5
-            }
+           }
+        end
+
+        def supported?(name)
+            @map.keys.include?(name)
         end
 
         def get(name)
