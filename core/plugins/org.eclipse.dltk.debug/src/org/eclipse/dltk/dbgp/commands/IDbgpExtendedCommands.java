@@ -13,9 +13,19 @@ import org.eclipse.dltk.dbgp.IDbgpProperty;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 
 public interface IDbgpExtendedCommands {
-	final int DISABLE = 0;
+	int DISABLE = 0;
 
-	final int REDIRECT = 1;
+	int REDIRECT = 1;
+
+	String BREAK_COMMAND = "break";
+
+	String STDIN_COMMAND = "stdin";
+
+	String EVAL_COMMAND = "eval";
+
+	String EXEC_COMMAND = "exec";
+
+	String EXPR_COMMAND = "expr";
 
 	boolean configureStdin(int value) throws DbgpException;
 

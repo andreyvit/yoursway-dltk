@@ -52,7 +52,7 @@ public class RubyDebugPreferencePage extends PreferencePage implements
 	protected void createEngineSelector(Composite parent, Object data) {
 		Group group = new Group(parent, SWT.NONE);
 		group.setFont(parent.getFont());
-		group.setText("Debugging Engine");
+		group.setText(PreferenceMessages.DebuggingEngine);		
 		group.setLayoutData(data);
 
 		GridLayout layout = new GridLayout(2, false);

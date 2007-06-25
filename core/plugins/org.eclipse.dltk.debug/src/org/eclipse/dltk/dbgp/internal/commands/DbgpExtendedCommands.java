@@ -20,17 +20,7 @@ import org.w3c.dom.NodeList;
 
 public class DbgpExtendedCommands extends DbgpBaseCommands implements
 		IDbgpExtendedCommands {
-
-	private static final String BREAK_COMMAND = "break";
-
-	private static final String STDIN_COMMAND = "stdin";
-
-	private static final String EVAL_COMMAND = "eval";
-
-	private static final String EXEC_COMMAND = "exec";
-
-	private static final String EXPR_COMMAND = "expr";
-
+	
 	private IDbgpProperty parseResponse(Element response) {
 		if (DbgpXmlParser.parseSuccess(response)) {
 			NodeList list = response.getElementsByTagName("property");
