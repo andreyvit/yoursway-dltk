@@ -26,35 +26,23 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.texteditor.templates.TemplatePreferencePage;
 
-public abstract class ScriptTemplatePreferencePage extends TemplatePreferencePage
-		implements IWorkbenchPreferencePage {
-	
-	public boolean performOk() {
-		boolean ok = super.performOk();
+public abstract class ScriptTemplatePreferencePage extends
+		TemplatePreferencePage implements IWorkbenchPreferencePage {
 
-		// TODO: save plugin prefereces
-
-		return ok;
-	}
-	
-	protected abstract ScriptSourceViewerConfiguration createSourceViewerConfiguration(IDocument document); 
-		
-	
 	protected SourceViewer createViewer(Composite parent) {
 		IDocument document = new Document();
-		
+
 		IPreferenceStore store = getPreferenceStore();
-		
+
 		ScriptSourceViewerConfiguration configuration = createSourceViewerConfiguration(document);
-		
-		
+
 		SourceViewer viewer = new ScriptSourceViewer(parent, null, null, false,
 				SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL, store);
-		
+
 		viewer.configure(configuration);
 		viewer.setEditable(false);
 		viewer.setDocument(document);
-		
+
 		Control control = viewer.getControl();
 		control.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL
 				| GridData.FILL_VERTICAL));
@@ -62,8 +50,8 @@ public abstract class ScriptTemplatePreferencePage extends TemplatePreferencePag
 		// Font font = JFaceResources
 		// .getFont(TPreferenceConstants.EDITOR_TEXT_FONT);
 		// viewer.getTextWidget().setFont(font);
-		
-		new ScriptSourcePreviewerUpdater(viewer, configuration, store);
+
+		//new ScriptSourcePreviewerUpdater(viewer, configuration, store);
 
 		return viewer;
 	}
@@ -100,8 +88,7 @@ public abstract class ScriptTemplatePreferencePage extends TemplatePreferencePag
 	protected boolean isShowFormatterSetting() {
 		return false;
 	}
-	
-	// protected String getFormatterPreferenceKey() {
-	// return PreferenceConstants.TEMPLATES_USE_CODEFORMATTER;
-	// }
+
+	protected abstract ScriptSourceViewerConfiguration createSourceViewerConfiguration(
+			IDocument document);
 }

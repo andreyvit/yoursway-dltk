@@ -17,10 +17,29 @@ import org.eclipse.dltk.ui.templates.ScriptTemplatePreferencePage;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.jface.text.templates.ContextTypeRegistry;
+import org.eclipse.jface.text.templates.Template;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class RubyTemplatePreferencePage extends ScriptTemplatePreferencePage
 		implements IWorkbenchPreferencePage {
+
+	protected class RubyEditTemplateDialog extends EditTemplateDialog {
+		public RubyEditTemplateDialog(Shell parent, Template template,
+				boolean edit, boolean isNameModifiable,
+				ContextTypeRegistry registry) {
+			super(parent, template, edit, isNameModifiable, registry);
+		}
+
+		protected SourceViewer createViewer(Composite parent) {
+			return RubyTemplatePreferencePage.this.createViewer(parent);
+		}
+	}
+
 	public RubyTemplatePreferencePage() {
 		setPreferenceStore(RubyUI.getDefault().getPreferenceStore());
 
@@ -41,5 +60,15 @@ public class RubyTemplatePreferencePage extends ScriptTemplatePreferencePage
 				.getColorManager(), store, null,
 				RubyPartitions.RUBY_PARTITIONING, false);
 
+	}
+
+	protected Template editTemplate(Template template, boolean edit,
+			boolean isNameModifiable) {
+		EditTemplateDialog dialog = new RubyEditTemplateDialog(getShell(),
+				template, edit, isNameModifiable, getContextTypeRegistry());
+		if (dialog.open() == Window.OK) {
+			return dialog.getTemplate();
+		}
+		return null;
 	}
 }
