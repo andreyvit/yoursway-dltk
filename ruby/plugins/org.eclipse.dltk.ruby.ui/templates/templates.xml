@@ -83,7 +83,7 @@ end</template>
 	context="rubyUniversalTemplateContextType" 
 	description="%ifTemplate2.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.if2" 
-	name="if">if __FILE__ == $0
+	name="if">if __FILE__ == $$0
     ${cursor}
 end</template>
 
@@ -130,7 +130,7 @@ end</template>
 	id="org.eclipse.dltk.ruby.ui.templates.begin1" 
 	name="begin">begin
  ${body}
-end until {$condition}</template>
+end until ${condition}</template>
 
 <template 
 	context="rubyUniversalTemplateContextType" 
@@ -138,7 +138,7 @@ end until {$condition}</template>
 	id="org.eclipse.dltk.ruby.ui.templates.begin2" 
 	name="begin">begin
  ${body}
-end while {$condition}</template>
+end while ${condition}</template>
 
 <template 
 	context="rubyUniversalTemplateContextType" 
