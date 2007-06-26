@@ -10,7 +10,6 @@
 package org.eclipse.dltk.ui.templates;
 
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
-import org.eclipse.dltk.internal.ui.preferences.ScriptSourcePreviewerUpdater;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.Document;
@@ -35,7 +34,7 @@ public abstract class ScriptTemplatePreferencePage extends
 		IPreferenceStore store = getPreferenceStore();
 
 		ScriptSourceViewerConfiguration configuration = createSourceViewerConfiguration(document);
-
+		
 		SourceViewer viewer = new ScriptSourceViewer(parent, null, null, false,
 				SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL, store);
 

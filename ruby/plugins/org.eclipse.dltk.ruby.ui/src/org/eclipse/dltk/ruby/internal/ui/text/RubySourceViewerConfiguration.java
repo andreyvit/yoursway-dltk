@@ -251,32 +251,22 @@ public class RubySourceViewerConfiguration extends
 	}
 
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
-
 		if (getEditor() != null) {
-
 			ContentAssistant assistant = new ContentAssistant();
-			assistant
-					.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
-
-			assistant
-					.setRestoreCompletionProposalSize(getSettings("completion_proposal_size")); //$NON-NLS-1$
-
+						
+			assistant.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
+			assistant.setRestoreCompletionProposalSize(getSettings("completion_proposal_size")); //$NON-NLS-1$
+			assistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
+			assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
+			//assistant.setStatusLineVisible(true);
+			//assistant.setStatusMessage("Hello!");
+			
 			IContentAssistProcessor scriptProcessor = new RubyCompletionProcessor(
 					getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
-			assistant.setContentAssistProcessor(scriptProcessor,
-					IDocument.DEFAULT_CONTENT_TYPE);
-		
-
-			RubyContentAssistPreference.getDefault().configure(assistant,
-					fPreferenceStore);
-
-			assistant
-					.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
-			assistant
-					.setInformationControlCreator(getInformationControlCreator(sourceViewer));
-
-			// assistant.setStatusLineVisible(true);
-
+			assistant.setContentAssistProcessor(scriptProcessor, IDocument.DEFAULT_CONTENT_TYPE);
+			
+			RubyContentAssistPreference.getDefault().configure(assistant, fPreferenceStore);
+			
 			return assistant;
 		}
 
@@ -288,10 +278,11 @@ public class RubySourceViewerConfiguration extends
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
 				return new DefaultInformationControl(parent, SWT.NONE,
-						new HTMLTextPresenter(true), "My Status");
+						new HTMLTextPresenter(true), "");
 			}
 		};
 	}
+	
 	protected void initializeQuickOutlineContexts(InformationPresenter presenter,
 			IInformationProvider provider) {
 		presenter.setInformationProvider(provider, RubyPartitions.RUBY_COMMENT);

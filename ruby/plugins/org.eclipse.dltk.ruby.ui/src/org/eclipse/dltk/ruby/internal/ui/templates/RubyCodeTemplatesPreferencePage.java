@@ -17,6 +17,9 @@ import org.eclipse.dltk.ui.templates.ScriptTemplatePreferencePage;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.contentassist.ContentAssistant;
+import org.eclipse.jface.text.contentassist.IContentAssistant;
+import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.templates.ContextTypeRegistry;
 import org.eclipse.jface.text.templates.Template;
@@ -25,8 +28,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class RubyTemplatePreferencePage extends ScriptTemplatePreferencePage
-		implements IWorkbenchPreferencePage {
+public class RubyCodeTemplatesPreferencePage extends
+		ScriptTemplatePreferencePage implements IWorkbenchPreferencePage {
 
 	protected class RubyEditTemplateDialog extends EditTemplateDialog {
 		public RubyEditTemplateDialog(Shell parent, Template template,
@@ -36,11 +39,11 @@ public class RubyTemplatePreferencePage extends ScriptTemplatePreferencePage
 		}
 
 		protected SourceViewer createViewer(Composite parent) {
-			return RubyTemplatePreferencePage.this.createViewer(parent);
+			return RubyCodeTemplatesPreferencePage.this.createViewer(parent);
 		}
 	}
 
-	public RubyTemplatePreferencePage() {
+	public RubyCodeTemplatesPreferencePage() {
 		setPreferenceStore(RubyUI.getDefault().getPreferenceStore());
 
 		setTemplateStore(RubyTemplateAccess.getInstance().getTemplateStore());
@@ -59,10 +62,9 @@ public class RubyTemplatePreferencePage extends ScriptTemplatePreferencePage
 		return new SimpleRubySourceViewerConfiguration(textTools
 				.getColorManager(), store, null,
 				RubyPartitions.RUBY_PARTITIONING, false);
-
 	}
 
-	protected Template editTemplate(Template template, boolean edit,
+	/*protected Template editTemplate(Template template, boolean edit,
 			boolean isNameModifiable) {
 		EditTemplateDialog dialog = new RubyEditTemplateDialog(getShell(),
 				template, edit, isNameModifiable, getContextTypeRegistry());
@@ -70,5 +72,5 @@ public class RubyTemplatePreferencePage extends ScriptTemplatePreferencePage
 			return dialog.getTemplate();
 		}
 		return null;
-	}
+	}*/
 }

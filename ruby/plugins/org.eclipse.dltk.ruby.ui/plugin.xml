@@ -144,8 +144,8 @@
 	          id="org.eclipse.dltk.ruby.preferences.editor.syntaxcoloring"
 	          name="%RubyEditorSyntaxColoringPreferencePage.name"/>
      	<page
-              category="org.eclipse.dltk.ruby.preferences"
-              class="org.eclipse.dltk.ruby.internal.ui.templates.RubyTemplatePreferencePage"
+              category="org.eclipse.dltk.ruby.preferences.editor"
+              class="org.eclipse.dltk.ruby.internal.ui.templates.RubyCodeTemplatesPreferencePage"
               id="org.eclipse.dltk.ruby.preferences.templates"
               name="%RubyCodeTemplatesPreferencePage.name">
      </page>	          

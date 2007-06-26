@@ -192,8 +192,8 @@
           id="org.eclipse.dltk.tcl.preferences.mans"
           name="%TclManPagesPreferencePage.name"/>
     <page
-           category="org.eclipse.dltk.tcl.preferences"
-           class="org.eclipse.dltk.tcl.internal.ui.templates.TclTemplatePreferencePage"
+           category="org.eclipse.dltk.tcl.preferences.editor"
+           class="org.eclipse.dltk.tcl.internal.ui.templates.TclCodeTemplatesPreferencePage"
            id="org.eclipse.dltk.tcl.preferences.templates"
            name="%TclCodeTemplatesPreferencePage.name"/>        
     <page
