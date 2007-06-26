@@ -17,7 +17,7 @@
   <extension
         point="org.eclipse.debug.core.sourceLocators">
      <sourceLocator
-           class="org.eclipse.dltk.ruby.internal.launching.RubySourceLookupDirector"
+           class="org.eclipse.dltk.launching.ScriptSourceLookupDirector"
            id="rubySourceLocator"
            name="%RubySourceLocator.name">
      </sourceLocator>

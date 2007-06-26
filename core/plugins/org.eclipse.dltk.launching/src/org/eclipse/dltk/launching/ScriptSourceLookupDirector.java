@@ -1,13 +1,4 @@
-/*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- 
- *******************************************************************************/
-package org.eclipse.dltk.internal.launching;
+package org.eclipse.dltk.launching;
 
 import java.io.File;
 import java.net.URI;
@@ -24,9 +15,9 @@ import org.eclipse.debug.core.model.IPersistableSourceLocator;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.dltk.internal.debug.core.model.ScriptStackFrame;
 
-public class TclSourceLookupDirector implements IPersistableSourceLocator {
-		
-	public TclSourceLookupDirector() {
+public class ScriptSourceLookupDirector implements IPersistableSourceLocator {
+
+	public ScriptSourceLookupDirector() {
 	}
 
 	public Object getSourceElement(IStackFrame stackFrame) {
@@ -35,12 +26,10 @@ public class TclSourceLookupDirector implements IPersistableSourceLocator {
 			URI uri = sf.getFileName();
 
 			String pathname = uri.getPath();
-			
+
 			if (Platform.getOS().equals(Platform.OS_WIN32)) {
 				pathname = pathname.substring(1);
 			}
-			
-		//	System.out.println("====> " + pathname);
 
 			File file = new File(pathname);
 

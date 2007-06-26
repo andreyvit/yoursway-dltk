@@ -10,27 +10,13 @@
                modes="run,debug"
                name="%TclLaunchConfigurationType.name"
                public="true"
-               sourceLocatorId="tclSourceLocator"
-               sourcePathComputerId="tclSourcePathComputer">
+               sourceLocatorId="tclSourceLocator">
 		  </launchConfigurationType>
-         <!--launchConfigurationType
-               delegate="org.eclipse.dltk.tcl.launching.TclLaunchConfigurationDelegate"
-               id="org.eclipse.dltk.tcl.launching.TCLRemoteLaunchConfigurationType"
-               modes="debug"
-               name="Remote TCL Script"
-               public="true">
-         </launchConfigurationType-->         
    </extension>
-  <extension
-        point="org.eclipse.debug.core.sourcePathComputers">
-     <sourcePathComputer
-           class="org.eclipse.dltk.internal.launching.TclSourcePathComputer"
-           id="tclSourcePathComputer"/>
-  </extension>
-  <extension
+   <extension
         point="org.eclipse.debug.core.sourceLocators">
      <sourceLocator
-           class="org.eclipse.dltk.internal.launching.TclSourceLookupDirector"
+           class="org.eclipse.dltk.launching.ScriptSourceLookupDirector"
            id="tclSourceLocator"
            name="org.eclipse.dltk.tcl.launching.tclSourceLocator"/>
   </extension>
