@@ -54,24 +54,24 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 
 	public static void doRunImpl(InterpreterConfig config, ILaunch launch)
 			throws CoreException {
-		
+
 		String host = (String) config.getProperty(DbgpConstants.HOST_PROP);
 		if (host == null) {
 			host = "";
 		}
-		
+
 		String port = (String) config.getProperty(DbgpConstants.PORT_PROP);
 		if (port == null) {
 			port = "";
 		}
-		
+
 		String sessionId = (String) config
 				.getProperty(DbgpConstants.SESSION_ID_PROP);
-		
+
 		if (sessionId == null) {
 			sessionId = "";
 		}
-		
+
 		IScriptProject proj = AbstractScriptLaunchConfigurationDelegate
 				.getScriptProject(launch.getLaunchConfiguration());
 		IJavaProject myJavaProject = JavaCore.create(proj.getProject());
@@ -79,7 +79,8 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 		if (vmInstall == null)
 			vmInstall = JavaRuntime.getDefaultVMInstall();
 		if (vmInstall != null) {
-			IVMRunner vmRunner = vmInstall.getVMRunner(ILaunchManager.DEBUG_MODE);
+			IVMRunner vmRunner = vmInstall
+					.getVMRunner(ILaunchManager.DEBUG_MODE);
 			if (vmRunner != null) {
 				String[] classPath = null;
 				try {
@@ -91,30 +92,40 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 
 					Bundle bundle = Platform
 							.getBundle(GenericJavaScriptInstallType.EMBEDDED_RHINO_BUNDLE_ID);
-					
-					Bundle bundle1 = Platform.getBundle(GenericJavaScriptInstallType.DBGP_FOR_RHINO_BUNDLE_ID);
+
+					Bundle bundle1 = Platform
+							.getBundle(GenericJavaScriptInstallType.DBGP_FOR_RHINO_BUNDLE_ID);
 					try {
 						URL resolve = FileLocator.toFileURL(bundle1
 								.getResource("RhinoRunner.class"));
 						try {
-							File fl = new File(new URI(resolve.toString())).getParentFile();
-							URL fileURL = FileLocator.toFileURL(bundle.getResource("org/mozilla/classfile/ByteCode.class"));
-							File fl1 = new File(new URI(fileURL.toString())).getParentFile().getParentFile().getParentFile().getParentFile();
+							File fl = new File(new URI(resolve.toString()))
+									.getParentFile();
+							URL fileURL = FileLocator
+									.toFileURL(bundle
+											.getResource("org/mozilla/classfile/ByteCode.class"));
+							File fl1 = new File(new URI(fileURL.toString()))
+									.getParentFile().getParentFile()
+									.getParentFile().getParentFile();
 							String[] newClassPath = new String[classPath.length + 2];
 							System.arraycopy(classPath, 0, newClassPath, 0,
 									classPath.length);
 							newClassPath[classPath.length] = fl
 									.getAbsolutePath();
-							newClassPath[classPath.length+1] = fl1.getAbsolutePath();
+							newClassPath[classPath.length + 1] = fl1
+									.getAbsolutePath();
 							VMRunnerConfiguration vmConfig = new VMRunnerConfiguration(
 									"RhinoRunner", newClassPath);
-							vmConfig.setProgramArguments(new String[] { config
-									.getScriptFile().toString(),host,""+port,sessionId });
-							ILaunch launchr = new Launch(launch.getLaunchConfiguration(),
+							vmConfig.setProgramArguments(new String[] {
+									config.getScriptFile().toString(), host,
+									"" + port, sessionId });
+							ILaunch launchr = new Launch(launch
+									.getLaunchConfiguration(),
 									ILaunchManager.DEBUG_MODE, null);
 							vmRunner.run(vmConfig, launchr, null);
-							IDebugTarget[] debugTargets = launchr.getDebugTargets();
-							for (int a=0;a<debugTargets.length;a++){
+							IDebugTarget[] debugTargets = launchr
+									.getDebugTargets();
+							for (int a = 0; a < debugTargets.length; a++) {
 								launch.addDebugTarget(debugTargets[a]);
 							}
 							IProcess[] processes = launchr.getProcesses();
@@ -135,8 +146,8 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 		throw new CoreException(new Status(IStatus.ERROR, "", ""));
 	}
 
-	protected String constructProgramString(
-			InterpreterConfig config) throws CoreException {
+	protected String constructProgramString(InterpreterConfig config)
+			throws CoreException {
 
 		return "";
 	}

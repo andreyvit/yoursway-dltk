@@ -172,4 +172,8 @@ public class DBGPStackManager {
 	public Observer getObserver() {
 		return observer;
 	}
+
+	public BreakPoint getBreakpoint(String id) {
+		return this.manager.getBreakpoint(id);
+	}
 }

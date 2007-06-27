@@ -11,6 +11,7 @@ public class Base64Helper {
 	private static final BASE64Decoder decoder = new BASE64Decoder();
 
 	public static String encodeString(String s) {
+		if (s==null)return"";
 		return encoder.encode(s.getBytes());
 	}
 

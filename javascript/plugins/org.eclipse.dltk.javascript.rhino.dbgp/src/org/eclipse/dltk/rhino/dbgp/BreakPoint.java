@@ -27,13 +27,17 @@ public class BreakPoint {
 
 	protected boolean isAccess;
 
+	private String type;
+
 	protected BreakPoint(HashMap options) {
 
-		if (options.get("-t").equals("return")) {
+		String object = (String) options.get("-t");
+		this.type=object;
+		if (object.equals("return")) {
 			method = (String) options.get("-m");
 			this.isReturn = true;
 		}
-		if (options.get("-t").equals("watch")) {
+		if (object.equals("watch")) {
 			this.isWatch = true;
 		}
 		if (true) {
@@ -123,5 +127,20 @@ public class BreakPoint {
 
 	protected void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public String getState() {
+		return "";
+	}
+
+	public String getHitCondition() {
+		if (hitCondition==1)return ">=";
+		if (hitCondition==2)return "==";
+		if (hitCondition==3)return "%";
+		return "==";
 	}
 }

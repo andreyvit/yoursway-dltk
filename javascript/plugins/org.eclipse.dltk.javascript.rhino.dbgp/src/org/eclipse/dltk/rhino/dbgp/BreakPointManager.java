@@ -135,4 +135,8 @@ public class BreakPointManager {
 		return (List) watchpoints.get(property);
 	}
 
+	public BreakPoint getBreakpoint(String id) {
+		return (BreakPoint) ids.get(id);
+	}
+
 }

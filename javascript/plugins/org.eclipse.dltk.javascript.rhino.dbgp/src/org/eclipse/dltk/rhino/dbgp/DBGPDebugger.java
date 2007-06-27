@@ -76,6 +76,7 @@ public class DBGPDebugger extends Thread implements Debugger, Observer,
 		strategies.put("step_over", new StepOverCommand(this));
 		strategies.put("step_into", new StepIntoCommand(this));
 		strategies.put("step_out", new StepOutCommand(this));
+		strategies.put("breakpoint_get", new GetBreakPointCommand(this));
 		strategies.put("breakpoint_set", new SetBreakPointCommand(this));
 		strategies.put("breakpoint_remove", new RemoveBreakPointCommand(this));
 		strategies.put("breakpoint_update", new UpdateBreakPointCommand(this));
