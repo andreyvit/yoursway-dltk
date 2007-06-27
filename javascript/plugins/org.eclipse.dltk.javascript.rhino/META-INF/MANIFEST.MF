@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Rhino Plug-in
+Bundle-SymbolicName: org.eclipse.dltk.javascript.rhino;singleton:=true
+Bundle-Version: 1.0.0
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.dltk.javascript.launching,
+ org.eclipse.dltk.launching,
+ org.eclipse.core.variables,
+ org.apache.xmlbeans
+Eclipse-LazyStart: false
+Export-Package: org.mozilla.classfile,
+ org.mozilla.javascript,
+ org.mozilla.javascript.continuations,
+ org.mozilla.javascript.debug,
+ org.mozilla.javascript.jdk11,
+ org.mozilla.javascript.jdk13,
+ org.mozilla.javascript.optimizer,
+ org.mozilla.javascript.regexp,
+ org.mozilla.javascript.resources,
+ org.mozilla.javascript.serialize,
+ org.mozilla.javascript.xml
