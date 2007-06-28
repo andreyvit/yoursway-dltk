@@ -256,6 +256,7 @@ public class DBGPDebugger extends Thread implements Debugger, Observer,
 				property);
 		if (list != null) {
 			int size = list.size();
+			
 			for (int a = 0; a < size; a++) {
 				BreakPoint watchPoint = (BreakPoint) list.get(a);
 				if (watchPoint != null) {
@@ -283,11 +284,13 @@ public class DBGPDebugger extends Thread implements Debugger, Observer,
 	WeakHashMap cache = new WeakHashMap();
 
 	public void modification(String property, ScriptableObject object) {
+		
 		ArrayList list = (ArrayList) cmanager.getManager().getWatchPoints(
 				property);
 		if (list != null) {
 			int size = list.size();
 			for (int a = 0; a < size; a++) {
+				
 				BreakPoint watchPoint = (BreakPoint) list.get(a);
 				if (watchPoint != null) {
 					if (watchPoint.enabled) {

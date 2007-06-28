@@ -65,17 +65,20 @@ public class BreakPoint {
 		String hitCondition = (String) options.get("-o");
 		setHitCondition(hitCondition);
 		expression = (String) options.get("--");
+		
 		String disable = (String) options.get("-s");
 		if (disable.equals("disabled")) {
 			this.setEnabled(false);
 		}
 		if (expression != null) {
 			expression = Base64Helper.decodeString(expression);
+			if (expression!=null)expression=expression.trim();
 		}
 		if (isWatch) {
 			this.isModification = expression.charAt(expression.length() - 1) == '1';
 			this.isAccess = expression.charAt(expression.length() - 2) == '1';
 			this.expression = expression.substring(0, expression.length() - 2);
+			
 		}
 
 		this.id = last_id++;

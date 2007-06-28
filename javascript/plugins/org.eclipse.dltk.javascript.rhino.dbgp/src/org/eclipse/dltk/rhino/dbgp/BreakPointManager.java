@@ -56,7 +56,6 @@ public class BreakPointManager {
 	}
 
 	public BreakPoint hit(String sourcePath, int lineNumber) {
-
 		HashMap q = (HashMap) fileMap.get(sourcePath);
 
 		if (q == null)

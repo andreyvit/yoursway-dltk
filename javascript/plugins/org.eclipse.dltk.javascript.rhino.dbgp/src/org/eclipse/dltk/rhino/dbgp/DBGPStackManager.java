@@ -34,8 +34,13 @@ public class DBGPStackManager {
 		return object;
 	}
 
-	public void enter(DBGPDebugFrame debugFrame) {
-		stack.add(debugFrame);
+	public void enter(DBGPDebugFrame debugFrame) {		
+		stack.add(debugFrame);		
+//		BreakPoint hit = manager.hit(debugFrame.getSourceName(), debugFrame.getLineNumber());
+//		if (debugFrame.getWhere().equals("module"))
+//		{
+//		checkBreakpoint(debugFrame, hit);
+//		}
 	}
 
 	public void exit(DBGPDebugFrame debugFrame) {
