@@ -15,6 +15,8 @@ public class JavaScriptDebugPlugin extends Plugin {
 	
 	public static final String PLUGIN_ID =  "org.eclipse.dltk.javascript.debug";
 	
+	public static final String MODEL_ID =  "org.eclipse.dltk.debug.javascriptModel";
+	
 	private static JavaScriptDebugPlugin fgPlugin;
 			
 	public static final int INTERNAL_ERROR = 120;

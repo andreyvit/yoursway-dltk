@@ -15,16 +15,21 @@ public class JavaScriptLaunchConfigurationDelegate extends
 	protected void runRunner(ILaunchConfiguration configuration,
 			IInterpreterRunner runner, InterpreterConfig config,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		if (runner instanceof IJavaScriptInterpreterRunner) {
-			IJavaScriptInterpreterRunner jrunner = (IJavaScriptInterpreterRunner) runner;
-			configureRunner(jrunner,config,launch);
+		if (runner instanceof IConfigurableRunner){
+			IJavaScriptInterpreterRunnerConfig runnerConfig = getConfig();
+			if (runnerConfig!=null){
+				IConfigurableRunner rc=(IConfigurableRunner) runner;
+				rc.setRunnerConfig(runnerConfig);
+			}
 		}
 		runner.run(config, launch, monitor);
 	}
-
-	protected void configureRunner(IJavaScriptInterpreterRunner jrunner, InterpreterConfig config, ILaunch launch) {
-
+	
+	public IJavaScriptInterpreterRunnerConfig getConfig(){
+		return null;
 	}
+
+	
 
 	public String getLanguageId() {
 		return JavaScriptNature.NATURE_ID;

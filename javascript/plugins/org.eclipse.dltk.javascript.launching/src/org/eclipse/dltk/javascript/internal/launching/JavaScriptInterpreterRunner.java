@@ -30,6 +30,8 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.dltk.console.ScriptConsoleServer;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.dltk.javascript.launching.IConfigurableRunner;
+import org.eclipse.dltk.javascript.launching.IJavaScriptInterpreterRunnerConfig;
 import org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.javascript.launching.JavaScriptLaunchingPlugin;
 import org.eclipse.dltk.launching.AbstractInterpreterRunner;
@@ -45,15 +47,40 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.osgi.framework.Bundle;
 
-public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
+public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner implements IConfigurableRunner{
+
+	public static final IJavaScriptInterpreterRunnerConfig DEFAULT_CONFIG = new IJavaScriptInterpreterRunnerConfig() {
+
+		public void adjustRunnerConfiguration(VMRunnerConfiguration vconfig,
+				InterpreterConfig iconfig, ILaunch launch, IJavaProject project) {
+
+		}
+
+		public String[] computeClassPath(InterpreterConfig config,
+				ILaunch launch, IJavaProject project) throws Exception {
+			return JavaScriptInterpreterRunner.getClassPath(project);
+		}
+
+		public String[] getProgramArguments(InterpreterConfig config,
+				ILaunch launch, IJavaProject project) {
+			return new String[0];
+		}
+
+		public String getRunnerClassName(InterpreterConfig config,
+				ILaunch launch, IJavaProject project) {
+			return "RhinoRunner";
+		}
+
+	};
+	private IJavaScriptInterpreterRunnerConfig config = DEFAULT_CONFIG;
 
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
-		doRunImpl(config, launch);
+		doRunImpl(config, launch, this.config);
 	}
 
-	public static void doRunImpl(InterpreterConfig config, ILaunch launch)
-			throws CoreException {
+	public static void doRunImpl(InterpreterConfig config, ILaunch launch,
+			IJavaScriptInterpreterRunnerConfig iconfig) throws CoreException {
 
 		String host = (String) config.getProperty(DbgpConstants.HOST_PROP);
 		if (host == null) {
@@ -82,46 +109,33 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 			IVMRunner vmRunner = vmInstall
 					.getVMRunner(ILaunchManager.DEBUG_MODE);
 			if (vmRunner != null) {
-				String[] classPath = null;
-				try {
-					classPath = JavaRuntime
-							.computeDefaultRuntimeClassPath(myJavaProject);
-				} catch (CoreException e) {
-				}
-				if (classPath != null) {
+				{
 
-					Bundle bundle = Platform
-							.getBundle(GenericJavaScriptInstallType.EMBEDDED_RHINO_BUNDLE_ID);
-
-					Bundle bundle1 = Platform
-							.getBundle(GenericJavaScriptInstallType.DBGP_FOR_RHINO_BUNDLE_ID);
 					try {
-						URL resolve = FileLocator.toFileURL(bundle1
-								.getResource("RhinoRunner.class"));
+
 						try {
-							File fl = new File(new URI(resolve.toString()))
-									.getParentFile();
-							URL fileURL = FileLocator
-									.toFileURL(bundle
-											.getResource("org/mozilla/classfile/ByteCode.class"));
-							File fl1 = new File(new URI(fileURL.toString()))
-									.getParentFile().getParentFile()
-									.getParentFile().getParentFile();
-							String[] newClassPath = new String[classPath.length + 2];
-							System.arraycopy(classPath, 0, newClassPath, 0,
-									classPath.length);
-							newClassPath[classPath.length] = fl
-									.getAbsolutePath();
-							newClassPath[classPath.length + 1] = fl1
-									.getAbsolutePath();
+							String[] newClassPath = getClassPath(myJavaProject);
+
 							VMRunnerConfiguration vmConfig = new VMRunnerConfiguration(
-									"RhinoRunner", newClassPath);
-							vmConfig.setProgramArguments(new String[] {
+									iconfig.getRunnerClassName(config, launch,
+											myJavaProject), newClassPath);
+							String[] strings = new String[] {
 									config.getScriptFile().toString(), host,
-									"" + port, sessionId });
+									"" + port, sessionId };
+							String[] newStrings = iconfig.getProgramArguments(
+									config, launch, myJavaProject);
+							String[] rs = new String[strings.length
+									+ newStrings.length];
+							for (int a = 0; a < strings.length; a++)
+								rs[a] = strings[a];
+							for (int a = 0; a < newStrings.length; a++)
+								rs[a + strings.length] = newStrings[a];
+							vmConfig.setProgramArguments(strings);
 							ILaunch launchr = new Launch(launch
 									.getLaunchConfiguration(),
 									ILaunchManager.DEBUG_MODE, null);
+							iconfig.adjustRunnerConfiguration(vmConfig, config,
+									launch, myJavaProject);
 							vmRunner.run(vmConfig, launchr, null);
 							IDebugTarget[] debugTargets = launchr
 									.getDebugTargets();
@@ -133,17 +147,46 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 								launch.addProcess(processes[a]);
 							return;
 						} catch (URISyntaxException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			}
 		}
 		throw new CoreException(new Status(IStatus.ERROR, "", ""));
+	}
+
+	public static String[] getClassPath(IJavaProject myJavaProject)
+			throws IOException, URISyntaxException {
+		Bundle bundle = Platform
+				.getBundle(GenericJavaScriptInstallType.EMBEDDED_RHINO_BUNDLE_ID);
+
+		Bundle bundle1 = Platform
+				.getBundle(GenericJavaScriptInstallType.DBGP_FOR_RHINO_BUNDLE_ID);
+		URL resolve = FileLocator.toFileURL(bundle1
+				.getResource("RhinoRunner.class"));
+		File fl = new File(new URI(resolve.toString())).getParentFile();
+		URL fileURL = FileLocator.toFileURL(bundle
+				.getResource("org/mozilla/classfile/ByteCode.class"));
+		File fl1 = new File(new URI(fileURL.toString())).getParentFile()
+				.getParentFile().getParentFile().getParentFile();
+		String[] classPath = null;
+		try {
+			classPath = computeBaseClassPath(myJavaProject);
+		} catch (CoreException e) {
+		}
+		String[] newClassPath = new String[classPath.length + 2];
+		System.arraycopy(classPath, 0, newClassPath, 0, classPath.length);
+		newClassPath[classPath.length] = fl.getAbsolutePath();
+		newClassPath[classPath.length + 1] = fl1.getAbsolutePath();
+		return newClassPath;
+	}
+
+	protected static String[] computeBaseClassPath(IJavaProject myJavaProject)
+			throws CoreException {
+		return JavaRuntime.computeDefaultRuntimeClassPath(myJavaProject);
 	}
 
 	protected String constructProgramString(InterpreterConfig config)
@@ -186,5 +229,9 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner {
 
 	protected String getPluginId() {
 		return JavaScriptLaunchingPlugin.PLUGIN_ID;
+	}
+
+	public void setRunnerConfig(IJavaScriptInterpreterRunnerConfig config) {
+		this.config=config;
 	}
 }
