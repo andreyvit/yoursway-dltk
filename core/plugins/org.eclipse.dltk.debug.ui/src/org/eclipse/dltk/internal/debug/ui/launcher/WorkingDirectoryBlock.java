@@ -26,7 +26,7 @@ import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.debug.ui.launchConfigurations.CommonScriptLaunchTab;
-import org.eclipse.dltk.debug.ui.messages.DLTKLaunchMessages;
+import org.eclipse.dltk.debug.ui.messages.ScriptLaunchMessages;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.swt.SWT;
@@ -119,10 +119,10 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 		group.setFont(font);
 		setControl(group);
 		
-		group.setText(DLTKLaunchMessages.WorkingDirectoryBlock_12); 
+		group.setText(ScriptLaunchMessages.WorkingDirectoryBlock_12); 
 		
 		fUseDefaultDirButton = new Button(group, SWT.RADIO);
-		fUseDefaultDirButton.setText(DLTKLaunchMessages.WorkingDirectoryBlock_18);
+		fUseDefaultDirButton.setText(ScriptLaunchMessages.WorkingDirectoryBlock_18);
 		fUseDefaultDirButton.setFont(font);
 		fUseDefaultDirButton.addSelectionListener(fListener);
 		fWorkingDirText = new Text(group, SWT.SINGLE | SWT.BORDER);
@@ -133,7 +133,7 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 		fWorkingDirText.setEnabled(false);
 		
 		fUseOtherDirButton = new Button(group, SWT.RADIO);
-		fUseOtherDirButton.setText(DLTKLaunchMessages.WorkingDirectoryBlock_19);
+		fUseOtherDirButton.setText(ScriptLaunchMessages.WorkingDirectoryBlock_19);
 		fUseOtherDirButton.setFont(font);
 		fUseOtherDirButton.addSelectionListener(fListener);
 		fOtherWorkingText = new Text(group, SWT.SINGLE | SWT.BORDER);
@@ -151,13 +151,13 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 		gd.horizontalSpan = 2;
 		buttonComp.setLayoutData(gd);
 		buttonComp.setFont(font);		
-		fWorkspaceButton = createPushButton(buttonComp, DLTKLaunchMessages.WorkingDirectoryBlock_0, null); 
+		fWorkspaceButton = createPushButton(buttonComp, ScriptLaunchMessages.WorkingDirectoryBlock_0, null); 
 		fWorkspaceButton.addSelectionListener(fListener);
 		
-		fFileSystemButton = createPushButton(buttonComp, DLTKLaunchMessages.WorkingDirectoryBlock_1, null); 
+		fFileSystemButton = createPushButton(buttonComp, ScriptLaunchMessages.WorkingDirectoryBlock_1, null); 
 		fFileSystemButton.addSelectionListener(fListener);
 		
-		fVariablesButton = createPushButton(buttonComp, DLTKLaunchMessages.WorkingDirectoryBlock_17, null); 
+		fVariablesButton = createPushButton(buttonComp, ScriptLaunchMessages.WorkingDirectoryBlock_17, null); 
 		fVariablesButton.addSelectionListener(fListener);
 	}
 					
@@ -171,7 +171,7 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 	 */
 	private void handleWorkingDirBrowseButtonSelected() {
 		DirectoryDialog dialog = new DirectoryDialog(getShell());
-		dialog.setMessage(DLTKLaunchMessages.WorkingDirectoryBlock_7); 
+		dialog.setMessage(ScriptLaunchMessages.WorkingDirectoryBlock_7); 
 		String currentWorkingDir = getWorkingDirectoryText();
 		if (!currentWorkingDir.trim().equals("")) { //$NON-NLS-1$
 			File path = new File(currentWorkingDir);
@@ -194,7 +194,7 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 		if (currentContainer == null) {
 		    currentContainer = ResourcesPlugin.getWorkspace().getRoot();
 		}//end if 
-		ContainerSelectionDialog dialog = new ContainerSelectionDialog(getShell(), currentContainer, false,	DLTKLaunchMessages.WorkingDirectoryBlock_4); 
+		ContainerSelectionDialog dialog = new ContainerSelectionDialog(getShell(), currentContainer, false,	ScriptLaunchMessages.WorkingDirectoryBlock_4); 
 		dialog.showClosedProjects(false);
 		dialog.open();
 		Object[] results = dialog.getResult();		
@@ -323,11 +323,11 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 				if (dir.isDirectory()) {
 					return true;
 				}//end if
-				setErrorMessage(DLTKLaunchMessages.WorkingDirectoryBlock_10); 
+				setErrorMessage(ScriptLaunchMessages.WorkingDirectoryBlock_10); 
 				return false;
 			}//end if
 		} else if (workingDirPath.length() == 0) {
-			setErrorMessage(DLTKLaunchMessages.WorkingDirectoryBlock_20);
+			setErrorMessage(ScriptLaunchMessages.WorkingDirectoryBlock_20);
 		}
 		return true;
 	}//end isValid
@@ -354,7 +354,7 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 			}//end else
 		}//end try 
 		catch (CoreException e) {
-			setErrorMessage(DLTKLaunchMessages.ArgumentsTab_Exception_occurred_reading_configuration___15 + e.getStatus().getMessage()); 
+			setErrorMessage(ScriptLaunchMessages.ArgumentsTab_Exception_occurred_reading_configuration___15 + e.getStatus().getMessage()); 
 			DLTKLaunchingPlugin.log(e);
 		}//end catch
 	}
@@ -375,7 +375,7 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getName()
 	 */
 	public String getName() {
-		return DLTKLaunchMessages.WorkingDirectoryBlock_Working_Directory_8; 
+		return ScriptLaunchMessages.WorkingDirectoryBlock_Working_Directory_8; 
 	}//end getName
 	
 	/**

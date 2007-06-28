@@ -6,7 +6,7 @@ public class BreakpointMessages {
 	private static final String BUNDLE_NAME = "org.eclipse.dltk.debug.ui.breakpoints.BreakpointMessages"; //$NON-NLS-1$
 	
 	static {
-		NLS.initializeMessages(BUNDLE_NAME, BreakpointMessages .class);
+		NLS.initializeMessages(BUNDLE_NAME, BreakpointMessages.class);
 	}
 	
 	// Breakpoint titles

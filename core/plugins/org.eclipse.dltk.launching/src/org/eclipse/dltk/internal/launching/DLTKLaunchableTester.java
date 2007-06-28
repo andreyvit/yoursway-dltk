@@ -163,9 +163,6 @@ public class DLTKLaunchableTester extends PropertyTester {
 	 *         false otherwise
 	 */
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-		if( DLTKCore.VERBOSE ) {
-			System.out.println("DLTKLaunchableTester:" + property);
-		}
 		if (PROPERTY_IS_CONTAINER.equals(property)) {
 			if (receiver instanceof IAdaptable) {
 				IResource resource = (IResource) ((IAdaptable) receiver).getAdapter(IResource.class);
@@ -175,6 +172,7 @@ public class DLTKLaunchableTester extends PropertyTester {
 			}
 			return false;
 		}
+		
 		IModelElement element = null;
 		if (receiver instanceof IAdaptable) {
 			element = (IModelElement) ((IAdaptable) receiver).getAdapter(IModelElement.class);

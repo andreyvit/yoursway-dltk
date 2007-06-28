@@ -12,7 +12,7 @@ package org.eclipse.dltk.debug.ui.messages;
 import org.eclipse.osgi.util.NLS;
 
 public class DLTKLaunchConfigurationsMessages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.dltk.debug.ui.messages.DLTKLaunchConfigurationsMessages";//$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.dltk.debug.ui.messages.ScriptLaunchConfigurationsMessages";//$NON-NLS-1$
 	public static String mainTab_title;
 	public static String mainTab_projectGroup;
 	public static String mainTab_projectButton;

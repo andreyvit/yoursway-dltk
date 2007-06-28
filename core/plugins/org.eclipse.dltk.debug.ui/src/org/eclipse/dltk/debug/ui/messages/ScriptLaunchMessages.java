@@ -11,8 +11,8 @@ package org.eclipse.dltk.debug.ui.messages;
 
 import org.eclipse.osgi.util.NLS;
 
-public class DLTKLaunchMessages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.dltk.debug.ui.messages.DLTKLaunchMessages";//$NON-NLS-1$
+public class ScriptLaunchMessages extends NLS {
+	private static final String BUNDLE_NAME = "org.eclipse.dltk.debug.ui.messages.ScriptLaunchMessages";//$NON-NLS-1$
 	public static String scriptLaunchShortcut2_title;
 	public static String scriptLaunchShortcut2;
 	public static String WorkingDirectoryBlock_12;
@@ -40,11 +40,11 @@ public class DLTKLaunchMessages extends NLS {
 	public static String InterpreterArgumentsTab_Exception_occurred_reading_configuration;
 	public static String InterpreterArgumentsBlock_Interpreter_Arguments;
 
-	private DLTKLaunchMessages() {
+	private ScriptLaunchMessages() {
 	// dont instatiate
 	}
 	static {
 		// load message values from bundle file
-		NLS.initializeMessages(BUNDLE_NAME, DLTKLaunchMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, ScriptLaunchMessages.class);
 	}
 }

@@ -14,11 +14,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
-import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.jface.text.Document;
@@ -145,8 +142,8 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 		// Script language
 		createLabel(labelComposite, BreakpointMessages.LanguageLabel);
-		createLabel(labelComposite, DLTKLanguageManager.getLanguageToolkit(
-				getNatureId()).getLanguageName());
+		createLabel(labelComposite, BreakpointUtils.getLanguageToolkit(
+				breakpoint).getLanguageName());
 
 		// Resource name
 		String resourceName = breakpoint.getResourceName();
@@ -251,8 +248,8 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 		expressionViewer = new ScriptSourceViewer(group, null, null, false,
 				SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL, null);
 
-		IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
-				.getLanguageToolkit(getNatureId());
+		IDLTKUILanguageToolkit toolkit = BreakpointUtils
+				.getUILanguageToolkit(getBreakpoint());
 
 		IDocument document = new Document();
 
@@ -272,12 +269,6 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 	protected IScriptBreakpoint getBreakpoint() {
 		return (IScriptBreakpoint) getElement();
-	}
-
-	protected String getNatureId() {
-		ScriptDebugManager manager = ScriptDebugManager.getInstance();
-		return manager.getNatureByDebugModel(getBreakpoint()
-				.getModelIdentifier());
 	}
 
 	protected Control createContents(Composite parent) {

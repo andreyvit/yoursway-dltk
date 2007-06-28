@@ -25,17 +25,13 @@ import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchListener;
 import org.eclipse.debug.core.model.IBreakpoint;
-import org.eclipse.debug.internal.core.BreakpointManager;
 import org.eclipse.debug.ui.DebugUITools;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpointListener;
-import org.eclipse.dltk.debug.core.model.IScriptDebugElement;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
-import org.eclipse.dltk.internal.debug.core.model.AbstractScriptBreakpoint;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 

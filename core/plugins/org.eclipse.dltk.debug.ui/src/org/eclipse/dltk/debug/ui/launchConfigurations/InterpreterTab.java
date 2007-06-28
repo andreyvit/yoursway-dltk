@@ -25,7 +25,7 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
-import org.eclipse.dltk.debug.ui.messages.DLTKLaunchMessages;
+import org.eclipse.dltk.debug.ui.messages.ScriptLaunchMessages;
 import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterComboBlock;
 import org.eclipse.dltk.internal.debug.ui.interpreters.InterpreterDescriptor;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
@@ -224,7 +224,7 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 	 * @see ILaunchConfigurationTab#getName()
 	 */
 	public String getName() {
-		return DLTKLaunchMessages.InterpreterTab__Interp_1; 
+		return ScriptLaunchMessages.InterpreterTab__Interp_1; 
 	}
 	
 	/**
@@ -277,7 +277,7 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 							wc = getLaunchConfiguration().getWorkingCopy();
 					}
 				} catch (CoreException e) {
-					DLTKDebugUIPlugin.errorDialog(DLTKLaunchMessages.InterpreterTab_Unable_to_initialize_defaults_for_selected_InterpreterEnvironment_1, e); 
+					DLTKDebugUIPlugin.errorDialog(ScriptLaunchMessages.InterpreterTab_Unable_to_initialize_defaults_for_selected_InterpreterEnvironment_1, e); 
 					return;
 				}
 			}
@@ -390,14 +390,14 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 
 			public String getDescription() {
 				IScriptProject project = getScriptProject();
-				String name = DLTKLaunchMessages.InterpreterTab_7; 
+				String name = ScriptLaunchMessages.InterpreterTab_7; 
 				if (project == null) {					
 					IInterpreterInstall Interpreter = null;
 					Interpreter = ScriptRuntime.getDefaultInterpreterInstall(getNature());
 					if (Interpreter != null) {
 						name = Interpreter.getName();
 					}
-					return MessageFormat.format(DLTKLaunchMessages.InterpreterTab_8, new String[]{name}); 
+					return MessageFormat.format(ScriptLaunchMessages.InterpreterTab_8, new String[]{name}); 
 				}
 				try {
 					IInterpreterInstall Interpreter = ScriptRuntime.getInterpreterInstall(project);
@@ -406,7 +406,7 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 					}
 				} catch (CoreException e) {
 				}
-				return MessageFormat.format(DLTKLaunchMessages.InterpreterTab_9, new String[]{name}); 
+				return MessageFormat.format(ScriptLaunchMessages.InterpreterTab_9, new String[]{name}); 
 			}
 		};
 	}

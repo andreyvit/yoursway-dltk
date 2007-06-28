@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.debug.ui.interpreters;
 
 import java.text.MessageFormat;
 
-import org.eclipse.dltk.debug.ui.messages.DLTKLaunchMessages;
+import org.eclipse.dltk.debug.ui.messages.ScriptLaunchMessages;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.ScriptRuntime;
 
@@ -27,12 +27,12 @@ public class BuildInterpreterDescriptor extends InterpreterDescriptor {
 	}
 		
 	public String getDescription() {
-		String name = DLTKLaunchMessages.InterpreterTab_7;
+		String name = ScriptLaunchMessages.InterpreterTab_7;
 		IInterpreterInstall Interpreter = ScriptRuntime.getDefaultInterpreterInstall(fNature);
 		if (Interpreter != null) {
 			name = Interpreter.getName();
 		}
-		return MessageFormat.format(DLTKLaunchMessages.InterpreterTab_8, new String[] {
+		return MessageFormat.format(ScriptLaunchMessages.InterpreterTab_8, new String[] {
 			name
 		});
 	}

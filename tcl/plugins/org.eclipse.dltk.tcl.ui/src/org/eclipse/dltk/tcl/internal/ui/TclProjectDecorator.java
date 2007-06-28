@@ -19,7 +19,7 @@ public class TclProjectDecorator extends LabelProvider implements
 			project = (IProject) element;
 		}
 
-		if (project != null) {
+		if (project != null && project.isOpen()) {
 			try {
 				if (project.hasNature(TclNature.NATURE_ID)) {
 					decoration.addOverlay(TclImages.PROJECT_DECARATOR);

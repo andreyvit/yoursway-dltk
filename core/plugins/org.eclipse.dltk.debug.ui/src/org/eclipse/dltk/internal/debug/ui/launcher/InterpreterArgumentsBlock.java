@@ -17,7 +17,7 @@ import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.actions.ControlAccessibleListener;
 import org.eclipse.dltk.debug.ui.launchConfigurations.CommonScriptLaunchTab;
-import org.eclipse.dltk.debug.ui.messages.DLTKLaunchMessages;
+import org.eclipse.dltk.debug.ui.messages.ScriptLaunchMessages;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -55,7 +55,7 @@ public class InterpreterArgumentsBlock extends CommonScriptLaunchTab {
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		group.setLayoutData(gd);
 		group.setFont(font);
-		group.setText(DLTKLaunchMessages.InterpreterArgumentsTab_Interpreter_ar_guments); 
+		group.setText(ScriptLaunchMessages.InterpreterArgumentsTab_Interpreter_ar_guments); 
 		
 		fInterpreterArgumentsText = new Text(group, SWT.MULTI | SWT.WRAP| SWT.BORDER | SWT.V_SCROLL);
 		gd = new GridData(GridData.FILL_BOTH);
@@ -70,7 +70,7 @@ public class InterpreterArgumentsBlock extends CommonScriptLaunchTab {
 		});	
 		ControlAccessibleListener.addListener(fInterpreterArgumentsText, group.getText());
 				
-		fPgrmArgVariableButton = createPushButton(group, DLTKLaunchMessages.InterpreterArgumentsBlock, null);
+		fPgrmArgVariableButton = createPushButton(group, ScriptLaunchMessages.InterpreterArgumentsBlock, null);
 		fPgrmArgVariableButton.setFont(font);
 		fPgrmArgVariableButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
 		fPgrmArgVariableButton.addSelectionListener(new SelectionListener() {
@@ -102,7 +102,7 @@ public class InterpreterArgumentsBlock extends CommonScriptLaunchTab {
 		try {
 			fInterpreterArgumentsText.setText(configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_INTERPRETER_ARGUMENTS, "")); //$NON-NLS-1$
 		} catch (CoreException e) {
-			setErrorMessage(DLTKLaunchMessages.InterpreterArgumentsTab_Exception_occurred_reading_configuration + e.getStatus().getMessage()); 
+			setErrorMessage(ScriptLaunchMessages.InterpreterArgumentsTab_Exception_occurred_reading_configuration + e.getStatus().getMessage()); 
 			DLTKDebugUIPlugin.log(e);			
 		}
 	}
@@ -118,7 +118,7 @@ public class InterpreterArgumentsBlock extends CommonScriptLaunchTab {
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getName()
 	 */
 	public String getName() {
-		return DLTKLaunchMessages.InterpreterArgumentsBlock_Interpreter_Arguments; 
+		return ScriptLaunchMessages.InterpreterArgumentsBlock_Interpreter_Arguments; 
 	}
 	
 	/**

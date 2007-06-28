@@ -24,6 +24,7 @@ import org.eclipse.dltk.internal.ui.dialogs.StatusInfo;
 import org.eclipse.dltk.internal.ui.dialogs.StatusUtil;
 import org.eclipse.dltk.internal.ui.preferences.ScrolledPageContent;
 import org.eclipse.dltk.ui.util.PixelConverter;
+import org.eclipse.dltk.ui.util.SWTFactory;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -34,6 +35,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
@@ -49,14 +51,13 @@ import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 
-
 /**
  * Configures preferences.
  * 
  */
 public abstract class AbstractConfigurationBlock implements
 		IPreferenceConfigurationBlock {
-	
+
 	/**
 	 * Use as follows:
 	 * 
@@ -299,7 +300,7 @@ public abstract class AbstractConfigurationBlock implements
 	 * List of master/slave listeners when there's a dependency.
 	 * 
 	 * @see #createDependency(Button, Control)
-	 *
+	 * 
 	 */
 	private ArrayList fMasterSlaveListeners = new ArrayList();
 
@@ -359,6 +360,21 @@ public abstract class AbstractConfigurationBlock implements
 
 	private boolean isNestedInScrolledComposite(Composite parent) {
 		return getParentScrolledComposite(parent) != null;
+	}
+
+	protected Composite createComposite(Composite parent, Font font,
+			int columns, int hspan, int fill, int marginwidth, int marginheight) {
+		return SWTFactory.createComposite(parent, font, columns, hspan, fill,
+				marginwidth, marginheight);
+	}
+
+	protected Group createGroup(Composite parent, String text, int columns,
+			int hspan, int fill) {
+		return SWTFactory.createGroup(parent, text, columns, hspan, fill);
+	}
+
+	protected Label createLabel(Composite parent, String text, int hspan) {
+		return SWTFactory.createLabel(parent, text, hspan);
 	}
 
 	protected Button addCheckBox(Composite parent, String label, String key,
@@ -576,7 +592,7 @@ public abstract class AbstractConfigurationBlock implements
 			fStatus = new StatusInfo();
 		return fStatus;
 	}
-	
+
 	public void dispose() {
 	}
 
@@ -647,30 +663,29 @@ public abstract class AbstractConfigurationBlock implements
 			return group;
 		}
 	}
-	
+
 	private FontMetrics fFontMetrics;
 
-	
 	/**
-     * Initializes the computation of horizontal and vertical dialog units based
-     * on the size of current font.
-     * <p>
-     * This method must be called before any of the dialog unit based conversion
-     * methods are called.
-     * </p>
-     * 
-     * @param testControl
-     *            a control from which to obtain the current font
-     */
-    protected void initializeDialogUnits(Control testControl) {
-        // Compute and store a font metric
-        GC gc = new GC(testControl);
-        gc.setFont(JFaceResources.getDialogFont());
-        fFontMetrics = gc.getFontMetrics();
-        gc.dispose();
-    }	
-    
-    /**
+	 * Initializes the computation of horizontal and vertical dialog units based
+	 * on the size of current font.
+	 * <p>
+	 * This method must be called before any of the dialog unit based conversion
+	 * methods are called.
+	 * </p>
+	 * 
+	 * @param testControl
+	 *            a control from which to obtain the current font
+	 */
+	protected void initializeDialogUnits(Control testControl) {
+		// Compute and store a font metric
+		GC gc = new GC(testControl);
+		gc.setFont(JFaceResources.getDialogFont());
+		fFontMetrics = gc.getFontMetrics();
+		gc.dispose();
+	}
+
+	/**
 	 * Returns the number of pixels corresponding to the width of the given
 	 * number of characters.
 	 * <p>

@@ -5,5 +5,5 @@ public final class RubyDebuggingConstants {
 	}
 	
 	// TODO: name correctly
-	public static final String DEBUGGING_ENGINE_ID = "debugging_engine_id";
+	public static final String DEBUGGING_ENGINE_ID_KEY = "debugging_engine_id";
 }

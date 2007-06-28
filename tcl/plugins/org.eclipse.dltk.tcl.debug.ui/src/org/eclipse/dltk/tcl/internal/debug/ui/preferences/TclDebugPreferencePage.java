@@ -83,6 +83,8 @@ public class TclDebugPreferencePage extends PreferencePage implements
 	}
 
 	protected Control createContents(Composite parent) {
+		setDescription(TclDebugPreferencesMessages.PreferencesDescription);
+		
 		Composite top = new Composite(parent, SWT.NONE);
 
 		GridLayout layout = new GridLayout();

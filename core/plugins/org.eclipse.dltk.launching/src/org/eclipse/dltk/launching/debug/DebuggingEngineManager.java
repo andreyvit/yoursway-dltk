@@ -13,7 +13,6 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.launching.debug.DebuggingEngine;
-import org.eclipse.dltk.internal.launching.debug.PriorityBasedDebuggingEngineSelector;
 import org.eclipse.dltk.launching.IInterpreterRunnerFactory;
 
 public class DebuggingEngineManager {

@@ -32,7 +32,7 @@ import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
-import org.eclipse.dltk.debug.ui.messages.DLTKLaunchMessages;
+import org.eclipse.dltk.debug.ui.messages.ScriptLaunchMessages;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.LaunchingMessages;
@@ -262,8 +262,8 @@ public abstract class AbstractScriptLaunchShortcut implements ILaunchShortcut {
 		ElementListSelectionDialog dialog = new ElementListSelectionDialog(
 				getShell(), labelProvider);
 		dialog.setElements(configList.toArray());
-		dialog.setTitle(DLTKLaunchMessages.scriptLaunchShortcut2_title);
-		dialog.setMessage(DLTKLaunchMessages.scriptLaunchShortcut2);
+		dialog.setTitle(ScriptLaunchMessages.scriptLaunchShortcut2_title);
+		dialog.setMessage(ScriptLaunchMessages.scriptLaunchShortcut2);
 		dialog.setMultipleSelection(false);
 		int result = dialog.open();
 		labelProvider.dispose();

@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
@@ -22,6 +24,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
+import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.internal.debug.ui.ImageDescriptorRegistry;
 import org.eclipse.dltk.internal.debug.ui.ScriptDebugLogManager;
 import org.eclipse.dltk.internal.debug.ui.ScriptDebugOptionsManager;
@@ -88,6 +91,11 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 		launchManager.addLaunchListener(DebugConsoleManager.getInstance());
 		launchManager.addLaunchListener(ScriptDebugLogManager.getInstance());
 
+		IAdapterManager manager = Platform.getAdapterManager();
+
+		IAdapterFactory variableFactory = new ScriptDebugElementAdapterFactory();
+		manager.registerAdapters(variableFactory, IScriptVariable.class);
+
 		ScriptDebugOptionsManager.getDefault().startup();
 
 		// Special listener that prints command line on the console
@@ -109,13 +117,12 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 													DLTKLaunchingPlugin.LAUNCH_COMMAND_LINE);
 
 									if (cmdLine != null) {
-										/*try {
-											stream.write(cmdLine.trim());
-											stream.write("\n");
-											stream.flush();
-										} catch (IOException e) {
-											DLTKDebugUIPlugin.log(e);
-										}*/
+										/*
+										 * try { stream.write(cmdLine.trim());
+										 * stream.write("\n"); stream.flush(); }
+										 * catch (IOException e) {
+										 * DLTKDebugUIPlugin.log(e); }
+										 */
 									}
 								}
 							}

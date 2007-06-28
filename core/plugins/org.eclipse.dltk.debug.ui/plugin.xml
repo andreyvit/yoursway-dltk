@@ -52,7 +52,7 @@
          </factory>
          <factory
           adaptableType="org.eclipse.dltk.internal.ui.editor.ScriptEditor"
-          class="org.eclipse.dltk.internal.debug.ui.DltkRetargettableActionAdapterFactory">
+          class="org.eclipse.dltk.internal.debug.ui.ScriptEditorDebugAdapterFactory">
        <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
        <adapter
              type="org.eclipse.debug.ui.actions.IRunToLineTarget">
@@ -327,6 +327,7 @@
           id="org.eclipse.dltk.debug.ui.breakpoints.ScriptLineBreakpointPropertyPage"
           name="Script Line Breakpoint">
           <enabledWhen>
+            <and>
             <or>
                <instanceof
                      value="org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint">
@@ -335,6 +336,15 @@
                      type="org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint">
                </adapt>              
             </or>
+            <not>
+            <instanceof
+                     value="org.eclipse.dltk.debug.core.model.IScriptWatchpoint"/>
+            </not>
+            <not>
+            <instanceof
+                     value="org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint"/>
+            </not>
+            </and>
          </enabledWhen>
     </page>
     <page
@@ -401,7 +411,7 @@
           category="org.eclipse.dltk.preferences"
           class="org.eclipse.dltk.debug.ui.preferences.ScriptDebugPreferencePage"
           id="org.eclipse.dltk.preferences.debug"
-          name="Debugging">
+          name="%ScriptDebugPreferencePage.name">
     </page>
  </extension>
  <extension
