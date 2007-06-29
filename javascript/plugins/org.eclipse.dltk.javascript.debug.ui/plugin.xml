@@ -170,6 +170,39 @@
              menubarPath="group.properties"/>
        
     </viewerContribution>    
+    <viewerContribution targetID="#JavascriptEditorContext"
+			id="org.eclipse.dltk.debug.ui.DebugPopupActions">
+			<visibility>
+				<and>
+					<systemProperty
+						name="org.eclipse.dltk.debug.ui.debuggerActive" value="true">
+					</systemProperty>
+					<objectClass
+						name="org.eclipse.jface.text.ITextSelection">
+					</objectClass>
+				</and>
+			</visibility>
+			<action label="%ScriptWatch.label"
+				icon="/icons/watch_exp.gif"
+				class="org.eclipse.dltk.internal.debug.ui.actions.ScriptWatchAction"
+				menubarPath="additions"
+				id="org.eclipse.dltk.javascript.debug.ui.ScriptWatch">
+			</action>
+			<action label="%ScriptInspect.label"
+				icon="/icons/insp_sbook.gif"
+				definitionId="org.eclipse.dlkt.debug.ui.commands.ScriptInspect"
+				class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptInspectAction"
+				menubarPath="additions"
+				id="org.eclipse.dltk.javascript.debug.ui.ScriptInspect">
+			</action>
+			<action label="%ScriptDisplay.label"
+				icon="/icons/disp_sbook.gif"
+				definitionId="org.eclipse.dlkt.debug.ui.commands.ScriptDisplay"
+				class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptDisplayAction"
+				menubarPath="additions"
+				id="org.eclipse.dltk.javascript.debug.ui.ScriptDisplay">
+			</action>
+		</viewerContribution>
  </extension>
 	
 	<extension

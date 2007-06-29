@@ -17,6 +17,7 @@ public class Base64Helper {
 
 	public static String decodeString(String base64){
 		try {
+			if (base64==null)return "";
 			return new String(decoder.decodeBuffer(base64));
 		} catch (IOException e) {
 			throw new RuntimeException();

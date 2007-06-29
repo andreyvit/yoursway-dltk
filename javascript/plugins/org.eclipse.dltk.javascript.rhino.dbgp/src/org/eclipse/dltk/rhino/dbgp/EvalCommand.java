@@ -23,6 +23,7 @@ final class EvalCommand extends DBGPDebugger.Command {
 	void parseAndExecute(String command, HashMap options) {
 		String value = Base64Helper
 				.decodeString((String) options.get("--"));
+		if (value.length()==0)value="this";
 		StringBuffer valueBuffer = new StringBuffer();
 		if (this.debugger.cmanager.getStackDepth()==0){
 			this.debugger.printProperty(value, value, "", valueBuffer, 0, true);
