@@ -47,7 +47,8 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.osgi.framework.Bundle;
 
-public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner implements IConfigurableRunner{
+public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
+		implements IConfigurableRunner {
 
 	public static final IJavaScriptInterpreterRunnerConfig DEFAULT_CONFIG = new IJavaScriptInterpreterRunnerConfig() {
 
@@ -101,10 +102,8 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner imple
 
 		IScriptProject proj = AbstractScriptLaunchConfigurationDelegate
 				.getScriptProject(launch.getLaunchConfiguration());
-		IJavaProject myJavaProject = JavaCore.create(proj.getProject());
-		IVMInstall vmInstall = JavaRuntime.getVMInstall(myJavaProject);
-		if (vmInstall == null)
-			vmInstall = JavaRuntime.getDefaultVMInstall();
+		IJavaProject myJavaProject = JavaCore.create(proj.getProject());		
+		IVMInstall vmInstall = myJavaProject.exists()?JavaRuntime.getVMInstall(myJavaProject):JavaRuntime.getDefaultVMInstall();		
 		if (vmInstall != null) {
 			IVMRunner vmRunner = vmInstall
 					.getVMRunner(ILaunchManager.DEBUG_MODE);
@@ -186,6 +185,7 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner imple
 
 	protected static String[] computeBaseClassPath(IJavaProject myJavaProject)
 			throws CoreException {
+		if (!myJavaProject.exists())return new String[0];
 		return JavaRuntime.computeDefaultRuntimeClassPath(myJavaProject);
 	}
 
@@ -232,6 +232,6 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner imple
 	}
 
 	public void setRunnerConfig(IJavaScriptInterpreterRunnerConfig config) {
-		this.config=config;
+		this.config = config;
 	}
 }
