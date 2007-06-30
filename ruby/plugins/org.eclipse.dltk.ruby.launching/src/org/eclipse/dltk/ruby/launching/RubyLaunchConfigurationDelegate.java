@@ -86,7 +86,7 @@ public class RubyLaunchConfigurationDelegate extends
 			ILaunchConfiguration configuration) {
 		config.addInterpreterArg("-e");
 		config
-				.addInterpreterArg("\"STDOUT.sync=true;STDERR.sync=true;load($0=ARGV.shift)\"");
+				.addInterpreterArg("STDOUT.sync=true;STDERR.sync=true;load($0=ARGV.shift)");
 	}
 
 	protected InterpreterConfig createInterpreterConfig(
