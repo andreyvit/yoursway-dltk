@@ -19,7 +19,7 @@
                icon="icons/method_entry.gif"
                id="org.eclipse.jdt.debug.ui.actions.AddException"
                label="suspend on method entry"
-               state="true"
+               state="false"
                style="toggle"
                toolbarPath="additions"
                tooltip="%suspendOnEntry">
@@ -32,7 +32,7 @@
                 icon="icons/method_exit.gif"
                 id="org.eclipse.jdt.debug.ui.actions.AddException"
                 label="suspend on method exit"
-                state="true"
+                state="false"
                 style="toggle"
                 toolbarPath="additions"
                 tooltip="%suspendOnExit">
