@@ -19,12 +19,13 @@ public interface IScriptThread extends IThread /* , IFilteredStep */{
 	int ERR_THREAD_NOT_SUSPENDED = -3;
 
 	IDbgpSession getDbgpSession();
-	
+
 	IDbgpBreakpoint getDbgpBreakpoint(String id);
 
 	IScriptThreadStreamProxy getStreamProxy();
 
 	IScriptEvaluationEngine getEvaluationEngine();
-	
+
 	int getSuspendCount();
+
 }

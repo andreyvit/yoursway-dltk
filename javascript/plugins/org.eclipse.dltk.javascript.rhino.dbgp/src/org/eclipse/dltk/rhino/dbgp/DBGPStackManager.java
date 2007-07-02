@@ -18,6 +18,12 @@ public class DBGPStackManager {
 
 	private BreakPointManager manager = new BreakPointManager();
 
+	private boolean suspendOnExit;
+
+	private boolean suspendOnEntry;
+
+	private boolean suspenOnChangeLine;
+
 	public BreakPointManager getManager() {
 		return manager;
 	}
@@ -34,17 +40,27 @@ public class DBGPStackManager {
 		return object;
 	}
 
-	public void enter(DBGPDebugFrame debugFrame) {		
-		stack.add(debugFrame);		
-//		BreakPoint hit = manager.hit(debugFrame.getSourceName(), debugFrame.getLineNumber());
-//		if (debugFrame.getWhere().equals("module"))
-//		{
-//		checkBreakpoint(debugFrame, hit);
-//		}
+	public void enter(DBGPDebugFrame debugFrame) {
+		stack.add(debugFrame);
+		if (suspendOnEntry) {
+			if (debugFrame.getWhere().equals("module")){
+				observer.update(null, this);
+				synchronized (this) {
+					try {
+						this.wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+			else suspenOnChangeLine=true;
+		}
 	}
 
 	public void exit(DBGPDebugFrame debugFrame) {
-		if (needSuspend) {
+		if (needSuspend || suspendOnExit) {
+			
 			observer.update(null, this);
 			synchronized (this) {
 				try {
@@ -67,6 +83,18 @@ public class DBGPStackManager {
 	}
 
 	public void changeLine(DBGPDebugFrame frame, int lineNumber) {
+		if (suspenOnChangeLine){
+			suspenOnChangeLine=false;
+			observer.update(null, this);
+			synchronized (this) {
+				try {
+					this.wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}			
+		}
 		if (frame.isSuspend()) {
 			needSuspend = true;
 		}
@@ -180,5 +208,16 @@ public class DBGPStackManager {
 
 	public BreakPoint getBreakpoint(String id) {
 		return this.manager.getBreakpoint(id);
+	}
+
+	public void setSuspendOnExit(boolean parseBoolean) {
+		this.suspendOnExit = parseBoolean;
+		System.out.println(parseBoolean);
+	}
+
+	public void setSuspendOnEntry(boolean parseBoolean) {
+		System.out.println("Entry:"+parseBoolean);
+		this.suspendOnExit = parseBoolean;
+		this.suspendOnEntry = parseBoolean;
 	}
 }

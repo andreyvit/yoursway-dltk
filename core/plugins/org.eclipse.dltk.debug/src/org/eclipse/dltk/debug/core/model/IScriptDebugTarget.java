@@ -35,4 +35,12 @@ public interface IScriptDebugTarget extends IDebugTarget {
 
 	// Run to line
 	void runToLine(URI uri, int lineNumber) throws DebugException;
+
+	boolean isSuspendOnMethodEntry();
+
+	void setSuspendOnMethodEntry(boolean suspend);
+
+	boolean isSuspendOnMethodExit();
+
+	void setSuspendOnMethodExit(boolean suspend);
 }

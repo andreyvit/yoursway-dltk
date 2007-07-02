@@ -16,6 +16,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.WeakHashMap;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
@@ -34,6 +37,8 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
+import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+import org.eclipse.dltk.dbgp.internal.commands.DbgpBaseCommands;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.IDbgpService;
@@ -41,11 +46,18 @@ import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTargetListener;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
+import org.eclipse.dltk.debug.core.model.MethodEntryManager;
 
 public class ScriptDebugTarget extends ScriptDebugElement implements
 		IScriptDebugTarget, IDbgpThreadManagerListener {
 
+	private static final String ON_EXIT = "suspendOnExit";
+
+	private static final String SUSPEND_ON_ENTRY = "suspendOnEntry";
+
 	private static final int THREAD_TERMINATION_TIMEOUT = 5000; // 5 seconds
+
+	private static final String SUSPEND_ON_EXIT = ON_EXIT;
 
 	private final ListenerList listeners;
 
@@ -56,6 +68,10 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	private final ILaunch launch;
 
 	private String name;
+
+	private boolean suspendOnMethodEntry;
+
+	private boolean suspendOnMethodExit;
 
 	private boolean disconnected;
 
@@ -121,6 +137,12 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		}
 	}
 
+	static WeakHashMap targets = new WeakHashMap();
+
+	public static List getAllTargets() {
+		return new ArrayList(targets.keySet());
+	}
+
 	public ScriptDebugTarget(String modelId, IDbgpService dbgpService,
 			String id, ILaunch launch, IProcess process) throws CoreException {
 
@@ -145,6 +167,13 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		this.threadManager.addListener(this);
 
 		DebugEventHelper.fireCreateEvent(this);
+		targets.put(this, "");
+		boolean suspendOnMethodEntry2 = MethodEntryManager
+				.isSuspendOnMethodEntry();
+		boolean suspendOnMethodExit2 = MethodEntryManager
+				.isSuspendOnMethodExit();
+		setSuspendOnMethodEntry(suspendOnMethodEntry2);
+		setSuspendOnMethodExit(suspendOnMethodExit2);
 	}
 
 	public IDebugTarget getDebugTarget() {
@@ -321,6 +350,19 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 			// DebugEventHelper.fireCreateEvent(this);
 			fireTargetInitialized();
 		}
+		try {
+			initSuspends(thread);
+		} catch (DbgpException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void initSuspends(IScriptThread thread) throws DbgpException {
+		thread.getDbgpSession().getCoreCommands().setProperty(
+				SUSPEND_ON_ENTRY, -1, Boolean.toString(suspendOnMethodEntry));
+		thread.getDbgpSession().getCoreCommands().setProperty(
+				SUSPEND_ON_EXIT, -1, Boolean.toString(suspendOnMethodExit));
 	}
 
 	public void allThreadsTerminated() {
@@ -363,5 +405,64 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	public boolean supportsBreakpoint(IBreakpoint breakpoint) {
 		return breakpointManager.supportsBreakpoint(breakpoint);
+	}
+
+	public boolean isSuspendOnMethodEntry() {
+		return suspendOnMethodEntry;
+	}
+
+	public boolean isSuspendOnMethodExit() {
+		return suspendOnMethodExit;
+	}
+
+	public void setSuspendOnMethodEntry(boolean suspend) {
+		boolean ok = true;
+		if (!isDisconnected()) {
+			IThread[] threads;
+			try {
+				threads = this.getThreads();
+				l2: for (int a = 0; a < threads.length; a++) {
+					IScriptThread scr = (IScriptThread) threads[a];
+					try {
+						scr.getDbgpSession().getCoreCommands().setProperty(
+								SUSPEND_ON_ENTRY, -1, Boolean.toString(suspend));
+					} catch (DbgpException e) {
+						e.printStackTrace();
+						ok = false;
+						break l2;
+					}
+				}
+
+			} catch (DebugException e) {
+				e.printStackTrace();
+			}
+		}
+		if (ok)
+			this.suspendOnMethodEntry = suspend;
+	}
+
+	public void setSuspendOnMethodExit(boolean suspend) {
+		boolean ok = true;
+		if (!isDisconnected()) {
+			IThread[] threads;
+			try {
+				threads = this.getThreads();
+				l2: for (int a = 0; a < threads.length; a++) {
+					IScriptThread scr = (IScriptThread) threads[a];
+					try {
+						scr.getDbgpSession().getCoreCommands().setProperty(
+								ON_EXIT, -1, Boolean.toString(suspend));
+					} catch (DbgpException e) {
+						e.printStackTrace();
+						ok = false;
+						break l2;
+					}
+				}
+			} catch (DebugException e) {
+				e.printStackTrace();
+			}
+		}
+		if (ok)
+			this.suspendOnMethodExit = suspend;
 	}
 }

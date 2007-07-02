@@ -8,5 +8,5 @@
             natureId="org.eclipse.dltk.javascript.core.nature"
             typeFactory="org.eclipse.dltk.javascript.internal.debug.JavaScriptTypeFactory">
       </debugModel>
-   </extension>
+   </extension> 
 </plugin>

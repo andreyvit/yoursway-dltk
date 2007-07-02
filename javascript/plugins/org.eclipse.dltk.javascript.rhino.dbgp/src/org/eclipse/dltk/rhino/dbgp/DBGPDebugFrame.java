@@ -63,11 +63,11 @@ public final class DBGPDebugFrame implements DebugFrame {
 	}
 
 	public void onExit(Context cx, boolean byThrow, Object resultOrException) {
-
+		
 		stackManager.exit(this);
 	}
 
-	public void onLineChange(Context cx, int lineNumber) {
+	public void onLineChange(Context cx, int lineNumber) {		
 		this.lineNumber = lineNumber;
 		stackManager.changeLine(this, lineNumber);
 	}

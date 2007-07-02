@@ -31,6 +31,7 @@ public class DBGPDebugger extends Thread implements Debugger, Observer,
 	private Socket socket;
 	private PrintStream out;
 	private HashMap strategies = new HashMap();
+	HashMap properties=new HashMap();
 	String runTransctionId;
 
 	static abstract class Command {
@@ -320,5 +321,18 @@ public class DBGPDebugger extends Thread implements Debugger, Observer,
 				}
 			}
 		}
+	}
+	
+
+	public void setProperty(String name, String value) {
+		
+	}
+
+	public void setSuspendOnExit(boolean parseBoolean) {
+		cmanager.setSuspendOnExit(parseBoolean);
+	}
+
+	public void setSuspendOnEntry(boolean parseBoolean) {
+		cmanager.setSuspendOnEntry(parseBoolean);
 	}
 }

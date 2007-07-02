@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.dltk.debug,
  org.eclipse.debug.ui,
  org.eclipse.debug.core,
  org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.debug.ui
 Bundle-Activator: org.eclipse.dltk.javascript.internal.debug.JavaScriptDebugPlugin
 Export-Package: org.eclipse.dltk.javascript.internal.debug
 Eclipse-LazyStart: true
