@@ -24,6 +24,7 @@ class Foo
 
 end
 
-## meth Foo.ultimate_answer => Fixnum
-## meth Foo.dining_philosopher => Fixnum
-## meth Foo.dining_philosopher_2 => Fixnum
+Foo.new.ultimate_answer ## expr Foo.new.ultimate_answer => Fixnum%
+Foo.new.dining_philosopher ## expr Foo.new.dining_philosopher => Fixnum%
+Foo.new.dining_philosopher_2 ## expr Foo.new.dining_philosopher_2 => Fixnum% 
+

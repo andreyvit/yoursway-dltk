@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
 import org.eclipse.dltk.tcl.core.TclNature;
@@ -41,7 +42,7 @@ public class TclASTBuildTests extends AbstractModelTests
 	
 	public void testBuildExtendedAST001() throws Exception {
 		String prj = "prj1";
-		//IScriptProject project = setUpScriptProject( prj );
+		IScriptProject project = setUpScriptProject( prj );
 		
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("module0.tcl") );
 		

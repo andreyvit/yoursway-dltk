@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -117,12 +118,12 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 													DLTKLaunchingPlugin.LAUNCH_COMMAND_LINE);
 
 									if (cmdLine != null) {
-										/*
-										 * try { stream.write(cmdLine.trim());
-										 * stream.write("\n"); stream.flush(); }
-										 * catch (IOException e) {
-										 * DLTKDebugUIPlugin.log(e); }
-										 */
+									
+//										  try { stream.write(cmdLine.trim());
+//										  stream.write("\n"); stream.flush(); }
+//										  catch (IOException e) {
+//										  DLTKDebugUIPlugin.log(e); }
+										
 									}
 								}
 							}

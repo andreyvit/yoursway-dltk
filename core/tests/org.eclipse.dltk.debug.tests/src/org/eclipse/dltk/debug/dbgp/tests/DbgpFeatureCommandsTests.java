@@ -9,7 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.dbgp.tests;
 
-public class DbgpFeatureCommandsTests {
+import junit.framework.TestCase;
+
+public class DbgpFeatureCommandsTests  extends TestCase {
 	public void testGetFeature() throws Exception {
 
 	}

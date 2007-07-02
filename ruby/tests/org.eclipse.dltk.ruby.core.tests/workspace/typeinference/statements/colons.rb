@@ -26,4 +26,4 @@ class Class1
 	end	
 end
 n = Class1::Class2.new
-n ## expr n => Class1::Class2
+n ## expr n => Class1{Class2%

@@ -7,15 +7,15 @@
  *
  
  *******************************************************************************/
-package org.eclipse.dltk.core.tests.mixin;
+package org.eclipse.dltk.ruby.tests.typeinference;
 
-import org.eclipse.dltk.core.tests.model.AbstractModelTests;
-import org.eclipse.dltk.core.tests.model.ModelTestsPlugin;
+import junit.framework.Test;
 
-public class MixinTests extends AbstractModelTests {
-	public MixinTests(String name) {
-		super(ModelTestsPlugin.PLUGIN_NAME, name);
+
+public class SimpleTest {
+
+	public static Test suite() {
+		return new TypeInferenceSuite("/workspace/typeinference/simple");
 	}
-	public void testCreateIndexEntries() throws Exception {
-	}
+
 }

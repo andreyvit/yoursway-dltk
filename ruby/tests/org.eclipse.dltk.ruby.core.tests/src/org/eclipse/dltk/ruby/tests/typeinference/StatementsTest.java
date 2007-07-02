@@ -7,16 +7,15 @@
  *
  
  *******************************************************************************/
-package org.eclipse.dltk.ruby.tests.typeinference.old;
+package org.eclipse.dltk.ruby.tests.typeinference;
 
 import junit.framework.Test;
 
-import org.eclipse.dltk.ruby.tests.typeinference.TypeInferenceSuite;
 
-public class DepTrackingTest {
+public class StatementsTest {
 
 	public static Test suite() {
-		return new TypeInferenceSuite("/workspace/typeinference/deptracking");
+		return new TypeInferenceSuite("/workspace/typeinference/statements");
 	}
 
 }

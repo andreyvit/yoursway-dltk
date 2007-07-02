@@ -19,6 +19,7 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.tests.model.AbstractModelCompletionTests;
 import org.eclipse.dltk.core.tests.model.CompletionTestsRequestor;
+import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.tests.Activator;
 
 public class RubyCompletionTests extends AbstractModelCompletionTests {
@@ -35,6 +36,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		waitUntilIndexesReady();
 		ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 		waitForAutoBuild();
+		RubyPlugin.initialized = true;
 		super.setUpSuite();
 	}
 

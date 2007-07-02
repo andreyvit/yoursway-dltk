@@ -9,8 +9,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.dbgp.tests;
 
+import junit.framework.TestCase;
 
-public class DbgpContextCommandsTests {
+
+public class DbgpContextCommandsTests  extends TestCase  {
 	public void testGetContextNames() throws Exception {
 		
 	}

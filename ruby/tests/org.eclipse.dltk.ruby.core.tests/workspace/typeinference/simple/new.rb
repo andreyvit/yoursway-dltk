@@ -9,7 +9,7 @@
 ###############################################################################
 
 
-class Foo
+class FooNew
 
 	def ultimate_answer
 		42
@@ -21,9 +21,9 @@ class Foo
 
 end
 
-class Bar
+class BarNew
 	def boz
-		Foo.new
+		FooNew.new
 	end
 	
 	def func
@@ -31,7 +31,8 @@ class Bar
 	end
 end
 
-## meth Foo.ultimate_answer => Fixnum
-## meth Foo.dining_philosopher => Fixnum
-## meth Bar.boz => Foo
-## meth Bar.func => Fixnum
+FooNew.new.ultimate_answer ## expr FooNew.new.ultimate_answer => Fixnum%
+FooNew.new.dining_philosopher ## expr FooNew.new.dining_philosopher => Fixnum%
+BarNew.new.boz ## expr BarNew.new.boz => FooNew%
+BarNew.new.func ## expr BarNew.new.func => Fixnum%
+

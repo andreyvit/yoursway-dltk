@@ -22,8 +22,9 @@ class Bar
 	def biz(foo)
 		foo
 	end
+
 end
 
-## meth Bar.biz => Fixnum
-## meth Bar.boz => Fixnum
-## meth Bar.func => Fixnum
+Bar.new.biz(0) ## expr Bar.new.biz(0) => Fixnum%
+Bar.new.boz(42) ## expr Bar.new.boz(42) => Fixnum%
+Bar.new.func ## expr Bar.new.func => Fixnum%

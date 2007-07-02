@@ -47,13 +47,13 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ContentProviderTests1 extends TestCase {
 
-	public static Test suite() {
-		TestSuite suite= new TestSuite("org.eclipse.dltk.ui.ContentProviderTests1"); //$NON-NLS-1$
-		//$JUnit-BEGIN$
-	   suite.addTestSuite(ContentProviderTests1.class);
-		//$JUnit-END$
-		return suite;
-	}
+//	public static Test suite() {
+//		TestSuite suite= new TestSuite("org.eclipse.dltk.ui.ContentProviderTests1"); //$NON-NLS-1$
+//		//$JUnit-BEGIN$
+//	   suite.addTestSuite(ContentProviderTests1.class);
+//		//$JUnit-END$
+//		return suite;
+//	}
 
 	private IScriptProject fJProject1;
 	private IScriptProject fJProject2;

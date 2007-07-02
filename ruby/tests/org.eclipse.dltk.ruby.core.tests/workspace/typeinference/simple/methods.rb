@@ -5,7 +5,6 @@
 # which accompanies this distribution, and is available at
 # http://www.eclipse.org/legal/epl-v10.html
 #
-
 ###############################################################################
 
 class Foo
@@ -35,5 +34,5 @@ class Baz
 	end
 end
 
-## meth Foo.creator => Bar
-## meth Baz.bobobo => Fixnum
+Foo.new.creator ## expr Foo.new.creator => Bar%
+Baz.new.bobobo ## expr Baz.new.bobobo => Fixnum%

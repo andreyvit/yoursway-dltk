@@ -29,8 +29,11 @@ public class TypeHierarchyTests extends AbstractDLTKSearchTests implements IDLTK
 	}
 
 	public void setUpSuite() throws Exception {
-		super.setUpSuite();
+		deleteProject(PROJECT);
+		SCRIPT_PROJECT.close();
+		SCRIPT_PROJECT = null;
 		up();
+		super.setUpSuite();
 	}
 
 	public void tearDownSuite() throws Exception {

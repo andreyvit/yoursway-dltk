@@ -9,10 +9,12 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.dbgp.tests;
 
+import junit.framework.TestCase;
+
 import org.eclipse.dltk.dbgp.IDbgpContinuationHandler;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 
-public class DbgpContinuationCommandsTests {
+public class DbgpContinuationCommandsTests  extends TestCase  {
 	public void testRun() throws Exception {
 
 	}

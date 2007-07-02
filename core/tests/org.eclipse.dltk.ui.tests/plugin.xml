@@ -35,7 +35,7 @@
  </extension>
  -->
  
- <!--
+ 
   <extension
          point="org.eclipse.ui.views">
       <view
@@ -44,5 +44,5 @@
             id="org.eclipse.dltk.ui.tests.packageview.MockPluginView">
       </view>
    </extension>
-   --> 
+   
 </plugin>

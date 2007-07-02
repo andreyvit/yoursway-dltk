@@ -15,15 +15,15 @@ import junit.framework.TestSuite;
 
 public class PackageExplorerTests {
 
-	public static Test suite() {
-		TestSuite suite= new TestSuite("Test fororg.eclipse.dltk.ui.tests.packageview");
+	public static Test suite() { 
+		TestSuite suite= new TestSuite("Test for org.eclipse.dltk.ui.tests.packageview");
 		//$JUnit-BEGIN$
-		suite.addTest(ContentProviderTests1.suite());
-		suite.addTest(ContentProviderTests2.suite());
-		suite.addTest(ContentProviderTests3.suite());
-		suite.addTest(ContentProviderTests4.suite());
-		suite.addTest(ContentProviderTests5.suite());
-		suite.addTest(PackageExplorerShowInTests.suite());
+		suite.addTestSuite(ContentProviderTests1.class);
+		suite.addTestSuite(ContentProviderTests2.class);
+		suite.addTestSuite(ContentProviderTests3.class);
+		suite.addTestSuite(ContentProviderTests4.class);
+		suite.addTestSuite(ContentProviderTests5.class);
+		suite.addTestSuite(PackageExplorerShowInTests.class);
 		//suite.addTestSuite(WorkingSetDropAdapterTest.class);
 		//$JUnit-END$
 		return suite;

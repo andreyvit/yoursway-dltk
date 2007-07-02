@@ -66,9 +66,9 @@ public class ContentProviderTests5 extends TestCase{
 		super(name);
 	}
 	
-	public static Test suite() {
-		return new TestSuite(ContentProviderTests5.class);
-	}
+//	public static Test suite() {
+//		return new TestSuite(ContentProviderTests5.class);
+//	}
 	
 	protected void setUp() throws Exception {
 		super.setUp();

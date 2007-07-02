@@ -38,16 +38,16 @@ public class PackageExplorerShowInTests extends TestCase {
 		super(name);
 	}
 	
-	public static Test suite() {
-		if (true) {
-			return new ProjectTestSetup(new TestSuite(clazz));
-		} else {
-			System.err.println("*** Running only parts of " + clazz.getName() + "!");
-			TestSuite suite= new TestSuite();
-			suite.addTest(new PackageExplorerShowInTests("testXXX"));
-			return new ProjectTestSetup(suite);
-		}
-	}
+//	public static Test suite() {
+//		if (true) {
+//			return new ProjectTestSetup(new TestSuite(clazz));
+//		} else {
+//			System.err.println("*** Running only parts of " + clazz.getName() + "!");
+//			TestSuite suite= new TestSuite();
+//			suite.addTest(new PackageExplorerShowInTests("testXXX"));
+//			return new ProjectTestSetup(suite);
+//		}
+//	}
 	
 	public static Test setUpTest(Test someTest) {
 		return new ProjectTestSetup(someTest);

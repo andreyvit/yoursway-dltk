@@ -30,14 +30,14 @@ import org.eclipse.dltk.ti.goals.GoalEvaluator;
 import org.eclipse.dltk.ti.goals.IGoal;
 import org.eclipse.dltk.ti.types.IEvaluatedType;
 
-public class DDPTests extends SuiteOfTestCases {	
+public class CoreDDPTests extends SuiteOfTestCases {	
 
-	public DDPTests(String name) {
+	public CoreDDPTests(String name) {
 		super(name);
 	}
 	
 	public static Test suite() {
-		return new Suite(DDPTests.class);
+		return new Suite(CoreDDPTests.class);
 	}
 
 	private static final class FixedAnswerGoalEvaluator extends GoalEvaluator {

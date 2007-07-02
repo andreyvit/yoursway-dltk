@@ -14,6 +14,8 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.StringTokenizer;
 
+import junit.framework.Test;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -42,6 +44,8 @@ public class ModifyingResourceTests extends AbstractModelTests {
 	public ModifyingResourceTests(String testProjectName, String name) {
 		super(testProjectName, name);
 	}
+	
+	
 
 	protected void assertElementDescendants(String message, String expected, IModelElement element) throws CoreException {
 		String actual = expandAll(element);

@@ -7,13 +7,17 @@
  *
  
  *******************************************************************************/
-package org.eclipse.dltk.core.tests.model;
+package org.eclipse.dltk.core.tests;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.eclipse.dltk.core.tests.buildpath.BuildpathTests;
-import org.eclipse.dltk.core.tests.ddp.DDPTests;
+import org.eclipse.dltk.core.tests.ddp.CoreDDPTests;
+import org.eclipse.dltk.core.tests.model.BufferTests;
+import org.eclipse.dltk.core.tests.model.ModelMembersTests;
+import org.eclipse.dltk.core.tests.model.ModifyingResourceTests;
+import org.eclipse.dltk.core.tests.model.WorkingCopyTests;
 
 public class AllTests {
 
@@ -21,11 +25,13 @@ public class AllTests {
 		TestSuite suite = new TestSuite(
 				"Test for org.eclipse.dltk.core.tests.model");
 		// $JUnit-BEGIN$
+		suite.addTest(BuildpathTests.suite());
+		
+		suite.addTest(CoreDDPTests.suite());
+		
 		suite.addTest(BufferTests.suite());
 		suite.addTest(ModelMembersTests.suite());
-		suite.addTest(BuildpathTests.suite());
 		suite.addTest(WorkingCopyTests.suite());
-		suite.addTest(DDPTests.suite());
 		// $JUnit-END$
 		return suite;
 	}

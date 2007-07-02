@@ -9,8 +9,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.dbgp.tests;
 
+import junit.framework.TestCase;
 
-public class DbgpStreamCommandsTests {
+
+public class DbgpStreamCommandsTests  extends TestCase  {
 	public void testConfigureStdout() throws Exception {
 		
 	}

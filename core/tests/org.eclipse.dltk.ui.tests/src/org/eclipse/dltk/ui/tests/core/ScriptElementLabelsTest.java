@@ -57,11 +57,14 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 		IScriptFolder pack1= sourceFolder.getScriptFolder(""); //sourceFolder.createScriptFolder("org.test", false, null);
 		
 		StringBuffer buf= new StringBuffer();
-		buf.append("namespace eval Outer {\n");
-		buf.append("}\n");
+//		buf.append("namespace eval Outer {\n");
+//		buf.append("}\n");
+		buf.append("# parseme!\n");
+		buf.append("enterType Outer\n");
+		buf.append("exitType");
 		
 		String content= buf.toString();
-		ISourceModule cu= pack1.createSourceModule("Outer.tcl", content, false, null);
+		ISourceModule cu= pack1.createSourceModule("Outer.txt", content, false, null);
 
 		IModelElement elem= cu.getElementAt(content.indexOf("Outer"));
 		String lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED);
@@ -74,10 +77,10 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 		assertEqualString(lab, "Outer");
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED | ScriptElementLabels.APPEND_ROOT_PATH);
-		assertEqualString(lab, "Outer - TestSetupProject/src/Outer.tcl");
+		assertEqualString(lab, "Outer - TestSetupProject/src/Outer.txt");
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED | ScriptElementLabels.PREPEND_ROOT_PATH);
-		assertEqualString(lab, "TestSetupProject/src/Outer.tcl - Outer");
+		assertEqualString(lab, "TestSetupProject/src/Outer.txt - Outer");
 	}
 	
 	public void testTypeLabelInner() throws Exception {
@@ -88,17 +91,28 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 		
 		StringBuffer buf= new StringBuffer();
 				
-		buf.append("package require Tk\n");
-		buf.append("namespace eval Outer {\n");
-		buf.append("    proc foo{vec} {\n");
-		buf.append("    }\n");
-		buf.append("    namespace eval Inner {\n");
-		buf.append("        proc inner {vec} {\n");
-		buf.append("        }\n");	
-		buf.append("    }\n");	
-		buf.append("}\n");	
+//		buf.append("package require Tk\n");
+//		buf.append("namespace eval Outer {\n");
+//		buf.append("    proc foo{vec} {\n");
+//		buf.append("    }\n");
+//		buf.append("    namespace eval Inner {\n");
+//		buf.append("        proc inner {vec} {\n");
+//		buf.append("        }\n");	
+//		buf.append("    }\n");	
+//		buf.append("}\n");
+		
+		buf.append("# parseme!\n");
+		buf.append("enterType Outer\n");
+		buf.append("enterMethod foo\n");
+		buf.append("exitMethod\n");
+		buf.append("enterType Inner\n");
+		buf.append("enterMethod inner\n");
+		buf.append("exitMethod\n");
+		buf.append("exitType\n");
+		buf.append("exitType");
+		
 		String content= buf.toString();
-		ISourceModule cu= pack1.createSourceModule("Outer2.tcl", content, false, null);
+		ISourceModule cu= pack1.createSourceModule("Outer2.txt", content, false, null);
 
 		IModelElement elem= cu.getElementAt(content.indexOf("Inner"));
 		
@@ -112,10 +126,10 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 		assertEqualString(lab, "Inner - Outer");
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED | ScriptElementLabels.APPEND_ROOT_PATH);
-		assertEqualString(lab, "Outer.Inner - TestSetupProject/src/Outer2.tcl");
+		assertEqualString(lab, "Outer.Inner - TestSetupProject/src/Outer2.txt");
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED | ScriptElementLabels.PREPEND_ROOT_PATH);
-		assertEqualString(lab, "TestSetupProject/src/Outer2.tcl - Outer.Inner");
+		assertEqualString(lab, "TestSetupProject/src/Outer2.txt - Outer.Inner");
 	}
 	
 	public void testTypeLabelLocal() throws Exception {
@@ -126,15 +140,24 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 		
 		StringBuffer buf= new StringBuffer();
 
-		buf.append("package require Vector\n");
-		buf.append("namespace eval Outer {\n");
-		buf.append("    proc foo {vec} {\n");
-		buf.append("        namespace eval Local {\n");
-		buf.append("        }\n");
-		buf.append("    }\n");	
-		buf.append("}\n");	
+//		buf.append("package require Vector\n");
+//		buf.append("namespace eval Outer {\n");
+//		buf.append("    proc foo {vec} {\n");
+//		buf.append("        namespace eval Local {\n");
+//		buf.append("        }\n");
+//		buf.append("    }\n");	
+//		buf.append("}\n");	
+		
+		buf.append("# parseme!\n");
+		buf.append("enterType Outer\n");
+		buf.append("enterMethod foo\n");
+		buf.append("enterType Local\n");
+		buf.append("exitType\n");
+		buf.append("exitMethod\n");
+		buf.append("exitType");
+		
 		String content= buf.toString();
-		ISourceModule cu= pack1.createSourceModule("Outer3.tcl", content, false, null);
+		ISourceModule cu= pack1.createSourceModule("Outer3.txt", content, false, null);
 
 		IModelElement elem= cu.getElementAt(content.indexOf("Local"));
 		
@@ -148,10 +171,10 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 		assertEqualString(lab, "Local - Outer.foo(...)");
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED | ScriptElementLabels.APPEND_ROOT_PATH);
-		assertEqualString(lab, "Outer.foo(...).Local - TestSetupProject/src/Outer3.tcl");
+		assertEqualString(lab, "Outer.foo(...).Local - TestSetupProject/src/Outer3.txt");
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED | ScriptElementLabels.PREPEND_ROOT_PATH);
-		assertEqualString(lab, "TestSetupProject/src/Outer3.tcl - Outer.foo(...).Local");
+		assertEqualString(lab, "TestSetupProject/src/Outer3.txt - Outer.foo(...).Local");
 	}
 		
 	

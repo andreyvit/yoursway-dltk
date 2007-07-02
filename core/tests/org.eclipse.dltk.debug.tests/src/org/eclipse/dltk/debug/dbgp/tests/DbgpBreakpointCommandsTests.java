@@ -9,8 +9,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.dbgp.tests;
 
+import junit.framework.TestCase;
 
-public class DbgpBreakpointCommandsTests {
+
+public class DbgpBreakpointCommandsTests  extends TestCase  {
 	
 	
 	

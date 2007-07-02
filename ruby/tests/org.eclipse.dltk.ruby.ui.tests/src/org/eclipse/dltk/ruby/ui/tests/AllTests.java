@@ -1,3 +1,4 @@
+package org.eclipse.dltk.ruby.ui.tests;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -13,7 +14,6 @@ public class AllTests {
 		TestSuite suite = new TestSuite("Test for default package");
 		// $JUnit-BEGIN$
 		suite.addTestSuite(RubyAutoIndentStrategyTest.class);
-		suite.addTestSuite(BalanceTest.class);
 		suite.addTestSuite(BalanceTest.class);
 		suite.addTestSuite(ContextTest.class);
 		suite.addTestSuite(PartitioningTest.class);

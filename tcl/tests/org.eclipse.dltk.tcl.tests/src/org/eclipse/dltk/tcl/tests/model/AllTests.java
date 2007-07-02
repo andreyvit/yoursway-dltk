@@ -18,6 +18,7 @@ public class AllTests {
 		TestSuite suite = new TestSuite(
 				"Test for org.eclipse.dltk.tcl.tests.model");
 		//$JUnit-BEGIN$
+		suite.addTest(TclASTBuildTests.suite());
 		suite.addTest(ModelTclTests.suite());
 		//$JUnit-END$
 		return suite;
