@@ -24,7 +24,8 @@ Require-Bundle: org.eclipse.debug.ui,
  org.eclipse.dltk.tcl.core,
  org.eclipse.dltk.tcl.debug,
  org.eclipse.dltk.tcl.launching,
- org.eclipse.dltk.debug
+ org.eclipse.dltk.debug,
+ org.eclipse.dltk.tcl.ui
 Export-Package: org.eclipse.dltk.tcl.internal.console.ui,
  org.eclipse.dltk.tcl.internal.debug.ui,
  org.eclipse.dltk.tcl.internal.debug.ui.console,

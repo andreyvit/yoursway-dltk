@@ -38,7 +38,7 @@ public class BreakpointMessages {
 	
 	public static String SuspendOnMethodExitLabel;
 	
-	// Watchpoint lables
+	// Watchpoint labels
 	public static String WatchFieldLabel;
 	
 	public static String SuspendOnAccessLabel;

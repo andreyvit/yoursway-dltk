@@ -55,7 +55,7 @@ public class RubyEditor extends ScriptEditor {
 	protected void initializeEditor() {
 		super.initializeEditor();
 		setEditorContextMenuId(EDITOR_CONTEXT);
-		setRulerContextMenuId(RULER_CONTEXT);
+		setRulerContextMenuId(RULER_CONTEXT);		
 	}
 
 	protected IPreferenceStore getScriptPreferenceStore() {

@@ -17,10 +17,8 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.ruby.core.RubyNature;
-import org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterPreferencePage;
 import org.eclipse.dltk.ruby.internal.ui.RubyImages;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.dltk.ruby.internal.ui.preferences.RubyBuildPathsBlock;
@@ -35,11 +33,13 @@ import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
-public class RubyNewProjectWizard extends NewElementWizard implements INewWizard, IExecutableExtension {
+public class RubyNewProjectWizard extends NewElementWizard implements
+		INewWizard, IExecutableExtension {
 	public static final String WIZARD_ID = "org.eclipse.dltk.ruby.wizards.newproject";
-	
+
 	private ProjectWizardFirstPage fFirstPage;
 	private ProjectWizardSecondPage fSecondPage;
 	private IConfigurationElement fConfigElement;
@@ -55,24 +55,23 @@ public class RubyNewProjectWizard extends NewElementWizard implements INewWizard
 		fFirstPage = new ProjectWizardFirstPage() {
 
 			RubyInterpreterGroup fInterpreterGroup;
-        	
-        	final class RubyInterpreterGroup extends AbstractInterpreterGroup {
-        		
-        		public RubyInterpreterGroup(Composite composite) {
-        			super (composite);
-        		}
+
+			final class RubyInterpreterGroup extends AbstractInterpreterGroup {
+
+				public RubyInterpreterGroup(Composite composite) {
+					super(composite);
+				}
 
 				protected String getCurrentLanguageNature() {
 					return RubyNature.NATURE_ID;
 				}
-
-				protected void showInterpreterPreferencePage() {
-					IPreferencePage page = new RubyInterpreterPreferencePage(); 
-					DLTKDebugUIPlugin.showPreferencePage("org.eclipse.dltk.ruby.debug.ui.interpreters.RubyInterpreterPreferencePage", page); 					
+				
+				
+				protected String getIntereprtersPreferencePageId() {
+					return "org.eclipse.dltk.ruby.preferences.interpreters";
 				}
-            	
-            };
-        	
+			};
+
 			protected void createInterpreterGroup(Composite parent) {
 				fInterpreterGroup = new RubyInterpreterGroup(parent);
 			}
@@ -97,16 +96,20 @@ public class RubyNewProjectWizard extends NewElementWizard implements INewWizard
 				return true;
 			}
 		};
-		
+
 		// First page
 		fFirstPage.setTitle(RubyWizardMessages.NewProjectFirstPage_title);
-		fFirstPage.setDescription(RubyWizardMessages.NewProjectFirstPage_description);
+		fFirstPage
+				.setDescription(RubyWizardMessages.NewProjectFirstPage_description);
 		addPage(fFirstPage);
 
 		// Second page
 		fSecondPage = new ProjectWizardSecondPage(fFirstPage) {
-			protected BuildpathsBlock createBuildpathBlock(IStatusChangeListener listener) {
-				return new RubyBuildPathsBlock(new BusyIndicatorRunnableContext(), listener, 0, useNewSourcePage(), null);
+			protected BuildpathsBlock createBuildpathBlock(
+					IStatusChangeListener listener) {
+				return new RubyBuildPathsBlock(
+						new BusyIndicatorRunnableContext(), listener, 0,
+						useNewSourcePage(), null);
 			}
 
 			protected String getScriptNature() {
@@ -120,7 +123,8 @@ public class RubyNewProjectWizard extends NewElementWizard implements INewWizard
 		addPage(fSecondPage);
 	}
 
-	protected void finishPage(IProgressMonitor monitor) throws InterruptedException, CoreException {
+	protected void finishPage(IProgressMonitor monitor)
+			throws InterruptedException, CoreException {
 		fSecondPage.performFinish(monitor); // use the full progress monitor
 	}
 
@@ -132,12 +136,13 @@ public class RubyNewProjectWizard extends NewElementWizard implements INewWizard
 		}
 		return res;
 	}
-	
+
 	/*
 	 * Stores the configuration element for the wizard. The config element will
 	 * be used in <code>performFinish</code> to set the result perspective.
 	 */
-	public void setInitializationData(IConfigurationElement cfig, String propertyName, Object data) {
+	public void setInitializationData(IConfigurationElement cfig,
+			String propertyName, Object data) {
 		fConfigElement = cfig;
 	}
 

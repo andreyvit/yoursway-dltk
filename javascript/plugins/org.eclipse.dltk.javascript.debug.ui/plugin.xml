@@ -344,5 +344,14 @@
   <extension point="org.eclipse.debug.ui.debugModelContextBindings">
     <modelContextBinding contextId="org.eclipse.dltk.debug.ui.debugging" debugModelId="org.eclipse.dltk.debug.javascriptModel"/>
  </extension>
+ 
+ <extension point="org.eclipse.core.runtime.adapters">
+   <factory
+      adaptableType="org.eclipse.dltk.javascript.internal.ui.editor.JavaScriptEditor"
+      class="org.eclipse.dltk.javascript.internal.debug.ui.JavaScriptEditorDebugAdapterFactory">
+       <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
+       <adapter type="org.eclipse.debug.ui.actions.IRunToLineTarget"/>
+   </factory>         
+</extension>
    
 </plugin>

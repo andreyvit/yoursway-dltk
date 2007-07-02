@@ -11,32 +11,113 @@ package org.eclipse.dltk.internal.debug.ui;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.ILineBreakpoint;
-import org.eclipse.debug.ui.actions.IToggleBreakpointsTarget;
-import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
-import org.eclipse.dltk.debug.ui.breakpoints.BreakpointUtils;
-import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
+import org.eclipse.debug.ui.actions.IToggleBreakpointsTargetExtension;
+import org.eclipse.dltk.core.IMember;
+import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
+import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.texteditor.IEditorStatusLine;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-public class ScriptToggleBreakpointAdapter implements IToggleBreakpointsTarget {
+public abstract class ScriptToggleBreakpointAdapter implements
+		IToggleBreakpointsTargetExtension {
 
-	protected ITextEditor getPartEditor(IWorkbenchPart part) {
-		if (part instanceof ITextEditor) {
-			return (ITextEditor) part;
+	protected boolean isRemote(IWorkbenchPart part, ISelection selection) {
+		if (selection instanceof IStructuredSelection) {
+			IStructuredSelection ss = (IStructuredSelection) selection;
+			Object element = ss.getFirstElement();
+			if (element instanceof IMember) {
+				IMember member = (IMember) element;
+				return !member.getScriptProject().getProject().exists();
+			}
+		}
+		ITextEditor editor = getTextEditor(part);
+		if (editor != null) {
+			IEditorInput input = editor.getEditorInput();
+			Object adapter = Platform.getAdapterManager().getAdapter(input,
+					"org.eclipse.team.core.history.IFileRevision"); //$NON-NLS-1$
+			return adapter != null;
+		}
+		return false;
+	}
+
+	protected IBreakpoint[] getBreakpoints(String debugModelId) {
+		if (debugModelId == null) {
+			return DebugPlugin.getDefault().getBreakpointManager()
+					.getBreakpoints();
+		} else {
+			return DebugPlugin.getDefault().getBreakpointManager()
+					.getBreakpoints(debugModelId);
+		}
+	}
+
+	protected String getSelectedFirstLine(ITextEditor editor,
+			ITextSelection selection) {
+		try {
+			IDocument doc = editor.getDocumentProvider().getDocument(null);
+			final int line = selection.getStartLine();
+			IRegion region = doc.getLineInformation(line /* - 1 */);
+			return doc.get(region.getOffset(), region.getLength());
+		} catch (BadLocationException e) {
+			DLTKUIPlugin.log(e);
 		}
 
 		return null;
 	}
 
+	protected String getSelectedText(ITextEditor editor,
+			ITextSelection selection) {
+		try {
+			IDocument doc = editor.getDocumentProvider().getDocument(null);
+			return doc.get(selection.getOffset(), selection.getLength());
+		} catch (BadLocationException e) {
+			DLTKUIPlugin.log(e);
+		}
+
+		return null;
+	}
+
+	protected void report(final String message, final IWorkbenchPart part) {
+		DLTKDebugUIPlugin.getStandardDisplay().asyncExec(new Runnable() {
+			public void run() {
+				IEditorStatusLine statusLine = (IEditorStatusLine) part
+						.getAdapter(IEditorStatusLine.class);
+				if (statusLine != null) {
+					if (message != null) {
+						statusLine.setMessage(true, message, null);
+					} else {
+						statusLine.setMessage(true, null, null);
+					}
+				}
+				if (message != null
+						&& DLTKDebugUIPlugin.getActiveWorkbenchShell() != null) {
+					DLTKDebugUIPlugin.getActiveWorkbenchShell().getDisplay()
+							.beep();
+				}
+			}
+		});
+	}
+
+	protected ITextEditor getTextEditor(IWorkbenchPart part) {
+		if (part instanceof ITextEditor) {
+			return (ITextEditor) part;
+		}
+		return (ITextEditor) part.getAdapter(ITextEditor.class);
+	}
+
 	protected IResource getPartResource(IWorkbenchPart part) {
-		ITextEditor textEditor = getPartEditor(part);
+		ITextEditor textEditor = getTextEditor(part);
 		if (textEditor != null) {
 			IResource resource = (IResource) textEditor.getEditorInput()
 					.getAdapter(IResource.class);
@@ -46,161 +127,28 @@ public class ScriptToggleBreakpointAdapter implements IToggleBreakpointsTarget {
 		return null;
 	}
 
+	protected ILineBreakpoint findLineBreakpoint(IBreakpoint[] breakpoints,
+			IResource resource, int lineNumber) {
+		for (int i = 0; i < breakpoints.length; i++) {
+			IBreakpoint breakpoint = breakpoints[i];
+			if (breakpoint instanceof IBreakpoint) {
+				if (resource.equals(breakpoint.getMarker().getResource())) {
+					ILineBreakpoint lineBreakpoint = (ILineBreakpoint) breakpoint;
+					try {
+						if (lineBreakpoint.getLineNumber() == lineNumber) {
+							return lineBreakpoint;
+						}
+					} catch (CoreException e) {
+						DLTKDebugUIPlugin.log(e);
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
 	public ScriptToggleBreakpointAdapter() {
 
-	}
-
-	public void toggleLineBreakpoints(IWorkbenchPart part, ISelection selection)
-			throws CoreException {
-		if (selection instanceof ITextSelection) {
-
-			ITextSelection textSelection = (ITextSelection) selection;
-			int lineNumber = textSelection.getStartLine() + 1; // one based
-
-			IResource resource = getPartResource(part);
-
-			if (resource != null) {
-				// TODO: optimize
-				IBreakpoint[] breakpoints = DebugPlugin.getDefault()
-						.getBreakpointManager().getBreakpoints();
-
-				for (int i = 0; i < breakpoints.length; i++) {
-					IBreakpoint breakpoint = breakpoints[i];
-					if (resource.equals(breakpoint.getMarker().getResource())) {
-						if (((ILineBreakpoint) breakpoint).getLineNumber() == lineNumber) {
-							// delete existing breakpoint
-							breakpoint.delete();
-							return;
-						}
-					}
-				}
-				ITextEditor partEditor = getPartEditor(part);
-				if (partEditor instanceof ScriptEditor) {
-					ScriptEditor ed = (ScriptEditor) partEditor;
-					IRegion lineInformation;
-					try {
-						lineInformation = ed.getScriptSourceViewer()
-								.getDocument().getLineInformation(
-										lineNumber - 1);
-						String string = ed.getScriptSourceViewer()
-								.getDocument().get(lineInformation.getOffset(),
-										lineInformation.getLength());
-						int contains = string.indexOf("function");
-						if (contains != -1) {
-							string = string.substring(
-									contains + "function".length()).trim();
-							int apos = string.indexOf('(');
-							if (apos >= 0)
-								string = string.substring(0, apos).trim();
-							BreakpointUtils.addMethodEntryBreakpoint(
-									partEditor, lineNumber, string);
-							return;
-						} else
-							BreakpointUtils.addLineBreakpoint(partEditor,
-									lineNumber);
-					} catch (BadLocationException e) {
-						DLTKDebugPlugin.log(e);
-						return;
-					}
-				} else
-					BreakpointUtils.addLineBreakpoint(partEditor, lineNumber);
-			}
-		}
-	}
-
-	public boolean canToggleLineBreakpoints(IWorkbenchPart part,
-			ISelection selection) {
-		return getPartResource(part) != null;
-	}
-
-	public void toggleMethodBreakpoints(IWorkbenchPart part,
-			ISelection selection) throws CoreException {
-	}
-
-	public boolean canToggleMethodBreakpoints(IWorkbenchPart part,
-			ISelection selection) {
-		return false;
-	}
-
-	public void toggleWatchpoints(IWorkbenchPart part, ISelection selection)
-			throws CoreException {
-		if (selection instanceof ITextSelection) {
-
-			ITextSelection textSelection = (ITextSelection) selection;
-			int lineNumber = textSelection.getStartLine() + 1; // one based
-
-			IResource resource = getPartResource(part);
-
-			if (resource != null) {
-				// TODO: optimize
-				IBreakpoint[] breakpoints = DebugPlugin.getDefault()
-						.getBreakpointManager().getBreakpoints();
-
-				for (int i = 0; i < breakpoints.length; i++) {
-					IBreakpoint breakpoint = breakpoints[i];
-					if (resource.equals(breakpoint.getMarker().getResource())) {
-						if (((ILineBreakpoint) breakpoint).getLineNumber() == lineNumber) {
-							// delete existing breakpoint
-							breakpoint.delete();
-							return;
-						}
-					}
-				}
-				ITextEditor partEditor = getPartEditor(part);
-				if (partEditor instanceof ScriptEditor) {
-					ScriptEditor ed = (ScriptEditor) partEditor;
-					IRegion lineInformation;
-					try {
-						lineInformation = ed.getScriptSourceViewer()
-								.getDocument().getLineInformation(
-										lineNumber - 1);
-						String string = ed.getScriptSourceViewer()
-								.getDocument().get(lineInformation.getOffset(),
-										lineInformation.getLength());
-						int indexOf = string.indexOf('=');
-						string = string.substring(0, indexOf);
-						indexOf = string.lastIndexOf('.') + 1;
-						if (indexOf != -1)
-							string = string.substring(indexOf);
-						indexOf = string.lastIndexOf(' ' + 1);
-						if (indexOf != -1)
-							string = string.substring(indexOf).trim();
-						BreakpointUtils.addWatchPoint(partEditor, lineNumber,
-								string);
-					} catch (BadLocationException e) {
-						DLTKDebugPlugin.log(e);
-						return;
-					}
-				} else
-					BreakpointUtils.addWatchPoint(partEditor, lineNumber,
-							"Hello");
-			}
-		}
-	}
-
-	public boolean canToggleWatchpoints(IWorkbenchPart part,
-			ISelection selection) {
-		if (selection instanceof ITextSelection) {
-			ITextSelection ts = (ITextSelection) selection;
-			int startLine = ts.getStartLine();
-			String ta = ts.getText();
-			if (part instanceof ScriptEditor) {
-				ScriptEditor ed = (ScriptEditor) part;
-				try {
-					IRegion lineInformation = ed.getScriptSourceViewer()
-							.getDocument()
-							.getLineInformation(ts.getStartLine());
-					String string = ed.getScriptSourceViewer().getDocument()
-							.get(lineInformation.getOffset(),
-									lineInformation.getLength());
-					return string.indexOf('=') > -1;
-				} catch (BadLocationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			return ta.indexOf("=") != -1;
-		}
-		return true;
-	}
+	}	
 }

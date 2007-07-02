@@ -2,9 +2,9 @@ package org.eclipse.dltk.ruby.internal.ui;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.ruby.core.RubyNature;
+import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -20,15 +20,13 @@ public class RubyProjectDecorator extends LabelProvider implements
 			project = (IProject) element;
 		}
 
-		if (project != null) {
+		if (project != null && project.isOpen()) {
 			try {
-				if (project.isOpen() && project.hasNature(RubyNature.NATURE_ID)) {
+				if (project.hasNature(RubyNature.NATURE_ID)) {
 					decoration.addOverlay(RubyImages.PROJECT_DECARATOR);
 				}
 			} catch (CoreException e) {
-				if( DLTKCore.DEBUG ) {
-					e.printStackTrace();
-				}
+				DLTKUIPlugin.log(e);
 			}
 		}
 	}

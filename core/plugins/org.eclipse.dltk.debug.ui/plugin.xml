@@ -49,15 +49,7 @@
             class="" 
             adaptableType="org.eclipse.dltk.internal.ui.editor.ExternalStorageEditorInput">
             <adapter type="org.eclipse.debug.ui.actions.ILaunchable"/>
-         </factory>
-         <factory
-          adaptableType="org.eclipse.dltk.internal.ui.editor.ScriptEditor"
-          class="org.eclipse.dltk.internal.debug.ui.ScriptEditorDebugAdapterFactory">
-       <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
-       <adapter
-             type="org.eclipse.debug.ui.actions.IRunToLineTarget">
-       </adapter>
-    </factory>         
+         </factory>               
     </extension>
      <extension
          point="org.eclipse.ui.popupMenus">

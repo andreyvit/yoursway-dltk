@@ -116,7 +116,7 @@
 		<page category="org.eclipse.dltk.ruby.preferences"
 			class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterPreferencePage"
 			id="org.eclipse.dltk.ruby.preferences.interpreters"
-			name="Interpreters" />
+			name="%RubyInterpretersPreferencePage.name" />
 
 		<page category="org.eclipse.dltk.ruby.preferences"
 			class="org.eclipse.dltk.ruby.internal.debug.ui.preferences.RubyDebugPreferencePage"
@@ -229,4 +229,13 @@
 			name="Ruby Interpreter Libraries"
 			nature="org.eclipse.dltk.ruby.core.nature" />
 	</extension>
+	
+	<extension point="org.eclipse.core.runtime.adapters">
+       <factory
+          adaptableType="org.eclipse.dltk.ruby.internal.ui.editor.RubyEditor"
+          class="org.eclipse.dltk.ruby.internal.debug.ui.RubyEditorDebugAdapterFactory">
+           <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
+           <adapter type="org.eclipse.debug.ui.actions.IRunToLineTarget"/>
+       </factory>         
+    </extension>
 </plugin>

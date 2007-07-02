@@ -251,4 +251,12 @@
 			class="org.eclipse.dltk.tcl.internal.console.ui.TclConsoleFactory"
 			natureID="org.eclipse.dltk.tcl.core.nature" />
 	</extension>
+	<extension point="org.eclipse.core.runtime.adapters">
+       <factory
+          adaptableType="org.eclipse.dltk.tcl.internal.ui.editor.TclEditor"
+          class="org.eclipse.dltk.tcl.internal.debug.ui.TclEditorDebugAdapterFactory">
+           <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
+           <adapter type="org.eclipse.debug.ui.actions.IRunToLineTarget"/>
+       </factory>         
+    </extension>
 </plugin>

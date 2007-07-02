@@ -47,6 +47,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
 /**
@@ -260,8 +261,11 @@ public abstract class AbstractInterpreterComboBlock {
 	 * @param id pref page id
 	 * @param page pref page
 	 */
-	protected void showPrefPage(String id, IPreferencePage page) {
-		DLTKDebugUIPlugin.showPreferencePage(id, page);
+	protected void showPrefPage(String pageId) {
+		PreferencesUtil.createPreferenceDialogOn(getShell(),
+				pageId, new String[] { pageId }, null).open();
+		
+		
 		refreshInterpreters();	
 	}
 	

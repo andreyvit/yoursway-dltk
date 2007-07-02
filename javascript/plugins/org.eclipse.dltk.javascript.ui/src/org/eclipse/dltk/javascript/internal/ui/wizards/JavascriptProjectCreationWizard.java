@@ -62,14 +62,10 @@ public class JavascriptProjectCreationWizard extends NewElementWizard implements
 				protected String getCurrentLanguageNature() {
 					return JavaScriptNature.NATURE_ID;
 				}
-
-				protected void showInterpreterPreferencePage() {
-					// IPreferencePage page = new
-					// JavascriptInterpreterPreferencePage();
-					// DLTKDebugUIPlugin.showPreferencePage("org.eclipse.dltk.javascript.debug.ui.interpreters.JavascriptInterpreterPreferencePage",
-					// page);
-				}
-
+				
+				protected String getIntereprtersPreferencePageId() {
+					return null;
+				} 
 			};
 
 			protected void createInterpreterGroup(Composite parent) {

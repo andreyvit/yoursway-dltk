@@ -23,6 +23,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.expressions
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.javascript.internal.ui,
+ org.eclipse.dltk.javascript.internal.ui.editor,
  org.eclipse.dltk.javascript.internal.ui.text,
  org.eclipse.dltk.javascript.internal.ui.text.completion,
  org.eclipse.dltk.javascript.internal.ui.wizards,

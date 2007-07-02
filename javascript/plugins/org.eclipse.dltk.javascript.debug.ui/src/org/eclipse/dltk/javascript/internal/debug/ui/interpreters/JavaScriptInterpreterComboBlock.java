@@ -9,7 +9,7 @@ public class JavaScriptInterpreterComboBlock extends AbstractInterpreterComboBlo
 	
 	protected void showInterpreterPreferencePage()  { 
 		IPreferencePage page = new JavaScriptInterpreterPreferencePage(); 
-		showPrefPage("org.eclipse.dltk.tcl.debug.ui.interpreters.TclInterpreterPreferencePage", page); //$NON-NLS-1$
+		//showPrefPage("org.eclipse.dltk.tcl.debug.ui.interpreters.TclInterpreterPreferencePage", page); //$NON-NLS-1$
 	}
 
 	protected String getCurrentLanguageNature() {

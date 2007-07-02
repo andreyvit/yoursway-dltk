@@ -11,9 +11,10 @@ package org.eclipse.dltk.debug.ui.breakpoints;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.internal.debug.core.model.ScriptDebugModel;
@@ -63,9 +64,7 @@ public class BreakpointUtils {
 						.createLineBreakpoint(resource, lineNumber, start, end,
 								0, true, null);
 			} catch (BadLocationException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
+				DLTKDebugPlugin.log(e);
 			}
 		}
 	}
@@ -86,9 +85,7 @@ public class BreakpointUtils {
 						.createMethodEntryBreakpoint(resource, lineNumber,
 								start, end, 0, true, null, methodName);
 			} catch (BadLocationException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
+				DebugPlugin.log(e);
 			}
 		}
 	}
@@ -108,9 +105,7 @@ public class BreakpointUtils {
 				/* ILineBreakpoint b = */ScriptDebugModel.createWatchPoint(
 						resource, lineNumber, start, end, fieldName);
 			} catch (BadLocationException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
+				DebugPlugin.log(e);
 			}
 		}
 	}

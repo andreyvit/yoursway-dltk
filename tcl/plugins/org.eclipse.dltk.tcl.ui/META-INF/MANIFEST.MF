@@ -19,8 +19,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.tcl.core,
  org.eclipse.dltk.launching,
  org.eclipse.dltk.tcl.launching,
- org.eclipse.dltk.debug.ui,
- org.eclipse.dltk.tcl.debug.ui,
  org.eclipse.dltk.console.ui,
  org.eclipse.search
 Eclipse-AutoStart: true

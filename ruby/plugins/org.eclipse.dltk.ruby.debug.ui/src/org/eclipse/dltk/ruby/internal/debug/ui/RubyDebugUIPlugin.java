@@ -9,6 +9,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.debug.ui;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.internal.ui.DLTKUIMessages;
+import org.eclipse.dltk.internal.ui.IDLTKStatusConstants;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -55,5 +59,14 @@ public class RubyDebugUIPlugin extends AbstractUIPlugin {
 	public static RubyDebugUIPlugin getDefault() {
 		return plugin;
 	}
+	
+	public static void log(IStatus status) {
+		getDefault().getLog().log(status);
+	}
 
+	public static void log(Throwable e) {
+		log(new Status(IStatus.ERROR, PLUGIN_ID,
+				IDLTKStatusConstants.INTERNAL_ERROR,
+				DLTKUIMessages.ScriptPlugin_internal_error, e));
+	}
 }

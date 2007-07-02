@@ -393,7 +393,7 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 				}
 			}, null, 0, null);
 		} catch (CoreException e) {
-			// TODO: log exception
+			DebugPlugin.log(e);
 		}
 
 		return super.performOk();

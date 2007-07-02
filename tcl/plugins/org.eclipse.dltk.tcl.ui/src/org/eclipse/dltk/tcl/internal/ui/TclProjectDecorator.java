@@ -4,6 +4,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.tcl.core.TclNature;
+import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -25,8 +26,7 @@ public class TclProjectDecorator extends LabelProvider implements
 					decoration.addOverlay(TclImages.PROJECT_DECARATOR);
 				}
 			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				DLTKUIPlugin.log(e);
 			}
 		}
 	}

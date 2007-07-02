@@ -9,12 +9,12 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.debug.ui.interpreters;
 
-import org.eclipse.dltk.internal.debug.ui.interpreters.InterpreterPreferencePage;
+import org.eclipse.dltk.internal.debug.ui.interpreters.ScriptInterpreterPreferencePage;
 import org.eclipse.dltk.internal.debug.ui.interpreters.InterpretersBlock;
 
-public class RubyInterpreterPreferencePage extends InterpreterPreferencePage {
+public class RubyInterpreterPreferencePage extends ScriptInterpreterPreferencePage {
 	
-	public static final String PAGE_ID = "org.eclipse.dltk.debug.ui.RubyInterpreters";
+	public static final String PAGE_ID = "org.eclipse.dltk.ruby.preferences.interpreters";
 
 	public InterpretersBlock createInterpretersBlock() {
 		return new RubyInterpretersBlock();

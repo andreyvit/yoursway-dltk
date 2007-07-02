@@ -43,12 +43,12 @@ import org.eclipse.ui.PlatformUI;
  * 
 	 *
  */
-public abstract class InterpreterPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
+public abstract class ScriptInterpreterPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 							
 	// InterpreterEnvironment Block
 	private InterpretersBlock fInterpretersBlock;									
 		
-	public InterpreterPreferencePage() {
+	public ScriptInterpreterPreferencePage() {
 		super();
 		
 		// only used when page is shown programatically
