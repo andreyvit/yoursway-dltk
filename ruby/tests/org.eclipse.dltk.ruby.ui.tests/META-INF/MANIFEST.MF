@@ -17,3 +17,4 @@ Require-Bundle: org.eclipse.ui,
 Bundle-Activator: org.eclipse.dltk.ruby.ui.tests.internal.RubyUITestsPlugin
 Eclipse-LazyStart: true
 Bundle-Vendor: %pluginProvider
+Export-Package: org.eclipse.dltk.ruby.ui.tests
