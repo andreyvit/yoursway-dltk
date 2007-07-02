@@ -36,11 +36,11 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 	}
 
 	public String getFieldName() throws CoreException {
-		return getMarker().getAttribute(FIELD_NAME, "");
+		return this.getMarker().getAttribute(FIELD_NAME, "");
 	}
 
 	public void setFieldName(String name) throws CoreException {
-		getMarker().setAttribute(FIELD_NAME, name);
+		this.getMarker().setAttribute(FIELD_NAME, name);
 	}
 
 	protected String getMarkerId() {
@@ -48,21 +48,21 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 	}
 
 	public boolean isAccess() throws CoreException {
-		return (new Boolean(getMarker().getAttribute(ACCESS, "true")))
+		return (new Boolean(this.getMarker().getAttribute(ACCESS, "true")))
 				.booleanValue();
 	}
 
 	public boolean isModification() throws CoreException {
-		return (new Boolean(getMarker().getAttribute(MODIFICATION, "true")))
+		return (new Boolean(this.getMarker().getAttribute(MODIFICATION, "true")))
 				.booleanValue();
 	}
 
 	public void setAccess(boolean access) throws CoreException {
-		getMarker().setAttribute(ACCESS, Boolean.toString(access));
+		this.getMarker().setAttribute(ACCESS, Boolean.toString(access));
 	}
 
 	public void setModification(boolean modification) throws CoreException {
-		getMarker().setAttribute(MODIFICATION, Boolean.toString(modification));
+		this.getMarker().setAttribute(MODIFICATION, Boolean.toString(modification));
 	}
 
 	public boolean supportsAccess() {

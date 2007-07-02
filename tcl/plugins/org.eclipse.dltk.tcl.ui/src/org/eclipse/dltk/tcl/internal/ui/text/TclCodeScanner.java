@@ -12,7 +12,7 @@ package org.eclipse.dltk.tcl.internal.ui.text;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.dltk.tcl.TclKeywordsManager;
+import org.eclipse.dltk.tcl.core.TclKeywordsManager;
 import org.eclipse.dltk.tcl.internal.ui.rules.TclCommentRule;
 import org.eclipse.dltk.tcl.internal.ui.rules.TclFloatNumberRule;
 import org.eclipse.dltk.tcl.internal.ui.rules.TclVariableRule;

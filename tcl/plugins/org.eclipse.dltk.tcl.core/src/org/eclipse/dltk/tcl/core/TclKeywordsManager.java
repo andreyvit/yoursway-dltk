@@ -7,7 +7,7 @@
  *
  
  *******************************************************************************/
-package org.eclipse.dltk.tcl;
+package org.eclipse.dltk.tcl.core;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;

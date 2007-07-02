@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.tcl.ast.expressions;
 
@@ -20,16 +20,16 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.tcl.ast.TclConstants;
+import org.eclipse.dltk.tcl.core.ITclSourceParser;
 import org.eclipse.dltk.tcl.core.TclNature;
-import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 
 public class TclExecuteExpression extends Expression {
 	private String fExceuteContent;
 	private char[] fileName = null;
 	public TclExecuteExpression(int start, int end, String content) {
-		setStart(start);
-		setEnd(end);
-		fExceuteContent = content;
+		this.setStart(start);
+		this.setEnd(end);
+		this.fExceuteContent = content;
 	}
 
 	public int getKind() {
@@ -38,7 +38,7 @@ public class TclExecuteExpression extends Expression {
 
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
-			List statements = parseExpression();
+			List statements = this.parseExpression();
 			if (statements != null) {
 				for (int i = 0; i < statements.size(); ++i) {
 					ASTNode nde = (ASTNode) statements.get(i);
@@ -50,36 +50,36 @@ public class TclExecuteExpression extends Expression {
 	}
 
 	public String getExpression() {
-		return fExceuteContent;
+		return this.fExceuteContent;
 	}
 
 	public List parseExpression() {
-		return parseExpression(this.sourceStart() + 1);
+		return this.parseExpression(this.sourceStart() + 1);
 	}
 
 	public List parseExpression(int startFrom) {
-		if (fExceuteContent == null) {
+		if (this.fExceuteContent == null) {
 			return null;
 		}
 
-		String content = fExceuteContent.substring(1,
-				fExceuteContent.length() - 1);
+		String content = this.fExceuteContent.substring(1,
+				this.fExceuteContent.length() - 1);
 
-		TclSourceParser parser = null;
+		ITclSourceParser parser = null;
 		try {
-			parser = (TclSourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+			parser = (ITclSourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
 		} catch (CoreException e) {
 			if( DLTKCore.DEBUG ) {
 				e.printStackTrace();
 			}
 			return new ArrayList();
 		}
-		parser.setCurrentPosition(startFrom);
+		parser.setOffset(startFrom);
 		ModuleDeclaration module = parser.parse(null, content.toCharArray(), null);
 		return module.getStatements();
 	}
 
 	public String toString() {
-		return fExceuteContent;
+		return this.fExceuteContent;
 	}
 }

@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.tcl.internal.parser;
 
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
@@ -24,6 +23,7 @@ import org.eclipse.dltk.tcl.ast.TclModuleDeclaration;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
+import org.eclipse.dltk.tcl.core.ITclSourceParser;
 import org.eclipse.dltk.tcl.internal.parsers.raw.BracesSubstitution;
 import org.eclipse.dltk.tcl.internal.parsers.raw.CommandSubstitution;
 import org.eclipse.dltk.tcl.internal.parsers.raw.QuotesSubstitution;
@@ -33,7 +33,7 @@ import org.eclipse.dltk.tcl.internal.parsers.raw.TclParseException;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclScript;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclWord;
 
-public class TclSourceParser implements ISourceParser {
+public class TclSourceParser implements ITclSourceParser {
 	private int currentPosition = 0;
 	public ModuleDeclaration parse(char[] fileName, char[] content0, IProblemReporter reporter) {
 		String content = new String(content0);
@@ -44,8 +44,9 @@ public class TclSourceParser implements ISourceParser {
 		try {
 			script = SimpleTclParser.parse(content );
 		} catch (TclParseException e) {
-			if (DLTKCore.DEBUG_PARSER)
+			if (DLTKCore.DEBUG_PARSER) {
 				e.printStackTrace();
+			}
 			return null;
 		}
 
@@ -70,15 +71,15 @@ public class TclSourceParser implements ISourceParser {
 					QuotesSubstitution qs = (QuotesSubstitution) o;
 
 					exprs.add(new StringLiteral(
-							currentPosition + qs.getStart(), currentPosition
+							this.currentPosition + qs.getStart(), this.currentPosition
 									+ qs.getEnd() + 1, wordText)); // TODO:
 																	// fixme,
 																	// wtf?
 				} else if (o instanceof BracesSubstitution) {
 					BracesSubstitution bs = (BracesSubstitution) o;
 
-					TclBlockExpression tclBlockExpression = new TclBlockExpression(currentPosition
-							+ bs.getStart(), currentPosition + bs.getEnd() + 1,
+					TclBlockExpression tclBlockExpression = new TclBlockExpression(this.currentPosition
+							+ bs.getStart(), this.currentPosition + bs.getEnd() + 1,
 							wordText);
 					tclBlockExpression.setFilename(fileName);
 					exprs.add(tclBlockExpression);
@@ -86,12 +87,12 @@ public class TclSourceParser implements ISourceParser {
 						&& (word.getContents().size() == 1)) {
 					CommandSubstitution bs = (CommandSubstitution) o;
 
-					exprs.add(new TclExecuteExpression(currentPosition
-							+ bs.getStart(), currentPosition + bs.getEnd() + 1,
+					exprs.add(new TclExecuteExpression(this.currentPosition
+							+ bs.getStart(), this.currentPosition + bs.getEnd() + 1,
 							wordText));
 				} else {
-					exprs.add(new SimpleReference(currentPosition
-							+ word.getStart(), currentPosition + word.getEnd()
+					exprs.add(new SimpleReference(this.currentPosition
+							+ word.getStart(), this.currentPosition + word.getEnd()
 							+ 1, wordText));
 				}
 			}
@@ -109,7 +110,7 @@ public class TclSourceParser implements ISourceParser {
 		return moduleDeclaration;
 	}
 
-	public void setCurrentPosition(int startFrom) {
+	public void setOffset(int startFrom) {
 		this.currentPosition = startFrom;
 	}
 }

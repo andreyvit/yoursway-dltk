@@ -1,4 +1,4 @@
-package org.eclipse.dltk.tcl;
+package org.eclipse.dltk.tcl.core;
 
 public interface ITclKeywords {
 	public static final int MODULE = 0;

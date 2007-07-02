@@ -10,12 +10,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.dltk.core,
  org.eclipse.core.resources
 Eclipse-AutoStart: true
-Export-Package: org.eclipse.dltk.tcl,
- org.eclipse.dltk.tcl.ast,
+Export-Package: org.eclipse.dltk.tcl.ast,
  org.eclipse.dltk.tcl.ast.expressions,
  org.eclipse.dltk.tcl.core,
  org.eclipse.dltk.tcl.internal.core,
  org.eclipse.dltk.tcl.internal.core.codeassist,
  org.eclipse.dltk.tcl.internal.parser,
  org.eclipse.dltk.tcl.internal.parsers.raw
- 

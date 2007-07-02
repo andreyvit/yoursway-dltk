@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 /*
  * (c) 2002, 2005 xored software and others all rights reserved. http://www.xored.com
@@ -38,15 +38,15 @@ public class ModuleDeclaration extends ASTNode {
 	public SourceModuleScope scope;
 
 	public List getTypeList() {
-		return types;
+		return this.types;
 	}
 
 	public List getFunctionList() {
-		return functions;
+		return this.functions;
 	}
 
 	public List getVariablesList() {
-		return variables;
+		return this.variables;
 	}
 
 	public ModuleDeclaration(int sourceLength) {
@@ -67,30 +67,30 @@ public class ModuleDeclaration extends ASTNode {
 
 	public final void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
-			body.traverse(visitor);
+			this.body.traverse(visitor);
 			visitor.endvisit(this);
 		}
 	}
 
 	public void setStatements(List statements) {
-		body = new Block(sourceStart(), sourceEnd(), statements);
+		this.body = new Block(this.sourceStart(), this.sourceEnd(), statements);
 	}
 
 	public void addStatement(Statement statement) {
-		body.addStatement(statement);
+		this.body.addStatement(statement);
 	}
 
-	public List getStatements() {		
-		return body.getStatements();
+	public List getStatements() {
+		return this.body.getStatements();
 	}
 
 	public void printNode(CorePrinter output) {
 		output.formatPrintLn("Module" + this.getSourceRange().toString() + ":");
-		body.printNode(output);
+		this.body.printNode(output);
 	}
 
 	public boolean isEmpty() {
-		return body.getStatements().isEmpty();
+		return this.body.getStatements().isEmpty();
 	}
 
 	protected void doRebuild() {
@@ -107,17 +107,17 @@ public class ModuleDeclaration extends ASTNode {
 	}
 
 	public final void rebuild() {
-		if (rebuildEnabled) {
-			doRebuild();
+		if (this.rebuildEnabled) {
+			this.doRebuild();
 		}
 	}
 
 	protected boolean isRebuildEnabled() {
-		return rebuildEnabled;
+		return this.rebuildEnabled;
 	}
 
 	public void disableRebuild() {
-		rebuildEnabled = false;
+		this.rebuildEnabled = false;
 	}
 
 	public TypeDeclaration[] getTypes() {
@@ -133,7 +133,7 @@ public class ModuleDeclaration extends ASTNode {
 	}
 
 	public ASTNode[] getNonTypeOrMethodNode() {
-		List statements = getStatements();
+		List statements = this.getStatements();
 		List results = new ArrayList();
 		if (statements != null) {
 			Iterator it = statements.iterator();
@@ -148,15 +148,15 @@ public class ModuleDeclaration extends ASTNode {
 		return (ASTNode[]) results.toArray(new ASTNode[results.size()]);
 	}
 
-	public void setEnd(int end) {		
+	public void setEnd(int end) {
 		super.setEnd(end);
-		body.setEnd(end);
+		this.body.setEnd(end);
 	}
 
 	public void setStart(int start) {
 		super.setStart(start);
-		body.setStart(start);
+		this.body.setStart(start);
 	}
-	
-	
+	public void rebuildMethods() {
+	}
 }

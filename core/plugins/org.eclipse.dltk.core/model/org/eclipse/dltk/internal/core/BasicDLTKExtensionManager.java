@@ -45,7 +45,7 @@ public class BasicDLTKExtensionManager {
 
 	public static class ElementInfo {
 		int level;
-		protected IConfigurationElement config;
+		public IConfigurationElement config;
 		public Object object;
 		public ElementInfo oldInfo;
 

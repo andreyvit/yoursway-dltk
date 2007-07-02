@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.tcl.ast.expressions;
 
@@ -20,8 +20,8 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.tcl.ast.TclConstants;
+import org.eclipse.dltk.tcl.core.ITclSourceParser;
 import org.eclipse.dltk.tcl.core.TclNature;
-import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class TclBlockExpression extends Expression {
@@ -29,8 +29,8 @@ public class TclBlockExpression extends Expression {
 	private char[] fileName = null;
 
 	public TclBlockExpression(int start, int end, String content) {
-		setStart(start);
-		setEnd(end);
+		this.setStart(start);
+		this.setEnd(end);
 		this.fBlockContent = content;
 	}
 
@@ -40,7 +40,7 @@ public class TclBlockExpression extends Expression {
 
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
-			List statements = parseBlock();
+			List statements = this.parseBlock();
 			if (statements != null) {
 				for (int i = 0; i < statements.size(); i++) {
 					ASTNode node = (ASTNode) statements.get(i);
@@ -60,31 +60,31 @@ public class TclBlockExpression extends Expression {
 	}
 
 	public List parseBlock() {
-		return parseBlock(sourceStart() + 1);
+		return this.parseBlock(this.sourceStart() + 1);
 	}
 
 	public List parseBlock(int startFrom) {
-		if (fBlockContent == null) {
+		if (this.fBlockContent == null) {
 			return null;
 		}
 
-		String content = fBlockContent.substring(1, fBlockContent.length() - 1);
-		TclSourceParser parser = null;
+		String content = this.fBlockContent.substring(1, this.fBlockContent.length() - 1);
+		ITclSourceParser parser = null;
 		try {
-			parser = (TclSourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+			parser = (ITclSourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
 		} catch (CoreException e) {
 			if( DLTKCore.DEBUG ) {
 				e.printStackTrace();
 			}
 			return new ArrayList();
 		}
-		parser.setCurrentPosition(startFrom);
-		ModuleDeclaration module = parser.parse(fileName, content.toCharArray(), null);
+		parser.setOffset(startFrom);
+		ModuleDeclaration module = parser.parse(this.fileName, content.toCharArray(), null);
 		return module.getStatements();
 	}
 
 	public String getBlock() {
-		return fBlockContent;
+		return this.fBlockContent;
 	}
 
 	public void setFilename(char[] fileName) {

@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.tcl.core;
 
@@ -31,8 +31,6 @@ import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.core.search.matching.MatchLocatorParser;
 import org.eclipse.dltk.core.search.matching.PatternLocator;
 import org.eclipse.dltk.core.search.matching.PossibleMatch;
-import org.eclipse.dltk.tcl.TclKeywordsManager;
-import org.eclipse.dltk.tcl.ast.TclModuleDeclaration;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
@@ -53,7 +51,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 	public TclMatchLocatorParser(MatchLocator locator) {
 		super(locator);
 		try {
-			parser = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+			this.parser = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
 		} catch (CoreException e) {
 			if( DLTKCore.DEBUG ) {
 				e.printStackTrace();
@@ -62,7 +60,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 	}
 
 	public ModuleDeclaration parse(PossibleMatch possibleMatch) {
-		TclModuleDeclaration module = (TclModuleDeclaration) parser.parse(possibleMatch.getFileName(), possibleMatch
+		ModuleDeclaration module = this.parser.parse(possibleMatch.getFileName(), possibleMatch
 						.getSourceContents().toCharArray(), null);
 		module.rebuild();
 		module.rebuildMethods();
@@ -74,21 +72,21 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 		if (types != null) {
 			for (int i = 0; i < types.length; i++) {
 				TypeDeclaration type = types[i];
-				getPatternLocator().match(processType(type), getNodeSet());
-				parseBodies(type);
+				this.getPatternLocator().match(this.processType(type), this.getNodeSet());
+				this.parseBodies(type);
 			}
 		}
 		MethodDeclaration[] methods = unit.getFunctions();
 		if (methods != null) {
-			PatternLocator locator = getPatternLocator();
+			PatternLocator locator = this.getPatternLocator();
 			for (int i = 0; i < methods.length; i++) {
 				MethodDeclaration method = methods[i];
 				if (method instanceof MethodDeclaration) {
 					MethodDeclaration methodDeclaration = method;
-									
-					locator.match(processMethod(methodDeclaration),
-							getNodeSet());
-					parseBodies(methodDeclaration);
+
+					locator.match(this.processMethod(methodDeclaration),
+							this.getNodeSet());
+					this.parseBodies(methodDeclaration);
 				}
 			}
 		}
@@ -96,7 +94,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 		ASTNode[] nodes = unit.getNonTypeOrMethodNode();
 		int length = nodes.length;
 		for (int i = 0; i < length; i++) {
-			processStatement(nodes[i]);
+			this.processStatement(nodes[i]);
 		}
 	}
 
@@ -129,7 +127,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 
 	protected void parseBodies(TypeDeclaration type) {
 
-		PatternLocator locator = getPatternLocator();
+		PatternLocator locator = this.getPatternLocator();
 
 		MethodDeclaration[] methods = type.getMethods();
 		if (methods != null) {
@@ -137,9 +135,9 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 				MethodDeclaration method = methods[i];
 				if (method instanceof MethodDeclaration) {
 					MethodDeclaration methodDeclaration = method;
-					locator.match(processMethod(methodDeclaration),
-							getNodeSet());
-					parseBodies(methodDeclaration);
+					locator.match(this.processMethod(methodDeclaration),
+							this.getNodeSet());
+					this.parseBodies(methodDeclaration);
 				}
 			}
 		}
@@ -148,14 +146,14 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 		if (memberTypes != null) {
 			for (int i = 0; i < memberTypes.length; i++) {
 				TypeDeclaration memberType = memberTypes[i];
-				locator.match(processType(memberType), getNodeSet());
+				locator.match(this.processType(memberType), this.getNodeSet());
 				this.parseBodies(memberType);
 			}
 		}
 		ASTNode[] nodes = type.getNonTypeOrMethodNode();
 		int length = nodes.length;
 		for (int i = 0; i < length; i++) {
-			processStatement(nodes[i]);
+			this.processStatement(nodes[i]);
 		}
 	}
 
@@ -164,7 +162,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 		int length = nodes.size();
 		for (int i = 0; i < length; i++) {
 			ASTNode node = (ASTNode) nodes.get(i);
-			processStatement(node);
+			this.processStatement(node);
 		}
 	}
 
@@ -173,22 +171,22 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 			return;
 		}
 		if (node instanceof TclStatement) {
-			PatternLocator locator = getPatternLocator();
+			PatternLocator locator = this.getPatternLocator();
 			TclStatement statement = (TclStatement) node;
 			// process variables.
 			FieldDeclaration[] fields = TclParseUtils
 					.returnVariableDeclarations(statement);
 			for (int k = 0; k < fields.length; ++k) {
-				locator.match(fields[k], getNodeSet());
+				locator.match(fields[k], this.getNodeSet());
 			}
-			processReferences(statement);
+			this.processReferences(statement);
 		}
 	}
 
 	private void processReferences(TclStatement statement) {
 		Expression commandId = statement.getAt(0);
 		PatternLocator locator;
-		locator = getPatternLocator();
+		locator = this.getPatternLocator();
 		if (commandId != null && commandId instanceof SimpleReference) {
 			String name = ((SimpleReference) commandId).getName();
 			if (name.startsWith("::")) {
@@ -202,16 +200,16 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 					for (int i = 0; i < ns.length; ++i) {
 						if (ns[i].length() > 0) {
 							if(i == ns.length - 1 ) {
-								locator.match((CallExpression) new CallExpression(
+								locator.match(new CallExpression(
 										commandId.sourceStart(), commandId
 										.sourceEnd(), null, ns[i], null),
-										getNodeSet());
+										this.getNodeSet());
 							}
 							else {
-								locator.match((TypeReference) new TypeReference(
+								locator.match(new TypeReference(
 										commandId.sourceStart(), commandId
 										.sourceEnd(), ns[i]),
-										getNodeSet());
+										this.getNodeSet());
 							}
 						}
 					}
@@ -220,18 +218,19 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 			if (name.equals("catch")) {
 				if (statement.getCount() >= 2) {
 					Expression e = statement.getAt(1);
-					if (e instanceof TclBlockExpression)
-						processBlock(e);
+					if (e instanceof TclBlockExpression) {
+						this.processBlock(e);
+					}
 				}
 			}
 			if (name.equals("if")) {
-				processIf(statement);
+				this.processIf(statement);
 			}
 			if (name.equals("for")) {
-				processFor(statement);
+				this.processFor(statement);
 			}
 			if (name.equals("while")) {
-				processWhile(statement);
+				this.processWhile(statement);
 			}
 		}
 		for (int j = 1; j < statement.getCount(); ++j) {
@@ -241,7 +240,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 				List exprs = expr.parseExpression();
 				for (int i = 0; i < exprs.size(); ++i) {
 					if (exprs.get(i) instanceof TclStatement) {
-						processReferences((TclStatement) exprs.get(i));
+						this.processReferences((TclStatement) exprs.get(i));
 					}
 				}
 			} else if (st instanceof StringLiteral) {
@@ -254,11 +253,11 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 					if( ref != null ) {
 						ref.setName(ref.getName().substring(1));
 						ref.setEnd(ref.sourceEnd() - 1);
-						locator.match(ref, getNodeSet());
+						locator.match(ref, this.getNodeSet());
 						pos = pos + ref.getName().length();
 					}
 					pos = value.indexOf("$", pos + 1 );
-				}	
+				}
 			}
 //			else if (st instanceof TclBlockExpression) {
 //				int pos = 0;
@@ -274,15 +273,15 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 //						pos = pos + ref.getName().length();
 //					}
 //					pos = value.indexOf("$", pos + 1 );
-//				}	
-//			}  
+//				}
+//			}
 			else if (st instanceof SimpleReference) {
 				SimpleReference ref = (SimpleReference) st;
 				String name = ref.getName();
 				if (name.startsWith("$")) { // This is variable usage.
 					ref.setName(name.substring(1));
 					ref.setEnd(ref.sourceEnd() - 1);
-					locator.match(ref, getNodeSet());
+					locator.match(ref, this.getNodeSet());
 				}
 			}
 		}
@@ -293,7 +292,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 		List code = block.parseBlock(block.sourceStart() + 1);
 		for (int i = 0; i < code.size(); ++i) {
 			if (code.get(i) instanceof TclStatement) {
-				processReferences((TclStatement) code.get(i));
+				this.processReferences((TclStatement) code.get(i));
 			}
 		}
 	}
@@ -310,7 +309,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 		if (1 < len) { // Process initializers
 			Expression bl = (Expression) exprs.get(1);
 			if (bl instanceof TclBlockExpression) {
-				processBlock(bl);
+				this.processBlock(bl);
 			}
 		}
 
@@ -318,7 +317,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 		if (bi < len) {
 			Expression bl = (Expression) exprs.get(bi);
 			if (bl instanceof TclBlockExpression) {
-				processBlock(bl);
+				this.processBlock(bl);
 			}
 		}
 	}
@@ -334,7 +333,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 		if (bi < len) {
 			Expression bl = (Expression) exprs.get(bi);
 			if (bl instanceof TclBlockExpression) {
-				processBlock(bl);
+				this.processBlock(bl);
 			}
 		}
 	}
@@ -362,7 +361,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 								continue;
 							}
 						} else if (bl instanceof TclBlockExpression) {
-							processBlock(bl);
+							this.processBlock(bl);
 						}
 						break;
 					}
@@ -371,7 +370,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 					if (i + 1 < len) {
 						Expression bl = (Expression) exprs.get(i + 1);
 						if (bl instanceof TclBlockExpression) {
-							processBlock(bl);
+							this.processBlock(bl);
 						}
 					}
 				}

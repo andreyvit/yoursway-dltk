@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 /*
  * (c) 2002, 2005 xored software and others all rights reserved. http://www.xored.com
@@ -52,8 +52,8 @@ public class MethodDeclaration extends Declaration {
 		this.setNameStart(nameStart);
 		this.setNameEnd(nameEnd);
 	}
-	
-	
+
+
 
 	public MethodDeclaration(int start, int end) {
 		super(start, end);
@@ -75,8 +75,8 @@ public class MethodDeclaration extends Declaration {
 
 		if (visitor.visit(this)) {
 			// Deocrators
-			if (decorators != null) {
-				Iterator it = decorators.iterator();
+			if (this.decorators != null) {
+				Iterator it = this.decorators.iterator();
 				while (it.hasNext()) {
 					Decorator dec = (Decorator) it.next();
 					dec.traverse(visitor);
@@ -84,15 +84,15 @@ public class MethodDeclaration extends Declaration {
 			}
 
 			// Arguments
-			Iterator it = arguments.iterator();
+			Iterator it = this.arguments.iterator();
 			while (it.hasNext()) {
 				Argument arg = (Argument) it.next();
 				arg.traverse(visitor);
 			}
 
 			// Body
-			if (body != null) {
-				body.traverse(visitor);
+			if (this.body != null) {
+				this.body.traverse(visitor);
 			}
 
 			visitor.endvisit(this);
@@ -100,9 +100,9 @@ public class MethodDeclaration extends Declaration {
 	}
 
 	public List getArguments() {
-		return arguments;
+		return this.arguments;
 	}
-	
+
 	public void addArgument (Argument arg) {
 		this.arguments.add(arg);
 	}
@@ -112,13 +112,13 @@ public class MethodDeclaration extends Declaration {
 	}
 
 	public void acceptBody(Block block) {
-		acceptBody(block, true);
+		this.acceptBody(block, true);
 	}
-	
+
 	public void setBody (ASTListNode statement) {
 		Block b = new Block (statement.sourceStart(), statement.sourceEnd());
 		b.acceptStatements(statement.getChilds());
-		acceptBody(b, true);
+		this.acceptBody(b, true);
 	}
 
 	public void acceptBody(Block block, boolean replace) {
@@ -134,24 +134,24 @@ public class MethodDeclaration extends Declaration {
 	}
 
 	public List getStatements() {
-		if (body == null) {
-			body = new Block(sourceStart(), sourceEnd());
+		if (this.body == null) {
+			this.body = new Block(this.sourceStart(), this.sourceEnd());
 		}
-		return body.getStatements();
+		return this.body.getStatements();
 	}
 
 	public Block getBody() {
-		return body;
+		return this.body;
 	}
 
 	public void printNode(CorePrinter output) {
-		if (decorators != null) {
-			Iterator i = decorators.iterator();
+		if (this.decorators != null) {
+			Iterator i = this.decorators.iterator();
 			while (i.hasNext()) {
 				((Decorator) i.next()).printNode(output);
 			}
 		}
-		output.formatPrintLn("Method" + this.getSourceRange().toString() 
+		output.formatPrintLn("Method" + this.getSourceRange().toString()
 				+ this.getNameSourceRange().toString() +  ": " + super.toString());
 		output.formatPrintLn("(");
 		if (this.arguments != null && this.arguments.size() > 0) {
@@ -180,7 +180,7 @@ public class MethodDeclaration extends Declaration {
 	}
 
 	public String getDeclaringTypeName() {
-		return declaringTypeName;
+		return this.declaringTypeName;
 	}
 
 	public boolean equals(Object obj) {
@@ -193,9 +193,9 @@ public class MethodDeclaration extends Declaration {
 			return false;
 		}
 		// Only name.
-		return d.name.equals(this.name)
-				&& d.nameStart == this.nameStart
-				&& d.nameEnd == this.nameEnd
+		return d.getName().equals(this.getName())
+				&& d.getNameStart() == this.getNameStart()
+				&& d.getNameEnd() == this.getNameEnd()
 				&& (this.declaringTypeName == null || this.declaringTypeName
 						.equals(d.declaringTypeName));
 	}

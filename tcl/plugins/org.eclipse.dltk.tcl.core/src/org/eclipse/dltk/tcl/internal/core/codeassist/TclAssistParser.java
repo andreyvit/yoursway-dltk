@@ -21,7 +21,7 @@ import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.tcl.ITclKeywords;
+import org.eclipse.dltk.tcl.core.ITclKeywords;
 import org.eclipse.dltk.tcl.core.TclNature;
 
 public abstract class TclAssistParser implements IAssistParser {
