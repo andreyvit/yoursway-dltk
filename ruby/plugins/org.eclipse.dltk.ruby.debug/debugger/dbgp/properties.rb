@@ -10,7 +10,7 @@
 
 
     def has_children(obj)
-        atomic_types = [NilClass, Fixnum, String, Symbol]
+        atomic_types = [NilClass, TrueClass, FalseClass, Fixnum, String, Symbol]
         not atomic_types.include?(obj.class)
     end
 
