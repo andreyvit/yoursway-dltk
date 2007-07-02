@@ -2,6 +2,7 @@ package org.eclipse.dltk.ruby.internal.ui;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.jface.viewers.IDecoration;
@@ -21,12 +22,13 @@ public class RubyProjectDecorator extends LabelProvider implements
 
 		if (project != null) {
 			try {
-				if (project.hasNature(RubyNature.NATURE_ID)) {
+				if (project.isOpen() && project.hasNature(RubyNature.NATURE_ID)) {
 					decoration.addOverlay(RubyImages.PROJECT_DECARATOR);
 				}
 			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if( DLTKCore.DEBUG ) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
