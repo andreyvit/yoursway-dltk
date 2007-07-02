@@ -212,12 +212,9 @@ public class DBGPStackManager {
 
 	public void setSuspendOnExit(boolean parseBoolean) {
 		this.suspendOnExit = parseBoolean;
-		System.out.println(parseBoolean);
 	}
 
 	public void setSuspendOnEntry(boolean parseBoolean) {
-		System.out.println("Entry:"+parseBoolean);
 		this.suspendOnExit = parseBoolean;
-		this.suspendOnEntry = parseBoolean;
 	}
 }
