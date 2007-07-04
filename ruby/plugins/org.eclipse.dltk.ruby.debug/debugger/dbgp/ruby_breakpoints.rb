@@ -11,7 +11,6 @@
 require 'thread'
 
 module XoredDebugger
-
     class Breakpoint
         COND_GREATER_OR_EQUALS = '>='
         COND_EQUALS            = '=='   

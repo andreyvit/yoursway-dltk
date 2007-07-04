@@ -61,7 +61,7 @@ module XoredDebugger
     end # class States
 
 
-    class RubyThread
+    class RubyThreadBase
     private
         def breakpoints
             @debugger.breakpoints
@@ -74,6 +74,7 @@ module XoredDebugger
         def capturer
             @debugger.capturer
         end
+		
 
 
         def thread_label
@@ -82,7 +83,8 @@ module XoredDebugger
             label += ', priority=' + @thread.priority.to_s
         end
 
-
+	public # DBGP support
+	
         # Init
         def init(key, file_uri)
             { :app_id   => 'test',
@@ -117,56 +119,9 @@ module XoredDebugger
             { :name    => name, 
               :success => 1 }
         end
+      
 
-        # Continuation commands
-        def run
-            @waitDepth = -2
-            nil
-        end
-
-        def step_into
-            @waitDepth = -1
-            nil
-        end
-
-        def step_over
-            @waitDepth = @stack.depth
-            nil
-        end
-
-        def step_out
-            @waitDepth = @stack.depth - 1
-            nil
-        end
-
-        def stop
-            terminate
-            nil
-        end
-
-        def detach
-            logger.puts('--> detach <--')
-            nil
-        end
-
-        def break_cmd
-            @waitDepth = -1
-            { :success => true }       
-        end
-
-        # Context commands
-        def make_property(name, obj) # TODO: move!!!
-            type = obj.class
-
-            if type == Hash
-                prepare_hash(name, obj)
-            elsif type == Array
-                prepare_array(name, obj)
-            else
-                prepare_object(name, obj)
-            end
-        end
-
+        # Context commands        
         LOCAL_CONTEXT_ID  = 0
         GLOBAL_CONTEXT_ID = 1
         CLASS_CONTEXT_ID  = 2
@@ -238,8 +193,7 @@ module XoredDebugger
         def property_set(name, depth, value)
             success = true
             begin
-                command = name + ' = ' + value.to_s
-                logger.puts('String to evaluate: ' + command)
+                command = "#{name} = #{value.to_s}"
                 @stack.eval(command, depth)
             rescue Exception
                 success = false
@@ -249,14 +203,14 @@ module XoredDebugger
         end
 
         def property_value
+			#TODO:
             {}
         end
 
-
         # Breakpoint commands
         def breakpoint_set_line(file, line, state, temporary, expression, hit_value, hit_condition)
-            id = breakpoints.set_line_bpt(file, line, state, temporary, expression, hit_value, hit_condition)
-            logger.puts("BR_ID: " + id.to_s)
+			id = breakpoints.set_line_bpt(file, line, state, temporary, expression, hit_value, hit_condition)
+
             { :state         => state, 
               :breakpoint_id => id }
         end
@@ -306,6 +260,7 @@ module XoredDebugger
 
         def stack_get(depth = nil)
             levels = []
+			
             @stack.depth.times { |i|
                 level = @stack[i]
                 levels << { :level    => i,
@@ -321,7 +276,6 @@ module XoredDebugger
                 n = depth.to_i
                 { :levels => [levels[n]] }
             else
-
                 { :levels => levels }
             end  
         end
@@ -372,7 +326,7 @@ module XoredDebugger
             success = true
             property = nil
             begin
-                property = make_property(expression, @stack.eval(expression))        
+                property = make_property(expression, @stack.eval(expression))
             rescue Exception
                 success = false
             end
@@ -408,16 +362,21 @@ module XoredDebugger
                 when 'break': break_cmd
 
                 # Breakpoint commands
-                when 'breakpoint_set'               
-                    type = command.arg('-t')
-                    
+                when 'breakpoint_set'
+					type = command.arg('-t')                    
                     state = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false                   
                     temporary = command.arg_with_default('-r', false)
                     hit_value = command.arg_with_default('-h', 1).to_i
                     hit_condition = command.arg_with_default('-o', '>=')
                     expression = command.data
                     
-                    logger.puts("### Expression: " + expression.to_s)
+					logger.puts('Setting breakpoint:')
+					logger.puts("\ttype: " + type.to_s)
+					logger.puts("\tstate: " + state.to_s)
+					logger.puts("\ttemporary: " + temporary.to_s)
+					logger.puts("\thit_value: " + hit_value.to_s)
+					logger.puts("\thit_condition: " + hit_condition.to_s)
+					logger.puts("\texpression: " + expression.to_s)
                     
                     case type
                     when 'line'
@@ -452,9 +411,7 @@ module XoredDebugger
                     hit_value = command.arg_with_default('-h', 1).to_i
                     hit_condition = command.arg_with_default('-o', '>=')
                     expression = command.data
-                    
-                    logger.puts("### Expression: " + expression.to_s)
-                    
+                                                           
                     breakpoint_update(id, state, temporary, expression, hit_value, hit_condition)
                 
                 when 'breakpoint_remove'
@@ -529,30 +486,17 @@ module XoredDebugger
             data
         end
 
-    private
-        def receive
-            @io.receive
-        end
-
-        def send(name, data)
-            @io.send(name, data)
-        end
-
-    public
-        def initialize(debugger, thread, io, key)
+        def initialize(debugger, thread,key)
             @debugger = debugger
             @thread = thread
-            @io = io    
             @key = key
             
             @features = Features.new
             @states = States.new
             @stack = Stack.new
-
-            @waitDepth = -1
+   
             
             @terminated = false
-
             @started = false        
         end
 
@@ -575,8 +519,131 @@ module XoredDebugger
                 end
             end
         end
-        
-        def command_loop
+		
+		def get_code_line(file, line)
+			where = 'Unknown code line'
+            if lines = SCRIPT_LINES__[file] and lines != true
+                where = lines[line - 1].chomp
+            end      
+		end
+
+        def to_s
+            'Thread [' + @thread.object_id.to_s + ']'
+        end
+		
+		
+		# Special commands
+		def get_stack
+			@core.get_stack
+		end
+		
+		def get_breakpoints
+			@core.get_breakpoints
+		end
+		
+		def get_features
+			@core.get_features
+		end
+		
+		def get_logger
+			@core.get_logger
+		end
+    end # class RubyThread
+	
+	
+	class XXX < RubyThreadBase
+		def initialize(core)
+			super(@core)
+		end
+	
+		def run
+            @waitDepth = -2
+            nil
+        end
+
+        def step_into
+            @waitDepth = -1
+            nil
+        end
+
+        def step_over
+            @waitDepth = @stack.depth
+            nil
+        end
+
+        def step_out
+            @waitDepth = @stack.depth - 1
+            nil
+        end
+
+        def stop
+            terminate
+            nil
+        end
+
+        def detach
+            logger.puts('--> detach <--')
+            nil
+        end
+
+        def break_cmd
+            @waitDepth = -1
+            { :success => true }       
+        end
+	end
+	
+	class RubyThread < RubyThreadBase
+		def initialize(debugger, thread, io, key)
+			super(debugger, thread, key)
+			@io = io
+			@waitDepth = -1
+		end
+	
+		def receive
+            @io.receive
+        end
+
+        def send(name, data)
+            @io.send(name, data)
+        end
+		
+		  # Continuation commands
+        def run
+            @waitDepth = -2
+            nil
+        end
+
+        def step_into
+            @waitDepth = -1
+            nil
+        end
+
+        def step_over
+            @waitDepth = @stack.depth
+            nil
+        end
+
+        def step_out
+            @waitDepth = @stack.depth - 1
+            nil
+        end
+
+        def stop
+            terminate
+            nil
+        end
+
+        def detach
+            logger.puts('--> detach <--')
+            nil
+        end
+
+        def break_cmd
+            @waitDepth = -1
+            { :success => true }       
+        end
+		
+		def command_loop
              if @last_continuation_command.nil?
                 loop do
                     @command = Command.new(receive)                        
@@ -597,17 +664,14 @@ module XoredDebugger
                 end     
             end
         end
-
+	
         def trace(event, file, line, id, binding, klass)
             if @terminated
                 return
             end
 
             # Get the code line 
-            where = 'Unknown code line'
-            if lines = SCRIPT_LINES__[file] and lines != true
-                where = lines[line - 1].chomp
-            end      
+            where = get_code_line(file, line)
             
             # Absolute path
             @file = File.expand_path(file) # Absolute file path
@@ -681,9 +745,5 @@ module XoredDebugger
                     @debugger.terminate
             end
         end
-
-        def to_s
-            'Thread [' + @thread.object_id.to_s + ']'
-        end
-    end # class RubyThread
+	end
 end # module
