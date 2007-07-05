@@ -22,6 +22,7 @@ import org.eclipse.dltk.debug.core.eval.IScriptEvaluationResult;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
+import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
@@ -191,8 +192,13 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 
 	protected String getResultText(IScriptEvaluationResult result)
 			throws DebugException {
-		return prepareHtml(result.getSnippet() + " = "
-				+ result.getValue().getValueString());
+		// TODO: make with string constnants and patterns
+		IScriptValue value = result.getValue();
+
+		String str = value == null ? "Can't evaluate hover" : value
+				.getValueString();
+
+		return prepareHtml(result.getSnippet() + " = " + str);
 	}
 
 	protected String getVariableText(IVariable variable) throws DebugException {
