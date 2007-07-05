@@ -9,13 +9,22 @@
 ###############################################################################
 
 module XoredDebugger
-    class StackLevelInfo
-        def initialize(file, line, where)
-            @file = file
-            @line = line
-            @where = where
+    # BreakpointManager interface example
+    class BreakpointManager
+        # adds breakpoint and returns its id
+        def add(info)
         end
         
-        attr_reader :file, :line, :where
-    end # class StackLevelInfo
+        # udates breakpoint with id to info
+        def update(id, info)
+        end
+        
+        # removes breakpoint with id
+        def remove(id)
+        end
+        
+        # returns breakpoint info (breakpoint_id, hit_count - additional attributes)
+        def [] (id)
+        end
+    end # class BreakpointManager
 end # module XoredDebugger

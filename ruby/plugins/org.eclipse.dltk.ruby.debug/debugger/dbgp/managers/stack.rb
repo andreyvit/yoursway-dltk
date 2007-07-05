@@ -9,13 +9,18 @@
 ###############################################################################
 
 module XoredDebugger
-    class StackLevelInfo
-        def initialize(file, line, where)
-            @file = file
-            @line = line
-            @where = where
+    # StackManager interface
+    class StackManager
+        # Evaluation
+        def eval(text, index)
+        end
+    
+        # Stack depth
+        def depth
         end
         
-        attr_reader :file, :line, :where
-    end # class StackLevelInfo
+        # Stack level
+        def [](index)
+        end
+    end # class StackManager
 end # module XoredDebugger

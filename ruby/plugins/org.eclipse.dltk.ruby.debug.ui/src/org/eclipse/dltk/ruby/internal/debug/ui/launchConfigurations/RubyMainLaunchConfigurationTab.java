@@ -21,27 +21,27 @@ import org.eclipse.swt.graphics.Image;
 
 public class RubyMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
 
-
 	protected boolean validateProject(IScriptProject project) {
-		if (project == null)
+		if (project == null) {
 			return false;
-		// check project nature		
+		}
+
 		try {
-			IDLTKLanguageToolkit ltk = DLTKLanguageManager.getLanguageToolkit(project);
-			if (ltk instanceof RubyLanguageToolkit)
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+					.getLanguageToolkit(project);
+			if (toolkit instanceof RubyLanguageToolkit) {
 				return true;
+			}
 		} catch (CoreException e) {
 		}
+
 		return false;
 	}
-	
-	protected String getLanguageName () {
+
+	protected String getLanguageName() {
 		return "RUBY";
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#getImage()
-	 */
+
 	public Image getImage() {
 		return DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_CLASS);
 	}
@@ -49,5 +49,4 @@ public class RubyMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
 	protected String getNatureID() {
 		return RubyNature.NATURE_ID;
 	}
-
 }

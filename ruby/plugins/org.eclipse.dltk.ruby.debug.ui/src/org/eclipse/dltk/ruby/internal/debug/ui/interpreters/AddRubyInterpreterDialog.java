@@ -26,5 +26,4 @@ public class AddRubyInterpreterDialog extends AddScriptInterpreterDialog {
 	protected AbstractInterpreterLibraryBlock createLibraryBlock(AddScriptInterpreterDialog dialog) {		
 		return new RubyInterpreterLibraryBlock(dialog);
 	}
-
 }

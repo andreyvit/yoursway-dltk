@@ -20,8 +20,7 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 	private static final String RUBY_SCRIPT_VAR = "DBGP_RUBY_SCRIPT";
 	private static final String RUBY_LOG_VAR = "DBGP_RUBY_LOG";
 
-	private static final String DEBUGGER_DBGP_DIR = "dbgp";
-	private static final String DEBUGGER_SCRIPT = "runner.rb";
+	private static final String DEBUGGER_SCRIPT = "simple_runner.rb";
 
 	private final boolean logging;
 
@@ -52,17 +51,14 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 		// Get debugger source location
 		final IPath sourceLocation = deploy();
 
-		final File scriptFile = sourceLocation.append(DEBUGGER_DBGP_DIR)
-				.append(DEBUGGER_SCRIPT).toFile();
-
-		final String includePath = sourceLocation.toOSString();
+		final File scriptFile = sourceLocation.append(DEBUGGER_SCRIPT).toFile();
 
 		// Creating new config
 		InterpreterConfig newConfig = new InterpreterConfig();
 
 		// Interpreter arguments
 		newConfig.addInterpreterArgs(config.getInterpreterArgs());
-		newConfig.addInterpreterArg("-I" + includePath);
+		newConfig.addInterpreterArg("-I" + sourceLocation.toOSString());
 
 		// Script
 		newConfig.setScriptFile(scriptFile);

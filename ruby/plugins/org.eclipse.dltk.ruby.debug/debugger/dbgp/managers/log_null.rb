@@ -9,37 +9,11 @@
 ###############################################################################
 
 module XoredDebugger
-
-    class NullLogger
+	class NullLogManager
         def puts(str)
         end
 
         def close
         end
-    end  # class NullLogger
-
-    class StdoutLogger
-        def puts(str)
-            Kernel.puts(str)
-        end
-
-        def close
-        end
-    end # class StdoutLogger
-
-    class FileLogger
-        def initialize(filename)
-            @f = File.open(filename, 'w')
-        end
-
-        def puts(str)
-            @f.puts(str)
-            @f.flush
-        end
-
-        def close
-            @f.close
-        end
-    end # class FileLogger
-
+    end  # class NullLogManager
 end # module XoredDebugger

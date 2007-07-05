@@ -9,8 +9,7 @@
 ###############################################################################
 
 module XoredDebugger
-
-    class Features
+    class FeatureManager
         def initialize
             # Required
             @map = {
@@ -50,6 +49,5 @@ module XoredDebugger
                 @map[name][0] = value
             end
         end 
-    end # class Features
-
+    end # class FeatureManager
 end # module XoredDebugger

@@ -375,5 +375,4 @@ public abstract class AbstractScriptLaunchShortcut implements ILaunchShortcut {
 	protected String getSelectionEmptyMessage() {
 		return LaunchingMessages.LaunchShortcut_selectionContainsNoScript;
 	}
-
 }

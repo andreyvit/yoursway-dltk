@@ -9,13 +9,18 @@
 ###############################################################################
 
 module XoredDebugger
-    class StackLevelInfo
-        def initialize(file, line, where)
-            @file = file
-            @line = line
-            @where = where
+	class FileLogManager
+        def initialize(filename)
+            @f = File.open(filename, 'w')
         end
-        
-        attr_reader :file, :line, :where
-    end # class StackLevelInfo
+
+        def puts(str)
+            @f.puts(str)
+            @f.flush
+        end
+
+        def close
+            @f.close
+        end
+    end # class FileLogManager
 end # module XoredDebugger

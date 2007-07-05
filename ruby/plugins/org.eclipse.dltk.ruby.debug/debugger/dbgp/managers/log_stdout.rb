@@ -9,13 +9,12 @@
 ###############################################################################
 
 module XoredDebugger
-    class StackLevelInfo
-        def initialize(file, line, where)
-            @file = file
-            @line = line
-            @where = where
+	class StdoutLogManager
+        def puts(str)
+            Kernel.puts(str)
         end
-        
-        attr_reader :file, :line, :where
-    end # class StackLevelInfo
+
+        def close
+        end
+    end # class StdoutLogManager
 end # module XoredDebugger

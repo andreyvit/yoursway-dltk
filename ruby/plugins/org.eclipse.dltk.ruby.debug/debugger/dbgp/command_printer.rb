@@ -270,4 +270,4 @@ module XoredDebugger
 
     end # class Printer
 
-end # module
+end # module XoredDebugger

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.debug.ui;
 
+import java.text.MessageFormat;
+
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.ui.IValueDetailListener;
@@ -24,6 +26,9 @@ import org.eclipse.ui.IEditorInput;
 public class RubyDebugModelPresentation extends ScriptDebugModelPresentation {
 	private static final String RUBY_EDITOR_ID = "org.eclipse.dltk.ruby.ui.editor.RubyEditor";
 
+	private static final String EVAL_PATTERN = "({0}).to_s";
+	private static final String CANNOT_EVALUATE = "Can't evaluate details.";
+
 	public String getEditorId(IEditorInput input, Object element) {
 		return RUBY_EDITOR_ID;
 	}
@@ -35,31 +40,27 @@ public class RubyDebugModelPresentation extends ScriptDebugModelPresentation {
 				.getDebugTarget());
 
 		if (thread != null) {
-			IScriptEvaluationEngine engine = thread.getEvaluationEngine();
+			final String snippet = MessageFormat.format(EVAL_PATTERN,
+					new Object[] { ((IScriptValue) value).getEvalName() });
 
-			engine.asyncEvaluate("(" + ((IScriptValue) value).getEvalName()
-					+ ").to_s", null, new IScriptEvaluationListener() {
-				public void evaluationComplete(IScriptEvaluationResult result) {
-					if (result != null) {
-						listener.detailComputed(value, result.getValue()
-								.toString());
-					} else {
-						try {
-							listener.detailComputed(value, value
-									.getValueString());
-						} catch (DebugException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+			final IScriptEvaluationEngine engine = thread.getEvaluationEngine();
+			engine.asyncEvaluate(snippet, null,
+					new IScriptEvaluationListener() {
+						public void evaluationComplete(
+								IScriptEvaluationResult result) {
+							if (result != null) {
+								IScriptValue value = result.getValue();
+								final String details = value == null ? CANNOT_EVALUATE
+										: value.toString();
+								listener.detailComputed(value, details);
+							}
 						}
-					}
-				}
-			});
+					});
 		} else {
 			try {
 				listener.detailComputed(value, value.getValueString());
 			} catch (DebugException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				RubyDebugUIPlugin.log(e);
 			}
 		}
 	}
