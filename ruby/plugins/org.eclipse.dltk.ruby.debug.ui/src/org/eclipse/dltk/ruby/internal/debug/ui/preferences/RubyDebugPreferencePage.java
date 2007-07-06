@@ -15,6 +15,8 @@ import org.eclipse.jface.preference.PreferencePage;
  */
 public class RubyDebugPreferencePage extends
 		AbstractConfigurationBlockPreferencePage {
+	public static final String PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug";
+	
 	protected static class RubyDebugConfigurationBlock extends
 			AbstractScriptDebuggingEngineConfigurationBlock {
 		public RubyDebugConfigurationBlock(OverlayPreferenceStore store,

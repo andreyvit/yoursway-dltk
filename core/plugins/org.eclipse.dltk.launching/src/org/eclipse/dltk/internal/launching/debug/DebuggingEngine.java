@@ -9,16 +9,18 @@ import org.eclipse.dltk.launching.debug.IDebuggingEngine;
 public class DebuggingEngine implements IDebuggingEngine {
 	private String id;
 	private String natureId;
+	private String preferencePageId;
 	private String name;
 	private String description;
 	private int priority;
 	private IInterpreterRunnerFactory factory;
 
-	public DebuggingEngine(String id, String natureId, String name,
+	public DebuggingEngine(String id, String natureId, String preferencePageId, String name,
 			String description, int priority, IInterpreterRunnerFactory factory) {
 		super();
 		this.id = id;
 		this.natureId = natureId;
+		this.preferencePageId = preferencePageId;
 		this.name = name;
 		this.description = description;
 		this.priority = priority;
@@ -35,6 +37,10 @@ public class DebuggingEngine implements IDebuggingEngine {
 
 	public String getNatureId() {
 		return natureId;
+	}
+	
+	public String getPreferencePageId() {
+		return preferencePageId;
 	}
 
 	public String getName() {

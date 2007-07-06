@@ -13,6 +13,8 @@ public class ScriptDebugPreferencesMessages {
 	public static String GeneralPreferencesDescription;
 	
 	public static String LinkToGeneralPreferenses;
+	
+	public static String LingToDebuggingEnginePreferences;
 
 	public static String DebuggingEngine;
 

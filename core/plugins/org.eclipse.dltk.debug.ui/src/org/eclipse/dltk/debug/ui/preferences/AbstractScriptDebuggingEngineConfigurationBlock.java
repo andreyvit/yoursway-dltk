@@ -1,6 +1,8 @@
 package org.eclipse.dltk.debug.ui.preferences;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
 import org.eclipse.dltk.launching.debug.IDebuggingEngine;
@@ -16,6 +18,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -29,14 +32,19 @@ public abstract class AbstractScriptDebuggingEngineConfigurationBlock extends
 		AbstractConfigurationBlock {
 
 	private ComboViewer allEngines;
-	private Label description;
+	// private Label description;
+	private Composite descriptionPlace;
 	private PreferencePage preferencePage;
+
+	private Map engineToDescriptionMap;
 
 	public AbstractScriptDebuggingEngineConfigurationBlock(
 			OverlayPreferenceStore store, PreferencePage preferencePage) {
 		super(store, preferencePage);
 
 		this.preferencePage = preferencePage;
+
+		this.engineToDescriptionMap = new HashMap();
 
 		store.addKeys(createKeys());
 	}
@@ -94,9 +102,12 @@ public abstract class AbstractScriptDebuggingEngineConfigurationBlock extends
 		}
 	}
 
-	protected void updateDescription(String text) {
-		description.setText(ScriptDebugPreferencesMessages.DescriptionLabel
-				+ " " + text);
+	protected void updateDescription(IDebuggingEngine engine) {
+		StackLayout stackLayout = (StackLayout) descriptionPlace.getLayout();
+		Composite composite = (Composite) engineToDescriptionMap.get(engine
+				.getId());
+		stackLayout.topControl = composite;
+		descriptionPlace.layout();
 	}
 
 	protected void createEngineSelector(Composite parent, Object data) {
@@ -126,35 +137,39 @@ public abstract class AbstractScriptDebuggingEngineConfigurationBlock extends
 
 		allEngines.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
-				updateDescription(getSelectedDebuggineEngine().getDescription());
+				updateDescription(getSelectedDebuggineEngine());
 			}
 		});
 
-		// Description
-		this.description = new Label(group, SWT.NONE);
-		this.description.setText("");
-		this.description.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
-				true));
+		descriptionPlace = createComposite(group, group.getFont(), 1, 1, 0, 0,
+				GridData.FILL);
+		descriptionPlace.setLayout(new StackLayout());
 	}
 
-	protected GridData makeGridData() {
-		GridData data = new GridData();
-		data.grabExcessHorizontalSpace = true;
-		data.horizontalAlignment = GridData.FILL;
-		return data;
-	}
+	private Composite createDescription(Composite parent,
+			IDebuggingEngine engine) {
+		Composite composite = createComposite(parent, parent.getFont(), 1, 1,
+				0, 0, GridData.FILL);
+		Label label = new Label(composite, SWT.NONE);
+		label.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		label.setText(ScriptDebugPreferencesMessages.DescriptionLabel + " "
+				+ engine.getDescription());
 
-	protected Control createContents(Composite parent) {
-		Composite top = new Composite(parent, SWT.NONE);
+		final String preferencePageId = engine.getPreferencePageId();
+		if (preferencePageId != null && preferencePageId.length() > 0) {
+			PreferenceLinkArea area = new PreferenceLinkArea(
+					composite,
+					SWT.NONE,
+					preferencePageId,
+					ScriptDebugPreferencesMessages.LingToDebuggingEnginePreferences,
+					(IWorkbenchPreferenceContainer) preferencePage
+							.getContainer(), null);
 
-		GridLayout layout = new GridLayout(1, false);
-		top.setLayout(layout);
+			area.getControl().setLayoutData(
+					new GridData(SWT.FILL, SWT.FILL, false, false));
+		}
 
-		createEngineSelector(top, makeGridData());
-
-		initializeValues();
-
-		return top;
+		return composite;
 	}
 
 	protected void initializeValues() {
@@ -163,6 +178,13 @@ public abstract class AbstractScriptDebuggingEngineConfigurationBlock extends
 		String natureId = getNatureId();
 		String engineId = getPreferenceStore().getString(
 				getDebuggingEngineIdKey());
+
+		IDebuggingEngine[] engines = manager.getDebuggingEngines(natureId);
+		for (int i = 0; i < engines.length; ++i) {
+			IDebuggingEngine engine = engines[i];
+			engineToDescriptionMap.put(engine.getId(), createDescription(
+					descriptionPlace, engine));
+		}
 
 		if ("".equals(engineId)) {
 			// Engine not selected (for example, first launch)
@@ -181,10 +203,6 @@ public abstract class AbstractScriptDebuggingEngineConfigurationBlock extends
 		}
 	}
 
-	protected abstract String getDebuggingEngineIdKey();
-
-	protected abstract String getNatureId();
-
 	public void performOk() {
 		IPreferenceStore prefs = getPreferenceStore();
 
@@ -194,4 +212,8 @@ public abstract class AbstractScriptDebuggingEngineConfigurationBlock extends
 			prefs.setValue(getDebuggingEngineIdKey(), engine.getId());
 		}
 	}
+
+	protected abstract String getDebuggingEngineIdKey();
+
+	protected abstract String getNatureId();
 }
