@@ -109,6 +109,9 @@ public class MixinTestsSuite extends TestSuite {
 							StringTokenizer tok = new StringTokenizer(line
 									.substring(pos + 2));
 							String test = tok.nextToken();
+							if ("exit".equals(test)) {
+								return;
+							}
 							if ("get".equals(test)) {
 								String key = tok.nextToken();
 								assertions.add(new GetElementAssertion(key,

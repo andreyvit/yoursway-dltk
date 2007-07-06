@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
     <buildpathentry kind="src" path="src"/>
-    <buildpathentry kind="src" path="src2"/>
     <buildpathentry kind="con" path="org.eclipse.dltk.launching.INTERPRETER_CONTAINER"/>
     <!--buildpathentry external="true" kind="lib" path="C:/ruby/lib/ruby/gems/1.8/gems/activesupport-1.4.0"/-->
 </buildpath>

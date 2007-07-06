@@ -14,7 +14,7 @@ import junit.framework.Test;
 public class AutoMixinTests {
 
 	public static Test suite() {
-		return new MixinTestsSuite("/workspace/mixins/src/auto");
+		return new MixinTestsSuite("/workspace/automixins/src");
 	}
 
 }

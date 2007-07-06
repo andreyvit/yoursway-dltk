@@ -8,17 +8,36 @@
 
 ###############################################################################
 
+class Abc
+end
 
-class Bar
-	Foo = boz(17)
+class XYZ
 	
-	def func
-		boz(Foo)
-	end
-	
-	def boz(foo)
-		foo
+	include Abc
+
+	class Wow
 	end
 end
 
-## meth Bar.func => Fixnum
+## get Abc
+## get XYZ
+## get XYZ{Wow
+
+class ::Global1
+	class ::Global2
+		class ::XYZ::Wow::Subwow
+		end
+	end
+end
+
+## get Global1
+## get Global2
+## get XYZ{Wow{Subwow
+
+
+module MegaModule
+	def megamethod
+	end
+end
+
+## get MegaModule%{megamethod

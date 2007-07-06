@@ -20,7 +20,7 @@ import org.eclipse.dltk.core.tests.model.AbstractDLTKSearchTests;
 
 public class MixinTest extends AbstractDLTKSearchTests implements IDLTKSearchConstants {
 
-	private static final String SRC_PROJECT = "mixins";
+	private static final String SRC_PROJECT = "automixins";
 
 	public MixinTest(String name) {
 		super("org.eclipse.dltk.ruby.core.tests", name);

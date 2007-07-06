@@ -46,7 +46,8 @@ public class TypeHierarchyTests extends AbstractDLTKSearchTests implements IDLTK
 			SCRIPT_PROJECT = setUpScriptProject(PROJECT);
 		}
 	}
-	public void testBuildHierarcy001() throws Exception {
+	
+	public void _testBuildHierarcy001() throws Exception {
 		up();
 		IType type = getSourceModule(PROJECT, "src", "src1.rb").getType("B");
 //		search(type, DECLARATIONS, getSearchScope(PROJECT));

@@ -111,7 +111,9 @@ public class TypeInferenceSuite extends TestSuite {
 						if (pos >= 0) {
 							StringTokenizer tok = new StringTokenizer(line.substring(pos + 2));
 							String test = tok.nextToken();
-							if ("meth".equals(test)) {
+							if ("exit".equals(test)) {
+								return;
+							} else if ("meth".equals(test)) {
 								String methodRef = tok.nextToken();
 								String arrow = tok.nextToken();
 								Assert.isLegal(arrow.equals("=>"));
@@ -264,7 +266,7 @@ public class TypeInferenceSuite extends TestSuite {
 			input = Activator.getDefault().openResource(path);
 			InputStreamReader reader = new InputStreamReader(input);
 			BufferedReader br = new BufferedReader(reader);
-			char[] data = new char[10*1024*1024];
+			char[] data = new char[100*1024]; // tests shouldnt be more that 100 kb
 			int size = br.read(data);
 			buffer.append(data, 0, size);
 		} finally {

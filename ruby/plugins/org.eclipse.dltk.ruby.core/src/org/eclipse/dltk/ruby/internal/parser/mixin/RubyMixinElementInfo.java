@@ -33,6 +33,40 @@ public class RubyMixinElementInfo {
 
 	private int kind = 0;
 	private Object object = null;
+	
+	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + kind;
+		result = prime * result + ((object == null) ? 0 : object.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final RubyMixinElementInfo other = (RubyMixinElementInfo) obj;
+		if (kind != other.kind)
+			return false;
+		if (object == null) {
+			if (other.object != null)
+				return false;
+		} else if (!object.equals(other.object))
+			return false;
+		return true;
+	}
 
 	public RubyMixinElementInfo(int kind, Object object) {
 		super();
