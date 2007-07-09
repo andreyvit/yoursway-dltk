@@ -27,6 +27,7 @@
 	<target name="build" depends="init" if="build_distro_target_exists">
 		<property name="buildfile" value="${distributionCoreName}.build/build.xml" />
 		<echo message="buildfile: ${buildfile}" />
+		<echo message="logExtension: ${logExtension}" />
 		<ant antfile="${buildfile}">
 			<property name="dltk.builder.home" value="${dltk.builder.home}" />
 			<property name="buildBranch" value="${buildBranch}" />
@@ -34,8 +35,8 @@
 			<property name="eclipse.builder.fetch" value="${eclipse.builder.fetch}" />
 			<property name="logExtension" value="${logExtension}" />
 		</ant>
-		
-		
+
+
 	</target>
 
 
@@ -95,15 +96,22 @@
 			<equals arg1="${mapVersionTag}" arg2="HEAD" />
 		</condition>
 		<condition property="buildBranch" value="R0.9">
-			<equals arg1="${mapVersionTag}" arg2="HEAD" />
+			<equals arg1="${mapVersionTag}" arg2="R0_9_maintenance" />
 		</condition>
-		<condition property="buildBranch" value="R0.7">
-			<equals arg1="${mapVersionTag}" arg2="R0_7_maintenance" />
-		</condition>
+		<!-- if not set above, assume R1.0 -->
+		<!-- this happens, for example, when using a "tempTest" branch -->
+		<property name="buildBranch" value="R3.0" />
 
 		<touch file="${user.home}/.cvspass" />
 
+    <!-- strip trailing blanks. Seems either Eclipse, or CVS make it hard to not have trailing spaces -->
+    <replaceregexp
+                flags="gm"
+                file="${dltk.builder.home}/build.properties"
+                match=" *$"
+                replace="" />
 		<property file="${dltk.builder.home}/build.properties" />
+
 		<ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
 		<property file="${buildDirectory}/label.properties" />
 
@@ -127,5 +135,5 @@
 	</target>
 
 
-	
+
 </project>
