@@ -66,32 +66,15 @@
              tag="HEAD" />
     </target>
 
-        <target name="dltk-R0.9-N">
-
-            <!-- 
-            	do not need, since we do nightly builds "on demand" only
-                <cvs quiet="true" cvsRoot="${mapCvsRoot}" package="${wst}" dest="${codir}" />
-                <cvs quiet="true" cvsRoot="${mapCvsRoot}" package="${jst}" dest="${codir}" />
-            -->
-
-        </target>
-
-        <target name="dltk-R0.9-S">
-            <cvs quiet="true"
-                 cvsRoot="${mapCvsRoot}"
-                 package="${cvsPrefix}/${releng}"
-                 dest="${codir}"
-                 tag="HEAD" />
-        </target>
-
-        <target name="dltk-R0.9-I">
-            <cvs quiet="true"
-                 cvsRoot="${mapCvsRoot}"
-                 package="${cvsPrefix}/${releng}"
-                 dest="${codir}"
-                 tag="HEAD" />
-        </target>
-
+    <target name="dltk-R0.9-M">
+        <cvs
+            quiet="true"
+            cvsRoot="${mapCvsRoot}"
+            package="${releng}"
+            dest="${codir}"
+            tag="R0_9_maintenance" />
+    </target>
+	
     <!-- 
         The order of execution of these three worker targets
         is critical, check.clean, initBuilders, and 

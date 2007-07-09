@@ -197,15 +197,14 @@
 
             </ant>
         </schedule>
-
-
     </project>
 
-    <project name="dltk-R0.9-I">
+    <project name="dltk-R0.9-M">
         <!-- Defines where cruise looks for changes, to decide whether to run the build -->
         <modificationset quietperiod="120">
-            <cvs module="${env.CVS_RELENG}" />
-
+            <cvs
+                tag="R0_9_maintenance"
+                module="releng" />
         </modificationset>
 
         <schedule interval="${time.oneHour}">
@@ -218,109 +217,32 @@
                 savelogdir="${logDir}"
                 usedebug="false"
                 antworkingdir="${env.BUILD_HOME}/releng.control">
+
+                <!-- this "M" label should be changed to "R" once maintenance release
+                    is warming up for its "R"elease.
+                -->
                 <property
                     name="buildType"
-                    value="I" />
-                <property
-                    name="buildBranch"
-                    value="R0.9" />
-                <property
-                    name="checkoutprojectname"
-                    value="${project.name}" />
+                    value="M" />
 
-                <property
-                    name="mapVersionTag"
-                    value="HEAD" />
-                <property
-                    name="build.distribution"
-                    value="dltk" />
-
-
-            </ant>
-        </schedule>
-
-    </project>
-
-
-    <project name="dltk-R0.9-N">
-
-        <schedule interval="${time.VeryVeryLongTime}">
-            <ant
-                antscript="${env.BUILD_HOME}/releng.control/ant.sh"
-                buildfile="cc_project_build.xml"
-                target="Build"
-                useQuiet="false"
-                useLogger="false"
-                savelogdir="${logDir}"
-                usedebug="false"
-                antworkingdir="${env.BUILD_HOME}/releng.control">
-                <property
-                    name="buildType"
-                    value="N" />
-                <!-- in this context, buildBranch is simply a label -->
-                <property
-                    name="buildBranch"
-                    value="R0.9" />
-                <property
-                    name="mapVersionTag"
-                    value="HEAD" />
-                <property
-                    name="build.distribution"
-                    value="dltk" />
-                <property
-                    name="build.trial"
-                    value="true" />
-
-
-            </ant>
-        </schedule>
-
-    </project>
-
-
-    <project name="dltk-R0.9-S">
-        <!-- Defines where cruise looks for changes, to decide whether to run the build -->
-        <modificationset quietperiod="120">
-            <cvs module="${env.CVS_RELENG}" />
-
-        </modificationset>
-
-        <schedule interval="${time.VeryVeryLongTime}">
-            <ant
-                antscript="${env.BUILD_HOME}/releng.control/ant.sh"
-                buildfile="cc_project_build.xml"
-                target="Build"
-                useQuiet="false"
-                useLogger="false"
-                savelogdir="${logDir}"
-                usedebug="false"
-                antworkingdir="${env.BUILD_HOME}/releng.control">
-                <property
-                    name="buildType"
-                    value="S" />
                 <property
                     name="buildId"
-                    value="0.9RC2a" />
+                    value="0.9.1" />
                 <property
                     name="buildBranch"
                     value="R0.9" />
+
                 <property
                     name="checkoutprojectname"
                     value="${project.name}" />
 
+
                 <property
                     name="mapVersionTag"
-                    value="HEAD" />
-                <property
-                    name="build.distribution"
-                    value="dltk" />
-                <property
-                    name="build.pack-all-in-one"
-                    value="true" />
+                    value="R0_9_maintenance" />                    
 
             </ant>
         </schedule>
-
 
     </project>
 
