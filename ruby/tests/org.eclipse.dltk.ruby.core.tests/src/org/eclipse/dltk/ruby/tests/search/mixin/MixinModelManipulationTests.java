@@ -31,7 +31,7 @@ import org.eclipse.dltk.ruby.tests.Activator;
  * 
  * Warning! Tests results depends of test execution order cause tests modifies a project.
  * 
- * @author Haiodo
+ * @author fourdman
  * 
  */
 public class MixinModelManipulationTests extends AbstractDLTKSearchTests implements
@@ -59,9 +59,12 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests impleme
 	}
 
 	private void up() throws Exception {
-		if (SCRIPT_PROJECT == null) {
-			SCRIPT_PROJECT = setUpScriptProject(PROJECT_NAME);
+		if (SCRIPT_PROJECT != null) {
+			deleteProject (SCRIPT_PROJECT.getElementName());
 		}
+//		if (SCRIPT_PROJECT == null) {
+			SCRIPT_PROJECT = setUpScriptProject(PROJECT_NAME);
+//		}
 	}
 	
 	private void buildAll() throws CoreException {

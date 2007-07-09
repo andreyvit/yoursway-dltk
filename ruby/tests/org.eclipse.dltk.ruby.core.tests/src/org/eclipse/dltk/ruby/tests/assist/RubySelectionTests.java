@@ -63,6 +63,11 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 						new NullProgressMonitor());
 		waitForAutoBuild();
 	}
+	
+	public void tearDownSuite () throws Exception {
+		deleteProject(SELECTION_PROJECT);
+		super.tearDownSuite();
+	}
 
 	public static Test suite() {
 		return new Suite(RubySelectionTests.class);
