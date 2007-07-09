@@ -25,9 +25,9 @@
 	<target name="runTest">
 
 		<dirname file="${ant.file}" property="test.component.dir" />
-		<ant antfile="${wtp.builder.home}/scripts/build/label.xml" />
+		<ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
 		<property file="${buildDirectory}/label.properties" />
-		<property file="${wtp.builder.home}/build.properties" />
+		<property file="${dltk.builder.home}/build.properties" />
 
 		<fail message="testRoot must be set for this task"
 			unless="testRoot" />
