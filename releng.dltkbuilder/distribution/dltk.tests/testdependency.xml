@@ -11,35 +11,11 @@
 
 	<target name="get">
 		<antcall target="getAndInstall">
-			<param name="groupId" value="emf" />
-		</antcall>
-		<antcall target="getAndInstall">
-			<param name="groupId" value="gef" />
-		</antcall>
-        
-	    <antcall target="getAndInstall">
-            <param name="groupId" value="dtp" />
-        </antcall>
-		<antcall target="getAndInstall">
 			<param name="groupId" value="eclipse" />
 		</antcall>
 		<antcall target="getAndInstall">
 			<param name="groupId" value="eclipseTestFramework" />
 		</antcall>
-		<antcall target="getAndInstall">
-			<param name="groupId" value="tomcat.5" />
-		</antcall>
-		<antcall target="getAndInstall">
-			<param name="groupId" value="jonas.4" />
-		</antcall>
-		<antcall target="getAndInstall">
-			<param name="groupId" value="oagis.release" />
-		</antcall>
-		<antcall target="getAndInstall">
-			<param name="groupId" value="oagis.wsdl" />
-		</antcall>
-
-
 	</target>
 
 
