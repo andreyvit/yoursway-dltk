@@ -20,3 +20,4 @@ Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.ui.tests,
  org.eclipse.dltk.ui.tests.core,
  org.eclipse.dltk.ui.tests.navigator
+Bundle-RequiredExecutionEnvironment: J2SE-1.4

@@ -18,3 +18,4 @@ Bundle-Activator: org.eclipse.dltk.ruby.ui.tests.internal.RubyUITestsPlugin
 Eclipse-LazyStart: true
 Bundle-Vendor: %pluginProvider
 Export-Package: org.eclipse.dltk.ruby.ui.tests
+Bundle-RequiredExecutionEnvironment: J2SE-1.4

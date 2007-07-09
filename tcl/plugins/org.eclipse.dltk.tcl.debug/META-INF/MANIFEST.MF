@@ -13,3 +13,4 @@ Require-Bundle: org.eclipse.dltk.debug,
 Bundle-Activator: org.eclipse.dltk.tcl.internal.debug.TclDebugPlugin
 Export-Package: org.eclipse.dltk.tcl.internal.debug
 Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: J2SE-1.4

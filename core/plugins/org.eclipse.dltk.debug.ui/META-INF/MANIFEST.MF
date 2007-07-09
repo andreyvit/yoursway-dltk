@@ -32,3 +32,4 @@ Export-Package: org.eclipse.dltk.debug.ui,
  org.eclipse.dltk.internal.debug.ui.actions,
  org.eclipse.dltk.internal.debug.ui.interpreters,
  org.eclipse.dltk.internal.debug.ui.launcher
+Bundle-RequiredExecutionEnvironment: J2SE-1.4

@@ -19,3 +19,4 @@ Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.internal.launching,
  org.eclipse.dltk.launching,
  org.eclipse.dltk.launching.debug
+Bundle-RequiredExecutionEnvironment: J2SE-1.4

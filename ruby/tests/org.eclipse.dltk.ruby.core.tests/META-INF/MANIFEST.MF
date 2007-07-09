@@ -15,3 +15,4 @@ Require-Bundle: org.eclipse.core.runtime,
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.ruby.tests,
  org.eclipse.dltk.ruby.tests.parser
+Bundle-RequiredExecutionEnvironment: J2SE-1.4

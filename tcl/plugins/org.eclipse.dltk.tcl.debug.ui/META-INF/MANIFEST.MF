@@ -34,3 +34,4 @@ Export-Package: org.eclipse.dltk.tcl.internal.console.ui,
  org.eclipse.dltk.tcl.internal.debug.ui.launcher
 Eclipse-LazyStart: true
 Bundle-Activator: org.eclipse.dltk.tcl.internal.debug.ui.TclDebugUIPlugin
+Bundle-RequiredExecutionEnvironment: J2SE-1.4

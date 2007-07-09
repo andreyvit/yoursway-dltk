@@ -14,3 +14,4 @@ Require-Bundle: org.eclipse.core.runtime,
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.tcl.tests,
  org.eclipse.dltk.tcl.tests.model
+Bundle-RequiredExecutionEnvironment: J2SE-1.4

@@ -16,3 +16,4 @@ Export-Package: org.eclipse.dltk.core.tests,
  org.eclipse.dltk.core.tests.buildpath,
  org.eclipse.dltk.core.tests.model,
  org.eclipse.dltk.core.tests.util
+Bundle-RequiredExecutionEnvironment: J2SE-1.4

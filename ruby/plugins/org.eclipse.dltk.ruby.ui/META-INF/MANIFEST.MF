@@ -31,4 +31,4 @@ Export-Package: org.eclipse.dltk.ruby.internal.ui,
  org.eclipse.dltk.ruby.internal.ui.text.rules,
  org.eclipse.dltk.ruby.internal.ui.text.syntax,
  org.eclipse.dltk.ruby.ui.preferences
-
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
