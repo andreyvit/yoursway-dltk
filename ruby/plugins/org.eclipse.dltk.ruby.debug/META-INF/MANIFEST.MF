@@ -12,5 +12,4 @@ Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.ruby.debug,
  org.eclipse.dltk.ruby.debug.model
 Bundle-Vendor: %providerName
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
 Bundle-Localization: plugin
