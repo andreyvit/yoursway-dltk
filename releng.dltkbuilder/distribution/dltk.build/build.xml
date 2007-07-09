@@ -95,7 +95,7 @@
 	</target>
 	
 	<target name="package">
-		<!-- post, post packaging, for WTP ... "manually" assemble the desired zips -->
+		<!-- post, post packaging, for DLTK ... "manually" assemble the desired zips -->
 	
 		<antcall target="combineArchives">
 			<param name="corename" value=""/>

@@ -1,0 +1,531 @@
+<project name="Automated Eclipse Testing" default="all" basedir=".">
+
+	<echo message="starting Automated Eclipse Testing" />
+	<echo message="basedir: ${basedir}" />
+	<echo message="testRoot: ${testRoot}" />
+
+	<fail message="testRoot must be set" unless="testRoot" />
+
+	<!--properties file containing the some server name properties -->
+	<property file="${testRoot}/testServer.properties" />
+
+	<!--properties file containing the build information-->
+	<property file="${buildDirectory}/label.properties" />
+
+	<!--default directory where test-eclipse will be installed-->
+	<property name="install" value="${testRoot}" />
+
+	<!--name that can be added to report name to identify which platform tests results come from-->
+	<property name="platform" value="" />
+
+	<!-- The root of the eclipse installation -->
+	<property name="eclipse-home" value="${testRoot}/eclipse" />
+
+	<!-- The path to libary.xml -->
+	<!--property name="library-file" value="${eclipse-home}/plugins/${org.eclipse.test}/library.xml" /-->
+
+	<!-- The directory that will contain the xml and html results from the tests that are run -->
+	<property name="results" value="${testRoot}/results" />
+
+	<!-- jonas install directory -->
+	<property name="jonas432Dir" value="${testRoot}/${jonas432DirName}" />
+
+	<target name="init">
+		<antcall target="setPropertyJOnAS432Dir" />
+		<antcall target="computePluginVersion" />
+	</target>
+
+	<target name="setPropertyJOnAS432Dir" unless="jonas432Dir">
+		<property name="jonas432Dir" value="${testRoot}/${jonas432DirName}" />
+	</target>
+
+	<target name="setup" if="clean" description="Reinstall the test Eclipse installation if specified by user">
+		<delete dir="${install}" />
+		<mkdir dir="${install}" />
+		<exec dir="." executable="unzip">
+			<arg line="-o -qq ../downloads/*.zip -d ${install}" />
+		</exec>
+
+		<exec dir="." executable="unzip">
+			<arg line="-o -qq  wtp-wst-tests-feature*.zip -d ${install}" />
+		</exec>
+
+	</target>
+
+	<target name="runapitests" depends="setup">
+		<antcall target="runtests" />
+	</target>
+
+	<target name="runtests" depends="setup" description="Runs ant on the test.xml for a specified plugin.">
+		<available file="${eclipse-home}/plugins/${testPlugin}/test.xml" property="test.xml.exists" />
+		<antcall target="runtests2" />
+	</target>
+
+	<target name="runtests2" if="test.xml.exists">
+		<antcall target="runtests-normal" />
+		<copy file="${eclipse-home}/${report}.xml" tofile="${results}/xml/${report}_${platform}.xml" failonerror="false" />
+		<antcall target="genHtml" />
+	</target>
+
+	<target name="runtests-normal">
+		<ant antfile="${eclipse-home}/plugins/${testPlugin}/test.xml" dir="${eclipse-home}">
+			<property name="library-file" value="${testRoot}/wtp-junit-tests.xml" />
+		</ant>
+		<copy file="${eclipse-home}/${report}.xml" tofile="${results}/xml/${report}_${platform}.xml" failonerror="false" />
+		<antcall target="genHtml" />
+	</target>
+
+	<target name="wst-server-tests" description="Runs the org.eclipse.wst.server.*.tests test.xml">
+		<antcall target="runapitests">
+			<param name="testPlugin" value="${org.eclipse.wst.server.core.tests}" />
+			<param name="report" value="org.eclipse.wst.server.core.tests" />
+			<param name="package.includes" value="org.eclipse.wst.server" />
+		</antcall>
+		<antcall target="runapitests">
+			<param name="testPlugin" value="${org.eclipse.wst.server.ui.tests}" />
+			<param name="report" value="org.eclipse.wst.server.ui.tests" />
+			<param name="package.includes" value="org.eclipse.wst.server" />
+		</antcall>
+	</target>
+
+	<target name="wst-monitor-tests" description="Runs the org.eclipse.wst.internet.monitor.*.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.internet.monitor.core.tests}" />
+			<param name="report" value="org.eclipse.wst.internet.monitor.core.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.internet.monitor.ui.tests}" />
+			<param name="report" value="org.eclipse.wst.internet.monitor.ui.tests" />
+		</antcall>
+	</target>
+
+	<target name="wst-cache-tests" description="Runs the org.eclipse.wst.internet.cache.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.internet.cache.tests}" />
+			<param name="report" value="org.eclipse.wst.internet.cache.tests" />
+		</antcall>
+	</target>
+
+	<target name="jst-server-tests" description="Runs the org.eclipse.jst.server.*.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.server.core.tests}" />
+			<param name="report" value="org.eclipse.jst.server.core.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.server.ui.tests}" />
+			<param name="report" value="org.eclipse.jst.server.ui.tests" />
+		</antcall>
+	</target>
+
+	<target name="jst-server-tomcat-tests" description="Runs the org.eclipse.jst.server.tomcat.*.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.server.tomcat.core.tests}" />
+			<param name="report" value="org.eclipse.jst.server.tomcat.core.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.server.tomcat.ui.tests}" />
+			<param name="report" value="org.eclipse.jst.server.tomcat.ui.tests" />
+		</antcall>
+	</target>
+
+	<target name="jst-server-generic-tests" description="Runs the org.eclipse.jst.server.generic.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.server.generic.tests}" />
+			<param name="report" value="org.eclipse.jst.server.generic.tests" />
+		</antcall>
+	</target>
+
+	<target name="jst-server-geronimo-tests" description="Runs the org.eclipse.jst.server.geronimo.*.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.server.geronimo.core.tests}" />
+			<param name="report" value="org.eclipse.jst.server.geronimo.core.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.server.geronimo.ui.tests}" />
+			<param name="report" value="org.eclipse.jst.server.geronimo.ui.tests" />
+		</antcall>
+	</target>
+
+	<target name="jst-jem-tests" description="Runs the org.eclipse.jem.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jem.tests}" />
+			<param name="report" value="org.eclipse.jem.tests" />
+		</antcall>
+	</target>
+
+	<target name="jst-j2ee-core-tests" description="Runs the org.eclipse.jst.j2ee.core.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.j2ee.core.tests}" />
+			<param name="report" value="org.eclipse.jst.j2ee.core.tests" />
+		</antcall>
+	</target>
+
+	<target name="jst-j2ee-tests" description="Runs the org.eclipse.jst.j2ee.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.j2ee.tests}" />
+			<param name="report" value="org.eclipse.jst.j2ee.tests" />
+		</antcall>
+	</target>
+
+	<target name="wst-common-tests" description="Runs the org.eclipse.jst.j2ee.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.common.tests}" />
+			<param name="report" value="org.eclipse.wst.common.tests" />
+		</antcall>
+	</target>
+
+	<target name="wst-common-snippets-tests">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.common.snippets.tests}" />
+			<param name="report" value="org.eclipse.wst.common.snippets.tests" />
+		</antcall>
+	</target>
+
+	<target name="jst-servlet-tests" description="Runs the org.eclipse.jst.servlet.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.servlet.tests}" />
+			<param name="report" value="org.eclipse.jst.servlet.tests" />
+		</antcall>
+	</target>
+
+	<target name="jst-validation-framework-tests" description="Runs the org.eclipse.jst.validation.test test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.validation.test}" />
+			<param name="report" value="org.eclipse.jst.validation.test" />
+		</antcall>
+	</target>
+
+	<!-- JSP TESTS -->
+	<target name="jst-jsp-tests" description="Runs test.xml for
+                                                                                                org.eclipse.jst.jsp.core.tests
+                                                                                                org.eclipse.jst.jsp.ui.tests
+                                                                                                org.eclipse.jst.jsp.tests.encoding">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.jsp.core.tests}" />
+			<param name="report" value="org.eclipse.jst.jsp.core.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.jsp.ui.tests}" />
+			<param name="report" value="org.eclipse.jst.jsp.ui.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.jsp.tests.encoding}" />
+			<param name="report" value="org.eclipse.jst.jsp.tests.encoding" />
+		</antcall>
+	</target>
+
+	<!-- SSE TESTS -->
+	<target name="wst-sse-tests" description="Runs test.xml for
+                                                                                                org.eclipse.wst.sse.core.tests
+                                                                                                org.eclipse.wst.sse.ui.tests">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.sse.core.tests}" />
+			<param name="report" value="org.eclipse.wst.sse.core.tests" />
+		</antcall>
+
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.sse.ui.tests}" />
+			<param name="report" value="org.eclipse.wst.sse.ui.tests" />
+		</antcall>
+	</target>
+
+	<!-- XML TESTS -->
+	<target name="wst-xml-tests" description="Runs test.xml for
+                                                                                                org.eclipse.wst.xml.core.tests
+                                                                                                org.eclipse.wst.xml.ui.tests
+                                                                                                org.eclipse.wst.xml.tests.encoding
+                                                                                                org.eclipse.wst.xml.validation.tests">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.xml.core.tests}" />
+			<param name="report" value="org.eclipse.wst.xml.core.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.xml.ui.tests}" />
+			<param name="report" value="org.eclipse.wst.xml.ui.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.xml.tests.encoding}" />
+			<param name="report" value="org.eclipse.wst.xml.tests.encoding" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.xml.validation.tests}" />
+			<param name="report" value="org.eclipse.wst.xml.validation.tests" />
+		</antcall>
+	</target>
+
+	<!-- WSDL TESTS -->
+	<target name="wst-wsdl-tests" description="Runs test.xml for
+                                                     org.eclipse.wst.wsdl.tests
+                                                     org.eclipse.wst.wsdl.validation.tests">
+		<antcall target="runapitests">
+			<param name="testPlugin" value="${org.eclipse.wst.wsdl.tests}" />
+			<param name="report" value="org.eclipse.wst.wsdl.tests" />
+			<param name="package.includes" value="org.eclipse.wst.wsdl" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.wsdl.validation.tests}" />
+			<param name="report" value="org.eclipse.wst.wsdl.validation.tests" />
+		</antcall>
+	</target>
+
+	<!-- WSI TESTS -->
+	<target name="wst-wsi-tests" description="Runs test.xml for
+                                                     org.eclipse.wst.wsi.tests">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.wsi.tests}" />
+			<param name="report" value="org.eclipse.wst.wsi.tests" />
+		</antcall>
+	</target>
+
+	<!-- XSD TESTS -->
+	<target name="wst-xsd-tests" description="Runs test.xml for
+                                                     org.eclipse.wst.xsd.validation.tests">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.xsd.validation.tests}" />
+			<param name="report" value="org.eclipse.wst.xsd.validation.tests" />
+		</antcall>
+	</target>
+
+	<!-- HTML TESTS -->
+	<target name="wst-html-tests" description="Runs test.xml for
+                org.eclipse.wst.html.core.tests
+                org.eclipse.wst.html.ui.tests
+                org.eclipse.wst.html.tests.encoding">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.html.core.tests}" />
+			<param name="report" value="org.eclipse.wst.html.core.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.html.ui.tests}" />
+			<param name="report" value="org.eclipse.wst.html.ui.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.html.tests.encoding}" />
+			<param name="report" value="org.eclipse.wst.html.tests.encoding" />
+		</antcall>
+	</target>
+
+	<!-- DTD Tests -->
+	<target name="wst-dtd-tests">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.dtd.ui.tests}" />
+			<param name="report" value="org.eclipse.wst.dtd.ui.tests" />
+		</antcall>
+	</target>
+
+	<!-- CSS TESTS -->
+	<target name="wst-css-tests" description="Runs test.xml for
+                                                                                                org.eclipse.wst.css.core.tests
+                                                                                                org.eclipse.wst.css.ui.tests
+                                                                                                org.eclipse.wst.css.tests.encoding">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.css.core.tests}" />
+			<param name="report" value="org.eclipse.wst.css.core.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.css.tests.encoding}" />
+			<param name="report" value="org.eclipse.wst.css.tests.encoding" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.css.ui.tests}" />
+			<param name="report" value="org.eclipse.wst.css.ui.tests" />
+		</antcall>
+	</target>
+
+	<!-- JSF TESTS -->
+	<target name="jsf-tests" description="Runs test.xml for org.eclipse.jst.jsf.core.tests, org.eclipse.jst.jsf.ui.tests">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.jsf.core.tests}" />
+			<param name="report" value="org.eclipse.jst.jsf.core.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.jsf.ui.tests}" />
+			<param name="report" value="org.eclipse.jst.jsf.ui.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.jsf.metadata.tests}" />
+			<param name="report" value="org.eclipse.jst.jsf.metadata.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.jsf.contentassist.tests}" />
+			<param name="report" value="org.eclipse.jst.jsf.contentassist.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.jsf.context.symbol.tests}" />
+			<param name="report" value="org.eclipse.jst.jsf.context.symbol.tests" />
+		</antcall>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.jsf.designtime.tests}" />
+			<param name="report" value="org.eclipse.jst.jsf.designtime.tests" />
+		</antcall>
+	</target>
+
+	<!-- WS TESTS -->
+
+	<target name="wst-ws-tests" description="Runs the org.eclipse.wst.ws.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.ws.tests}" />
+			<param name="report" value="org.eclipse.wst.ws.tests" />
+		</antcall>
+	</target>
+
+	<target name="jst-ws-tests" description="Runs the org.eclipse.jst.ws.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jst.ws.tests}" />
+			<param name="report" value="org.eclipse.jst.ws.tests" />
+		</antcall>
+	</target>
+
+	<!-- Faceted Project Framework Tests -->
+
+	<target name="wst-facets-tests" description="Runs the Faceted Project Framework tests.">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wst.common.project.facet.core.tests}" />
+			<param name="report" value="org.eclipse.wst.common.project.facet.core.tests" />
+		</antcall>
+	</target>
+
+	<!-- Dali tests -->
+	<target name="jpt-utility-tests" description="Runs the org.eclipse.jpt.utility.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jpt.utility.tests}" />
+			<param name="report" value="org.eclipse.jpt.utility.tests" />
+		</antcall>
+	</target>
+	<target name="dali-core-tests" description="Runs the org.eclipse.jpt.core.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jpt.core.tests}" />
+			<param name="report" value="org.eclipse.jpt.core.tests" />
+		</antcall>
+	</target>
+
+	<!-- releng Tests -->
+
+	<target name="releng-tests" description="Runs the releng tests.">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.wtp.releng.tests}" />
+			<param name="report" value="org.eclipse.wtp.releng.tests" />
+		</antcall>
+	</target>
+
+	<target name="all" depends="init">
+		<property file="${testRoot}/test2.properties" />
+
+		<echo message="Starting WTP Unit Tests" />
+
+		<echo message="Starting releng tests" />
+		<antcall target="releng-tests" />
+
+		<echo message="Starting wst-server-tests" />
+		<antcall target="wst-server-tests" />
+
+		<echo message="Starting wst-monitor-tests" />
+		<antcall target="wst-monitor-tests" />
+
+		<echo message="Starting wst-cache-tests" />
+		<antcall target="wst-cache-tests" />
+
+		<echo message="Starting wst-common-tests" />
+		<antcall target="wst-common-tests" />
+
+		<echo message="Starting wst-common-snippets-tests" />
+		<antcall target="wst-common-snippets-tests" />
+
+		<echo message="Starting wst-sse-tests" />
+		<antcall target="wst-sse-tests" />
+
+		<echo message="Starting wst-xml-tests" />
+		<antcall target="wst-xml-tests" />
+
+		<echo message="Starting wst-wsdl-tests" />
+		<antcall target="wst-wsdl-tests" />
+
+		<echo message="Starting wst-wsi-tests" />
+		<antcall target="wst-wsi-tests" />
+
+		<echo message="Starting wst-xsd-tests" />
+		<antcall target="wst-xsd-tests" />
+
+		<echo message="Starting wst-html-tests" />
+		<antcall target="wst-html-tests" />
+
+		<echo message="Starting wst-dtd-tests" />
+		<antcall target="wst-dtd-tests" />
+
+		<echo message="Starting wst-css-tests" />
+		<antcall target="wst-css-tests" />
+
+		<echo message="Starting wst-ws-tests" />
+		<antcall target="wst-ws-tests" />
+
+
+		<echo message="Starting jst-server-tests" />
+		<antcall target="jst-server-tests" />
+
+		<echo message="Starting jst-server-tomcat-tests" />
+		<antcall target="jst-server-tomcat-tests" />
+
+		<echo message="Starting jst-server-geronimo-tests" />
+		<antcall target="jst-server-geronimo-tests" />
+
+		<echo message="Starting jst-server-generic-tests" />
+		<antcall target="jst-server-generic-tests" />
+
+		<echo message="Starting jst-jem-tests" />
+		<antcall target="jst-jem-tests" />
+
+		<echo message="Starting jst-j2ee-core-tests" />
+		<antcall target="jst-j2ee-core-tests" />
+
+		<echo message="Starting jst-j2ee-tests" />
+		<antcall target="jst-j2ee-tests" />
+
+		<echo message="Starting jst-validation-framework-tests" />
+		<antcall target="jst-validation-framework-tests" />
+
+		<echo message="Starting jst-jsp-tests" />
+		<antcall target="jst-jsp-tests" />
+
+		<echo message="Starting jst-ws-tests" />
+		<antcall target="jst-ws-tests" />
+
+		<echo message="Starting wst-facets-tests" />
+		<antcall target="wst-facets-tests" />
+
+
+		<echo message="Starting JPT Unit Tests" />
+
+		<echo message="Starting jpt-utility-tests" />
+		<antcall target="jpt-utility-tests" />
+		<echo message="Starting dali-core-tests" />
+		<antcall target="dali-core-tests" />
+
+		<echo message="Ended JPT Unit Tests" />
+
+		<echo message="Starting JSF Tests" />
+		<antcall target="jsf-tests" />
+
+		<echo message="Ended WTP Unit Tests" />
+
+
+
+
+
+
+	</target>
+
+	<target name="genHtml" description="Generates HTML results with provided JUNIT.XSL provided" unless="genHtml.disable">
+		<style style="JUNIT.XSL" basedir="${results}/xml" destdir="${results}/html" />
+	</target>
+
+	<target name="computePluginVersion">
+		<java classname="org.eclipse.wtp.releng.test.ComputePluginVersion">
+			<classpath>
+				<pathelement location="ComputePluginVersion.jar" />
+			</classpath>
+			<arg value="${testRoot}/eclipse/plugins" />
+			<arg value="${testRoot}/test2.properties" />
+		</java>
+	</target>
+
+</project>

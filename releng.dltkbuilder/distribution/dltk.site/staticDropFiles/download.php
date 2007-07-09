@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Eclipse WTP Download Click Through</title>
+<title>Eclipse DLTK Download Click Through</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link rel="stylesheet" href="http://dev.eclipse.org/default_style.css" type="text/css">
 <?php

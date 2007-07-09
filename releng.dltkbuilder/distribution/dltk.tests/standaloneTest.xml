@@ -1,0 +1,144 @@
+<project default="main" basedir=".">
+
+	<!--
+	Required inputs:
+	
+	build.home
+	buildType
+	buildId
+	timestamp
+	build.stream [optional]
+	build.committers [optional]
+	testTarget [optional]
+	-->
+	
+	<target name="main">
+		<property file="${build.home}/releng.dltkbuilder/build.properties"/>
+		<property name="local.cache.dir" value="${env.LOCAL_PREREQS_CACHE}"/>
+		<property name="testRoot" value="${build.home}/testRoot"/>
+		<delete dir="${testRoot}" failonerror="false"/>
+		<mkdir dir="${testRoot}"/>
+		<antcall target="getReleng"/>
+		<property file="${testRoot}/releng/maps/dependencies.properties"/>
+		<antcall target="getDependencies"/>
+		<condition property="dltk-sdk" value="dltk-sdk-${buildId}.zip" else="dltk-sdk-${buildType}-${buildId}-${timestamp}.zip">
+			<available file="${local.cache.dir}/dltk-sdk-${buildId}.zip"/>
+		</condition>
+		<condition property="dltk-wst-tests" value="dltk-wst-Automated-Tests-${buildId}.zip" else="dltk-wst-Automated-Tests-${buildType}-${buildId}-${timestamp}.zip">
+			<available file="${local.cache.dir}/dltk-wst-Automated-Tests-${buildId}.zip"/>
+		</condition>
+		<condition property="dltk-jst-tests" value="dltk-jst-Automated-Tests-${buildId}.zip" else="dltk-jst-Automated-Tests-${buildType}-${buildId}-${timestamp}.zip">
+			<available file="${local.cache.dir}/dltk-jst-Automated-Tests-${buildId}.zip"/>
+		</condition>
+		<antcall target="run"/>
+	</target>
+
+	<target name="getReleng">
+		<property name="releng.tag" value="v${buildType}${timestamp}"/>
+		<cvs
+			cvsRoot=":pserver:anonymous@dev.eclipse.org:/cvsroot/webtools"
+			package="releng"
+			dest="${testRoot}"
+			command="export"
+			tag="${releng.tag}"
+		/>
+	</target>
+
+	<target name="getDependencies">
+		<ant antfile="${build.home}/releng.dltkbuilder/distribution/dltk.tests/testdependency.xml">
+			<property name="base.install.dir" value="${testRoot}"/>
+			<property name="dependencyTargets" value="${build.home}/releng.dltkbuilder/scripts/dependency/build.xml"/>
+		</ant>
+		<antcall target="getAndInstalldltk">
+			<param name="file" value="dltk-sdk-${buildId}.zip" />
+		</antcall>
+		<antcall target="getAndInstalldltk">
+			<param name="file" value="dltk-sdk-${buildType}-${buildId}-${timestamp}.zip" />
+		</antcall>
+		<antcall target="getAndInstalldltk">
+			<param name="file" value="dltk-wst-Automated-Tests-${buildId}.zip" />
+		</antcall>
+		<antcall target="getAndInstalldltk">
+			<param name="file" value="dltk-wst-Automated-Tests-${buildType}-${buildId}-${timestamp}.zip" />
+		</antcall>
+		<antcall target="getAndInstalldltk">
+			<param name="file" value="dltk-jst-Automated-Tests-${buildId}.zip" />
+		</antcall>
+		<antcall target="getAndInstalldltk">
+			<param name="file" value="dltk-jst-Automated-Tests-${buildType}-${buildId}-${timestamp}.zip" />
+		</antcall>
+	</target>
+
+	<target name="getAndInstalldltk">
+		<available file="${local.cache.dir}/${file}" property="file.exists"/>
+		<antcall target="getdltk"/>
+		<available file="${local.cache.dir}/${file}" property="file.exists"/>
+		<antcall target="installdltk"/>
+	</target>
+
+	<target name="getdltk">
+		<condition property="file.url.1" value="http://download.eclipse.org/webtools/committers" else="http://download.eclipse.org/webtools/downloads">
+			<isset property="build.committers"/>
+		</condition>
+		<condition property="file.url" value="${file.url.1}/drops/${build.stream}/${buildType}-${buildId}-${timestamp}" else="${file.url.1}/drops/${buildType}-${buildId}-${timestamp}">
+			<isset property="build.stream"/>
+		</condition>
+		<antcall target="getdltk2"/>
+	</target>
+
+	<target name="getdltk2" unless="file.exists">
+		<property name="file.url" value="http://download.eclipse.org/webtools/downloads/drops/${build.stream}/${buildType}-${buildId}-${timestamp}"/>
+		<get dest="${local.cache.dir}/${file}" src="${file.url}/${file}" ignoreerrors="true"/>
+	</target>
+
+	<target name="installdltk" if="file.exists">
+		<unzip src="${local.cache.dir}/${file}" dest="${testRoot}" overwrite="true"/>
+	</target>
+
+	<target name="run">
+		<mkdir dir="${testRoot}/results/consolelogs"/>
+		<copy todir="${testRoot}" flatten="true" overwrite="true">
+			<fileset dir="${build.home}/releng.dltkbuilder/distribution/dltk.tests/testScripts"/>
+		</copy>
+		<ant antfile="${build.home}/releng.dltkbuilder/distribution/dltk.tests/build.xml" target="runTestEclipse">
+			<property name="testRoot" value="${testRoot}"/>
+			<property name="testTarget" value="all"/>
+		</ant>
+		<copy file="${build.home}/releng.dltkbuilder/distribution/dltk.tests/templateFiles/index.php" todir="${testRoot}/results" overwrite="true"/>
+	</target>
+
+	<target name="upload" if="login">
+		<mkdir dir="${build.home}/archives"/>
+		<zip destfile="${build.home}/archives/${buildType}-${buildId}-${timestamp}.zip" basedir="${build.home}/testRoot/results"/>
+		<condition property="upload.path.1"
+			else="~/downloads/webtools/downloads"
+			value="~/downloads/webtools/committers">
+			<isset property="build.committers"/>
+		</condition>
+		<condition property="upload.path"
+			else="${upload.path.1}/drops/${buildType}-${buildId}-${timestamp}/testResults/${config}"
+			value="${upload.path.1}/drops/${build.stream}/${buildType}-${buildId}-${timestamp}/testResults/${config}">
+			<isset property="build.stream"/>
+		</condition>
+		<exec executable="ssh" dir="${build.home}">
+			<arg line="${login}@download1.eclipse.org rm -rf ${upload.path}"/>
+		</exec>
+		<exec executable="ssh" dir="${build.home}">
+			<arg line="${login}@download1.eclipse.org mkdir ${upload.path}"/>
+		</exec>
+		<exec executable="scp" dir="${build.home}">
+			<arg line="-r ./testRoot/results ${login}@download1.eclipse.org:${upload.path}"/>
+		</exec>
+	</target>
+
+	<target name="clean" if="clean">
+		<property file="${build.home}/releng.dltkbuilder/build.properties"/>
+		<property name="local.cache.dir" value="${env.LOCAL_PREREQS_CACHE}"/>
+		<property name="testRoot" value="${build.home}/testRoot"/>
+		<delete dir="${testRoot}" failonerror="false"/>
+		<delete failonerror="false">
+			<fileset dir="${local.cache.dir}" includes="dltk-*"/>
+		</delete>
+	</target>
+
+</project>

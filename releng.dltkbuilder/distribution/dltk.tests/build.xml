@@ -1,0 +1,256 @@
+<project name="Build specific targets and properties"
+	default="runTest">
+
+	<!-- Note to be cross-platform, "environment variables" are only appropriate for
+		some variables, e.g. ones we set, since properties are case sensitive, even if
+		the environment variables on your operating system are not, e.g. it will
+		be ${env.Path} not ${env.PATH} on Windows -->
+	<property environment="env" />
+
+	<fail message="testRoot must be set for this task"
+		unless="testRoot" />
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do after the build is done. -->
+	<!-- ===================================================================== -->
+	<target name="test">
+		<dirname file="${ant.file}" property="currentDirectory" />
+		<ant antfile="${ant.file}" target="runTest"
+			dir="${currentDirectory}" />
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do to test the build results -->
+	<!-- ===================================================================== -->
+	<target name="runTest">
+
+		<dirname file="${ant.file}" property="test.component.dir" />
+		<ant antfile="${wtp.builder.home}/scripts/build/label.xml" />
+		<property file="${buildDirectory}/label.properties" />
+		<property file="${wtp.builder.home}/build.properties" />
+
+		<fail message="testRoot must be set for this task"
+			unless="testRoot" />
+		<mkdir dir="${testRoot}" />
+
+		<!-- if results already exist, delete them -->
+		<delete dir="${testRoot}/results" failOnError="false" />
+		<mkdir dir="${testRoot}/results" />
+
+		<mkdir dir="${testRoot}/results/consolelogs" />
+		<mkdir dir="${testRoot}/results/consolelogs/metadata-logs" />
+		<mkdir dir="${testRoot}/results/consolelogs/configuration-logs" />
+
+		<copy todir="${testRoot}" overwrite="true">
+			<fileset dir="${test.component.dir}/testScripts"></fileset>
+		</copy>
+
+		<echo
+			message="BASEOS: ${env.BASEOS}   BASEWS: ${env.BASEWS}   BASEARCH: ${env.BASEARCH} " />
+
+		<ant antfile="${test.component.dir}/testdependency.xml"
+			target="get">
+			<property name="dependency.properties"
+				value="${buildDirectory}/maps/releng/maps/dependencies.properties" />
+			<property name="base.install.dir" value="${testRoot}" />
+		</ant>
+
+		<antcall target="unzipTests" />
+
+		<antcall target="runTestEclipse">
+			<param name="testTarget" value="all" />
+		</antcall>
+		<antcall target="postRunTestEclipse">
+			<param name="testTarget" value="all" />
+		</antcall>
+
+	</target>
+
+	<target name="unzipTests">
+
+		<!--unzip the builds and junit tests
+			we use 'unzip' here, so we can continue on error
+			(such as if zip was not created, due to other failures or options).
+		-->
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
+			failonerror="false">
+			<arg line="-o -qq dltk-sdk-${buildLabel}.zip -d ${testRoot}" />
+		</exec>
+
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
+			failonerror="false">
+			<arg
+				line="-o -qq dltk-wst-Automated-Tests-${buildLabel}.zip -d ${testRoot}" />
+		</exec>
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
+			failonerror="false">
+			<arg
+				line="-o -qq dltk-jst-Automated-Tests-${buildLabel}.zip -d ${testRoot}" />
+		</exec>
+
+
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
+			failonerror="false">
+			<arg line="-o -qq dltk-jpt-sdk-${buildLabel}.zip -d ${testRoot}" />
+		</exec>
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
+			failonerror="false">
+			<arg
+				line="-o -qq dltk-jpt-Automated-Tests-${buildLabel}.zip -d ${testRoot}" />
+		</exec>
+
+	</target>
+
+	<!-- time out may need to be set/adjust for api or performance tests?
+		This testTimeLimit is the whole, overall limit on tests. There's a shorter 
+		one for individual suites.
+		
+		some common values, of milliseconds to more recognizable units:
+		7200000: 2 hours
+		3600000: 1 hour
+		1800000: 30 minutes
+		600000: 10 minutes
+	-->
+
+	<property name="testTimeLimit" value="7200000" />
+	<property name="testFailOnError" value="false" />
+
+	<target name="runTestEclipse"
+		description="Run our JUnit's within an instance of antRunner">
+
+
+		<property name="test-vm" value="${env.JAVA_5_HOME}/bin/java" />
+		<property name="plugin-path"
+			value="${testRoot}/eclipse/plugins" />
+		<property name="vmargs"
+			value="-Xms256m -Xmx512m -Dosgi.ws=${env.BASEWS} -Dosgi.os=${env.BASEOS} -Dosgi.arch=${env.BASEARCH} -Dws=${env.BASEWS} -Dos=${env.BASEOS} -Darch=${env.BASEARCH} -Dosgi.clean=true -Dnoclean=true -DbuildBranch=${buildBranch} -DbuildType=${buildType} -DbuildId=${buildId} -DtestRoot=${testRoot} -DtestDir=${testRoot} -DbuildDirectory=${buildDirectory} -Dbuild.home=${env.BUILD_HOME} -DeclipseBuilderDirectory=${pde.builder.path} -DbuildLabel=${buildLabel} -Dtest-vm=${test-vm}  -Dperf.buildId=${buildType}${date}-${time}" />
+
+
+		<!-- set path to eclipse folder. If local folder, use '.'; otherwise, use c:\path\to\eclipse or /path/to/eclipse/ -->
+		<property name="eclipse.home" value="${testRoot}" />
+
+		<echo message="Running junits" />
+
+		<!-- If there is not exactly one launcher in the stack, 
+			we'd best fail fast, since we are not expecting that, 
+			and may indicate an installation that would produce unpredictable
+			results -->
+		<!-- requires ant 1.7, and at this point, we're running 1.6 from 
+		eclipse ... 
+		
+		<condition property="expectedNumberOfLaunchers">
+			<resourcecount when="equal" count="1" >
+				<fileset dir="${testRoot}/eclipse/plugins">
+					<include name="org.eclipse.equinox.launcher_*.jar" />
+				</fileset>		
+			</resourcecount>
+		</condition>
+		<fail message="Did not find expected number of launcher jars. Check installation." unless="expectedNumberOfLaunchers" />
+		-->
+		<!-- 
+			Remember: using -debug for org.eclipse.ant.core.antRunner 
+			produces ant debug info to be output ... which is a TON of stuff 
+		-->
+		<java 
+		    taskname="unit-test-masterprocess" 
+		    fork="true"
+			resultProperty="dltkmasterjunitresult" 
+			failonerror="false"
+			timeout="${testTimeLimit}" 
+			dir="${testRoot}/eclipse"
+			jvm="${env.JAVA_5_HOME}/bin/java" 
+			classname="org.eclipse.equinox.launcher.Main">
+			<classpath>
+				<fileset dir="${testRoot}/eclipse/plugins">
+					<include name="org.eclipse.equinox.launcher_*.jar" />
+				</fileset>
+			</classpath>
+			
+			<jvmarg value="-Xms256m"/>
+			<jvmarg value="-Xmx512m" />
+			
+			<jvmarg value="-Dosgi.ws=${env.BASEWS}" />
+			<jvmarg value="-Dosgi.os=${env.BASEOS}" />
+			<jvmarg value="-Dosgi.arch=${env.BASEARCH}" />
+			<jvmarg value="-Dws=${env.BASEWS}" />
+			<jvmarg value="-Dos=${env.BASEOS}" />
+			<jvmarg value="-Darch=${env.BASEARCH}" />
+			
+			<jvmarg value="-Dosgi.clean=true" />
+			<jvmarg value="-Dnoclean=true" />
+			<jvmarg value="-DbuildBranch=${buildBranch}" />
+			<jvmarg value="-DbuildType=${buildType}" />
+			<jvmarg value="-DbuildId=${buildId}" />
+
+			<arg value="-nosplash" />
+			<arg value="-consolelog" />
+			
+			<arg value="-data" />
+			<arg value="${testRoot}/overallTestWorkspace" />
+			<arg value="-application" />
+			<arg value="org.eclipse.ant.core.antRunner" />
+			<arg value="-file" />
+			<arg value="${testRoot}/test.xml" />
+			<arg value="-logger" />
+			<arg value="org.apache.tools.ant.DefaultLogger" />
+			<env key="DISPLAY" value="${env.DISPLAY}" />
+			<redirector 
+				output="${testRoot}/results/fullOutput.txt"
+				error="${testRoot}/results/fullErrorLog.txt"/>
+			<sysproperty key="build.home" value="${env.BUILD_HOME}" />
+			<sysproperty key="buildDirectory" value="${buildDirectory}" />
+			<sysproperty key="buildLabel" value="${buildLabel}" />
+			<sysproperty key="baseLocation" value="${baseLocation}" />
+			<sysproperty key="testRoot" value="${testRoot}" />
+			<sysproperty key="testDir" value="${testRoot}" />
+			<sysproperty key="perf.buildId"
+				value="${buildType}${date}-${time}" />
+			<sysproperty key="eclipseBuilderDirectory"
+				value="${pde.builder.path}" />
+			<sysproperty key="buildLabel" value="${buildLabel}" />
+		</java>
+
+		<echo message="dltkmasterjunitresult ${dltkmasterjunitresult}"/>
+	</target>
+
+
+	<target name="postRunTestEclipse">
+		<copy
+			todir="${buildDirectory}/${buildLabel}/testResults/consolelogs/testLogs"
+			overwrite="true" failonerror="false">
+			<fileset dir="${testRoot}/results">
+				<include name="*output.txt" />
+			</fileset>
+		</copy>
+		<copy
+			todir="${buildDirectory}/${buildLabel}/testResults/consolelogs/testSysErrorLogs"
+			overwrite="true" failonerror="false">
+			<fileset dir="${testRoot}/results">
+				<include name="*error.txt" />
+			</fileset>
+		</copy>
+		<copy file="${testRoot}/results/fullOutput.txt"
+			toDir="${buildDirectory}/${buildLabel}/testResults/consolelogs/full"
+			overwrite="true" failonerror="false">
+		</copy>
+		<copy file="${testRoot}/results/fullErrorLog.txt"
+			toDir="${buildDirectory}/${buildLabel}/testResults/consolelogs/full"
+			overwrite="true" failonerror="false">
+		</copy>
+
+		<copy todir="${buildDirectory}/${buildLabel}/testResults/xml"
+			overwrite="true" failonerror="false">
+			<fileset dir="${testRoot}/results/xml">
+				<include name="*.xml" />
+			</fileset>
+		</copy>
+		<copy todir="${buildDirectory}/${buildLabel}/testResults/html"
+			overwrite="true" failonerror="false">
+			<fileset dir="${testRoot}/results/html">
+				<include name="*.html" />
+			</fileset>
+		</copy>
+	</target>
+
+
+</project>

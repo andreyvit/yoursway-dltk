@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<project name="JUnit tests" basedir=".">
+
+	<property environment="env" />
+
+	<target name="init">
+		<!--
+			Parameters:
+			(Mandatory)
+			data-dir                - the workspace directory for Eclipse to write its data
+			plugin-name             - symboic name of the plugin to test
+			testPlugin				- directory name of plugin (with version suffix)
+			classname               - the name of the test class
+			
+			(Optional - overrides defaults set in script)
+			extraVMargs             - allows separate setting of VM args from separate caller.
+			timeout                 - overrides default test timeout value (in milliseconds).
+		-->
+
+		<property name="junit-report-output" value="${testRoot}/results" />
+		<mkdir dir="${junit-report-output}/raw" />
+		
+
+		<!-- if not otherwise set, be sure extraVMargs is at least empty string -->
+		<property name="extraVMargs" value="" />
+		
+		<!-- if not otherwise set, use a unique workspace name -->
+		<property name="data-dir" value="${testRoot}/junitworkspaces/workspace-${classname}" />
+
+		<property name="testRoot" value="${testRoot}" />
+		<property name="timeout" value="1800000" />
+		<property name="junit-report-output" value="${junit-report-output}" />
+		<property name="plugin-path" value="${testRoot}/plugins/${testPlugin}" />
+		<property name="formatter" value="org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter" />
+		<property name="test-output" value="${junit-report-output}/raw/${classname}.xml" />
+		<property name="jvm" value="${env.JAVA_5_HOME}/bin/java" />
+
+		<dirname file="${ant.file}" property="currentDir" />
+
+
+		<echo message="data-dir: ${data-dir}" />
+		<echo message="plugin-name: ${plugin-name}" />
+		<echo message="testPlugin: ${testPlugin}" />
+		<echo message="classname: ${classname}" />
+		<echo message="extraVMargs: ${extraVMargs}" />
+		<echo message="timeout: ${timeout}" />
+		<echo message="testRoot: ${testRoot}" />
+
+		<echo message="basedir: ${basedir}" />
+		<echo message="eclipse-home: ${eclipse-home}" />
+		<echo message="plugin-path: ${plugin-path}" />
+		<echo message="junit-report-output: ${junit-report-output}" />
+		<echo message="test-output: ${test-output}" />
+		<echo message="buildDirectory: ${buildDirectory}"/>
+		<echo message="buildLabel: ${buildLabel}"/>
+
+		<echo message="jvm: ${env.JAVA_5_HOME}/bin/java" />
+
+
+
+	</target>
+
+
+
+	<target name="core-test" depends="init">
+		<echo message="test-type: core-test" />
+		<ant antfile="${ant.file}" dir="${currentDir}" target="eclipse-test">
+			<property name="application" value="org.eclipse.test.coretestapplication" />
+		</ant>
+	</target>
+
+
+	<target name="ui-test" depends="init">
+		<echo message="test-type: ui-test" />
+		<ant antfile="${ant.file}" dir="${currentDir}" target="eclipse-test">
+			<property name="application" value="org.eclipse.test.uitestapplication" />
+		</ant>
+	</target>
+
+	<target name="eclipse-test" description="Runs the specified classname as a plug-in test.">
+
+		<echo message="Running ${classname}" />
+		<echo message="Result file: ${junit-report-output}/${classname}.xml." />
+		<echo message="DISPLAY: ${env.DISPLAY}" />
+
+		<!-- If there is not exactly one launcher in the stack, 
+			we'd best fail fast, since we are not expecting that, 
+			and may indicate an installation that would produce unpredictable
+			results -->
+		<!-- requires ant 1.7, and at this point, we're running 1.6 from 
+			eclipse ... 
+			
+			<condition property="expectedNumberOfLaunchers">
+				<resourcecount when="equal" count="1" >
+					<fileset dir="${testRoot}/eclipse/plugins">
+						<include name="org.eclipse.equinox.launcher_*.jar" />
+					</fileset>		
+				</resourcecount>
+			</condition>
+			<fail message="Did not find expected number of launcher jars. Check installation." unless="expectedNumberOfLaunchers" />
+		-->
+		<java 
+		taskname="suiteUnitTest" 
+		fork="true" 
+		resultProperty="suitejunitresult" 
+		failonerror="false" 
+		timeout="${timeout}" 
+		dir="${testRoot}/eclipse" 
+		jvm="${env.JAVA_5_HOME}/bin/java" 
+		classname="org.eclipse.equinox.launcher.Main">
+			<classpath>
+				<fileset dir="${testRoot}/eclipse/plugins">
+					<include name="org.eclipse.equinox.launcher_*.jar" />
+				</fileset>
+			</classpath>
+
+			<jvmarg value="-Xms256m" />
+			<jvmarg value="-Xmx1024m" />
+			
+			<jvmarg value="-Dosgi.ws=${env.BASEWS}" />
+			<jvmarg value="-Dosgi.os=${env.BASEOS}" />
+			<jvmarg value="-Dosgi.arch=${env.BASEARCH}" />
+			<jvmarg value="-DbuildLabel=${buildLabel}"/>
+			<jvmarg value="-DbuildDirectory=${buildDirectory}"/>
+			
+			<jvmarg value="-Dwtp.autotest.noninteractive=true" />
+			<jvmarg value="-Dosgi.clean=true" />
+			<jvmarg value="-DPLUGIN_PATH=${plugin-path}"/>
+			<jvmarg line="${extraVMargs}"/>
+			
+			<arg value="-nosplash" />
+			<arg value="-consolelog" />
+			<arg value="-debug" />
+			<arg value="-data" />
+			<arg value="${data-dir}" />
+			<arg value="-application" />
+			<arg value="${application}" />
+			<arg value="formatter=${formatter},${test-output}" />
+			<arg value="-testPluginName" />
+			<arg value="${plugin-name}" />
+			<arg value="-className" />
+			<arg value="${classname}" />
+			<env key="DISPLAY" value="${env.DISPLAY}" />
+			<redirector 
+				output="${junit-report-output}/${classname}.output.txt" 
+				error="${junit-report-output}/${classname}.error.txt" />
+		</java>
+
+
+
+
+
+
+
+
+				
+		<antcall target="collect-results"/>
+		
+		<echo message="suitejunitresult: ${suitejunitresult}"/>
+		
+	</target>
+
+	<target name="collect-results">
+		<dirname property="output-dir" file="${test-output}" />
+		<basename property="output-file-name" file="${test-output}" />
+		<mkdir dir="${junit-report-output}/xml" />
+		<junitreport todir="${junit-report-output}/xml" tofile="${classname}.xml">
+			<fileset dir="${output-dir}">
+				<include name="${output-file-name}" />
+			</fileset>
+		</junitreport>
+
+		<mkdir dir="${junit-report-output}/html" />
+		<style style="${testRoot}/JUNIT.XSL" basedir="${junit-report-output}" includes="${classname}.xml" destdir="${junit-report-output}/html" />
+
+
+		<copy file="${data-dir}/.metadata/.log" toFile="${testRoot}/results/consolelogs/metadata-logs/${classname}.workspace.log" overwrite="true" failonError="false" />
+
+		<!-- todo: this, especially, should be concat (there could be more than one, in theory) -->
+		<copy file="${testRoot}/eclipse/configuration/*.log" toFile="${testRoot}/results/consolelogs/configuration-logs/${classname}.config.log" overwrite="true" failonError="false" />
+
+	</target>
+
+	<target name="collect">
+		<!--  deprecated, each test.xml uses it, and we should remove, eventually -->
+	</target>
+
+
+
+
+
+</project>
