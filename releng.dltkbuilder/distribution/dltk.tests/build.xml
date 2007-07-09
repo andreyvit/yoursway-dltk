@@ -74,29 +74,13 @@
 		-->
 		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
 			failonerror="false">
-			<arg line="-o -qq dltk-sdk-${buildLabel}.zip -d ${testRoot}" />
+			<arg line="-o -qq dltk-sdk-${buildLabel}-incubation.zip -d ${testRoot}" />
 		</exec>
 
 		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
 			failonerror="false">
 			<arg
-				line="-o -qq dltk-wst-Automated-Tests-${buildLabel}.zip -d ${testRoot}" />
-		</exec>
-		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
-			failonerror="false">
-			<arg
-				line="-o -qq dltk-jst-Automated-Tests-${buildLabel}.zip -d ${testRoot}" />
-		</exec>
-
-
-		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
-			failonerror="false">
-			<arg line="-o -qq dltk-jpt-sdk-${buildLabel}.zip -d ${testRoot}" />
-		</exec>
-		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
-			failonerror="false">
-			<arg
-				line="-o -qq dltk-jpt-Automated-Tests-${buildLabel}.zip -d ${testRoot}" />
+				line="-o -qq dltk-Automated_Tests-${buildLabel}-incubation.zip -d ${testRoot}" />
 		</exec>
 
 	</target>
