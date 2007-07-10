@@ -31,6 +31,7 @@ ibmjvm=false;
 javaversion="`uname -a`"
 
 case "$javaversion" in
+  *x86*)  sunjvm=true;;
   *i686*) sunjvm=true;;
   *ppc*)  ibmjvm=true;;
 esac
