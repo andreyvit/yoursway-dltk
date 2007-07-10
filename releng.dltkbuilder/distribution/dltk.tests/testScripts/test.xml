@@ -167,10 +167,10 @@
 		</antcall>
 	</target>
 
-	<target name="wst-common-tests" description="Runs the org.eclipse.jst.j2ee.tests test.xml">
+	<target name="core-tests" description="Runs the org.eclipse.dltk.core.tests test.xml">
 		<antcall target="runtests">
-			<param name="testPlugin" value="${org.eclipse.wst.common.tests}" />
-			<param name="report" value="org.eclipse.wst.common.tests" />
+			<param name="testPlugin" value="${org.eclipse.dltk.core.tests}" />
+			<param name="report" value="org.eclipse.dltk.core.tests" />
 		</antcall>
 	</target>
 
@@ -411,9 +411,12 @@
 	<target name="all" depends="init">
 		<property file="${testRoot}/test2.properties" />
 
-		<echo message="Starting WTP Unit Tests" />
+		<echo message="Starting DLTK Unit Tests" />
 
-		<echo message="Starting releng tests" />
+		<echo message="Starting Core Frameworks tests" />
+		<antcall target="core-tests" />
+		
+		<!--echo message="Starting releng tests" />
 		<antcall target="releng-tests" />
 
 		<echo message="Starting wst-server-tests" />
@@ -503,9 +506,9 @@
 		<echo message="Ended JPT Unit Tests" />
 
 		<echo message="Starting JSF Tests" />
-		<antcall target="jsf-tests" />
+		<antcall target="jsf-tests" /-->
 
-		<echo message="Ended WTP Unit Tests" />
+		<echo message="Ended DLTK Unit Tests" />
 
 
 
