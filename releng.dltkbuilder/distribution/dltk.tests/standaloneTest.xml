@@ -19,7 +19,7 @@
 		<delete dir="${testRoot}" failonerror="false"/>
 		<mkdir dir="${testRoot}"/>
 		<antcall target="getReleng"/>
-		<property file="${testRoot}/releng/maps/dependencies.properties"/>
+		<property file="${testRoot}/releng.maps/dependencies.properties"/>
 		<antcall target="getDependencies"/>
 		<condition property="dltk-sdk" value="dltk-sdk-${buildId}.zip" else="dltk-sdk-${buildType}-${buildId}-${timestamp}.zip">
 			<available file="${local.cache.dir}/dltk-sdk-${buildId}.zip"/>
