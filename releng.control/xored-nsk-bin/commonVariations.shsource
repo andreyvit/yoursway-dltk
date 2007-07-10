@@ -1,36 +1,32 @@
 #!/bin/sh
 
-# This particular file is not used in production builds, 
-# though there is a similar one (with same name) in main 
-# directory that is. 
+# Note: if "local" users have this file first in their path, then 
+# the bash shell's "include source" function will find that paths version 
+# first, instead of this "standard" eclipse ppc one.
 
-# If "local" users have this file on their path, 
-# that is, in "someDirectory" on the users local path, 
-# then the bash "include source" function will find that version
-# first, instead of the "standard" eclipse ppc one.
+# this file is intentionally named "shsource" to denote this is intended to 
+# be included in other sh files, with "source" command, not 
+# executed on its own. 
+
 
 export BUILD_HOME=/home/releng
 
-export DISPLAY=127.0.0.1:0
+export DISPLAY=127.0.0.1:1.0
 
-# remember to check virtual display with 
-# ps -ef | grep Xvfb
-
-JAVA_4_DIR="j2sdk1.4.2_11"
-JAVA_5_DIR="jdk1.5.0_09"
-ANT_DIR="apache-ant-1.7.0"
+export JAVA_4_DIR="j2sdk1.4.2_13"
+export JAVA_5_DIR="jdk1.5.0_09"
+export ANT_DIR="apache-ant-1.7.0"
 
 export BASEOS=linux
 export BASEWS=gtk
 export BASEARCH=x86
 
+# no local build properties, for production builds
+export LOCAL_BUILD_PROPERTIES_DIR=${BUILD_HOME}/releng.control/xoredNskProperties
 
-export LOCAL_BUILD_PROPERTIES_DIR=${BUILD_HOME}/xoredNskProperties
-
-# technically should not be needed for "local builds" ... but ... just in case. 
 export STANDARD_PROPERTIES_DIR=${BUILD_HOME}/releng.control/standardMachineProperties
 
 export BUILD_BUILDMASTER_EMAIL=andrey@xored.com
-export BUILD_RESULT_URL=http://dltk.eclipse.org:3000/cruisecontrol/buildresults
-export BUILD_TOADDRESS=dltk-dev@eclipse.org
+export BUILD_RESULT_URL=http://192.168.1.127:3000/cruisecontrol/buildresults
+export BUILD_TOADDRESS=andrey@xored.com
 
