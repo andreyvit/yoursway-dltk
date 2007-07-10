@@ -58,6 +58,13 @@ public class RubyNewProjectWizard extends NewElementWizard implements
 
 			final class RubyInterpreterGroup extends AbstractInterpreterGroup {
 
+				public void showInterpreterPreferencePage () {
+					final String pageId = getIntereprtersPreferencePageId();
+					
+					PreferencesUtil.createPreferenceDialogOn(getShell(),
+							pageId, new String[] { pageId }, null).open();
+				}
+				
 				public RubyInterpreterGroup(Composite composite) {
 					super(composite);
 				}
