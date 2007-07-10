@@ -174,10 +174,10 @@
 		</antcall>
 	</target>
 
-	<target name="wst-common-snippets-tests">
+	<target name="core-debug-tests">
 		<antcall target="runtests">
-			<param name="testPlugin" value="${org.eclipse.wst.common.snippets.tests}" />
-			<param name="report" value="org.eclipse.wst.common.snippets.tests" />
+			<param name="testPlugin" value="${org.eclipse.dltk.core.tests}" />
+			<param name="report" value="org.eclipse.dltk.core.tests" />
 		</antcall>
 	</target>
 
@@ -416,10 +416,10 @@
 		<echo message="Starting Core Frameworks tests" />
 		<antcall target="core-tests" />
 		
-		<!--echo message="Starting releng tests" />
-		<antcall target="releng-tests" />
+		<echo message="Starting Core Debugger tests" />
+		<antcall target="core-debug-tests" />
 
-		<echo message="Starting wst-server-tests" />
+		<!-- echo message="Starting wst-server-tests" />
 		<antcall target="wst-server-tests" />
 
 		<echo message="Starting wst-monitor-tests" />
