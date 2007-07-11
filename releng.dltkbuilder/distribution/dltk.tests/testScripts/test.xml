@@ -466,8 +466,23 @@
 		<echo message="Starting Core Frameworks tests" />
 		<antcall target="core-tests" />
 
-		<echo message="Starting Core Debugger tests" />
-		<antcall target="core-debug-tests" />
+		<echo message="Starting Core UI tests" />
+		<antcall target="core-ui-tests" />
+
+		<echo message="Starting Ruby Core tests" />
+		<antcall target="ruby-core-tests" />
+
+		<echo message="Starting Ruby UI tests" />
+		<antcall target="ruby-ui-tests" />
+
+		<echo message="Starting Tcl Core tests" />
+		<antcall target="tcl-core-tests" />
+
+		<echo message="Starting Additional Tcl tests" />
+		<antcall target="tcl-tests" />
+
+		<echo message="Starting Tcl UI tests" />
+		<antcall target="tcl-ui-tests" />
 
 		<!-- echo message="Starting wst-server-tests" />
 		<antcall target="wst-server-tests" />
