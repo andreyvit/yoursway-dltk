@@ -484,6 +484,10 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		IType obj = null;
 		if (moduleAvailable) {
 			IModelElement elementFor = findModelElementFor(decl);
+			if (!(elementFor instanceof IType))  {
+				elementFor = findModelElementFor(decl);
+				System.out.println();
+			}
 			obj = (IType) elementFor;
 		}
 		boolean module = (decl.getModifiers() & Modifiers.AccModule) != 0;

@@ -167,6 +167,8 @@
 		</antcall>
 	</target>
 
+	<!-- DLTK Core -->
+
 	<target name="core-tests" description="Runs the org.eclipse.dltk.core.tests test.xml">
 		<antcall target="runtests">
 			<param name="testPlugin" value="${org.eclipse.dltk.core.tests}" />
@@ -174,10 +176,58 @@
 		</antcall>
 	</target>
 
-	<target name="core-debug-tests">
+	<target name="core-debug-tests" description="Runs the org.eclipse.dltk.debug.tests test.xml">
 		<antcall target="runtests">
-			<param name="testPlugin" value="${org.eclipse.dltk.core.tests}" />
-			<param name="report" value="org.eclipse.dltk.core.tests" />
+			<param name="testPlugin" value="${org.eclipse.dltk.debug.tests}" />
+			<param name="report" value="org.eclipse.dltk.debug.tests" />
+		</antcall>
+	</target>
+
+	<target name="core-ui-tests" description="Runs the org.eclipse.dltk.ui.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.dltk.ui.tests}" />
+			<param name="report" value="org.eclipse.dltk.ui.tests" />
+		</antcall>
+	</target>
+
+
+	<!-- DLTK Ruby -->
+
+	<target name="ruby-core-tests" description="Runs the org.eclipse.dltk.ruby.core.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.dltk.ruby.core.tests}" />
+			<param name="report" value="org.eclipse.dltk.ruby.core.tests" />
+		</antcall>
+	</target>
+
+
+	<target name="ruby-ui-tests" description="Runs the org.eclipse.dltk.ruby.ui.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.dltk.ruby.ui.tests}" />
+			<param name="report" value="org.eclipse.dltk.ruby.ui.tests" />
+		</antcall>
+	</target>
+
+	<!-- DLTK Tcl -->
+
+	<target name="tcl-core-tests" description="Runs the org.eclipse.dltk.tcl.core.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.dltk.tcl.core.tests}" />
+			<param name="report" value="org.eclipse.dltk.tcl.core.tests" />
+		</antcall>
+	</target>
+
+	<target name="tcl-tests" description="Runs the org.eclipse.dltk.tcl.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.dltk.tcl.tests}" />
+			<param name="report" value="org.eclipse.dltk.tcl.tests" />
+		</antcall>
+	</target>
+
+	<target name="tcl-ui-tests" description="Runs the org.eclipse.dltk.tcl.ui.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.dltk.tcl.ui.tests}" />
+			<param name="report" value="org.eclipse.dltk.tcl.ui.tests" />
 		</antcall>
 	</target>
 
@@ -415,7 +465,7 @@
 
 		<echo message="Starting Core Frameworks tests" />
 		<antcall target="core-tests" />
-		
+
 		<echo message="Starting Core Debugger tests" />
 		<antcall target="core-debug-tests" />
 
