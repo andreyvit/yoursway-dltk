@@ -129,7 +129,7 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 			int offset = matcher.start();
 			if (offset > regionStart)
 				result.append(content.subSequence(regionStart, offset));
-			fixPositions.add(result.length());
+			fixPositions.add(new Integer( result.length() ));
 			result.append(replacement);
 //			fixPositions.add(new Integer(offset + fixPositions.size() * magicLength));			
 			regionStart = offset + delta; //2
