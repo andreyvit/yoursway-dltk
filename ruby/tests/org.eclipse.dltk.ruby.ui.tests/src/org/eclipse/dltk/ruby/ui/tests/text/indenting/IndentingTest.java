@@ -54,7 +54,7 @@ public class IndentingTest extends SuiteOfTestCases {
 		Assert.isLegal(startPos >= 0);
 		data = data.substring(0, startPos) + data.substring(startPos + 1);
 		
-		int replacePos = data.indexOf('±');
+		int replacePos = data.indexOf("±");
 		int insertionStartPos = startPos;
 		if (replacePos >= 0) {
 			Assert.isLegal(replacePos >= startPos);
