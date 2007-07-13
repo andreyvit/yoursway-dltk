@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.dltk.tcl.activestatedebugger;singleton:=true
+Bundle-Version: 0.9.0.qualifier
+Bundle-Activator: org.eclipse.dltk.tcl.activestatedebugger.TclActiveStateDebuggerPlugin
+Bundle-Vendor: %pluginProvider
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.ui.browser,
+ org.eclipse.core.runtime,
+ org.eclipse.dltk.core,
+ org.eclipse.dltk.launching,
+ org.eclipse.dltk.ui,
+ org.eclipse.dltk.debug.ui
+Eclipse-LazyStart: true

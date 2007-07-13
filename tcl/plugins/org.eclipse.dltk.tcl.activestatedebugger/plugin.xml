@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	<extension point="org.eclipse.dltk.launching.debuggingEngine">
+		<engineContribution
+			natureId="org.eclipse.dltk.tcl.core.nature">
+			<engine
+         class="org.eclipse.dltk.tcl.activestatedebugger.TclActiveStateDebuggerRunnerFactory"
+         description="%ActiveStateDebuggingEngine.description"
+         id="org.eclipse.dltk.tcl.asdebugger.TclActiveStateDebuggerRunnerFactory"
+         name="%ActiveStateDebuggingEngine.name"
+         preferencePageId="org.eclipse.dltk.tcl.preferences.debug.activestatedebugger"
+         priority="0">
+			</engine>
+		</engineContribution>
+	</extension>
+ <extension
+       point="org.eclipse.ui.preferencePages">
+    <page
+          category="org.eclipse.dltk.tcl.preferences.debug"
+          class="org.eclipse.dltk.tcl.activestatedebugger.preferences.TclActiveStateDebuggerPreferencePage"
+          id="org.eclipse.dltk.tcl.preferences.debug.activestatedebugger"
+          name="%TclActiveStateDebuggerPreferencePage.name">
+    </page>
+ </extension>
+</plugin>
