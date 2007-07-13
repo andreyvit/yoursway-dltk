@@ -466,6 +466,9 @@
 		<echo message="Starting Core Frameworks tests" />
 		<antcall target="core-tests" />
 
+		<echo message="Starting Core Debug Frameworks tests" />
+		<antcall target="core-debug-tests" />
+
 		<echo message="Starting Core UI tests" />
 		<antcall target="core-ui-tests" />
 
