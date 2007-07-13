@@ -1,7 +1,7 @@
 
 ! Tcl Development Tools (DLTK)
 !
-! $Id: tcl.map,v 1.34 2007/07/11 10:51:58 mkalugin Exp $ 
+! $Id: tcl.map,v 1.35 2007/07/13 12:41:19 dkovalev Exp $ 
 
 feature@org.eclipse.dltk.tcl=v20070601c,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl-feature
 feature@org.eclipse.dltk.tcl.sdk=v20070622,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl.sdk
@@ -15,3 +15,5 @@ plugin@org.eclipse.dltk.tcl.debug=v20070711a,:pserver:anonymous@dev.eclipse.org:
 plugin@org.eclipse.dltk.tcl.debug.ui=v20070711a,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.debug.ui
 
 plugin@org.eclipse.dltk.tcl.tclchecker=v20070711a,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.tclchecker
+
+plugin@org.eclipse.dltk.tcl.activestatedebugger=v20070713,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.activestatedebugger
