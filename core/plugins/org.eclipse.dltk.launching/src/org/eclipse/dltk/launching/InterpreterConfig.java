@@ -7,12 +7,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class InterpreterConfig {
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+
+public class InterpreterConfig implements Cloneable {
 	// Script file to launch
-	private File scriptFile;
+	private IPath scriptFile;
 
 	// Working directory
-	private File workingDirectory;
+	private IPath workingDirectory;
 
 	// Arguments for interpreter (Strings)
 	private ArrayList interpreterArgs;
@@ -27,6 +30,15 @@ public class InterpreterConfig {
 	private HashMap properties;
 
 	public InterpreterConfig(File scriptFile) {
+		this(new Path(scriptFile.toString()));
+	}
+
+	public InterpreterConfig(File scriptFile, File workingDirectory) {
+		this(new Path(scriptFile.toString()), new Path(workingDirectory
+				.toString()));
+	}
+
+	public InterpreterConfig(IPath scriptFile) {
 		this();
 
 		if (scriptFile == null) {
@@ -36,7 +48,7 @@ public class InterpreterConfig {
 		this.scriptFile = scriptFile;
 	}
 
-	public InterpreterConfig(File scriptFile, File workingDirectory) {
+	public InterpreterConfig(IPath scriptFile, IPath workingDirectory) {
 		this();
 
 		if (scriptFile == null) {
@@ -55,20 +67,42 @@ public class InterpreterConfig {
 	}
 
 	// Script file
+	/**
+	 * @deprecated Use getScriptFilePath instead
+	 */
 	public File getScriptFile() {
+		return scriptFile.toFile();
+	}
+
+	public IPath getScriptFilePath() {
 		return scriptFile;
 	}
 
 	public void setScriptFile(File file) {
+		setScriptFile(new Path(file.toString()));
+	}
+
+	public void setScriptFile(IPath file) {
 		this.scriptFile = file;
 	}
 
 	// Working directory
+	/**
+	 * @deprecated Use getWorkingDirectoryPath instead
+	 */
 	public File getWorkingDirectory() {
+		return workingDirectory.toFile();
+	}
+
+	public IPath getWorkingDirectoryPath() {
 		return workingDirectory;
 	}
 
 	public void setWorkingDirectory(File directory) {
+		setWorkingDirectory(new Path(directory.toString()));
+	}
+
+	public void setWorkingDirectory(IPath directory) {
 		this.workingDirectory = directory;
 	}
 
@@ -195,35 +229,63 @@ public class InterpreterConfig {
 		return properties.put(name, value);
 	}
 
+	public void unsetProperty(String name) {
+		properties.remove(name);
+	}
+
 	public Object getProperty(String name) {
 		return properties.get(name);
 	}
 
+	public void addProperties(Map map) {
+		properties.putAll(map);
+	}
+
+	public Map getPropeties() {
+		return (Map) properties.clone();
+	}
+
 	// Command line
-	public String[] renderCommandLine(String exe) {
-		List items = new ArrayList();
+	public String[] renderCommandLine(String interpreter) {
+		return renderCommandLine(new Path(interpreter));
+	}
 
-		items.add(exe);
+	public Object clone() {
+		final InterpreterConfig config = new InterpreterConfig(scriptFile,
+				workingDirectory);
+		config.addProperties(getPropeties());
+		config.addEnvVars(getEnvVars());
+		config.addInterpreterArgs(getInterpreterArgs());
+		config.addScriptArgs(getScriptArgs());
+		return config;
+	}
 
-		// Interpreter arguments
-		Iterator it = interpreterArgs.iterator();
-		while (it.hasNext()) {
-			items.add(it.next());
-		}
+	public String[] renderCommandLine(IPath interpreter) {
+		final List items = new ArrayList();
 
-		// Script file
-		items.add(scriptFile.toString());
-
-		// Script arguments
-		it = scriptArgs.iterator();
-		while (it.hasNext()) {
-			items.add(it.next());
-		}
+		items.add(interpreter.toPortableString());
+		items.addAll(interpreterArgs);
+		items.add(scriptFile.toPortableString());
+		items.addAll(scriptArgs);
 
 		return (String[]) items.toArray(new String[items.size()]);
 	}
 
+	// TODO: make more real implementation
 	public String toString() {
-		return "TODO";
+		final List items = new ArrayList();
+		items.add("<interpreter>");
+		items.addAll(interpreterArgs);
+		items.add(scriptFile.toPortableString());
+		items.addAll(scriptArgs);
+
+		Iterator it = items.iterator();
+		StringBuffer sb = new StringBuffer();
+		while (it.hasNext()) {
+			sb.append(it.next());
+			sb.append(' ');
+		}
+
+		return sb.toString();
 	}
 }

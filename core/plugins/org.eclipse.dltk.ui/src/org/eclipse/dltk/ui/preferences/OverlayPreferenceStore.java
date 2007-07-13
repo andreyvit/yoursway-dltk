@@ -7,7 +7,7 @@
  *
  
  *******************************************************************************/
- 
+
 package org.eclipse.dltk.ui.preferences;
 
 import org.eclipse.core.runtime.Assert;
@@ -83,7 +83,7 @@ public class OverlayPreferenceStore  implements IPreferenceStore {
 		return (findOverlayKey(key) != null);
 	}
 	
-	private void propagateProperty(IPreferenceStore orgin, OverlayKey key, IPreferenceStore target) {
+	private static void propagateProperty(IPreferenceStore orgin, OverlayKey key, IPreferenceStore target) {
 		
 		if (orgin.isDefault(key.fKey)) {
 			if (!target.isDefault(key.fKey))
@@ -460,7 +460,7 @@ public class OverlayPreferenceStore  implements IPreferenceStore {
 	 * </p>
 	 * 
 	 * @param keys
-	 *
+	 * @since 3.0
 	 */
 	public void addKeys(OverlayKey[] keys) {
 		Assert.isTrue(!fLoaded);

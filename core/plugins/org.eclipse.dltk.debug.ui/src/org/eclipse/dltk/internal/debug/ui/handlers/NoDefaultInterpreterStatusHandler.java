@@ -9,53 +9,20 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.ui.handlers;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.debug.core.IStatusHandler;
-import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
-import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.launching.LaunchingMessages;
-import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.PreferenceDialog;
-import org.eclipse.ui.dialogs.PreferencesUtil;
 
-public class NoDefaultInterpreterStatusHandler implements IStatusHandler {
-
-	public Object handleStatus(IStatus status, Object source) {
-		final boolean[] result = new boolean[1];
-
-		final String natureId = ((AbstractScriptLaunchConfigurationDelegate) source)
-				.getLanguageId();
-
-		DLTKDebugUIPlugin.getStandardDisplay().syncExec(new Runnable() {
-			public void run() {
-				String title = LaunchingMessages.NoDefaultInterpreterStatusHandler_title;
-				String message = LaunchingMessages.NoDefaultInterpreterStatusHandler_message;
-				result[0] = (MessageDialog.openQuestion(DLTKDebugUIPlugin
-						.getActiveWorkbenchShell(), title, message));
-				if (result[0]) {
-					showInterpreterPreferencePage(natureId);
-				}
-			}
-		});
-
-		return new Boolean(result[0]);
+public class NoDefaultInterpreterStatusHandler extends
+		AbstractOpenPreferencePageStatusHandler {
+	protected String getTitle() {
+		return LaunchingMessages.NoDefaultInterpreterStatusHandler_title;
 	}
 
-	protected void showInterpreterPreferencePage(String natureId) {
-		String preferencePageId = null;
-		IDLTKUILanguageToolkit languageToolkit = null;
-		languageToolkit = DLTKUILanguageManager.getLanguageToolkit(natureId);
-		if( languageToolkit == null ) {
-			return;
-		}
-		preferencePageId = languageToolkit.getInterpreterPreferencePage();
+	protected String getMessage() {
+		return LaunchingMessages.NoDefaultInterpreterStatusHandler_message;
+	}
 
-		if (preferencePageId != null) {
-			PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(
-					null, preferencePageId, null, null);
-			dialog.open();
-		}
+	protected String getPreferencePageId(IDLTKUILanguageToolkit toolkit) {
+		return toolkit.getInterpreterPreferencePage();
 	}
 }

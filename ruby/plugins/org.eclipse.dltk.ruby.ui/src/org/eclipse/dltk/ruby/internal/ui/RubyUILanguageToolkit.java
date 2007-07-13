@@ -13,6 +13,7 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.ruby.ast.RubyDefinedExpression;
 import org.eclipse.dltk.ruby.core.RubyConstants;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.internal.ui.editor.RubyEditor;
@@ -114,7 +115,14 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 				getPartitioningId(), false);
 	}
 
+	private static final String INTERPRETERS_PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.interpreters";
+	private static final String DEBUG_PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug";
+
 	public String getInterpreterPreferencePage() {
-		return "org.eclipse.dltk.ruby.preferences.interpreters";
+		return INTERPRETERS_PREFERENCE_PAGE_ID;
+	}
+
+	public String getDebugPreferencePage() {
+		return DEBUG_PREFERENCE_PAGE_ID;
 	}
 }

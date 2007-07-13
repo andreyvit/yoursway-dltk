@@ -9,12 +9,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.debug.ui;
 
-import java.text.MessageFormat;
-
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.ui.IValueDetailListener;
-import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
+import org.eclipse.dltk.debug.core.eval.IScriptEvaluationCommand;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationListener;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationResult;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
@@ -26,11 +24,22 @@ import org.eclipse.ui.IEditorInput;
 public class RubyDebugModelPresentation extends ScriptDebugModelPresentation {
 	private static final String RUBY_EDITOR_ID = "org.eclipse.dltk.ruby.ui.editor.RubyEditor";
 
-	private static final String EVAL_PATTERN = "({0}).to_s";
 	private static final String CANNOT_EVALUATE = "Can't evaluate details.";
+
+	private static final String TO_S = "({0}).to_s";
 
 	public String getEditorId(IEditorInput input, Object element) {
 		return RUBY_EDITOR_ID;
+	}
+
+	private String getValueString(IValue value) {
+		try {
+			return value.getValueString();
+		} catch (DebugException e) {
+			RubyDebugUIPlugin.log(e);
+		}
+
+		return value.toString();
 	}
 
 	public void computeDetail(final IValue value,
@@ -40,28 +49,25 @@ public class RubyDebugModelPresentation extends ScriptDebugModelPresentation {
 				.getDebugTarget());
 
 		if (thread != null) {
-			final String snippet = MessageFormat.format(EVAL_PATTERN,
-					new Object[] { ((IScriptValue) value).getEvalName() });
+			final IScriptValue scriptValue = (IScriptValue) value;
+			final IScriptEvaluationCommand command = scriptValue.sendMessage(
+					TO_S, thread);
 
-			final IScriptEvaluationEngine engine = thread.getEvaluationEngine();
-			engine.asyncEvaluate(snippet, null,
-					new IScriptEvaluationListener() {
-						public void evaluationComplete(
-								IScriptEvaluationResult result) {
-							if (result != null) {
-								IScriptValue value = result.getValue();
-								final String details = value == null ? CANNOT_EVALUATE
-										: value.toString();
-								listener.detailComputed(value, details);
-							}
+			command.asyncEvaluate(new IScriptEvaluationListener() {
+				public void evaluationComplete(IScriptEvaluationResult result) {
+					if (result != null) {
+						final IScriptValue resultValue = result.getValue();
+						if (resultValue != null) {
+							listener.detailComputed(value,
+									getValueString(resultValue));
+						} else {
+							listener.detailComputed(value, CANNOT_EVALUATE);
 						}
-					});
+					}
+				}
+			});
 		} else {
-			try {
-				listener.detailComputed(value, value.getValueString());
-			} catch (DebugException e) {
-				RubyDebugUIPlugin.log(e);
-			}
+			listener.detailComputed(value, getValueString(value));
 		}
 	}
 }

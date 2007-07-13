@@ -2,526 +2,487 @@
 <?eclipse version="3.2"?>
 <plugin>
 
-<!-- Extensions Points -->
-   <extension-point id="interpreterInstallTypePage" name="%interpreterInstallTypePage" schema="schema/interpreterInstallTypePage.exsd"/>
+	<!-- Extensions Points -->
+	<extension-point id="interpreterInstallTypePage"
+		name="%interpreterInstallTypePage"
+		schema="schema/interpreterInstallTypePage.exsd" />
 
-<!-- Extensions -->
-   
- <extension
-       point="org.eclipse.debug.core.statusHandlers">
-    <statusHandler
-          class="org.eclipse.dltk.internal.debug.ui.handlers.DbgpServiceNotAvailableStatusHandler"
-          code="200"
-          id="org.eclipse.dltk.internal.debug.ui.DbgpServiceNotAvailableStatusHandler"
-          plugin="org.eclipse.dltk.launching">
-    </statusHandler>
-    <statusHandler
-          class="org.eclipse.dltk.internal.debug.ui.handlers.DebuggingEngineNotStartedStatusHandler"
-          code="201"
-          id="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotStartedStatusHandler"
-          plugin="org.eclipse.dltk.launching">
-    </statusHandler>
-    <statusHandler
-          class="org.eclipse.dltk.internal.debug.ui.handlers.DebuggingEngineNotConnectedStatusHandler"
-          code="202"
-          id="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotConnectedStatusHandler"
-          plugin="org.eclipse.dltk.launching">
-    </statusHandler>    
-    <statusHandler
-            class="org.eclipse.dltk.internal.debug.ui.handlers.NoDefaultInterpreterStatusHandler"
-            code="167"
-            id="org.eclipse.dltk.internal.debug.ui.NoDefaultInterpreterStatusHandler"
-            plugin="org.eclipse.dltk.launching">
-    </statusHandler>
- </extension>
+	<!-- Extensions -->
+
+	<extension point="org.eclipse.debug.core.statusHandlers">
+		<statusHandler
+			class="org.eclipse.dltk.internal.debug.ui.handlers.DbgpServiceNotAvailableStatusHandler"
+			code="200"
+			id="org.eclipse.dltk.internal.debug.ui.DbgpServiceNotAvailableStatusHandler"
+			plugin="org.eclipse.dltk.launching">
+		</statusHandler>
+		<statusHandler
+			class="org.eclipse.dltk.internal.debug.ui.handlers.DebuggingEngineNotStartedStatusHandler"
+			code="201"
+			id="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotStartedStatusHandler"
+			plugin="org.eclipse.dltk.launching">
+		</statusHandler>
+		<statusHandler
+			class="org.eclipse.dltk.internal.debug.ui.handlers.DebuggingEngineNotConnectedStatusHandler"
+			code="202"
+			id="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotConnectedStatusHandler"
+			plugin="org.eclipse.dltk.launching">
+		</statusHandler>
+		<statusHandler
+			class="org.eclipse.dltk.internal.debug.ui.handlers.NoDefaultInterpreterStatusHandler"
+			code="167"
+			id="org.eclipse.dltk.internal.debug.ui.NoDefaultInterpreterStatusHandler"
+			plugin="org.eclipse.dltk.launching">
+		</statusHandler>
+		<statusHandler
+			class="org.eclipse.dltk.internal.debug.ui.handlers.NoDebuggingEngineStatusHandler"
+			code="180"
+			id="org.eclipse.dltk.internal.debug.ui.handlers.NoDebuggingEngineStatusHandler"
+			plugin="org.eclipse.dltk.launching">
+		</statusHandler>
+	</extension>
 	<extension point="org.eclipse.core.runtime.adapters">
-         <factory 
-            class="" 
-            adaptableType="org.eclipse.dltk.core.IModelElement">
-            <adapter type="org.eclipse.debug.ui.actions.ILaunchable"/>
-         </factory>
-         <factory 
-            class="" 
-            adaptableType="org.eclipse.core.resources.IResource">
-            <adapter type="org.eclipse.debug.ui.actions.ILaunchable"/>
-         </factory>
-         <factory 
-            class="" 
-            adaptableType="org.eclipse.dltk.internal.ui.editor.ExternalStorageEditorInput">
-            <adapter type="org.eclipse.debug.ui.actions.ILaunchable"/>
-         </factory>               
-    </extension>
-     <extension
-         point="org.eclipse.ui.popupMenus">
-    <objectContribution
-            objectClass="org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint"
-            id="org.eclipse.dltk.debug.MethodBreakpointToggleActions">
-         <action
-               label="%entryAction.label"
-               state="false"
-               class="org.eclipse.dltk.debug.ui.actions.EntryToggleAction"
-               menubarPath="emptyBreakpointGroup"
-               enablesFor="+"
-               id="org.eclipse.dltk.debug.ui.actions.EntryToggle">
-         </action>
-         <action
-               label="%exitAction.label"
-               state="false"
-               class="org.eclipse.dltk.debug.ui.actions.ExitToggleAction"
-               menubarPath="emptyBreakpointGroup"
-               enablesFor="+"
-               id="org.eclipse.dltk.debug.ui.actions.ExitToggle">
-         </action>
-      </objectContribution>
-      <objectContribution
-            objectClass="org.eclipse.dltk.debug.core.model.IScriptBreakpoint"
-            id="org.eclipse.dltk.debug.ScriptBreakpointActions">                
-         <action
-               class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesAction"
-               enablesFor="1"
-               helpContextId="breakpoint_properties_action_context"
-               id="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointProperties"
-               label="%ScriptBreakpointProperties.label"
-               menubarPath="additions">
-         </action>
-      </objectContribution>
-      </extension>
+		<factory class=""
+			adaptableType="org.eclipse.dltk.core.IModelElement">
+			<adapter type="org.eclipse.debug.ui.actions.ILaunchable" />
+		</factory>
+		<factory class=""
+			adaptableType="org.eclipse.core.resources.IResource">
+			<adapter type="org.eclipse.debug.ui.actions.ILaunchable" />
+		</factory>
+		<factory class=""
+			adaptableType="org.eclipse.dltk.internal.ui.editor.ExternalStorageEditorInput">
+			<adapter type="org.eclipse.debug.ui.actions.ILaunchable" />
+		</factory>
+	</extension>
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution
+			objectClass="org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint"
+			id="org.eclipse.dltk.debug.MethodBreakpointToggleActions">
+			<action label="%entryAction.label" state="false"
+				class="org.eclipse.dltk.debug.ui.actions.EntryToggleAction"
+				menubarPath="emptyBreakpointGroup" enablesFor="+"
+				id="org.eclipse.dltk.debug.ui.actions.EntryToggle">
+			</action>
+			<action label="%exitAction.label" state="false"
+				class="org.eclipse.dltk.debug.ui.actions.ExitToggleAction"
+				menubarPath="emptyBreakpointGroup" enablesFor="+"
+				id="org.eclipse.dltk.debug.ui.actions.ExitToggle">
+			</action>
+		</objectContribution>
+		<objectContribution
+			objectClass="org.eclipse.dltk.debug.core.model.IScriptBreakpoint"
+			id="org.eclipse.dltk.debug.ScriptBreakpointActions">
+			<action
+				class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesAction"
+				enablesFor="1" helpContextId="breakpoint_properties_action_context"
+				id="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointProperties"
+				label="%ScriptBreakpointProperties.label" menubarPath="additions">
+			</action>
+		</objectContribution>
+	</extension>
 
- <extension
-         point="org.eclipse.ui.actionSetPartAssociations">
-      <actionSetPartAssociation
-            targetID="org.eclipse.debug.ui.launchActionSet">
-         <part
-               id="org.eclipse.dltk.ui.ScriptExplorer">
-         </part>
-      </actionSetPartAssociation>
-      <actionSetPartAssociation
-            targetID="org.eclipse.dltk.debug.ui.ScriptDebugActionSet">
-         <part
-               id="org.eclipse.dltk.ui.ScriptExplorer">
-         </part>
-      </actionSetPartAssociation>
-  </extension>
- <!-- Adapters for contextual launch -->
- <!--extension
-         point="org.eclipse.ui.actionSets">
-      <actionSet
-            label="%DebugActionSet.label"
-            visible="false"
-            id="org.eclipse.dltk.debug.ui.DLTKDebugActionSet">
-         <menu
-               label="%RunMenu.label"
-               path="additions"
-               id="org.eclipse.ui.run">
-            <separator 
-            	name="scriptGroup">
-            </separator>
-         </menu>
-                 
-         <action
-               class="org.eclipse.dltk.internal.debug.ui.actions.WatchAction"
-               enablesFor="+"
-               id="org.eclipse.dltk.debug.ui.Watch"
-               label="Watch!!!!"
-               menubarPath="org.eclipse.ui.run/scriptGroup">           
-         </action>
-       </actionSet>
- </extension-->
- 
- 
-  <extension
-         point="org.eclipse.ui.actionSets">
-      <actionSet
-            id="org.eclipse.dltk.debug.ui.ScriptDebugActionSet"
-            label="Script debugger action set"
-            visible="false">
-         <menu
-               label="%RunMenu.label"
-               path="additions"
-               id="org.eclipse.ui.run">
-            <separator
-                  name="scriptGroup">
-            </separator>
-         </menu>
-         <!--action
-               definitionId="org.eclipse.jdt.debug.ui.commands.AddExceptionBreakpoint"
-               label="%exceptionAction.accel.label"
-               icon="$nl$/icons/full/elcl16/exc_catch.gif"
-               class="org.eclipse.jdt.internal.debug.ui.breakpoints.AddExceptionAction"
-               menubarPath="org.eclipse.ui.run/breakpointGroup"
-               id="org.eclipse.jdt.debug.ui.actions.AddExceptionBreakpoint">
-         </action-->
-         
-         <!--action
-               definitionId="org.eclipse.jdt.debug.ui.commands.StepIntoSelection"
-               label="%stepIntoSelectionAction.label"               
-               class="org.eclipse.jdt.internal.debug.ui.actions.StepIntoSelectionActionDelegate"
-               menubarPath="org.eclipse.ui.run/jdtGroup"
-               enablesFor="*"
-               id="org.eclipse.jdt.debug.ui.actions.StepIntoSelection">
-            <enablement>
-               <and>
-                  <systemProperty
-                        name="org.eclipse.jdt.debug.ui.instanceof.IJavaStackFrame"
-                        value="true">
-                  </systemProperty>
-                  <objectClass
-                        name="org.eclipse.jface.text.ITextSelection">
-                  </objectClass>
-               </and>
-            </enablement>
-         </action-->
-         
-         <!--action
-               id="org.eclipse.jdt.debug.ui.actions.ForceReturn"
-               class="org.eclipse.jdt.internal.debug.ui.actions.ForceReturnAction"
-               definitionId="org.eclipse.jdt.debug.ui.commands.ForceReturn"
-               label="%ForceReturn.label"
-               helpContextId="force_return_action_context"
-               menubarPath="org.eclipse.ui.run/jdtGroup">
-            <enablement>
-               <and>
-                  <systemProperty
-                      name="org.eclipse.jdt.debug.ui.debuggerActive"
-                      value="true">
-                  </systemProperty>
-                  <systemProperty
-                      name="org.eclipse.jdt.debug.ui.supportsForceReturn"
-                      value="true">
-                  </systemProperty>                  
-                  <objectClass
-                        name="org.eclipse.jface.text.ITextSelection">
-                  </objectClass>
-               </and>
-            </enablement>
-         </action-->
-         
-                  
-         <!--action
-               id="org.eclipse.jdt.debug.ui.actions.Execute"
-               hoverIcon="$nl$/icons/full/etool16/run_sbook.gif"
-               class="org.eclipse.jdt.internal.debug.ui.actions.ExecuteAction"
-               definitionId="org.eclipse.jdt.debug.ui.commands.Execute"
-               disabledIcon="$nl$/icons/full/dtool16/run_sbook.gif"
-               enablesFor="+"
-               icon="$nl$/icons/full/etool16/run_sbook.gif"
-               label="%Execute.label"
-               helpContextId="execute_action_context"
-               menubarPath="org.eclipse.ui.run/jdtGroup">
-            <enablement>
-               <and>
-                  <or>
-                     <systemProperty
-                           name="org.eclipse.jdt.debug.ui.debuggerActive"
-                           value="true">
-                     </systemProperty>
-                     <systemProperty
-                           name="org.eclipse.jdt.debug.ui.scrapbookActive"
-                           value="true">
-                     </systemProperty>
-                  </or>
-                  <objectClass
-                        name="org.eclipse.jface.text.ITextSelection">
-                  </objectClass>
-               </and>
-            </enablement>
-         </action-->
-         <action
-               class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptDisplayAction"
-               definitionId="org.eclipse.dltk.debug.ui.commands.ScriptDisplay"
-               disabledIcon="$nl$/icons/full/dtool16/disp_sbook.gif"
-               helpContextId="display_action_context"
-               hoverIcon="$nl$/icons/full/etool16/disp_sbook.gif"
-               icon="$nl$/icons/full/etool16/disp_sbook.gif"
-               id="org.eclipse.dltk.debug.ui.actions.Display"
-               label="%ScriptDisplay.label"
-               menubarPath="org.eclipse.ui.run/scriptGroup"
-               tooltip="%ScriptDisplay.tooltip">
-            <enablement>
-               <and>
-                 <systemProperty
-                       name="org.eclipse.dltk.debug.ui.debuggerActive"
-                       value="true">
-                 </systemProperty>
-                  <objectClass
-                        name="org.eclipse.jface.text.ITextSelection">
-                  </objectClass>
-               </and>
-            </enablement>
-         </action>
-         
-         
-         <action
-               class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptInspectAction"
-               definitionId="org.eclipse.dltk.debug.ui.commands.ScriptInspect"
-               disabledIcon="$nl$/icons/full/dtool16/insp_sbook.gif"
-               hoverIcon="$nl$/icons/full/etool16/insp_sbook.gif"
-               icon="$nl$/icons/full/etool16/insp_sbook.gif"
-               id="org.eclipse.dltk.debug.ui.actions.Inspect"
-               label="%ScriptInspect.label"
-               menubarPath="org.eclipse.ui.run/scriptGroup"
-               tooltip="%ScriptInspect.tooltip">
-              <enablement>
-               <and>
-                  <systemProperty
-                        name="org.eclipse.dltk.debug.ui.debuggerActive"
-                        value="true">
-                  </systemProperty>
-                  <or>
-                     <objectClass
-                           name="org.eclipse.jface.text.ITextSelection">
-                     </objectClass>
-                     <objectClass
-                           name="org.eclipse.dltk.debug.core.model.IScriptVariable">
-                     </objectClass>
-                  </or>
-               </and>
-            </enablement>
-         </action>
-         
-         <action
-               class="org.eclipse.dltk.internal.debug.ui.actions.ScriptWatchAction"
-               definitionId="org.eclipse.dltk.debug.ui.commands.ScriptWatch"
-               disabledIcon="$nl$/icons/full/dtool16/watch_exp.gif"
-               enablesFor="+"
-               hoverIcon="$nl$/icons/full/etool16/watch_exp.gif"
-               icon="$nl$/icons/full/etool16/watch_exp.gif"
-               id="org.eclipse.dltk.debug.ui.Watch"
-               label="%ScriptWatch.label"
-               menubarPath="org.eclipse.ui.run/scriptGroup"
-               tooltip="%ScriptWatch.tooltip">
-            <enablement>
-               <and>
-                  <systemProperty
-                        name="org.eclipse.dltk.debug.ui.debuggerActive"
-                        value="true">
-                  </systemProperty>
-                  <or>
-                     <objectClass
-                           name="org.eclipse.jface.text.ITextSelection">
-                     </objectClass>
-                     <objectClass
-                           name="org.eclipse.dltk.debug.core.model.IScriptVariable">
-                     </objectClass>
-                  </or>
-               </and>
-            </enablement>
-         </action>
-      </actionSet>
-   </extension>
-  
- 
- 
- <extension
-       point="org.eclipse.ui.propertyPages">
-    <page
-          class="org.eclipse.dltk.debug.ui.breakpoints.ScriptLineBreakpointPropertyPage"
-          id="org.eclipse.dltk.debug.ui.breakpoints.ScriptLineBreakpointPropertyPage"
-          name="Script Line Breakpoint">
-          <enabledWhen>
-            <and>
-            <or>
-               <instanceof
-                     value="org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint">
-               </instanceof>
-               <adapt
-                     type="org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint">
-               </adapt>              
-            </or>
-            <not>
-            <instanceof
-                     value="org.eclipse.dltk.debug.core.model.IScriptWatchpoint"/>
-            </not>
-            <not>
-            <instanceof
-                     value="org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint"/>
-            </not>
-            </and>
-         </enabledWhen>
-    </page>
-    <page
-          class="org.eclipse.dltk.debug.ui.breakpoints.ScriptWatchpointPropertyPage"
-          id="org.eclipse.dltk.debug.ui.breakpoints.ScriptWatchpointPropertyPage"
-          name="Script Watchpoint">
-          <enabledWhen>
-            <or>
-               <instanceof
-                     value="org.eclipse.dltk.debug.core.model.IScriptWatchpoint">
-               </instanceof>
-               <adapt
-                     type="org.eclipse.dltk.debug.core.model.IScriptWatchpoint">
-               </adapt>              
-            </or>
-         </enabledWhen>
-    </page>
-    <page
-          class="org.eclipse.dltk.debug.ui.breakpoints.ScriptMethodBreakpointPropertyPage"
-          id="org.eclipse.dltk.debug.ui.breakpoints.ScriptMethodBreakpointPropertyPage"
-          name="Script Method Breakpoint">
-          <enabledWhen>
-            <or>
-               <instanceof
-                     value="org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint">
-               </instanceof>
-               <adapt
-                     type="org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint">
-               </adapt>              
-            </or>
-         </enabledWhen>
-    </page>
- </extension>
- 
-    <extension
-         point="org.eclipse.ui.contexts">
-      <context
-            name="%DebuggingScriptContext.label"
-            description="%DebuggingScriptContext.description"
-            id="org.eclipse.dltk.debug.ui.debugging"
-            parentId="org.eclipse.debug.ui.debugging">
-      </context>
-   </extension>
-   
- <extension
-       point="org.eclipse.ui.perspectiveExtensions">
-    <perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">
-         <actionSet
-               id="org.eclipse.dltk.debug.ui.ScriptDebugActionSet">
-         </actionSet>
-    </perspectiveExtension>
-    <perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">
+	<extension point="org.eclipse.ui.actionSetPartAssociations">
+		<actionSetPartAssociation
+			targetID="org.eclipse.debug.ui.launchActionSet">
+			<part id="org.eclipse.dltk.ui.ScriptExplorer"></part>
+		</actionSetPartAssociation>
+		<actionSetPartAssociation
+			targetID="org.eclipse.dltk.debug.ui.ScriptDebugActionSet">
+			<part id="org.eclipse.dltk.ui.ScriptExplorer"></part>
+		</actionSetPartAssociation>
+	</extension>
+	<!-- Adapters for contextual launch -->
+	<!--extension
+		point="org.eclipse.ui.actionSets">
+		<actionSet
+		label="%DebugActionSet.label"
+		visible="false"
+		id="org.eclipse.dltk.debug.ui.DLTKDebugActionSet">
+		<menu
+		label="%RunMenu.label"
+		path="additions"
+		id="org.eclipse.ui.run">
+		<separator 
+		name="scriptGroup">
+		</separator>
+		</menu>
+		
+		<action
+		class="org.eclipse.dltk.internal.debug.ui.actions.WatchAction"
+		enablesFor="+"
+		id="org.eclipse.dltk.debug.ui.Watch"
+		label="Watch!!!!"
+		menubarPath="org.eclipse.ui.run/scriptGroup">           
+		</action>
+		</actionSet>
+		</extension-->
+
+
+	<extension point="org.eclipse.ui.actionSets">
+		<actionSet id="org.eclipse.dltk.debug.ui.ScriptDebugActionSet"
+			label="Script debugger action set" visible="false">
+			<menu label="%RunMenu.label" path="additions"
+				id="org.eclipse.ui.run">
+				<separator name="scriptGroup"></separator>
+			</menu>
+			<!--action
+				definitionId="org.eclipse.jdt.debug.ui.commands.AddExceptionBreakpoint"
+				label="%exceptionAction.accel.label"
+				icon="$nl$/icons/full/elcl16/exc_catch.gif"
+				class="org.eclipse.jdt.internal.debug.ui.breakpoints.AddExceptionAction"
+				menubarPath="org.eclipse.ui.run/breakpointGroup"
+				id="org.eclipse.jdt.debug.ui.actions.AddExceptionBreakpoint">
+				</action-->
+
+			<!--action
+				definitionId="org.eclipse.jdt.debug.ui.commands.StepIntoSelection"
+				label="%stepIntoSelectionAction.label"               
+				class="org.eclipse.jdt.internal.debug.ui.actions.StepIntoSelectionActionDelegate"
+				menubarPath="org.eclipse.ui.run/jdtGroup"
+				enablesFor="*"
+				id="org.eclipse.jdt.debug.ui.actions.StepIntoSelection">
+				<enablement>
+				<and>
+				<systemProperty
+				name="org.eclipse.jdt.debug.ui.instanceof.IJavaStackFrame"
+				value="true">
+				</systemProperty>
+				<objectClass
+				name="org.eclipse.jface.text.ITextSelection">
+				</objectClass>
+				</and>
+				</enablement>
+				</action-->
+
+			<!--action
+				id="org.eclipse.jdt.debug.ui.actions.ForceReturn"
+				class="org.eclipse.jdt.internal.debug.ui.actions.ForceReturnAction"
+				definitionId="org.eclipse.jdt.debug.ui.commands.ForceReturn"
+				label="%ForceReturn.label"
+				helpContextId="force_return_action_context"
+				menubarPath="org.eclipse.ui.run/jdtGroup">
+				<enablement>
+				<and>
+				<systemProperty
+				name="org.eclipse.jdt.debug.ui.debuggerActive"
+				value="true">
+				</systemProperty>
+				<systemProperty
+				name="org.eclipse.jdt.debug.ui.supportsForceReturn"
+				value="true">
+				</systemProperty>                  
+				<objectClass
+				name="org.eclipse.jface.text.ITextSelection">
+				</objectClass>
+				</and>
+				</enablement>
+				</action-->
+
+
+			<!--action
+				id="org.eclipse.jdt.debug.ui.actions.Execute"
+				hoverIcon="$nl$/icons/full/etool16/run_sbook.gif"
+				class="org.eclipse.jdt.internal.debug.ui.actions.ExecuteAction"
+				definitionId="org.eclipse.jdt.debug.ui.commands.Execute"
+				disabledIcon="$nl$/icons/full/dtool16/run_sbook.gif"
+				enablesFor="+"
+				icon="$nl$/icons/full/etool16/run_sbook.gif"
+				label="%Execute.label"
+				helpContextId="execute_action_context"
+				menubarPath="org.eclipse.ui.run/jdtGroup">
+				<enablement>
+				<and>
+				<or>
+				<systemProperty
+				name="org.eclipse.jdt.debug.ui.debuggerActive"
+				value="true">
+				</systemProperty>
+				<systemProperty
+				name="org.eclipse.jdt.debug.ui.scrapbookActive"
+				value="true">
+				</systemProperty>
+				</or>
+				<objectClass
+				name="org.eclipse.jface.text.ITextSelection">
+				</objectClass>
+				</and>
+				</enablement>
+				</action-->
+			<action
+				class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptDisplayAction"
+				definitionId="org.eclipse.dltk.debug.ui.commands.ScriptDisplay"
+				disabledIcon="$nl$/icons/full/dtool16/disp_sbook.gif"
+				helpContextId="display_action_context"
+				hoverIcon="$nl$/icons/full/etool16/disp_sbook.gif"
+				icon="$nl$/icons/full/etool16/disp_sbook.gif"
+				id="org.eclipse.dltk.debug.ui.actions.Display"
+				label="%ScriptDisplay.label"
+				menubarPath="org.eclipse.ui.run/scriptGroup"
+				tooltip="%ScriptDisplay.tooltip">
+				<enablement>
+					<and>
+						<systemProperty
+							name="org.eclipse.dltk.debug.ui.debuggerActive" value="true">
+						</systemProperty>
+						<objectClass
+							name="org.eclipse.jface.text.ITextSelection">
+						</objectClass>
+					</and>
+				</enablement>
+			</action>
+
+
+			<action
+				class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptInspectAction"
+				definitionId="org.eclipse.dltk.debug.ui.commands.ScriptInspect"
+				disabledIcon="$nl$/icons/full/dtool16/insp_sbook.gif"
+				hoverIcon="$nl$/icons/full/etool16/insp_sbook.gif"
+				icon="$nl$/icons/full/etool16/insp_sbook.gif"
+				id="org.eclipse.dltk.debug.ui.actions.Inspect"
+				label="%ScriptInspect.label"
+				menubarPath="org.eclipse.ui.run/scriptGroup"
+				tooltip="%ScriptInspect.tooltip">
+				<enablement>
+					<and>
+						<systemProperty
+							name="org.eclipse.dltk.debug.ui.debuggerActive" value="true">
+						</systemProperty>
+						<or>
+							<objectClass
+								name="org.eclipse.jface.text.ITextSelection">
+							</objectClass>
+							<objectClass
+								name="org.eclipse.dltk.debug.core.model.IScriptVariable">
+							</objectClass>
+						</or>
+					</and>
+				</enablement>
+			</action>
+
+			<action
+				class="org.eclipse.dltk.internal.debug.ui.actions.ScriptWatchAction"
+				definitionId="org.eclipse.dltk.debug.ui.commands.ScriptWatch"
+				disabledIcon="$nl$/icons/full/dtool16/watch_exp.gif" enablesFor="+"
+				hoverIcon="$nl$/icons/full/etool16/watch_exp.gif"
+				icon="$nl$/icons/full/etool16/watch_exp.gif"
+				id="org.eclipse.dltk.debug.ui.Watch" label="%ScriptWatch.label"
+				menubarPath="org.eclipse.ui.run/scriptGroup"
+				tooltip="%ScriptWatch.tooltip">
+				<enablement>
+					<and>
+						<systemProperty
+							name="org.eclipse.dltk.debug.ui.debuggerActive" value="true">
+						</systemProperty>
+						<or>
+							<objectClass
+								name="org.eclipse.jface.text.ITextSelection">
+							</objectClass>
+							<objectClass
+								name="org.eclipse.dltk.debug.core.model.IScriptVariable">
+							</objectClass>
+						</or>
+					</and>
+				</enablement>
+			</action>
+		</actionSet>
+	</extension>
+
+
+
+	<extension point="org.eclipse.ui.propertyPages">
+		<page
+			class="org.eclipse.dltk.debug.ui.breakpoints.ScriptLineBreakpointPropertyPage"
+			id="org.eclipse.dltk.debug.ui.breakpoints.ScriptLineBreakpointPropertyPage"
+			name="Script Line Breakpoint">
+			<enabledWhen>
+				<and>
+					<or>
+						<instanceof
+							value="org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint">
+						</instanceof>
+						<adapt
+							type="org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint">
+						</adapt>
+					</or>
+					<not>
+						<instanceof
+							value="org.eclipse.dltk.debug.core.model.IScriptWatchpoint" />
+					</not>
+					<not>
+						<instanceof
+							value="org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint" />
+					</not>
+				</and>
+			</enabledWhen>
+		</page>
+		<page
+			class="org.eclipse.dltk.debug.ui.breakpoints.ScriptWatchpointPropertyPage"
+			id="org.eclipse.dltk.debug.ui.breakpoints.ScriptWatchpointPropertyPage"
+			name="Script Watchpoint">
+			<enabledWhen>
+				<or>
+					<instanceof
+						value="org.eclipse.dltk.debug.core.model.IScriptWatchpoint">
+					</instanceof>
+					<adapt
+						type="org.eclipse.dltk.debug.core.model.IScriptWatchpoint">
+					</adapt>
+				</or>
+			</enabledWhen>
+		</page>
+		<page
+			class="org.eclipse.dltk.debug.ui.breakpoints.ScriptMethodBreakpointPropertyPage"
+			id="org.eclipse.dltk.debug.ui.breakpoints.ScriptMethodBreakpointPropertyPage"
+			name="Script Method Breakpoint">
+			<enabledWhen>
+				<or>
+					<instanceof
+						value="org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint">
+					</instanceof>
+					<adapt
+						type="org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint">
+					</adapt>
+				</or>
+			</enabledWhen>
+		</page>
+	</extension>
+
+	<extension point="org.eclipse.ui.contexts">
+		<context name="%DebuggingScriptContext.label"
+			description="%DebuggingScriptContext.description"
+			id="org.eclipse.dltk.debug.ui.debugging"
+			parentId="org.eclipse.debug.ui.debugging">
+		</context>
+	</extension>
+
+	<extension point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension
+			targetID="org.eclipse.debug.ui.DebugPerspective">
+			<actionSet
+				id="org.eclipse.dltk.debug.ui.ScriptDebugActionSet">
+			</actionSet>
+		</perspectiveExtension>
+		<perspectiveExtension
+			targetID="org.eclipse.debug.ui.DebugPerspective">
+			<view relative="org.eclipse.debug.ui.DebugView"
+				visible="false" relationship="stack"
+				id="org.eclipse.dltk.ui.ScriptExplorer">
+			</view>
+		</perspectiveExtension>
+	</extension>
+	<extension point="org.eclipse.ui.preferencePages">
+		<page category="org.eclipse.dltk.preferences"
+			class="org.eclipse.dltk.debug.ui.preferences.ScriptDebugPreferencePage"
+			id="org.eclipse.dltk.preferences.debug"
+			name="%ScriptDebugPreferencePage.name">
+		</page>
+	</extension>
+	<extension point="org.eclipse.ui.views">
 		<view
-			relative="org.eclipse.debug.ui.DebugView"
-			visible="false"
-			relationship="stack"
-			id="org.eclipse.dltk.ui.ScriptExplorer">
-		</view> 
-	</perspectiveExtension>
- </extension>
- <extension
-       point="org.eclipse.ui.preferencePages">
-    <page
-          category="org.eclipse.dltk.preferences"
-          class="org.eclipse.dltk.debug.ui.preferences.ScriptDebugPreferencePage"
-          id="org.eclipse.dltk.preferences.debug"
-          name="%ScriptDebugPreferencePage.name">
-    </page>
- </extension>
- <extension
-       point="org.eclipse.ui.views">
-    <view
-          class="org.eclipse.dltk.internal.debug.ui.ScriptDebugLogView"
-          id="org.eclipse.dltk.debug.ui.dbgpLogView"
-          name="Script Debug Log">
-    </view>
- </extension>
-   <extension point="org.eclipse.ui.commands">
-      <!--command
-            name="%ActionDefinition.addException.name"
-            description="%ActionDefinition.addException.description"
-            categoryId="org.eclipse.debug.ui.category.run"
-            id="org.eclipse.jdt.debug.ui.commands.AddExceptionBreakpoint">
-      </command-->
-      <!--command
-            name="%ActionDefinition.stepIntoSelection.name"
-            description="%ActionDefinition.stepIntoSelection.description"
-            categoryId="org.eclipse.debug.ui.category.run"
-            id="org.eclipse.jdt.debug.ui.commands.StepIntoSelection">
-      </command-->
-      <!--command
-            name="%ActionDefinition.execute.name"
-            description="%ActionDefinition.execute.description"
-            categoryId="org.eclipse.debug.ui.category.run"
-            id="org.eclipse.jdt.debug.ui.commands.Execute">
-      </command-->
-      <command
-            name="%ActionDefinition.ScriptDisplay.name"
-            description="%ActionDefinition.ScriptDisplay.description"
-            categoryId="org.eclipse.debug.ui.category.run"
-            id="org.eclipse.dltk.debug.ui.commands.ScriptDisplay">
-      </command>
-      <command
-            name="%ActionDefinition.ScriptInspect.name"
-            description="%ActionDefinition.ScriptInspect.description"
-            categoryId="org.eclipse.debug.ui.category.run"
-            id="org.eclipse.dltk.debug.ui.commands.ScriptInspect">
-      </command>
-            
-      <!--command
-            name="%ViewCommand.displayView.name"
-            description="%ViewCommand.displayView.description"
-            categoryId="org.eclipse.ui.category.views"
-            id="org.eclipse.jdt.debug.ui.DisplayView">
-      </command-->
-      
-      <!--command
-            name="%JavaApplicationShortcut.description.debug"
-            description="%JavaApplicationShortcut.description.debug"
-            categoryId="org.eclipse.debug.ui.category.run"
-            id="org.eclipse.jdt.debug.ui.localJavaShortcut.debug">
-      </command-->
-      <!--command
-            name="%JavaApplicationShortcut.description.run"
-            description="%JavaApplicationShortcut.description.run"
-            categoryId="org.eclipse.debug.ui.category.run"
-            id="org.eclipse.jdt.debug.ui.localJavaShortcut.run">
-      </command-->
-    
-      <command
-            categoryId="org.eclipse.debug.ui.category.run"
-            description="%ActionDefinition.ScriptWatch.description"
-            id="org.eclipse.dltk.debug.ui.commands.ScriptWatch"
-            name="%ActionDefinition.ScriptWatch.name"/> 
-     
-      <!--command
-            categoryId="org.eclipse.debug.ui.category.run"
-            description="%ActionDefinition.breakpointproperties.description"
-            id="org.eclipse.jdt.debug.ui.breakpoint.properties"
-            name="%CommandDefinition.breakpointproperties.name">
-      </command--> 
-   </extension>
-   
-   <extension point="org.eclipse.ui.bindings">
-      <key
-            sequence="M1+M2+D"
-            contextId="org.eclipse.dltk.debug.ui.debugging"
-            commandId="org.eclipse.dltk.debug.ui.commands.ScriptDisplay"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
-     
-	  <key
-            sequence="M1+M2+I"
-            contextId="org.eclipse.dltk.debug.ui.debugging"
-            commandId="org.eclipse.dltk.debug.ui.commands.ScriptInspect"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
-   </extension>
-   
-   <extension
-         point="org.eclipse.ui.viewActions">
-         
-         <viewContribution
-            targetID="org.eclipse.debug.ui.VariableView"
-            id="org.eclipse.dltk.debug.ui.VariableViewActions">
-         <action
-               class="org.eclipse.dltk.debug.ui.actions.ToggleShowGlobalVariablesActionDelegate"
-               id="org.eclipse.dltk.debug.ui.variableViewActions.ShowStatic"
-               label="%ShowGlobalVarsAction.label"
-               menubarPath="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu/scriptPart"
-               style="toggle"
-               tooltip="%ShowGlobalVarsAction.tooltip">
-         </action>
-         <action
-               class="org.eclipse.dltk.debug.ui.actions.ToggleShowClassVariablesActionDelegate"
-               id="org.eclipse.dltk.debug.ui.variableViewActions.ShowStatic"
-               label="%ShowClassVarsAction.label"
-               menubarPath="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu/scriptPart"
-               style="toggle"
-               tooltip="%ShowClasssVarsAction.tooltip">
-         </action>
-         <menu
-               id="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu"
-               label="%VariablesViewScriptSubmenu.label"
-               path="scriptActions">
-            <groupMarker name="org.eclipse.dltk.debug.ui.scriptPart"/>
-         </menu>
-      </viewContribution>
-   </extension>
-  </plugin>
+			class="org.eclipse.dltk.internal.debug.ui.ScriptDebugLogView"
+			id="org.eclipse.dltk.debug.ui.dbgpLogView" name="Script Debug Log">
+		</view>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
+		<!--command
+			name="%ActionDefinition.addException.name"
+			description="%ActionDefinition.addException.description"
+			categoryId="org.eclipse.debug.ui.category.run"
+			id="org.eclipse.jdt.debug.ui.commands.AddExceptionBreakpoint">
+			</command-->
+		<!--command
+			name="%ActionDefinition.stepIntoSelection.name"
+			description="%ActionDefinition.stepIntoSelection.description"
+			categoryId="org.eclipse.debug.ui.category.run"
+			id="org.eclipse.jdt.debug.ui.commands.StepIntoSelection">
+			</command-->
+		<!--command
+			name="%ActionDefinition.execute.name"
+			description="%ActionDefinition.execute.description"
+			categoryId="org.eclipse.debug.ui.category.run"
+			id="org.eclipse.jdt.debug.ui.commands.Execute">
+			</command-->
+		<command name="%ActionDefinition.ScriptDisplay.name"
+			description="%ActionDefinition.ScriptDisplay.description"
+			categoryId="org.eclipse.debug.ui.category.run"
+			id="org.eclipse.dltk.debug.ui.commands.ScriptDisplay">
+		</command>
+		<command name="%ActionDefinition.ScriptInspect.name"
+			description="%ActionDefinition.ScriptInspect.description"
+			categoryId="org.eclipse.debug.ui.category.run"
+			id="org.eclipse.dltk.debug.ui.commands.ScriptInspect">
+		</command>
+
+		<!--command
+			name="%ViewCommand.displayView.name"
+			description="%ViewCommand.displayView.description"
+			categoryId="org.eclipse.ui.category.views"
+			id="org.eclipse.jdt.debug.ui.DisplayView">
+			</command-->
+
+		<!--command
+			name="%JavaApplicationShortcut.description.debug"
+			description="%JavaApplicationShortcut.description.debug"
+			categoryId="org.eclipse.debug.ui.category.run"
+			id="org.eclipse.jdt.debug.ui.localJavaShortcut.debug">
+			</command-->
+		<!--command
+			name="%JavaApplicationShortcut.description.run"
+			description="%JavaApplicationShortcut.description.run"
+			categoryId="org.eclipse.debug.ui.category.run"
+			id="org.eclipse.jdt.debug.ui.localJavaShortcut.run">
+			</command-->
+
+		<command categoryId="org.eclipse.debug.ui.category.run"
+			description="%ActionDefinition.ScriptWatch.description"
+			id="org.eclipse.dltk.debug.ui.commands.ScriptWatch"
+			name="%ActionDefinition.ScriptWatch.name" />
+
+		<!--command
+			categoryId="org.eclipse.debug.ui.category.run"
+			description="%ActionDefinition.breakpointproperties.description"
+			id="org.eclipse.jdt.debug.ui.breakpoint.properties"
+			name="%CommandDefinition.breakpointproperties.name">
+			</command-->
+	</extension>
+
+	<extension point="org.eclipse.ui.bindings">
+		<key sequence="M1+M2+D"
+			contextId="org.eclipse.dltk.debug.ui.debugging"
+			commandId="org.eclipse.dltk.debug.ui.commands.ScriptDisplay"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" />
+
+		<key sequence="M1+M2+I"
+			contextId="org.eclipse.dltk.debug.ui.debugging"
+			commandId="org.eclipse.dltk.debug.ui.commands.ScriptInspect"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" />
+	</extension>
+
+	<extension point="org.eclipse.ui.viewActions">
+
+		<viewContribution targetID="org.eclipse.debug.ui.VariableView"
+			id="org.eclipse.dltk.debug.ui.VariableViewActions">
+			<action
+				class="org.eclipse.dltk.debug.ui.actions.ToggleShowGlobalVariablesActionDelegate"
+				id="org.eclipse.dltk.debug.ui.variableViewActions.ShowStatic"
+				label="%ShowGlobalVarsAction.label"
+				menubarPath="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu/scriptPart"
+				style="toggle" tooltip="%ShowGlobalVarsAction.tooltip">
+			</action>
+			<action
+				class="org.eclipse.dltk.debug.ui.actions.ToggleShowClassVariablesActionDelegate"
+				id="org.eclipse.dltk.debug.ui.variableViewActions.ShowStatic"
+				label="%ShowClassVarsAction.label"
+				menubarPath="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu/scriptPart"
+				style="toggle" tooltip="%ShowClasssVarsAction.tooltip">
+			</action>
+			<menu
+				id="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu"
+				label="%VariablesViewScriptSubmenu.label" path="scriptActions">
+				<groupMarker
+					name="org.eclipse.dltk.debug.ui.scriptPart" />
+			</menu>
+		</viewContribution>
+	</extension>
+</plugin>

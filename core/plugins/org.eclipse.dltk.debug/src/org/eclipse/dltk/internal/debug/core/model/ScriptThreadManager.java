@@ -14,16 +14,12 @@ import java.util.List;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.model.ISuspendResume;
-import org.eclipse.debug.core.model.ITerminate;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.dltk.dbgp.IDbgpSession;
-import org.eclipse.dltk.dbgp.IDbgpThreadAcceptor;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 
-public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
-		ISuspendResume {
+public class ScriptThreadManager implements IScriptThreadManager {
 
 	// Helper methods
 	private interface IThreadBoolean {
@@ -60,7 +56,7 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 	protected void fireThreadAccepted(IScriptThread thread, boolean first) {
 		Object[] list = listeners.getListeners();
 		for (int i = 0; i < list.length; ++i) {
-			((IDbgpThreadManagerListener) list[i])
+			((IScriptThreadManagerListener) list[i])
 					.threadAccepted(thread, first);
 		}
 	}
@@ -68,15 +64,15 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 	protected void fireAllThreadsTerminated() {
 		Object[] list = listeners.getListeners();
 		for (int i = 0; i < list.length; ++i) {
-			((IDbgpThreadManagerListener) list[i]).allThreadsTerminated();
+			((IScriptThreadManagerListener) list[i]).allThreadsTerminated();
 		}
 	}
 
-	public void addListener(IDbgpThreadManagerListener listener) {
+	public void addListener(IScriptThreadManagerListener listener) {
 		listeners.add(listener);
 	}
 
-	public void removeListener(IDbgpThreadManagerListener listener) {
+	public void removeListener(IScriptThreadManagerListener listener) {
 		listeners.remove(listener);
 	}
 
@@ -92,7 +88,8 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 
 	public IScriptThread[] getThreads() {
 		synchronized (threads) {
-			return (IScriptThread[]) threads.toArray(new IScriptThread[threads.size()]);
+			return (IScriptThread[]) threads.toArray(new IScriptThread[threads
+					.size()]);
 		}
 	}
 
@@ -142,7 +139,6 @@ public class ScriptThreadManager implements IDbgpThreadAcceptor, ITerminate,
 
 	// ITerminate
 	public boolean canTerminate() {
-
 		synchronized (threads) {
 			IThread[] ths = getThreads();
 

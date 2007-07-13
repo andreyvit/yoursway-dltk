@@ -28,10 +28,6 @@ public class JavaScriptMainLaunchConfigurationTab extends MainLaunchConfiguratio
 		return false;
 	}
 
-	protected String getLanguageName() {
-		return "JavaScript";
-	}
-	
 	protected String getNatureID() {
 		return JavaScriptNature.NATURE_ID;
 	}

@@ -51,9 +51,16 @@ public class DbgpExtendedCommands extends DbgpBaseCommands implements
 		return DbgpXmlParser.parseSuccess(communicate(request));
 	}
 
-	public IDbgpProperty evaluate(String string) throws DbgpException {
+	public IDbgpProperty evaluate(String snippet) throws DbgpException {
 		DbgpRequest request = createRequest(EVAL_COMMAND);
-		request.setData(string);
+		request.setData(snippet);
+		return parseResponse(communicate(request));
+	}
+	
+	public IDbgpProperty evaluate(String snippet, int depth) throws DbgpException {
+		DbgpRequest request = createRequest(EVAL_COMMAND);
+		request.setData(snippet);
+		request.addOption("-d", depth);
 		return parseResponse(communicate(request));
 	}
 

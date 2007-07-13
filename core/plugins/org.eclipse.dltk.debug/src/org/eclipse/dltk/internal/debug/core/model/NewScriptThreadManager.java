@@ -7,25 +7,27 @@
  *
  
  *******************************************************************************/
-package org.eclipse.dltk.ruby.debug.model;
+
+package org.eclipse.dltk.internal.debug.core.model;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.model.ISuspendResume;
-import org.eclipse.debug.core.model.ITerminate;
 import org.eclipse.dltk.dbgp.IDbgpSession;
-import org.eclipse.dltk.dbgp.IDbgpThreadAcceptor;
-import org.eclipse.dltk.internal.debug.core.model.DebugEventHelper;
-import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
-import org.eclipse.dltk.internal.debug.core.model.ScriptThread;
+import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
+import org.eclipse.dltk.debug.core.model.IScriptThread;
 
-public class RubyThreadManager implements ISuspendResume, ITerminate,
-		IDbgpThreadAcceptor {
+public class NewScriptThreadManager implements IScriptThreadManager {
 
 	private static final int WAITING = 0;
 	private static final int ACCEPTING = 1;
 	private static final int TERMINATING = 2;
 	private static final int TERMINATED = 3;
+
+	private final ListenerList listeners = new ListenerList(
+			ListenerList.IDENTITY);
 
 	private Object lock = new Object();
 
@@ -33,11 +35,11 @@ public class RubyThreadManager implements ISuspendResume, ITerminate,
 
 	private ScriptThread[] threads;
 
-	private ScriptDebugTarget debugTarget;
+	private IScriptDebugTarget debugTarget;
 
 	private void destroy() {
 		state = TERMINATED;
-//		debugTarget.destroy();
+		// debugTarget.destroy();
 	}
 
 	private void addThread(ScriptThread thread) {
@@ -47,7 +49,7 @@ public class RubyThreadManager implements ISuspendResume, ITerminate,
 		threads = newThreads;
 	}
 
-	private void removeThread(ScriptThread thread) {
+	private void removeThread(IScriptThread thread) {
 		ScriptThread[] newThreads = new ScriptThread[threads.length - 1];
 		for (int i = 0, j = 0; i < threads.length; ++i) {
 			if (threads[i] != thread) {
@@ -57,36 +59,40 @@ public class RubyThreadManager implements ISuspendResume, ITerminate,
 		threads = newThreads;
 	}
 
-	protected void createThread(IDbgpSession session) {
-		ScriptThread thread = null; //new ScriptThread(this, "My Thread", 0, session);
+	protected IScriptThread createThread(IDbgpSession session) throws DbgpException, CoreException {
+		ScriptThread thread = new ScriptThread(debugTarget, session, this);
+		
 		addThread(thread);
 		DebugEventHelper.fireCreateEvent(thread);
+		
+		return thread;
 	}
 
-	public void terminateThread(ScriptThread thread) {
+	public void terminateThread(IScriptThread thread) {
 		synchronized (lock) {
 			removeThread(thread);
 			DebugEventHelper.fireTerminateEvent(thread);
 
 			if (!hasThreads()) {
 				destroy();
+				fireAllThreadsTerminated();
 			}
 		}
 	}
 
-	public RubyThreadManager(ScriptDebugTarget debugTarget) {
+	public NewScriptThreadManager(IScriptDebugTarget debugTarget) {
 		this.debugTarget = debugTarget;
 		this.state = WAITING;
 		this.threads = new ScriptThread[0];
 	}
-	
-	public ScriptDebugTarget getDebugTarget() {
+
+	public IScriptDebugTarget getDebugTarget() {
 		return debugTarget;
 	}
 
-	public ScriptThread[] getThreads() {
+	public IScriptThread[] getThreads() {
 		synchronized (lock) {
-			return (ScriptThread[]) threads.clone();
+			return (IScriptThread[]) threads.clone();
 		}
 	}
 
@@ -201,7 +207,7 @@ public class RubyThreadManager implements ISuspendResume, ITerminate,
 			} else if (state == ACCEPTING) {
 				state = TERMINATING;
 
-				ScriptThread[] temp = getThreads();
+				IScriptThread[] temp = getThreads();
 				for (int i = 0; i < temp.length; ++i) {
 					temp[i].terminate();
 				}
@@ -218,15 +224,57 @@ public class RubyThreadManager implements ISuspendResume, ITerminate,
 				return;
 			}
 
-			createThread(session);
+			try {
+				final IScriptThread thread = createThread(session);
 
-			if (state == WAITING) {
-				state = ACCEPTING;
+				boolean first = false;
+				if (state == WAITING) {
+					first = true;
+					state = ACCEPTING;
+				}
+				
+				fireThreadAccepted(thread, first);
+			} catch (DbgpException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			
 		}
 	}
 
 	public void acceptDbgpThreadNotUnavailable() {
 		// TODO: implement
-     	}
+	}
+
+	// ===================================
+	// Listeners
+	public void addListener(IScriptThreadManagerListener listener) {
+		listeners.add(listener);
+	}
+
+	public void removeListener(IScriptThreadManagerListener listener) {
+		listeners.remove(listener);
+	}
+
+	protected void fireThreadAccepted(IScriptThread thread, boolean first) {
+		Object[] list = listeners.getListeners();
+		for (int i = 0; i < list.length; ++i) {
+			((IScriptThreadManagerListener) list[i]).threadAccepted(thread,
+					first);
+		}
+	}
+
+	protected void fireAllThreadsTerminated() {
+		Object[] list = listeners.getListeners();
+		for (int i = 0; i < list.length; ++i) {
+			((IScriptThreadManagerListener) list[i]).allThreadsTerminated();
+		}
+	}
+
+	public boolean isWaitingForThreads() {
+		return state == WAITING;
+	}
 }

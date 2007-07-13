@@ -88,7 +88,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	protected void abort(String message, Throwable exception, int code)
 			throws CoreException {
 		throw new CoreException(new Status(IStatus.ERROR, DLTKLaunchingPlugin
-				.getUniqueIdentifier(), code, message, exception));
+				.PLUGIN_ID, code, message, exception));
 	}
 
 	/**

@@ -119,7 +119,7 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
 									iconfig.getRunnerClassName(config, launch,
 											myJavaProject), newClassPath);
 							String[] strings = new String[] {
-									config.getScriptFile().toString(), host,
+									config.getScriptFilePath().toPortableString(), host,
 									"" + port, sessionId };
 							String[] newStrings = iconfig.getProgramArguments(
 									config, launch, myJavaProject);

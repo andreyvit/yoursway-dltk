@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui.launchConfigurations;
 
- 
 import java.text.MessageFormat;
 import java.util.Map;
 
@@ -43,7 +42,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * A launch configuration tab that displays and edits the Interpreter install 
+ * A launch configuration tab that displays and edits the Interpreter install
  * launch configuration attributes.
  * <p>
  * This class may be instantiated. This class is not intended to be subclassed.
@@ -51,34 +50,31 @@ import org.eclipse.swt.widgets.Control;
  */
 
 public abstract class InterpreterTab extends CommonScriptLaunchTab {
-	
+
 	// Interpreter Block
 	protected AbstractInterpreterComboBlock fInterpreterBlock;
-	
+
 	// Dynamic Interpreter UI widgets
 	protected ILaunchConfigurationTab fDynamicTab;
 	protected Composite fDynamicTabHolder;
 	protected boolean fUseDynamicArea = true;
-	
+
 	protected ILaunchConfigurationWorkingCopy fWorkingCopy;
 	protected ILaunchConfiguration fLaunchConfiguration;
-	
+
 	// State
 	protected boolean fIsInitializing = false;
-	
+
 	// Selection changed listener (checked InterpreterEnvironment)
 	private IPropertyChangeListener fCheckListener = new IPropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent event) {
 			handleSelectedInterpreterChanged();
 		}
 	};
-	
+
 	// Constants
 	protected static final String EMPTY_STRING = ""; //$NON-NLS-1$
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#dispose()
-	 */
+
 	public void dispose() {
 		super.dispose();
 		if (fInterpreterBlock != null) {
@@ -91,42 +87,45 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 	 */
 	public void createControl(Composite parent) {
 		Font font = parent.getFont();
-		
+
 		Composite topComp = new Composite(parent, SWT.NONE);
 		setControl(topComp);
-		//PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(), IScriptDebugHelpContextIds.LAUNCH_CONFIGURATION_DIALOG_InterpreterEnvironment_TAB);
+		// PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(),
+		// IScriptDebugHelpContextIds.LAUNCH_CONFIGURATION_DIALOG_InterpreterEnvironment_TAB);
 		GridLayout topLayout = new GridLayout();
 		topLayout.numColumns = 1;
-		topLayout.marginHeight=0;
-		topLayout.marginWidth=0;
+		topLayout.marginHeight = 0;
+		topLayout.marginWidth = 0;
 		topComp.setLayout(topLayout);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		topComp.setLayoutData(gd);
 		topComp.setFont(font);
-				
+
 		fInterpreterBlock = getInterpreterBlock();
-		fInterpreterBlock.setDefaultInterpreterDescriptor(getDefaultInterpreterDescriptor());
-		fInterpreterBlock.setSpecificInterpreterDescriptor(getSpecificInterpreterDescriptor());
+		fInterpreterBlock
+				.setDefaultInterpreterDescriptor(getDefaultInterpreterDescriptor());
+		fInterpreterBlock
+				.setSpecificInterpreterDescriptor(getSpecificInterpreterDescriptor());
 		fInterpreterBlock.createControl(topComp);
 		Control control = fInterpreterBlock.getControl();
 		fInterpreterBlock.addPropertyChangeListener(fCheckListener);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		control.setLayoutData(gd);
-		
+
 		Composite dynTabComp = new Composite(topComp, SWT.NONE);
 		dynTabComp.setFont(font);
-		
+
 		setDynamicTabHolder(dynTabComp);
 		GridLayout tabHolderLayout = new GridLayout();
-		tabHolderLayout.marginHeight= 0;
-		tabHolderLayout.marginWidth= 0;
+		tabHolderLayout.marginHeight = 0;
+		tabHolderLayout.marginWidth = 0;
 		tabHolderLayout.numColumns = 1;
 		getDynamicTabHolder().setLayout(tabHolderLayout);
 		gd = new GridData(GridData.FILL_BOTH);
 		getDynamicTabHolder().setLayoutData(gd);
 	}
-	
-	protected abstract AbstractInterpreterComboBlock getInterpreterBlock ();
+
+	protected abstract AbstractInterpreterComboBlock getInterpreterBlock();
 
 	protected void setDynamicTabHolder(Composite tabHolder) {
 		this.fDynamicTabHolder = tabHolder;
@@ -154,7 +153,7 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 			dynamicTab.setDefaults(config);
 		}
 	}
-	
+
 	/**
 	 * @see ILaunchConfigurationTab#initializeFrom(ILaunchConfiguration)
 	 */
@@ -163,37 +162,47 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 		getControl().setRedraw(false);
 		setLaunchConfiguration(configuration);
 		updateInterpreterFromConfig(configuration);
-		fInterpreterBlock.setDefaultInterpreterDescriptor(getDefaultInterpreterDescriptor());
+		fInterpreterBlock
+				.setDefaultInterpreterDescriptor(getDefaultInterpreterDescriptor());
 		ILaunchConfigurationTab dynamicTab = getDynamicTab();
 		if (dynamicTab != null) {
 			dynamicTab.initializeFrom(configuration);
-		}		
+		}
 		getControl().setRedraw(true);
 		fIsInitializing = false;
 	}
-	
-	protected abstract String getNature ();
+
+	protected abstract String getNature();
 
 	/**
 	 * @see ILaunchConfigurationTab#performApply(ILaunchConfigurationWorkingCopy)
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE, getNature());
+		configuration.setAttribute(
+				ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE,
+				getNature());
 		if (fInterpreterBlock.isDefaultInterpreter()) {
-			configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH, (String)null);
+			configuration.setAttribute(
+					ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH,
+					(String) null);
 		} else {
 			IPath containerPath = fInterpreterBlock.getPath();
 			String portablePath = null;
 			if (containerPath != null) {
 				portablePath = containerPath.toPortableString();
 			}
-			configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH, portablePath);
+			configuration.setAttribute(
+					ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH,
+					portablePath);
 		}
-	
+
 		// Handle any attributes in the Interpreter-specific area
 		ILaunchConfigurationTab dynamicTab = getDynamicTab();
 		if (dynamicTab == null) {
-			configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_INTERPRETER_INSTALL_TYPE_SPECIFIC_ATTRS_MAP, (Map)null);
+			configuration
+					.setAttribute(
+							ScriptLaunchConfigurationConstants.ATTR_INTERPRETER_INSTALL_TYPE_SPECIFIC_ATTRS_MAP,
+							(Map) null);
 		} else {
 			dynamicTab.performApply(configuration);
 		}
@@ -203,13 +212,13 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 	 * @see ILaunchConfigurationTab#isValid(ILaunchConfiguration)
 	 */
 	public boolean isValid(ILaunchConfiguration config) {
-		
+
 		setErrorMessage(null);
 		setMessage(null);
-		
+
 		IStatus status = fInterpreterBlock.getStatus();
 		if (!status.isOK()) {
-			setErrorMessage(status.getMessage());			 
+			setErrorMessage(status.getMessage());
 			return false;
 		}
 
@@ -224,19 +233,21 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 	 * @see ILaunchConfigurationTab#getName()
 	 */
 	public String getName() {
-		return ScriptLaunchMessages.InterpreterTab__Interp_1; 
+		return ScriptLaunchMessages.InterpreterTab__Interp_1;
 	}
-	
+
 	/**
 	 * @see ILaunchConfigurationTab#getImage()
 	 */
 	public Image getImage() {
 		return DLTKPluginImages.DESC_OBJS_NATIVE_LIB_PATH_ATTRIB.createImage();
-	}	
+	}
 
 	protected void updateInterpreterFromConfig(ILaunchConfiguration config) {
 		try {
-			String path = config.getAttribute(ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH, (String)null);
+			String path = config.getAttribute(
+					ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH,
+					(String) null);
 			if (path != null) {
 				fInterpreterBlock.setPath(Path.fromPortableString(path));
 				return;
@@ -244,27 +255,31 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 		} catch (CoreException e) {
 			DLTKDebugUIPlugin.log(e);
 		}
-		fInterpreterBlock.setUseDefaultInterpreter();		
-	}	
-	
+		fInterpreterBlock.setUseDefaultInterpreter();
+	}
+
 	/**
-	 * Notification that the user changed the selection in the InterpreterEnvironment combination box.
+	 * Notification that the user changed the selection in the
+	 * InterpreterEnvironment combination box.
 	 */
 	protected void handleSelectedInterpreterChanged() {
 		loadDynamicInterpreterArea();
-		
+
 		// always set the newly created area with defaults
 		ILaunchConfigurationWorkingCopy wc = getLaunchConfigurationWorkingCopy();
 		if (getDynamicTab() == null) {
 			// remove any Interpreter specific arguments from the config
 			if (wc == null) {
 				if (getLaunchConfiguration().isWorkingCopy()) {
-					wc = (ILaunchConfigurationWorkingCopy)getLaunchConfiguration();
+					wc = (ILaunchConfigurationWorkingCopy) getLaunchConfiguration();
 				}
 			}
 			if (!fIsInitializing) {
 				if (wc != null) {
-					wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_INTERPRETER_INSTALL_TYPE_SPECIFIC_ATTRS_MAP, (Map)null);
+					wc
+							.setAttribute(
+									ScriptLaunchConfigurationConstants.ATTR_INTERPRETER_INSTALL_TYPE_SPECIFIC_ATTRS_MAP,
+									(Map) null);
 				}
 			}
 		} else {
@@ -272,12 +287,16 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 				try {
 					if (getLaunchConfiguration().isWorkingCopy()) {
 						// get a fresh copy to work on
-						wc = ((ILaunchConfigurationWorkingCopy)getLaunchConfiguration()).getOriginal().getWorkingCopy();
+						wc = ((ILaunchConfigurationWorkingCopy) getLaunchConfiguration())
+								.getOriginal().getWorkingCopy();
 					} else {
-							wc = getLaunchConfiguration().getWorkingCopy();
+						wc = getLaunchConfiguration().getWorkingCopy();
 					}
 				} catch (CoreException e) {
-					DLTKDebugUIPlugin.errorDialog(ScriptLaunchMessages.InterpreterTab_Unable_to_initialize_defaults_for_selected_InterpreterEnvironment_1, e); 
+					DLTKDebugUIPlugin
+							.errorDialog(
+									ScriptLaunchMessages.InterpreterTab_Unable_to_initialize_defaults_for_selected_InterpreterEnvironment_1,
+									e);
 					return;
 				}
 			}
@@ -286,67 +305,75 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 				getDynamicTab().initializeFrom(wc);
 			}
 		}
-				
-		updateLaunchConfigurationDialog();		
+
+		updateLaunchConfigurationDialog();
 	}
-	
+
 	protected void selectInterpreter(String typeID, String InterpreterName) {
 		if (typeID == null) {
 			fInterpreterBlock.setUseDefaultInterpreter();
 		} else {
-			fInterpreterBlock.setPath(ScriptRuntime.newInterpreterContainerPath(typeID, InterpreterName));
+			fInterpreterBlock.setPath(ScriptRuntime
+					.newInterpreterContainerPath(typeID, InterpreterName));
 		}
 	}
-	
+
 	/**
 	 * Return the class that implements <code>ILaunchConfigurationTab</code>
-	 * that is registered against the install type of the currently selected Interpreter.
+	 * that is registered against the install type of the currently selected
+	 * Interpreter.
 	 */
 	protected ILaunchConfigurationTab getTabForCurrentInterpreter() {
 		IPath path = fInterpreterBlock.getPath();
 		if (path != null) {
-			IInterpreterInstall Interpreter = fInterpreterBlock.getInterpreter();
+			IInterpreterInstall Interpreter = fInterpreterBlock
+					.getInterpreter();
 			if (Interpreter != null) {
-				String InterpreterInstallTypeID = Interpreter.getInterpreterInstallType().getId();
-				return DLTKDebugUIPlugin.getDefault().getInterpreterInstallTypePage(InterpreterInstallTypeID);
+				String InterpreterInstallTypeID = Interpreter
+						.getInterpreterInstallType().getId();
+				return DLTKDebugUIPlugin
+						.getDefault()
+						.getInterpreterInstallTypePage(InterpreterInstallTypeID);
 			}
-		}	
+		}
 		return null;
 	}
-	
+
 	/**
 	 * Show the contributed piece of UI that was registered for the install type
 	 * of the currently selected Interpreter.
 	 */
 	protected void loadDynamicInterpreterArea() {
-		
+
 		// Dispose of any current child widgets in the tab holder area
 		Control[] children = getDynamicTabHolder().getChildren();
 		for (int i = 0; i < children.length; i++) {
 			children[i].dispose();
 		}
-		
+
 		if (isUseDynamicInterpreterArea()) {
-			// Retrieve the dynamic UI for the current InterpreterEnvironment 
+			// Retrieve the dynamic UI for the current InterpreterEnvironment
 			setDynamicTab(getTabForCurrentInterpreter());
 			if (getDynamicTab() == null) {
 				return;
 			}
-			
+
 			// Ask the dynamic UI to create its Control
-			getDynamicTab().setLaunchConfigurationDialog(getLaunchConfigurationDialog());
+			getDynamicTab().setLaunchConfigurationDialog(
+					getLaunchConfigurationDialog());
 			getDynamicTab().createControl(getDynamicTabHolder());
-			getDynamicTabHolder().layout();	
+			getDynamicTabHolder().layout();
 		}
-			
+
 	}
 
 	protected ILaunchConfigurationWorkingCopy getLaunchConfigurationWorkingCopy() {
 		return fWorkingCopy;
 	}
-	
+
 	/**
-	 * Overridden here so that any error message in the dynamic UI gets returned.
+	 * Overridden here so that any error message in the dynamic UI gets
+	 * returned.
 	 * 
 	 * @see ILaunchConfigurationTab#getErrorMessage()
 	 */
@@ -358,7 +385,8 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 		return tab.getErrorMessage();
 	}
 
-	protected void setLaunchConfigurationWorkingCopy(ILaunchConfigurationWorkingCopy workingCopy) {
+	protected void setLaunchConfigurationWorkingCopy(
+			ILaunchConfigurationWorkingCopy workingCopy) {
 		fWorkingCopy = workingCopy;
 	}
 
@@ -366,21 +394,24 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 		return fLaunchConfiguration;
 	}
 
-	protected void setLaunchConfiguration(ILaunchConfiguration launchConfiguration) {
+	protected void setLaunchConfiguration(
+			ILaunchConfiguration launchConfiguration) {
 		fLaunchConfiguration = launchConfiguration;
 	}
-	
+
 	/**
-	 * Sets whether this tab will display the Interpreter specific arguments area
-	 * if a InterpreterEnvironment supports Interpreter specific arguments.
+	 * Sets whether this tab will display the Interpreter specific arguments
+	 * area if a InterpreterEnvironment supports Interpreter specific arguments.
 	 * 
-	 * @param visible whether this tab will display the Interpreter specific arguments area
-	 * 	if a InterpreterEnvironment supports Interpreter specific arguments
+	 * @param visible
+	 *            whether this tab will display the Interpreter specific
+	 *            arguments area if a InterpreterEnvironment supports
+	 *            Interpreter specific arguments
 	 */
 	public void setInterpreterSpecificArgumentsVisible(boolean visible) {
 		fUseDynamicArea = visible;
 	}
-	
+
 	protected boolean isUseDynamicInterpreterArea() {
 		return fUseDynamicArea;
 	}
@@ -390,44 +421,53 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 
 			public String getDescription() {
 				IScriptProject project = getScriptProject();
-				String name = ScriptLaunchMessages.InterpreterTab_7; 
-				if (project == null) {					
+				String name = ScriptLaunchMessages.InterpreterTab_7;
+				if (project == null) {
 					IInterpreterInstall Interpreter = null;
-					Interpreter = ScriptRuntime.getDefaultInterpreterInstall(getNature());
+					Interpreter = ScriptRuntime
+							.getDefaultInterpreterInstall(getNature());
 					if (Interpreter != null) {
 						name = Interpreter.getName();
 					}
-					return MessageFormat.format(ScriptLaunchMessages.InterpreterTab_8, new String[]{name}); 
+					return MessageFormat.format(
+							ScriptLaunchMessages.InterpreterTab_8,
+							new String[] { name });
 				}
 				try {
-					IInterpreterInstall Interpreter = ScriptRuntime.getInterpreterInstall(project);
+					IInterpreterInstall Interpreter = ScriptRuntime
+							.getInterpreterInstall(project);
 					if (Interpreter != null) {
 						name = Interpreter.getName();
 					}
 				} catch (CoreException e) {
 				}
-				return MessageFormat.format(ScriptLaunchMessages.InterpreterTab_9, new String[]{name}); 
+				return MessageFormat.format(
+						ScriptLaunchMessages.InterpreterTab_9,
+						new String[] { name });
 			}
 		};
 	}
-	
+
 	protected InterpreterDescriptor getSpecificInterpreterDescriptor() {
 		return null;
 	}
-	
+
 	/**
-	 * Returns the Script project associated with the current config being edited,
-	 * or <code>null</code> if none.
+	 * Returns the Script project associated with the current config being
+	 * edited, or <code>null</code> if none.
 	 * 
 	 * @returnscriptproject or <code>null</code>
 	 */
 	protected IScriptProject getScriptProject() {
 		if (getLaunchConfiguration() != null) {
 			try {
-				String name = getLaunchConfiguration().getAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);
+				String name = getLaunchConfiguration().getAttribute(
+						ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
+						(String) null);
 				if (name != null && name.length() > 0) {
-					IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
-					if (project.exists()) { 
+					IProject project = ResourcesPlugin.getWorkspace().getRoot()
+							.getProject(name);
+					if (project.exists()) {
 						return DLTKCore.create(project);
 					}
 				}
@@ -437,20 +477,15 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 		}
 		return null;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#activated(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
-	 */
+
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
-		// update the default InterpreterEnvironment description, in case it has changed
+		// update the default InterpreterEnvironment description, in case it has
+		// changed
 		// based on the selected project
 		fInterpreterBlock.refresh();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#deactivated(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
-	 */
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
 		// do nothing when deactivated
-	}	
+	}
 }

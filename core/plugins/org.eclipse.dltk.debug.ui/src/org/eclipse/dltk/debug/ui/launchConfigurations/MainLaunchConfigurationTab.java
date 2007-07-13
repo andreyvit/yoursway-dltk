@@ -18,6 +18,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptModel;
@@ -54,8 +56,8 @@ import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceComparator;
 
-
-public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
+public abstract class MainLaunchConfigurationTab extends
+		AbstractLaunchConfigurationTab {
 	/**
 	 * A listener which handles widget change events for the controls in this
 	 * tab.
@@ -86,6 +88,7 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 			}
 		}
 	}
+
 	protected static final String EMPTY_STRING = ""; //$NON-NLS-1$
 	// Project UI widgets
 	protected Text fProjText;
@@ -98,21 +101,24 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	 * @return
 	 */
 	protected IScriptProject chooseProject() {
-		ILabelProvider labelProvider = DLTKUILanguageManager.createLabelProvider(getNatureID());
-		ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(), labelProvider);
-		dialog.setTitle(DLTKLaunchConfigurationsMessages.mainTab_chooseProject_title);
-		dialog.setMessage(DLTKLaunchConfigurationsMessages.mainTab_chooseProject_message);
+		ILabelProvider labelProvider = DLTKUILanguageManager
+				.createLabelProvider(getNatureID());
+		ElementListSelectionDialog dialog = new ElementListSelectionDialog(
+				getShell(), labelProvider);
+		dialog
+				.setTitle(DLTKLaunchConfigurationsMessages.mainTab_chooseProject_title);
+		dialog
+				.setMessage(DLTKLaunchConfigurationsMessages.mainTab_chooseProject_message);
 		try {
-			dialog.setElements(DLTKCore.create(getWorkspaceRoot()).getScriptProjects());
+			dialog.setElements(DLTKCore.create(getWorkspaceRoot())
+					.getScriptProjects());
 		}// end try
 		catch (ModelException jme) {
 			DLTKLaunchingPlugin.log(jme);
 		}
 		IScriptProject project = getProject();
 		if (project != null) {
-			dialog.setInitialSelections(new Object[] {
-				project
-			});
+			dialog.setInitialSelections(new Object[] { project });
 		}// end if
 		if (dialog.open() == Window.OK) {
 			return (IScriptProject) dialog.getFirstResult();
@@ -141,7 +147,8 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 		fProjText.setLayoutData(gd);
 		fProjText.setFont(font);
 		fProjText.addModifyListener(fListener);
-		fProjButton = createPushButton(group, DLTKLaunchConfigurationsMessages.mainTab_projectButton, null);
+		fProjButton = createPushButton(group,
+				DLTKLaunchConfigurationsMessages.mainTab_projectButton, null);
 		fProjButton.addSelectionListener(fListener);
 	}
 
@@ -153,8 +160,9 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	}
 
 	/**
-	 * Return the IScriptProject corresponding to the project name in the project
-	 * name text field, or null if the text does not match a project name.
+	 * Return the IScriptProject corresponding to the project name in the
+	 * project name text field, or null if the text does not match a project
+	 * name.
 	 */
 	protected IScriptProject getProject() {
 		String projectName = fProjText.getText().trim();
@@ -173,7 +181,18 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 
 	protected abstract boolean validateProject(IScriptProject project);
 
-	protected abstract String getLanguageName();
+	protected String getLanguageName() {
+		try {
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+					.getLanguageToolkit(getNatureID());
+			return toolkit.getLanguageName();
+		} catch (CoreException e) {
+			
+		}
+
+		return null;
+	}
+
 	protected abstract String getNatureID();
 
 	/**
@@ -186,14 +205,20 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 		if (project == null)
 			return;
 		if (!validateProject(project)) {
-			String msg = Messages.format(DLTKLaunchConfigurationsMessages.mainTab_errorDlg_notALangProject, new String[] {
-				getLanguageName()
-			});
-			String reason = Messages.format(DLTKLaunchConfigurationsMessages.mainTab_errorDlg_reasonNotALangProject, new String[] {
-				getLanguageName()
-			});
-			ErrorDialog.openError(getShell(), DLTKLaunchConfigurationsMessages.mainTab_errorDlg_invalidProject, msg,
-					DLTKUIStatus.createError(IStatus.ERROR, reason, null));
+			String msg = Messages
+					.format(
+							DLTKLaunchConfigurationsMessages.mainTab_errorDlg_notALangProject,
+							new String[] { getLanguageName() });
+			String reason = Messages
+					.format(
+							DLTKLaunchConfigurationsMessages.mainTab_errorDlg_reasonNotALangProject,
+							new String[] { getLanguageName() });
+			ErrorDialog
+					.openError(
+							getShell(),
+							DLTKLaunchConfigurationsMessages.mainTab_errorDlg_invalidProject,
+							msg, DLTKUIStatus.createError(IStatus.ERROR,
+									reason, null));
 			return;
 		}
 		String projectName = project.getElementName();
@@ -208,7 +233,8 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	public void initializeFrom(ILaunchConfiguration config) {
 		updateProjectFromConfig(config);
 		updateMainModuleFromConfig(config);
-		if (fProjText.getText().trim().length() == 0 && fMainText.getText().trim().length() == 0) {
+		if (fProjText.getText().trim().length() == 0
+				&& fMainText.getText().trim().length() == 0) {
 			// try to fill-in
 			IWorkbenchPage page = DLTKUIPlugin.getActivePage();
 			if (page != null) {
@@ -216,11 +242,15 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 				if (editor != null) {
 					IEditorInput editorInput = editor.getEditorInput();
 					if (editorInput != null) {
-						IModelElement me = DLTKUIPlugin.getEditorInputModelElement(editorInput);
+						IModelElement me = DLTKUIPlugin
+								.getEditorInputModelElement(editorInput);
 						IScriptProject project = me.getScriptProject();
 						if (project != null && validateProject(project)) {
 							String projectName = project.getProject().getName();
-							String scriptName =  me.getResource().getProjectRelativePath().toPortableString();//me.getResource().getLocation().toPortableString(); /*me.getResource().getFullPath().toPortableString();*/
+							String scriptName = me.getResource()
+									.getProjectRelativePath()
+									.toPortableString();// me.getResource().getLocation().toPortableString();
+							// /*me.getResource().getFullPath().toPortableString();*/
 							if (scriptName.trim().length() > 0) {
 								fProjText.setText(projectName);
 								fMainText.setText(scriptName);
@@ -241,13 +271,16 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	protected void updateProjectFromConfig(ILaunchConfiguration config) {
 		String projectName = EMPTY_STRING;
 		try {
-			projectName = config.getAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, EMPTY_STRING);
+			projectName = config.getAttribute(
+					ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
+					EMPTY_STRING);
 		}// end try
 		catch (CoreException ce) {
 			DLTKLaunchingPlugin.log(ce);
 		}
 		fProjText.setText(projectName);
 	}
+
 	protected Text fMainText;
 	private Button fSearchButton;
 
@@ -276,9 +309,11 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 				updateLaunchConfigurationDialog();
 			}
 		});
-		fSearchButton = createPushButton(mainGroup, DLTKLaunchConfigurationsMessages.mainTab_searchButton, null);
+		fSearchButton = createPushButton(mainGroup,
+				DLTKLaunchConfigurationsMessages.mainTab_searchButton, null);
 		fSearchButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {}
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
 
 			public void widgetSelected(SelectionEvent e) {
 				handleSearchButtonSelected();
@@ -290,10 +325,13 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	 * The select button pressed handler
 	 */
 	protected void handleSearchButtonSelected() {
-		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(),
+		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
+				getShell(), new WorkbenchLabelProvider(),
 				new WorkbenchContentProvider());
-		dialog.setTitle(DLTKLaunchConfigurationsMessages.mainTab_searchButton_title);
-		dialog.setMessage(DLTKLaunchConfigurationsMessages.mainTab_searchButton_message);
+		dialog
+				.setTitle(DLTKLaunchConfigurationsMessages.mainTab_searchButton_title);
+		dialog
+				.setMessage(DLTKLaunchConfigurationsMessages.mainTab_searchButton_message);
 		IScriptProject proj = getProject();
 		if (proj == null)
 			return;
@@ -316,7 +354,9 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	protected void updateMainModuleFromConfig(ILaunchConfiguration config) {
 		String mainModuleName = EMPTY_STRING;
 		try {
-			mainModuleName = config.getAttribute(ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME, EMPTY_STRING);
+			mainModuleName = config.getAttribute(
+					ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
+					EMPTY_STRING);
 		}// end try
 		catch (CoreException ce) {
 			DLTKLaunchingPlugin.log(ce);
@@ -336,7 +376,8 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 		comp.setFont(font);
 		createProjectEditor(comp);
 		createVerticalSpacer(comp, 1);
-		createMainModuleEditor(comp, DLTKLaunchConfigurationsMessages.mainTab_mainModule);
+		createMainModuleEditor(comp,
+				DLTKLaunchConfigurationsMessages.mainTab_mainModule);
 	}
 
 	public String getName() {
@@ -344,10 +385,16 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	}
 
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		String mainModule = fMainText.getText().trim();
-		String project = fProjText.getText().trim();
-		configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME, mainModule);
-		configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, project);
+		// Project name
+		final String project = fProjText.getText().trim();
+		configuration.setAttribute(
+				ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, project);
+
+		// Script
+		final String mainModule = fMainText.getText().trim();
+		configuration.setAttribute(
+				ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
+				mainModule);
 	}
 
 	protected boolean validateProject() {
@@ -384,6 +431,5 @@ public abstract class MainLaunchConfigurationTab extends AbstractLaunchConfigura
 	}
 
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-	// TODO Auto-generated method stub
 	}
 }

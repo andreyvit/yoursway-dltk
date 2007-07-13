@@ -128,15 +128,16 @@ public class DLTKLanguageManager {
 				.getObject(element);
 	}
 
-// public static ISourceParser getSourceParser( String nature ) throws
-// CoreException {
-// return (ISourceElementParser) sourceParsersManager.getObject(nature);
-// }
-//	
-// public static ISourceParser getSourceParser( IModelElement element ) throws
-// CoreException {
-// return (ISourceElementParser) sourceParsersManager.getObject(element);
-// }
+	// public static ISourceParser getSourceParser( String nature ) throws
+	// CoreException {
+	// return (ISourceElementParser) sourceParsersManager.getObject(nature);
+	// }
+	//	
+	// public static ISourceParser getSourceParser( IModelElement element )
+	// throws
+	// CoreException {
+	// return (ISourceElementParser) sourceParsersManager.getObject(element);
+	// }
 
 	public static IProblemFactory getProblemFactory(String natureID)
 			throws CoreException {
@@ -175,7 +176,7 @@ public class DLTKLanguageManager {
 
 	/**
 	 * Return source parser witch is one level lower from top. If this is only
-	 * one source parser for selected ature then return null.
+	 * one source parser for selected nature then return null.
 	 * 
 	 */
 	public static ISourceParser getSourceParserLower(String natureID)

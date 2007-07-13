@@ -8,6 +8,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.dbgp.IDbgpProperty;
 import org.eclipse.dltk.dbgp.IDbgpSession;
+import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationListener;
@@ -46,10 +47,13 @@ public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
 			IScriptStackFrame frame) {
 		IScriptEvaluationResult result = null;
 		try {
-			IDbgpSession session = thread.getDbgpSession();
+			final IDbgpSession session = thread.getDbgpSession();
 
-			IDbgpProperty property = session.getExtendedCommands().evaluate(
-					snippet);
+			final IDbgpExtendedCommands extended = session.getExtendedCommands();
+
+			final IDbgpProperty property = (frame == null) ? 
+					extended.evaluate(snippet) : 
+					extended.evaluate(snippet, frame.getLevel());
 
 			if (property != null) {
 				IScriptVariable variable = new ScriptVariable(
@@ -100,7 +104,7 @@ public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
 			final IScriptStackFrame frame,
 			final IScriptEvaluationListener listener) {
 		// TODO: localize
-		Job job = new Job("Evaluation of \"" + snippet + "\"") {
+		Job job = new Job("Evaluation of \"" + snippet + "\"") { // TODO: make constant
 			protected IStatus run(IProgressMonitor monitor) {
 				if (getScriptDebugTarget().isTerminated()) {
 					return Status.OK_STATUS;

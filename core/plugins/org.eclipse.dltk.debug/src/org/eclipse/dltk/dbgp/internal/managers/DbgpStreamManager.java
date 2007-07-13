@@ -38,7 +38,7 @@ public class DbgpStreamManager extends DbgpWorkingThread implements
 	protected void workingCycle() throws Exception {
 		try {
 			while (!Thread.interrupted()) {
-				DbgpStreamPacket packet = engine.getStreamPacket();
+				final DbgpStreamPacket packet = engine.getStreamPacket();
 
 				if (packet.isStderr()) {
 					fireStderrReceived(packet.getContent());

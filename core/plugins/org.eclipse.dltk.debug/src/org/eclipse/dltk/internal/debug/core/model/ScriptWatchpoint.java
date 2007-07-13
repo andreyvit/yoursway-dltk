@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
@@ -62,7 +66,8 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 	}
 
 	public void setModification(boolean modification) throws CoreException {
-		this.getMarker().setAttribute(MODIFICATION, Boolean.toString(modification));
+		this.getMarker().setAttribute(MODIFICATION,
+				Boolean.toString(modification));
 	}
 
 	public boolean supportsAccess() {
@@ -71,5 +76,15 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 
 	public boolean supportsModification() {
 		return true;
+	}
+
+	private static final String[] UPDATABLE_ATTRS = new String[] { FIELD_NAME,
+			ACCESS, MODIFICATION };
+
+	public String[] getUpdatableAttributes() {
+		List all = new ArrayList();
+		Arrays.asList(super.getUpdatableAttributes());
+		Arrays.asList(UPDATABLE_ATTRS);
+		return (String[])all.toArray(new String[all.size()]);
 	}
 }

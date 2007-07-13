@@ -33,7 +33,9 @@ public interface IDbgpExtendedCommands {
 
 	boolean makeBreak() throws DbgpException;
 
-	IDbgpProperty evaluate(String string) throws DbgpException;
+	IDbgpProperty evaluate(String snippet) throws DbgpException;
+	
+	IDbgpProperty evaluate(String snippet, int depth) throws DbgpException;
 
 	IDbgpProperty expression(String expression) throws DbgpException;
 

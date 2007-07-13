@@ -10,11 +10,20 @@
 package org.eclipse.dltk.debug.core.model;
 
 import org.eclipse.debug.core.model.IValue;
+import org.eclipse.dltk.debug.core.eval.IScriptEvaluationCommand;
 
 public interface IScriptValue extends IValue {
 	String getInstanceId();
-	
+
 	IScriptType getType();
-	
-	String getEvalName();
+
+	/**
+	 * 
+	 * @param messageTemplate
+	 *            String with {0} placeholder
+	 * @param thread
+	 * @return
+	 */
+	IScriptEvaluationCommand sendMessage(String messageTemplate,
+			IScriptThread thread);
 }

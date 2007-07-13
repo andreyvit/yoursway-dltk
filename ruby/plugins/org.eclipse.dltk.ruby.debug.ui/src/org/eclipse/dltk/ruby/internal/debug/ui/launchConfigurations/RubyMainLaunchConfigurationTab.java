@@ -33,13 +33,10 @@ public class RubyMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
 				return true;
 			}
 		} catch (CoreException e) {
+			
 		}
 
 		return false;
-	}
-
-	protected String getLanguageName() {
-		return "RUBY";
 	}
 
 	public Image getImage() {

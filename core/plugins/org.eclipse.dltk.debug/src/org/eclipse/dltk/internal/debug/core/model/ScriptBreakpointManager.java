@@ -323,9 +323,45 @@ public class ScriptBreakpointManager implements IBreakpointListener {
 		}
 	}
 
+	private static boolean hasChanges(IMarkerDelta delta, String[] attrs) {
+		for (int i = 0; i < attrs.length; ++i) {
+			final String attr = attrs[i];
+
+			try {
+				final Object oldValue = delta.getAttribute(attr);
+				final Object newValue = delta.getMarker().getAttribute(attr);
+
+				if (oldValue == null && newValue != null) {
+					return true;
+				}
+
+				if (oldValue != null && newValue == null) {
+					return true;
+				}
+
+				if (oldValue != null && newValue != null) {
+					if (!oldValue.equals(newValue)) {
+						return true;
+					}
+				}
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
 	public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta) {
 		try {
-			changeBreakpoint(breakpoint);
+			if (breakpoint instanceof IScriptBreakpoint) {
+				final String[] attrs = ((IScriptBreakpoint) breakpoint)
+						.getUpdatableAttributes();
+				if (hasChanges(delta, attrs)) {
+					changeBreakpoint(breakpoint);
+				}
+			}
 		} catch (Exception e) {
 			DLTKDebugPlugin.log(e);
 		}

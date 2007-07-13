@@ -12,9 +12,12 @@ import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTargetListener;
 import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
+import org.eclipse.dltk.internal.launching.InterpreterMessages;
 import org.eclipse.dltk.launching.debug.DbgpConstants;
 
 public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
+	private static final String LOCALHOST = "127.0.0.1";
+
 	protected static final int DEFAULT_WAITING_TIMEOUT = 1000 * 1000;
 
 	protected static final int DEFAULT_PAUSE = 500;
@@ -28,7 +31,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 	}
 
 	protected String getPluginId() {
-		return DLTKLaunchingPlugin.ID_PLUGIN;
+		return DLTKLaunchingPlugin.PLUGIN_ID;
 	}
 
 	public static class ScriptDebugTargetWaiter implements
@@ -103,8 +106,9 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 				return DLTKDebugPlugin.getDefault().creaeDbgpService(port);
 			}
 		} catch (Exception e) {
-			abort(DLTKLaunchingPlugin.ID_PLUGIN, "Dbgp service not available",
-					null, DLTKLaunchingPlugin.DBGP_SERVICE_NOT_AVAILABLE);
+			abort(DLTKLaunchingPlugin.PLUGIN_ID,
+					InterpreterMessages.errDbgpServiceNotStarted, null,
+					ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
 		}
 
 		return null;
@@ -122,7 +126,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		addDebugTarget(launch, configuration, service, sessionId);
 
 		final int port = service.getPort();
-		final String host = "127.0.0.1";
+		final String host = LOCALHOST;
 
 		config.setProperty(DbgpConstants.HOST_PROP, host);
 		config.setProperty(DbgpConstants.PORT_PROP, Integer.toString(port));
@@ -132,10 +136,11 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
 
-		// Disabling the output of the debugging engine process
+		// Disable the output of the debugging engine process
 		launch.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, "false");
 
 		try {
+			// Configuration
 			final ILaunchConfiguration configuration = launch
 					.getLaunchConfiguration();
 
@@ -144,26 +149,29 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			InterpreterConfig newConfig = alterConfig(constructProgramString(),
 					config);
 
+			// TODO: remove later
 			sleep(DEFAULT_PAUSE);
 
+			// Starting debugging engine
 			try {
 				String exe = (String) newConfig.getProperty("OVERRIDE_EXE");
 
 				if (exe != null) {
 					String[] cmdLine = newConfig.renderCommandLine(exe);
-					rawRun(launch, cmdLine, newConfig.getWorkingDirectory(),
+					rawRun(launch, cmdLine, newConfig.getWorkingDirectoryPath().toFile(),
 							newConfig.getEnvironmentAsStrings());
 				} else {
 					super.run(newConfig, launch, monitor);
 				}
 			} catch (CoreException e) {
-				abort(DLTKLaunchingPlugin.ID_PLUGIN,
-						"Debugging engine not started", null,
-						DLTKLaunchingPlugin.DEBUGGING_ENGINE_NOT_STARTED);
+				abort(
+						DLTKLaunchingPlugin.PLUGIN_ID,
+						InterpreterMessages.errDebuggingEngineNotStarted,
+						null,
+						ScriptLaunchConfigurationConstants.ERR_DEBUGGING_ENGINE_NOT_STARTED);
 			}
 
-			// Waiting
-
+			// Waiting for debugging engine connect
 			int waitingTimeout = configuration
 					.getAttribute(
 							ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
@@ -173,9 +181,11 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 					(IScriptDebugTarget) launch.getDebugTarget());
 
 			if (!waiter.waitThread(waitingTimeout)) {
-				abort(DLTKLaunchingPlugin.ID_PLUGIN,
-						"Debugging engine not connected", null,
-						DLTKLaunchingPlugin.DEBUGGING_ENGINE_NOT_CONNECTED);
+				abort(
+						DLTKLaunchingPlugin.PLUGIN_ID,
+						InterpreterMessages.errDebuggingEngineNotConnected,
+						null,
+						ScriptLaunchConfigurationConstants.ERR_DEBUGGING_ENGINE_NOT_CONNECTED);
 			}
 		} catch (CoreException e) {
 			launch.terminate();

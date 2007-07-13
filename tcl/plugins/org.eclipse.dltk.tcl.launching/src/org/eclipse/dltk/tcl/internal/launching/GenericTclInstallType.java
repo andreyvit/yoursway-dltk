@@ -29,7 +29,7 @@ public class GenericTclInstallType extends AbstractInterpreterInstallType {
 	}
 
 	public String getName() {
-		return "Generic TCL install";
+		return "Generic Tcl install";
 	}
 
 	private static String[] possibleExes = { "tclsh", "wish", "vtk", "expect" };

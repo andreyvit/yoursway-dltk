@@ -20,23 +20,7 @@
            name="%RubySourceLocator.name">
      </sourceLocator>
   </extension>
-  <extension
-        point="org.eclipse.dltk.launching.debuggingEngine">
-     <engineContribution
-           natureId="org.eclipse.dltk.ruby.core.nature">
-        <engine
-              class="org.eclipse.dltk.ruby.internal.launching.debug.RubyBasicDebuggerRunnerFactory"
-              description="%BasicDebuggingEngine.description"
-              id="org.eclipse.dltk.ruby.launching.BasicRubyDebugger"
-              name="%BasicDebuggingEngine.name"
-              priority="0">
-        </engine>
-        <selector
-              class="org.eclipse.dltk.ruby.internal.launching.debug.RubyDebuggingEngineSelector">
-        </selector>
-     </engineContribution>
-  </extension>
-   <extension
+     <extension
          point="org.eclipse.dltk.launching.interpreterInstallTypes">
           <interpreterInstallType
             class="org.eclipse.dltk.ruby.internal.launching.RubyGenericInstallType"
@@ -48,5 +32,14 @@
       <initializer
             class="org.eclipse.dltk.ruby.launching.RubyLaunchingPluginPreferenceInitializer">
       </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.launching.debuggingEngine">
+      <engineContribution
+            natureId="org.eclipse.dltk.ruby.core.nature">
+         <selector
+               class="org.eclipse.dltk.ruby.launching.RubyDebuggingEngineSelector">
+         </selector>
+      </engineContribution>
    </extension>
 </plugin>

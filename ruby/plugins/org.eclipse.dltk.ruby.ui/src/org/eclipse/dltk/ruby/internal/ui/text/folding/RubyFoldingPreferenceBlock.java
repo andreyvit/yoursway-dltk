@@ -39,7 +39,6 @@ import org.eclipse.swt.widgets.Control;
 /**
  * Script default folding preferences.
  * 
-	 *
  */
 public class RubyFoldingPreferenceBlock extends AbstractConfigurationBlock implements IFoldingPreferenceBlock {
 	private OverlayPreferenceStore fOverlayStore;
@@ -65,6 +64,7 @@ public class RubyFoldingPreferenceBlock extends AbstractConfigurationBlock imple
 		overlayKeys.toArray(keys);
 		return keys;
 	}	
+	
 	private class ListBlock {
 		private ListViewer fList;
 		String fKey;

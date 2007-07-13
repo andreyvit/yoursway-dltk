@@ -29,11 +29,9 @@ import org.eclipse.dltk.ui.wizards.BuildpathsBlock;
 import org.eclipse.dltk.ui.wizards.NewElementWizard;
 import org.eclipse.dltk.ui.wizards.ProjectWizardFirstPage;
 import org.eclipse.dltk.ui.wizards.ProjectWizardSecondPage;
-import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
-import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 public class RubyNewProjectWizard extends NewElementWizard implements
@@ -57,14 +55,6 @@ public class RubyNewProjectWizard extends NewElementWizard implements
 			RubyInterpreterGroup fInterpreterGroup;
 
 			final class RubyInterpreterGroup extends AbstractInterpreterGroup {
-
-				public void showInterpreterPreferencePage () {
-					final String pageId = getIntereprtersPreferencePageId();
-					
-					PreferencesUtil.createPreferenceDialogOn(getShell(),
-							pageId, new String[] { pageId }, null).open();
-				}
-				
 				public RubyInterpreterGroup(Composite composite) {
 					super(composite);
 				}
@@ -72,8 +62,7 @@ public class RubyNewProjectWizard extends NewElementWizard implements
 				protected String getCurrentLanguageNature() {
 					return RubyNature.NATURE_ID;
 				}
-				
-				
+
 				protected String getIntereprtersPreferencePageId() {
 					return "org.eclipse.dltk.ruby.preferences.interpreters";
 				}

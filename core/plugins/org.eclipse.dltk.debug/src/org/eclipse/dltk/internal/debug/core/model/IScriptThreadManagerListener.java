@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.debug.core.model;
 
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 
-public interface IDbgpThreadManagerListener {
+public interface IScriptThreadManagerListener {
 	void threadAccepted(IScriptThread thread, boolean first);
 
 	void allThreadsTerminated();

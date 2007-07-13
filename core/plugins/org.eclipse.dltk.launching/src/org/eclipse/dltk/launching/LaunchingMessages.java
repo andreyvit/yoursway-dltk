@@ -87,5 +87,5 @@ public class LaunchingMessages extends NLS {
 
 	public static String LaunchShortcut_selectScriptToLaunch;
 	public static String LaunchShortcut_selectionContainsNoScript;
-	public static String LaunchShortcut_searchingForScripts;
+	public static String LaunchShortcut_searchingForScripts;	
 }

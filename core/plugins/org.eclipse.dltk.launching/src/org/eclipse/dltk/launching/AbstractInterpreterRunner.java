@@ -233,7 +233,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 			// Running
 			monitor.subTask("Running");
 			rawRun(launch, config.renderCommandLine(constructProgramString()),
-					config.getWorkingDirectory(), config
+					config.getWorkingDirectoryPath().toFile(), config
 							.getEnvironmentAsStrings());
 			monitor.worked(4);
 

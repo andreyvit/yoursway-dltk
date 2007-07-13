@@ -9,12 +9,18 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model;
 
+import java.text.MessageFormat;
+
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.dltk.debug.core.eval.IScriptEvaluationCommand;
+import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
+import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptType;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
+import org.eclipse.dltk.internal.debug.core.eval.ScriptEvaluationCommand;
 
 public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 
@@ -38,7 +44,7 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 				sb.append(type.getName());
 				String id = getInstanceId();
 				if (id != null) {
-					sb.append(" (id = " + id + ")");
+					sb.append(" (id = " + id + ")"); // TODO add constant
 				}
 				return sb.toString();
 			}
@@ -75,7 +81,14 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 		return variable.getType();
 	}
 
-	public String getEvalName() {
-		return variable.getEvalName();
+	public IScriptEvaluationCommand sendMessage(String messageTemplate,
+			IScriptThread thread) {
+		IScriptEvaluationEngine engine = thread.getEvaluationEngine();
+
+		final String snippet = MessageFormat.format(messageTemplate,
+				new Object[] { variable.getEvalName() });
+
+		return new ScriptEvaluationCommand(engine, snippet, variable
+				.getStackFrame());
 	}
 }

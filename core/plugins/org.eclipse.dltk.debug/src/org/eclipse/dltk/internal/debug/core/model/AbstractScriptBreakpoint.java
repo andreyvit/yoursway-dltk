@@ -13,6 +13,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugException;
@@ -23,20 +24,21 @@ import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 
 public abstract class AbstractScriptBreakpoint extends Breakpoint implements
 		IScriptBreakpoint {
-	public static final String BREAKPOINT = "org.eclipse.dltk.script_breakpoint";
+	
+	private static final String ATTR_PREFIX = "org.eclipse.dltk.script_breakpoint";
+	
+	public static final String ENGINE_IDENTIFIER = ATTR_PREFIX + ".id";
 
-	private static final String IDENTIFIER = BREAKPOINT + ".id";
+	public static final String HIT_COUNT = ATTR_PREFIX + ".hit_count";
 
-	private static final String HIT_COUNT = BREAKPOINT + ".hit_count";
+	public static final String EXPRESSION = ATTR_PREFIX + ".expression";
 
-	private static final String EXPRESSION = BREAKPOINT + ".expression";
+	public static final String EXPRESSION_STATE = EXPRESSION + ".state";
 
-	private static final String EXPRESSION_STATE = EXPRESSION + ".state";
+	public static final String HIT_VALUE = ATTR_PREFIX + ".hit_value";
 
-	private static final String HIT_VALUE = BREAKPOINT + ".hit_value";
-
-	private static final String HIT_CONDITION = BREAKPOINT + ".hit_condition";
-
+	public static final String HIT_CONDITION = ATTR_PREFIX + ".hit_condition";
+	
 	public static URI makeUri(IResource resource) {
 		try {
 			return new URI("file", "///"
@@ -70,11 +72,20 @@ public abstract class AbstractScriptBreakpoint extends Breakpoint implements
 
 	// Identifier
 	public String getIdentifier() throws CoreException {
-		return ensureMarker().getAttribute(IDENTIFIER, null);
+		return ensureMarker().getAttribute(ENGINE_IDENTIFIER, null);
 	}
 
 	public void setIdentifier(String id) throws CoreException {
-		setAttribute(IDENTIFIER, id);
+		setAttribute(ENGINE_IDENTIFIER, id);
+	}
+
+	// Message
+	public String getMessage() throws CoreException {
+		return ensureMarker().getAttribute(IMarker.MESSAGE, null);
+	}
+	
+	public void setMessage(String message) throws CoreException {
+		setAttribute(IMarker.MESSAGE, message);
 	}
 
 	// Hit count
@@ -83,7 +94,7 @@ public abstract class AbstractScriptBreakpoint extends Breakpoint implements
 	}
 
 	public void setHitCount(int value) throws CoreException {
-		ensureMarker().setAttribute(HIT_COUNT, value);
+		setAttribute(HIT_COUNT, value);
 	}
 
 	// Hit value
@@ -119,7 +130,7 @@ public abstract class AbstractScriptBreakpoint extends Breakpoint implements
 	}
 
 	public void setExpression(String expression) throws CoreException {
-		ensureMarker().setAttribute(EXPRESSION, expression);
+		setAttribute(EXPRESSION, expression);
 	}
 
 	public boolean getExpressionState() throws CoreException {

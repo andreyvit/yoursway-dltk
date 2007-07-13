@@ -1,5 +1,9 @@
 package org.eclipse.dltk.internal.debug.core.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugException;
@@ -32,12 +36,11 @@ public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
 
 	public ScriptMethodEntryBreakpoint(String debugModelId, IResource resource,
 			int lineNumber, int charStart, int charEnd, int hitCount,
-			boolean register, String methodName)
-			throws DebugException {
+			boolean register, String methodName) throws DebugException {
 
 		super(debugModelId, resource, lineNumber, charStart, charEnd, hitCount,
 				register);
-		
+
 		try {
 			ensureMarker().setAttribute(METHOD_NAME, methodName);
 		} catch (CoreException e) {
@@ -84,5 +87,15 @@ public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
 
 	public void setExitBreakpointId(String id) throws CoreException {
 		ensureMarker().setAttribute(EXIT_ID, id);
+	}
+
+	private static final String[] UPDATABLE_ATTRS = new String[] { METHOD_NAME,
+			BREAK_ON_ENTRY, BREAK_ON_EXIT };
+
+	public String[] getUpdatableAttributes() {
+		List all = new ArrayList();
+		Arrays.asList(super.getUpdatableAttributes());
+		Arrays.asList(UPDATABLE_ATTRS);
+		return (String[]) all.toArray(new String[all.size()]);
 	}
 }

@@ -14,7 +14,6 @@ import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterComboB
 import org.eclipse.dltk.ruby.core.RubyNature;
 
 public class RubyInterpreterTab extends InterpreterTab {
-	
 	protected AbstractInterpreterComboBlock getInterpreterBlock() {
 		return new RubyInterpreterComboBlock();
 	}
@@ -22,5 +21,4 @@ public class RubyInterpreterTab extends InterpreterTab {
 	protected String getNature() {
 		return RubyNature.NATURE_ID;
 	}
-	
 }

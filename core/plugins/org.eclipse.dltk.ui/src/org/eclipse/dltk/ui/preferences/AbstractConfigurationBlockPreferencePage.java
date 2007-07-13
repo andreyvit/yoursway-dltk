@@ -24,28 +24,18 @@ import org.eclipse.ui.PlatformUI;
  */
 public abstract class AbstractConfigurationBlockPreferencePage extends
 		PreferencePage implements IWorkbenchPreferencePage {
+
 	private IPreferenceConfigurationBlock fConfigurationBlock;
 	private OverlayPreferenceStore fOverlayStore;
 
-	/**
-	 * Creates a new preference page.
-	 */
 	public AbstractConfigurationBlockPreferencePage() {
 		setDescription();
 		setPreferenceStore();
+
 		fOverlayStore = new OverlayPreferenceStore(getPreferenceStore(),
 				new OverlayPreferenceStore.OverlayKey[] {});
 		fConfigurationBlock = createConfigurationBlock(fOverlayStore);
 	}
-
-	protected abstract IPreferenceConfigurationBlock createConfigurationBlock(
-			OverlayPreferenceStore overlayPreferenceStore);
-
-	protected abstract String getHelpId();
-
-	protected abstract void setDescription();
-
-	protected abstract void setPreferenceStore();
 
 	public void init(IWorkbench workbench) {
 	}
@@ -98,4 +88,13 @@ public abstract class AbstractConfigurationBlockPreferencePage extends
 
 		super.dispose();
 	}
+
+	protected abstract String getHelpId();
+
+	protected abstract void setDescription();
+
+	protected abstract void setPreferenceStore();
+
+	protected abstract IPreferenceConfigurationBlock createConfigurationBlock(
+			OverlayPreferenceStore overlayPreferenceStore);
 }

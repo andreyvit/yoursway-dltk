@@ -3,8 +3,8 @@ package org.eclipse.dltk.ruby.internal.debug.ui.preferences;
 import org.eclipse.dltk.debug.ui.preferences.AbstractScriptDebuggingEngineConfigurationBlock;
 import org.eclipse.dltk.internal.ui.text.PreferencesAdapter;
 import org.eclipse.dltk.ruby.core.RubyNature;
-import org.eclipse.dltk.ruby.internal.launching.debug.RubyDebuggingConstants;
-import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
+import org.eclipse.dltk.ruby.debug.RubyDebugConstants;
+import org.eclipse.dltk.ruby.debug.RubyDebugPlugin;
 import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPreferencePage;
 import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
@@ -16,26 +16,19 @@ import org.eclipse.jface.preference.PreferencePage;
 public class RubyDebugPreferencePage extends
 		AbstractConfigurationBlockPreferencePage {
 	public static final String PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug";
-	
-	protected static class RubyDebugConfigurationBlock extends
-			AbstractScriptDebuggingEngineConfigurationBlock {
-		public RubyDebugConfigurationBlock(OverlayPreferenceStore store,
-				PreferencePage preferencePage) {
-			super(store, preferencePage);
-		}
-
-		protected String getDebuggingEngineIdKey() {
-			return RubyDebuggingConstants.DEBUGGING_ENGINE_ID_KEY;
-		}
-
-		protected String getNatureId() {
-			return RubyNature.NATURE_ID;
-		}
-	}
 
 	protected IPreferenceConfigurationBlock createConfigurationBlock(
 			OverlayPreferenceStore overlayPreferenceStore) {
-		return new RubyDebugConfigurationBlock(overlayPreferenceStore, this);
+		return new AbstractScriptDebuggingEngineConfigurationBlock(
+				overlayPreferenceStore, this) {
+			protected String getDebuggingEngineIdKey() {
+				return RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY;
+			}
+
+			protected String getNatureId() {
+				return RubyNature.NATURE_ID;
+			}
+		};
 	}
 
 	protected String getHelpId() {
@@ -47,13 +40,13 @@ public class RubyDebugPreferencePage extends
 	}
 
 	protected void setPreferenceStore() {
-		setPreferenceStore(new PreferencesAdapter(RubyLaunchingPlugin
-				.getDefault().getPluginPreferences()));
+		setPreferenceStore(new PreferencesAdapter(RubyDebugPlugin.getDefault()
+				.getPluginPreferences()));
 	}
 
 	public boolean performOk() {
 		super.performOk();
-		RubyLaunchingPlugin.getDefault().savePluginPreferences();
+		RubyDebugPlugin.getDefault().savePluginPreferences();
 		return true;
 	}
 }

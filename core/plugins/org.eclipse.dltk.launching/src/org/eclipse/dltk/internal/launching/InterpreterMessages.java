@@ -12,18 +12,23 @@ package org.eclipse.dltk.internal.launching;
 import org.eclipse.osgi.util.NLS;
 
 public class InterpreterMessages extends NLS {
-
-	private static final String BUNDLE_NAME = "org.eclipse.dltk.internal.launching.InterpreterMessages";//$NON-NLS-1$
-
-	public static String errNonExistentOrInvalidInstallLocation;
-	public static String errNoInterpreterExecutablesFound;
-	public static String statusFetchingLibs;
-
 	private InterpreterMessages() {
 	}
+
+	private static final String BUNDLE_NAME = "org.eclipse.dltk.internal.launching.InterpreterMessages";//$NON-NLS-1$
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, InterpreterMessages.class);
 	}
 
+	public static String errNonExistentOrInvalidInstallLocation;
+	public static String errNoInterpreterExecutablesFound;
+	public static String statusFetchingLibs;
+
+	public static String errNoDebuggingEngine;
+	public static String errDebuggingEngineNotStarted;
+	public static String errDebuggingEngineNotConnected;
+	public static String errDebuggingEnginePathNotSpecified;
+	public static String errDebuggingEnginePathInvalid;
+	public static String errDbgpServiceNotStarted;
 }

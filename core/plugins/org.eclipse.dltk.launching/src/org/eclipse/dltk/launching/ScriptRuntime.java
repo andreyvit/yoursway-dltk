@@ -264,7 +264,7 @@ public final class ScriptRuntime {
 	 */
 	private static void initializeInterpreterTypeExtensions() {
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry()
-				.getExtensionPoint(DLTKLaunchingPlugin.ID_PLUGIN,
+				.getExtensionPoint(DLTKLaunchingPlugin.PLUGIN_ID,
 						"interpreterInstallTypes"); //$NON-NLS-1$
 		IConfigurationElement[] configs = extensionPoint
 				.getConfigurationElements();
@@ -1241,7 +1241,7 @@ public final class ScriptRuntime {
 
 	private static void initializeResolvers() {
 		IExtensionPoint point = Platform.getExtensionRegistry()
-				.getExtensionPoint(DLTKLaunchingPlugin.ID_PLUGIN,
+				.getExtensionPoint(DLTKLaunchingPlugin.PLUGIN_ID,
 						EXTENSION_POINT_RUNTIME_BUILDPATH_ENTRY_RESOLVERS);
 		IConfigurationElement[] extensions = point.getConfigurationElements();
 		fgContainerResolvers = new HashMap(extensions.length);
@@ -1272,7 +1272,7 @@ public final class ScriptRuntime {
 
 	private static void initializeProviders() {
 		IExtensionPoint point = Platform.getExtensionRegistry()
-				.getExtensionPoint(DLTKLaunchingPlugin.ID_PLUGIN,
+				.getExtensionPoint(DLTKLaunchingPlugin.PLUGIN_ID,
 						EXTENSION_POINT_RUNTIME_BUILDPATH_PROVIDERS);
 		IConfigurationElement[] extensions = point.getConfigurationElements();
 		fgPathProviders = new HashMap(extensions.length);
@@ -1532,7 +1532,7 @@ public final class ScriptRuntime {
 	private static void addInterpreterExtensions(
 			InterpreterDefinitionsContainer InterpreterDefs) {
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry()
-				.getExtensionPoint(DLTKLaunchingPlugin.ID_PLUGIN,
+				.getExtensionPoint(DLTKLaunchingPlugin.PLUGIN_ID,
 						ScriptRuntime.EXTENSION_POINT_INTERPRETER_INSTALLS);
 		IConfigurationElement[] configs = extensionPoint
 				.getConfigurationElements();

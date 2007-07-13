@@ -29,7 +29,7 @@ public class DebuggingEngineManager {
 	private Map natureToEnginesMap;
 	private Map natureToSelectorMap;
 
-	private static final String DEBUGGING_ENGINE_EXT_POINT = DLTKLaunchingPlugin.ID_PLUGIN
+	private static final String DEBUGGING_ENGINE_EXT_POINT = DLTKLaunchingPlugin.PLUGIN_ID
 			+ ".debuggingEngine";
 
 	private static final String ID = "id";

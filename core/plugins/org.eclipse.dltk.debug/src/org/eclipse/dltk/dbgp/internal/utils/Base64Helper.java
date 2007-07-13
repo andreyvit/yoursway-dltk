@@ -18,11 +18,13 @@ import sun.misc.BASE64Encoder;
 
 public class Base64Helper {
 	private static final BASE64Encoder encoder = new BASE64Encoder();
+	
 
 	private static final BASE64Decoder decoder = new BASE64Decoder();
 
 	public static String encodeString(String s) {
-		return encoder.encode(s.getBytes());
+		return encoder.encode(s.getBytes()).replaceAll("\n", "");
+		
 	}
 
 	public static String decodeString(String base64) throws DbgpIOException {

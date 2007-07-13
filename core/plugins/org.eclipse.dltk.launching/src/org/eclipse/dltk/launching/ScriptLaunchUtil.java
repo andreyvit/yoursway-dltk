@@ -56,7 +56,7 @@ public class ScriptLaunchUtil {
 	public static Process runScriptWithInterpreter(String interpreter,
 			InterpreterConfig config) throws CoreException {
 		String[] cmdLine = config.renderCommandLine(interpreter);
-		return DebugPlugin.exec(cmdLine, config.getWorkingDirectory(), config
+		return DebugPlugin.exec(cmdLine, config.getWorkingDirectoryPath().toFile(), config
 				.getEnvironmentAsStrings());
 	}
 

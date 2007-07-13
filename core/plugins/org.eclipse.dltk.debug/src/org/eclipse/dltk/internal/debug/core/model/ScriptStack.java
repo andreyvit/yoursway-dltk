@@ -3,13 +3,16 @@ package org.eclipse.dltk.internal.debug.core.model;
 import org.eclipse.dltk.dbgp.IDbgpStackLevel;
 import org.eclipse.dltk.dbgp.commands.IDbgpStatckCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 
 public class ScriptStack {
-	private ScriptStackFrame[] frames;
+	public static final IScriptStackFrame[] NO_STACK_FRAMES = new IScriptStackFrame[0];
+
+	private IScriptStackFrame[] frames;
 
 	private final ScriptThread thread;
 
-	protected ScriptStackFrame[] readFrames(IDbgpStatckCommands commands)
+	protected IScriptStackFrame[] readFrames(IDbgpStatckCommands commands)
 			throws DbgpException {
 		IDbgpStackLevel[] levels = commands.getStackLevels();
 		ScriptStackFrame[] frames = new ScriptStackFrame[levels.length];
@@ -29,11 +32,12 @@ public class ScriptStack {
 	}
 
 	public void update() {
-		this.frames = new ScriptStackFrame[0];
+		this.frames = NO_STACK_FRAMES;
 
 		try {
 			this.frames = readFrames(thread.getDbgpSession().getCoreCommands());
 		} catch (DbgpException e) {
+			// TODO: log exception
 		}
 	}
 
@@ -49,12 +53,12 @@ public class ScriptStack {
 		return frames.length > 0;
 	}
 
-	public ScriptStackFrame[] getFrames() {
-		return (ScriptStackFrame[]) frames.clone();
+	public IScriptStackFrame[] getFrames() {
+		return (IScriptStackFrame[]) frames.clone();
 	}
 
-	public ScriptStackFrame getTopFrame() {
-		ScriptStackFrame[] frames = getFrames();
+	public IScriptStackFrame getTopFrame() {
+		final IScriptStackFrame[] frames = getFrames();
 		return frames.length > 0 ? frames[0] : null;
 	}
 }

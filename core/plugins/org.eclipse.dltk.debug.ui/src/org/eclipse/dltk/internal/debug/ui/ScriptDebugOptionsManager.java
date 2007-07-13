@@ -12,7 +12,6 @@ package org.eclipse.dltk.internal.debug.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -32,6 +31,7 @@ import org.eclipse.dltk.debug.core.model.IScriptBreakpointListener;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
+import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 
@@ -44,37 +44,63 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 	private static ILabelProvider fLabelProvider = DebugUITools
 			.newDebugModelPresentation();
 
-	protected void updateBreakpointHitCounts(IBreakpoint[] breakpoints,
-			IScriptThread thread) {
-		for (int j = 0; j < breakpoints.length; ++j) {
-			IBreakpoint breakpoint = breakpoints[j];
-			if (breakpoint instanceof IScriptBreakpoint) {
-				IScriptBreakpoint scriptBreakpoint = (IScriptBreakpoint) breakpoint;
-				try {
-					String id = scriptBreakpoint.getIdentifier();
-					IDbgpBreakpoint br = thread.getDbgpBreakpoint(id);
-					int hitCount = br.getHitCount();
-					scriptBreakpoint.setHitCount(hitCount);
-				} catch (CoreException e) {
-					// TODO: log exception
-					e.printStackTrace();
+	private static interface IBreakpointUpdater {
+		void update(IScriptBreakpoint breakpoint) throws CoreException;
+	}
+
+	protected void updateBreakpoints(final IBreakpoint[] breakpoints,
+			final IBreakpointUpdater updater) {
+		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
+			public void run(IProgressMonitor monitor) throws CoreException {
+				for (int i = 0; i < breakpoints.length; i++) {
+					IBreakpoint breakpoint = breakpoints[i];
+					if (breakpoint instanceof IScriptBreakpoint) {
+						try {
+							updater.update((IScriptBreakpoint) breakpoint);
+						} catch (CoreException e) {
+							DLTKDebugUIPlugin.log(e);
+						}
+					}
 				}
 			}
+		};
+
+		try {
+			ResourcesPlugin.getWorkspace().run(runnable, null);
+		} catch (CoreException e) {
+			DLTKUIPlugin.log(e);
 		}
 	}
 
-	protected void updateBreakpoinHitCountsToDefualt(IBreakpoint[] breakpoints) {
-		for (int j = 0; j < breakpoints.length; ++j) {
-			IBreakpoint breakpoint = breakpoints[j];
-			if (breakpoint instanceof IScriptBreakpoint) {
-				try {
-					((IScriptBreakpoint) breakpoint).setHitCount(-1);
-				} catch (CoreException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+	private void updateBreakpointMessages(final IBreakpoint[] breakpoints) {
+		updateBreakpoints(breakpoints, new IBreakpointUpdater() {
+			public void update(IScriptBreakpoint breakpoint)
+					throws CoreException {
+				final String message = fLabelProvider.getText(breakpoint);
+				breakpoint.setMessage(message);
 			}
-		}
+		});
+	}
+
+	protected void updateBreakpointHitCounts(final IBreakpoint[] breakpoints,
+			final IScriptThread thread) {
+		updateBreakpoints(breakpoints, new IBreakpointUpdater() {
+			public void update(IScriptBreakpoint breakpoint)
+					throws CoreException {
+				IDbgpBreakpoint br = thread.getDbgpBreakpoint(breakpoint
+						.getIdentifier());
+				breakpoint.setHitCount(br.getHitCount());
+			}
+		});
+	}
+
+	protected void updateBreakpoinHitCountsToDefualt(IBreakpoint[] breakpoints) {
+		updateBreakpoints(breakpoints, new IBreakpointUpdater() {
+			public void update(IScriptBreakpoint breakpoint)
+					throws CoreException {
+				breakpoint.setHitCount(-1);
+			}
+		});
 	}
 
 	public void handleDebugEvents(DebugEvent[] events) {
@@ -82,10 +108,12 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 			DebugEvent event = events[i];
 			final int kind = event.getKind();
 			final Object source = event.getSource();
+
 			if (kind == DebugEvent.SUSPEND) {
 				if (source instanceof IScriptThread) {
-					IScriptThread thread = (IScriptThread) source;
-					IBreakpoint[] breakpoints = thread.getBreakpoints();
+					final IScriptThread thread = (IScriptThread) source;
+					final IBreakpoint[] breakpoints = thread.getBreakpoints();
+
 					updateBreakpointHitCounts(breakpoints, thread);
 					updateBreakpointMessages(breakpoints);
 				}
@@ -93,7 +121,8 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 				if (source instanceof IScriptDebugTarget) {
 					final String debugModelId = ((IScriptDebugTarget) source)
 							.getModelIdentifier();
-					IBreakpoint[] breakpoints = DebugPlugin.getDefault()
+
+					final IBreakpoint[] breakpoints = DebugPlugin.getDefault()
 							.getBreakpointManager()
 							.getBreakpoints(debugModelId);
 
@@ -106,65 +135,39 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 
 	public void launchAdded(ILaunch launch) {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void launchChanged(ILaunch launch) {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void launchRemoved(ILaunch launch) {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void breakpointsAdded(IBreakpoint[] breakpoints) {
-		// if a breakpoint is added, but already has a message, do not update it
-		List update = new ArrayList();
+		List list = new ArrayList();
 		for (int i = 0; i < breakpoints.length; i++) {
-			IBreakpoint breakpoint = breakpoints[i];
 			try {
+				IBreakpoint breakpoint = breakpoints[i];
 				if (breakpoint instanceof IScriptBreakpoint
-						&& breakpoint.getMarker().getAttribute(IMarker.MESSAGE) == null) {
-					update.add(breakpoint);
+						&& ((IScriptBreakpoint) breakpoint).getMessage() == null) {
+					list.add(breakpoint);
 				}
 			} catch (CoreException e) {
 				DLTKDebugUIPlugin.log(e);
 			}
 		}
-		if (!update.isEmpty()) {
-			updateBreakpointMessages((IBreakpoint[]) update
-					.toArray(new IBreakpoint[update.size()]));
+
+		if (!list.isEmpty()) {
+			updateBreakpointMessages((IBreakpoint[]) list
+					.toArray(new IBreakpoint[list.size()]));
 		}
 	}
 
 	public void breakpointsChanged(IBreakpoint[] breakpoints,
 			IMarkerDelta[] deltas) {
 		updateBreakpointMessages(breakpoints);
-
-	}
-
-	private void updateBreakpointMessages(final IBreakpoint[] breakpoints) {
-		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {
-				for (int i = 0; i < breakpoints.length; i++) {
-					IBreakpoint breakpoint = breakpoints[i];
-					if (breakpoint instanceof IScriptBreakpoint) {
-						String info = fLabelProvider.getText(breakpoint);
-						breakpoint.getMarker().setAttribute(IMarker.MESSAGE,
-								info);
-
-					}
-				}
-			}
-		};
-
-		try {
-			ResourcesPlugin.getWorkspace().run(runnable, null, 0, null);
-		} catch (CoreException e) {
-			DLTKDebugUIPlugin.log(e);
-		}
 	}
 
 	public void breakpointsRemoved(IBreakpoint[] breakpoints,

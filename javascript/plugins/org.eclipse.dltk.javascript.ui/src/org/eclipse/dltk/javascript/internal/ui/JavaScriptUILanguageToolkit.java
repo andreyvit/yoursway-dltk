@@ -72,4 +72,8 @@ public class JavaScriptUILanguageToolkit implements IDLTKUILanguageToolkit {
 	public String getInterpreterPreferencePage() {
 		return "org.eclipse.dltk.debug.ui.JavaScriptInterpreters";
 	}
+
+	public String getDebugPreferencePage() {
+		return null;
+	}
 }

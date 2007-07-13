@@ -60,7 +60,7 @@ public class TclRemoteTab extends AbstractLaunchConfigurationTab {
 	protected void createInstruction(Composite parent, Object data) {
 		Label instruction = new Label(parent, SWT.NONE);
 		instruction.setLayoutData(data);
-		instruction.setText("To start TCL debugging engine use this command temlate:");
+		instruction.setText("To start Tcl debugging engine use this command temlate:");
 	}
 
 	protected void createPathTemplate(Composite parent, Object data) {

@@ -24,24 +24,25 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
-	
+
 	private static TclUILanguageToolkit sToolkit = null;
-	
+
 	public static IDLTKUILanguageToolkit getInstance() {
-		if( sToolkit == null ) {
+		if (sToolkit == null) {
 			sToolkit = new TclUILanguageToolkit();
 		}
 		return sToolkit;
 	}
-	
+
 	private static class TclScriptElementLabels extends ScriptElementLabels {
-		public void getElementLabel(IModelElement element, long flags, StringBuffer buf) {
+		public void getElementLabel(IModelElement element, long flags,
+				StringBuffer buf) {
 			StringBuffer buffer = new StringBuffer(60);
 			super.getElementLabel(element, flags, buffer);
 			String s = buffer.toString();
-			if( s != null && !s.startsWith(element.getElementName())) {
-				if( s.indexOf('$') != -1 ) {
-					s = s.replaceAll("\\$","::");
+			if (s != null && !s.startsWith(element.getElementName())) {
+				if (s.indexOf('$') != -1) {
+					s = s.replaceAll("\\$", "::");
 				}
 			}
 			buf.append(s);
@@ -49,16 +50,18 @@ public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
 
 		protected char getTypeDelimiter() {
 			return '$';
-		}	
-//		protected void getTypeLabel(IType type, long flags, StringBuffer buf) {
-//			StringBuffer buffer = new StringBuffer(60);
-//			super.getTypeLabel(type, flags, buffer);
-//			if( type.getParent() instanceof ISourceModule ) {
-//				buf.append("$");
-//			}
-//			buf.append(buffer);
-//		}
-	};	
+		}
+		// protected void getTypeLabel(IType type, long flags, StringBuffer buf)
+		// {
+		// StringBuffer buffer = new StringBuffer(60);
+		// super.getTypeLabel(type, flags, buffer);
+		// if( type.getParent() instanceof ISourceModule ) {
+		// buf.append("$");
+		// }
+		// buf.append(buffer);
+		// }
+	};
+
 	private static TclScriptElementLabels sInstance = new TclScriptElementLabels();
 
 	public ScriptElementLabels getScriptElementLabels() {
@@ -72,6 +75,7 @@ public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
 	public IDLTKLanguageToolkit getCoreToolkit() {
 		return TclLanguageToolkit.getDefault();
 	}
+
 	public IDialogSettings getDialogSettings() {
 		return TclUI.getDefault().getDialogSettings();
 	}
@@ -79,30 +83,41 @@ public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
 	public String getPartitioningId() {
 		return TclConstants.TCL_PARTITIONING;
 	}
+
 	public String getEditorId(Object inputElement) {
 		return "org.eclipse.dltk.tcl.ui.editor.TclEditor";
 	}
+
 	public String getInterpreterContainerId() {
 		return "org.eclipse.dltk.tcl.launching.INTERPRETER_CONTAINER";
 	}
+
 	public ScriptUILabelProvider createScripUILabelProvider() {
 		return null;
 	}
+
 	public boolean getProvideMembers(ISourceModule element) {
 		return true;
 	}
-	
+
 	public ScriptTextTools getTextTools() {
 		return TclUI.getDefault().getTextTools();
 	}
-	
+
 	public ScriptSourceViewerConfiguration createSourceViwerConfiguration() {
 		return new SimpleTclSourceViewerConfiguration(getTextTools()
 				.getColorManager(), getPreferenceStore(), null,
 				getPartitioningId(), false);
 	}
 
+	private static final String INTERPRETERS_PREFERENCE_PAGE_ID = "org.eclipse.dltk.tcl.preferences.interpreters";
+	private static final String DEBUG_PREFERENCE_PAGE_ID = "org.eclipse.dltk.tcl.preferences.debug";
+
 	public String getInterpreterPreferencePage() {
-		return "org.eclipse.dltk.tcl.preferences.interpreters";
+		return INTERPRETERS_PREFERENCE_PAGE_ID;
+	}
+
+	public String getDebugPreferencePage() {
+		return DEBUG_PREFERENCE_PAGE_ID;
 	}
 }

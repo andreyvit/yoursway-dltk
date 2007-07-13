@@ -37,10 +37,6 @@ public class TclMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
 		return false;
 	}
 
-	protected String getLanguageName() {
-		return "TCL";
-	}
-
 	public Image getImage() {
 		return DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_CLASS);
 	}

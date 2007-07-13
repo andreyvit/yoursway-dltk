@@ -151,6 +151,10 @@ public class ScriptVariable extends AbstractScriptVariable {
 	public String getValueString() {
 		return assignedValue != null ? assignedValue : property.getValue();
 	}
+	
+	public IScriptStackFrame getStackFrame() {
+		return frame;
+	}
 
 	public String toString() {
 		return getEvalName();
@@ -166,12 +170,14 @@ public class ScriptVariable extends AbstractScriptVariable {
 
 	public IScriptType getType() {
 		if (type == null) {
-			IScriptTypeFactory factory = ScriptDebugManager.getInstance()
+			final String rawType = property.getType();
+			
+			final IScriptTypeFactory factory = ScriptDebugManager.getInstance()
 					.getTypeFactoryByDebugModel(getModelIdentifier());
 			if (factory != null) {
-				type = factory.buildType(property.getType());
+				type = factory.buildType(rawType);
 			} else {
-				type = new AtomicScriptType(property.getType());
+				type = new AtomicScriptType(rawType);
 			}
 		}
 

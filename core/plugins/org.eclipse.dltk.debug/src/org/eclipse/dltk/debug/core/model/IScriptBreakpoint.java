@@ -19,11 +19,16 @@ public interface IScriptBreakpoint extends IBreakpoint {
 	int HIT_CONDITION_EQUAL = IDbgpBreakpoint.HIT_CONDITION_EQUAL;
 
 	int HIT_CONDITION_MULTIPLE = IDbgpBreakpoint.HIT_CONDITION_MULTIPLE;
-
+	
 	// Identifier
 	String getIdentifier() throws CoreException;
 
 	void setIdentifier(String id) throws CoreException;
+	
+	// Message
+	String getMessage() throws CoreException;
+	
+	void setMessage(String message) throws CoreException;
 
 	// Hit count (returns effective hit count during debugging or -1 if not
 	// available)
@@ -52,4 +57,6 @@ public interface IScriptBreakpoint extends IBreakpoint {
 	boolean getExpressionState() throws CoreException;
 
 	void setExpressionState(boolean state) throws CoreException;
+	
+	String[] getUpdatableAttributes();
 }

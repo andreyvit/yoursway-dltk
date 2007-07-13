@@ -38,8 +38,10 @@ public interface IDLTKUILanguageToolkit {
 	
 	ScriptSourceViewerConfiguration createSourceViwerConfiguration();
 	
-	// Per module script explorer show childrens way.
+	// Per module script explorer show children way.
 	boolean getProvideMembers(ISourceModule element);
 	
 	String getInterpreterPreferencePage();
+	
+	String getDebugPreferencePage();
 }

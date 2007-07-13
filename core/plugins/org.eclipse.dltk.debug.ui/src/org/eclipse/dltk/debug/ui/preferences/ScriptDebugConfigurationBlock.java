@@ -12,17 +12,24 @@ package org.eclipse.dltk.debug.ui.preferences;
 import java.util.ArrayList;
 
 import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
-import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlock;
+import org.eclipse.dltk.ui.DLTKUILanguageManager;
+import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
+import org.eclipse.dltk.ui.preferences.ImprovedAbstractConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
+import org.eclipse.dltk.ui.util.SWTFactory;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.ui.dialogs.PreferenceLinkArea;
+import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
-public class ScriptDebugConfigurationBlock extends AbstractConfigurationBlock {
+public class ScriptDebugConfigurationBlock extends ImprovedAbstractConfigurationBlock {
+
+	private PreferencePage preferencePage;
 
 	private OverlayPreferenceStore.OverlayKey[] createOverlayStoreKeys() {
 
@@ -58,63 +65,81 @@ public class ScriptDebugConfigurationBlock extends AbstractConfigurationBlock {
 	public ScriptDebugConfigurationBlock(OverlayPreferenceStore store,
 			PreferencePage mainPreferencePage) {
 		super(store, mainPreferencePage);
-
 		store.addKeys(createOverlayStoreKeys());
+
+		this.preferencePage = mainPreferencePage;
 	}
 
 	private Control createSettingsGroup(Composite parent) {
-		Group group = new Group(parent, SWT.NONE);
-		group.setText("General options");
-		group.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		final Group group = SWTFactory.createGroup(parent, "General options",
+				1, 1, GridData.FILL_HORIZONTAL);
 
-		GridLayout layout = new GridLayout(2, false);
-		group.setLayout(layout);
+		Button b = SWTFactory.createCheckButton(group, "Break on first line",
+				null, false, 1);
+		bindControl(b, DebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
 
-		String label = "Break on first line";
-		addCheckBox(group, label,
-				DebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE, 0);
-
-		label = "Enable DBGP logging";
-		addCheckBox(group, label,
-				DebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING, 0);
+		b = SWTFactory.createCheckButton(group, "Break on first line", null,
+				false, 1);
+		bindControl(b, DebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
 
 		return group;
 	}
 
 	private Control createVariablesGroup(Composite parent) {
-		Group group = new Group(parent, SWT.NONE);
-		group.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		group.setText("Variables");
+		final Group group = SWTFactory.createGroup(parent, "Variables", 1, 1,
+				GridData.FILL_HORIZONTAL);
 
-		GridLayout layout = new GridLayout(2, false);
-		group.setLayout(layout);
+		Button b = SWTFactory.createCheckButton(group, "Show Local Variables",
+				null, false, 1);
+		bindControl(b, DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL);
 
-		String label = "Show Local Variables";
-		addCheckBox(group, label,
-				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL, 0);
+		b = SWTFactory.createCheckButton(group, "Show Global Variables", null,
+				false, 1);
+		bindControl(b, DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL);
 
-		label = "Show Global Variables";
-		addCheckBox(group, label,
-				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL, 0);
-
-		label = "Show Class Variables";
-		addCheckBox(group, label,
-				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS, 0);
+		b = SWTFactory.createCheckButton(group, "Show Class Variables", null,
+				false, 1);
+		bindControl(b, DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS);
 
 		return group;
 	}
 
+	private void createScriptLanguagesLinks(Composite parent) {
+		IDLTKUILanguageToolkit[] toolkits = DLTKUILanguageManager
+				.getLanguageToolkits();
+
+		Composite composite = SWTFactory.createComposite(parent, parent
+				.getFont(), 1, 1, GridData.FILL_HORIZONTAL);
+
+		for (int i = 0; i < toolkits.length; ++i) {
+			final IDLTKUILanguageToolkit toolkit = toolkits[i];
+
+			final String pageId = toolkit.getDebugPreferencePage();
+
+			if (pageId != null) {
+				final String languageName = toolkit.getCoreToolkit()
+						.getLanguageName();
+
+				// Link
+				PreferenceLinkArea area = new PreferenceLinkArea(composite,
+						SWT.NONE, pageId, "See <a>''{0}''</a> for "
+								+ languageName + " debug settings",
+						(IWorkbenchPreferenceContainer) preferencePage
+								.getContainer(), null);
+
+				area.getControl().setLayoutData(
+						new GridData(SWT.FILL, SWT.FILL, false, false));
+			}
+		}
+	}
+
 	public Control createControl(Composite parent) {
-		initializeDialogUnits(parent);
-
-		Composite control = new Composite(parent, SWT.NONE);
-
-		GridLayout layout = new GridLayout(1, false);
-
-		control.setLayout(layout);
+		final Composite control = SWTFactory.createComposite(parent, parent
+				.getFont(), 1, 1, GridData.FILL_HORIZONTAL);
 
 		createSettingsGroup(control);
 		createVariablesGroup(control);
+		createScriptLanguagesLinks(control);
 
 		return control;
 	}

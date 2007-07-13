@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
 
 public class ScriptLineBreakpoint extends AbstractScriptBreakpoint implements
@@ -89,5 +90,15 @@ public class ScriptLineBreakpoint extends AbstractScriptBreakpoint implements
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	private static final String[] UPDATABLE_ATTRS = new String[] {
+			IBreakpoint.ENABLED, AbstractScriptBreakpoint.HIT_CONDITION,
+			AbstractScriptBreakpoint.HIT_VALUE,
+			AbstractScriptBreakpoint.EXPRESSION,
+			AbstractScriptBreakpoint.EXPRESSION_STATE };
+
+	public String[] getUpdatableAttributes() {
+		return UPDATABLE_ATTRS;
 	}
 }

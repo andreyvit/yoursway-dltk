@@ -9,8 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.DLTKCore;
+import java.util.ArrayList;
+
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.internal.core.ClassBasedDLTKExtensionManager;
 import org.eclipse.dltk.ui.viewsupport.ScriptUILabelProvider;
@@ -22,6 +22,22 @@ public class DLTKUILanguageManager extends ClassBasedDLTKExtensionManager {
 
 	private DLTKUILanguageManager() {
 		super(LANGUAGE_EXTPOINT);
+	}
+
+	public static IDLTKUILanguageToolkit[] getLanguageToolkits() {
+		ElementInfo[] elementInfos = instance.getElementInfos();
+		ArrayList toolkits = new ArrayList();
+		for (int j = 0; j < elementInfos.length; j++) {
+			IDLTKUILanguageToolkit toolkit = (IDLTKUILanguageToolkit) instance
+					.getInitObject(elementInfos[j]);
+
+			if (toolkit != null) {
+				toolkits.add(toolkit);
+			}
+		}
+
+		return (IDLTKUILanguageToolkit[]) toolkits
+				.toArray(new IDLTKUILanguageToolkit[toolkits.size()]);
 	}
 
 	public static IDLTKUILanguageToolkit getLanguageToolkit(String natureId) {

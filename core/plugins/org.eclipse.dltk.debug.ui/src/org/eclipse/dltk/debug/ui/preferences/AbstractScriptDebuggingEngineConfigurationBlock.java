@@ -1,14 +1,14 @@
 package org.eclipse.dltk.debug.ui.preferences;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
 import org.eclipse.dltk.launching.debug.IDebuggingEngine;
-import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlock;
+import org.eclipse.dltk.ui.preferences.ImprovedAbstractConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore.OverlayKey;
+import org.eclipse.dltk.ui.util.SWTFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -20,71 +20,20 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.dialogs.PreferenceLinkArea;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
 public abstract class AbstractScriptDebuggingEngineConfigurationBlock extends
-		AbstractConfigurationBlock {
+		ImprovedAbstractConfigurationBlock {
 
 	private ComboViewer allEngines;
-	// private Label description;
 	private Composite descriptionPlace;
 	private PreferencePage preferencePage;
 
 	private Map engineToDescriptionMap;
-
-	public AbstractScriptDebuggingEngineConfigurationBlock(
-			OverlayPreferenceStore store, PreferencePage preferencePage) {
-		super(store, preferencePage);
-
-		this.preferencePage = preferencePage;
-
-		this.engineToDescriptionMap = new HashMap();
-
-		store.addKeys(createKeys());
-	}
-
-	public Control createControl(Composite parent) {
-		Composite composite = createComposite(parent, parent.getFont(), 1, 1,
-				0, 0, GridData.FILL);
-
-		// Link
-		PreferenceLinkArea area = new PreferenceLinkArea(composite, SWT.NONE,
-				ScriptDebugPreferencePage.PAGE_ID,
-				ScriptDebugPreferencesMessages.LinkToGeneralPreferenses,
-				(IWorkbenchPreferenceContainer) preferencePage.getContainer(),
-				null);
-
-		area.getControl().setLayoutData(
-				new GridData(SWT.FILL, SWT.FILL, false, false));
-
-		// Debugging engine
-		createEngineSelector(composite, new GridData(SWT.FILL, SWT.FILL, true,
-				false));
-
-		return composite;
-	}
-
-	public void initialize() {
-		super.initialize();
-
-		initializeValues();
-	}
-
-	private OverlayKey[] createKeys() {
-		ArrayList keys = new ArrayList();
-
-		keys.add(new OverlayPreferenceStore.OverlayKey(
-				OverlayPreferenceStore.STRING, getDebuggingEngineIdKey()));
-
-		return (OverlayKey[]) keys
-				.toArray(new OverlayPreferenceStore.OverlayKey[keys.size()]);
-	}
 
 	protected IDebuggingEngine getSelectedDebuggineEngine() {
 		IStructuredSelection selection = (IStructuredSelection) allEngines
@@ -110,19 +59,62 @@ public abstract class AbstractScriptDebuggingEngineConfigurationBlock extends
 		descriptionPlace.layout();
 	}
 
-	protected void createEngineSelector(Composite parent, Object data) {
-		Group group = new Group(parent, SWT.NONE);
-		group.setFont(parent.getFont());
-		group.setLayoutData(data);
-		group.setText(ScriptDebugPreferencesMessages.DebuggingEngine);
+	private void configurePreferenceStore(OverlayPreferenceStore store) {
+		OverlayKey[] keys = new OverlayKey[] { new OverlayKey(
+				OverlayPreferenceStore.STRING, getDebuggingEngineIdKey()) };
 
-		GridLayout layout = new GridLayout(1, false);
-		group.setLayout(layout);
+		store.addKeys(keys);
+	}
+
+	public AbstractScriptDebuggingEngineConfigurationBlock(
+			OverlayPreferenceStore store, PreferencePage preferencePage) {
+		super(store, preferencePage);
+
+		configurePreferenceStore(store);
+
+		this.preferencePage = preferencePage;
+		this.engineToDescriptionMap = new HashMap();
+	}
+
+	public Control createControl(Composite parent) {
+		// Composite
+		Composite composite = SWTFactory.createComposite(parent, parent
+				.getFont(), 1, 1, GridData.FILL);
+
+		// Link
+		PreferenceLinkArea area = new PreferenceLinkArea(composite, SWT.NONE,
+				ScriptDebugPreferencePage.PAGE_ID,
+				ScriptDebugPreferencesMessages.LinkToGeneralPreferenses,
+				(IWorkbenchPreferenceContainer) preferencePage.getContainer(),
+				null);
+
+		area.getControl().setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, false, false));
+
+		// Debugging engine
+		createEngineSelector(composite, new GridData(SWT.FILL, SWT.FILL, true,
+				false));
+
+		return composite;
+	}
+
+	public void initialize() {
+		super.initialize();
+		initializeValues();
+	}
+
+	protected void createEngineSelector(Composite parent, Object data) {
+
+		// Group
+		Group group = SWTFactory.createGroup(parent,
+				ScriptDebugPreferencesMessages.DebuggingEngine, 1, 1,
+				GridData.FILL_HORIZONTAL);
 
 		// Name
-		Label nameLabel = new Label(group, SWT.NONE);
-		nameLabel.setText(ScriptDebugPreferencesMessages.NameLabel);
+		SWTFactory.createLabel(group, ScriptDebugPreferencesMessages.NameLabel,
+				1);
 
+		// Engines
 		allEngines = new ComboViewer(group);
 		allEngines.getCombo().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -141,19 +133,20 @@ public abstract class AbstractScriptDebuggingEngineConfigurationBlock extends
 			}
 		});
 
-		descriptionPlace = createComposite(group, group.getFont(), 1, 1, 0, 0,
-				GridData.FILL);
+		// Description
+		descriptionPlace = SWTFactory.createComposite(group, group.getFont(),
+				1, 1, GridData.FILL);
 		descriptionPlace.setLayout(new StackLayout());
 	}
 
-	private Composite createDescription(Composite parent,
+	protected Composite createDescription(Composite parent,
 			IDebuggingEngine engine) {
-		Composite composite = createComposite(parent, parent.getFont(), 1, 1,
-				0, 0, GridData.FILL);
-		Label label = new Label(composite, SWT.NONE);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		label.setText(ScriptDebugPreferencesMessages.DescriptionLabel + " "
-				+ engine.getDescription());
+		Composite composite = SWTFactory.createComposite(parent, parent
+				.getFont(), 1, 1, GridData.FILL);
+
+		SWTFactory.createLabel(composite,
+				ScriptDebugPreferencesMessages.DescriptionLabel + " "
+						+ engine.getDescription(), 1);
 
 		final String preferencePageId = engine.getPreferencePageId();
 		if (preferencePageId != null && preferencePageId.length() > 0) {

@@ -13,16 +13,16 @@ package org.eclipse.dltk.ui.preferences;
 import org.eclipse.osgi.util.NLS;
 
 public final class PreferencesMessages extends NLS {
-
-	private static final String BUNDLE_NAME= "org.eclipse.dltk.ui.preferences.PreferencesMessages";//$NON-NLS-1$
-		
 	
-
+	private static final String BUNDLE_NAME= "org.eclipse.dltk.ui.preferences.PreferencesMessages";//$NON-NLS-1$
+	
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, PreferencesMessages.class);
+	}
+	
 	private PreferencesMessages() {
 		// Do not instantiate
 	}
-	
-	
 	
 	public static String BuildPathsPropertyPage_no_script_project_message;
 	//public static String BuildPathDialog_error_title;
@@ -630,9 +630,7 @@ public final class PreferencesMessages extends NLS {
 //	public static String ProjectSelectionDialog_desciption;
 //	public static String ProjectSelectionDialog_filter;
 
-	static {
-		NLS.initializeMessages(BUNDLE_NAME, PreferencesMessages.class);
-	}
+	
 
 //	public static String NameConventionConfigurationBlock_use_override_annotation_label;
 //	public static String ProblemSeveritiesConfigurationBlock_pb_unhandled_surpresswarning_tokens;

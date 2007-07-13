@@ -65,17 +65,11 @@ import com.ibm.icu.text.MessageFormat;
 public class DLTKLaunchingPlugin extends Plugin implements
 		Preferences.IPropertyChangeListener, IInterpreterInstallChangedListener {
 
-	public static final int DBGP_SERVICE_NOT_AVAILABLE = 200;
-
-	public static final int DEBUGGING_ENGINE_NOT_STARTED = 201;
-
-	public static final int DEBUGGING_ENGINE_NOT_CONNECTED = 202;
-
-	public final static String ID_PLUGIN = "org.eclipse.dltk.launching";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.launching";
 
 	public static final String ID_EXTENSION_POINT_RUNTIME_BUILDPATH_ENTRIES = "runtimeBuildpathEntries"; //$NON-NLS-1$
 
-	public static final String LAUNCH_COMMAND_LINE = ID_PLUGIN
+	public static final String LAUNCH_COMMAND_LINE = PLUGIN_ID
 			+ ".LAUNCH_COMMAND_LINE";
 
 	/**
@@ -107,7 +101,7 @@ public class DLTKLaunchingPlugin extends Plugin implements
 	 * Convenience method which returns the unique identifier of this plug-in.
 	 */
 	public static String getUniqueIdentifier() {
-		return ID_PLUGIN;
+		return PLUGIN_ID;
 	}
 
 	public static DLTKLaunchingPlugin getDefault() {
@@ -234,7 +228,7 @@ public class DLTKLaunchingPlugin extends Plugin implements
 	 */
 	private void initializeRuntimeBuildpathExtensions() {
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry()
-				.getExtensionPoint(DLTKLaunchingPlugin.ID_PLUGIN,
+				.getExtensionPoint(DLTKLaunchingPlugin.PLUGIN_ID,
 						ID_EXTENSION_POINT_RUNTIME_BUILDPATH_ENTRIES);
 		IConfigurationElement[] configs = extensionPoint
 				.getConfigurationElements();

@@ -10,6 +10,7 @@
 
 package org.eclipse.dltk.ui.preferences;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,7 +19,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.ui.dialogs.StatusInfo;
 import org.eclipse.dltk.internal.ui.dialogs.StatusUtil;
@@ -57,6 +60,23 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
  */
 public abstract class AbstractConfigurationBlock implements
 		IPreferenceConfigurationBlock {
+
+	protected static class FilePathValidator implements IInputValidator {
+		public String isValid(String newText) {
+			IPath path = Path.fromOSString(newText);
+			File file = path.toFile();
+
+			String error = null;
+			if ("".equals(newText)) {
+				error = "Empty path"; //ScriptDebugPreferencesMessages.EmptyPath;
+			} else if (!file.exists()) {
+				error = "File not exists"; //ScriptDebugPreferencesMessages.FileDoesNotExist;
+			} else if (!file.isFile()) {
+				error = "Not a file"; //  ScriptDebugPreferencesMessages.InvalidFileType;
+			}
+			return error;
+		}
+	}
 
 	/**
 	 * Use as follows:
@@ -460,7 +480,7 @@ public abstract class AbstractConfigurationBlock implements
 	 * @param indentation
 	 *            the field's indentation
 	 * @param isNumber
-	 *            <code>true</code> iff this text field is used to e4dit a
+	 *            <code>true</code> iff this text field is used to edit a
 	 *            number
 	 * @return the controls added
 	 */

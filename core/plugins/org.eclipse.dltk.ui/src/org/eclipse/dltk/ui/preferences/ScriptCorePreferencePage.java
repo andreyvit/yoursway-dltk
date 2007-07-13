@@ -10,34 +10,22 @@
 package org.eclipse.dltk.ui.preferences;
 
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.dltk.ui.util.SWTFactory;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public class ScriptCorePreferencePage extends
 		AbstractConfigurationBlockPreferencePage {
 
-	private static class GlobalConfigurationBlock extends
-			AbstractConfigurationBlock {
-
-		public GlobalConfigurationBlock(OverlayPreferenceStore store,
-				PreferencePage mainPreferencePage) {
-			super(store, mainPreferencePage);		
-		}
-
-		public Control createControl(Composite parent) {
-			initializeDialogUnits(parent);
-			Composite composite = new Composite(parent, SWT.NONE);
-			composite.setLayout(new GridLayout());
-			return composite;
-		}
-	}
-
 	protected IPreferenceConfigurationBlock createConfigurationBlock(
-			OverlayPreferenceStore overlayPreferenceStore) {
-		return new GlobalConfigurationBlock(overlayPreferenceStore, this);
+			OverlayPreferenceStore store) {
+		return new ImprovedAbstractConfigurationBlock(store, this) {
+			public Control createControl(Composite parent) {
+				return SWTFactory.createComposite(parent, parent.getFont(), 1,
+						1, GridData.FILL);
+			}
+		};
 	}
 
 	protected String getHelpId() {
@@ -45,7 +33,7 @@ public class ScriptCorePreferencePage extends
 	}
 
 	protected void setDescription() {
-		setDescription(""); // TODO: add description or some useful information
+		setDescription(""); // TODO:
 	}
 
 	protected void setPreferenceStore() {

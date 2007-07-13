@@ -38,7 +38,6 @@ import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
-import org.eclipse.dltk.dbgp.internal.commands.DbgpBaseCommands;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.IDbgpService;
@@ -49,7 +48,7 @@ import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.core.model.MethodEntryManager;
 
 public class ScriptDebugTarget extends ScriptDebugElement implements
-		IScriptDebugTarget, IDbgpThreadManagerListener {
+		IScriptDebugTarget, IScriptThreadManagerListener {
 
 	private static final String ON_EXIT = "suspendOnExit";
 
@@ -75,7 +74,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	private boolean disconnected;
 
-	private final ScriptThreadManager threadManager;
+	private final IScriptThreadManager threadManager;
 
 	private final ScriptBreakpointManager breakpointManager;
 
@@ -120,20 +119,29 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	private URI scriptUri;
 	private int scriptNonEmptyLine = -1;
 
+	private static final String ATTR_PROJECT = "project";
+	private static final String ATTR_SCRIPT = "mainScript";
+
 	private void setupScriptParameters(ILaunchConfiguration configuration)
 			throws CoreException {
-		String projectName = configuration.getAttribute("project",
+		final String projectName = configuration.getAttribute(ATTR_PROJECT,
 				(String) null);
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
-				projectName);
 
-		String scriptName = configuration.getAttribute("mainScript",
+		final String scriptName = configuration.getAttribute(ATTR_SCRIPT,
 				(String) null);
-		IResource resource = project.findMember(scriptName);
 
-		if (resource instanceof IFile) {
-			scriptUri = ScriptLineBreakpoint.makeUri((IFile) resource);
-			scriptNonEmptyLine = findFirstNonEmptyScriptLine((IFile) resource);
+		if (projectName != null && scriptName != null) {
+			final IProject project = ResourcesPlugin.getWorkspace().getRoot()
+					.getProject(projectName);
+
+			if (project != null) {
+				final IResource resource = project.findMember(scriptName);
+
+				if (resource instanceof IFile) {
+					scriptUri = ScriptLineBreakpoint.makeUri((IFile) resource);
+					scriptNonEmptyLine = findFirstNonEmptyScriptLine((IFile) resource);
+				}
+			}
 		}
 	}
 
@@ -155,7 +163,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		this.process = process;
 		this.launch = launch;
 
-		this.threadManager = new ScriptThreadManager(this);
+		this.threadManager = new /*New*/ScriptThreadManager(this);
 		this.dbgpId = id;
 		this.dbgpService = dbgpService;
 		this.dbgpService.registerAcceptor(this.dbgpId, this.threadManager);
@@ -332,8 +340,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	// IDbgpThreadManagerListener
 	public void threadAccepted(IScriptThread thread, boolean first) {
 		if (first) {
-
-			Preferences prefs = DLTKDebugPlugin.getDefault()
+			final Preferences prefs = DLTKDebugPlugin.getDefault()
 					.getPluginPreferences();
 			boolean breakOnFirstLine = prefs
 					.getBoolean(DebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
@@ -359,10 +366,10 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	private void initSuspends(IScriptThread thread) throws DbgpException {
-		thread.getDbgpSession().getCoreCommands().setProperty(
-				SUSPEND_ON_ENTRY, -1, Boolean.toString(suspendOnMethodEntry));
-		thread.getDbgpSession().getCoreCommands().setProperty(
-				SUSPEND_ON_EXIT, -1, Boolean.toString(suspendOnMethodExit));
+		thread.getDbgpSession().getCoreCommands().setProperty(SUSPEND_ON_ENTRY,
+				-1, Boolean.toString(suspendOnMethodEntry));
+		thread.getDbgpSession().getCoreCommands().setProperty(SUSPEND_ON_EXIT,
+				-1, Boolean.toString(suspendOnMethodExit));
 	}
 
 	public void allThreadsTerminated() {
@@ -424,8 +431,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 				l2: for (int a = 0; a < threads.length; a++) {
 					IScriptThread scr = (IScriptThread) threads[a];
 					try {
-						scr.getDbgpSession().getCoreCommands().setProperty(
-								SUSPEND_ON_ENTRY, -1, Boolean.toString(suspend));
+						scr.getDbgpSession().getCoreCommands()
+								.setProperty(SUSPEND_ON_ENTRY, -1,
+										Boolean.toString(suspend));
 					} catch (DbgpException e) {
 						e.printStackTrace();
 						ok = false;
