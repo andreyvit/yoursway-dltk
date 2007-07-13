@@ -17,6 +17,7 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.ruby.ast.RubyBlock;
 
 public class OffsetTargetedASTVisitor extends ASTVisitor {
 
@@ -92,7 +93,14 @@ public class OffsetTargetedASTVisitor extends ASTVisitor {
 		return visitGeneralInteresting(s);
 	}
 
+	protected boolean visitInteresting(RubyBlock b) {
+		return true;
+	}
+	
 	protected boolean visitGeneralInteresting(ASTNode s) {
+		if (s instanceof RubyBlock) {
+			return visitInteresting((RubyBlock) s);
+		}
 		return true;
 	}
 

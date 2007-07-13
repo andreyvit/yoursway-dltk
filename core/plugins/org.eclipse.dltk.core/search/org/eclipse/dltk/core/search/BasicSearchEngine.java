@@ -807,17 +807,17 @@ public class BasicSearchEngine {
 			}
 		}
 		final String singleWkcpPath = workingCopyPath;
-		final List documentPathFilter = new ArrayList();
+//		final List documentPathFilter = new ArrayList();
 		// Index requestor
 		IndexQueryRequestor searchRequestor = new IndexQueryRequestor(){
 			public boolean acceptIndexMatch(String documentPath,
 					SearchPattern indexRecord, SearchParticipant participant,
 					AccessRuleSet access) {
-				IPath fullPath = new Path(documentPath);
-				if( documentPathFilter.contains(fullPath)) {
-					return true;
-				}
-				documentPathFilter.add(fullPath);
+//				IPath fullPath = new Path(documentPath);
+//				if( documentPathFilter.contains(fullPath)) {
+//					return true;
+//				}
+//				documentPathFilter.add(fullPath);
 				// Filter unexpected types
 				TypeDeclarationPattern record = (TypeDeclarationPattern)indexRecord;
 				if (record.enclosingTypeNames == IIndexConstants.ONE_ZERO_CHAR) {

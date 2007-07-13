@@ -14,6 +14,7 @@ public class AllTests {
 		suite.addTestSuite(ScriptElementLabelsTest.class);
 		
 		suite.addTest(PackageExplorerTests.suite());
+
 		//$JUnit-END$
 		return suite;
 	}

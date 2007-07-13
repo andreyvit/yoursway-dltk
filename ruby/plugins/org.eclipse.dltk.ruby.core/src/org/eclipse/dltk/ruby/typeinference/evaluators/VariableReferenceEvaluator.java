@@ -25,6 +25,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.ruby.ast.RubyCallArgument;
+import org.eclipse.dltk.ruby.ast.RubyDVarExpression;
 import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
 import org.eclipse.dltk.ruby.ast.RubySingletonMethodDeclaration;
 import org.eclipse.dltk.ruby.ast.RubyVariableKind;
@@ -86,8 +87,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 	}
 
 	public IGoal[] init() {
-		VariableReference ref = (VariableReference) ((ExpressionTypeGoal) goal)
-				.getExpression();
+		VariableReference ref = getGoalVariableReference ();
 		if (ref.getVariableKind() == RubyVariableKind.LOCAL) {
 			IContext context = goal.getContext();
 			ModuleDeclaration rootNode = ((ISourceModuleContext) context)
@@ -179,10 +179,21 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 		}
 		return argPos;
 	}
+	
+	private VariableReference getGoalVariableReference () {
+		ASTNode expression = ((ExpressionTypeGoal) goal)
+		.getExpression();
+		if (expression instanceof VariableReference)
+			return (VariableReference) expression;
+		if (expression instanceof RubyDVarExpression) {
+			RubyDVarExpression dvar = (RubyDVarExpression) expression;
+			return new VariableReference(dvar.sourceStart(), dvar.sourceEnd(), dvar.getName(), RubyVariableKind.LOCAL);
+		}
+		return null;
+	}
 
 	private ASTNode getArgFromCall(CallExpression expr) {
-		VariableReference ref = (VariableReference) ((ExpressionTypeGoal) goal)
-				.getExpression();
+		VariableReference ref = getGoalVariableReference ();
 		if (ref.getVariableKind() != RubyVariableKind.LOCAL)
 			return null;
 

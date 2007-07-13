@@ -27,6 +27,7 @@ import org.eclipse.dltk.ruby.ast.RubyCallArgument;
 import org.eclipse.dltk.ruby.ast.RubyCaseStatement;
 import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyConstantDeclaration;
+import org.eclipse.dltk.ruby.ast.RubyDVarExpression;
 import org.eclipse.dltk.ruby.ast.RubyDynamicBackquoteStringExpression;
 import org.eclipse.dltk.ruby.ast.RubyDynamicStringExpression;
 import org.eclipse.dltk.ruby.ast.RubyHashExpression;
@@ -97,7 +98,7 @@ public class DefaultRubyEvaluatorFactory implements IGoalEvaluatorFactory {
 
 		if (expr instanceof BooleanLiteral)
 			return new BooleanLiteralEvaluator(goal);
-		if (expr instanceof VariableReference)
+		if (expr instanceof VariableReference || expr instanceof RubyDVarExpression)
 			return new VariableReferenceEvaluator(goal);
 
 		if (expr instanceof RubyAssignment)
