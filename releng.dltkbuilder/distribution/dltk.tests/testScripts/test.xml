@@ -190,6 +190,13 @@
 		</antcall>
 	</target>
 
+	<target name="core-validators-tests" description="Runs the org.eclipse.dltk.validators.core.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.dltk.validators.core.tests}" />
+			<param name="report" value="org.eclipse.dltk.validators.core.tests" />
+		</antcall>
+	</target>
+
 
 	<!-- DLTK Ruby -->
 
@@ -471,6 +478,9 @@
 
 		<echo message="Starting Core UI tests" />
 		<antcall target="core-ui-tests" />
+
+		<echo message="Starting Core Validators tests" />
+		<antcall target="core-validators-tests" />
 
 		<echo message="Starting Ruby Core tests" />
 		<antcall target="ruby-core-tests" />
