@@ -237,18 +237,20 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 		return null;
 	}
 
-	public IInterpreterRunner getInterpreterRunner(String mode) {
-		// Handle debug mode
-		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			final String natureId = getNatureId();
-			DebuggingEngineManager manager = DebuggingEngineManager
-					.getInstance();
-			IDebuggingEngine engine = manager
-					.getSelectedDebuggineEngine(natureId);
+	protected IInterpreterRunner getDebugInterpreterRunner() {
+		DebuggingEngineManager manager = DebuggingEngineManager.getInstance();
+		IDebuggingEngine engine = manager.getSelectedDebuggineEngine(getNatureId());
 
-			if (engine != null) {
-				return engine.getRunner(this);
-			}
+		if (engine != null) {
+			return engine.getRunner(this);
+		}
+
+		return null;
+	}
+
+	public IInterpreterRunner getInterpreterRunner(String mode) {
+		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
+			return getDebugInterpreterRunner();
 		}
 
 		return null;

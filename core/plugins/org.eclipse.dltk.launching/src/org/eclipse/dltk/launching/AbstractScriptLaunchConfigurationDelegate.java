@@ -87,8 +87,16 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 */
 	protected void abort(String message, Throwable exception, int code)
 			throws CoreException {
-		throw new CoreException(new Status(IStatus.ERROR, DLTKLaunchingPlugin
-				.PLUGIN_ID, code, message, exception));
+		throw new CoreException(new Status(IStatus.ERROR,
+				DLTKLaunchingPlugin.PLUGIN_ID, code, message, exception));
+	}
+
+	protected void abort(String message, Throwable exception)
+			throws CoreException {
+		throw new CoreException(new Status(IStatus.ERROR,
+				DLTKLaunchingPlugin.PLUGIN_ID,
+				ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR, message,
+				exception));
 	}
 
 	/**
@@ -122,21 +130,21 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 */
 	public IInterpreterInstall verifyInterpreterInstall(
 			ILaunchConfiguration configuration) throws CoreException {
-		IInterpreterInstall Interpreter = getInterpreterInstall(configuration);
-		if (Interpreter == null) {
+		IInterpreterInstall interpreter = getInterpreterInstall(configuration);
+		if (interpreter == null) {
 			abort(
 					LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_The_specified_InterpreterEnvironment_installation_does_not_exist_4,
 					null,
 					ScriptLaunchConfigurationConstants.ERR_INTERPRETER_INSTALL_DOES_NOT_EXIST);
 
 		}
-		File location = Interpreter.getInstallLocation();
+		File location = interpreter.getInstallLocation();
 		if (location == null) {
 			abort(
 					MessageFormat
 							.format(
 									LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_InterpreterEnvironment_home_directory_not_specified_for__0__5,
-									new String[] { Interpreter.getName() }),
+									new String[] { interpreter.getName() }),
 					null,
 					ScriptLaunchConfigurationConstants.ERR_INTERPRETER_INSTALL_DOES_NOT_EXIST);
 		}
@@ -145,12 +153,12 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 					MessageFormat
 							.format(
 									LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_InterpreterEnvironment_home_directory_for__0__does_not_exist___1__6,
-									new String[] { Interpreter.getName(),
+									new String[] { interpreter.getName(),
 											location.getAbsolutePath() }),
 					null,
 					ScriptLaunchConfigurationConstants.ERR_INTERPRETER_INSTALL_DOES_NOT_EXIST);
 		}
-		return Interpreter;
+		return interpreter;
 	}
 
 	/**
@@ -647,7 +655,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 */
 	public String verifyMainScriptName(ILaunchConfiguration configuration)
 			throws CoreException {
-		String name = getMainScriptName(configuration);
+		final String name = getMainScriptName(configuration);
 		if (name == null) {
 			abort(
 					LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_Main_type_not_specified_11,
@@ -727,25 +735,34 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 					new SubProgressMonitor(monitor, 1));
 
 		} catch (CoreException e) {
-			// consult status handler if there is one
-			IStatus status = e.getStatus();
-			IStatusHandler handler = DebugPlugin.getDefault().getStatusHandler(
-					status);
-
-			if (handler == null) {
-				throw e;
-			}
-
-			handler.handleStatus(status, this);
+			tryHandleStatus(e, this);
 		} finally {
 			monitor.done();
 		}
 	}
 
+	protected static void tryHandleStatus(CoreException e, Object source)
+			throws CoreException {
+		final IStatus status = e.getStatus();
+
+		final IStatusHandler handler = DebugPlugin.getDefault()
+				.getStatusHandler(status);
+
+		if (handler == null) {
+			throw e;
+		}
+
+		handler.handleStatus(status, source);
+	}
+
 	protected void runRunner(ILaunchConfiguration configuration,
 			IInterpreterRunner runner, InterpreterConfig config,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		runner.run(config, launch, monitor);
+		try {
+			runner.run(config, launch, monitor);
+		} catch (CoreException e) {
+			tryHandleStatus(e, runner);
+		}
 	}
 
 	protected String getWorkingDir(ILaunchConfiguration configuration)
@@ -859,7 +876,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			abort(
 					MessageFormat
 							.format(
-									LaunchingMessages.ScriptLaunchConfigurationDelegate_0,
+									LaunchingMessages.InterpreterRunnerDoesntExist,
 									new String[] { install.getName(), mode }),
 					null,
 					ScriptLaunchConfigurationConstants.ERR_INTERPRETER_RUNNER_DOES_NOT_EXIST);

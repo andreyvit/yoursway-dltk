@@ -137,9 +137,9 @@ public class InterpreterContainerInitializer extends
 	public void requestBuildpathContainerUpdate(IPath containerPath,
 			IScriptProject project, IBuildpathContainer containerSuggestion)
 			throws CoreException {
-		IInterpreterInstall Interpreter = resolveInterpreter(
+		IInterpreterInstall interpreter = resolveInterpreter(
 				getNatureFromProject(project), containerPath);
-		if (Interpreter == null) {
+		if (interpreter == null) {
 			IStatus status = new Status(
 					IStatus.ERROR,
 					DLTKLaunchingPlugin.getUniqueIdentifier(),
@@ -186,7 +186,7 @@ public class InterpreterContainerInitializer extends
 				throw new CoreException(status);
 			}
 		}
-		InterpreterStandin standin = new InterpreterStandin(Interpreter);
+		InterpreterStandin standin = new InterpreterStandin(interpreter);
 		standin.setLibraryLocations(libs);
 		standin.convertToRealInterpreter();
 		ScriptRuntime.saveInterpreterConfiguration();

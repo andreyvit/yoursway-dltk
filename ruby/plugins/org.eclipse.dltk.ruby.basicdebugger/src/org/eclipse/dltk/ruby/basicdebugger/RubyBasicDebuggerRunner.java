@@ -60,6 +60,8 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 			throws CoreException {
 		// Get debugger source location
 		final IPath sourceLocation = deploy();
+		
+		
 
 		final IPath scriptFile = sourceLocation.append(DEBUGGER_SCRIPT);
 

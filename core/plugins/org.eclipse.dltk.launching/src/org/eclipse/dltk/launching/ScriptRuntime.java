@@ -698,7 +698,7 @@ public final class ScriptRuntime {
 	private static void abort(String message, int code, Throwable exception)
 			throws CoreException {
 		throw new CoreException(new Status(IStatus.ERROR, DLTKLaunchingPlugin
-				.getUniqueIdentifier(), code, message, exception));
+				.PLUGIN_ID, code, message, exception));
 	}
 
 	/**

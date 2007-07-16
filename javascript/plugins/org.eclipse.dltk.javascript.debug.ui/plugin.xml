@@ -68,15 +68,7 @@
             id="org.eclipse.dltk.javascript.internal.debug.ui.JavaScriptDebugHover">
       </hover>
    </extension>
-   <extension
-         point="org.eclipse.debug.core.statusHandlers">
-      <statusHandler
-            class="org.eclipse.dltk.javascript.internal.debug.ui.NoDebuggingEgineJavaScriptStatusHandler"
-            code="180"
-            id="org.eclipse.dltk.javascript.debug.ui.NoDebuggingEgineTclStatusHandler"
-            plugin="org.eclipse.dltk.javascript.launching"/>
-            
-   </extension>
+
       <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup

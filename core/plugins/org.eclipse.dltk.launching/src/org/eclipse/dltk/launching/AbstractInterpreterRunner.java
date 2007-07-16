@@ -38,7 +38,7 @@ import com.ibm.icu.text.MessageFormat;
  */
 public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	private IInterpreterInstall interpreterInstall;
-	
+
 	protected IInterpreterInstall getInstall() {
 		return interpreterInstall;
 	}
@@ -55,12 +55,13 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	protected String constructProgramString() throws CoreException {
 		File exe = interpreterInstall.getInstallLocation();
 		if (exe == null) {
-			abort(
-					MessageFormat
-							.format(
-									LaunchingMessages.StandardInterpreterRunner_Unable_to_locate_executable_for,
-									new String[] { interpreterInstall.getName() }),
-					null, ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
+			final String message = MessageFormat
+					.format(
+							LaunchingMessages.StandardInterpreterRunner_Unable_to_locate_executable_for,
+							new String[] { interpreterInstall.getName() });
+
+			abort(message, null,
+					ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
 		}
 		return exe.getAbsolutePath();
 	}
@@ -108,16 +109,18 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		return buf.toString();
 	}
 
-	// Abort helpers
-	protected void abort(String message, Throwable exception, int code)
+	protected void abort(String message, Throwable exception)
 			throws CoreException {
-		abort(getPluginId(), message, exception, code);
+		throw new CoreException(new Status(IStatus.ERROR,
+				DLTKLaunchingPlugin.PLUGIN_ID,
+				ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR, message,
+				exception));
 	}
 
-	protected void abort(String pluginId, String message, Throwable exception,
-			int code) throws CoreException {
-		throw new CoreException(new Status(IStatus.ERROR, pluginId, code,
-				message, exception));
+	protected void abort(String message, Throwable exception, int code)
+			throws CoreException {
+		throw new CoreException(new Status(IStatus.ERROR,
+				DLTKLaunchingPlugin.PLUGIN_ID, code, message, exception));
 	}
 
 	// Execution helpers
@@ -167,8 +170,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		IProcess process = DebugPlugin.newProcess(launch, p, label, attributes);
 		if (process == null) {
 			p.destroy();
-			abort(LaunchingMessages.AbstractInterpreterRunner_0, null,
-					ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
+			abort(LaunchingMessages.AbstractInterpreterRunner_0, null);
 		}
 		return process;
 	}
@@ -244,6 +246,4 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		// TODO: Handling of
 		// IDLTKLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT
 	}
-
-	protected abstract String getPluginId();
 }

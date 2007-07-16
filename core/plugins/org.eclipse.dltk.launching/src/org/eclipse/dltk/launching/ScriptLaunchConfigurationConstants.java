@@ -117,7 +117,7 @@ public class ScriptLaunchConfigurationConstants {
 
 	public static final int ERR_NOT_A_SCRIPT_PROJECT = 102;
 
-	public static final int ERR_UNSPECIFIED_INTERPRETER_INSTALL = 104;
+	// public static final int ERR_UNSPECIFIED_INTERPRETER_INSTALL = 104;
 
 	public static final int ERR_INTERPRETER_INSTALL_DOES_NOT_EXIST = 105;
 
@@ -130,12 +130,9 @@ public class ScriptLaunchConfigurationConstants {
 	public static final int ERR_UNSPECIFIED_PROJECT = 109;
 
 	public static final int ERR_NO_DEFAULT_INTERPRETER_INSTALL = 167;
-	
-	
-	// Debugging engine errors
-	public static final int ERR_NO_DEBUGGING_ENGINE = 180;
-	
-	public static final int ERR_DEBUGGING_ENGINE_NOT_STARTED = 201;
 
-	public static final int ERR_DEBUGGING_ENGINE_NOT_CONNECTED = 202;
+	// Debugging engine errors
+	public static final int ERR_DEBUGGING_ENGINE_NOT_CONFIGURED = 500;
+
+	public static final int ERR_NO_DEFAULT_DEBUGGING_ENGINE = 510;
 }

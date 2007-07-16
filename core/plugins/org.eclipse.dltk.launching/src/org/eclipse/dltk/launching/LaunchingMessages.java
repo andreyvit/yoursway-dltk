@@ -25,7 +25,7 @@ public class LaunchingMessages extends NLS {
 	public static String DefaultProjectBuildpathEntry_3;
 	public static String DefaultProjectBuildpathEntry_4;
 
-	public static String ScriptLaunchConfigurationDelegate_0;
+	public static String InterpreterRunnerDoesntExist;
 
 	public static String ScriptRuntime_badFormat;
 	public static String ScriptRuntime_exceptionsOccurred;

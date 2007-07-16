@@ -154,14 +154,6 @@
 			</actionSet>
 		</perspectiveExtension>
 	</extension>
-	
-	<extension point="org.eclipse.debug.core.statusHandlers">
-		<statusHandler
-			class="org.eclipse.dltk.tcl.internal.debug.ui.NoDebuggingEngineTclStatusHandler"
-			code="180"
-			id="org.eclipse.dltk.tcl.debug.ui.NoDebuggingEgineTclStatusHandler"
-			plugin="org.eclipse.dltk.tcl.launching" />
-	</extension>
 
 	<extension
 		point="org.eclipse.debug.ui.launchConfigurationTypeImages">

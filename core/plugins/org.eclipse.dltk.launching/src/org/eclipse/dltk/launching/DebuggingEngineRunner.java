@@ -111,9 +111,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 				return DLTKDebugPlugin.getDefault().creaeDbgpService(port);
 			}
 		} catch (Exception e) {
-			abort(DLTKLaunchingPlugin.PLUGIN_ID,
-					InterpreterMessages.errDbgpServiceNotStarted, null,
-					ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
+			abort(InterpreterMessages.errDbgpServiceNotStarted, null);
 		}
 
 		return null;
@@ -176,11 +174,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 					super.run(newConfig, launch, monitor);
 				}
 			} catch (CoreException e) {
-				abort(
-						DLTKLaunchingPlugin.PLUGIN_ID,
-						InterpreterMessages.errDebuggingEngineNotStarted,
-						null,
-						ScriptLaunchConfigurationConstants.ERR_DEBUGGING_ENGINE_NOT_STARTED);
+				abort(InterpreterMessages.errDebuggingEngineNotStarted, null);
 			}
 
 			// Waiting for debugging engine connect
@@ -193,11 +187,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 					(IScriptDebugTarget) launch.getDebugTarget());
 
 			if (!waiter.waitThread(waitingTimeout)) {
-				abort(
-						DLTKLaunchingPlugin.PLUGIN_ID,
-						InterpreterMessages.errDebuggingEngineNotConnected,
-						null,
-						ScriptLaunchConfigurationConstants.ERR_DEBUGGING_ENGINE_NOT_CONNECTED);
+				abort(InterpreterMessages.errDebuggingEngineNotConnected, null);
 			}
 		} catch (CoreException e) {
 			launch.terminate();
@@ -207,12 +197,12 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		// Happy debugging :)
 	}
 
-	protected String getDebugModelId() {
+	public String getDebugModelId() {
 		return ScriptDebugManager.getInstance().getDebugModelByNature(
 				getInstall().getNatureId());
 	}
 
-	protected IDebuggingEngine getDebuggingEngine() {
+	public IDebuggingEngine getDebuggingEngine() {
 		return DebuggingEngineManager.getInstance().getDebuggingEngine(
 				getDebuggingEngineId());
 	}

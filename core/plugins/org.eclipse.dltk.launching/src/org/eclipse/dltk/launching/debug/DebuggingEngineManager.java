@@ -133,6 +133,11 @@ public class DebuggingEngineManager {
 		return NO_ENGINES;
 	}
 
+	public boolean hasDebuggingEngines(String natureId) {
+		final List engines = (List) natureToEnginesMap.get(natureId);
+		return !engines.isEmpty();
+	}
+
 	public IDebuggingEngine getDebuggingEngine(String id) {
 		final Iterator it = natureToEnginesMap.keySet().iterator();
 		while (it.hasNext()) {

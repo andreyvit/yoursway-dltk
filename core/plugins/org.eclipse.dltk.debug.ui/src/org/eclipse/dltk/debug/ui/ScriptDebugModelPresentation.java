@@ -137,25 +137,37 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		return thread.toString();
 	}
 
+	protected static IPath getStackFrameRelativePath(
+			IScriptStackFrame stackFrame) throws CoreException {
+		final URI uri = stackFrame.getSourceURI();
+		final IProject project = getProject(stackFrame);
+
+		final IPath projectPath = project.getLocation();
+		final IPath realPath = new Path(uri.getPath());
+
+		IPath path = realPath;
+		if (projectPath.isPrefixOf(realPath)) {
+			path = new Path("");
+			int index = projectPath.segmentCount();
+			while (index < realPath.segmentCount()) {
+				path = path.append(realPath.segment(index));
+				++index;
+			}
+		}
+
+		return path;
+	}
+
 	protected String getStackFrameText(IScriptStackFrame stackFrame) {
 		// TODO: improve later
 		try {
-			final String sourceLine = stackFrame.getSourceLine();
-			final URI uri = stackFrame.getSourceURI();
-			final IProject project = getProject(stackFrame);
-
-			final IPath projectPath = project.getLocation();
-			final IPath realPath = new Path(uri.getPath());
-
-			IPath path = realPath;
-			if (projectPath.isPrefixOf(realPath)) {
-				path = new Path("");
-				int index = projectPath.segmentCount();
-				while (index < realPath.segmentCount()) {
-					path = path.append(realPath.segment(index));
-					++index;
-				}
+			String sourceLine = stackFrame.getSourceLine();
+			if (sourceLine == null || sourceLine.length() == 0) {
+				// TODO: fix later
+				sourceLine = "Stack frame #" + stackFrame.getLevel();
 			}
+
+			final IPath path = getStackFrameRelativePath(stackFrame);
 
 			// TODO: may be make external option for file:line
 			return MessageFormat.format("{0} [{1}: {2}]", new Object[] {

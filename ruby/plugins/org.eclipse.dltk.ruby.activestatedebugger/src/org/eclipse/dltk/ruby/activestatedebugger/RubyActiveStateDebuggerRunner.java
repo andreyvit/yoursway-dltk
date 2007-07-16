@@ -41,7 +41,12 @@ public class RubyActiveStateDebuggerRunner extends
 				.getPreferenceStore()
 				.getString(
 						RubyActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY);
-		return new File(path);
+
+		if (path != null) {
+			return new File(path);
+		}
+
+		return null;
 	}
 
 	protected InterpreterConfig alterConfig(String exe,

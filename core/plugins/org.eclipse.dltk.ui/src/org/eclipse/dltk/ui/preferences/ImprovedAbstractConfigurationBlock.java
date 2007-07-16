@@ -141,7 +141,7 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 		protected void bindControl(final Text text, final String key,
 				IFieldValidator validator) {
 			textControls.put(text, key);
-			
+
 			if (validator != null) {
 				validatorManager.registerValidator(text, validator);
 			}
@@ -158,7 +158,7 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 						status = validator.validate(value);
 					}
 
-					if (status.isOK()) {
+					if (status.getSeverity() != IStatus.ERROR) {
 						store.setValue(key, value);
 					}
 
@@ -186,7 +186,8 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 		dependencyManager.initialize();
 	}
 
-	public ImprovedAbstractConfigurationBlock(IPreferenceStore store, PreferencePage page) {
+	public ImprovedAbstractConfigurationBlock(IPreferenceStore store,
+			PreferencePage page) {
 		this.bindManager = new BindingManager(store, page);
 		this.dependencyManager = new DependencyManager();
 	}

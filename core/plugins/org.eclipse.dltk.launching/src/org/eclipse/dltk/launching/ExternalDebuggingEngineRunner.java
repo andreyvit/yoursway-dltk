@@ -3,9 +3,6 @@ package org.eclipse.dltk.launching;
 import java.io.File;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.launching.InterpreterMessages;
 
 public abstract class ExternalDebuggingEngineRunner extends
@@ -17,26 +14,22 @@ public abstract class ExternalDebuggingEngineRunner extends
 
 	protected final InterpreterConfig alterConfig(String exe,
 			InterpreterConfig config) throws CoreException {
-		final File debugEnginePath = getDebuggingEnginePath();
+		final File file = getDebuggingEnginePath();
 
 		// Checking debugging engine path
-		IStatus status = null;
-		if (debugEnginePath == null) {
-			status = new Status(IStatus.ERROR, DLTKLaunchingPlugin.PLUGIN_ID,
-					ScriptLaunchConfigurationConstants.ERR_NO_DEBUGGING_ENGINE,
+		if (file == null || file.toString().length() == 0) {
+			abort(
 					InterpreterMessages.errDebuggingEnginePathNotSpecified,
-					null);
-		} else if (!debugEnginePath.isFile()) {
-			status = new Status(IStatus.ERROR, DLTKLaunchingPlugin.PLUGIN_ID,
-					ScriptLaunchConfigurationConstants.ERR_NO_DEBUGGING_ENGINE,
-					InterpreterMessages.errDebuggingEnginePathInvalid, null);
+					null,
+					ScriptLaunchConfigurationConstants.ERR_DEBUGGING_ENGINE_NOT_CONFIGURED);
+		} else if (!file.isFile()) {
+			abort(
+					InterpreterMessages.errDebuggingEnginePathInvalid,
+					null,
+					ScriptLaunchConfigurationConstants.ERR_DEBUGGING_ENGINE_NOT_CONFIGURED);
 		}
 
-		if (status != null) {
-			throw new CoreException(status);
-		}
-
-		return alterConfig(exe, config, debugEnginePath.toString());
+		return alterConfig(exe, config, file.toString());
 	}
 
 	protected abstract File getDebuggingEnginePath();

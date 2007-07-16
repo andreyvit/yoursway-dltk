@@ -10,34 +10,35 @@
 	<!-- Extensions -->
 
 	<extension point="org.eclipse.debug.core.statusHandlers">
+	    <!-- ERR_NO_DEFAULT_INTERPRETER_INSTALL = 167 -->
 		<statusHandler
-			class="org.eclipse.dltk.internal.debug.ui.handlers.DbgpServiceNotAvailableStatusHandler"
-			code="200"
-			id="org.eclipse.dltk.internal.debug.ui.DbgpServiceNotAvailableStatusHandler"
+			class="org.eclipse.dltk.internal.debug.ui.handlers.NoDefaultInterperterStatusHandler"
+			code="167" 
+			id="org.eclipse.dltk.statushandlers.nodefaultinterpreter"
 			plugin="org.eclipse.dltk.launching">
 		</statusHandler>
+		
+		<!-- ERR_INTERPRETER_RUNNER_DOES_NOT_EXIST -->
 		<statusHandler
-			class="org.eclipse.dltk.internal.debug.ui.handlers.DebuggingEngineNotStartedStatusHandler"
-			code="201"
-			id="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotStartedStatusHandler"
+			class="org.eclipse.dltk.internal.debug.ui.handlers.InterpreterRunnerNotFoundStatusHandler"
+			code="107" 
+			id="org.eclipse.dltk.statushandlers.nodefaultinterpreter"
 			plugin="org.eclipse.dltk.launching">
 		</statusHandler>
+	
+		<!-- ERR_DEBUGGING_ENGINE_NOT_CONFIGURED = 500 -->
 		<statusHandler
-			class="org.eclipse.dltk.internal.debug.ui.handlers.DebuggingEngineNotConnectedStatusHandler"
-			code="202"
-			id="org.eclipse.dltk.internal.debug.ui.DebuggingEngineNotConnectedStatusHandler"
+			class="org.eclipse.dltk.internal.debug.ui.handlers.DebuggingEngineNotConfiguredStatusHandler"
+			code="500" 
+			id="org.eclipse.dltk.statushandlers.debuggingenginenotconfigured"
 			plugin="org.eclipse.dltk.launching">
 		</statusHandler>
+			
+		<!-- ERR_NO_DEFAULT_DEBUGGING_ENGINE -->
 		<statusHandler
-			class="org.eclipse.dltk.internal.debug.ui.handlers.NoDefaultInterpreterStatusHandler"
-			code="167"
-			id="org.eclipse.dltk.internal.debug.ui.NoDefaultInterpreterStatusHandler"
-			plugin="org.eclipse.dltk.launching">
-		</statusHandler>
-		<statusHandler
-			class="org.eclipse.dltk.internal.debug.ui.handlers.NoDebuggingEngineStatusHandler"
-			code="180"
-			id="org.eclipse.dltk.internal.debug.ui.handlers.NoDebuggingEngineStatusHandler"
+			class="org.eclipse.dltk.internal.debug.ui.handlers.NoDefaultDebuggingEngineStatus"
+			code="510" 
+			id="org.eclipse.dltk.statushandlers.nodefaultdebuggingengine"
 			plugin="org.eclipse.dltk.launching">
 		</statusHandler>
 	</extension>

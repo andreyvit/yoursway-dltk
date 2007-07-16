@@ -21,7 +21,7 @@ public class JavaScriptAndJDTDebuggerRunner extends DebuggingEngineRunner
 		super(install);
 	}
 
-	protected String getDebugModelId() {
+	public String getDebugModelId() {
 		return JavaScriptDebugPlugin.MODEL_ID;
 	}
 
