@@ -170,6 +170,7 @@
 	<!-- DLTK Core -->
 
 	<target name="core-tests" description="Runs the org.eclipse.dltk.core.tests test.xml">
+		<echo message="fourdman: hello from core-tests" />
 		<antcall target="runtests">
 			<param name="testPlugin" value="${org.eclipse.dltk.core.tests}" />
 			<param name="report" value="org.eclipse.dltk.core.tests" />
@@ -191,6 +192,9 @@
 	</target>
 
 	<target name="core-validators-tests" description="Runs the org.eclipse.dltk.validators.core.tests test.xml">
+		
+		<echo message="fourdman: hello from validators core-tests" />
+		
 		<antcall target="runtests">
 			<param name="testPlugin" value="${org.eclipse.dltk.validators.core.tests}" />
 			<param name="report" value="org.eclipse.dltk.validators.core.tests" />
@@ -218,6 +222,9 @@
 	<!-- DLTK Tcl -->
 
 	<target name="tcl-core-tests" description="Runs the org.eclipse.dltk.tcl.core.tests test.xml">
+		
+		<echo message="fourdman: hello from Tcl core-tests" />
+		
 		<antcall target="runtests">
 			<param name="testPlugin" value="${org.eclipse.dltk.tcl.core.tests}" />
 			<param name="report" value="org.eclipse.dltk.tcl.core.tests" />
