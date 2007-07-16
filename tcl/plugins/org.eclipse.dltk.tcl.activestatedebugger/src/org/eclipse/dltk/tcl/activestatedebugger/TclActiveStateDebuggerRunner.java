@@ -19,6 +19,8 @@ import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.debug.DbgpConstants;
 
 public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner {
+	public static final String ENGINE_ID = "org.eclipse.dltk.tcl.avtivestatedebugger";
+
 	private static final String HOST_KEY = "-host-ide";
 	private static final String PORT_KEY = "-port-ide";
 	private static final String SHELL_KEY = "-app-shell";
@@ -79,5 +81,9 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 		newConfig.addScriptArgs(config.getScriptArgs());
 
 		return newConfig;
+	}
+
+	protected String getDebuggingEngineId() {
+		return ENGINE_ID;
 	}
 }

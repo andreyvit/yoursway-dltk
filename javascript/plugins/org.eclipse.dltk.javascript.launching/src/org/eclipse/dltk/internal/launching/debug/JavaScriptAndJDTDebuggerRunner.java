@@ -40,4 +40,8 @@ public class JavaScriptAndJDTDebuggerRunner extends DebuggingEngineRunner
 	public void setRunnerConfig(IJavaScriptInterpreterRunnerConfig config) {
 		this.runnerconfig = config;
 	}
+
+	protected String getDebuggingEngineId() {
+		return "org.eclipse.dltk.internal.launching.debug.JavaScriptAndJDTDebuggerRunnerFactory";
+	}
 }

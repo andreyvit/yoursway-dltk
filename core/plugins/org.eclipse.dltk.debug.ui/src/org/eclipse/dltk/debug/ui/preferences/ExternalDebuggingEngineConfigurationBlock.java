@@ -68,9 +68,7 @@ public abstract class ExternalDebuggingEngineConfigurationBlock extends
 	public Control createControl(Composite parent) {
 		final Composite composite = SWTFactory.createComposite(parent, parent
 				.getFont(), 1, 1, GridData.FILL);
-
 		createEnginePath(composite);
-
 		return composite;
 	}
 	

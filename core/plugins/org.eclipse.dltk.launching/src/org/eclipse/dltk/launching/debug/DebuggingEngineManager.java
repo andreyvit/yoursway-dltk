@@ -45,7 +45,8 @@ public class DebuggingEngineManager {
 
 	private void addEngine(String natureId, IConfigurationElement element) {
 		final String id = element.getAttribute(ID);
-		final String preferencePageId = element.getAttribute(PREFERENCE_PAGE_ID);
+		final String preferencePageId = element
+				.getAttribute(PREFERENCE_PAGE_ID);
 		final String name = element.getAttribute(NAME);
 		final String description = element.getAttribute(DESCRIPTION);
 		final int priority = Integer.parseInt(element.getAttribute(PRIORITY));
@@ -55,15 +56,16 @@ public class DebuggingEngineManager {
 			if (object instanceof IInterpreterRunnerFactory) {
 				IInterpreterRunnerFactory factory = (IInterpreterRunnerFactory) object;
 
-				IDebuggingEngine engine = new DebuggingEngine(id, natureId, preferencePageId,
-						name, description, priority, factory);
+				IDebuggingEngine engine = new DebuggingEngine(id, natureId,
+						preferencePageId, name, description, priority, factory);
 
+				// Add to natureToEnginesMap
 				List engines = (List) natureToEnginesMap.get(natureId);
 				if (engines == null) {
-					natureToEnginesMap.put(natureId, new ArrayList());
+					engines = new ArrayList();
+					natureToEnginesMap.put(natureId, engines);
 				}
-
-				((List) natureToEnginesMap.get(natureId)).add(engine);
+				engines.add(engine);
 			}
 		} catch (CoreException e) {
 			e.printStackTrace();
@@ -118,10 +120,10 @@ public class DebuggingEngineManager {
 		loadExtenstionPoints();
 	}
 
-	private IDebuggingEngine[] NO_ENGINES = new IDebuggingEngine[0];
+	private static IDebuggingEngine[] NO_ENGINES = new IDebuggingEngine[0];
 
 	public IDebuggingEngine[] getDebuggingEngines(String natureId) {
-		List engines = (List) natureToEnginesMap.get(natureId);
+		final List engines = (List) natureToEnginesMap.get(natureId);
 
 		if (engines != null) {
 			return (IDebuggingEngine[]) engines
@@ -131,6 +133,28 @@ public class DebuggingEngineManager {
 		return NO_ENGINES;
 	}
 
+	public IDebuggingEngine getDebuggingEngine(String id) {
+		final Iterator it = natureToEnginesMap.keySet().iterator();
+		while (it.hasNext()) {
+			final List list = (List) natureToEnginesMap.get(it.next());
+			final Iterator listIt = list.iterator();
+			while (listIt.hasNext()) {
+				IDebuggingEngine engine = (IDebuggingEngine) listIt.next();
+				if (engine.getId().equals(id)) {
+					return engine;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * @deprecated
+	 * @param natureId
+	 * @param id
+	 * @return
+	 */
 	public IDebuggingEngine getDebuggingEngine(String natureId, String id) {
 		Iterator it = ((List) natureToEnginesMap.get(natureId)).iterator();
 		while (it.hasNext()) {

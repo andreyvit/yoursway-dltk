@@ -2,7 +2,6 @@ package org.eclipse.dltk.internal.debug.ui.actions;
 
 import java.text.MessageFormat;
 
-import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;

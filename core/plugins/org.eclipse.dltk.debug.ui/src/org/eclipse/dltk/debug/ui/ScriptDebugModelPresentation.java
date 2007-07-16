@@ -10,14 +10,18 @@
 package org.eclipse.dltk.debug.ui;
 
 import java.io.File;
+import java.net.URI;
 import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IErrorReportingExpression;
 import org.eclipse.debug.core.model.IExpression;
 import org.eclipse.debug.core.model.ILineBreakpoint;
@@ -34,22 +38,49 @@ import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 import org.eclipse.dltk.debug.ui.breakpoints.BreakpointUtils;
+import org.eclipse.dltk.internal.debug.ui.ExternalFileEditorInput;
 import org.eclipse.dltk.internal.debug.ui.ScriptEvaluationContextManager;
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.dltk.launching.DebuggingEngineRunner;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
+import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
+import org.eclipse.dltk.launching.debug.IDebuggingEngine;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IPathEditorInput;
-import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.editors.text.ILocationProvider;
 import org.eclipse.ui.part.FileEditorInput;
 
 public abstract class ScriptDebugModelPresentation extends LabelProvider
 		implements IDebugModelPresentation {
 
+	// TODO: move to properties file
 	private static final String SUSPENDED_LABEL = "suspended";
 	private static final String RUNNING_LABEL = "running";
+
+	public static IDebuggingEngine getDebuggingEngine(IDebugElement element) {
+		final String id = element.getLaunch().getAttribute(
+				DebuggingEngineRunner.LAUNCH_ATTR_DEBUGGING_ENGINE_ID);
+		if (id == null) {
+			return null;
+		}
+
+		return DebuggingEngineManager.getInstance().getDebuggingEngine(id);
+	}
+
+	public static IProject getProject(IDebugElement element)
+			throws CoreException {
+		final ILaunchConfiguration configuration = element.getLaunch()
+				.getLaunchConfiguration();
+
+		final String projectName = configuration.getAttribute(
+				ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
+				(String) null);
+		if (projectName == null) {
+			return null;
+		}
+
+		return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+	}
 
 	public static IScriptThread getEvaluationThread(IScriptDebugTarget target) {
 		IScriptThread thread = null;
@@ -82,87 +113,22 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		return thread;
 	}
 
-	public static class ExternalFileEditorInput implements IPathEditorInput,
-			ILocationProvider {
-		private File file;
-
-		public ExternalFileEditorInput(File file) {
-			super();
-			this.file = file;
-		}
-
-		public boolean exists() {
-			return file.exists();
-		}
-
-		public ImageDescriptor getImageDescriptor() {
-			return null;
-		}
-
-		public String getName() {
-			return file.getName();
-		}
-
-		public IPersistableElement getPersistable() {
-			return null;
-		}
-
-		public String getToolTipText() {
-			return file.getAbsolutePath();
-		}
-
-		public Object getAdapter(Class adapter) {
-			if (ILocationProvider.class.equals(adapter)) {
-				return this;
-			}
-
-			return Platform.getAdapterManager().getAdapter(this, adapter);
-		}
-
-		public IPath getPath(Object element) {
-			if (element instanceof ExternalFileEditorInput) {
-				ExternalFileEditorInput input = (ExternalFileEditorInput) element;
-				return Path.fromOSString(input.file.getAbsolutePath());
-			}
-			return null;
-		}
-
-		public IPath getPath() {
-			return Path.fromOSString(file.getAbsolutePath());
-		}
-
-		public boolean equals(Object o) {
-			if (o == this)
-				return true;
-
-			if (o instanceof ExternalFileEditorInput) {
-				ExternalFileEditorInput input = (ExternalFileEditorInput) o;
-				return file.equals(input.file);
-			}
-
-			if (o instanceof IPathEditorInput) {
-				IPathEditorInput input = (IPathEditorInput) o;
-				return getPath().equals(input.getPath());
-			}
-
-			return false;
-		}
-
-		public int hashCode() {
-			return file.hashCode();
-		}
-	}
-
 	protected String getDebugTargetText(IScriptDebugTarget target) {
+		IDebuggingEngine engine = getDebuggingEngine(target);
+		if (engine != null) {
+			return MessageFormat.format("{0} [session id: {1}]", new Object[] {
+					engine.getName(), target.getSessionId() });
+		}
+
 		return target.toString();
 	}
 
 	// Text
 	protected String getThreadText(IScriptThread thread) {
 		try {
-			return thread.getName() + " ("
-					+ (thread.isSuspended() ? SUSPENDED_LABEL : RUNNING_LABEL)
-					+ ")";
+			return MessageFormat.format("{0} ({1})", new Object[] {
+					thread.getName(),
+					thread.isSuspended() ? SUSPENDED_LABEL : RUNNING_LABEL });
 
 		} catch (DebugException e) {
 			DLTKDebugUIPlugin.log(e);
@@ -172,9 +138,31 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	}
 
 	protected String getStackFrameText(IScriptStackFrame stackFrame) {
+		// TODO: improve later
 		try {
-			return stackFrame.getName();
-		} catch (DebugException e) {
+			final String sourceLine = stackFrame.getSourceLine();
+			final URI uri = stackFrame.getSourceURI();
+			final IProject project = getProject(stackFrame);
+
+			final IPath projectPath = project.getLocation();
+			final IPath realPath = new Path(uri.getPath());
+
+			IPath path = realPath;
+			if (projectPath.isPrefixOf(realPath)) {
+				path = new Path("");
+				int index = projectPath.segmentCount();
+				while (index < realPath.segmentCount()) {
+					path = path.append(realPath.segment(index));
+					++index;
+				}
+			}
+
+			// TODO: may be make external option for file:line
+			return MessageFormat.format("{0} [{1}: {2}]", new Object[] {
+					sourceLine, path.toPortableString(),
+					new Integer(stackFrame.getLineNumber()) });
+
+		} catch (CoreException e) {
 			DLTKDebugUIPlugin.log(e);
 		}
 
@@ -216,8 +204,9 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 				final int lineNumber = w.getLineNumber();
 				final String fieldName = w.getFieldName();
 
-				sb.append(MessageFormat.format("{0}: {1} [line: {2}], watch: {3}",
-						new Object[] { language, file, new Integer(lineNumber),
+				sb.append(MessageFormat.format(
+						"{0}: {1} [line: {2}], watch: {3}", new Object[] {
+								language, file, new Integer(lineNumber),
 								fieldName }));
 			} else if (breakpoint instanceof IScriptLineBreakpoint) { // IScriptLineBreakpoint
 				IScriptLineBreakpoint b = (IScriptLineBreakpoint) breakpoint;
@@ -225,8 +214,9 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 				final String file = b.getResourceName();
 				final int lineNumber = b.getLineNumber();
 
-				sb.append(MessageFormat.format("{0}: {1}: [line: {2}]", new Object[] {
-						language, file, new Integer(lineNumber) }));
+				sb.append(MessageFormat
+						.format("{0}: {1}: [line: {2}]", new Object[] {
+								language, file, new Integer(lineNumber) }));
 			}
 
 			if (hitCount != -1) {
@@ -254,7 +244,8 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 
 			IScriptValue value = (IScriptValue) expression.getValue();
 			if (value != null) {
-				return expressionText + " = " + value.getValueString();
+				return MessageFormat.format("{0} = {1}", new Object[] {
+						expressionText, value.getValueString() });
 			}
 		} catch (DebugException e) {
 			DLTKDebugUIPlugin.log(e);

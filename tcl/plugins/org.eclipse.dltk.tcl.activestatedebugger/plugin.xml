@@ -7,7 +7,7 @@
 			<engine
          class="org.eclipse.dltk.tcl.activestatedebugger.TclActiveStateDebuggerRunnerFactory"
          description="%ActiveStateDebuggingEngine.description"
-         id="org.eclipse.dltk.tcl.asdebugger.TclActiveStateDebuggerRunnerFactory"
+         id="org.eclipse.dltk.tcl.avtivestatedebugger"
          name="%ActiveStateDebuggingEngine.name"
          preferencePageId="org.eclipse.dltk.tcl.preferences.debug.activestatedebugger"
          priority="0">

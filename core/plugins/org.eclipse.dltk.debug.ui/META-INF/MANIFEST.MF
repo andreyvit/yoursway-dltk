@@ -16,11 +16,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.core,
  org.eclipse.dltk.ui,
  org.eclipse.dltk.debug,
- org.eclipse.dltk.launching,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.ui.editors,
  org.eclipse.jface.text,
- org.eclipse.ui.console
+ org.eclipse.ui.console,
+ org.eclipse.dltk.launching
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.debug.ui,
  org.eclipse.dltk.debug.ui.actions,

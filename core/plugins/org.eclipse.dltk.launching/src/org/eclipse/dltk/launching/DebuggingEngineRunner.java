@@ -14,8 +14,13 @@ import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.launching.InterpreterMessages;
 import org.eclipse.dltk.launching.debug.DbgpConstants;
+import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
+import org.eclipse.dltk.launching.debug.IDebuggingEngine;
 
 public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
+	// Launch attributes
+	public static final String LAUNCH_ATTR_DEBUGGING_ENGINE_ID = "debugging_engine_id";
+
 	private static final String LOCALHOST = "127.0.0.1";
 
 	protected static final int DEFAULT_WAITING_TIMEOUT = 1000 * 1000;
@@ -85,8 +90,8 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			ILaunchConfiguration configuration, IDbgpService dbgpService,
 			String sessionId) throws CoreException {
 
-		IScriptDebugTarget target = new ScriptDebugTarget(getDebugModelId(),
-				dbgpService, sessionId, launch, null);
+		final IScriptDebugTarget target = new ScriptDebugTarget(
+				getDebugModelId(), dbgpService, sessionId, launch, null);
 		launch.addDebugTarget(target);
 	}
 
@@ -123,8 +128,18 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			ILaunchConfiguration configuration) throws CoreException {
 		final IDbgpService service = createDebuggingService(configuration);
 		final String sessionId = getSessionId(configuration);
+
 		addDebugTarget(launch, configuration, service, sessionId);
 
+		// Disable the output of the debugging engine process
+		launch.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, Boolean.FALSE
+				.toString());
+
+		// Debugging engine id
+		launch.setAttribute(LAUNCH_ATTR_DEBUGGING_ENGINE_ID,
+				getDebuggingEngineId());
+
+		// Config
 		final int port = service.getPort();
 		final String host = LOCALHOST;
 
@@ -136,9 +151,6 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
 
-		// Disable the output of the debugging engine process
-		launch.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, "false");
-
 		try {
 			// Configuration
 			final ILaunchConfiguration configuration = launch
@@ -146,8 +158,8 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 
 			initialize(config, launch, configuration);
 
-			InterpreterConfig newConfig = alterConfig(constructProgramString(),
-					config);
+			final InterpreterConfig newConfig = alterConfig(
+					constructProgramString(), config);
 
 			// TODO: remove later
 			sleep(DEFAULT_PAUSE);
@@ -158,8 +170,8 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 
 				if (exe != null) {
 					String[] cmdLine = newConfig.renderCommandLine(exe);
-					rawRun(launch, cmdLine, newConfig.getWorkingDirectoryPath().toFile(),
-							newConfig.getEnvironmentAsStrings());
+					rawRun(launch, cmdLine, newConfig.getWorkingDirectoryPath()
+							.toFile(), newConfig.getEnvironmentAsStrings());
 				} else {
 					super.run(newConfig, launch, monitor);
 				}
@@ -199,4 +211,11 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		return ScriptDebugManager.getInstance().getDebugModelByNature(
 				getInstall().getNatureId());
 	}
+
+	protected IDebuggingEngine getDebuggingEngine() {
+		return DebuggingEngineManager.getInstance().getDebuggingEngine(
+				getDebuggingEngineId());
+	}
+
+	protected abstract String getDebuggingEngineId();
 }

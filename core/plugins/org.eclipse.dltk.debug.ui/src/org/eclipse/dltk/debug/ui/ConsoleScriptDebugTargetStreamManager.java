@@ -16,7 +16,6 @@ import org.eclipse.dltk.internal.debug.core.model.IScriptDebugTargetStreamManage
 import org.eclipse.dltk.internal.debug.core.model.IScriptThreadStreamProxy;
 import org.eclipse.ui.console.IOConsole;
 
-
 public class ConsoleScriptDebugTargetStreamManager implements
 		IScriptDebugTargetStreamManager {
 	private IOConsole console;

@@ -17,6 +17,9 @@ import org.eclipse.dltk.internal.debug.core.model.IScriptDebugTargetStreamManage
 
 public interface IScriptDebugTarget extends IDebugTarget {
 	boolean isInitialized();
+	
+	// 
+	String getSessionId();
 
 	// Listener
 	void addListener(IScriptDebugTargetListener listener);
@@ -36,6 +39,7 @@ public interface IScriptDebugTarget extends IDebugTarget {
 	// Run to line
 	void runToLine(URI uri, int lineNumber) throws DebugException;
 
+	// Suspends
 	boolean isSuspendOnMethodEntry();
 
 	void setSuspendOnMethodEntry(boolean suspend);

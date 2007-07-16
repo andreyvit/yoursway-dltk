@@ -79,7 +79,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	private final ScriptBreakpointManager breakpointManager;
 
 	private final IDbgpService dbgpService;
-	private final String dbgpId;
+	private final String sessionId;
 
 	private final String mondelId;
 
@@ -152,7 +152,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	public ScriptDebugTarget(String modelId, IDbgpService dbgpService,
-			String id, ILaunch launch, IProcess process) throws CoreException {
+			String sessionId, ILaunch launch, IProcess process) throws CoreException {
 
 		setupScriptParameters(launch.getLaunchConfiguration());
 
@@ -164,9 +164,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		this.launch = launch;
 
 		this.threadManager = new /*New*/ScriptThreadManager(this);
-		this.dbgpId = id;
+		this.sessionId = sessionId;
 		this.dbgpService = dbgpService;
-		this.dbgpService.registerAcceptor(this.dbgpId, this.threadManager);
+		this.dbgpService.registerAcceptor(this.sessionId, this.threadManager);
 
 		this.disconnected = false;
 
@@ -182,6 +182,10 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 				.isSuspendOnMethodExit();
 		setSuspendOnMethodEntry(suspendOnMethodEntry2);
 		setSuspendOnMethodExit(suspendOnMethodExit2);
+	}
+	
+	public String getSessionId() {
+		return sessionId;
 	}
 
 	public IDebugTarget getDebugTarget() {
@@ -241,7 +245,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	public void terminate() throws DebugException {
-		dbgpService.unregisterAcceptor(dbgpId);
+		dbgpService.unregisterAcceptor(sessionId);
 		dbgpService.shutdown();
 		threadManager.terminate();
 		if (waitTermianted()) {
@@ -382,7 +386,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	public String toString() {
-		return "Debugging engine (id = " + this.dbgpId + ")";
+		return "Debugging engine (id = " + this.sessionId + ")";
 	}
 
 	// IScriptDebugTarget

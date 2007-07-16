@@ -8,7 +8,7 @@
          <engine
               class="org.eclipse.dltk.ruby.activestatedebugger.RubyActiveStateDebuggerRunnerFactory"
               description="%ActiveStateDebuggingEngine.description"
-              id="org.eclipse.dltk.ruby.asdebugger.RubyActiveStateDebuggerRunnerFactory"
+              id="org.eclipse.dltk.ruby.activestatedebugger"
               name="%ActiveStateDebuggingEngine.name"
               priority="0"
               preferencePageId="org.eclipse.dltk.ruby.preferences.debug.activestatedebugger">

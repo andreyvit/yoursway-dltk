@@ -269,13 +269,16 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public String toString() {
-
 		return MessageFormat.format(STACK_FRAME_LABEL,
 				new Object[] { new Integer(level.getLevel()) });
 	}
 
-	public String getSourceString() {
+	public String getSourceLine() {
 		return level.getWhere();
+	}
+
+	public URI getSourceURI() {
+		return level.getFileURI();
 	}
 
 	public IScriptThread getScriptThread() {

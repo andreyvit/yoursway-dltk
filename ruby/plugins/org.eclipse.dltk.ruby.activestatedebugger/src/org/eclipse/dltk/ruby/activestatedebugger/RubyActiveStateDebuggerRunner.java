@@ -29,6 +29,8 @@ import org.eclipse.dltk.launching.debug.DbgpConstants;
 public class RubyActiveStateDebuggerRunner extends
 		ExternalDebuggingEngineRunner {
 
+	public static final String ENGINE_ID = "org.eclipse.dltk.ruby.activestatedebugger";
+
 	public RubyActiveStateDebuggerRunner(IInterpreterInstall install) {
 		super(install);
 	}
@@ -45,8 +47,10 @@ public class RubyActiveStateDebuggerRunner extends
 	protected InterpreterConfig alterConfig(String exe,
 			InterpreterConfig config, String debugEnginePath) {
 
-		final String host = (String) config.getProperty(DbgpConstants.HOST_PROP);
-		final String port = (String) config.getProperty(DbgpConstants.PORT_PROP);
+		final String host = (String) config
+				.getProperty(DbgpConstants.HOST_PROP);
+		final String port = (String) config
+				.getProperty(DbgpConstants.PORT_PROP);
 		final String sessionId = (String) config
 				.getProperty(DbgpConstants.SESSION_ID_PROP);
 
@@ -69,5 +73,9 @@ public class RubyActiveStateDebuggerRunner extends
 		config.addInterpreterArg(debugEnginePath);
 
 		return config;
+	}
+
+	protected String getDebuggingEngineId() {
+		return ENGINE_ID;
 	}
 }

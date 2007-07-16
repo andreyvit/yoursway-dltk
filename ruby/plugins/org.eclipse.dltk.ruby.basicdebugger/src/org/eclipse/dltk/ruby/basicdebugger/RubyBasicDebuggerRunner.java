@@ -22,6 +22,8 @@ import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.debug.DbgpConstants;
 
 public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
+	public static final String ENGINE_ID = "org.eclipse.dltk.ruby.basicdebugger";
+	
 	private static final String RUBY_HOST_VAR = "DBGP_RUBY_HOST";
 	private static final String RUBY_PORT_VAR = "DBGP_RUBY_PORT";
 	private static final String RUBY_KEY_VAR = "DBGP_RUBY_KEY";
@@ -53,7 +55,7 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 
 		this.logging = true;
 	}
-
+	
 	protected InterpreterConfig alterConfig(String exe, InterpreterConfig config)
 			throws CoreException {
 		// Get debugger source location
@@ -96,5 +98,9 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 		}
 
 		return newConfig;
+	}
+
+	protected String getDebuggingEngineId() {
+		return ENGINE_ID;
 	}
 }

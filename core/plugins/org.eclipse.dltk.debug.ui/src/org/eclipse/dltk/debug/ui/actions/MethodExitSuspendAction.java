@@ -19,5 +19,4 @@ public class MethodExitSuspendAction implements IViewActionDelegate {
 	public void selectionChanged(IAction action, ISelection selection) {
 
 	}
-
 }

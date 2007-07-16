@@ -9,15 +9,19 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.core.model;
 
+import java.net.URI;
+
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IStackFrame;
 
 public interface IScriptStackFrame extends IStackFrame {
-	String getSourceString();
+	IScriptThread getScriptThread();
 
 	int getLevel();
 
-	IScriptVariable findVariable(String varName) throws DebugException;
+	String getSourceLine();
 
-	IScriptThread getScriptThread();
+	URI getSourceURI();
+
+	IScriptVariable findVariable(String varName) throws DebugException;
 }

@@ -7,7 +7,7 @@
 			<engine
          class="org.eclipse.dltk.ruby.basicdebugger.RubyBasicDebuggerRunnerFactory"
          description="%BasicDebuggingEngine.description"
-         id="org.eclipse.dltk.ruby.basicdebugger.RubyBasicDebuggerRunnerFactory"
+         id="org.eclipse.dltk.ruby.basicdebugger"
          name="%BasicDebuggingEngine.name"
          preferencePageId="org.eclipse.dltk.ruby.preferences.debug.basicdebugger"
          priority="0">

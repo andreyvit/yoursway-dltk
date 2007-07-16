@@ -9,8 +9,6 @@ public class ScriptWatchExpressionFilter implements
 		IWatchExpressionFactoryAdapterExtension {
 
 	public boolean canCreateWatchExpression(IVariable variable) {
-		//IScriptVariable v = (IScriptVariable) variable;
-		
 		return true;
 	}
 
