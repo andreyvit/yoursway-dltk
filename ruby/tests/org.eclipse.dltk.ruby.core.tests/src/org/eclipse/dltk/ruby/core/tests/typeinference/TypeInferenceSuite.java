@@ -43,9 +43,10 @@ import org.eclipse.dltk.ti.types.RecursionTypeCall;
 
 public class TypeInferenceSuite extends TestSuite {
 
-	public TypeInferenceSuite(String testsDirectory) {		
+	public TypeInferenceSuite(String testsDirectory) {
 		super(testsDirectory);
-		Enumeration entryPaths = Activator.getDefault().getBundle().getEntryPaths(testsDirectory);
+		Enumeration entryPaths = Activator.getDefault().getBundle()
+				.getEntryPaths(testsDirectory);
 		while (entryPaths.hasMoreElements()) {
 			final String path = (String) entryPaths.nextElement();
 			URL entry = Activator.getDefault().getBundle().getEntry(path);
@@ -66,41 +67,6 @@ public class TypeInferenceSuite extends TestSuite {
 				public void setUp() {
 				}
 
-				class MethodReturnTypeAssertion implements IAssertion {
-
-					private final String className;
-
-					private final String methodName;
-
-					private final String correctClassRef;
-
-					public MethodReturnTypeAssertion(String className, String methodName,
-							String correctClassRef) {
-						this.className = className;
-						this.methodName = methodName;
-						this.correctClassRef = correctClassRef;
-					}
-
-					public void check(ModuleDeclaration rootNode, ISourceModule cu, ITypeInferencer inferencer) {
-						fail("This type of assertion is not implemented yet");
-//						ITypeDescriptor correctType;
-//						if ("recursion".equals(correctClassRef))
-//							correctType = RecursiveCallTypeDescriptor.INSTANCE;
-//						else if ("any".equals(correctClassRef))
-//							correctType = AnyTypeDescriptor.INSTANCE;
-//						else
-//							correctType = lookupType(correctClassRef);
-//						IKnownTypeDescriptor methType = lookupType(className);
-//						assertNotNull("class " + className + " not found", methType);
-//						IMethodDescriptor method = methType.getMethodByName(methodName);
-//						assertNotNull("method " + methodName + " not found", method);
-//						ITypeDescriptor checkedType = method.getReturnType();
-//						assertEquals("Incorrect type of " + className + "." + methodName, correctType, checkedType);
-					}
-
-				}
-				
-
 				protected void runTest() throws Throwable {
 					String content = loadContent(path);
 					String[] lines = content.split("\n");
@@ -109,24 +75,11 @@ public class TypeInferenceSuite extends TestSuite {
 						String line = lines[i].trim();
 						int pos = line.indexOf("##");
 						if (pos >= 0) {
-							StringTokenizer tok = new StringTokenizer(line.substring(pos + 2));
+							StringTokenizer tok = new StringTokenizer(line
+									.substring(pos + 2));
 							String test = tok.nextToken();
 							if ("exit".equals(test)) {
 								return;
-							} else if ("meth".equals(test)) {
-								String methodRef = tok.nextToken();
-								String arrow = tok.nextToken();
-								Assert.isLegal(arrow.equals("=>"));
-								String correctClassRef = tok.nextToken();
-								int dotPos = methodRef.lastIndexOf('.');
-								if (dotPos >= 0) {
-									String classRef = methodRef.substring(0, dotPos);
-									String methodName = methodRef.substring(dotPos + 1);
-									assertions.add(new MethodReturnTypeAssertion(classRef,
-											methodName, correctClassRef));
-								} else {
-									Assert.isLegal(false);
-								}
 							} else if ("localvar".equals(test)) {
 								String varName = tok.nextToken();
 								int namePos = lines[i].indexOf(varName);
@@ -135,7 +88,8 @@ public class TypeInferenceSuite extends TestSuite {
 								String arrow = tok.nextToken();
 								Assert.isLegal(arrow.equals("=>"));
 								String correctClassRef = tok.nextToken();
-								assertions.add(new VariableReturnTypeAssertion(varName, namePos, correctClassRef));
+								assertions.add(new VariableReturnTypeAssertion(
+										varName, namePos, correctClassRef));
 							} else if ("expr".equals(test)) {
 								String expr = tok.nextToken();
 								int namePos = lines[i].indexOf(expr);
@@ -144,85 +98,97 @@ public class TypeInferenceSuite extends TestSuite {
 								String arrow = tok.nextToken();
 								Assert.isLegal(arrow.equals("=>"));
 								String correctClassRef = tok.nextToken();
-								assertions.add(new ExpressionTypeAssertion(expr, namePos, correctClassRef));
+								assertions.add(new ExpressionTypeAssertion(
+										expr, namePos, correctClassRef));
 							} else {
-//								Assert.isLegal(false);
+// Assert.isLegal(false);
 							}
 						}
 						lineOffset += lines[i].length() + 1;
 					}
-					
+
 					if (assertions.size() == 0)
 						return;
-					
+
 					ITypeInferencer inferencer = new DLTKTypeInferenceEngine();
 
-					TypeInferenceTest tests = new TypeInferenceTest("ruby selection tests");
+					TypeInferenceTest tests = new TypeInferenceTest(
+							"ruby selection tests");
 					tests.setUpSuite();
 					try {
-						tests.executeTest(folder, name, inferencer, assertions);						
+						tests.executeTest(folder, name, inferencer, assertions);
 					} finally {
 						tests.tearDownSuite();
 					}
 				}
 
 				class VariableReturnTypeAssertion implements IAssertion {
-					
+
 					private final String correctClassRef;
 
-					private final String varName;
+// private final String varName;
 
 					private final int namePos;
-					
-					public VariableReturnTypeAssertion(String varName, int namePos, String correctClassRef) {
-						this.varName = varName;
+
+					public VariableReturnTypeAssertion(String varName,
+							int namePos, String correctClassRef) {
+// this.varName = varName;
 						this.namePos = namePos;
 						this.correctClassRef = correctClassRef;
 					}
-					
-					public void check(ModuleDeclaration rootNode, ISourceModule cu, ITypeInferencer inferencer) throws Exception {
+
+					public void check(ModuleDeclaration rootNode,
+							ISourceModule cu, ITypeInferencer inferencer)
+							throws Exception {
 						final ASTNode[] result = new ASTNode[1];
-						ASTVisitor visitor = new OffsetTargetedASTVisitor(namePos) {
+						ASTVisitor visitor = new OffsetTargetedASTVisitor(
+								namePos) {
 
 							protected boolean visitGeneralInteresting(ASTNode s) {
 								if (s instanceof VariableReference)
-									if (s.sourceStart() == namePos && result[0] == null) {
+									if (s.sourceStart() == namePos
+											&& result[0] == null) {
 										result[0] = s;
 									}
 								return true;
 							}
-							
+
 						};
 						rootNode.traverse(visitor);
 						Assert.isLegal(result[0] != null);
-						ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(cu, rootNode), result[0]);
+						ExpressionTypeGoal goal = new ExpressionTypeGoal(
+								new BasicContext(cu, rootNode), result[0]);
 						IEvaluatedType type = inferencer.evaluateType(goal, -1);
 						assertNotNull(type);
-						
-						assertEquals(correctClassRef, ((RubyClassType)type).getModelKey());
+
+						assertEquals(correctClassRef, ((RubyClassType) type)
+								.getModelKey());
 					}
-					
-					
+
 				}
-				
+
 				class ExpressionTypeAssertion implements IAssertion {
-					
+
 					private final String correctClassRef;
-					
-					private final String expression;
-					
+
+// private final String expression;
+
 					private final int namePos;
-					
-					public ExpressionTypeAssertion(String expression, int namePos, String correctClassRef) {
-						this.expression = expression;
+
+					public ExpressionTypeAssertion(String expression,
+							int namePos, String correctClassRef) {
+// this.expression = expression;
 						this.namePos = namePos;
 						this.correctClassRef = correctClassRef;
 					}
-					
-					public void check(ModuleDeclaration rootNode, ISourceModule cu, ITypeInferencer inferencer) throws Exception {
+
+					public void check(ModuleDeclaration rootNode,
+							ISourceModule cu, ITypeInferencer inferencer)
+							throws Exception {
 						final ASTNode[] result = new ASTNode[1];
-						ASTVisitor visitor = new OffsetTargetedASTVisitor(namePos) {
-							
+						ASTVisitor visitor = new OffsetTargetedASTVisitor(
+								namePos) {
+
 							protected boolean visitGeneralInteresting(ASTNode s) {
 								if (s instanceof ASTNode && result[0] == null)
 									if (s.sourceStart() == namePos) {
@@ -230,43 +196,48 @@ public class TypeInferenceSuite extends TestSuite {
 									}
 								return true;
 							}
-							
+
 						};
 						rootNode.traverse(visitor);
 						if (result[0] == null)
-							System.out.println("ExpressionTypeAssertion.check()");
+							System.out
+									.println("ExpressionTypeAssertion.check()");
 						Assert.isLegal(result[0] != null);
-						ExpressionTypeGoal goal = new ExpressionTypeGoal(new BasicContext(cu, rootNode), result[0]);
+						ExpressionTypeGoal goal = new ExpressionTypeGoal(
+								new BasicContext(cu, rootNode), result[0]);
 						IEvaluatedType type = inferencer.evaluateType(goal, -1);
 						if (!correctClassRef.equals("recursion")) {
 							if (type == null)
-								throw new AssertionFailedError("null type fetched, but " + correctClassRef + " expected");
+								throw new AssertionFailedError(
+										"null type fetched, but "
+												+ correctClassRef + " expected");
 							assertNotNull(type);
 							if (type instanceof SimpleType) {
 								IEvaluatedType intrinsicType = getIntrinsicType(correctClassRef);
 								assertEquals(intrinsicType, type);
-							} else { 
-								RubyClassType rubyType = (RubyClassType)type;
-								assertEquals(correctClassRef, rubyType.getModelKey());
+							} else {
+								RubyClassType rubyType = (RubyClassType) type;
+								assertEquals(correctClassRef, rubyType
+										.getModelKey());
 							}
 						}
 					}
-					
-					
+
 				}
 
 			});
 		}
 	}
-	
+
 	private String loadContent(String path) throws IOException {
 		StringBuffer buffer = new StringBuffer();
 		InputStream input = null;
 		try {
-			input = Activator.getDefault().openResource(path);
+			input = Activator.openResource(path);
 			InputStreamReader reader = new InputStreamReader(input);
 			BufferedReader br = new BufferedReader(reader);
-			char[] data = new char[100*1024]; // tests shouldnt be more that 100 kb
+			char[] data = new char[100 * 1024]; // tests shouldnt be more that
+			// 100 kb
 			int size = br.read(data);
 			buffer.append(data, 0, size);
 		} finally {
@@ -284,10 +255,10 @@ public class TypeInferenceSuite extends TestSuite {
 			correctType = RecursionTypeCall.INSTANCE;
 		else if ("any".equals(correctClassRef))
 			correctType = UnknownType.INSTANCE;
-//		else if ("Fixnum".equals(correctClassRef))
-//			correctType = new SimpleType(SimpleType.TYPE_NUMBER);
-//		else if ("Str".equals(correctClassRef))
-//			correctType = new SimpleType(SimpleType.TYPE_STRING);
+// else if ("Fixnum".equals(correctClassRef))
+// correctType = new SimpleType(SimpleType.TYPE_NUMBER);
+// else if ("Str".equals(correctClassRef))
+// correctType = new SimpleType(SimpleType.TYPE_STRING);
 		else
 			correctType = null;
 		return correctType;

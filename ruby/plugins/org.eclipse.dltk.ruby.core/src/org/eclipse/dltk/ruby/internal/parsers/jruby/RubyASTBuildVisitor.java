@@ -902,19 +902,19 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			if (bodyNode instanceof BlockNode) {
 				BlockNode blockNode = (BlockNode) bodyNode;
 				end = blockNode.getLast().getPosition().getEndOffset() + 1; // /XXX!!!!
-			} 
+			}
 			pos = fixBorders(pos);
 			Block bl = new Block(pos.getStartOffset(), (end == -1) ? pos
 					.getEndOffset() + 1 : end);
 			type.setBody(bl);
-			
-			if (bodyNode instanceof BlockNode){
+
+			if (bodyNode instanceof BlockNode) {
 				for (Iterator iterator = bodyNode.childNodes().iterator(); iterator
 						.hasNext();) {
 					Node n = (Node) iterator.next();
 					n.accept(this);
 				}
-			}	else
+			} else
 				bodyNode.accept(this);
 		}
 
@@ -975,17 +975,15 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
-	public Instruction visitDAsgnNode(DAsgnNode iVisited) { // FIXME, just a
-		// stub
+	public Instruction visitDAsgnNode(DAsgnNode iVisited) {
 		ISourcePosition pos = iVisited.getPosition();
+		ASTNode valueNode = this.collectSingleNodeSafe(iVisited.getValueNode(),
+				true);
 		RubyDAssgnExpression e = new RubyDAssgnExpression(pos.getStartOffset(),
-				pos.getEndOffset());
-		e.setName(iVisited.getName());
+				pos.getEndOffset(), iVisited.getName(), valueNode);
+
 		states.peek().add(e);
-		// Iterator iterator = iVisited.childNodes().iterator();
-		// while (iterator.hasNext()) {
-		// ((Node) iterator.next()).accept(this);
-		// }
+
 		return null;
 	}
 
@@ -1173,8 +1171,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	// method
 	public Instruction visitDefnNode(DefnNode iVisited) {
-//		Collection comments = iVisited.getComments();
-//		System.out.println(comments);
+// Collection comments = iVisited.getComments();
+// System.out.println(comments);
 		ArgumentNode nameNode = iVisited.getNameNode();
 
 		ISourcePosition pos = fixNamePosition(nameNode.getPosition());
@@ -1196,13 +1194,13 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			ISourcePosition bodyPos = bodyNode.getPosition();
 			method.getBody().setStart(bodyPos.getStartOffset());
 			method.getBody().setEnd(bodyPos.getEndOffset());
-			if (bodyNode instanceof BlockNode){
+			if (bodyNode instanceof BlockNode) {
 				for (Iterator iterator = bodyNode.childNodes().iterator(); iterator
 						.hasNext();) {
 					Node n = (Node) iterator.next();
 					n.accept(this);
 				}
-			}	else
+			} else
 				bodyNode.accept(this);
 		}
 		ArgsNode args = (ArgsNode) iVisited.getArgsNode();
@@ -1279,13 +1277,13 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		}
 		Node bodyNode = iVisited.getBodyNode();
 		if (bodyNode != null) {
-			if (bodyNode instanceof BlockNode){
+			if (bodyNode instanceof BlockNode) {
 				for (Iterator iterator = bodyNode.childNodes().iterator(); iterator
 						.hasNext();) {
 					Node n = (Node) iterator.next();
 					n.accept(this);
 				}
-			}	else
+			} else
 				bodyNode.accept(this);
 		}
 		states.pop();
@@ -1365,7 +1363,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 		int funcNameStart = iVisited.getPosition().getStartOffset();
 		c.setStart(funcNameStart);
-		fixFunctionCallOffsets(c, methodName, funcNameStart, argList.sourceStart(), argList.sourceEnd());
+		fixFunctionCallOffsets(c, methodName, funcNameStart, argList
+				.sourceStart(), argList.sourceEnd());
 
 		states.peek().add(c);
 

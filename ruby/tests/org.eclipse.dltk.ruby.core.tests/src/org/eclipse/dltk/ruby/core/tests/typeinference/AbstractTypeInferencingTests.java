@@ -9,6 +9,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.typeinference;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Hashtable;
 
 import junit.framework.ComparisonFailure;
@@ -21,6 +25,7 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
 import org.eclipse.dltk.core.tests.model.CompletionTestsRequestor2;
+import org.eclipse.dltk.ruby.core.tests.Activator;
 
 
 public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
@@ -73,6 +78,25 @@ public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
 		return result;
 	}
 
+	protected String loadContent(String path) throws IOException {
+		StringBuffer buffer = new StringBuffer();
+		InputStream input = null;
+		try {
+			input = Activator.openResource(path);
+			InputStreamReader reader = new InputStreamReader(input);
+			BufferedReader br = new BufferedReader(reader);
+			char[] data = new char[100*1024]; // tests shouldnt be more that 100 kb
+			int size = br.read(data);
+			buffer.append(data, 0, size);
+		} finally {
+			if (input != null) {
+				input.close();
+			}
+		}
+		String content = buffer.toString();
+		return content;
+	}
+	
 	protected CompletionResult contextComplete(ISourceModule cu, int cursorLocation) throws ModelException {
 		CompletionTestsRequestor2 requestor = new CompletionTestsRequestor2(true, false, false, false);
 		cu.codeComplete(cursorLocation, requestor, this.wcOwner);

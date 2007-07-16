@@ -31,8 +31,10 @@ public class OffsetTargetedASTVisitor extends ASTVisitor {
 		// XXX AST offsets bug workaround
 		if (s instanceof Block)
 			return true;
-		if (s.sourceStart() >= 0 && s.sourceEnd() > s.sourceStart()
-				&& (requestedOffset < s.sourceStart() || requestedOffset >= s.sourceEnd()))
+		if (s.sourceStart() >= 0
+				&& s.sourceEnd() > s.sourceStart()
+				&& (requestedOffset < s.sourceStart() || requestedOffset >= s
+						.sourceEnd()))
 			return false;
 		return true;
 	}
@@ -87,20 +89,20 @@ public class OffsetTargetedASTVisitor extends ASTVisitor {
 		return visitGeneralInteresting(s);
 	}
 
-	public final boolean visitGeneral(ASTNode s) throws Exception {
-		if (!interesting(s))
-			return false;
-		return visitGeneralInteresting(s);
-	}
-
 	protected boolean visitInteresting(RubyBlock b) {
 		return true;
 	}
-	
-	protected boolean visitGeneralInteresting(ASTNode s) {
+
+	public final boolean visitGeneral(ASTNode s) throws Exception {
+		if (!interesting(s))
+			return false;
 		if (s instanceof RubyBlock) {
 			return visitInteresting((RubyBlock) s);
 		}
+		return visitGeneralInteresting(s);
+	}
+
+	protected boolean visitGeneralInteresting(ASTNode s) {
 		return true;
 	}
 

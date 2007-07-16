@@ -26,6 +26,12 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.ruby.ast.RubyBlock;
+import org.eclipse.dltk.ruby.ast.RubyForStatement2;
+import org.eclipse.dltk.ruby.ast.RubyIfStatement;
+import org.eclipse.dltk.ruby.ast.RubyUnlessStatement;
+import org.eclipse.dltk.ruby.ast.RubyUntilStatement;
+import org.eclipse.dltk.ruby.ast.RubyWhileStatement;
 import org.eclipse.dltk.ruby.core.RubyNature;
 
 public class ASTUtils {
@@ -34,17 +40,19 @@ public class ASTUtils {
 		throw new AssertionError("Cannot instantiate utility class");
 	}
 
-	public static void setVisibility(MethodDeclaration methodDeclaration, int newVisibility) {
+	public static void setVisibility(MethodDeclaration methodDeclaration,
+			int newVisibility) {
 		int modifiers = methodDeclaration.getModifiers();
-		modifiers = modifiers & ~(Modifiers.AccPublic | Modifiers.AccProtected | Modifiers.AccPrivate | Modifiers.AccDefault);
+		modifiers = modifiers
+				& ~(Modifiers.AccPublic | Modifiers.AccProtected
+						| Modifiers.AccPrivate | Modifiers.AccDefault);
 		methodDeclaration.setModifiers(modifiers | newVisibility);
 	}
-	
-	
-	
-	public static ASTNode[] restoreWayToNode (ModuleDeclaration module, final ASTNode nde) {
+
+	public static ASTNode[] restoreWayToNode(ModuleDeclaration module,
+			final ASTNode nde) {
 		final Stack stack = new Stack();
-		
+
 		ASTVisitor visitor = new ASTVisitor() {
 			boolean found = false;
 
@@ -59,12 +67,12 @@ public class ASTUtils {
 
 			public void endvisitGeneral(ASTNode node) throws Exception {
 				super.endvisitGeneral(node);
-				if (found) 
+				if (found)
 					return;
 				stack.pop();
-			}			
+			}
 		};
-		
+
 		try {
 			module.traverse(visitor);
 		} catch (Exception e) {
@@ -72,8 +80,9 @@ public class ASTUtils {
 		}
 		return (ASTNode[]) stack.toArray(new ASTNode[stack.size()]);
 	}
-	
-	private static ASTNode getEnclosingElement(Class element, ASTNode[] wayToNode, ASTNode node, boolean considerGiven) {
+
+	private static ASTNode getEnclosingElement(Class element,
+			ASTNode[] wayToNode, ASTNode node, boolean considerGiven) {
 		int pos = -1;
 		for (int i = wayToNode.length - 1; i >= 0; i--) {
 			if (wayToNode[i] == node) {
@@ -84,48 +93,56 @@ public class ASTUtils {
 		Assert.isLegal(pos != -1);
 		if (!considerGiven)
 			pos--;
-		for (int i = pos; i >= 0; i--) {		
+		for (int i = pos; i >= 0; i--) {
 			if (element.isInstance(wayToNode[i]))
 				return wayToNode[i];
 		}
-		
+
 		return null;
 	}
-	
-	public static TypeDeclaration getEnclosingType(ASTNode[] wayToNode, ASTNode node, boolean considerGiven) {
-		return (TypeDeclaration) getEnclosingElement(TypeDeclaration.class, wayToNode, node, considerGiven);
+
+	public static TypeDeclaration getEnclosingType(ASTNode[] wayToNode,
+			ASTNode node, boolean considerGiven) {
+		return (TypeDeclaration) getEnclosingElement(TypeDeclaration.class,
+				wayToNode, node, considerGiven);
 	}
-	
-	public static CallExpression getEnclosingCallNode(ASTNode[] wayToNode, ASTNode node, boolean considerGiven) {
-		return (CallExpression) getEnclosingElement(CallExpression.class, wayToNode, node, considerGiven);
+
+	public static CallExpression getEnclosingCallNode(ASTNode[] wayToNode,
+			ASTNode node, boolean considerGiven) {
+		return (CallExpression) getEnclosingElement(CallExpression.class,
+				wayToNode, node, considerGiven);
 	}
-	
-	public static MethodDeclaration getEnclosingMethod(ASTNode[] wayToNode, ASTNode node, boolean considerGiven) {
-		return (MethodDeclaration) getEnclosingElement(MethodDeclaration.class, wayToNode, node, considerGiven);
+
+	public static MethodDeclaration getEnclosingMethod(ASTNode[] wayToNode,
+			ASTNode node, boolean considerGiven) {
+		return (MethodDeclaration) getEnclosingElement(MethodDeclaration.class,
+				wayToNode, node, considerGiven);
 	}
-	
+
 	/**
 	 * Finds minimal ast node, that covers given position
+	 * 
 	 * @param unit
 	 * @param position
 	 * @return
 	 */
-	public static ASTNode findMinimalNode(ModuleDeclaration unit, int start, int end) {
-			
+	public static ASTNode findMinimalNode(ModuleDeclaration unit, int start,
+			int end) {
+
 		class Visitor extends ASTVisitor {
 			ASTNode result = null;
 			int start, end;
-			
+
 			public Visitor(int start, int end) {
 				this.start = start;
 				this.end = end;
 			}
-			
-			public ASTNode getResult () {
+
+			public ASTNode getResult() {
 				return result;
-			}			
-			
-			private int calcLen (ASTNode s) {
+			}
+
+			private int calcLen(ASTNode s) {
 				int realStart = s.sourceStart();
 				int realEnd = s.sourceEnd();
 				if (s instanceof TypeDeclaration) {
@@ -139,12 +156,12 @@ public class ASTUtils {
 				}
 				return realEnd - realStart;
 			}
-			
-			public boolean visitGeneral(ASTNode s) throws Exception {				
+
+			public boolean visitGeneral(ASTNode s) throws Exception {
 				int realStart = s.sourceStart();
 				int realEnd = s.sourceEnd();
 				if (s instanceof Block) {
-					realStart = realEnd = -42; //never select on blocks
+					realStart = realEnd = -42; // never select on blocks
 				} else if (s instanceof TypeDeclaration) {
 					TypeDeclaration declaration = (TypeDeclaration) s;
 					realStart = declaration.getNameStart();
@@ -158,33 +175,31 @@ public class ASTUtils {
 					if (result != null) {
 						int oldlen = calcLen(result);
 						int newlen = realEnd - realStart;
-						if (newlen <= oldlen )
+						if (newlen <= oldlen)
 							result = s;
 					} else {
-						result = s;						
+						result = s;
 					}
-					
-					
+
 					if (DLTKCore.DEBUG_SELECTION)
 						System.out.println("Found " + s.getClass().getName());
 				}
 				return true;
 			}
 
-			
 		}
-		
-		Visitor visitor = new Visitor(start, end);		
-		
+
+		Visitor visitor = new Visitor(start, end);
+
 		try {
 			unit.traverse(visitor);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return visitor.getResult();
 	}
-	
+
 	/**
 	 * Finds minimal ast node, that covers given position
 	 * 
@@ -192,7 +207,8 @@ public class ASTUtils {
 	 * @param position
 	 * @return
 	 */
-	public static ASTNode findMaximalNodeEndingAt(ModuleDeclaration unit, final int boundaryOffset) {
+	public static ASTNode findMaximalNodeEndingAt(ModuleDeclaration unit,
+			final int boundaryOffset) {
 
 		class Visitor extends ASTVisitor {
 			ASTNode result = null;
@@ -205,7 +221,8 @@ public class ASTUtils {
 				if (s.sourceStart() < 0 || s.sourceEnd() < 0)
 					return true;
 				int sourceEnd = s.sourceEnd();
-				if (Math.abs(sourceEnd - boundaryOffset) <= 0) { //XXX: was ... <= 1
+				if (Math.abs(sourceEnd - boundaryOffset) <= 0) { // XXX: was
+					// ... <= 1
 					result = s;
 					System.out.println("Found " + s.getClass().getName());
 				}
@@ -224,15 +241,15 @@ public class ASTUtils {
 
 		return visitor.getResult();
 	}
-	
-	
+
 	public static ModuleDeclaration getAST(ISourceModule module) {
 		char[] cs;
 		try {
 			cs = module.getSourceAsCharArray();
 			ISourceParser sourceParser = DLTKLanguageManager
 					.getSourceParser(RubyNature.NATURE_ID);
-			ModuleDeclaration declaration = sourceParser.parse(module.getPath().toString().toCharArray(), cs, null);
+			ModuleDeclaration declaration = sourceParser.parse(module.getPath()
+					.toString().toCharArray(), cs, null);
 			return declaration;
 		} catch (ModelException e) {
 			e.printStackTrace();
@@ -241,7 +258,30 @@ public class ASTUtils {
 		}
 		return null;
 	}
-	
-	
-	
+
+	public static ModuleDeclaration getAST(char[] cs) {
+		try {
+			ISourceParser sourceParser = DLTKLanguageManager
+					.getSourceParser(RubyNature.NATURE_ID);
+			ModuleDeclaration declaration = sourceParser.parse("RawSource"
+					.toCharArray(), cs, null);
+			return declaration;
+		} catch (ModelException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static boolean isNodeScoping(ASTNode node) {
+		return (node instanceof RubyIfStatement
+				|| node instanceof RubyForStatement2
+				|| node instanceof RubyWhileStatement
+				|| node instanceof RubyBlock
+				|| node instanceof RubyUntilStatement
+				|| node instanceof RubyUnlessStatement
+				|| node instanceof TypeDeclaration || node instanceof MethodDeclaration);
+	}
+
 }

@@ -7,5 +7,5 @@
 	
 	
 	v = Vista.new
-	v.tu	
+	v.tu
 }

@@ -106,20 +106,20 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 				}
 			}
 
-			info = RubyTypeInferencingUtils.searchLocalVars(rootNode,
+			info = RubyTypeInferencingUtils.inspectLocalVariable(rootNode,
 					expression.sourceStart(), varName);
 
 			List poss = new ArrayList();
 
 			if (info != null) {
-				if (info.lastAssignment != null) {
+				if (info.getLastAssignment() != null) {
 					IGoal subgoal = new ExpressionTypeGoal(context,
-							info.lastAssignment.getRight());
+							info.getLastAssignment().getRight());
 					poss.add(subgoal);
 				}
-				for (int i = 0; i < info.conditionalAssignments.length; i++) {
+				for (int i = 0; i < info.getConditionalAssignments().length; i++) {
 					IGoal subgoal = new ExpressionTypeGoal(context,
-							info.conditionalAssignments[i].getRight());
+							info.getConditionalAssignments()[i].getRight());
 					poss.add(subgoal);
 				}
 			}
