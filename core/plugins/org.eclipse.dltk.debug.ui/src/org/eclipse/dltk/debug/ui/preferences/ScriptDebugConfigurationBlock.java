@@ -27,7 +27,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.dialogs.PreferenceLinkArea;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
-public class ScriptDebugConfigurationBlock extends ImprovedAbstractConfigurationBlock {
+public class ScriptDebugConfigurationBlock extends
+		ImprovedAbstractConfigurationBlock {
 
 	private PreferencePage preferencePage;
 
@@ -74,11 +75,15 @@ public class ScriptDebugConfigurationBlock extends ImprovedAbstractConfiguration
 		final Group group = SWTFactory.createGroup(parent, "General options",
 				1, 1, GridData.FILL_HORIZONTAL);
 
-		Button b = SWTFactory.createCheckButton(group, "Break on first line",
-				null, false, 1);
+		// Break on first line
+		Button b = SWTFactory.createCheckButton(group,
+				ScriptDebugPreferencesMessages.BreakOnFirstLineLabel, null,
+				false, 1);
 		bindControl(b, DebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
 
-		b = SWTFactory.createCheckButton(group, "Break on first line", null,
+		// Enable dbpg logging
+		b = SWTFactory.createCheckButton(group,
+				ScriptDebugPreferencesMessages.EnableDbgpLoggingLabel, null,
 				false, 1);
 		bindControl(b, DebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
 

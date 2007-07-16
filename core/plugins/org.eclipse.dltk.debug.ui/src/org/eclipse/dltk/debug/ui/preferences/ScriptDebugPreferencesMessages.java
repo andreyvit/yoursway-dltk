@@ -31,4 +31,11 @@ public class ScriptDebugPreferencesMessages {
 	public static String BrowseEnginePath;
 
 	public static String ExternalEngineGroup;
+	
+	//
+	public static String BreakOnFirstLineLabel;
+	
+	public static String EnableDbgpLoggingLabel;
+	
+	
 }
