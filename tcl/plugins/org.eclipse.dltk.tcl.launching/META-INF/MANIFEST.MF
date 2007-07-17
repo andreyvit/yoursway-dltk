@@ -10,11 +10,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.core,
  org.eclipse.dltk.tcl.core,
  org.eclipse.dltk.core,
- org.eclipse.core.resources,
  org.eclipse.dltk.launching,
- org.eclipse.dltk.console,
- org.eclipse.dltk.debug,
- org.eclipse.dltk.tcl.debug
+ org.eclipse.dltk.console
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.tcl.console,
  org.eclipse.dltk.tcl.launching

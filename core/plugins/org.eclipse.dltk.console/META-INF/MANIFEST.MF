@@ -6,7 +6,7 @@ Bundle-Version: 0.9.0.qualifier
 Bundle-Activator: org.eclipse.dltk.console.ScriptConsolePlugin
 Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.core.runtime, org.eclipse.debug.core, org.eclipse.dltk.core
+Require-Bundle: org.eclipse.core.runtime
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.console
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

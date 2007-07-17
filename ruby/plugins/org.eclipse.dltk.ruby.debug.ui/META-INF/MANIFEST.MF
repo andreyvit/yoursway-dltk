@@ -7,9 +7,7 @@ Bundle-Activator: org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugUIPlugin
 Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.jface.text,
- org.eclipse.debug.core,
  org.eclipse.ui,
- org.eclipse.core.resources,
  org.eclipse.debug.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.workbench.texteditor,
@@ -22,7 +20,6 @@ Require-Bundle: org.eclipse.jface.text,
  org.eclipse.dltk.ruby.launching,
  org.eclipse.dltk.debug,
  org.eclipse.dltk.core,
- org.eclipse.dltk.ruby.ui,
  org.eclipse.dltk.ruby.debug
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.ruby.internal.debug.ui,

@@ -6,10 +6,8 @@ Bundle-Version: 0.9.0.qualifier
 Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.debug.ui,
- org.eclipse.debug.core,
  org.eclipse.core.variables,
  org.eclipse.core.runtime,
- org.eclipse.core.resources,
  org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.ui.console,
@@ -24,8 +22,7 @@ Require-Bundle: org.eclipse.debug.ui,
  org.eclipse.dltk.tcl.core,
  org.eclipse.dltk.tcl.debug,
  org.eclipse.dltk.tcl.launching,
- org.eclipse.dltk.debug,
- org.eclipse.dltk.tcl.ui
+ org.eclipse.dltk.debug
 Export-Package: org.eclipse.dltk.tcl.internal.console.ui,
  org.eclipse.dltk.tcl.internal.debug.ui,
  org.eclipse.dltk.tcl.internal.debug.ui.console,
