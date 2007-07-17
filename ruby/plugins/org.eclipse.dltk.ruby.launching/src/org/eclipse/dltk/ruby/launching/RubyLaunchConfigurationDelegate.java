@@ -70,12 +70,12 @@ public class RubyLaunchConfigurationDelegate extends
 
 		char separator = Platform.getOS().equals(Platform.OS_WIN32) ? ';' : ':';
 
-		StringBuffer sb = new StringBuffer("-I");
-		for (int i = 0; i < paths.length; ++i) {
-
-			sb.append(paths[i].toOSString());
-			if (i < paths.length - 1) {
+		final StringBuffer sb = new StringBuffer("-I");
+		if (paths.length > 0) {
+			sb.append(paths[0]);
+			for (int i = 1; i < paths.length; ++i) {
 				sb.append(separator);
+				sb.append(paths[i].toPortableString());
 			}
 		}
 
@@ -92,7 +92,7 @@ public class RubyLaunchConfigurationDelegate extends
 			ILaunchConfiguration configuration, ILaunch launch)
 			throws CoreException {
 
-		InterpreterConfig config = super.createInterpreterConfig(configuration,
+		final InterpreterConfig config = super.createInterpreterConfig(configuration,
 				launch);
 
 		addEncodingInterpreterArg(config, configuration);

@@ -12,9 +12,6 @@
          preferencePageId="org.eclipse.dltk.ruby.preferences.debug.basicdebugger"
          priority="0">
 			</engine>
-			<selector
-				class="">
-			</selector>
 		</engineContribution>
 	</extension>
  <extension

@@ -48,6 +48,7 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 			SelectionListener listener = new SelectionListener() {
 				public void widgetSelected(SelectionEvent e) {
 					boolean state = master.getSelection();
+				
 					for (int i = 0; i < slaves.length; i++) {
 						slaves[i].setEnabled(state);
 					}
@@ -57,6 +58,7 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 				}
 			};
 			master.addSelectionListener(listener);
+			
 			masterSlaveListeners.add(listener);
 		}
 	}
@@ -226,11 +228,16 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 	}
 
 	// Dependency
-	public void createDependency(final Button master, final Control slave) {
+	protected void createDependency(final Button master, final Control slave) {
 		createDependency(master, new Control[] { slave });
 	}
 
-	public void createDependency(final Button master, final Control[] slaves) {
+	protected void createDependency(final Button master, final Control[] slaves) {
 		dependencyManager.createDependency(master, slaves);
+	}
+	
+	// Status
+	protected void updateStatus(IStatus status) {
+		bindManager.updateStatus(status);
 	}
 }
