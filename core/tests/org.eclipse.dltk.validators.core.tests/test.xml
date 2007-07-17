@@ -26,7 +26,6 @@
 		<delete dir="${workspace}" quiet="true" />
 		<echo message="fourdman: validators core-tests internal test.xml 1" />
 		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
-			<echo message="fourdman: validators core-tests internal test.xml 2" />
 			<property name="data-dir" value="${workspace}" />
 			<property name="plugin-name" value="${plugin-name}" />
 			<property name="classname" value="org.eclipse.dltk.validators.core.tests.AllTests" />
