@@ -45,5 +45,5 @@ public interface Modifiers {
 
 	public static final int AccAnnotation = 0x1000;
 
-	public static final int USER_MODIFIER = 0x10000;
+	public static final int USER_MODIFIER = 0x20000;
 }
