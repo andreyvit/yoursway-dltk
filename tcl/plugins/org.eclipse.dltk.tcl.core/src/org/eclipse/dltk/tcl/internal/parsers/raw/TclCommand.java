@@ -31,5 +31,4 @@ public class TclCommand extends TclElement {
 	public List getWords() {
 		return words;
 	}
-
 }

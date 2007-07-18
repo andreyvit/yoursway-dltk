@@ -56,7 +56,6 @@ public class TclSourceElementParser implements ISourceElementParser {
 
 	private static String[] kw = TclKeywordsManager.getKeywords();
 	private static Map kwMap = new HashMap();
-
 	static {
 		for (int q = 0; q < kw.length; ++q) {
 			kwMap.put(kw[q], Boolean.TRUE);

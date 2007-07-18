@@ -15,6 +15,7 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
+import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 
@@ -26,6 +27,9 @@ public class TclASTUtil {
 			return ((TypeDeclaration) node).getStatements();
 		} else if (node instanceof MethodDeclaration) {
 			return ((MethodDeclaration) node).getStatements();
+		}
+		else if (node instanceof Block) {
+			return ((Block) node).getStatements();
 		}
 		return null;
 	}

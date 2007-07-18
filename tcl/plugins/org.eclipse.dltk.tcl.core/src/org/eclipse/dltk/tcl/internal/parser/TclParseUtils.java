@@ -264,6 +264,9 @@ public class TclParseUtils {
 		String content = nameFromBlock(literal.getValue(), '"', '"');
 		int position = pos - 1;
 		int start = startLineOrNoSymbol(position, content);
+		if( position < 0 ) {
+			position = 0;
+		}
 		try {
 			if (content.charAt(position) == '$') {
 				position++;
