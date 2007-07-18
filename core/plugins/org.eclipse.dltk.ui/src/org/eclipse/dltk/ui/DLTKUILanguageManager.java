@@ -10,12 +10,13 @@
 package org.eclipse.dltk.ui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.internal.core.ClassBasedDLTKExtensionManager;
+import org.eclipse.dltk.core.PriorityClassDLTKExtensionManager;
 import org.eclipse.dltk.ui.viewsupport.ScriptUILabelProvider;
 
-public class DLTKUILanguageManager extends ClassBasedDLTKExtensionManager {
+public class DLTKUILanguageManager extends PriorityClassDLTKExtensionManager {
 	private static DLTKUILanguageManager instance = new DLTKUILanguageManager();
 	private final static String LANGUAGE_EXTPOINT = DLTKUIPlugin.PLUGIN_ID
 			+ ".language";
@@ -26,7 +27,7 @@ public class DLTKUILanguageManager extends ClassBasedDLTKExtensionManager {
 
 	public static IDLTKUILanguageToolkit[] getLanguageToolkits() {
 		ElementInfo[] elementInfos = instance.getElementInfos();
-		ArrayList toolkits = new ArrayList();
+		List toolkits = new ArrayList();
 		for (int j = 0; j < elementInfos.length; j++) {
 			IDLTKUILanguageToolkit toolkit = (IDLTKUILanguageToolkit) instance
 					.getInitObject(elementInfos[j]);

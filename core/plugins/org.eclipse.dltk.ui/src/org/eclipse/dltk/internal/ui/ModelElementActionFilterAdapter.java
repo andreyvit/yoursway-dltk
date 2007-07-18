@@ -2,18 +2,17 @@ package org.eclipse.dltk.internal.ui;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.dltk.core.PriorityDLTKExtensionManager;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.internal.core.BasicDLTKExtensionManager;
 import org.eclipse.dltk.ui.actions.IActionFilterTester;
 import org.eclipse.ui.IActionFilter;
 
 public class ModelElementActionFilterAdapter implements IActionFilter {
 	private final static String ACTION_FILTER_TESTER = "org.eclipse.dltk.ui.actionFilterTester";
-	private static class IdBasedExtensionManager extends BasicDLTKExtensionManager {
+	private static class IdBasedExtensionManager extends PriorityDLTKExtensionManager {
 		private static final String CLASS_ATTR = "class";
 		public IdBasedExtensionManager(String extension) {
-			super(extension);
-			setIdentifierValue("id");
+			super(extension, "id");
 		}
 		public IActionFilterTester getObject(String id) throws CoreException {
 			ElementInfo ext = this.getElementInfo(id);
