@@ -9,6 +9,7 @@
 ###############################################################################
 
 module XoredDebugger
+	
     # DBGP stack model, depth = N, zero-index is for top-level frame
     #====================================
     # N - 1 |  ...  | 1 | 0 |   <=  push
@@ -60,7 +61,7 @@ module XoredDebugger
         end
 
     end # Stack
-	
+		
 	class FullStackManager
 		def initialize()
 			@stack = Stack.new
@@ -81,7 +82,8 @@ module XoredDebugger
 		# Stack level
 		def [](index)
 			level = @stack[index]
-			StackLevelInfo.new(level[:file], level[:line])
+					
+			StackLevelInfo.new(level[:file], level[:line], get_function_name(level[:binding]))
 		end
 	end # class FullStackManager
 

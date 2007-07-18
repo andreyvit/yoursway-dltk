@@ -10,60 +10,64 @@
 
 require 'thread'
 
+require 'dbgp/logger'
+
 module XoredDebugger
-            
-    class Breakpoint    
+
+    class Breakpoint
+		include Logger
+	
         def initialize(id, info)
             @id = id
             @info = info
-            @hit_count = 0            
+            @hit_count = 0
         end
 
-        attr_reader :id        
+        attr_reader :id
         attr_reader :info
-        attr_reader :hit_count      
-        
+        attr_reader :hit_count
+
         def state
             @info.state
         end
-        
+
         def temporary
             @info.temporary
         end
-        
+
         def expression
             @info.expression
         end
-        
+
         def hit_value
             @info.hit_value
         end
-        
+
         def hit_condition
             @info.hit_condition
         end
-        
+
         def update(info)
             @info.update(info)
         end
-                
+
         def hit(stack)
             @hit_count += 1
-                        
+			
+			# State
+            if not state
+                return false # Breakpoint disabled
+            end
+			
             # Expression
             unless expression.nil?
-                begin 
-                    if not stack.eval(expression)
+                begin
+                    if not stack.eval(expression.to_s)
                         return false # Expression evaluated to false
                     end
                 rescue Exception
                     return false # Expression can not be evaluated
                 end
-            end
-            
-            # State
-            if not state
-                return false # Breakpoint disabled
             end
 
             # Hit condition
@@ -77,19 +81,19 @@ module XoredDebugger
                 else
                     false
             end
-        end     
-        protected :hit  
+        end
+        protected :hit
     end # class Breakpoint
-            
+
     class LineBreakpoint < Breakpoint
         def initialize(id, info)
-            super(id, info)         
+            super(id, info)
         end
-                
+
         def file
             info.file
         end
-        
+
         def line
             info.line
         end
@@ -101,9 +105,9 @@ module XoredDebugger
 
     class ExceptionBreakpoint < Breakpoint
         def initialize(id, info)
-            super(id, info)            
+            super(id, info)
         end
-        
+
         def exception
             info.exception
         end
@@ -112,65 +116,65 @@ module XoredDebugger
             exception == e and super(s)
         end
     end # class ExceptionBreakpoint
-        
+
     class BreakpointManager
         @@id = 0
-		
+
 		class << self
 			def next_id
 				@@id += 1
 			end
 		end
-                
+
         def initialize
             @mutex = Mutex.new
 
             @line_bps = {}
             @exception_bps = {}
         end
-        
+
         # Interface methods
         def add(info)
             @mutex.synchronize do
                 id = BreakpointManager.next_id
-                
+
                 # Add breakpoint to correct list
-                type = info.class               
+                type = info.class
                 if info.class == LineBreakpointInfo
                     @line_bps[id] = LineBreakpoint.new(id, info)
                 elsif info.class == ExceptionBreakpointInfo
                     # TODO:
                 end
-                    
+
                 id
             end
         end
-        
+
         def update(id, info)
-            @mutex.synchronize do                               
-                old_info = self[id]             
+            @mutex.synchronize do
+                old_info = self[id]
                 unless old_info.nil?
                     old_info.update(info)
                 end
             end
         end
-        
+
         def remove(id)
             @mutex.synchronize do
-                (not @line_bps.delete(id).nil?) or 
+                (not @line_bps.delete(id).nil?) or
                 (not @exception_bps.delete(id).nil?)
             end
         end
-        
+
         def [] (id)
             # TODO: handle all breakpoint types
             bp = @line_bps[id]
-                        
+
             info = bp.info
             info.breakpoint_id = bp.id
             info.hit_count = bp.hit_count
             info
-        end     
+        end
 
         # Manager specific methods
         def line_break?(stack, file, line)

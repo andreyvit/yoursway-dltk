@@ -12,23 +12,15 @@ require 'socket'
 require 'io/wait'
 require 'thread'
 
+require 'logger'
+
 module XoredDebugger
     class SocketIOManager
-        def log_send(text)
-            @logger.puts('>>> ' + text)
-        end
-        private :log_send
-        
+		include Logger
 
-        def log_receive(text)
-            @logger.puts('<<< ' + text)
-        end
-        private :log_receive
-
-        def initialize(host, port, logger, printer)
+        def initialize(host, port, printer)
 			@mutex = Mutex.new
             @socket = TCPSocket.new(host, port)
-            @logger = logger
             @printer = printer
         end
 
@@ -43,7 +35,7 @@ module XoredDebugger
 	            @socket.putc(0)
 	            @socket.flush
 
-	            log_send(xml)
+	            log('>>> ' + xml)
 			end
         end
 
@@ -58,9 +50,9 @@ module XoredDebugger
 	            while((ch = @socket.getc) != 0)
 	                line << ch
 	            end
+				
+				log('<<< ' + line)
 	            
-	            log_receive(line)
-
 	            line
 			end
         end

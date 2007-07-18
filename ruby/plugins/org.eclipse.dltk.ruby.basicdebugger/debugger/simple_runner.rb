@@ -8,69 +8,54 @@
 
 ###############################################################################    
 
+require 'dbgp/logger'
+require 'dbgp/params'
+
 require 'dbgp/managers/log_null'
 require 'dbgp/managers/log_file'
 require 'dbgp/managers/log_stdout'
 
 require 'simple_debugger'
-                                           
+                          
 module XoredDebugger
-    
     class Runner
         def Runner.go
-            log = ENV['DBGP_RUBY_LOG']
-            logger = log.nil? ? NullLogManager.new : (log == 'stdout' ? StdoutLogManager.new : FileLogManager.new(log))
-
-            host   = ENV['DBGP_RUBY_HOST']
-            port   = ENV['DBGP_RUBY_PORT'].to_i
-            key    = ENV['DBGP_RUBY_KEY']
-            script = ENV['DBGP_RUBY_SCRIPT']
-            test   = ENV['DBGP_RUBY_TEST']
-            test   = test.nil? ? false : test == '1' ? true : false
-
             begin
-                if (host.nil? or port == 0 or key.nil? or script.nil?)
+                params = Params.new
+                puts params.inspect
+                log = params.log
+                logger = log.nil? ? NullLogManager.new : (log == 'stdout' ? StdoutLogManager.new : FileLogManager.new(log))
+                
+                Logger.setup(logger)
+                
+                params.print(logger)
+                
+                unless params.valid?
                     logger.puts('Invalid debugger params')
-                else
-                    logger.puts("Time:   #{Time.new.to_s}")
-                    logger.puts("Host:   #{host.to_s}")
-                    logger.puts("Port:   #{port.to_s}")
-                    logger.puts("Key:    #{key.to_s}")
-                    logger.puts("Script: #{script.to_s}")
-                    logger.puts("Test:   #{test.to_s}")
-
-                    logger.puts("Input args:")
-                    ARGV.each { |arg|
-                        logger.puts("\t#{arg}")
-                    }
-
-
-                    logger.puts('Include paths:')
-                    $:.each { |path|
-                        logger.puts("\t#{path}")
-                    }
-
-
-                    # Debugger setup
-                    logger.puts('Creating debugger...')
-                    debugger = RubyDebugger.new(host, port, key, script, logger, test)
-
-                    logger.puts('Setting trace_func...')
-                    set_trace_func proc { |event, file, line, id, binding, klass, *rest|
-                        #logger.puts("=> Trace: #{event.to_s} from #{file.to_s} at #{line.to_s}")
-                        debugger.trace(event, file, line, id, binding, klass)
-                    }
-
-                    # Script for debug
-                    load script
-
-                    # Debugger teardown
-                    set_trace_func nil
-                    debugger.terminate
+                    return
                 end
 
+                # Debugger setup
+                logger.puts('Creating debugger...')
+                debugger = RubyDebugger.new(params)
+
+                logger.puts('Setting trace_func...')
+                set_trace_func proc { |event, file, line, id, binding, klass, *rest|
+                    #logger.puts("=> Trace: #{event.to_s} from #{file.to_s} at #{line.to_s}")
+                    debugger.trace(event, file, line, id, binding, klass)
+                }
+
+                # Script for debug
+                logger.puts('Unsetting trace func...')
+                load(params.script, true)
+
+                # Debugger teardown
+                logger.puts('Terminating all...')
+                set_trace_func nil
+                debugger.terminate
             rescue Exception
                 logger.puts('Exception during debugging:')
+                logger.puts("\tClass: " + $!.class.to_s)
                 logger.puts("\tMessage: " + $!.message)
                 logger.puts("\tBacktrace: " + $!.backtrace.join("\n"))
             ensure

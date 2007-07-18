@@ -8,10 +8,13 @@
 
 ###############################################################################
 
+require 'logger'
+
 module XoredDebugger
     class TestIOManager
-        def initialize(logger, printer)
-            @logger = logger
+		include Logger
+	
+        def initialize(printer)            
             @printer = printer
 
             @n = 0
@@ -77,9 +80,7 @@ module XoredDebugger
                 "dummy"
             end
             
-            unless @logger.nil?
-                @logger.puts('<<< ' + command)
-            end
+            log('<<< ' + command)
 
             cmd
         end
@@ -87,13 +88,11 @@ module XoredDebugger
         def send(command, data)
             response = @printer.print(command, data)
 
-            unless @logger.nil?
-                @logger.puts('>>> ' + response)
-            end
+            log('>>> ' + response)           
         end
 
         def close
-            puts "Closing..."
+            log('Closing...')
         end
     end # class TestIOManager
 end # module XoredDebugger

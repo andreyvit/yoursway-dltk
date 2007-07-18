@@ -12,7 +12,7 @@ require 'dbgp/managers/breakpoint'
 require 'dbgp/command_handler'
 
 require 'stack_manager'
-                             
+						 
 module XoredDebugger
 
     class States
@@ -45,14 +45,14 @@ module XoredDebugger
  
 
     class RubyThread < CommandHandler
-        # Events
+		# Events
         def created
-            log_manager.puts("Thread 'created' event: " + @thread.inspect)
+            log("Thread 'created' event: " + @thread.inspect)
             io_manager.send('init', init('app_test_id', @key, thread_label, @script))
         end
         
         def terminated
-            log_manager.puts("Thread 'terminated' event: " + @thread.inspect)
+            log("Thread 'terminated' event: " + @thread.inspect)
             unless @f_term
                 sent_stopped
             end         
@@ -60,9 +60,9 @@ module XoredDebugger
         
         
         def terminate
-            log_manager.puts('Thread termination:')
-            log_manager.puts("\tThread main: " + (@thread == Thread.main).to_s)
-            log_manager.puts("\tThread info: " + @thread.inspect.to_s)
+            log('Thread termination:')
+            log("\tThread main: " + (@thread == Thread.main).to_s)
+            log("\tThread info: " + @thread.inspect.to_s)
             
             sent_stopped            
             @f_term = true
@@ -89,10 +89,6 @@ module XoredDebugger
 
         def feature_manager
             @debugger.feature_manager
-        end
-        
-        def log_manager
-            @debugger.log_manager
         end
         
         def source_manager
@@ -143,13 +139,13 @@ module XoredDebugger
         end
 
         def stop
-            log_manager.puts('Stopping thread...')
+            log('Stopping thread...')
             terminate
             nil
         end
 
         def detach
-            log_manager.puts('--> detach <--')
+            log('--> detach <--')
             nil
         end
 
@@ -169,7 +165,7 @@ module XoredDebugger
 
                     data = dispatch_command(@command)
 
-                    log_manager.puts('Data: ' + data.inspect)
+                    log('Data: ' + data.inspect)
 
                     if data.nil?
                         break
@@ -181,7 +177,7 @@ module XoredDebugger
         end
 
         def trace(event, file, line, id, binding, klass)       
-            #log_manager.puts("Thread trace from #{file} at #{line}")
+            #log("Thread trace from #{file} at #{line}")
 
             # Get the code line
             where = source_manager.line_at(file, line)        #get_code_line(file, line)
@@ -211,15 +207,17 @@ module XoredDebugger
 
                     @stack_manager.stack.update(binding, @file, line)
 
+					log('Checking breakpoint...')
                     br_break = breakpoint_manager.line_break?(@stack_manager.stack, @file, line)
-                    log_manager.puts("Breakpoint test result: file: #{file}, line: #{line}, break: #{br_break}, thread: #{Thread.current}")
+                    log("Breakpoint test result: file: #{file}, line: #{line}, break: #{br_break}, thread: #{Thread.current}")
                     #    @io.has_data? or
                     if (
                         @waitDepth == -1 or
                         @waitDepth >= @stack_manager.stack.depth or
                         br_break)
 
-                        log_manager.puts("==>> Line ##{line} from #{@file} by #{Thread.current} <<==")
+                        log("==>> Line ##{line} from #{@file} by #{Thread.current} <<==")
+						
 
                         # Break checking
                         unless @last_continuation_command.nil?
@@ -252,7 +250,7 @@ module XoredDebugger
                     # TODO: handle exception and check exception breakpoints
                     #set_trace_func nil
                     #@debugger.terminate
-                    log_manager.puts('=== Exception ===')
+                    log('=== Exception ===')
             end
         end
     end

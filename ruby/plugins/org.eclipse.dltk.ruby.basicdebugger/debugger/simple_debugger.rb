@@ -14,6 +14,7 @@ require 'thread'
 require 'dbgp/command'
 require 'dbgp/command_printer'
 require 'dbgp/thread_manager'
+require 'dbgp/logger'
 
 require 'dbgp/managers/io_socket'
 require 'dbgp/managers/io_test'
@@ -26,12 +27,12 @@ require 'breakpoint_manager'
 
 module XoredDebugger
     class RubyDebugger
+		include Logger
+	
 		# Construction
-        def initialize(host, port, key, script, logger, test)            
+        def initialize(params)
 			@mutex = Mutex.new
-		
-            @log_manager = logger
-                        
+
             @stdout_capturer = StdoutCapturer.new(false)
             #@stderr_capturer = StderrCapturer.new(true)
 
@@ -41,22 +42,22 @@ module XoredDebugger
 
             @thread_manager = ThreadManager.new() { |thread|
                 printer = Printer.new
-				io = test ? TestIOManager.new(@logger, printer) : SocketIOManager.new(host, port, logger, printer)
-                RubyThread.new(self, thread, io, key, script)
-            }        
+				io = params.test ? TestIOManager.new(printer) : SocketIOManager.new(params.host, params.port, printer)
+                RubyThread.new(self, thread, io, params.key, params.script)
+            }
         end
 
 		# Termination request
         def terminate
-            log_manager.puts('Debugger terminating...')
-			
-			main = @thread_manager.main_thread					
+            log('Debugger terminating...')
+
+			main = @thread_manager.main_thread
 			all = @thread_manager.all_threads
-			
+
 			(all - [main]).each { | th|
 				th.terminate
 			}
-								
+
 			main.terminate
         end
 
@@ -64,30 +65,26 @@ module XoredDebugger
         def breakpoint_manager
             @breakpoint_manager
         end
-        
+
         def feature_manager
             @feature_manager
         end
 
-        def log_manager
-            @log_manager
-        end
-		
 		def source_manager
 			@source_manager
 		end
-        
+
         def capturer
             @stdout_capturer
         end
-				
+
 		# Tracing
         def trace(event, file, line, id, binding, klass)
 			@mutex.synchronize do
 				thread = @thread_manager.synchronize
-				thread.trace(event, file, line, id, binding, klass)			
+				thread.trace(event, file, line, id, binding, klass)
 			end
-        end 
+        end
     end # class RubyDebugger
 
 end # module

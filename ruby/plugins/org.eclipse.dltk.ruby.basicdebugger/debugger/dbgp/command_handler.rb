@@ -15,6 +15,7 @@ THIS_PATH = File.dirname(__FILE__)
 require THIS_PATH + '/properties'
 require THIS_PATH + '/breakpoints'
 require THIS_PATH + '/stack'
+require THIS_PATH + '/logger'
 
 #
 # uri -> path
@@ -36,7 +37,9 @@ def normalize_path(path)
 end
 
 module XoredDebugger
-  class CommandHandler
+	class CommandHandler
+		include Logger
+  
         # Init
         def init(app_id, ide_key, thread, file_uri)
             { :app_id   => app_id,
@@ -55,7 +58,7 @@ module XoredDebugger
 
         # Feature commands
         def feature_get(name)
-            log_manager.puts("feature_get: #{name}")
+            log("feature_get: #{name}")
 
             supported = feature_manager.supported?(name)
 
@@ -65,7 +68,7 @@ module XoredDebugger
         end
 
         def feature_set(name, value)
-            log_manager.puts("feature_set: #{name} = #{value}")
+            log("feature_set: #{name} = #{value}")
 
             feature_manager.set(name, value) # Check types!!! (string or int)
             { :name    => name,
@@ -163,7 +166,7 @@ module XoredDebugger
 
         # Breakpoint commands
         def breakpoint_set(info)
-            log_manager.puts('Setting breakpoint, info: ' + info.inspect)
+            log('Setting breakpoint, info: ' + info.inspect)
 
             id = breakpoint_manager.add(info)
 
@@ -222,13 +225,18 @@ module XoredDebugger
             stack_manager.depth.times { |i|
                 level = stack_manager[i]
 				
+				where = level.method
+				if where.nil?
+					where = source_manager.line_at(level.file, level.line)
+				end
+				
                 levels << { :level    => i,
                             :type     => 'source',
                             :filename => path_to_uri(normalize_path(level.file)),
                             :lineno   => level.line,
                             :cmdbegin => '0:0',
                             :cmdend   => '0:0',
-                            :where    => source_manager.line_at(level.file, level.line) }
+                            :where    => where }
             }
 
             unless depth.nil?
@@ -250,9 +258,9 @@ module XoredDebugger
 
             # TODO:
             if value == 0
-                log_manager.puts("Disabling stdin")
+                log("Disabling stdin")
             elsif value == 1
-                log_manager.puts("Redirecting stdin")
+                log("Redirecting stdin")
             end
 
             { :success => true }
@@ -264,7 +272,7 @@ module XoredDebugger
             # 2 - redirection
 
             # TODO:
-            log_manager.puts("Configure stdout: #{value}")
+            log("Configure stdout: #{value}")
 
             { :success => true }
         end
@@ -275,13 +283,13 @@ module XoredDebugger
             # 2 - redirection
 
             # TODO:
-            log_manager.puts("Configure stderr: #{value}")
+            log("Configure stderr: #{value}")
 
             { :success => true }
         end
 
         def eval_handler(expression, depth)
-            log_manager.puts('Evaluating expression: ' + expression)
+            log('Evaluating expression: ' + expression)
 
             success = true
             property = nil
@@ -296,7 +304,7 @@ module XoredDebugger
         end
 
         def dispatch_command(command)
-            log_manager.puts('Dispatching command: ' + command.name)
+            log('Dispatching command: ' + command.name)
 
             data = case command.name
                 # Status
@@ -331,23 +339,23 @@ module XoredDebugger
                     hit_condition = command.arg_with_default('-o', '>=')
                     expression = command.data
 
-                    log_manager.puts('Setting breakpoint:')
-                    log_manager.puts("\ttype: " + type.to_s)
-                    log_manager.puts("\tstate: " + state.to_s)
-                    log_manager.puts("\ttemporary: " + temporary.to_s)
-                    log_manager.puts("\thit_value: " + hit_value.to_s)
-                    log_manager.puts("\thit_condition: " + hit_condition.to_s)
-                    log_manager.puts("\texpression: " + expression.to_s)
+                    log('Setting breakpoint:')
+                    log("\ttype: " + type.to_s)
+                    log("\tstate: " + state.to_s)
+                    log("\ttemporary: " + temporary.to_s)
+                    log("\thit_value: " + hit_value.to_s)
+                    log("\thit_condition: " + hit_condition.to_s)
+                    log("\texpression: " + expression.to_s)
 
-                    log_manager.puts('Creating info:')
+                    log('Creating info:')
 
                     info = case type
                         when 'line'
                             file = File.expand_path(uri_to_path(command.arg('-f')))
                             line = command.arg('-n').to_i
 
-                            log_manager.puts("\tfile: " + file.to_s)
-                            log_manager.puts("\tline: " + line.to_s)
+                            log("\tfile: " + file.to_s)
+                            log("\tline: " + line.to_s)
 
                             LineBreakpointInfo.new(file, line, state, temporary, expression, hit_value, hit_condition)
 
@@ -365,7 +373,7 @@ module XoredDebugger
                         when 'exception'
                             exception = command.arg('-x')
 
-                            log_manager.puts("\texception: " + file.to_s)
+                            log("\texception: " + file.to_s)
 
                             ExceptionBreakpointInfo.new(exception, state, temporary, expression, hit_value, hit_condition)
 
@@ -377,7 +385,7 @@ module XoredDebugger
                             nil
                     end
 
-                    log_manager.puts('Info created: ' + info.inspect)
+                    log('Info created: ' + info.inspect)
 
                     unless info.nil?
                         breakpoint_set(info)
@@ -468,7 +476,7 @@ module XoredDebugger
                 data[:id] = command.arg('-i')
             end
 
-            log_manager.puts('Dispatch completed, data: ' + data.inspect)
+            log('Dispatch completed, data: ' + data.inspect)
 
             data
         end
