@@ -16,7 +16,6 @@ import org.eclipse.dltk.core.tests.buildpath.BuildpathTests;
 import org.eclipse.dltk.core.tests.ddp.CoreDDPTests;
 import org.eclipse.dltk.core.tests.model.BufferTests;
 import org.eclipse.dltk.core.tests.model.ModelMembersTests;
-import org.eclipse.dltk.core.tests.model.ModifyingResourceTests;
 import org.eclipse.dltk.core.tests.model.WorkingCopyTests;
 
 public class AllTests {
