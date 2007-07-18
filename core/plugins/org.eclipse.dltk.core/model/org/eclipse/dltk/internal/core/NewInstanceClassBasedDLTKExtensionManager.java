@@ -11,9 +11,10 @@ package org.eclipse.dltk.internal.core;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.dltk.core.PriorityClassDLTKExtensionManager;
 
 public class NewInstanceClassBasedDLTKExtensionManager extends
-		ClassBasedDLTKExtensionManager {
+		PriorityClassDLTKExtensionManager {
 
 	public NewInstanceClassBasedDLTKExtensionManager(String extensionPoint) {
 		super(extensionPoint);

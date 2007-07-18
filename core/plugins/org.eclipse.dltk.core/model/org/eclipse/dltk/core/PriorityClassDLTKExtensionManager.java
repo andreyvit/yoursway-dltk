@@ -7,20 +7,18 @@
  *
  
  *******************************************************************************/
-package org.eclipse.dltk.internal.core;
+package org.eclipse.dltk.core;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IModelElement;
 
-public class ClassBasedDLTKExtensionManager extends BasicDLTKExtensionManager {
+public class PriorityClassDLTKExtensionManager extends PriorityDLTKExtensionManager {
 
 	private static final String CLASS_ATTR = "class";
 
-	public ClassBasedDLTKExtensionManager(String extensionPoint) {
-		super(extensionPoint);
+	public PriorityClassDLTKExtensionManager(String extensionPoint) {
+		super(extensionPoint, "nature");
 	}
 
 	public Object getObject(String natureId) {

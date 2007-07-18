@@ -7,7 +7,7 @@
  *
  
  *******************************************************************************/
-package org.eclipse.dltk.internal.core;
+package org.eclipse.dltk.core;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,15 +26,13 @@ import org.eclipse.core.runtime.Platform;
  * @author Haiodo
  * 
  */
-public class BasicDLTKExtensionManager {
+public class PriorityDLTKExtensionManager {
 	public final static String PRIORITY_ATTR = "priority";
-
-	private final static String NATURE_ATTR = "nature";
-
+	
 	private Map extensions;
 
 	private String extensionPoint = null;
-	private String identifier = NATURE_ATTR;
+	private String identifier = null;
 
 	protected void setIdentifierValue(String identifier) {
 		this.identifier = identifier;
@@ -58,9 +56,11 @@ public class BasicDLTKExtensionManager {
 		}
 	}
 
-	public BasicDLTKExtensionManager(String extensionPoint) {
+	public PriorityDLTKExtensionManager(String extensionPoint, String identifier) {
 		this.extensionPoint = extensionPoint;
+		this.identifier = identifier;
 		Assert.isNotNull(this.extensionPoint);
+		Assert.isNotNull(this.identifier);
 	}
 
 	private void initialize() {
