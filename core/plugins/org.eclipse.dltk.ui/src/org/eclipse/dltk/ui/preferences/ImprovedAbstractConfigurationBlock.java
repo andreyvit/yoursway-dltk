@@ -48,7 +48,7 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 			SelectionListener listener = new SelectionListener() {
 				public void widgetSelected(SelectionEvent e) {
 					boolean state = master.getSelection();
-				
+
 					for (int i = 0; i < slaves.length; i++) {
 						slaves[i].setEnabled(state);
 					}
@@ -58,7 +58,7 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 				}
 			};
 			master.addSelectionListener(listener);
-			
+
 			masterSlaveListeners.add(listener);
 		}
 	}
@@ -152,7 +152,7 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 				public void modifyText(ModifyEvent e) {
 					final String value = text.getText();
 
-					IStatus status = null;
+					IStatus status = new StatusInfo();
 
 					IFieldValidator validator = validatorManager
 							.getValidator(text);
@@ -235,7 +235,7 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 	protected void createDependency(final Button master, final Control[] slaves) {
 		dependencyManager.createDependency(master, slaves);
 	}
-	
+
 	// Status
 	protected void updateStatus(IStatus status) {
 		bindManager.updateStatus(status);

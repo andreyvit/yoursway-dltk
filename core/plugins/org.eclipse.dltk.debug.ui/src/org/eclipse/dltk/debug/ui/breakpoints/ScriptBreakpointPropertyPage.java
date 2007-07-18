@@ -18,6 +18,7 @@ import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
+import org.eclipse.dltk.ui.util.SWTFactory;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.SourceViewer;
@@ -33,7 +34,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
 
@@ -100,64 +100,36 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 		return enableExpressionButton.getSelection();
 	}
 
-	protected Composite createComposite(Composite parent, int numColumns) {
-		Composite composit = new Composite(parent, SWT.NONE);
-		composit.setFont(parent.getFont());
-
-		GridLayout layout = new GridLayout(numColumns, false);
-		composit.setLayout(layout);
-		composit.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		return composit;
-	}
-
-	protected Button createRadioButton(Composite parent, String text) {
-		Button button = new Button(parent, SWT.RADIO | SWT.LEFT);
-		button.setText(text);
-		button.setFont(parent.getFont());
-		button.setLayoutData(new GridData());
-		return button;
-	}
-
-	protected Button createCheckButton(Composite parent, String text) {
-		Button button = new Button(parent, SWT.CHECK | SWT.LEFT);
-		button.setText(text);
-		button.setFont(parent.getFont());
-		button.setLayoutData(new GridData());
-		return button;
-	}
-
-	protected Label createLabel(Composite parent, String text) {
-		Label label = new Label(parent, SWT.NONE);
-		label.setText(text);
-		label.setFont(parent.getFont());
-		label.setLayoutData(new GridData());
-		return label;
-	}
-
 	// Static breakpoint information
 	protected void createLabels(Composite parent) throws CoreException {
 		IScriptBreakpoint breakpoint = getBreakpoint();
 
-		Composite labelComposite = createComposite(parent, 2);
+		Composite labelComposite = SWTFactory.createComposite(parent, parent
+				.getFont(), 2, 1, GridData.FILL_HORIZONTAL);
 
 		// Script language
-		createLabel(labelComposite, BreakpointMessages.LanguageLabel);
-		createLabel(labelComposite, BreakpointUtils.getLanguageToolkit(
-				breakpoint).getLanguageName());
+		SWTFactory.createLabel(labelComposite,
+				BreakpointMessages.LanguageLabel, 1);
+		SWTFactory.createLabel(labelComposite, BreakpointUtils
+				.getLanguageToolkit(breakpoint).getLanguageName(), 1);
 
 		// Resource name
 		String resourceName = breakpoint.getResourceName();
 		if (resourceName != null) {
-			createLabel(labelComposite, BreakpointMessages.FileLabel);
-			createLabel(labelComposite, resourceName);
+			SWTFactory.createLabel(labelComposite,
+					BreakpointMessages.FileLabel, 1);
+			SWTFactory.createLabel(labelComposite, resourceName, 1);
 		}
 
 		// Hit count
-		createLabel(labelComposite, BreakpointMessages.HitCountLabel);
+		SWTFactory.createLabel(labelComposite,
+				BreakpointMessages.HitCountLabel, 1);
+
 		int hitCount = breakpoint.getHitCount();
-		createLabel(labelComposite,
+		SWTFactory.createLabel(labelComposite,
 				hitCount == -1 ? BreakpointMessages.HitCountNotAvailableMessage
-						: Integer.toString(hitCount));
+						: Integer.toString(hitCount), 1);
+
 		// from debugging engine
 
 		createTypeSpecificLabels(labelComposite);
@@ -170,10 +142,12 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 	// Breakpoint information
 	protected void createButtons(Composite parent) throws CoreException {
-		Composite buttonsComposite = createComposite(parent, 1);
+		Composite buttonsComposite = SWTFactory.createComposite(parent, parent
+				.getFont(), 1, 1, GridData.FILL_HORIZONTAL);
 
-		enabledBreakpointButton = createCheckButton(buttonsComposite,
-				BreakpointMessages.EnabledLabel);
+		enabledBreakpointButton = SWTFactory.createCheckButton(
+				buttonsComposite, BreakpointMessages.EnabledLabel, null, false,
+				1);
 
 		createTypeSpecificButtons(buttonsComposite);
 	}
@@ -183,11 +157,13 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 	}
 
 	protected void createHitCountEditor(Composite parent) {
-		Composite hitCountComposite = createComposite(parent, 4);
+		Composite hitCountComposite = SWTFactory.createComposite(parent, parent
+				.getFont(), 4, 1, GridData.FILL_HORIZONTAL);
 
 		// Hit count checking
-		hitCountCheckingButton = createCheckButton(hitCountComposite,
-				BreakpointMessages.BreakWhenHitCountLabel);
+		hitCountCheckingButton = SWTFactory.createCheckButton(
+				hitCountComposite, BreakpointMessages.BreakWhenHitCountLabel,
+				null, false, 1);
 
 		hitCountCheckingButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -229,7 +205,8 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 			}
 		});
 
-		createLabel(hitCountComposite, BreakpointMessages.HitsLabel);
+		SWTFactory.createLabel(hitCountComposite, BreakpointMessages.HitsLabel,
+				1);
 	}
 
 	protected void createExpressionEditor(Composite parent) {
@@ -273,7 +250,8 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 	protected Control createContents(Composite parent) {
 		noDefaultAndApplyButton();
-		Composite composite = createComposite(parent, 1);
+		Composite composite = SWTFactory.createComposite(parent, parent
+				.getFont(), 1, 1, GridData.FILL_BOTH);
 
 		try {
 			createLabels(composite);

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
 import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
+import org.eclipse.dltk.ui.preferences.FieldValidators;
 import org.eclipse.dltk.ui.preferences.ImprovedAbstractConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 import org.eclipse.dltk.ui.util.SWTFactory;
@@ -24,6 +25,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PreferenceLinkArea;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
@@ -36,6 +38,20 @@ public class ScriptDebugConfigurationBlock extends
 
 		ArrayList overlayKeys = new ArrayList();
 
+		// Connection
+		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
+				OverlayPreferenceStore.INT,
+				DebugPreferenceConstants.PREF_DBGP_PORT));
+
+		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
+				OverlayPreferenceStore.INT,
+				DebugPreferenceConstants.PREF_DBGP_CONNECTION_TIMEOUT));
+
+		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
+				OverlayPreferenceStore.INT,
+				DebugPreferenceConstants.PREF_DBGP_RESPONSE_TIMEOUT));
+
+		// 
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
 				OverlayPreferenceStore.BOOLEAN,
 				DebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE));
@@ -69,6 +85,34 @@ public class ScriptDebugConfigurationBlock extends
 		store.addKeys(createOverlayStoreKeys());
 
 		this.preferencePage = mainPreferencePage;
+	}
+
+	private Control createDbgpGroup(Composite parent) {
+		final Group group = SWTFactory.createGroup(parent, "Communication", 2,
+				1, GridData.FILL_HORIZONTAL);
+
+		// Port
+		SWTFactory.createLabel(group, "Port:", 1);
+		final Text port = SWTFactory.createText(group, SWT.BORDER, 1, "");
+		bindControl(port, DebugPreferenceConstants.PREF_DBGP_PORT);
+
+		// Connection timeout
+		SWTFactory.createLabel(group, "Connection timeout (ms):", 1);
+		final Text connectionTimeout = SWTFactory.createText(group, SWT.BORDER,
+				1, "");
+		bindControl(connectionTimeout,
+				DebugPreferenceConstants.PREF_DBGP_CONNECTION_TIMEOUT,
+				FieldValidators.POSITIVE_NUMBER_VALIDATOR);
+
+		// Response timeout
+		SWTFactory.createLabel(group, "Response timeout (ms):", 1);
+		final Text responseTimeout = SWTFactory.createText(group, SWT.BORDER,
+				1, "");
+		bindControl(responseTimeout,
+				DebugPreferenceConstants.PREF_DBGP_RESPONSE_TIMEOUT,
+				FieldValidators.POSITIVE_NUMBER_VALIDATOR);
+
+		return group;
 	}
 
 	private Control createSettingsGroup(Composite parent) {
@@ -139,13 +183,14 @@ public class ScriptDebugConfigurationBlock extends
 	}
 
 	public Control createControl(Composite parent) {
-		final Composite control = SWTFactory.createComposite(parent, parent
+		final Composite composite = SWTFactory.createComposite(parent, parent
 				.getFont(), 1, 1, GridData.FILL_HORIZONTAL);
 
-		createSettingsGroup(control);
-		createVariablesGroup(control);
-		createScriptLanguagesLinks(control);
+		createDbgpGroup(composite);
+		createSettingsGroup(composite);
+		createVariablesGroup(composite);
+		createScriptLanguagesLinks(composite);
 
-		return control;
+		return composite;
 	}
 }

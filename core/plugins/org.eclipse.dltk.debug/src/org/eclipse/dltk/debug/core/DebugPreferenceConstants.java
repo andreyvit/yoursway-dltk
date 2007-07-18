@@ -17,12 +17,18 @@ public class DebugPreferenceConstants {
 
 	public static final String PREF_DBGP_ENABLE_LOGGING = "dbgp_enable_logging";
 
+	// Communication
 	public static final String PREF_DBGP_PORT = "dbgp_port";
 
+	// Time to wait of connection debugging engine to the IDE
 	public static final String PREF_DBGP_CONNECTION_TIMEOUT = "dbgp_connection_timeout";
 
+	// Time to wait after sending dbgp request to the debugging engine
 	public static final String PREF_DBGP_RESPONSE_TIMEOUT = "dbgp_response_timeout";
-
+	
+	
+	
+	
 	public static final String PREF_DBGP_SHOW_SCOPE_PREFIX = "dbgp_show_scope_";
 
 	public static final String PREF_DBGP_SHOW_SCOPE_LOCAL = PREF_DBGP_SHOW_SCOPE_PREFIX

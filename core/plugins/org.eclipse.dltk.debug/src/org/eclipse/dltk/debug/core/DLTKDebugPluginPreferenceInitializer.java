@@ -18,6 +18,7 @@ public class DLTKDebugPluginPreferenceInitializer extends
 		prefs.setDefault(DebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING,
 				false);
 
+		// Connection
 		prefs.setDefault(DebugPreferenceConstants.PREF_DBGP_PORT, -1);
 
 		prefs.setDefault(DebugPreferenceConstants.PREF_DBGP_CONNECTION_TIMEOUT,

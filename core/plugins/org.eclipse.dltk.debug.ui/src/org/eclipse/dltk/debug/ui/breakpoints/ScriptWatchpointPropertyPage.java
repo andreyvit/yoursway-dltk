@@ -2,6 +2,7 @@ package org.eclipse.dltk.debug.ui.breakpoints;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
+import org.eclipse.dltk.ui.util.SWTFactory;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -21,8 +22,8 @@ public class ScriptWatchpointPropertyPage extends ScriptBreakpointPropertyPage {
 		IScriptWatchpoint watchPoint = (IScriptWatchpoint) getBreakpoint();
 
 		// Watch field
-		createLabel(parent, BreakpointMessages.WatchFieldLabel);
-		createLabel(parent, watchPoint.getFieldName());
+		SWTFactory.createLabel(parent, BreakpointMessages.WatchFieldLabel, 1);
+		SWTFactory.createLabel(parent, watchPoint.getFieldName(), 1);
 	}
 
 	protected boolean hasExpressionEditor() {
@@ -30,10 +31,10 @@ public class ScriptWatchpointPropertyPage extends ScriptBreakpointPropertyPage {
 	}
 
 	protected void createTypeSpecificButtons(Composite parent) {
-		suspendOnAccessButton = createCheckButton(parent,
-				BreakpointMessages.SuspendOnAccessLabel);
-		suspendOnModificationButton = createCheckButton(parent,
-				BreakpointMessages.SuspendOnModificationLabel);
+		suspendOnAccessButton = SWTFactory.createCheckButton(parent,
+				BreakpointMessages.SuspendOnAccessLabel, null, false, 1);
+		suspendOnModificationButton = SWTFactory.createCheckButton(parent,
+				BreakpointMessages.SuspendOnModificationLabel, null, false, 1);
 	}
 
 	protected void loadValues() throws CoreException {

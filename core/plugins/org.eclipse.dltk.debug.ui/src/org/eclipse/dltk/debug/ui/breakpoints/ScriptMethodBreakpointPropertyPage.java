@@ -2,6 +2,7 @@ package org.eclipse.dltk.debug.ui.breakpoints;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
+import org.eclipse.dltk.ui.util.SWTFactory;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -18,10 +19,11 @@ public class ScriptMethodBreakpointPropertyPage extends
 	protected void createTypeSpecificButtons(Composite parent) {
 		setTitle(BreakpointMessages.MethodBreakpointTitle);
 
-		breakOnEntryButton = createCheckButton(parent,
-				BreakpointMessages.SuspendOnMethodEntryLabel);
-		breakOnExitButton = createCheckButton(parent,
-				BreakpointMessages.SuspendOnMethodExitLabel);
+		breakOnEntryButton = SWTFactory.createCheckButton(parent,
+				BreakpointMessages.SuspendOnMethodEntryLabel, null, false, 1);
+
+		breakOnExitButton = SWTFactory.createCheckButton(parent,
+				BreakpointMessages.SuspendOnMethodExitLabel, null, false, 1);
 	}
 
 	protected void loadValues() throws CoreException {
