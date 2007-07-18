@@ -10,6 +10,7 @@
 
 package org.eclipse.dltk.ruby.basicdebugger;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
@@ -55,15 +56,15 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 
 		this.logging = true;
 	}
-	
+		
 	protected InterpreterConfig alterConfig(String exe, InterpreterConfig config)
 			throws CoreException {
 		// Get debugger source location
 		final IPath sourceLocation = deploy();
-		
-		
 
 		final IPath scriptFile = sourceLocation.append(DEBUGGER_SCRIPT);
+		
+		
 
 		// Creating new config
 		InterpreterConfig newConfig = new InterpreterConfig();
@@ -91,14 +92,13 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 		newConfig.addEnvVar(RUBY_HOST_VAR, host);
 		newConfig.addEnvVar(RUBY_PORT_VAR, port);
 		newConfig.addEnvVar(RUBY_KEY_VAR, sessionId);
-		newConfig.addEnvVar(RUBY_SCRIPT_VAR, config.getScriptFilePath()
-				.toPortableString());
-
+		newConfig.addEnvVar(RUBY_SCRIPT_VAR, config.getScriptFilePath().toPortableString());
+		
 		if (logging) {
 			newConfig.addEnvVar(RUBY_LOG_VAR, getLogFilename()
 					.toPortableString());
 		}
-
+				
 		return newConfig;
 	}
 

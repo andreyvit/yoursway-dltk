@@ -38,7 +38,6 @@ public abstract class DbgpWorkingThread extends DbgpTermination {
 		}
 	}
 
-	// IDbgpTerminate
 	public void requestTermination() {
 		thread.interrupt();
 	}

@@ -1,89 +1,140 @@
-/*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- 
- *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model;
 
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.dltk.core.DLTKCore;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
+import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.dltk.dbgp.DbgpServer;
-import org.eclipse.dltk.dbgp.DbgpServerException;
-import org.eclipse.dltk.dbgp.IDbgpServer;
+import org.eclipse.dltk.dbgp.IDbgpServerListener;
+import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.IDbgpThreadAcceptor;
+import org.eclipse.dltk.dbgp.internal.IDbgpTerminationListener;
+import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
+import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.IDbgpService;
 
-public class DbgpService implements IDbgpService {
-	private static final boolean DEBUG = DLTKCore.DEBUG;
+public class DbgpService implements IDbgpService, IPropertyChangeListener,
+		IDbgpTerminationListener, IDbgpServerListener {
+	private static final int FROM_PORT = 10000;
+	private static final int TO_PORT = 50000;
 
-	private static final int PORT_SEARCH_BEGIN = 10000;
+	private static final int SERVER_SOCKET_TIMEOUT = 10000000;
+	private static final int CLIENT_SOCKET_TIMEOUT = 10000000;
 
-	private static final int PORT_SEARCH_END = 50000;
+	private DbgpServer server;
 
-	// 30 seconds or 1 hour
-	private static final int SERVER_TIMEOUT = 1000 * (DEBUG ? 30 : 60 * 60);
+	private Map acceptors;
 
-	// 30 seconds or 2 hours
-	private static final int CLIENT_TIMEOUT = 1000 * (DEBUG ? 30 : 2 * 60 * 60);
+	private int serverPort;
 
-	public static IDbgpService getService() throws Exception {
-		return new DbgpService(PORT_SEARCH_BEGIN, PORT_SEARCH_END);
+	private int getPreferencePort() {
+		return DLTKDebugPlugin.getDefault().getPluginPreferences().getInt(
+				DebugPreferenceConstants.PREF_DBGP_PORT);
 	}
 
-	public static IDbgpService getService(int port) throws Exception {
-		return new DbgpService(port);
-	}
+	protected void restartServer(int port) {
+		if (server != null) {
+			server.removeTerminationListener(this);
+			server.setListener(null);
 
-	public static IDbgpService getService(int portBegin, int portEnd)
-			throws Exception {
-		return new DbgpService(portBegin, portEnd);
-	}
-
-	// Instance
-	private final IDbgpServer server;
-
-	protected DbgpService(int port) throws DbgpServerException {
-		this.server = new DbgpServer(CLIENT_TIMEOUT, SERVER_TIMEOUT);
-		this.server.start(port);
-	}
-
-	protected DbgpService(int startPort, int endPort)
-			throws DbgpServerException {
-		this.server = new DbgpServer(CLIENT_TIMEOUT, SERVER_TIMEOUT);
-		this.server.start(startPort, endPort);
-	}
-
-	public int getPort() {
-		try {
-			return server.getPort();
-		} catch (DbgpServerException e) {
-			DebugPlugin.log(e);
+			server.requestTermination();
+			try {
+				server.waitTerminated();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
-		return -1;
+		serverPort = port;
+
+		server = new DbgpServer(port, SERVER_SOCKET_TIMEOUT,
+				CLIENT_SOCKET_TIMEOUT);
+		server.addTerminationListener(this);
+		server.setListener(this);
+		server.start();
 	}
 
-	public void registerAcceptor(String id, IDbgpThreadAcceptor acceptor) {
-		try {
-			server.registerAcceptor(id, acceptor);
-		} catch (DbgpServerException e) {
-			DebugPlugin.log(e);
+	public DbgpService() {
+		this.acceptors = Collections.synchronizedMap(new HashMap());
+
+		DLTKDebugPlugin.getDefault().getPluginPreferences()
+				.addPropertyChangeListener(this);
+
+		int port = getPreferencePort();
+		if (port == DebugPreferenceConstants.DBGP_AVAILABLE_PORT) {
+			port = DbgpServer.findAvailablePort(FROM_PORT, TO_PORT);
 		}
-	}
 
-	public IDbgpThreadAcceptor unregisterAcceptor(String id) {
-		return server.unregisterAcceptor(id);
+		restartServer(port);
 	}
 
 	public void shutdown() {
-		try {
-			server.stop();
-		} catch (DbgpServerException e) {
-			DebugPlugin.log(e);
+		if (server != null) {
+			server.removeTerminationListener(this);
+			server.setListener(null);
+
+			server.requestTermination();
+			try {
+				server.waitTerminated();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public int getPort() {
+		return serverPort;
+	}
+
+	// Acceptors
+	public void registerAcceptor(String id, IDbgpThreadAcceptor acceptor) {
+		acceptors.put(id, acceptor);
+	}
+
+	public IDbgpThreadAcceptor unregisterAcceptor(String id) {
+		return (IDbgpThreadAcceptor) acceptors.remove(id);
+	}
+
+	// IPropertyChangeListener
+	public void propertyChange(PropertyChangeEvent event) {
+		final String property = event.getProperty();
+
+		if (DebugPreferenceConstants.PREF_DBGP_PORT.equals(property)) {
+			final int port = getPreferencePort();
+			if (port != DebugPreferenceConstants.DBGP_AVAILABLE_PORT) {
+				// Only restart if concrete port specified
+				restartServer(port);
+			}
+		}
+	}
+
+	// IDbgpTerminationListener
+	public void objectTerminated(Object object, Exception e) {
+		if (e != null) {
+			DLTKDebugPlugin.log(e);
+			restartServer(serverPort);
+		}
+	}
+
+	public boolean available() {
+		return true;
+	}
+
+	// INewDbgpServerListener
+	public void clientConnected(IDbgpSession session) {
+		final String id = session.getInfo().getIdeKey();
+
+		final IDbgpThreadAcceptor acceptor = (IDbgpThreadAcceptor) acceptors
+				.get(id);
+
+		if (acceptor != null) {
+			acceptor.acceptDbgpThread(session);
+		} else {
+			session.requestTermination();
 		}
 	}
 }

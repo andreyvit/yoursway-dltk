@@ -59,27 +59,23 @@ public class FieldValidators {
 			return status;
 		}
 	}
-	
+
 	public static class PortValidator implements IFieldValidator {
-		// TODO: rewrite
 		public IStatus validate(String text) {
 			StatusInfo status = new StatusInfo();
 
 			if (text.trim().length() == 0) {
-				status.setError(ValidatorMessages.PositiveNumberIsEmpty);
+				status.setError(ValidatorMessages.PortIsEmpty);
 			} else {
 				try {
 					int value = Integer.parseInt(text);
-					if (value < 0) {
-						status
-								.setError(Messages
-										.format(
-												ValidatorMessages.PositiveNumberIsInvalid,
-												text));
+					if (value < 1000 || value > 65535) {
+						status.setError(Messages.format(
+								ValidatorMessages.PortShouldBeInRange, text));
 					}
 				} catch (NumberFormatException e) {
 					status.setError(Messages.format(
-							ValidatorMessages.PositiveNumberIsInvalid, text));
+							ValidatorMessages.PortShouldBeInRange, text));
 				}
 			}
 
@@ -91,6 +87,6 @@ public class FieldValidators {
 	public static IFieldValidator PATH_VALIDATOR = new FilePathValidator();
 
 	public static IFieldValidator POSITIVE_NUMBER_VALIDATOR = new PositiveNumberValidator();
-	
+
 	public static IFieldValidator PORT_VALIDATOR = new PortValidator();
 }

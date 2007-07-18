@@ -30,9 +30,7 @@ public class JavaLocalApplicationLaunchConfigurationDelegate extends
 		System.out.println("launching");
 		IDbgpService dbgpService = null;
 		try {
-			int port = 2300;
-			dbgpService = DLTKDebugPlugin.getDefault().createDbgpService(port,
-					port + 1);
+			dbgpService = DLTKDebugPlugin.getDefault().getDbgpService();
 			
 			IScriptDebugTarget target = new ScriptDebugTarget("org.eclipse.dltk.debug.javascriptModel", dbgpService,
 					"hello", launch,null);

@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ui.preferences;
 
+import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.osgi.util.NLS;
 
 public class ValidatorMessages {
@@ -23,4 +24,7 @@ public class ValidatorMessages {
 	
 	public static String PositiveNumberIsInvalid;
 	
+	// Port validator
+	public static String PortIsEmpty;
+	public static String PortShouldBeInRange;
 }

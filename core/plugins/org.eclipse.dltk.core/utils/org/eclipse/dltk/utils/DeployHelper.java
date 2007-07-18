@@ -68,7 +68,7 @@ public class DeployHelper {
 				String path = (String) paths.nextElement();
 				if (path.endsWith("/")) {
 					deploy(bundle, path, diskPath);
-				} else {
+				} else { 
 					File file = diskPath.append(path).toFile();
 					DeployHelper.copy(bundle.getEntry(path), file);
 				}

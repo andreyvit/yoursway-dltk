@@ -40,20 +40,19 @@ public class DLTKDebugPlugin extends Plugin {
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 
-		// TODO: stop
+		if (dbgpService != null) {
+			dbgpService.shutdown();
+		}
 	}
 
-	public IDbgpService createDbgpService() throws Exception {
-		return DbgpService.getService();
-	}
+	private DbgpService dbgpService;
 
-	public IDbgpService creaeDbgpService(int port) throws Exception {
-		return DbgpService.getService(port);
-	}
+	public IDbgpService getDbgpService() {
+		if (dbgpService == null) {
+			dbgpService = new DbgpService();
+		}
 
-	public IDbgpService createDbgpService(int portBegin, int portEnd)
-			throws Exception {
-		return DbgpService.getService(portBegin, portEnd);
+		return dbgpService;
 	}
 
 	// Logging

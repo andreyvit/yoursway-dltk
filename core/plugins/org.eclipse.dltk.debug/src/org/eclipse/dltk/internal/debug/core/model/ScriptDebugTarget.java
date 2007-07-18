@@ -246,7 +246,6 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	public void terminate() throws DebugException {
 		dbgpService.unregisterAcceptor(sessionId);
-		dbgpService.shutdown();
 		threadManager.terminate();
 		if (waitTermianted()) {
 

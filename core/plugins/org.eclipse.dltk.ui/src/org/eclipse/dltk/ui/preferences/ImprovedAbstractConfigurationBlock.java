@@ -142,7 +142,9 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 
 		protected void bindControl(final Text text, final String key,
 				IFieldValidator validator) {
-			textControls.put(text, key);
+			if (key != null) {
+				textControls.put(text, key);
+			}
 
 			if (validator != null) {
 				validatorManager.registerValidator(text, validator);
@@ -156,12 +158,15 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 
 					IFieldValidator validator = validatorManager
 							.getValidator(text);
-					if (validator != null) {
+
+					if (validator != null && text.isEnabled()) {
 						status = validator.validate(value);
 					}
 
-					if (status.getSeverity() != IStatus.ERROR) {
-						store.setValue(key, value);
+					if (key != null) {
+						if (status.getSeverity() != IStatus.ERROR) {
+							store.setValue(key, value);
+						}
 					}
 
 					updateStatus(status);
@@ -225,6 +230,10 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 
 	protected void bindControl(final Text text, final String key) {
 		bindManager.bindControl(text, key, null);
+	}
+
+	protected void bindControl(final Text text, IFieldValidator validator) {
+		bindManager.bindControl(text, null, validator);
 	}
 
 	// Dependency

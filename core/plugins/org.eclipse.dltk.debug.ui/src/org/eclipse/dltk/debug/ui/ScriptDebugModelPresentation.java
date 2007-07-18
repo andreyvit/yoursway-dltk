@@ -115,9 +115,10 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 
 	protected String getDebugTargetText(IScriptDebugTarget target) {
 		IDebuggingEngine engine = getDebuggingEngine(target);
+		
 		if (engine != null) {
-			return MessageFormat.format("{0} [session id: {1}]", new Object[] {
-					engine.getName(), target.getSessionId() });
+			return MessageFormat.format("{0} [session id: {1}]",
+					new Object[] { engine.getName(), target.getSessionId()});
 		}
 
 		return target.toString();

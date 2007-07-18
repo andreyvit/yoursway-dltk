@@ -18,10 +18,14 @@ import org.eclipse.dltk.ui.preferences.FieldValidators;
 import org.eclipse.dltk.ui.preferences.ImprovedAbstractConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 import org.eclipse.dltk.ui.util.SWTFactory;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -87,14 +91,47 @@ public class ScriptDebugConfigurationBlock extends
 		this.preferencePage = mainPreferencePage;
 	}
 
+	private static final int AUTO_SELECT_PORT_INDEX = 0;
+	private static final int CUSTOM_PORT_INDEX = 1;
+
+	private Combo portCombo;
+	private Text portText;
+
 	private Control createDbgpGroup(Composite parent) {
 		final Group group = SWTFactory.createGroup(parent, "Communication", 2,
 				1, GridData.FILL_HORIZONTAL);
 
 		// Port
 		SWTFactory.createLabel(group, "Port:", 1);
-		final Text port = SWTFactory.createText(group, SWT.BORDER, 1, "");
-		bindControl(port, DebugPreferenceConstants.PREF_DBGP_PORT);
+
+		Composite portCompsite = SWTFactory.createComposite(group, group
+				.getFont(), 2, 0, GridData.FILL_HORIZONTAL);
+
+		portCombo = SWTFactory.createCombo(portCompsite, SWT.READ_ONLY
+				| SWT.BORDER, 0, new String[] {});
+
+		portCombo.add("auto select", AUTO_SELECT_PORT_INDEX);
+		portCombo.add("custom", CUSTOM_PORT_INDEX);
+
+		portText = SWTFactory.createText(portCompsite, SWT.BORDER, 0, "");
+		bindControl(portText, FieldValidators.PORT_VALIDATOR);
+
+		portCombo.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				boolean isCustom = portCombo.getSelectionIndex() == CUSTOM_PORT_INDEX;
+
+				portText.setEnabled(isCustom);
+				
+				if (!isCustom) {
+					portText.setText("");
+				} else {
+					portText.setText(portText.getText());
+				}
+			}
+		});
 
 		// Connection timeout
 		SWTFactory.createLabel(group, "Connection timeout (ms):", 1);
@@ -125,7 +162,7 @@ public class ScriptDebugConfigurationBlock extends
 				false, 1);
 		bindControl(b, DebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
 
-		// Enable dbpg logging
+		// Enable dbgp logging
 		b = SWTFactory.createCheckButton(group,
 				ScriptDebugPreferencesMessages.EnableDbgpLoggingLabel, null,
 				false, 1);
@@ -192,5 +229,38 @@ public class ScriptDebugConfigurationBlock extends
 		createScriptLanguagesLinks(composite);
 
 		return composite;
+	}
+
+	public void initialize() {
+		super.initialize();
+
+		final IPreferenceStore store = getPreferenceStore();
+
+		int port = store.getInt(DebugPreferenceConstants.PREF_DBGP_PORT);
+		if (port == DebugPreferenceConstants.DBGP_AVAILABLE_PORT) {
+			portText.setEnabled(false);
+			portText.setText("");
+			portCombo.select(AUTO_SELECT_PORT_INDEX);
+
+		} else {
+			portText.setEnabled(true);
+			portText.setText(Integer.toString(port));
+			portCombo.select(CUSTOM_PORT_INDEX);
+		}
+
+	}
+
+	public void performOk() {
+		super.performOk();
+
+		final IPreferenceStore store = getPreferenceStore();
+
+		if (portCombo.getSelectionIndex() == AUTO_SELECT_PORT_INDEX) {
+			store.setValue(DebugPreferenceConstants.PREF_DBGP_PORT,
+					DebugPreferenceConstants.DBGP_AVAILABLE_PORT);
+		} else {
+			store.setValue(DebugPreferenceConstants.PREF_DBGP_PORT, Integer
+					.parseInt(portText.getText()));
+		}
 	}
 }
