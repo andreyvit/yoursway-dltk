@@ -123,10 +123,10 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 
 		// Id
 		SWTFactory.createLabel(labelComposite,
-				BreakpointMessages.EngineIdLabel, 1);
+				BreakpointMessages.InternalIdLabel, 1);
 
 		String engineId = breakpoint.getIdentifier();
-		String engineIdText = engineId == null ? BreakpointMessages.EngineIdNotAvailableMessage
+		String engineIdText = (engineId == null || engineId.length() == 0) ? BreakpointMessages.InternalIdNotAvailableMessage
 				: engineId;
 		SWTFactory.createLabel(labelComposite, engineIdText, 1);
 

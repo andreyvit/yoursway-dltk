@@ -94,10 +94,11 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 		});
 	}
 
-	protected void updateBreakpoinHitCountsToDefualt(IBreakpoint[] breakpoints) {
+	protected void updateBreakpoinInfoToDefualt(IBreakpoint[] breakpoints) {
 		updateBreakpoints(breakpoints, new IBreakpointUpdater() {
 			public void update(IScriptBreakpoint breakpoint)
 					throws CoreException {
+				breakpoint.setIdentifier("");
 				breakpoint.setHitCount(-1);
 			}
 		});
@@ -126,7 +127,7 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 							.getBreakpointManager()
 							.getBreakpoints(debugModelId);
 
-					updateBreakpoinHitCountsToDefualt(breakpoints);
+					updateBreakpoinInfoToDefualt(breakpoints);
 					updateBreakpointMessages(breakpoints);
 				}
 			}

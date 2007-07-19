@@ -22,7 +22,7 @@ public class BreakpointMessages {
 	
 	public static String FileLabel;
 	
-	public static String EngineIdLabel;
+	public static String InternalIdLabel;
 	
 	public static String HitCountLabel;
 	
@@ -51,7 +51,7 @@ public class BreakpointMessages {
 	public static String InvalidNumberOfHits;
 	
 	//
-	public static String EngineIdNotAvailableMessage;
+	public static String InternalIdNotAvailableMessage;
 	
 	public static String HitCountNotAvailableMessage;
 	
