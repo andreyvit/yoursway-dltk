@@ -100,7 +100,8 @@ public class DocumentAdapter implements IBuffer, IDocumentListener {
 
 			public void set(String contents) {
 				fContents= contents;
-				Display.getDefault().syncExec(this);
+				//Display.getDefault().syncExec(this);
+				DocumentAdapter.run(this);
 			}
 		}
 
@@ -475,5 +476,19 @@ public class DocumentAdapter implements IBuffer, IDocumentListener {
 				((IBufferChangedListener) e.next()).bufferChanged(event);
 		}
 	}
-}
 
+	/**
+	 * Run the given runnable in the UI thread.
+	 * 
+	 * @param runnable the runnable
+	 * @since 3.3
+	 */
+	private static final void run(Runnable runnable) {
+		Display currentDisplay= Display.getCurrent();
+		if (currentDisplay != null)
+			runnable.run();
+		else
+			Display.getDefault().syncExec(runnable);
+	}
+	
+}

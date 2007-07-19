@@ -26,6 +26,7 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceReference;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
+import org.eclipse.dltk.internal.core.BufferManager;
 import org.eclipse.dltk.internal.core.BuiltinSourceModule;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
@@ -97,13 +98,16 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 					if (resource instanceof IFile)
 						return new DocumentAdapter(workingCopy,
 								(IFile) resource);
-				} else if (original instanceof ExternalSourceModule) {
+				} 
+				else if (original instanceof ExternalSourceModule) {
 					IPath path = original.getPath();
 					return new DocumentAdapter(workingCopy, path);
 				}
 				if (original instanceof BuiltinSourceModule) {
-					IPath path = original.getPath();
-					return new DocumentAdapter(workingCopy, path);
+//					 IPath path = original.getPath();
+//					 return new DocumentAdapter(workingCopy, path);
+					return BufferManager.getDefaultBufferManager()
+							.createBuffer(original);
 				}
 				return DocumentAdapter.NULL;
 			}
