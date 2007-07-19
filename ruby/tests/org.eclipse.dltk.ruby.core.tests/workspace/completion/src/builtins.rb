@@ -567,3 +567,351 @@ module Kernel
 	end
 end
 
+	
+class File  < ::IO
+	class << ::File
+		
+		include Kernel
+	
+	end
+	
+public
+	def ctime ()
+	end
+	
+	def lstat ()
+	end
+	
+	def chown (arg1, arg2)
+	end
+	
+	def mtime ()
+	end
+	
+	def path ()
+	end
+	
+	def truncate (arg1)
+	end
+	
+	def chmod (arg1)
+	end
+	
+	def atime ()
+	end
+	
+	def flock (arg1)
+	end
+	
+	
+protected
+	
+private
+	def initialize (*args)
+	end
+	
+	def self.exist? (arg1)
+	end
+	
+	def self.grpowned? (arg1)
+	end
+	
+	def self.lchown (*args)
+	end
+	
+	def self.executable_real? (arg1)
+	end
+	
+	def self.setgid? (arg1)
+	end
+	
+	def self.utime (*args)
+	end
+	
+	def self.expand_path (*args)
+	end
+	
+	def self.readable_real? (arg1)
+	end
+	
+	def self.socket? (arg1)
+	end
+	
+	def self.ftype (arg1)
+	end
+	
+	def self.readlink (arg1)
+	end
+	
+	def self.directory? (arg1)
+	end
+	
+	def self.owned? (arg1)
+	end
+	
+	def self.lchmod (*args)
+	end
+	
+	def self.extname (arg1)
+	end
+	
+	def self.executable? (arg1)
+	end
+	
+	def self.setuid? (arg1)
+	end
+	
+	def self.ctime (arg1)
+	end
+	
+	def self.delete (*args)
+	end
+	
+	def self.umask (*args)
+	end
+	
+	def self.readable? (arg1)
+	end
+	
+	def self.symlink? (arg1)
+	end
+	
+	def self.lstat (arg1)
+	end
+	
+	def self.symlink (arg1, arg2)
+	end
+	
+	def self.split (arg1)
+	end
+	
+	def self.join (*args)
+	end
+	
+	def self.size? (arg1)
+	end
+	
+	def self.identical? (arg1, arg2)
+	end
+	
+	def self.chown (*args)
+	end
+	
+	def self.dirname (arg1)
+	end
+	
+	def self.fnmatch (*args)
+	end
+	
+	def self.writable_real? (arg1)
+	end
+	
+	def self.zero? (arg1)
+	end
+	
+	def self.chardev? (arg1)
+	end
+	
+	def self.mtime (arg1)
+	end
+	
+	def self.rename (arg1, arg2)
+	end
+	
+	def self.exists? (arg1)
+	end
+	
+	def self.size (arg1)
+	end
+	
+	def self.pipe? (arg1)
+	end
+	
+	def self.stat (arg1)
+	end
+	
+	def self.link (arg1, arg2)
+	end
+	
+	def self.truncate (arg1, arg2)
+	end
+	
+	def self.file? (arg1)
+	end
+	
+	def self.sticky? (arg1)
+	end
+	
+	def self.chmod (*args)
+	end
+	
+	def self.basename (*args)
+	end
+	
+	def self.fnmatch? (*args)
+	end
+	
+	def self.writable? (arg1)
+	end
+	
+	def self.blockdev? (arg1)
+	end
+	
+	def self.atime (arg1)
+	end
+	
+	def self.unlink (*args)
+	end
+	
+end
+
+	
+class File::Stat  < ::Object
+		
+	include Comparable
+	
+	class << ::File::Stat
+		
+		include Kernel
+	
+	end
+	
+public
+	def rdev_minor ()
+	end
+	
+	def grpowned? ()
+	end
+	
+	def <=> (arg1)
+	end
+	
+	def uid ()
+	end
+	
+	def executable_real? ()
+	end
+	
+	def setgid? ()
+	end
+	
+	def dev_minor ()
+	end
+	
+	def ftype ()
+	end
+	
+	def readable_real? ()
+	end
+	
+	def socket? ()
+	end
+	
+	def rdev_major ()
+	end
+	
+	def directory? ()
+	end
+	
+	def owned? ()
+	end
+	
+	def nlink ()
+	end
+	
+	def ctime ()
+	end
+	
+	def executable? ()
+	end
+	
+	def setuid? ()
+	end
+	
+	def dev_major ()
+	end
+	
+	def blocks ()
+	end
+	
+	def readable? ()
+	end
+	
+	def symlink? ()
+	end
+	
+	def rdev ()
+	end
+	
+	def size? ()
+	end
+	
+	def mode ()
+	end
+	
+	def mtime ()
+	end
+	
+	def writable_real? ()
+	end
+	
+	def zero? ()
+	end
+	
+	def chardev? ()
+	end
+	
+	def dev ()
+	end
+	
+	def size ()
+	end
+	
+	def blksize ()
+	end
+	
+	def pipe? ()
+	end
+	
+	def gid ()
+	end
+	
+	def file? ()
+	end
+	
+	def sticky? ()
+	end
+	
+	def ino ()
+	end
+	
+	def atime ()
+	end
+	
+	def writable? ()
+	end
+	
+	def blockdev? ()
+	end
+	
+	
+protected
+	
+private
+	def initialize (arg1)
+	end
+	
+	def initialize_copy (arg1)
+	end
+	
+end
+
+		
+module File::Constants
+	
+public
+	
+protected
+	
+private
+end

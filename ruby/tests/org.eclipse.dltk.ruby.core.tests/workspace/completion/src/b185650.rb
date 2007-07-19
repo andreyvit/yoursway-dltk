@@ -1,0 +1,2 @@
+l=Object.new
+l.

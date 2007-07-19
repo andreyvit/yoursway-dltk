@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.text.completion;
 
+import java.util.Vector;
+
 import junit.framework.Test;
 
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -474,5 +476,330 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		assertTrue(requestor.getResults().length() > 0);
 	}	
+	
+	public void testCompletion028() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180149.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "p";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue(requestor.getResults().length() > 0);
+	}
+	
+	public void testCompletion029() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180143.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "arg3['sdsd'] = ";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue(requestor.getResults().length() > 0);
+	}
+
+	public void testCompletion030() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180146.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "ff g";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue(requestor.getResults().length() > 0);
+	}
+	
+	public void testCompletion031() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180160.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "_f";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		assertTrue(requestor.getResults().length() > 0);
+	}
+	
+	public void testCompletion032() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180157.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "puts v";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		assertTrue(requestor.getResults().length() > 0);
+	}	
+	
+	public void testCompletion033() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180162_01.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "@data[@i";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		assertTrue(requestor.getResults().length() > 0);
+	}	
+
+	public void testCompletion034() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180162_02.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "@data[@";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		assertTrue(requestor.getResults().length() > 0);
+	}	
+	
+	public void testCompletion035() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180163.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "xx";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		assertTrue(requestor.getResults().length() > 0);
+	}
+	
+	public void testCompletion036() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180165.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "t";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		assertTrue(requestor.getResults().length() > 0);
+	}
+
+	public void testCompletion037() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180155.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "Test.";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		assertTrue(requestor.getResults().length() > 0);
+	}
+	
+	//check that keyword is "elsif", but not "elseif"
+	public void testCompletion038Keywords() throws ModelException {
+		
+		ISourceModule cu = getSourceModule("completion", "src", "b180158.rb");
+
+		String str = cu.getSource();
+		String[] keyWords = str.split("\n");
+		for (int i = 0; i < keyWords.length; i++) {
+			keyWords[i] = keyWords[i].trim();
+		}
+		
+		for (int i = 0; i < keyWords.length; i++) {
+			CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+			String completeBehind = keyWords[i];
+			int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+			cursorLocation--;//try to complete one char before the end
+			
+			waitForAutoBuild();
+			cu.codeComplete(cursorLocation, requestor);
+			String completionResults = requestor.getResults(); 
+			assertTrue(completionResults.length() > 0);
+		}
+	}
+	
+	public void testCompletion039() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180152.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "::";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue((requestor.getResults().length() > 0));
+	}
+
+	public void testCompletion040() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b182532.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "x.";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue(requestor.getResults().length() > 0);
+	}
+	
+	public void testCompletion041() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b182532.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "y.";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue(requestor.getResults().length() > 0);
+	}
+	
+	public void testCompletion042() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b191439.rb");
+
+		String str = cu.getSource();
+		String completeBehind = ".se";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		String completionResults = requestor.getResults(); 
+		int methodOccurence = completionResults.indexOf("send"); 
+		assertTrue( methodOccurence > -1);
+	}
+	
+	public void testCompletion043() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b186509.rb");
+
+		String str = cu.getSource();
+		String completeBehind = ".n";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		String completionResults = requestor.getResults(); 
+		int methodOccurence = completionResults.indexOf("new(i,g,d,s,a,r)"); 
+		assertTrue( methodOccurence > -1);
+	}
+	
+	public void testCompletion044Sorting() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b185650.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "l.";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		String completionResults = requestor.getResults();
+		
+		Vector methods = new Vector();
+		int lastElementsOccurance = 0;
+		while ((lastElementsOccurance = completionResults.indexOf("element:", lastElementsOccurance)) > -1) {
+			int lastElementsIndex = lastElementsOccurance + new String("element:").length();
+			lastElementsOccurance = completionResults.indexOf(" ", lastElementsOccurance);
+			methods.add(completionResults.substring(lastElementsIndex, lastElementsOccurance));
+		}
+		
+		Vector relevances = new Vector();
+		int lastRelevanceOccurance = 0;
+		while ( lastRelevanceOccurance > -1) {
+			lastRelevanceOccurance = completionResults.indexOf("relevance:", lastRelevanceOccurance); 
+			int lastRelevanceIndex = lastRelevanceOccurance + new String("relevance:").length();
+			lastRelevanceOccurance = completionResults.indexOf("\n", lastRelevanceOccurance);
+			if ( lastRelevanceOccurance > -1 )
+				relevances.add(completionResults.substring(lastRelevanceIndex, lastRelevanceOccurance));
+			else
+				relevances.add(completionResults.substring(lastRelevanceIndex));
+		}
+		
+		assertTrue(methods.size() == relevances.size());
+		for ( int i = 1; i < methods.size(); i++ ){
+			assertTrue(relevances.get(i-1).toString().compareTo(relevances.get(i).toString()) >= 0 );
+			if ( relevances.get(i-1).toString().compareTo(relevances.get(i).toString()) == 0 ){
+				String methodPrev = methods.get(i-1).toString();
+				String methodNext = methods.get(i).toString();
+				assertTrue(methodPrev.compareTo(methodNext) < 0 );
+			}
+		}
+	}
+	public void testCompletion045() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180383.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "File.";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue(requestor.getResults().length() > 0);
+	}
+	public void testCompletion046() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180383.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "File.";
+		int cursorLocation = str.indexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue(requestor.getResults().length() > 0);
+	}
+	
+	public void testCompletion047() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180382.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "File.ex";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue(requestor.getResults().length() > 0);
+	}
+	
+	public void testCompletion048() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180372.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "@f";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+
+		assertTrue(requestor.getResults().length() > 0);
+	}
 }
