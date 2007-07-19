@@ -16,17 +16,18 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 
 public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 		IScriptWatchpoint {
 
-	private static final String FIELD_NAME = ScriptLineBreakpoint.ID
+	private static final String FIELD_NAME = DLTKDebugPlugin.PLUGIN_ID
 			+ ".fieldName";
 
-	private static final String ACCESS = ScriptLineBreakpoint.ID + ".access";
+	private static final String ACCESS = DLTKDebugPlugin.PLUGIN_ID + ".access";
 
-	private static final String MODIFICATION = ScriptLineBreakpoint.ID
+	private static final String MODIFICATION = DLTKDebugPlugin.PLUGIN_ID
 			+ ".modification";
 
 	public ScriptWatchpoint(String debugModelId, IResource resource,
@@ -85,6 +86,6 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 		List all = new ArrayList();
 		Arrays.asList(super.getUpdatableAttributes());
 		Arrays.asList(UPDATABLE_ATTRS);
-		return (String[])all.toArray(new String[all.size()]);
+		return (String[]) all.toArray(new String[all.size()]);
 	}
 }

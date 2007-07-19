@@ -1,96 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-   <extension-point id="scriptDebugModel" name="Script Debug Model" schema="schema/scriptDebugModel.exsd"/>
-    <extension
-         point="org.eclipse.debug.core.breakpoints">
-      <breakpoint
-            markerType="org.eclipse.dltk.debug.scriptMethodEntryBreakpointMarker"
-            class="org.eclipse.dltk.internal.debug.core.model.ScriptMethodEntryBreakpoint"
-            id="org.eclipse.dltk.debug.internal.core.model.ScriptMethodEntryBreakpoint">
-      </breakpoint>
-      <breakpoint
-            class="org.eclipse.dltk.internal.debug.core.model.ScriptWatchpoint"
-            id="org.eclipse.dltk.debug.internal.core.model.ScriptWatchPoint"
-            markerType="org.eclipse.dltk.debug.scriptWatchPointMarker">
-      </breakpoint>
-   </extension>
-   <extension
-         id="scriptBreakpointMarker"
-         point="org.eclipse.core.resources.markers">
-      <super
-            type="org.eclipse.debug.core.breakpointMarker">
-      </super>
-   </extension>
-   <extension
-         point="org.eclipse.debug.core.breakpoints">
-      <breakpoint
-            markerType="org.eclipse.dltk.debug.scriptLineBreakpointMarker"
-            class="org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint"
-            id="org.eclipse.dltk.debug.internal.core.model.ScriptLineBreakpoint">
-      </breakpoint>
-   </extension>
-   <extension
-         id="scriptBreakpointMarker"
-         point="org.eclipse.core.resources.markers">
-      <super
-            type="org.eclipse.debug.core.breakpointMarker">
-      </super>
-   </extension>
-   
-   <extension
-         id="scriptLineBreakpointMarker"
-         point="org.eclipse.core.resources.markers">
-      <persistent  value="true"/>
-      <super
-            type="org.eclipse.debug.core.lineBreakpointMarker">
-      </super>
-      <super
-            type="org.eclipse.dltk.debug.scriptBreakpointMarker">
-      </super>
-   </extension>
-   <extension
-         id="scriptMethodEntryBreakpointMarker"
-         point="org.eclipse.core.resources.markers">
-      <super
-            type="org.eclipse.dltk.debug.scriptLineBreakpointMarker">
-      </super>
-      <persistent
-            value="true">
-      </persistent>
-      <attribute
-            name="org.eclipse.debug.core.id.methodName">
-      </attribute>
-      <attribute
-            name="org.eclipse.debug.core.id.methodSignature">
-      </attribute>
-      <attribute
-            name="org.eclipse.debug.core.id.methodEntry">
-      </attribute>
-      <attribute
-            name="org.eclipse.debug.core.id.methodExit">
-      </attribute>
-   </extension>
-   <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="org.eclipse.dltk.debug.core.DLTKDebugPluginPreferenceInitializer">
-      </initializer>
-   </extension>
-   <extension
-         id="scriptWatchPointMarker"
-         name="Script WathPoint"
-         point="org.eclipse.core.resources.markers">
-      <persistent
-            value="true">
-      </persistent>
-      <super
-            type="org.eclipse.debug.core.lineBreakpointMarker">
-      </super>
-      <super
-            type="org.eclipse.dltk.debug.scriptBreakpointMarker">
-      </super>
-   </extension>
-   
-      
+	<extension-point id="scriptDebugModel" name="Script Debug Model"
+		schema="schema/scriptDebugModel.exsd" />
+	
+	<extension point="org.eclipse.core.runtime.preferences">
+		<initializer
+			class="org.eclipse.dltk.debug.core.DLTKDebugPluginPreferenceInitializer" />
+	</extension>
+	
+	<extension id="scriptBreakpointMarker"
+		point="org.eclipse.core.resources.markers">
+		<persistent value="true"/>
+		
+		<super type="org.eclipse.debug.core.breakpointMarker" />
+      	
+      	<attribute name="org.eclipse.dltk.debug.id"/>      
+      	<attribute name="org.eclipse.dltk.debug.hit_count"/>
+      	<attribute name="org.eclipse.dltk.debug.expression"/>
+      	<attribute name="org.eclipse.dltk.debug.expression.state"/>
+      	<attribute name="org.eclipse.dltk.debug.hit_value"/>
+      	<attribute name="org.eclipse.dltk.debug.hit_condition"/>
+	</extension>
+	
+	<extension id="scriptLineBreakpointMarker"
+		point="org.eclipse.core.resources.markers">
+		<persistent value="true" />
+		
+		<super type="org.eclipse.dltk.debug.scriptBreakpointMarker" />
+		<super type="org.eclipse.debug.core.lineBreakpointMarker" />
+	</extension>
+	
+	<extension id="scriptMethodEntryBreakpointMarker"
+		point="org.eclipse.core.resources.markers">
+		<persistent value="true" />
+
+		<super type="org.eclipse.dltk.debug.scriptLineBreakpointMarker" />
+
+		<attribute name="org.eclipse.dltk.debug.methodName"/>
+		<attribute name="org.eclipse.dltk.debug.methodEntry"/>
+		<attribute name="org.eclipse.dltk.debug.methodExit"/>
+		<attribute name="org.eclipse.dltk.debug.entryBrId"/>
+		<attribute name="org.eclipse.dltk.debug.exitBrId"/>
+	</extension>
+	
+	<extension id="scriptWatchPointMarker"
+		point="org.eclipse.core.resources.markers">
+		<persistent value="true" />		
+		
+		<super type="org.eclipse.dltk.debug.scriptLineBreakpointMarker" />
+		
+		<attribute name="org.eclipse.dltk.debug.fieldName"/>
+		<attribute name="org.eclipse.dltk.debug.access"/>
+		<attribute name="org.eclipse.dltk.debug.modification"/>
+	</extension>
+	
+	<extension point="org.eclipse.debug.core.breakpoints">
+		<breakpoint
+      	  	class="org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint"
+        	id="scriptLineBreakpoint"
+        	markerType="org.eclipse.dltk.debug.scriptLineBreakpointMarker"
+        	name="%ScriptLineBreakpoint.name"/>
+		
+		<breakpoint
+        	class="org.eclipse.dltk.internal.debug.core.model.ScriptMethodEntryBreakpoint"
+    	    id="scriptMethodEntryBreakpoint"
+	        markerType="org.eclipse.dltk.debug.scriptMethodEntryBreakpointMarker"
+        	name="%ScriptMethodEntryBreakpoint.name"/>
+        	
+		<breakpoint
+	        class="org.eclipse.dltk.internal.debug.core.model.ScriptWatchpoint"
+    	    id="scriptWatchpoint"
+        	markerType="org.eclipse.dltk.debug.scriptWatchPointMarker"
+        	name="%ScriptWatchpoint.name"/>
+	</extension>
 </plugin>

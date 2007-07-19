@@ -22,6 +22,8 @@ public class BreakpointMessages {
 	
 	public static String FileLabel;
 	
+	public static String EngineIdLabel;
+	
 	public static String HitCountLabel;
 	
 	public static String UseConditionLabel;
@@ -49,6 +51,8 @@ public class BreakpointMessages {
 	public static String InvalidNumberOfHits;
 	
 	//
+	public static String EngineIdNotAvailableMessage;
+	
 	public static String HitCountNotAvailableMessage;
 	
 	public static String HitConditionGreaterOrEqual;

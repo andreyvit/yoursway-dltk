@@ -7,24 +7,26 @@ import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
 
 public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
 		IScriptMethodEntryBreakpoint {
 
-	private static final String METHOD_NAME = ScriptLineBreakpoint.ID
+	private static final String METHOD_NAME = DLTKDebugPlugin.PLUGIN_ID
 			+ ".methodName";
 
-	private static final String BREAK_ON_ENTRY = ScriptLineBreakpoint.ID
+	private static final String BREAK_ON_ENTRY = DLTKDebugPlugin.PLUGIN_ID
 			+ ".methodEntry";
 
-	private static final String BREAK_ON_EXIT = ScriptLineBreakpoint.ID
+	private static final String BREAK_ON_EXIT = DLTKDebugPlugin.PLUGIN_ID
 			+ ".methodExit";
 
-	private static final String ENTRY_ID = ScriptLineBreakpoint.ID
+	private static final String ENTRY_ID = DLTKDebugPlugin.PLUGIN_ID
 			+ ".entryBrId";
 
-	private static final String EXIT_ID = ScriptLineBreakpoint.ID + ".exitBrId";
+	private static final String EXIT_ID = DLTKDebugPlugin.PLUGIN_ID
+			+ ".exitBrId";
 
 	protected String getMarkerId() {
 		return ScriptMarkerFactory.METHOD_ENTRY_MARKER_ID;

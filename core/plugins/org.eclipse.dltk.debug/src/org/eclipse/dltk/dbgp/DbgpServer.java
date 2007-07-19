@@ -60,7 +60,9 @@ public class DbgpServer extends DbgpWorkingThread {
 				}
 			}
 		} finally {
-			server.close();
+			if (server != null && !server.isClosed()) {
+				server.close();
+			}
 		}
 	}
 
@@ -72,6 +74,15 @@ public class DbgpServer extends DbgpWorkingThread {
 		this.clientTimeout = clientTimeout;
 	}
 
+	public void requestTermination() {
+		try {
+			server.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		super.requestTermination();
+	}
+	
 	private IDbgpServerListener listener;
 
 	public void setListener(IDbgpServerListener listener) {
