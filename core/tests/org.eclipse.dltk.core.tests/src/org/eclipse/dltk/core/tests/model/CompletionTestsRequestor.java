@@ -72,12 +72,27 @@ public class CompletionTestsRequestor extends CompletionRequestor {
 			case CompletionProposal.METHOD_REF:
 				fElements.addElement(new String(proposal.getName()));
 				this.acceptCommon(proposal);
-				if (fDebug)
+				if (fDebug){
 					System.out.println("method " + new String(proposal.getName()));
+				}
 				break;
 				
 			case CompletionProposal.METHOD_DECLARATION:
-				fElements.addElement(new String(proposal.getName()));
+				String resultString = new String(proposal.getName())+"(";
+				
+				char[][] parameterNames = proposal.findParameterNames(null);
+				if ( parameterNames != null ) {
+					for ( int i = 0; i < parameterNames.length; i++ ){
+						if ( i > 0 )
+							resultString += ",";
+						resultString += new String(parameterNames[i]);
+					}
+				}
+				resultString += ")";
+				//fElements.addElement(resultString);
+				fElements.addElement(new String(resultString));
+				
+				//fElements.addElement(new String(proposal.getName()));
 				this.acceptCommon(proposal);
 				if (fDebug)
 					System.out.println("method declaration " + new String(proposal.getName()));
