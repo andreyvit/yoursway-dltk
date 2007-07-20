@@ -24,8 +24,7 @@ public class PartitioningTest extends SuiteOfTestCases {
 		super(name);
 	}
 
-	public void doTest(String data, String partition)
-			throws Exception {
+	public void doTest(String data, String partition) throws Exception {
 		int startPos = data.indexOf("§");
 		Assert.isLegal(startPos >= 0);
 		data = data.substring(0, startPos) + data.substring(startPos + 1);
@@ -37,8 +36,9 @@ public class PartitioningTest extends SuiteOfTestCases {
 		TestUtils.installStuff(doc);
 		StringBuffer expected = new StringBuffer(), actual = new StringBuffer();
 		for (int offset = startPos; offset < endPos; offset++) {
-			ITypedRegion p2 = TextUtilities.getPartition(doc, RubyPartitions.RUBY_PARTITIONING, offset, 
-				(offset > startPos));
+			ITypedRegion p2 = TextUtilities.getPartition(doc,
+					RubyPartitions.RUBY_PARTITIONING, offset,
+					(offset > startPos));
 			expected.append(offset);
 			expected.append(" ");
 			expected.append(partition);
@@ -49,40 +49,44 @@ public class PartitioningTest extends SuiteOfTestCases {
 			actual.append("\n");
 			offset = p2.getOffset() + p2.getLength();
 		}
-		assertEquals("Wrong partition at \"" + test + "\" in doc:\n" + data, expected.toString(),
-				actual.toString());
+		assertEquals("Wrong partition at \"" + test + "\" in doc:\n" + data,
+				expected.toString(), actual.toString());
 	}
-	
+
 	public void testCode() throws Exception {
 		doTest("§class Foo; end§", IDocument.DEFAULT_CONTENT_TYPE);
 	}
-	
+
 	public void testString() throws Exception {
 		doTest("puts §\"Hello, world\"§, a", RubyPartitions.RUBY_STRING);
 	}
-	
+
 	public void testPercentStringAfterPuts() throws Exception {
 		doTest("puts §%s/foo bar boz/§ / 2", RubyPartitions.RUBY_STRING);
 	}
-	
+
 	public void testPercentStringAfterMethodCall() throws Exception {
-		doTest("def foo(*args); puts(*args); end\nfoo §%s/foo bar boz/§ / 2", RubyPartitions.RUBY_STRING);
+		doTest("def foo(*args); puts(*args); end\nfoo §%s/foo bar boz/§ / 2",
+				RubyPartitions.RUBY_STRING);
 	}
-	
+
 	public void testPercentOperatorAfterVariable() throws Exception {
-		// XXX: this does not start a string in Ruby, but will be treated as a string in IDE
+		// XXX: this does not start a string in Ruby, but will be treated as a
+		// string in IDE
 		doTest("foo = 20\nfoo §%s/foo bar boz/§ 2", RubyPartitions.RUBY_STRING);
 	}
-	
+
 	public void testPercentDoesStartString() throws Exception {
-		doTest("if a == §%s/2/§ then puts 1 else puts 2 end", RubyPartitions.RUBY_STRING);
+		doTest("if a == §%s/2/§ then puts 1 else puts 2 end",
+				RubyPartitions.RUBY_STRING);
 	}
-	
+
 	public void testPercentDoesNotStartString() throws Exception {
-		// XXX: this does not start a string in Ruby, but will be treated as a string in IDE
+		// XXX: this does not start a string in Ruby, but will be treated as a
+		// string in IDE
 		doTest("puts bar §%s/2/§\n3", RubyPartitions.RUBY_STRING);
 	}
-	
+
 	private void doHereDocTest(String data) throws Exception {
 		String s1 = data.replaceAll("[±ø∑]", "");
 		String s2 = data.replaceAll("±", "§");
@@ -96,37 +100,141 @@ public class PartitioningTest extends SuiteOfTestCases {
 		if (!data.equals(s4))
 			doTest(s3, RubyPartitions.RUBY_STRING);
 	}
-	
+
 	public void testAllSortsOfHeredocs() throws Exception {
 		for (int x = 0; x < 2 * 3; x++) {
 			String minus = ((x & 1) != 0 ? "-" : "");
 			String quote = ((x & 6) == 0 ? "" : ((x & 6) == 1 ? "'" : "\""));
-			doHereDocTest("puts §<<" + minus + quote + "HEREDOC" + quote + "§, 'blah'\n" +
-					"±one two three\n" +
-					"fourdman five six\n" +
-					"seven eight\n" +
-					"HEREDOC±\n" +
-					"puts ");
+			doHereDocTest("puts §<<" + minus + quote + "HEREDOC" + quote
+					+ "§, 'blah'\n" + "±one two three\n"
+					+ "fourdman five six\n" + "seven eight\n" + "HEREDOC±\n"
+					+ "puts ");
 		}
 	}
-	
+
 	public void testAllSortsOfSequentialHeredocs() throws Exception {
 		for (int x = 0; x < 2 * 3; x++) {
 			String minus = ((x & 1) != 0 ? "-" : "");
 			String quote = ((x & 6) == 0 ? "" : ((x & 6) == 1 ? "'" : "\""));
-			doHereDocTest("puts §<<" + minus + quote + "HEREDOC" + quote + "§, 'blah', ø<<-BOO, 123\n" +
-					"±one two three\n" +
-					"fourdman five six\n" +
-					"seven eight\n" +
-					"HEREDOC±\n" +
-					"∑sdfsdfdsfsdfsd\n" +
-					"BOO∑\n" +
-					"puts 222");
+			doHereDocTest("puts §<<" + minus + quote + "HEREDOC" + quote
+					+ "§, 'blah', ø<<-BOO, 123\n" + "±one two three\n"
+					+ "fourdman five six\n" + "seven eight\n" + "HEREDOC±\n"
+					+ "∑sdfsdfdsfsdfsd\n" + "BOO∑\n" + "puts 222");
 		}
 	}
-	
+
 	public void testEmbeddedCode() throws Exception {
-		doTest("puts \"Press any #{§if 2 > 4 then key else reset_button end§} to continue\"", IDocument.DEFAULT_CONTENT_TYPE);
+		doTest(
+				"puts \"Press any #{§if 2 > 4 then key else reset_button end§} to continue\"",
+				IDocument.DEFAULT_CONTENT_TYPE);
+	}
+
+	public void testBug179488() throws Exception {
+		doTest("class Test\ndef test(x)\nobj = f($'§, x)\n"
+				+ "if (obj.class.name == §\"Array\") then\n#...\n"
+				+ "return\nend\n# It's ...\nend",
+				IDocument.DEFAULT_CONTENT_TYPE);
+		doTest("class Test\ndef test(x)\nobj = f($', x)\n"
+				+ "if (obj.class.name == §\"Array\"§) then\n#...\n"
+				+ "return\nend\n# It's ...\nend", RubyPartitions.RUBY_STRING);
+		doTest("class Test\ndef test(x)\nobj = f($', x)\n"
+				+ "if (obj.class.name == \"Array\"§) then\n§#...\n"
+				+ "return\nend\n# It's ...\nend",
+				IDocument.DEFAULT_CONTENT_TYPE);
+		doTest("class Test\ndef test(x)\nobj = f($', x)\n"
+				+ "if (obj.class.name == \"Array\") then\n§#...\n§"
+				+ "return\nend\n# It's ...\nend", RubyPartitions.RUBY_COMMENT);
+		doTest("class Test\ndef test(x)\nobj = f($', x)\n"
+				+ "if (obj.class.name == \"Array\") then\n#...\n§"
+				+ "return\nend\n§# It's ...\nend",
+				IDocument.DEFAULT_CONTENT_TYPE);
+		doTest("class Test\ndef test(x)\nobj = f($', x)\n"
+				+ "if (obj.class.name == \"Array\") then\n#...\n"
+				+ "return\nend\n§# It's ...\n§end", RubyPartitions.RUBY_COMMENT);
+		doTest("class Test\ndef test(x)\nobj = f($', x)\n"
+				+ "if (obj.class.name == \"Array\") then\n#...\n"
+				+ "return\nend\n# It's ...\n§end§",
+				IDocument.DEFAULT_CONTENT_TYPE);
+	}
+
+	public void testBug180370() throws Exception {
+		doTest(
+				"§# Some metaprogramming to make it rock\n§"
+						+ "%w{app controllers models helpers views\n"
+						+ "specs spec_models spec_helpers spec_controllers spec_views spec_fixtures\n"
+						+ "tests fixtures unit_tests functional_tests integration_tests\n"
+						+ "public stylesheets javascripts images}.each do |item|\n"
+						+ "\n" + "method_to_eval = <<-EO_METH\n"
+						+ "def #{item}_dir_path\n" + "resolve_path(:#{item})\n"
+						+ "end\n" + "EO_METH\n"
+						+ "class_eval(method_to_eval)\n" + "end",
+				RubyPartitions.RUBY_COMMENT);
+		doTest(
+				"# Some metaprogramming to make it rock\n"
+						+ "§%w{app controllers models helpers views\n"
+						+ "specs spec_models spec_helpers spec_controllers spec_views spec_fixtures\n"
+						+ "tests fixtures unit_tests functional_tests integration_tests\n"
+						+ "public stylesheets javascripts images}§.each do |item|\n"
+						+ "\n" + "method_to_eval = <<-EO_METH\n"
+						+ "def #{item}_dir_path\n" + "resolve_path(:#{item})\n"
+						+ "end\n" + "EO_METH\n"
+						+ "class_eval(method_to_eval)\n" + "end",
+				RubyPartitions.RUBY_STRING);
+		doTest(
+				"# Some metaprogramming to make it rock\n"
+						+ "%w{app controllers models helpers views\n"
+						+ "specs spec_models spec_helpers spec_controllers spec_views spec_fixtures\n"
+						+ "tests fixtures unit_tests functional_tests integration_tests\n"
+						+ "public stylesheets javascripts images}§.each do |item|\n"
+						+ "\n" + "method_to_eval = <<-EO_METH\n"
+						+ "def §#{item}_dir_path\n"
+						+ "resolve_path(:#{item})\n" + "end\n" + "EO_METH\n"
+						+ "class_eval(method_to_eval)\n" + "end",
+				IDocument.DEFAULT_CONTENT_TYPE);
+		doTest(
+				"# Some metaprogramming to make it rock\n"
+						+ "%w{app controllers models helpers views\n"
+						+ "specs spec_models spec_helpers spec_controllers spec_views spec_fixtures\n"
+						+ "tests fixtures unit_tests functional_tests integration_tests\n"
+						+ "public stylesheets javascripts images}.each do |item|\n"
+						+ "\n" + "method_to_eval = <<-EO_METH\n"
+						+ "def §#{item}_dir_path\n§"
+						+ "resolve_path(:#{item})\n" + "end\n" + "EO_METH\n"
+						+ "class_eval(method_to_eval)\n" + "end",
+				RubyPartitions.RUBY_COMMENT);
+		doTest(
+				"# Some metaprogramming to make it rock\n"
+						+ "%w{app controllers models helpers views\n"
+						+ "specs spec_models spec_helpers spec_controllers spec_views spec_fixtures\n"
+						+ "tests fixtures unit_tests functional_tests integration_tests\n"
+						+ "public stylesheets javascripts images}.each do |item|\n"
+						+ "\n" + "method_to_eval = <<-EO_METH\n"
+						+ "def #{item}_dir_path\n"
+						+ "§resolve_path(:§#{item})\n" + "end\n" + "EO_METH\n"
+						+ "class_eval(method_to_eval)\n" + "end",
+				IDocument.DEFAULT_CONTENT_TYPE);
+		doTest(
+				"# Some metaprogramming to make it rock\n"
+						+ "%w{app controllers models helpers views\n"
+						+ "specs spec_models spec_helpers spec_controllers spec_views spec_fixtures\n"
+						+ "tests fixtures unit_tests functional_tests integration_tests\n"
+						+ "public stylesheets javascripts images}.each do |item|\n"
+						+ "\n" + "method_to_eval = <<-EO_METH\n"
+						+ "def #{item}_dir_path\n"
+						+ "resolve_path(:§#{item})\n§" + "end\n" + "EO_METH\n"
+						+ "class_eval(method_to_eval)\n" + "end",
+				RubyPartitions.RUBY_COMMENT);
+		doTest(
+				"# Some metaprogramming to make it rock\n"
+						+ "%w{app controllers models helpers views\n"
+						+ "specs spec_models spec_helpers spec_controllers spec_views spec_fixtures\n"
+						+ "tests fixtures unit_tests functional_tests integration_tests\n"
+						+ "public stylesheets javascripts images}.each do |item|\n"
+						+ "\n" + "method_to_eval = <<-EO_METH\n"
+						+ "def #{item}_dir_path\n" + "resolve_path(:#{item})\n"
+						+ "§end\n" + "EO_METH\n"
+						+ "class_eval(method_to_eval)\n" + "end§",
+				IDocument.DEFAULT_CONTENT_TYPE);
 	}
 
 }
