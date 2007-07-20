@@ -21,7 +21,6 @@ import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.core.tests.Activator;
 import org.eclipse.dltk.utils.CorePrinter;
 
-
 public class RubyParserTests extends AbstractModelTests {
 	public RubyParserTests(String name) {
 		super(Activator.PLUGIN_ID, name);
@@ -39,19 +38,19 @@ public class RubyParserTests extends AbstractModelTests {
 			InputStreamReader reader = new InputStreamReader(input);
 			BufferedReader br = new BufferedReader(reader);
 			StringBuffer buffer = new StringBuffer();
-			while( br.ready() ) {
+			while (br.ready()) {
 				String l = br.readLine();
-				if( l != null ) {
+				if (l != null) {
 					buffer.append(l);
 					buffer.append('\n');
 				}
 			}
-			ISourceParser parser = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
-			ModuleDeclaration module = parser.parse(name.toCharArray(), buffer.toString().toCharArray(), null);
-			CorePrinter printer = new CorePrinter(System.out, true);
-			module.printNode(printer);
-			printer.close();
-			
+			ISourceParser parser = DLTKLanguageManager
+					.getSourceParser(RubyNature.NATURE_ID);
+			ModuleDeclaration module = parser.parse(name.toCharArray(), buffer
+					.toString().toCharArray(), null);
+			assertNotNull(module);
+			assertFalse(module.isEmpty());
 		} finally {
 			if (input != null) {
 				input.close();
@@ -62,7 +61,7 @@ public class RubyParserTests extends AbstractModelTests {
 	public void testJRubyParser001() throws Exception {
 		processScript("/workspace/parse/test_call.rb");
 	}
-//	public void testJRubyParser002() throws Exception {
-//		processScript("/workspace/parse/test_iterator.rb");
-//	}
+// public void testJRubyParser002() throws Exception {
+// processScript("/workspace/parse/test_iterator.rb");
+// }
 }
