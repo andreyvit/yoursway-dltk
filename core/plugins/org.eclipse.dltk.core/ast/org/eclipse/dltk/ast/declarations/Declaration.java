@@ -181,7 +181,7 @@ public abstract class Declaration extends Statement implements Modifiers {
 	public String debugString () {
 		return super.debugString() + this.getNameSourceRange().toString();
 	}
-	protected SimpleReference getRef() {
+	public SimpleReference getRef() {
 		return this.ref;
 	}
 }

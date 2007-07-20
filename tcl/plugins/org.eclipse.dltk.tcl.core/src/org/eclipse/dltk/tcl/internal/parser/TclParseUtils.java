@@ -35,81 +35,82 @@ public class TclParseUtils {
 	public static List parseArguments(List st) {
 		List arguments = new ArrayList();
 		if (st != null && st.size() > 0) {
-			TclStatement tclSt = (TclStatement) st.get(0);
-			if (tclSt instanceof TclStatement) {
-				Iterator i = tclSt.getExpressions().iterator();
-				while (i.hasNext()) {
-					Expression ex = (Expression) i.next();
-					if (ex instanceof SimpleReference) {
-						Argument a = new Argument();
-						a.set((SimpleReference) ex, null);
-						arguments.add(a);
-					} else if (ex instanceof TclBlockExpression) {
-						TclBlockExpression bl = (TclBlockExpression) ex;
-						// try {
-						List elements = bl.parseBlock();
-						if (elements.size() > 0) {
-							ASTNode node = (ASTNode) elements.get(0);
-							Expression initializer = null;
-							if (elements.size() > 1) {
-								initializer = (Expression) elements.get(1);
-							}
-							if (node instanceof TclStatement
-									&& ((TclStatement) node).getCount() > 0) {
-								TclStatement stat = ((TclStatement) node);
-								node = stat.getAt(0);
-								if (stat.getCount() > 1) {
-									initializer = stat.getAt(1);
+			for (int y = 0; y < st.size(); ++y) {
+				TclStatement tclSt = (TclStatement) st.get(y);
+				if (tclSt instanceof TclStatement) {
+					Iterator i = tclSt.getExpressions().iterator();
+					while (i.hasNext()) {
+						Expression ex = (Expression) i.next();
+						if (ex instanceof SimpleReference) {
+							Argument a = new Argument();
+							a.set((SimpleReference) ex, null);
+							arguments.add(a);
+						} else if (ex instanceof TclBlockExpression) {
+							TclBlockExpression bl = (TclBlockExpression) ex;
+							// try {
+							List elements = bl.parseBlock();
+							if (elements.size() > 0) {
+								ASTNode node = (ASTNode) elements.get(0);
+								Expression initializer = null;
+								if (elements.size() > 1) {
+									initializer = (Expression) elements.get(1);
+								}
+								if (node instanceof TclStatement
+										&& ((TclStatement) node).getCount() > 0) {
+									TclStatement stat = ((TclStatement) node);
+									node = stat.getAt(0);
+									if (stat.getCount() > 1) {
+										initializer = stat.getAt(1);
+									}
+								}
+								if (node instanceof SimpleReference) {
+									Argument a = new Argument();
+									a.set((SimpleReference) node, null);
+									a.setInitializationExpression(initializer);
+									arguments.add(a);
+								} else if (node instanceof TclBlockExpression) {
+									String name = ((TclBlockExpression) node)
+											.getBlock();
+
+									Argument a = new Argument();
+									a.setStart(node.sourceStart() + 1);
+									a.setEnd(node.sourceEnd() + 1);
+									a.setArgumentName(nameFromBlock(name, '{',
+											'}'));
+									a.setInitializationExpression(initializer);
+									arguments.add(a);
+								} else if (node instanceof StringLiteral) {
+									String name = ((StringLiteral) node)
+											.getValue();
+
+									Argument a = new Argument();
+									a.setStart(node.sourceStart() + 1);
+									a.setEnd(node.sourceEnd() + 1);
+									a.setArgumentName(nameFromBlock(name, '"',
+											'"'));
+									a.setInitializationExpression(initializer);
+									arguments.add(a);
+								} else if (node instanceof TclExecuteExpression) {
+									String name = ((TclBlockExpression) node)
+											.getBlock();
+
+									Argument a = new Argument();
+									a.setStart(node.sourceStart() + 1);
+									a.setEnd(node.sourceEnd() + 1);
+									a.setArgumentName(name);
+									a.setInitializationExpression(initializer);
+									arguments.add(a);
 								}
 							}
-							if (node instanceof SimpleReference) {
-								Argument a = new Argument();
-								a.set((SimpleReference) node, null);
-								a.setInitializationExpression(initializer);
-								arguments.add(a);
-							} else if (node instanceof TclBlockExpression) {
-								String name = ((TclBlockExpression) node)
-										.getBlock();
-
-								Argument a = new Argument();
-								a.setStart(node.sourceStart() + 1);
-								a.setEnd(node.sourceEnd() + 1);
-								a
-										.setArgumentName(nameFromBlock(name,
-												'{', '}'));
-								a.setInitializationExpression(initializer);
-								arguments.add(a);
-							} else if (node instanceof StringLiteral) {
-								String name = ((StringLiteral) node).getValue();
-
-								Argument a = new Argument();
-								a.setStart(node.sourceStart() + 1);
-								a.setEnd(node.sourceEnd() + 1);
-								a
-										.setArgumentName(nameFromBlock(name,
-												'"', '"'));
-								a.setInitializationExpression(initializer);
-								arguments.add(a);
-							} else if (node instanceof TclExecuteExpression) {
-								String name = ((TclBlockExpression) node)
-										.getBlock();
-
-								Argument a = new Argument();
-								a.setStart(node.sourceStart() + 1);
-								a.setEnd(node.sourceEnd() + 1);
-								a.setArgumentName(name);
-								a.setInitializationExpression(initializer);
-								arguments.add(a);
-							}
+							/*
+							 * } catch (ANTLRException e) { if
+							 * (DLTKCore.DEBUG_PARSER) {
+							 * System.out.println("ANTLRException: " +
+							 * e.getMessage());
+							 * System.out.println("TclParseUtils.parseArguments()");
+							 * e.printStackTrace(); } }
+							 */
 						}
-						/*
-						 * } catch (ANTLRException e) { if
-						 * (DLTKCore.DEBUG_PARSER) {
-						 * System.out.println("ANTLRException: " +
-						 * e.getMessage());
-						 * System.out.println("TclParseUtils.parseArguments()");
-						 * e.printStackTrace(); } }
-						 */
 					}
 				}
 			}
@@ -264,13 +265,14 @@ public class TclParseUtils {
 		String content = nameFromBlock(literal.getValue(), '"', '"');
 		int position = pos - 1;
 		int start = startLineOrNoSymbol(position, content);
-		if( position < 0 ) {
+		if (position < 0) {
 			position = 0;
 		}
 		try {
 			if (content.charAt(position) == '$') {
 				position++;
-				if (position < content.length() && content.charAt(position) == '{')
+				if (position < content.length()
+						&& content.charAt(position) == '{')
 					position++;
 			}
 		} catch (IndexOutOfBoundsException e) {
@@ -279,12 +281,14 @@ public class TclParseUtils {
 		if (start < 0) {
 			start = 0;
 		}
-		if (start + 1 < content.length() && (content.charAt(start) == '$' && content.charAt(start + 1) == '{')
+		if (start + 1 < content.length()
+				&& (content.charAt(start) == '$' && content.charAt(start + 1) == '{')
 				|| (content.charAt(start) == '{')) {
-			while (content.charAt(end) != '}' && content.charAt(end) != '\\' && end < content.length())
+			while (content.charAt(end) != '}' && content.charAt(end) != '\\'
+					&& end < content.length())
 				end++;
 			end++;
-			
+
 		}
 		if (start < end) {
 			String sub = content.substring(start, end);
@@ -383,7 +387,7 @@ public class TclParseUtils {
 	public static String processMethodName(IMethod method, String tok) {
 		String elName = method.getElementName();
 		if (elName.startsWith("::")) {
-			return checkDots(elName,tok);
+			return checkDots(elName, tok);
 		}
 		String name = "";
 		try {
@@ -396,12 +400,13 @@ public class TclParseUtils {
 		if (tok.startsWith("::") && !name.startsWith("::")) {
 			name = "::" + name;
 		}
-		return checkDots(name,tok);
+		return checkDots(name, tok);
 	}
+
 	public static String processFieldName(IField field, String tok) {
 		String elName = field.getElementName();
 		if (elName.startsWith("::")) {
-			return checkDots( elName, tok );
+			return checkDots(elName, tok);
 		}
 		String name = "";
 		try {
@@ -414,11 +419,11 @@ public class TclParseUtils {
 		if (tok.startsWith("::") && !name.startsWith("::")) {
 			name = "::" + name;
 		}
-		return checkDots( name, tok );
+		return checkDots(name, tok);
 	}
 
 	private static String checkDots(String elName, String tok) {
-		if( elName.startsWith("::") && !tok.startsWith("::") ) {
+		if (elName.startsWith("::") && !tok.startsWith("::")) {
 			return elName.substring(2);
 		}
 		return elName;
@@ -457,14 +462,16 @@ public class TclParseUtils {
 						}
 					}
 				}
-				fields.add(new FieldDeclaration(vars[j], nStart, nEnd,
-						nStart, nEnd));
+				fields.add(new FieldDeclaration(vars[j], nStart, nEnd, nStart,
+						nEnd));
 			}
 		}
 		return (FieldDeclaration[]) fields.toArray(new FieldDeclaration[fields
 				.size()]);
 	}
-	public static void processIf(List exprs, String name, int beforePosition, IProcessStatementAction action) {
+
+	public static void processIf(List exprs, String name, int beforePosition,
+			IProcessStatementAction action) {
 		int len = exprs.size();
 		for (int i = 0; i < len; ++i) {
 			Expression e = (Expression) exprs.get(i);
