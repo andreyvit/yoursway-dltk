@@ -61,6 +61,16 @@ public class RubyParserTests extends AbstractModelTests {
 	public void testJRubyParser001() throws Exception {
 		processScript("/workspace/parse/test_call.rb");
 	}
+	public void testBug180142() throws Exception {
+		processScript("/workspace/parse/b180142_cgi.rb");
+	}
+	public void testBug183493() throws Exception {
+		processScript("/workspace/parse/b183493.rb");
+	}	
+	public void testBug183298() throws Exception {
+		processScript("/workspace/parse/b183298.rb");
+	}	
+	
 // public void testJRubyParser002() throws Exception {
 // processScript("/workspace/parse/test_iterator.rb");
 // }
