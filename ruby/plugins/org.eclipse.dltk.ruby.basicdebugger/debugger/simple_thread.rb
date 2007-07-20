@@ -42,45 +42,31 @@ module XoredDebugger
             @state
         end
     end # class States
- 
 
     class RubyThread < CommandHandler
 		# Events
         def created
             log("Thread 'created' event: " + @thread.inspect)
-            io_manager.send('init', init('app_test_id', @key, thread_label, @script))
+            io_manager.send('init', init('app_test_id', @key, get_thread_label(@thread), @script))
         end
         
         def terminated
             log("Thread 'terminated' event: " + @thread.inspect)
-            unless @f_term
-                sent_stopped
-            end         
+            sent_stopped
         end
         
-        
+		# Terminate function
         def terminate
-            log('Thread termination:')
-            log("\tThread main: " + (@thread == Thread.main).to_s)
-            log("\tThread info: " + @thread.inspect.to_s)
-            
-            sent_stopped            
-            @f_term = true
+            log('Thread termination: ' + @thread.inspect)
+            log("\tMain?: " + (@thread == Thread.main).to_s)
+                        
+            sent_stopped
             Thread.kill(@thread)
         end
                 
-        def capturer
-            @debugger.capturer
-        end
-    
-        def thread_label
-            label = @thread == Thread.main ? 'Main thread' : 'Thread'
-            label += ' id=' + @thread.object_id.to_s
-            label += ', priority=' + @thread.priority.to_s
-        end
-    
-        def to_s
-            'Thread [' + @thread.object_id.to_s + ']'
+		# Managers
+        def capture_manager
+            @debugger.capture_manager
         end
     
         def breakpoint_manager
@@ -100,21 +86,18 @@ module XoredDebugger
         end
         
         def io_manager
-            @io
+            @io_manager
         end
 
-        def initialize(debugger, thread, io, key, script)
+        def initialize(debugger, thread, io_manager, key, script)
             @debugger = debugger
             @thread = thread
-            @io = io
+            @io_manager = io_manager
             @key = key
             @script = script
             
-            
             @waitDepth = -1
-            @stack_manager = FullStackManager.new           
-                 
-            @f_term = false
+            @stack_manager = FullStackManager.new
         end
         
         # Continuation commands
@@ -139,19 +122,18 @@ module XoredDebugger
         end
 
         def stop
-            log('Stopping thread...')
             terminate
             nil
         end
 
         def detach
-            log('--> detach <--')
             nil
         end
 
         def break_cmd
             @waitDepth = -1
-            { :success => true }
+            
+			{ :success => true }
         end
 
         def command_loop
@@ -175,24 +157,27 @@ module XoredDebugger
                 end
             end
         end
+		
+		def sync_output
+			stdout = capture_manager.get_stdout
+			stderr = capture_manager.get_stderr
+			
+            unless stdout.empty?
+                io_manager.send('stdout_data', {:_data => stdout})
+            end
+			
+			unless stderr.empty?
+				io_manager.send('stdout_data', {:_data => stderr})
+			end
+		end
 
         def trace(event, file, line, id, binding, klass)       
-            #log("Thread trace from #{file} at #{line}")
-
-            # Get the code line
-            where = source_manager.line_at(file, line)        #get_code_line(file, line)
-
             # Absolute path
             @file = File.expand_path(file) # Absolute file path
             @line = line
 
             # Output
-            capturer.disable
-            out = capturer.get
-            unless out.empty?
-                io_manager.send('stdout_data', {:_data => out})
-            end
-            #capturer.enable
+            sync_output
 
             # Don't debug debugger :)
             if klass.to_s.index('XoredDebugger::') == 0
@@ -200,11 +185,10 @@ module XoredDebugger
             end
 
             command_loop
-
-            case event
+			
+			# Output handling
+			case event
                 when 'line'
-                    #capturer.disable
-
                     @stack_manager.stack.update(binding, @file, line)
 
 					log('Checking breakpoint...')
@@ -217,7 +201,6 @@ module XoredDebugger
                         br_break)
 
                         log("==>> Line ##{line} from #{@file} by #{Thread.current} <<==")
-						
 
                         # Break checking
                         unless @last_continuation_command.nil?
@@ -233,7 +216,7 @@ module XoredDebugger
                         command_loop
                     end
 
-                    #capturer.enable
+                    
                 when 'call'
                     @stack_manager.stack.push(binding, @file, line)
 
@@ -247,10 +230,7 @@ module XoredDebugger
                     #TODO: Do something useful
 
                 when 'raise'
-                    # TODO: handle exception and check exception breakpoints
-                    #set_trace_func nil
-                    #@debugger.terminate
-                    log('=== Exception ===')
+					#TODO: Handle exception breakpoints here
             end
         end
     end

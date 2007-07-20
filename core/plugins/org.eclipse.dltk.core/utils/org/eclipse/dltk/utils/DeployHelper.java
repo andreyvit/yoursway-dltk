@@ -54,13 +54,19 @@ public class DeployHelper {
 				input.close();
 			}
 		}
-	}	
+	}
 
-	public static IPath deploy(Bundle bundle, String bundlePath, IPath diskPath)
-			throws IOException {
+	public static IPath deploy(Bundle bundle, String bundlePath,
+			IPath diskPath, boolean clearDiskPath) throws IOException {
 
 		File dir = diskPath.append(bundlePath).toFile();
-		dir.mkdir();
+		if (clearDiskPath && dir.exists()) {
+			dir.delete();
+		}
+
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
 
 		Enumeration paths = bundle.getEntryPaths(bundlePath);
 		if (paths != null) {
@@ -68,7 +74,7 @@ public class DeployHelper {
 				String path = (String) paths.nextElement();
 				if (path.endsWith("/")) {
 					deploy(bundle, path, diskPath);
-				} else { 
+				} else {
 					File file = diskPath.append(path).toFile();
 					DeployHelper.copy(bundle.getEntry(path), file);
 				}
@@ -77,8 +83,14 @@ public class DeployHelper {
 
 		return new Path(dir.getAbsolutePath());
 	}
-	
-	public static IPath deploy(Plugin plugin, String bundlePath) throws IOException {
+
+	public static IPath deploy(Bundle bundle, String bundlePath, IPath diskPath)
+			throws IOException {
+		return deploy(bundle, bundlePath, diskPath, true);
+	}
+
+	public static IPath deploy(Plugin plugin, String bundlePath)
+			throws IOException {
 		return deploy(plugin.getBundle(), bundlePath, plugin.getStateLocation());
 	}
 }

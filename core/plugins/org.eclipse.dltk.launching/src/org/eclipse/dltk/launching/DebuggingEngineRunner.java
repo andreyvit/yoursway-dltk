@@ -131,6 +131,12 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			ILaunchConfiguration configuration) throws CoreException {
 		final IDbgpService service = DLTKDebugPlugin.getDefault()
 				.getDbgpService();
+		
+		if (!service.available()) {
+			abort("DBGP connection service not available.", null);
+		}
+		
+		
 		final String sessionId = getSessionId(configuration);
 
 		addDebugTarget(launch, configuration, service, sessionId);

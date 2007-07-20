@@ -20,7 +20,8 @@ require 'simple_debugger'
 module XoredDebugger
     class Runner
         def Runner.go
-            begin
+			debugger = nil
+            begin			
                 params = Params.new
                 puts params.inspect
                 log = params.log
@@ -58,6 +59,10 @@ module XoredDebugger
                 logger.puts("\tClass: " + $!.class.to_s)
                 logger.puts("\tMessage: " + $!.message)
                 logger.puts("\tBacktrace: " + $!.backtrace.join("\n"))
+				
+				unless debugger.nil?
+					debugger.terminate
+				end
             ensure
                 logger.close
             end  

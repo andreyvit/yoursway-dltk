@@ -32,6 +32,14 @@ def path_to_uri(path)
    'file:///' + CGI.escape(path).gsub('+', '%20')
 end
 
+#
+# Thread label
+#
+def get_thread_label(thread)	
+	is_main = thread == Thread.main
+	sprintf("Thread %s id=%d, priority=%d", is_main ? '(main)' : '', thread.object_id, thread.priority)
+end
+
 def normalize_path(path)
 	Pathname.new(path).expand_path.to_s
 end
@@ -39,6 +47,10 @@ end
 module XoredDebugger
 	class CommandHandler
 		include Logger
+		
+		def initialize
+			@stop_sent = false
+		end
   
         # Init
         def init(app_id, ide_key, thread, file_uri)
@@ -302,7 +314,7 @@ module XoredDebugger
             { :success  => success,
               :property => property }
         end
-
+	
         def dispatch_command(command)
             log('Dispatching command: ' + command.name)
 
@@ -331,23 +343,12 @@ module XoredDebugger
 
                 # Breakpoint commands
                 when 'breakpoint_set'
-                    type = command.arg('-t')
-
-                    state = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false
-                    temporary = command.arg_with_default('-r', false)
-                    hit_value = command.arg_with_default('-h', 1).to_i
+                    type          = command.arg('-t')
+					state         = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false
+                    temporary     = command.arg_with_default('-r', false)
+                    hit_value     = command.arg_with_default('-h', 1).to_i
                     hit_condition = command.arg_with_default('-o', '>=')
-                    expression = command.data
-
-                    log('Setting breakpoint:')
-                    log("\ttype: " + type.to_s)
-                    log("\tstate: " + state.to_s)
-                    log("\ttemporary: " + temporary.to_s)
-                    log("\thit_value: " + hit_value.to_s)
-                    log("\thit_condition: " + hit_condition.to_s)
-                    log("\texpression: " + expression.to_s)
-
-                    log('Creating info:')
+                    expression    = command.data
 
                     info = case type
                         when 'line'
@@ -361,7 +362,6 @@ module XoredDebugger
 
                         when 'call'
                             function = command.arg('-m')
-
                             # TODO:
                             nil
 
@@ -380,12 +380,13 @@ module XoredDebugger
                         when 'conditional'
                             # TODO:
                             nil
+							
                         when 'whatch'
                             # TODO:
                             nil
                     end
 
-                    log('Info created: ' + info.inspect)
+                    log('Breakpoint info: ' + info.to_s)
 
                     unless info.nil?
                         breakpoint_set(info)
@@ -398,11 +399,11 @@ module XoredDebugger
                 when 'breakpoint_update'
                     id = command.arg('-d').to_i
 
-                    state = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false
-                    temporary = command.arg_with_default('-r', false)
-                    hit_value = command.arg_with_default('-h', 1).to_i
+					state         = command.arg_with_default('-s', 'enabled') == 'enabled' ? true : false
+                    temporary     = command.arg_with_default('-r', false)
+                    hit_value     = command.arg_with_default('-h', 1).to_i
                     hit_condition = command.arg_with_default('-o', '>=')
-                    expression = command.data
+                    expression    = command.data
 
                     info = BreakpointInfo.new(state, temporary, expression, hit_value, hit_condition)
 
@@ -483,12 +484,16 @@ module XoredDebugger
 
         def sent_stopped
             unless @command.nil?
-                map = { :status => 'stopped',
-                        :reason => 'ok',
-                        :id     => @command.arg('-i') }
+				unless @stop_sent
+	                map = { :status => 'stopped',
+	                        :reason => 'ok',
+	                        :id     => @command.arg('-i') }
 
-                io_manager.send(@command.name, map) # TODO: move from here
+	                io_manager.send(@command.name, map) # TODO: move from here
+					@stop_sent = true
+				end
             end
         end
+		
     end # class CommandHandler
 end # module XoredDebugger

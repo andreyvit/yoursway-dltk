@@ -31,7 +31,13 @@ module XoredDebugger
         end
         
         def to_s
-            "Breakpoint TODO"
+			s = ''
+			s += sprintf('state: %s; ', @state.to_s)
+			s += sprintf('temporary: %s; ', @temporary)
+			s += sprintf('expression: %s; ', @expression)
+            s += sprintf('hit_value: %s; ', @hit_value)
+            s += sprintf('hit_condition: %s;', @hit_condition)
+            s
         end
             
         attr_reader :state

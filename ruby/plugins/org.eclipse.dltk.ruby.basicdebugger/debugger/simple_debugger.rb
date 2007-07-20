@@ -31,18 +31,18 @@ module XoredDebugger
 	
 		# Construction
         def initialize(params)
+			STDOUT.sync = true
+			STDERR.sync = true
+		
 			@mutex = Mutex.new
-
-            @stdout_capturer = StdoutCapturer.new(false)
-            #@stderr_capturer = StderrCapturer.new(true)
-
+			
+			@capture_manager    = CaptureManager.new(true)
             @breakpoint_manager = BreakpointManager.new
-            @feature_manager = FeatureManager.new
-			@source_manager = SourceManager.new
+            @feature_manager    = FeatureManager.new
+			@source_manager     = SourceManager.new
 
-            @thread_manager = ThreadManager.new() { |thread|
-                printer = Printer.new
-				io = params.test ? TestIOManager.new(printer) : SocketIOManager.new(params.host, params.port, printer)
+            @thread_manager = ThreadManager.new() { |thread|                
+				io = params.test ? TestIOManager.new(printer) : SocketIOManager.new(params.host, params.port, Printer.new)
                 RubyThread.new(self, thread, io, params.key, params.script)
             }
         end
@@ -54,7 +54,7 @@ module XoredDebugger
 			main = @thread_manager.main_thread
 			all = @thread_manager.all_threads
 
-			(all - [main]).each { | th|
+			(all - [main]).each { |th|
 				th.terminate
 			}
 
@@ -74,8 +74,8 @@ module XoredDebugger
 			@source_manager
 		end
 
-        def capturer
-            @stdout_capturer
+        def capture_manager
+            @capture_manager
         end
 
 		# Tracing

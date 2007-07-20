@@ -22,17 +22,17 @@ module XoredDebugger
             @output = ''
         end
 
-        def write(s)
-            #@mutex.synchronize do
+        def write(s)			
+         #   @mutex.synchronize do
                 @output += s
-            #end
+          #  end
         end
                  
         def get
             #@mutex.synchronize do
-                out = @output
-                @output = ''
-                out
+				out = @output
+				@output = ''
+			out
             #end
         end
 
@@ -69,4 +69,29 @@ module XoredDebugger
             $stderr = saved_stream
         end
     end # class StderrCapturer
+	
+	class CaptureManager
+		def initialize(state)
+			@stdout_capturer = StdoutCapturer.new(state)
+			@stderr_capturer = StderrCapturer.new(state)
+		end
+		
+		def enable
+			@stdout_capturer.enable
+			@stderr_capturer.enable
+		end
+		
+		def disable
+			@stdout_capturer.disable
+			@stderr_capturer.disable
+		end
+		
+		def get_stdout
+			@stdout_capturer.get
+		end
+		
+		def get_stderr
+			@stderr_capturer.get
+		end
+	end # class CaptureManager
 end # module XoredDebugger
