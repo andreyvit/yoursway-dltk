@@ -392,7 +392,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 		store.setDefault( PreferenceConstants.EDITOR_SMART_PASTE, true);
 		store.setDefault( PreferenceConstants.EDITOR_SMART_HOME_END, true);
 		store.setDefault( PreferenceConstants.EDITOR_SUB_WORD_NAVIGATION, true);		
-		store.setDefault( PreferenceConstants.EDITOR_TAB_WIDTH, 4);
+		store.setDefault( PreferenceConstants.EDITOR_TAB_WIDTH, 2);
 		store.setDefault( PreferenceConstants.EDITOR_SYNC_OUTLINE_ON_CURSOR_MOVE, true);
 		
 		// folding
@@ -402,9 +402,9 @@ public class RubyPreferenceConstants extends PreferenceConstants
 //		store.setDefault(PreferenceConstants.EDITOR_FOLDING_METHODS, false);
 //		store.setDefault(PreferenceConstants.EDITOR_FOLDING_IMPORTS, true);
 		
-		store.setDefault (CodeFormatterConstants.FORMATTER_TAB_CHAR, CodeFormatterConstants.TAB);
-		store.setDefault (CodeFormatterConstants.FORMATTER_TAB_SIZE, "4");
-		store.setDefault (CodeFormatterConstants.FORMATTER_INDENTATION_SIZE, "4");
+		store.setDefault (CodeFormatterConstants.FORMATTER_TAB_CHAR, CodeFormatterConstants.SPACE);
+		store.setDefault (CodeFormatterConstants.FORMATTER_TAB_SIZE, "2");
+		store.setDefault (CodeFormatterConstants.FORMATTER_INDENTATION_SIZE, "2");
 		
 		NewScriptProjectPreferencePage.initDefaults(store);
 		
