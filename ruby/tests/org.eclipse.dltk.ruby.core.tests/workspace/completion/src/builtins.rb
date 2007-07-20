@@ -915,3 +915,388 @@ protected
 	
 private
 end
+
+	
+class Fixnum  < ::Integer
+	class << ::Fixnum
+		
+		include Kernel
+	
+	end
+	
+public
+	def quo (arg1)
+	end
+	
+	def ** (arg1)
+	end
+	
+	def - (arg1)
+	end
+	
+	def <=> (arg1)
+	end
+	
+	def modulo (arg1)
+	end
+	
+	def [] (arg1)
+	end
+	
+	def / (arg1)
+	end
+	
+	def | (arg1)
+	end
+	
+	def rpower (arg1)
+	end
+	
+	def % (arg1)
+	end
+	
+	def << (arg1)
+	end
+	
+	def to_f ()
+	end
+	
+	def to_sym ()
+	end
+	
+	def divmod (arg1)
+	end
+	
+	def ~ ()
+	end
+	
+	def & (arg1)
+	end
+	
+	def >> (arg1)
+	end
+	
+	def ^ (arg1)
+	end
+	
+	def rdiv (arg1)
+	end
+	
+	def power! (arg1)
+	end
+	
+	def abs ()
+	end
+	
+	def zero? ()
+	end
+	
+	def id2name ()
+	end
+	
+	def div (arg1)
+	end
+	
+	def size ()
+	end
+	
+	def * (arg1)
+	end
+	
+	def -@ ()
+	end
+	
+	def + (arg1)
+	end
+	
+	
+protected
+	
+private
+	def self.induced_from (arg1)
+	end
+	
+end
+
+	
+class String  < ::Object
+		
+	include Enumerable
+	
+		
+	include Comparable
+	
+	class << ::String
+		
+		include Kernel
+	
+	end
+	
+public
+	def unpack (arg1)
+	end
+	
+	def slice! (*args)
+	end
+	
+	def strip ()
+	end
+	
+	def each_line (*args)
+	end
+	
+	def gsub! (*args)
+	end
+	
+	def length ()
+	end
+	
+	def tr_s! (arg1, arg2)
+	end
+	
+	def to_str ()
+	end
+	
+	def ljust (*args)
+	end
+	
+	def taguri= (arg1)
+	end
+	
+	def delete (*args)
+	end
+	
+	def rstrip! ()
+	end
+	
+	def split (*args)
+	end
+	
+	def to_yaml (*args)
+	end
+	
+	def to_java_string ()
+	end
+	
+	def is_binary_data? ()
+	end
+	
+	def * (arg1)
+	end
+	
+	def swapcase! ()
+	end
+	
+	def to_i (*args)
+	end
+	
+	def casecmp (arg1)
+	end
+	
+	def swapcase ()
+	end
+	
+	def chop ()
+	end
+	
+	def empty? ()
+	end
+	
+	def tr (arg1, arg2)
+	end
+	
+	def + (arg1)
+	end
+	
+	def rindex (*args)
+	end
+	
+	def intern ()
+	end
+	
+	def each (*args)
+	end
+	
+	def slice (*args)
+	end
+	
+	def next! ()
+	end
+	
+	def reverse! ()
+	end
+	
+	def strip! ()
+	end
+	
+	def match (arg1)
+	end
+	
+	def hex ()
+	end
+	
+	def downcase ()
+	end
+	
+	def sub (*args)
+	end
+	
+	def javacase ()
+	end
+	
+	def downcase! ()
+	end
+	
+	def upto (arg1)
+	end
+	
+	def concat (arg1)
+	end
+	
+	def chop! ()
+	end
+	
+	def size ()
+	end
+	
+	def lstrip ()
+	end
+	
+	def each_byte ()
+	end
+	
+	def [] (*args)
+	end
+	
+	def succ! ()
+	end
+	
+	def delete! (*args)
+	end
+	
+	def dump ()
+	end
+	
+	def []= (*args)
+	end
+	
+	def rjust (*args)
+	end
+	
+	def squeeze (*args)
+	end
+	
+	def to_sym ()
+	end
+	
+	def next ()
+	end
+	
+	def << (arg1)
+	end
+	
+	def reverse ()
+	end
+	
+	def chomp (*args)
+	end
+	
+	def to_f ()
+	end
+	
+	def sub! (*args)
+	end
+	
+	def insert (arg1, arg2)
+	end
+	
+	def replace (arg1)
+	end
+	
+	def scan (arg1)
+	end
+	
+	def tr_s (arg1, arg2)
+	end
+	
+	def tr! (arg1, arg2)
+	end
+	
+	def oct ()
+	end
+	
+	def succ ()
+	end
+	
+	def lstrip! ()
+	end
+	
+	def capitalize! ()
+	end
+	
+	def gsub (*args)
+	end
+	
+	def capitalize ()
+	end
+	
+	def is_complex_yaml? ()
+	end
+	
+	def <=> (arg1)
+	end
+	
+	def crypt (arg1)
+	end
+	
+	def index (*args)
+	end
+	
+	def rstrip ()
+	end
+	
+	def chomp! (*args)
+	end
+	
+	def sum (*args)
+	end
+	
+	def center (*args)
+	end
+	
+	def upcase ()
+	end
+	
+	def % (arg1)
+	end
+	
+	def upcase! ()
+	end
+	
+	def count (*args)
+	end
+	
+	def squeeze! (*args)
+	end
+	
+	def taguri ()
+	end
+	
+	
+protected
+	
+private
+	def initialize_copy (arg1)
+	end
+	
+	def initialize (*args)
+	end
+	
+	def self.yaml_tag_subclasses? ()
+	end
+	
+	def self.yaml_new (arg1, arg2, arg3)
+	end
+	
+end
+
