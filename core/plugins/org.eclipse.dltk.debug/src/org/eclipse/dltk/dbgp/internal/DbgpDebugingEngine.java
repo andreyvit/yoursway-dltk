@@ -70,9 +70,9 @@ public class DbgpDebugingEngine extends DbgpTermination implements
 		return receiver.getNotifyPacket();
 	}
 
-	public DbgpResponsePacket getResponsePacket(int transactionId)
+	public DbgpResponsePacket getResponsePacket(int transactionId, int timeout)
 			throws IOException, InterruptedException {
-		return receiver.getResponsePacket(transactionId);
+		return receiver.getResponsePacket(transactionId, timeout);
 	}
 
 	public void sendCommand(String command) throws IOException {

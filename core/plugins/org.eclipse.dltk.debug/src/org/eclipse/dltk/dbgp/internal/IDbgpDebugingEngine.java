@@ -21,9 +21,9 @@ public interface IDbgpDebugingEngine extends IDbgpTermination {
 	void sendCommand(String command) throws IOException;
 
 	// Blocking methods
-	DbgpResponsePacket getResponsePacket(int transactionId) throws IOException,
+	DbgpResponsePacket getResponsePacket(int transactionId, int timeout) throws IOException,
 			InterruptedException;
-
+	
 	DbgpNotifyPacket getNotifyPacket() throws IOException, InterruptedException;
 
 	DbgpStreamPacket getStreamPacket() throws IOException, InterruptedException;

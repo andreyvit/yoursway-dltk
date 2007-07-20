@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.exceptions.DbgpIOException;
+import org.eclipse.dltk.dbgp.exceptions.DbgpTimeoutException;
 import org.eclipse.dltk.dbgp.internal.DbgpRequest;
 import org.eclipse.dltk.dbgp.internal.IDbgpDebugingEngine;
 import org.eclipse.dltk.dbgp.internal.packets.DbgpResponsePacket;
@@ -20,6 +21,7 @@ import org.eclipse.dltk.dbgp.internal.utils.DbgpXmlParser;
 import org.w3c.dom.Element;
 
 public class DbgpDebuggingEngineCommunicator implements IDbgpCommunicator {
+	private static final int TIMEOUT = 500000;
 
 	private final IDbgpDebugingEngine engine;
 
@@ -29,7 +31,7 @@ public class DbgpDebuggingEngineCommunicator implements IDbgpCommunicator {
 
 	private DbgpResponsePacket receiveResponse(int transactionId)
 			throws IOException, InterruptedException {
-		return engine.getResponsePacket(transactionId);
+		return engine.getResponsePacket(transactionId, TIMEOUT);
 	}
 
 	public DbgpDebuggingEngineCommunicator(IDbgpDebugingEngine engine) {
@@ -43,8 +45,15 @@ public class DbgpDebuggingEngineCommunicator implements IDbgpCommunicator {
 	public Element communicate(DbgpRequest request) throws DbgpException {
 		try {
 			sendRequest(request.toString());
-			Element response = receiveResponse(
-					Integer.parseInt(request.getOption("-i"))).getContent();
+
+			DbgpResponsePacket packet = receiveResponse(Integer
+					.parseInt(request.getOption("-i")));
+
+			if (packet == null) {
+				throw new DbgpTimeoutException();
+			}
+
+			Element response = packet.getContent();
 
 			DbgpException e = DbgpXmlParser.checkError(response);
 			if (e != null) {

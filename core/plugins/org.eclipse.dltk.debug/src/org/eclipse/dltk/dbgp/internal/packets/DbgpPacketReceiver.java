@@ -32,12 +32,27 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 			notifyAll();
 		}
 
-		public synchronized Object get(Object key) throws InterruptedException {
-			while (!map.containsKey(key)) {
-				wait();
-			}
+		public synchronized Object get(Object key, int timeout)
+				throws InterruptedException {
+			if (timeout == 0) {
+				while (!map.containsKey(key)) {
+					wait();
+				}
 
-			return map.remove(key);
+				return map.remove(key);
+			} else {
+				if (map.containsKey(key)) {
+					return map.remove(key);
+				}
+
+				wait(timeout);
+
+				if (map.containsKey(key)) {
+					return map.remove(key);
+				}
+
+				return null;
+			}
 		}
 
 		public synchronized int size() {
@@ -123,11 +138,11 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 		return (DbgpStreamPacket) streamQueue.get();
 	}
 
-	public DbgpResponsePacket getResponsePacket(int transactionId)
+	public DbgpResponsePacket getResponsePacket(int transactionId, int timeout)
 			throws InterruptedException {
 
-		return (DbgpResponsePacket) responseQueue
-				.get(new Integer(transactionId));
+		return (DbgpResponsePacket) responseQueue.get(
+				new Integer(transactionId), timeout);
 	}
 
 	public DbgpPacketReceiver(InputStream input) {

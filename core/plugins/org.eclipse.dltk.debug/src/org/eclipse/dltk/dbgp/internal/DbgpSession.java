@@ -83,7 +83,7 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 
 		try {
 			info = DbgpXmlEntityParser.parseSession(engine
-					.getResponsePacket(-1).getContent());
+					.getResponsePacket(-1, 0).getContent());
 		} catch (InterruptedException e) {
 		}
 
