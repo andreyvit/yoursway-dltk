@@ -12,6 +12,11 @@ package org.eclipse.dltk.internal.debug.ui;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -54,13 +59,22 @@ public class ExternalFileEditorInput implements IPathEditorInput,
 			return this;
 		}
 
+		if (IResource.class.equals(adapter)) {
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			IWorkspaceRoot root = workspace.getRoot();
+			IFile[] files = root.findFilesForLocation(getPath());
+			if (files.length > 0) {
+				return files[0];
+			}
+		}
+
 		return Platform.getAdapterManager().getAdapter(this, adapter);
 	}
 
 	public IPath getPath(Object element) {
 		if (element instanceof ExternalFileEditorInput) {
 			ExternalFileEditorInput input = (ExternalFileEditorInput) element;
-			return Path.fromOSString(input.file.getAbsolutePath());
+			return input.getPath();
 		}
 		return null;
 	}
@@ -70,8 +84,9 @@ public class ExternalFileEditorInput implements IPathEditorInput,
 	}
 
 	public boolean equals(Object o) {
-		if (o == this)
+		if (o == this) {
 			return true;
+		}
 
 		if (o instanceof ExternalFileEditorInput) {
 			ExternalFileEditorInput input = (ExternalFileEditorInput) o;

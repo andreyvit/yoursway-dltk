@@ -69,6 +69,11 @@ public class RubyToggleBreakpointAdapter extends ScriptToggleBreakpointAdapter {
 								.getStartLine();
 
 						final IResource resource = getPartResource(part);
+						if (resource == null) {
+							return Status.CANCEL_STATUS;
+						}
+						
+						
 						final IBreakpoint[] rubyBreakpoints = getBreakpoints(RubyDebugConstants.DEBUG_MODEL_ID);
 						final IBreakpoint breakpoint = findLineBreakpoint(
 								rubyBreakpoints, resource, lineNumber + 1);

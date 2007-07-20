@@ -1,4 +1,3 @@
-
 ###############################################################################
 # Copyright (c) 2005, 2007 IBM Corporation and others.
 # All rights reserved. This program and the accompanying materials
@@ -21,11 +20,11 @@ module XoredDebugger
 	            SCRIPT_LINES__[file] = File.readlines(file)
 	          end
 
-	          change_time = test(?M, file)
-	          SCRIPT_TIMESTAMPS__[file] ||= change_time
-	          if @reload_source_on_change && SCRIPT_TIMESTAMPS__[file] < change_time
-	            SCRIPT_LINES__[file] = File.readlines(file)
-	          end
+	          #change_time = test(?M, file)
+	          #SCRIPT_TIMESTAMPS__[file] ||= change_time
+	          #if @reload_source_on_change && SCRIPT_TIMESTAMPS__[file] < change_time
+	          #  SCRIPT_LINES__[file] = File.readlines(file)
+	          #end
 
 	          SCRIPT_LINES__[file]
 	        end
