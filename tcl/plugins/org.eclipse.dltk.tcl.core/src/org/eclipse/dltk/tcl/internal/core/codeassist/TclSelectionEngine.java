@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
@@ -268,6 +269,10 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 				Object element = match.getElement();
 				if (element instanceof IType) {
 					IType type = (IType) element;
+					// We need to skip not namespaces.
+					if( (type.getFlags() & Modifiers.AccNameSpace)== 0) {
+						return;
+					}
 //					String mn = TclParseUtils.processTypeName(type, name);
 //					if (mn.equals(name)
 //							&& !TclSelectionEngine.this.selectionElements
@@ -533,6 +538,9 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 				Object element = match.getElement();
 				if (element instanceof IType) {
 					IType type = (IType) element;
+					if( (type.getFlags() & Modifiers.AccNameSpace)== 0) {
+						return;
+					}
 					String mn = TclParseUtils.processTypeName(type, name);
 					if (mn.equals(name)
 							&& !TclSelectionEngine.this.selectionElements
@@ -743,6 +751,9 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		try {
 			for (int i = 0; i < childs.length; ++i) {
 				if (childs[i] instanceof IType) {
+					if( (((IType)childs[i]).getFlags() & Modifiers.AccNameSpace)== 0) {
+						break;
+					}
 					IType type = (IType) childs[i];
 					String qname = name + delimiter + type.getElementName();
 					if (qname.equals(parentName)) {

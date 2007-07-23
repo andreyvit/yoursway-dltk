@@ -15,6 +15,9 @@ Export-Package: org.eclipse.dltk.tcl.ast,
  org.eclipse.dltk.tcl.core,
  org.eclipse.dltk.tcl.internal.core,
  org.eclipse.dltk.tcl.internal.core.codeassist,
+ org.eclipse.dltk.tcl.internal.core.codeassist.completion,
+ org.eclipse.dltk.tcl.internal.core.codeassist.selection,
+ org.eclipse.dltk.tcl.internal.core.search,
  org.eclipse.dltk.tcl.internal.parser,
  org.eclipse.dltk.tcl.internal.parsers.raw
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

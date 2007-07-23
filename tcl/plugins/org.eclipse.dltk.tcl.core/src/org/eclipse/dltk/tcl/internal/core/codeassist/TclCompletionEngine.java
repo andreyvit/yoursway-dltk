@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
@@ -225,6 +226,9 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 				Object element = match.getElement();
 				if (element instanceof IType) {
 					IType type = (IType) element;
+					if( (type.getFlags() & Modifiers.AccNameSpace)== 0) {
+						return;
+					}
 					if (!(type.getParent() instanceof ISourceModule)) {
 						return;
 					}
@@ -637,6 +641,9 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 				Object element = match.getElement();
 				if (element instanceof IType) {
 					IType type = (IType) element;
+					if( (type.getFlags() & Modifiers.AccNameSpace)== 0) {
+						return;
+					}
 					if (!(type.getParent() instanceof ISourceModule)) {
 						return;
 					}
