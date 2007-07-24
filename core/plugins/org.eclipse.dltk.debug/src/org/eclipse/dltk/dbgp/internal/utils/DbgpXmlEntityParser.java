@@ -35,6 +35,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class DbgpXmlEntityParser extends DbgpXmlParser {
+
+	private static String ENCODING_NONE = "none";
+	private static String ENCODING_BASE64 = "base64";
+
 	protected DbgpXmlEntityParser() {
 
 	}
@@ -65,18 +69,11 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 
 		int lineNumber = Integer.parseInt(element.getAttribute(ATTR_LINENO));
 
-		URI fileUri = null;
-		// try {
-		String fileName = element.getAttribute(ATTR_FILENAME);
-		fileUri = URI.create(fileName);
-		// String test = fileUri.toASCIIString();
-		// String host = fileUri.getHost();
-		// String path = fileUri.getPath();
-		// } catch (URISyntaxException e) {
-		// throw new DbgpException(e);
-		// }
+		final String fileName = element.getAttribute(ATTR_FILENAME);
+		final URI fileUri = URI.create(fileName);
 
-		String where = element.getAttribute(ATTR_WHERE);
+		final String where = element.getAttribute(ATTR_WHERE);
+
 		return new DbgpStackLevel(fileUri, where, level, lineNumber, lineBegin,
 				lineEnd);
 	}
@@ -99,13 +96,18 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		final String ATTR_CHILDREN = "children";
 		final String ATTR_NUMCHILDREN = "numchildren";
 		final String ATTR_CONSTANT = "constant";
-		final String ATTR_ENCODING = "encoding";
 		final String ATTR_SIZE = "size";
 		final String ATTR_KEY = "key";
 
-		String name = property.getAttribute(ATTR_NAME);
-		String fullName = property.getAttribute(ATTR_FULLNAME);
-		String type = property.getAttribute(ATTR_TYPE);
+		/*
+		 * attributes: name, fullname, type, children, numchildren, constant,
+		 * encoding, size, key
+		 */
+
+		// may exist as an attribute of the property or as child element
+		final String name = getFromChildOrAttr(property, ATTR_NAME);
+		final String fullName = getFromChildOrAttr(property, ATTR_FULLNAME);
+		final String type = property.getAttribute(ATTR_TYPE);
 
 		// hasChildren
 		boolean hasChildren = false;
@@ -142,17 +144,11 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		String value = "";
 
 		if (!hasChildren) {
-			String encoding = "none";
-			if (property.hasAttribute(ATTR_ENCODING)) {
-				encoding = property.getAttribute(ATTR_ENCODING);
-			}
-
-			if (encoding.equals("none")) {
-				value = parseContent(property);
-			} else if (encoding.equals("base64")) {
-				value = parseBase64Content(property);
+			NodeList list = property.getElementsByTagName("value");
+			if (list.getLength() == 0) {
+				value = getEncodedValue(property);
 			} else {
-				throw new AssertionError();
+				value = getEncodedValue((Element) list.item(0));
 			}
 		}
 
@@ -272,15 +268,42 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		String parentId = element.getAttribute(ATTR_PARENT);
 		String language = element.getAttribute(ATTR_LANGUAGE);
 
-		// try {
-		// String uri = init.getAttribute(FILEURI_ATTR);
-		// System.out.println(uri);
-		// fileUri = new URI(uri);
-		// } catch (URISyntaxException e) {
-		// throw new DbgpException(e);
-		// }
-
 		return new DbgpSessionInfo(appId, ideKey, session, threadId, parentId,
 				language, null);
+	}
+
+	protected static String getFromChildOrAttr(Element property, String name) {
+		NodeList list = property.getElementsByTagName(name);
+
+		if (list.getLength() == 0) {
+			return property.getAttribute(name);
+		}
+
+		/*
+		 * this may or may not need to be base64 decoded - need to see output
+		 * from an ActiveState's python debugging session to determine. gotta
+		 * love protocol changes that have made their way back into the
+		 * published spec
+		 */
+		return getEncodedValue((Element) list.item(0));
+	}
+
+	protected static String getEncodedValue(Element element) {
+		final String ATTR_ENCODING = "encoding";
+
+		String encoding = ENCODING_NONE;
+		if (element.hasAttribute(ATTR_ENCODING)) {
+			encoding = element.getAttribute(ATTR_ENCODING);
+		}
+
+		if (ENCODING_NONE.equals(encoding)) {
+			return parseContent(element);
+		}
+
+		if (ENCODING_BASE64.equals(encoding)) {
+			return parseBase64Content(element);
+		}
+
+		throw new AssertionError("invalid encoding [" + encoding + "]");
 	}
 }
