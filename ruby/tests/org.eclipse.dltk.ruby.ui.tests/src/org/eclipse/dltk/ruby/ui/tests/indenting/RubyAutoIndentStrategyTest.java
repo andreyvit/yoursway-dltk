@@ -11,6 +11,7 @@ package org.eclipse.dltk.ruby.ui.tests.indenting;
 
 import org.eclipse.dltk.core.tests.model.SuiteOfTestCases;
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
+import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyAutoEditStrategy;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
@@ -1526,5 +1527,13 @@ public class RubyAutoIndentStrategyTest extends SuiteOfTestCases {
         
     }
 
+    public void testBug186514() throws Exception {
+    	String prefix = "class A\n\tdef b\n\tend\n\t";
+		String postfix = "\nend";
+		String inserted = "def test1\nend\n|";
+		String expected = "\tdef test1\n\tend\n\t|";
+		doTestInsertion(prefix, postfix, inserted, expected);
+    }    
+    
 
 }

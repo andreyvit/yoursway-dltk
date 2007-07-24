@@ -348,6 +348,29 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 		assertEquals(1, elements.length);
 	}
 
+	public void testBug185487() throws ModelException {
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
+				"dsl/behaviour.rb");
+
+		String source = cu.getSource();
+		int start = source.indexOf("example_finished") + 1;
+
+		IModelElement[] elements = cu.codeSelect(start, 0);
+		assertNotNull(elements);
+		assertEquals(1, elements.length);
+	}
+
+	public void testBug193105() throws ModelException {
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
+				"b193105.rb");
+
+		String source = cu.getSource();
+		int start = source.indexOf("instance_variable_set") + 1;
+
+		IModelElement[] elements = cu.codeSelect(start, 0);
+		assertNotNull(elements);
+		assertEquals(1, elements.length);
+	}
 	// ////
 	public void executeTest(String module, int offset, int length)
 			throws ModelException {
@@ -366,4 +389,5 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 
 	}
 
+	
 }

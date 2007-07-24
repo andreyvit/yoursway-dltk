@@ -81,5 +81,26 @@ public class RubyFoldingTest extends TestCase {
 				.createInitialContext());
 		assertEquals(1, result.size());
 	}
+	public void test177924() throws Exception {
+		fStore.setValue(RubyPreferenceConstants.EDITOR_FOLDING_LINES_LIMIT, 2);
+		String content = TestUtils.getData("resources/folding/b177924.rb");
+		Document document = new Document(content);
+		TestUtils.installStuff(document);
+		provider.setDocument(document);
+		Map result = provider.testComputeFoldingStructure(content, provider
+				.createInitialContext());
+		assertEquals(8, result.size());
+	}
+	
+	public void test193174() throws Exception {
+		fStore.setValue(RubyPreferenceConstants.EDITOR_FOLDING_LINES_LIMIT, 2);
+		String content = TestUtils.getData("resources/folding/b193174.rb");
+		Document document = new Document(content);
+		TestUtils.installStuff(document);
+		provider.setDocument(document);
+		Map result = provider.testComputeFoldingStructure(content, provider
+				.createInitialContext());
+		assertEquals(114, result.size());
+	}
 
 }
