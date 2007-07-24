@@ -26,8 +26,6 @@ import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.exceptions.DbgpTimeoutException;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 
-import com.sun.java_cup.internal.emit;
-
 public abstract class DbgpOperation {
 	private static final boolean DEBUG = DLTKCore.DEBUG;
 
