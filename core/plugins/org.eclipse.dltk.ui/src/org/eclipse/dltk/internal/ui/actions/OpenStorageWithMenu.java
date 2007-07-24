@@ -16,7 +16,6 @@ import java.util.Comparator;
 import java.util.Hashtable;
 
 import org.eclipse.core.resources.IStorage;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.internal.ui.editor.ExternalStorageEditorInput;

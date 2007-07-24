@@ -19,7 +19,6 @@ import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.core.tests.Activator;
-import org.eclipse.dltk.utils.CorePrinter;
 
 public class RubyParserTests extends AbstractModelTests {
 	public RubyParserTests(String name) {

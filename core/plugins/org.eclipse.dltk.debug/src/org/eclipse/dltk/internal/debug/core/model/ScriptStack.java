@@ -3,9 +3,10 @@ package org.eclipse.dltk.internal.debug.core.model;
 import org.eclipse.dltk.dbgp.IDbgpStackLevel;
 import org.eclipse.dltk.dbgp.commands.IDbgpStatckCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+import org.eclipse.dltk.debug.core.model.IScriptStack;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 
-public class ScriptStack {
+public class ScriptStack implements IScriptStack {
 	public static final IScriptStackFrame[] NO_STACK_FRAMES = new IScriptStackFrame[0];
 
 	private IScriptStackFrame[] frames;
@@ -19,7 +20,7 @@ public class ScriptStack {
 
 		for (int i = 0; i < levels.length; ++i) {
 			IDbgpStackLevel level = levels[i];
-			frames[level.getLevel()] = new ScriptStackFrame(thread, level);
+			frames[level.getLevel()] = new ScriptStackFrame(this, level);
 		}
 
 		return frames;

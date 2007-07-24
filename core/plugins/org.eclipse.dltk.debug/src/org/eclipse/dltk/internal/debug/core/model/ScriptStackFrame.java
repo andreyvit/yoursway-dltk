@@ -27,6 +27,7 @@ import org.eclipse.dltk.dbgp.commands.IDbgpContextCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
+import org.eclipse.dltk.debug.core.model.IScriptStack;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
@@ -35,6 +36,8 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		IScriptStackFrame {
 
 	private static final String STACK_FRAME_LABEL = "Stack frame #{0}";
+
+	private IScriptStack stack;
 
 	private IScriptThread thread;
 
@@ -116,11 +119,16 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		}
 	}
 
-	public ScriptStackFrame(IScriptThread thread, IDbgpStackLevel stackLevel)
+	public ScriptStackFrame(IScriptStack stack, IDbgpStackLevel stackLevel)
 			throws DbgpException {
-		this.thread = thread;
+		this.stack = stack;
+		this.thread = stack.getThread();
 		this.level = stackLevel;
 		this.variables = readAllVariables();
+	}
+
+	public IScriptStack getStack() {
+		return stack;
 	}
 
 	public URI getFileName() {

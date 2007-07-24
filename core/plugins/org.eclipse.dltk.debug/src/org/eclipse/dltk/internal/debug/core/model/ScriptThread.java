@@ -28,6 +28,7 @@ import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
 import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.internal.IDbgpTerminationListener;
+import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
@@ -68,13 +69,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	public void handleTermination(DbgpException e) {
 		if (e != null) {
-			//try {
-				System.err.println(e.getMessage());
-				//streamProxy.getStdout().write(e.getMessage().getBytes());
-			//} catch (IOException e1) {
-				// TODO: log properly
-				//e1.printStackTrace();
-			//}
+			DLTKDebugPlugin.log(e);
 		}
 
 		session.requestTermination();

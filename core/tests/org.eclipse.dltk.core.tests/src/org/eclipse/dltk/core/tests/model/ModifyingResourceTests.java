@@ -14,8 +14,6 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.StringTokenizer;
 
-import junit.framework.Test;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;

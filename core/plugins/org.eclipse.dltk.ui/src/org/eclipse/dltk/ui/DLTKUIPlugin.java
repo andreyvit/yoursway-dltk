@@ -98,14 +98,13 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 					if (resource instanceof IFile)
 						return new DocumentAdapter(workingCopy,
 								(IFile) resource);
-				} 
-				else if (original instanceof ExternalSourceModule) {
+				} else if (original instanceof ExternalSourceModule) {
 					IPath path = original.getPath();
 					return new DocumentAdapter(workingCopy, path);
 				}
 				if (original instanceof BuiltinSourceModule) {
-//					 IPath path = original.getPath();
-//					 return new DocumentAdapter(workingCopy, path);
+					// IPath path = original.getPath();
+					// return new DocumentAdapter(workingCopy, path);
 					return BufferManager.getDefaultBufferManager()
 							.createBuffer(original);
 				}
@@ -118,8 +117,8 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 		IPreferenceStore store = getPreferenceStore();
 		fMembersOrderPreferenceCache = new MembersOrderPreferenceCache();
 		fMembersOrderPreferenceCache.install(store);
-		
-		//to initialize launching
+
+		// to initialize launching
 		DLTKLaunchingPlugin.getDefault();
 	}
 
@@ -189,6 +188,10 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 			fSourceModuleDocumentProvider = new SourceModuleDocumentProvider();
 		}
 		return fSourceModuleDocumentProvider;
+	}
+
+	public static ISourceModuleDocumentProvider getDocumentProvider() {
+		return DLTKUIPlugin.getDefault().getSourceModuleDocumentProvider();
 	}
 
 	public static ImageDescriptorRegistry getImageDescriptorRegistry() {
@@ -422,13 +425,14 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 		}
 		return part;
 	}
+
 	public synchronized ProblemMarkerManager getProblemMarkerManager() {
 		if (fProblemMarkerManager == null)
-			fProblemMarkerManager= new ProblemMarkerManager();
+			fProblemMarkerManager = new ProblemMarkerManager();
 		return fProblemMarkerManager;
 	}
 
 	public static boolean isDebug() {
 		return DLTKCore.DEBUG;
-	}	
+	}
 }

@@ -10,7 +10,6 @@
 
 package org.eclipse.dltk.ruby.basicdebugger;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;

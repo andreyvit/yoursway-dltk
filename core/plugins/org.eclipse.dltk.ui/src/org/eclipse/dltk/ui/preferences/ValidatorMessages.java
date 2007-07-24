@@ -1,6 +1,5 @@
 package org.eclipse.dltk.ui.preferences;
 
-import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.osgi.util.NLS;
 
 public class ValidatorMessages {

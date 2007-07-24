@@ -44,18 +44,23 @@ import org.eclipse.dltk.launching.DebuggingEngineRunner;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
 import org.eclipse.dltk.launching.debug.IDebuggingEngine;
+import org.eclipse.dltk.ui.DLTKUIPlugin;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.texteditor.IDocumentProvider;
 
 public abstract class ScriptDebugModelPresentation extends LabelProvider
 		implements IDebugModelPresentation {
 
 	// TODO: move to properties file
-	private static final String SUSPENDED_LABEL = "suspended";
-	private static final String RUNNING_LABEL = "running";
+	protected static final String SUSPENDED_LABEL = "suspended";
+	protected static final String RUNNING_LABEL = "running";
 
 	public static IDebuggingEngine getDebuggingEngine(IDebugElement element) {
 		final String id = element.getLaunch().getAttribute(
@@ -115,10 +120,10 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 
 	protected String getDebugTargetText(IScriptDebugTarget target) {
 		IDebuggingEngine engine = getDebuggingEngine(target);
-		
+
 		if (engine != null) {
-			return MessageFormat.format("{0} [session id: {1}]",
-					new Object[] { engine.getName(), target.getSessionId()});
+			return MessageFormat.format("{0} [session id: {1}]", new Object[] {
+					engine.getName(), target.getSessionId() });
 		}
 
 		return target.toString();
@@ -163,18 +168,51 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		// TODO: improve later
 		try {
 			String sourceLine = stackFrame.getSourceLine();
+
+			// Check if source line is empty
 			if (sourceLine == null || sourceLine.length() == 0) {
-				// TODO: fix later
-				sourceLine = "Stack frame #" + stackFrame.getLevel();
+
+				final Object object = stackFrame.getLaunch().getSourceLocator()
+						.getSourceElement(stackFrame);
+
+				if (object instanceof IFile) {
+					final IDocumentProvider provider = DLTKUIPlugin
+							.getDocumentProvider();
+
+					final IDocument document = provider
+							.getDocument(new FileEditorInput((IFile) object));
+
+					if (document != null) {
+						try {
+							final IRegion region = document
+									.getLineInformation(stackFrame
+											.getLineNumber() - 1);
+
+							sourceLine = document.get(region.getOffset(),
+									region.getLength()).trim();
+
+						} catch (BadLocationException e) {
+							DLTKDebugUIPlugin.log(e);
+						}
+					}
+				}
 			}
 
+			// Check if source line is empty (again)
+			if (sourceLine == null || sourceLine.length() == 0) {
+				final int level = stackFrame.getStack().size()
+						- stackFrame.getLevel() - 1;
+				sourceLine = MessageFormat.format("Stack frame #{0}",
+						new Object[] { new Integer(level) });
+			}
+
+			// Compute stack frame relative path
 			final IPath path = getStackFrameRelativePath(stackFrame);
 
 			// TODO: may be make external option for file:line
 			return MessageFormat.format("{0} [{1}: {2}]", new Object[] {
 					sourceLine, path.toPortableString(),
 					new Integer(stackFrame.getLineNumber()) });
-
 		} catch (CoreException e) {
 			DLTKDebugUIPlugin.log(e);
 		}

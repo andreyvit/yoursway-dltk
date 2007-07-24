@@ -64,7 +64,7 @@ public class DebugConsoleManager implements ILaunchListener {
 	}
 
 	protected DebugConsoleManager() {
-		launchToConsoleMap = new HashMap();
+		this.launchToConsoleMap = new HashMap();
 	}
 
 	public void launchAdded(ILaunch launch) {
@@ -81,7 +81,6 @@ public class DebugConsoleManager implements ILaunchListener {
 		}
 
 		if (launch.getDebugTarget() instanceof IScriptDebugTarget) {
-
 			IScriptDebugTarget target = (IScriptDebugTarget) launch
 					.getDebugTarget();
 

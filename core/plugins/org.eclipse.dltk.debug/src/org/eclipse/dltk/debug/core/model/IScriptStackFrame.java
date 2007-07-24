@@ -15,10 +15,12 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IStackFrame;
 
 public interface IScriptStackFrame extends IStackFrame {
+	IScriptStack getStack();
+	
 	IScriptThread getScriptThread();
 
 	int getLevel();
-
+	
 	String getSourceLine();
 
 	URI getSourceURI();
