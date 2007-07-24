@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.IBreakpointManager;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IBreakpoint;
@@ -152,7 +153,8 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	public ScriptDebugTarget(String modelId, IDbgpService dbgpService,
-			String sessionId, ILaunch launch, IProcess process) throws CoreException {
+			String sessionId, ILaunch launch, IProcess process)
+			throws CoreException {
 
 		setupScriptParameters(launch.getLaunchConfiguration());
 
@@ -163,7 +165,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		this.process = process;
 		this.launch = launch;
 
-		this.threadManager = new /*New*/ScriptThreadManager(this);
+		this.threadManager = new /* New */ScriptThreadManager(this);
 		this.sessionId = sessionId;
 		this.dbgpService = dbgpService;
 		this.dbgpService.registerAcceptor(this.sessionId, this.threadManager);
@@ -183,7 +185,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		setSuspendOnMethodEntry(suspendOnMethodEntry2);
 		setSuspendOnMethodExit(suspendOnMethodExit2);
 	}
-	
+
 	public String getSessionId() {
 		return sessionId;
 	}
@@ -249,8 +251,13 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		threadManager.terminate();
 		if (waitTermianted()) {
 			threadManager.removeListener(this);
-			DebugPlugin.getDefault().getBreakpointManager()
-					.removeBreakpointListener(this);
+
+			IBreakpointManager manager = DebugPlugin.getDefault()
+					.getBreakpointManager();
+
+			manager.removeBreakpointListener(this);
+			manager.removeBreakpointManagerListener(breakpointManager);
+
 			DebugEventHelper.fireTerminateEvent(this);
 		}
 	}
@@ -354,8 +361,13 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 			}
 
 			breakpointManager.setupDeferredBreakpoints();
-			DebugPlugin.getDefault().getBreakpointManager()
-					.addBreakpointListener(this);
+
+			IBreakpointManager manager = DebugPlugin.getDefault()
+					.getBreakpointManager();
+
+			manager.addBreakpointListener(this);
+			manager.addBreakpointManagerListener(breakpointManager);
+
 			// DebugEventHelper.fireCreateEvent(this);
 			fireTargetInitialized();
 		}

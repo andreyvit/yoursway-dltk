@@ -18,6 +18,7 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IBreakpointListener;
 import org.eclipse.debug.core.IBreakpointManager;
+import org.eclipse.debug.core.IBreakpointManagerListener;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.dltk.dbgp.breakpoints.DbgpBreakpointConfig;
@@ -31,7 +32,8 @@ import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 
-public class ScriptBreakpointManager implements IBreakpointListener {
+public class ScriptBreakpointManager implements IBreakpointListener,
+		IBreakpointManagerListener {
 	// Utility methods
 	protected static IBreakpointManager getBreakpointManager() {
 		return DebugPlugin.getDefault().getBreakpointManager();
@@ -189,6 +191,36 @@ public class ScriptBreakpointManager implements IBreakpointListener {
 		}
 	}
 
+	private static boolean hasChanges(IMarkerDelta delta, String[] attrs) {
+		for (int i = 0; i < attrs.length; ++i) {
+			final String attr = attrs[i];
+
+			try {
+				final Object oldValue = delta.getAttribute(attr);
+				final Object newValue = delta.getMarker().getAttribute(attr);
+
+				if (oldValue == null && newValue != null) {
+					return true;
+				}
+
+				if (oldValue != null && newValue == null) {
+					return true;
+				}
+
+				if (oldValue != null && newValue != null) {
+					if (!oldValue.equals(newValue)) {
+						return true;
+					}
+				}
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
 	// DebugTarget
 	private final IScriptDebugTarget target;
 
@@ -323,36 +355,6 @@ public class ScriptBreakpointManager implements IBreakpointListener {
 		}
 	}
 
-	private static boolean hasChanges(IMarkerDelta delta, String[] attrs) {
-		for (int i = 0; i < attrs.length; ++i) {
-			final String attr = attrs[i];
-
-			try {
-				final Object oldValue = delta.getAttribute(attr);
-				final Object newValue = delta.getMarker().getAttribute(attr);
-
-				if (oldValue == null && newValue != null) {
-					return true;
-				}
-
-				if (oldValue != null && newValue == null) {
-					return true;
-				}
-
-				if (oldValue != null && newValue != null) {
-					if (!oldValue.equals(newValue)) {
-						return true;
-					}
-				}
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		return false;
-	}
-
 	public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta) {
 		try {
 			if (breakpoint instanceof IScriptBreakpoint) {
@@ -372,6 +374,22 @@ public class ScriptBreakpointManager implements IBreakpointListener {
 			removeBreakpoint(breakpoint);
 		} catch (Exception e) {
 			DLTKDebugPlugin.log(e);
+		}
+	}
+
+	// IBreakpointManagerListener
+	public void breakpointManagerEnablementChanged(boolean enabled) {
+		final IBreakpointManager manager = getBreakpointManager();
+
+		IBreakpoint[] breakpoints = manager.getBreakpoints(target
+				.getModelIdentifier());
+
+		for (int i = 0; i < breakpoints.length; ++i) {
+			try {
+				changeBreakpoint(breakpoints[i]);
+			} catch (Exception e) {
+				DLTKDebugPlugin.log(e);
+			}
 		}
 	}
 }
