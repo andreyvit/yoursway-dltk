@@ -1,6 +1,5 @@
 package org.eclipse.dltk.debug.ui;
 
-import org.eclipse.dltk.internal.debug.ui.ScriptDebugImages;
 import org.eclipse.jface.resource.CompositeImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.ImageData;

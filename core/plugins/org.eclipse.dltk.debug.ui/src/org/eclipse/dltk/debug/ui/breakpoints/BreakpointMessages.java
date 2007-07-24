@@ -50,7 +50,6 @@ public class BreakpointMessages {
 	// Errors
 	public static String InvalidNumberOfHits;
 	
-	//
 	public static String InternalIdNotAvailableMessage;
 	
 	public static String HitCountNotAvailableMessage;
@@ -60,4 +59,7 @@ public class BreakpointMessages {
 	public static String HitConditionEqual;
 	
 	public static String HitConditionMultiple;
+	
+	
+	// Error of ToggleBreakpointAdapter
 }

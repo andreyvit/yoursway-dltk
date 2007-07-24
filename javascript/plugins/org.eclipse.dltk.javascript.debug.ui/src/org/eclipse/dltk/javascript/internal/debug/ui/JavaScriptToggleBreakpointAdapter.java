@@ -7,8 +7,9 @@ import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.ILineBreakpoint;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.ui.breakpoints.BreakpointUtils;
-import org.eclipse.dltk.internal.debug.ui.ScriptToggleBreakpointAdapter;
+import org.eclipse.dltk.debug.ui.breakpoints.ScriptToggleBreakpointAdapter;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
+import org.eclipse.dltk.javascript.internal.debug.JavaScriptDebugConstants;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -20,6 +21,11 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 public class JavaScriptToggleBreakpointAdapter extends ScriptToggleBreakpointAdapter {
 	// Line breakpoints
+	
+	protected String getDebugModelId() {
+		return JavaScriptDebugConstants.DEBUG_MODEL_ID; 
+	}
+	
 	public boolean canToggleLineBreakpoints(IWorkbenchPart part,
 			ISelection selection) {
 

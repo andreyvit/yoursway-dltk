@@ -8,7 +8,7 @@
  
  *******************************************************************************/
 
-package org.eclipse.dltk.internal.debug.ui;
+package org.eclipse.dltk.internal.debug.ui.log;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;

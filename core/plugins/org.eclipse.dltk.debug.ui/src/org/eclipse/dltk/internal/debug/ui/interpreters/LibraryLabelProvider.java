@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.debug.ui.interpreters;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
-import org.eclipse.dltk.internal.debug.ui.DebugImageDescriptor;
+import org.eclipse.dltk.debug.ui.DebugImageDescriptor;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.LabelProvider;

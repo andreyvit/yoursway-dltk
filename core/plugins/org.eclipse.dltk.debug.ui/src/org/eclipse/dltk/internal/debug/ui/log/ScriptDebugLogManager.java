@@ -8,7 +8,7 @@
  
  *******************************************************************************/
 
-package org.eclipse.dltk.internal.debug.ui;
+package org.eclipse.dltk.internal.debug.ui.log;
 
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.debug.core.DebugEvent;

@@ -381,7 +381,7 @@
 	</extension>
 	<extension point="org.eclipse.ui.views">
 		<view
-			class="org.eclipse.dltk.internal.debug.ui.ScriptDebugLogView"
+			class="org.eclipse.dltk.internal.debug.ui.log.ScriptDebugLogView"
 			id="org.eclipse.dltk.debug.ui.dbgpLogView" name="Script Debug Log">
 		</view>
 	</extension>
