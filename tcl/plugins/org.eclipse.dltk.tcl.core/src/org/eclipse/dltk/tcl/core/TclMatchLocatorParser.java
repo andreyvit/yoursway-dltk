@@ -9,164 +9,29 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.core;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
-import org.eclipse.dltk.ast.declarations.MethodDeclaration;
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.TypeReference;
-import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
-import org.eclipse.dltk.core.search.matching.MatchLocatorParser;
 import org.eclipse.dltk.core.search.matching.PatternLocator;
-import org.eclipse.dltk.core.search.matching.PossibleMatch;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 
-public class TclMatchLocatorParser extends MatchLocatorParser {
-	private ISourceParser parser;
-
-	private static String[] kw = TclKeywordsManager.getKeywords();
-
-	private static Map kwMap = new HashMap();
-	static {
-		for (int q = 0; q < kw.length; ++q) {
-			kwMap.put(kw[q], Boolean.TRUE);
-		}
-	}
+public class TclMatchLocatorParser extends BasicTclMatchLocatorParser {
 
 	public TclMatchLocatorParser(MatchLocator locator) {
 		super(locator);
-		try {
-			this.parser = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
-		} catch (CoreException e) {
-			if( DLTKCore.DEBUG ) {
-				e.printStackTrace();
-			}
-		}
 	}
 
-	public ModuleDeclaration parse(PossibleMatch possibleMatch) {
-		ModuleDeclaration module = this.parser.parse(possibleMatch.getFileName(), possibleMatch
-						.getSourceContents().toCharArray(), null);
-		module.rebuild();
-		module.rebuildMethods();
-		return module;
-	}
-
-	public void parseBodies(ModuleDeclaration unit) {
-		TypeDeclaration[] types = unit.getTypes();
-		if (types != null) {
-			for (int i = 0; i < types.length; i++) {
-				TypeDeclaration type = types[i];
-				this.getPatternLocator().match(this.processType(type), this.getNodeSet());
-				this.parseBodies(type);
-			}
-		}
-		MethodDeclaration[] methods = unit.getFunctions();
-		if (methods != null) {
-			PatternLocator locator = this.getPatternLocator();
-			for (int i = 0; i < methods.length; i++) {
-				MethodDeclaration method = methods[i];
-				if (method instanceof MethodDeclaration) {
-					MethodDeclaration methodDeclaration = method;
-
-					locator.match(this.processMethod(methodDeclaration),
-							this.getNodeSet());
-					this.parseBodies(methodDeclaration);
-				}
-			}
-		}
-
-		ASTNode[] nodes = unit.getNonTypeOrMethodNode();
-		int length = nodes.length;
-		for (int i = 0; i < length; i++) {
-			this.processStatement(nodes[i]);
-		}
-	}
-
-	private MethodDeclaration processMethod(MethodDeclaration m) {
-		String name = m.getName();
-		if (name.startsWith("::")) {
-			name = name.substring(2);
-		}
-		if (name.indexOf("::") != -1) {
-			int pos = name.lastIndexOf("::");
-			String declTypeName = name.substring(0, pos);
-			m.setDeclaringTypeName(declTypeName);
-			name = name.substring(pos + 2);
-		}
-		m.setName(name);
-		return m;
-	}
-
-	private TypeDeclaration processType(TypeDeclaration t) {
-		String name = t.getName();
-		if (name.startsWith("::")) {
-			name = name.substring(2);
-		}
-		if (name.endsWith("::")) {
-			name = name.substring(0, name.length() - 2);
-		}
-		t.setName(name);
-		return t;
-	}
-
-	protected void parseBodies(TypeDeclaration type) {
-
-		PatternLocator locator = this.getPatternLocator();
-
-		MethodDeclaration[] methods = type.getMethods();
-		if (methods != null) {
-			for (int i = 0; i < methods.length; i++) {
-				MethodDeclaration method = methods[i];
-				if (method instanceof MethodDeclaration) {
-					MethodDeclaration methodDeclaration = method;
-					locator.match(this.processMethod(methodDeclaration),
-							this.getNodeSet());
-					this.parseBodies(methodDeclaration);
-				}
-			}
-		}
-
-		TypeDeclaration[] memberTypes = type.getTypes();
-		if (memberTypes != null) {
-			for (int i = 0; i < memberTypes.length; i++) {
-				TypeDeclaration memberType = memberTypes[i];
-				locator.match(this.processType(memberType), this.getNodeSet());
-				this.parseBodies(memberType);
-			}
-		}
-		ASTNode[] nodes = type.getNonTypeOrMethodNode();
-		int length = nodes.length;
-		for (int i = 0; i < length; i++) {
-			this.processStatement(nodes[i]);
-		}
-	}
-
-	protected void parseBodies(MethodDeclaration method) {
-		List nodes = method.getStatements();
-		int length = nodes.size();
-		for (int i = 0; i < length; i++) {
-			ASTNode node = (ASTNode) nodes.get(i);
-			this.processStatement(node);
-		}
-	}
-
-	private void processStatement(ASTNode node) {
+	protected void processStatement(ASTNode node) {
 		if (node == null) {
 			return;
 		}
@@ -182,8 +47,7 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 			this.processReferences(statement);
 		}
 	}
-
-	private void processReferences(TclStatement statement) {
+	protected void processReferences(TclStatement statement) {
 		Expression commandId = statement.getAt(0);
 		PatternLocator locator;
 		locator = this.getPatternLocator();
@@ -259,22 +123,6 @@ public class TclMatchLocatorParser extends MatchLocatorParser {
 					pos = value.indexOf("$", pos + 1 );
 				}
 			}
-//			else if (st instanceof TclBlockExpression) {
-//				int pos = 0;
-//				StringLiteral literal = (StringLiteral)st;
-//				String value = literal.getValue();
-//				pos = value.indexOf("$");
-//				while( pos != -1 ) {
-//					SimpleReference ref = TclParseUtils.findVariableFromString(literal, pos);
-//					if( ref != null ) {
-//						ref.setName(ref.getName().substring(1));
-//						ref.setEnd(ref.sourceEnd() - 1);
-//						locator.match(ref, getNodeSet());
-//						pos = pos + ref.getName().length();
-//					}
-//					pos = value.indexOf("$", pos + 1 );
-//				}
-//			}
 			else if (st instanceof SimpleReference) {
 				SimpleReference ref = (SimpleReference) st;
 				String name = ref.getName();

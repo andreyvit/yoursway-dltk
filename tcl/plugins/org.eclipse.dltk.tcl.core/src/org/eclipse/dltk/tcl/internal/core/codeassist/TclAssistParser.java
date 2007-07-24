@@ -100,4 +100,7 @@ public abstract class TclAssistParser implements IAssistParser {
 
 		return module;
 	}
+	public ModuleDeclaration getModule() {
+		return this.module;
+	}
 }

@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
+import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
@@ -53,7 +54,7 @@ import org.eclipse.dltk.tcl.internal.parser.TclParseUtils.IProcessStatementActio
 
 public class TclCompletionEngine extends ScriptCompletionEngine {
 	
-	private TclCompletionParser parser;
+	protected TclCompletionParser parser;
 
 	public TclCompletionEngine(/*ISearchableEnvironment environment,
 			CompletionRequestor requestor, Map options, IScriptProject project*/) {
@@ -774,8 +775,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		findTypes(token, true, types);
 		findFields(token, false, fields, provideDollar ? "$" : "");
 	}
-
-	private void findASTVariables(ASTNode node, String prefix, char[] token,
+	protected void findASTVariables(ASTNode node, String prefix, char[] token,
 			boolean canCompleteEmptyToken, List choices) {
 		List statements = null;
 		String add = "";
@@ -812,6 +812,10 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 						}
 					}
 				}
+				else if( nde instanceof FieldDeclaration ) {
+					FieldDeclaration field = (FieldDeclaration) nde;
+					checkAddVariable(choices, field.getName());
+				}
 				findASTVariables(nde, prefix + add, token,
 						canCompleteEmptyToken, choices);
 			}
@@ -832,11 +836,15 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		findLocalVariables(token, cc, canCompleteEmptyToken, provideDollar);
 	}
 
-	private void checkVariableStatements(int beforePosition, List choices,
+	protected void checkVariableStatements(int beforePosition, List choices,
 			List statements) {
 		if (statements != null) {
 			for (int i = 0; i < statements.size(); ++i) {
 				ASTNode node = (ASTNode) statements.get(i);
+				if( node instanceof FieldDeclaration ) {
+					FieldDeclaration decl = (FieldDeclaration) node;
+					this.checkAddVariable(choices, decl.getName());
+				}
 				if (node instanceof TclStatement
 						&& node.sourceEnd() < beforePosition) {
 					TclStatement s = (TclStatement) node;
@@ -846,10 +854,6 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 							checkAddVariable(choices, variable[u]);
 						}
 					}
-				}
-				if (node instanceof TclStatement
-						&& node.sourceStart() < beforePosition) {
-					TclStatement s = (TclStatement) node;
 					Expression commandId = s.getAt(0);
 					if (commandId != null
 							&& commandId instanceof SimpleReference) {
@@ -919,7 +923,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		});
 	}
 
-	private void checkAddVariable(List choices, String n) {
+	protected void checkAddVariable(List choices, String n) {
 		String str = preProcessVariable(n);
 		if (!choices.contains(str)) {
 			choices.add(str);

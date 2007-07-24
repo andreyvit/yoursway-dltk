@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
+import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
@@ -57,7 +58,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 
 	private int actualSelectionEnd;
 	
-	private List selectionElements = new ArrayList();
+	protected List selectionElements = new ArrayList();
 
 	private TclSelectionParser parser = new TclSelectionParser();
 
@@ -371,6 +372,10 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		if (statements != null) {
 			for (int i = 0; i < statements.size(); ++i) {
 				ASTNode node = (ASTNode) statements.get(i);
+				if( node instanceof FieldDeclaration ) {
+					FieldDeclaration decl = (FieldDeclaration) node;
+					checkVariable(name, prefix + decl.getName(), node);
+				}
 				if (node instanceof TclStatement
 						&& node.sourceEnd() < beforePosition) {
 					TclStatement s = (TclStatement) node;
@@ -746,7 +751,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		searchAddElementsTo(statements, nde, sourceModule);
 	}
 
-	private IParent findTypeFrom(IModelElement[] childs, String name,
+	protected IParent findTypeFrom(IModelElement[] childs, String name,
 			String parentName, char delimiter) {
 		try {
 			for (int i = 0; i < childs.length; ++i) {
@@ -867,36 +872,9 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 							searchAddElementsTo(stats, node, (IParent) e);
 						}
 					} else if (nde instanceof MethodDeclaration) {
-						MethodDeclaration method = (MethodDeclaration) nde;
-						String methodName = method.getName();
-						if (methodName.indexOf("::") != -1) {
-							String pName = methodName.substring(0, methodName
-									.lastIndexOf("::"));
-							pName = pName.replaceAll("::", "\\$");
-							if (pName.equals("$")) {
-								element = this.sourceModule;
-							} else {
-								try {
-									element = findTypeFrom(sourceModule
-											.getChildren(), "", pName, '$');
-									if (element == null) {
-										return;
-									}
-								} catch (ModelException e) {
-									e.printStackTrace();
-									return;
-								}
-							}
-							methodName = getNodeChildName(nde);
-						}
-						IModelElement e = findChildrenByName(methodName,
-								(IParent) element);
-						if (e != null && e instanceof IParent) {
-							List stats = ((MethodDeclaration) nde)
-									.getStatements();
-							searchAddElementsTo(stats, node, (IParent) e);
-						}
-					} else if (nde instanceof TclStatement) {
+						searchInMethod(node, element, nde);
+					}
+					else if (nde instanceof TclStatement) {
 						TclStatement s = (TclStatement) nde;
 						Expression commandId = s.getAt(0);
 						final IParent e = element;
@@ -941,7 +919,40 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		}
 	}
 
-	private String getNodeChildName(ASTNode node) {
+	protected void searchInMethod(final ASTNode node, IParent element,
+			ASTNode nde) {
+		MethodDeclaration method = (MethodDeclaration) nde;
+		String methodName = method.getName();
+		if (methodName.indexOf("::") != -1) {
+			String pName = methodName.substring(0, methodName
+					.lastIndexOf("::"));
+			pName = pName.replaceAll("::", "\\$");
+			if (pName.equals("$")) {
+				element = this.sourceModule;
+			} else {
+				try {
+					element = findTypeFrom(sourceModule
+							.getChildren(), "", pName, '$');
+					if (element == null) {
+						return;
+					}
+				} catch (ModelException e) {
+					e.printStackTrace();
+					return;
+				}
+			}
+			methodName = getNodeChildName(nde);
+		}
+		IModelElement e = findChildrenByName(methodName,
+				(IParent) element);
+		if (e != null && e instanceof IParent) {
+			List stats = ((MethodDeclaration) nde)
+					.getStatements();
+			searchAddElementsTo(stats, node, (IParent) e);
+		}
+	}
+
+	protected String getNodeChildName(ASTNode node) {
 		if (node instanceof MethodDeclaration) {
 			MethodDeclaration method = (MethodDeclaration) node;
 			String name = method.getName();
@@ -965,7 +976,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		return null;
 	}
 
-	private IModelElement findChildrenByName(String typeName, IParent element) {
+	protected IModelElement findChildrenByName(String typeName, IParent element) {
 		try {
 			String nextName = null;
 			int pos;
@@ -1064,5 +1075,8 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 
 	public IAssistParser getParser() {
 		return parser;
+	}
+	protected IParent getSourceModule() {
+		return this.sourceModule;
 	}
 }
