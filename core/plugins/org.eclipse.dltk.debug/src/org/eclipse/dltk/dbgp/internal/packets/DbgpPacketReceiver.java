@@ -21,6 +21,8 @@ import org.w3c.dom.Element;
 
 public class DbgpPacketReceiver extends DbgpWorkingThread {
 	private static class SyncMap {
+		private static final int MIN_TIMEOUT = 5;
+
 		private final HashMap map;
 
 		public SyncMap() {
@@ -41,14 +43,26 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 
 				return map.remove(key);
 			} else {
-				if (map.containsKey(key)) {
-					return map.remove(key);
-				}
+				while (true) {
+					if (map.containsKey(key)) {
+						return map.remove(key);
+					}
 
-				wait(timeout);
+					long begin = System.currentTimeMillis();
+					wait(timeout);
+					long end = System.currentTimeMillis();
 
-				if (map.containsKey(key)) {
-					return map.remove(key);
+					if (map.containsKey(key)) {
+						return map.remove(key);
+					}
+
+					long delta = end - begin;
+
+					if (delta < MIN_TIMEOUT) {
+						break;
+					}
+
+					timeout = (int) delta;
 				}
 
 				return null;

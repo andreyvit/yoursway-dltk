@@ -1,6 +1,7 @@
 package org.eclipse.dltk.launching;
 
 import java.io.File;
+import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -15,44 +16,11 @@ import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTargetListener;
 import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
 import org.eclipse.dltk.internal.launching.InterpreterMessages;
-import org.eclipse.dltk.launching.debug.DbgpConstants;
+import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
 import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
 import org.eclipse.dltk.launching.debug.IDebuggingEngine;
 
 public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
-	public static class DbgpInterpreterConfig {
-		private InterpreterConfig config;
-
-		public DbgpInterpreterConfig(InterpreterConfig config) {
-			this.config = config;
-		}
-
-		public void setHost(String host) {
-			config.setProperty(DbgpConstants.HOST_PROP, host);
-		}
-
-		public String getHost() {
-			return (String) config.getProperty(DbgpConstants.HOST_PROP);
-		}
-
-		public void setPort(int port) {
-			config.setProperty(DbgpConstants.PORT_PROP, Integer.toString(port));
-		}
-
-		public int getPort() {
-			return ((Integer) config.getProperty(DbgpConstants.PORT_PROP))
-					.intValue();
-		}
-
-		public void setSessionId(String sessionId) {
-			config.setProperty(DbgpConstants.SESSION_ID_PROP, sessionId);
-		}
-
-		public String getSessionId() {
-			return (String) config.getProperty(DbgpConstants.SESSION_ID_PROP);
-		}
-	}
-
 	public static class ScriptDebugTargetWaiter implements
 			IScriptDebugTargetListener {
 
@@ -86,36 +54,18 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 
 	private static final String LOCALHOST = "127.0.0.1";
 
-	protected static final int DEFAULT_PAUSE = 500;
-
-	private static void sleep(long millis) {
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
+	protected String getSessionId() {
+		return DbgpSessionIdGenerator.generate();
 	}
 
-	protected String getSessionId(ILaunchConfiguration configuration)
+	protected IScriptDebugTarget addDebugTarget(ILaunch launch,
+			ILaunchConfiguration configuration, IDbgpService dbgpService)
 			throws CoreException {
-		String id = configuration.getAttribute(
-				ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
-				(String) null);
-
-		if (id == null) {
-			id = DbgpSessionIdGenerator.generate();
-		}
-
-		return id;
-	}
-
-	protected void addDebugTarget(ILaunch launch,
-			ILaunchConfiguration configuration, IDbgpService dbgpService,
-			String sessionId) throws CoreException {
 
 		final IScriptDebugTarget target = new ScriptDebugTarget(
-				getDebugModelId(), dbgpService, sessionId, launch, null);
+				getDebugModelId(), dbgpService, getSessionId(), launch, null);
 		launch.addDebugTarget(target);
+		return target;
 	}
 
 	public DebuggingEngineRunner(IInterpreterInstall install) {
@@ -124,22 +74,20 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 
 	protected InterpreterConfig alterConfig(String exe, InterpreterConfig config)
 			throws CoreException {
-		return config;
+		return (InterpreterConfig) config.clone();
 	}
 
 	protected void initialize(InterpreterConfig config, ILaunch launch,
 			ILaunchConfiguration configuration) throws CoreException {
 		final IDbgpService service = DLTKDebugPlugin.getDefault()
 				.getDbgpService();
-		
-		if (!service.available()) {
-			abort("DBGP connection service not available.", null);
-		}
-		
-		
-		final String sessionId = getSessionId(configuration);
 
-		addDebugTarget(launch, configuration, service, sessionId);
+		if (!service.available()) {
+			abort(InterpreterMessages.errDbgpServiceNotAvailable, null);
+		}
+
+		final IScriptDebugTarget target = addDebugTarget(launch, configuration,
+				service);
 
 		// Disable the output of the debugging engine process
 		launch.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, Boolean.FALSE
@@ -149,24 +97,31 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		launch.setAttribute(LAUNCH_ATTR_DEBUGGING_ENGINE_ID,
 				getDebuggingEngineId());
 
-		// Config
-		final int port = service.getPort();
-		final String host = LOCALHOST;
+		// Configuration
+		final DbgpInterpreterConfig deConfig = new DbgpInterpreterConfig(config);
 
-		config.setProperty(DbgpConstants.HOST_PROP, host);
-		config.setProperty(DbgpConstants.PORT_PROP, Integer.toString(port));
-		config.setProperty(DbgpConstants.SESSION_ID_PROP, sessionId);
+		deConfig.setSessionId(target.getSessionId());
+		deConfig.setPort(service.getPort());
+		deConfig.setHost(LOCALHOST);
 	}
 
 	protected void checkConfig(InterpreterConfig config) throws CoreException {
 		File dir = new File(config.getWorkingDirectoryPath().toOSString());
 		if (!dir.exists()) {
-			abort("Working directory doesn't exist: " + dir.toString(), null);
+			abort(
+					MessageFormat
+							.format(
+									InterpreterMessages.errDebuggingEngineWorkingDirectoryDoesntExist,
+									new Object[] { dir.toString() }), null);
 		}
 
 		File script = new File(config.getScriptFilePath().toOSString());
 		if (!script.exists()) {
-			abort("Script to run doesn't exist: " + script.toString(), null);
+			abort(
+					MessageFormat
+							.format(
+									InterpreterMessages.errDebuggingEngineScriptFileDoesntExist,
+									new Object[] { script.toString() }), null);
 		}
 	}
 
@@ -185,9 +140,6 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 
 			checkConfig(newConfig);
 
-			// TODO: remove later
-			sleep(DEFAULT_PAUSE);
-
 			// Starting debugging engine
 			try {
 				String exe = (String) newConfig.getProperty("OVERRIDE_EXE");
@@ -200,7 +152,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 					super.run(newConfig, launch, monitor);
 				}
 			} catch (CoreException e) {
-				abort(InterpreterMessages.errDebuggingEngineNotStarted, null);
+				abort(InterpreterMessages.errDebuggingEngineNotStarted, e);
 			}
 
 			// Waiting for debugging engine connect

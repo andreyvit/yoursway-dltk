@@ -23,7 +23,10 @@ import org.eclipse.dltk.dbgp.commands.IDbgpCommands;
 import org.eclipse.dltk.dbgp.commands.IDbgpCoreCommands;
 import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+import org.eclipse.dltk.dbgp.exceptions.DbgpTimeoutException;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
+
+import com.sun.java_cup.internal.emit;
 
 public abstract class DbgpOperation {
 	private static final boolean DEBUG = DLTKCore.DEBUG;
@@ -72,12 +75,16 @@ public abstract class DbgpOperation {
 
 		job = new Job(name) {
 			protected IStatus run(IProgressMonitor monitor) {
+				// TODO: improve
 				try {
 					process();
+				} catch (DbgpTimeoutException e) {
+					System.err.println("Timeout exception!!!");
+					e.printStackTrace();
 				} catch (DbgpException e) {
-					if (DEBUG) {
-						System.out.println("Exception: " + e.getMessage());
-					}
+					System.out.println("Exception: " + e.getMessage());
+					System.out.println(e.getClass());
+					e.printStackTrace();
 
 					resultHandler.finish(null, e);
 				}

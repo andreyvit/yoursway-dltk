@@ -11,7 +11,7 @@
 module XoredDebugger
     class ThreadManager
         def add_thread(thread)
-            wrapper = @threads[thread] = @block.call(thread)
+            wrapper = @threads[thread] = @creator.call(thread)
             wrapper.created
         end
         private :add_thread
@@ -21,9 +21,15 @@ module XoredDebugger
             wrapper.terminated
         end
         private :remove_thread
+		
+		def get_threads(&filter)		
+			list = Thread.list
+			filter.nil? ? list : list.delete_if(&filter)
+		end
+		private :get_threads
     
-        def initialize(&block)
-            @block = block
+        def initialize(&creator)
+            @creator = creator
             @threads = {}
         end
 		
@@ -35,8 +41,8 @@ module XoredDebugger
 			@threads.values
 		end
 
-        def synchronize
-			ths = Thread.list
+        def synchronize(&filter)
+			ths = get_threads(&filter)
 			
 			# Adding
 			added = ths - @threads.keys

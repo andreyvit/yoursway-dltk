@@ -248,7 +248,6 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		dbgpService.unregisterAcceptor(sessionId);
 		threadManager.terminate();
 		if (waitTermianted()) {
-
 			threadManager.removeListener(this);
 			DebugPlugin.getDefault().getBreakpointManager()
 					.removeBreakpointListener(this);

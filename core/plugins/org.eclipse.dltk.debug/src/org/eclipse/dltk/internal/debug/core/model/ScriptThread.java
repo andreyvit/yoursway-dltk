@@ -68,12 +68,13 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	public void handleTermination(DbgpException e) {
 		if (e != null) {
-			try {
-				streamProxy.getStdout().write(e.getMessage().getBytes());
-			} catch (IOException e1) {
+			//try {
+				System.err.println(e.getMessage());
+				//streamProxy.getStdout().write(e.getMessage().getBytes());
+			//} catch (IOException e1) {
 				// TODO: log properly
-				e1.printStackTrace();
-			}
+				//e1.printStackTrace();
+			//}
 		}
 
 		session.requestTermination();
