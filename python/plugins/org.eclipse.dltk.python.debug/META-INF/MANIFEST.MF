@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.dltk.python.debug;singleton:=true
+Bundle-Version: 0.9.0.qualifier
+Bundle-Activator: org.eclipse.dltk.python.debug.PythonDebugPlugin
+Bundle-Vendor: %pluginProvider
+Require-Bundle: org.eclipse.core.runtime
+Eclipse-LazyStart: true
+Export-Package: org.eclipse.dltk.python.debug
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: J2SE-1.4

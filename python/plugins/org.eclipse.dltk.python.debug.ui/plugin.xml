@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+	point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+ 		<launchConfigurationTypeImage
+			icon="icons/obj16/python_obj.gif"
+			configTypeID="org.eclipse.dltk.python.launching.PythonLaunchConfigurationType"
+			id="org.eclipse.dltk.python.debug.ui.launchConfigurationTypeImage.localTCLScript">
+		</launchConfigurationTypeImage>
+   </extension>
+   
+  
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.eclipse.dltk.python.launching.PythonLaunchConfigurationType"
+            class="org.eclipse.dltk.python.internal.debug.ui.launchConfigurations.PythonTabGroup"
+            id="org.eclipse.dltk.python.debug.ui.PythonTabGroup">
+      </launchConfigurationTabGroup>
+   </extension>
+   
+  
+   <extension point="org.eclipse.debug.ui.launchShortcuts">
+    <shortcut
+          class="org.eclipse.dltk.python.internal.debug.ui.launcher.PythonLaunchShortcut"
+          icon="icons/obj16/python_obj.gif"
+          id="org.eclipse.dltk.python.debug.ui.launchShortcut"
+          label="Python Script"
+          modes="run, debug">
+		<perspective id="org.eclipse.dltk.python.ui.PythonPerspective"/> 
+        <contextualLaunch>
+           <enablement>
+             <with variable="selection">
+               <count value="1"/>
+               <iterate>
+                <or>
+           	     <test property="org.eclipse.dltk.launching.hasProjectNature" args="org.eclipse.dltk.python.core.nature"/>           	  
+               	</or>
+               </iterate>
+               </with>
+           </enablement>
+  		 </contextualLaunch>
+         <perspective
+               id="org.eclipse.debug.ui.DebugPerspective">
+         </perspective>
+	</shortcut>
+	</extension>
+	
+	<extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.debug.ui.launchActionSet">
+         <part
+               id="org.eclipse.dltk.python.ui.editor.PythonEditor">
+         </part>
+      </actionSetPartAssociation>
+   </extension>
+
+
+<extension
+         point="org.eclipse.ui.console.consolePatternMatchListeners">
+      <consolePatternMatchListener
+            class="org.eclipse.dltk.python.internal.debug.ui.console.PythonConsoleTracker"
+            regex="File &quot;.*&quot;, line \d*"
+            id="org.eclipse.dltk.python.debug.ui.PythonConsoleTracker">
+         <enablement>
+            <or>
+               <test property="org.eclipse.debug.ui.processTypeTest" value="pythonInterpreter"/>
+            </or>
+         </enablement>
+      </consolePatternMatchListener>
+     
+   </extension>  
+
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+		    category="org.eclipse.dltk.python.preferences"
+            class="org.eclipse.dltk.python.internal.debug.ui.interpreters.PythonInterpreterPreferencePage"
+            id="org.eclipse.dltk.python.preferences.interpreters"
+            name="Interpreters"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.debug.ui.launchActionSet">
+         <part
+               id="org.eclipse.dltk.ui.ScriptExplorer">
+         </part>
+         <part
+               id="org.eclipse.dltk.python.ui.editor.PythonEditor">
+         </part>
+      </actionSetPartAssociation>
+   </extension>   
+   <extension
+         point="org.eclipse.dltk.ui.buildpathContainerPage">
+      <buildpathContainerPath
+            class="org.eclipse.dltk.python.internal.debug.ui.interpreters.PythonInterpreterContainerWizardPage"
+            id="org.eclipse.dltk.python.launching.INTERPRETER_CONTAINER"
+            name="Python Interpreter Libraries"
+            nature="org.eclipse.dltk.python.core.nature"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.dltk.python.preferences"
+            class="org.eclipse.dltk.python.internal.debug.ui.preferences.PythonDebugPreferencePage"
+            id="org.eclipse.dltk.python.preferences.debug"
+            name="%PythonDebugPreferencePage.name">
+      </page>
+   </extension>
+</plugin>

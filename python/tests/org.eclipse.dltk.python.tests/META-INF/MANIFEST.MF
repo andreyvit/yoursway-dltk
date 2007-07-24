@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.dltk.python.tests
+Bundle-Version: 0.9.0.qualifier
+Bundle-Activator: org.eclipse.dltk.python.tests.PythonTestsPlugin
+Bundle-Vendor: %pluginProvider
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.dltk.core,
+ org.junit,
+ org.eclipse.dltk.python.core,
+ org.eclipse.dltk.core.tests
+Eclipse-AutoStart: true
+Export-Package: org.eclipse.dltk.python.tests,
+ org.eclipse.dltk.python.tests.eval.generated,
+ org.eclipse.dltk.python.tests.model
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
+

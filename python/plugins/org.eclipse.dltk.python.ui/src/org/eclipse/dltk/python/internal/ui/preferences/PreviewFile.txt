@@ -1,0 +1,20 @@
+###############################################################################
+# This is Comment
+
+class Bar:
+	def __init__( self ):
+		pass
+	def string_method( self ):
+		return "String"
+	def int_method( self )
+		return 200
+	def float_method( self ):
+		return 2.4
+	pass
+	
+print Bar.__doc__
+
+s = """
+Long string
+"""
+print s

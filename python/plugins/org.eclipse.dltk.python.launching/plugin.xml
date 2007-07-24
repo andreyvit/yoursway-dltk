@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.dltk.launching.interpreterInstallTypes">
+          <interpreterInstallType
+            class="org.eclipse.dltk.python.internal.launching.GenericPythonInstallType"
+            id="org.eclipse.dltk.internal.debug.ui.launcher.GenericPythonInstallType">
+      </interpreterInstallType>   
+   </extension>
+  
+  <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+         <launchConfigurationType
+               delegate="org.eclipse.dltk.python.launching.PythonLaunchConfigurationDelegate"
+               id="org.eclipse.dltk.python.launching.PythonLaunchConfigurationType"
+               modes="run,debug"
+               name="Python Script"
+               public="true">
+		  </launchConfigurationType>         
+   </extension>
+</plugin>

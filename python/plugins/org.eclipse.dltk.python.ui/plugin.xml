@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>   
+   
+	<extension
+      id="org.eclipse.dltk.python.ui.editor.DocumentSetupParticipant"
+      name="%documentSetupParticipantName"
+      point="org.eclipse.core.filebuffers.documentSetup">
+		<participant extensions="py" 
+			class="org.eclipse.dltk.python.internal.ui.editor.PythonDocumentSetupParticipant">
+   		</participant>
+	</extension>
+      <extension point="org.eclipse.core.runtime.preferences">
+        <initializer class="org.eclipse.dltk.python.internal.ui.PythonUIPreferenceInitializer"/>
+    </extension>
+ <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.dltk.python.internal.ui.editor.PythonEditor"
+            contributorClass="org.eclipse.dltk.internal.ui.editor.SourceModuleEditorActionContributor"
+            default="true"
+            extensions="py"
+            icon="$nl$/icons/obj16/python_obj.gif"
+            id="org.eclipse.dltk.python.ui.editor.PythonEditor"
+            name="%PythonEditor.name">
+         <contentTypeBinding
+               contentTypeId="org.eclipse.dltk.pythonContentType">
+         </contentTypeBinding>
+      </editor>
+   </extension>
+  <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            name="%PythonEditContext.name"
+            description="%PythonEditContext.description"
+            parentId="org.eclipse.dltk.ui.scriptEditorScope"
+            id="org.eclipse.dltk.ui.pythonEditorScope">
+      </context>
+  </extension>
+	
+	<extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.dltk.python.ui"
+            name="%PythonWizardsCategory.name"
+            >
+      </category>
+      <wizard
+            category="org.eclipse.dltk.python.ui"
+            class="org.eclipse.dltk.python.internal.ui.wizards.PythonProjectCreationWizard"
+            finalPerspective="org.eclipse.dltk.python.ui.PythonPerspective"
+            icon="$nl$/icons/etool16/newprj_wiz.gif"
+            id="org.eclipse.dltk.python.internal.ui.wizards.PythonProjectWizard"
+            name="Python Project"
+            preferredPerspectives="org.eclipse.dltk.python.ui.PythonPerspective"
+            project="true">
+         <description>
+            Creates new Python Project.
+         </description>
+      </wizard>
+      </extension>
+	 <extension
+       point="org.eclipse.ui.perspectives">
+    <perspective
+          class="org.eclipse.dltk.python.ui.PythonPerspective"
+          icon="$nl$/icons/eview16/python_persp.gif"
+          id="org.eclipse.dltk.python.ui.PythonPerspective"
+          name="%PythonPerspective.name"/>
+ </extension>
+    
+    <extension
+       point="org.eclipse.ui.preferencePages">
+       <page	          
+	          class="org.eclipse.dltk.python.internal.ui.preferences.PythonGlobalPreferencesPage"
+	          id="org.eclipse.dltk.python.preferences"
+	          name="%PythonPreferencePage.name"/>
+       
+	    <page
+	          category="org.eclipse.dltk.python.preferences"
+	          class="org.eclipse.dltk.python.internal.ui.preferences.PythonEditorPreferencesPage"
+	          id="org.eclipse.dltk.python.preferences.editor"
+	          name="%PythonEditorPreferencePage.name"/>
+	    <page
+	          category="org.eclipse.dltk.python.preferences.editor"
+	          class="org.eclipse.dltk.python.internal.ui.preferences.PythonEditorSyntaxColoringPreferencePage"
+	          id="org.eclipse.dltk.python.ui.editor.SyntaxColoring"
+	          name="PythonEditorSyntaxColoringPreferencePage.name"/>
+	    <page
+	          category="org.eclipse.dltk.python.preferences.editor"
+	          class="org.eclipse.dltk.python.internal.ui.preferences.PythonSmartTypingPreferencePage"
+	          id="org.eclipse.dltk.python.ui.editor.SmartTyping"
+	          name="%PythonEditorSmartTypingPreferencePage.name"/>          
+	    <page
+          category="org.eclipse.dltk.python.preferences.editor"
+          class="org.eclipse.dltk.python.internal.ui.preferences.PythonFoldingPreferencePage"
+          id="org.eclipse.dltk.python.ui.editor.PythonFolding"
+          name="%PythonEditorFoldingPreferencePage.name"/>	          
+	    
+	 </extension>
+  <extension
+       point="org.eclipse.ui.propertyPages">
+    <page
+          class="org.eclipse.dltk.python.internal.ui.preferences.PythonBuildPathPropertyPage"
+          id="org.eclipse.dltk.python.ui.BuildpathProperties"
+          name="%PythonBuildPathPropertyPage.name"
+          objectClass="org.eclipse.core.resources.IProject">
+       <filter
+             name="nature"
+             value="org.eclipse.dltk.python.core.nature"/>
+       <keywordReference id="org.eclipse.dltk.ui.buildpath"/>
+    </page>
+ </extension>
+ <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+         <part
+               id="org.eclipse.dltk.python.ui.editor.PythonEditor">
+         </part>
+	 </actionSetPartAssociation>
+ </extension>
+   <extension
+       point="org.eclipse.dltk.ui.language">
+    <language
+          class="org.eclipse.dltk.python.internal.ui.PythonUILanguageToolkit"
+          nature="org.eclipse.dltk.python.core.nature"/>
+ </extension> 
+ 
+<extension
+         point="org.eclipse.dltk.ui.dltkElementFilters">
+<!-- Script Explorer --> 
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideInnerPycFiles.label"
+            enabled="true"
+            description="%HideInnerPycFiles.description"
+            pattern="*.pyc">
+      </filter>
+      <filter
+            targetId="org.eclipse.dltk.ui.ScriptExplorer"
+            name="%HideInnerPyoFiles.label"
+            enabled="true"
+            description="%HideInnerPyoFiles.description"
+            pattern="*.pyo">
+      </filter>		      
+ </extension>   
+</plugin>

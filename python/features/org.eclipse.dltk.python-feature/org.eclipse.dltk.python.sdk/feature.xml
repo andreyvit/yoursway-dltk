@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.dltk.python.sdk"
+      label="%featureName"
+      version="1.0.0.qualifier"
+      provider-name="%providerName"
+      image="eclipse_update_120.jpg">
+
+   <description>
+      %description
+   </description>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://download.eclipse.org/technology/dltk/updates/"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/technology/dltk/updates/"/>
+   </url>
+
+   <includes
+         id="org.eclipse.dltk.python"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.dltk.python.source"
+         version="0.0.0"/>
+
+</feature>

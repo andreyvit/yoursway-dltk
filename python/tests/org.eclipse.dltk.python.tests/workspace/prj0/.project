@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>prj0</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<natures>
+		<nature>org.eclipse.dltk.python.core.nature</nature>
+	</natures>
+</projectDescription>
