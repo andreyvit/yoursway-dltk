@@ -19,7 +19,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 /**
  * 
  * @author kds
- *
+ * 
  */
 public class InterpreterRunnerNotFoundStatusHandler implements IStatusHandler {
 	public Object handleStatus(final IStatus status, Object source)
@@ -27,7 +27,9 @@ public class InterpreterRunnerNotFoundStatusHandler implements IStatusHandler {
 		DLTKDebugUIPlugin.getStandardDisplay().syncExec(new Runnable() {
 			public void run() {
 				MessageDialog.openError(DLTKDebugUIPlugin
-						.getActiveWorkbenchShell(), HandlerMessages.InterpreterRunnerNotFound, status.getMessage());
+						.getActiveWorkbenchShell(),
+						HandlerMessages.InterpreterRunnerNotFound, status
+								.getMessage());
 			}
 		});
 

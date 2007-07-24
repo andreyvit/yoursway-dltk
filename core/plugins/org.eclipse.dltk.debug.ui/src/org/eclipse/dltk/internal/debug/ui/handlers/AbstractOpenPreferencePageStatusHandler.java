@@ -21,7 +21,7 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 /**
  * 
  * @author kds
- *
+ * 
  */
 public abstract class AbstractOpenPreferencePageStatusHandler implements
 		IStatusHandler {
@@ -46,8 +46,8 @@ public abstract class AbstractOpenPreferencePageStatusHandler implements
 							.getActiveWorkbenchShell(), title, status
 							.getMessage());
 				} else {
-					final String message = status.getMessage()
-							+ " " + getQuestion();
+					final String message = status.getMessage() + " "
+							+ getQuestion();
 					result[0] = (MessageDialog.openQuestion(DLTKDebugUIPlugin
 							.getActiveWorkbenchShell(), title, message));
 					if (result[0]) {

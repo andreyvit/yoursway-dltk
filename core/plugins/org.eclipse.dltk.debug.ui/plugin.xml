@@ -36,7 +36,7 @@
 			
 		<!-- ERR_NO_DEFAULT_DEBUGGING_ENGINE -->
 		<statusHandler
-			class="org.eclipse.dltk.internal.debug.ui.handlers.NoDefaultDebuggingEngineStatus"
+			class="org.eclipse.dltk.internal.debug.ui.handlers.NoDefaultDebuggingEngineStatusHandler"
 			code="510" 
 			id="org.eclipse.dltk.statushandlers.nodefaultdebuggingengine"
 			plugin="org.eclipse.dltk.launching">
