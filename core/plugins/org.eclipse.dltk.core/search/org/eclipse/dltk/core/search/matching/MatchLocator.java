@@ -406,6 +406,9 @@ public class MatchLocator implements ITypeRequestor {
 		this.methodHandles.add(methodHandle);
 		return methodHandle;
 	}
+	protected IModelElement createTypeHandle(IType parent, String name) {
+		return parent.getType(name);
+	}
 
 	/*
 	 * Create method handle. Store occurences for create handle to retrieve
@@ -1486,7 +1489,7 @@ public class MatchLocator implements ITypeRequestor {
 		if (enclosingElement == null) {
 			enclosingElement = createTypeHandle(type.getName());
 		} else if (enclosingElement instanceof IType) {
-			enclosingElement = ((IType) parent).getType(type.getName());
+			enclosingElement = createTypeHandle((IType)parent, type.getName());
 		} else if (enclosingElement instanceof IMember) {
 			IMember member = (IMember) parent;
 			enclosingElement = member.getType(type.getName(), occurrenceCount);
