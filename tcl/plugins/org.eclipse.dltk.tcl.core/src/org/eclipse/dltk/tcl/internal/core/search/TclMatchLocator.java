@@ -13,6 +13,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
@@ -20,7 +21,11 @@ import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
+import org.eclipse.dltk.internal.core.BuiltinSourceModule;
+import org.eclipse.dltk.internal.core.ExternalSourceModule;
+import org.eclipse.dltk.internal.core.Openable;
 import org.eclipse.dltk.internal.core.SourceMethod;
+import org.eclipse.dltk.internal.core.SourceModule;
 
 public class TclMatchLocator extends MatchLocator {
 
@@ -95,5 +100,50 @@ public class TclMatchLocator extends MatchLocator {
 			}
 		}
 		return null;
+	}
+	protected IModelElement createTypeHandle(IType parent, String name) {
+		if( name.indexOf( "::") != -1 ) {
+			String[] split = name.split("::");
+			IType e = parent;
+			for (int i = 0; i < split.length; i++) {
+				e = e.getType(split[i]);
+				if( e == null ) {
+					return null;
+				}
+			}
+			if( e != null) {
+				return e;
+			}
+		}
+		return super.createTypeHandle(parent, name);
+	}
+	protected IType createTypeHandle(String name) {
+		Openable openable = this.currentPossibleMatch.openable;
+		if (openable instanceof SourceModule
+				|| openable instanceof ExternalSourceModule
+				|| openable instanceof BuiltinSourceModule) {
+			IParent e = ((IParent) openable);
+			if( name.indexOf( "::") != -1 ) {
+				String[] split = name.split("::");
+				for (int i = 0; i < split.length; i++) {
+					if( e instanceof ISourceModule) {
+						e = ((ISourceModule)e).getType(split[i]);	
+					}
+					else if( e instanceof IType ) {
+						e = ((IType)e).getType(split[i]);
+					}
+					else {
+						e = null;
+					}
+					if( e == null ) {
+						return null;
+					}
+				}
+				if( e != null && e instanceof IType ) {
+					return (IType)e;
+				}
+			}
+		}
+		return super.createTypeHandle(name);
 	}
 }
