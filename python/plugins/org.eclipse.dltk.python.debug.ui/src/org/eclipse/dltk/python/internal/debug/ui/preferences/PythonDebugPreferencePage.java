@@ -11,15 +11,15 @@ import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 
 /**
- * Ruby debug preference page
+ * Python debug preference page
  */
 public class PythonDebugPreferencePage extends
 		AbstractConfigurationBlockPreferencePage {
 	public static final String PAGE_ID = "org.eclipse.dltk.python.preferences.debug";
 
-	protected static class RubyDebugConfigurationBlock extends
+	protected static class PythonDebugConfigurationBlock extends
 			AbstractScriptDebuggingEngineConfigurationBlock {
-		public RubyDebugConfigurationBlock(OverlayPreferenceStore store,
+		public PythonDebugConfigurationBlock(OverlayPreferenceStore store,
 				PreferencePage preferencePage) {
 			super(store, preferencePage);
 		}
@@ -35,7 +35,7 @@ public class PythonDebugPreferencePage extends
 
 	protected IPreferenceConfigurationBlock createConfigurationBlock(
 			OverlayPreferenceStore overlayPreferenceStore) {
-		return new RubyDebugConfigurationBlock(overlayPreferenceStore, this);
+		return new PythonDebugConfigurationBlock(overlayPreferenceStore, this);
 	}
 
 	protected String getHelpId() {
