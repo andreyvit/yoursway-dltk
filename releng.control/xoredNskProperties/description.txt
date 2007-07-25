@@ -2,7 +2,7 @@
 The files in this directory are not used 
 in production builds. 
 
-The are given here as examples of how someone might
+They are given here as examples of how someone might
 override various build properties on their own machine, 
 to do "local builds".  
 

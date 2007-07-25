@@ -46,51 +46,19 @@
 			<property name="component" value="tcl.tests" />
 			<property name="eclipseBuildFailOnError" value="false" />
 		</ant>
-				
-		<!-- ant antfile="${buildTargets}">
-			<property name="component" value="wysiwyg" />
-		</ant>
+
 		<ant antfile="${buildTargets}">
-			<property name="component" value="jst-sdk" />
+			<property name="component" value="python" />
 		</ant>
+
 		<ant antfile="${buildTargets}">
-			<property name="component" value="jst.tests" />
+			<property name="component" value="python-sdk" />
+		</ant>
+		
+		<ant antfile="${buildTargets}">
+			<property name="component" value="python.tests" />
 			<property name="eclipseBuildFailOnError" value="false" />
-		</ant>
-
-		<ant antfile="${buildTargets}">
-			<property name="component" value="jsf" />
-			<property name="eclipseBuildFailOnError" value="false" />
-		</ant>
-
-		<ant antfile="${buildTargets}">
-			<property name="component" value="jsf-sdk" />
-			<property name="eclipseBuildFailOnError" value="false" />
-		</ant>
-		<ant antfile="${buildTargets}">
-			<property name="component" value="jsf.tests" />
-			<property name="eclipseBuildFailOnError" value="false" />
-		</ant>
-
-		<ant antfile="${buildTargets}">
-			<property name="component" value="dali" />
-			<property name="eclipseBuildFailOnError" value="false" />
-		</ant>
-
-		<ant antfile="${buildTargets}">
-			<property name="component" value="dali-sdk" />
-			<property name="eclipseBuildFailOnError" value="false" />
-		</ant>
-
-		<ant antfile="${buildTargets}">
-			<property name="component" value="dali.tests" />
-			<property name="eclipseBuildFailOnError" value="false" />
-		</ant -->
-
-
-		<ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
-
-		<antcall target="package"/>
+		</ant>		
 		
 		<!-- todo: all-one's will have to be moved after 'package' now --> 
 		
@@ -136,6 +104,10 @@
 			<arg line="-o -qq dltk-tcl${corename}-${buildLabel}-incubation.zip -d ${buildDirectory}/tempforrezipping" />
 		</exec>
 	
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
+			<arg line="-o -qq dltk-python${corename}-${buildLabel}-incubation.zip -d ${buildDirectory}/tempforrezipping" />
+		</exec>
+
 		<zip destfile="${buildDirectory}/${buildLabel}/${archiveName}" basedir="${buildDirectory}/tempforrezipping" />
 	
 		<delete dir="${buildDirectory}/tempforrezipping" failonerror="false"/>
