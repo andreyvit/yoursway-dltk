@@ -938,5 +938,7 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 		return buffer.toString();
 	}
 
-	protected abstract InputStream getPreviewContentReader();
+	protected InputStream getPreviewContentReader() {
+		return null;
+	}
 }
