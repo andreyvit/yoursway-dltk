@@ -60,7 +60,8 @@
 			<property name="eclipseBuildFailOnError" value="false" />
 		</ant>		
 		
-		<!-- todo: all-one's will have to be moved after 'package' now --> 
+		<ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
+		<antcall target="package"/>
 		
 	</target>
 
