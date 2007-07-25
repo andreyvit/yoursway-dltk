@@ -15,12 +15,14 @@ import org.eclipse.dltk.ui.wizards.BuildpathsBlock;
 import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
-public class RubyBuildPathPropertyPage extends BuildPathsPropertyPage implements IWorkbenchPropertyPage {
+public class RubyBuildPathPropertyPage extends BuildPathsPropertyPage implements
+		IWorkbenchPropertyPage {
 	public RubyBuildPathPropertyPage() {
 	}
 
-	protected BuildpathsBlock createBuildPathBlock(IWorkbenchPreferenceContainer pageContainer) {
-		return new RubyBuildPathsBlock(new BusyIndicatorRunnableContext(), 
+	protected BuildpathsBlock createBuildPathBlock(
+			IWorkbenchPreferenceContainer pageContainer) {
+		return new RubyBuildPathsBlock(new BusyIndicatorRunnableContext(),
 				this, getSettings().getInt(INDEX), false, pageContainer);
 	}
 }

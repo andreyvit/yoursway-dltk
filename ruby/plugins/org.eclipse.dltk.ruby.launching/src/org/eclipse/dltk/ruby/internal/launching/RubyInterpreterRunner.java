@@ -12,15 +12,10 @@ package org.eclipse.dltk.ruby.internal.launching;
 import org.eclipse.dltk.launching.AbstractInterpreterRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationConstants;
-import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
 
 public class RubyInterpreterRunner extends AbstractInterpreterRunner {
 	public RubyInterpreterRunner(IInterpreterInstall InterpreterInstance) {
 		super(InterpreterInstance);
-	}
-
-	protected String getPluginId() {
-		return RubyLaunchingPlugin.getUniqueIdentifier();
 	}
 
 	protected String getProcessType() {

@@ -219,16 +219,8 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
 		return newCmdLine;
 	}
 
-	protected String getPluginIdentifier() {
-		return JavaScriptLaunchingPlugin.getUniqueIdentifier();
-	}
-
 	protected String getProcessType() {
 		return JavaScriptLaunchConfigurationConstants.ID_JAVASCRIPT_PROCESS_TYPE;
-	}
-
-	protected String getPluginId() {
-		return JavaScriptLaunchingPlugin.PLUGIN_ID;
 	}
 
 	public void setRunnerConfig(IJavaScriptInterpreterRunnerConfig config) {

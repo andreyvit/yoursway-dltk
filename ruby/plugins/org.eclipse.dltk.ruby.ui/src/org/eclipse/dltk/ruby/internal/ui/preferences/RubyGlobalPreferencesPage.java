@@ -9,34 +9,39 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.preferences;
 
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
+import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPreferencePage;
 import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
+import org.eclipse.dltk.ui.util.SWTFactory;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
-public class RubyGlobalPreferencesPage extends AbstractConfigurationBlockPreferencePage {
+public class RubyGlobalPreferencesPage extends
+		AbstractConfigurationBlockPreferencePage {
 
-	protected IPreferenceConfigurationBlock createConfigurationBlock(OverlayPreferenceStore overlayPreferenceStore) {
-		// TODO Auto-generated method stub
-		return new RubyGlobalConfigurationBlock(overlayPreferenceStore, this);
+	protected IPreferenceConfigurationBlock createConfigurationBlock(
+			OverlayPreferenceStore overlayPreferenceStore) {
+		return new AbstractConfigurationBlock(overlayPreferenceStore, this) {
+			public Control createControl(Composite parent) {
+				Composite composite = SWTFactory.createComposite(parent, parent
+						.getFont(), 1, 1, GridData.FILL_HORIZONTAL);
+				return composite;
+			}
+		};
 	}
 
 	protected String getHelpId() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	protected void setDescription() {
-		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Move to messages");
-		}
-		String description = "General Ruby settings";
-		setDescription(description);
+		setDescription(RubyPreferencesMessages.GlobalPreferencePageDescription);
 	}
 
 	protected void setPreferenceStore() {
-		setPreferenceStore(RubyUI.getDefault().getPreferenceStore());		
+		setPreferenceStore(RubyUI.getDefault().getPreferenceStore());
 	}
-
 }

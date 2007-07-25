@@ -10,6 +10,10 @@
 
 package org.eclipse.dltk.ui.preferences;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -59,10 +63,9 @@ import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.ChainedPreferenceStore;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-
 /**
- * Configures Editor hover preferences.
- * TODO: We need to add support for user categories here...
+ * Configures Editor hover preferences. TODO: We need to add support for user
+ * categories here...
  */
 public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 		AbstractConfigurationBlock {
@@ -92,7 +95,7 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 		 * Underline preference key.
 		 */
 		private String fUnderlineKey;
-		
+
 		private String fCategory;
 
 		/**
@@ -139,7 +142,7 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 
 		/**
 		 * @return the strikethrough preference key
-	 *
+		 * 
 		 */
 		public String getStrikethroughKey() {
 			return fStrikethroughKey;
@@ -147,7 +150,7 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 
 		/**
 		 * @return the underline preference key
-	 *
+		 * 
 		 */
 		public String getUnderlineKey() {
 			return fUnderlineKey;
@@ -166,7 +169,7 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 		public String getDisplayName() {
 			return fDisplayName;
 		}
-		
+
 		/**
 		 * @return the category name
 		 */
@@ -201,9 +204,10 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 		 */
 		public SemanticHighlightingColorListItem(String displayName,
 				String colorKey, String boldKey, String italicKey,
-				String strikethroughKey, String underlineKey, String category, String enableKey) {
+				String strikethroughKey, String underlineKey, String category,
+				String enableKey) {
 			super(displayName, colorKey, boldKey, italicKey, strikethroughKey,
-					underlineKey, category );
+					underlineKey, category);
 			fEnableKey = enableKey;
 		}
 
@@ -218,7 +222,7 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 	/**
 	 * Color list label provider.
 	 * 
-	 *
+	 * 
 	 */
 	private class ColorListLabelProvider extends LabelProvider {
 		/*
@@ -234,12 +238,13 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 	/**
 	 * Color list content provider.
 	 * 
-	 *
+	 * 
 	 */
-	protected String[] getCategories(){
-		return new String[]{sCoreCategory,sDocumentationCategory,sCommentsCategory};
+	protected String[] getCategories() {
+		return new String[] { sCoreCategory, sDocumentationCategory,
+				sCommentsCategory };
 	}
-	
+
 	private class ColorListContentProvider implements ITreeContentProvider {
 
 		/*
@@ -247,12 +252,12 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 		 */
 		public Object[] getElements(Object inputElement) {
 			List categorys = new ArrayList();
-			String[] cats=getCategories();
-			for (int a=0;a<cats.length;a++){
-				if( getElementsForCategory(cats[a]).length > 0 ) {
+			String[] cats = getCategories();
+			for (int a = 0; a < cats.length; a++) {
+				if (getElementsForCategory(cats[a]).length > 0) {
 					categorys.add(cats[a]);
-				}	
-			}						
+				}
+			}
 			return categorys.toArray();
 		}
 
@@ -298,21 +303,21 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 	/**
 	 * Preference key suffix for italic preferences.
 	 * 
-	 *
+	 * 
 	 */
 	private static final String ITALIC = PreferenceConstants.EDITOR_ITALIC_SUFFIX;
 
 	/**
 	 * Preference key suffix for strikethrough preferences.
 	 * 
-	 *
+	 * 
 	 */
 	private static final String STRIKETHROUGH = PreferenceConstants.EDITOR_STRIKETHROUGH_SUFFIX;
 
 	/**
 	 * Preference key suffix for underline preferences.
 	 * 
-	 *
+	 * 
 	 */
 	private static final String UNDERLINE = PreferenceConstants.EDITOR_UNDERLINE_SUFFIX;
 
@@ -333,74 +338,77 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 	/**
 	 * Check box for italic preference.
 	 * 
-	 *
+	 * 
 	 */
 	private Button fItalicCheckBox;
 
 	/**
 	 * Check box for strikethrough preference.
 	 * 
-	 *
+	 * 
 	 */
 	private Button fStrikethroughCheckBox;
 
 	/**
 	 * Check box for underline preference.
 	 * 
-	 *
+	 * 
 	 */
 	private Button fUnderlineCheckBox;
 
 	/**
 	 * Highlighting color list
 	 * 
-	 *
+	 * 
 	 */
 	private final java.util.List fListModel = new ArrayList();
 
 	/**
 	 * Highlighting color list viewer
 	 * 
-	 *
+	 * 
 	 */
 	private StructuredViewer fListViewer;
 
 	/**
 	 * Semantic highlighting manager
 	 * 
-	 *
+	 * 
 	 */
 	// private SemanticHighlightingManager fSemanticHighlightingManager;
 	/**
 	 * The previewer.
 	 * 
-	 *
+	 * 
 	 */
 	private ProjectionViewer fPreviewViewer;
 	/**
 	 * The color manager.
 	 * 
-	 *
+	 * 
 	 */
 	private IColorManager fColorManager;
 
 	protected abstract String[][] getSyntaxColorListModel();
-	
-	protected abstract ProjectionViewer createPreviewViewer(Composite parent, IVerticalRuler verticalRuler, IOverviewRuler overviewRuler, boolean showAnnotationsOverview, int styles, IPreferenceStore store);
-	
-	protected abstract ScriptSourceViewerConfiguration createSimpleSourceViewerConfiguration(IColorManager colorManager, IPreferenceStore preferenceStore, ITextEditor editor, boolean configureFormatter);
-	
-	protected abstract void setDocumentPartitioning( IDocument document );
-	
-	protected abstract String getPreviewContent();
+
+	protected abstract ProjectionViewer createPreviewViewer(Composite parent,
+			IVerticalRuler verticalRuler, IOverviewRuler overviewRuler,
+			boolean showAnnotationsOverview, int styles, IPreferenceStore store);
+
+	protected abstract ScriptSourceViewerConfiguration createSimpleSourceViewerConfiguration(
+			IColorManager colorManager, IPreferenceStore preferenceStore,
+			ITextEditor editor, boolean configureFormatter);
+
+	protected abstract void setDocumentPartitioning(IDocument document);
 
 	public Object[] getElementsForCategory(String entry) {
 		List elements = new ArrayList();
-		
+
 		Iterator i = this.fListModel.iterator();
-		while( i.hasNext()) {
-			HighlightingColorListItem item = (HighlightingColorListItem)i.next();
-			if( item.getCategory().equals(entry)) {
+		while (i.hasNext()) {
+			HighlightingColorListItem item = (HighlightingColorListItem) i
+					.next();
+			if (item.getCategory().equals(entry)) {
 				elements.add(item);
 			}
 		}
@@ -412,36 +420,33 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 		super(store);
 
 		fColorManager = new DLTKColorManager(false);
-		
+
 		String[][] model = getSyntaxColorListModel();
 
 		for (int i = 0, n = model.length; i < n; i++)
-			fListModel.add(new HighlightingColorListItem(
-					model[i][0],
-					model[i][1],
-					model[i][1] + BOLD,
-					model[i][1] + ITALIC,
-					model[i][1] + STRIKETHROUGH,
-					model[i][1] + UNDERLINE, model[i][2]));
+			fListModel.add(new HighlightingColorListItem(model[i][0],
+					model[i][1], model[i][1] + BOLD, model[i][1] + ITALIC,
+					model[i][1] + STRIKETHROUGH, model[i][1] + UNDERLINE,
+					model[i][2]));
 
-//		SemanticHighlighting[] semanticHighlightings = SemanticHighlightings
-//				.getSemanticHighlightings();
-//		for (int i = 0, n = semanticHighlightings.length; i < n; i++)
-//			fListModel
-//					.add(new SemanticHighlightingColorListItem(
-//							semanticHighlightings[i].getDisplayName(),
-//							SemanticHighlightings
-//									.getColorPreferenceKey(semanticHighlightings[i]),
-//							SemanticHighlightings
-//									.getBoldPreferenceKey(semanticHighlightings[i]),
-//							SemanticHighlightings
-//									.getItalicPreferenceKey(semanticHighlightings[i]),
-//							SemanticHighlightings
-//									.getStrikethroughPreferenceKey(semanticHighlightings[i]),
-//							SemanticHighlightings
-//									.getUnderlinePreferenceKey(semanticHighlightings[i]),
-//							SemanticHighlightings
-//									.getEnabledPreferenceKey(semanticHighlightings[i])));
+		// SemanticHighlighting[] semanticHighlightings = SemanticHighlightings
+		// .getSemanticHighlightings();
+		// for (int i = 0, n = semanticHighlightings.length; i < n; i++)
+		// fListModel
+		// .add(new SemanticHighlightingColorListItem(
+		// semanticHighlightings[i].getDisplayName(),
+		// SemanticHighlightings
+		// .getColorPreferenceKey(semanticHighlightings[i]),
+		// SemanticHighlightings
+		// .getBoldPreferenceKey(semanticHighlightings[i]),
+		// SemanticHighlightings
+		// .getItalicPreferenceKey(semanticHighlightings[i]),
+		// SemanticHighlightings
+		// .getStrikethroughPreferenceKey(semanticHighlightings[i]),
+		// SemanticHighlightings
+		// .getUnderlinePreferenceKey(semanticHighlightings[i]),
+		// SemanticHighlightings
+		// .getEnabledPreferenceKey(semanticHighlightings[i])));
 
 		store.addKeys(createOverlayStoreKeys());
 	}
@@ -491,7 +496,6 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 		return createSyntaxPage(parent);
 	}
 
-
 	public void initialize() {
 		super.initialize();
 
@@ -509,7 +513,7 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 
 		fPreviewViewer.invalidateTextPresentation();
 	}
-	
+
 	public void dispose() {
 		uninstallSemanticHighlighting();
 		fColorManager.dispose();
@@ -586,7 +590,7 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 
 		GridData gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
 		gridData.widthHint = 150; // only expand further if anyone else
-									// requires it
+		// requires it
 		gridData.horizontalSpan = 2;
 		link.setLayoutData(gridData);
 
@@ -638,7 +642,7 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 				.getVerticalBar();
 		if (vBar != null)
 			maxWidth += vBar.getSize().x * 3; // scrollbars and tree
-												// indentation guess
+		// indentation guess
 		gd.widthHint = maxWidth;
 
 		fListViewer.getControl().setLayoutData(gd);
@@ -702,19 +706,18 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 		gd.horizontalIndent = 20;
 		gd.horizontalSpan = 2;
 		fUnderlineCheckBox.setLayoutData(gd);
-		
+
 		label = new Label(colorComposite, SWT.LEFT);
 		label.setText(PreferencesMessages.DLTKEditorPreferencePage_preview);
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
+
 		Control previewer = createPreviewer(colorComposite);
-		if( previewer != null ) {						
+		if (previewer != null) {
 			gd = new GridData(GridData.FILL_BOTH);
 			gd.widthHint = convertWidthInCharsToPixels(20);
 			gd.heightHint = convertHeightInCharsToPixels(5);
-			previewer.setLayoutData(gd);			
-		}
-		else {
+			previewer.setLayoutData(gd);
+		} else {
 			label.dispose();
 		}
 
@@ -836,23 +839,23 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 		fPreviewViewer = this.createPreviewViewer(parent, null, null, false,
 				SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER, store);
 
-		if( fPreviewViewer == null ) {
+		if (fPreviewViewer == null) {
 			return null;
 		}
 		ScriptSourceViewerConfiguration configuration = createSimpleSourceViewerConfiguration(
 				fColorManager, store, null, false);
 		fPreviewViewer.configure(configuration);
-				
-//		Font font = JFaceResources
-//				.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
-		//fPreviewViewer.getTextWidget().setFont(font);
+
+		// Font font = JFaceResources
+		// .getFont(PreferenceConstants.EDITOR_TEXT_FONT);
+		// fPreviewViewer.getTextWidget().setFont(font);
 		new ScriptSourcePreviewerUpdater(fPreviewViewer, configuration, store);
 		fPreviewViewer.setEditable(false);
 
-		String content = getPreviewContent(); 
+		String content = getPreviewContent();
 		IDocument document = new Document(content);
-		this.setDocumentPartitioning(document);		
-		
+		this.setDocumentPartitioning(document);
+
 		fPreviewViewer.setDocument(document);
 
 		installSemanticHighlighting();
@@ -863,42 +866,41 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 	private Preferences createTemporaryCorePreferenceStore() {
 		Preferences result = new Preferences();
 
-		//result.setValue(COMPILER_TASK_TAGS, "TASK,TODO"); //$NON-NLS-1$
+		// result.setValue(COMPILER_TASK_TAGS, "TASK,TODO"); //$NON-NLS-1$
 
 		return result;
-	}	
+	}
 
 	/**
 	 * Install Semantic Highlighting on the previewer
 	 * 
-	 *
+	 * 
 	 */
 	private void installSemanticHighlighting() {
-//		if (fSemanticHighlightingManager == null) {
-//			fSemanticHighlightingManager = new SemanticHighlightingManager();
-//			fSemanticHighlightingManager.install(fPreviewViewer, fColorManager,
-//					getPreferenceStore(), createPreviewerRanges());
-//		}
+		// if (fSemanticHighlightingManager == null) {
+		// fSemanticHighlightingManager = new SemanticHighlightingManager();
+		// fSemanticHighlightingManager.install(fPreviewViewer, fColorManager,
+		// getPreferenceStore(), createPreviewerRanges());
+		// }
 	}
 
 	/**
 	 * Uninstall Semantic Highlighting from the previewer
 	 * 
-	 *
+	 * 
 	 */
 	private void uninstallSemanticHighlighting() {
-//		if (fSemanticHighlightingManager != null) {
-//			fSemanticHighlightingManager.uninstall();
-//			fSemanticHighlightingManager = null;
-//		}
+		// if (fSemanticHighlightingManager != null) {
+		// fSemanticHighlightingManager.uninstall();
+		// fSemanticHighlightingManager = null;
+		// }
 	}
-
 
 	/**
 	 * Returns the current highlighting color list item.
 	 * 
 	 * @return the current highlighting color list item
-	 *
+	 * 
 	 */
 	private HighlightingColorListItem getHighlightingColorListItem() {
 		IStructuredSelection selection = (IStructuredSelection) fListViewer
@@ -908,4 +910,33 @@ public abstract class AbstractScriptEditorColoringConfigurationBlock extends
 			return null;
 		return (HighlightingColorListItem) element;
 	}
+
+	protected String getPreviewContent() {
+		String separator = System.getProperty("line.separator"); //$NON-NLS-1$
+
+		StringBuffer buffer = new StringBuffer(512);
+
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new InputStreamReader(
+					getPreviewContentReader()));
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				buffer.append(line);
+				buffer.append(separator);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+		return buffer.toString();
+	}
+
+	protected abstract InputStream getPreviewContentReader();
 }

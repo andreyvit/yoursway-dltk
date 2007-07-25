@@ -9,9 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.internal.ui.preferences;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.tcl.internal.ui.editor.TclDocumentSetupParticipant;
@@ -32,11 +30,10 @@ import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-
 public class TclEditorColoringConfigurationBlock extends
 		AbstractScriptEditorColoringConfigurationBlock implements
 		IPreferenceConfigurationBlock {
-	
+
 	private static final String PREVIEW_FILE_NAME = "PreviewFile.txt";
 
 	private static final String[][] fSyntaxColorListModel = new String[][] {
@@ -46,9 +43,10 @@ public class TclEditorColoringConfigurationBlock extends
 			{ PreferencesMessages.DLTKEditorPreferencePage_keywords,
 					TclPreferenceConstants.EDITOR_KEYWORD_COLOR, sCoreCategory },
 
-                        { PreferencesMessages.DLTKEditorPreferencePage_returnKeyword,
-                                        TclPreferenceConstants.EDITOR_KEYWORD_RETURN_COLOR, sCoreCategory },
-					
+			{ PreferencesMessages.DLTKEditorPreferencePage_returnKeyword,
+					TclPreferenceConstants.EDITOR_KEYWORD_RETURN_COLOR,
+					sCoreCategory },
+
 			{ PreferencesMessages.DLTKEditorPreferencePage_strings,
 					TclPreferenceConstants.EDITOR_STRING_COLOR, sCoreCategory },
 
@@ -56,7 +54,6 @@ public class TclEditorColoringConfigurationBlock extends
 					TclPreferenceConstants.EDITOR_NUMBER_COLOR, sCoreCategory },
 			{ PreferencesMessages.DLTKEditorPreferencePage_variables,
 					TclPreferenceConstants.EDITOR_VARIABLE_COLOR, sCoreCategory } };
-	
 
 	public TclEditorColoringConfigurationBlock(OverlayPreferenceStore store) {
 		super(store);
@@ -86,31 +83,7 @@ public class TclEditorColoringConfigurationBlock extends
 		participant.setup(document);
 	}
 
-	protected String getPreviewContent() {
-		String line;
-		String separator = System.getProperty("line.separator"); //$NON-NLS-1$
-		StringBuffer buffer = new StringBuffer(512);
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new InputStreamReader(getClass()
-					.getResourceAsStream(PREVIEW_FILE_NAME)));
-			while ((line = reader.readLine()) != null) {
-				buffer.append(line);
-				buffer.append(separator);
-			}
-		} catch (IOException io) {
-			// DLTKUIPlugin.log(io);
-			io.printStackTrace();
-			// System.err.println("io");
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-				}
-			}
-		}
-		return buffer.toString();
-
+	protected InputStream getPreviewContentReader() {
+		return getClass().getResourceAsStream(PREVIEW_FILE_NAME);
 	}
 }

@@ -44,7 +44,6 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 		return IModelStatus.VERIFIED_OK;
 	}
 
-
 	public String getRubyExtension() {
 		return "rb";
 	}
@@ -70,13 +69,15 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 
 	public IStatus validateSourceModule(IResource resource) {
 		if (resource == null || resource.getLocation() == null)
-			return new Status(IModelStatus.ERROR, RubyPlugin.PLUGIN_ID, 1, "Resource passed to validateSourceModule() is null", null);
-		
-//		String ext = resource.getLocation().getFileExtension();
-//		if (ext == null || ext.length() == 0)
-//			if (isRubyHeadered(resource.getLocation().toFile()) == IModelStatus.VERIFIED_OK) {
-//				return IModelStatus.VERIFIED_OK;
-//			}
+			return new Status(IModelStatus.ERROR, RubyPlugin.PLUGIN_ID, 1,
+					"Resource passed to validateSourceModule() is null", null);
+
+		// String ext = resource.getLocation().getFileExtension();
+		// if (ext == null || ext.length() == 0)
+		// if (isRubyHeadered(resource.getLocation().toFile()) ==
+		// IModelStatus.VERIFIED_OK) {
+		// return IModelStatus.VERIFIED_OK;
+		// }
 		if ("rakefile".equalsIgnoreCase(resource.getLocation().lastSegment())) {
 			return IModelStatus.VERIFIED_OK;
 		}
@@ -85,7 +86,8 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	}
 
 	public IStatus validateSourceModule(IPath resource) {
-		if( resource.toString().startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
+		if (resource.toString().startsWith(
+				IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
 			return IModelStatus.VERIFIED_OK;
 		}
 		return validateSourceModule(resource.lastSegment());
@@ -94,6 +96,7 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	public IStatus validateSourceModule(IModelElement parent, String str) {
 		return validateSourceModule(str);
 	}
+
 	public IStatus validateSourceModuleName(String str) {
 		return validateSourceModule(str);
 	}
@@ -109,9 +112,8 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	public String[] getLanguageFileExtensions() {
 		return new String[] { "rb" };
 	}
-		
-	public String getLanguageName()
-	{
+
+	public String getLanguageName() {
 		return "Ruby";
 	}
 }

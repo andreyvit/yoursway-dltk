@@ -16,11 +16,6 @@ import org.eclipse.dltk.launching.IInterpreterRunnerFactory;
 
 public class RubyBasicDebuggerRunnerFactory implements
 		IInterpreterRunnerFactory {
-
-	public RubyBasicDebuggerRunnerFactory() {
-
-	}
-
 	public IInterpreterRunner createRunner(IInterpreterInstall install) {
 		return new RubyBasicDebuggerRunner(install);
 	}

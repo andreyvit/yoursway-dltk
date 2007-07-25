@@ -26,8 +26,8 @@ public class DbgpInterpreterConfig {
 	}
 
 	public int getPort() {
-		return ((Integer) config.getProperty(DbgpConstants.PORT_PROP))
-				.intValue();
+		return Integer.parseInt((String) config
+				.getProperty(DbgpConstants.PORT_PROP));
 	}
 
 	public void setSessionId(String sessionId) {

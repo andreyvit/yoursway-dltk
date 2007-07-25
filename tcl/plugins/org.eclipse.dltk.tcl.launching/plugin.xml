@@ -18,7 +18,7 @@
      <sourceLocator
            class="org.eclipse.dltk.launching.ScriptSourceLookupDirector"
            id="tclSourceLocator"
-           name="org.eclipse.dltk.tcl.launching.tclSourceLocator"/>
+           name="%TclSourceLocator.name"/>
   </extension>
     
    <extension

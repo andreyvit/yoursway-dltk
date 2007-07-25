@@ -11,10 +11,10 @@ package org.eclipse.dltk.ruby.launching;
 
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 
-public class RubyLaunchConfigurationConstants extends
+public final class RubyLaunchConfigurationConstants extends
 		ScriptLaunchConfigurationConstants {
 
-	protected RubyLaunchConfigurationConstants() {
+	private RubyLaunchConfigurationConstants() {
 
 	}
 

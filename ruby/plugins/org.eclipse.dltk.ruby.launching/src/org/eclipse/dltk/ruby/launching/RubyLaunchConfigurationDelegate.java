@@ -24,10 +24,6 @@ import org.eclipse.dltk.ruby.core.RubyNature;
 public class RubyLaunchConfigurationDelegate extends
 		AbstractScriptLaunchConfigurationDelegate {
 
-	public String getLanguageId() {
-		return RubyNature.NATURE_ID;
-	}
-
 	protected String getCharset(ILaunchConfiguration configuration)
 			throws CoreException {
 		IProject project = getScriptProject(configuration).getProject();
@@ -85,20 +81,25 @@ public class RubyLaunchConfigurationDelegate extends
 	protected void addStreamSync(InterpreterConfig config,
 			ILaunchConfiguration configuration) {
 		config.addInterpreterArg("-e");
-		config.addInterpreterArg("STDOUT.sync=true; STDERR.sync=true; load($0=ARGV.shift)");
+		config
+				.addInterpreterArg("STDOUT.sync=true; STDERR.sync=true; load($0=ARGV.shift)");
 	}
 
 	protected InterpreterConfig createInterpreterConfig(
 			ILaunchConfiguration configuration, ILaunch launch)
 			throws CoreException {
 
-		final InterpreterConfig config = super.createInterpreterConfig(configuration,
-				launch);
+		final InterpreterConfig config = super.createInterpreterConfig(
+				configuration, launch);
 
 		addEncodingInterpreterArg(config, configuration);
 		addIncludePathInterpreterArg(config, configuration);
 		addStreamSync(config, configuration);
 
 		return config;
+	}
+
+	public String getLanguageId() {
+		return RubyNature.NATURE_ID;
 	}
 }

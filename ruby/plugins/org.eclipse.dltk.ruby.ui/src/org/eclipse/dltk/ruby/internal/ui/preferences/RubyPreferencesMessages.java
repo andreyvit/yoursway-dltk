@@ -13,17 +13,18 @@ package org.eclipse.dltk.ruby.internal.ui.preferences;
 import org.eclipse.osgi.util.NLS;
 
 public final class RubyPreferencesMessages extends NLS {
-
-	private static final String BUNDLE_NAME= "org.eclipse.dltk.ui.preferences.PythonPreferencesMessages";//$NON-NLS-1$
-
-	private RubyPreferencesMessages() {
-		// Do not instantiate
-	}
-	
-	
-	public static String DLTKEditorPreferencePage_general;
+	private static final String BUNDLE_NAME = "org.eclipse.dltk.ruby.internal.ui.preferences.RubyPreferencesMessages"; //$NON-NLS-1$
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, RubyPreferencesMessages.class);
 	}
+
+	private RubyPreferencesMessages() {
+	}
+	
+	public static String EditorPreferencePageDescription;
+	
+	public static String EditorSyntaxColoringPreferencePageDescription;
+	
+	public static String GlobalPreferencePageDescription;
 }

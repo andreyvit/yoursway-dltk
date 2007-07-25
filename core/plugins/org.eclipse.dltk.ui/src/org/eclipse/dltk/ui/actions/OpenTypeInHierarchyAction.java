@@ -7,11 +7,12 @@
  *
  
  *******************************************************************************/
-package org.eclipse.dltk.internal.ui.actions;
+package org.eclipse.dltk.ui.actions;
 
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.SearchEngine;
+import org.eclipse.dltk.internal.ui.actions.ActionMessages;
 import org.eclipse.dltk.internal.ui.dialogs.OpenTypeSelectionDialog2;
 import org.eclipse.dltk.internal.ui.typehierarchy.OpenTypeHierarchyUtil;
 import org.eclipse.dltk.ui.DLTKUIPlugin;

@@ -7,7 +7,7 @@
  *
  
  *******************************************************************************/
-package org.eclipse.dltk.internal.ui.search;
+package org.eclipse.dltk.ui.search;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,10 +27,12 @@ import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.internal.ui.actions.SelectionConverter;
 import org.eclipse.dltk.internal.ui.dialogs.TextFieldNavigationHandler;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
+import org.eclipse.dltk.internal.ui.search.DLTKSearchQuery;
+import org.eclipse.dltk.internal.ui.search.DLTKSearchScopeFactory;
+import org.eclipse.dltk.internal.ui.search.PatternStrings;
+import org.eclipse.dltk.internal.ui.search.SearchMessages;
+import org.eclipse.dltk.internal.ui.search.SearchUtil;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.dltk.ui.search.ElementQuerySpecification;
-import org.eclipse.dltk.ui.search.PatternQuerySpecification;
-import org.eclipse.dltk.ui.search.QuerySpecification;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.dialogs.IDialogSettings;

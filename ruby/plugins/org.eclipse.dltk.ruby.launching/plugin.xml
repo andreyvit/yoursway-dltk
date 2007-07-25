@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.dltk.ruby.launching.RubyLaunchingPluginPreferenceInitializer">
+      </initializer>
+   </extension>
   <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
          <launchConfigurationType
                delegate="org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationDelegate"
                id="org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationType"
                modes="run,debug"
-               name="Ruby Script"
+               name="%RubyLaunchConfigurationType.name"
                public="true"
                sourceLocatorId="rubySourceLocator">
 		  </launchConfigurationType>         
@@ -26,12 +32,6 @@
             class="org.eclipse.dltk.ruby.internal.launching.RubyGenericInstallType"
             id="org.eclipse.dltk.internal.debug.ui.launcher.GenericRubyInstallType">
       </interpreterInstallType>   
-   </extension>
-   <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="org.eclipse.dltk.ruby.launching.RubyLaunchingPluginPreferenceInitializer">
-      </initializer>
    </extension>
    <extension
          point="org.eclipse.dltk.launching.debuggingEngine">

@@ -145,7 +145,7 @@ public class RubyGenericInstall extends AbstractInterpreterInstall {
 		if (sources == null) {
 			initialize();
 		}
-		
+
 		return (String[]) sources.keySet().toArray(new String[sources.size()]);
 	}
 

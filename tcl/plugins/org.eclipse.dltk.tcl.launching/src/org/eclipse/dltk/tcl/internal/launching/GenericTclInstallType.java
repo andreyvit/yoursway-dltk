@@ -24,6 +24,9 @@ import org.osgi.framework.Bundle;
 
 public class GenericTclInstallType extends AbstractInterpreterInstallType {
 
+	private static final String[] possibleExes = { "tclsh", "wish", "vtk",
+			"expect" };
+
 	public String getNatureId() {
 		return TclNature.NATURE_ID;
 	}
@@ -31,8 +34,6 @@ public class GenericTclInstallType extends AbstractInterpreterInstallType {
 	public String getName() {
 		return "Generic Tcl install";
 	}
-
-	private static String[] possibleExes = { "tclsh", "wish", "vtk", "expect" };
 
 	protected String getPluginId() {
 		return TclLaunchingPlugin.PLUGIN_ID;
@@ -54,8 +55,8 @@ public class GenericTclInstallType extends AbstractInterpreterInstallType {
 	}
 
 	protected File createPathFile() throws IOException {
-		DeployHelper.deploy(TclLaunchingPlugin.getDefault(), "scripts").append("");
-		
+		DeployHelper.deploy(TclLaunchingPlugin.getDefault(), "scripts").append(
+				"");
 		Bundle bundle = TclLaunchingPlugin.getDefault().getBundle();
 		return storeToMetadata(bundle, "path.tcl", "scripts/path.tcl");
 	}

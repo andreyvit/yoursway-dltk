@@ -9,9 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.actions;
 
-import org.eclipse.dltk.internal.ui.actions.OpenTypeInHierarchyAction;
 import org.eclipse.dltk.ruby.internal.ui.RubyUILanguageToolkit;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
+import org.eclipse.dltk.ui.actions.OpenTypeInHierarchyAction;
 
 public class RubyOpenTypeInHierarchyAction extends OpenTypeInHierarchyAction {
 

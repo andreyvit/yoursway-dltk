@@ -15,7 +15,7 @@ import java.io.File;
 import org.eclipse.dltk.launching.ExternalDebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
-import org.eclipse.dltk.launching.debug.DbgpConstants;
+import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
 
 /**
  * Debugging engine implementation for ActiveState's ruby debugging engine.
@@ -51,15 +51,13 @@ public class RubyActiveStateDebuggerRunner extends
 
 	protected InterpreterConfig alterConfig(String exe,
 			InterpreterConfig config, String debugEnginePath) {
+		
+		DbgpInterpreterConfig dbgpConfig = new DbgpInterpreterConfig(config);
+		final String host = dbgpConfig.getHost();
+		final int port = dbgpConfig.getPort();
+		final String sessionId = dbgpConfig.getSessionId();
 
-		final String host = (String) config
-				.getProperty(DbgpConstants.HOST_PROP);
-		final String port = (String) config
-				.getProperty(DbgpConstants.PORT_PROP);
-		final String sessionId = (String) config
-				.getProperty(DbgpConstants.SESSION_ID_PROP);
-
-		String dir = debugEnginePath.substring(0, debugEnginePath
+		final String dir = debugEnginePath.substring(0, debugEnginePath
 				.lastIndexOf('/'));
 
 		/*

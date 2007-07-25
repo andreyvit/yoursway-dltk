@@ -14,16 +14,14 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.launching.DebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
-import org.eclipse.dltk.launching.debug.DbgpConstants;
+import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
 
 public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 	public static final String ENGINE_ID = "org.eclipse.dltk.ruby.basicdebugger";
-	
+
 	private static final String RUBY_HOST_VAR = "DBGP_RUBY_HOST";
 	private static final String RUBY_PORT_VAR = "DBGP_RUBY_PORT";
 	private static final String RUBY_KEY_VAR = "DBGP_RUBY_KEY";
@@ -33,6 +31,10 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 	private static final String DEBUGGER_SCRIPT = "simple_runner.rb";
 
 	private final boolean logging;
+
+	protected boolean isLoggingEnabled() {
+		return logging;
+	}
 
 	protected IPath getLogFilename() {
 		// TODO:customize log file name, may be to preferences
@@ -44,10 +46,10 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 		try {
 			return RubyBasicDebuggerPlugin.getDefault().deployDebuggerSource();
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR,
-					RubyBasicDebuggerPlugin.PLUGIN_ID,
-					"Can't deploy debugger source", e));
+			abort("Can't deploy debugger source", e);
 		}
+
+		return null;
 	}
 
 	public RubyBasicDebuggerRunner(IInterpreterInstall install) {
@@ -55,15 +57,13 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 
 		this.logging = true;
 	}
-		
+
 	protected InterpreterConfig alterConfig(String exe, InterpreterConfig config)
 			throws CoreException {
 		// Get debugger source location
 		final IPath sourceLocation = deploy();
 
 		final IPath scriptFile = sourceLocation.append(DEBUGGER_SCRIPT);
-		
-		
 
 		// Creating new config
 		InterpreterConfig newConfig = new InterpreterConfig();
@@ -82,22 +82,22 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 		newConfig.setWorkingDirectory(config.getWorkingDirectoryPath());
 
 		// Environment
-		String host = (String) config.getProperty(DbgpConstants.HOST_PROP);
-		String port = (String) config.getProperty(DbgpConstants.PORT_PROP);
-		String sessionId = (String) config
-				.getProperty(DbgpConstants.SESSION_ID_PROP);
+		final DbgpInterpreterConfig dbgpConfig = new DbgpInterpreterConfig(
+				config);
 
 		newConfig.addEnvVars(config.getEnvVars());
-		newConfig.addEnvVar(RUBY_HOST_VAR, host);
-		newConfig.addEnvVar(RUBY_PORT_VAR, port);
-		newConfig.addEnvVar(RUBY_KEY_VAR, sessionId);
-		newConfig.addEnvVar(RUBY_SCRIPT_VAR, config.getScriptFilePath().toPortableString());
-		
-		if (logging) {
+		newConfig.addEnvVar(RUBY_HOST_VAR, dbgpConfig.getHost());
+		newConfig.addEnvVar(RUBY_PORT_VAR, Integer.toString(dbgpConfig
+				.getPort()));
+		newConfig.addEnvVar(RUBY_KEY_VAR, dbgpConfig.getSessionId());
+		newConfig.addEnvVar(RUBY_SCRIPT_VAR, config.getScriptFilePath()
+				.toPortableString());
+
+		if (isLoggingEnabled()) {
 			newConfig.addEnvVar(RUBY_LOG_VAR, getLogFilename()
 					.toPortableString());
 		}
-				
+
 		return newConfig;
 	}
 

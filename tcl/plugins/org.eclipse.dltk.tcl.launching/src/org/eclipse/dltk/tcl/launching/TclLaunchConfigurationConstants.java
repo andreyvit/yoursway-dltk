@@ -11,10 +11,10 @@ package org.eclipse.dltk.tcl.launching;
 
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 
-public class TclLaunchConfigurationConstants extends
+public final class TclLaunchConfigurationConstants extends
 		ScriptLaunchConfigurationConstants {
 	
-	protected TclLaunchConfigurationConstants() {
+	private TclLaunchConfigurationConstants() {
 		
 	}
 	

@@ -10,8 +10,8 @@
 package org.eclipse.dltk.ruby.internal.ui.search;
 
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.internal.ui.search.ScriptSearchPage;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
+import org.eclipse.dltk.ui.search.ScriptSearchPage;
 
 public class RubySearchPage extends ScriptSearchPage {
 	protected IDLTKLanguageToolkit getLanguageToolkit() {

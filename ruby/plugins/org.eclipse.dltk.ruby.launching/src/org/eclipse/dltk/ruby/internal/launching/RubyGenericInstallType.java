@@ -62,12 +62,14 @@ public class RubyGenericInstallType extends AbstractInterpreterInstallType {
 					InterpreterMessages.errNonExistentOrInvalidInstallLocation,
 					null);
 		}
+
 		// special support for jruby
 		String name = installLocation.getName();
 		if (Platform.getOS().equals(Platform.OS_WIN32)
 				&& name.equals("jruby.bat")) {
 			return createStatus(IStatus.OK, "", null);
 		}
+		
 		return super.validateInstallLocation(installLocation);
 	}
 

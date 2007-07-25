@@ -17,7 +17,9 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
 public class RubyBuildPathsBlock extends BuildpathsBlock {
-	public RubyBuildPathsBlock(IRunnableContext runnableContext, IStatusChangeListener context, int pageToShow, boolean useNewPage, IWorkbenchPreferenceContainer pageContainer) {
+	public RubyBuildPathsBlock(IRunnableContext runnableContext,
+			IStatusChangeListener context, int pageToShow, boolean useNewPage,
+			IWorkbenchPreferenceContainer pageContainer) {
 		super(runnableContext, context, pageToShow, useNewPage, pageContainer);
 	}
 

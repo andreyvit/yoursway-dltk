@@ -19,9 +19,6 @@ import org.eclipse.dltk.core.IModelElement;
 
 class UniqueNamesList extends ArrayList {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4866432224140371654L;
 	
 	HashSet names = new HashSet ();

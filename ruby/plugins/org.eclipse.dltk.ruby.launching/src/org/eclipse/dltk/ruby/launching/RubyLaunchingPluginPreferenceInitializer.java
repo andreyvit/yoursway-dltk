@@ -13,7 +13,5 @@ public class RubyLaunchingPluginPreferenceInitializer extends
 	public void initializeDefaultPreferences() {
 		Preferences prefs = RubyLaunchingPlugin.getDefault()
 				.getPluginPreferences();
-		
-		// TODO:
 	}
 }

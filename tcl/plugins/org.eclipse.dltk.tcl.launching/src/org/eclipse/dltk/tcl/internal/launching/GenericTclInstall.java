@@ -30,13 +30,8 @@ public class GenericTclInstall extends AbstractInterpreterInstall {
 
 		if (mode.equals(ILaunchManager.RUN_MODE)) {
 			return new TclInterpreterRunner(this);
-		} /*
-			 * else if (mode.equals(ILaunchManager.DEBUG_MODE)) { return new
-			 * TclInterpreterDebugger(this); }
-			 */
+		}
 
-		// TODO: possible throw exception and handle it by status like: No
-		// runner
 		return null;
 	}
 

@@ -11,6 +11,7 @@ package org.eclipse.dltk.internal.ui.search;
 
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.internal.ui.editor.ExternalStorageEditorInput;
+import org.eclipse.dltk.ui.search.ScriptSearchPage;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
