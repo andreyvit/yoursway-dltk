@@ -125,6 +125,8 @@ public abstract class AbstractScriptEditorTextHover implements
 		try {
 			IModelElement inputModelElement = EditorUtility
 					.getEditorInputModelElement(this.fEditor, false);
+			if (inputModelElement == null)
+				return null;
 			nature = DLTKLanguageManager.getLanguageToolkit(inputModelElement)
 					.getNatureId();
 		} catch (CoreException e) {
