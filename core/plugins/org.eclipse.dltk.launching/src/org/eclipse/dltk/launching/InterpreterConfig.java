@@ -11,59 +11,74 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
 public class InterpreterConfig implements Cloneable {
-	// Script file to launch
+	/**
+	 * Script file to launch
+	 */
 	private IPath scriptFile;
 
-	// Working directory
+	/**
+	 * Working directory
+	 */
 	private IPath workingDirectory;
 
-	// Arguments for interpreter (Strings)
+	/**
+	 * Arguments for interpreter (Strings)
+	 */
 	private ArrayList interpreterArgs;
 
-	// Arguments for script (Strings)
+	/**
+	 * Arguments for script (Strings)
+	 */
 	private ArrayList scriptArgs;
 
-	// Environment variables (String => String)
+	/**
+	 * Environment variables (String => String)
+	 */
 	private HashMap environment;
 
-	// Additional properties (String => Object)
+	/**
+	 * Additional properties (String => Object)
+	 */
 	private HashMap properties;
 
-	public InterpreterConfig(File scriptFile) {
-		this(new Path(scriptFile.toString()));
-	}
-
-	public InterpreterConfig(File scriptFile, File workingDirectory) {
-		this(new Path(scriptFile.toString()), new Path(workingDirectory
-				.toString()));
-	}
-
-	public InterpreterConfig(IPath scriptFile) {
-		this();
-
+	protected void init(IPath scriptFile, IPath workingDirectory) {
 		if (scriptFile == null) {
 			throw new IllegalArgumentException();
 		}
 
+		// Script file
 		this.scriptFile = scriptFile;
-	}
 
-	public InterpreterConfig(IPath scriptFile, IPath workingDirectory) {
-		this();
+		// Working directory
+		this.workingDirectory = workingDirectory != null ? workingDirectory
+				: scriptFile.removeLastSegments(1);
 
-		if (scriptFile == null) {
-			throw new IllegalArgumentException();
-		}
-
-		this.scriptFile = scriptFile;
-		this.workingDirectory = workingDirectory;
-	}
-
-	public InterpreterConfig() {
 		this.interpreterArgs = new ArrayList();
 		this.scriptArgs = new ArrayList();
 		this.environment = new HashMap();
 		this.properties = new HashMap();
+	}
+
+	public InterpreterConfig(File scriptFile) {
+		this(scriptFile, (File) null);
+	}
+
+	public InterpreterConfig(File scriptFile, File workingDirectory) {
+		if (scriptFile == null) {
+			throw new IllegalArgumentException();
+		}
+
+		init(new Path(scriptFile.getAbsolutePath()),
+				workingDirectory == null ? null : new Path(workingDirectory
+						.getAbsolutePath()));
+	}
+
+	public InterpreterConfig(IPath scriptFile) {
+		this(scriptFile, (IPath) null);
+	}
+
+	public InterpreterConfig(IPath scriptFile, IPath workingDirectory) {
+		init(scriptFile, workingDirectory);
 	}
 
 	// Script file

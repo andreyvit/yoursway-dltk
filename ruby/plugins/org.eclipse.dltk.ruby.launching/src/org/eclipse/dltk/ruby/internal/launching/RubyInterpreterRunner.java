@@ -14,8 +14,8 @@ import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationConstants;
 
 public class RubyInterpreterRunner extends AbstractInterpreterRunner {
-	public RubyInterpreterRunner(IInterpreterInstall InterpreterInstance) {
-		super(InterpreterInstance);
+	public RubyInterpreterRunner(IInterpreterInstall install) {
+		super(install);
 	}
 
 	protected String getProcessType() {

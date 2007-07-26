@@ -66,14 +66,11 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 		final IPath scriptFile = sourceLocation.append(DEBUGGER_SCRIPT);
 
 		// Creating new config
-		InterpreterConfig newConfig = new InterpreterConfig();
+		InterpreterConfig newConfig = new InterpreterConfig(scriptFile);
 
 		// Interpreter arguments
 		newConfig.addInterpreterArgs(config.getInterpreterArgs());
 		newConfig.addInterpreterArg("-I" + sourceLocation.toPortableString());
-
-		// Script
-		newConfig.setScriptFile(scriptFile);
 
 		// Script arguments
 		newConfig.addScriptArgs(config.getScriptArgs());

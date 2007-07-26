@@ -215,7 +215,4 @@ public class CoreDDPTests extends SuiteOfTestCases {
 			}
 		}
 	}
-	
-
-
 }

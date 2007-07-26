@@ -242,25 +242,6 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 		return fileBytes;
 	}
 
-	protected IScriptProject setUpScriptProject(final String projectName) throws CoreException, IOException {
-		// copy files in project from source workspace to target workspace
-		String sourceWorkspacePath = getSourceWorkspacePath();
-		String targetWorkspacePath = getWorkspaceRoot().getLocation().toFile().getCanonicalPath();
-		copyDirectory(new File(sourceWorkspacePath, projectName), new File(targetWorkspacePath, projectName));
-
-		// create project
-		final IProject project = getWorkspaceRoot().getProject(projectName);
-		IWorkspaceRunnable populate = new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {
-				project.create(null);
-				project.open(null);
-			}
-		};
-		getWorkspace().run(populate, null);
-		IScriptProject scriptProject = DLTKCore.create(project);
-		return scriptProject;
-	}
-
 	protected IProject setUpProject(final String projectName) throws CoreException, IOException {
 		// copy files in project from source workspace to target workspace
 		String sourceWorkspacePath = getSourceWorkspacePath();
@@ -277,6 +258,11 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 		};
 		getWorkspace().run(populate, null);
 		return project;
+	}
+	
+	protected IScriptProject setUpScriptProject(final String projectName) throws CoreException, IOException {
+		final IProject project = setUpProject(projectName);
+		return DLTKCore.create(project);
 	}
 
 	/**

@@ -671,8 +671,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		String mainScriptName = verifyMainScriptName(configuration);
 		IProject project = getScriptProject(configuration).getProject();
 
-		return project.getLocation().toPortableString() + Path.SEPARATOR
-				+ mainScriptName;
+		return project.getLocation().append(mainScriptName).toPortableString();
 	}
 
 	// Should be overriden in for any language
@@ -681,8 +680,9 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			throws CoreException {
 
 		// Validation already included
-		final File mainScript = new File(getScriptLaunchPath(configuration));
-		final File workingDirectory = getWorkingDirectory(configuration);
+		final IPath mainScript = new Path(getScriptLaunchPath(configuration));
+		final IPath workingDirectory = new Path(getWorkingDirectory(
+				configuration).getAbsolutePath());
 
 		InterpreterConfig config = new InterpreterConfig(mainScript,
 				workingDirectory);
@@ -874,10 +874,9 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 
 		if (runner == null) {
 			abort(
-					MessageFormat
-							.format(
-									LaunchingMessages.InterpreterRunnerDoesntExist,
-									new String[] { install.getName(), mode }),
+					MessageFormat.format(
+							LaunchingMessages.InterpreterRunnerDoesntExist,
+							new String[] { install.getName(), mode }),
 					null,
 					ScriptLaunchConfigurationConstants.ERR_INTERPRETER_RUNNER_DOES_NOT_EXIST);
 		}

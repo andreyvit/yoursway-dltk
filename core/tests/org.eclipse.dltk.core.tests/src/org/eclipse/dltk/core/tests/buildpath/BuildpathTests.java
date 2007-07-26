@@ -48,7 +48,6 @@ import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.utils.CorePrinter;
 
-
 public class BuildpathTests extends ModifyingResourceTests {
 
 	private static final String[] TEST_NATURE = new String[] { "org.eclipse.dltk.core.tests.testnature" };
