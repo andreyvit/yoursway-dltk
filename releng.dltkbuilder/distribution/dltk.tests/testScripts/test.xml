@@ -212,7 +212,7 @@
 		<antcall target="tcl-ui-tests" />
 
 		<echo message="Starting Python Core tests" />
-		<antcall target="python-core-tests" />
+		<antcall target="python-tests" />
 
 		<echo message="Starting Python UI tests" />
 		<antcall target="python-ui-tests" />
