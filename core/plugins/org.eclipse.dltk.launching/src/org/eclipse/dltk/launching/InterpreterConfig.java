@@ -41,10 +41,34 @@ public class InterpreterConfig implements Cloneable {
 	 */
 	private HashMap properties;
 
-	protected void init(IPath scriptFile, IPath workingDirectory) {
-		if (scriptFile == null) {
-			throw new IllegalArgumentException();
+	protected void checkScriptFile(File file) {
+		if (file == null) {
+			throw new IllegalArgumentException("Script file cannot be null");
 		}
+	}
+
+	protected void checkScriptFile(IPath file) {
+		if (file == null) {
+			throw new IllegalArgumentException("Script file cannot be null");
+		}
+	}
+
+	protected void checkWorkingDirectory(File directory) {
+		if (directory == null) {
+			throw new IllegalArgumentException(
+					"Working directory cannot be null");
+		}
+	}
+
+	protected void checkWorkingDirectory(IPath directory) {
+		if (directory == null) {
+			throw new IllegalArgumentException(
+					"Working directory cannot be null");
+		}
+	}
+
+	protected void init(IPath scriptFile, IPath workingDirectory) {
+		checkScriptFile(scriptFile);
 
 		// Script file
 		this.scriptFile = scriptFile;
@@ -94,10 +118,12 @@ public class InterpreterConfig implements Cloneable {
 	}
 
 	public void setScriptFile(File file) {
+		checkScriptFile(file);
 		setScriptFile(new Path(file.toString()));
 	}
 
 	public void setScriptFile(IPath file) {
+		checkScriptFile(file);
 		this.scriptFile = file;
 	}
 
@@ -114,15 +140,22 @@ public class InterpreterConfig implements Cloneable {
 	}
 
 	public void setWorkingDirectory(File directory) {
+		checkWorkingDirectory(directory);
 		setWorkingDirectory(new Path(directory.toString()));
 	}
 
 	public void setWorkingDirectory(IPath directory) {
+		checkWorkingDirectory(directory);
 		this.workingDirectory = directory;
 	}
 
 	// Interpreter section
 	public boolean addInterpreterArg(String arg) {
+		if (arg == null) {
+			throw new IllegalArgumentException(
+					"Interpreter argument cannot be null");
+		}
+
 		return interpreterArgs.add(arg);
 	}
 
@@ -161,6 +194,10 @@ public class InterpreterConfig implements Cloneable {
 
 	// Script section
 	public boolean addScriptArg(String arg) {
+		if (arg == null) {
+			throw new IllegalArgumentException("Script argument cannot be null");
+		}
+
 		return scriptArgs.add(arg);
 	}
 

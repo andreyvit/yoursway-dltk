@@ -24,14 +24,15 @@ import org.osgi.framework.Bundle;
 
 public class RubyGenericInstallType extends AbstractInterpreterInstallType {
 
-	private static String[] interpreterNames = { "ruby" };
+	private static final String TYPE_NAME = "Generic Ruby install";
+	private static final String[] INTERPRETER_NAMES = { "ruby" };
 
 	public String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
 
 	public String getName() {
-		return "Generic Ruby install";
+		return TYPE_NAME;
 	}
 
 	protected String getPluginId() {
@@ -39,7 +40,7 @@ public class RubyGenericInstallType extends AbstractInterpreterInstallType {
 	}
 
 	protected String[] getPossibleInterpreterNames() {
-		return interpreterNames;
+		return INTERPRETER_NAMES;
 	}
 
 	protected IInterpreterInstall doCreateInterpreterInstall(String id) {
@@ -63,13 +64,13 @@ public class RubyGenericInstallType extends AbstractInterpreterInstallType {
 					null);
 		}
 
-		// special support for jruby
-		String name = installLocation.getName();
+		// JRuby support
+		final String name = installLocation.getName();
 		if (Platform.getOS().equals(Platform.OS_WIN32)
 				&& name.equals("jruby.bat")) {
 			return createStatus(IStatus.OK, "", null);
 		}
-		
+
 		return super.validateInstallLocation(installLocation);
 	}
 

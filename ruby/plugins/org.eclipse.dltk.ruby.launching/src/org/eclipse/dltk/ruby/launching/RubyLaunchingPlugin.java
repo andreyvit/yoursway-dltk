@@ -21,9 +21,6 @@ public class RubyLaunchingPlugin extends Plugin {
 
 	private static RubyLaunchingPlugin plugin;
 
-	/**
-	 * The constructor
-	 */
 	public RubyLaunchingPlugin() {
 		plugin = this;
 	}
