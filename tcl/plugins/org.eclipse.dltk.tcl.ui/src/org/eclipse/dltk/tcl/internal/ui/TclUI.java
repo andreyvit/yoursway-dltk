@@ -10,7 +10,10 @@
 package org.eclipse.dltk.tcl.internal.ui;
 
 import org.eclipse.dltk.console.ui.ScriptConsoleUIPlugin;
+import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.internal.ui.text.TclTextTools;
+import org.eclipse.dltk.ui.DLTKUILanguageManager;
+import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -71,8 +74,12 @@ public class TclUI extends AbstractUIPlugin {
 	}
 	
 	public synchronized TclTextTools getTextTools() {
+		IDLTKUILanguageToolkit languageToolkit = DLTKUILanguageManager.getLanguageToolkit(TclNature.NATURE_ID);
+		return (TclTextTools) languageToolkit.getTextTools();
+	}	
+	public synchronized TclTextTools internalgetTextTools() {
 		if (fTclTextTools == null)
 			fTclTextTools= new TclTextTools(true);
-		return fTclTextTools;
-	}	
+		return fTclTextTools;			
+	}
 }

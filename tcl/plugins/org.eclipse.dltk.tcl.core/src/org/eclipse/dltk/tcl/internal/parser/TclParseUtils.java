@@ -102,14 +102,6 @@ public class TclParseUtils {
 									arguments.add(a);
 								}
 							}
-							/*
-							 * } catch (ANTLRException e) { if
-							 * (DLTKCore.DEBUG_PARSER) {
-							 * System.out.println("ANTLRException: " +
-							 * e.getMessage());
-							 * System.out.println("TclParseUtils.parseArguments()");
-							 * e.printStackTrace(); } }
-							 */
 						}
 					}
 				}

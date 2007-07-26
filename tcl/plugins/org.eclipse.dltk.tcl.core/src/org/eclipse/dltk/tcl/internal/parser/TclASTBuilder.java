@@ -184,7 +184,7 @@ public class TclASTBuilder {
 		if (procArguments instanceof TclBlockExpression) {
 			List/* < Statement > */st = null;
 			//try {
-				st = ((TclBlockExpression) procArguments).parseBlock();
+				st = ((TclBlockExpression) procArguments).parseBlockSimple();
 			/*} catch (ANTLRException ex) {
 				if( DLTKCore.DEBUG_PARSER )
 					ex.printStackTrace();

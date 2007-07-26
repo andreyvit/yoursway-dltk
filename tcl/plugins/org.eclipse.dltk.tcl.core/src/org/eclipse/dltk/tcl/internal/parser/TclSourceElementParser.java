@@ -665,7 +665,7 @@ public class TclSourceElementParser implements ISourceElementParser {
 		if (procArguments instanceof TclBlockExpression) {
 			List/* < Statement > */st = null;
 
-			st = ((TclBlockExpression) procArguments).parseBlock();
+			st = ((TclBlockExpression) procArguments).parseBlockSimple();
 
 			arguments = TclParseUtils.parseArguments(st);
 		}

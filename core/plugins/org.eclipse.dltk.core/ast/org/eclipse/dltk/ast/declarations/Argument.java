@@ -72,7 +72,8 @@ public class Argument extends Declaration {
 	 */
 	public final void set(SimpleReference mn, ASTNode initialization) {
 		this.initialization = initialization;
-		this.setName(mn.getName());
+//		this.setName(mn.getName());
+		this.ref = mn;
 		this.setStart(mn.sourceStart());
 		this.setEnd(mn.sourceEnd());
 	}

@@ -22,6 +22,7 @@ import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.tcl.ast.TclConstants;
 import org.eclipse.dltk.tcl.core.ITclSourceParser;
 import org.eclipse.dltk.tcl.core.TclNature;
+import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class TclBlockExpression extends Expression {
@@ -89,5 +90,18 @@ public class TclBlockExpression extends Expression {
 
 	public void setFilename(char[] fileName) {
 		this.fileName = fileName;
+	}
+
+	public List parseBlockSimple() {
+		if (this.fBlockContent == null) {
+			return null;
+		}
+
+		String content = this.fBlockContent.substring(1, this.fBlockContent.length() - 1);
+		ITclSourceParser parser = null;
+		parser = new TclSourceParser();
+		parser.setOffset(this.sourceStart() + 1);
+		ModuleDeclaration module = parser.parse(this.fileName, content.toCharArray(), null);
+		return module.getStatements();
 	}
 }

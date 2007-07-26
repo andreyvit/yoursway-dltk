@@ -22,6 +22,7 @@ import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnAST;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnKeywordOrFunction;
+import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnNode;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnVariable;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 
@@ -167,6 +168,12 @@ public class TclSelectionParser extends TclAssistParser {
 			if (!inStatement) {
 				this.handleNotInElement(method, position);
 			}
+		}
+		// Handle other cases here
+		if (node.sourceStart() <= position && node.sourceEnd() >= position) {
+			SelectionOnNode nde = new SelectionOnNode(node);
+			nde.setPosition(position);
+			throw new SelectionNodeFound(nde);
 		}
 	}
 

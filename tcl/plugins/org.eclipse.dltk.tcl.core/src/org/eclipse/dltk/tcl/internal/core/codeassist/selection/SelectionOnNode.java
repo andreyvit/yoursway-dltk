@@ -12,15 +12,20 @@ package org.eclipse.dltk.tcl.internal.core.codeassist.selection;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.references.SimpleReference;
 
-public class SelectionOnKeywordOrFunction extends SimpleReference {
-	private ASTNode originalNode;
-	public SelectionOnKeywordOrFunction(String completionToken,
-			ASTNode completionNode, ASTNode node) {
-		super(completionNode.sourceStart(), completionNode.sourceEnd(),
-				completionToken);
-		this.originalNode = node;
+public class SelectionOnNode extends SimpleReference {
+	private ASTNode node;
+	private int position;
+	public SelectionOnNode(ASTNode token) {
+		super(token.sourceStart(), token.sourceEnd(), "");
+		this.node = token;
 	}
-	public ASTNode getOriginalNode() {
-		return this.originalNode;
+	public ASTNode getNode() {
+		return this.node;
+	}
+	public void setPosition(int position) {
+		this.position = position;
+	}
+	public int getPosition() {
+		return this.position;
 	}
 }

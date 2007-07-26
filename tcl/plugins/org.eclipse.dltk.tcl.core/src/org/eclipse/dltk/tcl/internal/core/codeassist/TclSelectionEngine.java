@@ -143,7 +143,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 				.toArray(new IModelElement[selectionElements.size()]);
 	}
 
-	private void select(ASTNode astNode, ASTNode astNodeParent) {
+	protected void select(ASTNode astNode, ASTNode astNodeParent) {
 		if (astNode instanceof SelectionOnKeywordOrFunction) {
 			SelectionOnKeywordOrFunction key = (SelectionOnKeywordOrFunction) astNode;
 			// findKeywords(key.getToken(), key.getPossibleKeywords(),
@@ -745,7 +745,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		}
 	}
 
-	private void addElementFromASTNode(ASTNode nde) {
+	protected void addElementFromASTNode(ASTNode nde) {
 		ModuleDeclaration module = parser.module;
 		List statements = module.getStatements();
 		searchAddElementsTo(statements, nde, sourceModule);
@@ -776,7 +776,9 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		}
 		return null;
 	}
-
+	protected IModelElement findElementParent(ASTNode node, String name, IParent parent) {
+		return null;
+	}
 	protected void searchAddElementsTo(List statements, final ASTNode node,
 			IParent element) {
 		if (statements == null || element == null) {
@@ -827,8 +829,12 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 						nodeName = nodeName.substring(2);
 						e = findChildrenByName(nodeName,
 								(IParent) this.sourceModule);
-					} else
+					} else {
 						e = findChildrenByName(nodeName, (IParent) element);
+					}
+					if( e == null ) {
+						e = findElementParent(node, nodeName, (IParent)element);
+					}
 					if (e != null) {
 						List toRemove = new ArrayList();
 						for (int k = 0; k < this.selectionElements.size(); ++k) {

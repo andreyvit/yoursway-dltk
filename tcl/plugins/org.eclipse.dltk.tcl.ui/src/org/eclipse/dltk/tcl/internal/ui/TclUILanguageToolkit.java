@@ -101,7 +101,7 @@ public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
 	}
 
 	public ScriptTextTools getTextTools() {
-		return TclUI.getDefault().getTextTools();
+		return TclUI.getDefault().internalgetTextTools();
 	}
 
 	public ScriptSourceViewerConfiguration createSourceViwerConfiguration() {
