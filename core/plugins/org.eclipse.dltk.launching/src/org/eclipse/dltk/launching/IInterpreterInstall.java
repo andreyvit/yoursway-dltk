@@ -43,10 +43,10 @@ public interface IInterpreterInstall extends IBuiltinModuleProvider {
 	// Arguments
 	public String[] getInterpreterArguments();
 
-	void setInterpreterArguments(String[] InterpreterArgs);
+	void setInterpreterArguments(String[] args);
 
 	// Arguments
 	String getInterpreterArgs();
 
-	void setInterpreterArgs(String InterpreterArgs);
+	void setInterpreterArgs(String args);
 }

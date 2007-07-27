@@ -380,11 +380,11 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 
 	private void doOkPressed() {
 		if (fEditedInterpreter == null) {
-			IInterpreterInstall Interpreter = new InterpreterStandin(
+			IInterpreterInstall install = new InterpreterStandin(
 					fSelectedInterpreterType,
 					createUniqueId(fSelectedInterpreterType));
-			setFieldValuesToInterpreter(Interpreter);
-			fRequestor.interpreterAdded(Interpreter);
+			setFieldValuesToInterpreter(install);
+			fRequestor.interpreterAdded(install);
 		} else {
 			setFieldValuesToInterpreter(fEditedInterpreter);
 		}
@@ -398,29 +398,29 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		return id;
 	}
 
-	protected void setFieldValuesToInterpreter(IInterpreterInstall Interpreter) {
+	protected void setFieldValuesToInterpreter(IInterpreterInstall install) {
 		File dir = new File(fInterpreterPath.getText());
 // try {
-		Interpreter.setInstallLocation(dir);
+		install.setInstallLocation(dir);
 // } catch (IOException e) {
 // // Interpreter.setInstallLocation(dir.getAbsoluteFile());
 // Interpreter.setInstallLocation(dir);
 // }
-		Interpreter.setName(fInterpreterName.getText());
+		install.setName(fInterpreterName.getText());
 
 		if (this.useInterpreterArgs()) {
 			String argString = fInterpreterArgs.getText().trim();
 
 			if (argString != null && argString.length() > 0) {
-				Interpreter.setInterpreterArgs(argString);
+				install.setInterpreterArgs(argString);
 			} else {
-				Interpreter.setInterpreterArgs(null);
+				install.setInterpreterArgs(null);
 			}
 		} else {
-			Interpreter.setInterpreterArgs(null);
+			install.setInterpreterArgs(null);
 		}
 
-		fLibraryBlock.performApply(Interpreter);
+		fLibraryBlock.performApply(install);
 	}
 
 // protected File getAbsoluteFileOrEmpty(String path) {

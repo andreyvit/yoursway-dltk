@@ -23,16 +23,17 @@ import org.eclipse.dltk.utils.DeployHelper;
 import org.osgi.framework.Bundle;
 
 public class GenericTclInstallType extends AbstractInterpreterInstallType {
+	private static final String INSTALL_TYPE_NAME = "Generic Tcl";
 
-	private static final String[] possibleExes = { "tclsh", "wish", "vtk",
-			"expect" };
+	private static final String[] INTERPRETER_NAMES = { "tclsh", "tclsh84", "wish",
+			"wish84", "vtk", "expect" };
 
 	public String getNatureId() {
 		return TclNature.NATURE_ID;
 	}
 
 	public String getName() {
-		return "Generic Tcl install";
+		return INSTALL_TYPE_NAME;
 	}
 
 	protected String getPluginId() {
@@ -40,7 +41,7 @@ public class GenericTclInstallType extends AbstractInterpreterInstallType {
 	}
 
 	protected String[] getPossibleInterpreterNames() {
-		return possibleExes;
+		return INTERPRETER_NAMES;
 	}
 
 	protected IInterpreterInstall doCreateInterpreterInstall(String id) {

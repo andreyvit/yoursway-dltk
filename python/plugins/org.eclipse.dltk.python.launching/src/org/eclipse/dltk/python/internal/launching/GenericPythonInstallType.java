@@ -20,15 +20,16 @@ import org.eclipse.dltk.python.launching.PythonLaunchingPlugin;
 import org.osgi.framework.Bundle;
 
 public class GenericPythonInstallType extends AbstractInterpreterInstallType {
+	private static final String INSTALL_TYPE_NAME = "Generic Python";
 
-	private static String[] interpreterNames = { "python" };
+	private static final String[] INTERPRETER_NAMES = { "python", "pythonw" };
 
 	public String getNatureId() {
 		return PythonNature.NATURE_ID;
 	}
 
 	public String getName() {
-		return "Generic Python install";
+		return INSTALL_TYPE_NAME;
 	}
 
 	protected String getPluginId() {
@@ -36,7 +37,7 @@ public class GenericPythonInstallType extends AbstractInterpreterInstallType {
 	}
 
 	protected String[] getPossibleInterpreterNames() {
-		return interpreterNames;
+		return INTERPRETER_NAMES;
 	}
 
 	protected IInterpreterInstall doCreateInterpreterInstall(String id) {

@@ -678,7 +678,7 @@ public abstract class InterpretersBlock implements
 				final File file = (File) it1.next();
 				final IInterpreterInstallType type = (IInterpreterInstallType) it2
 						.next();
-				IInterpreterInstall Interpreter = new InterpreterStandin(type,
+				IInterpreterInstall interpreter = new InterpreterStandin(type,
 						createUniqueId(type));
 				String name = file.getName();
 				String nameCopy = new String(name);
@@ -686,9 +686,9 @@ public abstract class InterpretersBlock implements
 				while (isDuplicateName(nameCopy)) {
 					nameCopy = name + '(' + i++ + ')';
 				}
-				Interpreter.setName(nameCopy);
-				Interpreter.setInstallLocation(file);
-				interpreterAdded(Interpreter);
+				interpreter.setName(nameCopy);
+				interpreter.setInstallLocation(file);
+				interpreterAdded(interpreter);
 			}
 		}
 	}
@@ -1070,18 +1070,19 @@ public abstract class InterpretersBlock implements
 	protected void editInterpreter() {
 		IStructuredSelection selection = (IStructuredSelection) fInterpreterList
 				.getSelection();
-		IInterpreterInstall Interpreter = (IInterpreterInstall) selection
+		IInterpreterInstall install = (IInterpreterInstall) selection
 				.getFirstElement();
-		if (Interpreter == null) {
+		
+		if (install == null) {
 			return;
 		}
 
-		AddScriptInterpreterDialog dialog = createInterpreterDialog(Interpreter);
+		AddScriptInterpreterDialog dialog = createInterpreterDialog(install);
 		dialog.setTitle(InterpretersMessages.InstalledInterpretersBlock_8);
 		if (dialog.open() != Window.OK) {
 			return;
 		}
-		fInterpreterList.refresh(Interpreter);
+		fInterpreterList.refresh(install);
 
 	}
 }

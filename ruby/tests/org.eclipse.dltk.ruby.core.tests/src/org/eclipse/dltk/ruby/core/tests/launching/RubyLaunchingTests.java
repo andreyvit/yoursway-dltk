@@ -1,9 +1,14 @@
 package org.eclipse.dltk.ruby.core.tests.launching;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import junit.framework.Test;
 
@@ -23,14 +28,131 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
+import org.eclipse.dltk.internal.launching.InterpreterDefinitionsContainer;
 import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.core.tests.Activator;
+import org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationDelegate;
 
 public class RubyLaunchingTests extends AbstractModelTests {
+
+	public static class MyInterpretersUpdater {
+
+		private InterpreterDefinitionsContainer fOriginalInterpreters;
+
+		private void saveCurrentAsOriginal() {
+			fOriginalInterpreters = new InterpreterDefinitionsContainer();
+
+			final String[] natureIds = ScriptRuntime.getInterpreterNatures();
+			for (int i = 0; i < natureIds.length; i++) {
+				final String natureId = natureIds[i];
+
+				IInterpreterInstall def = ScriptRuntime
+						.getDefaultInterpreterInstall(natureId);
+
+				if (def != null) {
+					fOriginalInterpreters
+							.setDefaultInterpreterInstallCompositeID(natureId,
+									ScriptRuntime
+											.getCompositeIdFromInterpreter(def));
+				}
+			}
+
+			final IInterpreterInstallType[] types = ScriptRuntime
+					.getInterpreterInstallTypes();
+			for (int i = 0; i < types.length; i++) {
+				IInterpreterInstall[] installs = types[i]
+						.getInterpreterInstalls();
+				if (installs != null) {
+					for (int j = 0; j < installs.length; j++) {
+						fOriginalInterpreters.addInterpreter(installs[j]);
+					}
+				}
+			}
+		}
+
+		private void saveInterpreterDefinitions(
+				final InterpreterDefinitionsContainer container) {
+			try {
+				final String xml = container.getAsXML();
+				ScriptRuntime.getPreferences().setValue(
+						ScriptRuntime.PREF_INTERPRETER_XML, xml);
+				ScriptRuntime.savePreferences();
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (TransformerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		public MyInterpretersUpdater() {
+			saveCurrentAsOriginal();
+		}
+
+		public boolean updateInterpreterSettings(String langNatureId,
+				IInterpreterInstall[] interpreters,
+				IInterpreterInstall defaultInterpreter) {
+			// Create a Interpreter definition container
+			InterpreterDefinitionsContainer container = new InterpreterDefinitionsContainer();
+
+			// Default interpreter id for natureId
+			if (defaultInterpreter != null) {
+				final String defaultId = ScriptRuntime
+						.getCompositeIdFromInterpreter(defaultInterpreter);
+				container.setDefaultInterpreterInstallCompositeID(langNatureId,
+						defaultId);
+			} else {
+				container.setDefaultInterpreterInstallCompositeID(langNatureId,
+						null);
+			}
+
+			// Interpreters for natureId
+			for (int i = 0; i < interpreters.length; i++) {
+				container.addInterpreter(interpreters[i]);
+			}
+
+			// Default interpreters for other languages
+			final String[] natureIds = fOriginalInterpreters
+					.getInterpreterNatures();
+			for (int i = 0; i < natureIds.length; i++) {
+				final String natureId = natureIds[i];
+				if (!langNatureId.equals(natureId)) {
+					final String defaultId = fOriginalInterpreters
+							.getDefaultInterpreterInstallCompositeID(natureId);
+					container.setDefaultInterpreterInstallCompositeID(natureId,
+							defaultId);
+				}
+			}
+
+			// Save interpreters from other languages to the container
+			final Iterator it = fOriginalInterpreters.getInterpreterList()
+					.iterator();
+			while (it.hasNext()) {
+				final IInterpreterInstall install = (IInterpreterInstall) it
+						.next();
+				if (!langNatureId.equals(install.getInterpreterInstallType()
+						.getNatureId())) {
+					container.addInterpreter(install);
+				}
+			}
+
+			saveInterpreterDefinitions(container);
+
+			saveCurrentAsOriginal();
+
+			return true;
+		}
+	}
+
 	private static final String PROJECT_NAME = "launching";
 
 	private IScriptProject scriptProject;
@@ -268,27 +390,36 @@ public class RubyLaunchingTests extends AbstractModelTests {
 		};
 	}
 
-	public void testLaunch() throws Exception {
+	public void __testLaunch() throws Exception {
 		IProject project = scriptProject.getProject();
 		IResource member = project.findMember("src/test.rb");
 
-		// Interpreter install
-		final IInterpreterInstall install = ScriptRuntime
-				.getDefaultInterpreterInstall(RubyNature.NATURE_ID);
+		IInterpreterInstallType[] installTypes = ScriptRuntime
+				.getInterpreterInstallTypes(RubyNature.NATURE_ID);
+		IInterpreterInstallType installType = installTypes[0];
 
-		// Interperter runner
-		// RubyInterpreterRunner runner = new RubyInterpreterRunner(install);
-		// runner.run(config, launch, null);
+		IInterpreterInstall install = installType
+				.createInterpreterInstall("test_install");
+
+		install.setName("my ruby");
+		install.setInstallLocation(new File("C:/ruby/bin/ruby.exe"));
+		install.setLibraryLocations(null);
+
+		MyInterpretersUpdater updater = new MyInterpretersUpdater();
+		updater.updateInterpreterSettings(RubyNature.NATURE_ID,
+				new IInterpreterInstall[] { install }, install);
+
+		// Interpreter install (for testing)
+		final IInterpreterInstall myInstall = ScriptRuntime
+				.getDefaultInterpreterInstall(RubyNature.NATURE_ID);
 
 		ILaunch launch = new Launch(null, ILaunchManager.RUN_MODE, null);
 
-		// RubyLaunchConfigurationDelegate delegate = new
-		// RubyLaunchConfigurationDTLelegate();
-		// delegate.launch(createConfiguration(), ILaunchManager.RUN_MODE,
-		// launch,
-		// null);
+		RubyLaunchConfigurationDelegate delegate = new RubyLaunchConfigurationDelegate();
+		delegate.launch(createConfiguration(), ILaunchManager.RUN_MODE, launch,
+				null);
 
-		assertTrue(member != null);
+		// assertTrue(member != null);
 	}
 
 	protected InterpreterConfig createInterperterConfig() {

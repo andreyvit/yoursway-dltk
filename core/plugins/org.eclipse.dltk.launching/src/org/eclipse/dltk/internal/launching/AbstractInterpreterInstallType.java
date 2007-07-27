@@ -369,22 +369,37 @@ public abstract class AbstractInterpreterInstallType implements
 					null);
 		}
 
-		String name = installLocation.getName();
-		if (Platform.getOS().equals(Platform.OS_WIN32)
-				&& !name.matches(".*\\.exe")) {
-			return createStatus(IStatus.ERROR,
-					InterpreterMessages.errNoInterpreterExecutablesFound, null);
-		}
+		String possibleNames[] = getPossibleInterpreterNames();
 
-		String[] possible = getPossibleInterpreterNames();
-		for (int i = 0; i < possible.length; i++) {
-			if (name.indexOf(possible[i]) != -1) {
-				return createStatus(IStatus.OK, "", null);
+		boolean matchFound = false;
+		final String name = installLocation.getName();
+
+		if (Platform.getOS().equals(Platform.OS_WIN32)) {
+			// (name.matches(".*\\.exe")
+			for (int i = 0; i < possibleNames.length; ++i) {
+				final String possibleName = possibleNames[i];
+				if (name.equals(possibleName + ".exe")
+						|| name.equals(possibleName + ".bat")) {
+					matchFound = true;
+					break;
+				}
+			}
+		} else {
+			for (int i = 0; i < possibleNames.length; i++) {
+				final String possibleName = possibleNames[i];
+				if (name.equalsIgnoreCase(possibleName)) {
+					matchFound = true;
+					break;
+				}
 			}
 		}
 
-		return createStatus(IStatus.ERROR,
-				InterpreterMessages.errNoInterpreterExecutablesFound, null);
+		if (matchFound) {
+			return createStatus(IStatus.OK, "", null);
+		} else {
+			return createStatus(IStatus.ERROR,
+					InterpreterMessages.errNoInterpreterExecutablesFound, null);
+		}
 	}
 
 	protected IRunnableWithProgress createLookupRunnable(
@@ -415,7 +430,7 @@ public abstract class AbstractInterpreterInstallType implements
 								throw new IOException(
 										"null result from process");
 							}
-							
+
 							String[] paths = parsePaths(result);
 
 							IPath path = new Path(pathFile.getCanonicalPath())
@@ -424,7 +439,7 @@ public abstract class AbstractInterpreterInstallType implements
 							fillLocationsExceptOne(locations, paths, path);
 						}
 					} catch (CoreException e) {
-						//TODO: handle
+						// TODO: handle
 					}
 
 				} catch (IOException e) {

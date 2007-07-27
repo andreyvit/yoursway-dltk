@@ -144,9 +144,10 @@ public abstract class ScriptInterpreterPreferencePage extends PreferencePage imp
 		BusyIndicator.showWhile(null, new Runnable() {
 			public void run() {
 				IInterpreterInstall defaultInterpreter = getCurrentDefaultInterpreter();
-				IInterpreterInstall[] Interpreters = fInterpretersBlock.getInterpreters();
+				IInterpreterInstall[] interpreters = fInterpretersBlock.getInterpreters();
+				
 				InterpretersUpdater updater = new InterpretersUpdater();
-				if (!updater.updateInterpreterSettings(fInterpretersBlock.getCurrentNature(), Interpreters, defaultInterpreter)) {
+				if (!updater.updateInterpreterSettings(fInterpretersBlock.getCurrentNature(), interpreters, defaultInterpreter)) {
 					canceled[0] = true;
 				}
 			}

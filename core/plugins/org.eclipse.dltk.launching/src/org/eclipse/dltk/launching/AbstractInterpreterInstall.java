@@ -172,13 +172,13 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 		return ex.getInterpreterArgumentsArray();
 	}
 
-	public void setInterpreterArguments(String[] InterpreterArgs) {
-		if (InterpreterArgs == null) {
+	public void setInterpreterArguments(String[] args) {
+		if (args == null) {
 			setInterpreterArgs(null);
 		} else {
 			StringBuffer buf = new StringBuffer();
-			for (int i = 0; i < InterpreterArgs.length; i++) {
-				String string = InterpreterArgs[i];
+			for (int i = 0; i < args.length; i++) {
+				String string = args[i];
 				buf.append(string);
 				buf.append(' ');
 			}
@@ -190,19 +190,19 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 		return fInterpreterArgs;
 	}
 
-	public void setInterpreterArgs(String InterpreterArgs) {
+	public void setInterpreterArgs(String args) {
 		if (fInterpreterArgs == null) {
-			if (InterpreterArgs == null) {
+			if (args == null) {
 				return;
 			}
-		} else if (fInterpreterArgs.equals(InterpreterArgs)) {
+		} else if (fInterpreterArgs.equals(args)) {
 			return;
 		}
 		PropertyChangeEvent event = new PropertyChangeEvent(
 				this,
 				IInterpreterInstallChangedListener.PROPERTY_Interpreter_ARGUMENTS,
-				fInterpreterArgs, InterpreterArgs);
-		fInterpreterArgs = InterpreterArgs;
+				fInterpreterArgs, args);
+		fInterpreterArgs = args;
 
 		firePropertyChangeEvent(event);
 	}
