@@ -2889,7 +2889,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 			((IScriptReconcilingListener) listeners[i]).reconciled(ast, forced,
 					progressMonitor);
 
-		// Update Java Outline page selection
+		// Update Outline page selection
 		if (!forced && !progressMonitor.isCanceled()) {
 			Shell shell = getSite().getShell();
 			if (shell != null && !shell.isDisposed()) {

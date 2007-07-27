@@ -145,8 +145,8 @@ public class SemanticHighlightingReconciler implements
 						fRemovedPositions);
 
 			stopReconcilingPositions();
-			long t1 = System.currentTimeMillis();
-			System.out.println(t1 - t0);
+//			long t1 = System.currentTimeMillis();
+//			System.out.println(t1 - t0);
 
 		} finally {
 			fJobPresenter = null;

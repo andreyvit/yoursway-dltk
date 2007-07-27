@@ -80,7 +80,7 @@ public abstract class ScriptSourceViewerConfiguration extends
 
 	public IReconciler getReconciler(ISourceViewer sourceViewer) {
 		final ITextEditor editor = getEditor();
-		if (editor != null && editor.isEditable()) {
+//		if (editor != null && editor.isEditable()) {
 
 			ScriptCompositeReconcilingStrategy strategy = new ScriptCompositeReconcilingStrategy(
 					editor, getConfiguredDocumentPartitioning(sourceViewer));
@@ -91,8 +91,8 @@ public abstract class ScriptSourceViewerConfiguration extends
 			reconciler.setDelay(500);
 
 			return reconciler;
-		}
-		return null;
+//		}
+//		return null;
 	}
 
 	public abstract boolean affectsTextPresentation(PropertyChangeEvent event);
