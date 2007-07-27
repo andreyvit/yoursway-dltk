@@ -1,3 +1,2 @@
-f = File.open("D:/temp/xxx.txt", "w")
-f << 'Hello, World!'
-f.close
+STDOUT.print ARGV[0]
+STDERR.print ARGV[1]

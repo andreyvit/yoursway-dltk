@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.core.tests;
 
+import org.eclipse.dltk.tcl.core.tests.launching.TclLaunchingTests;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -17,10 +19,11 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(
 				"Test for org.eclipse.dltk.tcl.core.tests");
-		//$JUnit-BEGIN$
+		// $JUnit-BEGIN$
 		suite.addTest(org.eclipse.dltk.tcl.core.tests.model.AllTests.suite());
 		suite.addTest(org.eclipse.dltk.tcl.parser.tests.AllTests.suite());
-		//$JUnit-END$
+		suite.addTest(TclLaunchingTests.suite());
+		// $JUnit-END$
 		return suite;
 	}
 

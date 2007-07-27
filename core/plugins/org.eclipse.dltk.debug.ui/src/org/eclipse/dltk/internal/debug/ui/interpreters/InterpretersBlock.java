@@ -10,28 +10,21 @@
 package org.eclipse.dltk.internal.debug.ui.interpreters;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.internal.ui.util.SWTUtil;
 import org.eclipse.dltk.internal.ui.util.TableLayoutComposite;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
+import org.eclipse.dltk.launching.InterpreterSearcher;
 import org.eclipse.dltk.launching.InterpreterStandin;
 import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.dltk.ui.util.PixelConverter;
@@ -634,8 +627,7 @@ public abstract class InterpretersBlock implements
 		}
 
 		// search
-		final List locations = new ArrayList();
-		final List types = new ArrayList();
+		final InterpreterSearcher searcher = new InterpreterSearcher();
 
 		IRunnableWithProgress r = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) {
@@ -643,7 +635,9 @@ public abstract class InterpretersBlock implements
 					monitor.beginTask(
 							InterpretersMessages.InstalledInterpretersBlock_11,
 							IProgressMonitor.UNKNOWN);
-					searchFast(locations, types, exstingLocations, monitor);
+
+					searcher.search(getCurrentNature(), exstingLocations, 1,
+							monitor);
 				} finally {
 					monitor.done();
 				}
@@ -667,25 +661,29 @@ public abstract class InterpretersBlock implements
 			return; // cancelled
 		}
 
-		if (locations.isEmpty()) {
+		if (!searcher.hasResults()) {
 			MessageDialog.openInformation(getShell(),
 					InterpretersMessages.InstalledInterpretersBlock_12,
 					InterpretersMessages.InstalledInterpretersBlock_113);
 		} else {
-			final Iterator it1 = locations.iterator();
-			final Iterator it2 = types.iterator();
-			while (it1.hasNext()) {
-				final File file = (File) it1.next();
-				final IInterpreterInstallType type = (IInterpreterInstallType) it2
-						.next();
+			final File[] locations = searcher.getFoundFiles();
+			final IInterpreterInstallType[] types = searcher
+					.getFoundInstallTypes();
+
+			for (int i = 0; i < locations.length; ++i) {
+				final File file = locations[i];
+				final IInterpreterInstallType type = types[i];
+
 				IInterpreterInstall interpreter = new InterpreterStandin(type,
 						createUniqueId(type));
-				String name = file.getName();
+				final String name = file.getName();
+
 				String nameCopy = new String(name);
-				int i = 1;
+				int j = 1;
 				while (isDuplicateName(nameCopy)) {
-					nameCopy = name + '(' + i++ + ')';
+					nameCopy = name + '(' + (j++) + ')';
 				}
+
 				interpreter.setName(nameCopy);
 				interpreter.setInstallLocation(file);
 				interpreterAdded(interpreter);
@@ -695,158 +693,6 @@ public abstract class InterpretersBlock implements
 
 	protected Shell getShell() {
 		return getControl().getShell();
-	}
-
-	/**
-	 * Searches in PATH
-	 * 
-	 * @param found
-	 * @param types
-	 * @param ignore
-	 * @param monitor
-	 */
-	private Set alreadySearched = new HashSet();
-	
-	protected void searchFast(List found, List types, Set ignore,
-			IProgressMonitor monitor) {
-		if (monitor.isCanceled()) {
-			return;
-		}
-		
-		alreadySearched.clear();
-
-		// Path variable
-		Map env = DebugPlugin.getDefault().getLaunchManager()
-				.getNativeEnvironmentCasePreserved();
-
-		String path = null;
-		final Iterator it = env.keySet().iterator();
-		while (it.hasNext()) {
-			final String name = (String) it.next();
-			if (name.compareToIgnoreCase("path") == 0) { //$NON-NLS-1$
-				path = (String) env.get(name);
-			}
-		}
-
-		if (path == null) {
-			return;
-		}
-
-		// Folder list
-		final String separator = Platform.getOS().equals(Platform.OS_WIN32) ? ";" : ":"; //$NON-NLS-1$ $NON-NLS-1$
-
-		final List folders = new ArrayList();
-		String[] res = path.split(separator);
-		for (int i = 0; i < res.length; i++) {
-			folders.add(Path.fromOSString(res[i]));
-		}
-
-		final Iterator iter = folders.iterator();
-		while (iter.hasNext()) {
-			final IPath folder = (IPath) iter.next();
-
-			if (folder != null) {
-				File f = folder.toFile();
-				if (f.isDirectory()) {
-					search(f, found, types, ignore, monitor, 1);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Searches the specified directory recursively for installed Interpreters,
-	 * adding each detected Interpreter to the <code>found</code> list. Any
-	 * directories specified in the <code>ignore</code> are not traversed.
-	 * 
-	 * @param directory
-	 * @param found
-	 * @param types
-	 * @param ignore
-	 * @param deep
-	 *            deepness of search. -1 if infinite.
-	 */
-		
-	protected void search(File directory, List found, List types, Set ignore,
-			IProgressMonitor monitor, int deep) {
-		if (monitor.isCanceled()) {
-			return;
-		}
-
-		if (deep == 0) {
-			return;
-		}
-		
-		if (alreadySearched.contains(directory)) {
-			return;
-		}
-
-		String[] names = directory.list();
-		if (names == null) {
-			return;
-		}
-
-		List subDirs = new ArrayList();
-		for (int i = 0; i < names.length; i++) {
-			if (monitor.isCanceled()) {
-				return;
-			}
-
-			final File file = new File(directory, names[i]);
-
-			try {
-				monitor.subTask(MessageFormat.format(
-						InterpretersMessages.InstalledInterpretersBlock_14,
-						new String[] { Integer.toString(found.size()),
-								file.getCanonicalPath() }));
-
-				// Check if file is a symlink
-				if (file.isDirectory()
-						&& (!file.getCanonicalPath().equals(
-								file.getAbsolutePath()))) {
-					continue;
-				}
-			} catch (IOException e) {
-			}
-
-			IInterpreterInstallType[] installTypes = ScriptRuntime
-					.getInterpreterInstallTypes(getCurrentNature());
-
-			if (!ignore.contains(file)) {
-				boolean validLocation = false;
-				// Take the first Interpreter install type that claims the
-				// location as a
-				// valid Interpreter install. Interpreter install types should
-				// be smart enough to not
-				// claim another type's Interpreter, but just in case...
-				for (int j = 0; j < installTypes.length; j++) {
-					if (monitor.isCanceled()) {
-						return;
-					}
-
-					final IInterpreterInstallType installType = installTypes[j];
-					IStatus status = installType.validateInstallLocation(file);
-
-					if (status.isOK()) {
-						found.add(file);
-						types.add(installType);
-						validLocation = true;
-						break;
-					}
-				}
-
-				if (file.isDirectory() && !validLocation) {
-					subDirs.add(file);
-				}
-			}
-		}
-
-		while (!subDirs.isEmpty()) {
-			File subDir = (File) subDirs.remove(0);
-			search(subDir, found, types, ignore, monitor, deep - 1);
-		}
-		
-		alreadySearched.add(directory);
 	}
 
 	/**
@@ -1072,7 +918,7 @@ public abstract class InterpretersBlock implements
 				.getSelection();
 		IInterpreterInstall install = (IInterpreterInstall) selection
 				.getFirstElement();
-		
+
 		if (install == null) {
 			return;
 		}
@@ -1083,6 +929,5 @@ public abstract class InterpretersBlock implements
 			return;
 		}
 		fInterpreterList.refresh(install);
-
 	}
 }

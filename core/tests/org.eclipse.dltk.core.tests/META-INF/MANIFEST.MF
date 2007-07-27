@@ -10,10 +10,13 @@ Require-Bundle: org.eclipse.dltk.core,
  org.eclipse.core.runtime,
  org.junit,
  org.eclipse.core.resources,
- org.eclipse.team.core
+ org.eclipse.team.core,
+ org.eclipse.dltk.launching,
+ org.eclipse.debug.core
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.core.tests,
  org.eclipse.dltk.core.tests.buildpath,
+ org.eclipse.dltk.core.tests.launching,
  org.eclipse.dltk.core.tests.model,
  org.eclipse.dltk.core.tests.util
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
