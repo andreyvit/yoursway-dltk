@@ -248,16 +248,7 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 		String targetWorkspacePath = getWorkspaceRoot().getLocation().toFile().getCanonicalPath();
 		copyDirectory(new File(sourceWorkspacePath, projectName), new File(targetWorkspacePath, projectName));
 
-		// create project
-		final IProject project = getWorkspaceRoot().getProject(projectName);
-		IWorkspaceRunnable populate = new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {
-				project.create(null);
-				project.open(null);
-			}
-		};
-		getWorkspace().run(populate, null);
-		return project;
+		return createProject(projectName);
 	}
 	
 	protected IScriptProject setUpScriptProject(final String projectName) throws CoreException, IOException {
