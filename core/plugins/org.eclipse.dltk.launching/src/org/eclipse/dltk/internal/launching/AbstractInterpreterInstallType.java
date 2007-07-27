@@ -374,8 +374,8 @@ public abstract class AbstractInterpreterInstallType implements
 		boolean matchFound = false;
 		final String name = installLocation.getName();
 
+		// name.matches(possibleName + ".*\\.exe")
 		if (Platform.getOS().equals(Platform.OS_WIN32)) {
-			// (name.matches(".*\\.exe")
 			for (int i = 0; i < possibleNames.length; ++i) {
 				final String possibleName = possibleNames[i];
 				if (name.equals(possibleName + ".exe")
@@ -387,7 +387,7 @@ public abstract class AbstractInterpreterInstallType implements
 		} else {
 			for (int i = 0; i < possibleNames.length; i++) {
 				final String possibleName = possibleNames[i];
-				if (name.equalsIgnoreCase(possibleName)) {
+				if (name.indexOf(possibleName) == 0) {
 					matchFound = true;
 					break;
 				}
