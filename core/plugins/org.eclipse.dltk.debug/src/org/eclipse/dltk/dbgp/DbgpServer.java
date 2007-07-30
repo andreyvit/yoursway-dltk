@@ -82,7 +82,7 @@ public class DbgpServer extends DbgpWorkingThread {
 		}
 		super.requestTermination();
 	}
-	
+
 	private IDbgpServerListener listener;
 
 	public void setListener(IDbgpServerListener listener) {

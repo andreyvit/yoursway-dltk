@@ -154,7 +154,11 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests impleme
 
 		IScriptFolder scriptFolder = getScriptFolder(PROJECT_NAME, "src",
 				new Path(""));
-		String contents = "class Buzzy\n def myFyb\n end\n end\n";
+		String contents = "class Buzzy\n" +
+						  "    def myFyb\n " +
+						  "    end\n " +
+						  "end\n";
+		
 		scriptFolder.createSourceModule("Buzzy.rb", contents, true, null);
 
 		buildAll();

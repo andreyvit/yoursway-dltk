@@ -33,7 +33,7 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 	public ScriptWatchpoint(String debugModelId, IResource resource,
 			int lineNumber, int start, int end, String fieldName)
 			throws CoreException {
-		super(debugModelId, resource, lineNumber, start, end, end, true);
+		super(debugModelId, resource, lineNumber, start, end, true);
 		this.setFieldName(fieldName);
 	}
 

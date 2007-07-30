@@ -19,6 +19,7 @@ import org.eclipse.dltk.debug.dbgp.tests.DbgpStackCommandsTests;
 import org.eclipse.dltk.debug.dbgp.tests.DbgpStackLevelTests;
 import org.eclipse.dltk.debug.dbgp.tests.DbgpStatusCommandsTests;
 import org.eclipse.dltk.debug.dbgp.tests.DbgpStreamCommandsTests;
+import org.eclipse.dltk.debug.tests.breakpoints.BreakpointTests;
 import org.eclipse.dltk.debug.tests.core.BuildpathContainerTests;
 
 import junit.framework.Test;
@@ -39,8 +40,10 @@ public class AllTests {
 		suite.addTestSuite(DbgpStackCommandsTests.class);
 		suite.addTestSuite(DbgpStreamCommandsTests.class);
 		suite.addTestSuite(DbgpStatusCommandsTests.class);
-		
+
 		suite.addTestSuite(BuildpathContainerTests.class);
+
+		suite.addTest(BreakpointTests.suite());
 		// $JUnit-END$
 		return suite;
 	}

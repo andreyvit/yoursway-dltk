@@ -27,21 +27,19 @@ public class ScriptDebugModel {
 
 	public static IScriptLineBreakpoint createLineBreakpoint(
 			IResource resource, int lineNumber, int charStart, int charEnd,
-			int hitCount, boolean register, Map attributes)
-			throws CoreException {
+			boolean register, Map attributes) throws CoreException {
 
 		return new ScriptLineBreakpoint(getDenbugModelId(resource), resource,
-				lineNumber, charStart, charEnd, hitCount, register);
+				lineNumber, charStart, charEnd, register);
 	}
 
 	public static IScriptLineBreakpoint createMethodEntryBreakpoint(
 			IResource resource, int lineNumber, int charStart, int charEnd,
-			int hitCount, boolean register, Map attributes, String methodName)
+			boolean register, Map attributes, String methodName)
 			throws CoreException {
 
 		return new ScriptMethodEntryBreakpoint(getDenbugModelId(resource),
-				resource, lineNumber, charStart, charEnd, hitCount, register,
-				methodName);
+				resource, lineNumber, charStart, charEnd, register, methodName);
 	}
 
 	public static IScriptWatchpoint createWatchPoint(IResource resource,

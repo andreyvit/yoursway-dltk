@@ -25,6 +25,7 @@ import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.exceptions.DbgpTimeoutException;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
+import org.eclipse.dltk.internal.debug.core.model.IScriptThreadStreamProxy;
 
 public abstract class DbgpOperation {
 	private static final boolean DEBUG = DLTKCore.DEBUG;
@@ -95,13 +96,16 @@ public abstract class DbgpOperation {
 
 		this.continuationHandler = new IDbgpContinuationHandler() {
 			public void stderrReceived(String data) {
-				try {
-					OutputStream err = th.getStreamProxy().getStderr();
-					err.write(data.getBytes());
-					err.flush();
+				final IScriptThreadStreamProxy proxy = th.getStreamProxy();
+				if (proxy != null) {
+					try {
+						final OutputStream err = proxy.getStderr();
+						err.write(data.getBytes());
+						err.flush();
 
-				} catch (IOException e) {
-					e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 
 				if (DEBUG) {
@@ -110,8 +114,9 @@ public abstract class DbgpOperation {
 			}
 
 			public void stdoutReceived(String data) {
+				final IScriptThreadStreamProxy proxy = th.getStreamProxy();
 				try {
-					OutputStream out = th.getStreamProxy().getStdout();
+					final OutputStream out = proxy.getStdout();
 					out.write(data.getBytes());
 					out.flush();
 				} catch (IOException e) {

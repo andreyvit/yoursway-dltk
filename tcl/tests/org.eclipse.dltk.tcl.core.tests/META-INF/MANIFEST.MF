@@ -14,7 +14,8 @@ Require-Bundle: org.junit,
  org.eclipse.dltk.launching,
  org.eclipse.dltk.debug,
  org.eclipse.dltk.tcl.launching,
- org.eclipse.debug.core
+ org.eclipse.debug.core,
+ org.eclipse.dltk.tcl.debug
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.tcl.core.tests,
  org.eclipse.dltk.tcl.core.tests.model,

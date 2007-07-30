@@ -25,36 +25,27 @@ import org.eclipse.jface.util.SafeRunnable;
  * Tests for launch configurations
  */
 public abstract class AbstractDebugTest extends TestCase {
-	
+
 	public static final int DEFAULT_TIMEOUT = 30000;
-	
+
 	public static IScriptProject fScriptProject;
-	
-	/**
-	 * Returns the launch manager
-	 * 
-	 * @return launch manager
-	 */
+
 	protected ILaunchManager getLaunchManager() {
 		return DebugPlugin.getDefault().getLaunchManager();
 	}
-	
-	/**
-	 * Returns the breakpoint manager
-	 * 
-	 * @return breakpoint manager
-	 */
+
 	protected IBreakpointManager getBreakpointManager() {
 		return DebugPlugin.getDefault().getBreakpointManager();
 	}
-	
+
 	public AbstractDebugTest(String name) {
 		super(name);
+
 		// set error dialog to non-blocking to avoid hanging the UI during test
 		ErrorDialog.AUTOMATED_MODE = true;
 		SafeRunnable.setIgnoreErrors(true);
 	}
-	
+
 	/**
 	 * Returns the 'DebugTests' project.
 	 * 
@@ -63,16 +54,17 @@ public abstract class AbstractDebugTest extends TestCase {
 	protected IScriptProject getScriptProject() {
 		return getScriptProject("DebugTests");
 	}
-	
+
 	/**
 	 * Returns the Script project with the given name.
 	 * 
-	 * @param name project name
+	 * @param name
+	 *            project name
 	 * @return the Script project with the given name
 	 */
 	protected IScriptProject getScriptProject(String name) {
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
+				name);
 		return DLTKCore.create(project);
 	}
 }
-

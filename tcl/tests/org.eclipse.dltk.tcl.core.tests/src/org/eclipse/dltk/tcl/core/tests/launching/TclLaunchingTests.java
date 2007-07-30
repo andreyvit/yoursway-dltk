@@ -7,10 +7,12 @@ import junit.framework.Test;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.core.tests.launching.ScriptLaunchingTests;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.tcl.core.TclNature;
+import org.eclipse.dltk.tcl.internal.debug.TclDebugConstants;
 import org.eclipse.dltk.tcl.launching.TclLaunchConfigurationDelegate;
 
 public class TclLaunchingTests extends ScriptLaunchingTests {
@@ -51,11 +53,18 @@ public class TclLaunchingTests extends ScriptLaunchingTests {
 		return TclNature.NATURE_ID;
 	}
 
-	protected void createLaunch(ILaunch launch, String mode, String arguments)
-			throws CoreException {
+	protected String getDebugModelId() {
+		return TclDebugConstants.DEBUG_MODEL_ID;
+	}
+
+	protected ILaunchConfiguration createLaunchConfiguration(String arguments) {
+		return createTestLaunchConfiguration(getNatureId(), getProjectName(),
+				"src/test.tcl", arguments);
+	}
+
+	protected void startLaunch(ILaunch launch) throws CoreException {
 		final AbstractScriptLaunchConfigurationDelegate delegate = new TclLaunchConfigurationDelegate();
-		delegate.launch(createTestLaunchConfiguration(getNatureId(),
-				getProjectName(), "src/test.tcl", arguments), mode, launch,
-				null);
+		delegate.launch(launch.getLaunchConfiguration(),
+				launch.getLaunchMode(), launch, null);
 	}
 }

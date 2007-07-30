@@ -62,7 +62,7 @@ public class BreakpointUtils {
 
 				/* ILineBreakpoint b = */ScriptDebugModel
 						.createLineBreakpoint(resource, lineNumber, start, end,
-								0, true, null);
+								true, null);
 			} catch (BadLocationException e) {
 				DLTKDebugPlugin.log(e);
 			}
@@ -83,7 +83,7 @@ public class BreakpointUtils {
 				int end = start + line.getLength() - 1;
 				/* ILineBreakpoint b = */ScriptDebugModel
 						.createMethodEntryBreakpoint(resource, lineNumber,
-								start, end, 0, true, null, methodName);
+								start, end, true, null, methodName);
 			} catch (BadLocationException e) {
 				DebugPlugin.log(e);
 			}

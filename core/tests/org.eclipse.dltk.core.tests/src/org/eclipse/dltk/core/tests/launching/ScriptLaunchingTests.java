@@ -18,6 +18,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.debug.core.DebugEvent;
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -30,6 +34,10 @@ import org.eclipse.debug.core.model.IStreamMonitor;
 import org.eclipse.debug.core.model.IStreamsProxy;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
+import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
+import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
+import org.eclipse.dltk.debug.core.model.IScriptThread;
+import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 import org.eclipse.dltk.internal.launching.InterpreterDefinitionsContainer;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
@@ -373,11 +381,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 				.toArray(new IInterpreterInstall[installs.size()]);
 	}
 
-	protected abstract String getProjectName();
-
-	protected abstract String getNatureId();
-
-	public void testLaunch() throws Exception {
+	public void testRun() throws Exception {
 		if (interpreterInstalls.length == 0) {
 			fail("No interperters found for nature " + getNatureId());
 		}
@@ -387,15 +391,17 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			updater.updateInterpreterSettings(getNatureId(),
 					interpreterInstalls, interpreterInstalls[i]);
 
-			final ILaunch launch = new Launch(null, ILaunchManager.RUN_MODE,
-					null);
-
 			final long time = System.currentTimeMillis();
 			final String stdoutTest = Long.toString(time) + "_stdout";
 			final String stderrTest = Long.toString(time) + "_stderr";
 
-			createLaunch(launch, ILaunchManager.RUN_MODE, stdoutTest + " "
-					+ stderrTest);
+			final ILaunchConfiguration configuration = createLaunchConfiguration(stdoutTest
+					+ " " + stderrTest);
+
+			final ILaunch launch = new Launch(configuration,
+					ILaunchManager.RUN_MODE, null);
+
+			startLaunch(launch);
 
 			IProcess[] processes = launch.getProcesses();
 			assertEquals(1, processes.length);
@@ -427,6 +433,124 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 		}
 	}
 
-	protected abstract void createLaunch(ILaunch launch, String mode,
-			String arguments) throws CoreException;
+	private static class DebugEventStats implements IDebugEventSetListener {
+		private int suspendCount;
+		private int resumeCount;
+
+		public DebugEventStats() {
+			this.suspendCount = 0;
+			this.resumeCount = 0;
+		}
+
+		public void handleDebugEvents(DebugEvent[] events) {
+			for (int i = 0; i < events.length; ++i) {
+				DebugEvent event = events[i];
+
+				final int kind = event.getKind();
+				switch (kind) {
+				case DebugEvent.RESUME:
+					resumeCount += 1;
+					break;
+				case DebugEvent.SUSPEND:
+					suspendCount += 1;
+					try {
+						final Object source = event.getSource();
+						if (source instanceof IScriptStackFrame) {
+							((IScriptStackFrame) source).resume();
+						} else if (source instanceof IScriptThread) {
+							((IScriptThread) source).resume();
+						}
+					} catch (DebugException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					break;
+				case DebugEvent.CREATE:
+					break;
+				case DebugEvent.TERMINATE:
+					break;
+				case DebugEvent.CHANGE:
+					break;
+				}
+			}
+		}
+
+		public void reset() {
+			suspendCount = 0;
+			resumeCount = 0;
+		}
+
+		public int getSuspendCount() {
+			return suspendCount;
+		}
+
+		public int getResumeCount() {
+			return resumeCount;
+		}
+	}
+
+	public void testDebug() throws Exception {
+		if (interpreterInstalls.length == 0) {
+			fail("No interperters found for nature " + getNatureId());
+		}
+
+		// Debug
+		final IFile file = getFile("/launching/src/test.rb");
+
+		// Setting breakpoint
+		IScriptLineBreakpoint b = new ScriptLineBreakpoint(getDebugModelId(),
+				file, 1, -1, -1, true);
+
+		DebugEventStats stats = new DebugEventStats();
+
+		DebugPlugin.getDefault().addDebugEventListener(stats);
+
+		for (int i = 0; i < interpreterInstalls.length; ++i) {
+			MyInterpretersUpdater updater = new MyInterpretersUpdater();
+			updater.updateInterpreterSettings(getNatureId(),
+					interpreterInstalls, interpreterInstalls[i]);
+
+			stats.reset();
+
+			final ILaunch launch = new Launch(createLaunchConfiguration(""),
+					ILaunchManager.DEBUG_MODE, null);
+
+			final long time = System.currentTimeMillis();
+
+			startLaunch(launch);
+
+			IProcess[] processes = launch.getProcesses();
+			assertEquals(1, processes.length);
+
+			final IProcess process = processes[0];
+			final IStreamsProxy proxy = process.getStreamsProxy();
+			// assertNotNull(proxy);
+
+			while (!process.isTerminated()) {
+				Thread.sleep(200);
+			}
+
+			assertTrue(process.isTerminated());
+
+			int suspendCount = stats.getSuspendCount();
+			assertEquals(1, suspendCount);
+
+			int resumeCount = stats.getResumeCount();
+
+			final int exitValue = process.getExitValue();
+			assertEquals(0, exitValue);
+		}
+	}
+
+	protected abstract String getProjectName();
+
+	protected abstract String getNatureId();
+
+	protected abstract String getDebugModelId();
+
+	protected abstract void startLaunch(ILaunch launch) throws CoreException;
+
+	protected abstract ILaunchConfiguration createLaunchConfiguration(
+			String arguments);
 }

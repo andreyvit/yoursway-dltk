@@ -42,8 +42,8 @@ public class ScriptLineBreakpoint extends AbstractScriptBreakpoint implements
 
 	public ScriptLineBreakpoint(final String debugModelId,
 			final IResource resource, final int lineNumber,
-			final int charStart, final int charEnd, final int hitCount,
-			final boolean add) throws DebugException {
+			final int charStart, final int charEnd, final boolean add)
+			throws DebugException {
 
 		final Map attributes = new HashMap();
 

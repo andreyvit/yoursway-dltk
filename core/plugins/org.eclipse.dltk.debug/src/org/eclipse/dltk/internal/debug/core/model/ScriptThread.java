@@ -9,10 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugException;
@@ -21,8 +17,6 @@ import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.dbgp.IDbgpNotification;
-import org.eclipse.dltk.dbgp.IDbgpNotificationListener;
 import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
 import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
@@ -43,7 +37,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	private final IScriptThreadManager manager;
 
-	private final IScriptThreadStreamProxy streamProxy;
+	private IScriptThreadStreamProxy streamProxy;
 
 	private final ScriptStack stack;
 
@@ -55,10 +49,10 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	private IScriptEvaluationEngine evalEngine;
 
-	// ScriptThreadStateManager.IStateChangeHandler 
+	// ScriptThreadStateManager.IStateChangeHandler
 	public void handleSuspend(int detail) {
 		stack.update();
-		
+
 		DebugEventHelper.fireSuspendEvent(this, detail);
 	}
 
@@ -88,8 +82,6 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 		this.manager = manager;
 
-		this.streamProxy = target.getStreamManager().makeThreadStreamProxy();
-
 		this.session = session;
 		this.session.addTerminationListener(this);
 
@@ -116,23 +108,23 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		engine.redirectStdout();
 		engine.redirectStderr();
 
-		session.getNotificationManager().addNotificationListener(
-				new IDbgpNotificationListener() {
-					private final BufferedReader reader = new BufferedReader(
-							new InputStreamReader(getStreamProxy().getStdin()));
-
-					public void dbgpNotify(IDbgpNotification notification) {
-						try {
-							extended.sendStdin(reader.readLine() + "\n");
-						} catch (IOException e) {
-							// TODO: log exception
-							e.printStackTrace();
-						} catch (DbgpException e) {
-							// TODO: log exception
-							e.printStackTrace();
-						}
-					}
-				});
+		// session.getNotificationManager().addNotificationListener(
+		// new IDbgpNotificationListener() {
+		// private final BufferedReader reader = new BufferedReader(
+		// new InputStreamReader(getStreamProxy().getStdin()));
+		//
+		// public void dbgpNotify(IDbgpNotification notification) {
+		// try {
+		// extended.sendStdin(reader.readLine() + "\n");
+		// } catch (IOException e) {
+		// // TODO: log exception
+		// e.printStackTrace();
+		// } catch (DbgpException e) {
+		// // TODO: log exception
+		// e.printStackTrace();
+		// }
+		// }
+		// });
 
 		this.stack = new ScriptStack(this);
 	}
@@ -173,7 +165,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	public int getSuspendCount() {
 		return stateManager.getSuspendCount();
 	}
-	
+
 	public boolean isSuspended() {
 		return stateManager.isSuspended();
 	}
@@ -185,7 +177,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	public void suspend() throws DebugException {
 		stateManager.suspend();
 	}
-	
+
 	// Resume
 	public boolean canResume() {
 		return stateManager.canResume();
@@ -256,6 +248,13 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	}
 
 	public IScriptThreadStreamProxy getStreamProxy() {
+		if (streamProxy == null) {
+			IScriptDebugTargetStreamManager manager = target.getStreamManager();
+			if (manager != null) {
+				streamProxy = manager.makeThreadStreamProxy();
+			}
+		}
+
 		return streamProxy;
 	}
 
@@ -276,7 +275,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		Assert.isTrue(object == session);
 		manager.terminateThread(this);
 	}
-	
+
 	// Object
 	public String toString() {
 		return "Thread (" + session.getInfo().getThreadId() + ")";

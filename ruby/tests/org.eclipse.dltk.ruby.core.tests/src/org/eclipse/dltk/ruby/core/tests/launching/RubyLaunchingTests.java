@@ -4,9 +4,11 @@ import junit.framework.Test;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.core.tests.launching.ScriptLaunchingTests;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.ruby.core.RubyNature;
+import org.eclipse.dltk.ruby.debug.RubyDebugConstants;
 import org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationDelegate;
 
 public class RubyLaunchingTests extends ScriptLaunchingTests {
@@ -31,12 +33,18 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 		return RubyNature.NATURE_ID;
 	}
 
-	protected void createLaunch(ILaunch launch, String mode, String arguments)
-			throws CoreException {
+	protected String getDebugModelId() {
+		return RubyDebugConstants.DEBUG_MODEL_ID;
+	}
+
+	protected ILaunchConfiguration createLaunchConfiguration(String arguments) {
+		return createTestLaunchConfiguration(getNatureId(), getProjectName(),
+				"src/test.rb", arguments);
+	}
+
+	protected void startLaunch(ILaunch launch) throws CoreException {
 		final AbstractScriptLaunchConfigurationDelegate delegate = new RubyLaunchConfigurationDelegate();
-		delegate
-				.launch(createTestLaunchConfiguration(getNatureId(),
-						getProjectName(), "src/test.rb", arguments), mode,
-						launch, null);
+		delegate.launch(launch.getLaunchConfiguration(),
+				launch.getLaunchMode(), launch, null);
 	}
 }
