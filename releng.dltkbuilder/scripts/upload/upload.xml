@@ -48,19 +48,24 @@
         <ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
         <property file="${buildDirectory}/label.properties" />
 
-        <echo message="chmod for ${buildDirectory}/${buildLabel}" />
+    	 <copy todir="${uploadRemoteDirectory}/${buildLabel}">
+    	    <fileset dir="${rsyncRootPrefix}${buildDirectory}/${buildLabel}"/>
+    	  </copy>
+    	
+        <!--echo message="chmod for ${buildDirectory}/${buildLabel}" /-->
         <!-- synch on host is a tiny bit faster if permisions already set -->
         <!-- and, remember, chmod ant task is implemented only for unix -->
         <!-- TODO: put in windows logic here? -->
-        <exec executable="chmod">
+        <!--exec executable="chmod">
             <arg line="-Rc  o+rx  ${buildDirectory}/${buildLabel}" />
-        </exec>
+        </exec-->
 
-        <echo message="RSYNC to: ${uploadRemoteDirectory}/${buildLabel}" />
+        <!--echo message="RSYNC to: ${uploadRemoteDirectory}/${buildLabel}" /-->
 
-        <exec executable="rsync">
+        <!--exec executable="rsync">
             <arg line="-e ssh -Cavz ${rsyncRootPrefix}${buildDirectory}/${buildLabel} ${uploadUser}@${uploadServer}:${uploadRemoteDirectory}" />
-        </exec>
+        </exec-->
+    	
     </target>
 
     <target name="check.upload">

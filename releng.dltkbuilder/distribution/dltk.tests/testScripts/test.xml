@@ -172,10 +172,10 @@
 	
 	<!-- DLTK Javascript -->
 
-	<target name="javascript-tests" description="Runs the org.eclipse.dltk.javascript.tests test.xml">
+	<target name="javascript-tests" description="Runs the org.eclipse.dltk.javascript.core.tests test.xml">
 		<antcall target="runtests">
-			<param name="testPlugin" value="${org.eclipse.dltk.javascript.tests}" />
-			<param name="report" value="org.eclipse.dltk.javascript.tests" />
+			<param name="testPlugin" value="${org.eclipse.dltk.javascript.core.tests}" />
+			<param name="report" value="org.eclipse.dltk.javascript.core.tests" />
 		</antcall>
 	</target>
 
