@@ -39,6 +39,14 @@ digestURL="http://download.eclipse.org/technology/dltk/updates/1.0/">
       <category name="Dynamic Languages Toolkit (DLTK)" />
    </feature>
 
+   <feature url="features/org.eclipse.dltk.javascript_@org.eclipse.dltk.javascript@.jar" id="org.eclipse.dltk.javascript" version="@org.eclipse.dltk.javascript@">
+      <category name="Dynamic Languages Toolkit (DLTK)" />
+   </feature>
+
+   <feature url="features/org.eclipse.dltk.javascript.sdk_@org.eclipse.dltk.javascript.sdk@.jar" id="org.eclipse.dltk.javascript.sdk" version="@org.eclipse.dltk.javascript.sdk@">
+      <category name="Dynamic Languages Toolkit (DLTK)" />
+   </feature>
+
    <category-def name="Dynamic Languages Toolkit (DLTK)" label="Dynamic Languages Toolkit (DLTK)">
       <description>
          This category contains the features of the Eclipse Dynamic Languages Toolkit Project (DLTK).

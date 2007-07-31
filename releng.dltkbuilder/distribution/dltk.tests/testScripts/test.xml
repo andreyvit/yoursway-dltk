@@ -170,6 +170,15 @@
 		</antcall>
 	</target>
 	
+	<!-- DLTK Javascript -->
+
+	<target name="javascript-tests" description="Runs the org.eclipse.dltk.javascript.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.dltk.javascript.tests}" />
+			<param name="report" value="org.eclipse.dltk.javascript.tests" />
+		</antcall>
+	</target>
+
 	<!-- releng Tests -->
 
 	<target name="releng-tests" description="Runs the releng tests.">
@@ -217,6 +226,9 @@
 		<echo message="Starting Python UI tests" />
 		<antcall target="python-ui-tests" />
 					
+		<echo message="Starting Javascript Core tests" />
+		<antcall target="javascript-tests" />
+
 		<echo message="Ended DLTK Unit Tests" />
 
 	</target>

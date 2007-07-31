@@ -59,6 +59,19 @@
 			<property name="component" value="python.tests" />
 			<property name="eclipseBuildFailOnError" value="false" />
 		</ant>		
+
+		<ant antfile="${buildTargets}">
+			<property name="component" value="javascript" />
+		</ant>
+
+		<ant antfile="${buildTargets}">
+			<property name="component" value="javascript-sdk" />
+		</ant>
+		
+		<ant antfile="${buildTargets}">
+			<property name="component" value="javascript.tests" />
+			<property name="eclipseBuildFailOnError" value="false" />
+		</ant>						
 		
 		<ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
 		<antcall target="package"/>
@@ -109,6 +122,10 @@
 			<arg line="-o -qq dltk-python${corename}-${buildLabel}-incubation.zip -d ${buildDirectory}/tempforrezipping" />
 		</exec>
 
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
+			<arg line="-o -qq dltk-javascript${corename}-${buildLabel}-incubation.zip -d ${buildDirectory}/tempforrezipping" />
+		</exec>		
+		
 		<zip destfile="${buildDirectory}/${buildLabel}/${archiveName}" basedir="${buildDirectory}/tempforrezipping" />
 	
 		<delete dir="${buildDirectory}/tempforrezipping" failonerror="false"/>

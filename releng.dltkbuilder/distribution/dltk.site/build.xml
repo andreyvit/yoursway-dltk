@@ -64,7 +64,7 @@
         </condition>
 
         <ant antfile="${publish.xml}" dir="${component.dir}">
-            <property name="dropTokenList" value="%dltkruntime%,%dltksdk%,%dltktest%,%core%,%core-sdk%,%core-tests%,%ruby-tests%,%core-perf-tests%,%ruby-perf-tests%,%tcl-runtime%,%tcl-sdk%,%tcl-tests%,%python-runtime%,%python-sdk%,%python-tests%" />
+            <property name="dropTokenList" value="%dltkruntime%,%dltksdk%,%dltktest%,%core%,%core-sdk%,%core-tests%,%ruby-tests%,%core-perf-tests%,%ruby-perf-tests%,%tcl-runtime%,%tcl-sdk%,%tcl-tests%,%python-runtime%,%python-sdk%,%python-tests%,%javascript-runtime%,%javascript-sdk%,%javascript-tests%" />
             <property name="webtoolsDownloadURL" value="http://www.eclipse.org/downloads/download.php?file=/technology/dltk/drops"/>
 
             <property name="buildBranch" value="${buildBranch}" />

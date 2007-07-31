@@ -329,7 +329,11 @@
             <replacefilter token="@org.eclipse.dltk.python@"
                            property="org.eclipse.dltk.python" />
             <replacefilter token="@org.eclipse.dltk.python.sdk@"
-                           property="org.eclipse.dltk.python.sdk" />        	
+                           property="org.eclipse.dltk.python.sdk" />
+            <replacefilter token="@org.eclipse.dltk.javascript@"
+                           property="org.eclipse.dltk.javascript" />
+            <replacefilter token="@org.eclipse.dltk.javascript.sdk@"
+                           property="org.eclipse.dltk.javascript.sdk" />        	
         </replace>
     	<echo message = "Done site.xml: ${buildDirectory}/${buildLabel}/updateSite/site.xml" />
     </target>
