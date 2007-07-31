@@ -29,8 +29,8 @@
      
     <property name="uploadUser" value="releng" />
     <property name="uploadPassword" value="This is not really used since ssh login is assumed (required)" />
-    <property name="uploadServer" value="dltk.eclipse.org" />
-    <property name="uploadRemoteDirectory" value="/home/${uploadUser}/public_html/${site-sub-dir}/drops/${buildBranch}" />
+    <property name="uploadServer" value="localhost" />
+    <property name="uploadRemoteDirectory" value="/media/slider/builds/dltk/staging/drops/${buildBranch}" />
     <!-- rsyncRootPrefix should be empty for Linux machines. -->
     <!-- But, Windows using cygwin will need something like /cygdrive/G/  -->
     <!-- for what ever drive or directory is parent of build home  -->
