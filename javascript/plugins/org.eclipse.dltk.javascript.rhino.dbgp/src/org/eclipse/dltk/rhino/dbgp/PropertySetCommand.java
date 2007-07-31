@@ -27,11 +27,11 @@ final class PropertySetCommand extends DBGPDebugger.Command {
 			fr.setValue(name, value);
 		} else {
 			if (name.equals("suspendOnEntry")) {
-				boolean parseBoolean = Boolean.parseBoolean(value);
+				boolean parseBoolean = new Boolean(value).booleanValue();
 				debugger.setSuspendOnEntry(parseBoolean);
 			}
 			if (name.equals("suspendOnExit")) {
-				boolean parseBoolean = Boolean.parseBoolean(value);
+				boolean parseBoolean = new Boolean(value).booleanValue();
 				debugger.setSuspendOnExit(parseBoolean);
 			}
 			debugger.setProperty(name, value);
