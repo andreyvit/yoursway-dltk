@@ -11,7 +11,7 @@
 
 export BUILD_HOME=/home/releng
 
-export DISPLAY=127.0.0.1:1.0
+export DISPLAY=:0.0
 
 export JAVA_4_DIR="j2sdk1.4.2_13"
 export JAVA_5_DIR="jdk1.5.0_09"
@@ -26,7 +26,7 @@ export LOCAL_BUILD_PROPERTIES_DIR=${BUILD_HOME}/releng.control/xoredNskPropertie
 
 export STANDARD_PROPERTIES_DIR=${BUILD_HOME}/releng.control/standardMachineProperties
 
-export BUILD_BUILDMASTER_EMAIL=andrey@xored.com
+export BUILD_BUILDMASTER_EMAIL=kurtov@xored.com
 export BUILD_RESULT_URL=http://dltk.xored.local:3000/cruisecontrol/buildresults
-export BUILD_TOADDRESS=andrey@xored.com
+export BUILD_TOADDRESS=kurtov@xored.com
 
