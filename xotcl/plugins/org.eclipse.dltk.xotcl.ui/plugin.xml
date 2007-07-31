@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.dltk.ui.language">
+      <language
+            class="org.eclipse.dltk.xotcl.internal.ui.XOTclUILanguageToolkit"
+            nature="org.eclipse.dltk.tcl.core.nature"
+            priority="1">
+      </language>
+   </extension>
+<extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+             category="org.eclipse.dltk.tcl.ui"
+             class="org.eclipse.dltk.xotcl.internal.ui.wizards.XOTclNewFileWizard"
+             icon="$nl$/icons/etool16/newfile_wiz.gif"
+             id="org.eclipse.dltk.xotcl.wizards.newfile"
+             name="%NewFileWizard.name">
+          <description>%NewFileWizard.description</description>
+       </wizard>
+       <wizard
+             category="org.eclipse.dltk.tcl.ui"
+             class="org.eclipse.dltk.xotcl.internal.ui.wizards.XOTclNewClassWizard"
+             icon="$nl$/icons/etool16/newclass_wiz.gif"
+             id="org.eclipse.dltk.xotcl.wizards.newclass"
+             name="%NewClassWizard.name">
+          <description>%NewClassWizard.description</description>
+       </wizard>
+	</extension>
+<extension
+      point="org.eclipse.ui.perspectiveExtensions">
+   <perspectiveExtension
+         targetID="org.eclipse.dltk.tcl.ui.TclPerspective">
+      <newWizardShortcut
+            id="org.eclipse.dltk.xotcl.wizards.newfile">
+      </newWizardShortcut>
+      <newWizardShortcut
+            id="org.eclipse.dltk.xotcl.wizards.newclass">
+      </newWizardShortcut>
+   </perspectiveExtension>
+</extension>
+</plugin>
