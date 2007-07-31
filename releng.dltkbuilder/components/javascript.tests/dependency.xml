@@ -16,6 +16,9 @@
 			<param name="groupId" value="eclipse" />
 		</antcall>
 		<antcall target="getAndInstall">
+			<param name="groupId" value="eclipseJDT" />
+		</antcall>
+		<antcall target="getAndInstall">
 			<param name="groupId" value="eclipseTestFramework" />
 		</antcall>
 
