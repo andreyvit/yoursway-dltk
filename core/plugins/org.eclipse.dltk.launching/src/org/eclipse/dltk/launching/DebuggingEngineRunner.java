@@ -54,7 +54,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 
 	private static final String LOCALHOST = "127.0.0.1";
 
-	protected String getSessionId() {
+	protected String getSessionId(ILaunchConfiguration configuration) throws CoreException {
 		return DbgpSessionIdGenerator.generate();
 	}
 
@@ -63,7 +63,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			throws CoreException {
 
 		final IScriptDebugTarget target = new ScriptDebugTarget(
-				getDebugModelId(), dbgpService, getSessionId(), launch, null);
+				getDebugModelId(), dbgpService, getSessionId(configuration), launch, null);
 		launch.addDebugTarget(target);
 		return target;
 	}
@@ -156,23 +156,28 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			}
 
 			// Waiting for debugging engine connect
-			int waitingTimeout = configuration
-					.getAttribute(
-							ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
-							0);
-
-			ScriptDebugTargetWaiter waiter = new ScriptDebugTargetWaiter(
-					(IScriptDebugTarget) launch.getDebugTarget());
-
-			if (!waiter.waitThread(waitingTimeout)) {
-				abort(InterpreterMessages.errDebuggingEngineNotConnected, null);
-			}
+			startDebuggingEngine(launch, configuration);
 		} catch (CoreException e) {
 			launch.terminate();
 			throw e;
 		}
 
 		// Happy debugging :)
+	}
+
+	protected void startDebuggingEngine(ILaunch launch,
+			final ILaunchConfiguration configuration) throws CoreException {
+		int waitingTimeout = configuration
+				.getAttribute(
+						ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
+						0);
+
+		ScriptDebugTargetWaiter waiter = new ScriptDebugTargetWaiter(
+				(IScriptDebugTarget) launch.getDebugTarget());
+
+		if (!waiter.waitThread(waitingTimeout)) {
+			abort(InterpreterMessages.errDebuggingEngineNotConnected, null);
+		}
 	}
 
 	public String getDebugModelId() {

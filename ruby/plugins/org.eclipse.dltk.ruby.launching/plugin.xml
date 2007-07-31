@@ -16,7 +16,15 @@
                name="%RubyLaunchConfigurationType.name"
                public="true"
                sourceLocatorId="rubySourceLocator">
-		  </launchConfigurationType>         
+		  </launchConfigurationType> 
+		  <launchConfigurationType
+               delegate="org.eclipse.dltk.ruby.launching.RubyRemoteLaunchConfigurationDelegate"
+               id="org.eclipse.dltk.ruby.launching.RubyRemoteLaunchConfigurationType"
+               modes="debug"
+               name="%RubyRemoteLaunchConfigurationType.name"
+               public="true"
+               sourceLocatorId="rubySourceLocator">
+          </launchConfigurationType>         
    </extension>
   <extension
         point="org.eclipse.debug.core.sourceLocators">

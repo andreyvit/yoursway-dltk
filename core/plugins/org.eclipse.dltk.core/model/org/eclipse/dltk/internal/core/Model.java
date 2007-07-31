@@ -12,6 +12,7 @@ package org.eclipse.dltk.internal.core;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IContainer;
@@ -22,6 +23,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -33,7 +35,6 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.internal.core.util.MementoTokenizer;
 import org.eclipse.dltk.utils.CorePrinter;
-
 
 public class Model extends Openable implements IScriptModel {
 	/**
@@ -56,11 +57,12 @@ public class Model extends Openable implements IScriptModel {
 
 	protected boolean buildStructure(OpenableElementInfo info,
 			IProgressMonitor pm, Map newElements, IResource underlyingResource) /*
-																				 * throws
-																				 * ModelException
-																				 */{
+	 * throws
+	 * ModelException
+	 */{
 		// determine my children
-		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
+				.getProjects();
 		int length = projects.length;
 		IModelElement[] children = new IModelElement[length];
 		int index = 0;
@@ -71,7 +73,8 @@ public class Model extends Openable implements IScriptModel {
 			}
 		}
 		if (index < length)
-			System.arraycopy(children, 0, children = new IModelElement[index], 0, index);
+			System.arraycopy(children, 0, children = new IModelElement[index],
+					0, index);
 		info.setChildren(children);
 
 		newElements.put(this, info);
@@ -157,10 +160,29 @@ public class Model extends Openable implements IScriptModel {
 	 * @see IScriptModel
 	 */
 	public IScriptProject[] getScriptProjects() throws ModelException {
-		ArrayList list = getChildrenOfType(SCRIPT_PROJECT);
-		IScriptProject[] array = new IScriptProject[list.size()];
-		list.toArray(array);
-		return array;
+		final List list = getChildrenOfType(SCRIPT_PROJECT);
+		return (IScriptProject[]) list.toArray(new IScriptProject[list.size()]);
+	}
+
+	public IScriptProject[] getOpenedScriptProjects(String natureId)
+			throws ModelException {
+		final List list = new ArrayList();
+		final IScriptProject[] projects = getScriptProjects();
+		try {
+			for (int i = 0; i < projects.length; ++i) {
+				final IScriptProject scriptProject = projects[i];
+				final IProject project = scriptProject.getProject();
+
+				if (project.exists() && project.isOpen()
+						&& (natureId == null || project.hasNature(natureId))) {
+					list.add(scriptProject);
+				}
+			}
+		} catch (CoreException e) {
+			throw new ModelException(e);
+		}
+
+		return (IScriptProject[]) list.toArray(new IScriptProject[list.size()]);
 	}
 
 	public void copy(IModelElement[] elements, IModelElement[] containers,
@@ -252,7 +274,7 @@ public class Model extends Openable implements IScriptModel {
 		}
 		output.dedent();
 	}
-	
+
 	public void delete(IModelElement[] elements, boolean force,
 			IProgressMonitor monitor) throws ModelException {
 		if (elements != null && elements.length > 0 && elements[0] != null

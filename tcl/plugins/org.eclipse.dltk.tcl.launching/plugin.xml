@@ -12,7 +12,16 @@
                public="true"
                sourceLocatorId="tclSourceLocator">
 		  </launchConfigurationType>
+         <launchConfigurationType
+               delegate="org.eclipse.dltk.tcl.launching.TclRemoteLaunchConfigurationDelegate"
+               id="org.eclipse.dltk.tcl.launching.TCLRemoteLaunchConfigurationType"
+               modes="debug"
+               name="%TclRemoteLaunchConfigurationType.name"
+               public="true"
+               sourceLocatorId="tclSourceLocator">
+          </launchConfigurationType>
    </extension>
+   
    <extension
         point="org.eclipse.debug.core.sourceLocators">
      <sourceLocator

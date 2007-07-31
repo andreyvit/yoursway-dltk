@@ -68,19 +68,29 @@ public class InterpreterConfig implements Cloneable {
 	}
 
 	protected void init(IPath scriptFile, IPath workingDirectory) {
-		checkScriptFile(scriptFile);
+		init(scriptFile, workingDirectory, true);
+	}
 
-		// Script file
-		this.scriptFile = scriptFile;
+	protected void init(IPath scriptFile, IPath workingDirectory,
+			boolean isLocal) {
+		// local debugger run
+		if (isLocal) {
+			// Script file
+			this.scriptFile = scriptFile;
 
-		// Working directory
-		this.workingDirectory = workingDirectory != null ? workingDirectory
-				: scriptFile.removeLastSegments(1);
+			// Working directory
+			this.workingDirectory = workingDirectory != null ? workingDirectory
+					: scriptFile.removeLastSegments(1);
+		}
 
 		this.interpreterArgs = new ArrayList();
 		this.scriptArgs = new ArrayList();
 		this.environment = new HashMap();
 		this.properties = new HashMap();
+	}
+
+	public InterpreterConfig() {
+		init(null, null, false);
 	}
 
 	public InterpreterConfig(File scriptFile) {
@@ -102,6 +112,7 @@ public class InterpreterConfig implements Cloneable {
 	}
 
 	public InterpreterConfig(IPath scriptFile, IPath workingDirectory) {
+		checkScriptFile(scriptFile);
 		init(scriptFile, workingDirectory);
 	}
 

@@ -166,16 +166,24 @@
 			configTypeID="org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationType"
 			id="org.eclipse.dltk.ruby.debug.ui.launchConfigurationTypeImage">
 		</launchConfigurationTypeImage>
+        <launchConfigurationTypeImage icon="icons/obj16/ruby_obj.gif"
+            configTypeID="org.eclipse.dltk.ruby.launching.RubyRemoteLaunchConfigurationType"
+            id="org.eclipse.dltk.ruby.debug.ui.remoteLaunchConfigurationTypeImage">
+        </launchConfigurationTypeImage>		
 	</extension>
 
 	<extension
 		point="org.eclipse.debug.ui.launchConfigurationTabGroups">
 		<launchConfigurationTabGroup
 			class="org.eclipse.dltk.ruby.internal.debug.ui.launchConfigurations.RubyTabGroup"
-			description="%RubyTabGroup.description"
 			id="org.eclipse.dltk.ruby.debug.ui.RubyTabGroup"
 			type="org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationType">
 		</launchConfigurationTabGroup>
+        <launchConfigurationTabGroup
+            class="org.eclipse.dltk.ruby.internal.debug.ui.launchConfigurations.RubyRemoteTabGroup"
+            id="org.eclipse.dltk.ruby.debug.ui.RubyRemoteTabGroup"
+            type="org.eclipse.dltk.ruby.launching.RubyRemoteLaunchConfigurationType">
+        </launchConfigurationTabGroup>		
 	</extension>
 
 	<extension point="org.eclipse.debug.ui.launchShortcuts">

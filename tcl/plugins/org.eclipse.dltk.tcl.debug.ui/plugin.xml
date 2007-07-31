@@ -162,16 +162,25 @@
 			configTypeID="org.eclipse.dltk.tcl.launching.TCLLaunchConfigurationType"
 			id="org.eclipse.dltk.tcl.debug.ui.launchConfigurationTypeImage">
 		</launchConfigurationTypeImage>
+		<launchConfigurationTypeImage
+            icon="$nl$/icons/obj16/tcl_obj.gif"
+            configTypeID="org.eclipse.dltk.tcl.launching.TCLRemoteLaunchConfigurationType"
+            id="org.eclipse.dltk.tcl.debug.ui.remoteLaunchConfigurationTypeImage">
+        </launchConfigurationTypeImage>
 	</extension>
 
 	<extension
 		point="org.eclipse.debug.ui.launchConfigurationTabGroups">
 		<launchConfigurationTabGroup
 			class="org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations.TclTabGroup"
-			description="%TclTabGroup.description"
 			id="org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations.TclTabGroup"
 			type="org.eclipse.dltk.tcl.launching.TCLLaunchConfigurationType">
 		</launchConfigurationTabGroup>
+        <launchConfigurationTabGroup
+            class="org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations.TclRemoteTabGroup"
+            id="org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations.TclRtemoteTabGroup"
+            type="org.eclipse.dltk.tcl.launching.TCLRemoteLaunchConfigurationType">
+        </launchConfigurationTabGroup>		
 	</extension>
 
 	<extension point="org.eclipse.debug.ui.launchShortcuts">

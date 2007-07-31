@@ -10,7 +10,7 @@ import org.eclipse.dltk.internal.ui.dialogs.StatusInfo;
 
 public class FieldValidators {
 
-	protected static class FilePathValidator implements IFieldValidator {
+	public static class FilePathValidator implements IFieldValidator {
 		public IStatus validate(String text) {
 			StatusInfo status = new StatusInfo();
 
