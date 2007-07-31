@@ -22,6 +22,19 @@
 		</ant>
 
 		<ant antfile="${buildTargets}">
+			<property name="component" value="javascript" />
+		</ant>
+
+		<ant antfile="${buildTargets}">
+			<property name="component" value="javascript-sdk" />
+		</ant>
+		
+		<ant antfile="${buildTargets}">
+			<property name="component" value="javascript.tests" />
+			<property name="eclipseBuildFailOnError" value="false" />
+		</ant>						
+
+		<ant antfile="${buildTargets}">
 			<property name="component" value="ruby" />
 		</ant>
 
@@ -59,19 +72,6 @@
 			<property name="component" value="python.tests" />
 			<property name="eclipseBuildFailOnError" value="false" />
 		</ant>		
-
-		<ant antfile="${buildTargets}">
-			<property name="component" value="javascript" />
-		</ant>
-
-		<ant antfile="${buildTargets}">
-			<property name="component" value="javascript-sdk" />
-		</ant>
-		
-		<ant antfile="${buildTargets}">
-			<property name="component" value="javascript.tests" />
-			<property name="eclipseBuildFailOnError" value="false" />
-		</ant>						
 		
 		<ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
 		<antcall target="package"/>
