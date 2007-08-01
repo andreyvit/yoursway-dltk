@@ -334,7 +334,11 @@
                            property="org.eclipse.dltk.javascript" />
             <replacefilter token="@org.eclipse.dltk.javascript.sdk@"
                            property="org.eclipse.dltk.javascript.sdk" />        	
-        </replace>
+            <replacefilter token="@org.eclipse.dltk.xotcl@"
+                           property="org.eclipse.dltk.xotcl" />
+            <replacefilter token="@org.eclipse.dltk.xotcl.sdk@"
+                           property="org.eclipse.dltk.xotcl.sdk" />     
+    </replace>
     	<echo message = "Done site.xml: ${buildDirectory}/${buildLabel}/updateSite/site.xml" />
     </target>
 

@@ -179,6 +179,15 @@
 		</antcall>
 	</target>
 
+	<!-- DLTK XOTcl -->
+
+	<target name="xotcl-tests" description="Runs the org.eclipse.dltk.xotcl.core.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.dltk.xotcl.core.tests}" />
+			<param name="report" value="org.eclipse.dltk.xotcl.core.tests" />
+		</antcall>
+	</target>
+
 	<!-- releng Tests -->
 
 	<target name="releng-tests" description="Runs the releng tests.">
@@ -228,6 +237,9 @@
 					
 		<echo message="Starting Javascript Core tests" />
 		<antcall target="javascript-tests" />
+
+		<echo message="Starting Xotcl Core tests" />
+		<antcall target="xotcl-tests" />
 
 		<echo message="Ended DLTK Unit Tests" />
 
