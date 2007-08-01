@@ -9,16 +9,29 @@
  *******************************************************************************/
 package org.eclipse.dltk.core.tests.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModule;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 
@@ -146,7 +159,7 @@ public class ModelTestUtils
 				return method;
 			}
 		}
-		TestCase.assertEquals("Method not exist", "", name);
+		TestCase.assertEquals("Method not exist", name, "");
 		return null;
 	}
 	/**
@@ -258,5 +271,32 @@ public class ModelTestUtils
 			return elements[ 0 ].getParent();
 		}
 		return null;
+	}
+	public static void exractZipInto(IScriptProject scriptProject, URL entry) throws IOException, CoreException {
+		
+		IProject prj = scriptProject.getProject();
+
+		NullProgressMonitor monitor = new NullProgressMonitor();
+
+		InputStream openStream = entry.openStream();
+		ZipInputStream zis = new ZipInputStream(openStream);
+		while (zis.available() != 0) {
+			ZipEntry nextEntry = zis.getNextEntry();
+			if (nextEntry != null) {
+				String name = nextEntry.getName();
+//				System.out.println(name);
+				if (!nextEntry.isDirectory()) {
+					long len = nextEntry.getSize();
+					byte content[] = new byte[(int) len];
+					zis.read(content);
+					IFile file = prj.getFile(new Path(name));
+					ByteArrayInputStream bis = new ByteArrayInputStream(content);
+					file.create(bis, true, monitor);
+				} else {
+					IFolder f = prj.getFolder(new Path(name));
+					f.create(true, true, monitor);
+				}
+			}
+		}
 	}
 }

@@ -22,13 +22,14 @@ if __name__ == "__main__":
 	import glob
 	import os
 	tests_count = 50
-	files_zip = "../workspace/src.zip".replace( "/", os.sep )
-	files_zip_arch = "../../../../../../workspace/src.zip".replace( "/", os.sep )
+	#files_zip = "../workspace/src.zip".replace( "/", os.sep )
+	#files_zip_arch = "../../../../../../workspace/src.zip".replace( "/", os.sep )
 	proj_dir = "src"
-	file_name = "../src/com/xored/dltk/python/tests/model/GeneratedModelTests".replace( "/", os.sep )
-	plugin_path = "pytests"
-	zip = zipfile.PyZipFile(files_zip) 
-	files = [ n for n in zip.namelist() if n.endswith(".py")]
+	file_name = "../src/org/eclipse/dltk/python/tests/model/GeneratedModelTests".replace( "/", os.sep )
+	plugin_path = "pytests_"
+	#zip = zipfile.PyZipFile(files_zip) 
+	#files = [ n for n in zip.namelist() if n.endswith(".py")]
+	files = glob.glob("../workspace/pytests/src/*.py")
 	
 	base_0 = """
 package org.eclipse.dltk.python.tests.model;
@@ -44,26 +45,31 @@ import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
 import org.eclipse.dltk.core.tests.util.ModelTestUtils;
 import org.eclipse.dltk.python.tests.PythonTestsPlugin;
+import java.net.URL;
+import org.osgi.framework.Bundle;
 
-public class GeneratedModelTests%d extends AbstractModelTests
+public class GeneratedModelTests%(id)d extends AbstractModelTests
 {
-	public GeneratedModelTests%d(String name) {
+	public GeneratedModelTests%(id)d(String name) {
 		super( PythonTestsPlugin.PLUGIN_NAME, name);
 	}
 	
 	public static Test suite() {
-		return new Suite( GeneratedModelTests%d.class);
+		return new Suite( GeneratedModelTests%(id)d.class);
 	}
 	
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
-		setUpScriptProject( "pytests" );
+		setUpScriptProjectTo( "pytests_%(id)d", "pytests" );
+		Bundle bundle = PythonTestsPlugin.getDefault().getBundle();
+		URL entry = bundle.getEntry("/workspace/src.zip");
+		IScriptProject scriptProject = setUpScriptProject("pytests_%(id)d");
+		ModelTestUtils.exractZipInto(scriptProject, entry);
 		// Extract all files from selected zip file.
-		
 	}
 	public void tearDownSuite() throws Exception {
 		super.tearDownSuite();
-		deleteProject( "pytests" );
+		deleteProject( "pytests%(id)d" );
 	}
 """
 	ending_0 = """
@@ -74,17 +80,17 @@ public class GeneratedModelTests%d extends AbstractModelTests
 	output = open( file_name + "%s.java" %( file_index ), "w" )
 	content = ""
 	for test_file in files:
-		maker = model_test_maker.MakeScriptTestCase( test_file, index, plugin_path )
+		maker = model_test_maker.MakeScriptTestCase( test_file, index, plugin_path + str( file_index ) )
 		content += maker.Content + "\n"
 		index += 1
 		if index % tests_count == 0:
 			print "output is:", output
-			output.write( base_0 %( file_index, file_index, file_index ) + content + ending_0 )
+			output.write( base_0 % { "id":file_index } + content + ending_0 )
 			output.close()
 			content = ""
 			file_index += 1
 			output = open( file_name + "%s.java" %( file_index ), "w" )			
-	output.write( base_0 %( file_index, file_index, file_index ) + content + ending_0 )
+	output.write( base_0 % { "id":file_index } + content + ending_0 )
 	output.close()
 	content = ""
 	#print content

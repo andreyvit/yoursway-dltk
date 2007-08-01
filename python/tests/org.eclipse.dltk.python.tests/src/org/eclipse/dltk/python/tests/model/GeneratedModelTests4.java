@@ -1,17 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- 
- *******************************************************************************/
 
 package org.eclipse.dltk.python.tests.model;
 
 import junit.framework.Test;
-
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
@@ -22,6 +12,8 @@ import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
 import org.eclipse.dltk.core.tests.util.ModelTestUtils;
 import org.eclipse.dltk.python.tests.PythonTestsPlugin;
+import java.net.URL;
+import org.osgi.framework.Bundle;
 
 public class GeneratedModelTests4 extends AbstractModelTests
 {
@@ -35,14 +27,19 @@ public class GeneratedModelTests4 extends AbstractModelTests
 	
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
-		setUpScriptProject( "pytests" );
+		setUpScriptProjectTo( "pytests_4", "pytests" );
+		Bundle bundle = PythonTestsPlugin.getDefault().getBundle();
+		URL entry = bundle.getEntry("/workspace/src.zip");
+		IScriptProject scriptProject = setUpScriptProject("pytests_4");
+		ModelTestUtils.exractZipInto(scriptProject, entry);
+		// Extract all files from selected zip file.
 	}
 	public void tearDownSuite() throws Exception {
 		super.tearDownSuite();
-		deleteProject( "pytests" );
+		deleteProject( "pytests4" );
 	}
 	public void testModelGen200( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_slice.py"));
 
@@ -131,7 +128,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen201( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_pkg.py"));
 
@@ -203,7 +200,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen202( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_fileinput.py"));
 
@@ -288,7 +285,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen203( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_pow.py"));
 
@@ -372,7 +369,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen204( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_univnewlines.py"));
 
@@ -557,7 +554,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen205( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_MimeWriter.py"));
 
@@ -597,7 +594,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen206( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_pty.py"));
 
@@ -650,7 +647,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen207( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_pwd.py"));
 
@@ -686,7 +683,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen208( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_tuple.py"));
 
@@ -774,7 +771,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen209( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_hmac.py"));
 
@@ -898,7 +895,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen210( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_dummy_threading.py"));
 
@@ -933,7 +930,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen211( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_decorators.py"));
 
@@ -1289,7 +1286,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen212( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("pydocfodder.py"));
 
@@ -1930,7 +1927,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen213( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_sax.py"));
 
@@ -2375,7 +2372,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen214( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_bufio.py"));
 
@@ -2407,7 +2404,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen215( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_set.py"));
 
@@ -4377,7 +4374,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen216( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_sha.py"));
 
@@ -4427,7 +4424,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen217( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("badsyntax_future3.py"));
 
@@ -4455,7 +4452,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen218( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("badsyntax_future4.py"));
 
@@ -4483,7 +4480,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen219( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("badsyntax_future5.py"));
 
@@ -4511,7 +4508,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen220( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("badsyntax_future6.py"));
 
@@ -4539,7 +4536,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen221( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("badsyntax_future7.py"));
 
@@ -4567,7 +4564,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen222( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("badsyntax_future8.py"));
 
@@ -4591,7 +4588,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen223( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("badsyntax_future9.py"));
 
@@ -4615,7 +4612,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen224( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_tcl.py"));
 
@@ -4788,7 +4785,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen225( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_codecs.py"));
 
@@ -5126,7 +5123,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen226( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_str.py"));
 
@@ -5166,7 +5163,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen227( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_deque.py"));
 
@@ -5683,7 +5680,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen228( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_gzip.py"));
 
@@ -5797,7 +5794,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen229( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_ucn.py"));
 
@@ -5882,7 +5879,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen230( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_sys.py"));
 
@@ -6022,7 +6019,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen231( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_descr.py"));
 
@@ -10451,7 +10448,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen232( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_robotparser.py"));
 
@@ -10597,7 +10594,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen233( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_netrc.py"));
 
@@ -10652,7 +10649,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen234( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_codeop.py"));
 
@@ -10730,7 +10727,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen235( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_imgfile.py"));
 
@@ -10753,7 +10750,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen236( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_wave.py"));
 
@@ -10802,7 +10799,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen237( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_macostools.py"));
 
@@ -10877,7 +10874,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen238( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_exceptions.py"));
 
@@ -10997,7 +10994,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen239( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_global.py"));
 
@@ -11030,7 +11027,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen240( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_bisect.py"));
 
@@ -11193,7 +11190,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen241( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_binascii.py"));
 
@@ -11289,7 +11286,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen242( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_queue.py"));
 
@@ -11418,7 +11415,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen243( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_logging.py"));
 
@@ -11700,7 +11697,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen244( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_ntpath.py"));
 
@@ -11721,7 +11718,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen245( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("pystone.py"));
 
@@ -11934,7 +11931,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen246( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_future1.py"));
 
@@ -11962,7 +11959,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen247( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_future2.py"));
 
@@ -11990,7 +11987,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen248( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_future3.py"));
 
@@ -12049,7 +12046,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 
 	}
 	public void testModelGen249( ) throws Exception {
-		String prj = "pytests";
+		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_userstring.py"));
 

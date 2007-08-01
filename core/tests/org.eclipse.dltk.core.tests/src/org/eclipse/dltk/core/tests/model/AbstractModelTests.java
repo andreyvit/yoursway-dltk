@@ -251,6 +251,20 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 		return createProject(projectName);
 	}
 	
+	protected IScriptProject setUpScriptProjectTo(final String projectName, final String fromName) throws CoreException, IOException {
+		final IProject project = setUpProjectTo(projectName, fromName);
+		return DLTKCore.create(project);
+	}
+	
+	protected IProject setUpProjectTo(final String projectName, final String fromName) throws CoreException, IOException {
+		// copy files in project from source workspace to target workspace
+		String sourceWorkspacePath = getSourceWorkspacePath();
+		String targetWorkspacePath = getWorkspaceRoot().getLocation().toFile().getCanonicalPath();
+		copyDirectory(new File(sourceWorkspacePath, fromName), new File(targetWorkspacePath, projectName));
+
+		return createProject(projectName);
+	}
+	
 	protected IScriptProject setUpScriptProject(final String projectName) throws CoreException, IOException {
 		final IProject project = setUpProject(projectName);
 		return DLTKCore.create(project);
