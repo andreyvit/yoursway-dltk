@@ -37,22 +37,6 @@ public interface IScriptModel extends IModelElement, IParent, IOpenable {
 	IScriptProject[] getScriptProjects() throws ModelException;
 
 	/**
-	 * Returns the opened script projects in the model, opened script projects
-	 * that have the specified nature id, or an empty array if there are none.
-	 * 
-	 * @param natureId
-	 *            nature id, if null then all opened script projects returned
-	 * 
-	 * @return the script projects in this model, or an empty array if there are
-	 *         none
-	 * 
-	 * @throws ModelException
-	 *             if the request fails
-	 */
-	IScriptProject[] getOpenedScriptProjects(String natureId)
-			throws ModelException;
-
-	/**
 	 * Deletes the given elements, forcing the operation if necessary and
 	 * specified.
 	 * 

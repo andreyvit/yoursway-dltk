@@ -14,6 +14,7 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptModel;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.ScriptModelHelper;
 import org.eclipse.dltk.debug.ui.messages.DLTKLaunchConfigurationsMessages;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
@@ -206,8 +207,9 @@ public abstract class ScriptLaunchConfigurationTab extends
 				.setMessage(DLTKLaunchConfigurationsMessages.mainTab_chooseProject_message);
 
 		try {
-			IScriptProject[] projects = DLTKCore.create(getWorkspaceRoot())
-					.getOpenedScriptProjects(getNatureID());
+			final IScriptProject[] projects = ScriptModelHelper
+					.getOpenedScriptProjects(DLTKCore
+							.create(getWorkspaceRoot()), getNatureID());
 			dialog.setElements(projects);
 		} catch (ModelException e) {
 			DLTKLaunchingPlugin.log(e);

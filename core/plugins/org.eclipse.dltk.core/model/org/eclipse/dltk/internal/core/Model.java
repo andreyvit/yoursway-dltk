@@ -10,7 +10,6 @@
 package org.eclipse.dltk.internal.core;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -23,14 +22,13 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptModel;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.internal.core.util.MementoTokenizer;
@@ -57,9 +55,9 @@ public class Model extends Openable implements IScriptModel {
 
 	protected boolean buildStructure(OpenableElementInfo info,
 			IProgressMonitor pm, Map newElements, IResource underlyingResource) /*
-	 * throws
-	 * ModelException
-	 */{
+																				 * throws
+																				 * ModelException
+																				 */{
 		// determine my children
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
 				.getProjects();
@@ -161,27 +159,6 @@ public class Model extends Openable implements IScriptModel {
 	 */
 	public IScriptProject[] getScriptProjects() throws ModelException {
 		final List list = getChildrenOfType(SCRIPT_PROJECT);
-		return (IScriptProject[]) list.toArray(new IScriptProject[list.size()]);
-	}
-
-	public IScriptProject[] getOpenedScriptProjects(String natureId)
-			throws ModelException {
-		final List list = new ArrayList();
-		final IScriptProject[] projects = getScriptProjects();
-		try {
-			for (int i = 0; i < projects.length; ++i) {
-				final IScriptProject scriptProject = projects[i];
-				final IProject project = scriptProject.getProject();
-
-				if (project.exists() && project.isOpen()
-						&& (natureId == null || project.hasNature(natureId))) {
-					list.add(scriptProject);
-				}
-			}
-		} catch (CoreException e) {
-			throw new ModelException(e);
-		}
-
 		return (IScriptProject[]) list.toArray(new IScriptProject[list.size()]);
 	}
 
