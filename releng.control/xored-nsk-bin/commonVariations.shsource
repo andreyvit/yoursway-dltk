@@ -28,5 +28,5 @@ export STANDARD_PROPERTIES_DIR=${BUILD_HOME}/releng.control/standardMachinePrope
 
 export BUILD_BUILDMASTER_EMAIL=kurtov@xored.com
 export BUILD_RESULT_URL=http://dltk.xored.local:3000/cruisecontrol/buildresults
-export BUILD_TOADDRESS=kurtov@xored.com
+export BUILD_TOADDRESS=kds@xored.com
 

@@ -58,7 +58,7 @@
         </modificationset>
         <publishers>
             <email
-                mailhost="localhost"
+                mailhost="us.xored.com"
                 returnaddress="${env.BUILD_BUILDMASTER_EMAIL}"
                 skipusers="false"
                 subjectprefix="[${project.name}]"
