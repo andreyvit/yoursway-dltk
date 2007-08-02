@@ -74,7 +74,7 @@ public class ModelTclTests extends AbstractModelTests
 		IModelElement[] moduleChildren = module.getChildren();
 		assertNotNull( moduleChildren );
 		// Check count of module childrens
-		assertEquals(4, moduleChildren.length );
+		assertEquals(3, moduleChildren.length );
 		
 		
 					
