@@ -1,7 +1,11 @@
 package org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl;
 
+import java.util.List;
+
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.Modifiers;
+import org.eclipse.dltk.ast.declarations.MethodDeclaration;
+import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
@@ -12,9 +16,20 @@ import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.xotcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.xotcl.core.ITclParser;
+import org.eclipse.dltk.xotcl.core.TclParseUtil;
 
 public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
-
+	private ASTNode findRealParent(ASTNode node) {
+		List levels = TclParseUtil.findLevelsTo(this.getModuleDeclaration(), node);
+		for (int i = levels.size() - 1; i >= 0; --i) {
+			ASTNode n = (ASTNode) levels.get(i);
+			if (n instanceof MethodDeclaration || n instanceof TypeDeclaration
+					|| n instanceof ModuleDeclaration) {
+				return n;
+			}
+		}
+		return null;
+	}
 	public ASTNode process(TclCommand command, ITclParser parser, int offset, ASTNode parent) {
 		ASTNode namespace = parser.processLocal(command, offset);
 		if( !(namespace instanceof TclStatement) ) {
@@ -52,6 +67,11 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 		if (sNameSpaceArg.equals("eval")) {
 			TypeDeclaration type = new TypeDeclaration(sNameSpaceName, nameSpaceName.sourceStart(), nameSpaceName.sourceEnd(), namespace.sourceStart(), namespace.sourceEnd());
 			type.setModifiers(Modifiers.AccNameSpace);
+			ASTNode realParent = findRealParent(parent);
+			if( realParent instanceof TypeDeclaration ) {
+				TypeDeclaration t = ((TypeDeclaration)realParent);
+				type.setEnclosingTypeName(t.getEnclosingTypeName() + "$" + t.getName() );
+			}
 			addToParent(parent, type);
 			if( code instanceof TclBlockExpression ) {
 				TclBlockExpression block = (TclBlockExpression) code;

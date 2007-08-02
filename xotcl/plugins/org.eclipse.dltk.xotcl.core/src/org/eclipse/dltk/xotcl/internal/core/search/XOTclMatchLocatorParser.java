@@ -44,6 +44,7 @@ public class XOTclMatchLocatorParser extends BasicTclMatchLocatorParser {
 			else if( node instanceof FieldDeclaration ) {
 				locator.match(node, XOTclMatchLocatorParser.this.getNodeSet());
 			}
+			
 			return true;
 		}
 
@@ -58,6 +59,9 @@ public class XOTclMatchLocatorParser extends BasicTclMatchLocatorParser {
 			return true;
 		}
 	};
+	
+	protected void parseBodies(MethodDeclaration method) {
+	}
 	protected void processStatement(ASTNode node) {
 		if( node != null) {
 			try {
