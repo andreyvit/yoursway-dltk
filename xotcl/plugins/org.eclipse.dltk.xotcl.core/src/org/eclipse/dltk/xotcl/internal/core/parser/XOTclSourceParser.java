@@ -24,8 +24,8 @@ import org.eclipse.dltk.xotcl.core.TclParseUtil.CodeModel;
 
 public class XOTclSourceParser implements ITclSourceParser, ITclParser {
 	private IProblemReporter problemReporter;
-	private CodeModel codeModel;
-	private String content;
+	protected CodeModel codeModel;
+	protected String content;
 	private char[] fileName;
 	private int startPos = 0;
 	private ModuleDeclaration moduleDeclaration;

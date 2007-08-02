@@ -5,7 +5,6 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
@@ -168,8 +167,8 @@ public class XOTclComandProcessorTests extends TestCase {
 		List superClassNames = type.getSuperClassNames();
 		assertNotNull(superClassNames);
 		assertNotNull( superClassNames.get(0) );
-		assertTrue( superClassNames.get(0) instanceof SimpleReference );
-		assertEquals( "MySuperClass", ((SimpleReference)superClassNames.get(0)).getName() );
+		assertTrue( superClassNames.get(0) instanceof String );
+		assertEquals( "MySuperClass", ((String)superClassNames.get(0)) );
 		
 	}
 	private ASTNode process(String content, XOTclClassProcessor processor)
