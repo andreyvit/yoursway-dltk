@@ -27,10 +27,9 @@ public class GeneratedModelTests6 extends AbstractModelTests
 	
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
-		setUpScriptProjectTo( "pytests_6", "pytests" );
+		IScriptProject scriptProject = setUpScriptProjectTo( "pytests_6", "pytests" );
 		Bundle bundle = PythonTestsPlugin.getDefault().getBundle();
 		URL entry = bundle.getEntry("/workspace/src.zip");
-		IScriptProject scriptProject = setUpScriptProject("pytests_6");
 		ModelTestUtils.exractZipInto(scriptProject, entry);
 		// Extract all files from selected zip file.
 	}
