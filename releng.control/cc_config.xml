@@ -95,6 +95,9 @@
                 savelogdir="${logDir}"
                 usedebug="false"
                 antworkingdir="${env.BUILD_HOME}/releng.control">
+                <jvmarg arg="-server" />
+				<jvmarg arg="-Xms128m" />
+				<jvmarg arg="-Xmx384m" />
                 <property
                     name="buildType"
                     value="I" />
@@ -131,6 +134,9 @@
                 savelogdir="${logDir}"
                 usedebug="false"
                 antworkingdir="${env.BUILD_HOME}/releng.control">
+                <jvmarg arg="-server" />
+				<jvmarg arg="-Xms128m" />
+				<jvmarg arg="-Xmx384m" />
                 <property
                     name="buildType"
                     value="N" />
@@ -172,6 +178,9 @@
                 savelogdir="${logDir}"
                 usedebug="false"
                 antworkingdir="${env.BUILD_HOME}/releng.control">
+                <jvmarg arg="-server" />
+				<jvmarg arg="-Xms128m" />
+				<jvmarg arg="-Xmx384m" />
                 <property
                     name="buildType"
                     value="S" />
@@ -221,6 +230,9 @@
                 <!-- this "M" label should be changed to "R" once maintenance release
                     is warming up for its "R"elease.
                 -->
+                <jvmarg arg="-server" />
+				<jvmarg arg="-Xms128m" />
+				<jvmarg arg="-Xmx384m" />
                 <property
                     name="buildType"
                     value="M" />
@@ -257,6 +269,9 @@
                 savelogdir="${logDir}"
                 usedebug="false"
                 antworkingdir="${env.BUILD_HOME}/releng.control">
+                <jvmarg arg="-server" />
+				<jvmarg arg="-Xms128m" />
+				<jvmarg arg="-Xmx384m" />
 
             </ant>
         </schedule>
