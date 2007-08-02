@@ -9,6 +9,7 @@ import org.eclipse.dltk.core.tests.launching.ScriptLaunchingTests;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.debug.RubyDebugConstants;
+import org.eclipse.dltk.ruby.debug.RubyDebugPlugin;
 import org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationDelegate;
 
 public class RubyLaunchingTests extends ScriptLaunchingTests {
@@ -46,5 +47,13 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 		final AbstractScriptLaunchConfigurationDelegate delegate = new RubyLaunchConfigurationDelegate();
 		delegate.launch(launch.getLaunchConfiguration(),
 				launch.getLaunchMode(), launch, null);
+	}
+
+	public void testDebug() throws Exception {
+		RubyDebugPlugin.getDefault().getPluginPreferences().setValue(
+				RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY,
+				"org.eclipse.dltk.ruby.basicdebugger");
+
+		super.testDebug();
 	}
 }

@@ -54,7 +54,8 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 
 	private static final String LOCALHOST = "127.0.0.1";
 
-	protected String getSessionId(ILaunchConfiguration configuration) throws CoreException {
+	protected String getSessionId(ILaunchConfiguration configuration)
+			throws CoreException {
 		return DbgpSessionIdGenerator.generate();
 	}
 
@@ -63,7 +64,8 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			throws CoreException {
 
 		final IScriptDebugTarget target = new ScriptDebugTarget(
-				getDebugModelId(), dbgpService, getSessionId(configuration), launch, null);
+				getDebugModelId(), dbgpService, getSessionId(configuration),
+				launch, null);
 		launch.addDebugTarget(target);
 		return target;
 	}
@@ -98,11 +100,11 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 				getDebuggingEngineId());
 
 		// Configuration
-		final DbgpInterpreterConfig deConfig = new DbgpInterpreterConfig(config);
+		final DbgpInterpreterConfig dbgpConfig = new DbgpInterpreterConfig(config);
 
-		deConfig.setSessionId(target.getSessionId());
-		deConfig.setPort(service.getPort());
-		deConfig.setHost(LOCALHOST);
+		dbgpConfig.setSessionId(target.getSessionId());
+		dbgpConfig.setPort(service.getPort());
+		dbgpConfig.setHost(LOCALHOST);
 	}
 
 	protected void checkConfig(InterpreterConfig config) throws CoreException {

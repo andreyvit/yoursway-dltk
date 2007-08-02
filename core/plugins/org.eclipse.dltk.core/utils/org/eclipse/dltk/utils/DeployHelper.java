@@ -19,7 +19,6 @@ import java.net.URL;
 import java.util.Enumeration;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.Bundle;
 
@@ -56,37 +55,41 @@ public class DeployHelper {
 		}
 	}
 
-	public static IPath deploy(Bundle bundle, String bundlePath,
-			IPath diskPath, boolean clearDiskPath) throws IOException {
+	public static IPath deploy(Bundle bundle, String bundlePath, IPath diskPath)
+			throws IOException {
+		// Check if directory
+		final Enumeration paths = bundle.getEntryPaths(bundlePath);
+		final IPath result = diskPath.append(bundlePath);
 
-		File dir = diskPath.append(bundlePath).toFile();
-		if (clearDiskPath && dir.exists()) {
-			dir.delete();
-		}
-
-		if (!dir.exists()) {
-			dir.mkdir();
-		}
-
-		Enumeration paths = bundle.getEntryPaths(bundlePath);
 		if (paths != null) {
+			// result is a directory
+			result.toFile().mkdirs();
+
 			while (paths.hasMoreElements()) {
-				String path = (String) paths.nextElement();
+				final String path = (String) paths.nextElement();
 				if (path.endsWith("/")) {
 					deploy(bundle, path, diskPath);
 				} else {
-					File file = diskPath.append(path).toFile();
-					DeployHelper.copy(bundle.getEntry(path), file);
+					copy(bundle.getEntry(path), diskPath.append(path).toFile());
 				}
+			}
+
+			return result;
+		} else {
+			final URL url = bundle.getEntry(bundlePath);
+			if (url != null) {
+				final File file = result.toFile();
+
+				if (!file.exists()) {
+					file.getParentFile().mkdirs();
+				}
+
+				copy(url, file);
+				return result;
 			}
 		}
 
-		return new Path(dir.getAbsolutePath());
-	}
-
-	public static IPath deploy(Bundle bundle, String bundlePath, IPath diskPath)
-			throws IOException {
-		return deploy(bundle, bundlePath, diskPath, true);
+		return null;
 	}
 
 	public static IPath deploy(Plugin plugin, String bundlePath)

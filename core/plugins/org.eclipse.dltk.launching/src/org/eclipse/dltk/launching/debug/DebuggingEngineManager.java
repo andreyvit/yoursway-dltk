@@ -122,6 +122,37 @@ public class DebuggingEngineManager {
 
 	private static IDebuggingEngine[] NO_ENGINES = new IDebuggingEngine[0];
 
+	/**
+	 * Returns debugging engine selector for script language with nature
+	 * natureId
+	 * 
+	 * @param natureId
+	 * @return
+	 */
+	public IDebuggingEngineSelector getDebuggingEngineSelector(String natureId) {
+		IDebuggingEngineSelector selector = (IDebuggingEngineSelector) natureToSelectorMap
+				.get(natureId);
+
+		if (selector == null) {
+			selector = defaultSelector;
+		}
+
+		return selector;
+	}
+
+	/**
+	 * @param natureId
+	 * @return
+	 */
+	public boolean hasDebuggingEngineSelector(String natureId) {
+		return natureToSelectorMap.containsKey(natureId);
+	}
+
+	/**
+	 * 
+	 * @param natureId
+	 * @return
+	 */
 	public IDebuggingEngine[] getDebuggingEngines(String natureId) {
 		final List engines = (List) natureToEnginesMap.get(natureId);
 
@@ -133,6 +164,11 @@ public class DebuggingEngineManager {
 		return NO_ENGINES;
 	}
 
+	/**
+	 * 
+	 * @param natureId
+	 * @return
+	 */
 	public boolean hasDebuggingEngines(String natureId) {
 		final List engines = (List) natureToEnginesMap.get(natureId);
 		return !engines.isEmpty();
@@ -161,36 +197,38 @@ public class DebuggingEngineManager {
 	 * @return
 	 */
 	public IDebuggingEngine getDebuggingEngine(String natureId, String id) {
-		Iterator it = ((List) natureToEnginesMap.get(natureId)).iterator();
-		while (it.hasNext()) {
-			IDebuggingEngine engine = (IDebuggingEngine) it.next();
-			if (engine.getId().equals(id)) {
-				return engine;
-			}
+		return getDebuggingEngine(id);
+	}
+
+	/**
+	 * Returns selected debugging engine for script language with natureId. Uses
+	 * default debugging engine selector (priority based) if custom selector is
+	 * not contributed.
+	 * 
+	 * @param natureId
+	 * @return Selected debugging engine or null (if there are no debugging
+	 *         engines at all or there are no selected engine)
+	 */
+	public IDebuggingEngine getSelectedDebuggingEngine(String natureId) {
+		IDebuggingEngine[] engines = getDebuggingEngines(natureId);
+
+		if (engines.length > 0) {
+			IDebuggingEngineSelector selector = getDebuggingEngineSelector(natureId);
+			return selector.select(engines);
 		}
 
 		return null;
 	}
 
-	public IDebuggingEngine getSelectedDebuggineEngine(String natureId) {
-		IDebuggingEngine[] engines = getDebuggingEngines(natureId);
-
-		IDebuggingEngine engine = null;
-
-		if (engines.length > 0) {
-			IDebuggingEngineSelector selector = (IDebuggingEngineSelector) natureToSelectorMap
-					.get(natureId);
-
-			if (selector != null) {
-				engine = selector.select(engines);
-				if (engine == null) {
-					engine = defaultSelector.select(engines);
-				}
-			} else {
-				engine = defaultSelector.select(engines);
-			}
-		}
-
-		return engine;
+	/**
+	 * Returns if script language with nature natureId has selected debugging
+	 * engine. If this method returns false then getSelectedDebuggingEngine
+	 * returns null.
+	 * 
+	 * @param natureId
+	 * @return
+	 */
+	public boolean hasSelectedDebuggingEngine(String natureId) {
+		return getSelectedDebuggingEngine(natureId) != null;
 	}
 }

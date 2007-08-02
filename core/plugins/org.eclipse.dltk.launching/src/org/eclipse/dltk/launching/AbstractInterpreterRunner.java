@@ -204,12 +204,10 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		IProcess process = newProcess(launch, p, processLabel,
 				getDefaultProcessMap());
 		process.setAttribute(IProcess.ATTR_CMDLINE, cmdLineLabel);
-
 	}
 
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
-
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}

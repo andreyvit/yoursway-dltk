@@ -9,7 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.python.launching;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -22,40 +24,39 @@ public class PythonLaunchingPlugin extends Plugin {
 
 	// The shared instance
 	private static PythonLaunchingPlugin plugin;
-	
-	/**
-	 * The constructor
-	 */
+
 	public PythonLaunchingPlugin() {
 		plugin = this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
 	}
 
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
 	public static PythonLaunchingPlugin getDefault() {
 		return plugin;
 	}
+
 	public static String getUniqueIdentifier() {
 		return PLUGIN_ID;
+	}
+
+	public static void log(IStatus status) {
+		getDefault().getLog().log(status);
+	}
+
+	public static void log(String message) {
+		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR,
+				message, null));
+	}
+
+	public static void log(Throwable e) {
+		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR, e
+				.getMessage(), e));
 	}
 }

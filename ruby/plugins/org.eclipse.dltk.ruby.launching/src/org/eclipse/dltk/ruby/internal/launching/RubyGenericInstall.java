@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.launching.AbstractInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
@@ -38,10 +37,9 @@ public class RubyGenericInstall extends AbstractInterpreterInstall {
 		private Map sources;
 
 		private String[] generateLines() throws IOException, CoreException {
-			final IPath path = DeployHelper.deploy(RubyLaunchingPlugin
-					.getDefault(), "scripts");
-
-			final File builder = path.append("builtin.rb").toFile();
+			final File builder = DeployHelper.deploy(
+					RubyLaunchingPlugin.getDefault(), "scripts/builtin.rb")
+					.toFile();
 
 			final List lines = new ArrayList();
 
@@ -99,9 +97,9 @@ public class RubyGenericInstall extends AbstractInterpreterInstall {
 						parseLines(lines);
 					}
 				} catch (IOException e) {
-					// RubyLaunchingPlugin.log(e);
+					e.printStackTrace();
 				} catch (CoreException e) {
-
+					e.printStackTrace();
 				}
 			}
 

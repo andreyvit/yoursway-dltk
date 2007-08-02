@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.launching;
 
+import java.io.IOException;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -20,6 +22,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.ruby.core.RubyNature;
+import org.eclipse.dltk.utils.DeployHelper;
 
 public class RubyLaunchConfigurationDelegate extends
 		AbstractScriptLaunchConfigurationDelegate {
@@ -80,8 +83,19 @@ public class RubyLaunchConfigurationDelegate extends
 
 	protected void addStreamSync(InterpreterConfig config,
 			ILaunchConfiguration configuration) {
-		config.addInterpreterArg("-e");
-		config.addInterpreterArg("STDOUT.sync=true; STDERR.sync=true; load($0=ARGV.shift)");
+		try {
+			final IPath path = DeployHelper.deploy(RubyLaunchingPlugin
+					.getDefault(), "scripts/sync.rb");
+			config.addInterpreterArg("-r");
+			config.addInterpreterArg(path.toPortableString());
+		} catch (IOException e) {
+			RubyLaunchingPlugin.log(e);
+		}
+
+		// Old solution
+		// config.addInterpreterArg("-e");
+		// config.addInterpreterArg("STDOUT.sync=true; STDERR.sync=true;
+		// load($0=ARGV.shift)");
 	}
 
 	protected InterpreterConfig createInterpreterConfig(

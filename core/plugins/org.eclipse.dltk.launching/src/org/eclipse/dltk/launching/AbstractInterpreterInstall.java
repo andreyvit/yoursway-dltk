@@ -239,7 +239,8 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 
 	protected IInterpreterRunner getDebugInterpreterRunner() {
 		DebuggingEngineManager manager = DebuggingEngineManager.getInstance();
-		IDebuggingEngine engine = manager.getSelectedDebuggineEngine(getNatureId());
+		IDebuggingEngine engine = manager
+				.getSelectedDebuggingEngine(getNatureId());
 
 		if (engine != null) {
 			return engine.getRunner(this);

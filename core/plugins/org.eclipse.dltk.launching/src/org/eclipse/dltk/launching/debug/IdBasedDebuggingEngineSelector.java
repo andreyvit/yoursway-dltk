@@ -1,6 +1,5 @@
 package org.eclipse.dltk.launching.debug;
 
-
 public abstract class IdBasedDebuggingEngineSelector implements
 		IDebuggingEngineSelector {
 

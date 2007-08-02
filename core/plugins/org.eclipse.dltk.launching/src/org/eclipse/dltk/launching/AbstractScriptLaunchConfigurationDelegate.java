@@ -38,10 +38,11 @@ import org.eclipse.debug.core.IStatusHandler;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IScriptModelMarker;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.launching.InterpreterRuntimeBuildpathEntryResolver;
+import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
 
 import com.ibm.icu.text.MessageFormat;
 
@@ -702,37 +703,69 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		return config;
 	}
 
+	protected void validateLaunchConfiguration(
+			ILaunchConfiguration configuration, String mode)
+			throws CoreException {
+
+		// Validation of available debugging engine
+		if (ILaunchManager.DEBUG_MODE.equals(mode)) {
+
+			if (!DebuggingEngineManager.getInstance()
+					.hasSelectedDebuggingEngine(getNatureId(configuration))) {
+				abort(
+						"Debugging engine not selected.",
+						null,
+						ScriptLaunchConfigurationConstants.ERR_NO_DEFAULT_DEBUGGING_ENGINE);
+			}
+		}
+	}
+
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		if (monitor == null) {
-			monitor = new NullProgressMonitor();
-		}
 
 		try {
-			monitor.beginTask(configuration.getName() + " ...", 3);
+			if (monitor == null) {
+				monitor = new NullProgressMonitor();
+			}
+
+			monitor.beginTask(MessageFormat.format(
+					"Starting launch configuration {0}...",
+					new Object[] { configuration.getName() }), 10);
+			if (monitor.isCanceled()) {
+				return;
+			}
+
+			monitor.subTask(MessageFormat.format(
+					"Validating launch configuration {0}...",
+					new Object[] { configuration.getName() }));
+			validateLaunchConfiguration(configuration, mode);
+			monitor.worked(1);
 			if (monitor.isCanceled()) {
 				return;
 			}
 
 			// Getting InterpreterConfig
-			InterpreterConfig config = createInterpreterConfig(configuration,
-					launch);
+			monitor.subTask("Generating interpreter config...");
+			final InterpreterConfig config = createInterpreterConfig(
+					configuration, launch);
 			if (monitor.isCanceled()) {
 				return;
 			}
 			monitor.worked(1);
 
 			// Getting IInterpreterRunner
-			IInterpreterRunner runner = getInterpreterRunner(configuration,
-					mode);
+			monitor.subTask("Getting interpreter runner...");
+			final IInterpreterRunner runner = getInterpreterRunner(
+					configuration, mode);
 			if (monitor.isCanceled()) {
 				return;
 			}
 			monitor.worked(1);
 
 			// Real run
+			monitor.subTask("Executing runner...");
 			runRunner(configuration, runner, config, launch,
-					new SubProgressMonitor(monitor, 1));
+					new SubProgressMonitor(monitor, 7));
 
 		} catch (CoreException e) {
 			tryHandleStatus(e, this);
@@ -869,8 +902,10 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	public IInterpreterRunner getInterpreterRunner(
 			ILaunchConfiguration configuration, String mode)
 			throws CoreException {
-		IInterpreterInstall install = verifyInterpreterInstall(configuration);
-		IInterpreterRunner runner = install.getInterpreterRunner(mode);
+
+		final IInterpreterInstall install = verifyInterpreterInstall(configuration);
+
+		final IInterpreterRunner runner = install.getInterpreterRunner(mode);
 
 		if (runner == null) {
 			abort(
@@ -947,6 +982,13 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			return p.getLocation().toFile();
 		}
 		return null;
+	}
+
+	protected String getNatureId(ILaunchConfiguration configuration)
+			throws CoreException {
+		return configuration.getAttribute(
+				ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE,
+				(String) null);
 	}
 
 	abstract public String getLanguageId();

@@ -182,15 +182,14 @@ public abstract class AbstractScriptDebuggingEngineConfigurationBlock extends
 		if ("".equals(engineId)) {
 			// Engine not selected (for example, first launch)
 			IDebuggingEngine engine = manager
-					.getSelectedDebuggineEngine(natureId);
+					.getSelectedDebuggingEngine(natureId);
 			if (engine != null) {
 				engineId = engine.getId();
 			}
 		}
 
 		if (!"".equals(engineId)) {
-			IDebuggingEngine engine = manager.getDebuggingEngine(natureId,
-					engineId);
+			IDebuggingEngine engine = manager.getDebuggingEngine(engineId);
 
 			setSelectedDebuggingEngine(engine);
 		}

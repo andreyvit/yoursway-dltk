@@ -9,7 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.launching;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -40,5 +42,19 @@ public class RubyLaunchingPlugin extends Plugin {
 
 	public static String getUniqueIdentifier() {
 		return PLUGIN_ID;
+	}
+
+	public static void log(IStatus status) {
+		getDefault().getLog().log(status);
+	}
+
+	public static void log(String message) {
+		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR,
+				message, null));
+	}
+
+	public static void log(Throwable e) {
+		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR, e
+				.getMessage(), e));
 	}
 }
