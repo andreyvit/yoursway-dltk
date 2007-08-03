@@ -929,5 +929,16 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		cu.codeComplete(cursorLocation, requestor);
 		assertTrue(requestor.getResults().indexOf("%") > -1); 
 	}
+	public void testCompletion058() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b198704.rb");
 
+		String str = cu.getSource();
+		String completeBehind = "--1.";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		assertTrue(requestor.getResults().indexOf("%") > -1); 
+	}
 }
