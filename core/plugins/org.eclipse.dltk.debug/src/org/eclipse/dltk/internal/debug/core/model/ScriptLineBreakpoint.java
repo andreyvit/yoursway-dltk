@@ -40,6 +40,16 @@ public class ScriptLineBreakpoint extends AbstractScriptBreakpoint implements
 
 	}
 
+	/**
+	 * @deprecated
+	 */
+	public ScriptLineBreakpoint(final String debugModelId,
+			final IResource resource, final int lineNumber,
+			final int charStart, final int charEnd, final int hitCount,
+			final boolean add) throws DebugException {
+		this(debugModelId, resource, lineNumber, charStart, charEnd, add);
+	}
+
 	public ScriptLineBreakpoint(final String debugModelId,
 			final IResource resource, final int lineNumber,
 			final int charStart, final int charEnd, final boolean add)

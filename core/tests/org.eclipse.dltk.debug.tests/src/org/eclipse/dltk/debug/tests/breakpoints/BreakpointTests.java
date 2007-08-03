@@ -1,16 +1,23 @@
 package org.eclipse.dltk.debug.tests.breakpoints;
 
-import junit.framework.Test;
+import junit.framework.TestSuite;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
-import org.eclipse.dltk.debug.tests.ScriptDebugTest;
+import org.eclipse.dltk.debug.tests.AbstractDebugTests;
 import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 
-public class BreakpointTests extends ScriptDebugTest {
-	public BreakpointTests(String name) {
-		super("Breakpoint tests", name);
+public class BreakpointTests extends AbstractDebugTests {
+	public static TestSuite suite() {
+		Suite s = new Suite(BreakpointTests.class);
+		// s.addTestSuite(BreakpointTests.class);
+		// return s;
+		return s;
+	}
+
+	public BreakpointTests() {
+		super("org.eclipse.dltk.debug.tests", "My Breakpoint tests");
 	}
 
 	private IScriptLineBreakpoint breakpoint;
@@ -22,17 +29,19 @@ public class BreakpointTests extends ScriptDebugTest {
 				"src/test.rb");
 
 		breakpoint = new ScriptLineBreakpoint("test_debug_model", resource, 1,
-				-1, -1, true);
+				-1, -1, 0, true);
 	}
 
-	public static Test suite() {
-		return new Suite(BreakpointTests.class);
+	public void tearDownSuite() throws Exception {
+		super.tearDownSuite();
 	}
 
+	// Helper methods
 	protected String getProjectName() {
 		return "debug";
 	}
 
+	// Real tests
 	public void testSetGet() throws Exception {
 		// Id
 		final String id = "32145";

@@ -9,6 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.tests;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
 import org.eclipse.dltk.debug.dbgp.tests.DbgpBreakpointCommandsTests;
 import org.eclipse.dltk.debug.dbgp.tests.DbgpContextCommandsTests;
 import org.eclipse.dltk.debug.dbgp.tests.DbgpContinuationCommandsTests;
@@ -20,31 +23,31 @@ import org.eclipse.dltk.debug.dbgp.tests.DbgpStackLevelTests;
 import org.eclipse.dltk.debug.dbgp.tests.DbgpStatusCommandsTests;
 import org.eclipse.dltk.debug.dbgp.tests.DbgpStreamCommandsTests;
 import org.eclipse.dltk.debug.tests.breakpoints.BreakpointTests;
-import org.eclipse.dltk.debug.tests.core.BuildpathContainerTests;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 public class AllTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.eclipse.dltk.debug");
-		// $JUnit-BEGIN$
-		suite.addTestSuite(DbgpRequestTests.class);
-		suite.addTestSuite(DbgpStackLevelTests.class);
-		suite.addTestSuite(DbgpPropertyCommandsTests.class);
-		suite.addTestSuite(DbgpFeatureCommandsTests.class);
-		suite.addTestSuite(DbgpBreakpointCommandsTests.class);
-		suite.addTestSuite(DbgpContextCommandsTests.class);
-		suite.addTestSuite(DbgpContinuationCommandsTests.class);
-		suite.addTestSuite(DbgpStackCommandsTests.class);
-		suite.addTestSuite(DbgpStreamCommandsTests.class);
-		suite.addTestSuite(DbgpStatusCommandsTests.class);
+		final TestSuite suite = new TestSuite("Test for org.eclipse.dltk.debug");
 
-		suite.addTestSuite(BuildpathContainerTests.class);
+		// // $JUnit-BEGIN$
 
+		// Dbgp
+		final TestSuite dbgpSuite = new TestSuite("DBGP tests");
+		dbgpSuite.addTestSuite(DbgpRequestTests.class);
+		dbgpSuite.addTestSuite(DbgpStackLevelTests.class);
+		dbgpSuite.addTestSuite(DbgpPropertyCommandsTests.class);
+		dbgpSuite.addTestSuite(DbgpFeatureCommandsTests.class);
+		dbgpSuite.addTestSuite(DbgpBreakpointCommandsTests.class);
+		dbgpSuite.addTestSuite(DbgpContextCommandsTests.class);
+		dbgpSuite.addTestSuite(DbgpContinuationCommandsTests.class);
+		dbgpSuite.addTestSuite(DbgpStackCommandsTests.class);
+		dbgpSuite.addTestSuite(DbgpStreamCommandsTests.class);
+		dbgpSuite.addTestSuite(DbgpStatusCommandsTests.class);
+		suite.addTest(dbgpSuite);
+
+		// Brealpoints
 		suite.addTest(BreakpointTests.suite());
-		// $JUnit-END$
+		// // $JUnit-END$
 		return suite;
 	}
 }
