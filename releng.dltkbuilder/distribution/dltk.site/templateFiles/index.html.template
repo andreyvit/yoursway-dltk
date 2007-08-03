@@ -1,9 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-
-<title>DLTK Downloads</title>
-
+<title>Eclipse Dynamic Languages Toolkit (DLTK) Downloads - for Committers and Early Testers</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <link href="downloads.css" rel="stylesheet" type="text/css" />
 
 <?php
 //ini_set("display_errors", "true");
@@ -59,289 +59,225 @@ foreach ($compileSummary->summaryItem as $summaryItem) {
 
 
 ?>
-
-
 </head>
 
 <body>
+<div id="container">
+ <div class="grad">
+  <div id="summary">
+    <div id="header">
+      <h1>@type@ Build: @build@</h1>
+      <h4>@date@</h4>
+      <p>The Eclipse Dynamic Languages Toolkit Project is a tool for vendors, researchers, and end-users who rely on dynamic languages. DLTK is comprised
+of a set of extensible frameworks designed to reduce the complexity of building full featured development environments for dynamic languages such
+as PHP and Perl.</p>
+      <p>&nbsp;</p>
+      <p>Besides a set of frameworks DLTK provides exemplary Tcl, Ruby, and Python development environments ready to use out of the box.</p> 
+    </div>
+   </div>
+ </div>
 
-<table BORDER=0 CELLSPACING=2 CELLPADDING=2 WIDTH="100%">
-        <tr>
-                <td ALIGN=left><font face="'Bitstream Vera',Helvetica,Arial" size="+2"><b>@type@
-                Build: @build@</b></font></td>
 
-
-        <tr>
-                <td><font size="-1">@date@</font></td>
-        </tr>
-        <tr>
-                <td>
-                <p>The Eclipse Dynamic Languages Toolkit Project is a tool for vendors, researchers, and end-users who 
-                rely on dynamic languages. DLTK is comprised of a set of extensible frameworks designed to reduce the 
-                complexity of building full featured development environments for dynamic languages such as PHP and Perl.
-				</p>
-				<p>Besides a set of frameworks DLTK provides exemplary Tcl, Ruby, and Python development environments ready to use out of the box.
-				</p> 
-                </td>
-        </tr>
-</table>
-
+ <div class="white">
+  <div id="build">
 <!-- ***********  Required Prerequisites **************  -->
-<table border=0 cellspacing=2 cellpadding=2 width="100%">
-        <tr>
-                <td align="left" valign="top" bgcolor="#0080C0"><font
-                        face="'Bitstream Vera',Helvetica,Arial" color="#FFFFFF">Required
-                Prerequisites</font></td>
-        </tr>
-        <tr>
-                <td>Eclipse Platform is the prerequisite project to run the Dynamic Languages
-                Toolkit. It must be downloaded and installed before DLTK can be
-                installed or used.</td>
-        </tr>
-        <tr>
-                <table border=0 cellspacing=1 cellpadding=1 width="90%" align="center">
-                        <tr valign="top">
-                        		<td width="10%"/>
-                                <td>Eclipse Platform</td>
-                                <td align="right"><a href="@eclipseURL@">@eclipseFile@</a> or <a
-                                        href=@eclipseBuildURL@>other platform</a></td>
-                        </tr>
-                </table>
-        </tr>
-</table>
+   <div class="build_item">
+    <h3>Required Prerequisites</h3>
+    <h4>Eclipse Platform is the prerequisite project to run the Dynamic Languages Toolkit. It must be downloaded and installed before DLTK can be installed
+or used.</h4>
+    <table>
+      <tr>
+        <td class="bold" width="182">Eclipse Platform</td>
+        <td width="790"><a href="@eclipseURL@">@eclipseFile@</a> or <a href=@eclipseBuildURL@>other platform</a></td>
+      </tr>
+    </table>
+  </div>
 
-<!-- ***********  DLTK **************  -->
-<table border=0 cellspacing=2 cellpadding=2 width="100%">
-        <tr>
-                <td align=left valign=top colspan="5" bgcolor="#0080C0"><font
-                        face="'Bitstream Vera',Helvetica,Arial" color="#FFFFFF"> Dynamic
-                Languages Toolkit Complete</font></td>
-        </tr>
+<!-- ***********  DLTK COMPONENTS **************  -->
+<div class="build_item">
+    <h3>Dynamic Languages Toolkit Components</h3>
+    <h4>The DLTK zip files includes the features and plugins from the DLTK Core, Ruby, TCL, Python and Javascript components.</h4>
+    <table>
+      <tr>
+        <td class="bold" width="168">DLTK Core</td>
+        <td width="450"></td>
+        <?php
+        $zipfilename="dltk-core-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td width="100"><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilename="dltk-core-sdk-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        ?>
+      </tr>
+      <tr>
+        <td class="bold">DLTK Ruby</td>
+        <td>Requires DLTK Core</td>
+        <?php
+        $zipfilename="dltk-ruby-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilename="dltk-ruby-sdk-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        ?>
+      </tr>
+      <tr>
+        <td class="bold">DLTK TCL</td>
+        <td>Requires DLTK Core</td>
+        <?php
+        $zipfilename="dltk-tcl-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilename="dltk-tcl-sdk-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td"><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        ?>
+      </tr>      
+      <tr>
+        <td class="bold">DLTK Python</td>
+        <td>Experimental Package. Requires DLTK Core</td>
+        <?php
+        $zipfilename="dltk-python-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilename="dltk-python-sdk-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        ?>
+      </tr>
+      <tr>
+        <td class="bold">DLTK Javascript</td>
+        <td>Experimental Package. Requires DLTK Core</td>
+        <?php
+        $zipfilename="dltk-javascript-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilename="dltk-javascript-sdk-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        ?>
+      </tr>
+      
+    <div class="build_item">
+    <h3>Dynamic Languages Toolkit Extensions</h3>
+    <table>
+      <tr>
+        <td width="168" class="bold">DLTK XOTCL</td>
+        <td width="450">Requires DLTK TCL</td>
+        <?php
+        $zipfilename="dltk-xotcl-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td width="100"><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilename="dltk-xotcl-sdk-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        ?>
+      </tr>
+    </table>
+    </div>
 
-        <tr>
-                <td align="left" valign="top" colspan="5">
-                <p>The DLTK zip files includes the features and plugins from the DLTK Core,
-                Ruby, and TCL components.</p>
-                </td>
-        </tr>
-        <tr>
-                <table border=0 cellspacing=2 cellpadding=2 width="90%" align="center">
-
-
-                        <tr>
-                                <td align="left" valign="top" width="10%"><b>Developers (Dynamic Language Users):</b></td>
-                                <td align="left" valign="top">
-                                <p>This non-SDK package is for most users. It includes the runnable
-                                code and end-user documentation for those using the tools to develop
-                                applications with dynamic languages.</p>
-                                </td>
-                                <?php
-
-                                $zipfilename="dltk-@build@-incubation";
-
-                                $filename=$zipfilename.".zip";
-                                $zipfilesize=fileSizeInMegs($filename);
-                                echo '  <td align="right" valign="top" width="10%">
-                           <a href="' . ${downloadprefix} . ${filename} . '">' . "dltk" . '</a>
-                        </td>
-                        <td align="right" valign="top" width="5%">
-                           (' . ${zipfilesize} . 'M)
-                        </td>
-                        <td align="right" valign="top" width="5%">
-                           [<a href="checksum/' . ${filename} . '.md5">md5</a>]
-                        </td>';
-
-                                ?>
-                        </tr>
-
-                        <tr>
-
-
-                        <tr>
-                                <td align="left" valign="top" width="10%"><b>Tool Developers:</b></td>
-
-                                <td align="left" valign="top">
-                                <p>The SDK package includes source code and developer documentation
-                                for those using DLTK as a framework to build more tools or extend existing implementations, 
-                                as well as everything that is in the non-SDK version.</p>
-
-                                <?php
-
-                                $zipfilename="dltk-sdk-@build@-incubation";
-
-                                $filename=$zipfilename.".zip";
-                                $zipfilesize=fileSizeInMegs($filename);
-                                echo '<td align="right" valign="top" width="10%">
-                        <a href="' . ${downloadprefix} . ${filename} . '">' . "dltk-sdk" . '</a>
-                        </td>
-                        <td align="right" valign="top" width="5%">
-                        (' . ${zipfilesize} . 'M)
-                        </td>
-                        <td align="right" valign="top" width="5%">
-                        [<a href="checksum/' . ${filename} . '.md5">md5</a>]
-                        </td>';
-                                ?>
-
-                        </tr>
-
-                        <tr>
-
-                                <td align="left" valign="top" width="10%"></td>
-                                <td align="left" valign="top">
-                                <p>The Automated Test zip contains the unit tests.</p>
-                                <?php
-
-                                $zipfilename="dltk-Automated_Tests-@build@-incubation";
-
-                                $filename=$zipfilename.".zip";
-                                $zipfilesize=fileSizeInMegs($filename);
-                                echo '<td align="right" valign="top" width="10%">
-                        <a href="' . ${downloadprefix} . ${filename} . '">' . "dltk-Automated_Tests" . '</a>
-                        </td>
-                        <td align="right" valign="top" width="5%">
-                        (' . ${zipfilesize} . 'M)
-                        </td>
-                        <td align="right" valign="top" width="5%">
-                        [<a href="checksum/' . ${filename} . '.md5">md5</a>]
-                        </td>';
-                                ?>
-
-                        </tr>
-                </table>
-
-
-        <tr>
-
-</table>
+    <div class="build_item">
+    <h3>Dynamic Languages Toolkit Bundles</h3>
+    <table>
+      <tr>
+        <td width="168" class="bold">DLTK Core+Ruby</td>
+        <td width="450">Package contains everything to run DLTK Ruby</td>
+        <?php
+        $zipfilename="dltk-core-ruby-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td width="100"><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilename="dltk-core-ruby-sdk-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        ?>
+      </tr>
+      <tr>
+        <td class="bold">DLTK Core+Python</td>
+        <td>Package contains everything to run DLTK Python</td>
+        <?php
+        $zipfilename="dltk-core-python-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td width="100"><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilename="dltk-core-python-sdk-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        ?>
+      </tr>      
+      <tr>
+        <td class="bold">DLTK All</td>
+        <td>Package contains all DLTK components and extensions</td>
+        <?php
+        $zipfilename="dltk-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td width="100"><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilename="dltk-sdk-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        ?>
+      </tr>
+     </table>
+    </div>
 
 
 <!-- ***********  Build Status **************  -->
-<table border=0 cellspacing=2 cellpadding=2 width="100%">
-        <tr>
-                <td align=left valign=top bgcolor="#0080C0"><font
-                        face="'Bitstream Vera',Helvetica,Arial" color="#FFFFFF">Status, tests
-                and other interesting details</font></td>
-        </tr>
-        <tr>
-                <table border=0 cellspacing=2 cellpadding=2 width="90%" align="center">
-
-                        <tr>
-                                <td>
-                                <?php
-                                $buildmachineScript="../../../displayBuildMachine.php";
-                                if (file_exists($buildmachineScript))
-                                {
-                                        include $buildmachineScript;
-                                        echo displayBuildMachine();
-                                }
-                                ?> 
-                                <a href="buildNotes.php">Build notes</a> <br />
-                                <a href="directory.txt">map files</a> <br /> 
-                                <?php
-
-                                if (isset($unitTests_grandTotalErrors)) {
-                                        $errorColor="green";
-                                        if ($unitTests_grandTotalErrors > 0) {
-                                                $errorColor="red";
-                                        }
-                                        echo "<a href=\"testResults.php\">Unit test results</a>&nbsp;";
-                                        echo "<img src=\"junit_err.gif\"/><font color=\"" . $errorColor . "\">" . $unitTests_grandTotalErrors . "</font>&nbsp;&nbsp;Total: " . $unitTests_grandTotalTests;
-                                }
-                                else {
-                                        echo "<br /><font color=\"orange\">Unit tests are pending</font>&nbsp;&nbsp;<img src=\"pending.gif\"/>";
-                                }
-                                ?> <br />
-                                <a href="compileResults.php">Compile logs: Code Bundles</a> 
-                                <?php
-                                echo "&nbsp;&nbsp;($code_totalBundles)&nbsp;&nbsp;";
-                                echo "<img src=\"compile_err.gif\"/><font color=red>$code_totalErrors</font>&nbsp;";
-                                echo "<img src=\"compile_warn.gif\"/><font color=orange>$code_totalWarnings</font>&nbsp;";
-                                echo "<img src=\"access_err.gif\"/><font color=red>$code_totalforbiddenAccessWarningCount</font>&nbsp;";
-                                echo "<img src=\"access_warn.gif\"/><font color=orange>$code_totaldiscouragedAccessWarningCount</font>&nbsp;";
-                                ?> <br />
-                                <a href="testCompileResults.php">Compile logs: Test Bundles</a> 
-                                <?php
-                                echo "&nbsp;&nbsp;($test_totalBundles)&nbsp;&nbsp;";
-                                echo "<img src=\"compile_err.gif\"/><font color=red>$test_totalErrors</font>&nbsp;";
-                                echo "<img src=\"compile_warn.gif\"/><font color=orange>$test_totalWarnings</font>&nbsp;";
-                                echo "<img src=\"access_err.gif\"/><font color=red>$test_totalforbiddenAccessWarningCount</font>&nbsp;";
-                                echo "<img src=\"access_warn.gif\"/><font color=orange>$test_totaldiscouragedAccessWarningCount</font>&nbsp;";
-                                ?> <br />
-                                <a href="whatisfixed/buglog.html">What is fixed</a> <br />
-                                <a href="pii.php">Unused property messages</a> <?php
-                                if (file_exists("versioningReportName.php"))
-                                {
-                                        include "versioningReportName.php";
-                                        $fname="${versionReportFilename}.html";
-                                        if (file_exists($fname)) {
-                                                echo "<br /> <a href='$fname'>Versioning Information</a>";
-                                        }
-}
-?> <?php
-echo "<br />";
-if (file_exists("./apiresults/api-progress.html"))
-{
-        echo "<br /> <a href=\"apiresults/api-progress.html\">API Progress Report</a>";
-}
-if (file_exists("./apiresults/api-info-summary.html"))
-{
-        echo "<br /> <a href=\"apiresults/api-info-summary.html\">APIs Defined by Each Component</a>";
-}
-if (file_exists("./apiresults/api-ref-compatibility.html"))
-{    
-        echo "<br /> <a href=\"apiresults/api-ref-compatibility.html\">Adopter Breakage Report</a>";
-}
-if (file_exists("./apiresults/api-violation-summary.html"))
-{ 
-        echo "<br /> <a href=\"apiresults/api-violation-summary.html\">API Violations</a>";
-}
-if (file_exists("./apiresults/component-api-violation-all.html"))
-{ 
-        echo "<br /> <a href=\"apiresults/component-api-violation-all.html\">Non-API dependencies</a>";
-}
-if (file_exists("./apiresults/api-tc-summary.html"))
-{ 
-        echo "<br /> <a href=\"apiresults/api-tc-summary.html\">API Test Coverage</a>";
-}
-if (file_exists("./apiresults/api-javadoc-summary.html"))
-{ 
-        echo "<br /> <a href=\"apiresults/api-javadoc-summary.html\">API Javadoc Coverage</a>";
-}
-if (file_exists("./apiresults/api-tc-summary.html"))
-{ 
-        echo "<br /><br /> <a href=\"apiresults/full_test_coverage/api-tc-summary.html\">Test Coverage for All Classes and Methods</a>";
-}
-?> <?php
-if (file_exists("./perfresults/graph/performance.php"))
-{
-        echo "<br />";
-        echo "<br /> <a href=\"perfresults/graph/performance.php\">Performance Results</a>";
-        echo "<br />";
-}
-?></td>
-                        </tr>
-
-
-                </table>
-        </tr>
-</table>
-
-
-
-<!-- footer -->
-<center>
-<hr>
-<p>All downloads are provided under the terms and conditions of the <a
-        href="http://www.eclipse.org/legal/notice.html">Eclipse.org Software
-User Agreement</a> unless otherwise specified.</p>
-
-<p>If you have problems downloading the drops, contact the <font
-        face="'Bitstream Vera',Helvetica,Arial" size="-1"><a
-        href="mailto:webmaster@eclipse.org">webmaster</a></font>.</p>
-
-</center>
-<!-- end footer -->
-
-
+   <div class="build_item">
+    <h3>Status, tests and other interesting details</h3>
+    <table>
+      <tr><td width="890">
+        <?php
+        $buildmachineScript="../../../displayBuildMachine.php";
+        if (file_exists($buildmachineScript))
+        {
+                include $buildmachineScript;
+                echo displayBuildMachine();
+        }
+        ?> 
+        <a href="buildNotes.php">Build notes</a>
+      </td></tr>
+      <tr><td><a href="directory.txt">Map files</a></td></tr>
+      <tr><td><?php
+        if (isset($unitTests_grandTotalErrors)) {
+                $errorColor="green";
+                if ($unitTests_grandTotalErrors > 0) {
+                        $errorColor="red";
+                }
+                echo "<a href=\"testResults.php\">Unit test results</a>";
+                echo "<img src=\"junit_err.png\"/>" . $unitTests_grandTotalErrors . "Total: " . $unitTests_grandTotalTests;
+        }
+        else {
+                echo "Unit tests are pending<!--img src=\"pending.gif\"/-->";
+        }
+        ?></td></tr>
+      <tr><td><a href="compileResults.php">Compile logs: Code Bundles  
+        <?php
+        echo "<img src=\"plugins.png\"/>($code_totalBundles)";
+        echo "<img src=\"compile_err.png\"/>$code_totalErrors";
+        echo "<img src=\"compile_warn.png\"/>$code_totalWarnings";
+        echo "<img src=\"access_err.png\"/>$code_totalforbiddenAccessWarningCount";
+        echo "<img src=\"access_warn.png\"/>$code_totaldiscouragedAccessWarningCount";
+        ?></td></tr>
+        <tr><td><a href="testCompileResults.php">Compile logs: Test Bundles
+        </a> 
+        <?php
+        echo "<img src=\"compile_err.png\"/>($test_totalBundles)";
+        echo "<img src=\"compile_err.png\"/>$test_totalErrors";
+        echo "<img src=\"compile_warn.png\"/>$test_totalWarnings";
+        echo "<img src=\"access_err.png\"/>$test_totalforbiddenAccessWarningCount";
+        echo "<img src=\"access_warn.png\"/>$test_totaldiscouragedAccessWarningCount";
+        ?></a></td></tr>
+      <tr><td><a href="whatisfixed/buglog.html">What is fixed</a></td></tr>
+      <tr><td><a href="pii.php">Unused property messages</a></td></tr> 		
+    </table>
+   </div>
+  </div>
+ </div>
+ <div class="blue">
+  <div id="footer">
+    <p>All downloads are provided under the terms and conditions of the Eclipse.org Software User Agreement unless otherwise specified.</p>
+    <p>If you have problems downloading the drops, contact the webmaster.</p>
+  </div>
+ </div>
+</div>
 </body>
 </html>
