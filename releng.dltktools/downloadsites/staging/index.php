@@ -244,10 +244,10 @@ foreach($dropTypeOrdered as $value) {
   echo "<div id=\"$value[0]_list\">";
   echo"<h3>$value</h3>";
   echo "<table><tr>";
-  echo "<th width="162">Build Name</th>";
-  echo "<th width="127">Stream</th>";
-  echo "<th width="190">Build Date</th>";
-  echo "<th width="339">&nbsp</th>";
+  echo "<th width=\"162\">Build Name</th>";
+  echo "<th width=\"127\">Stream</th>";
+  echo "<th width=\"190\">Build Date</th>";
+  echo "<th width=\"339\">&nbsp</th>";
   echo "</tr>";
   
    foreach($buildBranches as $bValue) {
