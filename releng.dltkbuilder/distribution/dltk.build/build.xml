@@ -185,19 +185,19 @@
 	</target>
 	<target name="combineArchivesCore">
 		<property name="archiveName" value="dltk-core-${packname}${corename}-${buildLabel}-incubation.zip" />
-		<delete dir="${buildDirectory}/tempforrezipping" failonerror="false"/>
+		<delete dir="${buildDirectory}/tempforrezippin2" failonerror="false"/>
 		
 		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
-			<arg line="-o -qq dltk-core${corename}-${buildLabel}-incubation.zip -d ${buildDirectory}/tempforrezipping" />
+			<arg line="-o -qq dltk-core${corename}-${buildLabel}-incubation.zip -d ${buildDirectory}/tempforrezippin2" />
 		</exec>
 	
 		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
-			<arg line="-o -qq dltk-{$packname}${corename}-${buildLabel}-incubation.zip -d ${buildDirectory}/tempforrezipping" />
+			<arg line="-o -qq dltk-${packname}${corename}-${buildLabel}-incubation.zip -d ${buildDirectory}/tempforrezippin2" />
 		</exec>
 		
-		<zip destfile="${buildDirectory}/${buildLabel}/${archiveName}" basedir="${buildDirectory}/tempforrezipping" />
+		<zip destfile="${buildDirectory}/${buildLabel}/${archiveName}" basedir="${buildDirectory}/tempforrezippin2" />
 	
-		<delete dir="${buildDirectory}/tempforrezipping" failonerror="false"/>
+		<delete dir="${buildDirectory}/tempforrezippin2" failonerror="false"/>
 		
 		<ant antfile="${dltk.builder.home}/scripts/build/buildutilities.xml" target="createChecksums">
 			<property name="buildDirectory" value="${buildDirectory}" />
