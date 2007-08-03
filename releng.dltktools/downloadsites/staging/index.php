@@ -135,7 +135,7 @@
 ?>
 <?php	$dropTypesOrdered = array();
   $dropTypesOrdered[0] = "Maintenance";
-  $dropTypesOrdered[1] = "Release";
+  $dropTypesOrdered[1] = "Released";
   $dropTypesOrdered[2] = "Stable";
   $dropTypesOrdered[3] = "Integration";
 
