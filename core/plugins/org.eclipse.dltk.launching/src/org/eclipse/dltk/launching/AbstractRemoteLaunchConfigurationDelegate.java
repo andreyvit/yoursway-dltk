@@ -35,4 +35,13 @@ public abstract class AbstractRemoteLaunchConfigurationDelegate extends
 		return getDebuggingRunner(install);
 	}
 
+	/*
+	 * @see org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate#validateLaunchConfiguration(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String)
+	 */
+	protected void validateLaunchConfiguration(
+			ILaunchConfiguration configuration, String mode)
+			throws CoreException {
+		// nothing to validate 
+	}
+
 }
