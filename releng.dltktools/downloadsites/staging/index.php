@@ -1,24 +1,71 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-<title>Eclipse Dynamic Languages Toolkit (DLTK) Downloads - for Committers and Early Testers</title>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<link href="downloads.css" rel="stylesheet" type="text/css" >
+<link rel="stylesheet" href="http://dev.eclipse.org/default_style.css">
+<title>Eclipse Dynamic Languages Toolkit (DLTK) Downloads - for Committers and
+Early Testers</title>
 </head>
 <body>
-<div id="container">
- <div class="grad">
-  <div id="summary">
-    <div id="header">
-      <h1>Dynamic Languages Toolkit downloads</h1>
-      <h4>Latest early trial downloads from the Dynamic Languages Toolkit project</h4>
-      <p>This is the starting page for where you can find the latest <a href="http://wiki.eclipse.org/index.php/DLTK_Build_Types">continuous build</a> produced by the <a href="http://www.eclipse.org/dltk">Eclipse Dynamic Languages Toolkit (DLTK) Project</a>.</p>
-      <p>Please note that each build page details the pre-reqs for that particular build.</p>
-      <p>&nbsp</p>
-      <p>If you got here to this continuous-build site by accident or casual browsing, please be aware that <a href="http://download.eclipse.org/technology/dltk/downloads/">declared builds</a> are available!<p>
-    </div>
-   </div>
-   
+
+<!-- heading start -->
+<?php
+
+// tiny banner to remind when looking at "local" machine results
+$serverName = $_SERVER["SERVER_NAME"];
+
+if (!stristr($serverName, "eclipse.org") && !stristr($serverName,"you.are.at.eclipsecon.org")) {
+  echo '<center><p>Reminder: this is <font color="#FF0000">', $serverName,'</font>  See also <a href="http://download.eclipse.org/technology/dltk/downloads" target="_top">Live public eclipse site</a>.</center><hr />';
+}
+
+if (function_exists("date_default_timezone_set")) {
+  date_default_timezone_set("UTC");
+  //echo "<p>default timezone: ";
+  //echo date_default_timezone_get();
+  //echo "</p>";
+}
+
+?>
+
+
+<?php
+//ini_set("display_errors", "true");
+//error_reporting (E_ALL);
+?>
+
+<?php
+$QString = $_SERVER['QUERY_STRING'];
+$C = strcmp($QString, "test");
+?>
+
+
+<table border=0 cellpadding=0 width="100%">
+<tr>
+<td width="35%"><font class=indextop> Dynamic Languages Toolkit<br>
+committer downloads</font><br>
+<font class=indexsub>Latest early trial downloads from the Dynamic Languages Toolkit project</font></td>
+<td width="35%" align="right"><a href="http://www.eclipse.org/dltk"><img border="0"src="http://www.eclipse.org/images/egg-incubation.png"></a></td>
+</tr>
+</table>
+
+<!-- heading end -->
+
+
+<hr />
+<table border=0 cellpadding=2 width="70%" align="center">
+	<tr>
+		<td>
+		<p>This is the starting page for where you can find the latest <a
+			href="http://wiki.eclipse.org/index.php/DLTK_Build_Types">continuous build</a> produced by the <a
+			href="http://www.eclipse.org/dltk">Eclipse Dynamic Languages Toolkit (DLTK) Project</a>. Please note that each build page details
+		the pre-reqs for that particular build.</p>
+
+		<p>If you got here to this continuous-build site by accident or casual
+		browsing, please be aware that <a
+			href="http://download.eclipse.org/technology/dltk/downloads/" target="_top">
+		declared builds</a> are available!</p>
+		</td>
+	</tr>
+</table>
+
 <?php
 $contents = substr(file_get_contents('dlconfig.txt'),0,-1);
 $contents = str_replace("\n", "", $contents);
@@ -58,25 +105,28 @@ for ($i = 0; $i < count($dropType); $i++) {
 $buildBranches = array();
 $buildBranches[0]="R1.0";
 $buildBranches[1]="R0.9";
+$buildBranches[2]="R0.8";
 include 'report.php';
 include 'report2.php';
 
 $latestTimeStamp=array();
 $latestFile = array();
 
-//echo "<table border=0 cellpadding=2 width=\"100%\"><tr>";
-//echo "<td align=\"center\" bgcolor=\"#0080C0\"><b><font color=\"#FFFFFF\" face=\"Arial,Helvetica\">";
-//echo "Latest Downloads (In progress, towards a declared build)";
-//echo "</td></font></b>";
-//echo "</tr></table>";
+echo "<table border=0 cellpadding=2 width=\"100%\"><tr>";
+echo "<td align=\"center\" bgcolor=\"#0080C0\"><b><font color=\"#FFFFFF\" face=\"Arial,Helvetica\">";
+echo "Latest Downloads (In progress, towards a declared build)";
+echo "</td></font></b>";
+echo "</tr></table>";
+
+
 
 foreach ($buildBranches as $buildBranch ) {
 
   $aBranchDirectoryName = "drops/".$buildBranch;
-  $latestFile[$buildBranch] = array(); //moved here from inside the loop
   if (file_exists($aBranchDirectoryName) && is_dir($aBranchDirectoryName)) {
     $aDirectory = dir($aBranchDirectoryName);
     $latestTimeStamp[$buildBranch] = array();
+    $latestFile[$buildBranch] = array();
 
 
     while (false !== ($anEntry = $aDirectory->read())) {
@@ -181,78 +231,90 @@ foreach ($buildBranches as $buildBranch ) {
   }}
 
 ?>
-   
+
+
+<table width="70%" align="center" cellpadding=2>
+<tr>
+<td width="25%"><b>Build Type</b></td>
+<td width="25%"><b>Build Name</b></td>
+<td width="15%"><b>Stream</b></td>
+<td width="40%"><b>Build Date</b></td>
+</tr>
+
+
+
 <?php
-//foreach($dropType as $value) {
-$dropTypesOrdered = array();
-$dropTypesOrdered[0] = "Maintenance";
-$dropTypesOrdered[1] = "Release";
-$dropTypesOrdered[2] = "Stable";
-$dropTypesOrdered[3] = "Integration";
-
-
-echo "<div class=\"blue\">";
-echo "<div id=\"latest\">";
-echo "<table>";
-for($i=0;$i<2;$i++){
- echo "<tr>";
- for($j=0;$j<2;$j++){
-  $value = $dropTypesOredered[$j+$i*2];
-  echo "<td id=\"$value[0]\">";
-  
+foreach($dropType as $value) {
   $prefix=$typeToPrefix[$value];
 
-  //Information from the branch, where this build presents
-  echo "<h3>$value</h3>";
-  $alreadyFound = 0;
   foreach($buildBranches as $bValue) {
-    if (array_key_exists($prefix, $latestFile[$bValue]) && ($alreadyFound==0)) {
+
+    if (array_key_exists($prefix, $latestFile[$bValue])) {
       $fileName = $latestFile[$bValue][$prefix];
+      echo "<tr>";
+      echo "<td width=\"25%\">$value</td>";
+
+
       $fileNameParts = explode("-", $fileName);
+
       if (sizeof($fileNameParts) > 1) {
-        $alreadyFound = 1;
-        echo "<p>Stream: $bValue</p>";
-        echo "<p>Build Name: $fileNameParts[1]</p>";
-        echo "<p>$timeStamps[$fileName]</p>";
-        echo "<a href=\"drops/$bValue/$fileName/\">Download</a>";
+        // Uncomment the line below if we need click through licenses.
+        // echo "<td><a href=license.php?license=drops/$bValue/$fileName>$parts[1]</a></td>";
+
+        // Comment the line below if we need click through licenses.
+        echo "<td  width=\"25%\"><a href=\"drops/$bValue/$fileName/\">$fileNameParts[1]</a></td>";
+        echo "<td width=\"15%\">$bValue</td>";
+        echo "<td width=\"40%\">$timeStamps[$fileName]</td>";
+        echo "</tr>";
       }
     }
   }
-  //Not found in any branch
-  if ($alreadyFound == 0){
-    echo "<p>Stream: ---</p>";
-    echo "<p>Build Name: ---</p>";
-    echo "<p>---</p>";
-    echo "<a href=\"\">Download</a>";
-  }
-  echo "</td>";    
- }
- echo "</tr>";
 }
-echo "</table>";
-echo "</div>";
-echo "</div>";
 ?>
- </div>
- <div class="white">
-  <div id="list">
+
+<table border="0" cellpadding="2" width="100%">
+<tr>
+<td bgcolor="#0080C0">
+&nbsp;
+</td>
+</tr></table>
+
+
+</table>
+
+<table border="0" cellpadding="2" width="100%">
+	<tr>
+		<td align="center" bgcolor="#999999"><b><font color="#FFFFFF" face="Arial,Helvetica">Recent History</b></font></td>
+	</tr>
+</table>
 
 <?php
-foreach($dropTypeOrdered as $value) {
+foreach($dropType as $value) {
   $prefix=$typeToPrefix[$value];
 
-  echo "<div id=\"$value[0]_list\">";
-  echo"<h3>$value</h3>";
-  echo "<table><tr>";
-  echo "<th width=\"162\">Build Name</th>";
-  echo "<th width=\"127\">Stream</th>";
-  echo "<th width=\"190\">Build Date</th>";
-  echo "<th width=\"339\">&nbsp</th>";
+
+  echo "
+                <table width=\"100%\" cellpadding=2>
+                <tr bgcolor=\"#999999\">
+                <td align=left><b><a name=\"$value\"><font color=\"#FFFFFF\" face=\"Arial,Helvetica\">";
+  echo "$value";
+  echo "</font></a></b></td>";
   echo "</tr>";
-  
-   foreach($buildBranches as $bValue) {
+
+  echo "<tr>
+                <td align=left>
+                <table  width=\"100%\" cellpadding=2>
+                <tr>
+                <td width=\"13%\"><b>Build Name</b></td>
+								<td width=\"8%\"><b>Stream</b></td>
+                <td width=\"20%\"><b>Build Date</b></td>
+                <td></td>
+                </tr>";
+
+  foreach($buildBranches as $bValue) {
     if (array_key_exists($bValue, $buckets) && $buckets[$bValue] != NULL
     && array_key_exists($prefix, $buckets[$bValue])) {
+      echo "<tr><td colspan=\"11\"/><hr/></tr>";
       $aBucket = $buckets[$bValue][$prefix];
       if (isset($aBucket)) {
         rsort($aBucket);
@@ -280,10 +342,18 @@ foreach($dropTypeOrdered as $value) {
           $innerValueParts = explode("-", $innerValue);
           echo "<tr>";
 
-          echo "<td><a href=\"drops/$bValue/$innerValue/\">$innerValueParts[1]</a></td>";
-          echo "<td>$bValue</td>";
-          echo "<td>$timeStamps[$innerValue]</td>";
+          // Uncomment the line below if we need click through licenses.
+          // echo "<td><a href=\"license.php?license=drops/$bValue/$innerValue\">$innerValueParts[1]</a></td>";
 
+          // Comment the line below if we need click through licenses.
+          echo "<td width=\"13%\"><a href=\"drops/$bValue/$innerValue/\">$innerValueParts[1]</a></td>";
+          echo "<td width=\"8%\">$bValue</td>";
+          echo "<td width=\"20%\">$timeStamps[$innerValue]</td>";
+          echo "<td></td>";
+
+          // if compilelogsSummary.xml exists, assume the "new way" (summary in xml file).
+          // else, assume old way
+          //echo "drops/$bValue/$innerValue/compilelogsSummary.xml";
           if (file_exists("drops/$bValue/$innerValue/compilelogsSummary.xml"))
           {
             $filename = "drops/$bValue/$innerValue/compilelogsSummary.xml";
@@ -330,64 +400,176 @@ foreach($dropTypeOrdered as $value) {
             $totalForbidden = $code_totalforbiddenAccessWarningCount + $test_totalforbiddenAccessWarningCount;
             $totalDiscouraged = $code_totaldiscouragedAccessWarningCount + $test_totaldiscouragedAccessWarningCount;
 
-            echo "<td><img src=\"plugins.png\"/>$totalBundles";
-            
-            echo "<img src=\"compile_err";
-            if ($totalCommpileErrors <= 0) echo "_false";
-            echo ".png\"/>$totalCommpileErrors";
-            
-            echo "<img src=\"compile_warn";
-            if ($totalCompileOtherWarnings <= 0) echo "_false";
-            echo ".png\"/>$totalCompileOtherWarnings";
-            
-            echo "<img src=\"access_err";
-            if ($totalForbidden <= 0) echo "_false";
-            echo ".png\"/>$totalForbidden";
-            
-            echo "<img src=\"access_warn";
-            if ($totalDiscouraged <= 0) echo "_false";
-            echo ".png\"/>$totalDiscouraged";
-            
+            echo "<td width=\"6%\">($totalBundles)</td>";
+            echo "<td width=\"6%\"><img src=\"compile_err.gif\" width=\"16\" height=\"16\"/><font color=red>$totalCommpileErrors</font></td>";
+            echo "<td width=\"6%\"><img src=\"compile_warn.gif\" width=\"16\" height=\"16\"/><font color=orange>$totalCompileOtherWarnings</font></td>";
+            echo "<td width=\"6%\"><img src=\"access_err.gif\" width=\"16\" height=\"16\"/><font color=red>$totalForbidden</font></td>";
+            echo "<td width=\"6%\"><img src=\"access_warn.gif\" width=\"16\" height=\"16\"/><font color=orange>$totalDiscouraged</font></td>";
+
             if (isset($unittest_grandTotalErrors)) {
-              echo "<img src=\"junit_err";
-              if ($unittest_grandTotalErrors <= 0) echo "_false";
-              echo ".png\"/>$unittest_grandTotalErrors" ($unittest_grandTotalTests);
+              echo "<td width=\"6%\"><img src=\"junit_err.gif\" width=\"16\" height=\"16\"/><font color=red>$unittest_grandTotalErrors</font></td>";
+              echo "<td width=\"6%\">($unittest_grandTotalTests)</td>";
             }
+            else {
+              echo "<td width=\"6%\"><img src=\"pending.gif\" width=\"16\" height=\"16\"/></td>";
+              echo "<td width=\"6%\"><img src=\"pending.gif\" width=\"16\" height=\"16\"/></td>";
+            }
+            echo "</tr>";
+          }
+          // if compileResults.php exists, assume the "new way" (testResults and compileResult seperated).
+          // else, assume old way
+          else if (file_exists("drops/$bValue/$innerValue/compileResults.php"))
+          {
+            $testResults = parse2_testResults("drops/$bValue/$innerValue/testResults.php");
+            list ($junitFailures) = $testResults;
+
+            $compileResults = parse2_compileResults("drops/$bValue/$innerValue/compileResults.php");
+            list ($compileErrors, $compileAccessWarnings, $compileOtherWarnings) = $compileResults;
+            $testCompileResults = parse2_compileResults("drops/$bValue/$innerValue/testCompileResults.php");
+            list ($testCompileErrors, $testCompileAccessWarnings, $testCompileOtherWarnings) = $testCompileResults;
+
+            $totalCommpileErrors = $compileErrors + $testCompileErrors;
+            // we'll just use code for warnning summaries, for now
+            $totalAccessWarnings = $compileAccessWarnings;
+            $totalCompileOtherWarnings = $compileOtherWarnings;
+
+            echo "<td width=\"6%\">&nbsp;</td>";
+            echo "<td width=\"6%\"><img src=\"compile_err.gif\" width=\"16\" height=\"16\"/><font color=red>$totalCommpileErrors</font></td>";
+            echo "<td width=\"6%\"><img src=\"compile_warn.gif\" width=\"16\" height=\"16\"/><font color=orange>$totalCompileOtherWarnings</font></td>";
+						if ($junitFailures < 0) {
+									echo "<td width=\"6%\"><img src=\"pending.gif\" width=\"16\" height=\"16\"/><font color=red>&nbsp;</font></td>";
+						}
+						else {
+									echo "<td width=\"6%\"><img src=\"junit_err.gif\" width=\"16\" height=\"16\"/><font color=red>$junitFailures</font></td>";
+						}
+
+            echo "</tr>";
+
+          }
+          else {
+            $testResults = parse_testResult("drops/$bValue/$innerValue/testResults.php");
+            list ($compileErrors, $compileWarnings, $junitFailures) = $testResults;
+
+            echo "<td width=\"6%\">&nbsp;</td>";
+            echo "<td width=\"6%\"><img src=\"compile_err.gif\" width=\"16\" height=\"16\"/><font color=red>$compileErrors</font></td>";
+            echo "<td width=\"6%\"><img src=\"compile_warn.gif\" width=\"16\" height=\"16\"/><font color=orange>$compileWarnings</font></td>";
+           	echo "<td width=\"6%\"><img src=\"junit_err.gif\" width=\"16\" height=\"16\"/><font color=red>$junitFailures</font></td>";
+
+            echo "</tr>";
+          }
         }
-        echo "</tr>";
-      }
-    }
-  }
- }
- echo "</table>";
- echo "</div>";
-}?>
-    <div id="legend">
-      <table>
-        <tr>
-          <td><img src="/images/plugins.png"/>- Plug-Ins</td>
-          <td><img src="/images/compile_err.png"/>- Compilation Errors</td>
-        <tr>
-        </tr>
-          <td><img src="/images/compile_warn.png"/>- Compilation Warnings</td>
-          <td><img src="/images/access_err.png"/>- Access Violation</td>
-        <tr>
-        </tr>
-        <tr>
-          <td><img src="/images/access_warn.png"/>- Access Warning</td>
-          <td><img src="/images/junit_err.png"/>- JUnit Failures</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-  <div style="clear:both;height:30px"/>
- </div>
- <div class="blue">
-  <div id="footer">
-    <p>All downloads are provided under the terms and conditions of the Eclipse.org Software User Agreement unless otherwise specified.</p>
-    <p>If you have problems downloading the drops, contact the webmaster.</p>
-  </div>
- </div>
-</div>
+      }}}
+      echo "</table></table>";
+}
+?>
+
+<table border="0" cellpadding="2" width="100%">
+	<tr>
+		<td bgcolor="#999999">&nbsp;</td>
+	</tr>
+</table>
+
+
+<table border="0" width="100%" cellpadding="2">
+	<tbody>
+		<tr>
+			<td valign="top" width="40%">
+
+
+			<table border="0" cellpadding="2">
+				<tbody>
+					<tr>
+						<td width="100%" bgcolor="#0080c0" valign="top"><b><font
+							face="Arial,Helvetica"><font color="#ffffff">Download Related
+						Links</font> </font></b></td>
+					</tr>
+					<tr>
+						<td valign="top">
+
+
+						<p><a href="http://download.eclipse.org/technology/dltk/downloads/"
+							target="_top">Declared builds</a> are available which are for
+						end-users and adopters.</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			</td>
+
+			<td />
+			
+			
+			<td width="45%" valign="top">
+			<table border="0" cellpadding="2">
+				<tbody>
+					<tr>
+						<td width="100%" colspan="4" bgcolor="#0080c0" valign="top"><b><font
+							face="Arial,Helvetica"><font color="#ffffff">Metrics Legend</font>
+						</font></b></td>
+					</tr>
+
+					<tr>
+						<td valign="top"><img src="compile_err.gif" width="16" height="16" /></td>
+						<td valign="top" width="50%">compilation errors.</td>
+						<td valign="top"><img src="compile_warn.gif" width="16" height="16" /></td>
+						<td valign="top" width="50%">compilation warnings.</td>
+					</tr>
+					<tr>
+						<td valign="top"><img src="access_err.gif" width="16" height="16" /></td>
+						<td valign="top" width="50%">Access Rule Violations</td>
+						<td valign="top"><img src="access_warn.gif" width="16" height="16" /></td>
+						<td valign="top" width="50%">Access Rule Warnings</td>
+					</tr>
+					<tr>
+						<td valign="top"><img src="junit_err.gif" width="16" height="16" /></td>
+						<td valign="top" width="50%">junit failures.</td>
+						<td valign="top"><img src="pending1.gif" width="16" height="16" /></td>
+						<td valign="top" width="50%">Pending results</td>
+					</tr>
+					<tr>
+						<td valign="top"><img src="api_err.gif" width="16" height="16" /></td>
+						<td valign="top" width="50%">API violations.</td>
+
+						<td valign="top"><img src="api_junit.gif" width="16" height="16" /></td>
+						<td valign="top" width="50%">APIs without junit testcases.</td>
+					</tr>
+					<tr>
+						<td valign="top"><img src="api_removed.gif" width="16" height="16" /></td>
+						<td valign="top" width="50%">removed APIs.</td>
+					</tr>
+					<tr>
+						<td valign="top"><b>(</b>nnn<b>)</b></td>
+						<td valign="top">Number of bundles, jars, and wars, or number of
+						unit tests.</td>
+
+						<td valign="top"><b>NA</b></td>
+						<td valign="top"><b>N</b>ot <b>A</b>vailable</td>
+					</tr>
+				</tbody>
+			</table>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<!-- footer -->
+<center>
+<hr />
+<p>All downloads are provided under the terms and conditions of the <a
+	href="http://www.eclipse.org/legal/notice.html">Eclipse.org Software
+User Agreement</a> unless otherwise specified.</p>
+
+<p>If you have problems downloading the drops, contact the <font
+	size="-1" face="arial,helvetica,geneva"><a
+	href="mailto:webmaster@eclipse.org">webmaster</a></font>.</p>
+</center>
+<!-- end footer -->
+
 </body>
 </html>
+<?php
+if (isset($old_error_handler) && sizeof($old_error_handler)) {
+  set_error_handler($old_error_handler);
+}
+?>
