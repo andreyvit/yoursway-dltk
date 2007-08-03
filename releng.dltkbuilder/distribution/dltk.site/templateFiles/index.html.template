@@ -88,7 +88,7 @@ or used.</h4>
     <table>
       <tr>
         <td class="bold" width="182">Eclipse Platform</td>
-        <td width="790"><a href="@eclipseURL@">@eclipseFile@</a> or <a href=@eclipseBuildURL@>other platform</a></td>
+        <td width="790"><a href="@eclipseURL@">@eclipseFile@</a> or <a href="@eclipseBuildURL@">other platform</a></td>
       </tr>
     </table>
   </div>
@@ -131,12 +131,12 @@ or used.</h4>
         echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
         $zipfilename="dltk-tcl-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
-        echo '<td"><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
         ?>
       </tr>      
       <tr>
         <td class="bold">DLTK Python</td>
-        <td>Experimental Package. Requires DLTK Core</td>
+        <td>Requires DLTK Core. Experimental Package</td>
         <?php
         $zipfilename="dltk-python-@build@-incubation";
         $filename=$zipfilename.".zip";
@@ -148,16 +148,18 @@ or used.</h4>
       </tr>
       <tr>
         <td class="bold">DLTK Javascript</td>
-        <td>Experimental Package. Requires DLTK Core</td>
+        <td>Requires DLTK Core. Experimental Package</td>
         <?php
         $zipfilename="dltk-javascript-@build@-incubation";
         $filename=$zipfilename.".zip";
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
         $zipfilename="dltk-javascript-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download" . '</a>&nbsp;&nbsp;[<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
         ?>
       </tr>
+    </table>
+    </div>
       
     <div class="build_item">
     <h3>Dynamic Languages Toolkit Extensions</h3>
@@ -181,7 +183,7 @@ or used.</h4>
     <h3>Dynamic Languages Toolkit Bundles</h3>
     <table>
       <tr>
-        <td width="168" class="bold">DLTK Core+Ruby</td>
+        <td width="168" class="bold">DLTK Core + Ruby</td>
         <td width="450">Package contains everything to run DLTK Ruby</td>
         <?php
         $zipfilename="dltk-core-ruby-@build@-incubation";
@@ -193,7 +195,7 @@ or used.</h4>
         ?>
       </tr>
       <tr>
-        <td class="bold">DLTK Core+Python</td>
+        <td class="bold">DLTK Core + Python</td>
         <td>Package contains everything to run DLTK Python</td>
         <?php
         $zipfilename="dltk-core-python-@build@-incubation";
@@ -243,7 +245,7 @@ or used.</h4>
                         $errorColor="red";
                 }
                 echo "<a href=\"testResults.php\">Unit test results</a>";
-                echo "<img src=\"junit_err.png\"/>" . $unitTests_grandTotalErrors . "Total: " . $unitTests_grandTotalTests;
+                echo "<img src=\"junit_err.png\"/>" . $unitTests_grandTotalErrors . "&nbsp;Total: " . $unitTests_grandTotalTests;
         }
         else {
                 echo "Unit tests are pending<!--img src=\"pending.gif\"/-->";
@@ -256,11 +258,10 @@ or used.</h4>
         echo "<img src=\"compile_warn.png\"/>$code_totalWarnings";
         echo "<img src=\"access_err.png\"/>$code_totalforbiddenAccessWarningCount";
         echo "<img src=\"access_warn.png\"/>$code_totaldiscouragedAccessWarningCount";
-        ?></td></tr>
+        ?></a></td></tr>
         <tr><td><a href="testCompileResults.php">Compile logs: Test Bundles
-        </a> 
         <?php
-        echo "<img src=\"compile_err.png\"/>($test_totalBundles)";
+        echo "<img src=\"plugins.png\"/>($test_totalBundles)";
         echo "<img src=\"compile_err.png\"/>$test_totalErrors";
         echo "<img src=\"compile_warn.png\"/>$test_totalWarnings";
         echo "<img src=\"access_err.png\"/>$test_totalforbiddenAccessWarningCount";
