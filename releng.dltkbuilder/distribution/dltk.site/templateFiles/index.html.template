@@ -100,16 +100,16 @@ or used.</h4>
     <table>
       <tr>
         <td class="bold" width="168">DLTK Core</td>
-        <td width="420"></td>
+        <td width="400"></td>
         <?php
         $zipfilename="dltk-core-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td width="140"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
         $zipfilename="dltk-core-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td width="140"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
         ?>
       </tr>
       <tr>
@@ -215,11 +215,11 @@ or used.</h4>
         $zipfilename="dltk-core-python-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="100"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
         $zipfilename="dltk-core-python-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
         ?>
       </tr>      
       <tr>
@@ -229,11 +229,11 @@ or used.</h4>
         $zipfilename="dltk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="100"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
         $zipfilename="dltk-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
         ?>
       </tr>
      </table>
