@@ -74,7 +74,11 @@ public class RubyGenericInstall extends AbstractInterpreterInstall {
 				int index = line.indexOf(PREFIX);
 				if (index != -1) {
 					if (fileName != null) {
-						sources.put(fileName, sb.toString());
+						String old = (String) sources.get(fileName);
+						if (old == null)
+							sources.put(fileName, sb.toString());
+						else
+							sources.put(fileName, old + "\n\n" + sb.toString());
 						sb.setLength(0);
 					}
 
