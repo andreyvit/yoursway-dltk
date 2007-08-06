@@ -161,7 +161,7 @@ height:27px;
 border-bottom:1px solid #eaeaea;
 }
 div#list td img{
-padding:0px 4px 0px 12px;
+padding:0px 4px 0px 0px;
 position:relative;
 top:2px;
 }

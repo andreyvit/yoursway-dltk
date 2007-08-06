@@ -190,10 +190,16 @@ echo "</div>";
   echo"<h3>$value</h3>";
   echo "<table><tr>";
   echo "<th width=\"162\">Build Name</th>";
-  echo "<th width=\"127\">Stream</th>";
-  echo "<th width=\"190\">Build Date</th>";
-  echo "<th width=\"339\">&nbsp;</th>";
+  echo "<th width=\"107\">Stream</th>";
+  echo "<th width=\"180\">Build Date</th>";
+  echo "<th width=\"45\">&nbsp;</th>";
+  echo "<th width=\"45\">&nbsp;</th>";
+  echo "<th width=\"45\">&nbsp;</th>";
+  echo "<th width=\"45\">&nbsp;</th>";
+  echo "<th width=\"45\">&nbsp;</th>";
+  echo "<th width=\"55\">&nbsp;</th>";
   echo "</tr>";
+
 	      
   foreach($buildBranches as $bValue) {
   if (array_key_exists($bValue, $buckets) && $buckets[$bValue] != NULL
@@ -270,29 +276,29 @@ echo "</div>";
 	     $totalForbidden = $code_totalforbiddenAccessWarningCount + $test_totalforbiddenAccessWarningCount;
 		 $totalDiscouraged = $code_totaldiscouragedAccessWarningCount + $test_totaldiscouragedAccessWarningCount;
 
-		 echo "<td><img src=\"plugins.png\"/>$totalBundles";
-				                 
-		 echo "<img src=\"compile_err";
-		 if ($totalCommpileErrors <= 0) echo "_false";
-		   echo ".png\"/>$totalCommpileErrors";
-			  
-		   echo "<img src=\"compile_warn";
-		   if ($totalCompileOtherWarnings <= 0) echo "_false";
-			 echo ".png\"/>$totalCompileOtherWarnings";
-																	                 
-			 echo "<img src=\"access_err";
-			 if ($totalForbidden <= 0) echo "_false";
-			   echo ".png\"/>$totalForbidden";
-																							                 
-			   echo "<img src=\"access_warn";
-               if ($totalDiscouraged <= 0) echo "_false";
-		         echo ".png\"/>$totalDiscouraged";
-			                 
-				 if (isset($unittest_grandTotalErrors)) {
-				   echo "<img src=\"junit_err";
- 				   if ($unittest_grandTotalErrors <= 0) echo "_false";
-                   echo ".png\"/>$unittest_grandTotalErrors ($unittest_grandTotalTests)";
-                 }
+				echo "<td><img src=\"plugins.png\"/>$totalBundles";
+				echo "</td><td>";		                 
+				echo "<img src=\"compile_err";
+				if ($totalCommpileErrors <= 0) echo "_false";
+				echo ".png\"/>$totalCommpileErrors";
+				echo "</td><td>";	  
+				echo "<img src=\"compile_warn";
+				if ($totalCompileOtherWarnings <= 0) echo "_false";
+				echo ".png\"/>$totalCompileOtherWarnings";
+				echo "</td><td>";
+				echo "<img src=\"access_err";
+				if ($totalForbidden <= 0) echo "_false";
+				echo ".png\"/>$totalForbidden";
+				echo "</td><td>";																					                 
+				echo "<img src=\"access_warn";
+        		if ($totalDiscouraged <= 0) echo "_false";
+				echo ".png\"/>$totalDiscouraged";
+				echo "</td><td>";	                 
+				if (isset($unittest_grandTotalErrors)) {
+				  echo "<img src=\"junit_err";
+		 		  if ($unittest_grandTotalErrors <= 0) echo "_false";
+        		    echo ".png\"/>$unittest_grandTotalErrors ($unittest_grandTotalTests)";
+        		   }
 		         echo "</td>";
 			   }
 			   echo "</tr>";
