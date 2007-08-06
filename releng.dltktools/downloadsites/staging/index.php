@@ -192,12 +192,12 @@ echo "</div>";
   echo "<th width=\"162\">Build Name</th>";
   echo "<th width=\"107\">Stream</th>";
   echo "<th width=\"190\">Build Date</th>";
-  echo "<th width=\"38\">&nbsp;</th>";
-  echo "<th width=\"38\">&nbsp;</th>";
-  echo "<th width=\"38\">&nbsp;</th>";
-  echo "<th width=\"38\">&nbsp;</th>";
-  echo "<th width=\"38\">&nbsp;</th>";
-  echo "<th width=\"80\">&nbsp;</th>";
+  echo "<th width=\"36\">&nbsp;</th>";
+  echo "<th width=\"36\">&nbsp;</th>";
+  echo "<th width=\"36\">&nbsp;</th>";
+  echo "<th width=\"36\">&nbsp;</th>";
+  echo "<th width=\"36\">&nbsp;</th>";
+  echo "<th width=\"90\">&nbsp;</th>";
   echo "</tr>";
 
 	      
