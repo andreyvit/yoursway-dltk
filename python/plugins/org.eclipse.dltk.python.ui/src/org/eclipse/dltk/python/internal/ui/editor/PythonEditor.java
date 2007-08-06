@@ -27,13 +27,16 @@ import org.eclipse.ui.IEditorInput;
 
 public class PythonEditor extends ScriptEditor {
 
-	public static final String EDITOR_ID = "org.eclipse.dltk.python.internal.ui.editor.PythonEditor";
+	public static final String EDITOR_ID = "org.eclipse.dltk.python.ui.editor.PythonEditor";
 
 	public static final String EDITOR_CONTEXT = "#PythonEditorContext";
+	
+	public static final String RULER_CONTEXT = "#PythonRulerContext";
 
 	protected void initializeEditor() {
 		super.initializeEditor();
 		setEditorContextMenuId(EDITOR_CONTEXT);
+		setRulerContextMenuId(RULER_CONTEXT);
 	}
 	
 	protected IPreferenceStore getScriptPreferenceStore() {
