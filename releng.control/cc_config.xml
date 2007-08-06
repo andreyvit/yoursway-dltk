@@ -204,7 +204,7 @@
         <modificationset quietperiod="120">
             <cvs
                 tag="R0_9_maintenance"
-                module="releng" />
+                module="${env.CVS_RELENG}" />
         </modificationset>
 
         <schedule interval="${time.oneHour}">
