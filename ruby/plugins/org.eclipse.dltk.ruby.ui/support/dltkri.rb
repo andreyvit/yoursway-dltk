@@ -1,6 +1,6 @@
 require 'rdoc/ri/ri_driver'
 
-ENV["ri"] = "-f html"
+ENV["RI"] = "-f html"
 
 ri = RiDriver.new
 
