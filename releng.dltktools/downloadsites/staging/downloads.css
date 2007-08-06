@@ -167,13 +167,17 @@ top:2px;
 }
 div#legend{
 float:right;
-padding:40px 40px 0px 0px;
+padding:40px 0px 0px 0px;
+margin:0px;
 font-size:11px;
 color:#7f7f7f;
+line-height:40px;
 }
 div#legend td{
 border:none;
-padding:0px 20px 20px 0px;
+padding:0px;
+margin:0px;
+width:178px;
 }
 div#footer{
 color:#fff;
