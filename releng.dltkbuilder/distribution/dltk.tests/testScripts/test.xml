@@ -100,9 +100,7 @@
 	</target>
 
 	<target name="core-validators-tests" description="Runs the org.eclipse.dltk.validators.core.tests test.xml">
-		
 		<echo message="fourdman: hello from validators core-tests" />
-		
 		<antcall target="runtests">
 			<param name="testPlugin" value="${org.eclipse.dltk.validators.core.tests}" />
 			<param name="report" value="org.eclipse.dltk.validators.core.tests" />
@@ -190,12 +188,12 @@
 
 	<!-- releng Tests -->
 
-	<target name="releng-tests" description="Runs the releng tests.">
+	<!--target name="releng-tests" description="Runs the releng tests.">
 		<antcall target="runtests">
 			<param name="testPlugin" value="${org.eclipse.wtp.releng.tests}" />
 			<param name="report" value="org.eclipse.wtp.releng.tests" />
 		</antcall>
-	</target>
+	</target-->
 
 	<target name="all" depends="init">
 		<property file="${testRoot}/test2.properties" />
