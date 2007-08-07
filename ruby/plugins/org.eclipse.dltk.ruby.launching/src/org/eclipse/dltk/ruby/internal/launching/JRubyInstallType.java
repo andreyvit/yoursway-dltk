@@ -53,7 +53,7 @@ public class JRubyInstallType extends AbstractInterpreterInstallType {
 
 	public IStatus validateInstallLocation(File installLocation) {
 		if (!Platform.getOS().equals(Platform.OS_WIN32)) {
-			if (installLocation.getName().indexOf(".bat") != 0) {
+			if (installLocation.getName().indexOf(".bat") != -1) {
 				return createStatus(
 						IStatus.ERROR,
 						InterpreterMessages.errNonExistentOrInvalidInstallLocation,
