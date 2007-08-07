@@ -387,9 +387,13 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 		}
 
 		for (int i = 0; i < interpreterInstalls.length; ++i) {
+			final IInterpreterInstall install = interpreterInstalls[i];
+			System.out.println("Interpreter install location: "
+					+ install.getInstallLocation().toString());
+
 			MyInterpretersUpdater updater = new MyInterpretersUpdater();
 			updater.updateInterpreterSettings(getNatureId(),
-					interpreterInstalls, interpreterInstalls[i]);
+					interpreterInstalls, install);
 
 			final long time = System.currentTimeMillis();
 			final String stdoutTest = Long.toString(time) + "_stdout";

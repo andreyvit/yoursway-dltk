@@ -67,4 +67,8 @@ public class TclLaunchingTests extends ScriptLaunchingTests {
 		delegate.launch(launch.getLaunchConfiguration(),
 				launch.getLaunchMode(), launch, null);
 	}
+
+	public void testDebug() throws Exception {
+		fail("Active State Tcl debugging engine not installed");
+	}
 }
