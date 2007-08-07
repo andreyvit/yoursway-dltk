@@ -25,7 +25,7 @@
 	<target name="suite">
 		<delete dir="${workspace}" quiet="true" />
 		<echo message="fourdman: core-tests internal test.xml 1" />
-		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
+		<ant target="core-tests" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${workspace}" />
 			<property name="plugin-name" value="${plugin-name}" />
 			<property name="classname" value="org.eclipse.dltk.core.tests.AllTests" />
