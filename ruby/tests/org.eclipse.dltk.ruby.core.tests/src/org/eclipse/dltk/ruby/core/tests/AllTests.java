@@ -41,7 +41,7 @@ public class AllTests {
 		suite.addTest(SimpleTest.suite());
 
 		// Launching
-		suite.addTestSuite(RubyLaunchingTests.class);
+		suite.addTest(RubyLaunchingTests.suite());
 
 		// $JUnit-END$
 		return suite;
