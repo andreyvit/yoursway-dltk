@@ -503,7 +503,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 
 		// Setting breakpoint
 		IScriptLineBreakpoint b = new ScriptLineBreakpoint(getDebugModelId(),
-				file, 1, -1, -1, true);
+				file, 1, -1, -1, 0, true);
 
 		DebugEventStats stats = new DebugEventStats();
 
