@@ -112,7 +112,7 @@ while ($anEntry = $dir->read())
 These <a href="consoleLogs.php">logs</a> contain the console output captured while 
 running the JUnit automated tests. <br>
 <br>
-
+<a href="testResults/consolelogs/testLogs/logIndex.php">test outputs</a>
 
 </body>
 </html>
