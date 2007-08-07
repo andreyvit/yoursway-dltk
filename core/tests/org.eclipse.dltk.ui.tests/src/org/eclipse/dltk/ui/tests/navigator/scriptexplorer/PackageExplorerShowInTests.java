@@ -12,6 +12,7 @@ package org.eclipse.dltk.ui.tests.navigator.scriptexplorer;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
@@ -37,16 +38,16 @@ public class PackageExplorerShowInTests extends TestCase {
 		super(name);
 	}
 	
-//	public static Test suite() {
-//		if (true) {
-//			return new ProjectTestSetup(new TestSuite(clazz));
-//		} else {
+	public static Test suite() {
+		if (true) {
+			return new ProjectTestSetup(new TestSuite(clazz));
+		} else {
 //			System.err.println("*** Running only parts of " + clazz.getName() + "!");
-//			TestSuite suite= new TestSuite();
-//			suite.addTest(new PackageExplorerShowInTests("testXXX"));
-//			return new ProjectTestSetup(suite);
-//		}
-//	}
+			TestSuite suite= new TestSuite();
+			suite.addTest(new PackageExplorerShowInTests("testXXX"));
+			return new ProjectTestSetup(suite);
+		}
+	}
 	
 	public static Test setUpTest(Test someTest) {
 		return new ProjectTestSetup(someTest);
