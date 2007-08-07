@@ -14,7 +14,7 @@ public class XOTclKeywords implements ITclKeywords {
         "eval", "exists", "extractConfigureArg", "filter", "filterguard", "filtersearch", "forward", "getExitHandler", "hasclass",
         "incr", "info", "instvar", "invar", "isclass", "ismetaclass", "ismixin", "isobject", "istype", "lappend", "mixin", "move", "noinit",
         "parametercmd", "proc", "procsearch", "requireNamespace", "set", "setExitHandler", "subst", "trace", "unset", "uplevel",
-        "upvar", "volatile", "vwait"
+        "upvar", "volatile", "vwait", "create"
 	};
 	private static String[][] all = new String[END_INDEX][];
 	static {

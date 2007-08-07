@@ -49,15 +49,18 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 		if ((method.getModifiers() & IXOTclModifiers.AccXOTcl) != 0
 				&& method instanceof XOTclMethodDeclaration) {
 			XOTclMethodDeclaration me = (XOTclMethodDeclaration) method;
-			TypeDeclaration declaringXOTclType = me.getDeclaringXOTclType();
-			if (declaringXOTclType.getName().indexOf("::") == -1) { // Only
-				// simple
-				// case are
-				// supported.
-				IModelElement element2 = this.findChildrenByName(
-						declaringXOTclType.getName(), element);
-				if (element2 != null) {
-					element = (IParent) element2;
+			ASTNode xoTclType = me.getDeclaringXOTclType();
+			if (xoTclType instanceof TypeDeclaration) {
+				TypeDeclaration declaringXOTclType = (TypeDeclaration) xoTclType;
+				if (declaringXOTclType.getName().indexOf("::") == -1) { // Only
+					// simple
+					// case are
+					// supported.
+					IModelElement element2 = this.findChildrenByName(
+							declaringXOTclType.getName(), element);
+					if (element2 != null) {
+						element = (IParent) element2;
+					}
 				}
 			}
 		}
@@ -82,24 +85,21 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 			ASTNode node = selOn.getNode();
 			if (node instanceof XOTclMethodCallStatement) {
 				handleInstanceMethodCall(selOn, (XOTclMethodCallStatement) node);
+			} else if (node instanceof XOTclProcCallStatement) {
+				handleClassProcCall(selOn, (XOTclProcCallStatement) node);
+			} else if (node instanceof XOTclInstanceVariable) {
+				handleInstanceVariable(selOn, (XOTclInstanceVariable) node);
+			} else if (node instanceof XOTclMethodDeclaration) {
+				handleMethodDeclaration(selOn.getPosition(),
+						(XOTclMethodDeclaration) node);
 			}
-			else if( node instanceof XOTclProcCallStatement ) {
-				handleClassProcCall(selOn, (XOTclProcCallStatement)node);
-			}
-			else if( node instanceof XOTclInstanceVariable ) {
-				handleInstanceVariable(selOn, (XOTclInstanceVariable)node);
-			}
-			else if( node instanceof XOTclMethodDeclaration ) {
-				handleMethodDeclaration(selOn.getPosition(), (XOTclMethodDeclaration)node);
-			}
-		}
-		else if( astNode instanceof SelectionOnAST ) {
-			ASTNode node = ((SelectionOnAST)astNode).getNode();
-			if( node instanceof XOTclMethodDeclaration ) {
-//				handleMethodDeclaration(node., (XOTclMethodDeclaration)node);
+		} else if (astNode instanceof SelectionOnAST) {
+			ASTNode node = ((SelectionOnAST) astNode).getNode();
+			if (node instanceof XOTclMethodDeclaration) {
+				// handleMethodDeclaration(node., (XOTclMethodDeclaration)node);
 			}
 		}
-		if( this.selectionElements.size() > 0 ) {
+		if (this.selectionElements.size() > 0) {
 			return;
 		}
 		super.select(astNode, astNodeParent);
@@ -109,8 +109,7 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 			XOTclMethodDeclaration node) {
 		if (node.getTypeNameRef().sourceStart() <= position
 				&& position < node.getTypeNameRef().sourceEnd()) {
-			TypeDeclaration type = node.getDeclaringXOTclType();
-			addElementFromASTNode(type);
+			addElementFromASTNode(node.getDeclaringXOTclType());
 		}
 	}
 
@@ -130,14 +129,17 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 		SimpleReference callName = st.getCallName();
 		if (callName.sourceStart() <= position
 				&& position < callName.sourceEnd()) {
-			TypeDeclaration type = st.getType();
-			MethodDeclaration[] methods = type.getMethods();
-			searchMethodsList(callName, methods);
-		}
-		else if (st.getInstNameRef().sourceStart() <= position
+			if (st.getObject() instanceof TypeDeclaration) {
+				TypeDeclaration type = (TypeDeclaration) st.getObject();
+				MethodDeclaration[] methods = type.getMethods();
+				searchMethodsList(callName, methods);
+			}
+		} else if (st.getInstNameRef().sourceStart() <= position
 				&& position < st.getInstNameRef().sourceEnd()) {
-			TypeDeclaration type = st.getType();
-			addElementFromASTNode(type);
+			if (st.getObject() instanceof TypeDeclaration) {
+				TypeDeclaration type = (TypeDeclaration) st.getObject();
+				addElementFromASTNode(type);
+			}
 		}
 	}
 
@@ -158,8 +160,10 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 			IParent parent) {
 		if (node instanceof XOTclMethodDeclaration) {
 			XOTclMethodDeclaration me = (XOTclMethodDeclaration) node;
-			TypeDeclaration declaringXOTclType = me.getDeclaringXOTclType();
-//			if (declaringXOTclType.getName().indexOf("::") == -1) { // Only
+			if (me.getDeclaringXOTclType() instanceof TypeDeclaration) {
+				TypeDeclaration declaringXOTclType = (TypeDeclaration) me.getDeclaringXOTclType();
+				// if (declaringXOTclType.getName().indexOf("::") == -1) { //
+				// Only
 				// simple
 				// case are
 				// supported.
@@ -169,7 +173,8 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 					return this.findChildrenByName(me.getName(),
 							(IParent) element2);
 				}
-//			}
+				// }
+			}
 		}
 		return null;
 	}
@@ -184,8 +189,7 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 			TypeDeclaration type = variable.getType();
 			MethodDeclaration[] methods = type.getMethods();
 			searchMethodsList(callName, methods);
-		}
-		else if (st.getInstNameRef().sourceStart() <= position
+		} else if (st.getInstNameRef().sourceStart() <= position
 				&& position < st.getInstNameRef().sourceEnd()) {
 			XOTclInstanceVariable variable = st.getInstanceVariable();
 			TypeDeclaration type = variable.getType();

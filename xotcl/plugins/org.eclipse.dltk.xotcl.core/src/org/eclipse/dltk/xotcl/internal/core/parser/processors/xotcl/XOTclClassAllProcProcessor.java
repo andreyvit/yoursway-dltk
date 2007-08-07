@@ -18,19 +18,21 @@ import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.xotcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.xotcl.core.ITclParser;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 import org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.Messages;
 
-/** 
- * Process "#Class#instproc" and "#Object#proc" commands.
+/**
+ * Process "#Class#instproc", "#Class#proc" and "#Object#proc", and instance
+ * proc commands.
  * 
  * @author haiodo
- *
+ * 
  */
 
-public class XOTclClassInstproc extends AbstractTclCommandProcessor {
+public class XOTclClassAllProcProcessor extends AbstractTclCommandProcessor {
 
-	public XOTclClassInstproc() {
+	public XOTclClassAllProcProcessor() {
 	}
 
 	public ASTNode process(TclCommand command, ITclParser parser, int offset,
@@ -40,11 +42,11 @@ public class XOTclClassInstproc extends AbstractTclCommandProcessor {
 			return null;
 		}
 		TclStatement statement = (TclStatement) node;
-		TypeDeclaration decl = null;
+		ASTNode decl = null;
 
 		if (getDetectedParameter() != null
-				&& (getDetectedParameter() instanceof TypeDeclaration)) {
-			decl = (TypeDeclaration) getDetectedParameter();
+				&& (getDetectedParameter() instanceof ASTNode)) {
+			decl = (ASTNode) getDetectedParameter();
 		}
 		if (decl == null) {
 			return null;
@@ -90,7 +92,13 @@ public class XOTclClassInstproc extends AbstractTclCommandProcessor {
 				.getStart()
 				+ offset, command.getEnd() + offset);
 		method.setDeclaringXOTclType(decl);
-		method.setDeclaringTypeName(decl.getName());
+		if (decl instanceof TypeDeclaration) {
+			method.setDeclaringTypeName(((TypeDeclaration) decl).getName());
+		}
+		else if( decl instanceof XOTclInstanceVariable ) {
+			method.setDeclaringTypeName(((XOTclInstanceVariable)decl).getName());
+		}
+
 		method.setModifiers(IXOTclModifiers.AccXOTcl);
 		method.setName(sName);
 		method.setNameStart(procName.sourceStart());
@@ -103,10 +111,11 @@ public class XOTclClassInstproc extends AbstractTclCommandProcessor {
 				.sourceEnd() - 1);
 		method.acceptBody(block);
 		this.addToParent(parent, method);
-		method.setDeclaringTypeName(decl.getName());
-		decl.getMethodList().add(method);
-		parser.parse(content,
-				procCode.sourceStart() + 1, block);
+
+		if (decl instanceof TypeDeclaration) {
+			((TypeDeclaration)decl).getMethodList().add(method);
+		}
+		parser.parse(content, procCode.sourceStart() + 1, block);
 		return method;
 	}
 

@@ -25,6 +25,8 @@ import org.eclipse.dltk.xotcl.core.TclParseUtil;
 import org.eclipse.dltk.xotcl.core.ast.TclGlobalVariableDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.TclPackageDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.TclUpvarVariableDeclaration;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclVariableDeclaration;
 
 public class XOTclSourceElementRequestVisitor extends
@@ -420,12 +422,22 @@ public class XOTclSourceElementRequestVisitor extends
 		mi.nameSourceEnd = method.getNameEnd()-1;
 		mi.declarationStart = method.sourceStart();
 		ExitFromType exit = null;
+		boolean requireFieldExit = false;
 		if( (method.getModifiers() & IXOTclModifiers.AccXOTcl) != 0 ) {
 			String tName = method.getDeclaringTypeName();
 			if( tName == null ) {
 				tName = "";
 			}
 			exit = this.resolveType(method, tName + "::dummy", false);
+//			if( method instanceof XOTclMethodDeclaration) {
+//				XOTclMethodDeclaration mDecl = (XOTclMethodDeclaration) method;
+//				ASTNode dt = mDecl.getDeclaringXOTclType();
+//				if( dt instanceof XOTclInstanceVariable) {
+//					XOTclInstanceVariable var = (XOTclInstanceVariable) dt;
+//					this.fRequestor.
+//					var.getName();
+//				}
+//			}
 		}
 		else {
 			exit = this.resolveType(method, fullName, false);

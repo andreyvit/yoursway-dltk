@@ -1,11 +1,11 @@
 package org.eclipse.dltk.xotcl.core.ast.xotcl;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
-import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.references.SimpleReference;
 
 public class XOTclMethodDeclaration extends MethodDeclaration {
-	private TypeDeclaration declaringXOTclType;
+	private ASTNode declaringXOTclType;
 	private SimpleReference typeNameRef;
 	public XOTclMethodDeclaration(int start, int end) {
 		super(start, end);
@@ -16,11 +16,11 @@ public class XOTclMethodDeclaration extends MethodDeclaration {
 		super(name, nameStart, nameEnd, declStart, declEnd);
 	}
 
-	public TypeDeclaration getDeclaringXOTclType() {
+	public ASTNode getDeclaringXOTclType() {
 		return declaringXOTclType;
 	}
 
-	public void setDeclaringXOTclType(TypeDeclaration declaringXOTclType) {
+	public void setDeclaringXOTclType(ASTNode declaringXOTclType) {
 		this.declaringXOTclType = declaringXOTclType;
 	}
 

@@ -1,25 +1,33 @@
 package org.eclipse.dltk.xotcl.core.ast.xotcl;
 
 import org.eclipse.dltk.ast.ASTListNode;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.tcl.ast.TclStatement;
 
 public class XOTclProcCallStatement extends Statement {
 	private SimpleReference methodName;
 	private ASTListNode arguments;
-	private TypeDeclaration type;
+	private ASTNode object;
 	private SimpleReference instName;
-	public XOTclProcCallStatement(SimpleReference name, TypeDeclaration type, ASTListNode args) {
+	private TclStatement originalStatement;
+	public XOTclProcCallStatement(SimpleReference name, ASTNode type, ASTListNode args) {
 		this.methodName = name;
-		this.type = type;
+		this.object = type;
 		this.arguments = args;
 	}
 	public int getKind() {
 		return 0;
 	}
 
+	public TclStatement getOriginalStatement() {
+		return this.originalStatement;
+	}
+	public void setOriginalStatement(TclStatement originalStatement) {
+		this.originalStatement = originalStatement;
+	}
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if( visitor.visit(this)) {
 			if( this.methodName != null ) {
@@ -32,11 +40,11 @@ public class XOTclProcCallStatement extends Statement {
 		}
 	}
 	
-	public TypeDeclaration getType() {
-		return type;
+	public ASTNode getObject() {
+		return object;
 	}
-	public void setType(TypeDeclaration type) {
-		this.type = type;
+	public void setObject(ASTNode type) {
+		this.object = type;
 	}
 	public SimpleReference getCallName() {
 		return this.methodName;

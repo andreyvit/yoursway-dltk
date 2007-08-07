@@ -83,11 +83,11 @@
             id="#Class#create">
       </processor>
       <processor
-            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.xotcl.XOTclClassInstproc"
+            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.xotcl.XOTclClassAllProcProcessor"
             id="#Class#instproc">
       </processor>
       <processor
-            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.xotcl.XOTclClassInstproc"
+            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.xotcl.XOTclClassAllProcProcessor"
             id="#Object#proc">
       </processor>
       <processor
@@ -103,8 +103,16 @@
             id="#Class#$newInstance">
       </processor>
       <processor
-            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.xotcl.XOTclClassProcCallProcessor"
+            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.xotcl.XOTclProcCallProcessor"
             id="#Class#$ProcCall">
+      </processor>
+      <processor
+            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.xotcl.XOTclObjectCreateProcessor"
+            id="#Object#create">
+      </processor>
+      <processor
+            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.xotcl.XOTclClassAllProcProcessor"
+            id="#Class#proc">
       </processor>
    </extension>
    <extension
@@ -130,6 +138,13 @@
             nature="org.eclipse.dltk.tcl.core.nature"
             priority="1">
       </selectionEngine>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.mixin">
+      <mixin
+            class="org.eclipse.dltk.xotcl.internal.core.search.mixin.XOTclMixinParser"
+            nature="org.eclipse.dltk.tcl.core.nature">
+      </mixin>
    </extension>
 
 </plugin>
