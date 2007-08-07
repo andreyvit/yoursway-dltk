@@ -387,7 +387,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 
 		for (int i = 0; i < interpreterInstalls.length; ++i) {
 			final IInterpreterInstall install = interpreterInstalls[i];
-			System.out.println("Interpreter install location: "
+			System.out.println("Interpreter install location (run): "
 					+ install.getInstallLocation().toString());
 
 			MyInterpretersUpdater updater = new MyInterpretersUpdater();
@@ -500,18 +500,24 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 
 		// Debug
 		final IFile file = getFile("/launching/src/test.rb");
+
 		// Setting breakpoint
 		IScriptLineBreakpoint b = new ScriptLineBreakpoint(getDebugModelId(),
-				file, 1, -1, -1, 0, true);
+				file, 1, -1, -1, true);
 
 		DebugEventStats stats = new DebugEventStats();
 
 		DebugPlugin.getDefault().addDebugEventListener(stats);
 
 		for (int i = 0; i < interpreterInstalls.length; ++i) {
-			MyInterpretersUpdater updater = new MyInterpretersUpdater();
+			final IInterpreterInstall install = interpreterInstalls[i];
+
+			System.out.println("Interperter install location (debug): "
+					+ install.getInstallLocation());
+
+			final MyInterpretersUpdater updater = new MyInterpretersUpdater();
 			updater.updateInterpreterSettings(getNatureId(),
-					interpreterInstalls, interpreterInstalls[i]);
+					interpreterInstalls, install);
 
 			stats.reset();
 
