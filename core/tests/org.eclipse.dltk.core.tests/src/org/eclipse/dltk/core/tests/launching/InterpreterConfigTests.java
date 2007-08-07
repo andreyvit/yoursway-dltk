@@ -40,8 +40,8 @@ public class InterpreterConfigTests extends AbstractModelTests {
 		IProject project = scriptProject.getProject();
 		IResource member = project.findMember("src/script.xxx");
 		IPath scriptPath = member.getLocation();
-
-		return new InterpreterConfig(scriptPath);
+		File file = new File( scriptPath.toOSString() );
+		return new InterpreterConfig(file);
 	}
 
 	public void testInterpreterConfig() {
@@ -49,45 +49,46 @@ public class InterpreterConfigTests extends AbstractModelTests {
 		IResource member = project.findMember("src/script.xxx");
 		IPath scriptPath = member.getLocation();
 
-		InterpreterConfig config = new InterpreterConfig(scriptPath);
+		File file = new File( scriptPath.toOSString() );
+		InterpreterConfig config = new InterpreterConfig(file);
 
 		// Creation
-		assertNotNull(config.getScriptFilePath());
-		assertNotNull(config.getWorkingDirectoryPath());
+		assertNotNull(config.getScriptFile());
+		assertNotNull(config.getWorkingDirectory());
 
-		assertEquals(scriptPath, config.getScriptFilePath());
+		assertEquals(scriptPath, config.getScriptFile());
 		assertEquals(scriptPath.removeLastSegments(1), config
-				.getWorkingDirectoryPath());
+				.getWorkingDirectory());
 
 		// Null as script file
 		try {
-			config.setScriptFile((IPath) null);
+			config.setScriptFile((File)null);
 			fail("Should raise an IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 
 		}
 
-		try {
-			config.setScriptFile((File) null);
-			fail("Should raise an IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
-
-		}
+//		try {
+//			config.setScriptFile((File) null);
+//			fail("Should raise an IllegalArgumentException");
+//		} catch (IllegalArgumentException e) {
+//
+//		}
 
 		// Null as working directory
-		try {
-			config.setWorkingDirectory((IPath) null);
-			fail("Should raise an IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
-
-		}
-
 		try {
 			config.setWorkingDirectory((File) null);
 			fail("Should raise an IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 
 		}
+
+//		try {
+//			config.setWorkingDirectory((File) null);
+//			fail("Should raise an IllegalArgumentException");
+//		} catch (IllegalArgumentException e) {
+//
+//		}
 	}
 
 	public void testInterpreterConfigEnvArgs() {

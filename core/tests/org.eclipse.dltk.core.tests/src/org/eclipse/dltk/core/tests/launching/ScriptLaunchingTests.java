@@ -41,7 +41,6 @@ import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 import org.eclipse.dltk.internal.launching.InterpreterDefinitionsContainer;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
-import org.eclipse.dltk.launching.InterpreterSearcher;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.ScriptRuntime;
 
@@ -501,10 +500,9 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 
 		// Debug
 		final IFile file = getFile("/launching/src/test.rb");
-
 		// Setting breakpoint
 		IScriptLineBreakpoint b = new ScriptLineBreakpoint(getDebugModelId(),
-				file, 1, -1, -1, true);
+				file, 1, -1, -1, 0, true);
 
 		DebugEventStats stats = new DebugEventStats();
 
