@@ -31,12 +31,22 @@ public class DbgpStackCommandsTests extends DbgpProtocolTests {
 		return parseResponse(xml);
 	}
 
+	protected Element getStackGetResponse(int transaction_id)
+			throws IOException {
+		String xml = getResourceAsString("stack_get.xml");
+
+		xml = MessageFormat.format(xml, new Object[] { Integer
+				.toString(transaction_id) });
+
+		return parseResponse(xml);
+	}
+
 	protected Element getStackLevelsResponse() {
 		return null;
 	}
 
 	public void testStackDepth() throws Exception {
-		final Element response = getStackDepthResponse(324, 3);
+		final Element response = getStackDepthResponse(0, 3);
 
 		IDbgpStatckCommands commands = new DbgpStackCommands(
 				new IDbgpCommunicator() {
@@ -45,15 +55,12 @@ public class DbgpStackCommandsTests extends DbgpProtocolTests {
 
 						assertEquals(1, request.optionCount());
 						assertTrue(request.hasOption("-i"));
-						assertEquals(Integer.toString(324), request
-								.getOption("-i"));
 
 						return response;
 					}
 
 					public void send(DbgpRequest request) throws DbgpException {
 						// TODO Auto-generated method stub
-						
 					}
 				});
 
@@ -62,38 +69,25 @@ public class DbgpStackCommandsTests extends DbgpProtocolTests {
 	}
 
 	public void testGetStackLevel() throws Exception {
-		final Element response = null;
+		final Element response = getStackGetResponse(0);
 
 		IDbgpStatckCommands commands = new DbgpStackCommands(
 				new IDbgpCommunicator() {
-
 					public Element communicate(DbgpRequest request)
 							throws DbgpException {
 
-						assertEquals(2, request.optionCount());
-
 						assertTrue(request.hasOption("-i"));
-						
-						assertTrue(request.hasOption("-d"));
-						assertEquals(Integer.toString(2), request
-								.getOption("-d"));
 
 						return response;
 					}
 
 					public void send(DbgpRequest request) throws DbgpException {
 						// TODO Auto-generated method stub
-						
 					}
 				});
-		
-		IDbgpStackLevel level = commands.getStackLevel(2);
-		assertEquals(2, level.getLevel());
-		
-		
-	}
 
-	public void testGetStackLevels() throws Exception {
-
+		IDbgpStackLevel level = commands.getStackLevel(0);
+		assertEquals(0, level.getLevel());
+		assertEquals(8, level.getLineNumber());
 	}
 }

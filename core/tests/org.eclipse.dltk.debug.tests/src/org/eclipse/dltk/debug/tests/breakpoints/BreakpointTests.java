@@ -10,10 +10,7 @@ import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 
 public class BreakpointTests extends AbstractDebugTests {
 	public static TestSuite suite() {
-		Suite s = new Suite(BreakpointTests.class);
-		// s.addTestSuite(BreakpointTests.class);
-		// return s;
-		return s;
+		return new Suite(BreakpointTests.class);
 	}
 
 	public BreakpointTests() {
@@ -67,14 +64,13 @@ public class BreakpointTests extends AbstractDebugTests {
 
 		// Hit condition
 		final int hitCondition = IScriptBreakpoint.HIT_CONDITION_EQUAL;
-		assertEquals(IScriptBreakpoint.HIT_CONDITION_GREATER_OR_EQUAL,
-				breakpoint.getHitCondition());
+		assertEquals(-1, breakpoint.getHitCondition());
 		breakpoint.setHitCondition(hitCondition);
 		assertEquals(hitCondition, breakpoint.getHitCondition());
 
 		// Hit value
 		final int hitValue = 22;
-		assertEquals(1, breakpoint.getHitValue());
+		assertEquals(-1, breakpoint.getHitValue());
 		breakpoint.setHitValue(hitValue);
 		assertEquals(hitValue, breakpoint.getHitValue());
 	}

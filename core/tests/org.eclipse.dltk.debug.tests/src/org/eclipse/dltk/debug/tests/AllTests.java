@@ -45,7 +45,7 @@ public class AllTests {
 		dbgpSuite.addTestSuite(DbgpStatusCommandsTests.class);
 		suite.addTest(dbgpSuite);
 
-		// Brealpoints
+		// Breakpoints
 		suite.addTest(BreakpointTests.suite());
 		// // $JUnit-END$
 		return suite;
