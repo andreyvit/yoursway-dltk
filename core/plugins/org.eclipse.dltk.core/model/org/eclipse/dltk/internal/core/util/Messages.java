@@ -36,6 +36,7 @@ public class Messages extends NLS {
 	public static String buildpath_closedProject;
 	public static String buildpath_couldNotWriteBuildpathFile;
 	public static String buildpath_cycle;
+	public static String buildpath_disabledInclusionExclusionPatterns;
 	public static String buildpath_duplicateEntryPath;
 	public static String buildpath_illegalContainerPath;
 	public static String buildpath_illegalEntryInBuildpathFile;

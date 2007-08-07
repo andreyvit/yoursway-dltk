@@ -45,6 +45,7 @@ public class WorkingCopyTests extends ModifyingResourceTests {
 	protected void setUp() throws Exception {
 		super.setUp();
 		try {
+			
 			this.createScriptProject("P", TEST_NATURE,new String[] {
 				"src"
 			} );

@@ -32,5 +32,12 @@
            priority="0">
      </parser>
   </extension>
+  <extension
+        point="org.eclipse.team.core.repository">
+     <repository
+           class="org.eclipse.dltk.core.tests.model.TestPessimisticProvider"
+           id="org.eclipse.dltk.core.tests.model.pessimisticnature">
+     </repository>
+  </extension>
 
 </plugin>

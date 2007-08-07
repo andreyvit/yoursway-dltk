@@ -323,7 +323,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 			proj.setRawBuildpath(newCP, null);
 			
 			IProjectFragment[] fragments = proj.getProjectFragments();
-			assertEquals(1, fragments.length);
+			assertEquals(2, fragments.length);
 			
 			System.out.println("Model:");
 			CorePrinter printer = new CorePrinter(System.out, true);
@@ -408,7 +408,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 			IScriptProject proj = createScriptProject("P2i", TEST_NATURE,
 					new String[]{""}, new String[] { "/P1i/src1/src2" });
 			assertMarkers("Unexpected markers",
-					"Project P2i is missing required source folder: \'/P1i/src1/src2\'", proj);
+					"Illegal path for required project: '/P1i/src1/src2' in project P2i", proj);
 		} finally {
 			deleteProject("P1i");
 			deleteProject("P2i");
