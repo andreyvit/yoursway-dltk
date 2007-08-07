@@ -25,7 +25,7 @@
   <target name="suite">
     <delete dir="${workspace}" quiet="true"/>
     
-    <ant target="python-tests" antfile="${library-file}" dir="${eclipse-home}">
+    <ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
       <property name="data-dir" value="${workspace}"/>
       <property name="plugin-name" value="${plugin-name}"/>
       <property name="classname" value="org.eclipse.dltk.python.tests.AllTests"/>
