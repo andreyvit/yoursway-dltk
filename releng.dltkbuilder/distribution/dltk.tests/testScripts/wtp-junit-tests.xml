@@ -25,10 +25,8 @@
 		<property name="extraVMargs" value="" />
 		
 		<!-- if not otherwise set, use a unique workspace name -->
-		<!--property name="data-dir" value="${testRoot}/junitworkspaces/workspace-${classname}" /-->
-		<echo message="workspace: ${workspace}" />
-		<property name="data-dir" value="${workspace}" />
-		
+		<property name="data-dir" value="${testRoot}/junitworkspaces/workspace-${classname}" />
+
 		<property name="testRoot" value="${testRoot}" />
 		<property name="timeout" value="300000" />
 		<property name="junit-report-output" value="${junit-report-output}" />
@@ -117,7 +115,7 @@
 			</classpath>
 
 			<jvmarg value="-Xms256m" />
-			<jvmarg value="-Xmx512m" />
+			<jvmarg value="-Xmx1024m" />
 			
 			<jvmarg value="-Dosgi.ws=${env.BASEWS}" />
 			<jvmarg value="-Dosgi.os=${env.BASEOS}" />
