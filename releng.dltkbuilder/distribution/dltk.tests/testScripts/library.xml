@@ -31,7 +31,8 @@
 			<isset property="useEclipseExe" />
 		</condition>
 		<!--default launch target for launching tests-->
-		<property name="launchTarget" value="java-test" />
+		<!--property name="launchTarget" value="java-test" /-->
+		<property name="launchTarget" value="eclipse-test" />
 		<property name="formatter" value="org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter"/>
 	    
 		<!--default heap sizes when running performance tests-->
