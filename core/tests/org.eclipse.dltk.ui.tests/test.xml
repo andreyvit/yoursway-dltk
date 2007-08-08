@@ -8,22 +8,9 @@
   <!-- sets the properties eclipse-home, and library-file -->
   <property name="plugin-name" value="org.eclipse.dltk.ui.tests"/>
   <property name="library-file" value="${eclipse-home}/plugins/org.eclipse.test_3.2.0/library.xml"/>
+            
+  <property name="workspace" value="${basedir}/${plugin-name}"/>
 
-	<property name="classname" value="org.eclipse.dltk.ui.tests.AllTests" />
-	<property name="testType" value="ui-test" />	
-	
-  <property name="workspace" value="${basedir}/${plugin-name}/workspace"/>
-
-    <!-- should be little need to change what's below -->
-
-    <echo message="basedir: ${basedir}" />
-    <echo message="eclipse-home: ${eclipse-home}" />
-    <echo message="buildDirectory: ${buildDirectory}" />
-    <echo message="plugin-name: ${plugin-name}" />
-    <echo message="classname: ${classname}" />
-    <echo message="testType ${testType}" />
-	
-	
   <!-- This target holds all initialization code that needs to be done for -->
   <!-- all tests that are to be run. Initialization for individual tests -->
   <!-- should be done within the body of the suite target. -->
@@ -32,29 +19,17 @@
     <delete>
       <fileset dir="${eclipse-home}" includes="org*.xml"/>
     </delete>
-  	
-    <!-- make directory, in case path doesn't exist yet -->
-    <mkdir dir="${workspace}" />
-    <!--  but delete to make sure fresh contents-->
-    <delete
-        dir="${workspace}"
-        quiet="true" />
-  	
   </target>
 
   <!-- This target defines the tests that need to be run. -->
   <target name="suite">
-  	  		
-    <ant target="${testType}" antfile="${library-file}" dir="${eclipse-home}">
+    <delete dir="${workspace}" quiet="true"/>
+    
+    <ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
       <property name="data-dir" value="${workspace}"/>
       <property name="plugin-name" value="${plugin-name}"/>
-      <property name="classname" value="${classname}"/>
-      <property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}" />
+      <property name="classname" value="org.eclipse.dltk.ui.tests.AllTests"/>
     </ant>
-  	
-    <copy failonerror="false" file="${workspace}/.metadata/.log"
-        tofile="${buildDirectory}/${buildLabel}/testResults/consolelogs/${plugin-name}.consolelog.txt" />
-  	
   </target>
     
   <!-- This target holds code to cleanup the testing environment after -->
@@ -74,6 +49,4 @@
   </target>
 
 </project>
-
-
 
