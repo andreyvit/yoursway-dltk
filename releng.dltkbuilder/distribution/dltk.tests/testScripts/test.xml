@@ -69,8 +69,8 @@
 
 	<target name="runtests-normal">
 		<ant antfile="${eclipse-home}/plugins/${testPlugin}/test.xml" dir="${eclipse-home}">
-			<!--property name="library-file" value="${testRoot}/wtp-junit-tests.xml" /-->
-			<property name="library-file" value="${testRoot}/library.xml" />
+			<property name="library-file" value="${testRoot}/wtp-junit-tests.xml" />
+			<!--property name="library-file" value="${testRoot}/library.xml" /-->
 		</ant>
 		<copy file="${eclipse-home}/${report}.xml" tofile="${results}/xml/${report}_${platform}.xml" failonerror="false" />
 		<antcall target="genHtml" />
