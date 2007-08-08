@@ -69,7 +69,8 @@
 
 	<target name="runtests-normal">
 		<ant antfile="${eclipse-home}/plugins/${testPlugin}/test.xml" dir="${eclipse-home}">
-			<property name="library-file" value="${testRoot}/wtp-junit-tests.xml" />
+			<!--property name="library-file" value="${testRoot}/wtp-junit-tests.xml" /-->
+			<property name="library-file" value="${testRoot}/library.xml" />
 		</ant>
 		<copy file="${eclipse-home}/${report}.xml" tofile="${results}/xml/${report}_${platform}.xml" failonerror="false" />
 		<antcall target="genHtml" />
@@ -92,13 +93,6 @@
 		</antcall>
 	</target>
 
-	<target name="core-ui-tests" description="Runs the org.eclipse.dltk.ui.tests test.xml">
-		<antcall target="runtests">
-			<param name="testPlugin" value="${org.eclipse.dltk.ui.tests}" />
-			<param name="report" value="org.eclipse.dltk.ui.tests" />
-		</antcall>
-	</target>
-
 	<target name="core-validators-tests" description="Runs the org.eclipse.dltk.validators.core.tests test.xml">
 		<echo message="fourdman: hello from validators core-tests" />
 		<antcall target="runtests">
@@ -114,14 +108,6 @@
 		<antcall target="runtests">
 			<param name="testPlugin" value="${org.eclipse.dltk.ruby.core.tests}" />
 			<param name="report" value="org.eclipse.dltk.ruby.core.tests" />
-		</antcall>
-	</target>
-
-
-	<target name="ruby-ui-tests" description="Runs the org.eclipse.dltk.ruby.ui.tests test.xml">
-		<antcall target="runtests">
-			<param name="testPlugin" value="${org.eclipse.dltk.ruby.ui.tests}" />
-			<param name="report" value="org.eclipse.dltk.ruby.ui.tests" />
 		</antcall>
 	</target>
 
@@ -144,13 +130,6 @@
 		</antcall>
 	</target>
 
-	<target name="tcl-ui-tests" description="Runs the org.eclipse.dltk.tcl.ui.tests test.xml">
-		<antcall target="runtests">
-			<param name="testPlugin" value="${org.eclipse.dltk.tcl.ui.tests}" />
-			<param name="report" value="org.eclipse.dltk.tcl.ui.tests" />
-		</antcall>
-	</target>
-
 	<!-- DLTK Python -->
 
 	<target name="python-tests" description="Runs the org.eclipse.dltk.python.tests test.xml">
@@ -159,15 +138,7 @@
 			<param name="report" value="org.eclipse.dltk.python.tests" />
 		</antcall>
 	</target>
-
-
-	<target name="python-ui-tests" description="Runs the org.eclipse.dltk.python.ui.tests test.xml">
-		<antcall target="runtests">
-			<param name="testPlugin" value="${org.eclipse.dltk.python.ui.tests}" />
-			<param name="report" value="org.eclipse.dltk.python.ui.tests" />
-		</antcall>
-	</target>
-	
+			
 	<!-- DLTK Javascript -->
 
 	<target name="javascript-tests" description="Runs the org.eclipse.dltk.javascript.core.tests test.xml">
@@ -185,15 +156,36 @@
 			<param name="report" value="org.eclipse.dltk.xotcl.core.tests" />
 		</antcall>
 	</target>
-
-	<!-- releng Tests -->
-
-	<!--target name="releng-tests" description="Runs the releng tests.">
+		
+	<!-- UI Tests -->
+	
+	<target name="core-ui-tests" description="Runs the org.eclipse.dltk.ui.tests test.xml">
 		<antcall target="runtests">
-			<param name="testPlugin" value="${org.eclipse.wtp.releng.tests}" />
-			<param name="report" value="org.eclipse.wtp.releng.tests" />
+			<param name="testPlugin" value="${org.eclipse.dltk.ui.tests}" />
+			<param name="report" value="org.eclipse.dltk.ui.tests" />
 		</antcall>
-	</target-->
+	</target>
+
+	<target name="ruby-ui-tests" description="Runs the org.eclipse.dltk.ruby.ui.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.dltk.ruby.ui.tests}" />
+			<param name="report" value="org.eclipse.dltk.ruby.ui.tests" />
+		</antcall>
+	</target>
+	
+	<target name="python-ui-tests" description="Runs the org.eclipse.dltk.python.ui.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.dltk.python.ui.tests}" />
+			<param name="report" value="org.eclipse.dltk.python.ui.tests" />
+		</antcall>
+	</target>
+		
+	<target name="tcl-ui-tests" description="Runs the org.eclipse.dltk.tcl.ui.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.dltk.tcl.ui.tests}" />
+			<param name="report" value="org.eclipse.dltk.tcl.ui.tests" />
+		</antcall>
+	</target>
 
 	<target name="all" depends="init">
 		<property file="${testRoot}/test2.properties" />
@@ -206,17 +198,11 @@
 		<echo message="Starting Core Debug Frameworks tests" />
 		<antcall target="core-debug-tests" />
 
-		<echo message="Starting Core UI tests" />
-		<antcall target="core-ui-tests" />
-
 		<echo message="Starting Core Validators tests" />
 		<antcall target="core-validators-tests" />
 
 		<echo message="Starting Ruby Core tests" />
 		<antcall target="ruby-core-tests" />
-
-		<echo message="Starting Ruby UI tests" />
-		<antcall target="ruby-ui-tests" />
 
 		<echo message="Starting Tcl Core tests" />
 		<antcall target="tcl-core-tests" />
@@ -224,20 +210,26 @@
 		<echo message="Starting Additional Tcl tests" />
 		<antcall target="tcl-tests" />
 
-		<echo message="Starting Tcl UI tests" />
-		<antcall target="tcl-ui-tests" />
-
 		<echo message="Starting Python Core tests" />
 		<antcall target="python-tests" />
-
-		<echo message="Starting Python UI tests" />
-		<antcall target="python-ui-tests" />
 					
 		<echo message="Starting Javascript Core tests" />
 		<antcall target="javascript-tests" />
 
 		<echo message="Starting Xotcl Core tests" />
 		<antcall target="xotcl-tests" />
+
+		<echo message="Starting Core UI tests" />
+		<antcall target="core-ui-tests" />
+
+		<echo message="Starting Ruby UI tests" />
+		<antcall target="ruby-ui-tests" />
+
+		<echo message="Starting Tcl UI tests" />
+		<antcall target="tcl-ui-tests" />
+
+		<echo message="Starting Python UI tests" />
+		<antcall target="python-ui-tests" />
 
 		<echo message="Ended DLTK Unit Tests" />
 
