@@ -28,7 +28,7 @@
 		<property name="data-dir" value="${testRoot}/junitworkspaces/workspace-${classname}" />
 
 		<property name="testRoot" value="${testRoot}" />
-		<property name="timeout" value="300000" />
+		<property name="timeout" value="900000" />
 		<property name="junit-report-output" value="${junit-report-output}" />
 		<property name="plugin-path" value="${testRoot}/plugins/${testPlugin}" />
 		<property name="formatter" value="org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter" />
