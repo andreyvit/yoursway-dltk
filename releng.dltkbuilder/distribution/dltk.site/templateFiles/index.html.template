@@ -223,6 +223,20 @@ or used.</h4>
         ?>
       </tr>      
       <tr>
+        <td class="bold">DLTK Core + TCL</td>
+        <td>Package contains everything to run DLTK TCL</td>
+        <?php
+        $zipfilename="dltk-core-tcl-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        $zipfilesize=fileSizeInMegs($filename);
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilename="dltk-core-tcl-sdk-@build@-incubation";
+        $filename=$zipfilename.".zip";
+        $zipfilesize=fileSizeInMegs($filename);
+        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        ?>
+      </tr>      
+      <tr>
         <td class="bold">DLTK All</td>
         <td>Package contains all DLTK components and extensions</td>
         <?php

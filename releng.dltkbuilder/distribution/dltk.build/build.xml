@@ -143,6 +143,21 @@
 			<param name="corename" value="-Automated_Tests"/>
 			<param name="packname" value="python"/>
 		</antcall>
+		
+		<antcall target="combineArchivesCore">
+			<param name="corename" value=""/>
+			<param name="packname" value="tcl"/>
+		</antcall>
+	
+		<antcall target="combineArchivesCore">
+			<param name="corename" value="-sdk"/>
+			<param name="packname" value="tcl"/>
+		</antcall>
+		
+		<antcall target="combineArchivesCore">
+			<param name="corename" value="-Automated_Tests"/>
+			<param name="packname" value="tcl"/>
+		</antcall>
 
 	</target>
 	<target name="combineArchives">
