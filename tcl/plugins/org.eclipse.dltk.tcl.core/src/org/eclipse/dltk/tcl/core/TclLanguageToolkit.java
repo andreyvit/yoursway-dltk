@@ -29,26 +29,31 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.internal.core.util.Messages;
 
-
 public class TclLanguageToolkit implements IDLTKLanguageToolkit {
+
 	protected static String[] patterns = {
 			"#!/usr/bin/tclsh",
 			"#!/usr/bin/expect",
 			"# ;;; Local Variable: \\*\\*\\*\\s*\r*\n# ;;; mode: tcl \\*\\*\\*\\s*\r*\n# ;;; End: \\*\\*\\*",
 			"#!/bin/sh\\s*\r*\n#.*\\\\s*\r*\nexec .*tclsh .*",
 			"#!/bin/sh\\s*\r*\n#.*\\\\s*\r*\nexec .*expect .*",
-			"#!/bin/sh\\s*\r*\n#.*\\\\s*\r*\nexec .*wish.*"};
+			"#!/bin/sh\\s*\r*\n#.*\\\\s*\r*\nexec .*wish.*" };
 	protected static IDLTKLanguageToolkit sInstance = new TclLanguageToolkit();
 
 	public String[] getLanguageFileExtensions() {
-		return new String[] {"tcl", "exp", "test"};
+		return new String[] { "tcl", "exp", "test" };
 	}
 
 	private IStatus isTclHeadered(File file) {
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(file));
-			int size = (int)file.length(); //i hope, that size is covertable to int
+			int size = Math.min((int) file.length(), 1024 * 1024); // DON'T
+																	// READ
+																	// FILES
+																	// WITH SIZE
+																	// MORE THAN
+																	// 1 Mb
 			char buf[] = new char[size + 1];
 			reader.read(buf);
 
@@ -83,31 +88,32 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 				"Header not found", null);
 	}
 
-
 	private boolean isSureNotTCLFile(IPath path) {
 		String name = path.toOSString();
 		String[] exts = { "so", "a", "la", "c", "h" };
-		for( int i = 0; i < exts.length; ++i ) {
+		for (int i = 0; i < exts.length; ++i) {
 			if (name.endsWith("." + exts[i])) {
 				return true;
 			}
 		}
-		if(Platform.getOS().equals(Platform.OS_LINUX ) ) {
+		if (Platform.getOS().equals(Platform.OS_LINUX)) {
 			name = path.lastSegment();
-			if( name.startsWith("lib") && Character.isDigit(name.charAt(name.length() -1 ))) {
+			if (name.startsWith("lib")
+					&& Character.isDigit(name.charAt(name.length() - 1))) {
 				return true;
 			}
 		}
 		return false;
 	}
+
 	private boolean isTCLLikeFileName(String name) {
 		String[] exts = getLanguageFileExtensions();
-		for( int i = 0; i < exts.length; ++i ) {
+		for (int i = 0; i < exts.length; ++i) {
 			if (name.endsWith("." + exts[i])) {
 				return true;
 			}
 		}
-		if( name.toLowerCase().equals("tclindex")) {
+		if (name.toLowerCase().equals("tclindex")) {
 			return true;
 		}
 		return false;
@@ -123,6 +129,7 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 	public IStatus validateSourceModule(IModelElement parent, String name) {
 		return validateSourceModuleName(name);
 	}
+
 	public IStatus validateSourceModuleName(String name) {
 		if (name == null) {
 			return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,
@@ -132,7 +139,9 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 			return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,
 					MessageFormat.format(
 							Messages.convention_unit_notScriptName,
-							new String[] { getLanguageFileExtensions().toString(), "Tcl" }), null);
+							new String[] {
+									getLanguageFileExtensions().toString(),
+									"Tcl" }), null);
 		}
 		return IModelStatus.VERIFIED_OK;
 	}
@@ -147,7 +156,9 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 			return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,
 					MessageFormat.format(
 							Messages.convention_unit_notScriptName,
-							new String[] { getLanguageFileExtensions().toString(), "Tcl" }), null);
+							new String[] {
+									getLanguageFileExtensions().toString(),
+									"Tcl" }), null);
 		}
 
 		if (isTclHeadered(path.toFile()) == IModelStatus.VERIFIED_OK)
@@ -194,7 +205,7 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 		}
 		return false;
 	}
-	
+
 	public String getNatureId() {
 		return TclNature.NATURE_ID;
 	}
@@ -203,13 +214,11 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 		return sInstance;
 	}
 
-
 	public String getDelimeterReplacerString() {
 		return "::";
 	}
 
-	public String getLanguageName()
-	{
+	public String getLanguageName() {
 		return "Tcl";
 	}
 }
