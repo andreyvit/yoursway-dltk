@@ -10,6 +10,7 @@
 package org.eclipse.dltk.core.tests.util;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -280,22 +281,29 @@ public class ModelTestUtils
 
 		InputStream openStream = entry.openStream();
 		ZipInputStream zis = new ZipInputStream(openStream);
-		while (zis.available() != 0) {
+		while (true) {
 			ZipEntry nextEntry = zis.getNextEntry();
 			if (nextEntry != null) {
 				String name = nextEntry.getName();
 //				System.out.println(name);
 				if (!nextEntry.isDirectory()) {
-					long len = nextEntry.getSize();
-					byte content[] = new byte[(int) len];
-					zis.read(content);
+					byte[] buf = new byte[1024];
+			        int len;
+			        ByteArrayOutputStream arrayOut = new ByteArrayOutputStream();
+			        while ((len = zis.read(buf)) > 0) {
+			            arrayOut.write(buf, 0, len);
+			        }
+					ByteArrayInputStream bis = new ByteArrayInputStream(arrayOut.toByteArray());
 					IFile file = prj.getFile(new Path(name));
-					ByteArrayInputStream bis = new ByteArrayInputStream(content);
 					file.create(bis, true, monitor);
 				} else {
 					IFolder f = prj.getFolder(new Path(name));
 					f.create(true, true, monitor);
 				}
+				zis.closeEntry();
+			}
+			else {
+				break;
 			}
 		}
 	}
