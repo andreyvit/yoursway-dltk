@@ -60,10 +60,9 @@ public class GeneratedModelTests%(id)d extends AbstractModelTests
 	
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
-		setUpScriptProjectTo( "pytests_%(id)d", "pytests" );
+		IScriptProject scriptProject = setUpScriptProjectTo( "pytests_%(id)d", "pytests" );
 		Bundle bundle = PythonTestsPlugin.getDefault().getBundle();
 		URL entry = bundle.getEntry("/workspace/src.zip");
-		IScriptProject scriptProject = setUpScriptProject("pytests_%(id)d");
 		ModelTestUtils.exractZipInto(scriptProject, entry);
 		// Extract all files from selected zip file.
 	}

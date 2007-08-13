@@ -17,7 +17,7 @@
 import glob
 import os
 
-TESTS_PATH = "../../../src/com/xored/dltk/python/tests/eval/generated/"
+TESTS_PATH = "../../../src/org/eclipse/dltk/python/tests/eval/generated/"
 tests = glob.glob( "*.py" )
 print tests
 
@@ -30,19 +30,19 @@ import junit.framework.Test;
 
 import org.eclipse.core.runtime.Path;
 
-import org.eclipse.dltk.python.internal.evaluation.PythonASTFindVisitor;
-import org.eclipse.dltk.python.internal.evaluation.PythonASTTypeEvaluator;
-import org.eclipse.dltk.python.internal.evaluation.PythonTypeEvaluatorUtils;
-import org.eclipse.dltk.python.tests.PythonTestsPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
-import org.eclipse.dltk.internal.evaluation.types.IEvaluatedType;
+import org.eclipse.dltk.python.internal.core.evaluation.PythonASTFindVisitor;
+import org.eclipse.dltk.python.internal.core.evaluation.PythonASTTypeEvaluator;
+import org.eclipse.dltk.python.internal.core.evaluation.PythonTypeEvaluatorUtils;
+import org.eclipse.dltk.python.tests.PythonTestsPlugin;
+import org.eclipse.dltk.ti.types.IEvaluatedType;
 import org.eclipse.dltk.utils.CorePrinter;
-
 public class %s extends AbstractModelTests
 {
 	public %s(String name) {
@@ -52,18 +52,17 @@ public class %s extends AbstractModelTests
 	public static Test suite() {
 	    return new Suite( %s.class);
 	}
-				    
+	private String prj = "eval0_%s";    			    
 	public void setUpSuite() throws Exception {
 	    super.setUpSuite();
-	    setUpScriptProject( "eval0" );
+	    setUpScriptProjectTo( prj, "eval0" );
 	}
 	public void tearDownSuite() throws Exception {
 	    super.tearDownSuite();
-	    deleteProject( "eval0" );
+	    deleteProject( prj );
 	}
 	private void testType( String moduleName, String name, String type ) throws Exception {
 		
-		String prj = "eval0";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path( moduleName ) );
 		
@@ -101,7 +100,7 @@ def makeTest( test_name ):
 	if os.name == "nt":
 		stream = os.popen( "c:\\haiodo\\python24\\python.exe %s" % (test_name ) )
 	else:
-	    stream = os.popen( "python %s" % (test_name ) )
+	    stream = os.popen( "python %s" % ( test_name ) )
 	if not stream:
 		print "Error to execute python"
 		return
@@ -109,7 +108,7 @@ def makeTest( test_name ):
 	lines = stream.readlines()
 	output = open( TESTS_PATH + "genTest" + test_name[:-3] + ".java", "w" )
 	name =  "genTest" + test_name[:-3]
-	output.write( PRE_TEXT %( name, name, name ) )
+	output.write( PRE_TEXT %( name, name, name, test_name ) )
 	if len( lines ) == 0:
 		print "Lines are empty."
 	for line in lines:

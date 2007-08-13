@@ -47,3 +47,4 @@ namespace eval mynamespace2 {
 		return $aa23
 	}
 }
+
