@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site pack200="true"
-mirrorsURL="http://www.eclipse.org/downloads/download.php?file=/technology/dltk/updates/1.0/site-interim.xml&amp;format=xml"
-digestURL="http://download.eclipse.org/technology/dltk/updates/1.0/">
+mirrorsURL="http://www.eclipse.org/downloads/download.php?file=/technology/dltk/updates/0.9/site-interim.xml&amp;format=xml"
+digestURL="http://download.eclipse.org/technology/dltk/updates/0.9/">
 
    <description url="http://download.eclipse.org/technology/dltk/index.html">
       The update site contains the features of the Eclipse Dynamic Languages Toolkit Project (DLTK)
@@ -28,22 +28,6 @@ digestURL="http://download.eclipse.org/technology/dltk/updates/1.0/">
    </feature>
 
    <feature url="features/org.eclipse.dltk.tcl.sdk_@org.eclipse.dltk.tcl.sdk@.jar" id="org.eclipse.dltk.tcl.sdk" version="@org.eclipse.dltk.tcl.sdk@">
-      <category name="Dynamic Languages Toolkit (DLTK)" />
-   </feature>
-
-   <feature url="features/org.eclipse.dltk.python_@org.eclipse.dltk.python@.jar" id="org.eclipse.dltk.python" version="@org.eclipse.dltk.python@">
-      <category name="Dynamic Languages Toolkit (DLTK)" />
-   </feature>
-
-   <feature url="features/org.eclipse.dltk.python.sdk_@org.eclipse.dltk.python.sdk@.jar" id="org.eclipse.dltk.python.sdk" version="@org.eclipse.dltk.python.sdk@">
-      <category name="Dynamic Languages Toolkit (DLTK)" />
-   </feature>
-
-   <feature url="features/org.eclipse.dltk.javascript_@org.eclipse.dltk.javascript@.jar" id="org.eclipse.dltk.javascript" version="@org.eclipse.dltk.javascript@">
-      <category name="Dynamic Languages Toolkit (DLTK)" />
-   </feature>
-
-   <feature url="features/org.eclipse.dltk.javascript.sdk_@org.eclipse.dltk.javascript.sdk@.jar" id="org.eclipse.dltk.javascript.sdk" version="@org.eclipse.dltk.javascript.sdk@">
       <category name="Dynamic Languages Toolkit (DLTK)" />
    </feature>
 

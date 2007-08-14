@@ -72,7 +72,7 @@ foreach ($compileSummary->summaryItem as $summaryItem) {
 of a set of extensible frameworks designed to reduce the complexity of building full featured development environments for dynamic languages such
 as PHP and Perl.</p>
       <p>&nbsp;</p>
-      <p>Besides a set of frameworks DLTK provides exemplary Tcl, Ruby, and Python development environments ready to use out of the box.</p> 
+      <p>Besides a set of frameworks DLTK provides exemplary Tcl and Ruby development environments ready to use out of the box.</p> 
     </div>
    </div>
  </div>
@@ -96,7 +96,7 @@ or used.</h4>
 <!-- ***********  DLTK COMPONENTS **************  -->
 <div class="build_item">
     <h3>Dynamic Languages Toolkit Components</h3>
-    <h4>The DLTK zip files includes the features and plugins from the DLTK Core, Ruby, TCL, Python and Javascript components.</h4>
+    <h4>The DLTK zip files includes the features and plugins from the DLTK Core, Ruby and Tcl components.</h4>
     <table>
       <tr>
         <td class="bold" width="168">DLTK Core</td>
@@ -140,57 +140,9 @@ or used.</h4>
         echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
         ?>
       </tr>      
-      <tr>
-        <td class="bold">DLTK Python</td>
-        <td>Requires DLTK Core. Experimental Package</td>
-        <?php
-        $zipfilename="dltk-python-@build@-incubation";
-        $filename=$zipfilename.".zip";
-		$zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
-        $zipfilename="dltk-python-sdk-@build@-incubation";
-        $filename=$zipfilename.".zip";
-        $zipfilesize=fileSizeInMegs($filename);
-		echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
-        ?>
-      </tr>
-      <tr>
-        <td class="bold">DLTK Javascript</td>
-        <td>Requires DLTK Core. Experimental Package</td>
-        <?php
-        $zipfilename="dltk-javascript-@build@-incubation";
-        $filename=$zipfilename.".zip";
-		$zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
-        $zipfilename="dltk-javascript-sdk-@build@-incubation";
-        $filename=$zipfilename.".zip";
-        $zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
-        ?>
-      </tr>
     </table>
     </div>
       
-    <div class="build_item">
-    <h3>Dynamic Languages Toolkit Extensions</h3>
-    <table>
-      <tr>
-        <td width="168" class="bold">DLTK XOTCL</td>
-        <td width="420">Requires DLTK TCL</td>
-        <?php
-        $zipfilename="dltk-xotcl-@build@-incubation";
-        $filename=$zipfilename.".zip";
-        $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
-        $zipfilename="dltk-xotcl-sdk-@build@-incubation";
-        $filename=$zipfilename.".zip";
-        $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
-        ?>
-      </tr>
-    </table>
-    </div>
-
     <div class="build_item">
     <h3>Dynamic Languages Toolkit Bundles</h3>
     <table>
@@ -209,22 +161,8 @@ or used.</h4>
         ?>
       </tr>
       <tr>
-        <td class="bold">DLTK Core + Python</td>
-        <td>Package contains everything to run DLTK Python</td>
-        <?php
-        $zipfilename="dltk-core-python-@build@-incubation";
-        $filename=$zipfilename.".zip";
-        $zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
-        $zipfilename="dltk-core-python-sdk-@build@-incubation";
-        $filename=$zipfilename.".zip";
-        $zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
-        ?>
-      </tr>      
-      <tr>
-        <td class="bold">DLTK Core + TCL</td>
-        <td>Package contains everything to run DLTK TCL</td>
+        <td class="bold">DLTK Core + Tcl</td>
+        <td>Package contains everything to run DLTK Tcl</td>
         <?php
         $zipfilename="dltk-core-tcl-@build@-incubation";
         $filename=$zipfilename.".zip";
