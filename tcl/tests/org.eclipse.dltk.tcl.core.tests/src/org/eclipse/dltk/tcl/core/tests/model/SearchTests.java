@@ -12,19 +12,17 @@ package org.eclipse.dltk.tcl.core.tests.model;
 import java.util.List;
 
 import org.eclipse.core.runtime.Path;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptFolder;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.tests.model.AbstractDLTKSearchTests;
-import org.eclipse.dltk.internal.core.InternalDLTKLanguageManager;
-import org.eclipse.dltk.tcl.core.TclNature;
 
 
 public class SearchTests extends AbstractDLTKSearchTests implements IDLTKSearchConstants {
@@ -41,13 +39,13 @@ public class SearchTests extends AbstractDLTKSearchTests implements IDLTKSearchC
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
 		up();
-		InternalDLTKLanguageManager.setPrefferedPriority(TclNature.NATURE_ID, 0);
+//		InternalDLTKLanguageManager.setPrefferedPriority(TclNature.NATURE_ID, 0);
 	}
 
 	public void tearDownSuite() throws Exception {
 		deleteProject(TCLSEARCH);
 		super.tearDownSuite();
-		InternalDLTKLanguageManager.setPrefferedPriority(TclNature.NATURE_ID, -1);
+//		InternalDLTKLanguageManager.setPrefferedPriority(TclNature.NATURE_ID, -1);
 	}
 	
 	private void up() throws Exception {
