@@ -247,9 +247,9 @@ public class ModelTestUtils
 			IModelElement[] childs = parentMethod.getChildren();
 			for( int i = 0; i < childs.length; ++i ) {
 				IModelElement c = childs[i];
-				//if( c.getElementType() == IModelElement.FIELD ) {
-				//	fields.add( (IField)c );
-				//}
+				if( c.getElementType() == IModelElement.FIELD ) {
+					fields.add( (IField)c );
+				}
 				if( c.getElementType() == IModelElement.METHOD ) {
 					methods.add( c );
 				}
