@@ -16,6 +16,8 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.tests.model.AbstractModelCompletionTests;
 import org.eclipse.dltk.core.tests.model.CompletionTestsRequestor;
+import org.eclipse.dltk.internal.core.InternalDLTKLanguageManager;
+import org.eclipse.dltk.tcl.core.TclNature;
 
 public class CompletionTests extends AbstractModelCompletionTests {
 
@@ -30,6 +32,13 @@ public class CompletionTests extends AbstractModelCompletionTests {
 		PROJECT = setUpScriptProject("Completion");
 
 		super.setUpSuite();
+		InternalDLTKLanguageManager.setPrefferedPriority(TclNature.NATURE_ID, 0);
+	}
+	
+
+	public void tearDownSuite() throws Exception {
+		super.tearDownSuite();
+		InternalDLTKLanguageManager.setPrefferedPriority(TclNature.NATURE_ID, -1);
 	}
 
 	public static Test suite() {
@@ -129,7 +138,7 @@ public class CompletionTests extends AbstractModelCompletionTests {
 		cu.codeComplete(cursorLocation, requestor);
 
 		assertEquals(makeResult(new String[] { "::a::c::fac", "::a::c::fbac",
-				"::a::c::feac" }), requestor.getResults());
+				"::a::c::feac()" }), requestor.getResults());
 
 	}
 

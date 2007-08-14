@@ -31,7 +31,7 @@ public class TclLaunchingTests extends ScriptLaunchingTests {
 		for (int i = 0; i < interpreterInstalls.length; ++i) {
 			IInterpreterInstall install = interpreterInstalls[i];
 			final String name = install.getInstallLocation().getName();
-			if (name.indexOf("w") == -1) {
+			if (name.indexOf("tclsh") != -1) {
 				newInterpreterInstalls.add(install);
 			}
 		}
