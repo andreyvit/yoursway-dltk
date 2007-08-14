@@ -109,7 +109,7 @@ public class HandleFactory {
 				|| !(resourcePath.startsWith(this.lastPkgFragmentRootPath) 
 					&& (rootPathLength = this.lastPkgFragmentRootPath.length()) > 0
 					&& resourcePath.charAt(rootPathLength) == '/')) {
-				IProjectFragment root= this.getProjectFragment(resourcePath);
+				IProjectFragment root= this.getProjectFragment(resourcePath, scope);
 				if (root == null)
 					return null; // match is outside classpath
 				this.lastPkgFragmentRoot = root;
@@ -251,14 +251,27 @@ public class HandleFactory {
 	
 	/**
 	 * Returns the package fragment root that contains the given resource path.
+	 * @param scope 
 	 */
-	private IProjectFragment getProjectFragment(String pathString) {
+	private IProjectFragment getProjectFragment(String pathString, IDLTKSearchScope scope) {
 
 		IPath path= new Path(pathString);
 		IProject[] projects= ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		IPath[] enclosingProjectsAndZips = scope.enclosingProjectsAndZips();
 		for (int i= 0, max= projects.length; i < max; i++) {
 			try {
 				IProject project = projects[i];
+				IPath location = project.getFullPath();
+				boolean found = false;
+				for (int j = 0; j < enclosingProjectsAndZips.length; j++) {
+					if(enclosingProjectsAndZips[j].equals(location) ) {
+						found = true;
+						break;
+					}
+				}
+				if(!found) {
+					continue;
+				}
 				if (!project.isAccessible() 
 					|| !DLTKLanguageManager.hasScriptNature(project)) continue;
 				IScriptProject scriptProject= this.model.getScriptProject(project);
