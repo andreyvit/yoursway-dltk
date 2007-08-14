@@ -11,6 +11,7 @@ package org.eclipse.dltk.core;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
@@ -33,6 +34,10 @@ public class PriorityDLTKExtensionManager {
 
 	private String extensionPoint = null;
 	private String identifier = null;
+	/**
+	 * The preffered Id is not zero then
+	 */
+	private Map prefferedLevels = new HashMap();
 
 	protected void setIdentifierValue(String identifier) {
 		this.identifier = identifier;
@@ -110,9 +115,24 @@ public class PriorityDLTKExtensionManager {
 		return info;
 	}
 
-	protected ElementInfo getElementInfo(String nature) {
+	protected ElementInfo internalGetElementInfo(String id) {
 		initialize();
-		return (ElementInfo) extensions.get(nature);
+		ElementInfo info = (ElementInfo) extensions.get(id);
+		Object level = prefferedLevels.get(id);
+		if( level != null) {
+			// Search for preffered id.
+			int prefferedLevel = ((Integer)level).intValue();
+			while( info != null ) {
+				if( info.level == prefferedLevel) {
+					return info;
+				}
+				info = info.oldInfo;
+			}
+		}
+		return info;
+	}
+	protected ElementInfo getElementInfo(String id) {
+		return internalGetElementInfo(id);
 	}
 
 	protected int getLevel(IConfigurationElement config) {
@@ -130,8 +150,15 @@ public class PriorityDLTKExtensionManager {
 
 	public ElementInfo[] getElementInfos() {
 		initialize();
-		Collection values = extensions.values();
-		return (ElementInfo[]) values.toArray(new ElementInfo[values.size()]);
+//		Collection values = extensions.values();
+//		return (ElementInfo[]) values.toArray(new ElementInfo[values.size()]);
+		ElementInfo[] values = new ElementInfo[this.extensions.size()];
+		Iterator j = this.extensions.keySet().iterator();
+		for (int i = 0; i < values.length; i++) {
+			String key = (String) j.next();
+			values[i] = this.getElementInfo(key);
+		}
+		return values;
 	}
 
 	/**
@@ -159,5 +186,13 @@ public class PriorityDLTKExtensionManager {
 		}
 
 		return null;
+	}
+	public void setPreffetedLevel(String id, int level) {
+		if( level != -1 ) {
+			this.prefferedLevels.put( id, new Integer(level));
+		}
+		else {
+			this.prefferedLevels.put( id, null);
+		}
 	}
 }
