@@ -1,5 +1,6 @@
 package org.eclipse.dltk.rhino.dbgp;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class DefaultRhinoRunner {
 					}
 					cx.setGeneratingDebug(true);
 					cx.setOptimizationLevel(-1);
-					cx.evaluateReader(scope, new FileReader(args[0]), args[0],
+					cx.evaluateReader(scope, new FileReader(args[0]),new File(args[0]).getAbsolutePath(),
 							0, null);
 
 				} catch (FileNotFoundException e) {
