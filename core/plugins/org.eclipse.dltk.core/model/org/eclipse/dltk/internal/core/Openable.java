@@ -439,8 +439,11 @@ public abstract class Openable extends ModelElement implements IOpenable,
 			return;
 		}
 		if (position < -1 || position > buffer.getLength()) {
-			throw new ModelException(new ModelStatus(
-					IModelStatusConstants.INDEX_OUT_OF_BOUNDS));
+			if( DLTKCore.DEBUG) {
+				throw new ModelException(new ModelStatus(
+						IModelStatusConstants.INDEX_OUT_OF_BOUNDS));
+			}
+			return;
 		}
 		
 		ScriptProject project = (ScriptProject) getScriptProject();

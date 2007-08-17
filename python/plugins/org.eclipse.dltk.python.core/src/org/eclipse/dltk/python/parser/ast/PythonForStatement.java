@@ -29,11 +29,14 @@ public class PythonForStatement extends ClassicalForStatement
 
 		super( ft, new EmptyExpression( ), condition, new EmptyExpression( ), action );
 		this.fMainArguments = mains;
+		this.setStart(ft.getColumn());
+		this.setEnd(action.sourceEnd());
 	}
 
 	public void acceptElse( Statement elseExpression ) {
 
 		this.fElseStatement = elseExpression;
+		this.setEnd(elseExpression.sourceEnd());
 	}
 
 	

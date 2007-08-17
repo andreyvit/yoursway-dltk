@@ -15,12 +15,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.PositionInformation;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
+import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionList;
 import org.eclipse.dltk.ast.references.SimpleReference;
@@ -28,6 +30,7 @@ import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
+import org.eclipse.dltk.python.parser.ast.PythonClassDeclaration;
 import org.eclipse.dltk.python.parser.ast.PythonImportFromStatement;
 import org.eclipse.dltk.python.parser.ast.PythonImportStatement;
 import org.eclipse.dltk.python.parser.ast.expressions.Assignment;
@@ -50,14 +53,18 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 
 		private ASTNode fToNode;
 
+		private ASTNode declaredIn; // The node where the declaration was found
+									// (should be either class or method node)
+
 		TypeField(String name, String initValue, PositionInformation pos,
-				Expression expression, ASTNode toNode) {
+				Expression expression, ASTNode toNode, ASTNode declaredIn) {
 
 			this.fName = name;
 			this.fInitValue = initValue;
 			this.fPos = pos;
 			this.fExpression = expression;
 			this.fToNode = toNode;
+			this.declaredIn = declaredIn;
 		}
 
 		String getName() {
@@ -100,6 +107,10 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 			return this.fName;
 		}
 
+		public ASTNode getDeclaredIn() {
+			return declaredIn;
+		}
+
 	}
 
 	// Used to prehold fields if adding in methods.
@@ -138,16 +149,18 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 	 * 
 	 * @param left
 	 */
-	private void addVariableReference( Statement left, Statement right, boolean inClass, boolean inMethod ) {
+	private void addVariableReference(Statement left, Statement right,
+			boolean inClass, boolean inMethod) {
 
 		if (left == null) {
 			return;
-//			throw new RuntimeException("addVariable expression can't be null");
+			// throw new RuntimeException("addVariable expression can't be
+			// null");
 		}
 		if (left instanceof VariableReference) {
 			VariableReference var = (VariableReference) left;
 
-			if (!inMethod) { 
+			if (!inMethod) {
 				// for module static of class static variables.
 
 				if (canAddVariables((ASTNode) this.fNodes.peek(), var.getName())) {
@@ -171,8 +184,7 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 			if (inClass && inMethod) {
 				ExtendedVariableReference extendedVariable = ((ExtendedVariableReference) left);
 
-				List varParts = extendedVariable
-						.getExpressions();
+				List varParts = extendedVariable.getExpressions();
 				if (extendedVariable.isDot(0)) {
 					Expression first = (Expression) varParts.get(0);
 					// support only local variable addition.
@@ -184,8 +196,7 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 						String varName = ((VariableReference) first).getName();
 						MethodDeclaration currentMethod = this
 								.getCurrentMethod();
-						List arguments = currentMethod
-								.getArguments();
+						List arguments = currentMethod.getArguments();
 						if (arguments != null && arguments.size() > 0) {
 							Argument firstArgument = (Argument) arguments
 									.get(0);
@@ -205,10 +216,16 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 								ASTNode method = (ASTNode) this.fNodes.pop();
 								ASTNode toClass = (ASTNode) this.fNodes.peek();
 								this.fNodes.push(method);
-
-								TypeField field = new TypeField(var.getName(),
-										initialString, pos, (Expression)left, toClass);
-								this.fNotAddedFields.add(field);
+								if (toClass instanceof TypeDeclaration) 
+								{
+									List decorators = ((MethodDeclaration)method).getDecorators();
+									if (null == decorators || null != decorators && decorators.size() == 0)
+									{
+										TypeField field = new TypeField(var.getName(), initialString, pos,
+												(Expression) left, toClass, method);
+										this.fNotAddedFields.add(field);
+									}
+								}
 							}
 						}
 					}
@@ -230,9 +247,9 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 
 		if (expression instanceof Assignment) {
 			// this is static variable assignment.
-			Assignment assignment = ( Assignment )expression;
-			Statement left = assignment.getLeft( );
-			Statement right = assignment.getRight( );
+			Assignment assignment = (Assignment) expression;
+			Statement left = assignment.getLeft();
+			Statement right = assignment.getRight();
 
 			if (left instanceof SimpleReference
 					&& right instanceof PythonLambdaExpression) {
@@ -273,18 +290,18 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 
 		if (expression instanceof Assignment) {
 			// this is static variable assignment.
-			Assignment assignment = ( Assignment )expression;
-			Statement left = assignment.getLeft( );
-			Statement right = assignment.getRight( );
+			Assignment assignment = (Assignment) expression;
+			Statement left = assignment.getLeft();
+			Statement right = assignment.getRight();
 
 			if (left instanceof SimpleReference
 					&& right instanceof PythonLambdaExpression) {
 
 				// Declare new Method.
 				PythonLambdaExpression lambdaExpression = (PythonLambdaExpression) right;
-				//PositionInformation position = new PositionInformation(left
-				//		.sourceStart(), left.sourceEnd(), lambdaExpression
-				//		.sourceStart(), lambdaExpression.sourceEnd());
+				// PositionInformation position = new PositionInformation(left
+				// .sourceStart(), left.sourceEnd(), lambdaExpression
+				// .sourceStart(), lambdaExpression.sourceEnd());
 				// builder.exitMethod( position );
 				this.fRequestor.exitMethod(lambdaExpression.sourceEnd());
 			}
@@ -294,25 +311,32 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 
 	protected void onEndVisitMethod(MethodDeclaration method) {
 
-		Iterator i = this.fNotAddedFields.iterator();
-		while (i.hasNext()) {
-			TypeField field = (TypeField) i.next();
-			if (canAddVariables(field.getToNode(), field.getName())) {
-
-				PositionInformation pos = field.getPos();
-
-				ISourceElementRequestor.FieldInfo info = new ISourceElementRequestor.FieldInfo();
-				info.modifiers = Modifiers.AccStatic;
-				info.name = field.getName();
-				info.nameSourceEnd = pos.nameEnd - 1;
-				info.nameSourceStart = pos.nameStart;
-				info.declarationStart = pos.sourceStart;
-				this.fRequestor.enterField(info);
-				this.fRequestor.exitField(pos.sourceEnd);
-
+		if (fNotAddedFields.size() >= 1)
+		{	
+			TypeField typeField = (TypeField) fNotAddedFields.get(0);
+			if (null != typeField && typeField.getDeclaredIn().equals(method))
+			{
+				Iterator i = this.fNotAddedFields.iterator();
+				while (i.hasNext()) {
+					TypeField field = (TypeField) i.next();
+					if (canAddVariables(field.getToNode(), field.getName())) {
+		
+						PositionInformation pos = field.getPos();
+		
+						ISourceElementRequestor.FieldInfo info = new ISourceElementRequestor.FieldInfo();
+						info.modifiers = Modifiers.AccStatic;
+						info.name = field.getName();
+						info.nameSourceEnd = pos.nameEnd - 1;
+						info.nameSourceStart = pos.nameStart;
+						info.declarationStart = pos.sourceStart;
+						this.fRequestor.enterField(info);
+						this.fRequestor.exitField(pos.sourceEnd);
+		
+					}
+				}
+				this.fNotAddedFields.clear();
 			}
 		}
-		this.fNotAddedFields.clear();
 	}
 
 	public boolean visit(Statement statement) throws Exception {
@@ -321,7 +345,7 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 			PythonImportStatement importStatement = (PythonImportStatement) statement;
 			List/* < Expression > */exprs = importStatement.getImports();
 
-			//PositionInformation position = importStatement.getPosition();
+			// PositionInformation position = importStatement.getPosition();
 			// TODO: Add correct positioning for each as and multiple import per
 			// statement.
 
@@ -329,7 +353,8 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 			while (i.hasNext()) {
 				Expression ex = (Expression) i.next();
 				if (ex instanceof PythonImportAsExpression) {
-					//PythonImportAsExpression importAs = (PythonImportAsExpression) ex;
+					// PythonImportAsExpression importAs =
+					// (PythonImportAsExpression) ex;
 					// TODO: Add correct import declarations here? Or may be not
 					// add it here?
 					// this.builder.declareField( Modifiers.AccModule,
@@ -361,8 +386,9 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 				}
 			}
 		} else if (statement instanceof PythonImportFromStatement) {
-			//PythonImportFromStatement importStatement = (PythonImportFromStatement) statement;
-			//PositionInformation position = importStatement.getPosition();
+			// PythonImportFromStatement importStatement =
+			// (PythonImportFromStatement) statement;
+			// PositionInformation position = importStatement.getPosition();
 			// this.builder.declareImport( statement, position);
 			// TODO: Add correct import declarations here? Or may be not add it
 			// here?

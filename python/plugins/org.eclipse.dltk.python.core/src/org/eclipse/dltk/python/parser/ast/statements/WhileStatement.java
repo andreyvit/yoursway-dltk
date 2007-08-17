@@ -29,6 +29,7 @@ public class WhileStatement extends Statement {
 	public WhileStatement(DLTKToken whileToken, Expression condition,
 			Statement action) {
 		this.setStart(whileToken.getColumn());
+		this.setEnd(action.sourceEnd());
 		this.fCondition = condition;
 		this.fAction = action;
 	}

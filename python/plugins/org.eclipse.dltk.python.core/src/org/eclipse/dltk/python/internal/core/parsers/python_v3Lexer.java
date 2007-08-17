@@ -1,116 +1,108 @@
-// $ANTLR 3.0 C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g 2007-06-12 21:46:00
+// $ANTLR 3.0 /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g 2007-08-17 15:27:18
 
 	package org.eclipse.dltk.python.internal.core.parsers;
 
 
-import org.antlr.runtime.BaseRecognizer;
-import org.antlr.runtime.CharStream;
-import org.antlr.runtime.ClassicToken;
-import org.antlr.runtime.DFA;
-import org.antlr.runtime.EarlyExitException;
-import org.antlr.runtime.FailedPredicateException;
-import org.antlr.runtime.IntStream;
-import org.antlr.runtime.Lexer;
-import org.antlr.runtime.MismatchedSetException;
-import org.antlr.runtime.NoViableAltException;
-import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.Token;
+import org.antlr.runtime.*;
+import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
 
 public class python_v3Lexer extends Lexer {
-    public static final int SLASHEQUAL=20;
-    public static final int BACKQUOTE=52;
-    public static final int STAR=13;
-    public static final int CIRCUMFLEXEQUAL=24;
-    public static final int GREATEREQUAL=34;
-    public static final int COMPLEX=56;
-    public static final int EOF=-1;
-    public static final int NOTEQUAL=37;
-    public static final int LEADING_WS=63;
-    public static final int VBAR=38;
-    public static final int MINUSEQUAL=18;
-    public static final int RPAREN=9;
-    public static final int NAME=10;
-    public static final int GREATER=32;
-    public static final int DOUBLESTAREQUAL=27;
-    public static final int LESS=31;
-    public static final int COMMENT=64;
-    public static final int RBRACK=49;
-    public static final int LCURLY=50;
-    public static final int INT=53;
-    public static final int RIGHTSHIFT=29;
-    public static final int DOUBLESLASHEQUAL=28;
-    public static final int WS=62;
-    public static final int VBAREQUAL=23;
-    public static final int LONGINT=54;
-    public static final int DECORATOR_S=7;
-    public static final int PERCENTEQUAL=21;
-    public static final int LESSEQUAL=35;
-    public static final int T75=75;
-    public static final int DOUBLESLASH=46;
-    public static final int T76=76;
-    public static final int T73=73;
-    public static final int T74=74;
-    public static final int CONTINUED_LINE=61;
-    public static final int LBRACK=48;
-    public static final int T79=79;
-    public static final int T77=77;
-    public static final int T78=78;
-    public static final int DOUBLESTAR=14;
-    public static final int ESC=60;
-    public static final int DIGITS=58;
-    public static final int Exponent=59;
-    public static final int FLOAT=55;
-    public static final int DEDENT=5;
-    public static final int RIGHTSHIFTEQUAL=26;
-    public static final int T72=72;
-    public static final int INDENT=4;
-    public static final int LPAREN=8;
-    public static final int T71=71;
-    public static final int PLUSEQUAL=17;
-    public static final int T70=70;
-    public static final int T65=65;
-    public static final int SLASH=44;
-    public static final int T66=66;
-    public static final int T67=67;
-    public static final int T68=68;
-    public static final int T69=69;
     public static final int COMMA=12;
-    public static final int AMPER=40;
-    public static final int EQUAL=33;
-    public static final int TILDE=47;
-    public static final int LEFTSHIFTEQUAL=25;
-    public static final int PLUS=42;
-    public static final int LEFTSHIFT=41;
-    public static final int DOT=30;
-    public static final int PERCENT=45;
     public static final int MINUS=43;
-    public static final int T94=94;
-    public static final int Tokens=95;
-    public static final int T93=93;
-    public static final int T92=92;
-    public static final int SEMI=16;
-    public static final int T91=91;
-    public static final int T90=90;
-    public static final int COLON=11;
-    public static final int T88=88;
-    public static final int T89=89;
-    public static final int T84=84;
+    public static final int DEDENT=5;
+    public static final int DECORATOR_S=7;
+    public static final int T70=70;
+    public static final int T74=74;
+    public static final int COMPLEX=56;
     public static final int T85=85;
+    public static final int TILDE=47;
+    public static final int DOUBLESLASHEQUAL=28;
     public static final int NEWLINE=6;
-    public static final int AMPEREQUAL=22;
-    public static final int T86=86;
-    public static final int T87=87;
-    public static final int RCURLY=51;
-    public static final int ASSIGN=15;
+    public static final int DOT=30;
+    public static final int PLUSEQUAL=17;
+    public static final int RIGHTSHIFTEQUAL=26;
+    public static final int LCURLY=50;
     public static final int T81=81;
-    public static final int T80=80;
-    public static final int T83=83;
-    public static final int T82=82;
-    public static final int STAREQUAL=19;
-    public static final int CIRCUMFLEX=39;
+    public static final int RPAREN=9;
+    public static final int PLUS=42;
+    public static final int T68=68;
+    public static final int T73=73;
+    public static final int T84=84;
+    public static final int T78=78;
+    public static final int WS=62;
     public static final int STRING=57;
+    public static final int T71=71;
+    public static final int T72=72;
+    public static final int T94=94;
+    public static final int LBRACK=48;
+    public static final int T76=76;
+    public static final int SEMI=16;
+    public static final int T75=75;
+    public static final int EQUAL=33;
+    public static final int LESSEQUAL=35;
+    public static final int T89=89;
+    public static final int T67=67;
     public static final int ALT_NOTEQUAL=36;
-    
+    public static final int COLON=11;
+    public static final int AMPER=40;
+    public static final int T82=82;
+    public static final int NAME=10;
+    public static final int DOUBLESTAREQUAL=27;
+    public static final int T79=79;
+    public static final int PERCENT=45;
+    public static final int FLOAT=55;
+    public static final int DOUBLESTAR=14;
+    public static final int T93=93;
+    public static final int SLASHEQUAL=20;
+    public static final int T83=83;
+    public static final int NOTEQUAL=37;
+    public static final int CIRCUMFLEX=39;
+    public static final int RCURLY=51;
+    public static final int T91=91;
+    public static final int LESS=31;
+    public static final int T86=86;
+    public static final int LONGINT=54;
+    public static final int INT=53;
+    public static final int LEADING_WS=63;
+    public static final int ASSIGN=15;
+    public static final int VBAR=38;
+    public static final int GREATER=32;
+    public static final int LPAREN=8;
+    public static final int T77=77;
+    public static final int BACKQUOTE=52;
+    public static final int CONTINUED_LINE=61;
+    public static final int T69=69;
+    public static final int Exponent=59;
+    public static final int DIGITS=58;
+    public static final int SLASH=44;
+    public static final int T92=92;
+    public static final int T66=66;
+    public static final int COMMENT=64;
+    public static final int T88=88;
+    public static final int AMPEREQUAL=22;
+    public static final int ESC=60;
+    public static final int T65=65;
+    public static final int T87=87;
+    public static final int T80=80;
+    public static final int RIGHTSHIFT=29;
+    public static final int MINUSEQUAL=18;
+    public static final int PERCENTEQUAL=21;
+    public static final int LEFTSHIFTEQUAL=25;
+    public static final int EOF=-1;
+    public static final int CIRCUMFLEXEQUAL=24;
+    public static final int INDENT=4;
+    public static final int Tokens=95;
+    public static final int RBRACK=49;
+    public static final int GREATEREQUAL=34;
+    public static final int DOUBLESLASH=46;
+    public static final int STAREQUAL=19;
+    public static final int STAR=13;
+    public static final int VBAREQUAL=23;
+    public static final int T90=90;
+    public static final int LEFTSHIFT=41;
+
     /** Handles context-sensitive lexing of implicit line joining such as
      *  the case where newline is ignored in cases like this:
      *  a = [3,
@@ -125,14 +117,14 @@ public class python_v3Lexer extends Lexer {
     public python_v3Lexer(CharStream input) {
         super(input);
     }
-    public String getGrammarFileName() { return "C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g"; }
+    public String getGrammarFileName() { return "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g"; }
 
     // $ANTLR start T65
     public final void mT65() throws RecognitionException {
         try {
             int _type = T65;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:21:7: ( 'def' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:21:7: 'def'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:21:5: ( 'def' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:21:7: 'def'
             {
             match("def"); 
 
@@ -150,8 +142,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT66() throws RecognitionException {
         try {
             int _type = T66;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:22:7: ( 'print' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:22:7: 'print'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:22:5: ( 'print' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:22:7: 'print'
             {
             match("print"); 
 
@@ -169,8 +161,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT67() throws RecognitionException {
         try {
             int _type = T67;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:23:7: ( 'del' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:23:7: 'del'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:23:5: ( 'del' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:23:7: 'del'
             {
             match("del"); 
 
@@ -188,8 +180,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT68() throws RecognitionException {
         try {
             int _type = T68;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:24:7: ( 'pass' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:24:7: 'pass'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:24:5: ( 'pass' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:24:7: 'pass'
             {
             match("pass"); 
 
@@ -207,8 +199,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT69() throws RecognitionException {
         try {
             int _type = T69;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:25:7: ( 'break' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:25:7: 'break'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:25:5: ( 'break' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:25:7: 'break'
             {
             match("break"); 
 
@@ -226,8 +218,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT70() throws RecognitionException {
         try {
             int _type = T70;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:26:7: ( 'continue' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:26:7: 'continue'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:26:5: ( 'continue' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:26:7: 'continue'
             {
             match("continue"); 
 
@@ -245,8 +237,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT71() throws RecognitionException {
         try {
             int _type = T71;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:27:7: ( 'return' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:27:7: 'return'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:27:5: ( 'return' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:27:7: 'return'
             {
             match("return"); 
 
@@ -264,8 +256,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT72() throws RecognitionException {
         try {
             int _type = T72;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:28:7: ( 'yield' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:28:7: 'yield'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:28:5: ( 'yield' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:28:7: 'yield'
             {
             match("yield"); 
 
@@ -283,8 +275,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT73() throws RecognitionException {
         try {
             int _type = T73;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:29:7: ( 'raise' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:29:7: 'raise'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:29:5: ( 'raise' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:29:7: 'raise'
             {
             match("raise"); 
 
@@ -302,8 +294,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT74() throws RecognitionException {
         try {
             int _type = T74;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:30:7: ( 'import' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:30:7: 'import'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:30:5: ( 'import' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:30:7: 'import'
             {
             match("import"); 
 
@@ -321,8 +313,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT75() throws RecognitionException {
         try {
             int _type = T75;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:31:7: ( 'from' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:31:7: 'from'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:31:5: ( 'from' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:31:7: 'from'
             {
             match("from"); 
 
@@ -340,8 +332,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT76() throws RecognitionException {
         try {
             int _type = T76;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:32:7: ( 'as' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:32:7: 'as'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:32:5: ( 'as' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:32:7: 'as'
             {
             match("as"); 
 
@@ -359,8 +351,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT77() throws RecognitionException {
         try {
             int _type = T77;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:33:7: ( 'global' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:33:7: 'global'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:33:5: ( 'global' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:33:7: 'global'
             {
             match("global"); 
 
@@ -378,8 +370,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT78() throws RecognitionException {
         try {
             int _type = T78;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:34:7: ( 'exec' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:34:7: 'exec'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:34:5: ( 'exec' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:34:7: 'exec'
             {
             match("exec"); 
 
@@ -397,8 +389,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT79() throws RecognitionException {
         try {
             int _type = T79;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:35:7: ( 'in' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:35:7: 'in'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:35:5: ( 'in' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:35:7: 'in'
             {
             match("in"); 
 
@@ -416,8 +408,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT80() throws RecognitionException {
         try {
             int _type = T80;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:36:7: ( 'assert' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:36:7: 'assert'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:36:5: ( 'assert' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:36:7: 'assert'
             {
             match("assert"); 
 
@@ -435,8 +427,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT81() throws RecognitionException {
         try {
             int _type = T81;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:37:7: ( 'if' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:37:7: 'if'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:37:5: ( 'if' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:37:7: 'if'
             {
             match("if"); 
 
@@ -454,8 +446,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT82() throws RecognitionException {
         try {
             int _type = T82;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:38:7: ( 'elif' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:38:7: 'elif'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:38:5: ( 'elif' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:38:7: 'elif'
             {
             match("elif"); 
 
@@ -473,8 +465,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT83() throws RecognitionException {
         try {
             int _type = T83;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:39:7: ( 'else' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:39:7: 'else'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:39:5: ( 'else' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:39:7: 'else'
             {
             match("else"); 
 
@@ -492,8 +484,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT84() throws RecognitionException {
         try {
             int _type = T84;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:40:7: ( 'while' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:40:7: 'while'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:40:5: ( 'while' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:40:7: 'while'
             {
             match("while"); 
 
@@ -511,8 +503,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT85() throws RecognitionException {
         try {
             int _type = T85;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:41:7: ( 'for' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:41:7: 'for'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:41:5: ( 'for' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:41:7: 'for'
             {
             match("for"); 
 
@@ -530,8 +522,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT86() throws RecognitionException {
         try {
             int _type = T86;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:42:7: ( 'try' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:42:7: 'try'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:42:5: ( 'try' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:42:7: 'try'
             {
             match("try"); 
 
@@ -549,8 +541,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT87() throws RecognitionException {
         try {
             int _type = T87;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:43:7: ( 'except' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:43:7: 'except'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:43:5: ( 'except' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:43:7: 'except'
             {
             match("except"); 
 
@@ -568,8 +560,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT88() throws RecognitionException {
         try {
             int _type = T88;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:44:7: ( 'finally' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:44:7: 'finally'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:44:5: ( 'finally' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:44:7: 'finally'
             {
             match("finally"); 
 
@@ -587,8 +579,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT89() throws RecognitionException {
         try {
             int _type = T89;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:45:7: ( 'or' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:45:7: 'or'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:45:5: ( 'or' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:45:7: 'or'
             {
             match("or"); 
 
@@ -606,8 +598,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT90() throws RecognitionException {
         try {
             int _type = T90;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:46:7: ( 'and' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:46:7: 'and'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:46:5: ( 'and' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:46:7: 'and'
             {
             match("and"); 
 
@@ -625,8 +617,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT91() throws RecognitionException {
         try {
             int _type = T91;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:47:7: ( 'not' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:47:7: 'not'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:47:5: ( 'not' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:47:7: 'not'
             {
             match("not"); 
 
@@ -644,8 +636,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT92() throws RecognitionException {
         try {
             int _type = T92;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:48:7: ( 'is' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:48:7: 'is'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:48:5: ( 'is' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:48:7: 'is'
             {
             match("is"); 
 
@@ -663,8 +655,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT93() throws RecognitionException {
         try {
             int _type = T93;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:49:7: ( 'lambda' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:49:7: 'lambda'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:49:5: ( 'lambda' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:49:7: 'lambda'
             {
             match("lambda"); 
 
@@ -682,8 +674,8 @@ public class python_v3Lexer extends Lexer {
     public final void mT94() throws RecognitionException {
         try {
             int _type = T94;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:50:7: ( 'class' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:50:7: 'class'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:50:5: ( 'class' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:50:7: 'class'
             {
             match("class"); 
 
@@ -701,8 +693,8 @@ public class python_v3Lexer extends Lexer {
     public final void mLPAREN() throws RecognitionException {
         try {
             int _type = LPAREN;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1641:10: ( '(' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1641:10: '('
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1650:8: ( '(' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1650:10: '('
             {
             match('('); 
             implicitLineJoiningLevel++;
@@ -720,8 +712,8 @@ public class python_v3Lexer extends Lexer {
     public final void mRPAREN() throws RecognitionException {
         try {
             int _type = RPAREN;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1643:10: ( ')' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1643:10: ')'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1652:8: ( ')' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1652:10: ')'
             {
             match(')'); 
             implicitLineJoiningLevel--;
@@ -739,8 +731,8 @@ public class python_v3Lexer extends Lexer {
     public final void mLBRACK() throws RecognitionException {
         try {
             int _type = LBRACK;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1645:10: ( '[' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1645:10: '['
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1654:8: ( '[' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1654:10: '['
             {
             match('['); 
             implicitLineJoiningLevel++;
@@ -758,8 +750,8 @@ public class python_v3Lexer extends Lexer {
     public final void mRBRACK() throws RecognitionException {
         try {
             int _type = RBRACK;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1647:10: ( ']' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1647:10: ']'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1656:8: ( ']' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1656:10: ']'
             {
             match(']'); 
             implicitLineJoiningLevel--;
@@ -777,8 +769,8 @@ public class python_v3Lexer extends Lexer {
     public final void mCOLON() throws RecognitionException {
         try {
             int _type = COLON;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1649:10: ( ':' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1649:10: ':'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1658:8: ( ':' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1658:10: ':'
             {
             match(':'); 
 
@@ -795,8 +787,8 @@ public class python_v3Lexer extends Lexer {
     public final void mCOMMA() throws RecognitionException {
         try {
             int _type = COMMA;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1651:9: ( ',' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1651:9: ','
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1660:7: ( ',' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1660:9: ','
             {
             match(','); 
 
@@ -813,8 +805,8 @@ public class python_v3Lexer extends Lexer {
     public final void mSEMI() throws RecognitionException {
         try {
             int _type = SEMI;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1653:8: ( ';' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1653:8: ';'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1662:6: ( ';' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1662:8: ';'
             {
             match(';'); 
 
@@ -831,8 +823,8 @@ public class python_v3Lexer extends Lexer {
     public final void mPLUS() throws RecognitionException {
         try {
             int _type = PLUS;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1655:8: ( '+' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1655:8: '+'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1664:6: ( '+' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1664:8: '+'
             {
             match('+'); 
 
@@ -849,8 +841,8 @@ public class python_v3Lexer extends Lexer {
     public final void mMINUS() throws RecognitionException {
         try {
             int _type = MINUS;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1657:9: ( '-' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1657:9: '-'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1666:7: ( '-' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1666:9: '-'
             {
             match('-'); 
 
@@ -867,8 +859,8 @@ public class python_v3Lexer extends Lexer {
     public final void mSTAR() throws RecognitionException {
         try {
             int _type = STAR;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1659:8: ( '*' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1659:8: '*'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1668:6: ( '*' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1668:8: '*'
             {
             match('*'); 
 
@@ -885,8 +877,8 @@ public class python_v3Lexer extends Lexer {
     public final void mSLASH() throws RecognitionException {
         try {
             int _type = SLASH;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1661:9: ( '/' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1661:9: '/'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1670:7: ( '/' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1670:9: '/'
             {
             match('/'); 
 
@@ -903,8 +895,8 @@ public class python_v3Lexer extends Lexer {
     public final void mVBAR() throws RecognitionException {
         try {
             int _type = VBAR;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1663:8: ( '|' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1663:8: '|'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1672:6: ( '|' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1672:8: '|'
             {
             match('|'); 
 
@@ -921,8 +913,8 @@ public class python_v3Lexer extends Lexer {
     public final void mAMPER() throws RecognitionException {
         try {
             int _type = AMPER;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1665:9: ( '&' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1665:9: '&'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1674:7: ( '&' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1674:9: '&'
             {
             match('&'); 
 
@@ -939,8 +931,8 @@ public class python_v3Lexer extends Lexer {
     public final void mLESS() throws RecognitionException {
         try {
             int _type = LESS;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1667:8: ( '<' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1667:8: '<'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1676:6: ( '<' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1676:8: '<'
             {
             match('<'); 
 
@@ -957,8 +949,8 @@ public class python_v3Lexer extends Lexer {
     public final void mGREATER() throws RecognitionException {
         try {
             int _type = GREATER;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1669:11: ( '>' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1669:11: '>'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1678:9: ( '>' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1678:11: '>'
             {
             match('>'); 
 
@@ -975,8 +967,8 @@ public class python_v3Lexer extends Lexer {
     public final void mASSIGN() throws RecognitionException {
         try {
             int _type = ASSIGN;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1671:10: ( '=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1671:10: '='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1680:8: ( '=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1680:10: '='
             {
             match('='); 
 
@@ -993,8 +985,8 @@ public class python_v3Lexer extends Lexer {
     public final void mPERCENT() throws RecognitionException {
         try {
             int _type = PERCENT;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1673:11: ( '%' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1673:11: '%'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1682:9: ( '%' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1682:11: '%'
             {
             match('%'); 
 
@@ -1011,8 +1003,8 @@ public class python_v3Lexer extends Lexer {
     public final void mBACKQUOTE() throws RecognitionException {
         try {
             int _type = BACKQUOTE;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1675:13: ( '`' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1675:13: '`'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1684:11: ( '`' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1684:13: '`'
             {
             match('`'); 
 
@@ -1029,8 +1021,8 @@ public class python_v3Lexer extends Lexer {
     public final void mLCURLY() throws RecognitionException {
         try {
             int _type = LCURLY;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1677:10: ( '{' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1677:10: '{'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1686:8: ( '{' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1686:10: '{'
             {
             match('{'); 
             implicitLineJoiningLevel++;
@@ -1048,8 +1040,8 @@ public class python_v3Lexer extends Lexer {
     public final void mRCURLY() throws RecognitionException {
         try {
             int _type = RCURLY;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1679:10: ( '}' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1679:10: '}'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1688:8: ( '}' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1688:10: '}'
             {
             match('}'); 
             implicitLineJoiningLevel--;
@@ -1067,8 +1059,8 @@ public class python_v3Lexer extends Lexer {
     public final void mCIRCUMFLEX() throws RecognitionException {
         try {
             int _type = CIRCUMFLEX;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1681:14: ( '^' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1681:14: '^'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1690:12: ( '^' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1690:14: '^'
             {
             match('^'); 
 
@@ -1085,8 +1077,8 @@ public class python_v3Lexer extends Lexer {
     public final void mTILDE() throws RecognitionException {
         try {
             int _type = TILDE;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1683:9: ( '~' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1683:9: '~'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1692:7: ( '~' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1692:9: '~'
             {
             match('~'); 
 
@@ -1103,8 +1095,8 @@ public class python_v3Lexer extends Lexer {
     public final void mEQUAL() throws RecognitionException {
         try {
             int _type = EQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1685:9: ( '==' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1685:9: '=='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1694:7: ( '==' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1694:9: '=='
             {
             match("=="); 
 
@@ -1122,8 +1114,8 @@ public class python_v3Lexer extends Lexer {
     public final void mNOTEQUAL() throws RecognitionException {
         try {
             int _type = NOTEQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1687:12: ( '!=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1687:12: '!='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1696:10: ( '!=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1696:12: '!='
             {
             match("!="); 
 
@@ -1141,8 +1133,8 @@ public class python_v3Lexer extends Lexer {
     public final void mALT_NOTEQUAL() throws RecognitionException {
         try {
             int _type = ALT_NOTEQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1689:15: ( '<>' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1689:15: '<>'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1698:13: ( '<>' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1698:15: '<>'
             {
             match("<>"); 
 
@@ -1160,8 +1152,8 @@ public class python_v3Lexer extends Lexer {
     public final void mLESSEQUAL() throws RecognitionException {
         try {
             int _type = LESSEQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1691:13: ( '<=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1691:13: '<='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1700:11: ( '<=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1700:13: '<='
             {
             match("<="); 
 
@@ -1179,8 +1171,8 @@ public class python_v3Lexer extends Lexer {
     public final void mLEFTSHIFT() throws RecognitionException {
         try {
             int _type = LEFTSHIFT;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1693:13: ( '<<' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1693:13: '<<'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1702:11: ( '<<' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1702:13: '<<'
             {
             match("<<"); 
 
@@ -1198,8 +1190,8 @@ public class python_v3Lexer extends Lexer {
     public final void mGREATEREQUAL() throws RecognitionException {
         try {
             int _type = GREATEREQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1695:16: ( '>=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1695:16: '>='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1704:14: ( '>=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1704:16: '>='
             {
             match(">="); 
 
@@ -1217,8 +1209,8 @@ public class python_v3Lexer extends Lexer {
     public final void mRIGHTSHIFT() throws RecognitionException {
         try {
             int _type = RIGHTSHIFT;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1697:14: ( '>>' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1697:14: '>>'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1706:12: ( '>>' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1706:14: '>>'
             {
             match(">>"); 
 
@@ -1236,8 +1228,8 @@ public class python_v3Lexer extends Lexer {
     public final void mPLUSEQUAL() throws RecognitionException {
         try {
             int _type = PLUSEQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1699:13: ( '+=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1699:13: '+='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1708:11: ( '+=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1708:13: '+='
             {
             match("+="); 
 
@@ -1255,8 +1247,8 @@ public class python_v3Lexer extends Lexer {
     public final void mMINUSEQUAL() throws RecognitionException {
         try {
             int _type = MINUSEQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1701:14: ( '-=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1701:14: '-='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1710:12: ( '-=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1710:14: '-='
             {
             match("-="); 
 
@@ -1274,8 +1266,8 @@ public class python_v3Lexer extends Lexer {
     public final void mDOUBLESTAR() throws RecognitionException {
         try {
             int _type = DOUBLESTAR;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1703:14: ( '**' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1703:14: '**'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1712:12: ( '**' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1712:14: '**'
             {
             match("**"); 
 
@@ -1293,8 +1285,8 @@ public class python_v3Lexer extends Lexer {
     public final void mSTAREQUAL() throws RecognitionException {
         try {
             int _type = STAREQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1705:13: ( '*=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1705:13: '*='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1714:11: ( '*=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1714:13: '*='
             {
             match("*="); 
 
@@ -1312,8 +1304,8 @@ public class python_v3Lexer extends Lexer {
     public final void mDOUBLESLASH() throws RecognitionException {
         try {
             int _type = DOUBLESLASH;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1707:15: ( '//' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1707:15: '//'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1716:13: ( '//' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1716:15: '//'
             {
             match("//"); 
 
@@ -1331,8 +1323,8 @@ public class python_v3Lexer extends Lexer {
     public final void mSLASHEQUAL() throws RecognitionException {
         try {
             int _type = SLASHEQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1709:14: ( '/=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1709:14: '/='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1718:12: ( '/=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1718:14: '/='
             {
             match("/="); 
 
@@ -1350,8 +1342,8 @@ public class python_v3Lexer extends Lexer {
     public final void mVBAREQUAL() throws RecognitionException {
         try {
             int _type = VBAREQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1711:13: ( '|=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1711:13: '|='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1720:11: ( '|=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1720:13: '|='
             {
             match("|="); 
 
@@ -1369,8 +1361,8 @@ public class python_v3Lexer extends Lexer {
     public final void mPERCENTEQUAL() throws RecognitionException {
         try {
             int _type = PERCENTEQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1713:16: ( '%=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1713:16: '%='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1722:14: ( '%=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1722:16: '%='
             {
             match("%="); 
 
@@ -1388,8 +1380,8 @@ public class python_v3Lexer extends Lexer {
     public final void mAMPEREQUAL() throws RecognitionException {
         try {
             int _type = AMPEREQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1715:14: ( '&=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1715:14: '&='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1724:12: ( '&=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1724:14: '&='
             {
             match("&="); 
 
@@ -1407,8 +1399,8 @@ public class python_v3Lexer extends Lexer {
     public final void mCIRCUMFLEXEQUAL() throws RecognitionException {
         try {
             int _type = CIRCUMFLEXEQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1717:19: ( '^=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1717:19: '^='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1726:17: ( '^=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1726:19: '^='
             {
             match("^="); 
 
@@ -1426,8 +1418,8 @@ public class python_v3Lexer extends Lexer {
     public final void mLEFTSHIFTEQUAL() throws RecognitionException {
         try {
             int _type = LEFTSHIFTEQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1719:18: ( '<<=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1719:18: '<<='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1728:16: ( '<<=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1728:18: '<<='
             {
             match("<<="); 
 
@@ -1445,8 +1437,8 @@ public class python_v3Lexer extends Lexer {
     public final void mRIGHTSHIFTEQUAL() throws RecognitionException {
         try {
             int _type = RIGHTSHIFTEQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1721:19: ( '>>=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1721:19: '>>='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1730:17: ( '>>=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1730:19: '>>='
             {
             match(">>="); 
 
@@ -1464,8 +1456,8 @@ public class python_v3Lexer extends Lexer {
     public final void mDOUBLESTAREQUAL() throws RecognitionException {
         try {
             int _type = DOUBLESTAREQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1723:19: ( '**=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1723:19: '**='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1732:17: ( '**=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1732:19: '**='
             {
             match("**="); 
 
@@ -1483,8 +1475,8 @@ public class python_v3Lexer extends Lexer {
     public final void mDOUBLESLASHEQUAL() throws RecognitionException {
         try {
             int _type = DOUBLESLASHEQUAL;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1725:20: ( '//=' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1725:20: '//='
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1734:18: ( '//=' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1734:20: '//='
             {
             match("//="); 
 
@@ -1502,8 +1494,8 @@ public class python_v3Lexer extends Lexer {
     public final void mDOT() throws RecognitionException {
         try {
             int _type = DOT;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1727:7: ( '.' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1727:7: '.'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1736:5: ( '.' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1736:7: '.'
             {
             match('.'); 
 
@@ -1520,7 +1512,7 @@ public class python_v3Lexer extends Lexer {
     public final void mFLOAT() throws RecognitionException {
         try {
             int _type = FLOAT;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1730:4: ( '.' DIGITS ( Exponent )? | DIGITS ( '.' ( DIGITS ( Exponent )? )? | Exponent ) )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1739:2: ( '.' DIGITS ( Exponent )? | DIGITS ( '.' ( DIGITS ( Exponent )? )? | Exponent ) )
             int alt5=2;
             int LA5_0 = input.LA(1);
 
@@ -1532,17 +1524,17 @@ public class python_v3Lexer extends Lexer {
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("1729:1: FLOAT : ( '.' DIGITS ( Exponent )? | DIGITS ( '.' ( DIGITS ( Exponent )? )? | Exponent ) );", 5, 0, input);
+                    new NoViableAltException("1738:1: FLOAT : ( '.' DIGITS ( Exponent )? | DIGITS ( '.' ( DIGITS ( Exponent )? )? | Exponent ) );", 5, 0, input);
 
                 throw nvae;
             }
             switch (alt5) {
                 case 1 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1730:4: '.' DIGITS ( Exponent )?
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1739:4: '.' DIGITS ( Exponent )?
                     {
                     match('.'); 
                     mDIGITS(); 
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1730:15: ( Exponent )?
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1739:15: ( Exponent )?
                     int alt1=2;
                     int LA1_0 = input.LA(1);
 
@@ -1551,7 +1543,7 @@ public class python_v3Lexer extends Lexer {
                     }
                     switch (alt1) {
                         case 1 :
-                            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1730:16: Exponent
+                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1739:16: Exponent
                             {
                             mExponent(); 
 
@@ -1564,10 +1556,10 @@ public class python_v3Lexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1731:9: DIGITS ( '.' ( DIGITS ( Exponent )? )? | Exponent )
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1740:9: DIGITS ( '.' ( DIGITS ( Exponent )? )? | Exponent )
                     {
                     mDIGITS(); 
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1731:16: ( '.' ( DIGITS ( Exponent )? )? | Exponent )
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1740:16: ( '.' ( DIGITS ( Exponent )? )? | Exponent )
                     int alt4=2;
                     int LA4_0 = input.LA(1);
 
@@ -1579,16 +1571,16 @@ public class python_v3Lexer extends Lexer {
                     }
                     else {
                         NoViableAltException nvae =
-                            new NoViableAltException("1731:16: ( '.' ( DIGITS ( Exponent )? )? | Exponent )", 4, 0, input);
+                            new NoViableAltException("1740:16: ( '.' ( DIGITS ( Exponent )? )? | Exponent )", 4, 0, input);
 
                         throw nvae;
                     }
                     switch (alt4) {
                         case 1 :
-                            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1731:17: '.' ( DIGITS ( Exponent )? )?
+                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1740:17: '.' ( DIGITS ( Exponent )? )?
                             {
                             match('.'); 
-                            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1731:21: ( DIGITS ( Exponent )? )?
+                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1740:21: ( DIGITS ( Exponent )? )?
                             int alt3=2;
                             int LA3_0 = input.LA(1);
 
@@ -1597,10 +1589,10 @@ public class python_v3Lexer extends Lexer {
                             }
                             switch (alt3) {
                                 case 1 :
-                                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1731:22: DIGITS ( Exponent )?
+                                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1740:22: DIGITS ( Exponent )?
                                     {
                                     mDIGITS(); 
-                                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1731:29: ( Exponent )?
+                                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1740:29: ( Exponent )?
                                     int alt2=2;
                                     int LA2_0 = input.LA(1);
 
@@ -1609,7 +1601,7 @@ public class python_v3Lexer extends Lexer {
                                     }
                                     switch (alt2) {
                                         case 1 :
-                                            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1731:30: Exponent
+                                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1740:30: Exponent
                                             {
                                             mExponent(); 
 
@@ -1628,7 +1620,7 @@ public class python_v3Lexer extends Lexer {
                             }
                             break;
                         case 2 :
-                            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1731:45: Exponent
+                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1740:45: Exponent
                             {
                             mExponent(); 
 
@@ -1653,8 +1645,8 @@ public class python_v3Lexer extends Lexer {
     public final void mLONGINT() throws RecognitionException {
         try {
             int _type = LONGINT;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1735:9: ( INT ( 'l' | 'L' ) )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1735:9: INT ( 'l' | 'L' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1744:5: ( INT ( 'l' | 'L' ) )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1744:9: INT ( 'l' | 'L' )
             {
             mINT(); 
             if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
@@ -1680,8 +1672,8 @@ public class python_v3Lexer extends Lexer {
     // $ANTLR start Exponent
     public final void mExponent() throws RecognitionException {
         try {
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1740:4: ( ( 'e' | 'E' ) ( '+' | '-' )? DIGITS )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1740:4: ( 'e' | 'E' ) ( '+' | '-' )? DIGITS
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1749:2: ( ( 'e' | 'E' ) ( '+' | '-' )? DIGITS )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1749:4: ( 'e' | 'E' ) ( '+' | '-' )? DIGITS
             {
             if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                 input.consume();
@@ -1693,7 +1685,7 @@ public class python_v3Lexer extends Lexer {
                 recover(mse);    throw mse;
             }
 
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1740:16: ( '+' | '-' )?
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1749:16: ( '+' | '-' )?
             int alt6=2;
             int LA6_0 = input.LA(1);
 
@@ -1702,7 +1694,7 @@ public class python_v3Lexer extends Lexer {
             }
             switch (alt6) {
                 case 1 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:
                     {
                     if ( input.LA(1)=='+'||input.LA(1)=='-' ) {
                         input.consume();
@@ -1734,7 +1726,7 @@ public class python_v3Lexer extends Lexer {
     public final void mINT() throws RecognitionException {
         try {
             int _type = INT;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1744:9: ( '0' ( 'x' | 'X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+ ( 'l' | 'L' )? | '0' ( DIGITS )* | '1' .. '9' ( DIGITS )* )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1752:5: ( '0' ( 'x' | 'X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+ ( 'l' | 'L' )? | '0' ( DIGITS )* | '1' .. '9' ( DIGITS )* )
             int alt11=3;
             int LA11_0 = input.LA(1);
 
@@ -1752,13 +1744,13 @@ public class python_v3Lexer extends Lexer {
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("1743:1: INT : ( '0' ( 'x' | 'X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+ ( 'l' | 'L' )? | '0' ( DIGITS )* | '1' .. '9' ( DIGITS )* );", 11, 0, input);
+                    new NoViableAltException("1752:1: INT : ( '0' ( 'x' | 'X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+ ( 'l' | 'L' )? | '0' ( DIGITS )* | '1' .. '9' ( DIGITS )* );", 11, 0, input);
 
                 throw nvae;
             }
             switch (alt11) {
                 case 1 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1744:9: '0' ( 'x' | 'X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+ ( 'l' | 'L' )?
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1753:9: '0' ( 'x' | 'X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+ ( 'l' | 'L' )?
                     {
                     match('0'); 
                     if ( input.LA(1)=='X'||input.LA(1)=='x' ) {
@@ -1771,7 +1763,7 @@ public class python_v3Lexer extends Lexer {
                         recover(mse);    throw mse;
                     }
 
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1744:25: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1753:25: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+
                     int cnt7=0;
                     loop7:
                     do {
@@ -1785,7 +1777,7 @@ public class python_v3Lexer extends Lexer {
 
                         switch (alt7) {
                     	case 1 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:
                     	    {
                     	    if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='F')||(input.LA(1)>='a' && input.LA(1)<='f') ) {
                     	        input.consume();
@@ -1810,7 +1802,7 @@ public class python_v3Lexer extends Lexer {
                         cnt7++;
                     } while (true);
 
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1745:9: ( 'l' | 'L' )?
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1754:9: ( 'l' | 'L' )?
                     int alt8=2;
                     int LA8_0 = input.LA(1);
 
@@ -1819,7 +1811,7 @@ public class python_v3Lexer extends Lexer {
                     }
                     switch (alt8) {
                         case 1 :
-                            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:
+                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:
                             {
                             if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
                                 input.consume();
@@ -1841,10 +1833,10 @@ public class python_v3Lexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1747:9: '0' ( DIGITS )*
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1756:9: '0' ( DIGITS )*
                     {
                     match('0'); 
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1747:13: ( DIGITS )*
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1756:13: ( DIGITS )*
                     loop9:
                     do {
                         int alt9=2;
@@ -1857,7 +1849,7 @@ public class python_v3Lexer extends Lexer {
 
                         switch (alt9) {
                     	case 1 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1747:13: DIGITS
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1756:13: DIGITS
                     	    {
                     	    mDIGITS(); 
 
@@ -1873,10 +1865,10 @@ public class python_v3Lexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1748:9: '1' .. '9' ( DIGITS )*
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1757:9: '1' .. '9' ( DIGITS )*
                     {
                     matchRange('1','9'); 
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1748:18: ( DIGITS )*
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1757:18: ( DIGITS )*
                     loop10:
                     do {
                         int alt10=2;
@@ -1889,7 +1881,7 @@ public class python_v3Lexer extends Lexer {
 
                         switch (alt10) {
                     	case 1 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1748:18: DIGITS
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1757:18: DIGITS
                     	    {
                     	    mDIGITS(); 
 
@@ -1917,12 +1909,12 @@ public class python_v3Lexer extends Lexer {
     public final void mCOMPLEX() throws RecognitionException {
         try {
             int _type = COMPLEX;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1752:9: ( INT ( 'j' | 'J' ) | FLOAT ( 'j' | 'J' ) )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1761:5: ( INT ( 'j' | 'J' ) | FLOAT ( 'j' | 'J' ) )
             int alt12=2;
             alt12 = dfa12.predict(input);
             switch (alt12) {
                 case 1 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1752:9: INT ( 'j' | 'J' )
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1761:9: INT ( 'j' | 'J' )
                     {
                     mINT(); 
                     if ( input.LA(1)=='J'||input.LA(1)=='j' ) {
@@ -1939,7 +1931,7 @@ public class python_v3Lexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1753:9: FLOAT ( 'j' | 'J' )
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1762:9: FLOAT ( 'j' | 'J' )
                     {
                     mFLOAT(); 
                     if ( input.LA(1)=='J'||input.LA(1)=='j' ) {
@@ -1967,10 +1959,10 @@ public class python_v3Lexer extends Lexer {
     // $ANTLR start DIGITS
     public final void mDIGITS() throws RecognitionException {
         try {
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1757:10: ( ( '0' .. '9' )+ )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1757:10: ( '0' .. '9' )+
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1766:8: ( ( '0' .. '9' )+ )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1766:10: ( '0' .. '9' )+
             {
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1757:10: ( '0' .. '9' )+
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1766:10: ( '0' .. '9' )+
             int cnt13=0;
             loop13:
             do {
@@ -1984,7 +1976,7 @@ public class python_v3Lexer extends Lexer {
 
                 switch (alt13) {
             	case 1 :
-            	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1757:12: '0' .. '9'
+            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1766:12: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -2013,8 +2005,8 @@ public class python_v3Lexer extends Lexer {
     public final void mNAME() throws RecognitionException {
         try {
             int _type = NAME;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1759:7: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1759:7: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1768:5: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1768:7: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             {
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
@@ -2026,7 +2018,7 @@ public class python_v3Lexer extends Lexer {
                 recover(mse);    throw mse;
             }
 
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1760:9: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1769:9: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             loop14:
             do {
                 int alt14=2;
@@ -2039,7 +2031,7 @@ public class python_v3Lexer extends Lexer {
 
                 switch (alt14) {
             	case 1 :
-            	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:
+            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:
             	    {
             	    if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
             	        input.consume();
@@ -2074,10 +2066,10 @@ public class python_v3Lexer extends Lexer {
     public final void mSTRING() throws RecognitionException {
         try {
             int _type = STRING;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1767:9: ( ( 'r' | 'u' | 'ur' )? ( '\\'\\'\\'' ( options {greedy=false; } : . )* '\\'\\'\\'' | '\"\"\"' ( options {greedy=false; } : . )* '\"\"\"' | '\"' ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )* '\"' | '\\'' ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )* '\\'' ) )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1767:9: ( 'r' | 'u' | 'ur' )? ( '\\'\\'\\'' ( options {greedy=false; } : . )* '\\'\\'\\'' | '\"\"\"' ( options {greedy=false; } : . )* '\"\"\"' | '\"' ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )* '\"' | '\\'' ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )* '\\'' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1776:5: ( ( 'r' | 'u' | 'ur' )? ( '\\'\\'\\'' ( options {greedy=false; } : . )* '\\'\\'\\'' | '\"\"\"' ( options {greedy=false; } : . )* '\"\"\"' | '\"' ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )* '\"' | '\\'' ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )* '\\'' ) )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1776:9: ( 'r' | 'u' | 'ur' )? ( '\\'\\'\\'' ( options {greedy=false; } : . )* '\\'\\'\\'' | '\"\"\"' ( options {greedy=false; } : . )* '\"\"\"' | '\"' ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )* '\"' | '\\'' ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )* '\\'' )
             {
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1767:9: ( 'r' | 'u' | 'ur' )?
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1776:9: ( 'r' | 'u' | 'ur' )?
             int alt15=4;
             int LA15_0 = input.LA(1);
 
@@ -2096,21 +2088,21 @@ public class python_v3Lexer extends Lexer {
             }
             switch (alt15) {
                 case 1 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1767:10: 'r'
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1776:10: 'r'
                     {
                     match('r'); 
 
                     }
                     break;
                 case 2 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1767:14: 'u'
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1776:14: 'u'
                     {
                     match('u'); 
 
                     }
                     break;
                 case 3 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1767:18: 'ur'
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1776:18: 'ur'
                     {
                     match("ur"); 
 
@@ -2120,7 +2112,7 @@ public class python_v3Lexer extends Lexer {
 
             }
 
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1768:9: ( '\\'\\'\\'' ( options {greedy=false; } : . )* '\\'\\'\\'' | '\"\"\"' ( options {greedy=false; } : . )* '\"\"\"' | '\"' ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )* '\"' | '\\'' ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )* '\\'' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1777:9: ( '\\'\\'\\'' ( options {greedy=false; } : . )* '\\'\\'\\'' | '\"\"\"' ( options {greedy=false; } : . )* '\"\"\"' | '\"' ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )* '\"' | '\\'' ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )* '\\'' )
             int alt20=4;
             int LA20_0 = input.LA(1);
 
@@ -2141,7 +2133,7 @@ public class python_v3Lexer extends Lexer {
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("1768:9: ( '\\'\\'\\'' ( options {greedy=false; } : . )* '\\'\\'\\'' | '\"\"\"' ( options {greedy=false; } : . )* '\"\"\"' | '\"' ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )* '\"' | '\\'' ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )* '\\'' )", 20, 1, input);
+                        new NoViableAltException("1777:9: ( '\\'\\'\\'' ( options {greedy=false; } : . )* '\\'\\'\\'' | '\"\"\"' ( options {greedy=false; } : . )* '\"\"\"' | '\"' ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )* '\"' | '\\'' ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )* '\\'' )", 20, 1, input);
 
                     throw nvae;
                 }
@@ -2163,24 +2155,24 @@ public class python_v3Lexer extends Lexer {
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("1768:9: ( '\\'\\'\\'' ( options {greedy=false; } : . )* '\\'\\'\\'' | '\"\"\"' ( options {greedy=false; } : . )* '\"\"\"' | '\"' ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )* '\"' | '\\'' ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )* '\\'' )", 20, 2, input);
+                        new NoViableAltException("1777:9: ( '\\'\\'\\'' ( options {greedy=false; } : . )* '\\'\\'\\'' | '\"\"\"' ( options {greedy=false; } : . )* '\"\"\"' | '\"' ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )* '\"' | '\\'' ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )* '\\'' )", 20, 2, input);
 
                     throw nvae;
                 }
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("1768:9: ( '\\'\\'\\'' ( options {greedy=false; } : . )* '\\'\\'\\'' | '\"\"\"' ( options {greedy=false; } : . )* '\"\"\"' | '\"' ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )* '\"' | '\\'' ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )* '\\'' )", 20, 0, input);
+                    new NoViableAltException("1777:9: ( '\\'\\'\\'' ( options {greedy=false; } : . )* '\\'\\'\\'' | '\"\"\"' ( options {greedy=false; } : . )* '\"\"\"' | '\"' ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )* '\"' | '\\'' ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )* '\\'' )", 20, 0, input);
 
                 throw nvae;
             }
             switch (alt20) {
                 case 1 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1768:13: '\\'\\'\\'' ( options {greedy=false; } : . )* '\\'\\'\\''
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1777:13: '\\'\\'\\'' ( options {greedy=false; } : . )* '\\'\\'\\''
                     {
                     match("\'\'\'"); 
 
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1768:22: ( options {greedy=false; } : . )*
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1777:22: ( options {greedy=false; } : . )*
                     loop16:
                     do {
                         int alt16=2;
@@ -2214,7 +2206,7 @@ public class python_v3Lexer extends Lexer {
 
                         switch (alt16) {
                     	case 1 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1768:47: .
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1777:47: .
                     	    {
                     	    matchAny(); 
 
@@ -2232,11 +2224,11 @@ public class python_v3Lexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1769:13: '\"\"\"' ( options {greedy=false; } : . )* '\"\"\"'
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1778:13: '\"\"\"' ( options {greedy=false; } : . )* '\"\"\"'
                     {
                     match("\"\"\""); 
 
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1769:19: ( options {greedy=false; } : . )*
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1778:19: ( options {greedy=false; } : . )*
                     loop17:
                     do {
                         int alt17=2;
@@ -2270,7 +2262,7 @@ public class python_v3Lexer extends Lexer {
 
                         switch (alt17) {
                     	case 1 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1769:44: .
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1778:44: .
                     	    {
                     	    matchAny(); 
 
@@ -2288,10 +2280,10 @@ public class python_v3Lexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1770:13: '\"' ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )* '\"'
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1779:13: '\"' ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )* '\"'
                     {
                     match('\"'); 
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1770:17: ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )*
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1779:17: ( ESC | ~ ( '\\\\' | '\\n' | '\"' ) )*
                     loop18:
                     do {
                         int alt18=3;
@@ -2307,14 +2299,14 @@ public class python_v3Lexer extends Lexer {
 
                         switch (alt18) {
                     	case 1 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1770:18: ESC
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1779:18: ESC
                     	    {
                     	    mESC(); 
 
                     	    }
                     	    break;
                     	case 2 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1770:22: ~ ( '\\\\' | '\\n' | '\"' )
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1779:22: ~ ( '\\\\' | '\\n' | '\"' )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFE') ) {
                     	        input.consume();
@@ -2340,10 +2332,10 @@ public class python_v3Lexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1771:13: '\\'' ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )* '\\''
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1780:13: '\\'' ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )* '\\''
                     {
                     match('\''); 
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1771:18: ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )*
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1780:18: ( ESC | ~ ( '\\\\' | '\\n' | '\\'' ) )*
                     loop19:
                     do {
                         int alt19=3;
@@ -2359,14 +2351,14 @@ public class python_v3Lexer extends Lexer {
 
                         switch (alt19) {
                     	case 1 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1771:19: ESC
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1780:19: ESC
                     	    {
                     	    mESC(); 
 
                     	    }
                     	    break;
                     	case 2 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1771:23: ~ ( '\\\\' | '\\n' | '\\'' )
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1780:23: ~ ( '\\\\' | '\\n' | '\\'' )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFE') ) {
                     	        input.consume();
@@ -2407,8 +2399,8 @@ public class python_v3Lexer extends Lexer {
     // $ANTLR start ESC
     public final void mESC() throws RecognitionException {
         try {
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1776:4: ( '\\\\' . )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1776:4: '\\\\' .
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1785:2: ( '\\\\' . )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1785:4: '\\\\' .
             {
             match('\\'); 
             matchAny(); 
@@ -2425,11 +2417,11 @@ public class python_v3Lexer extends Lexer {
     public final void mCONTINUED_LINE() throws RecognitionException {
         try {
             int _type = CONTINUED_LINE;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1781:4: ( '\\\\' ( '\\r' )? '\\n' ( ' ' | '\\t' )* )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1781:4: '\\\\' ( '\\r' )? '\\n' ( ' ' | '\\t' )*
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1790:2: ( '\\\\' ( '\\r' )? '\\n' ( ' ' | '\\t' )* )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1790:4: '\\\\' ( '\\r' )? '\\n' ( ' ' | '\\t' )*
             {
             match('\\'); 
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1781:9: ( '\\r' )?
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1790:9: ( '\\r' )?
             int alt21=2;
             int LA21_0 = input.LA(1);
 
@@ -2438,7 +2430,7 @@ public class python_v3Lexer extends Lexer {
             }
             switch (alt21) {
                 case 1 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1781:10: '\\r'
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1790:10: '\\r'
                     {
                     match('\r'); 
 
@@ -2448,7 +2440,7 @@ public class python_v3Lexer extends Lexer {
             }
 
             match('\n'); 
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1781:22: ( ' ' | '\\t' )*
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1790:22: ( ' ' | '\\t' )*
             loop22:
             do {
                 int alt22=2;
@@ -2461,7 +2453,7 @@ public class python_v3Lexer extends Lexer {
 
                 switch (alt22) {
             	case 1 :
-            	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:
+            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:
             	    {
             	    if ( input.LA(1)=='\t'||input.LA(1)==' ' ) {
             	        input.consume();
@@ -2482,7 +2474,7 @@ public class python_v3Lexer extends Lexer {
                 }
             } while (true);
 
-            
+
             		 //fModule.acceptLine(getColumn());
             		 /*newline();*/ channel=HIDDEN; 
 
@@ -2499,13 +2491,13 @@ public class python_v3Lexer extends Lexer {
     public final void mWS() throws RecognitionException {
         try {
             int _type = WS;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1786:6: ({...}? => ( ' ' | '\\t' )+ )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1786:6: {...}? => ( ' ' | '\\t' )+
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1795:4: ({...}? => ( ' ' | '\\t' )+ )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1795:6: {...}? => ( ' ' | '\\t' )+
             {
             if ( !(startPos>0) ) {
                 throw new FailedPredicateException(input, "WS", "startPos>0");
             }
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1786:22: ( ' ' | '\\t' )+
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1795:22: ( ' ' | '\\t' )+
             int cnt23=0;
             loop23:
             do {
@@ -2519,7 +2511,7 @@ public class python_v3Lexer extends Lexer {
 
                 switch (alt23) {
             	case 1 :
-            	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:
+            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:
             	    {
             	    if ( input.LA(1)=='\t'||input.LA(1)==' ' ) {
             	        input.consume();
@@ -2559,16 +2551,16 @@ public class python_v3Lexer extends Lexer {
     public final void mLEADING_WS() throws RecognitionException {
         try {
             int _type = LEADING_WS;
-            
+
                 int spaces = 0;
 
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1798:9: ({...}? => ({...}? ( ' ' | '\\t' )+ | ( ' ' | '\\t' )+ ( ( '\\r' )? '\\n' )* ) )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1798:9: {...}? => ({...}? ( ' ' | '\\t' )+ | ( ' ' | '\\t' )+ ( ( '\\r' )? '\\n' )* )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1807:5: ({...}? => ({...}? ( ' ' | '\\t' )+ | ( ' ' | '\\t' )+ ( ( '\\r' )? '\\n' )* ) )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1807:9: {...}? => ({...}? ( ' ' | '\\t' )+ | ( ' ' | '\\t' )+ ( ( '\\r' )? '\\n' )* )
             {
             if ( !(startPos==0) ) {
                 throw new FailedPredicateException(input, "LEADING_WS", "startPos==0");
             }
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1799:6: ({...}? ( ' ' | '\\t' )+ | ( ' ' | '\\t' )+ ( ( '\\r' )? '\\n' )* )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1808:6: ({...}? ( ' ' | '\\t' )+ | ( ' ' | '\\t' )+ ( ( '\\r' )? '\\n' )* )
             int alt28=2;
             int LA28_0 = input.LA(1);
 
@@ -2583,7 +2575,7 @@ public class python_v3Lexer extends Lexer {
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("1799:6: ({...}? ( ' ' | '\\t' )+ | ( ' ' | '\\t' )+ ( ( '\\r' )? '\\n' )* )", 28, 1, input);
+                        new NoViableAltException("1808:6: ({...}? ( ' ' | '\\t' )+ | ( ' ' | '\\t' )+ ( ( '\\r' )? '\\n' )* )", 28, 1, input);
 
                     throw nvae;
                 }
@@ -2599,25 +2591,25 @@ public class python_v3Lexer extends Lexer {
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("1799:6: ({...}? ( ' ' | '\\t' )+ | ( ' ' | '\\t' )+ ( ( '\\r' )? '\\n' )* )", 28, 2, input);
+                        new NoViableAltException("1808:6: ({...}? ( ' ' | '\\t' )+ | ( ' ' | '\\t' )+ ( ( '\\r' )? '\\n' )* )", 28, 2, input);
 
                     throw nvae;
                 }
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("1799:6: ({...}? ( ' ' | '\\t' )+ | ( ' ' | '\\t' )+ ( ( '\\r' )? '\\n' )* )", 28, 0, input);
+                    new NoViableAltException("1808:6: ({...}? ( ' ' | '\\t' )+ | ( ' ' | '\\t' )+ ( ( '\\r' )? '\\n' )* )", 28, 0, input);
 
                 throw nvae;
             }
             switch (alt28) {
                 case 1 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1799:10: {...}? ( ' ' | '\\t' )+
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1808:10: {...}? ( ' ' | '\\t' )+
                     {
                     if ( !(implicitLineJoiningLevel>0) ) {
                         throw new FailedPredicateException(input, "LEADING_WS", "implicitLineJoiningLevel>0");
                     }
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1799:40: ( ' ' | '\\t' )+
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1808:40: ( ' ' | '\\t' )+
                     int cnt24=0;
                     loop24:
                     do {
@@ -2631,7 +2623,7 @@ public class python_v3Lexer extends Lexer {
 
                         switch (alt24) {
                     	case 1 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:
                     	    {
                     	    if ( input.LA(1)=='\t'||input.LA(1)==' ' ) {
                     	        input.consume();
@@ -2661,9 +2653,9 @@ public class python_v3Lexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1800:11: ( ' ' | '\\t' )+ ( ( '\\r' )? '\\n' )*
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1809:11: ( ' ' | '\\t' )+ ( ( '\\r' )? '\\n' )*
                     {
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1800:11: ( ' ' | '\\t' )+
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1809:11: ( ' ' | '\\t' )+
                     int cnt25=0;
                     loop25:
                     do {
@@ -2680,7 +2672,7 @@ public class python_v3Lexer extends Lexer {
 
                         switch (alt25) {
                     	case 1 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1800:14: ' '
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1809:14: ' '
                     	    {
                     	    match(' '); 
                     	     spaces++; 
@@ -2688,7 +2680,7 @@ public class python_v3Lexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1801:12: '\\t'
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1810:12: '\\t'
                     	    {
                     	    match('\t'); 
                     	     spaces += 8; spaces -= (spaces % 8); 
@@ -2705,7 +2697,7 @@ public class python_v3Lexer extends Lexer {
                         cnt25++;
                     } while (true);
 
-                    
+
                                 // make a string of n spaces where n is column number - 1
                                 char[] indentation = new char[spaces];
                                 for (int i=0; i<spaces; i++) {
@@ -2715,7 +2707,7 @@ public class python_v3Lexer extends Lexer {
                                 Token tok = new ClassicToken(LEADING_WS,new String(indentation));
                                 emit(tok);
                             
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1814:10: ( ( '\\r' )? '\\n' )*
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1823:10: ( ( '\\r' )? '\\n' )*
                     loop27:
                     do {
                         int alt27=2;
@@ -2728,9 +2720,9 @@ public class python_v3Lexer extends Lexer {
 
                         switch (alt27) {
                     	case 1 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1814:12: ( '\\r' )? '\\n'
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1823:12: ( '\\r' )? '\\n'
                     	    {
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1814:12: ( '\\r' )?
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1823:12: ( '\\r' )?
                     	    int alt26=2;
                     	    int LA26_0 = input.LA(1);
 
@@ -2739,7 +2731,7 @@ public class python_v3Lexer extends Lexer {
                     	    }
                     	    switch (alt26) {
                     	        case 1 :
-                    	            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1814:13: '\\r'
+                    	            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1823:13: '\\r'
                     	            {
                     	            match('\r'); 
 
@@ -2779,20 +2771,20 @@ public class python_v3Lexer extends Lexer {
     public final void mCOMMENT() throws RecognitionException {
         try {
             int _type = COMMENT;
-            
+
                 channel=HIDDEN;
 
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1852:7: ({...}? => ( ' ' | '\\t' )* '#' (~ '\\n' )* ( '\\n' )+ | {...}? => '#' (~ '\\n' )* )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1861:5: ({...}? => ( ' ' | '\\t' )* '#' (~ '\\n' )* ( '\\n' )+ | {...}? => '#' (~ '\\n' )* )
             int alt33=2;
             alt33 = dfa33.predict(input);
             switch (alt33) {
                 case 1 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1852:7: {...}? => ( ' ' | '\\t' )* '#' (~ '\\n' )* ( '\\n' )+
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1861:7: {...}? => ( ' ' | '\\t' )* '#' (~ '\\n' )* ( '\\n' )+
                     {
                     if ( !(startPos==0) ) {
                         throw new FailedPredicateException(input, "COMMENT", "startPos==0");
                     }
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1852:24: ( ' ' | '\\t' )*
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1861:24: ( ' ' | '\\t' )*
                     loop29:
                     do {
                         int alt29=2;
@@ -2805,7 +2797,7 @@ public class python_v3Lexer extends Lexer {
 
                         switch (alt29) {
                     	case 1 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:
                     	    {
                     	    if ( input.LA(1)=='\t'||input.LA(1)==' ' ) {
                     	        input.consume();
@@ -2827,7 +2819,7 @@ public class python_v3Lexer extends Lexer {
                     } while (true);
 
                     match('#'); 
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1852:40: (~ '\\n' )*
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1861:40: (~ '\\n' )*
                     loop30:
                     do {
                         int alt30=2;
@@ -2840,7 +2832,7 @@ public class python_v3Lexer extends Lexer {
 
                         switch (alt30) {
                     	case 1 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1852:41: ~ '\\n'
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1861:41: ~ '\\n'
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\uFFFE') ) {
                     	        input.consume();
@@ -2861,7 +2853,7 @@ public class python_v3Lexer extends Lexer {
                         }
                     } while (true);
 
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1852:49: ( '\\n' )+
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1861:49: ( '\\n' )+
                     int cnt31=0;
                     loop31:
                     do {
@@ -2875,7 +2867,7 @@ public class python_v3Lexer extends Lexer {
 
                         switch (alt31) {
                     	case 1 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1852:49: '\\n'
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1861:49: '\\n'
                     	    {
                     	    match('\n'); 
 
@@ -2895,13 +2887,13 @@ public class python_v3Lexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1853:7: {...}? => '#' (~ '\\n' )*
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1862:7: {...}? => '#' (~ '\\n' )*
                     {
                     if ( !(startPos>0) ) {
                         throw new FailedPredicateException(input, "COMMENT", "startPos>0");
                     }
                     match('#'); 
-                    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1853:27: (~ '\\n' )*
+                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1862:27: (~ '\\n' )*
                     loop32:
                     do {
                         int alt32=2;
@@ -2914,7 +2906,7 @@ public class python_v3Lexer extends Lexer {
 
                         switch (alt32) {
                     	case 1 :
-                    	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1853:28: ~ '\\n'
+                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1862:28: ~ '\\n'
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\uFFFE') ) {
                     	        input.consume();
@@ -2951,8 +2943,8 @@ public class python_v3Lexer extends Lexer {
     public final void mDECORATOR_S() throws RecognitionException {
         try {
             int _type = DECORATOR_S;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1870:2: ( '@' )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1870:2: '@'
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1878:12: ( '@' )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1879:2: '@'
             {
             match('@'); 
 
@@ -2969,10 +2961,10 @@ public class python_v3Lexer extends Lexer {
     public final void mNEWLINE() throws RecognitionException {
         try {
             int _type = NEWLINE;
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1877:9: ( ( ( '\\r' )? '\\n' )+ )
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1877:9: ( ( '\\r' )? '\\n' )+
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1886:5: ( ( ( '\\r' )? '\\n' )+ )
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1886:9: ( ( '\\r' )? '\\n' )+
             {
-            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1877:9: ( ( '\\r' )? '\\n' )+
+            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1886:9: ( ( '\\r' )? '\\n' )+
             int cnt35=0;
             loop35:
             do {
@@ -2986,9 +2978,9 @@ public class python_v3Lexer extends Lexer {
 
                 switch (alt35) {
             	case 1 :
-            	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1877:10: ( '\\r' )? '\\n'
+            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1886:10: ( '\\r' )? '\\n'
             	    {
-            	    // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1877:10: ( '\\r' )?
+            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1886:10: ( '\\r' )?
             	    int alt34=2;
             	    int LA34_0 = input.LA(1);
 
@@ -2997,7 +2989,7 @@ public class python_v3Lexer extends Lexer {
             	    }
             	    switch (alt34) {
             	        case 1 :
-            	            // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1877:11: '\\r'
+            	            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1886:11: '\\r'
             	            {
             	            match('\r'); 
 
@@ -3034,607 +3026,607 @@ public class python_v3Lexer extends Lexer {
     // $ANTLR end NEWLINE
 
     public void mTokens() throws RecognitionException {
-        // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:10: ( T65 | T66 | T67 | T68 | T69 | T70 | T71 | T72 | T73 | T74 | T75 | T76 | T77 | T78 | T79 | T80 | T81 | T82 | T83 | T84 | T85 | T86 | T87 | T88 | T89 | T90 | T91 | T92 | T93 | T94 | LPAREN | RPAREN | LBRACK | RBRACK | COLON | COMMA | SEMI | PLUS | MINUS | STAR | SLASH | VBAR | AMPER | LESS | GREATER | ASSIGN | PERCENT | BACKQUOTE | LCURLY | RCURLY | CIRCUMFLEX | TILDE | EQUAL | NOTEQUAL | ALT_NOTEQUAL | LESSEQUAL | LEFTSHIFT | GREATEREQUAL | RIGHTSHIFT | PLUSEQUAL | MINUSEQUAL | DOUBLESTAR | STAREQUAL | DOUBLESLASH | SLASHEQUAL | VBAREQUAL | PERCENTEQUAL | AMPEREQUAL | CIRCUMFLEXEQUAL | LEFTSHIFTEQUAL | RIGHTSHIFTEQUAL | DOUBLESTAREQUAL | DOUBLESLASHEQUAL | DOT | FLOAT | LONGINT | INT | COMPLEX | NAME | STRING | CONTINUED_LINE | WS | LEADING_WS | COMMENT | DECORATOR_S | NEWLINE )
+        // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:8: ( T65 | T66 | T67 | T68 | T69 | T70 | T71 | T72 | T73 | T74 | T75 | T76 | T77 | T78 | T79 | T80 | T81 | T82 | T83 | T84 | T85 | T86 | T87 | T88 | T89 | T90 | T91 | T92 | T93 | T94 | LPAREN | RPAREN | LBRACK | RBRACK | COLON | COMMA | SEMI | PLUS | MINUS | STAR | SLASH | VBAR | AMPER | LESS | GREATER | ASSIGN | PERCENT | BACKQUOTE | LCURLY | RCURLY | CIRCUMFLEX | TILDE | EQUAL | NOTEQUAL | ALT_NOTEQUAL | LESSEQUAL | LEFTSHIFT | GREATEREQUAL | RIGHTSHIFT | PLUSEQUAL | MINUSEQUAL | DOUBLESTAR | STAREQUAL | DOUBLESLASH | SLASHEQUAL | VBAREQUAL | PERCENTEQUAL | AMPEREQUAL | CIRCUMFLEXEQUAL | LEFTSHIFTEQUAL | RIGHTSHIFTEQUAL | DOUBLESTAREQUAL | DOUBLESLASHEQUAL | DOT | FLOAT | LONGINT | INT | COMPLEX | NAME | STRING | CONTINUED_LINE | WS | LEADING_WS | COMMENT | DECORATOR_S | NEWLINE )
         int alt36=86;
         alt36 = dfa36.predict(input);
         switch (alt36) {
             case 1 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:10: T65
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:10: T65
                 {
                 mT65(); 
 
                 }
                 break;
             case 2 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:14: T66
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:14: T66
                 {
                 mT66(); 
 
                 }
                 break;
             case 3 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:18: T67
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:18: T67
                 {
                 mT67(); 
 
                 }
                 break;
             case 4 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:22: T68
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:22: T68
                 {
                 mT68(); 
 
                 }
                 break;
             case 5 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:26: T69
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:26: T69
                 {
                 mT69(); 
 
                 }
                 break;
             case 6 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:30: T70
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:30: T70
                 {
                 mT70(); 
 
                 }
                 break;
             case 7 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:34: T71
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:34: T71
                 {
                 mT71(); 
 
                 }
                 break;
             case 8 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:38: T72
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:38: T72
                 {
                 mT72(); 
 
                 }
                 break;
             case 9 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:42: T73
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:42: T73
                 {
                 mT73(); 
 
                 }
                 break;
             case 10 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:46: T74
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:46: T74
                 {
                 mT74(); 
 
                 }
                 break;
             case 11 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:50: T75
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:50: T75
                 {
                 mT75(); 
 
                 }
                 break;
             case 12 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:54: T76
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:54: T76
                 {
                 mT76(); 
 
                 }
                 break;
             case 13 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:58: T77
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:58: T77
                 {
                 mT77(); 
 
                 }
                 break;
             case 14 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:62: T78
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:62: T78
                 {
                 mT78(); 
 
                 }
                 break;
             case 15 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:66: T79
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:66: T79
                 {
                 mT79(); 
 
                 }
                 break;
             case 16 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:70: T80
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:70: T80
                 {
                 mT80(); 
 
                 }
                 break;
             case 17 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:74: T81
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:74: T81
                 {
                 mT81(); 
 
                 }
                 break;
             case 18 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:78: T82
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:78: T82
                 {
                 mT82(); 
 
                 }
                 break;
             case 19 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:82: T83
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:82: T83
                 {
                 mT83(); 
 
                 }
                 break;
             case 20 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:86: T84
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:86: T84
                 {
                 mT84(); 
 
                 }
                 break;
             case 21 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:90: T85
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:90: T85
                 {
                 mT85(); 
 
                 }
                 break;
             case 22 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:94: T86
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:94: T86
                 {
                 mT86(); 
 
                 }
                 break;
             case 23 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:98: T87
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:98: T87
                 {
                 mT87(); 
 
                 }
                 break;
             case 24 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:102: T88
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:102: T88
                 {
                 mT88(); 
 
                 }
                 break;
             case 25 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:106: T89
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:106: T89
                 {
                 mT89(); 
 
                 }
                 break;
             case 26 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:110: T90
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:110: T90
                 {
                 mT90(); 
 
                 }
                 break;
             case 27 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:114: T91
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:114: T91
                 {
                 mT91(); 
 
                 }
                 break;
             case 28 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:118: T92
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:118: T92
                 {
                 mT92(); 
 
                 }
                 break;
             case 29 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:122: T93
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:122: T93
                 {
                 mT93(); 
 
                 }
                 break;
             case 30 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:126: T94
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:126: T94
                 {
                 mT94(); 
 
                 }
                 break;
             case 31 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:130: LPAREN
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:130: LPAREN
                 {
                 mLPAREN(); 
 
                 }
                 break;
             case 32 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:137: RPAREN
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:137: RPAREN
                 {
                 mRPAREN(); 
 
                 }
                 break;
             case 33 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:144: LBRACK
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:144: LBRACK
                 {
                 mLBRACK(); 
 
                 }
                 break;
             case 34 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:151: RBRACK
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:151: RBRACK
                 {
                 mRBRACK(); 
 
                 }
                 break;
             case 35 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:158: COLON
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:158: COLON
                 {
                 mCOLON(); 
 
                 }
                 break;
             case 36 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:164: COMMA
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:164: COMMA
                 {
                 mCOMMA(); 
 
                 }
                 break;
             case 37 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:170: SEMI
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:170: SEMI
                 {
                 mSEMI(); 
 
                 }
                 break;
             case 38 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:175: PLUS
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:175: PLUS
                 {
                 mPLUS(); 
 
                 }
                 break;
             case 39 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:180: MINUS
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:180: MINUS
                 {
                 mMINUS(); 
 
                 }
                 break;
             case 40 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:186: STAR
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:186: STAR
                 {
                 mSTAR(); 
 
                 }
                 break;
             case 41 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:191: SLASH
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:191: SLASH
                 {
                 mSLASH(); 
 
                 }
                 break;
             case 42 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:197: VBAR
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:197: VBAR
                 {
                 mVBAR(); 
 
                 }
                 break;
             case 43 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:202: AMPER
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:202: AMPER
                 {
                 mAMPER(); 
 
                 }
                 break;
             case 44 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:208: LESS
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:208: LESS
                 {
                 mLESS(); 
 
                 }
                 break;
             case 45 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:213: GREATER
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:213: GREATER
                 {
                 mGREATER(); 
 
                 }
                 break;
             case 46 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:221: ASSIGN
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:221: ASSIGN
                 {
                 mASSIGN(); 
 
                 }
                 break;
             case 47 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:228: PERCENT
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:228: PERCENT
                 {
                 mPERCENT(); 
 
                 }
                 break;
             case 48 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:236: BACKQUOTE
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:236: BACKQUOTE
                 {
                 mBACKQUOTE(); 
 
                 }
                 break;
             case 49 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:246: LCURLY
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:246: LCURLY
                 {
                 mLCURLY(); 
 
                 }
                 break;
             case 50 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:253: RCURLY
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:253: RCURLY
                 {
                 mRCURLY(); 
 
                 }
                 break;
             case 51 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:260: CIRCUMFLEX
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:260: CIRCUMFLEX
                 {
                 mCIRCUMFLEX(); 
 
                 }
                 break;
             case 52 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:271: TILDE
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:271: TILDE
                 {
                 mTILDE(); 
 
                 }
                 break;
             case 53 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:277: EQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:277: EQUAL
                 {
                 mEQUAL(); 
 
                 }
                 break;
             case 54 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:283: NOTEQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:283: NOTEQUAL
                 {
                 mNOTEQUAL(); 
 
                 }
                 break;
             case 55 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:292: ALT_NOTEQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:292: ALT_NOTEQUAL
                 {
                 mALT_NOTEQUAL(); 
 
                 }
                 break;
             case 56 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:305: LESSEQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:305: LESSEQUAL
                 {
                 mLESSEQUAL(); 
 
                 }
                 break;
             case 57 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:315: LEFTSHIFT
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:315: LEFTSHIFT
                 {
                 mLEFTSHIFT(); 
 
                 }
                 break;
             case 58 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:325: GREATEREQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:325: GREATEREQUAL
                 {
                 mGREATEREQUAL(); 
 
                 }
                 break;
             case 59 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:338: RIGHTSHIFT
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:338: RIGHTSHIFT
                 {
                 mRIGHTSHIFT(); 
 
                 }
                 break;
             case 60 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:349: PLUSEQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:349: PLUSEQUAL
                 {
                 mPLUSEQUAL(); 
 
                 }
                 break;
             case 61 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:359: MINUSEQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:359: MINUSEQUAL
                 {
                 mMINUSEQUAL(); 
 
                 }
                 break;
             case 62 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:370: DOUBLESTAR
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:370: DOUBLESTAR
                 {
                 mDOUBLESTAR(); 
 
                 }
                 break;
             case 63 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:381: STAREQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:381: STAREQUAL
                 {
                 mSTAREQUAL(); 
 
                 }
                 break;
             case 64 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:391: DOUBLESLASH
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:391: DOUBLESLASH
                 {
                 mDOUBLESLASH(); 
 
                 }
                 break;
             case 65 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:403: SLASHEQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:403: SLASHEQUAL
                 {
                 mSLASHEQUAL(); 
 
                 }
                 break;
             case 66 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:414: VBAREQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:414: VBAREQUAL
                 {
                 mVBAREQUAL(); 
 
                 }
                 break;
             case 67 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:424: PERCENTEQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:424: PERCENTEQUAL
                 {
                 mPERCENTEQUAL(); 
 
                 }
                 break;
             case 68 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:437: AMPEREQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:437: AMPEREQUAL
                 {
                 mAMPEREQUAL(); 
 
                 }
                 break;
             case 69 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:448: CIRCUMFLEXEQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:448: CIRCUMFLEXEQUAL
                 {
                 mCIRCUMFLEXEQUAL(); 
 
                 }
                 break;
             case 70 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:464: LEFTSHIFTEQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:464: LEFTSHIFTEQUAL
                 {
                 mLEFTSHIFTEQUAL(); 
 
                 }
                 break;
             case 71 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:479: RIGHTSHIFTEQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:479: RIGHTSHIFTEQUAL
                 {
                 mRIGHTSHIFTEQUAL(); 
 
                 }
                 break;
             case 72 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:495: DOUBLESTAREQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:495: DOUBLESTAREQUAL
                 {
                 mDOUBLESTAREQUAL(); 
 
                 }
                 break;
             case 73 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:511: DOUBLESLASHEQUAL
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:511: DOUBLESLASHEQUAL
                 {
                 mDOUBLESLASHEQUAL(); 
 
                 }
                 break;
             case 74 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:528: DOT
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:528: DOT
                 {
                 mDOT(); 
 
                 }
                 break;
             case 75 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:532: FLOAT
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:532: FLOAT
                 {
                 mFLOAT(); 
 
                 }
                 break;
             case 76 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:538: LONGINT
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:538: LONGINT
                 {
                 mLONGINT(); 
 
                 }
                 break;
             case 77 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:546: INT
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:546: INT
                 {
                 mINT(); 
 
                 }
                 break;
             case 78 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:550: COMPLEX
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:550: COMPLEX
                 {
                 mCOMPLEX(); 
 
                 }
                 break;
             case 79 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:558: NAME
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:558: NAME
                 {
                 mNAME(); 
 
                 }
                 break;
             case 80 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:563: STRING
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:563: STRING
                 {
                 mSTRING(); 
 
                 }
                 break;
             case 81 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:570: CONTINUED_LINE
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:570: CONTINUED_LINE
                 {
                 mCONTINUED_LINE(); 
 
                 }
                 break;
             case 82 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:585: WS
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:585: WS
                 {
                 mWS(); 
 
                 }
                 break;
             case 83 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:588: LEADING_WS
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:588: LEADING_WS
                 {
                 mLEADING_WS(); 
 
                 }
                 break;
             case 84 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:599: COMMENT
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:599: COMMENT
                 {
                 mCOMMENT(); 
 
                 }
                 break;
             case 85 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:607: DECORATOR_S
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:607: DECORATOR_S
                 {
                 mDECORATOR_S(); 
 
                 }
                 break;
             case 86 :
-                // C:\\Develop\\dltk\\org.eclipse.dltk.python.core\\src\\org\\eclipse\\dltk\\python\\internal\\core\\parsers\\python_v3.g:1:619: NEWLINE
+                // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1:619: NEWLINE
                 {
                 mNEWLINE(); 
 
@@ -3705,7 +3697,7 @@ public class python_v3Lexer extends Lexer {
             this.transition = DFA12_transition;
         }
         public String getDescription() {
-            return "1751:1: COMPLEX : ( INT ( 'j' | 'J' ) | FLOAT ( 'j' | 'J' ) );";
+            return "1760:1: COMPLEX : ( INT ( 'j' | 'J' ) | FLOAT ( 'j' | 'J' ) );";
         }
     }
     static final String DFA33_eotS =
@@ -3719,7 +3711,7 @@ public class python_v3Lexer extends Lexer {
     static final String DFA33_acceptS =
         "\1\uffff\1\1\2\uffff\1\2";
     static final String DFA33_specialS =
-        "\1\2\1\uffff\1\0\1\1\1\uffff}>";
+        "\1\0\1\uffff\1\1\1\2\1\uffff}>";
     static final String[] DFA33_transitionS = {
             "\1\1\26\uffff\1\1\2\uffff\1\2",
             "",
@@ -3758,19 +3750,34 @@ public class python_v3Lexer extends Lexer {
             this.transition = DFA33_transition;
         }
         public String getDescription() {
-            return "1828:1: COMMENT : ({...}? => ( ' ' | '\\t' )* '#' (~ '\\n' )* ( '\\n' )+ | {...}? => '#' (~ '\\n' )* );";
+            return "1837:1: COMMENT : ({...}? => ( ' ' | '\\t' )* '#' (~ '\\n' )* ( '\\n' )+ | {...}? => '#' (~ '\\n' )* );";
         }
         public int specialStateTransition(int s, IntStream input) throws NoViableAltException {
         	int _s = s;
             switch ( s ) {
                     case 0 : 
+                        int LA33_0 = input.LA(1);
+
+                         
+                        int index33_0 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA33_0=='\t'||LA33_0==' ') && (startPos==0)) {s = 1;}
+
+                        else if ( (LA33_0=='#') && ((startPos>0||startPos==0))) {s = 2;}
+
+                         
+                        input.seek(index33_0);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 1 : 
                         int LA33_2 = input.LA(1);
 
                          
                         int index33_2 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( ((LA33_2>='\u0000' && LA33_2<='\t')||(LA33_2>='\u000B' && LA33_2<='\uFFFE')) && ((startPos==0||startPos>0))) {s = 3;}
+                        if ( ((LA33_2>='\u0000' && LA33_2<='\t')||(LA33_2>='\u000B' && LA33_2<='\uFFFE')) && ((startPos>0||startPos==0))) {s = 3;}
 
                         else if ( (LA33_2=='\n') && (startPos==0)) {s = 1;}
 
@@ -3780,14 +3787,14 @@ public class python_v3Lexer extends Lexer {
                         input.seek(index33_2);
                         if ( s>=0 ) return s;
                         break;
-                    case 1 : 
+                    case 2 : 
                         int LA33_3 = input.LA(1);
 
                          
                         int index33_3 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( ((LA33_3>='\u0000' && LA33_3<='\t')||(LA33_3>='\u000B' && LA33_3<='\uFFFE')) && ((startPos==0||startPos>0))) {s = 3;}
+                        if ( ((LA33_3>='\u0000' && LA33_3<='\t')||(LA33_3>='\u000B' && LA33_3<='\uFFFE')) && ((startPos>0||startPos==0))) {s = 3;}
 
                         else if ( (LA33_3=='\n') && (startPos==0)) {s = 1;}
 
@@ -3795,21 +3802,6 @@ public class python_v3Lexer extends Lexer {
 
                          
                         input.seek(index33_3);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 2 : 
-                        int LA33_0 = input.LA(1);
-
-                         
-                        int index33_0 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA33_0=='\t'||LA33_0==' ') && (startPos==0)) {s = 1;}
-
-                        else if ( (LA33_0=='#') && ((startPos==0||startPos>0))) {s = 2;}
-
-                         
-                        input.seek(index33_0);
                         if ( s>=0 ) return s;
                         break;
             }
@@ -3821,71 +3813,71 @@ public class python_v3Lexer extends Lexer {
     }
     static final String DFA36_eotS =
         "\1\uffff\20\54\7\uffff\1\117\1\121\1\124\1\127\1\131\1\133\1\137"+
-        "\1\142\1\144\1\146\3\uffff\1\150\2\uffff\1\151\2\154\1\54\3\uffff"+
-        "\1\165\1\167\3\uffff\12\54\1\u0083\1\u0084\1\u0085\3\54\1\u008a"+
-        "\6\54\1\u0093\2\54\4\uffff\1\u0097\2\uffff\1\u0099\6\uffff\1\u009b"+
-        "\4\uffff\1\u009d\10\uffff\1\u009e\2\uffff\1\u009e\1\uffff\1\154"+
-        "\2\uffff\1\154\1\54\4\uffff\1\u00a5\1\u00a6\11\54\3\uffff\2\54\1"+
-        "\u00b2\1\54\1\uffff\1\u00b4\6\54\1\u00bb\1\uffff\1\u00bc\1\54\12"+
-        "\uffff\1\154\1\u009e\1\uffff\1\u009e\3\uffff\1\u00c2\10\54\1\u00cb"+
-        "\1\54\1\uffff\1\54\1\uffff\1\54\1\u00cf\1\54\1\u00d1\1\u00d2\1\54"+
-        "\2\uffff\1\54\1\uffff\1\u009e\1\160\2\uffff\1\u00d7\1\u00d8\1\54"+
-        "\1\u00da\1\54\1\u00dc\1\u00dd\1\54\1\uffff\3\54\1\uffff\1\54\2\uffff"+
-        "\1\u00e3\1\54\1\uffff\1\u009e\2\uffff\1\54\1\uffff\1\u00e6\2\uffff"+
-        "\1\u00e7\1\54\1\u00e9\1\u00ea\1\u00eb\1\uffff\1\u00ec\1\54\2\uffff"+
-        "\1\u00ee\4\uffff\1\u00ef\2\uffff";
+        "\1\142\1\144\1\146\3\uffff\1\150\2\uffff\1\152\2\154\1\54\3\uffff"+
+        "\1\165\1\167\3\uffff\11\54\1\u0082\1\u0083\1\54\1\u0085\3\54\1\u008a"+
+        "\6\54\1\u0093\2\54\5\uffff\1\u0097\2\uffff\1\u0099\5\uffff\1\u009b"+
+        "\4\uffff\1\u009d\7\uffff\1\u009e\3\uffff\1\u009e\1\uffff\1\154\2"+
+        "\uffff\1\154\1\54\4\uffff\1\u00a5\1\u00a6\10\54\2\uffff\1\54\1\uffff"+
+        "\2\54\1\u00b2\1\54\1\uffff\1\u00b4\6\54\1\u00bb\1\uffff\1\u00bc"+
+        "\1\54\12\uffff\1\154\1\u009e\1\uffff\1\u009e\3\uffff\1\u00c2\11"+
+        "\54\1\u00cc\1\uffff\1\54\1\uffff\1\54\1\u00cf\1\54\1\u00d1\1\u00d2"+
+        "\1\54\2\uffff\1\54\1\uffff\1\u009e\1\161\2\uffff\1\u00d7\1\u00d8"+
+        "\1\54\1\u00da\1\54\1\u00dc\1\u00dd\2\54\1\uffff\2\54\1\uffff\1\54"+
+        "\2\uffff\1\u00e3\1\54\1\uffff\1\u009e\2\uffff\1\54\1\uffff\1\u00e6"+
+        "\2\uffff\1\u00e7\1\54\1\u00e9\1\u00ea\1\u00eb\1\uffff\1\u00ec\1"+
+        "\54\2\uffff\1\u00ee\4\uffff\1\u00ef\2\uffff";
     static final String DFA36_eofS =
         "\u00f0\uffff";
     static final String DFA36_minS =
         "\1\11\1\145\1\141\1\162\1\154\1\42\1\151\1\146\1\151\1\156\2\154"+
         "\1\150\2\162\1\157\1\141\7\uffff\2\75\1\52\1\57\2\75\1\74\3\75\3"+
         "\uffff\1\75\2\uffff\1\60\2\56\1\42\3\uffff\2\11\3\uffff\1\146\1"+
-        "\163\1\151\1\145\1\156\1\141\1\164\1\151\1\145\1\160\3\60\1\157"+
-        "\1\156\1\162\1\60\1\144\1\157\1\143\2\151\1\171\1\60\1\164\1\155"+
-        "\4\uffff\1\75\2\uffff\1\75\6\uffff\1\75\4\uffff\1\75\10\uffff\2"+
-        "\60\1\uffff\1\60\1\53\1\56\2\uffff\1\56\1\42\1\uffff\1\0\1\uffff"+
-        "\1\0\2\60\1\163\1\156\1\141\1\164\1\163\1\165\1\163\1\154\1\157"+
-        "\3\uffff\1\155\1\141\1\60\1\145\1\uffff\1\60\1\142\1\143\1\145\1"+
-        "\146\1\145\1\154\1\60\1\uffff\1\60\1\142\11\uffff\1\53\4\60\3\uffff"+
-        "\1\60\1\164\1\153\1\151\1\163\1\162\1\145\1\144\1\162\1\60\1\154"+
-        "\1\uffff\1\162\1\uffff\1\141\1\60\1\160\2\60\1\145\2\uffff\1\144"+
-        "\2\60\1\112\1\53\1\uffff\2\60\1\156\1\60\1\156\2\60\1\164\1\uffff"+
-        "\1\154\1\164\1\154\1\uffff\1\164\2\uffff\1\60\1\141\2\60\2\uffff"+
-        "\1\165\1\uffff\1\60\2\uffff\1\60\1\171\3\60\1\uffff\1\60\1\145\2"+
-        "\uffff\1\60\4\uffff\1\60\2\uffff";
+        "\163\1\151\1\145\1\156\1\141\1\164\1\151\1\145\2\60\1\160\1\60\1"+
+        "\156\1\157\1\162\1\60\1\144\1\157\1\143\2\151\1\171\1\60\1\164\1"+
+        "\155\5\uffff\1\75\2\uffff\1\75\5\uffff\1\75\4\uffff\1\75\7\uffff"+
+        "\1\60\1\uffff\1\60\1\uffff\1\60\1\53\1\56\2\uffff\1\56\1\42\1\uffff"+
+        "\1\0\1\uffff\1\0\2\60\1\163\1\156\1\141\1\164\1\163\1\165\1\163"+
+        "\1\154\2\uffff\1\157\1\uffff\1\141\1\155\1\60\1\145\1\uffff\1\60"+
+        "\1\142\1\143\2\145\1\146\1\154\1\60\1\uffff\1\60\1\142\11\uffff"+
+        "\1\53\4\60\3\uffff\1\60\1\164\1\153\1\151\1\163\1\162\1\145\1\144"+
+        "\1\162\1\154\1\60\1\uffff\1\162\1\uffff\1\141\1\60\1\160\2\60\1"+
+        "\145\2\uffff\1\144\2\60\1\112\1\53\1\uffff\2\60\1\156\1\60\1\156"+
+        "\2\60\1\164\1\154\1\uffff\1\164\1\154\1\uffff\1\164\2\uffff\1\60"+
+        "\1\141\2\60\2\uffff\1\165\1\uffff\1\60\2\uffff\1\60\1\171\3\60\1"+
+        "\uffff\1\60\1\145\2\uffff\1\60\4\uffff\1\60\2\uffff";
     static final String DFA36_maxS =
         "\1\176\1\145\2\162\1\157\1\145\1\151\1\163\1\162\1\163\1\154\1\170"+
         "\1\150\2\162\1\157\1\141\7\uffff\6\75\2\76\2\75\3\uffff\1\75\2\uffff"+
         "\1\71\1\170\1\154\1\162\3\uffff\2\43\3\uffff\1\154\1\163\1\151\1"+
-        "\145\1\156\1\141\1\164\1\151\1\145\1\160\3\172\1\157\1\156\1\162"+
-        "\1\172\1\144\1\157\1\145\1\163\1\151\1\171\1\172\1\164\1\155\4\uffff"+
-        "\1\75\2\uffff\1\75\6\uffff\1\75\4\uffff\1\75\10\uffff\1\152\1\146"+
-        "\1\uffff\1\152\1\71\1\154\2\uffff\1\154\1\47\1\uffff\1\0\1\uffff"+
-        "\1\0\2\172\1\163\1\156\1\141\1\164\1\163\1\165\1\163\1\154\1\157"+
-        "\3\uffff\1\155\1\141\1\172\1\145\1\uffff\1\172\1\142\1\143\1\145"+
-        "\1\146\1\145\1\154\1\172\1\uffff\1\172\1\142\11\uffff\1\71\1\154"+
-        "\1\152\1\71\1\152\3\uffff\1\172\1\164\1\153\1\151\1\163\1\162\1"+
-        "\145\1\144\1\162\1\172\1\154\1\uffff\1\162\1\uffff\1\141\1\172\1"+
-        "\160\2\172\1\145\2\uffff\1\144\1\71\2\152\1\71\1\uffff\2\172\1\156"+
-        "\1\172\1\156\2\172\1\164\1\uffff\1\154\1\164\1\154\1\uffff\1\164"+
-        "\2\uffff\1\172\1\141\1\71\1\152\2\uffff\1\165\1\uffff\1\172\2\uffff"+
-        "\1\172\1\171\3\172\1\uffff\1\172\1\145\2\uffff\1\172\4\uffff\1\172"+
-        "\2\uffff";
+        "\145\1\156\1\141\1\164\1\151\1\145\2\172\1\160\1\172\1\156\1\157"+
+        "\1\162\1\172\1\144\1\157\1\145\1\163\1\151\1\171\1\172\1\164\1\155"+
+        "\5\uffff\1\75\2\uffff\1\75\5\uffff\1\75\4\uffff\1\75\7\uffff\1\152"+
+        "\1\uffff\1\146\1\uffff\1\152\1\71\1\154\2\uffff\1\154\1\47\1\uffff"+
+        "\1\0\1\uffff\1\0\2\172\1\163\1\156\1\141\1\164\1\163\1\165\1\163"+
+        "\1\154\2\uffff\1\157\1\uffff\1\141\1\155\1\172\1\145\1\uffff\1\172"+
+        "\1\142\1\143\2\145\1\146\1\154\1\172\1\uffff\1\172\1\142\11\uffff"+
+        "\1\71\1\154\1\152\1\71\1\152\3\uffff\1\172\1\164\1\153\1\151\1\163"+
+        "\1\162\1\145\1\144\1\162\1\154\1\172\1\uffff\1\162\1\uffff\1\141"+
+        "\1\172\1\160\2\172\1\145\2\uffff\1\144\1\71\2\152\1\71\1\uffff\2"+
+        "\172\1\156\1\172\1\156\2\172\1\164\1\154\1\uffff\1\164\1\154\1\uffff"+
+        "\1\164\2\uffff\1\172\1\141\1\71\1\152\2\uffff\1\165\1\uffff\1\172"+
+        "\2\uffff\1\172\1\171\3\172\1\uffff\1\172\1\145\2\uffff\1\172\4\uffff"+
+        "\1\172\2\uffff";
     static final String DFA36_acceptS =
         "\21\uffff\1\37\1\40\1\41\1\42\1\43\1\44\1\45\12\uffff\1\60\1\61"+
         "\1\62\1\uffff\1\64\1\66\4\uffff\1\117\1\120\1\121\2\uffff\1\124"+
-        "\1\125\1\126\32\uffff\1\74\1\46\1\75\1\47\1\uffff\1\77\1\50\1\uffff"+
-        "\1\101\1\51\1\102\1\52\1\104\1\53\1\uffff\1\67\1\70\1\54\1\72\1"+
-        "\uffff\1\55\1\65\1\56\1\103\1\57\1\105\1\63\1\112\2\uffff\1\115"+
-        "\3\uffff\1\114\1\116\2\uffff\1\123\1\uffff\1\124\14\uffff\1\17\1"+
-        "\34\1\21\4\uffff\1\14\10\uffff\1\31\2\uffff\1\110\1\76\1\111\1\100"+
-        "\1\106\1\71\1\107\1\73\1\113\5\uffff\1\122\1\1\1\3\13\uffff\1\25"+
-        "\1\uffff\1\32\6\uffff\1\26\1\33\5\uffff\1\4\10\uffff\1\13\3\uffff"+
-        "\1\16\1\uffff\1\22\1\23\4\uffff\1\2\1\5\1\uffff\1\36\1\uffff\1\11"+
-        "\1\10\5\uffff\1\24\2\uffff\1\7\1\12\1\uffff\1\20\1\15\1\27\1\35"+
-        "\1\uffff\1\30\1\6";
+        "\1\125\1\126\32\uffff\1\74\1\46\1\75\1\47\1\77\1\uffff\1\50\1\101"+
+        "\1\uffff\1\51\1\102\1\52\1\104\1\53\1\uffff\1\70\1\67\1\54\1\72"+
+        "\1\uffff\1\55\1\65\1\56\1\103\1\57\1\105\1\63\1\uffff\1\112\1\uffff"+
+        "\1\115\3\uffff\1\116\1\114\2\uffff\1\123\1\uffff\1\124\13\uffff"+
+        "\1\21\1\34\1\uffff\1\17\4\uffff\1\14\10\uffff\1\31\2\uffff\1\110"+
+        "\1\76\1\111\1\100\1\106\1\71\1\107\1\73\1\113\5\uffff\1\122\1\1"+
+        "\1\3\13\uffff\1\25\1\uffff\1\32\6\uffff\1\26\1\33\5\uffff\1\4\11"+
+        "\uffff\1\13\2\uffff\1\16\1\uffff\1\23\1\22\4\uffff\1\2\1\5\1\uffff"+
+        "\1\36\1\uffff\1\11\1\10\5\uffff\1\24\2\uffff\1\7\1\12\1\uffff\1"+
+        "\20\1\15\1\27\1\35\1\uffff\1\30\1\6";
     static final String DFA36_specialS =
-        "\1\4\56\uffff\1\3\1\2\104\uffff\1\0\1\uffff\1\1\170\uffff}>";
+        "\1\0\56\uffff\1\1\1\4\104\uffff\1\2\1\uffff\1\3\170\uffff}>";
     static final String[] DFA36_transitionS = {
             "\1\60\1\63\2\uffff\1\63\22\uffff\1\57\1\47\1\55\1\61\1\uffff"+
             "\1\41\1\35\1\55\1\21\1\22\1\32\1\30\1\26\1\31\1\50\1\33\1\51"+
@@ -3899,8 +3891,8 @@ public class python_v3Lexer extends Lexer {
             "\1\71\2\uffff\1\70",
             "\1\55\4\uffff\1\55\71\uffff\1\73\3\uffff\1\72",
             "\1\74",
-            "\1\100\6\uffff\1\75\1\76\4\uffff\1\77",
-            "\1\102\5\uffff\1\103\2\uffff\1\101",
+            "\1\75\6\uffff\1\77\1\100\4\uffff\1\76",
+            "\1\101\5\uffff\1\103\2\uffff\1\102",
             "\1\105\4\uffff\1\104",
             "\1\106",
             "\1\110\13\uffff\1\107",
@@ -3918,11 +3910,11 @@ public class python_v3Lexer extends Lexer {
             "",
             "\1\116",
             "\1\120",
-            "\1\122\22\uffff\1\123",
-            "\1\125\15\uffff\1\126",
+            "\1\123\22\uffff\1\122",
+            "\1\126\15\uffff\1\125",
             "\1\130",
             "\1\132",
-            "\1\134\1\136\1\135",
+            "\1\134\1\135\1\136",
             "\1\140\1\141",
             "\1\143",
             "\1\145",
@@ -3932,12 +3924,12 @@ public class python_v3Lexer extends Lexer {
             "\1\147",
             "",
             "",
-            "\12\152",
-            "\1\155\1\uffff\12\157\13\uffff\1\156\4\uffff\1\161\1\uffff\1"+
-            "\160\13\uffff\1\153\14\uffff\1\156\4\uffff\1\161\1\uffff\1\160"+
+            "\12\151",
+            "\1\155\1\uffff\12\157\13\uffff\1\156\4\uffff\1\160\1\uffff\1"+
+            "\161\13\uffff\1\153\14\uffff\1\156\4\uffff\1\160\1\uffff\1\161"+
             "\13\uffff\1\153",
-            "\1\155\1\uffff\12\162\13\uffff\1\156\4\uffff\1\161\1\uffff\1"+
-            "\160\30\uffff\1\156\4\uffff\1\161\1\uffff\1\160",
+            "\1\155\1\uffff\12\162\13\uffff\1\156\4\uffff\1\160\1\uffff\1"+
+            "\161\30\uffff\1\156\4\uffff\1\160\1\uffff\1\161",
             "\1\55\4\uffff\1\55\112\uffff\1\163",
             "",
             "",
@@ -3956,9 +3948,9 @@ public class python_v3Lexer extends Lexer {
             "\1\177",
             "\1\u0080",
             "\1\u0081",
-            "\1\u0082",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "\1\u0084",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u0086",
             "\1\u0087",
@@ -3967,7 +3959,7 @@ public class python_v3Lexer extends Lexer {
             "\1\u008b",
             "\1\u008c",
             "\1\u008e\1\uffff\1\u008d",
-            "\1\u008f\11\uffff\1\u0090",
+            "\1\u0090\11\uffff\1\u008f",
             "\1\u0091",
             "\1\u0092",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
@@ -3977,11 +3969,11 @@ public class python_v3Lexer extends Lexer {
             "",
             "",
             "",
+            "",
             "\1\u0096",
             "",
             "",
             "\1\u0098",
-            "",
             "",
             "",
             "",
@@ -4000,19 +3992,19 @@ public class python_v3Lexer extends Lexer {
             "",
             "",
             "",
+            "\12\151\13\uffff\1\u009f\4\uffff\1\160\32\uffff\1\u009f\4\uffff"+
+            "\1\160",
             "",
-            "\12\152\13\uffff\1\u009f\4\uffff\1\161\32\uffff\1\u009f\4\uffff"+
-            "\1\161",
             "\12\u00a0\7\uffff\6\u00a0\32\uffff\6\u00a0",
             "",
-            "\12\u00a1\20\uffff\1\161\37\uffff\1\161",
+            "\12\u00a1\20\uffff\1\160\37\uffff\1\160",
             "\1\u00a2\1\uffff\1\u00a2\2\uffff\12\u00a3",
-            "\1\155\1\uffff\12\157\13\uffff\1\156\4\uffff\1\161\1\uffff\1"+
-            "\160\30\uffff\1\156\4\uffff\1\161\1\uffff\1\160",
+            "\1\155\1\uffff\12\157\13\uffff\1\156\4\uffff\1\160\1\uffff\1"+
+            "\161\30\uffff\1\156\4\uffff\1\160\1\uffff\1\161",
             "",
             "",
-            "\1\155\1\uffff\12\162\13\uffff\1\156\4\uffff\1\161\1\uffff\1"+
-            "\160\30\uffff\1\156\4\uffff\1\161\1\uffff\1\160",
+            "\1\155\1\uffff\12\162\13\uffff\1\156\4\uffff\1\160\1\uffff\1"+
+            "\161\30\uffff\1\156\4\uffff\1\160\1\uffff\1\161",
             "\1\55\4\uffff\1\55",
             "",
             "\1\uffff",
@@ -4028,9 +4020,9 @@ public class python_v3Lexer extends Lexer {
             "\1\u00ac",
             "\1\u00ad",
             "\1\u00ae",
+            "",
+            "",
             "\1\u00af",
-            "",
-            "",
             "",
             "\1\u00b0",
             "\1\u00b1",
@@ -4058,12 +4050,12 @@ public class python_v3Lexer extends Lexer {
             "",
             "",
             "\1\u00be\1\uffff\1\u00be\2\uffff\12\u00bf",
-            "\12\u00a0\7\uffff\6\u00a0\3\uffff\1\161\1\uffff\1\u00c0\24\uffff"+
-            "\6\u00a0\3\uffff\1\161\1\uffff\1\u00c0",
-            "\12\u00a1\13\uffff\1\u00c1\4\uffff\1\161\32\uffff\1\u00c1\4"+
-            "\uffff\1\161",
+            "\12\u00a0\7\uffff\6\u00a0\3\uffff\1\160\1\uffff\1\u00c0\24\uffff"+
+            "\6\u00a0\3\uffff\1\160\1\uffff\1\u00c0",
+            "\12\u00a1\13\uffff\1\u00c1\4\uffff\1\160\32\uffff\1\u00c1\4"+
+            "\uffff\1\160",
             "\12\u00a3",
-            "\12\u00a3\20\uffff\1\161\37\uffff\1\161",
+            "\12\u00a3\20\uffff\1\160\37\uffff\1\160",
             "",
             "",
             "",
@@ -4076,8 +4068,8 @@ public class python_v3Lexer extends Lexer {
             "\1\u00c8",
             "\1\u00c9",
             "\1\u00ca",
+            "\1\u00cb",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\1\u00cc",
             "",
             "\1\u00cd",
             "",
@@ -4091,8 +4083,8 @@ public class python_v3Lexer extends Lexer {
             "",
             "\1\u00d4",
             "\12\u00bf",
-            "\12\u00bf\20\uffff\1\161\37\uffff\1\161",
-            "\1\161\37\uffff\1\161",
+            "\12\u00bf\20\uffff\1\160\37\uffff\1\160",
+            "\1\160\37\uffff\1\160",
             "\1\u00d5\1\uffff\1\u00d5\2\uffff\12\u00d6",
             "",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
@@ -4103,8 +4095,8 @@ public class python_v3Lexer extends Lexer {
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u00de",
-            "",
             "\1\u00df",
+            "",
             "\1\u00e0",
             "\1\u00e1",
             "",
@@ -4114,7 +4106,7 @@ public class python_v3Lexer extends Lexer {
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u00e4",
             "\12\u00d6",
-            "\12\u00d6\20\uffff\1\161\37\uffff\1\161",
+            "\12\u00d6\20\uffff\1\160\37\uffff\1\160",
             "",
             "",
             "\1\u00e5",
@@ -4178,78 +4170,6 @@ public class python_v3Lexer extends Lexer {
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA36_117 = input.LA(1);
-
-                         
-                        int index36_117 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (startPos>0) ) {s = 164;}
-
-                        else if ( (((startPos==0&&implicitLineJoiningLevel>0)||startPos==0)) ) {s = 116;}
-
-                         
-                        input.seek(index36_117);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 1 : 
-                        int LA36_119 = input.LA(1);
-
-                         
-                        int index36_119 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (startPos>0) ) {s = 164;}
-
-                        else if ( (((startPos==0&&implicitLineJoiningLevel>0)||startPos==0)) ) {s = 116;}
-
-                         
-                        input.seek(index36_119);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 2 : 
-                        int LA36_48 = input.LA(1);
-
-                         
-                        int index36_48 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA36_48=='\n'||LA36_48=='\r') && (startPos==0)) {s = 116;}
-
-                        else if ( (LA36_48==' ') && ((startPos==0||startPos>0))) {s = 47;}
-
-                        else if ( (LA36_48=='\t') && ((startPos==0||startPos>0))) {s = 48;}
-
-                        else if ( (LA36_48=='#') && (startPos==0)) {s = 118;}
-
-                        else s = 119;
-
-                         
-                        input.seek(index36_48);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 3 : 
-                        int LA36_47 = input.LA(1);
-
-                         
-                        int index36_47 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA36_47=='\n'||LA36_47=='\r') && (startPos==0)) {s = 116;}
-
-                        else if ( (LA36_47==' ') && ((startPos==0||startPos>0))) {s = 47;}
-
-                        else if ( (LA36_47=='\t') && ((startPos==0||startPos>0))) {s = 48;}
-
-                        else if ( (LA36_47=='#') && (startPos==0)) {s = 118;}
-
-                        else s = 117;
-
-                         
-                        input.seek(index36_47);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 4 : 
                         int LA36_0 = input.LA(1);
 
                          
@@ -4348,11 +4268,11 @@ public class python_v3Lexer extends Lexer {
 
                         else if ( (LA36_0=='\\') ) {s = 46;}
 
-                        else if ( (LA36_0==' ') && ((startPos==0||startPos>0))) {s = 47;}
+                        else if ( (LA36_0==' ') && ((startPos>0||startPos==0))) {s = 47;}
 
-                        else if ( (LA36_0=='\t') && ((startPos==0||startPos>0))) {s = 48;}
+                        else if ( (LA36_0=='\t') && ((startPos>0||startPos==0))) {s = 48;}
 
-                        else if ( (LA36_0=='#') && ((startPos==0||startPos>0))) {s = 49;}
+                        else if ( (LA36_0=='#') && ((startPos>0||startPos==0))) {s = 49;}
 
                         else if ( (LA36_0=='@') ) {s = 50;}
 
@@ -4360,6 +4280,78 @@ public class python_v3Lexer extends Lexer {
 
                          
                         input.seek(index36_0);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 1 : 
+                        int LA36_47 = input.LA(1);
+
+                         
+                        int index36_47 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA36_47=='\n'||LA36_47=='\r') && (startPos==0)) {s = 116;}
+
+                        else if ( (LA36_47==' ') && ((startPos>0||startPos==0))) {s = 47;}
+
+                        else if ( (LA36_47=='\t') && ((startPos>0||startPos==0))) {s = 48;}
+
+                        else if ( (LA36_47=='#') && (startPos==0)) {s = 118;}
+
+                        else s = 117;
+
+                         
+                        input.seek(index36_47);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 2 : 
+                        int LA36_117 = input.LA(1);
+
+                         
+                        int index36_117 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (startPos>0) ) {s = 164;}
+
+                        else if ( (((startPos==0&&implicitLineJoiningLevel>0)||startPos==0)) ) {s = 116;}
+
+                         
+                        input.seek(index36_117);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 3 : 
+                        int LA36_119 = input.LA(1);
+
+                         
+                        int index36_119 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (startPos>0) ) {s = 164;}
+
+                        else if ( (((startPos==0&&implicitLineJoiningLevel>0)||startPos==0)) ) {s = 116;}
+
+                         
+                        input.seek(index36_119);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 4 : 
+                        int LA36_48 = input.LA(1);
+
+                         
+                        int index36_48 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA36_48==' ') && ((startPos>0||startPos==0))) {s = 47;}
+
+                        else if ( (LA36_48=='#') && (startPos==0)) {s = 118;}
+
+                        else if ( (LA36_48=='\n'||LA36_48=='\r') && (startPos==0)) {s = 116;}
+
+                        else if ( (LA36_48=='\t') && ((startPos>0||startPos==0))) {s = 48;}
+
+                        else s = 119;
+
+                         
+                        input.seek(index36_48);
                         if ( s>=0 ) return s;
                         break;
             }

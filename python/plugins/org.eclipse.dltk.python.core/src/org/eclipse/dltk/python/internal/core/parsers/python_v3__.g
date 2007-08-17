@@ -49,156 +49,156 @@ T92 : 'is' ;
 T93 : 'lambda' ;
 T94 : 'class' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1641
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1650
 LPAREN	: '(' {implicitLineJoiningLevel++;} ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1643
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1652
 RPAREN	: ')' {implicitLineJoiningLevel--;} ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1645
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1654
 LBRACK	: '[' {implicitLineJoiningLevel++;} ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1647
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1656
 RBRACK	: ']' {implicitLineJoiningLevel--;} ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1649
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1658
 COLON 	: ':' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1651
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1660
 COMMA	: ',' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1653
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1662
 SEMI	: ';' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1655
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1664
 PLUS	: '+' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1657
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1666
 MINUS	: '-' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1659
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1668
 STAR	: '*' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1661
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1670
 SLASH	: '/' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1663
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1672
 VBAR	: '|' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1665
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1674
 AMPER	: '&' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1667
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1676
 LESS	: '<' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1669
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1678
 GREATER	: '>' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1671
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1680
 ASSIGN	: '=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1673
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1682
 PERCENT	: '%' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1675
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1684
 BACKQUOTE	: '`' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1677
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1686
 LCURLY	: '{' {implicitLineJoiningLevel++;} ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1679
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1688
 RCURLY	: '}' {implicitLineJoiningLevel--;} ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1681
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1690
 CIRCUMFLEX	: '^' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1683
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1692
 TILDE	: '~' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1685
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1694
 EQUAL	: '==' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1687
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1696
 NOTEQUAL	: '!=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1689
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1698
 ALT_NOTEQUAL: '<>' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1691
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1700
 LESSEQUAL	: '<=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1693
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1702
 LEFTSHIFT	: '<<' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1695
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1704
 GREATEREQUAL	: '>=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1697
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1706
 RIGHTSHIFT	: '>>' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1699
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1708
 PLUSEQUAL	: '+=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1701
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1710
 MINUSEQUAL	: '-=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1703
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1712
 DOUBLESTAR	: '**' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1705
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1714
 STAREQUAL	: '*=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1707
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1716
 DOUBLESLASH	: '//' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1709
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1718
 SLASHEQUAL	: '/=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1711
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1720
 VBAREQUAL	: '|=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1713
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1722
 PERCENTEQUAL	: '%=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1715
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1724
 AMPEREQUAL	: '&=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1717
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1726
 CIRCUMFLEXEQUAL	: '^=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1719
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1728
 LEFTSHIFTEQUAL	: '<<=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1721
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1730
 RIGHTSHIFTEQUAL	: '>>=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1723
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1732
 DOUBLESTAREQUAL	: '**=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1725
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1734
 DOUBLESLASHEQUAL	: '//=' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1727
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1736
 DOT : '.' ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1729
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1738
 FLOAT
 	:	'.' DIGITS (Exponent)?
     |   DIGITS ('.' (DIGITS (Exponent)?)? | Exponent)
     ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1734
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1743
 LONGINT
     :   INT ('l'|'L')
     ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1738
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1747
 fragment
 Exponent
 	:	('e' | 'E') ( '+' | '-' )? DIGITS
 	;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1743
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1752
 INT :   // Hex
         '0' ('x' | 'X') ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+
         ('l' | 'L')?
@@ -207,22 +207,22 @@ INT :   // Hex
     |   '1'..'9' DIGITS*
     ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1751
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1760
 COMPLEX
     :   INT ('j'|'J')
     |   FLOAT ('j'|'J')
     ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1756
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1765
 fragment
 DIGITS : ( '0' .. '9' )+ ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1759
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1768
 NAME:	( 'a' .. 'z' | 'A' .. 'Z' | '_')
         ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
     ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1763
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1772
 /** Match various string types.  Note that greedy=false implies '''
  *  should make us exit loop not continue.
  */
@@ -234,13 +234,13 @@ STRING
         |   '\'' (ESC|~('\\'|'\n'|'\''))* '\''
         )
 	; 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1774
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1783
 fragment
 ESC
 	:	'\\' .
 	;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1779
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1788
 /** Consume a newline and any whitespace at start of next line */
 CONTINUED_LINE
 	:	'\\' ('\r')? '\n' (' '|'\t')* {
@@ -248,10 +248,10 @@ CONTINUED_LINE
 		 /*newline();*/ $channel=HIDDEN; }
 	;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1786
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1795
 WS	:	{startPos>0}?=> (' '|'\t')+ {$channel=HIDDEN;}
 	; 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1788
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1797
 /** Grab everything before a real symbol.  Then if newline, kill it
  *  as this is a blank line.  If whitespace followed by comment, kill it
  *  as it's a comment on a line by itself.
@@ -292,7 +292,7 @@ LEADING_WS
         */
     ;
 
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1828
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1837
 /** Comments not on line by themselves are turned into newlines because
     sometimes they are newlines like
 
@@ -334,11 +334,11 @@ COMMENT
 //}
 //        )+ )?
 //    ;    
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1869
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1878
 DECORATOR_S:
 	'@'
 ;
-// $ANTLR src "C:\Develop\dltk\org.eclipse.dltk.python.core\src\org\eclipse\dltk\python\internal\core\parsers\python_v3.g" 1872
+// $ANTLR src "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g" 1881
 /** Treat a sequence of blank lines as a single blank line.  If
  *  nested within a (..), {..}, or [..], then ignore newlines.
  *  If the first newline starts in column one, they are to be ignored.

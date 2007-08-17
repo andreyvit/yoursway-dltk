@@ -107,6 +107,11 @@ public void reportError(RecognitionException e) {
 		reporter.reportError(e);
 	}
 }
+public void setStartEndForEmbracedExpr(Expression exp, Token lb, Token rb)
+{
+	exp.setStart(toDLTK(lb).getColumn());
+	exp.setEnd(toDLTK(rb).getColumn()+1);
+}
 }
 
 @rulecatch {
@@ -481,7 +486,8 @@ return_stmt returns [ Statement statement = null ]:
 	ra = 'return' 
 		( tu = testlist )?
 		{
-			int end = -1;
+			DLTKToken ret = toDLTK(ra);
+			int end = ret.getColumn()+ret.getText().length();
 			if( tu != null ) {
 				end = tu.sourceEnd();
 			}
@@ -713,8 +719,10 @@ if_stmt returns [ IfStatement statement = null ]:
 		body = suite
 		{ 
 			IfStatement t,base;
+			List ifs = new ArrayList();
 			statement = new IfStatement( toDLTK( is ), mn, body ); 
 			statement.setEnd(body.sourceEnd());
+			ifs.add(statement);
 			base = statement;
 			t = statement; 
 		}		
@@ -728,6 +736,8 @@ if_stmt returns [ IfStatement statement = null ]:
 					IfStatement elseIfStatement = new IfStatement( toDLTK( z ), mn, body );
 					t.acceptElse( elseIfStatement );
 					t = elseIfStatement;
+					ifs.add(t);
+					for(Iterator i = ifs.iterator(); i.hasNext(); ((IfStatement)i.next()).setEnd(body.sourceEnd()));
 					base.setEnd(elseIfStatement.sourceEnd());
 				} 
 		)*
@@ -737,6 +747,7 @@ if_stmt returns [ IfStatement statement = null ]:
 			body = suite  		
 				{ 
 					t.setElse( body );
+					for(Iterator i = ifs.iterator(); i.hasNext(); ((IfStatement)i.next()).setEnd(body.sourceEnd()));
 				} 
 		)?
 	;		
@@ -1243,13 +1254,13 @@ trailer[ Expression expr ] returns [ Expression returnExpression = null ]:
 	;
 	
 atom returns [ Expression exp = null ]:
-	  LPAREN ( exp0 = tuplelist { exp = exp0;} ) RPAREN
-	| LPAREN { exp = new PythonTupleExpression(); } RPAREN	 // for initializations like a = ()
-	| LBRACK ( exp0 = listmaker {exp = exp0; } ) RBRACK
-	| LBRACK { exp = new PythonListExpression( ); } RBRACK // for initializations like a = []
-	| LCURLY ( exp0 = dictmaker { exp = exp0; } ) RCURLY
-	| LCURLY { exp = new PythonDictExpression(); } RCURLY // for initialization like a = {}
-	| BACKQUOTE exp0 = testlist { exp = exp0; } BACKQUOTE
+	  lb = LPAREN ( exp0 = tuplelist { exp = exp0;} ) rb = RPAREN { setStartEndForEmbracedExpr(exp,lb,rb); }
+	| lb = LPAREN { exp = new PythonTupleExpression(); } rb = RPAREN { setStartEndForEmbracedExpr(exp,lb,rb); } // for initializations like a = ()
+	| lb = LBRACK ( exp0 = listmaker {exp = exp0; } ) rb = RBRACK { setStartEndForEmbracedExpr(exp,lb,rb); }
+	| lb =LBRACK { exp = new PythonListExpression( ); } rb = RBRACK { setStartEndForEmbracedExpr(exp,lb,rb); }  // for initializations like a = []
+	| a1=LCURLY {lb =a1;} ( exp0 = dictmaker { exp = exp0; } ) rb = RCURLY { setStartEndForEmbracedExpr(exp,lb,rb); }
+	| lb =LCURLY { exp = new PythonDictExpression(); } rb = RCURLY { setStartEndForEmbracedExpr(exp,lb,rb); }  // for initialization like a = {}
+	| lb = BACKQUOTE exp0 = testlist { exp = exp0; } rb =  BACKQUOTE { setStartEndForEmbracedExpr(exp,lb,rb); }
 	| n =NAME { exp = new VariableReference( toDLTK( n ) ); }	
 	| i = INT  { exp = new NumericLiteral( toDLTK( i ) );} 
     	| li = LONGINT { exp=new NumericLiteral( toDLTK( li ) );}
@@ -1454,6 +1465,7 @@ testlist returns [ Expression p = new EmptyExpression() ]:
 		p = e0;
 		listExpression.addExpression( e0 );
 		if( p != null && p.sourceEnd() > end ) {
+			listExpression.setStart(p.sourceStart());
 			end = p.sourceEnd();
 		}
 	}
@@ -1490,14 +1502,11 @@ tuplelist returns [ Expression p = null ]:
     			{
     				if( !( p instanceof PythonTupleExpression ) ) {
 	    				PythonTupleExpression tuple = new PythonTupleExpression();
-	    				tuple.setStart( p.sourceStart() - 1 );
-	    				tuple.setEnd( p.sourceEnd() + 1 );
     					tuple.addExpression( p );
     					p = tuple;
     				}
     				PythonTupleExpression tup = (PythonTupleExpression)p;
     				tup.addExpression( e0 );
-    				tup.setEnd(e0.sourceEnd() + 1);
     			}
     	)*
         (options {greedy=true;}:COMMA)?
@@ -1629,7 +1638,7 @@ argument returns [ Expression e = null ]:
 
 /////////////////////////////////////////////////////////////////////
 //Lexer rules
-//lexer grammar python_v3;
+//lexer grammar python_v3;ASSIGN
 //@lexer::options
 //{
 //	k = 3;

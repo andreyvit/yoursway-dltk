@@ -36,6 +36,8 @@ public class PythonWhileStatement extends WhileStatement
 	public void setElseStatement( Statement st ) {
 
 		this.fElseStatement = st;
+		if (null != st)
+			this.setEnd(st.sourceEnd());
 	}
 
 	public Statement getElseStatement( ) {

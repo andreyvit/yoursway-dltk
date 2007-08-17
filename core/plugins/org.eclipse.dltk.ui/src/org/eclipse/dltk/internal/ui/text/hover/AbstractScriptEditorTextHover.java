@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ICodeAssist;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.util.Messages;
@@ -127,7 +128,11 @@ public abstract class AbstractScriptEditorTextHover implements
 					.getEditorInputModelElement(this.fEditor, false);
 			if (inputModelElement == null)
 				return null;
-			nature = DLTKLanguageManager.getLanguageToolkit(inputModelElement)
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(inputModelElement);
+			if( toolkit == null) {
+				return null;
+			}
+			nature = toolkit
 					.getNatureId();
 		} catch (CoreException e) {
 			return null;
