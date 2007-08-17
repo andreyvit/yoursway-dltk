@@ -53,8 +53,6 @@ public class MethodDeclaration extends Declaration {
 		this.setNameEnd(nameEnd);
 	}
 
-
-
 	public MethodDeclaration(int start, int end) {
 		super(start, end);
 	}
@@ -76,18 +74,22 @@ public class MethodDeclaration extends Declaration {
 		if (visitor.visit(this)) {
 			// Deocrators
 			if (this.decorators != null) {
-				Iterator it = this.decorators.iterator();
-				while (it.hasNext()) {
-					Decorator dec = (Decorator) it.next();
-					dec.traverse(visitor);
+				if (this.decorators != null) {
+					Iterator it = this.decorators.iterator();
+					while (it.hasNext()) {
+						Decorator dec = (Decorator) it.next();
+						dec.traverse(visitor);
+					}
 				}
 			}
 
 			// Arguments
-			Iterator it = this.arguments.iterator();
-			while (it.hasNext()) {
-				Argument arg = (Argument) it.next();
-				arg.traverse(visitor);
+			if (this.arguments != null) {
+				Iterator it = this.arguments.iterator();
+				while (it.hasNext()) {
+					Argument arg = (Argument) it.next();
+					arg.traverse(visitor);
+				}
 			}
 
 			// Body
@@ -103,7 +105,7 @@ public class MethodDeclaration extends Declaration {
 		return this.arguments;
 	}
 
-	public void addArgument (Argument arg) {
+	public void addArgument(Argument arg) {
 		this.arguments.add(arg);
 	}
 
@@ -115,8 +117,8 @@ public class MethodDeclaration extends Declaration {
 		this.acceptBody(block, true);
 	}
 
-	public void setBody (ASTListNode statement) {
-		Block b = new Block (statement.sourceStart(), statement.sourceEnd());
+	public void setBody(ASTListNode statement) {
+		Block b = new Block(statement.sourceStart(), statement.sourceEnd());
 		b.acceptStatements(statement.getChilds());
 		this.acceptBody(b, true);
 	}
@@ -152,7 +154,8 @@ public class MethodDeclaration extends Declaration {
 			}
 		}
 		output.formatPrintLn("Method" + this.getSourceRange().toString()
-				+ this.getNameSourceRange().toString() +  ": " + super.toString());
+				+ this.getNameSourceRange().toString() + ": "
+				+ super.toString());
 		output.formatPrintLn("(");
 		if (this.arguments != null && this.arguments.size() > 0) {
 			boolean first = true;

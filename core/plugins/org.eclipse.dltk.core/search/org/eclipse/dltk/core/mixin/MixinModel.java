@@ -200,7 +200,7 @@ public class MixinModel {
 		markElementAsFinal(element);
 	}
 
-	private void markElementAsFinal(MixinElement element) {
+	private synchronized void markElementAsFinal(MixinElement element) {
 		element.bFinal = true;
 		for (Iterator i = element.children.iterator(); i.hasNext();) {
 			markElementAsFinal((MixinElement) i.next());
