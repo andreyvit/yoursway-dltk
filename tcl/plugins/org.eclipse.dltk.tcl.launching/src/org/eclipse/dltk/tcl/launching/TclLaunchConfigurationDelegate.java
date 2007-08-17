@@ -68,9 +68,10 @@ public class TclLaunchConfigurationDelegate extends
 			throws CoreException {
 		InterpreterConfig config = super.createInterpreterConfig(
 				configuration, launch);
-
-		addLibpathEnvVar(config, configuration);
-		checkEnvVars(config, configuration);
+		if( config != null ) {
+			addLibpathEnvVar(config, configuration);
+			checkEnvVars(config, configuration);
+		}
 
 		return config;
 	}
