@@ -11,7 +11,9 @@ package org.eclipse.dltk.launching;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -697,8 +699,25 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		config.addInterpreterArgs(interpreterArgs);
 
 		// Environment
-		config.addEnvVars(DebugPlugin.getDefault().getLaunchManager()
-				.getNativeEnvironmentCasePreserved());
+		// config.addEnvVars(DebugPlugin.getDefault().getLaunchManager()
+		// .getNativeEnvironmentCasePreserved());
+		Map configEnv = configuration.getAttribute(
+				ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new HashMap());
+		// build base environment
+		Map env = DebugPlugin.getDefault().getLaunchManager()
+				.getNativeEnvironmentCasePreserved();
+		boolean append = configuration.getAttribute(
+				ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
+		if (configEnv != null) {
+			for (Iterator iterator = configEnv.keySet().iterator(); iterator
+					.hasNext();) {
+				String name = (String) iterator.next();
+				if (!env.containsKey(name) || !append) {
+					env.put(name, configEnv.get(name));
+				}
+			}
+		}
+		config.addEnvVars(env);
 
 		return config;
 	}
