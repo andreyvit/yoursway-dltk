@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site pack200="true"
 mirrorsURL="http://www.eclipse.org/downloads/download.php?file=/technology/dltk/updates/0.9/site-interim.xml&amp;format=xml"
-digestURL="http://download.eclipse.org/technology/dltk/updates/0.9/">
+digestURL="http://download.eclipse.org/technology/dltk/updates/1.0/">
 
    <description url="http://download.eclipse.org/technology/dltk/index.html">
       The update site contains the features of the Eclipse Dynamic Languages Toolkit Project (DLTK)
