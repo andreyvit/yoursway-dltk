@@ -18,5 +18,6 @@ Export-Package: org.eclipse.dltk.xotcl.core,
  org.eclipse.dltk.xotcl.internal.core.parser;x-friends:="org.eclipse.dltk.xotcl.core.tests,org.eclipse.dltk.xotcl.ui",
  org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl;x-friends:="org.eclipse.dltk.xotcl.core.tests,org.eclipse.dltk.xotcl.ui",
  org.eclipse.dltk.xotcl.internal.core.parser.processors.xotcl;x-friends:="org.eclipse.dltk.xotcl.core,org.eclipse.dltk.xotcl.ui",
- org.eclipse.dltk.xotcl.internal.core.search;x-friends:="org.eclipse.dltk.xotcl.core,org.eclipse.dltk.xotcl.ui"
+ org.eclipse.dltk.xotcl.internal.core.search;x-friends:="org.eclipse.dltk.xotcl.core,org.eclipse.dltk.xotcl.ui",
+ org.eclipse.dltk.xotcl.internal.core.search.mixin
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

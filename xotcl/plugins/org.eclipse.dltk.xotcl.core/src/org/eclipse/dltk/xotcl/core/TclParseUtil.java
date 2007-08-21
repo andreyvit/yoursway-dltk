@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.declarations.Declaration;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
@@ -24,7 +25,6 @@ import org.eclipse.dltk.tcl.internal.parsers.raw.SimpleTclParser;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclElement;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclWord;
-import org.eclipse.dltk.xotcl.core.ITclCommandDetector.CommandInfo;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
 
@@ -276,6 +276,38 @@ public class TclParseUtil {
 
 	public static TypeDeclaration findXOTclTypeDeclarationFrom(
 			ModuleDeclaration module, ASTNode parent, String originalName) {
+		return findTclTypeDeclarationFrom(module, parent, originalName, true);
+	}
+
+	public static TypeDeclaration findTclTypeDeclarationFrom(
+			ModuleDeclaration module, ASTNode node) {
+		String name = getNameFromNode(node);
+		if (name == null) {
+			return null;
+		}
+		if (name.indexOf("::") != -1) {
+			name = name.substring(0, name.lastIndexOf("::"));
+		}
+		List levels = findLevelsTo(module, node);
+		if (levels.size() - 2 > 0) {
+			return findTclTypeDeclarationFrom(module, (ASTNode) levels
+					.get(levels.size() - 2), name, false);
+		}
+		return null;
+	}
+
+	public static String getNameFromNode(ASTNode node) {
+		if (node instanceof Declaration) {
+			return ((Declaration) node).getName();
+		} else if (node instanceof SimpleReference) {
+			return ((SimpleReference) node).getName();
+		}
+		return null;
+	}
+
+	public static TypeDeclaration findTclTypeDeclarationFrom(
+			ModuleDeclaration module, ASTNode parent, String originalName,
+			boolean onlyXOTcl) {
 		String name = originalName;
 		boolean startFromTop = false;
 		if (name.startsWith("::")) {
@@ -294,44 +326,78 @@ public class TclParseUtil {
 				if (childs == null) {
 					continue;
 				}
-				TypeDeclaration ty = findXOTclTypeCheckASTLevel(originalName,
-						split, childs);
+				TypeDeclaration ty = findTclTypeCheckASTLevel(originalName,
+						split, childs, onlyXOTcl);
 				if (ty != null) {
 					return ty;
 				}
+			}
+		} else {
+			List childs = TclASTUtil.getStatements(module);
+			if (childs == null) {
+				return null;
+			}
+			TypeDeclaration ty = findTclTypeCheckASTLevel(originalName, split,
+					childs, onlyXOTcl);
+			if (ty != null) {
+				return ty;
 			}
 		}
 		return null;
 	}
 
-	private static TypeDeclaration findXOTclTypeCheckASTLevel(
-			String originalName, String[] split, List childs) {
+	private static TypeDeclaration findTclTypeCheckASTLevel(
+			String originalName, String[] split, List childs, boolean onlyXOTcl) {
 		for (int i = 0; i < childs.size(); i++) {
 			if (!(childs.get(i) instanceof TypeDeclaration)) {
 				continue;
 			}
 			TypeDeclaration type = (TypeDeclaration) childs.get(i);
-			if ((type.getModifiers() & IXOTclModifiers.AccXOTcl) != 0) {
-				if (type.getName().equals(originalName)) { // Check for
-															// original name
-					return type;
-				} else {
-					if (type.getName().equals(split[0]) && split.length == 1) {
-						return type;
-					} else {
-						if (split.length > 1) {
+			if ((type.getModifiers() & IXOTclModifiers.AccXOTcl) != 0
+					|| !onlyXOTcl) {
+//				if (type.getName().equals(originalName)) { // Check for
+//					// original name
+//					return type;
+//				}
+				// Check complex in
+				String cName = split[0];
+				for( int q = 1; q <= split.length; ++q ) {
+					if( type.getName().equals(cName)) {
+						if( q == split.length) {
+							return type;
+						}
+						else {
+							String nsplit[] = new String[split.length - q];
+							System.arraycopy(split, q, nsplit, 0, split.length - q);
 							List nchilds = TclASTUtil.getStatements(type);
 							if (childs == null) {
 								continue;
 							}
-							String nsplit[] = new String[split.length - 1];
-							System.arraycopy(split, 1, nsplit, 0,
-									split.length - 1);
-							TypeDeclaration ty = findXOTclTypeCheckASTLevel(
-									originalName, nsplit, nchilds);
+							TypeDeclaration ty = findTclTypeCheckASTLevel(
+									originalName, nsplit, nchilds, onlyXOTcl);
 							if (ty != null) {
 								return ty;
 							}
+						}
+					}
+					if( q != split.length ) {
+						cName += "::" + split[q];
+					}
+				}
+				if (type.getName().equals(split[0]) && split.length == 1) {
+					return type;
+				} else {
+					if (split.length > 1) {
+						List nchilds = TclASTUtil.getStatements(type);
+						if (childs == null) {
+							continue;
+						}
+						String nsplit[] = new String[split.length - 1];
+						System.arraycopy(split, 1, nsplit, 0, split.length - 1);
+						TypeDeclaration ty = findTclTypeCheckASTLevel(
+								originalName, nsplit, nchilds, onlyXOTcl);
+						if (ty != null) {
+							return ty;
 						}
 					}
 				}
@@ -363,6 +429,7 @@ public class TclParseUtil {
 		}
 		return null;
 	}
+
 	public static XOTclObjectDeclaration findXOTclObjectInstanceFrom(
 			ModuleDeclaration module, ASTNode parent, String commandNameValue) {
 		List levels = TclParseUtil.findLevelsTo(module, parent);
@@ -382,6 +449,25 @@ public class TclParseUtil {
 				if (inst.getName().equals(commandNameValue)) {
 					return inst;
 				}
+			}
+		}
+		return null;
+	}
+
+	public static TypeDeclaration findTypesFromASTNode(
+			ModuleDeclaration module, ASTNode node, String name) {
+		List levels = findLevelsTo(module, node);
+		String[] split = name.split("::");
+		for (int i = 0; i < levels.size() - 1; i++) {
+			ASTNode nde = (ASTNode) levels.get(levels.size() - i - 2);
+			if (nde instanceof TypeDeclaration) {
+				TypeDeclaration type = (TypeDeclaration) nde;
+				if (split.length == 2) {
+					if (type.getName().equals(split[0])) {
+						return type;
+					}
+				}
+				TypeDeclaration[] types = type.getTypes();
 			}
 		}
 		return null;

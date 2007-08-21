@@ -22,6 +22,9 @@ public interface IMixinRequestor {
 		 * All possible user object.
 		 */
 		public Object object;
+		public String toString() {
+			return key + " : " + object;
+		}
 	}
 	void reportElement( ElementInfo info );
 }
