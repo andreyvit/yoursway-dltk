@@ -176,7 +176,7 @@ public class TclIfProcessor extends AbstractTclCommandProcessor {
 	}
 
 	private Statement extractCondition(List exprs, int i, ITclParser parser) {
-		if( exprs.size() >= i ) {
+		if( exprs.size() <= i ) {
 			return null;
 		}
 		ASTNode node = (ASTNode) exprs.get(i);
