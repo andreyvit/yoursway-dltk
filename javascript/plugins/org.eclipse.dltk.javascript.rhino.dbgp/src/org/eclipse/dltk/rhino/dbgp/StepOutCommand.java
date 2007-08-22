@@ -23,6 +23,6 @@ final class StepOutCommand extends DBGPDebugger.Command {
 	void parseAndExecute(String command, HashMap options) {
 		Object tid = options.get("-i");
 		this.debugger.runTransctionId = (String) tid;
-		this.debugger.cmanager.stepOut();
+		this.debugger.stackmanager.stepOut();
 	}
 }

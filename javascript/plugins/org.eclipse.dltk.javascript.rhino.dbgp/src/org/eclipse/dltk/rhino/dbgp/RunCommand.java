@@ -27,7 +27,7 @@ final class RunCommand extends DBGPDebugger.Command {
 		synchronized (this.debugger) {
 			this.debugger.notify();
 		}
-		this.debugger.cmanager.resume();
+		this.debugger.stackmanager.resume();
 		// printResponse("<response command=\"run\"\r\n"
 		// + "status=\"starting\"" + " reason=\"ok\""
 		// + " transaction_id=\"" + object + "\">\r\n"

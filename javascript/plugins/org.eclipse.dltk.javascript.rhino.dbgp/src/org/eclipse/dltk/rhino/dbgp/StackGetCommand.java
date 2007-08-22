@@ -28,9 +28,9 @@ final class StackGetCommand extends DBGPDebugger.Command {
 			level = Integer.parseInt(string);	
 		}		
 		StringBuffer stack = new StringBuffer();
-		if (this.debugger.cmanager.getStackDepth() >= level) {
+		if (this.debugger.stackmanager.getStackDepth() >= level) {
 			if (level==-1){
-				for (int a=0;a<this.debugger.cmanager.getStackDepth();a++){
+				for (int a=0;a<this.debugger.stackmanager.getStackDepth();a++){
 					appendLevel(a, stack);
 				}
 			}
@@ -48,7 +48,7 @@ final class StackGetCommand extends DBGPDebugger.Command {
 	}
 
 	private void appendLevel(int level, StringBuffer stack) {
-		DBGPDebugFrame stackFrame = this.debugger.cmanager.getStackFrame(level);
+		DBGPDebugFrame stackFrame = this.debugger.stackmanager.getStackFrame(level);
 		stack.append("<stack level=\""
 				+ level
 				+ "\"\r\n"

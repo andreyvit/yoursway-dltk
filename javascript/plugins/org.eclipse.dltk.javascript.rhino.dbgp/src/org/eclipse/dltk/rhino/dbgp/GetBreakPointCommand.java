@@ -16,7 +16,7 @@ public class GetBreakPointCommand extends Command {
 	void parseAndExecute(String command, HashMap options) {
 		String id = (String) options.get("-d");
 
-		BreakPoint breakpoint = this.debugger.cmanager.getBreakpoint(id);
+		BreakPoint breakpoint = this.debugger.stackmanager.getBreakpoint(id);
 		this.debugger.printResponse("<response command=\"breakpoint_get\"\r\n"
 				+ " transaction_id=\""
 				+ options.get("-i")

@@ -24,7 +24,7 @@ final class ContextGetCommand extends DBGPDebugger.Command {
 	void parseAndExecute(String command, HashMap options) {
 		StringBuffer properties = new StringBuffer();
 		int level = Integer.parseInt((String) options.get("-d"));
-		DBGPDebugFrame stackFrame = this.debugger.cmanager.getStackFrame(level);
+		DBGPDebugFrame stackFrame = this.debugger.stackmanager.getStackFrame(level);
 		String[] propertyIds = stackFrame.getParametersAndVars();
 		for (int a = 0; a < propertyIds.length; a++) {
 			String id = propertyIds[a].toString();

@@ -11,12 +11,16 @@ public class DBGPStackManager {
 	protected static WeakHashMap map = new WeakHashMap();
 
 	private ArrayList stack = new ArrayList();
+	
+	private static boolean breakpointsThreadLocal;
 
 	private boolean needSuspend;
 
 	private DBGPDebugger observer;
 
-	private BreakPointManager manager = new BreakPointManager();
+	private BreakPointManager manager = null;
+	
+	private static BreakPointManager gmanager = null;
 
 	private boolean suspendOnExit;
 
@@ -29,6 +33,15 @@ public class DBGPStackManager {
 	}
 
 	private DBGPStackManager() {
+		if (isBreakpointsThreadLocal()){
+		manager=new BreakPointManager();
+		}
+		else{
+			synchronized (DBGPStackManager.class) {
+				if (gmanager==null)gmanager=new BreakPointManager();
+			}
+			manager=gmanager;
+		}
 	}
 
 	public static DBGPStackManager getManager(Context cx) {
@@ -43,7 +56,7 @@ public class DBGPStackManager {
 	public void enter(DBGPDebugFrame debugFrame) {
 		stack.add(debugFrame);
 		if (suspendOnEntry) {
-			if (debugFrame.getWhere().equals("module")){
+			if (debugFrame.getWhere().equals("module")) {
 				observer.update(null, this);
 				synchronized (this) {
 					try {
@@ -53,14 +66,14 @@ public class DBGPStackManager {
 						e.printStackTrace();
 					}
 				}
-			}
-			else suspenOnChangeLine=true;
+			} else
+				suspenOnChangeLine = true;
 		}
 	}
 
 	public void exit(DBGPDebugFrame debugFrame) {
 		if (needSuspend || suspendOnExit) {
-			
+
 			observer.update(null, this);
 			synchronized (this) {
 				try {
@@ -83,8 +96,8 @@ public class DBGPStackManager {
 	}
 
 	public void changeLine(DBGPDebugFrame frame, int lineNumber) {
-		if (suspenOnChangeLine){
-			suspenOnChangeLine=false;
+		if (suspenOnChangeLine) {
+			suspenOnChangeLine = false;
 			observer.update(null, this);
 			synchronized (this) {
 				try {
@@ -93,7 +106,7 @@ public class DBGPStackManager {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}			
+			}
 		}
 		if (frame.isSuspend()) {
 			needSuspend = true;
@@ -217,4 +230,14 @@ public class DBGPStackManager {
 	public void setSuspendOnEntry(boolean parseBoolean) {
 		this.suspendOnExit = parseBoolean;
 	}
+
+	public static boolean isBreakpointsThreadLocal() {
+		return breakpointsThreadLocal;
+	}
+
+	public static void setBreakpointsThreadLocal(boolean breakpointsThreadLocal) {
+		DBGPStackManager.breakpointsThreadLocal = breakpointsThreadLocal;
+	}
+
+
 }

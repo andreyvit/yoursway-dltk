@@ -28,7 +28,7 @@ final class PropertyGetCommand extends DBGPDebugger.Command {
 			level = Integer.parseInt(depth);
 		}
 		StringBuffer properties = new StringBuffer();
-		DBGPDebugFrame stackFrame = this.debugger.cmanager.getStackFrame(level);
+		DBGPDebugFrame stackFrame = this.debugger.stackmanager.getStackFrame(level);
 		Object value = stackFrame.getValue(longName);
 		int shName = longName.indexOf('.');
 		if (shName == -1)

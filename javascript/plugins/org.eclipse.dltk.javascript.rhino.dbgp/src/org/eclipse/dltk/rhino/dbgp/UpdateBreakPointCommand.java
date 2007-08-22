@@ -31,7 +31,7 @@ final class UpdateBreakPointCommand extends DBGPDebugger.Command {
 		
 		if (condEString!=null)condEString=Base64Helper.decodeString(condEString);
 		
-		this.debugger.cmanager.updateBreakpoint(id, newState, newLine, hitValue,
+		this.debugger.stackmanager.updateBreakpoint(id, newState, newLine, hitValue,
 				hitCondition,condEString);
 		String enabled=newState;
 		this.debugger.printResponse("<response command=\"breakpoint_update\"\r\n"

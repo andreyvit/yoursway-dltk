@@ -21,7 +21,7 @@ final class BreakCommand extends DBGPDebugger.Command {
 	}
 
 	void parseAndExecute(String command, final HashMap options) {
-		this.debugger.cmanager.suspend();
+		this.debugger.stackmanager.suspend();
 		this.debugger.printResponse("<response command=\"break\"\r\n"
 				+ "          success=\"1\"\r\n"
 				+ "          transaction_id=\"" + options.get("-i")
