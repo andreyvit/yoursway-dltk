@@ -1250,37 +1250,33 @@ public class GeneratedModelTests4 extends AbstractModelTests
 						method__init__46 = ModelTestUtils.getAssertMethod( classNameLookupTracer45Childs, "__init__", 2 );
 						ModelTestUtils.assertParameterNames( method__init__46, new String[] {"self", "index"} );
 					}
-					{
-						IModelElement[] classNameLookupTracer45Childs = classNameLookupTracer45.getChildren();
-						IField fieldValue = ModelTestUtils.getAssertField( classNameLookupTracer45Childs, "index");
-					}
 					//Function test:__getattr__
 					{
-					IMethod method__getattr__48;
+					IMethod method__getattr__47;
 						IModelElement[] classNameLookupTracer45Childs = classNameLookupTracer45.getChildren();
-						method__getattr__48 = ModelTestUtils.getAssertMethod( classNameLookupTracer45Childs, "__getattr__", 2 );
-						ModelTestUtils.assertParameterNames( method__getattr__48, new String[] {"self", "fname"} );
+						method__getattr__47 = ModelTestUtils.getAssertMethod( classNameLookupTracer45Childs, "__getattr__", 2 );
+						ModelTestUtils.assertParameterNames( method__getattr__47, new String[] {"self", "fname"} );
 					}
 				}
 				//Function test:foo
 				{
-				IMethod methodfoo49;
+				IMethod methodfoo48;
 					IModelElement[] methodtest_eval_order42Childs = methodtest_eval_order42.getChildren();
-					methodfoo49 = ModelTestUtils.getAssertMethod( methodtest_eval_order42Childs, "foo", 0 );
+					methodfoo48 = ModelTestUtils.getAssertMethod( methodtest_eval_order42Childs, "foo", 0 );
 				}
 				//Function test:bar
 				{
-				IMethod methodbar50;
+				IMethod methodbar49;
 					IModelElement[] methodtest_eval_order42Childs = methodtest_eval_order42.getChildren();
-					methodbar50 = ModelTestUtils.getAssertMethod( methodtest_eval_order42Childs, "bar", 0 );
+					methodbar49 = ModelTestUtils.getAssertMethod( methodtest_eval_order42Childs, "bar", 0 );
 				}
 			}
 		}
 		//Function test:test_main
 		{
-		IMethod methodtest_main51;
+		IMethod methodtest_main50;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_main51 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 0 );
+			methodtest_main50 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 0 );
 		}
 
 	}
@@ -1850,72 +1846,64 @@ public class GeneratedModelTests4 extends AbstractModelTests
 				method__init__78 = ModelTestUtils.getAssertMethod( classFunkyProperties77Childs, "__init__", 1 );
 				ModelTestUtils.assertParameterNames( method__init__78, new String[] {"self"} );
 			}
-			{
-				IModelElement[] classFunkyProperties77Childs = classFunkyProperties77.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classFunkyProperties77Childs, "desc");
-			}
 			//Class test
 			{
-			IType classget_desc80;
+			IType classget_desc79;
 				IModelElement[] classFunkyProperties77Childs = classFunkyProperties77.getChildren();
-				classget_desc80 = ModelTestUtils.getAssertClass( classFunkyProperties77Childs, "get_desc" );
+				classget_desc79 = ModelTestUtils.getAssertClass( classFunkyProperties77Childs, "get_desc" );
 				//Function test:__init__
 				{
-				IMethod method__init__81;
-					IModelElement[] classget_desc80Childs = classget_desc80.getChildren();
-					method__init__81 = ModelTestUtils.getAssertMethod( classget_desc80Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__81, new String[] {"self", "attr"} );
-				}
-				{
-					IModelElement[] classget_desc80Childs = classget_desc80.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classget_desc80Childs, "attr");
+				IMethod method__init__80;
+					IModelElement[] classget_desc79Childs = classget_desc79.getChildren();
+					method__init__80 = ModelTestUtils.getAssertMethod( classget_desc79Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__80, new String[] {"self", "attr"} );
 				}
 				//Function test:__call__
 				{
-				IMethod method__call__83;
-					IModelElement[] classget_desc80Childs = classget_desc80.getChildren();
-					method__call__83 = ModelTestUtils.getAssertMethod( classget_desc80Childs, "__call__", 2 );
-					ModelTestUtils.assertParameterNames( method__call__83, new String[] {"self", "inst"} );
+				IMethod method__call__81;
+					IModelElement[] classget_desc79Childs = classget_desc79.getChildren();
+					method__call__81 = ModelTestUtils.getAssertMethod( classget_desc79Childs, "__call__", 2 );
+					ModelTestUtils.assertParameterNames( method__call__81, new String[] {"self", "inst"} );
 				}
 			}
 			//Class test
 			{
-			IType classset_desc84;
+			IType classset_desc82;
 				IModelElement[] classFunkyProperties77Childs = classFunkyProperties77.getChildren();
-				classset_desc84 = ModelTestUtils.getAssertClass( classFunkyProperties77Childs, "set_desc" );
+				classset_desc82 = ModelTestUtils.getAssertClass( classFunkyProperties77Childs, "set_desc" );
 				//Function test:__init__
 				{
-				IMethod method__init__85;
-					IModelElement[] classset_desc84Childs = classset_desc84.getChildren();
-					method__init__85 = ModelTestUtils.getAssertMethod( classset_desc84Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__85, new String[] {"self", "attr"} );
+				IMethod method__init__83;
+					IModelElement[] classset_desc82Childs = classset_desc82.getChildren();
+					method__init__83 = ModelTestUtils.getAssertMethod( classset_desc82Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__83, new String[] {"self", "attr"} );
 				}
 				//Function test:__call__
 				{
-				IMethod method__call__86;
-					IModelElement[] classset_desc84Childs = classset_desc84.getChildren();
-					method__call__86 = ModelTestUtils.getAssertMethod( classset_desc84Childs, "__call__", 3 );
-					ModelTestUtils.assertParameterNames( method__call__86, new String[] {"self", "inst", "val"} );
+				IMethod method__call__84;
+					IModelElement[] classset_desc82Childs = classset_desc82.getChildren();
+					method__call__84 = ModelTestUtils.getAssertMethod( classset_desc82Childs, "__call__", 3 );
+					ModelTestUtils.assertParameterNames( method__call__84, new String[] {"self", "inst", "val"} );
 				}
 			}
 			//Class test
 			{
-			IType classdel_desc87;
+			IType classdel_desc85;
 				IModelElement[] classFunkyProperties77Childs = classFunkyProperties77.getChildren();
-				classdel_desc87 = ModelTestUtils.getAssertClass( classFunkyProperties77Childs, "del_desc" );
+				classdel_desc85 = ModelTestUtils.getAssertClass( classFunkyProperties77Childs, "del_desc" );
 				//Function test:__init__
 				{
-				IMethod method__init__88;
-					IModelElement[] classdel_desc87Childs = classdel_desc87.getChildren();
-					method__init__88 = ModelTestUtils.getAssertMethod( classdel_desc87Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__88, new String[] {"self", "attr"} );
+				IMethod method__init__86;
+					IModelElement[] classdel_desc85Childs = classdel_desc85.getChildren();
+					method__init__86 = ModelTestUtils.getAssertMethod( classdel_desc85Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__86, new String[] {"self", "attr"} );
 				}
 				//Function test:__call__
 				{
-				IMethod method__call__89;
-					IModelElement[] classdel_desc87Childs = classdel_desc87.getChildren();
-					method__call__89 = ModelTestUtils.getAssertMethod( classdel_desc87Childs, "__call__", 2 );
-					ModelTestUtils.assertParameterNames( method__call__89, new String[] {"self", "inst"} );
+				IMethod method__call__87;
+					IModelElement[] classdel_desc85Childs = classdel_desc85.getChildren();
+					method__call__87 = ModelTestUtils.getAssertMethod( classdel_desc85Childs, "__call__", 2 );
+					ModelTestUtils.assertParameterNames( method__call__87, new String[] {"self", "inst"} );
 				}
 			}
 			{
@@ -2100,105 +2088,89 @@ public class GeneratedModelTests4 extends AbstractModelTests
 				method__init__24 = ModelTestUtils.getAssertMethod( classTestDTDHandler23Childs, "__init__", 1 );
 				ModelTestUtils.assertParameterNames( method__init__24, new String[] {"self"} );
 			}
-			{
-				IModelElement[] classTestDTDHandler23Childs = classTestDTDHandler23.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestDTDHandler23Childs, "_notations");
-			}
-			{
-				IModelElement[] classTestDTDHandler23Childs = classTestDTDHandler23.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestDTDHandler23Childs, "_entities");
-			}
 			//Function test:notationDecl
 			{
-			IMethod methodnotationDecl26;
+			IMethod methodnotationDecl25;
 				IModelElement[] classTestDTDHandler23Childs = classTestDTDHandler23.getChildren();
-				methodnotationDecl26 = ModelTestUtils.getAssertMethod( classTestDTDHandler23Childs, "notationDecl", 4 );
-				ModelTestUtils.assertParameterNames( methodnotationDecl26, new String[] {"self", "name", "publicId", "systemId"} );
+				methodnotationDecl25 = ModelTestUtils.getAssertMethod( classTestDTDHandler23Childs, "notationDecl", 4 );
+				ModelTestUtils.assertParameterNames( methodnotationDecl25, new String[] {"self", "name", "publicId", "systemId"} );
 			}
 			//Function test:unparsedEntityDecl
 			{
-			IMethod methodunparsedEntityDecl27;
+			IMethod methodunparsedEntityDecl26;
 				IModelElement[] classTestDTDHandler23Childs = classTestDTDHandler23.getChildren();
-				methodunparsedEntityDecl27 = ModelTestUtils.getAssertMethod( classTestDTDHandler23Childs, "unparsedEntityDecl", 5 );
-				ModelTestUtils.assertParameterNames( methodunparsedEntityDecl27, new String[] {"self", "name", "publicId", "systemId", "ndata"} );
+				methodunparsedEntityDecl26 = ModelTestUtils.getAssertMethod( classTestDTDHandler23Childs, "unparsedEntityDecl", 5 );
+				ModelTestUtils.assertParameterNames( methodunparsedEntityDecl26, new String[] {"self", "name", "publicId", "systemId", "ndata"} );
 			}
 		}
 		//Function test:test_expat_dtdhandler
 		{
-		IMethod methodtest_expat_dtdhandler28;
+		IMethod methodtest_expat_dtdhandler27;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_dtdhandler28 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_dtdhandler", 0 );
+			methodtest_expat_dtdhandler27 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_dtdhandler", 0 );
 		}
 		//Class test
 		{
-		IType classTestEntityResolver29;
+		IType classTestEntityResolver28;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestEntityResolver29 = ModelTestUtils.getAssertClass( moduleChilds, "TestEntityResolver" );
+			classTestEntityResolver28 = ModelTestUtils.getAssertClass( moduleChilds, "TestEntityResolver" );
 			//Function test:resolveEntity
 			{
-			IMethod methodresolveEntity30;
-				IModelElement[] classTestEntityResolver29Childs = classTestEntityResolver29.getChildren();
-				methodresolveEntity30 = ModelTestUtils.getAssertMethod( classTestEntityResolver29Childs, "resolveEntity", 3 );
-				ModelTestUtils.assertParameterNames( methodresolveEntity30, new String[] {"self", "publicId", "systemId"} );
+			IMethod methodresolveEntity29;
+				IModelElement[] classTestEntityResolver28Childs = classTestEntityResolver28.getChildren();
+				methodresolveEntity29 = ModelTestUtils.getAssertMethod( classTestEntityResolver28Childs, "resolveEntity", 3 );
+				ModelTestUtils.assertParameterNames( methodresolveEntity29, new String[] {"self", "publicId", "systemId"} );
 			}
 		}
 		//Function test:test_expat_entityresolver
 		{
-		IMethod methodtest_expat_entityresolver31;
+		IMethod methodtest_expat_entityresolver30;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_entityresolver31 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_entityresolver", 0 );
+			methodtest_expat_entityresolver30 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_entityresolver", 0 );
 		}
 		//Class test
 		{
-		IType classAttrGatherer32;
+		IType classAttrGatherer31;
 			IModelElement[] moduleChilds = module.getChildren();
-			classAttrGatherer32 = ModelTestUtils.getAssertClass( moduleChilds, "AttrGatherer" );
+			classAttrGatherer31 = ModelTestUtils.getAssertClass( moduleChilds, "AttrGatherer" );
 			//Function test:startElement
 			{
-			IMethod methodstartElement33;
-				IModelElement[] classAttrGatherer32Childs = classAttrGatherer32.getChildren();
-				methodstartElement33 = ModelTestUtils.getAssertMethod( classAttrGatherer32Childs, "startElement", 3 );
-				ModelTestUtils.assertParameterNames( methodstartElement33, new String[] {"self", "name", "attrs"} );
-			}
-			{
-				IModelElement[] classAttrGatherer32Childs = classAttrGatherer32.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classAttrGatherer32Childs, "_attrs");
+			IMethod methodstartElement32;
+				IModelElement[] classAttrGatherer31Childs = classAttrGatherer31.getChildren();
+				methodstartElement32 = ModelTestUtils.getAssertMethod( classAttrGatherer31Childs, "startElement", 3 );
+				ModelTestUtils.assertParameterNames( methodstartElement32, new String[] {"self", "name", "attrs"} );
 			}
 			//Function test:startElementNS
 			{
-			IMethod methodstartElementNS35;
-				IModelElement[] classAttrGatherer32Childs = classAttrGatherer32.getChildren();
-				methodstartElementNS35 = ModelTestUtils.getAssertMethod( classAttrGatherer32Childs, "startElementNS", 4 );
-				ModelTestUtils.assertParameterNames( methodstartElementNS35, new String[] {"self", "name", "qname", "attrs"} );
-			}
-			{
-				IModelElement[] classAttrGatherer32Childs = classAttrGatherer32.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classAttrGatherer32Childs, "_attrs");
+			IMethod methodstartElementNS33;
+				IModelElement[] classAttrGatherer31Childs = classAttrGatherer31.getChildren();
+				methodstartElementNS33 = ModelTestUtils.getAssertMethod( classAttrGatherer31Childs, "startElementNS", 4 );
+				ModelTestUtils.assertParameterNames( methodstartElementNS33, new String[] {"self", "name", "qname", "attrs"} );
 			}
 		}
 		//Function test:test_expat_attrs_empty
 		{
-		IMethod methodtest_expat_attrs_empty37;
+		IMethod methodtest_expat_attrs_empty34;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_attrs_empty37 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_attrs_empty", 0 );
+			methodtest_expat_attrs_empty34 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_attrs_empty", 0 );
 		}
 		//Function test:test_expat_attrs_wattr
 		{
-		IMethod methodtest_expat_attrs_wattr38;
+		IMethod methodtest_expat_attrs_wattr35;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_attrs_wattr38 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_attrs_wattr", 0 );
+			methodtest_expat_attrs_wattr35 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_attrs_wattr", 0 );
 		}
 		//Function test:test_expat_nsattrs_empty
 		{
-		IMethod methodtest_expat_nsattrs_empty39;
+		IMethod methodtest_expat_nsattrs_empty36;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_nsattrs_empty39 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_nsattrs_empty", 0 );
+			methodtest_expat_nsattrs_empty36 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_nsattrs_empty", 0 );
 		}
 		//Function test:test_expat_nsattrs_wattr
 		{
-		IMethod methodtest_expat_nsattrs_wattr40;
+		IMethod methodtest_expat_nsattrs_wattr37;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_nsattrs_wattr40 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_nsattrs_wattr", 0 );
+			methodtest_expat_nsattrs_wattr37 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_nsattrs_wattr", 0 );
 		}
 		{
 			IModelElement[] moduleChilds = module.getChildren();
@@ -2206,163 +2178,155 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Function test:test_expat_inpsource_filename
 		{
-		IMethod methodtest_expat_inpsource_filename41;
+		IMethod methodtest_expat_inpsource_filename38;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_inpsource_filename41 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_inpsource_filename", 0 );
+			methodtest_expat_inpsource_filename38 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_inpsource_filename", 0 );
 		}
 		//Function test:test_expat_inpsource_sysid
 		{
-		IMethod methodtest_expat_inpsource_sysid42;
+		IMethod methodtest_expat_inpsource_sysid39;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_inpsource_sysid42 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_inpsource_sysid", 0 );
+			methodtest_expat_inpsource_sysid39 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_inpsource_sysid", 0 );
 		}
 		//Function test:test_expat_inpsource_stream
 		{
-		IMethod methodtest_expat_inpsource_stream43;
+		IMethod methodtest_expat_inpsource_stream40;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_inpsource_stream43 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_inpsource_stream", 0 );
+			methodtest_expat_inpsource_stream40 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_inpsource_stream", 0 );
 		}
 		//Function test:test_expat_incremental
 		{
-		IMethod methodtest_expat_incremental44;
+		IMethod methodtest_expat_incremental41;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_incremental44 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_incremental", 0 );
+			methodtest_expat_incremental41 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_incremental", 0 );
 		}
 		//Function test:test_expat_incremental_reset
 		{
-		IMethod methodtest_expat_incremental_reset45;
+		IMethod methodtest_expat_incremental_reset42;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_incremental_reset45 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_incremental_reset", 0 );
+			methodtest_expat_incremental_reset42 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_incremental_reset", 0 );
 		}
 		//Function test:test_expat_locator_noinfo
 		{
-		IMethod methodtest_expat_locator_noinfo46;
+		IMethod methodtest_expat_locator_noinfo43;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_locator_noinfo46 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_locator_noinfo", 0 );
+			methodtest_expat_locator_noinfo43 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_locator_noinfo", 0 );
 		}
 		//Function test:test_expat_locator_withinfo
 		{
-		IMethod methodtest_expat_locator_withinfo47;
+		IMethod methodtest_expat_locator_withinfo44;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_locator_withinfo47 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_locator_withinfo", 0 );
+			methodtest_expat_locator_withinfo44 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_locator_withinfo", 0 );
 		}
 		//Function test:test_expat_inpsource_location
 		{
-		IMethod methodtest_expat_inpsource_location48;
+		IMethod methodtest_expat_inpsource_location45;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_inpsource_location48 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_inpsource_location", 0 );
+			methodtest_expat_inpsource_location45 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_inpsource_location", 0 );
 		}
 		//Function test:test_expat_incomplete
 		{
-		IMethod methodtest_expat_incomplete49;
+		IMethod methodtest_expat_incomplete46;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_expat_incomplete49 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_incomplete", 0 );
+			methodtest_expat_incomplete46 = ModelTestUtils.getAssertMethod( moduleChilds, "test_expat_incomplete", 0 );
 		}
 		//Function test:test_sax_parse_exception_str
 		{
-		IMethod methodtest_sax_parse_exception_str50;
+		IMethod methodtest_sax_parse_exception_str47;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_sax_parse_exception_str50 = ModelTestUtils.getAssertMethod( moduleChilds, "test_sax_parse_exception_str", 0 );
+			methodtest_sax_parse_exception_str47 = ModelTestUtils.getAssertMethod( moduleChilds, "test_sax_parse_exception_str", 0 );
 		}
 		//Class test
 		{
-		IType classDummyLocator51;
+		IType classDummyLocator48;
 			IModelElement[] moduleChilds = module.getChildren();
-			classDummyLocator51 = ModelTestUtils.getAssertClass( moduleChilds, "DummyLocator" );
+			classDummyLocator48 = ModelTestUtils.getAssertClass( moduleChilds, "DummyLocator" );
 			//Function test:__init__
 			{
-			IMethod method__init__52;
-				IModelElement[] classDummyLocator51Childs = classDummyLocator51.getChildren();
-				method__init__52 = ModelTestUtils.getAssertMethod( classDummyLocator51Childs, "__init__", 3 );
-				ModelTestUtils.assertParameterNames( method__init__52, new String[] {"self", "lineno", "colno"} );
-			}
-			{
-				IModelElement[] classDummyLocator51Childs = classDummyLocator51.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classDummyLocator51Childs, "_lineno");
-			}
-			{
-				IModelElement[] classDummyLocator51Childs = classDummyLocator51.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classDummyLocator51Childs, "_colno");
+			IMethod method__init__49;
+				IModelElement[] classDummyLocator48Childs = classDummyLocator48.getChildren();
+				method__init__49 = ModelTestUtils.getAssertMethod( classDummyLocator48Childs, "__init__", 3 );
+				ModelTestUtils.assertParameterNames( method__init__49, new String[] {"self", "lineno", "colno"} );
 			}
 			//Function test:getPublicId
 			{
-			IMethod methodgetPublicId54;
-				IModelElement[] classDummyLocator51Childs = classDummyLocator51.getChildren();
-				methodgetPublicId54 = ModelTestUtils.getAssertMethod( classDummyLocator51Childs, "getPublicId", 1 );
-				ModelTestUtils.assertParameterNames( methodgetPublicId54, new String[] {"self"} );
+			IMethod methodgetPublicId50;
+				IModelElement[] classDummyLocator48Childs = classDummyLocator48.getChildren();
+				methodgetPublicId50 = ModelTestUtils.getAssertMethod( classDummyLocator48Childs, "getPublicId", 1 );
+				ModelTestUtils.assertParameterNames( methodgetPublicId50, new String[] {"self"} );
 			}
 			//Function test:getSystemId
 			{
-			IMethod methodgetSystemId55;
-				IModelElement[] classDummyLocator51Childs = classDummyLocator51.getChildren();
-				methodgetSystemId55 = ModelTestUtils.getAssertMethod( classDummyLocator51Childs, "getSystemId", 1 );
-				ModelTestUtils.assertParameterNames( methodgetSystemId55, new String[] {"self"} );
+			IMethod methodgetSystemId51;
+				IModelElement[] classDummyLocator48Childs = classDummyLocator48.getChildren();
+				methodgetSystemId51 = ModelTestUtils.getAssertMethod( classDummyLocator48Childs, "getSystemId", 1 );
+				ModelTestUtils.assertParameterNames( methodgetSystemId51, new String[] {"self"} );
 			}
 			//Function test:getLineNumber
 			{
-			IMethod methodgetLineNumber56;
-				IModelElement[] classDummyLocator51Childs = classDummyLocator51.getChildren();
-				methodgetLineNumber56 = ModelTestUtils.getAssertMethod( classDummyLocator51Childs, "getLineNumber", 1 );
-				ModelTestUtils.assertParameterNames( methodgetLineNumber56, new String[] {"self"} );
+			IMethod methodgetLineNumber52;
+				IModelElement[] classDummyLocator48Childs = classDummyLocator48.getChildren();
+				methodgetLineNumber52 = ModelTestUtils.getAssertMethod( classDummyLocator48Childs, "getLineNumber", 1 );
+				ModelTestUtils.assertParameterNames( methodgetLineNumber52, new String[] {"self"} );
 			}
 			//Function test:getColumnNumber
 			{
-			IMethod methodgetColumnNumber57;
-				IModelElement[] classDummyLocator51Childs = classDummyLocator51.getChildren();
-				methodgetColumnNumber57 = ModelTestUtils.getAssertMethod( classDummyLocator51Childs, "getColumnNumber", 1 );
-				ModelTestUtils.assertParameterNames( methodgetColumnNumber57, new String[] {"self"} );
+			IMethod methodgetColumnNumber53;
+				IModelElement[] classDummyLocator48Childs = classDummyLocator48.getChildren();
+				methodgetColumnNumber53 = ModelTestUtils.getAssertMethod( classDummyLocator48Childs, "getColumnNumber", 1 );
+				ModelTestUtils.assertParameterNames( methodgetColumnNumber53, new String[] {"self"} );
 			}
 		}
 		//Function test:verify_empty_attrs
 		{
-		IMethod methodverify_empty_attrs58;
+		IMethod methodverify_empty_attrs54;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodverify_empty_attrs58 = ModelTestUtils.getAssertMethod( moduleChilds, "verify_empty_attrs", 1 );
-			ModelTestUtils.assertParameterNames( methodverify_empty_attrs58, new String[] {"attrs"} );
+			methodverify_empty_attrs54 = ModelTestUtils.getAssertMethod( moduleChilds, "verify_empty_attrs", 1 );
+			ModelTestUtils.assertParameterNames( methodverify_empty_attrs54, new String[] {"attrs"} );
 		}
 		//Function test:verify_attrs_wattr
 		{
-		IMethod methodverify_attrs_wattr59;
+		IMethod methodverify_attrs_wattr55;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodverify_attrs_wattr59 = ModelTestUtils.getAssertMethod( moduleChilds, "verify_attrs_wattr", 1 );
-			ModelTestUtils.assertParameterNames( methodverify_attrs_wattr59, new String[] {"attrs"} );
+			methodverify_attrs_wattr55 = ModelTestUtils.getAssertMethod( moduleChilds, "verify_attrs_wattr", 1 );
+			ModelTestUtils.assertParameterNames( methodverify_attrs_wattr55, new String[] {"attrs"} );
 		}
 		//Function test:test_attrs_empty
 		{
-		IMethod methodtest_attrs_empty60;
+		IMethod methodtest_attrs_empty56;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_attrs_empty60 = ModelTestUtils.getAssertMethod( moduleChilds, "test_attrs_empty", 0 );
+			methodtest_attrs_empty56 = ModelTestUtils.getAssertMethod( moduleChilds, "test_attrs_empty", 0 );
 		}
 		//Function test:test_attrs_wattr
 		{
-		IMethod methodtest_attrs_wattr61;
+		IMethod methodtest_attrs_wattr57;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_attrs_wattr61 = ModelTestUtils.getAssertMethod( moduleChilds, "test_attrs_wattr", 0 );
+			methodtest_attrs_wattr57 = ModelTestUtils.getAssertMethod( moduleChilds, "test_attrs_wattr", 0 );
 		}
 		//Function test:verify_empty_nsattrs
 		{
-		IMethod methodverify_empty_nsattrs62;
+		IMethod methodverify_empty_nsattrs58;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodverify_empty_nsattrs62 = ModelTestUtils.getAssertMethod( moduleChilds, "verify_empty_nsattrs", 1 );
-			ModelTestUtils.assertParameterNames( methodverify_empty_nsattrs62, new String[] {"attrs"} );
+			methodverify_empty_nsattrs58 = ModelTestUtils.getAssertMethod( moduleChilds, "verify_empty_nsattrs", 1 );
+			ModelTestUtils.assertParameterNames( methodverify_empty_nsattrs58, new String[] {"attrs"} );
 		}
 		//Function test:test_nsattrs_empty
 		{
-		IMethod methodtest_nsattrs_empty63;
+		IMethod methodtest_nsattrs_empty59;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_nsattrs_empty63 = ModelTestUtils.getAssertMethod( moduleChilds, "test_nsattrs_empty", 0 );
+			methodtest_nsattrs_empty59 = ModelTestUtils.getAssertMethod( moduleChilds, "test_nsattrs_empty", 0 );
 		}
 		//Function test:test_nsattrs_wattr
 		{
-		IMethod methodtest_nsattrs_wattr64;
+		IMethod methodtest_nsattrs_wattr60;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_nsattrs_wattr64 = ModelTestUtils.getAssertMethod( moduleChilds, "test_nsattrs_wattr", 0 );
+			methodtest_nsattrs_wattr60 = ModelTestUtils.getAssertMethod( moduleChilds, "test_nsattrs_wattr", 0 );
 		}
 		//Function test:make_test_output
 		{
-		IMethod methodmake_test_output65;
+		IMethod methodmake_test_output61;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodmake_test_output65 = ModelTestUtils.getAssertMethod( moduleChilds, "make_test_output", 0 );
+			methodmake_test_output61 = ModelTestUtils.getAssertMethod( moduleChilds, "make_test_output", 0 );
 		}
 		{
 			IModelElement[] moduleChilds = module.getChildren();
@@ -2434,430 +2398,406 @@ public class GeneratedModelTests4 extends AbstractModelTests
 				methodsetUp3 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "setUp", 1 );
 				ModelTestUtils.assertParameterNames( methodsetUp3, new String[] {"self"} );
 			}
-			{
-				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestJointOps2Childs, "word");
-			}
-			{
-				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestJointOps2Childs, "otherword");
-			}
-			{
-				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestJointOps2Childs, "letters");
-			}
-			{
-				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestJointOps2Childs, "s");
-			}
-			{
-				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestJointOps2Childs, "d");
-			}
 			//Function test:test_new_or_init
 			{
-			IMethod methodtest_new_or_init5;
+			IMethod methodtest_new_or_init4;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_new_or_init5 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_new_or_init", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_new_or_init5, new String[] {"self"} );
+				methodtest_new_or_init4 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_new_or_init", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_new_or_init4, new String[] {"self"} );
 			}
 			//Function test:test_uniquification
 			{
-			IMethod methodtest_uniquification6;
+			IMethod methodtest_uniquification5;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_uniquification6 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_uniquification", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_uniquification6, new String[] {"self"} );
+				methodtest_uniquification5 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_uniquification", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_uniquification5, new String[] {"self"} );
 			}
 			//Function test:test_len
 			{
-			IMethod methodtest_len7;
+			IMethod methodtest_len6;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_len7 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_len", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_len7, new String[] {"self"} );
+				methodtest_len6 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_len", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_len6, new String[] {"self"} );
 			}
 			//Function test:test_contains
 			{
-			IMethod methodtest_contains8;
+			IMethod methodtest_contains7;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_contains8 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_contains", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_contains8, new String[] {"self"} );
+				methodtest_contains7 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_contains", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_contains7, new String[] {"self"} );
 			}
 			//Function test:test_union
 			{
-			IMethod methodtest_union9;
+			IMethod methodtest_union8;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_union9 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_union", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_union9, new String[] {"self"} );
+				methodtest_union8 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_union", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_union8, new String[] {"self"} );
 			}
 			//Function test:test_or
 			{
-			IMethod methodtest_or10;
+			IMethod methodtest_or9;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_or10 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_or", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_or10, new String[] {"self"} );
+				methodtest_or9 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_or", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_or9, new String[] {"self"} );
 			}
 			//Function test:test_intersection
 			{
-			IMethod methodtest_intersection11;
+			IMethod methodtest_intersection10;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_intersection11 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_intersection", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection11, new String[] {"self"} );
+				methodtest_intersection10 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_intersection", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection10, new String[] {"self"} );
 			}
 			//Function test:test_and
 			{
-			IMethod methodtest_and12;
+			IMethod methodtest_and11;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_and12 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_and", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_and12, new String[] {"self"} );
+				methodtest_and11 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_and", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_and11, new String[] {"self"} );
 			}
 			//Function test:test_difference
 			{
-			IMethod methodtest_difference13;
+			IMethod methodtest_difference12;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_difference13 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_difference", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_difference13, new String[] {"self"} );
+				methodtest_difference12 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_difference", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_difference12, new String[] {"self"} );
 			}
 			//Function test:test_sub
 			{
-			IMethod methodtest_sub14;
+			IMethod methodtest_sub13;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_sub14 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_sub", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_sub14, new String[] {"self"} );
+				methodtest_sub13 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_sub", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_sub13, new String[] {"self"} );
 			}
 			//Function test:test_symmetric_difference
 			{
-			IMethod methodtest_symmetric_difference15;
+			IMethod methodtest_symmetric_difference14;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_symmetric_difference15 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_symmetric_difference", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_symmetric_difference15, new String[] {"self"} );
+				methodtest_symmetric_difference14 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_symmetric_difference", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_symmetric_difference14, new String[] {"self"} );
 			}
 			//Function test:test_xor
 			{
-			IMethod methodtest_xor16;
+			IMethod methodtest_xor15;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_xor16 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_xor", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_xor16, new String[] {"self"} );
+				methodtest_xor15 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_xor", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_xor15, new String[] {"self"} );
 			}
 			//Function test:test_equality
 			{
-			IMethod methodtest_equality17;
+			IMethod methodtest_equality16;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_equality17 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_equality", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_equality17, new String[] {"self"} );
+				methodtest_equality16 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_equality", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_equality16, new String[] {"self"} );
 			}
 			//Function test:test_setOfFrozensets
 			{
-			IMethod methodtest_setOfFrozensets18;
+			IMethod methodtest_setOfFrozensets17;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_setOfFrozensets18 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_setOfFrozensets", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_setOfFrozensets18, new String[] {"self"} );
+				methodtest_setOfFrozensets17 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_setOfFrozensets", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_setOfFrozensets17, new String[] {"self"} );
 			}
 			//Function test:test_compare
 			{
-			IMethod methodtest_compare19;
+			IMethod methodtest_compare18;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_compare19 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_compare", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_compare19, new String[] {"self"} );
+				methodtest_compare18 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_compare", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_compare18, new String[] {"self"} );
 			}
 			//Function test:test_sub_and_super
 			{
-			IMethod methodtest_sub_and_super20;
+			IMethod methodtest_sub_and_super19;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_sub_and_super20 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_sub_and_super", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_sub_and_super20, new String[] {"self"} );
+				methodtest_sub_and_super19 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_sub_and_super", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_sub_and_super19, new String[] {"self"} );
 			}
 			//Function test:test_pickling
 			{
-			IMethod methodtest_pickling21;
+			IMethod methodtest_pickling20;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_pickling21 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_pickling", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_pickling21, new String[] {"self"} );
+				methodtest_pickling20 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_pickling", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_pickling20, new String[] {"self"} );
 			}
 			//Function test:test_deepcopy
 			{
-			IMethod methodtest_deepcopy22;
+			IMethod methodtest_deepcopy21;
 				IModelElement[] classTestJointOps2Childs = classTestJointOps2.getChildren();
-				methodtest_deepcopy22 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_deepcopy", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_deepcopy22, new String[] {"self"} );
+				methodtest_deepcopy21 = ModelTestUtils.getAssertMethod( classTestJointOps2Childs, "test_deepcopy", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_deepcopy21, new String[] {"self"} );
 				//Class test
 				{
-				IType classTracer23;
-					IModelElement[] methodtest_deepcopy22Childs = methodtest_deepcopy22.getChildren();
-					classTracer23 = ModelTestUtils.getAssertClass( methodtest_deepcopy22Childs, "Tracer" );
+				IType classTracer22;
+					IModelElement[] methodtest_deepcopy21Childs = methodtest_deepcopy21.getChildren();
+					classTracer22 = ModelTestUtils.getAssertClass( methodtest_deepcopy21Childs, "Tracer" );
 					//Function test:__init__
 					{
-					IMethod method__init__24;
-						IModelElement[] classTracer23Childs = classTracer23.getChildren();
-						method__init__24 = ModelTestUtils.getAssertMethod( classTracer23Childs, "__init__", 2 );
-						ModelTestUtils.assertParameterNames( method__init__24, new String[] {"self", "value"} );
-					}
-					{
-						IModelElement[] classTracer23Childs = classTracer23.getChildren();
-						IField fieldValue = ModelTestUtils.getAssertField( classTracer23Childs, "value");
+					IMethod method__init__23;
+						IModelElement[] classTracer22Childs = classTracer22.getChildren();
+						method__init__23 = ModelTestUtils.getAssertMethod( classTracer22Childs, "__init__", 2 );
+						ModelTestUtils.assertParameterNames( method__init__23, new String[] {"self", "value"} );
 					}
 					//Function test:__hash__
 					{
-					IMethod method__hash__26;
-						IModelElement[] classTracer23Childs = classTracer23.getChildren();
-						method__hash__26 = ModelTestUtils.getAssertMethod( classTracer23Childs, "__hash__", 1 );
-						ModelTestUtils.assertParameterNames( method__hash__26, new String[] {"self"} );
+					IMethod method__hash__24;
+						IModelElement[] classTracer22Childs = classTracer22.getChildren();
+						method__hash__24 = ModelTestUtils.getAssertMethod( classTracer22Childs, "__hash__", 1 );
+						ModelTestUtils.assertParameterNames( method__hash__24, new String[] {"self"} );
 					}
 					//Function test:__deepcopy__
 					{
-					IMethod method__deepcopy__27;
-						IModelElement[] classTracer23Childs = classTracer23.getChildren();
-						method__deepcopy__27 = ModelTestUtils.getAssertMethod( classTracer23Childs, "__deepcopy__", 2 );
-						ModelTestUtils.assertParameterNames( method__deepcopy__27, new String[] {"self", "memo"} );
+					IMethod method__deepcopy__25;
+						IModelElement[] classTracer22Childs = classTracer22.getChildren();
+						method__deepcopy__25 = ModelTestUtils.getAssertMethod( classTracer22Childs, "__deepcopy__", 2 );
+						ModelTestUtils.assertParameterNames( method__deepcopy__25, new String[] {"self", "memo"} );
 					}
 				}
 			}
 		}
 		//Class test
 		{
-		IType classTestSet28;
+		IType classTestSet26;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestSet28 = ModelTestUtils.getAssertClass( moduleChilds, "TestSet" );
+			classTestSet26 = ModelTestUtils.getAssertClass( moduleChilds, "TestSet" );
 			{
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSet28Childs, "thetype");
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSet26Childs, "thetype");
 			}
 			//Function test:test_init
 			{
-			IMethod methodtest_init29;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_init29 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_init", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_init29, new String[] {"self"} );
+			IMethod methodtest_init27;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_init27 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_init", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_init27, new String[] {"self"} );
 			}
 			//Function test:test_constructor_identity
 			{
-			IMethod methodtest_constructor_identity30;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_constructor_identity30 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_constructor_identity", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_constructor_identity30, new String[] {"self"} );
+			IMethod methodtest_constructor_identity28;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_constructor_identity28 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_constructor_identity", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_constructor_identity28, new String[] {"self"} );
 			}
 			//Function test:test_hash
 			{
-			IMethod methodtest_hash31;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_hash31 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_hash", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_hash31, new String[] {"self"} );
+			IMethod methodtest_hash29;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_hash29 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_hash", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_hash29, new String[] {"self"} );
 			}
 			//Function test:test_clear
 			{
-			IMethod methodtest_clear32;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_clear32 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_clear", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_clear32, new String[] {"self"} );
+			IMethod methodtest_clear30;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_clear30 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_clear", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_clear30, new String[] {"self"} );
 			}
 			//Function test:test_copy
 			{
-			IMethod methodtest_copy33;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_copy33 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_copy", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_copy33, new String[] {"self"} );
+			IMethod methodtest_copy31;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_copy31 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_copy", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_copy31, new String[] {"self"} );
 			}
 			//Function test:test_add
 			{
-			IMethod methodtest_add34;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_add34 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_add", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_add34, new String[] {"self"} );
+			IMethod methodtest_add32;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_add32 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_add", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_add32, new String[] {"self"} );
 			}
 			//Function test:test_remove
 			{
-			IMethod methodtest_remove35;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_remove35 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_remove", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_remove35, new String[] {"self"} );
+			IMethod methodtest_remove33;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_remove33 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_remove", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_remove33, new String[] {"self"} );
 			}
 			//Function test:test_discard
 			{
-			IMethod methodtest_discard36;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_discard36 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_discard", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_discard36, new String[] {"self"} );
+			IMethod methodtest_discard34;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_discard34 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_discard", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_discard34, new String[] {"self"} );
 			}
 			//Function test:test_pop
 			{
-			IMethod methodtest_pop37;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_pop37 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_pop", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_pop37, new String[] {"self"} );
+			IMethod methodtest_pop35;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_pop35 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_pop", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_pop35, new String[] {"self"} );
 			}
 			//Function test:test_update
 			{
-			IMethod methodtest_update38;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_update38 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_update", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_update38, new String[] {"self"} );
+			IMethod methodtest_update36;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_update36 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_update", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_update36, new String[] {"self"} );
 			}
 			//Function test:test_ior
 			{
-			IMethod methodtest_ior39;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_ior39 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_ior", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_ior39, new String[] {"self"} );
+			IMethod methodtest_ior37;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_ior37 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_ior", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_ior37, new String[] {"self"} );
 			}
 			//Function test:test_intersection_update
 			{
-			IMethod methodtest_intersection_update40;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_intersection_update40 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_intersection_update", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection_update40, new String[] {"self"} );
+			IMethod methodtest_intersection_update38;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_intersection_update38 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_intersection_update", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection_update38, new String[] {"self"} );
 			}
 			//Function test:test_iand
 			{
-			IMethod methodtest_iand41;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_iand41 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_iand", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_iand41, new String[] {"self"} );
+			IMethod methodtest_iand39;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_iand39 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_iand", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_iand39, new String[] {"self"} );
 			}
 			//Function test:test_difference_update
 			{
-			IMethod methodtest_difference_update42;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_difference_update42 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_difference_update", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_difference_update42, new String[] {"self"} );
+			IMethod methodtest_difference_update40;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_difference_update40 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_difference_update", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_difference_update40, new String[] {"self"} );
 			}
 			//Function test:test_isub
 			{
-			IMethod methodtest_isub43;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_isub43 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_isub", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_isub43, new String[] {"self"} );
+			IMethod methodtest_isub41;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_isub41 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_isub", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_isub41, new String[] {"self"} );
 			}
 			//Function test:test_symmetric_difference_update
 			{
-			IMethod methodtest_symmetric_difference_update44;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_symmetric_difference_update44 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_symmetric_difference_update", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_symmetric_difference_update44, new String[] {"self"} );
+			IMethod methodtest_symmetric_difference_update42;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_symmetric_difference_update42 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_symmetric_difference_update", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_symmetric_difference_update42, new String[] {"self"} );
 			}
 			//Function test:test_ixor
 			{
-			IMethod methodtest_ixor45;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_ixor45 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_ixor", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_ixor45, new String[] {"self"} );
+			IMethod methodtest_ixor43;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_ixor43 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_ixor", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_ixor43, new String[] {"self"} );
 			}
 			//Function test:test_weakref
 			{
-			IMethod methodtest_weakref46;
-				IModelElement[] classTestSet28Childs = classTestSet28.getChildren();
-				methodtest_weakref46 = ModelTestUtils.getAssertMethod( classTestSet28Childs, "test_weakref", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_weakref46, new String[] {"self"} );
+			IMethod methodtest_weakref44;
+				IModelElement[] classTestSet26Childs = classTestSet26.getChildren();
+				methodtest_weakref44 = ModelTestUtils.getAssertMethod( classTestSet26Childs, "test_weakref", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_weakref44, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classSetSubclass47;
+		IType classSetSubclass45;
 			IModelElement[] moduleChilds = module.getChildren();
-			classSetSubclass47 = ModelTestUtils.getAssertClass( moduleChilds, "SetSubclass" );
+			classSetSubclass45 = ModelTestUtils.getAssertClass( moduleChilds, "SetSubclass" );
 		}
 		//Class test
 		{
-		IType classTestSetSubclass48;
+		IType classTestSetSubclass46;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestSetSubclass48 = ModelTestUtils.getAssertClass( moduleChilds, "TestSetSubclass" );
+			classTestSetSubclass46 = ModelTestUtils.getAssertClass( moduleChilds, "TestSetSubclass" );
 			{
-				IModelElement[] classTestSetSubclass48Childs = classTestSetSubclass48.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSetSubclass48Childs, "thetype");
+				IModelElement[] classTestSetSubclass46Childs = classTestSetSubclass46.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSetSubclass46Childs, "thetype");
 			}
 		}
 		//Class test
 		{
-		IType classTestFrozenSet49;
+		IType classTestFrozenSet47;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestFrozenSet49 = ModelTestUtils.getAssertClass( moduleChilds, "TestFrozenSet" );
+			classTestFrozenSet47 = ModelTestUtils.getAssertClass( moduleChilds, "TestFrozenSet" );
 			{
-				IModelElement[] classTestFrozenSet49Childs = classTestFrozenSet49.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestFrozenSet49Childs, "thetype");
+				IModelElement[] classTestFrozenSet47Childs = classTestFrozenSet47.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestFrozenSet47Childs, "thetype");
 			}
 			//Function test:test_init
 			{
-			IMethod methodtest_init50;
-				IModelElement[] classTestFrozenSet49Childs = classTestFrozenSet49.getChildren();
-				methodtest_init50 = ModelTestUtils.getAssertMethod( classTestFrozenSet49Childs, "test_init", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_init50, new String[] {"self"} );
+			IMethod methodtest_init48;
+				IModelElement[] classTestFrozenSet47Childs = classTestFrozenSet47.getChildren();
+				methodtest_init48 = ModelTestUtils.getAssertMethod( classTestFrozenSet47Childs, "test_init", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_init48, new String[] {"self"} );
 			}
 			//Function test:test_constructor_identity
 			{
-			IMethod methodtest_constructor_identity51;
-				IModelElement[] classTestFrozenSet49Childs = classTestFrozenSet49.getChildren();
-				methodtest_constructor_identity51 = ModelTestUtils.getAssertMethod( classTestFrozenSet49Childs, "test_constructor_identity", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_constructor_identity51, new String[] {"self"} );
+			IMethod methodtest_constructor_identity49;
+				IModelElement[] classTestFrozenSet47Childs = classTestFrozenSet47.getChildren();
+				methodtest_constructor_identity49 = ModelTestUtils.getAssertMethod( classTestFrozenSet47Childs, "test_constructor_identity", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_constructor_identity49, new String[] {"self"} );
 			}
 			//Function test:test_hash
 			{
-			IMethod methodtest_hash52;
-				IModelElement[] classTestFrozenSet49Childs = classTestFrozenSet49.getChildren();
-				methodtest_hash52 = ModelTestUtils.getAssertMethod( classTestFrozenSet49Childs, "test_hash", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_hash52, new String[] {"self"} );
+			IMethod methodtest_hash50;
+				IModelElement[] classTestFrozenSet47Childs = classTestFrozenSet47.getChildren();
+				methodtest_hash50 = ModelTestUtils.getAssertMethod( classTestFrozenSet47Childs, "test_hash", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_hash50, new String[] {"self"} );
 			}
 			//Function test:test_copy
 			{
-			IMethod methodtest_copy53;
-				IModelElement[] classTestFrozenSet49Childs = classTestFrozenSet49.getChildren();
-				methodtest_copy53 = ModelTestUtils.getAssertMethod( classTestFrozenSet49Childs, "test_copy", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_copy53, new String[] {"self"} );
+			IMethod methodtest_copy51;
+				IModelElement[] classTestFrozenSet47Childs = classTestFrozenSet47.getChildren();
+				methodtest_copy51 = ModelTestUtils.getAssertMethod( classTestFrozenSet47Childs, "test_copy", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_copy51, new String[] {"self"} );
 			}
 			//Function test:test_frozen_as_dictkey
 			{
-			IMethod methodtest_frozen_as_dictkey54;
-				IModelElement[] classTestFrozenSet49Childs = classTestFrozenSet49.getChildren();
-				methodtest_frozen_as_dictkey54 = ModelTestUtils.getAssertMethod( classTestFrozenSet49Childs, "test_frozen_as_dictkey", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_frozen_as_dictkey54, new String[] {"self"} );
+			IMethod methodtest_frozen_as_dictkey52;
+				IModelElement[] classTestFrozenSet47Childs = classTestFrozenSet47.getChildren();
+				methodtest_frozen_as_dictkey52 = ModelTestUtils.getAssertMethod( classTestFrozenSet47Childs, "test_frozen_as_dictkey", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_frozen_as_dictkey52, new String[] {"self"} );
 			}
 			//Function test:test_hash_caching
 			{
-			IMethod methodtest_hash_caching55;
-				IModelElement[] classTestFrozenSet49Childs = classTestFrozenSet49.getChildren();
-				methodtest_hash_caching55 = ModelTestUtils.getAssertMethod( classTestFrozenSet49Childs, "test_hash_caching", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_hash_caching55, new String[] {"self"} );
+			IMethod methodtest_hash_caching53;
+				IModelElement[] classTestFrozenSet47Childs = classTestFrozenSet47.getChildren();
+				methodtest_hash_caching53 = ModelTestUtils.getAssertMethod( classTestFrozenSet47Childs, "test_hash_caching", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_hash_caching53, new String[] {"self"} );
 			}
 			//Function test:test_hash_effectiveness
 			{
-			IMethod methodtest_hash_effectiveness56;
-				IModelElement[] classTestFrozenSet49Childs = classTestFrozenSet49.getChildren();
-				methodtest_hash_effectiveness56 = ModelTestUtils.getAssertMethod( classTestFrozenSet49Childs, "test_hash_effectiveness", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_hash_effectiveness56, new String[] {"self"} );
+			IMethod methodtest_hash_effectiveness54;
+				IModelElement[] classTestFrozenSet47Childs = classTestFrozenSet47.getChildren();
+				methodtest_hash_effectiveness54 = ModelTestUtils.getAssertMethod( classTestFrozenSet47Childs, "test_hash_effectiveness", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_hash_effectiveness54, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classFrozenSetSubclass57;
+		IType classFrozenSetSubclass55;
 			IModelElement[] moduleChilds = module.getChildren();
-			classFrozenSetSubclass57 = ModelTestUtils.getAssertClass( moduleChilds, "FrozenSetSubclass" );
+			classFrozenSetSubclass55 = ModelTestUtils.getAssertClass( moduleChilds, "FrozenSetSubclass" );
 		}
 		//Class test
 		{
-		IType classTestFrozenSetSubclass58;
+		IType classTestFrozenSetSubclass56;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestFrozenSetSubclass58 = ModelTestUtils.getAssertClass( moduleChilds, "TestFrozenSetSubclass" );
+			classTestFrozenSetSubclass56 = ModelTestUtils.getAssertClass( moduleChilds, "TestFrozenSetSubclass" );
 			{
-				IModelElement[] classTestFrozenSetSubclass58Childs = classTestFrozenSetSubclass58.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestFrozenSetSubclass58Childs, "thetype");
+				IModelElement[] classTestFrozenSetSubclass56Childs = classTestFrozenSetSubclass56.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestFrozenSetSubclass56Childs, "thetype");
 			}
 			//Function test:test_constructor_identity
 			{
-			IMethod methodtest_constructor_identity59;
-				IModelElement[] classTestFrozenSetSubclass58Childs = classTestFrozenSetSubclass58.getChildren();
-				methodtest_constructor_identity59 = ModelTestUtils.getAssertMethod( classTestFrozenSetSubclass58Childs, "test_constructor_identity", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_constructor_identity59, new String[] {"self"} );
+			IMethod methodtest_constructor_identity57;
+				IModelElement[] classTestFrozenSetSubclass56Childs = classTestFrozenSetSubclass56.getChildren();
+				methodtest_constructor_identity57 = ModelTestUtils.getAssertMethod( classTestFrozenSetSubclass56Childs, "test_constructor_identity", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_constructor_identity57, new String[] {"self"} );
 			}
 			//Function test:test_copy
 			{
-			IMethod methodtest_copy60;
-				IModelElement[] classTestFrozenSetSubclass58Childs = classTestFrozenSetSubclass58.getChildren();
-				methodtest_copy60 = ModelTestUtils.getAssertMethod( classTestFrozenSetSubclass58Childs, "test_copy", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_copy60, new String[] {"self"} );
+			IMethod methodtest_copy58;
+				IModelElement[] classTestFrozenSetSubclass56Childs = classTestFrozenSetSubclass56.getChildren();
+				methodtest_copy58 = ModelTestUtils.getAssertMethod( classTestFrozenSetSubclass56Childs, "test_copy", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_copy58, new String[] {"self"} );
 			}
 			//Function test:test_nested_empty_constructor
 			{
-			IMethod methodtest_nested_empty_constructor61;
-				IModelElement[] classTestFrozenSetSubclass58Childs = classTestFrozenSetSubclass58.getChildren();
-				methodtest_nested_empty_constructor61 = ModelTestUtils.getAssertMethod( classTestFrozenSetSubclass58Childs, "test_nested_empty_constructor", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_nested_empty_constructor61, new String[] {"self"} );
+			IMethod methodtest_nested_empty_constructor59;
+				IModelElement[] classTestFrozenSetSubclass56Childs = classTestFrozenSetSubclass56.getChildren();
+				methodtest_nested_empty_constructor59 = ModelTestUtils.getAssertMethod( classTestFrozenSetSubclass56Childs, "test_nested_empty_constructor", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_nested_empty_constructor59, new String[] {"self"} );
 			}
 		}
 		{
@@ -2866,1509 +2806,1289 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Class test
 		{
-		IType classTestBasicOps62;
+		IType classTestBasicOps60;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestBasicOps62 = ModelTestUtils.getAssertClass( moduleChilds, "TestBasicOps" );
+			classTestBasicOps60 = ModelTestUtils.getAssertClass( moduleChilds, "TestBasicOps" );
 			//Function test:test_repr
 			{
-			IMethod methodtest_repr63;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_repr63 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_repr", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_repr63, new String[] {"self"} );
+			IMethod methodtest_repr61;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_repr61 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_repr", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_repr61, new String[] {"self"} );
 			}
 			//Function test:test_print
 			{
-			IMethod methodtest_print64;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_print64 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_print", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_print64, new String[] {"self"} );
+			IMethod methodtest_print62;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_print62 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_print", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_print62, new String[] {"self"} );
 			}
 			//Function test:test_length
 			{
-			IMethod methodtest_length65;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_length65 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_length", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_length65, new String[] {"self"} );
+			IMethod methodtest_length63;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_length63 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_length", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_length63, new String[] {"self"} );
 			}
 			//Function test:test_self_equality
 			{
-			IMethod methodtest_self_equality66;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_self_equality66 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_self_equality", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_self_equality66, new String[] {"self"} );
+			IMethod methodtest_self_equality64;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_self_equality64 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_self_equality", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_self_equality64, new String[] {"self"} );
 			}
 			//Function test:test_equivalent_equality
 			{
-			IMethod methodtest_equivalent_equality67;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_equivalent_equality67 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_equivalent_equality", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_equivalent_equality67, new String[] {"self"} );
+			IMethod methodtest_equivalent_equality65;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_equivalent_equality65 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_equivalent_equality", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_equivalent_equality65, new String[] {"self"} );
 			}
 			//Function test:test_copy
 			{
-			IMethod methodtest_copy68;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_copy68 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_copy", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_copy68, new String[] {"self"} );
+			IMethod methodtest_copy66;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_copy66 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_copy", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_copy66, new String[] {"self"} );
 			}
 			//Function test:test_self_union
 			{
-			IMethod methodtest_self_union69;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_self_union69 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_self_union", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_self_union69, new String[] {"self"} );
+			IMethod methodtest_self_union67;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_self_union67 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_self_union", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_self_union67, new String[] {"self"} );
 			}
 			//Function test:test_empty_union
 			{
-			IMethod methodtest_empty_union70;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_empty_union70 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_empty_union", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_empty_union70, new String[] {"self"} );
+			IMethod methodtest_empty_union68;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_empty_union68 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_empty_union", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_empty_union68, new String[] {"self"} );
 			}
 			//Function test:test_union_empty
 			{
-			IMethod methodtest_union_empty71;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_union_empty71 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_union_empty", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_union_empty71, new String[] {"self"} );
+			IMethod methodtest_union_empty69;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_union_empty69 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_union_empty", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_union_empty69, new String[] {"self"} );
 			}
 			//Function test:test_self_intersection
 			{
-			IMethod methodtest_self_intersection72;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_self_intersection72 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_self_intersection", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_self_intersection72, new String[] {"self"} );
+			IMethod methodtest_self_intersection70;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_self_intersection70 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_self_intersection", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_self_intersection70, new String[] {"self"} );
 			}
 			//Function test:test_empty_intersection
 			{
-			IMethod methodtest_empty_intersection73;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_empty_intersection73 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_empty_intersection", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_empty_intersection73, new String[] {"self"} );
+			IMethod methodtest_empty_intersection71;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_empty_intersection71 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_empty_intersection", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_empty_intersection71, new String[] {"self"} );
 			}
 			//Function test:test_intersection_empty
 			{
-			IMethod methodtest_intersection_empty74;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_intersection_empty74 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_intersection_empty", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection_empty74, new String[] {"self"} );
+			IMethod methodtest_intersection_empty72;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_intersection_empty72 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_intersection_empty", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection_empty72, new String[] {"self"} );
 			}
 			//Function test:test_self_symmetric_difference
 			{
-			IMethod methodtest_self_symmetric_difference75;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_self_symmetric_difference75 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_self_symmetric_difference", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_self_symmetric_difference75, new String[] {"self"} );
+			IMethod methodtest_self_symmetric_difference73;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_self_symmetric_difference73 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_self_symmetric_difference", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_self_symmetric_difference73, new String[] {"self"} );
 			}
 			//Function test:checkempty_symmetric_difference
 			{
-			IMethod methodcheckempty_symmetric_difference76;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodcheckempty_symmetric_difference76 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "checkempty_symmetric_difference", 1 );
-				ModelTestUtils.assertParameterNames( methodcheckempty_symmetric_difference76, new String[] {"self"} );
+			IMethod methodcheckempty_symmetric_difference74;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodcheckempty_symmetric_difference74 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "checkempty_symmetric_difference", 1 );
+				ModelTestUtils.assertParameterNames( methodcheckempty_symmetric_difference74, new String[] {"self"} );
 			}
 			//Function test:test_self_difference
 			{
-			IMethod methodtest_self_difference77;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_self_difference77 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_self_difference", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_self_difference77, new String[] {"self"} );
+			IMethod methodtest_self_difference75;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_self_difference75 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_self_difference", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_self_difference75, new String[] {"self"} );
 			}
 			//Function test:test_empty_difference
 			{
-			IMethod methodtest_empty_difference78;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_empty_difference78 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_empty_difference", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_empty_difference78, new String[] {"self"} );
+			IMethod methodtest_empty_difference76;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_empty_difference76 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_empty_difference", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_empty_difference76, new String[] {"self"} );
 			}
 			//Function test:test_empty_difference_rev
 			{
-			IMethod methodtest_empty_difference_rev79;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_empty_difference_rev79 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_empty_difference_rev", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_empty_difference_rev79, new String[] {"self"} );
+			IMethod methodtest_empty_difference_rev77;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_empty_difference_rev77 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_empty_difference_rev", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_empty_difference_rev77, new String[] {"self"} );
 			}
 			//Function test:test_iteration
 			{
-			IMethod methodtest_iteration80;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_iteration80 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_iteration", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_iteration80, new String[] {"self"} );
+			IMethod methodtest_iteration78;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_iteration78 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_iteration", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_iteration78, new String[] {"self"} );
 			}
 			//Function test:test_pickling
 			{
-			IMethod methodtest_pickling81;
-				IModelElement[] classTestBasicOps62Childs = classTestBasicOps62.getChildren();
-				methodtest_pickling81 = ModelTestUtils.getAssertMethod( classTestBasicOps62Childs, "test_pickling", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_pickling81, new String[] {"self"} );
+			IMethod methodtest_pickling79;
+				IModelElement[] classTestBasicOps60Childs = classTestBasicOps60.getChildren();
+				methodtest_pickling79 = ModelTestUtils.getAssertMethod( classTestBasicOps60Childs, "test_pickling", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_pickling79, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestBasicOpsEmpty82;
+		IType classTestBasicOpsEmpty80;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestBasicOpsEmpty82 = ModelTestUtils.getAssertClass( moduleChilds, "TestBasicOpsEmpty" );
+			classTestBasicOpsEmpty80 = ModelTestUtils.getAssertClass( moduleChilds, "TestBasicOpsEmpty" );
+			//Function test:setUp
+			{
+			IMethod methodsetUp81;
+				IModelElement[] classTestBasicOpsEmpty80Childs = classTestBasicOpsEmpty80.getChildren();
+				methodsetUp81 = ModelTestUtils.getAssertMethod( classTestBasicOpsEmpty80Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp81, new String[] {"self"} );
+			}
+		}
+		//Class test
+		{
+		IType classTestBasicOpsSingleton82;
+			IModelElement[] moduleChilds = module.getChildren();
+			classTestBasicOpsSingleton82 = ModelTestUtils.getAssertClass( moduleChilds, "TestBasicOpsSingleton" );
 			//Function test:setUp
 			{
 			IMethod methodsetUp83;
-				IModelElement[] classTestBasicOpsEmpty82Childs = classTestBasicOpsEmpty82.getChildren();
-				methodsetUp83 = ModelTestUtils.getAssertMethod( classTestBasicOpsEmpty82Childs, "setUp", 1 );
+				IModelElement[] classTestBasicOpsSingleton82Childs = classTestBasicOpsSingleton82.getChildren();
+				methodsetUp83 = ModelTestUtils.getAssertMethod( classTestBasicOpsSingleton82Childs, "setUp", 1 );
 				ModelTestUtils.assertParameterNames( methodsetUp83, new String[] {"self"} );
 			}
+			//Function test:test_in
 			{
-				IModelElement[] classTestBasicOpsEmpty82Childs = classTestBasicOpsEmpty82.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsEmpty82Childs, "case");
+			IMethod methodtest_in84;
+				IModelElement[] classTestBasicOpsSingleton82Childs = classTestBasicOpsSingleton82.getChildren();
+				methodtest_in84 = ModelTestUtils.getAssertMethod( classTestBasicOpsSingleton82Childs, "test_in", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_in84, new String[] {"self"} );
 			}
+			//Function test:test_not_in
 			{
-				IModelElement[] classTestBasicOpsEmpty82Childs = classTestBasicOpsEmpty82.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsEmpty82Childs, "values");
-			}
-			{
-				IModelElement[] classTestBasicOpsEmpty82Childs = classTestBasicOpsEmpty82.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsEmpty82Childs, "set");
-			}
-			{
-				IModelElement[] classTestBasicOpsEmpty82Childs = classTestBasicOpsEmpty82.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsEmpty82Childs, "dup");
-			}
-			{
-				IModelElement[] classTestBasicOpsEmpty82Childs = classTestBasicOpsEmpty82.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsEmpty82Childs, "length");
-			}
-			{
-				IModelElement[] classTestBasicOpsEmpty82Childs = classTestBasicOpsEmpty82.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsEmpty82Childs, "repr");
+			IMethod methodtest_not_in85;
+				IModelElement[] classTestBasicOpsSingleton82Childs = classTestBasicOpsSingleton82.getChildren();
+				methodtest_not_in85 = ModelTestUtils.getAssertMethod( classTestBasicOpsSingleton82Childs, "test_not_in", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_not_in85, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestBasicOpsSingleton85;
+		IType classTestBasicOpsTuple86;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestBasicOpsSingleton85 = ModelTestUtils.getAssertClass( moduleChilds, "TestBasicOpsSingleton" );
+			classTestBasicOpsTuple86 = ModelTestUtils.getAssertClass( moduleChilds, "TestBasicOpsTuple" );
 			//Function test:setUp
 			{
-			IMethod methodsetUp86;
-				IModelElement[] classTestBasicOpsSingleton85Childs = classTestBasicOpsSingleton85.getChildren();
-				methodsetUp86 = ModelTestUtils.getAssertMethod( classTestBasicOpsSingleton85Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp86, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestBasicOpsSingleton85Childs = classTestBasicOpsSingleton85.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsSingleton85Childs, "case");
-			}
-			{
-				IModelElement[] classTestBasicOpsSingleton85Childs = classTestBasicOpsSingleton85.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsSingleton85Childs, "values");
-			}
-			{
-				IModelElement[] classTestBasicOpsSingleton85Childs = classTestBasicOpsSingleton85.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsSingleton85Childs, "set");
-			}
-			{
-				IModelElement[] classTestBasicOpsSingleton85Childs = classTestBasicOpsSingleton85.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsSingleton85Childs, "dup");
-			}
-			{
-				IModelElement[] classTestBasicOpsSingleton85Childs = classTestBasicOpsSingleton85.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsSingleton85Childs, "length");
-			}
-			{
-				IModelElement[] classTestBasicOpsSingleton85Childs = classTestBasicOpsSingleton85.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsSingleton85Childs, "repr");
+			IMethod methodsetUp87;
+				IModelElement[] classTestBasicOpsTuple86Childs = classTestBasicOpsTuple86.getChildren();
+				methodsetUp87 = ModelTestUtils.getAssertMethod( classTestBasicOpsTuple86Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp87, new String[] {"self"} );
 			}
 			//Function test:test_in
 			{
 			IMethod methodtest_in88;
-				IModelElement[] classTestBasicOpsSingleton85Childs = classTestBasicOpsSingleton85.getChildren();
-				methodtest_in88 = ModelTestUtils.getAssertMethod( classTestBasicOpsSingleton85Childs, "test_in", 1 );
+				IModelElement[] classTestBasicOpsTuple86Childs = classTestBasicOpsTuple86.getChildren();
+				methodtest_in88 = ModelTestUtils.getAssertMethod( classTestBasicOpsTuple86Childs, "test_in", 1 );
 				ModelTestUtils.assertParameterNames( methodtest_in88, new String[] {"self"} );
 			}
 			//Function test:test_not_in
 			{
 			IMethod methodtest_not_in89;
-				IModelElement[] classTestBasicOpsSingleton85Childs = classTestBasicOpsSingleton85.getChildren();
-				methodtest_not_in89 = ModelTestUtils.getAssertMethod( classTestBasicOpsSingleton85Childs, "test_not_in", 1 );
+				IModelElement[] classTestBasicOpsTuple86Childs = classTestBasicOpsTuple86.getChildren();
+				methodtest_not_in89 = ModelTestUtils.getAssertMethod( classTestBasicOpsTuple86Childs, "test_not_in", 1 );
 				ModelTestUtils.assertParameterNames( methodtest_not_in89, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestBasicOpsTuple90;
+		IType classTestBasicOpsTriple90;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestBasicOpsTuple90 = ModelTestUtils.getAssertClass( moduleChilds, "TestBasicOpsTuple" );
+			classTestBasicOpsTriple90 = ModelTestUtils.getAssertClass( moduleChilds, "TestBasicOpsTriple" );
 			//Function test:setUp
 			{
 			IMethod methodsetUp91;
-				IModelElement[] classTestBasicOpsTuple90Childs = classTestBasicOpsTuple90.getChildren();
-				methodsetUp91 = ModelTestUtils.getAssertMethod( classTestBasicOpsTuple90Childs, "setUp", 1 );
+				IModelElement[] classTestBasicOpsTriple90Childs = classTestBasicOpsTriple90.getChildren();
+				methodsetUp91 = ModelTestUtils.getAssertMethod( classTestBasicOpsTriple90Childs, "setUp", 1 );
 				ModelTestUtils.assertParameterNames( methodsetUp91, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestBasicOpsTuple90Childs = classTestBasicOpsTuple90.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsTuple90Childs, "case");
-			}
-			{
-				IModelElement[] classTestBasicOpsTuple90Childs = classTestBasicOpsTuple90.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsTuple90Childs, "values");
-			}
-			{
-				IModelElement[] classTestBasicOpsTuple90Childs = classTestBasicOpsTuple90.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsTuple90Childs, "set");
-			}
-			{
-				IModelElement[] classTestBasicOpsTuple90Childs = classTestBasicOpsTuple90.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsTuple90Childs, "dup");
-			}
-			{
-				IModelElement[] classTestBasicOpsTuple90Childs = classTestBasicOpsTuple90.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsTuple90Childs, "length");
-			}
-			{
-				IModelElement[] classTestBasicOpsTuple90Childs = classTestBasicOpsTuple90.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsTuple90Childs, "repr");
-			}
-			//Function test:test_in
-			{
-			IMethod methodtest_in93;
-				IModelElement[] classTestBasicOpsTuple90Childs = classTestBasicOpsTuple90.getChildren();
-				methodtest_in93 = ModelTestUtils.getAssertMethod( classTestBasicOpsTuple90Childs, "test_in", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_in93, new String[] {"self"} );
-			}
-			//Function test:test_not_in
-			{
-			IMethod methodtest_not_in94;
-				IModelElement[] classTestBasicOpsTuple90Childs = classTestBasicOpsTuple90.getChildren();
-				methodtest_not_in94 = ModelTestUtils.getAssertMethod( classTestBasicOpsTuple90Childs, "test_not_in", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_not_in94, new String[] {"self"} );
-			}
-		}
-		//Class test
-		{
-		IType classTestBasicOpsTriple95;
-			IModelElement[] moduleChilds = module.getChildren();
-			classTestBasicOpsTriple95 = ModelTestUtils.getAssertClass( moduleChilds, "TestBasicOpsTriple" );
-			//Function test:setUp
-			{
-			IMethod methodsetUp96;
-				IModelElement[] classTestBasicOpsTriple95Childs = classTestBasicOpsTriple95.getChildren();
-				methodsetUp96 = ModelTestUtils.getAssertMethod( classTestBasicOpsTriple95Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp96, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestBasicOpsTriple95Childs = classTestBasicOpsTriple95.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsTriple95Childs, "case");
-			}
-			{
-				IModelElement[] classTestBasicOpsTriple95Childs = classTestBasicOpsTriple95.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsTriple95Childs, "values");
-			}
-			{
-				IModelElement[] classTestBasicOpsTriple95Childs = classTestBasicOpsTriple95.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsTriple95Childs, "set");
-			}
-			{
-				IModelElement[] classTestBasicOpsTriple95Childs = classTestBasicOpsTriple95.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsTriple95Childs, "dup");
-			}
-			{
-				IModelElement[] classTestBasicOpsTriple95Childs = classTestBasicOpsTriple95.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsTriple95Childs, "length");
-			}
-			{
-				IModelElement[] classTestBasicOpsTriple95Childs = classTestBasicOpsTriple95.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBasicOpsTriple95Childs, "repr");
 			}
 		}
 		//Function test:baditer
 		{
-		IMethod methodbaditer98;
+		IMethod methodbaditer92;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodbaditer98 = ModelTestUtils.getAssertMethod( moduleChilds, "baditer", 0 );
+			methodbaditer92 = ModelTestUtils.getAssertMethod( moduleChilds, "baditer", 0 );
 		}
 		//Function test:gooditer
 		{
-		IMethod methodgooditer99;
+		IMethod methodgooditer93;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodgooditer99 = ModelTestUtils.getAssertMethod( moduleChilds, "gooditer", 0 );
+			methodgooditer93 = ModelTestUtils.getAssertMethod( moduleChilds, "gooditer", 0 );
 		}
 		//Class test
 		{
-		IType classTestExceptionPropagation100;
+		IType classTestExceptionPropagation94;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestExceptionPropagation100 = ModelTestUtils.getAssertClass( moduleChilds, "TestExceptionPropagation" );
+			classTestExceptionPropagation94 = ModelTestUtils.getAssertClass( moduleChilds, "TestExceptionPropagation" );
 			//Function test:test_instanceWithException
 			{
-			IMethod methodtest_instanceWithException101;
-				IModelElement[] classTestExceptionPropagation100Childs = classTestExceptionPropagation100.getChildren();
-				methodtest_instanceWithException101 = ModelTestUtils.getAssertMethod( classTestExceptionPropagation100Childs, "test_instanceWithException", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_instanceWithException101, new String[] {"self"} );
+			IMethod methodtest_instanceWithException95;
+				IModelElement[] classTestExceptionPropagation94Childs = classTestExceptionPropagation94.getChildren();
+				methodtest_instanceWithException95 = ModelTestUtils.getAssertMethod( classTestExceptionPropagation94Childs, "test_instanceWithException", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_instanceWithException95, new String[] {"self"} );
 			}
 			//Function test:test_instancesWithoutException
 			{
-			IMethod methodtest_instancesWithoutException102;
-				IModelElement[] classTestExceptionPropagation100Childs = classTestExceptionPropagation100.getChildren();
-				methodtest_instancesWithoutException102 = ModelTestUtils.getAssertMethod( classTestExceptionPropagation100Childs, "test_instancesWithoutException", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_instancesWithoutException102, new String[] {"self"} );
+			IMethod methodtest_instancesWithoutException96;
+				IModelElement[] classTestExceptionPropagation94Childs = classTestExceptionPropagation94.getChildren();
+				methodtest_instancesWithoutException96 = ModelTestUtils.getAssertMethod( classTestExceptionPropagation94Childs, "test_instancesWithoutException", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_instancesWithoutException96, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestSetOfSets103;
+		IType classTestSetOfSets97;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestSetOfSets103 = ModelTestUtils.getAssertClass( moduleChilds, "TestSetOfSets" );
+			classTestSetOfSets97 = ModelTestUtils.getAssertClass( moduleChilds, "TestSetOfSets" );
 			//Function test:test_constructor
 			{
-			IMethod methodtest_constructor104;
-				IModelElement[] classTestSetOfSets103Childs = classTestSetOfSets103.getChildren();
-				methodtest_constructor104 = ModelTestUtils.getAssertMethod( classTestSetOfSets103Childs, "test_constructor", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_constructor104, new String[] {"self"} );
+			IMethod methodtest_constructor98;
+				IModelElement[] classTestSetOfSets97Childs = classTestSetOfSets97.getChildren();
+				methodtest_constructor98 = ModelTestUtils.getAssertMethod( classTestSetOfSets97Childs, "test_constructor", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_constructor98, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestBinaryOps105;
+		IType classTestBinaryOps99;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestBinaryOps105 = ModelTestUtils.getAssertClass( moduleChilds, "TestBinaryOps" );
+			classTestBinaryOps99 = ModelTestUtils.getAssertClass( moduleChilds, "TestBinaryOps" );
 			//Function test:setUp
 			{
-			IMethod methodsetUp106;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodsetUp106 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp106, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestBinaryOps105Childs, "set");
+			IMethod methodsetUp100;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodsetUp100 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp100, new String[] {"self"} );
 			}
 			//Function test:test_eq
 			{
-			IMethod methodtest_eq108;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodtest_eq108 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "test_eq", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_eq108, new String[] {"self"} );
+			IMethod methodtest_eq101;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodtest_eq101 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "test_eq", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_eq101, new String[] {"self"} );
 			}
 			//Function test:test_union_subset
 			{
-			IMethod methodtest_union_subset109;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodtest_union_subset109 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "test_union_subset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_union_subset109, new String[] {"self"} );
+			IMethod methodtest_union_subset102;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodtest_union_subset102 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "test_union_subset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_union_subset102, new String[] {"self"} );
 			}
 			//Function test:test_union_superset
 			{
-			IMethod methodtest_union_superset110;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodtest_union_superset110 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "test_union_superset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_union_superset110, new String[] {"self"} );
+			IMethod methodtest_union_superset103;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodtest_union_superset103 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "test_union_superset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_union_superset103, new String[] {"self"} );
 			}
 			//Function test:test_union_overlap
 			{
-			IMethod methodtest_union_overlap111;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodtest_union_overlap111 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "test_union_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_union_overlap111, new String[] {"self"} );
+			IMethod methodtest_union_overlap104;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodtest_union_overlap104 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "test_union_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_union_overlap104, new String[] {"self"} );
 			}
 			//Function test:test_union_non_overlap
 			{
-			IMethod methodtest_union_non_overlap112;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodtest_union_non_overlap112 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "test_union_non_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_union_non_overlap112, new String[] {"self"} );
+			IMethod methodtest_union_non_overlap105;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodtest_union_non_overlap105 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "test_union_non_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_union_non_overlap105, new String[] {"self"} );
 			}
 			//Function test:test_intersection_subset
 			{
-			IMethod methodtest_intersection_subset113;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodtest_intersection_subset113 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "test_intersection_subset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection_subset113, new String[] {"self"} );
+			IMethod methodtest_intersection_subset106;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodtest_intersection_subset106 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "test_intersection_subset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection_subset106, new String[] {"self"} );
 			}
 			//Function test:test_intersection_superset
 			{
-			IMethod methodtest_intersection_superset114;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodtest_intersection_superset114 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "test_intersection_superset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection_superset114, new String[] {"self"} );
+			IMethod methodtest_intersection_superset107;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodtest_intersection_superset107 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "test_intersection_superset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection_superset107, new String[] {"self"} );
 			}
 			//Function test:test_intersection_overlap
 			{
-			IMethod methodtest_intersection_overlap115;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodtest_intersection_overlap115 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "test_intersection_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection_overlap115, new String[] {"self"} );
+			IMethod methodtest_intersection_overlap108;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodtest_intersection_overlap108 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "test_intersection_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection_overlap108, new String[] {"self"} );
 			}
 			//Function test:test_intersection_non_overlap
 			{
-			IMethod methodtest_intersection_non_overlap116;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodtest_intersection_non_overlap116 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "test_intersection_non_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection_non_overlap116, new String[] {"self"} );
+			IMethod methodtest_intersection_non_overlap109;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodtest_intersection_non_overlap109 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "test_intersection_non_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection_non_overlap109, new String[] {"self"} );
 			}
 			//Function test:test_sym_difference_subset
 			{
-			IMethod methodtest_sym_difference_subset117;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodtest_sym_difference_subset117 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "test_sym_difference_subset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_sym_difference_subset117, new String[] {"self"} );
+			IMethod methodtest_sym_difference_subset110;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodtest_sym_difference_subset110 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "test_sym_difference_subset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_sym_difference_subset110, new String[] {"self"} );
 			}
 			//Function test:test_sym_difference_superset
 			{
-			IMethod methodtest_sym_difference_superset118;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodtest_sym_difference_superset118 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "test_sym_difference_superset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_sym_difference_superset118, new String[] {"self"} );
+			IMethod methodtest_sym_difference_superset111;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodtest_sym_difference_superset111 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "test_sym_difference_superset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_sym_difference_superset111, new String[] {"self"} );
 			}
 			//Function test:test_sym_difference_overlap
 			{
-			IMethod methodtest_sym_difference_overlap119;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodtest_sym_difference_overlap119 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "test_sym_difference_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_sym_difference_overlap119, new String[] {"self"} );
+			IMethod methodtest_sym_difference_overlap112;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodtest_sym_difference_overlap112 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "test_sym_difference_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_sym_difference_overlap112, new String[] {"self"} );
 			}
 			//Function test:test_sym_difference_non_overlap
 			{
-			IMethod methodtest_sym_difference_non_overlap120;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodtest_sym_difference_non_overlap120 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "test_sym_difference_non_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_sym_difference_non_overlap120, new String[] {"self"} );
+			IMethod methodtest_sym_difference_non_overlap113;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodtest_sym_difference_non_overlap113 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "test_sym_difference_non_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_sym_difference_non_overlap113, new String[] {"self"} );
 			}
 			//Function test:test_cmp
 			{
-			IMethod methodtest_cmp121;
-				IModelElement[] classTestBinaryOps105Childs = classTestBinaryOps105.getChildren();
-				methodtest_cmp121 = ModelTestUtils.getAssertMethod( classTestBinaryOps105Childs, "test_cmp", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_cmp121, new String[] {"self"} );
+			IMethod methodtest_cmp114;
+				IModelElement[] classTestBinaryOps99Childs = classTestBinaryOps99.getChildren();
+				methodtest_cmp114 = ModelTestUtils.getAssertMethod( classTestBinaryOps99Childs, "test_cmp", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_cmp114, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestUpdateOps122;
+		IType classTestUpdateOps115;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestUpdateOps122 = ModelTestUtils.getAssertClass( moduleChilds, "TestUpdateOps" );
+			classTestUpdateOps115 = ModelTestUtils.getAssertClass( moduleChilds, "TestUpdateOps" );
 			//Function test:setUp
 			{
-			IMethod methodsetUp123;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodsetUp123 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp123, new String[] {"self"} );
+			IMethod methodsetUp116;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodsetUp116 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp116, new String[] {"self"} );
 			}
 			//Function test:test_union_subset
 			{
-			IMethod methodtest_union_subset124;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_union_subset124 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_union_subset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_union_subset124, new String[] {"self"} );
+			IMethod methodtest_union_subset117;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_union_subset117 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_union_subset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_union_subset117, new String[] {"self"} );
 			}
 			//Function test:test_union_superset
 			{
-			IMethod methodtest_union_superset125;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_union_superset125 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_union_superset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_union_superset125, new String[] {"self"} );
+			IMethod methodtest_union_superset118;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_union_superset118 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_union_superset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_union_superset118, new String[] {"self"} );
 			}
 			//Function test:test_union_overlap
 			{
-			IMethod methodtest_union_overlap126;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_union_overlap126 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_union_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_union_overlap126, new String[] {"self"} );
+			IMethod methodtest_union_overlap119;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_union_overlap119 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_union_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_union_overlap119, new String[] {"self"} );
 			}
 			//Function test:test_union_non_overlap
 			{
-			IMethod methodtest_union_non_overlap127;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_union_non_overlap127 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_union_non_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_union_non_overlap127, new String[] {"self"} );
+			IMethod methodtest_union_non_overlap120;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_union_non_overlap120 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_union_non_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_union_non_overlap120, new String[] {"self"} );
 			}
 			//Function test:test_union_method_call
 			{
-			IMethod methodtest_union_method_call128;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_union_method_call128 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_union_method_call", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_union_method_call128, new String[] {"self"} );
+			IMethod methodtest_union_method_call121;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_union_method_call121 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_union_method_call", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_union_method_call121, new String[] {"self"} );
 			}
 			//Function test:test_intersection_subset
 			{
-			IMethod methodtest_intersection_subset129;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_intersection_subset129 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_intersection_subset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection_subset129, new String[] {"self"} );
+			IMethod methodtest_intersection_subset122;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_intersection_subset122 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_intersection_subset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection_subset122, new String[] {"self"} );
 			}
 			//Function test:test_intersection_superset
 			{
-			IMethod methodtest_intersection_superset130;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_intersection_superset130 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_intersection_superset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection_superset130, new String[] {"self"} );
+			IMethod methodtest_intersection_superset123;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_intersection_superset123 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_intersection_superset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection_superset123, new String[] {"self"} );
 			}
 			//Function test:test_intersection_overlap
 			{
-			IMethod methodtest_intersection_overlap131;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_intersection_overlap131 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_intersection_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection_overlap131, new String[] {"self"} );
+			IMethod methodtest_intersection_overlap124;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_intersection_overlap124 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_intersection_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection_overlap124, new String[] {"self"} );
 			}
 			//Function test:test_intersection_non_overlap
 			{
-			IMethod methodtest_intersection_non_overlap132;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_intersection_non_overlap132 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_intersection_non_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection_non_overlap132, new String[] {"self"} );
+			IMethod methodtest_intersection_non_overlap125;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_intersection_non_overlap125 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_intersection_non_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection_non_overlap125, new String[] {"self"} );
 			}
 			//Function test:test_intersection_method_call
 			{
-			IMethod methodtest_intersection_method_call133;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_intersection_method_call133 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_intersection_method_call", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection_method_call133, new String[] {"self"} );
+			IMethod methodtest_intersection_method_call126;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_intersection_method_call126 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_intersection_method_call", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection_method_call126, new String[] {"self"} );
 			}
 			//Function test:test_sym_difference_subset
 			{
-			IMethod methodtest_sym_difference_subset134;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_sym_difference_subset134 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_sym_difference_subset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_sym_difference_subset134, new String[] {"self"} );
+			IMethod methodtest_sym_difference_subset127;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_sym_difference_subset127 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_sym_difference_subset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_sym_difference_subset127, new String[] {"self"} );
 			}
 			//Function test:test_sym_difference_superset
 			{
-			IMethod methodtest_sym_difference_superset135;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_sym_difference_superset135 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_sym_difference_superset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_sym_difference_superset135, new String[] {"self"} );
+			IMethod methodtest_sym_difference_superset128;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_sym_difference_superset128 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_sym_difference_superset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_sym_difference_superset128, new String[] {"self"} );
 			}
 			//Function test:test_sym_difference_overlap
 			{
-			IMethod methodtest_sym_difference_overlap136;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_sym_difference_overlap136 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_sym_difference_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_sym_difference_overlap136, new String[] {"self"} );
+			IMethod methodtest_sym_difference_overlap129;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_sym_difference_overlap129 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_sym_difference_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_sym_difference_overlap129, new String[] {"self"} );
 			}
 			//Function test:test_sym_difference_non_overlap
 			{
-			IMethod methodtest_sym_difference_non_overlap137;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_sym_difference_non_overlap137 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_sym_difference_non_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_sym_difference_non_overlap137, new String[] {"self"} );
+			IMethod methodtest_sym_difference_non_overlap130;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_sym_difference_non_overlap130 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_sym_difference_non_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_sym_difference_non_overlap130, new String[] {"self"} );
 			}
 			//Function test:test_sym_difference_method_call
 			{
-			IMethod methodtest_sym_difference_method_call138;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_sym_difference_method_call138 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_sym_difference_method_call", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_sym_difference_method_call138, new String[] {"self"} );
+			IMethod methodtest_sym_difference_method_call131;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_sym_difference_method_call131 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_sym_difference_method_call", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_sym_difference_method_call131, new String[] {"self"} );
 			}
 			//Function test:test_difference_subset
 			{
-			IMethod methodtest_difference_subset139;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_difference_subset139 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_difference_subset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_difference_subset139, new String[] {"self"} );
+			IMethod methodtest_difference_subset132;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_difference_subset132 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_difference_subset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_difference_subset132, new String[] {"self"} );
 			}
 			//Function test:test_difference_superset
 			{
-			IMethod methodtest_difference_superset140;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_difference_superset140 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_difference_superset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_difference_superset140, new String[] {"self"} );
+			IMethod methodtest_difference_superset133;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_difference_superset133 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_difference_superset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_difference_superset133, new String[] {"self"} );
 			}
 			//Function test:test_difference_overlap
 			{
-			IMethod methodtest_difference_overlap141;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_difference_overlap141 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_difference_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_difference_overlap141, new String[] {"self"} );
+			IMethod methodtest_difference_overlap134;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_difference_overlap134 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_difference_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_difference_overlap134, new String[] {"self"} );
 			}
 			//Function test:test_difference_non_overlap
 			{
-			IMethod methodtest_difference_non_overlap142;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_difference_non_overlap142 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_difference_non_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_difference_non_overlap142, new String[] {"self"} );
+			IMethod methodtest_difference_non_overlap135;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_difference_non_overlap135 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_difference_non_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_difference_non_overlap135, new String[] {"self"} );
 			}
 			//Function test:test_difference_method_call
 			{
-			IMethod methodtest_difference_method_call143;
-				IModelElement[] classTestUpdateOps122Childs = classTestUpdateOps122.getChildren();
-				methodtest_difference_method_call143 = ModelTestUtils.getAssertMethod( classTestUpdateOps122Childs, "test_difference_method_call", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_difference_method_call143, new String[] {"self"} );
+			IMethod methodtest_difference_method_call136;
+				IModelElement[] classTestUpdateOps115Childs = classTestUpdateOps115.getChildren();
+				methodtest_difference_method_call136 = ModelTestUtils.getAssertMethod( classTestUpdateOps115Childs, "test_difference_method_call", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_difference_method_call136, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestMutate144;
+		IType classTestMutate137;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestMutate144 = ModelTestUtils.getAssertClass( moduleChilds, "TestMutate" );
+			classTestMutate137 = ModelTestUtils.getAssertClass( moduleChilds, "TestMutate" );
 			//Function test:setUp
 			{
-			IMethod methodsetUp145;
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				methodsetUp145 = ModelTestUtils.getAssertMethod( classTestMutate144Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp145, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestMutate144Childs, "values");
-			}
-			{
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestMutate144Childs, "set");
+			IMethod methodsetUp138;
+				IModelElement[] classTestMutate137Childs = classTestMutate137.getChildren();
+				methodsetUp138 = ModelTestUtils.getAssertMethod( classTestMutate137Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp138, new String[] {"self"} );
 			}
 			//Function test:test_add_present
 			{
-			IMethod methodtest_add_present147;
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				methodtest_add_present147 = ModelTestUtils.getAssertMethod( classTestMutate144Childs, "test_add_present", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_add_present147, new String[] {"self"} );
+			IMethod methodtest_add_present139;
+				IModelElement[] classTestMutate137Childs = classTestMutate137.getChildren();
+				methodtest_add_present139 = ModelTestUtils.getAssertMethod( classTestMutate137Childs, "test_add_present", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_add_present139, new String[] {"self"} );
 			}
 			//Function test:test_add_absent
 			{
-			IMethod methodtest_add_absent148;
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				methodtest_add_absent148 = ModelTestUtils.getAssertMethod( classTestMutate144Childs, "test_add_absent", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_add_absent148, new String[] {"self"} );
+			IMethod methodtest_add_absent140;
+				IModelElement[] classTestMutate137Childs = classTestMutate137.getChildren();
+				methodtest_add_absent140 = ModelTestUtils.getAssertMethod( classTestMutate137Childs, "test_add_absent", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_add_absent140, new String[] {"self"} );
 			}
 			//Function test:test_add_until_full
 			{
-			IMethod methodtest_add_until_full149;
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				methodtest_add_until_full149 = ModelTestUtils.getAssertMethod( classTestMutate144Childs, "test_add_until_full", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_add_until_full149, new String[] {"self"} );
+			IMethod methodtest_add_until_full141;
+				IModelElement[] classTestMutate137Childs = classTestMutate137.getChildren();
+				methodtest_add_until_full141 = ModelTestUtils.getAssertMethod( classTestMutate137Childs, "test_add_until_full", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_add_until_full141, new String[] {"self"} );
 			}
 			//Function test:test_remove_present
 			{
-			IMethod methodtest_remove_present150;
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				methodtest_remove_present150 = ModelTestUtils.getAssertMethod( classTestMutate144Childs, "test_remove_present", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_remove_present150, new String[] {"self"} );
+			IMethod methodtest_remove_present142;
+				IModelElement[] classTestMutate137Childs = classTestMutate137.getChildren();
+				methodtest_remove_present142 = ModelTestUtils.getAssertMethod( classTestMutate137Childs, "test_remove_present", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_remove_present142, new String[] {"self"} );
 			}
 			//Function test:test_remove_absent
 			{
-			IMethod methodtest_remove_absent151;
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				methodtest_remove_absent151 = ModelTestUtils.getAssertMethod( classTestMutate144Childs, "test_remove_absent", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_remove_absent151, new String[] {"self"} );
+			IMethod methodtest_remove_absent143;
+				IModelElement[] classTestMutate137Childs = classTestMutate137.getChildren();
+				methodtest_remove_absent143 = ModelTestUtils.getAssertMethod( classTestMutate137Childs, "test_remove_absent", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_remove_absent143, new String[] {"self"} );
 			}
 			//Function test:test_remove_until_empty
 			{
-			IMethod methodtest_remove_until_empty152;
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				methodtest_remove_until_empty152 = ModelTestUtils.getAssertMethod( classTestMutate144Childs, "test_remove_until_empty", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_remove_until_empty152, new String[] {"self"} );
+			IMethod methodtest_remove_until_empty144;
+				IModelElement[] classTestMutate137Childs = classTestMutate137.getChildren();
+				methodtest_remove_until_empty144 = ModelTestUtils.getAssertMethod( classTestMutate137Childs, "test_remove_until_empty", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_remove_until_empty144, new String[] {"self"} );
 			}
 			//Function test:test_discard_present
 			{
-			IMethod methodtest_discard_present153;
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				methodtest_discard_present153 = ModelTestUtils.getAssertMethod( classTestMutate144Childs, "test_discard_present", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_discard_present153, new String[] {"self"} );
+			IMethod methodtest_discard_present145;
+				IModelElement[] classTestMutate137Childs = classTestMutate137.getChildren();
+				methodtest_discard_present145 = ModelTestUtils.getAssertMethod( classTestMutate137Childs, "test_discard_present", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_discard_present145, new String[] {"self"} );
 			}
 			//Function test:test_discard_absent
 			{
-			IMethod methodtest_discard_absent154;
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				methodtest_discard_absent154 = ModelTestUtils.getAssertMethod( classTestMutate144Childs, "test_discard_absent", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_discard_absent154, new String[] {"self"} );
+			IMethod methodtest_discard_absent146;
+				IModelElement[] classTestMutate137Childs = classTestMutate137.getChildren();
+				methodtest_discard_absent146 = ModelTestUtils.getAssertMethod( classTestMutate137Childs, "test_discard_absent", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_discard_absent146, new String[] {"self"} );
 			}
 			//Function test:test_clear
 			{
-			IMethod methodtest_clear155;
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				methodtest_clear155 = ModelTestUtils.getAssertMethod( classTestMutate144Childs, "test_clear", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_clear155, new String[] {"self"} );
+			IMethod methodtest_clear147;
+				IModelElement[] classTestMutate137Childs = classTestMutate137.getChildren();
+				methodtest_clear147 = ModelTestUtils.getAssertMethod( classTestMutate137Childs, "test_clear", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_clear147, new String[] {"self"} );
 			}
 			//Function test:test_pop
 			{
-			IMethod methodtest_pop156;
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				methodtest_pop156 = ModelTestUtils.getAssertMethod( classTestMutate144Childs, "test_pop", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_pop156, new String[] {"self"} );
+			IMethod methodtest_pop148;
+				IModelElement[] classTestMutate137Childs = classTestMutate137.getChildren();
+				methodtest_pop148 = ModelTestUtils.getAssertMethod( classTestMutate137Childs, "test_pop", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_pop148, new String[] {"self"} );
 			}
 			//Function test:test_update_empty_tuple
 			{
-			IMethod methodtest_update_empty_tuple157;
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				methodtest_update_empty_tuple157 = ModelTestUtils.getAssertMethod( classTestMutate144Childs, "test_update_empty_tuple", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_update_empty_tuple157, new String[] {"self"} );
+			IMethod methodtest_update_empty_tuple149;
+				IModelElement[] classTestMutate137Childs = classTestMutate137.getChildren();
+				methodtest_update_empty_tuple149 = ModelTestUtils.getAssertMethod( classTestMutate137Childs, "test_update_empty_tuple", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_update_empty_tuple149, new String[] {"self"} );
 			}
 			//Function test:test_update_unit_tuple_overlap
 			{
-			IMethod methodtest_update_unit_tuple_overlap158;
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				methodtest_update_unit_tuple_overlap158 = ModelTestUtils.getAssertMethod( classTestMutate144Childs, "test_update_unit_tuple_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_update_unit_tuple_overlap158, new String[] {"self"} );
+			IMethod methodtest_update_unit_tuple_overlap150;
+				IModelElement[] classTestMutate137Childs = classTestMutate137.getChildren();
+				methodtest_update_unit_tuple_overlap150 = ModelTestUtils.getAssertMethod( classTestMutate137Childs, "test_update_unit_tuple_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_update_unit_tuple_overlap150, new String[] {"self"} );
 			}
 			//Function test:test_update_unit_tuple_non_overlap
 			{
-			IMethod methodtest_update_unit_tuple_non_overlap159;
-				IModelElement[] classTestMutate144Childs = classTestMutate144.getChildren();
-				methodtest_update_unit_tuple_non_overlap159 = ModelTestUtils.getAssertMethod( classTestMutate144Childs, "test_update_unit_tuple_non_overlap", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_update_unit_tuple_non_overlap159, new String[] {"self"} );
+			IMethod methodtest_update_unit_tuple_non_overlap151;
+				IModelElement[] classTestMutate137Childs = classTestMutate137.getChildren();
+				methodtest_update_unit_tuple_non_overlap151 = ModelTestUtils.getAssertMethod( classTestMutate137Childs, "test_update_unit_tuple_non_overlap", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_update_unit_tuple_non_overlap151, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestSubsets160;
+		IType classTestSubsets152;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestSubsets160 = ModelTestUtils.getAssertClass( moduleChilds, "TestSubsets" );
+			classTestSubsets152 = ModelTestUtils.getAssertClass( moduleChilds, "TestSubsets" );
 			{
-				IModelElement[] classTestSubsets160Childs = classTestSubsets160.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsets160Childs, "case2method");
+				IModelElement[] classTestSubsets152Childs = classTestSubsets152.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsets152Childs, "case2method");
 			}
 			{
-				IModelElement[] classTestSubsets160Childs = classTestSubsets160.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsets160Childs, "reverse");
+				IModelElement[] classTestSubsets152Childs = classTestSubsets152.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsets152Childs, "reverse");
 			}
 			//Function test:test_issubset
 			{
-			IMethod methodtest_issubset161;
-				IModelElement[] classTestSubsets160Childs = classTestSubsets160.getChildren();
-				methodtest_issubset161 = ModelTestUtils.getAssertMethod( classTestSubsets160Childs, "test_issubset", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_issubset161, new String[] {"self"} );
+			IMethod methodtest_issubset153;
+				IModelElement[] classTestSubsets152Childs = classTestSubsets152.getChildren();
+				methodtest_issubset153 = ModelTestUtils.getAssertMethod( classTestSubsets152Childs, "test_issubset", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_issubset153, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestSubsetEqualEmpty162;
+		IType classTestSubsetEqualEmpty154;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestSubsetEqualEmpty162 = ModelTestUtils.getAssertClass( moduleChilds, "TestSubsetEqualEmpty" );
+			classTestSubsetEqualEmpty154 = ModelTestUtils.getAssertClass( moduleChilds, "TestSubsetEqualEmpty" );
 			{
-				IModelElement[] classTestSubsetEqualEmpty162Childs = classTestSubsetEqualEmpty162.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualEmpty162Childs, "left");
+				IModelElement[] classTestSubsetEqualEmpty154Childs = classTestSubsetEqualEmpty154.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualEmpty154Childs, "left");
 			}
 			{
-				IModelElement[] classTestSubsetEqualEmpty162Childs = classTestSubsetEqualEmpty162.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualEmpty162Childs, "right");
+				IModelElement[] classTestSubsetEqualEmpty154Childs = classTestSubsetEqualEmpty154.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualEmpty154Childs, "right");
 			}
 			{
-				IModelElement[] classTestSubsetEqualEmpty162Childs = classTestSubsetEqualEmpty162.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualEmpty162Childs, "name");
+				IModelElement[] classTestSubsetEqualEmpty154Childs = classTestSubsetEqualEmpty154.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualEmpty154Childs, "name");
 			}
 			{
-				IModelElement[] classTestSubsetEqualEmpty162Childs = classTestSubsetEqualEmpty162.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualEmpty162Childs, "cases");
+				IModelElement[] classTestSubsetEqualEmpty154Childs = classTestSubsetEqualEmpty154.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualEmpty154Childs, "cases");
 			}
 		}
 		//Class test
 		{
-		IType classTestSubsetEqualNonEmpty163;
+		IType classTestSubsetEqualNonEmpty155;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestSubsetEqualNonEmpty163 = ModelTestUtils.getAssertClass( moduleChilds, "TestSubsetEqualNonEmpty" );
+			classTestSubsetEqualNonEmpty155 = ModelTestUtils.getAssertClass( moduleChilds, "TestSubsetEqualNonEmpty" );
 			{
-				IModelElement[] classTestSubsetEqualNonEmpty163Childs = classTestSubsetEqualNonEmpty163.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualNonEmpty163Childs, "left");
+				IModelElement[] classTestSubsetEqualNonEmpty155Childs = classTestSubsetEqualNonEmpty155.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualNonEmpty155Childs, "left");
 			}
 			{
-				IModelElement[] classTestSubsetEqualNonEmpty163Childs = classTestSubsetEqualNonEmpty163.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualNonEmpty163Childs, "right");
+				IModelElement[] classTestSubsetEqualNonEmpty155Childs = classTestSubsetEqualNonEmpty155.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualNonEmpty155Childs, "right");
 			}
 			{
-				IModelElement[] classTestSubsetEqualNonEmpty163Childs = classTestSubsetEqualNonEmpty163.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualNonEmpty163Childs, "name");
+				IModelElement[] classTestSubsetEqualNonEmpty155Childs = classTestSubsetEqualNonEmpty155.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualNonEmpty155Childs, "name");
 			}
 			{
-				IModelElement[] classTestSubsetEqualNonEmpty163Childs = classTestSubsetEqualNonEmpty163.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualNonEmpty163Childs, "cases");
+				IModelElement[] classTestSubsetEqualNonEmpty155Childs = classTestSubsetEqualNonEmpty155.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEqualNonEmpty155Childs, "cases");
 			}
 		}
 		//Class test
 		{
-		IType classTestSubsetEmptyNonEmpty164;
+		IType classTestSubsetEmptyNonEmpty156;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestSubsetEmptyNonEmpty164 = ModelTestUtils.getAssertClass( moduleChilds, "TestSubsetEmptyNonEmpty" );
+			classTestSubsetEmptyNonEmpty156 = ModelTestUtils.getAssertClass( moduleChilds, "TestSubsetEmptyNonEmpty" );
 			{
-				IModelElement[] classTestSubsetEmptyNonEmpty164Childs = classTestSubsetEmptyNonEmpty164.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEmptyNonEmpty164Childs, "left");
+				IModelElement[] classTestSubsetEmptyNonEmpty156Childs = classTestSubsetEmptyNonEmpty156.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEmptyNonEmpty156Childs, "left");
 			}
 			{
-				IModelElement[] classTestSubsetEmptyNonEmpty164Childs = classTestSubsetEmptyNonEmpty164.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEmptyNonEmpty164Childs, "right");
+				IModelElement[] classTestSubsetEmptyNonEmpty156Childs = classTestSubsetEmptyNonEmpty156.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEmptyNonEmpty156Childs, "right");
 			}
 			{
-				IModelElement[] classTestSubsetEmptyNonEmpty164Childs = classTestSubsetEmptyNonEmpty164.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEmptyNonEmpty164Childs, "name");
+				IModelElement[] classTestSubsetEmptyNonEmpty156Childs = classTestSubsetEmptyNonEmpty156.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEmptyNonEmpty156Childs, "name");
 			}
 			{
-				IModelElement[] classTestSubsetEmptyNonEmpty164Childs = classTestSubsetEmptyNonEmpty164.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEmptyNonEmpty164Childs, "cases");
+				IModelElement[] classTestSubsetEmptyNonEmpty156Childs = classTestSubsetEmptyNonEmpty156.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetEmptyNonEmpty156Childs, "cases");
 			}
 		}
 		//Class test
 		{
-		IType classTestSubsetPartial165;
+		IType classTestSubsetPartial157;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestSubsetPartial165 = ModelTestUtils.getAssertClass( moduleChilds, "TestSubsetPartial" );
+			classTestSubsetPartial157 = ModelTestUtils.getAssertClass( moduleChilds, "TestSubsetPartial" );
 			{
-				IModelElement[] classTestSubsetPartial165Childs = classTestSubsetPartial165.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetPartial165Childs, "left");
+				IModelElement[] classTestSubsetPartial157Childs = classTestSubsetPartial157.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetPartial157Childs, "left");
 			}
 			{
-				IModelElement[] classTestSubsetPartial165Childs = classTestSubsetPartial165.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetPartial165Childs, "right");
+				IModelElement[] classTestSubsetPartial157Childs = classTestSubsetPartial157.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetPartial157Childs, "right");
 			}
 			{
-				IModelElement[] classTestSubsetPartial165Childs = classTestSubsetPartial165.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetPartial165Childs, "name");
+				IModelElement[] classTestSubsetPartial157Childs = classTestSubsetPartial157.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetPartial157Childs, "name");
 			}
 			{
-				IModelElement[] classTestSubsetPartial165Childs = classTestSubsetPartial165.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetPartial165Childs, "cases");
+				IModelElement[] classTestSubsetPartial157Childs = classTestSubsetPartial157.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetPartial157Childs, "cases");
 			}
 		}
 		//Class test
 		{
-		IType classTestSubsetNonOverlap166;
+		IType classTestSubsetNonOverlap158;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestSubsetNonOverlap166 = ModelTestUtils.getAssertClass( moduleChilds, "TestSubsetNonOverlap" );
+			classTestSubsetNonOverlap158 = ModelTestUtils.getAssertClass( moduleChilds, "TestSubsetNonOverlap" );
 			{
-				IModelElement[] classTestSubsetNonOverlap166Childs = classTestSubsetNonOverlap166.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetNonOverlap166Childs, "left");
+				IModelElement[] classTestSubsetNonOverlap158Childs = classTestSubsetNonOverlap158.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetNonOverlap158Childs, "left");
 			}
 			{
-				IModelElement[] classTestSubsetNonOverlap166Childs = classTestSubsetNonOverlap166.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetNonOverlap166Childs, "right");
+				IModelElement[] classTestSubsetNonOverlap158Childs = classTestSubsetNonOverlap158.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetNonOverlap158Childs, "right");
 			}
 			{
-				IModelElement[] classTestSubsetNonOverlap166Childs = classTestSubsetNonOverlap166.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetNonOverlap166Childs, "name");
+				IModelElement[] classTestSubsetNonOverlap158Childs = classTestSubsetNonOverlap158.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetNonOverlap158Childs, "name");
 			}
 			{
-				IModelElement[] classTestSubsetNonOverlap166Childs = classTestSubsetNonOverlap166.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetNonOverlap166Childs, "cases");
+				IModelElement[] classTestSubsetNonOverlap158Childs = classTestSubsetNonOverlap158.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classTestSubsetNonOverlap158Childs, "cases");
 			}
 		}
 		//Class test
 		{
-		IType classTestOnlySetsInBinaryOps167;
+		IType classTestOnlySetsInBinaryOps159;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestOnlySetsInBinaryOps167 = ModelTestUtils.getAssertClass( moduleChilds, "TestOnlySetsInBinaryOps" );
+			classTestOnlySetsInBinaryOps159 = ModelTestUtils.getAssertClass( moduleChilds, "TestOnlySetsInBinaryOps" );
 			//Function test:test_eq_ne
 			{
-			IMethod methodtest_eq_ne168;
-				IModelElement[] classTestOnlySetsInBinaryOps167Childs = classTestOnlySetsInBinaryOps167.getChildren();
-				methodtest_eq_ne168 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps167Childs, "test_eq_ne", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_eq_ne168, new String[] {"self"} );
+			IMethod methodtest_eq_ne160;
+				IModelElement[] classTestOnlySetsInBinaryOps159Childs = classTestOnlySetsInBinaryOps159.getChildren();
+				methodtest_eq_ne160 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps159Childs, "test_eq_ne", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_eq_ne160, new String[] {"self"} );
 			}
 			//Function test:test_ge_gt_le_lt
 			{
-			IMethod methodtest_ge_gt_le_lt169;
-				IModelElement[] classTestOnlySetsInBinaryOps167Childs = classTestOnlySetsInBinaryOps167.getChildren();
-				methodtest_ge_gt_le_lt169 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps167Childs, "test_ge_gt_le_lt", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_ge_gt_le_lt169, new String[] {"self"} );
+			IMethod methodtest_ge_gt_le_lt161;
+				IModelElement[] classTestOnlySetsInBinaryOps159Childs = classTestOnlySetsInBinaryOps159.getChildren();
+				methodtest_ge_gt_le_lt161 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps159Childs, "test_ge_gt_le_lt", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_ge_gt_le_lt161, new String[] {"self"} );
 			}
 			//Function test:test_update_operator
 			{
-			IMethod methodtest_update_operator170;
-				IModelElement[] classTestOnlySetsInBinaryOps167Childs = classTestOnlySetsInBinaryOps167.getChildren();
-				methodtest_update_operator170 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps167Childs, "test_update_operator", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_update_operator170, new String[] {"self"} );
+			IMethod methodtest_update_operator162;
+				IModelElement[] classTestOnlySetsInBinaryOps159Childs = classTestOnlySetsInBinaryOps159.getChildren();
+				methodtest_update_operator162 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps159Childs, "test_update_operator", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_update_operator162, new String[] {"self"} );
 			}
 			//Function test:test_update
 			{
-			IMethod methodtest_update171;
-				IModelElement[] classTestOnlySetsInBinaryOps167Childs = classTestOnlySetsInBinaryOps167.getChildren();
-				methodtest_update171 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps167Childs, "test_update", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_update171, new String[] {"self"} );
+			IMethod methodtest_update163;
+				IModelElement[] classTestOnlySetsInBinaryOps159Childs = classTestOnlySetsInBinaryOps159.getChildren();
+				methodtest_update163 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps159Childs, "test_update", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_update163, new String[] {"self"} );
 			}
 			//Function test:test_union
 			{
-			IMethod methodtest_union172;
-				IModelElement[] classTestOnlySetsInBinaryOps167Childs = classTestOnlySetsInBinaryOps167.getChildren();
-				methodtest_union172 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps167Childs, "test_union", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_union172, new String[] {"self"} );
+			IMethod methodtest_union164;
+				IModelElement[] classTestOnlySetsInBinaryOps159Childs = classTestOnlySetsInBinaryOps159.getChildren();
+				methodtest_union164 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps159Childs, "test_union", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_union164, new String[] {"self"} );
 			}
 			//Function test:test_intersection_update_operator
 			{
-			IMethod methodtest_intersection_update_operator173;
-				IModelElement[] classTestOnlySetsInBinaryOps167Childs = classTestOnlySetsInBinaryOps167.getChildren();
-				methodtest_intersection_update_operator173 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps167Childs, "test_intersection_update_operator", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection_update_operator173, new String[] {"self"} );
+			IMethod methodtest_intersection_update_operator165;
+				IModelElement[] classTestOnlySetsInBinaryOps159Childs = classTestOnlySetsInBinaryOps159.getChildren();
+				methodtest_intersection_update_operator165 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps159Childs, "test_intersection_update_operator", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection_update_operator165, new String[] {"self"} );
 			}
 			//Function test:test_intersection_update
 			{
-			IMethod methodtest_intersection_update174;
-				IModelElement[] classTestOnlySetsInBinaryOps167Childs = classTestOnlySetsInBinaryOps167.getChildren();
-				methodtest_intersection_update174 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps167Childs, "test_intersection_update", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection_update174, new String[] {"self"} );
+			IMethod methodtest_intersection_update166;
+				IModelElement[] classTestOnlySetsInBinaryOps159Childs = classTestOnlySetsInBinaryOps159.getChildren();
+				methodtest_intersection_update166 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps159Childs, "test_intersection_update", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection_update166, new String[] {"self"} );
 			}
 			//Function test:test_intersection
 			{
-			IMethod methodtest_intersection175;
-				IModelElement[] classTestOnlySetsInBinaryOps167Childs = classTestOnlySetsInBinaryOps167.getChildren();
-				methodtest_intersection175 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps167Childs, "test_intersection", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_intersection175, new String[] {"self"} );
+			IMethod methodtest_intersection167;
+				IModelElement[] classTestOnlySetsInBinaryOps159Childs = classTestOnlySetsInBinaryOps159.getChildren();
+				methodtest_intersection167 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps159Childs, "test_intersection", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_intersection167, new String[] {"self"} );
 			}
 			//Function test:test_sym_difference_update_operator
 			{
-			IMethod methodtest_sym_difference_update_operator176;
-				IModelElement[] classTestOnlySetsInBinaryOps167Childs = classTestOnlySetsInBinaryOps167.getChildren();
-				methodtest_sym_difference_update_operator176 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps167Childs, "test_sym_difference_update_operator", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_sym_difference_update_operator176, new String[] {"self"} );
+			IMethod methodtest_sym_difference_update_operator168;
+				IModelElement[] classTestOnlySetsInBinaryOps159Childs = classTestOnlySetsInBinaryOps159.getChildren();
+				methodtest_sym_difference_update_operator168 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps159Childs, "test_sym_difference_update_operator", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_sym_difference_update_operator168, new String[] {"self"} );
 			}
 			//Function test:test_sym_difference_update
 			{
-			IMethod methodtest_sym_difference_update177;
-				IModelElement[] classTestOnlySetsInBinaryOps167Childs = classTestOnlySetsInBinaryOps167.getChildren();
-				methodtest_sym_difference_update177 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps167Childs, "test_sym_difference_update", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_sym_difference_update177, new String[] {"self"} );
+			IMethod methodtest_sym_difference_update169;
+				IModelElement[] classTestOnlySetsInBinaryOps159Childs = classTestOnlySetsInBinaryOps159.getChildren();
+				methodtest_sym_difference_update169 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps159Childs, "test_sym_difference_update", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_sym_difference_update169, new String[] {"self"} );
 			}
 			//Function test:test_sym_difference
 			{
-			IMethod methodtest_sym_difference178;
-				IModelElement[] classTestOnlySetsInBinaryOps167Childs = classTestOnlySetsInBinaryOps167.getChildren();
-				methodtest_sym_difference178 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps167Childs, "test_sym_difference", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_sym_difference178, new String[] {"self"} );
+			IMethod methodtest_sym_difference170;
+				IModelElement[] classTestOnlySetsInBinaryOps159Childs = classTestOnlySetsInBinaryOps159.getChildren();
+				methodtest_sym_difference170 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps159Childs, "test_sym_difference", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_sym_difference170, new String[] {"self"} );
 			}
 			//Function test:test_difference_update_operator
 			{
-			IMethod methodtest_difference_update_operator179;
-				IModelElement[] classTestOnlySetsInBinaryOps167Childs = classTestOnlySetsInBinaryOps167.getChildren();
-				methodtest_difference_update_operator179 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps167Childs, "test_difference_update_operator", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_difference_update_operator179, new String[] {"self"} );
+			IMethod methodtest_difference_update_operator171;
+				IModelElement[] classTestOnlySetsInBinaryOps159Childs = classTestOnlySetsInBinaryOps159.getChildren();
+				methodtest_difference_update_operator171 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps159Childs, "test_difference_update_operator", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_difference_update_operator171, new String[] {"self"} );
 			}
 			//Function test:test_difference_update
 			{
-			IMethod methodtest_difference_update180;
-				IModelElement[] classTestOnlySetsInBinaryOps167Childs = classTestOnlySetsInBinaryOps167.getChildren();
-				methodtest_difference_update180 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps167Childs, "test_difference_update", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_difference_update180, new String[] {"self"} );
+			IMethod methodtest_difference_update172;
+				IModelElement[] classTestOnlySetsInBinaryOps159Childs = classTestOnlySetsInBinaryOps159.getChildren();
+				methodtest_difference_update172 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps159Childs, "test_difference_update", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_difference_update172, new String[] {"self"} );
 			}
 			//Function test:test_difference
 			{
-			IMethod methodtest_difference181;
-				IModelElement[] classTestOnlySetsInBinaryOps167Childs = classTestOnlySetsInBinaryOps167.getChildren();
-				methodtest_difference181 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps167Childs, "test_difference", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_difference181, new String[] {"self"} );
+			IMethod methodtest_difference173;
+				IModelElement[] classTestOnlySetsInBinaryOps159Childs = classTestOnlySetsInBinaryOps159.getChildren();
+				methodtest_difference173 = ModelTestUtils.getAssertMethod( classTestOnlySetsInBinaryOps159Childs, "test_difference", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_difference173, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestOnlySetsNumeric182;
+		IType classTestOnlySetsNumeric174;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestOnlySetsNumeric182 = ModelTestUtils.getAssertClass( moduleChilds, "TestOnlySetsNumeric" );
+			classTestOnlySetsNumeric174 = ModelTestUtils.getAssertClass( moduleChilds, "TestOnlySetsNumeric" );
+			//Function test:setUp
+			{
+			IMethod methodsetUp175;
+				IModelElement[] classTestOnlySetsNumeric174Childs = classTestOnlySetsNumeric174.getChildren();
+				methodsetUp175 = ModelTestUtils.getAssertMethod( classTestOnlySetsNumeric174Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp175, new String[] {"self"} );
+			}
+		}
+		//Class test
+		{
+		IType classTestOnlySetsDict176;
+			IModelElement[] moduleChilds = module.getChildren();
+			classTestOnlySetsDict176 = ModelTestUtils.getAssertClass( moduleChilds, "TestOnlySetsDict" );
+			//Function test:setUp
+			{
+			IMethod methodsetUp177;
+				IModelElement[] classTestOnlySetsDict176Childs = classTestOnlySetsDict176.getChildren();
+				methodsetUp177 = ModelTestUtils.getAssertMethod( classTestOnlySetsDict176Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp177, new String[] {"self"} );
+			}
+		}
+		//Class test
+		{
+		IType classTestOnlySetsOperator178;
+			IModelElement[] moduleChilds = module.getChildren();
+			classTestOnlySetsOperator178 = ModelTestUtils.getAssertClass( moduleChilds, "TestOnlySetsOperator" );
+			//Function test:setUp
+			{
+			IMethod methodsetUp179;
+				IModelElement[] classTestOnlySetsOperator178Childs = classTestOnlySetsOperator178.getChildren();
+				methodsetUp179 = ModelTestUtils.getAssertMethod( classTestOnlySetsOperator178Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp179, new String[] {"self"} );
+			}
+		}
+		//Class test
+		{
+		IType classTestOnlySetsTuple180;
+			IModelElement[] moduleChilds = module.getChildren();
+			classTestOnlySetsTuple180 = ModelTestUtils.getAssertClass( moduleChilds, "TestOnlySetsTuple" );
+			//Function test:setUp
+			{
+			IMethod methodsetUp181;
+				IModelElement[] classTestOnlySetsTuple180Childs = classTestOnlySetsTuple180.getChildren();
+				methodsetUp181 = ModelTestUtils.getAssertMethod( classTestOnlySetsTuple180Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp181, new String[] {"self"} );
+			}
+		}
+		//Class test
+		{
+		IType classTestOnlySetsString182;
+			IModelElement[] moduleChilds = module.getChildren();
+			classTestOnlySetsString182 = ModelTestUtils.getAssertClass( moduleChilds, "TestOnlySetsString" );
 			//Function test:setUp
 			{
 			IMethod methodsetUp183;
-				IModelElement[] classTestOnlySetsNumeric182Childs = classTestOnlySetsNumeric182.getChildren();
-				methodsetUp183 = ModelTestUtils.getAssertMethod( classTestOnlySetsNumeric182Childs, "setUp", 1 );
+				IModelElement[] classTestOnlySetsString182Childs = classTestOnlySetsString182.getChildren();
+				methodsetUp183 = ModelTestUtils.getAssertMethod( classTestOnlySetsString182Childs, "setUp", 1 );
 				ModelTestUtils.assertParameterNames( methodsetUp183, new String[] {"self"} );
 			}
-			{
-				IModelElement[] classTestOnlySetsNumeric182Childs = classTestOnlySetsNumeric182.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsNumeric182Childs, "set");
-			}
-			{
-				IModelElement[] classTestOnlySetsNumeric182Childs = classTestOnlySetsNumeric182.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsNumeric182Childs, "other");
-			}
-			{
-				IModelElement[] classTestOnlySetsNumeric182Childs = classTestOnlySetsNumeric182.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsNumeric182Childs, "otherIsIterable");
-			}
 		}
 		//Class test
 		{
-		IType classTestOnlySetsDict185;
+		IType classTestOnlySetsGenerator184;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestOnlySetsDict185 = ModelTestUtils.getAssertClass( moduleChilds, "TestOnlySetsDict" );
+			classTestOnlySetsGenerator184 = ModelTestUtils.getAssertClass( moduleChilds, "TestOnlySetsGenerator" );
 			//Function test:setUp
 			{
-			IMethod methodsetUp186;
-				IModelElement[] classTestOnlySetsDict185Childs = classTestOnlySetsDict185.getChildren();
-				methodsetUp186 = ModelTestUtils.getAssertMethod( classTestOnlySetsDict185Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp186, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestOnlySetsDict185Childs = classTestOnlySetsDict185.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsDict185Childs, "set");
-			}
-			{
-				IModelElement[] classTestOnlySetsDict185Childs = classTestOnlySetsDict185.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsDict185Childs, "other");
-			}
-			{
-				IModelElement[] classTestOnlySetsDict185Childs = classTestOnlySetsDict185.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsDict185Childs, "otherIsIterable");
-			}
-		}
-		//Class test
-		{
-		IType classTestOnlySetsOperator188;
-			IModelElement[] moduleChilds = module.getChildren();
-			classTestOnlySetsOperator188 = ModelTestUtils.getAssertClass( moduleChilds, "TestOnlySetsOperator" );
-			//Function test:setUp
-			{
-			IMethod methodsetUp189;
-				IModelElement[] classTestOnlySetsOperator188Childs = classTestOnlySetsOperator188.getChildren();
-				methodsetUp189 = ModelTestUtils.getAssertMethod( classTestOnlySetsOperator188Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp189, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestOnlySetsOperator188Childs = classTestOnlySetsOperator188.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsOperator188Childs, "set");
-			}
-			{
-				IModelElement[] classTestOnlySetsOperator188Childs = classTestOnlySetsOperator188.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsOperator188Childs, "other");
-			}
-			{
-				IModelElement[] classTestOnlySetsOperator188Childs = classTestOnlySetsOperator188.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsOperator188Childs, "otherIsIterable");
-			}
-		}
-		//Class test
-		{
-		IType classTestOnlySetsTuple191;
-			IModelElement[] moduleChilds = module.getChildren();
-			classTestOnlySetsTuple191 = ModelTestUtils.getAssertClass( moduleChilds, "TestOnlySetsTuple" );
-			//Function test:setUp
-			{
-			IMethod methodsetUp192;
-				IModelElement[] classTestOnlySetsTuple191Childs = classTestOnlySetsTuple191.getChildren();
-				methodsetUp192 = ModelTestUtils.getAssertMethod( classTestOnlySetsTuple191Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp192, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestOnlySetsTuple191Childs = classTestOnlySetsTuple191.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsTuple191Childs, "set");
-			}
-			{
-				IModelElement[] classTestOnlySetsTuple191Childs = classTestOnlySetsTuple191.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsTuple191Childs, "other");
-			}
-			{
-				IModelElement[] classTestOnlySetsTuple191Childs = classTestOnlySetsTuple191.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsTuple191Childs, "otherIsIterable");
-			}
-		}
-		//Class test
-		{
-		IType classTestOnlySetsString194;
-			IModelElement[] moduleChilds = module.getChildren();
-			classTestOnlySetsString194 = ModelTestUtils.getAssertClass( moduleChilds, "TestOnlySetsString" );
-			//Function test:setUp
-			{
-			IMethod methodsetUp195;
-				IModelElement[] classTestOnlySetsString194Childs = classTestOnlySetsString194.getChildren();
-				methodsetUp195 = ModelTestUtils.getAssertMethod( classTestOnlySetsString194Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp195, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestOnlySetsString194Childs = classTestOnlySetsString194.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsString194Childs, "set");
-			}
-			{
-				IModelElement[] classTestOnlySetsString194Childs = classTestOnlySetsString194.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsString194Childs, "other");
-			}
-			{
-				IModelElement[] classTestOnlySetsString194Childs = classTestOnlySetsString194.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsString194Childs, "otherIsIterable");
-			}
-		}
-		//Class test
-		{
-		IType classTestOnlySetsGenerator197;
-			IModelElement[] moduleChilds = module.getChildren();
-			classTestOnlySetsGenerator197 = ModelTestUtils.getAssertClass( moduleChilds, "TestOnlySetsGenerator" );
-			//Function test:setUp
-			{
-			IMethod methodsetUp198;
-				IModelElement[] classTestOnlySetsGenerator197Childs = classTestOnlySetsGenerator197.getChildren();
-				methodsetUp198 = ModelTestUtils.getAssertMethod( classTestOnlySetsGenerator197Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp198, new String[] {"self"} );
+			IMethod methodsetUp185;
+				IModelElement[] classTestOnlySetsGenerator184Childs = classTestOnlySetsGenerator184.getChildren();
+				methodsetUp185 = ModelTestUtils.getAssertMethod( classTestOnlySetsGenerator184Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp185, new String[] {"self"} );
 				//Function test:gen
 				{
-				IMethod methodgen199;
-					IModelElement[] methodsetUp198Childs = methodsetUp198.getChildren();
-					methodgen199 = ModelTestUtils.getAssertMethod( methodsetUp198Childs, "gen", 0 );
+				IMethod methodgen186;
+					IModelElement[] methodsetUp185Childs = methodsetUp185.getChildren();
+					methodgen186 = ModelTestUtils.getAssertMethod( methodsetUp185Childs, "gen", 0 );
 				}
-			}
-			{
-				IModelElement[] classTestOnlySetsGenerator197Childs = classTestOnlySetsGenerator197.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsGenerator197Childs, "set");
-			}
-			{
-				IModelElement[] classTestOnlySetsGenerator197Childs = classTestOnlySetsGenerator197.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsGenerator197Childs, "other");
-			}
-			{
-				IModelElement[] classTestOnlySetsGenerator197Childs = classTestOnlySetsGenerator197.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestOnlySetsGenerator197Childs, "otherIsIterable");
 			}
 		}
 		//Class test
 		{
-		IType classTestCopying201;
+		IType classTestCopying187;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestCopying201 = ModelTestUtils.getAssertClass( moduleChilds, "TestCopying" );
+			classTestCopying187 = ModelTestUtils.getAssertClass( moduleChilds, "TestCopying" );
 			//Function test:test_copy
 			{
-			IMethod methodtest_copy202;
-				IModelElement[] classTestCopying201Childs = classTestCopying201.getChildren();
-				methodtest_copy202 = ModelTestUtils.getAssertMethod( classTestCopying201Childs, "test_copy", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_copy202, new String[] {"self"} );
+			IMethod methodtest_copy188;
+				IModelElement[] classTestCopying187Childs = classTestCopying187.getChildren();
+				methodtest_copy188 = ModelTestUtils.getAssertMethod( classTestCopying187Childs, "test_copy", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_copy188, new String[] {"self"} );
 			}
 			//Function test:test_deep_copy
 			{
-			IMethod methodtest_deep_copy203;
-				IModelElement[] classTestCopying201Childs = classTestCopying201.getChildren();
-				methodtest_deep_copy203 = ModelTestUtils.getAssertMethod( classTestCopying201Childs, "test_deep_copy", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_deep_copy203, new String[] {"self"} );
+			IMethod methodtest_deep_copy189;
+				IModelElement[] classTestCopying187Childs = classTestCopying187.getChildren();
+				methodtest_deep_copy189 = ModelTestUtils.getAssertMethod( classTestCopying187Childs, "test_deep_copy", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_deep_copy189, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestCopyingEmpty204;
+		IType classTestCopyingEmpty190;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestCopyingEmpty204 = ModelTestUtils.getAssertClass( moduleChilds, "TestCopyingEmpty" );
+			classTestCopyingEmpty190 = ModelTestUtils.getAssertClass( moduleChilds, "TestCopyingEmpty" );
 			//Function test:setUp
 			{
-			IMethod methodsetUp205;
-				IModelElement[] classTestCopyingEmpty204Childs = classTestCopyingEmpty204.getChildren();
-				methodsetUp205 = ModelTestUtils.getAssertMethod( classTestCopyingEmpty204Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp205, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestCopyingEmpty204Childs = classTestCopyingEmpty204.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestCopyingEmpty204Childs, "set");
+			IMethod methodsetUp191;
+				IModelElement[] classTestCopyingEmpty190Childs = classTestCopyingEmpty190.getChildren();
+				methodsetUp191 = ModelTestUtils.getAssertMethod( classTestCopyingEmpty190Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp191, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestCopyingSingleton207;
+		IType classTestCopyingSingleton192;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestCopyingSingleton207 = ModelTestUtils.getAssertClass( moduleChilds, "TestCopyingSingleton" );
+			classTestCopyingSingleton192 = ModelTestUtils.getAssertClass( moduleChilds, "TestCopyingSingleton" );
 			//Function test:setUp
 			{
-			IMethod methodsetUp208;
-				IModelElement[] classTestCopyingSingleton207Childs = classTestCopyingSingleton207.getChildren();
-				methodsetUp208 = ModelTestUtils.getAssertMethod( classTestCopyingSingleton207Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp208, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestCopyingSingleton207Childs = classTestCopyingSingleton207.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestCopyingSingleton207Childs, "set");
+			IMethod methodsetUp193;
+				IModelElement[] classTestCopyingSingleton192Childs = classTestCopyingSingleton192.getChildren();
+				methodsetUp193 = ModelTestUtils.getAssertMethod( classTestCopyingSingleton192Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp193, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestCopyingTriple210;
+		IType classTestCopyingTriple194;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestCopyingTriple210 = ModelTestUtils.getAssertClass( moduleChilds, "TestCopyingTriple" );
+			classTestCopyingTriple194 = ModelTestUtils.getAssertClass( moduleChilds, "TestCopyingTriple" );
 			//Function test:setUp
 			{
-			IMethod methodsetUp211;
-				IModelElement[] classTestCopyingTriple210Childs = classTestCopyingTriple210.getChildren();
-				methodsetUp211 = ModelTestUtils.getAssertMethod( classTestCopyingTriple210Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp211, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestCopyingTriple210Childs = classTestCopyingTriple210.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestCopyingTriple210Childs, "set");
+			IMethod methodsetUp195;
+				IModelElement[] classTestCopyingTriple194Childs = classTestCopyingTriple194.getChildren();
+				methodsetUp195 = ModelTestUtils.getAssertMethod( classTestCopyingTriple194Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp195, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestCopyingTuple213;
+		IType classTestCopyingTuple196;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestCopyingTuple213 = ModelTestUtils.getAssertClass( moduleChilds, "TestCopyingTuple" );
+			classTestCopyingTuple196 = ModelTestUtils.getAssertClass( moduleChilds, "TestCopyingTuple" );
 			//Function test:setUp
 			{
-			IMethod methodsetUp214;
-				IModelElement[] classTestCopyingTuple213Childs = classTestCopyingTuple213.getChildren();
-				methodsetUp214 = ModelTestUtils.getAssertMethod( classTestCopyingTuple213Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp214, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestCopyingTuple213Childs = classTestCopyingTuple213.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestCopyingTuple213Childs, "set");
+			IMethod methodsetUp197;
+				IModelElement[] classTestCopyingTuple196Childs = classTestCopyingTuple196.getChildren();
+				methodsetUp197 = ModelTestUtils.getAssertMethod( classTestCopyingTuple196Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp197, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestCopyingNested216;
+		IType classTestCopyingNested198;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestCopyingNested216 = ModelTestUtils.getAssertClass( moduleChilds, "TestCopyingNested" );
+			classTestCopyingNested198 = ModelTestUtils.getAssertClass( moduleChilds, "TestCopyingNested" );
 			//Function test:setUp
 			{
-			IMethod methodsetUp217;
-				IModelElement[] classTestCopyingNested216Childs = classTestCopyingNested216.getChildren();
-				methodsetUp217 = ModelTestUtils.getAssertMethod( classTestCopyingNested216Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp217, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestCopyingNested216Childs = classTestCopyingNested216.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestCopyingNested216Childs, "set");
+			IMethod methodsetUp199;
+				IModelElement[] classTestCopyingNested198Childs = classTestCopyingNested198.getChildren();
+				methodsetUp199 = ModelTestUtils.getAssertMethod( classTestCopyingNested198Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp199, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestIdentities219;
+		IType classTestIdentities200;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestIdentities219 = ModelTestUtils.getAssertClass( moduleChilds, "TestIdentities" );
+			classTestIdentities200 = ModelTestUtils.getAssertClass( moduleChilds, "TestIdentities" );
 			//Function test:setUp
 			{
-			IMethod methodsetUp220;
-				IModelElement[] classTestIdentities219Childs = classTestIdentities219.getChildren();
-				methodsetUp220 = ModelTestUtils.getAssertMethod( classTestIdentities219Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp220, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classTestIdentities219Childs = classTestIdentities219.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestIdentities219Childs, "a");
-			}
-			{
-				IModelElement[] classTestIdentities219Childs = classTestIdentities219.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTestIdentities219Childs, "b");
+			IMethod methodsetUp201;
+				IModelElement[] classTestIdentities200Childs = classTestIdentities200.getChildren();
+				methodsetUp201 = ModelTestUtils.getAssertMethod( classTestIdentities200Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp201, new String[] {"self"} );
 			}
 			//Function test:test_binopsVsSubsets
 			{
-			IMethod methodtest_binopsVsSubsets222;
-				IModelElement[] classTestIdentities219Childs = classTestIdentities219.getChildren();
-				methodtest_binopsVsSubsets222 = ModelTestUtils.getAssertMethod( classTestIdentities219Childs, "test_binopsVsSubsets", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_binopsVsSubsets222, new String[] {"self"} );
+			IMethod methodtest_binopsVsSubsets202;
+				IModelElement[] classTestIdentities200Childs = classTestIdentities200.getChildren();
+				methodtest_binopsVsSubsets202 = ModelTestUtils.getAssertMethod( classTestIdentities200Childs, "test_binopsVsSubsets", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_binopsVsSubsets202, new String[] {"self"} );
 			}
 			//Function test:test_commutativity
 			{
-			IMethod methodtest_commutativity223;
-				IModelElement[] classTestIdentities219Childs = classTestIdentities219.getChildren();
-				methodtest_commutativity223 = ModelTestUtils.getAssertMethod( classTestIdentities219Childs, "test_commutativity", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_commutativity223, new String[] {"self"} );
+			IMethod methodtest_commutativity203;
+				IModelElement[] classTestIdentities200Childs = classTestIdentities200.getChildren();
+				methodtest_commutativity203 = ModelTestUtils.getAssertMethod( classTestIdentities200Childs, "test_commutativity", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_commutativity203, new String[] {"self"} );
 			}
 			//Function test:test_summations
 			{
-			IMethod methodtest_summations224;
-				IModelElement[] classTestIdentities219Childs = classTestIdentities219.getChildren();
-				methodtest_summations224 = ModelTestUtils.getAssertMethod( classTestIdentities219Childs, "test_summations", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_summations224, new String[] {"self"} );
+			IMethod methodtest_summations204;
+				IModelElement[] classTestIdentities200Childs = classTestIdentities200.getChildren();
+				methodtest_summations204 = ModelTestUtils.getAssertMethod( classTestIdentities200Childs, "test_summations", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_summations204, new String[] {"self"} );
 			}
 			//Function test:test_exclusion
 			{
-			IMethod methodtest_exclusion225;
-				IModelElement[] classTestIdentities219Childs = classTestIdentities219.getChildren();
-				methodtest_exclusion225 = ModelTestUtils.getAssertMethod( classTestIdentities219Childs, "test_exclusion", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_exclusion225, new String[] {"self"} );
+			IMethod methodtest_exclusion205;
+				IModelElement[] classTestIdentities200Childs = classTestIdentities200.getChildren();
+				methodtest_exclusion205 = ModelTestUtils.getAssertMethod( classTestIdentities200Childs, "test_exclusion", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_exclusion205, new String[] {"self"} );
 			}
 		}
 		//Function test:R
 		{
-		IMethod methodR226;
+		IMethod methodR206;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodR226 = ModelTestUtils.getAssertMethod( moduleChilds, "R", 1 );
-			ModelTestUtils.assertParameterNames( methodR226, new String[] {"seqn"} );
+			methodR206 = ModelTestUtils.getAssertMethod( moduleChilds, "R", 1 );
+			ModelTestUtils.assertParameterNames( methodR206, new String[] {"seqn"} );
 		}
 		//Class test
 		{
-		IType classG227;
+		IType classG207;
 			IModelElement[] moduleChilds = module.getChildren();
-			classG227 = ModelTestUtils.getAssertClass( moduleChilds, "G" );
+			classG207 = ModelTestUtils.getAssertClass( moduleChilds, "G" );
 			//Function test:__init__
 			{
-			IMethod method__init__228;
-				IModelElement[] classG227Childs = classG227.getChildren();
-				method__init__228 = ModelTestUtils.getAssertMethod( classG227Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__228, new String[] {"self", "seqn"} );
-			}
-			{
-				IModelElement[] classG227Childs = classG227.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classG227Childs, "seqn");
+			IMethod method__init__208;
+				IModelElement[] classG207Childs = classG207.getChildren();
+				method__init__208 = ModelTestUtils.getAssertMethod( classG207Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__208, new String[] {"self", "seqn"} );
 			}
 			//Function test:__getitem__
 			{
-			IMethod method__getitem__230;
-				IModelElement[] classG227Childs = classG227.getChildren();
-				method__getitem__230 = ModelTestUtils.getAssertMethod( classG227Childs, "__getitem__", 2 );
-				ModelTestUtils.assertParameterNames( method__getitem__230, new String[] {"self", "i"} );
+			IMethod method__getitem__209;
+				IModelElement[] classG207Childs = classG207.getChildren();
+				method__getitem__209 = ModelTestUtils.getAssertMethod( classG207Childs, "__getitem__", 2 );
+				ModelTestUtils.assertParameterNames( method__getitem__209, new String[] {"self", "i"} );
 			}
 		}
 		//Class test
 		{
-		IType classI231;
+		IType classI210;
 			IModelElement[] moduleChilds = module.getChildren();
-			classI231 = ModelTestUtils.getAssertClass( moduleChilds, "I" );
+			classI210 = ModelTestUtils.getAssertClass( moduleChilds, "I" );
 			//Function test:__init__
 			{
-			IMethod method__init__232;
-				IModelElement[] classI231Childs = classI231.getChildren();
-				method__init__232 = ModelTestUtils.getAssertMethod( classI231Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__232, new String[] {"self", "seqn"} );
-			}
-			{
-				IModelElement[] classI231Childs = classI231.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classI231Childs, "seqn");
-			}
-			{
-				IModelElement[] classI231Childs = classI231.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classI231Childs, "i");
+			IMethod method__init__211;
+				IModelElement[] classI210Childs = classI210.getChildren();
+				method__init__211 = ModelTestUtils.getAssertMethod( classI210Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__211, new String[] {"self", "seqn"} );
 			}
 			//Function test:__iter__
 			{
-			IMethod method__iter__234;
-				IModelElement[] classI231Childs = classI231.getChildren();
-				method__iter__234 = ModelTestUtils.getAssertMethod( classI231Childs, "__iter__", 1 );
-				ModelTestUtils.assertParameterNames( method__iter__234, new String[] {"self"} );
+			IMethod method__iter__212;
+				IModelElement[] classI210Childs = classI210.getChildren();
+				method__iter__212 = ModelTestUtils.getAssertMethod( classI210Childs, "__iter__", 1 );
+				ModelTestUtils.assertParameterNames( method__iter__212, new String[] {"self"} );
 			}
 			//Function test:next
 			{
-			IMethod methodnext235;
-				IModelElement[] classI231Childs = classI231.getChildren();
-				methodnext235 = ModelTestUtils.getAssertMethod( classI231Childs, "next", 1 );
-				ModelTestUtils.assertParameterNames( methodnext235, new String[] {"self"} );
+			IMethod methodnext213;
+				IModelElement[] classI210Childs = classI210.getChildren();
+				methodnext213 = ModelTestUtils.getAssertMethod( classI210Childs, "next", 1 );
+				ModelTestUtils.assertParameterNames( methodnext213, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classIg236;
+		IType classIg214;
 			IModelElement[] moduleChilds = module.getChildren();
-			classIg236 = ModelTestUtils.getAssertClass( moduleChilds, "Ig" );
+			classIg214 = ModelTestUtils.getAssertClass( moduleChilds, "Ig" );
 			//Function test:__init__
 			{
-			IMethod method__init__237;
-				IModelElement[] classIg236Childs = classIg236.getChildren();
-				method__init__237 = ModelTestUtils.getAssertMethod( classIg236Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__237, new String[] {"self", "seqn"} );
+			IMethod method__init__215;
+				IModelElement[] classIg214Childs = classIg214.getChildren();
+				method__init__215 = ModelTestUtils.getAssertMethod( classIg214Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__215, new String[] {"self", "seqn"} );
 			}
 			//Function test:__iter__
 			{
-			IMethod method__iter__238;
-				IModelElement[] classIg236Childs = classIg236.getChildren();
-				method__iter__238 = ModelTestUtils.getAssertMethod( classIg236Childs, "__iter__", 1 );
-				ModelTestUtils.assertParameterNames( method__iter__238, new String[] {"self"} );
+			IMethod method__iter__216;
+				IModelElement[] classIg214Childs = classIg214.getChildren();
+				method__iter__216 = ModelTestUtils.getAssertMethod( classIg214Childs, "__iter__", 1 );
+				ModelTestUtils.assertParameterNames( method__iter__216, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classX239;
+		IType classX217;
 			IModelElement[] moduleChilds = module.getChildren();
-			classX239 = ModelTestUtils.getAssertClass( moduleChilds, "X" );
+			classX217 = ModelTestUtils.getAssertClass( moduleChilds, "X" );
 			//Function test:__init__
 			{
-			IMethod method__init__240;
-				IModelElement[] classX239Childs = classX239.getChildren();
-				method__init__240 = ModelTestUtils.getAssertMethod( classX239Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__240, new String[] {"self", "seqn"} );
+			IMethod method__init__218;
+				IModelElement[] classX217Childs = classX217.getChildren();
+				method__init__218 = ModelTestUtils.getAssertMethod( classX217Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__218, new String[] {"self", "seqn"} );
 			}
 			//Function test:next
 			{
-			IMethod methodnext241;
-				IModelElement[] classX239Childs = classX239.getChildren();
-				methodnext241 = ModelTestUtils.getAssertMethod( classX239Childs, "next", 1 );
-				ModelTestUtils.assertParameterNames( methodnext241, new String[] {"self"} );
+			IMethod methodnext219;
+				IModelElement[] classX217Childs = classX217.getChildren();
+				methodnext219 = ModelTestUtils.getAssertMethod( classX217Childs, "next", 1 );
+				ModelTestUtils.assertParameterNames( methodnext219, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classN242;
+		IType classN220;
 			IModelElement[] moduleChilds = module.getChildren();
-			classN242 = ModelTestUtils.getAssertClass( moduleChilds, "N" );
+			classN220 = ModelTestUtils.getAssertClass( moduleChilds, "N" );
 			//Function test:__init__
 			{
-			IMethod method__init__243;
-				IModelElement[] classN242Childs = classN242.getChildren();
-				method__init__243 = ModelTestUtils.getAssertMethod( classN242Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__243, new String[] {"self", "seqn"} );
+			IMethod method__init__221;
+				IModelElement[] classN220Childs = classN220.getChildren();
+				method__init__221 = ModelTestUtils.getAssertMethod( classN220Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__221, new String[] {"self", "seqn"} );
 			}
 			//Function test:__iter__
 			{
-			IMethod method__iter__244;
-				IModelElement[] classN242Childs = classN242.getChildren();
-				method__iter__244 = ModelTestUtils.getAssertMethod( classN242Childs, "__iter__", 1 );
-				ModelTestUtils.assertParameterNames( method__iter__244, new String[] {"self"} );
+			IMethod method__iter__222;
+				IModelElement[] classN220Childs = classN220.getChildren();
+				method__iter__222 = ModelTestUtils.getAssertMethod( classN220Childs, "__iter__", 1 );
+				ModelTestUtils.assertParameterNames( method__iter__222, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classE245;
+		IType classE223;
 			IModelElement[] moduleChilds = module.getChildren();
-			classE245 = ModelTestUtils.getAssertClass( moduleChilds, "E" );
+			classE223 = ModelTestUtils.getAssertClass( moduleChilds, "E" );
 			//Function test:__init__
 			{
-			IMethod method__init__246;
-				IModelElement[] classE245Childs = classE245.getChildren();
-				method__init__246 = ModelTestUtils.getAssertMethod( classE245Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__246, new String[] {"self", "seqn"} );
+			IMethod method__init__224;
+				IModelElement[] classE223Childs = classE223.getChildren();
+				method__init__224 = ModelTestUtils.getAssertMethod( classE223Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__224, new String[] {"self", "seqn"} );
 			}
 			//Function test:__iter__
 			{
-			IMethod method__iter__247;
-				IModelElement[] classE245Childs = classE245.getChildren();
-				method__iter__247 = ModelTestUtils.getAssertMethod( classE245Childs, "__iter__", 1 );
-				ModelTestUtils.assertParameterNames( method__iter__247, new String[] {"self"} );
+			IMethod method__iter__225;
+				IModelElement[] classE223Childs = classE223.getChildren();
+				method__iter__225 = ModelTestUtils.getAssertMethod( classE223Childs, "__iter__", 1 );
+				ModelTestUtils.assertParameterNames( method__iter__225, new String[] {"self"} );
 			}
 			//Function test:next
 			{
-			IMethod methodnext248;
-				IModelElement[] classE245Childs = classE245.getChildren();
-				methodnext248 = ModelTestUtils.getAssertMethod( classE245Childs, "next", 1 );
-				ModelTestUtils.assertParameterNames( methodnext248, new String[] {"self"} );
+			IMethod methodnext226;
+				IModelElement[] classE223Childs = classE223.getChildren();
+				methodnext226 = ModelTestUtils.getAssertMethod( classE223Childs, "next", 1 );
+				ModelTestUtils.assertParameterNames( methodnext226, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classS249;
+		IType classS227;
 			IModelElement[] moduleChilds = module.getChildren();
-			classS249 = ModelTestUtils.getAssertClass( moduleChilds, "S" );
+			classS227 = ModelTestUtils.getAssertClass( moduleChilds, "S" );
 			//Function test:__init__
 			{
-			IMethod method__init__250;
-				IModelElement[] classS249Childs = classS249.getChildren();
-				method__init__250 = ModelTestUtils.getAssertMethod( classS249Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__250, new String[] {"self", "seqn"} );
+			IMethod method__init__228;
+				IModelElement[] classS227Childs = classS227.getChildren();
+				method__init__228 = ModelTestUtils.getAssertMethod( classS227Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__228, new String[] {"self", "seqn"} );
 			}
 			//Function test:__iter__
 			{
-			IMethod method__iter__251;
-				IModelElement[] classS249Childs = classS249.getChildren();
-				method__iter__251 = ModelTestUtils.getAssertMethod( classS249Childs, "__iter__", 1 );
-				ModelTestUtils.assertParameterNames( method__iter__251, new String[] {"self"} );
+			IMethod method__iter__229;
+				IModelElement[] classS227Childs = classS227.getChildren();
+				method__iter__229 = ModelTestUtils.getAssertMethod( classS227Childs, "__iter__", 1 );
+				ModelTestUtils.assertParameterNames( method__iter__229, new String[] {"self"} );
 			}
 			//Function test:next
 			{
-			IMethod methodnext252;
-				IModelElement[] classS249Childs = classS249.getChildren();
-				methodnext252 = ModelTestUtils.getAssertMethod( classS249Childs, "next", 1 );
-				ModelTestUtils.assertParameterNames( methodnext252, new String[] {"self"} );
+			IMethod methodnext230;
+				IModelElement[] classS227Childs = classS227.getChildren();
+				methodnext230 = ModelTestUtils.getAssertMethod( classS227Childs, "next", 1 );
+				ModelTestUtils.assertParameterNames( methodnext230, new String[] {"self"} );
 			}
 		}
 		//Function test:L
 		{
-		IMethod methodL253;
+		IMethod methodL231;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodL253 = ModelTestUtils.getAssertMethod( moduleChilds, "L", 1 );
-			ModelTestUtils.assertParameterNames( methodL253, new String[] {"seqn"} );
+			methodL231 = ModelTestUtils.getAssertMethod( moduleChilds, "L", 1 );
+			ModelTestUtils.assertParameterNames( methodL231, new String[] {"seqn"} );
 		}
 		//Class test
 		{
-		IType classTestVariousIteratorArgs254;
+		IType classTestVariousIteratorArgs232;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestVariousIteratorArgs254 = ModelTestUtils.getAssertClass( moduleChilds, "TestVariousIteratorArgs" );
+			classTestVariousIteratorArgs232 = ModelTestUtils.getAssertClass( moduleChilds, "TestVariousIteratorArgs" );
 			//Function test:test_constructor
 			{
-			IMethod methodtest_constructor255;
-				IModelElement[] classTestVariousIteratorArgs254Childs = classTestVariousIteratorArgs254.getChildren();
-				methodtest_constructor255 = ModelTestUtils.getAssertMethod( classTestVariousIteratorArgs254Childs, "test_constructor", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_constructor255, new String[] {"self"} );
+			IMethod methodtest_constructor233;
+				IModelElement[] classTestVariousIteratorArgs232Childs = classTestVariousIteratorArgs232.getChildren();
+				methodtest_constructor233 = ModelTestUtils.getAssertMethod( classTestVariousIteratorArgs232Childs, "test_constructor", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_constructor233, new String[] {"self"} );
 			}
 			//Function test:test_inline_methods
 			{
-			IMethod methodtest_inline_methods256;
-				IModelElement[] classTestVariousIteratorArgs254Childs = classTestVariousIteratorArgs254.getChildren();
-				methodtest_inline_methods256 = ModelTestUtils.getAssertMethod( classTestVariousIteratorArgs254Childs, "test_inline_methods", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_inline_methods256, new String[] {"self"} );
+			IMethod methodtest_inline_methods234;
+				IModelElement[] classTestVariousIteratorArgs232Childs = classTestVariousIteratorArgs232.getChildren();
+				methodtest_inline_methods234 = ModelTestUtils.getAssertMethod( classTestVariousIteratorArgs232Childs, "test_inline_methods", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_inline_methods234, new String[] {"self"} );
 			}
 			//Function test:test_inplace_methods
 			{
-			IMethod methodtest_inplace_methods257;
-				IModelElement[] classTestVariousIteratorArgs254Childs = classTestVariousIteratorArgs254.getChildren();
-				methodtest_inplace_methods257 = ModelTestUtils.getAssertMethod( classTestVariousIteratorArgs254Childs, "test_inplace_methods", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_inplace_methods257, new String[] {"self"} );
+			IMethod methodtest_inplace_methods235;
+				IModelElement[] classTestVariousIteratorArgs232Childs = classTestVariousIteratorArgs232.getChildren();
+				methodtest_inplace_methods235 = ModelTestUtils.getAssertMethod( classTestVariousIteratorArgs232Childs, "test_inplace_methods", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_inplace_methods235, new String[] {"self"} );
 			}
 		}
 		//Function test:test_main
 		{
-		IMethod methodtest_main258;
+		IMethod methodtest_main236;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_main258 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 1 );
-			ModelTestUtils.assertParameterNames( methodtest_main258, new String[] {"verbose"} );
+			methodtest_main236 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 1 );
+			ModelTestUtils.assertParameterNames( methodtest_main236, new String[] {"verbose"} );
 		}
 
 	}
@@ -4630,156 +4350,152 @@ public class GeneratedModelTests4 extends AbstractModelTests
 				methodsetUp1 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "setUp", 1 );
 				ModelTestUtils.assertParameterNames( methodsetUp1, new String[] {"self"} );
 			}
-			{
-				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classTclTest0Childs, "interp");
-			}
 			//Function test:testEval
 			{
-			IMethod methodtestEval3;
+			IMethod methodtestEval2;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestEval3 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testEval", 1 );
-				ModelTestUtils.assertParameterNames( methodtestEval3, new String[] {"self"} );
+				methodtestEval2 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testEval", 1 );
+				ModelTestUtils.assertParameterNames( methodtestEval2, new String[] {"self"} );
 			}
 			//Function test:testEvalException
 			{
-			IMethod methodtestEvalException4;
+			IMethod methodtestEvalException3;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestEvalException4 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testEvalException", 1 );
-				ModelTestUtils.assertParameterNames( methodtestEvalException4, new String[] {"self"} );
+				methodtestEvalException3 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testEvalException", 1 );
+				ModelTestUtils.assertParameterNames( methodtestEvalException3, new String[] {"self"} );
 			}
 			//Function test:testEvalException2
 			{
-			IMethod methodtestEvalException25;
+			IMethod methodtestEvalException24;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestEvalException25 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testEvalException2", 1 );
-				ModelTestUtils.assertParameterNames( methodtestEvalException25, new String[] {"self"} );
+				methodtestEvalException24 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testEvalException2", 1 );
+				ModelTestUtils.assertParameterNames( methodtestEvalException24, new String[] {"self"} );
 			}
 			//Function test:testCall
 			{
-			IMethod methodtestCall6;
+			IMethod methodtestCall5;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestCall6 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testCall", 1 );
-				ModelTestUtils.assertParameterNames( methodtestCall6, new String[] {"self"} );
+				methodtestCall5 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testCall", 1 );
+				ModelTestUtils.assertParameterNames( methodtestCall5, new String[] {"self"} );
 			}
 			//Function test:testCallException
 			{
-			IMethod methodtestCallException7;
+			IMethod methodtestCallException6;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestCallException7 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testCallException", 1 );
-				ModelTestUtils.assertParameterNames( methodtestCallException7, new String[] {"self"} );
+				methodtestCallException6 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testCallException", 1 );
+				ModelTestUtils.assertParameterNames( methodtestCallException6, new String[] {"self"} );
 			}
 			//Function test:testCallException2
 			{
-			IMethod methodtestCallException28;
+			IMethod methodtestCallException27;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestCallException28 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testCallException2", 1 );
-				ModelTestUtils.assertParameterNames( methodtestCallException28, new String[] {"self"} );
+				methodtestCallException27 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testCallException2", 1 );
+				ModelTestUtils.assertParameterNames( methodtestCallException27, new String[] {"self"} );
 			}
 			//Function test:testSetVar
 			{
-			IMethod methodtestSetVar9;
+			IMethod methodtestSetVar8;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestSetVar9 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testSetVar", 1 );
-				ModelTestUtils.assertParameterNames( methodtestSetVar9, new String[] {"self"} );
+				methodtestSetVar8 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testSetVar", 1 );
+				ModelTestUtils.assertParameterNames( methodtestSetVar8, new String[] {"self"} );
 			}
 			//Function test:testSetVarArray
 			{
-			IMethod methodtestSetVarArray10;
+			IMethod methodtestSetVarArray9;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestSetVarArray10 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testSetVarArray", 1 );
-				ModelTestUtils.assertParameterNames( methodtestSetVarArray10, new String[] {"self"} );
+				methodtestSetVarArray9 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testSetVarArray", 1 );
+				ModelTestUtils.assertParameterNames( methodtestSetVarArray9, new String[] {"self"} );
 			}
 			//Function test:testGetVar
 			{
-			IMethod methodtestGetVar11;
+			IMethod methodtestGetVar10;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestGetVar11 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testGetVar", 1 );
-				ModelTestUtils.assertParameterNames( methodtestGetVar11, new String[] {"self"} );
+				methodtestGetVar10 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testGetVar", 1 );
+				ModelTestUtils.assertParameterNames( methodtestGetVar10, new String[] {"self"} );
 			}
 			//Function test:testGetVarArray
 			{
-			IMethod methodtestGetVarArray12;
+			IMethod methodtestGetVarArray11;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestGetVarArray12 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testGetVarArray", 1 );
-				ModelTestUtils.assertParameterNames( methodtestGetVarArray12, new String[] {"self"} );
+				methodtestGetVarArray11 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testGetVarArray", 1 );
+				ModelTestUtils.assertParameterNames( methodtestGetVarArray11, new String[] {"self"} );
 			}
 			//Function test:testGetVarException
 			{
-			IMethod methodtestGetVarException13;
+			IMethod methodtestGetVarException12;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestGetVarException13 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testGetVarException", 1 );
-				ModelTestUtils.assertParameterNames( methodtestGetVarException13, new String[] {"self"} );
+				methodtestGetVarException12 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testGetVarException", 1 );
+				ModelTestUtils.assertParameterNames( methodtestGetVarException12, new String[] {"self"} );
 			}
 			//Function test:testGetVarArrayException
 			{
-			IMethod methodtestGetVarArrayException14;
+			IMethod methodtestGetVarArrayException13;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestGetVarArrayException14 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testGetVarArrayException", 1 );
-				ModelTestUtils.assertParameterNames( methodtestGetVarArrayException14, new String[] {"self"} );
+				methodtestGetVarArrayException13 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testGetVarArrayException", 1 );
+				ModelTestUtils.assertParameterNames( methodtestGetVarArrayException13, new String[] {"self"} );
 			}
 			//Function test:testUnsetVar
 			{
-			IMethod methodtestUnsetVar15;
+			IMethod methodtestUnsetVar14;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestUnsetVar15 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testUnsetVar", 1 );
-				ModelTestUtils.assertParameterNames( methodtestUnsetVar15, new String[] {"self"} );
+				methodtestUnsetVar14 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testUnsetVar", 1 );
+				ModelTestUtils.assertParameterNames( methodtestUnsetVar14, new String[] {"self"} );
 			}
 			//Function test:testUnsetVarArray
 			{
-			IMethod methodtestUnsetVarArray16;
+			IMethod methodtestUnsetVarArray15;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestUnsetVarArray16 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testUnsetVarArray", 1 );
-				ModelTestUtils.assertParameterNames( methodtestUnsetVarArray16, new String[] {"self"} );
+				methodtestUnsetVarArray15 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testUnsetVarArray", 1 );
+				ModelTestUtils.assertParameterNames( methodtestUnsetVarArray15, new String[] {"self"} );
 			}
 			//Function test:testUnsetVarException
 			{
-			IMethod methodtestUnsetVarException17;
+			IMethod methodtestUnsetVarException16;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestUnsetVarException17 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testUnsetVarException", 1 );
-				ModelTestUtils.assertParameterNames( methodtestUnsetVarException17, new String[] {"self"} );
+				methodtestUnsetVarException16 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testUnsetVarException", 1 );
+				ModelTestUtils.assertParameterNames( methodtestUnsetVarException16, new String[] {"self"} );
 			}
 			//Function test:testEvalFile
 			{
-			IMethod methodtestEvalFile18;
+			IMethod methodtestEvalFile17;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestEvalFile18 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testEvalFile", 1 );
-				ModelTestUtils.assertParameterNames( methodtestEvalFile18, new String[] {"self"} );
+				methodtestEvalFile17 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testEvalFile", 1 );
+				ModelTestUtils.assertParameterNames( methodtestEvalFile17, new String[] {"self"} );
 			}
 			//Function test:testEvalFileException
 			{
-			IMethod methodtestEvalFileException19;
+			IMethod methodtestEvalFileException18;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestEvalFileException19 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testEvalFileException", 1 );
-				ModelTestUtils.assertParameterNames( methodtestEvalFileException19, new String[] {"self"} );
+				methodtestEvalFileException18 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testEvalFileException", 1 );
+				ModelTestUtils.assertParameterNames( methodtestEvalFileException18, new String[] {"self"} );
 			}
 			//Function test:testPackageRequireException
 			{
-			IMethod methodtestPackageRequireException20;
+			IMethod methodtestPackageRequireException19;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestPackageRequireException20 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testPackageRequireException", 1 );
-				ModelTestUtils.assertParameterNames( methodtestPackageRequireException20, new String[] {"self"} );
+				methodtestPackageRequireException19 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testPackageRequireException", 1 );
+				ModelTestUtils.assertParameterNames( methodtestPackageRequireException19, new String[] {"self"} );
 			}
 			//Function test:testLoadTk
 			{
-			IMethod methodtestLoadTk21;
+			IMethod methodtestLoadTk20;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestLoadTk21 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testLoadTk", 1 );
-				ModelTestUtils.assertParameterNames( methodtestLoadTk21, new String[] {"self"} );
+				methodtestLoadTk20 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testLoadTk", 1 );
+				ModelTestUtils.assertParameterNames( methodtestLoadTk20, new String[] {"self"} );
 			}
 			//Function test:testLoadTkFailure
 			{
-			IMethod methodtestLoadTkFailure22;
+			IMethod methodtestLoadTkFailure21;
 				IModelElement[] classTclTest0Childs = classTclTest0.getChildren();
-				methodtestLoadTkFailure22 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testLoadTkFailure", 1 );
-				ModelTestUtils.assertParameterNames( methodtestLoadTkFailure22, new String[] {"self"} );
+				methodtestLoadTkFailure21 = ModelTestUtils.getAssertMethod( classTclTest0Childs, "testLoadTkFailure", 1 );
+				ModelTestUtils.assertParameterNames( methodtestLoadTkFailure21, new String[] {"self"} );
 			}
 		}
 		//Function test:test_main
 		{
-		IMethod methodtest_main23;
+		IMethod methodtest_main22;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_main23 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 0 );
+			methodtest_main22 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 0 );
 		}
 
 	}
@@ -4803,198 +4519,190 @@ public class GeneratedModelTests4 extends AbstractModelTests
 				method__init__1 = ModelTestUtils.getAssertMethod( classQueue0Childs, "__init__", 1 );
 				ModelTestUtils.assertParameterNames( method__init__1, new String[] {"self"} );
 			}
-			{
-				IModelElement[] classQueue0Childs = classQueue0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classQueue0Childs, "_buffer");
-			}
 			//Function test:write
 			{
-			IMethod methodwrite3;
+			IMethod methodwrite2;
 				IModelElement[] classQueue0Childs = classQueue0.getChildren();
-				methodwrite3 = ModelTestUtils.getAssertMethod( classQueue0Childs, "write", 2 );
-				ModelTestUtils.assertParameterNames( methodwrite3, new String[] {"self", "chars"} );
+				methodwrite2 = ModelTestUtils.getAssertMethod( classQueue0Childs, "write", 2 );
+				ModelTestUtils.assertParameterNames( methodwrite2, new String[] {"self", "chars"} );
 			}
 			//Function test:read
 			{
-			IMethod methodread4;
+			IMethod methodread3;
 				IModelElement[] classQueue0Childs = classQueue0.getChildren();
-				methodread4 = ModelTestUtils.getAssertMethod( classQueue0Childs, "read", 2 );
-				ModelTestUtils.assertParameterNames( methodread4, new String[] {"self", "size"} );
-			}
-			{
-				IModelElement[] classQueue0Childs = classQueue0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classQueue0Childs, "_buffer");
+				methodread3 = ModelTestUtils.getAssertMethod( classQueue0Childs, "read", 2 );
+				ModelTestUtils.assertParameterNames( methodread3, new String[] {"self", "size"} );
 			}
 		}
 		//Class test
 		{
-		IType classReadTest6;
+		IType classReadTest4;
 			IModelElement[] moduleChilds = module.getChildren();
-			classReadTest6 = ModelTestUtils.getAssertClass( moduleChilds, "ReadTest" );
+			classReadTest4 = ModelTestUtils.getAssertClass( moduleChilds, "ReadTest" );
 			//Function test:test_seek
 			{
-			IMethod methodtest_seek7;
-				IModelElement[] classReadTest6Childs = classReadTest6.getChildren();
-				methodtest_seek7 = ModelTestUtils.getAssertMethod( classReadTest6Childs, "test_seek", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_seek7, new String[] {"self"} );
+			IMethod methodtest_seek5;
+				IModelElement[] classReadTest4Childs = classReadTest4.getChildren();
+				methodtest_seek5 = ModelTestUtils.getAssertMethod( classReadTest4Childs, "test_seek", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_seek5, new String[] {"self"} );
 			}
 			//Function test:check_partial
 			{
-			IMethod methodcheck_partial8;
-				IModelElement[] classReadTest6Childs = classReadTest6.getChildren();
-				methodcheck_partial8 = ModelTestUtils.getAssertMethod( classReadTest6Childs, "check_partial", 3 );
-				ModelTestUtils.assertParameterNames( methodcheck_partial8, new String[] {"self", "input", "partialresults"} );
+			IMethod methodcheck_partial6;
+				IModelElement[] classReadTest4Childs = classReadTest4.getChildren();
+				methodcheck_partial6 = ModelTestUtils.getAssertMethod( classReadTest4Childs, "check_partial", 3 );
+				ModelTestUtils.assertParameterNames( methodcheck_partial6, new String[] {"self", "input", "partialresults"} );
 			}
 			//Function test:test_readline
 			{
-			IMethod methodtest_readline9;
-				IModelElement[] classReadTest6Childs = classReadTest6.getChildren();
-				methodtest_readline9 = ModelTestUtils.getAssertMethod( classReadTest6Childs, "test_readline", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_readline9, new String[] {"self"} );
+			IMethod methodtest_readline7;
+				IModelElement[] classReadTest4Childs = classReadTest4.getChildren();
+				methodtest_readline7 = ModelTestUtils.getAssertMethod( classReadTest4Childs, "test_readline", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_readline7, new String[] {"self"} );
 				//Function test:getreader
 				{
-				IMethod methodgetreader10;
-					IModelElement[] methodtest_readline9Childs = methodtest_readline9.getChildren();
-					methodgetreader10 = ModelTestUtils.getAssertMethod( methodtest_readline9Childs, "getreader", 1 );
-					ModelTestUtils.assertParameterNames( methodgetreader10, new String[] {"input"} );
+				IMethod methodgetreader8;
+					IModelElement[] methodtest_readline7Childs = methodtest_readline7.getChildren();
+					methodgetreader8 = ModelTestUtils.getAssertMethod( methodtest_readline7Childs, "getreader", 1 );
+					ModelTestUtils.assertParameterNames( methodgetreader8, new String[] {"input"} );
 				}
 				//Function test:readalllines
 				{
-				IMethod methodreadalllines11;
-					IModelElement[] methodtest_readline9Childs = methodtest_readline9.getChildren();
-					methodreadalllines11 = ModelTestUtils.getAssertMethod( methodtest_readline9Childs, "readalllines", 2 );
-					ModelTestUtils.assertParameterNames( methodreadalllines11, new String[] {"input", "keepends"} );
+				IMethod methodreadalllines9;
+					IModelElement[] methodtest_readline7Childs = methodtest_readline7.getChildren();
+					methodreadalllines9 = ModelTestUtils.getAssertMethod( methodtest_readline7Childs, "readalllines", 2 );
+					ModelTestUtils.assertParameterNames( methodreadalllines9, new String[] {"input", "keepends"} );
 				}
 			}
 			//Function test:test_readlinequeue
 			{
-			IMethod methodtest_readlinequeue12;
-				IModelElement[] classReadTest6Childs = classReadTest6.getChildren();
-				methodtest_readlinequeue12 = ModelTestUtils.getAssertMethod( classReadTest6Childs, "test_readlinequeue", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_readlinequeue12, new String[] {"self"} );
+			IMethod methodtest_readlinequeue10;
+				IModelElement[] classReadTest4Childs = classReadTest4.getChildren();
+				methodtest_readlinequeue10 = ModelTestUtils.getAssertMethod( classReadTest4Childs, "test_readlinequeue", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_readlinequeue10, new String[] {"self"} );
 			}
 			//Function test:test_bug1098990_a
 			{
-			IMethod methodtest_bug1098990_a13;
-				IModelElement[] classReadTest6Childs = classReadTest6.getChildren();
-				methodtest_bug1098990_a13 = ModelTestUtils.getAssertMethod( classReadTest6Childs, "test_bug1098990_a", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_bug1098990_a13, new String[] {"self"} );
+			IMethod methodtest_bug1098990_a11;
+				IModelElement[] classReadTest4Childs = classReadTest4.getChildren();
+				methodtest_bug1098990_a11 = ModelTestUtils.getAssertMethod( classReadTest4Childs, "test_bug1098990_a", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_bug1098990_a11, new String[] {"self"} );
 			}
 			//Function test:test_bug1098990_b
 			{
-			IMethod methodtest_bug1098990_b14;
-				IModelElement[] classReadTest6Childs = classReadTest6.getChildren();
-				methodtest_bug1098990_b14 = ModelTestUtils.getAssertMethod( classReadTest6Childs, "test_bug1098990_b", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_bug1098990_b14, new String[] {"self"} );
+			IMethod methodtest_bug1098990_b12;
+				IModelElement[] classReadTest4Childs = classReadTest4.getChildren();
+				methodtest_bug1098990_b12 = ModelTestUtils.getAssertMethod( classReadTest4Childs, "test_bug1098990_b", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_bug1098990_b12, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classUTF16Test15;
+		IType classUTF16Test13;
 			IModelElement[] moduleChilds = module.getChildren();
-			classUTF16Test15 = ModelTestUtils.getAssertClass( moduleChilds, "UTF16Test" );
+			classUTF16Test13 = ModelTestUtils.getAssertClass( moduleChilds, "UTF16Test" );
 			{
-				IModelElement[] classUTF16Test15Childs = classUTF16Test15.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classUTF16Test15Childs, "encoding");
+				IModelElement[] classUTF16Test13Childs = classUTF16Test13.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classUTF16Test13Childs, "encoding");
 			}
 			{
-				IModelElement[] classUTF16Test15Childs = classUTF16Test15.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classUTF16Test15Childs, "spamle");
+				IModelElement[] classUTF16Test13Childs = classUTF16Test13.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classUTF16Test13Childs, "spamle");
 			}
 			{
-				IModelElement[] classUTF16Test15Childs = classUTF16Test15.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classUTF16Test15Childs, "spambe");
+				IModelElement[] classUTF16Test13Childs = classUTF16Test13.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classUTF16Test13Childs, "spambe");
 			}
 			//Function test:test_only_one_bom
 			{
-			IMethod methodtest_only_one_bom16;
-				IModelElement[] classUTF16Test15Childs = classUTF16Test15.getChildren();
-				methodtest_only_one_bom16 = ModelTestUtils.getAssertMethod( classUTF16Test15Childs, "test_only_one_bom", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_only_one_bom16, new String[] {"self"} );
+			IMethod methodtest_only_one_bom14;
+				IModelElement[] classUTF16Test13Childs = classUTF16Test13.getChildren();
+				methodtest_only_one_bom14 = ModelTestUtils.getAssertMethod( classUTF16Test13Childs, "test_only_one_bom", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_only_one_bom14, new String[] {"self"} );
+			}
+			//Function test:test_partial
+			{
+			IMethod methodtest_partial15;
+				IModelElement[] classUTF16Test13Childs = classUTF16Test13.getChildren();
+				methodtest_partial15 = ModelTestUtils.getAssertMethod( classUTF16Test13Childs, "test_partial", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_partial15, new String[] {"self"} );
+			}
+		}
+		//Class test
+		{
+		IType classUTF16LETest16;
+			IModelElement[] moduleChilds = module.getChildren();
+			classUTF16LETest16 = ModelTestUtils.getAssertClass( moduleChilds, "UTF16LETest" );
+			{
+				IModelElement[] classUTF16LETest16Childs = classUTF16LETest16.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classUTF16LETest16Childs, "encoding");
 			}
 			//Function test:test_partial
 			{
 			IMethod methodtest_partial17;
-				IModelElement[] classUTF16Test15Childs = classUTF16Test15.getChildren();
-				methodtest_partial17 = ModelTestUtils.getAssertMethod( classUTF16Test15Childs, "test_partial", 1 );
+				IModelElement[] classUTF16LETest16Childs = classUTF16LETest16.getChildren();
+				methodtest_partial17 = ModelTestUtils.getAssertMethod( classUTF16LETest16Childs, "test_partial", 1 );
 				ModelTestUtils.assertParameterNames( methodtest_partial17, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classUTF16LETest18;
+		IType classUTF16BETest18;
 			IModelElement[] moduleChilds = module.getChildren();
-			classUTF16LETest18 = ModelTestUtils.getAssertClass( moduleChilds, "UTF16LETest" );
+			classUTF16BETest18 = ModelTestUtils.getAssertClass( moduleChilds, "UTF16BETest" );
 			{
-				IModelElement[] classUTF16LETest18Childs = classUTF16LETest18.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classUTF16LETest18Childs, "encoding");
+				IModelElement[] classUTF16BETest18Childs = classUTF16BETest18.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classUTF16BETest18Childs, "encoding");
 			}
 			//Function test:test_partial
 			{
 			IMethod methodtest_partial19;
-				IModelElement[] classUTF16LETest18Childs = classUTF16LETest18.getChildren();
-				methodtest_partial19 = ModelTestUtils.getAssertMethod( classUTF16LETest18Childs, "test_partial", 1 );
+				IModelElement[] classUTF16BETest18Childs = classUTF16BETest18.getChildren();
+				methodtest_partial19 = ModelTestUtils.getAssertMethod( classUTF16BETest18Childs, "test_partial", 1 );
 				ModelTestUtils.assertParameterNames( methodtest_partial19, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classUTF16BETest20;
+		IType classUTF8Test20;
 			IModelElement[] moduleChilds = module.getChildren();
-			classUTF16BETest20 = ModelTestUtils.getAssertClass( moduleChilds, "UTF16BETest" );
+			classUTF8Test20 = ModelTestUtils.getAssertClass( moduleChilds, "UTF8Test" );
 			{
-				IModelElement[] classUTF16BETest20Childs = classUTF16BETest20.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classUTF16BETest20Childs, "encoding");
+				IModelElement[] classUTF8Test20Childs = classUTF8Test20.getChildren();
+				IField fieldValue = ModelTestUtils.getAssertField( classUTF8Test20Childs, "encoding");
 			}
 			//Function test:test_partial
 			{
 			IMethod methodtest_partial21;
-				IModelElement[] classUTF16BETest20Childs = classUTF16BETest20.getChildren();
-				methodtest_partial21 = ModelTestUtils.getAssertMethod( classUTF16BETest20Childs, "test_partial", 1 );
+				IModelElement[] classUTF8Test20Childs = classUTF8Test20.getChildren();
+				methodtest_partial21 = ModelTestUtils.getAssertMethod( classUTF8Test20Childs, "test_partial", 1 );
 				ModelTestUtils.assertParameterNames( methodtest_partial21, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classUTF8Test22;
+		IType classEscapeDecodeTest22;
 			IModelElement[] moduleChilds = module.getChildren();
-			classUTF8Test22 = ModelTestUtils.getAssertClass( moduleChilds, "UTF8Test" );
-			{
-				IModelElement[] classUTF8Test22Childs = classUTF8Test22.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classUTF8Test22Childs, "encoding");
-			}
-			//Function test:test_partial
-			{
-			IMethod methodtest_partial23;
-				IModelElement[] classUTF8Test22Childs = classUTF8Test22.getChildren();
-				methodtest_partial23 = ModelTestUtils.getAssertMethod( classUTF8Test22Childs, "test_partial", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_partial23, new String[] {"self"} );
-			}
-		}
-		//Class test
-		{
-		IType classEscapeDecodeTest24;
-			IModelElement[] moduleChilds = module.getChildren();
-			classEscapeDecodeTest24 = ModelTestUtils.getAssertClass( moduleChilds, "EscapeDecodeTest" );
+			classEscapeDecodeTest22 = ModelTestUtils.getAssertClass( moduleChilds, "EscapeDecodeTest" );
 			//Function test:test_empty_escape_decode
 			{
-			IMethod methodtest_empty_escape_decode25;
-				IModelElement[] classEscapeDecodeTest24Childs = classEscapeDecodeTest24.getChildren();
-				methodtest_empty_escape_decode25 = ModelTestUtils.getAssertMethod( classEscapeDecodeTest24Childs, "test_empty_escape_decode", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_empty_escape_decode25, new String[] {"self"} );
+			IMethod methodtest_empty_escape_decode23;
+				IModelElement[] classEscapeDecodeTest22Childs = classEscapeDecodeTest22.getChildren();
+				methodtest_empty_escape_decode23 = ModelTestUtils.getAssertMethod( classEscapeDecodeTest22Childs, "test_empty_escape_decode", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_empty_escape_decode23, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classRecodingTest26;
+		IType classRecodingTest24;
 			IModelElement[] moduleChilds = module.getChildren();
-			classRecodingTest26 = ModelTestUtils.getAssertClass( moduleChilds, "RecodingTest" );
+			classRecodingTest24 = ModelTestUtils.getAssertClass( moduleChilds, "RecodingTest" );
 			//Function test:test_recoding
 			{
-			IMethod methodtest_recoding27;
-				IModelElement[] classRecodingTest26Childs = classRecodingTest26.getChildren();
-				methodtest_recoding27 = ModelTestUtils.getAssertMethod( classRecodingTest26Childs, "test_recoding", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_recoding27, new String[] {"self"} );
+			IMethod methodtest_recoding25;
+				IModelElement[] classRecodingTest24Childs = classRecodingTest24.getChildren();
+				methodtest_recoding25 = ModelTestUtils.getAssertMethod( classRecodingTest24Childs, "test_recoding", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_recoding25, new String[] {"self"} );
 			}
 		}
 		{
@@ -5003,22 +4711,22 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Class test
 		{
-		IType classPunycodeTest28;
+		IType classPunycodeTest26;
 			IModelElement[] moduleChilds = module.getChildren();
-			classPunycodeTest28 = ModelTestUtils.getAssertClass( moduleChilds, "PunycodeTest" );
+			classPunycodeTest26 = ModelTestUtils.getAssertClass( moduleChilds, "PunycodeTest" );
 			//Function test:test_encode
 			{
-			IMethod methodtest_encode29;
-				IModelElement[] classPunycodeTest28Childs = classPunycodeTest28.getChildren();
-				methodtest_encode29 = ModelTestUtils.getAssertMethod( classPunycodeTest28Childs, "test_encode", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_encode29, new String[] {"self"} );
+			IMethod methodtest_encode27;
+				IModelElement[] classPunycodeTest26Childs = classPunycodeTest26.getChildren();
+				methodtest_encode27 = ModelTestUtils.getAssertMethod( classPunycodeTest26Childs, "test_encode", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_encode27, new String[] {"self"} );
 			}
 			//Function test:test_decode
 			{
-			IMethod methodtest_decode30;
-				IModelElement[] classPunycodeTest28Childs = classPunycodeTest28.getChildren();
-				methodtest_decode30 = ModelTestUtils.getAssertMethod( classPunycodeTest28Childs, "test_decode", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_decode30, new String[] {"self"} );
+			IMethod methodtest_decode28;
+				IModelElement[] classPunycodeTest26Childs = classPunycodeTest26.getChildren();
+				methodtest_decode28 = ModelTestUtils.getAssertMethod( classPunycodeTest26Childs, "test_decode", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_decode28, new String[] {"self"} );
 			}
 		}
 		{
@@ -5027,97 +4735,89 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Class test
 		{
-		IType classNameprepTest31;
+		IType classNameprepTest29;
 			IModelElement[] moduleChilds = module.getChildren();
-			classNameprepTest31 = ModelTestUtils.getAssertClass( moduleChilds, "NameprepTest" );
+			classNameprepTest29 = ModelTestUtils.getAssertClass( moduleChilds, "NameprepTest" );
 			//Function test:test_nameprep
 			{
-			IMethod methodtest_nameprep32;
-				IModelElement[] classNameprepTest31Childs = classNameprepTest31.getChildren();
-				methodtest_nameprep32 = ModelTestUtils.getAssertMethod( classNameprepTest31Childs, "test_nameprep", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_nameprep32, new String[] {"self"} );
+			IMethod methodtest_nameprep30;
+				IModelElement[] classNameprepTest29Childs = classNameprepTest29.getChildren();
+				methodtest_nameprep30 = ModelTestUtils.getAssertMethod( classNameprepTest29Childs, "test_nameprep", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_nameprep30, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classCodecTest33;
+		IType classCodecTest31;
 			IModelElement[] moduleChilds = module.getChildren();
-			classCodecTest33 = ModelTestUtils.getAssertClass( moduleChilds, "CodecTest" );
+			classCodecTest31 = ModelTestUtils.getAssertClass( moduleChilds, "CodecTest" );
 			//Function test:test_builtin
 			{
-			IMethod methodtest_builtin34;
-				IModelElement[] classCodecTest33Childs = classCodecTest33.getChildren();
-				methodtest_builtin34 = ModelTestUtils.getAssertMethod( classCodecTest33Childs, "test_builtin", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_builtin34, new String[] {"self"} );
+			IMethod methodtest_builtin32;
+				IModelElement[] classCodecTest31Childs = classCodecTest31.getChildren();
+				methodtest_builtin32 = ModelTestUtils.getAssertMethod( classCodecTest31Childs, "test_builtin", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_builtin32, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classCodecsModuleTest35;
+		IType classCodecsModuleTest33;
 			IModelElement[] moduleChilds = module.getChildren();
-			classCodecsModuleTest35 = ModelTestUtils.getAssertClass( moduleChilds, "CodecsModuleTest" );
+			classCodecsModuleTest33 = ModelTestUtils.getAssertClass( moduleChilds, "CodecsModuleTest" );
 			//Function test:test_decode
 			{
-			IMethod methodtest_decode36;
-				IModelElement[] classCodecsModuleTest35Childs = classCodecsModuleTest35.getChildren();
-				methodtest_decode36 = ModelTestUtils.getAssertMethod( classCodecsModuleTest35Childs, "test_decode", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_decode36, new String[] {"self"} );
+			IMethod methodtest_decode34;
+				IModelElement[] classCodecsModuleTest33Childs = classCodecsModuleTest33.getChildren();
+				methodtest_decode34 = ModelTestUtils.getAssertMethod( classCodecsModuleTest33Childs, "test_decode", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_decode34, new String[] {"self"} );
 			}
 			//Function test:test_encode
 			{
-			IMethod methodtest_encode37;
-				IModelElement[] classCodecsModuleTest35Childs = classCodecsModuleTest35.getChildren();
-				methodtest_encode37 = ModelTestUtils.getAssertMethod( classCodecsModuleTest35Childs, "test_encode", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_encode37, new String[] {"self"} );
+			IMethod methodtest_encode35;
+				IModelElement[] classCodecsModuleTest33Childs = classCodecsModuleTest33.getChildren();
+				methodtest_encode35 = ModelTestUtils.getAssertMethod( classCodecsModuleTest33Childs, "test_encode", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_encode35, new String[] {"self"} );
 			}
 			//Function test:test_register
 			{
-			IMethod methodtest_register38;
-				IModelElement[] classCodecsModuleTest35Childs = classCodecsModuleTest35.getChildren();
-				methodtest_register38 = ModelTestUtils.getAssertMethod( classCodecsModuleTest35Childs, "test_register", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_register38, new String[] {"self"} );
+			IMethod methodtest_register36;
+				IModelElement[] classCodecsModuleTest33Childs = classCodecsModuleTest33.getChildren();
+				methodtest_register36 = ModelTestUtils.getAssertMethod( classCodecsModuleTest33Childs, "test_register", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_register36, new String[] {"self"} );
 			}
 			//Function test:test_lookup
 			{
-			IMethod methodtest_lookup39;
-				IModelElement[] classCodecsModuleTest35Childs = classCodecsModuleTest35.getChildren();
-				methodtest_lookup39 = ModelTestUtils.getAssertMethod( classCodecsModuleTest35Childs, "test_lookup", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_lookup39, new String[] {"self"} );
+			IMethod methodtest_lookup37;
+				IModelElement[] classCodecsModuleTest33Childs = classCodecsModuleTest33.getChildren();
+				methodtest_lookup37 = ModelTestUtils.getAssertMethod( classCodecsModuleTest33Childs, "test_lookup", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_lookup37, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classStreamReaderTest40;
+		IType classStreamReaderTest38;
 			IModelElement[] moduleChilds = module.getChildren();
-			classStreamReaderTest40 = ModelTestUtils.getAssertClass( moduleChilds, "StreamReaderTest" );
+			classStreamReaderTest38 = ModelTestUtils.getAssertClass( moduleChilds, "StreamReaderTest" );
 			//Function test:setUp
 			{
-			IMethod methodsetUp41;
-				IModelElement[] classStreamReaderTest40Childs = classStreamReaderTest40.getChildren();
-				methodsetUp41 = ModelTestUtils.getAssertMethod( classStreamReaderTest40Childs, "setUp", 1 );
-				ModelTestUtils.assertParameterNames( methodsetUp41, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classStreamReaderTest40Childs = classStreamReaderTest40.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classStreamReaderTest40Childs, "reader");
-			}
-			{
-				IModelElement[] classStreamReaderTest40Childs = classStreamReaderTest40.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classStreamReaderTest40Childs, "stream");
+			IMethod methodsetUp39;
+				IModelElement[] classStreamReaderTest38Childs = classStreamReaderTest38.getChildren();
+				methodsetUp39 = ModelTestUtils.getAssertMethod( classStreamReaderTest38Childs, "setUp", 1 );
+				ModelTestUtils.assertParameterNames( methodsetUp39, new String[] {"self"} );
 			}
 			//Function test:test_readlines
 			{
-			IMethod methodtest_readlines43;
-				IModelElement[] classStreamReaderTest40Childs = classStreamReaderTest40.getChildren();
-				methodtest_readlines43 = ModelTestUtils.getAssertMethod( classStreamReaderTest40Childs, "test_readlines", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_readlines43, new String[] {"self"} );
+			IMethod methodtest_readlines40;
+				IModelElement[] classStreamReaderTest38Childs = classStreamReaderTest38.getChildren();
+				methodtest_readlines40 = ModelTestUtils.getAssertMethod( classStreamReaderTest38Childs, "test_readlines", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_readlines40, new String[] {"self"} );
 			}
 		}
 		//Function test:test_main
 		{
-		IMethod methodtest_main44;
+		IMethod methodtest_main41;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_main44 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 0 );
+			methodtest_main41 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 0 );
 		}
 
 	}
@@ -5400,263 +5100,251 @@ public class GeneratedModelTests4 extends AbstractModelTests
 				method__init__32 = ModelTestUtils.getAssertMethod( classG31Childs, "__init__", 2 );
 				ModelTestUtils.assertParameterNames( method__init__32, new String[] {"self", "seqn"} );
 			}
-			{
-				IModelElement[] classG31Childs = classG31.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classG31Childs, "seqn");
-			}
 			//Function test:__getitem__
 			{
-			IMethod method__getitem__34;
+			IMethod method__getitem__33;
 				IModelElement[] classG31Childs = classG31.getChildren();
-				method__getitem__34 = ModelTestUtils.getAssertMethod( classG31Childs, "__getitem__", 2 );
-				ModelTestUtils.assertParameterNames( method__getitem__34, new String[] {"self", "i"} );
+				method__getitem__33 = ModelTestUtils.getAssertMethod( classG31Childs, "__getitem__", 2 );
+				ModelTestUtils.assertParameterNames( method__getitem__33, new String[] {"self", "i"} );
 			}
 		}
 		//Class test
 		{
-		IType classI35;
+		IType classI34;
 			IModelElement[] moduleChilds = module.getChildren();
-			classI35 = ModelTestUtils.getAssertClass( moduleChilds, "I" );
+			classI34 = ModelTestUtils.getAssertClass( moduleChilds, "I" );
 			//Function test:__init__
 			{
-			IMethod method__init__36;
-				IModelElement[] classI35Childs = classI35.getChildren();
-				method__init__36 = ModelTestUtils.getAssertMethod( classI35Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__36, new String[] {"self", "seqn"} );
-			}
-			{
-				IModelElement[] classI35Childs = classI35.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classI35Childs, "seqn");
-			}
-			{
-				IModelElement[] classI35Childs = classI35.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classI35Childs, "i");
+			IMethod method__init__35;
+				IModelElement[] classI34Childs = classI34.getChildren();
+				method__init__35 = ModelTestUtils.getAssertMethod( classI34Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__35, new String[] {"self", "seqn"} );
 			}
 			//Function test:__iter__
 			{
-			IMethod method__iter__38;
-				IModelElement[] classI35Childs = classI35.getChildren();
-				method__iter__38 = ModelTestUtils.getAssertMethod( classI35Childs, "__iter__", 1 );
-				ModelTestUtils.assertParameterNames( method__iter__38, new String[] {"self"} );
+			IMethod method__iter__36;
+				IModelElement[] classI34Childs = classI34.getChildren();
+				method__iter__36 = ModelTestUtils.getAssertMethod( classI34Childs, "__iter__", 1 );
+				ModelTestUtils.assertParameterNames( method__iter__36, new String[] {"self"} );
 			}
 			//Function test:next
 			{
-			IMethod methodnext39;
-				IModelElement[] classI35Childs = classI35.getChildren();
-				methodnext39 = ModelTestUtils.getAssertMethod( classI35Childs, "next", 1 );
-				ModelTestUtils.assertParameterNames( methodnext39, new String[] {"self"} );
+			IMethod methodnext37;
+				IModelElement[] classI34Childs = classI34.getChildren();
+				methodnext37 = ModelTestUtils.getAssertMethod( classI34Childs, "next", 1 );
+				ModelTestUtils.assertParameterNames( methodnext37, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classIg40;
+		IType classIg38;
 			IModelElement[] moduleChilds = module.getChildren();
-			classIg40 = ModelTestUtils.getAssertClass( moduleChilds, "Ig" );
+			classIg38 = ModelTestUtils.getAssertClass( moduleChilds, "Ig" );
 			//Function test:__init__
 			{
-			IMethod method__init__41;
-				IModelElement[] classIg40Childs = classIg40.getChildren();
-				method__init__41 = ModelTestUtils.getAssertMethod( classIg40Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__41, new String[] {"self", "seqn"} );
+			IMethod method__init__39;
+				IModelElement[] classIg38Childs = classIg38.getChildren();
+				method__init__39 = ModelTestUtils.getAssertMethod( classIg38Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__39, new String[] {"self", "seqn"} );
 			}
 			//Function test:__iter__
 			{
-			IMethod method__iter__42;
-				IModelElement[] classIg40Childs = classIg40.getChildren();
-				method__iter__42 = ModelTestUtils.getAssertMethod( classIg40Childs, "__iter__", 1 );
-				ModelTestUtils.assertParameterNames( method__iter__42, new String[] {"self"} );
+			IMethod method__iter__40;
+				IModelElement[] classIg38Childs = classIg38.getChildren();
+				method__iter__40 = ModelTestUtils.getAssertMethod( classIg38Childs, "__iter__", 1 );
+				ModelTestUtils.assertParameterNames( method__iter__40, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classX43;
+		IType classX41;
 			IModelElement[] moduleChilds = module.getChildren();
-			classX43 = ModelTestUtils.getAssertClass( moduleChilds, "X" );
+			classX41 = ModelTestUtils.getAssertClass( moduleChilds, "X" );
 			//Function test:__init__
 			{
-			IMethod method__init__44;
-				IModelElement[] classX43Childs = classX43.getChildren();
-				method__init__44 = ModelTestUtils.getAssertMethod( classX43Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__44, new String[] {"self", "seqn"} );
+			IMethod method__init__42;
+				IModelElement[] classX41Childs = classX41.getChildren();
+				method__init__42 = ModelTestUtils.getAssertMethod( classX41Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__42, new String[] {"self", "seqn"} );
 			}
 			//Function test:next
 			{
-			IMethod methodnext45;
-				IModelElement[] classX43Childs = classX43.getChildren();
-				methodnext45 = ModelTestUtils.getAssertMethod( classX43Childs, "next", 1 );
-				ModelTestUtils.assertParameterNames( methodnext45, new String[] {"self"} );
+			IMethod methodnext43;
+				IModelElement[] classX41Childs = classX41.getChildren();
+				methodnext43 = ModelTestUtils.getAssertMethod( classX41Childs, "next", 1 );
+				ModelTestUtils.assertParameterNames( methodnext43, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classN46;
+		IType classN44;
 			IModelElement[] moduleChilds = module.getChildren();
-			classN46 = ModelTestUtils.getAssertClass( moduleChilds, "N" );
+			classN44 = ModelTestUtils.getAssertClass( moduleChilds, "N" );
 			//Function test:__init__
 			{
-			IMethod method__init__47;
-				IModelElement[] classN46Childs = classN46.getChildren();
-				method__init__47 = ModelTestUtils.getAssertMethod( classN46Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__47, new String[] {"self", "seqn"} );
+			IMethod method__init__45;
+				IModelElement[] classN44Childs = classN44.getChildren();
+				method__init__45 = ModelTestUtils.getAssertMethod( classN44Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__45, new String[] {"self", "seqn"} );
 			}
 			//Function test:__iter__
 			{
-			IMethod method__iter__48;
-				IModelElement[] classN46Childs = classN46.getChildren();
-				method__iter__48 = ModelTestUtils.getAssertMethod( classN46Childs, "__iter__", 1 );
-				ModelTestUtils.assertParameterNames( method__iter__48, new String[] {"self"} );
+			IMethod method__iter__46;
+				IModelElement[] classN44Childs = classN44.getChildren();
+				method__iter__46 = ModelTestUtils.getAssertMethod( classN44Childs, "__iter__", 1 );
+				ModelTestUtils.assertParameterNames( method__iter__46, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classE49;
+		IType classE47;
 			IModelElement[] moduleChilds = module.getChildren();
-			classE49 = ModelTestUtils.getAssertClass( moduleChilds, "E" );
+			classE47 = ModelTestUtils.getAssertClass( moduleChilds, "E" );
 			//Function test:__init__
 			{
-			IMethod method__init__50;
-				IModelElement[] classE49Childs = classE49.getChildren();
-				method__init__50 = ModelTestUtils.getAssertMethod( classE49Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__50, new String[] {"self", "seqn"} );
+			IMethod method__init__48;
+				IModelElement[] classE47Childs = classE47.getChildren();
+				method__init__48 = ModelTestUtils.getAssertMethod( classE47Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__48, new String[] {"self", "seqn"} );
 			}
 			//Function test:__iter__
 			{
-			IMethod method__iter__51;
-				IModelElement[] classE49Childs = classE49.getChildren();
-				method__iter__51 = ModelTestUtils.getAssertMethod( classE49Childs, "__iter__", 1 );
-				ModelTestUtils.assertParameterNames( method__iter__51, new String[] {"self"} );
+			IMethod method__iter__49;
+				IModelElement[] classE47Childs = classE47.getChildren();
+				method__iter__49 = ModelTestUtils.getAssertMethod( classE47Childs, "__iter__", 1 );
+				ModelTestUtils.assertParameterNames( method__iter__49, new String[] {"self"} );
 			}
 			//Function test:next
 			{
-			IMethod methodnext52;
-				IModelElement[] classE49Childs = classE49.getChildren();
-				methodnext52 = ModelTestUtils.getAssertMethod( classE49Childs, "next", 1 );
-				ModelTestUtils.assertParameterNames( methodnext52, new String[] {"self"} );
+			IMethod methodnext50;
+				IModelElement[] classE47Childs = classE47.getChildren();
+				methodnext50 = ModelTestUtils.getAssertMethod( classE47Childs, "next", 1 );
+				ModelTestUtils.assertParameterNames( methodnext50, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classS53;
+		IType classS51;
 			IModelElement[] moduleChilds = module.getChildren();
-			classS53 = ModelTestUtils.getAssertClass( moduleChilds, "S" );
+			classS51 = ModelTestUtils.getAssertClass( moduleChilds, "S" );
 			//Function test:__init__
 			{
-			IMethod method__init__54;
-				IModelElement[] classS53Childs = classS53.getChildren();
-				method__init__54 = ModelTestUtils.getAssertMethod( classS53Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__54, new String[] {"self", "seqn"} );
+			IMethod method__init__52;
+				IModelElement[] classS51Childs = classS51.getChildren();
+				method__init__52 = ModelTestUtils.getAssertMethod( classS51Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__52, new String[] {"self", "seqn"} );
 			}
 			//Function test:__iter__
 			{
-			IMethod method__iter__55;
-				IModelElement[] classS53Childs = classS53.getChildren();
-				method__iter__55 = ModelTestUtils.getAssertMethod( classS53Childs, "__iter__", 1 );
-				ModelTestUtils.assertParameterNames( method__iter__55, new String[] {"self"} );
+			IMethod method__iter__53;
+				IModelElement[] classS51Childs = classS51.getChildren();
+				method__iter__53 = ModelTestUtils.getAssertMethod( classS51Childs, "__iter__", 1 );
+				ModelTestUtils.assertParameterNames( method__iter__53, new String[] {"self"} );
 			}
 			//Function test:next
 			{
-			IMethod methodnext56;
-				IModelElement[] classS53Childs = classS53.getChildren();
-				methodnext56 = ModelTestUtils.getAssertMethod( classS53Childs, "next", 1 );
-				ModelTestUtils.assertParameterNames( methodnext56, new String[] {"self"} );
+			IMethod methodnext54;
+				IModelElement[] classS51Childs = classS51.getChildren();
+				methodnext54 = ModelTestUtils.getAssertMethod( classS51Childs, "next", 1 );
+				ModelTestUtils.assertParameterNames( methodnext54, new String[] {"self"} );
 			}
 		}
 		//Function test:L
 		{
-		IMethod methodL57;
+		IMethod methodL55;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodL57 = ModelTestUtils.getAssertMethod( moduleChilds, "L", 1 );
-			ModelTestUtils.assertParameterNames( methodL57, new String[] {"seqn"} );
+			methodL55 = ModelTestUtils.getAssertMethod( moduleChilds, "L", 1 );
+			ModelTestUtils.assertParameterNames( methodL55, new String[] {"seqn"} );
 		}
 		//Class test
 		{
-		IType classTestVariousIteratorArgs58;
+		IType classTestVariousIteratorArgs56;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestVariousIteratorArgs58 = ModelTestUtils.getAssertClass( moduleChilds, "TestVariousIteratorArgs" );
+			classTestVariousIteratorArgs56 = ModelTestUtils.getAssertClass( moduleChilds, "TestVariousIteratorArgs" );
 			//Function test:test_constructor
 			{
-			IMethod methodtest_constructor59;
-				IModelElement[] classTestVariousIteratorArgs58Childs = classTestVariousIteratorArgs58.getChildren();
-				methodtest_constructor59 = ModelTestUtils.getAssertMethod( classTestVariousIteratorArgs58Childs, "test_constructor", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_constructor59, new String[] {"self"} );
+			IMethod methodtest_constructor57;
+				IModelElement[] classTestVariousIteratorArgs56Childs = classTestVariousIteratorArgs56.getChildren();
+				methodtest_constructor57 = ModelTestUtils.getAssertMethod( classTestVariousIteratorArgs56Childs, "test_constructor", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_constructor57, new String[] {"self"} );
 			}
 			//Function test:test_iter_with_altered_data
 			{
-			IMethod methodtest_iter_with_altered_data60;
-				IModelElement[] classTestVariousIteratorArgs58Childs = classTestVariousIteratorArgs58.getChildren();
-				methodtest_iter_with_altered_data60 = ModelTestUtils.getAssertMethod( classTestVariousIteratorArgs58Childs, "test_iter_with_altered_data", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_iter_with_altered_data60, new String[] {"self"} );
+			IMethod methodtest_iter_with_altered_data58;
+				IModelElement[] classTestVariousIteratorArgs56Childs = classTestVariousIteratorArgs56.getChildren();
+				methodtest_iter_with_altered_data58 = ModelTestUtils.getAssertMethod( classTestVariousIteratorArgs56Childs, "test_iter_with_altered_data", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_iter_with_altered_data58, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classDeque61;
+		IType classDeque59;
 			IModelElement[] moduleChilds = module.getChildren();
-			classDeque61 = ModelTestUtils.getAssertClass( moduleChilds, "Deque" );
+			classDeque59 = ModelTestUtils.getAssertClass( moduleChilds, "Deque" );
 		}
 		//Class test
 		{
-		IType classDequeWithBadIter62;
+		IType classDequeWithBadIter60;
 			IModelElement[] moduleChilds = module.getChildren();
-			classDequeWithBadIter62 = ModelTestUtils.getAssertClass( moduleChilds, "DequeWithBadIter" );
+			classDequeWithBadIter60 = ModelTestUtils.getAssertClass( moduleChilds, "DequeWithBadIter" );
 			//Function test:__iter__
 			{
-			IMethod method__iter__63;
-				IModelElement[] classDequeWithBadIter62Childs = classDequeWithBadIter62.getChildren();
-				method__iter__63 = ModelTestUtils.getAssertMethod( classDequeWithBadIter62Childs, "__iter__", 1 );
-				ModelTestUtils.assertParameterNames( method__iter__63, new String[] {"self"} );
+			IMethod method__iter__61;
+				IModelElement[] classDequeWithBadIter60Childs = classDequeWithBadIter60.getChildren();
+				method__iter__61 = ModelTestUtils.getAssertMethod( classDequeWithBadIter60Childs, "__iter__", 1 );
+				ModelTestUtils.assertParameterNames( method__iter__61, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classTestSubclass64;
+		IType classTestSubclass62;
 			IModelElement[] moduleChilds = module.getChildren();
-			classTestSubclass64 = ModelTestUtils.getAssertClass( moduleChilds, "TestSubclass" );
+			classTestSubclass62 = ModelTestUtils.getAssertClass( moduleChilds, "TestSubclass" );
 			//Function test:test_basics
 			{
-			IMethod methodtest_basics65;
-				IModelElement[] classTestSubclass64Childs = classTestSubclass64.getChildren();
-				methodtest_basics65 = ModelTestUtils.getAssertMethod( classTestSubclass64Childs, "test_basics", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_basics65, new String[] {"self"} );
+			IMethod methodtest_basics63;
+				IModelElement[] classTestSubclass62Childs = classTestSubclass62.getChildren();
+				methodtest_basics63 = ModelTestUtils.getAssertMethod( classTestSubclass62Childs, "test_basics", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_basics63, new String[] {"self"} );
 			}
 			//Function test:test_copy_pickle
 			{
-			IMethod methodtest_copy_pickle66;
-				IModelElement[] classTestSubclass64Childs = classTestSubclass64.getChildren();
-				methodtest_copy_pickle66 = ModelTestUtils.getAssertMethod( classTestSubclass64Childs, "test_copy_pickle", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_copy_pickle66, new String[] {"self"} );
+			IMethod methodtest_copy_pickle64;
+				IModelElement[] classTestSubclass62Childs = classTestSubclass62.getChildren();
+				methodtest_copy_pickle64 = ModelTestUtils.getAssertMethod( classTestSubclass62Childs, "test_copy_pickle", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_copy_pickle64, new String[] {"self"} );
 			}
 			//Function test:test_pickle
 			{
-			IMethod methodtest_pickle67;
-				IModelElement[] classTestSubclass64Childs = classTestSubclass64.getChildren();
-				methodtest_pickle67 = ModelTestUtils.getAssertMethod( classTestSubclass64Childs, "test_pickle", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_pickle67, new String[] {"self"} );
+			IMethod methodtest_pickle65;
+				IModelElement[] classTestSubclass62Childs = classTestSubclass62.getChildren();
+				methodtest_pickle65 = ModelTestUtils.getAssertMethod( classTestSubclass62Childs, "test_pickle", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_pickle65, new String[] {"self"} );
 			}
 			//Function test:test_weakref
 			{
-			IMethod methodtest_weakref68;
-				IModelElement[] classTestSubclass64Childs = classTestSubclass64.getChildren();
-				methodtest_weakref68 = ModelTestUtils.getAssertMethod( classTestSubclass64Childs, "test_weakref", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_weakref68, new String[] {"self"} );
+			IMethod methodtest_weakref66;
+				IModelElement[] classTestSubclass62Childs = classTestSubclass62.getChildren();
+				methodtest_weakref66 = ModelTestUtils.getAssertMethod( classTestSubclass62Childs, "test_weakref", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_weakref66, new String[] {"self"} );
 			}
 			//Function test:test_strange_subclass
 			{
-			IMethod methodtest_strange_subclass69;
-				IModelElement[] classTestSubclass64Childs = classTestSubclass64.getChildren();
-				methodtest_strange_subclass69 = ModelTestUtils.getAssertMethod( classTestSubclass64Childs, "test_strange_subclass", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_strange_subclass69, new String[] {"self"} );
+			IMethod methodtest_strange_subclass67;
+				IModelElement[] classTestSubclass62Childs = classTestSubclass62.getChildren();
+				methodtest_strange_subclass67 = ModelTestUtils.getAssertMethod( classTestSubclass62Childs, "test_strange_subclass", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_strange_subclass67, new String[] {"self"} );
 				//Class test
 				{
-				IType classX70;
-					IModelElement[] methodtest_strange_subclass69Childs = methodtest_strange_subclass69.getChildren();
-					classX70 = ModelTestUtils.getAssertClass( methodtest_strange_subclass69Childs, "X" );
+				IType classX68;
+					IModelElement[] methodtest_strange_subclass67Childs = methodtest_strange_subclass67.getChildren();
+					classX68 = ModelTestUtils.getAssertClass( methodtest_strange_subclass67Childs, "X" );
 					//Function test:__iter__
 					{
-					IMethod method__iter__71;
-						IModelElement[] classX70Childs = classX70.getChildren();
-						method__iter__71 = ModelTestUtils.getAssertMethod( classX70Childs, "__iter__", 1 );
-						ModelTestUtils.assertParameterNames( method__iter__71, new String[] {"self"} );
+					IMethod method__iter__69;
+						IModelElement[] classX68Childs = classX68.getChildren();
+						method__iter__69 = ModelTestUtils.getAssertMethod( classX68Childs, "__iter__", 1 );
+						ModelTestUtils.assertParameterNames( method__iter__69, new String[] {"self"} );
 					}
 				}
 			}
@@ -5671,10 +5359,10 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Function test:test_main
 		{
-		IMethod methodtest_main72;
+		IMethod methodtest_main70;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_main72 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 1 );
-			ModelTestUtils.assertParameterNames( methodtest_main72, new String[] {"verbose"} );
+			methodtest_main70 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 1 );
+			ModelTestUtils.assertParameterNames( methodtest_main70, new String[] {"verbose"} );
 		}
 
 	}
@@ -6151,162 +5839,150 @@ public class GeneratedModelTests4 extends AbstractModelTests
 					method__init__19 = ModelTestUtils.getAssertMethod( classAddressBookEntry18Childs, "__init__", 3 );
 					ModelTestUtils.assertParameterNames( method__init__19, new String[] {"self", "first", "last"} );
 				}
-				{
-					IModelElement[] classAddressBookEntry18Childs = classAddressBookEntry18.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classAddressBookEntry18Childs, "first");
-				}
-				{
-					IModelElement[] classAddressBookEntry18Childs = classAddressBookEntry18.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classAddressBookEntry18Childs, "last");
-				}
 				//Function test:__iter__
 				{
-				IMethod method__iter__21;
+				IMethod method__iter__20;
 					IModelElement[] classAddressBookEntry18Childs = classAddressBookEntry18.getChildren();
-					method__iter__21 = ModelTestUtils.getAssertMethod( classAddressBookEntry18Childs, "__iter__", 1 );
-					ModelTestUtils.assertParameterNames( method__iter__21, new String[] {"self"} );
+					method__iter__20 = ModelTestUtils.getAssertMethod( classAddressBookEntry18Childs, "__iter__", 1 );
+					ModelTestUtils.assertParameterNames( method__iter__20, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:test_dir
 		{
-		IMethod methodtest_dir22;
+		IMethod methodtest_dir21;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_dir22 = ModelTestUtils.getAssertMethod( moduleChilds, "test_dir", 0 );
+			methodtest_dir21 = ModelTestUtils.getAssertMethod( moduleChilds, "test_dir", 0 );
 			//Class test
 			{
-			IType classC23;
-				IModelElement[] methodtest_dir22Childs = methodtest_dir22.getChildren();
-				classC23 = ModelTestUtils.getAssertClass( methodtest_dir22Childs, "C" );
+			IType classC22;
+				IModelElement[] methodtest_dir21Childs = methodtest_dir21.getChildren();
+				classC22 = ModelTestUtils.getAssertClass( methodtest_dir21Childs, "C" );
 				//Function test:Cmethod
 				{
-				IMethod methodCmethod24;
-					IModelElement[] classC23Childs = classC23.getChildren();
-					methodCmethod24 = ModelTestUtils.getAssertMethod( classC23Childs, "Cmethod", 1 );
-					ModelTestUtils.assertParameterNames( methodCmethod24, new String[] {"self"} );
+				IMethod methodCmethod23;
+					IModelElement[] classC22Childs = classC22.getChildren();
+					methodCmethod23 = ModelTestUtils.getAssertMethod( classC22Childs, "Cmethod", 1 );
+					ModelTestUtils.assertParameterNames( methodCmethod23, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classA25;
-				IModelElement[] methodtest_dir22Childs = methodtest_dir22.getChildren();
-				classA25 = ModelTestUtils.getAssertClass( methodtest_dir22Childs, "A" );
+			IType classA24;
+				IModelElement[] methodtest_dir21Childs = methodtest_dir21.getChildren();
+				classA24 = ModelTestUtils.getAssertClass( methodtest_dir21Childs, "A" );
 				//Function test:Amethod
 				{
-				IMethod methodAmethod26;
-					IModelElement[] classA25Childs = classA25.getChildren();
-					methodAmethod26 = ModelTestUtils.getAssertMethod( classA25Childs, "Amethod", 1 );
-					ModelTestUtils.assertParameterNames( methodAmethod26, new String[] {"self"} );
+				IMethod methodAmethod25;
+					IModelElement[] classA24Childs = classA24.getChildren();
+					methodAmethod25 = ModelTestUtils.getAssertMethod( classA24Childs, "Amethod", 1 );
+					ModelTestUtils.assertParameterNames( methodAmethod25, new String[] {"self"} );
 				}
 			}
 			//Function test:interesting
 			{
-			IMethod methodinteresting27;
-				IModelElement[] methodtest_dir22Childs = methodtest_dir22.getChildren();
-				methodinteresting27 = ModelTestUtils.getAssertMethod( methodtest_dir22Childs, "interesting", 1 );
-				ModelTestUtils.assertParameterNames( methodinteresting27, new String[] {"strings"} );
+			IMethod methodinteresting26;
+				IModelElement[] methodtest_dir21Childs = methodtest_dir21.getChildren();
+				methodinteresting26 = ModelTestUtils.getAssertMethod( methodtest_dir21Childs, "interesting", 1 );
+				ModelTestUtils.assertParameterNames( methodinteresting26, new String[] {"strings"} );
 			}
 			//Class test
 			{
-			IType classC28;
-				IModelElement[] methodtest_dir22Childs = methodtest_dir22.getChildren();
-				classC28 = ModelTestUtils.getAssertClass( methodtest_dir22Childs, "C" );
+			IType classC27;
+				IModelElement[] methodtest_dir21Childs = methodtest_dir21.getChildren();
+				classC27 = ModelTestUtils.getAssertClass( methodtest_dir21Childs, "C" );
 				//Function test:Cmethod
 				{
-				IMethod methodCmethod29;
-					IModelElement[] classC28Childs = classC28.getChildren();
-					methodCmethod29 = ModelTestUtils.getAssertMethod( classC28Childs, "Cmethod", 1 );
-					ModelTestUtils.assertParameterNames( methodCmethod29, new String[] {"self"} );
+				IMethod methodCmethod28;
+					IModelElement[] classC27Childs = classC27.getChildren();
+					methodCmethod28 = ModelTestUtils.getAssertMethod( classC27Childs, "Cmethod", 1 );
+					ModelTestUtils.assertParameterNames( methodCmethod28, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classA30;
-				IModelElement[] methodtest_dir22Childs = methodtest_dir22.getChildren();
-				classA30 = ModelTestUtils.getAssertClass( methodtest_dir22Childs, "A" );
+			IType classA29;
+				IModelElement[] methodtest_dir21Childs = methodtest_dir21.getChildren();
+				classA29 = ModelTestUtils.getAssertClass( methodtest_dir21Childs, "A" );
 				//Function test:Amethod
 				{
-				IMethod methodAmethod31;
-					IModelElement[] classA30Childs = classA30.getChildren();
-					methodAmethod31 = ModelTestUtils.getAssertMethod( classA30Childs, "Amethod", 1 );
-					ModelTestUtils.assertParameterNames( methodAmethod31, new String[] {"self"} );
+				IMethod methodAmethod30;
+					IModelElement[] classA29Childs = classA29.getChildren();
+					methodAmethod30 = ModelTestUtils.getAssertMethod( classA29Childs, "Amethod", 1 );
+					ModelTestUtils.assertParameterNames( methodAmethod30, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classM32;
-				IModelElement[] methodtest_dir22Childs = methodtest_dir22.getChildren();
-				classM32 = ModelTestUtils.getAssertClass( methodtest_dir22Childs, "M" );
+			IType classM31;
+				IModelElement[] methodtest_dir21Childs = methodtest_dir21.getChildren();
+				classM31 = ModelTestUtils.getAssertClass( methodtest_dir21Childs, "M" );
 			}
 			//Class test
 			{
-			IType classM233;
-				IModelElement[] methodtest_dir22Childs = methodtest_dir22.getChildren();
-				classM233 = ModelTestUtils.getAssertClass( methodtest_dir22Childs, "M2" );
+			IType classM232;
+				IModelElement[] methodtest_dir21Childs = methodtest_dir21.getChildren();
+				classM232 = ModelTestUtils.getAssertClass( methodtest_dir21Childs, "M2" );
 				//Function test:getdict
 				{
-				IMethod methodgetdict34;
-					IModelElement[] classM233Childs = classM233.getChildren();
-					methodgetdict34 = ModelTestUtils.getAssertMethod( classM233Childs, "getdict", 1 );
-					ModelTestUtils.assertParameterNames( methodgetdict34, new String[] {"self"} );
+				IMethod methodgetdict33;
+					IModelElement[] classM232Childs = classM232.getChildren();
+					methodgetdict33 = ModelTestUtils.getAssertMethod( classM232Childs, "getdict", 1 );
+					ModelTestUtils.assertParameterNames( methodgetdict33, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classWrapper35;
-				IModelElement[] methodtest_dir22Childs = methodtest_dir22.getChildren();
-				classWrapper35 = ModelTestUtils.getAssertClass( methodtest_dir22Childs, "Wrapper" );
+			IType classWrapper34;
+				IModelElement[] methodtest_dir21Childs = methodtest_dir21.getChildren();
+				classWrapper34 = ModelTestUtils.getAssertClass( methodtest_dir21Childs, "Wrapper" );
 				//Function test:__init__
 				{
-				IMethod method__init__36;
-					IModelElement[] classWrapper35Childs = classWrapper35.getChildren();
-					method__init__36 = ModelTestUtils.getAssertMethod( classWrapper35Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__36, new String[] {"self", "obj"} );
-				}
-				{
-					IModelElement[] classWrapper35Childs = classWrapper35.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classWrapper35Childs, "__obj");
+				IMethod method__init__35;
+					IModelElement[] classWrapper34Childs = classWrapper34.getChildren();
+					method__init__35 = ModelTestUtils.getAssertMethod( classWrapper34Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__35, new String[] {"self", "obj"} );
 				}
 				//Function test:__repr__
 				{
-				IMethod method__repr__38;
-					IModelElement[] classWrapper35Childs = classWrapper35.getChildren();
-					method__repr__38 = ModelTestUtils.getAssertMethod( classWrapper35Childs, "__repr__", 1 );
-					ModelTestUtils.assertParameterNames( method__repr__38, new String[] {"self"} );
+				IMethod method__repr__36;
+					IModelElement[] classWrapper34Childs = classWrapper34.getChildren();
+					method__repr__36 = ModelTestUtils.getAssertMethod( classWrapper34Childs, "__repr__", 1 );
+					ModelTestUtils.assertParameterNames( method__repr__36, new String[] {"self"} );
 				}
 				//Function test:__getitem__
 				{
-				IMethod method__getitem__39;
-					IModelElement[] classWrapper35Childs = classWrapper35.getChildren();
-					method__getitem__39 = ModelTestUtils.getAssertMethod( classWrapper35Childs, "__getitem__", 2 );
-					ModelTestUtils.assertParameterNames( method__getitem__39, new String[] {"self", "key"} );
+				IMethod method__getitem__37;
+					IModelElement[] classWrapper34Childs = classWrapper34.getChildren();
+					method__getitem__37 = ModelTestUtils.getAssertMethod( classWrapper34Childs, "__getitem__", 2 );
+					ModelTestUtils.assertParameterNames( method__getitem__37, new String[] {"self", "key"} );
 				}
 				//Function test:__len__
 				{
-				IMethod method__len__40;
-					IModelElement[] classWrapper35Childs = classWrapper35.getChildren();
-					method__len__40 = ModelTestUtils.getAssertMethod( classWrapper35Childs, "__len__", 1 );
-					ModelTestUtils.assertParameterNames( method__len__40, new String[] {"self"} );
+				IMethod method__len__38;
+					IModelElement[] classWrapper34Childs = classWrapper34.getChildren();
+					method__len__38 = ModelTestUtils.getAssertMethod( classWrapper34Childs, "__len__", 1 );
+					ModelTestUtils.assertParameterNames( method__len__38, new String[] {"self"} );
 				}
 				//Function test:__getattr__
 				{
-				IMethod method__getattr__41;
-					IModelElement[] classWrapper35Childs = classWrapper35.getChildren();
-					method__getattr__41 = ModelTestUtils.getAssertMethod( classWrapper35Childs, "__getattr__", 2 );
-					ModelTestUtils.assertParameterNames( method__getattr__41, new String[] {"self", "name"} );
+				IMethod method__getattr__39;
+					IModelElement[] classWrapper34Childs = classWrapper34.getChildren();
+					method__getattr__39 = ModelTestUtils.getAssertMethod( classWrapper34Childs, "__getattr__", 2 );
+					ModelTestUtils.assertParameterNames( method__getattr__39, new String[] {"self", "name"} );
 				}
 			}
 			//Class test
 			{
-			IType classC42;
-				IModelElement[] methodtest_dir22Childs = methodtest_dir22.getChildren();
-				classC42 = ModelTestUtils.getAssertClass( methodtest_dir22Childs, "C" );
+			IType classC40;
+				IModelElement[] methodtest_dir21Childs = methodtest_dir21.getChildren();
+				classC40 = ModelTestUtils.getAssertClass( methodtest_dir21Childs, "C" );
 				//Function test:__getclass
 				{
-				IMethod method__getclass43;
-					IModelElement[] classC42Childs = classC42.getChildren();
-					method__getclass43 = ModelTestUtils.getAssertMethod( classC42Childs, "__getclass", 1 );
-					ModelTestUtils.assertParameterNames( method__getclass43, new String[] {"self"} );
+				IMethod method__getclass41;
+					IModelElement[] classC40Childs = classC40.getChildren();
+					method__getclass41 = ModelTestUtils.getAssertMethod( classC40Childs, "__getclass", 1 );
+					ModelTestUtils.assertParameterNames( method__getclass41, new String[] {"self"} );
 				}
 			}
 		}
@@ -6336,1012 +6012,976 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Function test:numops
 		{
-		IMethod methodnumops44;
+		IMethod methodnumops42;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodnumops44 = ModelTestUtils.getAssertMethod( moduleChilds, "numops", 3 );
-			ModelTestUtils.assertParameterNames( methodnumops44, new String[] {"a", "b", "skip"} );
+			methodnumops42 = ModelTestUtils.getAssertMethod( moduleChilds, "numops", 3 );
+			ModelTestUtils.assertParameterNames( methodnumops42, new String[] {"a", "b", "skip"} );
 		}
 		//Function test:ints
 		{
-		IMethod methodints45;
+		IMethod methodints43;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodints45 = ModelTestUtils.getAssertMethod( moduleChilds, "ints", 0 );
+			methodints43 = ModelTestUtils.getAssertMethod( moduleChilds, "ints", 0 );
 			//Class test
 			{
-			IType classC46;
-				IModelElement[] methodints45Childs = methodints45.getChildren();
-				classC46 = ModelTestUtils.getAssertClass( methodints45Childs, "C" );
+			IType classC44;
+				IModelElement[] methodints43Childs = methodints43.getChildren();
+				classC44 = ModelTestUtils.getAssertClass( methodints43Childs, "C" );
 				//Function test:__add__
 				{
-				IMethod method__add__47;
-					IModelElement[] classC46Childs = classC46.getChildren();
-					method__add__47 = ModelTestUtils.getAssertMethod( classC46Childs, "__add__", 2 );
-					ModelTestUtils.assertParameterNames( method__add__47, new String[] {"self", "other"} );
+				IMethod method__add__45;
+					IModelElement[] classC44Childs = classC44.getChildren();
+					method__add__45 = ModelTestUtils.getAssertMethod( classC44Childs, "__add__", 2 );
+					ModelTestUtils.assertParameterNames( method__add__45, new String[] {"self", "other"} );
 				}
 			}
 		}
 		//Function test:longs
 		{
-		IMethod methodlongs48;
+		IMethod methodlongs46;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodlongs48 = ModelTestUtils.getAssertMethod( moduleChilds, "longs", 0 );
+			methodlongs46 = ModelTestUtils.getAssertMethod( moduleChilds, "longs", 0 );
 		}
 		//Function test:floats
 		{
-		IMethod methodfloats49;
+		IMethod methodfloats47;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodfloats49 = ModelTestUtils.getAssertMethod( moduleChilds, "floats", 0 );
+			methodfloats47 = ModelTestUtils.getAssertMethod( moduleChilds, "floats", 0 );
 		}
 		//Function test:complexes
 		{
-		IMethod methodcomplexes50;
+		IMethod methodcomplexes48;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodcomplexes50 = ModelTestUtils.getAssertMethod( moduleChilds, "complexes", 0 );
+			methodcomplexes48 = ModelTestUtils.getAssertMethod( moduleChilds, "complexes", 0 );
 			//Class test
 			{
-			IType classNumber51;
-				IModelElement[] methodcomplexes50Childs = methodcomplexes50.getChildren();
-				classNumber51 = ModelTestUtils.getAssertClass( methodcomplexes50Childs, "Number" );
+			IType classNumber49;
+				IModelElement[] methodcomplexes48Childs = methodcomplexes48.getChildren();
+				classNumber49 = ModelTestUtils.getAssertClass( methodcomplexes48Childs, "Number" );
 				//Function test:__new__
 				{
-				IMethod method__new__52;
-					IModelElement[] classNumber51Childs = classNumber51.getChildren();
-					method__new__52 = ModelTestUtils.getAssertMethod( classNumber51Childs, "__new__", 3 );
-					ModelTestUtils.assertParameterNames( method__new__52, new String[] {"cls", "args", "kwds"} );
+				IMethod method__new__50;
+					IModelElement[] classNumber49Childs = classNumber49.getChildren();
+					method__new__50 = ModelTestUtils.getAssertMethod( classNumber49Childs, "__new__", 3 );
+					ModelTestUtils.assertParameterNames( method__new__50, new String[] {"cls", "args", "kwds"} );
 				}
 				//Function test:__repr__
 				{
-				IMethod method__repr__53;
-					IModelElement[] classNumber51Childs = classNumber51.getChildren();
-					method__repr__53 = ModelTestUtils.getAssertMethod( classNumber51Childs, "__repr__", 1 );
-					ModelTestUtils.assertParameterNames( method__repr__53, new String[] {"self"} );
+				IMethod method__repr__51;
+					IModelElement[] classNumber49Childs = classNumber49.getChildren();
+					method__repr__51 = ModelTestUtils.getAssertMethod( classNumber49Childs, "__repr__", 1 );
+					ModelTestUtils.assertParameterNames( method__repr__51, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:spamlists
 		{
-		IMethod methodspamlists54;
+		IMethod methodspamlists52;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodspamlists54 = ModelTestUtils.getAssertMethod( moduleChilds, "spamlists", 0 );
+			methodspamlists52 = ModelTestUtils.getAssertMethod( moduleChilds, "spamlists", 0 );
 			//Function test:spamlist
 			{
-			IMethod methodspamlist55;
-				IModelElement[] methodspamlists54Childs = methodspamlists54.getChildren();
-				methodspamlist55 = ModelTestUtils.getAssertMethod( methodspamlists54Childs, "spamlist", 2 );
-				ModelTestUtils.assertParameterNames( methodspamlist55, new String[] {"l", "memo"} );
+			IMethod methodspamlist53;
+				IModelElement[] methodspamlists52Childs = methodspamlists52.getChildren();
+				methodspamlist53 = ModelTestUtils.getAssertMethod( methodspamlists52Childs, "spamlist", 2 );
+				ModelTestUtils.assertParameterNames( methodspamlist53, new String[] {"l", "memo"} );
 			}
 			//Class test
 			{
-			IType classC56;
-				IModelElement[] methodspamlists54Childs = methodspamlists54.getChildren();
-				classC56 = ModelTestUtils.getAssertClass( methodspamlists54Childs, "C" );
+			IType classC54;
+				IModelElement[] methodspamlists52Childs = methodspamlists52.getChildren();
+				classC54 = ModelTestUtils.getAssertClass( methodspamlists52Childs, "C" );
 				//Function test:foo
 				{
-				IMethod methodfoo57;
-					IModelElement[] classC56Childs = classC56.getChildren();
-					methodfoo57 = ModelTestUtils.getAssertMethod( classC56Childs, "foo", 1 );
-					ModelTestUtils.assertParameterNames( methodfoo57, new String[] {"self"} );
+				IMethod methodfoo55;
+					IModelElement[] classC54Childs = classC54.getChildren();
+					methodfoo55 = ModelTestUtils.getAssertMethod( classC54Childs, "foo", 1 );
+					ModelTestUtils.assertParameterNames( methodfoo55, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:spamdicts
 		{
-		IMethod methodspamdicts58;
+		IMethod methodspamdicts56;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodspamdicts58 = ModelTestUtils.getAssertMethod( moduleChilds, "spamdicts", 0 );
+			methodspamdicts56 = ModelTestUtils.getAssertMethod( moduleChilds, "spamdicts", 0 );
 			//Function test:spamdict
 			{
-			IMethod methodspamdict59;
-				IModelElement[] methodspamdicts58Childs = methodspamdicts58.getChildren();
-				methodspamdict59 = ModelTestUtils.getAssertMethod( methodspamdicts58Childs, "spamdict", 2 );
-				ModelTestUtils.assertParameterNames( methodspamdict59, new String[] {"d", "memo"} );
+			IMethod methodspamdict57;
+				IModelElement[] methodspamdicts56Childs = methodspamdicts56.getChildren();
+				methodspamdict57 = ModelTestUtils.getAssertMethod( methodspamdicts56Childs, "spamdict", 2 );
+				ModelTestUtils.assertParameterNames( methodspamdict57, new String[] {"d", "memo"} );
 			}
 			//Class test
 			{
-			IType classC60;
-				IModelElement[] methodspamdicts58Childs = methodspamdicts58.getChildren();
-				classC60 = ModelTestUtils.getAssertClass( methodspamdicts58Childs, "C" );
+			IType classC58;
+				IModelElement[] methodspamdicts56Childs = methodspamdicts56.getChildren();
+				classC58 = ModelTestUtils.getAssertClass( methodspamdicts56Childs, "C" );
 				//Function test:foo
 				{
-				IMethod methodfoo61;
-					IModelElement[] classC60Childs = classC60.getChildren();
-					methodfoo61 = ModelTestUtils.getAssertMethod( classC60Childs, "foo", 1 );
-					ModelTestUtils.assertParameterNames( methodfoo61, new String[] {"self"} );
+				IMethod methodfoo59;
+					IModelElement[] classC58Childs = classC58.getChildren();
+					methodfoo59 = ModelTestUtils.getAssertMethod( classC58Childs, "foo", 1 );
+					ModelTestUtils.assertParameterNames( methodfoo59, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:pydicts
 		{
-		IMethod methodpydicts62;
+		IMethod methodpydicts60;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodpydicts62 = ModelTestUtils.getAssertMethod( moduleChilds, "pydicts", 0 );
+			methodpydicts60 = ModelTestUtils.getAssertMethod( moduleChilds, "pydicts", 0 );
 			//Class test
 			{
-			IType classC63;
-				IModelElement[] methodpydicts62Childs = methodpydicts62.getChildren();
-				classC63 = ModelTestUtils.getAssertClass( methodpydicts62Childs, "C" );
+			IType classC61;
+				IModelElement[] methodpydicts60Childs = methodpydicts60.getChildren();
+				classC61 = ModelTestUtils.getAssertClass( methodpydicts60Childs, "C" );
 				//Function test:__init__
 				{
-				IMethod method__init__64;
-					IModelElement[] classC63Childs = classC63.getChildren();
-					method__init__64 = ModelTestUtils.getAssertMethod( classC63Childs, "__init__", 3 );
-					ModelTestUtils.assertParameterNames( method__init__64, new String[] {"self", "a", "kw"} );
-				}
-				{
-					IModelElement[] classC63Childs = classC63.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC63Childs, "state");
-				}
-				{
-					IModelElement[] classC63Childs = classC63.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC63Childs, "OP_ASSIGN");
+				IMethod method__init__62;
+					IModelElement[] classC61Childs = classC61.getChildren();
+					method__init__62 = ModelTestUtils.getAssertMethod( classC61Childs, "__init__", 3 );
+					ModelTestUtils.assertParameterNames( method__init__62, new String[] {"self", "a", "kw"} );
 				}
 				//Function test:__getitem__
 				{
-				IMethod method__getitem__66;
-					IModelElement[] classC63Childs = classC63.getChildren();
-					method__getitem__66 = ModelTestUtils.getAssertMethod( classC63Childs, "__getitem__", 2 );
-					ModelTestUtils.assertParameterNames( method__getitem__66, new String[] {"self", "key"} );
+				IMethod method__getitem__63;
+					IModelElement[] classC61Childs = classC61.getChildren();
+					method__getitem__63 = ModelTestUtils.getAssertMethod( classC61Childs, "__getitem__", 2 );
+					ModelTestUtils.assertParameterNames( method__getitem__63, new String[] {"self", "key"} );
 				}
 				//Function test:__setitem__
 				{
-				IMethod method__setitem__67;
-					IModelElement[] classC63Childs = classC63.getChildren();
-					method__setitem__67 = ModelTestUtils.getAssertMethod( classC63Childs, "__setitem__", 3 );
-					ModelTestUtils.assertParameterNames( method__setitem__67, new String[] {"self", "key", "value"} );
+				IMethod method__setitem__64;
+					IModelElement[] classC61Childs = classC61.getChildren();
+					method__setitem__64 = ModelTestUtils.getAssertMethod( classC61Childs, "__setitem__", 3 );
+					ModelTestUtils.assertParameterNames( method__setitem__64, new String[] {"self", "key", "value"} );
 				}
 				//Function test:setstate
 				{
-				IMethod methodsetstate68;
-					IModelElement[] classC63Childs = classC63.getChildren();
-					methodsetstate68 = ModelTestUtils.getAssertMethod( classC63Childs, "setstate", 2 );
-					ModelTestUtils.assertParameterNames( methodsetstate68, new String[] {"self", "state"} );
-				}
-				{
-					IModelElement[] classC63Childs = classC63.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC63Childs, "state");
+				IMethod methodsetstate65;
+					IModelElement[] classC61Childs = classC61.getChildren();
+					methodsetstate65 = ModelTestUtils.getAssertMethod( classC61Childs, "setstate", 2 );
+					ModelTestUtils.assertParameterNames( methodsetstate65, new String[] {"self", "state"} );
 				}
 				//Function test:getstate
 				{
-				IMethod methodgetstate70;
-					IModelElement[] classC63Childs = classC63.getChildren();
-					methodgetstate70 = ModelTestUtils.getAssertMethod( classC63Childs, "getstate", 1 );
-					ModelTestUtils.assertParameterNames( methodgetstate70, new String[] {"self"} );
+				IMethod methodgetstate66;
+					IModelElement[] classC61Childs = classC61.getChildren();
+					methodgetstate66 = ModelTestUtils.getAssertMethod( classC61Childs, "getstate", 1 );
+					ModelTestUtils.assertParameterNames( methodgetstate66, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:pylists
 		{
-		IMethod methodpylists71;
+		IMethod methodpylists67;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodpylists71 = ModelTestUtils.getAssertMethod( moduleChilds, "pylists", 0 );
+			methodpylists67 = ModelTestUtils.getAssertMethod( moduleChilds, "pylists", 0 );
 			//Class test
 			{
-			IType classC72;
-				IModelElement[] methodpylists71Childs = methodpylists71.getChildren();
-				classC72 = ModelTestUtils.getAssertClass( methodpylists71Childs, "C" );
+			IType classC68;
+				IModelElement[] methodpylists67Childs = methodpylists67.getChildren();
+				classC68 = ModelTestUtils.getAssertClass( methodpylists67Childs, "C" );
 				//Function test:__getitem__
 				{
-				IMethod method__getitem__73;
-					IModelElement[] classC72Childs = classC72.getChildren();
-					method__getitem__73 = ModelTestUtils.getAssertMethod( classC72Childs, "__getitem__", 2 );
-					ModelTestUtils.assertParameterNames( method__getitem__73, new String[] {"self", "i"} );
+				IMethod method__getitem__69;
+					IModelElement[] classC68Childs = classC68.getChildren();
+					method__getitem__69 = ModelTestUtils.getAssertMethod( classC68Childs, "__getitem__", 2 );
+					ModelTestUtils.assertParameterNames( method__getitem__69, new String[] {"self", "i"} );
 				}
 				//Function test:__getslice__
 				{
-				IMethod method__getslice__74;
-					IModelElement[] classC72Childs = classC72.getChildren();
-					method__getslice__74 = ModelTestUtils.getAssertMethod( classC72Childs, "__getslice__", 3 );
-					ModelTestUtils.assertParameterNames( method__getslice__74, new String[] {"self", "i", "j"} );
+				IMethod method__getslice__70;
+					IModelElement[] classC68Childs = classC68.getChildren();
+					method__getslice__70 = ModelTestUtils.getAssertMethod( classC68Childs, "__getslice__", 3 );
+					ModelTestUtils.assertParameterNames( method__getslice__70, new String[] {"self", "i", "j"} );
 				}
 			}
 		}
 		//Function test:metaclass
 		{
-		IMethod methodmetaclass75;
+		IMethod methodmetaclass71;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodmetaclass75 = ModelTestUtils.getAssertMethod( moduleChilds, "metaclass", 0 );
+			methodmetaclass71 = ModelTestUtils.getAssertMethod( moduleChilds, "metaclass", 0 );
 			//Class test
 			{
-			IType classC76;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classC76 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "C" );
+			IType classC72;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classC72 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "C" );
 				//Function test:__init__
 				{
-				IMethod method__init__77;
-					IModelElement[] classC76Childs = classC76.getChildren();
-					method__init__77 = ModelTestUtils.getAssertMethod( classC76Childs, "__init__", 1 );
-					ModelTestUtils.assertParameterNames( method__init__77, new String[] {"self"} );
-				}
-				{
-					IModelElement[] classC76Childs = classC76.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC76Childs, "__state");
+				IMethod method__init__73;
+					IModelElement[] classC72Childs = classC72.getChildren();
+					method__init__73 = ModelTestUtils.getAssertMethod( classC72Childs, "__init__", 1 );
+					ModelTestUtils.assertParameterNames( method__init__73, new String[] {"self"} );
 				}
 				//Function test:getstate
 				{
-				IMethod methodgetstate79;
-					IModelElement[] classC76Childs = classC76.getChildren();
-					methodgetstate79 = ModelTestUtils.getAssertMethod( classC76Childs, "getstate", 1 );
-					ModelTestUtils.assertParameterNames( methodgetstate79, new String[] {"self"} );
+				IMethod methodgetstate74;
+					IModelElement[] classC72Childs = classC72.getChildren();
+					methodgetstate74 = ModelTestUtils.getAssertMethod( classC72Childs, "getstate", 1 );
+					ModelTestUtils.assertParameterNames( methodgetstate74, new String[] {"self"} );
 				}
 				//Function test:setstate
 				{
-				IMethod methodsetstate80;
-					IModelElement[] classC76Childs = classC76.getChildren();
-					methodsetstate80 = ModelTestUtils.getAssertMethod( classC76Childs, "setstate", 2 );
-					ModelTestUtils.assertParameterNames( methodsetstate80, new String[] {"self", "state"} );
-				}
-				{
-					IModelElement[] classC76Childs = classC76.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC76Childs, "__state");
+				IMethod methodsetstate75;
+					IModelElement[] classC72Childs = classC72.getChildren();
+					methodsetstate75 = ModelTestUtils.getAssertMethod( classC72Childs, "setstate", 2 );
+					ModelTestUtils.assertParameterNames( methodsetstate75, new String[] {"self", "state"} );
 				}
 			}
 			//Class test
 			{
-			IType classD82;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classD82 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "D" );
+			IType classD76;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classD76 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "D" );
 				//Class test
 				{
-				IType class__metaclass__83;
-					IModelElement[] classD82Childs = classD82.getChildren();
-					class__metaclass__83 = ModelTestUtils.getAssertClass( classD82Childs, "__metaclass__" );
+				IType class__metaclass__77;
+					IModelElement[] classD76Childs = classD76.getChildren();
+					class__metaclass__77 = ModelTestUtils.getAssertClass( classD76Childs, "__metaclass__" );
 					//Function test:myself
 					{
-					IMethod methodmyself84;
-						IModelElement[] class__metaclass__83Childs = class__metaclass__83.getChildren();
-						methodmyself84 = ModelTestUtils.getAssertMethod( class__metaclass__83Childs, "myself", 1 );
-						ModelTestUtils.assertParameterNames( methodmyself84, new String[] {"cls"} );
+					IMethod methodmyself78;
+						IModelElement[] class__metaclass__77Childs = class__metaclass__77.getChildren();
+						methodmyself78 = ModelTestUtils.getAssertMethod( class__metaclass__77Childs, "myself", 1 );
+						ModelTestUtils.assertParameterNames( methodmyself78, new String[] {"cls"} );
 					}
 				}
 			}
 			//Class test
 			{
-			IType classM185;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classM185 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "M1" );
+			IType classM179;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classM179 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "M1" );
 				//Function test:__new__
 				{
-				IMethod method__new__86;
-					IModelElement[] classM185Childs = classM185.getChildren();
-					method__new__86 = ModelTestUtils.getAssertMethod( classM185Childs, "__new__", 4 );
-					ModelTestUtils.assertParameterNames( method__new__86, new String[] {"cls", "name", "bases", "dict"} );
+				IMethod method__new__80;
+					IModelElement[] classM179Childs = classM179.getChildren();
+					method__new__80 = ModelTestUtils.getAssertMethod( classM179Childs, "__new__", 4 );
+					ModelTestUtils.assertParameterNames( method__new__80, new String[] {"cls", "name", "bases", "dict"} );
 				}
 			}
 			//Class test
 			{
-			IType classC87;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classC87 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "C" );
+			IType classC81;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classC81 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "C" );
 			}
 			//Class test
 			{
-			IType class_instance88;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				class_instance88 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "_instance" );
+			IType class_instance82;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				class_instance82 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "_instance" );
 			}
 			//Class test
 			{
-			IType classM289;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classM289 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "M2" );
+			IType classM283;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classM283 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "M2" );
 				//Function test:__new__
 				{
-				IMethod method__new__90;
-					IModelElement[] classM289Childs = classM289.getChildren();
-					method__new__90 = ModelTestUtils.getAssertMethod( classM289Childs, "__new__", 4 );
-					ModelTestUtils.assertParameterNames( method__new__90, new String[] {"cls", "name", "bases", "dict"} );
-				}
-				{
-					IModelElement[] classM289Childs = classM289.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classM289Childs, "name");
-				}
-				{
-					IModelElement[] classM289Childs = classM289.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classM289Childs, "bases");
-				}
-				{
-					IModelElement[] classM289Childs = classM289.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classM289Childs, "dict");
+				IMethod method__new__84;
+					IModelElement[] classM283Childs = classM283.getChildren();
+					method__new__84 = ModelTestUtils.getAssertMethod( classM283Childs, "__new__", 4 );
+					ModelTestUtils.assertParameterNames( method__new__84, new String[] {"cls", "name", "bases", "dict"} );
 				}
 				//Function test:__call__
 				{
-				IMethod method__call__92;
-					IModelElement[] classM289Childs = classM289.getChildren();
-					method__call__92 = ModelTestUtils.getAssertMethod( classM289Childs, "__call__", 1 );
-					ModelTestUtils.assertParameterNames( method__call__92, new String[] {"self"} );
+				IMethod method__call__85;
+					IModelElement[] classM283Childs = classM283.getChildren();
+					method__call__85 = ModelTestUtils.getAssertMethod( classM283Childs, "__call__", 1 );
+					ModelTestUtils.assertParameterNames( method__call__85, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classC93;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classC93 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "C" );
+			IType classC86;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classC86 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "C" );
 				//Function test:spam
 				{
-				IMethod methodspam94;
-					IModelElement[] classC93Childs = classC93.getChildren();
-					methodspam94 = ModelTestUtils.getAssertMethod( classC93Childs, "spam", 1 );
-					ModelTestUtils.assertParameterNames( methodspam94, new String[] {"self"} );
+				IMethod methodspam87;
+					IModelElement[] classC86Childs = classC86.getChildren();
+					methodspam87 = ModelTestUtils.getAssertMethod( classC86Childs, "spam", 1 );
+					ModelTestUtils.assertParameterNames( methodspam87, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classautosuper95;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classautosuper95 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "autosuper" );
+			IType classautosuper88;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classautosuper88 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "autosuper" );
 				//Function test:__new__
 				{
-				IMethod method__new__96;
-					IModelElement[] classautosuper95Childs = classautosuper95.getChildren();
-					method__new__96 = ModelTestUtils.getAssertMethod( classautosuper95Childs, "__new__", 4 );
-					ModelTestUtils.assertParameterNames( method__new__96, new String[] {"metaclass", "name", "bases", "dict"} );
+				IMethod method__new__89;
+					IModelElement[] classautosuper88Childs = classautosuper88.getChildren();
+					method__new__89 = ModelTestUtils.getAssertMethod( classautosuper88Childs, "__new__", 4 );
+					ModelTestUtils.assertParameterNames( method__new__89, new String[] {"metaclass", "name", "bases", "dict"} );
 				}
 			}
 			//Class test
 			{
-			IType classA97;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classA97 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "A" );
+			IType classA90;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classA90 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "A" );
 				//Function test:meth
 				{
-				IMethod methodmeth98;
-					IModelElement[] classA97Childs = classA97.getChildren();
-					methodmeth98 = ModelTestUtils.getAssertMethod( classA97Childs, "meth", 1 );
-					ModelTestUtils.assertParameterNames( methodmeth98, new String[] {"self"} );
+				IMethod methodmeth91;
+					IModelElement[] classA90Childs = classA90.getChildren();
+					methodmeth91 = ModelTestUtils.getAssertMethod( classA90Childs, "meth", 1 );
+					ModelTestUtils.assertParameterNames( methodmeth91, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classB99;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classB99 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "B" );
+			IType classB92;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classB92 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "B" );
 				//Function test:meth
 				{
-				IMethod methodmeth100;
-					IModelElement[] classB99Childs = classB99.getChildren();
-					methodmeth100 = ModelTestUtils.getAssertMethod( classB99Childs, "meth", 1 );
-					ModelTestUtils.assertParameterNames( methodmeth100, new String[] {"self"} );
+				IMethod methodmeth93;
+					IModelElement[] classB92Childs = classB92.getChildren();
+					methodmeth93 = ModelTestUtils.getAssertMethod( classB92Childs, "meth", 1 );
+					ModelTestUtils.assertParameterNames( methodmeth93, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classC101;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classC101 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "C" );
+			IType classC94;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classC94 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "C" );
 				//Function test:meth
 				{
-				IMethod methodmeth102;
-					IModelElement[] classC101Childs = classC101.getChildren();
-					methodmeth102 = ModelTestUtils.getAssertMethod( classC101Childs, "meth", 1 );
-					ModelTestUtils.assertParameterNames( methodmeth102, new String[] {"self"} );
+				IMethod methodmeth95;
+					IModelElement[] classC94Childs = classC94.getChildren();
+					methodmeth95 = ModelTestUtils.getAssertMethod( classC94Childs, "meth", 1 );
+					ModelTestUtils.assertParameterNames( methodmeth95, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classD103;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classD103 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "D" );
+			IType classD96;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classD96 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "D" );
 				//Function test:meth
 				{
-				IMethod methodmeth104;
-					IModelElement[] classD103Childs = classD103.getChildren();
-					methodmeth104 = ModelTestUtils.getAssertMethod( classD103Childs, "meth", 1 );
-					ModelTestUtils.assertParameterNames( methodmeth104, new String[] {"self"} );
+				IMethod methodmeth97;
+					IModelElement[] classD96Childs = classD96.getChildren();
+					methodmeth97 = ModelTestUtils.getAssertMethod( classD96Childs, "meth", 1 );
+					ModelTestUtils.assertParameterNames( methodmeth97, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classE105;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classE105 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "E" );
+			IType classE98;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classE98 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "E" );
 				//Function test:meth
 				{
-				IMethod methodmeth106;
-					IModelElement[] classE105Childs = classE105.getChildren();
-					methodmeth106 = ModelTestUtils.getAssertMethod( classE105Childs, "meth", 1 );
-					ModelTestUtils.assertParameterNames( methodmeth106, new String[] {"self"} );
+				IMethod methodmeth99;
+					IModelElement[] classE98Childs = classE98.getChildren();
+					methodmeth99 = ModelTestUtils.getAssertMethod( classE98Childs, "meth", 1 );
+					ModelTestUtils.assertParameterNames( methodmeth99, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classautoproperty107;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classautoproperty107 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "autoproperty" );
+			IType classautoproperty100;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classautoproperty100 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "autoproperty" );
 				//Function test:__new__
 				{
-				IMethod method__new__108;
-					IModelElement[] classautoproperty107Childs = classautoproperty107.getChildren();
-					method__new__108 = ModelTestUtils.getAssertMethod( classautoproperty107Childs, "__new__", 4 );
-					ModelTestUtils.assertParameterNames( method__new__108, new String[] {"metaclass", "name", "bases", "dict"} );
+				IMethod method__new__101;
+					IModelElement[] classautoproperty100Childs = classautoproperty100.getChildren();
+					method__new__101 = ModelTestUtils.getAssertMethod( classautoproperty100Childs, "__new__", 4 );
+					ModelTestUtils.assertParameterNames( method__new__101, new String[] {"metaclass", "name", "bases", "dict"} );
 				}
 			}
 			//Class test
 			{
-			IType classA109;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classA109 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "A" );
+			IType classA102;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classA102 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "A" );
 				//Function test:_get_x
 				{
-				IMethod method_get_x110;
-					IModelElement[] classA109Childs = classA109.getChildren();
-					method_get_x110 = ModelTestUtils.getAssertMethod( classA109Childs, "_get_x", 1 );
-					ModelTestUtils.assertParameterNames( method_get_x110, new String[] {"self"} );
+				IMethod method_get_x103;
+					IModelElement[] classA102Childs = classA102.getChildren();
+					method_get_x103 = ModelTestUtils.getAssertMethod( classA102Childs, "_get_x", 1 );
+					ModelTestUtils.assertParameterNames( method_get_x103, new String[] {"self"} );
 				}
 				//Function test:_set_x
 				{
-				IMethod method_set_x111;
-					IModelElement[] classA109Childs = classA109.getChildren();
-					method_set_x111 = ModelTestUtils.getAssertMethod( classA109Childs, "_set_x", 2 );
-					ModelTestUtils.assertParameterNames( method_set_x111, new String[] {"self", "x"} );
-				}
-				{
-					IModelElement[] classA109Childs = classA109.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classA109Childs, "__x");
+				IMethod method_set_x104;
+					IModelElement[] classA102Childs = classA102.getChildren();
+					method_set_x104 = ModelTestUtils.getAssertMethod( classA102Childs, "_set_x", 2 );
+					ModelTestUtils.assertParameterNames( method_set_x104, new String[] {"self", "x"} );
 				}
 			}
 			//Class test
 			{
-			IType classmultimetaclass113;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classmultimetaclass113 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "multimetaclass" );
+			IType classmultimetaclass105;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classmultimetaclass105 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "multimetaclass" );
 			}
 			//Class test
 			{
-			IType classA114;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classA114 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "A" );
+			IType classA106;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classA106 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "A" );
 				//Function test:_get_x
 				{
-				IMethod method_get_x115;
-					IModelElement[] classA114Childs = classA114.getChildren();
-					method_get_x115 = ModelTestUtils.getAssertMethod( classA114Childs, "_get_x", 1 );
-					ModelTestUtils.assertParameterNames( method_get_x115, new String[] {"self"} );
+				IMethod method_get_x107;
+					IModelElement[] classA106Childs = classA106.getChildren();
+					method_get_x107 = ModelTestUtils.getAssertMethod( classA106Childs, "_get_x", 1 );
+					ModelTestUtils.assertParameterNames( method_get_x107, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classB116;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classB116 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "B" );
+			IType classB108;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classB108 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "B" );
 				//Function test:_get_x
 				{
-				IMethod method_get_x117;
-					IModelElement[] classB116Childs = classB116.getChildren();
-					method_get_x117 = ModelTestUtils.getAssertMethod( classB116Childs, "_get_x", 1 );
-					ModelTestUtils.assertParameterNames( method_get_x117, new String[] {"self"} );
+				IMethod method_get_x109;
+					IModelElement[] classB108Childs = classB108.getChildren();
+					method_get_x109 = ModelTestUtils.getAssertMethod( classB108Childs, "_get_x", 1 );
+					ModelTestUtils.assertParameterNames( method_get_x109, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classC118;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classC118 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "C" );
+			IType classC110;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classC110 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "C" );
 				//Function test:_get_x
 				{
-				IMethod method_get_x119;
-					IModelElement[] classC118Childs = classC118.getChildren();
-					method_get_x119 = ModelTestUtils.getAssertMethod( classC118Childs, "_get_x", 1 );
-					ModelTestUtils.assertParameterNames( method_get_x119, new String[] {"self"} );
+				IMethod method_get_x111;
+					IModelElement[] classC110Childs = classC110.getChildren();
+					method_get_x111 = ModelTestUtils.getAssertMethod( classC110Childs, "_get_x", 1 );
+					ModelTestUtils.assertParameterNames( method_get_x111, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classD120;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classD120 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "D" );
+			IType classD112;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classD112 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "D" );
 				//Function test:_get_x
 				{
-				IMethod method_get_x121;
-					IModelElement[] classD120Childs = classD120.getChildren();
-					method_get_x121 = ModelTestUtils.getAssertMethod( classD120Childs, "_get_x", 1 );
-					ModelTestUtils.assertParameterNames( method_get_x121, new String[] {"self"} );
+				IMethod method_get_x113;
+					IModelElement[] classD112Childs = classD112.getChildren();
+					method_get_x113 = ModelTestUtils.getAssertMethod( classD112Childs, "_get_x", 1 );
+					ModelTestUtils.assertParameterNames( method_get_x113, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classT122;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classT122 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "T" );
+			IType classT114;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classT114 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "T" );
 				//Function test:__init__
 				{
-				IMethod method__init__123;
-					IModelElement[] classT122Childs = classT122.getChildren();
-					method__init__123 = ModelTestUtils.getAssertMethod( classT122Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__123, new String[] {"self", "args"} );
+				IMethod method__init__115;
+					IModelElement[] classT114Childs = classT114.getChildren();
+					method__init__115 = ModelTestUtils.getAssertMethod( classT114Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__115, new String[] {"self", "args"} );
 				}
 			}
 			//Class test
 			{
-			IType classC124;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classC124 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "C" );
+			IType classC116;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classC116 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "C" );
 			}
 			//Class test
 			{
-			IType classC125;
-				IModelElement[] methodmetaclass75Childs = methodmetaclass75.getChildren();
-				classC125 = ModelTestUtils.getAssertClass( methodmetaclass75Childs, "C" );
+			IType classC117;
+				IModelElement[] methodmetaclass71Childs = methodmetaclass71.getChildren();
+				classC117 = ModelTestUtils.getAssertClass( methodmetaclass71Childs, "C" );
 			}
 		}
 		//Function test:pymods
 		{
-		IMethod methodpymods126;
+		IMethod methodpymods118;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodpymods126 = ModelTestUtils.getAssertMethod( moduleChilds, "pymods", 0 );
+			methodpymods118 = ModelTestUtils.getAssertMethod( moduleChilds, "pymods", 0 );
 			//Class test
 			{
-			IType classMM127;
-				IModelElement[] methodpymods126Childs = methodpymods126.getChildren();
-				classMM127 = ModelTestUtils.getAssertClass( methodpymods126Childs, "MM" );
+			IType classMM119;
+				IModelElement[] methodpymods118Childs = methodpymods118.getChildren();
+				classMM119 = ModelTestUtils.getAssertClass( methodpymods118Childs, "MM" );
 				//Function test:__init__
 				{
-				IMethod method__init__128;
-					IModelElement[] classMM127Childs = classMM127.getChildren();
-					method__init__128 = ModelTestUtils.getAssertMethod( classMM127Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__128, new String[] {"self", "name"} );
+				IMethod method__init__120;
+					IModelElement[] classMM119Childs = classMM119.getChildren();
+					method__init__120 = ModelTestUtils.getAssertMethod( classMM119Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__120, new String[] {"self", "name"} );
 				}
 				//Function test:__getattribute__
 				{
-				IMethod method__getattribute__129;
-					IModelElement[] classMM127Childs = classMM127.getChildren();
-					method__getattribute__129 = ModelTestUtils.getAssertMethod( classMM127Childs, "__getattribute__", 2 );
-					ModelTestUtils.assertParameterNames( method__getattribute__129, new String[] {"self", "name"} );
+				IMethod method__getattribute__121;
+					IModelElement[] classMM119Childs = classMM119.getChildren();
+					method__getattribute__121 = ModelTestUtils.getAssertMethod( classMM119Childs, "__getattribute__", 2 );
+					ModelTestUtils.assertParameterNames( method__getattribute__121, new String[] {"self", "name"} );
 				}
 				//Function test:__setattr__
 				{
-				IMethod method__setattr__130;
-					IModelElement[] classMM127Childs = classMM127.getChildren();
-					method__setattr__130 = ModelTestUtils.getAssertMethod( classMM127Childs, "__setattr__", 3 );
-					ModelTestUtils.assertParameterNames( method__setattr__130, new String[] {"self", "name", "value"} );
+				IMethod method__setattr__122;
+					IModelElement[] classMM119Childs = classMM119.getChildren();
+					method__setattr__122 = ModelTestUtils.getAssertMethod( classMM119Childs, "__setattr__", 3 );
+					ModelTestUtils.assertParameterNames( method__setattr__122, new String[] {"self", "name", "value"} );
 				}
 				//Function test:__delattr__
 				{
-				IMethod method__delattr__131;
-					IModelElement[] classMM127Childs = classMM127.getChildren();
-					method__delattr__131 = ModelTestUtils.getAssertMethod( classMM127Childs, "__delattr__", 2 );
-					ModelTestUtils.assertParameterNames( method__delattr__131, new String[] {"self", "name"} );
+				IMethod method__delattr__123;
+					IModelElement[] classMM119Childs = classMM119.getChildren();
+					method__delattr__123 = ModelTestUtils.getAssertMethod( classMM119Childs, "__delattr__", 2 );
+					ModelTestUtils.assertParameterNames( method__delattr__123, new String[] {"self", "name"} );
 				}
 			}
 		}
 		//Function test:multi
 		{
-		IMethod methodmulti132;
+		IMethod methodmulti124;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodmulti132 = ModelTestUtils.getAssertMethod( moduleChilds, "multi", 0 );
+			methodmulti124 = ModelTestUtils.getAssertMethod( moduleChilds, "multi", 0 );
 			//Class test
 			{
-			IType classC133;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classC133 = ModelTestUtils.getAssertClass( methodmulti132Childs, "C" );
+			IType classC125;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classC125 = ModelTestUtils.getAssertClass( methodmulti124Childs, "C" );
 				//Function test:__init__
 				{
-				IMethod method__init__134;
-					IModelElement[] classC133Childs = classC133.getChildren();
-					method__init__134 = ModelTestUtils.getAssertMethod( classC133Childs, "__init__", 1 );
-					ModelTestUtils.assertParameterNames( method__init__134, new String[] {"self"} );
+				IMethod method__init__126;
+					IModelElement[] classC125Childs = classC125.getChildren();
+					method__init__126 = ModelTestUtils.getAssertMethod( classC125Childs, "__init__", 1 );
+					ModelTestUtils.assertParameterNames( method__init__126, new String[] {"self"} );
 				}
 				//Function test:getstate
 				{
-				IMethod methodgetstate135;
-					IModelElement[] classC133Childs = classC133.getChildren();
-					methodgetstate135 = ModelTestUtils.getAssertMethod( classC133Childs, "getstate", 1 );
-					ModelTestUtils.assertParameterNames( methodgetstate135, new String[] {"self"} );
+				IMethod methodgetstate127;
+					IModelElement[] classC125Childs = classC125.getChildren();
+					methodgetstate127 = ModelTestUtils.getAssertMethod( classC125Childs, "getstate", 1 );
+					ModelTestUtils.assertParameterNames( methodgetstate127, new String[] {"self"} );
 				}
 				//Function test:setstate
 				{
-				IMethod methodsetstate136;
-					IModelElement[] classC133Childs = classC133.getChildren();
-					methodsetstate136 = ModelTestUtils.getAssertMethod( classC133Childs, "setstate", 2 );
-					ModelTestUtils.assertParameterNames( methodsetstate136, new String[] {"self", "state"} );
+				IMethod methodsetstate128;
+					IModelElement[] classC125Childs = classC125.getChildren();
+					methodsetstate128 = ModelTestUtils.getAssertMethod( classC125Childs, "setstate", 2 );
+					ModelTestUtils.assertParameterNames( methodsetstate128, new String[] {"self", "state"} );
 				}
 			}
 			//Class test
 			{
-			IType classD137;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classD137 = ModelTestUtils.getAssertClass( methodmulti132Childs, "D" );
+			IType classD129;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classD129 = ModelTestUtils.getAssertClass( methodmulti124Childs, "D" );
 				//Function test:__init__
 				{
-				IMethod method__init__138;
-					IModelElement[] classD137Childs = classD137.getChildren();
-					method__init__138 = ModelTestUtils.getAssertMethod( classD137Childs, "__init__", 1 );
-					ModelTestUtils.assertParameterNames( method__init__138, new String[] {"self"} );
+				IMethod method__init__130;
+					IModelElement[] classD129Childs = classD129.getChildren();
+					method__init__130 = ModelTestUtils.getAssertMethod( classD129Childs, "__init__", 1 );
+					ModelTestUtils.assertParameterNames( method__init__130, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classNode139;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classNode139 = ModelTestUtils.getAssertClass( methodmulti132Childs, "Node" );
+			IType classNode131;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classNode131 = ModelTestUtils.getAssertClass( methodmulti124Childs, "Node" );
 				//Function test:__int__
 				{
-				IMethod method__int__140;
-					IModelElement[] classNode139Childs = classNode139.getChildren();
-					method__int__140 = ModelTestUtils.getAssertMethod( classNode139Childs, "__int__", 1 );
-					ModelTestUtils.assertParameterNames( method__int__140, new String[] {"self"} );
+				IMethod method__int__132;
+					IModelElement[] classNode131Childs = classNode131.getChildren();
+					method__int__132 = ModelTestUtils.getAssertMethod( classNode131Childs, "__int__", 1 );
+					ModelTestUtils.assertParameterNames( method__int__132, new String[] {"self"} );
 				}
 				//Function test:foo
 				{
-				IMethod methodfoo141;
-					IModelElement[] classNode139Childs = classNode139.getChildren();
-					methodfoo141 = ModelTestUtils.getAssertMethod( classNode139Childs, "foo", 1 );
-					ModelTestUtils.assertParameterNames( methodfoo141, new String[] {"self"} );
+				IMethod methodfoo133;
+					IModelElement[] classNode131Childs = classNode131.getChildren();
+					methodfoo133 = ModelTestUtils.getAssertMethod( classNode131Childs, "foo", 1 );
+					ModelTestUtils.assertParameterNames( methodfoo133, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classFrag142;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classFrag142 = ModelTestUtils.getAssertClass( methodmulti132Childs, "Frag" );
+			IType classFrag134;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classFrag134 = ModelTestUtils.getAssertClass( methodmulti124Childs, "Frag" );
 				//Function test:foo
 				{
-				IMethod methodfoo143;
-					IModelElement[] classFrag142Childs = classFrag142.getChildren();
-					methodfoo143 = ModelTestUtils.getAssertMethod( classFrag142Childs, "foo", 1 );
-					ModelTestUtils.assertParameterNames( methodfoo143, new String[] {"self"} );
+				IMethod methodfoo135;
+					IModelElement[] classFrag134Childs = classFrag134.getChildren();
+					methodfoo135 = ModelTestUtils.getAssertMethod( classFrag134Childs, "foo", 1 );
+					ModelTestUtils.assertParameterNames( methodfoo135, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classA144;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classA144 = ModelTestUtils.getAssertClass( methodmulti132Childs, "A" );
+			IType classA136;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classA136 = ModelTestUtils.getAssertClass( methodmulti124Childs, "A" );
 			}
 			//Class test
 			{
-			IType classB145;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classB145 = ModelTestUtils.getAssertClass( methodmulti132Childs, "B" );
+			IType classB137;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classB137 = ModelTestUtils.getAssertClass( methodmulti124Childs, "B" );
 			}
 			//Class test
 			{
-			IType classC146;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classC146 = ModelTestUtils.getAssertClass( methodmulti132Childs, "C" );
+			IType classC138;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classC138 = ModelTestUtils.getAssertClass( methodmulti124Childs, "C" );
 			}
 			//Class test
 			{
-			IType classD147;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classD147 = ModelTestUtils.getAssertClass( methodmulti132Childs, "D" );
+			IType classD139;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classD139 = ModelTestUtils.getAssertClass( methodmulti124Childs, "D" );
 			}
 			//Class test
 			{
-			IType classE148;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classE148 = ModelTestUtils.getAssertClass( methodmulti132Childs, "E" );
+			IType classE140;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classE140 = ModelTestUtils.getAssertClass( methodmulti124Childs, "E" );
 			}
 			//Class test
 			{
-			IType classF149;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classF149 = ModelTestUtils.getAssertClass( methodmulti132Childs, "F" );
+			IType classF141;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classF141 = ModelTestUtils.getAssertClass( methodmulti124Childs, "F" );
 			}
 			//Class test
 			{
-			IType classC150;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classC150 = ModelTestUtils.getAssertClass( methodmulti132Childs, "C" );
+			IType classC142;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classC142 = ModelTestUtils.getAssertClass( methodmulti124Childs, "C" );
 				//Function test:cmethod
 				{
-				IMethod methodcmethod151;
-					IModelElement[] classC150Childs = classC150.getChildren();
-					methodcmethod151 = ModelTestUtils.getAssertMethod( classC150Childs, "cmethod", 1 );
-					ModelTestUtils.assertParameterNames( methodcmethod151, new String[] {"self"} );
+				IMethod methodcmethod143;
+					IModelElement[] classC142Childs = classC142.getChildren();
+					methodcmethod143 = ModelTestUtils.getAssertMethod( classC142Childs, "cmethod", 1 );
+					ModelTestUtils.assertParameterNames( methodcmethod143, new String[] {"self"} );
 				}
 				//Function test:all_method
 				{
-				IMethod methodall_method152;
-					IModelElement[] classC150Childs = classC150.getChildren();
-					methodall_method152 = ModelTestUtils.getAssertMethod( classC150Childs, "all_method", 1 );
-					ModelTestUtils.assertParameterNames( methodall_method152, new String[] {"self"} );
+				IMethod methodall_method144;
+					IModelElement[] classC142Childs = classC142.getChildren();
+					methodall_method144 = ModelTestUtils.getAssertMethod( classC142Childs, "all_method", 1 );
+					ModelTestUtils.assertParameterNames( methodall_method144, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classM1153;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classM1153 = ModelTestUtils.getAssertClass( methodmulti132Childs, "M1" );
+			IType classM1145;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classM1145 = ModelTestUtils.getAssertClass( methodmulti124Childs, "M1" );
 				//Function test:m1method
 				{
-				IMethod methodm1method154;
-					IModelElement[] classM1153Childs = classM1153.getChildren();
-					methodm1method154 = ModelTestUtils.getAssertMethod( classM1153Childs, "m1method", 1 );
-					ModelTestUtils.assertParameterNames( methodm1method154, new String[] {"self"} );
+				IMethod methodm1method146;
+					IModelElement[] classM1145Childs = classM1145.getChildren();
+					methodm1method146 = ModelTestUtils.getAssertMethod( classM1145Childs, "m1method", 1 );
+					ModelTestUtils.assertParameterNames( methodm1method146, new String[] {"self"} );
 				}
 				//Function test:all_method
 				{
-				IMethod methodall_method155;
-					IModelElement[] classM1153Childs = classM1153.getChildren();
-					methodall_method155 = ModelTestUtils.getAssertMethod( classM1153Childs, "all_method", 1 );
-					ModelTestUtils.assertParameterNames( methodall_method155, new String[] {"self"} );
+				IMethod methodall_method147;
+					IModelElement[] classM1145Childs = classM1145.getChildren();
+					methodall_method147 = ModelTestUtils.getAssertMethod( classM1145Childs, "all_method", 1 );
+					ModelTestUtils.assertParameterNames( methodall_method147, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classD156;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classD156 = ModelTestUtils.getAssertClass( methodmulti132Childs, "D" );
+			IType classD148;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classD148 = ModelTestUtils.getAssertClass( methodmulti124Childs, "D" );
 				//Function test:dmethod
 				{
-				IMethod methoddmethod157;
-					IModelElement[] classD156Childs = classD156.getChildren();
-					methoddmethod157 = ModelTestUtils.getAssertMethod( classD156Childs, "dmethod", 1 );
-					ModelTestUtils.assertParameterNames( methoddmethod157, new String[] {"self"} );
+				IMethod methoddmethod149;
+					IModelElement[] classD148Childs = classD148.getChildren();
+					methoddmethod149 = ModelTestUtils.getAssertMethod( classD148Childs, "dmethod", 1 );
+					ModelTestUtils.assertParameterNames( methoddmethod149, new String[] {"self"} );
 				}
 				//Function test:all_method
 				{
-				IMethod methodall_method158;
-					IModelElement[] classD156Childs = classD156.getChildren();
-					methodall_method158 = ModelTestUtils.getAssertMethod( classD156Childs, "all_method", 1 );
-					ModelTestUtils.assertParameterNames( methodall_method158, new String[] {"self"} );
+				IMethod methodall_method150;
+					IModelElement[] classD148Childs = classD148.getChildren();
+					methodall_method150 = ModelTestUtils.getAssertMethod( classD148Childs, "all_method", 1 );
+					ModelTestUtils.assertParameterNames( methodall_method150, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classM2159;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classM2159 = ModelTestUtils.getAssertClass( methodmulti132Childs, "M2" );
+			IType classM2151;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classM2151 = ModelTestUtils.getAssertClass( methodmulti124Childs, "M2" );
 				//Function test:m2method
 				{
-				IMethod methodm2method160;
-					IModelElement[] classM2159Childs = classM2159.getChildren();
-					methodm2method160 = ModelTestUtils.getAssertMethod( classM2159Childs, "m2method", 1 );
-					ModelTestUtils.assertParameterNames( methodm2method160, new String[] {"self"} );
+				IMethod methodm2method152;
+					IModelElement[] classM2151Childs = classM2151.getChildren();
+					methodm2method152 = ModelTestUtils.getAssertMethod( classM2151Childs, "m2method", 1 );
+					ModelTestUtils.assertParameterNames( methodm2method152, new String[] {"self"} );
 				}
 				//Function test:all_method
 				{
-				IMethod methodall_method161;
-					IModelElement[] classM2159Childs = classM2159.getChildren();
-					methodall_method161 = ModelTestUtils.getAssertMethod( classM2159Childs, "all_method", 1 );
-					ModelTestUtils.assertParameterNames( methodall_method161, new String[] {"self"} );
+				IMethod methodall_method153;
+					IModelElement[] classM2151Childs = classM2151.getChildren();
+					methodall_method153 = ModelTestUtils.getAssertMethod( classM2151Childs, "all_method", 1 );
+					ModelTestUtils.assertParameterNames( methodall_method153, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classM3162;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classM3162 = ModelTestUtils.getAssertClass( methodmulti132Childs, "M3" );
+			IType classM3154;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classM3154 = ModelTestUtils.getAssertClass( methodmulti124Childs, "M3" );
 				//Function test:m3method
 				{
-				IMethod methodm3method163;
-					IModelElement[] classM3162Childs = classM3162.getChildren();
-					methodm3method163 = ModelTestUtils.getAssertMethod( classM3162Childs, "m3method", 1 );
-					ModelTestUtils.assertParameterNames( methodm3method163, new String[] {"self"} );
+				IMethod methodm3method155;
+					IModelElement[] classM3154Childs = classM3154.getChildren();
+					methodm3method155 = ModelTestUtils.getAssertMethod( classM3154Childs, "m3method", 1 );
+					ModelTestUtils.assertParameterNames( methodm3method155, new String[] {"self"} );
 				}
 				//Function test:all_method
 				{
-				IMethod methodall_method164;
-					IModelElement[] classM3162Childs = classM3162.getChildren();
-					methodall_method164 = ModelTestUtils.getAssertMethod( classM3162Childs, "all_method", 1 );
-					ModelTestUtils.assertParameterNames( methodall_method164, new String[] {"self"} );
+				IMethod methodall_method156;
+					IModelElement[] classM3154Childs = classM3154.getChildren();
+					methodall_method156 = ModelTestUtils.getAssertMethod( classM3154Childs, "all_method", 1 );
+					ModelTestUtils.assertParameterNames( methodall_method156, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classClassic165;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classClassic165 = ModelTestUtils.getAssertClass( methodmulti132Childs, "Classic" );
+			IType classClassic157;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classClassic157 = ModelTestUtils.getAssertClass( methodmulti124Childs, "Classic" );
 			}
 			//Class test
 			{
-			IType classNew166;
-				IModelElement[] methodmulti132Childs = methodmulti132.getChildren();
-				classNew166 = ModelTestUtils.getAssertClass( methodmulti132Childs, "New" );
+			IType classNew158;
+				IModelElement[] methodmulti124Childs = methodmulti124.getChildren();
+				classNew158 = ModelTestUtils.getAssertClass( methodmulti124Childs, "New" );
 			}
 		}
 		//Function test:diamond
 		{
-		IMethod methoddiamond167;
+		IMethod methoddiamond159;
 			IModelElement[] moduleChilds = module.getChildren();
-			methoddiamond167 = ModelTestUtils.getAssertMethod( moduleChilds, "diamond", 0 );
+			methoddiamond159 = ModelTestUtils.getAssertMethod( moduleChilds, "diamond", 0 );
 			//Class test
 			{
-			IType classA168;
-				IModelElement[] methoddiamond167Childs = methoddiamond167.getChildren();
-				classA168 = ModelTestUtils.getAssertClass( methoddiamond167Childs, "A" );
+			IType classA160;
+				IModelElement[] methoddiamond159Childs = methoddiamond159.getChildren();
+				classA160 = ModelTestUtils.getAssertClass( methoddiamond159Childs, "A" );
 				//Function test:spam
 				{
-				IMethod methodspam169;
-					IModelElement[] classA168Childs = classA168.getChildren();
-					methodspam169 = ModelTestUtils.getAssertMethod( classA168Childs, "spam", 1 );
-					ModelTestUtils.assertParameterNames( methodspam169, new String[] {"self"} );
+				IMethod methodspam161;
+					IModelElement[] classA160Childs = classA160.getChildren();
+					methodspam161 = ModelTestUtils.getAssertMethod( classA160Childs, "spam", 1 );
+					ModelTestUtils.assertParameterNames( methodspam161, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classB170;
-				IModelElement[] methoddiamond167Childs = methoddiamond167.getChildren();
-				classB170 = ModelTestUtils.getAssertClass( methoddiamond167Childs, "B" );
+			IType classB162;
+				IModelElement[] methoddiamond159Childs = methoddiamond159.getChildren();
+				classB162 = ModelTestUtils.getAssertClass( methoddiamond159Childs, "B" );
 				//Function test:boo
 				{
-				IMethod methodboo171;
-					IModelElement[] classB170Childs = classB170.getChildren();
-					methodboo171 = ModelTestUtils.getAssertMethod( classB170Childs, "boo", 1 );
-					ModelTestUtils.assertParameterNames( methodboo171, new String[] {"self"} );
+				IMethod methodboo163;
+					IModelElement[] classB162Childs = classB162.getChildren();
+					methodboo163 = ModelTestUtils.getAssertMethod( classB162Childs, "boo", 1 );
+					ModelTestUtils.assertParameterNames( methodboo163, new String[] {"self"} );
 				}
 				//Function test:spam
 				{
-				IMethod methodspam172;
-					IModelElement[] classB170Childs = classB170.getChildren();
-					methodspam172 = ModelTestUtils.getAssertMethod( classB170Childs, "spam", 1 );
-					ModelTestUtils.assertParameterNames( methodspam172, new String[] {"self"} );
+				IMethod methodspam164;
+					IModelElement[] classB162Childs = classB162.getChildren();
+					methodspam164 = ModelTestUtils.getAssertMethod( classB162Childs, "spam", 1 );
+					ModelTestUtils.assertParameterNames( methodspam164, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classC173;
-				IModelElement[] methoddiamond167Childs = methoddiamond167.getChildren();
-				classC173 = ModelTestUtils.getAssertClass( methoddiamond167Childs, "C" );
+			IType classC165;
+				IModelElement[] methoddiamond159Childs = methoddiamond159.getChildren();
+				classC165 = ModelTestUtils.getAssertClass( methoddiamond159Childs, "C" );
 				//Function test:boo
 				{
-				IMethod methodboo174;
-					IModelElement[] classC173Childs = classC173.getChildren();
-					methodboo174 = ModelTestUtils.getAssertMethod( classC173Childs, "boo", 1 );
-					ModelTestUtils.assertParameterNames( methodboo174, new String[] {"self"} );
+				IMethod methodboo166;
+					IModelElement[] classC165Childs = classC165.getChildren();
+					methodboo166 = ModelTestUtils.getAssertMethod( classC165Childs, "boo", 1 );
+					ModelTestUtils.assertParameterNames( methodboo166, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classD175;
-				IModelElement[] methoddiamond167Childs = methoddiamond167.getChildren();
-				classD175 = ModelTestUtils.getAssertClass( methoddiamond167Childs, "D" );
+			IType classD167;
+				IModelElement[] methoddiamond159Childs = methoddiamond159.getChildren();
+				classD167 = ModelTestUtils.getAssertClass( methoddiamond159Childs, "D" );
 			}
 			//Class test
 			{
-			IType classE176;
-				IModelElement[] methoddiamond167Childs = methoddiamond167.getChildren();
-				classE176 = ModelTestUtils.getAssertClass( methoddiamond167Childs, "E" );
+			IType classE168;
+				IModelElement[] methoddiamond159Childs = methoddiamond159.getChildren();
+				classE168 = ModelTestUtils.getAssertClass( methoddiamond159Childs, "E" );
 			}
 			//Class test
 			{
-			IType classF177;
-				IModelElement[] methoddiamond167Childs = methoddiamond167.getChildren();
-				classF177 = ModelTestUtils.getAssertClass( methoddiamond167Childs, "F" );
+			IType classF169;
+				IModelElement[] methoddiamond159Childs = methoddiamond159.getChildren();
+				classF169 = ModelTestUtils.getAssertClass( methoddiamond159Childs, "F" );
 			}
 			//Class test
 			{
-			IType classG178;
-				IModelElement[] methoddiamond167Childs = methoddiamond167.getChildren();
-				classG178 = ModelTestUtils.getAssertClass( methoddiamond167Childs, "G" );
+			IType classG170;
+				IModelElement[] methoddiamond159Childs = methoddiamond159.getChildren();
+				classG170 = ModelTestUtils.getAssertClass( methoddiamond159Childs, "G" );
 			}
 		}
 		//Function test:ex5
 		{
-		IMethod methodex5179;
+		IMethod methodex5171;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodex5179 = ModelTestUtils.getAssertMethod( moduleChilds, "ex5", 0 );
+			methodex5171 = ModelTestUtils.getAssertMethod( moduleChilds, "ex5", 0 );
 			//Class test
 			{
-			IType classA180;
-				IModelElement[] methodex5179Childs = methodex5179.getChildren();
-				classA180 = ModelTestUtils.getAssertClass( methodex5179Childs, "A" );
+			IType classA172;
+				IModelElement[] methodex5171Childs = methodex5171.getChildren();
+				classA172 = ModelTestUtils.getAssertClass( methodex5171Childs, "A" );
 			}
 			//Class test
 			{
-			IType classB181;
-				IModelElement[] methodex5179Childs = methodex5179.getChildren();
-				classB181 = ModelTestUtils.getAssertClass( methodex5179Childs, "B" );
+			IType classB173;
+				IModelElement[] methodex5171Childs = methodex5171.getChildren();
+				classB173 = ModelTestUtils.getAssertClass( methodex5171Childs, "B" );
 			}
 			//Class test
 			{
-			IType classC182;
-				IModelElement[] methodex5179Childs = methodex5179.getChildren();
-				classC182 = ModelTestUtils.getAssertClass( methodex5179Childs, "C" );
+			IType classC174;
+				IModelElement[] methodex5171Childs = methodex5171.getChildren();
+				classC174 = ModelTestUtils.getAssertClass( methodex5171Childs, "C" );
 			}
 			//Class test
 			{
-			IType classX183;
-				IModelElement[] methodex5179Childs = methodex5179.getChildren();
-				classX183 = ModelTestUtils.getAssertClass( methodex5179Childs, "X" );
+			IType classX175;
+				IModelElement[] methodex5171Childs = methodex5171.getChildren();
+				classX175 = ModelTestUtils.getAssertClass( methodex5171Childs, "X" );
 			}
 			//Class test
 			{
-			IType classY184;
-				IModelElement[] methodex5179Childs = methodex5179.getChildren();
-				classY184 = ModelTestUtils.getAssertClass( methodex5179Childs, "Y" );
+			IType classY176;
+				IModelElement[] methodex5171Childs = methodex5171.getChildren();
+				classY176 = ModelTestUtils.getAssertClass( methodex5171Childs, "Y" );
 			}
 			//Class test
 			{
-			IType classZ185;
-				IModelElement[] methodex5179Childs = methodex5179.getChildren();
-				classZ185 = ModelTestUtils.getAssertClass( methodex5179Childs, "Z" );
+			IType classZ177;
+				IModelElement[] methodex5171Childs = methodex5171.getChildren();
+				classZ177 = ModelTestUtils.getAssertClass( methodex5171Childs, "Z" );
 			}
 		}
 		//Function test:monotonicity
 		{
-		IMethod methodmonotonicity186;
+		IMethod methodmonotonicity178;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodmonotonicity186 = ModelTestUtils.getAssertMethod( moduleChilds, "monotonicity", 0 );
+			methodmonotonicity178 = ModelTestUtils.getAssertMethod( moduleChilds, "monotonicity", 0 );
 			//Class test
 			{
-			IType classBoat187;
-				IModelElement[] methodmonotonicity186Childs = methodmonotonicity186.getChildren();
-				classBoat187 = ModelTestUtils.getAssertClass( methodmonotonicity186Childs, "Boat" );
+			IType classBoat179;
+				IModelElement[] methodmonotonicity178Childs = methodmonotonicity178.getChildren();
+				classBoat179 = ModelTestUtils.getAssertClass( methodmonotonicity178Childs, "Boat" );
 			}
 			//Class test
 			{
-			IType classDayBoat188;
-				IModelElement[] methodmonotonicity186Childs = methodmonotonicity186.getChildren();
-				classDayBoat188 = ModelTestUtils.getAssertClass( methodmonotonicity186Childs, "DayBoat" );
+			IType classDayBoat180;
+				IModelElement[] methodmonotonicity178Childs = methodmonotonicity178.getChildren();
+				classDayBoat180 = ModelTestUtils.getAssertClass( methodmonotonicity178Childs, "DayBoat" );
 			}
 			//Class test
 			{
-			IType classWheelBoat189;
-				IModelElement[] methodmonotonicity186Childs = methodmonotonicity186.getChildren();
-				classWheelBoat189 = ModelTestUtils.getAssertClass( methodmonotonicity186Childs, "WheelBoat" );
+			IType classWheelBoat181;
+				IModelElement[] methodmonotonicity178Childs = methodmonotonicity178.getChildren();
+				classWheelBoat181 = ModelTestUtils.getAssertClass( methodmonotonicity178Childs, "WheelBoat" );
 			}
 			//Class test
 			{
-			IType classEngineLess190;
-				IModelElement[] methodmonotonicity186Childs = methodmonotonicity186.getChildren();
-				classEngineLess190 = ModelTestUtils.getAssertClass( methodmonotonicity186Childs, "EngineLess" );
+			IType classEngineLess182;
+				IModelElement[] methodmonotonicity178Childs = methodmonotonicity178.getChildren();
+				classEngineLess182 = ModelTestUtils.getAssertClass( methodmonotonicity178Childs, "EngineLess" );
 			}
 			//Class test
 			{
-			IType classSmallMultihull191;
-				IModelElement[] methodmonotonicity186Childs = methodmonotonicity186.getChildren();
-				classSmallMultihull191 = ModelTestUtils.getAssertClass( methodmonotonicity186Childs, "SmallMultihull" );
+			IType classSmallMultihull183;
+				IModelElement[] methodmonotonicity178Childs = methodmonotonicity178.getChildren();
+				classSmallMultihull183 = ModelTestUtils.getAssertClass( methodmonotonicity178Childs, "SmallMultihull" );
 			}
 			//Class test
 			{
-			IType classPedalWheelBoat192;
-				IModelElement[] methodmonotonicity186Childs = methodmonotonicity186.getChildren();
-				classPedalWheelBoat192 = ModelTestUtils.getAssertClass( methodmonotonicity186Childs, "PedalWheelBoat" );
+			IType classPedalWheelBoat184;
+				IModelElement[] methodmonotonicity178Childs = methodmonotonicity178.getChildren();
+				classPedalWheelBoat184 = ModelTestUtils.getAssertClass( methodmonotonicity178Childs, "PedalWheelBoat" );
 			}
 			//Class test
 			{
-			IType classSmallCatamaran193;
-				IModelElement[] methodmonotonicity186Childs = methodmonotonicity186.getChildren();
-				classSmallCatamaran193 = ModelTestUtils.getAssertClass( methodmonotonicity186Childs, "SmallCatamaran" );
+			IType classSmallCatamaran185;
+				IModelElement[] methodmonotonicity178Childs = methodmonotonicity178.getChildren();
+				classSmallCatamaran185 = ModelTestUtils.getAssertClass( methodmonotonicity178Childs, "SmallCatamaran" );
 			}
 			//Class test
 			{
-			IType classPedalo194;
-				IModelElement[] methodmonotonicity186Childs = methodmonotonicity186.getChildren();
-				classPedalo194 = ModelTestUtils.getAssertClass( methodmonotonicity186Childs, "Pedalo" );
+			IType classPedalo186;
+				IModelElement[] methodmonotonicity178Childs = methodmonotonicity178.getChildren();
+				classPedalo186 = ModelTestUtils.getAssertClass( methodmonotonicity178Childs, "Pedalo" );
 			}
 		}
 		//Function test:consistency_with_epg
 		{
-		IMethod methodconsistency_with_epg195;
+		IMethod methodconsistency_with_epg187;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodconsistency_with_epg195 = ModelTestUtils.getAssertMethod( moduleChilds, "consistency_with_epg", 0 );
+			methodconsistency_with_epg187 = ModelTestUtils.getAssertMethod( moduleChilds, "consistency_with_epg", 0 );
 			//Class test
 			{
-			IType classPane196;
-				IModelElement[] methodconsistency_with_epg195Childs = methodconsistency_with_epg195.getChildren();
-				classPane196 = ModelTestUtils.getAssertClass( methodconsistency_with_epg195Childs, "Pane" );
+			IType classPane188;
+				IModelElement[] methodconsistency_with_epg187Childs = methodconsistency_with_epg187.getChildren();
+				classPane188 = ModelTestUtils.getAssertClass( methodconsistency_with_epg187Childs, "Pane" );
 			}
 			//Class test
 			{
-			IType classScrollingMixin197;
-				IModelElement[] methodconsistency_with_epg195Childs = methodconsistency_with_epg195.getChildren();
-				classScrollingMixin197 = ModelTestUtils.getAssertClass( methodconsistency_with_epg195Childs, "ScrollingMixin" );
+			IType classScrollingMixin189;
+				IModelElement[] methodconsistency_with_epg187Childs = methodconsistency_with_epg187.getChildren();
+				classScrollingMixin189 = ModelTestUtils.getAssertClass( methodconsistency_with_epg187Childs, "ScrollingMixin" );
 			}
 			//Class test
 			{
-			IType classEditingMixin198;
-				IModelElement[] methodconsistency_with_epg195Childs = methodconsistency_with_epg195.getChildren();
-				classEditingMixin198 = ModelTestUtils.getAssertClass( methodconsistency_with_epg195Childs, "EditingMixin" );
+			IType classEditingMixin190;
+				IModelElement[] methodconsistency_with_epg187Childs = methodconsistency_with_epg187.getChildren();
+				classEditingMixin190 = ModelTestUtils.getAssertClass( methodconsistency_with_epg187Childs, "EditingMixin" );
 			}
 			//Class test
 			{
-			IType classScrollablePane199;
-				IModelElement[] methodconsistency_with_epg195Childs = methodconsistency_with_epg195.getChildren();
-				classScrollablePane199 = ModelTestUtils.getAssertClass( methodconsistency_with_epg195Childs, "ScrollablePane" );
+			IType classScrollablePane191;
+				IModelElement[] methodconsistency_with_epg187Childs = methodconsistency_with_epg187.getChildren();
+				classScrollablePane191 = ModelTestUtils.getAssertClass( methodconsistency_with_epg187Childs, "ScrollablePane" );
 			}
 			//Class test
 			{
-			IType classEditablePane200;
-				IModelElement[] methodconsistency_with_epg195Childs = methodconsistency_with_epg195.getChildren();
-				classEditablePane200 = ModelTestUtils.getAssertClass( methodconsistency_with_epg195Childs, "EditablePane" );
+			IType classEditablePane192;
+				IModelElement[] methodconsistency_with_epg187Childs = methodconsistency_with_epg187.getChildren();
+				classEditablePane192 = ModelTestUtils.getAssertClass( methodconsistency_with_epg187Childs, "EditablePane" );
 			}
 			//Class test
 			{
-			IType classEditableScrollablePane201;
-				IModelElement[] methodconsistency_with_epg195Childs = methodconsistency_with_epg195.getChildren();
-				classEditableScrollablePane201 = ModelTestUtils.getAssertClass( methodconsistency_with_epg195Childs, "EditableScrollablePane" );
+			IType classEditableScrollablePane193;
+				IModelElement[] methodconsistency_with_epg187Childs = methodconsistency_with_epg187.getChildren();
+				classEditableScrollablePane193 = ModelTestUtils.getAssertClass( methodconsistency_with_epg187Childs, "EditableScrollablePane" );
 			}
 		}
 		{
@@ -7350,3099 +6990,2927 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Function test:mro_disagreement
 		{
-		IMethod methodmro_disagreement202;
+		IMethod methodmro_disagreement194;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodmro_disagreement202 = ModelTestUtils.getAssertMethod( moduleChilds, "mro_disagreement", 0 );
+			methodmro_disagreement194 = ModelTestUtils.getAssertMethod( moduleChilds, "mro_disagreement", 0 );
 			//Function test:raises
 			{
-			IMethod methodraises203;
-				IModelElement[] methodmro_disagreement202Childs = methodmro_disagreement202.getChildren();
-				methodraises203 = ModelTestUtils.getAssertMethod( methodmro_disagreement202Childs, "raises", 4 );
-				ModelTestUtils.assertParameterNames( methodraises203, new String[] {"exc", "expected", "callable", "args"} );
+			IMethod methodraises195;
+				IModelElement[] methodmro_disagreement194Childs = methodmro_disagreement194.getChildren();
+				methodraises195 = ModelTestUtils.getAssertMethod( methodmro_disagreement194Childs, "raises", 4 );
+				ModelTestUtils.assertParameterNames( methodraises195, new String[] {"exc", "expected", "callable", "args"} );
 			}
 			//Class test
 			{
-			IType classA204;
-				IModelElement[] methodmro_disagreement202Childs = methodmro_disagreement202.getChildren();
-				classA204 = ModelTestUtils.getAssertClass( methodmro_disagreement202Childs, "A" );
+			IType classA196;
+				IModelElement[] methodmro_disagreement194Childs = methodmro_disagreement194.getChildren();
+				classA196 = ModelTestUtils.getAssertClass( methodmro_disagreement194Childs, "A" );
 			}
 			//Class test
 			{
-			IType classB205;
-				IModelElement[] methodmro_disagreement202Childs = methodmro_disagreement202.getChildren();
-				classB205 = ModelTestUtils.getAssertClass( methodmro_disagreement202Childs, "B" );
+			IType classB197;
+				IModelElement[] methodmro_disagreement194Childs = methodmro_disagreement194.getChildren();
+				classB197 = ModelTestUtils.getAssertClass( methodmro_disagreement194Childs, "B" );
 			}
 			//Class test
 			{
-			IType classC206;
-				IModelElement[] methodmro_disagreement202Childs = methodmro_disagreement202.getChildren();
-				classC206 = ModelTestUtils.getAssertClass( methodmro_disagreement202Childs, "C" );
+			IType classC198;
+				IModelElement[] methodmro_disagreement194Childs = methodmro_disagreement194.getChildren();
+				classC198 = ModelTestUtils.getAssertClass( methodmro_disagreement194Childs, "C" );
 			}
 			//Class test
 			{
-			IType classGridLayout207;
-				IModelElement[] methodmro_disagreement202Childs = methodmro_disagreement202.getChildren();
-				classGridLayout207 = ModelTestUtils.getAssertClass( methodmro_disagreement202Childs, "GridLayout" );
+			IType classGridLayout199;
+				IModelElement[] methodmro_disagreement194Childs = methodmro_disagreement194.getChildren();
+				classGridLayout199 = ModelTestUtils.getAssertClass( methodmro_disagreement194Childs, "GridLayout" );
 			}
 			//Class test
 			{
-			IType classHorizontalGrid208;
-				IModelElement[] methodmro_disagreement202Childs = methodmro_disagreement202.getChildren();
-				classHorizontalGrid208 = ModelTestUtils.getAssertClass( methodmro_disagreement202Childs, "HorizontalGrid" );
+			IType classHorizontalGrid200;
+				IModelElement[] methodmro_disagreement194Childs = methodmro_disagreement194.getChildren();
+				classHorizontalGrid200 = ModelTestUtils.getAssertClass( methodmro_disagreement194Childs, "HorizontalGrid" );
 			}
 			//Class test
 			{
-			IType classVerticalGrid209;
-				IModelElement[] methodmro_disagreement202Childs = methodmro_disagreement202.getChildren();
-				classVerticalGrid209 = ModelTestUtils.getAssertClass( methodmro_disagreement202Childs, "VerticalGrid" );
+			IType classVerticalGrid201;
+				IModelElement[] methodmro_disagreement194Childs = methodmro_disagreement194.getChildren();
+				classVerticalGrid201 = ModelTestUtils.getAssertClass( methodmro_disagreement194Childs, "VerticalGrid" );
 			}
 			//Class test
 			{
-			IType classHVGrid210;
-				IModelElement[] methodmro_disagreement202Childs = methodmro_disagreement202.getChildren();
-				classHVGrid210 = ModelTestUtils.getAssertClass( methodmro_disagreement202Childs, "HVGrid" );
+			IType classHVGrid202;
+				IModelElement[] methodmro_disagreement194Childs = methodmro_disagreement194.getChildren();
+				classHVGrid202 = ModelTestUtils.getAssertClass( methodmro_disagreement194Childs, "HVGrid" );
 			}
 			//Class test
 			{
-			IType classVHGrid211;
-				IModelElement[] methodmro_disagreement202Childs = methodmro_disagreement202.getChildren();
-				classVHGrid211 = ModelTestUtils.getAssertClass( methodmro_disagreement202Childs, "VHGrid" );
+			IType classVHGrid203;
+				IModelElement[] methodmro_disagreement194Childs = methodmro_disagreement194.getChildren();
+				classVHGrid203 = ModelTestUtils.getAssertClass( methodmro_disagreement194Childs, "VHGrid" );
 			}
 		}
 		//Function test:objects
 		{
-		IMethod methodobjects212;
+		IMethod methodobjects204;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodobjects212 = ModelTestUtils.getAssertMethod( moduleChilds, "objects", 0 );
+			methodobjects204 = ModelTestUtils.getAssertMethod( moduleChilds, "objects", 0 );
 			//Class test
 			{
-			IType classCdict213;
-				IModelElement[] methodobjects212Childs = methodobjects212.getChildren();
-				classCdict213 = ModelTestUtils.getAssertClass( methodobjects212Childs, "Cdict" );
+			IType classCdict205;
+				IModelElement[] methodobjects204Childs = methodobjects204.getChildren();
+				classCdict205 = ModelTestUtils.getAssertClass( methodobjects204Childs, "Cdict" );
 			}
 		}
 		//Function test:slots
 		{
-		IMethod methodslots214;
+		IMethod methodslots206;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodslots214 = ModelTestUtils.getAssertMethod( moduleChilds, "slots", 0 );
+			methodslots206 = ModelTestUtils.getAssertMethod( moduleChilds, "slots", 0 );
 			//Class test
 			{
-			IType classC0215;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classC0215 = ModelTestUtils.getAssertClass( methodslots214Childs, "C0" );
+			IType classC0207;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classC0207 = ModelTestUtils.getAssertClass( methodslots206Childs, "C0" );
 			}
 			//Class test
 			{
-			IType classC1216;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classC1216 = ModelTestUtils.getAssertClass( methodslots214Childs, "C1" );
+			IType classC1208;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classC1208 = ModelTestUtils.getAssertClass( methodslots206Childs, "C1" );
 			}
 			//Class test
 			{
-			IType classC3217;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classC3217 = ModelTestUtils.getAssertClass( methodslots214Childs, "C3" );
+			IType classC3209;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classC3209 = ModelTestUtils.getAssertClass( methodslots206Childs, "C3" );
 			}
 			//Class test
 			{
-			IType classC4218;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classC4218 = ModelTestUtils.getAssertClass( methodslots214Childs, "C4" );
+			IType classC4210;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classC4210 = ModelTestUtils.getAssertClass( methodslots206Childs, "C4" );
 				//Function test:__init__
 				{
-				IMethod method__init__219;
-					IModelElement[] classC4218Childs = classC4218.getChildren();
-					method__init__219 = ModelTestUtils.getAssertMethod( classC4218Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__219, new String[] {"self", "value"} );
-				}
-				{
-					IModelElement[] classC4218Childs = classC4218.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC4218Childs, "__a");
+				IMethod method__init__211;
+					IModelElement[] classC4210Childs = classC4210.getChildren();
+					method__init__211 = ModelTestUtils.getAssertMethod( classC4210Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__211, new String[] {"self", "value"} );
 				}
 				//Function test:get
 				{
-				IMethod methodget221;
-					IModelElement[] classC4218Childs = classC4218.getChildren();
-					methodget221 = ModelTestUtils.getAssertMethod( classC4218Childs, "get", 1 );
-					ModelTestUtils.assertParameterNames( methodget221, new String[] {"self"} );
+				IMethod methodget212;
+					IModelElement[] classC4210Childs = classC4210.getChildren();
+					methodget212 = ModelTestUtils.getAssertMethod( classC4210Childs, "get", 1 );
+					ModelTestUtils.assertParameterNames( methodget212, new String[] {"self"} );
+				}
+			}
+			//Class test
+			{
+			IType classC213;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classC213 = ModelTestUtils.getAssertClass( methodslots206Childs, "C" );
+			}
+			//Class test
+			{
+			IType classC214;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classC214 = ModelTestUtils.getAssertClass( methodslots206Childs, "C" );
+			}
+			//Class test
+			{
+			IType classC215;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classC215 = ModelTestUtils.getAssertClass( methodslots206Childs, "C" );
+			}
+			//Class test
+			{
+			IType classC216;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classC216 = ModelTestUtils.getAssertClass( methodslots206Childs, "C" );
+			}
+			//Class test
+			{
+			IType classC217;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classC217 = ModelTestUtils.getAssertClass( methodslots206Childs, "C" );
+			}
+			//Class test
+			{
+			IType classC218;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classC218 = ModelTestUtils.getAssertClass( methodslots206Childs, "C" );
+			}
+			//Class test
+			{
+			IType classCounted219;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classCounted219 = ModelTestUtils.getAssertClass( methodslots206Childs, "Counted" );
+				//Function test:__init__
+				{
+				IMethod method__init__220;
+					IModelElement[] classCounted219Childs = classCounted219.getChildren();
+					method__init__220 = ModelTestUtils.getAssertMethod( classCounted219Childs, "__init__", 1 );
+					ModelTestUtils.assertParameterNames( method__init__220, new String[] {"self"} );
+				}
+				//Function test:__del__
+				{
+				IMethod method__del__221;
+					IModelElement[] classCounted219Childs = classCounted219.getChildren();
+					method__del__221 = ModelTestUtils.getAssertMethod( classCounted219Childs, "__del__", 1 );
+					ModelTestUtils.assertParameterNames( method__del__221, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
 			IType classC222;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classC222 = ModelTestUtils.getAssertClass( methodslots214Childs, "C" );
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classC222 = ModelTestUtils.getAssertClass( methodslots206Childs, "C" );
 			}
 			//Class test
 			{
-			IType classC223;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classC223 = ModelTestUtils.getAssertClass( methodslots214Childs, "C" );
+			IType classD223;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classD223 = ModelTestUtils.getAssertClass( methodslots206Childs, "D" );
 			}
 			//Class test
 			{
-			IType classC224;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classC224 = ModelTestUtils.getAssertClass( methodslots214Childs, "C" );
+			IType classE224;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classE224 = ModelTestUtils.getAssertClass( methodslots206Childs, "E" );
 			}
 			//Class test
 			{
-			IType classC225;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classC225 = ModelTestUtils.getAssertClass( methodslots214Childs, "C" );
+			IType classF225;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classF225 = ModelTestUtils.getAssertClass( methodslots206Childs, "F" );
 			}
 			//Class test
 			{
-			IType classC226;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classC226 = ModelTestUtils.getAssertClass( methodslots214Childs, "C" );
+			IType classG226;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classG226 = ModelTestUtils.getAssertClass( methodslots206Childs, "G" );
+				//Function test:__cmp__
+				{
+				IMethod method__cmp__227;
+					IModelElement[] classG226Childs = classG226.getChildren();
+					method__cmp__227 = ModelTestUtils.getAssertMethod( classG226Childs, "__cmp__", 2 );
+					ModelTestUtils.assertParameterNames( method__cmp__227, new String[] {"self", "other"} );
+				}
 			}
 			//Class test
 			{
-			IType classC227;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classC227 = ModelTestUtils.getAssertClass( methodslots214Childs, "C" );
-			}
-			//Class test
-			{
-			IType classCounted228;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classCounted228 = ModelTestUtils.getAssertClass( methodslots214Childs, "Counted" );
+			IType classH228;
+				IModelElement[] methodslots206Childs = methodslots206.getChildren();
+				classH228 = ModelTestUtils.getAssertClass( methodslots206Childs, "H" );
 				//Function test:__init__
 				{
 				IMethod method__init__229;
-					IModelElement[] classCounted228Childs = classCounted228.getChildren();
-					method__init__229 = ModelTestUtils.getAssertMethod( classCounted228Childs, "__init__", 1 );
+					IModelElement[] classH228Childs = classH228.getChildren();
+					method__init__229 = ModelTestUtils.getAssertMethod( classH228Childs, "__init__", 1 );
 					ModelTestUtils.assertParameterNames( method__init__229, new String[] {"self"} );
 				}
 				//Function test:__del__
 				{
 				IMethod method__del__230;
-					IModelElement[] classCounted228Childs = classCounted228.getChildren();
-					method__del__230 = ModelTestUtils.getAssertMethod( classCounted228Childs, "__del__", 1 );
+					IModelElement[] classH228Childs = classH228.getChildren();
+					method__del__230 = ModelTestUtils.getAssertMethod( classH228Childs, "__del__", 1 );
 					ModelTestUtils.assertParameterNames( method__del__230, new String[] {"self"} );
-				}
-			}
-			//Class test
-			{
-			IType classC231;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classC231 = ModelTestUtils.getAssertClass( methodslots214Childs, "C" );
-			}
-			//Class test
-			{
-			IType classD232;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classD232 = ModelTestUtils.getAssertClass( methodslots214Childs, "D" );
-			}
-			//Class test
-			{
-			IType classE233;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classE233 = ModelTestUtils.getAssertClass( methodslots214Childs, "E" );
-			}
-			//Class test
-			{
-			IType classF234;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classF234 = ModelTestUtils.getAssertClass( methodslots214Childs, "F" );
-			}
-			//Class test
-			{
-			IType classG235;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classG235 = ModelTestUtils.getAssertClass( methodslots214Childs, "G" );
-				//Function test:__cmp__
-				{
-				IMethod method__cmp__236;
-					IModelElement[] classG235Childs = classG235.getChildren();
-					method__cmp__236 = ModelTestUtils.getAssertMethod( classG235Childs, "__cmp__", 2 );
-					ModelTestUtils.assertParameterNames( method__cmp__236, new String[] {"self", "other"} );
-				}
-			}
-			//Class test
-			{
-			IType classH237;
-				IModelElement[] methodslots214Childs = methodslots214.getChildren();
-				classH237 = ModelTestUtils.getAssertClass( methodslots214Childs, "H" );
-				//Function test:__init__
-				{
-				IMethod method__init__238;
-					IModelElement[] classH237Childs = classH237.getChildren();
-					method__init__238 = ModelTestUtils.getAssertMethod( classH237Childs, "__init__", 1 );
-					ModelTestUtils.assertParameterNames( method__init__238, new String[] {"self"} );
-				}
-				{
-					IModelElement[] classH237Childs = classH237.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classH237Childs, "a");
-				}
-				{
-					IModelElement[] classH237Childs = classH237.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classH237Childs, "b");
-				}
-				//Function test:__del__
-				{
-				IMethod method__del__240;
-					IModelElement[] classH237Childs = classH237.getChildren();
-					method__del__240 = ModelTestUtils.getAssertMethod( classH237Childs, "__del__", 1 );
-					ModelTestUtils.assertParameterNames( method__del__240, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:slotspecials
 		{
-		IMethod methodslotspecials241;
+		IMethod methodslotspecials231;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodslotspecials241 = ModelTestUtils.getAssertMethod( moduleChilds, "slotspecials", 0 );
+			methodslotspecials231 = ModelTestUtils.getAssertMethod( moduleChilds, "slotspecials", 0 );
 			//Class test
 			{
-			IType classD242;
-				IModelElement[] methodslotspecials241Childs = methodslotspecials241.getChildren();
-				classD242 = ModelTestUtils.getAssertClass( methodslotspecials241Childs, "D" );
+			IType classD232;
+				IModelElement[] methodslotspecials231Childs = methodslotspecials231.getChildren();
+				classD232 = ModelTestUtils.getAssertClass( methodslotspecials231Childs, "D" );
 			}
 			//Class test
 			{
-			IType classW243;
-				IModelElement[] methodslotspecials241Childs = methodslotspecials241.getChildren();
-				classW243 = ModelTestUtils.getAssertClass( methodslotspecials241Childs, "W" );
+			IType classW233;
+				IModelElement[] methodslotspecials231Childs = methodslotspecials231.getChildren();
+				classW233 = ModelTestUtils.getAssertClass( methodslotspecials231Childs, "W" );
 			}
 			//Class test
 			{
-			IType classC1244;
-				IModelElement[] methodslotspecials241Childs = methodslotspecials241.getChildren();
-				classC1244 = ModelTestUtils.getAssertClass( methodslotspecials241Childs, "C1" );
+			IType classC1234;
+				IModelElement[] methodslotspecials231Childs = methodslotspecials231.getChildren();
+				classC1234 = ModelTestUtils.getAssertClass( methodslotspecials231Childs, "C1" );
 			}
 			//Class test
 			{
-			IType classC2245;
-				IModelElement[] methodslotspecials241Childs = methodslotspecials241.getChildren();
-				classC2245 = ModelTestUtils.getAssertClass( methodslotspecials241Childs, "C2" );
+			IType classC2235;
+				IModelElement[] methodslotspecials231Childs = methodslotspecials231.getChildren();
+				classC2235 = ModelTestUtils.getAssertClass( methodslotspecials231Childs, "C2" );
 			}
 		}
 		//Function test:dynamics
 		{
-		IMethod methoddynamics246;
+		IMethod methoddynamics236;
 			IModelElement[] moduleChilds = module.getChildren();
-			methoddynamics246 = ModelTestUtils.getAssertMethod( moduleChilds, "dynamics", 0 );
+			methoddynamics236 = ModelTestUtils.getAssertMethod( moduleChilds, "dynamics", 0 );
 			//Class test
 			{
-			IType classD247;
-				IModelElement[] methoddynamics246Childs = methoddynamics246.getChildren();
-				classD247 = ModelTestUtils.getAssertClass( methoddynamics246Childs, "D" );
+			IType classD237;
+				IModelElement[] methoddynamics236Childs = methoddynamics236.getChildren();
+				classD237 = ModelTestUtils.getAssertClass( methoddynamics236Childs, "D" );
 			}
 			//Class test
 			{
-			IType classE248;
-				IModelElement[] methoddynamics246Childs = methoddynamics246.getChildren();
-				classE248 = ModelTestUtils.getAssertClass( methoddynamics246Childs, "E" );
+			IType classE238;
+				IModelElement[] methoddynamics236Childs = methoddynamics236.getChildren();
+				classE238 = ModelTestUtils.getAssertClass( methoddynamics236Childs, "E" );
 			}
 			//Class test
 			{
-			IType classF249;
-				IModelElement[] methoddynamics246Childs = methoddynamics246.getChildren();
-				classF249 = ModelTestUtils.getAssertClass( methoddynamics246Childs, "F" );
+			IType classF239;
+				IModelElement[] methoddynamics236Childs = methoddynamics236.getChildren();
+				classF239 = ModelTestUtils.getAssertClass( methoddynamics236Childs, "F" );
 			}
 			//Class test
 			{
-			IType classC250;
-				IModelElement[] methoddynamics246Childs = methoddynamics246.getChildren();
-				classC250 = ModelTestUtils.getAssertClass( methoddynamics246Childs, "C" );
+			IType classC240;
+				IModelElement[] methoddynamics236Childs = methoddynamics236.getChildren();
+				classC240 = ModelTestUtils.getAssertClass( methoddynamics236Childs, "C" );
 			}
 			//Function test:mygetattr
 			{
-			IMethod methodmygetattr251;
-				IModelElement[] methoddynamics246Childs = methoddynamics246.getChildren();
-				methodmygetattr251 = ModelTestUtils.getAssertMethod( methoddynamics246Childs, "mygetattr", 2 );
-				ModelTestUtils.assertParameterNames( methodmygetattr251, new String[] {"self", "name"} );
+			IMethod methodmygetattr241;
+				IModelElement[] methoddynamics236Childs = methoddynamics236.getChildren();
+				methodmygetattr241 = ModelTestUtils.getAssertMethod( methoddynamics236Childs, "mygetattr", 2 );
+				ModelTestUtils.assertParameterNames( methodmygetattr241, new String[] {"self", "name"} );
 			}
 			//Function test:mysetattr
 			{
-			IMethod methodmysetattr252;
-				IModelElement[] methoddynamics246Childs = methoddynamics246.getChildren();
-				methodmysetattr252 = ModelTestUtils.getAssertMethod( methoddynamics246Childs, "mysetattr", 3 );
-				ModelTestUtils.assertParameterNames( methodmysetattr252, new String[] {"self", "name", "value"} );
+			IMethod methodmysetattr242;
+				IModelElement[] methoddynamics236Childs = methoddynamics236.getChildren();
+				methodmysetattr242 = ModelTestUtils.getAssertMethod( methoddynamics236Childs, "mysetattr", 3 );
+				ModelTestUtils.assertParameterNames( methodmysetattr242, new String[] {"self", "name", "value"} );
 			}
 			//Class test
 			{
-			IType classD253;
-				IModelElement[] methoddynamics246Childs = methoddynamics246.getChildren();
-				classD253 = ModelTestUtils.getAssertClass( methoddynamics246Childs, "D" );
+			IType classD243;
+				IModelElement[] methoddynamics236Childs = methoddynamics236.getChildren();
+				classD243 = ModelTestUtils.getAssertClass( methoddynamics236Childs, "D" );
 			}
 			//Class test
 			{
-			IType classI254;
-				IModelElement[] methoddynamics246Childs = methoddynamics246.getChildren();
-				classI254 = ModelTestUtils.getAssertClass( methoddynamics246Childs, "I" );
+			IType classI244;
+				IModelElement[] methoddynamics236Childs = methoddynamics236.getChildren();
+				classI244 = ModelTestUtils.getAssertClass( methoddynamics236Childs, "I" );
 			}
 			//Class test
 			{
-			IType classL255;
-				IModelElement[] methoddynamics246Childs = methoddynamics246.getChildren();
-				classL255 = ModelTestUtils.getAssertClass( methoddynamics246Childs, "L" );
+			IType classL245;
+				IModelElement[] methoddynamics236Childs = methoddynamics236.getChildren();
+				classL245 = ModelTestUtils.getAssertClass( methoddynamics236Childs, "L" );
 			}
 			//Class test
 			{
-			IType classdynamicmetaclass256;
-				IModelElement[] methoddynamics246Childs = methoddynamics246.getChildren();
-				classdynamicmetaclass256 = ModelTestUtils.getAssertClass( methoddynamics246Childs, "dynamicmetaclass" );
+			IType classdynamicmetaclass246;
+				IModelElement[] methoddynamics236Childs = methoddynamics236.getChildren();
+				classdynamicmetaclass246 = ModelTestUtils.getAssertClass( methoddynamics236Childs, "dynamicmetaclass" );
 			}
 			//Class test
 			{
-			IType classsomeclass257;
-				IModelElement[] methoddynamics246Childs = methoddynamics246.getChildren();
-				classsomeclass257 = ModelTestUtils.getAssertClass( methoddynamics246Childs, "someclass" );
+			IType classsomeclass247;
+				IModelElement[] methoddynamics236Childs = methoddynamics236.getChildren();
+				classsomeclass247 = ModelTestUtils.getAssertClass( methoddynamics236Childs, "someclass" );
 			}
 		}
 		//Function test:errors
 		{
-		IMethod methoderrors258;
+		IMethod methoderrors248;
 			IModelElement[] moduleChilds = module.getChildren();
-			methoderrors258 = ModelTestUtils.getAssertMethod( moduleChilds, "errors", 0 );
+			methoderrors248 = ModelTestUtils.getAssertMethod( moduleChilds, "errors", 0 );
 			//Class test
 			{
-			IType classC259;
-				IModelElement[] methoderrors258Childs = methoderrors258.getChildren();
-				classC259 = ModelTestUtils.getAssertClass( methoderrors258Childs, "C" );
+			IType classC249;
+				IModelElement[] methoderrors248Childs = methoderrors248.getChildren();
+				classC249 = ModelTestUtils.getAssertClass( methoderrors248Childs, "C" );
 			}
 			//Class test
 			{
-			IType classC260;
-				IModelElement[] methoderrors258Childs = methoderrors258.getChildren();
-				classC260 = ModelTestUtils.getAssertClass( methoderrors258Childs, "C" );
+			IType classC250;
+				IModelElement[] methoderrors248Childs = methoderrors248.getChildren();
+				classC250 = ModelTestUtils.getAssertClass( methoderrors248Childs, "C" );
 			}
 			//Class test
 			{
-			IType classClassic261;
-				IModelElement[] methoderrors258Childs = methoderrors258.getChildren();
-				classClassic261 = ModelTestUtils.getAssertClass( methoderrors258Childs, "Classic" );
+			IType classClassic251;
+				IModelElement[] methoderrors248Childs = methoderrors248.getChildren();
+				classClassic251 = ModelTestUtils.getAssertClass( methoderrors248Childs, "Classic" );
 			}
 			//Class test
 			{
-			IType classC262;
-				IModelElement[] methoderrors258Childs = methoderrors258.getChildren();
-				classC262 = ModelTestUtils.getAssertClass( methoderrors258Childs, "C" );
+			IType classC252;
+				IModelElement[] methoderrors248Childs = methoderrors248.getChildren();
+				classC252 = ModelTestUtils.getAssertClass( methoderrors248Childs, "C" );
 			}
 			//Class test
 			{
-			IType classC263;
-				IModelElement[] methoderrors258Childs = methoderrors258.getChildren();
-				classC263 = ModelTestUtils.getAssertClass( methoderrors258Childs, "C" );
+			IType classC253;
+				IModelElement[] methoderrors248Childs = methoderrors248.getChildren();
+				classC253 = ModelTestUtils.getAssertClass( methoderrors248Childs, "C" );
 			}
 			//Class test
 			{
-			IType classC264;
-				IModelElement[] methoderrors258Childs = methoderrors258.getChildren();
-				classC264 = ModelTestUtils.getAssertClass( methoderrors258Childs, "C" );
+			IType classC254;
+				IModelElement[] methoderrors248Childs = methoderrors248.getChildren();
+				classC254 = ModelTestUtils.getAssertClass( methoderrors248Childs, "C" );
 			}
 		}
 		//Function test:classmethods
 		{
-		IMethod methodclassmethods265;
+		IMethod methodclassmethods255;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodclassmethods265 = ModelTestUtils.getAssertMethod( moduleChilds, "classmethods", 0 );
+			methodclassmethods255 = ModelTestUtils.getAssertMethod( moduleChilds, "classmethods", 0 );
 			//Class test
 			{
-			IType classC266;
-				IModelElement[] methodclassmethods265Childs = methodclassmethods265.getChildren();
-				classC266 = ModelTestUtils.getAssertClass( methodclassmethods265Childs, "C" );
+			IType classC256;
+				IModelElement[] methodclassmethods255Childs = methodclassmethods255.getChildren();
+				classC256 = ModelTestUtils.getAssertClass( methodclassmethods255Childs, "C" );
 				//Function test:foo
 				{
-				IMethod methodfoo267;
-					IModelElement[] classC266Childs = classC266.getChildren();
-					methodfoo267 = ModelTestUtils.getAssertMethod( classC266Childs, "foo", 1 );
-					ModelTestUtils.assertParameterNames( methodfoo267, new String[] {"a"} );
+				IMethod methodfoo257;
+					IModelElement[] classC256Childs = classC256.getChildren();
+					methodfoo257 = ModelTestUtils.getAssertMethod( classC256Childs, "foo", 1 );
+					ModelTestUtils.assertParameterNames( methodfoo257, new String[] {"a"} );
 				}
 			}
 			//Class test
 			{
-			IType classD268;
-				IModelElement[] methodclassmethods265Childs = methodclassmethods265.getChildren();
-				classD268 = ModelTestUtils.getAssertClass( methodclassmethods265Childs, "D" );
+			IType classD258;
+				IModelElement[] methodclassmethods255Childs = methodclassmethods255.getChildren();
+				classD258 = ModelTestUtils.getAssertClass( methodclassmethods255Childs, "D" );
 			}
 			//Function test:f
 			{
-			IMethod methodf269;
-				IModelElement[] methodclassmethods265Childs = methodclassmethods265.getChildren();
-				methodf269 = ModelTestUtils.getAssertMethod( methodclassmethods265Childs, "f", 2 );
-				ModelTestUtils.assertParameterNames( methodf269, new String[] {"cls", "arg"} );
+			IMethod methodf259;
+				IModelElement[] methodclassmethods255Childs = methodclassmethods255.getChildren();
+				methodf259 = ModelTestUtils.getAssertMethod( methodclassmethods255Childs, "f", 2 );
+				ModelTestUtils.assertParameterNames( methodf259, new String[] {"cls", "arg"} );
 			}
 		}
 		//Function test:classmethods_in_c
 		{
-		IMethod methodclassmethods_in_c270;
+		IMethod methodclassmethods_in_c260;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodclassmethods_in_c270 = ModelTestUtils.getAssertMethod( moduleChilds, "classmethods_in_c", 0 );
+			methodclassmethods_in_c260 = ModelTestUtils.getAssertMethod( moduleChilds, "classmethods_in_c", 0 );
 		}
 		//Function test:staticmethods
 		{
-		IMethod methodstaticmethods271;
+		IMethod methodstaticmethods261;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodstaticmethods271 = ModelTestUtils.getAssertMethod( moduleChilds, "staticmethods", 0 );
+			methodstaticmethods261 = ModelTestUtils.getAssertMethod( moduleChilds, "staticmethods", 0 );
 			//Class test
 			{
-			IType classC272;
-				IModelElement[] methodstaticmethods271Childs = methodstaticmethods271.getChildren();
-				classC272 = ModelTestUtils.getAssertClass( methodstaticmethods271Childs, "C" );
+			IType classC262;
+				IModelElement[] methodstaticmethods261Childs = methodstaticmethods261.getChildren();
+				classC262 = ModelTestUtils.getAssertClass( methodstaticmethods261Childs, "C" );
 				//Function test:foo
 				{
-				IMethod methodfoo273;
-					IModelElement[] classC272Childs = classC272.getChildren();
-					methodfoo273 = ModelTestUtils.getAssertMethod( classC272Childs, "foo", 1 );
-					ModelTestUtils.assertParameterNames( methodfoo273, new String[] {"a"} );
+				IMethod methodfoo263;
+					IModelElement[] classC262Childs = classC262.getChildren();
+					methodfoo263 = ModelTestUtils.getAssertMethod( classC262Childs, "foo", 1 );
+					ModelTestUtils.assertParameterNames( methodfoo263, new String[] {"a"} );
 				}
 			}
 			//Class test
 			{
-			IType classD274;
-				IModelElement[] methodstaticmethods271Childs = methodstaticmethods271.getChildren();
-				classD274 = ModelTestUtils.getAssertClass( methodstaticmethods271Childs, "D" );
+			IType classD264;
+				IModelElement[] methodstaticmethods261Childs = methodstaticmethods261.getChildren();
+				classD264 = ModelTestUtils.getAssertClass( methodstaticmethods261Childs, "D" );
 			}
 		}
 		//Function test:staticmethods_in_c
 		{
-		IMethod methodstaticmethods_in_c275;
+		IMethod methodstaticmethods_in_c265;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodstaticmethods_in_c275 = ModelTestUtils.getAssertMethod( moduleChilds, "staticmethods_in_c", 0 );
+			methodstaticmethods_in_c265 = ModelTestUtils.getAssertMethod( moduleChilds, "staticmethods_in_c", 0 );
 		}
 		//Function test:classic
 		{
-		IMethod methodclassic276;
+		IMethod methodclassic266;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodclassic276 = ModelTestUtils.getAssertMethod( moduleChilds, "classic", 0 );
+			methodclassic266 = ModelTestUtils.getAssertMethod( moduleChilds, "classic", 0 );
 			//Class test
 			{
-			IType classC277;
-				IModelElement[] methodclassic276Childs = methodclassic276.getChildren();
-				classC277 = ModelTestUtils.getAssertClass( methodclassic276Childs, "C" );
+			IType classC267;
+				IModelElement[] methodclassic266Childs = methodclassic266.getChildren();
+				classC267 = ModelTestUtils.getAssertClass( methodclassic266Childs, "C" );
 				//Function test:foo
 				{
-				IMethod methodfoo278;
-					IModelElement[] classC277Childs = classC277.getChildren();
-					methodfoo278 = ModelTestUtils.getAssertMethod( classC277Childs, "foo", 1 );
-					ModelTestUtils.assertParameterNames( methodfoo278, new String[] {"a"} );
+				IMethod methodfoo268;
+					IModelElement[] classC267Childs = classC267.getChildren();
+					methodfoo268 = ModelTestUtils.getAssertMethod( classC267Childs, "foo", 1 );
+					ModelTestUtils.assertParameterNames( methodfoo268, new String[] {"a"} );
 				}
 			}
 			//Class test
 			{
-			IType classD279;
-				IModelElement[] methodclassic276Childs = methodclassic276.getChildren();
-				classD279 = ModelTestUtils.getAssertClass( methodclassic276Childs, "D" );
+			IType classD269;
+				IModelElement[] methodclassic266Childs = methodclassic266.getChildren();
+				classD269 = ModelTestUtils.getAssertClass( methodclassic266Childs, "D" );
 			}
 			//Class test
 			{
-			IType classE280;
-				IModelElement[] methodclassic276Childs = methodclassic276.getChildren();
-				classE280 = ModelTestUtils.getAssertClass( methodclassic276Childs, "E" );
+			IType classE270;
+				IModelElement[] methodclassic266Childs = methodclassic266.getChildren();
+				classE270 = ModelTestUtils.getAssertClass( methodclassic266Childs, "E" );
 			}
 		}
 		//Function test:compattr
 		{
-		IMethod methodcompattr281;
+		IMethod methodcompattr271;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodcompattr281 = ModelTestUtils.getAssertMethod( moduleChilds, "compattr", 0 );
+			methodcompattr271 = ModelTestUtils.getAssertMethod( moduleChilds, "compattr", 0 );
 			//Class test
 			{
-			IType classC282;
-				IModelElement[] methodcompattr281Childs = methodcompattr281.getChildren();
-				classC282 = ModelTestUtils.getAssertClass( methodcompattr281Childs, "C" );
+			IType classC272;
+				IModelElement[] methodcompattr271Childs = methodcompattr271.getChildren();
+				classC272 = ModelTestUtils.getAssertClass( methodcompattr271Childs, "C" );
 				//Class test
 				{
-				IType classcomputed_attribute283;
-					IModelElement[] classC282Childs = classC282.getChildren();
-					classcomputed_attribute283 = ModelTestUtils.getAssertClass( classC282Childs, "computed_attribute" );
+				IType classcomputed_attribute273;
+					IModelElement[] classC272Childs = classC272.getChildren();
+					classcomputed_attribute273 = ModelTestUtils.getAssertClass( classC272Childs, "computed_attribute" );
 					//Function test:__init__
 					{
-					IMethod method__init__284;
-						IModelElement[] classcomputed_attribute283Childs = classcomputed_attribute283.getChildren();
-						method__init__284 = ModelTestUtils.getAssertMethod( classcomputed_attribute283Childs, "__init__", 4 );
-						ModelTestUtils.assertParameterNames( method__init__284, new String[] {"self", "get", "set", "delete"} );
-					}
-					{
-						IModelElement[] classcomputed_attribute283Childs = classcomputed_attribute283.getChildren();
-						IField fieldValue = ModelTestUtils.getAssertField( classcomputed_attribute283Childs, "__get");
-					}
-					{
-						IModelElement[] classcomputed_attribute283Childs = classcomputed_attribute283.getChildren();
-						IField fieldValue = ModelTestUtils.getAssertField( classcomputed_attribute283Childs, "__set");
-					}
-					{
-						IModelElement[] classcomputed_attribute283Childs = classcomputed_attribute283.getChildren();
-						IField fieldValue = ModelTestUtils.getAssertField( classcomputed_attribute283Childs, "__delete");
+					IMethod method__init__274;
+						IModelElement[] classcomputed_attribute273Childs = classcomputed_attribute273.getChildren();
+						method__init__274 = ModelTestUtils.getAssertMethod( classcomputed_attribute273Childs, "__init__", 4 );
+						ModelTestUtils.assertParameterNames( method__init__274, new String[] {"self", "get", "set", "delete"} );
 					}
 					//Function test:__get__
 					{
-					IMethod method__get__286;
-						IModelElement[] classcomputed_attribute283Childs = classcomputed_attribute283.getChildren();
-						method__get__286 = ModelTestUtils.getAssertMethod( classcomputed_attribute283Childs, "__get__", 3 );
-						ModelTestUtils.assertParameterNames( method__get__286, new String[] {"self", "obj", "type"} );
+					IMethod method__get__275;
+						IModelElement[] classcomputed_attribute273Childs = classcomputed_attribute273.getChildren();
+						method__get__275 = ModelTestUtils.getAssertMethod( classcomputed_attribute273Childs, "__get__", 3 );
+						ModelTestUtils.assertParameterNames( method__get__275, new String[] {"self", "obj", "type"} );
 					}
 					//Function test:__set__
 					{
-					IMethod method__set__287;
-						IModelElement[] classcomputed_attribute283Childs = classcomputed_attribute283.getChildren();
-						method__set__287 = ModelTestUtils.getAssertMethod( classcomputed_attribute283Childs, "__set__", 3 );
-						ModelTestUtils.assertParameterNames( method__set__287, new String[] {"self", "obj", "value"} );
+					IMethod method__set__276;
+						IModelElement[] classcomputed_attribute273Childs = classcomputed_attribute273.getChildren();
+						method__set__276 = ModelTestUtils.getAssertMethod( classcomputed_attribute273Childs, "__set__", 3 );
+						ModelTestUtils.assertParameterNames( method__set__276, new String[] {"self", "obj", "value"} );
 					}
 					//Function test:__delete__
 					{
-					IMethod method__delete__288;
-						IModelElement[] classcomputed_attribute283Childs = classcomputed_attribute283.getChildren();
-						method__delete__288 = ModelTestUtils.getAssertMethod( classcomputed_attribute283Childs, "__delete__", 2 );
-						ModelTestUtils.assertParameterNames( method__delete__288, new String[] {"self", "obj"} );
+					IMethod method__delete__277;
+						IModelElement[] classcomputed_attribute273Childs = classcomputed_attribute273.getChildren();
+						method__delete__277 = ModelTestUtils.getAssertMethod( classcomputed_attribute273Childs, "__delete__", 2 );
+						ModelTestUtils.assertParameterNames( method__delete__277, new String[] {"self", "obj"} );
 					}
 				}
 				//Function test:__init__
 				{
-				IMethod method__init__289;
-					IModelElement[] classC282Childs = classC282.getChildren();
-					method__init__289 = ModelTestUtils.getAssertMethod( classC282Childs, "__init__", 1 );
-					ModelTestUtils.assertParameterNames( method__init__289, new String[] {"self"} );
-				}
-				{
-					IModelElement[] classC282Childs = classC282.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC282Childs, "__x");
+				IMethod method__init__278;
+					IModelElement[] classC272Childs = classC272.getChildren();
+					method__init__278 = ModelTestUtils.getAssertMethod( classC272Childs, "__init__", 1 );
+					ModelTestUtils.assertParameterNames( method__init__278, new String[] {"self"} );
 				}
 				//Function test:__get_x
 				{
-				IMethod method__get_x291;
-					IModelElement[] classC282Childs = classC282.getChildren();
-					method__get_x291 = ModelTestUtils.getAssertMethod( classC282Childs, "__get_x", 1 );
-					ModelTestUtils.assertParameterNames( method__get_x291, new String[] {"self"} );
-				}
-				{
-					IModelElement[] classC282Childs = classC282.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC282Childs, "__x");
+				IMethod method__get_x279;
+					IModelElement[] classC272Childs = classC272.getChildren();
+					method__get_x279 = ModelTestUtils.getAssertMethod( classC272Childs, "__get_x", 1 );
+					ModelTestUtils.assertParameterNames( method__get_x279, new String[] {"self"} );
 				}
 				//Function test:__set_x
 				{
-				IMethod method__set_x293;
-					IModelElement[] classC282Childs = classC282.getChildren();
-					method__set_x293 = ModelTestUtils.getAssertMethod( classC282Childs, "__set_x", 2 );
-					ModelTestUtils.assertParameterNames( method__set_x293, new String[] {"self", "x"} );
-				}
-				{
-					IModelElement[] classC282Childs = classC282.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC282Childs, "__x");
+				IMethod method__set_x280;
+					IModelElement[] classC272Childs = classC272.getChildren();
+					method__set_x280 = ModelTestUtils.getAssertMethod( classC272Childs, "__set_x", 2 );
+					ModelTestUtils.assertParameterNames( method__set_x280, new String[] {"self", "x"} );
 				}
 				//Function test:__delete_x
 				{
-				IMethod method__delete_x295;
-					IModelElement[] classC282Childs = classC282.getChildren();
-					method__delete_x295 = ModelTestUtils.getAssertMethod( classC282Childs, "__delete_x", 1 );
-					ModelTestUtils.assertParameterNames( method__delete_x295, new String[] {"self"} );
+				IMethod method__delete_x281;
+					IModelElement[] classC272Childs = classC272.getChildren();
+					method__delete_x281 = ModelTestUtils.getAssertMethod( classC272Childs, "__delete_x", 1 );
+					ModelTestUtils.assertParameterNames( method__delete_x281, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:newslot
 		{
-		IMethod methodnewslot296;
+		IMethod methodnewslot282;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodnewslot296 = ModelTestUtils.getAssertMethod( moduleChilds, "newslot", 0 );
+			methodnewslot282 = ModelTestUtils.getAssertMethod( moduleChilds, "newslot", 0 );
 			//Class test
 			{
-			IType classC297;
-				IModelElement[] methodnewslot296Childs = methodnewslot296.getChildren();
-				classC297 = ModelTestUtils.getAssertClass( methodnewslot296Childs, "C" );
+			IType classC283;
+				IModelElement[] methodnewslot282Childs = methodnewslot282.getChildren();
+				classC283 = ModelTestUtils.getAssertClass( methodnewslot282Childs, "C" );
 				//Function test:__new__
 				{
-				IMethod method__new__298;
-					IModelElement[] classC297Childs = classC297.getChildren();
-					method__new__298 = ModelTestUtils.getAssertMethod( classC297Childs, "__new__", 1 );
-					ModelTestUtils.assertParameterNames( method__new__298, new String[] {"cls"} );
-				}
-				{
-					IModelElement[] classC297Childs = classC297.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC297Childs, "foo");
+				IMethod method__new__284;
+					IModelElement[] classC283Childs = classC283.getChildren();
+					method__new__284 = ModelTestUtils.getAssertMethod( classC283Childs, "__new__", 1 );
+					ModelTestUtils.assertParameterNames( method__new__284, new String[] {"cls"} );
 				}
 				//Function test:__init__
 				{
-				IMethod method__init__300;
-					IModelElement[] classC297Childs = classC297.getChildren();
-					method__init__300 = ModelTestUtils.getAssertMethod( classC297Childs, "__init__", 1 );
-					ModelTestUtils.assertParameterNames( method__init__300, new String[] {"self"} );
-				}
-				{
-					IModelElement[] classC297Childs = classC297.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC297Childs, "foo");
+				IMethod method__init__285;
+					IModelElement[] classC283Childs = classC283.getChildren();
+					method__init__285 = ModelTestUtils.getAssertMethod( classC283Childs, "__init__", 1 );
+					ModelTestUtils.assertParameterNames( method__init__285, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classD302;
-				IModelElement[] methodnewslot296Childs = methodnewslot296.getChildren();
-				classD302 = ModelTestUtils.getAssertClass( methodnewslot296Childs, "D" );
+			IType classD286;
+				IModelElement[] methodnewslot282Childs = methodnewslot282.getChildren();
+				classD286 = ModelTestUtils.getAssertClass( methodnewslot282Childs, "D" );
 			}
 		}
 		//Function test:altmro
 		{
-		IMethod methodaltmro303;
+		IMethod methodaltmro287;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodaltmro303 = ModelTestUtils.getAssertMethod( moduleChilds, "altmro", 0 );
+			methodaltmro287 = ModelTestUtils.getAssertMethod( moduleChilds, "altmro", 0 );
 			//Class test
 			{
-			IType classA304;
-				IModelElement[] methodaltmro303Childs = methodaltmro303.getChildren();
-				classA304 = ModelTestUtils.getAssertClass( methodaltmro303Childs, "A" );
+			IType classA288;
+				IModelElement[] methodaltmro287Childs = methodaltmro287.getChildren();
+				classA288 = ModelTestUtils.getAssertClass( methodaltmro287Childs, "A" );
 				//Function test:f
 				{
-				IMethod methodf305;
-					IModelElement[] classA304Childs = classA304.getChildren();
-					methodf305 = ModelTestUtils.getAssertMethod( classA304Childs, "f", 1 );
-					ModelTestUtils.assertParameterNames( methodf305, new String[] {"self"} );
+				IMethod methodf289;
+					IModelElement[] classA288Childs = classA288.getChildren();
+					methodf289 = ModelTestUtils.getAssertMethod( classA288Childs, "f", 1 );
+					ModelTestUtils.assertParameterNames( methodf289, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classB306;
-				IModelElement[] methodaltmro303Childs = methodaltmro303.getChildren();
-				classB306 = ModelTestUtils.getAssertClass( methodaltmro303Childs, "B" );
+			IType classB290;
+				IModelElement[] methodaltmro287Childs = methodaltmro287.getChildren();
+				classB290 = ModelTestUtils.getAssertClass( methodaltmro287Childs, "B" );
 			}
 			//Class test
 			{
-			IType classC307;
-				IModelElement[] methodaltmro303Childs = methodaltmro303.getChildren();
-				classC307 = ModelTestUtils.getAssertClass( methodaltmro303Childs, "C" );
+			IType classC291;
+				IModelElement[] methodaltmro287Childs = methodaltmro287.getChildren();
+				classC291 = ModelTestUtils.getAssertClass( methodaltmro287Childs, "C" );
 				//Function test:f
 				{
-				IMethod methodf308;
-					IModelElement[] classC307Childs = classC307.getChildren();
-					methodf308 = ModelTestUtils.getAssertMethod( classC307Childs, "f", 1 );
-					ModelTestUtils.assertParameterNames( methodf308, new String[] {"self"} );
+				IMethod methodf292;
+					IModelElement[] classC291Childs = classC291.getChildren();
+					methodf292 = ModelTestUtils.getAssertMethod( classC291Childs, "f", 1 );
+					ModelTestUtils.assertParameterNames( methodf292, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classD309;
-				IModelElement[] methodaltmro303Childs = methodaltmro303.getChildren();
-				classD309 = ModelTestUtils.getAssertClass( methodaltmro303Childs, "D" );
+			IType classD293;
+				IModelElement[] methodaltmro287Childs = methodaltmro287.getChildren();
+				classD293 = ModelTestUtils.getAssertClass( methodaltmro287Childs, "D" );
 			}
 			//Class test
 			{
-			IType classPerverseMetaType310;
-				IModelElement[] methodaltmro303Childs = methodaltmro303.getChildren();
-				classPerverseMetaType310 = ModelTestUtils.getAssertClass( methodaltmro303Childs, "PerverseMetaType" );
+			IType classPerverseMetaType294;
+				IModelElement[] methodaltmro287Childs = methodaltmro287.getChildren();
+				classPerverseMetaType294 = ModelTestUtils.getAssertClass( methodaltmro287Childs, "PerverseMetaType" );
 				//Function test:mro
 				{
-				IMethod methodmro311;
-					IModelElement[] classPerverseMetaType310Childs = classPerverseMetaType310.getChildren();
-					methodmro311 = ModelTestUtils.getAssertMethod( classPerverseMetaType310Childs, "mro", 1 );
-					ModelTestUtils.assertParameterNames( methodmro311, new String[] {"cls"} );
+				IMethod methodmro295;
+					IModelElement[] classPerverseMetaType294Childs = classPerverseMetaType294.getChildren();
+					methodmro295 = ModelTestUtils.getAssertMethod( classPerverseMetaType294Childs, "mro", 1 );
+					ModelTestUtils.assertParameterNames( methodmro295, new String[] {"cls"} );
 				}
 			}
 			//Class test
 			{
-			IType classX312;
-				IModelElement[] methodaltmro303Childs = methodaltmro303.getChildren();
-				classX312 = ModelTestUtils.getAssertClass( methodaltmro303Childs, "X" );
+			IType classX296;
+				IModelElement[] methodaltmro287Childs = methodaltmro287.getChildren();
+				classX296 = ModelTestUtils.getAssertClass( methodaltmro287Childs, "X" );
 			}
 		}
 		//Function test:overloading
 		{
-		IMethod methodoverloading313;
+		IMethod methodoverloading297;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodoverloading313 = ModelTestUtils.getAssertMethod( moduleChilds, "overloading", 0 );
+			methodoverloading297 = ModelTestUtils.getAssertMethod( moduleChilds, "overloading", 0 );
 			//Class test
 			{
-			IType classB314;
-				IModelElement[] methodoverloading313Childs = methodoverloading313.getChildren();
-				classB314 = ModelTestUtils.getAssertClass( methodoverloading313Childs, "B" );
+			IType classB298;
+				IModelElement[] methodoverloading297Childs = methodoverloading297.getChildren();
+				classB298 = ModelTestUtils.getAssertClass( methodoverloading297Childs, "B" );
 			}
 			//Class test
 			{
-			IType classC315;
-				IModelElement[] methodoverloading313Childs = methodoverloading313.getChildren();
-				classC315 = ModelTestUtils.getAssertClass( methodoverloading313Childs, "C" );
+			IType classC299;
+				IModelElement[] methodoverloading297Childs = methodoverloading297.getChildren();
+				classC299 = ModelTestUtils.getAssertClass( methodoverloading297Childs, "C" );
 				//Function test:__getattr__
 				{
-				IMethod method__getattr__316;
-					IModelElement[] classC315Childs = classC315.getChildren();
-					method__getattr__316 = ModelTestUtils.getAssertMethod( classC315Childs, "__getattr__", 2 );
-					ModelTestUtils.assertParameterNames( method__getattr__316, new String[] {"self", "name"} );
+				IMethod method__getattr__300;
+					IModelElement[] classC299Childs = classC299.getChildren();
+					method__getattr__300 = ModelTestUtils.getAssertMethod( classC299Childs, "__getattr__", 2 );
+					ModelTestUtils.assertParameterNames( method__getattr__300, new String[] {"self", "name"} );
 				}
 				//Function test:__setattr__
 				{
-				IMethod method__setattr__317;
-					IModelElement[] classC315Childs = classC315.getChildren();
-					method__setattr__317 = ModelTestUtils.getAssertMethod( classC315Childs, "__setattr__", 3 );
-					ModelTestUtils.assertParameterNames( method__setattr__317, new String[] {"self", "name", "value"} );
-				}
-				{
-					IModelElement[] classC315Childs = classC315.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC315Childs, "setattr");
+				IMethod method__setattr__301;
+					IModelElement[] classC299Childs = classC299.getChildren();
+					method__setattr__301 = ModelTestUtils.getAssertMethod( classC299Childs, "__setattr__", 3 );
+					ModelTestUtils.assertParameterNames( method__setattr__301, new String[] {"self", "name", "value"} );
 				}
 				//Function test:__delattr__
 				{
-				IMethod method__delattr__319;
-					IModelElement[] classC315Childs = classC315.getChildren();
-					method__delattr__319 = ModelTestUtils.getAssertMethod( classC315Childs, "__delattr__", 2 );
-					ModelTestUtils.assertParameterNames( method__delattr__319, new String[] {"self", "name"} );
-				}
-				{
-					IModelElement[] classC315Childs = classC315.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC315Childs, "delattr");
+				IMethod method__delattr__302;
+					IModelElement[] classC299Childs = classC299.getChildren();
+					method__delattr__302 = ModelTestUtils.getAssertMethod( classC299Childs, "__delattr__", 2 );
+					ModelTestUtils.assertParameterNames( method__delattr__302, new String[] {"self", "name"} );
 				}
 				//Function test:__getitem__
 				{
-				IMethod method__getitem__321;
-					IModelElement[] classC315Childs = classC315.getChildren();
-					method__getitem__321 = ModelTestUtils.getAssertMethod( classC315Childs, "__getitem__", 2 );
-					ModelTestUtils.assertParameterNames( method__getitem__321, new String[] {"self", "key"} );
+				IMethod method__getitem__303;
+					IModelElement[] classC299Childs = classC299.getChildren();
+					method__getitem__303 = ModelTestUtils.getAssertMethod( classC299Childs, "__getitem__", 2 );
+					ModelTestUtils.assertParameterNames( method__getitem__303, new String[] {"self", "key"} );
 				}
 				//Function test:__setitem__
 				{
-				IMethod method__setitem__322;
-					IModelElement[] classC315Childs = classC315.getChildren();
-					method__setitem__322 = ModelTestUtils.getAssertMethod( classC315Childs, "__setitem__", 3 );
-					ModelTestUtils.assertParameterNames( method__setitem__322, new String[] {"self", "key", "value"} );
-				}
-				{
-					IModelElement[] classC315Childs = classC315.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC315Childs, "setitem");
+				IMethod method__setitem__304;
+					IModelElement[] classC299Childs = classC299.getChildren();
+					method__setitem__304 = ModelTestUtils.getAssertMethod( classC299Childs, "__setitem__", 3 );
+					ModelTestUtils.assertParameterNames( method__setitem__304, new String[] {"self", "key", "value"} );
 				}
 				//Function test:__delitem__
 				{
-				IMethod method__delitem__324;
-					IModelElement[] classC315Childs = classC315.getChildren();
-					method__delitem__324 = ModelTestUtils.getAssertMethod( classC315Childs, "__delitem__", 2 );
-					ModelTestUtils.assertParameterNames( method__delitem__324, new String[] {"self", "key"} );
-				}
-				{
-					IModelElement[] classC315Childs = classC315.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC315Childs, "delitem");
+				IMethod method__delitem__305;
+					IModelElement[] classC299Childs = classC299.getChildren();
+					method__delitem__305 = ModelTestUtils.getAssertMethod( classC299Childs, "__delitem__", 2 );
+					ModelTestUtils.assertParameterNames( method__delitem__305, new String[] {"self", "key"} );
 				}
 				//Function test:__getslice__
 				{
-				IMethod method__getslice__326;
-					IModelElement[] classC315Childs = classC315.getChildren();
-					method__getslice__326 = ModelTestUtils.getAssertMethod( classC315Childs, "__getslice__", 3 );
-					ModelTestUtils.assertParameterNames( method__getslice__326, new String[] {"self", "i", "j"} );
+				IMethod method__getslice__306;
+					IModelElement[] classC299Childs = classC299.getChildren();
+					method__getslice__306 = ModelTestUtils.getAssertMethod( classC299Childs, "__getslice__", 3 );
+					ModelTestUtils.assertParameterNames( method__getslice__306, new String[] {"self", "i", "j"} );
 				}
 				//Function test:__setslice__
 				{
-				IMethod method__setslice__327;
-					IModelElement[] classC315Childs = classC315.getChildren();
-					method__setslice__327 = ModelTestUtils.getAssertMethod( classC315Childs, "__setslice__", 4 );
-					ModelTestUtils.assertParameterNames( method__setslice__327, new String[] {"self", "i", "j", "value"} );
-				}
-				{
-					IModelElement[] classC315Childs = classC315.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC315Childs, "setslice");
+				IMethod method__setslice__307;
+					IModelElement[] classC299Childs = classC299.getChildren();
+					method__setslice__307 = ModelTestUtils.getAssertMethod( classC299Childs, "__setslice__", 4 );
+					ModelTestUtils.assertParameterNames( method__setslice__307, new String[] {"self", "i", "j", "value"} );
 				}
 				//Function test:__delslice__
 				{
-				IMethod method__delslice__329;
-					IModelElement[] classC315Childs = classC315.getChildren();
-					method__delslice__329 = ModelTestUtils.getAssertMethod( classC315Childs, "__delslice__", 3 );
-					ModelTestUtils.assertParameterNames( method__delslice__329, new String[] {"self", "i", "j"} );
-				}
-				{
-					IModelElement[] classC315Childs = classC315.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC315Childs, "delslice");
+				IMethod method__delslice__308;
+					IModelElement[] classC299Childs = classC299.getChildren();
+					method__delslice__308 = ModelTestUtils.getAssertMethod( classC299Childs, "__delslice__", 3 );
+					ModelTestUtils.assertParameterNames( method__delslice__308, new String[] {"self", "i", "j"} );
 				}
 			}
 		}
 		//Function test:methods
 		{
-		IMethod methodmethods331;
+		IMethod methodmethods309;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodmethods331 = ModelTestUtils.getAssertMethod( moduleChilds, "methods", 0 );
+			methodmethods309 = ModelTestUtils.getAssertMethod( moduleChilds, "methods", 0 );
 			//Class test
 			{
-			IType classC332;
-				IModelElement[] methodmethods331Childs = methodmethods331.getChildren();
-				classC332 = ModelTestUtils.getAssertClass( methodmethods331Childs, "C" );
+			IType classC310;
+				IModelElement[] methodmethods309Childs = methodmethods309.getChildren();
+				classC310 = ModelTestUtils.getAssertClass( methodmethods309Childs, "C" );
 				//Function test:__init__
 				{
-				IMethod method__init__333;
-					IModelElement[] classC332Childs = classC332.getChildren();
-					method__init__333 = ModelTestUtils.getAssertMethod( classC332Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__333, new String[] {"self", "x"} );
-				}
-				{
-					IModelElement[] classC332Childs = classC332.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC332Childs, "x");
+				IMethod method__init__311;
+					IModelElement[] classC310Childs = classC310.getChildren();
+					method__init__311 = ModelTestUtils.getAssertMethod( classC310Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__311, new String[] {"self", "x"} );
 				}
 				//Function test:foo
 				{
-				IMethod methodfoo335;
-					IModelElement[] classC332Childs = classC332.getChildren();
-					methodfoo335 = ModelTestUtils.getAssertMethod( classC332Childs, "foo", 1 );
-					ModelTestUtils.assertParameterNames( methodfoo335, new String[] {"self"} );
+				IMethod methodfoo312;
+					IModelElement[] classC310Childs = classC310.getChildren();
+					methodfoo312 = ModelTestUtils.getAssertMethod( classC310Childs, "foo", 1 );
+					ModelTestUtils.assertParameterNames( methodfoo312, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classD336;
-				IModelElement[] methodmethods331Childs = methodmethods331.getChildren();
-				classD336 = ModelTestUtils.getAssertClass( methodmethods331Childs, "D" );
+			IType classD313;
+				IModelElement[] methodmethods309Childs = methodmethods309.getChildren();
+				classD313 = ModelTestUtils.getAssertClass( methodmethods309Childs, "D" );
 			}
 			//Class test
 			{
-			IType classE337;
-				IModelElement[] methodmethods331Childs = methodmethods331.getChildren();
-				classE337 = ModelTestUtils.getAssertClass( methodmethods331Childs, "E" );
+			IType classE314;
+				IModelElement[] methodmethods309Childs = methodmethods309.getChildren();
+				classE314 = ModelTestUtils.getAssertClass( methodmethods309Childs, "E" );
 			}
 		}
 		//Function test:specials
 		{
-		IMethod methodspecials338;
+		IMethod methodspecials315;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodspecials338 = ModelTestUtils.getAssertMethod( moduleChilds, "specials", 0 );
+			methodspecials315 = ModelTestUtils.getAssertMethod( moduleChilds, "specials", 0 );
 			//Class test
 			{
-			IType classC339;
-				IModelElement[] methodspecials338Childs = methodspecials338.getChildren();
-				classC339 = ModelTestUtils.getAssertClass( methodspecials338Childs, "C" );
+			IType classC316;
+				IModelElement[] methodspecials315Childs = methodspecials315.getChildren();
+				classC316 = ModelTestUtils.getAssertClass( methodspecials315Childs, "C" );
 				//Function test:__getitem__
 				{
-				IMethod method__getitem__340;
-					IModelElement[] classC339Childs = classC339.getChildren();
-					method__getitem__340 = ModelTestUtils.getAssertMethod( classC339Childs, "__getitem__", 2 );
-					ModelTestUtils.assertParameterNames( method__getitem__340, new String[] {"self", "i"} );
+				IMethod method__getitem__317;
+					IModelElement[] classC316Childs = classC316.getChildren();
+					method__getitem__317 = ModelTestUtils.getAssertMethod( classC316Childs, "__getitem__", 2 );
+					ModelTestUtils.assertParameterNames( method__getitem__317, new String[] {"self", "i"} );
 				}
 			}
 			//Class test
 			{
-			IType classD341;
-				IModelElement[] methodspecials338Childs = methodspecials338.getChildren();
-				classD341 = ModelTestUtils.getAssertClass( methodspecials338Childs, "D" );
+			IType classD318;
+				IModelElement[] methodspecials315Childs = methodspecials315.getChildren();
+				classD318 = ModelTestUtils.getAssertClass( methodspecials315Childs, "D" );
 				//Function test:__getitem__
 				{
-				IMethod method__getitem__342;
-					IModelElement[] classD341Childs = classD341.getChildren();
-					method__getitem__342 = ModelTestUtils.getAssertMethod( classD341Childs, "__getitem__", 2 );
-					ModelTestUtils.assertParameterNames( method__getitem__342, new String[] {"self", "i"} );
+				IMethod method__getitem__319;
+					IModelElement[] classD318Childs = classD318.getChildren();
+					method__getitem__319 = ModelTestUtils.getAssertMethod( classD318Childs, "__getitem__", 2 );
+					ModelTestUtils.assertParameterNames( method__getitem__319, new String[] {"self", "i"} );
 				}
 			}
 			//Class test
 			{
-			IType classProxy343;
-				IModelElement[] methodspecials338Childs = methodspecials338.getChildren();
-				classProxy343 = ModelTestUtils.getAssertClass( methodspecials338Childs, "Proxy" );
+			IType classProxy320;
+				IModelElement[] methodspecials315Childs = methodspecials315.getChildren();
+				classProxy320 = ModelTestUtils.getAssertClass( methodspecials315Childs, "Proxy" );
 				//Function test:__init__
 				{
-				IMethod method__init__344;
-					IModelElement[] classProxy343Childs = classProxy343.getChildren();
-					method__init__344 = ModelTestUtils.getAssertMethod( classProxy343Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__344, new String[] {"self", "x"} );
+				IMethod method__init__321;
+					IModelElement[] classProxy320Childs = classProxy320.getChildren();
+					method__init__321 = ModelTestUtils.getAssertMethod( classProxy320Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__321, new String[] {"self", "x"} );
 				}
 				//Function test:__nonzero__
 				{
-				IMethod method__nonzero__345;
-					IModelElement[] classProxy343Childs = classProxy343.getChildren();
-					method__nonzero__345 = ModelTestUtils.getAssertMethod( classProxy343Childs, "__nonzero__", 1 );
-					ModelTestUtils.assertParameterNames( method__nonzero__345, new String[] {"self"} );
+				IMethod method__nonzero__322;
+					IModelElement[] classProxy320Childs = classProxy320.getChildren();
+					method__nonzero__322 = ModelTestUtils.getAssertMethod( classProxy320Childs, "__nonzero__", 1 );
+					ModelTestUtils.assertParameterNames( method__nonzero__322, new String[] {"self"} );
 				}
 				//Function test:__hash__
 				{
-				IMethod method__hash__346;
-					IModelElement[] classProxy343Childs = classProxy343.getChildren();
-					method__hash__346 = ModelTestUtils.getAssertMethod( classProxy343Childs, "__hash__", 1 );
-					ModelTestUtils.assertParameterNames( method__hash__346, new String[] {"self"} );
+				IMethod method__hash__323;
+					IModelElement[] classProxy320Childs = classProxy320.getChildren();
+					method__hash__323 = ModelTestUtils.getAssertMethod( classProxy320Childs, "__hash__", 1 );
+					ModelTestUtils.assertParameterNames( method__hash__323, new String[] {"self"} );
 				}
 				//Function test:__eq__
 				{
-				IMethod method__eq__347;
-					IModelElement[] classProxy343Childs = classProxy343.getChildren();
-					method__eq__347 = ModelTestUtils.getAssertMethod( classProxy343Childs, "__eq__", 2 );
-					ModelTestUtils.assertParameterNames( method__eq__347, new String[] {"self", "other"} );
+				IMethod method__eq__324;
+					IModelElement[] classProxy320Childs = classProxy320.getChildren();
+					method__eq__324 = ModelTestUtils.getAssertMethod( classProxy320Childs, "__eq__", 2 );
+					ModelTestUtils.assertParameterNames( method__eq__324, new String[] {"self", "other"} );
 				}
 				//Function test:__ne__
 				{
-				IMethod method__ne__348;
-					IModelElement[] classProxy343Childs = classProxy343.getChildren();
-					method__ne__348 = ModelTestUtils.getAssertMethod( classProxy343Childs, "__ne__", 2 );
-					ModelTestUtils.assertParameterNames( method__ne__348, new String[] {"self", "other"} );
+				IMethod method__ne__325;
+					IModelElement[] classProxy320Childs = classProxy320.getChildren();
+					method__ne__325 = ModelTestUtils.getAssertMethod( classProxy320Childs, "__ne__", 2 );
+					ModelTestUtils.assertParameterNames( method__ne__325, new String[] {"self", "other"} );
 				}
 				//Function test:__cmp__
 				{
-				IMethod method__cmp__349;
-					IModelElement[] classProxy343Childs = classProxy343.getChildren();
-					method__cmp__349 = ModelTestUtils.getAssertMethod( classProxy343Childs, "__cmp__", 2 );
-					ModelTestUtils.assertParameterNames( method__cmp__349, new String[] {"self", "other"} );
+				IMethod method__cmp__326;
+					IModelElement[] classProxy320Childs = classProxy320.getChildren();
+					method__cmp__326 = ModelTestUtils.getAssertMethod( classProxy320Childs, "__cmp__", 2 );
+					ModelTestUtils.assertParameterNames( method__cmp__326, new String[] {"self", "other"} );
 				}
 				//Function test:__str__
 				{
-				IMethod method__str__350;
-					IModelElement[] classProxy343Childs = classProxy343.getChildren();
-					method__str__350 = ModelTestUtils.getAssertMethod( classProxy343Childs, "__str__", 1 );
-					ModelTestUtils.assertParameterNames( method__str__350, new String[] {"self"} );
+				IMethod method__str__327;
+					IModelElement[] classProxy320Childs = classProxy320.getChildren();
+					method__str__327 = ModelTestUtils.getAssertMethod( classProxy320Childs, "__str__", 1 );
+					ModelTestUtils.assertParameterNames( method__str__327, new String[] {"self"} );
 				}
 				//Function test:__repr__
 				{
-				IMethod method__repr__351;
-					IModelElement[] classProxy343Childs = classProxy343.getChildren();
-					method__repr__351 = ModelTestUtils.getAssertMethod( classProxy343Childs, "__repr__", 1 );
-					ModelTestUtils.assertParameterNames( method__repr__351, new String[] {"self"} );
+				IMethod method__repr__328;
+					IModelElement[] classProxy320Childs = classProxy320.getChildren();
+					method__repr__328 = ModelTestUtils.getAssertMethod( classProxy320Childs, "__repr__", 1 );
+					ModelTestUtils.assertParameterNames( method__repr__328, new String[] {"self"} );
 				}
 				//Function test:__contains__
 				{
-				IMethod method__contains__352;
-					IModelElement[] classProxy343Childs = classProxy343.getChildren();
-					method__contains__352 = ModelTestUtils.getAssertMethod( classProxy343Childs, "__contains__", 2 );
-					ModelTestUtils.assertParameterNames( method__contains__352, new String[] {"self", "value"} );
+				IMethod method__contains__329;
+					IModelElement[] classProxy320Childs = classProxy320.getChildren();
+					method__contains__329 = ModelTestUtils.getAssertMethod( classProxy320Childs, "__contains__", 2 );
+					ModelTestUtils.assertParameterNames( method__contains__329, new String[] {"self", "value"} );
 				}
 			}
 			//Class test
 			{
-			IType classDProxy353;
-				IModelElement[] methodspecials338Childs = methodspecials338.getChildren();
-				classDProxy353 = ModelTestUtils.getAssertClass( methodspecials338Childs, "DProxy" );
+			IType classDProxy330;
+				IModelElement[] methodspecials315Childs = methodspecials315.getChildren();
+				classDProxy330 = ModelTestUtils.getAssertClass( methodspecials315Childs, "DProxy" );
 				//Function test:__init__
 				{
-				IMethod method__init__354;
-					IModelElement[] classDProxy353Childs = classDProxy353.getChildren();
-					method__init__354 = ModelTestUtils.getAssertMethod( classDProxy353Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__354, new String[] {"self", "x"} );
+				IMethod method__init__331;
+					IModelElement[] classDProxy330Childs = classDProxy330.getChildren();
+					method__init__331 = ModelTestUtils.getAssertMethod( classDProxy330Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__331, new String[] {"self", "x"} );
 				}
 				//Function test:__nonzero__
 				{
-				IMethod method__nonzero__355;
-					IModelElement[] classDProxy353Childs = classDProxy353.getChildren();
-					method__nonzero__355 = ModelTestUtils.getAssertMethod( classDProxy353Childs, "__nonzero__", 1 );
-					ModelTestUtils.assertParameterNames( method__nonzero__355, new String[] {"self"} );
+				IMethod method__nonzero__332;
+					IModelElement[] classDProxy330Childs = classDProxy330.getChildren();
+					method__nonzero__332 = ModelTestUtils.getAssertMethod( classDProxy330Childs, "__nonzero__", 1 );
+					ModelTestUtils.assertParameterNames( method__nonzero__332, new String[] {"self"} );
 				}
 				//Function test:__hash__
 				{
-				IMethod method__hash__356;
-					IModelElement[] classDProxy353Childs = classDProxy353.getChildren();
-					method__hash__356 = ModelTestUtils.getAssertMethod( classDProxy353Childs, "__hash__", 1 );
-					ModelTestUtils.assertParameterNames( method__hash__356, new String[] {"self"} );
+				IMethod method__hash__333;
+					IModelElement[] classDProxy330Childs = classDProxy330.getChildren();
+					method__hash__333 = ModelTestUtils.getAssertMethod( classDProxy330Childs, "__hash__", 1 );
+					ModelTestUtils.assertParameterNames( method__hash__333, new String[] {"self"} );
 				}
 				//Function test:__eq__
 				{
-				IMethod method__eq__357;
-					IModelElement[] classDProxy353Childs = classDProxy353.getChildren();
-					method__eq__357 = ModelTestUtils.getAssertMethod( classDProxy353Childs, "__eq__", 2 );
-					ModelTestUtils.assertParameterNames( method__eq__357, new String[] {"self", "other"} );
+				IMethod method__eq__334;
+					IModelElement[] classDProxy330Childs = classDProxy330.getChildren();
+					method__eq__334 = ModelTestUtils.getAssertMethod( classDProxy330Childs, "__eq__", 2 );
+					ModelTestUtils.assertParameterNames( method__eq__334, new String[] {"self", "other"} );
 				}
 				//Function test:__ne__
 				{
-				IMethod method__ne__358;
-					IModelElement[] classDProxy353Childs = classDProxy353.getChildren();
-					method__ne__358 = ModelTestUtils.getAssertMethod( classDProxy353Childs, "__ne__", 2 );
-					ModelTestUtils.assertParameterNames( method__ne__358, new String[] {"self", "other"} );
+				IMethod method__ne__335;
+					IModelElement[] classDProxy330Childs = classDProxy330.getChildren();
+					method__ne__335 = ModelTestUtils.getAssertMethod( classDProxy330Childs, "__ne__", 2 );
+					ModelTestUtils.assertParameterNames( method__ne__335, new String[] {"self", "other"} );
 				}
 				//Function test:__cmp__
 				{
-				IMethod method__cmp__359;
-					IModelElement[] classDProxy353Childs = classDProxy353.getChildren();
-					method__cmp__359 = ModelTestUtils.getAssertMethod( classDProxy353Childs, "__cmp__", 2 );
-					ModelTestUtils.assertParameterNames( method__cmp__359, new String[] {"self", "other"} );
+				IMethod method__cmp__336;
+					IModelElement[] classDProxy330Childs = classDProxy330.getChildren();
+					method__cmp__336 = ModelTestUtils.getAssertMethod( classDProxy330Childs, "__cmp__", 2 );
+					ModelTestUtils.assertParameterNames( method__cmp__336, new String[] {"self", "other"} );
 				}
 				//Function test:__str__
 				{
-				IMethod method__str__360;
-					IModelElement[] classDProxy353Childs = classDProxy353.getChildren();
-					method__str__360 = ModelTestUtils.getAssertMethod( classDProxy353Childs, "__str__", 1 );
-					ModelTestUtils.assertParameterNames( method__str__360, new String[] {"self"} );
+				IMethod method__str__337;
+					IModelElement[] classDProxy330Childs = classDProxy330.getChildren();
+					method__str__337 = ModelTestUtils.getAssertMethod( classDProxy330Childs, "__str__", 1 );
+					ModelTestUtils.assertParameterNames( method__str__337, new String[] {"self"} );
 				}
 				//Function test:__repr__
 				{
-				IMethod method__repr__361;
-					IModelElement[] classDProxy353Childs = classDProxy353.getChildren();
-					method__repr__361 = ModelTestUtils.getAssertMethod( classDProxy353Childs, "__repr__", 1 );
-					ModelTestUtils.assertParameterNames( method__repr__361, new String[] {"self"} );
+				IMethod method__repr__338;
+					IModelElement[] classDProxy330Childs = classDProxy330.getChildren();
+					method__repr__338 = ModelTestUtils.getAssertMethod( classDProxy330Childs, "__repr__", 1 );
+					ModelTestUtils.assertParameterNames( method__repr__338, new String[] {"self"} );
 				}
 				//Function test:__contains__
 				{
-				IMethod method__contains__362;
-					IModelElement[] classDProxy353Childs = classDProxy353.getChildren();
-					method__contains__362 = ModelTestUtils.getAssertMethod( classDProxy353Childs, "__contains__", 2 );
-					ModelTestUtils.assertParameterNames( method__contains__362, new String[] {"self", "value"} );
+				IMethod method__contains__339;
+					IModelElement[] classDProxy330Childs = classDProxy330.getChildren();
+					method__contains__339 = ModelTestUtils.getAssertMethod( classDProxy330Childs, "__contains__", 2 );
+					ModelTestUtils.assertParameterNames( method__contains__339, new String[] {"self", "value"} );
 				}
 			}
 			//Function test:unsafecmp
 			{
-			IMethod methodunsafecmp363;
-				IModelElement[] methodspecials338Childs = methodspecials338.getChildren();
-				methodunsafecmp363 = ModelTestUtils.getAssertMethod( methodspecials338Childs, "unsafecmp", 2 );
-				ModelTestUtils.assertParameterNames( methodunsafecmp363, new String[] {"a", "b"} );
+			IMethod methodunsafecmp340;
+				IModelElement[] methodspecials315Childs = methodspecials315.getChildren();
+				methodunsafecmp340 = ModelTestUtils.getAssertMethod( methodspecials315Childs, "unsafecmp", 2 );
+				ModelTestUtils.assertParameterNames( methodunsafecmp340, new String[] {"a", "b"} );
 			}
 			//Class test
 			{
-			IType classLetter364;
-				IModelElement[] methodspecials338Childs = methodspecials338.getChildren();
-				classLetter364 = ModelTestUtils.getAssertClass( methodspecials338Childs, "Letter" );
+			IType classLetter341;
+				IModelElement[] methodspecials315Childs = methodspecials315.getChildren();
+				classLetter341 = ModelTestUtils.getAssertClass( methodspecials315Childs, "Letter" );
 				//Function test:__new__
 				{
-				IMethod method__new__365;
-					IModelElement[] classLetter364Childs = classLetter364.getChildren();
-					method__new__365 = ModelTestUtils.getAssertMethod( classLetter364Childs, "__new__", 2 );
-					ModelTestUtils.assertParameterNames( method__new__365, new String[] {"cls", "letter"} );
+				IMethod method__new__342;
+					IModelElement[] classLetter341Childs = classLetter341.getChildren();
+					method__new__342 = ModelTestUtils.getAssertMethod( classLetter341Childs, "__new__", 2 );
+					ModelTestUtils.assertParameterNames( method__new__342, new String[] {"cls", "letter"} );
 				}
 				//Function test:__str__
 				{
-				IMethod method__str__366;
-					IModelElement[] classLetter364Childs = classLetter364.getChildren();
-					method__str__366 = ModelTestUtils.getAssertMethod( classLetter364Childs, "__str__", 1 );
-					ModelTestUtils.assertParameterNames( method__str__366, new String[] {"self"} );
+				IMethod method__str__343;
+					IModelElement[] classLetter341Childs = classLetter341.getChildren();
+					method__str__343 = ModelTestUtils.getAssertMethod( classLetter341Childs, "__str__", 1 );
+					ModelTestUtils.assertParameterNames( method__str__343, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:weakrefs
 		{
-		IMethod methodweakrefs367;
+		IMethod methodweakrefs344;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodweakrefs367 = ModelTestUtils.getAssertMethod( moduleChilds, "weakrefs", 0 );
+			methodweakrefs344 = ModelTestUtils.getAssertMethod( moduleChilds, "weakrefs", 0 );
 			//Class test
 			{
-			IType classC368;
-				IModelElement[] methodweakrefs367Childs = methodweakrefs367.getChildren();
-				classC368 = ModelTestUtils.getAssertClass( methodweakrefs367Childs, "C" );
+			IType classC345;
+				IModelElement[] methodweakrefs344Childs = methodweakrefs344.getChildren();
+				classC345 = ModelTestUtils.getAssertClass( methodweakrefs344Childs, "C" );
 			}
 			//Class test
 			{
-			IType classNoWeak369;
-				IModelElement[] methodweakrefs367Childs = methodweakrefs367.getChildren();
-				classNoWeak369 = ModelTestUtils.getAssertClass( methodweakrefs367Childs, "NoWeak" );
+			IType classNoWeak346;
+				IModelElement[] methodweakrefs344Childs = methodweakrefs344.getChildren();
+				classNoWeak346 = ModelTestUtils.getAssertClass( methodweakrefs344Childs, "NoWeak" );
 			}
 			//Class test
 			{
-			IType classWeak370;
-				IModelElement[] methodweakrefs367Childs = methodweakrefs367.getChildren();
-				classWeak370 = ModelTestUtils.getAssertClass( methodweakrefs367Childs, "Weak" );
+			IType classWeak347;
+				IModelElement[] methodweakrefs344Childs = methodweakrefs344.getChildren();
+				classWeak347 = ModelTestUtils.getAssertClass( methodweakrefs344Childs, "Weak" );
 			}
 		}
 		//Function test:properties
 		{
-		IMethod methodproperties371;
+		IMethod methodproperties348;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodproperties371 = ModelTestUtils.getAssertMethod( moduleChilds, "properties", 0 );
+			methodproperties348 = ModelTestUtils.getAssertMethod( moduleChilds, "properties", 0 );
 			//Class test
 			{
-			IType classC372;
-				IModelElement[] methodproperties371Childs = methodproperties371.getChildren();
-				classC372 = ModelTestUtils.getAssertClass( methodproperties371Childs, "C" );
+			IType classC349;
+				IModelElement[] methodproperties348Childs = methodproperties348.getChildren();
+				classC349 = ModelTestUtils.getAssertClass( methodproperties348Childs, "C" );
 				//Function test:getx
 				{
-				IMethod methodgetx373;
-					IModelElement[] classC372Childs = classC372.getChildren();
-					methodgetx373 = ModelTestUtils.getAssertMethod( classC372Childs, "getx", 1 );
-					ModelTestUtils.assertParameterNames( methodgetx373, new String[] {"self"} );
+				IMethod methodgetx350;
+					IModelElement[] classC349Childs = classC349.getChildren();
+					methodgetx350 = ModelTestUtils.getAssertMethod( classC349Childs, "getx", 1 );
+					ModelTestUtils.assertParameterNames( methodgetx350, new String[] {"self"} );
 				}
 				//Function test:setx
 				{
-				IMethod methodsetx374;
-					IModelElement[] classC372Childs = classC372.getChildren();
-					methodsetx374 = ModelTestUtils.getAssertMethod( classC372Childs, "setx", 2 );
-					ModelTestUtils.assertParameterNames( methodsetx374, new String[] {"self", "value"} );
-				}
-				{
-					IModelElement[] classC372Childs = classC372.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC372Childs, "__x");
+				IMethod methodsetx351;
+					IModelElement[] classC349Childs = classC349.getChildren();
+					methodsetx351 = ModelTestUtils.getAssertMethod( classC349Childs, "setx", 2 );
+					ModelTestUtils.assertParameterNames( methodsetx351, new String[] {"self", "value"} );
 				}
 				//Function test:delx
 				{
-				IMethod methoddelx376;
-					IModelElement[] classC372Childs = classC372.getChildren();
-					methoddelx376 = ModelTestUtils.getAssertMethod( classC372Childs, "delx", 1 );
-					ModelTestUtils.assertParameterNames( methoddelx376, new String[] {"self"} );
+				IMethod methoddelx352;
+					IModelElement[] classC349Childs = classC349.getChildren();
+					methoddelx352 = ModelTestUtils.getAssertMethod( classC349Childs, "delx", 1 );
+					ModelTestUtils.assertParameterNames( methoddelx352, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classD377;
-				IModelElement[] methodproperties371Childs = methodproperties371.getChildren();
-				classD377 = ModelTestUtils.getAssertClass( methodproperties371Childs, "D" );
+			IType classD353;
+				IModelElement[] methodproperties348Childs = methodproperties348.getChildren();
+				classD353 = ModelTestUtils.getAssertClass( methodproperties348Childs, "D" );
 			}
 		}
 		//Function test:supers
 		{
-		IMethod methodsupers378;
+		IMethod methodsupers354;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodsupers378 = ModelTestUtils.getAssertMethod( moduleChilds, "supers", 0 );
+			methodsupers354 = ModelTestUtils.getAssertMethod( moduleChilds, "supers", 0 );
 			//Class test
 			{
-			IType classA379;
-				IModelElement[] methodsupers378Childs = methodsupers378.getChildren();
-				classA379 = ModelTestUtils.getAssertClass( methodsupers378Childs, "A" );
+			IType classA355;
+				IModelElement[] methodsupers354Childs = methodsupers354.getChildren();
+				classA355 = ModelTestUtils.getAssertClass( methodsupers354Childs, "A" );
 				//Function test:meth
 				{
-				IMethod methodmeth380;
-					IModelElement[] classA379Childs = classA379.getChildren();
-					methodmeth380 = ModelTestUtils.getAssertMethod( classA379Childs, "meth", 2 );
-					ModelTestUtils.assertParameterNames( methodmeth380, new String[] {"self", "a"} );
+				IMethod methodmeth356;
+					IModelElement[] classA355Childs = classA355.getChildren();
+					methodmeth356 = ModelTestUtils.getAssertMethod( classA355Childs, "meth", 2 );
+					ModelTestUtils.assertParameterNames( methodmeth356, new String[] {"self", "a"} );
 				}
 			}
 			//Class test
 			{
-			IType classB381;
-				IModelElement[] methodsupers378Childs = methodsupers378.getChildren();
-				classB381 = ModelTestUtils.getAssertClass( methodsupers378Childs, "B" );
+			IType classB357;
+				IModelElement[] methodsupers354Childs = methodsupers354.getChildren();
+				classB357 = ModelTestUtils.getAssertClass( methodsupers354Childs, "B" );
 				//Function test:__init__
 				{
-				IMethod method__init__382;
-					IModelElement[] classB381Childs = classB381.getChildren();
-					method__init__382 = ModelTestUtils.getAssertMethod( classB381Childs, "__init__", 1 );
-					ModelTestUtils.assertParameterNames( method__init__382, new String[] {"self"} );
-				}
-				{
-					IModelElement[] classB381Childs = classB381.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classB381Childs, "__super");
+				IMethod method__init__358;
+					IModelElement[] classB357Childs = classB357.getChildren();
+					method__init__358 = ModelTestUtils.getAssertMethod( classB357Childs, "__init__", 1 );
+					ModelTestUtils.assertParameterNames( method__init__358, new String[] {"self"} );
 				}
 				//Function test:meth
 				{
-				IMethod methodmeth384;
-					IModelElement[] classB381Childs = classB381.getChildren();
-					methodmeth384 = ModelTestUtils.getAssertMethod( classB381Childs, "meth", 2 );
-					ModelTestUtils.assertParameterNames( methodmeth384, new String[] {"self", "a"} );
+				IMethod methodmeth359;
+					IModelElement[] classB357Childs = classB357.getChildren();
+					methodmeth359 = ModelTestUtils.getAssertMethod( classB357Childs, "meth", 2 );
+					ModelTestUtils.assertParameterNames( methodmeth359, new String[] {"self", "a"} );
 				}
 			}
 			//Class test
 			{
-			IType classC385;
-				IModelElement[] methodsupers378Childs = methodsupers378.getChildren();
-				classC385 = ModelTestUtils.getAssertClass( methodsupers378Childs, "C" );
+			IType classC360;
+				IModelElement[] methodsupers354Childs = methodsupers354.getChildren();
+				classC360 = ModelTestUtils.getAssertClass( methodsupers354Childs, "C" );
 				//Function test:meth
 				{
-				IMethod methodmeth386;
-					IModelElement[] classC385Childs = classC385.getChildren();
-					methodmeth386 = ModelTestUtils.getAssertMethod( classC385Childs, "meth", 2 );
-					ModelTestUtils.assertParameterNames( methodmeth386, new String[] {"self", "a"} );
+				IMethod methodmeth361;
+					IModelElement[] classC360Childs = classC360.getChildren();
+					methodmeth361 = ModelTestUtils.getAssertMethod( classC360Childs, "meth", 2 );
+					ModelTestUtils.assertParameterNames( methodmeth361, new String[] {"self", "a"} );
 				}
 			}
 			//Class test
 			{
-			IType classD387;
-				IModelElement[] methodsupers378Childs = methodsupers378.getChildren();
-				classD387 = ModelTestUtils.getAssertClass( methodsupers378Childs, "D" );
+			IType classD362;
+				IModelElement[] methodsupers354Childs = methodsupers354.getChildren();
+				classD362 = ModelTestUtils.getAssertClass( methodsupers354Childs, "D" );
 				//Function test:meth
 				{
-				IMethod methodmeth388;
-					IModelElement[] classD387Childs = classD387.getChildren();
-					methodmeth388 = ModelTestUtils.getAssertMethod( classD387Childs, "meth", 2 );
-					ModelTestUtils.assertParameterNames( methodmeth388, new String[] {"self", "a"} );
+				IMethod methodmeth363;
+					IModelElement[] classD362Childs = classD362.getChildren();
+					methodmeth363 = ModelTestUtils.getAssertMethod( classD362Childs, "meth", 2 );
+					ModelTestUtils.assertParameterNames( methodmeth363, new String[] {"self", "a"} );
 				}
 			}
 			//Class test
 			{
-			IType classmysuper389;
-				IModelElement[] methodsupers378Childs = methodsupers378.getChildren();
-				classmysuper389 = ModelTestUtils.getAssertClass( methodsupers378Childs, "mysuper" );
+			IType classmysuper364;
+				IModelElement[] methodsupers354Childs = methodsupers354.getChildren();
+				classmysuper364 = ModelTestUtils.getAssertClass( methodsupers354Childs, "mysuper" );
 				//Function test:__init__
 				{
-				IMethod method__init__390;
-					IModelElement[] classmysuper389Childs = classmysuper389.getChildren();
-					method__init__390 = ModelTestUtils.getAssertMethod( classmysuper389Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__390, new String[] {"self", "args"} );
+				IMethod method__init__365;
+					IModelElement[] classmysuper364Childs = classmysuper364.getChildren();
+					method__init__365 = ModelTestUtils.getAssertMethod( classmysuper364Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__365, new String[] {"self", "args"} );
 				}
 			}
 			//Class test
 			{
-			IType classE391;
-				IModelElement[] methodsupers378Childs = methodsupers378.getChildren();
-				classE391 = ModelTestUtils.getAssertClass( methodsupers378Childs, "E" );
+			IType classE366;
+				IModelElement[] methodsupers354Childs = methodsupers354.getChildren();
+				classE366 = ModelTestUtils.getAssertClass( methodsupers354Childs, "E" );
 				//Function test:meth
 				{
-				IMethod methodmeth392;
-					IModelElement[] classE391Childs = classE391.getChildren();
-					methodmeth392 = ModelTestUtils.getAssertMethod( classE391Childs, "meth", 2 );
-					ModelTestUtils.assertParameterNames( methodmeth392, new String[] {"self", "a"} );
+				IMethod methodmeth367;
+					IModelElement[] classE366Childs = classE366.getChildren();
+					methodmeth367 = ModelTestUtils.getAssertMethod( classE366Childs, "meth", 2 );
+					ModelTestUtils.assertParameterNames( methodmeth367, new String[] {"self", "a"} );
 				}
 			}
 			//Class test
 			{
-			IType classF393;
-				IModelElement[] methodsupers378Childs = methodsupers378.getChildren();
-				classF393 = ModelTestUtils.getAssertClass( methodsupers378Childs, "F" );
+			IType classF368;
+				IModelElement[] methodsupers354Childs = methodsupers354.getChildren();
+				classF368 = ModelTestUtils.getAssertClass( methodsupers354Childs, "F" );
 				//Function test:meth
 				{
-				IMethod methodmeth394;
-					IModelElement[] classF393Childs = classF393.getChildren();
-					methodmeth394 = ModelTestUtils.getAssertMethod( classF393Childs, "meth", 2 );
-					ModelTestUtils.assertParameterNames( methodmeth394, new String[] {"self", "a"} );
+				IMethod methodmeth369;
+					IModelElement[] classF368Childs = classF368.getChildren();
+					methodmeth369 = ModelTestUtils.getAssertMethod( classF368Childs, "meth", 2 );
+					ModelTestUtils.assertParameterNames( methodmeth369, new String[] {"self", "a"} );
 				}
 			}
 			//Class test
 			{
-			IType classDDbase395;
-				IModelElement[] methodsupers378Childs = methodsupers378.getChildren();
-				classDDbase395 = ModelTestUtils.getAssertClass( methodsupers378Childs, "DDbase" );
+			IType classDDbase370;
+				IModelElement[] methodsupers354Childs = methodsupers354.getChildren();
+				classDDbase370 = ModelTestUtils.getAssertClass( methodsupers354Childs, "DDbase" );
 				//Function test:getx
 				{
-				IMethod methodgetx396;
-					IModelElement[] classDDbase395Childs = classDDbase395.getChildren();
-					methodgetx396 = ModelTestUtils.getAssertMethod( classDDbase395Childs, "getx", 1 );
-					ModelTestUtils.assertParameterNames( methodgetx396, new String[] {"self"} );
+				IMethod methodgetx371;
+					IModelElement[] classDDbase370Childs = classDDbase370.getChildren();
+					methodgetx371 = ModelTestUtils.getAssertMethod( classDDbase370Childs, "getx", 1 );
+					ModelTestUtils.assertParameterNames( methodgetx371, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classDDsub397;
-				IModelElement[] methodsupers378Childs = methodsupers378.getChildren();
-				classDDsub397 = ModelTestUtils.getAssertClass( methodsupers378Childs, "DDsub" );
+			IType classDDsub372;
+				IModelElement[] methodsupers354Childs = methodsupers354.getChildren();
+				classDDsub372 = ModelTestUtils.getAssertClass( methodsupers354Childs, "DDsub" );
 				//Function test:getx
 				{
-				IMethod methodgetx398;
-					IModelElement[] classDDsub397Childs = classDDsub397.getChildren();
-					methodgetx398 = ModelTestUtils.getAssertMethod( classDDsub397Childs, "getx", 1 );
-					ModelTestUtils.assertParameterNames( methodgetx398, new String[] {"self"} );
+				IMethod methodgetx373;
+					IModelElement[] classDDsub372Childs = classDDsub372.getChildren();
+					methodgetx373 = ModelTestUtils.getAssertMethod( classDDsub372Childs, "getx", 1 );
+					ModelTestUtils.assertParameterNames( methodgetx373, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classBase399;
-				IModelElement[] methodsupers378Childs = methodsupers378.getChildren();
-				classBase399 = ModelTestUtils.getAssertClass( methodsupers378Childs, "Base" );
+			IType classBase374;
+				IModelElement[] methodsupers354Childs = methodsupers354.getChildren();
+				classBase374 = ModelTestUtils.getAssertClass( methodsupers354Childs, "Base" );
 			}
 			//Class test
 			{
-			IType classSub400;
-				IModelElement[] methodsupers378Childs = methodsupers378.getChildren();
-				classSub400 = ModelTestUtils.getAssertClass( methodsupers378Childs, "Sub" );
+			IType classSub375;
+				IModelElement[] methodsupers354Childs = methodsupers354.getChildren();
+				classSub375 = ModelTestUtils.getAssertClass( methodsupers354Childs, "Sub" );
 				//Function test:test
 				{
-				IMethod methodtest401;
-					IModelElement[] classSub400Childs = classSub400.getChildren();
-					methodtest401 = ModelTestUtils.getAssertMethod( classSub400Childs, "test", 1 );
-					ModelTestUtils.assertParameterNames( methodtest401, new String[] {"klass"} );
+				IMethod methodtest376;
+					IModelElement[] classSub375Childs = classSub375.getChildren();
+					methodtest376 = ModelTestUtils.getAssertMethod( classSub375Childs, "test", 1 );
+					ModelTestUtils.assertParameterNames( methodtest376, new String[] {"klass"} );
 				}
 			}
 		}
 		//Function test:inherits
 		{
-		IMethod methodinherits402;
+		IMethod methodinherits377;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodinherits402 = ModelTestUtils.getAssertMethod( moduleChilds, "inherits", 0 );
+			methodinherits377 = ModelTestUtils.getAssertMethod( moduleChilds, "inherits", 0 );
 			//Class test
 			{
-			IType classhexint403;
-				IModelElement[] methodinherits402Childs = methodinherits402.getChildren();
-				classhexint403 = ModelTestUtils.getAssertClass( methodinherits402Childs, "hexint" );
+			IType classhexint378;
+				IModelElement[] methodinherits377Childs = methodinherits377.getChildren();
+				classhexint378 = ModelTestUtils.getAssertClass( methodinherits377Childs, "hexint" );
 				//Function test:__repr__
 				{
-				IMethod method__repr__404;
-					IModelElement[] classhexint403Childs = classhexint403.getChildren();
-					method__repr__404 = ModelTestUtils.getAssertMethod( classhexint403Childs, "__repr__", 1 );
-					ModelTestUtils.assertParameterNames( method__repr__404, new String[] {"self"} );
+				IMethod method__repr__379;
+					IModelElement[] classhexint378Childs = classhexint378.getChildren();
+					method__repr__379 = ModelTestUtils.getAssertMethod( classhexint378Childs, "__repr__", 1 );
+					ModelTestUtils.assertParameterNames( method__repr__379, new String[] {"self"} );
 				}
 				//Function test:__add__
 				{
-				IMethod method__add__405;
-					IModelElement[] classhexint403Childs = classhexint403.getChildren();
-					method__add__405 = ModelTestUtils.getAssertMethod( classhexint403Childs, "__add__", 2 );
-					ModelTestUtils.assertParameterNames( method__add__405, new String[] {"self", "other"} );
+				IMethod method__add__380;
+					IModelElement[] classhexint378Childs = classhexint378.getChildren();
+					method__add__380 = ModelTestUtils.getAssertMethod( classhexint378Childs, "__add__", 2 );
+					ModelTestUtils.assertParameterNames( method__add__380, new String[] {"self", "other"} );
 				}
 			}
 			//Class test
 			{
-			IType classoctlong406;
-				IModelElement[] methodinherits402Childs = methodinherits402.getChildren();
-				classoctlong406 = ModelTestUtils.getAssertClass( methodinherits402Childs, "octlong" );
+			IType classoctlong381;
+				IModelElement[] methodinherits377Childs = methodinherits377.getChildren();
+				classoctlong381 = ModelTestUtils.getAssertClass( methodinherits377Childs, "octlong" );
 				//Function test:__str__
 				{
-				IMethod method__str__407;
-					IModelElement[] classoctlong406Childs = classoctlong406.getChildren();
-					method__str__407 = ModelTestUtils.getAssertMethod( classoctlong406Childs, "__str__", 1 );
-					ModelTestUtils.assertParameterNames( method__str__407, new String[] {"self"} );
+				IMethod method__str__382;
+					IModelElement[] classoctlong381Childs = classoctlong381.getChildren();
+					method__str__382 = ModelTestUtils.getAssertMethod( classoctlong381Childs, "__str__", 1 );
+					ModelTestUtils.assertParameterNames( method__str__382, new String[] {"self"} );
 				}
 				//Function test:__add__
 				{
-				IMethod method__add__408;
-					IModelElement[] classoctlong406Childs = classoctlong406.getChildren();
-					method__add__408 = ModelTestUtils.getAssertMethod( classoctlong406Childs, "__add__", 2 );
-					ModelTestUtils.assertParameterNames( method__add__408, new String[] {"self", "other"} );
+				IMethod method__add__383;
+					IModelElement[] classoctlong381Childs = classoctlong381.getChildren();
+					method__add__383 = ModelTestUtils.getAssertMethod( classoctlong381Childs, "__add__", 2 );
+					ModelTestUtils.assertParameterNames( method__add__383, new String[] {"self", "other"} );
 				}
 			}
 			//Class test
 			{
-			IType classlongclone409;
-				IModelElement[] methodinherits402Childs = methodinherits402.getChildren();
-				classlongclone409 = ModelTestUtils.getAssertClass( methodinherits402Childs, "longclone" );
+			IType classlongclone384;
+				IModelElement[] methodinherits377Childs = methodinherits377.getChildren();
+				classlongclone384 = ModelTestUtils.getAssertClass( methodinherits377Childs, "longclone" );
 			}
 			//Class test
 			{
-			IType classprecfloat410;
-				IModelElement[] methodinherits402Childs = methodinherits402.getChildren();
-				classprecfloat410 = ModelTestUtils.getAssertClass( methodinherits402Childs, "precfloat" );
+			IType classprecfloat385;
+				IModelElement[] methodinherits377Childs = methodinherits377.getChildren();
+				classprecfloat385 = ModelTestUtils.getAssertClass( methodinherits377Childs, "precfloat" );
 				//Function test:__init__
 				{
-				IMethod method__init__411;
-					IModelElement[] classprecfloat410Childs = classprecfloat410.getChildren();
-					method__init__411 = ModelTestUtils.getAssertMethod( classprecfloat410Childs, "__init__", 3 );
-					ModelTestUtils.assertParameterNames( method__init__411, new String[] {"self", "value", "prec"} );
-				}
-				{
-					IModelElement[] classprecfloat410Childs = classprecfloat410.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classprecfloat410Childs, "prec");
+				IMethod method__init__386;
+					IModelElement[] classprecfloat385Childs = classprecfloat385.getChildren();
+					method__init__386 = ModelTestUtils.getAssertMethod( classprecfloat385Childs, "__init__", 3 );
+					ModelTestUtils.assertParameterNames( method__init__386, new String[] {"self", "value", "prec"} );
 				}
 				//Function test:__repr__
 				{
-				IMethod method__repr__413;
-					IModelElement[] classprecfloat410Childs = classprecfloat410.getChildren();
-					method__repr__413 = ModelTestUtils.getAssertMethod( classprecfloat410Childs, "__repr__", 1 );
-					ModelTestUtils.assertParameterNames( method__repr__413, new String[] {"self"} );
+				IMethod method__repr__387;
+					IModelElement[] classprecfloat385Childs = classprecfloat385.getChildren();
+					method__repr__387 = ModelTestUtils.getAssertMethod( classprecfloat385Childs, "__repr__", 1 );
+					ModelTestUtils.assertParameterNames( method__repr__387, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classmadcomplex414;
-				IModelElement[] methodinherits402Childs = methodinherits402.getChildren();
-				classmadcomplex414 = ModelTestUtils.getAssertClass( methodinherits402Childs, "madcomplex" );
+			IType classmadcomplex388;
+				IModelElement[] methodinherits377Childs = methodinherits377.getChildren();
+				classmadcomplex388 = ModelTestUtils.getAssertClass( methodinherits377Childs, "madcomplex" );
 				//Function test:__repr__
 				{
-				IMethod method__repr__415;
-					IModelElement[] classmadcomplex414Childs = classmadcomplex414.getChildren();
-					method__repr__415 = ModelTestUtils.getAssertMethod( classmadcomplex414Childs, "__repr__", 1 );
-					ModelTestUtils.assertParameterNames( method__repr__415, new String[] {"self"} );
+				IMethod method__repr__389;
+					IModelElement[] classmadcomplex388Childs = classmadcomplex388.getChildren();
+					method__repr__389 = ModelTestUtils.getAssertMethod( classmadcomplex388Childs, "__repr__", 1 );
+					ModelTestUtils.assertParameterNames( method__repr__389, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classmadtuple416;
-				IModelElement[] methodinherits402Childs = methodinherits402.getChildren();
-				classmadtuple416 = ModelTestUtils.getAssertClass( methodinherits402Childs, "madtuple" );
+			IType classmadtuple390;
+				IModelElement[] methodinherits377Childs = methodinherits377.getChildren();
+				classmadtuple390 = ModelTestUtils.getAssertClass( methodinherits377Childs, "madtuple" );
 				//Function test:rev
 				{
-				IMethod methodrev417;
-					IModelElement[] classmadtuple416Childs = classmadtuple416.getChildren();
-					methodrev417 = ModelTestUtils.getAssertMethod( classmadtuple416Childs, "rev", 1 );
-					ModelTestUtils.assertParameterNames( methodrev417, new String[] {"self"} );
-				}
-				{
-					IModelElement[] classmadtuple416Childs = classmadtuple416.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classmadtuple416Childs, "_rev");
+				IMethod methodrev391;
+					IModelElement[] classmadtuple390Childs = classmadtuple390.getChildren();
+					methodrev391 = ModelTestUtils.getAssertMethod( classmadtuple390Childs, "rev", 1 );
+					ModelTestUtils.assertParameterNames( methodrev391, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classmadstring419;
-				IModelElement[] methodinherits402Childs = methodinherits402.getChildren();
-				classmadstring419 = ModelTestUtils.getAssertClass( methodinherits402Childs, "madstring" );
+			IType classmadstring392;
+				IModelElement[] methodinherits377Childs = methodinherits377.getChildren();
+				classmadstring392 = ModelTestUtils.getAssertClass( methodinherits377Childs, "madstring" );
 				//Function test:rev
 				{
-				IMethod methodrev420;
-					IModelElement[] classmadstring419Childs = classmadstring419.getChildren();
-					methodrev420 = ModelTestUtils.getAssertMethod( classmadstring419Childs, "rev", 1 );
-					ModelTestUtils.assertParameterNames( methodrev420, new String[] {"self"} );
-				}
-				{
-					IModelElement[] classmadstring419Childs = classmadstring419.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classmadstring419Childs, "_rev");
+				IMethod methodrev393;
+					IModelElement[] classmadstring392Childs = classmadstring392.getChildren();
+					methodrev393 = ModelTestUtils.getAssertMethod( classmadstring392Childs, "rev", 1 );
+					ModelTestUtils.assertParameterNames( methodrev393, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classmadunicode422;
-				IModelElement[] methodinherits402Childs = methodinherits402.getChildren();
-				classmadunicode422 = ModelTestUtils.getAssertClass( methodinherits402Childs, "madunicode" );
+			IType classmadunicode394;
+				IModelElement[] methodinherits377Childs = methodinherits377.getChildren();
+				classmadunicode394 = ModelTestUtils.getAssertClass( methodinherits377Childs, "madunicode" );
 				//Function test:rev
 				{
-				IMethod methodrev423;
-					IModelElement[] classmadunicode422Childs = classmadunicode422.getChildren();
-					methodrev423 = ModelTestUtils.getAssertMethod( classmadunicode422Childs, "rev", 1 );
-					ModelTestUtils.assertParameterNames( methodrev423, new String[] {"self"} );
-				}
-				{
-					IModelElement[] classmadunicode422Childs = classmadunicode422.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classmadunicode422Childs, "_rev");
+				IMethod methodrev395;
+					IModelElement[] classmadunicode394Childs = classmadunicode394.getChildren();
+					methodrev395 = ModelTestUtils.getAssertMethod( classmadunicode394Childs, "rev", 1 );
+					ModelTestUtils.assertParameterNames( methodrev395, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classsublist425;
-				IModelElement[] methodinherits402Childs = methodinherits402.getChildren();
-				classsublist425 = ModelTestUtils.getAssertClass( methodinherits402Childs, "sublist" );
+			IType classsublist396;
+				IModelElement[] methodinherits377Childs = methodinherits377.getChildren();
+				classsublist396 = ModelTestUtils.getAssertClass( methodinherits377Childs, "sublist" );
 			}
 			//Class test
 			{
-			IType classCountedInput426;
-				IModelElement[] methodinherits402Childs = methodinherits402.getChildren();
-				classCountedInput426 = ModelTestUtils.getAssertClass( methodinherits402Childs, "CountedInput" );
+			IType classCountedInput397;
+				IModelElement[] methodinherits377Childs = methodinherits377.getChildren();
+				classCountedInput397 = ModelTestUtils.getAssertClass( methodinherits377Childs, "CountedInput" );
 				//Function test:readline
 				{
-				IMethod methodreadline427;
-					IModelElement[] classCountedInput426Childs = classCountedInput426.getChildren();
-					methodreadline427 = ModelTestUtils.getAssertMethod( classCountedInput426Childs, "readline", 1 );
-					ModelTestUtils.assertParameterNames( methodreadline427, new String[] {"self"} );
-				}
-				{
-					IModelElement[] classCountedInput426Childs = classCountedInput426.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classCountedInput426Childs, "ateof");
+				IMethod methodreadline398;
+					IModelElement[] classCountedInput397Childs = classCountedInput397.getChildren();
+					methodreadline398 = ModelTestUtils.getAssertMethod( classCountedInput397Childs, "readline", 1 );
+					ModelTestUtils.assertParameterNames( methodreadline398, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:keywords
 		{
-		IMethod methodkeywords429;
+		IMethod methodkeywords399;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodkeywords429 = ModelTestUtils.getAssertMethod( moduleChilds, "keywords", 0 );
+			methodkeywords399 = ModelTestUtils.getAssertMethod( moduleChilds, "keywords", 0 );
 		}
 		//Function test:restricted
 		{
-		IMethod methodrestricted430;
+		IMethod methodrestricted400;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodrestricted430 = ModelTestUtils.getAssertMethod( moduleChilds, "restricted", 0 );
+			methodrestricted400 = ModelTestUtils.getAssertMethod( moduleChilds, "restricted", 0 );
 		}
 		//Function test:str_subclass_as_dict_key
 		{
-		IMethod methodstr_subclass_as_dict_key431;
+		IMethod methodstr_subclass_as_dict_key401;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodstr_subclass_as_dict_key431 = ModelTestUtils.getAssertMethod( moduleChilds, "str_subclass_as_dict_key", 0 );
+			methodstr_subclass_as_dict_key401 = ModelTestUtils.getAssertMethod( moduleChilds, "str_subclass_as_dict_key", 0 );
 			//Class test
 			{
-			IType classcistr432;
-				IModelElement[] methodstr_subclass_as_dict_key431Childs = methodstr_subclass_as_dict_key431.getChildren();
-				classcistr432 = ModelTestUtils.getAssertClass( methodstr_subclass_as_dict_key431Childs, "cistr" );
+			IType classcistr402;
+				IModelElement[] methodstr_subclass_as_dict_key401Childs = methodstr_subclass_as_dict_key401.getChildren();
+				classcistr402 = ModelTestUtils.getAssertClass( methodstr_subclass_as_dict_key401Childs, "cistr" );
 				//Function test:__init__
 				{
-				IMethod method__init__433;
-					IModelElement[] classcistr432Childs = classcistr432.getChildren();
-					method__init__433 = ModelTestUtils.getAssertMethod( classcistr432Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__433, new String[] {"self", "value"} );
-				}
-				{
-					IModelElement[] classcistr432Childs = classcistr432.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classcistr432Childs, "canonical");
-				}
-				{
-					IModelElement[] classcistr432Childs = classcistr432.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classcistr432Childs, "hashcode");
+				IMethod method__init__403;
+					IModelElement[] classcistr402Childs = classcistr402.getChildren();
+					method__init__403 = ModelTestUtils.getAssertMethod( classcistr402Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__403, new String[] {"self", "value"} );
 				}
 				//Function test:__eq__
 				{
-				IMethod method__eq__435;
-					IModelElement[] classcistr432Childs = classcistr432.getChildren();
-					method__eq__435 = ModelTestUtils.getAssertMethod( classcistr432Childs, "__eq__", 2 );
-					ModelTestUtils.assertParameterNames( method__eq__435, new String[] {"self", "other"} );
+				IMethod method__eq__404;
+					IModelElement[] classcistr402Childs = classcistr402.getChildren();
+					method__eq__404 = ModelTestUtils.getAssertMethod( classcistr402Childs, "__eq__", 2 );
+					ModelTestUtils.assertParameterNames( method__eq__404, new String[] {"self", "other"} );
 				}
 				//Function test:__hash__
 				{
-				IMethod method__hash__436;
-					IModelElement[] classcistr432Childs = classcistr432.getChildren();
-					method__hash__436 = ModelTestUtils.getAssertMethod( classcistr432Childs, "__hash__", 1 );
-					ModelTestUtils.assertParameterNames( method__hash__436, new String[] {"self"} );
+				IMethod method__hash__405;
+					IModelElement[] classcistr402Childs = classcistr402.getChildren();
+					method__hash__405 = ModelTestUtils.getAssertMethod( classcistr402Childs, "__hash__", 1 );
+					ModelTestUtils.assertParameterNames( method__hash__405, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:classic_comparisons
 		{
-		IMethod methodclassic_comparisons437;
+		IMethod methodclassic_comparisons406;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodclassic_comparisons437 = ModelTestUtils.getAssertMethod( moduleChilds, "classic_comparisons", 0 );
+			methodclassic_comparisons406 = ModelTestUtils.getAssertMethod( moduleChilds, "classic_comparisons", 0 );
 			//Class test
 			{
-			IType classclassic438;
-				IModelElement[] methodclassic_comparisons437Childs = methodclassic_comparisons437.getChildren();
-				classclassic438 = ModelTestUtils.getAssertClass( methodclassic_comparisons437Childs, "classic" );
+			IType classclassic407;
+				IModelElement[] methodclassic_comparisons406Childs = methodclassic_comparisons406.getChildren();
+				classclassic407 = ModelTestUtils.getAssertClass( methodclassic_comparisons406Childs, "classic" );
 			}
 			//Class test
 			{
-			IType classC439;
-				IModelElement[] methodclassic_comparisons437Childs = methodclassic_comparisons437.getChildren();
-				classC439 = ModelTestUtils.getAssertClass( methodclassic_comparisons437Childs, "C" );
+			IType classC408;
+				IModelElement[] methodclassic_comparisons406Childs = methodclassic_comparisons406.getChildren();
+				classC408 = ModelTestUtils.getAssertClass( methodclassic_comparisons406Childs, "C" );
 				//Function test:__init__
 				{
-				IMethod method__init__440;
-					IModelElement[] classC439Childs = classC439.getChildren();
-					method__init__440 = ModelTestUtils.getAssertMethod( classC439Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__440, new String[] {"self", "value"} );
-				}
-				{
-					IModelElement[] classC439Childs = classC439.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC439Childs, "value");
+				IMethod method__init__409;
+					IModelElement[] classC408Childs = classC408.getChildren();
+					method__init__409 = ModelTestUtils.getAssertMethod( classC408Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__409, new String[] {"self", "value"} );
 				}
 				//Function test:__cmp__
 				{
-				IMethod method__cmp__442;
-					IModelElement[] classC439Childs = classC439.getChildren();
-					method__cmp__442 = ModelTestUtils.getAssertMethod( classC439Childs, "__cmp__", 2 );
-					ModelTestUtils.assertParameterNames( method__cmp__442, new String[] {"self", "other"} );
+				IMethod method__cmp__410;
+					IModelElement[] classC408Childs = classC408.getChildren();
+					method__cmp__410 = ModelTestUtils.getAssertMethod( classC408Childs, "__cmp__", 2 );
+					ModelTestUtils.assertParameterNames( method__cmp__410, new String[] {"self", "other"} );
 				}
 			}
 		}
 		//Function test:rich_comparisons
 		{
-		IMethod methodrich_comparisons443;
+		IMethod methodrich_comparisons411;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodrich_comparisons443 = ModelTestUtils.getAssertMethod( moduleChilds, "rich_comparisons", 0 );
+			methodrich_comparisons411 = ModelTestUtils.getAssertMethod( moduleChilds, "rich_comparisons", 0 );
 			//Class test
 			{
-			IType classZ444;
-				IModelElement[] methodrich_comparisons443Childs = methodrich_comparisons443.getChildren();
-				classZ444 = ModelTestUtils.getAssertClass( methodrich_comparisons443Childs, "Z" );
+			IType classZ412;
+				IModelElement[] methodrich_comparisons411Childs = methodrich_comparisons411.getChildren();
+				classZ412 = ModelTestUtils.getAssertClass( methodrich_comparisons411Childs, "Z" );
 			}
 			//Class test
 			{
-			IType classZZ445;
-				IModelElement[] methodrich_comparisons443Childs = methodrich_comparisons443.getChildren();
-				classZZ445 = ModelTestUtils.getAssertClass( methodrich_comparisons443Childs, "ZZ" );
+			IType classZZ413;
+				IModelElement[] methodrich_comparisons411Childs = methodrich_comparisons411.getChildren();
+				classZZ413 = ModelTestUtils.getAssertClass( methodrich_comparisons411Childs, "ZZ" );
 				//Function test:__eq__
 				{
-				IMethod method__eq__446;
-					IModelElement[] classZZ445Childs = classZZ445.getChildren();
-					method__eq__446 = ModelTestUtils.getAssertMethod( classZZ445Childs, "__eq__", 2 );
-					ModelTestUtils.assertParameterNames( method__eq__446, new String[] {"self", "other"} );
+				IMethod method__eq__414;
+					IModelElement[] classZZ413Childs = classZZ413.getChildren();
+					method__eq__414 = ModelTestUtils.getAssertMethod( classZZ413Childs, "__eq__", 2 );
+					ModelTestUtils.assertParameterNames( method__eq__414, new String[] {"self", "other"} );
 				}
 			}
 			//Class test
 			{
-			IType classclassic447;
-				IModelElement[] methodrich_comparisons443Childs = methodrich_comparisons443.getChildren();
-				classclassic447 = ModelTestUtils.getAssertClass( methodrich_comparisons443Childs, "classic" );
+			IType classclassic415;
+				IModelElement[] methodrich_comparisons411Childs = methodrich_comparisons411.getChildren();
+				classclassic415 = ModelTestUtils.getAssertClass( methodrich_comparisons411Childs, "classic" );
 			}
 			//Class test
 			{
-			IType classC448;
-				IModelElement[] methodrich_comparisons443Childs = methodrich_comparisons443.getChildren();
-				classC448 = ModelTestUtils.getAssertClass( methodrich_comparisons443Childs, "C" );
+			IType classC416;
+				IModelElement[] methodrich_comparisons411Childs = methodrich_comparisons411.getChildren();
+				classC416 = ModelTestUtils.getAssertClass( methodrich_comparisons411Childs, "C" );
 				//Function test:__init__
 				{
-				IMethod method__init__449;
-					IModelElement[] classC448Childs = classC448.getChildren();
-					method__init__449 = ModelTestUtils.getAssertMethod( classC448Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__449, new String[] {"self", "value"} );
+				IMethod method__init__417;
+					IModelElement[] classC416Childs = classC416.getChildren();
+					method__init__417 = ModelTestUtils.getAssertMethod( classC416Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__417, new String[] {"self", "value"} );
 				}
 				//Function test:__cmp__
 				{
-				IMethod method__cmp__450;
-					IModelElement[] classC448Childs = classC448.getChildren();
-					method__cmp__450 = ModelTestUtils.getAssertMethod( classC448Childs, "__cmp__", 2 );
-					ModelTestUtils.assertParameterNames( method__cmp__450, new String[] {"self", "other"} );
+				IMethod method__cmp__418;
+					IModelElement[] classC416Childs = classC416.getChildren();
+					method__cmp__418 = ModelTestUtils.getAssertMethod( classC416Childs, "__cmp__", 2 );
+					ModelTestUtils.assertParameterNames( method__cmp__418, new String[] {"self", "other"} );
 				}
 				//Function test:__eq__
 				{
-				IMethod method__eq__451;
-					IModelElement[] classC448Childs = classC448.getChildren();
-					method__eq__451 = ModelTestUtils.getAssertMethod( classC448Childs, "__eq__", 2 );
-					ModelTestUtils.assertParameterNames( method__eq__451, new String[] {"self", "other"} );
+				IMethod method__eq__419;
+					IModelElement[] classC416Childs = classC416.getChildren();
+					method__eq__419 = ModelTestUtils.getAssertMethod( classC416Childs, "__eq__", 2 );
+					ModelTestUtils.assertParameterNames( method__eq__419, new String[] {"self", "other"} );
 				}
 				//Function test:__ne__
 				{
-				IMethod method__ne__452;
-					IModelElement[] classC448Childs = classC448.getChildren();
-					method__ne__452 = ModelTestUtils.getAssertMethod( classC448Childs, "__ne__", 2 );
-					ModelTestUtils.assertParameterNames( method__ne__452, new String[] {"self", "other"} );
+				IMethod method__ne__420;
+					IModelElement[] classC416Childs = classC416.getChildren();
+					method__ne__420 = ModelTestUtils.getAssertMethod( classC416Childs, "__ne__", 2 );
+					ModelTestUtils.assertParameterNames( method__ne__420, new String[] {"self", "other"} );
 				}
 				//Function test:__lt__
 				{
-				IMethod method__lt__453;
-					IModelElement[] classC448Childs = classC448.getChildren();
-					method__lt__453 = ModelTestUtils.getAssertMethod( classC448Childs, "__lt__", 2 );
-					ModelTestUtils.assertParameterNames( method__lt__453, new String[] {"self", "other"} );
+				IMethod method__lt__421;
+					IModelElement[] classC416Childs = classC416.getChildren();
+					method__lt__421 = ModelTestUtils.getAssertMethod( classC416Childs, "__lt__", 2 );
+					ModelTestUtils.assertParameterNames( method__lt__421, new String[] {"self", "other"} );
 				}
 				//Function test:__le__
 				{
-				IMethod method__le__454;
-					IModelElement[] classC448Childs = classC448.getChildren();
-					method__le__454 = ModelTestUtils.getAssertMethod( classC448Childs, "__le__", 2 );
-					ModelTestUtils.assertParameterNames( method__le__454, new String[] {"self", "other"} );
+				IMethod method__le__422;
+					IModelElement[] classC416Childs = classC416.getChildren();
+					method__le__422 = ModelTestUtils.getAssertMethod( classC416Childs, "__le__", 2 );
+					ModelTestUtils.assertParameterNames( method__le__422, new String[] {"self", "other"} );
 				}
 				//Function test:__gt__
 				{
-				IMethod method__gt__455;
-					IModelElement[] classC448Childs = classC448.getChildren();
-					method__gt__455 = ModelTestUtils.getAssertMethod( classC448Childs, "__gt__", 2 );
-					ModelTestUtils.assertParameterNames( method__gt__455, new String[] {"self", "other"} );
+				IMethod method__gt__423;
+					IModelElement[] classC416Childs = classC416.getChildren();
+					method__gt__423 = ModelTestUtils.getAssertMethod( classC416Childs, "__gt__", 2 );
+					ModelTestUtils.assertParameterNames( method__gt__423, new String[] {"self", "other"} );
 				}
 				//Function test:__ge__
 				{
-				IMethod method__ge__456;
-					IModelElement[] classC448Childs = classC448.getChildren();
-					method__ge__456 = ModelTestUtils.getAssertMethod( classC448Childs, "__ge__", 2 );
-					ModelTestUtils.assertParameterNames( method__ge__456, new String[] {"self", "other"} );
+				IMethod method__ge__424;
+					IModelElement[] classC416Childs = classC416.getChildren();
+					method__ge__424 = ModelTestUtils.getAssertMethod( classC416Childs, "__ge__", 2 );
+					ModelTestUtils.assertParameterNames( method__ge__424, new String[] {"self", "other"} );
 				}
 			}
 		}
 		//Function test:coercions
 		{
-		IMethod methodcoercions457;
+		IMethod methodcoercions425;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodcoercions457 = ModelTestUtils.getAssertMethod( moduleChilds, "coercions", 0 );
+			methodcoercions425 = ModelTestUtils.getAssertMethod( moduleChilds, "coercions", 0 );
 			//Class test
 			{
-			IType classI458;
-				IModelElement[] methodcoercions457Childs = methodcoercions457.getChildren();
-				classI458 = ModelTestUtils.getAssertClass( methodcoercions457Childs, "I" );
+			IType classI426;
+				IModelElement[] methodcoercions425Childs = methodcoercions425.getChildren();
+				classI426 = ModelTestUtils.getAssertClass( methodcoercions425Childs, "I" );
 			}
 			//Class test
 			{
-			IType classL459;
-				IModelElement[] methodcoercions457Childs = methodcoercions457.getChildren();
-				classL459 = ModelTestUtils.getAssertClass( methodcoercions457Childs, "L" );
+			IType classL427;
+				IModelElement[] methodcoercions425Childs = methodcoercions425.getChildren();
+				classL427 = ModelTestUtils.getAssertClass( methodcoercions425Childs, "L" );
 			}
 			//Class test
 			{
-			IType classF460;
-				IModelElement[] methodcoercions457Childs = methodcoercions457.getChildren();
-				classF460 = ModelTestUtils.getAssertClass( methodcoercions457Childs, "F" );
+			IType classF428;
+				IModelElement[] methodcoercions425Childs = methodcoercions425.getChildren();
+				classF428 = ModelTestUtils.getAssertClass( methodcoercions425Childs, "F" );
 			}
 			//Class test
 			{
-			IType classC461;
-				IModelElement[] methodcoercions457Childs = methodcoercions457.getChildren();
-				classC461 = ModelTestUtils.getAssertClass( methodcoercions457Childs, "C" );
+			IType classC429;
+				IModelElement[] methodcoercions425Childs = methodcoercions425.getChildren();
+				classC429 = ModelTestUtils.getAssertClass( methodcoercions425Childs, "C" );
 			}
 		}
 		//Function test:descrdoc
 		{
-		IMethod methoddescrdoc462;
+		IMethod methoddescrdoc430;
 			IModelElement[] moduleChilds = module.getChildren();
-			methoddescrdoc462 = ModelTestUtils.getAssertMethod( moduleChilds, "descrdoc", 0 );
+			methoddescrdoc430 = ModelTestUtils.getAssertMethod( moduleChilds, "descrdoc", 0 );
 			//Function test:check
 			{
-			IMethod methodcheck463;
-				IModelElement[] methoddescrdoc462Childs = methoddescrdoc462.getChildren();
-				methodcheck463 = ModelTestUtils.getAssertMethod( methoddescrdoc462Childs, "check", 2 );
-				ModelTestUtils.assertParameterNames( methodcheck463, new String[] {"descr", "what"} );
+			IMethod methodcheck431;
+				IModelElement[] methoddescrdoc430Childs = methoddescrdoc430.getChildren();
+				methodcheck431 = ModelTestUtils.getAssertMethod( methoddescrdoc430Childs, "check", 2 );
+				ModelTestUtils.assertParameterNames( methodcheck431, new String[] {"descr", "what"} );
 			}
 		}
 		//Function test:setclass
 		{
-		IMethod methodsetclass464;
+		IMethod methodsetclass432;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodsetclass464 = ModelTestUtils.getAssertMethod( moduleChilds, "setclass", 0 );
+			methodsetclass432 = ModelTestUtils.getAssertMethod( moduleChilds, "setclass", 0 );
 			//Class test
 			{
-			IType classC465;
-				IModelElement[] methodsetclass464Childs = methodsetclass464.getChildren();
-				classC465 = ModelTestUtils.getAssertClass( methodsetclass464Childs, "C" );
+			IType classC433;
+				IModelElement[] methodsetclass432Childs = methodsetclass432.getChildren();
+				classC433 = ModelTestUtils.getAssertClass( methodsetclass432Childs, "C" );
 			}
 			//Class test
 			{
-			IType classD466;
-				IModelElement[] methodsetclass464Childs = methodsetclass464.getChildren();
-				classD466 = ModelTestUtils.getAssertClass( methodsetclass464Childs, "D" );
+			IType classD434;
+				IModelElement[] methodsetclass432Childs = methodsetclass432.getChildren();
+				classD434 = ModelTestUtils.getAssertClass( methodsetclass432Childs, "D" );
 			}
 			//Class test
 			{
-			IType classE467;
-				IModelElement[] methodsetclass464Childs = methodsetclass464.getChildren();
-				classE467 = ModelTestUtils.getAssertClass( methodsetclass464Childs, "E" );
+			IType classE435;
+				IModelElement[] methodsetclass432Childs = methodsetclass432.getChildren();
+				classE435 = ModelTestUtils.getAssertClass( methodsetclass432Childs, "E" );
 			}
 			//Class test
 			{
-			IType classF468;
-				IModelElement[] methodsetclass464Childs = methodsetclass464.getChildren();
-				classF468 = ModelTestUtils.getAssertClass( methodsetclass464Childs, "F" );
+			IType classF436;
+				IModelElement[] methodsetclass432Childs = methodsetclass432.getChildren();
+				classF436 = ModelTestUtils.getAssertClass( methodsetclass432Childs, "F" );
 			}
 			//Function test:cant
 			{
-			IMethod methodcant469;
-				IModelElement[] methodsetclass464Childs = methodsetclass464.getChildren();
-				methodcant469 = ModelTestUtils.getAssertMethod( methodsetclass464Childs, "cant", 2 );
-				ModelTestUtils.assertParameterNames( methodcant469, new String[] {"x", "C"} );
+			IMethod methodcant437;
+				IModelElement[] methodsetclass432Childs = methodsetclass432.getChildren();
+				methodcant437 = ModelTestUtils.getAssertMethod( methodsetclass432Childs, "cant", 2 );
+				ModelTestUtils.assertParameterNames( methodcant437, new String[] {"x", "C"} );
 			}
 			//Class test
 			{
-			IType classInt470;
-				IModelElement[] methodsetclass464Childs = methodsetclass464.getChildren();
-				classInt470 = ModelTestUtils.getAssertClass( methodsetclass464Childs, "Int" );
+			IType classInt438;
+				IModelElement[] methodsetclass432Childs = methodsetclass432.getChildren();
+				classInt438 = ModelTestUtils.getAssertClass( methodsetclass432Childs, "Int" );
 			}
 		}
 		//Function test:setdict
 		{
-		IMethod methodsetdict471;
+		IMethod methodsetdict439;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodsetdict471 = ModelTestUtils.getAssertMethod( moduleChilds, "setdict", 0 );
+			methodsetdict439 = ModelTestUtils.getAssertMethod( moduleChilds, "setdict", 0 );
 			//Class test
 			{
-			IType classC472;
-				IModelElement[] methodsetdict471Childs = methodsetdict471.getChildren();
-				classC472 = ModelTestUtils.getAssertClass( methodsetdict471Childs, "C" );
+			IType classC440;
+				IModelElement[] methodsetdict439Childs = methodsetdict439.getChildren();
+				classC440 = ModelTestUtils.getAssertClass( methodsetdict439Childs, "C" );
 			}
 			//Function test:cant
 			{
-			IMethod methodcant473;
-				IModelElement[] methodsetdict471Childs = methodsetdict471.getChildren();
-				methodcant473 = ModelTestUtils.getAssertMethod( methodsetdict471Childs, "cant", 2 );
-				ModelTestUtils.assertParameterNames( methodcant473, new String[] {"x", "dict"} );
+			IMethod methodcant441;
+				IModelElement[] methodsetdict439Childs = methodsetdict439.getChildren();
+				methodcant441 = ModelTestUtils.getAssertMethod( methodsetdict439Childs, "cant", 2 );
+				ModelTestUtils.assertParameterNames( methodcant441, new String[] {"x", "dict"} );
 			}
 		}
 		//Function test:pickles
 		{
-		IMethod methodpickles474;
+		IMethod methodpickles442;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodpickles474 = ModelTestUtils.getAssertMethod( moduleChilds, "pickles", 0 );
+			methodpickles442 = ModelTestUtils.getAssertMethod( moduleChilds, "pickles", 0 );
 			//Function test:sorteditems
 			{
-			IMethod methodsorteditems475;
-				IModelElement[] methodpickles474Childs = methodpickles474.getChildren();
-				methodsorteditems475 = ModelTestUtils.getAssertMethod( methodpickles474Childs, "sorteditems", 1 );
-				ModelTestUtils.assertParameterNames( methodsorteditems475, new String[] {"d"} );
+			IMethod methodsorteditems443;
+				IModelElement[] methodpickles442Childs = methodpickles442.getChildren();
+				methodsorteditems443 = ModelTestUtils.getAssertMethod( methodpickles442Childs, "sorteditems", 1 );
+				ModelTestUtils.assertParameterNames( methodsorteditems443, new String[] {"d"} );
 			}
 			//Class test
 			{
-			IType classC476;
-				IModelElement[] methodpickles474Childs = methodpickles474.getChildren();
-				classC476 = ModelTestUtils.getAssertClass( methodpickles474Childs, "C" );
+			IType classC444;
+				IModelElement[] methodpickles442Childs = methodpickles442.getChildren();
+				classC444 = ModelTestUtils.getAssertClass( methodpickles442Childs, "C" );
 				//Function test:__init__
 				{
-				IMethod method__init__477;
-					IModelElement[] classC476Childs = classC476.getChildren();
-					method__init__477 = ModelTestUtils.getAssertMethod( classC476Childs, "__init__", 3 );
-					ModelTestUtils.assertParameterNames( method__init__477, new String[] {"self", "a", "b"} );
-				}
-				{
-					IModelElement[] classC476Childs = classC476.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC476Childs, "a");
-				}
-				{
-					IModelElement[] classC476Childs = classC476.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC476Childs, "b");
+				IMethod method__init__445;
+					IModelElement[] classC444Childs = classC444.getChildren();
+					method__init__445 = ModelTestUtils.getAssertMethod( classC444Childs, "__init__", 3 );
+					ModelTestUtils.assertParameterNames( method__init__445, new String[] {"self", "a", "b"} );
 				}
 				//Function test:__repr__
 				{
-				IMethod method__repr__479;
-					IModelElement[] classC476Childs = classC476.getChildren();
-					method__repr__479 = ModelTestUtils.getAssertMethod( classC476Childs, "__repr__", 1 );
-					ModelTestUtils.assertParameterNames( method__repr__479, new String[] {"self"} );
+				IMethod method__repr__446;
+					IModelElement[] classC444Childs = classC444.getChildren();
+					method__repr__446 = ModelTestUtils.getAssertMethod( classC444Childs, "__repr__", 1 );
+					ModelTestUtils.assertParameterNames( method__repr__446, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classC1480;
-				IModelElement[] methodpickles474Childs = methodpickles474.getChildren();
-				classC1480 = ModelTestUtils.getAssertClass( methodpickles474Childs, "C1" );
+			IType classC1447;
+				IModelElement[] methodpickles442Childs = methodpickles442.getChildren();
+				classC1447 = ModelTestUtils.getAssertClass( methodpickles442Childs, "C1" );
 				//Function test:__new__
 				{
-				IMethod method__new__481;
-					IModelElement[] classC1480Childs = classC1480.getChildren();
-					method__new__481 = ModelTestUtils.getAssertMethod( classC1480Childs, "__new__", 3 );
-					ModelTestUtils.assertParameterNames( method__new__481, new String[] {"cls", "a", "b"} );
+				IMethod method__new__448;
+					IModelElement[] classC1447Childs = classC1447.getChildren();
+					method__new__448 = ModelTestUtils.getAssertMethod( classC1447Childs, "__new__", 3 );
+					ModelTestUtils.assertParameterNames( method__new__448, new String[] {"cls", "a", "b"} );
 				}
 				//Function test:__getnewargs__
 				{
-				IMethod method__getnewargs__482;
-					IModelElement[] classC1480Childs = classC1480.getChildren();
-					method__getnewargs__482 = ModelTestUtils.getAssertMethod( classC1480Childs, "__getnewargs__", 1 );
-					ModelTestUtils.assertParameterNames( method__getnewargs__482, new String[] {"self"} );
+				IMethod method__getnewargs__449;
+					IModelElement[] classC1447Childs = classC1447.getChildren();
+					method__getnewargs__449 = ModelTestUtils.getAssertMethod( classC1447Childs, "__getnewargs__", 1 );
+					ModelTestUtils.assertParameterNames( method__getnewargs__449, new String[] {"self"} );
 				}
 				//Function test:__init__
 				{
-				IMethod method__init__483;
-					IModelElement[] classC1480Childs = classC1480.getChildren();
-					method__init__483 = ModelTestUtils.getAssertMethod( classC1480Childs, "__init__", 3 );
-					ModelTestUtils.assertParameterNames( method__init__483, new String[] {"self", "a", "b"} );
-				}
-				{
-					IModelElement[] classC1480Childs = classC1480.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC1480Childs, "a");
-				}
-				{
-					IModelElement[] classC1480Childs = classC1480.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC1480Childs, "b");
+				IMethod method__init__450;
+					IModelElement[] classC1447Childs = classC1447.getChildren();
+					method__init__450 = ModelTestUtils.getAssertMethod( classC1447Childs, "__init__", 3 );
+					ModelTestUtils.assertParameterNames( method__init__450, new String[] {"self", "a", "b"} );
 				}
 				//Function test:__repr__
 				{
-				IMethod method__repr__485;
-					IModelElement[] classC1480Childs = classC1480.getChildren();
-					method__repr__485 = ModelTestUtils.getAssertMethod( classC1480Childs, "__repr__", 1 );
-					ModelTestUtils.assertParameterNames( method__repr__485, new String[] {"self"} );
+				IMethod method__repr__451;
+					IModelElement[] classC1447Childs = classC1447.getChildren();
+					method__repr__451 = ModelTestUtils.getAssertMethod( classC1447Childs, "__repr__", 1 );
+					ModelTestUtils.assertParameterNames( method__repr__451, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classC2486;
-				IModelElement[] methodpickles474Childs = methodpickles474.getChildren();
-				classC2486 = ModelTestUtils.getAssertClass( methodpickles474Childs, "C2" );
+			IType classC2452;
+				IModelElement[] methodpickles442Childs = methodpickles442.getChildren();
+				classC2452 = ModelTestUtils.getAssertClass( methodpickles442Childs, "C2" );
 				//Function test:__new__
 				{
-				IMethod method__new__487;
-					IModelElement[] classC2486Childs = classC2486.getChildren();
-					method__new__487 = ModelTestUtils.getAssertMethod( classC2486Childs, "__new__", 4 );
-					ModelTestUtils.assertParameterNames( method__new__487, new String[] {"cls", "a", "b", "val"} );
+				IMethod method__new__453;
+					IModelElement[] classC2452Childs = classC2452.getChildren();
+					method__new__453 = ModelTestUtils.getAssertMethod( classC2452Childs, "__new__", 4 );
+					ModelTestUtils.assertParameterNames( method__new__453, new String[] {"cls", "a", "b", "val"} );
 				}
 				//Function test:__getnewargs__
 				{
-				IMethod method__getnewargs__488;
-					IModelElement[] classC2486Childs = classC2486.getChildren();
-					method__getnewargs__488 = ModelTestUtils.getAssertMethod( classC2486Childs, "__getnewargs__", 1 );
-					ModelTestUtils.assertParameterNames( method__getnewargs__488, new String[] {"self"} );
+				IMethod method__getnewargs__454;
+					IModelElement[] classC2452Childs = classC2452.getChildren();
+					method__getnewargs__454 = ModelTestUtils.getAssertMethod( classC2452Childs, "__getnewargs__", 1 );
+					ModelTestUtils.assertParameterNames( method__getnewargs__454, new String[] {"self"} );
 				}
 				//Function test:__init__
 				{
-				IMethod method__init__489;
-					IModelElement[] classC2486Childs = classC2486.getChildren();
-					method__init__489 = ModelTestUtils.getAssertMethod( classC2486Childs, "__init__", 4 );
-					ModelTestUtils.assertParameterNames( method__init__489, new String[] {"self", "a", "b", "val"} );
-				}
-				{
-					IModelElement[] classC2486Childs = classC2486.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC2486Childs, "a");
-				}
-				{
-					IModelElement[] classC2486Childs = classC2486.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC2486Childs, "b");
+				IMethod method__init__455;
+					IModelElement[] classC2452Childs = classC2452.getChildren();
+					method__init__455 = ModelTestUtils.getAssertMethod( classC2452Childs, "__init__", 4 );
+					ModelTestUtils.assertParameterNames( method__init__455, new String[] {"self", "a", "b", "val"} );
 				}
 				//Function test:__repr__
 				{
-				IMethod method__repr__491;
-					IModelElement[] classC2486Childs = classC2486.getChildren();
-					method__repr__491 = ModelTestUtils.getAssertMethod( classC2486Childs, "__repr__", 1 );
-					ModelTestUtils.assertParameterNames( method__repr__491, new String[] {"self"} );
+				IMethod method__repr__456;
+					IModelElement[] classC2452Childs = classC2452.getChildren();
+					method__repr__456 = ModelTestUtils.getAssertMethod( classC2452Childs, "__repr__", 1 );
+					ModelTestUtils.assertParameterNames( method__repr__456, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classC3492;
-				IModelElement[] methodpickles474Childs = methodpickles474.getChildren();
-				classC3492 = ModelTestUtils.getAssertClass( methodpickles474Childs, "C3" );
+			IType classC3457;
+				IModelElement[] methodpickles442Childs = methodpickles442.getChildren();
+				classC3457 = ModelTestUtils.getAssertClass( methodpickles442Childs, "C3" );
 				//Function test:__init__
 				{
-				IMethod method__init__493;
-					IModelElement[] classC3492Childs = classC3492.getChildren();
-					method__init__493 = ModelTestUtils.getAssertMethod( classC3492Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__493, new String[] {"self", "foo"} );
-				}
-				{
-					IModelElement[] classC3492Childs = classC3492.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC3492Childs, "foo");
+				IMethod method__init__458;
+					IModelElement[] classC3457Childs = classC3457.getChildren();
+					method__init__458 = ModelTestUtils.getAssertMethod( classC3457Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__458, new String[] {"self", "foo"} );
 				}
 				//Function test:__getstate__
 				{
-				IMethod method__getstate__495;
-					IModelElement[] classC3492Childs = classC3492.getChildren();
-					method__getstate__495 = ModelTestUtils.getAssertMethod( classC3492Childs, "__getstate__", 1 );
-					ModelTestUtils.assertParameterNames( method__getstate__495, new String[] {"self"} );
+				IMethod method__getstate__459;
+					IModelElement[] classC3457Childs = classC3457.getChildren();
+					method__getstate__459 = ModelTestUtils.getAssertMethod( classC3457Childs, "__getstate__", 1 );
+					ModelTestUtils.assertParameterNames( method__getstate__459, new String[] {"self"} );
 				}
 				//Function test:__setstate__
 				{
-				IMethod method__setstate__496;
-					IModelElement[] classC3492Childs = classC3492.getChildren();
-					method__setstate__496 = ModelTestUtils.getAssertMethod( classC3492Childs, "__setstate__", 2 );
-					ModelTestUtils.assertParameterNames( method__setstate__496, new String[] {"self", "foo"} );
-				}
-				{
-					IModelElement[] classC3492Childs = classC3492.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC3492Childs, "foo");
+				IMethod method__setstate__460;
+					IModelElement[] classC3457Childs = classC3457.getChildren();
+					method__setstate__460 = ModelTestUtils.getAssertMethod( classC3457Childs, "__setstate__", 2 );
+					ModelTestUtils.assertParameterNames( method__setstate__460, new String[] {"self", "foo"} );
 				}
 			}
 			//Class test
 			{
-			IType classC4classic498;
-				IModelElement[] methodpickles474Childs = methodpickles474.getChildren();
-				classC4classic498 = ModelTestUtils.getAssertClass( methodpickles474Childs, "C4classic" );
+			IType classC4classic461;
+				IModelElement[] methodpickles442Childs = methodpickles442.getChildren();
+				classC4classic461 = ModelTestUtils.getAssertClass( methodpickles442Childs, "C4classic" );
 			}
 			//Class test
 			{
-			IType classC4499;
-				IModelElement[] methodpickles474Childs = methodpickles474.getChildren();
-				classC4499 = ModelTestUtils.getAssertClass( methodpickles474Childs, "C4" );
+			IType classC4462;
+				IModelElement[] methodpickles442Childs = methodpickles442.getChildren();
+				classC4462 = ModelTestUtils.getAssertClass( methodpickles442Childs, "C4" );
 			}
 		}
 		//Function test:pickleslots
 		{
-		IMethod methodpickleslots500;
+		IMethod methodpickleslots463;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodpickleslots500 = ModelTestUtils.getAssertMethod( moduleChilds, "pickleslots", 0 );
+			methodpickleslots463 = ModelTestUtils.getAssertMethod( moduleChilds, "pickleslots", 0 );
 			//Class test
 			{
-			IType classB501;
-				IModelElement[] methodpickleslots500Childs = methodpickleslots500.getChildren();
-				classB501 = ModelTestUtils.getAssertClass( methodpickleslots500Childs, "B" );
+			IType classB464;
+				IModelElement[] methodpickleslots463Childs = methodpickleslots463.getChildren();
+				classB464 = ModelTestUtils.getAssertClass( methodpickleslots463Childs, "B" );
 			}
 			//Class test
 			{
-			IType classC502;
-				IModelElement[] methodpickleslots500Childs = methodpickleslots500.getChildren();
-				classC502 = ModelTestUtils.getAssertClass( methodpickleslots500Childs, "C" );
+			IType classC465;
+				IModelElement[] methodpickleslots463Childs = methodpickleslots463.getChildren();
+				classC465 = ModelTestUtils.getAssertClass( methodpickleslots463Childs, "C" );
 			}
 			//Class test
 			{
-			IType classD503;
-				IModelElement[] methodpickleslots500Childs = methodpickleslots500.getChildren();
-				classD503 = ModelTestUtils.getAssertClass( methodpickleslots500Childs, "D" );
+			IType classD466;
+				IModelElement[] methodpickleslots463Childs = methodpickleslots463.getChildren();
+				classD466 = ModelTestUtils.getAssertClass( methodpickleslots463Childs, "D" );
 			}
 			//Class test
 			{
-			IType classC504;
-				IModelElement[] methodpickleslots500Childs = methodpickleslots500.getChildren();
-				classC504 = ModelTestUtils.getAssertClass( methodpickleslots500Childs, "C" );
+			IType classC467;
+				IModelElement[] methodpickleslots463Childs = methodpickleslots463.getChildren();
+				classC467 = ModelTestUtils.getAssertClass( methodpickleslots463Childs, "C" );
 				//Function test:__getstate__
 				{
-				IMethod method__getstate__505;
-					IModelElement[] classC504Childs = classC504.getChildren();
-					method__getstate__505 = ModelTestUtils.getAssertMethod( classC504Childs, "__getstate__", 1 );
-					ModelTestUtils.assertParameterNames( method__getstate__505, new String[] {"self"} );
+				IMethod method__getstate__468;
+					IModelElement[] classC467Childs = classC467.getChildren();
+					method__getstate__468 = ModelTestUtils.getAssertMethod( classC467Childs, "__getstate__", 1 );
+					ModelTestUtils.assertParameterNames( method__getstate__468, new String[] {"self"} );
 				}
 				//Function test:__setstate__
 				{
-				IMethod method__setstate__506;
-					IModelElement[] classC504Childs = classC504.getChildren();
-					method__setstate__506 = ModelTestUtils.getAssertMethod( classC504Childs, "__setstate__", 2 );
-					ModelTestUtils.assertParameterNames( method__setstate__506, new String[] {"self", "d"} );
+				IMethod method__setstate__469;
+					IModelElement[] classC467Childs = classC467.getChildren();
+					method__setstate__469 = ModelTestUtils.getAssertMethod( classC467Childs, "__setstate__", 2 );
+					ModelTestUtils.assertParameterNames( method__setstate__469, new String[] {"self", "d"} );
 				}
 			}
 			//Class test
 			{
-			IType classD507;
-				IModelElement[] methodpickleslots500Childs = methodpickleslots500.getChildren();
-				classD507 = ModelTestUtils.getAssertClass( methodpickleslots500Childs, "D" );
+			IType classD470;
+				IModelElement[] methodpickleslots463Childs = methodpickleslots463.getChildren();
+				classD470 = ModelTestUtils.getAssertClass( methodpickleslots463Childs, "D" );
 			}
 			//Class test
 			{
-			IType classE508;
-				IModelElement[] methodpickleslots500Childs = methodpickleslots500.getChildren();
-				classE508 = ModelTestUtils.getAssertClass( methodpickleslots500Childs, "E" );
+			IType classE471;
+				IModelElement[] methodpickleslots463Childs = methodpickleslots463.getChildren();
+				classE471 = ModelTestUtils.getAssertClass( methodpickleslots463Childs, "E" );
 			}
 		}
 		//Function test:copies
 		{
-		IMethod methodcopies509;
+		IMethod methodcopies472;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodcopies509 = ModelTestUtils.getAssertMethod( moduleChilds, "copies", 0 );
+			methodcopies472 = ModelTestUtils.getAssertMethod( moduleChilds, "copies", 0 );
 			//Class test
 			{
-			IType classC510;
-				IModelElement[] methodcopies509Childs = methodcopies509.getChildren();
-				classC510 = ModelTestUtils.getAssertClass( methodcopies509Childs, "C" );
+			IType classC473;
+				IModelElement[] methodcopies472Childs = methodcopies472.getChildren();
+				classC473 = ModelTestUtils.getAssertClass( methodcopies472Childs, "C" );
 			}
 		}
 		//Function test:binopoverride
 		{
-		IMethod methodbinopoverride511;
+		IMethod methodbinopoverride474;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodbinopoverride511 = ModelTestUtils.getAssertMethod( moduleChilds, "binopoverride", 0 );
+			methodbinopoverride474 = ModelTestUtils.getAssertMethod( moduleChilds, "binopoverride", 0 );
 			//Class test
 			{
-			IType classI512;
-				IModelElement[] methodbinopoverride511Childs = methodbinopoverride511.getChildren();
-				classI512 = ModelTestUtils.getAssertClass( methodbinopoverride511Childs, "I" );
+			IType classI475;
+				IModelElement[] methodbinopoverride474Childs = methodbinopoverride474.getChildren();
+				classI475 = ModelTestUtils.getAssertClass( methodbinopoverride474Childs, "I" );
 				//Function test:__repr__
 				{
-				IMethod method__repr__513;
-					IModelElement[] classI512Childs = classI512.getChildren();
-					method__repr__513 = ModelTestUtils.getAssertMethod( classI512Childs, "__repr__", 1 );
-					ModelTestUtils.assertParameterNames( method__repr__513, new String[] {"self"} );
+				IMethod method__repr__476;
+					IModelElement[] classI475Childs = classI475.getChildren();
+					method__repr__476 = ModelTestUtils.getAssertMethod( classI475Childs, "__repr__", 1 );
+					ModelTestUtils.assertParameterNames( method__repr__476, new String[] {"self"} );
 				}
 				//Function test:__add__
 				{
-				IMethod method__add__514;
-					IModelElement[] classI512Childs = classI512.getChildren();
-					method__add__514 = ModelTestUtils.getAssertMethod( classI512Childs, "__add__", 2 );
-					ModelTestUtils.assertParameterNames( method__add__514, new String[] {"self", "other"} );
+				IMethod method__add__477;
+					IModelElement[] classI475Childs = classI475.getChildren();
+					method__add__477 = ModelTestUtils.getAssertMethod( classI475Childs, "__add__", 2 );
+					ModelTestUtils.assertParameterNames( method__add__477, new String[] {"self", "other"} );
 				}
 				//Function test:__pow__
 				{
-				IMethod method__pow__515;
-					IModelElement[] classI512Childs = classI512.getChildren();
-					method__pow__515 = ModelTestUtils.getAssertMethod( classI512Childs, "__pow__", 3 );
-					ModelTestUtils.assertParameterNames( method__pow__515, new String[] {"self", "other", "mod"} );
+				IMethod method__pow__478;
+					IModelElement[] classI475Childs = classI475.getChildren();
+					method__pow__478 = ModelTestUtils.getAssertMethod( classI475Childs, "__pow__", 3 );
+					ModelTestUtils.assertParameterNames( method__pow__478, new String[] {"self", "other", "mod"} );
 				}
 				//Function test:__rpow__
 				{
-				IMethod method__rpow__516;
-					IModelElement[] classI512Childs = classI512.getChildren();
-					method__rpow__516 = ModelTestUtils.getAssertMethod( classI512Childs, "__rpow__", 3 );
-					ModelTestUtils.assertParameterNames( method__rpow__516, new String[] {"self", "other", "mod"} );
+				IMethod method__rpow__479;
+					IModelElement[] classI475Childs = classI475.getChildren();
+					method__rpow__479 = ModelTestUtils.getAssertMethod( classI475Childs, "__rpow__", 3 );
+					ModelTestUtils.assertParameterNames( method__rpow__479, new String[] {"self", "other", "mod"} );
 				}
 			}
 			//Class test
 			{
-			IType classS517;
-				IModelElement[] methodbinopoverride511Childs = methodbinopoverride511.getChildren();
-				classS517 = ModelTestUtils.getAssertClass( methodbinopoverride511Childs, "S" );
+			IType classS480;
+				IModelElement[] methodbinopoverride474Childs = methodbinopoverride474.getChildren();
+				classS480 = ModelTestUtils.getAssertClass( methodbinopoverride474Childs, "S" );
 				//Function test:__eq__
 				{
-				IMethod method__eq__518;
-					IModelElement[] classS517Childs = classS517.getChildren();
-					method__eq__518 = ModelTestUtils.getAssertMethod( classS517Childs, "__eq__", 2 );
-					ModelTestUtils.assertParameterNames( method__eq__518, new String[] {"self", "other"} );
+				IMethod method__eq__481;
+					IModelElement[] classS480Childs = classS480.getChildren();
+					method__eq__481 = ModelTestUtils.getAssertMethod( classS480Childs, "__eq__", 2 );
+					ModelTestUtils.assertParameterNames( method__eq__481, new String[] {"self", "other"} );
 				}
 			}
 		}
 		//Function test:subclasspropagation
 		{
-		IMethod methodsubclasspropagation519;
+		IMethod methodsubclasspropagation482;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodsubclasspropagation519 = ModelTestUtils.getAssertMethod( moduleChilds, "subclasspropagation", 0 );
+			methodsubclasspropagation482 = ModelTestUtils.getAssertMethod( moduleChilds, "subclasspropagation", 0 );
 			//Class test
 			{
-			IType classA520;
-				IModelElement[] methodsubclasspropagation519Childs = methodsubclasspropagation519.getChildren();
-				classA520 = ModelTestUtils.getAssertClass( methodsubclasspropagation519Childs, "A" );
+			IType classA483;
+				IModelElement[] methodsubclasspropagation482Childs = methodsubclasspropagation482.getChildren();
+				classA483 = ModelTestUtils.getAssertClass( methodsubclasspropagation482Childs, "A" );
 			}
 			//Class test
 			{
-			IType classB521;
-				IModelElement[] methodsubclasspropagation519Childs = methodsubclasspropagation519.getChildren();
-				classB521 = ModelTestUtils.getAssertClass( methodsubclasspropagation519Childs, "B" );
+			IType classB484;
+				IModelElement[] methodsubclasspropagation482Childs = methodsubclasspropagation482.getChildren();
+				classB484 = ModelTestUtils.getAssertClass( methodsubclasspropagation482Childs, "B" );
 			}
 			//Class test
 			{
-			IType classC522;
-				IModelElement[] methodsubclasspropagation519Childs = methodsubclasspropagation519.getChildren();
-				classC522 = ModelTestUtils.getAssertClass( methodsubclasspropagation519Childs, "C" );
+			IType classC485;
+				IModelElement[] methodsubclasspropagation482Childs = methodsubclasspropagation482.getChildren();
+				classC485 = ModelTestUtils.getAssertClass( methodsubclasspropagation482Childs, "C" );
 			}
 			//Class test
 			{
-			IType classD523;
-				IModelElement[] methodsubclasspropagation519Childs = methodsubclasspropagation519.getChildren();
-				classD523 = ModelTestUtils.getAssertClass( methodsubclasspropagation519Childs, "D" );
+			IType classD486;
+				IModelElement[] methodsubclasspropagation482Childs = methodsubclasspropagation482.getChildren();
+				classD486 = ModelTestUtils.getAssertClass( methodsubclasspropagation482Childs, "D" );
 			}
 			//Function test:__getattribute__
 			{
-			IMethod method__getattribute__524;
-				IModelElement[] methodsubclasspropagation519Childs = methodsubclasspropagation519.getChildren();
-				method__getattribute__524 = ModelTestUtils.getAssertMethod( methodsubclasspropagation519Childs, "__getattribute__", 2 );
-				ModelTestUtils.assertParameterNames( method__getattribute__524, new String[] {"self", "name"} );
+			IMethod method__getattribute__487;
+				IModelElement[] methodsubclasspropagation482Childs = methodsubclasspropagation482.getChildren();
+				method__getattribute__487 = ModelTestUtils.getAssertMethod( methodsubclasspropagation482Childs, "__getattribute__", 2 );
+				ModelTestUtils.assertParameterNames( method__getattribute__487, new String[] {"self", "name"} );
 			}
 			//Function test:__getattr__
 			{
-			IMethod method__getattr__525;
-				IModelElement[] methodsubclasspropagation519Childs = methodsubclasspropagation519.getChildren();
-				method__getattr__525 = ModelTestUtils.getAssertMethod( methodsubclasspropagation519Childs, "__getattr__", 2 );
-				ModelTestUtils.assertParameterNames( method__getattr__525, new String[] {"self", "name"} );
+			IMethod method__getattr__488;
+				IModelElement[] methodsubclasspropagation482Childs = methodsubclasspropagation482.getChildren();
+				method__getattr__488 = ModelTestUtils.getAssertMethod( methodsubclasspropagation482Childs, "__getattr__", 2 );
+				ModelTestUtils.assertParameterNames( method__getattr__488, new String[] {"self", "name"} );
 			}
 			//Class test
 			{
-			IType classA526;
-				IModelElement[] methodsubclasspropagation519Childs = methodsubclasspropagation519.getChildren();
-				classA526 = ModelTestUtils.getAssertClass( methodsubclasspropagation519Childs, "A" );
+			IType classA489;
+				IModelElement[] methodsubclasspropagation482Childs = methodsubclasspropagation482.getChildren();
+				classA489 = ModelTestUtils.getAssertClass( methodsubclasspropagation482Childs, "A" );
 			}
 			//Class test
 			{
-			IType classB527;
-				IModelElement[] methodsubclasspropagation519Childs = methodsubclasspropagation519.getChildren();
-				classB527 = ModelTestUtils.getAssertClass( methodsubclasspropagation519Childs, "B" );
+			IType classB490;
+				IModelElement[] methodsubclasspropagation482Childs = methodsubclasspropagation482.getChildren();
+				classB490 = ModelTestUtils.getAssertClass( methodsubclasspropagation482Childs, "B" );
 			}
 		}
 		//Function test:buffer_inherit
 		{
-		IMethod methodbuffer_inherit528;
+		IMethod methodbuffer_inherit491;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodbuffer_inherit528 = ModelTestUtils.getAssertMethod( moduleChilds, "buffer_inherit", 0 );
+			methodbuffer_inherit491 = ModelTestUtils.getAssertMethod( moduleChilds, "buffer_inherit", 0 );
 			//Class test
 			{
-			IType classMyStr529;
-				IModelElement[] methodbuffer_inherit528Childs = methodbuffer_inherit528.getChildren();
-				classMyStr529 = ModelTestUtils.getAssertClass( methodbuffer_inherit528Childs, "MyStr" );
+			IType classMyStr492;
+				IModelElement[] methodbuffer_inherit491Childs = methodbuffer_inherit491.getChildren();
+				classMyStr492 = ModelTestUtils.getAssertClass( methodbuffer_inherit491Childs, "MyStr" );
 			}
 			//Class test
 			{
-			IType classMyUni530;
-				IModelElement[] methodbuffer_inherit528Childs = methodbuffer_inherit528.getChildren();
-				classMyUni530 = ModelTestUtils.getAssertClass( methodbuffer_inherit528Childs, "MyUni" );
+			IType classMyUni493;
+				IModelElement[] methodbuffer_inherit491Childs = methodbuffer_inherit491.getChildren();
+				classMyUni493 = ModelTestUtils.getAssertClass( methodbuffer_inherit491Childs, "MyUni" );
 			}
 			//Class test
 			{
-			IType classMyInt531;
-				IModelElement[] methodbuffer_inherit528Childs = methodbuffer_inherit528.getChildren();
-				classMyInt531 = ModelTestUtils.getAssertClass( methodbuffer_inherit528Childs, "MyInt" );
+			IType classMyInt494;
+				IModelElement[] methodbuffer_inherit491Childs = methodbuffer_inherit491.getChildren();
+				classMyInt494 = ModelTestUtils.getAssertClass( methodbuffer_inherit491Childs, "MyInt" );
 			}
 		}
 		//Function test:str_of_str_subclass
 		{
-		IMethod methodstr_of_str_subclass532;
+		IMethod methodstr_of_str_subclass495;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodstr_of_str_subclass532 = ModelTestUtils.getAssertMethod( moduleChilds, "str_of_str_subclass", 0 );
+			methodstr_of_str_subclass495 = ModelTestUtils.getAssertMethod( moduleChilds, "str_of_str_subclass", 0 );
 			//Class test
 			{
-			IType classoctetstring533;
-				IModelElement[] methodstr_of_str_subclass532Childs = methodstr_of_str_subclass532.getChildren();
-				classoctetstring533 = ModelTestUtils.getAssertClass( methodstr_of_str_subclass532Childs, "octetstring" );
+			IType classoctetstring496;
+				IModelElement[] methodstr_of_str_subclass495Childs = methodstr_of_str_subclass495.getChildren();
+				classoctetstring496 = ModelTestUtils.getAssertClass( methodstr_of_str_subclass495Childs, "octetstring" );
 				//Function test:__str__
 				{
-				IMethod method__str__534;
-					IModelElement[] classoctetstring533Childs = classoctetstring533.getChildren();
-					method__str__534 = ModelTestUtils.getAssertMethod( classoctetstring533Childs, "__str__", 1 );
-					ModelTestUtils.assertParameterNames( method__str__534, new String[] {"self"} );
+				IMethod method__str__497;
+					IModelElement[] classoctetstring496Childs = classoctetstring496.getChildren();
+					method__str__497 = ModelTestUtils.getAssertMethod( classoctetstring496Childs, "__str__", 1 );
+					ModelTestUtils.assertParameterNames( method__str__497, new String[] {"self"} );
 				}
 				//Function test:__repr__
 				{
-				IMethod method__repr__535;
-					IModelElement[] classoctetstring533Childs = classoctetstring533.getChildren();
-					method__repr__535 = ModelTestUtils.getAssertMethod( classoctetstring533Childs, "__repr__", 1 );
-					ModelTestUtils.assertParameterNames( method__repr__535, new String[] {"self"} );
+				IMethod method__repr__498;
+					IModelElement[] classoctetstring496Childs = classoctetstring496.getChildren();
+					method__repr__498 = ModelTestUtils.getAssertMethod( classoctetstring496Childs, "__repr__", 1 );
+					ModelTestUtils.assertParameterNames( method__repr__498, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:kwdargs
 		{
-		IMethod methodkwdargs536;
+		IMethod methodkwdargs499;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodkwdargs536 = ModelTestUtils.getAssertMethod( moduleChilds, "kwdargs", 0 );
+			methodkwdargs499 = ModelTestUtils.getAssertMethod( moduleChilds, "kwdargs", 0 );
 			//Function test:f
 			{
-			IMethod methodf537;
-				IModelElement[] methodkwdargs536Childs = methodkwdargs536.getChildren();
-				methodf537 = ModelTestUtils.getAssertMethod( methodkwdargs536Childs, "f", 1 );
-				ModelTestUtils.assertParameterNames( methodf537, new String[] {"a"} );
+			IMethod methodf500;
+				IModelElement[] methodkwdargs499Childs = methodkwdargs499.getChildren();
+				methodf500 = ModelTestUtils.getAssertMethod( methodkwdargs499Childs, "f", 1 );
+				ModelTestUtils.assertParameterNames( methodf500, new String[] {"a"} );
 			}
 		}
 		//Function test:delhook
 		{
-		IMethod methoddelhook538;
+		IMethod methoddelhook501;
 			IModelElement[] moduleChilds = module.getChildren();
-			methoddelhook538 = ModelTestUtils.getAssertMethod( moduleChilds, "delhook", 0 );
+			methoddelhook501 = ModelTestUtils.getAssertMethod( moduleChilds, "delhook", 0 );
 			//Class test
 			{
-			IType classC539;
-				IModelElement[] methoddelhook538Childs = methoddelhook538.getChildren();
-				classC539 = ModelTestUtils.getAssertClass( methoddelhook538Childs, "C" );
+			IType classC502;
+				IModelElement[] methoddelhook501Childs = methoddelhook501.getChildren();
+				classC502 = ModelTestUtils.getAssertClass( methoddelhook501Childs, "C" );
 				//Function test:__del__
 				{
-				IMethod method__del__540;
-					IModelElement[] classC539Childs = classC539.getChildren();
-					method__del__540 = ModelTestUtils.getAssertMethod( classC539Childs, "__del__", 1 );
-					ModelTestUtils.assertParameterNames( method__del__540, new String[] {"self"} );
+				IMethod method__del__503;
+					IModelElement[] classC502Childs = classC502.getChildren();
+					method__del__503 = ModelTestUtils.getAssertMethod( classC502Childs, "__del__", 1 );
+					ModelTestUtils.assertParameterNames( method__del__503, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classD541;
-				IModelElement[] methoddelhook538Childs = methoddelhook538.getChildren();
-				classD541 = ModelTestUtils.getAssertClass( methoddelhook538Childs, "D" );
+			IType classD504;
+				IModelElement[] methoddelhook501Childs = methoddelhook501.getChildren();
+				classD504 = ModelTestUtils.getAssertClass( methoddelhook501Childs, "D" );
 			}
 		}
 		//Function test:hashinherit
 		{
-		IMethod methodhashinherit542;
+		IMethod methodhashinherit505;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodhashinherit542 = ModelTestUtils.getAssertMethod( moduleChilds, "hashinherit", 0 );
+			methodhashinherit505 = ModelTestUtils.getAssertMethod( moduleChilds, "hashinherit", 0 );
 			//Class test
 			{
-			IType classmydict543;
-				IModelElement[] methodhashinherit542Childs = methodhashinherit542.getChildren();
-				classmydict543 = ModelTestUtils.getAssertClass( methodhashinherit542Childs, "mydict" );
+			IType classmydict506;
+				IModelElement[] methodhashinherit505Childs = methodhashinherit505.getChildren();
+				classmydict506 = ModelTestUtils.getAssertClass( methodhashinherit505Childs, "mydict" );
 			}
 			//Class test
 			{
-			IType classmylist544;
-				IModelElement[] methodhashinherit542Childs = methodhashinherit542.getChildren();
-				classmylist544 = ModelTestUtils.getAssertClass( methodhashinherit542Childs, "mylist" );
+			IType classmylist507;
+				IModelElement[] methodhashinherit505Childs = methodhashinherit505.getChildren();
+				classmylist507 = ModelTestUtils.getAssertClass( methodhashinherit505Childs, "mylist" );
 			}
 		}
 		//Function test:strops
 		{
-		IMethod methodstrops545;
+		IMethod methodstrops508;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodstrops545 = ModelTestUtils.getAssertMethod( moduleChilds, "strops", 0 );
+			methodstrops508 = ModelTestUtils.getAssertMethod( moduleChilds, "strops", 0 );
 		}
 		//Function test:deepcopyrecursive
 		{
-		IMethod methoddeepcopyrecursive546;
+		IMethod methoddeepcopyrecursive509;
 			IModelElement[] moduleChilds = module.getChildren();
-			methoddeepcopyrecursive546 = ModelTestUtils.getAssertMethod( moduleChilds, "deepcopyrecursive", 0 );
+			methoddeepcopyrecursive509 = ModelTestUtils.getAssertMethod( moduleChilds, "deepcopyrecursive", 0 );
 			//Class test
 			{
-			IType classNode547;
-				IModelElement[] methoddeepcopyrecursive546Childs = methoddeepcopyrecursive546.getChildren();
-				classNode547 = ModelTestUtils.getAssertClass( methoddeepcopyrecursive546Childs, "Node" );
+			IType classNode510;
+				IModelElement[] methoddeepcopyrecursive509Childs = methoddeepcopyrecursive509.getChildren();
+				classNode510 = ModelTestUtils.getAssertClass( methoddeepcopyrecursive509Childs, "Node" );
 			}
 		}
 		//Function test:modules
 		{
-		IMethod methodmodules548;
+		IMethod methodmodules511;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodmodules548 = ModelTestUtils.getAssertMethod( moduleChilds, "modules", 0 );
+			methodmodules511 = ModelTestUtils.getAssertMethod( moduleChilds, "modules", 0 );
 		}
 		//Function test:dictproxyiterkeys
 		{
-		IMethod methoddictproxyiterkeys549;
+		IMethod methoddictproxyiterkeys512;
 			IModelElement[] moduleChilds = module.getChildren();
-			methoddictproxyiterkeys549 = ModelTestUtils.getAssertMethod( moduleChilds, "dictproxyiterkeys", 0 );
+			methoddictproxyiterkeys512 = ModelTestUtils.getAssertMethod( moduleChilds, "dictproxyiterkeys", 0 );
 			//Class test
 			{
-			IType classC550;
-				IModelElement[] methoddictproxyiterkeys549Childs = methoddictproxyiterkeys549.getChildren();
-				classC550 = ModelTestUtils.getAssertClass( methoddictproxyiterkeys549Childs, "C" );
+			IType classC513;
+				IModelElement[] methoddictproxyiterkeys512Childs = methoddictproxyiterkeys512.getChildren();
+				classC513 = ModelTestUtils.getAssertClass( methoddictproxyiterkeys512Childs, "C" );
 				//Function test:meth
 				{
-				IMethod methodmeth551;
-					IModelElement[] classC550Childs = classC550.getChildren();
-					methodmeth551 = ModelTestUtils.getAssertMethod( classC550Childs, "meth", 1 );
-					ModelTestUtils.assertParameterNames( methodmeth551, new String[] {"self"} );
+				IMethod methodmeth514;
+					IModelElement[] classC513Childs = classC513.getChildren();
+					methodmeth514 = ModelTestUtils.getAssertMethod( classC513Childs, "meth", 1 );
+					ModelTestUtils.assertParameterNames( methodmeth514, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:dictproxyitervalues
 		{
-		IMethod methoddictproxyitervalues552;
+		IMethod methoddictproxyitervalues515;
 			IModelElement[] moduleChilds = module.getChildren();
-			methoddictproxyitervalues552 = ModelTestUtils.getAssertMethod( moduleChilds, "dictproxyitervalues", 0 );
+			methoddictproxyitervalues515 = ModelTestUtils.getAssertMethod( moduleChilds, "dictproxyitervalues", 0 );
 			//Class test
 			{
-			IType classC553;
-				IModelElement[] methoddictproxyitervalues552Childs = methoddictproxyitervalues552.getChildren();
-				classC553 = ModelTestUtils.getAssertClass( methoddictproxyitervalues552Childs, "C" );
+			IType classC516;
+				IModelElement[] methoddictproxyitervalues515Childs = methoddictproxyitervalues515.getChildren();
+				classC516 = ModelTestUtils.getAssertClass( methoddictproxyitervalues515Childs, "C" );
 				//Function test:meth
 				{
-				IMethod methodmeth554;
-					IModelElement[] classC553Childs = classC553.getChildren();
-					methodmeth554 = ModelTestUtils.getAssertMethod( classC553Childs, "meth", 1 );
-					ModelTestUtils.assertParameterNames( methodmeth554, new String[] {"self"} );
+				IMethod methodmeth517;
+					IModelElement[] classC516Childs = classC516.getChildren();
+					methodmeth517 = ModelTestUtils.getAssertMethod( classC516Childs, "meth", 1 );
+					ModelTestUtils.assertParameterNames( methodmeth517, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:dictproxyiteritems
 		{
-		IMethod methoddictproxyiteritems555;
+		IMethod methoddictproxyiteritems518;
 			IModelElement[] moduleChilds = module.getChildren();
-			methoddictproxyiteritems555 = ModelTestUtils.getAssertMethod( moduleChilds, "dictproxyiteritems", 0 );
+			methoddictproxyiteritems518 = ModelTestUtils.getAssertMethod( moduleChilds, "dictproxyiteritems", 0 );
 			//Class test
 			{
-			IType classC556;
-				IModelElement[] methoddictproxyiteritems555Childs = methoddictproxyiteritems555.getChildren();
-				classC556 = ModelTestUtils.getAssertClass( methoddictproxyiteritems555Childs, "C" );
+			IType classC519;
+				IModelElement[] methoddictproxyiteritems518Childs = methoddictproxyiteritems518.getChildren();
+				classC519 = ModelTestUtils.getAssertClass( methoddictproxyiteritems518Childs, "C" );
 				//Function test:meth
 				{
-				IMethod methodmeth557;
-					IModelElement[] classC556Childs = classC556.getChildren();
-					methodmeth557 = ModelTestUtils.getAssertMethod( classC556Childs, "meth", 1 );
-					ModelTestUtils.assertParameterNames( methodmeth557, new String[] {"self"} );
+				IMethod methodmeth520;
+					IModelElement[] classC519Childs = classC519.getChildren();
+					methodmeth520 = ModelTestUtils.getAssertMethod( classC519Childs, "meth", 1 );
+					ModelTestUtils.assertParameterNames( methodmeth520, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:funnynew
 		{
-		IMethod methodfunnynew558;
+		IMethod methodfunnynew521;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodfunnynew558 = ModelTestUtils.getAssertMethod( moduleChilds, "funnynew", 0 );
+			methodfunnynew521 = ModelTestUtils.getAssertMethod( moduleChilds, "funnynew", 0 );
 			//Class test
 			{
-			IType classC559;
-				IModelElement[] methodfunnynew558Childs = methodfunnynew558.getChildren();
-				classC559 = ModelTestUtils.getAssertClass( methodfunnynew558Childs, "C" );
+			IType classC522;
+				IModelElement[] methodfunnynew521Childs = methodfunnynew521.getChildren();
+				classC522 = ModelTestUtils.getAssertClass( methodfunnynew521Childs, "C" );
 				//Function test:__new__
 				{
-				IMethod method__new__560;
-					IModelElement[] classC559Childs = classC559.getChildren();
-					method__new__560 = ModelTestUtils.getAssertMethod( classC559Childs, "__new__", 2 );
-					ModelTestUtils.assertParameterNames( method__new__560, new String[] {"cls", "arg"} );
+				IMethod method__new__523;
+					IModelElement[] classC522Childs = classC522.getChildren();
+					method__new__523 = ModelTestUtils.getAssertMethod( classC522Childs, "__new__", 2 );
+					ModelTestUtils.assertParameterNames( method__new__523, new String[] {"cls", "arg"} );
 				}
 			}
 			//Class test
 			{
-			IType classD561;
-				IModelElement[] methodfunnynew558Childs = methodfunnynew558.getChildren();
-				classD561 = ModelTestUtils.getAssertClass( methodfunnynew558Childs, "D" );
+			IType classD524;
+				IModelElement[] methodfunnynew521Childs = methodfunnynew521.getChildren();
+				classD524 = ModelTestUtils.getAssertClass( methodfunnynew521Childs, "D" );
 				//Function test:__init__
 				{
-				IMethod method__init__562;
-					IModelElement[] classD561Childs = classD561.getChildren();
-					method__init__562 = ModelTestUtils.getAssertMethod( classD561Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__562, new String[] {"self", "arg"} );
-				}
-				{
-					IModelElement[] classD561Childs = classD561.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classD561Childs, "foo");
+				IMethod method__init__525;
+					IModelElement[] classD524Childs = classD524.getChildren();
+					method__init__525 = ModelTestUtils.getAssertMethod( classD524Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__525, new String[] {"self", "arg"} );
 				}
 			}
 		}
 		//Function test:imulbug
 		{
-		IMethod methodimulbug564;
+		IMethod methodimulbug526;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodimulbug564 = ModelTestUtils.getAssertMethod( moduleChilds, "imulbug", 0 );
+			methodimulbug526 = ModelTestUtils.getAssertMethod( moduleChilds, "imulbug", 0 );
 			//Class test
 			{
-			IType classC565;
-				IModelElement[] methodimulbug564Childs = methodimulbug564.getChildren();
-				classC565 = ModelTestUtils.getAssertClass( methodimulbug564Childs, "C" );
+			IType classC527;
+				IModelElement[] methodimulbug526Childs = methodimulbug526.getChildren();
+				classC527 = ModelTestUtils.getAssertClass( methodimulbug526Childs, "C" );
 				//Function test:__imul__
 				{
-				IMethod method__imul__566;
-					IModelElement[] classC565Childs = classC565.getChildren();
-					method__imul__566 = ModelTestUtils.getAssertMethod( classC565Childs, "__imul__", 2 );
-					ModelTestUtils.assertParameterNames( method__imul__566, new String[] {"self", "other"} );
+				IMethod method__imul__528;
+					IModelElement[] classC527Childs = classC527.getChildren();
+					method__imul__528 = ModelTestUtils.getAssertMethod( classC527Childs, "__imul__", 2 );
+					ModelTestUtils.assertParameterNames( method__imul__528, new String[] {"self", "other"} );
 				}
 			}
 		}
 		//Function test:docdescriptor
 		{
-		IMethod methoddocdescriptor567;
+		IMethod methoddocdescriptor529;
 			IModelElement[] moduleChilds = module.getChildren();
-			methoddocdescriptor567 = ModelTestUtils.getAssertMethod( moduleChilds, "docdescriptor", 0 );
+			methoddocdescriptor529 = ModelTestUtils.getAssertMethod( moduleChilds, "docdescriptor", 0 );
 			//Class test
 			{
-			IType classDocDescr568;
-				IModelElement[] methoddocdescriptor567Childs = methoddocdescriptor567.getChildren();
-				classDocDescr568 = ModelTestUtils.getAssertClass( methoddocdescriptor567Childs, "DocDescr" );
+			IType classDocDescr530;
+				IModelElement[] methoddocdescriptor529Childs = methoddocdescriptor529.getChildren();
+				classDocDescr530 = ModelTestUtils.getAssertClass( methoddocdescriptor529Childs, "DocDescr" );
 				//Function test:__get__
 				{
-				IMethod method__get__569;
-					IModelElement[] classDocDescr568Childs = classDocDescr568.getChildren();
-					method__get__569 = ModelTestUtils.getAssertMethod( classDocDescr568Childs, "__get__", 3 );
-					ModelTestUtils.assertParameterNames( method__get__569, new String[] {"self", "object", "otype"} );
+				IMethod method__get__531;
+					IModelElement[] classDocDescr530Childs = classDocDescr530.getChildren();
+					method__get__531 = ModelTestUtils.getAssertMethod( classDocDescr530Childs, "__get__", 3 );
+					ModelTestUtils.assertParameterNames( method__get__531, new String[] {"self", "object", "otype"} );
 				}
 			}
 			//Class test
 			{
-			IType classOldClass570;
-				IModelElement[] methoddocdescriptor567Childs = methoddocdescriptor567.getChildren();
-				classOldClass570 = ModelTestUtils.getAssertClass( methoddocdescriptor567Childs, "OldClass" );
+			IType classOldClass532;
+				IModelElement[] methoddocdescriptor529Childs = methoddocdescriptor529.getChildren();
+				classOldClass532 = ModelTestUtils.getAssertClass( methoddocdescriptor529Childs, "OldClass" );
 			}
 			//Class test
 			{
-			IType classNewClass571;
-				IModelElement[] methoddocdescriptor567Childs = methoddocdescriptor567.getChildren();
-				classNewClass571 = ModelTestUtils.getAssertClass( methoddocdescriptor567Childs, "NewClass" );
+			IType classNewClass533;
+				IModelElement[] methoddocdescriptor529Childs = methoddocdescriptor529.getChildren();
+				classNewClass533 = ModelTestUtils.getAssertClass( methoddocdescriptor529Childs, "NewClass" );
 			}
 		}
 		//Function test:string_exceptions
 		{
-		IMethod methodstring_exceptions572;
+		IMethod methodstring_exceptions534;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodstring_exceptions572 = ModelTestUtils.getAssertMethod( moduleChilds, "string_exceptions", 0 );
+			methodstring_exceptions534 = ModelTestUtils.getAssertMethod( moduleChilds, "string_exceptions", 0 );
 			//Class test
 			{
-			IType classMyStr573;
-				IModelElement[] methodstring_exceptions572Childs = methodstring_exceptions572.getChildren();
-				classMyStr573 = ModelTestUtils.getAssertClass( methodstring_exceptions572Childs, "MyStr" );
+			IType classMyStr535;
+				IModelElement[] methodstring_exceptions534Childs = methodstring_exceptions534.getChildren();
+				classMyStr535 = ModelTestUtils.getAssertClass( methodstring_exceptions534Childs, "MyStr" );
 			}
 		}
 		//Function test:copy_setstate
 		{
-		IMethod methodcopy_setstate574;
+		IMethod methodcopy_setstate536;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodcopy_setstate574 = ModelTestUtils.getAssertMethod( moduleChilds, "copy_setstate", 0 );
+			methodcopy_setstate536 = ModelTestUtils.getAssertMethod( moduleChilds, "copy_setstate", 0 );
 			//Class test
 			{
-			IType classC575;
-				IModelElement[] methodcopy_setstate574Childs = methodcopy_setstate574.getChildren();
-				classC575 = ModelTestUtils.getAssertClass( methodcopy_setstate574Childs, "C" );
+			IType classC537;
+				IModelElement[] methodcopy_setstate536Childs = methodcopy_setstate536.getChildren();
+				classC537 = ModelTestUtils.getAssertClass( methodcopy_setstate536Childs, "C" );
 				//Function test:__init__
 				{
-				IMethod method__init__576;
-					IModelElement[] classC575Childs = classC575.getChildren();
-					method__init__576 = ModelTestUtils.getAssertMethod( classC575Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__576, new String[] {"self", "foo"} );
-				}
-				{
-					IModelElement[] classC575Childs = classC575.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC575Childs, "foo");
-				}
-				{
-					IModelElement[] classC575Childs = classC575.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC575Childs, "__foo");
+				IMethod method__init__538;
+					IModelElement[] classC537Childs = classC537.getChildren();
+					method__init__538 = ModelTestUtils.getAssertMethod( classC537Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__538, new String[] {"self", "foo"} );
 				}
 				//Function test:setfoo
 				{
-				IMethod methodsetfoo578;
-					IModelElement[] classC575Childs = classC575.getChildren();
-					methodsetfoo578 = ModelTestUtils.getAssertMethod( classC575Childs, "setfoo", 2 );
-					ModelTestUtils.assertParameterNames( methodsetfoo578, new String[] {"self", "foo"} );
-				}
-				{
-					IModelElement[] classC575Childs = classC575.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC575Childs, "foo");
+				IMethod methodsetfoo539;
+					IModelElement[] classC537Childs = classC537.getChildren();
+					methodsetfoo539 = ModelTestUtils.getAssertMethod( classC537Childs, "setfoo", 2 );
+					ModelTestUtils.assertParameterNames( methodsetfoo539, new String[] {"self", "foo"} );
 				}
 				//Function test:getfoo
 				{
-				IMethod methodgetfoo580;
-					IModelElement[] classC575Childs = classC575.getChildren();
-					methodgetfoo580 = ModelTestUtils.getAssertMethod( classC575Childs, "getfoo", 1 );
-					ModelTestUtils.assertParameterNames( methodgetfoo580, new String[] {"self"} );
+				IMethod methodgetfoo540;
+					IModelElement[] classC537Childs = classC537.getChildren();
+					methodgetfoo540 = ModelTestUtils.getAssertMethod( classC537Childs, "getfoo", 1 );
+					ModelTestUtils.assertParameterNames( methodgetfoo540, new String[] {"self"} );
 				}
 				//Function test:__getstate__
 				{
-				IMethod method__getstate__581;
-					IModelElement[] classC575Childs = classC575.getChildren();
-					method__getstate__581 = ModelTestUtils.getAssertMethod( classC575Childs, "__getstate__", 1 );
-					ModelTestUtils.assertParameterNames( method__getstate__581, new String[] {"self"} );
+				IMethod method__getstate__541;
+					IModelElement[] classC537Childs = classC537.getChildren();
+					method__getstate__541 = ModelTestUtils.getAssertMethod( classC537Childs, "__getstate__", 1 );
+					ModelTestUtils.assertParameterNames( method__getstate__541, new String[] {"self"} );
 				}
 				//Function test:__setstate__
 				{
-				IMethod method__setstate__582;
-					IModelElement[] classC575Childs = classC575.getChildren();
-					method__setstate__582 = ModelTestUtils.getAssertMethod( classC575Childs, "__setstate__", 2 );
-					ModelTestUtils.assertParameterNames( method__setstate__582, new String[] {"self", "lst"} );
-				}
-				{
-					IModelElement[] classC575Childs = classC575.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classC575Childs, "__foo");
+				IMethod method__setstate__542;
+					IModelElement[] classC537Childs = classC537.getChildren();
+					method__setstate__542 = ModelTestUtils.getAssertMethod( classC537Childs, "__setstate__", 2 );
+					ModelTestUtils.assertParameterNames( method__setstate__542, new String[] {"self", "lst"} );
 				}
 			}
 		}
 		//Function test:slices
 		{
-		IMethod methodslices584;
+		IMethod methodslices543;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodslices584 = ModelTestUtils.getAssertMethod( moduleChilds, "slices", 0 );
+			methodslices543 = ModelTestUtils.getAssertMethod( moduleChilds, "slices", 0 );
 			//Class test
 			{
-			IType classS585;
-				IModelElement[] methodslices584Childs = methodslices584.getChildren();
-				classS585 = ModelTestUtils.getAssertClass( methodslices584Childs, "S" );
+			IType classS544;
+				IModelElement[] methodslices543Childs = methodslices543.getChildren();
+				classS544 = ModelTestUtils.getAssertClass( methodslices543Childs, "S" );
 				//Function test:__getitem__
 				{
-				IMethod method__getitem__586;
-					IModelElement[] classS585Childs = classS585.getChildren();
-					method__getitem__586 = ModelTestUtils.getAssertMethod( classS585Childs, "__getitem__", 2 );
-					ModelTestUtils.assertParameterNames( method__getitem__586, new String[] {"self", "x"} );
+				IMethod method__getitem__545;
+					IModelElement[] classS544Childs = classS544.getChildren();
+					method__getitem__545 = ModelTestUtils.getAssertMethod( classS544Childs, "__getitem__", 2 );
+					ModelTestUtils.assertParameterNames( method__getitem__545, new String[] {"self", "x"} );
 				}
 			}
 			//Class test
 			{
-			IType classT587;
-				IModelElement[] methodslices584Childs = methodslices584.getChildren();
-				classT587 = ModelTestUtils.getAssertClass( methodslices584Childs, "T" );
+			IType classT546;
+				IModelElement[] methodslices543Childs = methodslices543.getChildren();
+				classT546 = ModelTestUtils.getAssertClass( methodslices543Childs, "T" );
 				//Function test:__getitem__
 				{
-				IMethod method__getitem__588;
-					IModelElement[] classT587Childs = classT587.getChildren();
-					method__getitem__588 = ModelTestUtils.getAssertMethod( classT587Childs, "__getitem__", 2 );
-					ModelTestUtils.assertParameterNames( method__getitem__588, new String[] {"self", "x"} );
+				IMethod method__getitem__547;
+					IModelElement[] classT546Childs = classT546.getChildren();
+					method__getitem__547 = ModelTestUtils.getAssertMethod( classT546Childs, "__getitem__", 2 );
+					ModelTestUtils.assertParameterNames( method__getitem__547, new String[] {"self", "x"} );
 				}
 			}
 			//Class test
 			{
-			IType classL589;
-				IModelElement[] methodslices584Childs = methodslices584.getChildren();
-				classL589 = ModelTestUtils.getAssertClass( methodslices584Childs, "L" );
+			IType classL548;
+				IModelElement[] methodslices543Childs = methodslices543.getChildren();
+				classL548 = ModelTestUtils.getAssertClass( methodslices543Childs, "L" );
 				//Function test:__getitem__
 				{
-				IMethod method__getitem__590;
-					IModelElement[] classL589Childs = classL589.getChildren();
-					method__getitem__590 = ModelTestUtils.getAssertMethod( classL589Childs, "__getitem__", 2 );
-					ModelTestUtils.assertParameterNames( method__getitem__590, new String[] {"self", "x"} );
+				IMethod method__getitem__549;
+					IModelElement[] classL548Childs = classL548.getChildren();
+					method__getitem__549 = ModelTestUtils.getAssertMethod( classL548Childs, "__getitem__", 2 );
+					ModelTestUtils.assertParameterNames( method__getitem__549, new String[] {"self", "x"} );
 				}
 			}
 		}
 		//Function test:subtype_resurrection
 		{
-		IMethod methodsubtype_resurrection591;
+		IMethod methodsubtype_resurrection550;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodsubtype_resurrection591 = ModelTestUtils.getAssertMethod( moduleChilds, "subtype_resurrection", 0 );
+			methodsubtype_resurrection550 = ModelTestUtils.getAssertMethod( moduleChilds, "subtype_resurrection", 0 );
 			//Class test
 			{
-			IType classC592;
-				IModelElement[] methodsubtype_resurrection591Childs = methodsubtype_resurrection591.getChildren();
-				classC592 = ModelTestUtils.getAssertClass( methodsubtype_resurrection591Childs, "C" );
+			IType classC551;
+				IModelElement[] methodsubtype_resurrection550Childs = methodsubtype_resurrection550.getChildren();
+				classC551 = ModelTestUtils.getAssertClass( methodsubtype_resurrection550Childs, "C" );
 				//Function test:__del__
 				{
-				IMethod method__del__593;
-					IModelElement[] classC592Childs = classC592.getChildren();
-					method__del__593 = ModelTestUtils.getAssertMethod( classC592Childs, "__del__", 1 );
-					ModelTestUtils.assertParameterNames( method__del__593, new String[] {"self"} );
+				IMethod method__del__552;
+					IModelElement[] classC551Childs = classC551.getChildren();
+					method__del__552 = ModelTestUtils.getAssertMethod( classC551Childs, "__del__", 1 );
+					ModelTestUtils.assertParameterNames( method__del__552, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:slottrash
 		{
-		IMethod methodslottrash594;
+		IMethod methodslottrash553;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodslottrash594 = ModelTestUtils.getAssertMethod( moduleChilds, "slottrash", 0 );
+			methodslottrash553 = ModelTestUtils.getAssertMethod( moduleChilds, "slottrash", 0 );
 			//Class test
 			{
-			IType classtrash595;
-				IModelElement[] methodslottrash594Childs = methodslottrash594.getChildren();
-				classtrash595 = ModelTestUtils.getAssertClass( methodslottrash594Childs, "trash" );
+			IType classtrash554;
+				IModelElement[] methodslottrash553Childs = methodslottrash553.getChildren();
+				classtrash554 = ModelTestUtils.getAssertClass( methodslottrash553Childs, "trash" );
 				//Function test:__init__
 				{
-				IMethod method__init__596;
-					IModelElement[] classtrash595Childs = classtrash595.getChildren();
-					method__init__596 = ModelTestUtils.getAssertMethod( classtrash595Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__596, new String[] {"self", "x"} );
+				IMethod method__init__555;
+					IModelElement[] classtrash554Childs = classtrash554.getChildren();
+					method__init__555 = ModelTestUtils.getAssertMethod( classtrash554Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__555, new String[] {"self", "x"} );
 				}
 			}
 		}
 		//Function test:slotmultipleinheritance
 		{
-		IMethod methodslotmultipleinheritance597;
+		IMethod methodslotmultipleinheritance556;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodslotmultipleinheritance597 = ModelTestUtils.getAssertMethod( moduleChilds, "slotmultipleinheritance", 0 );
+			methodslotmultipleinheritance556 = ModelTestUtils.getAssertMethod( moduleChilds, "slotmultipleinheritance", 0 );
 			//Class test
 			{
-			IType classA598;
-				IModelElement[] methodslotmultipleinheritance597Childs = methodslotmultipleinheritance597.getChildren();
-				classA598 = ModelTestUtils.getAssertClass( methodslotmultipleinheritance597Childs, "A" );
+			IType classA557;
+				IModelElement[] methodslotmultipleinheritance556Childs = methodslotmultipleinheritance556.getChildren();
+				classA557 = ModelTestUtils.getAssertClass( methodslotmultipleinheritance556Childs, "A" );
 			}
 			//Class test
 			{
-			IType classB599;
-				IModelElement[] methodslotmultipleinheritance597Childs = methodslotmultipleinheritance597.getChildren();
-				classB599 = ModelTestUtils.getAssertClass( methodslotmultipleinheritance597Childs, "B" );
+			IType classB558;
+				IModelElement[] methodslotmultipleinheritance556Childs = methodslotmultipleinheritance556.getChildren();
+				classB558 = ModelTestUtils.getAssertClass( methodslotmultipleinheritance556Childs, "B" );
 			}
 			//Class test
 			{
-			IType classC600;
-				IModelElement[] methodslotmultipleinheritance597Childs = methodslotmultipleinheritance597.getChildren();
-				classC600 = ModelTestUtils.getAssertClass( methodslotmultipleinheritance597Childs, "C" );
+			IType classC559;
+				IModelElement[] methodslotmultipleinheritance556Childs = methodslotmultipleinheritance556.getChildren();
+				classC559 = ModelTestUtils.getAssertClass( methodslotmultipleinheritance556Childs, "C" );
 			}
 		}
 		//Function test:testrmul
 		{
-		IMethod methodtestrmul601;
+		IMethod methodtestrmul560;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtestrmul601 = ModelTestUtils.getAssertMethod( moduleChilds, "testrmul", 0 );
+			methodtestrmul560 = ModelTestUtils.getAssertMethod( moduleChilds, "testrmul", 0 );
 			//Class test
 			{
-			IType classC602;
-				IModelElement[] methodtestrmul601Childs = methodtestrmul601.getChildren();
-				classC602 = ModelTestUtils.getAssertClass( methodtestrmul601Childs, "C" );
+			IType classC561;
+				IModelElement[] methodtestrmul560Childs = methodtestrmul560.getChildren();
+				classC561 = ModelTestUtils.getAssertClass( methodtestrmul560Childs, "C" );
 				//Function test:__mul__
 				{
-				IMethod method__mul__603;
-					IModelElement[] classC602Childs = classC602.getChildren();
-					method__mul__603 = ModelTestUtils.getAssertMethod( classC602Childs, "__mul__", 2 );
-					ModelTestUtils.assertParameterNames( method__mul__603, new String[] {"self", "other"} );
+				IMethod method__mul__562;
+					IModelElement[] classC561Childs = classC561.getChildren();
+					method__mul__562 = ModelTestUtils.getAssertMethod( classC561Childs, "__mul__", 2 );
+					ModelTestUtils.assertParameterNames( method__mul__562, new String[] {"self", "other"} );
 				}
 				//Function test:__rmul__
 				{
-				IMethod method__rmul__604;
-					IModelElement[] classC602Childs = classC602.getChildren();
-					method__rmul__604 = ModelTestUtils.getAssertMethod( classC602Childs, "__rmul__", 2 );
-					ModelTestUtils.assertParameterNames( method__rmul__604, new String[] {"self", "other"} );
+				IMethod method__rmul__563;
+					IModelElement[] classC561Childs = classC561.getChildren();
+					method__rmul__563 = ModelTestUtils.getAssertMethod( classC561Childs, "__rmul__", 2 );
+					ModelTestUtils.assertParameterNames( method__rmul__563, new String[] {"self", "other"} );
 				}
 			}
 		}
 		//Function test:testipow
 		{
-		IMethod methodtestipow605;
+		IMethod methodtestipow564;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtestipow605 = ModelTestUtils.getAssertMethod( moduleChilds, "testipow", 0 );
+			methodtestipow564 = ModelTestUtils.getAssertMethod( moduleChilds, "testipow", 0 );
 			//Class test
 			{
-			IType classC606;
-				IModelElement[] methodtestipow605Childs = methodtestipow605.getChildren();
-				classC606 = ModelTestUtils.getAssertClass( methodtestipow605Childs, "C" );
+			IType classC565;
+				IModelElement[] methodtestipow564Childs = methodtestipow564.getChildren();
+				classC565 = ModelTestUtils.getAssertClass( methodtestipow564Childs, "C" );
 				//Function test:__ipow__
 				{
-				IMethod method__ipow__607;
-					IModelElement[] classC606Childs = classC606.getChildren();
-					method__ipow__607 = ModelTestUtils.getAssertMethod( classC606Childs, "__ipow__", 2 );
-					ModelTestUtils.assertParameterNames( method__ipow__607, new String[] {"self", "other"} );
+				IMethod method__ipow__566;
+					IModelElement[] classC565Childs = classC565.getChildren();
+					method__ipow__566 = ModelTestUtils.getAssertMethod( classC565Childs, "__ipow__", 2 );
+					ModelTestUtils.assertParameterNames( method__ipow__566, new String[] {"self", "other"} );
 				}
 			}
 		}
 		//Function test:do_this_first
 		{
-		IMethod methoddo_this_first608;
+		IMethod methoddo_this_first567;
 			IModelElement[] moduleChilds = module.getChildren();
-			methoddo_this_first608 = ModelTestUtils.getAssertMethod( moduleChilds, "do_this_first", 0 );
+			methoddo_this_first567 = ModelTestUtils.getAssertMethod( moduleChilds, "do_this_first", 0 );
 			//Class test
 			{
-			IType classUserLong609;
-				IModelElement[] methoddo_this_first608Childs = methoddo_this_first608.getChildren();
-				classUserLong609 = ModelTestUtils.getAssertClass( methoddo_this_first608Childs, "UserLong" );
+			IType classUserLong568;
+				IModelElement[] methoddo_this_first567Childs = methoddo_this_first567.getChildren();
+				classUserLong568 = ModelTestUtils.getAssertClass( methoddo_this_first567Childs, "UserLong" );
 				//Function test:__pow__
 				{
-				IMethod method__pow__610;
-					IModelElement[] classUserLong609Childs = classUserLong609.getChildren();
-					method__pow__610 = ModelTestUtils.getAssertMethod( classUserLong609Childs, "__pow__", 2 );
-					ModelTestUtils.assertParameterNames( method__pow__610, new String[] {"self", "args"} );
+				IMethod method__pow__569;
+					IModelElement[] classUserLong568Childs = classUserLong568.getChildren();
+					method__pow__569 = ModelTestUtils.getAssertMethod( classUserLong568Childs, "__pow__", 2 );
+					ModelTestUtils.assertParameterNames( method__pow__569, new String[] {"self", "args"} );
 				}
 			}
 		}
 		//Function test:test_mutable_bases
 		{
-		IMethod methodtest_mutable_bases611;
+		IMethod methodtest_mutable_bases570;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_mutable_bases611 = ModelTestUtils.getAssertMethod( moduleChilds, "test_mutable_bases", 0 );
+			methodtest_mutable_bases570 = ModelTestUtils.getAssertMethod( moduleChilds, "test_mutable_bases", 0 );
 			//Class test
 			{
-			IType classC612;
-				IModelElement[] methodtest_mutable_bases611Childs = methodtest_mutable_bases611.getChildren();
-				classC612 = ModelTestUtils.getAssertClass( methodtest_mutable_bases611Childs, "C" );
+			IType classC571;
+				IModelElement[] methodtest_mutable_bases570Childs = methodtest_mutable_bases570.getChildren();
+				classC571 = ModelTestUtils.getAssertClass( methodtest_mutable_bases570Childs, "C" );
 			}
 			//Class test
 			{
-			IType classC2613;
-				IModelElement[] methodtest_mutable_bases611Childs = methodtest_mutable_bases611.getChildren();
-				classC2613 = ModelTestUtils.getAssertClass( methodtest_mutable_bases611Childs, "C2" );
+			IType classC2572;
+				IModelElement[] methodtest_mutable_bases570Childs = methodtest_mutable_bases570.getChildren();
+				classC2572 = ModelTestUtils.getAssertClass( methodtest_mutable_bases570Childs, "C2" );
 				//Function test:__getattribute__
 				{
-				IMethod method__getattribute__614;
-					IModelElement[] classC2613Childs = classC2613.getChildren();
-					method__getattribute__614 = ModelTestUtils.getAssertMethod( classC2613Childs, "__getattribute__", 2 );
-					ModelTestUtils.assertParameterNames( method__getattribute__614, new String[] {"self", "attr"} );
+				IMethod method__getattribute__573;
+					IModelElement[] classC2572Childs = classC2572.getChildren();
+					method__getattribute__573 = ModelTestUtils.getAssertMethod( classC2572Childs, "__getattribute__", 2 );
+					ModelTestUtils.assertParameterNames( method__getattribute__573, new String[] {"self", "attr"} );
 				}
 				//Function test:meth
 				{
-				IMethod methodmeth615;
-					IModelElement[] classC2613Childs = classC2613.getChildren();
-					methodmeth615 = ModelTestUtils.getAssertMethod( classC2613Childs, "meth", 1 );
-					ModelTestUtils.assertParameterNames( methodmeth615, new String[] {"self"} );
+				IMethod methodmeth574;
+					IModelElement[] classC2572Childs = classC2572.getChildren();
+					methodmeth574 = ModelTestUtils.getAssertMethod( classC2572Childs, "meth", 1 );
+					ModelTestUtils.assertParameterNames( methodmeth574, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classD616;
-				IModelElement[] methodtest_mutable_bases611Childs = methodtest_mutable_bases611.getChildren();
-				classD616 = ModelTestUtils.getAssertClass( methodtest_mutable_bases611Childs, "D" );
+			IType classD575;
+				IModelElement[] methodtest_mutable_bases570Childs = methodtest_mutable_bases570.getChildren();
+				classD575 = ModelTestUtils.getAssertClass( methodtest_mutable_bases570Childs, "D" );
 			}
 			//Class test
 			{
-			IType classE617;
-				IModelElement[] methodtest_mutable_bases611Childs = methodtest_mutable_bases611.getChildren();
-				classE617 = ModelTestUtils.getAssertClass( methodtest_mutable_bases611Childs, "E" );
+			IType classE576;
+				IModelElement[] methodtest_mutable_bases570Childs = methodtest_mutable_bases570.getChildren();
+				classE576 = ModelTestUtils.getAssertClass( methodtest_mutable_bases570Childs, "E" );
 			}
 			//Class test
 			{
-			IType classL618;
-				IModelElement[] methodtest_mutable_bases611Childs = methodtest_mutable_bases611.getChildren();
-				classL618 = ModelTestUtils.getAssertClass( methodtest_mutable_bases611Childs, "L" );
+			IType classL577;
+				IModelElement[] methodtest_mutable_bases570Childs = methodtest_mutable_bases570.getChildren();
+				classL577 = ModelTestUtils.getAssertClass( methodtest_mutable_bases570Childs, "L" );
 			}
 			//Class test
 			{
-			IType classClassic619;
-				IModelElement[] methodtest_mutable_bases611Childs = methodtest_mutable_bases611.getChildren();
-				classClassic619 = ModelTestUtils.getAssertClass( methodtest_mutable_bases611Childs, "Classic" );
+			IType classClassic578;
+				IModelElement[] methodtest_mutable_bases570Childs = methodtest_mutable_bases570.getChildren();
+				classClassic578 = ModelTestUtils.getAssertClass( methodtest_mutable_bases570Childs, "Classic" );
 				//Function test:meth2
 				{
-				IMethod methodmeth2620;
-					IModelElement[] classClassic619Childs = classClassic619.getChildren();
-					methodmeth2620 = ModelTestUtils.getAssertMethod( classClassic619Childs, "meth2", 1 );
-					ModelTestUtils.assertParameterNames( methodmeth2620, new String[] {"self"} );
+				IMethod methodmeth2579;
+					IModelElement[] classClassic578Childs = classClassic578.getChildren();
+					methodmeth2579 = ModelTestUtils.getAssertMethod( classClassic578Childs, "meth2", 1 );
+					ModelTestUtils.assertParameterNames( methodmeth2579, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:test_mutable_bases_with_failing_mro
 		{
-		IMethod methodtest_mutable_bases_with_failing_mro621;
+		IMethod methodtest_mutable_bases_with_failing_mro580;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_mutable_bases_with_failing_mro621 = ModelTestUtils.getAssertMethod( moduleChilds, "test_mutable_bases_with_failing_mro", 0 );
+			methodtest_mutable_bases_with_failing_mro580 = ModelTestUtils.getAssertMethod( moduleChilds, "test_mutable_bases_with_failing_mro", 0 );
 			//Class test
 			{
-			IType classWorkOnce622;
-				IModelElement[] methodtest_mutable_bases_with_failing_mro621Childs = methodtest_mutable_bases_with_failing_mro621.getChildren();
-				classWorkOnce622 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro621Childs, "WorkOnce" );
+			IType classWorkOnce581;
+				IModelElement[] methodtest_mutable_bases_with_failing_mro580Childs = methodtest_mutable_bases_with_failing_mro580.getChildren();
+				classWorkOnce581 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro580Childs, "WorkOnce" );
 				//Function test:__new__
 				{
-				IMethod method__new__623;
-					IModelElement[] classWorkOnce622Childs = classWorkOnce622.getChildren();
-					method__new__623 = ModelTestUtils.getAssertMethod( classWorkOnce622Childs, "__new__", 4 );
-					ModelTestUtils.assertParameterNames( method__new__623, new String[] {"self", "name", "bases", "ns"} );
-				}
-				{
-					IModelElement[] classWorkOnce622Childs = classWorkOnce622.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classWorkOnce622Childs, "flag");
+				IMethod method__new__582;
+					IModelElement[] classWorkOnce581Childs = classWorkOnce581.getChildren();
+					method__new__582 = ModelTestUtils.getAssertMethod( classWorkOnce581Childs, "__new__", 4 );
+					ModelTestUtils.assertParameterNames( method__new__582, new String[] {"self", "name", "bases", "ns"} );
 				}
 				//Function test:mro
 				{
-				IMethod methodmro625;
-					IModelElement[] classWorkOnce622Childs = classWorkOnce622.getChildren();
-					methodmro625 = ModelTestUtils.getAssertMethod( classWorkOnce622Childs, "mro", 1 );
-					ModelTestUtils.assertParameterNames( methodmro625, new String[] {"self"} );
+				IMethod methodmro583;
+					IModelElement[] classWorkOnce581Childs = classWorkOnce581.getChildren();
+					methodmro583 = ModelTestUtils.getAssertMethod( classWorkOnce581Childs, "mro", 1 );
+					ModelTestUtils.assertParameterNames( methodmro583, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classWorkAlways626;
-				IModelElement[] methodtest_mutable_bases_with_failing_mro621Childs = methodtest_mutable_bases_with_failing_mro621.getChildren();
-				classWorkAlways626 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro621Childs, "WorkAlways" );
+			IType classWorkAlways584;
+				IModelElement[] methodtest_mutable_bases_with_failing_mro580Childs = methodtest_mutable_bases_with_failing_mro580.getChildren();
+				classWorkAlways584 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro580Childs, "WorkAlways" );
 				//Function test:mro
 				{
-				IMethod methodmro627;
-					IModelElement[] classWorkAlways626Childs = classWorkAlways626.getChildren();
-					methodmro627 = ModelTestUtils.getAssertMethod( classWorkAlways626Childs, "mro", 1 );
-					ModelTestUtils.assertParameterNames( methodmro627, new String[] {"self"} );
+				IMethod methodmro585;
+					IModelElement[] classWorkAlways584Childs = classWorkAlways584.getChildren();
+					methodmro585 = ModelTestUtils.getAssertMethod( classWorkAlways584Childs, "mro", 1 );
+					ModelTestUtils.assertParameterNames( methodmro585, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classC628;
-				IModelElement[] methodtest_mutable_bases_with_failing_mro621Childs = methodtest_mutable_bases_with_failing_mro621.getChildren();
-				classC628 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro621Childs, "C" );
+			IType classC586;
+				IModelElement[] methodtest_mutable_bases_with_failing_mro580Childs = methodtest_mutable_bases_with_failing_mro580.getChildren();
+				classC586 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro580Childs, "C" );
 			}
 			//Class test
 			{
-			IType classC2629;
-				IModelElement[] methodtest_mutable_bases_with_failing_mro621Childs = methodtest_mutable_bases_with_failing_mro621.getChildren();
-				classC2629 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro621Childs, "C2" );
+			IType classC2587;
+				IModelElement[] methodtest_mutable_bases_with_failing_mro580Childs = methodtest_mutable_bases_with_failing_mro580.getChildren();
+				classC2587 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro580Childs, "C2" );
 			}
 			//Class test
 			{
-			IType classD630;
-				IModelElement[] methodtest_mutable_bases_with_failing_mro621Childs = methodtest_mutable_bases_with_failing_mro621.getChildren();
-				classD630 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro621Childs, "D" );
+			IType classD588;
+				IModelElement[] methodtest_mutable_bases_with_failing_mro580Childs = methodtest_mutable_bases_with_failing_mro580.getChildren();
+				classD588 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro580Childs, "D" );
 			}
 			//Class test
 			{
-			IType classE631;
-				IModelElement[] methodtest_mutable_bases_with_failing_mro621Childs = methodtest_mutable_bases_with_failing_mro621.getChildren();
-				classE631 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro621Childs, "E" );
+			IType classE589;
+				IModelElement[] methodtest_mutable_bases_with_failing_mro580Childs = methodtest_mutable_bases_with_failing_mro580.getChildren();
+				classE589 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro580Childs, "E" );
 			}
 			//Class test
 			{
-			IType classF632;
-				IModelElement[] methodtest_mutable_bases_with_failing_mro621Childs = methodtest_mutable_bases_with_failing_mro621.getChildren();
-				classF632 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro621Childs, "F" );
+			IType classF590;
+				IModelElement[] methodtest_mutable_bases_with_failing_mro580Childs = methodtest_mutable_bases_with_failing_mro580.getChildren();
+				classF590 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro580Childs, "F" );
 			}
 			//Class test
 			{
-			IType classG633;
-				IModelElement[] methodtest_mutable_bases_with_failing_mro621Childs = methodtest_mutable_bases_with_failing_mro621.getChildren();
-				classG633 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro621Childs, "G" );
+			IType classG591;
+				IModelElement[] methodtest_mutable_bases_with_failing_mro580Childs = methodtest_mutable_bases_with_failing_mro580.getChildren();
+				classG591 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_with_failing_mro580Childs, "G" );
 			}
 		}
 		//Function test:test_mutable_bases_catch_mro_conflict
 		{
-		IMethod methodtest_mutable_bases_catch_mro_conflict634;
+		IMethod methodtest_mutable_bases_catch_mro_conflict592;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_mutable_bases_catch_mro_conflict634 = ModelTestUtils.getAssertMethod( moduleChilds, "test_mutable_bases_catch_mro_conflict", 0 );
+			methodtest_mutable_bases_catch_mro_conflict592 = ModelTestUtils.getAssertMethod( moduleChilds, "test_mutable_bases_catch_mro_conflict", 0 );
 			//Class test
 			{
-			IType classA635;
-				IModelElement[] methodtest_mutable_bases_catch_mro_conflict634Childs = methodtest_mutable_bases_catch_mro_conflict634.getChildren();
-				classA635 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_catch_mro_conflict634Childs, "A" );
+			IType classA593;
+				IModelElement[] methodtest_mutable_bases_catch_mro_conflict592Childs = methodtest_mutable_bases_catch_mro_conflict592.getChildren();
+				classA593 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_catch_mro_conflict592Childs, "A" );
 			}
 			//Class test
 			{
-			IType classB636;
-				IModelElement[] methodtest_mutable_bases_catch_mro_conflict634Childs = methodtest_mutable_bases_catch_mro_conflict634.getChildren();
-				classB636 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_catch_mro_conflict634Childs, "B" );
+			IType classB594;
+				IModelElement[] methodtest_mutable_bases_catch_mro_conflict592Childs = methodtest_mutable_bases_catch_mro_conflict592.getChildren();
+				classB594 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_catch_mro_conflict592Childs, "B" );
 			}
 			//Class test
 			{
-			IType classC637;
-				IModelElement[] methodtest_mutable_bases_catch_mro_conflict634Childs = methodtest_mutable_bases_catch_mro_conflict634.getChildren();
-				classC637 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_catch_mro_conflict634Childs, "C" );
+			IType classC595;
+				IModelElement[] methodtest_mutable_bases_catch_mro_conflict592Childs = methodtest_mutable_bases_catch_mro_conflict592.getChildren();
+				classC595 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_catch_mro_conflict592Childs, "C" );
 			}
 			//Class test
 			{
-			IType classD638;
-				IModelElement[] methodtest_mutable_bases_catch_mro_conflict634Childs = methodtest_mutable_bases_catch_mro_conflict634.getChildren();
-				classD638 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_catch_mro_conflict634Childs, "D" );
+			IType classD596;
+				IModelElement[] methodtest_mutable_bases_catch_mro_conflict592Childs = methodtest_mutable_bases_catch_mro_conflict592.getChildren();
+				classD596 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_catch_mro_conflict592Childs, "D" );
 			}
 			//Class test
 			{
-			IType classE639;
-				IModelElement[] methodtest_mutable_bases_catch_mro_conflict634Childs = methodtest_mutable_bases_catch_mro_conflict634.getChildren();
-				classE639 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_catch_mro_conflict634Childs, "E" );
+			IType classE597;
+				IModelElement[] methodtest_mutable_bases_catch_mro_conflict592Childs = methodtest_mutable_bases_catch_mro_conflict592.getChildren();
+				classE597 = ModelTestUtils.getAssertClass( methodtest_mutable_bases_catch_mro_conflict592Childs, "E" );
 			}
 		}
 		//Function test:mutable_names
 		{
-		IMethod methodmutable_names640;
+		IMethod methodmutable_names598;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodmutable_names640 = ModelTestUtils.getAssertMethod( moduleChilds, "mutable_names", 0 );
+			methodmutable_names598 = ModelTestUtils.getAssertMethod( moduleChilds, "mutable_names", 0 );
 			//Class test
 			{
-			IType classC641;
-				IModelElement[] methodmutable_names640Childs = methodmutable_names640.getChildren();
-				classC641 = ModelTestUtils.getAssertClass( methodmutable_names640Childs, "C" );
+			IType classC599;
+				IModelElement[] methodmutable_names598Childs = methodmutable_names598.getChildren();
+				classC599 = ModelTestUtils.getAssertClass( methodmutable_names598Childs, "C" );
 			}
 		}
 		//Function test:subclass_right_op
 		{
-		IMethod methodsubclass_right_op642;
+		IMethod methodsubclass_right_op600;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodsubclass_right_op642 = ModelTestUtils.getAssertMethod( moduleChilds, "subclass_right_op", 0 );
+			methodsubclass_right_op600 = ModelTestUtils.getAssertMethod( moduleChilds, "subclass_right_op", 0 );
 			//Class test
 			{
-			IType classB643;
-				IModelElement[] methodsubclass_right_op642Childs = methodsubclass_right_op642.getChildren();
-				classB643 = ModelTestUtils.getAssertClass( methodsubclass_right_op642Childs, "B" );
+			IType classB601;
+				IModelElement[] methodsubclass_right_op600Childs = methodsubclass_right_op600.getChildren();
+				classB601 = ModelTestUtils.getAssertClass( methodsubclass_right_op600Childs, "B" );
 				//Function test:__floordiv__
 				{
-				IMethod method__floordiv__644;
-					IModelElement[] classB643Childs = classB643.getChildren();
-					method__floordiv__644 = ModelTestUtils.getAssertMethod( classB643Childs, "__floordiv__", 2 );
-					ModelTestUtils.assertParameterNames( method__floordiv__644, new String[] {"self", "other"} );
+				IMethod method__floordiv__602;
+					IModelElement[] classB601Childs = classB601.getChildren();
+					method__floordiv__602 = ModelTestUtils.getAssertMethod( classB601Childs, "__floordiv__", 2 );
+					ModelTestUtils.assertParameterNames( method__floordiv__602, new String[] {"self", "other"} );
 				}
 				//Function test:__rfloordiv__
 				{
-				IMethod method__rfloordiv__645;
-					IModelElement[] classB643Childs = classB643.getChildren();
-					method__rfloordiv__645 = ModelTestUtils.getAssertMethod( classB643Childs, "__rfloordiv__", 2 );
-					ModelTestUtils.assertParameterNames( method__rfloordiv__645, new String[] {"self", "other"} );
+				IMethod method__rfloordiv__603;
+					IModelElement[] classB601Childs = classB601.getChildren();
+					method__rfloordiv__603 = ModelTestUtils.getAssertMethod( classB601Childs, "__rfloordiv__", 2 );
+					ModelTestUtils.assertParameterNames( method__rfloordiv__603, new String[] {"self", "other"} );
 				}
 			}
 			//Class test
 			{
-			IType classC646;
-				IModelElement[] methodsubclass_right_op642Childs = methodsubclass_right_op642.getChildren();
-				classC646 = ModelTestUtils.getAssertClass( methodsubclass_right_op642Childs, "C" );
+			IType classC604;
+				IModelElement[] methodsubclass_right_op600Childs = methodsubclass_right_op600.getChildren();
+				classC604 = ModelTestUtils.getAssertClass( methodsubclass_right_op600Childs, "C" );
 				//Function test:__floordiv__
 				{
-				IMethod method__floordiv__647;
-					IModelElement[] classC646Childs = classC646.getChildren();
-					method__floordiv__647 = ModelTestUtils.getAssertMethod( classC646Childs, "__floordiv__", 2 );
-					ModelTestUtils.assertParameterNames( method__floordiv__647, new String[] {"self", "other"} );
+				IMethod method__floordiv__605;
+					IModelElement[] classC604Childs = classC604.getChildren();
+					method__floordiv__605 = ModelTestUtils.getAssertMethod( classC604Childs, "__floordiv__", 2 );
+					ModelTestUtils.assertParameterNames( method__floordiv__605, new String[] {"self", "other"} );
 				}
 				//Function test:__rfloordiv__
 				{
-				IMethod method__rfloordiv__648;
-					IModelElement[] classC646Childs = classC646.getChildren();
-					method__rfloordiv__648 = ModelTestUtils.getAssertMethod( classC646Childs, "__rfloordiv__", 2 );
-					ModelTestUtils.assertParameterNames( method__rfloordiv__648, new String[] {"self", "other"} );
+				IMethod method__rfloordiv__606;
+					IModelElement[] classC604Childs = classC604.getChildren();
+					method__rfloordiv__606 = ModelTestUtils.getAssertMethod( classC604Childs, "__rfloordiv__", 2 );
+					ModelTestUtils.assertParameterNames( method__rfloordiv__606, new String[] {"self", "other"} );
 				}
 			}
 			//Class test
 			{
-			IType classD649;
-				IModelElement[] methodsubclass_right_op642Childs = methodsubclass_right_op642.getChildren();
-				classD649 = ModelTestUtils.getAssertClass( methodsubclass_right_op642Childs, "D" );
+			IType classD607;
+				IModelElement[] methodsubclass_right_op600Childs = methodsubclass_right_op600.getChildren();
+				classD607 = ModelTestUtils.getAssertClass( methodsubclass_right_op600Childs, "D" );
 				//Function test:__floordiv__
 				{
-				IMethod method__floordiv__650;
-					IModelElement[] classD649Childs = classD649.getChildren();
-					method__floordiv__650 = ModelTestUtils.getAssertMethod( classD649Childs, "__floordiv__", 2 );
-					ModelTestUtils.assertParameterNames( method__floordiv__650, new String[] {"self", "other"} );
+				IMethod method__floordiv__608;
+					IModelElement[] classD607Childs = classD607.getChildren();
+					method__floordiv__608 = ModelTestUtils.getAssertMethod( classD607Childs, "__floordiv__", 2 );
+					ModelTestUtils.assertParameterNames( method__floordiv__608, new String[] {"self", "other"} );
 				}
 				//Function test:__rfloordiv__
 				{
-				IMethod method__rfloordiv__651;
-					IModelElement[] classD649Childs = classD649.getChildren();
-					method__rfloordiv__651 = ModelTestUtils.getAssertMethod( classD649Childs, "__rfloordiv__", 2 );
-					ModelTestUtils.assertParameterNames( method__rfloordiv__651, new String[] {"self", "other"} );
+				IMethod method__rfloordiv__609;
+					IModelElement[] classD607Childs = classD607.getChildren();
+					method__rfloordiv__609 = ModelTestUtils.getAssertMethod( classD607Childs, "__rfloordiv__", 2 );
+					ModelTestUtils.assertParameterNames( method__rfloordiv__609, new String[] {"self", "other"} );
 				}
 			}
 			//Class test
 			{
-			IType classE652;
-				IModelElement[] methodsubclass_right_op642Childs = methodsubclass_right_op642.getChildren();
-				classE652 = ModelTestUtils.getAssertClass( methodsubclass_right_op642Childs, "E" );
+			IType classE610;
+				IModelElement[] methodsubclass_right_op600Childs = methodsubclass_right_op600.getChildren();
+				classE610 = ModelTestUtils.getAssertClass( methodsubclass_right_op600Childs, "E" );
 			}
 		}
 		//Function test:dict_type_with_metaclass
 		{
-		IMethod methoddict_type_with_metaclass653;
+		IMethod methoddict_type_with_metaclass611;
 			IModelElement[] moduleChilds = module.getChildren();
-			methoddict_type_with_metaclass653 = ModelTestUtils.getAssertMethod( moduleChilds, "dict_type_with_metaclass", 0 );
+			methoddict_type_with_metaclass611 = ModelTestUtils.getAssertMethod( moduleChilds, "dict_type_with_metaclass", 0 );
 			//Class test
 			{
-			IType classB654;
-				IModelElement[] methoddict_type_with_metaclass653Childs = methoddict_type_with_metaclass653.getChildren();
-				classB654 = ModelTestUtils.getAssertClass( methoddict_type_with_metaclass653Childs, "B" );
+			IType classB612;
+				IModelElement[] methoddict_type_with_metaclass611Childs = methoddict_type_with_metaclass611.getChildren();
+				classB612 = ModelTestUtils.getAssertClass( methoddict_type_with_metaclass611Childs, "B" );
 			}
 			//Class test
 			{
-			IType classM655;
-				IModelElement[] methoddict_type_with_metaclass653Childs = methoddict_type_with_metaclass653.getChildren();
-				classM655 = ModelTestUtils.getAssertClass( methoddict_type_with_metaclass653Childs, "M" );
+			IType classM613;
+				IModelElement[] methoddict_type_with_metaclass611Childs = methoddict_type_with_metaclass611.getChildren();
+				classM613 = ModelTestUtils.getAssertClass( methoddict_type_with_metaclass611Childs, "M" );
 			}
 			//Class test
 			{
-			IType classC656;
-				IModelElement[] methoddict_type_with_metaclass653Childs = methoddict_type_with_metaclass653.getChildren();
-				classC656 = ModelTestUtils.getAssertClass( methoddict_type_with_metaclass653Childs, "C" );
+			IType classC614;
+				IModelElement[] methoddict_type_with_metaclass611Childs = methoddict_type_with_metaclass611.getChildren();
+				classC614 = ModelTestUtils.getAssertClass( methoddict_type_with_metaclass611Childs, "C" );
 			}
 		}
 		//Function test:meth_class_get
 		{
-		IMethod methodmeth_class_get657;
+		IMethod methodmeth_class_get615;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodmeth_class_get657 = ModelTestUtils.getAssertMethod( moduleChilds, "meth_class_get", 0 );
+			methodmeth_class_get615 = ModelTestUtils.getAssertMethod( moduleChilds, "meth_class_get", 0 );
 		}
 		//Function test:isinst_isclass
 		{
-		IMethod methodisinst_isclass658;
+		IMethod methodisinst_isclass616;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodisinst_isclass658 = ModelTestUtils.getAssertMethod( moduleChilds, "isinst_isclass", 0 );
+			methodisinst_isclass616 = ModelTestUtils.getAssertMethod( moduleChilds, "isinst_isclass", 0 );
 			//Class test
 			{
-			IType classProxy659;
-				IModelElement[] methodisinst_isclass658Childs = methodisinst_isclass658.getChildren();
-				classProxy659 = ModelTestUtils.getAssertClass( methodisinst_isclass658Childs, "Proxy" );
+			IType classProxy617;
+				IModelElement[] methodisinst_isclass616Childs = methodisinst_isclass616.getChildren();
+				classProxy617 = ModelTestUtils.getAssertClass( methodisinst_isclass616Childs, "Proxy" );
 				//Function test:__init__
 				{
-				IMethod method__init__660;
-					IModelElement[] classProxy659Childs = classProxy659.getChildren();
-					method__init__660 = ModelTestUtils.getAssertMethod( classProxy659Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__660, new String[] {"self", "obj"} );
+				IMethod method__init__618;
+					IModelElement[] classProxy617Childs = classProxy617.getChildren();
+					method__init__618 = ModelTestUtils.getAssertMethod( classProxy617Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__618, new String[] {"self", "obj"} );
 				}
 				//Function test:__getattribute__
 				{
-				IMethod method__getattribute__661;
-					IModelElement[] classProxy659Childs = classProxy659.getChildren();
-					method__getattribute__661 = ModelTestUtils.getAssertMethod( classProxy659Childs, "__getattribute__", 2 );
-					ModelTestUtils.assertParameterNames( method__getattribute__661, new String[] {"self", "name"} );
+				IMethod method__getattribute__619;
+					IModelElement[] classProxy617Childs = classProxy617.getChildren();
+					method__getattribute__619 = ModelTestUtils.getAssertMethod( classProxy617Childs, "__getattribute__", 2 );
+					ModelTestUtils.assertParameterNames( method__getattribute__619, new String[] {"self", "name"} );
 				}
 			}
 			//Class test
 			{
-			IType classC662;
-				IModelElement[] methodisinst_isclass658Childs = methodisinst_isclass658.getChildren();
-				classC662 = ModelTestUtils.getAssertClass( methodisinst_isclass658Childs, "C" );
+			IType classC620;
+				IModelElement[] methodisinst_isclass616Childs = methodisinst_isclass616.getChildren();
+				classC620 = ModelTestUtils.getAssertClass( methodisinst_isclass616Childs, "C" );
 			}
 			//Class test
 			{
-			IType classD663;
-				IModelElement[] methodisinst_isclass658Childs = methodisinst_isclass658.getChildren();
-				classD663 = ModelTestUtils.getAssertClass( methodisinst_isclass658Childs, "D" );
+			IType classD621;
+				IModelElement[] methodisinst_isclass616Childs = methodisinst_isclass616.getChildren();
+				classD621 = ModelTestUtils.getAssertClass( methodisinst_isclass616Childs, "D" );
 			}
 			//Class test
 			{
-			IType classC664;
-				IModelElement[] methodisinst_isclass658Childs = methodisinst_isclass658.getChildren();
-				classC664 = ModelTestUtils.getAssertClass( methodisinst_isclass658Childs, "C" );
+			IType classC622;
+				IModelElement[] methodisinst_isclass616Childs = methodisinst_isclass616.getChildren();
+				classC622 = ModelTestUtils.getAssertClass( methodisinst_isclass616Childs, "C" );
 			}
 			//Class test
 			{
-			IType classD665;
-				IModelElement[] methodisinst_isclass658Childs = methodisinst_isclass658.getChildren();
-				classD665 = ModelTestUtils.getAssertClass( methodisinst_isclass658Childs, "D" );
+			IType classD623;
+				IModelElement[] methodisinst_isclass616Childs = methodisinst_isclass616.getChildren();
+				classD623 = ModelTestUtils.getAssertClass( methodisinst_isclass616Childs, "D" );
 			}
 		}
 		//Function test:proxysuper
 		{
-		IMethod methodproxysuper666;
+		IMethod methodproxysuper624;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodproxysuper666 = ModelTestUtils.getAssertMethod( moduleChilds, "proxysuper", 0 );
+			methodproxysuper624 = ModelTestUtils.getAssertMethod( moduleChilds, "proxysuper", 0 );
 			//Class test
 			{
-			IType classProxy667;
-				IModelElement[] methodproxysuper666Childs = methodproxysuper666.getChildren();
-				classProxy667 = ModelTestUtils.getAssertClass( methodproxysuper666Childs, "Proxy" );
+			IType classProxy625;
+				IModelElement[] methodproxysuper624Childs = methodproxysuper624.getChildren();
+				classProxy625 = ModelTestUtils.getAssertClass( methodproxysuper624Childs, "Proxy" );
 				//Function test:__init__
 				{
-				IMethod method__init__668;
-					IModelElement[] classProxy667Childs = classProxy667.getChildren();
-					method__init__668 = ModelTestUtils.getAssertMethod( classProxy667Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__668, new String[] {"self", "obj"} );
+				IMethod method__init__626;
+					IModelElement[] classProxy625Childs = classProxy625.getChildren();
+					method__init__626 = ModelTestUtils.getAssertMethod( classProxy625Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__626, new String[] {"self", "obj"} );
 				}
 				//Function test:__getattribute__
 				{
-				IMethod method__getattribute__669;
-					IModelElement[] classProxy667Childs = classProxy667.getChildren();
-					method__getattribute__669 = ModelTestUtils.getAssertMethod( classProxy667Childs, "__getattribute__", 2 );
-					ModelTestUtils.assertParameterNames( method__getattribute__669, new String[] {"self", "name"} );
+				IMethod method__getattribute__627;
+					IModelElement[] classProxy625Childs = classProxy625.getChildren();
+					method__getattribute__627 = ModelTestUtils.getAssertMethod( classProxy625Childs, "__getattribute__", 2 );
+					ModelTestUtils.assertParameterNames( method__getattribute__627, new String[] {"self", "name"} );
 				}
 			}
 			//Class test
 			{
-			IType classB670;
-				IModelElement[] methodproxysuper666Childs = methodproxysuper666.getChildren();
-				classB670 = ModelTestUtils.getAssertClass( methodproxysuper666Childs, "B" );
+			IType classB628;
+				IModelElement[] methodproxysuper624Childs = methodproxysuper624.getChildren();
+				classB628 = ModelTestUtils.getAssertClass( methodproxysuper624Childs, "B" );
 				//Function test:f
 				{
-				IMethod methodf671;
-					IModelElement[] classB670Childs = classB670.getChildren();
-					methodf671 = ModelTestUtils.getAssertMethod( classB670Childs, "f", 1 );
-					ModelTestUtils.assertParameterNames( methodf671, new String[] {"self"} );
+				IMethod methodf629;
+					IModelElement[] classB628Childs = classB628.getChildren();
+					methodf629 = ModelTestUtils.getAssertMethod( classB628Childs, "f", 1 );
+					ModelTestUtils.assertParameterNames( methodf629, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classC672;
-				IModelElement[] methodproxysuper666Childs = methodproxysuper666.getChildren();
-				classC672 = ModelTestUtils.getAssertClass( methodproxysuper666Childs, "C" );
+			IType classC630;
+				IModelElement[] methodproxysuper624Childs = methodproxysuper624.getChildren();
+				classC630 = ModelTestUtils.getAssertClass( methodproxysuper624Childs, "C" );
 				//Function test:f
 				{
-				IMethod methodf673;
-					IModelElement[] classC672Childs = classC672.getChildren();
-					methodf673 = ModelTestUtils.getAssertMethod( classC672Childs, "f", 1 );
-					ModelTestUtils.assertParameterNames( methodf673, new String[] {"self"} );
+				IMethod methodf631;
+					IModelElement[] classC630Childs = classC630.getChildren();
+					methodf631 = ModelTestUtils.getAssertMethod( classC630Childs, "f", 1 );
+					ModelTestUtils.assertParameterNames( methodf631, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:carloverre
 		{
-		IMethod methodcarloverre674;
+		IMethod methodcarloverre632;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodcarloverre674 = ModelTestUtils.getAssertMethod( moduleChilds, "carloverre", 0 );
+			methodcarloverre632 = ModelTestUtils.getAssertMethod( moduleChilds, "carloverre", 0 );
 		}
 		//Function test:weakref_segfault
 		{
-		IMethod methodweakref_segfault675;
+		IMethod methodweakref_segfault633;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodweakref_segfault675 = ModelTestUtils.getAssertMethod( moduleChilds, "weakref_segfault", 0 );
+			methodweakref_segfault633 = ModelTestUtils.getAssertMethod( moduleChilds, "weakref_segfault", 0 );
 			//Class test
 			{
-			IType classProvoker676;
-				IModelElement[] methodweakref_segfault675Childs = methodweakref_segfault675.getChildren();
-				classProvoker676 = ModelTestUtils.getAssertClass( methodweakref_segfault675Childs, "Provoker" );
+			IType classProvoker634;
+				IModelElement[] methodweakref_segfault633Childs = methodweakref_segfault633.getChildren();
+				classProvoker634 = ModelTestUtils.getAssertClass( methodweakref_segfault633Childs, "Provoker" );
 				//Function test:__init__
 				{
-				IMethod method__init__677;
-					IModelElement[] classProvoker676Childs = classProvoker676.getChildren();
-					method__init__677 = ModelTestUtils.getAssertMethod( classProvoker676Childs, "__init__", 2 );
-					ModelTestUtils.assertParameterNames( method__init__677, new String[] {"self", "referrent"} );
-				}
-				{
-					IModelElement[] classProvoker676Childs = classProvoker676.getChildren();
-					IField fieldValue = ModelTestUtils.getAssertField( classProvoker676Childs, "ref");
+				IMethod method__init__635;
+					IModelElement[] classProvoker634Childs = classProvoker634.getChildren();
+					method__init__635 = ModelTestUtils.getAssertMethod( classProvoker634Childs, "__init__", 2 );
+					ModelTestUtils.assertParameterNames( method__init__635, new String[] {"self", "referrent"} );
 				}
 				//Function test:__del__
 				{
-				IMethod method__del__679;
-					IModelElement[] classProvoker676Childs = classProvoker676.getChildren();
-					method__del__679 = ModelTestUtils.getAssertMethod( classProvoker676Childs, "__del__", 1 );
-					ModelTestUtils.assertParameterNames( method__del__679, new String[] {"self"} );
+				IMethod method__del__636;
+					IModelElement[] classProvoker634Childs = classProvoker634.getChildren();
+					method__del__636 = ModelTestUtils.getAssertMethod( classProvoker634Childs, "__del__", 1 );
+					ModelTestUtils.assertParameterNames( method__del__636, new String[] {"self"} );
 				}
 			}
 			//Class test
 			{
-			IType classOops680;
-				IModelElement[] methodweakref_segfault675Childs = methodweakref_segfault675.getChildren();
-				classOops680 = ModelTestUtils.getAssertClass( methodweakref_segfault675Childs, "Oops" );
+			IType classOops637;
+				IModelElement[] methodweakref_segfault633Childs = methodweakref_segfault633.getChildren();
+				classOops637 = ModelTestUtils.getAssertClass( methodweakref_segfault633Childs, "Oops" );
 			}
 		}
 		//Function test:filefault
 		{
-		IMethod methodfilefault681;
+		IMethod methodfilefault638;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodfilefault681 = ModelTestUtils.getAssertMethod( moduleChilds, "filefault", 0 );
+			methodfilefault638 = ModelTestUtils.getAssertMethod( moduleChilds, "filefault", 0 );
 			//Class test
 			{
-			IType classStdoutGuard682;
-				IModelElement[] methodfilefault681Childs = methodfilefault681.getChildren();
-				classStdoutGuard682 = ModelTestUtils.getAssertClass( methodfilefault681Childs, "StdoutGuard" );
+			IType classStdoutGuard639;
+				IModelElement[] methodfilefault638Childs = methodfilefault638.getChildren();
+				classStdoutGuard639 = ModelTestUtils.getAssertClass( methodfilefault638Childs, "StdoutGuard" );
 				//Function test:__getattr__
 				{
-				IMethod method__getattr__683;
-					IModelElement[] classStdoutGuard682Childs = classStdoutGuard682.getChildren();
-					method__getattr__683 = ModelTestUtils.getAssertMethod( classStdoutGuard682Childs, "__getattr__", 2 );
-					ModelTestUtils.assertParameterNames( method__getattr__683, new String[] {"self", "attr"} );
+				IMethod method__getattr__640;
+					IModelElement[] classStdoutGuard639Childs = classStdoutGuard639.getChildren();
+					method__getattr__640 = ModelTestUtils.getAssertMethod( classStdoutGuard639Childs, "__getattr__", 2 );
+					ModelTestUtils.assertParameterNames( method__getattr__640, new String[] {"self", "attr"} );
 				}
 			}
 		}
 		//Function test:vicious_descriptor_nonsense
 		{
-		IMethod methodvicious_descriptor_nonsense684;
+		IMethod methodvicious_descriptor_nonsense641;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodvicious_descriptor_nonsense684 = ModelTestUtils.getAssertMethod( moduleChilds, "vicious_descriptor_nonsense", 0 );
+			methodvicious_descriptor_nonsense641 = ModelTestUtils.getAssertMethod( moduleChilds, "vicious_descriptor_nonsense", 0 );
 			//Class test
 			{
-			IType classEvil685;
-				IModelElement[] methodvicious_descriptor_nonsense684Childs = methodvicious_descriptor_nonsense684.getChildren();
-				classEvil685 = ModelTestUtils.getAssertClass( methodvicious_descriptor_nonsense684Childs, "Evil" );
+			IType classEvil642;
+				IModelElement[] methodvicious_descriptor_nonsense641Childs = methodvicious_descriptor_nonsense641.getChildren();
+				classEvil642 = ModelTestUtils.getAssertClass( methodvicious_descriptor_nonsense641Childs, "Evil" );
 				//Function test:__hash__
 				{
-				IMethod method__hash__686;
-					IModelElement[] classEvil685Childs = classEvil685.getChildren();
-					method__hash__686 = ModelTestUtils.getAssertMethod( classEvil685Childs, "__hash__", 1 );
-					ModelTestUtils.assertParameterNames( method__hash__686, new String[] {"self"} );
+				IMethod method__hash__643;
+					IModelElement[] classEvil642Childs = classEvil642.getChildren();
+					method__hash__643 = ModelTestUtils.getAssertMethod( classEvil642Childs, "__hash__", 1 );
+					ModelTestUtils.assertParameterNames( method__hash__643, new String[] {"self"} );
 				}
 				//Function test:__eq__
 				{
-				IMethod method__eq__687;
-					IModelElement[] classEvil685Childs = classEvil685.getChildren();
-					method__eq__687 = ModelTestUtils.getAssertMethod( classEvil685Childs, "__eq__", 2 );
-					ModelTestUtils.assertParameterNames( method__eq__687, new String[] {"self", "other"} );
+				IMethod method__eq__644;
+					IModelElement[] classEvil642Childs = classEvil642.getChildren();
+					method__eq__644 = ModelTestUtils.getAssertMethod( classEvil642Childs, "__eq__", 2 );
+					ModelTestUtils.assertParameterNames( method__eq__644, new String[] {"self", "other"} );
 				}
 			}
 			//Class test
 			{
-			IType classDescr688;
-				IModelElement[] methodvicious_descriptor_nonsense684Childs = methodvicious_descriptor_nonsense684.getChildren();
-				classDescr688 = ModelTestUtils.getAssertClass( methodvicious_descriptor_nonsense684Childs, "Descr" );
+			IType classDescr645;
+				IModelElement[] methodvicious_descriptor_nonsense641Childs = methodvicious_descriptor_nonsense641.getChildren();
+				classDescr645 = ModelTestUtils.getAssertClass( methodvicious_descriptor_nonsense641Childs, "Descr" );
 				//Function test:__get__
 				{
-				IMethod method__get__689;
-					IModelElement[] classDescr688Childs = classDescr688.getChildren();
-					method__get__689 = ModelTestUtils.getAssertMethod( classDescr688Childs, "__get__", 3 );
-					ModelTestUtils.assertParameterNames( method__get__689, new String[] {"self", "ob", "type"} );
+				IMethod method__get__646;
+					IModelElement[] classDescr645Childs = classDescr645.getChildren();
+					method__get__646 = ModelTestUtils.getAssertMethod( classDescr645Childs, "__get__", 3 );
+					ModelTestUtils.assertParameterNames( method__get__646, new String[] {"self", "ob", "type"} );
 				}
 			}
 			//Class test
 			{
-			IType classC690;
-				IModelElement[] methodvicious_descriptor_nonsense684Childs = methodvicious_descriptor_nonsense684.getChildren();
-				classC690 = ModelTestUtils.getAssertClass( methodvicious_descriptor_nonsense684Childs, "C" );
+			IType classC647;
+				IModelElement[] methodvicious_descriptor_nonsense641Childs = methodvicious_descriptor_nonsense641.getChildren();
+				classC647 = ModelTestUtils.getAssertClass( methodvicious_descriptor_nonsense641Childs, "C" );
 			}
 		}
 		//Function test:test_init
 		{
-		IMethod methodtest_init691;
+		IMethod methodtest_init648;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_init691 = ModelTestUtils.getAssertMethod( moduleChilds, "test_init", 0 );
+			methodtest_init648 = ModelTestUtils.getAssertMethod( moduleChilds, "test_init", 0 );
 			//Class test
 			{
-			IType classFoo692;
-				IModelElement[] methodtest_init691Childs = methodtest_init691.getChildren();
-				classFoo692 = ModelTestUtils.getAssertClass( methodtest_init691Childs, "Foo" );
+			IType classFoo649;
+				IModelElement[] methodtest_init648Childs = methodtest_init648.getChildren();
+				classFoo649 = ModelTestUtils.getAssertClass( methodtest_init648Childs, "Foo" );
 				//Function test:__init__
 				{
-				IMethod method__init__693;
-					IModelElement[] classFoo692Childs = classFoo692.getChildren();
-					method__init__693 = ModelTestUtils.getAssertMethod( classFoo692Childs, "__init__", 1 );
-					ModelTestUtils.assertParameterNames( method__init__693, new String[] {"self"} );
+				IMethod method__init__650;
+					IModelElement[] classFoo649Childs = classFoo649.getChildren();
+					method__init__650 = ModelTestUtils.getAssertMethod( classFoo649Childs, "__init__", 1 );
+					ModelTestUtils.assertParameterNames( method__init__650, new String[] {"self"} );
 				}
 			}
 		}
 		//Function test:test_main
 		{
-		IMethod methodtest_main694;
+		IMethod methodtest_main651;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_main694 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 0 );
+			methodtest_main651 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 0 );
 		}
 
 	}
@@ -10466,39 +9934,19 @@ public class GeneratedModelTests4 extends AbstractModelTests
 				method__init__1 = ModelTestUtils.getAssertMethod( classRobotTestCase0Childs, "__init__", 6 );
 				ModelTestUtils.assertParameterNames( method__init__1, new String[] {"self", "index", "parser", "url", "good", "agent"} );
 			}
-			{
-				IModelElement[] classRobotTestCase0Childs = classRobotTestCase0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classRobotTestCase0Childs, "str");
-			}
-			{
-				IModelElement[] classRobotTestCase0Childs = classRobotTestCase0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classRobotTestCase0Childs, "parser");
-			}
-			{
-				IModelElement[] classRobotTestCase0Childs = classRobotTestCase0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classRobotTestCase0Childs, "url");
-			}
-			{
-				IModelElement[] classRobotTestCase0Childs = classRobotTestCase0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classRobotTestCase0Childs, "good");
-			}
-			{
-				IModelElement[] classRobotTestCase0Childs = classRobotTestCase0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classRobotTestCase0Childs, "agent");
-			}
 			//Function test:runTest
 			{
-			IMethod methodrunTest3;
+			IMethod methodrunTest2;
 				IModelElement[] classRobotTestCase0Childs = classRobotTestCase0.getChildren();
-				methodrunTest3 = ModelTestUtils.getAssertMethod( classRobotTestCase0Childs, "runTest", 1 );
-				ModelTestUtils.assertParameterNames( methodrunTest3, new String[] {"self"} );
+				methodrunTest2 = ModelTestUtils.getAssertMethod( classRobotTestCase0Childs, "runTest", 1 );
+				ModelTestUtils.assertParameterNames( methodrunTest2, new String[] {"self"} );
 			}
 			//Function test:__str__
 			{
-			IMethod method__str__4;
+			IMethod method__str__3;
 				IModelElement[] classRobotTestCase0Childs = classRobotTestCase0.getChildren();
-				method__str__4 = ModelTestUtils.getAssertMethod( classRobotTestCase0Childs, "__str__", 1 );
-				ModelTestUtils.assertParameterNames( method__str__4, new String[] {"self"} );
+				method__str__3 = ModelTestUtils.getAssertMethod( classRobotTestCase0Childs, "__str__", 1 );
+				ModelTestUtils.assertParameterNames( method__str__3, new String[] {"self"} );
 			}
 		}
 		{
@@ -10507,10 +9955,10 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Function test:RobotTest
 		{
-		IMethod methodRobotTest5;
+		IMethod methodRobotTest4;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodRobotTest5 = ModelTestUtils.getAssertMethod( moduleChilds, "RobotTest", 5 );
-			ModelTestUtils.assertParameterNames( methodRobotTest5, new String[] {"index", "robots_txt", "good_urls", "bad_urls", "agent"} );
+			methodRobotTest4 = ModelTestUtils.getAssertMethod( moduleChilds, "RobotTest", 5 );
+			ModelTestUtils.assertParameterNames( methodRobotTest4, new String[] {"index", "robots_txt", "good_urls", "bad_urls", "agent"} );
 		}
 		{
 			IModelElement[] moduleChilds = module.getChildren();
@@ -10586,9 +10034,9 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Function test:test_main
 		{
-		IMethod methodtest_main6;
+		IMethod methodtest_main5;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_main6 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 0 );
+			methodtest_main5 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 0 );
 		}
 
 	}
@@ -10620,30 +10068,26 @@ public class GeneratedModelTests4 extends AbstractModelTests
 				methodsetUp1 = ModelTestUtils.getAssertMethod( classNetrcTestCase0Childs, "setUp", 1 );
 				ModelTestUtils.assertParameterNames( methodsetUp1, new String[] {"self"} );
 			}
-			{
-				IModelElement[] classNetrcTestCase0Childs = classNetrcTestCase0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classNetrcTestCase0Childs, "netrc");
-			}
 			//Function test:tearDown
 			{
-			IMethod methodtearDown3;
+			IMethod methodtearDown2;
 				IModelElement[] classNetrcTestCase0Childs = classNetrcTestCase0.getChildren();
-				methodtearDown3 = ModelTestUtils.getAssertMethod( classNetrcTestCase0Childs, "tearDown", 1 );
-				ModelTestUtils.assertParameterNames( methodtearDown3, new String[] {"self"} );
+				methodtearDown2 = ModelTestUtils.getAssertMethod( classNetrcTestCase0Childs, "tearDown", 1 );
+				ModelTestUtils.assertParameterNames( methodtearDown2, new String[] {"self"} );
 			}
 			//Function test:test_case_1
 			{
-			IMethod methodtest_case_14;
+			IMethod methodtest_case_13;
 				IModelElement[] classNetrcTestCase0Childs = classNetrcTestCase0.getChildren();
-				methodtest_case_14 = ModelTestUtils.getAssertMethod( classNetrcTestCase0Childs, "test_case_1", 1 );
-				ModelTestUtils.assertParameterNames( methodtest_case_14, new String[] {"self"} );
+				methodtest_case_13 = ModelTestUtils.getAssertMethod( classNetrcTestCase0Childs, "test_case_1", 1 );
+				ModelTestUtils.assertParameterNames( methodtest_case_13, new String[] {"self"} );
 			}
 		}
 		//Function test:test_main
 		{
-		IMethod methodtest_main5;
+		IMethod methodtest_main4;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_main5 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 0 );
+			methodtest_main4 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 0 );
 		}
 
 	}
@@ -11308,108 +10752,80 @@ public class GeneratedModelTests4 extends AbstractModelTests
 				method__init__1 = ModelTestUtils.getAssertMethod( class_TriggerThread0Childs, "__init__", 3 );
 				ModelTestUtils.assertParameterNames( method__init__1, new String[] {"self", "fn", "args"} );
 			}
-			{
-				IModelElement[] class_TriggerThread0Childs = class_TriggerThread0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( class_TriggerThread0Childs, "fn");
-			}
-			{
-				IModelElement[] class_TriggerThread0Childs = class_TriggerThread0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( class_TriggerThread0Childs, "args");
-			}
-			{
-				IModelElement[] class_TriggerThread0Childs = class_TriggerThread0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( class_TriggerThread0Childs, "startedEvent");
-			}
 			//Function test:run
 			{
-			IMethod methodrun3;
+			IMethod methodrun2;
 				IModelElement[] class_TriggerThread0Childs = class_TriggerThread0.getChildren();
-				methodrun3 = ModelTestUtils.getAssertMethod( class_TriggerThread0Childs, "run", 1 );
-				ModelTestUtils.assertParameterNames( methodrun3, new String[] {"self"} );
+				methodrun2 = ModelTestUtils.getAssertMethod( class_TriggerThread0Childs, "run", 1 );
+				ModelTestUtils.assertParameterNames( methodrun2, new String[] {"self"} );
 			}
 		}
 		//Function test:_doBlockingTest
 		{
-		IMethod method_doBlockingTest4;
+		IMethod method_doBlockingTest3;
 			IModelElement[] moduleChilds = module.getChildren();
-			method_doBlockingTest4 = ModelTestUtils.getAssertMethod( moduleChilds, "_doBlockingTest", 4 );
-			ModelTestUtils.assertParameterNames( method_doBlockingTest4, new String[] {"block_func", "block_args", "trigger_func", "trigger_args"} );
+			method_doBlockingTest3 = ModelTestUtils.getAssertMethod( moduleChilds, "_doBlockingTest", 4 );
+			ModelTestUtils.assertParameterNames( method_doBlockingTest3, new String[] {"block_func", "block_args", "trigger_func", "trigger_args"} );
 		}
 		//Function test:_doExceptionalBlockingTest
 		{
-		IMethod method_doExceptionalBlockingTest5;
+		IMethod method_doExceptionalBlockingTest4;
 			IModelElement[] moduleChilds = module.getChildren();
-			method_doExceptionalBlockingTest5 = ModelTestUtils.getAssertMethod( moduleChilds, "_doExceptionalBlockingTest", 5 );
-			ModelTestUtils.assertParameterNames( method_doExceptionalBlockingTest5, new String[] {"block_func", "block_args", "trigger_func", "trigger_args", "expected_exception_class"} );
+			method_doExceptionalBlockingTest4 = ModelTestUtils.getAssertMethod( moduleChilds, "_doExceptionalBlockingTest", 5 );
+			ModelTestUtils.assertParameterNames( method_doExceptionalBlockingTest4, new String[] {"block_func", "block_args", "trigger_func", "trigger_args", "expected_exception_class"} );
 		}
 		//Class test
 		{
-		IType classFailingQueueException6;
+		IType classFailingQueueException5;
 			IModelElement[] moduleChilds = module.getChildren();
-			classFailingQueueException6 = ModelTestUtils.getAssertClass( moduleChilds, "FailingQueueException" );
+			classFailingQueueException5 = ModelTestUtils.getAssertClass( moduleChilds, "FailingQueueException" );
 		}
 		//Class test
 		{
-		IType classFailingQueue7;
+		IType classFailingQueue6;
 			IModelElement[] moduleChilds = module.getChildren();
-			classFailingQueue7 = ModelTestUtils.getAssertClass( moduleChilds, "FailingQueue" );
+			classFailingQueue6 = ModelTestUtils.getAssertClass( moduleChilds, "FailingQueue" );
 			//Function test:__init__
 			{
-			IMethod method__init__8;
-				IModelElement[] classFailingQueue7Childs = classFailingQueue7.getChildren();
-				method__init__8 = ModelTestUtils.getAssertMethod( classFailingQueue7Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__8, new String[] {"self", "args"} );
-			}
-			{
-				IModelElement[] classFailingQueue7Childs = classFailingQueue7.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classFailingQueue7Childs, "fail_next_put");
-			}
-			{
-				IModelElement[] classFailingQueue7Childs = classFailingQueue7.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classFailingQueue7Childs, "fail_next_get");
+			IMethod method__init__7;
+				IModelElement[] classFailingQueue6Childs = classFailingQueue6.getChildren();
+				method__init__7 = ModelTestUtils.getAssertMethod( classFailingQueue6Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__7, new String[] {"self", "args"} );
 			}
 			//Function test:_put
 			{
-			IMethod method_put10;
-				IModelElement[] classFailingQueue7Childs = classFailingQueue7.getChildren();
-				method_put10 = ModelTestUtils.getAssertMethod( classFailingQueue7Childs, "_put", 2 );
-				ModelTestUtils.assertParameterNames( method_put10, new String[] {"self", "item"} );
-			}
-			{
-				IModelElement[] classFailingQueue7Childs = classFailingQueue7.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classFailingQueue7Childs, "fail_next_put");
+			IMethod method_put8;
+				IModelElement[] classFailingQueue6Childs = classFailingQueue6.getChildren();
+				method_put8 = ModelTestUtils.getAssertMethod( classFailingQueue6Childs, "_put", 2 );
+				ModelTestUtils.assertParameterNames( method_put8, new String[] {"self", "item"} );
 			}
 			//Function test:_get
 			{
-			IMethod method_get12;
-				IModelElement[] classFailingQueue7Childs = classFailingQueue7.getChildren();
-				method_get12 = ModelTestUtils.getAssertMethod( classFailingQueue7Childs, "_get", 1 );
-				ModelTestUtils.assertParameterNames( method_get12, new String[] {"self"} );
-			}
-			{
-				IModelElement[] classFailingQueue7Childs = classFailingQueue7.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classFailingQueue7Childs, "fail_next_get");
+			IMethod method_get9;
+				IModelElement[] classFailingQueue6Childs = classFailingQueue6.getChildren();
+				method_get9 = ModelTestUtils.getAssertMethod( classFailingQueue6Childs, "_get", 1 );
+				ModelTestUtils.assertParameterNames( method_get9, new String[] {"self"} );
 			}
 		}
 		//Function test:FailingQueueTest
 		{
-		IMethod methodFailingQueueTest14;
+		IMethod methodFailingQueueTest10;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodFailingQueueTest14 = ModelTestUtils.getAssertMethod( moduleChilds, "FailingQueueTest", 1 );
-			ModelTestUtils.assertParameterNames( methodFailingQueueTest14, new String[] {"q"} );
+			methodFailingQueueTest10 = ModelTestUtils.getAssertMethod( moduleChilds, "FailingQueueTest", 1 );
+			ModelTestUtils.assertParameterNames( methodFailingQueueTest10, new String[] {"q"} );
 		}
 		//Function test:SimpleQueueTest
 		{
-		IMethod methodSimpleQueueTest15;
+		IMethod methodSimpleQueueTest11;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodSimpleQueueTest15 = ModelTestUtils.getAssertMethod( moduleChilds, "SimpleQueueTest", 1 );
-			ModelTestUtils.assertParameterNames( methodSimpleQueueTest15, new String[] {"q"} );
+			methodSimpleQueueTest11 = ModelTestUtils.getAssertMethod( moduleChilds, "SimpleQueueTest", 1 );
+			ModelTestUtils.assertParameterNames( methodSimpleQueueTest11, new String[] {"q"} );
 		}
 		//Function test:test
 		{
-		IMethod methodtest16;
+		IMethod methodtest12;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest16 = ModelTestUtils.getAssertMethod( moduleChilds, "test", 0 );
+			methodtest12 = ModelTestUtils.getAssertMethod( moduleChilds, "test", 0 );
 		}
 
 	}
@@ -11480,35 +10896,27 @@ public class GeneratedModelTests4 extends AbstractModelTests
 				method__init__5 = ModelTestUtils.getAssertMethod( classLogRecordSocketReceiver4Childs, "__init__", 4 );
 				ModelTestUtils.assertParameterNames( method__init__5, new String[] {"self", "host", "port", "handler"} );
 			}
-			{
-				IModelElement[] classLogRecordSocketReceiver4Childs = classLogRecordSocketReceiver4.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classLogRecordSocketReceiver4Childs, "abort");
-			}
-			{
-				IModelElement[] classLogRecordSocketReceiver4Childs = classLogRecordSocketReceiver4.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classLogRecordSocketReceiver4Childs, "timeout");
-			}
 			//Function test:serve_until_stopped
 			{
-			IMethod methodserve_until_stopped7;
+			IMethod methodserve_until_stopped6;
 				IModelElement[] classLogRecordSocketReceiver4Childs = classLogRecordSocketReceiver4.getChildren();
-				methodserve_until_stopped7 = ModelTestUtils.getAssertMethod( classLogRecordSocketReceiver4Childs, "serve_until_stopped", 1 );
-				ModelTestUtils.assertParameterNames( methodserve_until_stopped7, new String[] {"self"} );
+				methodserve_until_stopped6 = ModelTestUtils.getAssertMethod( classLogRecordSocketReceiver4Childs, "serve_until_stopped", 1 );
+				ModelTestUtils.assertParameterNames( methodserve_until_stopped6, new String[] {"self"} );
 			}
 			//Function test:process_request
 			{
-			IMethod methodprocess_request8;
+			IMethod methodprocess_request7;
 				IModelElement[] classLogRecordSocketReceiver4Childs = classLogRecordSocketReceiver4.getChildren();
-				methodprocess_request8 = ModelTestUtils.getAssertMethod( classLogRecordSocketReceiver4Childs, "process_request", 3 );
-				ModelTestUtils.assertParameterNames( methodprocess_request8, new String[] {"self", "request", "client_address"} );
+				methodprocess_request7 = ModelTestUtils.getAssertMethod( classLogRecordSocketReceiver4Childs, "process_request", 3 );
+				ModelTestUtils.assertParameterNames( methodprocess_request7, new String[] {"self", "request", "client_address"} );
 			}
 		}
 		//Function test:runTCP
 		{
-		IMethod methodrunTCP9;
+		IMethod methodrunTCP8;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodrunTCP9 = ModelTestUtils.getAssertMethod( moduleChilds, "runTCP", 1 );
-			ModelTestUtils.assertParameterNames( methodrunTCP9, new String[] {"tcpserver"} );
+			methodrunTCP8 = ModelTestUtils.getAssertMethod( moduleChilds, "runTCP", 1 );
+			ModelTestUtils.assertParameterNames( methodrunTCP8, new String[] {"tcpserver"} );
 		}
 		{
 			IModelElement[] moduleChilds = module.getChildren();
@@ -11516,15 +10924,15 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Function test:nextmessage
 		{
-		IMethod methodnextmessage10;
+		IMethod methodnextmessage9;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodnextmessage10 = ModelTestUtils.getAssertMethod( moduleChilds, "nextmessage", 0 );
+			methodnextmessage9 = ModelTestUtils.getAssertMethod( moduleChilds, "nextmessage", 0 );
 		}
 		//Function test:test0
 		{
-		IMethod methodtest011;
+		IMethod methodtest010;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest011 = ModelTestUtils.getAssertMethod( moduleChilds, "test0", 0 );
+			methodtest010 = ModelTestUtils.getAssertMethod( moduleChilds, "test0", 0 );
 		}
 		{
 			IModelElement[] moduleChilds = module.getChildren();
@@ -11576,60 +10984,56 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Class test
 		{
-		IType classSpecificLevelFilter12;
+		IType classSpecificLevelFilter11;
 			IModelElement[] moduleChilds = module.getChildren();
-			classSpecificLevelFilter12 = ModelTestUtils.getAssertClass( moduleChilds, "SpecificLevelFilter" );
+			classSpecificLevelFilter11 = ModelTestUtils.getAssertClass( moduleChilds, "SpecificLevelFilter" );
 			//Function test:__init__
 			{
-			IMethod method__init__13;
-				IModelElement[] classSpecificLevelFilter12Childs = classSpecificLevelFilter12.getChildren();
-				method__init__13 = ModelTestUtils.getAssertMethod( classSpecificLevelFilter12Childs, "__init__", 2 );
-				ModelTestUtils.assertParameterNames( method__init__13, new String[] {"self", "lvl"} );
-			}
-			{
-				IModelElement[] classSpecificLevelFilter12Childs = classSpecificLevelFilter12.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classSpecificLevelFilter12Childs, "level");
+			IMethod method__init__12;
+				IModelElement[] classSpecificLevelFilter11Childs = classSpecificLevelFilter11.getChildren();
+				method__init__12 = ModelTestUtils.getAssertMethod( classSpecificLevelFilter11Childs, "__init__", 2 );
+				ModelTestUtils.assertParameterNames( method__init__12, new String[] {"self", "lvl"} );
 			}
 			//Function test:filter
 			{
-			IMethod methodfilter15;
-				IModelElement[] classSpecificLevelFilter12Childs = classSpecificLevelFilter12.getChildren();
-				methodfilter15 = ModelTestUtils.getAssertMethod( classSpecificLevelFilter12Childs, "filter", 2 );
-				ModelTestUtils.assertParameterNames( methodfilter15, new String[] {"self", "record"} );
+			IMethod methodfilter13;
+				IModelElement[] classSpecificLevelFilter11Childs = classSpecificLevelFilter11.getChildren();
+				methodfilter13 = ModelTestUtils.getAssertMethod( classSpecificLevelFilter11Childs, "filter", 2 );
+				ModelTestUtils.assertParameterNames( methodfilter13, new String[] {"self", "record"} );
 			}
 		}
 		//Class test
 		{
-		IType classGarrulousFilter16;
+		IType classGarrulousFilter14;
 			IModelElement[] moduleChilds = module.getChildren();
-			classGarrulousFilter16 = ModelTestUtils.getAssertClass( moduleChilds, "GarrulousFilter" );
+			classGarrulousFilter14 = ModelTestUtils.getAssertClass( moduleChilds, "GarrulousFilter" );
 			//Function test:__init__
 			{
-			IMethod method__init__17;
-				IModelElement[] classGarrulousFilter16Childs = classGarrulousFilter16.getChildren();
-				method__init__17 = ModelTestUtils.getAssertMethod( classGarrulousFilter16Childs, "__init__", 1 );
-				ModelTestUtils.assertParameterNames( method__init__17, new String[] {"self"} );
+			IMethod method__init__15;
+				IModelElement[] classGarrulousFilter14Childs = classGarrulousFilter14.getChildren();
+				method__init__15 = ModelTestUtils.getAssertMethod( classGarrulousFilter14Childs, "__init__", 1 );
+				ModelTestUtils.assertParameterNames( method__init__15, new String[] {"self"} );
 			}
 		}
 		//Class test
 		{
-		IType classVerySpecificFilter18;
+		IType classVerySpecificFilter16;
 			IModelElement[] moduleChilds = module.getChildren();
-			classVerySpecificFilter18 = ModelTestUtils.getAssertClass( moduleChilds, "VerySpecificFilter" );
+			classVerySpecificFilter16 = ModelTestUtils.getAssertClass( moduleChilds, "VerySpecificFilter" );
 			//Function test:filter
 			{
-			IMethod methodfilter19;
-				IModelElement[] classVerySpecificFilter18Childs = classVerySpecificFilter18.getChildren();
-				methodfilter19 = ModelTestUtils.getAssertMethod( classVerySpecificFilter18Childs, "filter", 2 );
-				ModelTestUtils.assertParameterNames( methodfilter19, new String[] {"self", "record"} );
+			IMethod methodfilter17;
+				IModelElement[] classVerySpecificFilter16Childs = classVerySpecificFilter16.getChildren();
+				methodfilter17 = ModelTestUtils.getAssertMethod( classVerySpecificFilter16Childs, "filter", 2 );
+				ModelTestUtils.assertParameterNames( methodfilter17, new String[] {"self", "record"} );
 			}
 		}
 		//Function test:message
 		{
-		IMethod methodmessage20;
+		IMethod methodmessage18;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodmessage20 = ModelTestUtils.getAssertMethod( moduleChilds, "message", 1 );
-			ModelTestUtils.assertParameterNames( methodmessage20, new String[] {"s"} );
+			methodmessage18 = ModelTestUtils.getAssertMethod( moduleChilds, "message", 1 );
+			ModelTestUtils.assertParameterNames( methodmessage18, new String[] {"s"} );
 		}
 		{
 			IModelElement[] moduleChilds = module.getChildren();
@@ -11637,15 +11041,15 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Function test:test1
 		{
-		IMethod methodtest121;
+		IMethod methodtest119;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest121 = ModelTestUtils.getAssertMethod( moduleChilds, "test1", 0 );
+			methodtest119 = ModelTestUtils.getAssertMethod( moduleChilds, "test1", 0 );
 			//Function test:doLog
 			{
-			IMethod methoddoLog22;
-				IModelElement[] methodtest121Childs = methodtest121.getChildren();
-				methoddoLog22 = ModelTestUtils.getAssertMethod( methodtest121Childs, "doLog", 1 );
-				ModelTestUtils.assertParameterNames( methoddoLog22, new String[] {"log"} );
+			IMethod methoddoLog20;
+				IModelElement[] methodtest119Childs = methodtest119.getChildren();
+				methoddoLog20 = ModelTestUtils.getAssertMethod( methodtest119Childs, "doLog", 1 );
+				ModelTestUtils.assertParameterNames( methoddoLog20, new String[] {"log"} );
 			}
 		}
 		{
@@ -11654,9 +11058,9 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Function test:test2
 		{
-		IMethod methodtest223;
+		IMethod methodtest221;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest223 = ModelTestUtils.getAssertMethod( moduleChilds, "test2", 0 );
+			methodtest221 = ModelTestUtils.getAssertMethod( moduleChilds, "test2", 0 );
 		}
 		{
 			IModelElement[] moduleChilds = module.getChildren();
@@ -11664,34 +11068,34 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Function test:doLog3
 		{
-		IMethod methoddoLog324;
+		IMethod methoddoLog322;
 			IModelElement[] moduleChilds = module.getChildren();
-			methoddoLog324 = ModelTestUtils.getAssertMethod( moduleChilds, "doLog3", 0 );
+			methoddoLog322 = ModelTestUtils.getAssertMethod( moduleChilds, "doLog3", 0 );
 		}
 		//Function test:test3
 		{
-		IMethod methodtest325;
+		IMethod methodtest323;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest325 = ModelTestUtils.getAssertMethod( moduleChilds, "test3", 0 );
+			methodtest323 = ModelTestUtils.getAssertMethod( moduleChilds, "test3", 0 );
 		}
 		//Function test:banner
 		{
-		IMethod methodbanner26;
+		IMethod methodbanner24;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodbanner26 = ModelTestUtils.getAssertMethod( moduleChilds, "banner", 2 );
-			ModelTestUtils.assertParameterNames( methodbanner26, new String[] {"nm", "typ"} );
+			methodbanner24 = ModelTestUtils.getAssertMethod( moduleChilds, "banner", 2 );
+			ModelTestUtils.assertParameterNames( methodbanner24, new String[] {"nm", "typ"} );
 		}
 		//Function test:test_main_inner
 		{
-		IMethod methodtest_main_inner27;
+		IMethod methodtest_main_inner25;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_main_inner27 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main_inner", 0 );
+			methodtest_main_inner25 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main_inner", 0 );
 		}
 		//Function test:test_main
 		{
-		IMethod methodtest_main28;
+		IMethod methodtest_main26;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodtest_main28 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 0 );
+			methodtest_main26 = ModelTestUtils.getAssertMethod( moduleChilds, "test_main", 0 );
 		}
 
 	}
@@ -11744,32 +11148,12 @@ public class GeneratedModelTests4 extends AbstractModelTests
 				method__init__1 = ModelTestUtils.getAssertMethod( classRecord0Childs, "__init__", 6 );
 				ModelTestUtils.assertParameterNames( method__init__1, new String[] {"self", "PtrComp", "Discr", "EnumComp", "IntComp", "StringComp"} );
 			}
-			{
-				IModelElement[] classRecord0Childs = classRecord0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classRecord0Childs, "PtrComp");
-			}
-			{
-				IModelElement[] classRecord0Childs = classRecord0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classRecord0Childs, "Discr");
-			}
-			{
-				IModelElement[] classRecord0Childs = classRecord0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classRecord0Childs, "EnumComp");
-			}
-			{
-				IModelElement[] classRecord0Childs = classRecord0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classRecord0Childs, "IntComp");
-			}
-			{
-				IModelElement[] classRecord0Childs = classRecord0.getChildren();
-				IField fieldValue = ModelTestUtils.getAssertField( classRecord0Childs, "StringComp");
-			}
 			//Function test:copy
 			{
-			IMethod methodcopy3;
+			IMethod methodcopy2;
 				IModelElement[] classRecord0Childs = classRecord0.getChildren();
-				methodcopy3 = ModelTestUtils.getAssertMethod( classRecord0Childs, "copy", 1 );
-				ModelTestUtils.assertParameterNames( methodcopy3, new String[] {"self"} );
+				methodcopy2 = ModelTestUtils.getAssertMethod( classRecord0Childs, "copy", 1 );
+				ModelTestUtils.assertParameterNames( methodcopy2, new String[] {"self"} );
 			}
 		}
 		{
@@ -11782,17 +11166,17 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Function test:main
 		{
-		IMethod methodmain4;
+		IMethod methodmain3;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodmain4 = ModelTestUtils.getAssertMethod( moduleChilds, "main", 1 );
-			ModelTestUtils.assertParameterNames( methodmain4, new String[] {"loops"} );
+			methodmain3 = ModelTestUtils.getAssertMethod( moduleChilds, "main", 1 );
+			ModelTestUtils.assertParameterNames( methodmain3, new String[] {"loops"} );
 		}
 		//Function test:pystones
 		{
-		IMethod methodpystones5;
+		IMethod methodpystones4;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodpystones5 = ModelTestUtils.getAssertMethod( moduleChilds, "pystones", 1 );
-			ModelTestUtils.assertParameterNames( methodpystones5, new String[] {"loops"} );
+			methodpystones4 = ModelTestUtils.getAssertMethod( moduleChilds, "pystones", 1 );
+			ModelTestUtils.assertParameterNames( methodpystones4, new String[] {"loops"} );
 		}
 		{
 			IModelElement[] moduleChilds = module.getChildren();
@@ -11828,92 +11212,92 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 		//Function test:Proc0
 		{
-		IMethod methodProc06;
+		IMethod methodProc05;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodProc06 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc0", 1 );
-			ModelTestUtils.assertParameterNames( methodProc06, new String[] {"loops"} );
+			methodProc05 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc0", 1 );
+			ModelTestUtils.assertParameterNames( methodProc05, new String[] {"loops"} );
 		}
 		//Function test:Proc1
 		{
-		IMethod methodProc17;
+		IMethod methodProc16;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodProc17 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc1", 1 );
-			ModelTestUtils.assertParameterNames( methodProc17, new String[] {"PtrParIn"} );
+			methodProc16 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc1", 1 );
+			ModelTestUtils.assertParameterNames( methodProc16, new String[] {"PtrParIn"} );
 		}
 		//Function test:Proc2
 		{
-		IMethod methodProc28;
+		IMethod methodProc27;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodProc28 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc2", 1 );
-			ModelTestUtils.assertParameterNames( methodProc28, new String[] {"IntParIO"} );
+			methodProc27 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc2", 1 );
+			ModelTestUtils.assertParameterNames( methodProc27, new String[] {"IntParIO"} );
 		}
 		//Function test:Proc3
 		{
-		IMethod methodProc39;
+		IMethod methodProc38;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodProc39 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc3", 1 );
-			ModelTestUtils.assertParameterNames( methodProc39, new String[] {"PtrParOut"} );
+			methodProc38 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc3", 1 );
+			ModelTestUtils.assertParameterNames( methodProc38, new String[] {"PtrParOut"} );
 		}
 		//Function test:Proc4
 		{
-		IMethod methodProc410;
+		IMethod methodProc49;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodProc410 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc4", 0 );
+			methodProc49 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc4", 0 );
 		}
 		//Function test:Proc5
 		{
-		IMethod methodProc511;
+		IMethod methodProc510;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodProc511 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc5", 0 );
+			methodProc510 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc5", 0 );
 		}
 		//Function test:Proc6
 		{
-		IMethod methodProc612;
+		IMethod methodProc611;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodProc612 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc6", 1 );
-			ModelTestUtils.assertParameterNames( methodProc612, new String[] {"EnumParIn"} );
+			methodProc611 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc6", 1 );
+			ModelTestUtils.assertParameterNames( methodProc611, new String[] {"EnumParIn"} );
 		}
 		//Function test:Proc7
 		{
-		IMethod methodProc713;
+		IMethod methodProc712;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodProc713 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc7", 2 );
-			ModelTestUtils.assertParameterNames( methodProc713, new String[] {"IntParI1", "IntParI2"} );
+			methodProc712 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc7", 2 );
+			ModelTestUtils.assertParameterNames( methodProc712, new String[] {"IntParI1", "IntParI2"} );
 		}
 		//Function test:Proc8
 		{
-		IMethod methodProc814;
+		IMethod methodProc813;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodProc814 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc8", 4 );
-			ModelTestUtils.assertParameterNames( methodProc814, new String[] {"Array1Par", "Array2Par", "IntParI1", "IntParI2"} );
+			methodProc813 = ModelTestUtils.getAssertMethod( moduleChilds, "Proc8", 4 );
+			ModelTestUtils.assertParameterNames( methodProc813, new String[] {"Array1Par", "Array2Par", "IntParI1", "IntParI2"} );
 		}
 		//Function test:Func1
 		{
-		IMethod methodFunc115;
+		IMethod methodFunc114;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodFunc115 = ModelTestUtils.getAssertMethod( moduleChilds, "Func1", 2 );
-			ModelTestUtils.assertParameterNames( methodFunc115, new String[] {"CharPar1", "CharPar2"} );
+			methodFunc114 = ModelTestUtils.getAssertMethod( moduleChilds, "Func1", 2 );
+			ModelTestUtils.assertParameterNames( methodFunc114, new String[] {"CharPar1", "CharPar2"} );
 		}
 		//Function test:Func2
 		{
-		IMethod methodFunc216;
+		IMethod methodFunc215;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodFunc216 = ModelTestUtils.getAssertMethod( moduleChilds, "Func2", 2 );
-			ModelTestUtils.assertParameterNames( methodFunc216, new String[] {"StrParI1", "StrParI2"} );
+			methodFunc215 = ModelTestUtils.getAssertMethod( moduleChilds, "Func2", 2 );
+			ModelTestUtils.assertParameterNames( methodFunc215, new String[] {"StrParI1", "StrParI2"} );
 		}
 		//Function test:Func3
 		{
-		IMethod methodFunc317;
+		IMethod methodFunc316;
 			IModelElement[] moduleChilds = module.getChildren();
-			methodFunc317 = ModelTestUtils.getAssertMethod( moduleChilds, "Func3", 1 );
-			ModelTestUtils.assertParameterNames( methodFunc317, new String[] {"EnumParIn"} );
+			methodFunc316 = ModelTestUtils.getAssertMethod( moduleChilds, "Func3", 1 );
+			ModelTestUtils.assertParameterNames( methodFunc316, new String[] {"EnumParIn"} );
 		}
 		//Function test:error
 		{
-		IMethod methoderror18;
+		IMethod methoderror17;
 			IModelElement[] moduleChilds = module.getChildren();
-			methoderror18 = ModelTestUtils.getAssertMethod( moduleChilds, "error", 1 );
-			ModelTestUtils.assertParameterNames( methoderror18, new String[] {"msg"} );
+			methoderror17 = ModelTestUtils.getAssertMethod( moduleChilds, "error", 1 );
+			ModelTestUtils.assertParameterNames( methoderror17, new String[] {"msg"} );
 		}
 		{
 			IModelElement[] moduleChilds = module.getChildren();

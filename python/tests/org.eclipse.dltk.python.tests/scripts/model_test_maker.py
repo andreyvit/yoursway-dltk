@@ -47,10 +47,10 @@ class MakeScriptTestCase( object ):
 		""" %{ "index": self.test_index, "fName": self.file_name, "pluginPath": self.pluginPath }
 		
 		self.content += "\n"
-		self.addChildTests( self.ast )
+		self.addChildTests( self.ast, 0, "" )
 		self.content += "\n\t}"		
 	
-	def addChildTests( self, node, depth = 2 ):
+	def addChildTests( self, node, parentNode, elderParentName, depth = 2 ):
 		childs = node.getChildNodes( )
 		#self.content += "\t"*depth + "//Nodes count %s" %( len( childs ) ) + "\n"
 		#self.content += "\t"*depth + str( node.__class__ ) + "\n"
@@ -95,8 +95,9 @@ class MakeScriptTestCase( object ):
 			self.inst_index += 1			
 			self.content += "\t"*(depth+1) +  "IModelElement[] %sChilds = %s.getChildren();" %( oldParentName, oldParentName ) + "\n"
 			self.content += "\t"*(depth+1) + instName + " = ModelTestUtils.getAssertClass( %sChilds, \"%s\" );" %( oldParentName, node.name ) + "\n"
-		if node.__class__ == compiler.ast.Assign:				
-			if ( self.inClass and not self.inMethod ) or self.parentName == "module":				
+		if node.__class__ == compiler.ast.Assign:
+			if node.expr.__class__ == compiler.ast.Lambda : pass
+			elif ( self.inClass and not self.inMethod ) or self.parentName == "module":
 				try:# can raise exceptions if not simple assert here.                                
 					child_name = ( node.getChildren()[0].name )
 					self.content += "\t"*(depth) + "{\n"
@@ -115,30 +116,30 @@ class MakeScriptTestCase( object ):
 					pass
 		for child in childs:
 				if node.__class__ in [ compiler.ast.Class, compiler.ast.Function, compiler.ast.Assign ]:
-					self.addChildTests( child, depth + 1 )
+					self.addChildTests( child, node, oldParentName, depth + 1 )
 				else:
-					self.addChildTests( child, depth )	                
+					self.addChildTests( child, node, oldParentName, depth )	                
 		if self.parentName != oldParentName:
 			self.parentName = oldParentName
 			self.content += "\t"*depth + "}\n"
 		if hasSub:
-			if node.__class__ == compiler.ast.Function:
+			if node.__class__ == compiler.ast.Function and parentNode.__class__ == compiler.ast.Class:
 				if len( self.after_fields ) > 0:
 					for field in self.after_fields:
-						if str( node ) in self.added_fields.keys():
-							fields = self.added_fields[ str( node ) ]
+						if str( parentNode ) in self.added_fields.keys():
+							fields = self.added_fields[ str( parentNode ) ]
 							if not field in fields:
 								fields.append( field )
 								self.content += "\t"*(depth) + "{\n"
-								self.content += "\t"*(depth+1) +  "IModelElement[] %sChilds = %s.getChildren();" %( oldParentName, oldParentName ) + "\n"
-								self.content += "\t"*(depth+1) + """IField fieldValue = ModelTestUtils.getAssertField( %(className)s, "%(childName)s");\n""" % { "childName": field, "className": self.parentName + "Childs"  }
+								self.content += "\t"*(depth+1) +  "IModelElement[] %sChilds = %s.getChildren();" %( elderParentName, elderParentName ) + "\n"
+								self.content += "\t"*(depth+1) + """IField fieldValue = ModelTestUtils.getAssertField( %(className)s, "%(childName)s");\n""" % { "childName": field, "className": elderParentName + "Childs"  }
 								self.content += "\t"*(depth) + "}\n"
 						else:
 							fields = [ field ]
-							self.added_fields[ str( node ) ] = fields
+							self.added_fields[ str( parentNode ) ] = fields
 							self.content += "\t"*(depth) + "{\n"
-							self.content += "\t"*(depth+1) +  "IModelElement[] %sChilds = %s.getChildren();" %( oldParentName, oldParentName ) + "\n"
-							self.content += "\t"*(depth+1) + """IField fieldValue = ModelTestUtils.getAssertField( %(className)s, "%(childName)s");\n""" % { "childName": field, "className": self.parentName + "Childs"  }
+							self.content += "\t"*(depth+1) +  "IModelElement[] %sChilds = %s.getChildren();" %( elderParentName, elderParentName ) + "\n"
+							self.content += "\t"*(depth+1) + """IField fieldValue = ModelTestUtils.getAssertField( %(className)s, "%(childName)s");\n""" % { "childName": field, "className": elderParentName + "Childs"  }
 							self.content += "\t"*(depth) + "}\n"
 							self.inst_index += 1
 				self.after_fields = []               
