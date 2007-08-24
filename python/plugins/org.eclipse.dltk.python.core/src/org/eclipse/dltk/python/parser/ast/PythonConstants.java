@@ -19,6 +19,7 @@ public interface PythonConstants
 	public static final int S_IMPORT 	= 37003;
 	public static final int S_RAISE 	= 37004;
 	public static final int S_YIELD 	= 37005;
+	public static final int S_WITH 		= 37006;
 	
 	// Expressions
 	public static final int E_ALLIMPORTS= 38001;

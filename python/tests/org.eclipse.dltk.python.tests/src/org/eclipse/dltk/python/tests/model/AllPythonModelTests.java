@@ -32,6 +32,7 @@ public class AllPythonModelTests {
 		suite.addTest(DeleteResourcesTests.suite());
 		
 		suite.addTest(TokenPostitionsParserTests.suite());
+		suite.addTest(ComplexConstructsTests.suite());
 		//$JUnit-END$
 		return suite;
 	}

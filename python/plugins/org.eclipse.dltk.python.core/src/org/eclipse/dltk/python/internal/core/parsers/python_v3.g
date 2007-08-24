@@ -77,6 +77,7 @@ import org.eclipse.dltk.python.parser.ast.statements.ExecStatement;
 import org.eclipse.dltk.python.parser.ast.statements.IfStatement;
 import org.eclipse.dltk.python.parser.ast.statements.ReturnStatement;
 import org.eclipse.dltk.python.parser.ast.statements.TryFinallyStatement;
+import org.eclipse.dltk.python.parser.ast.PythonWithStatement;
 }
 @lexer::members {
 /** Handles context-sensitive lexing of implicit line joining such as
@@ -710,6 +711,7 @@ compound_stmt returns [ Statement statement = null ]:
 	| statement3 = try_stmt{ statement = statement3; }
 	| statement4 = funcdef{ statement = statement4; }
 	| statement5 = classdef{ statement = statement5; }
+	| statement6 = with_stmt {statement = statement6; }
 	;		
 // If Statement
 if_stmt returns [ IfStatement statement = null ]: 
@@ -787,8 +789,8 @@ for_stmt returns [ PythonForStatement statement = null]:
 					statement.acceptElse( body );
 				}
 		)?
-	;		
-
+	;	
+	
 // Try Statement
 // not fully implemented yet
 try_stmt returns [ PythonTryStatement statement = null  ]:
@@ -844,7 +846,7 @@ try_stmt returns [ PythonTryStatement statement = null  ]:
 		statement = new PythonTryStatement( toDLTK( is ), body, catches );
 		statement.setElseStatement( elseBlock );
         }
-	;		
+	;
 // Suite rule
 suite returns [ Block statement = new Block() ]:
 	  {
@@ -930,7 +932,7 @@ suite returns [ Block statement = new Block() ]:
 /// Expressions
 //////////////////////////////////////////
 
-test returns [ Expression exp = null ]:
+or_test returns [ Expression exp = null ] :
 	exp0 = and_test
 	{
 		exp = exp0;
@@ -942,11 +944,12 @@ test returns [ Expression exp = null ]:
 				exp = new BinaryExpression( exp0, Expression.E_LOR, v);
 			}
 	)*
+	;
+//To be replaced with  'expression' (?) in some rules (as 2.5 grammar)
+test returns [ Expression exp = null ]:
+		exp0 = or_test {exp = exp0;}
 	| 
-		( exp0 = lambdef )
-		{
-		exp = exp0;
-		}
+		 exp0 = lambdef {exp = exp0;}
 	;		
 
 and_test returns [ Expression exp = null ]: 
@@ -1454,7 +1457,7 @@ exprlist returns [ PythonTestListExpression p = new PythonTestListExpression( );
 	(COMMA)?
 	;		
 
-
+// to be replaced by 'target' in some rules(as  in 2.5 grammar)
 testlist returns [ Expression p = new EmptyExpression() ]: 
 	{
 		PythonTestListExpression listExpression = new PythonTestListExpression();
@@ -1464,9 +1467,10 @@ testlist returns [ Expression p = new EmptyExpression() ]:
 	{		
 		p = e0;
 		listExpression.addExpression( e0 );
-		if( p != null && p.sourceEnd() > end ) {
+		if( p != null) {
 			listExpression.setStart(p.sourceStart());
 			end = p.sourceEnd();
+			listExpression.setEnd(end);
 		}
 	}
     	(options {k=2;greedy=true;}:
@@ -1511,8 +1515,18 @@ tuplelist returns [ Expression p = null ]:
     	)*
         (options {greedy=true;}:COMMA)?
     	;        	
-
-// NEED to implement
+with_stmt returns [Statement st = null]:
+	w_token = 'with' 
+	exp_what = test
+	(
+		 'as' exp_as = testlist
+	)? COLON block = suite
+	{
+		DLTKToken token = toDLTK(w_token);
+		st = new PythonWithStatement(token, exp_what, exp_as, block, token.getColumn(), block.sourceEnd());
+	}
+	;
+//TODO: NEED to implement
 dictmaker returns [ PythonDictExpression d = new PythonDictExpression() ] :
 	t1 = test
 	COLON
@@ -1541,18 +1555,23 @@ classdef returns [ PythonClassDeclaration classDeclaration = null ]:
 		}				
 	( 
 		r =LPAREN
-			te = testlist
+			(te = testlist)?
 			m = RPAREN
 			{
-				if( te instanceof ExpressionList ) {
-					classDeclaration.setParents( toDLTK( r ), (ExpressionList)te, toDLTK( m ) );
+				if (null != te)
+				{
+					if( te instanceof ExpressionList ) {
+						classDeclaration.setParents( toDLTK( r ), (ExpressionList)te, toDLTK( m ) );
+					}
+					else {
+						ExpressionList exprList = new ExpressionList();
+						exprList.setStart(te.sourceStart());
+						exprList.setEnd(te.sourceEnd());
+						exprList.addExpression( te );
+						classDeclaration.setParents( toDLTK( r ), exprList, toDLTK( m ) );
+					}
 				}
-				else {
-					ExpressionList exprList = new ExpressionList();
-					exprList.addExpression( te );
-					classDeclaration.setParents( toDLTK( r ), exprList, toDLTK( m ) );
-				}
-				
+					
 			}
 	)?
 	co = COLON
@@ -1735,11 +1754,19 @@ DOUBLESLASHEQUAL	: '//=' ;
 
 DOT : '.' ;
 
-FLOAT
-	:	'.' DIGITS (Exponent)?
-    |   DIGITS ('.' (DIGITS (Exponent)?)? | Exponent)
+FLOAT  	:	POINTFLOAT | EXPONENTFLOAT
+//	:	'.' DIGITS (Exponent)?
+//    |   DIGITS ('.' (DIGITS (Exponent)?)? | Exponent)
     ;
-
+POINTFLOAT
+	:	DIGITS? FRACTION | DIGITS '.'
+	;
+FRACTION 
+	:	'.' DIGITS
+	;
+EXPONENTFLOAT 
+	:	(DIGITS | POINTFLOAT) Exponent
+	;
 LONGINT
     :   INT ('l'|'L')
     ;

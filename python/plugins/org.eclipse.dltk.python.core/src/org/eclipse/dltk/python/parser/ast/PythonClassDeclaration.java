@@ -37,6 +37,8 @@ public class PythonClassDeclaration extends TypeDeclaration
 	public void setParents( DLTKToken pStart, ExpressionList supers, DLTKToken pEnd ) {
 		ASTListNode s = new ASTListNode();
 		s.getChilds().addAll(supers.getExpressions());
+		s.setStart(supers.sourceStart());
+		s.setEnd(supers.sourceEnd());		
 		this.setSuperClasses( s );
 		this.setParentStart( pStart.getColumn( ) );
 		this.setParentEnd( pEnd.getColumn( ) );

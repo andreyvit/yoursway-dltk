@@ -5,12 +5,14 @@ import java.util.List;
 
 import junit.framework.Test;
 
+import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.NumericLiteral;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.core.tests.model.SuiteOfTestCases;
 import org.eclipse.dltk.python.internal.core.parser.PythonSourceParser;
+import org.eclipse.dltk.python.parser.ast.PythonClassDeclaration;
 import org.eclipse.dltk.python.parser.ast.PythonWhileStatement;
 import org.eclipse.dltk.python.parser.ast.expressions.PrintExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonDictExpression;
@@ -27,6 +29,7 @@ public class TokenPostitionsParserTests extends SuiteOfTestCases {
 	private static final String testTupleExprScript  = "( 1, () )";
 	private static final String testListExprScript = "[ [],[] ]";
 	private static final String testBackQuotesScript  = "` 0 `";
+	private static final String testSuperClassDeclScript = "class A (object) : pass";
 	
 	private static final String msg = "Invalid token displacement";
 
@@ -126,5 +129,12 @@ public class TokenPostitionsParserTests extends SuiteOfTestCases {
 		NumericLiteral expr = (NumericLiteral)((Block)children.get(0)).getChilds().get(0);
 		assertTrue(msg, expr.sourceStart() == 0 && expr.sourceEnd() == 5);
 	}
-	
+	public void testSuperClassDecl()
+	{
+		PythonSourceParser parser = new PythonSourceParser();
+		ModuleDeclaration module = parser.parse(null, testSuperClassDeclScript.toCharArray(), null);
+		List children = module.getChilds();
+		ASTListNode supers = ((PythonClassDeclaration)((Block)children.get(0)).getChilds().get(0)).getSuperClasses();
+		assertTrue(msg,9 == supers.sourceStart() && 15 == supers.sourceEnd());
+	}
 }

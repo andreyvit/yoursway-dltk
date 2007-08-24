@@ -24,7 +24,7 @@ import org.eclipse.jface.text.rules.WordRule;
 public class PythonCodeScanner extends AbstractScriptScanner {
 	private static String[] fgKeywords = {
 			"and", "del", "for", "is", "raise", "assert", "elif", "from", "lambda", "break", "else", "global", "not", "try", "class",
-			"except", "if", "or", "while", "continue", "exec", "import", "pass", "yield", "def", "finally", "in", "print", "self"
+			"except", "if", "or", "while", "continue", "exec", "import", "pass", "yield", "def", "finally", "in", "print", "self", "with", "as"
 	};
 	private static String fgReturnKeyword = "return";
 	private static String fgTokenProperties[] = new String[] {
