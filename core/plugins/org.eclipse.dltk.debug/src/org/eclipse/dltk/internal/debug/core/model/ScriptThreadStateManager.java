@@ -38,7 +38,10 @@ public class ScriptThreadStateManager implements IDbgpDebuggerFeedback {
 		if (exception != null) {
 			setTerminated(exception);
 		}
-
+		if( status == null ) {
+			setTerminated(null);
+			return;
+		}
 		if (status.isBreak()) {
 			setSuspended(true, suspendDetail);
 		} else if (status.isStopping()) {
