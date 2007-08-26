@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD>
+<meta name="copyright"
+	content="Copyright (c) IBM Corporation and others 2000, 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page.">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1"
+	TYPE="text/css">
+<title>DLTK Model</title>
+
+<link rel="stylesheet" type="text/css" HREF="../book.css">
+</HEAD>
+<BODY>
+
+<h2>DLTK Model</h2>
+
+<h3>Structure</h3>
+
+<p>Model is a key thing in DLTK you should know about. In fact, as
+you probably know, DLTK model had been cloned from JDT model. So, if you
+are familiar with JDT model, you will understand everything here
+quickly. As JDT, DLTK uses an in-memory object model to represent the
+workspace structure from projects level to source file internals. This
+structure is derived from the project's build path. The model is
+hierarchical. The following table summarizes the different kinds of
+model elements. All elements classes support the IModelElement
+interface.
+<table>
+	<tr>
+		<td>Element</td>
+		<td>JDT-analog</td>
+		<td>Description</td>
+	</tr>
+	<tr>
+		<td>IScriptModel</td>
+		<td>IJavaModel</td>
+		<td>Represents the root model element, corresponding to the
+		workspace. The parent of all projects with the script natures. It also
+		gives you access to the projects without the script nature.</td>
+	</tr>
+	<tr>
+		<td>IScriptProject</td>
+		<td>IJavaProject</td>
+		<td>Represents a script project in the workspace. (Child of
+		IScriptModel)</td>
+	</tr>
+	<tr>
+		<td>IProjectFragment</td>
+		<td>IPackageFragmentRoot</td>
+		<td>Represents a project fragment, and maps the contents to an
+		underlying resource which is either a folder, JAR, or ZIP file. (Child
+		of IScriptProject)</td>
+	</tr>
+	<tr>
+		<td>IScriptFolder</td>
+		<td>IPackageFragment</td>
+		<td>Represents a folder containing script files inside. (Child of
+		IProjectFragment )</td>
+	</tr>
+	<tr>
+		<td>ISourceModule</td>
+		<td>ICompilationUnit</td>
+		<td>Represents a source file. (Child of IScriptFolder)</td>
+	</tr>
+	<tr>
+		<td>IPackageDeclaration</td>
+		<td>IPackageDeclaration</td>
+		<td>Represents a package declaration in a source module. (Child
+		of ISourceModule )</td>
+	</tr>
+	<tr>
+		<td>IType</td>
+		<td>IType</td>
+		<td>Represents either a class/module/namespace inside a source
+		file.</td>
+	</tr>
+	<tr>
+		<td>IField</td>
+		<td>IField</td>
+		<td>Represents a field inside a type. (Child of IType)</td>
+	</tr>
+	<tr>
+		<td>IMethod</td>
+		<td>IMethod</td>
+		<td>Represents a method or constructor inside a type. (Child of
+		IType)</td>
+	</tr>
+</table>
+
+<p>You can use DLTKCore.create(...) methods to access model. These
+methods allow to create appropriate model element from file, resource or
+project.
+<h3>Model building</h3>
+
+<p>DLTK Model elements from workspace level down to source modules
+level are built automatically. All things, that you should do for that:
+
+<ul>
+	<li>Contribute IDLTKLanguageToolkit interface implementation via
+	org.eclipse.dltk.core.language extension point.
+	<li>Set correct nature as in extension point attribute, so in
+	getNatureId() method.
+	<li>Methods validateSourceModule() and validateSourcePackage()
+	should return OK if source module/package is a real source module, or
+	anything else if it's a regular file/folder.
+</ul>
+<p>After that, projects, that have given nature will be considered
+as script project and model for them will be built accordingly to
+internal structure, validate...() methods and build paths.
+<p>For building source module's internal model there is another
+mechanism called source element parsers. They are contributed via
+org.eclipse.dltk.core.sourceElementParsers ext. point and should
+implement ISourceElementParser.
+<p>Main task of source element parser is to parse source file and
+report internal model elements info to given ISourceElementRequestor.
+</BODY>
+</HTML>

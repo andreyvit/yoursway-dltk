@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD>
+<meta name="copyright"
+	content="Copyright (c) IBM Corporation and others 2000, 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page.">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1"
+	TYPE="text/css">
+<title>Build paths</title>
+
+<link rel="stylesheet" type="text/css" HREF="../book.css">
+</HEAD>
+<BODY>
+
+<h2>Build paths</h2>
+
+<p>Similar to java class paths, DLTK has a concept of build paths.
+
+<p>Build paths is a set of source folders, library containers and
+references to another projects. This paths are used as for model
+building, so for launching.
+
+<p>Paths is stored in .buildpath file from project's root folder.
+DLTK automatically parses it when required. You can get project build
+paths via <code>IScriptProject.getRawBuildpath()</code> method. To set
+buildpath to project you should use setRawBuildpath() method. Elements
+of <code>IBuildpathEntry</code> may be created with <code>DLTKCore.new*Entry(...)</code>
+methods.
+
+</BODY>
+</HTML>

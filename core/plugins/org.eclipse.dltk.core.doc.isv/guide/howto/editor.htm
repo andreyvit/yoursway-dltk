@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD>
+<meta name="copyright"
+	content="Copyright (c) IBM Corporation and others 2000, 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page.">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1"
+	TYPE="text/css">
+<title>Editor</title>
+
+<link rel="stylesheet" type="text/css" HREF="../book.css">
+</HEAD>
+<BODY>
+
+<h2>Editor</h2>
+
+<p>Editors may be contributed as usual using a
+org.eclipse.ui.editors extenstion point. For all script language editors
+exists ScriptEditor abstract class. It already has standard editor
+features like folding support, standard actions, word navigation,
+bracket matching, outline page and more.
+<p>There are important things, that concrete editor implementation
+should provide. First thing it a "text tools". So you should implement
+all ScriptTextTools abstract methods. They may return partition scanner,
+semantic highlighing strategies, source viewer configuration and more.
+<p>Source viewer configuration is a second important thing. If
+you'll use ScriptSourceViewerConfiguration as base, you'll fetch "for
+free" a quick outline view, documentation hovers, hyperlinks support.
+</BODY>
+</HTML>

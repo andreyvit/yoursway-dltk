@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD>
+<meta name="copyright"
+	content="Copyright (c) IBM Corporation and others 2000, 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page.">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1"
+	TYPE="text/css">
+<title>Launching</title>
+
+<link rel="stylesheet" type="text/css" HREF="../book.css">
+</HEAD>
+<BODY>
+
+<h2>Launching</h2>
+
+<ul>
+
+	<li>Register installation type for your intepreter using a
+	org.eclipse.dltk.launching.interpreterInstallTypes ext. point. Use a
+	AbstractInterpreterInstallType class as base for implementation.
+	<li>Register launch configuration type using a
+	org.eclipse.debug.core.launchConfigurationTypes ext. point. Use a
+	AbstractScriptLaunchConfigurationDelegate as base for your launch
+	delegate implementation.
+	<li>Add preference page for interpreter configuration.
+	InterpretersBlock may be used as base for a configuration block. In
+	fact you may use any another way for interpreter configuration, but for
+	launching at least one interpreter should be registered in the
+	workspace and be available for a ScriptRuntime class.
+	<li>Also you may add a shortcut for launching via
+	org.eclipse.debug.ui.launchShortcuts. Use AbstractScriptLaunchShortcut
+	as base for your implementation(then you'll should just point a
+	language nature and configuration type inside).
+	
+</ul>
+
+</BODY>
+</HTML>

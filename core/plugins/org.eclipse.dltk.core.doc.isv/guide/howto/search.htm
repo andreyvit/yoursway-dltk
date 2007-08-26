@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD>
+<meta name="copyright"
+	content="Copyright (c) IBM Corporation and others 2000, 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page.">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1"
+	TYPE="text/css">
+<title>Search</title>
+
+<link rel="stylesheet" type="text/css" HREF="../book.css">
+</HEAD>
+<BODY>
+
+<h2>Search</h2>
+
+<p>Simple declaration search will be available automatically, after
+you specify sourceElementParser for your language and add search pages.
+
+
+<p>For search pages you need to extend
+org.eclipse.search.searchPages extension point. There is
+ScriptSearchPage class, you can use it like following:
+<pre>
+public class RubySearchPage extends ScriptSearchPage {
+	protected IDLTKLanguageToolkit getLanguageToolkit() {
+		return RubyLanguageToolkit.getDefault();
+	}
+}
+</pre>
+
+<p>For more advanced search you need to perform following tasks:
+<ul>
+	<li>Extend org.eclipse.dltk.core.search extension point. It will
+	provide ISearchFactory interface. With this interface you could specify
+	match parser, locator, and source indexer requester. For example you
+	could see RubySearchFactory or TclSearchFactory classes.
+	<li>MatchLocatorParser is used to parse selected module and report
+	all possible matches to pattern locator.
+	<li>SourceIndexerRequestor is used to report all needed things to
+	DLTK Index. Default implementation (SourceIndexerRequestor) report
+	model elements.
+</ul>
+</BODY>
+</HTML>

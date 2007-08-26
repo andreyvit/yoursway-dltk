@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD>
+<meta name="copyright"
+	content="Copyright (c) IBM Corporation and others 2000, 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page.">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1"
+	TYPE="text/css">
+<title>Runtime model</title>
+
+<link rel="stylesheet" type="text/css" HREF="../book.css">
+</HEAD>
+<BODY>
+
+<h2>Runtime(mixin) model</h2>
+
+<p>DLTK has a very simple, but really powerful structure for
+managing runtime source files model. If model elements may be
+constructed from several source files(that's why model is called
+"mixin") or modified during execution, this approach can help.
+<p>In fact, mixin-model is built on top of the standard indexes
+facility. Mixin-parser(IMixinParser implementation, ext. point
+org.eclipse.dltk.core.mixin) reports keys(String objects) while parsing.
+One key may be reported many times from many places. To each key some
+Object may be attached. And... that's all. DLTK worries about everything
+else.
+<p>Lets consider the following example for Ruby.
+<pre>
+	#file1.rb
+	
+	class Foo # key "Foo" reported, IType object attached
+	end
+	
+	class Foo # key "Foo" reported, IType object attached
+		def doo # key "Foo{doo" reported, IMethod object attached
+		end
+	end
+</pre>
+<pre>
+	#file2.rb
+	
+	class Foo # key "Foo" reported, IType object attached
+		def doo2 # key "Foo{doo2" reported, IMethod object attached
+		end
+	end
+</pre>
+
+<p>Now, if we'll ask model for Foo key(MixinModel.get() method),
+we'll fetch IMixinElement with information, that this key has been
+reported from file1.rb and file2.rb and we'll be able to get every IType
+object attached. More. "{" is a standard delimeter, so get can call
+getChilds() and fetch information about "Foo{doo" and "Foo{doo2" keys.
+</BODY>
+</HTML>

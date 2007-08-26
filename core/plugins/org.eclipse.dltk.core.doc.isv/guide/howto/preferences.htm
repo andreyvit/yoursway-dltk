@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD>
+<meta name="copyright"
+	content="Copyright (c) IBM Corporation and others 2000, 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page.">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1"
+	TYPE="text/css">
+<title>Preference pages</title>
+
+<link rel="stylesheet" type="text/css" HREF="../book.css">
+</HEAD>
+<BODY>
+
+<h2>Preference pages</h2>
+
+<p>DLTK has a set of abstract classes for preference pages. Here is
+a list of main of them:
+<ul>
+	<li><em>AbstractConfigurationBlockPreferencePage</em> Abstact
+	preference page, that can be used for anything.
+	<li><em>AbstractConfigurationBlock</em> Abstact configuration
+	block, has implementation of methods like addCheckBox(), addComboBox()
+	with appropriate listeners and linking with preferences. You'll need
+	just to implement createContol() method.
+	<li><em>AbstractScriptEditorColoringConfigurationBlock</em> Block
+	for syntax coloring preferences.
+	<li><em>InterpretersBlock</em> Block for interpreters settings.
+	You'll need to implement only getCurrentNature() method and interpreter
+	addition dialog.
+	<li><em>AddScriptInterpreterDialog</em> Dialog for adding an
+	interpreter.
+</ul>
+</BODY>
+</HTML>

@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD>
+<meta name="copyright"
+	content="Copyright (c) IBM Corporation and others 2000, 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page.">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1"
+	TYPE="text/css">
+<title>Completion and templates</title>
+
+<link rel="stylesheet" type="text/css" HREF="../book.css">
+</HEAD>
+<BODY>
+
+<h2>Completion and templates</h2>
+
+<ul>
+	<li>Implement completion engine. It should extend
+	ScriptCompletionEngine class. Contribute it via
+	org.eclipse.dltk.core.completionEngine extension point.
+	<li>
+	<p>Contribute proposal computer via
+	org.eclipse.dltk.ui.scriptCompletionProposalComputer. It should be
+	derived from ScriptCompletionProposalComputer. Inside it you should
+	create a proposal collector and template processor.
+	<p>Task of proposal collector is to accept completion proposals
+	from completion engine, create appropriate labels for proposals and
+	return as result set of IScriptCompletionProposal. You may use
+	ScriptCompletionProposalCollector as base class for your
+	implementation.
+	<p>Template processor is a separate implementation of
+	IContentAssistProcessor that should compute proposals for templates.
+	You should use TemplateCompletionProcessor as base class for your
+	implementation.
+	<li>Extend ScriptCompletionProcessor and create class for your
+	code completion processor.
+	<li>Implement getContentAssistant() method in your source viewer
+	configuration. Example: <pre>
+public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
+	if (getEditor() != null) {
+		ContentAssistant assistant = new ContentAssistant();
+		assistant.
+			setDocumentPartitioning(
+				getConfiguredDocumentPartitioning(sourceViewer));
+		assistant.
+			setRestoreCompletionProposalSize(
+				getSettings("completion_proposal_size")); //$NON-NLS-1$
+		IContentAssistProcessor scriptProcessor = new RubyCompletionProcessor(
+				getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
+		assistant.setContentAssistProcessor(scriptProcessor,
+				IDocument.DEFAULT_CONTENT_TYPE);
+		RubyContentAssistPreference.getDefault().configure(assistant,
+				fPreferenceStore);
+		assistant.
+			setContextInformationPopupOrientation(
+				IContentAssistant.CONTEXT_INFO_ABOVE);
+		assistant.setInformationControlCreator(
+			getInformationControlCreator(sourceViewer)); 
+		return assistant;
+	}
+	return null;
+}
+</pre>
+</ul>
+</BODY>
+</HTML>

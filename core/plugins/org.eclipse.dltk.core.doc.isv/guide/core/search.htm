@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD>
+<meta name="copyright"
+	content="Copyright (c) IBM Corporation and others 2000, 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page.">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1"
+	TYPE="text/css">
+<title>Search</title>
+
+<link rel="stylesheet" type="text/css" HREF="../book.css">
+</HEAD>
+<BODY>
+
+<h2>Search</h2>
+
+
+<h3>Indexes</h3>
+
+<p>Indexes is a main facility which search engine uses. Index is a
+set of documents and keys associated with them. There are possible
+several different indexes (for type names, for methods, ...).
+<p>DLTK automatically index all source files in a separate thread.
+It uses standard source element parser with a requester set to
+SourceIndexerRequestor object. Source element parser doesn't know
+anything about search and just reports model elements info. Task of
+SourceIndexerRequestor is to report appropriate index keys to given
+SourceIndexer. User may extend SourceIndexerRequestor if it's required.
+
+
+<h3>Search</h3>
+
+<p>Before using the search engine user should prepare a special
+object: search pattern. It's a SearchPattern class object. It may be a
+TypeDeclarationPattern or may be MethodPattern. Static method
+SearchPattern.createPattern() may be used for that purpose. After that
+user should specify a search scope(project, workspace,...). It may be
+created with a SearchEngine.createSearchScope() method. And final item
+is a search requestor. It's a SearchRequestor object, that will receive
+all successfull search matches. After that SearchEngine::search() may be
+called. Here is an example:
+<pre>
+	SearchRequestor requestor = new SearchRequestor() {
+
+		public void acceptSearchMatch(SearchMatch match)
+				throws CoreException {
+			// process match
+		}
+
+	};
+	SearchPattern pattern = SearchPattern.createPattern(namePattern,
+			IDLTKSearchConstants.METHOD, IDLTKSearchConstants.DECLARATIONS,
+			SearchPattern.R_PATTERN_MATCH | SearchPattern.R_EXACT_MATCH);
+	IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(RubyLanguageToolkit
+				.getDefault());
+	try {
+		SearchEngine engine = new SearchEngine();
+		engine.search(pattern, new SearchParticipant[] { SearchEngine
+				.getDefaultSearchParticipant() }, scope, requestor, null);
+	} catch (CoreException e) {
+		if (DLTKCore.DEBUG)
+			e.printStackTrace();
+	}
+</pre>
+
+<h3>How it works?</h3>
+
+<p>Extending a search engine requires understanding of how search
+engine works. After you had called search() method, a special
+PatternSearchJob are being created. Inside it all indexes are being
+enumerated. As result, list of documents, containing a matching key will
+be received. After that, using a MatchLocator class each document will
+be reparsed and appropriate SearchMatch objects reported. User given
+MatchLocatorParser are being used for reparsing. It knows a MatchLocator
+and PossibleMatch objects and while parsing should call match(...)
+method from the locator.
+</BODY>
+</HTML>

@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD>
+<meta name="copyright"
+	content="Copyright (c) IBM Corporation and others 2000, 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page.">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1"
+	TYPE="text/css">
+<title>DLTK AST</title>
+
+<link rel="stylesheet" type="text/css" HREF="../book.css">
+</HEAD>
+<BODY>
+
+<h2>DLTK AST</h2>
+
+<p>AST &mdash; Abstract Syntax Tree. DLTK has a set of classes, that
+can be used for your language AST structure. Here is a list of main of
+them:
+<table>
+	<tr>
+		<td>ASTNote</td>
+		<td>Superclass of all the ast nodes.</td>
+	</tr>
+	<tr>
+		<td>ASTListNode</td>
+		<td>Represents list of nodes.</td>
+	</tr>
+	<tr>
+		<td>ModuleDeclaration</td>
+		<td>Top-level node for a source file.</td>
+	</tr>
+	<tr>
+		<td>TypeDeclaration</td>
+		<td>Declaration of class/module/namespace.</td>
+	</tr>
+	<tr>
+		<td>MethodDeclaration</td>
+		<td>Declaration of procedure or method.</td>
+	</tr>
+</table>
+
+<p>Other classes you can find in <code>org.eclipse.dltk.ast.*</code>
+packages. Usage of DLTK AST is not mandatory, but some DLTK features
+like folding may rely on it and greatly simplify implementation.
+
+
+</BODY>
+</HTML>

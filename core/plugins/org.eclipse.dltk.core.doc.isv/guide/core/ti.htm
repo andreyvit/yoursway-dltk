@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"><HTML>
+<HEAD>
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2000, 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1" TYPE="text/css">
+<title>Type Inference</title>
+
+<link rel="stylesheet" type="text/css" HREF="../book.css">
+</HEAD>
+<BODY>
+
+<h2>Type inference(draft)</h2>
+
+<p>DLTK has a language independent engine for building type inference systems. It uses demand-driven analysis with subgoal pruning algorithm. Key abstractions here:
+<ul>
+<li><em>Goal</em>. It may be type of some ASTNode in source file, incoming/outcoming data flow, whatever. Goals are unique. So, two object of IGoal having a common ASTNode object is equal.
+<li><em>Goal evaluator</em>. Strategy, that knows how to evaluate goal. While evaluating it may produce another helper goals (sub-goals), may wait for their results and only after that produce it's own result.
+<li><em>Goal evaluator factory</em>. This factory constructs a GoalEvaluator objects for given IGoals.
+<li><em>Pruner</em>. Pruner is a straregy that are able to cancel some evaluators as non-important. Also using pruner is possible to implement time limits for evaluations. 
+</ul>
+
+// To be continued
+
+</BODY>
+</HTML>

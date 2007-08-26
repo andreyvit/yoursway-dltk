@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"><HTML>
+<HEAD>
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2000, 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1" TYPE="text/css">
+<title>Go-to-the-declaration</title>
+
+<link rel="stylesheet" type="text/css" HREF="../book.css">
+</HEAD>
+<BODY>
+
+<h2>Go-to-the-declaration</h2>
+
+<p>For go-to-the-declaration feature and many others like documentation hovers you need to implement selection engine. Task of selection engine is to determine model element from given offset in source file. 
+
+<p>Selection engines could be contributed via org.eclipse.dltk.core.selectionEngine extension point, they should implement ISelectionEngine interface. DLTK already has partial implementation of this interface: ScriptSelectionEngine, so you could just extend it. 
+
+<p>For example implementation, you can look at RubySelectionEngine.
+</BODY>
+</HTML>

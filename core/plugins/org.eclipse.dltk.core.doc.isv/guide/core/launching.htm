@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML>
+<HEAD>
+<meta name="copyright"
+	content="Copyright (c) IBM Corporation and others 2000, 2005. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page.">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="../book.css" CHARSET="ISO-8859-1"
+	TYPE="text/css">
+<title>Launching</title>
+
+<link rel="stylesheet" type="text/css" HREF="../book.css">
+</HEAD>
+<BODY>
+
+<h2>Launching</h2>
+
+<h3>Interpreter management</h3>
+
+<p>Each interpreter installation in system is stored inside a
+IInterpreterInstall object. Such object knows interpreter name,
+executable path, arguments, library paths and also installation type and
+IInterpreterRunner object. Installation type is represented via
+IInterpreterInstallType object. Installation type knows about all
+installations with such type, knows how to fetch default library
+locations and able to validate installations.
+<p>For each language, DLTK stores a separate set of
+IInterpreterInstalls. One of them should be marked as "default".
+<p>The key class for accessing installation is a ScriptRuntime.
+<p>However, ScriptRuntime allows only to fetch installs, not to
+modify them. In fact, there is no beautiful way for that. So here we'll
+describe relatively low-level way to do that.
+<p>All information about interpreter installs are stored in plugin
+preferences in XML format. XML data can be read/created using an
+InterpreterDefinitionsContainer. This class represent a set of
+interpreter installs and allows to read them from XML or store to XML.
+<p>For setting set of interpreters in preferences, there are exists
+an IntepreterUpdater class. It takes an InterpreterDefinitionsContainer
+object and stores in plugin preferences. After that ScriptRuntime will
+be able to read new values.
+<h3>Launching a script</h3>
+
+<p>DLTK launching engine is fully based on standard Eclipse
+launching, so there are not a lot of new things are here.
+<p>Cause each InterpreterInstall has an IInterpreterRunner object,
+launch process looks like following:
+<ul>
+	<li>get selected interpreter install info from launch
+	configuration (it should be put there before)
+	<li>get runner
+	<li>launch it
+</ul>
+
+<p>In fact, all this stuff is already implemented. First, there is a
+AbstractScriptLaunchConfigurationDelegate class. It requires only two
+methods from user: getLanguageId() and createInterpreterConfig().
+InterpreterConfig is a simple structure containing information for
+launch in a low-level form.
+<p>Also, for IInterpreterRunner exists a AbstractInterpreterRunner
+class, that requires from user only a launching plugin id and created
+process type.
+<p>For launching scripts programmatically there is a
+ScriptLaunchUtil class. It contains lots of methods for launching
+scripts.
+</BODY>
+</HTML>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<!-- ============================================================================= -->
+<!-- Define the top level topics                                                   -->
+<!-- ============================================================================= -->
+
+<toc label="DLTK Developer Guide">
+	<topic label="DLTK Core Architecture" href="guide/core/intro.htm">
+		<topic label="Build paths" href="guide/core/buildpaths.htm" />
+		<topic label="Model" href="guide/core/model.htm" />
+		<topic label="Search engine" href="guide/core/search.htm" />
+		<topic label="Runtime(mixin) model" href="guide/core/mixin.htm" />
+		<!-- <topic label="Type inference" href="guide/core/ti.htm" /> -->
+		<topic label="Launching" href="guide/core/launching.htm" />
+		<topic label="DLTK AST" href="guide/core/ast.htm" />
+	</topic>
+	<topic label="Mini HOWTOs"  href="guide/howto/intro.htm">
+		<topic label="Editor" href="guide/howto/editor.htm" />
+		<topic label="Outline" href="guide/howto/outline.htm" />
+		<topic label="Code folding" href="guide/howto/folding.htm" />
+		<topic label="Go-to-the-declaration" href="guide/howto/f3.htm" />
+		<topic label="Documentation hovers" href="guide/howto/doc.htm" />
+		<topic label="Completion and templates" href="guide/howto/completion.htm" />
+		<topic label="Preference pages" href="guide/howto/preferences.htm" />
+		<topic label="Search" href="guide/howto/search.htm" />
+		<topic label="Launching" href="guide/howto/launching.htm" />
+	</topic>
+	<topic label="Examples" href="guide/examples.htm" />
+	<topic label="Legal" href="notices.html"/>
+	<enablement>
+		<test property="org.eclipse.core.runtime.isBundleInstalled" args="org.eclipse.dltk.ui"/>
+	</enablement>
+</toc>
