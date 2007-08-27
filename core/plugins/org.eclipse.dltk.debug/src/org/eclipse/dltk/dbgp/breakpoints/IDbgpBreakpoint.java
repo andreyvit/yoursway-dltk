@@ -15,6 +15,8 @@ public interface IDbgpBreakpoint {
 	final int HIT_CONDITION_EQUAL = 1;
 
 	final int HIT_CONDITION_MULTIPLE = 2;
+	
+	final int HIT_NOT_SET = -1;
 
 	String getId();
 
@@ -23,8 +25,9 @@ public interface IDbgpBreakpoint {
 	// -1 if not available
 	int getHitCount();
 
-	// -1 of not set
+	// -1 if not set
 	int getHitValue();
 
+	// -1 if not set
 	int getHitCondition();
 }

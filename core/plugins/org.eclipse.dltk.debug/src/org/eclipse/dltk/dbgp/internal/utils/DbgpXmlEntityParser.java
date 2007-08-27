@@ -196,6 +196,7 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		final String ATTR_HIT_CONDITION = "hit_condition";
 		final String ATTR_FILENAME = "filename";
 		final String ATTR_LINENO = "lineno";
+		final String ATTR_LINE = "line";
 		final String ATTR_FUNCTION = "function";
 		final String ATTR_EXCEPTION = "exception";
 		final String ATTR_EXPRESSION = "expression";
@@ -224,8 +225,14 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 
 		if (type.equals(LINE_BREAKPOINT)) {
 			String fileName = element.getAttribute(ATTR_FILENAME);
-			int lineNumber = Integer
-					.parseInt(element.getAttribute(ATTR_LINENO));
+			
+			// ActiveState's dbgp implementation is slightly inconsistent
+			String lineno = element.getAttribute(ATTR_LINENO);
+			if ("".equals(lineno)) {
+				lineno = element.getAttribute(ATTR_LINE);
+			}
+			
+			int lineNumber = Integer.parseInt(lineno);
 			return new DbgpLineBreakpoint(id, enabled, hitValue, hitCount,
 					hitCondition, fileName, lineNumber);
 		} else if (type.equals(CALL_BREAKPOINT)) {

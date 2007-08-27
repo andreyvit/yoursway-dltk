@@ -32,6 +32,8 @@ public class DbgpBreakpoint implements IDbgpBreakpoint {
 			return HIT_CONDITION_EQUAL;
 		} else if ("%".equals(s)) {
 			return HIT_CONDITION_MULTIPLE;
+		} else if ("".equals(s)) {
+			return HIT_NOT_SET;
 		}
 
 		throw new IllegalArgumentException("Invalud hitCondition value");
