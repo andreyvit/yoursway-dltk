@@ -30,7 +30,7 @@ public class DbgpSourceCommands extends DbgpBaseCommands implements
 		boolean success = DbgpXmlParser.parseSuccess(response);
 
 		if (success) {
-			DbgpXmlParser.parseBase64Content(response);
+			return DbgpXmlParser.parseBase64Content(response);
 		}
 
 		return null;
