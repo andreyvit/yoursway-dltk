@@ -8,7 +8,7 @@
  
  *******************************************************************************/
 
-package org.eclipse.dltk.python.debug;
+package org.eclipse.dltk.python.internal.debug;
 
 public final class PythonDebugConstants {
 	private PythonDebugConstants() {

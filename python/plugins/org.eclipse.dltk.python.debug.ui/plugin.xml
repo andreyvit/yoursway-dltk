@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
+	<extension point="org.eclipse.debug.ui.debugModelContextBindings">
+		<modelContextBinding
+			contextId="org.eclipse.dltk.debug.ui.debugging"
+			debugModelId="org.eclipse.dltk.debug.pythonModel" />
+	</extension>
+
+	<extension point="org.eclipse.debug.ui.debugModelPresentations">
+		<debugModelPresentation
+			class="org.eclipse.dltk.python.internal.debug.ui.PythonDebugModelPresentation"
+			id="org.eclipse.dltk.debug.pythonModel" />
+	</extension>
+
    <extension
 	point="org.eclipse.debug.ui.launchConfigurationTypeImages">
  		<launchConfigurationTypeImage
@@ -20,6 +32,30 @@
       </launchConfigurationTabGroup>
    </extension>
    
+   <extension point="org.eclipse.ui.popupMenus">
+		<viewerContribution
+			id="org.eclipse.dltk.python.debug.ui.rulerContribution"
+			targetID="#PythonRulerContext">
+
+			<action label="%EnableDisableBreakpoint.label"
+				id="org.eclipse.dltk.python.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+				class="org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+				menubarPath="debug">
+			</action>
+
+			<action label="%ToggleBreakpoint.label"
+				id="org.eclipse.dltk.python.ui.actions.RulerToggleBreakpointActionDelegate"
+				class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+				menubarPath="debug">
+			</action>
+
+			<action
+				class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesRulerActionDelegate"
+				id="org.eclipse.dltk.python.debug.ui.ScriptBreakpointPropertiesRulerActionDelegate"
+				label="%BreakpointProperties.label" 
+				menubarPath="group.properties" />
+		</viewerContribution>
+	</extension>
   
    <extension point="org.eclipse.debug.ui.launchShortcuts">
     <shortcut
@@ -110,4 +146,38 @@
             name="%PythonDebugPreferencePage.name">
       </page>
    </extension>
+  <extension point="org.eclipse.core.runtime.adapters">
+       <factory
+          adaptableType="org.eclipse.dltk.python.internal.ui.editor.PythonEditor"
+          class="org.eclipse.dltk.python.internal.debug.ui.PythonEditorDebugAdapterFactory">
+           <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
+           <adapter type="org.eclipse.debug.ui.actions.IRunToLineTarget"/>
+       </factory>         
+    </extension>
+<extension point="org.eclipse.ui.editorActions">
+		<editorContribution
+			targetID="org.eclipse.dltk.python.ui.editor.PythonEditor"
+			id="org.eclipse.dltk.python.debug.PythonEditor.BreakpointRulerActions">
+
+			<action label="Toggle Breakpoint (label not used)"
+				class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+				style="push" actionID="RulerDoubleClick"
+				id="PythonEditor.doubleClickBreakpointAction" />
+
+		</editorContribution>
+	</extension>
+ <extension
+    point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension
+      targetID="org.eclipse.dltk.python.ui.PythonPerspective">
+      <actionSet
+        id="org.eclipse.debug.ui.breakpointActionSet" />
+    </perspectiveExtension>
+  </extension>
+<extension
+    point="org.eclipse.debug.core.watchExpressionDelegates">
+    <watchExpressionDelegate
+      debugModel="org.eclipse.dltk.debug.pythonModel"
+      delegateClass="org.eclipse.dltk.python.internal.debug.ui.PythonWatchExpressionDelegate" />
+  </extension>  
 </plugin>

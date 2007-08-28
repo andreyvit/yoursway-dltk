@@ -133,7 +133,7 @@
 			targetID="org.eclipse.dltk.tcl.ui.editor.TclEditor"
 			id="org.eclipse.dltk.tcl.debug.TclEditor.BreakpointRulerActions">
 
-			<action label="Toogle Breakpoint (label not used)"
+			<action label="Toggle Breakpoint (label not used)"
 				class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
 				style="push" actionID="RulerDoubleClick"
 				id="TclEditor.doubleClickBreakpointAction" />

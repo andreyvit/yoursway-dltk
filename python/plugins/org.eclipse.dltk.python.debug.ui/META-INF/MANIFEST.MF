@@ -23,7 +23,8 @@ Require-Bundle: org.eclipse.debug.ui,
  org.eclipse.dltk.python.core,
  org.eclipse.dltk.python.launching,
  org.eclipse.dltk.python.ui,
- org.eclipse.dltk.python.debug
+ org.eclipse.dltk.python.debug,
+ org.eclipse.dltk.debug
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.python.internal.debug.ui,
  org.eclipse.dltk.python.internal.debug.ui.console,

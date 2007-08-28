@@ -8,7 +8,7 @@
  
  *******************************************************************************/
 
-package org.eclipse.dltk.python.debug;
+package org.eclipse.dltk.python.internal.debug;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;

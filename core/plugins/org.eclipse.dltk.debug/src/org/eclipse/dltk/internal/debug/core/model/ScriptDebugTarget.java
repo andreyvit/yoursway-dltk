@@ -120,6 +120,8 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	private URI scriptUri;
 	private int scriptNonEmptyLine = -1;
 
+	private boolean isRemote;
+
 	private static final String ATTR_PROJECT = "project";
 	private static final String ATTR_SCRIPT = "mainScript";
 
@@ -139,11 +141,14 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 				final IResource resource = project.findMember(scriptName);
 
 				if (resource instanceof IFile) {
-					scriptUri = ScriptLineBreakpoint.makeUri((IFile) resource);
+					scriptUri = ScriptLineBreakpoint.makeUri((IFile) resource);			
 					scriptNonEmptyLine = findFirstNonEmptyScriptLine((IFile) resource);
 				}
 			}
+		} else {
+			isRemote = true;
 		}
+			
 	}
 
 	static WeakHashMap targets = new WeakHashMap();
@@ -349,17 +354,6 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	// IDbgpThreadManagerListener
 	public void threadAccepted(IScriptThread thread, boolean first) {
 		if (first) {
-			final Preferences prefs = DLTKDebugPlugin.getDefault()
-					.getPluginPreferences();
-			boolean breakOnFirstLine = prefs
-					.getBoolean(DebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
-
-			if (breakOnFirstLine && scriptUri != null
-					&& scriptNonEmptyLine != -1) {
-				breakpointManager.setBreakpointUntilFirstSuspend(scriptUri,
-						scriptNonEmptyLine);
-			}
-
 			breakpointManager.setupDeferredBreakpoints();
 
 			IBreakpointManager manager = DebugPlugin.getDefault()
