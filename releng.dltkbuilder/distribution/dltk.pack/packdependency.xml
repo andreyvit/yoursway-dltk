@@ -15,7 +15,7 @@
 		<echo message="eclipse.builder: ${eclipse.builder}" />
 
 		<antcall target="getAndInstall">
-			<param name="groupId" value="eclipse_windows" />
+			<param name="groupId" value="eclipse" />
 		</antcall>
 	</target>
 
