@@ -17,7 +17,7 @@ function fileSizeInMegs($filename) {
         // handy constant to compute file size in megabytes
         $onemeg=1024*1024;
         $zipfilesize=filesize($filename);
-        $zipfilesize=round($zipfilesize/$onemeg, 0);
+        $zipfilesize=number_format (round($zipfilesize/$onemeg, 1), 1, ',', '');
         return $zipfilesize;
 }
 
@@ -95,159 +95,154 @@ or used.</h4>
 
 <!-- ***********  DLTK COMPONENTS **************  -->
 <div class="build_item">
-    <h3>Dynamic Languages Toolkit Components</h3>
-    <h4>The DLTK zip files includes the features and plugins from the DLTK Core, Ruby, TCL, Python and Javascript components.</h4>
+    <h3>Dynamic Languages Toolkit Complete</h3>
+    <h4><table><tr>
+    	<td width="135">Name</td>
+	<td width="220">Requirements</td>
+	<td width="210">Runtime Downloads</td>
+   	<td width="220">SDK Downloads</td>
+    </tr></table></h4>
     <table>
       <tr>
-        <td class="bold" width="168">DLTK Core</td>
-        <td width="400"></td>
+        <td class="bold" width="155"><img src="images/eclipse.png" alt="" />Core Frameworks</td>
+        <td width="220"></td>
         <?php
         $zipfilename="dltk-core-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="140"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td width="210"><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         $zipfilename="dltk-core-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="140"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td width="210"><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         ?>
       </tr>
       <tr>
-        <td class="bold">DLTK Ruby</td>
-        <td>Requires DLTK Core</td>
+        <td class="bold"><img src="images/ruby.png" alt="" />Ruby IDE</td>
+        <td><img src="images/eclipse.png" alt="" />Core Frameworks</td>
         <?php
         $zipfilename="dltk-ruby-@build@-incubation";
         $filename=$zipfilename.".zip";
-        $zipfilesize=fileSizeInMegs($filename);        
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilesize=fileSizeInMegs($filename);
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         $zipfilename="dltk-ruby-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
-        $zipfilesize=fileSizeInMegs($filename);        
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilesize=fileSizeInMegs($filename);
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         ?>
       </tr>
       <tr>
-        <td class="bold">DLTK TCL</td>
-        <td>Requires DLTK Core</td>
+        <td class="bold"><img src="images/tcl.png" alt="" />Tcl IDE</td>
+        <td><img src="images/eclipse.png" alt="" />Core Frameworks</td>
         <?php
         $zipfilename="dltk-tcl-@build@-incubation";
         $filename=$zipfilename.".zip";
-		$zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilesize=fileSizeInMegs($filename);
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         $zipfilename="dltk-tcl-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         ?>
       </tr>      
       <tr>
-        <td class="bold">DLTK Python</td>
-        <td>Requires DLTK Core. Experimental Package</td>
+        <td class="bold"><img src="images/python.png" alt="" />Python IDE</td>
+        <td><img src="images/eclipse.png" alt="" />Core Frameworks</td>
         <?php
         $zipfilename="dltk-python-@build@-incubation";
         $filename=$zipfilename.".zip";
-		$zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilesize=fileSizeInMegs($filename);
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         $zipfilename="dltk-python-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-		echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         ?>
       </tr>
       <tr>
-        <td class="bold">DLTK Javascript</td>
-        <td>Requires DLTK Core. Experimental Package</td>
+        <td class="bold"><img src="images/javascript.png" alt="" />Javascript IDE</td>
+        <td><img src="images/eclipse.png" alt="" />Core Frameworks</td>
         <?php
         $zipfilename="dltk-javascript-@build@-incubation";
         $filename=$zipfilename.".zip";
-		$zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        $zipfilesize=fileSizeInMegs($filename);
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         $zipfilename="dltk-javascript-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         ?>
       </tr>
-    </table>
-    </div>
-      
-    <div class="build_item">
-    <h3>Dynamic Languages Toolkit Extensions</h3>
-    <table>
       <tr>
-        <td width="168" class="bold">DLTK XOTCL</td>
-        <td width="420">Requires DLTK TCL</td>
+        <td class="bold"><img src="images/xotcl.png" alt="" />XOTcl IDE</td>
+        <td><p><img src="images/eclipse.png" alt="" />Core Frameworks</p><img src="images/tcl.png" alt="" />Tcl IDE</td>
         <?php
         $zipfilename="dltk-xotcl-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         $zipfilename="dltk-xotcl-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         ?>
       </tr>
     </table>
-    </div>
-
+  </div>
+      
     <div class="build_item">
     <h3>Dynamic Languages Toolkit Bundles</h3>
     <table>
       <tr>
-        <td width="168" class="bold">DLTK Core + Ruby</td>
-        <td width="420">Package contains everything to run DLTK Ruby</td>
+        <td class="bold" width="375"><h5><img src="images/eclipse.png" alt="" />+<img src="images/ruby.png" alt="" /></h5>Ruby IDE</td>
         <?php
         $zipfilename="dltk-core-ruby-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td width="210"><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         $zipfilename="dltk-core-ruby-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="130"><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td width="210"><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         ?>
       </tr>
       <tr>
-        <td class="bold">DLTK Core + Python</td>
-        <td>Package contains everything to run DLTK Python</td>
+        <td class="bold"><h5><img src="images/eclipse.png" alt="" />+<img src="images/python.png" alt="" /></h5>Python IDE</td>
         <?php
         $zipfilename="dltk-core-python-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         $zipfilename="dltk-core-python-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         ?>
-      </tr>      
+      </tr>
       <tr>
-        <td class="bold">DLTK Core + TCL</td>
-        <td>Package contains everything to run DLTK TCL</td>
+        <td class="bold"><h5><img src="images/eclipse.png" alt="" />+<img src="images/tcl.png" alt="" /></h5>Tcl IDE</td>
         <?php
         $zipfilename="dltk-core-tcl-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         $zipfilename="dltk-core-tcl-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         ?>
-      </tr>      
+      </tr>
       <tr>
-        <td class="bold">DLTK All</td>
-        <td>Package contains all DLTK components and extensions</td>
+        <td class="bold"><h5><img src="images/eclipse.png" alt="" />+<img src="images/ruby.png" alt="" />+<img src="images/tcl.png" alt="" />+<img src="images/python.png" alt="" />+<img src="images/javascript.png" alt="" /></h5>All-in-1</td>
         <?php
         $zipfilename="dltk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         $zipfilename="dltk-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td><a href="' . ${downloadprefix} . ${filename} . '">' . "download " . '</a>'.${zipfilesize}.'mb [<a href="checksum/' . ${filename} . '.md5">md5</a>]</td>';
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         ?>
       </tr>
      </table>
