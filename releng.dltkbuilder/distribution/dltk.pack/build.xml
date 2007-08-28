@@ -1,0 +1,67 @@
+<project name="Pack" default="build" basedir=".">
+
+    <!-- Note to be cross-platform, "environment variables" are only appropriate for
+        some variables, e.g. ones we set, since properties are case sensitive, even if
+        the environment variables on your operating system are not, e.g. it will
+        be ${env.Path} not ${env.PATH} on Windows -->
+    <property environment="env" />
+    <!-- 
+     	Let users override standard properties, if desired.
+     	If directory, file, or some properties do not exist,  
+     	then standard properties will be used.
+      -->
+     <property file="${env.LOCAL_BUILD_PROPERTIES_DIR}/${ant.project.name}.properties" />
+
+     <!-- load standard properties for production environment -->
+     <property file="${env.STANDARD_PROPERTIES_DIR}/${ant.project.name}.properties" />
+     <!-- = = = end standard properties pattern = = = -->
+
+    <echo message="Pack: ant.file: ${ant.file}"/>
+    <target name="build">
+    	<property file="${dltk.builder.home}/pack.properties"/>
+    	<echo message="Pack: ant.file: ${ant.file}"/>
+		<echo message="packRoot=${packRoot}" />
+        <java jar="${eclipse.launcher}" fork="true"  failonerror="true">
+            <jvmarg value="-Dosgi.clean=true" />
+            <jvmarg value="-Dosgi.ws=${env.BASEWS}" />
+            <jvmarg value="-Dosgi.os=${env.BASEOS}" />
+            <jvmarg value="-Dosgi.arch=${env.BASEARCH}" />
+            <jvmarg value="-Dbuild.trial=${build.trial}" />
+            <jvmarg value="-DbuildBranch=${buildBranch}" />
+            <jvmarg value="-Dbuild.pack-all-in-one=${build.pack-all-in-one}" />
+            <jvmarg value="-DbuildType=${buildType}" />
+            <jvmarg value="-DbuildId=${buildId}" />
+            <jvmarg value="-DjavacDebugInfo=on" />
+            <jvmarg value="-DmapVersionTag=${mapVersionTag}" />
+            <jvmarg value="-Dbuild.distribution=${build.distribution}" />
+            <jvmarg value="-DbuildDirectory=${buildDirectory}" />
+            <jvmarg value="-Dcisco.builder.home=${dltk.builder.home}" />
+            <arg value="-data" />
+            <arg value="${basedir}/workspace" />
+            <arg value="-application" />
+            <arg value="org.eclipse.ant.core.antRunner" />
+            <arg value="-buildfile" />
+            <arg value="${ant.file}" />
+            <arg value="pack" />
+        </java>
+    </target>
+
+    <!-- ===================================================================== -->
+    <!-- Steps to do to publish the build results -->
+    <!-- ===================================================================== -->
+    <target name="pack">
+        <dirname file="${ant.file}" property="component.dir" />
+        <ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
+        <property file="${buildDirectory}/label.properties" />
+        <property file="${dltk.builder.home}/pack.properties" />
+
+        <property name="pack.xml" value="${component.dir}/pack.xml" />
+
+        <ant antfile="${pack.xml}" dir="${component.dir}">
+            <property name="buildBranch" value="${buildBranch}" />
+        </ant>
+
+    </target>
+
+
+</project>

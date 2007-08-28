@@ -1,0 +1,122 @@
+<project name="Pack something" default="runPack">
+
+	<!-- Note to be cross-platform, "environment variables" are only appropriate for
+		some variables, e.g. ones we set, since properties are case sensitive, even if
+		the environment variables on your operating system are not, e.g. it will
+		be ${env.Path} not ${env.PATH} on Windows -->
+	<property environment="env" />
+
+	<fail message="packRoot must be set for this task"
+		unless="packRoot" />
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do after the build is done. -->
+	<!-- ===================================================================== -->
+	<target name="pack">
+		<dirname file="${ant.file}" property="currentDirectory" />
+		<ant antfile="${ant.file}" target="runPack"
+			dir="${currentDirectory}" />
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do to test the build results -->
+	<!-- ===================================================================== -->
+	<target name="runPack">
+
+		<dirname file="${ant.file}" property="pack.component.dir" />
+		<ant antfile="${cisco.builder.home}/scripts/build/label.xml" />
+		<property file="${buildDirectory}/label.properties" />
+		<property file="${cisco.builder.home}/build.properties" />
+
+		<fail message="packRoot must be set for this task"
+			unless="packRoot" />
+		<mkdir dir="${packRoot}" />
+
+		<echo
+			message="BASEOS: ${env.BASEOS}   BASEWS: ${env.BASEWS}   BASEARCH: ${env.BASEARCH} " />
+
+		<ant antfile="${pack.component.dir}/packdependency.xml"
+			target="get">
+            <property
+                name="dependency.properties"
+                value="${buildDirectory}/maps/releng/maps/dependencies.properties" />
+			<property name="base.install.dir" value="${packRoot}" />
+		</ant>
+
+		<antcall target="unzipTests" />
+		<antcall target="doPacking" />
+
+	</target>
+
+	<target name="unzipTests">
+
+		<!--unzip the builds and junit tests
+			we use 'unzip' here, so we can continue on error
+			(such as if zip was not created, due to other failures or options).
+		-->
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
+					failonerror="false">
+			<arg line="-o -qq dltk-core-${buildLabel}-incubation.zip -d ${packRoot}" />
+		</exec>
+		
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
+					failonerror="false">
+			<arg line="-o -qq dltk-ruby-${buildLabel}-incubation.zip -d ${packRoot}" />
+		</exec>
+
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
+					failonerror="false">
+			<arg line="-o -qq dltk-python-${buildLabel}-incubation.zip -d ${packRoot}" />
+		</exec>
+		
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
+					failonerror="false">
+			<arg line="-o -qq dltk-tcl-${buildLabel}-incubation.zip -d ${packRoot}" />
+		</exec>
+
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
+					failonerror="false">
+			<arg line="-o -qq dltk-javascript-${buildLabel}-incubation.zip -d ${packRoot}" />
+		</exec>
+			
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
+					failonerror="false">
+			<arg line="-o -qq dltk-xotcl-${buildLabel}-incubation.zip -d ${packRoot}" />
+		</exec>
+
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
+					failonerror="false">
+			<arg line="-o -qq dltk-installer-${buildLabel}-incubation.zip -d ${packRoot}" />
+		</exec>
+	</target>
+
+	<target name="doPacking">
+		<echo message="baseDir: ${basedir}"/>
+		
+		<property file="${cisco.builder.home}/build.properties" />
+		<property name="pde.builder.path" value="${env.BUILD_HOME}/builders/${eclipse.builder.version}/${eclipse.builder}" />
+		<echo message="pde.builder.path: ${pde.builder.path}" />
+		<echo message="eclipse.builder.version: ${eclipse.builder.version}" />
+		<echo message="eclipse.builder: ${eclipse.builder}" />
+		
+		<archivetask
+			packagetype="exe"
+			command="eclipse/eclipse.exe"
+			archivefile="${buildDirectory}/${buildLabel}/install"
+			rootdir="${packRoot}"
+			templates="${pde.builder.path}/plugins/templates/"
+			pack200="true">
+			
+			<fileset dir="${packRoot}/eclipse/">
+				<include name="**/*"/>
+			</fileset>
+			
+			<unpack>
+				<fileset dir="${packRoot}/eclipse/">
+					<include name="**/*"/>
+				</fileset>
+			</unpack>
+		</archivetask>
+	</target>
+
+</project>

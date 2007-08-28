@@ -66,6 +66,20 @@
 		</ant>
 	</target>
 
+	<target name="pack" depends="init" if="pack_distro_target_exists">
+		<property name="nl" value="&#10;"/>
+		<echo message="dltk.builder.home=${dltk.builder.home}${nl}" file="${dltk.builder.home}/pack.properties" append="false"/>
+		<echo message="buildBranch=${buildBranch}${nl}" file="${dltk.builder.home}/pack.properties" append="true"/>
+		<echo message="build.pack-all-in-one=${build.pack-all-in-one}${nl}" file="${dltk.builder.home}/pack.properties" append="true"/>
+		<echo message="packRoot=${env.BUILD_HOME}/${build.pack}-${build.distribution}-${buildBranch}-${buildType}${nl}" file="${dltk.builder.home}/pack.properties" append="true"/>
+		<echo message="dependencyTargets=${dltk.builder.home}/scripts/dependency/build.xml${nl}" file="${dltk.builder.home}/pack.properties" append="true"/>
+		<echo message="local.cache.dir=${env.LOCAL_PREREQS_CACHE}${nl}" file="${dltk.builder.home}/pack.properties" append="true"/>
+		<echo message="buildDirectory=${buildDirectory}${nl}" file="${dltk.builder.home}/pack.properties" append="true"/>
+		<echo message="buildLabel=${buildLabel}${nl}" file="${dltk.builder.home}/pack.properties" append="true"/>
+		<echo message="eclipse.launcher=${eclipse.launcher}${nl}" file="${dltk.builder.home}/pack.properties" append="true"/>
+		<ant antfile="${distributionCoreName}.pack/build.xml" />
+	</target>
+	
 	<target name="upload" depends="init" if="upload_distro_target_exists">
 		<ant antfile="${distributionCoreName}.upload/build.xml">
 			<property name="dltk.builder.home" value="${dltk.builder.home}" />
@@ -120,6 +134,7 @@
 		<available file="${distributionCoreName}.build/build.xml" type="file" property="build_distro_target_exists" />
 		<available file="${distributionCoreName}.site/build.xml" type="file" property="site_distro_target_exists" />
 		<available file="${distributionCoreName}.tests/build.xml" type="file" property="tests_distro_target_exists" />
+		<available file="${distributionCoreName}.pack/build.xml" type="file" property="pack_distro_target_exists" />
 		<available file="${distributionCoreName}.upload/build.xml" type="file" property="upload_distro_target_exists" />
 		<available file="${distributionCoreName}.whatisfixed/build.xml" type="file" property="whatisfixed_distro_target_exists" />
 

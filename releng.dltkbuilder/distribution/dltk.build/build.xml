@@ -9,6 +9,10 @@
 
 
 		<ant antfile="${buildTargets}">
+			<property name="component" value="installer" />
+		</ant>
+		
+		<ant antfile="${buildTargets}">
 			<property name="component" value="core" />
 		</ant>
 
@@ -18,7 +22,7 @@
 		
 		<ant antfile="${buildTargets}">
 			<property name="component" value="core.tests" />
-			<property name="eclipseBuildFailOnError" value="false" />
+			<property name="ewclipseBuildFailOnError" value="false" />
 		</ant>
 
 		<ant antfile="${buildTargets}">
