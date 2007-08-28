@@ -5,7 +5,6 @@
 	dependencyTargets
 	local.cache.dir
 	dependency.properties
-                                                               
      ====================================================================== -->
 <project name="test" default="get">
 
@@ -28,9 +27,5 @@
 			<property name="install.destination" value="${base.install.dir}" />
 		</ant>
 	</target>
-
-
-
-
+	
 </project>
-

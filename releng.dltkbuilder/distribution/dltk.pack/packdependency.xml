@@ -4,7 +4,7 @@
     base.install.dir
 	dependencyTargets
 	local.cache.dir
-	dependency.properties                     
+	dependency.properties
      ====================================================================== -->
 <project name="pack_dependency" default="get">
 
@@ -14,7 +14,6 @@
 		<echo message="eclipse.builder.version: ${eclipse.builder.version}" />
 		<echo message="eclipse.builder: ${eclipse.builder}" />
 
-		
 		<antcall target="getAndInstall">
 			<param name="groupId" value="eclipse_windows" />
 		</antcall>
