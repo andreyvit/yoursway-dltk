@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.dltk.launching.debuggingEngine">
+      <engineContribution
+            natureId="org.eclipse.dltk.python.core.nature">
+         <engine
+              class="org.eclipse.dltk.python.activestatedebugger.PythonActiveStateDebuggerRunnerFactory"
+              description="%ActiveStateDebuggingEngine.description"
+              id="org.eclipse.dltk.python.activestatedebugger"
+              name="%ActiveStateDebuggingEngine.name"
+              priority="0"
+              preferencePageId="org.eclipse.dltk.python.preferences.debug.activestatedebugger">
+        </engine>    
+      </engineContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.dltk.python.preferences.debug"
+            class="org.eclipse.dltk.python.activestatedebugger.preferences.PythonActiveStateDebuggerPreferencePage"
+            id="org.eclipse.dltk.python.preferences.debug.activestatedebugger"
+            name="%PythonActiveStateDebuggerPreferencePage.name">
+      </page>
+   </extension>
+   
+        
+
+</plugin>
