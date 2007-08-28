@@ -35,7 +35,7 @@
             <jvmarg value="-DmapVersionTag=${mapVersionTag}" />
             <jvmarg value="-Dbuild.distribution=${build.distribution}" />
             <jvmarg value="-DbuildDirectory=${buildDirectory}" />
-            <jvmarg value="-Dcisco.builder.home=${dltk.builder.home}" />
+            <jvmarg value="-Ddltk.builder.home=${dltk.builder.home}" />
             <arg value="-data" />
             <arg value="${basedir}/workspace" />
             <arg value="-application" />

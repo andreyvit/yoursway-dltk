@@ -24,9 +24,9 @@
 	<target name="runPack">
 
 		<dirname file="${ant.file}" property="pack.component.dir" />
-		<ant antfile="${cisco.builder.home}/scripts/build/label.xml" />
+		<ant antfile="${dltk.builder.home}/scripts/build/label.xml" />
 		<property file="${buildDirectory}/label.properties" />
-		<property file="${cisco.builder.home}/build.properties" />
+		<property file="${dltk.builder.home}/build.properties" />
 
 		<fail message="packRoot must be set for this task"
 			unless="packRoot" />
@@ -93,7 +93,7 @@
 	<target name="doPacking">
 		<echo message="baseDir: ${basedir}"/>
 		
-		<property file="${cisco.builder.home}/build.properties" />
+		<property file="${dltk.builder.home}/build.properties" />
 		<property name="pde.builder.path" value="${env.BUILD_HOME}/builders/${eclipse.builder.version}/${eclipse.builder}" />
 		<echo message="pde.builder.path: ${pde.builder.path}" />
 		<echo message="eclipse.builder.version: ${eclipse.builder.version}" />
