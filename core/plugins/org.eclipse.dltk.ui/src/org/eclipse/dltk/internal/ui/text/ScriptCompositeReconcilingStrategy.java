@@ -38,6 +38,10 @@ public class ScriptCompositeReconcilingStrategy extends
 	}
 
 	private IProblemRequestorExtension getProblemRequestorExtension() {
+		if (fEditor == null) {
+			return null;
+		}
+		
 		IDocumentProvider p = fEditor.getDocumentProvider();
 		if (p == null) {
 			p = DLTKUIPlugin.getDefault().getSourceModuleDocumentProvider();

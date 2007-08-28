@@ -66,6 +66,10 @@ public class ScriptReconcilingStrategy implements IReconcilingStrategy,
 	}
 	
 	protected void reconcile(final boolean initialReconcile) {	
+		if (fEditor == null) {
+			return;
+		}
+		
 		final ISourceModule unit = fManager.getWorkingCopy(fEditor
 				.getEditorInput());
 
