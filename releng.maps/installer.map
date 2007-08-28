@@ -2,4 +2,4 @@
 
 feature@org.eclipse.dltk.installer=HEAD,kurtov@xored.com:/opt/cisco,,org.eclipse.dltk.installer-feature
 
-plugin@org.eclipse.dltk.installer=HEAD,kurtov@xored.com:/opt/cisco:,,org.eclipse.dltk.installer
+plugin@org.eclipse.dltk.installer=HEAD,kurtov@xored.com:/opt/cisco,,org.eclipse.dltk.installer
