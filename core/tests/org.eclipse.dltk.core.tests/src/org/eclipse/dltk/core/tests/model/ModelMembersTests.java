@@ -30,16 +30,16 @@ public class ModelMembersTests extends AbstractModelTests {
 
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
-		setUpScriptProject("ModelMembers");
+		setUpScriptProjectTo("ModelMembersq", "ModelMembers");
 	}
 
 	public void tearDownSuite() throws Exception {
-		deleteProject("ModelMembers");
+		deleteProject("ModelMembersq");
 		super.tearDownSuite();
 	}
 
 	public void test001() throws ModelException {
-		ISourceModule module = getSourceModule("ModelMembers", "src1", new Path("X.txt"));
+		ISourceModule module = getSourceModule("ModelMembersq", "src1", new Path("X.txt"));
 		assertNotNull("No source module", module);
 		IModelElement[] children = module.getChildren();
 		assertNotNull("No children", children);

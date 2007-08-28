@@ -56,9 +56,9 @@ public class InterpreterConfigTests extends AbstractModelTests {
 		assertNotNull(config.getScriptFile());
 		assertNotNull(config.getWorkingDirectory());
 
-		assertEquals(scriptPath, config.getScriptFile());
-		assertEquals(scriptPath.removeLastSegments(1), config
-				.getWorkingDirectory());
+		assertEquals(scriptPath.toOSString(), config.getScriptFile().toString());
+		assertEquals(scriptPath.removeLastSegments(1).toOSString(), config
+				.getWorkingDirectory().toString());
 
 		// Null as script file
 		try {

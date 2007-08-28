@@ -43,40 +43,15 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 	}
 
 	private String getKeyFromLevels(List nodes) {
-		StringBuffer prefix = new StringBuffer();
-		for (Iterator iterator = nodes.iterator(); iterator.hasNext();) {
-			ASTNode ns = (ASTNode) iterator.next();
-			String name = null;
-			if (ns instanceof ModuleDeclaration) {
-				name = "";
-			} else if (ns instanceof TypeDeclaration) {
-				name = ((TypeDeclaration) ns).getName();
-			} else if (ns instanceof MethodDeclaration) {
-				name = ((MethodDeclaration) ns).getName();
-			}
-			if (name.startsWith("::")) {
-				prefix.delete(0, prefix.length());
-			}
-			if (name.length() > 0) {
-				prefix.append(tclNameToKey(name)
-						+ IMixinRequestor.MIXIN_NAME_SEPARATOR);
-			}
-		}
-
-		String result = prefix.toString();
-		if (result.endsWith(IMixinRequestor.MIXIN_NAME_SEPARATOR)) {
-			return result.substring(0, result.length()
-					- IMixinRequestor.MIXIN_NAME_SEPARATOR.length());
-		}
-		return result;
+		return TclParseUtil.getElementFQN(nodes, IMixinRequestor.MIXIN_NAME_SEPARATOR);
 	}
 
-	private String getKeyFromLevelsName(List nodes, String nodeName) {
-		String prefix = getKeyFromLevels(nodes);
-		String[] split = nodeName.split("::");
-		return prefix + IMixinRequestor.MIXIN_NAME_SEPARATOR
-				+ tclNameToKey(split[split.length - 1]);
-	}
+//	private String getKeyFromLevelsName(List nodes, String nodeName) {
+//		String prefix = getKeyFromLevels(nodes);
+//		String[] split = nodeName.split("::");
+//		return prefix + IMixinRequestor.MIXIN_NAME_SEPARATOR
+//				+ tclNameToKey(split[split.length - 1]);
+//	}
 
 	private String getNamespacePrefix() {
 		StringBuffer prefix = new StringBuffer();
@@ -96,7 +71,7 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 	}
 
 	private String tclNameToKey(String name) {
-		return name.replaceAll("::", IMixinRequestor.MIXIN_NAME_SEPARATOR);
+		return TclParseUtil.tclNameTo(name, IMixinRequestor.MIXIN_NAME_SEPARATOR);
 	}
 
 	public boolean visit(MethodDeclaration s) throws Exception {

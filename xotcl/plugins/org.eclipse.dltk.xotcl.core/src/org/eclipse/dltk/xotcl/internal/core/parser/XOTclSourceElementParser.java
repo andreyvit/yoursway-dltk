@@ -20,7 +20,7 @@ public class XOTclSourceElementParser implements ISourceElementParser {
 		ModuleDeclaration moduleDeclaration = parseModule(astCashe, contents, this.reporter, filename);
 
 		XOTclSourceElementRequestVisitor requestor = new XOTclSourceElementRequestVisitor(
-				this.requestor);
+				this.requestor, reporter );
 
 		try {
 			moduleDeclaration.traverse(requestor);

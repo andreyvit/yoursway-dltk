@@ -14,6 +14,7 @@ import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
@@ -320,18 +321,18 @@ public class TclParseUtil {
 		if (!startFromTop) {
 			List levels = TclParseUtil.findLevelsTo(module, parent);
 			int len = levels.size();
-			for (int j = 0; j < len; ++j) {
-				ASTNode astNodeParent = (ASTNode) levels.get(len - 1 - j);
-				List childs = TclASTUtil.getStatements(astNodeParent);
-				if (childs == null) {
-					continue;
-				}
+			// We need to observe only previous level.
+			// for (int j = 0; j < len; ++j) {
+			ASTNode astNodeParent = (ASTNode) levels.get(len - 1/* - j */);
+			List childs = TclASTUtil.getStatements(astNodeParent);
+			if (childs != null) {
 				TypeDeclaration ty = findTclTypeCheckASTLevel(originalName,
 						split, childs, onlyXOTcl);
 				if (ty != null) {
 					return ty;
 				}
 			}
+			// }
 		} else {
 			List childs = TclASTUtil.getStatements(module);
 			if (childs == null) {
@@ -355,20 +356,20 @@ public class TclParseUtil {
 			TypeDeclaration type = (TypeDeclaration) childs.get(i);
 			if ((type.getModifiers() & IXOTclModifiers.AccXOTcl) != 0
 					|| !onlyXOTcl) {
-//				if (type.getName().equals(originalName)) { // Check for
-//					// original name
-//					return type;
-//				}
+				// if (type.getName().equals(originalName)) { // Check for
+				// // original name
+				// return type;
+				// }
 				// Check complex in
 				String cName = split[0];
-				for( int q = 1; q <= split.length; ++q ) {
-					if( type.getName().equals(cName)) {
-						if( q == split.length) {
+				for (int q = 1; q <= split.length; ++q) {
+					if (type.getName().equals(cName)) {
+						if (q == split.length) {
 							return type;
-						}
-						else {
+						} else {
 							String nsplit[] = new String[split.length - q];
-							System.arraycopy(split, q, nsplit, 0, split.length - q);
+							System.arraycopy(split, q, nsplit, 0, split.length
+									- q);
 							List nchilds = TclASTUtil.getStatements(type);
 							if (childs == null) {
 								continue;
@@ -380,7 +381,7 @@ public class TclParseUtil {
 							}
 						}
 					}
-					if( q != split.length ) {
+					if (q != split.length) {
 						cName += "::" + split[q];
 					}
 				}
@@ -471,5 +472,39 @@ public class TclParseUtil {
 			}
 		}
 		return null;
+	}
+	public static String getElementFQN(List nodes, String separator) {
+		StringBuffer prefix = new StringBuffer();
+		for (Iterator iterator = nodes.iterator(); iterator.hasNext();) {
+			ASTNode ns = (ASTNode) iterator.next();
+			String name = null;
+			if (ns instanceof ModuleDeclaration) {
+				name = "";
+			} else if (ns instanceof TypeDeclaration) {
+				name = ((TypeDeclaration) ns).getName();
+			} else if (ns instanceof MethodDeclaration) {
+				name = ((MethodDeclaration) ns).getName();
+			}
+			if (name.startsWith("::")) {
+				prefix.delete(0, prefix.length());
+			}
+			if (name.length() > 0) {
+				prefix.append(tclNameTo(name, separator)
+						+ separator);
+			}
+		}
+
+		String result = prefix.toString();
+		if (result.endsWith(separator)) {
+			return result.substring(0, result.length()
+					- separator.length());
+		}
+		return result;
+	}
+	public static String tclNameTo(String name, String separator) {
+		if( !separator.equals("::")) {
+			return name.replaceAll("::", separator);
+		}
+		return name;
 	}
 }

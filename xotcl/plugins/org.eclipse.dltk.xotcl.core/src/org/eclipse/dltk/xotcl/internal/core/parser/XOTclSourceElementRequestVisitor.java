@@ -3,6 +3,7 @@ package org.eclipse.dltk.xotcl.internal.core.parser;
 import java.util.List;
 import java.util.Stack;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
@@ -16,6 +17,9 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
+import org.eclipse.dltk.compiler.problem.DefaultProblem;
+import org.eclipse.dltk.compiler.problem.IProblemReporter;
+import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclConstants;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
@@ -25,8 +29,6 @@ import org.eclipse.dltk.xotcl.core.TclParseUtil;
 import org.eclipse.dltk.xotcl.core.ast.TclGlobalVariableDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.TclPackageDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.TclUpvarVariableDeclaration;
-import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
-import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclVariableDeclaration;
 
 public class XOTclSourceElementRequestVisitor extends
@@ -34,6 +36,7 @@ public class XOTclSourceElementRequestVisitor extends
 
 	private Stack namespacesLevel = new Stack();
 	private Stack exitStack = new Stack();
+	private IProblemReporter fReporter;
 
 	private String removeLastSegment(String s, String delimeter) {
 		if (s.indexOf("::") == -1) {
@@ -55,12 +58,17 @@ public class XOTclSourceElementRequestVisitor extends
 		private int end;
 		private boolean exitFromModule;
 		private boolean pop;
+		public boolean created = false;
 
 		public ExitFromType(int level, int declEnd, boolean mod, boolean pop) {
 			this.level = level;
 			this.end = declEnd;
 			this.exitFromModule = mod;
 			this.pop = pop;
+		}
+		public ExitFromType(int level, int declEnd, boolean mod, boolean pop, boolean created) {
+			this(level, declEnd, mod, pop);
+			this.created = created;
 		}
 
 		public void go() {
@@ -92,7 +100,7 @@ public class XOTclSourceElementRequestVisitor extends
 	 * <em>not qualified</em> names only in current namespace. If type doesn't
 	 * exists, it will be created. If name is qualified, it will be created
 	 * globally, else in current namespace.s
-	 *
+	 * 
 	 * @param decl
 	 *            expression containing typedeclaration correct source ranges
 	 *            setup
@@ -136,14 +144,29 @@ public class XOTclSourceElementRequestVisitor extends
 		if (this.fRequestor.enterTypeAppend(type, "::")) {
 			this.namespacesLevel.push(fullyQualified);
 			return new ExitFromType(1, decl.sourceEnd(), false, true);
-		} else if (!fqn && !onlyCurrent) { // look in global
-			if (this.fRequestor.enterTypeAppend("::" + type, "::")) {
-				this.namespacesLevel.push("::" + type);
-				return new ExitFromType(1, decl.sourceEnd(), false, true);
-			}
-		}
+		} 
+		// This is not correct for Tcl
+//		else if (!fqn && !onlyCurrent) { // look in global
+//			if (this.fNodes.size() > 0
+//					&& this.fNodes.get(0) instanceof ModuleDeclaration) {
+//				ModuleDeclaration module = (ModuleDeclaration) this.fNodes
+//						.get(0);
+//				TypeDeclaration t = TclParseUtil.findTclTypeDeclarationFrom(
+//						module, decl);
+//				if (t != null) {
+//					List nodes = TclParseUtil.findLevelsTo(module, t);
+//					String elementFQN = TclParseUtil.getElementFQN(nodes, "::");
+//					if (this.fRequestor.enterTypeAppend(elementFQN, "::")) {
+//						this.namespacesLevel.push("::" + type);
+//						return new ExitFromType(1, decl.sourceEnd(), false,
+//								true);
+//					}
+//				}
+//			}
+//		}
 
 		// create it
+		// Lets add warning in any case.
 		int needEnterLeave = 0;
 		String[] split = null;
 		String e = this.getEnclosingNamespace();
@@ -153,6 +176,7 @@ public class XOTclSourceElementRequestVisitor extends
 		boolean entered = false;
 		boolean exitFromModule = false;
 		if (e.length() > 0 && !fqn) {
+			// We need to report warning here.
 			entered = this.fRequestor.enterTypeAppend(e, "::");
 		}
 		if (fqn || !entered) {
@@ -184,11 +208,12 @@ public class XOTclSourceElementRequestVisitor extends
 		}
 		this.namespacesLevel.push(fullyQualified);
 		return new ExitFromType(needEnterLeave, decl.sourceEnd(),
-				exitFromModule, true);
+				exitFromModule, true, true);
 	}
 
-	protected XOTclSourceElementRequestVisitor(ISourceElementRequestor requesor) {
+	protected XOTclSourceElementRequestVisitor(ISourceElementRequestor requesor, IProblemReporter reporter) {
 		super(requesor);
+		this.fReporter = reporter;
 	}
 
 	public boolean visit(TypeDeclaration s) throws Exception {
@@ -220,7 +245,7 @@ public class XOTclSourceElementRequestVisitor extends
 
 	private int getModifiers(Declaration s) {
 		int flags = 0;
-		
+
 		if ((s.getModifiers() & Modifiers.AccAbstract) != 0) {
 			flags |= Modifiers.AccAbstract;
 		}
@@ -253,14 +278,13 @@ public class XOTclSourceElementRequestVisitor extends
 		}
 		if (statement instanceof TclStatement) {
 			this.fNodes.pop();
- 			return false;
+			return false;
 		}
 		if (statement instanceof FieldDeclaration) {
 			this.processField(statement);
 		}
 		return true;
 	}
-
 
 	private void processPackage(Statement statement) {
 		TclPackageDeclaration pack = (TclPackageDeclaration) statement;
@@ -326,16 +350,16 @@ public class XOTclSourceElementRequestVisitor extends
 		}
 		fi.name = name;
 		String fullName = TclParseUtil.escapeName(name);
-		ExitFromType exit = null;//this.resolveType(decl, fullName, false);
-		if( (decl.getModifiers() & IXOTclModifiers.AccXOTcl) != 0 && decl instanceof XOTclVariableDeclaration ) {
+		ExitFromType exit = null;// this.resolveType(decl, fullName, false);
+		if ((decl.getModifiers() & IXOTclModifiers.AccXOTcl) != 0
+				&& decl instanceof XOTclVariableDeclaration) {
 			XOTclVariableDeclaration field = (XOTclVariableDeclaration) decl;
 			String tName = field.getDeclaringTypeName();
-			if( tName == null ) {
+			if (tName == null) {
 				tName = "";
 			}
 			exit = this.resolveType(field, tName + "::dummy", false);
-		}
-		else {
+		} else {
 			exit = this.resolveType(decl, fullName, false);
 		}
 		needExit = this.fRequestor.enterFieldCheckDuplicates(fi);
@@ -419,28 +443,38 @@ public class XOTclSourceElementRequestVisitor extends
 		mi.name = sName;
 		mi.modifiers = this.getModifiers(method);
 		mi.nameSourceStart = method.getNameStart();
-		mi.nameSourceEnd = method.getNameEnd()-1;
+		mi.nameSourceEnd = method.getNameEnd() - 1;
 		mi.declarationStart = method.sourceStart();
 		ExitFromType exit = null;
 		boolean requireFieldExit = false;
-		if( (method.getModifiers() & IXOTclModifiers.AccXOTcl) != 0 ) {
+		if ((method.getModifiers() & IXOTclModifiers.AccXOTcl) != 0) {
 			String tName = method.getDeclaringTypeName();
-			if( tName == null ) {
+			if (tName == null) {
 				tName = "";
 			}
 			exit = this.resolveType(method, tName + "::dummy", false);
-//			if( method instanceof XOTclMethodDeclaration) {
-//				XOTclMethodDeclaration mDecl = (XOTclMethodDeclaration) method;
-//				ASTNode dt = mDecl.getDeclaringXOTclType();
-//				if( dt instanceof XOTclInstanceVariable) {
-//					XOTclInstanceVariable var = (XOTclInstanceVariable) dt;
-//					this.fRequestor.
-//					var.getName();
-//				}
-//			}
-		}
-		else {
+			// if( method instanceof XOTclMethodDeclaration) {
+			// XOTclMethodDeclaration mDecl = (XOTclMethodDeclaration) method;
+			// ASTNode dt = mDecl.getDeclaringXOTclType();
+			// if( dt instanceof XOTclInstanceVariable) {
+			// XOTclInstanceVariable var = (XOTclInstanceVariable) dt;
+			// this.fRequestor.
+			// var.getName();
+			// }
+			// }
+		} else {
 			exit = this.resolveType(method, fullName, false);
+		}
+		if( exit.created ) {
+			if( this.fReporter != null ) {
+				try {
+					this.fReporter.reportProblem(new DefaultProblem("", "Namespace not found.", 0,
+							null, ProblemSeverities.Warning, method.getNameStart(), method.getNameEnd(), -1));
+				} catch (CoreException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		}
 		this.fRequestor.enterMethodRemoveSame(mi);
 		this.exitStack.push(exit);
