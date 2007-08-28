@@ -1,14 +1,14 @@
 
 ! Python Development Tools (DLTK)
 !
-! $Id: python.map,v 1.7 2007/08/24 13:17:27 asobolev Exp $ 
+! $Id: python.map,v 1.8 2007/08/28 12:17:20 asobolev Exp $ 
 
 feature@org.eclipse.dltk.python=v20070725,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/python/features/org.eclipse.dltk.python-feature
 feature@org.eclipse.dltk.python.sdk=v20070725,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/python/features/org.eclipse.dltk.python.sdk
 
 plugin@org.eclipse.dltk.python.core=v20070824,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/python/plugins/org.eclipse.dltk.python.core
 plugin@org.eclipse.dltk.python.launching=v20070802,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/python/plugins/org.eclipse.dltk.python.launching
-plugin@org.eclipse.dltk.python.debug=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/python/plugins/org.eclipse.dltk.python.debug
-plugin@org.eclipse.dltk.python.ui=v20070824,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/python/plugins/org.eclipse.dltk.python.ui
-plugin@org.eclipse.dltk.python.debug.ui=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/python/plugins/org.eclipse.dltk.python.debug.ui
+plugin@org.eclipse.dltk.python.debug=v20070828,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/python/plugins/org.eclipse.dltk.python.debug
+plugin@org.eclipse.dltk.python.ui=v20070828,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/python/plugins/org.eclipse.dltk.python.ui
+plugin@org.eclipse.dltk.python.debug.ui=v20070828,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/python/plugins/org.eclipse.dltk.python.debug.ui
 plugin@org.eclipse.dltk.python.antlr=v20070725,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/python/plugins/org.eclipse.dltk.python.antlr
