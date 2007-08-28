@@ -36,15 +36,18 @@ public class ArchiveProjectFragment extends ProjectFragment {
 	 * internal, or an OS path if the archive is external)
 	 */
 	protected final IPath zipPath;
+	protected final IResource zipResource;
 
 	protected ArchiveProjectFragment(IResource resource, ScriptProject project) {
 		super(resource, project);
 		zipPath = resource.getFullPath();
+		this.zipResource = resource;
 	}
 
 	protected ArchiveProjectFragment(IPath path, ScriptProject project) {
 		super(null, project);
 		zipPath = path;
+		this.zipResource = null;
 	}
 
 	/**
@@ -208,11 +211,7 @@ public class ArchiveProjectFragment extends ProjectFragment {
 	}
 
 	public IPath getPath() {
-		if (isExternal()) {
-			return this.zipPath;
-		} else {
-			return super.getPath();
-		}
+		return zipPath;
 	}
 
 	public IResource getResource() {

@@ -42,7 +42,7 @@ public class ArchiveFolder extends ScriptFolder {
 				String resName = resNames[i];
 				if (!Util.isValidSourceModuleName(getScriptProject(), resName)) {
 					IPath parentRelativePath = new Path(resName).removeFirstSegments(this.path.segmentCount());
-					res[index++] = new ArchiveEntryFile(resName, zipName, parentRelativePath);
+					res[index++] = new ArchiveEntryFile(resName, zipName, parentRelativePath, this.getProjectFragment().getResource());
 				}
 			}
 			if (index != max) {
@@ -60,7 +60,7 @@ public class ArchiveFolder extends ScriptFolder {
 		return new ExternalSourceModule(this, name, 
 				DefaultWorkingCopyOwner.PRIMARY, 
 				true, 
-				new ArchiveEntryFile(name,fragment.getZipName(), this.path) );
+				new ArchiveEntryFile(name,fragment.getZipName(), this.path, fragment.getResource()) );
 	}
 
 	protected boolean computeChildren(OpenableElementInfo info, ArrayList entryNames) {

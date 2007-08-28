@@ -724,7 +724,7 @@ public class ModelManager implements ISaveParticipant {
 			// perWorkingCopyInfo
 			// collection as its own
 			// lock
-			WorkingCopyOwner owner = workingCopy.owner;
+			WorkingCopyOwner owner = workingCopy.getOwner();
 			Map workingCopyToInfos = (Map) this.perWorkingCopyInfos.get(owner);
 			if (workingCopyToInfos == null && create) {
 				workingCopyToInfos = new HashMap();
@@ -983,7 +983,7 @@ public class ModelManager implements ISaveParticipant {
 		}
 		PerWorkingCopyInfo info = null;
 		synchronized (this.perWorkingCopyInfos) {
-			WorkingCopyOwner owner = workingCopy.owner;
+			WorkingCopyOwner owner = workingCopy.getOwner();
 			Map workingCopyToInfos = (Map) this.perWorkingCopyInfos.get(owner);
 			if (workingCopyToInfos == null)
 				return -1;
