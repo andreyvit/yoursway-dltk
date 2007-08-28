@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuffer;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceReference;
 import org.eclipse.dltk.core.ModelException;
@@ -99,8 +100,15 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 						return new DocumentAdapter(workingCopy,
 								(IFile) resource);
 				} else if (original instanceof ExternalSourceModule) {
-					IPath path = original.getPath();
-					return new DocumentAdapter(workingCopy, path);
+					IProjectFragment fragment = (IProjectFragment) original
+							.getAncestor(IModelElement.PROJECT_FRAGMENT);
+					if (!fragment.isArchive()) {
+						IPath path = original.getPath();
+						return new DocumentAdapter(workingCopy, path);
+					} else {
+						return BufferManager.getDefaultBufferManager()
+								.createBuffer(original);
+					}
 				}
 				if (original instanceof BuiltinSourceModule) {
 					// IPath path = original.getPath();
