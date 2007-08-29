@@ -44,13 +44,14 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.sourcelookup.ISourceContainer;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IScriptModel;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.launching.CompositeId;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.launching.DefaultEntryResolver;
@@ -61,6 +62,7 @@ import org.eclipse.dltk.internal.launching.ListenerList;
 import org.eclipse.dltk.internal.launching.RuntimeBuildpathEntry;
 import org.eclipse.dltk.internal.launching.RuntimeBuildpathEntryResolver;
 import org.eclipse.dltk.internal.launching.RuntimeBuildpathProvider;
+import org.eclipse.dltk.internal.launching.ScriptSourceLookupUtil;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -232,6 +234,7 @@ public final class ScriptRuntime {
 	 * Default buildpath and source path providers.
 	 */
 	private static IRuntimeBuildpathProvider fgDefaultBuildpathProvider = new StandardBuildpathProvider();
+	private static IRuntimeBuildpathProvider fgDefaultSourcepathProvider = new StandardSourcepathProvider();
 
 	/**
 	 * Interpreter change listeners
@@ -268,7 +271,7 @@ public final class ScriptRuntime {
 						"interpreterInstallTypes"); //$NON-NLS-1$
 		IConfigurationElement[] configs = extensionPoint
 				.getConfigurationElements();
-		
+
 		MultiStatus status = new MultiStatus(DLTKLaunchingPlugin
 				.getUniqueIdentifier(), IStatus.OK,
 				LaunchingMessages.ScriptRuntime_exceptionsOccurred, null);
@@ -371,7 +374,7 @@ public final class ScriptRuntime {
 				return type;
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -2053,6 +2056,27 @@ public final class ScriptRuntime {
 		return provider;
 	}
 
+	public static IRuntimeBuildpathProvider getScriptpathProvider(
+			ILaunchConfiguration configuration) throws CoreException {
+
+		String providerId = configuration.getAttribute(
+				ScriptLaunchConfigurationConstants.ATTR_SOURCEPATH_PROVIDER,
+				(String) null);
+		IRuntimeBuildpathProvider provider = null;
+		if (providerId == null) {
+			provider = 	fgDefaultSourcepathProvider;
+		} else {
+			
+			provider = (IRuntimeBuildpathProvider) getBuildpathProviders().get(
+					providerId);
+			if (provider == null) {
+				abort(MessageFormat.format(LaunchingMessages.ScriptRuntime_27,
+						new String[] { providerId }), null);
+			}
+		}
+		return provider;
+	}
+
 	/**
 	 * Performs default resolution for a container entry. Delegates to the
 	 * Script model.
@@ -2186,6 +2210,19 @@ public final class ScriptRuntime {
 			IRuntimeBuildpathEntry entry, ILaunchConfiguration configuration)
 			throws CoreException {
 		switch (entry.getType()) {
+		case IRuntimeBuildpathEntry.PROJECT:
+			// if the project has multiple output locations, they must be returned
+			IResource resource = entry.getResource();
+			if (resource instanceof IProject) {
+				IProject p = (IProject)resource;
+				IScriptProject project = DLTKCore.create(p);
+				if (project == null || !p.isOpen() || !project.exists()) {
+					return new IRuntimeBuildpathEntry[0];
+				}
+			} else {
+				abort(MessageFormat.format(LaunchingMessages.ScriptRuntime_Buildpath_references_non_existant_project___0__3, new String[]{entry.getPath().lastSegment()}), null);
+			}
+			break;
 		case IRuntimeBuildpathEntry.CONTAINER:
 			IRuntimeBuildpathEntryResolver resolver = getContainerResolver(entry
 					.getContainerName());
@@ -2339,8 +2376,8 @@ public final class ScriptRuntime {
 	 * @throws CoreException
 	 *             if unable to compute the default buildpath
 	 */
-	public static String[] computeDefaultRuntimeClassPath(IScriptProject jproject)
-			throws CoreException {
+	public static String[] computeDefaultRuntimeClassPath(
+			IScriptProject jproject) throws CoreException {
 		IRuntimeBuildpathEntry[] unresolved = computeUnresolvedRuntimeBuildpath(jproject);
 		// 1. remove bootpath entries
 		// 2. resolve & translate to local file system paths
@@ -2359,6 +2396,16 @@ public final class ScriptRuntime {
 			}
 		}
 		return (String[]) resolved.toArray(new String[resolved.size()]);
+	}
+
+	public static ISourceContainer[] getSourceContainers(
+			IRuntimeBuildpathEntry[] resolved) {
+		return ScriptSourceLookupUtil.translate(resolved);
+	}
+
+	public static IRuntimeBuildpathEntry[] computeUnresolvedSourceBuildpath(
+			ILaunchConfiguration configuration) throws CoreException {
+		return getScriptpathProvider(configuration).computeUnresolvedBuildpath(configuration);
 	}
 
 }

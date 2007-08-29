@@ -15,25 +15,40 @@
                modes="run,debug"
                name="%RubyLaunchConfigurationType.name"
                public="true"
-               sourceLocatorId="rubySourceLocator">
-		  </launchConfigurationType> 
+               sourceLocatorId="rubySourceLocator"
+               sourcePathComputerId="rubySourcePathComputer" />
 		  <launchConfigurationType
                delegate="org.eclipse.dltk.ruby.launching.RubyRemoteLaunchConfigurationDelegate"
                id="org.eclipse.dltk.ruby.launching.RubyRemoteLaunchConfigurationType"
                modes="debug"
                name="%RubyRemoteLaunchConfigurationType.name"
                public="true"
-               sourceLocatorId="rubySourceLocator">
+               sourceLocatorId="rubyRemoteSourceLocator">
           </launchConfigurationType>         
    </extension>
-  <extension
+
+   <extension
         point="org.eclipse.debug.core.sourceLocators">
-     <sourceLocator
-           class="org.eclipse.dltk.launching.ScriptSourceLookupDirector"
+        <sourceLocator
+           class="org.eclipse.dltk.launching.sourcelookup.ScriptSourceLookupDirector"
            id="rubySourceLocator"
-           name="%RubySourceLocator.name">
-     </sourceLocator>
-  </extension>
+           name="%RubySourceLocator.name" />
+   </extension>
+    <extension
+        point="org.eclipse.debug.core.sourceLocators">
+        <sourceLocator
+           class="org.eclipse.dltk.launching.sourcelookup.RemoteScriptSourceLookupDirector"
+           id="rubyRemoteSourceLocator"
+           name="%RubyRemoteSourceLocator.name" />
+   </extension> 
+  
+   <extension 
+        point="org.eclipse.debug.core.sourcePathComputers">
+        <sourcePathComputer
+            class="org.eclipse.dltk.launching.sourcelookup.ScriptSourcePathComputer"
+            id="rubySourcePathComputer"/>
+   </extension>
+  
      <extension
          point="org.eclipse.dltk.launching.interpreterInstallTypes">
           <interpreterInstallType

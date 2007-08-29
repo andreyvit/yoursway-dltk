@@ -33,6 +33,7 @@ public class LaunchingMessages extends NLS {
 	public static String ScriptRuntime_Could_not_resolve_classpath_container___0__1;
 	public static String ScriptRuntime_Buildpath_references_non_existant_archive___0__4;
 	public static String ScriptRuntime_26;
+	public static String ScriptRuntime_27;
 
 	public static String ScriptRuntime_28;
 	public static String ScriptRuntime_31;
@@ -88,4 +89,11 @@ public class LaunchingMessages extends NLS {
 	public static String LaunchShortcut_selectScriptToLaunch;
 	public static String LaunchShortcut_selectionContainsNoScript;
 	public static String LaunchShortcut_searchingForScripts;	
+	
+	public static String ScriptProjectSourceContainerTypeDelegate_5;
+	public static String ScriptProjectSourceContainerTypeDelegate_6;
+	public static String ScriptProjectSourceContainerTypeDelegate_7;
+
+	public static String ScriptRuntime_Buildpath_references_non_existant_project___0__3;
+	
 }

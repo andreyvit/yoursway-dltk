@@ -39,6 +39,7 @@ import org.eclipse.dltk.internal.ui.editor.ISourceModuleDocumentProvider;
 import org.eclipse.dltk.internal.ui.editor.SourceModuleDocumentProvider;
 import org.eclipse.dltk.internal.ui.editor.WorkingCopyManager;
 import org.eclipse.dltk.internal.ui.text.hover.EditorTextHoverDescriptor;
+import org.eclipse.dltk.launching.sourcelookup.RemoteScriptSourceLookupDirector.RemoteSourceModule;
 import org.eclipse.dltk.ui.text.completion.ContentAssistHistory;
 import org.eclipse.dltk.ui.viewsupport.ImageDescriptorRegistry;
 import org.eclipse.dltk.ui.viewsupport.ProblemMarkerManager;
@@ -105,11 +106,16 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 					if (!fragment.isArchive()) {
 						IPath path = original.getPath();
 						return new DocumentAdapter(workingCopy, path);
-					} else {
-						return BufferManager.getDefaultBufferManager()
-								.createBuffer(original);
 					}
+					return BufferManager.getDefaultBufferManager()
+							.createBuffer(original);
 				}
+
+				if (original instanceof RemoteSourceModule) {
+					return BufferManager.getDefaultBufferManager()
+							.createBuffer(original);
+				}
+
 				if (original instanceof BuiltinSourceModule) {
 					// IPath path = original.getPath();
 					// return new DocumentAdapter(workingCopy, path);

@@ -70,6 +70,10 @@ public class ScriptLaunchConfigurationConstants {
 	 */
 	public static final String ATTR_DEFAULT_BUILDPATH = "defaultBuildpath"; //$NON-NLS-1$
 
+	public static final String ATTR_DEFAULT_SOURCEPATH = "defaultSourcePath";
+	
+	public static final String ATTR_SOURCEPATH = "sourcePath";
+	
 	/**
 	 * Launch configuration attribute key. The attribute value is an ordered
 	 * list of strings which are mementos for runtime build path entries. When
@@ -95,12 +99,14 @@ public class ScriptLaunchConfigurationConstants {
 	public static final String ATTR_CONTAINER_PATH = ScriptRuntime.INTERPRETER_CONTAINER;
 
 	/**
-	 * Launch configuration attribute key. The value is an identifier of a
+	 * Launch configuration attribute key. The value is an identifier for a
 	 * buildpath provider extension used to compute the buildpath for a launch
 	 * configuration. When unspecified, the default buildpath provider is used -
 	 * <code>StandardBuildpathProvider</code>.
 	 */
 	public static final String ATTR_BUILDPATH_PROVIDER = "buildpathProvider"; //$NON-NLS-1$
+	
+	public static final String ATTR_SOURCEPATH_PROVIDER = "sourcepathProvider";
 
 	public static final String ATTR_DEBUG_CONNECTOR = "debugConnector"; //$NON-NLS-1$
 
@@ -108,8 +114,16 @@ public class ScriptLaunchConfigurationConstants {
 
 	public static final String ATTR_INTERPRETER_ARGUMENTS = "interpreterArguments"; //$NON-NLS-1$
 
+	/**
+	 * Launch configuration attribute key. This value is an identifier for the
+	 * working directory of a remote debugging session, and is used in an
+	 * attempt to map the remote source file to a project in the workspace.
+	 */
+	public static final String ATTR_DLTK_DBGP_REMOTE_WORKING_DIR = "remoteWorkingDir";
+	
 	public static final String ID_SCRIPT_PROCESS_TYPE = "script"; //$NON-NLS-1$
 
+	
 	// Errors
 	public static final int ERR_INTERNAL_ERROR = 100;
 
@@ -135,4 +149,5 @@ public class ScriptLaunchConfigurationConstants {
 	public static final int ERR_DEBUGGING_ENGINE_NOT_CONFIGURED = 500;
 
 	public static final int ERR_NO_DEFAULT_DEBUGGING_ENGINE = 510;
+
 }
