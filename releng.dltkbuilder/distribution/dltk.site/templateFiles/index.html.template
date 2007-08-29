@@ -172,9 +172,21 @@ or used.</h4>
         echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         ?>
       </tr>
+    </table>
+  </div>
+      
+<!-- ***********  DLTK EXTENSIONS **************  -->
+<div class="build_item">
+    <h3>Dynamic Languages Toolkit Extensions</h3>
+    <table><tr>
+        <th width="135">Name</th>
+	    <th width="220">Requirements</th>
+	    <th width="210">Runtime Downloads</th>
+   	    <th width="220">SDK Downloads</th>
+      </tr>
       <tr>
         <td class="bold"><img src="images/xotcl.png" alt="" />XOTcl IDE</td>
-        <td><p><img src="images/eclipse.png" alt="" />Core Frameworks</p><img src="images/tcl.png" alt="" />Tcl IDE</td>
+                <td><img src="images/eclipse.png" alt="" />Core, <img src="images/tcl.png" alt="" />Tcl IDE</td>
         <?php
         $zipfilename="dltk-xotcl-@build@-incubation";
         $filename=$zipfilename.".zip";
@@ -188,8 +200,9 @@ or used.</h4>
       </tr>
     </table>
   </div>
-      
-    <div class="build_item">
+
+
+  <div class="build_item">
     <h3>Dynamic Languages Toolkit Bundles</h3>
     <table>
       <tr>
