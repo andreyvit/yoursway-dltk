@@ -101,7 +101,7 @@
 		
 		<archivetask
 			packagetype="exe"
-			command="eclipse/eclipse.exe -application org.eclipse.epp.installer.core.application"
+			command="eclipse/eclipse.exe -product org.eclipse.dltk.installer.installer"
 			archivefile="${buildDirectory}/${buildLabel}/install"
 			rootdir="${packRoot}"
 			templates="${pde.builder.path}/plugins/templates/"
