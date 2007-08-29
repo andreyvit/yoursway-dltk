@@ -96,25 +96,24 @@ or used.</h4>
 <!-- ***********  DLTK COMPONENTS **************  -->
 <div class="build_item">
     <h3>Dynamic Languages Toolkit Complete</h3>
-    <h4><table><tr>
-    	<td width="135">Name</td>
-	<td width="220">Requirements</td>
-	<td width="210">Runtime Downloads</td>
-   	<td width="220">SDK Downloads</td>
-    </tr></table></h4>
-    <table>
+    <table><tr>
+        <th width="135">Name</th>
+	    <th width="220">Requirements</th>
+	    <th width="210">Runtime Downloads</th>
+   	    <th width="220">SDK Downloads</th>
+      </tr>
       <tr>
-        <td class="bold" width="155"><img src="images/eclipse.png" alt="" />Core Frameworks</td>
-        <td width="220"></td>
+        <td class="bold"><img src="images/eclipse.png" alt="" />Core Frameworks</td>
+        <td></td>
         <?php
         $zipfilename="dltk-core-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="210"><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         $zipfilename="dltk-core-sdk-@build@-incubation";
         $filename=$zipfilename.".zip";
         $zipfilesize=fileSizeInMegs($filename);
-        echo '<td width="210"><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
+        echo '<td><img src="images/download.png" alt="" /><a href="' . ${downloadprefix} . ${filename} . '">' . "Download " . '</a><h6>'.${zipfilesize}.'mb</h6><a href="checksum/' . ${filename} . '.md5"><img src="images/md5.png" alt="" /></a></td>';
         ?>
       </tr>
       <tr>
@@ -194,7 +193,7 @@ or used.</h4>
     <h3>Dynamic Languages Toolkit Bundles</h3>
     <table>
       <tr>
-        <td class="bold" width="375"><h5><img src="images/eclipse.png" alt="" />+<img src="images/ruby.png" alt="" /></h5>Ruby IDE</td>
+        <td class="bold" width="375"><img src="images/eclipse.png" alt="" /><h5>+</h5><img src="images/ruby.png" alt="" />Ruby IDE</td>
         <?php
         $zipfilename="dltk-core-ruby-@build@-incubation";
         $filename=$zipfilename.".zip";
@@ -207,7 +206,7 @@ or used.</h4>
         ?>
       </tr>
       <tr>
-        <td class="bold"><h5><img src="images/eclipse.png" alt="" />+<img src="images/python.png" alt="" /></h5>Python IDE</td>
+        <td class="bold"><img src="images/eclipse.png" alt="" /><h5>+</h5><img src="images/python.png" alt="" />Python IDE</td>
         <?php
         $zipfilename="dltk-core-python-@build@-incubation";
         $filename=$zipfilename.".zip";
@@ -220,7 +219,7 @@ or used.</h4>
         ?>
       </tr>
       <tr>
-        <td class="bold"><h5><img src="images/eclipse.png" alt="" />+<img src="images/tcl.png" alt="" /></h5>Tcl IDE</td>
+        <td class="bold"><img src="images/eclipse.png" alt="" /><h5>+</h5><img src="images/tcl.png" alt="" />Tcl IDE</td>
         <?php
         $zipfilename="dltk-core-tcl-@build@-incubation";
         $filename=$zipfilename.".zip";
@@ -233,7 +232,7 @@ or used.</h4>
         ?>
       </tr>
       <tr>
-        <td class="bold"><h5><img src="images/eclipse.png" alt="" />+<img src="images/ruby.png" alt="" />+<img src="images/tcl.png" alt="" />+<img src="images/python.png" alt="" />+<img src="images/javascript.png" alt="" /></h5>All-in-1</td>
+        <td class="bold"><img src="images/eclipse.png" alt="" /><h5>+</h5><img src="images/ruby.png" alt="" /><h5>+</h5><img src="images/tcl.png" alt="" /><h5>+</h5><img src="images/python.png" alt="" /><h5>+</h5><img src="images/javascript.png" alt="" />All-in-1</td>
         <?php
         $zipfilename="dltk-@build@-incubation";
         $filename=$zipfilename.".zip";

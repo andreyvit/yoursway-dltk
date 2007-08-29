@@ -219,7 +219,22 @@ div.build_item h5{
 font-weight:normal;
 font-size:11px;
 color:#999999;
+padding:0px;
+margin:0px;
 display:inline;
+position:relative;
+bottom:1px;
+}
+div.build_item h6{
+display:inline;
+font-family:Georgia,Arial,Tahoma,Verdana,sans-serif;
+font-size:12px;
+font-weight:normal;
+padding:0px 4px 0px 2px;
+}
+div.build_item p{
+padding:0px 0px 3px 0px;
+margin:0px;
 }
 div.build_item table{
 width:890px;
@@ -228,13 +243,25 @@ div.build_item td{
 padding:3px 0px 3px 18px;
 margin:0px;
 border-bottom:1px solid #eaeaea;
-line-height:17px;
+line-height:19px;
 vertical-align:top;
+}
+div.build_item th{
+width:872px;
+background:url(images/capt_list.png) repeat-x bottom;
+padding:4px 0px 8px 18px;
+margin:0px;
+line-height:17x;
+font-size:12px;
+font-weight:bold;
+text-align:left;
 }
 div.build_item td img{
 padding:0px 4px 0px 12px;
 position:relative;
-top:2px;
+top:3px;
+padding:0px 3px;
+margin:0px;
 }
 .bold{
 font-weight:bold;

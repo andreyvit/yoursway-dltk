@@ -44,7 +44,7 @@
 		</ant>
 
 		<antcall target="unzipTests" />
-		<antcall target="doPacking" />
+		<antcall target="doPackingWin" />
 
 	</target>
 
@@ -90,7 +90,7 @@
 		</exec>
 	</target>
 
-	<target name="doPacking">
+	<target name="doPackingWin">
 		<echo message="baseDir: ${basedir}"/>
 		
 		<property file="${dltk.builder.home}/build.properties" />
