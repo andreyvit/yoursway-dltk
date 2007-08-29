@@ -10,6 +10,7 @@
 package org.eclipse.dltk.internal.ui.editor;
 
 import org.eclipse.core.resources.IStorage;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
@@ -41,7 +42,12 @@ public class ExternalStorageEditorInput implements IEditorInput, IStorageEditorI
 	}
 
 	public String getToolTipText() {
-		return fStorage.getFullPath().toOSString();
+		IPath path = fStorage.getFullPath();
+		if (path == null) {
+			return "";
+		}
+		
+		return path.toOSString();
 	}
 
 	public Object getAdapter(Class adapter) {
