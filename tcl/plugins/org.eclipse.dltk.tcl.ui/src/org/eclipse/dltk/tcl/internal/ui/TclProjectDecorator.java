@@ -1,33 +1,25 @@
 package org.eclipse.dltk.tcl.internal.ui;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.tcl.core.TclNature;
-import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.jface.viewers.IDecoration;
-import org.eclipse.jface.viewers.ILightweightLabelDecorator;
-import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.dltk.ui.AbstractScriptProjectDecorator;
+import org.eclipse.jface.resource.ImageDescriptor;
 
-public class TclProjectDecorator extends LabelProvider implements
-		ILightweightLabelDecorator {
+/**
+ * Tcl project decorator
+ */
+public class TclProjectDecorator extends AbstractScriptProjectDecorator {
 
-	public void decorate(Object element, IDecoration decoration) {
-		IProject project = null;
-		if (element instanceof IScriptProject) {
-			project = ((IScriptProject) element).getProject();
-		} else if (element instanceof IProject) {
-			project = (IProject) element;
-		}
+	/*
+	 * @see org.eclipse.dltk.ui.AbstractScriptProjectDecorator#getNatureId()
+	 */
+	protected String getNatureId() {
+		return TclNature.NATURE_ID;
+	}
 
-		if (project != null && project.isOpen()) {
-			try {
-				if (project.hasNature(TclNature.NATURE_ID)) {
-					decoration.addOverlay(TclImages.PROJECT_DECARATOR);
-				}
-			} catch (CoreException e) {
-				DLTKUIPlugin.log(e);
-			}
-		}
+	/*
+	 * @see org.eclipse.dltk.ui.AbstractScriptProjectDecorator#getProjectDecorator()
+	 */
+	protected ImageDescriptor getProjectDecorator() {
+		return TclImages.PROJECT_DECARATOR;
 	}
 }

@@ -1,33 +1,17 @@
 package org.eclipse.dltk.ruby.internal.ui;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.ruby.core.RubyNature;
-import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.jface.viewers.IDecoration;
-import org.eclipse.jface.viewers.ILightweightLabelDecorator;
-import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.dltk.ui.AbstractScriptProjectDecorator;
+import org.eclipse.jface.resource.ImageDescriptor;
 
-public class RubyProjectDecorator extends LabelProvider implements
-		ILightweightLabelDecorator {
+public class RubyProjectDecorator extends AbstractScriptProjectDecorator {
 
-	public void decorate(Object element, IDecoration decoration) {
-		IProject project = null;
-		if (element instanceof IScriptProject) {
-			project = ((IScriptProject) element).getProject();
-		} else if (element instanceof IProject) {
-			project = (IProject) element;
-		}
-
-		if (project != null && project.isOpen()) {
-			try {
-				if (project.hasNature(RubyNature.NATURE_ID)) {
-					decoration.addOverlay(RubyImages.PROJECT_DECARATOR);
-				}
-			} catch (CoreException e) {
-				DLTKUIPlugin.log(e);
-			}
-		}
+	public String getNatureId() {
+		return RubyNature.NATURE_ID;
 	}
+	
+	public ImageDescriptor getProjectDecorator() {
+		return RubyImages.PROJECT_DECARATOR;
+	}
+
 }
