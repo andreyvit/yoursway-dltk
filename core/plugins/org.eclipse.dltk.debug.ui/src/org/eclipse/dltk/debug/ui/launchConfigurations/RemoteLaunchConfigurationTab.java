@@ -27,6 +27,7 @@ public abstract class RemoteLaunchConfigurationTab extends
 
 	private Text port;
 	private Text ideKey;
+	private Text remoteWorkingDir;
 
 	/*
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getName()
@@ -46,29 +47,20 @@ public abstract class RemoteLaunchConfigurationTab extends
 	 * @see org.eclipse.dltk.debug.ui.launchConfigurations.ScriptLaunchConfigurationTab#doInitializeForm(org.eclipse.debug.core.ILaunchConfiguration)
 	 */
 	protected void doInitializeForm(ILaunchConfiguration config) {
-		String text = null;
-		try {
-			text = config.getAttribute(
-					ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_PORT,
-					Integer.toString(DEFAULT_PORT));
-		} catch (CoreException e) {
-			// log?
-			text = Integer.toString(DEFAULT_PORT);
-		}
 
-		port.setText(text);
+		port.setText(getLaunchAttr(config,
+				ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_PORT, Integer
+						.toString(DEFAULT_PORT)));
 
-		try {
-			text = config
-					.getAttribute(
-							ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
-							DEFAULT_IDEKEY);
-		} catch (CoreException e) {
-			// log?
-			text = DEFAULT_IDEKEY;
-		}
+		ideKey.setText(getLaunchAttr(config,
+				ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
+				DEFAULT_IDEKEY));
 
-		ideKey.setText(text);
+		remoteWorkingDir
+				.setText(getLaunchAttr(
+						config,
+						ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_REMOTE_WORKING_DIR,
+						""));
 	}
 
 	/*
@@ -81,16 +73,19 @@ public abstract class RemoteLaunchConfigurationTab extends
 		config.setAttribute(
 				ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
 				ideKey.getText().trim());
+		config
+				.setAttribute(
+						ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_REMOTE_WORKING_DIR,
+						remoteWorkingDir.getText().trim());
 	}
 
 	/*
 	 * @see org.eclipse.dltk.debug.ui.launchConfigurations.ScriptLaunchConfigurationTab#doCanSave()
 	 */
 	protected boolean doCanSave() {
-		return validatePort() && validateIdeKey();
+		return validatePort() && validateIdeKey() && validateRemoteWorkingDir();
 	}
 
-	
 	protected boolean validatePort() {
 		IStatus result = FieldValidators.PORT_VALIDATOR
 				.validate(port.getText());
@@ -110,6 +105,11 @@ public abstract class RemoteLaunchConfigurationTab extends
 			return false;
 		}
 
+		return true;
+	}
+	
+	protected boolean validateRemoteWorkingDir() {
+		// XXX: what validation should be done on this?
 		return true;
 	}
 
@@ -149,5 +149,34 @@ public abstract class RemoteLaunchConfigurationTab extends
 				updateLaunchConfigurationDialog();
 			}
 		});
+
+		SWTFactory.createHorizontalSpacer(composite, 1);
+
+		group = SWTFactory.createGroup(composite,
+				DLTKLaunchConfigurationsMessages.remoteTab_remoteWorkingDir, 1,
+				1, GridData.FILL_HORIZONTAL);
+
+		remoteWorkingDir = SWTFactory.createText(group, SWT.BORDER, 1,
+				EMPTY_STRING);
+		remoteWorkingDir.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				updateLaunchConfigurationDialog();
+			}
+		});
+
+	}
+
+	private String getLaunchAttr(ILaunchConfiguration config, String key,
+			String defaultValue) {
+		String text = null;
+
+		try {
+			text = config.getAttribute(key, defaultValue);
+		} catch (CoreException e) {
+			// log?
+			text = defaultValue;
+		}
+
+		return text;
 	}
 }
