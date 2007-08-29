@@ -106,7 +106,7 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 		return false;
 	}
 
-	private boolean isTCLLikeFileName(String name) {
+	public boolean isScriptLikeFileName(String name) {
 		String[] exts = getLanguageFileExtensions();
 		for (int i = 0; i < exts.length; ++i) {
 			if (name.endsWith("." + exts[i])) {
@@ -135,7 +135,7 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 			return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,
 					Messages.convention_unit_nullName, null);
 		}
-		if (!isTCLLikeFileName(name)) {
+		if (!isScriptLikeFileName(name)) {
 			return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,
 					MessageFormat.format(
 							Messages.convention_unit_notScriptName,

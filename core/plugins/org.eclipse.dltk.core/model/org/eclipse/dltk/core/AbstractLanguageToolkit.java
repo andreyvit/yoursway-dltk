@@ -74,7 +74,7 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 	}
 
 
-	private boolean isScriptLikeFileName(String name) {
+	public boolean isScriptLikeFileName(String name) {
 		// TODO: Add more correct checking here.
 		String[] extensions = this.getLanguageFileExtensions();
 		for (int i = 0; i < extensions.length; i++) {

@@ -41,4 +41,6 @@ public interface IDLTKLanguageToolkit {
 	String[] getLanguageFileExtensions();
 	
 	String getLanguageName();
+	
+	boolean isScriptLikeFileName(String name);
 }

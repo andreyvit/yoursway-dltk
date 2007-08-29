@@ -67,7 +67,7 @@ public class TestLanguageToolkit implements IDLTKLanguageToolkit {
 	}
 
 	public IStatus validateSourceModule(String name) {
-		if (name.endsWith(".txt")) {
+		if (isScriptLikeFileName(name)) {
 			return IModelStatus.VERIFIED_OK;
 		}
 		return new Status(IStatus.ERROR, "TEST", -1, MessageFormat.format(
@@ -180,5 +180,9 @@ public class TestLanguageToolkit implements IDLTKLanguageToolkit {
 
 	public IStatus validateSourceModule(IModelElement parent, String name) {
 		return validateSourceModule(name);
+	}
+
+	public boolean isScriptLikeFileName(String name) {
+		return name.endsWith(".txt");
 	}
 }

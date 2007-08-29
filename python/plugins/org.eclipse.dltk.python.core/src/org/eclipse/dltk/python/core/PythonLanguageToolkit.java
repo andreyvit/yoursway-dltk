@@ -33,7 +33,7 @@ public class PythonLanguageToolkit implements IDLTKLanguageToolkit {
 			return new Status(IStatus.ERROR, PythonPlugin.PLUGIN_ID, -1,
 					Messages.convention_unit_nullName, null);
 		}
-		if (!isPythonLikeFileName(name)) {
+		if (!isScriptLikeFileName(name)) {
 			return new Status(IStatus.ERROR, PythonPlugin.PLUGIN_ID, -1,
 					MessageFormat.format(
 							Messages.convention_unit_notScriptName,
@@ -47,7 +47,7 @@ public class PythonLanguageToolkit implements IDLTKLanguageToolkit {
 		return "py";
 	}
 
-	private boolean isPythonLikeFileName(String name) {
+	public boolean isScriptLikeFileName(String name) {
 		// TODO: Add more correct checking here.
 		if (name.endsWith("." + getPythonExtension())) {
 			return true;

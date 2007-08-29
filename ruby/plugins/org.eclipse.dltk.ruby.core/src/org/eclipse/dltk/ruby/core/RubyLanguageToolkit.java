@@ -34,7 +34,7 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 					Messages.convention_unit_nullName, null);
 		}
 
-		if (!isRubyLikeFileName(name)) {
+		if (!isScriptLikeFileName(name)) {
 			return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
 					MessageFormat.format(
 							Messages.convention_unit_notScriptName,
@@ -46,13 +46,6 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 
 	public String getRubyExtension() {
 		return "rb";
-	}
-
-	protected boolean isRubyLikeFileName(String name) {
-		if (name.endsWith("." + getRubyExtension())) {
-			return true;
-		}
-		return false;
 	}
 
 	public boolean languageSupportZIPBuildpath() {
@@ -116,4 +109,17 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	public String getLanguageName() {
 		return "Ruby";
 	}
+	
+	public boolean isScriptLikeFileName(String name) {
+		// TODO: pull up and refactor to use AbstractLanguageToolkit
+		String[] exts = getLanguageFileExtensions();
+		for (int i = 0; i < exts.length; ++i) {
+			if (name.endsWith("." + exts[i])) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
 }
