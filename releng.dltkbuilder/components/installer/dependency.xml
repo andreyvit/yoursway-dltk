@@ -33,7 +33,9 @@
 		<antcall target="getAndInstall">
 			<param name="groupId" value="epp" />
 		</antcall>
-
+		<antcall target="getAndInstall">
+			<param name="groupId" value="epp-tools" />
+		</antcall>
 	</target>
 
 
