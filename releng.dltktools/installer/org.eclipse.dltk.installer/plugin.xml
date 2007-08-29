@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="installer"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.epp.installer.core.application"
+            name="DLTK Installer">
+         <property
+               name="appName"
+               value="DLTK Installer">
+         </property>
+      </product>
+   </extension>
+
+   <extension
+         point="org.eclipse.epp.installer.core.configurationProvider">
+      <provider
+      		id="org.eclipse.dltk.installer.install"
+            class="org.eclipse.epp.installer.core.ExtendableInstallConfiguration"
+            product="org.eclipse.dltk.installer.installer"
+            type="install">
+      </provider>
+   </extension>
+   <extension
+         point="org.eclipse.epp.installer.core.steps">
+      <steps
+            providerId="org.eclipse.dltk.installer.install">
+	      <step
+	            id="org.eclipse.epp.installer.CheckAdminPrivilegesStep"
+	            title="Welcome to the DLTK installer">
+	         <parameter
+	               key="text"
+	               value="This is an example installer, which will install one of EPP packages on your platform">
+	         </parameter>
+	      </step>
+	      <step
+	            id="org.eclipse.epp.installer.ChoiceStep"
+	            title="License Agreement"
+	            description="Please read the following important information before continue.">
+	         <parameter
+	               key="choiceText"
+	               value="${LicenseAgreement}">
+	         </parameter>
+	         <parameter
+	               key="acceptText"
+	               value="I accept the agreement">
+	         </parameter>
+	         <parameter
+	               key="declineText"
+	               value="I do not accept the agreement">
+	         </parameter>
+	         <parameter
+	               key="continueOnDecline"
+	               value="false">
+	         </parameter>
+	         <parameter
+	               key="defaultChoice"
+	               value="false">
+	         </parameter>
+	      </step>
+	      <step
+	            id="org.eclipse.epp.installer.ChooseLocationStep"
+	            title="Select Destination Location"
+	            description="Where should the ${ProductName} be installed?">
+	      </step>
+	      <step
+	            id="org.eclipse.epp.installer.PromptUserStep"
+	            title="Ready to Install"
+	            description="Setup is now ready to begin installing ${ProductName} on your computer.">
+	         <aboutToStep>
+	            <parameter
+	                  key="text"
+	                  value="Click Next to continue with the installation, or click Back if you want to review or change any settings.\n\nProduct:\n   ${ProductName}\n\nLocation:\n   ${InstallDir}">
+	            </parameter>
+	         </aboutToStep>
+	      </step>
+	      <step
+	            id="org.eclipse.epp.installer.RunOperationsStep"
+	            description="Installing...">
+	         <aboutToStep>
+	            <process
+	                  class="org.eclipse.dltk.installer.CreateInstallOperationsProcessor">
+	            </process>
+	         </aboutToStep>
+	      </step>
+	      <step
+	            id="org.eclipse.epp.installer.PromptUserStep"
+	            title="Installation complete">
+	         <aboutToStep>
+	            <parameter
+	                  key="text"
+	                  value="Thank you very much for choosing ${ProductName}.\n\nClick Finish to exit setup.">
+	            </parameter>
+	         </aboutToStep>
+	      </step>
+      </steps>
+   </extension>
+
+</plugin>
