@@ -1,5 +1,4 @@
 !***************  DLTK CONTRIBUTION  ******************************************************** 
 
-feature@org.eclipse.dltk.installer=HEAD,kurtov@xored.com:/opt/cisco,,org.eclipse.dltk.installer-feature
-
-plugin@org.eclipse.dltk.installer=HEAD,kurtov@xored.com:/opt/cisco,,org.eclipse.dltk.installer
+feature@org.eclipse.dltk.installer=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/releng.dltktools/installer/org.eclipse.dltk.installer-feature
+plugin@org.eclipse.dltk.installer=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/releng.dltktools/installer/org.eclipse.dltk.installer
