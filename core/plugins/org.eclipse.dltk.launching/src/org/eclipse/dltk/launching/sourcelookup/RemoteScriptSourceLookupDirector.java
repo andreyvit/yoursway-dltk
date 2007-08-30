@@ -35,23 +35,31 @@ public class RemoteScriptSourceLookupDirector extends
 
 	public Object getSourceElement(Object element) {
 		// source element was found inside the project
-		Object o = super.getSourceElement(element);		
+		Object o = super.getSourceElement(element);
 		if (o instanceof IFile) {
 			return o;
 		}
-		
+
 		// time to ask for it remotely
 		ScriptStackFrame frame = (ScriptStackFrame) element;
-		
+
 		URI uri = frame.getFileName();
 		String path = uri.getPath();
 
 		try {
-			IProject project = LaunchConfigurationUtils.getProject(getLaunchConfiguration());
+			IProject project = LaunchConfigurationUtils
+					.getProject(getLaunchConfiguration());
 			ScriptProject scriptProject = new ScriptProject(project, null);
-			
-			return new RemoteSourceModule(scriptProject, path, DefaultWorkingCopyOwner.PRIMARY, frame);			
-			
+
+			/*
+			 * XXX: this should probably use some kind of IStorable
+			 * implementation instead of directly relying on the stack frame -
+			 * that allows for re-use of the ExternalStorageEditorInput object
+			 */
+
+			return new RemoteSourceModule(scriptProject, path,
+					DefaultWorkingCopyOwner.PRIMARY, frame);
+
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -81,11 +89,11 @@ public class RemoteScriptSourceLookupDirector extends
 
 			return super.equals(obj);
 		}
-		
+
 		protected IStatus validateSourceModule(IResource resource) {
 			/*
 			 * XXX: is there a way to validate a remote resource?
-			 */			
+			 */
 			return IModelStatus.VERIFIED_OK;
 		}
 
@@ -143,8 +151,8 @@ public class RemoteScriptSourceLookupDirector extends
 
 		private String lookupSource() throws DbgpException {
 			/*
-			 * XXX: this has problems if the encodings on both hosts don't
-			 * match - see getBufferContents/getContents
+			 * XXX: this has problems if the encodings on both hosts don't match -
+			 * see getBufferContents/getContents
 			 */
 			URI uri = frame.getFileName();
 			return frame.getScriptThread().getDbgpSession().getCoreCommands()
