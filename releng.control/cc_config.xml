@@ -210,7 +210,7 @@
         <schedule interval="${time.oneHour}">
             <ant
                 antscript="${env.BUILD_HOME}/releng.control/ant.sh"
-                buildfile="cc_project_build.xml"
+                buildfile="cc_project_build_0_9.xml"
                 target="Build"
                 useQuiet="false"
                 useLogger="false"

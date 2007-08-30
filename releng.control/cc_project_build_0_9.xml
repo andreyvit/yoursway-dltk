@@ -1,0 +1,96 @@
+<project name="cc_project_build" default="Build" basedir=".">
+
+    
+    <!-- = = = standard properties pattern = = = -->
+    <!-- 
+    	Note to be cross-platform, "environment variables" are only appropriate for 
+        some variables, e.g. ones we set, since properties are case sensitive, even if 
+        the environment variables on your operating system are not, e.g. it will 
+        be ${env.Path} not ${env.PATH} on Windows -->
+    <property environment="env" />
+     
+    <!-- 
+    	Let users override standard properties, if desired.
+    	If directory, file, or some properties do not exist,  
+    	then standard properties will be used.
+     -->
+    <property file="${env.LOCAL_BUILD_PROPERTIES_DIR}/${ant.project.name}.properties" />
+
+    <!-- load standard properties for production environment -->
+    <property file="${env.STANDARD_PROPERTIES_DIR}/${ant.project.name}.properties" />
+    <!-- = = = end standard properties pattern = = = -->
+
+    
+    <!-- 
+    	If not set yet, by "caller", then we set checkoutprojectname here. 
+    	Normally this is literally the project name from CruiseControl, but 
+    	if running "standalone", we make this simplifying assumption.
+    -->
+    <property name="build.distribution" value="dltk" />
+    <property name="buildBranch" value="R0.9" />
+    <property name="buildType" value="I" />
+    <property name="checkoutprojectname" value="${build.distribution}-${buildBranch}-${buildType}" />
+
+    <target name="Build">
+
+        <!-- set main builder file name, based on distribution, buildBranch and build type -->
+        <property name="dltkBuilder"
+                  value="${env.BUILD_HOME}/build-node/checkout/${checkoutprojectname}/org.eclipse.dltk/releng.dltkbuilder/build.xml" />
+
+
+
+        <!-- clean previous build -->
+        <antcall target="clean" />
+
+
+
+
+        <!-- check out fresh set of appropriate files  -->
+        <!-- this is to make sure maps and builders are correct, but also to 
+			 make sure the cruisecontrol triggered "diffs" are accurate next 
+			 time around -->
+        <ant antfile="checkout.xml">
+            <property name="checkoutprojectname" value="${checkoutprojectname}"/>
+
+        </ant>
+
+
+
+        <!-- build and create preliminary download site files -->
+        <ant antfile="${dltkBuilder}" target="build" />
+
+        <ant antfile="${dltkBuilder}" target="site" />
+        
+        <!-- upload what we have so far -->
+        <ant antfile="${dltkBuilder}" target="upload" />
+
+
+        <!-- test and create test summary files -->
+        <ant antfile="${dltkBuilder}" target="test" />
+
+        <ant antfile="${dltkBuilder}" target="site" />
+        <!-- upload what we have so far -->
+        <ant antfile="${dltkBuilder}" target="upload" />
+
+    </target>
+
+
+
+    <target name="clean" depends="check.clean" if="doClean">
+        <delete dir="${env.BUILD_HOME}/build-${checkoutprojectname}"
+                failonerror="false" />
+        <delete dir="${env.BUILD_HOME}/test-${checkoutprojectname}"
+                failonerror="false" />
+        <delete dir="${env.BUILD_HOME}/pack-${checkoutprojectname}"
+                failonerror="false" />
+    </target>
+
+
+    <target name="check.clean">
+        <condition property="doClean">
+            <equals arg1="${build.clean}" arg2="true" />
+        </condition>
+    </target>
+
+
+</project>
