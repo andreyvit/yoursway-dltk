@@ -97,4 +97,14 @@ public class JavaScriptLanguageToolkit implements IDLTKLanguageToolkit {
 	{
 		return "Javascript";
 	}
+
+	public boolean isScriptLikeFileName(String name) {
+		String[] exts = getLanguageFileExtensions();
+		for (int i = 0; i < exts.length; ++i) {
+			if (name.endsWith("." + exts[i])) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
