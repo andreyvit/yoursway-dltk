@@ -245,7 +245,7 @@ or used.</h4>
         ?>
       </tr>
       <tr>
-        <td class="bold"><img src="images/eclipse.png" alt="" /><h5>+</h5><img src="images/tcl.png" alt="" /><h5>+</h5><img src="images/xotcl.png" alt="" /><h5>+</h5><img src="images/python.png" alt="" /><h5>+</h5><img src="images/javascript.png" alt="" />XOTcl IDE</td>
+        <td class="bold"><img src="images/eclipse.png" alt="" /><h5>+</h5><img src="images/tcl.png" alt="" /><h5>+</h5><img src="images/xotcl.png" alt="" />XOTcl IDE</td>
         <?php
         $zipfilename="dltk-xotcl-tcl-core-@build@-incubation";
         $filename=$zipfilename.".zip";
