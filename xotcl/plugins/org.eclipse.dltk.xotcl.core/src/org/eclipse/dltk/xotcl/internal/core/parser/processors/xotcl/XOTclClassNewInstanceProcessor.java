@@ -34,7 +34,7 @@ public class XOTclClassNewInstanceProcessor extends AbstractTclCommandProcessor 
 		}
 		XOTclInstanceVariable var = new XOTclInstanceVariable(commandOrName, e.sourceStart(), e.sourceEnd(), statement.sourceStart(), statement.sourceEnd());
 		var.setClassInstanceName((SimpleReference) statement.getAt(0));
-		var.setType(type);
+		var.setDeclaringType(type);
 		this.addToParent(parent, var);
 		return var;
 	}

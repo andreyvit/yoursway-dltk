@@ -9,16 +9,20 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.compiler.lookup;
 
+import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.compiler.env.lookup.Scope;
 
-/**
- * Particular block scope used for methods, constructors or clinits,
- * representing its outermost blockscope. Note also that such a scope will be
- * provided to enclose field initializers subscopes as well.
- */
 public class MethodScope extends BlockScope {
-	public MethodScope(Scope parent, boolean isStatic) {
+	MethodDeclaration referenceMethod;
+	public MethodScope(Scope parent, MethodDeclaration referenceMethod ) {
 		super(METHOD_SCOPE, parent);
-		this.startIndex = 0;
 	}
+	/*
+	 * Answer the reference type of this scope. It is the nearest enclosing type
+	 * of this scope.
+	 */
+	public MethodDeclaration referenceMethod() {
+		return referenceMethod;
+	}
+
 }

@@ -17,7 +17,6 @@ import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.xotcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.xotcl.core.ITclParser;
-import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 
 public class TclProcProcessor extends AbstractTclCommandProcessor {
 	

@@ -10,7 +10,7 @@ import org.eclipse.dltk.xotcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.xotcl.core.ITclParser;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 import org.eclipse.dltk.xotcl.core.TclParseUtil;
-import org.eclipse.dltk.xotcl.core.ast.TclVariableDeclaration;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclFieldDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclVariableDeclaration;
 
 public class XOTclObjectSetProcessor extends AbstractTclCommandProcessor {
@@ -37,7 +37,7 @@ public class XOTclObjectSetProcessor extends AbstractTclCommandProcessor {
 			throw new RuntimeException("empty variable name");
 		}
 		SimpleReference variable = TclParseUtil.makeVariable(variableName);
-		XOTclVariableDeclaration var = new XOTclVariableDeclaration(variable, variableValue, statement.sourceStart(), statement.sourceEnd());
+		XOTclFieldDeclaration var = new XOTclVariableDeclaration(variable, variableValue, statement.sourceStart(), statement.sourceEnd());
 		var.setDeclaringType(type);
 		var.setDeclaringTypeName(type.getName());
 		var.setModifier(IXOTclModifiers.AccXOTcl);

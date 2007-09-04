@@ -29,6 +29,7 @@ import org.eclipse.dltk.xotcl.core.TclParseUtil;
 import org.eclipse.dltk.xotcl.core.ast.TclGlobalVariableDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.TclPackageDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.TclUpvarVariableDeclaration;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclFieldDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclVariableDeclaration;
 
 public class XOTclSourceElementRequestVisitor extends
@@ -334,16 +335,8 @@ public class XOTclSourceElementRequestVisitor extends
 		String arrayIndex = null;
 		String name = decl.getName();
 		if (TclParseUtil.isArrayVariable(name)) {
-			int t1 = name.indexOf("(");
-			if (t1 > 0 && (name.charAt(t1 - 1) == '\\')) {
-				t1--;
-			}
-			arrayName = name.substring(0, t1);
-			arrayIndex = name.substring(name.indexOf("(") + 1,
-					name.length() - 1);
-			if (arrayIndex.endsWith("\\")) {
-				arrayIndex = arrayIndex.substring(0, arrayIndex.length() - 1);
-			}
+			arrayName = TclParseUtil.extractArrayName(name);
+			arrayIndex = TclParseUtil.extractArrayIndex(name);
 		}
 		if (arrayName != null) {
 			name = arrayName;
@@ -353,7 +346,7 @@ public class XOTclSourceElementRequestVisitor extends
 		ExitFromType exit = null;// this.resolveType(decl, fullName, false);
 		if ((decl.getModifiers() & IXOTclModifiers.AccXOTcl) != 0
 				&& decl instanceof XOTclVariableDeclaration) {
-			XOTclVariableDeclaration field = (XOTclVariableDeclaration) decl;
+			XOTclFieldDeclaration field = (XOTclFieldDeclaration) decl;
 			String tName = field.getDeclaringTypeName();
 			if (tName == null) {
 				tName = "";

@@ -60,9 +60,11 @@ public class XOTclMixinTests extends TestCase {
 			"myModuleInstance myInstanceProc\n" ;
 		String expected = 
 			"MyModule : null\n" +
-			"MyModule{myInstanceProc : null\n" ;
+			"MyModule{myInstanceProc : null\n" +
+			"MyModule{myModuleInstance : null\n" ;
 		checkMixin(content, expected);
 	}
+	
 
 	private void checkMixin(String content, String expected) throws Exception {
 		ModuleDeclaration module = this.parser( content );

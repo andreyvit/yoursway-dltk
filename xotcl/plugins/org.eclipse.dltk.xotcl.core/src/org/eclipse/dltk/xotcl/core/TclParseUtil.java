@@ -14,7 +14,6 @@ import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
@@ -506,5 +505,24 @@ public class TclParseUtil {
 			return name.replaceAll("::", separator);
 		}
 		return name;
+	}
+	public static String extractArrayName(String name) {
+		int t1 = name.indexOf("(");
+		if (t1 > 0 && (name.charAt(t1 - 1) == '\\')) {
+			t1--;
+		}
+		return name.substring(0, t1);
+	}
+	public static String extractArrayIndex(String name) {
+		int t1 = name.indexOf("(");
+		if (t1 > 0 && (name.charAt(t1 - 1) == '\\')) {
+			t1--;
+		}
+		String arrayIndex = name.substring(name.indexOf("(") + 1,
+				name.length() - 1);
+		if (arrayIndex.endsWith("\\")) {
+			arrayIndex = arrayIndex.substring(0, arrayIndex.length() - 1);
+		}
+		return arrayIndex;
 	}
 }

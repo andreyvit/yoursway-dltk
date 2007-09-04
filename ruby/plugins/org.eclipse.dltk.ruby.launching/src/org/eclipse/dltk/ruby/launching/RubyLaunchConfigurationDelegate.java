@@ -104,10 +104,11 @@ public class RubyLaunchConfigurationDelegate extends
 
 		final InterpreterConfig config = super.createInterpreterConfig(
 				configuration, launch);
-
-		addEncodingInterpreterArg(config, configuration);
-		addIncludePathInterpreterArg(config, configuration);
-		addStreamSync(config, configuration);
+		if( config != null ) {
+			addEncodingInterpreterArg(config, configuration);
+			addIncludePathInterpreterArg(config, configuration);
+			addStreamSync(config, configuration);
+		}
 
 		return config;
 	}

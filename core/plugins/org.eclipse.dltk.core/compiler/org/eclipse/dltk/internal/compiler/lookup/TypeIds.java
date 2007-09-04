@@ -16,8 +16,5 @@ public interface TypeIds {
     // The IDs below must be representable using 4 bits so as to fit in operator signatures.
 	final int T_undefined = 0; // should not be changed
 	
-	final int NoId = Integer.MAX_VALUE;
-
-
-	
+	final int NoId = Integer.MAX_VALUE;	
 }

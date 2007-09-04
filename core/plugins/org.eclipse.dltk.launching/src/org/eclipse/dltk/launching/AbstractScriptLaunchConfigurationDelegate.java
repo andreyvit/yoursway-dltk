@@ -673,8 +673,11 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			throws CoreException {
 		String mainScriptName = verifyMainScriptName(configuration);
 		IProject project = getScriptProject(configuration).getProject();
-
-		return project.getLocation().append(mainScriptName).toPortableString();
+		IPath location = project.getLocation();
+		if( location == null ) {
+			return null;
+		}
+		return location.append(mainScriptName).toPortableString();
 	}
 
 	// Should be overriden in for any language
@@ -683,7 +686,11 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			throws CoreException {
 
 		// Validation already included
-		final IPath mainScript = new Path(getScriptLaunchPath(configuration));
+		String scriptLaunchPath = getScriptLaunchPath(configuration);
+		if( scriptLaunchPath == null ) {
+			return null;
+		}
+		final IPath mainScript = new Path(scriptLaunchPath);
 		final IPath workingDirectory = new Path(getWorkingDirectory(
 				configuration).getAbsolutePath());
 
@@ -767,6 +774,10 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			monitor.subTask("Generating interpreter config...");
 			final InterpreterConfig config = createInterpreterConfig(
 					configuration, launch);
+			if(config == null ) {
+				monitor.setCanceled(true);
+				return;
+			}
 			if (monitor.isCanceled()) {
 				return;
 			}

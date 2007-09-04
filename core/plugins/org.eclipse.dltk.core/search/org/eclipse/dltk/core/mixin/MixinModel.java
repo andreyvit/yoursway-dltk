@@ -24,6 +24,7 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ElementChangedEvent;
@@ -140,7 +141,6 @@ public class MixinModel {
 	}
 
 	public String[] findKeys(String pattern) {
-// System.out.println("$$$ MixinModel.findKeys() pattern=" + pattern);
 		return SearchEngine.searchMixinPatterns(pattern, toolkit);
 	}
 
@@ -420,7 +420,15 @@ public class MixinModel {
 			this.elementToMixinCache.remove(element);
 		}
 	}
-
+	/***
+	 * Then getObjects are called, special initialize listener are called. 
+	 *
+	 */
+	public interface IMixinObjectInitializeListener {
+		void initialize(IMixinElement element, Object object, ISourceModule module);
+	}
+	private final ListenerList mixinObjectInitializeListeners = new ListenerList();
+	
 	private class MixinElement implements IMixinElement, IInternalMixinElement {
 		private String key;
 		private boolean bFinal = false;
@@ -546,8 +554,14 @@ public class MixinModel {
 			this.validate();
 			Object o = this.sourceModuleToObject.get(module);
 			if (o instanceof List) {
-				return ((List) o).toArray();
+			
+				Object[] objs = ((List) o).toArray();
+				for (int i = 0; i < objs.length; i++) {
+					notifyInitializeListener(this, module, objs[i]);
+				}
+				return objs;
 			}
+			notifyInitializeListener(this, module, o);
 			return new Object[] { o };
 		}
 
@@ -689,5 +703,21 @@ public class MixinModel {
 		existKeysCache.remove(key);
 		notExistKeysCache.remove(key);
 		// MixinElement e = (MixinElement)this.cache.get(key);
-	};
+	}
+	
+	//// Mixin object initialize listeners code
+	public void addObjectInitializeListener(
+			IMixinObjectInitializeListener mixinObjectInitializeListener) {
+		this.mixinObjectInitializeListeners.add(mixinObjectInitializeListener);
+	}
+	public void removeObjectInitializeListener(
+			IMixinObjectInitializeListener mixinObjectInitializeListener) {
+		this.mixinObjectInitializeListeners.remove(mixinObjectInitializeListener);
+	}
+	private void notifyInitializeListener(IMixinElement element, ISourceModule module, Object o ) {
+		Object[] listeners = mixinObjectInitializeListeners.getListeners();
+		for (int i = 0; i < listeners.length; i++) {
+			((IMixinObjectInitializeListener)(listeners[i])).initialize(element, o, module);
+		}
+	}
 }

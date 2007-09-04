@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
+import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
@@ -16,7 +17,16 @@ import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 import org.eclipse.dltk.xotcl.core.TclParseUtil;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclFieldDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
+import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.TclField;
+import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.TclNamespace;
+import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.TclProc;
+import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclClass;
+import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclInstProc;
+import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclObject;
+import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclProc;
 
 public class XOTclMixinBuildVisitor extends ASTVisitor {
 	private boolean signature = false;
@@ -43,15 +53,16 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 	}
 
 	private String getKeyFromLevels(List nodes) {
-		return TclParseUtil.getElementFQN(nodes, IMixinRequestor.MIXIN_NAME_SEPARATOR);
+		return TclParseUtil.getElementFQN(nodes,
+				IMixinRequestor.MIXIN_NAME_SEPARATOR);
 	}
 
-//	private String getKeyFromLevelsName(List nodes, String nodeName) {
-//		String prefix = getKeyFromLevels(nodes);
-//		String[] split = nodeName.split("::");
-//		return prefix + IMixinRequestor.MIXIN_NAME_SEPARATOR
-//				+ tclNameToKey(split[split.length - 1]);
-//	}
+	// private String getKeyFromLevelsName(List nodes, String nodeName) {
+	// String prefix = getKeyFromLevels(nodes);
+	// String[] split = nodeName.split("::");
+	// return prefix + IMixinRequestor.MIXIN_NAME_SEPARATOR
+	// + tclNameToKey(split[split.length - 1]);
+	// }
 
 	private String getNamespacePrefix() {
 		StringBuffer prefix = new StringBuffer();
@@ -71,7 +82,8 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 	}
 
 	private String tclNameToKey(String name) {
-		return TclParseUtil.tclNameTo(name, IMixinRequestor.MIXIN_NAME_SEPARATOR);
+		return TclParseUtil.tclNameTo(name,
+				IMixinRequestor.MIXIN_NAME_SEPARATOR);
 	}
 
 	public boolean visit(MethodDeclaration s) throws Exception {
@@ -101,6 +113,9 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 			}
 		}
 		if (info.key != null) {
+			if (signature) {
+				info.object = new TclProc();
+			}
 			this.requestor.reportElement(info);
 		}
 		// System.out.println("Report proc or instproc:" + info.key);
@@ -121,6 +136,16 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 			info.key = this.getKeyFromLevels(levels)
 					+ IMixinRequestor.MIXIN_NAME_SEPARATOR + tclNameToKey(name);
 		}
+		if (signature) {
+			switch (method.getKind()) {
+			case XOTclMethodDeclaration.KIND_INSTPROC:
+				info.object = new XOTclInstProc();
+				break;
+			case XOTclMethodDeclaration.KIND_PROC:
+				info.object = new XOTclProc();
+				break;
+			}
+		}
 		this.requestor.reportElement(info);
 		// System.out.println("Report proc or instproc:" + info.key);
 	}
@@ -131,6 +156,41 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 	}
 
 	public boolean visit(Statement s) throws Exception {
+		if (s instanceof XOTclFieldDeclaration) {
+			XOTclFieldDeclaration var = (XOTclFieldDeclaration) s;
+			String name = var.getName();
+			TypeDeclaration type = var.getDeclaringType();
+			List levels = TclParseUtil.findLevelsTo(this.moduleDeclaration,
+					type);
+
+			ElementInfo info = new ElementInfo();
+			info.key = this.getKeyFromLevels(levels)
+					+ IMixinRequestor.MIXIN_NAME_SEPARATOR
+					+ this.tclNameToKey(name);
+			if (signature) {
+				info.object = new TclField();
+			}
+			this.requestor.reportElement(info);
+		} else if (s instanceof FieldDeclaration) {
+			FieldDeclaration field = (FieldDeclaration) s;
+			ElementInfo info = new ElementInfo();
+			// We need to filter arrays.
+			if (!TclParseUtil.isArrayVariable(field.getName())) {
+				info.key = this.getNamespacePrefix()
+						+ IMixinRequestor.MIXIN_NAME_SEPARATOR
+						+ this.tclNameToKey(field.getName());
+			} else {
+				info.key = this.getNamespacePrefix()
+						+ IMixinRequestor.MIXIN_NAME_SEPARATOR
+						+ this.tclNameToKey(TclParseUtil.extractArrayName(field
+								.getName()));
+			}
+			if (signature) {
+				info.object = new TclField();
+			}
+			this.requestor.reportElement(info);
+		}
+
 		return super.visit(s);
 	}
 
@@ -140,13 +200,22 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 			return true;
 		}
 		// This is Tcl namespaces
-		if ((s.getModifiers() & IXOTclModifiers.AccXOTcl) == 0) {
+		if ((s.getModifiers() & IXOTclModifiers.AccXOTcl) != 0) {
 			ElementInfo info = new ElementInfo();
 
 			info.key = this.getNamespacePrefix() + tclNameToKey(s.getName());
 			this.requestor.reportElement(info);
 			// System.out.println("Report Tcl namespace:" + info.key);
 			this.namespaceNames.push(s);
+			if (signature) {
+				if (s instanceof XOTclObjectDeclaration) {
+					info.object = new XOTclObject();
+				} else {
+					XOTclClass tclClass = new XOTclClass();
+					info.object = tclClass;
+					tclClass.setNamespace(this.getNamespacePrefix());
+				}
+			}
 		} else {
 			ElementInfo info = new ElementInfo();
 
@@ -154,6 +223,9 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 			this.requestor.reportElement(info);
 			// System.out.println("Report XOTcl type:" + info.key);
 			this.namespaceNames.push(s);
+			if( signature ) {
+				info.object = new TclNamespace();
+			}
 		}
 		return true;
 	}

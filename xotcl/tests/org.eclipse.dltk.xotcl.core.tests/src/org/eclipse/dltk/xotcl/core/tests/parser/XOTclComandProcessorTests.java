@@ -7,7 +7,6 @@ import junit.framework.TestCase;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
-import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.tcl.internal.parsers.raw.SimpleTclParser;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;

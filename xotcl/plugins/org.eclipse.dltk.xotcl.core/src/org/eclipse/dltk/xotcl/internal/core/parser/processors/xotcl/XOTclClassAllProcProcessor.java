@@ -32,6 +32,9 @@ import org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.Messages;
 
 public class XOTclClassAllProcProcessor extends AbstractTclCommandProcessor {
 
+	private static final String KIND_PROC_STR = "proc";
+	private static final String KIND_INSTPROC_STR = "instproc";
+
 	public XOTclClassAllProcProcessor() {
 	}
 
@@ -115,6 +118,20 @@ public class XOTclClassAllProcProcessor extends AbstractTclCommandProcessor {
 		if (decl instanceof TypeDeclaration) {
 			((TypeDeclaration)decl).getMethodList().add(method);
 		}
+		/**
+		 * Parse method kind.
+		 */
+		Expression kind = statement.getAt(1);
+		String kindName = this.extractName(kind);
+		if( kindName != null ) {
+			if( KIND_PROC_STR.equals(kindName)) {
+				method.setKind(XOTclMethodDeclaration.KIND_PROC);
+			}
+			else if( KIND_INSTPROC_STR.equals(kindName)) {
+				method.setKind(XOTclMethodDeclaration.KIND_INSTPROC);
+			}
+		}
+		
 		parser.parse(content, procCode.sourceStart() + 1, block);
 		return method;
 	}

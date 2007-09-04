@@ -1,16 +1,12 @@
 package org.eclipse.dltk.xotcl.core.ast.xotcl;
 
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.declarations.FieldDeclaration;
-import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.utils.CorePrinter;
 
-public class XOTclVariableDeclaration extends FieldDeclaration {
+public class XOTclVariableDeclaration extends XOTclFieldDeclaration {
 	private Expression initializer;
-	private TypeDeclaration type;
-	private String name;
 	public XOTclVariableDeclaration(SimpleReference name, Expression initializer, int start, int end) {
 		super(name.getName(), name.sourceStart(), name.sourceEnd(), start, end);
 		this.initializer = initializer;
@@ -32,17 +28,5 @@ public class XOTclVariableDeclaration extends FieldDeclaration {
 			this.initializer.printNode(output);
 		}
 		output.formatPrintLn("");
-	}
-	public void setDeclaringType( TypeDeclaration type ) {
-		this.type = type;
-	}
-	public TypeDeclaration getDeclaringType() {
-		return this.type;
-	}
-	public void setDeclaringTypeName(String name) {
-		this.name = name;
-	}
-	public String getDeclaringTypeName() {
-		return this.name;
 	}
 }

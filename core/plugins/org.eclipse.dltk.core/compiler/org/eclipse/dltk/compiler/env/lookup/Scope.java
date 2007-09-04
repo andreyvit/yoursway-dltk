@@ -51,7 +51,7 @@ public abstract class Scope {
 		return null;
 	}
 
-	public final SourceModuleScope compilationUnitScope() {
+	public final SourceModuleScope sourceModuleScope() {
 		Scope lastScope = null;
 		Scope scope = this;
 		do {

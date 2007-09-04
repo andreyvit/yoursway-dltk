@@ -1,4 +1,4 @@
-package org.eclipse.dltk.xotcl.core;
+package org.eclipse.dltk.xotcl.internal.core.search;
 
 import java.util.List;
 
@@ -13,12 +13,13 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclSelectionEngine;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnAST;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnNode;
+import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodCallStatement;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclProcCallStatement;
 
-public class XOTclSelectionEngine extends TclSelectionEngine {
+public class XOTclSelectionEngineOld extends TclSelectionEngine {
 	protected void searchInMethod(final ASTNode node, IParent element,
 			ASTNode nde) {
 		MethodDeclaration method = (MethodDeclaration) nde;
@@ -118,7 +119,7 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 		int position = selOn.getPosition();
 		if (st.getClassInstanceName().sourceStart() <= position
 				&& position < st.getClassInstanceName().sourceEnd()) {
-			TypeDeclaration type = st.getType();
+			TypeDeclaration type = st.getDeclaringType();
 			addElementFromASTNode(type);
 		}
 	}
@@ -186,13 +187,13 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 		if (callName.sourceStart() <= position
 				&& position < callName.sourceEnd()) {
 			XOTclInstanceVariable variable = st.getInstanceVariable();
-			TypeDeclaration type = variable.getType();
+			TypeDeclaration type = variable.getDeclaringType();
 			MethodDeclaration[] methods = type.getMethods();
 			searchMethodsList(callName, methods);
 		} else if (st.getInstNameRef().sourceStart() <= position
 				&& position < st.getInstNameRef().sourceEnd()) {
 			XOTclInstanceVariable variable = st.getInstanceVariable();
-			TypeDeclaration type = variable.getType();
+			TypeDeclaration type = variable.getDeclaringType();
 			addElementFromASTNode(type);
 		}
 	}
