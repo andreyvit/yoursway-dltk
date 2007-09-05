@@ -26,7 +26,7 @@ public class EuropaInstallConfiguration implements IConfigurationProvider {
 		installer.setTitle(options
 				.getString(InstallOptions.OPTION_PRODUCT_NAME)
 				+ " Installer");
-		
+			
 		// Welcome step
 		ScrollablePromptUserStep welcomeStep = new CheckAdminPrivilegesStep(
 				installer);

@@ -10,16 +10,21 @@
    </launcherArgs>
 
    <plugins>
+      <plugin id="org.eclipse.ant.core"/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.jobs"/>
       <plugin id="org.eclipse.core.runtime"/>
       <plugin id="org.eclipse.core.runtime.compatibility.auth"/>
       <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment="true"/>
+      <plugin id="org.eclipse.core.variables"/>
       <plugin id="org.eclipse.dltk.installer"/>
+      <plugin id="org.eclipse.epp.installer.archive"/>
       <plugin id="org.eclipse.epp.installer.core"/>
+      <plugin id="org.eclipse.epp.installer.core.linux" fragment="true"/>
       <plugin id="org.eclipse.epp.installer.core.win32" fragment="true"/>
       <plugin id="org.eclipse.epp.installer.ui"/>
+      <plugin id="org.eclipse.epp.sfx.archive"/>
       <plugin id="org.eclipse.equinox.app"/>
       <plugin id="org.eclipse.equinox.common"/>
       <plugin id="org.eclipse.equinox.preferences"/>

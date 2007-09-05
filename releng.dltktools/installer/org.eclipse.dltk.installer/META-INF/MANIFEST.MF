@@ -6,4 +6,5 @@ Bundle-Version: 0.5.0
 Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.epp.installer.core,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.epp.installer.archive
