@@ -101,7 +101,7 @@
 		
 		<archivetask
 			packagetype="exe"
-			command="eclipse/eclipse.exe -product org.eclipse.dltk.installer.installer"
+			command="eclipse/eclipse.exe -product org.eclipse.dltk.installer.installer -vmargs -Dinstaller.jar.path=$#launcher#"
 			archivefile="${buildDirectory}/${buildLabel}/install"
 			rootdir="${packRoot}"
 			templates="${pde.builder.path}/plugins/templates/"
