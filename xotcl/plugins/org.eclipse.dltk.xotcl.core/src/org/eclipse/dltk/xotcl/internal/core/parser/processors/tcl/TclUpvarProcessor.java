@@ -17,7 +17,7 @@ public class TclUpvarProcessor extends AbstractTclCommandProcessor {
 	}
 
 	public ASTNode process(TclCommand command, ITclParser parser, int offset, ASTNode parent) {
-		TclStatement statement = (TclStatement) parser.processLocal(command, offset);
+		TclStatement statement = (TclStatement) parser.processLocal(command, offset, parent);
 		int statementsCount = statement.getCount();
 		if (statementsCount < 2) {
 			// TODO: Add error reporting here.

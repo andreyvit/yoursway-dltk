@@ -159,4 +159,8 @@ public class ModuleDeclaration extends ASTNode {
 	}
 	public void rebuildMethods() {
 	}
+
+	public void removeStatement(Statement node) {
+		this.body.removeStatement(node);
+	}
 }

@@ -1,13 +1,16 @@
 package org.eclipse.dltk.xotcl.internal.core.parser;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.internal.resources.AliasManager.AddToCollectionDoit;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.tcl.ast.TclStatement;
+import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.ITclSourceParser;
 import org.eclipse.dltk.tcl.internal.parsers.raw.SimpleTclParser;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
@@ -21,6 +24,7 @@ import org.eclipse.dltk.xotcl.core.ITclParser;
 import org.eclipse.dltk.xotcl.core.TclParseUtil;
 import org.eclipse.dltk.xotcl.core.ITclCommandDetector.CommandInfo;
 import org.eclipse.dltk.xotcl.core.TclParseUtil.CodeModel;
+import org.eclipse.dltk.xotcl.core.ast.TclAdvancedExecuteExpression;
 
 public class XOTclSourceParser implements ITclSourceParser, ITclParser {
 	private IProblemReporter problemReporter;
@@ -29,7 +33,8 @@ public class XOTclSourceParser implements ITclSourceParser, ITclParser {
 	private char[] fileName;
 	private int startPos = 0;
 	private ModuleDeclaration moduleDeclaration;
-//	private Map commandParserCache = new HashMap();
+
+	// private Map commandParserCache = new HashMap();
 
 	public ModuleDeclaration parse(char[] fileName, char[] source,
 			IProblemReporter reporter) {
@@ -47,19 +52,21 @@ public class XOTclSourceParser implements ITclSourceParser, ITclParser {
 	ITclCommandProcessor localProcessor = new ITclCommandProcessor() {
 		public ASTNode process(TclCommand command, ITclParser parser,
 				int offset, ASTNode parent) {
-//			if (commandParserCache.containsKey(command)) {
-//				ASTNode st = (ASTNode) commandParserCache.get(command);
-//				if (parent != null) {
-//					TclParseUtil.addToDeclaration(parent, st);
-//				}
-//				return st;
-//			}
+			// if (commandParserCache.containsKey(command)) {
+			// ASTNode st = (ASTNode) commandParserCache.get(command);
+			// if (parent != null) {
+			// TclParseUtil.addToDeclaration(parent, st);
+			// }
+			// return st;
+			// }
 			TclStatement st = TclParseUtil.convertToAST(command, parser,
 					offset, XOTclSourceParser.this.content,
 					XOTclSourceParser.this.startPos);
-//			commandParserCache.put(command, st);
+			// commandParserCache.put(command, st);
 			if (parent != null) {
 				TclParseUtil.addToDeclaration(parent, st);
+				// Replace execute expressions and parse they content.
+				convertExecuteToBlocks(st);
 			}
 			return st;
 		}
@@ -71,8 +78,34 @@ public class XOTclSourceParser implements ITclSourceParser, ITclParser {
 		}
 	};
 
-	public ASTNode processLocal(TclCommand command, int offset) {
-		return this.localProcessor.process(command, this, offset, null);
+	private void convertExecuteToBlocks(TclStatement st) {
+		ASTNode[] nodes = (ASTNode[]) st.getExpressions().toArray(
+				new ASTNode[st.getCount()]);
+		for (int i = 0; i < nodes.length; i++) {
+			if (nodes[i] instanceof TclExecuteExpression) {
+
+				TclExecuteExpression tclExecuteExpression = ((TclExecuteExpression) nodes[i]);
+				String expression = tclExecuteExpression.getExpression();
+				expression = expression.substring(1, expression.length() - 1);
+				TclAdvancedExecuteExpression newExpr = new TclAdvancedExecuteExpression(
+						nodes[i].sourceStart() + 1, nodes[i].sourceEnd());
+				nodes[i] = newExpr;
+				st.setExpressions(Arrays.asList(nodes));
+				XOTclSourceParser.this.parse(expression, nodes[i].sourceStart()
+						- getStartPos(), newExpr);
+			}
+		}
+		st.setExpressions(Arrays.asList(nodes));
+	}
+
+	public ASTNode processLocal(TclCommand command, int offset, ASTNode parent) {
+		ASTNode node = this.localProcessor.process(command, this, offset, null);
+		if (node instanceof TclStatement) {
+			TclParseUtil.addToDeclaration(parent, node);
+			this.convertExecuteToBlocks((TclStatement) node);
+			TclParseUtil.removeFromDeclaration(parent, node);
+		}
+		return node;
 	}
 
 	public void parse(String content, int offset, ASTNode decl) {
@@ -95,7 +128,7 @@ public class XOTclSourceParser implements ITclSourceParser, ITclParser {
 			ITclCommandProcessor processor = this.locateProcessor(command,
 					content, offset, decl);
 			if (processor != null) {
-				if( processor.process(command, this, offset, decl) == null ) {
+				if (processor.process(command, this, offset, decl) == null) {
 					localProcessor.process(command, this, offset, decl);
 				}
 				// We thinks processor add node to parent by itself
@@ -113,7 +146,7 @@ public class XOTclSourceParser implements ITclSourceParser, ITclParser {
 		if (object instanceof TclWord) {
 			String name = TclParseUtil
 					.extractWord((TclElement) object, content);
-			if( name.startsWith("::")) {
+			if (name.startsWith("::")) {
 				name = name.substring(2);
 			}
 			ITclCommandProcessor processor = CommandManager.getInstance()

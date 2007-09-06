@@ -13,6 +13,6 @@ public interface ITclParser {
 	String substring(int start, int end);
 	IProblemReporter getProblemReporter();
 	char[] getFileName();
-	ASTNode processLocal(TclCommand command, int offset);
+	ASTNode processLocal(TclCommand command, int offset, ASTNode parent);
 	int getStartPos();
 }

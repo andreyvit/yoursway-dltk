@@ -25,7 +25,7 @@ public class XOTclObjectSetProcessor extends AbstractTclCommandProcessor {
 		}
 		TypeDeclaration type = (TypeDeclaration) this.getDetectedParameter();
 		
-		TclStatement statement = (TclStatement) parser.processLocal(command, offset);
+		TclStatement statement = (TclStatement) parser.processLocal(command, offset, parent);
 		if (statement.getCount() < 4) {
 			// This works like get command
 			return null;

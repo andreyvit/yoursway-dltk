@@ -25,7 +25,7 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 	public CommandInfo detectCommand(TclCommand command, int offset,
 			ModuleDeclaration module, ITclParser parser, ASTNode parent) {
 		TclStatement statement = (TclStatement) parser.processLocal(command,
-				offset);
+				offset, parent);
 		if (statement.getCount() == 0) {
 			return null;
 		}
@@ -64,7 +64,8 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 					if (info != null) {
 						return info;
 					}
-				} else {
+				}
+				else {
 					return new CommandInfo("#Class#$newInstance", type);
 				}
 
@@ -128,9 +129,13 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 		if (arg instanceof SimpleReference) {
 			String value = ((SimpleReference) arg).getName();
 
-			for (int i = 0; i < XOTclKeywords.XOTclCommandClassArgs.length; i++) {
-				if (value.equals(XOTclKeywords.XOTclCommandClassArgs[i])) {
-					return new CommandInfo("#Class#" + value, null);
+			TypeDeclaration type = TclParseUtil.findXOTclTypeDeclarationFrom(
+					module, parent, "Class");
+			if (type != null) {
+				for (int i = 0; i < XOTclKeywords.XOTclCommandClassArgs.length; i++) {
+					if (value.equals(XOTclKeywords.XOTclCommandClassArgs[i])) {
+						return new CommandInfo("#Class#" + value, type);
+					}
 				}
 			}
 			CommandInfo info = checkCreateType(statement, parent, arg, value);
@@ -153,10 +158,13 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 		Expression arg = statement.getAt(1);
 		if (arg instanceof SimpleReference) {
 			String value = ((SimpleReference) arg).getName();
-
-			for (int i = 0; i < XOTclKeywords.XOTclCommandObjectArgs.length; i++) {
-				if (value.equals(XOTclKeywords.XOTclCommandObjectArgs[i])) {
-					return new CommandInfo("#Object#" + value, null);
+			TypeDeclaration type = TclParseUtil.findXOTclTypeDeclarationFrom(
+					module, parent, "Object");
+			if (type != null) {
+				for (int i = 0; i < XOTclKeywords.XOTclCommandObjectArgs.length; i++) {
+					if (value.equals(XOTclKeywords.XOTclCommandObjectArgs[i])) {
+						return new CommandInfo("#Object#" + value, type);
+					}
 				}
 			}
 			CommandInfo info = checkCreateType(statement, parent, arg, value);
@@ -177,7 +185,9 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 			Expression arg, String value) {
 		if (value.equals("instproc") || value.equals("proc")
 				|| value.equals("set")) {
-			TypeDeclaration decl = createTypeAdd(statement, parent, arg, value);
+			String name = TclParseUtil.getNameFromNode(statement.getAt(0));
+			TypeDeclaration decl = createTypeAdd(statement, parent, statement
+					.getAt(0), name);
 			CommandInfo info = checkCommands(value, decl);
 			if (info != null) {
 				return info;
@@ -188,9 +198,8 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 
 	private TypeDeclaration createTypeAdd(TclStatement statement,
 			ASTNode parent, Expression arg, String value) {
-		TypeDeclaration decl = new TypeDeclaration(value,
-				arg.sourceStart(), arg.sourceEnd(),
-				statement.sourceStart(), statement.sourceEnd());
+		TypeDeclaration decl = new TypeDeclaration(value, arg.sourceStart(),
+				arg.sourceEnd(), arg.sourceStart(), arg.sourceEnd());
 		TclParseUtil.addToDeclaration(parent, decl);
 		return decl;
 	}

@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.xotcl.core.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.ast.statements.Block;
@@ -22,7 +23,7 @@ public class IfStatement extends Statement {
 	/**
 	 * Condition expression.
 	 */
-	private Statement fCondition;
+	private ASTNode fCondition;
 
 	/**
 	 * Then statement of if.
@@ -94,7 +95,7 @@ public class IfStatement extends Statement {
 	public void acceptThen( Statement statement ) {
 		this.fThenStatement = statement;
 	}
-	public void acceptCondition( Statement condition ) {
+	public void acceptCondition( ASTNode condition ) {
 		this.fCondition = condition;
 	}
 
@@ -111,7 +112,7 @@ public class IfStatement extends Statement {
 		return this.fThenStatement;
 	}
 
-	public Statement getCondition() {
+	public ASTNode getCondition() {
 		return this.fCondition;
 	}
 

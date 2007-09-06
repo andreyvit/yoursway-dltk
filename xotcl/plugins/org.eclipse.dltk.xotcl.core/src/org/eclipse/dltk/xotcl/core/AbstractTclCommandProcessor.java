@@ -63,7 +63,7 @@ public abstract class AbstractTclCommandProcessor implements
 	public Object getDetectedParameter( ) {
 		return this.parameter;
 	}
-	public String extractSimpleReference( ASTNode node ) {
+	public static String extractSimpleReference( ASTNode node ) {
 		if( node instanceof SimpleReference ) {
 			return ((SimpleReference)node).getName();
 		}

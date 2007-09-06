@@ -93,4 +93,8 @@ public class TclStatement extends Statement {
 
 		return value;
 	}
+
+	public void setExpressions(List asList) {
+		this.expressions = asList;
+	}
 }

@@ -23,7 +23,7 @@ public class XOTclClassProcCallProcessor extends AbstractTclCommandProcessor {
 		if( param == null || !(param instanceof TypeDeclaration)) {
 			return null;
 		}
-		TclStatement statement = (TclStatement) parser.processLocal(command, offset);
+		TclStatement statement = (TclStatement) parser.processLocal(command, offset, parent);
 		TypeDeclaration type = (TypeDeclaration) param;
 		Expression nameExpr = statement.getAt(1);
 		if( !(nameExpr instanceof SimpleReference ) ) {

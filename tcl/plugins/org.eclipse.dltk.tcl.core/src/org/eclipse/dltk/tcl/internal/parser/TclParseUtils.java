@@ -240,13 +240,18 @@ public class TclParseUtils {
 	public static SimpleReference extractVariableFromString(
 			StringLiteral literal, int pos) {
 		String content = nameFromBlock(literal.getValue(), '"', '"');
+		return extractVariableFromString(literal.sourceStart(), literal.sourceEnd(), pos, content);
+	}
+
+	public static SimpleReference extractVariableFromString(
+			int start, int end, int pos, String content) {
 		int position = pos - 1;
 		int index = content.lastIndexOf('$', position);
 		if (index != -1 && index < position) {
 			String sub = content.substring(index, position);
 			if (sub.indexOf(' ') == -1) {
-				return new SimpleReference(literal.sourceStart() + index + 1,
-						literal.sourceStart() + index + 1 + sub.length(), sub);
+				return new SimpleReference(start + index + 1,
+						end + index + 1 + sub.length(), sub);
 			}
 		}
 		return null;
@@ -332,7 +337,7 @@ public class TclParseUtils {
 		}
 		if (from >= content.length())
 			from--;
-		for (pos = from; pos < content.length(); ++pos) {
+		for (pos = from; pos > 0 && pos < content.length(); ++pos) {
 			if (checkBounds(content, pos)) {
 				if (content.charAt(pos) == '$' && pos == from) {
 					continue;
@@ -348,7 +353,10 @@ public class TclParseUtils {
 
 	private static boolean checkBounds(String content, int pos) {
 		char[] syms = { ' ', '\t', '\n', '\r', ']', '[', '}', '{', '(', ')',
-				'$', '\\' };
+				'$', '\\', ',' };
+		if( pos == -1 ) {
+			pos = 1;
+		}
 		char c = content.charAt(pos);
 		for (int i = 0; i < syms.length; ++i) {
 			if (syms[i] == c) {
@@ -365,7 +373,7 @@ public class TclParseUtils {
 		if (from >= content.length())
 			from--;
 		int pos;
-		for (pos = from; pos > 0; --pos) {
+		for (pos = from; pos > 0 && pos < content.length(); --pos) {
 			if (checkBounds(content, pos)) {
 				if (content.charAt(pos) == '$') {
 					return pos;

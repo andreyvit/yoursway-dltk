@@ -20,7 +20,7 @@ import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclClassParameterDeclaration;
 public class XOTclClassProcessor extends AbstractTclCommandProcessor {
 
 	public ASTNode process(TclCommand command, ITclParser parser, int offset, ASTNode parent) {
-		TclStatement statement = (TclStatement) parser.processLocal(command, offset);
+		TclStatement statement = (TclStatement) parser.processLocal(command, offset, parent);
 		if( statement.getCount() < 2 ) {
 			this.report(parser, "Incorrect XOTcl class declaration", statement, ProblemSeverities.Error);
 			return null;

@@ -31,7 +31,7 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 		return null;
 	}
 	public ASTNode process(TclCommand command, ITclParser parser, int offset, ASTNode parent) {
-		ASTNode namespace = parser.processLocal(command, offset);
+		ASTNode namespace = parser.processLocal(command, offset, parent);
 		if( !(namespace instanceof TclStatement) ) {
 			return null;
 		}

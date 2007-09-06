@@ -1,9 +1,9 @@
 package org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl;
 
-import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.xotcl.core.AbstractTclCommandProcessor;
@@ -17,7 +17,7 @@ public class TclGlobalVariableProcessor extends AbstractTclCommandProcessor {
 	}
 
 	public ASTNode process(TclCommand command, ITclParser parser, int offset, ASTNode parent) {
-		TclStatement statement = (TclStatement) parser.processLocal(command, offset);
+		TclStatement statement = (TclStatement) parser.processLocal(command, offset, parent);
 		int statementsCount = statement.getCount();
 		if (statementsCount < 2) {
 			// TODO: Add error reporting here.
@@ -36,15 +36,15 @@ public class TclGlobalVariableProcessor extends AbstractTclCommandProcessor {
 				ret = var;
 			}
 			else {
-				if(!( ret instanceof ASTListNode  )) {
-					ASTListNode list = new ASTListNode();
-					list.addNode(ret);
+				if(!( ret instanceof Block  )) {
+					Block list = new Block();
+					list.addStatement(ret);
 					list.setStart(ret.sourceStart());
 					list.setEnd(ret.sourceEnd());
 					ret = list;
 				}
-				((ASTListNode)ret).addNode(var);
-				((ASTListNode)ret).setEnd(var.sourceEnd());
+				((Block)ret).addStatement(var);
+				((Block)ret).setEnd(var.sourceEnd());
 			}
 		}
 		if( ret != null ) {

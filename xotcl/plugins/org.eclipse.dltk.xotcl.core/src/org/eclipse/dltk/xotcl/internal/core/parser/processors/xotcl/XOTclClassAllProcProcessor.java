@@ -40,7 +40,7 @@ public class XOTclClassAllProcProcessor extends AbstractTclCommandProcessor {
 
 	public ASTNode process(TclCommand command, ITclParser parser, int offset,
 			ASTNode parent) {
-		ASTNode node = parser.processLocal(command, offset);
+		ASTNode node = parser.processLocal(command, offset, parent);
 		if (!(node instanceof TclStatement)) {
 			return null;
 		}

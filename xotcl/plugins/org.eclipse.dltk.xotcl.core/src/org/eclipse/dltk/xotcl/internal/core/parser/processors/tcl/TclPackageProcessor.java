@@ -19,7 +19,7 @@ public class TclPackageProcessor extends AbstractTclCommandProcessor implements
 	}
 
 	public ASTNode process(TclCommand command, ITclParser parser, int offset,ASTNode parent) {
-		TclStatement statement = (TclStatement) parser.processLocal(command, offset);
+		TclStatement statement = (TclStatement) parser.processLocal(command, offset, parent);
 		if (statement.getCount() < 3) {
 			// TODO: Add error reporting here.
 			if (DLTKCore.DEBUG) {

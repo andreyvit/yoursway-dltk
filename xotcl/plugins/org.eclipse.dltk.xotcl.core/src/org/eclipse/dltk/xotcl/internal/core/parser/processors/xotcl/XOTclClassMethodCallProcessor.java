@@ -24,7 +24,7 @@ public class XOTclClassMethodCallProcessor extends AbstractTclCommandProcessor {
 			return null;
 		}
 		TclStatement statement = (TclStatement) parser.processLocal(command,
-				offset);
+				offset, parent);
 		XOTclInstanceVariable inst = (XOTclInstanceVariable) param;
 		Expression nameExpr = statement.getAt(1);
 		if (!(nameExpr instanceof SimpleReference)) {

@@ -22,12 +22,12 @@ public class XOTclParserUtilTests extends TestCase {
 			"}\n" +
 			"namespace eval a {\n" +
 			"	namespace eval b {\n" +
-			"		proc c::d { } {\n" +
+			"		proc ::c::d { } {\n" +
 			"		}\n" +
 			"	}\n" +
 			"}\n";
 		ModuleDeclaration module = this.parser( content );
-		ASTNode nodes[] = findNodeByName(module, "c::d");
+		ASTNode nodes[] = findNodeByName(module, "::c::d");
 		assertEquals(1, nodes.length);
 		ASTNode node  = nodes[0];
 		TypeDeclaration type = TclParseUtil.findTclTypeDeclarationFrom( module, node);
@@ -86,12 +86,12 @@ public class XOTclParserUtilTests extends TestCase {
 			"}\n" +
 			"namespace eval a {\n" +
 			"	namespace eval b {\n" +
-			"		proc c::d::q { } {\n" +
+			"		proc ::c::d::q { } {\n" +
 			"		}\n" +
 			"	}\n" +
 			"}\n";
 		ModuleDeclaration module = this.parser( content );
-		ASTNode nodes[] = findNodeByName(module, "c::d::q");
+		ASTNode nodes[] = findNodeByName(module, "::c::d::q");
 		assertEquals(1, nodes.length);
 		ASTNode node  = nodes[0];
 		TypeDeclaration type = TclParseUtil.findTclTypeDeclarationFrom( module, node);
@@ -110,12 +110,12 @@ public class XOTclParserUtilTests extends TestCase {
 			"	namespace eval c {\n" +
 			"	}\n" +
 			"	namespace eval b {\n" +
-			"		proc c::d::q { } {\n" +
+			"		proc ::c::d::q { } {\n" +
 			"		}\n" +
 			"	}\n" +
 			"}\n";
 		ModuleDeclaration module = this.parser( content );
-		ASTNode nodes[] = findNodeByName(module, "c::d::q");
+		ASTNode nodes[] = findNodeByName(module, "::c::d::q");
 		assertEquals(1, nodes.length);
 		ASTNode node  = nodes[0];
 		TypeDeclaration type = TclParseUtil.findTclTypeDeclarationFrom( module, node);
@@ -136,19 +136,19 @@ public class XOTclParserUtilTests extends TestCase {
 			"		}\n" +
 			"	}\n" +
 			"	namespace eval b {\n" +
-			"		proc c::d::q { } {\n" +
+			"		proc ::c::d::q { } {\n" +
 			"		}\n" +
 			"	}\n" +
 			"}\n";
 		ModuleDeclaration module = this.parser( content );
-		ASTNode nodes[] = findNodeByName(module, "c::d::q");
+		ASTNode nodes[] = findNodeByName(module, "::c::d::q");
 		assertEquals(1, nodes.length);
 		ASTNode node  = nodes[0];
 		TypeDeclaration type = TclParseUtil.findTclTypeDeclarationFrom( module, node);
 		assertNotNull(type);
 		assertEquals("d", type.getName());
 		List levelsTo = TclParseUtil.findLevelsTo(module, type);
-		assertEquals(4, levelsTo.size());
+		assertEquals(3, levelsTo.size());
 	}
 	public void testParseUtil007() throws Throwable {
 		String content = 
@@ -156,12 +156,12 @@ public class XOTclParserUtilTests extends TestCase {
 			"}\n" +
 			"namespace eval a {\n" +
 			"	namespace eval b {\n" +
-			"		proc c::d::q { } {\n" +
+			"		proc ::c::d::q { } {\n" +
 			"		}\n" +
 			"	}\n" +
 			"}\n";
 		ModuleDeclaration module = this.parser( content );
-		ASTNode nodes[] = findNodeByName(module, "c::d::q");
+		ASTNode nodes[] = findNodeByName(module, "::c::d::q");
 		assertEquals(1, nodes.length);
 		ASTNode node  = nodes[0];
 		TypeDeclaration type = TclParseUtil.findTclTypeDeclarationFrom( module, node);

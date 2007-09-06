@@ -25,6 +25,7 @@ import org.eclipse.dltk.tcl.internal.parsers.raw.SimpleTclParser;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclElement;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclWord;
+import org.eclipse.dltk.xotcl.core.ast.AdvancedTclBlockExpression;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
 
@@ -205,15 +206,16 @@ public class TclParseUtil {
 				wordText = content.substring(offset + word.getStart(), word
 						.getEnd()
 						+ 1 + offset);
-				TclBlockExpression tclBlockExpression = new TclBlockExpression(
+				AdvancedTclBlockExpression tclBlockExpression = new AdvancedTclBlockExpression(
 						startPos + offset + bs.getStart(), startPos + offset
 								+ bs.getEnd() + 1, wordText);
+				// Advanced content for tcl blocks.
 				tclBlockExpression.setFilename(parser.getFileName());
 				exprs.add(tclBlockExpression);
 			} else if (o instanceof CommandSubstitution
 					&& (word.getContents().size() == 1)) {
 				CommandSubstitution bs = (CommandSubstitution) o;
-
+				
 				exprs.add(new TclExecuteExpression(startPos + offset
 						+ bs.getStart(), startPos + offset + bs.getEnd() + 1,
 						wordText));
@@ -236,6 +238,17 @@ public class TclParseUtil {
 			((MethodDeclaration) decl).getStatements().add(node);
 		} else if (decl instanceof Block) {
 			((Block) decl).addStatement(node);
+		}
+	}
+	public static void removeFromDeclaration(ASTNode decl, ASTNode node) {
+		if (decl instanceof ModuleDeclaration && node instanceof Statement) {
+			((ModuleDeclaration) decl).removeStatement((Statement) node);
+		} else if (decl instanceof TypeDeclaration) {
+			((TypeDeclaration) decl).getStatements().remove(node);
+		} else if (decl instanceof MethodDeclaration) {
+			((MethodDeclaration) decl).getStatements().remove(node);
+		} else if (decl instanceof Block) {
+			((Block) decl).removeStatement(node);
 		}
 	}
 
@@ -524,5 +537,16 @@ public class TclParseUtil {
 			arrayIndex = arrayIndex.substring(0, arrayIndex.length() - 1);
 		}
 		return arrayIndex;
+	}
+
+	public static ASTNode getScopeParent(ModuleDeclaration module, ASTNode node) {
+		List levels = TclParseUtil.findLevelsTo(module, node);
+		for (int i = 0; i < levels.size(); i++) {
+			ASTNode nde = (ASTNode) levels.get(levels.size() - i - 1);
+			if( nde instanceof TypeDeclaration || nde instanceof MethodDeclaration || nde instanceof ModuleDeclaration && nde instanceof Block ) {
+				return nde;
+			}
+		}
+		return module;
 	}
 }

@@ -21,9 +21,13 @@ public abstract class TclMixinElement implements ITclMixinElement {
 	 * Search for module model element from specified module.
 	 */
 	protected IModelElement findElement(ISourceModule module, String key) {
-		String[] split = key.split(IMixinRequestor.MIXIN_NAME_SEPARATOR);
+		String[] split = key.split("\\" +IMixinRequestor.MIXIN_NAME_SEPARATOR);
 		IParent parent = module;
-		for (int i = 0; i < split.length; i++) {
+		int q = 0;
+		if( split[0].equals("")) {
+			q = 1;
+		}
+		for (int i = q; i < split.length; i++) {
 			try {
 				IModelElement[] children = parent.getChildren();
 				for (int j = 0; j < children.length; j++) {

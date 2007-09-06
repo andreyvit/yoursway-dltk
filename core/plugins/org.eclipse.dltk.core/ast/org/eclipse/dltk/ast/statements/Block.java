@@ -80,6 +80,11 @@ public class Block extends Expression {
 		output.formatPrint("");
 		output.dedent();
 	}
-	
-	
+
+	public void removeStatement(ASTNode node) {
+		if (node == null) {
+			throw new IllegalArgumentException();
+		}
+		statements.remove(node);
+	}
 }

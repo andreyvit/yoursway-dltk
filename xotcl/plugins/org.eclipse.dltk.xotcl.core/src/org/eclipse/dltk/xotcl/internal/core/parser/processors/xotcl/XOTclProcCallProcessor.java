@@ -32,7 +32,7 @@ public class XOTclProcCallProcessor extends AbstractTclCommandProcessor {
 			return null;
 		}
 		TclStatement statement = (TclStatement) parser.processLocal(command,
-				offset);
+				offset, parent);
 
 		Expression nameExpr = statement.getAt(1);
 		if (!(nameExpr instanceof SimpleReference)) {

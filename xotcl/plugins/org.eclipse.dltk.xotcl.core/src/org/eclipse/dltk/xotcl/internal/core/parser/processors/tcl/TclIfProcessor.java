@@ -3,8 +3,8 @@ package org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
@@ -23,7 +23,7 @@ public class TclIfProcessor extends AbstractTclCommandProcessor {
 
 	public ASTNode process(TclCommand command, ITclParser parser, int offset, ASTNode parent) {
 		TclStatement statement = (TclStatement) parser.processLocal(command,
-				offset);
+				offset, parent);
 		List exprs = statement.getExpressions();
 		int start = statement.sourceStart();
 		int end = statement.sourceEnd();
@@ -175,16 +175,28 @@ public class TclIfProcessor extends AbstractTclCommandProcessor {
 		return null;
 	}
 
-	private Statement extractCondition(List exprs, int i, ITclParser parser) {
+	private ASTNode extractCondition(List exprs, int i, ITclParser parser) {
 		if( exprs.size() <= i ) {
 			return null;
 		}
 		ASTNode node = (ASTNode) exprs.get(i);
 		if (node instanceof TclBlockExpression) {
 			TclBlockExpression bl = (TclBlockExpression) node;
-			String block = bl.getBlock();
-			return new StringLiteral(bl.sourceStart() + 1, bl.sourceEnd() - 1,
-					block.substring(1, block.length() - 1));
+			List parseBlock = bl.parseBlock();
+			ASTListNode list = new ASTListNode(bl.sourceStart() + 1, bl.sourceEnd() - 1);
+			for (int j = 0; j < parseBlock.size(); j++) {
+				Object st = parseBlock.get(j);
+				if( st instanceof TclStatement ) {
+					List expressions = ((TclStatement)st).getExpressions();
+					for (int k = 0; k < expressions.size(); k++) {
+						list.addNode((ASTNode)expressions.get(k));
+					}
+				}
+			}
+			return list;
+//			String block = bl.getBlock();
+//			return new StringLiteral(bl.sourceStart() + 1, bl.sourceEnd() - 1,
+//					block.substring(1, block.length() - 1));
 		}
 		else if( node instanceof SimpleReference ) {
 			return (Statement) node;
