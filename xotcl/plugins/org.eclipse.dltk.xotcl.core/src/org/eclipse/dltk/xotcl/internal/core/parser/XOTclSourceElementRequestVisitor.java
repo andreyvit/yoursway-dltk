@@ -144,7 +144,16 @@ public class XOTclSourceElementRequestVisitor extends
 		// first, try existent
 		if (this.fRequestor.enterTypeAppend(type, "::")) {
 			this.namespacesLevel.push(fullyQualified);
-			return new ExitFromType(1, decl.sourceEnd(), false, true);
+			if( type.startsWith("::")) {
+				String name2 = type.substring(2);
+				String[] split = name2.split("::");
+				return new ExitFromType(split.length, decl.sourceEnd(), false, true);
+			}
+			else {
+				String name2 = type;
+				String[] split = name2.split("::");
+				return new ExitFromType(split.length, decl.sourceEnd(), false, true);
+			}
 		} 
 		// This is not correct for Tcl
 //		else if (!fqn && !onlyCurrent) { // look in global

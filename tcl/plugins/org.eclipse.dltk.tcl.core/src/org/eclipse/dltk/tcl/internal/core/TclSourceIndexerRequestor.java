@@ -39,19 +39,28 @@ public class TclSourceIndexerRequestor extends SourceIndexerRequestor {
 //						.println("We need to correct index global namespace append from other namespace..");
 //			}
 			String name = fullName.substring(2);
-			this.indexer.addTypeDeclaration(Modifiers.AccNameSpace,
-					this.pkgName, name, enclosingTypeNames(), null);
-			this.pushTypeName(name.toCharArray());
-		} else {
-			String name = fullName;
-			int pos = fullName.lastIndexOf("::");
-			if (pos != -1) {
-				name = fullName.substring(pos + 2);
+			String[] split = name.split("::");
+			for (int i = 0; i < split.length; i++) {
+				this.indexer.addTypeDeclaration(Modifiers.AccNameSpace,
+						this.pkgName, split[i], enclosingTypeNames(), null);
+				this.pushTypeName(split[i].toCharArray());
 			}
-			// TODO: Need to support entering into complex name.
-			this.indexer.addTypeDeclaration(Modifiers.AccNameSpace,
-					this.pkgName, name, enclosingTypeNames(), null);
-			this.pushTypeName(name.toCharArray());
+		} else {
+//			String name = fullName;
+//			int pos = fullName.lastIndexOf("::");
+//			if (pos != -1) {
+//				name = fullName.substring(pos + 2);
+//			}
+//			// TODO: Need to support entering into complex name.
+//			this.indexer.addTypeDeclaration(Modifiers.AccNameSpace,
+//					this.pkgName, name, enclosingTypeNames(), null);
+//			this.pushTypeName(name.toCharArray());
+			String[] split = fullName.split("::");
+			for (int i = 0; i < split.length; i++) {
+				this.indexer.addTypeDeclaration(Modifiers.AccNameSpace,
+						this.pkgName, split[i], enclosingTypeNames(), null);
+				this.pushTypeName(split[i].toCharArray());
+			}
 		}
 		return true;
 	}
@@ -69,5 +78,16 @@ public class TclSourceIndexerRequestor extends SourceIndexerRequestor {
 			String parentName, String delimiter) {
 		enterMethod(info);
 		return false;
+	}
+	public void pushTypeName(char[] typeName) {
+		String type = new String(typeName);
+//		System.out.println("PUSH type:" + type);
+		if( type.indexOf("::") != -1) {
+			typeName = type.replaceAll("::", "\\$").toCharArray();
+		}
+		if (depth == enclosingTypeNames.length)
+			System.arraycopy(enclosingTypeNames, 0,
+					enclosingTypeNames = new char[depth * 2][], 0, depth);
+		enclosingTypeNames[depth++] = typeName;
 	}
 }

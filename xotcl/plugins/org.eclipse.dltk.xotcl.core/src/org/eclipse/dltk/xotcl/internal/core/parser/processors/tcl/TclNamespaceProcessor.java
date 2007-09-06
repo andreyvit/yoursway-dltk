@@ -70,7 +70,11 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 			ASTNode realParent = findRealParent(parent);
 			if( realParent instanceof TypeDeclaration ) {
 				TypeDeclaration t = ((TypeDeclaration)realParent);
-				type.setEnclosingTypeName(t.getEnclosingTypeName() + "$" + t.getName() );
+				String enclosingTypeName = t.getEnclosingTypeName();
+				if( enclosingTypeName.indexOf("::") != -1) {
+					enclosingTypeName = enclosingTypeName.replaceAll("::", "\\$");
+				}
+				type.setEnclosingTypeName(enclosingTypeName + "$" + t.getName().replaceAll("::", "\\$") );
 			}
 			addToParent(parent, type);
 			if( code instanceof TclBlockExpression ) {

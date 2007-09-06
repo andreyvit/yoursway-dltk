@@ -54,7 +54,7 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 
 	private String getKeyFromLevels(List nodes) {
 		return TclParseUtil.getElementFQN(nodes,
-				IMixinRequestor.MIXIN_NAME_SEPARATOR);
+				IMixinRequestor.MIXIN_NAME_SEPARATOR, this.moduleDeclaration);
 	}
 
 	// private String getKeyFromLevelsName(List nodes, String nodeName) {
@@ -106,7 +106,7 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 					List levels = TclParseUtil.findLevelsTo(
 							this.moduleDeclaration, type);
 					String[] mName = name.split("::");
-					info.key = this.getKeyFromLevels(levels)
+					info.key = this.getKeyFromLevels(levels)	
 							+ IMixinRequestor.MIXIN_NAME_SEPARATOR
 							+ mName[mName.length - 1];
 				}
@@ -134,7 +134,8 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 			List levels = TclParseUtil.findLevelsTo(this.moduleDeclaration,
 					declaringXOTclType);
 			info.key = this.getKeyFromLevels(levels)
-					+ IMixinRequestor.MIXIN_NAME_SEPARATOR + tclNameToKey(name);
+					+ IMixinRequestor.MIXIN_NAME_SEPARATOR + 
+					tclNameToKey(name);
 		}
 		if (signature) {
 			switch (method.getKind()) {
@@ -176,12 +177,16 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 			ElementInfo info = new ElementInfo();
 			// We need to filter arrays.
 			if (!TclParseUtil.isArrayVariable(field.getName())) {
-				info.key = this.getNamespacePrefix()
+				List levels = TclParseUtil.findLevelsTo(this.moduleDeclaration, s);
+				info.key = TclParseUtil.getElementFQN(levels, IMixinRequestor.MIXIN_NAME_SEPARATOR, moduleDeclaration)//this.getNamespacePrefix()
 						+ IMixinRequestor.MIXIN_NAME_SEPARATOR
 						+ this.tclNameToKey(field.getName());
+				if( info.key.startsWith("{")) {
+					info.key = info.key.substring(1);
+				}
 			} else {
 				info.key = this.getNamespacePrefix()
-						+ IMixinRequestor.MIXIN_NAME_SEPARATOR
+//						+ IMixinRequestor.MIXIN_NAME_SEPARATOR
 						+ this.tclNameToKey(TclParseUtil.extractArrayName(field
 								.getName()));
 			}
@@ -220,6 +225,9 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 			ElementInfo info = new ElementInfo();
 
 			info.key = this.getNamespacePrefix() + tclNameToKey(s.getName());
+			if( info.key.startsWith("{")) {
+				info.key = info.key.substring(1);
+			}
 			this.requestor.reportElement(info);
 			// System.out.println("Report XOTcl type:" + info.key);
 			this.namespaceNames.push(s);

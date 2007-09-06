@@ -22,9 +22,9 @@ public class SourceIndexerRequestor implements ISourceElementRequestor,
 		IIndexConstants {
 	protected SourceIndexer indexer;
 	// char[] packageName = CharOperation.NO_CHAR;
-	char[][] enclosingTypeNames = new char[5][];
-	int depth = 0;
-	int methodDepth = 0;
+	protected char[][] enclosingTypeNames = new char[5][];
+	protected int depth = 0;
+	protected int methodDepth = 0;
 	protected char[] pkgName = CharOperation.NO_CHAR;
 
 	public SourceIndexerRequestor(SourceIndexer indexer) {
@@ -126,6 +126,7 @@ public class SourceIndexerRequestor implements ISourceElementRequestor,
 		char[][] qualification = new char[this.depth][];
 		System.arraycopy(this.enclosingTypeNames, 0, qualification, 0,
 				this.depth);
+		
 		return qualification;
 	}
 
@@ -221,6 +222,7 @@ public class SourceIndexerRequestor implements ISourceElementRequestor,
 
 	public void popTypeName() {
 		if (depth > 0) {
+//			System.out.println("POPNAME:" + new String( enclosingTypeNames[depth-1]));
 			enclosingTypeNames[--depth] = null;
 		} 
 //		else if (JobManager.VERBOSE) {

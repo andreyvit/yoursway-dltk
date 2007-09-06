@@ -125,7 +125,7 @@ public class TclASTBuilder {
 									statement.sourceStart(), statement.sourceEnd());
 							if( node instanceof TypeDeclaration ) {
 								TypeDeclaration t = ((TypeDeclaration)node);
-								nsType.setEnclosingTypeName(t.getEnclosingTypeName() + "$" + t.getName() );
+								nsType.setEnclosingTypeName(t.getEnclosingTypeName().replaceAll("::", "\\$") + "$" + t.getName().replaceAll("::", "\\$") );
 							}
 							replaceChild(node, statement, nsType);
 							List/* < Statement > */inner = null;
