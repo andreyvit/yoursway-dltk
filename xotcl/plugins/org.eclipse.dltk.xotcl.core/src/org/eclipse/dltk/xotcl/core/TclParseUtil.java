@@ -582,6 +582,9 @@ public class TclParseUtil {
 	public static ASTNode getPrevParent(ModuleDeclaration module,
 			ASTNode declaringType) {
 		ASTNode parent = TclParseUtil.getScopeParent(module, declaringType );
+		if( parent instanceof ModuleDeclaration ) {
+			return parent;
+		}
 		List levels = TclParseUtil.findLevelsTo(module, parent);
 		return (ASTNode) levels.get(levels.size() - 2);
 	}
