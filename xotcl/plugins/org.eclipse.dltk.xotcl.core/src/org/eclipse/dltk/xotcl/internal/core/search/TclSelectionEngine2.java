@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.Modifiers;
@@ -26,7 +25,6 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.ScriptSelectionEngine;
 import org.eclipse.dltk.compiler.env.ISourceModule;
@@ -44,7 +42,6 @@ import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchMatch;
-import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.internal.codeassist.select.SelectionNodeFound;
@@ -225,7 +222,14 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 						(XOTclMethodDeclaration) node,
 						this.actualSelectionStart);
 			}
+			else if( node instanceof TclStatement ) {
+				// We need to check for XOTcl command calls.
+				processXOTclCommandCalls((TclStatement)node);
+			}
 		}
+	}
+
+	private void processXOTclCommandCalls(TclStatement node) {		
 	}
 
 	private void findMethodFromMixin(String name, ASTNode parent) {
