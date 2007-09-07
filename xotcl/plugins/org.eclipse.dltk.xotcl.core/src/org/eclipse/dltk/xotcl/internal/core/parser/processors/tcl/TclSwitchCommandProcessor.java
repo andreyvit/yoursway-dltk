@@ -70,7 +70,15 @@ public class TclSwitchCommandProcessor extends AbstractTclCommandProcessor {
 			blockContent = blockContent.substring(1, blockContent.length() - 1);
 			Block bl = new Block(block.sourceStart(), block.sourceEnd());
 			parser.parse(blockContent, block.sourceStart() + 1 - parser.getStartPos(), bl);
-			statements = ((TclStatement)bl.getStatements().get(0)).getExpressions();
+			List statements2 = bl.getStatements();
+			Object stmt = statements2.get(0);
+			if( stmt instanceof TclStatement ) {
+				statements = ((TclStatement)stmt).getExpressions();
+			}
+			else {
+//				System.out.println("C");
+				statements = new ArrayList();
+			}
 		}
 		else { 
 			statements = statement.getExpressions();

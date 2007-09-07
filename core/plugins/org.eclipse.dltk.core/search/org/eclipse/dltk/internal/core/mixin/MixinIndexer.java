@@ -54,7 +54,7 @@ public class MixinIndexer extends AbstractIndexer {
 				MixinIndexer.this.addMixin(info.key.toCharArray());
 			}
 			else {
-				System.out.println("error");
+				//System.out.println("error");
 			}
 		}	
 	}

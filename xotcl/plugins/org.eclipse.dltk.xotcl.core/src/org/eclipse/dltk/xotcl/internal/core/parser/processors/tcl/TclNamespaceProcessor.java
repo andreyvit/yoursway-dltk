@@ -65,30 +65,12 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 
 		if (sNameSpaceArg.equals("eval")) {
 			final int FIRST_ARGUMENT_POSITION = 3;
-			
-			List statements = new ArrayList(statement.getCount() - FIRST_ARGUMENT_POSITION);
-			for (int i = FIRST_ARGUMENT_POSITION; i < statement.getCount(); i++) {
-				Expression expr = statement.getAt(i);
-				if (expr == null) {
-					return null;
-					// TODO: Add error reporting here.
-					// continue;
-				}
-				if (expr instanceof TclBlockExpression) {
-					TclBlockExpression block = (TclBlockExpression)expr;
-					String blockContent = block.getBlock();
-					blockContent = blockContent.substring(1, blockContent.length() - 1);
-					Block bl = new Block(block.sourceStart(), block.sourceEnd());
-					parser.parse(blockContent, block.sourceStart() + 1 - parser.getStartPos(), bl);
-					statements.addAll(bl.getStatements());
-				}
-				else statements.add(expr);
-			}
-			int start = statement.getAt(FIRST_ARGUMENT_POSITION).sourceStart();
-			int end = statement.getAt(statement.getCount()-1).sourceEnd();
-			Expression code = (1 == statements.size() && statements.get(0) instanceof Block)?//XXX: incorrect behavior 
-								(Block)statements.get(0) : new Block(start, end, statements);
 
+			// List statements = new ArrayList(statement.getCount() -
+			// FIRST_ARGUMENT_POSITION);
+			int start = statement.getAt(FIRST_ARGUMENT_POSITION).sourceStart();
+			int end = statement.getAt(statement.getCount() - 1).sourceEnd();
+			Block code = new Block(start, end);
 			TypeDeclaration type = new TypeDeclaration(sNameSpaceName,
 					nameSpaceName.sourceStart(), nameSpaceName.sourceEnd(),
 					namespace.sourceStart(), namespace.sourceEnd());
@@ -100,10 +82,30 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 						+ t.getName());
 			}
 			addToParent(parent, type);
-			type.setBody((Block)code);
+			type.setBody((Block) code);
+			for (int i = FIRST_ARGUMENT_POSITION; i < statement.getCount(); i++) {
+				Expression expr = statement.getAt(i);
+				if (expr == null) {
+					return null;
+					// TODO: Add error reporting here.
+					// continue;
+				}
+				if (expr instanceof TclBlockExpression) {
+					TclBlockExpression block = (TclBlockExpression) expr;
+					String blockContent = block.getBlock();
+					blockContent = blockContent.substring(1, blockContent
+							.length() - 1);
+					parser.parse(blockContent, block.sourceStart() + 1
+							- parser.getStartPos(), code);
+//					code.getStatements().addAll(bl.getStatements());
+				} else {
+					code.getStatements().add(expr);
+				}
+			}
+
 			return type;
 		} else {
-			System.out.println("Cool");
+			// System.out.println("Cool");
 		}
 		return null;
 	}

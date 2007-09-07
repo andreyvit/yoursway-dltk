@@ -209,7 +209,6 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 			ElementInfo info = new ElementInfo();
 
 			info.key = this.getNamespacePrefix() + tclNameToKey(s.getName());
-			this.requestor.reportElement(info);
 			// System.out.println("Report Tcl namespace:" + info.key);
 			this.namespaceNames.push(s);
 			if (signature) {
@@ -221,6 +220,7 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 					tclClass.setNamespace(this.getNamespacePrefix());
 				}
 			}
+			this.requestor.reportElement(info);
 		} else {
 			ElementInfo info = new ElementInfo();
 
@@ -228,12 +228,12 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 			if( info.key.startsWith("{")) {
 				info.key = info.key.substring(1);
 			}
-			this.requestor.reportElement(info);
 			// System.out.println("Report XOTcl type:" + info.key);
 			this.namespaceNames.push(s);
 			if( signature ) {
 				info.object = new TclNamespace();
 			}
+			this.requestor.reportElement(info);
 		}
 		return true;
 	}

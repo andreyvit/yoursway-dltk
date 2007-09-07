@@ -494,7 +494,10 @@ public class TclParseUtil {
 		}
 		return null;
 	}
-
+	public static String getElementFQN( ASTNode node, String separator, ModuleDeclaration module) {
+		List nodes = findLevelsTo(module, node);
+		return getElementFQN(nodes, separator, module);
+	}
 	public static String getElementFQN(List nodes, String separator,
 			ModuleDeclaration module) {
 		StringBuffer prefix = new StringBuffer();
@@ -574,5 +577,12 @@ public class TclParseUtil {
 			}
 		}
 		return module;
+	}
+
+	public static ASTNode getPrevParent(ModuleDeclaration module,
+			ASTNode declaringType) {
+		ASTNode parent = TclParseUtil.getScopeParent(module, declaringType );
+		List levels = TclParseUtil.findLevelsTo(module, parent);
+		return (ASTNode) levels.get(levels.size() - 2);
 	}
 }

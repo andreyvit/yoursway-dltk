@@ -60,8 +60,12 @@ import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodCallStatement;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclProcCallStatement;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.TclMixinModel;
+import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.ITclMixinElement;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.TclField;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.TclProc;
+import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclClass;
+import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclInstProc;
+import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclObject;
 
 public class TclSelectionEngine2 extends ScriptSelectionEngine {
 	public static boolean DEBUG = DLTKCore.DEBUG_SELECTION;
@@ -173,7 +177,7 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 					return;
 				}
 				findMethodFromMixin(name, astNodeParent);
-//				findMethodFromSearch(name);
+				// findMethodFromSearch(name);
 				if (this.selectionElements.size() > 0) {
 					return;
 				}
@@ -190,8 +194,12 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 					if (!fqnName.startsWith("::"))
 						fqnName = "::" + fqnName;
 					findMethodFromMixin(name, astNodeParent);
-//					findMethodFromSearch(fqnName);
+					// findMethodFromSearch(fqnName);
 				}
+			}
+			ASTNode originalNode = key.getOriginalNode();
+			if (originalNode instanceof TclStatement) {
+				processXOTclCommandCalls((TclStatement) originalNode);
 			}
 		} else if (astNode instanceof SelectionOnVariable) {
 			SelectionOnVariable completion = (SelectionOnVariable) astNode;
@@ -221,25 +229,151 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 				processSelectXOTclMethodDeclaration(
 						(XOTclMethodDeclaration) node,
 						this.actualSelectionStart);
-			}
-			else if( node instanceof TclStatement ) {
+			} else if (node instanceof TclStatement) {
 				// We need to check for XOTcl command calls.
-				processXOTclCommandCalls((TclStatement)node);
+				processXOTclCommandCalls((TclStatement) node);
 			}
 		}
 	}
 
-	private void processXOTclCommandCalls(TclStatement node) {		
+	private void processXOTclCommandCalls(TclStatement node) {
+		// System.out.println("CoOL:" + node);
+		if (node.getCount() == 0) {
+			return;
+		}
+		ASTNode parent = TclParseUtil.getPrevParent(this.parser.getModule(),
+				node);
+		String prefix = TclParseUtil.getElementFQN(parent,
+				IMixinRequestor.MIXIN_NAME_SEPARATOR, this.parser.getModule());
+		Expression commandExpr = node.getAt(0);
+		String command = TclParseUtil.getNameFromNode(commandExpr);
+		if (command != null && command.startsWith("::")) {
+			String name = command.substring(2);
+			// Check class proc call
+			String[] split = name.split("::");
+			IModelElement[] typeMixin = findTypeMixin(tclNameToKey(name),
+					split[split.length - 1]);
+			checkMixinTypeForMethod(node, commandExpr, typeMixin, prefix);
+		} else if (command != null) {
+			String[] split = command.split("::");
+			if (parent instanceof ModuleDeclaration) {
+				IModelElement[] typeMixin = findTypeMixin(
+						tclNameToKey(command), split[split.length - 1]);
+				checkMixinTypeForMethod(node, commandExpr, typeMixin, prefix);
+			} else {
+				IModelElement[] typeMixin = findTypeMixin(prefix
+						+ IMixinRequestor.MIXIN_NAME_SEPARATOR
+						+ tclNameToKey(command), split[split.length - 1]);
+				checkMixinTypeForMethod(node, commandExpr, typeMixin, prefix);
+			}
+		}
+	}
+
+	private boolean checkMixinTypeForMethod(TclStatement node,
+			Expression commandExpr, IModelElement[] typeMixin, String prefix) {
+		for (int i = 0; i < typeMixin.length; i++) {
+			// Select type if point on type
+			if (commandExpr.sourceStart() <= this.actualSelectionStart
+					&& this.actualSelectionStart <= commandExpr.sourceEnd()) {
+				this.selectionElements.add(typeMixin[i]);
+				return true;
+			}
+			Expression callExpr = node.getAt(1);
+			if (node.getCount() > 1 && typeMixin[i] instanceof IParent) {
+				if (callExpr.sourceStart() <= this.actualSelectionStart
+						&& this.actualSelectionStart <= callExpr.sourceEnd()) {
+					String call = TclParseUtil.getNameFromNode(callExpr);
+					IParent eParent = (IParent) typeMixin[i];
+					if (call != null) {
+						// search for method call in selected type
+						IModelElement[] children = null;
+						try {
+							children = eParent.getChildren();
+						} catch (ModelException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						if (children != null) {
+							for (int j = 0; j < children.length; j++) {
+								if (children[j].getElementType() == IModelElement.METHOD
+										&& children[j].getElementName().equals(
+												call)) {
+									this.selectionElements.add(children[j]);
+									return true;
+								}
+							}
+						}
+						// We need to check super type of this type.
+						if (eParent instanceof IType) {
+							IType type = (IType) eParent;
+							try {
+								String[] superClasses = type.getSuperClasses();
+								String command = TclParseUtil
+										.getNameFromNode(commandExpr);
+								if (superClasses != null) {
+									for (int j = 0; j < superClasses.length; j++) {
+
+										IModelElement[] ptypeMixin = findTypeMixin(
+												(prefix.length() > 0 ? prefix
+														+ IMixinRequestor.MIXIN_NAME_SEPARATOR
+														: "")
+														+ tclNameToKey(superClasses[j]),
+												superClasses[j]);
+										String[] split = superClasses[j]
+												.split("::");
+										checkMixinTypeForMethod(node,
+												commandExpr, typeMixin,
+												split[split.length - 1]);
+									}
+								}
+							} catch (ModelException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private IModelElement[] findTypeMixin(String pattern, String name) {
+		IMixinElement[] find = TclMixinModel.getInstance().find(pattern + "*");
+		List elements = new ArrayList();
+		for (int i = 0; i < find.length; i++) {
+			Object[] allObjects = find[i].getAllObjects();
+			for (int j = 0; j < allObjects.length; j++) {
+				if (allObjects[j] != null
+						&& (allObjects[j] instanceof XOTclClass || allObjects[j] instanceof XOTclObject)) {
+					String name2 = null;
+					if (allObjects[j] instanceof XOTclClass) {
+						XOTclClass field = (XOTclClass) allObjects[j];
+						name2 = field.getName();
+					} else if (allObjects[j] instanceof XOTclObject) {
+						XOTclObject field = (XOTclObject) allObjects[j];
+						name2 = field.getName();
+					}
+					if (name2 != null && name.equals(name2)) {
+						// this.selectionElements.add(field.getModelElement());
+						elements.add(((ITclMixinElement) allObjects[j])
+								.getModelElement());
+					}
+				}
+			}
+		}
+		return (IModelElement[]) elements.toArray(new IModelElement[elements
+				.size()]);
 	}
 
 	private void findMethodFromMixin(String name, ASTNode parent) {
 		// TODO Auto-generated method stub
-		if( name.startsWith("::")) {
+		if (name.startsWith("::")) {
 			if (name.startsWith("::")) {
 				name = name.substring(2);
 			}
 			String oName = name;
-			if( name.indexOf("::") != -1 ) {
+			if (name.indexOf("::") != -1) {
 				String[] split = name.split("::");
 				oName = split[split.length - 1];
 			}
@@ -307,17 +441,73 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 				if (declaringType != null) {
 					IModelElement parent = findElementFromNode(declaringType);
 					if (parent != null) {
-						List methodList = declaringType.getMethodList();
-						for (Iterator iterator = methodList.iterator(); iterator
-								.hasNext();) {
-							MethodDeclaration method = (MethodDeclaration) iterator
-									.next();
-							if (method.getName().equals(callName.toString())) {
+						if (checkMethodFrom(declaringType, callName, parent)) {
+							return;
+						}
+						// Check mixin for selected class.
+						String typeMixin = TclParseUtil.getElementFQN(
+								declaringType,
+								IMixinRequestor.MIXIN_NAME_SEPARATOR,
+								this.parser.getModule())
+								+ IMixinRequestor.MIXIN_NAME_SEPARATOR;
 
-								IModelElement methodElement = findChildrenByName(
-										method.getName(), (IParent) parent);
-								this.selectionElements.add(methodElement);
-								return;
+						findMethodMixin(typeMixin
+								+ tclNameToKey(callName.getName()), callName
+								.getName());
+						// Check super.
+						ASTNode nde = TclParseUtil.getPrevParent(this.parser
+								.getModule(), declaringType);
+						List supersToHandle = new ArrayList();
+						fillSuperClassesTo(declaringType, supersToHandle);
+						TypeDeclaration prev = declaringType;
+						while (supersToHandle.size() > 0) {
+							String superClassName = (String) supersToHandle
+									.get(0);
+							supersToHandle.remove(0);
+							TypeDeclaration sType = TclParseUtil
+									.findXOTclTypeDeclarationFrom(this.parser
+											.getModule(), nde, superClassName);
+							if (sType != null) {
+								prev = sType;
+								fillSuperClassesTo(sType, supersToHandle);
+								IModelElement sParent = findElementFromNode(sType);
+								if (checkMethodFrom(sType, callName, sParent)) {
+									return;
+								}
+								String sTypeMixin = TclParseUtil.getElementFQN(
+										sType,
+										IMixinRequestor.MIXIN_NAME_SEPARATOR,
+										this.parser.getModule())
+										+ IMixinRequestor.MIXIN_NAME_SEPARATOR;
+
+								findXOTclMethodMixin(sTypeMixin
+										+ tclNameToKey(callName.getName()),
+										callName.getName());
+								// System.out.println("COOL");
+							} else {
+								String sTypeMixin = "";
+								if (prev != null) {
+									ASTNode prevParent = TclParseUtil
+											.getPrevParent(this.parser
+													.getModule(), prev);
+									if (prevParent instanceof ModuleDeclaration) {
+										sTypeMixin = tclNameToKey(superClassName)
+												+ IMixinRequestor.MIXIN_NAME_SEPARATOR;
+									} else {
+										sTypeMixin = TclParseUtil
+												.getElementFQN(
+														prevParent,
+														IMixinRequestor.MIXIN_NAME_SEPARATOR,
+														this.parser.getModule())
+												+ IMixinRequestor.MIXIN_NAME_SEPARATOR
+												+ tclNameToKey(superClassName)
+												+ IMixinRequestor.MIXIN_NAME_SEPARATOR;
+									}
+								}
+
+								findXOTclMethodMixin(sTypeMixin
+										+ tclNameToKey(callName.getName()),
+										callName.getName());
 							}
 						}
 					}
@@ -325,6 +515,40 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 			} else if (instName.sourceStart() <= position
 					&& position <= instName.sourceEnd()) {
 				addElementFromASTNode(instanceVariable);
+			}
+		}
+	}
+
+	private boolean checkMethodFrom(TypeDeclaration declaringType,
+			SimpleReference callName, IModelElement parent) {
+		List methodList = declaringType.getMethodList();
+		for (Iterator iterator = methodList.iterator(); iterator.hasNext();) {
+			MethodDeclaration method = (MethodDeclaration) iterator.next();
+			if (method.getName().equals(callName.toString())) {
+
+				IModelElement methodElement = findChildrenByName(method
+						.getName(), (IParent) parent);
+				this.selectionElements.add(methodElement);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void fillSuperClassesTo(TypeDeclaration declaringType,
+			List supersToHandle) {
+		if (declaringType == null) {
+			return;
+		}
+		if (declaringType.getSuperClasses() == null) {
+			return;
+		}
+		List superClasses = declaringType.getSuperClasses().getChilds();
+		for (int i = 0; i < superClasses.size(); i++) {
+			String superClassName = TclParseUtil
+					.getNameFromNode((ASTNode) superClasses.get(i));
+			if (superClassName != null) {
+				supersToHandle.add(superClassName);
 			}
 		}
 	}
@@ -395,7 +619,7 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 			}
 			// findFieldFromSearch(name);
 		}
-		if( this.selectionElements.size() > 0 ) {
+		if (this.selectionElements.size() > 0) {
 			return;
 		}
 		// Search from mixins if not found local.
@@ -404,45 +628,46 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 
 	private void findFieldFromMixin(ASTNode parent, String name) {
 
-//		findFieldMixin(IMixinRequestor.MIXIN_NAME_SEPARATOR + tclNameToKey(name), name);
-		if( name.startsWith("$")) {
+		// findFieldMixin(IMixinRequestor.MIXIN_NAME_SEPARATOR +
+		// tclNameToKey(name), name);
+		if (name.startsWith("$")) {
 			name = name.substring(1);
 		}
-		if( name.startsWith("{") || name.endsWith( "}" )) {
-			name = name.substring(1, name.length() - 1 );
+		if (name.startsWith("{") || name.endsWith("}")) {
+			name = name.substring(1, name.length() - 1);
 		}
-		if( parent instanceof ModuleDeclaration || name.startsWith("::")) {
+		if (parent instanceof ModuleDeclaration || name.startsWith("::")) {
 			if (name.startsWith("::")) {
 				name = name.substring(2);
 			}
 			String oName = name;
-			if( name.indexOf("::") != -1 ) {
+			if (name.indexOf("::") != -1) {
 				String[] split = name.split("::");
 				oName = split[split.length - 1];
 			}
 			findFieldMixin(tclNameToKey(name), oName);
-		}
-		else {
-			List levels = TclParseUtil.findLevelsTo(this.parser.getModule(), parent);
+		} else {
+			List levels = TclParseUtil.findLevelsTo(this.parser.getModule(),
+					parent);
 			String keyFromLevels = getKeyFromLevels(levels);
-			findFieldMixin(keyFromLevels + IMixinRequestor.MIXIN_NAME_SEPARATOR + name, name);
+			findFieldMixin(keyFromLevels + IMixinRequestor.MIXIN_NAME_SEPARATOR
+					+ name, name);
 		}
 	}
+
 	private String tclNameToKey(String name) {
 		return TclParseUtil.tclNameTo(name,
 				IMixinRequestor.MIXIN_NAME_SEPARATOR);
 	}
 
 	private void findFieldMixin(String pattern, String name) {
-		IMixinElement[] find = TclMixinModel.getInstance().find( pattern + "*"
-				);
+		IMixinElement[] find = TclMixinModel.getInstance().find(pattern + "*");
 		for (int i = 0; i < find.length; i++) {
 			Object[] allObjects = find[i].getAllObjects();
 			for (int j = 0; j < allObjects.length; j++) {
-				if (allObjects[i] != null
-						&& allObjects[i] instanceof TclField) {
+				if (allObjects[i] != null && allObjects[i] instanceof TclField) {
 					TclField field = (TclField) allObjects[i];
-					if (field.getName().equals(name)) {
+					if (name.equals(field.getName())) {
 						this.selectionElements.add(field.getModelElement());
 						return;
 					}
@@ -450,16 +675,15 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 			}
 		}
 	}
+
 	private void findMethodMixin(String pattern, String name) {
-		IMixinElement[] find = TclMixinModel.getInstance().find( pattern + "*"
-				);
+		IMixinElement[] find = TclMixinModel.getInstance().find(pattern + "*");
 		for (int i = 0; i < find.length; i++) {
 			Object[] allObjects = find[i].getAllObjects();
 			for (int j = 0; j < allObjects.length; j++) {
-				if (allObjects[i] != null
-						&& allObjects[i] instanceof TclProc) {
-					TclProc field = (TclProc) allObjects[i];
-					if (field.getName().equals(name)) {
+				if (allObjects[j] != null && allObjects[j] instanceof TclProc) {
+					TclProc field = (TclProc) allObjects[j];
+					if (name.equals(field.getName())) {
 						this.selectionElements.add(field.getModelElement());
 						return;
 					}
@@ -467,6 +691,24 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 			}
 		}
 	}
+
+	private void findXOTclMethodMixin(String pattern, String name) {
+		IMixinElement[] find = TclMixinModel.getInstance().find(pattern + "*");
+		for (int i = 0; i < find.length; i++) {
+			Object[] allObjects = find[i].getAllObjects();
+			for (int j = 0; j < allObjects.length; j++) {
+				if (allObjects[j] != null
+						&& allObjects[j] instanceof XOTclInstProc) {
+					XOTclInstProc field = (XOTclInstProc) allObjects[j];
+					if (name.equals(field.getName())) {
+						this.selectionElements.add(field.getModelElement());
+						return;
+					}
+				}
+			}
+		}
+	}
+
 	private String getKeyFromLevels(List nodes) {
 		return TclParseUtil.getElementFQN(nodes,
 				IMixinRequestor.MIXIN_NAME_SEPARATOR, this.parser.getModule());

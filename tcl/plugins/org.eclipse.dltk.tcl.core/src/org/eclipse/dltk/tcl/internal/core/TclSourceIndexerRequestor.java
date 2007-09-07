@@ -13,6 +13,8 @@ import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.core.search.indexing.SourceIndexerRequestor;
 
 public class TclSourceIndexerRequestor extends SourceIndexerRequestor {
+	protected String[] realEnclosingTypeNames = new String[5];
+	protected int realdepth = 0;
 	public void acceptMethodReference(char[] methodName, int argCount,
 			int sourcePosition, int sourceEndPosition) {
 		// System.out.println("TclSourceIndexerRequestor:Add Method Reference: "
@@ -43,8 +45,9 @@ public class TclSourceIndexerRequestor extends SourceIndexerRequestor {
 			for (int i = 0; i < split.length; i++) {
 				this.indexer.addTypeDeclaration(Modifiers.AccNameSpace,
 						this.pkgName, split[i], enclosingTypeNames(), null);
-				this.pushTypeName(split[i].toCharArray());
+//				this.pushTypeName(split[i].toCharArray());
 			}
+			this.pushTypeName(name.toCharArray());
 		} else {
 //			String name = fullName;
 //			int pos = fullName.lastIndexOf("::");
@@ -59,8 +62,9 @@ public class TclSourceIndexerRequestor extends SourceIndexerRequestor {
 			for (int i = 0; i < split.length; i++) {
 				this.indexer.addTypeDeclaration(Modifiers.AccNameSpace,
 						this.pkgName, split[i], enclosingTypeNames(), null);
-				this.pushTypeName(split[i].toCharArray());
+//				this.pushTypeName(split[i].toCharArray());
 			}
+			this.pushTypeName(fullName.toCharArray());
 		}
 		return true;
 	}
@@ -79,15 +83,25 @@ public class TclSourceIndexerRequestor extends SourceIndexerRequestor {
 		enterMethod(info);
 		return false;
 	}
+	public void popTypeName() {
+		if (depth > 0) {
+			String name = realEnclosingTypeNames[realdepth-1];
+			realEnclosingTypeNames[--realdepth] = null;
+			String[] split = name.split("::");
+			for( int i = 0; i < split.length; ++i ) {
+				super.popTypeName();
+			}
+		} 
+	}
 	public void pushTypeName(char[] typeName) {
 		String type = new String(typeName);
-//		System.out.println("PUSH type:" + type);
-		if( type.indexOf("::") != -1) {
-			typeName = type.replaceAll("::", "\\$").toCharArray();
+		String[] split = type.split("::");
+		for (int i = 0; i < split.length; i++) {
+			super.pushTypeName(split[i].toCharArray());
 		}
-		if (depth == enclosingTypeNames.length)
-			System.arraycopy(enclosingTypeNames, 0,
-					enclosingTypeNames = new char[depth * 2][], 0, depth);
-		enclosingTypeNames[depth++] = typeName;
+		if (realdepth == realEnclosingTypeNames.length)
+			System.arraycopy(realEnclosingTypeNames, 0,
+					realEnclosingTypeNames = new String[depth * 2], 0, realdepth);
+		realEnclosingTypeNames[realdepth++] = type;
 	}
 }
