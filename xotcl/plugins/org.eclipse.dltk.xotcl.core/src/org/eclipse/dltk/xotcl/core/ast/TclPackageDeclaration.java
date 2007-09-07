@@ -21,6 +21,7 @@ public class TclPackageDeclaration extends Declaration {
 		this.setName(name.getName());
 		this.setNameStart(name.sourceStart());
 		this.setNameEnd(name.sourceEnd());
+		this.setStyle(style);
 		this.version = version;
 	}
 	public int getStyle() {

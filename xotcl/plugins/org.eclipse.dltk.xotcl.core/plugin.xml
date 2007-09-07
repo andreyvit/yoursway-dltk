@@ -30,6 +30,9 @@
          name="tcl commands"
          point="org.eclipse.dltk.xotcl.core.tclCommandProcessor">
       <processor
+            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclSwitchCommandProcessor"
+            id="switch"></processor>
+      <processor
             class="org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclNamespaceProcessor"
             id="namespace"></processor>
       <processor

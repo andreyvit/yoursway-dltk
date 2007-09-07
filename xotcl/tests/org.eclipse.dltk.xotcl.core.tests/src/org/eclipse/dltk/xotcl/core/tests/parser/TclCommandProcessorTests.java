@@ -3,9 +3,10 @@ package org.eclipse.dltk.xotcl.core.tests.parser;
 import java.util.Iterator;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
@@ -13,7 +14,6 @@ import org.eclipse.dltk.tcl.internal.parsers.raw.SimpleTclParser;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclParseException;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclScript;
-import org.eclipse.dltk.xotcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.xotcl.core.ast.IfStatement;
 import org.eclipse.dltk.xotcl.core.ast.TclCatchStatement;
 import org.eclipse.dltk.xotcl.core.ast.TclGlobalVariableDeclaration;
@@ -21,8 +21,6 @@ import org.eclipse.dltk.xotcl.core.ast.TclVariableDeclaration;
 import org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclCatchProcessor;
 import org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclGlobalVariableProcessor;
 import org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclIfProcessor;
-
-import junit.framework.TestCase;
 
 public class TclCommandProcessorTests extends TestCase
 {

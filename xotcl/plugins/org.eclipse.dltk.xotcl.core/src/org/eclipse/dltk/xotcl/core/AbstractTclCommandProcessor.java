@@ -1,19 +1,12 @@
 package org.eclipse.dltk.xotcl.core;
 
-import java.util.List;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.references.SimpleReference;
-import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
-import org.eclipse.dltk.tcl.internal.parsers.raw.SimpleTclParser;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclParseException;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclScript;
 
 public abstract class AbstractTclCommandProcessor implements
 		ITclCommandProcessor {

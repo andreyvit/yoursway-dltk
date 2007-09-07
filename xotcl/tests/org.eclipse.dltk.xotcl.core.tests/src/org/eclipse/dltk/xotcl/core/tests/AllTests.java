@@ -1,11 +1,11 @@
 package org.eclipse.dltk.xotcl.core.tests;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
 import org.eclipse.dltk.xotcl.core.tests.parser.TclCommandProcessorTests;
 import org.eclipse.dltk.xotcl.core.tests.parser.XOTclCommandProcessorTests;
 import org.eclipse.dltk.xotcl.core.tests.parser.XOTclParserUtilTests;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 public class AllTests {
 

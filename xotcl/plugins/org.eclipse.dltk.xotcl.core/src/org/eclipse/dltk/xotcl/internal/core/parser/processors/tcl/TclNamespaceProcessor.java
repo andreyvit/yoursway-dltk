@@ -1,5 +1,7 @@
 package org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
@@ -20,7 +22,8 @@ import org.eclipse.dltk.xotcl.core.TclParseUtil;
 
 public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 	private ASTNode findRealParent(ASTNode node) {
-		List levels = TclParseUtil.findLevelsTo(this.getModuleDeclaration(), node);
+		List levels = TclParseUtil.findLevelsTo(this.getModuleDeclaration(),
+				node);
 		for (int i = levels.size() - 1; i >= 0; --i) {
 			ASTNode n = (ASTNode) levels.get(i);
 			if (n instanceof MethodDeclaration || n instanceof TypeDeclaration
@@ -30,9 +33,11 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 		}
 		return null;
 	}
-	public ASTNode process(TclCommand command, ITclParser parser, int offset, ASTNode parent) {
+
+	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+			ASTNode parent) {
 		ASTNode namespace = parser.processLocal(command, offset, parent);
-		if( !(namespace instanceof TclStatement) ) {
+		if (!(namespace instanceof TclStatement)) {
 			return null;
 		}
 		TclStatement statement = (TclStatement) namespace;
@@ -40,7 +45,8 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 		if (nameSpaceArg == null || !(nameSpaceArg instanceof SimpleReference)) {
 			// TODO: Add error reporting here.
 			if (DLTKCore.DEBUG) {
-				System.err.println("tcl: namespace argument is null or not simple reference");
+				System.err
+						.println("tcl: namespace argument is null or not simple reference");
 			}
 			// continue;
 		}
@@ -54,40 +60,49 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 			return null;
 		}
 
-		Expression code = statement.getAt(3);
-		if (code == null || !(code instanceof TclBlockExpression)) {
-			return null;
-			// TODO: Add error reporting here.
-			// continue;
-		}
-
 		String sNameSpaceArg = ((SimpleReference) nameSpaceArg).getName();
 		String sNameSpaceName = ((SimpleReference) nameSpaceName).getName();
 
 		if (sNameSpaceArg.equals("eval")) {
-			TypeDeclaration type = new TypeDeclaration(sNameSpaceName, nameSpaceName.sourceStart(), nameSpaceName.sourceEnd(), namespace.sourceStart(), namespace.sourceEnd());
+			final int FIRST_ARGUMENT_POSITION = 3;
+			
+			List statements = new ArrayList(statement.getCount() - FIRST_ARGUMENT_POSITION);
+			for (int i = FIRST_ARGUMENT_POSITION; i < statement.getCount(); i++) {
+				Expression expr = statement.getAt(i);
+				if (expr == null) {
+					return null;
+					// TODO: Add error reporting here.
+					// continue;
+				}
+				if (expr instanceof TclBlockExpression) {
+					TclBlockExpression block = (TclBlockExpression)expr;
+					String blockContent = block.getBlock();
+					blockContent = blockContent.substring(1, blockContent.length() - 1);
+					Block bl = new Block(block.sourceStart(), block.sourceEnd());
+					parser.parse(blockContent, block.sourceStart() + 1 - parser.getStartPos(), bl);
+					statements.addAll(bl.getStatements());
+				}
+				else statements.add(expr);
+			}
+			int start = statement.getAt(FIRST_ARGUMENT_POSITION).sourceStart();
+			int end = statement.getAt(statement.getCount()-1).sourceEnd();
+			Expression code = (1 == statements.size() && statements.get(0) instanceof Block)?//XXX: incorrect behavior 
+								(Block)statements.get(0) : new Block(start, end, statements);
+
+			TypeDeclaration type = new TypeDeclaration(sNameSpaceName,
+					nameSpaceName.sourceStart(), nameSpaceName.sourceEnd(),
+					namespace.sourceStart(), namespace.sourceEnd());
 			type.setModifiers(Modifiers.AccNameSpace);
 			ASTNode realParent = findRealParent(parent);
-			if( realParent instanceof TypeDeclaration ) {
-				TypeDeclaration t = ((TypeDeclaration)realParent);
-				String enclosingTypeName = t.getEnclosingTypeName();
-				if( enclosingTypeName.indexOf("::") != -1) {
-					enclosingTypeName = enclosingTypeName.replaceAll("::", "\\$");
-				}
-				type.setEnclosingTypeName(enclosingTypeName + "$" + t.getName().replaceAll("::", "\\$") );
+			if (realParent instanceof TypeDeclaration) {
+				TypeDeclaration t = ((TypeDeclaration) realParent);
+				type.setEnclosingTypeName(t.getEnclosingTypeName() + "$"
+						+ t.getName());
 			}
 			addToParent(parent, type);
-			if( code instanceof TclBlockExpression ) {
-				TclBlockExpression block = (TclBlockExpression) code;
-				String blockContent = block.getBlock();
-				blockContent = blockContent.substring(1, blockContent.length() - 1);
-				Block bl = new Block(code.sourceStart(), code.sourceEnd());
-				type.setBody(bl);
-				parser.parse(blockContent, block.sourceStart() + 1 - parser.getStartPos(), bl );
-			}
+			type.setBody((Block)code);
 			return type;
-		}
-		else {
+		} else {
 			System.out.println("Cool");
 		}
 		return null;

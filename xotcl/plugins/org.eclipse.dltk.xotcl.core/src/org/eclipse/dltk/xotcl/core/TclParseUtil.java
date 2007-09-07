@@ -339,16 +339,17 @@ public class TclParseUtil {
 			int len = levels.size();
 			// We need to observe only previous level.
 			// for (int j = 0; j < len; ++j) {
-			ASTNode astNodeParent = (ASTNode) levels.get(len - 1/* - j */);
-			List childs = TclASTUtil.getStatements(astNodeParent);
-			if (childs != null) {
-				TypeDeclaration ty = findTclTypeCheckASTLevel(originalName,
-						split, childs, onlyXOTcl);
-				if (ty != null) {
-					return ty;
+			if (len > 0) {
+				ASTNode astNodeParent = (ASTNode) levels.get(len - 1/* - j */);
+				List childs = TclASTUtil.getStatements(astNodeParent);
+				if (childs != null) {
+					TypeDeclaration ty = findTclTypeCheckASTLevel(originalName,
+							split, childs, onlyXOTcl);
+					if (ty != null) {
+						return ty;
+					}
 				}
 			}
-			// }
 		} else {
 			List childs = TclASTUtil.getStatements(module);
 			if (childs == null) {

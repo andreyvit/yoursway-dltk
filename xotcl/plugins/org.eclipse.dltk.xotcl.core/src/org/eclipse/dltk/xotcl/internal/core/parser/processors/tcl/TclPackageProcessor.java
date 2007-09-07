@@ -37,11 +37,11 @@ public class TclPackageProcessor extends AbstractTclCommandProcessor implements
 			return null;
 		}
 		String arg = ((SimpleReference) nameSpaceArg).getName();
-		if (arg.equals("provide") ) {
+		if (arg.equals("require") || arg.equals("provide")) {
 			boolean exact = false;
 			int i = 2;
 			Expression pkg = statement.getAt(i);
-			if( pkg instanceof SimpleReference && "-exact".equals(((SimpleReference)pkg).getName())) {
+			if( arg.equals("require") && pkg instanceof SimpleReference && "-exact".equals(((SimpleReference)pkg).getName())) {
 				i = 3;
 				pkg = statement.getAt(i);
 			}
@@ -50,7 +50,10 @@ public class TclPackageProcessor extends AbstractTclCommandProcessor implements
 				pkgVer = statement.getAt(i + 1);
 			}
 			if (pkg != null && pkg instanceof SimpleReference) {
-				TclPackageDeclaration st = new TclPackageDeclaration((SimpleReference)pkg, pkgVer, TclPackageDeclaration.STYLE_PROVIDE, command.getStart() + offset, command.getEnd() + offset + 1);
+				int style = -1;
+				if (arg.equals("require")) style = TclPackageDeclaration.STYLE_REQUIRE;
+				else if (arg.equals("provide")) style = TclPackageDeclaration.STYLE_PROVIDE;
+				TclPackageDeclaration st = new TclPackageDeclaration((SimpleReference)pkg, pkgVer, style, command.getStart() + offset, command.getEnd() + offset + 1);
 				st.setExact(exact);
 				this.addToParent(parent, st);
 				return st;
@@ -60,14 +63,22 @@ public class TclPackageProcessor extends AbstractTclCommandProcessor implements
 			Expression pkg = statement.getAt(2);
 			Expression pkgVer = null;
 			Expression script = null;
-			if (statement.getCount() > 3 &&  statement.getAt(3) instanceof SimpleReference) {
-				pkgVer = statement.getAt(3);
+			switch (statement.getCount())
+			{
+			case 5:
+			{
+				if (statement.getAt(4) instanceof TclBlockExpression)
+					script = statement.getAt(4);
+				//no break!
 			}
-			else if(statement.getAt(3) instanceof TclBlockExpression) {
-				script = statement.getAt(3);
+			case 4:
+			{
+				if (statement.getAt(3) instanceof SimpleReference)
+					pkgVer = statement.getAt(3);
+				break;
 			}
-			if (script != null && statement.getCount() > 4) {
-				pkgVer = statement.getAt(4);
+			default:
+				return null;
 			}
 			if (pkg != null && pkg instanceof SimpleReference) {
 				TclPackageDeclaration st = new TclPackageDeclaration((SimpleReference)pkg, pkgVer, TclPackageDeclaration.STYLE_IFNEEDED, command.getStart() + offset, command.getEnd() + offset + 1);
