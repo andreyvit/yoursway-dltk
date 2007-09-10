@@ -66,6 +66,10 @@ public class DLTKCore extends Plugin {
 	
 	public static final boolean DEBUG = Boolean.valueOf(
 			Platform.getDebugOption("org.eclipse.dltk.core/debug")).booleanValue();
+	
+	public static final boolean SHOW_REINDEX = Boolean.valueOf(
+			Platform.getDebugOption("org.eclipse.dltk.core/show_reindex")).booleanValue();
+	
 	public static final boolean DEBUG_PRINT_MODEL = Boolean.valueOf(
 			Platform.getDebugOption("org.eclipse.dltk.core/debugPrintModel")).booleanValue();
 	public static final boolean DEBUG_SCOPES = Boolean.valueOf(
