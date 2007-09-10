@@ -79,6 +79,12 @@
 
 		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
 			failonerror="false">
+			<arg line="-o -qq dltk-xotcl-sdk-${buildLabel}-incubation.zip -d ${testRoot}" />
+		</exec>
+
+		
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip"
+			failonerror="false">
 			<arg
 				line="-o -qq dltk-Automated_Tests-${buildLabel}-incubation.zip -d ${testRoot}" />
 		</exec>
