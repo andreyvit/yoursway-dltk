@@ -6,21 +6,26 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 
 public class XOTclMethodCallStatement extends CallExpression {
 	private XOTclInstanceVariable instanceVariable;
-	public XOTclMethodCallStatement(SimpleReference name, XOTclInstanceVariable var, CallArgumentsList args) {
-		super(var, name.getName(), args);
+
+	public XOTclMethodCallStatement(int start, int end, SimpleReference name,
+			XOTclInstanceVariable var, CallArgumentsList args) {
+		super(start, end, var, name, args);
 		this.instanceVariable = var;
 	}
+
 	public int getKind() {
 		return 0;
 	}
+
 	public XOTclInstanceVariable getInstanceVariable() {
-		return (XOTclInstanceVariable) getReceiver();
+		return (XOTclInstanceVariable) instanceVariable;
 	}
-	
+
 	public void setInstNameRef(SimpleReference at) {
 		this.receiver = at;
 	}
+
 	public SimpleReference getInstNameRef() {
-		return this.getInstanceVariable().getRef();
+		return ((SimpleReference)this.getReceiver());
 	}
 }

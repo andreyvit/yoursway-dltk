@@ -33,13 +33,14 @@ public class XOTclClassMethodCallProcessor extends AbstractTclCommandProcessor {
 		SimpleReference name = (SimpleReference) nameExpr;
 		CallArgumentsList args = null;
 		if (statement.getCount() > 2) {
-			args = new CallArgumentsList(name.sourceEnd() + 1, statement.sourceEnd());
+			args = new CallArgumentsList(name.sourceEnd() + 1, statement
+					.sourceEnd());
 			for (int i = 2; i < statement.getCount(); i++) {
 				args.addNode(statement.getAt(i));
 			}
 		}
-		XOTclMethodCallStatement call = new XOTclMethodCallStatement(name,
-				inst, args);
+		XOTclMethodCallStatement call = new XOTclMethodCallStatement(statement
+				.sourceStart(), statement.sourceEnd(), name, inst, args);
 		call.setInstNameRef((SimpleReference) statement.getAt(0));
 		call.setStart(statement.sourceStart());
 		call.setEnd(statement.sourceEnd());

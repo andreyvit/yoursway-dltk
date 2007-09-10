@@ -233,6 +233,20 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 				// We need to check for XOTcl command calls.
 				processXOTclCommandCalls((TclStatement) node);
 			}
+			else if( node instanceof XOTclInstanceVariable ) {
+				processXOTclInstanceVariable((XOTclInstanceVariable)node);
+			}
+		}
+	}
+
+	private void processXOTclInstanceVariable(XOTclInstanceVariable node) {
+		SimpleReference classInstanceName = node.getClassInstanceName();
+		if( classInstanceName.sourceStart() <= this.actualSelectionStart && this.actualSelectionStart <= classInstanceName.sourceEnd()) {
+			TypeDeclaration declaringType = node.getDeclaringType();
+			IModelElement type = this.findElementFromNode(declaringType);
+			if( type != null) {
+				this.selectionElements.add(type);
+			}
 		}
 	}
 
