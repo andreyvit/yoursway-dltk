@@ -111,7 +111,7 @@ public class XOTclCommandProcessorTests extends TestCase {
 		assertTrue(statement instanceof XOTclMethodCallStatement);
 		XOTclMethodCallStatement methodCall = (XOTclMethodCallStatement)statement;
 		assertEquals("procedure",methodCall.getCallName().getName());
-		ASTListNode arguments = methodCall.getArguments();
+		ASTListNode arguments = methodCall.getArgs();
 		assertEquals(1, arguments.getChilds().size());
 	}
 	
@@ -140,7 +140,7 @@ public class XOTclCommandProcessorTests extends TestCase {
 		assertTrue(statement instanceof XOTclMethodCallStatement);
 		XOTclMethodCallStatement methodCall = (XOTclMethodCallStatement)statement;
 		assertEquals("bar", methodCall.getCallName().getName());
-		assertEquals(1, methodCall.getArguments().getChilds().size());
+		assertEquals(1, methodCall.getArgs().getChilds().size());
 	}
 	
 	public void testXOTclClassAllProcProcessor001() throws TclParseException

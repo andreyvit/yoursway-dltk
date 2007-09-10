@@ -1,48 +1,26 @@
 package org.eclipse.dltk.xotcl.core.ast.xotcl;
 
-import org.eclipse.dltk.ast.ASTListNode;
-import org.eclipse.dltk.ast.ASTVisitor;
+import org.eclipse.dltk.ast.expressions.CallArgumentsList;
+import org.eclipse.dltk.ast.expressions.CallExpression;
 import org.eclipse.dltk.ast.references.SimpleReference;
-import org.eclipse.dltk.ast.statements.Statement;
 
-public class XOTclMethodCallStatement extends Statement {
-	private SimpleReference methodName;
-	private ASTListNode arguments;
+public class XOTclMethodCallStatement extends CallExpression {
 	private XOTclInstanceVariable instanceVariable;
-	private SimpleReference instName;
-	public XOTclMethodCallStatement(SimpleReference name, XOTclInstanceVariable var, ASTListNode args) {
-		this.methodName = name;
+	public XOTclMethodCallStatement(SimpleReference name, XOTclInstanceVariable var, CallArgumentsList args) {
+		super(var, name.getName(), args);
 		this.instanceVariable = var;
-		this.arguments = args;
 	}
 	public int getKind() {
 		return 0;
 	}
-
-	public void traverse(ASTVisitor visitor) throws Exception {
-		if( visitor.visit(this)) {
-			if( this.methodName != null ) {
-				this.methodName.traverse(visitor);
-			}
-			if( this.arguments != null ) {
-				this.arguments.traverse(visitor);
-			}
-			visitor.endvisit(this);
-		}
-	}
 	public XOTclInstanceVariable getInstanceVariable() {
-		return this.instanceVariable;
+		return (XOTclInstanceVariable) getReceiver();
 	}
-	public SimpleReference getCallName() {
-		return this.methodName;
-	}
+	
 	public void setInstNameRef(SimpleReference at) {
-		this.instName = at;
+		this.receiver = at;
 	}
 	public SimpleReference getInstNameRef() {
-		return this.instName;
-	}
-	public ASTListNode getArguments() {
-		return this.arguments;
+		return this.getInstanceVariable().getRef();
 	}
 }

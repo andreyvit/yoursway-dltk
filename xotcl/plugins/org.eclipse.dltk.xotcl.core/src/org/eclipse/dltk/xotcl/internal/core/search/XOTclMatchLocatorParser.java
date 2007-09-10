@@ -16,7 +16,6 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.core.search.matching.PatternLocator;
 import org.eclipse.dltk.tcl.ast.TclStatement;
-import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.BasicTclMatchLocatorParser;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
@@ -26,53 +25,64 @@ public class XOTclMatchLocatorParser extends BasicTclMatchLocatorParser {
 	protected XOTclMatchLocatorParser(MatchLocator locator) {
 		super(locator);
 	}
+
 	private ASTVisitor visitor = new ASTVisitor() {
 
 		public boolean visitGeneral(ASTNode node) throws Exception {
-//			XOTclMatchLocatorParser.this.processStatement(node);
-			PatternLocator locator = XOTclMatchLocatorParser.this.getPatternLocator();
+			// XOTclMatchLocatorParser.this.processStatement(node);
+			PatternLocator locator = XOTclMatchLocatorParser.this
+					.getPatternLocator();
 			if (node instanceof TclStatement) {
 				TclStatement statement = (TclStatement) node;
 				// process variables.
 				FieldDeclaration[] fields = TclParseUtils
 						.returnVariableDeclarations(statement);
 				for (int k = 0; k < fields.length; ++k) {
-					locator.match(fields[k], XOTclMatchLocatorParser.this.getNodeSet());
+					locator.match(fields[k], XOTclMatchLocatorParser.this
+							.getNodeSet());
 				}
 				XOTclMatchLocatorParser.this.processReferences(statement);
+			} else if (node instanceof FieldDeclaration) {
+				locator.match((FieldDeclaration) node,
+						XOTclMatchLocatorParser.this.getNodeSet());
+			} else if (node instanceof CallExpression) {
+				locator.match((CallExpression) node,
+						XOTclMatchLocatorParser.this.getNodeSet());
 			}
-			else if( node instanceof FieldDeclaration ) {
-				locator.match(node, XOTclMatchLocatorParser.this.getNodeSet());
-			}
-			
+
 			return true;
 		}
 
 		public boolean visit(MethodDeclaration s) throws Exception {
-			XOTclMatchLocatorParser.this.getPatternLocator().match(XOTclMatchLocatorParser.this.processMethod(s), XOTclMatchLocatorParser.this.getNodeSet());
+			XOTclMatchLocatorParser.this.getPatternLocator().match(
+					XOTclMatchLocatorParser.this.processMethod(s),
+					XOTclMatchLocatorParser.this.getNodeSet());
 			return true;
 		}
 
-
 		public boolean visit(TypeDeclaration s) throws Exception {
-			XOTclMatchLocatorParser.this.getPatternLocator().match(XOTclMatchLocatorParser.this.processType(s), XOTclMatchLocatorParser.this.getNodeSet());
+			XOTclMatchLocatorParser.this.getPatternLocator().match(
+					XOTclMatchLocatorParser.this.processType(s),
+					XOTclMatchLocatorParser.this.getNodeSet());
 			return true;
 		}
 	};
-	
+
 	protected void parseBodies(MethodDeclaration method) {
 	}
+
 	protected void processStatement(ASTNode node) {
-		if( node != null) {
+		if (node != null) {
 			try {
 				node.traverse(visitor);
 			} catch (Exception e) {
-				if( DLTKCore.DEBUG ) {
+				if (DLTKCore.DEBUG) {
 					e.printStackTrace();
 				}
 			}
 		}
 	}
+
 	protected void processReferences(TclStatement statement) {
 		Expression commandId = statement.getAt(0);
 		PatternLocator locator;
@@ -87,17 +97,14 @@ public class XOTclMatchLocatorParser extends BasicTclMatchLocatorParser {
 					String[] ns = name.split("::");
 					for (int i = 0; i < ns.length; ++i) {
 						if (ns[i].length() > 0) {
-							if(i == ns.length - 1 ) {
-								locator.match(new CallExpression(
-										commandId.sourceStart(), commandId
-										.sourceEnd(), null, ns[i], null),
-										this.getNodeSet());
-							}
-							else {
-								locator.match(new TypeReference(
-										commandId.sourceStart(), commandId
-										.sourceEnd(), ns[i]),
-										this.getNodeSet());
+							if (i == ns.length - 1) {
+								locator.match(new CallExpression(commandId
+										.sourceStart(), commandId.sourceEnd(),
+										null, ns[i], null), this.getNodeSet());
+							} else {
+								locator.match(new TypeReference(commandId
+										.sourceStart(), commandId.sourceEnd(),
+										ns[i]), this.getNodeSet());
 							}
 						}
 					}
@@ -116,21 +123,21 @@ public class XOTclMatchLocatorParser extends BasicTclMatchLocatorParser {
 				}
 			} else if (st instanceof StringLiteral) {
 				int pos = 0;
-				StringLiteral literal = (StringLiteral)st;
+				StringLiteral literal = (StringLiteral) st;
 				String value = literal.getValue();
 				pos = value.indexOf("$");
-				while( pos != -1 ) {
-					SimpleReference ref = TclParseUtils.findVariableFromString(literal, pos);
-					if( ref != null ) {
+				while (pos != -1) {
+					SimpleReference ref = TclParseUtils.findVariableFromString(
+							literal, pos);
+					if (ref != null) {
 						ref.setName(ref.getName().substring(1));
 						ref.setEnd(ref.sourceEnd() - 1);
 						locator.match(ref, this.getNodeSet());
 						pos = pos + ref.getName().length();
 					}
-					pos = value.indexOf("$", pos + 1 );
+					pos = value.indexOf("$", pos + 1);
 				}
-			}
-			else if (st instanceof SimpleReference) {
+			} else if (st instanceof SimpleReference) {
 				SimpleReference ref = (SimpleReference) st;
 				String name = ref.getName();
 				if (name.startsWith("$")) { // This is variable usage.

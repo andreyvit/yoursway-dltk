@@ -1,9 +1,12 @@
 package org.eclipse.dltk.xotcl.internal.core.parser;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
@@ -12,6 +15,7 @@ import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
+import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
@@ -24,12 +28,15 @@ import org.eclipse.dltk.tcl.ast.TclConstants;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
+import org.eclipse.dltk.tcl.core.TclKeywordsManager;
+import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 import org.eclipse.dltk.xotcl.core.TclParseUtil;
 import org.eclipse.dltk.xotcl.core.ast.TclGlobalVariableDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.TclPackageDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.TclUpvarVariableDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclFieldDeclaration;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodCallStatement;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclVariableDeclaration;
 
 public class XOTclSourceElementRequestVisitor extends
@@ -67,7 +74,9 @@ public class XOTclSourceElementRequestVisitor extends
 			this.exitFromModule = mod;
 			this.pop = pop;
 		}
-		public ExitFromType(int level, int declEnd, boolean mod, boolean pop, boolean created) {
+
+		public ExitFromType(int level, int declEnd, boolean mod, boolean pop,
+				boolean created) {
 			this(level, declEnd, mod, pop);
 			this.created = created;
 		}
@@ -144,37 +153,40 @@ public class XOTclSourceElementRequestVisitor extends
 		// first, try existent
 		if (this.fRequestor.enterTypeAppend(type, "::")) {
 			this.namespacesLevel.push(fullyQualified);
-//			if( type.startsWith("::")) {
-//				String name2 = type.substring(2);
-//				String[] split = name2.split("::");
-//				return new ExitFromType(split.length, decl.sourceEnd(), false, true);
-//			}
-//			else {
-//				String name2 = type;
-//				String[] split = name2.split("::");
-//				return new ExitFromType(split.length, decl.sourceEnd(), false, true);
-//			}
-			return new ExitFromType(1/*split.length*/, decl.sourceEnd(), false, true);
-		} 
+			// if( type.startsWith("::")) {
+			// String name2 = type.substring(2);
+			// String[] split = name2.split("::");
+			// return new ExitFromType(split.length, decl.sourceEnd(), false,
+			// true);
+			// }
+			// else {
+			// String name2 = type;
+			// String[] split = name2.split("::");
+			// return new ExitFromType(split.length, decl.sourceEnd(), false,
+			// true);
+			// }
+			return new ExitFromType(1/* split.length */, decl.sourceEnd(),
+					false, true);
+		}
 		// This is not correct for Tcl
-//		else if (!fqn && !onlyCurrent) { // look in global
-//			if (this.fNodes.size() > 0
-//					&& this.fNodes.get(0) instanceof ModuleDeclaration) {
-//				ModuleDeclaration module = (ModuleDeclaration) this.fNodes
-//						.get(0);
-//				TypeDeclaration t = TclParseUtil.findTclTypeDeclarationFrom(
-//						module, decl);
-//				if (t != null) {
-//					List nodes = TclParseUtil.findLevelsTo(module, t);
-//					String elementFQN = TclParseUtil.getElementFQN(nodes, "::");
-//					if (this.fRequestor.enterTypeAppend(elementFQN, "::")) {
-//						this.namespacesLevel.push("::" + type);
-//						return new ExitFromType(1, decl.sourceEnd(), false,
-//								true);
-//					}
-//				}
-//			}
-//		}
+		// else if (!fqn && !onlyCurrent) { // look in global
+		// if (this.fNodes.size() > 0
+		// && this.fNodes.get(0) instanceof ModuleDeclaration) {
+		// ModuleDeclaration module = (ModuleDeclaration) this.fNodes
+		// .get(0);
+		// TypeDeclaration t = TclParseUtil.findTclTypeDeclarationFrom(
+		// module, decl);
+		// if (t != null) {
+		// List nodes = TclParseUtil.findLevelsTo(module, t);
+		// String elementFQN = TclParseUtil.getElementFQN(nodes, "::");
+		// if (this.fRequestor.enterTypeAppend(elementFQN, "::")) {
+		// this.namespacesLevel.push("::" + type);
+		// return new ExitFromType(1, decl.sourceEnd(), false,
+		// true);
+		// }
+		// }
+		// }
+		// }
 
 		// create it
 		// Lets add warning in any case.
@@ -222,7 +234,8 @@ public class XOTclSourceElementRequestVisitor extends
 				exitFromModule, true, true);
 	}
 
-	protected XOTclSourceElementRequestVisitor(ISourceElementRequestor requesor, IProblemReporter reporter) {
+	protected XOTclSourceElementRequestVisitor(
+			ISourceElementRequestor requesor, IProblemReporter reporter) {
 		super(requesor);
 		this.fReporter = reporter;
 	}
@@ -280,21 +293,98 @@ public class XOTclSourceElementRequestVisitor extends
 		return true;
 	}
 
+	private static String[] kw = TclKeywordsManager.getKeywords();
+	private static Map kwMap = new HashMap();
+	static {
+		for (int q = 0; q < kw.length; ++q) {
+			kwMap.put(kw[q], Boolean.TRUE);
+		}
+	}
+
 	public boolean visit(Statement statement) throws Exception {
 		this.fNodes.push(statement);
 		if (statement instanceof TclPackageDeclaration) {
 			this.processPackage(statement);
 			this.fNodes.pop();
 			return false;
-		}
-		if (statement instanceof TclStatement) {
+		} else if (statement instanceof TclStatement) {
 			this.fNodes.pop();
+			processReferences((TclStatement) statement);
 			return false;
-		}
-		if (statement instanceof FieldDeclaration) {
+		} else if (statement instanceof FieldDeclaration) {
 			this.processField(statement);
+		} else if (statement instanceof XOTclMethodCallStatement) {
+			XOTclMethodCallStatement call = (XOTclMethodCallStatement) statement;
+			SimpleReference callName = call.getCallName();
+			int len = 0;
+			if (call.getArgs() != null) {
+				ASTListNode arguments = call.getArgs();
+				List childs = arguments.getChilds();
+				if(childs != null) {
+					len = childs.size();
+				}
+			}
+
+			this.fRequestor.acceptMethodReference(callName.getName()
+					.toCharArray(), len, call.sourceStart(), call.sourceEnd());
+			
+			//Also lets add type references from here.
 		}
 		return true;
+	}
+
+	private void processReferences(TclStatement statement) {
+		Expression commandId = statement.getAt(0);
+		if (commandId != null && commandId instanceof SimpleReference) {
+			String name = ((SimpleReference) commandId).getName();
+			if (name.startsWith("::")) {
+				name = name.substring(2);
+			}
+			if (!kwMap.containsKey(name)) {
+				int argCount = statement.getCount() - 1;
+				if (name.length() > 0) {
+					if (name.charAt(0) != '$') {
+						this.fRequestor.acceptMethodReference(name
+								.toCharArray(), argCount, commandId
+								.sourceStart(), commandId.sourceEnd());
+					}
+				}
+			}
+		}
+		for (int j = 1; j < statement.getCount(); ++j) {
+			Expression st = statement.getAt(j);
+			if (st instanceof TclExecuteExpression) {
+				TclExecuteExpression expr = (TclExecuteExpression) st;
+				List exprs = expr.parseExpression();
+				for (int i = 0; i < exprs.size(); ++i) {
+					if (exprs.get(i) instanceof TclStatement) {
+						this.processReferences((TclStatement) exprs.get(i));
+					}
+				}
+			} else if (st instanceof StringLiteral) {
+				int pos = 0;
+				StringLiteral literal = (StringLiteral) st;
+				String value = literal.getValue();
+				pos = value.indexOf("$");
+				while (pos != -1) {
+					SimpleReference ref = TclParseUtils.findVariableFromString(
+							literal, pos);
+					if (ref != null) {
+						this.fRequestor.acceptFieldReference(ref.getName()
+								.substring(1).toCharArray(), ref.sourceStart());
+						pos = pos + ref.getName().length();
+					}
+					pos = value.indexOf("$", pos + 1);
+				}
+			} else if (st instanceof SimpleReference) {
+				SimpleReference ref = (SimpleReference) st;
+				String name = ref.getName();
+				if (name.startsWith("$")) { // This is variable usage.
+					this.fRequestor.acceptFieldReference(ref.getName()
+							.substring(1).toCharArray(), ref.sourceStart());
+				}
+			}
+		}
 	}
 
 	private void processPackage(Statement statement) {
@@ -468,11 +558,13 @@ public class XOTclSourceElementRequestVisitor extends
 		} else {
 			exit = this.resolveType(method, fullName, false);
 		}
-		if( exit.created ) {
-			if( this.fReporter != null ) {
+		if (exit.created) {
+			if (this.fReporter != null) {
 				try {
-					this.fReporter.reportProblem(new DefaultProblem("", "Namespace not found.", 0,
-							null, ProblemSeverities.Warning, method.getNameStart(), method.getNameEnd(), -1));
+					this.fReporter.reportProblem(new DefaultProblem("",
+							"Namespace not found.", 0, null,
+							ProblemSeverities.Warning, method.getNameStart(),
+							method.getNameEnd(), -1));
 				} catch (CoreException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

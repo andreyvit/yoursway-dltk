@@ -1190,8 +1190,8 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 		}
 	}
 
-	private void processMethods(String name, List statements,
-			String namePrefix, List visited) {
+	private void processMethods(String name, final List statements,
+			final String namePrefix, final List visited) {
 		if (selectionElements.size() > 0) {
 			return;
 		}
@@ -1228,7 +1228,37 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 							+ "::", visited);
 				}
 
+			} else {
+				// We need to visit blocked expressions to one level.
+				final String fname = name;
+				ASTVisitor visitor = new ASTVisitor() {
+					public boolean visit(Expression s) throws Exception {
+						if (s instanceof Block) {
+							List tStatements = ((Block) s).getStatements();
+							visited.add(s);
+							processMethods(fname, tStatements, namePrefix,
+									visited);
+						}
+						return false;
+					}
+
+					public boolean visit(MethodDeclaration s) throws Exception {
+						return false;
+					}
+
+					public boolean visit(TypeDeclaration s) throws Exception {
+						return false;
+					}
+				};
+				try {
+					nde.traverse(visitor);
+				} catch (Exception e) {
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
+					}
+				}
 			}
+
 			visited.add(nde);
 		}
 	}

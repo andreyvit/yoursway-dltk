@@ -136,6 +136,9 @@ public class TclSelectionParser2 extends TclAssistParser {
 					throw new SelectionNodeFound(nde);
 				}
 			}
+			if (completionNode != null) {
+				this.visitElements(completionNode, position);
+			}
 		} else if (node instanceof MethodDeclaration) {
 			MethodDeclaration method = (MethodDeclaration) node;
 			List statements = method.getStatements();
@@ -164,23 +167,27 @@ public class TclSelectionParser2 extends TclAssistParser {
 		// Handle other cases here
 		// New Parser cases
 		if (node.sourceStart() <= position && node.sourceEnd() >= position) {
-			if (!(node instanceof TclStatement)) {
-				SelectionVisitor visitor = new SelectionVisitor(position, this
-						.getModule());
-				try {
-					node.traverse(visitor);
-				} catch (SelectionNodeFound e) {
-					throw e;
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				// Selection on AST.
-				// SelectionOnAST nde = new SelectionOnAST(node);
-				// throw new SelectionNodeFound(nde);
-			}
+			visitElements(node, position);
 			SelectionOnNode nde = new SelectionOnNode(node);
 			nde.setPosition(position);
 			throw new SelectionNodeFound(nde);
+		}
+	}
+
+	private void visitElements(ASTNode node, int position) {
+		if (!(node instanceof TclStatement)) {
+			SelectionVisitor visitor = new SelectionVisitor(position, this
+					.getModule());
+			try {
+				node.traverse(visitor);
+			} catch (SelectionNodeFound e) {
+				throw e;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			// Selection on AST.
+			// SelectionOnAST nde = new SelectionOnAST(node);
+			// throw new SelectionNodeFound(nde);
 		}
 	}
 
@@ -228,8 +235,7 @@ public class TclSelectionParser2 extends TclAssistParser {
 						SelectionOnAST nde = new SelectionOnAST(s);
 						throw new SelectionNodeFound(nde);
 					}
-				}
-				else if( s instanceof XOTclMethodCallStatement ) {
+				} else if (s instanceof XOTclMethodCallStatement) {
 					ASTNode inNode = findInNode(this.module, s);
 					SelectionOnNode nde = new SelectionOnNode(s);
 					assistNodeParent = inNode;

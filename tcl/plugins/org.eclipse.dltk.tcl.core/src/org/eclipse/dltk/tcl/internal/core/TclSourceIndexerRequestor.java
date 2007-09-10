@@ -9,6 +9,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.internal.core;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.core.search.indexing.SourceIndexerRequestor;
 
@@ -36,37 +40,55 @@ public class TclSourceIndexerRequestor extends SourceIndexerRequestor {
 
 	public boolean enterTypeAppend(String fullName, String delimiter) {
 		if (fullName.startsWith("::")) {
-//			if (DLTKCore.DEBUG) {
-//				System.out
-//						.println("We need to correct index global namespace append from other namespace..");
-//			}
 			String name = fullName.substring(2);
 			String[] split = name.split("::");
+			
+			List cEnclodingNames = new ArrayList();
 			for (int i = 0; i < split.length; i++) {
 				this.indexer.addTypeDeclaration(Modifiers.AccNameSpace,
-						this.pkgName, split[i], enclosingTypeNames(), null);
-//				this.pushTypeName(split[i].toCharArray());
+						this.pkgName, split[i], eclosingTypeNamesFrom(cEnclodingNames, split, i), null);
 			}
 			this.pushTypeName(name.toCharArray());
 		} else {
-//			String name = fullName;
-//			int pos = fullName.lastIndexOf("::");
-//			if (pos != -1) {
-//				name = fullName.substring(pos + 2);
-//			}
-//			// TODO: Need to support entering into complex name.
-//			this.indexer.addTypeDeclaration(Modifiers.AccNameSpace,
-//					this.pkgName, name, enclosingTypeNames(), null);
-//			this.pushTypeName(name.toCharArray());
+
+			List cEnclodingNames = enclosingTypeNamesAsList();
 			String[] split = fullName.split("::");
 			for (int i = 0; i < split.length; i++) {
 				this.indexer.addTypeDeclaration(Modifiers.AccNameSpace,
-						this.pkgName, split[i], enclosingTypeNames(), null);
-//				this.pushTypeName(split[i].toCharArray());
+						this.pkgName, split[i],eclosingTypeNamesFrom(cEnclodingNames, split, i), null);
 			}
 			this.pushTypeName(fullName.toCharArray());
 		}
 		return true;
+	}
+
+	private char[][] eclosingTypeNamesFrom(List enclosingNames, String[] split,
+			int i) {
+		char[][] result = new char[enclosingNames.size() + i][];
+		int index = 0;
+		for (Iterator iterator = enclosingNames.iterator(); iterator.hasNext();) {
+			String name = (String) iterator.next();
+			result[index++] = name.toCharArray();
+		}
+		for (int j = 0; j < i; j++) {
+			result[index++] = split[j].toCharArray();
+		}
+		if( result.length > 0 ) {
+			return result;
+		}
+		return null;
+	}
+
+	private List enclosingTypeNamesAsList() {
+		List cEnclosingNames = new ArrayList();
+		char[][] enclosingTypeNames2 = enclosingTypeNames();
+		if( enclosingTypeNames2 == null) {
+			return cEnclosingNames;
+		}
+		for (int i = 0; i < enclosingTypeNames2.length; i++) {
+			cEnclosingNames.add(new String(enclosingTypeNames2[i]));
+		};
+		return cEnclosingNames;
 	}
 
 	public boolean enterTypeAppend(TypeInfo info, String fullName,

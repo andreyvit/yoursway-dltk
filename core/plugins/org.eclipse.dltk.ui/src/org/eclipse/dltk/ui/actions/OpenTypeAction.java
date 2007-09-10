@@ -27,38 +27,44 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
-public abstract class OpenTypeAction extends Action implements IWorkbenchWindowActionDelegate {
-	
+public abstract class OpenTypeAction extends Action implements
+		IWorkbenchWindowActionDelegate {
+
 	public OpenTypeAction() {
 		super();
 		setText(DLTKUIMessages.OpenTypeAction_label);
 		setDescription(DLTKUIMessages.OpenTypeAction_description);
 		setToolTipText(DLTKUIMessages.OpenTypeAction_tooltip);
 		setImageDescriptor(DLTKPluginImages.DESC_TOOL_OPENTYPE);
-//		PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.OPEN_TYPE_ACTION);
+		// PlatformUI.getWorkbench().getHelpSystem().setHelp(this,
+		// IJavaHelpContextIds.OPEN_TYPE_ACTION);
 	}
-	
+
 	protected abstract IDLTKUILanguageToolkit getUILanguageToolkit();
 
 	public void run() {
-		Shell parent= DLTKUIPlugin.getActiveWorkbenchShell();
-		OpenTypeSelectionDialog2 dialog= new OpenTypeSelectionDialog2(parent, true, PlatformUI.getWorkbench().getProgressService(), null, IDLTKSearchConstants.TYPE, this.getUILanguageToolkit());
+		Shell parent = DLTKUIPlugin.getActiveWorkbenchShell();
+		OpenTypeSelectionDialog2 dialog = new OpenTypeSelectionDialog2(parent,
+				true, PlatformUI.getWorkbench().getProgressService(), null,
+				IDLTKSearchConstants.TYPE, this.getUILanguageToolkit());
 		dialog.setTitle(DLTKUIMessages.OpenTypeAction_dialogTitle);
 		dialog.setMessage(DLTKUIMessages.OpenTypeAction_dialogMessage);
 
-		int result= dialog.open();
+		int result = dialog.open();
 		if (result != IDialogConstants.OK_ID)
 			return;
 
-		Object[] types= dialog.getResult();
+		Object[] types = dialog.getResult();
 		if (types != null && types.length > 0) {
-			IType type= null;
-			for (int i= 0; i < types.length; i++) {
-				type= (IType) types[i];
+			IType type = null;
+			for (int i = 0; i < types.length; i++) {
+				type = (IType) types[i];
 				try {
 					DLTKUIPlugin.openInEditor(type, true, true);
 				} catch (CoreException x) {
-					ExceptionHandler.handle(x, DLTKUIMessages.OpenTypeAction_errorTitle, DLTKUIMessages.OpenTypeAction_errorMessage);
+					ExceptionHandler.handle(x,
+							DLTKUIMessages.OpenTypeAction_errorTitle,
+							DLTKUIMessages.OpenTypeAction_errorMessage);
 				}
 			}
 		}

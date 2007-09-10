@@ -63,6 +63,10 @@
             class="org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclIfProcessor"
             id="if">
       </processor>
+      <processor
+            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclNamespaceVariableProcessor"
+            id="variable">
+      </processor>
    </extension>
    <extension
          point="org.eclipse.dltk.core.sourceElementParsers">
@@ -152,6 +156,13 @@
             class="org.eclipse.dltk.xotcl.internal.core.search.mixin.XOTclMixinParser"
             nature="org.eclipse.dltk.tcl.core.nature">
       </mixin>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.contentTypes">
+      <file-association
+            content-type="org.eclipse.dltk.tclContentType"
+            file-extensions="xotcl">
+      </file-association>
    </extension>
 
 </plugin>

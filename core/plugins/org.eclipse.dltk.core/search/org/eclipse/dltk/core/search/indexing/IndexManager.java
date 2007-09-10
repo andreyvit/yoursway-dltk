@@ -26,6 +26,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -48,9 +49,9 @@ import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.index.Index;
 import org.eclipse.dltk.core.search.index.MixinIndex;
-import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.Model;
 import org.eclipse.dltk.internal.core.ModelManager;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.search.PatternSearchJob;
 import org.eclipse.dltk.internal.core.search.processing.IJob;
 import org.eclipse.dltk.internal.core.search.processing.JobManager;
@@ -237,7 +238,8 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		}
 	}
 
-	public SourceIndexerRequestor getSourceRequestor(IScriptProject scriptProject) {
+	public SourceIndexerRequestor getSourceRequestor(
+			IScriptProject scriptProject) {
 		IDLTKLanguageToolkit toolkit = null;
 		try {
 			toolkit = DLTKLanguageManager.getLanguageToolkit(scriptProject);
@@ -254,7 +256,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	public ISourceElementParser getSourceElementParser(IScriptProject project,
 			ISourceElementRequestor requestor) {
 		// disable task tags to speed up parsing
-// Map options = project.getOptions(true);
+		// Map options = project.getOptions(true);
 		// options.put(DLTKCore.COMPILER_TASK_TAGS, ""); //$NON-NLS-1$
 		IDLTKLanguageToolkit toolkit = null;
 		try {
@@ -300,8 +302,8 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	 */
 	public synchronized Index getSpecialIndex(String id, String path,
 			String containerPath/* , IProject project */) {
-// String containerPath = project.getFullPath().toOSString();
-// String path = project.getFullPath();
+		// String containerPath = project.getFullPath().toOSString();
+		// String path = project.getFullPath();
 
 		boolean mixin = id.equals("mixin");
 
@@ -1122,6 +1124,32 @@ public class IndexManager extends JobManager implements IIndexConstants {
 				} catch (IOException e) {
 					// ignore
 				}
+			}
+		}
+	}
+
+	public synchronized void rebuild() {
+		disable();
+		File indexesDirectory = new File(getScriptPluginWorkingLocation()
+				.toOSString());
+		// this.
+		if (indexesDirectory.isDirectory()) {
+			File[] indexesFiles = indexesDirectory.listFiles();
+			if (indexesFiles != null) {
+				for (int i = 0, indexesFilesLength = indexesFiles.length; i < indexesFilesLength; i++) {
+					indexesFiles[i].delete();
+				}
+			}
+		}
+		this.reset();
+		// this.indexAll(project)
+		
+		enable();
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IProject[] projects = root.getProjects();
+		for (int i = 0; i < projects.length; i++) {
+			if( DLTKLanguageManager.hasScriptNature(projects[i]) ) {
+				indexAll(projects[i]);
 			}
 		}
 	}

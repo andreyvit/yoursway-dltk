@@ -9,12 +9,15 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.internal.core.codeassist;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
+import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
@@ -27,11 +30,37 @@ public class TclASTUtil {
 			return ((TypeDeclaration) node).getStatements();
 		} else if (node instanceof MethodDeclaration) {
 			return ((MethodDeclaration) node).getStatements();
-		}
-		else if (node instanceof Block) {
+		} else if (node instanceof Block) {
 			return ((Block) node).getStatements();
 		}
-		return null;
+		else {
+			final List innerBlockStatements = new ArrayList();
+			// Lets traverse to see inner blocks.
+			ASTVisitor visitor = new ASTVisitor() {
+				public boolean visit(Expression s) throws Exception {
+					if (s instanceof Block) {
+						List tStatements = ((Block) s).getStatements();
+						innerBlockStatements.addAll(tStatements);
+					}
+					return false;
+				}
+
+				public boolean visit(MethodDeclaration s) throws Exception {
+					return false;
+				}
+
+				public boolean visit(TypeDeclaration s) throws Exception {
+					return false;
+				}
+			};
+			try {
+				node.traverse(visitor);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return innerBlockStatements;
+		}
+//		return null;
 	}
 
 	/**

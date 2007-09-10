@@ -1,7 +1,7 @@
 package org.eclipse.dltk.xotcl.internal.core.parser.processors.xotcl;
 
-import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.expressions.CallArgumentsList;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.tcl.ast.TclStatement;
@@ -31,9 +31,9 @@ public class XOTclClassMethodCallProcessor extends AbstractTclCommandProcessor {
 			return null;
 		}
 		SimpleReference name = (SimpleReference) nameExpr;
-		ASTListNode args = null;
+		CallArgumentsList args = null;
 		if (statement.getCount() > 2) {
-			args = new ASTListNode(name.sourceEnd() + 1, statement.sourceEnd());
+			args = new CallArgumentsList(name.sourceEnd() + 1, statement.sourceEnd());
 			for (int i = 2; i < statement.getCount(); i++) {
 				args.addNode(statement.getAt(i));
 			}

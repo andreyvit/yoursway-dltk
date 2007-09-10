@@ -11,15 +11,31 @@ package org.eclipse.dltk.ast.expressions;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
+import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class CallExpression extends Expression {
-	private ASTNode receiver;
-	private String name;
+	protected ASTNode receiver;
+	private SimpleReference name;
 	
 	private CallArgumentsList args;
 	
 	public CallExpression(int start, int end, ASTNode receiver, String name, CallArgumentsList args) {
+		super(start, end);
+		if (name == null){
+			throw new IllegalArgumentException();
+		}
+		
+		if (args == null) {
+//			throw new IllegalArgumentException();
+			args = new CallArgumentsList();
+		}
+		
+		this.receiver = receiver;
+		this.name = new SimpleReference( start, end, name );
+		this.args = args;
+	}
+	public CallExpression(int start, int end, ASTNode receiver, SimpleReference name, CallArgumentsList args) {
 		super(start, end);
 		if (name == null){
 			throw new IllegalArgumentException();
@@ -60,7 +76,10 @@ public class CallExpression extends Expression {
 	}
 	
 	public String getName() {
-		return name;
+		return name.getName();
+	}
+	public SimpleReference getCallName() {
+		return this.name;
 	}
 	
 	public CallArgumentsList getArgs () {

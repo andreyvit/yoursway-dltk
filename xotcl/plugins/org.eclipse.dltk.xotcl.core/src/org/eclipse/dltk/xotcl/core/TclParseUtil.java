@@ -25,7 +25,6 @@ import org.eclipse.dltk.tcl.internal.parsers.raw.SimpleTclParser;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclElement;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclWord;
-import org.eclipse.dltk.xotcl.core.ast.AdvancedTclBlockExpression;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
@@ -207,7 +206,7 @@ public class TclParseUtil {
 				wordText = content.substring(offset + word.getStart(), word
 						.getEnd()
 						+ 1 + offset);
-				AdvancedTclBlockExpression tclBlockExpression = new AdvancedTclBlockExpression(
+				TclBlockExpression tclBlockExpression = new TclBlockExpression(
 						startPos + offset + bs.getStart(), startPos + offset
 								+ bs.getEnd() + 1, wordText);
 				// Advanced content for tcl blocks.

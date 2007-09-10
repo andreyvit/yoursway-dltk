@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
@@ -41,13 +40,13 @@ public class TclBlockExpression extends Expression {
 
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
-			List statements = this.parseBlock();
-			if (statements != null) {
-				for (int i = 0; i < statements.size(); i++) {
-					ASTNode node = (ASTNode) statements.get(i);
-					node.traverse(visitor);
-				}
-			}
+//			List statements = this.parseBlock();
+//			if (statements != null) {
+//				for (int i = 0; i < statements.size(); i++) {
+//					ASTNode node = (ASTNode) statements.get(i);
+//					node.traverse(visitor);
+//				}
+//			}
 			visitor.endvisit(this);
 		}
 	}
