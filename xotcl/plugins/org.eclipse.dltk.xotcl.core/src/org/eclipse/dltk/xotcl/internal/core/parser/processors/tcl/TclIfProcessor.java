@@ -52,9 +52,7 @@ public class TclIfProcessor extends AbstractTclCommandProcessor {
 			ASTNode node = (ASTNode) exprs.get(0);
 			if( node instanceof TclBlockExpression ) {
 				TclBlockExpression block = (TclBlockExpression) node;
-				String blockContent = block.getBlock();
-				blockContent = blockContent.substring(1, blockContent.length() - 1);
-				parser.parse(blockContent, block.sourceStart() + 1 - parser.getStartPos(), el );
+				parseBlock(parser, el, block);
 				return el;
 //				return this.toBlock((TclBlockExpression) node, el);
 			}
@@ -82,9 +80,7 @@ public class TclIfProcessor extends AbstractTclCommandProcessor {
 			ASTNode nde= (ASTNode) exprs.get(1);
 			if (nde instanceof TclBlockExpression) {
 				TclBlockExpression block = (TclBlockExpression) nde;
-				String blockContent = block.getBlock();
-				blockContent = blockContent.substring(1, blockContent.length() - 1);
-				parser.parse(blockContent, block.sourceStart() + 1 - parser.getStartPos(), el );
+				parseBlock(parser, el, block);
 				return el;
 //				return this.toBlock((TclBlockExpression) block, el);
 			} else {
@@ -107,6 +103,13 @@ public class TclIfProcessor extends AbstractTclCommandProcessor {
 		}
 
 		return null;
+	}
+
+	private void parseBlock(ITclParser parser, Block el,
+			TclBlockExpression block) {
+		String blockContent = block.getBlock();
+		blockContent = blockContent.substring(1, blockContent.length() - 1);
+		parser.parse(blockContent, block.sourceStart() + 1 - parser.getStartPos(), el );
 	}
 
 	private List makeElseList(List exprs, int i, ITclParser parser, int start,
@@ -147,9 +150,7 @@ public class TclIfProcessor extends AbstractTclCommandProcessor {
 		}
 		if (node instanceof TclBlockExpression) {
 			TclBlockExpression block = (TclBlockExpression) node;
-			String blockContent = block.getBlock();
-			blockContent = blockContent.substring(1, blockContent.length() - 1);
-			parser.parse(blockContent, block.sourceStart() + 1 - parser.getStartPos(), bl );
+			parseBlock(parser, bl, block);
 			return bl;
 //			return this.toBlock((TclBlockExpression) node, bl);
 		}
@@ -194,9 +195,6 @@ public class TclIfProcessor extends AbstractTclCommandProcessor {
 				}
 			}
 			return list;
-//			String block = bl.getBlock();
-//			return new StringLiteral(bl.sourceStart() + 1, bl.sourceEnd() - 1,
-//					block.substring(1, block.length() - 1));
 		}
 		else if( node instanceof SimpleReference ) {
 			return (Statement) node;
