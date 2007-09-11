@@ -44,6 +44,19 @@ public class TclSelectionParser2 extends TclAssistParser {
 				ASTNode nde = new SelectionOnAST(memberType);
 				throw new SelectionNodeFound(nde);
 			}
+//			ASTListNode superClasses = memberType.getSuperClasses();
+//			if (superClasses != null) {
+//				List childs = superClasses.getChilds();
+//				if (childs != null) {
+//					for (int i = 0; i < childs.size(); i++) {
+//						SimpleReference ref = (SimpleReference) childs.get(i);
+//						if (memberType.getNameStart() <= position
+//								&& memberType.getNameEnd() >= position) {
+//							
+//						}
+//					}
+//				}
+//			}
 		}
 	}
 

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.Declaration;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
@@ -14,6 +15,9 @@ import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.IMember;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
@@ -186,7 +190,7 @@ public class TclParseUtil {
 	}
 
 	public static TclStatement convertToAST(TclCommand command,
-			ITclParser parser, int offset, String content, int startPos) {
+			char[] filename, int offset, String content, int startPos) {
 		List words = command.getWords();
 		List exprs = new ArrayList();
 		for (Iterator iterator = words.iterator(); iterator.hasNext();) {
@@ -210,7 +214,7 @@ public class TclParseUtil {
 						startPos + offset + bs.getStart(), startPos + offset
 								+ bs.getEnd() + 1, wordText);
 				// Advanced content for tcl blocks.
-				tclBlockExpression.setFilename(parser.getFileName());
+				tclBlockExpression.setFilename(filename);
 				exprs.add(tclBlockExpression);
 			} else if (o instanceof CommandSubstitution
 					&& (word.getContents().size() == 1)) {
@@ -493,10 +497,13 @@ public class TclParseUtil {
 		}
 		return null;
 	}
-	public static String getElementFQN( ASTNode node, String separator, ModuleDeclaration module) {
+
+	public static String getElementFQN(ASTNode node, String separator,
+			ModuleDeclaration module) {
 		List nodes = findLevelsTo(module, node);
 		return getElementFQN(nodes, separator, module);
 	}
+
 	public static String getElementFQN(List nodes, String separator,
 			ModuleDeclaration module) {
 		StringBuffer prefix = new StringBuffer();
@@ -580,11 +587,53 @@ public class TclParseUtil {
 
 	public static ASTNode getPrevParent(ModuleDeclaration module,
 			ASTNode declaringType) {
-		ASTNode parent = TclParseUtil.getScopeParent(module, declaringType );
-		if( parent instanceof ModuleDeclaration ) {
+		ASTNode parent = TclParseUtil.getScopeParent(module, declaringType);
+		if (parent instanceof ModuleDeclaration) {
 			return parent;
 		}
 		List levels = TclParseUtil.findLevelsTo(module, parent);
 		return (ASTNode) levels.get(levels.size() - 2);
+	}
+
+	public static List findLevelFromModule(final ModuleDeclaration module,
+			final IMember member, final String memberFQN) {
+		final List levels = new ArrayList();
+
+		ASTVisitor visitor = new ASTVisitor() {
+			public boolean visitGeneral(ASTNode s) throws Exception {
+				if (s instanceof Declaration) {
+					Declaration d = (Declaration) s;
+					String key = "::" + getElementFQN(s, "::", module);
+					if (key.equals(memberFQN)) {
+						levels.add(d);
+					}
+				}
+				return true;
+			}
+		};
+		try {
+			module.traverse(visitor);
+		} catch (Exception e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+			return levels;
+		}
+		return levels;
+	}
+
+	public static String getNameFromModelElement(IModelElement member) {
+		return getFQNFromModelElement(member, "::");
+	}
+
+	public static String getFQNFromModelElement(IModelElement member,
+			String separator) {
+		String buffer = new String();
+		IModelElement m = member;
+		while (m.getElementType() != IModelElement.SOURCE_MODULE) {
+			buffer = separator + m.getElementName() + buffer;
+			m = m.getParent();
+		}
+		return buffer;
 	}
 }

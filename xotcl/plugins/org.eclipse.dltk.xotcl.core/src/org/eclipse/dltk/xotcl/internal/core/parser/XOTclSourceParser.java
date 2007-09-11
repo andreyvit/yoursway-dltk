@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.internal.resources.AliasManager.AddToCollectionDoit;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
@@ -59,7 +58,7 @@ public class XOTclSourceParser implements ITclSourceParser, ITclParser {
 			// }
 			// return st;
 			// }
-			TclStatement st = TclParseUtil.convertToAST(command, parser,
+			TclStatement st = TclParseUtil.convertToAST(command, parser.getFileName(),
 					offset, XOTclSourceParser.this.content,
 					XOTclSourceParser.this.startPos);
 			// commandParserCache.put(command, st);

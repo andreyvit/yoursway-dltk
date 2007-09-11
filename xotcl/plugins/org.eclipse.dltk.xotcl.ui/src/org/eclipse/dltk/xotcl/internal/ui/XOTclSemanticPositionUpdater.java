@@ -22,6 +22,7 @@ import org.eclipse.dltk.internal.ui.editor.semantic.highlighting.PositionUpdater
 import org.eclipse.dltk.internal.ui.editor.semantic.highlighting.SemanticHighlightingPresenter;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.TclNature;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclDocumentationNode;
 import org.eclipse.dltk.xotcl.internal.core.parser.XOTclSourceElementParser;
 
 public class XOTclSemanticPositionUpdater extends PositionUpdater {
@@ -63,6 +64,11 @@ public class XOTclSemanticPositionUpdater extends PositionUpdater {
 									.sourceStart(), st.sourceEnd()
 									- st.sourceStart(), highlightings[0]));
 						}
+					}
+					else if( s instanceof XOTclDocumentationNode ) {
+						result.add(presenter.createHighlightedPosition(s
+								.sourceStart(), s.sourceEnd()
+								- s.sourceStart(), highlightings[0]));
 					}
 					return super.visit(s);
 				}

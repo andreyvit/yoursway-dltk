@@ -17,6 +17,7 @@ import org.eclipse.dltk.xotcl.internal.core.XOTclKeywords;
 public class XOTclCommandDetector implements ITclCommandDetector {
 	// Options
 	public static boolean INTERPRET_CLASS_UNKNOWN_AS_CREATE = true;
+	public static boolean INTERPRET_OBJECT_UNKNOWN_AS_CREATE = true;
 
 	public XOTclCommandDetector() {
 		// TODO Auto-generated constructor stub
@@ -64,8 +65,7 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 					if (info != null) {
 						return info;
 					}
-				}
-				else {
+				} else {
 					return new CommandInfo("#Class#$newInstance", type);
 				}
 
@@ -172,9 +172,9 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 				return info;
 			}
 			// // Else unknown command or create command.
-			// if (INTERPRET_CLASS_UNKNOWN_AS_CREATE) {
-			// return new CommandInfo("#Class#create", null);
-			// }
+			if (INTERPRET_OBJECT_UNKNOWN_AS_CREATE) {
+				return new CommandInfo("#Object#create", null);
+			}
 
 			return null;
 		}

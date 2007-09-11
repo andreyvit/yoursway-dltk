@@ -225,6 +225,9 @@ public class XOTclSourceElementRequestVisitor extends
 					ti.nameSourceStart = decl.getNameStart();
 					ti.nameSourceEnd = decl.getNameEnd() - 1;
 					ti.declarationStart = decl.sourceStart();
+					if (decl instanceof TypeDeclaration) {
+						ti.superclasses = processSuperClasses((TypeDeclaration)decl);
+					}
 					this.fRequestor.enterType(ti);
 				}
 			}
@@ -258,6 +261,7 @@ public class XOTclSourceElementRequestVisitor extends
 		info.nameSourceStart = s.getNameStart();
 		info.nameSourceEnd = s.getNameEnd();
 		info.declarationStart = s.sourceStart();
+		info.superclasses = this.processSuperClasses(s);
 
 		ExitFromType exit = this.resolveType(s, fullName + "::dummy", true);
 
@@ -320,15 +324,15 @@ public class XOTclSourceElementRequestVisitor extends
 			if (call.getArgs() != null) {
 				ASTListNode arguments = call.getArgs();
 				List childs = arguments.getChilds();
-				if(childs != null) {
+				if (childs != null) {
 					len = childs.size();
 				}
 			}
 
 			this.fRequestor.acceptMethodReference(callName.getName()
 					.toCharArray(), len, call.sourceStart(), call.sourceEnd());
-			
-			//Also lets add type references from here.
+
+			// Also lets add type references from here.
 		}
 		return true;
 	}

@@ -9,7 +9,7 @@ public interface ITclParser {
 	// Used to parser inner elements
 	void parse( String content, int offset, ASTNode parent );
 	CodeModel getCodeModel();
-//	String getContent();
+	String getContent();
 	String substring(int start, int end);
 	IProblemReporter getProblemReporter();
 	char[] getFileName();

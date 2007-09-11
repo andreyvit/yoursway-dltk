@@ -13,6 +13,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.tcl.core,
  org.eclipse.dltk.core,
  org.eclipse.jface.text,
- org.eclipse.dltk.xotcl.core
+ org.eclipse.dltk.xotcl.core,
+ org.eclipse.ui.editors
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

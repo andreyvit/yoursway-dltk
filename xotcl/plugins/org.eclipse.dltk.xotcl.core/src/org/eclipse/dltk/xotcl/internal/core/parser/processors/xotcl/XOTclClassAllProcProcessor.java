@@ -20,6 +20,7 @@ import org.eclipse.dltk.xotcl.core.ITclParser;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
 import org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.Messages;
 
 /**
@@ -129,6 +130,9 @@ public class XOTclClassAllProcProcessor extends AbstractTclCommandProcessor {
 			}
 			else if( KIND_INSTPROC_STR.equals(kindName)) {
 				method.setKind(XOTclMethodDeclaration.KIND_INSTPROC);
+				if( decl instanceof XOTclObjectDeclaration ) {
+//					report(parser, "Adding instproc to object", kind, ProblemSeverities.Warning);
+				}
 			}
 		}
 		

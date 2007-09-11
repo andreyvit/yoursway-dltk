@@ -125,6 +125,10 @@
             class="org.eclipse.dltk.xotcl.internal.core.parser.processors.xotcl.XOTclClassMyProcessor"
             id="my">
       </processor>
+      <processor
+            class="org.eclipse.dltk.xotcl.core.XOTclDocumentationProcessor"
+            id="@">
+      </processor>
    </extension>
    <extension
          point="org.eclipse.dltk.core.search">

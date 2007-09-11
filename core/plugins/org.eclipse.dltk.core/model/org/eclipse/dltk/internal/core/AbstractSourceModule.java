@@ -10,7 +10,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.compiler.problem.IProblemFactory;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.DLTKCore;
@@ -473,9 +472,6 @@ public abstract class AbstractSourceModule extends Openable implements
 			ISourceModuleInfo mifo = sourceModuleInfoCache.get(this);
 			parser.parseSourceModule(contents, mifo, this.getPath().toString()
 					.toCharArray());
-			// if( mifo.isEmpty()) {
-			// sourceModuleInfoCache.remove(this);
-			// }
 
 			if (DEBUG_PRINT_MODEL) {
 				System.out.println("Source Module Debug print:");

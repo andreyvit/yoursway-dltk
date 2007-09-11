@@ -40,4 +40,34 @@
       </newWizardShortcut>
    </perspectiveExtension>
 </extension>
+<extension
+      point="org.eclipse.dltk.ui.scriptDocumentationProviders">
+   <provider
+         class="org.eclipse.dltk.xotcl.internal.ui.documentation.XOTclDocumentationProvider"
+         id="org.eclipse.dltk.xotcl.ui.xodoc_provider"
+         nature="org.eclipse.dltk.tcl.core.nature">
+   </provider>
+</extension>
+<extension
+      point="org.eclipse.ui.actionSets">
+   <actionSet
+         id="org.eclipse.dltk.xotcl.ui.xotcl"
+         label="XOTcl actions">
+      <action
+            class="org.eclipse.dltk.xotcl.internal.ui.actions.XOTclOpenSuperImplementation"
+            id="org.eclipse.dltk.xotcl.ui.openSuperImplementation"
+            label="Open Super implementation"
+            menubarPath="navigate/open.ext">
+      </action>
+   </actionSet>
+</extension>
+<extension
+      point="org.eclipse.ui.actionSetPartAssociations">
+   <actionSetPartAssociation
+         targetID="org.eclipse.dltk.xotcl.ui.xotcl">
+      <part
+            id="org.eclipse.dltk.tcl.ui.editor.TclEditor">
+      </part>
+   </actionSetPartAssociation>
+</extension>
 </plugin>

@@ -9,6 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui.documentation;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,10 +22,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-
 
 /**
  * Helper needed to get access to script documentation.
@@ -36,30 +39,33 @@ public class ScriptDocumentationAccess {
 	private static final String ATTR_CLASS = "class";
 	private static final String ATTR_NATURE = "nature";
 	private static IScriptDocumentationProvider[] documentationProviders = null;
-	private static Map providerNatures = new HashMap();	
+	private static Map providerNatures = new HashMap();
 
 	private ScriptDocumentationAccess() {
-	// do not instantiate
+		// do not instantiate
 	}
 
 	/**
 	 * Creates {@link IScriptDocumentationProvider} objects from configuration
 	 * elements.
 	 */
-	private static IScriptDocumentationProvider[] createProviders(IConfigurationElement[] elements) {
+	private static IScriptDocumentationProvider[] createProviders(
+			IConfigurationElement[] elements) {
 		List result = new ArrayList(elements.length);
 		for (int i = 0; i < elements.length; i++) {
 			IConfigurationElement element = elements[i];
 			try {
-				IScriptDocumentationProvider pr = (IScriptDocumentationProvider) element.createExecutableExtension(ATTR_CLASS);
+				IScriptDocumentationProvider pr = (IScriptDocumentationProvider) element
+						.createExecutableExtension(ATTR_CLASS);
 				String nature = element.getAttribute(ATTR_NATURE);
-				result.add(pr);				
+				result.add(pr);
 				providerNatures.put(pr, nature);
 			} catch (CoreException e) {
 				DLTKUIPlugin.log(e);
 			}
 		}
-		return (IScriptDocumentationProvider[]) result.toArray(new IScriptDocumentationProvider[result.size()]);
+		return (IScriptDocumentationProvider[]) result
+				.toArray(new IScriptDocumentationProvider[result.size()]);
 	}
 
 	/**
@@ -68,7 +74,8 @@ public class ScriptDocumentationAccess {
 	private static IScriptDocumentationProvider[] getContributedProviders() {
 		if (documentationProviders == null) {
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
-			IConfigurationElement[] elements = registry.getConfigurationElementsFor(DOCUMENTATION_PROVIDERS_EXTENSION_POINT);
+			IConfigurationElement[] elements = registry
+					.getConfigurationElementsFor(DOCUMENTATION_PROVIDERS_EXTENSION_POINT);
 			providerNatures.clear();
 			documentationProviders = createProviders(elements);
 		}
@@ -94,18 +101,36 @@ public class ScriptDocumentationAccess {
 	 * @throws ModelException
 	 *             is thrown when the elements documentaion can not be accessed
 	 */
-	public static Reader getHTMLContentReader(String nature, IMember member, boolean allowInherited, boolean allowExternal) throws ModelException {
+	public static Reader getHTMLContentReader(String nature, IMember member,
+			boolean allowInherited, boolean allowExternal)
+			throws ModelException {
 		IScriptDocumentationProvider[] providers = getContributedProviders();
+		StringBuffer buffer = new StringBuffer();
 		for (int i = 0; i < providers.length; i++) {
 			IScriptDocumentationProvider p = providers[i];
-			String pNature  = (String) providerNatures.get(p);
+			String pNature = (String) providerNatures.get(p);
 			if (pNature == null || !pNature.equals(nature))
 				continue;
 			Reader reader = p.getInfo(member, allowInherited, allowExternal);
 			if (reader != null) {
-				// TODO: add mechanism to combine several sources to one
-				return reader;
+				// return reader;
+				char[] buff = new char[1024];
+				int len = 0;
+				try {
+					while ((len = reader.read(buff,0, 1023)) != -1) {
+						buffer.append(buff, 0, len);
+					}
+				} catch (IOException e) {
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
+					}
+				}
 			}
+		}
+		if (buffer.length() > 0) {
+			ByteArrayInputStream ba = new ByteArrayInputStream(buffer
+					.toString().getBytes());
+			return new InputStreamReader(ba);
 		}
 		return null;
 	}
@@ -122,11 +147,12 @@ public class ScriptDocumentationAccess {
 	 * @throws ModelException
 	 *             is thrown when the elements documentaion can not be accessed
 	 */
-	public static Reader getHTMLContentReader(String nature, String content) throws ModelException {
+	public static Reader getHTMLContentReader(String nature, String content)
+			throws ModelException {
 		IScriptDocumentationProvider[] providers = getContributedProviders();
 		for (int i = 0; i < providers.length; i++) {
 			IScriptDocumentationProvider p = providers[i];
-			String pNature  = (String) providerNatures.get(p);
+			String pNature = (String) providerNatures.get(p);
 			if (pNature == null || !pNature.equals(nature))
 				continue;
 			Reader reader = p.getInfo(content);

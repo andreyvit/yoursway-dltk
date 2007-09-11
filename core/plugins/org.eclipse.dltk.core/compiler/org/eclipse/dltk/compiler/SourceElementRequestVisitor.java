@@ -57,8 +57,10 @@ public class SourceElementRequestVisitor extends ASTVisitor {
 
 	protected String[] processSuperClasses(TypeDeclaration type) {
 		List names = type.getSuperClassNames();
-
-		if (names.isEmpty()) {
+		if( names == null ) {
+			return null;
+		}
+		if (names.isEmpty() ) {
 			return null;
 		}
 

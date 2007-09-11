@@ -23,7 +23,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 
 
-public class TclCommentDocumentationProvider implements IScriptDocumentationProvider {
+public class TclCommentDocumentationProvider extends ScriptDocumentationProvider implements IScriptDocumentationProvider {
 		
 	protected String getLine (Document d, int line) throws BadLocationException {
 		return d.get(d.getLineOffset(line), d.getLineLength(line));
