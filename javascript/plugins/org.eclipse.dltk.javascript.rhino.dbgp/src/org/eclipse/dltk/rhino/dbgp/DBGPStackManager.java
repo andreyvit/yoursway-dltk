@@ -209,6 +209,15 @@ public class DBGPStackManager {
 		this.notify();
 	}
 
+	public synchronized void waitForNotify() {
+		try {
+			this.wait();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public void removeBreakpoint(String id) {
 		this.manager.removeBreakPoint(id);
 	}

@@ -31,7 +31,7 @@ public class DBGPDebugger extends Thread implements Debugger, Observer,
 	private Socket socket;
 	private PrintStream out;
 	private HashMap strategies = new HashMap();
-	HashMap properties=new HashMap();
+	HashMap properties = new HashMap();
 	String runTransctionId;
 
 	static abstract class Command {
@@ -48,15 +48,11 @@ public class DBGPDebugger extends Thread implements Debugger, Observer,
 
 	DBGPStackManager stackmanager;
 	public boolean isInited;
-	
-	
 
-
-	
 	public void setContext(Context cx) {
 		DBGPStackManager manager = DBGPStackManager.getManager(cx);
 		manager.setDebugger(this);
-		this.stackmanager=manager;
+		this.stackmanager = manager;
 	}
 
 	public DBGPDebugger(Socket socket, String file, String string, Context ct)
@@ -267,7 +263,7 @@ public class DBGPDebugger extends Thread implements Debugger, Observer,
 				property);
 		if (list != null) {
 			int size = list.size();
-			
+
 			for (int a = 0; a < size; a++) {
 				BreakPoint watchPoint = (BreakPoint) list.get(a);
 				if (watchPoint != null) {
@@ -277,14 +273,7 @@ public class DBGPDebugger extends Thread implements Debugger, Observer,
 							String s = (String) cache.get(object);
 							if ((s != null) && (s.equals(wkey))) {
 								stackmanager.getObserver().update(null, this);
-								synchronized (this) {
-									try {
-										this.wait();
-									} catch (InterruptedException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-								}
+								stackmanager.waitForNotify();
 							}
 						}
 				}
@@ -295,17 +284,18 @@ public class DBGPDebugger extends Thread implements Debugger, Observer,
 	WeakHashMap cache = new WeakHashMap();
 
 	public void modification(String property, ScriptableObject object) {
-		
+
 		ArrayList list = (ArrayList) stackmanager.getManager().getWatchPoints(
 				property);
 		if (list != null) {
 			int size = list.size();
 			for (int a = 0; a < size; a++) {
-				
+
 				BreakPoint watchPoint = (BreakPoint) list.get(a);
 				if (watchPoint != null) {
 					if (watchPoint.enabled) {
-						String sn = stackmanager.getStackFrame(0).getSourceName();
+						String sn = stackmanager.getStackFrame(0)
+								.getSourceName();
 						int ln = stackmanager.getStackFrame(0).getLineNumber();
 						String key = sn + ln;
 						String wkey = watchPoint.file + watchPoint.line;
@@ -317,7 +307,8 @@ public class DBGPDebugger extends Thread implements Debugger, Observer,
 							if (object2 != null)
 								if (object2.equals(wkey)) {
 
-									stackmanager.getObserver().update(null, this);
+									stackmanager.getObserver().update(null,
+											this);
 									synchronized (this.stackmanager) {
 										try {
 											this.stackmanager.wait();
@@ -332,10 +323,9 @@ public class DBGPDebugger extends Thread implements Debugger, Observer,
 			}
 		}
 	}
-	
 
 	public void setProperty(String name, String value) {
-		
+
 	}
 
 	public void setSuspendOnExit(boolean parseBoolean) {
