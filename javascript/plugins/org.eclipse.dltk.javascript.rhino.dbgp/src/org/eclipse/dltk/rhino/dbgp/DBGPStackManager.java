@@ -232,7 +232,7 @@ public class DBGPStackManager {
 	}
 
 	public void setSuspendOnEntry(boolean parseBoolean) {
-		this.suspendOnExit = parseBoolean;
+		this.suspendOnEntry = parseBoolean;
 	}
 
 	public static boolean isBreakpointsThreadLocal() {
