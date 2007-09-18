@@ -11,7 +11,7 @@ public class DBGPStackManager {
 	protected static WeakHashMap map = new WeakHashMap();
 
 	private ArrayList stack = new ArrayList();
-	
+
 	private static boolean breakpointsThreadLocal;
 
 	private boolean needSuspend;
@@ -19,7 +19,7 @@ public class DBGPStackManager {
 	private DBGPDebugger observer;
 
 	private BreakPointManager manager = null;
-	
+
 	private static BreakPointManager gmanager = null;
 
 	private boolean suspendOnExit;
@@ -33,14 +33,14 @@ public class DBGPStackManager {
 	}
 
 	private DBGPStackManager() {
-		if (isBreakpointsThreadLocal()){
-		manager=new BreakPointManager();
-		}
-		else{
+		if (isBreakpointsThreadLocal()) {
+			manager = new BreakPointManager();
+		} else {
 			synchronized (DBGPStackManager.class) {
-				if (gmanager==null)gmanager=new BreakPointManager();
+				if (gmanager == null)
+					gmanager = new BreakPointManager();
 			}
-			manager=gmanager;
+			manager = gmanager;
 		}
 	}
 
@@ -51,6 +51,10 @@ public class DBGPStackManager {
 		object = new DBGPStackManager();
 		map.put(cx, object);
 		return object;
+	}
+
+	public static void removeManager(Context cx) {
+		map.remove(cx);
 	}
 
 	public void enter(DBGPDebugFrame debugFrame) {
@@ -238,6 +242,5 @@ public class DBGPStackManager {
 	public static void setBreakpointsThreadLocal(boolean breakpointsThreadLocal) {
 		DBGPStackManager.breakpointsThreadLocal = breakpointsThreadLocal;
 	}
-
 
 }
