@@ -53,6 +53,7 @@ public class BreakPointManager {
 			return;
 		}
 		object.remove(new Integer(point.line));
+		ids.remove("p" + point.id);
 	}
 
 	public BreakPoint hit(String sourcePath, int lineNumber) {
