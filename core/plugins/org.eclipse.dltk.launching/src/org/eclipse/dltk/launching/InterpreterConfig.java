@@ -211,6 +211,14 @@ public class InterpreterConfig implements Cloneable {
 
 		return scriptArgs.add(arg);
 	}
+	// Script section
+	public void addScriptArg(String arg, int pos) {
+		if (arg == null) {
+			throw new IllegalArgumentException("Script argument cannot be null");
+		}
+
+		scriptArgs.add(pos, arg);
+	}
 
 	public void addScriptArgs(String[] args) {
 		for (int i = 0; i < args.length; ++i) {

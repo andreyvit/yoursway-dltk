@@ -48,7 +48,7 @@ public class DebugConsoleManager implements ILaunchListener {
 	}
 
 	protected IOConsole createConsole(String name) {
-		IOConsole console = new IOConsole(name, null);
+		ScriptDebugConsole console = new ScriptDebugConsole(name, null);
 
 		IConsoleManager manager = ConsolePlugin.getDefault()
 				.getConsoleManager();
@@ -85,7 +85,7 @@ public class DebugConsoleManager implements ILaunchListener {
 					.getDebugTarget();
 
 			if (target != null) {
-				IOConsole console = (IOConsole) launchToConsoleMap.get(launch);
+				ScriptDebugConsole console = (ScriptDebugConsole) launchToConsoleMap.get(launch);
 				if (console != null) {
 					if (target.getStreamManager() == null) {
 						ConsoleScriptDebugTargetStreamManager manager = new ConsoleScriptDebugTargetStreamManager(
@@ -102,7 +102,7 @@ public class DebugConsoleManager implements ILaunchListener {
 			return;
 		}
 
-		IOConsole console = (IOConsole) launchToConsoleMap.get(launch);
+		ScriptDebugConsole console = (ScriptDebugConsole) launchToConsoleMap.get(launch);
 		destroyConsole(console);
 		launchToConsoleMap.remove(launch);
 	}

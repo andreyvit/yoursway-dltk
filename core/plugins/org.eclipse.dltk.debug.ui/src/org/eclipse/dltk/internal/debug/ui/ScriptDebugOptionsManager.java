@@ -89,7 +89,9 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 					throws CoreException {
 				IDbgpBreakpoint br = thread.getDbgpBreakpoint(breakpoint
 						.getIdentifier());
-				breakpoint.setHitCount(br.getHitCount());
+				if (br != null) {
+					breakpoint.setHitCount(br.getHitCount());
+				}
 			}
 		});
 	}

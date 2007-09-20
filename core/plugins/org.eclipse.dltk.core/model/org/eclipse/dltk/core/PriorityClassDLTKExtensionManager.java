@@ -20,6 +20,9 @@ public class PriorityClassDLTKExtensionManager extends PriorityDLTKExtensionMana
 	public PriorityClassDLTKExtensionManager(String extensionPoint) {
 		super(extensionPoint, "nature");
 	}
+	public PriorityClassDLTKExtensionManager(String extensionPoint, String id) {
+		super(extensionPoint, id);
+	}
 
 	public Object getObject(String natureId) {
 		return getInitObject(getElementInfo(natureId));

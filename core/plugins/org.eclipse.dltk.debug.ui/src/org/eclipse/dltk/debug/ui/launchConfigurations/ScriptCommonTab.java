@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 public class ScriptCommonTab extends CommonTab {
-	
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 		
@@ -58,6 +57,6 @@ public class ScriptCommonTab extends CommonTab {
 		if (myButtom.getSelection()){
 			configuration.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, false);
 			configuration.setAttribute("script_console_output", true);
-		}		
+		}
 	}	
 }

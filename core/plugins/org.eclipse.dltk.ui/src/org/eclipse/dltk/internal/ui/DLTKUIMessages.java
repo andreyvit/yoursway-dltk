@@ -79,4 +79,8 @@ public final class DLTKUIMessages extends NLS {
 	public static String TypeInfoViewer_remove_from_history;
 	public static String TypeInfoViewer_separator_message;
 	public static String TypeInfoViewer_library_name_format;
+	
+	public static String HistoryListAction_remove;
+	public static String HistoryListAction_max_entries_constraint;
+	public static String HistoryListAction_remove_all;
 }

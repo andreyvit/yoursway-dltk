@@ -24,11 +24,14 @@ Require-Bundle: org.eclipse.debug.ui,
  org.eclipse.dltk.tcl.launching,
  org.eclipse.dltk.debug
 Export-Package: org.eclipse.dltk.tcl.internal.console.ui,
+ org.eclipse.dltk.tcl.internal.console.ui.actions,
+ org.eclipse.dltk.tcl.internal.console.ui.preferences,
  org.eclipse.dltk.tcl.internal.debug.ui,
  org.eclipse.dltk.tcl.internal.debug.ui.console,
  org.eclipse.dltk.tcl.internal.debug.ui.interpreters,
  org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations,
- org.eclipse.dltk.tcl.internal.debug.ui.launcher
+ org.eclipse.dltk.tcl.internal.debug.ui.launcher,
+ org.eclipse.dltk.tcl.internal.debug.ui.preferences
 Eclipse-LazyStart: true
 Bundle-Activator: org.eclipse.dltk.tcl.internal.debug.ui.TclDebugUIPlugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
