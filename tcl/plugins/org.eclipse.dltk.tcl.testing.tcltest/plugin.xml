@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.dltk.tcl.testing.tclTestEngine">
+      <testEngine
+            class="org.eclipse.dltk.tcl.testing.internal.tcltest.TclTestTestingEngine"
+            id="tcl.tcltest"
+            priority="0">
+      </testEngine>
+   </extension>
+
+</plugin>
