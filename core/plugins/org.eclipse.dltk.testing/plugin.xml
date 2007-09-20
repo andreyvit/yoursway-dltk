@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension-point id="testRunListeners" name="%testRunListeners.name" schema="schema/testRunListeners.exsd"/>
+   <extension-point id="testingLaunchConfigs" name="%testingLaunchConfigs.name" schema="schema/testingLaunchConfigs.exsd"/>
+   <extension-point id="internal_testKinds" name="%testKinds.name" schema="schema/internal_testKinds.exsd"/>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            name="%View.label"
+            icon="$nl$/icons/full/eview16/testing.png"
+            category="org.eclipse.dltk.ui.main"
+            fastViewWidthRatio="0.40"
+            class="org.eclipse.dltk.internal.testing.ui.TestRunnerViewPart"
+            id="org.eclipse.dltk.testing.ResultView">
+      </view>
+   </extension>
+   <!--extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="%PreferencePage.label"
+            category="org.eclipse.dltk.ui.preferences.JavaBasePreferencePage"
+            class="org.eclipse.dltk.internal.testing.ui.testingPreferencePage"
+            id="org.eclipse.dltk.testing.preferences">
+         <keywordReference id="org.eclipse.dltk.testing.testing"/>
+      </page>
+   </extension-->
+   <extension
+         point="org.eclipse.ui.keywords">
+      <keyword
+            id="org.eclipse.dltk.testing.testing"
+            label="%preferenceKeywords.general"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="%testingActionSet.label"
+            visible="false"
+            id="org.eclipse.dltk.testing.testingActionSet">
+         <menu
+               label="%searchMenu.label"
+               path="navigate"
+               id="org.eclipse.search.menu">
+				<groupMarker name="internalDialogGroup"/>   <!-- not to be used by clients  -->
+				<groupMarker name="dialogGroup"/>           <!-- to be used by clients      -->
+				<separator name="fileSearchContextMenuActionsGroup"/> <!-- to be used by clients      -->
+	         	<separator name="contextMenuActionsGroup"/> <!-- to be used by clients -->
+	         	<separator name="occurencesActionsGroup"/> <!-- to be used by clients -->
+	         	<separator name="extraSearchGroup"/> <!-- to be used by clients -->
+         </menu>
+		<action
+               definitionId="org.eclipse.dltk.testing.gotoTest"
+               label="%GotoTestAction.label"
+               helpContextId="org.eclipse.dltk.testing.goto_referenced_test_action_context"
+               class="org.eclipse.dltk.internal.testing.ui.GotoReferencedTestAction"
+               tooltip="%GotoTestAction.tooltip"
+               menubarPath="org.eclipse.search.menu/extraSearchGroup"
+               id="testing.actions.GotoTestAction">
+         </action>
+      </actionSet>
+   </extension>
+      <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.dltk.testing.testingActionSet">
+         <part
+               id="org.eclipse.dltk.ui.ScriptExplorer">
+         </part>
+         <part
+               id="org.eclipse.search.SearchResultView">
+         </part>
+      </actionSetPartAssociation>
+   </extension>
+    
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            properties="isTest,canLaunchAsTesting"
+            namespace="org.eclipse.dltk.testing"
+            type="org.eclipse.core.runtime.IAdaptable"
+            class="org.eclipse.dltk.internal.testing.DLTKTestingPropertyTester"
+            id="org.eclipse.dltk.testing.testingPropertyTester">
+      </propertyTester>
+   </extension>
+ 
+    <extension
+         point="org.eclipse.ui.commands">
+      <command
+         name="%GotoTestCommand.name"
+         description="%GotoTestCommand.description"
+         categoryId="org.eclipse.search.ui.category.search"
+         id="org.eclipse.dltk.testing.gotoTest">
+      </command>
+      <command
+            name="%ViewCommand.testingView.name"
+            description="%ViewCommand.testingView.description"
+            categoryId="org.eclipse.ui.category.views"
+            id="org.eclipse.dltk.testing.ResultView">
+      </command>
+      
+      <command
+            name="%testingShortcut.description.run"
+            description="%testingShortcut.description.run"
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="org.eclipse.dltk.testing.testingShortcut.run">
+      </command>
+      <command
+            name="%testingShortcut.description.debug"
+            description="%testingShortcut.description.debug"
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="org.eclipse.dltk.testing.testingShortcut.debug">
+      </command>
+      <command
+            name="%testingShortcut.description.rerunLast"
+            description="%testingShortcut.description.rerunLast"
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="org.eclipse.dltk.testing.testingShortcut.rerunLast">
+      </command>
+      <command
+            name="%testingShortcut.description.rerunFailedFirst"
+            description="%testingShortcut.description.rerunFailedFirst"
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="org.eclipse.dltk.testing.testingShortcut.rerunFailedFirst">
+      </command>       
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.dltk.internal.testing.ui.DLTKTestingPreferenceInitializer">
+      </initializer>
+   </extension>
+    <!-- testing Container -->
+ 
+</plugin>
