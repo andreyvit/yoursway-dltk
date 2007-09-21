@@ -5,9 +5,17 @@
          point="org.eclipse.dltk.tcl.testing.tclTestEngine">
       <testEngine
             class="org.eclipse.dltk.tcl.testing.internal.tcltest.TclTestTestingEngine"
-            id="tcl.tcltest"
+            id="org.eclipse.dltk.tcl.testing.tcltest.testingEngine"
             priority="0">
       </testEngine>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.testing.memberResolver">
+      <resolver
+            class="org.eclipse.dltk.tcl.testing.internal.tcltest.TcltestMemberResolver"
+            id="org.eclipse.dltk.tcl.testing.tcltest.testingEngine"
+            priority="0">
+      </resolver>
    </extension>
 
 </plugin>

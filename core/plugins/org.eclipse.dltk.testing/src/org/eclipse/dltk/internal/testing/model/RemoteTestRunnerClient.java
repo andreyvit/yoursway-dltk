@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
-
 import org.eclipse.dltk.testing.DLTKTestingPlugin;
 import org.eclipse.dltk.testing.ITestingClient;
 import org.eclipse.dltk.testing.MessageIds;
@@ -587,11 +586,11 @@ public class RemoteTestRunnerClient implements ITestingClient {
 		synchronized (operations) {
 			operations.add(new Runnable() {
 				public void run() {
-					fCurrentState= fDefaultState;
+//					fCurrentState= fDefaultState;
 //					notifyTestFailed();(Integer.toString(id) + "," + name);
-					receiveMessage(MessageIds.TRACE_START);
+//					receiveMessage(MessageIds.TRACE_START);
 					receiveMessage(message);
-					receiveMessage(MessageIds.TRACE_END);
+//					receiveMessage(MessageIds.TRACE_END);
 				}
 			});
 			operations.notify();
@@ -613,6 +612,56 @@ public class RemoteTestRunnerClient implements ITestingClient {
 			operations.notify();
 		}
 	}
+	
+	public void testActual(final String actual) {
+		synchronized (operations) {
+			operations.add(new Runnable() {
+				public void run() {
+//					fCurrentState= fDefaultState;
+//					notifyTestFailed();(Integer.toString(id) + "," + name);
+					receiveMessage(MessageIds.ACTUAL_START);
+					receiveMessage(actual);
+					receiveMessage(MessageIds.ACTUAL_END);
+				}
+			});
+			operations.notify();
+		}
+	}
+	public void testExpected(final String expected) {
+		synchronized (operations) {
+			operations.add(new Runnable() {
+				public void run() {
+//					fCurrentState= fDefaultState;
+//					notifyTestFailed();(Integer.toString(id) + "," + name);
+					receiveMessage(MessageIds.EXPECTED_START);
+					receiveMessage(expected);
+					receiveMessage(MessageIds.EXPECTED_END);
+				}
+			});
+			operations.notify();
+		}
+	}
+	public void traceStart() {
+		synchronized (operations) {
+			operations.add(new Runnable() {
+				public void run() {
+					receiveMessage(MessageIds.TRACE_START);
+				}
+			});
+			operations.notify();
+		}
+	}
+	public void traceEnd() {
+		synchronized (operations) {
+			operations.add(new Runnable() {
+				public void run() {
+					receiveMessage(MessageIds.TRACE_END);
+				}
+			});
+			operations.notify();
+		}
+	}
+
 
 	private List operations= new ArrayList();
 	private Thread operationsThread;

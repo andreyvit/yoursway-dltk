@@ -10,81 +10,83 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.testing.ui;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
-import java.util.Set;
-
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.SubProgressMonitor;
-
-import org.eclipse.swt.widgets.Shell;
-
+import org.eclipse.core.runtime.Path;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.IMember;
+import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.internal.testing.MemberResolverManager;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
+import org.eclipse.dltk.testing.IDLTKTestingConstants;
+import org.eclipse.dltk.testing.ITestingElementResolver;
+import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
-
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.ITextEditor;
-
-import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.IScriptModel;
-import org.eclipse.dltk.core.IScriptProject;
-import org.eclipse.dltk.core.IType;
-import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.search.IDLTKSearchConstants;
-import org.eclipse.dltk.core.search.SearchEngine;
-import org.eclipse.dltk.core.search.SearchPattern;
-import org.eclipse.dltk.core.search.TypeNameMatch;
-import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
-import org.eclipse.dltk.testing.DLTKTestingPlugin;
-import org.eclipse.dltk.ui.DLTKUIPlugin;
-
 
 /**
  * Abstract Action for opening a Java editor.
  */
 public abstract class OpenEditorAction extends Action {
-	protected String fClassName;
+	protected String fName;
 	protected TestRunnerViewPart fTestRunner;
 	private final boolean fActivate;
-	
-	protected OpenEditorAction(TestRunnerViewPart testRunner, String testClassName) {
+
+	protected OpenEditorAction(TestRunnerViewPart testRunner,
+			String testClassName) {
 		this(testRunner, testClassName, true);
 	}
 
-	public OpenEditorAction(TestRunnerViewPart testRunner, String className, boolean activate) {
-		super(DLTKTestingMessages.OpenEditorAction_action_label); 
-		fClassName= className;
-		fTestRunner= testRunner;
-		fActivate= activate;
+	public OpenEditorAction(TestRunnerViewPart testRunner, String className,
+			boolean activate) {
+		super(DLTKTestingMessages.OpenEditorAction_action_label);
+		fName = className;
+		fTestRunner = testRunner;
+		fActivate = activate;
 	}
 
 	/*
 	 * @see IAction#run()
 	 */
 	public void run() {
-		ITextEditor textEditor= null;
+		ITextEditor textEditor = null;
 		try {
-			IModelElement element= findElement(getLaunchedProject(), fClassName);
+			IModelElement element = findMember(getLaunchedProject(), fName);
 			if (element == null) {
-				MessageDialog.openError(getShell(), 
-					DLTKTestingMessages.OpenEditorAction_error_cannotopen_title, DLTKTestingMessages.OpenEditorAction_error_cannotopen_message); 
+				MessageDialog
+						.openError(
+								getShell(),
+								DLTKTestingMessages.OpenEditorAction_error_cannotopen_title,
+								DLTKTestingMessages.OpenEditorAction_error_cannotopen_message);
 				return;
-			} 
-			textEditor= (ITextEditor) DLTKUIPlugin.openInEditor(element, fActivate, false);		
+			}
+			textEditor = (ITextEditor) DLTKUIPlugin.openInEditor(element,
+					fActivate, false);
 		} catch (CoreException e) {
-			ErrorDialog.openError(getShell(), DLTKTestingMessages.OpenEditorAction_error_dialog_title, DLTKTestingMessages.OpenEditorAction_error_dialog_message, e.getStatus()); 
+			ErrorDialog.openError(getShell(),
+					DLTKTestingMessages.OpenEditorAction_error_dialog_title,
+					DLTKTestingMessages.OpenEditorAction_error_dialog_message,
+					e.getStatus());
 			return;
 		}
 		if (textEditor == null) {
-			fTestRunner.registerInfoMessage(DLTKTestingMessages.OpenEditorAction_message_cannotopen); 
+			fTestRunner
+					.registerInfoMessage(DLTKTestingMessages.OpenEditorAction_message_cannotopen);
 			return;
 		}
 		reveal(textEditor);
 	}
-	
+
 	protected Shell getShell() {
 		return fTestRunner.getSite().getShell();
 	}
@@ -95,82 +97,66 @@ public abstract class OpenEditorAction extends Action {
 	protected IScriptProject getLaunchedProject() {
 		return fTestRunner.getLaunchedProject();
 	}
-	
+
 	protected String getClassName() {
-		return fClassName;
+		return fName;
 	}
 
-	protected abstract IModelElement findElement(IScriptProject project, String className) throws CoreException;
-	
-	protected abstract void reveal(ITextEditor editor);
-
-	protected final IType findType(final IScriptProject project, String className) throws ModelException {
-		final IType[] result= { null };
-		final String dottedName= className.replace('$', '.'); // for nested classes...
+	protected IModelElement findMember(IScriptProject project, String name)
+			throws ModelException {
+		IScriptProject launchedProject = fTestRunner.getLaunchedProject();
+		ILaunch launch = fTestRunner.getLaunch();
+		ILaunchConfiguration launchConfiguration = launch
+				.getLaunchConfiguration();
+		IModelElement element = null;
+		String id = null;
 		try {
-			PlatformUI.getWorkbench().getProgressService().busyCursorWhile(new IRunnableWithProgress() {
-				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-					try {
-						if (project == null) {
-							int lastDot= dottedName.lastIndexOf('.');
-							TypeNameMatchRequestor nameMatchRequestor= new TypeNameMatchRequestor() {
-								public void acceptTypeNameMatch(TypeNameMatch match) {
-									result[0]= match.getType();
-								}
-							};
-							new SearchEngine().searchAllTypeNames(
-									lastDot >= 0 ? dottedName.substring(0, lastDot).toCharArray() : null,
-									SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE,
-									(lastDot >= 0 ? dottedName.substring(lastDot + 1) : dottedName).toCharArray(),
-									SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE,
-									IDLTKSearchConstants.TYPE,
-									SearchEngine.createSearchScope(new IScriptProject[]{project}),
-									nameMatchRequestor,
-									IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
-									monitor);
-						} else {
-							result[0]= internalFindType(project, dottedName, new HashSet(), monitor);
-						}
-					} catch (ModelException e) {
-						throw new InvocationTargetException(e);
-					}
-				}
-			});
-		} catch (InvocationTargetException e) {
-			DLTKTestingPlugin.log(e);
-		} catch (InterruptedException e) {
-			// user cancelled
+			id = launchConfiguration.getAttribute(
+					IDLTKTestingConstants.ENGINE_ID_ATR, "");
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
-		return result[0];
+		if (id != null) {
+			ITestingElementResolver resolver = MemberResolverManager.getResolver(id);
+			if (resolver == null) {
+				return element;
+			}
+			ISourceModule module = resolveSourceModule(launchedProject,
+					launchConfiguration);
+			element = resolver.resolveElement(launchedProject,
+					launchConfiguration, module, name);
+			if (element == null) {
+				String title = DLTKTestingMessages.OpenTestAction_error_title;
+				String message = "Error";
+				MessageDialog.openInformation(getShell(), title, message);
+				return element;
+			}
+		}
+		return element;
 	}
 
-	private IType internalFindType(IScriptProject project, String className, Set/*<IJavaProject>*/ visitedProjects, IProgressMonitor monitor) throws ModelException {
+	protected ISourceModule resolveSourceModule(IScriptProject launchedProject,
+			ILaunchConfiguration launchConfiguration) {
+		String scriptName;
 		try {
-			if (visitedProjects.contains(project))
-				return null;
-			monitor.beginTask("", 2); //$NON-NLS-1$
-			IType type= project.findType(className, new SubProgressMonitor(monitor, 1));
-			if (type != null)
-				return type;
-			//fix for bug 87492: visit required projects explicitly to also find not exported types
-			visitedProjects.add(project);
-			IScriptModel javaModel= project.getModel();
-			
-//			String[] requiredProjectNames= project.getRequiredProjectNames();
-//			IProgressMonitor reqMonitor= new SubProgressMonitor(monitor, 1);
-//			reqMonitor.beginTask("", requiredProjectNames.length); //$NON-NLS-1$
-//			for (int i= 0; i < requiredProjectNames.length; i++) {
-//				IScriptProject requiredProject= javaModel.getJavaProject(requiredProjectNames[i]);
-//				if (requiredProject.exists()) {
-//					type= internalFindType(requiredProject, className, visitedProjects, new SubProgressMonitor(reqMonitor, 1));
-//					if (type != null)
-//						return type;
-//				}
-//			}
+			scriptName = launchConfiguration.getAttribute(
+					ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
+					(String) null);
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 			return null;
-		} finally {
-			monitor.done();
 		}
+		IProject prj = launchedProject.getProject();
+		IResource file = prj.findMember(new Path(scriptName));
+		if (file instanceof IFile) {
+			return (ISourceModule) DLTKCore.create(file);
+		}
+		return null;
 	}
-	
+
+	protected abstract void reveal(ITextEditor editor);
 }

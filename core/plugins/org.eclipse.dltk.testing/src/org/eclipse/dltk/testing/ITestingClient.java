@@ -14,7 +14,13 @@ public interface ITestingClient {
 	public void testEnded(final int id, final String name);
 
 	public void traceMessage(final String message);
+	public void traceStart();
+	public void traceEnd();
 
 	public void testError(final int id, final String name);
 	public void testFailed(int id, String name);
+	
+	public void testActual(final String actual);
+	public void testExpected(final String expected);
+
 }

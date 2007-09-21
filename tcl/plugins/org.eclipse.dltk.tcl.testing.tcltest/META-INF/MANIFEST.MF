@@ -10,6 +10,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.dltk.testing,
  org.eclipse.dltk.launching,
  org.eclipse.debug.core,
- org.eclipse.debug.ui
+ org.eclipse.debug.ui,
+ org.eclipse.dltk.tcl.core,
+ org.eclipse.dltk.tcl.launching
 Eclipse-LazyStart: true
 Bundle-Vendor: %pluginProvider

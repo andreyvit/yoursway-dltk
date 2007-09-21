@@ -8,8 +8,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.dltk.debug.ui.messages.DLTKLaunchConfigurationsMessages;
 import org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations.TclMainLaunchConfigurationTab;
-import org.eclipse.dltk.tcl.testing.ITclTestingConstants;
 import org.eclipse.dltk.tcl.testing.ITclTestingEngine;
+import org.eclipse.dltk.testing.IDLTKTestingConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -83,7 +83,7 @@ public class TclTestingMainLaunchConfigurationTab extends
 
 	protected void doPerformApply(ILaunchConfigurationWorkingCopy config) {
 		super.doPerformApply(config);
-		config.setAttribute(ITclTestingConstants.ENGINE_ID_ATR,
+		config.setAttribute(IDLTKTestingConstants.ENGINE_ID_ATR,
 				(String) this.nameToId.get(this.engineType.getText()));
 	}
 
@@ -92,7 +92,7 @@ public class TclTestingMainLaunchConfigurationTab extends
 		ITclTestingEngine[] engines = TclTestingEngineManager.getEngines();
 		String id = null;
 		try {
-			id = config.getAttribute(ITclTestingConstants.ENGINE_ID_ATR, "");
+			id = config.getAttribute(IDLTKTestingConstants.ENGINE_ID_ATR, "");
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

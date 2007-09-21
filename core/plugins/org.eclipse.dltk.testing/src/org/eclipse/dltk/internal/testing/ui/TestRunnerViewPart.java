@@ -29,14 +29,47 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ILock;
 import org.eclipse.core.runtime.jobs.Job;
-
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.ElementChangedEvent;
+import org.eclipse.dltk.core.IElementChangedListener;
+import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IModelElementDelta;
+import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.dltk.internal.testing.Messages;
+import org.eclipse.dltk.internal.testing.launcher.DLTKTestingLaunchConfigurationConstants;
+import org.eclipse.dltk.internal.testing.launcher.ITestKind;
+import org.eclipse.dltk.internal.testing.model.DLTKTestingModel;
+import org.eclipse.dltk.internal.testing.model.ITestRunSessionListener;
+import org.eclipse.dltk.internal.testing.model.ITestSessionListener;
+import org.eclipse.dltk.internal.testing.model.TestCaseElement;
+import org.eclipse.dltk.internal.testing.model.TestElement;
+import org.eclipse.dltk.internal.testing.model.TestRunSession;
+import org.eclipse.dltk.testing.DLTKTestingPlugin;
+import org.eclipse.dltk.testing.ITestSession;
+import org.eclipse.dltk.testing.model.ITestElement.Result;
+import org.eclipse.dltk.ui.viewsupport.ViewHistory;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IStatusLineManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
@@ -54,20 +87,6 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
-
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IStatusLineManager;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.resource.ImageDescriptor;
-
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorActionBarContributor;
 import org.eclipse.ui.IEditorPart;
@@ -89,32 +108,6 @@ import org.eclipse.ui.part.EditorActionBarContributor;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 import org.eclipse.ui.progress.UIJob;
-
-import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-
-import org.eclipse.debug.ui.DebugUITools;
-
-import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.ElementChangedEvent;
-import org.eclipse.dltk.core.IElementChangedListener;
-import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.IModelElementDelta;
-import org.eclipse.dltk.core.IScriptProject;
-import org.eclipse.dltk.internal.testing.Messages;
-import org.eclipse.dltk.internal.testing.launcher.DLTKTestingLaunchConfigurationConstants;
-import org.eclipse.dltk.internal.testing.launcher.ITestKind;
-import org.eclipse.dltk.internal.testing.model.DLTKTestingModel;
-import org.eclipse.dltk.internal.testing.model.ITestRunSessionListener;
-import org.eclipse.dltk.internal.testing.model.ITestSessionListener;
-import org.eclipse.dltk.internal.testing.model.TestCaseElement;
-import org.eclipse.dltk.internal.testing.model.TestElement;
-import org.eclipse.dltk.internal.testing.model.TestRunSession;
-import org.eclipse.dltk.testing.DLTKTestingPlugin;
-import org.eclipse.dltk.testing.ITestSession;
-import org.eclipse.dltk.testing.model.ITestElement.Result;
-import org.eclipse.dltk.ui.viewsupport.ViewHistory;
 
 
 
@@ -1129,12 +1122,12 @@ public class TestRunnerViewPart extends ViewPart {
 	}
 
 	private void updateViewIcon() {
-		if (fTestRunSession == null || fTestRunSession.isStopped() || fTestRunSession.isRunning() || fTestRunSession.getStartedCount() == 0)
-			fViewImage= fOriginalViewImage;
-		else if (hasErrorsOrFailures())
-			fViewImage= fTestRunFailIcon;
-		else 
-			fViewImage= fTestRunOKIcon;
+//		if (fTestRunSession == null || fTestRunSession.isStopped() || fTestRunSession.isRunning() || fTestRunSession.getStartedCount() == 0)
+//			fViewImage= fOriginalViewImage;
+//		else if (hasErrorsOrFailures())
+//			fViewImage= fTestRunFailIcon;
+//		else 
+//			fViewImage= fTestRunOKIcon;
 		firePropertyChange(IWorkbenchPart.PROP_TITLE);	
 	}
 
@@ -1658,6 +1651,9 @@ action enablement
 	 */
 	public IScriptProject getLaunchedProject() {
 		return fTestRunSession == null ? null : fTestRunSession.getLaunchedProject();
+	}
+	public ILaunch getLaunch() {
+		return fTestRunSession == null ? null : fTestRunSession.getLaunch();
 	}
 	
 	public static Image createImage(String path) {

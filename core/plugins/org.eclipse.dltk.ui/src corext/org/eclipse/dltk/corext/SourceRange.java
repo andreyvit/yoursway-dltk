@@ -28,7 +28,7 @@ public class SourceRange implements ISourceRange{
 	}
 	
 	public SourceRange(ASTNode node) {
-		this(node.sourceStart(), node.sourceEnd());
+		this(node.sourceStart(), node.sourceEnd() - node.sourceStart());
 	}
 
 	public SourceRange(IProblem problem) {

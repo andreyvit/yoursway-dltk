@@ -8,9 +8,9 @@ import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.dltk.launching.IInterpreterRunner;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.tcl.launching.TclLaunchConfigurationDelegate;
-import org.eclipse.dltk.tcl.testing.ITclTestingConstants;
 import org.eclipse.dltk.tcl.testing.ITclTestingEngine;
 import org.eclipse.dltk.testing.DLTKTestingCore;
+import org.eclipse.dltk.testing.IDLTKTestingConstants;
 
 public class TclTestingLaunchConfigurationDelegate extends
 		TclLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
@@ -31,7 +31,7 @@ public class TclTestingLaunchConfigurationDelegate extends
 		// IModelElement sourceModule = DLTKCore.create(resource);
 		ITclTestingEngine[] engines = TclTestingEngineManager.getEngines();
 		String engineId = configuration.getAttribute(
-				ITclTestingConstants.ENGINE_ID_ATR, "");
+				IDLTKTestingConstants.ENGINE_ID_ATR, "");
 		for (int i = 0; i < engines.length; i++) {
 			if (engines[i].getId().equals(engineId)) {
 				engines[i].correctLaunchConfiguration(config);

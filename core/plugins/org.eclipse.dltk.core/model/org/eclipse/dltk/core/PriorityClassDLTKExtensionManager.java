@@ -24,8 +24,8 @@ public class PriorityClassDLTKExtensionManager extends PriorityDLTKExtensionMana
 		super(extensionPoint, id);
 	}
 
-	public Object getObject(String natureId) {
-		return getInitObject(getElementInfo(natureId));
+	public Object getObject(String id) {
+		return getInitObject(getElementInfo(id));
 	}
 
 	public Object getInitObject(ElementInfo ext) {

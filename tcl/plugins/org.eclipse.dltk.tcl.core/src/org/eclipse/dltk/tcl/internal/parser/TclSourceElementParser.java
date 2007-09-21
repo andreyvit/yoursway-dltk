@@ -69,6 +69,30 @@ public class TclSourceElementParser implements ISourceElementParser {
 
 	private static int counter = 0;
 
+	public static final Object AST = "ast";
+	public static ModuleDeclaration parseModule(ISourceModuleInfo astCache,
+			char[] content, IProblemReporter problemReporter, char[] filename ) {
+		ModuleDeclaration moduleDeclaration = null;
+		if( astCache != null ) {
+			moduleDeclaration = (ModuleDeclaration)astCache.get(AST);
+		}
+		if( moduleDeclaration == null ) {
+			ISourceParser sourceParser = null;
+			try {
+				sourceParser = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+			if( sourceParser != null ) {
+				moduleDeclaration = sourceParser.parse(filename, content, problemReporter);
+				if( moduleDeclaration != null && astCache != null ) {
+					astCache.put(AST, moduleDeclaration );
+				}
+			}
+		}
+		return moduleDeclaration;
+	}
+	
 	public ModuleDeclaration parseSourceModule(char[] contents,
 			ISourceModuleInfo astCashe, char[] filename) {
 
@@ -76,17 +100,7 @@ public class TclSourceElementParser implements ISourceElementParser {
 		// + (counter++));
 
 		// TODO: Add correct visitor like model builder for TCL.
-		ISourceParser sourceParser = null;
-		try {
-			sourceParser = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
-		} catch (CoreException e1) {
-			if( DLTKCore.DEBUG ) {
-				e1.printStackTrace();
-			}
-			return null;
-		}
-		ModuleDeclaration moduleDeclaration = sourceParser.parse(
-				null, contents, this.fReporter);
+		ModuleDeclaration moduleDeclaration = parseModule(astCashe, contents, this.fReporter, filename);
 		moduleDeclaration.disableRebuild();
 		List statements = moduleDeclaration.getStatements();
 		try {

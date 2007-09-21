@@ -22,8 +22,8 @@ import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
-import org.eclipse.dltk.tcl.testing.ITclTestingConstants;
 import org.eclipse.dltk.tcl.testing.ITclTestingEngine;
+import org.eclipse.dltk.testing.IDLTKTestingConstants;
 import org.eclipse.dltk.testing.ITestKind;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.ModelElementLabelProvider;
@@ -265,7 +265,7 @@ public class TclTestingLaunchShortcut implements ILaunchShortcut {
 		ISourceModule module = (ISourceModule) element.getAncestor(IModelElement.SOURCE_MODULE);
 		for (int i = 0; i < engines.length; i++) {
 			if( engines[i].isValidModule(module)) {
-				wc.setAttribute(ITclTestingConstants.ENGINE_ID_ATR, engines[i].getId());
+				wc.setAttribute(IDLTKTestingConstants.ENGINE_ID_ATR, engines[i].getId());
 				break;
 			}
 		}
@@ -283,7 +283,7 @@ public class TclTestingLaunchShortcut implements ILaunchShortcut {
 		return new String[] {
 			ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 			ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
-			ITclTestingConstants.ENGINE_ID_ATR
+			IDLTKTestingConstants.ENGINE_ID_ATR
 //			XUnitLaunchConfigurationConstants.ATTR_TEST_NAME,
 //			XUnitLaunchConfigurationConstants.ATTR_TEST_CONTAINER,
 //			XUnitLaunchConfigurationConstants.ATTR_TEST_ELEMENT_NAME

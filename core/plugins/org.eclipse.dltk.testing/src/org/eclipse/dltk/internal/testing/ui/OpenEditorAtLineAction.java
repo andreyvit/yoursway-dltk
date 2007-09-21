@@ -12,16 +12,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.testing.ui;
 
-import org.eclipse.core.runtime.CoreException;
-
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
-
-import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.IScriptProject;
 
 /**
  * Open a test in the Java editor and reveal a given line
@@ -46,9 +40,4 @@ public class OpenEditorAtLineAction extends OpenEditorAction {
 			}
 		}
 	}
-	
-	protected IModelElement findElement(IScriptProject project, String className) throws CoreException {
-		return findType(project, className);
-	}
-
 }
