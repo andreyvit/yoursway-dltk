@@ -1,7 +1,7 @@
 
 ! Tcl Development Tools (DLTK)
 !
-! $Id: tcl.map,v 1.58 2007/09/21 11:48:33 asobolev Exp $ 
+! $Id: tcl.map,v 1.59 2007/09/24 11:24:56 asobolev Exp $ 
 
 feature@org.eclipse.dltk.tcl=v20070920,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl-feature
 feature@org.eclipse.dltk.tcl.sdk=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl.sdk
@@ -18,5 +18,5 @@ plugin@org.eclipse.dltk.tcl.tclchecker=v20070727b,:pserver:anonymous@dev.eclipse
 
 plugin@org.eclipse.dltk.tcl.activestatedebugger=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.activestatedebugger
 
-plugin@org.eclipse.dltk.tcl.testing=v20070921,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.testing
-plugin@org.eclipse.dltk.tcl.testing.tcltest=v20070921,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.testing.tcltest
+plugin@org.eclipse.dltk.tcl.testing=v20070924,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.testing
+plugin@org.eclipse.dltk.tcl.testing.tcltest=v20070924,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.testing.tcltest
