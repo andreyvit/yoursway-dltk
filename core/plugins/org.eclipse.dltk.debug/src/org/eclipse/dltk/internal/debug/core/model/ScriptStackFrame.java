@@ -21,9 +21,11 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.dbgp.IDbgpProperty;
 import org.eclipse.dltk.dbgp.IDbgpStackLevel;
 import org.eclipse.dltk.dbgp.commands.IDbgpContextCommands;
+import org.eclipse.dltk.dbgp.exceptions.DbgpDebuggingEngineException;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
@@ -49,16 +51,23 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 			ScriptStackFrame parentFrame, int contextId,
 			IDbgpContextCommands commands) throws DbgpException {
 
-		IDbgpProperty[] properties = commands.getContextProperties(parentFrame
-				.getLevel(), contextId);
+		try {
+			IDbgpProperty[] properties = commands.getContextProperties(
+					parentFrame.getLevel(), contextId);
 
-		IScriptVariable[] variables = new IScriptVariable[properties.length];
+			IScriptVariable[] variables = new IScriptVariable[properties.length];
 
-		for (int i = 0; i < properties.length; ++i) {
-			variables[i] = new ScriptVariable(parentFrame, properties[i]);
+			for (int i = 0; i < properties.length; ++i) {
+				variables[i] = new ScriptVariable(parentFrame, properties[i]);
+			}
+
+			return variables;
+		} catch (DbgpDebuggingEngineException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+			return new IScriptVariable[0];
 		}
-
-		return variables;
 	}
 
 	protected IScriptVariable[] readAllVariables() throws DbgpException {

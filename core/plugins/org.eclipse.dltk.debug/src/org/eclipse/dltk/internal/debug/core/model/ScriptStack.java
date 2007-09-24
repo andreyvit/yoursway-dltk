@@ -1,5 +1,6 @@
 package org.eclipse.dltk.internal.debug.core.model;
 
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.dbgp.IDbgpStackLevel;
 import org.eclipse.dltk.dbgp.commands.IDbgpStatckCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
@@ -38,7 +39,9 @@ public class ScriptStack implements IScriptStack {
 		try {
 			this.frames = readFrames(thread.getDbgpSession().getCoreCommands());
 		} catch (DbgpException e) {
-			// TODO: log exception
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 	}
 

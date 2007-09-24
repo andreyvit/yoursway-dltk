@@ -8,7 +8,10 @@
             delegate="org.eclipse.dltk.tcl.internal.testing.TclTestingLaunchConfigurationDelegate"
             id="org.eclipse.dltk.tcl.testing.launchConfig"
             modes="run, debug"
-            name="Tcl Testing">
+            name="Tcl Testing"
+            public="true"
+            sourceLocatorId="tclSourceLocator"
+            sourcePathComputerId="tclSourcePathComputer">
       </launchConfigurationType>
    </extension>
    <extension

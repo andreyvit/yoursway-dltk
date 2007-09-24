@@ -14,7 +14,7 @@ public class ScriptSourceLookupDirector extends AbstractSourceLookupDirector {
 	 * @see org.eclipse.debug.core.sourcelookup.ISourceLookupDirector#initializeParticipants()
 	 */
 	public void initializeParticipants() {
+		addParticipants(new ISourceLookupParticipant[] { new DBGPSourceLookupParticipant() });
 		addParticipants(new ISourceLookupParticipant[] { new ScriptSourceLookupParticipant() });
 	}
-
 }

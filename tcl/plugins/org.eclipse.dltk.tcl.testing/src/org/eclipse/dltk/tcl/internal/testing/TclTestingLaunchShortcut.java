@@ -15,6 +15,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -22,6 +23,7 @@ import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
+import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.testing.ITclTestingEngine;
 import org.eclipse.dltk.testing.IDLTKTestingConstants;
 import org.eclipse.dltk.testing.ITestKind;
@@ -257,6 +259,8 @@ public class TclTestingLaunchShortcut implements ILaunchShortcut {
 		wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, element.getScriptProject().getElementName());
 		wc.setAttribute(ITestKind.LAUNCH_ATTR_TEST_KIND, "#");
 		wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME, testFileName);
+		wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE, TclNature.NATURE_ID);
+		wc.setAttribute(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, "true");
 //		wc.setAttribute(XUnitLaunchConfigurationConstants.ATTR_TEST_NAME, testFileName);
 //		wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH, containerHandleId);
 //		wc.setAttribute(XUnitLaunchConfigurationConstants.ATTR_TEST_ELEMENT_NAME, testElementName);
@@ -283,7 +287,8 @@ public class TclTestingLaunchShortcut implements ILaunchShortcut {
 		return new String[] {
 			ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 			ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
-			IDLTKTestingConstants.ENGINE_ID_ATR
+			IDLTKTestingConstants.ENGINE_ID_ATR,
+			ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE
 //			XUnitLaunchConfigurationConstants.ATTR_TEST_NAME,
 //			XUnitLaunchConfigurationConstants.ATTR_TEST_CONTAINER,
 //			XUnitLaunchConfigurationConstants.ATTR_TEST_ELEMENT_NAME

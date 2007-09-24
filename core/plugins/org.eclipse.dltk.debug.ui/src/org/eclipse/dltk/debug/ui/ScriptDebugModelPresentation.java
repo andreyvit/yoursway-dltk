@@ -21,11 +21,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IErrorReportingExpression;
 import org.eclipse.debug.core.model.IExpression;
 import org.eclipse.debug.core.model.ILineBreakpoint;
+import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.ui.IDebugModelPresentation;
@@ -174,7 +176,9 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			// Check if source line is empty
 			if (sourceLine == null || sourceLine.length() == 0) {
 
-				final Object object = stackFrame.getLaunch().getSourceLocator()
+				ILaunch launch = stackFrame.getLaunch();
+				ISourceLocator sourceLocator = launch.getSourceLocator();
+				final Object object = sourceLocator
 						.getSourceElement(stackFrame);
 
 				if (object instanceof IFile) {

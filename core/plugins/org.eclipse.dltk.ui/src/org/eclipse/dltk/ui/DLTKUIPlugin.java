@@ -39,7 +39,7 @@ import org.eclipse.dltk.internal.ui.editor.ISourceModuleDocumentProvider;
 import org.eclipse.dltk.internal.ui.editor.SourceModuleDocumentProvider;
 import org.eclipse.dltk.internal.ui.editor.WorkingCopyManager;
 import org.eclipse.dltk.internal.ui.text.hover.EditorTextHoverDescriptor;
-import org.eclipse.dltk.launching.sourcelookup.RemoteScriptSourceLookupDirector.RemoteSourceModule;
+import org.eclipse.dltk.launching.sourcelookup.DBGPSourceModule;
 import org.eclipse.dltk.ui.text.completion.ContentAssistHistory;
 import org.eclipse.dltk.ui.viewsupport.ImageDescriptorRegistry;
 import org.eclipse.dltk.ui.viewsupport.ProblemMarkerManager;
@@ -111,7 +111,7 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 							.createBuffer(original);
 				}
 
-				if (original instanceof RemoteSourceModule) {
+				if (original instanceof DBGPSourceModule) {
 					return BufferManager.getDefaultBufferManager()
 							.createBuffer(original);
 				}

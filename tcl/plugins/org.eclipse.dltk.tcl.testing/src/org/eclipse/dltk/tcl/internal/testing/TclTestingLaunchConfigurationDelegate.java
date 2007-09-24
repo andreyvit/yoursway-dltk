@@ -22,13 +22,6 @@ public class TclTestingLaunchConfigurationDelegate extends
 		// We need to create correct execute script for this element.
 		InterpreterConfig config = super.createInterpreterConfig(configuration,
 				launch);
-		//		
-		// config.getScriptFilePath();
-		// String name = getMainScriptName(configuration);
-		// IProject project = getScriptProject(configuration).getProject();
-		// // IScriptProject scriptProject = DLTKCore.create(project);
-		// IResource resource = project.findMember(new Path(name));
-		// IModelElement sourceModule = DLTKCore.create(resource);
 		ITclTestingEngine[] engines = TclTestingEngineManager.getEngines();
 		String engineId = configuration.getAttribute(
 				IDLTKTestingConstants.ENGINE_ID_ATR, "");

@@ -15,6 +15,7 @@ class TcltestOutputProcessor implements ITestingProcessor {
 
 	public TcltestOutputProcessor(ILaunch launch) {
 		this.launch = launch;
+		System.out.println("TcltestOutputProcessor created");
 	}
 
 	int index = 0;
@@ -26,16 +27,25 @@ class TcltestOutputProcessor implements ITestingProcessor {
 	private static final int STATE_NORMAL = 0;
 	private static final int STATE_RESULT_WAS = 1;
 	private static final int STATE_RESULT_ACTUAL = 2;
-	private String resultActual;
-	private String resultExpected;
+	private String resultActual = "";
+	private String resultExpected = "";
 
 	public void done() {
+		System.out.println("DONE");
+		if (session == null || client == null) {
+			System.out.println("Session is NULL");
+			return;
+		}
 		session.setTotalCount(index);
 		client.testTerminated((int) (System.currentTimeMillis() - start));
 	}
 
 	public void processLine(String line) {
 		System.out.println("#" + line);
+		if (session == null || client == null) {
+			return;
+		}
+		System.out.println("@");
 		if (line.length() == 0) {
 			return;
 		}
@@ -56,14 +66,13 @@ class TcltestOutputProcessor implements ITestingProcessor {
 					client.testStarted(id, name);
 					session.setTotalCount(id);
 					client.testError(id, name);
-									
+
 					client.testActual(resultActual);
 					client.testExpected(resultExpected);
 					client.traceStart();
 					client.traceMessage(message);
 					client.traceEnd();
 
-					
 					resetState();
 				}
 				skip = !skip;
@@ -78,11 +87,11 @@ class TcltestOutputProcessor implements ITestingProcessor {
 		}
 		switch (state) {
 		case STATE_RESULT_ACTUAL:
-			String d = resultExpected.length() > 0? "\n" : "";
+			String d = resultExpected.length() > 0 ? "\n" : "";
 			resultExpected += d + line;
 			break;
 		case STATE_RESULT_WAS:
-			d = resultActual.length() > 0? "\n" : "";
+			d = resultActual.length() > 0 ? "\n" : "";
 			resultActual += d + line;
 			break;
 		}
@@ -100,21 +109,20 @@ class TcltestOutputProcessor implements ITestingProcessor {
 					session.setTotalCount(id);
 					client.testEnded(id, name);
 					resetState();
-				}
-				else {
+				} else {
 					// We need to test for SKIPPED:
 					String sk = "SKIPPED:";
-					if( line.indexOf(sk) != -1) {
+					if (line.indexOf(sk) != -1) {
 						lastIndexOf = line.lastIndexOf(sk);
 						name = line.substring(5, lastIndexOf);
-						state = line.substring(lastIndexOf + sk.length() );
-						
+						state = line.substring(lastIndexOf + sk.length());
+
 						int id = ++index;
 						client.testTree(id, name, false, 0);
 						client.testStarted(id, name);
 						session.setTotalCount(id);
 						client.testFailed(id, name);
-										
+
 						client.traceStart();
 						client.traceMessage(state);
 						client.traceEnd();
@@ -132,6 +140,7 @@ class TcltestOutputProcessor implements ITestingProcessor {
 	}
 
 	public void start() {
+		System.out.println("!!!!!!START!!!!!!");
 		this.start = System.currentTimeMillis();
 		index = 0;
 		session = DLTKTestingPlugin.getTestRunSession(launch);
@@ -139,6 +148,8 @@ class TcltestOutputProcessor implements ITestingProcessor {
 			return;
 
 		client = session.getTestRunnerClient();
-		client.testRunStart(0);
+		if (client != null) {
+			client.testRunStart(0);
+		}
 	}
 }

@@ -11,16 +11,16 @@
 
 package org.eclipse.dltk.testing;
 
-
 import org.eclipse.ui.console.ConsolePlugin;
 
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 
 import org.eclipse.dltk.internal.testing.util.TestingConsoleListener;
 
 /**
- * Class for accessing JUnit support; all functionality is provided by 
- * static methods. 
+ * Class for accessing JUnit support; all functionality is provided by static
+ * methods.
  * <p>
  * This class is not intended to be subclassed or instantiated by clients.
  * </p>
@@ -32,7 +32,8 @@ public class DLTKTestingCore {
 	/**
 	 * Adds a listener for test runs.
 	 * 
-	 * @param listener the listener to be added
+	 * @param listener
+	 *            the listener to be added
 	 * @since 3.3
 	 */
 	public static void addTestRunListener(TestRunListener listener) {
@@ -42,15 +43,24 @@ public class DLTKTestingCore {
 	/**
 	 * Removes a listener for test runs.
 	 * 
-	 * @param listener the listener to be removed 
+	 * @param listener
+	 *            the listener to be removed
 	 * @since 3.3
 	 */
 	public static void removeTestRunListener(TestRunListener listener) {
-		DLTKTestingPlugin.getDefault().getNewTestRunListeners().remove(listener);
+		DLTKTestingPlugin.getDefault().getNewTestRunListeners()
+				.remove(listener);
 	}
 
-	public static void registerTestingProcessor(final ILaunch launch, ITestingProcessor processor) {
-		launch.setAttribute(ITestKind.LAUNCH_ATTR_TEST_KIND, "#"); //$NON-NLS-1$
-		ConsolePlugin.getDefault().getConsoleManager().addConsoleListener(new TestingConsoleListener(launch, processor));
+	private static int index = 0;
+
+	public static void registerTestingProcessor(final ILaunch launch,
+			ITestingProcessor processor) {
+		launch.setAttribute(ITestKind.LAUNCH_ATTR_TEST_KIND,
+				"#" + Integer.toString(++index)); //$NON-NLS-1$
+		ConsolePlugin.getDefault().getConsoleManager().addConsoleListener(
+				new TestingConsoleListener(launch, processor));
+		// DebugPlugin.getDefault().getLaunchManager().addLaunchListener(new
+		// TestingOutputListener(launch, processor));
 	}
 }
