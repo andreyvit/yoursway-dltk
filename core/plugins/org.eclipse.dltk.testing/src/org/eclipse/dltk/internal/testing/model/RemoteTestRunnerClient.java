@@ -402,6 +402,7 @@ public class RemoteTestRunnerClient implements ITestingClient {
 				}
 			});
 		}
+		isTerminated = true;
 	}
 
 	private void notifyTestEnded(final String test) {
@@ -488,13 +489,16 @@ public class RemoteTestRunnerClient implements ITestingClient {
 	}
 
 	public boolean isRunning() {
-		return true;
+		return !isTerminated;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.dltk.internal.testing.model.ITestingClient#testRunStart(int)
 	 */
 	public void testRunStart(final int count) {
+		if(isTerminated) {
+			return;
+		}
 		synchronized (operations) {
 			operations.add(new Runnable() {
 				public void run() {
@@ -510,6 +514,9 @@ public class RemoteTestRunnerClient implements ITestingClient {
 	 * @see org.eclipse.dltk.internal.testing.model.ITestingClient#testTree(int, java.lang.String, boolean, int)
 	 */
 	public void testTree(final int testId, final String testName, final boolean issuite, final int testCound) {
+		if(isTerminated) {
+			return;
+		}
 		synchronized (operations) {
 			operations.add(new Runnable() {
 				public void run() {
@@ -525,6 +532,9 @@ public class RemoteTestRunnerClient implements ITestingClient {
 	 * @see org.eclipse.dltk.internal.testing.model.ITestingClient#testTerminated()
 	 */
 	public void testTerminated(final int elapse) {
+		if(isTerminated) {
+			return;
+		}
 		synchronized (operations) {
 			operations.add(new Runnable() {
 				public void run() {
@@ -540,6 +550,9 @@ public class RemoteTestRunnerClient implements ITestingClient {
 	 * @see org.eclipse.dltk.internal.testing.model.ITestingClient#testStarted(int, java.lang.String)
 	 */
 	public void testStarted(final int id, final String name) {
+		if(isTerminated) {
+			return;
+		}
 		synchronized (operations) {
 			operations.add(new Runnable() {
 				public void run() {
@@ -555,6 +568,9 @@ public class RemoteTestRunnerClient implements ITestingClient {
 	 * @see org.eclipse.dltk.internal.testing.model.ITestingClient#testEnded(int, java.lang.String)
 	 */
 	public void testEnded(final int id, final String name) {
+		if(isTerminated) {
+			return;
+		}
 		synchronized (operations) {
 			operations.add(new Runnable() {
 				public void run() {
@@ -567,6 +583,9 @@ public class RemoteTestRunnerClient implements ITestingClient {
 	}
 
 	public void testFailed(final int id, final String name) {
+		if(isTerminated) {
+			return;
+		}
 		synchronized (operations) {
 			operations.add(new Runnable() {
 				public void run() {
@@ -583,6 +602,9 @@ public class RemoteTestRunnerClient implements ITestingClient {
 	 * @see org.eclipse.dltk.internal.testing.model.ITestingClient#traceMessage(java.lang.String)
 	 */
 	public void traceMessage(final String message) {
+		if(isTerminated) {
+			return;
+		}
 		synchronized (operations) {
 			operations.add(new Runnable() {
 				public void run() {
@@ -601,6 +623,9 @@ public class RemoteTestRunnerClient implements ITestingClient {
 	 * @see org.eclipse.dltk.internal.testing.model.ITestingClient#testError(int, java.lang.String)
 	 */
 	public void testError(final int id, final String name) {
+		if(isTerminated) {
+			return;
+		}
 		synchronized (operations) {
 			operations.add(new Runnable() {
 				public void run() {
@@ -614,6 +639,9 @@ public class RemoteTestRunnerClient implements ITestingClient {
 	}
 	
 	public void testActual(final String actual) {
+		if(isTerminated) {
+			return;
+		}
 		synchronized (operations) {
 			operations.add(new Runnable() {
 				public void run() {
@@ -628,6 +656,9 @@ public class RemoteTestRunnerClient implements ITestingClient {
 		}
 	}
 	public void testExpected(final String expected) {
+		if(isTerminated) {
+			return;
+		}
 		synchronized (operations) {
 			operations.add(new Runnable() {
 				public void run() {
@@ -642,6 +673,9 @@ public class RemoteTestRunnerClient implements ITestingClient {
 		}
 	}
 	public void traceStart() {
+		if(isTerminated) {
+			return;
+		}
 		synchronized (operations) {
 			operations.add(new Runnable() {
 				public void run() {
@@ -652,7 +686,13 @@ public class RemoteTestRunnerClient implements ITestingClient {
 		}
 	}
 	public void traceEnd() {
+		if(isTerminated) {
+			return;
+		}
 		synchronized (operations) {
+			if(operations == null) {
+				return;
+			}
 			operations.add(new Runnable() {
 				public void run() {
 					receiveMessage(MessageIds.TRACE_END);
@@ -665,9 +705,10 @@ public class RemoteTestRunnerClient implements ITestingClient {
 
 	private List operations= new ArrayList();
 	private Thread operationsThread;
+	private boolean isTerminated = false;
 	private Runnable runner= new Runnable() {
 		public void run() {
-			while (operations != null) {
+			while (!isTerminated || operations.size() > 0) {
 				Runnable operation= null;
 				synchronized (operations) {
 					if (operations.size() > 0) {

@@ -15,4 +15,11 @@ public class ScriptDebugConsole extends IOConsole {
 	public ScriptDebugConsole(String name, ImageDescriptor imageDescriptor) {
 		super(name, imageDescriptor);
 	}
+	public void matcherFinished() {
+		super.matcherFinished();
+	}
+	public void partitionerFinished() {
+		super.partitionerFinished();
+	}
+	
 }

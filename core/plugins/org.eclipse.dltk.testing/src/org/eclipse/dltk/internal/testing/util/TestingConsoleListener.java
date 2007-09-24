@@ -1,8 +1,6 @@
 package org.eclipse.dltk.internal.testing.util;
 
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchesListener2;
 import org.eclipse.debug.internal.ui.views.console.ProcessConsole;
 import org.eclipse.dltk.debug.ui.ScriptDebugConsole;
 import org.eclipse.dltk.testing.ITestKind;
@@ -16,8 +14,8 @@ import org.eclipse.ui.console.TextConsole;
 public class TestingConsoleListener implements IConsoleListener {
 	private ILaunch launch;
 	private ITestingProcessor processor;
-	private Thread textProcessor;
 	private boolean initialized = false;
+	private boolean finalized = false;
 
 	public TestingConsoleListener(ILaunch launch, ITestingProcessor processor) {
 		this.launch = launch;
@@ -28,7 +26,7 @@ public class TestingConsoleListener implements IConsoleListener {
 	}
 
 	public synchronized void consolesAdded(IConsole[] consoles) {
-		System.out.println("consolesAdded:" + consoles.length);
+//		System.out.println("consolesAdded:" + consoles.length);
 		checkConsoles(consoles);
 	}
 
@@ -62,13 +60,22 @@ public class TestingConsoleListener implements IConsoleListener {
 		}
 	}
 
+	private synchronized void done() {
+		if (!finalized) {
+			finalized = true;
+			processor.done();
+			ConsolePlugin.getDefault().getConsoleManager()
+					.removeConsoleListener(this);
+		}
+	}
+
 	private void process(TextConsole pc, final ILaunch launch) {
 		pc.addPatternMatchListener(new ConsoleLineNotifier() {
 			private boolean first = true;
 
 			public void connect(TextConsole console) {
 				super.connect(console);
-				System.out.println("%");
+//				System.out.println("%");
 			}
 
 			public synchronized void lineAppended(IRegion region, String content) {
@@ -81,42 +88,47 @@ public class TestingConsoleListener implements IConsoleListener {
 
 			public synchronized void disconnect() {
 				super.disconnect();
-				ConsolePlugin.getDefault().getConsoleManager()
-						.removeConsoleListener(TestingConsoleListener.this);
+				done();
 			}
 
 			public synchronized void consoleClosed() {
 				super.consoleClosed();
+				done();
 			}
 		});
-		DebugPlugin.getDefault().getLaunchManager().addLaunchListener(
-				new ILaunchesListener2() {
-					public void launchesAdded(ILaunch[] launches) {
-					}
-
-					public void launchesChanged(ILaunch[] launches) {
-					}
-
-					public void launchesRemoved(ILaunch[] launches) {
-					}
-
-					public void launchesTerminated(ILaunch[] launches) {
-						for (int i = 0; i < launches.length; i++) {
-							for (int j = 0; j < launches.length; j++) {
-								String attribute = launches[j]
-										.getAttribute(ITestKind.LAUNCH_ATTR_TEST_KIND);
-								if (attribute != null
-										&& attribute
-												.equals(launch
-														.getAttribute(ITestKind.LAUNCH_ATTR_TEST_KIND))) {
-									processor.done();
-								}
-							}
-						}
-					}
-				});
 	}
 
 	public void consolesRemoved(IConsole[] consoles) {
 	}
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((launch.getAttribute(ITestKind.LAUNCH_ATTR_TEST_KIND) == null) ? 0
+						: launch.getAttribute(ITestKind.LAUNCH_ATTR_TEST_KIND)
+								.hashCode());
+		return result;
+	}
+
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final TestingConsoleListener other = (TestingConsoleListener) obj;
+		if (launch.getAttribute(ITestKind.LAUNCH_ATTR_TEST_KIND) == null) {
+			if (other.launch.getAttribute(ITestKind.LAUNCH_ATTR_TEST_KIND) != null)
+				return false;
+		} else if (!launch.getAttribute(ITestKind.LAUNCH_ATTR_TEST_KIND)
+				.equals(
+						other.launch
+								.getAttribute(ITestKind.LAUNCH_ATTR_TEST_KIND)))
+			return false;
+		return true;
+	}
+
 }

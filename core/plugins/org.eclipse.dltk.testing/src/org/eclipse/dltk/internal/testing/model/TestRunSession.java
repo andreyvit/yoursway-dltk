@@ -327,7 +327,7 @@ public class TestRunSession implements ITestRunSession, ITestSession {
 	 */
 	public void setTotalCount(int count) {
 		this.fTotalCount = count;
-		System.out.println("COUNT:" + count);
+//		System.out.println("COUNT:" + count);
 	}
 
 	/* (non-Javadoc)

@@ -143,7 +143,7 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 
 			for (int i = 0; i < resolve.length; i++) {
 				IModelElement scriptElement = resolve[i];
-				System.out.println("Element: " + scriptElement.getClass());
+//				System.out.println("Element: " + scriptElement.getClass());
 				if (scriptElement instanceof IField) {
 					IField field = (IField) scriptElement;
 					IScriptVariable variable = null;

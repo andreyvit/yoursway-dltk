@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -29,6 +30,7 @@ public class ConsoleScriptDebugTargetStreamManager implements
 		final OutputStream output = console.newOutputStream();
 
 		return new IScriptThreadStreamProxy() {
+			private boolean closed = false;
 
 			public OutputStream getStderr() {
 				return output;
@@ -40,6 +42,18 @@ public class ConsoleScriptDebugTargetStreamManager implements
 
 			public InputStream getStdin() {
 				return input;
+			}
+
+			public synchronized void close() {
+				if (!closed) {
+					try {
+						output.close();
+						input.close();
+						closed = true;
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		};
 	}

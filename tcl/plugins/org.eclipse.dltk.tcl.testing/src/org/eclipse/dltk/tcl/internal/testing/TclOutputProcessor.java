@@ -25,7 +25,7 @@ class TclOutputProcessor implements ITestingProcessor {
 
 	public void processLine(String line) {
 
-		System.out.println("#" + line);
+//		System.out.println("#" + line);
 		if( line.length() == 0 ) {
 			return;	
 		}

@@ -131,6 +131,7 @@ public class ScriptThreadManager implements IScriptThreadManager {
 		synchronized (threads) {
 			threads.remove(thread);
 			DebugEventHelper.fireTerminateEvent(thread);
+			thread.getStreamProxy().close();
 			if (!hasThreads()) {
 				fireAllThreadsTerminated();
 			}

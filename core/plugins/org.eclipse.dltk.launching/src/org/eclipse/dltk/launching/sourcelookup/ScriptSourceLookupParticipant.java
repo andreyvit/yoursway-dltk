@@ -14,6 +14,9 @@ public class ScriptSourceLookupParticipant extends
 		ScriptStackFrame frame = (ScriptStackFrame) object;
 
 		String path = frame.getFileName().getPath();
+		if( path.length() == 0 ) {
+			return null;
+		}
 		if (Platform.getOS().equals(Platform.OS_WIN32)) {
 			path = path.substring(1);
 		}

@@ -37,6 +37,8 @@ import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
+import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.dbgp.exceptions.DbgpDebuggingEngineException;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.IDbgpService;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
@@ -371,10 +373,17 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	private void initSuspends(IScriptThread thread) throws DbgpException {
+		try {
 		thread.getDbgpSession().getCoreCommands().setProperty(SUSPEND_ON_ENTRY,
 				-1, Boolean.toString(suspendOnMethodEntry));
 		thread.getDbgpSession().getCoreCommands().setProperty(SUSPEND_ON_EXIT,
 				-1, Boolean.toString(suspendOnMethodExit));
+		}
+		catch( DbgpDebuggingEngineException e) {
+			if( DLTKCore.DEBUG ) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void allThreadsTerminated() {

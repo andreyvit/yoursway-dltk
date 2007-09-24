@@ -18,4 +18,6 @@ public interface IScriptThreadStreamProxy {
 	OutputStream getStdout();
 
 	OutputStream getStderr();
+
+	void close();
 }

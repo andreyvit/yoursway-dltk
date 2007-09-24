@@ -15,7 +15,7 @@ class TcltestOutputProcessor implements ITestingProcessor {
 
 	public TcltestOutputProcessor(ILaunch launch) {
 		this.launch = launch;
-		System.out.println("TcltestOutputProcessor created");
+//		System.out.println("TcltestOutputProcessor created");
 	}
 
 	int index = 0;
@@ -31,9 +31,9 @@ class TcltestOutputProcessor implements ITestingProcessor {
 	private String resultExpected = "";
 
 	public void done() {
-		System.out.println("DONE");
+//		System.out.println("DONE");
 		if (session == null || client == null) {
-			System.out.println("Session is NULL");
+//			System.out.println("Session is NULL");
 			return;
 		}
 		session.setTotalCount(index);
@@ -41,11 +41,11 @@ class TcltestOutputProcessor implements ITestingProcessor {
 	}
 
 	public void processLine(String line) {
-		System.out.println("#" + line);
+//		System.out.println("#" + line);
 		if (session == null || client == null) {
 			return;
 		}
-		System.out.println("@");
+//		System.out.println("@");
 		if (line.length() == 0) {
 			return;
 		}
@@ -140,7 +140,7 @@ class TcltestOutputProcessor implements ITestingProcessor {
 	}
 
 	public void start() {
-		System.out.println("!!!!!!START!!!!!!");
+//		System.out.println("!!!!!!START!!!!!!");
 		this.start = System.currentTimeMillis();
 		index = 0;
 		session = DLTKTestingPlugin.getTestRunSession(launch);
