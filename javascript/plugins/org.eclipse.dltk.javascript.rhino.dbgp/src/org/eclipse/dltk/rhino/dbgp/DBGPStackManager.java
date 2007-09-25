@@ -187,11 +187,12 @@ public class DBGPStackManager {
 	}
 
 	public synchronized void stepOver() {
-		if (this.getStackDepth() > 1) {
-			getStackFrame(0).setSuspend(true);
+		getStackFrame(0).setSuspend(true);
+		if (this.getStackDepth() > 1)
+		{
 			getStackFrame(1).setSuspend(true);
-			this.needSuspend = false;
 		}
+		this.needSuspend = false;
 		this.notify();
 	}
 

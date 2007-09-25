@@ -1,7 +1,7 @@
 
 ! Javascript Development Tools (DLTK)
 !
-! $Id: javascript.map,v 1.1 2007/07/31 10:39:23 aplatov Exp $ 
+! $Id: javascript.map,v 1.2 2007/09/25 13:23:56 aplatov Exp $ 
 
 feature@org.eclipse.dltk.javascript=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/features/org.eclipse.dltk.javascript-feature
 feature@org.eclipse.dltk.javascript.sdk=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/features/org.eclipse.dltk.javascript.sdk
@@ -14,7 +14,7 @@ plugin@org.eclipse.dltk.javascript.debug.ui=HEAD,:pserver:anonymous@dev.eclipse.
 plugin@org.eclipse.dltk.javascript.jdt.integration=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.jdt.integration
 plugin@org.eclipse.dltk.javascript.launching=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.launching
 plugin@org.eclipse.dltk.javascript.rhino=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.rhino
-plugin@org.eclipse.dltk.javascript.rhino.dbgp=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.rhino.dbgp
+plugin@org.eclipse.dltk.javascript.rhino.dbgp=v20070925,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.rhino.dbgp
 plugin@org.eclipse.dltk.javascript.ui=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.ui
 plugin@org.eclipse.dltk.wst.javascript.core=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.wst.javascript.core
 plugin@org.eclipse.dltk.wst.javascript.ui=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.wst.javascript.ui
