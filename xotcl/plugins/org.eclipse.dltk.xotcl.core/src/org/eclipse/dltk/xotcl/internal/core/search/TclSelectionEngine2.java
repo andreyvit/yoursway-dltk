@@ -49,12 +49,13 @@ import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.TclLanguageToolkit;
+import org.eclipse.dltk.tcl.core.TclParseUtil;
+import org.eclipse.dltk.tcl.core.ast.ExtendedTclMethodDeclaration;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnAST;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnKeywordOrFunction;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnNode;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnVariable;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
-import org.eclipse.dltk.xotcl.core.TclParseUtil;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodCallStatement;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
@@ -207,7 +208,7 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 			ASTNode node = ((SelectionOnAST) astNode).getNode();
 			if (node instanceof XOTclMethodDeclaration) {
 				processSelectXOTclMethodDeclaration(
-						(XOTclMethodDeclaration) node,
+						(ExtendedTclMethodDeclaration) node,
 						this.actualSelectionStart);
 				if (this.selectionElements.size() > 0) {
 					return;
@@ -225,7 +226,7 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 						position);
 			} else if (node instanceof XOTclMethodDeclaration) {
 				processSelectXOTclMethodDeclaration(
-						(XOTclMethodDeclaration) node,
+						(ExtendedTclMethodDeclaration) node,
 						this.actualSelectionStart);
 			} else if (node instanceof TclStatement) {
 				// We need to check for XOTcl command calls.
@@ -334,7 +335,7 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 										String[] split = superClasses[j]
 												.split("::");
 										checkMixinTypeForMethod(node,
-												commandExpr, typeMixin,
+												commandExpr, ptypeMixin,
 												split[split.length - 1]);
 									}
 								}
@@ -398,8 +399,8 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 	}
 
 	private void processSelectXOTclMethodDeclaration(
-			XOTclMethodDeclaration node, int position) {
-		ASTNode type = node.getDeclaringXOTclType();
+			ExtendedTclMethodDeclaration node, int position) {
+		ASTNode type = node.getDeclaringType();
 		if (type instanceof TypeDeclaration) {
 			SimpleReference ref = node.getTypeNameRef();
 			IModelElement parent = findElementFromNode(type);
@@ -1301,8 +1302,8 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 	protected IModelElement findElementParent(ASTNode node, String name,
 			IParent parent) {
 		if (node instanceof XOTclMethodDeclaration) {
-			XOTclMethodDeclaration xotclMethod = (XOTclMethodDeclaration) node;
-			ASTNode declaringXOTclType = xotclMethod.getDeclaringXOTclType();
+			ExtendedTclMethodDeclaration xotclMethod = (ExtendedTclMethodDeclaration) node;
+			ASTNode declaringXOTclType = xotclMethod.getDeclaringType();
 			if (declaringXOTclType instanceof TypeDeclaration) {
 				TypeDeclaration t = (TypeDeclaration) declaringXOTclType;
 				IModelElement pa = findElementFromNode(t);
@@ -1442,8 +1443,8 @@ public class TclSelectionEngine2 extends ScriptSelectionEngine {
 			ASTNode nde) {
 		MethodDeclaration method = (MethodDeclaration) nde;
 		if (method instanceof XOTclMethodDeclaration) {
-			XOTclMethodDeclaration xotclMethod = (XOTclMethodDeclaration) method;
-			ASTNode declaringXOTclType = xotclMethod.getDeclaringXOTclType();
+			ExtendedTclMethodDeclaration xotclMethod = (ExtendedTclMethodDeclaration) method;
+			ASTNode declaringXOTclType = xotclMethod.getDeclaringType();
 			if (declaringXOTclType instanceof TypeDeclaration) {
 				TypeDeclaration t = (TypeDeclaration) declaringXOTclType;
 				IModelElement pa = findElementFromNode(t);
