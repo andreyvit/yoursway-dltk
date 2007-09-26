@@ -19,13 +19,14 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-public class JavaScriptToggleBreakpointAdapter extends ScriptToggleBreakpointAdapter {
+public class JavaScriptToggleBreakpointAdapter extends
+		ScriptToggleBreakpointAdapter {
 	// Line breakpoints
-	
+
 	protected String getDebugModelId() {
-		return JavaScriptDebugConstants.DEBUG_MODEL_ID; 
+		return JavaScriptDebugConstants.DEBUG_MODEL_ID;
 	}
-	
+
 	public boolean canToggleLineBreakpoints(IWorkbenchPart part,
 			ISelection selection) {
 
@@ -168,14 +169,17 @@ public class JavaScriptToggleBreakpointAdapter extends ScriptToggleBreakpointAda
 								.getLength());
 
 						int index = string.indexOf('=');
-						string = string.substring(0, index);
-						index = string.lastIndexOf('.') + 1;
 						if (index != -1) {
-							string = string.substring(index);
+							string = string.substring(0, index);
 						}
-						index = string.lastIndexOf(' ' + 1);
+						index = string.lastIndexOf('.');
 						if (index != -1) {
-							string = string.substring(index).trim();
+							string = string.substring(index + 1);
+						}
+						string = string.trim();
+						index = string.lastIndexOf(' ');
+						if (index != -1) {
+							string = string.substring(index + 1).trim();
 						}
 
 						BreakpointUtils.addWatchPoint(textEditor, lineNumber,
