@@ -48,12 +48,12 @@ import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
+import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordOrFunction;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnVariable;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.TclCompletionParser;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils.IProcessStatementAction;
-import org.eclipse.dltk.xotcl.core.TclParseUtil;
 
 public class TclCompletionEngine2 extends ScriptCompletionEngine {
 

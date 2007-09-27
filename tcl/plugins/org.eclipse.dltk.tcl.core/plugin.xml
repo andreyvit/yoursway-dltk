@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
+   <extension-point id="tclCommandProcessor" name="tclCommandProcessor" schema="schema/tclCommandProcessor.exsd"/>
+   <extension-point id="tclCommandDetector" name="tclCommandDetector" schema="schema/tclCommandDetector.exsd"/>
    <extension-point id="tclkeywords" name="tclkeywords" schema="schema/tclkeywords.exsd"/>
    <extension
          id="nature"
@@ -81,5 +83,47 @@
             class="org.eclipse.dltk.tcl.core.TclKeywords"
             priority="0">
       </keywords>
+   </extension>
+ <extension
+         name="tcl commands"
+         point="org.eclipse.dltk.tcl.core.tclCommandProcessor">
+      <!--processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclSwitchCommandProcessor"
+            id="switch"></processor-->
+      <processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclNamespaceProcessor"
+            id="namespace"></processor>
+      <processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclProcProcessor"
+            id="proc">
+      </processor>
+      <processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclVariableProcessor"
+            id="set">
+      </processor>
+      <processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclUpvarProcessor"
+            id="upvar">
+      </processor>
+      <processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclGlobalVariableProcessor"
+            id="global">
+      </processor>
+      <processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclPackageProcessor"
+            id="package">
+      </processor>
+      <processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclCatchProcessor"
+            id="catch">
+      </processor>
+      <processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclIfProcessor"
+            id="if">
+      </processor>
+      <processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclNamespaceVariableProcessor"
+            id="variable">
+      </processor>
    </extension>
 </plugin>

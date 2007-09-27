@@ -5,8 +5,8 @@ import java.util.List;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.IMember;
+import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclASTUtil;
-import org.eclipse.dltk.xotcl.core.TclParseUtil;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclDocumentationNode;
 import org.eclipse.dltk.xotcl.internal.core.XOTclResolver;
 

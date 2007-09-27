@@ -13,7 +13,7 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
 import org.eclipse.dltk.tcl.core.ITclSourceParser;
-import org.eclipse.dltk.xotcl.internal.core.parser.XOTclSourceParser;
+import org.eclipse.dltk.tcl.internal.parser.ext.ExtTclSourceParser;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.XOTclMixinBuildVisitor;
 
 public class XOTclMixinTests extends TestCase {
@@ -106,7 +106,7 @@ public class XOTclMixinTests extends TestCase {
 	}
 
 	private ModuleDeclaration parser(String content) {
-		ITclSourceParser parser = new XOTclSourceParser();
+		ITclSourceParser parser = new ExtTclSourceParser();
 		ModuleDeclaration module = parser.parse("file".toCharArray(), content
 				.toCharArray(), null);
 		assertNotNull(module);

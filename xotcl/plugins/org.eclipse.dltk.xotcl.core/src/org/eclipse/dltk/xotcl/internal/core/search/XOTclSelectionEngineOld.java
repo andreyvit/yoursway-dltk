@@ -10,6 +10,7 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.tcl.core.ast.ExtendedTclMethodDeclaration;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclSelectionEngine;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnAST;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnNode;
@@ -49,8 +50,8 @@ public class XOTclSelectionEngineOld extends TclSelectionEngine {
 		// corretn model element.
 		if ((method.getModifiers() & IXOTclModifiers.AccXOTcl) != 0
 				&& method instanceof XOTclMethodDeclaration) {
-			XOTclMethodDeclaration me = (XOTclMethodDeclaration) method;
-			ASTNode xoTclType = me.getDeclaringXOTclType();
+			ExtendedTclMethodDeclaration me = (ExtendedTclMethodDeclaration) method;
+			ASTNode xoTclType = me.getDeclaringType();
 			if (xoTclType instanceof TypeDeclaration) {
 				TypeDeclaration declaringXOTclType = (TypeDeclaration) xoTclType;
 				if (declaringXOTclType.getName().indexOf("::") == -1) { // Only
@@ -92,7 +93,7 @@ public class XOTclSelectionEngineOld extends TclSelectionEngine {
 				handleInstanceVariable(selOn, (XOTclInstanceVariable) node);
 			} else if (node instanceof XOTclMethodDeclaration) {
 				handleMethodDeclaration(selOn.getPosition(),
-						(XOTclMethodDeclaration) node);
+						(ExtendedTclMethodDeclaration) node);
 			}
 		} else if (astNode instanceof SelectionOnAST) {
 			ASTNode node = ((SelectionOnAST) astNode).getNode();
@@ -107,10 +108,10 @@ public class XOTclSelectionEngineOld extends TclSelectionEngine {
 	}
 
 	private void handleMethodDeclaration(int position,
-			XOTclMethodDeclaration node) {
+			ExtendedTclMethodDeclaration node) {
 		if (node.getTypeNameRef().sourceStart() <= position
 				&& position < node.getTypeNameRef().sourceEnd()) {
-			addElementFromASTNode(node.getDeclaringXOTclType());
+			addElementFromASTNode(node.getDeclaringType());
 		}
 	}
 
@@ -160,9 +161,9 @@ public class XOTclSelectionEngineOld extends TclSelectionEngine {
 	protected IModelElement findElementParent(ASTNode node, String name,
 			IParent parent) {
 		if (node instanceof XOTclMethodDeclaration) {
-			XOTclMethodDeclaration me = (XOTclMethodDeclaration) node;
-			if (me.getDeclaringXOTclType() instanceof TypeDeclaration) {
-				TypeDeclaration declaringXOTclType = (TypeDeclaration) me.getDeclaringXOTclType();
+			ExtendedTclMethodDeclaration me = (ExtendedTclMethodDeclaration) node;
+			if (me.getDeclaringType() instanceof TypeDeclaration) {
+				TypeDeclaration declaringXOTclType = (TypeDeclaration) me.getDeclaringType();
 				// if (declaringXOTclType.getName().indexOf("::") == -1) { //
 				// Only
 				// simple

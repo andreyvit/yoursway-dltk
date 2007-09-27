@@ -25,13 +25,13 @@ import org.eclipse.dltk.internal.codeassist.select.SelectionNodeFound;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
+import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclAssistParser;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnAST;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnKeywordOrFunction;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnNode;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnVariable;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
-import org.eclipse.dltk.xotcl.core.TclParseUtil;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodCallStatement;
 
 public class TclSelectionParser2 extends TclAssistParser {

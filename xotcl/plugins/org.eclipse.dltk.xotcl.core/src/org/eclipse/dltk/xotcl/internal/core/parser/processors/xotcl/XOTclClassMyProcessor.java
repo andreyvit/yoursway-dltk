@@ -5,11 +5,11 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.tcl.ast.TclStatement;
+import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
+import org.eclipse.dltk.tcl.core.ITclParser;
+import org.eclipse.dltk.tcl.core.TclParseUtil;
+import org.eclipse.dltk.tcl.core.ast.TclVariableDeclaration;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
-import org.eclipse.dltk.xotcl.core.AbstractTclCommandProcessor;
-import org.eclipse.dltk.xotcl.core.ITclParser;
-import org.eclipse.dltk.xotcl.core.TclParseUtil;
-import org.eclipse.dltk.xotcl.core.ast.TclVariableDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 
 public class XOTclClassMyProcessor extends AbstractTclCommandProcessor {

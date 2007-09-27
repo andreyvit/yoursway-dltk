@@ -1,10 +1,10 @@
 package org.eclipse.dltk.xotcl.core.tests.parser;
 
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
-import org.eclipse.dltk.xotcl.core.TclParseUtil.CodeModel;
-import org.eclipse.dltk.xotcl.internal.core.parser.XOTclSourceParser;
+import org.eclipse.dltk.tcl.core.TclParseUtil.CodeModel;
+import org.eclipse.dltk.tcl.internal.parser.ext.ExtTclSourceParser;
 
-class TestTclParser extends XOTclSourceParser {
+class TestTclParser extends ExtTclSourceParser {
 	public TestTclParser( String content ) {
 		this.content = content;
 		this.codeModel = new CodeModel(content);

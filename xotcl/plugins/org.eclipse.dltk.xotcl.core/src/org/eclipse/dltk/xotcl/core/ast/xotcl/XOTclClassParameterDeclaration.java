@@ -2,7 +2,7 @@ package org.eclipse.dltk.xotcl.core.ast.xotcl;
 
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
-import org.eclipse.dltk.xotcl.core.ast.TclVariableDeclaration;
+import org.eclipse.dltk.tcl.core.ast.TclVariableDeclaration;
 
 public class XOTclClassParameterDeclaration extends TclVariableDeclaration {
 

@@ -15,7 +15,7 @@ import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.internal.core.ModelManager;
-import org.eclipse.dltk.xotcl.core.TclParseUtil;
+import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.xotcl.internal.core.parser.XOTclSourceElementParser;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.TclMixinModel;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.ITclMixinElement;

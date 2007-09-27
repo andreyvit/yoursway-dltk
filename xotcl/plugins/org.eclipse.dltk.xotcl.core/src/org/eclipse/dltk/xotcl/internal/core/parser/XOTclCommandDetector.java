@@ -6,10 +6,11 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.tcl.ast.TclStatement;
+import org.eclipse.dltk.tcl.core.ITclCommandDetector;
+import org.eclipse.dltk.tcl.core.ITclParser;
+import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
-import org.eclipse.dltk.xotcl.core.ITclCommandDetector;
-import org.eclipse.dltk.xotcl.core.ITclParser;
-import org.eclipse.dltk.xotcl.core.TclParseUtil;
+import org.eclipse.dltk.xotcl.core.XOTclParseUtil;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
 import org.eclipse.dltk.xotcl.internal.core.XOTclKeywords;
@@ -74,7 +75,7 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 		}
 
 		// Find Object instance
-		XOTclObjectDeclaration decl = TclParseUtil.findXOTclObjectInstanceFrom(
+		XOTclObjectDeclaration decl = XOTclParseUtil.findXOTclObjectInstanceFrom(
 				module, parent, commandNameValue);
 		if (decl != null) {
 			if (arg instanceof SimpleReference) {
@@ -88,7 +89,7 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 		}
 		// Letch check possibly this is method call for existing instance
 		// variable.
-		XOTclInstanceVariable variable = TclParseUtil
+		XOTclInstanceVariable variable = XOTclParseUtil
 				.findXOTclInstanceVariableDeclarationFrom(module, parent,
 						commandNameValue);
 		if (variable != null) {

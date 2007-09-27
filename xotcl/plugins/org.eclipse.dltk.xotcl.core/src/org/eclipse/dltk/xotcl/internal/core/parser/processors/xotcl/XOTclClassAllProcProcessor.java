@@ -13,15 +13,16 @@ import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
+import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
+import org.eclipse.dltk.tcl.core.ITclParser;
+import org.eclipse.dltk.tcl.core.ast.ExtendedTclMethodDeclaration;
+import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.Messages;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
-import org.eclipse.dltk.xotcl.core.AbstractTclCommandProcessor;
-import org.eclipse.dltk.xotcl.core.ITclParser;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
-import org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.Messages;
 
 /**
  * Process "#Class#instproc", "#Class#proc" and "#Object#proc", and instance
@@ -92,7 +93,7 @@ public class XOTclClassAllProcProcessor extends AbstractTclCommandProcessor {
 			arguments.add(a);
 		}
 
-		XOTclMethodDeclaration method = new XOTclMethodDeclaration(command
+		ExtendedTclMethodDeclaration method = new XOTclMethodDeclaration(command
 				.getStart()
 				+ offset, command.getEnd() + offset);
 		method.setDeclaringXOTclType(decl);
@@ -126,10 +127,10 @@ public class XOTclClassAllProcProcessor extends AbstractTclCommandProcessor {
 		String kindName = this.extractName(kind);
 		if( kindName != null ) {
 			if( KIND_PROC_STR.equals(kindName)) {
-				method.setKind(XOTclMethodDeclaration.KIND_PROC);
+				method.setKind(ExtendedTclMethodDeclaration.KIND_PROC);
 			}
 			else if( KIND_INSTPROC_STR.equals(kindName)) {
-				method.setKind(XOTclMethodDeclaration.KIND_INSTPROC);
+				method.setKind(ExtendedTclMethodDeclaration.KIND_INSTPROC);
 				if( decl instanceof XOTclObjectDeclaration ) {
 //					report(parser, "Adding instproc to object", kind, ProblemSeverities.Warning);
 				}

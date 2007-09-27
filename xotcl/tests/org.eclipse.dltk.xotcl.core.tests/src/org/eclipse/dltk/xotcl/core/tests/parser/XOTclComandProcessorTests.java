@@ -8,9 +8,10 @@ import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
+import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
+import org.eclipse.dltk.tcl.core.ast.ExtendedTclMethodDeclaration;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclParseException;
-import org.eclipse.dltk.xotcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodCallStatement;
@@ -171,7 +172,7 @@ public class XOTclComandProcessorTests extends TestCase
 		ASTNode statement = processor.process(TclCommandProcessorTests.toCommand(content), new TestTclParser(content), 0, null);
 		assertNotNull(statement);
 		assertTrue(statement instanceof XOTclMethodDeclaration);
-		XOTclMethodDeclaration decl = (XOTclMethodDeclaration)statement;
+		ExtendedTclMethodDeclaration decl = (ExtendedTclMethodDeclaration)statement;
 		assertEquals("Object", decl.getDeclaringTypeName());
 		assertEquals("bar", decl.getName());
 		assertEquals(1, decl.getArguments().size());
@@ -187,7 +188,7 @@ public class XOTclComandProcessorTests extends TestCase
 		ASTNode statement = processor.process(TclCommandProcessorTests.toCommand(content), new TestTclParser(content), 0, null);
 		assertNotNull(statement);
 		assertTrue(statement instanceof XOTclMethodDeclaration);
-		XOTclMethodDeclaration decl = (XOTclMethodDeclaration)statement;
+		ExtendedTclMethodDeclaration decl = (ExtendedTclMethodDeclaration)statement;
 		if (parameter instanceof TypeDeclaration) 
 			assertEquals("Foo", decl.getDeclaringTypeName());
 		else if (parameter instanceof FieldDeclaration)

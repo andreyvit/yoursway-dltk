@@ -6,9 +6,9 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.tcl.ast.TclStatement;
+import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
+import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
-import org.eclipse.dltk.xotcl.core.AbstractTclCommandProcessor;
-import org.eclipse.dltk.xotcl.core.ITclParser;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclProcCallStatement;
 
 public class XOTclClassProcCallProcessor extends AbstractTclCommandProcessor {

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension-point id="tclCommandProcessor" name="tclCommandProcessor" schema="schema/tclCommandProcessor.exsd"/>
-   <extension-point id="tclCommandDetector" name="tclCommandDetector" schema="schema/tclCommandDetector.exsd"/>
    <extension
          point="org.eclipse.dltk.core.language">
       <language
@@ -21,52 +19,10 @@
    <extension
          point="org.eclipse.dltk.core.sourceParsers">
       <parser
-            class="org.eclipse.dltk.xotcl.internal.core.parser.XOTclSourceParser"
+            class="org.eclipse.dltk.tcl.internal.parser.ext.ExtTclSourceParser"
             nature="org.eclipse.dltk.tcl.core.nature"
             priority="1">
       </parser>
-   </extension>
-   <extension
-         name="tcl commands"
-         point="org.eclipse.dltk.xotcl.core.tclCommandProcessor">
-      <!--processor
-            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclSwitchCommandProcessor"
-            id="switch"></processor-->
-      <processor
-            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclNamespaceProcessor"
-            id="namespace"></processor>
-      <processor
-            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclProcProcessor"
-            id="proc">
-      </processor>
-      <processor
-            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclVariableProcessor"
-            id="set">
-      </processor>
-      <processor
-            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclUpvarProcessor"
-            id="upvar">
-      </processor>
-      <processor
-            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclGlobalVariableProcessor"
-            id="global">
-      </processor>
-      <processor
-            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclPackageProcessor"
-            id="package">
-      </processor>
-      <processor
-            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclCatchProcessor"
-            id="catch">
-      </processor>
-      <processor
-            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclIfProcessor"
-            id="if">
-      </processor>
-      <processor
-            class="org.eclipse.dltk.xotcl.internal.core.parser.processors.tcl.TclNamespaceVariableProcessor"
-            id="variable">
-      </processor>
    </extension>
    <extension
          point="org.eclipse.dltk.core.sourceElementParsers">
@@ -77,14 +33,14 @@
       </parser>
    </extension>
    <extension
-         point="org.eclipse.dltk.xotcl.core.tclCommandDetector">
+         point="org.eclipse.dltk.tcl.core.tclCommandDetector">
       <detector
             class="org.eclipse.dltk.xotcl.internal.core.parser.XOTclCommandDetector">
       </detector>
    </extension>
    <extension
          name="XOTcl commands"
-         point="org.eclipse.dltk.xotcl.core.tclCommandProcessor">
+         point="org.eclipse.dltk.tcl.core.tclCommandProcessor">
       <processor
             class="org.eclipse.dltk.xotcl.internal.core.parser.processors.xotcl.XOTclClassProcessor"
             id="#Class#create">

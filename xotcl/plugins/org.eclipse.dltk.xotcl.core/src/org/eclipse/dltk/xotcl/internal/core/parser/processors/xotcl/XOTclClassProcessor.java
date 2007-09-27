@@ -10,10 +10,10 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
+import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
+import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
-import org.eclipse.dltk.xotcl.core.AbstractTclCommandProcessor;
-import org.eclipse.dltk.xotcl.core.ITclParser;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclClassParameterDeclaration;
 

@@ -15,8 +15,9 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
+import org.eclipse.dltk.tcl.core.TclParseUtil;
+import org.eclipse.dltk.tcl.core.ast.ExtendedTclMethodDeclaration;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
-import org.eclipse.dltk.xotcl.core.TclParseUtil;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclFieldDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
@@ -123,12 +124,12 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 	}
 
 	private void visitXOTclMethod(MethodDeclaration s) {
-		XOTclMethodDeclaration method = (XOTclMethodDeclaration) s;
+		ExtendedTclMethodDeclaration method = (ExtendedTclMethodDeclaration) s;
 
 		ElementInfo info = new ElementInfo();
 
 		String name = s.getName();
-		ASTNode declaringXOTclType = method.getDeclaringXOTclType();
+		ASTNode declaringXOTclType = method.getDeclaringType();
 		if (declaringXOTclType != null
 				&& declaringXOTclType instanceof TypeDeclaration) {
 			List levels = TclParseUtil.findLevelsTo(this.moduleDeclaration,
@@ -139,10 +140,10 @@ public class XOTclMixinBuildVisitor extends ASTVisitor {
 		}
 		if (signature) {
 			switch (method.getKind()) {
-			case XOTclMethodDeclaration.KIND_INSTPROC:
+			case ExtendedTclMethodDeclaration.KIND_INSTPROC:
 				info.object = new XOTclInstProc();
 				break;
-			case XOTclMethodDeclaration.KIND_PROC:
+			case ExtendedTclMethodDeclaration.KIND_PROC:
 				info.object = new XOTclProc();
 				break;
 			}
