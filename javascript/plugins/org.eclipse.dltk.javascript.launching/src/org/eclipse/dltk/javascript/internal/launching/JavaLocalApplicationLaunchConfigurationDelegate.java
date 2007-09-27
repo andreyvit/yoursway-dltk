@@ -22,7 +22,7 @@ public class JavaLocalApplicationLaunchConfigurationDelegate extends
 	public String getVMArguments(ILaunchConfiguration configuration)
 			throws CoreException {
 		return super.getVMArguments(configuration)
-				+ "-javaagent:C:/rhino-agent.jar";
+				+ " -javaagent:C:/rhino-agent.jar";
 	}
 
 	public void launch(ILaunchConfiguration configuration, String mode,
