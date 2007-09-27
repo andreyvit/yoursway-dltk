@@ -80,7 +80,7 @@ public class ScriptElementImageDescriptor extends CompositeImageDescriptor
 		if( this.fBaseImage == null ) {
 			return false;
 		}
-		return (fBaseImage.equals(other.fBaseImage) == fSize.equals(other.fSize));
+		return (other.fFlags == this.fFlags) && (fBaseImage.equals(other.fBaseImage) == fSize.equals(other.fSize));
 	}
 	
 	/* (non-Javadoc)
@@ -88,7 +88,7 @@ public class ScriptElementImageDescriptor extends CompositeImageDescriptor
 	 */
 	public int hashCode() {
 		if( this.fBaseImage != null ) {
-			return fBaseImage.hashCode() | fSize.hashCode();
+			return fBaseImage.hashCode() | fSize.hashCode() + this.fFlags;
 		}
 		return fSize.hashCode();
 	}

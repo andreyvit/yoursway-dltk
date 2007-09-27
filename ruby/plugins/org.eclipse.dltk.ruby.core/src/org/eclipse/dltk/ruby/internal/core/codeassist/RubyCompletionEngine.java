@@ -96,7 +96,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	private WeakHashSet intresting = new WeakHashSet();
 
 	private ASTNode completionNode;
-	
+
 	private final Comparator modelElementComparator = new Comparator() {
 
 		Collator collator = Collator.getInstance(Locale.ENGLISH);
@@ -206,20 +206,27 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		int len = 0;
 		while (position >= 0
 				&& len < maxLen
-				&& RubySyntaxUtils.isStrictIdentifierCharacter(content
+				&& RubySyntaxUtils.isLessStrictIdentifierCharacter(content
 						.charAt(position))) {
 			position--;
 		}
 		if (position + 1 > original)
 			return "";
-		if (position >= 0 && Character.isWhitespace(content.charAt(position)))
+		if ((position >= 0 && Character.isWhitespace(content.charAt(position)))
+				|| position == -1)
 			return content.substring(position + 1, original);
 		return null;
 	}
 
 	public void complete(ISourceModule module, int position, int i) {
 		this.currentModule = module;
-		if (Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_BUILD).length > 0) { //`FIXIT, make more correct awaiting for building
+		if (Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_BUILD).length > 0) { // `FIXIT,
+																						// make
+																						// more
+																						// correct
+																						// awaiting
+																						// for
+																						// building
 			this.requestor.completionFailure(new DefaultProblem(null,
 					"Please wait until building is ready...", 0, null,
 					IStatus.WARNING, startPosition, endPosition, -1));
@@ -249,8 +256,8 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				}
 			}
 
-			ModuleDeclaration moduleDeclaration = parser.parse(module.getFileName(), content
-							.toCharArray(), null);
+			ModuleDeclaration moduleDeclaration = parser.parse(module
+					.getFileName(), content.toCharArray(), null);
 
 			if (afterDollar(content, position)) {
 				completeGlobalVar((org.eclipse.dltk.core.ISourceModule) module,
@@ -430,8 +437,8 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		IMixinElement[] elements = RubyMixinModel.getRawInstance().find(
 				prefix + "*");
 
-// String[] findKeys = RubyMixinModel.getRawInstance().findKeys(
-// prefix + "*");
+		// String[] findKeys = RubyMixinModel.getRawInstance().findKeys(
+		// prefix + "*");
 		for (int i = 0; i < elements.length; i++) {
 			IRubyMixinElement rubyElement = RubyMixinModel.getInstance()
 					.createRubyElement(elements[i]);

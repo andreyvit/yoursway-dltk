@@ -68,13 +68,16 @@ public class ScriptModelUtil {
 	public static void searchTypeDeclarations(IScriptProject project,
 			String patternString, TypeNameMatchRequestor requestor) {
 		IDLTKSearchScope scope = SearchEngine
-			.createSearchScope(new IModelElement[] { project });
+				.createSearchScope(new IModelElement[] { project });
 		try {
 			SearchEngine engine = new SearchEngine();
-			engine.searchAllTypeNames(null, 0,
-					patternString.toCharArray(), SearchPattern.R_EXACT_MATCH | SearchPattern.R_PATTERN_MATCH,
-					IDLTKSearchConstants.TYPE, scope, requestor,
-					IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, null);
+			engine
+					.searchAllTypeNames(null, 0, patternString.toCharArray(),
+							SearchPattern.R_EXACT_MATCH
+									| SearchPattern.R_PATTERN_MATCH,
+							IDLTKSearchConstants.TYPE, scope, requestor,
+							IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
+							null);
 		} catch (CoreException e) {
 			if (DLTKCore.DEBUG)
 				e.printStackTrace();
@@ -83,9 +86,9 @@ public class ScriptModelUtil {
 
 	public static void searchMethodDeclarations(IScriptProject project,
 			String patternString, SearchRequestor requestor) {
-		
+
 		IDLTKSearchScope scope = SearchEngine
-					.createSearchScope(new IModelElement[] { project });
+				.createSearchScope(new IModelElement[] { project });
 
 		try {
 			SearchEngine engine = new SearchEngine();
@@ -100,7 +103,7 @@ public class ScriptModelUtil {
 				e.printStackTrace();
 		}
 	}
-	
+
 	public static IModelElement findType(IModelElement module,
 			String qualifiedName, String delimeter) {
 
@@ -168,7 +171,25 @@ public class ScriptModelUtil {
 	}
 
 	public static String getRenamedCUName(ISourceModule cu, String newMainName) {
-		String oldName = cu.getElementName();
+		String oldName = cu.getPath().lastSegment();
+		// String oldName = cu.getElementName();
+		try {
+			// Check for already specified extension in newMainName.
+			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+					.getLanguageToolkit(cu);
+			String[] languageFileExtensions = languageToolkit.getLanguageFileExtensions();
+			for (int i = 0; i < languageFileExtensions.length; i++) {
+				if( newMainName.endsWith(languageFileExtensions[i] ) ) {
+					// Return extension is OK.
+					return newMainName;
+				}
+			}
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+		}
+		// Add extension from old module name to new module name.
 		int i = oldName.lastIndexOf('.');
 		if (i != -1) {
 			return newMainName + oldName.substring(i);

@@ -10,6 +10,7 @@
 package org.eclipse.dltk.internal.core;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +23,13 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptModel;
 import org.eclipse.dltk.core.IScriptProject;
@@ -160,6 +164,29 @@ public class Model extends Openable implements IScriptModel {
 	public IScriptProject[] getScriptProjects() throws ModelException {
 		final List list = getChildrenOfType(SCRIPT_PROJECT);
 		return (IScriptProject[]) list.toArray(new IScriptProject[list.size()]);
+	}
+
+	public IScriptProject[] getScriptProjects(String nature)
+			throws ModelException {
+		final List list = getChildrenOfType(SCRIPT_PROJECT);
+		final List result = new ArrayList();
+		for (int i = 0; i < list.size(); i++) {
+			try {
+				IScriptProject project = (IScriptProject) list.get(i);
+				IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+						.getLanguageToolkit(project);
+				if (toolkit.getNatureId().equals(nature)) {
+					result.add(project);
+				}
+			} catch (CoreException e) {
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return (IScriptProject[]) result.toArray(new IScriptProject[result
+				.size()]);
 	}
 
 	public void copy(IModelElement[] elements, IModelElement[] containers,

@@ -56,7 +56,11 @@ public class TreeHierarchyLayoutProblemsDecorator extends ProblemsLabelDecorator
 				int flags= computeScriptFolderAdornmentFlags(fragments[i]);
 				if (flags == ScriptElementImageDescriptor.ERROR) {
 					return flags;
-				} else if (flags != 0) {
+				}
+				else if (flags == ScriptElementImageDescriptor.WARNING) {
+					return flags;
+				} 
+				else if (flags != 0) {
 					res= flags;
 				}
 			}

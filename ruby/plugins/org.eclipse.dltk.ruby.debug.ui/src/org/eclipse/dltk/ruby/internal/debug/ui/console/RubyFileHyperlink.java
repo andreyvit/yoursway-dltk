@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -256,5 +257,37 @@ public class RubyFileHyperlink implements IHyperlink {
 					e);
 			throw new CoreException(status);
 		}
+	}
+	protected String getLinkText(int offset, int length) throws CoreException {
+		try {
+			IDocument document = getConsole().getDocument();
+			return document.get(offset, length);
+		} catch (BadLocationException e) {
+			IStatus status = new Status(
+					IStatus.ERROR,
+					DLTKDebugUIPlugin.getUniqueIdentifier(),
+					0,
+					ConsoleMessages.RubyFileHyperlink_Unable_to_retrieve_hyperlink_text__8,
+					e);
+			throw new CoreException(status);
+		}
+	}
+
+	public boolean isCorrect(int offset, int length) {
+		try {
+			String linkText = getLinkText(offset, length);
+			if( linkText != null ) {
+				String fileName = getFileName(linkText);
+				Object sourceElement = getSourceModule(fileName);
+				if (sourceElement != null) {
+					return true;
+				}
+			}
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 }
