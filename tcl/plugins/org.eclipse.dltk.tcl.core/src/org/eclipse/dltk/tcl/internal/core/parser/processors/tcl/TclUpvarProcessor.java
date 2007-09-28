@@ -4,12 +4,13 @@ import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
+import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.ast.TclUpvarVariableDeclaration;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclUpvarProcessor extends AbstractTclCommandProcessor {
 
@@ -20,7 +21,7 @@ public class TclUpvarProcessor extends AbstractTclCommandProcessor {
 		TclStatement statement = (TclStatement) parser.processLocal(command, offset, parent);
 		int statementsCount = statement.getCount();
 		if (statementsCount < 2) {
-			// TODO: Add error reporting here.
+			this.report(parser, "Syntax error: at least one argument expected.", statement, ProblemSeverities.Error);
 			return null;
 		}
 
@@ -32,7 +33,7 @@ public class TclUpvarProcessor extends AbstractTclCommandProcessor {
 			SimpleReference sLevel = (SimpleReference) level;
 			String str = sLevel.getName();
 			if (str == null || str.length() == 0) {
-				// TODO: Add error reporting here
+				this.report(parser, "Parsing error: a level specifier assumed.", sLevel, ProblemSeverities.Error); //TODO: Do really need to report this error?
 				return null;
 			}
 			if (str.startsWith("#") || str.startsWith("\\#")
@@ -48,6 +49,7 @@ public class TclUpvarProcessor extends AbstractTclCommandProcessor {
 			Expression at = statement.getAt(i + 1);
 			variableName = at;
 			if (variableName == null) {
+				//TODO Add error reporting here?
 				// throw new RuntimeException("empty variable name");
 //				if (DLTKCore.DEBUG) {
 //					System.out.println("Incorrect upvar variable declaration");

@@ -14,14 +14,19 @@ import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.tcl.core.ast.BinaryExpression;
 import org.eclipse.dltk.tcl.core.ast.IfStatement;
 import org.eclipse.dltk.tcl.core.ast.TclCatchStatement;
+import org.eclipse.dltk.tcl.core.ast.TclForStatement;
+import org.eclipse.dltk.tcl.core.ast.TclForeachStatement;
 import org.eclipse.dltk.tcl.core.ast.TclGlobalVariableDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclPackageDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclSwitchStatement;
 import org.eclipse.dltk.tcl.core.ast.TclUpvarVariableDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclVariableDeclaration;
 import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclCatchProcessor;
+import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclForCommandProcessor;
+import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclForeachCommandProcessor;
 import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclGlobalVariableProcessor;
 import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclIfProcessor;
 import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclNamespaceProcessor;
@@ -174,7 +179,7 @@ public class TclCommandProcessorTests extends TestCase
 
 	public void testIfProcessor004() throws Throwable
 	{
-		String content = "if {a < 2} {\n" +
+		String content = "if {a < 2} then {\n" +
 						 "	set b 20\n" + 
 						 "}\n";
 		TclCommand ifCommand = TclCommandProcessorTests.toCommand(content);
@@ -202,7 +207,19 @@ public class TclCommandProcessorTests extends TestCase
 		String script = "catch {}";
 		testTclCatchProcessor(script, false);
 	}
+	
+	public void testTclCatchProcessor003() throws TclParseException
+	{
+		String script = "catch pid a";
+		testTclCatchProcessor(script, true);
+	}
 
+	public void testTclCatchProcessor004() throws TclParseException
+	{
+		String script = "catch pid";
+		testTclCatchProcessor(script, false);
+	}
+	
 	private void testTclCatchProcessor(String script, boolean withVariable) throws TclParseException
 	{
 		TclCatchProcessor processor = new TclCatchProcessor();
@@ -430,14 +447,20 @@ public class TclCommandProcessorTests extends TestCase
 	
 	public void testTclSwitchProcessor003() throws TclParseException
 	{
-		String script = "switch -exact -regexp -glob \"\" default {puts boo}";
-		testTclSwitchProcessor(script, 1);
+		String script = "switch -exact -regexp -glob \"\" [func] {puts py!} default {puts boo}";
+		testTclSwitchProcessor(script, 2);
 	}
 	
 	public void testTclSwitchProcessor004() throws TclParseException
 	{
 		String script = "switch -regexp -exact -glob -- -bu -bu {puts boo}";
 		testTclSwitchProcessor(script, 1);
+	}
+
+	public void testTclSwitchProcessor005() throws TclParseException
+	{
+		String script = "switch string {set pid default {puts boo}}";
+		testTclSwitchProcessor(script, 2);
 	}
 
 	private void testTclSwitchProcessor(String script, int alternativesNumber) throws TclParseException
@@ -449,6 +472,55 @@ public class TclCommandProcessorTests extends TestCase
 		assertNotNull(switchExpr.getString());
 		assertNotNull(switchExpr.getAlternatives());
 		assertEquals(alternativesNumber, switchExpr.getAlternatives().getChilds().size());
+	}
+	
+	public void testTclForProcessor001() throws TclParseException {
+		String script = "for {set x 0} {$x < 10} {incr x} {puts $x}";
+		testTclForProcessor(script);
+	}
+	
+	public void testTclForProcessor002() throws TclParseException {
+		String script = "for {set x 0} $x<10 {incr x} pid";	//infinite loop actually
+		testTclForProcessor(script);
+	}
+	
+	private void testTclForProcessor(String script) throws TclParseException {
+		TclForCommandProcessor processor = new TclForCommandProcessor();
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		assertNotNull(node);
+		assertTrue(node instanceof TclForStatement);
+		TclForStatement forStatement = (TclForStatement)node;
+		assertEquals(4, forStatement.getChilds().size());
+	}
+	
+	public void testTclForeachProcessor001() throws TclParseException {
+		String script = "foreach a {1 2 3 4} {set a 0}";
+		testTclForeachProcessor(script,1);
+	}
+	
+	public void testTclForeachProcessor002() throws TclParseException {
+		String script = "foreach {a b} {1 2 3 4} {a b} {1 2 3 4} pid";
+		testTclForeachProcessor(script,2);
+	}
+
+	private void testTclForeachProcessor(String script, int listsNumber) throws TclParseException {
+		TclForeachCommandProcessor processor =  new TclForeachCommandProcessor();
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		assertNotNull(node);
+		TclForeachStatement foreach = (TclForeachStatement)node;
+		assertNotNull(foreach.getArguments());
+		assertEquals(listsNumber, foreach.getArguments().getChilds().size());
+		assertNotNull(foreach.getBlock());
+		for (int i = 0; i < listsNumber; i++) {
+			assertTrue(foreach.getArguments().getChilds().get(i) instanceof BinaryExpression);
+			Object left = ((BinaryExpression)foreach.getArguments().getChilds().get(i)).getLeft();
+			assertTrue(left instanceof TclVariableDeclaration || left instanceof ASTListNode);
+			if (left instanceof ASTListNode) {
+				ASTListNode list = (ASTListNode)left;
+				for (Iterator j = list.getChilds().iterator(); j.hasNext(); )
+					assertTrue(j.next() instanceof TclVariableDeclaration);
+			}
+		}
 		
 	}
 }

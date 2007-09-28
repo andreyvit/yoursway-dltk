@@ -36,12 +36,16 @@ public class XOTclClassProcessor extends AbstractTclCommandProcessor {
 				if( ex instanceof SimpleReference ) {
 					name = (SimpleReference) ex;
 				}
+				else {
+					this.report(parser, "A name expected.", ex, ProblemSeverities.Error);
+					return null;
+				}
 			}
 			else {
 				name = (SimpleReference) nameExpr;
 			}
-		}
-		if( name == null ) {
+		} else {
+			this.report(parser, "A name or 'create' command expected.", nameExpr, ProblemSeverities.Error);
 			return null;
 		}
 		TypeDeclaration type = new TypeDeclaration(name.getName(), name.sourceStart(), name.sourceEnd(), statement.sourceStart(), statement.sourceEnd());
@@ -72,12 +76,11 @@ public class XOTclClassProcessor extends AbstractTclCommandProcessor {
 							XOTclClassParameterDeclaration decl = new XOTclClassParameterDeclaration(ref, (Expression)e.getInitialization(), e.sourceStart(), e.sourceEnd());
 							type.getStatements().add(decl);
 						}
-//						System.out.println("Cool");
 					}
 					i += 1;
 				}
 				else if( value.equals("-")) {
-					
+					//TODO ?
 				}
 			}
 		}

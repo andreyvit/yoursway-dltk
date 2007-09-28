@@ -1,5 +1,6 @@
 package org.eclipse.dltk.xotcl.core.tests;
 
+import org.eclipse.dltk.xotcl.core.tests.model.XOTclSelectionTests;
 import org.eclipse.dltk.xotcl.core.tests.parser.TclCommandProcessorTests;
 import org.eclipse.dltk.xotcl.core.tests.parser.XOTclComandProcessorTests;
 import org.eclipse.dltk.xotcl.core.tests.parser.XOTclParserUtilTests;
@@ -16,6 +17,7 @@ public class AllTests {
 		suite.addTestSuite(XOTclComandProcessorTests.class);
 		suite.addTestSuite(XOTclParserUtilTests.class);
 		suite.addTestSuite(TclCommandProcessorTests.class);
+		suite.addTest(XOTclSelectionTests.suite());
 		//$JUnit-END$
 		return suite;
 	}

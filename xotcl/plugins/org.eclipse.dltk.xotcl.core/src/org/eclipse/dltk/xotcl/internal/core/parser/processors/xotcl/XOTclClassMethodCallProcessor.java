@@ -4,6 +4,7 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.CallArgumentsList;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
@@ -14,7 +15,6 @@ import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodCallStatement;
 public class XOTclClassMethodCallProcessor extends AbstractTclCommandProcessor {
 
 	public XOTclClassMethodCallProcessor() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public ASTNode process(TclCommand command, ITclParser parser, int offset,
@@ -28,6 +28,7 @@ public class XOTclClassMethodCallProcessor extends AbstractTclCommandProcessor {
 		XOTclInstanceVariable inst = (XOTclInstanceVariable) param;
 		Expression nameExpr = statement.getAt(1);
 		if (!(nameExpr instanceof SimpleReference)) {
+			this.report(parser, "A method name expected.", nameExpr, ProblemSeverities.Error);
 			return null;
 		}
 		SimpleReference name = (SimpleReference) nameExpr;

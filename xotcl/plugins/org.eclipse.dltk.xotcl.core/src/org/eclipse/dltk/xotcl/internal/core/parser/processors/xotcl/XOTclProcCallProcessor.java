@@ -5,6 +5,7 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
@@ -36,6 +37,7 @@ public class XOTclProcCallProcessor extends AbstractTclCommandProcessor {
 
 		Expression nameExpr = statement.getAt(1);
 		if (!(nameExpr instanceof SimpleReference)) {
+			this.report(parser, "A proc name expected.", nameExpr, ProblemSeverities.Error);
 			return null;
 		}
 		SimpleReference name = (SimpleReference) nameExpr;

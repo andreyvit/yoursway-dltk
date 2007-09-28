@@ -4,12 +4,13 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
+import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
+import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.ast.TclNamespaceVariable;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclNamespaceVariableProcessor extends AbstractTclCommandProcessor {
 
@@ -22,7 +23,7 @@ public class TclNamespaceVariableProcessor extends AbstractTclCommandProcessor {
 				offset, parent);
 		int statementsCount = statement.getCount();
 		if (statementsCount < 2) {
-			// TODO: Add error reporting here.
+			this.report(parser, Messages.TclProcProcessor_Wrong_Number_of_Arguments, statement, ProblemSeverities.Error);
 			return null;
 		}
 		ASTNode ret = null;

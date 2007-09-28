@@ -1,7 +1,5 @@
 package org.eclipse.dltk.tcl.internal.core.parser.processors.tcl;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
@@ -12,13 +10,14 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
+import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
+import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 	private ASTNode findRealParent(ASTNode node) {
@@ -43,7 +42,7 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 		TclStatement statement = (TclStatement) namespace;
 		Expression nameSpaceArg = statement.getAt(1);
 		if (nameSpaceArg == null || !(nameSpaceArg instanceof SimpleReference)) {
-			// TODO: Add error reporting here.
+			this.report(parser, "Syntax error: a namespace name expected.", statement, ProblemSeverities.Error);			
 			if (DLTKCore.DEBUG) {
 				System.err
 						.println("tcl: namespace argument is null or not simple reference");
@@ -52,9 +51,8 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 		}
 
 		Expression nameSpaceName = statement.getAt(2);
-		if (nameSpaceName == null
-				|| !(nameSpaceName instanceof SimpleReference)) {
-			// TODO: Add error reporting here.
+		if (nameSpaceName == null || !(nameSpaceName instanceof SimpleReference)) {
+			this.report(parser, "Syntax error: namespace name expected", statement, ProblemSeverities.Error);
 			// continue;
 			// by now, just ignore
 			return null;
@@ -87,7 +85,7 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 				Expression expr = statement.getAt(i);
 				if (expr == null) {
 					return null;
-					// TODO: Add error reporting here.
+// TODO: Add error reporting here??? this may be only because of a mismatch somewhere else.
 					// continue;
 				}
 				if (expr instanceof TclBlockExpression) {

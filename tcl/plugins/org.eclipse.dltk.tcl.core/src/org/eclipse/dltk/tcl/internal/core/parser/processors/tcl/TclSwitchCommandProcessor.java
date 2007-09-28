@@ -8,13 +8,18 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
+import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
+import org.eclipse.dltk.tcl.internal.parsers.raw.SimpleTclParser;
+import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
+import org.eclipse.dltk.tcl.internal.parsers.raw.TclParseException;
+import org.eclipse.dltk.tcl.internal.parsers.raw.TclScript;
+import org.eclipse.dltk.tcl.internal.parsers.raw.TclWord;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.ast.BinaryExpression;
 import org.eclipse.dltk.tcl.core.ast.TclSwitchStatement;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclSwitchCommandProcessor extends AbstractTclCommandProcessor {
 
@@ -30,7 +35,6 @@ public class TclSwitchCommandProcessor extends AbstractTclCommandProcessor {
 	
 	/**
 	 * @return 'string' argument position
-	 * @throws nothing specific
 	 * */
 	private int matchOptions(TclStatement statement) {
 		int pos = OPTIONS_START_OR_STRING_POS;
@@ -48,50 +52,59 @@ public class TclSwitchCommandProcessor extends AbstractTclCommandProcessor {
 	}
 	
 	/**
+	 * @return an expression which is intended to be matched by the one of the alternatives
 	 * @throws MismatchException 
 	 * */
-	private Expression matchString(TclStatement statement, int pos) {
+	private ASTNode matchString(TclStatement statement, int pos, ITclParser parser) {
 		if (pos >= statement.getCount()) {
-			//TODO report an error
+			this.report(parser, "Syntax error: not enough arguments.", statement, ProblemSeverities.Error);
 			throw new MismatchException();
 		}
-		return statement.getAt(pos);		//XXX: can any Expression be returned?  
+		return statement.getAt(pos);  
 	}
 	
 	/**
 	 * @throws MismatchException 
 	 * */
-	private List /*<BinaryExpression>*/ matchAlternatives(TclStatement statement, int pos, ITclParser parser) {
+	private List /*<BinaryExpression>*/ matchAlternatives(TclStatement statement, int pos, ITclParser parser, ASTNode parent) {
 		List /*<BinaryExpression>*/ list;
 		List statements;
 		if (statement.getAt(pos) instanceof TclBlockExpression) {
-			TclBlockExpression block = (TclBlockExpression)statement.getAt(pos);
-			String blockContent = block.getBlock();
-			blockContent = blockContent.substring(1, blockContent.length() - 1);
-			Block bl = new Block(block.sourceStart(), block.sourceEnd());
-			parser.parse(blockContent, block.sourceStart() + 1 - parser.getStartPos(), bl);
-			List statements2 = bl.getStatements();
-			Object stmt = statements2.get(0);
-			if( stmt instanceof TclStatement ) {
-				statements = ((TclStatement)stmt).getExpressions();
-			}
-			else {
-//				System.out.println("C");
-				statements = new ArrayList();
+			statements = new ArrayList();
+			TclBlockExpression block = null;
+			try {
+				block = (TclBlockExpression)statement.getAt(pos);
+				String blockContent = block.getBlock();
+				blockContent = blockContent.substring(1, blockContent.length() - 1);
+				TclScript altBlock = SimpleTclParser.parse(blockContent);
+				List commands = altBlock.getCommands();
+				for (Iterator i = commands.iterator(); i.hasNext(); ) {
+					TclCommand command = (TclCommand)i.next();
+					for (Iterator j = command.getWords().iterator(); j.hasNext();) {
+						TclCommand newCommand = new TclCommand();
+						newCommand.addWord((TclWord)j.next());
+						statements.add(parser.processLocal(newCommand, block.sourceStart()+1, null));
+					}
+				}
+			} catch (TclParseException e) {
+				this.report(parser, "Parsing error: " + e.getMessage(), block, ProblemSeverities.Error);
+				throw new MismatchException();
 			}
 		}
 		else { 
 			statements = statement.getExpressions();
 			statements = statements.subList(pos, statements.size());
 		}
-		if (statements.size()%2 != 0 || statements.size() < 2) {
-			//TODO report an error
+		if (statements.size()%2 != 0 || statements.size() < 2 && statements.size() > 0) {
+			int start = ((ASTNode)statements.get(0)).sourceStart();
+			int end = ((ASTNode)statements.get(statements.size()-1)).sourceEnd();
+			this.report(parser, "Incorrect alternatives block.", start, end, ProblemSeverities.Error);
 			throw new MismatchException();
 		}
 		list = new ArrayList(statements.size()/2);
 		for (Iterator i = statements.iterator(); i.hasNext();) {
-			Expression caseExpression = (Expression)i.next();
-			Expression doExpression = (Expression)i.next();
+			ASTNode caseExpression = (ASTNode)i.next();
+			ASTNode doExpression = (ASTNode)i.next();
 			if (doExpression instanceof TclBlockExpression) {
 				TclBlockExpression block = (TclBlockExpression)doExpression;
 				String blockContent = block.getBlock();
@@ -110,16 +123,18 @@ public class TclSwitchCommandProcessor extends AbstractTclCommandProcessor {
 		if (!(node instanceof TclStatement)) {
 			return null;
 		}
+		TclStatement statement = (TclStatement) node;
+		TclSwitchStatement switchStatement = new TclSwitchStatement(statement.sourceStart(), statement.sourceEnd());
+		this.addToParent(parent, switchStatement);
 		try{
-			TclStatement statement = (TclStatement) node;
 			int startIndex = matchOptions(statement);
-			Expression string = matchString(statement, startIndex);
-			List /*<BinaryExpression>*/ alternatives = matchAlternatives(statement, startIndex + 1, parser);
-			int start = statement.getAt(0).sourceStart();
-			int end = statement.getAt(statement.getCount() - 1).sourceEnd();
-			return new TclSwitchStatement(string, alternatives, start, end);
+			ASTNode string = matchString(statement, startIndex, parser);
+			List /*<BinaryExpression>*/ alternatives = matchAlternatives(statement, startIndex + 1, parser, switchStatement);
+			switchStatement.setAlternatives(alternatives);
+			switchStatement.setString(string);
+			return switchStatement;
 		} catch (MismatchException e) {
-			//TODO report error
+			//TODO: error reporting should be here
 			return null;
 		}
 	}

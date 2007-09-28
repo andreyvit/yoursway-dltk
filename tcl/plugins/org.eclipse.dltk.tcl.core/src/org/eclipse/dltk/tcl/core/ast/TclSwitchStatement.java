@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.dltk.ast.ASTListNode;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Statement;
@@ -20,22 +21,38 @@ public class TclSwitchStatement extends Statement {
 		options.addAll(Arrays.asList(opts));
 	}
 
-	private Expression string;
+	private ASTNode string;
 	private ASTListNode alternatives;
 	
-	public TclSwitchStatement(Expression string, List /*<BinaryExpression>*/ alternatives, int startPos, int endPos) {
+	public TclSwitchStatement(int startPos, int endPos) {
+		this.setStart(startPos);
+		this.setEnd(endPos);
+	}
+	
+	public TclSwitchStatement(ASTNode string, List /*<BinaryExpression>*/ alternatives, int startPos, int endPos) {
 		this.string = string;
 		this.setStart(startPos);
 		this.setEnd(endPos);
-		int start = ((BinaryExpression)alternatives.get(0)).sourceStart();
-		int end = ((BinaryExpression)alternatives.get(alternatives.size()-1)).sourceEnd();
-		this.alternatives = new ASTListNode(start, end, alternatives);
+		this.setAlternatives(alternatives);
 	}
 	
 	public static boolean isOptionsEndMarker(String option) {
 		return END_OF_OPTIONS_MARKER.equals(option);
 	}
 	
+	public void setString(ASTNode string) {
+		this.string = string;
+	}
+
+	public void setAlternatives(List alternatives) {
+		if (alternatives.isEmpty()) this.alternatives = null;
+		else {
+			int start = ((BinaryExpression)alternatives.get(0)).sourceStart();
+			int end = ((BinaryExpression)alternatives.get(alternatives.size()-1)).sourceEnd();
+			this.alternatives = new ASTListNode(start, end, alternatives);
+		}
+	}
+
 	public int getKind() {
 		return this.S_SWITCH;
 	}
@@ -49,7 +66,7 @@ public class TclSwitchStatement extends Statement {
 		}
 	}
 	
-	public Expression getString() {
+	public ASTNode getString() {
 		return this.string;
 	}
 	

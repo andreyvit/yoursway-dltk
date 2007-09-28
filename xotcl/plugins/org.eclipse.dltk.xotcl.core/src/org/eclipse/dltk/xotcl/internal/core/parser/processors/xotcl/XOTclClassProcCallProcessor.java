@@ -5,6 +5,7 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
@@ -14,7 +15,6 @@ import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclProcCallStatement;
 public class XOTclClassProcCallProcessor extends AbstractTclCommandProcessor {
 
 	public XOTclClassProcCallProcessor() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public ASTNode process(TclCommand command, ITclParser parser, int offset,
@@ -27,6 +27,7 @@ public class XOTclClassProcCallProcessor extends AbstractTclCommandProcessor {
 		TypeDeclaration type = (TypeDeclaration) param;
 		Expression nameExpr = statement.getAt(1);
 		if( !(nameExpr instanceof SimpleReference ) ) {
+			this.report(parser, "A class proc name expected.", nameExpr, ProblemSeverities.Error);
 			return null;
 		}
 		SimpleReference name = (SimpleReference)nameExpr;

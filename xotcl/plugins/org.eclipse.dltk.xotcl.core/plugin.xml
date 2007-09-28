@@ -24,8 +24,8 @@
             priority="1">
       </parser>
    </extension>
-   <extension
-         point="org.eclipse.dltk.core.sourceElementParsers">
+   <extension 
+   		 point="org.eclipse.dltk.core.sourceElementParsers">
       <parser
             class="org.eclipse.dltk.xotcl.internal.core.parser.XOTclSourceElementParser"
             nature="org.eclipse.dltk.tcl.core.nature"

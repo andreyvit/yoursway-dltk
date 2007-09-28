@@ -3,14 +3,15 @@ package org.eclipse.dltk.tcl.internal.core.parser.processors.tcl;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
+import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.ast.TclPackageDeclaration;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclPackageProcessor extends AbstractTclCommandProcessor implements
 		ITclCommandProcessor {
@@ -21,7 +22,7 @@ public class TclPackageProcessor extends AbstractTclCommandProcessor implements
 	public ASTNode process(TclCommand command, ITclParser parser, int offset,ASTNode parent) {
 		TclStatement statement = (TclStatement) parser.processLocal(command, offset, parent);
 		if (statement.getCount() < 3) {
-			// TODO: Add error reporting here.
+			this.report(parser, "Syntax error: at least two arguments expected.", statement, ProblemSeverities.Error);
 			if (DLTKCore.DEBUG) {
 				System.err.println("tcl: package argument could incorrect...");
 			}
@@ -29,7 +30,7 @@ public class TclPackageProcessor extends AbstractTclCommandProcessor implements
 		}
 		Expression nameSpaceArg = statement.getAt(1);
 		if (nameSpaceArg == null || !(nameSpaceArg instanceof SimpleReference)) {
-			// TODO: Add error reporting here.
+			this.report(parser, "Syntax error: package subcommand expected.", nameSpaceArg, ProblemSeverities.Error);
 			if (DLTKCore.DEBUG) {
 				System.err
 						.println("tcl: package argument is null or not simple reference");
@@ -78,6 +79,7 @@ public class TclPackageProcessor extends AbstractTclCommandProcessor implements
 				break;
 			}
 			default:
+				this.report(parser, "Syntax error: 3 or 4 arguments expected.", statement, ProblemSeverities.Error);
 				return null;
 			}
 			if (pkg != null && pkg instanceof SimpleReference) {
