@@ -1,9 +1,9 @@
-package org.eclipse.dltk.xotcl.internal.core.search.mixin.model;
+package org.eclipse.dltk.tcl.internal.core.search.mixin.model;
 
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.mixin.IMixinElement;
-import org.eclipse.dltk.xotcl.internal.core.search.mixin.TclMixinModel;
+import org.eclipse.dltk.tcl.internal.core.search.mixin.TclMixinModel;
 
 public interface ITclMixinElement {
 	//tcl

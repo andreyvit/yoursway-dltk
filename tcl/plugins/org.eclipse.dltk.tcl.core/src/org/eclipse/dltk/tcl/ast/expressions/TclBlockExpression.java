@@ -21,7 +21,6 @@ import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.tcl.ast.TclConstants;
 import org.eclipse.dltk.tcl.core.ITclSourceParser;
 import org.eclipse.dltk.tcl.core.TclNature;
-import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class TclBlockExpression extends Expression {
@@ -40,13 +39,13 @@ public class TclBlockExpression extends Expression {
 
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
-//			List statements = this.parseBlock();
-//			if (statements != null) {
-//				for (int i = 0; i < statements.size(); i++) {
-//					ASTNode node = (ASTNode) statements.get(i);
-//					node.traverse(visitor);
-//				}
-//			}
+			// List statements = this.parseBlock();
+			// if (statements != null) {
+			// for (int i = 0; i < statements.size(); i++) {
+			// ASTNode node = (ASTNode) statements.get(i);
+			// node.traverse(visitor);
+			// }
+			// }
 			visitor.endvisit(this);
 		}
 	}
@@ -68,18 +67,21 @@ public class TclBlockExpression extends Expression {
 			return null;
 		}
 
-		String content = this.fBlockContent.substring(1, this.fBlockContent.length() - 1);
+		String content = this.fBlockContent.substring(1, this.fBlockContent
+				.length() - 1);
 		ITclSourceParser parser = null;
 		try {
-			parser = (ITclSourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+			parser = (ITclSourceParser) DLTKLanguageManager
+					.getSourceParser(TclNature.NATURE_ID);
 		} catch (CoreException e) {
-			if( DLTKCore.DEBUG ) {
+			if (DLTKCore.DEBUG) {
 				e.printStackTrace();
 			}
 			return new ArrayList();
 		}
 		parser.setOffset(startFrom);
-		ModuleDeclaration module = parser.parse(this.fileName, content.toCharArray(), null);
+		ModuleDeclaration module = parser.parse(this.fileName, content
+				.toCharArray(), null);
 		return module.getStatements();
 	}
 
@@ -92,15 +94,25 @@ public class TclBlockExpression extends Expression {
 	}
 
 	public List parseBlockSimple() {
-		if (this.fBlockContent == null) {
-			return null;
+		try {
+			if (this.fBlockContent == null) {
+				return null;
+			}
+			
+			String content = this.fBlockContent.substring(1, this.fBlockContent
+					.length() - 1);
+			ITclSourceParser parser = null;
+			parser = (ITclSourceParser) DLTKLanguageManager
+					.getSourceParser(TclNature.NATURE_ID);
+			parser.setOffset(this.sourceStart() + 1);
+			ModuleDeclaration module = parser.parse(this.fileName, content
+					.toCharArray(), null);
+			return module.getStatements();
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
-
-		String content = this.fBlockContent.substring(1, this.fBlockContent.length() - 1);
-		ITclSourceParser parser = null;
-		parser = new TclSourceParser();
-		parser.setOffset(this.sourceStart() + 1);
-		ModuleDeclaration module = parser.parse(this.fileName, content.toCharArray(), null);
-		return module.getStatements();
+		return null;
 	}
 }

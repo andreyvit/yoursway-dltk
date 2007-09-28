@@ -21,7 +21,7 @@
    <extension
          point="org.eclipse.dltk.core.sourceElementParsers">
       <parser
-            class="org.eclipse.dltk.tcl.internal.parser.TclSourceElementParser"
+            class="org.eclipse.dltk.tcl.internal.parser.ext.ExtTclSourceElementParser"
             nature="org.eclipse.dltk.tcl.core.nature"
             priority="0">
       </parser>
@@ -29,7 +29,7 @@
    <extension
          point="org.eclipse.dltk.core.selectionEngine">
       <selectionEngine
-            class="org.eclipse.dltk.tcl.internal.core.codeassist.TclSelectionEngine"
+            class="org.eclipse.dltk.tcl.internal.core.codeassist.ext.ExtTclSelectionEngine"
             nature="org.eclipse.dltk.tcl.core.nature"
             priority="0">
       </selectionEngine>
@@ -72,7 +72,7 @@
    <extension
          point="org.eclipse.dltk.core.sourceParsers">
       <parser
-            class="org.eclipse.dltk.tcl.internal.parser.TclSourceParser"
+            class="org.eclipse.dltk.tcl.internal.parser.ext.ExtTclSourceParser"
             nature="org.eclipse.dltk.tcl.core.nature"
             priority="0">
       </parser>
@@ -125,5 +125,12 @@
             class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclNamespaceVariableProcessor"
             id="variable">
       </processor>
+   </extension>
+ <extension
+         point="org.eclipse.dltk.core.mixin">
+      <mixin
+            class="org.eclipse.dltk.tcl.internal.core.search.mixin.TclMixinParser"
+            nature="org.eclipse.dltk.tcl.core.nature">
+      </mixin>
    </extension>
 </plugin>

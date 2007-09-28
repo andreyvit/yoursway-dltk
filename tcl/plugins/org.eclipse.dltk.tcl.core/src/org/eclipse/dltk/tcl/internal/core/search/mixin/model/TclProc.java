@@ -1,4 +1,4 @@
-package org.eclipse.dltk.xotcl.internal.core.search.mixin.model;
+package org.eclipse.dltk.tcl.internal.core.search.mixin.model;
 
 public class TclProc extends TclMixinElement {
 	public int getType() {

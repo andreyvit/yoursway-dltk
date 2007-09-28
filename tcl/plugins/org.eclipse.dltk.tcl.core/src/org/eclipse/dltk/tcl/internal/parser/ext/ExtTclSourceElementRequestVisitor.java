@@ -1,4 +1,4 @@
-package org.eclipse.dltk.xotcl.internal.core.parser;
+package org.eclipse.dltk.tcl.internal.parser.ext;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
@@ -34,12 +33,8 @@ import org.eclipse.dltk.tcl.core.ast.TclGlobalVariableDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclPackageDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclUpvarVariableDeclaration;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
-import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
-import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclFieldDeclaration;
-import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodCallStatement;
-import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclVariableDeclaration;
 
-public class XOTclSourceElementRequestVisitor extends
+public class ExtTclSourceElementRequestVisitor extends
 		SourceElementRequestVisitor {
 
 	private Stack namespacesLevel = new Stack();
@@ -83,15 +78,15 @@ public class XOTclSourceElementRequestVisitor extends
 
 		public void go() {
 			for (int i = 0; i < this.level; i++) {
-				XOTclSourceElementRequestVisitor.this.fRequestor
+				ExtTclSourceElementRequestVisitor.this.fRequestor
 						.exitType(this.end);
 			}
 			if (this.exitFromModule) {
-				XOTclSourceElementRequestVisitor.this.fRequestor
+				ExtTclSourceElementRequestVisitor.this.fRequestor
 						.exitModuleRoot();
 			}
 			if (this.pop) {
-				XOTclSourceElementRequestVisitor.this.namespacesLevel.pop();
+				ExtTclSourceElementRequestVisitor.this.namespacesLevel.pop();
 			}
 		}
 	}
@@ -226,7 +221,7 @@ public class XOTclSourceElementRequestVisitor extends
 					ti.nameSourceEnd = decl.getNameEnd() - 1;
 					ti.declarationStart = decl.sourceStart();
 					if (decl instanceof TypeDeclaration) {
-						ti.superclasses = processSuperClasses((TypeDeclaration)decl);
+						ti.superclasses = processSuperClasses((TypeDeclaration) decl);
 					}
 					this.fRequestor.enterType(ti);
 				}
@@ -237,7 +232,7 @@ public class XOTclSourceElementRequestVisitor extends
 				exitFromModule, true, true);
 	}
 
-	protected XOTclSourceElementRequestVisitor(
+	protected ExtTclSourceElementRequestVisitor(
 			ISourceElementRequestor requesor, IProblemReporter reporter) {
 		super(requesor);
 		this.fReporter = reporter;
@@ -271,7 +266,7 @@ public class XOTclSourceElementRequestVisitor extends
 		return true;
 	}
 
-	private int getModifiers(Declaration s) {
+	protected int getModifiers(Declaration s) {
 		int flags = 0;
 
 		if ((s.getModifiers() & Modifiers.AccAbstract) != 0) {
@@ -280,10 +275,6 @@ public class XOTclSourceElementRequestVisitor extends
 		if ((s.getModifiers() & Modifiers.AccNameSpace) != 0
 				&& s instanceof TypeDeclaration) {
 			return Modifiers.AccNameSpace | flags;
-		}
-		if ((s.getModifiers() & IXOTclModifiers.AccXOTcl) != 0) {
-			// This is ordinary class.
-			return IXOTclModifiers.AccXOTcl | flags;
 		}
 		return flags;
 	}
@@ -317,22 +308,6 @@ public class XOTclSourceElementRequestVisitor extends
 			return false;
 		} else if (statement instanceof FieldDeclaration) {
 			this.processField(statement);
-		} else if (statement instanceof XOTclMethodCallStatement) {
-			XOTclMethodCallStatement call = (XOTclMethodCallStatement) statement;
-			SimpleReference callName = call.getCallName();
-			int len = 0;
-			if (call.getArgs() != null) {
-				ASTListNode arguments = call.getArgs();
-				List childs = arguments.getChilds();
-				if (childs != null) {
-					len = childs.size();
-				}
-			}
-
-			this.fRequestor.acceptMethodReference(callName.getName()
-					.toCharArray(), len, call.sourceStart(), call.sourceEnd());
-
-			// Also lets add type references from here.
 		}
 		return true;
 	}
@@ -448,17 +423,17 @@ public class XOTclSourceElementRequestVisitor extends
 		fi.name = name;
 		String fullName = TclParseUtil.escapeName(name);
 		ExitFromType exit = null;// this.resolveType(decl, fullName, false);
-		if ((decl.getModifiers() & IXOTclModifiers.AccXOTcl) != 0
-				&& decl instanceof XOTclVariableDeclaration) {
-			XOTclFieldDeclaration field = (XOTclFieldDeclaration) decl;
-			String tName = field.getDeclaringTypeName();
-			if (tName == null) {
-				tName = "";
-			}
-			exit = this.resolveType(field, tName + "::dummy", false);
-		} else {
+//		if ((decl.getModifiers() & IXOTclModifiers.AccXOTcl) != 0
+//				&& decl instanceof XOTclVariableDeclaration) {
+//			XOTclFieldDeclaration field = (XOTclFieldDeclaration) decl;
+//			String tName = field.getDeclaringTypeName();
+//			if (tName == null) {
+//				tName = "";
+//			}
+//			exit = this.resolveType(field, tName + "::dummy", false);
+//		} else {
 			exit = this.resolveType(decl, fullName, false);
-		}
+//		}
 		needExit = this.fRequestor.enterFieldCheckDuplicates(fi);
 		int end = decl.sourceEnd();
 		if (needExit) {
@@ -544,24 +519,24 @@ public class XOTclSourceElementRequestVisitor extends
 		mi.declarationStart = method.sourceStart();
 		ExitFromType exit = null;
 		boolean requireFieldExit = false;
-		if ((method.getModifiers() & IXOTclModifiers.AccXOTcl) != 0) {
-			String tName = method.getDeclaringTypeName();
-			if (tName == null) {
-				tName = "";
-			}
-			exit = this.resolveType(method, tName + "::dummy", false);
-			// if( method instanceof XOTclMethodDeclaration) {
-			// XOTclMethodDeclaration mDecl = (XOTclMethodDeclaration) method;
-			// ASTNode dt = mDecl.getDeclaringXOTclType();
-			// if( dt instanceof XOTclInstanceVariable) {
-			// XOTclInstanceVariable var = (XOTclInstanceVariable) dt;
-			// this.fRequestor.
-			// var.getName();
-			// }
-			// }
-		} else {
+//		if ((method.getModifiers() & IXOTclModifiers.AccXOTcl) != 0) {
+//			String tName = method.getDeclaringTypeName();
+//			if (tName == null) {
+//				tName = "";
+//			}
+//			exit = this.resolveType(method, tName + "::dummy", false);
+//			// if( method instanceof XOTclMethodDeclaration) {
+//			// XOTclMethodDeclaration mDecl = (XOTclMethodDeclaration) method;
+//			// ASTNode dt = mDecl.getDeclaringXOTclType();
+//			// if( dt instanceof XOTclInstanceVariable) {
+//			// XOTclInstanceVariable var = (XOTclInstanceVariable) dt;
+//			// this.fRequestor.
+//			// var.getName();
+//			// }
+//			// }
+//		} else {
 			exit = this.resolveType(method, fullName, false);
-		}
+//		}
 		if (exit.created) {
 			if (this.fReporter != null) {
 				try {

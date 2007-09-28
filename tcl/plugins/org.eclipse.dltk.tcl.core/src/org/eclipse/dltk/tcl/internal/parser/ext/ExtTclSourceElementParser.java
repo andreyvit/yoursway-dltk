@@ -1,4 +1,4 @@
-package org.eclipse.dltk.xotcl.internal.core.parser;
+package org.eclipse.dltk.tcl.internal.parser.ext;
 
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
@@ -8,7 +8,7 @@ import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.tcl.internal.parser.TclSourceElementParser;
 
-public class XOTclSourceElementParser implements ISourceElementParser {
+public class ExtTclSourceElementParser implements ISourceElementParser {
 	public static final Object AST = "ast";
 	private ISourceElementRequestor requestor;
 	private IProblemReporter reporter;
@@ -19,8 +19,7 @@ public class XOTclSourceElementParser implements ISourceElementParser {
 		ModuleDeclaration moduleDeclaration = parseModule(astCashe, contents,
 				this.reporter, filename);
 
-		XOTclSourceElementRequestVisitor requestor = new XOTclSourceElementRequestVisitor(
-				this.requestor, reporter);
+		ExtTclSourceElementRequestVisitor requestor = createVisitor();
 
 		try {
 			moduleDeclaration.traverse(requestor);
@@ -31,6 +30,11 @@ public class XOTclSourceElementParser implements ISourceElementParser {
 			}
 		}
 		return moduleDeclaration;
+	}
+
+	private ExtTclSourceElementRequestVisitor createVisitor() {
+		return new ExtTclSourceElementRequestVisitor(
+				this.requestor, reporter);
 	}
 
 	public static ModuleDeclaration parseModule(ISourceModuleInfo astCache,
