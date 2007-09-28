@@ -159,6 +159,7 @@ padding:0px 0px 0px 18px;
 margin:0px;
 height:27px;
 border-bottom:1px solid #eaeaea;
+white-space:nowrap;
 }
 div#list td img{
 padding:0px 0px 0px 0px;
