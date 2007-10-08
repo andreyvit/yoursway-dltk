@@ -259,7 +259,7 @@ public abstract class ElementsView extends ViewPart {
 
 				private void processChildren(IModelElementDelta delta) {
 					IModelElement element = delta.getElement();
-					
+
 					if (delta.getKind() == IModelElementDelta.ADDED) {
 						addElementsJob(element);
 					}
@@ -337,13 +337,15 @@ public abstract class ElementsView extends ViewPart {
 
 		synchronized public void addElement(IModelElement element) {
 			try {
-				IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager.getLanguageToolkit(element);
-				if( !languageToolkit.getNatureId().equals(TclLanguageToolkit.getDefault().getNatureId())) {
+				IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+						.getLanguageToolkit(element);
+				if (!languageToolkit.getNatureId().equals(
+						TclLanguageToolkit.getDefault().getNatureId())) {
 					return;
 				}
 			} catch (CoreException e) {
 			}
-			
+
 			String name = labelProvider.getText(element);
 			if (elements.containsKey(name)) {
 				Object o = elements.get(name);
@@ -443,7 +445,7 @@ public abstract class ElementsView extends ViewPart {
 			try {
 				children = ((IParent) element).getChildren();
 			} catch (ModelException e) {
-				if( DLTKCore.DEBUG ) { 
+				if (DLTKCore.DEBUG) {
 					e.printStackTrace();
 				}
 				return;
@@ -473,11 +475,18 @@ public abstract class ElementsView extends ViewPart {
 
 	private void removeElements(IModelElement element) {
 		try {
-			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager.getLanguageToolkit(element);
-			if( !languageToolkit.getNatureId().equals(TclLanguageToolkit.getDefault().getNatureId())) {
+			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+					.getLanguageToolkit(element);
+			if (languageToolkit != null
+					&& !languageToolkit.getNatureId().equals(
+							TclLanguageToolkit.getDefault().getNatureId())) {
 				return;
 			}
 		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+			return;
 		}
 		if (isElement(element)) {
 			provider.removeElement(element);
@@ -538,7 +547,8 @@ public abstract class ElementsView extends ViewPart {
 						return Status.OK_STATUS;
 					try {
 						if (projects[i].hasNature(TclNature.NATURE_ID)) {
-							IScriptProject project = DLTKCore.create(projects[i]);
+							IScriptProject project = DLTKCore
+									.create(projects[i]);
 							if (project != null) {
 								addElements(project, monitor);
 							}

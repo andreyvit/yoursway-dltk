@@ -16,14 +16,6 @@
             priority="1">
       </keywords>
    </extension>
-   <extension
-         point="org.eclipse.dltk.core.sourceParsers">
-      <parser
-            class="org.eclipse.dltk.tcl.internal.parser.ext.ExtTclSourceParser"
-            nature="org.eclipse.dltk.tcl.core.nature"
-            priority="1">
-      </parser>
-   </extension>
    <extension 
    		 point="org.eclipse.dltk.core.sourceElementParsers">
       <parser
