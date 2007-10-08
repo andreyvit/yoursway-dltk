@@ -41,70 +41,82 @@ public class TclParseUtils {
 		List arguments = new ArrayList();
 		if (st != null && st.size() > 0) {
 			for (int y = 0; y < st.size(); ++y) {
-				TclStatement tclSt = (TclStatement) st.get(y);
-				if (tclSt instanceof TclStatement) {
-					Iterator i = tclSt.getExpressions().iterator();
-					while (i.hasNext()) {
-						Expression ex = (Expression) i.next();
-						if (ex instanceof SimpleReference) {
-							Argument a = new Argument();
-							a.set((SimpleReference) ex, null);
-							arguments.add(a);
-						} else if (ex instanceof TclBlockExpression) {
-							TclBlockExpression bl = (TclBlockExpression) ex;
-							// try {
-							List elements = bl.parseBlock();
-							if (elements.size() > 0) {
-								ASTNode node = (ASTNode) elements.get(0);
-								Expression initializer = null;
-								if (elements.size() > 1) {
-									initializer = (Expression) elements.get(1);
-								}
-								if (node instanceof TclStatement
-										&& ((TclStatement) node).getCount() > 0) {
-									TclStatement stat = ((TclStatement) node);
-									node = stat.getAt(0);
-									if (stat.getCount() > 1) {
-										initializer = stat.getAt(1);
+				Object sty = st.get(y);
+				if (sty instanceof FieldDeclaration) {
+					Argument a = new Argument();
+					a.set(((FieldDeclaration) sty).getRef(), null);
+					arguments.add(a);
+				} else if (sty instanceof TclStatement) {
+					TclStatement tclSt = (TclStatement) sty;
+					if (tclSt instanceof TclStatement) {
+						Iterator i = tclSt.getExpressions().iterator();
+						while (i.hasNext()) {
+							Expression ex = (Expression) i.next();
+							if (ex instanceof SimpleReference) {
+								Argument a = new Argument();
+								a.set((SimpleReference) ex, null);
+								arguments.add(a);
+							} else if (ex instanceof TclBlockExpression) {
+								TclBlockExpression bl = (TclBlockExpression) ex;
+								// try {
+								List elements = bl.parseBlock();
+								if (elements.size() > 0) {
+									ASTNode node = (ASTNode) elements.get(0);
+									Expression initializer = null;
+									if (elements.size() > 1) {
+										initializer = (Expression) elements
+												.get(1);
 									}
-								}
-								if (node instanceof SimpleReference) {
-									Argument a = new Argument();
-									a.set((SimpleReference) node, null);
-									a.setInitializationExpression(initializer);
-									arguments.add(a);
-								} else if (node instanceof TclBlockExpression) {
-									String name = ((TclBlockExpression) node)
-											.getBlock();
+									if (node instanceof TclStatement
+											&& ((TclStatement) node).getCount() > 0) {
+										TclStatement stat = ((TclStatement) node);
+										node = stat.getAt(0);
+										if (stat.getCount() > 1) {
+											initializer = stat.getAt(1);
+										}
+									}
+									if (node instanceof SimpleReference) {
+										Argument a = new Argument();
+										a.set((SimpleReference) node, null);
+										a
+												.setInitializationExpression(initializer);
+										arguments.add(a);
+									} else if (node instanceof TclBlockExpression) {
+										String name = ((TclBlockExpression) node)
+												.getBlock();
 
-									Argument a = new Argument();
-									a.setStart(node.sourceStart() + 1);
-									a.setEnd(node.sourceEnd() + 1);
-									a.setArgumentName(nameFromBlock(name, '{',
-											'}'));
-									a.setInitializationExpression(initializer);
-									arguments.add(a);
-								} else if (node instanceof StringLiteral) {
-									String name = ((StringLiteral) node)
-											.getValue();
+										Argument a = new Argument();
+										a.setStart(node.sourceStart() + 1);
+										a.setEnd(node.sourceEnd() + 1);
+										a.setArgumentName(nameFromBlock(name,
+												'{', '}'));
+										a
+												.setInitializationExpression(initializer);
+										arguments.add(a);
+									} else if (node instanceof StringLiteral) {
+										String name = ((StringLiteral) node)
+												.getValue();
 
-									Argument a = new Argument();
-									a.setStart(node.sourceStart() + 1);
-									a.setEnd(node.sourceEnd() + 1);
-									a.setArgumentName(nameFromBlock(name, '"',
-											'"'));
-									a.setInitializationExpression(initializer);
-									arguments.add(a);
-								} else if (node instanceof TclExecuteExpression) {
-									String name = ((TclBlockExpression) node)
-											.getBlock();
+										Argument a = new Argument();
+										a.setStart(node.sourceStart() + 1);
+										a.setEnd(node.sourceEnd() + 1);
+										a.setArgumentName(nameFromBlock(name,
+												'"', '"'));
+										a
+												.setInitializationExpression(initializer);
+										arguments.add(a);
+									} else if (node instanceof TclExecuteExpression) {
+										String name = ((TclBlockExpression) node)
+												.getBlock();
 
-									Argument a = new Argument();
-									a.setStart(node.sourceStart() + 1);
-									a.setEnd(node.sourceEnd() + 1);
-									a.setArgumentName(name);
-									a.setInitializationExpression(initializer);
-									arguments.add(a);
+										Argument a = new Argument();
+										a.setStart(node.sourceStart() + 1);
+										a.setEnd(node.sourceEnd() + 1);
+										a.setArgumentName(name);
+										a
+												.setInitializationExpression(initializer);
+										arguments.add(a);
+									}
 								}
 							}
 						}
@@ -245,18 +257,19 @@ public class TclParseUtils {
 	public static SimpleReference extractVariableFromString(
 			StringLiteral literal, int pos) {
 		String content = nameFromBlock(literal.getValue(), '"', '"');
-		return extractVariableFromString(literal.sourceStart(), literal.sourceEnd(), pos, content);
+		return extractVariableFromString(literal.sourceStart(), literal
+				.sourceEnd(), pos, content);
 	}
 
-	public static SimpleReference extractVariableFromString(
-			int start, int end, int pos, String content) {
+	public static SimpleReference extractVariableFromString(int start, int end,
+			int pos, String content) {
 		int position = pos - 1;
 		int index = content.lastIndexOf('$', position);
 		if (index != -1 && index < position) {
 			String sub = content.substring(index, position);
 			if (sub.indexOf(' ') == -1) {
-				return new SimpleReference(start + index + 1,
-						end + index + 1 + sub.length(), sub);
+				return new SimpleReference(start + index + 1, end + index + 1
+						+ sub.length(), sub);
 			}
 		}
 		return null;
@@ -359,7 +372,7 @@ public class TclParseUtils {
 	private static boolean checkBounds(String content, int pos) {
 		char[] syms = { ' ', '\t', '\n', '\r', ']', '[', '}', '{', '(', ')',
 				'$', '\\', ',' };
-		if( pos == -1 ) {
+		if (pos == -1) {
 			pos = 1;
 		}
 		char c = content.charAt(pos);
@@ -474,24 +487,26 @@ public class TclParseUtils {
 		return (FieldDeclaration[]) fields.toArray(new FieldDeclaration[fields
 				.size()]);
 	}
-	
+
 	public static ModuleDeclaration parseModule(ISourceModuleInfo astCache,
-			char[] content, IProblemReporter problemReporter, char[] filename ) {
+			char[] content, IProblemReporter problemReporter, char[] filename) {
 		ModuleDeclaration moduleDeclaration = null;
-		if( astCache != null ) {
-			moduleDeclaration = (ModuleDeclaration)astCache.get(AST);
+		if (astCache != null) {
+			moduleDeclaration = (ModuleDeclaration) astCache.get(AST);
 		}
-		if( moduleDeclaration == null ) {
+		if (moduleDeclaration == null) {
 			ISourceParser sourceParser = null;
 			try {
-				sourceParser = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+				sourceParser = DLTKLanguageManager
+						.getSourceParser(TclNature.NATURE_ID);
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
-			if( sourceParser != null ) {
-				moduleDeclaration = sourceParser.parse(filename, content, problemReporter);
-				if( moduleDeclaration != null && astCache != null ) {
-					astCache.put(AST, moduleDeclaration );
+			if (sourceParser != null) {
+				moduleDeclaration = sourceParser.parse(filename, content,
+						problemReporter);
+				if (moduleDeclaration != null && astCache != null) {
+					astCache.put(AST, moduleDeclaration);
 				}
 			}
 		}

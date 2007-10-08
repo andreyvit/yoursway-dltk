@@ -741,6 +741,7 @@ public abstract class ScriptSearchPage extends DialogPage implements ISearchPage
 //					}
 //					return new SearchPatternData(TYPE, DECLARATIONS, true, element.getElementName(), element, true);
 //				}
+				break;
 			case IModelElement.TYPE:
 				return new SearchPatternData(TYPE, REFERENCES, true, PatternStrings.getTypeSignature((IType) element), element, isInsideInterpreterEnvironment);
 			case IModelElement.SOURCE_MODULE: {

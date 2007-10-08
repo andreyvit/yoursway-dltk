@@ -21,8 +21,8 @@ public class TclPackageProcessor extends AbstractTclCommandProcessor implements
 
 	public ASTNode process(TclCommand command, ITclParser parser, int offset,ASTNode parent) {
 		TclStatement statement = (TclStatement) parser.processLocal(command, offset, parent);
-		if (statement.getCount() < 3) {
-			this.report(parser, "Syntax error: at least two arguments expected.", statement, ProblemSeverities.Error);
+		if (statement.getCount() < 2) {
+			this.report(parser, "Syntax error: at least one arguments expected.", statement, ProblemSeverities.Error);
 			if (DLTKCore.DEBUG) {
 				System.err.println("tcl: package argument could incorrect...");
 			}

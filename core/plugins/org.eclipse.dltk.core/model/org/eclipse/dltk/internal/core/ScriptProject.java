@@ -773,7 +773,8 @@ public class ScriptProject extends Openable implements IScriptProject {
 			if (referringEntry != null && !resolvedEntry.isExported())
 				return;
 			if (checkExistency) {
-				if (entryPath.toString().startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)
+				if (entryPath.toString().startsWith(
+						IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)
 						&& BuiltinProjectFragment.isSupported(this)) {
 					root = new BuiltinProjectFragment(entryPath, this);
 					break;
@@ -792,7 +793,7 @@ public class ScriptProject extends Openable implements IScriptProject {
 					if (Model.isFile(target)
 							&& (org.eclipse.dltk.compiler.util.Util
 									.isArchiveFileName(entryPath.lastSegment()))) {
-//						root = new ArchiveProjectFragment(entryPath, this);
+						// root = new ArchiveProjectFragment(entryPath, this);
 						root = getProjectFragment0(entryPath);
 					} else {
 						if (resolvedEntry.isContainerEntry()) {
@@ -1482,8 +1483,8 @@ public class ScriptProject extends Openable implements IScriptProject {
 		}
 		// actual file saving
 		try {
-			setSharedProperty(ScriptProject.BUILDPATH_FILENAME, encodeBuildpath(
-					newBuildpath, true, unknownElements));
+			setSharedProperty(ScriptProject.BUILDPATH_FILENAME,
+					encodeBuildpath(newBuildpath, true, unknownElements));
 			return true;
 		} catch (CoreException e) {
 			throw new ModelException(e);
@@ -2765,7 +2766,9 @@ public class ScriptProject extends Openable implements IScriptProject {
 		try {
 			allRoots = this.getProjectFragments();
 		} catch (ModelException e) {
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 			return null;
 		}
 		for (int i = 0; i < allRoots.length; i++) {

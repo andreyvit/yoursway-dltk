@@ -50,18 +50,23 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 			// continue;
 		}
 
-		Expression nameSpaceName = statement.getAt(2);
-		if (nameSpaceName == null || !(nameSpaceName instanceof SimpleReference)) {
-			this.report(parser, "Syntax error: namespace name expected", statement, ProblemSeverities.Error);
-			// continue;
-			// by now, just ignore
+		if( !(nameSpaceArg instanceof SimpleReference ) ) {
 			return null;
 		}
-
 		String sNameSpaceArg = ((SimpleReference) nameSpaceArg).getName();
-		String sNameSpaceName = ((SimpleReference) nameSpaceName).getName();
 
 		if (sNameSpaceArg.equals("eval")) {
+			Expression nameSpaceName = statement.getAt(2);
+			if( !(nameSpaceName instanceof SimpleReference) ) {
+				return null;
+			}
+			String sNameSpaceName = ((SimpleReference) nameSpaceName).getName();
+			if (nameSpaceName == null || !(nameSpaceName instanceof SimpleReference)) {
+				this.report(parser, "Syntax error: namespace name expected", statement, ProblemSeverities.Error);
+				// continue;
+				// by now, just ignore
+				return null;
+			}
 			final int FIRST_ARGUMENT_POSITION = 3;
 
 			// List statements = new ArrayList(statement.getCount() -

@@ -70,7 +70,7 @@ public class TclStatement extends Statement {
 
 	public void printNode(CorePrinter output) {
 		if (this.expressions != null) {
-			output.formatPrintLn("tcl statement:");
+			output.formatPrintLn("");
 			Iterator i = this.expressions.iterator();
 			while (i.hasNext()) {
 				ASTNode node = (ASTNode) i.next();

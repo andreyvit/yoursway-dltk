@@ -46,7 +46,7 @@ public class SimpleReference extends Reference {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrintLn("SimpleReference" + this.getSourceRange().toString() + ":(" + this.fName + ")");
+		output.formatPrintLn(this.fName + "(" + this.getSourceRange().toString() + ")");
 	}
 
 	public String toString() {

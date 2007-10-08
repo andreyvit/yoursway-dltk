@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.tcl.testing.ITclTestingEngine;
@@ -34,12 +35,15 @@ public class TclTestTestingEngine implements ITclTestingEngine {
 	public void correctLaunchConfiguration(InterpreterConfig config) {
 		// We need to extract tcl source module and correct config.
 		try {
-			IPath runner = DeployHelper.deploy(Activator.getDefault(), "scripts/tcltestEngine.tcl");
+			IPath runner = DeployHelper.deploy(Activator.getDefault(),
+					"scripts/tcltestEngine.tcl");
 			IPath scriptFilePath = config.getScriptFilePath();
 			config.setScriptFile(runner);
 			config.addScriptArg(scriptFilePath.toOSString(), 0);
 		} catch (IOException e) {
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
