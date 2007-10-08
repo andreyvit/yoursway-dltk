@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
@@ -23,6 +24,7 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.ScriptSelectionEngine;
 import org.eclipse.dltk.compiler.env.ISourceModule;
@@ -34,11 +36,12 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.mixin.IMixinElement;
+import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.SearchMatch;
-import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.internal.codeassist.select.SelectionNodeFound;
@@ -46,25 +49,30 @@ import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.TclLanguageToolkit;
+import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnAST;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnKeywordOrFunction;
+import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnNode;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnVariable;
+import org.eclipse.dltk.tcl.internal.core.search.mixin.TclMixinModel;
+import org.eclipse.dltk.tcl.internal.core.search.mixin.model.TclField;
+import org.eclipse.dltk.tcl.internal.core.search.mixin.model.TclProc;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 
 public class TclSelectionEngine extends ScriptSelectionEngine {
 	public static boolean DEBUG = DLTKCore.DEBUG_SELECTION;
 
-	private int actualSelectionStart;
+	protected int actualSelectionStart;
 
-	private int actualSelectionEnd;
-	
+	protected int actualSelectionEnd;
+
 	protected List selectionElements = new ArrayList();
 
-	private TclSelectionParser parser = new TclSelectionParser();
+	protected TclSelectionParser parser = new TclSelectionParser();
 
-	private org.eclipse.dltk.core.ISourceModule sourceModule;
+	protected org.eclipse.dltk.core.ISourceModule sourceModule;
 
-	private IDLTKLanguageToolkit toolkit;
+	protected IDLTKLanguageToolkit toolkit;
 
 	public TclSelectionEngine() {
 		this.toolkit = TclLanguageToolkit.getDefault();
@@ -75,7 +83,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		sourceModule = (org.eclipse.dltk.core.ISourceModule) sourceUnit
 				.getModelElement();
 		String content = sourceUnit.getSourceContents();
-		
+
 		if (DEBUG) {
 			System.out.print("SELECTION IN "); //$NON-NLS-1$
 			System.out.print(sourceUnit.getFileName());
@@ -86,18 +94,18 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 			System.out.println("SELECTION - Source :"); //$NON-NLS-1$
 			System.out.println(content);
 		}
-		
+
 		if (!checkSelection(content, selectionSourceStart, selectionSourceEnd)) {
 			return new IModelElement[0];
 		}
-		
+
 		if (DEBUG) {
 			System.out.print("SELECTION - Checked : \""); //$NON-NLS-1$
 			System.out.print(content.substring(actualSelectionStart,
 					actualSelectionEnd));
 			System.out.println('"');
 		}
-		
+
 		try {
 			ModuleDeclaration parsedUnit = (ModuleDeclaration) this.parser
 					.parse(sourceUnit);
@@ -137,8 +145,8 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 				System.out.println("Exception caught by SelectionEngine:"); //$NON-NLS-1$
 				e.printStackTrace(System.out);
 			}
-		} 
-		
+		}
+
 		return (IModelElement[]) selectionElements
 				.toArray(new IModelElement[selectionElements.size()]);
 	}
@@ -160,7 +168,8 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 				if (this.selectionElements.size() > 0) {
 					return;
 				}
-				findMethodFromSearch(name);
+				findMethodFromMixin(name, astNodeParent);
+				// findMethodFromSearch(name);
 				if (this.selectionElements.size() > 0) {
 					return;
 				}
@@ -176,7 +185,8 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 				if (fqnName != null) {
 					if (!fqnName.startsWith("::"))
 						fqnName = "::" + fqnName;
-					findMethodFromSearch(fqnName);
+					findMethodFromMixin(name, astNodeParent);
+					// findMethodFromSearch(fqnName);
 				}
 			}
 		} else if (astNode instanceof SelectionOnVariable) {
@@ -184,11 +194,68 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 			findVariables(completion.getName(), astNodeParent, astNode
 					.sourceStart());
 		} else if (astNode instanceof SelectionOnAST) {
-			addElementFromASTNode(((SelectionOnAST) astNode).getNode());
+			ASTNode node = ((SelectionOnAST) astNode).getNode();
+			addElementFromASTNode(node);
+		} else if (astNode instanceof SelectionOnNode) {
+			ASTNode node = ((SelectionOnNode) astNode).getNode();
+			int position = ((SelectionOnNode) astNode).getPosition();
+			if (node instanceof TclStatement) {
+				// We need to check for XOTcl command calls.
+				// processXOTclCommandCalls((TclStatement) node);
+			}
 		}
 	}
 
-	private void findVariables(String name, ASTNode parent, int beforePosition) {
+	protected void findMethodFromMixin(String name, ASTNode parent) {
+		if (name.startsWith("::")) {
+			if (name.startsWith("::")) {
+				name = name.substring(2);
+			}
+		}
+		String oName = name;
+		if (name.indexOf("::") != -1) {
+			String[] split = name.split("::");
+			oName = split[split.length - 1];
+		}
+		findMethodMixin(tclNameToKey(name), oName);
+	}
+
+	protected boolean checkMethodFrom(TypeDeclaration declaringType,
+			SimpleReference callName, IModelElement parent) {
+		List methodList = declaringType.getMethodList();
+		for (Iterator iterator = methodList.iterator(); iterator.hasNext();) {
+			MethodDeclaration method = (MethodDeclaration) iterator.next();
+			if (method.getName().equals(callName.toString())) {
+
+				IModelElement methodElement = findChildrenByName(method
+						.getName(), (IParent) parent);
+				this.selectionElements.add(methodElement);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected void fillSuperClassesTo(TypeDeclaration declaringType,
+			List supersToHandle) {
+		if (declaringType == null) {
+			return;
+		}
+		if (declaringType.getSuperClasses() == null) {
+			return;
+		}
+		List superClasses = declaringType.getSuperClasses().getChilds();
+		for (int i = 0; i < superClasses.size(); i++) {
+			String superClassName = TclParseUtil
+					.getNameFromNode((ASTNode) superClasses.get(i));
+			if (superClassName != null) {
+				supersToHandle.add(superClassName);
+			}
+		}
+	}
+
+	protected void findVariables(String name, ASTNode parent, int beforePosition) {
+		String originalName = name;
 		if (parent instanceof MethodDeclaration) {
 			MethodDeclaration method = (MethodDeclaration) parent;
 			List statements = method.getArguments();
@@ -212,7 +279,8 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 			checkVariableStatements(name, beforePosition, type.getStatements(),
 					"");
 		} else {
-			List levels = this.parser.findLevelsTo(parent);
+			List levels = TclParseUtil.findLevelsTo(this.parser.getModule(),
+					parent);
 			ASTNode realParent = findRealParent(levels);
 			if (realParent != null) {
 				findVariables(name, realParent, beforePosition);
@@ -232,11 +300,10 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 			typeName = typeName.replaceAll("::", "\\$");
 			try {
 				IModelElement type = null;
-				if( typeName.length() > 0 ) {
+				if (typeName.length() > 0) {
 					type = (IModelElement) findTypeFrom(sourceModule
 							.getChildren(), "", typeName, '$');
-				}
-				else {
+				} else {
 					type = this.sourceModule;
 				}
 				if (type != null && type instanceof IParent) {
@@ -251,16 +318,91 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 					e.printStackTrace();
 				}
 			}
+			// findFieldFromSearch(name);
+		}
+		if (this.selectionElements.size() > 0) {
+			return;
+		}
+		// Search from mixins if not found local.
+		findFieldFromMixin(parent, originalName);
+	}
 
-			findFieldFromSearch(name);
+	protected void findFieldFromMixin(ASTNode parent, String name) {
+
+		// findFieldMixin(IMixinRequestor.MIXIN_NAME_SEPARATOR +
+		// tclNameToKey(name), name);
+		if (name.startsWith("$")) {
+			name = name.substring(1);
+		}
+		if (name.startsWith("{") || name.endsWith("}")) {
+			name = name.substring(1, name.length() - 1);
+		}
+		if (parent instanceof ModuleDeclaration || name.startsWith("::")) {
+			if (name.startsWith("::")) {
+				name = name.substring(2);
+			}
+			String oName = name;
+			if (name.indexOf("::") != -1) {
+				String[] split = name.split("::");
+				oName = split[split.length - 1];
+			}
+			findFieldMixin(tclNameToKey(name), oName);
+		} else {
+			List levels = TclParseUtil.findLevelsTo(this.parser.getModule(),
+					parent);
+			String keyFromLevels = getKeyFromLevels(levels);
+			findFieldMixin(keyFromLevels + IMixinRequestor.MIXIN_NAME_SEPARATOR
+					+ name, name);
 		}
 	}
 
-	private void findFieldFromSearch(String varName ) {
-		if( this.selectionElements.size() > 0 ) {
+	protected String tclNameToKey(String name) {
+		return TclParseUtil.tclNameTo(name,
+				IMixinRequestor.MIXIN_NAME_SEPARATOR);
+	}
+
+	protected void findFieldMixin(String pattern, String name) {
+		IMixinElement[] find = TclMixinModel.getInstance().find(pattern + "*");
+		for (int i = 0; i < find.length; i++) {
+			Object[] allObjects = find[i].getAllObjects();
+			for (int j = 0; j < allObjects.length; j++) {
+				if (allObjects[i] != null && allObjects[i] instanceof TclField) {
+					TclField field = (TclField) allObjects[i];
+					if (name.equals(field.getName())) {
+						this.selectionElements.add(field.getModelElement());
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	protected void findMethodMixin(String pattern, String name) {
+		IMixinElement[] find = TclMixinModel.getInstance().find(pattern + "*");
+		for (int i = 0; i < find.length; i++) {
+			Object[] allObjects = find[i].getAllObjects();
+			for (int j = 0; j < allObjects.length; j++) {
+				if (allObjects[j] != null && allObjects[j] instanceof TclProc) {
+					TclProc field = (TclProc) allObjects[j];
+					if (name.equals(field.getName())) {
+						this.selectionElements.add(field.getModelElement());
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	protected String getKeyFromLevels(List nodes) {
+		return TclParseUtil.getElementFQN(nodes,
+				IMixinRequestor.MIXIN_NAME_SEPARATOR, this.parser.getModule());
+	}
+
+	protected void findFieldFromSearch(String varName) {
+		if (this.selectionElements.size() > 0) {
 			return;
 		}
-		if( varName.startsWith("$")) {
+		if (varName.startsWith("$")) {
 			varName = varName.substring(1);
 		}
 		final String name = varName;
@@ -271,15 +413,15 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 				if (element instanceof IType) {
 					IType type = (IType) element;
 					// We need to skip not namespaces.
-					if( (type.getFlags() & Modifiers.AccNameSpace)== 0) {
+					if ((type.getFlags() & Modifiers.AccNameSpace) == 0) {
 						return;
 					}
-//					String mn = TclParseUtils.processTypeName(type, name);
-//					if (mn.equals(name)
-//							&& !TclSelectionEngine.this.selectionElements
-//									.contains(type)) {
-//						TclSelectionEngine.this.selectionElements.add(type);
-//					}
+					// String mn = TclParseUtils.processTypeName(type, name);
+					// if (mn.equals(name)
+					// && !TclSelectionEngine.this.selectionElements
+					// .contains(type)) {
+					// TclSelectionEngine.this.selectionElements.add(type);
+					// }
 					IField[] tfields = type.getFields();
 					for (int i = 0; i < tfields.length; ++i) {
 						processField(name, tfields[i]);
@@ -356,7 +498,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		}
 	}
 
-	private ASTNode findRealParent(List levels) {
+	protected ASTNode findRealParent(List levels) {
 		for (int i = levels.size() - 1; i >= 0; --i) {
 			ASTNode n = (ASTNode) levels.get(i);
 			if (n instanceof MethodDeclaration || n instanceof TypeDeclaration
@@ -367,12 +509,12 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		return null;
 	}
 
-	private void checkVariableStatements(String name, int beforePosition,
+	protected void checkVariableStatements(String name, int beforePosition,
 			List statements, String prefix) {
 		if (statements != null) {
 			for (int i = 0; i < statements.size(); ++i) {
 				ASTNode node = (ASTNode) statements.get(i);
-				if( node instanceof FieldDeclaration ) {
+				if (node instanceof FieldDeclaration) {
 					FieldDeclaration decl = (FieldDeclaration) node;
 					checkVariable(name, prefix + decl.getName(), node);
 				}
@@ -396,124 +538,60 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 					// inner namespace.
 					checkVariableStatements(name, beforePosition, type
 							.getStatements(), prefix + nn + "::");
-//					checkVariableStatements(name, beforePosition, type
-//							.getStatements(), "");
+					// checkVariableStatements(name, beforePosition, type
+					// .getStatements(), "");
 				}
-				if (node instanceof TclStatement
-						&& node.sourceStart() <= beforePosition) {
-					TclStatement s = (TclStatement) node;
-					Expression commandId = s.getAt(0);
-					if (commandId != null
-							&& commandId instanceof SimpleReference) {
-						String qname = ((SimpleReference) commandId).getName();
-						if (qname.equals("if")) {
-							TclParseUtils.processIf(s.getExpressions(), name, beforePosition,
-									processBlockAction);
-						} else if (qname.equals("while")) {
-							processWhile(name, s, beforePosition,
-									processBlockAction);
-						} else if (qname.equals("for")) {
-							processFor(name, s, beforePosition,
-									processBlockAction);
-						} else if (qname.equals("catch")) {
-							processCatch(name, s, beforePosition,
-									processBlockAction);
-						}
+				if (node.sourceStart() <= beforePosition) {
+					List statements2 = findExtractBlocks(node);
+					if (statements2.size() != 0) {
+						checkVariableStatements(name, beforePosition,
+								statements2, prefix);
 					}
 				}
 			}
 		}
 	}
 
-	private void processBlock(String name, Expression bl, int beforePosition) {
+	protected List findExtractBlocks(ASTNode node) {
+		final List statements2 = new ArrayList();
+		ASTVisitor visitor = new ASTVisitor() {
+			public boolean visit(Expression s) throws Exception {
+				if (s instanceof Block) {
+					statements2.addAll(((Block) s).getStatements());
+				}
+				return super.visit(s);
+			}
+		};
+		try {
+			node.traverse(visitor);
+		} catch (Exception e) {
+			if( DLTKCore.DEBUG ) {
+				e.printStackTrace();
+			}
+		}
+		return statements2;
+	}
+
+	protected void processBlock(String name, Expression bl, int beforePosition) {
 		TclBlockExpression block = (TclBlockExpression) bl;
 		List/* < Statement > */code = null;
 
-//		Block b = new Block();
+		// Block b = new Block();
 		code = block.parseBlock(block.sourceStart() + 1);
-//		b.acceptStatements(code);
-		
-//		TclASTBuilder.build(b, code, TclASTBuilder.TYPE_UNKNOWN);
-		checkVariableStatements(name, beforePosition, code/*b.getStatements()*/, "");
+		// b.acceptStatements(code);
+
+		// TclASTBuilder.build(b, code, TclASTBuilder.TYPE_UNKNOWN);
+		checkVariableStatements(name, beforePosition,
+				code/* b.getStatements() */, "");
 
 	}
 
-	private void processExecuteBlock(String name, Expression bl,
+	protected void processExecuteBlock(String name, Expression bl,
 			int beforePosition) {
 		TclExecuteExpression block = (TclExecuteExpression) bl;
 		List code = block.parseExpression(block.sourceStart() + 1);
 		checkVariableStatements(name, beforePosition, code, "");
 
-	}
-
-	private TclParseUtils.IProcessStatementAction processBlockAction = new TclParseUtils.IProcessStatementAction() {
-		public void doAction(String name, Expression bl, int beforePosition) {
-			if (bl instanceof TclBlockExpression)
-				processBlock(name, bl, beforePosition);
-			if (bl instanceof TclExecuteExpression)
-				processExecuteBlock(name, bl, beforePosition);
-		}
-	};
-
-	private void processFor(String name, TclStatement statement,
-			int beforePosition, TclParseUtils.IProcessStatementAction action) {
-		// TODO: Add variable corrections here.
-		List exprs = statement.getExpressions();
-		int len = exprs.size();
-		if (1 < len) { // Process initializers
-			Expression bl = (Expression) exprs.get(1);
-			if (bl instanceof TclBlockExpression) {
-				action.doAction(name, bl, beforePosition);
-			}
-		}
-		int bi = 4; // Skip expression
-		if (bi < len) {
-			Expression bl = (Expression) exprs.get(bi);
-			if (bl instanceof TclBlockExpression) {
-				action.doAction(name, bl, beforePosition);
-			}
-		}
-	}
-
-	private void processWhile(String name, TclStatement statement,
-			int beforePosition, TclParseUtils.IProcessStatementAction action) {
-		List exprs = statement.getExpressions();
-		int len = exprs.size();
-		int bi = 2; // Skip expression
-		if (bi < len) {
-			Expression bl = (Expression) exprs.get(bi);
-			if (bl instanceof TclBlockExpression) {
-				action.doAction(name, bl, beforePosition);
-			}
-		}
-	}
-
-	private void processCatch(String name, TclStatement statement,
-			int beforePosition, TclParseUtils.IProcessStatementAction action) {
-		List exprs = statement.getExpressions();
-		int len = exprs.size();
-		int bi = 1; // Skip expression
-		if (bi < len) {
-			Expression bl = (Expression) exprs.get(bi);
-			if (bl instanceof TclBlockExpression
-					|| bl instanceof TclExecuteExpression) {
-				action.doAction(name, bl, beforePosition);
-			}
-		}
-	}
-
-	private void processAfter(String name, TclStatement statement,
-			int beforePosition, TclParseUtils.IProcessStatementAction action) {
-		List exprs = statement.getExpressions();
-		int len = exprs.size();
-		int bi = 2; // Skip expression
-		if (bi < len) {
-			Expression bl = (Expression) exprs.get(bi);
-			if (bl instanceof TclBlockExpression
-					|| bl instanceof TclExecuteExpression) {
-				action.doAction(name, bl, beforePosition);
-			}
-		}
 	}
 
 	private void checkVariable(String name, String variable, ASTNode node) {
@@ -536,14 +614,14 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		}
 	}
 
-	private void findMethodFromSearch(final String name) {
+	protected void findMethodFromSearch(final String name) {
 		SearchRequestor requestor = new SearchRequestor() {
 			public void acceptSearchMatch(SearchMatch match)
 					throws CoreException {
 				Object element = match.getElement();
 				if (element instanceof IType) {
 					IType type = (IType) element;
-					if( (type.getFlags() & Modifiers.AccNameSpace)== 0) {
+					if ((type.getFlags() & Modifiers.AccNameSpace) == 0) {
 						return;
 					}
 					String mn = TclParseUtils.processTypeName(type, name);
@@ -591,8 +669,8 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 				try {
 					search(to, IDLTKSearchConstants.METHOD,
 							IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-//					search(to, IDLTKSearchConstants.METHOD,
-//							IDLTKSearchConstants.DECLARATIONS, scope, requestor);
+					// search(to, IDLTKSearchConstants.METHOD,
+					// IDLTKSearchConstants.DECLARATIONS, scope, requestor);
 					// search( "::" + tok + "*", IDLTKSearchConstants.TYPE,
 					// IDLTKSearchConstants.DECLARATIONS, scope, requestor );
 					search(tok + "*", IDLTKSearchConstants.TYPE,
@@ -631,8 +709,8 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 	protected void search(String patternString, int searchFor, int limitTo,
 			IDLTKSearchScope scope, SearchRequestor resultCollector)
 			throws CoreException {
-		search(patternString, searchFor, limitTo, EXACT_RULE, scope,
-				resultCollector);
+		// search(patternString, searchFor, limitTo, EXACT_RULE, scope,
+		// resultCollector);
 	}
 
 	protected void search(String patternString, int searchFor, int limitTo,
@@ -642,16 +720,17 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 				|| patternString.indexOf('?') != -1) {
 			matchRule |= SearchPattern.R_PATTERN_MATCH;
 		}
-		SearchPattern pattern = SearchPattern.createPattern(patternString,
-				searchFor, limitTo, matchRule);
-		new SearchEngine().search(pattern,
-				new SearchParticipant[] { SearchEngine
-						.getDefaultSearchParticipant() }, scope, requestor,
-				null);
+		// SearchPattern pattern = SearchPattern.createPattern(patternString,
+		// searchFor, limitTo, matchRule);
+		// new SearchEngine().search(pattern,
+		// new SearchParticipant[] { SearchEngine
+		// .getDefaultSearchParticipant() }, scope, requestor,
+		// null);
 	}
 
-	private void findLocalFunctions(String name, ASTNode parent) {
-		List levels = this.parser.findLevelsTo(parent);
+	protected void findLocalFunctions(String name, ASTNode parent) {
+		List levels = TclParseUtil
+				.findLevelsTo(this.parser.getModule(), parent);
 		int len = levels.size();
 		ASTNode realParent = findRealParent(levels);
 		// At first search for namespace function
@@ -666,7 +745,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		processFindLocalFunctions(name, levels, len);
 	}
 
-	private void processFindLocalFunctions(String name, List levels, int len) {
+	protected void processFindLocalFunctions(String name, List levels, int len) {
 		List visited = new ArrayList();
 		for (int j = 0; j < len; ++j) {
 			ASTNode astNodeParent = (ASTNode) levels.get(len - 1 - j);
@@ -702,8 +781,8 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		}
 	}
 
-	private void processMethods(String name, List statements,
-			String namePrefix, List visited) {
+	protected void processMethods(String name, final List statements,
+			final String namePrefix, final List visited) {
 		if (selectionElements.size() > 0) {
 			return;
 		}
@@ -740,15 +819,57 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 							+ "::", visited);
 				}
 
+			} else {
+				// We need to visit blocked expressions to one level.
+				final String fname = name;
+				ASTVisitor visitor = new ASTVisitor() {
+					public boolean visit(Expression s) throws Exception {
+						if (s instanceof Block) {
+							List tStatements = ((Block) s).getStatements();
+							visited.add(s);
+							processMethods(fname, tStatements, namePrefix,
+									visited);
+						}
+						return false;
+					}
+
+					public boolean visit(MethodDeclaration s) throws Exception {
+						return false;
+					}
+
+					public boolean visit(TypeDeclaration s) throws Exception {
+						return false;
+					}
+				};
+				try {
+					nde.traverse(visitor);
+				} catch (Exception e) {
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
+					}
+				}
 			}
+
 			visited.add(nde);
 		}
 	}
 
 	protected void addElementFromASTNode(ASTNode nde) {
-		ModuleDeclaration module = parser.module;
+		ModuleDeclaration module = parser.getModule();
 		List statements = module.getStatements();
-		searchAddElementsTo(statements, nde, sourceModule);
+		searchAddElementsTo(statements, nde, sourceModule,
+				this.selectionElements);
+	}
+
+	protected IModelElement findElementFromNode(ASTNode nde) {
+		ModuleDeclaration module = parser.getModule();
+		List statements = module.getStatements();
+		List elements = new ArrayList();
+		searchAddElementsTo(statements, nde, sourceModule, elements);
+		if (elements.size() == 1) {
+			return (IModelElement) elements.get(0);
+		}
+		return null;
 	}
 
 	protected IParent findTypeFrom(IModelElement[] childs, String name,
@@ -756,8 +877,8 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		try {
 			for (int i = 0; i < childs.length; ++i) {
 				if (childs[i] instanceof IType) {
-					if( (((IType)childs[i]).getFlags() & Modifiers.AccNameSpace)== 0) {
-						break;
+					if ((((IType) childs[i]).getFlags() & Modifiers.AccNameSpace) == 0) {
+						continue;
 					}
 					IType type = (IType) childs[i];
 					String qname = name + delimiter + type.getElementName();
@@ -772,15 +893,20 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 				}
 			}
 		} catch (ModelException e) {
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
-	protected IModelElement findElementParent(ASTNode node, String name, IParent parent) {
+
+	protected IModelElement findElementParent(ASTNode node, String name,
+			IParent parent) {
 		return null;
 	}
+
 	protected void searchAddElementsTo(List statements, final ASTNode node,
-			IParent element) {
+			IParent element, List selectionElements) {
 		if (statements == null || element == null) {
 			return;
 		}
@@ -832,13 +958,14 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 					} else {
 						e = findChildrenByName(nodeName, (IParent) element);
 					}
-					if( e == null ) {
-						e = findElementParent(node, nodeName, (IParent)element);
+					if (e == null) {
+						e = findElementParent(node, nodeName, (IParent) element);
+
 					}
 					if (e != null) {
 						List toRemove = new ArrayList();
-						for (int k = 0; k < this.selectionElements.size(); ++k) {
-							IModelElement ke = (IModelElement) this.selectionElements
+						for (int k = 0; k < selectionElements.size(); ++k) {
+							IModelElement ke = (IModelElement) selectionElements
 									.get(k);
 							String keName = ke.getElementName();
 							if (keName.equals(nodeName)) {
@@ -846,9 +973,9 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 							}
 						}
 						for (int k = 0; k < toRemove.size(); ++k) {
-							this.selectionElements.remove(toRemove.get(k));
+							selectionElements.remove(toRemove.get(k));
 						}
-						this.selectionElements.add(e);
+						selectionElements.add(e);
 					}
 				}
 				return;
@@ -875,48 +1002,25 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 							// was: if (e != null || e instanceof IParent)
 							List stats = ((TypeDeclaration) nde)
 									.getStatements();
-							searchAddElementsTo(stats, node, (IParent) e);
+							searchAddElementsTo(stats, node, (IParent) e,
+									selectionElements);
 						}
 					} else if (nde instanceof MethodDeclaration) {
 						searchInMethod(node, element, nde);
-					}
-					else if (nde instanceof TclStatement) {
-						TclStatement s = (TclStatement) nde;
-						Expression commandId = s.getAt(0);
+					} /*
+						 * else if (nde instanceof TclStatement) { TclStatement
+						 * s = (TclStatement) nde; Expression commandId =
+						 * s.getAt(0); final IParent e = element; if (commandId !=
+						 * null && commandId instanceof SimpleReference) {
+						 * String qname = ((SimpleReference) commandId)
+						 * .getName(); } }
+						 */
+					else {
 						final IParent e = element;
-						if (commandId != null
-								&& commandId instanceof SimpleReference) {
-							String qname = ((SimpleReference) commandId)
-									.getName();
-
-							TclParseUtils.IProcessStatementAction action = new TclParseUtils.IProcessStatementAction() {
-								public void doAction(String name,
-										Expression bl, int beforePosition) {
-									if (bl instanceof TclBlockExpression) {
-										TclBlockExpression block = (TclBlockExpression) bl;
-										List code = block.parseBlock(block
-												.sourceStart() + 1);
-										searchAddElementsTo(code, node, e);
-									}
-									if (bl instanceof TclExecuteExpression) {
-										TclExecuteExpression block = (TclExecuteExpression) bl;
-										List code = block.parseExpression(block
-												.sourceStart() + 1);
-										searchAddElementsTo(code, node, e);
-									}
-								}
-							};
-							if (qname.equals("if")) {
-								TclParseUtils.processIf(s.getExpressions(), qname, 0, action);
-							} else if (qname.equals("while")) {
-								processWhile(qname, s, 0, action);
-							} else if (qname.equals("for")) {
-								processFor(qname, s, 0, action);
-							} else if (qname.equals("catch")) {
-								processCatch(qname, s, 0, action);
-							} else if (qname.equals("after")) {
-								processAfter(qname, s, 0, action);
-							}
+						List statements2 = findExtractBlocks(nde);
+						if (statements2.size() > 0) {
+							searchAddElementsTo(statements2, node, e,
+									selectionElements);
 						}
 					}
 				}
@@ -930,15 +1034,15 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		MethodDeclaration method = (MethodDeclaration) nde;
 		String methodName = method.getName();
 		if (methodName.indexOf("::") != -1) {
-			String pName = methodName.substring(0, methodName
-					.lastIndexOf("::"));
+			String pName = methodName
+					.substring(0, methodName.lastIndexOf("::"));
 			pName = pName.replaceAll("::", "\\$");
 			if (pName.equals("$")) {
 				element = this.sourceModule;
 			} else {
 				try {
-					element = findTypeFrom(sourceModule
-							.getChildren(), "", pName, '$');
+					element = findTypeFrom(sourceModule.getChildren(), "",
+							pName, '$');
 					if (element == null) {
 						return;
 					}
@@ -949,12 +1053,11 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 			}
 			methodName = getNodeChildName(nde);
 		}
-		IModelElement e = findChildrenByName(methodName,
-				(IParent) element);
+		IModelElement e = findChildrenByName(methodName, (IParent) element);
 		if (e != null && e instanceof IParent) {
-			List stats = ((MethodDeclaration) nde)
-					.getStatements();
-			searchAddElementsTo(stats, node, (IParent) e);
+			List stats = ((MethodDeclaration) nde).getStatements();
+			searchAddElementsTo(stats, node, (IParent) e,
+					this.selectionElements);
 		}
 	}
 
@@ -978,17 +1081,19 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 			if (var != null) {
 				return var[0];
 			}
+		} else if (node instanceof FieldDeclaration) {
+			return ((FieldDeclaration) node).getName();
 		}
 		return null;
 	}
 
-	protected IModelElement findChildrenByName(String typeName, IParent element) {
+	protected IModelElement findChildrenByName(String childName, IParent element) {
 		try {
 			String nextName = null;
 			int pos;
-			if ((pos = typeName.indexOf("::")) != -1) {
-				nextName = typeName.substring(pos + 2);
-				typeName = typeName.split("::")[0];
+			if ((pos = childName.indexOf("::")) != -1) {
+				nextName = childName.substring(pos + 2);
+				childName = childName.split("::")[0];
 			}
 			IModelElement[] children = element.getChildren();
 			if (children != null) {
@@ -998,7 +1103,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 							&& name.indexOf('(') != -1) {
 						name = name.substring(0, name.indexOf('('));
 					}
-					if (name.equals(typeName)) {
+					if (name.equals(childName)) {
 						if (nextName == null) {
 							return children[i];
 						} else if (children[i] instanceof IParent) {
@@ -1015,7 +1120,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		return null;
 	}
 
-	private boolean checkSelection(String source, int selectionSourceStart,
+	protected boolean checkSelection(String source, int selectionSourceStart,
 			int selectionSourceEnd) {
 
 		boolean cheat = false;
@@ -1058,8 +1163,8 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 			}
 		}
 		if (isVariable && end < source.length() && source.charAt(end) == '(') {// it
-																				// is
-																				// array
+			// is
+			// array
 			while (end < source.length() && source.charAt(end) != ')')
 				end++;
 			end++;
@@ -1082,6 +1187,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 	public IAssistParser getParser() {
 		return parser;
 	}
+
 	protected IParent getSourceModule() {
 		return this.sourceModule;
 	}

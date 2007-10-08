@@ -13,24 +13,29 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
+import org.eclipse.dltk.ast.declarations.ISourceParser;
+import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.compiler.problem.IProblemReporter;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
+import org.eclipse.dltk.tcl.core.TclNature;
 
 public class TclParseUtils {
-	public interface IProcessStatementAction {
-		void doAction(String name, Expression bl, int beforePosition);
-	}
+	public static final Object AST = "ast";
 
 	public static List parseArguments(List st) {
 		List arguments = new ArrayList();
@@ -469,40 +474,27 @@ public class TclParseUtils {
 		return (FieldDeclaration[]) fields.toArray(new FieldDeclaration[fields
 				.size()]);
 	}
-
-	public static void processIf(List exprs, String name, int beforePosition,
-			IProcessStatementAction action) {
-		int len = exprs.size();
-		for (int i = 0; i < len; ++i) {
-			Expression e = (Expression) exprs.get(i);
-			if (e instanceof SimpleReference) {
-				String value = ((SimpleReference) e).getName();
-				if (value.equals("if") || value.equals("elseif")) {
-					int bi = i + 2; // Skip expression
-					while (bi < len) {
-						Expression bl = (Expression) exprs.get(bi);
-						// Check for then statement
-						if (bl instanceof SimpleReference) {
-							String thenSt = ((SimpleReference) bl).getName();
-							if (thenSt != null && thenSt.equals("then")) {
-								bi++;
-								continue;
-							}
-						} else if (bl instanceof TclBlockExpression) {
-							action.doAction(name, bl, beforePosition);
-						}
-						break;
-					}
-					i = bi - 1;
-				} else if (value.equals("else")) {
-					if (i + 1 < len) {
-						Expression bl = (Expression) exprs.get(i + 1);
-						if (bl instanceof TclBlockExpression) {
-							action.doAction(name, bl, beforePosition);
-						}
-					}
+	
+	public static ModuleDeclaration parseModule(ISourceModuleInfo astCache,
+			char[] content, IProblemReporter problemReporter, char[] filename ) {
+		ModuleDeclaration moduleDeclaration = null;
+		if( astCache != null ) {
+			moduleDeclaration = (ModuleDeclaration)astCache.get(AST);
+		}
+		if( moduleDeclaration == null ) {
+			ISourceParser sourceParser = null;
+			try {
+				sourceParser = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+			if( sourceParser != null ) {
+				moduleDeclaration = sourceParser.parse(filename, content, problemReporter);
+				if( moduleDeclaration != null && astCache != null ) {
+					astCache.put(AST, moduleDeclaration );
 				}
 			}
 		}
+		return moduleDeclaration;
 	}
 }

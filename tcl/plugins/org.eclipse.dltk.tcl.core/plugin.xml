@@ -21,7 +21,7 @@
    <extension
          point="org.eclipse.dltk.core.sourceElementParsers">
       <parser
-            class="org.eclipse.dltk.tcl.internal.parser.ext.ExtTclSourceElementParser"
+            class="org.eclipse.dltk.tcl.internal.parser.TclSourceElementParser"
             nature="org.eclipse.dltk.tcl.core.nature"
             priority="0">
       </parser>
@@ -29,7 +29,7 @@
    <extension
          point="org.eclipse.dltk.core.selectionEngine">
       <selectionEngine
-            class="org.eclipse.dltk.tcl.internal.core.codeassist.ext.ExtTclSelectionEngine"
+            class="org.eclipse.dltk.tcl.internal.core.codeassist.TclSelectionEngine"
             nature="org.eclipse.dltk.tcl.core.nature"
             priority="0">
       </selectionEngine>
@@ -72,7 +72,7 @@
    <extension
          point="org.eclipse.dltk.core.sourceParsers">
       <parser
-            class="org.eclipse.dltk.tcl.internal.parser.ext.ExtTclSourceParser"
+            class="org.eclipse.dltk.tcl.internal.parser.TclSourceParser"
             nature="org.eclipse.dltk.tcl.core.nature"
             priority="0">
       </parser>

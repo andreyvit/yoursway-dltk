@@ -1,4 +1,4 @@
-package org.eclipse.dltk.tcl.internal.parser.ext;
+package org.eclipse.dltk.tcl.internal.parser;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,9 +32,8 @@ import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.ast.TclGlobalVariableDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclPackageDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclUpvarVariableDeclaration;
-import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 
-public class ExtTclSourceElementRequestVisitor extends
+public class TclSourceElementRequestVisitor extends
 		SourceElementRequestVisitor {
 
 	private Stack namespacesLevel = new Stack();
@@ -78,15 +77,15 @@ public class ExtTclSourceElementRequestVisitor extends
 
 		public void go() {
 			for (int i = 0; i < this.level; i++) {
-				ExtTclSourceElementRequestVisitor.this.fRequestor
+				TclSourceElementRequestVisitor.this.fRequestor
 						.exitType(this.end);
 			}
 			if (this.exitFromModule) {
-				ExtTclSourceElementRequestVisitor.this.fRequestor
+				TclSourceElementRequestVisitor.this.fRequestor
 						.exitModuleRoot();
 			}
 			if (this.pop) {
-				ExtTclSourceElementRequestVisitor.this.namespacesLevel.pop();
+				TclSourceElementRequestVisitor.this.namespacesLevel.pop();
 			}
 		}
 	}
@@ -232,7 +231,7 @@ public class ExtTclSourceElementRequestVisitor extends
 				exitFromModule, true, true);
 	}
 
-	protected ExtTclSourceElementRequestVisitor(
+	protected TclSourceElementRequestVisitor(
 			ISourceElementRequestor requesor, IProblemReporter reporter) {
 		super(requesor);
 		this.fReporter = reporter;

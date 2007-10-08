@@ -105,7 +105,7 @@
    <extension
          point="org.eclipse.dltk.core.selectionEngine">
       <selectionEngine
-            class="org.eclipse.dltk.xotcl.internal.core.search.TclSelectionEngine2"
+            class="org.eclipse.dltk.xotcl.internal.core.search.XOTTclSelectionEngine"
             nature="org.eclipse.dltk.tcl.core.nature"
             priority="1">
       </selectionEngine>

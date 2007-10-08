@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
@@ -22,7 +23,7 @@ import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.ScriptCompletionEngine;
 import org.eclipse.dltk.codeassist.complete.CompletionNodeFound;
@@ -46,11 +47,11 @@ import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
+import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordOrFunction;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnVariable;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.TclCompletionParser;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
-import org.eclipse.dltk.tcl.internal.parser.TclParseUtils.IProcessStatementAction;
 
 public class TclCompletionEngine extends ScriptCompletionEngine {
 	
@@ -271,8 +272,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 						if (methodNames.contains(mn.substring(2))) {
 							continue;
 						}
-					}
-					else {
+					} else {
 						if (methodNames.contains("::" + mn)) {
 							continue;
 						}
@@ -290,7 +290,8 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		};
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(this.scriptProject);
+			toolkit = DLTKLanguageManager
+					.getLanguageToolkit(this.scriptProject);
 		} catch (CoreException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -405,7 +406,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 
 	private void fillFunctionsByLevels(char[] token, ASTNode parent,
 			List methods, List gmethodNames) {
-		List levels = this.parser.findLevelsTo(parent);
+		List levels = TclParseUtil.findLevelsTo(parser.getModule(), parent);
 		int len = levels.size();
 		List visited = new ArrayList();
 		List methodNames = new ArrayList();
@@ -584,7 +585,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			if (provideDollar) {
 				prefix = "$" + prefix;
 			}
-			findASTVariables(this.parser.module, prefix, token,
+			findASTVariables(this.parser.getModule(), prefix, token,
 					canCompleteEmptyToken, choices);
 		}
 		// remove dublicates
@@ -612,7 +613,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		// Find one level up
 		if( !( checkValidParetNode(parent) ) ) {
 			// Lets find scope parent
-			List findLevelsTo = this.parser.findLevelsTo(parent);
+			List findLevelsTo = TclParseUtil.findLevelsTo(parser.getModule(), parent);
 			ASTNode realParent = null;
 			for (Iterator iterator = findLevelsTo.iterator(); iterator
 					.hasNext();) {
@@ -622,13 +623,16 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 				}
 			}
 			if( realParent != null && !realParent.equals(parent)) {
-				findVariables(token, realParent, canCompleteEmptyToken, beforePosition, provideDollar, gChoices);
+				findVariables(token, realParent, canCompleteEmptyToken,
+						beforePosition, provideDollar, gChoices);
 			}
 		}
 	}
 
 	private boolean checkValidParetNode(ASTNode parent) {
-		return parent instanceof MethodDeclaration || parent instanceof ModuleDeclaration || parent instanceof TypeDeclaration;
+		return parent instanceof MethodDeclaration
+				|| parent instanceof ModuleDeclaration
+				|| parent instanceof TypeDeclaration;
 	}
 
 	private void findGlobalVariables(char[] token, final List choices,
@@ -698,7 +702,8 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		};
 		IDLTKLanguageToolkit toolkit = null;
 		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(this.scriptProject);
+			toolkit = DLTKLanguageManager
+					.getLanguageToolkit(this.scriptProject);
 		} catch (CoreException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -811,8 +816,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 							}
 						}
 					}
-				}
-				else if( nde instanceof FieldDeclaration ) {
+				} else if (nde instanceof FieldDeclaration) {
 					FieldDeclaration field = (FieldDeclaration) nde;
 					checkAddVariable(choices, field.getName());
 				}
@@ -836,37 +840,60 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		findLocalVariables(token, cc, canCompleteEmptyToken, provideDollar);
 	}
 
-	protected void checkVariableStatements(int beforePosition, List choices,
-			List statements) {
+	protected void checkVariableStatements(int beforePosition,
+			final List choices, List statements) {
 		if (statements != null) {
 			for (int i = 0; i < statements.size(); ++i) {
 				ASTNode node = (ASTNode) statements.get(i);
 				if( node instanceof FieldDeclaration ) {
 					FieldDeclaration decl = (FieldDeclaration) node;
 					this.checkAddVariable(choices, decl.getName());
-				}
-				if (node instanceof TclStatement
+				} else if (node instanceof TclStatement
 						&& node.sourceEnd() < beforePosition) {
 					TclStatement s = (TclStatement) node;
-					String[] variable = TclParseUtils.returnVariable(s);
-					if (variable != null) {
-						for (int u = 0; u < variable.length; ++u) {
-							checkAddVariable(choices, variable[u]);
-						}
-					}
+					checkTclStatementForVariables(choices, s);
 					Expression commandId = s.getAt(0);
-					if (commandId != null
-							&& commandId instanceof SimpleReference) {
-						String name = ((SimpleReference) commandId).getName();
-						if (name.equals("if")) {
-							processIf(s, beforePosition, choices);
-						} else if (name.equals("while")) {
-							processWhile(s, beforePosition, choices);
-						} else if (name.equals("for")) {
-							processFor(s, beforePosition, choices);
+//					if (commandId != null
+//							&& commandId instanceof SimpleReference) {
+//						String name = ((SimpleReference) commandId).getName();
+//						if (name.equals("if")) {
+//							processIf(s, beforePosition, choices);
+//						} else if (name.equals("while")) {
+//							processWhile(s, beforePosition, choices);
+//						} else if (name.equals("for")) {
+//							processFor(s, beforePosition, choices);
+//						}
+//					}
+				} else {
+					ASTVisitor visitor = new ASTVisitor() {
+						public boolean visit(Statement s) throws Exception {
+							if (s instanceof FieldDeclaration) {
+								checkAddVariable(choices,
+										((FieldDeclaration) s).getName());
+				}
+							else if( s instanceof TclStatement ) {
+								checkTclStatementForVariables(choices, (TclStatement)s);
+							}
+							return super.visit(s);
 						}
+
+					};
+					try {
+						node.traverse(visitor);
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
+			}
+		}
+	}
+
+	private void checkTclStatementForVariables(final List choices,
+			TclStatement s) {
+		String[] variable = TclParseUtils.returnVariable(s);
+		if (variable != null) {
+			for (int u = 0; u < variable.length; ++u) {
+				checkAddVariable(choices, variable[u]);
 			}
 		}
 	}
@@ -912,17 +939,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			}
 		}
 	}
-
-	private void processIf(TclStatement statement, int beforePosition,
-			final List choices) {
-		List exprs = statement.getExpressions();
-		TclParseUtils.processIf(exprs, null, beforePosition, new IProcessStatementAction() {
-			public void doAction(String name, Expression bl, int beforePosition) {
-				processBlock(bl, beforePosition, choices);
-			}
-		});
-	}
-
+	
 	protected void checkAddVariable(List choices, String n) {
 		String str = preProcessVariable(n);
 		if (!choices.contains(str)) {
