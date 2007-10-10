@@ -8,6 +8,7 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Declaration;
+import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
@@ -453,6 +454,9 @@ public class TclParseUtil {
 	public static String getElementFQN(ASTNode node, String separator,
 			ModuleDeclaration module) {
 		List nodes = findLevelsTo(module, node);
+		if( !nodes.contains(node)) {
+			nodes.add(node);
+		}
 		return getElementFQN(nodes, separator, module);
 	}
 
@@ -477,6 +481,9 @@ public class TclParseUtil {
 				} else {
 					name = ((MethodDeclaration) ns).getName();
 				}
+			}
+			else if( ns instanceof FieldDeclaration ) {
+				name = ((FieldDeclaration)ns).getName();
 			}
 			if (name != null) {
 				if (name.startsWith("::")) {

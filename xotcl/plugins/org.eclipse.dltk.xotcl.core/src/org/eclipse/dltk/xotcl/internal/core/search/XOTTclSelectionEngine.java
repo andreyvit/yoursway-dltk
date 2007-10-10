@@ -27,6 +27,7 @@ import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.ast.ExtendedTclMethodDeclaration;
+import org.eclipse.dltk.tcl.internal.core.codeassist.TclResolver;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclSelectionEngine;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnAST;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnKeywordOrFunction;
@@ -255,7 +256,7 @@ public class XOTTclSelectionEngine extends TclSelectionEngine {
 				if (node.getCallName().sourceStart() <= position
 						&& position <= node.getCallName().sourceEnd()) {
 
-					IModelElement methodElement = findChildrenByName(node
+					IModelElement methodElement = TclResolver.findChildrenByName(node
 							.getCallName().getName(), (IParent) parent);
 					this.selectionElements.add(methodElement);
 					return;
@@ -277,7 +278,7 @@ public class XOTTclSelectionEngine extends TclSelectionEngine {
 				if (node.getNameStart() <= position
 						&& position <= node.getNameEnd()) {
 
-					IModelElement methodElement = findChildrenByName(node
+					IModelElement methodElement = TclResolver.findChildrenByName(node
 							.getName(), (IParent) parent);
 					this.selectionElements.add(methodElement);
 					return;

@@ -92,7 +92,7 @@ public abstract class TclAssistParser implements IAssistParser {
 	}
 
 	public ModuleDeclaration parse(ISourceModule sourceUnit) {
-		ModuleDeclaration module = this.parser.parse(sourceUnit.getFileName(), sourceUnit
+		module = this.parser.parse(sourceUnit.getFileName(), sourceUnit
 						.getSourceContents().toCharArray(), null);
 		module.rebuild();
 

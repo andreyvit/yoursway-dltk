@@ -31,7 +31,6 @@ import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IField;
-import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.IType;
@@ -50,6 +49,7 @@ import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.TclLanguageToolkit;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
+import org.eclipse.dltk.tcl.internal.core.codeassist.TclResolver.IResolveElementParent;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnAST;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnKeywordOrFunction;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnNode;
@@ -227,8 +227,8 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 			MethodDeclaration method = (MethodDeclaration) iterator.next();
 			if (method.getName().equals(callName.toString())) {
 
-				IModelElement methodElement = findChildrenByName(method
-						.getName(), (IParent) parent);
+				IModelElement methodElement = TclResolver.findChildrenByName(
+						method.getName(), (IParent) parent);
 				this.selectionElements.add(methodElement);
 				return true;
 			}
@@ -301,14 +301,14 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 			try {
 				IModelElement type = null;
 				if (typeName.length() > 0) {
-					type = (IModelElement) findTypeFrom(sourceModule
-							.getChildren(), "", typeName, '$');
+					type = (IModelElement) TclResolver.findTypeFrom(
+							sourceModule.getChildren(), "", typeName, '$');
 				} else {
 					type = this.sourceModule;
 				}
 				if (type != null && type instanceof IParent) {
-					IModelElement field = this.findChildrenByName(varName,
-							(IParent) type);
+					IModelElement field = TclResolver.findChildrenByName(
+							varName, (IParent) type);
 					if (field != null) {
 						this.selectionElements.add(field);
 					}
@@ -319,6 +319,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 				}
 			}
 			// findFieldFromSearch(name);
+			findFieldFromMixin(parent, name);
 		}
 		if (this.selectionElements.size() > 0) {
 			return;
@@ -396,6 +397,15 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 	protected String getKeyFromLevels(List nodes) {
 		return TclParseUtil.getElementFQN(nodes,
 				IMixinRequestor.MIXIN_NAME_SEPARATOR, this.parser.getModule());
+	}
+
+	protected void findFieldFromSearchMixin(String varName) {
+		if (this.selectionElements.size() > 0) {
+			return;
+		}
+		if (varName.startsWith("$")) {
+			varName = varName.substring(1);
+		}
 	}
 
 	protected void findFieldFromSearch(String varName) {
@@ -541,8 +551,9 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 					// checkVariableStatements(name, beforePosition, type
 					// .getStatements(), "");
 				}
-				if (node.sourceStart() <= beforePosition) {
-					List statements2 = findExtractBlocks(node);
+				// This is in case not of type declaration
+				else if (node.sourceStart() <= beforePosition) {
+					List statements2 = TclResolver.findExtractBlocks(node);
 					if (statements2.size() != 0) {
 						checkVariableStatements(name, beforePosition,
 								statements2, prefix);
@@ -550,26 +561,6 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 				}
 			}
 		}
-	}
-
-	protected List findExtractBlocks(ASTNode node) {
-		final List statements2 = new ArrayList();
-		ASTVisitor visitor = new ASTVisitor() {
-			public boolean visit(Expression s) throws Exception {
-				if (s instanceof Block) {
-					statements2.addAll(((Block) s).getStatements());
-				}
-				return super.visit(s);
-			}
-		};
-		try {
-			node.traverse(visitor);
-		} catch (Exception e) {
-			if( DLTKCore.DEBUG ) {
-				e.printStackTrace();
-			}
-		}
-		return statements2;
 	}
 
 	protected void processBlock(String name, Expression bl, int beforePosition) {
@@ -614,103 +605,11 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		}
 	}
 
-	protected void findMethodFromSearch(final String name) {
-		SearchRequestor requestor = new SearchRequestor() {
-			public void acceptSearchMatch(SearchMatch match)
-					throws CoreException {
-				Object element = match.getElement();
-				if (element instanceof IType) {
-					IType type = (IType) element;
-					if ((type.getFlags() & Modifiers.AccNameSpace) == 0) {
-						return;
-					}
-					String mn = TclParseUtils.processTypeName(type, name);
-					if (mn.equals(name)
-							&& !TclSelectionEngine.this.selectionElements
-									.contains(type)) {
-						TclSelectionEngine.this.selectionElements.add(type);
-					}
-					IMethod[] tmethods = type.getMethods();
-					for (int i = 0; i < tmethods.length; ++i) {
-						processMethod(name, tmethods[i]);
-					}
-				} else if (element instanceof IMethod) {
-					IMethod method = (IMethod) element;
-					processMethod(name, method);
-				}
-			}
-
-			private void processMethod(final String name, IMethod method) {
-				String mn = TclParseUtils.processMethodName(method, name);
-				if (mn.equals(name)
-						&& !TclSelectionEngine.this.selectionElements
-								.contains(method)) {
-					TclSelectionEngine.this.selectionElements.add(method);
-				}
-			}
-		};
-		IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit);
-		if (name != null && name.length() >= 3 && name.charAt(0) == ':') {
-			try {
-				search(name, IDLTKSearchConstants.TYPE,
-						IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-				search(name, IDLTKSearchConstants.METHOD,
-						IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-				if (name.startsWith("::")) {
-					String name_wo = name.substring(2);
-					search(name_wo, IDLTKSearchConstants.TYPE,
-							IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-					search(name_wo, IDLTKSearchConstants.METHOD,
-							IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-				}
-				String to = new String(name);
-				String[] tokens = to.split("::");
-				final String tok = tokens[1];
-				try {
-					search(to, IDLTKSearchConstants.METHOD,
-							IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-					// search(to, IDLTKSearchConstants.METHOD,
-					// IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-					// search( "::" + tok + "*", IDLTKSearchConstants.TYPE,
-					// IDLTKSearchConstants.DECLARATIONS, scope, requestor );
-					search(tok + "*", IDLTKSearchConstants.TYPE,
-							IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-					if (to.startsWith("::")) {
-						String to_wo = to.substring(2);
-						search(new String(to_wo) + "*",
-								IDLTKSearchConstants.METHOD,
-								IDLTKSearchConstants.DECLARATIONS, scope,
-								requestor);
-					}
-					search(new String(tok) + "*", IDLTKSearchConstants.METHOD,
-							IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-				} catch (CoreException e) {
-					e.printStackTrace();
-				}
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
-		} else if (name != null && name.length() >= 1 && name.charAt(0) != ':') {
-			try {
-				search(name, IDLTKSearchConstants.METHOD,
-						IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-				search(name, IDLTKSearchConstants.TYPE,
-						IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-				String[] tokens = name.split("::");
-				String tok = tokens[0];
-				search(tok + "*", IDLTKSearchConstants.TYPE,
-						IDLTKSearchConstants.DECLARATIONS, scope, requestor);
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	protected void search(String patternString, int searchFor, int limitTo,
 			IDLTKSearchScope scope, SearchRequestor resultCollector)
 			throws CoreException {
-		// search(patternString, searchFor, limitTo, EXACT_RULE, scope,
-		// resultCollector);
+		search(patternString, searchFor, limitTo, EXACT_RULE, scope,
+				resultCollector);
 	}
 
 	protected void search(String patternString, int searchFor, int limitTo,
@@ -857,266 +756,33 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 	protected void addElementFromASTNode(ASTNode nde) {
 		ModuleDeclaration module = parser.getModule();
 		List statements = module.getStatements();
-		searchAddElementsTo(statements, nde, sourceModule,
-				this.selectionElements);
+		new TclResolver(sourceModule, parser.module, parentResolver)
+				.searchAddElementsTo(statements, nde, sourceModule,
+						this.selectionElements);
 	}
 
-	protected IModelElement findElementFromNode(ASTNode nde) {
+	public IModelElement findElementFromNode(ASTNode nde) {
 		ModuleDeclaration module = parser.getModule();
 		List statements = module.getStatements();
 		List elements = new ArrayList();
-		searchAddElementsTo(statements, nde, sourceModule, elements);
+		new TclResolver(sourceModule, parser.module, parentResolver)
+				.searchAddElementsTo(statements, nde, sourceModule, elements);
 		if (elements.size() == 1) {
 			return (IModelElement) elements.get(0);
 		}
 		return null;
 	}
 
-	protected IParent findTypeFrom(IModelElement[] childs, String name,
-			String parentName, char delimiter) {
-		try {
-			for (int i = 0; i < childs.length; ++i) {
-				if (childs[i] instanceof IType) {
-					if ((((IType) childs[i]).getFlags() & Modifiers.AccNameSpace) == 0) {
-						continue;
-					}
-					IType type = (IType) childs[i];
-					String qname = name + delimiter + type.getElementName();
-					if (qname.equals(parentName)) {
-						return type;
-					}
-					IParent val = findTypeFrom(type.getChildren(), qname,
-							parentName, delimiter);
-					if (val != null) {
-						return val;
-					}
-				}
-			}
-		} catch (ModelException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
+	IResolveElementParent parentResolver = new IResolveElementParent() {
+		public IModelElement findElementParent(ASTNode node, String name,
+				IParent parent) {
+			return TclSelectionEngine.this
+					.findElementParent(node, name, parent);
 		}
-		return null;
-	}
+	};
 
 	protected IModelElement findElementParent(ASTNode node, String name,
 			IParent parent) {
-		return null;
-	}
-
-	protected void searchAddElementsTo(List statements, final ASTNode node,
-			IParent element, List selectionElements) {
-		if (statements == null || element == null) {
-			return;
-		}
-		Iterator i = statements.iterator();
-		while (i.hasNext()) {
-			ASTNode nde = (ASTNode) i.next();
-			if (nde.equals(node)) {
-				if (node instanceof MethodDeclaration) {
-					String oName = ((MethodDeclaration) node).getName();
-					if (oName.indexOf("::") != -1) {
-						String pName = oName.substring(0, oName
-								.lastIndexOf("::"));
-						pName = pName.replaceAll("::", "\\$");
-
-						if (pName.startsWith("$")) {
-							if (pName.equals("$")) {
-								element = this.sourceModule;
-							} else {
-								try {
-									element = findTypeFrom(this.sourceModule
-											.getChildren(), "", pName, '$');
-								} catch (ModelException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-							}
-						} else {
-							pName = "$" + pName;
-							try {
-								element = findTypeFrom(element.getChildren(),
-										"", pName, '$');
-								if (element == null) {
-									return;
-								}
-							} catch (ModelException e) {
-								e.printStackTrace();
-								return;
-							}
-						}
-					}
-				}
-				String nodeName = getNodeChildName(node);
-				if (nodeName != null) {
-					IModelElement e = null;
-					if (nodeName.startsWith("::")) {
-						nodeName = nodeName.substring(2);
-						e = findChildrenByName(nodeName,
-								(IParent) this.sourceModule);
-					} else {
-						e = findChildrenByName(nodeName, (IParent) element);
-					}
-					if (e == null) {
-						e = findElementParent(node, nodeName, (IParent) element);
-
-					}
-					if (e != null) {
-						List toRemove = new ArrayList();
-						for (int k = 0; k < selectionElements.size(); ++k) {
-							IModelElement ke = (IModelElement) selectionElements
-									.get(k);
-							String keName = ke.getElementName();
-							if (keName.equals(nodeName)) {
-								toRemove.add(ke);
-							}
-						}
-						for (int k = 0; k < toRemove.size(); ++k) {
-							selectionElements.remove(toRemove.get(k));
-						}
-						selectionElements.add(e);
-					}
-				}
-				return;
-			}
-			if (nde.sourceStart() <= node.sourceStart()
-					&& node.sourceEnd() <= nde.sourceEnd()) {
-				if (element instanceof IParent) {
-					if (nde instanceof TypeDeclaration) {
-						TypeDeclaration type = (TypeDeclaration) nde;
-						String typeName = getNodeChildName(type);
-						IModelElement e = findChildrenByName(typeName,
-								(IParent) element);
-						if (e == null && type.getName().startsWith("::")) {
-							try {
-								e = (IModelElement) findTypeFrom(sourceModule
-										.getChildren(), "", type.getName()
-										.replaceAll("::", "\\$"), '$');
-							} catch (ModelException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-						}
-						if (e instanceof IParent) {
-							// was: if (e != null || e instanceof IParent)
-							List stats = ((TypeDeclaration) nde)
-									.getStatements();
-							searchAddElementsTo(stats, node, (IParent) e,
-									selectionElements);
-						}
-					} else if (nde instanceof MethodDeclaration) {
-						searchInMethod(node, element, nde);
-					} /*
-						 * else if (nde instanceof TclStatement) { TclStatement
-						 * s = (TclStatement) nde; Expression commandId =
-						 * s.getAt(0); final IParent e = element; if (commandId !=
-						 * null && commandId instanceof SimpleReference) {
-						 * String qname = ((SimpleReference) commandId)
-						 * .getName(); } }
-						 */
-					else {
-						final IParent e = element;
-						List statements2 = findExtractBlocks(nde);
-						if (statements2.size() > 0) {
-							searchAddElementsTo(statements2, node, e,
-									selectionElements);
-						}
-					}
-				}
-				return;
-			}
-		}
-	}
-
-	protected void searchInMethod(final ASTNode node, IParent element,
-			ASTNode nde) {
-		MethodDeclaration method = (MethodDeclaration) nde;
-		String methodName = method.getName();
-		if (methodName.indexOf("::") != -1) {
-			String pName = methodName
-					.substring(0, methodName.lastIndexOf("::"));
-			pName = pName.replaceAll("::", "\\$");
-			if (pName.equals("$")) {
-				element = this.sourceModule;
-			} else {
-				try {
-					element = findTypeFrom(sourceModule.getChildren(), "",
-							pName, '$');
-					if (element == null) {
-						return;
-					}
-				} catch (ModelException e) {
-					e.printStackTrace();
-					return;
-				}
-			}
-			methodName = getNodeChildName(nde);
-		}
-		IModelElement e = findChildrenByName(methodName, (IParent) element);
-		if (e != null && e instanceof IParent) {
-			List stats = ((MethodDeclaration) nde).getStatements();
-			searchAddElementsTo(stats, node, (IParent) e,
-					this.selectionElements);
-		}
-	}
-
-	protected String getNodeChildName(ASTNode node) {
-		if (node instanceof MethodDeclaration) {
-			MethodDeclaration method = (MethodDeclaration) node;
-			String name = method.getName();
-			if (name.indexOf("::") != -1) {
-				return name.substring(name.lastIndexOf("::") + 2);
-			}
-			return name;
-		} else if (node instanceof TypeDeclaration) {
-			TypeDeclaration type = (TypeDeclaration) node;
-			String name = type.getName();
-			/*
-			 * if (name.startsWith("::")) { return name.substring(2); }
-			 */
-			return name;
-		} else if (node instanceof TclStatement) {
-			String[] var = TclParseUtils.returnVariable((TclStatement) node);
-			if (var != null) {
-				return var[0];
-			}
-		} else if (node instanceof FieldDeclaration) {
-			return ((FieldDeclaration) node).getName();
-		}
-		return null;
-	}
-
-	protected IModelElement findChildrenByName(String childName, IParent element) {
-		try {
-			String nextName = null;
-			int pos;
-			if ((pos = childName.indexOf("::")) != -1) {
-				nextName = childName.substring(pos + 2);
-				childName = childName.split("::")[0];
-			}
-			IModelElement[] children = element.getChildren();
-			if (children != null) {
-				for (int i = 0; i < children.length; ++i) {
-					String name = children[i].getElementName();
-					if (children[i] instanceof IField
-							&& name.indexOf('(') != -1) {
-						name = name.substring(0, name.indexOf('('));
-					}
-					if (name.equals(childName)) {
-						if (nextName == null) {
-							return children[i];
-						} else if (children[i] instanceof IParent) {
-							return findChildrenByName(nextName,
-									(IParent) children[i]);
-						}
-					}
-				}
-			}
-		} catch (ModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		return null;
 	}
 

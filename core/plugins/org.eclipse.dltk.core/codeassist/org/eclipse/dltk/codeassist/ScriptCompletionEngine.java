@@ -51,21 +51,24 @@ public abstract class ScriptCompletionEngine extends Engine implements
 
 	protected char[] source;
 
-	public ScriptCompletionEngine(/*ISearchableEnvironment nameEnvironment,
-			CompletionRequestor requestor, Map settings,
-			IScriptProject scriptProject*/) {
+	public ScriptCompletionEngine(/*
+									 * ISearchableEnvironment nameEnvironment,
+									 * CompletionRequestor requestor, Map
+									 * settings, IScriptProject scriptProject
+									 */) {
 		super(null);
-		
-//		this.scriptProject = scriptProject;
-//		this.requestor = requestor;
-//		this.nameEnvironment = nameEnvironment;
-//		this.lookupEnvironment = new LookupEnvironment(this, nameEnvironment);
+
+		// this.scriptProject = scriptProject;
+		// this.requestor = requestor;
+		// this.nameEnvironment = nameEnvironment;
+		// this.lookupEnvironment = new LookupEnvironment(this,
+		// nameEnvironment);
 	}
 
 	protected CompletionProposal createProposal(int kind, int completionOffset) {
 		CompletionProposal proposal = CompletionProposal.create(kind,
-				completionOffset - this.offset);	
-	
+				completionOffset - this.offset);
+
 		return proposal;
 	}
 
@@ -100,9 +103,9 @@ public abstract class ScriptCompletionEngine extends Engine implements
 		case CompletionProposal.METHOD_REF:
 			buffer.append("METHOD_REF"); //$NON-NLS-1$
 			break;
-		 case CompletionProposal.PACKAGE_REF :
-			 buffer.append("PACKAGE_REF"); //$NON-NLS-1$
-			 break;
+		case CompletionProposal.PACKAGE_REF:
+			buffer.append("PACKAGE_REF"); //$NON-NLS-1$
+			break;
 		case CompletionProposal.TYPE_REF:
 			buffer.append("TYPE_REF"); //$NON-NLS-1$
 			break;
@@ -131,11 +134,10 @@ public abstract class ScriptCompletionEngine extends Engine implements
 				.append("\tDeclarationKey[").append(proposal.getDeclarationKey() == null ? "null".toCharArray() : proposal.getDeclarationKey()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		buffer
 				.append("\tKey[").append(proposal.getKey() == null ? "null".toCharArray() : proposal.getKey()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	
+
 		buffer
 				.append("\tName[").append(proposal.getName() == null ? "null".toCharArray() : proposal.getName()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		
 		buffer
 				.append("\tCompletionLocation[").append(proposal.getCompletionLocation()).append("]\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		int start = proposal.getReplaceStart();
@@ -171,9 +173,9 @@ public abstract class ScriptCompletionEngine extends Engine implements
 			this.endPosition = end;
 		}
 	}
-	
+
 	protected abstract int getEndOfEmptyToken();
-	
+
 	protected abstract String processMethodName(IMethod method, String token);
 
 	protected abstract String processTypeName(IType method, String token);
@@ -194,7 +196,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 						&& CharOperation.prefixEquals(keyword, choices[i],
 								false)) {
 					int relevance = computeBaseRelevance();
-					
+
 					relevance += computeRelevanceForInterestingProposal();
 					relevance += computeRelevanceForCaseMatching(keyword,
 							choices[i]);
@@ -336,7 +338,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 			}
 		}
 	}
-	
+
 	protected void findMethods(char[] token, boolean canCompleteEmptyToken,
 			List methods) {
 		findMethods(token, canCompleteEmptyToken, methods,
@@ -381,13 +383,15 @@ public abstract class ScriptCompletionEngine extends Engine implements
 						// proposal.setSignature(getSignature(typeBinding));
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
+						proposal.setModelElement(method);
 						String[] arguments = null;
 
 						try {
 							arguments = method.getParameters();
 						} catch (ModelException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							if (DLTKCore.DEBUG) {
+								e.printStackTrace();
+							}
 						}
 						if (arguments != null && arguments.length > 0) {
 							char[][] args = new char[arguments.length][];
@@ -445,6 +449,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 						// proposal.setSignature(getSignature(typeBinding));
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
+						proposal.setModelElement(field);
 						proposal.setName(name);
 						proposal.setCompletion((prefix + qname).toCharArray());
 						// proposal.setFlags(Flags.AccDefault);
@@ -494,6 +499,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 						// proposal.setSignature(getSignature(typeBinding));
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
+						proposal.setModelElement(type);
 
 						proposal.setName(name);
 						proposal.setCompletion(name);
@@ -552,6 +558,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 		}
 		return 0;
 	}
+
 	public void setEnvironment(ISearchableEnvironment environment) {
 		this.nameEnvironment = environment;
 		this.lookupEnvironment = new LookupEnvironment(this, nameEnvironment);
