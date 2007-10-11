@@ -114,6 +114,7 @@
              package="${cvsPrefix}/${releng}"
              dest="${codir}"
              tag="${mapVersionTag}" />
+    	<exec command="sh ${env.BUILD_HOME}/replace.sh ${codir}/${cvsPrefix}/${releng}" />
     </target>
 
 
