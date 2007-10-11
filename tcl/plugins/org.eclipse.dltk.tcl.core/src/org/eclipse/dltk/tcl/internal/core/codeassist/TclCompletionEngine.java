@@ -25,6 +25,7 @@ import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.ScriptCompletionEngine;
@@ -52,6 +53,7 @@ import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
+import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordArgumentOrFunctionArgument;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordOrFunction;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnVariable;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.TclCompletionParser;
@@ -75,7 +77,8 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 
 	public void complete(ISourceModule sourceModule, int completionPosition,
 			int pos) {
-		this.sourceModule = (org.eclipse.dltk.core.ISourceModule) sourceModule.getModelElement();
+		this.sourceModule = (org.eclipse.dltk.core.ISourceModule) sourceModule
+				.getModelElement();
 		if (DEBUG) {
 			System.out.print("COMPLETION IN "); //$NON-NLS-1$
 			System.out.print(sourceModule.getFileName());
@@ -172,21 +175,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			CompletionOnKeywordOrFunction key = (CompletionOnKeywordOrFunction) astNode;
 			if (!this.requestor.isIgnored(CompletionProposal.KEYWORD)) {
 				String[] kw = key.getPossibleKeywords();
-				char[][] choices = new char[kw.length][];
-				boolean add = false;
-				char[] token = key.getToken();
-				if (token != null && token.length > 0 && token[0] == ':') {
-					add = true;
-				}
-				for (int i = 0; i < kw.length; ++i) {
-					if (add) {
-						choices[i] = ("::" + kw[i]).toCharArray();
-					} else {
-						choices[i] = kw[i].toCharArray();
-					}
-				}
-				findKeywords(key.getToken(), choices, key
-						.canCompleteEmptyToken());
+				completeForKeywordOrFunction(key, kw);
 			}
 			/*
 			 * TODO: Add search for functions. Variables start with $ so it will
@@ -213,8 +202,51 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 						completion.canHandleEmpty(), astNode.sourceStart(),
 						completion.getProvideDollar(), null);
 			}
+		} else if (astNode instanceof CompletionOnKeywordArgumentOrFunctionArgument) {
+			CompletionOnKeywordArgumentOrFunctionArgument compl = (CompletionOnKeywordArgumentOrFunctionArgument) astNode;
+			if (compl.argumentIndex() == 1) {
+				// Completion on two argument keywords
+				TclStatement st = compl.getStatement();
+				Expression at = st.getAt(0);
+				if (at instanceof SimpleReference) {
+					String prefix = ((SimpleReference) at).getName() + " "
+							+ new String(compl.getToken());
+					String[] possibleKeywords = compl.getPossibleKeywords();
+					List k = new ArrayList();
+					for (int i = 0; i < possibleKeywords.length; i++) {
+						String kkw = possibleKeywords[i];
+						if (kkw.startsWith(prefix)) {
+							k.add(kkw.substring(kkw.indexOf(" ") + 1));
+						}
+					}
+					String kw[] = (String[]) k.toArray(new String[k.size()]);
+					char[][] choices = new char[kw.length][];
+					for (int i = 0; i < kw.length; ++i) {
+						choices[i] = kw[i].toCharArray();
+					}
+					findKeywords(compl.getToken(), choices, true);
+				}
+			}
 		}
 		return true;
+	}
+
+	private void completeForKeywordOrFunction(
+			CompletionOnKeywordOrFunction key, String[] kw) {
+		char[][] choices = new char[kw.length][];
+		boolean add = false;
+		char[] token = key.getToken();
+		if (token != null && token.length > 0 && token[0] == ':') {
+			add = true;
+		}
+		for (int i = 0; i < kw.length; ++i) {
+			if (add) {
+				choices[i] = ("::" + kw[i]).toCharArray();
+			} else {
+				choices[i] = kw[i].toCharArray();
+			}
+		}
+		findKeywords(key.getToken(), choices, key.canCompleteEmptyToken());
 	}
 
 	private char[] removeLastColonFromToken(char[] token) {
@@ -380,8 +412,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		for (int i = 0; i < find.length; i++) {
 			Object[] allObjects = find[i].getAllObjects();
 			for (int j = 0; j < allObjects.length; j++) {
-				if (allObjects[j] != null
-						&& allObjects[j] instanceof TclProc) {
+				if (allObjects[j] != null && allObjects[j] instanceof TclProc) {
 					TclProc field = (TclProc) allObjects[j];
 					IModelElement method = field.getModelElement();
 					if (method != null) {
@@ -434,25 +465,27 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		fillFunctionsByLevels(token, astNodeParent, methods, methodNames);
 		List nodeMethods = new ArrayList();
 		List nodeMethodNames = new ArrayList();
-		List otherMethods= new ArrayList();
-		List otherMethodNames= new ArrayList();
-		TclResolver resolver = new TclResolver(this.sourceModule, this.parser.module);
+		List otherMethods = new ArrayList();
+		List otherMethodNames = new ArrayList();
+		TclResolver resolver = new TclResolver(this.sourceModule,
+				this.parser.module);
 		if (methods.size() > 0) {
 			for (int i = 0; i < methods.size(); i++) {
 				MethodDeclaration method = (MethodDeclaration) methods.get(i);
-				IModelElement modelElement = resolver.findModelElementFrom(method);
-				if( modelElement != null ) {
+				IModelElement modelElement = resolver
+						.findModelElementFrom(method);
+				if (modelElement != null) {
 					nodeMethods.add(modelElement);
 					nodeMethodNames.add(methodNames.get(i));
-				}
-				else {
+				} else {
 					otherMethods.add(method);
 					otherMethodNames.add(otherMethodNames.get(i));
 				}
-//				TclParseUtil.fi
+				// TclParseUtil.fi
 			}
 			findMethods(token, canCompleteEmptyToken, nodeMethods);
-			findLocalMethods(token, canCompleteEmptyToken, otherMethods, methodNames);
+			findLocalMethods(token, canCompleteEmptyToken, otherMethods,
+					methodNames);
 		}
 	}
 
@@ -922,9 +955,10 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 					ASTVisitor visitor = new ASTVisitor() {
 						public boolean visit(Statement s) throws Exception {
 							if (s instanceof FieldDeclaration) {
-								String name = TclParseUtil.getElementFQN(s, "::", parser.module);
+								String name = TclParseUtil.getElementFQN(s,
+										"::", parser.module);
 								checkAddVariable(choices,
-										/*((FieldDeclaration) s).getName()*/name);
+								/* ((FieldDeclaration) s).getName() */name);
 							} else if (s instanceof TclStatement) {
 								checkTclStatementForVariables(choices,
 										(TclStatement) s);
