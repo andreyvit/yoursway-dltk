@@ -246,6 +246,51 @@
 
     </project>
 
+<project name="dltk-R0.9.1-R">
+            <cvs
+                tag="R0_9_maintenance"
+                module="${env.CVS_RELENG}" />
+        </modificationset>
+
+        <schedule interval="${time.oneHour}">
+            <ant
+                antscript="${env.BUILD_HOME}/releng.control/ant.sh"
+                buildfile="cc_project_build_0_9.xml"
+                target="Build"
+                useQuiet="false"
+                useLogger="false"
+                savelogdir="${logDir}"
+                usedebug="false"
+                antworkingdir="${env.BUILD_HOME}/releng.control">
+
+                <!-- this "M" label should be changed to "R" once maintenance release
+                    is warming up for its "R"elease.
+                -->
+                <property
+                    name="buildType"
+                    value="R" />
+
+                <property
+                    name="buildId"
+                    value="0.9.1" />
+                <property
+                    name="buildBranch"
+                    value="R0.9" />
+
+                <property
+                    name="checkoutprojectname"
+                    value="${project.name}" />
+
+
+                <property
+                    name="mapVersionTag"
+                    value="R0_9_maintenance" />                    
+
+            </ant>
+        </schedule>
+
+    </project>
+
     <project name="dltk-whatisfixed">
         <schedule interval="${time.VeryVeryLongTime}">
             <ant

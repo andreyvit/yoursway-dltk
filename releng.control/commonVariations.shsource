@@ -27,7 +27,6 @@ export LOCAL_BUILD_PROPERTIES_DIR=
 
 export STANDARD_PROPERTIES_DIR=${BUILD_HOME}/releng.control/standardMachineProperties
 
-export BUILD_BUILDMASTER_EMAIL=andrey@xored.com
-export BUILD_RESULT_URL=http://dltk.eclipse.org:3000/cruisecontrol/buildresults
-export BUILD_TOADDRESS=dltk-dev@eclipse.org
-
+export BUILD_BUILDMASTER_EMAIL=kurtov@xored.com
+export BUILD_RESULT_URL=http://dltk.xored.local:3000/cruisecontrol/buildresults
+export BUILD_TOADDRESS="dltk-builds@xored.com"
