@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+  <head>
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2000, 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+
+    <title>Java search tab</title>
+    <link rel="stylesheet" href="../book.css" charset="ISO-8859-1" type="text/css">
+  </head>
+
+  <body>
+    <h1>Java search tab</h1>
+
+    <p>This tab in the Search dialog allows you to search for Java elements. To show the tab invoke <b>Search &gt; Java</b>.</p>
+
+    <h2>Search string</h2>
+
+    <p>In this field, type the expression for which you wish to search, using the wildcard characters mentioned in the dialog as needed. This field is initialized based on the
+    current selection.</p>
+
+    <ul>
+      <li>Depending on what is searched for, the search string should describe the element:
+      <ul>
+        <li>Type: the type name (may be qualified or not).<br>
+        	<i>Examples:
+        	<ul>
+        		<li>org.eclipse.jdt.internal.core.JavaElement</li>
+        		<li>MyClass.Inner</li>
+        		<li>Foo</li>
+        	</ul></i>
+        </li>
+        <li>Method: the defining type name (may be qualified or not as for Type search, optional), the method selector and its parameters (optional).<br>
+        	<i>Examples:
+        	<ul>
+        		<li>org.eclipse.jdt.internal.core.JavaElement.getHandleFromMemento(MementoTokenizer, WorkingCopyOwner)</li>
+        		<li>equals(Object)</li>
+        		<li>foo</li>
+        	</ul></i>
+        </li>
+        <li>Package: the package name for a package (e.g. org.eclipse.jdt.internal.core)</li>
+        <li>Constructor: the defining type name (may be qualified or not as for Type search, optional) and the constructor parameters (optional).<br>
+        	<i>Examples:
+        	<ul>
+        		<li>org.eclipse.jdt.internal.core.JavaElement(JavaElement, String)</li>
+        		<li>Foo</li>
+        	</ul></i>
+             Note that the constructor name should not be entered as it is always the same as the type name.
+        </li>
+        <li>Field: the defining type name (qualified or not as for Type search, optional) and the field name.<br>
+        	<i>Examples:
+        	<ul>
+        		<li>org.eclipse.jdt.internal.core.JavaElement.name</li>
+        		<li>foo</li>
+        	</ul></i>
+        </li>
+      </ul>
+      </li>
+      <li>From the drop-down menu, you can choose to repeat (or modify) a recent search.<br>
+       Select the <span class="control">Case sensitive</span> field to force a case aware search. <span class="control">Case sensitive</span> is enabled when a custom search
+      string is entered.</li>
+    </ul>
+
+    <h2 class="Head">Search For</h2>
+
+    <p>Select to search for one of the following kinds of elements:</p>
+
+    <ul>
+      <li>Type</li>
+
+      <li>Method</li>
+
+      <li>Package</li>
+
+      <li>Constructor</li>
+
+      <li>Field</li>
+    </ul>
+
+    <h2 class="Head">Limit To</h2>
+
+    <p>Select to limit your search results to one of the following kinds of matches:</p>
+
+    <ul>
+      <li>Declarations</li>
+
+      <li>Implementors (available only when searching for types)</li>
+
+      <li>References</li>
+
+      <li>All Occurrences</li>
+
+      <li>Read Access (available only when searching for fields)</li>
+
+      <li>Write Access (available only when searching for fields)</li>
+    </ul>
+
+    <h2 class="Item">Search In</h2>
+   
+	<p>Select where in the scope to search for results</p>
+	
+	<ul>
+		<li>Sources: Search in all source files in the scope</li>
+		<li>Required projects: Search in all required projects</li>
+		<li>JRE libraries: Search in JRE libraries on the build path</li>
+		<li>Application libraries: Search in libraries on the build path</li>
+	</ul>
+
+    <h2 class="Item">Scope</h2>
+
+    <p>Select to limit your search results to one of the following scope</p>
+
+    <ul>
+      <li>Workspace</li>
+
+      <li>Selected resources</li>
+      
+      <li>Enclosing Projects</li>
+
+      <li>Working Set</li>
+    </ul>
+
+    <p>Press <span class="control">Choose</span> to select or create a working set.</p>
+
+    <p><img src="../images/ngrelc.png" alt="Related concepts" border="0" ></p>
+    <p>
+     <a href="../concepts/concepts-8.htm">Java search</a></p>
+	<p>
+      <img src="../images/ngrelr.png" alt="Related reference" border="0" >
+    </p>
+    <p>
+     <a href="../reference/ref-menu-search.htm">Search</a></p>
+
+    
+  </body>
+</html>
+

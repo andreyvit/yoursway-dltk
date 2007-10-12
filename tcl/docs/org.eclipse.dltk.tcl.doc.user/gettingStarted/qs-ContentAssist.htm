@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+  <head>
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2000, 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+    <link rel="stylesheet" href="../book.css" charset="ISO-8859-1" type="text/css">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <title>
+      Using content assist
+    </title>
+  </head>
+  <body>
+    <h1>
+      Using content assist
+    </h1>
+    <p>
+    In this section you will learn how to use Tcl content assist, an editor feature which makes
+    code writing a little faster and easier.
+    </p>
+    <ol>
+    	<li>First, create a new Tcl file in an Tcl project</li>
+    	<li>Copy and paste the following code to that file using Tcl editor:<br>
+    	<p><code>
+    	#Code assist example<br>
+		proc printSum {arg0 arg1} {<br>
+		puts [expr $arg0+$arg1]<br>
+		}
+		</code>
+    	</p>
+    	</li>
+    	<li>Put the cursor after the end of the code fragment and press Ctrl + Space .
+    		<p><img border="0" src="./images/tcl-code-assist.png" alt="Tcl code assist"></p>
+    	</li>
+    	<li>The first line is selected, now just press Enter and type some arguments.
+    		<p><img border="0" src="./images/tcl-code-assist-2.png" alt="Tcl code assist"></p>
+    		That's it!
+    	</li>
+    </ol>
+    <P class="nav_footer" id="nav_footer">Next Section: <A href="qs-LocalHistory.htm">Using local history</A>
+</P>
+    <p>
+      <img border="0" src="../images/ngrelc.png" alt="Related concepts" >
+    </p>
+    <p>
+       <a href="../concepts/concepts-7.htm">Tcl editor</a><br>
+    </p>
+    <p>
+      <img src="../images/ngrelr.png"  alt="Related reference">
+    </p>
+    <p>
+       <a href="../reference/ref-143.htm">Tcl Content Assist</a><br>
+       <a href="../reference/ref-21.htm">Tcl Editor Preferences</a><br>
+    </p>
+    
+  </body>
+</html>
+
