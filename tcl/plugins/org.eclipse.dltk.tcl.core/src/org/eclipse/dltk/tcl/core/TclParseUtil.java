@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.Modifiers;
@@ -191,46 +192,50 @@ public class TclParseUtil {
 
 	public static TclStatement convertToAST(TclCommand command,
 			char[] filename, int offset, String content, int startPos) {
-		List words = command.getWords();
-		List exprs = new ArrayList();
-		for (Iterator iterator = words.iterator(); iterator.hasNext();) {
-			TclWord word = (TclWord) iterator.next();
-			String wordText = content.substring(offset + word.getStart(), word
-					.getEnd()
-					+ 1 + offset);
-			// wordText = SimpleTclParser.magicSubstitute(wordText);
-			Object o = word.getContents().get(0);
-			if (o instanceof QuotesSubstitution) {
-				QuotesSubstitution qs = (QuotesSubstitution) o;
+		try {
+			List words = command.getWords();
+			List exprs = new ArrayList();
+			for (Iterator iterator = words.iterator(); iterator.hasNext();) {
+				TclWord word = (TclWord) iterator.next();
+				String wordText = content.substring(offset + word.getStart(),
+						word.getEnd() + 1 + offset);
+				// wordText = SimpleTclParser.magicSubstitute(wordText);
+				Object o = word.getContents().get(0);
+				if (o instanceof QuotesSubstitution) {
+					QuotesSubstitution qs = (QuotesSubstitution) o;
 
-				exprs.add(new StringLiteral(startPos + offset + qs.getStart(),
-						startPos + offset + qs.getEnd() + 1, wordText));
-			} else if (o instanceof BracesSubstitution) {
-				BracesSubstitution bs = (BracesSubstitution) o;
-				wordText = content.substring(offset + word.getStart(), word
-						.getEnd()
-						+ 1 + offset);
-				TclBlockExpression tclBlockExpression = new TclBlockExpression(
-						startPos + offset + bs.getStart(), startPos + offset
-								+ bs.getEnd() + 1, wordText);
-				// Advanced content for tcl blocks.
-				tclBlockExpression.setFilename(filename);
-				exprs.add(tclBlockExpression);
-			} else if (o instanceof CommandSubstitution
-					&& (word.getContents().size() == 1)) {
-				CommandSubstitution bs = (CommandSubstitution) o;
+					exprs.add(new StringLiteral(startPos + offset
+							+ qs.getStart(), startPos + offset + qs.getEnd()
+							+ 1, wordText));
+				} else if (o instanceof BracesSubstitution) {
+					BracesSubstitution bs = (BracesSubstitution) o;
+					wordText = content.substring(offset + word.getStart(), word
+							.getEnd()
+							+ 1 + offset);
+					TclBlockExpression tclBlockExpression = new TclBlockExpression(
+							startPos + offset + bs.getStart(), startPos
+									+ offset + bs.getEnd() + 1, wordText);
+					// Advanced content for tcl blocks.
+					tclBlockExpression.setFilename(filename);
+					exprs.add(tclBlockExpression);
+				} else if (o instanceof CommandSubstitution
+						&& (word.getContents().size() == 1)) {
+					CommandSubstitution bs = (CommandSubstitution) o;
 
-				exprs.add(new TclExecuteExpression(startPos + offset
-						+ bs.getStart(), startPos + offset + bs.getEnd() + 1,
-						wordText));
-			} else {
-				exprs.add(new SimpleReference(startPos + offset
-						+ word.getStart(), startPos + offset + word.getEnd()
-						+ 1, wordText));
+					exprs.add(new TclExecuteExpression(startPos + offset
+							+ bs.getStart(), startPos + offset + bs.getEnd()
+							+ 1, wordText));
+				} else {
+					exprs.add(new SimpleReference(startPos + offset
+							+ word.getStart(), startPos + offset
+							+ word.getEnd() + 1, wordText));
+				}
 			}
+			TclStatement st = new TclStatement(exprs);
+			return st;
+		} catch (StringIndexOutOfBoundsException bounds) {
+			return null;
 		}
-		TclStatement st = new TclStatement(exprs);
-		return st;
 	}
 
 	public static void addToDeclaration(ASTNode decl, ASTNode node) {
@@ -431,7 +436,6 @@ public class TclParseUtil {
 		return null;
 	}
 
-	
 	public static TypeDeclaration findTypesFromASTNode(
 			ModuleDeclaration module, ASTNode node, String name) {
 		List levels = findLevelsTo(module, node);
@@ -454,7 +458,7 @@ public class TclParseUtil {
 	public static String getElementFQN(ASTNode node, String separator,
 			ModuleDeclaration module) {
 		List nodes = findLevelsTo(module, node);
-		if( !nodes.contains(node)) {
+		if (!nodes.contains(node)) {
 			nodes.add(node);
 		}
 		return getElementFQN(nodes, separator, module);
@@ -481,9 +485,8 @@ public class TclParseUtil {
 				} else {
 					name = ((MethodDeclaration) ns).getName();
 				}
-			}
-			else if( ns instanceof FieldDeclaration ) {
-				name = ((FieldDeclaration)ns).getName();
+			} else if (ns instanceof FieldDeclaration) {
+				name = ((FieldDeclaration) ns).getName();
 			}
 			if (name != null) {
 				if (name.startsWith("::")) {

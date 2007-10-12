@@ -60,4 +60,8 @@ public class TclMixinModel {
 		return model.find(pattern);
 	}
 
+	public IMixinElement[] find(String pattern, long delta) {
+		return model.find(pattern, delta);
+	}
+
 }

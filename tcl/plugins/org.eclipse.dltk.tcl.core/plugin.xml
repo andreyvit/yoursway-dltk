@@ -125,6 +125,18 @@
             class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclNamespaceVariableProcessor"
             id="variable">
       </processor>
+      <!--processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclSwitchCommandProcessor"
+            id="switch">
+      </processor>
+      <processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclForeachCommandProcessor"
+            id="for">
+      </processor>
+      <processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclForeachCommandProcessor"
+            id="foreach">
+      </processor-->
    </extension>
  <extension
          point="org.eclipse.dltk.core.mixin">

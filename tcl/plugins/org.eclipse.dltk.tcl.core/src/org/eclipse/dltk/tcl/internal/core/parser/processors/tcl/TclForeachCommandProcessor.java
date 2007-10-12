@@ -34,7 +34,11 @@ public class TclForeachCommandProcessor extends AbstractTclCommandProcessor {
 				TclBlockExpression block = (TclBlockExpression)listNode;
 				TclScript script = SimpleTclParser.parse(block.getBlock().substring(1, block.getBlock().length()-1));
 				List commands = script.getCommands();
-				Assert.isTrue(commands.size() == 1);
+//				Assert.isTrue(commands.size() == 1);
+				if( commands.size() == 1 ) {
+					report(parser, "Error to parser", listNode, ProblemSeverities.Error);
+					return null;
+				}
 				for (Iterator words = ((TclCommand)commands.get(0)).getWords().iterator(); words.hasNext(); ) {
 					TclCommand command = new TclCommand();
 					command.addWord((TclWord)words.next());

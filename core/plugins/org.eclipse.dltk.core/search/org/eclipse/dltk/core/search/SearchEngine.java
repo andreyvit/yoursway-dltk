@@ -10,12 +10,13 @@
 package org.eclipse.dltk.core.search;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
@@ -704,7 +705,14 @@ public class SearchEngine {
 		this.basicEngine.searchDeclarationsOfSentMessages(enclosingElement, requestor, monitor);
 	}
 	
-	public static ISourceModule[] searchMixinSources(String key, IDLTKLanguageToolkit toolkit, final Set keys ) {
+	/**
+	 * 
+	 * @param key contains map of ISourceModule to Set
+	 * @param toolkit
+	 * @param keys
+	 * @return
+	 */
+	public static ISourceModule[] searchMixinSources(String key, IDLTKLanguageToolkit toolkit, final Map keys ) {
 		final IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit); 
 		// Index requestor
 		final HandleFactory factory = new HandleFactory();
@@ -716,19 +724,25 @@ public class SearchEngine {
 				if( documentPath.startsWith(SPECIAL_MIXIN)) {
 					documentPath = documentPath.substring(SPECIAL_MIXIN.length());
 				}
-				String s = IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY.toString();
+//				String s = IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY.toString();
 				if( documentPath.indexOf(IDLTKSearchScope.FILE_ENTRY_SEPARATOR) != -1) {
 					documentPath = documentPath.substring(documentPath.indexOf(IDLTKSearchScope.FILE_ENTRY_SEPARATOR) + 1);
 				}
-				Openable createOpenable = factory.createOpenable(documentPath, scope);
-				if( createOpenable instanceof ISourceModule ) {
-					modules.add(createOpenable);
+				Openable module = factory.createOpenable(documentPath, scope);
+				if( module instanceof ISourceModule ) {
+					modules.add(module);
 				}
 				
 				if (keys != null) {
 					String val = new String( indexRecord.getIndexKey() );
-					if (!keys.contains(val)) {
-						keys.add(val);
+					if( keys.containsKey(module) ) {
+						Set keysList = (Set) keys.get(module);
+						keysList.add(val);
+					}
+					else {
+						Set keysList = new HashSet();
+						keysList.add(val);
+						keys.put(module, keysList);
 					}
 				}
 				
@@ -750,7 +764,7 @@ public class SearchEngine {
 				participant, // Script search only
 				scope, 
 				searchRequestor),
-				IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
+				IDLTKSearchConstants.FORCE_IMMEDIATE_SEARCH,
 			null);	
 		return (ISourceModule[])modules.toArray(new ISourceModule[modules.size()]);
 	}

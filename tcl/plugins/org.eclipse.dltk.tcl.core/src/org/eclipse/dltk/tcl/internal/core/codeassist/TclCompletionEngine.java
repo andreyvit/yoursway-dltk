@@ -65,6 +65,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 
 	protected TclCompletionParser parser;
 	org.eclipse.dltk.core.ISourceModule sourceModule;
+	private final static boolean TRACE_COMPLETION_TIME = true;
 
 	public TclCompletionEngine(/*
 								 * ISearchableEnvironment environment,
@@ -408,7 +409,13 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	private void findMethodFromMixin(final Set methods, String tok) {
-		IMixinElement[] find = TclMixinModel.getInstance().find(tok);
+		long delta = 200;
+		long time = System.currentTimeMillis();
+		IMixinElement[] find = TclMixinModel.getInstance().find(tok, delta);
+		if( TRACE_COMPLETION_TIME  ) {
+			System.out.println("findMethod from mixin: request model:" + Long.toString(System.currentTimeMillis()-time));
+		}
+		time = System.currentTimeMillis();
 		for (int i = 0; i < find.length; i++) {
 			Object[] allObjects = find[i].getAllObjects();
 			for (int j = 0; j < allObjects.length; j++) {
@@ -420,6 +427,9 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 					}
 				}
 			}
+//			if(System.currentTimeMillis()-time > delta) {
+//				return;
+//			}
 		}
 	}
 

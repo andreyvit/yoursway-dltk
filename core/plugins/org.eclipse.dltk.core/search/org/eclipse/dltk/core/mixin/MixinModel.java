@@ -112,8 +112,8 @@ public class MixinModel {
 		return null;
 	}
 
-	public IMixinElement[] find(String pattern) {
-		HashSet set = new HashSet();
+	public IMixinElement[] find(String pattern, long delta) {
+		Map set = new HashMap();
 
 		ISourceModule[] containedModules = SearchEngine.searchMixinSources(
 				pattern, toolkit, set);
@@ -122,22 +122,42 @@ public class MixinModel {
 			return new IMixinElement[0];
 		}
 
+		long start = System.currentTimeMillis();
 		for (int i = 0; i < containedModules.length; ++i) {
 			reportModule(containedModules[i]);
+			if (delta != -1) {
+				if (System.currentTimeMillis() - start > delta) {
+					System.out.println("Mixin timeout break:"
+							+ Long.toString(System.currentTimeMillis() - start)
+							+ ":"
+							+ Integer.toString(containedModules.length - i));
+					break;
+				}
+			}
 		}
 
-		IMixinElement[] result = new IMixinElement[set.size()];
+		List result = new ArrayList();
 
-		int i = 0;
-		for (Iterator iterator = set.iterator(); iterator.hasNext();) {
-			String key = (String) iterator.next();
-			MixinElement element = getCreateEmpty(key);
-			markElementAsFinal(element);
-			result[i++] = element;
-			existKeysCache.add(key);
+//		int i = 0;
+		for (Iterator iterator = set.keySet().iterator(); iterator.hasNext();) {
+			ISourceModule module = (ISourceModule) iterator.next();
+			if (this.elementToMixinCache.containsKey(module)) {
+				Set keys = (Set) set.get(module);
+				for (Iterator iterator2 = keys.iterator(); iterator2.hasNext();) {
+					String key = (String) iterator2.next();
+					MixinElement element = getCreateEmpty(key);
+					markElementAsFinal(element);
+					result.add( element);
+					existKeysCache.add(key);
+				}
+			}
 		}
 
-		return result;
+		return (IMixinElement[]) result.toArray(new IMixinElement[result.size()]);
+	}
+
+	public IMixinElement[] find(String pattern) {
+		return find(pattern, -1);
 	}
 
 	public String[] findKeys(String pattern) {
@@ -209,7 +229,7 @@ public class MixinModel {
 
 	public synchronized void reportModule(ISourceModule sourceModule) {
 		// if (DLTKCore.VERBOSE) {
-// System.out.println("Filling ratio:" + this.cache.fillingRatio());
+		// System.out.println("Filling ratio:" + this.cache.fillingRatio());
 		// this.cache.printStats();
 		// }
 		if (!this.elementToMixinCache.containsKey(sourceModule)) {
@@ -343,7 +363,7 @@ public class MixinModel {
 		public void resourceChanged(IResourceChangeEvent event) {
 			int eventType = event.getType();
 			IResource resource = event.getResource();
-// IResourceDelta delta = event.getDelta();
+			// IResourceDelta delta = event.getDelta();
 
 			switch (eventType) {
 			case IResourceChangeEvent.PRE_DELETE:
@@ -420,15 +440,18 @@ public class MixinModel {
 			this.elementToMixinCache.remove(element);
 		}
 	}
-	/***
-	 * Then getObjects are called, special initialize listener are called. 
-	 *
+
+	/***************************************************************************
+	 * Then getObjects are called, special initialize listener are called.
+	 * 
 	 */
 	public interface IMixinObjectInitializeListener {
-		void initialize(IMixinElement element, Object object, ISourceModule module);
+		void initialize(IMixinElement element, Object object,
+				ISourceModule module);
 	}
+
 	private final ListenerList mixinObjectInitializeListeners = new ListenerList();
-	
+
 	private class MixinElement implements IMixinElement, IInternalMixinElement {
 		private String key;
 		private boolean bFinal = false;
@@ -554,7 +577,7 @@ public class MixinModel {
 			this.validate();
 			Object o = this.sourceModuleToObject.get(module);
 			if (o instanceof List) {
-			
+
 				Object[] objs = ((List) o).toArray();
 				for (int i = 0; i < objs.length; i++) {
 					notifyInitializeListener(this, module, objs[i]);
@@ -704,20 +727,25 @@ public class MixinModel {
 		notExistKeysCache.remove(key);
 		// MixinElement e = (MixinElement)this.cache.get(key);
 	}
-	
-	//// Mixin object initialize listeners code
+
+	// // Mixin object initialize listeners code
 	public void addObjectInitializeListener(
 			IMixinObjectInitializeListener mixinObjectInitializeListener) {
 		this.mixinObjectInitializeListeners.add(mixinObjectInitializeListener);
 	}
+
 	public void removeObjectInitializeListener(
 			IMixinObjectInitializeListener mixinObjectInitializeListener) {
-		this.mixinObjectInitializeListeners.remove(mixinObjectInitializeListener);
+		this.mixinObjectInitializeListeners
+				.remove(mixinObjectInitializeListener);
 	}
-	private void notifyInitializeListener(IMixinElement element, ISourceModule module, Object o ) {
+
+	private void notifyInitializeListener(IMixinElement element,
+			ISourceModule module, Object o) {
 		Object[] listeners = mixinObjectInitializeListeners.getListeners();
 		for (int i = 0; i < listeners.length; i++) {
-			((IMixinObjectInitializeListener)(listeners[i])).initialize(element, o, module);
+			((IMixinObjectInitializeListener) (listeners[i])).initialize(
+					element, o, module);
 		}
 	}
 }
