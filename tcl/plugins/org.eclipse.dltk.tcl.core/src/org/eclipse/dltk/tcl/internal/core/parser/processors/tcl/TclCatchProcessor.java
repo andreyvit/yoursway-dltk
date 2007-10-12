@@ -8,15 +8,13 @@ import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.ast.TclAdvancedExecuteExpression;
 import org.eclipse.dltk.tcl.core.ast.TclCatchStatement;
 import org.eclipse.dltk.tcl.core.ast.TclVariableDeclaration;
-
-import com.sun.org.apache.xerces.internal.xs.StringList;
+import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclCatchProcessor extends AbstractTclCommandProcessor {
 
