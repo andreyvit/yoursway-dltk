@@ -910,7 +910,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		this.javaPluginLocation = null;
 	}
 
-	public void saveIndex(Index index) throws IOException {
+	public synchronized void saveIndex(Index index) throws IOException {
 		// must have permission to write from the write monitor
 		if (index.hasChanged()) {
 			if (VERBOSE)

@@ -90,7 +90,7 @@ public class ReconcileWorkingCopyOperation extends ModelOperation {
 			IScriptProject project = workingCopy.getScriptProject();
 			elements.add(workingCopy);
 			MixinBuilder.getDefault().buildModelElements(project, elements,
-					new NullProgressMonitor());
+					new NullProgressMonitor(), false );
 
 			return;
 		}
