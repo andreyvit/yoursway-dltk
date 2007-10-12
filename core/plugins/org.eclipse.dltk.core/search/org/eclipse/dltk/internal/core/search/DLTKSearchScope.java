@@ -358,6 +358,11 @@ public class DLTKSearchScope extends AbstractSearchScope {
 			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
 					.getLanguageToolkit(element);
 			IDLTKLanguageToolkit languageToolkit2 = this.getLanguageToolkit();
+			
+			// For all projects scope
+			if( languageToolkit2 == null ) {
+				return true;
+			}
 			if (languageToolkit != null
 					&& languageToolkit2 != null
 					&& languageToolkit.getNatureId().equals(

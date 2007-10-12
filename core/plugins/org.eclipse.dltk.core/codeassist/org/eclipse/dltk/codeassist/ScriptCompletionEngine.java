@@ -285,6 +285,73 @@ public abstract class ScriptCompletionEngine extends Engine implements
 		}
 	}
 
+	protected void findMethods(char[] token, boolean canCompleteEmptyToken,
+			List methods, List methodNames) {
+		if (methods == null || methods.size() == 0)
+			return;
+
+		int length = token.length;
+		String tok = new String(token);
+		if (canCompleteEmptyToken || length > 0) {
+			for (int i = 0; i < methods.size(); i++) {
+				IMethod method = (IMethod) methods.get(i);
+				String qname = (String) methodNames.get(i);//processMethodName(method, tok);
+				char[] name = qname.toCharArray();
+				if (DLTKCore.DEBUG_COMPLETION) {
+					System.out.println("Completion:" + qname);
+				}
+				if (length <= name.length
+						&& CharOperation.prefixEquals(token, name, false)) {
+					int relevance = computeBaseRelevance();
+					relevance += computeRelevanceForInterestingProposal();
+					relevance += computeRelevanceForCaseMatching(token, name);
+					relevance += computeRelevanceForRestrictions(IAccessRule.K_ACCESSIBLE); // no
+
+					// accept result
+					ScriptCompletionEngine.this.noProposal = false;
+					if (!ScriptCompletionEngine.this.requestor
+							.isIgnored(CompletionProposal.METHOD_DECLARATION)) {
+						CompletionProposal proposal = ScriptCompletionEngine.this
+								.createProposal(
+										CompletionProposal.METHOD_DECLARATION,
+										ScriptCompletionEngine.this.actualCompletionPosition);
+						// proposal.setSignature(getSignature(typeBinding));
+						// proposal.setPackageName(q);
+						// proposal.setTypeName(displayName);
+						proposal.setModelElement(method);
+						String[] arguments = null;
+
+						try {
+							arguments = method.getParameters();
+						} catch (ModelException e) {
+							if (DLTKCore.DEBUG) {
+								e.printStackTrace();
+							}
+						}
+						if (arguments != null && arguments.length > 0) {
+							char[][] args = new char[arguments.length][];
+							for (int j = 0; j < arguments.length; ++j) {
+								args[j] = arguments[j].toCharArray();
+							}
+							proposal.setParameterNames(args);
+						}
+
+						proposal.setName(name);
+						proposal.setCompletion(name);
+						// proposal.setFlags(Flags.AccDefault);
+						proposal.setReplaceRange(this.startPosition
+								- this.offset, this.endPosition - this.offset);
+						proposal.setRelevance(relevance);
+						this.requestor.accept(proposal);
+						if (DEBUG) {
+							this.printDebug(proposal);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	protected void findLocalMethods(char[] token,
 			boolean canCompleteEmptyToken, List methods, List methodNames) {
 		if (methods == null || methods.size() == 0)

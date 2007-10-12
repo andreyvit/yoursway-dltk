@@ -127,10 +127,10 @@ public class MixinModel {
 			reportModule(containedModules[i]);
 			if (delta != -1) {
 				if (System.currentTimeMillis() - start > delta) {
-					System.out.println("Mixin timeout break:"
-							+ Long.toString(System.currentTimeMillis() - start)
-							+ ":"
-							+ Integer.toString(containedModules.length - i));
+//					System.out.println("Mixin timeout break:"
+//							+ Long.toString(System.currentTimeMillis() - start)
+//							+ ":"
+//							+ Integer.toString(containedModules.length - i));
 					break;
 				}
 			}
