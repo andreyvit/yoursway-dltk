@@ -1,7 +1,7 @@
 
 ! Tcl Development Tools (DLTK)
 !
-! $Id: tcl.map,v 1.65 2007/10/12 12:58:33 asobolev Exp $ 
+! $Id: tcl.map,v 1.66 2007/10/12 14:40:34 asobolev Exp $ 
 
 feature@org.eclipse.dltk.tcl=v20071012a,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl-feature
 feature@org.eclipse.dltk.tcl.sdk=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl.sdk
@@ -21,4 +21,4 @@ plugin@org.eclipse.dltk.tcl.activestatedebugger=v20070727b,:pserver:anonymous@de
 plugin@org.eclipse.dltk.tcl.testing=v20070924a,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.testing
 plugin@org.eclipse.dltk.tcl.testing.tcltest=v20071012,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.testing.tcltest
 
-plugin@org.eclipse.dltk.tcl.doc.user=v20071012,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/docs/org.eclipse.dltk.tcl.doc.user
+plugin@org.eclipse.dltk.tcl.doc.user=v20071012a,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/docs/org.eclipse.dltk.tcl.doc.user
