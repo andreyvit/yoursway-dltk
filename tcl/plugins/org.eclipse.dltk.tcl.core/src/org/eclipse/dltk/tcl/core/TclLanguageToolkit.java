@@ -49,11 +49,11 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 		try {
 			reader = new BufferedReader(new FileReader(file));
 			int size = Math.min((int) file.length(), 1024 * 1024); // DON'T
-																	// READ
-																	// FILES
-																	// WITH SIZE
-																	// MORE THAN
-																	// 1 Mb
+			// READ
+			// FILES
+			// WITH SIZE
+			// MORE THAN
+			// 1 Mb
 			char buf[] = new char[size + 1];
 			reader.read(buf);
 
@@ -192,6 +192,17 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 		if (file != null && file.isDirectory()) {
 			String members[] = file.list(new FilenameFilter() {
 				public boolean accept(File dir, String name) {
+					File f = new File(dir.getPath() + File.separator + name);
+					if (f.isDirectory()) {
+						File[] listFiles = f.listFiles();
+						for (int i = 0; i < listFiles.length; i++) {
+							if (listFiles[i].isFile()
+									&& isScriptLikeFileName(listFiles[i]
+											.getName())) {
+								return true;
+							}
+						}
+					}
 					if (name.toLowerCase().equals("pkgindex.tcl")
 							|| name.toLowerCase().equals("tclindex")) {
 						return true;

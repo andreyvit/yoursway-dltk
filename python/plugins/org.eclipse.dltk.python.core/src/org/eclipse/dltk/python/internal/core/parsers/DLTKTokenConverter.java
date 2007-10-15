@@ -38,7 +38,12 @@ public class DLTKTokenConverter {
 		this.model = new CodeModel(content);
 	}
 
-	public DLTKToken convert(Token token ) {
+	public DLTKToken convert( Token token ) {
+		if( token == null ) {
+			DLTKToken t = new DLTKToken(0, "");
+			t.setLine(1);
+			return t;
+		}
 		int line = token.getLine()-1;
 		if( line < 0 ) {
 			line = 0;

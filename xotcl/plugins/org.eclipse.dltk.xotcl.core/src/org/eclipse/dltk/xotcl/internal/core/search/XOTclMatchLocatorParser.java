@@ -19,6 +19,9 @@ import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.BasicTclMatchLocatorParser;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodCallStatement;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclProcCallStatement;
 
 public class XOTclMatchLocatorParser extends BasicTclMatchLocatorParser {
 
@@ -48,6 +51,18 @@ public class XOTclMatchLocatorParser extends BasicTclMatchLocatorParser {
 			} else if (node instanceof CallExpression) {
 				locator.match((CallExpression) node,
 						XOTclMatchLocatorParser.this.getNodeSet());
+			} else if (node instanceof XOTclMethodCallStatement) {
+				XOTclMethodCallStatement st = (XOTclMethodCallStatement) node;
+				XOTclInstanceVariable instanceVariable = st
+						.getInstanceVariable();
+				CallExpression call = new CallExpression(instanceVariable, st
+						.getName(), null);
+				locator.match(call, XOTclMatchLocatorParser.this.getNodeSet());
+			} else if (node instanceof XOTclProcCallStatement) {
+				XOTclProcCallStatement st = (XOTclProcCallStatement) node;
+				CallExpression call = new CallExpression(st.getObject(), st
+						.getCallName().getName(), null);
+				locator.match(call, XOTclMatchLocatorParser.this.getNodeSet());
 			}
 
 			return true;

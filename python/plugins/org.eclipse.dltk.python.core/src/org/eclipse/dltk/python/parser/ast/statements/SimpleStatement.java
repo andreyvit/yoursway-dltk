@@ -29,7 +29,7 @@ public abstract class SimpleStatement extends Statement {
 	public SimpleStatement(DLTKToken token, Expression expression) {
 		super(token);
 		this.fExpression = expression;
-		if( expression != null || expression.sourceEnd() > this.sourceEnd() ) {
+		if( expression != null && expression.sourceEnd() > this.sourceEnd() ) {
 			this.setEnd(expression.sourceEnd());
 		}
 	}

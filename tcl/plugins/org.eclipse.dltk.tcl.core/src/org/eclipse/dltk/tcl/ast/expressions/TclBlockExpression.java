@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.ast.expressions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -56,33 +55,6 @@ public class TclBlockExpression extends Expression {
 
 	public String toString() {
 		return "tcl block:" + this.fBlockContent;
-	}
-
-	public List parseBlock() {
-		return this.parseBlock(this.sourceStart() + 1);
-	}
-
-	public List parseBlock(int startFrom) {
-		if (this.fBlockContent == null) {
-			return null;
-		}
-
-		String content = this.fBlockContent.substring(1, this.fBlockContent
-				.length() - 1);
-		ITclSourceParser parser = null;
-		try {
-			parser = (ITclSourceParser) DLTKLanguageManager
-					.getSourceParser(TclNature.NATURE_ID);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-			return new ArrayList();
-		}
-		parser.setOffset(startFrom);
-		ModuleDeclaration module = parser.parse(this.fileName, content
-				.toCharArray(), null);
-		return module.getStatements();
 	}
 
 	public String getBlock() {

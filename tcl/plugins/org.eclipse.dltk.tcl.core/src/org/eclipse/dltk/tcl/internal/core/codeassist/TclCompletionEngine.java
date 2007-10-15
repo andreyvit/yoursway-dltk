@@ -43,6 +43,7 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinElement;
+import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
@@ -50,8 +51,8 @@ import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
+import org.eclipse.dltk.internal.core.AbstractExternalSourceModule;
 import org.eclipse.dltk.tcl.ast.TclStatement;
-import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordArgumentOrFunctionArgument;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordOrFunction;
@@ -325,7 +326,8 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 	private void findMethodFromMixin(final Set methods, String tok) {
 		long delta = 200;
 		long time = System.currentTimeMillis();
-		IMixinElement[] find = TclMixinModel.getInstance().find(tok, delta);
+		IMixinElement[] find = TclMixinModel.getInstance().find(
+				tok.replace("::", IMixinRequestor.MIXIN_NAME_SEPARATOR), delta);
 		if (TRACE_COMPLETION_TIME) {
 			System.out.println("findMethod from mixin: request model:"
 					+ Long.toString(System.currentTimeMillis() - time));
@@ -338,7 +340,11 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 					TclProc field = (TclProc) allObjects[j];
 					IModelElement method = field.getModelElement();
 					if (method != null) {
-						methods.add(method);
+						// We should filter external source modules with same
+						// external path.
+						if (moduleFilter(methods, (IMethod) method)) {
+							methods.add(method);
+						}
 					}
 				}
 			}
@@ -346,6 +352,26 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			// return;
 			// }
 		}
+	}
+
+	private boolean moduleFilter(Set methods, IMethod method) {
+		org.eclipse.dltk.core.ISourceModule sourceModule = (org.eclipse.dltk.core.ISourceModule) method
+				.getAncestor(IModelElement.SOURCE_MODULE);
+		if (!(sourceModule instanceof AbstractExternalSourceModule)) {
+			return true;
+		}
+		String fullyQualifiedName = method.getFullyQualifiedName();
+		for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
+			IMethod element = (IMethod) iterator.next();
+			if (element.getFullyQualifiedName().equals(fullyQualifiedName)) {
+				org.eclipse.dltk.core.ISourceModule eModule = (org.eclipse.dltk.core.ISourceModule) element
+						.getAncestor(IModelElement.SOURCE_MODULE);
+				if (sourceModule.getPath().equals(eModule.getPath())) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	private List toList(Set types) {
@@ -909,48 +935,6 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		if (variable != null) {
 			for (int u = 0; u < variable.length; ++u) {
 				checkAddVariable(choices, variable[u]);
-			}
-		}
-	}
-
-	private void processBlock(Expression bl, int beforePosition, List choices) {
-		TclBlockExpression block = (TclBlockExpression) bl;
-		List code = null;
-
-		code = block.parseBlock(block.sourceStart() + 1);
-		checkVariableStatements(beforePosition, choices, code);
-
-	}
-
-	private void processFor(TclStatement statement, int beforePosition,
-			List choices) {
-		// TODO: Add variable corrections here.
-		List exprs = statement.getExpressions();
-		int len = exprs.size();
-		if (1 < len) { // Process initializers
-			Expression bl = (Expression) exprs.get(1);
-			if (bl instanceof TclBlockExpression) {
-				processBlock(bl, beforePosition, choices);
-			}
-		}
-		int bi = 4; // Skip expression
-		if (bi < len) {
-			Expression bl = (Expression) exprs.get(bi);
-			if (bl instanceof TclBlockExpression) {
-				processBlock(bl, beforePosition, choices);
-			}
-		}
-	}
-
-	private void processWhile(TclStatement statement, int beforePosition,
-			List choices) {
-		List exprs = statement.getExpressions();
-		int len = exprs.size();
-		int bi = 2; // Skip expression
-		if (bi < len) {
-			Expression bl = (Expression) exprs.get(bi);
-			if (bl instanceof TclBlockExpression) {
-				processBlock(bl, beforePosition, choices);
 			}
 		}
 	}

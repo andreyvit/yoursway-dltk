@@ -59,7 +59,7 @@ public class TclParseUtils {
 							} else if (ex instanceof TclBlockExpression) {
 								TclBlockExpression bl = (TclBlockExpression) ex;
 								// try {
-								List elements = bl.parseBlock();
+								List elements = bl.parseBlockSimple();
 								if (elements.size() > 0) {
 									ASTNode node = (ASTNode) elements.get(0);
 									Expression initializer = null;
@@ -128,14 +128,10 @@ public class TclParseUtils {
 	}
 
 	public static String nameFromBlock(String name, char c1, char c2) {
-		int pos = name.indexOf(c1);
-		String nname = name.substring(pos + 1);
-		pos = nname.lastIndexOf(c2);
-		if (pos < 0) {
-			return "";
+		if( name.charAt(0) == c1 || name.charAt(name.length() - 1) == c2) {
+			return name.substring(1, name.length() - 1);
 		}
-		nname = nname.substring(0, pos);
-		return nname;
+		return name;
 	}
 
 	public static String[] returnVariable(TclStatement s) {

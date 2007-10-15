@@ -41,7 +41,7 @@ import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclProcCallStatement;
 import org.eclipse.dltk.xotcl.internal.core.XOTclResolver;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclInstProc;
 
-public class XOTTclSelectionEngine extends TclSelectionEngine {
+public class XOTclSelectionEngine extends TclSelectionEngine {
 
 	protected void select(ASTNode astNode, ASTNode astNodeParent) {
 		if (astNode instanceof SelectionOnKeywordOrFunction) {

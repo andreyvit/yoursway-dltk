@@ -16,7 +16,6 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
@@ -30,22 +29,16 @@ import org.eclipse.dltk.codeassist.ScriptSelectionEngine;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IParent;
-import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
-import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
-import org.eclipse.dltk.core.search.SearchEngine;
-import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.internal.codeassist.select.SelectionNodeFound;
 import org.eclipse.dltk.tcl.ast.TclStatement;
-import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.TclLanguageToolkit;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
@@ -363,7 +356,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 	}
 
 	protected void findFieldMixin(String pattern, String name) {
-		IMixinElement[] find = TclMixinModel.getInstance().find(pattern + "*");
+		IMixinElement[] find = TclMixinModel.getInstance().find(pattern);
 		for (int i = 0; i < find.length; i++) {
 			Object[] allObjects = find[i].getAllObjects();
 			for (int j = 0; j < allObjects.length; j++) {
@@ -379,7 +372,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 	}
 
 	protected void findMethodMixin(String pattern, String name) {
-		IMixinElement[] find = TclMixinModel.getInstance().find(pattern + "*");
+		IMixinElement[] find = TclMixinModel.getInstance().find(pattern);
 		for (int i = 0; i < find.length; i++) {
 			Object[] allObjects = find[i].getAllObjects();
 			for (int j = 0; j < allObjects.length; j++) {
@@ -454,26 +447,11 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		}
 	}
 
-	protected void processBlock(String name, Expression bl, int beforePosition) {
-		TclBlockExpression block = (TclBlockExpression) bl;
-		List/* < Statement > */code = null;
-
-		// Block b = new Block();
-		code = block.parseBlock(block.sourceStart() + 1);
-		// b.acceptStatements(code);
-
-		// TclASTBuilder.build(b, code, TclASTBuilder.TYPE_UNKNOWN);
-		checkVariableStatements(name, beforePosition,
-				code/* b.getStatements() */, "");
-
-	}
-
 	protected void processExecuteBlock(String name, Expression bl,
 			int beforePosition) {
 		TclExecuteExpression block = (TclExecuteExpression) bl;
 		List code = block.parseExpression(block.sourceStart() + 1);
 		checkVariableStatements(name, beforePosition, code, "");
-
 	}
 
 	private void checkVariable(String name, String variable, ASTNode node) {

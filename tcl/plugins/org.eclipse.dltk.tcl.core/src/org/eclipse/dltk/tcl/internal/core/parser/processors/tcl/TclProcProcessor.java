@@ -19,17 +19,19 @@ import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclProcProcessor extends AbstractTclCommandProcessor {
-	
-	public ASTNode process(TclCommand command, ITclParser parser, int offset, ASTNode parent) {
+
+	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+			ASTNode parent) {
 		ASTNode node = parser.processLocal(command, offset, parent);
-		if( !( node instanceof TclStatement ) ) {
+		if (!(node instanceof TclStatement)) {
 			return null;
 		}
 		TclStatement statement = (TclStatement) node;
 		if (statement.getCount() < 4) {
 			this.report(parser,
 					Messages.TclProcProcessor_Wrong_Number_of_Arguments,
-					command.getStart(), command.getEnd(), ProblemSeverities.Error);
+					command.getStart(), command.getEnd(),
+					ProblemSeverities.Error);
 			return null;
 		}
 		Expression procName = statement.getAt(1);
@@ -44,7 +46,8 @@ public class TclProcProcessor extends AbstractTclCommandProcessor {
 		}
 		if (sName == null || sName.length() == 0) {
 			this.report(parser, Messages.TclProcProcessor_Empty_Proc_Name,
-					command.getStart() + offset, command.getEnd() + offset, ProblemSeverities.Error);
+					command.getStart() + offset, command.getEnd() + offset,
+					ProblemSeverities.Error);
 			return null;
 		}
 		Expression procArguments = statement.getAt(2);
@@ -73,9 +76,15 @@ public class TclProcProcessor extends AbstractTclCommandProcessor {
 		method.acceptArguments(arguments);
 		Block block = new Block(procCode.sourceStart(), procCode.sourceEnd());
 
-		String content = parser.substring(procCode.sourceStart() + 1, procCode.sourceEnd() - 1 );
+		String content = parser.substring(procCode.sourceStart(), procCode
+				.sourceEnd());
+		if (content.startsWith("{") && content.endsWith("}")) {
+			content = parser.substring(procCode.sourceStart() + 1, procCode
+					.sourceEnd() - 1);
+		}
 		method.acceptBody(block);
-		parser.parse(content, procCode.sourceStart() + 1 - parser.getStartPos(), block);
+		parser.parse(content,
+				procCode.sourceStart() + 1 - parser.getStartPos(), block);
 		this.addToParent(parent, method);
 		return method;
 	}

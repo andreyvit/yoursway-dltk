@@ -20,6 +20,9 @@ public class TclVariableProcessor extends AbstractTclCommandProcessor {
 			ASTNode parent) {
 		TclStatement statement = (TclStatement) parser.processLocal(command,
 				offset, parent);
+		if( statement == null ) {
+			return null;
+		}
 		if (statement.getCount() < 2) {
 			this.report(parser, "Syntax error: at least one argument expected.", statement, ProblemSeverities.Error);
 			return null;

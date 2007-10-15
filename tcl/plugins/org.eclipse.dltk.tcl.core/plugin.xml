@@ -128,15 +128,15 @@
       <!--processor
             class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclSwitchCommandProcessor"
             id="switch">
-      </processor>
+      </processor-->
       <processor
-            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclForeachCommandProcessor"
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclForCommandProcessor"
             id="for">
       </processor>
       <processor
             class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclForeachCommandProcessor"
             id="foreach">
-      </processor-->
+      </processor>
    </extension>
  <extension
          point="org.eclipse.dltk.core.mixin">

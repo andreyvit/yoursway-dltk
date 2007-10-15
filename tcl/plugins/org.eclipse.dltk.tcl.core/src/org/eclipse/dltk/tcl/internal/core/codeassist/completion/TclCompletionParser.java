@@ -24,11 +24,9 @@ import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.codeassist.complete.CompletionNodeFound;
 import org.eclipse.dltk.tcl.ast.TclStatement;
-import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.TclKeywordsManager;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
-import org.eclipse.dltk.tcl.internal.core.codeassist.TclASTUtil;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclAssistParser;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 
@@ -128,7 +126,7 @@ public class TclCompletionParser extends TclAssistParser {
 				}
 			} else if (completionNode instanceof SimpleReference) {
 				completionToken = ((SimpleReference) completionNode).getName();
-			} else if (completionNode instanceof TclBlockExpression) {
+			} /*else if (completionNode instanceof TclBlockExpression) {
 				TclBlockExpression block = (TclBlockExpression) completionNode;
 
 				List s = block.parseBlock();
@@ -149,7 +147,7 @@ public class TclCompletionParser extends TclAssistParser {
 				}
 				handleNotInElement(inNode, position);
 
-			}
+			}*/
 			if (completionNode instanceof StringLiteral) {
 				int pos = position - completionNode.sourceStart();
 				SimpleReference tok = TclParseUtils.extractVariableFromString(

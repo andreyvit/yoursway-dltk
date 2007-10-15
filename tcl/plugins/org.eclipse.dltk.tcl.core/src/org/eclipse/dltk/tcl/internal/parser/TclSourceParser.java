@@ -187,6 +187,9 @@ public class TclSourceParser implements ITclSourceParser, ITclParser {
 	}
 
 	public String substring(int start, int end) {
+		if( start > end ) {
+			return "";
+		}
 		try {
 			return this.content.substring(start - this.startPos, end
 					- this.startPos);

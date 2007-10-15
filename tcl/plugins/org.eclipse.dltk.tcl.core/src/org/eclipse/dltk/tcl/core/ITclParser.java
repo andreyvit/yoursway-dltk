@@ -8,6 +8,7 @@ import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 public interface ITclParser {
 	// Used to parser inner elements
 	void parse( String content, int offset, ASTNode parent );
+	
 	CodeModel getCodeModel();
 	String getContent();
 	String substring(int start, int end);

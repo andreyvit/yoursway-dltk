@@ -23,6 +23,7 @@ import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
 import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.tcl.ast.TclConstants;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
@@ -33,14 +34,19 @@ import org.eclipse.dltk.tcl.core.ast.TclGlobalVariableDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclPackageDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclUpvarVariableDeclaration;
 
-public class TclSourceElementRequestVisitor extends
-		SourceElementRequestVisitor {
+public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor {
 
-	private Stack namespacesLevel = new Stack();
-	private Stack exitStack = new Stack();
-	private IProblemReporter fReporter;
+	protected Stack namespacesLevel = new Stack();
+	protected Stack exitStack = new Stack();
+	protected IProblemReporter fReporter;
 
-	private String removeLastSegment(String s, String delimeter) {
+	public TclSourceElementRequestVisitor(ISourceElementRequestor requestor,
+			IProblemReporter reporter) {
+		super(requestor);
+		this.fReporter = reporter;
+	}
+
+	protected String removeLastSegment(String s, String delimeter) {
 		if (s.indexOf("::") == -1) {
 			return "";
 		}
@@ -55,7 +61,7 @@ public class TclSourceElementRequestVisitor extends
 		}
 	}
 
-	private class ExitFromType {
+	public class ExitFromType {
 		private int level;
 		private int end;
 		private boolean exitFromModule;
@@ -81,8 +87,7 @@ public class TclSourceElementRequestVisitor extends
 						.exitType(this.end);
 			}
 			if (this.exitFromModule) {
-				TclSourceElementRequestVisitor.this.fRequestor
-						.exitModuleRoot();
+				TclSourceElementRequestVisitor.this.fRequestor.exitModuleRoot();
 			}
 			if (this.pop) {
 				TclSourceElementRequestVisitor.this.namespacesLevel.pop();
@@ -90,7 +95,7 @@ public class TclSourceElementRequestVisitor extends
 		}
 	}
 
-	private String getEnclosingNamespace() {
+	protected String getEnclosingNamespace() {
 		String s = (String) this.namespacesLevel.peek();
 		return s;
 
@@ -113,7 +118,7 @@ public class TclSourceElementRequestVisitor extends
 	 * @param onlyCurrent
 	 * @return ExitFromType object, that should be called to exit
 	 */
-	private ExitFromType resolveType(Declaration decl, String name,
+	protected ExitFromType resolveType(Declaration decl, String name,
 			boolean onlyCurrent) {
 		String type = this.removeLastSegment(name, "::");
 		while (type.length() > 2 && type.endsWith("::")) {
@@ -147,40 +152,9 @@ public class TclSourceElementRequestVisitor extends
 		// first, try existent
 		if (this.fRequestor.enterTypeAppend(type, "::")) {
 			this.namespacesLevel.push(fullyQualified);
-			// if( type.startsWith("::")) {
-			// String name2 = type.substring(2);
-			// String[] split = name2.split("::");
-			// return new ExitFromType(split.length, decl.sourceEnd(), false,
-			// true);
-			// }
-			// else {
-			// String name2 = type;
-			// String[] split = name2.split("::");
-			// return new ExitFromType(split.length, decl.sourceEnd(), false,
-			// true);
-			// }
 			return new ExitFromType(1/* split.length */, decl.sourceEnd(),
 					false, true);
 		}
-		// This is not correct for Tcl
-		// else if (!fqn && !onlyCurrent) { // look in global
-		// if (this.fNodes.size() > 0
-		// && this.fNodes.get(0) instanceof ModuleDeclaration) {
-		// ModuleDeclaration module = (ModuleDeclaration) this.fNodes
-		// .get(0);
-		// TypeDeclaration t = TclParseUtil.findTclTypeDeclarationFrom(
-		// module, decl);
-		// if (t != null) {
-		// List nodes = TclParseUtil.findLevelsTo(module, t);
-		// String elementFQN = TclParseUtil.getElementFQN(nodes, "::");
-		// if (this.fRequestor.enterTypeAppend(elementFQN, "::")) {
-		// this.namespacesLevel.push("::" + type);
-		// return new ExitFromType(1, decl.sourceEnd(), false,
-		// true);
-		// }
-		// }
-		// }
-		// }
 
 		// create it
 		// Lets add warning in any case.
@@ -213,7 +187,8 @@ public class TclSourceElementRequestVisitor extends
 				needEnterLeave++;
 				if (!this.fRequestor.enterTypeAppend(split[i], "::")) {
 					ISourceElementRequestor.TypeInfo ti = new ISourceElementRequestor.TypeInfo();
-					ti.modifiers = this.getModifiers(decl) | Modifiers.AccNameSpace;
+					ti.modifiers = this.getModifiers(decl)
+							| Modifiers.AccNameSpace;
 
 					ti.name = split[i];
 					ti.nameSourceStart = decl.getNameStart();
@@ -229,12 +204,6 @@ public class TclSourceElementRequestVisitor extends
 		this.namespacesLevel.push(fullyQualified);
 		return new ExitFromType(needEnterLeave, decl.sourceEnd(),
 				exitFromModule, true, true);
-	}
-
-	protected TclSourceElementRequestVisitor(
-			ISourceElementRequestor requesor, IProblemReporter reporter) {
-		super(requesor);
-		this.fReporter = reporter;
 	}
 
 	public boolean visit(TypeDeclaration s) throws Exception {
@@ -307,6 +276,7 @@ public class TclSourceElementRequestVisitor extends
 			return false;
 		} else if (statement instanceof FieldDeclaration) {
 			this.processField(statement);
+			return false;
 		}
 		return true;
 	}
@@ -323,8 +293,8 @@ public class TclSourceElementRequestVisitor extends
 				if (name.length() > 0) {
 					if (name.charAt(0) != '$') {
 						this.fRequestor.acceptMethodReference(name
-								.toCharArray(), argCount, commandId
-								.sourceStart(), commandId.sourceEnd());
+								.toCharArray(), argCount, commandId.sourceStart(),
+								commandId.sourceEnd());
 					}
 				}
 			}
@@ -392,7 +362,7 @@ public class TclSourceElementRequestVisitor extends
 		}
 	}
 
-	private boolean processField(Statement statement) {
+	protected boolean processField(Statement statement) {
 		FieldDeclaration decl = (FieldDeclaration) statement;
 		ISourceElementRequestor.FieldInfo fi = new ISourceElementRequestor.FieldInfo();
 		fi.nameSourceStart = decl.getNameStart();
@@ -422,17 +392,17 @@ public class TclSourceElementRequestVisitor extends
 		fi.name = name;
 		String fullName = TclParseUtil.escapeName(name);
 		ExitFromType exit = null;// this.resolveType(decl, fullName, false);
-//		if ((decl.getModifiers() & IXOTclModifiers.AccXOTcl) != 0
-//				&& decl instanceof XOTclVariableDeclaration) {
-//			XOTclFieldDeclaration field = (XOTclFieldDeclaration) decl;
-//			String tName = field.getDeclaringTypeName();
-//			if (tName == null) {
-//				tName = "";
-//			}
-//			exit = this.resolveType(field, tName + "::dummy", false);
-//		} else {
-			exit = this.resolveType(decl, fullName, false);
-//		}
+		// if ((decl.getModifiers() & IXOTclModifiers.AccXOTcl) != 0
+		// && decl instanceof XOTclVariableDeclaration) {
+		// XOTclFieldDeclaration field = (XOTclFieldDeclaration) decl;
+		// String tName = field.getDeclaringTypeName();
+		// if (tName == null) {
+		// tName = "";
+		// }
+		// exit = this.resolveType(field, tName + "::dummy", false);
+		// } else {
+		exit = this.resolveType(decl, fullName, false);
+		// }
 		needExit = this.fRequestor.enterFieldCheckDuplicates(fi);
 		int end = decl.sourceEnd();
 		if (needExit) {
@@ -457,6 +427,14 @@ public class TclSourceElementRequestVisitor extends
 	public boolean visit(ModuleDeclaration declaration) throws Exception {
 		this.namespacesLevel.push("::");
 		return super.visit(declaration);
+	}
+
+	protected ExitFromType getExitExtended(MethodDeclaration method) {
+		return null;
+	}
+
+	protected boolean extendedExitRequired(MethodDeclaration method) {
+		return false;
 	}
 
 	public boolean visit(MethodDeclaration method) throws Exception {
@@ -517,25 +495,12 @@ public class TclSourceElementRequestVisitor extends
 		mi.nameSourceEnd = method.getNameEnd() - 1;
 		mi.declarationStart = method.sourceStart();
 		ExitFromType exit = null;
-		boolean requireFieldExit = false;
-//		if ((method.getModifiers() & IXOTclModifiers.AccXOTcl) != 0) {
-//			String tName = method.getDeclaringTypeName();
-//			if (tName == null) {
-//				tName = "";
-//			}
-//			exit = this.resolveType(method, tName + "::dummy", false);
-//			// if( method instanceof XOTclMethodDeclaration) {
-//			// XOTclMethodDeclaration mDecl = (XOTclMethodDeclaration) method;
-//			// ASTNode dt = mDecl.getDeclaringXOTclType();
-//			// if( dt instanceof XOTclInstanceVariable) {
-//			// XOTclInstanceVariable var = (XOTclInstanceVariable) dt;
-//			// this.fRequestor.
-//			// var.getName();
-//			// }
-//			// }
-//		} else {
+		// boolean requireFieldExit = false;
+		if (extendedExitRequired(method)) {
+			exit = getExitExtended(method);
+		} else {
 			exit = this.resolveType(method, fullName, false);
-//		}
+		}
 		if (exit.created) {
 			if (this.fReporter != null) {
 				try {
@@ -544,8 +509,9 @@ public class TclSourceElementRequestVisitor extends
 							ProblemSeverities.Warning, method.getNameStart(),
 							method.getNameEnd(), -1));
 				} catch (CoreException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					if (DLTKCore.DEBUG) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		}

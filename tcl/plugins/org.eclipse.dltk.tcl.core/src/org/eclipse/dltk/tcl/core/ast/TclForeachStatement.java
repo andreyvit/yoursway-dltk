@@ -1,20 +1,20 @@
 package org.eclipse.dltk.tcl.core.ast;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.dltk.ast.ASTListNode;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
 
 public class TclForeachStatement extends Statement {
-	
-	ASTListNode arguments = null; //contains binary expressions (<varList>, <value list>)
+	List arguments = null;
 	Block block = null;
-	
-	public TclForeachStatement(int startPos, int endPos) {
-		this.setStart(startPos);
-		this.setEnd(endPos);
+
+	public TclForeachStatement(int start, int end) {
+		super(start, end);
 	}
 
 	public int getKind() {
@@ -23,24 +23,24 @@ public class TclForeachStatement extends Statement {
 
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
-			if (null != this.arguments) arguments.traverse(visitor);
-			if (null != this.block) block.traverse(visitor);
+			if (this.arguments != null) {
+				for (Iterator iterator = this.arguments.iterator(); iterator
+						.hasNext();) {
+					ASTNode node = (ASTNode) iterator.next();
+					node.traverse(visitor);
+				}
+			}
+			if (this.block != null) {
+				block.traverse(visitor);
+			}
 			visitor.endvisit(this);
 		}
 	}
-	
-	/**
-	 * @param list - the first and the last nodes must be as in source 
-	 * */
-	public void setArguments(List /*<BinaryExpression>*/ list) {
-		if (!list.isEmpty()) {
-			int start = ((BinaryExpression)list.get(0)).sourceStart();
-			int end = ((BinaryExpression)list.get(list.size()-1)).sourceEnd();
-			arguments = new ASTListNode(start, end, list);
+
+	public List getArguments() {
+		if( arguments == null ) {
+			arguments = new ArrayList();
 		}
-	}
-	
-	public ASTListNode getArguments() {
 		return arguments;
 	}
 
@@ -48,7 +48,7 @@ public class TclForeachStatement extends Statement {
 		return block;
 	}
 
-	public void setBlock(Block block) {
+	public void acceptBlock(Block block) {
 		this.block = block;
 	}
 }
