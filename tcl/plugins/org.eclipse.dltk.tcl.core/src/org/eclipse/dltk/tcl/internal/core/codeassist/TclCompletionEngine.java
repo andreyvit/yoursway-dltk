@@ -327,7 +327,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		long delta = 200;
 		long time = System.currentTimeMillis();
 		IMixinElement[] find = TclMixinModel.getInstance().find(
-				tok.replace("::", IMixinRequestor.MIXIN_NAME_SEPARATOR), delta);
+				tok.replaceAll("::", IMixinRequestor.MIXIN_NAME_SEPARATOR), delta);
 		if (TRACE_COMPLETION_TIME) {
 			System.out.println("findMethod from mixin: request model:"
 					+ Long.toString(System.currentTimeMillis() - time));
