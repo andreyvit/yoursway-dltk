@@ -85,13 +85,14 @@ public class ReconcileWorkingCopyOperation extends ModelOperation {
 			workingCopy.makeConsistent(this.progressMonitor);
 			this.deltaBuilder.buildDeltas();
 			// Mixin source index operation required.
-
-			List elements = new ArrayList();
-			IScriptProject project = workingCopy.getScriptProject();
-			elements.add(workingCopy);
-			MixinBuilder.getDefault().buildModelElements(project, elements,
-					new NullProgressMonitor(), false );
-
+			int sum = this.deltaBuilder.delta.getAffectedChildren().length;
+			if (sum > 0) {
+				List elements = new ArrayList();
+				IScriptProject project = workingCopy.getScriptProject();
+				elements.add(workingCopy);
+				MixinBuilder.getDefault().buildModelElements(project, elements,
+						new NullProgressMonitor(), false);
+			}
 			return;
 		}
 	}

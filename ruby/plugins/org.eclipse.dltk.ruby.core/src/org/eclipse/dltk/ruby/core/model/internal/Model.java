@@ -34,24 +34,29 @@ import org.eclipse.dltk.ruby.core.model.IElementKind;
 import org.eclipse.dltk.ruby.core.model.IModel;
 
 public class Model implements IModel {
-	
+
 	private final IScriptProject project;
-	
+
 	private final Map sourceModulesToASTs = new WeakHashMap();
 
 	public Model(IScriptProject project) {
 		this.project = project;
 	}
 
-	public ModuleDeclaration getASTNode(ISourceModule sourceModule, ASTCaching caching) {
+	public ModuleDeclaration getASTNode(ISourceModule sourceModule,
+			ASTCaching caching) {
 		ModuleDeclaration result = null;
-		SoftReference astNode = (SoftReference) sourceModulesToASTs.get(sourceModule);
+		SoftReference astNode = (SoftReference) sourceModulesToASTs
+				.get(sourceModule);
 		if (astNode != null && caching != ASTCaching.REPARSE)
 			result = (ModuleDeclaration) astNode.get();
 		if (result == null && caching != ASTCaching.CACHED_ONLY) {
 			try {
-				ISourceParser parser = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
-				result = parser.parse(sourceModule.getPath().toString().toCharArray(), sourceModule.getSourceAsCharArray(), null);
+				ISourceParser parser = DLTKLanguageManager
+						.getSourceParser(RubyNature.NATURE_ID);
+				result = parser.parse(sourceModule.getPath().toString()
+						.toCharArray(), sourceModule.getSourceAsCharArray(),
+						null);
 			} catch (ModelException e) {
 				RubyPlugin.log(e);
 				result = null;
@@ -74,10 +79,12 @@ public class Model implements IModel {
 		} catch (ModelException e) {
 			e.printStackTrace();
 		}
-		return (ISourceModule[]) sourceModules.toArray(new ISourceModule[sourceModules.size()]);
+		return (ISourceModule[]) sourceModules
+				.toArray(new ISourceModule[sourceModules.size()]);
 	}
 
-	private void addModules(Collection sourceModules, IModelElement[] children) throws ModelException {
+	private void addModules(Collection sourceModules, IModelElement[] children)
+			throws ModelException {
 		for (int i = 0; i < children.length; i++) {
 			IModelElement element = children[i];
 			if (element instanceof ISourceModule)
@@ -87,9 +94,10 @@ public class Model implements IModel {
 		}
 	}
 
-	public IElement[] findChildren(IElementCriteria criteria, String name, IProgressMonitor pm) {
+	public IElement[] findChildren(IElementCriteria criteria, String name,
+			IProgressMonitor pm) {
 		if (criteria == IElementCriteria.CLASS_OR_MIXIN) {
-			
+
 		}
 		return null;
 	}
@@ -101,5 +109,5 @@ public class Model implements IModel {
 	public IElementKind getElementKind() {
 		return IElementKind.MODEL;
 	}
-	
+
 }

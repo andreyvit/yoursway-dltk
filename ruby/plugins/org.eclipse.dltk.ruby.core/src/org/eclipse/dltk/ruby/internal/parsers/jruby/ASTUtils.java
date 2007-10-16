@@ -26,6 +26,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.SourceParserUtil;
 import org.eclipse.dltk.ruby.ast.RubyBlock;
 import org.eclipse.dltk.ruby.ast.RubyForStatement2;
 import org.eclipse.dltk.ruby.ast.RubyIfStatement;
@@ -243,20 +244,7 @@ public class ASTUtils {
 	}
 
 	public static ModuleDeclaration getAST(ISourceModule module) {
-		char[] cs;
-		try {
-			cs = module.getSourceAsCharArray();
-			ISourceParser sourceParser = DLTKLanguageManager
-					.getSourceParser(RubyNature.NATURE_ID);
-			ModuleDeclaration declaration = sourceParser.parse(module.getPath()
-					.toString().toCharArray(), cs, null);
-			return declaration;
-		} catch (ModelException e) {
-			e.printStackTrace();
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return SourceParserUtil.getModuleDeclaration(module, null);
 	}
 
 	public static ModuleDeclaration getAST(char[] cs) {

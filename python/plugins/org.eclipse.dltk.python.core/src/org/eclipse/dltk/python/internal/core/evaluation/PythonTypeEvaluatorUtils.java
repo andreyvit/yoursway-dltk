@@ -13,9 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
@@ -23,11 +21,10 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionList;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
-import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModule;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.python.core.PythonNature;
+import org.eclipse.dltk.core.SourceParserUtil;
 import org.eclipse.dltk.python.parser.ast.expressions.Assignment;
 import org.eclipse.dltk.python.parser.ast.expressions.CallHolder;
 import org.eclipse.dltk.python.parser.ast.expressions.ExtendedVariableReference;
@@ -125,18 +122,7 @@ public class PythonTypeEvaluatorUtils {
 		}
 		ISourceModule sourceUnit = (ISourceModule) module;
 
-		String contents = new String(sourceUnit.getSource());
-
-		ISourceParser sourceParser;
-		try {
-			sourceParser = DLTKLanguageManager.getSourceParser(PythonNature.NATURE_ID);
-		} catch (CoreException e) {
-			throw new RuntimeException("Failed to create python source parser",e);
-		}
-
-		ModuleDeclaration moduleDeclaration = sourceParser.parse(module.getPath().toString().toCharArray(), contents.toCharArray(), null);
-
-		return moduleDeclaration;
+		return SourceParserUtil.getModuleDeclaration(sourceUnit, null);	
 	}
 
 	public static List/*<Expression>*/ parseCallHolder(CallHolder callHolder) {

@@ -13,21 +13,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
-import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.SourceParserUtil;
 import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
@@ -128,7 +126,7 @@ public class TclParseUtils {
 	}
 
 	public static String nameFromBlock(String name, char c1, char c2) {
-		if( name.charAt(0) == c1 || name.charAt(name.length() - 1) == c2) {
+		if (name.charAt(0) == c1 || name.charAt(name.length() - 1) == c2) {
 			return name.substring(1, name.length() - 1);
 		}
 		return name;
@@ -486,26 +484,7 @@ public class TclParseUtils {
 
 	public static ModuleDeclaration parseModule(ISourceModuleInfo astCache,
 			char[] content, IProblemReporter problemReporter, char[] filename) {
-		ModuleDeclaration moduleDeclaration = null;
-		if (astCache != null) {
-			moduleDeclaration = (ModuleDeclaration) astCache.get(AST);
-		}
-		if (moduleDeclaration == null) {
-			ISourceParser sourceParser = null;
-			try {
-				sourceParser = DLTKLanguageManager
-						.getSourceParser(TclNature.NATURE_ID);
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
-			if (sourceParser != null) {
-				moduleDeclaration = sourceParser.parse(filename, content,
-						problemReporter);
-				if (moduleDeclaration != null && astCache != null) {
-					astCache.put(AST, moduleDeclaration);
-				}
-			}
-		}
-		return moduleDeclaration;
+		return SourceParserUtil.getModuleDeclaration(filename, content,
+				TclNature.NATURE_ID, problemReporter, astCache);
 	}
 }

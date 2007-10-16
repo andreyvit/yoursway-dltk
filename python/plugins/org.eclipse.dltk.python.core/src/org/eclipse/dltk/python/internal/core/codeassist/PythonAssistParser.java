@@ -19,9 +19,9 @@ import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.compiler.env.ISourceModule;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.python.core.PythonNature;
-
 
 public abstract class PythonAssistParser implements IAssistParser {
 	protected ISourceParser parser;
@@ -29,12 +29,15 @@ public abstract class PythonAssistParser implements IAssistParser {
 	protected ModuleDeclaration module;
 
 	protected ASTNode assistNodeParent = null;
-	
+
 	protected PythonAssistParser() {
 		try {
-			parser = DLTKLanguageManager.getSourceParser(PythonNature.NATURE_ID);
+			parser = DLTKLanguageManager
+					.getSourceParser(PythonNature.NATURE_ID);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -81,8 +84,8 @@ public abstract class PythonAssistParser implements IAssistParser {
 	}
 
 	public ModuleDeclaration parse(ISourceModule sourceUnit) {
-		ModuleDeclaration module = this.parser.parse(sourceUnit.getFileName(), sourceUnit
-						.getSourceContents().toCharArray(), null);
+		ModuleDeclaration module = this.parser.parse(sourceUnit.getFileName(),
+				sourceUnit.getSourceContents().toCharArray(), null);
 		module.rebuild();
 
 		PythonASTUtil.extendStatements(module, sourceUnit.getSourceContents());

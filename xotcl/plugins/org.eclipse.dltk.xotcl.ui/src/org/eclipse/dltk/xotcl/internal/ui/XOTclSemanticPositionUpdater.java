@@ -7,23 +7,18 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.ISourceModuleInfoCache;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
-import org.eclipse.dltk.internal.core.ModelManager;
+import org.eclipse.dltk.core.SourceParserUtil;
 import org.eclipse.dltk.internal.ui.editor.semantic.highlighting.Highlighting;
 import org.eclipse.dltk.internal.ui.editor.semantic.highlighting.PositionUpdater;
 import org.eclipse.dltk.internal.ui.editor.semantic.highlighting.SemanticHighlightingPresenter;
 import org.eclipse.dltk.tcl.ast.TclStatement;
-import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclDocumentationNode;
-import org.eclipse.dltk.xotcl.internal.core.parser.XOTclSourceElementParser;
 
 public class XOTclSemanticPositionUpdater extends PositionUpdater {
 	private HashSet currentPositions = new HashSet();
@@ -33,25 +28,8 @@ public class XOTclSemanticPositionUpdater extends PositionUpdater {
 			final Highlighting[] highlightings) {
 		final ArrayList result = new ArrayList();
 		try {
-			char[] sourceAsCharArray = ast.getSourceAsCharArray();
-			ISourceParser parser = DLTKLanguageManager
-					.getSourceParser(TclNature.NATURE_ID);
-
-			ISourceModuleInfoCache sourceModuleInfoCache = ModelManager
-					.getModelManager().getSourceModuleInfoCache();
-			// sourceModuleInfoCache.remove(this);
-			ISourceModuleInfo mifo = sourceModuleInfoCache.get(ast);
-			ModuleDeclaration module = null;
-			if (mifo != null) {
-				Object object = mifo.get(XOTclSourceElementParser.AST);
-				if (object instanceof ModuleDeclaration) {
-					module = (ModuleDeclaration) object;
-				}
-			}
-			if (module == null) {
-				module = parser.parse(ast.getPath().toString().toCharArray(),
-						sourceAsCharArray, null);
-			}
+			ModuleDeclaration module = SourceParserUtil.getModuleDeclaration(
+					ast, null);
 			module.traverse(new ASTVisitor() {
 
 				public boolean visit(Statement s) throws Exception {
@@ -64,24 +42,27 @@ public class XOTclSemanticPositionUpdater extends PositionUpdater {
 									.sourceStart(), st.sourceEnd()
 									- st.sourceStart(), highlightings[0]));
 						}
-					}
-					else if( s instanceof XOTclDocumentationNode ) {
+					} else if (s instanceof XOTclDocumentationNode) {
 						result.add(presenter.createHighlightedPosition(s
-								.sourceStart(), s.sourceEnd()
-								- s.sourceStart(), highlightings[0]));
+								.sourceStart(),
+								s.sourceEnd() - s.sourceStart(),
+								highlightings[0]));
 					}
 					return super.visit(s);
 				}
 			});
 		} catch (ModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 		return result;
 	}

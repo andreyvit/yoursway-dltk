@@ -16,17 +16,13 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.IModelElementVisitor;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.ISourceModuleInfoCache;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
-import org.eclipse.dltk.internal.core.ModelManager;
+import org.eclipse.dltk.core.SourceParserUtil;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclASTUtil;
-import org.eclipse.dltk.tcl.internal.parser.TclSourceElementParser;
 import org.eclipse.dltk.testing.ITestingElementResolver;
 
 public class TcltestMemberResolver implements ITestingElementResolver {
@@ -48,8 +44,8 @@ public class TcltestMemberResolver implements ITestingElementResolver {
 			}
 			return null;
 		}
-		final ASTNode node = findNode(module, name, decl);
-		if( node != null ) {
+		final ASTNode node = findNode(name, decl);
+		if (node != null) {
 			return new ISourceRange() {
 
 				public int getLength() {
@@ -121,46 +117,12 @@ public class TcltestMemberResolver implements ITestingElementResolver {
 
 	public IModelElement resolveElement(IScriptProject project,
 			ILaunchConfiguration config, ISourceModule module, String name) {
-		try {
-			ModuleDeclaration decl = parseModule(module);
-			ASTNode nde = findNode(module, name, decl);
-			final IModelElement result[] = new IModelElement[] { null };
-			if (nde != null) {
-				ASTNode parent = getScopeParent(decl, nde);
-				if (parent != null) {
-					List l = findLevelsTo(decl, parent);
-					final String fqn = getElementFQN(l, decl);
-					module.accept(new IModelElementVisitor() {
-						public boolean visit(IModelElement element) {
-							String efqn = getFQNFromModelElement(element, "::");
-							if (efqn.equals(fqn)) {
-								result[0] = element;
-								return false;
-							}
-							return true;
-						}
-					});
-				}
-			}
-			return result[0];
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return module; 
 	}
 
 	private ModuleDeclaration parseModule(ISourceModule module)
 			throws CoreException, ModelException {
-
-		ISourceModuleInfoCache sourceModuleInfoCache = ModelManager
-				.getModelManager().getSourceModuleInfoCache();
-		// sourceModuleInfoCache.remove(this);
-		ISourceModuleInfo mifo = sourceModuleInfoCache.get(module);
-
-		ModuleDeclaration decl = TclSourceElementParser.parseModule(mifo,
-				module.getSource().toCharArray(), null, module.getPath()
-						.toOSString().toCharArray());
-		return decl;
+		return SourceParserUtil.getModuleDeclaration(module, null);
 	}
 
 	public static List findLevelsTo(ModuleDeclaration module,
@@ -198,7 +160,7 @@ public class TcltestMemberResolver implements ITestingElementResolver {
 		}
 	}
 
-	private ASTNode findNode(ISourceModule module, final String testName,
+	private ASTNode findNode(final String testName,
 			ModuleDeclaration decl) {
 		final ASTNode[] nde = new ASTNode[] { null };
 		try {
@@ -216,6 +178,7 @@ public class TcltestMemberResolver implements ITestingElementResolver {
 							}
 							if ("test".equals(cmdName)
 									|| "tcltest::test".equals(cmdName)) {
+								
 								// List findLevelsTo = findLevelsTo(decl, node);
 								Expression name = st.getAt(1);
 								if (name instanceof SimpleReference) {
@@ -232,11 +195,13 @@ public class TcltestMemberResolver implements ITestingElementResolver {
 				}
 			});
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 		return nde[0];
 	}

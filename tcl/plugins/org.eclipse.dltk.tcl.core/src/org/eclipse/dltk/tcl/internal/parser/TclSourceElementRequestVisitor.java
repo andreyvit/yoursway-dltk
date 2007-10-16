@@ -351,12 +351,12 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		} else if (pack.getStyle() == TclPackageDeclaration.STYLE_IFNEEDED) {
 			if (version != null && version instanceof SimpleReference) {
 				this.fRequestor.acceptPackage(pack.getNameStart(), pack
-						.getNameEnd(), ("ifneeded " + pack.getName() + " ("
-						+ ((SimpleReference) version).getName() + ")")
+						.getNameEnd(), (pack.getName() + " ("
+						+ ((SimpleReference) version).getName() + ")*")
 						.toCharArray());
 			} else {
 				this.fRequestor.acceptPackage(pack.getNameStart(), pack
-						.getNameEnd(), ("ifneeded " + pack.getName())
+						.getNameEnd(), (pack.getName() + "*")
 						.toCharArray());
 			}
 		}
