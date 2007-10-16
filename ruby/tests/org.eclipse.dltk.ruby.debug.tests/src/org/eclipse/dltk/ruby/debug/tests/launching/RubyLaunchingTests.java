@@ -6,7 +6,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.core.tests.launching.ScriptLaunchingTests;
+import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.ruby.core.RubyNature;
+import org.eclipse.dltk.ruby.debug.RubyDebugConstants;
+import org.eclipse.dltk.ruby.debug.RubyDebugPlugin;
+import org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationDelegate;
 
 public class RubyLaunchingTests extends ScriptLaunchingTests {
 
