@@ -357,7 +357,7 @@ public class ScriptBreakpointManager implements IBreakpointListener,
 
 	public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta) {
 		try {
-			if (breakpoint instanceof IScriptBreakpoint) {
+			if (breakpoint instanceof IScriptBreakpoint && delta != null) {
 				final String[] attrs = ((IScriptBreakpoint) breakpoint)
 						.getUpdatableAttributes();
 				if (hasChanges(delta, attrs)) {

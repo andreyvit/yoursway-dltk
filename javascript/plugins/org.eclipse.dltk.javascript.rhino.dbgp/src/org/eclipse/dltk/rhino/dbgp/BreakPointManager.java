@@ -122,6 +122,12 @@ public class BreakPointManager {
 			if (!p.isWatch) {
 				p.expression = condexpression;
 			}
+			else
+			{
+				p.isModification = condexpression.charAt(condexpression.length() - 1) == '1';
+				p.isAccess = condexpression.charAt(condexpression.length() - 2) == '1';
+				p.expression = condexpression.substring(0, condexpression.length() - 2);
+			}
 
 		}
 	}

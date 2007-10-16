@@ -57,12 +57,10 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 					}
 
 					long delta = end - begin;
-
-					if (delta < MIN_TIMEOUT) {
+					timeout -= delta;
+					if (timeout < MIN_TIMEOUT) {
 						break;
 					}
-
-					timeout = (int) delta;
 				}
 
 				return null;

@@ -122,7 +122,7 @@ public class JavaScriptToggleBreakpointAdapter extends
 					String string = doc.get(region.getOffset(), region
 							.getLength());
 
-					return string.indexOf('=') != -1;
+					return string.indexOf('=') != -1 || string.trim().startsWith("var ");
 				} catch (BadLocationException e) {
 					DLTKUIPlugin.log(e);
 				}
@@ -180,6 +180,11 @@ public class JavaScriptToggleBreakpointAdapter extends
 						index = string.lastIndexOf(' ');
 						if (index != -1) {
 							string = string.substring(index + 1).trim();
+						}
+						
+						if (string.endsWith(";"))
+						{
+							string = string.substring(0,string.length()-1);
 						}
 
 						BreakpointUtils.addWatchPoint(textEditor, lineNumber,

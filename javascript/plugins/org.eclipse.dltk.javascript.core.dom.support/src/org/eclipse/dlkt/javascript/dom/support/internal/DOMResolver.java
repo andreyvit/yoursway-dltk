@@ -148,14 +148,22 @@ public class DOMResolver implements IReferenceResolver, IExecutableExtension {
 		return mp;
 	}
 
-	private Object[] fillMap(HashMap mp, ScriptableObject resolveTopLevelScope) {
+	private Object[] fillMap(HashMap mp, Scriptable resolveTopLevelScope) {
 		Scriptable prototype = resolveTopLevelScope.getPrototype();
 		if (prototype != null) {
-			if (prototype instanceof ScriptableObject) {
-				fillMap(mp, (ScriptableObject) prototype);
+			if (prototype instanceof Scriptable) {
+				fillMap(mp, prototype);
 			}
 		}
-		Object[] allIds = resolveTopLevelScope.getAllIds();
+		Object[] allIds = null;
+		if (resolveTopLevelScope instanceof ScriptableObject && false)
+		{
+			allIds = ((ScriptableObject)resolveTopLevelScope).getAllIds();
+		}
+		else
+		{
+			allIds = resolveTopLevelScope.getIds();
+		}
 		for (int b = 0; b < allIds.length; b++) {
 			String key = allIds[b].toString();
 			try {
@@ -203,8 +211,8 @@ public class DOMResolver implements IReferenceResolver, IExecutableExtension {
 		} else {
 			while (pos != -1) {
 				Object object = globals.get(key);
-				if (object instanceof ScriptableObject) {
-					ScriptableObject sc = (ScriptableObject) object;
+				if (object instanceof Scriptable) {
+					Scriptable sc = (Scriptable) object;
 					globals.clear();
 					fillMap(globals, sc);
 				}

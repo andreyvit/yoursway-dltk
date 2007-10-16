@@ -287,7 +287,7 @@ public class DBGPDebugger extends Thread implements Debugger, Observer,
 
 		ArrayList list = (ArrayList) stackmanager.getManager().getWatchPoints(
 				property);
-		if (list != null) {
+		if (list != null && stackmanager.getStackDepth() > 0) {
 			int size = list.size();
 			for (int a = 0; a < size; a++) {
 
