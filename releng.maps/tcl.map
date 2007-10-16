@@ -1,13 +1,13 @@
 
 ! Tcl Development Tools (DLTK)
 !
-! $Id: tcl.map,v 1.66 2007/10/12 14:40:34 asobolev Exp $ 
+! $Id: tcl.map,v 1.67 2007/10/16 12:56:54 asobolev Exp $ 
 
 feature@org.eclipse.dltk.tcl=v20071012a,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl-feature
 feature@org.eclipse.dltk.tcl.sdk=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl.sdk
 
 plugin@org.eclipse.dltk.tcl=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl
-plugin@org.eclipse.dltk.tcl.core=v20071012a,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.core
+plugin@org.eclipse.dltk.tcl.core=v20071016,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.core
 plugin@org.eclipse.dltk.tcl.launching=v20070920,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.launching
 plugin@org.eclipse.dltk.tcl.ui=v20071008a,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.ui
 
@@ -19,6 +19,6 @@ plugin@org.eclipse.dltk.tcl.tclchecker=v20070727b,:pserver:anonymous@dev.eclipse
 plugin@org.eclipse.dltk.tcl.activestatedebugger=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.activestatedebugger
 
 plugin@org.eclipse.dltk.tcl.testing=v20070924a,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.testing
-plugin@org.eclipse.dltk.tcl.testing.tcltest=v20071012,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.testing.tcltest
+plugin@org.eclipse.dltk.tcl.testing.tcltest=v20071016,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.testing.tcltest
 
 plugin@org.eclipse.dltk.tcl.doc.user=v20071012a,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/docs/org.eclipse.dltk.tcl.doc.user
