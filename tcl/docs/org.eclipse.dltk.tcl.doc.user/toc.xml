@@ -5,12 +5,15 @@
 <!-- ============================================================================= -->
 
 <toc label="Tcl/Xotcl Development User Guide">
-    <topic label="Tcl/XOTcl development overview" href="gettingStarted/intro/overview.htm"/>
+    <topic label="Tcl development overview" href="gettingStarted/intro/overview.htm"/>
 	<topic label="Getting Started">
 		<link toc="topics_GettingStarted.xml" />
 	</topic>
 	<anchor id="jdt_getstart" />
-	
+	<topic label="Concepts">
+		<link toc="topics_Concepts.xml" />
+	</topic>
+	<anchor id="jdt_concepts" />
 	<topic label="Legal" href="notices.html"/>
 	<enablement>
 		<test property="org.eclipse.core.runtime.isBundleInstalled" args="org.eclipse.dltk.tcl.ui"/>

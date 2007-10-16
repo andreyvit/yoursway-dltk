@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+
+<html>
+  <head>
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2000, 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="../book.css" charset="ISO-8859-1" type="text/css">
+
+    <title>Tcl search</title>
+  </head>
+
+  <body>
+    <h1>Tcl search</h1>
+
+    <p><span>The Tcl searching support allows you to find declarations, references and occurrences of Tcl elements
+    (packages, types, methods, fields). Searching is supported by an index that
+    is kept up to date in the background as the resources corresponding to Tcl elements are changed.
+    The Tcl search operates on workspaces independent of their build state. For
+    example, searches can be conducted when auto-build is turned off.</span></p>
+
+    <p>The following searches can be initiated from the pop-up menus of Tcl elements:</p>
+
+    <table border="1" cellspacing="0" cellpadding="5" summary="Tcl search actions">
+      <thead>
+        <tr>
+          <td>
+            <p><span class="control">Command</span></p>
+          </td>
+
+          <td>
+            <p><span class="control">Description</span></p>
+          </td>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td valign="top">
+            <p>References</p>
+          </td>
+
+          <td valign="top">
+            <p>Finds all references to the selected Tcl element</p>
+          </td>
+        </tr>
+
+        <tr>
+          <td valign="top">
+            <p>Declarations</p>
+          </td>
+
+          <td valign="top">
+            <p>Finds all declarations of the selected Tcl element</p>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <p>The scope of the search is defined as:</p>
+
+    <p><span class="control">Workspace</span> - all projects and files in the workspace are included in this search</p>
+
+    <p><span class="control">Working Set</span> - only resources that belong to the chosen working set are included in this search</p>
+
+  </body>
+</html>
+

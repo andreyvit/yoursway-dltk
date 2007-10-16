@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.0
 Created-By: 1.4.2 (IBM Corporation)
 Eclipse-LazyStart: true
 Bundle-SymbolicName: org.eclipse.dltk.tcl.doc.user;singleton:=true
