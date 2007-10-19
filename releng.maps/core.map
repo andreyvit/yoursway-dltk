@@ -16,4 +16,4 @@ plugin@org.eclipse.dltk.console.ui=v20070727b,:pserver:anonymous@dev.eclipse.org
 plugin@org.eclipse.dltk.ui=v20071019,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.ui
 plugin@org.eclipse.dltk.debug.ui=v20071019,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.debug.ui
 
-plugin@org.eclipse.dltk.testing=v20071019,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.testing
+plugin@org.eclipse.dltk.testing=v20071019a,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/plugins/org.eclipse.dltk.testing

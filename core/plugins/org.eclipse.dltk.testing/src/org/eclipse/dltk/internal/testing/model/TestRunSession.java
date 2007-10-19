@@ -771,7 +771,7 @@ public class TestRunSession implements ITestRunSession, ITestSession {
 		}
 	
 		private void logUnexpectedTest(String testId, TestElement testElement) {
-			DLTKTestingPlugin.log(new Exception("Unexpected TestElement type for testId '" + testId + "': " + testElement)); //$NON-NLS-1$ //$NON-NLS-2$
+//			DLTKTestingPlugin.log(new Exception("Unexpected TestElement type for testId '" + testId + "': " + testElement)); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
