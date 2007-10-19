@@ -1,7 +1,7 @@
 
 ! Tcl Development Tools (DLTK)
 !
-! $Id: tcl.map,v 1.71 2007/10/19 14:18:05 asobolev Exp $ 
+! $Id: tcl.map,v 1.72 2007/10/19 15:12:16 asobolev Exp $ 
 
 feature@org.eclipse.dltk.tcl=v20071019,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl-feature
 feature@org.eclipse.dltk.tcl.sdk=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl.sdk
@@ -25,4 +25,4 @@ plugin@org.eclipse.dltk.tcl.doc.user=v20071019,:pserver:anonymous@dev.eclipse.or
 
 ! Temporary Cisco stuff
 plugin@com.cisco.tcl.scriptchecker=v20071019,:ext:kurtov@us.xored.com:/opt/cisco/,
-plugin@com.cisco.testing.aetest=v20071019,:ext:kurtov@us.xored.com:/opt/cisco/,
+plugin@com.cisco.testing.aetest=v20071019a,:ext:kurtov@us.xored.com:/opt/cisco/,
