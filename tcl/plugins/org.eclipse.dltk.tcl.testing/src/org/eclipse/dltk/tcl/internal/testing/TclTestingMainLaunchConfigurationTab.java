@@ -154,5 +154,6 @@ public class TclTestingMainLaunchConfigurationTab extends
 				}
 			}
 		}
+		handleDetectButtonSelected();
 	}
 }
