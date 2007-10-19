@@ -17,21 +17,29 @@
     <p>In this section you will learn how to easily find a "declaration" of a referenced Tcl variable (usually, a <code>set</code> command for the variable).</p>
 	<ol>
 		<li><P>Create a new project as shown in the first secion o this tutorial.</P></li>
-		<li><P>Open <i>http.tcl</i> file from <i>http1.0</i> package (it can be found in the <b>Interpreter libraries</b> section of the project in the Script view). </P></li>
-		<li><P> In the editor go to the line 27 
-				(you can go to a specified line by selecting <b>Navigate > Go to line</b> menu item.):<br>
-				<code>...<br>foreach name $options {<br>...</code>
-			</P>
-		</li>
-		<li><P>Set cursor to the <code>$options</code> variable reference.</P></li>
+		<li><P>Create a new Tcl file within that project. Then copy and paste the following code:<br>
+			   <code>
+				set var 1<br>
+				proc modify {arg} {<br>
+					set b 0<br>
+					puts "before: $arg"<br>
+					set arg $b<br>
+					puts "after: $arg"<br>
+				}<br>
+				modify $var <br>
+			   </code>
+		</P></li>
+		<li><P>Set cursor to the <code>$var</code> variable reference at the last line.</P></li>
 		<li><P>Select <b>Navigate > Open declaration</b> menu item.</P>
 			<p><img src="./images/tcl-nav-decl.png"  alt="Declaration"></p>
 			<p>Now the declaration of the variable is selected in the editor.
 			<br>
-			<i>Note that you might also use F3 key instead of the menu item to achieve the same effect.</i>
+			<i>Note that you might also use F3 key or left click the variable reference holding <i>Ctrl</i> key
+			   instead of the using menu item to achieve the same effect.</i>
 			</p>
 		</li>
 	</ol>
+	<p>You can navigate to the Tcl procedure declaration the same way.</p>
 	<P class="nav_footer" id="nav_footer">Next Section: <A href="qs-11.htm">Searching the workbench.</A>
 </P>
   </body>
