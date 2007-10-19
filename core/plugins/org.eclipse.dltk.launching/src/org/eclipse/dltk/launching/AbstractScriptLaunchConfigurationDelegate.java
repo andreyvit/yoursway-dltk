@@ -459,7 +459,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 * @exception CoreException
 	 *                if unable to retrieve the attribute
 	 */
-	public String getMainScriptName(ILaunchConfiguration configuration)
+	public static String getMainScriptName(ILaunchConfiguration configuration)
 			throws CoreException {
 		String script = configuration.getAttribute(
 				ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,

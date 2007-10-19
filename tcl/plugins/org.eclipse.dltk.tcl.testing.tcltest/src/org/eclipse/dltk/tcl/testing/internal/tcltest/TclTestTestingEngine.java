@@ -7,6 +7,7 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
@@ -42,7 +43,7 @@ public class TclTestTestingEngine implements ITclTestingEngine {
 		ModuleDeclaration moduleDeclaration = SourceParserUtil
 				.getModuleDeclaration(module, null);
 		ASTNode[] findTests = findTests(moduleDeclaration);
-		if(findTests.length > 0 ) {
+		if (findTests.length > 0) {
 			return true;
 		}
 		return false;
@@ -90,7 +91,8 @@ public class TclTestTestingEngine implements ITclTestingEngine {
 		return (ASTNode[]) ndes.toArray(new ASTNode[ndes.size()]);
 	}
 
-	public void correctLaunchConfiguration(InterpreterConfig config) {
+	public void correctLaunchConfiguration(InterpreterConfig config,
+			ILaunchConfiguration configuration) {
 		// We need to extract tcl source module and correct config.
 		try {
 			IPath runner = DeployHelper.deploy(Activator.getDefault(),

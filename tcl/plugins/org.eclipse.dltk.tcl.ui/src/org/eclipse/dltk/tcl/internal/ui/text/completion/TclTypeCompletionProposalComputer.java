@@ -9,145 +9,14 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.internal.ui.text.completion;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.CompletionProposal;
-import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IType;
-import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.tcl.internal.ui.templates.TclTemplateCompletionProcessor;
-import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.dltk.ui.text.completion.ContentAssistInvocationContext;
-import org.eclipse.dltk.ui.text.completion.IScriptCompletionProposal;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalComputer;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.templates.TemplateCompletionProcessor;
 
 public class TclTypeCompletionProposalComputer extends
 		ScriptCompletionProposalComputer {
-	private IScriptCompletionProposal createTypeProposal(int relevance,
-			String fullyQualifiedType,
-			ScriptContentAssistInvocationContext context) throws ModelException {
-		IType type = context.getSourceModule().getScriptProject().findType(
-				fullyQualifiedType);
-		if (type == null)
-			return null;
-
-		CompletionProposal proposal = CompletionProposal.create(
-				CompletionProposal.TYPE_REF, context.getInvocationOffset());
-		proposal.setCompletion(type.getElementName().toCharArray());
-		// proposal.setDeclarationSignature(type.getScriptFolder().getElementName().toCharArray());
-		proposal.setFlags(type.getFlags());
-		proposal.setRelevance(relevance);
-		proposal.setReplaceRange(context.getInvocationOffset(), context
-				.getInvocationOffset());
-
-		return new LazyTclTypeCompletionProposal(proposal, context);
-	}
-
-	public List computeContextInformation(
-			ContentAssistInvocationContext context, IProgressMonitor monitor) {//
-		System.out
-				.println("TclTypeCompletionProposalComputer.computeContextInformation()");
-
-		// if (context instanceof ScriptContentAssistInvocationContext) {
-		// ScriptContentAssistInvocationContext scriptContext=
-		// (ScriptContentAssistInvocationContext) context;
-		//			
-		// int contextInformationPosition=
-		// guessContextInformationPosition(scriptContext);
-		// List result= addContextInformations(scriptContext,
-		// contextInformationPosition, monitor);
-		// return result;
-		// }
-		// return Collections.EMPTY_LIST;
-
-		List types = computeCompletionProposals(context, monitor);
-		if (DLTKCore.DEBUG) {
-			System.out.println("!!! Proposals: " + types.size());
-		}
-		Iterator iter = types.iterator();
-
-		List list = new ArrayList();
-		while (iter.hasNext()) {
-			IScriptCompletionProposal proposal = (IScriptCompletionProposal) iter
-					.next();
-			if (DLTKCore.DEBUG) {
-				System.out.println("Proposal: "
-						+ proposal
-						+ ", info: "
-						+ proposal.getContextInformation()
-								.getInformationDisplayString());
-			}
-			list.add(proposal.getContextInformation());
-		}
-		return list;
-	}
-
-	public List computeCompletionProposals(
-			ContentAssistInvocationContext context, IProgressMonitor monitor) {
-				
-		List types = super.computeCompletionProposals(context, monitor);
-		
-		if (context instanceof ScriptContentAssistInvocationContext) {
-			ScriptContentAssistInvocationContext scriptContext = (ScriptContentAssistInvocationContext) context;
-			try {
-				if (types.size() > 0
-						&& context.computeIdentifierPrefix().length() == 0) {
-					IType expectedType = scriptContext.getExpectedType();
-					
-					if (expectedType != null) {
-						// empty prefix completion - insert LRU types if known
-						LazyTclTypeCompletionProposal typeProposal = (LazyTclTypeCompletionProposal) types
-								.get(0);
-						List history = DLTKUIPlugin.getDefault()
-								.getContentAssistHistory().getHistory(
-										expectedType.getFullyQualifiedName())
-								.getTypes();
-
-						int relevance = typeProposal.getRelevance()
-								- history.size() - 1;
-						for (Iterator it = history.iterator(); it.hasNext();) {
-							String type = (String) it.next();
-							if (type
-									.equals(((IType) typeProposal
-											.getModelElement())
-											.getFullyQualifiedName()))
-								continue;
-
-							IScriptCompletionProposal proposal = createTypeProposal(
-									relevance, type, scriptContext);
-
-							if (proposal != null) {
-								types.add(proposal);
-							}
-
-							relevance++;
-						}
-					}
-				}
-			} catch (BadLocationException x) {
-				// log & ignore
-				DLTKUIPlugin.log(x);
-			} catch (ModelException x) {
-				// log & ignore
-				DLTKUIPlugin.log(x);
-			}
-		}
-
-		return types;
-	}
 	
-	protected TemplateCompletionProcessor createTemplateProposalComputer(
-			ScriptContentAssistInvocationContext context) {
-		return new TclTemplateCompletionProcessor(context);
-	}
-
 	protected ScriptCompletionProposalCollector createCollector(
 			ScriptContentAssistInvocationContext context) {
 		ScriptCompletionProposalCollector collector = new TclCompletionProposalCollector(

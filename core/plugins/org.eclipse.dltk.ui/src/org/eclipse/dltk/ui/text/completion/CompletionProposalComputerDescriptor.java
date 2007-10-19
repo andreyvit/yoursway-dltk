@@ -337,6 +337,8 @@ final class CompletionProposalComputerDescriptor {
 				}
 			} finally {
 				fIsReportingDelay = true;
+
+				
 			}
 			status = createAPIViolationStatus(COMPUTE_COMPLETION_PROPOSALS);
 		} catch (InvalidRegistryObjectException x) {

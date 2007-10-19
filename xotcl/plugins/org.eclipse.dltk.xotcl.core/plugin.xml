@@ -106,7 +106,8 @@
          point="org.eclipse.dltk.core.mixin">
       <mixin
             class="org.eclipse.dltk.xotcl.internal.core.search.mixin.XOTclMixinParser"
-            nature="org.eclipse.dltk.tcl.core.nature">
+            nature="org.eclipse.dltk.tcl.core.nature"
+            priority="1">
       </mixin>
    </extension>
    <extension

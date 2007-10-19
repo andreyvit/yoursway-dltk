@@ -10,6 +10,7 @@ import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclExInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclProcCallStatement;
@@ -29,7 +30,8 @@ public class XOTclProcCallProcessor extends AbstractTclCommandProcessor {
 		Object param = this.getDetectedParameter();
 		if (param == null
 				|| !(param instanceof TypeDeclaration
-						|| param instanceof XOTclObjectDeclaration || param instanceof XOTclInstanceVariable)) {
+						|| param instanceof XOTclObjectDeclaration
+						|| param instanceof XOTclInstanceVariable || param instanceof XOTclExInstanceVariable)) {
 			return null;
 		}
 		TclStatement statement = (TclStatement) parser.processLocal(command,
@@ -37,7 +39,8 @@ public class XOTclProcCallProcessor extends AbstractTclCommandProcessor {
 
 		Expression nameExpr = statement.getAt(1);
 		if (!(nameExpr instanceof SimpleReference)) {
-			this.report(parser, "A proc name expected.", nameExpr, ProblemSeverities.Error);
+			this.report(parser, "A proc name expected.", nameExpr,
+					ProblemSeverities.Error);
 			return null;
 		}
 		SimpleReference name = (SimpleReference) nameExpr;
@@ -49,8 +52,8 @@ public class XOTclProcCallProcessor extends AbstractTclCommandProcessor {
 			}
 		}
 
-		XOTclProcCallStatement call = new XOTclProcCallStatement(name, (ASTNode)param,
-				args);
+		XOTclProcCallStatement call = new XOTclProcCallStatement(name,
+				(ASTNode) param, args);
 		call.setInstNameRef((SimpleReference) statement.getAt(0));
 		call.setStart(statement.sourceStart());
 		call.setEnd(statement.sourceEnd());

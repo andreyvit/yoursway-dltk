@@ -21,7 +21,8 @@
         point="org.eclipse.dltk.core.mixin">
      <mixin
            class="org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixin"
-           nature="org.eclipse.dltk.ruby.core.nature">
+           nature="org.eclipse.dltk.ruby.core.nature"
+           priority="0">
      </mixin>
   </extension>
   <extension

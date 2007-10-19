@@ -128,6 +128,9 @@ public class TclTestingLaunchShortcut implements ILaunchShortcut {
 
 	private void performLaunch(IModelElement element, String mode) throws InterruptedException, CoreException {
 		ILaunchConfigurationWorkingCopy temparary= createLaunchConfiguration(element);
+		if( temparary == null ) {
+			return;
+		}
 		ILaunchConfiguration config= findExistingLaunchConfiguration(temparary, mode);
 		if (config == null) {
 			// no existing found: create a new one
@@ -267,11 +270,16 @@ public class TclTestingLaunchShortcut implements ILaunchShortcut {
 //		XUnitMigrationDelegate.mapResources(wc);
 		ITclTestingEngine[] engines = TclTestingEngineManager.getEngines();
 		ISourceModule module = (ISourceModule) element.getAncestor(IModelElement.SOURCE_MODULE);
+		boolean engineFound = false;
 		for (int i = 0; i < engines.length; i++) {
 			if( engines[i].isValidModule(module)) {
 				wc.setAttribute(IDLTKTestingConstants.ENGINE_ID_ATR, engines[i].getId());
+				engineFound = true;
 				break;
 			}
+		}
+		if( engineFound == false ) {
+			return null;
 		}
 
 		return wc;

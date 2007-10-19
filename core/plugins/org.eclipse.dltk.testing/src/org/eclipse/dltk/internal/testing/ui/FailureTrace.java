@@ -72,7 +72,7 @@ public class FailureTrace implements IMenuListener {
 					fCompareAction.run();
 				}
 				if (fTable.getSelection().length != 0) {
-					Action a = createOpenEditorAction(getSelectedText());
+					Action a = null;//createOpenEditorAction(getSelectedText());
 					if (a != null)
 						a.run();
 				}

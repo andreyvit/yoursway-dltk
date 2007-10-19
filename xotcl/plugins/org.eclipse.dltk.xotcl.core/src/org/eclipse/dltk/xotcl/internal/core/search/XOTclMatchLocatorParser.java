@@ -53,7 +53,7 @@ public class XOTclMatchLocatorParser extends BasicTclMatchLocatorParser {
 						XOTclMatchLocatorParser.this.getNodeSet());
 			} else if (node instanceof XOTclMethodCallStatement) {
 				XOTclMethodCallStatement st = (XOTclMethodCallStatement) node;
-				XOTclInstanceVariable instanceVariable = st
+				FieldDeclaration instanceVariable = st
 						.getInstanceVariable();
 				CallExpression call = new CallExpression(instanceVariable, st
 						.getName(), null);

@@ -166,7 +166,7 @@ public abstract class MainLaunchConfigurationTab extends
 				getScriptName());
 	}
 
-	private String getScriptName() {
+	protected String getScriptName() {
 		return fScriptText.getText().trim();
 	}
 

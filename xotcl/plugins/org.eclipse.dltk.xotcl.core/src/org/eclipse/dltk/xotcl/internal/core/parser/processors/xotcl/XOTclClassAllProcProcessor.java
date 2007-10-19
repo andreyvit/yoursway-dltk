@@ -20,6 +20,7 @@ import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.Messages;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclExInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
@@ -102,6 +103,10 @@ public class XOTclClassAllProcProcessor extends AbstractTclCommandProcessor {
 		}
 		else if( decl instanceof XOTclInstanceVariable ) {
 			method.setDeclaringTypeName(((XOTclInstanceVariable)decl).getName());
+		}
+		else if( decl instanceof XOTclExInstanceVariable ) {
+			String name = ((XOTclExInstanceVariable)decl).getDeclaringClassParameter().getClassName();
+			method.setDeclaringTypeName(name);
 		}
 
 		method.setModifiers(IXOTclModifiers.AccXOTcl);

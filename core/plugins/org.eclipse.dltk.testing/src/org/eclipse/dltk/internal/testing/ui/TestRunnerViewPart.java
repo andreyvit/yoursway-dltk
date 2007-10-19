@@ -175,8 +175,8 @@ public class TestRunnerViewPart extends ViewPart {
 	
 	private Action fRerunLastTestAction;
 	private IHandlerActivation fRerunLastActivation;
-	private Action fRerunFailedFirstAction;
-	private IHandlerActivation fRerunFailedFirstActivation;
+//	private Action fRerunFailedFirstAction;
+//	private IHandlerActivation fRerunFailedFirstActivation;
 	
 	private Action fFailuresOnlyFilterAction;
 	private ScrollLockAction fScrollLockAction;
@@ -1201,7 +1201,7 @@ action enablement
 			stopUpdateJobs();
 			
 			fStopAction.setEnabled(false);
-			fRerunFailedFirstAction.setEnabled(false);
+//			fRerunFailedFirstAction.setEnabled(false);
 			fRerunLastTestAction.setEnabled(false);
 			
 		} else {
@@ -1234,7 +1234,7 @@ action enablement
 
 	private void updateRerunFailedFirstAction() {
 		boolean state= hasErrorsOrFailures() && fTestRunSession.getLaunch() != null;
-	    fRerunFailedFirstAction.setEnabled(state);
+//	    fRerunFailedFirstAction.setEnabled(state);
     }
     /**
      * @return the display name of the current test run sessions kind, or <code>null</code>
@@ -1263,7 +1263,7 @@ action enablement
 		
 		IHandlerService handlerService= (IHandlerService) getSite().getWorkbenchWindow().getService(IHandlerService.class);
 		handlerService.deactivateHandler(fRerunLastActivation);
-		handlerService.deactivateHandler(fRerunFailedFirstActivation);
+//		handlerService.deactivateHandler(fRerunFailedFirstActivation);
 		setActiveTestRunSession(null);
 		
 		if (fProgressImages != null)
@@ -1532,17 +1532,17 @@ action enablement
 		};
         fRerunLastActivation= handlerService.activateHandler(RERUN_LAST_COMMAND, handler);
 
-		fRerunFailedFirstAction= new RerunLastFailedFirstAction();
-		handler = new AbstractHandler() {
-			public Object execute(ExecutionEvent event) throws ExecutionException {
-				fRerunFailedFirstAction.run();
-				return null;
-			}
-			public boolean isEnabled() {
-				return fRerunFailedFirstAction.isEnabled();
-			}
-		};
-		fRerunFailedFirstActivation= handlerService.activateHandler(RERUN_FAILED_FIRST_COMMAND, handler);
+//		fRerunFailedFirstAction= new RerunLastFailedFirstAction();
+//		handler = new AbstractHandler() {
+//			public Object execute(ExecutionEvent event) throws ExecutionException {
+//				fRerunFailedFirstAction.run();
+//				return null;
+//			}
+//			public boolean isEnabled() {
+//				return fRerunFailedFirstAction.isEnabled();
+//			}
+//		};
+//		fRerunFailedFirstActivation= handlerService.activateHandler(RERUN_FAILED_FIRST_COMMAND, handler);
 		
 		fFailuresOnlyFilterAction= new FailuresOnlyFilterAction();
 		
@@ -1563,7 +1563,7 @@ action enablement
 		toolBar.add(fScrollLockAction);
 		toolBar.add(new Separator());
 		toolBar.add(fRerunLastTestAction);
-		toolBar.add(fRerunFailedFirstAction);
+//		toolBar.add(fRerunFailedFirstAction);
 		toolBar.add(fStopAction);
 		toolBar.add(fViewHistory.createHistoryDropDownAction());
 		

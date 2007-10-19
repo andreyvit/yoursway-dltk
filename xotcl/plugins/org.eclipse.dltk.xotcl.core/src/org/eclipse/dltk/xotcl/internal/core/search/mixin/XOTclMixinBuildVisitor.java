@@ -1,7 +1,6 @@
 package org.eclipse.dltk.xotcl.internal.core.search.mixin;
 
 import java.util.List;
-import java.util.Stack;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
@@ -11,6 +10,7 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
+import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.ast.ExtendedTclMethodDeclaration;
 import org.eclipse.dltk.tcl.internal.core.search.mixin.TclMixinBuildVisitor;
@@ -25,12 +25,6 @@ import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclObject;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclProc;
 
 public class XOTclMixinBuildVisitor extends TclMixinBuildVisitor {
-	private boolean signature = false;
-	private ISourceModule sourceModule;
-	private ModuleDeclaration moduleDeclaration;
-	private IMixinRequestor requestor;
-	Stack namespaceNames = new Stack();
-
 	public XOTclMixinBuildVisitor(ModuleDeclaration moduleDeclaration,
 			ISourceModule module, boolean signature, IMixinRequestor requestor) {
 		super(moduleDeclaration, module, signature, requestor);
@@ -91,6 +85,13 @@ public class XOTclMixinBuildVisitor extends TclMixinBuildVisitor {
 			}
 			this.requestor.reportElement(info);
 		}
+		else if( s instanceof TclStatement ) {
+			TclStatement st = (TclStatement) s;
+			// new field checks.
+			if( st.getCount() >= 3 ) {
+				
+			}
+		}
 		return super.visit(s);
 	}
 
@@ -116,6 +117,7 @@ public class XOTclMixinBuildVisitor extends TclMixinBuildVisitor {
 				}
 			}
 			this.requestor.reportElement(info);
+			return true;
 		}
 		return super.visit(s);
 	}

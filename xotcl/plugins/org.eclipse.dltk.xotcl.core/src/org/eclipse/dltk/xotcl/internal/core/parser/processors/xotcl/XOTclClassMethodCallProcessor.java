@@ -1,6 +1,7 @@
 package org.eclipse.dltk.xotcl.internal.core.parser.processors.xotcl;
 
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.expressions.CallArgumentsList;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
@@ -20,15 +21,15 @@ public class XOTclClassMethodCallProcessor extends AbstractTclCommandProcessor {
 	public ASTNode process(TclCommand command, ITclParser parser, int offset,
 			ASTNode parent) {
 		Object param = this.getDetectedParameter();
-		if (param == null || !(param instanceof XOTclInstanceVariable)) {
+		if (param == null || !(param instanceof FieldDeclaration)) {
 			return null;
 		}
 		TclStatement statement = (TclStatement) parser.processLocal(command,
 				offset, parent);
-		XOTclInstanceVariable inst = (XOTclInstanceVariable) param;
+		FieldDeclaration inst = (FieldDeclaration) param;
 		Expression nameExpr = statement.getAt(1);
 		if (!(nameExpr instanceof SimpleReference)) {
-			this.report(parser, "A method name expected.", nameExpr, ProblemSeverities.Error);
+			this.report(parser, "A method name expected.", statement, ProblemSeverities.Error);
 			return null;
 		}
 		SimpleReference name = (SimpleReference) nameExpr;

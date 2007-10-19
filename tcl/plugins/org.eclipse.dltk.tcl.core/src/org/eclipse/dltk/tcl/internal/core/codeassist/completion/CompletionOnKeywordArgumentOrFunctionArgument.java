@@ -24,15 +24,17 @@ public class CompletionOnKeywordArgumentOrFunctionArgument extends
 	private ASTNode completionNode;
 
 	public CompletionOnKeywordArgumentOrFunctionArgument(String token,
-			ASTNode completionNode, TclStatement node, String[] possibleKeywords) {
+			ASTNode completionNode, TclStatement node,
+			String[] KeywordspossibleKeywords) {
 		super(completionNode.sourceStart(), completionNode.sourceEnd(), token);
-		this.possibleKeywords = possibleKeywords;
+		this.possibleKeywords = KeywordspossibleKeywords;
 		this.statement = node;
 		this.completionNode = completionNode;
 	}
+
 	public CompletionOnKeywordArgumentOrFunctionArgument(String token,
-			TclStatement node, String[] possibleKeywords) {
-		super(node.sourceEnd(), node.sourceEnd(), token);
+			TclStatement node, String[] possibleKeywords, int position) {
+		super(position, position, token);
 		this.possibleKeywords = possibleKeywords;
 		this.statement = node;
 		this.completionNode = null;
@@ -55,20 +57,31 @@ public class CompletionOnKeywordArgumentOrFunctionArgument extends
 	public boolean canCompleteEmptyToken() {
 		return true;
 	}
+
 	public TclStatement getStatement() {
 		return this.statement;
 	}
+
 	public int argumentIndex() {
-		if( this.completionNode == null ) {
-			return 1;
+		if (this.completionNode == null) {
+			if (this.statement.getCount() == 1) {
+				return 1;
+			}
+			if (statement.getCount() > 2
+					&& statement.getAt(0).sourceEnd() <= sourceStart()
+					&& sourceEnd() <= statement.getAt(1).sourceStart()) {
+				return 1;
+			}
+			return -1;
 		}
-		for( int i = 0; i < this.statement.getCount(); ++i ) {
-			if( this.statement.getAt(i).equals(this.completionNode)) {
+		for (int i = 0; i < this.statement.getCount(); ++i) {
+			if (this.statement.getAt(i).equals(this.completionNode)) {
 				return i;
 			}
 		}
 		return -1;
 	}
+
 	public ASTNode getCompletionNode() {
 		return this.completionNode;
 	}

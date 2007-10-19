@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Declaration;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
@@ -352,7 +350,7 @@ public class TclParseUtil {
 				List childs = TclASTUtil.getStatements(astNodeParent);
 				if (childs != null) {
 					TypeDeclaration ty = findTclTypeCheckASTLevel(originalName,
-							split, childs, onlyXOTcl);
+							split, childs);
 					if (ty != null) {
 						return ty;
 					}
@@ -364,7 +362,7 @@ public class TclParseUtil {
 				return null;
 			}
 			TypeDeclaration ty = findTclTypeCheckASTLevel(originalName, split,
-					childs, onlyXOTcl);
+					childs);
 			if (ty != null) {
 				return ty;
 			}
@@ -373,66 +371,65 @@ public class TclParseUtil {
 	}
 
 	private static TypeDeclaration findTclTypeCheckASTLevel(
-			String originalName, String[] split, List childs, boolean onlyXOTcl) {
+			String originalName, String[] split, List childs) {
 		for (int i = 0; i < childs.size(); i++) {
 			if (!(childs.get(i) instanceof TypeDeclaration)) {
 				continue;
 			}
 			TypeDeclaration type = (TypeDeclaration) childs.get(i);
-			if ((type.getModifiers() & Modifiers.AccNameSpace) == 0
-					|| !onlyXOTcl) {
-				// if (type.getName().equals(originalName)) { // Check for
-				// // original name
-				// return type;
-				// }
-				// Check complex in
-				String cName = split[0];
-				String tName = type.getName();
-				if (tName.startsWith("::")) {
-					tName = tName.substring(2);
-				}
-				for (int q = 1; q <= split.length; ++q) {
-					if (tName.equals(cName)) {
-						if (q == split.length) {
-							return type;
-						} else {
-							String nsplit[] = new String[split.length - q];
-							System.arraycopy(split, q, nsplit, 0, split.length
-									- q);
-							List nchilds = TclASTUtil.getStatements(type);
-							if (childs == null) {
-								continue;
-							}
-							TypeDeclaration ty = findTclTypeCheckASTLevel(
-									originalName, nsplit, nchilds, onlyXOTcl);
-							if (ty != null) {
-								return ty;
-							}
-						}
-					}
-					if (q != split.length) {
-						cName += "::" + split[q];
-					}
-				}
-				if (tName.equals(split[0]) && split.length == 1) {
-					return type;
-				} else {
-					if (split.length > 1) {
+			// if ((type.getModifiers() & Modifiers.AccNameSpace) == 0
+			// || !onlyXOTcl) {
+			// if (type.getName().equals(originalName)) { // Check for
+			// // original name
+			// return type;
+			// }
+			// Check complex in
+			String cName = split[0];
+			String tName = type.getName();
+			if (tName.startsWith("::")) {
+				tName = tName.substring(2);
+			}
+			for (int q = 1; q <= split.length; ++q) {
+				if (tName.equals(cName)) {
+					if (q == split.length) {
+						return type;
+					} else {
+						String nsplit[] = new String[split.length - q];
+						System.arraycopy(split, q, nsplit, 0, split.length - q);
 						List nchilds = TclASTUtil.getStatements(type);
 						if (childs == null) {
 							continue;
 						}
-						String nsplit[] = new String[split.length - 1];
-						System.arraycopy(split, 1, nsplit, 0, split.length - 1);
 						TypeDeclaration ty = findTclTypeCheckASTLevel(
-								originalName, nsplit, nchilds, onlyXOTcl);
+								originalName, nsplit, nchilds);
 						if (ty != null) {
 							return ty;
 						}
 					}
 				}
+				if (q != split.length) {
+					cName += "::" + split[q];
+				}
+			}
+			if (tName.equals(split[0]) && split.length == 1) {
+				return type;
+			} else {
+				if (split.length > 1) {
+					List nchilds = TclASTUtil.getStatements(type);
+					if (childs == null) {
+						continue;
+					}
+					String nsplit[] = new String[split.length - 1];
+					System.arraycopy(split, 1, nsplit, 0, split.length - 1);
+					TypeDeclaration ty = findTclTypeCheckASTLevel(originalName,
+							nsplit, nchilds);
+					if (ty != null) {
+						return ty;
+					}
+				}
 			}
 		}
+		// }
 		return null;
 	}
 

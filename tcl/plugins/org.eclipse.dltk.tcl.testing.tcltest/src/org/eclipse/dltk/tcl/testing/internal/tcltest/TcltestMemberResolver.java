@@ -29,7 +29,7 @@ public class TcltestMemberResolver implements ITestingElementResolver {
 
 	public ISourceRange resolveRange(IScriptProject project,
 			ILaunchConfiguration config, String name, ISourceModule module,
-			IModelElement element) {
+			IModelElement element, String method) {
 		ModuleDeclaration decl;
 		try {
 			decl = parseModule(module);

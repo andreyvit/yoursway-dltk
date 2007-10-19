@@ -117,7 +117,7 @@ public class TclCompletionParser extends TclAssistParser {
 //					}
 					String[] keywords = checkKeywords(completionToken, MODULE);
 					ASTNode nde = new CompletionOnKeywordArgumentOrFunctionArgument(
-							"",  (TclStatement)node, keywords);
+							"",  (TclStatement)node, keywords, position);
 					this.assistNodeParent = inNode;
 					throw new CompletionNodeFound(nde, null/* ((TypeDeclaration)inNode).scope */);
 
@@ -260,11 +260,11 @@ public class TclCompletionParser extends TclAssistParser {
 		}
 	}
 
-	private class CompletionVisitor extends ASTVisitor {
-		private int position;
-		ModuleDeclaration module;
+	public class CompletionVisitor extends ASTVisitor {
+		protected int position;
+		protected ModuleDeclaration module;
 
-		CompletionVisitor(int position, ModuleDeclaration module) {
+		public CompletionVisitor(int position, ModuleDeclaration module) {
 			this.position = position;
 			this.module = module;
 		}

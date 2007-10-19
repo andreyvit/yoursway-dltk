@@ -142,7 +142,8 @@
          point="org.eclipse.dltk.core.mixin">
       <mixin
             class="org.eclipse.dltk.tcl.internal.core.search.mixin.TclMixinParser"
-            nature="org.eclipse.dltk.tcl.core.nature">
+            nature="org.eclipse.dltk.tcl.core.nature"
+            priority="0">
       </mixin>
    </extension>
 </plugin>

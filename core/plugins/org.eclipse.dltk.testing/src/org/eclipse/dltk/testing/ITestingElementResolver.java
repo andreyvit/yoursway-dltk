@@ -8,7 +8,7 @@ import org.eclipse.dltk.core.ISourceRange;
 
 public interface ITestingElementResolver {
 	ISourceRange resolveRange(IScriptProject project,
-			ILaunchConfiguration config, String name, ISourceModule module, IModelElement element);
+			ILaunchConfiguration config, String name, ISourceModule module, IModelElement element, String method);
 
 	IModelElement resolveElement(IScriptProject project, ILaunchConfiguration config,
 			ISourceModule module, String name);

@@ -27,7 +27,7 @@ public class TclTestingLaunchConfigurationDelegate extends
 				IDLTKTestingConstants.ENGINE_ID_ATR, "");
 		for (int i = 0; i < engines.length; i++) {
 			if (engines[i].getId().equals(engineId)) {
-				engines[i].correctLaunchConfiguration(config);
+				engines[i].correctLaunchConfiguration(config, configuration);
 				this.engine = engines[i];
 				break;
 			}

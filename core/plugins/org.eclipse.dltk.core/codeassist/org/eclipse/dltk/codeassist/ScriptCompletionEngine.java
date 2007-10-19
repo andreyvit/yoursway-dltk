@@ -544,6 +544,9 @@ public abstract class ScriptCompletionEngine extends Engine implements
 			for (int i = 0; i < types.size(); i++) {
 				IType type = (IType) types.get(i);
 				String qname = processTypeName(type, tok);
+				if( qname.startsWith("::") || ( length > 1 && token[0] != ':' && token[1] != ':' )) {
+					qname = qname.substring(2);
+				}
 				char[] name = qname.toCharArray();
 				if (DLTKCore.DEBUG_COMPLETION) {
 					System.out.println("Completion:" + qname);
@@ -559,6 +562,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 					ScriptCompletionEngine.this.noProposal = false;
 					if (!ScriptCompletionEngine.this.requestor
 							.isIgnored(CompletionProposal.TYPE_REF)) {
+					
 						CompletionProposal proposal = ScriptCompletionEngine.this
 								.createProposal(
 										CompletionProposal.TYPE_REF,
@@ -567,7 +571,6 @@ public abstract class ScriptCompletionEngine extends Engine implements
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
 						proposal.setModelElement(type);
-
 						proposal.setName(name);
 						proposal.setCompletion(name);
 						// proposal.setFlags(Flags.AccDefault);

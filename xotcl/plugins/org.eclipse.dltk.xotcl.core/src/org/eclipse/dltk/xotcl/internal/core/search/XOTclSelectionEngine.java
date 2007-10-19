@@ -13,11 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.IType;
@@ -34,11 +36,13 @@ import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnKeywor
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnNode;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnVariable;
 import org.eclipse.dltk.tcl.internal.core.search.mixin.TclMixinModel;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclExInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodCallStatement;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclProcCallStatement;
 import org.eclipse.dltk.xotcl.internal.core.XOTclResolver;
+import org.eclipse.dltk.xotcl.internal.core.parser.XOTclCommandDetector.XOTclGlobalClassParameter;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclInstProc;
 
 public class XOTclSelectionEngine extends TclSelectionEngine {
@@ -116,19 +120,28 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 			} else if (node instanceof TclStatement) {
 				// We need to check for XOTcl command calls.
 				processXOTclCommandCalls((TclStatement) node);
-			}
-			else if( node instanceof XOTclInstanceVariable ) {
-				processXOTclInstanceVariable((XOTclInstanceVariable)node);
+			} else if (node instanceof XOTclInstanceVariable) {
+				processXOTclInstanceVariable((XOTclInstanceVariable) node);
+			} else if (node instanceof XOTclExInstanceVariable) {
+				XOTclExInstanceVariable ex = (XOTclExInstanceVariable) node;
+				XOTclGlobalClassParameter declaringClassParameter = ex
+						.getDeclaringClassParameter();
+				IModelElement resolveElement = declaringClassParameter
+						.resolveElement();
+				if (resolveElement != null) {
+					selectionElements.add(resolveElement);
+				}
 			}
 		}
 	}
 
 	private void processXOTclInstanceVariable(XOTclInstanceVariable node) {
 		SimpleReference classInstanceName = node.getClassInstanceName();
-		if( classInstanceName.sourceStart() <= this.actualSelectionStart && this.actualSelectionStart <= classInstanceName.sourceEnd()) {
+		if (classInstanceName.sourceStart() <= this.actualSelectionStart
+				&& this.actualSelectionStart <= classInstanceName.sourceEnd()) {
 			TypeDeclaration declaringType = node.getDeclaringType();
 			IModelElement type = this.findElementFromNode(declaringType);
-			if( type != null) {
+			if (type != null) {
 				this.selectionElements.add(type);
 			}
 		}
@@ -149,8 +162,8 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 			String name = command.substring(2);
 			// Check class proc call
 			String[] split = name.split("::");
-			IModelElement[] typeMixin = XOTclResolver.findTypeMixin(tclNameToKey(name),
-					split[split.length - 1]);
+			IModelElement[] typeMixin = XOTclResolver.findTypeMixin(
+					tclNameToKey(name), split[split.length - 1]);
 			checkMixinTypeForMethod(node, commandExpr, typeMixin, prefix);
 		} else if (command != null) {
 			String[] split = command.split("::");
@@ -211,12 +224,13 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 								if (superClasses != null) {
 									for (int j = 0; j < superClasses.length; j++) {
 
-										IModelElement[] ptypeMixin = XOTclResolver.findTypeMixin(
-												(prefix.length() > 0 ? prefix
-														+ IMixinRequestor.MIXIN_NAME_SEPARATOR
-														: "")
-														+ tclNameToKey(superClasses[j]),
-												superClasses[j]);
+										IModelElement[] ptypeMixin = XOTclResolver
+												.findTypeMixin(
+														(prefix.length() > 0 ? prefix
+																+ IMixinRequestor.MIXIN_NAME_SEPARATOR
+																: "")
+																+ tclNameToKey(superClasses[j]),
+														superClasses[j]);
 										String[] split = superClasses[j]
 												.split("::");
 										checkMixinTypeForMethod(node,
@@ -237,7 +251,8 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 	}
 
 	/**
-	 * @deprecated Use {@link XOTclResolver#findTypeMixin(String,String)} instead
+	 * @deprecated Use {@link XOTclResolver#findTypeMixin(String,String)}
+	 *             instead
 	 */
 	public static IModelElement[] findTypeMixin(String pattern, String name) {
 		return XOTclResolver.findTypeMixin(pattern, name);
@@ -256,8 +271,9 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 				if (node.getCallName().sourceStart() <= position
 						&& position <= node.getCallName().sourceEnd()) {
 
-					IModelElement methodElement = TclResolver.findChildrenByName(node
-							.getCallName().getName(), (IParent) parent);
+					IModelElement methodElement = TclResolver
+							.findChildrenByName(node.getCallName().getName(),
+									(IParent) parent);
 					this.selectionElements.add(methodElement);
 					return;
 				} else if (typeName.sourceStart() <= position
@@ -278,8 +294,9 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 				if (node.getNameStart() <= position
 						&& position <= node.getNameEnd()) {
 
-					IModelElement methodElement = TclResolver.findChildrenByName(node
-							.getName(), (IParent) parent);
+					IModelElement methodElement = TclResolver
+							.findChildrenByName(node.getName(),
+									(IParent) parent);
 					this.selectionElements.add(methodElement);
 					return;
 				} else if (ref.sourceStart() <= position
@@ -292,14 +309,16 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 
 	private void processSelectXOTclMethod(XOTclMethodCallStatement call,
 			int position) {
-		XOTclInstanceVariable instanceVariable = call.getInstanceVariable();
-		if (instanceVariable != null) {
-			TypeDeclaration declaringType = instanceVariable.getDeclaringType();
-			SimpleReference callName = call.getCallName();
-			SimpleReference instName = call.getInstNameRef();
+		FieldDeclaration instanceVar = call.getInstanceVariable();
+		SimpleReference callName = call.getCallName();
+		SimpleReference instName = call.getInstNameRef();
+		if (instanceVar != null && instanceVar instanceof XOTclInstanceVariable) {
 			// Check for method
 			if (callName.sourceStart() <= position
 					&& position <= callName.sourceEnd()) {
+				XOTclInstanceVariable instanceVariable = (XOTclInstanceVariable) instanceVar;
+				TypeDeclaration declaringType = instanceVariable
+						.getDeclaringType();
 				if (declaringType != null) {
 					IModelElement parent = findElementFromNode(declaringType);
 					if (parent != null) {
@@ -370,13 +389,71 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 								findXOTclMethodMixin(sTypeMixin
 										+ tclNameToKey(callName.getName()),
 										callName.getName());
+								// Lets also look to toplevel
+								findXOTclMethodMixin(tclNameToKey(superClassName)
+										+ IMixinRequestor.MIXIN_NAME_SEPARATOR
+										+ tclNameToKey(callName.getName()),
+										callName.getName());
 							}
 						}
 					}
 				}
-			} else if (instName.sourceStart() <= position
-					&& position <= instName.sourceEnd()) {
-				addElementFromASTNode(instanceVariable);
+			}
+		} else if (instanceVar != null
+				&& instanceVar instanceof XOTclExInstanceVariable) {
+			// Check for method
+			XOTclExInstanceVariable instanceVariable = (XOTclExInstanceVariable) instanceVar;
+			IType type = (IType) instanceVariable.getDeclaringClassParameter()
+					.resolveElement();
+			if (type != null
+					&& (instName.sourceStart() <= position && position <= instName
+							.sourceEnd())) {
+				this.selectionElements.add(type);
+			} else if (type != null && callName.sourceStart() <= position
+					&& position <= callName.sourceEnd()) {
+
+				String typeMixin = TclParseUtil.getFQNFromModelElement(type, "::");
+				if( typeMixin.startsWith("::")) {
+					typeMixin = typeMixin.substring(2);
+				}
+				findXOTclMethodMixin(tclNameToKey(typeMixin) + IMixinRequestor.MIXIN_NAME_SEPARATOR + tclNameToKey(callName.getName()),
+						callName.getName());
+				// Check super.
+				List supersToHandle = new ArrayList();
+				String[] superClasses = null;
+				try {
+					superClasses = type.getSuperClasses();
+				} catch (ModelException e) {
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
+					}
+				}
+				if (superClasses != null) {
+					for (int i = 0; i < superClasses.length; i++) {
+						supersToHandle.add(superClasses[i]);
+					}
+				}
+				String prevClass = type.getFullyQualifiedName();
+				if (prevClass.startsWith("::")) {
+					prevClass = prevClass.substring(2);
+				}
+				while (supersToHandle.size() > 0) {
+					String superClassName = (String) supersToHandle.get(0);
+					supersToHandle.remove(0);
+					if (superClassName.startsWith("::")) {
+						findXOTclMethodMixin(superClassName.substring(2)
+								+ tclNameToKey(callName.getName()), callName
+								.getName());
+					} else {
+						// remove one level from prev class
+					}
+				}
+			}
+			if (this.selectionElements.size() == 0) {
+				if (instName.sourceStart() <= position
+						&& position <= instName.sourceEnd()) {
+					addElementFromASTNode(instanceVar);
+				}
 			}
 		}
 	}

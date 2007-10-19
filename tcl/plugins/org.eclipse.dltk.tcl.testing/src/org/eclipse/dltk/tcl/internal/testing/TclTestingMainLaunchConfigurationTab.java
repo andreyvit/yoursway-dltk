@@ -3,9 +3,14 @@ package org.eclipse.dltk.tcl.internal.testing;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.debug.ui.messages.DLTKLaunchConfigurationsMessages;
 import org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations.TclMainLaunchConfigurationTab;
 import org.eclipse.dltk.tcl.testing.ITclTestingEngine;
@@ -75,16 +80,57 @@ public class TclTestingMainLaunchConfigurationTab extends
 
 	private void handleDetectButtonSelected() {
 		ITclTestingEngine[] engines = TclTestingEngineManager.getEngines();
-		this.engineType.select(0);
-		for (int i = 0; i < engines.length; i++) {
-			// if( engines.i)
+		// this.engineType.select(0);
+		ISourceModule module = getSourceModule();
+		if (module != null && module.exists()) {
+			for (int i = 0; i < engines.length; i++) {
+				if (engines[i].isValidModule(module)) {
+					this.engineType.select(i);
+				}
+			}
 		}
+	}
+
+	private ISourceModule getSourceModule() {
+		IScriptProject project = this.getProject();
+		if (project == null) {
+			return null;
+		}
+		IProject prj = project.getProject();
+		String scriptName = this.getScriptName();
+		ISourceModule module = null;
+		IResource res = prj.getFile(scriptName);
+		module = (ISourceModule) DLTKCore.create(res);
+		return module;
+	}
+
+	protected boolean doCanSave() {
+		return validateScript() && validateEngine();
+	}
+
+	private boolean validateEngine() {
+		ISourceModule module = getSourceModule();
+		if (module != null) {
+			ITclTestingEngine[] engines = TclTestingEngineManager.getEngines();
+			for (int i = 0; i < engines.length; i++) {
+				String selectedEngine = this.getEngineId();
+				if (engines[i].getId().equals(selectedEngine)
+						&& engines[i].isValidModule(module)) {
+					return true;
+				}
+			}
+		}
+		setErrorMessage("Not a test file");
+		return false;
 	}
 
 	protected void doPerformApply(ILaunchConfigurationWorkingCopy config) {
 		super.doPerformApply(config);
-		config.setAttribute(IDLTKTestingConstants.ENGINE_ID_ATR,
-				(String) this.nameToId.get(this.engineType.getText()));
+		config.setAttribute(IDLTKTestingConstants.ENGINE_ID_ATR, getEngineId());
+	}
+
+	private String getEngineId() {
+		return (String) this.nameToId.get(this.engineType.getText());
 	}
 
 	protected void doInitializeForm(ILaunchConfiguration config) {
@@ -94,13 +140,14 @@ public class TclTestingMainLaunchConfigurationTab extends
 		try {
 			id = config.getAttribute(IDLTKTestingConstants.ENGINE_ID_ATR, "");
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 		if (id == null && id.length() == 0) {
 			handleDetectButtonSelected();
 		} else {
-//			this.engineType.select(0);
+			// this.engineType.select(0);
 			for (int i = 0; i < engines.length; i++) {
 				if (engines[i].getId().equals(id)) {
 					this.engineType.select(i);
