@@ -18,6 +18,7 @@ import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.search.index.Index;
+import org.eclipse.dltk.core.search.index.MixinIndex;
 import org.eclipse.dltk.core.search.indexing.SourceIndexer;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
@@ -128,6 +129,9 @@ public class DLTKSearchParticipant extends SearchParticipant {
 
 	public boolean isSkipped(Index index) {
 		if( this.bSkipMixinIndexes ) {
+			if( index instanceof MixinIndex ) {
+				return false;
+			}
 			String containerPath = index.containerPath;
 			if( containerPath.startsWith("#special#mixin")) {
 				return false;
