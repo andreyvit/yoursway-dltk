@@ -10,11 +10,6 @@ public interface ITclMixinElement {
 	public final static int ELEMENT_NAMESPACE = 0;
 	public final static int ELEMENT_FIELD = 1;
 	public final static int ELEMENT_PROC = 2;
-	//xotcl
-	public final static int ELEMENT_XOTCL_CLASS = 3;
-	public final static int ELEMENT_XOTCL_OBJECT = 4;
-	public final static int ELEMENT_XOTCL_INSTPROC = 5;
-	public final static int ELEMENT_XOTCL_PROC = 6;
 	
 	/**
 	 * Returns type of this mixin element. 

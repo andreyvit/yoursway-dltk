@@ -43,7 +43,6 @@ import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
@@ -59,7 +58,7 @@ import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeyw
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordOrFunction;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnVariable;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.TclCompletionParser;
-import org.eclipse.dltk.tcl.internal.core.search.mixin.TclMixinModel;
+import org.eclipse.dltk.tcl.internal.core.search.mixin.TclMixinUtils;
 import org.eclipse.dltk.tcl.internal.core.search.mixin.model.TclProc;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 
@@ -177,35 +176,10 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		setSourceRange(astNode.sourceStart(), astNode.sourceEnd());
 		if (astNode instanceof CompletionOnKeywordOrFunction) {
 			CompletionOnKeywordOrFunction key = (CompletionOnKeywordOrFunction) astNode;
-			if (!this.requestor.isIgnored(CompletionProposal.KEYWORD)) {
-				String[] kw = key.getPossibleKeywords();
-				completeForKeywordOrFunction(key, kw);
-			}
-			/*
-			 * TODO: Add search for functions. Variables start with $ so it will
-			 * not be here... To all functions are possible. Functions with
-			 * ::will not be here.
-			 * 
-			 */
-			if (!this.requestor
-					.isIgnored(CompletionProposal.METHOD_DECLARATION)) {
-				List methodNames = new ArrayList();
-				findLocalFunctions(key.getToken(), key.canCompleteEmptyToken(),
-						astNodeParent, methodNames);
-				char[] token = key.getToken();
-				token = removeLastColonFromToken(token);
-				findNamespaceFunctions(token, methodNames);
-			}
+			processCompletionOnKeywords(key);
+			processCompletionOnFunctions(astNodeParent, key);
 		} else if (astNode instanceof CompletionOnVariable) {
-			if (!this.requestor
-					.isIgnored(CompletionProposal.LOCAL_VARIABLE_REF)
-					&& !this.requestor
-							.isIgnored(CompletionProposal.VARIABLE_DECLARATION)) {
-				CompletionOnVariable completion = (CompletionOnVariable) astNode;
-				findVariables(completion.getToken(), completion.getInNode(),
-						completion.canHandleEmpty(), astNode.sourceStart(),
-						completion.getProvideDollar(), null);
-			}
+			processCompletionOnVariables(astNode);
 		} else if (astNode instanceof CompletionOnKeywordArgumentOrFunctionArgument) {
 			CompletionOnKeywordArgumentOrFunctionArgument compl = (CompletionOnKeywordArgumentOrFunctionArgument) astNode;
 			if (compl.argumentIndex() == 1) {
@@ -215,24 +189,65 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 				if (at instanceof SimpleReference) {
 					String prefix = ((SimpleReference) at).getName() + " "
 							+ new String(compl.getToken());
-					String[] possibleKeywords = compl.getPossibleKeywords();
-					List k = new ArrayList();
-					for (int i = 0; i < possibleKeywords.length; i++) {
-						String kkw = possibleKeywords[i];
-						if (kkw.startsWith(prefix)) {
-							k.add(kkw.substring(kkw.indexOf(" ") + 1));
-						}
-					}
-					String kw[] = (String[]) k.toArray(new String[k.size()]);
-					char[][] choices = new char[kw.length][];
-					for (int i = 0; i < kw.length; ++i) {
-						choices[i] = kw[i].toCharArray();
-					}
-					findKeywords(compl.getToken(), choices, true);
+					processPartOfKeywords(compl, prefix, null);
 				}
 			}
 		}
 		return true;
+	}
+
+	protected void processPartOfKeywords(
+			CompletionOnKeywordArgumentOrFunctionArgument compl, String prefix,
+			Set methodNames) {
+		String[] possibleKeywords = compl.getPossibleKeywords();
+		List k = new ArrayList();
+		for (int i = 0; i < possibleKeywords.length; i++) {
+			String kkw = possibleKeywords[i];
+			if (kkw.startsWith(prefix)) {
+				k.add(kkw.substring(kkw.indexOf(" ") + 1));
+			}
+		}
+		String kw[] = (String[]) k.toArray(new String[k.size()]);
+		char[][] choices = new char[kw.length][];
+		for (int i = 0; i < kw.length; ++i) {
+			choices[i] = kw[i].toCharArray();
+		}
+		findKeywords(compl.getToken(), choices, true);
+		if (methodNames != null) {
+			methodNames.addAll(k);
+		}
+	}
+
+	protected void processCompletionOnVariables(ASTNode astNode) {
+		if (!this.requestor.isIgnored(CompletionProposal.LOCAL_VARIABLE_REF)
+				&& !this.requestor
+						.isIgnored(CompletionProposal.VARIABLE_DECLARATION)) {
+			CompletionOnVariable completion = (CompletionOnVariable) astNode;
+			findVariables(completion.getToken(), completion.getInNode(),
+					completion.canHandleEmpty(), astNode.sourceStart(),
+					completion.getProvideDollar(), null);
+		}
+	}
+
+	protected void processCompletionOnFunctions(ASTNode astNodeParent,
+			CompletionOnKeywordOrFunction key) {
+		if (!this.requestor.isIgnored(CompletionProposal.METHOD_DECLARATION)) {
+			List methodNames = new ArrayList();
+			findLocalFunctions(key.getToken(), key.canCompleteEmptyToken(),
+					astNodeParent, methodNames);
+			char[] token = key.getToken();
+			token = removeLastColonFromToken(token);
+			Set set = new HashSet();
+			set.addAll(methodNames);
+			findNamespaceFunctions(token, set);
+		}
+	}
+
+	protected void processCompletionOnKeywords(CompletionOnKeywordOrFunction key) {
+		if (!this.requestor.isIgnored(CompletionProposal.KEYWORD)) {
+			String[] kw = key.getPossibleKeywords();
+			completeForKeywordOrFunction(key, kw);
+		}
 	}
 
 	protected void completeForKeywordOrFunction(
@@ -265,108 +280,96 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	protected void findNamespaceFunctions(final char[] token,
-			final List methodNames) {
+			final Set methodNames) {
 
 		final Set methods = new HashSet();
-		final Set types = new HashSet();
-
-		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager
-					.getLanguageToolkit(this.scriptProject);
-		} catch (CoreException e1) {
-			if (DLTKCore.DEBUG) {
-				e1.printStackTrace();
-			}
+		String to_ = new String(token);
+		String to = to_;
+		if (to.startsWith("::")) {
+			to = to.substring(2);
 		}
-		// IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit);
-		String to = new String(token);
-		if (token != null && token.length >= 3 && token[0] == ':') {
-			String[] tokens = to.split("::");
-			if (tokens.length < 2) {
-				return;
-			}
-			final String tok = to.substring(2);
-			findMethodFromMixin(methods, tok + "*");
-			int nonNoneCount = 0;
-			String mtok = null;
-			for (int i = 0; i < tokens.length; ++i) {
-				if (tokens[i].length() > 0) {
-					nonNoneCount++;
-					if (mtok == null) {
-						mtok = tokens[i];
-					}
-				}
-			}
-			if (DLTKCore.VERBOSE_COMPLETION) {
-				System.out
-						.println("Completion methods cound:" + methods.size());
-			}
-		} else if (token != null && token.length >= 1 && token[0] != ':') {
-			String[] tokens = to.split("::");
-			if (tokens.length == 0) {
-				return;
-			}
-			String tok = tokens[0];
-
-			findMethodFromMixin(methods, tok + "*");
-			int nonNoneCount = 0;
-			for (int i = 0; i < tokens.length; ++i) {
-				if (tokens[i].length() > 0) {
-					nonNoneCount++;
-				}
-			}
-			if (DLTKCore.VERBOSE_COMPLETION) {
-				System.out
-						.println("Completion methods cound:" + methods.size());
-			}
+		if (to.length() == 0) {
+			return;
 		}
-		findTypes(token, true, toList(types));
+		methods.addAll(methodNames);
+		findMethodFromMixin(methods, to + "*");
+		methods.removeAll(methodNames);
+		// Remove all with same names
+		removeSameFrom(methodNames, methods, to_);
+		// findTypes(token, true, toList(types));
 		findMethods(token, false, toList(methods));
 	}
 
-	protected void findMethodFromMixin(final Set methods, String tok) {
-		long delta = 200;
-		long time = System.currentTimeMillis();
-		IMixinElement[] find = TclMixinModel.getInstance().find(
-				tok.replaceAll("::", IMixinRequestor.MIXIN_NAME_SEPARATOR),
-				delta);
-		if (TRACE_COMPLETION_TIME) {
-			System.out.println("findMethod from mixin: request model:"
-					+ Long.toString(System.currentTimeMillis() - time));
-		}
-		time = System.currentTimeMillis();
-		for (int i = 0; i < find.length; i++) {
-			Object[] allObjects = find[i].getAllObjects();
-			for (int j = 0; j < allObjects.length; j++) {
-				if (allObjects[j] != null && allObjects[j] instanceof TclProc) {
-					TclProc field = (TclProc) allObjects[j];
-					IModelElement method = field.getModelElement();
-					if (method != null) {
-						// We should filter external source modules with same
-						// external path.
-						if (moduleFilter(methods, (IMethod) method)) {
-							methods.add(method);
+	protected void removeSameFrom(final Set methodNames, final Set methods,
+			String to_) {
+		for (Iterator iterator = methodNames.iterator(); iterator.hasNext();) {
+			Object name = (Object) iterator.next();
+			if (name instanceof String) {
+				// We need to remove all elements with name from methods.
+				Object elementToRemove = null;
+				for (Iterator me = methods.iterator(); me.hasNext();) {
+					Object m = (Object) me.next();
+					if (m instanceof IMethod) {
+						IMethod method = (IMethod) m;
+						String qname = processMethodName(method, to_);
+						if (qname.equals((String) name)) {
+							elementToRemove = m;
+							break;
+						}
+					} else if (m instanceof IType) {
+						IType type = (IType) m;
+						String qname = processTypeName(type, to_);
+						if (qname.equals((String) name)) {
+							elementToRemove = m;
+							break;
 						}
 					}
 				}
+				if (elementToRemove != null) {
+					methods.remove(elementToRemove);
+				}
 			}
-			// if(System.currentTimeMillis()-time > delta) {
-			// return;
-			// }
 		}
 	}
 
-	protected boolean moduleFilter(Set methods, IMethod method) {
-		org.eclipse.dltk.core.ISourceModule sourceModule = (org.eclipse.dltk.core.ISourceModule) method
+	protected void findMixinTclElement(final Set completions, String tok,
+			Class mixinClass) {
+		String pattern = tok.replaceAll("::",
+				IMixinRequestor.MIXIN_NAME_SEPARATOR);
+		IModelElement[] elements = TclMixinUtils.findModelElementsFromMixin(
+				pattern, mixinClass);
+		for (int i = 0; i < elements.length; i++) {
+			// We should filter external source modules with same
+			// external path.
+			if (moduleFilter(completions, elements[i])) {
+				completions.add(elements[i]);
+			}
+		}
+	}
+
+	protected void findMethodFromMixin(final Set methods, String tok) {
+		findMixinTclElement(methods, tok, TclProc.class);
+	}
+
+	protected boolean moduleFilter(Set completions, IModelElement modelElement) {
+		org.eclipse.dltk.core.ISourceModule sourceModule = (org.eclipse.dltk.core.ISourceModule) modelElement
 				.getAncestor(IModelElement.SOURCE_MODULE);
+		// firstly lets filter member names
+
+		String fullyQualifiedName = TclParseUtil.getFQNFromModelElement(
+				modelElement, "::");
+
 		if (!(sourceModule instanceof AbstractExternalSourceModule)) {
 			return true;
 		}
-		String fullyQualifiedName = method.getFullyQualifiedName();
-		for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
-			IMethod element = (IMethod) iterator.next();
-			if (element.getFullyQualifiedName().equals(fullyQualifiedName)) {
+		for (Iterator iterator = completions.iterator(); iterator.hasNext();) {
+			Object o = iterator.next();
+			if (!(o instanceof IModelElement)) {
+				continue;
+			}
+			IModelElement element = (IModelElement) iterator.next();
+			String eName = TclParseUtil.getFQNFromModelElement(element, "::");
+			if (eName.equals(fullyQualifiedName)) {
 				org.eclipse.dltk.core.ISourceModule eModule = (org.eclipse.dltk.core.ISourceModule) element
 						.getAncestor(IModelElement.SOURCE_MODULE);
 				if (sourceModule.getPath().equals(eModule.getPath())) {

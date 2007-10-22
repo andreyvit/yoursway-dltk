@@ -10,16 +10,17 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
-import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.ast.ExtendedTclMethodDeclaration;
 import org.eclipse.dltk.tcl.internal.core.search.mixin.TclMixinBuildVisitor;
 import org.eclipse.dltk.tcl.internal.core.search.mixin.model.TclField;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclFieldDeclaration;
+import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclClass;
+import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclClassInstance;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclInstProc;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclObject;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclProc;
@@ -29,9 +30,7 @@ public class XOTclMixinBuildVisitor extends TclMixinBuildVisitor {
 			ISourceModule module, boolean signature, IMixinRequestor requestor) {
 		super(moduleDeclaration, module, signature, requestor);
 	}
-
 	
-
 	public boolean visit(MethodDeclaration s) throws Exception {
 		if (s instanceof XOTclMethodDeclaration) {
 			visitXOTclMethod(s);
@@ -69,7 +68,19 @@ public class XOTclMixinBuildVisitor extends TclMixinBuildVisitor {
 	}
 
 	public boolean visit(Statement s) throws Exception {
-		if (s instanceof XOTclFieldDeclaration) {
+		if( s instanceof XOTclInstanceVariable ) {
+			XOTclInstanceVariable instanceVar = (XOTclInstanceVariable) s;
+			List levels = TclParseUtil.findLevelsTo(this.moduleDeclaration,
+					instanceVar);
+			ElementInfo info = new ElementInfo();
+			info.key = this.getKeyFromLevels(levels);
+			if (signature) {
+				info.object = new XOTclClassInstance();
+			}
+			this.requestor.reportElement(info);
+			return false;
+		}
+		else if (s instanceof XOTclFieldDeclaration) {
 			XOTclFieldDeclaration var = (XOTclFieldDeclaration) s;
 			String name = var.getName();
 			TypeDeclaration type = var.getDeclaringType();
@@ -84,13 +95,7 @@ public class XOTclMixinBuildVisitor extends TclMixinBuildVisitor {
 				info.object = new TclField();
 			}
 			this.requestor.reportElement(info);
-		}
-		else if( s instanceof TclStatement ) {
-			TclStatement st = (TclStatement) s;
-			// new field checks.
-			if( st.getCount() >= 3 ) {
-				
-			}
+			return false;
 		}
 		return super.visit(s);
 	}

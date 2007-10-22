@@ -1,6 +1,5 @@
 package org.eclipse.dltk.xotcl.internal.core.search.mixin.model;
 
-import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
@@ -8,7 +7,7 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.tcl.internal.core.search.mixin.model.TclMixinElement;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 
-public class XOTclObject extends TclMixinElement {
+public class XOTclObject extends TclMixinElement implements IXOTclMixinConstants {
 	public int getType() {
 		return ELEMENT_XOTCL_OBJECT;
 	}

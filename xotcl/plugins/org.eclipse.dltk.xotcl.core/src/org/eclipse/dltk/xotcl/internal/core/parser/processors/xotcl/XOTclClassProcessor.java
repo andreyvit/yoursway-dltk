@@ -37,7 +37,7 @@ public class XOTclClassProcessor extends AbstractTclCommandProcessor {
 					name = (SimpleReference) ex;
 				}
 				else {
-					this.report(parser, "A name expected.", ex, ProblemSeverities.Error);
+					this.report(parser, "A name expected.", statement, ProblemSeverities.Error);
 					return null;
 				}
 			}

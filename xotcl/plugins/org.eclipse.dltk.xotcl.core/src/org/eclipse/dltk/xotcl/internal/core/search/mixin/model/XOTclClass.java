@@ -8,7 +8,7 @@ import org.eclipse.dltk.tcl.internal.core.search.mixin.model.TclMixinElement;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 
 
-public class XOTclClass extends TclMixinElement {
+public class XOTclClass extends TclMixinElement implements IXOTclMixinConstants {
 	private String namespaceKey;
 	public int getType() {
 		return ELEMENT_XOTCL_CLASS;

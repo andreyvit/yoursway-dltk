@@ -80,6 +80,9 @@ public abstract class InternalSearchPattern {
 	 * Query a given index for matching entries. Assumes the sender has opened the index and will close when finished.
 	 */
 	public void findIndexMatches(Index index, IndexQueryRequestor requestor, SearchParticipant participant, IDLTKSearchScope scope, IProgressMonitor monitor) throws IOException {
+		if( participant.isSkipped(index)) {
+			return;
+		}
 		if (monitor != null && monitor.isCanceled()) throw new OperationCanceledException();
 		try {
 			index.startQuery();

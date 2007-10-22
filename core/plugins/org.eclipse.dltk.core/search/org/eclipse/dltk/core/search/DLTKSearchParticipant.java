@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.search.index.Index;
 import org.eclipse.dltk.core.search.indexing.SourceIndexer;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
@@ -37,7 +38,7 @@ import org.eclipse.dltk.internal.core.search.IndexSelector;
  */
 public class DLTKSearchParticipant extends SearchParticipant {
 	private IndexSelector indexSelector;
-
+	private boolean bSkipMixinIndexes = false;
 	public void beginSearching() {
 		super.beginSearching();
 		this.indexSelector = null;
@@ -117,12 +118,22 @@ public class DLTKSearchParticipant extends SearchParticipant {
 
 	public IPath[] selectMixinIndexes(SearchPattern query,
 			IDLTKSearchScope scope) {
+		this.skipNotMixin();
 		return selectIndexes(query, scope);
-//		if (this.indexSelector == null ||( this.indexSelector != null && this.indexSelector.mixin == false )) {
-//			this.indexSelector = new IndexSelector(scope, query);
-//			this.indexSelector.mixin = true;
-//		}
-//		return this.indexSelector.getIndexLocations();
-////		return null;
+	}
+
+	public void skipNotMixin() {
+		this.bSkipMixinIndexes = true;
+	}
+
+	public boolean isSkipped(Index index) {
+		if( this.bSkipMixinIndexes ) {
+			String containerPath = index.containerPath;
+			if( containerPath.startsWith("#special#mixin")) {
+				return false;
+			}
+			return true;
+		}
+		return false;
 	}
 }

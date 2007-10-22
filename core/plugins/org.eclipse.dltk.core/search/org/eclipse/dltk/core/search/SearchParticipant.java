@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.search.index.Index;
 import org.eclipse.dltk.core.search.indexing.IndexManager;
 import org.eclipse.dltk.internal.core.Model;
 import org.eclipse.dltk.internal.core.ModelManager;
@@ -245,4 +246,11 @@ public abstract class SearchParticipant {
 	public abstract IPath[] selectIndexes(SearchPattern query, IDLTKSearchScope scope);
 	
 	public abstract IPath[] selectMixinIndexes(SearchPattern query, IDLTKSearchScope scope);
+
+	public abstract void skipNotMixin();
+	
+	/**
+	 * Used then searcj, if selected index are skipped, it not inclouded in search.
+	 */
+	public abstract boolean isSkipped(Index index);
 }

@@ -1,13 +1,13 @@
 
 ! Tcl Development Tools (DLTK)
 !
-! $Id: tcl.map,v 1.73 2007/10/19 15:35:43 asobolev Exp $ 
+! $Id: tcl.map,v 1.74 2007/10/22 11:16:59 asobolev Exp $ 
 
 feature@org.eclipse.dltk.tcl=v20071019,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl-feature
 feature@org.eclipse.dltk.tcl.sdk=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/features/org.eclipse.dltk.tcl.sdk
 
 plugin@org.eclipse.dltk.tcl=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl
-plugin@org.eclipse.dltk.tcl.core=v20071019,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.core
+plugin@org.eclipse.dltk.tcl.core=v20071022,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.core
 plugin@org.eclipse.dltk.tcl.launching=v20070920,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.launching
 plugin@org.eclipse.dltk.tcl.ui=v20071019,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.ui
 
@@ -21,8 +21,8 @@ plugin@org.eclipse.dltk.tcl.activestatedebugger=v20070727b,:pserver:anonymous@de
 plugin@org.eclipse.dltk.tcl.testing=v20071019,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.testing
 plugin@org.eclipse.dltk.tcl.testing.tcltest=v20071019,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/plugins/org.eclipse.dltk.tcl.testing.tcltest
 
-plugin@org.eclipse.dltk.tcl.doc.user=v20071019,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/docs/org.eclipse.dltk.tcl.doc.user
+plugin@org.eclipse.dltk.tcl.doc.user=v20071022,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tcl/docs/org.eclipse.dltk.tcl.doc.user
 
 ! Temporary Cisco stuff
-plugin@com.cisco.tcl.scriptchecker=v20071019,:ext:kurtov@us.xored.com:/opt/cisco/,
-plugin@com.cisco.testing.aetest=v20071019b,:ext:kurtov@us.xored.com:/opt/cisco/,
+!plugin@com.cisco.tcl.scriptchecker=v20071019,:ext:kurtov@us.xored.com:/opt/cisco/,
+!plugin@com.cisco.testing.aetest=v20071019b,:ext:kurtov@us.xored.com:/opt/cisco/,

@@ -24,7 +24,9 @@ public class XOTclDocumentationResolver {
 						(ASTNode) sts.get(q));
 				String elementFQN = "::"
 						+ TclParseUtil.getElementFQN(parent, "::", module);
-
+				if( memberkey.length() < elementFQN.length() + 2) {
+					continue;
+				}
 				String shortDescr = memberkey
 						.substring(elementFQN.length() + 2);
 				if (elementFQN.equals("::")) {

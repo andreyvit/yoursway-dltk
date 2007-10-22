@@ -20,9 +20,9 @@ import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IAccessRule;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
@@ -544,9 +544,9 @@ public abstract class ScriptCompletionEngine extends Engine implements
 			for (int i = 0; i < types.size(); i++) {
 				IType type = (IType) types.get(i);
 				String qname = processTypeName(type, tok);
-				if( qname.startsWith("::") || ( length > 1 && token[0] != ':' && token[1] != ':' )) {
-					qname = qname.substring(2);
-				}
+//				if( qname.startsWith("::") || ( length > 1 && token[0] != ':' && token[1] != ':' )) {
+//					qname = qname.substring(2);
+//				}
 				char[] name = qname.toCharArray();
 				if (DLTKCore.DEBUG_COMPLETION) {
 					System.out.println("Completion:" + qname);
