@@ -13,6 +13,7 @@ package org.eclipse.dltk.ruby.basicdebugger;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.dltk.ruby.abstractdebugger.AbstractRubyDebuggerPlugin;
 import org.eclipse.dltk.utils.DeployHelper;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -55,7 +56,8 @@ public class RubyBasicDebuggerPlugin extends AbstractUIPlugin {
 	
 	private static final String DEBUGGER_DIR = "debugger";
 
-	public IPath deployDebuggerSource() throws IOException {		
+	public IPath deployDebuggerSource() throws IOException {
+		AbstractRubyDebuggerPlugin.getDefault().deployDebuggerSource(this);
 		return DeployHelper.deploy(this, DEBUGGER_DIR);		
 	}
 }
