@@ -88,8 +88,8 @@ public class TclCompletionParser extends TclAssistParser {
 			List expressions = statement.getExpressions();
 			int len = expressions.size();
 			boolean first = false;
-			ASTNode completionNode = null;
 			String completionToken = null;
+			ASTNode completionNode = null;
 			for (int i = 0; i < len; ++i) {
 				ASTNode n = (ASTNode) expressions.get(i);
 				if (n.sourceStart() <= position && n.sourceEnd() >= position
@@ -327,7 +327,7 @@ public class TclCompletionParser extends TclAssistParser {
 		return false;
 	}
 
-	private String[] checkKeywords(String completionToken, int type) {
+	protected String[] checkKeywords(String completionToken, int type) {
 		String[] keywords = TclKeywordsManager.getKeywords(type);
 		// TODO: Possible require cases.
 		if (type == MODULE || type == FUNCTION || type == NAMESPACE

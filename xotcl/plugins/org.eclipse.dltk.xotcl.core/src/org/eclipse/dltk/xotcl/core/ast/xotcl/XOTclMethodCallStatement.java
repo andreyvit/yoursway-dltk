@@ -7,7 +7,6 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 
 public class XOTclMethodCallStatement extends CallExpression {
 	private FieldDeclaration instanceVariable;
-
 	public XOTclMethodCallStatement(int start, int end, SimpleReference name,
 			FieldDeclaration var, CallArgumentsList args) {
 		super(start, end, var, name, args);

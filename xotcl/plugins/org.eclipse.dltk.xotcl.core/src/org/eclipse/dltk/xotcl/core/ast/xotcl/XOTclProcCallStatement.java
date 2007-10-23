@@ -55,4 +55,7 @@ public class XOTclProcCallStatement extends Statement {
 	public SimpleReference getInstNameRef() {
 		return this.instName;
 	}
+	public ASTListNode getArguments() {
+		return this.arguments;
+	}
 }

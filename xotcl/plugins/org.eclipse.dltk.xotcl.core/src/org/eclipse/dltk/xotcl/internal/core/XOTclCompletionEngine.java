@@ -7,21 +7,21 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.env.lookup.Scope;
 import org.eclipse.dltk.core.CompletionProposal;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IMethod;
-import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
-import org.eclipse.dltk.internal.core.AbstractExternalSourceModule;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
-import org.eclipse.dltk.tcl.internal.core.codeassist.TclASTUtil;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclCompletionEngine;
+import org.eclipse.dltk.tcl.internal.core.codeassist.TclResolver;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordArgumentOrFunctionArgument;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordOrFunction;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnVariable;
@@ -46,9 +46,9 @@ public class XOTclCompletionEngine extends TclCompletionEngine {
 		if (astNode instanceof CompletionOnKeywordOrFunction) {
 			CompletionOnKeywordOrFunction key = (CompletionOnKeywordOrFunction) astNode;
 			processCompletionOnKeywords(key);
-			
+
 			processCompletionOnFunctions(astNodeParent, key);
-			
+
 			if (!this.requestor.isIgnored(CompletionProposal.TYPE_REF)) {
 				Set methodNames = new HashSet();
 				char[] token = key.getToken();
@@ -62,6 +62,7 @@ public class XOTclCompletionEngine extends TclCompletionEngine {
 				char[] token = key.getToken();
 				token = removeLastColonFromToken(token);
 				// findLocalClassInstances
+				findLocalXOTclClassInstances(token, methodNames, astNodeParent);
 				findXOTclClassInstances(token, methodNames);
 			}
 		} else if (astNode instanceof CompletionOnVariable) {
@@ -75,7 +76,7 @@ public class XOTclCompletionEngine extends TclCompletionEngine {
 				if (at instanceof SimpleReference) {
 					String name = ((SimpleReference) at).getName();
 					String prefix = name + " " + new String(compl.getToken());
-					
+
 					Set methodNames = new HashSet();
 					processPartOfKeywords(compl, prefix, methodNames);
 					// Check for class and its methods.
@@ -104,28 +105,101 @@ public class XOTclCompletionEngine extends TclCompletionEngine {
 			ASTNode astNodeParent) {
 		ASTNode parent = TclParseUtil.getScopeParent(parser.getModule(),
 				astNodeParent);
-		List statements = TclASTUtil.getStatements(parent);
-		for (Iterator iterator = statements.iterator(); iterator.hasNext();) {
-			ASTNode nde = (ASTNode) iterator.next();
-			if (nde instanceof TypeDeclaration
-					&& ((((TypeDeclaration) nde).getModifiers() & IXOTclModifiers.AccXOTcl) != 0)) {
-				
+		// We need to process all xotcl classes.
+
+		Set classes = new HashSet();
+
+		findXOTclClassessIn(parent, classes);
+		removeSameFrom(methodNames, classes, new String(token));
+		findTypes(token, true, toList(classes));
+		methodNames.addAll(classes);
+	}
+
+	private void findLocalXOTclClassInstances(char[] token, Set methodNames,
+			ASTNode astNodeParent) {
+		ASTNode parent = TclParseUtil.getScopeParent(parser.getModule(),
+				astNodeParent);
+		// We need to process all xotcl classes.
+
+		Set classes = new HashSet();
+
+		findXOTclClassInstancesIn(parent, classes);
+		removeSameFrom(methodNames, classes, new String(token));
+		findFields(token, true, toList(classes), "");
+		methodNames.addAll(classes);
+	}
+
+	private void findXOTclClassessIn(ASTNode parent, Set classes) {
+		// List statements = TclASTUtil.getStatements(parent);
+		final List result = new ArrayList();
+		final TclResolver resolver = new TclResolver(this.sourceModule, parser
+				.getModule(), null);
+
+		try {
+			this.parser.getModule().traverse(new ASTVisitor() {
+				// for (Iterator iterator = statements.iterator();
+				// iterator.hasNext();) {
+				// ASTNode nde = (ASTNode) iterator.next();
+				public boolean visit(TypeDeclaration type) {
+					if ((type.getModifiers() & IXOTclModifiers.AccXOTcl) != 0
+							&& type.sourceStart() < actualCompletionPosition) {
+						// we need to find model element for selected type.
+						resolver.searchAddElementsTo(parser.getModule()
+								.getStatements(), type, sourceModule, result);
+					}
+					return true;
+				}
+			});
+		} catch (Exception e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
 			}
 		}
+		classes.addAll(result);
+	}
+
+	private void findXOTclClassInstancesIn(ASTNode parent, Set classes) {
+		// List statements = TclASTUtil.getStatements(parent);
+		final List result = new ArrayList();
+		final TclResolver resolver = new TclResolver(this.sourceModule, parser
+				.getModule(), null);
+
+		try {
+			this.parser.getModule().traverse(new ASTVisitor() {
+				public boolean visit(Statement st) {
+					if (st instanceof XOTclInstanceVariable
+							|| st instanceof XOTclExInstanceVariable) {
+						// we need to find model element for selected type.
+						resolver.searchAddElementsTo(parser.getModule()
+								.getStatements(), st, sourceModule, result);
+					}
+					return true;
+				}
+			});
+		} catch (Exception e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+		}
+		classes.addAll(result);
 	}
 
 	private void findXOTclClassInstances(char[] token, Set methodNames) {
 		// IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit);
-		String to = new String(token);
+		String to_ = new String(token);
+		String to = to_;
 		if (to.startsWith("::")) {
 			to = to.substring(2);
 		}
 		if (to.length() == 0) {
 			return;
 		}
-		findClassesInstanceFromMixin(methodNames, to + "*");
-
-		findFields(token, true, toList(methodNames), "");
+		Set elements = new HashSet();
+		elements.addAll(methodNames);
+		findClassesInstanceFromMixin(elements, to + "*");
+		removeSameFrom(methodNames, elements, to);
+		findFields(token, true, toList(elements), "");
+		methodNames.addAll(elements);
 	}
 
 	private FieldDeclaration searchFieldFromMixin(String name) {
@@ -261,25 +335,5 @@ public class XOTclCompletionEngine extends TclCompletionEngine {
 	protected void findClassesInstanceFromMixin(final Set completions,
 			String tok) {
 		findMixinTclElement(completions, tok, XOTclClassInstance.class);
-	}
-
-	protected boolean moduleFilter(Set methods, IType type) {
-		org.eclipse.dltk.core.ISourceModule sourceModule = (org.eclipse.dltk.core.ISourceModule) type
-				.getAncestor(IModelElement.SOURCE_MODULE);
-		if (!(sourceModule instanceof AbstractExternalSourceModule)) {
-			return true;
-		}
-		String fullyQualifiedName = type.getFullyQualifiedName();
-		for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
-			IType element = (IType) iterator.next();
-			if (element.getFullyQualifiedName().equals(fullyQualifiedName)) {
-				org.eclipse.dltk.core.ISourceModule eModule = (org.eclipse.dltk.core.ISourceModule) element
-						.getAncestor(IModelElement.SOURCE_MODULE);
-				if (sourceModule.getPath().equals(eModule.getPath())) {
-					return false;
-				}
-			}
-		}
-		return true;
 	}
 }

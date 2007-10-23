@@ -544,9 +544,6 @@ public abstract class ScriptCompletionEngine extends Engine implements
 			for (int i = 0; i < types.size(); i++) {
 				IType type = (IType) types.get(i);
 				String qname = processTypeName(type, tok);
-//				if( qname.startsWith("::") || ( length > 1 && token[0] != ':' && token[1] != ':' )) {
-//					qname = qname.substring(2);
-//				}
 				char[] name = qname.toCharArray();
 				if (DLTKCore.DEBUG_COMPLETION) {
 					System.out.println("Completion:" + qname);

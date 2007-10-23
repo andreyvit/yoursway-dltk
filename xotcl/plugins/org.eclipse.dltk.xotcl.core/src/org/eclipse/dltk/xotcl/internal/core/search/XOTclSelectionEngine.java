@@ -250,14 +250,6 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 		return false;
 	}
 
-	/**
-	 * @deprecated Use {@link XOTclResolver#findTypeMixin(String,String)}
-	 *             instead
-	 */
-	public static IModelElement[] findTypeMixin(String pattern, String name) {
-		return XOTclResolver.findTypeMixin(pattern, name);
-	}
-
 	private void processSelectXOTclMethod(XOTclProcCallStatement node,
 			int position) {
 		SimpleReference typeName = node.getInstNameRef();

@@ -51,7 +51,6 @@ import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
-import org.eclipse.dltk.internal.core.AbstractExternalSourceModule;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordArgumentOrFunctionArgument;
@@ -65,7 +64,7 @@ import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 public class TclCompletionEngine extends ScriptCompletionEngine {
 
 	protected TclCompletionParser parser;
-	org.eclipse.dltk.core.ISourceModule sourceModule;
+	protected org.eclipse.dltk.core.ISourceModule sourceModule;
 	protected final static boolean TRACE_COMPLETION_TIME = false;
 
 	public TclCompletionEngine(/*
@@ -106,20 +105,16 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 					System.out.println(parsedUnit.toString());
 				}
 				try {
-					this.lookupEnvironment.buildTypeScope(parsedUnit, null);
 
-					if ((this.unitScope = parsedUnit.scope) != null) {
-						this.source = sourceModule.getSourceContents()
-								.toCharArray();
-						parseBlockStatements(parsedUnit,
-								this.actualCompletionPosition);
-
-						if (DEBUG) {
-							System.out.println("COMPLETION - AST :"); //$NON-NLS-1$
-							System.out.println(parsedUnit.toString());
-						}
-						// parsedUnit.resolve();
+					this.source = sourceModule.getSourceContents()
+							.toCharArray();
+					parseBlockStatements(parsedUnit,
+							this.actualCompletionPosition);
+					if (DEBUG) {
+						System.out.println("COMPLETION - AST :"); //$NON-NLS-1$
+						System.out.println(parsedUnit.toString());
 					}
+
 				} catch (CompletionNodeFound e) {
 					// completionNodeFound = true;
 					if (e.astNode != null) {
@@ -300,14 +295,14 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		findMethods(token, false, toList(methods));
 	}
 
-	protected void removeSameFrom(final Set methodNames, final Set methods,
+	protected void removeSameFrom(final Set methodNames, final Set elements,
 			String to_) {
 		for (Iterator iterator = methodNames.iterator(); iterator.hasNext();) {
 			Object name = (Object) iterator.next();
 			if (name instanceof String) {
 				// We need to remove all elements with name from methods.
 				Object elementToRemove = null;
-				for (Iterator me = methods.iterator(); me.hasNext();) {
+				for (Iterator me = elements.iterator(); me.hasNext();) {
 					Object m = (Object) me.next();
 					if (m instanceof IMethod) {
 						IMethod method = (IMethod) m;
@@ -326,7 +321,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 					}
 				}
 				if (elementToRemove != null) {
-					methods.remove(elementToRemove);
+					elements.remove(elementToRemove);
 				}
 			}
 		}
@@ -338,11 +333,15 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 				IMixinRequestor.MIXIN_NAME_SEPARATOR);
 		IModelElement[] elements = TclMixinUtils.findModelElementsFromMixin(
 				pattern, mixinClass);
+		long start = System.currentTimeMillis();
 		for (int i = 0; i < elements.length; i++) {
 			// We should filter external source modules with same
 			// external path.
 			if (moduleFilter(completions, elements[i])) {
 				completions.add(elements[i]);
+			}
+			if (System.currentTimeMillis() - start > 100) {
+				return;
 			}
 		}
 	}
@@ -352,29 +351,28 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	protected boolean moduleFilter(Set completions, IModelElement modelElement) {
-		org.eclipse.dltk.core.ISourceModule sourceModule = (org.eclipse.dltk.core.ISourceModule) modelElement
-				.getAncestor(IModelElement.SOURCE_MODULE);
+		// org.eclipse.dltk.core.ISourceModule sourceModule =
+		// (org.eclipse.dltk.core.ISourceModule) modelElement
+		// .getAncestor(IModelElement.SOURCE_MODULE);
 		// firstly lets filter member names
 
 		String fullyQualifiedName = TclParseUtil.getFQNFromModelElement(
 				modelElement, "::");
 
-		if (!(sourceModule instanceof AbstractExternalSourceModule)) {
-			return true;
-		}
 		for (Iterator iterator = completions.iterator(); iterator.hasNext();) {
 			Object o = iterator.next();
 			if (!(o instanceof IModelElement)) {
+				if (o instanceof String) {
+					if (fullyQualifiedName.equals((String) o)) {
+						return false;
+					}
+				}
 				continue;
 			}
-			IModelElement element = (IModelElement) iterator.next();
+			IModelElement element = (IModelElement) o;
 			String eName = TclParseUtil.getFQNFromModelElement(element, "::");
 			if (eName.equals(fullyQualifiedName)) {
-				org.eclipse.dltk.core.ISourceModule eModule = (org.eclipse.dltk.core.ISourceModule) element
-						.getAncestor(IModelElement.SOURCE_MODULE);
-				if (sourceModule.getPath().equals(eModule.getPath())) {
-					return false;
-				}
+				return false;
 			}
 		}
 		return true;
@@ -988,6 +986,13 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 	}
 
 	protected String processTypeName(IType method, String tok) {
-		return TclParseUtils.processTypeName(method, tok);
+		String name = TclParseUtils.processTypeName(method, tok);
+		if (name.startsWith("::")
+				&& ((tok.length() > 1 && tok.charAt(0) != ':' && tok.charAt(1) != ':') || tok
+						.length() == 0)) {
+			name = name.substring(2);
+		}
+		return name;
+
 	}
 }
