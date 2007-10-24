@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -42,6 +43,7 @@ import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptModelMarker;
 import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.launching.InterpreterRuntimeBuildpathEntryResolver;
 import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
@@ -674,7 +676,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		String mainScriptName = verifyMainScriptName(configuration);
 		IProject project = getScriptProject(configuration).getProject();
 		IPath location = project.getLocation();
-		if( location == null ) {
+		if (location == null) {
 			return null;
 		}
 		return location.append(mainScriptName).toPortableString();
@@ -687,7 +689,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 
 		// Validation already included
 		String scriptLaunchPath = getScriptLaunchPath(configuration);
-		if( scriptLaunchPath == null ) {
+		if (scriptLaunchPath == null) {
 			return null;
 		}
 		final IPath mainScript = new Path(scriptLaunchPath);
@@ -774,7 +776,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			monitor.subTask("Generating interpreter config...");
 			final InterpreterConfig config = createInterpreterConfig(
 					configuration, launch);
-			if(config == null ) {
+			if (config == null) {
 				monitor.setCanceled(true);
 				return;
 			}
@@ -1022,4 +1024,19 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	}
 
 	abstract public String getLanguageId();
+
+	public static ISourceModule getSourceModule(
+			ILaunchConfiguration configuration) throws CoreException {
+		String projectName = AbstractScriptLaunchConfigurationDelegate
+				.getScriptProjectName(configuration);
+		String mainScriptName = AbstractScriptLaunchConfigurationDelegate
+				.getMainScriptName(configuration);
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
+				projectName);
+
+		IFile script = project.getFile(mainScriptName);
+
+		ISourceModule module = (ISourceModule) DLTKCore.create(script);
+		return module;
+	}
 }

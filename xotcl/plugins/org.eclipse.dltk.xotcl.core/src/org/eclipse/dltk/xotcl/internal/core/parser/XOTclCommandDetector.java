@@ -56,9 +56,9 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 		Expression commandName = statement.getAt(0);
 		if (commandName instanceof SimpleReference) {
 			String value = ((SimpleReference) commandName).getName();
-			if (value.equals("Class")) {
+			if (value.equals("Class") || value.equals("::xotcl::Class")|| value.equals("xotcl::Class")) {
 				return checkClass(statement, module, parser, parent);
-			} else if (value.equals("Object")) {
+			} else if (value.equals("Object")|| value.equals("::xotcl::Object")|| value.equals("xotcl::Object")) {
 				return checkObject(statement, module, parser, parent);
 			} else {
 				return checkInstanceOperations(module, parent, statement,
