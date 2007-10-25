@@ -219,10 +219,12 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 
 		String id = element.getAttribute(ATTR_ID);
 		boolean enabled = element.getAttribute(ATTR_STATE).equals("enabled");
-		int hitCount = Integer.parseInt(element.getAttribute(ATTR_HIT_COUNT));
-		int hitValue = Integer.parseInt(element.getAttribute(ATTR_HIT_VALUE));
-		String hitCondition = element.getAttribute(ATTR_HIT_CONDITION);
-
+		
+		// not all dbgp implementations have these
+		int hitCount = getIntAttribute(element, ATTR_HIT_COUNT, 0);
+		int hitValue = getIntAttribute(element, ATTR_HIT_VALUE, 0);
+		String hitCondition = getStringAttribute(element, ATTR_HIT_CONDITION);
+		
 		if (type.equals(LINE_BREAKPOINT)) {
 			String fileName = element.getAttribute(ATTR_FILENAME);
 			
@@ -313,4 +315,6 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 
 		throw new AssertionError("invalid encoding [" + encoding + "]");
 	}
+	
+	
 }

@@ -127,4 +127,30 @@ public class DbgpXmlParser {
 		return makeBoolean(response.getAttribute(ATTR_SUCCESS));
 	}
 
+	protected static String getStringAttribute(Element element, String name) {
+
+		String value = "";
+		if (element.hasAttribute(name)) {
+			value = element.getAttribute(name);
+		}
+
+		return value;
+	}
+
+	protected static int getIntAttribute(Element element, String name,
+			int defaultValue) {
+
+		int value = defaultValue;
+
+		if (element.hasAttribute(name)) {
+			try {
+				value = Integer.parseInt(element.getAttribute(name));
+			} catch (NumberFormatException e) {
+				// TODO: this should probably be logged
+			}
+		}
+
+		return value;
+	}
+
 }
