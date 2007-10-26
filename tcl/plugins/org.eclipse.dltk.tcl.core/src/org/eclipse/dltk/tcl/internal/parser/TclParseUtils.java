@@ -292,7 +292,7 @@ public class TclParseUtils {
 		}
 		if (start + 1 < content.length()
 				&& (content.charAt(start) == '$' && content.charAt(start + 1) == '{')
-				|| (content.charAt(start) == '{')) {
+				|| (start < content.length() && content.charAt(start) == '{')) {
 			while (content.charAt(end) != '}' && content.charAt(end) != '\\'
 					&& end < content.length())
 				end++;
