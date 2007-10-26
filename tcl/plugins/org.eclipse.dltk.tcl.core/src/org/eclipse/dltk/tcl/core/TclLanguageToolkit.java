@@ -195,11 +195,13 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 					File f = new File(dir.getPath() + File.separator + name);
 					if (f.isDirectory()) {
 						File[] listFiles = f.listFiles();
-						for (int i = 0; i < listFiles.length; i++) {
-							if (listFiles[i].isFile()
-									&& isScriptLikeFileName(listFiles[i]
-											.getName())) {
-								return true;
+						if (listFiles != null) {
+							for (int i = 0; i < listFiles.length; i++) {
+								if (listFiles[i].isFile()
+										&& isScriptLikeFileName(listFiles[i]
+												.getName())) {
+									return true;
+								}
 							}
 						}
 					}
