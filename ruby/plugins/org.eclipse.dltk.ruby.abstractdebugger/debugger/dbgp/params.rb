@@ -9,7 +9,15 @@
 ###############################################################################
 
 module XoredDebugger    
-    class Params 
+    class Params
+        @@instance = nil
+        def Params.instance
+            if (@@instance.nil?)
+                @@instance = Params.new
+            end
+            @@instance
+        end
+                 
         def initialize
             @host   = ENV['DBGP_RUBY_HOST']
             @port   = ENV['DBGP_RUBY_PORT'].to_i

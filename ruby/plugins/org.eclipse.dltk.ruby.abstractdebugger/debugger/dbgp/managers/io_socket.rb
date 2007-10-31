@@ -10,7 +10,7 @@
 
 require 'socket'
 require 'io/wait'
-require 'thread'
+require 'monitor'
 
 require 'logger'
 
@@ -19,13 +19,13 @@ module XoredDebugger
 		include Logger
 
         def initialize(host, port, printer)
-			@mutex = Mutex.new
+			@monitor = Monitor.new
             @socket = TCPSocket.new(host, port)
             @printer = printer
         end
 
         def send(command, data)
-			@mutex.synchronize do
+			@monitor.synchronize do
 	            xml = @printer.print(command, data)
 	            
 	            #DEBUGGER: [NUMBER] [NULL] XML(data) [NULL]
@@ -44,19 +44,23 @@ module XoredDebugger
         end
 
         def receive()
-			@mutex.synchronize do
-	            #IDE: command [SPACE] [args] -- data [NULL]
-	            line = ''
+            line = ''
+            begin
+   	            #IDE: command [SPACE] [args] -- data [NULL]
 	            while((ch = @socket.getc) != 0)
 	                line << ch
 	            end
-				
-				log('<<< ' + line)
-	            
-	            line
-			end
-        end
+            rescue Exception
+                log('Exception in io_manager.receive')
+                # Connection broken, exitting
+                # TODO: Add reconnect if thread not finished.
+                throw :done
+            end
 
+            log('<<< ' + line)	            
+            line
+        end
+        
         def close
             @socket.close
         end

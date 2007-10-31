@@ -33,7 +33,7 @@ module XoredDebugger
             if (@command =~ /(\w+)\s(.+)--(.*)/)
                 @name = $1
                 @args = $2
-                @data = Base64.decode64($3)
+                @data = Base64.decode64($3.to_s.strip)           
             elsif (@command =~ /(\w+)\s(.+)/)
                 @name = $1
                 @args = $2

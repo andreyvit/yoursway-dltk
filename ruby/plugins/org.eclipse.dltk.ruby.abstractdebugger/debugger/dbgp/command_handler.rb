@@ -48,8 +48,40 @@ module XoredDebugger
 	class CommandHandler
 		include Logger
 		
-		def initialize
+		def initialize(debugger, thread, io_manager, key, script)
+            @debugger = debugger
+            @thread = thread
+            @io_manager = io_manager
+            @key = key
+            @script = script		                
 			@stop_sent = false
+            @command = nil            
+            @context = debugger.thread_context(thread)
+            
+            @command_handler = debugger.create_debug_thread do
+                log("New control thread started: " + Thread.current.inspect)
+                io_manager.send('init', init('app_test_id', @key, get_thread_label(@thread), @script))
+                catch (:done) do                 
+                    loop do
+                        begin
+                            command_loop
+                        rescue Exception
+                            log('Exception in command loop:')
+                            log("\tMessage: " + $!.message)
+                            log("\tBacktrace: " + $!.backtrace.join("\n"))                            
+                        end
+                    end
+                end
+                log("Exiting control thread: " + Thread.current.inspect)
+#                
+#                unless @context.dead?
+#                    # if thread is still alive and suspended then resume thread
+#                    log("Resuming thread without control")
+#                    if @context.suspended?
+#                        @context.resume
+#                    end                     
+#                end
+            end            
 		end
   
         # Init
@@ -314,7 +346,8 @@ module XoredDebugger
             { :success  => success,
               :property => property }
         end
-	
+	        
+        
         def dispatch_command(command)
             log('Dispatching command: ' + command.name)
 
@@ -477,23 +510,156 @@ module XoredDebugger
                 data[:id] = command.arg('-i')
             end
 
-            log('Dispatch completed, data: ' + data.inspect)
+            #log('Dispatch completed, data: ' + data.inspect)
 
             data
         end
+		
+        
+        # Debugger ineraction       
+        def send_break
+            unless @last_continuation_command.nil?
+                log('Sending responce to continuation command...')
+                map = { :status => 'break',
+                        :reason => 'ok',
+                        :id     => @last_continuation_command.arg('-i') }
 
-        def sent_stopped
-            unless @command.nil?
-				unless @stop_sent
-	                map = { :status => 'stopped',
-	                        :reason => 'ok',
-	                        :id     => @command.arg('-i') }
-
-	                io_manager.send(@command.name, map) # TODO: move from here
-					@stop_sent = true
-				end
+                io_manager.send(@last_continuation_command.name, map)
+                @last_continuation_command = nil
             end
         end
-		
+        
+        def send_stopped
+            log(@last_continuation_command.inspect)
+            unless @last_continuation_command.nil?
+                map = { :status => 'stopped',
+                        :reason => 'ok',
+                        :id     => @last_continuation_command.arg('-i') }
+
+	            io_manager.send(@last_continuation_command.name, map)
+                @last_continuation_command = nil                    
+            end          
+        end        
+        
+        # Continuation commands
+        def run
+            @context.resume
+            nil
+        end
+ 
+        def step_into
+            @context.step(1)
+            @context.resume
+            nil
+        end
+
+        def step_over
+            @context.step_over(1)
+            @context.resume
+            nil
+        end
+
+        def stop
+            @context.interrupt
+            nil
+        end
+
+        def detach
+            nil
+        end
+
+        def break_cmd
+            @context.suspend
+            send_break
+            # responce to break command
+            { :success => 1 }
+        end        
+                
+        
+		# Terminate function
+        def terminate
+            log('Thread termination: ' + @thread.inspect)
+            log("\tMain?: " + (@thread == Thread.main).to_s)
+                        
+            send_stopped
+            Thread.kill(@thread)
+        end               
+        
+        
+        def terminated
+            log("Thread 'terminated' event: " + @thread.inspect)
+            send_stopped
+            @io_manager.close            
+        end                       
+        
+        def command_loop
+            loop do
+                log('Waiting command...')
+                @command = Command.new(io_manager.receive)
+                
+                if ['run', 'step_into', 'step_over', 'step_out'].include?(@command.name)
+                    @last_continuation_command = @command
+                end
+                
+                log('Dispatching command...')
+                data = dispatch_command(@command)
+
+                if data.nil?
+                    break
+                else
+                    io_manager.send(@command.name, data)
+                end         
+            end
+        end  
+        
+		# Managers
+        def capture_manager
+            @debugger.capture_manager
+        end
+    
+        def breakpoint_manager
+            @debugger.breakpoint_manager
+        end
+
+        def feature_manager
+            @debugger.feature_manager
+        end
+        
+        def source_manager
+            @debugger.source_manager
+        end
+        
+        def stack_manager
+            raise NotImplementedError.new('You MUST implement this method in ancessors')
+        end
+        
+        def io_manager
+            @io_manager
+        end       
+        
+        
+        
+        def at_breakpoint(context, breakpoint)
+            log(sprintf('=> at_breakpoint: %s:%s', breakpoint.file, breakpoint.line.to_s))                        
+            if breakpoint.state
+                @skipBreakpoint = false
+            else
+                @skipBreakpoint = true
+            end         
+        end
+    
+        def at_catchpoint(context, excpt)
+        end
+    
+        def at_tracing(context, file, line)
+        end
+
+        def at_line(context, file, line)
+            log(sprintf('=> at_line: %s: %d', file, line))
+            unless context.stop_reason == :breakpoint && @skipBreakpoint
+                @context.suspend
+                send_break
+            end
+        end               
     end # class CommandHandler
 end # module XoredDebugger

@@ -14,7 +14,7 @@ module XoredDebugger
             # Required
             @map = {
                 # Required
-                'language_supports_threads' => [0,        false], #get [0|1]
+                'language_supports_threads' => [1,        false], #get [0|1]
                 'language_name'             => ['ruby',   false], #get {eg. PHP, Python, Perl}  
                 'language_version'          => ['1.8',    false], #get {version string}
                 'encoding'                  => ['UTF-8',  false], #get current encoding in use by the debugger session

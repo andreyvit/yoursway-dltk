@@ -10,17 +10,20 @@
 
 module XoredDebugger
     # StackManager interface
-    class StackManager
-        # Evaluation
-        def eval(text, index)
-        end
-    
-        # Stack depth
-        def depth
-        end
-        
-        # Stack level
-        def [](index)
-        end
+    class AbstractStackManager
+	    # Evaluation
+	    def eval(text, index = 0)
+	        raise NotImplementedError.new('You MUST implement this method in ancessors')
+	    end
+	
+	    # Stack depth
+	    def depth
+	        raise NotImplementedError.new('You MUST implement this method in ancessors')
+	    end
+	    
+	    # Stack level
+	    def [](index)
+	        raise NotImplementedError.new('You MUST implement this method in ancessors')
+	    end
     end # class StackManager
 end # module XoredDebugger

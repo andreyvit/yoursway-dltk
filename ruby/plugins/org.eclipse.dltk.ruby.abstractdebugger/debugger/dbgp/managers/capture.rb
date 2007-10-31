@@ -8,90 +8,60 @@
 
 ###############################################################################
 
-require 'thread'
+require 'logger'
 
-module XoredDebugger   
+module XoredDebugger       
+    DISABLE = 0
+    COPY = 1
+    REDIRECT = 2
+    
     class Capturer
-        def initialize(stream, state)
-            @stream = stream
-
-            state ? enable : disable
+        include Logger
+        attr_accessor :state
         
-            @mutex = Mutex.new
-
-            @output = ''
+        def initialize(stream, state, &redirector)
+            @stream = stream 
+            @redirector = redirector
+            @state = state
         end
 
-        def write(s)			
-         #   @mutex.synchronize do
-                @output += s
-          #  end
+        def write(s)	
+            log("REDIRECT: " + s)		
+            if (@state != REDIRECT)
+                @stream.write(s)
+            end
+            if (@state != DISABLE)          
+	            @redirector.call(s)
+            end
         end
-                 
-        def get
-            #@mutex.synchronize do
-				out = @output
-				@output = ''
-			out
-            #end
-        end
-
-        def saved_stream
-            @stream
-        end
-        protected :saved_stream
     end # class Capturer
 
-    class StdoutCapturer < Capturer
-        def initialize(state = false)
-            super($stdout, state)
-        end
-
-        def enable
-            $stdout = self
-        end
-
-        def disable
-            $stdout = saved_stream
-        end
-    end # class StdoutCapturer
-
-    class StderrCapturer < Capturer
-        def initialize(state = false)
-            super($stderr, state)
-        end
-
-        def enable
-            $stderr = self
-        end
-
-        def disable
-            $stderr = saved_stream
-        end
-    end # class StderrCapturer
 	
 	class CaptureManager
-		def initialize(state)
-			@stdout_capturer = StdoutCapturer.new(state)
-			@stderr_capturer = StderrCapturer.new(state)
+        
+	    def initialize(thread_manager)	        
+	        @stdout_capturer = Capturer.new($stdout, COPY) do |message|
+	            wrapper = thread_manager.get_thread_wrapper(Thread.current)
+                unless wrapper.nil?
+                    wrapper.io_manager.send("stdout_data", {:_data => message})
+                end
+	        end
+            
+			@stderr_capturer = Capturer.new($stderr, COPY) do |message|
+                wrapper = thread_manager.get_thread_wrapper(Thread.current)
+                unless wrapper.nil?
+                    wrapper.io_manager.send("stderr_data", {:_data => message})
+                end
+            end
+            $stdout = @stdout_capturer
+            $stderr = @stderr_capturer
 		end
 		
-		def enable
-			@stdout_capturer.enable
-			@stderr_capturer.enable
-		end
-		
-		def disable
-			@stdout_capturer.disable
-			@stderr_capturer.disable
-		end
-		
-		def get_stdout
-			@stdout_capturer.get
-		end
-		
-		def get_stderr
-			@stderr_capturer.get
-		end
+        def terminate()
+            $stdout = STDOUT
+            $stderr = STDERR
+        end
+        
+        attr_reader :stdout_capturer, :stderr_capturer
 	end # class CaptureManager
 end # module XoredDebugger

@@ -10,21 +10,25 @@
 
 module XoredDebugger
     # BreakpointManager interface example
-    class BreakpointManager
+    class AbstractBreakpointManager
         # adds breakpoint and returns its id
         def add(info)
+            raise NotImplementedError.new('You MUST implement this method in ancessors')
         end
-        
+
         # udates breakpoint with id to info
         def update(id, info)
+            raise NotImplementedError.new('You MUST implement this method in ancessors')
         end
-        
+
         # removes breakpoint with id
         def remove(id)
+            raise NotImplementedError.new('You MUST implement this method in ancessors')
         end
-        
+       
         # returns breakpoint info (breakpoint_id, hit_count - additional attributes)
         def [] (id)
-        end
+            raise NotImplementedError.new('You MUST implement this method in ancessors')
+        end 
     end # class BreakpointManager
 end # module XoredDebugger
