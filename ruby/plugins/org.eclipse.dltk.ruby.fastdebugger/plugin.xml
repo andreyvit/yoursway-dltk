@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.dltk.launching.debuggingEngine">
+      <engineContribution
+            natureId="org.eclipse.dltk.ruby.core.nature">
+         <engine
+               class="org.eclipse.dltk.ruby.fastdebugger.FastRailsDebuggerRunnerFactory"
+               description="%FastDebuggingEngine.description"
+               id="com.xored.rubygears.railsdebugger"
+               name="%FastDebuggingEngine.name"
+               preferencePageId="org.eclipse.dltk.ruby.preferences.debug.railsdebugger"
+               priority="5">
+         </engine>
+      </engineContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.dltk.ruby.preferences.debug"
+            class="org.eclipse.dltk.ruby.fastdebugger.preferences.FastDebuggerPreferencePage"
+            id="org.eclipse.dltk.ruby.preferences.debug.railsdebugger"
+            name="%RailsDebuggerPreferencePage.name">
+      </page>
+   </extension>
+</plugin>
