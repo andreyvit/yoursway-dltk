@@ -70,4 +70,37 @@
       </part>
    </actionSetPartAssociation>
 </extension>
+<extension
+      point="org.eclipse.ui.views">
+   <view
+         class="org.eclipse.dltk.ui.browsing.ProjectsView:org.eclipse.dltk.tcl.core.nature"
+         icon="icons/eview16/tcl_persp.gif"
+         id="org.eclipse.dltk.xotcl.ui.Projects"
+         name="Tcl Projects">
+   </view>   
+   <view
+         class="org.eclipse.dltk.ui.browsing.ext.ExtendedClassesView:org.eclipse.dltk.tcl.core.nature"
+         icon="icons/eview16/tcl_persp.gif"
+         id="org.eclipse.dltk.xotcl.ui.extbrowsing"
+         name="XOTcl Browsing">
+   </view>
+   <view
+         class="org.eclipse.dltk.ui.browsing.MembersView:org.eclipse.dltk.tcl.core.nature"
+         icon="icons/eview16/tcl_persp.gif"
+         id="org.eclipse.dltk.xotcl.ui.Members"
+         name="Tcl Members">
+   </view>
+</extension>
+ <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="XOTcl browsing"
+            icon="icons/eview16/browse_persp.gif"
+            class="org.eclipse.dltk.xotcl.internal.ui.browsing.XOTclBrowsingPerspectiveFactory"
+            id="org.eclipse.jdt.ui.JavaBrowsingPerspective">
+         <description>
+            XOTcl browsing
+         </description>
+      </perspective>
+   </extension>
 </plugin>

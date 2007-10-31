@@ -262,22 +262,34 @@ public class DLTKSearchScope extends AbstractSearchScope {
 			break;
 		case IModelElement.PROJECT_FRAGMENT:
 			IProjectFragment root = (IProjectFragment) element;
-			IPath rootPath = root.getPath();
-			containerPath = root.getKind() == IProjectFragment.K_SOURCE ? root
-					.getParent().getPath() : rootPath;
-			containerPathToString = containerPath.getDevice() == null ? containerPath
-					.toString()
-					: containerPath.toOSString();
-			IResource rootResource = root.getResource();
-			String projectPath = root.getScriptProject().getPath().toString();
-			if (rootResource != null && rootResource.isAccessible()) {
-				String relativePath = Util.relativePath(rootResource
-						.getFullPath(), containerPath.segmentCount());
-				add(projectPath, relativePath, containerPathToString,
-						false/* not a package */, null);
+			String projectPath = null;
+			if (!root.isExternal()) {
+				IPath rootPath = root.getPath();
+				containerPath = root.getKind() == IProjectFragment.K_SOURCE ? root
+						.getParent().getPath()
+						: rootPath;
+				containerPathToString = containerPath.getDevice() == null ? containerPath
+						.toString()
+						: containerPath.toOSString();
+				IResource rootResource = root.getResource();
+				projectPath = root.getScriptProject().getPath().toString();
+				if (rootResource != null && rootResource.isAccessible()) {
+					String relativePath = Util.relativePath(rootResource
+							.getFullPath(), containerPath.segmentCount());
+					add(projectPath, relativePath, containerPathToString,
+							false/* not a package */, null);
+				} else {
+					add(
+							projectPath,
+							"", containerPathToString, false/* not a package */, null); //$NON-NLS-1$
+				}
 			} else {
-				add(
-						projectPath,
+				projectPath = root.getScriptProject().getPath().toString();
+				containerPath = root.getPath();
+				containerPathToString = containerPath.getDevice() == null ? containerPath
+						.toString()
+						: containerPath.toOSString();
+				add( projectPath,
 						"", containerPathToString, false/* not a package */, null); //$NON-NLS-1$
 			}
 			break;
@@ -358,9 +370,9 @@ public class DLTKSearchScope extends AbstractSearchScope {
 			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
 					.getLanguageToolkit(element);
 			IDLTKLanguageToolkit languageToolkit2 = this.getLanguageToolkit();
-			
+
 			// For all projects scope
-			if( languageToolkit2 == null ) {
+			if (languageToolkit2 == null) {
 				return true;
 			}
 			if (languageToolkit != null

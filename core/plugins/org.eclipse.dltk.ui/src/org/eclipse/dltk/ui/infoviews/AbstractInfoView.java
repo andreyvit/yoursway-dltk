@@ -57,7 +57,7 @@ import org.eclipse.ui.texteditor.ITextEditorActionConstants;
  * 
  * 
  */
-abstract class AbstractInfoView extends ViewPart implements ISelectionListener,
+public abstract class AbstractInfoView extends ViewPart implements ISelectionListener,
 		IMenuListener, IPropertyChangeListener {
 	/** ScriptElementLabels flags used for the title */
 	private final long TITLE_FLAGS = ScriptElementLabels.ALL_FULLY_QUALIFIED

@@ -567,4 +567,9 @@ public class PreferenceConstants {
 	 * A named preference that holds a list of semicolon separated fully qualified type names with wild card characters.
 	 */	
 	public static final String TYPEFILTER_ENABLED= "org.eclipse.dltk.ui.typefilter.enabled"; //$NON-NLS-1$
+
+	public static final String LINK_BROWSING_MEMBERS_TO_EDITOR = "org.eclipse.dltk.ui.browsing.member.to.editor";
+	public static final String LINK_BROWSING_PROJECTS_TO_EDITOR = "org.eclipse.dltk.ui.browsing.projects.to.editor";
+	public static final String LINK_BROWSING_PACKAGES_TO_EDITOR = "org.eclipse.dltk.ui.browsing.packages.to.editor";
+	public static final String LINK_BROWSING_TYPES_TO_EDITOR = "org.eclipse.dltk.ui.browsing.types.to.editor";
 }

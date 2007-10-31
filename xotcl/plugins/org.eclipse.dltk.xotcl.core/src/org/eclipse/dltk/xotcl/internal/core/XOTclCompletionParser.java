@@ -26,7 +26,7 @@ public class XOTclCompletionParser extends TclCompletionParser {
 
 						exprs.add(pcs.getInstNameRef());
 						exprs.add(pcs.getCallName());
-						if (pcs.getArgs() != null ) {
+						if (pcs.getArgs() != null) {
 							exprs.addAll(pcs.getArgs().getChilds());
 						}
 						processArgumentCompletion(s, exprs);
@@ -34,6 +34,7 @@ public class XOTclCompletionParser extends TclCompletionParser {
 				}
 				return true;
 			}
+
 			public boolean visit(Statement s) throws Exception {
 				if (s.sourceStart() <= position && s.sourceEnd() >= position) {
 					List exprs = new ArrayList();
@@ -51,6 +52,7 @@ public class XOTclCompletionParser extends TclCompletionParser {
 
 				return super.visit(s);
 			}
+
 			private void processArgumentCompletion(Statement s, List exprs) {
 				TclStatement statement = new TclStatement(exprs);
 				statement.setStart(s.sourceStart());
@@ -75,11 +77,18 @@ public class XOTclCompletionParser extends TclCompletionParser {
 				} else {
 					keywords = checkKeywords(token, MODULE);
 				}
-
-				ASTNode nde = new CompletionOnKeywordArgumentOrFunctionArgument(
-						token, completionNode, statement, keywords);
-				assistNodeParent = TclParseUtil.getPrevParent(module, s);
-				throw new CompletionNodeFound(nde, null/* ((TypeDeclaration)inNode).scope */);
+				if (completionNode != null) {
+					ASTNode nde = new CompletionOnKeywordArgumentOrFunctionArgument(
+							token, completionNode, statement, keywords);
+					assistNodeParent = TclParseUtil.getPrevParent(module, s);
+					throw new CompletionNodeFound(nde, null/* ((TypeDeclaration)inNode).scope */);
+				}
+				else {
+					ASTNode nde = new CompletionOnKeywordArgumentOrFunctionArgument(
+							token, statement, keywords, position );
+					assistNodeParent = TclParseUtil.getPrevParent(module, s);
+					throw new CompletionNodeFound(nde, null/* ((TypeDeclaration)inNode).scope */);
+				}
 			}
 		};
 	}

@@ -646,4 +646,6 @@ public interface IScriptProject extends IModelElement, IOpenable, IParent {
 		WorkingCopyOwner owner,
 		IProgressMonitor monitor)
 		throws ModelException;
+	
+	public IScriptFolder[] getScriptFolders() throws ModelException;
 }

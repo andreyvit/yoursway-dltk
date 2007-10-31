@@ -20,26 +20,36 @@ public class XOTclClassMyProcessor extends AbstractTclCommandProcessor {
 
 	public ASTNode process(TclCommand command, ITclParser parser, int offset,
 			ASTNode parent) {
-		TclStatement statement = (TclStatement) parser.processLocal(
-				command, offset, parent);
+		TclStatement statement = (TclStatement) parser.processLocal(command,
+				offset, parent);
 		ModuleDeclaration moduleDeclaration = this.getModuleDeclaration();
-		ASTNode scopeParent = TclParseUtil.getScopeParent(moduleDeclaration, parent);
+		ASTNode scopeParent = TclParseUtil.getScopeParent(moduleDeclaration,
+				parent);
 		if (scopeParent instanceof XOTclMethodDeclaration) {
-			if (statement.getCount() >= 3 && "instvar".equals(TclParseUtil.getNameFromNode(statement.getAt(1)))) {
+			if (statement.getCount() >= 3
+					&& "instvar".equals(TclParseUtil.getNameFromNode(statement
+							.getAt(1)))) {
 				ASTListNode vars = new ASTListNode();
 				for (int i = 2; i < statement.getCount(); i++) {
-					SimpleReference ref = (SimpleReference) statement.getAt(i);
-					TclVariableDeclaration decl = new TclVariableDeclaration(ref,null, ref.sourceStart(), ref.sourceEnd());
-					this.addToParent(parent, decl);
-					vars.addNode(decl);
+					if (statement.getAt(i) instanceof SimpleReference) {
+						SimpleReference ref = (SimpleReference) statement
+								.getAt(i);
+						TclVariableDeclaration decl = new TclVariableDeclaration(
+								ref, null, ref.sourceStart(), ref.sourceEnd());
+						this.addToParent(parent, decl);
+						vars.addNode(decl);
+					}
 				}
 				return vars;
+			} else {
+				// TODO process method call.
 			}
-			else {
-				//TODO process method call.
-			}
-		}
-		else this.report(parser, "'my' can only be used in a context of an instproc or a method specific proc.", statement, ProblemSeverities.Error);
+		} else
+			this
+					.report(
+							parser,
+							"'my' can only be used in a context of an instproc or a method specific proc.",
+							statement, ProblemSeverities.Error);
 		return null;
 	}
 }

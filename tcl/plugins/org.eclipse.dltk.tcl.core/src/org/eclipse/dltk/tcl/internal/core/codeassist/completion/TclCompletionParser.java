@@ -103,21 +103,22 @@ public class TclCompletionParser extends TclAssistParser {
 			if (completionNode == null) {
 				// TODO: Add inner completion here.
 				if (len > 0) {
-//					ASTNode firstNode = (ASTNode) expressions.get(0);
-//					if (position > firstNode.sourceEnd()) {
-//						// This could be variable completion.
-//						boolean provideDollar = !checkVariableWithoutDollarCompletion(
-//								statement, position);
-//						this.assistNodeParent = inNode;
-//						SimpleReference ref = new SimpleReference(position,
-//								position, "");
-//						ASTNode nde = new CompletionOnVariable("", ref, node,
-//								inNode, true, provideDollar);
-//						throw new CompletionNodeFound(nde, null);
-//					}
+					// ASTNode firstNode = (ASTNode) expressions.get(0);
+					// if (position > firstNode.sourceEnd()) {
+					// // This could be variable completion.
+					// boolean provideDollar =
+					// !checkVariableWithoutDollarCompletion(
+					// statement, position);
+					// this.assistNodeParent = inNode;
+					// SimpleReference ref = new SimpleReference(position,
+					// position, "");
+					// ASTNode nde = new CompletionOnVariable("", ref, node,
+					// inNode, true, provideDollar);
+					// throw new CompletionNodeFound(nde, null);
+					// }
 					String[] keywords = checkKeywords(completionToken, MODULE);
 					ASTNode nde = new CompletionOnKeywordArgumentOrFunctionArgument(
-							"",  (TclStatement)node, keywords, position);
+							"", (TclStatement) node, keywords, position);
 					this.assistNodeParent = inNode;
 					throw new CompletionNodeFound(nde, null/* ((TypeDeclaration)inNode).scope */);
 
@@ -126,28 +127,23 @@ public class TclCompletionParser extends TclAssistParser {
 				}
 			} else if (completionNode instanceof SimpleReference) {
 				completionToken = ((SimpleReference) completionNode).getName();
-			} /*else if (completionNode instanceof TclBlockExpression) {
-				TclBlockExpression block = (TclBlockExpression) completionNode;
-
-				List s = block.parseBlock();
-				if (s != null) {
-					int slen = s.size();
-					for (int u = 0; u < slen; ++u) {
-						ASTNode n = (ASTNode) s.get(u);
-						n.setStart(n.sourceStart() - block.sourceStart());
-						n.setEnd(n.sourceEnd() - block.sourceStart());
-						TclASTUtil.extendStatement(n, block.getBlock());
-						n.setStart(n.sourceStart() + block.sourceStart());
-						n.setEnd(n.sourceEnd() + block.sourceStart());
-						if (n != null && n.sourceStart() <= position
-								&& n.sourceEnd() >= position) {
-							parseBlockStatements(n, inNode, position);
-						}
-					}
-				}
-				handleNotInElement(inNode, position);
-
-			}*/
+			} /*
+				 * else if (completionNode instanceof TclBlockExpression) {
+				 * TclBlockExpression block = (TclBlockExpression)
+				 * completionNode;
+				 * 
+				 * List s = block.parseBlock(); if (s != null) { int slen =
+				 * s.size(); for (int u = 0; u < slen; ++u) { ASTNode n =
+				 * (ASTNode) s.get(u); n.setStart(n.sourceStart() -
+				 * block.sourceStart()); n.setEnd(n.sourceEnd() -
+				 * block.sourceStart()); TclASTUtil.extendStatement(n,
+				 * block.getBlock()); n.setStart(n.sourceStart() +
+				 * block.sourceStart()); n.setEnd(n.sourceEnd() +
+				 * block.sourceStart()); if (n != null && n.sourceStart() <=
+				 * position && n.sourceEnd() >= position) {
+				 * parseBlockStatements(n, inNode, position); } } }
+				 * handleNotInElement(inNode, position); }
+				 */
 			if (completionNode instanceof StringLiteral) {
 				int pos = position - completionNode.sourceStart();
 				SimpleReference tok = TclParseUtils.extractVariableFromString(
@@ -219,11 +215,27 @@ public class TclCompletionParser extends TclAssistParser {
 					this.assistNodeParent = inNode;
 					throw new CompletionNodeFound(nde, null/* ((TypeDeclaration)inNode).scope */);
 				} else {
-					String[] keywords = checkKeywords(completionToken, MODULE);
-					ASTNode nde = new CompletionOnKeywordArgumentOrFunctionArgument(
-							completionToken, completionNode, (TclStatement)node, keywords);
-					this.assistNodeParent = inNode;
-					throw new CompletionNodeFound(nde, null/* ((TypeDeclaration)inNode).scope */);
+					if (completionNode != null) {
+						String[] keywords = checkKeywords(completionToken,
+								MODULE);
+
+						ASTNode nde = new CompletionOnKeywordArgumentOrFunctionArgument(
+								completionToken, completionNode,
+								(TclStatement) node, keywords);
+						this.assistNodeParent = inNode;
+						throw new CompletionNodeFound(nde, null/* ((TypeDeclaration)inNode).scope */);
+					}
+					else {
+						String[] keywords = checkKeywords(completionToken,
+								MODULE);
+						if( completionToken == null ) {
+							completionToken = "";
+						}
+						ASTNode nde = new CompletionOnKeywordArgumentOrFunctionArgument(
+								completionToken, (TclStatement) node, keywords, position);
+						this.assistNodeParent = inNode;
+						throw new CompletionNodeFound(nde, null/* ((TypeDeclaration)inNode).scope */);
+					}
 				}
 			}
 			// if (checkVariableWithoutDollarCompletion(statement, position)
@@ -289,8 +301,7 @@ public class TclCompletionParser extends TclAssistParser {
 				ASTNode nde = new CompletionOnKeywordOrFunction("", inNode, s,
 						keywords);
 				assistNodeParent = inNode;
-				throw new CompletionNodeFound(nde,
-						((ModuleDeclaration) inNode).scope);
+				throw new CompletionNodeFound(nde, null);
 			}
 			return super.endvisit(s);
 		}

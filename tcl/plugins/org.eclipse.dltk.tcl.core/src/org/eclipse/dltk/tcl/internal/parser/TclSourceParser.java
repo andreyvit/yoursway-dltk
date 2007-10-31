@@ -59,8 +59,8 @@ public class TclSourceParser implements ITclSourceParser, ITclParser {
 			// }
 			// return st;
 			// }
-			TclStatement st = TclParseUtil.convertToAST(command, parser.getFileName(),
-					offset, TclSourceParser.this.content,
+			TclStatement st = TclParseUtil.convertToAST(command, parser
+					.getFileName(), offset, TclSourceParser.this.content,
 					TclSourceParser.this.startPos);
 			// commandParserCache.put(command, st);
 			if (parent != null) {
@@ -128,10 +128,15 @@ public class TclSourceParser implements ITclSourceParser, ITclParser {
 			ITclCommandProcessor processor = this.locateProcessor(command,
 					content, offset, decl);
 			if (processor != null) {
-				if (processor.process(command, this, offset, decl) == null) {
-					localProcessor.process(command, this, offset, decl);
+				try {
+					if (processor.process(command, this, offset, decl) == null) {
+						localProcessor.process(command, this, offset, decl);
+					}
+				} catch (Exception e) {
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
+					}
 				}
-				// We thinks processor add node to parent by itself
 			}
 		}
 	}
@@ -149,6 +154,7 @@ public class TclSourceParser implements ITclSourceParser, ITclParser {
 			if (name.startsWith("::")) {
 				name = name.substring(2);
 			}
+
 			ITclCommandProcessor processor = CommandManager.getInstance()
 					.getProcessor(name);
 			if (processor == null) {
@@ -187,7 +193,7 @@ public class TclSourceParser implements ITclSourceParser, ITclParser {
 	}
 
 	public String substring(int start, int end) {
-		if( start > end ) {
+		if (start > end) {
 			return "";
 		}
 		try {
