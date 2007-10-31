@@ -31,7 +31,7 @@ module XoredDebugger
             @monitor = Monitor.new             
             @breakpoint_manager = BreakpointManager.new
             @thread_manager = ThreadManager.new(self)
-            @capture_manager = CaptureManager.new(@thread_manager)
+            @capture_manager = CaptureManager.new(self)
         end	
 
         def thread_context(thread)
@@ -146,13 +146,21 @@ module XoredDebugger
                         thread.stack_manager.stack.pop                                           
 
                     when 'c-call'
-                        @depth += 1
-                        @startup = false
+                        if (Thread.current == Thread.main)
+	                        @depth += 1
+	                        if (@startup)
+	                            log('Entering script code...')
+	                            @startup = false
+	                        end
+                        end
 
                     when 'c-return'
-                        @depth -= 1
-                        if (@depth == 0)
-                            @shutdown = true
+                        if (Thread.current == Thread.main)
+	                        @depth -= 1
+	                        if (@depth == 0 && @shutdown == false)
+	                            log('Leaving script code...')
+	                            @shutdown = true
+	                        end
                         end
                         
                     when 'class'

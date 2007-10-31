@@ -27,15 +27,14 @@ module XoredDebugger
         def send(command, data)
 			@monitor.synchronize do
 	            xml = @printer.print(command, data)
+	            log('>>> ' + xml)
 	            
-	            #DEBUGGER: [NUMBER] [NULL] XML(data) [NULL]
+                #DEBUGGER: [NUMBER] [NULL] XML(data) [NULL]
 	            @socket.write(xml.length.to_s)
 	            @socket.putc(0)
 	            @socket.write(xml)
 	            @socket.putc(0)
 	            @socket.flush
-
-	            log('>>> ' + xml)
 			end
         end
 

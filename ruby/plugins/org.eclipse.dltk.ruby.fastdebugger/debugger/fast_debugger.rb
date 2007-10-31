@@ -33,7 +33,7 @@ module XoredDebugger
             super
             @breakpoint_manager = BreakpointManager.new
             @thread_manager = FastThreadManager.new(self) 
-            @capture_manager = CaptureManager.new(@thread_manager)        
+            @capture_manager = CaptureManager.new(self)        
         end
                 
         def debug(script)

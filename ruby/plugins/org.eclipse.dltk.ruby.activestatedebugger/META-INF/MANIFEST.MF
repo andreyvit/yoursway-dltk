@@ -10,5 +10,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.dltk.ui,
  org.eclipse.dltk.debug.ui,
- org.eclipse.dltk.launching
+ org.eclipse.dltk.launching,
+ org.eclipse.debug.core
 Eclipse-LazyStart: true
