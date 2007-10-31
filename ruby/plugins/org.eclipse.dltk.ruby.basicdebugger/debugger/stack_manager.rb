@@ -8,6 +8,8 @@
 
 ###############################################################################
 
+require 'dbgp/managers/stack'
+
 module XoredDebugger
 	
     # DBGP stack model, depth = N, zero-index is for top-level frame
@@ -62,7 +64,7 @@ module XoredDebugger
 
     end # Stack
 		
-	class FullStackManager
+	class FullStackManager < AbstractStackManager
 		def initialize()
 			@stack = Stack.new
 		end

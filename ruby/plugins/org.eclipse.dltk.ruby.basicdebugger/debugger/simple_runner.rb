@@ -8,67 +8,16 @@
 
 ###############################################################################    
 
-require 'dbgp/logger'
-require 'dbgp/params'
-
-require 'dbgp/managers/log_null'
-require 'dbgp/managers/log_file'
-require 'dbgp/managers/log_stdout'
-
+require 'abstract_runner'
 require 'simple_debugger'
                           
 module XoredDebugger
-    class Runner
-        def Runner.go
-			debugger = nil
-            begin			
-                params = Params.new
-                puts params.inspect
-                log = params.log
-                logger = log.nil? ? NullLogManager.new : (log == 'stdout' ? StdoutLogManager.new : FileLogManager.new(log))
-                
-                Logger.setup(logger)
-                
-                params.print(logger)
-                
-                unless params.valid?
-                    logger.puts('Invalid debugger params')
-                    return
-                end
-
-                # Debugger setup
-                logger.puts('Creating debugger...')
-                debugger = RubyDebugger.new(params)
-
-                logger.puts('Setting trace_func...')
-                set_trace_func proc { |event, file, line, id, binding, klass, *rest|
-                    #logger.puts("=> Trace: #{event.to_s} from #{file.to_s} at #{line.to_s}")
-                    debugger.trace(event, file, line, id, binding, klass)
-                }
-
-                # Script for debug
-                logger.puts('Unsetting trace func...')
-                load(params.script, true)
-
-                # Debugger teardown
-                logger.puts('Terminating all...')
-                set_trace_func nil
-                debugger.terminate
-            rescue Exception
-                logger.puts('Exception during debugging:')
-                logger.puts("\tClass: " + $!.class.to_s)
-                logger.puts("\tMessage: " + $!.message)
-                logger.puts("\tBacktrace: " + $!.backtrace.join("\n"))
-				
-				unless debugger.nil?
-					debugger.terminate
-				end
-            ensure
-                logger.close
-            end  
-        end # go
+    class SimpleRunner < AbstractRunner
+        def create_debugger
+            RubyDebugger.new()
+        end
     end # class Runner
 
-    Runner.go
+    SimpleRunner.new.run
 
 end # XoredDebugger

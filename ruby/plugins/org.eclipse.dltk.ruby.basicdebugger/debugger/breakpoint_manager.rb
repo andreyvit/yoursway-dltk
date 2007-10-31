@@ -8,51 +8,20 @@
 
 ###############################################################################
 
-require 'thread'
+require 'monitor'
 
 require 'dbgp/logger'
+require 'dbgp/managers/breakpoint'
+
 
 module XoredDebugger
 
-    class Breakpoint
-		include Logger
-	
-        def initialize(id, info)
-            @id = id
-            @info = info
-            @hit_count = 0
-        end
-
-        attr_reader :id
-        attr_reader :info
-        attr_reader :hit_count
-
-        def state
-            @info.state
-        end
-
-        def temporary
-            @info.temporary
-        end
-
-        def expression
-            @info.expression
-        end
-
-        def hit_value
-            @info.hit_value
-        end
-
-        def hit_condition
-            @info.hit_condition
-        end
-
-        def update(info)
-            @info.update(info)
-        end
-
+    class BreakpointInfo	
         def hit(stack)
-            @hit_count += 1
+            if (@hit_count.nil?)
+                @hit_count = 0
+            end
+            @hit_count = @hit_count + 1
 			
 			# State
             if not state
@@ -85,49 +54,26 @@ module XoredDebugger
         protected :hit
     end # class Breakpoint
 
-    class LineBreakpoint < Breakpoint
-        def initialize(id, info)
-            super(id, info)
-        end
-
-        def file
-            info.file
-        end
-
-        def line
-            info.line
-        end
-
+    class LineBreakpointInfo < BreakpointInfo
         def hit(s, f, l)
             file == f and line == l and super(s)
         end
     end # class LineBreakpoint
 
-    class ExceptionBreakpoint < Breakpoint
-        def initialize(id, info)
-            super(id, info)
-        end
-
-        def exception
-            info.exception
-        end
-
+    class ExceptionBreakpointInfo < BreakpointInfo
         def hit(s, e)
             exception == e and super(s)
         end
     end # class ExceptionBreakpoint
 
-    class BreakpointManager
+    class BreakpointManager < AbstractBreakpointManager
         @@id = 0
-
-		class << self
-			def next_id
-				@@id += 1
-			end
+		def BreakpointManager.next_id
+		    @@id += 1
 		end
 
         def initialize
-            @mutex = Mutex.new
+            @monitor = Monitor.new
 
             @line_bps = {}
             @exception_bps = {}
@@ -135,15 +81,18 @@ module XoredDebugger
 
         # Interface methods
         def add(info)
-            @mutex.synchronize do
+            @monitor.synchronize do
                 id = BreakpointManager.next_id
+                info.breakpoint_id = id
 
                 # Add breakpoint to correct list
                 type = info.class
                 if info.class == LineBreakpointInfo
-                    @line_bps[id] = LineBreakpoint.new(id, info)
+                    @line_bps[id] = info
                 elsif info.class == ExceptionBreakpointInfo
-                    # TODO:
+                    @exception_bps[id] = info
+                else
+                    raise NotImplementedError('Support for this type of exceptions is not implemented')
                 end
 
                 id
@@ -151,7 +100,7 @@ module XoredDebugger
         end
 
         def update(id, info)
-            @mutex.synchronize do
+            @monitor.synchronize do
                 old_info = self[id]
                 unless old_info.nil?
                     old_info.update(info)
@@ -160,7 +109,7 @@ module XoredDebugger
         end
 
         def remove(id)
-            @mutex.synchronize do
+            @monitor.synchronize do
                 (not @line_bps.delete(id).nil?) or
                 (not @exception_bps.delete(id).nil?)
             end
@@ -169,20 +118,16 @@ module XoredDebugger
         def [] (id)
             # TODO: handle all breakpoint types
             bp = @line_bps[id]
-
-            info = bp.info
-            info.breakpoint_id = bp.id
-            info.hit_count = bp.hit_count
-            info
+            bp.clone
         end
 
         # Manager specific methods
-        def line_break?(stack, file, line)
-            @mutex.synchronize do
-                result = false
+        def get_line_break(stack, file, line)
+            @monitor.synchronize do
+                result = nil
                 for bp in @line_bps.values do
                     if bp.hit(stack, file, line)
-                        result = true
+                        result = bp
                     end
                 end
                 result
@@ -190,7 +135,7 @@ module XoredDebugger
         end
 
         def exception_break?(stack, exception)
-            @mutex.synchronize do
+            @monitor.synchronize do
                 # TODO:
                 false
             end
