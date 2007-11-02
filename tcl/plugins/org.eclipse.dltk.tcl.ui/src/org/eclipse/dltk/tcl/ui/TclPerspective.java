@@ -21,13 +21,13 @@ import org.eclipse.ui.progress.IProgressConstants;
 
 public class TclPerspective implements IPerspectiveFactory {
 	// TODO: move to general class like ScriptPerspective
-	private static final String SCRIPT_EXPLORER = "org.eclipse.dltk.ui.ScriptExplorer";
+	public static final String SCRIPT_EXPLORER = "org.eclipse.dltk.ui.ScriptExplorer";
 
-	private static final String NEW_FOLDER_WIZARD = "org.eclipse.ui.wizards.new.folder"; //$NON-NLS-1$ 
+	public static final String NEW_FOLDER_WIZARD = "org.eclipse.ui.wizards.new.folder"; //$NON-NLS-1$ 
 
-	private static final String NEW_FILE_WIZARD = "org.eclipse.ui.wizards.new.file"; //$NON-NLS-1$
+	public static final String NEW_FILE_WIZARD = "org.eclipse.ui.wizards.new.file"; //$NON-NLS-1$
 
-	private static final String NEW_UNTITLED_TEXT_FILE_WIZARD = "org.eclipse.ui.editors.wizards.UntitledTextFileWizard"; //$NON-NLS-1$
+	public static final String NEW_UNTITLED_TEXT_FILE_WIZARD = "org.eclipse.ui.editors.wizards.UntitledTextFileWizard"; //$NON-NLS-1$
 
 	public static final String ID_NEW_SOURCE_WIZARD = "org.eclipse.dltk.tcl.ui.wizards.NewSourceFolderCreationWizard";
 

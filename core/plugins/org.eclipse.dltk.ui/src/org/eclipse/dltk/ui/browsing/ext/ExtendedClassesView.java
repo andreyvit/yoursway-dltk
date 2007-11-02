@@ -16,7 +16,9 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptProject;
@@ -66,6 +68,16 @@ public class ExtendedClassesView extends ViewPart implements
 		IViewPartInputProvider, ISelectionListener, ISelectionProvider,
 		IExecutableExtension, IMenuListener {
 
+	private final class IElementChangedListenerImplementation implements
+			IElementChangedListener {
+		public void elementChanged(ElementChangedEvent event) {
+			// We need to update
+			if( browsingPane != null && !browsingPane.isDisposed() ) {
+				browsingPane.refresh();
+			}
+		}
+	}
+
 	private OpenEditorActionGroup fOpenEditorGroup;
 	private CCPActionGroup fCCPActionGroup;
 	private BuildActionGroup fBuildActionGroup;
@@ -78,6 +90,18 @@ public class ExtendedClassesView extends ViewPart implements
 	// private CustomFiltersActionGroup fCustomFiltersActionGroup;
 
 	private MultiSelectionListViewer browsingPane;
+
+	public ExtendedClassesView() {
+		elementChangedListenerImplementation = new IElementChangedListenerImplementation();
+		DLTKCore
+				.addElementChangedListener(elementChangedListenerImplementation);
+	}
+
+	public void dispose() {
+		super.dispose();
+		DLTKCore
+				.removeElementChangedListener(elementChangedListenerImplementation);
+	}
 
 	//
 	public void createPartControl(Composite parent) {
@@ -121,7 +145,7 @@ public class ExtendedClassesView extends ViewPart implements
 					public int category(Object element) {
 						return super.category(unWrap(element));
 					}
-					
+
 				});
 
 				// Initialize menu
@@ -279,6 +303,24 @@ public class ExtendedClassesView extends ViewPart implements
 			return;
 		// Set selection
 		Object selectedElement = getSingleElementFromSelection(selection);
+		if (!checkElementNature(selectedElement)) {
+			return;
+		}
+		if (selectedElement instanceof List) {
+			List newList = new ArrayList();
+			List list = (List) selectedElement;
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Object obj = iterator.next();
+				if (checkElementNature(obj)) {
+					newList.add(obj);
+				}
+			}
+			if (newList.size() > 0) {
+				selectedElement = newList;
+			} else {
+				return;
+			}
+		}
 
 		if (selectedElement != null
 				&& (part == null || part.equals(fPreviousSelectionProvider))
@@ -290,6 +332,25 @@ public class ExtendedClassesView extends ViewPart implements
 				&& (selectedElement instanceof IScriptProject || selectedElement instanceof IProjectFragment)) {
 			browsingPane.setInput(selectedElement);
 		}
+	}
+
+	private boolean checkElementNature(Object selectedElement) {
+		if (selectedElement instanceof IModelElement) {
+			String natureId = this.fToolkit.getNatureId();
+			try {
+				IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+						.getLanguageToolkit((IModelElement) selectedElement);
+				if (languageToolkit != null
+						&& natureId.equals(languageToolkit.getNatureId())) {
+					return true;
+				}
+			} catch (CoreException e) {
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return false;
 	}
 
 	private boolean fProcessSelectionEvents = true;
@@ -330,6 +391,7 @@ public class ExtendedClassesView extends ViewPart implements
 
 	ListenerList listenerList = new ListenerList();
 	private IDLTKLanguageToolkit fToolkit;
+	private IElementChangedListenerImplementation elementChangedListenerImplementation;
 
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
 		listenerList.add(listener);

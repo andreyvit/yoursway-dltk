@@ -235,4 +235,13 @@ public class MultiSelectionListViewer extends ScrolledComposite {
 	public Object getInput() {
 		return this.input;
 	}
+
+	public void refresh() {
+		for (int i = 0; i < viewers.size(); i++) {
+			TreeViewer viewer = (TreeViewer) viewers.get(i);
+			if (!viewer.getControl().isDisposed()) {
+				viewer.refresh(true);
+			}
+		}
+	}
 }

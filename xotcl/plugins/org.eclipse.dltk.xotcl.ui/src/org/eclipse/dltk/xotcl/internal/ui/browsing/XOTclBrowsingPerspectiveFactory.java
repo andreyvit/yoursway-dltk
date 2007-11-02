@@ -12,7 +12,12 @@ package org.eclipse.dltk.xotcl.internal.ui.browsing;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.tcl.internal.ui.TclUI;
+import org.eclipse.dltk.tcl.internal.ui.wizards.TclFileCreationWizard;
+import org.eclipse.dltk.tcl.internal.ui.wizards.TclProjectCreationWizard;
+import org.eclipse.dltk.tcl.ui.TclPerspective;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
+import org.eclipse.dltk.ui.wizards.NewPackageCreationWizard;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.IPlaceholderFolderLayout;
@@ -42,7 +47,9 @@ public class XOTclBrowsingPerspectiveFactory implements IPerspectiveFactory {
 		layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
 		layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);
 		layout.addShowViewShortcut(IProgressConstants.PROGRESS_VIEW_ID);
-
+		addActionSets(layout);
+		addShowViewShortcuts(layout);
+		addNewWizardShortcuts(layout);
 	}
 
 	private void createHorizontalLayout(IPageLayout layout) {
@@ -80,6 +87,30 @@ public class XOTclBrowsingPerspectiveFactory implements IPerspectiveFactory {
 		placeHolderBottom.addPlaceholder(IProgressConstants.PROGRESS_VIEW_ID);
 	}
 
+	protected void addNewWizardShortcuts(IPageLayout layout) {
+		layout.addNewWizardShortcut(TclProjectCreationWizard.ID_WIZARD);
+		layout.addNewWizardShortcut(TclFileCreationWizard.ID_WIZARD);
+
+		layout.addNewWizardShortcut(TclPerspective.ID_NEW_SOURCE_WIZARD);
+		layout.addNewWizardShortcut(NewPackageCreationWizard.ID_WIZARD);
+
+		layout.addNewWizardShortcut(TclPerspective.NEW_FOLDER_WIZARD);
+		layout.addNewWizardShortcut(TclPerspective.NEW_FILE_WIZARD);
+		layout.addNewWizardShortcut(TclPerspective.NEW_UNTITLED_TEXT_FILE_WIZARD);
+	}
+
+	protected void addShowViewShortcuts(IPageLayout layout) {
+		layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
+		layout.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
+
+		layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);
+		layout.addShowViewShortcut(IProgressConstants.PROGRESS_VIEW_ID);
+	}
+
+	protected void addActionSets(IPageLayout layout) {
+		layout.addActionSet(IPageLayout.ID_NAVIGATE_ACTION_SET);
+		layout.addActionSet(TclUI.ID_ACTION_SET);
+	}
 	private boolean shouldShowProjectsView() {
 		return fgModelElementFromAction == null
 				|| fgModelElementFromAction.getElementType() == IModelElement.SCRIPT_MODEL;
