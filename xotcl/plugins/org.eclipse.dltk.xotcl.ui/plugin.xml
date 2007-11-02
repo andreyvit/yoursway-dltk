@@ -73,18 +73,21 @@
 <extension
       point="org.eclipse.ui.views">
    <view
+         category="org.eclipse.dltk.tcl.ui"
          class="org.eclipse.dltk.ui.browsing.ProjectsView:org.eclipse.dltk.tcl.core.nature"
          icon="icons/eview16/tcl_persp.gif"
          id="org.eclipse.dltk.xotcl.ui.Projects"
          name="Tcl Projects">
    </view>   
    <view
+         category="org.eclipse.dltk.tcl.ui"
          class="org.eclipse.dltk.ui.browsing.ext.ExtendedClassesView:org.eclipse.dltk.tcl.core.nature"
          icon="icons/eview16/tcl_persp.gif"
          id="org.eclipse.dltk.xotcl.ui.extbrowsing"
-         name="XOTcl Browsing">
+         name="Tcl Namespaces/Classes">
    </view>
    <view
+         category="org.eclipse.dltk.tcl.ui"
          class="org.eclipse.dltk.ui.browsing.MembersView:org.eclipse.dltk.tcl.core.nature"
          icon="icons/eview16/tcl_persp.gif"
          id="org.eclipse.dltk.xotcl.ui.Members"
