@@ -13,14 +13,15 @@ class Thread
 		def new(*args, &block)
 		    log('\\\\\\\\\\\\\\\\\\   creating APPLICATION thread   /////////////////////////')
 		    thread = __internal_ruby_debugger_new do
-                @@debugger.current_context.suspend		   
-		        begin
-			        block.call(args)
-		        rescue Exception
+                @@debugger.current_context.suspend	
+                begin	   
+		            block.call(args)
+                rescue Exception 
                     log('Exception in application thread:')
                     log("\tMessage: " + $!.message)
-                    log("\tBacktrace: " + $!.backtrace.join("\n"))
-		        end
+                    log("\tBacktrace: " + $!.backtrace.join("\n"))                    
+                    raise $!
+                end
 		    end 
             @@debugger.thread_manager.add_thread(thread) 
 		    thread

@@ -35,7 +35,11 @@ module XoredDebugger
             @thread_manager = FastThreadManager.new(self) 
             @capture_manager = CaptureManager.new(self)        
         end
-                
+        
+        def get_debugger_id
+            'org.eclipse.dltk.ruby.fastdebugger'
+        end
+                        
         def debug(script)
             Debugger.handler = self
             Debugger.start do

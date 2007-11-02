@@ -34,6 +34,7 @@ module XoredDebugger
 		        log('Exception during debugging:')
 		        log("\tMessage: " + $!.message)
 		        log("\tBacktrace: " + $!.backtrace.join("\n"))
+                debugger.handle_main_thread_exception($!)
             ensure
                 unless debugger.nil?
                     log('Terminating debugger...')

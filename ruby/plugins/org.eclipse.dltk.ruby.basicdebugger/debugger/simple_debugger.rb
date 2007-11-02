@@ -34,6 +34,10 @@ module XoredDebugger
             @capture_manager = CaptureManager.new(self)
         end	
 
+        def get_debugger_id
+            'org.eclipse.dltk.ruby.basicdebugger'
+        end        
+        
         def thread_context(thread)
             context = nil
             @monitor.synchronize do

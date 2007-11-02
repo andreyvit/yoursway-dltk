@@ -20,11 +20,12 @@ module XoredDebugger
             @creator = lambda { |thread| debugger.create_thread_wrapper(thread) }
             @monitor = Monitor.new
             @threads = {}      
-                                           
+                              
+            @terminated = false             
             @thread_manager_cleanup = debugger.create_debug_thread do
                 begin
 	                log('Thread manager cleanup started')
-	                loop do
+	                while (@terminated != true)
 	                    cleanup           
 	                    sleep 1
 	                end
@@ -38,7 +39,8 @@ module XoredDebugger
         end
 
         def terminate
-            @thread_manager_cleanup.terminate()
+            @terminated = true
+            @thread_manager_cleanup.join
             main = main_thread
 			all = all_threads
             

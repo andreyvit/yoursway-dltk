@@ -16,8 +16,7 @@ module XoredDebugger
 		attr_reader :feature_manager
 		attr_reader :source_manager
         
-	    def initialize()
-			Thread.abort_on_exception = true            		               
+	    def initialize()          		               
             @feature_manager = FeatureManager.new
             @source_manager = SourceManager.new                            
         end
@@ -47,8 +46,22 @@ module XoredDebugger
             }      
             false     
         end
-                
+        
+        def handle_main_thread_exception(exception)   
+            backtrace = exception.backtrace.delete_if { |s| s.index(get_debugger_id) != nil }
+	        trace = backtrace.shift + ': ' + exception.message + "\n"
+	        other_traces = backtrace.join("\n\t")
+	        unless other_traces.empty?
+	            trace += "\t" + other_traces
+	        end
+	        capture_manager.stderr_capturer.write(trace)
+        end        
+        
         # methods to override
+        def get_debugger_id
+            raise NotImplementedError.new('You MUST implement this method in ancessors')
+        end
+        
         def capture_manager
             raise NotImplementedError.new('You MUST implement this method in ancessors')
         end        

@@ -60,7 +60,8 @@ module XoredDebugger
 	class CaptureManager
 	    include Logger
         
-	    def initialize(debugger)	        
+	    def initialize(debugger)
+	        @debugger = debugger	        
 	        @stdout_capturer = Capturer.new($stdout, COPY)             
 			@stderr_capturer = Capturer.new($stderr, COPY)
             $stdout = @stdout_capturer
@@ -71,19 +72,11 @@ module XoredDebugger
                 begin
 	                while (@terminatig == false)
 	                    sleep 1
-	                    @stdout_capturer.redirected.each_pair do |thread, message| 
-	                        log('REDIRECT: ' + message)
-	                        wrapper = debugger.thread_manager.get_thread_wrapper(thread)
-	                        unless wrapper.nil?
-	                            wrapper.io_manager.send("stdout_data", {:_data => message})
-	                        end                    
+	                    @stdout_capturer.redirected.each_pair do |thread, message|
+	                        send(thread, 'stdout', message) 
 	                    end
 	                    @stderr_capturer.redirected.each_pair do |thread, message| 
-	                        log('REDIRECT: ' + message)
-	                        wrapper = debugger.thread_manager.get_thread_wrapper(thread)
-	                        unless wrapper.nil?
-	                            wrapper.io_manager.send("stderr_data", {:_data => message})
-	                        end                    
+	                        send(thread, 'stderr', message) 
 	                    end                                        
 	                end
                 rescue Exception
@@ -93,7 +86,19 @@ module XoredDebugger
                 end
             end
 		end
-		
+
+        def send(thread, stream, message)
+            log('REDIRECT ' + stream + ': ' + message)
+            wrapper = @debugger.thread_manager.get_thread_wrapper(thread)
+            if (wrapper != nil)
+                wrapper.io_manager.send(stream + "_data", {:_data => message})
+            else
+                # send through main thread's connection 
+                wrapper = @debugger.thread_manager.get_thread_wrapper(Thread.main)
+                wrapper.io_manager.send(stream + "_data", {:_data => message}) unless wrapper.nil?                                                                	                            
+            end                                
+        end
+        
         def terminate()
             $stdout = STDOUT
             $stderr = STDERR
