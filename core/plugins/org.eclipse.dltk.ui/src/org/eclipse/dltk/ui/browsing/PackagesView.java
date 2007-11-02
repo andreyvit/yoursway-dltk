@@ -363,7 +363,7 @@ public class PackagesView extends ScriptBrowsingPart {
 		ScriptUILabelProvider labelProvider = createLabelProvider();
 		viewer.setLabelProvider(createDecoratingLabelProvider(labelProvider));
 
-		viewer.setComparator(createJavaElementComparator());
+		viewer.setComparator(createModelElementComparator());
 		viewer.setUseHashlookup(true);
 
 		createContextMenu();
@@ -383,7 +383,7 @@ public class PackagesView extends ScriptBrowsingPart {
 	}
 
 	// alter sorter to include LogicalPackages
-	protected ModelElementSorter createJavaElementComparator() {
+	protected ModelElementSorter createModelElementComparator() {
 		return new ModelElementSorter() {
 			public int category(Object element) {
 				if (element instanceof LogicalPackage) {

@@ -12,6 +12,8 @@ package org.eclipse.dltk.ui.browsing.ext;
  *******************************************************************************/
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -50,6 +52,61 @@ public class ColumnForm extends Composite {
 				onDragSash(e);
 			}
 		};
+		layout();
+		this.addPaintListener(new PaintListener() {
+			public void paintControl(PaintEvent e) {
+				drawLines(e);
+			}
+		});
+	}
+
+	protected void drawLines(PaintEvent e) {
+		// We need to paint lines of white, line (100 3 100)*
+		Rectangle clientArea = this.getClientArea();
+		int[] widths = new int[controls.length];
+		int total = 0;
+		for (int i = 0; i < controls.length; i++) {
+			Object data = controls[i].getLayoutData();
+			if (data != null && data instanceof ColumnFormData) {
+				widths[i] = ((ColumnFormData) data).width;
+			} else {
+				data = new ColumnFormData();
+				controls[i].setLayoutData(data);
+				((ColumnFormData) data).width = widths[i] = 200;
+
+			}
+			total += widths[i];
+		}
+		int sashwidth = sashes.length > 0 ? this.SASH_WIDTH
+				+ sashes[0].getBorderWidth() * 2 : 2*this.SASH_WIDTH;
+		total += (this.sashes.length - 1) * sashwidth;
+
+		int drawWidth = clientArea.width - total;
+		int lines = drawWidth / 200;
+		int last = drawWidth % 200;
+
+		int x = total;
+		for (int i = 0; i < lines; i++) {
+			e.gc.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+			e.gc.fillRectangle(x,
+					clientArea.x, sashwidth,
+					clientArea.height);
+			x+= sashwidth;
+			e.gc.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+			e.gc.fillRectangle(x,
+					clientArea.x, 200,
+					clientArea.height);
+			x+= 200;
+		}
+		e.gc.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+		e.gc.fillRectangle(x,
+				clientArea.x, sashwidth,
+				clientArea.height);
+		x+= sashwidth;
+		e.gc.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+		e.gc.fillRectangle(x,
+				clientArea.x, last,
+				clientArea.height);
 	}
 
 	static int checkStyle(int style) {
@@ -95,16 +152,16 @@ public class ColumnForm extends Composite {
 			return;
 
 		Control c1 = controls[sashIndex];
-//		Control c2 = controls[sashIndex + 1];
+		// Control c2 = controls[sashIndex + 1];
 		Rectangle b1 = c1.getBounds();
-//		Rectangle b2 = c2.getBounds();
+		// Rectangle b2 = c2.getBounds();
 
 		Rectangle sashBounds = sash.getBounds();
-//		Rectangle area = getClientArea();
+		// Rectangle area = getClientArea();
 		boolean correction = false;
 
 		correction = b1.width < DRAG_MINIMUM;
-		
+
 		int shift = event.x - sashBounds.x;
 		Object data1 = c1.getLayoutData();
 		if (data1 == null || !(data1 instanceof ColumnFormData)) {
@@ -123,9 +180,10 @@ public class ColumnForm extends Composite {
 		if (correction || (event.doit && event.detail != SWT.DRAG)) {
 			c1.setBounds(b1);
 			sash.setBounds(event.x, event.y, event.width, event.height);
-//			c2.setBounds(b2);
+			// c2.setBounds(b2);
 		}
 		this.layout();
+		this.redraw();
 	}
 
 	public void setBackground(Color color) {
@@ -144,9 +202,9 @@ public class ColumnForm extends Composite {
 		}
 	}
 
-
 	public void setLayout(Layout layout) {
 		checkWidget();
 		return;
 	}
+
 }

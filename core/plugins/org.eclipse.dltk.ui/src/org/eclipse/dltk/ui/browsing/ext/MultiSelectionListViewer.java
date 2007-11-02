@@ -13,6 +13,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -20,6 +22,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 
 public class MultiSelectionListViewer extends ScrolledComposite {
+	// Contain ListViewers
+	private List viewers = new ArrayList();
+	private int elements = 0;
+	private ColumnForm columnForm;
+	private ITreeContentProvider contentProvider;
+	private Object input;
+	private ILabelProvider labelProvider;
 	private int selectedView = 0;
 
 	public class SelectionUpdater implements ISelectionChangedListener {
@@ -35,14 +44,16 @@ public class MultiSelectionListViewer extends ScrolledComposite {
 	}
 
 	private void updateAll(int controlIndex) {
-		if( this.viewers.size() == 0 ) {
+		if (this.viewers.size() == 0) {
 			addPane();
 			return;
 		}
 		// we need to update all elements with bigger indexes.
 		for (int i = controlIndex + 1; i < viewers.size(); i++) {
 			TreeViewer viewer = (TreeViewer) viewers.get(i);
-			viewer.refresh(true);
+			if (!viewer.getControl().isDisposed()) {
+				viewer.refresh(true);
+			}
 		}
 		selectedView = controlIndex;
 		// Add pane if required
@@ -71,19 +82,12 @@ public class MultiSelectionListViewer extends ScrolledComposite {
 		// lets scroll for corrent position
 		TreeViewer viewer = (TreeViewer) viewers.get(controlIndex);
 		Tree tree = viewer.getTree();
-		Rectangle bounds = tree.getBounds();
-		MultiSelectionListViewer.this.setOrigin(bounds.x, bounds.y);
-
+		if (!tree.isDisposed()) {
+			Rectangle bounds = tree.getBounds();
+			MultiSelectionListViewer.this.setOrigin(bounds.x, bounds.y);
+		}
 		elementSelectionChanged(viewer.getSelection());
 	}
-
-	// Contain ListViewers
-	private List viewers = new ArrayList();
-	private int elements = 0;
-	private ColumnForm columnForm;
-	private ITreeContentProvider contentProvider;
-	private Object input;
-	private ILabelProvider labelProvider;
 
 	private class TreeContentProvider implements ITreeContentProvider {
 		private int controlIndex = 0;
@@ -127,32 +131,52 @@ public class MultiSelectionListViewer extends ScrolledComposite {
 		this.columnForm.setSize(400, 300);
 		this.setContent(this.columnForm);
 		this.setExpandVertical(true);
+		this.addControlListener(new ControlListener() {
+			public void controlMoved(ControlEvent e) {
+			}
+
+			public void controlResized(ControlEvent e) {
+				columnForm.layout();
+			}
+		});
+		layout();
+		this.columnForm.layout();
 	}
 
 	/**
 	 * After calling addPane child composite could be added
 	 */
 	private void addPane() {
+		if (isDisposed()) {
+			return;
+		}
 		Tree list = new Tree(columnForm, SWT.SINGLE);
 		list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		TreeViewer viewer = new TreeViewer(list);
 		viewer.setContentProvider(new TreeContentProvider(elements));
 		viewer.setLabelProvider(this.labelProvider);
+		configureViewer(viewer);
 		viewer.setInput(input);
 		viewer.addSelectionChangedListener(new SelectionUpdater(elements));
 		list.setSize(100, 100);
+		list.layout();
 		viewers.add(viewer);
 		this.columnForm.layout();
 		this.layout();
 		elements += 1;
 	}
 
+	protected void configureViewer(TreeViewer viewer) {
+	}
+
 	private void removePane() {
-		if (elements > 0) {
+		if (elements > 0 && !isDisposed()) {
 			elements -= 1;
 			TreeViewer last = (TreeViewer) viewers.get(viewers.size() - 1);
+			if (!last.getControl().isDisposed()) {
+				last.getControl().dispose();
+			}
 			viewers.remove(last);
-			last.getControl().dispose();
 			columnForm.layout();
 			this.layout();
 		}
@@ -163,7 +187,7 @@ public class MultiSelectionListViewer extends ScrolledComposite {
 	}
 
 	public void setInput(Object input) {
-		if( input != null && !input.equals(this.input)) {
+		if (input != null && !input.equals(this.input)) {
 			this.contentProvider.inputChanged(null, this.input, input);
 		}
 		this.input = input;
@@ -171,6 +195,8 @@ public class MultiSelectionListViewer extends ScrolledComposite {
 		for (int i = 0; i < len; i++) {
 			removePane();
 		}
+		// Remove all disposed widgets
+
 		updateAll(0);
 	}
 
@@ -189,8 +215,7 @@ public class MultiSelectionListViewer extends ScrolledComposite {
 					return contentProvider.getChildren(firstElement);
 				}
 			}
-		}
-		else {
+		} else {
 			return contentProvider.getElements(this.input);
 		}
 		return new Object[0];

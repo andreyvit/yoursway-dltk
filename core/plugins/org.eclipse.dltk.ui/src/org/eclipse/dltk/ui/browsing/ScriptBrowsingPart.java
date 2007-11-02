@@ -332,7 +332,7 @@ public abstract class ScriptBrowsingPart extends ViewPart implements
 		fLabelProvider = createLabelProvider();
 		fViewer.setLabelProvider(createDecoratingLabelProvider(fLabelProvider));
 
-		fViewer.setComparator(createJavaElementComparator());
+		fViewer.setComparator(createModelElementComparator());
 		fViewer.setUseHashlookup(true);
 		fTitleProvider = createTitleProvider();
 
@@ -417,7 +417,7 @@ public abstract class ScriptBrowsingPart extends ViewPart implements
 		return new DecoratingModelLabelProvider(provider);
 	}
 
-	protected ModelElementSorter createJavaElementComparator() {
+	protected ModelElementSorter createModelElementComparator() {
 		return new ModelElementSorter();
 	}
 

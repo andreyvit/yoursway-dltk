@@ -97,7 +97,7 @@
             name="XOTcl browsing"
             icon="icons/eview16/browse_persp.gif"
             class="org.eclipse.dltk.xotcl.internal.ui.browsing.XOTclBrowsingPerspectiveFactory"
-            id="org.eclipse.jdt.ui.JavaBrowsingPerspective">
+            id="org.eclipse.jdt.ui.XOTclBrowsingPerspective">
          <description>
             XOTcl browsing
          </description>

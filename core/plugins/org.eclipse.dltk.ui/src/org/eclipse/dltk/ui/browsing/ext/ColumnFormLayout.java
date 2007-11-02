@@ -39,13 +39,13 @@ class ColumnFormLayout extends Layout {
 			return new Point(width, height);
 		}
 		// determine control sizes
-//		int maxIndex = 0;
+		// int maxIndex = 0;
 		int maxValue = 0;
 		for (int i = 0; i < cArray.length; i++) {
 
 			Point size = cArray[i].computeSize(SWT.DEFAULT, hHint, flushCache);
 			if (size.x > maxValue) {
-//				maxIndex = i;
+				// maxIndex = i;
 				maxValue = size.x;
 			}
 			height = Math.max(height, size.y);
@@ -72,8 +72,15 @@ class ColumnFormLayout extends Layout {
 			return;
 
 		Control[] newControls = columnForm.getControls(true);
-		if (columnForm.controls.length == 0 && newControls.length == 0)
+		if (columnForm.controls.length == 0 && newControls.length == 0) {
+			Rectangle oldBounds = columnForm.getBounds();
+			Rectangle bounds = columnForm.getParent().getBounds();
+			if (bounds.width != 0) {
+				columnForm.setBounds(oldBounds.x, oldBounds.y, bounds.width,
+						oldBounds.height);
+			}
 			return;
+		}
 		columnForm.controls = newControls;
 
 		Control[] controls = columnForm.controls;
@@ -142,27 +149,22 @@ class ColumnFormLayout extends Layout {
 			controls[i].setBounds(x, area.y, width, area.height);
 			x += width;
 		}
-		if( controls.length > 0) {
-			sashes[controls.length-1].setBounds(x, area.y, sashwidth, area.height);
+		if (controls.length > 0) {
+			sashes[controls.length - 1].setBounds(x, area.y, sashwidth,
+					area.height);
 		}
-		
+
 		// we need to set control width to correct value of total space.
 		Rectangle oldBounds = columnForm.getBounds();
 		Rectangle bounds = columnForm.getParent().getBounds();
-//		if( bounds.width <  x + sashwidth + 3 ) {
-			columnForm.setBounds(oldBounds.x, oldBounds.y, x + sashwidth+3, oldBounds.height);
-//		}
-//		else {
-//			columnForm.setBounds(oldBounds.x, oldBounds.y, bounds.width, oldBounds.height);
-//		}
-
-		// if (controls.length > 1) {
-		// sashes[sashes.length - 1].setBounds(x, area.y, sashwidth,
-		// area.height);
-		// x += sashwidth;
-		// width = area.width - x;
-		// controls[controls.length - 1].setBounds(x, area.y, width,
-		// area.height);
-		// }
+		if (bounds.width < x + sashwidth + 3) {
+			columnForm.setBounds(oldBounds.x, oldBounds.y, x + sashwidth + 3,
+					oldBounds.height);
+		} else {
+			columnForm.setBounds(oldBounds.x, oldBounds.y, bounds.width,
+					oldBounds.height);
+		}
+		// we need update with to parent size.
 	}
+
 }

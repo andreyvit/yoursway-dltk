@@ -41,7 +41,10 @@ public class CompletionOnKeywordArgumentOrFunctionArgument extends
 	}
 
 	public char[] getToken() {
-		return getName().toCharArray();
+		if( getName() != null ) {
+			return getName().toCharArray();	
+		}
+		return "".toCharArray();
 	}
 
 	public String[] getPossibleKeywords() {

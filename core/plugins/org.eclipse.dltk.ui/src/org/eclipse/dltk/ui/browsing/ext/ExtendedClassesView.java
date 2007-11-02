@@ -21,30 +21,61 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.search.SearchEngine;
+import org.eclipse.dltk.internal.ui.actions.BuildActionGroup;
+import org.eclipse.dltk.internal.ui.actions.CCPActionGroup;
+import org.eclipse.dltk.internal.ui.actions.CompositeActionGroup;
+import org.eclipse.dltk.internal.ui.actions.ImportActionGroup;
+import org.eclipse.dltk.internal.ui.actions.NewWizardsActionGroup;
+import org.eclipse.dltk.internal.ui.actions.refactoring.RefactorActionGroup;
 import org.eclipse.dltk.internal.ui.search.SearchUtil;
+import org.eclipse.dltk.ui.DLTKUIPlugin;
+import org.eclipse.dltk.ui.ModelElementSorter;
+import org.eclipse.dltk.ui.actions.OpenEditorActionGroup;
+import org.eclipse.dltk.ui.actions.OpenViewActionGroup;
+import org.eclipse.dltk.ui.actions.SearchActionGroup;
 import org.eclipse.dltk.ui.browsing.ScriptElementTypeComparator;
 import org.eclipse.dltk.ui.infoviews.AbstractInfoView;
 import org.eclipse.dltk.ui.viewsupport.IViewPartInputProvider;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.search.ui.ISearchResultViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
+import org.eclipse.ui.actions.ActionContext;
+import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.part.ViewPart;
 
 public class ExtendedClassesView extends ViewPart implements
 		IViewPartInputProvider, ISelectionListener, ISelectionProvider,
-		IExecutableExtension {
+		IExecutableExtension, IMenuListener {
+
+	private OpenEditorActionGroup fOpenEditorGroup;
+	private CCPActionGroup fCCPActionGroup;
+	private BuildActionGroup fBuildActionGroup;
+	// private ToggleLinkingAction fToggleLinkingAction;
+	protected CompositeActionGroup fActionGroups;
+
+	// private boolean fHasCustomFilter = true;
+
+	// Filters
+	// private CustomFiltersActionGroup fCustomFiltersActionGroup;
 
 	private MultiSelectionListViewer browsingPane;
 
@@ -61,14 +92,76 @@ public class ExtendedClassesView extends ViewPart implements
 							.selectionChanged(event);
 				}
 			}
+
+			protected void configureViewer(TreeViewer viewer) {
+				// viewer.setCom
+				viewer.setUseHashlookup(true);
+				viewer.setSorter(new ModelElementSorter() {
+					public int compare(Viewer viewer, Object e1, Object e2) {
+						e1 = unWrap(e1);
+						e2 = unWrap(e2);
+						return super.compare(viewer, e1, e2);
+					}
+
+					private Object unWrap(Object e1) {
+						if (e1 instanceof MixedClass) {
+							MixedClass cl = ((MixedClass) e1);
+							if (cl.getElements().size() > 0) {
+								e1 = cl.getElements().get(0);
+							}
+						}
+						return e1;
+					}
+
+					protected String getElementName(Object element) {
+						element = unWrap(element);
+						return super.getElementName(element);
+					}
+
+					public int category(Object element) {
+						return super.category(unWrap(element));
+					}
+					
+				});
+
+				// Initialize menu
+				createContextMenu(viewer.getControl());
+			}
+
 		};
-		browsingPane.setContentProvider(new ExtendedClasesContentProvider(
-				this, SearchEngine.createWorkspaceScope(this.fToolkit)));
+		browsingPane.setContentProvider(new ExtendedClasesContentProvider(this,
+				SearchEngine.createWorkspaceScope(this.fToolkit)));
 		browsingPane.setLabelProvider(new ExtendedClasesLabelProvider(this));
-		
+
 		getSite().setSelectionProvider(this);
 		getViewSite().getPage().addPostSelectionListener(this);
 		getViewSite().getPage().addPartListener(fPartListener);
+
+		createActions();
+	}
+
+	protected void createActions() {
+		fActionGroups = new CompositeActionGroup(new ActionGroup[] {
+				new NewWizardsActionGroup(this.getSite()),
+				fOpenEditorGroup = new OpenEditorActionGroup(this),
+				new OpenViewActionGroup(this),
+				fCCPActionGroup = new CCPActionGroup(this),
+				// new GenerateActionGroup(this),
+				new RefactorActionGroup(this), new ImportActionGroup(this),
+				fBuildActionGroup = new BuildActionGroup(this),
+				new SearchActionGroup(this, this.fToolkit) });
+
+		// fToggleLinkingAction = new ToggleLinkingAction(this);
+	}
+
+	protected void createContextMenu(Control parent) {
+		MenuManager menuManager = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(this);
+		Menu contextMenu = menuManager.createContextMenu(this.browsingPane);
+		// this.browsingPane.setMenu(contextMenu);
+		parent.setMenu(contextMenu);
+		getSite().registerContextMenu(menuManager, this);
 	}
 
 	/**
@@ -278,5 +371,17 @@ public class ExtendedClassesView extends ViewPart implements
 			throw new RuntimeException(
 					"Nature attribute should be specified and correct");
 		}
+	}
+
+	public void menuAboutToShow(IMenuManager menu) {
+		DLTKUIPlugin.createStandardGroups(menu);
+
+		IStructuredSelection selection = (IStructuredSelection) getSelection();
+		// int size = selection.size();
+		// Object element = selection.getFirstElement();
+
+		fActionGroups.setContext(new ActionContext(selection));
+		fActionGroups.fillContextMenu(menu);
+		fActionGroups.setContext(null);
 	}
 }
