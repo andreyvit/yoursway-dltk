@@ -30,7 +30,9 @@ import org.eclipse.dltk.internal.ui.actions.ImportActionGroup;
 import org.eclipse.dltk.internal.ui.actions.NewWizardsActionGroup;
 import org.eclipse.dltk.internal.ui.actions.refactoring.RefactorActionGroup;
 import org.eclipse.dltk.internal.ui.search.SearchUtil;
+import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
+import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.ModelElementSorter;
 import org.eclipse.dltk.ui.actions.OpenEditorActionGroup;
 import org.eclipse.dltk.ui.actions.OpenViewActionGroup;
@@ -72,7 +74,7 @@ public class ExtendedClassesView extends ViewPart implements
 			IElementChangedListener {
 		public void elementChanged(ElementChangedEvent event) {
 			// We need to update
-			if( browsingPane != null && !browsingPane.isDisposed() ) {
+			if (browsingPane != null && !browsingPane.isDisposed()) {
 				browsingPane.refresh();
 			}
 		}
@@ -155,7 +157,11 @@ public class ExtendedClassesView extends ViewPart implements
 		};
 		browsingPane.setContentProvider(new ExtendedClasesContentProvider(this,
 				SearchEngine.createWorkspaceScope(this.fToolkit)));
-		browsingPane.setLabelProvider(new ExtendedClasesLabelProvider(this));
+		IDLTKUILanguageToolkit languageToolkit = DLTKUILanguageManager
+				.getLanguageToolkit(this.fToolkit.getNatureId());
+
+		browsingPane.setLabelProvider(new ExtendedClasesLabelProvider(
+				languageToolkit.createScripUILabelProvider()));
 
 		getSite().setSelectionProvider(this);
 		getViewSite().getPage().addPostSelectionListener(this);

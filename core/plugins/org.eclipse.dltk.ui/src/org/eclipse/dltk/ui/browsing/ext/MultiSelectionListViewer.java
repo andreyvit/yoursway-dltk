@@ -15,6 +15,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -84,7 +85,12 @@ public class MultiSelectionListViewer extends ScrolledComposite {
 		Tree tree = viewer.getTree();
 		if (!tree.isDisposed()) {
 			Rectangle bounds = tree.getBounds();
-			MultiSelectionListViewer.this.setOrigin(bounds.x, bounds.y);
+//			Point origin = MultiSelectionListViewer.this.getOrigin();
+//			double step = ( origin.x - ( bounds.x + bounds.width ) ) / 10;
+//			for (int i = 0; i < 50; i++) {
+//				MultiSelectionListViewer.this.setOrigin(origin.x - (int)step*i, bounds.y);
+//				redraw();
+//			}
 		}
 		elementSelectionChanged(viewer.getSelection());
 	}
