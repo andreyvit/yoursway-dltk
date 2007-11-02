@@ -50,7 +50,6 @@ module XoredDebugger
 	                line << ch
 	            end
             rescue Exception
-                log('Exception in io_manager.receive')
                 # Connection broken, exitting
                 # TODO: Add reconnect if thread not finished.
                 throw :done

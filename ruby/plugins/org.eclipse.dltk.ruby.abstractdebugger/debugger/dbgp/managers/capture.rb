@@ -49,7 +49,11 @@ module XoredDebugger
                 @redirected = Hash.new
                 result
             end
-        end        
+        end 
+        
+        def method_missing(method, *args, &block)
+          @stream.send(method, *args, &block)
+        end               
     end # class Capturer
 
 	

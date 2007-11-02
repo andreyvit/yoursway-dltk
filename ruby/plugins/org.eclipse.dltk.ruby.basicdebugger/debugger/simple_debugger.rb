@@ -81,7 +81,6 @@ module XoredDebugger
 	            ensure 
 	                set_trace_func nil
 		            log("Trace function was unset")
-                    log("Depth value: " + @depth.to_s)
 	            end              
             end              
         end       

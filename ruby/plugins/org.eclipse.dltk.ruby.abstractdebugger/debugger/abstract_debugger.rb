@@ -23,8 +23,8 @@ module XoredDebugger
         end
 
         def terminate         
-			@capture_manager.terminate
-            @thread_manager.terminate                      
+			capture_manager.terminate
+            thread_manager.terminate                      
         end                              
         
         def create_thread_wrapper(thread)

@@ -6,9 +6,9 @@
       <engineContribution
             natureId="org.eclipse.dltk.ruby.core.nature">
          <engine
-               class="org.eclipse.dltk.ruby.fastdebugger.FastRailsDebuggerRunnerFactory"
+               class="org.eclipse.dltk.ruby.fastdebugger.FastDebuggerRunnerFactory"
                description="%FastDebuggingEngine.description"
-               id="com.xored.rubygears.railsdebugger"
+               id="org.eclipse.dltk.ruby.fastdebugger"
                name="%FastDebuggingEngine.name"
                preferencePageId="org.eclipse.dltk.ruby.preferences.debug.railsdebugger"
                priority="5">

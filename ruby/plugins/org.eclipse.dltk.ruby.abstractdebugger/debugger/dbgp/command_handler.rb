@@ -510,8 +510,6 @@ module XoredDebugger
                 data[:id] = command.arg('-i')
             end
 
-            #log('Dispatch completed, data: ' + data.inspect)
-
             data
         end
 		
@@ -530,7 +528,6 @@ module XoredDebugger
         end
         
         def send_stopped
-            log(@last_continuation_command.inspect)
             unless @last_continuation_command.nil?
                 map = { :status => 'stopped',
                         :reason => 'ok',
@@ -560,7 +557,12 @@ module XoredDebugger
         end
 
         def stop
-            @context.interrupt
+            map = { :status => 'stopped',
+                    :reason => 'ok',
+                    :id     => @command.arg('-i') } 
+            io_manager.send(@command.name, map)
+            @debugger.terminate
+            Kernel.exit!(0)
             nil
         end
 
@@ -573,18 +575,7 @@ module XoredDebugger
             send_break
             # responce to break command
             { :success => 1 }
-        end        
-                
-        
-		# Terminate function
-        def terminate
-            log('Thread termination: ' + @thread.inspect)
-            log("\tMain?: " + (@thread == Thread.main).to_s)
-                        
-            send_stopped
-            Thread.kill(@thread)
-        end               
-        
+        end                                                   
         
         def terminated
             log("Thread 'terminated' event: " + @thread.inspect)
