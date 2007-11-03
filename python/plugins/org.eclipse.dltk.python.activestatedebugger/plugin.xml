@@ -11,8 +11,9 @@
               id="org.eclipse.dltk.python.activestatedebugger"
               name="%ActiveStateDebuggingEngine.name"
               priority="0"
-              preferencePageId="org.eclipse.dltk.python.preferences.debug.activestatedebugger">
-        </engine>    
+              preferencePageId="org.eclipse.dltk.python.preferences.debug.activestatedebugger"
+              supportsSupendOnEntry="false" 
+              supportsSuspendOnExit="false" />
       </engineContribution>
    </extension>
    <extension

@@ -1,23 +1,19 @@
 package org.eclipse.dltk.python.internal.debug.ui;
 
-import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.debug.ui.actions.IRunToLineTarget;
-import org.eclipse.debug.ui.actions.IToggleBreakpointsTarget;
-import org.eclipse.dltk.internal.debug.ui.ScriptRunToLineAdapter;
+import org.eclipse.dltk.debug.ui.ScriptEditorDebugAdapterFactory;
+import org.eclipse.dltk.debug.ui.breakpoints.ScriptToggleBreakpointAdapter;
 
-public class PythonEditorDebugAdapterFactory implements IAdapterFactory {
-	public Object getAdapter(Object adaptableObject, Class adapterType) {
-		if (adapterType == IRunToLineTarget.class) {
-			return new ScriptRunToLineAdapter();
-		} else if (adapterType == IToggleBreakpointsTarget.class) {
-			return new PythonToggleBreakpointAdapter();
-		}
+/**
+ * Debug adapter factory for the Python editor.
+ */
+public class PythonEditorDebugAdapterFactory extends
+		ScriptEditorDebugAdapterFactory {
 
-		return null;
+	/*
+	 * @see org.eclipse.dltk.debug.ui.ScriptEditorDebugAdapterFactory#getBreakpointAdapter()
+	 */
+	protected ScriptToggleBreakpointAdapter getBreakpointAdapter() {
+		return new PythonToggleBreakpointAdapter();
 	}
 
-	public Class[] getAdapterList() {
-		return new Class[] { IRunToLineTarget.class,
-				IToggleBreakpointsTarget.class };
-	}
 }

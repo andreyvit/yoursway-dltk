@@ -18,8 +18,11 @@
  		<launchConfigurationTypeImage
 			icon="icons/obj16/python_obj.gif"
 			configTypeID="org.eclipse.dltk.python.launching.PythonLaunchConfigurationType"
-			id="org.eclipse.dltk.python.debug.ui.launchConfigurationTypeImage.localTCLScript">
-		</launchConfigurationTypeImage>
+			id="org.eclipse.dltk.python.debug.ui.launchConfigurationTypeImage.localPythonScript" />
+		<launchConfigurationTypeImage
+            icon="icons/obj16/python_obj.gif"
+            configTypeID="org.eclipse.dltk.python.launching.PythonRemoteLaunchConfigurationType"
+            id="org.eclipse.dltk.python.debug.ui.launchConfigurationTypeImage.remotePythonScript" />		
    </extension>
    
   
@@ -28,8 +31,11 @@
       <launchConfigurationTabGroup
             type="org.eclipse.dltk.python.launching.PythonLaunchConfigurationType"
             class="org.eclipse.dltk.python.internal.debug.ui.launchConfigurations.PythonTabGroup"
-            id="org.eclipse.dltk.python.debug.ui.PythonTabGroup">
-      </launchConfigurationTabGroup>
+            id="org.eclipse.dltk.python.debug.ui.PythonTabGroup" />
+      <launchConfigurationTabGroup
+            type="org.eclipse.dltk.python.launching.PythonRemoteLaunchConfigurationType"
+            class="org.eclipse.dltk.python.internal.debug.ui.launchConfigurations.PythonRemoteTabGroup"
+            id="org.eclipse.dltk.python.debug.ui.PythonRemoteTabGroup" />
    </extension>
    
    <extension point="org.eclipse.ui.popupMenus">
@@ -154,7 +160,8 @@
            <adapter type="org.eclipse.debug.ui.actions.IRunToLineTarget"/>
        </factory>         
     </extension>
-<extension point="org.eclipse.ui.editorActions">
+    
+   <extension point="org.eclipse.ui.editorActions">
 		<editorContribution
 			targetID="org.eclipse.dltk.python.ui.editor.PythonEditor"
 			id="org.eclipse.dltk.python.debug.PythonEditor.BreakpointRulerActions">

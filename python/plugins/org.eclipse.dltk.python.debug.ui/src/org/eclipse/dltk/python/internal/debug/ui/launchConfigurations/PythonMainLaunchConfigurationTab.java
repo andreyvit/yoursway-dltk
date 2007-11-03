@@ -10,6 +10,7 @@
 package org.eclipse.dltk.python.internal.debug.ui.launchConfigurations;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptProject;
@@ -19,23 +20,26 @@ import org.eclipse.dltk.python.core.PythonNature;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.swt.graphics.Image;
 
-public class PythonMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
-
+public class PythonMainLaunchConfigurationTab extends
+		MainLaunchConfigurationTab {
 
 	protected boolean validateProject(IScriptProject project) {
 		if (project == null)
 			return false;
-		// check project nature		
+		// check project nature
 		try {
-			IDLTKLanguageToolkit ltk = DLTKLanguageManager.getLanguageToolkit(project);
+			IDLTKLanguageToolkit ltk = DLTKLanguageManager
+					.getLanguageToolkit(project);
 			if (ltk instanceof PythonLanguageToolkit)
 				return true;
 		} catch (CoreException e) {
 		}
 		return false;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#getImage()
 	 */
 	public Image getImage() {
@@ -44,6 +48,13 @@ public class PythonMainLaunchConfigurationTab extends MainLaunchConfigurationTab
 
 	protected String getNatureID() {
 		return PythonNature.NATURE_ID;
+	}
+
+	protected void doPerformApply(ILaunchConfigurationWorkingCopy config) {
+		super.doPerformApply(config);
+
+		config.setAttribute("suspendOnEntry", false);
+		config.setAttribute("suspendOnExit", false);
 	}
 
 }

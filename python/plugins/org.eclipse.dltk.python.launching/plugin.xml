@@ -2,6 +2,13 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.dltk.python.launching.PythonLaunchingPluginPreferenceInitializer">
+      </initializer>
+   </extension>
+
+   <extension
          point="org.eclipse.dltk.launching.interpreterInstallTypes">
           <interpreterInstallType
             class="org.eclipse.dltk.python.internal.launching.GenericPythonInstallType"
@@ -15,8 +22,42 @@
                delegate="org.eclipse.dltk.python.launching.PythonLaunchConfigurationDelegate"
                id="org.eclipse.dltk.python.launching.PythonLaunchConfigurationType"
                modes="run,debug"
-               name="Python Script"
-               public="true">
-		  </launchConfigurationType>         
+               name="%PythonLaunchConfigurationType.name"
+               public="true"
+               sourceLocatorId="pythonSourceLocator"
+               sourcePathComputerId="pythonSourcePathComputer" />
+         <launchConfigurationType
+               delegate="org.eclipse.dltk.python.launching.PythonRemoteLaunchConfigurationDelegate"
+               id="org.eclipse.dltk.python.launching.PythonRemoteLaunchConfigurationType"
+               modes="run,debug"
+               name="%PythonRemoteLaunchConfigurationType.name"
+               public="true"
+               sourceLocatorId="pythonSourceLocator" />               
    </extension>
+ 
+   <extension
+        point="org.eclipse.debug.core.sourceLocators">
+        <sourceLocator
+           class="org.eclipse.dltk.launching.sourcelookup.ScriptSourceLookupDirector"
+           id="pythonSourceLocator"
+           name="%PythonSourceLocator.name" />
+   </extension>
+  
+   <extension 
+        point="org.eclipse.debug.core.sourcePathComputers">
+        <sourcePathComputer
+            class="org.eclipse.dltk.launching.sourcelookup.ScriptSourcePathComputer"
+            id="pythonSourcePathComputer"/>
+   </extension>
+ 
+   <extension
+         point="org.eclipse.dltk.launching.debuggingEngine">
+      <engineContribution
+            natureId="org.eclipse.dltk.python.core.nature">
+         <selector
+               class="org.eclipse.dltk.python.launching.PythonDebuggingEngineSelector">
+         </selector>
+      </engineContribution>
+   </extension>
+   
 </plugin>
