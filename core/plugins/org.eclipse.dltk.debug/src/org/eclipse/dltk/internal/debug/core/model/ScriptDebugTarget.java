@@ -12,26 +12,18 @@
  */
 package org.eclipse.dltk.internal.debug.core.model;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.WeakHashMap;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IBreakpointManager;
 import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IMemoryBlock;
@@ -83,72 +75,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	private final String mondelId;
 
-	private static int findFirstNonEmptyScriptLine(IFile file)
-			throws CoreException {
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new InputStreamReader(file
-					.getContents(), file.getCharset()));
+	private boolean supportsSuspendOnEntry;
 
-			int lineNumber = 1;
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				if (line.length() > 0) {
-					break;
-				}
-
-				++lineNumber;
-			}
-
-			return lineNumber;
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-				}
-			}
-		}
-
-		return -1;
-	}
-
-	private URI scriptUri;
-	private int scriptNonEmptyLine = -1;
-
-	private boolean isRemote;
-
-	private static final String ATTR_PROJECT = "project";
-	private static final String ATTR_SCRIPT = "mainScript";
-
-	private void setupScriptParameters(ILaunchConfiguration configuration)
-			throws CoreException {
-		final String projectName = configuration.getAttribute(ATTR_PROJECT,
-				(String) null);
-
-		final String scriptName = configuration.getAttribute(ATTR_SCRIPT,
-				(String) null);
-
-		if (projectName != null && scriptName != null) {
-			final IProject project = ResourcesPlugin.getWorkspace().getRoot()
-					.getProject(projectName);
-
-			if (project != null) {
-				final IResource resource = project.findMember(scriptName);
-
-				if (resource instanceof IFile) {
-					scriptUri = ScriptLineBreakpoint.makeUri((IFile) resource);			
-					scriptNonEmptyLine = findFirstNonEmptyScriptLine((IFile) resource);
-				}
-			}
-		} else {
-			isRemote = true;
-		}
-			
-	}
+	private boolean supportsSuspendOnExit;
 
 	static WeakHashMap targets = new WeakHashMap();
 
@@ -159,8 +88,6 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	public ScriptDebugTarget(String modelId, IDbgpService dbgpService,
 			String sessionId, ILaunch launch, IProcess process)
 			throws CoreException {
-
-		setupScriptParameters(launch.getLaunchConfiguration());
 
 		this.mondelId = modelId;
 
@@ -373,15 +300,32 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	private void initSuspends(IScriptThread thread) throws DbgpException {
-		try {
-		thread.getDbgpSession().getCoreCommands().setProperty(SUSPEND_ON_ENTRY,
-				-1, Boolean.toString(suspendOnMethodEntry));
-		thread.getDbgpSession().getCoreCommands().setProperty(SUSPEND_ON_EXIT,
-				-1, Boolean.toString(suspendOnMethodExit));
+		/*
+		 * certain debugging engines (activestate's python engine) hang
+		 * if these commands are sent, while others just respond with an
+		 * error
+		 */	
+		if (supportsSuspendOnEntry) {								
+			try {
+				thread.getDbgpSession().getCoreCommands().setProperty(SUSPEND_ON_ENTRY,
+						0, Boolean.toString(suspendOnMethodEntry));
+			}
+			catch( DbgpDebuggingEngineException e) {
+				if( DLTKCore.DEBUG ) {
+					e.printStackTrace();
+				}
+			}
 		}
-		catch( DbgpDebuggingEngineException e) {
-			if( DLTKCore.DEBUG ) {
-				e.printStackTrace();
+		
+		if (supportsSuspendOnExit) {
+			try {
+				thread.getDbgpSession().getCoreCommands().setProperty(SUSPEND_ON_EXIT,
+						0, Boolean.toString(suspendOnMethodExit));
+			}
+			catch( DbgpDebuggingEngineException e) {
+				if( DLTKCore.DEBUG ) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -486,5 +430,13 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		}
 		if (ok)
 			this.suspendOnMethodExit = suspend;
+	}
+
+	public void setSupportsSuspendOnEntry(boolean supportsSuspendOnEntry) {
+		this.supportsSuspendOnEntry = supportsSuspendOnEntry;
+	}
+
+	public void setSupportsSuspendOnExit(boolean supportsSuspendOnExit) {
+		this.supportsSuspendOnExit = supportsSuspendOnExit;
 	}
 }

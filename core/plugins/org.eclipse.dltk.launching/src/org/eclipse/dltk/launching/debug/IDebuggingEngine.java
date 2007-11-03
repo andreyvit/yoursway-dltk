@@ -18,5 +18,9 @@ public interface IDebuggingEngine {
 
 	int getPriority();
 
+	boolean supportsSuspendOnEntry();
+
+	boolean supportsSuspendOnExit();
+	
 	IInterpreterRunner getRunner(IInterpreterInstall install);
 }

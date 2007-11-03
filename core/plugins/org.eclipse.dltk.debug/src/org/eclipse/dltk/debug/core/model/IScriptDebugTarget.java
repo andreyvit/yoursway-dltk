@@ -47,4 +47,8 @@ public interface IScriptDebugTarget extends IDebugTarget {
 	boolean isSuspendOnMethodExit();
 
 	void setSuspendOnMethodExit(boolean suspend);
+	
+	public void setSupportsSuspendOnEntry(boolean supportsSuspendOnEntry);
+
+	public void setSupportsSuspendOnExit(boolean supportsSuspendOnExit);
 }

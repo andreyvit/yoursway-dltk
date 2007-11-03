@@ -66,6 +66,11 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		final IScriptDebugTarget target = new ScriptDebugTarget(
 				getDebugModelId(), dbgpService, getSessionId(configuration),
 				launch, null);
+		
+		IDebuggingEngine engine = getDebuggingEngine();
+		target.setSupportsSuspendOnEntry(engine.supportsSuspendOnEntry());
+		target.setSupportsSuspendOnExit(engine.supportsSuspendOnExit());
+		
 		launch.addDebugTarget(target);
 		return target;
 	}
@@ -191,6 +196,6 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		return DebuggingEngineManager.getInstance().getDebuggingEngine(
 				getDebuggingEngineId());
 	}
-
+	
 	protected abstract String getDebuggingEngineId();
 }

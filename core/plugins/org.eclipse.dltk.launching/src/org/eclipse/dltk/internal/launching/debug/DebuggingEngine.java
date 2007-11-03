@@ -14,9 +14,13 @@ public class DebuggingEngine implements IDebuggingEngine {
 	private String description;
 	private int priority;
 	private IInterpreterRunnerFactory factory;
+	private boolean supportsSuspendOnEntry;
+	private boolean supportsSuspendOnExit;
 
-	public DebuggingEngine(String id, String natureId, String preferencePageId, String name,
-			String description, int priority, IInterpreterRunnerFactory factory) {
+	public DebuggingEngine(String id, String natureId, String preferencePageId,
+			String name, String description, int priority,
+			boolean supportsSuspendOnEntry, boolean supportsSuspendOnExit,
+			IInterpreterRunnerFactory factory) {
 		super();
 		this.id = id;
 		this.natureId = natureId;
@@ -25,6 +29,9 @@ public class DebuggingEngine implements IDebuggingEngine {
 		this.description = description;
 		this.priority = priority;
 		this.factory = factory;
+		
+		this.supportsSuspendOnEntry = supportsSuspendOnEntry;
+		this.supportsSuspendOnExit = supportsSuspendOnExit;
 	}
 
 	public String getId() {
@@ -38,7 +45,7 @@ public class DebuggingEngine implements IDebuggingEngine {
 	public String getNatureId() {
 		return natureId;
 	}
-	
+
 	public String getPreferencePageId() {
 		return preferencePageId;
 	}
@@ -57,5 +64,13 @@ public class DebuggingEngine implements IDebuggingEngine {
 
 	public IInterpreterRunner getRunner(IInterpreterInstall install) {
 		return factory.createRunner(install);
+	}
+
+	public boolean supportsSuspendOnEntry() {
+		return supportsSuspendOnEntry;
+	}
+
+	public boolean supportsSuspendOnExit() {
+		return supportsSuspendOnExit;
 	}
 }
