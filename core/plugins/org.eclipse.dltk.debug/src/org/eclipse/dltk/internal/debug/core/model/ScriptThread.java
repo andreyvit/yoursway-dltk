@@ -37,7 +37,6 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	private final IScriptThreadManager manager;
 
-	private IScriptThreadStreamProxy streamProxy;
 
 	private final ScriptStack stack;
 
@@ -247,15 +246,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		return null;
 	}
 
-	public IScriptThreadStreamProxy getStreamProxy() {
-		if (streamProxy == null) {
-			IScriptDebugTargetStreamManager manager = target.getStreamManager();
-			if (manager != null) {
-				streamProxy = manager.makeThreadStreamProxy();
-			}
-		}
-
-		return streamProxy;
+	public IScriptStreamProxy getStreamProxy() {
+		return target.getStreamProxy();
 	}
 
 	public IDebugTarget getDebugTarget() {

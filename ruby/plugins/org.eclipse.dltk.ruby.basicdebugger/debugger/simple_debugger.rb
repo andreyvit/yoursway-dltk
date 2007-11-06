@@ -105,12 +105,11 @@ module XoredDebugger
                 current_context.check_suspended                
                                                                 
                 # Absolute path
-                @file = File.expand_path(file) # Absolute file path
-                @line = line
+                ex_file = File.expand_path(file) # Absolute file path
                 
                 # Output handling
                 case event
-                    when 'line'                        
+                    when 'line'  
                         # skipping all tracing while startup and shutdown
                         if (@startup || @shutdown)
                             return
@@ -122,11 +121,11 @@ module XoredDebugger
                         end
                                                            
                         # checking line breakpoint                         
-                        thread.stack_manager.stack.update(binding, @file, line)                                              
+                        thread.stack_manager.stack.update(binding, ex_file, line)                                              
                         current_context.stop_reason = :none   
-                        current_context.set_stack_manager(thread.stack_manager)
-                                                                     
-                        breakpoint = breakpoint_manager.get_line_break(thread.stack_manager.stack, @file, line)
+                        current_context.set_stack_manager(thread.stack_manager)                                        
+                                              
+                        breakpoint = breakpoint_manager.get_line_break(thread.stack_manager.stack, ex_file, line)
                         unless (breakpoint.nil?)
                             current_context.reset_stepping
                             current_context.stop_reason = :breakpoint
@@ -139,11 +138,11 @@ module XoredDebugger
                         end
                         
                         unless (current_context.stop_reason == :none)
-                            thread.at_line(current_context, @file, line)
+                            thread.at_line(current_context, ex_file, line)
                         end
                         
                     when 'call'                       
-                        thread.stack_manager.stack.push(binding, @file, line)
+                        thread.stack_manager.stack.push(binding, ex_file, line)
     
                     when 'return' 
                         thread.stack_manager.stack.pop                                           

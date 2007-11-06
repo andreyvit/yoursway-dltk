@@ -11,10 +11,12 @@ package org.eclipse.dltk.dbgp;
 
 import org.eclipse.dltk.dbgp.commands.IDbgpCommands;
 import org.eclipse.dltk.dbgp.internal.IDbgpTermination;
+import org.eclipse.dltk.dbgp.internal.managers.IDbgpStreamManager;
 
 public interface IDbgpSession extends IDbgpCommands, IDbgpTermination {
 	IDbgpSessionInfo getInfo();
 
+	IDbgpStreamManager getStreamManager();
 	IDbgpNotificationManager getNotificationManager();
 
 	// Listeners

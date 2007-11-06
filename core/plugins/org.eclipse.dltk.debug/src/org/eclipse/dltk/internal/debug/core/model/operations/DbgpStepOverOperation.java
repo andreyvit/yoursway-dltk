@@ -21,6 +21,6 @@ public class DbgpStepOverOperation extends DbgpStepOperation {
 	}
 
 	protected IDbgpStatus step() throws DbgpException {
-		return getCore().stepOver(getContinuationHandler());
+		return getCore().stepOver();
 	}
 }

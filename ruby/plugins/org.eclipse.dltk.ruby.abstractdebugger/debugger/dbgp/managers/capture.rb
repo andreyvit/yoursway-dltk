@@ -29,10 +29,10 @@ module XoredDebugger
         def write(s)
             # this is unsafe place which called directly from 
             # script code
+            if (@state != REDIRECT)
+                @stream.write(s)
+            end
             @monitor.synchronize do
-	            if (@state != REDIRECT)
-	                @stream.write(s)
-	            end
 	            if (@state != DISABLE)                                  	
 		            if @redirected[Thread.current].nil?
 		                @redirected[Thread.current] = s

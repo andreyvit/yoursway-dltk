@@ -9,18 +9,23 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IThread;
+import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.dbgp.IDbgpContinuationHandler;
 import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 
 public class ScriptThreadManager implements IScriptThreadManager {
-
+	private static final boolean DEBUG = DLTKCore.DEBUG;
+	
 	// Helper methods
 	private interface IThreadBoolean {
 		boolean get(IThread thread);
@@ -52,6 +57,8 @@ public class ScriptThreadManager implements IScriptThreadManager {
 	private volatile boolean waitingForThreads = true;
 
 	private final ScriptDebugTarget target;
+
+	private IDbgpContinuationHandler outputListener;
 
 	protected void fireThreadAccepted(IScriptThread thread, boolean first) {
 		Object[] list = listeners.getListeners();
@@ -99,12 +106,48 @@ public class ScriptThreadManager implements IScriptThreadManager {
 		}
 
 		this.target = target;
+		this.outputListener = new IDbgpContinuationHandler() {
+			public void stderrReceived(String data) {
+				final IScriptStreamProxy proxy = ScriptThreadManager.this.target.getStreamProxy();
+				if (proxy != null) {
+					try {
+						final OutputStream err = proxy.getStderr();
+						err.write(data.getBytes());
+						err.flush();
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+
+				if (DEBUG) {
+					System.out.println("Received (stderr): " + data);
+				}
+			}
+
+			public void stdoutReceived(String data) {
+				final IScriptStreamProxy proxy = ScriptThreadManager.this.target.getStreamProxy();
+				if (proxy != null) {
+					try {
+						final OutputStream out = proxy.getStdout();
+						out.write(data.getBytes());
+						out.flush();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				if (DEBUG) {
+					System.out.println("Received (stdout): " + data);
+				}
+			}			
+		};
 	}
 
 	// IDbgpThreadAcceptor
 	public void acceptDbgpThread(IDbgpSession session) {
 		synchronized (threads) {
 			try {
+				session.getStreamManager().addListener(outputListener);
 				ScriptThread thread = new ScriptThread(target, session, this);
 				threads.add(thread);
 
@@ -129,12 +172,12 @@ public class ScriptThreadManager implements IScriptThreadManager {
 
 	public void terminateThread(IScriptThread thread) {
 		synchronized (threads) {
-			threads.remove(thread);
-			DebugEventHelper.fireTerminateEvent(thread);
-			IScriptThreadStreamProxy proxy = thread.getStreamProxy();
-			if (proxy != null) {
-				proxy.close();
-			}
+			threads.remove(thread);	
+			DebugEventHelper.fireTerminateEvent(thread);			
+			
+			IDbgpSession session = ((ScriptThread) thread).getDbgpSession();
+			session.getStreamManager().removeListener(outputListener);
+			
 			if (!hasThreads()) {
 				fireAllThreadsTerminated();
 			}

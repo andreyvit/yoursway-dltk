@@ -13,7 +13,7 @@ import java.net.URI;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
-import org.eclipse.dltk.internal.debug.core.model.IScriptDebugTargetStreamManager;
+import org.eclipse.dltk.internal.debug.core.model.IScriptStreamProxy;
 
 public interface IScriptDebugTarget extends IDebugTarget {
 	boolean isInitialized();
@@ -31,10 +31,9 @@ public interface IScriptDebugTarget extends IDebugTarget {
 
 	int getRequestTimeout();
 
-	// StreamManager
-	void setStreamManager(IScriptDebugTargetStreamManager manager);
-
-	IScriptDebugTargetStreamManager getStreamManager();
+	// Stream proxy management
+	void setStreamProxy(IScriptStreamProxy proxy);
+	IScriptStreamProxy getStreamProxy();
 
 	// Run to line
 	void runToLine(URI uri, int lineNumber) throws DebugException;

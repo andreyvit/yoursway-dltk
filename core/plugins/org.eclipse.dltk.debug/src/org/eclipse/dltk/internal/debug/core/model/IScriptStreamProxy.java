@@ -9,6 +9,15 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model;
 
-public interface IScriptDebugTargetStreamManager {
-	IScriptThreadStreamProxy makeThreadStreamProxy();
+import java.io.InputStream;
+import java.io.OutputStream;
+
+public interface IScriptStreamProxy {
+	InputStream getStdin();
+
+	OutputStream getStdout();
+
+	OutputStream getStderr();
+
+	void close();
 }

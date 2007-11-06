@@ -36,12 +36,12 @@ class ExtendedClasesLabelProvider implements ILabelProvider {
 			return ((IModelElement) element).getElementName();
 		} else if (element instanceof MixedClass) {
 			MixedClass cl = (MixedClass) element;
-			if (cl.getElements().size() > 1) {
-				return cl.getName() + "("
-						+ Integer.toString(cl.getElements().size()) + ")";
-			} else {
-				return cl.getName();
-			}
+			// if (cl.getElements().size() > 1) {
+			// return cl.getName() + "("
+			// + Integer.toString(cl.getElements().size()) + ")";
+			// } else {
+			return cl.getName();
+			// }
 		} else if (element != null) {
 			return element.toString();
 		}

@@ -52,7 +52,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	private final ListenerList listeners;
 
-	private IScriptDebugTargetStreamManager manager;
+	private IScriptStreamProxy streamProxy;
 
 	private final IProcess process;
 
@@ -269,12 +269,12 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	// Streams
-	public IScriptDebugTargetStreamManager getStreamManager() {
-		return manager;
+	public IScriptStreamProxy getStreamProxy() {
+		return streamProxy;
 	}
 
-	public void setStreamManager(IScriptDebugTargetStreamManager manager) {
-		this.manager = manager;
+	public void setStreamProxy(IScriptStreamProxy proxy) {
+		this.streamProxy = proxy;
 	}
 
 	// IDbgpThreadManagerListener
@@ -332,6 +332,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	public void allThreadsTerminated() {
 		try {
+			if (streamProxy != null) {
+				streamProxy.close();
+			}
 			terminate();
 		} catch (DebugException e) {
 			// TODO Auto-generated catch block

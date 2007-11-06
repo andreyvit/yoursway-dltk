@@ -156,7 +156,7 @@ public class ExtendedClassesView extends ViewPart implements
 
 		};
 		browsingPane.setContentProvider(new ExtendedClasesContentProvider(this,
-				SearchEngine.createWorkspaceScope(this.fToolkit)));
+				SearchEngine.createWorkspaceScope(this.fToolkit), parent));
 		IDLTKUILanguageToolkit languageToolkit = DLTKUILanguageManager
 				.getLanguageToolkit(this.fToolkit.getNatureId());
 

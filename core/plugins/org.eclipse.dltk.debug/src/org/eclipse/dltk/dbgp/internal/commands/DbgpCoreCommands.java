@@ -12,7 +12,6 @@ package org.eclipse.dltk.dbgp.internal.commands;
 import java.net.URI;
 import java.util.Map;
 
-import org.eclipse.dltk.dbgp.IDbgpContinuationHandler;
 import org.eclipse.dltk.dbgp.IDbgpFeature;
 import org.eclipse.dltk.dbgp.IDbgpProperty;
 import org.eclipse.dltk.dbgp.IDbgpStackLevel;
@@ -31,7 +30,6 @@ import org.eclipse.dltk.dbgp.commands.IDbgpStatckCommands;
 import org.eclipse.dltk.dbgp.commands.IDbgpStatusCommands;
 import org.eclipse.dltk.dbgp.commands.IDbgpStreamCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
-import org.eclipse.dltk.dbgp.internal.managers.IDbgpStreamManager;
 
 public class DbgpCoreCommands implements IDbgpCoreCommands {
 
@@ -55,16 +53,14 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 
 	private final IDbgpPropertyCommands propertyCommands;
 
-	public DbgpCoreCommands(IDbgpCommunicator communicator,
-			IDbgpStreamManager streamManager) {
+	public DbgpCoreCommands(IDbgpCommunicator communicator) {
 		this.featureCommands = new DbgpFeatureCommands(communicator);
 		this.statusCommands = new DbgpStatusCommands(communicator);
 		this.breakpointCommands = new DbgpBreakpointCommands(communicator);
 		this.sourceCommands = new DbgpSourceCommands(communicator);
 		this.contextCommands = new DbgpContextCommands(communicator);
 		this.stackCommands = new DbgpStackCommands(communicator);
-		this.continuationCommands = new DbgpContinuationCommands(communicator,
-				streamManager);
+		this.continuationCommands = new DbgpContinuationCommands(communicator);
 		this.streamCommands = new DbgpStreamCommands(communicator);
 		this.propertyCommands = new DbgpPropertyCommands(communicator);
 		this.dataTypeCommands = new DbgpDataTypeCommands(communicator);
@@ -136,24 +132,24 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		return continuationCommands.detach();
 	}
 
-	public IDbgpStatus run(IDbgpContinuationHandler handler)
+	public IDbgpStatus run()
 			throws DbgpException {
-		return continuationCommands.run(handler);
+		return continuationCommands.run();
 	}
 
-	public IDbgpStatus stepInto(IDbgpContinuationHandler handler)
+	public IDbgpStatus stepInto()
 			throws DbgpException {
-		return continuationCommands.stepInto(handler);
+		return continuationCommands.stepInto();
 	}
 
-	public IDbgpStatus stepOut(IDbgpContinuationHandler handler)
+	public IDbgpStatus stepOut()
 			throws DbgpException {
-		return continuationCommands.stepOut(handler);
+		return continuationCommands.stepOut();
 	}
 
-	public IDbgpStatus stepOver(IDbgpContinuationHandler handler)
+	public IDbgpStatus stepOver()
 			throws DbgpException {
-		return continuationCommands.stepOver(handler);
+		return continuationCommands.stepOver();
 	}
 
 	public IDbgpStatus stop() throws DbgpException {

@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model.operations;
 
-import org.eclipse.core.runtime.Preferences;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
@@ -31,9 +30,9 @@ public class DbgpResumeOperation extends DbgpOperation {
 
 	protected void process() throws DbgpException {
 		if (first && breakOnFirstLine) {
-			callFinish(getCore().stepInto(getContinuationHandler()));
+			callFinish(getCore().stepInto());
 		} else {
-			callFinish(getCore().run(getContinuationHandler()));
+			callFinish(getCore().run());
 		}
 
 		first = false;	

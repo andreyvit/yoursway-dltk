@@ -9,12 +9,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.dbgp.internal.commands;
 
-import org.eclipse.dltk.dbgp.IDbgpContinuationHandler;
 import org.eclipse.dltk.dbgp.IDbgpStatus;
 import org.eclipse.dltk.dbgp.commands.IDbgpContinuationCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.internal.DbgpRequest;
-import org.eclipse.dltk.dbgp.internal.managers.IDbgpStreamManager;
 import org.eclipse.dltk.dbgp.internal.utils.DbgpXmlEntityParser;
 
 public class DbgpContinuationCommands extends DbgpBaseCommands implements
@@ -31,15 +29,9 @@ public class DbgpContinuationCommands extends DbgpBaseCommands implements
 
 	private static final String DETACH_COMMAND = "detach";
 
-	private final IDbgpStreamManager manager;
-
-	protected IDbgpStatus execCommandWithHandler(String command,
-			IDbgpContinuationHandler handler) throws DbgpException {
-		manager.addListener(handler);
+	protected IDbgpStatus execCommandWithHandler(String command) throws DbgpException {
 		DbgpRequest cb = createRequest(command);
-		IDbgpStatus status = DbgpXmlEntityParser.parseStatus(communicate(cb));
-		manager.removeListener(handler);
-		return status;
+		return DbgpXmlEntityParser.parseStatus(communicate(cb));
 	}
 
 	protected IDbgpStatus execCommand(String command) throws DbgpException {
@@ -47,35 +39,28 @@ public class DbgpContinuationCommands extends DbgpBaseCommands implements
 				.parseStatus(communicate(createRequest(command)));
 	}
 
-	public DbgpContinuationCommands(IDbgpCommunicator communicator,
-			IDbgpStreamManager manager) {
+	public DbgpContinuationCommands(IDbgpCommunicator communicator) {
 		super(communicator);
-
-		if (manager == null) {
-			throw new IllegalArgumentException();
-		}
-
-		this.manager = manager;
 	}
 
-	public IDbgpStatus run(IDbgpContinuationHandler handler)
+	public IDbgpStatus run()
 			throws DbgpException {
-		return execCommandWithHandler(RUN_COMMAND, handler);
+		return execCommandWithHandler(RUN_COMMAND);
 	}
 
-	public IDbgpStatus stepInto(IDbgpContinuationHandler handler)
+	public IDbgpStatus stepInto()
 			throws DbgpException {
-		return execCommandWithHandler(STEP_INTO_COMMAND, handler);
+		return execCommandWithHandler(STEP_INTO_COMMAND);
 	}
 
-	public IDbgpStatus stepOut(IDbgpContinuationHandler handler)
+	public IDbgpStatus stepOut()
 			throws DbgpException {
-		return execCommandWithHandler(STEP_OUT_COMMAND, handler);
+		return execCommandWithHandler(STEP_OUT_COMMAND);
 	}
 
-	public IDbgpStatus stepOver(IDbgpContinuationHandler handler)
+	public IDbgpStatus stepOver()
 			throws DbgpException {
-		return execCommandWithHandler(STEP_OVER_COMMAND, handler);
+		return execCommandWithHandler(STEP_OVER_COMMAND);
 	}
 
 	public IDbgpStatus stop() throws DbgpException {

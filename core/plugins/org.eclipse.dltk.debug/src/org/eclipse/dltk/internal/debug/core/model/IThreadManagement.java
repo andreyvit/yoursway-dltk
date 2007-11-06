@@ -10,5 +10,5 @@
 package org.eclipse.dltk.internal.debug.core.model;
 
 public interface IThreadManagement {
-	IScriptThreadStreamProxy getStreamProxy();
+	IScriptStreamProxy getStreamProxy();
 }

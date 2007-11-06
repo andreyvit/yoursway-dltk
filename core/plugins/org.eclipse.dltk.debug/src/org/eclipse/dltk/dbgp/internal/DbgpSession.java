@@ -23,6 +23,7 @@ import org.eclipse.dltk.dbgp.internal.commands.DbgpDebuggingEngineCommunicator;
 import org.eclipse.dltk.dbgp.internal.commands.DbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.internal.managers.DbgpNotificationManager;
 import org.eclipse.dltk.dbgp.internal.managers.DbgpStreamManager;
+import org.eclipse.dltk.dbgp.internal.managers.IDbgpStreamManager;
 import org.eclipse.dltk.dbgp.internal.utils.DbgpXmlEntityParser;
 
 public class DbgpSession extends DbgpTermination implements IDbgpSession,
@@ -98,12 +99,12 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 		this.streamManager = new DbgpStreamManager(engine,
 				"DBGP - Stream manager");
 		this.streamManager.addTerminationListener(this);
-
+		
 		// Commands
 		DbgpDebuggingEngineCommunicator communicator = new DbgpDebuggingEngineCommunicator(
 				engine);
 
-		this.coreCommands = new DbgpCoreCommands(communicator, streamManager);
+		this.coreCommands = new DbgpCoreCommands(communicator);
 		this.extendedCommands = new DbgpExtendedCommands(communicator);
 
 		// Starting all
@@ -127,6 +128,10 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 		return extendedCommands;
 	}
 
+	public IDbgpStreamManager getStreamManager() {
+		return streamManager;
+	}
+	
 	public IDbgpNotificationManager getNotificationManager() {
 		return notificationManager;
 	}
