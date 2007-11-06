@@ -15,7 +15,7 @@ import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
 import org.eclipse.dltk.ruby.fastdebugger.preferences.FastDebuggerPreferenceConstants;
 
 public class FastDebuggerRunner extends DebuggingEngineRunner {
-	public static final String ENGINE_ID = "com.xored.rubygears.railsdebugger";
+	public static final String ENGINE_ID = "org.eclipse.dltk.ruby.fastdebugger";
 
 	private static final String RUBY_HOST_VAR = "DBGP_RUBY_HOST";
 	private static final String RUBY_PORT_VAR = "DBGP_RUBY_PORT";

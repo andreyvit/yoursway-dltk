@@ -30,10 +30,20 @@ module XoredDebugger
             super
             @monitor = Monitor.new             
             @breakpoint_manager = BreakpointManager.new
-            @thread_manager = ThreadManager.new(self)
-            @capture_manager = CaptureManager.new(self)
+            # we will create next objects from tracing function
+            @thread_manager = nil 
+            @capture_manager = nil
         end	
-
+        
+        def trace_initialize
+            if @thread_manager.nil?
+                @thread_manager = ThreadManager.new(self)
+            end
+            if @capture_manager.nil?
+                @capture_manager = CaptureManager.new(self)
+            end        
+        end
+        
         def get_debugger_id
             'org.eclipse.dltk.ruby.basicdebugger'
         end        
@@ -60,8 +70,8 @@ module XoredDebugger
         end
    
         def create_debug_thread(*args, &block)
-            DebuggerThread.new(*args, &block)
-	    end
+            DebuggerThread.new(*args, &block) 
+        end
         
         def is_debug_thread?(thread)
             thread.is_a? DebuggerThread
@@ -74,13 +84,11 @@ module XoredDebugger
             @depth = 0
             catch(:done) do 
                 begin                  
-		            log("Adding main thread to thread manager...")
-		            thread_manager.add_thread(Thread.current)
-                    
    		            log("Setting trace function...")
 		            set_trace_func proc { |event, file, line, id, binding, klass, *rest|
 		                trace(event, file, line, id, binding, klass)
 		            }
+                                        
    		            load script
 	            ensure 
 	                set_trace_func nil
@@ -88,14 +96,18 @@ module XoredDebugger
 	            end              
             end              
         end       
-        
+
 		# Tracing
         def trace(event, file, line, id, binding, klass)
-            begin                
+            begin
+                trace_initialize
+                                                                                     
                 # Don't debug debugger intenal threads
-	            if (Thread.current.is_a? DebuggerThread)
-	                return
-	            end
+                # NOTE: To disable tracing of thread create it from tracing function
+                if (Thread.current.is_a? DebuggerThread)
+                    log('Warning: tracing function called for debugger thread')
+                    return
+                end
                 
                 # adding current thread to thread manager
                 # if it is already there, nothing happens
