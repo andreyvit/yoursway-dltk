@@ -51,6 +51,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -71,6 +72,9 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 	private static DLTKUIPlugin plugin;
 
 	private MembersOrderPreferenceCache fMembersOrderPreferenceCache;
+	
+	private static ISharedImages fgSharedImages= null;
+	
 
 	/**
 	 * Content assist history.

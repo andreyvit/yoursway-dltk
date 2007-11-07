@@ -15,6 +15,13 @@ public final class DLTKUIMessages extends NLS {
 
 	private static final String BUNDLE_NAME = "org.eclipse.dltk.internal.ui.DLTKUIMessages";
 
+	public static String FilteredTypesSelectionDialog_library_name_format;
+	public static String FilteredTypeSelectionDialog_showContainerForDuplicatesAction;
+	public static String FilteredTypesSelectionDialog_error_type_doesnot_exist;
+	public static String FilteredTypesSelectionDialog_searchJob_taskName;
+	public static String FilteredTypeSelectionDialog_titleFormat;
+	public static String FilteredTypesSelectionDialog_dialogMessage;
+
 	private DLTKUIMessages() {
 	}
 

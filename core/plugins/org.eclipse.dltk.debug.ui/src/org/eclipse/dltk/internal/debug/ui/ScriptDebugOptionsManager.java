@@ -11,6 +11,7 @@ package org.eclipse.dltk.internal.debug.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -212,5 +213,27 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 
 	public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
 		// TODO:
+	}
+	public static String serializeList(String[] list) {
+		if (list == null) {
+			return ""; //$NON-NLS-1$
+		}
+		StringBuffer buffer = new StringBuffer();
+		for (int i = 0; i < list.length; i++) {
+			if (i > 0) {
+				buffer.append(',');
+			}
+			buffer.append(list[i]);
+		}
+		return buffer.toString();
+	}
+	public static String[] parseList(String listString) {
+		List list = new ArrayList(10);
+		StringTokenizer tokenizer = new StringTokenizer(listString, ","); //$NON-NLS-1$
+		while (tokenizer.hasMoreTokens()) {
+			String token = tokenizer.nextToken();
+			list.add(token);
+		}
+		return (String[])list.toArray(new String[list.size()]);
 	}
 }

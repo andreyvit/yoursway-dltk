@@ -121,6 +121,12 @@
 		<page category="org.eclipse.dltk.ruby.preferences"
 			class="org.eclipse.dltk.ruby.internal.debug.ui.preferences.RubyDebugPreferencePage"
 			id="org.eclipse.dltk.ruby.preferences.debug" name="%RubyDebugPreferencePage.name" />
+  <page
+        category="org.eclipse.dltk.ruby.preferences.debug"
+        class="org.eclipse.dltk.debug.ui.preferences.ScriptStepFilterPreferencePage:org.eclipse.dltk.ruby.core.nature"
+        id="org.eclipse.dltk.ruby.debug.ui.stepfilter"
+        name="Step filters">
+  </page>
 	</extension>
 
 	<extension

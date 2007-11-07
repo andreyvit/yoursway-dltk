@@ -30,6 +30,7 @@ import org.eclipse.dltk.internal.ui.actions.ImportActionGroup;
 import org.eclipse.dltk.internal.ui.actions.NewWizardsActionGroup;
 import org.eclipse.dltk.internal.ui.actions.refactoring.RefactorActionGroup;
 import org.eclipse.dltk.internal.ui.search.SearchUtil;
+import org.eclipse.dltk.ui.DLTKExecuteExtensionHelper;
 import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
@@ -418,27 +419,7 @@ public class ExtendedClassesView extends ViewPart implements
 	public void setInitializationData(IConfigurationElement config,
 			String propertyName, Object data) {
 		super.setInitializationData(config, propertyName, data);
-		String nature = null;
-		if (data instanceof String) {
-			nature = (String) data;
-
-		} else if (data instanceof Map) {
-			nature = (String) ((Map) data).get("nature");
-		}
-		if (nature != null) {
-			try {
-				this.fToolkit = DLTKLanguageManager.getLanguageToolkit(nature);
-			} catch (CoreException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
-				throw new RuntimeException(
-						"Nature attribute should be specified and correct", e);
-			}
-		} else {
-			throw new RuntimeException(
-					"Nature attribute should be specified and correct");
-		}
+		this.fToolkit = DLTKExecuteExtensionHelper.getLanguageToolkit(config, propertyName, data);
 	}
 
 	public void menuAboutToShow(IMenuManager menu) {
