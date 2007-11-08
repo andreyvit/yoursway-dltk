@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui.preferences;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.dltk.ui.DLTKPluginImages;
+import org.eclipse.dltk.ui.ScriptElementImageProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -21,11 +25,15 @@ import org.eclipse.swt.graphics.Image;
  */
 public class FilterLabelProvider extends LabelProvider implements
 		ITableLabelProvider {
+	ScriptElementImageProvider provider;
 
-	private static final Image IMG_CUNIT = DLTKPluginImages.getDescriptor(
-			DLTKPluginImages.IMG_OBJS_CLASS).createImage();
+	public FilterLabelProvider() {
+		provider = new ScriptElementImageProvider();
+	}
+
 	private static final Image IMG_PKG = DLTKPluginImages.getDescriptor(
 			DLTKPluginImages.IMG_OBJS_PACKAGE).createImage();
+	private Map typeImages = new HashMap();
 
 	/**
 	 * @see ITableLabelProvider#getColumnText(Object, int)
@@ -48,10 +56,19 @@ public class FilterLabelProvider extends LabelProvider implements
 	 * @see ITableLabelProvider#getColumnImage(Object, int)
 	 */
 	public Image getColumnImage(Object object, int column) {
-		String name = ((Filter) object).getName();
-		if (name.endsWith("*") || name.equals("(default package)")) { //$NON-NLS-1$ //$NON-NLS-2$
+		Filter filter = (Filter) object;
+		String name = filter.getName();
+		if (name.endsWith("*") || name.equals("")) { //$NON-NLS-1$ //$NON-NLS-2$
 			return IMG_PKG;
 		}
-		return IMG_CUNIT;
+		Integer mod = new Integer(filter.getModifiers());
+		if (typeImages.containsKey(mod)) {
+			return (Image) typeImages.get(mod);
+		} else {
+			Image img = provider.getTypeImageDescriptor(filter.getModifiers(),
+					false).createImage();
+			typeImages.put(mod, img);
+			return img;
+		}
 	}
 }

@@ -54,7 +54,7 @@ public abstract class NamedMember extends Member {
 			return thisName;
 		switch (this.parent.getElementType()) {
 			case IModelElement.SOURCE_MODULE:
-				thisName = typeSeparator + thisName;
+//				thisName = /*typeSeparator + */thisName;
 				if (showParameters) {					
 					StringBuffer buffer = new StringBuffer(thisName);
 					// appendTypeParameters(buffer);

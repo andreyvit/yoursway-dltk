@@ -18,10 +18,21 @@ public class Filter {
 
 	private String fName;
 	private boolean fChecked;
+	// Element modifiers, used for correct icon display.
+	int modifiers;
 
-	public Filter(String name, boolean checked) {
+	public Filter(String name, boolean checked, int modifiers) {
 		setName(name);
 		setChecked(checked);
+		setModifiers(modifiers);
+	}
+
+	public int getModifiers() {
+		return modifiers;
+	}
+
+	public void setModifiers(int modifiers) {
+		this.modifiers = modifiers;
 	}
 
 	public String getName() {

@@ -380,7 +380,14 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 			Object[] types = dialog.getResult();
 			if (types != null && types.length > 0) {
 				IType type = (IType) types[0];
-				addFilter(type.getElementName(), true);
+				try {
+					addFilter(type.getTypeQualifiedName("."), true, type
+							.getFlags());
+				} catch (ModelException e) {
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 	}
@@ -394,15 +401,24 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 		try {
 			model.accept(new IModelElementVisitor() {
 				public boolean visit(IModelElement element) {
-					if( element.getElementType() == IModelElement.PROJECT_FRAGMENT) {
+					if (element.getElementType() == IModelElement.PROJECT_FRAGMENT) {
 						IProjectFragment fragment = (IProjectFragment) element;
-						if( fragment.isExternal()) {
+						if (fragment.isExternal()) {
 							return false;
 						}
 					}
-					if( element.getElementType() == IModelElement.TYPE ) {
-						Filter f = new Filter(element.getElementName(), true);
-						addFilter(f);
+					if (element.getElementType() == IModelElement.TYPE) {
+						IType type = (IType) element;
+						Filter filter;
+						try {
+							filter = new Filter(type.getTypeQualifiedName("."),
+									true, type.getFlags());
+							addFilter(filter);
+						} catch (ModelException e) {
+							if (DLTKCore.DEBUG) {
+								e.printStackTrace();
+							}
+						}
 					}
 					return true;
 				}
@@ -437,10 +453,11 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 		Filter[] filters = getAllFiltersFromTable();
 		for (int i = 0; i < filters.length; i++) {
 			name = filters[i].getName();
+			String modifiers = ":" + Integer.toString(filters[i].getModifiers());
 			if (filters[i].isChecked()) {
-				active.add(name);
+				active.add(name + modifiers);
 			} else {
-				inactive.add(name);
+				inactive.add(name + modifiers);
 			}
 		}
 		String pref = ScriptDebugOptionsManager.serializeList((String[]) active
@@ -477,18 +494,19 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 	 *            the checked state of the new filter
 	 * @since 3.2
 	 */
-	protected void addFilter(String filter, boolean checked) {
+	protected void addFilter(String filter, boolean checked, int modifiers) {
 		if (filter != null) {
-			Filter f = new Filter(filter, checked);
+			Filter f = new Filter(filter, checked, modifiers);
 			fTableViewer.add(f);
 			fTableViewer.setChecked(f, checked);
 		}
 	}
+
 	protected void addFilter(Filter filter) {
 		if (filter != null) {
 			Filter[] allFiltersFromTable = getAllFiltersFromTable();
 			for (int i = 0; i < allFiltersFromTable.length; i++) {
-				if( filter.equals(allFiltersFromTable[i])) {
+				if (filter.equals(allFiltersFromTable[i])) {
 					return;
 				}
 			}
@@ -541,11 +559,23 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 		}
 		filters = new Filter[activefilters.length + inactivefilters.length];
 		for (int i = 0; i < activefilters.length; i++) {
-			filters[i] = new Filter(activefilters[i], true);
+			String[] split = activefilters[i].split(":");
+			if (split.length == 1) {
+				filters[i] = new Filter(split[0], true, 0);
+			} else {
+				filters[i] = new Filter(split[0], true, (new Integer(split[1]))
+						.intValue());
+			}
 		}
 		for (int i = 0; i < inactivefilters.length; i++) {
-			filters[i + activefilters.length] = new Filter(inactivefilters[i],
-					false);
+			String[] split = inactivefilters[i].split(":");
+			if (split.length == 1) {
+				filters[i + activefilters.length] = new Filter(split[0], false,
+						0);
+			} else {
+				filters[i + activefilters.length] = new Filter(split[0], false,
+						(new Integer(split[1])).intValue());
+			}
 		}
 		return filters;
 	}

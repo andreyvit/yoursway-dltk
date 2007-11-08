@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.core.Flags;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
@@ -1087,6 +1088,12 @@ public class FilteredTypesSelectionDialog extends FilteredItemsSelectionDialog
 		public String getFullyQualifiedText(TypeNameMatch type) {
 			StringBuffer result = new StringBuffer();
 			result.append(type.getSimpleTypeName());
+			IType stype = type.getType();
+			if( stype.getParent().getElementType() == IModelElement.TYPE ) {
+				result.append(ScriptElementLabels.CONCAT_STRING);
+				IType parent = (IType) stype.getParent(); 
+				result.append(parent.getTypeQualifiedName("."));
+			}
 			// String containerName = type.getTypeContainerName();
 			// if (containerName.length() > 0) {
 			// result.append(ScriptElementLabels.CONCAT_STRING);
@@ -1103,55 +1110,13 @@ public class FilteredTypesSelectionDialog extends FilteredItemsSelectionDialog
 			int qualifications = 0;
 			String currentTN = current.getSimpleTypeName();
 			result.append(currentTN);
-			// String currentTCN = getTypeContainerName(current);
-			// if (last != null) {
-			// String lastTN = last.getSimpleTypeName();
-			// String lastTCN = getTypeContainerName(last);
-			// if (currentTCN.equals(lastTCN)) {
-			// if (currentTN.equals(lastTN)) {
-			// result.append(ScriptElementLabels.CONCAT_STRING);
-			// result.append(currentTCN);
-			// result.append(ScriptElementLabels.CONCAT_STRING);
-			// result.append(getContainerName(current));
-			// return result.toString();
-			// }
-			// } else if (currentTN.equals(lastTN)) {
-			// qualifications = 1;
-			// }
-			// }
-			// if (next != null) {
-			// String nextTN = next.getSimpleTypeName();
-			// String nextTCN = getTypeContainerName(next);
-			// if (currentTCN.equals(nextTCN)) {
-			// if (currentTN.equals(nextTN)) {
-			// result.append(ScriptElementLabels.CONCAT_STRING);
-			// result.append(currentTCN);
-			// result.append(ScriptElementLabels.CONCAT_STRING);
-			// result.append(getContainerName(current));
-			// return result.toString();
-			// }
-			// } else if (currentTN.equals(nextTN)) {
-			// qualifications = 1;
-			// }
-			// }
-			// if (qualifications > 0) {
-			// result.append(ScriptElementLabels.CONCAT_STRING);
-			// result.append(currentTCN);
-			// if (fFullyQualifyDuplicates) {
-			// result.append(ScriptElementLabels.CONCAT_STRING);
-			// result.append(getContainerName(current));
-			// }
-			// }
 			return result.toString();
 		}
 
 		public String getQualificationText(TypeNameMatch type) {
 			StringBuffer result = new StringBuffer();
-			// String containerName = type.getTypeContainerName();
-			// if (containerName.length() > 0) {
-			// result.append(containerName);
-			// result.append(ScriptElementLabels.CONCAT_STRING);
-			// }
+			result.append(type.getType().getTypeQualifiedName("."));
+			result.append(ScriptElementLabels.CONCAT_STRING);
 			result.append(getContainerName(type));
 			return result.toString();
 		}
@@ -1543,8 +1508,8 @@ public class FilteredTypesSelectionDialog extends FilteredItemsSelectionDialog
 					.getLanguageToolkit(fToolkit.getNatureId()))
 					.isFiltered(match))
 				return;
-			if (!addedNames.contains(match.getSimpleTypeName())) {
-				addedNames.add(match.getSimpleTypeName());
+			if (!addedNames.contains(match.getTypeQualifiedName())) {
+				addedNames.add(match.getTypeQualifiedName());
 				if (fTypeItemsFilter.matchesFilterExtension(match))
 					fContentProvider.add(match, fTypeItemsFilter);
 			}
