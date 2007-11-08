@@ -1,0 +1,11 @@
+!
+! Eclipse Dynamic Languages Toolkit (DLTK) Core JUnit Test
+!
+! $Id: core-tests.map,v 1.1 2007/11/08 11:48:21 asobolev Exp $
+
+feature@org.eclipse.dltk.core.tests=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/features/org.eclipse.dltk.core.tests
+
+plugin@org.eclipse.dltk.core.tests=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/tests/org.eclipse.dltk.core.tests
+plugin@org.eclipse.dltk.debug.tests=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/tests/org.eclipse.dltk.debug.tests
+plugin@org.eclipse.dltk.ui.tests=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/tests/org.eclipse.dltk.ui.tests
+plugin@org.eclipse.dltk.validators.core.tests=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/core/tests/org.eclipse.dltk.validators.core.tests
