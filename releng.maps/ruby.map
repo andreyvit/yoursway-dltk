@@ -1,7 +1,7 @@
 
 ! Ruby Development Tools (DLTK)
 !
-! $Id: ruby.map,v 1.75 2007/11/06 14:00:38 asobolev Exp $ 
+! $Id: ruby.map,v 1.76 2007/11/08 11:41:17 asobolev Exp $ 
 
 feature@org.eclipse.dltk.ruby=v20071031,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/features/org.eclipse.dltk.ruby-feature
 feature@org.eclipse.dltk.ruby.sdk=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/features/org.eclipse.dltk.ruby.sdk
@@ -10,8 +10,8 @@ plugin@org.eclipse.dltk.ruby=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsr
 plugin@org.eclipse.dltk.ruby.core=v20071019,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.core
 plugin@org.eclipse.dltk.ruby.launching=v20070904,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.launching
 plugin@org.eclipse.dltk.ruby.debug=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.debug
-plugin@org.eclipse.dltk.ruby.ui=v20071016,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.ui
-plugin@org.eclipse.dltk.ruby.debug.ui=v20071008,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.debug.ui
+plugin@org.eclipse.dltk.ruby.ui=v20071108,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.ui
+plugin@org.eclipse.dltk.ruby.debug.ui=v20071108,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.debug.ui
 
 plugin@org.eclipse.dltk.ruby.abstractdebugger=v20071106,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.abstractdebugger
 plugin@org.eclipse.dltk.ruby.basicdebugger=v20071106,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.basicdebugger
