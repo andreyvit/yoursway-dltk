@@ -90,7 +90,7 @@ public class DebuggingEngineManager {
 			return true;
 		}
 
-		return Boolean.parseBoolean(value);
+		return (new Boolean(value)).booleanValue();
 	}
 
 	private void addSelector(String natureId, IConfigurationElement element) {
