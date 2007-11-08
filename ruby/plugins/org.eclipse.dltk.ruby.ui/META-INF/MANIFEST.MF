@@ -22,6 +22,7 @@ Require-Bundle: org.eclipse.ui,
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.ruby.internal.ui,
  org.eclipse.dltk.ruby.internal.ui.editor,
+ org.eclipse.dltk.ruby.internal.ui.formatting,
  org.eclipse.dltk.ruby.internal.ui.preferences,
  org.eclipse.dltk.ruby.internal.ui.text,
  org.eclipse.dltk.ruby.internal.ui.text.completion,
