@@ -23,15 +23,20 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IBreakpointsListener;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchListener;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpointListener;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
+import org.eclipse.dltk.debug.ui.preferences.StepFilterManager;
+import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -133,6 +138,26 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 					updateBreakpoinInfoToDefualt(breakpoints);
 					updateBreakpointMessages(breakpoints);
 				}
+			} else if (kind == DebugEvent.CREATE) {
+				if (source instanceof IScriptDebugTarget) {
+					try {
+						IScriptDebugTarget target = (IScriptDebugTarget) source;
+						ILaunchConfiguration configuration = target.getLaunch()
+								.getLaunchConfiguration();
+						IScriptProject scriptProject;
+						scriptProject = AbstractScriptLaunchConfigurationDelegate
+								.getScriptProject(configuration);
+						String[] activeFilters = StepFilterManager
+								.getActiveFilters(scriptProject);
+						target.setFilters(activeFilters);
+						target.setUseStepFilters(StepFilterManager
+								.isUseStepFilters(scriptProject));
+					} catch (CoreException e) {
+						if (DLTKCore.DEBUG) {
+							e.printStackTrace();
+						}
+					}
+				}
 			}
 		}
 	}
@@ -214,6 +239,7 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 	public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
 		// TODO:
 	}
+
 	public static String serializeList(String[] list) {
 		if (list == null) {
 			return ""; //$NON-NLS-1$
@@ -227,6 +253,7 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 		}
 		return buffer.toString();
 	}
+
 	public static String[] parseList(String listString) {
 		List list = new ArrayList(10);
 		StringTokenizer tokenizer = new StringTokenizer(listString, ","); //$NON-NLS-1$
@@ -234,6 +261,6 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 			String token = tokenizer.nextToken();
 			list.add(token);
 		}
-		return (String[])list.toArray(new String[list.size()]);
+		return (String[]) list.toArray(new String[list.size()]);
 	}
 }

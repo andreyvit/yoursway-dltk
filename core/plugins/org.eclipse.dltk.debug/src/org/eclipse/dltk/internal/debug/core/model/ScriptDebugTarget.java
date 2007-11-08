@@ -80,6 +80,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	private boolean supportsSuspendOnExit;
 
 	static WeakHashMap targets = new WeakHashMap();
+	private String[] stepFilters;
+
+	private boolean useStepFilters;
 
 	public static List getAllTargets() {
 		return new ArrayList(targets.keySet());
@@ -441,5 +444,23 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	public void setSupportsSuspendOnExit(boolean supportsSuspendOnExit) {
 		this.supportsSuspendOnExit = supportsSuspendOnExit;
+	}
+
+	public void setFilters(String[] activeFilters) {
+		this.stepFilters = activeFilters;
+	}
+	public String[] getFilters() {
+		if( this.stepFilters != null ) {
+			return this.stepFilters;
+		}
+		return new String[0];
+	}
+
+	public boolean isUseStepFilters() {
+		return useStepFilters;
+	}
+
+	public void setUseStepFilters(boolean useStepFilters) {
+		this.useStepFilters = useStepFilters;
 	}
 }

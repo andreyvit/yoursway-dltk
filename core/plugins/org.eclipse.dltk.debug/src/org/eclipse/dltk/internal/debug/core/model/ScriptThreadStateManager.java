@@ -33,6 +33,8 @@ public class ScriptThreadStateManager implements IDbgpDebuggerFeedback {
 
 	private boolean terminated;
 
+	private boolean stepIntoState;
+
 	protected void handleStatus(DbgpException exception, IDbgpStatus status,
 			int suspendDetail) {
 		if (exception != null) {
@@ -122,8 +124,16 @@ public class ScriptThreadStateManager implements IDbgpDebuggerFeedback {
 
 	public void stepInto() throws DebugException {
 		beginStep(DebugEvent.STEP_INTO);
+		this.stepIntoState = true;
 		engine.stepInto();
 	}
+	public boolean isStepInto() {
+		return this.stepIntoState;
+	}
+	public void setStepInto(boolean state) {
+		this.stepIntoState = state;
+	}
+	
 
 	// StepOver
 	public boolean canStepOver() {

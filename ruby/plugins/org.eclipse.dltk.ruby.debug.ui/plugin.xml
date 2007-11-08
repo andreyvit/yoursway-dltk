@@ -252,4 +252,12 @@
            <adapter type="org.eclipse.debug.ui.actions.IRunToLineTarget"/>
        </factory>         
     </extension>
+ <extension
+       point="org.eclipse.dltk.debug.smartStepEvaluator">
+    <evaluator
+          class="org.eclipse.dltk.ruby.internal.debug.RubySmartStepEvaluator"
+          nature="org.eclipse.dltk.ruby.core.nature"
+          priority="0">
+    </evaluator>
+ </extension>
 </plugin>

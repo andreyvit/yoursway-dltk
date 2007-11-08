@@ -102,7 +102,7 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 	private Button fAddAllButton;
 	private Button fAddTypeButton;
 	private Button fRemoveFilterButton;
-	private Button fAddFilterButton;
+//	private Button fAddFilterButton;
 	private Button fSelectAllButton;
 	private Button fDeselectAllButton;
 	private IDLTKLanguageToolkit fToolkit;
@@ -162,7 +162,8 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 				.createCheckButton(
 						container,
 						ScriptDebugPreferencesMessages.ScriptStepFilterPreferencePage__Use_step_filters,
-						null, DebugUITools.isUseStepFilters(), 2);
+						null, StepFilterManager
+								.isUseStepFilters(getPreferenceStore()), 2);
 		fUseStepFiltersButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				setPageEnablement(fUseStepFiltersButton.getSelection());
@@ -233,7 +234,7 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 	 * @since 3.2
 	 */
 	protected void setPageEnablement(boolean enabled) {
-		fAddFilterButton.setEnabled(enabled);
+//		fAddFilterButton.setEnabled(enabled);
 		fAddAllButton.setEnabled(enabled);
 		fAddTypeButton.setEnabled(enabled);
 		fDeselectAllButton.setEnabled(enabled);
@@ -261,17 +262,17 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 		buttonLayout.marginWidth = 0;
 		buttonContainer.setLayout(buttonLayout);
 		// Add filter button
-		fAddFilterButton = SWTFactory
-				.createPushButton(
-						buttonContainer,
-						ScriptDebugPreferencesMessages.ScriptStepFilterPreferencePage_Add__Filter_9,
-						ScriptDebugPreferencesMessages.ScriptStepFilterPreferencePage_Key_in_the_name_of_a_new_step_filter_10,
-						null);
-		fAddFilterButton.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				addFilter();
-			}
-		});
+//		fAddFilterButton = SWTFactory
+//				.createPushButton(
+//						buttonContainer,
+//						ScriptDebugPreferencesMessages.ScriptStepFilterPreferencePage_Add__Filter_9,
+//						ScriptDebugPreferencesMessages.ScriptStepFilterPreferencePage_Key_in_the_name_of_a_new_step_filter_10,
+//						null);
+//		fAddFilterButton.addListener(SWT.Selection, new Listener() {
+//			public void handleEvent(Event e) {
+//				addFilter();
+//			}
+//		});
 		// Add type button
 		fAddTypeButton = SWTFactory
 				.createPushButton(
@@ -445,7 +446,7 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 	 * @see org.eclipse.jface.preference.PreferencePage#performOk()
 	 */
 	public boolean performOk() {
-		DebugUITools.setUseStepFilters(fUseStepFiltersButton.getSelection());
+		StepFilterManager.setUseStepFilters(fUseStepFiltersButton.getSelection(), getPreferenceStore());
 		IPreferenceStore store = getPreferenceStore();
 		ArrayList active = new ArrayList();
 		ArrayList inactive = new ArrayList();
@@ -453,7 +454,8 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 		Filter[] filters = getAllFiltersFromTable();
 		for (int i = 0; i < filters.length; i++) {
 			name = filters[i].getName();
-			String modifiers = ":" + Integer.toString(filters[i].getModifiers());
+			String modifiers = ":"
+					+ Integer.toString(filters[i].getModifiers());
 			if (filters[i].isChecked()) {
 				active.add(name + modifiers);
 			} else {

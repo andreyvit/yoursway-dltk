@@ -5,7 +5,6 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.debug.core.model;
 
@@ -17,7 +16,7 @@ import org.eclipse.dltk.internal.debug.core.model.IScriptStreamProxy;
 
 public interface IScriptDebugTarget extends IDebugTarget {
 	boolean isInitialized();
-	
+
 	// 
 	String getSessionId();
 
@@ -33,6 +32,7 @@ public interface IScriptDebugTarget extends IDebugTarget {
 
 	// Stream proxy management
 	void setStreamProxy(IScriptStreamProxy proxy);
+
 	IScriptStreamProxy getStreamProxy();
 
 	// Run to line
@@ -46,8 +46,15 @@ public interface IScriptDebugTarget extends IDebugTarget {
 	boolean isSuspendOnMethodExit();
 
 	void setSuspendOnMethodExit(boolean suspend);
-	
+
 	public void setSupportsSuspendOnEntry(boolean supportsSuspendOnEntry);
 
 	public void setSupportsSuspendOnExit(boolean supportsSuspendOnExit);
+
+	void setFilters(String[] activeFilters);
+
+	String[] getFilters();
+
+	void setUseStepFilters(boolean useStepFilters);
+	boolean isUseStepFilters();
 }
