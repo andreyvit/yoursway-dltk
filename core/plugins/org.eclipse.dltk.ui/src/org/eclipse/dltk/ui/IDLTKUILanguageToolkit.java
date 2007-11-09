@@ -36,7 +36,7 @@ public interface IDLTKUILanguageToolkit {
 	
 	ScriptTextTools getTextTools();
 	
-	ScriptSourceViewerConfiguration createSourceViwerConfiguration();
+	ScriptSourceViewerConfiguration createSourceViewerConfiguration();
 	
 	// Per module script explorer show children way.
 	boolean getProvideMembers(ISourceModule element);

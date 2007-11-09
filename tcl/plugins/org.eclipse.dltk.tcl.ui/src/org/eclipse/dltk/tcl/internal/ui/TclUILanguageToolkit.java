@@ -104,7 +104,7 @@ public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
 		return TclUI.getDefault().internalgetTextTools();
 	}
 
-	public ScriptSourceViewerConfiguration createSourceViwerConfiguration() {
+	public ScriptSourceViewerConfiguration createSourceViewerConfiguration() {
 		return new SimpleTclSourceViewerConfiguration(getTextTools()
 				.getColorManager(), getPreferenceStore(), null,
 				getPartitioningId(), false);

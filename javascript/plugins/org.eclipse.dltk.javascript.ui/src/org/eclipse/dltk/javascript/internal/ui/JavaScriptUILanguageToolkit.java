@@ -63,7 +63,7 @@ public class JavaScriptUILanguageToolkit implements IDLTKUILanguageToolkit {
 		return JavaScriptUI.getDefault().getTextTools();
 	}
 	
-	public ScriptSourceViewerConfiguration createSourceViwerConfiguration() {
+	public ScriptSourceViewerConfiguration createSourceViewerConfiguration() {
 		return new SimpleJavascriptSourceViewerConfiguration(getTextTools()
 				.getColorManager(), getPreferenceStore(), null,
 				getPartitioningId(), false);

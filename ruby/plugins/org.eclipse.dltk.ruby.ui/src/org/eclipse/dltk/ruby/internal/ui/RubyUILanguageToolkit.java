@@ -104,7 +104,7 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 		return RubyUI.getDefault().getTextTools();
 	}
 
-	public ScriptSourceViewerConfiguration createSourceViwerConfiguration() {
+	public ScriptSourceViewerConfiguration createSourceViewerConfiguration() {
 		return new SimpleRubySourceViewerConfiguration(getTextTools()
 				.getColorManager(), getPreferenceStore(), null,
 				getPartitioningId(), false);

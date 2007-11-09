@@ -41,6 +41,7 @@ import org.eclipse.dltk.internal.ui.text.DocumentCharacterIterator;
 import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
 import org.eclipse.dltk.internal.ui.text.IScriptReconcilingListener;
 import org.eclipse.dltk.internal.ui.text.hover.ScriptExpandHover;
+import org.eclipse.dltk.internal.ui.text.hover.SourceViewerInformationControl;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.IContextMenuConstants;
@@ -2591,7 +2592,29 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 				.addSummarizableAnnotationType("org.eclipse.ui.workbench.texteditor.error"); //$NON-NLS-1$
 		fProjectionSupport
 				.addSummarizableAnnotationType("org.eclipse.ui.workbench.texteditor.warning"); //$NON-NLS-1$
-
+		final IDLTKLanguageToolkit toolkit = this.getLanguageToolkit();
+		fProjectionSupport
+				.setHoverControlCreator(new IInformationControlCreator() {
+					public IInformationControl createInformationControl(
+							Shell shell) {
+						return createSourceViewerInformationControl(shell,
+								SWT.TOOL | SWT.NO_TRIM | getOrientation(),
+								SWT.NONE, toolkit);
+					}
+				});
+		fProjectionSupport
+				.setInformationPresenterControlCreator(new IInformationControlCreator() {
+					public IInformationControl createInformationControl(
+							Shell shell) {
+						int shellStyle = SWT.RESIZE | SWT.TOOL
+								| getOrientation();
+						int style = SWT.V_SCROLL | SWT.H_SCROLL;
+						// return new SourceViewerInformationControl(shell,
+						// shellStyle, style);
+						return createSourceViewerInformationControl(shell,
+								shellStyle, style, toolkit);
+					}
+				});
 		if (DLTKCore.DEBUG) {
 			System.err
 					.println("TODO: Add source viewer information control element into Editor class...");
@@ -2615,6 +2638,13 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		getSourceViewerDecorationSupport(viewer);
 
 		return viewer;
+	}
+
+	protected SourceViewerInformationControl createSourceViewerInformationControl(
+			Shell shell, int shellStyle, int style, IDLTKLanguageToolkit toolkit) {
+		return new SourceViewerInformationControl(shell, shellStyle, style,
+				EditorsUI.getTooltipAffordanceString(), toolkit);
+		// return null;
 	}
 
 	protected ISourceViewer createScriptSourceViewer(Composite parent,
@@ -2876,12 +2906,12 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 
 		// see: https://bugs.eclipse.org/bugs/show_bug.cgi?id=58245
 		// JavaPlugin javaPlugin= JavaPlugin.getDefault();
-// if (javaPlugin == null)
-// return;
-//		
-// // Always notify AST provider
-// javaPlugin.getASTProvider().reconciled(ast, getInputJavaElement(),
-// progressMonitor);
+		// if (javaPlugin == null)
+		// return;
+		//		
+		// // Always notify AST provider
+		// javaPlugin.getASTProvider().reconciled(ast, getInputJavaElement(),
+		// progressMonitor);
 
 		// Notify listeners
 		Object[] listeners = fReconcilingListeners.getListeners();

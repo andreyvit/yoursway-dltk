@@ -243,7 +243,7 @@ public class ScriptBreakpointPropertyPage extends PropertyPage {
 				toolkit.getPartitioningId());
 
 		ScriptSourceViewerConfiguration config = toolkit
-				.createSourceViwerConfiguration();
+				.createSourceViewerConfiguration();
 
 		expressionViewer.configure(config);
 		expressionViewer.setDocument(document);

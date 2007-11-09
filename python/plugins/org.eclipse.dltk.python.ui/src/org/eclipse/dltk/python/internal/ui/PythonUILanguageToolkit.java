@@ -67,7 +67,7 @@ public class PythonUILanguageToolkit implements IDLTKUILanguageToolkit {
 		return PythonUI.getDefault().getTextTools();
 	}
 
-	public ScriptSourceViewerConfiguration createSourceViwerConfiguration() {
+	public ScriptSourceViewerConfiguration createSourceViewerConfiguration() {
 		return new SimplePythonSourceViewerConfiguration(getTextTools()
 				.getColorManager(), getPreferenceStore(), null,
 				getPartitioningId(), false);

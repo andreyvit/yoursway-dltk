@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementVisitor;
@@ -402,6 +403,17 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 		try {
 			model.accept(new IModelElementVisitor() {
 				public boolean visit(IModelElement element) {
+					if (element.getElementType() == IModelElement.SCRIPT_PROJECT ) {
+						IDLTKLanguageToolkit languageToolkit;
+						try {
+							languageToolkit = DLTKLanguageManager.getLanguageToolkit(element);
+							if( !fToolkit.getNatureId().equals(languageToolkit.getNatureId()) ) {
+								return false;
+							}
+						} catch (CoreException e) {
+							return false;
+						}
+					}
 					if (element.getElementType() == IModelElement.PROJECT_FRAGMENT) {
 						IProjectFragment fragment = (IProjectFragment) element;
 						if (fragment.isExternal()) {

@@ -319,8 +319,8 @@ public class PreferenceConstants {
 		
 		store.setDefault(PreferenceConstants.EDITOR_MATCHING_BRACKETS, true);
 		store.setDefault(PreferenceConstants.EDITOR_TAB_ALWAYS_INDENT, false);
-		PreferenceConverter.setDefault(store, PreferenceConstants.EDITOR_MATCHING_BRACKETS_COLOR, new RGB(192, 192,192));
-		
+		PreferenceConverter.setDefault(store, PreferenceConstants.EDITOR_MATCHING_BRACKETS_COLOR, new RGB(192, 192, 192));
+		PreferenceConverter.setDefault(store, PreferenceConstants.EDITOR_SOURCE_HOVER_BACKGROUND_COLOR, new RGB(237, 233, 227));
 	}
 	/**
 	 * A named preference that controls whether all dirty editors are automatically saved before a refactoring is
@@ -572,4 +572,7 @@ public class PreferenceConstants {
 	public static final String LINK_BROWSING_PROJECTS_TO_EDITOR = "org.eclipse.dltk.ui.browsing.projects.to.editor";
 	public static final String LINK_BROWSING_PACKAGES_TO_EDITOR = "org.eclipse.dltk.ui.browsing.packages.to.editor";
 	public static final String LINK_BROWSING_TYPES_TO_EDITOR = "org.eclipse.dltk.ui.browsing.types.to.editor";
+	
+	public final static String EDITOR_SOURCE_HOVER_BACKGROUND_COLOR_SYSTEM_DEFAULT= "sourceHoverBackgroundColor.SystemDefault";
+	public final static String EDITOR_SOURCE_HOVER_BACKGROUND_COLOR= "sourceHoverBackgroundColor";
 }
