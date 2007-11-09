@@ -31,8 +31,11 @@ public class ScriptArrayValue extends ScriptValue implements IScriptValue,
 
 	public IVariable[] getVariables(int offset, int length)
 			throws DebugException {
-		return (IVariable[]) Arrays.copyOfRange(variables, offset, offset
-				+ length);
+		IVariable[] newa = new IVariable[length];
+		System.arraycopy(variables, offset, newa, 0, length);
+		return newa;
+//		return (IVariable[]) Arrays.copyOfRange(variables, offset, offset
+//				+ length);
 	}
 
 	public Object getAdapter(Class adapter) {

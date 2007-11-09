@@ -125,7 +125,7 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 			IScriptThread thread) {
 		IScriptEvaluationEngine engine = thread.getEvaluationEngine();
 
-		final String snippet = messageTemplate.replace("(%variable%)", getEvalName());
+		final String snippet = messageTemplate.replaceAll("(%variable%)", getEvalName());
 
 		return new ScriptEvaluationCommand(engine, snippet, frame);
 	}
