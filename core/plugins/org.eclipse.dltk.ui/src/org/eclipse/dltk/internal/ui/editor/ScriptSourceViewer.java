@@ -456,7 +456,7 @@ public class ScriptSourceViewer extends ProjectionViewer implements
 
 		super.createControl(parent, styles);
 
-		System.err.println("Add backup manager");
+		//System.err.println("Add backup manager");
 		// fBackspaceManager= new SmartBackspaceManager();
 		// fBackspaceManager.install(this);		
 	}
