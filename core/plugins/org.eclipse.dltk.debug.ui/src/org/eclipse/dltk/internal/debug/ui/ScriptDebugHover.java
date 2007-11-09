@@ -104,7 +104,7 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 						IScriptEvaluationEngine engine = ((IScriptThread) frame
 								.getThread()).getEvaluationEngine();
 						IScriptEvaluationResult result = engine.syncEvaluate(
-								snippet, null);
+								snippet, frame);
 
 						if (result != null) {
 							return getResultText(result);
@@ -192,18 +192,13 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 
 	protected String getResultText(IScriptEvaluationResult result)
 			throws DebugException {
-		// TODO: make with string constnants and patterns
 		IScriptValue value = result.getValue();
-
-		String str = value == null ? "Can't evaluate hover" : value
-				.getValueString();
-
+		String str = getModelPresentation().getText(value);
 		return prepareHtml(result.getSnippet() + " = " + str);
 	}
 
 	protected String getVariableText(IVariable variable) throws DebugException {
-		return prepareHtml(variable.getName() + " = "
-				+ variable.getValue().getValueString());
+		return prepareHtml(getModelPresentation().getText(variable));
 	}
 
 	protected String prepareHtml(String text) {

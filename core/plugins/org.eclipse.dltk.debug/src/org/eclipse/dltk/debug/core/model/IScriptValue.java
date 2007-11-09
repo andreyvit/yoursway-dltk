@@ -14,16 +14,9 @@ import org.eclipse.dltk.debug.core.eval.IScriptEvaluationCommand;
 
 public interface IScriptValue extends IValue {
 	String getInstanceId();
-
 	IScriptType getType();
-
-	/**
-	 * 
-	 * @param messageTemplate
-	 *            String with {0} placeholder
-	 * @param thread
-	 * @return
-	 */
-	IScriptEvaluationCommand sendMessage(String messageTemplate,
+	String getEvalName();
+	
+	IScriptEvaluationCommand createEvaluationCommand(String messageTemplate,
 			IScriptThread thread);
 }

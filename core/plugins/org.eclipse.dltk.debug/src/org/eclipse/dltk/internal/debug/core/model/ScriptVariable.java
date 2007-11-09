@@ -16,79 +16,52 @@ import org.eclipse.dltk.dbgp.IDbgpProperty;
 import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.commands.IDbgpCoreCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
-import org.eclipse.dltk.debug.core.ScriptDebugManager;
-import org.eclipse.dltk.debug.core.model.AtomicScriptType;
-import org.eclipse.dltk.debug.core.model.IScriptTypeFactory;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
-import org.eclipse.dltk.debug.core.model.IScriptType;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
-public class ScriptVariable extends AbstractScriptVariable {
-
+public class ScriptVariable extends ScriptDebugElement implements
+		IScriptVariable {
+	private final IDebugTarget target;
 	private final IDbgpSession session;
+	private final IScriptStackFrame frame;
+	private final String name;
+	private IDbgpProperty property;
 
-	private IScriptStackFrame frame;
-
-	private final IDbgpProperty property;
-
-	private String assignedValue;
-
-	private IScriptType type;
-
-	protected ScriptVariable[] readChildrenVariables(IDbgpCoreCommands core)
-			throws DbgpException {
-		String key = property.getKey();
-
-		IDbgpProperty p = null;
-
-		if (key != null) {
-			p = core
-					.getPropertyByKey(property.getEvalName(), property.getKey());
-		} else if (frame != null) {
-			p = core.getProperty(property.getEvalName(), frame.getLevel());
-		} else {
-			p = core.getProperty(property.getEvalName());
-		}
-
-		IDbgpProperty[] properties = p.getAvailableChildren();
-
-		ScriptVariable[] variables = new ScriptVariable[properties.length];
-		for (int i = 0; i < properties.length; ++i) {
-			variables[i] = createChildVariable(properties[i]);
-		}
-
-		return variables;
-	}
-
-	protected ScriptVariable createChildVariable(IDbgpProperty property) {
-		if (frame != null) {
-			return new ScriptVariable(frame, property);
-		} else {
-			return new ScriptVariable(getDebugTarget(), session, property);
-		}
-	}
+	private IValue value;
 
 	public ScriptVariable(IScriptStackFrame frame, IDbgpProperty property) {
-		super(frame.getDebugTarget());
-		this.frame = frame;
+		this.target = frame.getDebugTarget();
 		this.session = ((IScriptThread) frame.getThread()).getDbgpSession();
+		this.name = property.getName();
 		this.property = property;
+		this.frame = frame;
 	}
 
-	public ScriptVariable(IDebugTarget target, IDbgpSession session,
-			IDbgpProperty property) {
-		super(target);
-		this.session = session;
-		this.property = property;
+	public IDebugTarget getDebugTarget() {
+		return target;
 	}
 
-	public String getName() throws DebugException {
-		return property.getName();
+	public IValue getValue() throws DebugException {
+		if (value == null) {
+			try {
+				if (!childrenLoaded())
+					update();
+			} catch (DbgpException e) {
+				// TODO: localize
+				throw wrapDbgpException("Can't assign variable", e);
+			}
+			value = ScriptValue.createValue(frame, property);
+		}
+		return value;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public String getReferenceTypeName() throws DebugException {
-		return getType().getName();
+		return property.getType();
 	}
 
 	public boolean hasValueChanged() throws DebugException {
@@ -97,19 +70,39 @@ public class ScriptVariable extends AbstractScriptVariable {
 
 	public void setValue(String expression) throws DebugException {
 		try {
-			if (frame != null) {
-				if (session.getCoreCommands().setProperty(
-						property.getEvalName(), frame.getLevel(), expression)) {
-					DebugEventHelper.fireChangeEvent(this);
-				}
-
-				assignedValue = expression;
+			if (session.getCoreCommands().setProperty(property.getEvalName(),
+					frame.getLevel(), expression)) {
+				clearEvaluationManagerCache();
+				update();
 			}
-
 		} catch (DbgpException e) {
 			// TODO: localize
 			throw wrapDbgpException("Can't assign variable", e);
 		}
+	}
+
+	private void clearEvaluationManagerCache() {
+		ScriptThread thread = (ScriptThread) frame.getThread();
+		thread.notifyModified();
+		
+	}
+
+	private boolean childrenLoaded() {
+		return !property.hasChildren()
+				|| property.getAvailableChildren().length > 0;
+	}
+
+	private void update() throws DbgpException {
+		this.value = null;
+
+		IDbgpCoreCommands core = session.getCoreCommands();
+		String key = property.getKey();
+		String name = property.getEvalName();
+		
+		// TODO: Use key if provided
+		this.property = core.getProperty(name, frame.getLevel());
+
+		DebugEventHelper.fireChangeEvent(this);
 	}
 
 	public void setValue(IValue value) throws DebugException {
@@ -117,10 +110,11 @@ public class ScriptVariable extends AbstractScriptVariable {
 	}
 
 	public boolean supportsValueModification() {
-		return frame != null && !hasChildren() && !property.isConstant();
+		return !property.isConstant();
 	}
 
 	public boolean verifyValue(String expression) throws DebugException {
+		// TODO: perform more smart verification
 		return expression != null;
 	}
 
@@ -128,59 +122,15 @@ public class ScriptVariable extends AbstractScriptVariable {
 		return verifyValue(value.getValueString());
 	}
 
-	public boolean hasChildren() {
-		boolean shouldHas = property.hasChildren();
-		int count = property.getChildrenCount();
-
-		return count == -1 ? shouldHas : shouldHas && count > 0;
-	}
-
 	public boolean isConstant() {
 		return property.isConstant();
 	}
 
-	public synchronized IScriptVariable[] getChildren() throws DebugException {
-		try {
-			return readChildrenVariables(session.getCoreCommands());
-		} catch (DbgpException e) {
-			throw wrapDbgpException(
-					"Exception during getting variable children", e);
-		}
-	}
-
-	public String getValueString() {
-		return assignedValue != null ? assignedValue : property.getValue();
-	}
-	
-	public IScriptStackFrame getStackFrame() {
-		return frame;
-	}
-
 	public String toString() {
-		return getEvalName();
-	}
-
-	public String getEvalName() {
-		return property.getEvalName();
+		return getName();
 	}
 
 	public String getId() {
 		return property.getKey();
-	}
-
-	public IScriptType getType() {
-		if (type == null) {
-			final String rawType = property.getType();
-			
-			final IScriptTypeFactory factory = ScriptDebugManager.getInstance()
-					.getTypeFactoryByDebugModel(getModelIdentifier());
-			if (factory != null) {
-				type = factory.buildType(rawType);
-			} else {
-				type = new AtomicScriptType(rawType);
-			}
-		}
-
-		return type;
 	}
 }

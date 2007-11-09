@@ -142,7 +142,7 @@ module XoredDebugger
                 vars = stack_manager.eval(exp, d)
 
                 props = []
-                vars.each { |var|
+                vars.each { |var|                   
                     real_var = stack_manager.eval(var, d)
                     props << make_property(var, real_var)
                 }
@@ -177,17 +177,20 @@ module XoredDebugger
         end
 
         # Property commands
-        def property_get(name, depth, key)
-            # TODO: name, depth usage
-            obj = 'Error :('
+        def property_get(name, depth)
+            obj = nil
             begin
-                obj = ObjectSpace._id2ref(key)
-                if obj.nil?
-                    obj = 'Object is nil'
-                end
+                command = "#{name}"
+                log('Evaluating ' + command + ' at ' + depth.to_s)
+                obj = stack_manager.eval(command, depth)
             rescue Exception
+                obj = nil
             end
 
+            if (obj.nil?)
+                obj = 'Can not evaluate';
+            end
+            
             { :property => make_property(name, obj) }
         end
 
@@ -205,7 +208,7 @@ module XoredDebugger
 
         def property_value
             #TODO:
-            {}
+            raise NotImplementedError, 'property_value command is not implemented' 
         end
 
         # Breakpoint commands
@@ -463,8 +466,7 @@ module XoredDebugger
                 when 'property_get'
                     name = command.arg('-n')
                     depth =  command.arg_with_default('-d', '0').to_i
-                    key = command.arg('-k').to_i
-                    property_get(name, depth, key)
+                    property_get(name, depth)
 
                 when 'property_set'
                     name = command.arg('-n')

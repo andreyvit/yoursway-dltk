@@ -20,7 +20,7 @@ public class DbgpService implements IDbgpService, IPropertyChangeListener,
 	private static final int FROM_PORT = 10000;
 	private static final int TO_PORT = 50000;
 
-	private static final int SERVER_SOCKET_TIMEOUT = 10000000;
+	private static final int SERVER_SOCKET_TIMEOUT = 500;
 	private static final int CLIENT_SOCKET_TIMEOUT = 10000000;
 
 	private DbgpServer server;
@@ -80,8 +80,7 @@ public class DbgpService implements IDbgpService, IPropertyChangeListener,
 			try {
 				server.waitTerminated();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				DLTKDebugPlugin.log(e);
 			}
 		}
 	}

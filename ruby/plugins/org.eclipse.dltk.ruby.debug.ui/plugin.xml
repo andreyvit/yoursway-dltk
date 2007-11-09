@@ -260,4 +260,17 @@
           priority="0">
     </evaluator>
  </extension>
+ <extension
+       point="org.eclipse.dltk.debug.ui.scriptDetailFormatter">
+    <detailFormatter
+          nature="org.eclipse.dltk.ruby.core.nature"
+          snippet="&quot;{ &quot; + (%variable%).collect{|k, v| k.inspect + &quot; =&gt; &quot; + v.inspect}*&quot;, &quot; + &quot; }&quot;"
+          type="Hash">
+    </detailFormatter>
+    <detailFormatter
+          nature="org.eclipse.dltk.ruby.core.nature"
+          snippet="(%variable%).inspect"
+          type="#DEFAULT#">
+    </detailFormatter>
+ </extension>
 </plugin>

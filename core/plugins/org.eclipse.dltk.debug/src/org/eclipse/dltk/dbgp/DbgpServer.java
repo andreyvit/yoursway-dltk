@@ -3,6 +3,7 @@ package org.eclipse.dltk.dbgp;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 import org.eclipse.dltk.dbgp.internal.DbgpDebugingEngine;
 import org.eclipse.dltk.dbgp.internal.DbgpSession;
@@ -48,7 +49,7 @@ public class DbgpServer extends DbgpWorkingThread {
 			server.setSoTimeout(serverTimeout);
 
 			while (!Thread.interrupted()) {
-				final Socket client = server.accept();
+				Socket client = acceptClient();
 				client.setSoTimeout(clientTimeout);
 
 				if (listener != null) {
@@ -64,6 +65,17 @@ public class DbgpServer extends DbgpWorkingThread {
 				server.close();
 			}
 		}
+	}
+
+	private Socket acceptClient() throws IOException {
+		Socket client = null; 
+		while (client == null) {
+			try {
+				client = server.accept();
+			}
+			catch (SocketTimeoutException e) {}
+		}
+		return client;
 	}
 
 	public DbgpServer(int port, int serverTimeout, int clientTimeout) {

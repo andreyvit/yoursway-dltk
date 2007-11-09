@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IDebugElement;
@@ -42,6 +43,7 @@ import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 import org.eclipse.dltk.debug.ui.breakpoints.BreakpointUtils;
 import org.eclipse.dltk.internal.debug.ui.ExternalFileEditorInput;
+import org.eclipse.dltk.internal.debug.ui.ScriptDetailFormattersManager;
 import org.eclipse.dltk.internal.debug.ui.ScriptEvaluationContextManager;
 import org.eclipse.dltk.internal.ui.editor.ExternalStorageEditorInput;
 import org.eclipse.dltk.launching.DebuggingEngineRunner;
@@ -229,11 +231,11 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	public String getVariableText(IScriptVariable variable) {
 		try {
 			String name = variable.getName();
-
-			if (!variable.hasChildren()) {
-				String value = variable.getValueString();
-				if (value != null && value.length() > 0) {
-					return name + " = " + value;
+			IScriptValue value = (IScriptValue) variable.getValue();			
+			if (value != null) {
+				String valueText = getValueText(value);
+				if (valueText != null && valueText.length() > 0) {
+					return name + " = " + valueText;
 				}
 			}
 
@@ -243,6 +245,19 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		}
 
 		return variable.toString();
+	}
+
+	protected String getValueText(IScriptValue value) {
+		try {
+			return value.getValueString();
+		} catch (DebugException e) {
+			DebugPlugin.log(e);
+		}
+		return value.toString();
+	}
+
+	protected String renderUnknownValue(IScriptValue value) throws DebugException {
+		return value.getValueString();
 	}
 
 	protected String getBreakpointText(IScriptBreakpoint breakpoint) {
@@ -291,21 +306,17 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	protected String getExpressionText(IExpression expression) {
 		final String expressionText = expression.getExpressionText();
 
-		try {
-			if (expression instanceof IErrorReportingExpression) {
-				IErrorReportingExpression errorExpression = (IErrorReportingExpression) expression;
-				if (errorExpression.hasErrors()) {
-					return expressionText;
-				}
+		if (expression instanceof IErrorReportingExpression) {
+			IErrorReportingExpression errorExpression = (IErrorReportingExpression) expression;
+			if (errorExpression.hasErrors()) {
+				return expressionText;
 			}
+		}
 
-			IScriptValue value = (IScriptValue) expression.getValue();
-			if (value != null) {
-				return MessageFormat.format("{0} = {1}", new Object[] {
-						expressionText, value.getValueString() });
-			}
-		} catch (DebugException e) {
-			DLTKDebugUIPlugin.log(e);
+		IScriptValue value = (IScriptValue) expression.getValue();
+		if (value != null) {
+			return MessageFormat.format("{0} = {1}", new Object[] {
+					expressionText, getValueText(value) });
 		}
 
 		return expressionText;
@@ -322,6 +333,8 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			return getStackFrameText((IScriptStackFrame) element);
 		} else if (element instanceof IScriptVariable) {
 			return getVariableText((IScriptVariable) element);
+		} else if (element instanceof IScriptValue) {
+			return getValueText((IScriptValue) element);
 		} else if (element instanceof IExpression) {
 			return getExpressionText((IExpression) element);
 		}
@@ -331,10 +344,13 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 
 	// Details
 	public void computeDetail(IValue value, IValueDetailListener listener) {
-		try {
-			listener.detailComputed(value, value.getValueString());
-		} catch (DebugException e) {
-			e.printStackTrace();
+		IScriptDebugTarget target = (IScriptDebugTarget)value.getDebugTarget();
+		IScriptThread thread = getEvaluationThread(target);
+		if (thread == null) {
+			listener.detailComputed(value, getValueText((IScriptValue) value)); 
+		} else {
+			String natureId = target.getLanguageToolkit().getNatureId();
+			ScriptDetailFormattersManager.getDefault(natureId).computeValueDetail((IScriptValue)value, thread, listener);
 		}
 	}
 

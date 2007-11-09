@@ -9,25 +9,65 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model;
 
-import java.text.MessageFormat;
-
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.dltk.dbgp.IDbgpProperty;
+import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationCommand;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
+import org.eclipse.dltk.debug.core.model.AtomicScriptType;
+import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptType;
+import org.eclipse.dltk.debug.core.model.IScriptTypeFactory;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
-import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.internal.debug.core.eval.ScriptEvaluationCommand;
 
 public class ScriptValue extends ScriptDebugElement implements IScriptValue {
+	final private IDbgpProperty property;
+	final private IScriptType type;
+	final protected IVariable[] variables;
+	private IScriptStackFrame frame;
 
-	private final IScriptVariable variable;
+	public static IScriptValue createValue(IScriptStackFrame frame, IDbgpProperty property) {
+		IScriptType type = createType(frame.getDebugTarget(), property);
+		if (type.isCollection()) {			
+			return new ScriptArrayValue(frame, property, type);
+		}
+		return new ScriptValue(frame, property, type);
+	}
+	
+	ScriptValue(IScriptStackFrame frame, IDbgpProperty property, IScriptType type) {
+		this.frame = frame;
+		this.property = property;
+		this.type = type;
+		this.variables = createChildVariables(property);
+	}
 
-	protected ScriptValue(IScriptVariable variable) {
-		this.variable = variable;
+	private ScriptVariable[] createChildVariables(IDbgpProperty property) {
+		IDbgpProperty[] properties = property.getAvailableChildren();
+
+		ScriptVariable[] variables = new ScriptVariable[properties.length];
+		for (int i = 0; i < properties.length; ++i) {
+			variables[i] = new ScriptVariable(frame, properties[i]);
+		}
+
+		return variables;
+	}
+	
+	private static IScriptType createType(IDebugTarget target, IDbgpProperty property) {
+		IScriptType type = null;
+		final String rawType = property.getType();
+		
+		final IScriptTypeFactory factory = ScriptDebugManager.getInstance()
+				.getTypeFactoryByDebugModel(target.getModelIdentifier());
+		if (factory != null) {
+			type = factory.buildType(rawType);
+		} else {
+			type = new AtomicScriptType(rawType);
+		}
+		return type;
 	}
 
 	public String getReferenceTypeName() throws DebugException {
@@ -35,7 +75,7 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 	}
 
 	public String getValueString() throws DebugException {
-		String value = variable.getValueString();
+		String value = property.getValue();
 
 		if (value == null || value.length() == 0) {
 			IScriptType type = getType();
@@ -54,11 +94,11 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 	}
 
 	public IVariable[] getVariables() throws DebugException {
-		return variable.getChildren();
+		return (IVariable[]) variables.clone();
 	}
 
 	public boolean hasVariables() throws DebugException {
-		return variable.hasChildren();
+		return variables.length > 0;
 	}
 
 	public boolean isAllocated() throws DebugException {
@@ -66,29 +106,31 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 	}
 
 	public String toString() {
-		return variable.getValueString();
+		return property.getValue();
 	}
 
 	public IDebugTarget getDebugTarget() {
-		return variable.getDebugTarget();
+		return frame.getDebugTarget();
 	}
 
 	public String getInstanceId() {
-		return variable.getId();
+		return property.getKey();
 	}
 
 	public IScriptType getType() {
-		return variable.getType();
+		return type;
 	}
 
-	public IScriptEvaluationCommand sendMessage(String messageTemplate,
+	public IScriptEvaluationCommand createEvaluationCommand(String messageTemplate,
 			IScriptThread thread) {
 		IScriptEvaluationEngine engine = thread.getEvaluationEngine();
 
-		final String snippet = MessageFormat.format(messageTemplate,
-				new Object[] { variable.getEvalName() });
+		final String snippet = messageTemplate.replace("(%variable%)", getEvalName());
 
-		return new ScriptEvaluationCommand(engine, snippet, variable
-				.getStackFrame());
+		return new ScriptEvaluationCommand(engine, snippet, frame);
+	}
+	
+	public String getEvalName() {
+		return property.getEvalName();
 	}
 }

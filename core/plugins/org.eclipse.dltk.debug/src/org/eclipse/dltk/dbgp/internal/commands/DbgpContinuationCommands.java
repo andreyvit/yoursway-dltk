@@ -12,7 +12,6 @@ package org.eclipse.dltk.dbgp.internal.commands;
 import org.eclipse.dltk.dbgp.IDbgpStatus;
 import org.eclipse.dltk.dbgp.commands.IDbgpContinuationCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
-import org.eclipse.dltk.dbgp.internal.DbgpRequest;
 import org.eclipse.dltk.dbgp.internal.utils.DbgpXmlEntityParser;
 
 public class DbgpContinuationCommands extends DbgpBaseCommands implements
@@ -29,11 +28,6 @@ public class DbgpContinuationCommands extends DbgpBaseCommands implements
 
 	private static final String DETACH_COMMAND = "detach";
 
-	protected IDbgpStatus execCommandWithHandler(String command) throws DbgpException {
-		DbgpRequest cb = createRequest(command);
-		return DbgpXmlEntityParser.parseStatus(communicate(cb));
-	}
-
 	protected IDbgpStatus execCommand(String command) throws DbgpException {
 		return DbgpXmlEntityParser
 				.parseStatus(communicate(createRequest(command)));
@@ -45,22 +39,22 @@ public class DbgpContinuationCommands extends DbgpBaseCommands implements
 
 	public IDbgpStatus run()
 			throws DbgpException {
-		return execCommandWithHandler(RUN_COMMAND);
+		return execCommand(RUN_COMMAND);
 	}
 
 	public IDbgpStatus stepInto()
 			throws DbgpException {
-		return execCommandWithHandler(STEP_INTO_COMMAND);
+		return execCommand(STEP_INTO_COMMAND);
 	}
 
 	public IDbgpStatus stepOut()
 			throws DbgpException {
-		return execCommandWithHandler(STEP_OUT_COMMAND);
+		return execCommand(STEP_OUT_COMMAND);
 	}
 
 	public IDbgpStatus stepOver()
 			throws DbgpException {
-		return execCommandWithHandler(STEP_OVER_COMMAND);
+		return execCommand(STEP_OVER_COMMAND);
 	}
 
 	public IDbgpStatus stop() throws DbgpException {

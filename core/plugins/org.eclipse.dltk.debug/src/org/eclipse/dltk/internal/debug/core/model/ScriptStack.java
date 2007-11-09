@@ -22,6 +22,7 @@ public class ScriptStack implements IScriptStack {
 		for (int i = 0; i < levels.length; ++i) {
 			IDbgpStackLevel level = levels[i];
 			frames[level.getLevel()] = new ScriptStackFrame(this, level);
+
 		}
 
 		return frames;
@@ -64,5 +65,17 @@ public class ScriptStack implements IScriptStack {
 	public IScriptStackFrame getTopFrame() {
 		final IScriptStackFrame[] frames = getFrames();
 		return frames.length > 0 ? frames[0] : null;
+	}
+
+	public void updateFrames() {
+		for (int i = 0; i < frames.length; i++) {
+			try {
+				((ScriptStackFrame) frames[i]).updateVariables();
+			} catch (DbgpException e) {
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }

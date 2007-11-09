@@ -4,19 +4,18 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationResult;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
-import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
 public class ScriptEvaluationResult implements IScriptEvaluationResult {
 	private static final String[] NO_MESSAGES = new String[0];
 
 	private final IScriptThread thread;
 	private final String snippet;
-	private final IScriptVariable variable;
+	private final IScriptValue value;
 
 	public ScriptEvaluationResult(IScriptThread thread, String snippet,
-			IScriptVariable variable) {
+			IScriptValue value) {
 		this.thread = thread;
-		this.variable = variable;
+		this.value = value;
 		this.snippet = snippet;
 	}
 
@@ -25,13 +24,7 @@ public class ScriptEvaluationResult implements IScriptEvaluationResult {
 	}
 
 	public IScriptValue getValue() {
-		try {
-			return (IScriptValue) variable.getValue();
-		} catch (DebugException e) {
-			// TODO: log exception
-		}
-
-		return null;
+		return value;
 	}
 
 	public IScriptThread getThread() {

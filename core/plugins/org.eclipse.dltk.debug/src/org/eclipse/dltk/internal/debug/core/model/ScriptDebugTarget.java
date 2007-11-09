@@ -38,6 +38,7 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.dbgp.exceptions.DbgpDebuggingEngineException;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.IDbgpService;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTargetListener;
@@ -127,7 +128,15 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		setSuspendOnMethodEntry(suspendOnMethodEntry2);
 		setSuspendOnMethodExit(suspendOnMethodExit2);
 	}
-
+	
+	public void shutdown() {
+		try {
+			terminate();
+		} catch (DebugException e) {
+			DLTKDebugPlugin.log(e);
+		}
+	}
+	
 	public String getSessionId() {
 		return sessionId;
 	}

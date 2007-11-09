@@ -16,9 +16,9 @@ import org.eclipse.dltk.debug.core.eval.IScriptEvaluationResult;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
-import org.eclipse.dltk.debug.core.model.IScriptVariable;
+import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
-import org.eclipse.dltk.internal.debug.core.model.ScriptVariable;
+import org.eclipse.dltk.internal.debug.core.model.ScriptValue;
 
 public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
 	private final IScriptThread thread;
@@ -26,21 +26,24 @@ public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
 	private int count;
 	private final WeakHashMap cache;
 
+	
+	
 	protected void putToCache(String snippet, IScriptEvaluationResult result) {
-		if (result != null) {
-			cache.put(snippet, result);
-		}
+//		if (result != null) {
+//			cache.put(snippet, result);
+//		}
 	}
 
 	protected IScriptEvaluationResult getFromCache(String snippet) {
-		int newCount = thread.getSuspendCount();
-		if (count != newCount) {
-			cache.clear();
-			count = newCount;
-			return null;
-		}
-
-		return (IScriptEvaluationResult) cache.get(snippet);
+		return null;
+//		int newCount = thread.getModificationsCount();
+//		if (count != newCount) {
+//			cache.clear();
+//			count = newCount;
+//			return null;
+//		}
+//
+//		return (IScriptEvaluationResult) cache.get(snippet);
 	}
 
 	private IScriptEvaluationResult evaluate(String snippet,
@@ -56,10 +59,8 @@ public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
 					extended.evaluate(snippet, frame.getLevel());
 
 			if (property != null) {
-				IScriptVariable variable = new ScriptVariable(
-						getScriptDebugTarget(), session, property);
-
-				result = new ScriptEvaluationResult(thread, snippet, variable);
+				IScriptValue value = ScriptValue.createValue(frame, property);
+				result = new ScriptEvaluationResult(thread, snippet, value);
 			} else {
 				// TODO: localize
 				result = new FailedScriptEvaluationResult(thread, snippet,
@@ -77,7 +78,7 @@ public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
 
 	public ScriptEvaluationEngine(IScriptThread thread) {
 		this.thread = thread;
-		this.count = thread.getSuspendCount();
+		this.count = thread.getModificationsCount();
 		this.cache = new WeakHashMap();
 	}
 

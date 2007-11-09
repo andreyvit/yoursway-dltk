@@ -11,6 +11,9 @@ package org.eclipse.dltk.internal.debug.core.model;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Preferences;
+import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
+import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.model.IBreakpoint;
@@ -24,6 +27,7 @@ import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.internal.IDbgpTerminationListener;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
+import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.ISmartStepEvaluator;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
@@ -39,6 +43,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	private final IScriptThreadManager manager;
 
+
 	private final ScriptStack stack;
 
 	// Session
@@ -50,6 +55,9 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	private IScriptEvaluationEngine evalEngine;
 
 	private int currentStackLevel;
+	
+	private IPropertyChangeListener propertyListener;
+
 
 	// ScriptThreadStateManager.IStateChangeHandler
 	public void handleSuspend(int detail) {
@@ -161,6 +169,20 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		// });
 
 		this.stack = new ScriptStack(this);
+
+		
+		propertyListener = new IPropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent event) {
+				if (event.getProperty().equals(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL)
+						|| event.getProperty().equals(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS)) {
+					stack.updateFrames();
+					DebugEventHelper.fireChangeEvent(ScriptThread.this
+							.getDebugTarget());
+				}
+			}
+		};
+		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
+		prefs.addPropertyChangeListener(propertyListener);
 	}
 
 	public boolean hasStackFrames() throws DebugException {
@@ -196,8 +218,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	// ISuspendResume
 
 	// Suspend
-	public int getSuspendCount() {
-		return stateManager.getSuspendCount();
+	public int getModificationsCount() {
+		return stateManager.getModificationsCount();
 	}
 
 	public boolean isSuspended() {
@@ -300,12 +322,18 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	// IDbgpTerminationListener
 	public void objectTerminated(Object object, Exception e) {
-		Assert.isTrue(object == session);
+		Assert.isTrue(object == session);		
 		manager.terminateThread(this);
+		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
+		prefs.addPropertyChangeListener(propertyListener);
 	}
 
 	// Object
 	public String toString() {
 		return "Thread (" + session.getInfo().getThreadId() + ")";
+	}
+
+	public void notifyModified() {		
+		stateManager.notifyModified();
 	}
 }

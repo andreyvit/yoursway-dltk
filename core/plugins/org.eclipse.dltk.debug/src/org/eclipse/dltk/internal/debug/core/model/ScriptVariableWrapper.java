@@ -8,13 +8,12 @@ import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptType;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 
-public class ScriptVariableWrapper extends AbstractScriptVariable {
+public class ScriptVariableWrapper extends ScriptDebugElement implements IScriptVariable {
 	private final String name;
 	private final IScriptVariable[] children;
 
 	public ScriptVariableWrapper(IDebugTarget target, String name,
 			IScriptVariable[] children) {
-		super(target);
 		this.name = name;
 		this.children = children;
 	}
@@ -84,6 +83,16 @@ public class ScriptVariableWrapper extends AbstractScriptVariable {
 	}
 
 	public IScriptStackFrame getStackFrame() {
+		return null;
+	}
+
+	public IValue getValue() throws DebugException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public IDebugTarget getDebugTarget() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

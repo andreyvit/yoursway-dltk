@@ -13,7 +13,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.dltk.internal.debug.core.model.DbgpService;
+import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
 import org.osgi.framework.BundleContext;
 
 public class DLTKDebugPlugin extends Plugin {
@@ -42,6 +46,15 @@ public class DLTKDebugPlugin extends Plugin {
 
 		if (dbgpService != null) {
 			dbgpService.shutdown();
+		}
+		
+		ILaunchManager launchManager= DebugPlugin.getDefault().getLaunchManager();
+		IDebugTarget[] targets= launchManager.getDebugTargets();
+		for (int i= 0 ; i < targets.length; i++) {
+			IDebugTarget target= targets[i];
+			if (target instanceof ScriptDebugTarget) {
+				((ScriptDebugTarget)target).shutdown();
+			}
 		}
 	}
 

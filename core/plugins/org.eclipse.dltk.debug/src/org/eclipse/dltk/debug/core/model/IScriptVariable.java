@@ -9,23 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.core.model;
 
-import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IVariable;
 
 public interface IScriptVariable extends IVariable {
 	String getId();
-	
-	String getEvalName();
-	
-	String getValueString();
-	
-	IScriptStackFrame getStackFrame();
-
-	IScriptVariable[] getChildren() throws DebugException;
-	
-	boolean hasChildren();
-	
-	IScriptType getType();
-	
 	boolean isConstant();
 }

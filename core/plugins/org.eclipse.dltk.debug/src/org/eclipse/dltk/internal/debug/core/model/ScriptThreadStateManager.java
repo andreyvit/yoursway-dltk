@@ -24,7 +24,7 @@ public class ScriptThreadStateManager implements IDbgpDebuggerFeedback {
 	private boolean canSuspend;
 
 	// Number of suspends
-	private int suspendCount;
+	private int modificationsCount;
 
 	// States
 	private boolean stepping;
@@ -63,7 +63,7 @@ public class ScriptThreadStateManager implements IDbgpDebuggerFeedback {
 	protected void setSuspended(boolean value, int detail) {
 		suspended = value;
 		if (value) {
-			++suspendCount;
+			++modificationsCount;
 		}
 
 		if (value) {
@@ -97,7 +97,7 @@ public class ScriptThreadStateManager implements IDbgpDebuggerFeedback {
 		this.engine = new DbgpDebugger(thread, this);
 
 		canSuspend = true; // engine.isSupportsAsync();
-		this.suspendCount = 0;
+		this.modificationsCount = 0;
 
 		this.suspended = true;
 		this.terminated = false;
@@ -181,8 +181,8 @@ public class ScriptThreadStateManager implements IDbgpDebuggerFeedback {
 		engine.suspend();
 	}
 
-	public int getSuspendCount() {
-		return suspendCount;
+	public int getModificationsCount() {
+		return modificationsCount;
 	}
 
 	// Resume
@@ -215,5 +215,9 @@ public class ScriptThreadStateManager implements IDbgpDebuggerFeedback {
 
 	public void terminate() throws DebugException {
 		engine.terminate();
+	}
+
+	public void notifyModified() {
+		modificationsCount++;		
 	}
 }

@@ -1,11 +1,13 @@
 package org.eclipse.dltk.javascript.internal.debug.ui;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
+import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 import org.eclipse.dltk.debug.ui.ScriptDebugImageDescriptor;
@@ -106,7 +108,14 @@ public class JavaScriptDebugModelPresentation extends
 
 	protected Image getVariableImage(IScriptVariable variable) {
 		IScriptVariable v = variable;
-		String typeString = v.getType().getName();
+		IScriptValue scriptValue;
+		try {
+			scriptValue = (IScriptValue)v.getValue();
+		} catch (DebugException e) {
+			return ScriptDebugImages
+			.get(ScriptDebugImages.IMG_OBJS_LOCAL_VARIABLE);
+		}
+		String typeString = (scriptValue).getType().getName();
 		if (typeString.equals("function"))
 			return DLTKPluginImages.get(DLTKPluginImages.IMG_METHOD_PRIVATE);
 		if (typeString.equals("javaclass"))
@@ -115,7 +124,7 @@ public class JavaScriptDebugModelPresentation extends
 			return DLTKPluginImages.get(DLTKPluginImages.IMG_METHOD_PROTECTED);
 		if (typeString.equals("javaarray"))
 			return DLTKPluginImages.get(DLTKPluginImages.IMG_METHOD_DEFAULT);
-		String fullName = v.getEvalName();
+		String fullName = scriptValue.getEvalName();
 		if (fullName.indexOf('.') >= 0 || (fullName.equals("this")))
 			return DLTKPluginImages.get(DLTKPluginImages.IMG_METHOD_PUBLIC);
 		else

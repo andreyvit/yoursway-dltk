@@ -15,4 +15,8 @@ public class ComplexScriptType implements IScriptType {
 	public boolean isAtomic() {
 		return false;
 	}
+
+	public boolean isCollection() {
+		return false;
+	}
 }

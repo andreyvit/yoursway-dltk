@@ -16,7 +16,6 @@ public class ToggleShowGlobalVariablesActionDelegate implements
 	}
 
 	public void init(IViewPart view) {
-
 	}
 
 	public void run(IAction action) {
@@ -27,7 +26,5 @@ public class ToggleShowGlobalVariablesActionDelegate implements
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
-		action.setChecked(!getPrefs().getBoolean(
-				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL));
-	}
+	}	
 }

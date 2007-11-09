@@ -26,5 +26,5 @@ public interface IScriptThread extends IThread /* , IFilteredStep */{
 
 	IScriptEvaluationEngine getEvaluationEngine();
 
-	int getSuspendCount();
+	int getModificationsCount();
 }

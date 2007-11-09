@@ -1,22 +1,22 @@
 package org.eclipse.dltk.debug.core.model;
 
 
-public class AtomicScriptType implements IScriptType {
+public class CollectionScriptType implements IScriptType {
 	private String name;
 
-	public AtomicScriptType(String name) {
+	public CollectionScriptType(String name) {
 		this.name = name;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public boolean isAtomic() {
-		return true;
+		return false;
 	}
 
 	public boolean isCollection() {
-		return false;
+		return true;
 	}
 }

@@ -9,7 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model;
 
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugElement;
+import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IWatchExpressionDelegate;
 import org.eclipse.debug.core.model.IWatchExpressionListener;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
@@ -42,14 +44,31 @@ public class ScriptWatchExpressionDelegate implements IWatchExpressionDelegate {
 		return null;
 	}
 
+	protected static IScriptStackFrame getStackFrame(IDebugElement context) {
+		try {
+			if (context instanceof IScriptThread) {
+				IStackFrame[] frames = ((IScriptThread) context)
+						.getStackFrames();
+				if (frames.length > 0)
+					return (IScriptStackFrame) frames[0];
+			} else if (context instanceof IScriptStackFrame) {
+				return (IScriptStackFrame) context;
+			}
+		} catch (DebugException e) {
+		}
+
+		return null;
+	}
+
 	public void evaluateExpression(String expression, IDebugElement context,
 			IWatchExpressionListener listener) {
 
 		IScriptThread thread = getScriptThread(context);
-		if (thread != null) {
+		IScriptStackFrame frame = getStackFrame(context);
+		if (thread != null && frame != null) {
 			IScriptEvaluationEngine engine = thread.getEvaluationEngine();
 			if (engine != null) {
-				engine.asyncEvaluate(expression, null, new ListenerAdpater(
+				engine.asyncEvaluate(expression, frame, new ListenerAdpater(
 						listener));
 			}
 		}

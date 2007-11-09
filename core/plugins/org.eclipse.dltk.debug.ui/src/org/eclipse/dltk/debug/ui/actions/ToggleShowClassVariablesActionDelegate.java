@@ -24,11 +24,8 @@ public class ToggleShowClassVariablesActionDelegate implements
 				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS);
 		getPrefs().setValue(
 				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS, !value);
-
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
-		action.setChecked(getPrefs().getBoolean(
-				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS));
 	}
 }

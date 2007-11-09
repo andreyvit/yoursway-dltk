@@ -45,7 +45,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 
 	private final IDbgpStackLevel level;
 
-	private final IScriptVariable[] variables;
+	private IScriptVariable[] variables;
 
 	protected static IScriptVariable[] readVariables(
 			ScriptStackFrame parentFrame, int contextId,
@@ -133,6 +133,10 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		this.stack = stack;
 		this.thread = stack.getThread();
 		this.level = stackLevel;
+		updateVariables();
+	}
+
+	public void updateVariables() throws DbgpException {
 		this.variables = readAllVariables();
 	}
 
