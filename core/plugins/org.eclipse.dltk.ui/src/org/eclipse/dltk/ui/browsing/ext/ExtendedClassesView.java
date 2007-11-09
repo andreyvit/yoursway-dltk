@@ -1,10 +1,12 @@
 package org.eclipse.dltk.ui.browsing.ext;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -20,6 +22,7 @@ import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.search.SearchEngine;
@@ -75,9 +78,28 @@ public class ExtendedClassesView extends ViewPart implements
 			IElementChangedListener {
 		public void elementChanged(ElementChangedEvent event) {
 			// We need to update
-			if (browsingPane != null && !browsingPane.isDisposed()) {
-				browsingPane.refresh();
+//			if (event.getType() == ElementChangedEvent.POST_CHANGE) {
+				IModelElementDelta delta = event.getDelta();
+				if (browsingPane != null && !browsingPane.isDisposed()
+						&& typesChanged(delta)) {
+					browsingPane.refresh();
+				}
+//			}
+		}
+
+		private boolean typesChanged(IModelElementDelta delta) {
+			IModelElementDelta[] affectedChildren = delta.getAffectedChildren();
+			for (int i = 0; i < affectedChildren.length; i++) {
+				if (affectedChildren[i].getElement().getElementType() == IModelElement.TYPE) {
+					return true;
+				}
+				else {
+					if( typesChanged(affectedChildren[i])) {
+						return true;
+					}
+				}
 			}
+			return false;
 		}
 	}
 
@@ -419,7 +441,8 @@ public class ExtendedClassesView extends ViewPart implements
 	public void setInitializationData(IConfigurationElement config,
 			String propertyName, Object data) {
 		super.setInitializationData(config, propertyName, data);
-		this.fToolkit = DLTKExecuteExtensionHelper.getLanguageToolkit(config, propertyName, data);
+		this.fToolkit = DLTKExecuteExtensionHelper.getLanguageToolkit(config,
+				propertyName, data);
 	}
 
 	public void menuAboutToShow(IMenuManager menu) {

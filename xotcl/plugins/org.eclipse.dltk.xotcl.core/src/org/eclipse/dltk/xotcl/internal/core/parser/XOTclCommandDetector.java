@@ -183,13 +183,13 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 
 			TypeDeclaration type = TclParseUtil.findXOTclTypeDeclarationFrom(
 					module, parent, "Class");
-			if (type != null) {
+//			if (type != null) {
 				for (int i = 0; i < XOTclKeywords.XOTclCommandClassArgs.length; i++) {
 					if (value.equals(XOTclKeywords.XOTclCommandClassArgs[i])) {
 						return new CommandInfo("#Class#" + value, type);
 					}
 				}
-			}
+//			}
 			CommandInfo info = checkCreateType(statement, parent, arg, value);
 			if (info != null) {
 				return info;
@@ -212,13 +212,13 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 			String value = ((SimpleReference) arg).getName();
 			TypeDeclaration type = TclParseUtil.findXOTclTypeDeclarationFrom(
 					module, parent, "Object");
-			if (type != null) {
+//			if (type != null) {
 				for (int i = 0; i < XOTclKeywords.XOTclCommandObjectArgs.length; i++) {
 					if (value.equals(XOTclKeywords.XOTclCommandObjectArgs[i])) {
 						return new CommandInfo("#Object#" + value, type);
 					}
 				}
-			}
+//			}
 			CommandInfo info = checkCreateType(statement, parent, arg, value);
 			if (info != null) {
 				return info;
