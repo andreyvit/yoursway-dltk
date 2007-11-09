@@ -9,20 +9,15 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
 import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
@@ -39,8 +34,6 @@ import org.eclipse.dltk.internal.debug.core.model.operations.DbgpDebugger;
 public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		IThreadManagement, IDbgpTerminationListener,
 		ScriptThreadStateManager.IStateChangeHandler {
-
-	private static final String LAUNCH_CONFIGURATION_ATTR_PROJECT = "project";
 
 	private ScriptThreadStateManager stateManager;
 
@@ -76,7 +69,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 			stateManager.setStepInto(false);
 			IScriptDebugTarget target = this.getScriptDebugTarget();
 			String[] filters = target.getFilters();
-			IDLTKLanguageToolkit toolkit = getLanguageToolkit(target);
+			IDLTKLanguageToolkit toolkit = this.getScriptDebugTarget().getLanguageToolkit();
 			if (toolkit != null) {
 				ISmartStepEvaluator evaluator = SmartStepEvaluatorManager
 						.getEvaluator(toolkit.getNatureId());
@@ -95,32 +88,6 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 			}
 		}
 		return false;
-	}
-
-	private IDLTKLanguageToolkit getLanguageToolkit(IScriptDebugTarget target) {
-		ILaunchConfiguration configuration = target.getLaunch()
-				.getLaunchConfiguration();
-		String projectName = null;
-		try {
-			projectName = configuration.getAttribute(
-					LAUNCH_CONFIGURATION_ATTR_PROJECT, (String) null);
-			if (projectName != null) {
-				projectName = projectName.trim();
-				if (projectName.length() > 0) {
-					IProject project = ResourcesPlugin.getWorkspace().getRoot()
-							.getProject(projectName);
-					IScriptProject scriptProject = DLTKCore.create(project);
-					IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-							.getLanguageToolkit(scriptProject);
-					return toolkit;
-				}
-			}
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
-		return null;
 	}
 
 	public void handleResume(int detail) {

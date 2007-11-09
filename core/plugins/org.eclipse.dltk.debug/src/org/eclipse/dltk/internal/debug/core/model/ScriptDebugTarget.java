@@ -18,18 +18,24 @@ import java.util.List;
 import java.util.WeakHashMap;
 
 import org.eclipse.core.resources.IMarkerDelta;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IBreakpointManager;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.dbgp.exceptions.DbgpDebuggingEngineException;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.IDbgpService;
@@ -41,6 +47,8 @@ import org.eclipse.dltk.debug.core.model.MethodEntryManager;
 
 public class ScriptDebugTarget extends ScriptDebugElement implements
 		IScriptDebugTarget, IScriptThreadManagerListener {
+
+	private static final String LAUNCH_CONFIGURATION_ATTR_PROJECT = "project";
 
 	private static final String ON_EXIT = "suspendOnExit";
 
@@ -304,29 +312,28 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	private void initSuspends(IScriptThread thread) throws DbgpException {
 		/*
-		 * certain debugging engines (activestate's python engine) hang
-		 * if these commands are sent, while others just respond with an
-		 * error
-		 */	
-		if (supportsSuspendOnEntry) {								
+		 * certain debugging engines (activestate's python engine) hang if these
+		 * commands are sent, while others just respond with an error
+		 */
+		if (supportsSuspendOnEntry) {
 			try {
-				thread.getDbgpSession().getCoreCommands().setProperty(SUSPEND_ON_ENTRY,
-						0, Boolean.toString(suspendOnMethodEntry));
-			}
-			catch( DbgpDebuggingEngineException e) {
-				if( DLTKCore.DEBUG ) {
+				thread.getDbgpSession().getCoreCommands().setProperty(
+						SUSPEND_ON_ENTRY, 0,
+						Boolean.toString(suspendOnMethodEntry));
+			} catch (DbgpDebuggingEngineException e) {
+				if (DLTKCore.DEBUG) {
 					e.printStackTrace();
 				}
 			}
 		}
-		
+
 		if (supportsSuspendOnExit) {
 			try {
-				thread.getDbgpSession().getCoreCommands().setProperty(SUSPEND_ON_EXIT,
-						0, Boolean.toString(suspendOnMethodExit));
-			}
-			catch( DbgpDebuggingEngineException e) {
-				if( DLTKCore.DEBUG ) {
+				thread.getDbgpSession().getCoreCommands().setProperty(
+						SUSPEND_ON_EXIT, 0,
+						Boolean.toString(suspendOnMethodExit));
+			} catch (DbgpDebuggingEngineException e) {
+				if (DLTKCore.DEBUG) {
 					e.printStackTrace();
 				}
 			}
@@ -449,8 +456,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	public void setFilters(String[] activeFilters) {
 		this.stepFilters = activeFilters;
 	}
+
 	public String[] getFilters() {
-		if( this.stepFilters != null ) {
+		if (this.stepFilters != null) {
 			return this.stepFilters;
 		}
 		return new String[0];
@@ -462,5 +470,31 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	public void setUseStepFilters(boolean useStepFilters) {
 		this.useStepFilters = useStepFilters;
+	}
+
+	public IDLTKLanguageToolkit getLanguageToolkit() {
+		ILaunchConfiguration configuration = this.getLaunch()
+				.getLaunchConfiguration();
+		String projectName = null;
+		try {
+			projectName = configuration.getAttribute(
+					LAUNCH_CONFIGURATION_ATTR_PROJECT, (String) null);
+			if (projectName != null) {
+				projectName = projectName.trim();
+				if (projectName.length() > 0) {
+					IProject project = ResourcesPlugin.getWorkspace().getRoot()
+							.getProject(projectName);
+					IScriptProject scriptProject = DLTKCore.create(project);
+					IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+							.getLanguageToolkit(scriptProject);
+					return toolkit;
+				}
+			}
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 }
