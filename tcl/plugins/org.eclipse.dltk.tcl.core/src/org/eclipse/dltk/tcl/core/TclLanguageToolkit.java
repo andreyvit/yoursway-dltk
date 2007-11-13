@@ -48,12 +48,12 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(file));
-			int size = Math.min((int) file.length(), 1024 * 1024); // DON'T
+			int size = Math.min((int) file.length(), 128000); // DON'T
 			// READ
 			// FILES
 			// WITH SIZE
 			// MORE THAN
-			// 1 Mb
+			// 128k
 			char buf[] = new char[size + 1];
 			reader.read(buf);
 

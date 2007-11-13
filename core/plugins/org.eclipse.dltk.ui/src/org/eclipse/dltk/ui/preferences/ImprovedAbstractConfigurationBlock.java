@@ -82,6 +82,7 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 
 		private HashMap textControls;
 		private HashMap buttonControls;
+		private HashMap comboControls;
 
 		private ValidatorManager validatorManager;
 
@@ -102,6 +103,7 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 			this.page = page;
 			this.textControls = new HashMap();
 			this.buttonControls = new HashMap();
+			this.comboControls = new HashMap();
 			this.validatorManager = new ValidatorManager();
 		}
 
@@ -122,6 +124,24 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 				final Button button = (Button) it.next();
 				final String key = (String) buttonControls.get(button);
 				button.setSelection(store.getBoolean(key));
+			}
+			it = comboControls.keySet().iterator();
+			while (it.hasNext()) {
+				final Combo combo = (Combo) it.next();
+				final String key = (String) comboControls.get(combo);
+				String value = store.getString(key);
+				String[] items = combo.getItems();
+				boolean selected = false;
+				for (int i = 0; i < items.length; i++) {
+					if( items[i].equals(value)) {
+						combo.select(i);
+						selected = true;
+						break;
+					}
+				}
+				if( !selected ) {
+					combo.select(0);
+				}
 			}
 		}
 
@@ -175,11 +195,16 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 		}
 
 		protected void bindControl(final Combo combo, final String key) {
+			if (key != null) {
+				comboControls.put(combo, key);
+			}
 			combo.addSelectionListener(new SelectionListener() {
 				public void widgetDefaultSelected(SelectionEvent e) {
 				}
 
 				public void widgetSelected(SelectionEvent e) {
+					int index = combo.getSelectionIndex();
+					store.setValue(key, combo.getItem(index));
 				}
 			});
 		}
@@ -234,6 +259,10 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 
 	protected void bindControl(final Text text, IFieldValidator validator) {
 		bindManager.bindControl(text, null, validator);
+	}
+	protected void bindControl(final Combo combo,
+			final String key) {
+		bindManager.bindControl(combo, key);
 	}
 
 	// Dependency
