@@ -982,6 +982,12 @@
             class="org.eclipse.dltk.internal.ui.text.hover.DocumentationHover"
             id="org.eclipse.dltk.ui.DocumentationHover">
       </hover>
+       <hover
+            label="%sourceHover"
+            description="%sourceHoverDescription"
+            class="org.eclipse.dltk.internal.ui.text.hover.ScriptSourceHover"
+            id="org.eclipse.dltk.ui.ScriptSourceHover">
+      </hover>
       <hover
             label="%annotationHover"
             description="%annotationHoverDescription"

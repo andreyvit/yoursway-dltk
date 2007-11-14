@@ -21,6 +21,7 @@ import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IStatusLineManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
@@ -50,11 +51,16 @@ public class BasicScriptEditorActionContributor extends BasicTextEditorActionCon
 	
 	private RetargetTextEditorAction fGotoNextMemberAction;
 	private RetargetTextEditorAction fGotoPreviousMemberAction;
+	
+//	private RetargetTextEditorAction fRetargetShowInformationAction;
 
 	public BasicScriptEditorActionContributor() {
 		super();
 		
 		ResourceBundle b= DLTKEditorMessages.getBundleForConstructedKeys();
+		
+//		fRetargetShowInformationAction= new RetargetTextEditorAction(b, "Editor.ShowInformation."); //$NON-NLS-1$
+//		fRetargetShowInformationAction.setActionDefinitionId(ITextEditorActionDefinitionIds.SHOW_INFORMATION);
 		
 		fRetargetShowScriptDoc= new RetargetAction(DLTKActionConstants.SHOW_DOCUMENTAION, DLTKEditorMessages.ShowScriptDoc_label);
 		fRetargetShowScriptDoc.setActionDefinitionId(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
@@ -101,10 +107,21 @@ public class BasicScriptEditorActionContributor extends BasicTextEditorActionCon
 	public void contributeToMenu(IMenuManager menu) {
 		super.contributeToMenu(menu);
 		
+		IMenuManager editMenu= menu.findMenuUsingPath(IWorkbenchActionConstants.M_EDIT);
+		if (editMenu != null) {
+
+			MenuManager structureSelection= new MenuManager(DLTKEditorMessages.ExpandSelectionMenu_label, "expandSelection"); //$NON-NLS-1$
+			editMenu.insertAfter(ITextEditorActionConstants.SELECT_ALL, structureSelection);
+
+//			editMenu.appendToGroup(ITextEditorActionConstants.GROUP_INFORMATION, fRetargetShowInformationAction);
+		}
+		
 		IMenuManager navigateMenu= menu.findMenuUsingPath(IWorkbenchActionConstants.M_NAVIGATE);
 		if (navigateMenu != null) {
 			navigateMenu.appendToGroup(IWorkbenchActionConstants.SHOW_EXT, fShowOutline);
 			navigateMenu.appendToGroup(IWorkbenchActionConstants.SHOW_EXT, fOpenHierarchy);
+			
+			
 		}
 		
 		IMenuManager gotoMenu= menu.findMenuUsingPath("navigate/goTo"); //$NON-NLS-1$
@@ -133,6 +150,8 @@ public class BasicScriptEditorActionContributor extends BasicTextEditorActionCon
 		
 		fGotoNextMemberAction.setAction(getAction(textEditor, GoToNextPreviousMemberAction.NEXT_MEMBER));
 		fGotoPreviousMemberAction.setAction(getAction(textEditor, GoToNextPreviousMemberAction.PREVIOUS_MEMBER));
+		
+//		fRetargetShowInformationAction.setAction(getAction(textEditor, ITextEditorActionConstants.SHOW_INFORMATION));	
 
 		if (part instanceof ScriptEditor) {
 			ScriptEditor editor= (ScriptEditor) part;

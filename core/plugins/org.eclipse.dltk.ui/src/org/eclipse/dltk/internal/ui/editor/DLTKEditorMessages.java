@@ -18,7 +18,7 @@ import org.eclipse.osgi.util.NLS;
  */
 public final class DLTKEditorMessages extends NLS {
 
-	private static final String BUNDLE_FOR_CONSTRUCTED_KEYS= "org.eclipse.dltk.internal.ui.editor.ConstructedDLTKEditorMessages";//$NON-NLS-1$
+	private static final String BUNDLE_FOR_CONSTRUCTED_KEYS= "org.eclipse.dltk.internal.ui.editor.ConstructedScriptEditorMessages";//$NON-NLS-1$
 	private static ResourceBundle fgBundleForConstructedKeys= ResourceBundle.getBundle(BUNDLE_FOR_CONSTRUCTED_KEYS);
 
 	/**
@@ -32,6 +32,7 @@ public final class DLTKEditorMessages extends NLS {
 	}
 
 	private static final String BUNDLE_NAME= DLTKEditorMessages.class.getName();
+	public static String ExpandSelectionMenu_label;
 
 
 	private DLTKEditorMessages() {

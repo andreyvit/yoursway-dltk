@@ -245,7 +245,7 @@ public class AnnotationExpansionControl implements IInformationControl, IInforma
 		/*
 		 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
 		 */
-		public void mouseUp(MouseEvent e) {
+		public void mouseDown(MouseEvent e) {
 			Item item= (Item) ((Widget) e.getSource()).getData();
 			// TODO for now, to make double click work: disable single click on the first item
 			// disable later when the annotationlistener selectively handles input
@@ -256,9 +256,9 @@ public class AnnotationExpansionControl implements IInformationControl, IInforma
 		/*
 		 * @see org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.events.MouseEvent)
 		 */
-		public void mouseDown(MouseEvent e) {
-			super.mouseDown(e);
-		}
+		//public void mouseDown(MouseEvent e) {
+		//	super.mouseDown(e);
+		//}
 	}
 
 	/**

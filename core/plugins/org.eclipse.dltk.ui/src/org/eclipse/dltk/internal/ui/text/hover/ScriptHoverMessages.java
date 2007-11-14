@@ -14,7 +14,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Helper class to get NLSed messages.
  */
-final class ScriptHoverMessages extends NLS {
+public final class ScriptHoverMessages extends NLS {
 
 	private static final String BUNDLE_NAME= ScriptHoverMessages.class.getName();
 

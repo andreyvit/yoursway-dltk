@@ -32,6 +32,7 @@ import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.ISourceReference;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.ScriptModelUtil;
+import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.ui.actions.CompositeActionGroup;
 import org.eclipse.dltk.internal.ui.actions.FoldingActionGroup;
 import org.eclipse.dltk.internal.ui.actions.refactoring.RefactorActionGroup;
@@ -41,6 +42,7 @@ import org.eclipse.dltk.internal.ui.text.DocumentCharacterIterator;
 import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
 import org.eclipse.dltk.internal.ui.text.IScriptReconcilingListener;
 import org.eclipse.dltk.internal.ui.text.hover.ScriptExpandHover;
+import org.eclipse.dltk.internal.ui.text.hover.ScriptHoverMessages;
 import org.eclipse.dltk.internal.ui.text.hover.SourceViewerInformationControl;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
@@ -140,6 +142,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionContext;
 import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.editors.text.EditorsUI;
+import org.eclipse.ui.keys.IBindingService;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.ChainedPreferenceStore;
@@ -2615,17 +2618,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 								shellStyle, style, toolkit);
 					}
 				});
-		if (DLTKCore.DEBUG) {
-			System.err
-					.println("TODO: Add source viewer information control element into Editor class...");
-		}
-		// fProjectionSupport.setHoverControlCreator(new
-		// IInformationControlCreator() {
-		// public IInformationControl createInformationControl(Shell shell) {
-		// return new SourceViewerInformationControl(shell, SWT.TOOL |
-		// SWT.NO_TRIM | getOrientation(), SWT.NONE);
-		// }
-		// });
+	
 		fProjectionSupport.install();
 
 		fProjectionModelUpdater = getFoldingStructureProvider();
@@ -2639,12 +2632,30 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 
 		return viewer;
 	}
-
+//	protected String getTooltipAffordanceString() {
+//		if (this.getPreferenceStore() == null) {
+//			return "{0}";
+//		}
+//		IBindingService fBindingService = (IBindingService) PlatformUI.getWorkbench()
+//		.getAdapter(IBindingService.class);
+//		if (fBindingService == null
+//				|| !getPreferenceStore().getBoolean(
+//						PreferenceConstants.EDITOR_SHOW_TEXT_HOVER_AFFORDANCE))
+//			return null;
+//
+//		String keySequence = fBindingService
+//				.getBestActiveBindingFormattedFor(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
+//		if (keySequence == null)
+//			return null;
+//
+//		return Messages.format(
+//				ScriptHoverMessages.ScriptTextHover_makeStickyHint,
+//				keySequence == null ? "" : keySequence); //$NON-NLS-1$
+//	}
 	protected SourceViewerInformationControl createSourceViewerInformationControl(
 			Shell shell, int shellStyle, int style, IDLTKLanguageToolkit toolkit) {
 		return new SourceViewerInformationControl(shell, shellStyle, style,
 				EditorsUI.getTooltipAffordanceString(), toolkit);
-		// return null;
 	}
 
 	protected ISourceViewer createScriptSourceViewer(Composite parent,

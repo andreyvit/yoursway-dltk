@@ -12,7 +12,9 @@ package org.eclipse.dltk.ui;
 import org.eclipse.dltk.ui.text.completion.ProposalSorterRegistry;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
@@ -320,7 +322,10 @@ public class PreferenceConstants {
 		store.setDefault(PreferenceConstants.EDITOR_MATCHING_BRACKETS, true);
 		store.setDefault(PreferenceConstants.EDITOR_TAB_ALWAYS_INDENT, false);
 		PreferenceConverter.setDefault(store, PreferenceConstants.EDITOR_MATCHING_BRACKETS_COLOR, new RGB(192, 192, 192));
-		PreferenceConverter.setDefault(store, PreferenceConstants.EDITOR_SOURCE_HOVER_BACKGROUND_COLOR, new RGB(237, 233, 227));
+		
+//		PreferenceConverter.setDefault(store, PreferenceConstants.EDITOR_SOURCE_HOVER_BACKGROUND_COLOR, new RGB(237, 233, 227));
+		RGB rgb= PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND).getRGB();
+		PreferenceConverter.setValue(store, PreferenceConstants.EDITOR_SOURCE_HOVER_BACKGROUND_COLOR, rgb);
 	}
 	/**
 	 * A named preference that controls whether all dirty editors are automatically saved before a refactoring is
