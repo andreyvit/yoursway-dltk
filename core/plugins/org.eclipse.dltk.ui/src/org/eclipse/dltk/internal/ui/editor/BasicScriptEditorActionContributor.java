@@ -52,15 +52,15 @@ public class BasicScriptEditorActionContributor extends BasicTextEditorActionCon
 	private RetargetTextEditorAction fGotoNextMemberAction;
 	private RetargetTextEditorAction fGotoPreviousMemberAction;
 	
-//	private RetargetTextEditorAction fRetargetShowInformationAction;
+	private RetargetTextEditorAction fRetargetShowInformationAction;
 
 	public BasicScriptEditorActionContributor() {
 		super();
 		
 		ResourceBundle b= DLTKEditorMessages.getBundleForConstructedKeys();
 		
-//		fRetargetShowInformationAction= new RetargetTextEditorAction(b, "Editor.ShowInformation."); //$NON-NLS-1$
-//		fRetargetShowInformationAction.setActionDefinitionId(ITextEditorActionDefinitionIds.SHOW_INFORMATION);
+		fRetargetShowInformationAction= new RetargetTextEditorAction(b, "Editor.ShowInformation."); //$NON-NLS-1$
+		fRetargetShowInformationAction.setActionDefinitionId(ITextEditorActionDefinitionIds.SHOW_INFORMATION);
 		
 		fRetargetShowScriptDoc= new RetargetAction(DLTKActionConstants.SHOW_DOCUMENTAION, DLTKEditorMessages.ShowScriptDoc_label);
 		fRetargetShowScriptDoc.setActionDefinitionId(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
@@ -113,7 +113,7 @@ public class BasicScriptEditorActionContributor extends BasicTextEditorActionCon
 			MenuManager structureSelection= new MenuManager(DLTKEditorMessages.ExpandSelectionMenu_label, "expandSelection"); //$NON-NLS-1$
 			editMenu.insertAfter(ITextEditorActionConstants.SELECT_ALL, structureSelection);
 
-//			editMenu.appendToGroup(ITextEditorActionConstants.GROUP_INFORMATION, fRetargetShowInformationAction);
+			editMenu.appendToGroup(ITextEditorActionConstants.GROUP_INFORMATION, fRetargetShowInformationAction);
 		}
 		
 		IMenuManager navigateMenu= menu.findMenuUsingPath(IWorkbenchActionConstants.M_NAVIGATE);
@@ -151,7 +151,7 @@ public class BasicScriptEditorActionContributor extends BasicTextEditorActionCon
 		fGotoNextMemberAction.setAction(getAction(textEditor, GoToNextPreviousMemberAction.NEXT_MEMBER));
 		fGotoPreviousMemberAction.setAction(getAction(textEditor, GoToNextPreviousMemberAction.PREVIOUS_MEMBER));
 		
-//		fRetargetShowInformationAction.setAction(getAction(textEditor, ITextEditorActionConstants.SHOW_INFORMATION));	
+		fRetargetShowInformationAction.setAction(getAction(textEditor, ITextEditorActionConstants.SHOW_INFORMATION));	
 
 		if (part instanceof ScriptEditor) {
 			ScriptEditor editor= (ScriptEditor) part;

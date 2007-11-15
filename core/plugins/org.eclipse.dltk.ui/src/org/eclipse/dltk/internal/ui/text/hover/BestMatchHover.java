@@ -130,4 +130,5 @@ public class BestMatchHover extends AbstractScriptEditorTextHover implements ITe
 
 		return null;
 	}
+	
 }

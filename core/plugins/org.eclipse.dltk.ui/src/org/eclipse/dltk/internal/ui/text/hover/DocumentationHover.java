@@ -21,6 +21,7 @@ import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
 import org.eclipse.dltk.internal.ui.text.IInformationControlExtension4;
 import org.eclipse.dltk.ui.ScriptElementLabels;
 import org.eclipse.dltk.ui.documentation.ScriptDocumentationAccess;
+import org.eclipse.jface.text.AbstractReusableInformationControlCreator;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
@@ -28,6 +29,7 @@ import org.eclipse.jface.text.ITextHoverExtension;
 import org.eclipse.jface.text.information.IInformationProviderExtension2;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.editors.text.EditorsUI;
 
 /**
  * Provides documentation as hover info for Script elements and keywords.
@@ -90,11 +92,11 @@ public class DocumentationHover extends AbstractScriptEditorTextHover implements
 					if (BrowserInformationControl.isAvailable(parent))
 						return new BrowserInformationControl(parent, SWT.TOOL
 								| SWT.NO_TRIM, SWT.NONE,
-								getTooltipAffordanceString());
+								EditorsUI.getTooltipAffordanceString());
 					else
 						return new DefaultInformationControl(parent, SWT.NONE,
 								new HTMLTextPresenter(true),
-								getTooltipAffordanceString());
+								EditorsUI.getTooltipAffordanceString());
 				}
 
 				public boolean canReuse(IInformationControl control) {
@@ -102,7 +104,7 @@ public class DocumentationHover extends AbstractScriptEditorTextHover implements
 					if (canReuse
 							&& control instanceof IInformationControlExtension4)
 						((IInformationControlExtension4) control)
-								.setStatusText(getTooltipAffordanceString());
+								.setStatusText(EditorsUI.getTooltipAffordanceString());
 					return canReuse;
 
 				}

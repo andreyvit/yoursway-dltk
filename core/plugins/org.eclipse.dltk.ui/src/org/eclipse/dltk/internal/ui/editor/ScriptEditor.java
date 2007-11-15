@@ -1262,17 +1262,17 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 
 		fFoldingGroup = createFoldingActionGroup();
 
-		ResourceAction resAction = new TextOperationAction(DLTKEditorMessages
-				.getBundleForConstructedKeys(), "ShowDocumentaion.", this,
-				ISourceViewer.INFORMATION, true);
-
-		resAction = new InformationDispatchAction(DLTKEditorMessages
-				.getBundleForConstructedKeys(), "ShowDocumentation.",
-				(TextOperationAction) resAction);
-
-		resAction
-				.setActionDefinitionId(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
-		setAction("ShowDocumentation", resAction);
+//		ResourceAction resAction = new TextOperationAction(DLTKEditorMessages
+//				.getBundleForConstructedKeys(), "ShowDocumentaion.", this,
+//				ISourceViewer.INFORMATION, true);
+//
+//		resAction = new InformationDispatchAction(DLTKEditorMessages
+//				.getBundleForConstructedKeys(), "ShowDocumentation.",
+//				(TextOperationAction) resAction);
+//
+//		resAction
+//				.setActionDefinitionId(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
+//		setAction("ShowDocumentation", resAction);
 
 		Action action = new GotoMatchingBracketAction(this);
 		action

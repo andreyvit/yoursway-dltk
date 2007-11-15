@@ -46,6 +46,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.keys.IBindingService;
 import org.osgi.framework.Bundle;
 
@@ -101,23 +102,23 @@ public abstract class AbstractScriptEditorTextHover implements
 
 	public IRegion getHoverRegion(final ITextViewer textViewer, int offset) {
 
-		final IRegion[] result = new IRegion[] { ScriptWordFinder.findWord(
-				textViewer.getDocument(), offset) };
-
-		textViewer.getTextWidget().getDisplay().syncExec(new Runnable() {
-			public void run() {
-				Point selection = textViewer.getSelectedRange();
-				int off = selection.x;
-				int len = selection.y;
-
-				if (len > 0) {
-					result[0] = new Region(off, len);
-				}
-			}
-		});
-
-		return result[0];
-		// return ScriptWordFinder.findWord(textViewer.getDocument(), offset);
+		// final IRegion[] result = new IRegion[] { ScriptWordFinder.findWord(
+		// textViewer.getDocument(), offset) };
+		//
+		// textViewer.getTextWidget().getDisplay().syncExec(new Runnable() {
+		// public void run() {
+		// Point selection = textViewer.getSelectedRange();
+		// int off = selection.x;
+		// int len = selection.y;
+		//
+		// if (len > 0) {
+		// result[0] = new Region(off, len);
+		// }
+		// }
+		// });
+		//
+		// return result[0];
+		return ScriptWordFinder.findWord(textViewer.getDocument(), offset);
 	}
 
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
@@ -128,12 +129,12 @@ public abstract class AbstractScriptEditorTextHover implements
 					.getEditorInputModelElement(this.fEditor, false);
 			if (inputModelElement == null)
 				return null;
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(inputModelElement);
-			if( toolkit == null) {
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+					.getLanguageToolkit(inputModelElement);
+			if (toolkit == null) {
 				return null;
 			}
-			nature = toolkit
-					.getNatureId();
+			nature = toolkit.getNatureId();
 		} catch (CoreException e) {
 			return null;
 		}
@@ -205,7 +206,7 @@ public abstract class AbstractScriptEditorTextHover implements
 			public IInformationControl createInformationControl(Shell parent) {
 				return new DefaultInformationControl(parent, SWT.NONE,
 						new HTMLTextPresenter(true),
-						getTooltipAffordanceString());
+						EditorsUI.getTooltipAffordanceString());
 			}
 		};
 	}
@@ -217,24 +218,24 @@ public abstract class AbstractScriptEditorTextHover implements
 	 *         key binding is defined
 	 * 
 	 */
-	protected String getTooltipAffordanceString() {
-		if (this.getPreferenceStore() == null) {
-			return "{0}";
-		}
-		if (fBindingService == null
-				|| !getPreferenceStore().getBoolean(
-						PreferenceConstants.EDITOR_SHOW_TEXT_HOVER_AFFORDANCE))
-			return null;
-
-		String keySequence = fBindingService
-				.getBestActiveBindingFormattedFor(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
-		if (keySequence == null)
-			return null;
-
-		return Messages.format(
-				ScriptHoverMessages.ScriptTextHover_makeStickyHint,
-				keySequence == null ? "" : keySequence); //$NON-NLS-1$
-	}
+//	protected String getTooltipAffordanceString() {
+//		if (this.getPreferenceStore() == null) {
+//			return "{0}";
+//		}
+//		if (fBindingService == null
+//				|| !getPreferenceStore().getBoolean(
+//						PreferenceConstants.EDITOR_SHOW_TEXT_HOVER_AFFORDANCE))
+//			return null;
+//
+//		String keySequence = fBindingService
+//				.getBestActiveBindingFormattedFor(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
+//		if (keySequence == null)
+//			return null;
+//
+//		return Messages.format(
+//				ScriptHoverMessages.ScriptTextHover_makeStickyHint,
+//				keySequence == null ? "" : keySequence); //$NON-NLS-1$
+//	}
 
 	/**
 	 * Returns the style sheet.

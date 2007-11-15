@@ -458,12 +458,12 @@
             categoryId="org.eclipse.ui.category.navigate"
             id="org.eclipse.dltk.ui.edit.text.script.open.editor">
       </command>
-      <command
+      <!--command
             name="%ActionDefinition.showDocumentation.name"
             description="%ActionDefinition.showDocumentation.description"
             categoryId="org.eclipse.ui.category.edit"
             id="org.eclipse.dltk.ui.edit.text.script.show.documentation">
-      </command>
+      </command-->
       
       <command
             name="%ActionDefinition.show.outline.name"
@@ -780,11 +780,11 @@
             commandId="org.eclipse.dltk.ui.edit.text.script.open.editor"
             contextId="org.eclipse.dltk.ui.scriptEditorScope"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
-      <key
+      <!--key
             sequence="F2"
             contextId="org.eclipse.dltk.ui.scriptEditorScope"
             commandId="org.eclipse.dltk.ui.edit.text.script.show.documentation"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/-->
       <key
             sequence="F4"
             contextId="org.eclipse.dltk.ui.scriptEditorScope"
