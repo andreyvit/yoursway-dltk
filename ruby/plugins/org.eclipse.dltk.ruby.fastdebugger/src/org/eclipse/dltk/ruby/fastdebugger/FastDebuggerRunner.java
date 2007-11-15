@@ -60,18 +60,20 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 
 	protected InterpreterConfig alterConfig(String exe, InterpreterConfig config)
 			throws CoreException {
-		// DBGP specific configuration
+		// Get debugger source location
+		final IPath sourceLocation = deploy();
+
+		final IPath scriptFile = sourceLocation.append(DEBUGGER_SCRIPT);
+
+		// Creating new config
+		InterpreterConfig newConfig = (InterpreterConfig) config.clone();
+		newConfig.addInterpreterArg("-r" + scriptFile.toPortableString());
+		newConfig.addInterpreterArg("-I" + sourceLocation.toPortableString());
+		
+		// Environment
 		final DbgpInterpreterConfig dbgpConfig = new DbgpInterpreterConfig(
 				config);
-
-		// New configuration
-		final InterpreterConfig newConfig = (InterpreterConfig) config.clone();
-
-		// Customization
-		final IPath sourceLocation = deploy();
-		newConfig.setScriptFile(sourceLocation.append(DEBUGGER_SCRIPT));
-		newConfig.addInterpreterArg("-I" + sourceLocation.toPortableString());
-
+		
 		newConfig.addEnvVar(RUBY_HOST_VAR, dbgpConfig.getHost());
 		newConfig.addEnvVar(RUBY_PORT_VAR, Integer.toString(dbgpConfig
 				.getPort()));

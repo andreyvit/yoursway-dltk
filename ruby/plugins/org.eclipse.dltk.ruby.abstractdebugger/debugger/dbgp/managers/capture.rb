@@ -67,10 +67,11 @@ module XoredDebugger
             $stdout = @stdout_capturer
             $stderr = @stderr_capturer
             
-            @terminatig = false
+            @terminating = false
             @flusher = debugger.create_debug_thread do
                 begin
-	                while (@terminatig == false)
+                    log('Capture flusher started')
+                    while (@terminating == false)
 	                    sleep 1
 	                    @stdout_capturer.redirected.each_pair do |thread, message|
 	                        send(thread, 'stdout', message) 
@@ -79,6 +80,7 @@ module XoredDebugger
 	                        send(thread, 'stderr', message) 
 	                    end                                        
 	                end
+                    log('Capture flusher terminated')
                 rescue Exception
 			        log('Exception in capture flusher:')
 			        log("\tMessage: " + $!.message)
@@ -102,7 +104,8 @@ module XoredDebugger
         def terminate()
             $stdout = STDOUT
             $stderr = STDERR
-            @terminatig = true
+            @terminating = true
+            @flusher.wakeup()
             @flusher.join
         end
         

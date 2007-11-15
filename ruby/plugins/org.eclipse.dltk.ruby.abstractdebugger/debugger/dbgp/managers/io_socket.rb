@@ -43,7 +43,7 @@ module XoredDebugger
         end
 
         def receive()
-            line = ''
+            line = ''       
             begin
    	            #IDE: command [SPACE] [args] -- data [NULL]
 	            while((ch = @socket.getc) != 0)

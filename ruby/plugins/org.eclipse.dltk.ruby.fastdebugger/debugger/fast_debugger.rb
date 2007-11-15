@@ -40,20 +40,22 @@ module XoredDebugger
             'org.eclipse.dltk.ruby.fastdebugger'
         end
                         
-        def debug(script)
+        def start
             Debugger.handler = self
-            Debugger.start do
-                # Creating main thread in ThreadManager                
-                thread_manager.add_thread(Thread.current)
-                
-                # waiting while debugger negotate features with IDE                
-                Debugger.current_context.suspend                     
-                
-                logger.puts('Loading script...')                    
-                load script
-            end            
+            Debugger.keep_frame_binding = true
+            Debugger.start
+            # Creating main thread in ThreadManager                
+            thread_manager.add_thread(Thread.current)
+            
+            # waiting while debugger negotate features with IDE                
+            Debugger.current_context.suspend     
         end
         
+        def terminate
+            super
+            Debugger.stop
+        end
+                
         def thread_context(thread)
             Debugger.thread_context(thread)
         end
@@ -68,7 +70,7 @@ module XoredDebugger
         end
         
         def create_debug_thread(*args, &block)
-            Debugger::DebugThread.new(*args, &block)
+            Debugger::DebugThread.new(&block)
         end
         
         def is_debug_thread?(thread)

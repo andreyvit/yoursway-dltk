@@ -27,13 +27,14 @@ module XoredDebugger
 	                log('Thread manager cleanup started')
 	                while (@terminated != true)
 	                    cleanup           
-	                    sleep 1
+	                    sleep 1                     
 	                end
                 rescue Exception
                     log('Exception in thread manager cleanup:')
                     log("\tMessage: " + $!.message)
                     log("\tBacktrace: " + $!.backtrace.join("\n"))                
-                ensure log('Thread manager cleanup terminated')
+                ensure 
+                    log('Thread manager cleanup terminated')
                 end
             end                   
         end
@@ -55,8 +56,6 @@ module XoredDebugger
                 log('Exception')
 		        log("\tMessage: " + $!.message)
 		        log("\tBacktrace: " + $!.backtrace.join("\n"))                
-            ensure
-                log('Done')
             end
         end
         

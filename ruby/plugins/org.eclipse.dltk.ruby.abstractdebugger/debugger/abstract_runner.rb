@@ -27,20 +27,32 @@ module XoredDebugger
                 log('Creating debugger...')
                 debugger = create_debugger
               
+                at_exit {
+                    log('---->>>>>    AT EXIT:')
+                    # redirect exception to stderr if available
+                    unless $!.nil?
+                        log('Exitting with exception:')
+                        log("\tMessage: " + $!.message)
+                        log("\tBacktrace: " + $!.backtrace.join("\n"))
+                        debugger.handle_exception($!)
+                    end      
+                    begin    
+                        debugger.terminate unless debugger.nil?
+                        log('Debugger terminated')                    
+                        shutdownLogger()                                   
+                    rescue Exception
+                        log('Exception in at_exit:')
+                        log("\tMessage: " + $!.message)
+                        log("\tBacktrace: " + $!.backtrace.join("\n"))
+                    end            
+                }
+                
                 log('Starting debugger...')
-                debugger.debug(Params.instance.script)
-                log('Debug finished')
+                debugger.start
 	        rescue Exception
 		        log('Exception during debugging:')
 		        log("\tMessage: " + $!.message)
 		        log("\tBacktrace: " + $!.backtrace.join("\n"))
-                debugger.handle_main_thread_exception($!)
-            ensure
-                unless debugger.nil?
-                    log('Terminating debugger...')
-                    debugger.terminate unless debugger.nil?
-                end
-                shutdownLogger()               
             end            
         end
         

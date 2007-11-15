@@ -12,7 +12,7 @@ module XoredDebugger
     # StackManager interface
     class AbstractStackManager
 	    # Evaluation
-	    def eval(text, index = 0)
+	    def eval(text, index)
 	        raise NotImplementedError.new('You MUST implement this method in ancessors')
 	    end
 	

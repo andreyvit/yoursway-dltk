@@ -21,9 +21,9 @@ module XoredDebugger
             @source_manager = SourceManager.new                            
         end
 
-        def terminate         
-			capture_manager.terminate
-            thread_manager.terminate                      
+        def terminate
+			capture_manager.terminate                
+            thread_manager.terminate
         end                              
         
         def create_thread_wrapper(thread)
@@ -47,16 +47,12 @@ module XoredDebugger
             false     
         end
         
-        def handle_main_thread_exception(exception)   
-            backtrace = exception.backtrace.delete_if { |s| s.index(get_debugger_id) != nil }
-	        trace = backtrace.shift + ': ' + exception.message + "\n"
-	        other_traces = backtrace.join("\n\t")
-	        unless other_traces.empty?
-	            trace += "\t" + other_traces
-	        end
-	        capture_manager.stderr_capturer.write(trace)
-        end        
-        
+        def handle_exception(ex)
+            message = ex.backtrace.delete_if { |s| s.index(get_debugger_id) != nil }
+            message[0] += ': ' + ex.message + ' (' + ex.class.name + ')'
+            $stderr.write( message.join("\n")+"\n" )
+        end
+                    
         # methods to override
         def get_debugger_id
             raise NotImplementedError.new('You MUST implement this method in ancessors')

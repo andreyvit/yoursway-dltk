@@ -72,7 +72,7 @@ module XoredDebugger
 		attr_reader :stack
 			
 		# Evaluation
-		def eval(text, index = 0)
+		def eval(text, index)
 			@stack.eval(text, index)
 		end
 	

@@ -9,21 +9,24 @@
 ###############################################################################
 
 require 'dbgp/managers/stack'
+require 'dbgp/logger'
 
 module XoredDebugger
     class StackManager < AbstractStackManager
+        include Logger
+        
         def initialize(context)
             @context = context
         end
             
         # Evaluation
-        def eval(text, index = 0)
+        def eval(text, index)
             Kernel.eval(text, @context.frame_binding(index))
         end
     
         # Stack depth
         def depth
-            @context.stack_size - 1 # fix for debugger stack frame
+            @context.stack_size
         end
         
         # Stack level

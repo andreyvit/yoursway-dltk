@@ -13,15 +13,12 @@ class Thread
 		def new(*args, &block)
 		    log('\\\\\\\\\\\\\\\\\\   creating APPLICATION thread   /////////////////////////')
 		    thread = __internal_ruby_debugger_new do
+		        # HACK: Without this sometimes debugger become stopped when
+		        # thread exits. Especially, when thread exits with unhandled exception.  
+		        Debugger.start
+                
                 @@debugger.current_context.suspend	
-                begin	   
-		            block.call(args)
-                rescue Exception 
-                    log('Exception in application thread:')
-                    log("\tMessage: " + $!.message)
-                    log("\tBacktrace: " + $!.backtrace.join("\n"))                    
-                    raise $!
-                end
+		        block.call(args)
 		    end 
             @@debugger.thread_manager.add_thread(thread) 
 		    thread

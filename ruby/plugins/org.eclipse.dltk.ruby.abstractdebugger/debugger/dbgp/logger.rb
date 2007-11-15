@@ -17,6 +17,9 @@ module XoredDebugger
        def puts(s)
            @logger.log(s)
        end
+       def close
+           @logger.close
+       end
     end
     
     module Logger
@@ -35,6 +38,12 @@ module XoredDebugger
 	            @@logger.puts("[" + Thread.current.object_id.to_s + "]\t" + s)
 	        end
         end
+        
+        def close
+	        @@monitor.synchronize do 
+	            @@logger.close
+	        end
+        end            
         
         def logger
             LoggerAdaptor.new(self)

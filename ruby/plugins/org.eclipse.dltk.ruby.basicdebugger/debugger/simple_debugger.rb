@@ -36,11 +36,10 @@ module XoredDebugger
         end	
         
         def trace_initialize
-            if @thread_manager.nil?
+            if @need_initialize
                 @thread_manager = ThreadManager.new(self)
-            end
-            if @capture_manager.nil?
-                @capture_manager = CaptureManager.new(self)
+                @capture_manager = CaptureManager.new(self)             
+                @need_initialize = false
             end        
         end
         
@@ -78,7 +77,9 @@ module XoredDebugger
         end        
 
 
-        def debug(script)
+        def start
+            @need_initialize = true
+            @script = Params.instance.script
             @startup = true
             @shutdown = false
             @depth = 0
@@ -88,15 +89,17 @@ module XoredDebugger
 		            set_trace_func proc { |event, file, line, id, binding, klass, *rest|
 		                trace(event, file, line, id, binding, klass)
 		            }
-                                        
-   		            load script
-	            ensure 
-	                set_trace_func nil
-		            log("Trace function was unset")
 	            end              
             end              
         end       
 
+        
+        def terminate
+            set_trace_func nil
+            log("Tracing function was unset")             
+            super
+        end
+        
 		# Tracing
         def trace(event, file, line, id, binding, klass)
             begin
@@ -117,21 +120,21 @@ module XoredDebugger
                 current_context.check_suspended                
                                                                 
                 # Absolute path
-                ex_file = File.expand_path(file) # Absolute file path
-                
+                ex_file = File.expand_path(file) # Absolute file path                         
+
+                # Skipping startup and shutdown code
+                if (skip_startup_and_shutdown?(ex_file))
+                    return      
+                end     
+
                 # Output handling
                 case event
-                    when 'line'  
-                        # skipping all tracing while startup and shutdown
-                        if (@startup || @shutdown)
-                            return
-                        end                  
-                        
+                    when 'line'                         
                         # Don't debug debugger :)                          
                         if (in_debugger_code?(thread))
                             return
                         end
-                                                           
+                                                                                                                                   
                         # checking line breakpoint                         
                         thread.stack_manager.stack.update(binding, ex_file, line)                                              
                         current_context.stop_reason = :none   
@@ -162,19 +165,11 @@ module XoredDebugger
                     when 'c-call'
                         if (Thread.current == Thread.main)
 	                        @depth += 1
-	                        if (@startup)
-	                            log('Entering script code...')
-	                            @startup = false
-	                        end
                         end
 
                     when 'c-return'
                         if (Thread.current == Thread.main)
 	                        @depth -= 1
-	                        if (@depth == 0 && @shutdown == false)
-	                            log('Leaving script code...')
-	                            @shutdown = true
-	                        end
                         end
                         
                     when 'class'
@@ -192,6 +187,26 @@ module XoredDebugger
                 log("\tBacktrace: " + $!.backtrace.join("\n"))       	                
             end				
         end
+        
+        def skip_startup_and_shutdown?(ex_file)
+            if (Thread.current == Thread.main)
+                if (@startup && @script == ex_file)
+                    log('Entering script code...')
+                    @startup = false
+                    @depth = 0
+                end
+                if (@startup == false && @shutdown == false && @depth==0 && ex_file.index(get_debugger_id) != nil)
+                    log('Leaving script code...')
+                    @shutdown  = true
+                end
+            end                                              
+            
+            # skipping all tracing while startup and shutdown
+            if (@startup || @shutdown)
+                return true
+            else
+                return false
+            end    
+        end        
     end # class RubyDebugger
-
 end # module
