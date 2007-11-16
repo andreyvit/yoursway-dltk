@@ -162,7 +162,6 @@
           id="org.eclipse.dltk.javascript.debug.ui.rulerContribution"
           targetID="#JavascriptRulerContext">
 		<action
-             actionID="RulerDoubleClick1"
              class="org.eclipse.dltk.debug.ui.actions.RulerToggleWatchPointActionDelegate"
              icon="icons/jwatch_obj.gif"
              id="javascript.doubleClickWatchPointAction"

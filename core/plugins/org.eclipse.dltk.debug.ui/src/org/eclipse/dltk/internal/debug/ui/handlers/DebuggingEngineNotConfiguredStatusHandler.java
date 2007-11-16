@@ -27,7 +27,9 @@ public class DebuggingEngineNotConfiguredStatusHandler extends
 		if (source instanceof DebuggingEngineRunner) {
 			final DebuggingEngineRunner runner = (DebuggingEngineRunner) source;
 			final IDebuggingEngine engine = runner.getDebuggingEngine();
-			return engine.getPreferencePageId();
+			if (engine != null) {
+				return engine.getPreferencePageId();
+			}
 		}
 
 		return null;

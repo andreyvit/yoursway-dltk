@@ -16,12 +16,12 @@
           modes="debug"
           name="Debugging with JavaScript debug support"
           type="org.eclipse.jdt.launching.localJavaApplication">
-    </launchDelegate>    >
+    </launchDelegate>
 </extension>  
    <extension
          point="org.eclipse.dltk.console.scriptInterpreter">
       <scriptInterpreter
-            class="org.eclipse.dltk.javascript.console.TclInterpreter"
+            class="org.eclipse.dltk.javascript.console.JavaScriptInterpreter"
             natureID="org.eclipse.dltk.javascript.core.nature"/>
    </extension>
   <extension
@@ -70,7 +70,7 @@
            natureId="org.eclipse.dltk.javascript.core.nature">
         <engine
               class="org.eclipse.dltk.internal.launching.debug.JavaScriptAndJDTDebuggerRunnerFactory"
-              id="org.eclipse.dltk.javascript.launching.engine1"
+              id="org.eclipse.dltk.internal.launching.debug.JavaScriptAndJDTDebuggerRunnerFactory"
               name="JavaScript &amp; JDT Debugger"
               priority="0">
         </engine>

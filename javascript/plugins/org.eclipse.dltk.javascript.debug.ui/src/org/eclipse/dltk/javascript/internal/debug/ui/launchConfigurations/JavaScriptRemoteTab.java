@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Text;
 
 public class JavaScriptRemoteTab extends AbstractLaunchConfigurationTab {
 	private static final int DEFAULT_PORT = 9000;
-	private static final String DEFAULT_SESSION_ID = "tcl_debug";
+	private static final String DEFAULT_SESSION_ID = "javascript_debug";
 	private static final int DEFAULT_TIMEOUT = 30 * 1000; // 30 min
 
 	private Text portText;
