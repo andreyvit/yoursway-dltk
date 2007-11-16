@@ -1,5 +1,6 @@
 package org.eclipse.dltk.debug.ui.launchConfigurations;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -324,12 +325,15 @@ public abstract class ScriptLaunchConfigurationTab extends
 			 * TODO: validate script is an executable and not library/module
 			 * otherwise, return null and make user select
 			 */
-			String scriptName = me.getResource().getProjectRelativePath()
-					.toPortableString();
-			// me.getResource().getLocation().toPortableString();
-			// /*me.getResource().getFullPath().toPortableString();*/
-
-			return new String[] { projectName, scriptName };
+			IResource resource = me.getResource();
+			if (resource != null) {
+				String scriptName = resource.getProjectRelativePath()
+						.toPortableString();
+				// me.getResource().getLocation().toPortableString();
+				// /*me.getResource().getFullPath().toPortableString();*/
+	
+				return new String[] { projectName, scriptName };
+			}
 		}
 		return null;
 	}
