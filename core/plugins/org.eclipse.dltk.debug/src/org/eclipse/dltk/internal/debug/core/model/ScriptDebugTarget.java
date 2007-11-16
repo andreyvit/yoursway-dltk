@@ -36,28 +36,19 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptProject;
-import org.eclipse.dltk.dbgp.exceptions.DbgpDebuggingEngineException;
-import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.IDbgpService;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTargetListener;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
-import org.eclipse.dltk.debug.core.model.MethodEntryManager;
 
 public class ScriptDebugTarget extends ScriptDebugElement implements
 		IScriptDebugTarget, IScriptThreadManagerListener {
 
 	private static final String LAUNCH_CONFIGURATION_ATTR_PROJECT = "project";
 
-	private static final String ON_EXIT = "suspendOnExit";
-
-	private static final String SUSPEND_ON_ENTRY = "suspendOnEntry";
-
 	private static final int THREAD_TERMINATION_TIMEOUT = 5000; // 5 seconds
-
-	private static final String SUSPEND_ON_EXIT = ON_EXIT;
 
 	private final ListenerList listeners;
 
@@ -69,10 +60,6 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	private String name;
 
-	private boolean suspendOnMethodEntry;
-
-	private boolean suspendOnMethodExit;
-
 	private boolean disconnected;
 
 	private final IScriptThreadManager threadManager;
@@ -83,10 +70,6 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	private final String sessionId;
 
 	private final String mondelId;
-
-	private boolean supportsSuspendOnEntry;
-
-	private boolean supportsSuspendOnExit;
 
 	static WeakHashMap targets = new WeakHashMap();
 	private String[] stepFilters;
@@ -121,12 +104,6 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 		DebugEventHelper.fireCreateEvent(this);
 		targets.put(this, "");
-		boolean suspendOnMethodEntry2 = MethodEntryManager
-				.isSuspendOnMethodEntry();
-		boolean suspendOnMethodExit2 = MethodEntryManager
-				.isSuspendOnMethodExit();
-		setSuspendOnMethodEntry(suspendOnMethodEntry2);
-		setSuspendOnMethodExit(suspendOnMethodExit2);
 	}
 	
 	public void shutdown() {
@@ -311,42 +288,6 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 			// DebugEventHelper.fireCreateEvent(this);
 			fireTargetInitialized();
 		}
-		try {
-			initSuspends(thread);
-		} catch (DbgpException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	private void initSuspends(IScriptThread thread) throws DbgpException {
-		/*
-		 * certain debugging engines (activestate's python engine) hang if these
-		 * commands are sent, while others just respond with an error
-		 */
-		if (supportsSuspendOnEntry) {
-			try {
-				thread.getDbgpSession().getCoreCommands().setProperty(
-						SUSPEND_ON_ENTRY, 0,
-						Boolean.toString(suspendOnMethodEntry));
-			} catch (DbgpDebuggingEngineException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-		if (supportsSuspendOnExit) {
-			try {
-				thread.getDbgpSession().getCoreCommands().setProperty(
-						SUSPEND_ON_EXIT, 0,
-						Boolean.toString(suspendOnMethodExit));
-			} catch (DbgpDebuggingEngineException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 	public void allThreadsTerminated() {
@@ -392,74 +333,6 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	public boolean supportsBreakpoint(IBreakpoint breakpoint) {
 		return breakpointManager.supportsBreakpoint(breakpoint);
-	}
-
-	public boolean isSuspendOnMethodEntry() {
-		return suspendOnMethodEntry;
-	}
-
-	public boolean isSuspendOnMethodExit() {
-		return suspendOnMethodExit;
-	}
-
-	public void setSuspendOnMethodEntry(boolean suspend) {
-		boolean ok = true;
-		if (!isDisconnected()) {
-			IThread[] threads;
-			try {
-				threads = this.getThreads();
-				l2: for (int a = 0; a < threads.length; a++) {
-					IScriptThread scr = (IScriptThread) threads[a];
-					try {
-						scr.getDbgpSession().getCoreCommands()
-								.setProperty(SUSPEND_ON_ENTRY, -1,
-										Boolean.toString(suspend));
-					} catch (DbgpException e) {
-						e.printStackTrace();
-						ok = false;
-						break l2;
-					}
-				}
-
-			} catch (DebugException e) {
-				e.printStackTrace();
-			}
-		}
-		if (ok)
-			this.suspendOnMethodEntry = suspend;
-	}
-
-	public void setSuspendOnMethodExit(boolean suspend) {
-		boolean ok = true;
-		if (!isDisconnected()) {
-			IThread[] threads;
-			try {
-				threads = this.getThreads();
-				l2: for (int a = 0; a < threads.length; a++) {
-					IScriptThread scr = (IScriptThread) threads[a];
-					try {
-						scr.getDbgpSession().getCoreCommands().setProperty(
-								ON_EXIT, -1, Boolean.toString(suspend));
-					} catch (DbgpException e) {
-						e.printStackTrace();
-						ok = false;
-						break l2;
-					}
-				}
-			} catch (DebugException e) {
-				e.printStackTrace();
-			}
-		}
-		if (ok)
-			this.suspendOnMethodExit = suspend;
-	}
-
-	public void setSupportsSuspendOnEntry(boolean supportsSuspendOnEntry) {
-		this.supportsSuspendOnEntry = supportsSuspendOnEntry;
-	}
-
-	public void setSupportsSuspendOnExit(boolean supportsSuspendOnExit) {
-		this.supportsSuspendOnExit = supportsSuspendOnExit;
 	}
 
 	public void setFilters(String[] activeFilters) {

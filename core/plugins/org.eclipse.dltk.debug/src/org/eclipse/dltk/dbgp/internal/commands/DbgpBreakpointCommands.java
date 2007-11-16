@@ -118,14 +118,14 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 				null, null, info);
 	}
 
-	public String setCallBreakpoint(String function, DbgpBreakpointConfig info)
+	public String setCallBreakpoint(URI uri, String function, DbgpBreakpointConfig info)
 			throws DbgpException {
-		return setBreakpoint(CALL_BREAKPOINT, null, null, function, null, info);
+		return setBreakpoint(CALL_BREAKPOINT, uri, null, function, null, info);
 	}
 
 	public String setReturnBreakpoint(URI uri, String function,
 			DbgpBreakpointConfig info) throws DbgpException {
-		return setBreakpoint(RETURN_BREAKPOINT, uri, new Integer(-1), function,
+		return setBreakpoint(RETURN_BREAKPOINT, uri, null, function,
 				null, info);
 	}
 

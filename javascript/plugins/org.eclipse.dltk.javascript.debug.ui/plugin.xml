@@ -8,36 +8,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.viewActions">
-          <viewContribution
-            targetID="org.eclipse.debug.ui.BreakpointView"
-            id="org.eclipse.jdt.debug.ui.BreakpointViewActions">
-         <action
-               class="org.eclipse.dltk.debug.ui.actions.MethodEntrySuspendAction"
-               disabledIcon="icons/method_entry.gif"
-               helpContextId="add_exception_action_context"
-               hoverIcon="icons/method_entry.gif"
-               icon="icons/method_entry.gif"
-               id="org.eclipse.jdt.debug.ui.actions.AddException"
-               label="suspend on method entry"
-               state="false"
-               style="toggle"
-               toolbarPath="additions"
-               tooltip="%suspendOnEntry">
-         </action>
-          <action
-                class="org.eclipse.dltk.debug.ui.actions.MethodExitSuspendAction"
-                disabledIcon="icons/method_exit.gif"
-                helpContextId="add_exception_action_context"
-                hoverIcon="icons/method_exit.gif"
-                icon="icons/method_exit.gif"
-                id="org.eclipse.jdt.debug.ui.actions.AddException"
-                label="suspend on method exit"
-                state="false"
-                style="toggle"
-                toolbarPath="additions"
-                tooltip="%suspendOnExit">
-         </action>
-         </viewContribution>
          <viewContribution
             targetID="org.eclipse.debug.ui.VariableView"
             id="org.eclipse.jdt.debug.ui.VariableViewActions">

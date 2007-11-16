@@ -94,9 +94,9 @@ public class ScriptBreakpointManager implements IBreakpointListener,
 			}
 
 			if (entryBreakpoint.breakOnEntry()) {
-				final String entryId = commands.setLineBreakpoint(
+				final String entryId = commands.setCallBreakpoint(
 						entryBreakpoint.getResourceURI(), entryBreakpoint
-								.getLineNumber(), config);
+								.getMethodName(), config);
 
 				entryBreakpoint.setEntryBreakpointId(entryId);
 			}

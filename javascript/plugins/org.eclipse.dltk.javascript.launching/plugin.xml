@@ -72,9 +72,7 @@
               class="org.eclipse.dltk.internal.launching.debug.JavaScriptAndJDTDebuggerRunnerFactory"
               id="org.eclipse.dltk.internal.launching.debug.JavaScriptAndJDTDebuggerRunnerFactory"
               name="JavaScript &amp; JDT Debugger"
-              priority="0"
-              supportsSupendOnEntry="false"
-              supportsSuspendOnExit="false">
+              priority="0">
         </engine>
      </engineContribution>
   </extension>

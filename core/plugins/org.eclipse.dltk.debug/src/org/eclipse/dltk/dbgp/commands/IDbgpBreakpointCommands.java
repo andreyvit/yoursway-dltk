@@ -21,7 +21,7 @@ public interface IDbgpBreakpointCommands {
 			DbgpBreakpointConfig config) throws DbgpException;
 
 	// Call breakpoint
-	String setCallBreakpoint(String function, DbgpBreakpointConfig config)
+	String setCallBreakpoint(URI uri, String function, DbgpBreakpointConfig config)
 			throws DbgpException;
 
 	// Return breakpoint

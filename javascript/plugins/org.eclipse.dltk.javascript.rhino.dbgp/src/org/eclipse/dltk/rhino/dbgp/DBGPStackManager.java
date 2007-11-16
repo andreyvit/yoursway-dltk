@@ -59,6 +59,14 @@ public class DBGPStackManager {
 
 	public void enter(DBGPDebugFrame debugFrame) {
 		stack.add(debugFrame);
+		String sn = debugFrame.getWhere();
+
+		if (sn != null) {
+			BreakPoint hit = manager.hitEnter(sn);
+			if (hit != null)
+				checkBreakpoint(debugFrame, hit);
+		}
+		
 		if (suspendOnEntry) {
 			if (debugFrame.getWhere().equals("module")) {
 				observer.update(null, this);

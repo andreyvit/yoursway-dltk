@@ -22,35 +22,45 @@ public class BreakPoint {
 	protected String method;
 	protected boolean isReturn;
 	protected boolean isWatch;
-
+	protected boolean isCall;
+	
 	protected boolean isModification;
 
 	protected boolean isAccess;
 
 	private String type;
 
+
 	protected BreakPoint(HashMap options) {
 
 		String object = (String) options.get("-t");
 		this.type=object;
-		if (object.equals("return")) {
+		if (object.equals("call") || object.equals("return")) {
 			method = (String) options.get("-m");
-			this.isReturn = true;
+			this.isReturn = object.equals("return");
+			this.isCall = object.equals("call");
 		}
 		if (object.equals("watch")) {
 			this.isWatch = true;
 		}
-		if (true) {
+
+		String uri = (String) options.get("-f");
+		if (uri != null) {
 			try {
-				this.file = new File(new URI((String) options.get("-f")))
-						.getAbsolutePath();
+				this.file = new File(new URI(uri)).getAbsolutePath();
 			} catch (URISyntaxException e) {
 				throw new RuntimeException();
 			}
-
-			this.line = Integer.parseInt((String) options.get("-n")) - 1;
-		} else {
+		}
+		else {
 			this.file = "";
+		}
+		
+		String line = (String) options.get("-n");
+		if (line != null) {
+			this.line = Integer.parseInt(line) - 1;
+		}
+		else {
 			this.line = -1;
 		}
 
@@ -83,7 +93,7 @@ public class BreakPoint {
 
 		this.id = last_id++;
 	}
-
+	
 	protected void setHitCondition(String hitCondition) {
 		if (hitCondition != null) {
 			if (hitCondition.equals(">=")) {

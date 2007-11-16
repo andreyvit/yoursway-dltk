@@ -67,12 +67,6 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 				getDebugModelId(), dbgpService, getSessionId(configuration),
 				launch, null);
 		
-		IDebuggingEngine engine = getDebuggingEngine();
-		if (engine != null) {
-			target.setSupportsSuspendOnEntry(engine.supportsSuspendOnEntry());
-			target.setSupportsSuspendOnExit(engine.supportsSuspendOnExit());
-		}
-		
 		launch.addDebugTarget(target);
 		return target;
 	}

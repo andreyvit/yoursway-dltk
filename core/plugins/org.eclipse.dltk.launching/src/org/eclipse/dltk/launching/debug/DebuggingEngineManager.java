@@ -43,9 +43,6 @@ public class DebuggingEngineManager {
 	private static final String ENGINE_TAG = "engine";
 	private static final String SELECTOR_TAG = "selector";
 
-	private static final String SUPPORTS_SUSPEND_ON_ENTRY = "supportsSupendOnEntry";
-	private static final String SUPPORTS_SUSPEND_ON_EXIT = "supportsSuspendOnExit";
-
 	private void addEngine(String natureId, IConfigurationElement element) {
 		final String id = element.getAttribute(ID);
 		final String preferencePageId = element
@@ -53,12 +50,7 @@ public class DebuggingEngineManager {
 		final String name = element.getAttribute(NAME);
 		final String description = element.getAttribute(DESCRIPTION);
 		final int priority = Integer.parseInt(element.getAttribute(PRIORITY));
-
-		boolean supportsSuspendOnEntry = getOptionalBoolean(element,
-				SUPPORTS_SUSPEND_ON_ENTRY);
-		boolean supportsSuspendOnExit = getOptionalBoolean(element,
-				SUPPORTS_SUSPEND_ON_EXIT);
-
+		
 		try {
 			Object object = element.createExecutableExtension(CLASS);
 			if (object instanceof IInterpreterRunnerFactory) {
@@ -66,7 +58,7 @@ public class DebuggingEngineManager {
 
 				IDebuggingEngine engine = new DebuggingEngine(id, natureId,
 						preferencePageId, name, description, priority,
-						supportsSuspendOnEntry, supportsSuspendOnExit, factory);
+						factory);
 
 				// Add to natureToEnginesMap
 				List engines = (List) natureToEnginesMap.get(natureId);
@@ -79,18 +71,6 @@ public class DebuggingEngineManager {
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private boolean getOptionalBoolean(IConfigurationElement element,
-			String name) {
-		String value = element.getAttribute(name);
-
-		// this is default behavior befor the 'bug fix'
-		if (value == null) {
-			return true;
-		}
-
-		return (new Boolean(value)).booleanValue();
 	}
 
 	private void addSelector(String natureId, IConfigurationElement element) {

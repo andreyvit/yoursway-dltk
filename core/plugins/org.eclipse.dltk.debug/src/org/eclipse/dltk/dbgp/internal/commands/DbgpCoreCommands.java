@@ -87,9 +87,9 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		breakpointCommands.removeBreakpoint(id);
 	}
 
-	public String setCallBreakpoint(String function, DbgpBreakpointConfig info)
+	public String setCallBreakpoint(URI uri, String function, DbgpBreakpointConfig info)
 			throws DbgpException {
-		return breakpointCommands.setCallBreakpoint(function, info);
+		return breakpointCommands.setCallBreakpoint(uri, function, info);
 	}
 
 	public String setConditionalBreakpoint(URI uri, DbgpBreakpointConfig info)

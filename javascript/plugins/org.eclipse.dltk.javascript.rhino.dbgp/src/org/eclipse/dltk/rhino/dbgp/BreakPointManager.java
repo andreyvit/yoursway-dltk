@@ -8,8 +8,9 @@ public class BreakPointManager {
 
 	private HashMap fileMap = new HashMap();
 	private HashMap ids = new HashMap();
-	private HashMap names = new HashMap();
+	private HashMap returnNames = new HashMap();
 	private HashMap watchpoints = new HashMap();
+	private HashMap callNames = new HashMap();
 
 	public void removeBreakPoint(String id) {
 		BreakPoint object = (BreakPoint) ids.get(id);
@@ -19,7 +20,10 @@ public class BreakPointManager {
 
 	public final void addBreakPoint(BreakPoint point) {
 		if (point.isReturn) {
-			names.put(point.method, point);
+			returnNames.put(point.method, point);
+		}
+		if (point.isCall) {
+			callNames.put(point.method, point);
 		}
 
 		if (point.isWatch) {
@@ -42,7 +46,10 @@ public class BreakPointManager {
 
 	public void removeBreakPoint(BreakPoint point) {
 		if (point.isReturn) {
-			names.remove(point.method);
+			returnNames.remove(point.method);
+		}
+		if (point.isCall) {
+			callNames.remove(point.method);
 		}
 		if (point.isWatch) {
 
@@ -132,9 +139,13 @@ public class BreakPointManager {
 		}
 	}
 
-	public BreakPoint hitExit(String sn) {
 
-		return (BreakPoint) names.get(sn);
+	public BreakPoint hitEnter(String sn) {
+		return(BreakPoint) callNames.get(sn);
+	}
+	
+	public BreakPoint hitExit(String sn) {
+		return (BreakPoint) returnNames.get(sn);
 	}
 
 	public List getWatchPoints(String property) {
@@ -144,5 +155,6 @@ public class BreakPointManager {
 	public BreakPoint getBreakpoint(String id) {
 		return (BreakPoint) ids.get(id);
 	}
+
 
 }

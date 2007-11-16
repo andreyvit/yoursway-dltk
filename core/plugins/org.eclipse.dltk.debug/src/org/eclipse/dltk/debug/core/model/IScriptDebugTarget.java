@@ -39,19 +39,6 @@ public interface IScriptDebugTarget extends IDebugTarget {
 	// Run to line
 	void runToLine(URI uri, int lineNumber) throws DebugException;
 
-	// Suspends
-	boolean isSuspendOnMethodEntry();
-
-	void setSuspendOnMethodEntry(boolean suspend);
-
-	boolean isSuspendOnMethodExit();
-
-	void setSuspendOnMethodExit(boolean suspend);
-
-	public void setSupportsSuspendOnEntry(boolean supportsSuspendOnEntry);
-
-	public void setSupportsSuspendOnExit(boolean supportsSuspendOnExit);
-
 	void setFilters(String[] activeFilters);
 
 	String[] getFilters();
