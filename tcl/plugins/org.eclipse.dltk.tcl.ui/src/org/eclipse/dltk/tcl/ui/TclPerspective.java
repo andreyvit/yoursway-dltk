@@ -11,8 +11,8 @@ package org.eclipse.dltk.tcl.ui;
 
 import org.eclipse.dltk.tcl.internal.ui.TclUI;
 import org.eclipse.dltk.tcl.internal.ui.wizards.TclFileCreationWizard;
+import org.eclipse.dltk.tcl.internal.ui.wizards.TclPackageCreationWizard;
 import org.eclipse.dltk.tcl.internal.ui.wizards.TclProjectCreationWizard;
-import org.eclipse.dltk.ui.wizards.NewPackageCreationWizard;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
@@ -31,12 +31,14 @@ public class TclPerspective implements IPerspectiveFactory {
 
 	public static final String ID_NEW_SOURCE_WIZARD = "org.eclipse.dltk.tcl.ui.wizards.NewSourceFolderCreationWizard";
 
+	public static final String ID_NEW_PACKAGE_WIZARD = "org.eclipse.dltk.tcl.ui.wizards.NewPackageCreationWizard";
+
 	protected void addNewWizardShortcuts(IPageLayout layout) {
 		layout.addNewWizardShortcut(TclProjectCreationWizard.ID_WIZARD);
 		layout.addNewWizardShortcut(TclFileCreationWizard.ID_WIZARD);
 
 		layout.addNewWizardShortcut(ID_NEW_SOURCE_WIZARD);
-		layout.addNewWizardShortcut(NewPackageCreationWizard.ID_WIZARD);
+		layout.addNewWizardShortcut(TclPackageCreationWizard.ID_WIZARD);
 
 		layout.addNewWizardShortcut(NEW_FOLDER_WIZARD);
 		layout.addNewWizardShortcut(NEW_FILE_WIZARD);

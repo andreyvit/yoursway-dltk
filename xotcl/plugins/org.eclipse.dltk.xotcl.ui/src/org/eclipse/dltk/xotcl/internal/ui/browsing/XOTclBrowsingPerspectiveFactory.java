@@ -92,7 +92,7 @@ public class XOTclBrowsingPerspectiveFactory implements IPerspectiveFactory {
 		layout.addNewWizardShortcut(TclFileCreationWizard.ID_WIZARD);
 
 		layout.addNewWizardShortcut(TclPerspective.ID_NEW_SOURCE_WIZARD);
-		layout.addNewWizardShortcut(NewPackageCreationWizard.ID_WIZARD);
+		layout.addNewWizardShortcut(TclPerspective.ID_NEW_PACKAGE_WIZARD);
 
 		layout.addNewWizardShortcut(TclPerspective.NEW_FOLDER_WIZARD);
 		layout.addNewWizardShortcut(TclPerspective.NEW_FILE_WIZARD);

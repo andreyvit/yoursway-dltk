@@ -19,8 +19,6 @@ import org.eclipse.dltk.ui.DLTKUIPlugin;
 
 public abstract class NewPackageCreationWizard extends NewElementWizard {
 	
-	public static final String ID_WIZARD = "org.eclipse.dltk.tcl.ui.wizards.NewPackageCreationWizard";
-
 	private NewPackageWizardPage fPage;
 
 	public NewPackageCreationWizard() {

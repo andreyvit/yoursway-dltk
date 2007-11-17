@@ -22,6 +22,8 @@ import org.eclipse.dltk.ui.wizards.NewPackageCreationWizard;
 import org.eclipse.dltk.ui.wizards.NewPackageWizardPage;
 
 public class TclPackageCreationWizard extends NewPackageCreationWizard {
+	public static final String ID_WIZARD = "org.eclipse.dltk.tcl.ui.wizards.NewPackageCreationWizard";
+	
 	private static final String INDEX_PACKAGE_NAME = "pkgIndex.tcl";
 
 	protected NewPackageWizardPage createNewPackageWizardPage() {
