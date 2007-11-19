@@ -264,8 +264,33 @@
        point="org.eclipse.dltk.debug.ui.scriptDetailFormatter">
     <detailFormatter
           nature="org.eclipse.dltk.ruby.core.nature"
+          snippet="(%variable%).to_s"
+          type="Complex">
+    </detailFormatter>
+    <detailFormatter
+          nature="org.eclipse.dltk.ruby.core.nature"
+          snippet="(%variable%).to_s"
+          type="Date">
+    </detailFormatter>
+    <detailFormatter
+          nature="org.eclipse.dltk.ruby.core.nature"
+          snippet="(%variable%).to_s"
+          type="DateTime">
+    </detailFormatter>
+    <detailFormatter
+          nature="org.eclipse.dltk.ruby.core.nature"
           snippet="&quot;{ &quot; + (%variable%).collect{|k, v| k.inspect + &quot; =&gt; &quot; + v.inspect}*&quot;, &quot; + &quot; }&quot;"
           type="Hash">
+    </detailFormatter>
+    <detailFormatter
+          nature="org.eclipse.dltk.ruby.core.nature"
+          snippet="(%variable%).to_a.inspect"
+          type="MatchData">
+    </detailFormatter>
+    <detailFormatter
+          nature="org.eclipse.dltk.ruby.core.nature"
+          snippet="(%variable%).to_s"
+          type="Rational">
     </detailFormatter>
     <detailFormatter
           nature="org.eclipse.dltk.ruby.core.nature"
