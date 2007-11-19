@@ -7,26 +7,7 @@
 #
 
 ###############################################################################
-
-def get_function_name(binding)
-	s = <<-EOS
-			begin
-				 raise ''
-			rescue
-				$!.backtrace[0] =~/.*\`(.*)\'/
-				$1
-			end
-		EOS
-	
-	function = Kernel.eval(s, binding)
-	object = Kernel.eval('self.class.name', binding)
-		
-	if function.nil? or function.empty?
-		object
-	else
-		object + '::' + function
-	end
-end
+ 
 
 module XoredDebugger
     class StackLevelInfo

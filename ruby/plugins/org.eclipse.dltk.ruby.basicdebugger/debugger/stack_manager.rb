@@ -10,6 +10,13 @@
 
 require 'dbgp/managers/stack'
 
+module Kernel
+    def xored_debugger_current_method
+        caller[0] =~ /\d:in `([^']+)'/
+        $1
+    end 
+end
+
 module XoredDebugger
 	
     # DBGP stack model, depth = N, zero-index is for top-level frame
@@ -87,6 +94,17 @@ module XoredDebugger
 					
 			StackLevelInfo.new(level[:file], level[:line], get_function_name(level[:binding]))
 		end
+        
+        def get_function_name(binding)
+            function = Kernel.eval("xored_debugger_current_method", binding)
+            object = Kernel.eval('self.class.name', binding)
+                
+            if function.nil? or function.empty?
+                object
+            else
+                object + '::' + function
+            end
+        end        
 	end # class FullStackManager
 
 end # module

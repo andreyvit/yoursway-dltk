@@ -17,6 +17,13 @@ require 'breakpoint_manager'
 require 'dbgp/thread_manager'
 require 'context'
 
+module Kernel
+    alias_method(:xored_debugger_set_trace_func, :set_trace_func)
+    def set_trace_func(proc)
+        raise "Cannot call 'set_trace_func' method during debugging session."
+    end
+end
+
 module XoredDebugger 
     class DebuggerThread < Thread
     end    
@@ -85,8 +92,8 @@ module XoredDebugger
             @depth = 0
             catch(:done) do 
                 begin                  
-   		            log("Setting trace function...")
-		            set_trace_func proc { |event, file, line, id, binding, klass, *rest|
+   		            log("Setting trace function...")                  
+		            xored_debugger_set_trace_func proc { |event, file, line, id, binding, klass, *rest|
 		                trace(event, file, line, id, binding, klass)
 		            }
 	            end              
@@ -95,7 +102,7 @@ module XoredDebugger
 
         
         def terminate
-            set_trace_func nil
+            xored_debugger_set_trace_func nil
             log("Tracing function was unset")             
             super
         end
@@ -122,14 +129,14 @@ module XoredDebugger
                 # Absolute path
                 ex_file = File.expand_path(file) # Absolute file path                         
 
-                # Skipping startup and shutdown code
-                if (skip_startup_and_shutdown?(ex_file))
-                    return      
-                end     
-
                 # Output handling
                 case event
                     when 'line'                         
+                        # Skipping startup and shutdown code
+                        if (skip_startup_and_shutdown?(ex_file))
+                            return      
+                        end     
+
                         # Don't debug debugger :)                          
                         if (in_debugger_code?(thread))
                             return
@@ -158,9 +165,15 @@ module XoredDebugger
                         
                     when 'call'                       
                         thread.stack_manager.stack.push(binding, ex_file, line)
-    
+                        if (Thread.current == Thread.main)
+	                        @depth += 1
+                        end    
+                        
                     when 'return' 
                         thread.stack_manager.stack.pop                                           
+                        if (Thread.current == Thread.main)
+	                        @depth -= 1
+                        end
 
                     when 'c-call'
                         if (Thread.current == Thread.main)
