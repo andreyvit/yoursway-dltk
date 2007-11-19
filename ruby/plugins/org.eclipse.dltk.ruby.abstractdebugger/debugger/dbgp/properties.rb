@@ -10,7 +10,9 @@
 
 
 def has_children(obj)
-    atomic_types = [NilClass, TrueClass, FalseClass, Fixnum, String, Symbol]
+    atomic_types = [NilClass, TrueClass, FalseClass, 
+                    Numeric, Float, Integer, Fixnum, Bignum, 
+                    String]
     not atomic_types.include?(obj.class)
 end
 
@@ -98,6 +100,33 @@ def prepare_hash(name, hash)
     x
 end
 
+def prepare_match_data(name, obj)
+    x = { :name         => name,
+          :eval_name    => name,
+          :_type         => obj.class,
+          :is_cosntant  => false,
+          :has_children => true,
+          :_value       => '[...]',
+          :key          => obj.object_id }
+    
+    index = -1
+    children = obj.to_a.collect { |value|
+        index += 1
+                    
+        { :name         => sprintf('[%d]', index),
+          :eval_name    => sprintf('%s[%d]', name, index),
+          :_type         => value.class,
+          :is_constant  => false,
+          :has_children => has_children(value),
+          :_value       => get_string(value),
+          :key          => value.object_id }            
+    }
+
+    x[:num_children] = children.length
+    x[:children_props] = children       
+    x    
+end
+
 def make_property(name, obj)
     type = obj.class
 
@@ -105,6 +134,8 @@ def make_property(name, obj)
         prepare_hash(name, obj)
     elsif type == Array
         prepare_array(name, obj)
+    elsif type == MatchData
+        prepare_match_data(name, obj)
     else
         prepare_object(name, obj)
     end
