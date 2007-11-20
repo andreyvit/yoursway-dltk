@@ -11,7 +11,6 @@ import org.eclipse.dltk.internal.launching.InterpreterMessages;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
-import org.osgi.framework.Bundle;
 
 public class JRubyInstallType extends AbstractInterpreterInstallType {
 	private static final String INSTALL_TYPE_NAME = "JRuby";
@@ -39,8 +38,8 @@ public class JRubyInstallType extends AbstractInterpreterInstallType {
 	}
 
 	protected File createPathFile() throws IOException {
-		Bundle bundle = RubyLaunchingPlugin.getDefault().getBundle();
-		return storeToMetadata(bundle, "path.rb", "scripts/path.rb");
+		return storeToMetadata(RubyLaunchingPlugin.getDefault(), "path.rb",
+				"scripts/path.rb");
 	}
 
 	protected String getBuildPathDelimeter() {

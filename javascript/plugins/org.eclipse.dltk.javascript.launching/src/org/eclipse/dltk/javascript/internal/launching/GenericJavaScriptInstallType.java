@@ -23,9 +23,8 @@ import org.osgi.framework.Bundle;
 
 public class GenericJavaScriptInstallType extends
 		AbstractInterpreterInstallType {
-	
-	
-	public static final String DBGP_FOR_RHINO_BUNDLE_ID ="org.eclipse.dltk.javascript.rhino.dbgp";
+
+	public static final String DBGP_FOR_RHINO_BUNDLE_ID = "org.eclipse.dltk.javascript.rhino.dbgp";
 	public static final String EMBEDDED_RHINO_BUNDLE_ID = "org.eclipse.dltk.javascript.rhino";
 
 	public String getNatureId() {
@@ -38,16 +37,17 @@ public class GenericJavaScriptInstallType extends
 
 	public LibraryLocation[] getDefaultLibraryLocations(File installLocation) {
 		if (true) {
-			Bundle bundle = Platform
-					.getBundle(EMBEDDED_RHINO_BUNDLE_ID);
+			Bundle bundle = Platform.getBundle(EMBEDDED_RHINO_BUNDLE_ID);
 
 			URL resolve;
 			try {
 				resolve = FileLocator.toFileURL(bundle
 						.getResource("/org/mozilla/classfile/ByteCode.class"));
 				try {
-					
-					File fl = new File(new URI(resolve.toString())).getParentFile().getParentFile().getParentFile().getParentFile();
+
+					File fl = new File(new URI(resolve.toString()))
+							.getParentFile().getParentFile().getParentFile()
+							.getParentFile();
 					return new LibraryLocation[] { new LibraryLocation(
 							new Path(fl.getAbsolutePath())) };
 				} catch (URISyntaxException e) {
@@ -90,8 +90,9 @@ public class GenericJavaScriptInstallType extends
 	}
 
 	protected File createPathFile() throws IOException {
-		Bundle bundle = JavaScriptLaunchingPlugin.getDefault().getBundle();
-		return storeToMetadata(bundle, "path.tcl", "scripts/path.tcl");
+		// XXX: this is WRONG!!!
+		return storeToMetadata(JavaScriptLaunchingPlugin.getDefault(),
+				"path.tcl", "scripts/path.tcl");
 	}
 
 	protected String[] parsePaths(String result) {

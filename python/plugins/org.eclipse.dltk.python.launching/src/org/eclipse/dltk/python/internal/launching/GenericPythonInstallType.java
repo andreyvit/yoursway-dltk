@@ -17,7 +17,6 @@ import org.eclipse.dltk.internal.launching.AbstractInterpreterInstallType;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.python.core.PythonNature;
 import org.eclipse.dltk.python.launching.PythonLaunchingPlugin;
-import org.osgi.framework.Bundle;
 
 public class GenericPythonInstallType extends AbstractInterpreterInstallType {
 	private static final String INSTALL_TYPE_NAME = "Generic Python";
@@ -45,8 +44,8 @@ public class GenericPythonInstallType extends AbstractInterpreterInstallType {
 	}
 
 	protected File createPathFile() throws IOException {
-		Bundle bundle = PythonLaunchingPlugin.getDefault().getBundle();
-		return storeToMetadata(bundle, "path.py", "scripts/path.py");
+		return storeToMetadata(PythonLaunchingPlugin.getDefault(), "path.py",
+				"scripts/path.py");
 	}
 
 	protected ILog getLog() {

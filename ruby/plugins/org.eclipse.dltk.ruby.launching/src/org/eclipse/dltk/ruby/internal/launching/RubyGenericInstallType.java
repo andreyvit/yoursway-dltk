@@ -17,7 +17,6 @@ import org.eclipse.dltk.internal.launching.AbstractInterpreterInstallType;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
-import org.osgi.framework.Bundle;
 
 public class RubyGenericInstallType extends AbstractInterpreterInstallType {
 
@@ -46,8 +45,8 @@ public class RubyGenericInstallType extends AbstractInterpreterInstallType {
 	}
 
 	protected File createPathFile() throws IOException {
-		Bundle bundle = RubyLaunchingPlugin.getDefault().getBundle();
-		return storeToMetadata(bundle, "path.rb", "scripts/path.rb");
+		return storeToMetadata(RubyLaunchingPlugin.getDefault(), "path.rb",
+				"scripts/path.rb");
 	}
 
 	protected String getBuildPathDelimeter() {

@@ -38,16 +38,17 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.ScriptUtils;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.LaunchingMessages;
 import org.eclipse.dltk.launching.LibraryLocation;
 import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.osgi.framework.Bundle;
 
 /**
  * Abstract implementation of a interpreter install type. Subclasses should
@@ -224,12 +225,9 @@ public abstract class AbstractInterpreterInstallType implements
 		// Nothing to do
 	}
 
-	protected File storeToMetadata(Bundle bundle, String name, String path)
+	protected File storeToMetadata(Plugin plugin, String name, String path)
 			throws IOException {
-		File pathFile = DLTKCore.getDefault().getStateLocation().append(name)
-				.toFile();
-		storeFile(pathFile, FileLocator.resolve(bundle.getEntry(path)));
-		return pathFile;
+		return ScriptUtils.storeToMetadata(plugin, name, path);
 	}
 
 	/**

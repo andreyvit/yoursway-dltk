@@ -20,13 +20,12 @@ import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
 import org.eclipse.dltk.utils.DeployHelper;
-import org.osgi.framework.Bundle;
 
 public class GenericTclInstallType extends AbstractInterpreterInstallType {
 	private static final String INSTALL_TYPE_NAME = "Generic Tcl";
 
-	private static final String[] INTERPRETER_NAMES = { "tclsh", "tclsh84", "wish",
-			"wish84", "vtk", "expect" };
+	private static final String[] INTERPRETER_NAMES = { "tclsh", "tclsh84",
+			"wish", "wish84", "vtk", "expect" };
 
 	public String getNatureId() {
 		return TclNature.NATURE_ID;
@@ -58,8 +57,8 @@ public class GenericTclInstallType extends AbstractInterpreterInstallType {
 	protected File createPathFile() throws IOException {
 		DeployHelper.deploy(TclLaunchingPlugin.getDefault(), "scripts").append(
 				"");
-		Bundle bundle = TclLaunchingPlugin.getDefault().getBundle();
-		return storeToMetadata(bundle, "path.tcl", "scripts/path.tcl");
+		return storeToMetadata(TclLaunchingPlugin.getDefault(), "path.tcl",
+				"scripts/path.tcl");
 	}
 
 	protected String[] parsePaths(String result) {
