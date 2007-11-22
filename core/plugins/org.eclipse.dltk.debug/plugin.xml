@@ -29,9 +29,20 @@
 		<persistent value="true" />
 		
 		<super type="org.eclipse.dltk.debug.scriptBreakpointMarker" />
-		<super type="org.eclipse.debug.core.lineBreakpointMarker" />
 	</extension>
 	
+	<extension id="scriptExceptionBreakpointMarker"
+		point="org.eclipse.core.resources.markers">
+		<persistent value="true" />
+
+		<super type="org.eclipse.dltk.debug.scriptBreakpointMarker" />
+		
+		<attribute name="org.eclipse.dltk.debug.typeName"/>
+		<attribute name="org.eclipse.dltk.debug.caught"/>
+		<attribute name="org.eclipse.dltk.debug.uncaught"/>
+		<attribute name="org.eclipse.dltk.debug.suspend_on_subclasses"/>
+	</extension>
+
 	<extension id="scriptMethodEntryBreakpointMarker"
 		point="org.eclipse.core.resources.markers">
 		<persistent value="true" />
@@ -74,5 +85,11 @@
     	    id="scriptWatchpoint"
         	markerType="org.eclipse.dltk.debug.scriptWatchPointMarker"
         	name="%ScriptWatchpoint.name"/>
+  <breakpoint
+        class="org.eclipse.dltk.internal.debug.core.model.ScriptExceptionBreakpoint"
+        id="scriptExceptionBreakpoint"
+        markerType="org.eclipse.dltk.debug.scriptExceptionBreakpointMarker"
+        name="%ScriptExceptionBreakpoint.name">
+  </breakpoint>
 	</extension>
 </plugin>

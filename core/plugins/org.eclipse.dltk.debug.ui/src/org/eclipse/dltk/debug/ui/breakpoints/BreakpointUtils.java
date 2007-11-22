@@ -10,10 +10,12 @@
 package org.eclipse.dltk.debug.ui.breakpoints;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
@@ -107,6 +109,20 @@ public class BreakpointUtils {
 			} catch (BadLocationException e) {
 				DebugPlugin.log(e);
 			}
+		}
+	}
+	
+	public static void addExceptionBreakpoint(String debugModelId, boolean caught,
+			final boolean uncaught, final IType type) throws CoreException {
+		// TODO: Resource should refer to valid script type, so debug model id 
+		// can be calculated from it
+		IResource resource = type.getResource();
+		if (resource == null || !resource.getProject().exists()) {
+			resource = ResourcesPlugin.getWorkspace().getRoot();
+		}
+		if (resource != null) {
+			ScriptDebugModel.createExceptionBreakpoint(debugModelId, resource, type
+					.getFullyQualifiedName(), caught, uncaught, true, null);
 		}
 	}
 }

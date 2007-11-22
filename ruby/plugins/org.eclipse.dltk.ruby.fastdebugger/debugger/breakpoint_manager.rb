@@ -12,62 +12,72 @@ require 'dbgp/logger'
 require 'dbgp/managers/breakpoint'
 
 
-module XoredDebugger
+module XoredDebugger    
     class BreakpointManager < AbstractBreakpointManager
     	include Logger
-        
-		def initialize
-		    @breakpoints = Hash.new()
-		end
-        
-        # adds breakpoint and returns its id
-        def add(info)
+
+        def initialize()
+            super
+            @line_bps = Hash.new
+        end        
+               
+        def create_breakpoint(info)
             if info.class == LineBreakpointInfo
                 b = Debugger.add_breakpoint(info.file, info.line)
-                update(b.id, info)
-                @breakpoints[b.id] = info
-                b.id
-            else # TODO: if info.class == ExceptionBreakpointInfo
-                raise NotImplementedError('Support for this type of exceptions is not implemented')
+                @line_bps[b.id] = info
+                b
+            elsif info.class == ExceptionBreakpointInfo
+                info
+            else
+                nil
             end
         end
 
-        # udates breakpoint with id to info
-        def update(id, info)
-            b = debugger_get_breakpoint(id)
-            unless (b.nil?)
-	            b.hit_value = info.hit_value
-	            b.hit_condition = BreakpointManager.convert_condition(info.hit_condition)
+        def update_breakpoint(bp, info)
+            if (info.class == LineBreakpointInfo.class)
+	            bp.hit_value = info.hit_value
+	            bp.hit_condition = BreakpointManager.convert_condition(info.hit_condition)
 	            unless info.expression.nil?
-	                info.expression.inspect
-	                b.expr = info.expression
-	            end                        
+	                bp.expr = info.expression
+	            end
+	        elsif info.class == ExceptionBreakpointInfo
+                # Nothing to do ;)
+	        end
+            nil                        
+        end
 
-                oldInfo = @breakpoints[id]
-                unless oldInfo.nil?
-                    oldInfo.update(info)
-                end 
-            end
+        def update_info(bp, info)
+            info.hit_count = bp.hit_count
             nil
         end
 
-        # removes breakpoint with id
-        def remove(id)
-            @breakpoints.delete(id)
-            Debugger.remove_breakpoint(id)
-            nil
+        def remove_breakpoint(bp, info)
+            if (info.class == LineBreakpointInfo.class)
+                Debugger.remove_breakpoint(bp.id)
+                @line_bps.remove(bp.id)
+	        elsif info.class == ExceptionBreakpointInfo
+                # Nothing to do ;)
+	        end
+            nil                        
+        end        
+        
+        
+        def get_line_bp(id)
+            @line_bps[id]
         end
-
-        # returns breakpoint info (breakpoint_id, hit_count - additional attributes)
-        def [] (id)
-            info = @breakpoints[id]
-            b = debugger_get_breakpoint(id)
-            unless b.nil?
-                info.hit_count = b.hit_count
+        
+        def exception_break?(stack, exception)
+            @monitor.synchronize do
+                result = nil
+                for bp in @infos.values do
+                    if bp.class == ExceptionBreakpointInfo && bp.hit(stack, exception)
+                        result = bp
+                    end
+                end
+                result
             end
-            info
         end
-    
+             
     private
 		def BreakpointManager.convert_condition(condition)
 			if condition == BreakpointInfo::COND_GREATER_OR_EQUALS

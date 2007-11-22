@@ -44,6 +44,8 @@ module XoredDebugger
             Debugger.handler = self
             Debugger.keep_frame_binding = true
             Debugger.start
+            Debugger.catchpoint = 'Exception'
+            
             # Creating main thread in ThreadManager                
             thread_manager.add_thread(Thread.current)
             
@@ -80,15 +82,16 @@ module XoredDebugger
         # Event handlers
         def at_breakpoint(context, breakpoint)
             #check if breakpoint was disabled           
-            info = @breakpoint_manager[breakpoint.id]       
+            info = @breakpoint_manager.get_line_bp(breakpoint.id)       
             
             thread = thread_manager.current_thread
             thread.at_breakpoint(context, info)
         end
 
         def at_catchpoint(context, excpt)
-            log(sprintf('=> at_catchpoint: %s', excpt.inspect))
-            # TODO
+            log('=> at_catchpoint')
+            thread = thread_manager.current_thread
+            thread.at_catchpoint(context, excpt)
         end
 
         def at_tracing(context, file, line)

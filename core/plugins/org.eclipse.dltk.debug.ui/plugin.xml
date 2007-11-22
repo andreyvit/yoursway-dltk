@@ -128,14 +128,6 @@
 				id="org.eclipse.ui.run">
 				<separator name="scriptGroup"></separator>
 			</menu>
-			<!--action
-				definitionId="org.eclipse.jdt.debug.ui.commands.AddExceptionBreakpoint"
-				label="%exceptionAction.accel.label"
-				icon="$nl$/icons/full/elcl16/exc_catch.gif"
-				class="org.eclipse.jdt.internal.debug.ui.breakpoints.AddExceptionAction"
-				menubarPath="org.eclipse.ui.run/breakpointGroup"
-				id="org.eclipse.jdt.debug.ui.actions.AddExceptionBreakpoint">
-				</action-->
 
 			<!--action
 				definitionId="org.eclipse.jdt.debug.ui.commands.StepIntoSelection"
@@ -348,6 +340,21 @@
 				</or>
 			</enabledWhen>
 		</page>
+		<page
+			class="org.eclipse.dltk.debug.ui.breakpoints.ScriptExceptionBreakpointPropertyPage"
+			id="org.eclipse.dltk.debug.ui.breakpoints.ScriptExceptionBreakpointPropertyPage"
+			name="Script Exception Breakpoint">
+			<enabledWhen>
+				<or>
+					<instanceof
+						value="org.eclipse.dltk.debug.core.model.IScriptExceptionBreakpoint">
+					</instanceof>
+					<adapt
+						type="org.eclipse.dltk.debug.core.model.IScriptExceptionBreakpoint">
+					</adapt>
+				</or>
+			</enabledWhen>
+		</page>
 	</extension>
 
 	<extension point="org.eclipse.ui.contexts">
@@ -387,12 +394,6 @@
 		</view>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
-		<!--command
-			name="%ActionDefinition.addException.name"
-			description="%ActionDefinition.addException.description"
-			categoryId="org.eclipse.debug.ui.category.run"
-			id="org.eclipse.jdt.debug.ui.commands.AddExceptionBreakpoint">
-			</command-->
 		<!--command
 			name="%ActionDefinition.stepIntoSelection.name"
 			description="%ActionDefinition.stepIntoSelection.description"
@@ -462,7 +463,6 @@
 	</extension>
 
 	<extension point="org.eclipse.ui.viewActions">
-
 		<viewContribution targetID="org.eclipse.debug.ui.VariableView"
 			id="org.eclipse.dltk.debug.ui.VariableViewActions">
 			<action
@@ -485,6 +485,6 @@
 				<groupMarker
 					name="org.eclipse.dltk.debug.ui.scriptPart" />
 			</menu>
-		</viewContribution>
+		</viewContribution>		
 	</extension>
 </plugin>

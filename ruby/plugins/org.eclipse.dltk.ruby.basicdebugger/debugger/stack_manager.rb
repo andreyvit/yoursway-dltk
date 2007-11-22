@@ -52,7 +52,7 @@ module XoredDebugger
             @levels[depth - 1 - index]
         end
         
-        def eval(text, index = 0)	
+        def eval(text, index)	
             level = self[index]
 			Kernel.eval(text, level[:binding], level[:file], level[:line])
         end

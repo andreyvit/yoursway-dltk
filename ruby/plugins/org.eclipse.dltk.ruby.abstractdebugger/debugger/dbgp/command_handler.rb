@@ -238,6 +238,8 @@ module XoredDebugger
                 breakpoint[:type]     = 'line'
                 breakpoint[:filename] = info.file
                 breakpoint[:lineno]   = info.line
+            elsif type = ExceptionBreakpointInfo
+                # TODO: Add type specific info
             end
 
             # Return value
@@ -408,10 +410,13 @@ module XoredDebugger
 
                         when 'exception'
                             exception = command.arg('-x')
-
-                            log("\texception: " + file.to_s)
-
-                            ExceptionBreakpointInfo.new(exception, state, temporary, expression, hit_value, hit_condition)
+                            exceptionClass = Kernel.eval(exception)
+                            log("\texception: " + exceptionClass.name)
+                            if (exceptionClass.is_a? Exception.class)
+                                ExceptionBreakpointInfo.new(exceptionClass, state, temporary, expression, hit_value, hit_condition)
+                            else
+                                nil
+                            end
 
                         when 'conditional'
                             # TODO:
@@ -422,9 +427,11 @@ module XoredDebugger
                             nil
                     end
 
-                    log('Breakpoint info: ' + info.to_s)
-
-                    unless info.nil?
+                    if (info.nil?)
+                        { :success => false }
+                    else
+                        info.nil?
+                        log('Breakpoint info: ' + info.to_s)
                         breakpoint_set(info)
                     end
 
@@ -563,7 +570,6 @@ module XoredDebugger
                     :reason => 'ok',
                     :id     => @command.arg('-i') } 
             io_manager.send(@command.name, map)
-            @debugger.terminate
             Kernel.exit!(0)
             nil
         end
@@ -642,6 +648,13 @@ module XoredDebugger
         end
     
         def at_catchpoint(context, excpt)
+            log(sprintf('=> at_catchpoint: %s', excpt.inspect))                        
+            breakpoint = breakpoint_manager.exception_break?(stack_manager, excpt)
+            if breakpoint.state
+                @skipBreakpoint = false
+            else
+                @skipBreakpoint = true
+            end         
         end
     
         def at_tracing(context, file, line)

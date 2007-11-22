@@ -184,15 +184,24 @@ module XoredDebugger
                         if (Thread.current == Thread.main)
 	                        @depth -= 1
                         end
+
+                    when 'raise'
+                        # checking exception breakpoint 
+                        log('Checking exception breakpoint')                        
+						thread.stack_manager.stack.update(binding, ex_file, line)                                              
+						current_context.stop_reason = :none   
+						current_context.set_stack_manager(thread.stack_manager)                                        
+						                         
+						current_context.reset_stepping
+						current_context.stop_reason = :catchpoint
+						thread.at_catchpoint(current_context, $!)   
+					    thread.at_line(current_context, ex_file, line)
                         
                     when 'class'
                         #TODO: Do something useful
 
                     when 'end'
-                        #TODO: Do something useful
-    
-                    when 'raise'
-                        #TODO: Handle exception breakpoints here
+                        #TODO: Do something useful    
                 end
 	        rescue Exception
                 log('Exception in command loop:')

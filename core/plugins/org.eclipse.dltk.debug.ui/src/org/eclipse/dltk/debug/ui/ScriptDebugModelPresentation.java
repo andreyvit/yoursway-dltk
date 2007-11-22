@@ -35,6 +35,7 @@ import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
+import org.eclipse.dltk.debug.core.model.IScriptExceptionBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
@@ -289,6 +290,37 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 				sb.append(MessageFormat
 						.format("{0}: {1}: [line: {2}]", new Object[] {
 								language, file, new Integer(lineNumber) }));
+			} else if (breakpoint instanceof IScriptExceptionBreakpoint) {
+				IScriptExceptionBreakpoint b = (IScriptExceptionBreakpoint) breakpoint;
+				String typeName = b.getTypeName();
+				if(b.isSuspendOnSubclasses()) {
+					typeName += " [Include Subclasses]";
+				}
+
+				sb.append(MessageFormat
+						.format("{0}: {1}", new Object[] {
+								language, typeName}));
+
+				
+				/* TODO: Uncomment this comment when add support for
+				 * caught and uncaught exceptions
+				   
+				String state;
+				boolean c= b.isCaught();
+				boolean u= b.isUncaught();
+				if (c && u) {
+					state= "caught and uncaught"; 
+				} else if (c) {
+					state= "caught"; 
+				} else if (u) {
+					state= "uncaught"; 
+				} else {
+					state= ": must specify caught or uncaught exception";
+				}
+				sb.append(MessageFormat
+						.format("{0}: {1}: {2}", new Object[] {
+								language, typeName, state}));
+				*/
 			}
 
 			if (hitCount != -1) {

@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
+	<extension point="org.eclipse.ui.actionSets">
+		<actionSet id="org.eclipse.dltk.ruby.debug.ui.ScriptDebugActionSet"
+			label="Ruby debugger action set" visible="true">
+			<action
+				label="%exceptionAction.accel.label"
+				icon="$nl$/icons/elcl16/exc_catch.gif"
+				class="org.eclipse.dltk.ruby.internal.debug.ui.actions.AddRubyExceptionAction"
+				menubarPath="org.eclipse.ui.run/breakpointGroup"
+				id="org.eclipse.dltk.ruby.debug.ui.actions.AddExceptionBreakpoint">
+			</action>
+		</actionSet>
+	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<command name="%ActionDefinition.RunRubyScript.name"
 			description="%ActionDefinition.RunRubyScript.description"
@@ -252,50 +264,69 @@
            <adapter type="org.eclipse.debug.ui.actions.IRunToLineTarget"/>
        </factory>         
     </extension>
- <extension
-       point="org.eclipse.dltk.debug.smartStepEvaluator">
-    <evaluator
-          class="org.eclipse.dltk.ruby.internal.debug.RubySmartStepEvaluator"
-          nature="org.eclipse.dltk.ruby.core.nature"
-          priority="0">
-    </evaluator>
- </extension>
- <extension
-       point="org.eclipse.dltk.debug.ui.scriptDetailFormatter">
-    <detailFormatter
-          nature="org.eclipse.dltk.ruby.core.nature"
-          snippet="(%variable%).to_s"
-          type="Complex">
-    </detailFormatter>
-    <detailFormatter
-          nature="org.eclipse.dltk.ruby.core.nature"
-          snippet="(%variable%).to_s"
-          type="Date">
-    </detailFormatter>
-    <detailFormatter
-          nature="org.eclipse.dltk.ruby.core.nature"
-          snippet="(%variable%).to_s"
-          type="DateTime">
-    </detailFormatter>
-    <detailFormatter
-          nature="org.eclipse.dltk.ruby.core.nature"
-          snippet="&quot;{ &quot; + (%variable%).collect{|k, v| k.inspect + &quot; =&gt; &quot; + v.inspect}*&quot;, &quot; + &quot; }&quot;"
-          type="Hash">
-    </detailFormatter>
-    <detailFormatter
-          nature="org.eclipse.dltk.ruby.core.nature"
-          snippet="(%variable%).to_a.inspect"
-          type="MatchData">
-    </detailFormatter>
-    <detailFormatter
-          nature="org.eclipse.dltk.ruby.core.nature"
-          snippet="(%variable%).to_s"
-          type="Rational">
-    </detailFormatter>
-    <detailFormatter
-          nature="org.eclipse.dltk.ruby.core.nature"
-          snippet="(%variable%).inspect"
-          type="#DEFAULT#">
-    </detailFormatter>
- </extension>
+	<extension
+	       point="org.eclipse.dltk.debug.smartStepEvaluator">
+	    <evaluator
+	          class="org.eclipse.dltk.ruby.internal.debug.RubySmartStepEvaluator"
+	          nature="org.eclipse.dltk.ruby.core.nature"
+	          priority="0">
+	    </evaluator>
+	</extension>
+	
+	<extension
+	       point="org.eclipse.dltk.debug.ui.scriptDetailFormatter">
+	    <detailFormatter
+	          nature="org.eclipse.dltk.ruby.core.nature"
+	          snippet="(%variable%).to_s"
+	          type="Complex">
+	    </detailFormatter>
+	    <detailFormatter
+	          nature="org.eclipse.dltk.ruby.core.nature"
+	          snippet="(%variable%).to_s"
+	          type="Date">
+	    </detailFormatter>
+	    <detailFormatter
+	          nature="org.eclipse.dltk.ruby.core.nature"
+	          snippet="(%variable%).to_s"
+	          type="DateTime">
+	    </detailFormatter>
+	    <detailFormatter
+	          nature="org.eclipse.dltk.ruby.core.nature"
+	          snippet="&quot;{ &quot; + (%variable%).collect{|k, v| k.inspect + &quot; =&gt; &quot; + v.inspect}*&quot;, &quot; + &quot; }&quot;"
+	          type="Hash">
+	    </detailFormatter>
+	    <detailFormatter
+	          nature="org.eclipse.dltk.ruby.core.nature"
+	          snippet="(%variable%).to_a.inspect"
+	          type="MatchData">
+	    </detailFormatter>
+	    <detailFormatter
+	          nature="org.eclipse.dltk.ruby.core.nature"
+	          snippet="(%variable%).to_s"
+	          type="Rational">
+	    </detailFormatter>
+	    <detailFormatter
+	          nature="org.eclipse.dltk.ruby.core.nature"
+	          snippet="(%variable%).inspect"
+	          type="#DEFAULT#">
+	    </detailFormatter>
+	</extension>
+	
+	<extension point="org.eclipse.ui.viewActions">
+ 		<viewContribution
+            targetID="org.eclipse.debug.ui.BreakpointView"
+            id="org.eclipse.dltk.debug.ui.BreakpointViewActions">
+    	    <action
+				id="org.eclipse.dltk.ruby.debug.ui.actions.AddExceptionBreakpoint"
+				toolbarPath="scriptExceptions"
+				hoverIcon="$nl$/icons/elcl16/exc_catch.gif"
+				class="org.eclipse.dltk.ruby.internal.debug.ui.actions.AddRubyExceptionAction"
+				disabledIcon="$nl$/icons/dlcl16/exc_catch.gif"
+				icon="$nl$/icons/elcl16/exc_catch.gif"
+				helpContextId="add_exception_action_context"
+				label="%exceptionAction.label"
+				tooltip="%exceptionAction.tooltip">
+	        </action>
+        </viewContribution>
+	</extension>
 </plugin>

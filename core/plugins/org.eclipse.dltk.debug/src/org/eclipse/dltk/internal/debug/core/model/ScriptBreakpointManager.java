@@ -27,6 +27,7 @@ import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
+import org.eclipse.dltk.debug.core.model.IScriptExceptionBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
@@ -105,6 +106,9 @@ public class ScriptBreakpointManager implements IBreakpointListener,
 
 			id = commands.setLineBreakpoint(lineBreakpoint.getResourceURI(),
 					lineBreakpoint.getLineNumber(), config);
+		} else if (breakpoint instanceof IScriptExceptionBreakpoint) {
+			IScriptExceptionBreakpoint lineBreakpoint = (IScriptExceptionBreakpoint) breakpoint;
+			id = commands.setExceptionBreakpoint(lineBreakpoint.getTypeName(), config);
 		}
 
 		// Identifier
