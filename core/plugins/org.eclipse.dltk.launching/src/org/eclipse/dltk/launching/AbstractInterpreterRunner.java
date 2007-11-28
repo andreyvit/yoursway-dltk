@@ -211,6 +211,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	private void traceExecution(String processLabel,
 			String cmdLineLabel, File workingDirectory, String[] environment) {
 		StringBuffer sb = new StringBuffer();
+		sb.append("-----------------------------------------------\n");
 		sb.append("Running ").append(processLabel).append('\n');
 		sb.append("Command line: ").append(cmdLineLabel).append('\n');
 		sb.append("Working directory: ").append(workingDirectory).append('\n');
@@ -218,9 +219,8 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		for (int i=0; i<environment.length; i++) {
 			sb.append('\t').append(environment[i]).append('\n');
 		}
-		Status status = new Status(IStatus.INFO, DLTKLaunchingPlugin.PLUGIN_ID,
-				sb.toString());
-		DLTKLaunchingPlugin.log(status);		
+		sb.append("-----------------------------------------------\n");
+		System.out.println(sb);
 	}
 
 	public void run(InterpreterConfig config, ILaunch launch,
