@@ -36,7 +36,7 @@ import com.ibm.icu.text.MessageFormat;
  * @see IInterpreterRunner
  * 
  */
-public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
+public abstract class AbstractInterpreterRunner implements IInterpreterRunner {	
 	private IInterpreterInstall interpreterInstall;
 
 	protected IInterpreterInstall getInstall() {
@@ -187,16 +187,18 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	 */
 
 	protected void rawRun(ILaunch launch, String[] cmdLine,
-			File workingDirectory, String[] environment) throws CoreException {
-
+			File workingDirectory, String[] environment) throws CoreException {				
+		final String cmdLineLabel = renderCommandLine(cmdLine);
+		final String processLabel = renderProcessLabel(cmdLine);
+		
+		if(DLTKLaunchingPlugin.TRACE_EXECUTION)
+			traceExecution(processLabel, cmdLineLabel, workingDirectory, environment);
+		
 		Process p = exec(cmdLine, workingDirectory, environment);
 
 		if (p == null) {
 			return;
 		}
-
-		final String cmdLineLabel = renderCommandLine(cmdLine);
-		final String processLabel = renderProcessLabel(cmdLine);
 
 		launch.setAttribute(DLTKLaunchingPlugin.LAUNCH_COMMAND_LINE,
 				cmdLineLabel);
@@ -204,6 +206,21 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		IProcess process = newProcess(launch, p, processLabel,
 				getDefaultProcessMap());
 		process.setAttribute(IProcess.ATTR_CMDLINE, cmdLineLabel);
+	}
+
+	private void traceExecution(String processLabel,
+			String cmdLineLabel, File workingDirectory, String[] environment) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("Running ").append(processLabel).append('\n');
+		sb.append("Command line: ").append(cmdLineLabel).append('\n');
+		sb.append("Working directory: ").append(workingDirectory).append('\n');
+		sb.append("Environment:\n");
+		for (int i=0; i<environment.length; i++) {
+			sb.append('\t').append(environment[i]).append('\n');
+		}
+		Status status = new Status(IStatus.INFO, DLTKLaunchingPlugin.PLUGIN_ID,
+				sb.toString());
+		DLTKLaunchingPlugin.log(status);		
 	}
 
 	public void run(InterpreterConfig config, ILaunch launch,

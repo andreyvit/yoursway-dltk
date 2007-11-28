@@ -72,6 +72,12 @@ public class DLTKLaunchingPlugin extends Plugin implements
 	public static final String LAUNCH_COMMAND_LINE = PLUGIN_ID
 			+ ".LAUNCH_COMMAND_LINE";
 
+	public static final boolean TRACE_EXECUTION = Boolean
+			.valueOf(
+					Platform
+							.getDebugOption("org.eclipse.dltk.launching/traceExecution"))
+			.booleanValue();
+
 	/**
 	 * Runtime buildpath extensions
 	 */
