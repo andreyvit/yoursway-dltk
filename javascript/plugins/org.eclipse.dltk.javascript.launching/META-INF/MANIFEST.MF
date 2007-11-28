@@ -7,9 +7,7 @@ Bundle-Activator: org.eclipse.dltk.javascript.launching.JavaScriptLaunchingPlugi
 Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.debug.core,
  org.eclipse.dltk.core,
- org.eclipse.core.resources,
  org.eclipse.dltk.launching,
  org.eclipse.dltk.console,
  org.eclipse.dltk.debug,
@@ -18,12 +16,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.launching,
  org.eclipse.jdt.core,
  org.eclipse.debug.ui,
- org.eclipse.jface,
- org.eclipse.ui,
  org.eclipse.jdt.debug.ui,
- org.eclipse.jdt.debug,
  org.eclipse.ui.console,
- org.eclipse.dltk.debug.ui
+ org.eclipse.dltk.debug.ui,
+ org.eclipse.jface
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.javascript.console,
  org.eclipse.dltk.javascript.launching
