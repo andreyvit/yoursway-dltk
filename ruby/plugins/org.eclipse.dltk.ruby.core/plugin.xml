@@ -34,11 +34,15 @@
   </extension>
   <extension
         point="org.eclipse.dltk.core.sourceParsers">
-     <parser
+      <parserContribution
+            natureId="org.eclipse.dltk.ruby.core.nature">     
+        <parser
+           name="JRuby Source Parser"
+           id="org.eclipse.dltk.ruby.parser.jrubySourceParser"
+           description="JRuby Source Parser"
            class="org.eclipse.dltk.ruby.internal.parser.JRubySourceParser"
-           nature="org.eclipse.dltk.ruby.core.nature"
-           priority="0">
-     </parser>
+           priority="0"/>
+      </parserContribution>
   </extension>
   <extension
         point="org.eclipse.dltk.core.sourceElementParsers">

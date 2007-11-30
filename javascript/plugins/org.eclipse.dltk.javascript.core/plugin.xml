@@ -39,11 +39,15 @@
    </extension>
    <extension
          point="org.eclipse.dltk.core.sourceParsers">
-      <parser
-            class="org.eclipse.dltk.internal.javascript.parser.JavaScriptSourceParser"
-            nature="org.eclipse.dltk.javascript.core.nature"
-            priority="0">
-      </parser>
+      <parserContribution
+            natureId="org.eclipse.dltk.javascript.core.nature">
+         <parser
+               class="org.eclipse.dltk.internal.javascript.parser.JavaScriptSourceParser"
+               description="JavaScript Source Parser"
+               id="org.eclipse.dltk.javascript.sourceParser"
+               name="JavaScript Source Parser"
+               priority="0" />
+      </parserContribution>
    </extension>
    <extension
          point="org.eclipse.dltk.core.sourceElementParsers">

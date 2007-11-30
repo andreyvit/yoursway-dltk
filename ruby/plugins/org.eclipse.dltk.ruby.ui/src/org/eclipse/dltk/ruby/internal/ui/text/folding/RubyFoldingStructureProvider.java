@@ -12,7 +12,7 @@ package org.eclipse.dltk.ruby.internal.ui.text.folding;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
+import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.ruby.core.RubyNature;
@@ -94,18 +94,10 @@ public class RubyFoldingStructureProvider extends
 	}
 
 	/*
-	 * @see org.eclipse.dltk.ui.text.folding.AbstractASTFoldingStructureProvider#getSourceParser()
+	 * @see org.eclipse.dltk.ui.text.folding.AbstractASTFoldingStructureProvider#getNatureId()
 	 */
-	protected ISourceParser getSourceParser() {
-		// return new JRubySourceParser(null);
-		try {
-			return DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
-		return null;
+	protected String getNatureId() {
+		return RubyNature.NATURE_ID;
 	}
 
 	/*

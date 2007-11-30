@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.ast.parser.AbstractSourceParser;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.tcl.ast.TclStatement;
@@ -26,7 +27,7 @@ import org.eclipse.dltk.tcl.internal.parsers.raw.TclParseException;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclScript;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclWord;
 
-public class TclSourceParser implements ITclSourceParser, ITclParser {
+public class TclSourceParser extends AbstractSourceParser implements ITclSourceParser, ITclParser {
 	private IProblemReporter problemReporter;
 	protected CodeModel codeModel;
 	protected String content;

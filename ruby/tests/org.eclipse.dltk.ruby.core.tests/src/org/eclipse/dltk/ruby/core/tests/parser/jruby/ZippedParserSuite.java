@@ -19,8 +19,8 @@ import java.util.zip.ZipFile;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
 import org.eclipse.dltk.ruby.core.RubyNature;

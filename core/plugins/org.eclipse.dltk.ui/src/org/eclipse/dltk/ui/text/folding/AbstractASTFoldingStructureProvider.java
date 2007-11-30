@@ -18,14 +18,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
+import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
@@ -1032,7 +1034,7 @@ public abstract class AbstractASTFoldingStructureProvider implements
 
 	protected abstract IPartitionTokenScanner getPartitionScanner();
 
-	protected abstract ISourceParser getSourceParser();
+	protected abstract String getNatureId();
 
 	protected abstract String[] getPartitionTypes();
 
@@ -1072,6 +1074,14 @@ public abstract class AbstractASTFoldingStructureProvider implements
 		}
 	}
 
+	protected final ISourceParser getSourceParser() {
+		try {
+			return DLTKLanguageManager.getSourceParser(getNatureId());
+		} catch (CoreException e) {
+			return null;
+		}
+	}
+	
 	/**
 	 * Should locate all statements and return
 	 * 

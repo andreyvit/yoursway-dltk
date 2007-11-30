@@ -13,13 +13,10 @@ import java.io.CharArrayReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.ast.parser.AbstractSourceParser;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
@@ -36,8 +33,7 @@ import com.xored.org.mozilla.javascript.Parser;
 import com.xored.org.mozilla.javascript.ScriptOrFnNode;
 import com.xored.org.mozilla.javascript.ScriptOrFnNode.Position;
 
-public class JavaScriptSourceParser implements IExecutableExtension,
-		ISourceParser {
+public class JavaScriptSourceParser extends AbstractSourceParser {
 	
 	private final class ReferenceRecordingRequestor implements
 			ISourceElementRequestor {
@@ -252,9 +248,4 @@ public class JavaScriptSourceParser implements IExecutableExtension,
 		}
 		
 	}
-
-	public void setInitializationData(IConfigurationElement config,
-			String propertyName, Object data) throws CoreException {
-	}
-
 }

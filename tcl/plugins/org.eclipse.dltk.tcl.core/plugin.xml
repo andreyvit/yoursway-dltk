@@ -71,11 +71,15 @@
   </extension>
    <extension
          point="org.eclipse.dltk.core.sourceParsers">
-      <parser
-            class="org.eclipse.dltk.tcl.internal.parser.TclSourceParser"
-            nature="org.eclipse.dltk.tcl.core.nature"
-            priority="0">
-      </parser>
+      <parserContribution
+            natureId="org.eclipse.dltk.tcl.core.nature">
+         <parser
+               class="org.eclipse.dltk.tcl.internal.parser.TclSourceParser"
+               description="Tcl Source Parser"
+               id="org.eclipse.dltk.tcl.sourceParser"
+               name="Tcl Source Parser"
+               priority="0" />
+      </parserContribution>
    </extension>
    <extension
          point="org.eclipse.dltk.tcl.core.tclkeywords">

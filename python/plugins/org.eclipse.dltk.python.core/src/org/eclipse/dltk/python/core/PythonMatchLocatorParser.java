@@ -10,8 +10,8 @@
 package org.eclipse.dltk.python.core;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.search.IMatchLocatorParser;
 import org.eclipse.dltk.core.search.matching.MatchLocator;

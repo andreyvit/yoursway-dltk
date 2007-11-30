@@ -15,13 +15,14 @@ import java.util.List;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
+import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.internal.javascript.parser.JavaScriptSourceParser;
+import org.eclipse.dltk.javascript.core.JavaScriptNature;
 import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
 import org.eclipse.dltk.javascript.internal.ui.text.JavascriptPartitionScanner;
 import org.eclipse.dltk.javascript.ui.text.IJavaScriptPartitions;
@@ -221,8 +222,8 @@ public class JavascriptFoldingStructureProvider extends AbstractASTFoldingStruct
 		return IJavaScriptPartitions.JS_PARTITION_TYPES;
 	}
 
-	protected ISourceParser getSourceParser() {
-		return new JavaScriptSourceParser();
+	protected String getNatureId() {
+		return JavaScriptNature.NATURE_ID;
 	}
 
 	protected boolean initiallyCollapse(Statement s,

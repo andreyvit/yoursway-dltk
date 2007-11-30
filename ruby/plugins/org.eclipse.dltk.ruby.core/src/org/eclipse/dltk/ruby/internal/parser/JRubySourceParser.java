@@ -20,13 +20,12 @@ import java.util.regex.Pattern;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.Declaration;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.ast.parser.AbstractSourceParser;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.DLTKCore;
@@ -36,7 +35,7 @@ import org.eclipse.dltk.ruby.internal.parsers.jruby.RubyASTBuildVisitor;
 import org.jruby.ast.Node;
 import org.jruby.ast.visitor.NodeVisitor;
 
-public class JRubySourceParser implements IExecutableExtension, ISourceParser {
+public class JRubySourceParser extends AbstractSourceParser {
 
 	private static boolean silentState = true;
 
@@ -270,12 +269,7 @@ public class JRubySourceParser implements IExecutableExtension, ISourceParser {
 		}
 	}
 
-	public void setInitializationData(IConfigurationElement config,
-			String propertyName, Object data) throws CoreException {
-	}
-
 	public ModuleDeclaration parse(String source) {
 		return this.parse(null, source.toCharArray(), null);
 	}
-
 }

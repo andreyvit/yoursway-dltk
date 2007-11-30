@@ -21,11 +21,15 @@
    </extension>
    <extension
          point="org.eclipse.dltk.core.sourceParsers">
-      <parser
-            class="org.eclipse.dltk.python.internal.core.parser.PythonSourceParser"
-            nature="org.eclipse.dltk.python.core.nature"
-            priority="0">
-      </parser>
+      <parserContribution
+            natureId="org.eclipse.dltk.python.core.nature">
+         <parser
+               class="org.eclipse.dltk.python.internal.core.parser.PythonSourceParser"
+               description="Python Source Parser"
+               id="org.eclipse.dltk.python.sourceParser"
+               name="Python Source Parser"
+               priority="0" />
+      </parserContribution>
    </extension>
    <extension
          point="org.eclipse.dltk.core.sourceElementParsers">

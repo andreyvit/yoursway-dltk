@@ -12,8 +12,8 @@
 
    <element name="extension">
       <complexType>
-         <sequence minOccurs="0" maxOccurs="unbounded">
-            <element ref="parser"/>
+         <sequence>
+            <element ref="parserContribution"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -44,13 +44,6 @@
 
    <element name="parser">
       <complexType>
-         <attribute name="nature" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
          <attribute name="priority" type="string" use="default" value="0">
             <annotation>
                <documentation>
@@ -66,6 +59,65 @@
                <appInfo>
                   <meta.attribute kind="java" basedOn="org.eclipse.dltk.ast.declarations.ISourceParser"/>
                </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="preferencePageId" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="selector">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.dltk.ast.parser.ISourceParserSelector"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="parserContribution">
+      <complexType>
+         <sequence>
+            <element ref="selector" minOccurs="0" maxOccurs="1"/>
+            <element ref="parser" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="natureId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
             </annotation>
          </attribute>
       </complexType>
@@ -107,13 +159,5 @@
       </documentation>
    </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="copyright"/>
-      </appInfo>
-      <documentation>
-         
-      </documentation>
-   </annotation>
 
 </schema>

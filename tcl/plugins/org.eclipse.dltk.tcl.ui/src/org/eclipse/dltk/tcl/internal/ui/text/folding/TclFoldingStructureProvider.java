@@ -16,9 +16,9 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.DLTKCore;
@@ -62,7 +62,7 @@ public class TclFoldingStructureProvider extends AbstractASTFoldingStructureProv
          */
         ISourceParser pp = null;
 		try {
-			pp = (ISourceParser) DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+			pp = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
 		} catch (CoreException e1) {
 			if( DLTKCore.DEBUG ) {
 				e1.printStackTrace();
@@ -157,18 +157,10 @@ public class TclFoldingStructureProvider extends AbstractASTFoldingStructureProv
     }
 
     /*
-     * @see org.eclipse.dltk.ui.text.folding.AbstractASTFoldingStructureProvider#getSourceParser()
+     * @see org.eclipse.dltk.ui.text.folding.AbstractASTFoldingStructureProvider#getNatureId()
      */
-    protected ISourceParser getSourceParser()
-    {
-        try {
-			return DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
-		} catch (CoreException e) {
-			if( DLTKCore.DEBUG ) {
-				e.printStackTrace();
-			}
-		}
-		return null;
+    protected String getNatureId() {
+    	return TclNature.NATURE_ID;
     }
 
     /*

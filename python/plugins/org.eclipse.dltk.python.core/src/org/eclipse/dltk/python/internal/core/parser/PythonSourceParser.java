@@ -16,9 +16,8 @@ import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenStream;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExecutableExtension;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.ast.parser.AbstractSourceParser;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.python.internal.core.parsers.DLTKPythonErrorReporter;
@@ -28,7 +27,7 @@ import org.eclipse.dltk.python.internal.core.parsers.python_v3Lexer;
 import org.eclipse.dltk.python.internal.core.parsers.python_v3Parser;
 import org.eclipse.dltk.python.parser.ast.PythonModuleDeclaration;
 
-public class PythonSourceParser implements IExecutableExtension, ISourceParser {
+public class PythonSourceParser extends AbstractSourceParser {
 	private TokenStream fTokenStream;
 	private IProblemReporter problemReporter = null;
 
@@ -83,11 +82,4 @@ public class PythonSourceParser implements IExecutableExtension, ISourceParser {
 
 		return moduleDeclaration;
 	}
-
-	public void setInitializationData(IConfigurationElement config,
-			String propertyName, Object data) throws CoreException {
-		// TODO Auto-generated method stub
-
-	}
-
 }

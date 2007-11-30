@@ -16,7 +16,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
+import org.eclipse.dltk.ast.parser.ISourceParser;
+import org.eclipse.dltk.ast.parser.SourceParserManager;
 import org.eclipse.dltk.codeassist.ICompletionEngine;
 import org.eclipse.dltk.codeassist.ISelectionEngine;
 import org.eclipse.dltk.compiler.problem.DefaultProblemFactory;
@@ -146,20 +147,20 @@ public class DLTKLanguageManager {
 		return (ISelectionEngine) InternalDLTKLanguageManager.getSelectionEngineManager().getObject(natureID);
 	}
 
-	public static ISourceParser getSourceParser(String natureID)
+	public static ISourceParser getSourceParser(String natureID) 
 			throws CoreException {
-		return (ISourceParser) InternalDLTKLanguageManager.getSourceParsersManager().getObject(natureID);
+		return SourceParserManager.getInstance().getSourceParser(natureID);
 	}
 
-	/**
-	 * Return source parser witch is one level lower from top. If this is only
-	 * one source parser for selected nature then return null.
-	 * 
-	 */
-	public static ISourceParser getSourceParserLower(String natureID)
-			throws CoreException {
-		return (ISourceParser) InternalDLTKLanguageManager.getSourceParsersManager().getObjectLower(natureID);
-	}
+//	/**
+//	 * Return source parser witch is one level lower from top. If this is only
+//	 * one source parser for selected nature then return null.
+//	 * 
+//	 */
+//	public static ISourceParser getSourceParserLower(String natureID)
+//			throws CoreException {
+//		return (ISourceParser) InternalDLTKLanguageManager.getSourceParsersManager().getObjectLower(natureID);
+//	}
 
 	public static DLTKSearchParticipant createSearchParticipant(String natureID) {
 		ISearchFactory factory = getSearchFactory(natureID);

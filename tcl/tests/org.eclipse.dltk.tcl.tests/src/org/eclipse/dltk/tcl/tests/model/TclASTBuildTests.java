@@ -12,8 +12,8 @@ package org.eclipse.dltk.tcl.tests.model;
 import junit.framework.Test;
 
 import org.eclipse.core.runtime.Path;
-import org.eclipse.dltk.ast.declarations.ISourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
