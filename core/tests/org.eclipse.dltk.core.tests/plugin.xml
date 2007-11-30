@@ -39,5 +39,18 @@
            id="org.eclipse.dltk.core.tests.model.pessimisticnature">
      </repository>
   </extension>
+  <extension
+        point="org.eclipse.dltk.core.sourceParsers">
+     <parserContribution
+           natureId="org.eclipse.dltk.core.tests.testnature">
+        <parser
+              class="org.eclipse.dltk.core.tests.model.TestSourceParser"
+              description="Test Source Parser"
+              id="org.eclipse.dltk.core.tests.sourceParser"
+              name="Test Source Parser"
+              priority="1">
+        </parser>
+     </parserContribution>
+  </extension>
 
 </plugin>
