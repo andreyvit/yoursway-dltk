@@ -51,8 +51,12 @@ public abstract class DLTKContributionExtensionManager {
 		}
 
 		public int getPriority() {
-			return new Integer(this.configurationElement
-					.getAttribute(PRIORITY_ATTR)).intValue();
+			try {
+				return new Integer(this.configurationElement
+						.getAttribute(PRIORITY_ATTR)).intValue();
+			} catch (NumberFormatException e) {
+				return 0;
+			}
 		}
 
 		public Object createExecutableClass() throws CoreException {
