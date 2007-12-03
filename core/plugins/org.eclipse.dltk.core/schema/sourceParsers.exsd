@@ -57,7 +57,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.eclipse.dltk.ast.declarations.ISourceParser"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.dltk.ast.parser.ISourceParser"/>
                </appInfo>
             </annotation>
          </attribute>
@@ -158,6 +158,5 @@
          [Enter information about supplied implementation of this extension point.]
       </documentation>
    </annotation>
-
 
 </schema>
