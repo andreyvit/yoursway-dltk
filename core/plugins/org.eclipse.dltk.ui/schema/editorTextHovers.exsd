@@ -43,6 +43,11 @@
    </element>
 
    <element name="hover">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="label"/>
+         </appInfo>
+      </annotation>
       <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>

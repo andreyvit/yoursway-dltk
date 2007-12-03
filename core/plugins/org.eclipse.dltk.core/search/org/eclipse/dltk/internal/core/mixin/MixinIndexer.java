@@ -11,51 +11,52 @@ package org.eclipse.dltk.internal.core.mixin;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.ISourceModuleInfoCache;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.mixin.IMixinParser;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.search.SearchDocument;
 import org.eclipse.dltk.core.search.indexing.AbstractIndexer;
 
 public class MixinIndexer extends AbstractIndexer {
-	char[] source;
 	MixinIndexRequestor requestor = new MixinIndexRequestor();
-	ISourceModuleInfoCache.ISourceModuleInfo info;
-	public MixinIndexer(SearchDocument document, char[] source, ISourceModuleInfoCache.ISourceModuleInfo info ) {
+	ISourceModule sourceModule;
+
+	public MixinIndexer(SearchDocument document, ISourceModule module) {
 		super(document);
-		this.source = source;
-		this.info = info;
+		this.sourceModule = module;
 	}
+
 	public void indexDocument() {
 		IDLTKLanguageToolkit toolkit = this.document.getToolkit();
 		if (toolkit == null) {
 			toolkit = DLTKLanguageManager.findToolkit(new Path(this.document
 					.getPath()));
 		}
-		if( toolkit == null ) {
+		if (toolkit == null) {
 			return;
 		}
 		try {
-			IMixinParser parser = MixinManager.getMixinParser(toolkit.getNatureId());
-			if( parser != null ) {
+			IMixinParser parser = MixinManager.getMixinParser(toolkit
+					.getNatureId());
+			if (parser != null) {
 				parser.setRequirestor(this.requestor);
-//				System.out.println("Mixins: indexing " + this.document.getPath());
-				parser.parserSourceModule(this.source, false, null, info);
+				parser.parserSourceModule(false, this.sourceModule);
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 	}
+
 	private class MixinIndexRequestor implements IMixinRequestor {
 		public void reportElement(ElementInfo info) {
-			if( info.key.length() > 0 ) {
+			if (info.key.length() > 0) {
 				MixinIndexer.this.addMixin(info.key.toCharArray());
 			}
-			else {
-				//System.out.println("error");
-			}
-		}	
+		}
 	}
 }

@@ -38,7 +38,7 @@ import org.eclipse.dltk.internal.core.util.Messages;
 public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 	public AbstractLanguageToolkit() {
 	}
-	
+
 	public IProblemFactory createProblemFactory() {
 		return new DefaultProblemFactory();
 	}
@@ -56,6 +56,7 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 		}
 		return new DLTKProblemReporter(resource, factory);
 	}
+
 	protected abstract String getCorePluginID();
 
 	public IStatus validateSourceModule(String name) {
@@ -67,12 +68,10 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 			return new Status(IStatus.ERROR, this.getCorePluginID(), -1,
 					MessageFormat.format(
 							Messages.convention_unit_notScriptName,
-							new String[] { "", "" }),
-					null);
+							new String[] { "", "" }), null);
 		}
 		return IModelStatus.VERIFIED_OK;
 	}
-
 
 	public boolean isScriptLikeFileName(String name) {
 		// TODO: Add more correct checking here.
@@ -80,7 +79,7 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 		for (int i = 0; i < extensions.length; i++) {
 			if (name.endsWith("." + extensions[i])) {
 				return true;
-			}	
+			}
 		}
 		return false;
 	}
@@ -108,6 +107,10 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 	}
 
 	public IStatus validateSourceModule(IPath resource) {
+		if (resource.toString().startsWith(
+				IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
+			return IModelStatus.VERIFIED_OK;
+		}
 		return validateSourceModule(resource.lastSegment());
 	}
 
@@ -119,11 +122,12 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 		return null;
 	}
 
-	public ISelectionEngine createSelectionEngine(ISearchableEnvironment environment, Map options) {
+	public ISelectionEngine createSelectionEngine(
+			ISearchableEnvironment environment, Map options) {
 		return null;
 	}
 
-	public SourceIndexerRequestor createSourceRequestor() {		
+	public SourceIndexerRequestor createSourceRequestor() {
 		return new SourceIndexerRequestor();
 	}
 
@@ -131,11 +135,14 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 		return null;
 	}
 
-	public MatchLocator createMatchLocator(SearchPattern pattern, SearchRequestor requestor, IDLTKSearchScope scope, SubProgressMonitor monitor) {
+	public MatchLocator createMatchLocator(SearchPattern pattern,
+			SearchRequestor requestor, IDLTKSearchScope scope,
+			SubProgressMonitor monitor) {
 		return null;
 	}
 
-	public ICalleeProcessor createCalleeProcessor(IMethod method, IProgressMonitor monitor, IDLTKSearchScope scope) {
+	public ICalleeProcessor createCalleeProcessor(IMethod method,
+			IProgressMonitor monitor, IDLTKSearchScope scope) {
 		return null;
 	}
 
@@ -148,8 +155,18 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 	}
 
 	public abstract String[] getLanguageFileExtensions();
-	
+
 	public IType[] getParentTypes(IType type) {
 		return null;
-	}	
+	}
+
+	public IStatus validateSourceModule(IModelElement parent, String str) {
+		return validateSourceModule(str);
+	}
+
+	protected Status createNotScriptFileStatus() {
+		return new Status(IStatus.ERROR, getCorePluginID(), -1, MessageFormat
+				.format(Messages.convention_unit_notScriptName, new String[] {
+						getLanguageFileExtensions().toString(), "Tcl" }), null);
+	}
 }

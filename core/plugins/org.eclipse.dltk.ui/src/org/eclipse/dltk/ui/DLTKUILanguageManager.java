@@ -55,7 +55,7 @@ public class DLTKUILanguageManager extends PriorityClassDLTKExtensionManager {
 		IDLTKUILanguageToolkit languageToolkit = getLanguageToolkit(element);
 		if (languageToolkit != null) {
 			ScriptUILabelProvider provider = languageToolkit
-					.createScripUILabelProvider();
+					.createScriptUILabelProvider();
 			if (provider != null) {
 				return provider;
 			}
@@ -67,7 +67,7 @@ public class DLTKUILanguageManager extends PriorityClassDLTKExtensionManager {
 		IDLTKUILanguageToolkit languageToolkit = getLanguageToolkit(nature);
 		if (languageToolkit != null) {
 			ScriptUILabelProvider provider = languageToolkit
-					.createScripUILabelProvider();
+					.createScriptUILabelProvider();
 			if (provider != null) {
 				return provider;
 			}

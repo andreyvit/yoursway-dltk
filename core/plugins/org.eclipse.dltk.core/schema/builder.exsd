@@ -43,6 +43,11 @@
    </element>
 
    <element name="builder">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="nature"/>
+         </appInfo>
+      </annotation>
       <complexType>
          <attribute name="class" type="string" use="required">
             <annotation>

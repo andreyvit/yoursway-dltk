@@ -92,7 +92,7 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 		return "org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER";
 	}
 
-	public ScriptUILabelProvider createScripUILabelProvider() {
+	public ScriptUILabelProvider createScriptUILabelProvider() {
 		return null;
 	}
 

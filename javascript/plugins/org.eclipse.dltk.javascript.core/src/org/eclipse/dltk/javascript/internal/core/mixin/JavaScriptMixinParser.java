@@ -20,8 +20,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
+import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinParser;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.MixinModel;
@@ -46,24 +48,23 @@ public class JavaScriptMixinParser implements IMixinParser,
 
 	private IMixinRequestor requestor;
 
-	private void reportRefs(char[] contents, boolean signature,
-			ISourceModule module, ISourceModuleInfo info) {
-		String content = new String(contents);
+	private void reportRefs(boolean signature, ISourceModule module) {
+		char[] content = getContent(module);
 		CompilerEnvirons cenv = new CompilerEnvirons();
 		ErrorReporter reporter = new NullReporter();
 		JavaScriptModuleDeclaration moduleDeclaration = new JavaScriptModuleDeclaration(
-				content.length());
+				content.length);
 
 		Parser parser = new Parser(cenv, reporter);
 		try {
-			ScriptOrFnNode parse = parser.parse(new CharArrayReader(contents),
+			ScriptOrFnNode parse = parser.parse(new CharArrayReader(content),
 					"", 0);
 			TypeInferencer interferencer = new TypeInferencer(null,
 					new ReferenceResolverContext(null, new HashMap()));
 			// interferencer.setRequestor(fRequestor);
 			interferencer.doInterferencing(parse, Integer.MAX_VALUE);
 			// fRequestor.enterModule();
-			processNode("", parse,signature,(ModelElement) module);
+			processNode("", parse, signature, (IModelElement) module);
 			HostCollection collection = interferencer.getCollection();
 			// elements/
 			moduleDeclaration.setCollection(collection);
@@ -83,6 +84,17 @@ public class JavaScriptMixinParser implements IMixinParser,
 		}
 	}
 
+	private char[] getContent(ISourceModule module) {
+		try {
+			return module.getSourceAsCharArray();
+		} catch (ModelException e1) {
+			if (DLTKCore.DEBUG) {
+				e1.printStackTrace();
+			}
+			return new char[0];
+		}
+	}
+
 	private void reportRef(IReference ref, String sma, int level) {
 		Set sm = ref.getChilds(false);
 		String key = ref.getName();
@@ -95,26 +107,27 @@ public class JavaScriptMixinParser implements IMixinParser,
 				IReference refa = (IReference) next;
 				reportRef(refa, key, level + 1);
 			}
-		}		
+		}
 		IMixinRequestor.ElementInfo elementInfo = new IMixinRequestor.ElementInfo();
-		elementInfo.key = IIndexConstants.SEPARATOR+key.replace('.', IIndexConstants.SEPARATOR);
-		elementInfo.object=ref;
+		elementInfo.key = IIndexConstants.SEPARATOR
+				+ key.replace('.', IIndexConstants.SEPARATOR);
+		elementInfo.object = ref;
 		requestor.reportElement(elementInfo);
 	}
 
-	private void processNode(String parent, ScriptOrFnNode parse, boolean signature,ModelElement parentElement) {
+	private void processNode(String parent, ScriptOrFnNode parse,
+			boolean signature, IModelElement parentElement) {
 		for (int a = 0; a < parse.getFunctionCount(); a++) {
 			FunctionNode functionNode = parse.getFunctionNode(a);
 			String functionName = functionNode.getFunctionName();
-			if (functionName.length()>0)
-			{
-			IMixinRequestor.ElementInfo elementInfo = new IMixinRequestor.ElementInfo();
-			String key = parent + MixinModel.SEPARATOR + functionName;
-			elementInfo.key = key;
-			SourceMethod ms=new SourceMethod(parentElement,functionName);			
-			elementInfo.object=ms;			
-			requestor.reportElement(elementInfo);			
-			processNode(key, functionNode,signature,ms);
+			if (functionName.length() > 0) {
+				IMixinRequestor.ElementInfo elementInfo = new IMixinRequestor.ElementInfo();
+				String key = parent + MixinModel.SEPARATOR + functionName;
+				elementInfo.key = key;
+				SourceMethod ms = new SourceMethod((ModelElement)parentElement, functionName);
+				elementInfo.object = ms;
+				requestor.reportElement(elementInfo);
+				processNode(key, functionNode, signature, ms);
 			}
 		}
 		String[] paramsAndVars = parse.getParamAndVarNames();
@@ -137,7 +150,7 @@ public class JavaScriptMixinParser implements IMixinParser,
 				IMixinRequestor.ElementInfo elementInfo = new IMixinRequestor.ElementInfo();
 				String key = parent + MixinModel.SEPARATOR + var;
 				elementInfo.key = key;
-				elementInfo.object=new SourceField(parentElement,var);
+				elementInfo.object = new SourceField((ModelElement)parentElement, var);
 				requestor.reportElement(elementInfo);
 			}
 	}
@@ -150,8 +163,8 @@ public class JavaScriptMixinParser implements IMixinParser,
 			String propertyName, Object data) throws CoreException {
 	}
 
-	public void parserSourceModule(char[] contents, boolean signature,
-			ISourceModule module, ISourceModuleInfo info) {
-		reportRefs(contents, signature, module, info);
+	public void parserSourceModule(boolean signature,
+			ISourceModule module) {
+		reportRefs(signature, module);
 	}
 }

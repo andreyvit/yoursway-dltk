@@ -11,48 +11,16 @@ package org.eclipse.dltk.python.core;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.text.MessageFormat;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.dltk.core.ICallProcessor;
+import org.eclipse.dltk.core.AbstractLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.IModelStatus;
-import org.eclipse.dltk.internal.core.util.Messages;
 
-public class PythonLanguageToolkit implements IDLTKLanguageToolkit {
+public class PythonLanguageToolkit extends AbstractLanguageToolkit {
+	private static final String[] langaugeExtensions = new String[] { "py" };
 	private static PythonLanguageToolkit sInstance = new PythonLanguageToolkit();
+
 	public PythonLanguageToolkit() {
-	}
-
-	public IStatus validateSourceModule(String name) {
-		if (name == null) {
-			return new Status(IStatus.ERROR, PythonPlugin.PLUGIN_ID, -1,
-					Messages.convention_unit_nullName, null);
-		}
-		if (!isScriptLikeFileName(name)) {
-			return new Status(IStatus.ERROR, PythonPlugin.PLUGIN_ID, -1,
-					MessageFormat.format(
-							Messages.convention_unit_notScriptName,
-							new String[] { getPythonExtension(), "Python" }),
-					null);
-		}
-		return IModelStatus.VERIFIED_OK;
-	}
-
-	private String getPythonExtension() {
-		return "py";
-	}
-
-	public boolean isScriptLikeFileName(String name) {
-		// TODO: Add more correct checking here.
-		if (name.endsWith("." + getPythonExtension())) {
-			return true;
-		}
-		return false;
 	}
 
 	public boolean languageSupportZIPBuildpath() {
@@ -82,22 +50,6 @@ public class PythonLanguageToolkit implements IDLTKLanguageToolkit {
 		return PythonNature.NATURE_ID;
 	}
 
-	public IStatus validateSourceModule(IResource resource) {
-		return validateSourceModule(resource.getName());
-	}
-
-	public IStatus validateSourceModule(IPath resource) {
-		return validateSourceModule(resource.lastSegment());
-	}
-
-	public IStatus validateSourceModule(IModelElement parent, String name) {
-		return validateSourceModule(name);
-	}
-	
-	public IStatus validateSourceModuleName(String str) {
-		return validateSourceModule(str);
-	}
-
 	public static IDLTKLanguageToolkit getDefault() {
 		return sInstance;
 	}
@@ -106,17 +58,15 @@ public class PythonLanguageToolkit implements IDLTKLanguageToolkit {
 		return ".";
 	}
 
-	public ICallProcessor createCallProcessor() {
-		// TODO Auto-generated method stub
-		return null;
+	public String[] getLanguageFileExtensions() {
+		return langaugeExtensions;
 	}
 
-	public String[] getLanguageFileExtensions() {		
-		return new String[] {"py"};
-	}
-
-	public String getLanguageName()
-	{
+	public String getLanguageName() {
 		return "Python";
-	}	
+	}
+
+	protected String getCorePluginID() {
+		return PythonPlugin.PLUGIN_ID;
+	}
 }

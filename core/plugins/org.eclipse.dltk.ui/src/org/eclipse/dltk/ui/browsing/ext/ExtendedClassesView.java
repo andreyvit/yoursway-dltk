@@ -181,7 +181,7 @@ public class ExtendedClassesView extends ViewPart implements
 				.getLanguageToolkit(this.fToolkit.getNatureId());
 
 		browsingPane.setLabelProvider(new ExtendedClasesLabelProvider(
-				languageToolkit.createScripUILabelProvider()));
+				languageToolkit.createScriptUILabelProvider()));
 
 		getSite().setSelectionProvider(this);
 		getViewSite().getPage().addPostSelectionListener(this);

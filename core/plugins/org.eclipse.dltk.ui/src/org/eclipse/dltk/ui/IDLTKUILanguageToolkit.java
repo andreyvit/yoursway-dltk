@@ -14,19 +14,16 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.dltk.ui.viewsupport.ScriptUILabelProvider;
-import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 public interface IDLTKUILanguageToolkit {
 	ScriptElementLabels getScriptElementLabels();
 
-	ScriptUILabelProvider createScripUILabelProvider();
+	ScriptUILabelProvider createScriptUILabelProvider();
 	
 	IDLTKLanguageToolkit getCoreToolkit();
 
 	IPreferenceStore getPreferenceStore();
-
-	IDialogSettings getDialogSettings();
 
 	String getPartitioningId();
 

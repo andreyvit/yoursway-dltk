@@ -10,6 +10,8 @@
  package org.eclipse.dltk.internal.ui.dialogs;
 
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
+import org.eclipse.dltk.ui.DLTKUILanguageManager;
+import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.dialogs.TypeSelectionExtension;
 import org.eclipse.jface.dialogs.DialogSettings;
@@ -38,7 +40,7 @@ public class OpenTypeSelectionDialog2 extends TypeSelectionDialog2 {
 	public OpenTypeSelectionDialog2(Shell parent, boolean multi, IRunnableContext context, 
 			IDLTKSearchScope scope, int elementKinds, TypeSelectionExtension extension, IDLTKUILanguageToolkit toolkit) {
 		super(parent, multi, context, scope, elementKinds, extension, toolkit );
-		IDialogSettings settings= toolkit.getDialogSettings();
+		IDialogSettings settings= DLTKUIPlugin.getDefault().getDialogSettings();
 		fSettings= settings.getSection(DIALOG_SETTINGS);
 		if (fSettings == null) {
 			fSettings= new DialogSettings(DIALOG_SETTINGS);

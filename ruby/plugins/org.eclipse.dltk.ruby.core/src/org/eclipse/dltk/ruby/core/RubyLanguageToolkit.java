@@ -9,39 +9,18 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core;
 
-import java.text.MessageFormat;
-
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.AbstractLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
-import org.eclipse.dltk.internal.core.util.Messages;
 
-public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
+public class RubyLanguageToolkit extends AbstractLanguageToolkit {
 	protected static RubyLanguageToolkit sToolkit = new RubyLanguageToolkit();
 
 	public RubyLanguageToolkit() {
 
-	}
-
-	public IStatus validateSourceModule(String name) {
-		if (name == null) {
-			return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
-					Messages.convention_unit_nullName, null);
-		}
-
-		if (!isScriptLikeFileName(name)) {
-			return new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, -1,
-					MessageFormat.format(
-							Messages.convention_unit_notScriptName,
-							new String[] { getRubyExtension(), "Ruby" }), null);
-		}
-
-		return IModelStatus.VERIFIED_OK;
 	}
 
 	public String getRubyExtension() {
@@ -50,10 +29,6 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 
 	public boolean languageSupportZIPBuildpath() {
 		return false;
-	}
-
-	public boolean validateSourcePackage(IPath path) {
-		return true;
 	}
 
 	public String getNatureId() {
@@ -65,33 +40,11 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 			return new Status(IModelStatus.ERROR, RubyPlugin.PLUGIN_ID, 1,
 					"Resource passed to validateSourceModule() is null", null);
 
-		// String ext = resource.getLocation().getFileExtension();
-		// if (ext == null || ext.length() == 0)
-		// if (isRubyHeadered(resource.getLocation().toFile()) ==
-		// IModelStatus.VERIFIED_OK) {
-		// return IModelStatus.VERIFIED_OK;
-		// }
 		if ("rakefile".equalsIgnoreCase(resource.getLocation().lastSegment())) {
 			return IModelStatus.VERIFIED_OK;
 		}
 
 		return validateSourceModule(resource.getName());
-	}
-
-	public IStatus validateSourceModule(IPath resource) {
-		if (resource.toString().startsWith(
-				IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
-			return IModelStatus.VERIFIED_OK;
-		}
-		return validateSourceModule(resource.lastSegment());
-	}
-
-	public IStatus validateSourceModule(IModelElement parent, String str) {
-		return validateSourceModule(str);
-	}
-
-	public IStatus validateSourceModuleName(String str) {
-		return validateSourceModule(str);
 	}
 
 	public String getDelimeterReplacerString() {
@@ -109,17 +62,8 @@ public class RubyLanguageToolkit implements IDLTKLanguageToolkit {
 	public String getLanguageName() {
 		return "Ruby";
 	}
-	
-	public boolean isScriptLikeFileName(String name) {
-		// TODO: pull up and refactor to use AbstractLanguageToolkit
-		String[] exts = getLanguageFileExtensions();
-		for (int i = 0; i < exts.length; ++i) {
-			if (name.endsWith("." + exts[i])) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
 
+	protected String getCorePluginID() {
+		return RubyPlugin.PLUGIN_ID;
+	}
 }

@@ -11,10 +11,9 @@ package org.eclipse.dltk.ruby.internal.parser.mixin;
 
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.ISourceModuleInfoCache;
+import org.eclipse.dltk.core.SourceParserUtil;
 import org.eclipse.dltk.core.mixin.IMixinParser;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
-import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 
 public class RubyMixin implements IMixinParser {
 
@@ -26,19 +25,18 @@ public class RubyMixin implements IMixinParser {
 
 	private IMixinRequestor requestor;
 
-	public void parserSourceModule(char[] contents, boolean signature,
-			ISourceModule module, ISourceModuleInfoCache.ISourceModuleInfo info ) {
-//		if( module != null ) {
-//			RubyMixinModel.getRawInstance().remove(module);
-//		}
-//		long start = System.currentTimeMillis();
-		
-		ModuleDeclaration moduleDeclaration = RubySourceElementParser
-				.parseModule(info, contents, null, null);		
-		
-//		long end = System.currentTimeMillis();		
-//		System.out.println("RubyMixin: parsing took " + (end - start));
-//		start = end;
+	public void parserSourceModule(boolean signature, ISourceModule module) {
+		// if( module != null ) {
+		// RubyMixinModel.getRawInstance().remove(module);
+		// }
+		// long start = System.currentTimeMillis();
+
+		ModuleDeclaration moduleDeclaration = SourceParserUtil
+				.getModuleDeclaration(module, null);
+
+		// long end = System.currentTimeMillis();
+		// System.out.println("RubyMixin: parsing took " + (end - start));
+		// start = end;
 		RubyMixinBuildVisitor visitor = new RubyMixinBuildVisitor(
 				moduleDeclaration, module, signature, requestor);
 		try {
@@ -46,8 +44,9 @@ public class RubyMixin implements IMixinParser {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-//		end = System.currentTimeMillis();
-//		System.out.println("RubyMixin: traversing took " + (end - start) + " signature=" + signature);
+		// end = System.currentTimeMillis();
+		// System.out.println("RubyMixin: traversing took " + (end - start) + "
+		// signature=" + signature);
 	}
 
 	public void setRequirestor(IMixinRequestor requestor) {

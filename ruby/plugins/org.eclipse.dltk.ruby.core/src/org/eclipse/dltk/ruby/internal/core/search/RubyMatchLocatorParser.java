@@ -20,13 +20,13 @@ import org.eclipse.dltk.ast.references.ConstantReference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.TypeReference;
 import org.eclipse.dltk.ast.references.VariableReference;
+import org.eclipse.dltk.core.SourceParserUtil;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.core.search.matching.MatchLocatorParser;
 import org.eclipse.dltk.core.search.matching.PatternLocator;
 import org.eclipse.dltk.core.search.matching.PossibleMatch;
 import org.eclipse.dltk.ruby.ast.RubyAssignment;
 import org.eclipse.dltk.ruby.ast.RubyConstantDeclaration;
-import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 
 public class RubyMatchLocatorParser extends MatchLocatorParser {
 	public RubyMatchLocatorParser(MatchLocator locator) {
@@ -34,9 +34,9 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 	}
 
 	public ModuleDeclaration parse(PossibleMatch possibleMatch) {
-		ModuleDeclaration module = RubySourceElementParser
-				.parseModule((org.eclipse.dltk.core.ISourceModule) possibleMatch
-						.getModelElement());
+		ModuleDeclaration module = SourceParserUtil.getModuleDeclaration(
+				(org.eclipse.dltk.core.ISourceModule) possibleMatch
+						.getModelElement(), null);
 		return module;
 	}
 
@@ -48,13 +48,16 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 		}
 
 		public boolean visit(MethodDeclaration s) throws Exception {
-			RubyMatchLocatorParser.this.getPatternLocator().match(RubyMatchLocatorParser.this.processMethod(s), RubyMatchLocatorParser.this.getNodeSet());
+			RubyMatchLocatorParser.this.getPatternLocator().match(
+					RubyMatchLocatorParser.this.processMethod(s),
+					RubyMatchLocatorParser.this.getNodeSet());
 			return true;
 		}
 
-
 		public boolean visit(TypeDeclaration s) throws Exception {
-			RubyMatchLocatorParser.this.getPatternLocator().match(RubyMatchLocatorParser.this.processType(s), RubyMatchLocatorParser.this.getNodeSet());
+			RubyMatchLocatorParser.this.getPatternLocator().match(
+					RubyMatchLocatorParser.this.processType(s),
+					RubyMatchLocatorParser.this.getNodeSet());
 			return true;
 		}
 	};
@@ -90,18 +93,17 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 			if (end < 0) {
 				end = 1;
 			}
-			locator
-					.match(
-							/*
-							 * (CallExpression) new CallExpression(start, end,
-							 * call.getReceiver(), call.getName(),
-							 * call.getArgs())
-							 */call,
-							this.getNodeSet());
-			if( call.getName().equals("new")) {
+			locator.match(
+			/*
+			 * (CallExpression) new CallExpression(start, end,
+			 * call.getReceiver(), call.getName(), call.getArgs())
+			 */call, this.getNodeSet());
+			if (call.getName().equals("new")) {
 				ASTNode receiver = call.getReceiver();
-				if( receiver instanceof ConstantReference ) {
-					TypeReference ref = new TypeReference(receiver.sourceStart(), receiver.sourceEnd(), ((ConstantReference)receiver).getName());
+				if (receiver instanceof ConstantReference) {
+					TypeReference ref = new TypeReference(receiver
+							.sourceStart(), receiver.sourceEnd(),
+							((ConstantReference) receiver).getName());
 					locator.match(ref, this.getNodeSet());
 				}
 			}
@@ -113,8 +115,8 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 			if (left instanceof VariableReference) {
 				VariableReference var = (VariableReference) left;
 				FieldDeclaration field = new FieldDeclaration(var.getName(),
-						var.sourceStart(), var.sourceEnd()-1, var.sourceStart(),
-						var.sourceEnd()-1);
+						var.sourceStart(), var.sourceEnd() - 1, var
+								.sourceStart(), var.sourceEnd() - 1);
 				locator.match(field, this.getNodeSet());
 			}
 		} else if (node instanceof VariableReference) {

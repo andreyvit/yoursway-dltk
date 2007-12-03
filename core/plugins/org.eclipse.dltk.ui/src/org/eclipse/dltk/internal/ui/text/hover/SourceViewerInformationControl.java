@@ -16,6 +16,7 @@ import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.PreferenceConstants;
+import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.resource.JFaceResources;
@@ -350,8 +351,11 @@ public class SourceViewerInformationControl implements IInformationControl,
 		IDocument doc = new Document(content);
 		IDLTKUILanguageToolkit uiToolkit = DLTKUILanguageManager
 				.getLanguageToolkit(fToolkit.getNatureId());
-		uiToolkit.getTextTools().setupDocumentPartitioner(doc,
-				uiToolkit.getPartitioningId());
+		ScriptTextTools textTools = uiToolkit.getTextTools();
+		if (textTools != null) {
+			textTools.setupDocumentPartitioner(doc, uiToolkit
+					.getPartitioningId());
+		}
 		fViewer.setInput(doc);
 	}
 

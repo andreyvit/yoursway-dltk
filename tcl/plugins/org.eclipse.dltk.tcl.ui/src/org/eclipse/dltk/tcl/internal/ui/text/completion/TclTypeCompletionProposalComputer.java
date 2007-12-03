@@ -10,9 +10,11 @@
 package org.eclipse.dltk.tcl.internal.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionProposal;
+import org.eclipse.dltk.tcl.internal.ui.templates.TclTemplateCompletionProcessor;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalComputer;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
+import org.eclipse.jface.text.templates.TemplateCompletionProcessor;
 
 public class TclTypeCompletionProposalComputer extends
 		ScriptCompletionProposalComputer {
@@ -37,5 +39,9 @@ public class TclTypeCompletionProposalComputer extends
 		collector.setIgnored(CompletionProposal.TYPE_REF, false);
 
 		return collector;
+	}
+	protected TemplateCompletionProcessor createTemplateProposalComputer(
+			ScriptContentAssistInvocationContext context) {
+		return new TclTemplateCompletionProcessor(context);
 	}
 }

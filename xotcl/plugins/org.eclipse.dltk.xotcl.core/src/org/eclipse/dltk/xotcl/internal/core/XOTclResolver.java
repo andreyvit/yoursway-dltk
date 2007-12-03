@@ -8,17 +8,14 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.ISourceModuleInfoCache;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
+import org.eclipse.dltk.core.SourceParserUtil;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
-import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.core.search.mixin.TclMixinModel;
 import org.eclipse.dltk.tcl.internal.core.search.mixin.model.ITclMixinElement;
-import org.eclipse.dltk.xotcl.internal.core.parser.XOTclSourceElementParser;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclClass;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclObject;
 
@@ -48,7 +45,8 @@ public class XOTclResolver {
 									.length());
 				}
 				String[] split = superClass.split("::");
-				IModelElement[] types = findTypeMixin(memberkey, split[split.length - 1]);
+				IModelElement[] types = findTypeMixin(memberkey,
+						split[split.length - 1]);
 				for (int j = 0; j < types.length; j++) {
 					IType type = (IType) types[j];
 					IMethod[] methods = type.getMethods();
@@ -88,23 +86,11 @@ public class XOTclResolver {
 	public static ModuleDeclaration parseModule(IModelElement method) {
 		ISourceModule sourceModule = (ISourceModule) method
 				.getAncestor(IModelElement.SOURCE_MODULE);
-		ISourceModuleInfoCache sourceModuleInfoCache = ModelManager
-				.getModelManager().getSourceModuleInfoCache();
-		// sourceModuleInfoCache.remove(this);
-		ISourceModuleInfo mifo = sourceModuleInfoCache.get(sourceModule);
-		try {
-			ModuleDeclaration module = XOTclSourceElementParser.parseModule(
-					mifo, sourceModule.getSource().toCharArray(), null,
-					sourceModule.getPath().toOSString().toCharArray());
-			return module;
-		} catch (ModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+
+		ModuleDeclaration module = SourceParserUtil.getModuleDeclaration(
+				sourceModule, null);
+		return module;
+
 	}
 
 	public static IModelElement[] findTypeMixin(String pattern, String name) {

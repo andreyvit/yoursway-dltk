@@ -40,6 +40,11 @@
    </element>
 
    <element name="filter">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="id"/>
+         </appInfo>
+      </annotation>
       <complexType>
          <attribute name="id" type="string">
             <annotation>
@@ -65,7 +70,7 @@
          <attribute name="targetId" type="string">
             <annotation>
                <documentation>
-                  the id of the target where this filter is contributed. If this attribute is missing, then the filter will be contributed to all views which use the org.eclipse.dltk.ui.actions.CustomFiltersActionGroup. 
+                  the id of the target where this filter is contributed. If this attribute is missing, then the filter will be contributed to all views which use the org.eclipse.dltk.ui.actions.CustomFiltersActionGroup.
                </documentation>
             </annotation>
          </attribute>

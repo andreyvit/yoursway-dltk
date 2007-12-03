@@ -51,7 +51,7 @@ public class JavaScriptUILanguageToolkit implements IDLTKUILanguageToolkit {
 		return "org.eclipse.dltk.javascript.launching.INTERPRETER_CONTAINER";
 	}
 
-	public ScriptUILabelProvider createScripUILabelProvider() {
+	public ScriptUILabelProvider createScriptUILabelProvider() {
 		return null;
 	}
 

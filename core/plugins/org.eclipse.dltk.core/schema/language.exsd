@@ -44,6 +44,11 @@ Used to specify parsers, locators, validators, etc.
    </element>
 
    <element name="language">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="nature"/>
+         </appInfo>
+      </annotation>
       <complexType>
          <attribute name="class" type="string" use="required">
             <annotation>

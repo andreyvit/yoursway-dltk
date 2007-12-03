@@ -15,7 +15,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,12 +23,11 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.core.AbstractLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
-import org.eclipse.dltk.internal.core.util.Messages;
 
-public class TclLanguageToolkit implements IDLTKLanguageToolkit {
+public class TclLanguageToolkit extends AbstractLanguageToolkit {
 
 	protected static String[] patterns = {
 			"#!/usr/bin/tclsh",
@@ -48,12 +46,12 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(file));
-			int size = Math.min((int) file.length(), 128000); // DON'T
+			int size = Math.min((int) file.length(), 256 * 1024); // DON'T
 			// READ
 			// FILES
 			// WITH SIZE
 			// MORE THAN
-			// 128k
+			// 256k
 			char buf[] = new char[size + 1];
 			reader.read(buf);
 
@@ -90,7 +88,7 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 
 	private boolean isSureNotTCLFile(IPath path) {
 		String name = path.toOSString();
-		String[] exts = { "so", "a", "la", "c", "h" };
+		String[] exts = { "so", "a", "la", "c", "h", "log" };
 		for (int i = 0; i < exts.length; ++i) {
 			if (name.endsWith("." + exts[i])) {
 				return true;
@@ -107,11 +105,8 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 	}
 
 	public boolean isScriptLikeFileName(String name) {
-		String[] exts = getLanguageFileExtensions();
-		for (int i = 0; i < exts.length; ++i) {
-			if (name.endsWith("." + exts[i])) {
-				return true;
-			}
+		if (super.isScriptLikeFileName(name)) {
+			return true;
 		}
 		if (name.toLowerCase().equals("tclindex")) {
 			return true;
@@ -122,30 +117,6 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 	public TclLanguageToolkit() {
 	}
 
-	public boolean languageSupportZIPBuildpath() {
-		return false;
-	}
-
-	public IStatus validateSourceModule(IModelElement parent, String name) {
-		return validateSourceModuleName(name);
-	}
-
-	public IStatus validateSourceModuleName(String name) {
-		if (name == null) {
-			return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,
-					Messages.convention_unit_nullName, null);
-		}
-		if (!isScriptLikeFileName(name)) {
-			return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,
-					MessageFormat.format(
-							Messages.convention_unit_notScriptName,
-							new String[] {
-									getLanguageFileExtensions().toString(),
-									"Tcl" }), null);
-		}
-		return IModelStatus.VERIFIED_OK;
-	}
-
 	public IStatus validateSourceModule(IPath path) {
 		IStatus status = validateSourceModuleName(path.lastSegment());
 
@@ -153,12 +124,7 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 			return status;
 
 		if (isSureNotTCLFile(path)) {
-			return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,
-					MessageFormat.format(
-							Messages.convention_unit_notScriptName,
-							new String[] {
-									getLanguageFileExtensions().toString(),
-									"Tcl" }), null);
+			return createNotScriptFileStatus();
 		}
 
 		if (isTclHeadered(path.toFile()) == IModelStatus.VERIFIED_OK)
@@ -233,5 +199,9 @@ public class TclLanguageToolkit implements IDLTKLanguageToolkit {
 
 	public String getLanguageName() {
 		return "Tcl";
+	}
+
+	protected String getCorePluginID() {
+		return TclPlugin.PLUGIN_ID;
 	}
 }

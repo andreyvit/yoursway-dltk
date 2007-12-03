@@ -28,6 +28,6 @@ public class RubyBuildPathsBlock extends BuildpathsBlock {
 	}
 
 	protected boolean supportZips() {
-		return true;
+		return false;
 	}
 }

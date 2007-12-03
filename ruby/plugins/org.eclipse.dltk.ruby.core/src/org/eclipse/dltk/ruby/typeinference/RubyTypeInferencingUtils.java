@@ -27,6 +27,7 @@ import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ScriptModelUtil;
+import org.eclipse.dltk.core.SourceParserUtil;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.MixinModel;
@@ -44,7 +45,6 @@ import org.eclipse.dltk.ruby.ast.RubyUnlessStatement;
 import org.eclipse.dltk.ruby.ast.RubyUntilStatement;
 import org.eclipse.dltk.ruby.ast.RubyWhileStatement;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
-import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
 import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinBuildVisitor;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
@@ -265,7 +265,7 @@ public class RubyTypeInferencingUtils {
 	}
 
 	public static ModuleDeclaration parseSource(ISourceModule module) {
-		return RubySourceElementParser.parseModule(module);
+		return SourceParserUtil.getModuleDeclaration(module, null);
 	}
 
 	public static IEvaluatedType getAmbiguousMetaType(IEvaluatedType receiver) {

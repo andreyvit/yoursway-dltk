@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
@@ -62,7 +61,7 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 // this.fReporter = problemReporter;
 	}
 
-	public ModuleDeclaration parseSourceModule(char[] contents,
+	public void parseSourceModule(char[] contents,
 			ISourceModuleInfo info, char[] filename) {
 		String content = new String(contents);
 		CompilerEnvirons cenv = new CompilerEnvirons();
@@ -141,7 +140,7 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 			e.printStackTrace();
 		}
 
-		return moduleDeclaration;
+		return;
 	}
 
 	private HashSet reportedRefs = new HashSet();

@@ -55,7 +55,7 @@ public class PythonUILanguageToolkit implements IDLTKUILanguageToolkit {
 		return "org.eclipse.dltk.python.launching.INTERPRETER_CONTAINER";
 	}
 
-	public ScriptUILabelProvider createScripUILabelProvider() {
+	public ScriptUILabelProvider createScriptUILabelProvider() {
 		return null;
 	}
 

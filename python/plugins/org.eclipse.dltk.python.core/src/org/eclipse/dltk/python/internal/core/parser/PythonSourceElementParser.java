@@ -38,7 +38,7 @@ public class PythonSourceElementParser implements ISourceElementParser {
 		// this.fReporter = problemReporter;
 	}
 
-	public ModuleDeclaration parseSourceModule(char[] contents,
+	public void parseSourceModule(char[] contents,
 			ISourceModuleInfo astCache, char[] filename) {
 
 		ModuleDeclaration moduleDeclaration = SourceParserUtil
@@ -55,7 +55,6 @@ public class PythonSourceElementParser implements ISourceElementParser {
 				e.printStackTrace();
 			}
 		}
-		return moduleDeclaration;
 	}
 
 	public void setRequestor(ISourceElementRequestor requestor) {

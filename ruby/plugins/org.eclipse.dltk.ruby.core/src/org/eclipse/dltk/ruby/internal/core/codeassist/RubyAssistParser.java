@@ -13,13 +13,12 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.compiler.env.ISourceModule;
-import org.eclipse.dltk.ruby.internal.parser.RubySourceElementParser;
-
+import org.eclipse.dltk.core.SourceParserUtil;
 
 public abstract class RubyAssistParser implements IAssistParser {
 
 	protected ModuleDeclaration module;
-	
+
 	protected ASTNode assistNodeParent = null;
 
 	public ASTNode getAssistNodeParent() {
@@ -31,9 +30,11 @@ public abstract class RubyAssistParser implements IAssistParser {
 	}
 
 	public ModuleDeclaration parse(ISourceModule sourceUnit) {
-		ModuleDeclaration module=null;
-		module = RubySourceElementParser.parseModule((org.eclipse.dltk.core.ISourceModule)sourceUnit.getModelElement());
-		
+		ModuleDeclaration module = null;
+		module = SourceParserUtil.getModuleDeclaration(
+				(org.eclipse.dltk.core.ISourceModule) sourceUnit
+						.getModelElement(), null);
+
 		return module;
 	}
 }

@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.core.tests.model;
 
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.ISourceElementParser;
@@ -28,12 +27,12 @@ public class TestSourceElementParser implements ISourceElementParser {
 // this.requestor = requestor;
 // }
 
-	public ModuleDeclaration parseSourceModule(char[] contents,
+	public void parseSourceModule(char[] contents,
 			ISourceModuleInfo astCashe, char[] filename) {
 		String file = new String(contents);
 		if (file.startsWith(PARSEME_HEADER)) {
 			parsePseudo(file);
-			return null;
+			return;
 		}
 		requestor.enterModule();
 		ISourceElementRequestor.TypeInfo ti = new ISourceElementRequestor.TypeInfo();
@@ -48,7 +47,7 @@ public class TestSourceElementParser implements ISourceElementParser {
 		requestor.enterMethod(mi);
 		requestor.exitMethod(11);
 		requestor.exitModule(20);
-		return null;
+		return;
 	}
 
 	/**

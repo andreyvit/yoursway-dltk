@@ -92,7 +92,7 @@ public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
 		return "org.eclipse.dltk.tcl.launching.INTERPRETER_CONTAINER";
 	}
 
-	public ScriptUILabelProvider createScripUILabelProvider() {
+	public ScriptUILabelProvider createScriptUILabelProvider() {
 		return null;
 	}
 

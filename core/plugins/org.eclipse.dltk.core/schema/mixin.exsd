@@ -45,7 +45,7 @@
    <element name="mixin">
       <annotation>
          <appInfo>
-            <meta.element labelAttribute="class"/>
+            <meta.element labelAttribute="nature"/>
          </appInfo>
       </annotation>
       <complexType>

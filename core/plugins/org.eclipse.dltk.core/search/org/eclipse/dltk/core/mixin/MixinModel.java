@@ -34,13 +34,10 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.ISourceModuleInfoCache;
-import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.core.search.indexing.IIndexConstants;
 import org.eclipse.dltk.internal.core.ModelCache;
-import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.mixin.IInternalMixinElement;
 import org.eclipse.dltk.internal.core.mixin.MixinCache;
 import org.eclipse.dltk.internal.core.mixin.MixinManager;
@@ -246,22 +243,10 @@ public class MixinModel {
 			mixinParser = MixinManager.getMixinParser(sourceModule);
 			if (mixinParser != null) {
 				this.currentModule = sourceModule;
-				char[] content = sourceModule.getSourceAsCharArray();
 				mixinParser.setRequirestor(mixinRequestor);
 				// System.out.println("Mixins: reporting " +
 				// sourceModule.getPath());
-				ISourceModuleInfoCache sourceModuleInfoCache = ModelManager
-						.getModelManager().getSourceModuleInfoCache();
-				// sourceModuleInfoCache.remove(sourceModule);
-				ISourceModuleInfo mifo = sourceModuleInfoCache
-						.get(sourceModule);
-
-				mixinParser.parserSourceModule(content, true, sourceModule,
-						mifo);
-
-				if (mifo.isEmpty()) {
-					sourceModuleInfoCache.remove(sourceModule);
-				}
+				mixinParser.parserSourceModule(true, sourceModule);
 				this.currentModule = null;
 			}
 		} catch (CoreException e) {
