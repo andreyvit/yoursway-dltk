@@ -489,11 +489,11 @@ public class TclPreferenceConstants extends PreferenceConstants {
 		store.setDefault(PreferenceConstants.EDITOR_COMMENTS_FOLDING_ENABLED,
 				true);
 		store.setDefault(TclPreferenceConstants.EDITOR_FOLDING_BLOCKS,
-				TclPreferenceConstants.EDITOR_FOLDING_BLOCKS_EXCLUDE);
+				TclPreferenceConstants.EDITOR_FOLDING_BLOCKS_INCLUDE);
 		store.setDefault(TclPreferenceConstants.EDITOR_FOLDING_INCLUDE_LIST,
-				"proc,namespace");
+				"proc,namespace,catch,switch,if,while,for,foreach");
 		store.setDefault(TclPreferenceConstants.EDITOR_FOLDING_EXCLUDE_LIST,
-				"if");
+				"set,variable");
 		store.setDefault(
 				TclPreferenceConstants.EDITOR_FOLDING_COMMENTS_WITH_NEWLINES,
 				true);

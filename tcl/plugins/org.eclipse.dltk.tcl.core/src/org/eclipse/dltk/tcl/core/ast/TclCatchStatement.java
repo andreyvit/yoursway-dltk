@@ -1,8 +1,9 @@
 package org.eclipse.dltk.tcl.core.ast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.ast.declarations.FieldDeclaration;
-import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
 
@@ -31,5 +32,11 @@ public class TclCatchStatement extends Statement {
 				this.variable.traverse(visitor);
 			visitor.endvisit(this);
 		}
+	}
+	public List getStatements() {
+		if( this.block != null ) {
+			return this.block.getStatements();
+		}
+		return new ArrayList();
 	}
 }
