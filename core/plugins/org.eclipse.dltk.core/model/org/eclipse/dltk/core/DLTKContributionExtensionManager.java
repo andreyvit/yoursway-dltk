@@ -1,22 +1,23 @@
 package org.eclipse.dltk.core;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
+
 /**
  * Abstract base class that can be used to manage extension point contributions
  * that may have more then one implementation.
  * 
- * <p>Examples:
+ * <p>
+ * Examples:
  * <ul>
  * <li>Source Parsers
  * <li>Debugging Engines
@@ -31,6 +32,34 @@ public abstract class DLTKContributionExtensionManager {
 
 	private Map natureToContribMap = new HashMap();
 	private Map natureToSelectorMap = new HashMap();
+
+	public static class ContributionElement {
+		private static final String PRIORITY_ATTR = "priority";
+		private IConfigurationElement configurationElement;
+
+		public ContributionElement(IConfigurationElement config) {
+			this.configurationElement = config;
+		}
+
+		public IConfigurationElement getConfigurationElement() {
+			return configurationElement;
+		}
+
+		public void setConfigurationElement(
+				IConfigurationElement configurationElement) {
+			this.configurationElement = configurationElement;
+		}
+
+		public int getPriority() {
+			return new Integer(this.configurationElement
+					.getAttribute(PRIORITY_ATTR)).intValue();
+		}
+
+		public Object createExecutableClass() throws CoreException {
+			return this.configurationElement
+					.createExecutableExtension(CLASS_TAG);
+		}
+	}
 
 	protected DLTKContributionExtensionManager() {
 		loadExtensionPoints();
@@ -82,37 +111,6 @@ public abstract class DLTKContributionExtensionManager {
 	protected abstract String getExtensionPoint();
 
 	/**
-	 * Checks if the passed object is valid for the given contribution.
-	 * 
-	 * <p>
-	 * The passed object will have been created via a call to
-	 * {@link IConfigurationElement#createExecutableExtension(String)}
-	 * </p>
-	 * 
-	 * @param object
-	 *            contribution implementation class
-	 * 
-	 * @return true if valid, false otherwise
-	 */
-	protected abstract boolean isValidContribution(Object object);
-
-	/**
-	 * Checks if the passed object is a valid selector for the given
-	 * contribution.
-	 * 
-	 * <p>
-	 * The passed object will have been created via a call to
-	 * {@link IConfigurationElement#createExecutableExtension(String)}
-	 * </p>
-	 * 
-	 * @param object
-	 *            selector implemenation class.
-	 * 
-	 * @return true if valid, false otherwise
-	 */
-	protected abstract boolean isValidSelector(Object object);
-
-	/**
 	 * Configure the object being contributed with any configuration data it may
 	 * need.
 	 * 
@@ -127,39 +125,26 @@ public abstract class DLTKContributionExtensionManager {
 	}
 
 	private void addContribution(String natureId, IConfigurationElement element) {
-		try {
-			Object object = element.createExecutableExtension(CLASS_TAG);
-
-			if (isValidContribution(object)) {
-				/*
-				 * handle the case where the contribution is not the object that
-				 * was just created.
-				 */
-				Object contrib = configureContribution(object);
-
-				List list = (List) natureToContribMap.get(natureId);
-				if (list == null) {
-					list = new ArrayList();
-					natureToContribMap.put(natureId, list);
-				}
-
-				list.add(contrib);
-			}
-		} catch (CoreException e) {
-			e.printStackTrace();
+		List list = (List) natureToContribMap.get(natureId);
+		if (list == null) {
+			list = new ArrayList();
+			natureToContribMap.put(natureId, list);
 		}
+		list.add(new ContributionElement(element));
 
 	}
 
 	private void addSelector(String natureId, IConfigurationElement element) {
+		Object object;
 		try {
-			Object object = element.createExecutableExtension(CLASS_TAG);
-			if (isValidSelector(object)) {
-				natureToSelectorMap.put(natureId, object);
-			}
+			object = element.createExecutableExtension(CLASS_TAG);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+			return;
 		}
+		natureToSelectorMap.put(natureId, object);
 	}
 
 	private void loadChildren(String natureId,

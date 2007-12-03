@@ -195,8 +195,13 @@ public class TclParseUtil {
 			List exprs = new ArrayList();
 			for (Iterator iterator = words.iterator(); iterator.hasNext();) {
 				TclWord word = (TclWord) iterator.next();
-				String wordText = content.substring(offset + word.getStart(),
-						word.getEnd() + 1 + offset);
+				String wordText = null;
+				if( word.getStart() == word.getEnd() ) {
+					wordText = content.substring(offset + word.getStart(), offset + word.getStart() + 1);
+				}
+				else {
+					wordText = content.substring(offset + word.getStart(), word.getEnd() + 1 + offset);
+				}
 				// wordText = SimpleTclParser.magicSubstitute(wordText);
 				Object o = word.getContents().get(0);
 				if (o instanceof QuotesSubstitution) {

@@ -1,7 +1,11 @@
 package org.eclipse.dltk.ast.parser;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKContributionExtensionManager;
 import org.eclipse.dltk.core.DLTKCore;
 
@@ -40,32 +44,44 @@ public class SourceParserManager extends DLTKContributionExtensionManager {
 		return SOURCE_PARSER_EXT_POINT;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.core.DLTKContributionExtensionManager#isValidSelector(java.lang.Object)
-	 */
-	protected boolean isValidSelector(Object object) {
-		return (object instanceof ISourceParserSelector);
-	}
-
-	/*
-	 * @see org.eclipse.dltk.core.DLTKContributionExtensionManager#isValidContribution(java.lang.Object)
-	 */
-	protected boolean isValidContribution(Object object) {
-		return (object instanceof ISourceParser);
-	}
-
-	/**
-	 * @deprecated
-	 */
 	public ISourceParser getSourceParser(String natureId) {
-		List parsers = getContributions(natureId);
+		List parsers = getPriorityContributions(natureId);
 
 		if (parsers.isEmpty()) {
 			return null;
 		}
-
-		// mimic current functionality
-		return (ISourceParser) parsers.get(0);
+		try {
+			return (ISourceParser) ((ContributionElement) parsers.get(0))
+					.createExecutableClass();
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
+	private List getPriorityContributions(String natureId) {
+		List contributions = new ArrayList();
+		contributions.addAll(this.getContributions(natureId));
+		// Lets sort contributions by priority.
+		Collections.sort(contributions, new Comparator() {
+			public int compare(Object arg0, Object arg1) {
+				if (arg0 instanceof ContributionElement
+						&& arg1 instanceof ContributionElement) {
+					ContributionElement e1 = (ContributionElement) arg0;
+					ContributionElement e2 = (ContributionElement) arg1;
+					if (e1.getPriority() == e2.getPriority()) {
+						return 0;
+					}
+					if (e1.getPriority() < e2.getPriority()) {
+						return -1;
+					}
+					return 1;
+				}
+				return 0;
+			}
+		});
+		return contributions;
+	}
 }
