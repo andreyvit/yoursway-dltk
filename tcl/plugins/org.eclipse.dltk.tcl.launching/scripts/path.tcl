@@ -3,9 +3,6 @@
 # find-pkg-src.tcl \
 exec tclsh "$0" ${1+"$@"}
 
-set env(ATS_EASY) /Develop/cisco/ats5.0a7/ats_easy
-set env(AUTOTEST) /Develop/cisco/ats5.0a7
-
 ###############################################################################
 # Copyright (c) 2005, 2007 IBM Corporation and others.
 # All rights reserved. This program and the accompanying materials
