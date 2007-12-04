@@ -42,7 +42,7 @@
       <parserContribution
             natureId="org.eclipse.dltk.javascript.core.nature">
          <parser
-               class="org.eclipse.dltk.internal.javascript.parser.JavaScriptSourceParser"
+               class="org.eclipse.dltk.internal.javascript.parser.JavaScriptSourceParserFactory"
                description="JavaScript Source Parser"
                id="org.eclipse.dltk.javascript.sourceParser"
                name="JavaScript Source Parser"

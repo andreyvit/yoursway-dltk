@@ -2,7 +2,9 @@ package org.eclipse.dltk.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,47 +30,41 @@ public abstract class DLTKContributionExtensionManager {
 	private static final String NATURE_ID = "natureId";
 
 	private static final String SELECTOR_TAG = "selector";
-	private static final String CLASS_TAG = "class";
+	public static final String CLASS_TAG = "class";
 
+	private IDLTKContributionSelector defaultSelector;
+	
 	private Map natureToContribMap = new HashMap();
 	private Map natureToSelectorMap = new HashMap();
 
-	public static class ContributionElement {
-		private static final String PRIORITY_ATTR = "priority";
-		private IConfigurationElement configurationElement;
-
-		public ContributionElement(IConfigurationElement config) {
-			this.configurationElement = config;
-		}
-
-		public IConfigurationElement getConfigurationElement() {
-			return configurationElement;
-		}
-
-		public void setConfigurationElement(
-				IConfigurationElement configurationElement) {
-			this.configurationElement = configurationElement;
-		}
-
-		public int getPriority() {
-			try {
-				return new Integer(this.configurationElement
-						.getAttribute(PRIORITY_ATTR)).intValue();
-			} catch (NumberFormatException e) {
-				return 0;
-			}
-		}
-
-		public Object createExecutableClass() throws CoreException {
-			return this.configurationElement
-					.createExecutableExtension(CLASS_TAG);
-		}
-	}
-
 	protected DLTKContributionExtensionManager() {
-		loadExtensionPoints();
+		this.defaultSelector = new DLTKPriorityContributionSelector();
+		
+		loadExtensionPoints();		
 	}
 
+	public IDLTKContributedExtension[] getContributions(String natureId) {
+		List contributions = getContributionsByNature(natureId);
+		return (IDLTKContributedExtension[]) contributions
+				.toArray(new IDLTKContributedExtension[contributions.size()]);
+	}
+
+	public IDLTKContributedExtension getSelectedContribution(String natureId) {
+		IDLTKContributedExtension[] contributions = getContributions(natureId);
+		
+		if (contributions.length > 0) {
+			
+			IDLTKContributionSelector selector = getSelector(natureId);
+			if (selector == null) {
+				selector = defaultSelector;
+			}
+
+			return selector.select(contributions);
+		}
+	
+		return null;
+	}
+	
 	/**
 	 * Get the contributions registered for the given nature id
 	 * 
@@ -79,12 +75,36 @@ public abstract class DLTKContributionExtensionManager {
 	 *         <code>Collections.EMPTY_LIST</code> if no contributions have
 	 *         been registered by the plugin
 	 */
-	protected List getContributions(String natureId) {
+	protected final List getContributionsByNature(String natureId) {
 		if (!hasContributions(natureId)) {
 			return Collections.EMPTY_LIST;
 		}
 
-		return (List) natureToContribMap.get(natureId);
+		List contributions = (List) natureToContribMap.get(natureId);
+	
+		Collections.sort(contributions, new Comparator() {
+			public int compare(Object arg0, Object arg1) {
+				if (arg0 instanceof IDLTKContributedExtension
+						&& arg1 instanceof IDLTKContributedExtension) {
+					IDLTKContributedExtension e1 = (IDLTKContributedExtension) arg0;
+					IDLTKContributedExtension e2 = (IDLTKContributedExtension) arg1;
+					if (e1.getPriority() == e2.getPriority()) {
+						return 0;
+					}
+					if (e1.getPriority() < e2.getPriority()) {
+						return -1;
+					}
+					return 1;
+				}
+				return 0;
+			}
+		});
+
+		return contributions;
+	}
+
+	protected final IDLTKContributionSelector getSelector(String natureId) {
+		return (IDLTKContributionSelector) natureToSelectorMap.get(natureId);
 	}
 
 	/**
@@ -95,13 +115,50 @@ public abstract class DLTKContributionExtensionManager {
 	 * 
 	 * @return true if there are contributions, false otherwise
 	 */
-	protected boolean hasContributions(String natureId) {
-		if (!natureToContribMap.containsKey(natureId)) {
-			return false;
+	protected final boolean hasContributions(String natureId) {
+		if (natureToContribMap.containsKey(natureId)) {
+			List list = (List) natureToContribMap.get(natureId);
+			return !list.isEmpty();
 		}
 
-		List list = (List) natureToContribMap.get(natureId);
-		return !list.isEmpty();
+		return false;
+	}
+
+	/**
+	 * Has a selector been configured for the contribution
+	 * 
+	 * @param natureId
+	 *            nature id
+	 * 
+	 * @return true if a selector has been configured, false otherwise
+	 */
+	public final boolean hasSelector(String natureId) {
+		return natureToSelectorMap.containsKey(natureId);
+	}
+
+	/**
+	 * Returns a contributed extension implementation based on id.
+	 * 
+	 * @param id
+	 *            contribution id
+	 * 
+	 * @return contribution implementation
+	 */
+	public final IDLTKContributedExtension getContributionById(String id) {
+		Iterator keys = natureToContribMap.keySet().iterator();
+		while (keys.hasNext()) {
+			List list = (List) natureToContribMap.get(keys.next());
+
+			for (Iterator iter = list.iterator(); iter.hasNext();) {
+				IDLTKContributedExtension contrib = (IDLTKContributedExtension) iter
+						.next();
+				if (contrib.getId().equals(id)) {
+					return contrib;
+				}
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -113,6 +170,21 @@ public abstract class DLTKContributionExtensionManager {
 	 * Returns the name of the extension point to load
 	 */
 	protected abstract String getExtensionPoint();
+	
+	/**
+	 * Checks if the passed object is valid for the given contribution.
+	 * 
+	 * <p>
+	 * The passed object will have been created via a call to
+	 * {@link IConfigurationElement#createExecutableExtension(String)}
+	 * </p>
+	 * 
+	 * @param object
+	 *            contribution implementation class
+	 * 
+	 * @return true if valid, false otherwise
+	 */
+	protected abstract boolean isValidContribution(Object object);
 
 	/**
 	 * Configure the object being contributed with any configuration data it may
@@ -124,31 +196,48 @@ public abstract class DLTKContributionExtensionManager {
 	 * {@link org.eclipse.core.runtime.IExecutableExtension#setInitializationData(IConfigurationElement, String, Object)}
 	 * </p>
 	 */
-	protected Object configureContribution(Object object) {
+	protected Object configureContribution(Object object,
+			IConfigurationElement config) {
 		return object;
 	}
 
-	private void addContribution(String natureId, IConfigurationElement element) {
-		List list = (List) natureToContribMap.get(natureId);
-		if (list == null) {
-			list = new ArrayList();
-			natureToContribMap.put(natureId, list);
+	protected final void addContribution(String natureId,
+			IConfigurationElement element) {
+		try {
+			Object object = element.createExecutableExtension(CLASS_TAG);
+
+			if (isValidContribution(object)) {
+				/*
+				 * handle the case where the contribution is not the object that
+				 * was just created.
+				 */
+				Object contrib = configureContribution(object, element);
+
+				List list = (List) natureToContribMap.get(natureId);
+				if (list == null) {
+					list = new ArrayList();
+					natureToContribMap.put(natureId, list);
+				}
+
+				list.add(contrib);
+			}
+		} catch (CoreException e) {
+			e.printStackTrace();
 		}
-		list.add(new ContributionElement(element));
 
 	}
 
-	private void addSelector(String natureId, IConfigurationElement element) {
-		Object object;
+	protected final void addSelector(String natureId,
+			IConfigurationElement element) {
 		try {
-			object = element.createExecutableExtension(CLASS_TAG);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
+			Object object = element.createExecutableExtension(CLASS_TAG);
+			if (object instanceof IDLTKContributionSelector) {
+				// XXX: what if multiple extensions define a selector
+				natureToSelectorMap.put(natureId, object);
 			}
-			return;
+		} catch (CoreException e) {
+			e.printStackTrace();
 		}
-		natureToSelectorMap.put(natureId, object);
 	}
 
 	private void loadChildren(String natureId,

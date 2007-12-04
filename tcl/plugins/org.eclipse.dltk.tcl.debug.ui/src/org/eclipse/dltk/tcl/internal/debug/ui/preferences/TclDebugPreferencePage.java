@@ -24,7 +24,7 @@ public class TclDebugPreferencePage extends
 			super(store, preferencePage);
 		}
 
-		protected String getDebuggingEngineIdKey() {
+		protected String getContributionPrefKey() {
 			return TclDebugConstants.DEBUGGING_ENGINE_ID_KEY;
 		}
 

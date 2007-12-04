@@ -24,10 +24,10 @@
       <parserContribution
             natureId="org.eclipse.dltk.python.core.nature">
          <parser
-               class="org.eclipse.dltk.python.internal.core.parser.PythonSourceParser"
-               description="Python Source Parser"
+               class="org.eclipse.dltk.python.internal.core.parser.PythonSourceParserFactory"
+               description="sourceParser.description"
                id="org.eclipse.dltk.python.sourceParser"
-               name="Python Source Parser"
+               name="sourceParser.name"
                priority="0" />
       </parserContribution>
    </extension>

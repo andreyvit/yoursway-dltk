@@ -1,59 +1,33 @@
 package org.eclipse.dltk.internal.launching.debug;
 
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.dltk.core.DLTKContributedExtension;
 import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterRunner;
 import org.eclipse.dltk.launching.IInterpreterRunnerFactory;
 import org.eclipse.dltk.launching.debug.IDebuggingEngine;
 
-public class DebuggingEngine implements IDebuggingEngine {
-	private String id;
-	private String natureId;
-	private String preferencePageId;
-	private String name;
-	private String description;
-	private int priority;
+public class DebuggingEngine extends DLTKContributedExtension implements
+		IDebuggingEngine {
+
 	private IInterpreterRunnerFactory factory;
 
-	public DebuggingEngine(String id, String natureId, String preferencePageId,
-			String name, String description, int priority,
-			IInterpreterRunnerFactory factory) {
-		super();
-		this.id = id;
-		this.natureId = natureId;
-		this.preferencePageId = preferencePageId;
-		this.name = name;
-		this.description = description;
-		this.priority = priority;
+	public DebuggingEngine(IInterpreterRunnerFactory factory,
+			IConfigurationElement config) {
 		this.factory = factory;
-	}
 
-	public String getId() {
-		return id;
+		/*
+		 * this is a cheat - this class contains all the attributes of the
+		 * configured extension, so leverage the code DLTKContributedExtension
+		 * already provides
+		 */
+		setInitializationData(config, null, null);
 	}
 
 	public String getModelId() {
-		return ScriptDebugManager.getInstance().getDebugModelByNature(natureId);
-	}
-
-	public String getNatureId() {
-		return natureId;
-	}
-
-	public String getPreferencePageId() {
-		return preferencePageId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public int getPriority() {
-		return priority;
+		return ScriptDebugManager.getInstance().getDebugModelByNature(
+				getNatureId());
 	}
 
 	public IInterpreterRunner getRunner(IInterpreterInstall install) {

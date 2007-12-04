@@ -44,7 +44,7 @@
      <parserContribution
            natureId="org.eclipse.dltk.core.tests.testnature">
         <parser
-              class="org.eclipse.dltk.core.tests.model.TestSourceParser"
+              class="org.eclipse.dltk.core.tests.model.TestSourceParserFactory"
               description="Test Source Parser"
               id="org.eclipse.dltk.core.tests.sourceParser"
               name="Test Source Parser"

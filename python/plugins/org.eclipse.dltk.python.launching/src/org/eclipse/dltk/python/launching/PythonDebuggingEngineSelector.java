@@ -1,20 +1,19 @@
 package org.eclipse.dltk.python.launching;
 
-import org.eclipse.dltk.launching.debug.IdBasedDebuggingEngineSelector;
+import org.eclipse.dltk.core.DLTKIdContributionSelector;
 import org.eclipse.dltk.python.internal.debug.PythonDebugConstants;
 import org.eclipse.dltk.python.internal.debug.PythonDebugPlugin;
 
 /**
- * Python debugging engine selector
+ * Python debugging engine id based selector
  */
-public class PythonDebuggingEngineSelector extends
-		IdBasedDebuggingEngineSelector {
+public class PythonDebuggingEngineSelector extends DLTKIdContributionSelector {
 
 	/*
-	 * @see org.eclipse.dltk.launching.debug.IdBasedDebuggingEngineSelector#getDebuggingEngineId()
+	 * @see org.eclipse.dltk.core.DLTKIdContributionSelector#getContributionId()
 	 */
-	protected String getDebuggingEngineId() {
-		return PythonDebugPlugin.getDefault().getPluginPreferences()
-				.getString(PythonDebugConstants.DEBUGGING_ENGINE_ID_KEY);
+	protected String getSavedContributionId() {
+		return PythonDebugPlugin.getDefault().getPluginPreferences().getString(
+				PythonDebugConstants.DEBUGGING_ENGINE_ID_KEY);
 	}
 }

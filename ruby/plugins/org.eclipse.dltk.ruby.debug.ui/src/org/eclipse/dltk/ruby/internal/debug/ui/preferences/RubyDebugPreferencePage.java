@@ -20,7 +20,7 @@ public class RubyDebugPreferencePage extends
 			OverlayPreferenceStore overlayPreferenceStore) {
 		return new AbstractScriptDebuggingEngineConfigurationBlock(
 				overlayPreferenceStore, this) {
-			protected String getDebuggingEngineIdKey() {
+			protected String getContributionPrefKey() {
 				return RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY;
 			}
 

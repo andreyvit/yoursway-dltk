@@ -37,10 +37,10 @@
       <parserContribution
             natureId="org.eclipse.dltk.ruby.core.nature">     
         <parser
-           name="JRuby Source Parser"
+           name="%sourceParser.name"
            id="org.eclipse.dltk.ruby.parser.jrubySourceParser"
-           description="JRuby Source Parser"
-           class="org.eclipse.dltk.ruby.internal.parser.JRubySourceParser"
+           description="%sourceParser.description"
+           class="org.eclipse.dltk.ruby.internal.parser.JRubySourceParserFactory"
            priority="0"/>
       </parserContribution>
   </extension>

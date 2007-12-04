@@ -681,4 +681,7 @@ public final class PreferencesMessages extends NLS {
 	public static String NewScriptProjectPreferencePage_error_decode;
 	public static String EditorPreferencePage_folding_title;
 	
+	public static String SourceParsers_groupLabel;
+	public static String SourceParsers_nameLabel;
+	public static String SourceParsers_descLabel;
 }

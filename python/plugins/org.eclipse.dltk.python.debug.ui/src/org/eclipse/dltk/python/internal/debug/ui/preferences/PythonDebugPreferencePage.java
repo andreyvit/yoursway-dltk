@@ -24,7 +24,7 @@ public class PythonDebugPreferencePage extends
 			super(store, preferencePage);
 		}
 
-		protected String getDebuggingEngineIdKey() {
+		protected String getContributionPrefKey() {
 			return PythonDebugConstants.DEBUGGING_ENGINE_ID_KEY;
 		}
 

@@ -1,11 +1,7 @@
 package org.eclipse.dltk.ast.parser;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.dltk.core.DLTKContributedExtension;
 import org.eclipse.dltk.core.DLTKContributionExtensionManager;
 import org.eclipse.dltk.core.DLTKCore;
 
@@ -26,10 +22,13 @@ public class SourceParserManager extends DLTKContributionExtensionManager {
 		if (instance == null) {
 			instance = new SourceParserManager();
 		}
-
 		return instance;
 	}
 
+	public ISourceParser getSourceParserById(String id) {
+		return ((SourceParserContribution) getContributionById(id)).getSourceParser();
+	}
+	
 	/*
 	 * @see org.eclipse.dltk.core.DLTKContributionExtensionManager#getContributionElementName()
 	 */
@@ -44,44 +43,62 @@ public class SourceParserManager extends DLTKContributionExtensionManager {
 		return SOURCE_PARSER_EXT_POINT;
 	}
 
-	public ISourceParser getSourceParser(String natureId) {
-		List parsers = getPriorityContributions(natureId);
-
-		if (parsers.isEmpty()) {
-			return null;
-		}
-		try {
-			return (ISourceParser) ((ContributionElement) parsers.get(0))
-					.createExecutableClass();
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
-		return null;
+	/*
+	 * @see org.eclipse.dltk.core.DLTKContributionExtensionManager#isValidContribution(java.lang.Object)
+	 */
+	protected boolean isValidContribution(Object object) {
+		return (object instanceof ISourceParserFactory);
+	}
+	
+	/*
+	 * @see org.eclipse.dltk.core.DLTKContributionExtensionManager#configureContribution(java.lang.Object, org.eclipse.core.runtime.IConfigurationElement)
+	 */
+	protected Object configureContribution(Object object,
+			IConfigurationElement config) {
+		/*
+		 * using the following delegate class allows for integration with the
+		 * generic managed contribution preference page.
+		 * 
+		 * not all source parsers are thread safe, so the factory allows us
+		 * to create a new instance each time one is requested
+		 */		
+		return new SourceParserContribution((ISourceParserFactory) object, config);
 	}
 
-	private List getPriorityContributions(String natureId) {
-		List contributions = new ArrayList();
-		contributions.addAll(this.getContributions(natureId));
-		// Lets sort contributions by priority.
-		Collections.sort(contributions, new Comparator() {
-			public int compare(Object arg0, Object arg1) {
-				if (arg0 instanceof ContributionElement
-						&& arg1 instanceof ContributionElement) {
-					ContributionElement e1 = (ContributionElement) arg0;
-					ContributionElement e2 = (ContributionElement) arg1;
-					if (e1.getPriority() == e2.getPriority()) {
-						return 0;
-					}
-					if (e1.getPriority() < e2.getPriority()) {
-						return -1;
-					}
-					return 1;
-				}
-				return 0;
-			}
-		});
-		return contributions;
+	public ISourceParser getSourceParser(String natureId) {
+		return ((SourceParserContribution) getSelectedContribution(natureId)).getSourceParser();
+	}
+	
+	class SourceParserContribution extends DLTKContributedExtension {		
+
+		private ISourceParserFactory factory;
+		private IConfigurationElement config;
+		
+		SourceParserContribution(ISourceParserFactory factory, IConfigurationElement config) {
+			this.factory = factory;
+			this.config = config;
+			
+			/*
+			 * this is a cheat - this class contains all the attributes of the 
+			 * configured extension, so leverage the code DLTKContributedExtension
+			 * already provides
+			 */
+			setInitializationData(config, null, null);
+		}
+
+		ISourceParser getSourceParser() {
+			ISourceParser parser = factory.createSourceParser();
+			/*
+			 * another cheat - not all source parsers are thread safe, so
+			 * we need to create a new instance each time one is requested (hence
+			 * the factory). 
+			 *
+			 * the parser instance should be initialized with all it's attribute
+			 * data
+			 */
+			((AbstractSourceParser) parser).setInitializationData(config, null, null);
+			
+			return parser;
+		}
 	}
 }
