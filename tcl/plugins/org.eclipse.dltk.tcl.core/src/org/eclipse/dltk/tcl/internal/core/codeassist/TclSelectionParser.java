@@ -22,6 +22,7 @@ import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.internal.codeassist.select.SelectionNodeFound;
+import org.eclipse.dltk.tcl.ast.ITclStatementLookLike;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
@@ -79,21 +80,21 @@ public class TclSelectionParser extends TclAssistParser {
 							.indexOf('(') + 1, completionToken.length() - 1);
 				}
 			}
-//			if (completionNode instanceof TclBlockExpression) {
-//				TclBlockExpression block = (TclBlockExpression) completionNode;
-//				List s = block.parseBlock();
-//				if (s != null) {
-//					int slen = s.size();
-//					for (int u = 0; u < slen; ++u) {
-//						ASTNode n = (ASTNode) s.get(u);
-//						if (n != null && n.sourceStart() <= position
-//								&& n.sourceEnd() >= position) {
-//							parseBlockStatements(n, inNode, position);
-//						}
-//					}
-//				}
-//				handleNotInElement(inNode, position);
-//			}
+			// if (completionNode instanceof TclBlockExpression) {
+			// TclBlockExpression block = (TclBlockExpression) completionNode;
+			// List s = block.parseBlock();
+			// if (s != null) {
+			// int slen = s.size();
+			// for (int u = 0; u < slen; ++u) {
+			// ASTNode n = (ASTNode) s.get(u);
+			// if (n != null && n.sourceStart() <= position
+			// && n.sourceEnd() >= position) {
+			// parseBlockStatements(n, inNode, position);
+			// }
+			// }
+			// }
+			// handleNotInElement(inNode, position);
+			// }
 			if (completionNode instanceof StringLiteral) {
 				processStringLiteral(node, inNode, position, completionNode);
 			}
@@ -165,6 +166,11 @@ public class TclSelectionParser extends TclAssistParser {
 		// New Parser cases
 		if (node.sourceStart() <= position && node.sourceEnd() >= position) {
 			visitElements(node, position);
+			if (node instanceof ITclStatementLookLike) {
+				TclStatement statement = ((ITclStatementLookLike) node)
+						.getStatement();
+				this.parseBlockStatements(statement, inNode, position);
+			}
 			SelectionOnNode nde = new SelectionOnNode(node);
 			nde.setPosition(position);
 			throw new SelectionNodeFound(nde);
@@ -185,8 +191,7 @@ public class TclSelectionParser extends TclAssistParser {
 	}
 
 	private SelectionVisitor createSelectionVisitor(int position) {
-		return new SelectionVisitor(position, this
-				.getModule());
+		return new SelectionVisitor(position, this.getModule());
 	}
 
 	private void processStringLiteral(ASTNode node, ASTNode inNode,
@@ -233,9 +238,23 @@ public class TclSelectionParser extends TclAssistParser {
 						SelectionOnAST nde = new SelectionOnAST(s);
 						throw new SelectionNodeFound(nde);
 					}
-				} 
+				}
 			}
 			return super.visit(s);
+		}
+
+		public boolean endvisit(Statement s) throws Exception {
+			if (s.sourceStart() <= position && s.sourceEnd() >= position) {
+				if (s instanceof ITclStatementLookLike) {
+					TclStatement statement = ((ITclStatementLookLike) s)
+							.getStatement();
+					ASTNode inNode = findInNode(this.module, s);
+					TclSelectionParser.this.parseBlockStatements(statement,
+							inNode, position);
+
+				}
+			}
+			return super.endvisit(s);
 		}
 
 		public boolean visit(Expression s) throws Exception {
