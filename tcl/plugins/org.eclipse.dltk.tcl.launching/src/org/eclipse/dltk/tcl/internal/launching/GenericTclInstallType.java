@@ -12,14 +12,18 @@ package org.eclipse.dltk.tcl.internal.launching;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.internal.launching.AbstractInterpreterInstallType;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
 import org.eclipse.dltk.utils.DeployHelper;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 
 public class GenericTclInstallType extends AbstractInterpreterInstallType {
 	private static final String INSTALL_TYPE_NAME = "Generic Tcl";
@@ -59,6 +63,35 @@ public class GenericTclInstallType extends AbstractInterpreterInstallType {
 				"");
 		return storeToMetadata(TclLaunchingPlugin.getDefault(), "path.tcl",
 				"scripts/path.tcl");
+	}
+
+	protected File createSafePathFile() throws IOException {
+		DeployHelper.deploy(TclLaunchingPlugin.getDefault(), "scripts").append(
+				"");
+		return storeToMetadata(TclLaunchingPlugin.getDefault(), "path.tcl",
+				"scripts/path_safe.tcl");
+	}
+
+	protected IRunnableWithProgress createLookupRunnable(
+			final File installLocation, final List locations) {
+		return new IRunnableWithProgress() {
+			public void run(IProgressMonitor monitor) {
+				try {
+					// This retrieval could not receive paths in some cases.
+					retrivePaths(installLocation, locations, monitor,
+							createPathFile());
+					// This is safe retrieval
+					if (locations.size() == 0) {
+						retrivePaths(installLocation, locations, monitor,
+								createSafePathFile());
+					}
+				} catch (IOException e) {
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
+					}
+				}
+			}
+		};
 	}
 
 	protected String[] parsePaths(String result) {

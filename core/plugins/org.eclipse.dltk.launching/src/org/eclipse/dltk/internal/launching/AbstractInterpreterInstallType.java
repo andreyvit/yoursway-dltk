@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.ILog;
@@ -306,7 +305,9 @@ public abstract class AbstractInterpreterInstallType implements
 				File f = new File(paths[i]);
 				if (f.exists()) {
 					LibraryLocation l = new LibraryLocation(new Path(paths[i]));
-					locs.add(l);
+					if (!locs.contains(l)) {
+						locs.add(l);
+					}
 				}
 			}
 		}
@@ -400,57 +401,62 @@ public abstract class AbstractInterpreterInstallType implements
 		}
 	}
 
+	protected void retrivePaths(final File installLocation,
+			final List locations, IProgressMonitor monitor, File pathFile) {
+		Process process = null;
+		try {
+			monitor.beginTask(InterpreterMessages.statusFetchingLibs, 1);
+			if (monitor.isCanceled()) {
+				return;
+			}
+			String[] cmdLine;
+			String[] env = extractEnvironment();
+
+			cmdLine = buildCommandLine(installLocation, pathFile);
+			try {
+				process = DebugPlugin.exec(cmdLine, null, env);
+				if (process != null) {
+					String result = readPathsFromProcess(monitor, process);
+					if (result == null) {
+						throw new IOException("null result from process");
+					}
+
+					String[] paths = parsePaths(result);
+
+					IPath path = new Path(pathFile.getCanonicalPath())
+							.removeLastSegments(1);
+
+					fillLocationsExceptOne(locations, paths, path);
+				}
+			} catch (CoreException e) {
+				// TODO: handle
+			}
+
+		} catch (IOException e) {
+			if (DLTKCore.VERBOSE) {
+				getLog().log(
+						createStatus(IStatus.ERROR,
+								"Unable to lookup library paths", e));
+			}
+		} finally {
+			if (process != null) {
+				process.destroy();
+			}
+			monitor.done();
+		}
+	}
+
 	protected IRunnableWithProgress createLookupRunnable(
 			final File installLocation, final List locations) {
 		return new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) {
-				Process process = null;
-				String[] cmdLine = null;
 				try {
-					monitor
-							.beginTask(InterpreterMessages.statusFetchingLibs,
-									1);
-					if (monitor.isCanceled()) {
-						return;
-					}
-
-					String[] env = extractEnvironment();
-					File pathFile = createPathFile();
-
-					cmdLine = buildCommandLine(installLocation, pathFile);
-
-					try {
-						process = DebugPlugin.exec(cmdLine, null, env);
-						if (process != null) {
-							String result = readPathsFromProcess(monitor,
-									process);
-							if (result == null) {
-								throw new IOException(
-										"null result from process");
-							}
-
-							String[] paths = parsePaths(result);
-
-							IPath path = new Path(pathFile.getCanonicalPath())
-									.removeLastSegments(1);
-
-							fillLocationsExceptOne(locations, paths, path);
-						}
-					} catch (CoreException e) {
-						// TODO: handle
-					}
-
+					retrivePaths(installLocation, locations, monitor,
+							createPathFile());
 				} catch (IOException e) {
-					if (DLTKCore.VERBOSE) {
-						getLog().log(
-								createStatus(IStatus.ERROR,
-										"Unable to lookup library paths", e));
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
 					}
-				} finally {
-					if (process != null) {
-						process.destroy();
-					}
-					monitor.done();
 				}
 			}
 		};

@@ -3,9 +3,6 @@
 # find-pkg-src.tcl \
 exec tclsh "$0" ${1+"$@"}
 
-set env(ATS_EASY) /Develop/cisco/ats5.0a7/ats_easy
-set env(AUTOTEST) /Develop/cisco/ats5.0a7
-
 ###############################################################################
 # Copyright (c) 2005, 2007 IBM Corporation and others.
 # All rights reserved. This program and the accompanying materials
@@ -94,10 +91,11 @@ proc main {argv} {
 	
 	# try to load an unknown pkg, so that it discovers all packages
 	catch {package-org require unknown-random-[clock seconds]}
-
+	
 	# Process pkg ifneeded bodies
-	process-pkg-info
+	#process-pkg-info
 	puts "$::auto_path"
+
 	# Print pkg names and corresponding src files
 	#print-pkg-info
 }

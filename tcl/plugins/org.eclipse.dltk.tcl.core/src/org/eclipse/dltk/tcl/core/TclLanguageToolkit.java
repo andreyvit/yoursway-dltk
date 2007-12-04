@@ -30,12 +30,18 @@ import org.eclipse.dltk.core.IModelStatus;
 public class TclLanguageToolkit extends AbstractLanguageToolkit {
 
 	protected static String[] patterns = {
-			"#!/usr/bin/tclsh",
-			"#!/usr/bin/expect",
+			"#!\\s*/usr/bin/tclsh",
+			"#!\\s*/usr/bin/expect",
+			"#!\\s*/usr/bin/wish",
 			"# ;;; Local Variable: \\*\\*\\*\\s*\r*\n# ;;; mode: tcl \\*\\*\\*\\s*\r*\n# ;;; End: \\*\\*\\*",
-			"#!/bin/sh\\s*\r*\n#.*\\\\s*\r*\nexec .*tclsh .*",
-			"#!/bin/sh\\s*\r*\n#.*\\\\s*\r*\nexec .*expect .*",
-			"#!/bin/sh\\s*\r*\n#.*\\\\s*\r*\nexec .*wish.*" };
+			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n#.*\\\\s*\r*\nexec .*tclsh .*",
+			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n#.*\\\\s*\r*\nexec .*expect .*",
+			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n#.*\\\\s*\r*\nexec .*wish.* .*",
+			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n\\s*exec .*wish.* .*",
+			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n\\s*exec .*tclsh.* .*",
+			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n\\s*exec .*expect.* .*"
+			};
+	
 	protected static IDLTKLanguageToolkit sInstance = new TclLanguageToolkit();
 
 	public String[] getLanguageFileExtensions() {
