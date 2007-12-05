@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +30,7 @@ import org.eclipse.dltk.core.IModelStatus;
 
 public class TclLanguageToolkit extends AbstractLanguageToolkit {
 
-	protected static String[] patterns = {
+	protected static String[] header_patterns = {
 			"#!\\s*/usr/bin/tclsh",
 			"#!\\s*/usr/bin/expect",
 			"#!\\s*/usr/bin/wish",
@@ -39,9 +40,9 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n#.*\\\\s*\r*\nexec .*wish.* .*",
 			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n\\s*exec .*wish.* .*",
 			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n\\s*exec .*tclsh.* .*",
-			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n\\s*exec .*expect.* .*"
-			};
-	
+			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n\\s*exec .*expect.* .*" };
+	protected static String[] footer_patterns = { "# ;;; Local Variable: \\*\\*\\*\\s*\r*\n# ;;; mode: tcl \\*\\*\\*\\s*\r*\n# ;;; End: \\*\\*\\*" };
+
 	protected static IDLTKLanguageToolkit sInstance = new TclLanguageToolkit();
 
 	public String[] getLanguageFileExtensions() {
@@ -49,28 +50,12 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 	}
 
 	private IStatus isTclHeadered(File file) {
-		BufferedReader reader = null;
 		try {
-			reader = new BufferedReader(new FileReader(file));
-			int size = Math.min((int) file.length(), 256 * 1024); // DON'T
-			// READ
-			// FILES
-			// WITH SIZE
-			// MORE THAN
-			// 256k
-			char buf[] = new char[size + 1];
-			reader.read(buf);
-
-			String header = new String(buf);
-
-			if (header != null) {
-				for (int i = 0; i < patterns.length; i++) {
-					Pattern p = Pattern.compile(patterns[i], Pattern.MULTILINE);
-					Matcher m = p.matcher(header);
-					if (m.find()) {
-						return IModelStatus.VERIFIED_OK;
-					}
-				}
+			if (checkHeader(file)) {
+				return IModelStatus.VERIFIED_OK;
+			}
+			if (checkFooter(file)) {
+				return IModelStatus.VERIFIED_OK;
 			}
 		} catch (FileNotFoundException e) {
 			return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,
@@ -78,6 +63,30 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 		} catch (IOException e) {
 			return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,
 					"Can't read file", null);
+		}
+
+		return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,
+				"Header not found", null);
+	}
+
+	private boolean checkHeader(File file) throws FileNotFoundException,
+			IOException {
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			int size = Math.min((int) file.length(), 2 * 1024); // DON'T
+			// read not more than 2k of file header.
+			char buf[] = new char[size + 1];
+			reader.read(buf);
+
+			String header = new String(buf);
+
+			if (header != null) {
+				if (checkBufferForPatterns(header, header_patterns)) {
+					return true;
+				}
+			}
+			return false;
 		} finally {
 			if (reader != null) {
 				try {
@@ -87,9 +96,43 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 				}
 			}
 		}
+	}
 
-		return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,
-				"Header not found", null);
+	private boolean checkFooter(File file) throws FileNotFoundException,
+			IOException {
+		RandomAccessFile raFile = new RandomAccessFile(file, "r");
+		try {
+			long len = 2 * 1024;
+			long fileSize = raFile.length();
+			long offset = fileSize - len;
+			if (offset < 0) {
+				offset = 0;
+			}
+			raFile.seek(offset);
+			byte buf[] = new byte[(int) (len + 1)];
+			int code = raFile.read(buf);
+			if (code != -1) {
+				String content = new String(buf, 0, code);
+				if (checkBufferForPatterns(content, footer_patterns)) {
+					return true;
+				}
+			}
+			return false;
+		} finally {
+			raFile.close();
+		}
+
+	}
+
+	private boolean checkBufferForPatterns(String header, String[] patterns) {
+		for (int i = 0; i < patterns.length; i++) {
+			Pattern p = Pattern.compile(patterns[i], Pattern.MULTILINE);
+			Matcher m = p.matcher(header);
+			if (m.find()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean isSureNotTCLFile(IPath path) {
