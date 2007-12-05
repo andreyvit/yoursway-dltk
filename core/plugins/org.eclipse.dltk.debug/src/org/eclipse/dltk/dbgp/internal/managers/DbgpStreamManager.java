@@ -41,9 +41,9 @@ public class DbgpStreamManager extends DbgpWorkingThread implements
 				final DbgpStreamPacket packet = engine.getStreamPacket();
 
 				if (packet.isStderr()) {
-					fireStderrReceived(packet.getContent());
+					fireStderrReceived(packet.getTextContent());
 				} else if (packet.isStdout()) {
-					fireStdoutReceived(packet.getContent());
+					fireStdoutReceived(packet.getTextContent());
 				}
 			}
 		} catch (InterruptedException e) {

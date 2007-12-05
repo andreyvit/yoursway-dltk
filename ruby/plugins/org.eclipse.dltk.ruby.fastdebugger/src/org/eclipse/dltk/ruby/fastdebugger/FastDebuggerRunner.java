@@ -58,7 +58,7 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 		super(install);
 	}
 
-	protected InterpreterConfig alterConfig(String exe, InterpreterConfig config)
+	protected InterpreterConfig alterConfig(InterpreterConfig config)
 			throws CoreException {
 		// Get debugger source location
 		final IPath sourceLocation = deploy();

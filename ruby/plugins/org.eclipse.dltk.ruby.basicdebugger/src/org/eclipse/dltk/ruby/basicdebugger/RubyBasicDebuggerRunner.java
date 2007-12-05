@@ -58,7 +58,7 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 		this.logging = true;
 	}
 
-	protected InterpreterConfig alterConfig(String exe, InterpreterConfig config)
+	protected InterpreterConfig alterConfig(InterpreterConfig config)
 			throws CoreException {
 		// Get debugger source location
 		final IPath sourceLocation = deploy();

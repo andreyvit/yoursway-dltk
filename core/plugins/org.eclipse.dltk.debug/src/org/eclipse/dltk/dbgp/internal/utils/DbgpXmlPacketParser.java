@@ -37,7 +37,7 @@ public class DbgpXmlPacketParser extends DbgpXmlParser {
 		final String ATTR_TYPE = "type";
 
 		String type = element.getAttribute(ATTR_TYPE);
-		String content = DbgpXmlParser.parseBase64Content(element);
-		return new DbgpStreamPacket(type, content);
+		String textContent = DbgpXmlParser.parseBase64Content(element);
+		return new DbgpStreamPacket(type, textContent, element);
 	}
 }

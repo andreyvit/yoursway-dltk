@@ -108,17 +108,18 @@ module XoredDebugger
         end
         
 		# Tracing
-        def trace(event, file, line, id, binding, klass)
+        def trace(event, file, line, id, binding, klass)            
+            # Don't debug debugger intenal threads
+            # NOTE: To disable tracing of thread create it from tracing
+            # function (doesn't work with JRuby)
+            if (Thread.current.is_a? DebuggerThread)
+                return
+            end
+            
             begin
+                #log(event + ' ' + file + ':' + line.to_s)
                 trace_initialize
                                                                                      
-                # Don't debug debugger intenal threads
-                # NOTE: To disable tracing of thread create it from tracing function
-                if (Thread.current.is_a? DebuggerThread)
-                    log('Warning: tracing function called for debugger thread')
-                    return
-                end
-                
                 # adding current thread to thread manager
                 # if it is already there, nothing happens
 	            thread = thread_manager.add_thread(Thread.current)                

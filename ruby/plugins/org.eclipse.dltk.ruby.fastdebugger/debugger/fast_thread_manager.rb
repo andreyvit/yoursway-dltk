@@ -3,7 +3,6 @@ require 'dbgp/thread_manager'
 class Thread
     class << self 
         @@debugger = nil
-        @@logger = $stdout
         
         def log(message)
             @@logger.log(message)

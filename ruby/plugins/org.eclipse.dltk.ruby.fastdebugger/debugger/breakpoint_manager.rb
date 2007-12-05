@@ -22,11 +22,11 @@ module XoredDebugger
         end        
                
         def create_breakpoint(info)
-            if info.class == LineBreakpointInfo
+            if (info.class == LineBreakpointInfo)
                 b = Debugger.add_breakpoint(info.file, info.line)
                 @line_bps[b.id] = info
                 b
-            elsif info.class == ExceptionBreakpointInfo
+            elsif (info.class == ExceptionBreakpointInfo)
                 info
             else
                 nil
@@ -34,13 +34,13 @@ module XoredDebugger
         end
 
         def update_breakpoint(bp, info)
-            if (info.class == LineBreakpointInfo.class)
+            if (info.class == LineBreakpointInfo)
 	            bp.hit_value = info.hit_value
 	            bp.hit_condition = BreakpointManager.convert_condition(info.hit_condition)
 	            unless info.expression.nil?
 	                bp.expr = info.expression
 	            end
-	        elsif info.class == ExceptionBreakpointInfo
+	        elsif (info.class == ExceptionBreakpointInfo)
                 # Nothing to do ;)
 	        end
             nil                        
@@ -52,10 +52,10 @@ module XoredDebugger
         end
 
         def remove_breakpoint(bp, info)
-            if (info.class == LineBreakpointInfo.class)
+            if (info.class == LineBreakpointInfo)
                 Debugger.remove_breakpoint(bp.id)
-                @line_bps.remove(bp.id)
-	        elsif info.class == ExceptionBreakpointInfo
+                @line_bps.delete(bp.id)
+	        elsif (info.class == ExceptionBreakpointInfo)
                 # Nothing to do ;)
 	        end
             nil                        

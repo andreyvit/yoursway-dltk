@@ -23,6 +23,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
+import org.eclipse.dltk.internal.launching.InterpreterMessages;
 
 import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.MessageFormat;
@@ -36,37 +37,14 @@ import com.ibm.icu.text.MessageFormat;
  * @see IInterpreterRunner
  * 
  */
-public abstract class AbstractInterpreterRunner implements IInterpreterRunner {	
+public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	private IInterpreterInstall interpreterInstall;
 
 	protected IInterpreterInstall getInstall() {
 		return interpreterInstall;
 	}
 
-	/**
-	 * Construct and return a String containing the full path of a interpreter
-	 * executable command such as 'tclsh.exe' or 'wish.exe'. If the
-	 * configuration specifies an explicit executable, that is used.
-	 * 
-	 * @return full path toscriptexecutable
-	 * @exception CoreException
-	 *                if unable to locate an executeable
-	 */
-	protected String constructProgramString() throws CoreException {
-		File exe = interpreterInstall.getInstallLocation();
-		if (exe == null) {
-			final String message = MessageFormat
-					.format(
-							LaunchingMessages.StandardInterpreterRunner_Unable_to_locate_executable_for,
-							new String[] { interpreterInstall.getName() });
-
-			abort(message, null,
-					ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
-		}
-		return exe.getAbsolutePath();
-	}
-
-	public static String renderProcessLabel(String[] commandLine) {
+	private static String renderProcessLabel(String[] commandLine) {
 		String format = LaunchingMessages.StandardInterpreterRunner;
 		String timestamp = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
 				DateFormat.MEDIUM).format(new Date(System.currentTimeMillis()));
@@ -80,7 +58,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	 * @param commandLine
 	 * @return
 	 */
-	protected static String renderCommandLine(String[] commandLine) {
+	private static String renderCommandLineLabel(String[] commandLine) {
 		if (commandLine.length < 1)
 			return ""; //$NON-NLS-1$
 		StringBuffer buf = new StringBuffer();
@@ -109,6 +87,11 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		return buf.toString();
 	}
 
+	protected String renderCommandLineLabel(InterpreterConfig config) {
+		String[] cmdLine = renderCommandLine(config);
+		return renderCommandLineLabel(cmdLine);
+	}
+	
 	protected void abort(String message, Throwable exception)
 			throws CoreException {
 		throw new CoreException(new Status(IStatus.ERROR,
@@ -129,11 +112,6 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		return DebugPlugin.exec(cmdLine, workingDirectory);
 	}
 
-	protected Process exec(String[] cmdLine, File workingDirectory,
-			String[] envp) throws CoreException {
-		return DebugPlugin.exec(cmdLine, workingDirectory, envp);
-	}
-
 	// 
 	protected Map getDefaultProcessMap() {
 		Map map = new HashMap();
@@ -149,6 +127,27 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		this.interpreterInstall = install;
 	}
 
+
+	protected void checkConfig(InterpreterConfig config) throws CoreException {
+		File dir = new File(config.getWorkingDirectoryPath().toOSString());
+		if (!dir.exists()) {
+			abort(
+					MessageFormat
+							.format(
+									InterpreterMessages.errDebuggingEngineWorkingDirectoryDoesntExist,
+									new Object[] { dir.toString() }), null);
+		}
+	
+		File script = new File(config.getScriptFilePath().toOSString());
+		if (!script.exists()) {
+			abort(
+					MessageFormat
+							.format(
+									InterpreterMessages.errDebuggingEngineScriptFileDoesntExist,
+									new Object[] { script.toString() }), null);
+		}
+	}
+	
 	/**
 	 * Returns a new process aborting if the process could not be created.
 	 * 
@@ -165,7 +164,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	 *             problems occurred creating the process
 	 * 
 	 */
-	protected IProcess newProcess(ILaunch launch, Process p, String label,
+	private IProcess newProcess(ILaunch launch, Process p, String label,
 			Map attributes) throws CoreException {
 		IProcess process = DebugPlugin.newProcess(launch, p, label, attributes);
 		if (process == null) {
@@ -175,29 +174,29 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		return process;
 	}
 
-	/**
-	 * Returns the working directory to use for the launched Interpreter, or
-	 * <code>null</code> if the working directory is to be inherited from the
-	 * current process.
-	 * 
-	 * @return the working directory to use
-	 * @exception CoreException
-	 *                if the working directory specified by the configuration
-	 *                does not exist or is not a directory
-	 */
+	protected String[] renderCommandLine(InterpreterConfig config) {
+		return config.renderCommandLine(interpreterInstall);
+	}
 
-	protected void rawRun(ILaunch launch, String[] cmdLine,
-			File workingDirectory, String[] environment) throws CoreException {				
-		final String cmdLineLabel = renderCommandLine(cmdLine);
+	protected IProcess rawRun(ILaunch launch, InterpreterConfig config)
+			throws CoreException {
+		checkConfig(config);
+		
+		String[] cmdLine = renderCommandLine(config);
+		File workingDirectory = config.getWorkingDirectoryPath().toFile();
+		String[] environment = config.getEnvironmentAsStrings();
+
+		final String cmdLineLabel = renderCommandLineLabel(cmdLine);
 		final String processLabel = renderProcessLabel(cmdLine);
-		
-		if(DLTKLaunchingPlugin.TRACE_EXECUTION)
-			traceExecution(processLabel, cmdLineLabel, workingDirectory, environment);
-		
-		Process p = exec(cmdLine, workingDirectory, environment);
 
+		if (DLTKLaunchingPlugin.TRACE_EXECUTION) {
+			traceExecution(processLabel, cmdLineLabel, workingDirectory,
+					environment);
+		}
+		
+		Process p = DebugPlugin.exec(cmdLine, workingDirectory, environment);
 		if (p == null) {
-			return;
+			abort("Execution was cancelled", null);
 		}
 
 		launch.setAttribute(DLTKLaunchingPlugin.LAUNCH_COMMAND_LINE,
@@ -206,6 +205,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		IProcess process = newProcess(launch, p, processLabel,
 				getDefaultProcessMap());
 		process.setAttribute(IProcess.ATTR_CMDLINE, cmdLineLabel);
+		return process;	
 	}
 
 	private void traceExecution(String processLabel,
@@ -234,24 +234,9 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 			if (monitor.isCanceled()) {
 				return;
 			}
-
-			// Interpreter arguments
-			monitor.subTask("Getting interpreter args");
-			String[] interpreterArgs = interpreterInstall
-					.getInterpreterArguments();
-			if (interpreterArgs != null) {
-				config.addInterpreterArgs(interpreterArgs);
-			}
-			if (monitor.isCanceled()) {
-				return;
-			}
 			monitor.worked(1);
-
-			// Running
 			monitor.subTask("Running");
-			rawRun(launch, config.renderCommandLine(constructProgramString()),
-					config.getWorkingDirectoryPath().toFile(), config
-							.getEnvironmentAsStrings());
+			rawRun(launch, config);
 			monitor.worked(4);
 
 		} finally {

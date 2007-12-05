@@ -19,6 +19,7 @@ import org.eclipse.dltk.dbgp.commands.IDbgpCommands;
 import org.eclipse.dltk.dbgp.commands.IDbgpCoreCommands;
 import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+import org.eclipse.dltk.dbgp.exceptions.DbgpOpertionCanceledException;
 import org.eclipse.dltk.dbgp.exceptions.DbgpTimeoutException;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 
@@ -31,7 +32,6 @@ public abstract class DbgpOperation {
 
 	private final Job job;
 	private final IDbgpCommands commands;
-
 
 	protected IDbgpCoreCommands getCore() {
 		return commands.getCoreCommands();
@@ -62,6 +62,8 @@ public abstract class DbgpOperation {
 				// TODO: improve
 				try {
 					process();
+				} catch (DbgpOpertionCanceledException e) {
+					// Operation was canceled cause debugger is shutting down
 				} catch (DbgpTimeoutException e) {
 					System.err.println("Timeout exception!!!");
 					e.printStackTrace();

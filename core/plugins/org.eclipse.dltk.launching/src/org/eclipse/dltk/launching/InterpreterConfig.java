@@ -2,6 +2,7 @@ package org.eclipse.dltk.launching;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -211,6 +212,7 @@ public class InterpreterConfig implements Cloneable {
 
 		return scriptArgs.add(arg);
 	}
+
 	// Script section
 	public void addScriptArg(String arg, int pos) {
 		if (arg == null) {
@@ -316,11 +318,6 @@ public class InterpreterConfig implements Cloneable {
 		return (Map) properties.clone();
 	}
 
-	// Command line
-	public String[] renderCommandLine(String interpreter) {
-		return renderCommandLine(new Path(interpreter));
-	}
-
 	public Object clone() {
 		final InterpreterConfig config = new InterpreterConfig(scriptFile,
 				workingDirectory);
@@ -331,7 +328,24 @@ public class InterpreterConfig implements Cloneable {
 		return config;
 	}
 
-	public String[] renderCommandLine(IPath interpreter) {
+	public String[] renderCommandLine(IInterpreterInstall interpreter) {
+		final List items = new ArrayList();
+
+		items.add(interpreter.getInstallLocation().getAbsolutePath());
+		items.addAll(interpreterArgs);
+		
+		String[] interpreterOwnArgs = interpreter.getInterpreterArguments();
+		if (interpreterOwnArgs != null) {
+			items.addAll(Arrays.asList(interpreterOwnArgs));
+		}
+		
+		items.add(scriptFile.toPortableString());
+		items.addAll(scriptArgs);
+
+		return (String[]) items.toArray(new String[items.size()]);
+	}
+
+	protected String[] renderCommandLine(IPath interpreter) {
 		final List items = new ArrayList();
 
 		items.add(interpreter.toPortableString());
@@ -340,6 +354,10 @@ public class InterpreterConfig implements Cloneable {
 		items.addAll(scriptArgs);
 
 		return (String[]) items.toArray(new String[items.size()]);
+	}
+
+	public String[] renderCommandLine(String interpreter) {
+		return renderCommandLine(new Path(interpreter));
 	}
 
 	// TODO: make more real implementation

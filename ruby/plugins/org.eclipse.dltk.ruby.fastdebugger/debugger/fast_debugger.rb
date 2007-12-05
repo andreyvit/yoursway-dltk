@@ -8,10 +8,9 @@
 
 ###############################################################################
 
-require 'rubygems'
-require 'ruby-debug-base.rb'
 
 require 'dbgp/logger'
+require 'dbgp/params'  
 
 require 'cgi'
 require 'monitor'
@@ -23,6 +22,7 @@ require 'fast_thread_manager'
 
 
 module XoredDebugger
+    
     class FastRubyDebugger < AbstractDebugger
 		include Logger
         attr_reader :breakpoint_manager
@@ -38,13 +38,13 @@ module XoredDebugger
         
         def get_debugger_id
             'org.eclipse.dltk.ruby.fastdebugger'
-        end
-                        
+        end                
+                     
         def start
             Debugger.handler = self
             Debugger.keep_frame_binding = true
             Debugger.start
-            Debugger.catchpoint = 'Exception'
+            Debugger.catchpoint = 'Object'
             
             # Creating main thread in ThreadManager                
             thread_manager.add_thread(Thread.current)

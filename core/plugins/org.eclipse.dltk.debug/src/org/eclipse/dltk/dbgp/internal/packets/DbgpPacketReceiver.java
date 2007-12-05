@@ -20,106 +20,115 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class DbgpPacketReceiver extends DbgpWorkingThread {
-	private static class SyncMap {
+	private static class ResponcePacketWaiter {
 		private static final int MIN_TIMEOUT = 5;
-
 		private final HashMap map;
+		private boolean terminated;
 
-		public SyncMap() {
+		public ResponcePacketWaiter() {
 			map = new HashMap();
+			terminated = false;
 		}
 
-		public synchronized void put(Object key, Object value) {
-			map.put(key, value);
+		public synchronized void put(DbgpResponsePacket packet) {
+			int id = packet.getTransactionId();
+			map.put(new Integer(id), packet);
 			notifyAll();
 		}
 
-		public synchronized Object get(Object key, int timeout)
+		public synchronized DbgpResponsePacket waitPacket(int id, int timeout)
 				throws InterruptedException {
-			if (timeout == 0) {
-				while (!map.containsKey(key)) {
-					wait();
+			Integer key = new Integer(id);
+			while (!terminated && !map.containsKey(key)) {
+				if (timeout != 0 && timeout < MIN_TIMEOUT) {
+					break;
 				}
+				long begin = System.currentTimeMillis();
 
-				return map.remove(key);
-			} else {
-				while (true) {
-					if (map.containsKey(key)) {
-						return map.remove(key);
-					}
+				wait(timeout);
 
-					long begin = System.currentTimeMillis();
-					wait(timeout);
-					long end = System.currentTimeMillis();
-
-					if (map.containsKey(key)) {
-						return map.remove(key);
-					}
-
-					long delta = end - begin;
+				long delta = System.currentTimeMillis() - begin;
+				if (timeout != 0) {
 					timeout -= delta;
-					if (timeout < MIN_TIMEOUT) {
-						break;
-					}
 				}
-
-				return null;
 			}
+
+			if (map.containsKey(key)) {
+				return (DbgpResponsePacket) map.remove(key);
+			}
+			
+			if (terminated) {
+				throw new InterruptedException();
+			}				
+			
+			return null;
 		}
 
-		public synchronized int size() {
-			return map.size();
+		public synchronized void terminate() {
+			terminated = true;
+			notifyAll();
 		}
 	}
 
-	private static class SyncQueue {
+	private static class PacketWaiter {
 		private final LinkedList queue;
+		private boolean terminated;
 
-		public SyncQueue() {
+		public PacketWaiter() {
+			terminated = false;
 			this.queue = new LinkedList();
 		}
 
-		public synchronized void put(Object obj) {
+		public synchronized void put(DbgpPacket obj) {
 			queue.addLast(obj);
 			notifyAll();
 		}
 
-		public synchronized Object get() throws InterruptedException {
-			while (queue.isEmpty()) {
+		public synchronized DbgpPacket waitPacket() throws InterruptedException {
+			while (!terminated && queue.isEmpty()) {
 				wait();
 			}
+			
+			if (terminated) {
+				throw new InterruptedException();
+			}							
+			
+			return (DbgpPacket) queue.removeFirst();
+		}
 
-			return queue.removeFirst();
+		public synchronized void terminate() {
+			terminated = true;
+			notifyAll();
 		}
 	}
 
 	private static final String INIT_TAG = "init";
-
 	private static final String RESPONSE_TAG = "response";
-
 	private static final String STREAM_TAG = "stream";
-
 	private static final String NOTIFY_TAG = "notify";
 
-	private final SyncMap responseQueue;
-
-	private final SyncQueue notifyQueue;
-
-	private final SyncQueue streamQueue;
+	private final ResponcePacketWaiter responseWaiter;
+	private final PacketWaiter notifyWaiter;
+	private final PacketWaiter streamWaiter;
 
 	private final InputStream input;
-
 	private IDbgpRawLogger logger;
 
 	protected void workingCycle() throws Exception {
-		while (!Thread.interrupted()) {
-			DbgpRawPacket packet = DbgpRawPacket.readPacket(input);
+		try {
+			while (!Thread.interrupted()) {
+				DbgpRawPacket packet = DbgpRawPacket.readPacket(input);
 
-			if (logger != null) {
-				logger.log(packet.toString());
+				if (logger != null) {
+					logger.log(packet.toString());
+				}
+
+				addDocument(packet.getParsedXml());
 			}
-
-			addDocument(packet.getParsedXml());
+		} finally {
+			responseWaiter.terminate();
+			notifyWaiter.terminate();
+			streamWaiter.terminate();
 		}
 	}
 
@@ -129,32 +138,29 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 
 		// TODO: correct init tag handling without this hack
 		if (tag.equals(INIT_TAG)) {
-			responseQueue.put(new Integer(-1), new DbgpResponsePacket(element,
-					-1));
+			responseWaiter.put(new DbgpResponsePacket(element, -1));
 		} else if (tag.equals(RESPONSE_TAG)) {
 			DbgpResponsePacket packet = DbgpXmlPacketParser
 					.parseResponsePacket(element);
-			responseQueue.put(new Integer(packet.getTransactionId()), packet);
+			responseWaiter.put(packet);
 		} else if (tag.equals(STREAM_TAG)) {
-			streamQueue.put(DbgpXmlPacketParser.parseStreamPacket(element));
+			streamWaiter.put(DbgpXmlPacketParser.parseStreamPacket(element));
 		} else if (tag.equals(NOTIFY_TAG)) {
-			notifyQueue.put(DbgpXmlPacketParser.parseNotifyPacket(element));
+			notifyWaiter.put(DbgpXmlPacketParser.parseNotifyPacket(element));
 		}
 	}
 
 	public DbgpNotifyPacket getNotifyPacket() throws InterruptedException {
-		return (DbgpNotifyPacket) notifyQueue.get();
+		return (DbgpNotifyPacket) notifyWaiter.waitPacket();
 	}
 
 	public DbgpStreamPacket getStreamPacket() throws InterruptedException {
-		return (DbgpStreamPacket) streamQueue.get();
+		return (DbgpStreamPacket) streamWaiter.waitPacket();
 	}
 
 	public DbgpResponsePacket getResponsePacket(int transactionId, int timeout)
 			throws InterruptedException {
-
-		return (DbgpResponsePacket) responseQueue.get(
-				new Integer(transactionId), timeout);
+		return responseWaiter.waitPacket(transactionId, timeout);
 	}
 
 	public DbgpPacketReceiver(InputStream input) {
@@ -165,9 +171,9 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 		}
 
 		this.input = input;
-		this.notifyQueue = new SyncQueue();
-		this.streamQueue = new SyncQueue();
-		this.responseQueue = new SyncMap();
+		this.notifyWaiter = new PacketWaiter();
+		this.streamWaiter = new PacketWaiter();
+		this.responseWaiter = new ResponcePacketWaiter();
 	}
 
 	public void setLogger(IDbgpRawLogger logger) {

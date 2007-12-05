@@ -24,6 +24,7 @@ import org.eclipse.dltk.dbgp.internal.commands.DbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.internal.managers.DbgpNotificationManager;
 import org.eclipse.dltk.dbgp.internal.managers.DbgpStreamManager;
 import org.eclipse.dltk.dbgp.internal.managers.IDbgpStreamManager;
+import org.eclipse.dltk.dbgp.internal.packets.DbgpResponsePacket;
 import org.eclipse.dltk.dbgp.internal.utils.DbgpXmlEntityParser;
 
 public class DbgpSession extends DbgpTermination implements IDbgpSession,
@@ -39,9 +40,6 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 	private final DbgpStreamManager streamManager;
 
 	private IDbgpSessionInfo info;
-
-	private final Object terminatingLock = new Object();
-	private boolean terminating = false;
 
 	private final Object terminatedLock = new Object();
 	private boolean terminated = false;
@@ -83,8 +81,12 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 		this.engine = engine;
 
 		try {
-			info = DbgpXmlEntityParser.parseSession(engine
-					.getResponsePacket(-1, 0).getContent());
+			DbgpResponsePacket responsePacket = engine.getResponsePacket(-1, 0);
+			if (responsePacket == null) {
+				throw new DbgpException();
+			}
+			info = DbgpXmlEntityParser
+					.parseSession(responsePacket.getContent());
 		} catch (InterruptedException e) {
 		}
 
@@ -99,7 +101,7 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 		this.streamManager = new DbgpStreamManager(engine,
 				"DBGP - Stream manager");
 		this.streamManager.addTerminationListener(this);
-		
+
 		// Commands
 		DbgpDebuggingEngineCommunicator communicator = new DbgpDebuggingEngineCommunicator(
 				engine);
@@ -131,7 +133,7 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 	public IDbgpStreamManager getStreamManager() {
 		return streamManager;
 	}
-	
+
 	public IDbgpNotificationManager getNotificationManager() {
 		return notificationManager;
 	}
@@ -160,32 +162,24 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 	// IDbgpTerminationListener
 	public void objectTerminated(Object object, Exception e) {
 		// Allows to unblock all terminating threads
-		synchronized (terminatingLock) {
-			if (terminating) {
-				return;
-			} else {
-				terminating = true;
-			}
-		}
-
-		// Should be executed only once
 		synchronized (terminatedLock) {
-			engine.removeTerminationListener(this);
-			streamManager.removeTerminationListener(this);
-			notificationManager.removeTerminationListener(this);
-
-			// Request terminate
-			requestTerminateImpl(object);
-
-			try {
-				waitTerminatedImpl(object);
-			} catch (InterruptedException ex) {
-				// OK, interrrputed
-			}
-
+			if (terminated)
+				return;
 			terminated = true;
 		}
 
+		engine.removeTerminationListener(this);
+		streamManager.removeTerminationListener(this);
+		notificationManager.removeTerminationListener(this);
+
+		// Request terminate
+		requestTerminateImpl(object);
+
+		try {
+			waitTerminatedImpl(object);
+		} catch (InterruptedException ex) {
+			// OK, interrrputed
+		}
 		fireObjectTerminated(e);
 	}
 

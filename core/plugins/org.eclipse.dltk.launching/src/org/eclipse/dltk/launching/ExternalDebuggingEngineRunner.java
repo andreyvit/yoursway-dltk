@@ -12,8 +12,8 @@ public abstract class ExternalDebuggingEngineRunner extends
 		super(install);
 	}
 
-	protected final InterpreterConfig alterConfig(String exe,
-			InterpreterConfig config) throws CoreException {
+	protected final InterpreterConfig alterConfig(InterpreterConfig config)
+			throws CoreException {
 		final File file = getDebuggingEnginePath();
 
 		// Checking debugging engine path
@@ -29,12 +29,11 @@ public abstract class ExternalDebuggingEngineRunner extends
 					ScriptLaunchConfigurationConstants.ERR_DEBUGGING_ENGINE_NOT_CONFIGURED);
 		}
 
-		return alterConfig(exe, config, file.toString());
+		return alterConfig(config, file.toString());
 	}
 
 	protected abstract File getDebuggingEnginePath();
 
-	protected abstract InterpreterConfig alterConfig(String exe,
-			InterpreterConfig config, String debuggingEnginePath)
-			throws CoreException;
+	protected abstract InterpreterConfig alterConfig(InterpreterConfig config,
+			String debuggingEnginePath) throws CoreException;
 }

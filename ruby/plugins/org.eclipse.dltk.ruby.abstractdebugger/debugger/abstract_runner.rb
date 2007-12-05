@@ -24,9 +24,24 @@ module XoredDebugger
 	                return
 	            end  
 	           
+                #loading required libraries
+                begin
+                    load_libraries
+                rescue LoadError
+                    log('Error: ' + $!.message + '. Terminating...')
+                    begin
+                        require 'init_error'
+                        # 998 - An internal exception in the debugger occurred
+                        XoredDebugger.init_error(998, 1, $!.message)
+                    ensure
+                        Kernel.exit
+                    end
+                end                       
+
                 log('Creating debugger...')
                 debugger = create_debugger
               
+                log('Setting exit handler...')
                 at_exit {
                     log('---->>>>>    AT EXIT:')
                     # redirect exception to stderr if available
@@ -49,7 +64,11 @@ module XoredDebugger
                 
                 log('Starting debugger...')
                 debugger.start
-	        rescue Exception
+            
+            rescue SystemExit
+                Kernel.exit
+	        
+            rescue Exception
 		        log('Exception during debugging:')
 		        log("\tMessage: " + $!.message)
 		        log("\tBacktrace: " + $!.backtrace.join("\n"))
@@ -75,6 +94,10 @@ module XoredDebugger
 	            logger.close 
 	            logger = nil
             end
+        end
+        
+        def load_libraries()
+            #nothing to load by default
         end
     end
 end

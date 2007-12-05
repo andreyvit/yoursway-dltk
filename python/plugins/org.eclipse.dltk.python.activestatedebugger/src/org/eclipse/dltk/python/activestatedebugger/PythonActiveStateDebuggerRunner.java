@@ -26,7 +26,7 @@ public class PythonActiveStateDebuggerRunner extends
 		ExternalDebuggingEngineRunner {
 
 	public static final String ENGINE_ID = "org.eclipse.dltk.python.activestatedebugger";
-	
+
 	public PythonActiveStateDebuggerRunner(IInterpreterInstall install) {
 		super(install);
 	}
@@ -35,8 +35,8 @@ public class PythonActiveStateDebuggerRunner extends
 	 * @see org.eclipse.dltk.launching.ExternalDebugginEngineRunner#alterConfig(java.lang.String,
 	 *      org.eclipse.dltk.launching.InterpreterConfig, java.lang.String)
 	 */
-	protected InterpreterConfig alterConfig(String exe,
-			InterpreterConfig config, String debugEnginePath) {
+	protected InterpreterConfig alterConfig(InterpreterConfig config,
+			String debugEnginePath) {
 
 		DbgpInterpreterConfig dbgpConfig = new DbgpInterpreterConfig(config);
 		final String host = dbgpConfig.getHost();

@@ -1,19 +1,17 @@
 package org.eclipse.dltk.launching;
 
-import java.io.File;
-import java.text.MessageFormat;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.dltk.dbgp.DbgpSessionIdGenerator;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.IDbgpService;
 import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
-import org.eclipse.dltk.debug.core.model.IScriptDebugTargetListener;
 import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
 import org.eclipse.dltk.internal.launching.InterpreterMessages;
 import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
@@ -21,38 +19,12 @@ import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
 import org.eclipse.dltk.launching.debug.IDebuggingEngine;
 
 public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
-	public static class ScriptDebugTargetWaiter implements
-			IScriptDebugTargetListener {
-
-		private IScriptDebugTarget target;
-
-		public ScriptDebugTargetWaiter(IScriptDebugTarget target) {
-			this.target = target;
-		}
-
-		public synchronized void targetInitialized() {
-			notifyAll();
-		}
-
-		public synchronized boolean waitThread(int timeout) {
-			target.addListener(this);
-
-			try {
-				wait(timeout);
-			} catch (InterruptedException e) {
-				Thread.interrupted();
-			}
-
-			target.removeListener(this);
-
-			return target.isInitialized();
-		}
-	}
-
 	// Launch attributes
 	public static final String LAUNCH_ATTR_DEBUGGING_ENGINE_ID = "debugging_engine_id";
 
 	private static final String LOCALHOST = "127.0.0.1";
+
+	public static final String OVERRIDE_EXE = "OVERRIDE_EXE";
 
 	protected String getSessionId(ILaunchConfiguration configuration)
 			throws CoreException {
@@ -60,13 +32,12 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 	}
 
 	protected IScriptDebugTarget addDebugTarget(ILaunch launch,
-			ILaunchConfiguration configuration, IDbgpService dbgpService)
-			throws CoreException {
+			IDbgpService dbgpService) throws CoreException {
 
 		final IScriptDebugTarget target = new ScriptDebugTarget(
-				getDebugModelId(), dbgpService, getSessionId(configuration),
-				launch, null);
-		
+				getDebugModelId(), dbgpService, getSessionId(launch
+						.getLaunchConfiguration()), launch, null);
+
 		launch.addDebugTarget(target);
 		return target;
 	}
@@ -75,13 +46,8 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		super(install);
 	}
 
-	protected InterpreterConfig alterConfig(String exe, InterpreterConfig config)
+	protected void initializeLaunch(ILaunch launch, InterpreterConfig config)
 			throws CoreException {
-		return (InterpreterConfig) config.clone();
-	}
-
-	protected void initialize(InterpreterConfig config, ILaunch launch,
-			ILaunchConfiguration configuration) throws CoreException {
 		final IDbgpService service = DLTKDebugPlugin.getDefault()
 				.getDbgpService();
 
@@ -89,8 +55,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			abort(InterpreterMessages.errDbgpServiceNotAvailable, null);
 		}
 
-		final IScriptDebugTarget target = addDebugTarget(launch, configuration,
-				service);
+		final IScriptDebugTarget target = addDebugTarget(launch, service);
 
 		// Disable the output of the debugging engine process
 		launch.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, Boolean.FALSE
@@ -101,84 +66,112 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 				getDebuggingEngineId());
 
 		// Configuration
-		final DbgpInterpreterConfig dbgpConfig = new DbgpInterpreterConfig(config);
+		final DbgpInterpreterConfig dbgpConfig = new DbgpInterpreterConfig(
+				config);
 
 		dbgpConfig.setSessionId(target.getSessionId());
 		dbgpConfig.setPort(service.getPort());
 		dbgpConfig.setHost(LOCALHOST);
 	}
 
-	protected void checkConfig(InterpreterConfig config) throws CoreException {
-		File dir = new File(config.getWorkingDirectoryPath().toOSString());
-		if (!dir.exists()) {
-			abort(
-					MessageFormat
-							.format(
-									InterpreterMessages.errDebuggingEngineWorkingDirectoryDoesntExist,
-									new Object[] { dir.toString() }), null);
-		}
-
-		File script = new File(config.getScriptFilePath().toOSString());
-		if (!script.exists()) {
-			abort(
-					MessageFormat
-							.format(
-									InterpreterMessages.errDebuggingEngineScriptFileDoesntExist,
-									new Object[] { script.toString() }), null);
-		}
+	protected InterpreterConfig alterConfig(InterpreterConfig config)
+			throws CoreException {
+		return config;
 	}
 
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
 
+		monitor.beginTask("Launching...", 5);
+		if (monitor.isCanceled()) {
+			return;
+		}
 		try {
-			// Configuration
-			final ILaunchConfiguration configuration = launch
-					.getLaunchConfiguration();
-
-			initialize(config, launch, configuration);
-
-			final InterpreterConfig newConfig = alterConfig(
-					constructProgramString(), config);
-
-			checkConfig(newConfig);
+			initializeLaunch(launch, config);
+			InterpreterConfig newConfig = alterConfig(config);
 
 			// Starting debugging engine
+			IProcess process = null;
 			try {
-				String exe = (String) newConfig.getProperty("OVERRIDE_EXE");
-
-				if (exe != null) {
-					String[] cmdLine = newConfig.renderCommandLine(exe);
-					rawRun(launch, cmdLine, newConfig.getWorkingDirectoryPath()
-							.toFile(), newConfig.getEnvironmentAsStrings());
-				} else {
-					super.run(newConfig, launch, monitor);
-				}
+				// Running
+				monitor.subTask("Running");
+				process = rawRun(launch, newConfig);
 			} catch (CoreException e) {
 				abort(InterpreterMessages.errDebuggingEngineNotStarted, e);
 			}
+			monitor.worked(4);
 
 			// Waiting for debugging engine connect
-			startDebuggingEngine(launch, configuration);
+			waitDebuggerConnected(process, launch, monitor);
 		} catch (CoreException e) {
 			launch.terminate();
 			throw e;
+		} finally {
+			monitor.done();
 		}
-
 		// Happy debugging :)
 	}
 
-	protected void startDebuggingEngine(ILaunch launch,
-			final ILaunchConfiguration configuration) throws CoreException {
-		int waitingTimeout = configuration
+	protected String[] renderCommandLine(InterpreterConfig config) {
+		String exe = (String) config.getProperty(OVERRIDE_EXE);
+		if (exe != null) {
+			return config.renderCommandLine(exe);
+		} else {
+			return config.renderCommandLine(getInstall());
+		}
+	}
+
+	/**
+	 * Waiting debugging process to connect to current launch
+	 * 
+	 * @param debuggingProcess
+	 *            process that will connect to current launch or null if handle
+	 *            to process is not available (remote debugging)
+	 * @param launch
+	 *            launch to connect to
+	 * @param monitor
+	 *            progress monitor
+	 * @throws CoreException
+	 *             if debuggingProcess terminated, monitor is canceled or // *
+	 *             timeout
+	 */
+	protected void waitDebuggerConnected(IProcess debuggingProcess,
+			ILaunch launch, IProgressMonitor monitor) throws CoreException {
+		final int WAIT_CHUNK = 100;
+
+		ILaunchConfiguration configuration = launch.getLaunchConfiguration();
+		int timeout = configuration
 				.getAttribute(
 						ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
 						0);
 
-		ScriptDebugTargetWaiter waiter = new ScriptDebugTargetWaiter(
-				(IScriptDebugTarget) launch.getDebugTarget());
+		ScriptDebugTarget target = (ScriptDebugTarget) launch.getDebugTarget();
+		target.setProcess(debuggingProcess);
 
-		if (!waiter.waitThread(waitingTimeout)) {
+		try {
+			int all = 0;
+			while (timeout == 0 || all < timeout) {
+				if (target.isInitialized()
+						|| target.isTerminated()
+						|| monitor.isCanceled()
+						|| (debuggingProcess != null && debuggingProcess
+								.isTerminated()))
+					break;
+
+				Thread.sleep(WAIT_CHUNK);
+				all += WAIT_CHUNK;
+			}
+		} catch (InterruptedException e) {
+			Thread.interrupted();
+		}
+
+		if (!target.isInitialized()) {
+			if (debuggingProcess != null && debuggingProcess.canTerminate()) {
+				debuggingProcess.terminate();
+			}
 			abort(InterpreterMessages.errDebuggingEngineNotConnected, null);
 		}
 	}
@@ -192,6 +185,6 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		return DebuggingEngineManager.getInstance().getDebuggingEngine(
 				getDebuggingEngineId());
 	}
-	
+
 	protected abstract String getDebuggingEngineId();
 }

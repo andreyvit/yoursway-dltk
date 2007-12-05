@@ -11,6 +11,8 @@ package org.eclipse.dltk.dbgp;
 
 import java.net.URI;
 
+import org.eclipse.dltk.dbgp.exceptions.DbgpException;
+
 public interface IDbgpSessionInfo {
 	String getApplicationId();
 
@@ -25,4 +27,6 @@ public interface IDbgpSessionInfo {
 	String getLanguage();
 
 	URI getFileUri();
+	
+	DbgpException getError();
 }

@@ -276,9 +276,9 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		String threadId = element.getAttribute(ATTR_THREAD);
 		String parentId = element.getAttribute(ATTR_PARENT);
 		String language = element.getAttribute(ATTR_LANGUAGE);
-
+		DbgpException error = DbgpXmlParser.checkError(element);
 		return new DbgpSessionInfo(appId, ideKey, session, threadId, parentId,
-				language, null);
+				language, null, error);
 	}
 
 	protected static String getFromChildOrAttr(Element property, String name) {

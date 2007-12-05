@@ -23,8 +23,6 @@ module XoredDebugger
     end
     
     module Logger
-        # By default log to stdout
-        @@logger = $stdout
         @@monitor = Monitor.new
         
         def Logger.setup(logger)

@@ -21,6 +21,7 @@ module XoredDebugger
         def initialize(host, port, printer)
 			@monitor = Monitor.new
             @socket = TCPSocket.new(host, port)
+            @socket.sync = true
             @printer = printer
         end
 

@@ -49,9 +49,9 @@ public class RubyActiveStateDebuggerRunner extends
 		return null;
 	}
 
-	protected InterpreterConfig alterConfig(String exe,
-			InterpreterConfig config, String debugEnginePath) {
-		
+	protected InterpreterConfig alterConfig(InterpreterConfig config,
+			String debugEnginePath) {
+
 		DbgpInterpreterConfig dbgpConfig = new DbgpInterpreterConfig(config);
 		final String host = dbgpConfig.getHost();
 		final int port = dbgpConfig.getPort();

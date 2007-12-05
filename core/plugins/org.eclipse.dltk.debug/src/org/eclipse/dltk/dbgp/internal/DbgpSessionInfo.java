@@ -12,6 +12,7 @@ package org.eclipse.dltk.dbgp.internal;
 import java.net.URI;
 
 import org.eclipse.dltk.dbgp.IDbgpSessionInfo;
+import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 
 public class DbgpSessionInfo implements IDbgpSessionInfo {
 	private final String appId;
@@ -28,8 +29,10 @@ public class DbgpSessionInfo implements IDbgpSessionInfo {
 
 	private final URI fileUri;
 
+	private DbgpException error;
+
 	public DbgpSessionInfo(String appId, String ideKey, String session,
-			String threadId, String parentId, String language, URI fileUri) {
+			String threadId, String parentId, String language, URI fileUri, DbgpException error) {
 		super();
 		this.appId = appId;
 		this.ideKey = ideKey;
@@ -38,6 +41,7 @@ public class DbgpSessionInfo implements IDbgpSessionInfo {
 		this.parentId = parentId;
 		this.language = language;
 		this.fileUri = fileUri;
+		this.error = error;
 	}
 
 	public String getApplicationId() {
@@ -66,6 +70,10 @@ public class DbgpSessionInfo implements IDbgpSessionInfo {
 
 	public String getThreadId() {
 		return threadId;
+	}
+
+	public DbgpException getError() {
+		return error;
 	}
 
 }

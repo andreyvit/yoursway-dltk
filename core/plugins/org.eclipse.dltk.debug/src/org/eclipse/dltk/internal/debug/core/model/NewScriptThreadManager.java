@@ -201,6 +201,10 @@ public class NewScriptThreadManager implements IScriptThreadManager {
 	}
 
 	public void terminate() throws DebugException {
+		debugTarget.terminate();
+	}
+
+	public void sendTerminationRequest() throws DebugException {
 		synchronized (lock) {
 			if (state == WAITING) {
 				destroy();
@@ -209,12 +213,12 @@ public class NewScriptThreadManager implements IScriptThreadManager {
 
 				IScriptThread[] temp = getThreads();
 				for (int i = 0; i < temp.length; ++i) {
-					temp[i].terminate();
+					temp[i].sendTerminationRequest();
 				}
 			}
 		}
 	}
-
+	
 	// =========================================================================
 	// ======================= IDbgpThreadAcceptor =============================
 	// =========================================================================

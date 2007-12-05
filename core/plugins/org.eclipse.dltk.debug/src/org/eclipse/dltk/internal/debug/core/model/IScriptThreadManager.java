@@ -1,5 +1,6 @@
 package org.eclipse.dltk.internal.debug.core.model;
 
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.ISuspendResume;
 import org.eclipse.debug.core.model.ITerminate;
 import org.eclipse.dltk.dbgp.IDbgpThreadAcceptor;
@@ -21,4 +22,6 @@ public interface IScriptThreadManager extends IDbgpThreadAcceptor, ITerminate,
 	void terminateThread(IScriptThread thread);
 	
 	boolean isWaitingForThreads();
+
+	void sendTerminationRequest() throws DebugException;
 }

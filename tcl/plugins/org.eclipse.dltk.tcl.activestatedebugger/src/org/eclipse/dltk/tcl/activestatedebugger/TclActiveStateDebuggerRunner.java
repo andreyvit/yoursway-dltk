@@ -46,9 +46,9 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 		return null;
 	}
 
-	protected InterpreterConfig alterConfig(String exe,
-			InterpreterConfig config, String debuggingEnginePath)
-			throws CoreException {
+	protected InterpreterConfig alterConfig(InterpreterConfig config,
+			String debuggingEnginePath) throws CoreException {
+		final String exe = renderCommandLineLabel(config);
 		final String host = (String) config
 				.getProperty(DbgpConstants.HOST_PROP);
 		final String port = (String) config
@@ -59,7 +59,7 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 		InterpreterConfig newConfig = (InterpreterConfig) config.clone();
 
 		// Additional property
-		newConfig.setProperty("OVERRIDE_EXE", debuggingEnginePath);
+		newConfig.setProperty(OVERRIDE_EXE, debuggingEnginePath);
 
 		// Interpreter arguments
 		newConfig.addInterpreterArg(HOST_KEY);

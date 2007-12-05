@@ -100,8 +100,14 @@ module XoredDebugger
 
         # Init command
         def print_init(m)
-            sprintf('<init appid="%s" idekey="%s" session="%s"  thread="%s" parent="%s" language="ruby" protocol_version="1.0" fileuri="%s"/>',
-                m[:app_id], m[:ide_key], m[:session], m[:thread], m[:parent], m[:file_uri])
+            error = m[:error]
+            if (error.nil?)
+	            sprintf('<init appid="%s" idekey="%s" session="%s"  thread="%s" parent="%s" language="ruby" protocol_version="1.0" fileuri="%s"/>',
+	                m[:app_id], m[:ide_key], m[:session], m[:thread], m[:parent], m[:file_uri])
+            else
+	            sprintf('<init appid="%s" idekey="%s" session="%s"  thread="%s" parent="%s" language="ruby" protocol_version="1.0" fileuri="%s"><error code="%d" apperr="%d"><message>%s</message></error></init>',
+	               m[:app_id], m[:ide_key], m[:session], m[:thread], m[:parent], m[:file_uri], error[:code], error[:app_code], error[:message])                
+            end
         end
 
         # Status command
@@ -186,13 +192,24 @@ module XoredDebugger
                 m[:context_id], m[:id], props)
         end
 
+        def print_source(m)
+            lines = m[:lines]
+            if (lines.nil?)
+	            sprintf('<response command="source" success="%d" transaction_id="%d" />', 
+	                (m[:success])?1:0, m[:id])
+            else
+	            sprintf('<response command="source" success="%d" transaction_id="%d">%s</response>', 
+	                (m[:success])?1:0, m[:id], cdata(Base64.encode64(lines.join())))
+            end            
+        end
+        
         # Stream commands
         def print_stream(stream, m)
             sprintf('<response command="%s" success="%d" transaction_id="%d"/>',
                 stream, bool_to_bit(m[:success]), m[:id])
         end
         private :print_stream
-
+        
         def print_stdout(m)
             print_stream('stdout', m)
         end

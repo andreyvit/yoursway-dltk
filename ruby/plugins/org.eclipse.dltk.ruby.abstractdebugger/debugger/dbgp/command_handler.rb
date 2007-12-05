@@ -35,9 +35,15 @@ end
 #
 # Thread label
 #
-def get_thread_label(thread)	
-	is_main = thread == Thread.main
-	sprintf("Thread %s id=%d, priority=%d", is_main ? '(main)' : '', thread.object_id, thread.priority)
+def get_thread_label(thread)
+    main_label = (thread == Thread.main)? ' (main)' : ''
+    label = sprintf("Thread%s id=%d", main_label, thread.object_id)
+    
+    priority = thread.priority
+    unless (priority.nil?) 
+        label = sprintf("%s, priority=%d", label, priority)
+    end
+    label
 end
 
 def normalize_path(path)
@@ -59,28 +65,31 @@ module XoredDebugger
             @context = debugger.thread_context(thread)
             
             @command_handler = debugger.create_debug_thread do
-                log("New control thread started: " + Thread.current.inspect)
-                io_manager.send('init', init('app_test_id', @key, get_thread_label(@thread), @script))
-                catch (:done) do                 
-                    loop do
-                        begin
-                            command_loop
-                        rescue Exception
-                            log('Exception in command loop:')
-                            log("\tMessage: " + $!.message)
-                            log("\tBacktrace: " + $!.backtrace.join("\n"))                            
-                        end
-                    end
+                begin 
+	                log('New control thread started: ' + Thread.current.inspect)
+	                io_manager.send('init', init('app_test_id', @key, get_thread_label(@thread), @script))
+	                catch (:done) do                 
+	                    loop do
+	                        begin
+	                            command_loop
+	                        rescue Exception
+	                            log('Exception in command loop:')
+	                            log("\tMessage: " + $!.message)
+	                            log("\tBacktrace: " + $!.backtrace.join("\n"))                            
+	                        end
+	                    end
+	                end
+                rescue Exception
+                    log('Exception in command handler:')
+                    log("\tMessage: " + $!.message)
+                    log("\tBacktrace: " + $!.backtrace.join("\n"))                            
                 end
                 log("Exiting control thread: " + Thread.current.inspect)
-#                
-#                unless @context.dead?
-#                    # if thread is still alive and suspended then resume thread
-#                    log("Resuming thread without control")
-#                    if @context.suspended?
-#                        @context.resume
-#                    end                     
-#                end
+                
+                if @thread.alive? && Thread.main != @thread 
+                    log("Underlying thread is still active. So, this is connection error. Terminating the debugger...")
+                    Kernel.exit!
+                end
             end            
 		end
   
@@ -492,6 +501,13 @@ module XoredDebugger
                 when 'stack_depth'
                     stack_depth
 
+                when 'source'
+                    path = uri_to_path(command.arg('-f'))
+                    log('source path: ' + path)
+                    lines = source_manager.source_for(path)
+                    { :success => !lines.nil?,
+                      :lines => lines }                    
+                    
                 # Extended commands
                 when 'stdin'
                     value = command.arg('-c')
@@ -570,7 +586,7 @@ module XoredDebugger
                     :reason => 'ok',
                     :id     => @command.arg('-i') } 
             io_manager.send(@command.name, map)
-            Kernel.exit!(0)
+            Kernel.exit!
             nil
         end
 
@@ -650,10 +666,14 @@ module XoredDebugger
         def at_catchpoint(context, excpt)
             log(sprintf('=> at_catchpoint: %s', excpt.inspect))                        
             breakpoint = breakpoint_manager.exception_break?(stack_manager, excpt)
-            if breakpoint.state
+            if !breakpoint.nil? && breakpoint.state
                 @skipBreakpoint = false
             else
                 @skipBreakpoint = true
+                mainThread = Thread.main
+                if (mainThread == Thread.current && @context.suspended?)
+                    context.resume
+                end
             end         
         end
     
@@ -662,7 +682,8 @@ module XoredDebugger
 
         def at_line(context, file, line)
             log(sprintf('=> at_line: %s: %d', file, line))
-            unless context.stop_reason == :breakpoint && @skipBreakpoint
+            reason = context.stop_reason 
+            unless (reason == :breakpoint || reason == :catchpoint) && @skipBreakpoint
                 @context.suspend
                 send_break
             end

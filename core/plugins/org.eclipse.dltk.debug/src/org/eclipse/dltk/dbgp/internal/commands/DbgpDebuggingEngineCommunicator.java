@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.exceptions.DbgpIOException;
+import org.eclipse.dltk.dbgp.exceptions.DbgpOpertionCanceledException;
 import org.eclipse.dltk.dbgp.exceptions.DbgpTimeoutException;
 import org.eclipse.dltk.dbgp.internal.DbgpRequest;
 import org.eclipse.dltk.dbgp.internal.IDbgpDebugingEngine;
@@ -62,7 +63,7 @@ public class DbgpDebuggingEngineCommunicator implements IDbgpCommunicator {
 
 			return response;
 		} catch (InterruptedException e) {
-			return null;
+			throw new DbgpOpertionCanceledException();
 		} catch (IOException e) {
 			throw new DbgpIOException(e);
 		}

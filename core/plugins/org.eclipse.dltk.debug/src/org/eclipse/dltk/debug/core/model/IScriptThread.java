@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.core.model;
 
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.breakpoints.IDbgpBreakpoint;
@@ -27,4 +28,6 @@ public interface IScriptThread extends IThread /* , IFilteredStep */{
 	IScriptEvaluationEngine getEvaluationEngine();
 
 	int getModificationsCount();
+
+	void sendTerminationRequest() throws DebugException;
 }

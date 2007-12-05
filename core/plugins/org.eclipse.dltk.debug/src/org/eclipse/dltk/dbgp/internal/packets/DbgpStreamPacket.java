@@ -9,26 +9,30 @@
  *******************************************************************************/
 package org.eclipse.dltk.dbgp.internal.packets;
 
-public class DbgpStreamPacket {
+import org.w3c.dom.Element;
+
+public class DbgpStreamPacket extends DbgpPacket {
 	private static final String STDERR = "stderr";
 
 	private static final String STDOUT = "stdout";
 
 	private final String type;
 
-	private final String content;
+	private final String textContent;
 
-	public DbgpStreamPacket(String type, String content) {
+	public DbgpStreamPacket(String type, String textContent, Element content) {
+		super(content);
+		
 		if (!STDERR.equalsIgnoreCase(type) && !STDOUT.equalsIgnoreCase(type)) {
 			throw new IllegalArgumentException("Invalid type value");
 		}
 
-		if (content == null) {
+		if (textContent == null) {
 			throw new IllegalArgumentException("Content cannot be null");
 		}
 
 		this.type = type;
-		this.content = content;
+		this.textContent = textContent;
 	}
 
 	public boolean isStdout() {
@@ -39,12 +43,12 @@ public class DbgpStreamPacket {
 		return STDERR.equalsIgnoreCase(type);
 	}
 
-	public String getContent() {
-		return content;
+	public String getTextContent() {
+		return textContent;
 	}
 
 	public String toString() {
-		return "DbgpStreamPacket (Type: " + type + "; Content: " + content
+		return "DbgpStreamPacket (Type: " + type + "; Content: " + textContent
 				+ ";)";
 	}
 }

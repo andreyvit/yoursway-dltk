@@ -20,6 +20,7 @@ import org.eclipse.debug.core.model.IThread;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.dbgp.IDbgpContinuationHandler;
 import org.eclipse.dltk.dbgp.IDbgpSession;
+import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 
@@ -145,24 +146,34 @@ public class ScriptThreadManager implements IScriptThreadManager {
 
 	// IDbgpThreadAcceptor
 	public void acceptDbgpThread(IDbgpSession session) {
-		synchronized (threads) {
-			try {
-				session.getStreamManager().addListener(outputListener);
-				ScriptThread thread = new ScriptThread(target, session, this);
-				threads.add(thread);
-
-				boolean isFirstThread = waitingForThreads;
-				waitingForThreads = false;
-
-				fireThreadAccepted(thread, isFirstThread);
-
-				DebugEventHelper.fireCreateEvent(thread);
-
-				// Auto start
-				thread.resume();
-			} catch (Exception e) {
-				DLTKDebugPlugin.log(e);
+		try {
+			DbgpException error = session.getInfo().getError();
+			if (error != null) {
+				throw error;
 			}
+			
+			session.getStreamManager().addListener(outputListener);
+			ScriptThread thread = new ScriptThread(target, session, this);
+			addThread(thread);
+
+			boolean isFirstThread = waitingForThreads;
+			waitingForThreads = false;
+
+			fireThreadAccepted(thread, isFirstThread);
+
+			DebugEventHelper.fireCreateEvent(thread);
+
+			// Auto start
+			thread.resume();
+		} catch (Exception e) {
+			try { target.terminate();} catch (DebugException e1) {}
+			DLTKDebugPlugin.log(e);
+		}
+	}
+
+	private void addThread(ScriptThread thread) {
+		synchronized (threads) {
+			threads.add(thread);			
 		}
 	}
 
@@ -220,16 +231,19 @@ public class ScriptThreadManager implements IScriptThreadManager {
 	}
 
 	public void terminate() throws DebugException {
-		synchronized (threads) {
-			IThread[] threads = getThreads();
-			for (int i = 0; i < threads.length; ++i) {
-				threads[i].terminate();
-			}
-			waitingForThreads = false;
-
-		}
+		target.terminate();
 	}
 
+	public void sendTerminationRequest() throws DebugException {
+		synchronized (threads) {
+			IScriptThread[] threads = getThreads();
+			for (int i = 0; i < threads.length; ++i) {
+				threads[i].sendTerminationRequest();
+			}
+			waitingForThreads = false;
+		}
+	}
+	
 	public boolean canResume() {
 		return getThreadBoolean(new IThreadBoolean() {
 			public boolean get(IThread thread) {

@@ -107,6 +107,9 @@ public class DbgpDebugingEngine extends DbgpTermination implements
 
 	public void objectTerminated(Object object, Exception e) {
 		synchronized (terminatedLock) {
+			if (terminated)
+				return;
+			
 			receiver.removeTerminationListener(this);
 			try {
 				receiver.waitTerminated();

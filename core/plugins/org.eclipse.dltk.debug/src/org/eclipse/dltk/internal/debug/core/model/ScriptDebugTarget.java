@@ -54,7 +54,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	private IScriptStreamProxy streamProxy;
 
-	private final IProcess process;
+	private IProcess process;
 
 	private final ILaunch launch;
 
@@ -75,7 +75,10 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	private String[] stepFilters;
 
 	private boolean useStepFilters;
-
+	
+	private final Object terminatedLock = new Object();
+	private boolean terminated = false;
+	
 	public static List getAllTargets() {
 		return new ArrayList(targets.keySet());
 	}
@@ -101,11 +104,11 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		this.breakpointManager = new ScriptBreakpointManager(this);
 
 		this.threadManager.addListener(this);
-
+		
 		DebugEventHelper.fireCreateEvent(this);
 		targets.put(this, "");
 	}
-	
+
 	public void shutdown() {
 		try {
 			terminate();
@@ -113,7 +116,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 			DLTKDebugPlugin.log(e);
 		}
 	}
-	
+
 	public String getSessionId() {
 		return sessionId;
 	}
@@ -135,6 +138,10 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		return process;
 	}
 
+	public void setProcess(IProcess process) {
+		this.process = process; 
+	}
+	
 	public boolean hasThreads() throws DebugException {
 		return threadManager.hasThreads();
 	}
@@ -149,6 +156,8 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	// ITerminate
 	public boolean canTerminate() {
+		if (process != null && process.isTerminated())
+			return false;
 		return threadManager.canTerminate();
 	}
 
@@ -175,19 +184,30 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	public void terminate() throws DebugException {
-		dbgpService.unregisterAcceptor(sessionId);
-		threadManager.terminate();
-		if (waitTermianted()) {
-			threadManager.removeListener(this);
-
-			IBreakpointManager manager = DebugPlugin.getDefault()
-					.getBreakpointManager();
-
-			manager.removeBreakpointListener(this);
-			manager.removeBreakpointManagerListener(breakpointManager);
-
-			DebugEventHelper.fireTerminateEvent(this);
+		synchronized (terminatedLock) {
+			if (terminated)
+				return;
+			terminated = true;
 		}
+		
+		dbgpService.unregisterAcceptor(sessionId);
+		
+		threadManager.sendTerminationRequest();		
+		if (!waitTermianted()) {
+			// Debugging process is not answering, so terminating it
+			if (process != null && process.canTerminate())
+				process.terminate();
+		}
+		
+		threadManager.removeListener(this);
+
+		IBreakpointManager manager = DebugPlugin.getDefault()
+				.getBreakpointManager();
+
+		manager.removeBreakpointListener(this);
+		manager.removeBreakpointManagerListener(breakpointManager);
+		
+		DebugEventHelper.fireTerminateEvent(this);
 	}
 
 	// ISuspendResume
@@ -313,7 +333,8 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	public boolean isInitialized() {
-		return !threadManager.isWaitingForThreads();
+		return !threadManager.isWaitingForThreads()
+				&& threadManager.hasThreads();
 	}
 
 	protected void fireTargetInitialized() {

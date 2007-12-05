@@ -58,6 +58,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	
 	private IPropertyChangeListener propertyListener;
 
+	private boolean terminated = false;
+
 
 	// ScriptThreadStateManager.IStateChangeHandler
 	public void handleSuspend(int detail) {
@@ -129,13 +131,27 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 		this.stateManager = new ScriptThreadStateManager(this);
 
+		this.stack = new ScriptStack(this);
+
+		
+		this.propertyListener = new IPropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent event) {
+				if (event.getProperty().equals(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL)
+						|| event.getProperty().equals(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS)) {
+					stack.updateFrames();
+					DebugEventHelper.fireChangeEvent(ScriptThread.this
+							.getDebugTarget());
+				}
+			}
+		};
+		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
+		prefs.addPropertyChangeListener(propertyListener);
+		
 		final DbgpDebugger engine = this.stateManager.getEngine();
 
 		if (DLTKCore.DEBUG) {
 			DbgpDebugger.printEngineInfo(engine);
 		}
-
-		final IDbgpExtendedCommands extended = session.getExtendedCommands();
 
 		engine.setMaxChildren(256);
 		engine.setMaxDepth(2);
@@ -149,7 +165,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 		engine.redirectStdout();
 		engine.redirectStderr();
-
+		
+		// final IDbgpExtendedCommands extended = session.getExtendedCommands();
 		// session.getNotificationManager().addNotificationListener(
 		// new IDbgpNotificationListener() {
 		// private final BufferedReader reader = new BufferedReader(
@@ -167,22 +184,6 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		// }
 		// }
 		// });
-
-		this.stack = new ScriptStack(this);
-
-		
-		propertyListener = new IPropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent event) {
-				if (event.getProperty().equals(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL)
-						|| event.getProperty().equals(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS)) {
-					stack.updateFrames();
-					DebugEventHelper.fireChangeEvent(ScriptThread.this
-							.getDebugTarget());
-				}
-			}
-		};
-		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
-		prefs.addPropertyChangeListener(propertyListener);
 	}
 
 	public boolean hasStackFrames() throws DebugException {
@@ -278,7 +279,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	// ITerminate
 	public boolean isTerminated() {
-		return stateManager.isTerminated();
+		return terminated || stateManager.isTerminated();			
 	}
 
 	public boolean canTerminate() {
@@ -286,6 +287,10 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	}
 
 	public void terminate() throws DebugException {
+		target.terminate();
+	}
+	
+	public void sendTerminationRequest() throws DebugException {
 		stateManager.terminate();
 	}
 
@@ -322,10 +327,11 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	// IDbgpTerminationListener
 	public void objectTerminated(Object object, Exception e) {
+		terminated = true;
 		Assert.isTrue(object == session);		
 		manager.terminateThread(this);
 		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
-		prefs.addPropertyChangeListener(propertyListener);
+		prefs.removePropertyChangeListener(propertyListener);
 	}
 
 	// Object

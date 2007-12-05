@@ -5,9 +5,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.dbgp.internal.DbgpDebugingEngine;
 import org.eclipse.dltk.dbgp.internal.DbgpSession;
 import org.eclipse.dltk.dbgp.internal.DbgpWorkingThread;
+import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 
 public class DbgpServer extends DbgpWorkingThread {
 	private final int port;
@@ -51,20 +56,37 @@ public class DbgpServer extends DbgpWorkingThread {
 			while (!Thread.interrupted()) {
 				Socket client = acceptClient();
 				client.setSoTimeout(clientTimeout);
-
-				if (listener != null) {
-					final DbgpDebugingEngine dbgpDebugingEngine = new DbgpDebugingEngine(
-							client);
-					final DbgpSession session = new DbgpSession(
-							dbgpDebugingEngine);
-					listener.clientConnected(session);
-				}
+				createSession(client);
 			}
 		} finally {
 			if (server != null && !server.isClosed()) {
 				server.close();
 			}
 		}
+	}
+
+	private void createSession(final Socket client) {
+		Job job = new Job("Accepting debugging engine connection") {
+			protected IStatus run(IProgressMonitor monitor) {
+				if (listener != null) {
+					DbgpDebugingEngine dbgpDebugingEngine = null;
+					DbgpSession session = null;
+					
+					try {
+						dbgpDebugingEngine = new DbgpDebugingEngine(client);
+						session = new DbgpSession(dbgpDebugingEngine);
+						listener.clientConnected(session);
+					}
+					catch (Exception e) {
+						DLTKDebugPlugin.log(e);
+						if (dbgpDebugingEngine != null)
+							dbgpDebugingEngine.requestTermination();
+					}
+				}
+				return Status.OK_STATUS;				
+			} 
+		};
+		job.schedule();
 	}
 
 	private Socket acceptClient() throws IOException {

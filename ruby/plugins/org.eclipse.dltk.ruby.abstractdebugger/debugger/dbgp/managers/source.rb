@@ -8,49 +8,39 @@
 
 ###############################################################################
 
-SCRIPT_LINES__ = {} unless defined? SCRIPT_LINES__
-SCRIPT_TIMESTAMPS__ = {} unless defined? SCRIPT_TIMESTAMPS__
-
 module XoredDebugger
-	class SourceManager
-		def source_for(file) # :nodoc:
-	      finder = lambda do
-	        if File.exists?(file)
-	          if SCRIPT_LINES__[file].nil? || SCRIPT_LINES__[file] == true
-	            SCRIPT_LINES__[file] = File.readlines(file)
-	          end
+    class SourceManager
+        def initialize() 
+            @script_lines = {}
+        end
 
-	          #change_time = test(?M, file)
-	          #SCRIPT_TIMESTAMPS__[file] ||= change_time
-	          #if @reload_source_on_change && SCRIPT_TIMESTAMPS__[file] < change_time
-	          #  SCRIPT_LINES__[file] = File.readlines(file)
-	          #end
+        def source_for(file) # :nodoc:
+            finder = lambda do
+	            if File.exists?(file)
+	                if @script_lines[file].nil?
+	                    @script_lines[file] = File.readlines(file)
+	                end
+	                @script_lines[file]
+	            end
+            end	      
+            Dir.chdir(File.dirname($0)){finder.call} || finder.call ||
+                (@script_lines[file] == true ? nil : @script_lines[file])
+        end
 
-	          SCRIPT_LINES__[file]
-	        end
-	      end
-	      
-	      Dir.chdir(File.dirname($0)){finder.call} || finder.call ||
-	        (SCRIPT_LINES__[file] == true ? nil : SCRIPT_LINES__[file])
-	    end
-	    
-	    def source_reload
-	      SCRIPT_LINES__.keys.each do |file|
-	        next unless File.exists?(file)
-	        SCRIPT_LINES__[file] = nil
-	      end
-	    end
-	    
-	    def line_at(file, line) # :nodoc:
-	      lines = source_for(file)
-	      if lines
-	        line = lines[line-1]
-	        return "\n" unless line
-	        return "#{line.gsub(/^\s+/, '').chomp}\n"
-	      end
-	      return "\n"
-	    end
-	end # class SourceManager
+        def source_reload
+            @script_lines.clear
+        end
+
+        def line_at(file, line) # :nodoc:
+            lines = source_for(file)
+            if lines
+                line = lines[line-1]
+                return "\n" unless line
+                return "#{line.gsub(/^\s+/, '').chomp}\n"
+            end
+            return "\n"
+        end
+    end # class SourceManager
 end # module XoredDebugger
 
 
