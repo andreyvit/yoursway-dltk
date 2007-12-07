@@ -29,9 +29,11 @@ import org.eclipse.dltk.core.IModelStatus;
 
 public class TclLanguageToolkit extends AbstractLanguageToolkit {
 
-	private static final String[] FILTER_EXTS = { "so", "a", "la", "c", "h", "log" };
+	private static final String[] FILTER_EXTS = { "so", "a", "la", "c", "h",
+			"log" };
 
-	private static final String[] EXTENSIONS = new String[] { "tcl", "exp", "test" };
+	private static final String[] EXTENSIONS = new String[] { "tcl", "exp",
+			"test" };
 
 	protected static Pattern[] header_patterns = {
 			Pattern.compile("#!\\s*/usr/bin/tclsh", Pattern.MULTILINE),
@@ -93,8 +95,10 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 		return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,
 				"Header not found", null);
 	}
-	private final int bufferLength = 2* 1024;
+
+	private final int bufferLength = 2 * 1024;
 	private byte buf[] = new byte[bufferLength + 1];
+
 	private boolean checkHeader(File file) throws FileNotFoundException,
 			IOException {
 		FileInputStream reader = null;
@@ -108,7 +112,7 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 				if (checkBufferForPatterns(header, header_patterns)) {
 					return true;
 				}
-				if( file.length() < bufferLength ) {
+				if (file.length() < bufferLength) {
 					if (checkBufferForPatterns(header, footer_patterns)) {
 						return true;
 					}
@@ -150,7 +154,8 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 
 	}
 
-	private boolean checkBufferForPatterns(CharSequence header, Pattern[] patterns) {
+	private boolean checkBufferForPatterns(CharSequence header,
+			Pattern[] patterns) {
 		for (int i = 0; i < patterns.length; i++) {
 			Matcher m = patterns[i].matcher(header);
 			if (m.find()) {
@@ -162,16 +167,19 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 
 	private boolean isSureNotTCLFile(IPath path) {
 		String extension = path.getFileExtension();
-		String[] exts = FILTER_EXTS;
-		for (int i = 0; i < exts.length; ++i) {
-			if (extension.equals(exts[i])) {
-				return true;
+		if (extension != null) {
+			String[] exts = FILTER_EXTS;
+			for (int i = 0; i < exts.length; ++i) {
+				if (extension.equals(exts[i])) {
+					return true;
+				}
 			}
 		}
 		if (Platform.getOS().equals(Platform.OS_LINUX)) {
 			extension = path.lastSegment();
 			if (extension.startsWith("lib")
-					&& Character.isDigit(extension.charAt(extension.length() - 1))) {
+					&& Character.isDigit(extension
+							.charAt(extension.length() - 1))) {
 				return true;
 			}
 		}
