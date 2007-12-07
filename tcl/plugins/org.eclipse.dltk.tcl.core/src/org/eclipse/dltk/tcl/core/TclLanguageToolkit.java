@@ -9,10 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.core;
 
-import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -30,23 +29,49 @@ import org.eclipse.dltk.core.IModelStatus;
 
 public class TclLanguageToolkit extends AbstractLanguageToolkit {
 
-	protected static String[] header_patterns = {
-			"#!\\s*/usr/bin/tclsh",
-			"#!\\s*/usr/bin/expect",
-			"#!\\s*/usr/bin/wish",
-			"# ;;; Local Variable: \\*\\*\\*\\s*\r*\n# ;;; mode: tcl \\*\\*\\*\\s*\r*\n# ;;; End: \\*\\*\\*",
-			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n#.*\\\\s*\r*\nexec .*tclsh .*",
-			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n#.*\\\\s*\r*\nexec .*expect .*",
-			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n#.*\\\\s*\r*\nexec .*wish.* .*",
-			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n\\s*exec .*wish.* .*",
-			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n\\s*exec .*tclsh.* .*",
-			"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n\\s*exec .*expect.* .*" };
-	protected static String[] footer_patterns = { "# ;;; Local Variable: \\*\\*\\*\\s*\r*\n# ;;; mode: tcl \\*\\*\\*\\s*\r*\n# ;;; End: \\*\\*\\*" };
+	private static final String[] FILTER_EXTS = { "so", "a", "la", "c", "h", "log" };
+
+	private static final String[] EXTENSIONS = new String[] { "tcl", "exp", "test" };
+
+	protected static Pattern[] header_patterns = {
+			Pattern.compile("#!\\s*/usr/bin/tclsh", Pattern.MULTILINE),
+			Pattern.compile("#!\\s*/usr/bin/expect", Pattern.MULTILINE),
+			Pattern.compile("#!\\s*/usr/bin/wish", Pattern.MULTILINE),
+			Pattern
+					.compile(
+							"# ;;; Local Variable: \\*\\*\\*\\s*\r*\n# ;;; mode: tcl \\*\\*\\*\\s*\r*\n# ;;; End: \\*\\*\\*",
+							Pattern.MULTILINE),
+			Pattern
+					.compile(
+							"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n#.*\\\\s*\r*\nexec .*tclsh .*",
+							Pattern.MULTILINE),
+			Pattern
+					.compile(
+							"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n#.*\\\\s*\r*\nexec .*expect .*",
+							Pattern.MULTILINE),
+			Pattern
+					.compile(
+							"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n#.*\\\\s*\r*\nexec .*wish.* .*",
+							Pattern.MULTILINE),
+			Pattern.compile(
+					"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n\\s*exec .*wish.* .*",
+					Pattern.MULTILINE),
+			Pattern.compile(
+					"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n\\s*exec .*tclsh.* .*",
+					Pattern.MULTILINE),
+			Pattern.compile(
+					"#!\\s*/bin/(ba|tc)?sh\\s*\r*\n\\s*exec .*expect.* .*",
+					Pattern.MULTILINE) };
+
+	protected static Pattern[] footer_patterns = { Pattern
+			.compile(
+					"# ;;; Local Variable: \\*\\*\\*\\s*\r*\n# ;;; mode: tcl \\*\\*\\*\\s*\r*\n# ;;; End: \\*\\*\\*",
+					Pattern.MULTILINE) };
 
 	protected static IDLTKLanguageToolkit sInstance = new TclLanguageToolkit();
 
 	public String[] getLanguageFileExtensions() {
-		return new String[] { "tcl", "exp", "test" };
+		return EXTENSIONS;
 	}
 
 	private IStatus isTclHeadered(File file) {
@@ -54,7 +79,7 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 			if (checkHeader(file)) {
 				return IModelStatus.VERIFIED_OK;
 			}
-			if (checkFooter(file)) {
+			if (file.length() > bufferLength && checkFooter(file)) {
 				return IModelStatus.VERIFIED_OK;
 			}
 		} catch (FileNotFoundException e) {
@@ -68,15 +93,13 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 		return new Status(IStatus.ERROR, TclPlugin.PLUGIN_ID, -1,
 				"Header not found", null);
 	}
-
+	private final int bufferLength = 2* 1024;
+	private byte buf[] = new byte[bufferLength + 1];
 	private boolean checkHeader(File file) throws FileNotFoundException,
 			IOException {
-		BufferedReader reader = null;
+		FileInputStream reader = null;
 		try {
-			reader = new BufferedReader(new FileReader(file));
-			int size = Math.min((int) file.length(), 2 * 1024); // DON'T
-			// read not more than 2k of file header.
-			char buf[] = new char[size + 1];
+			reader = new FileInputStream(file);
 			reader.read(buf);
 
 			String header = new String(buf);
@@ -85,6 +108,11 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 				if (checkBufferForPatterns(header, header_patterns)) {
 					return true;
 				}
+				if( file.length() < bufferLength ) {
+					if (checkBufferForPatterns(header, footer_patterns)) {
+						return true;
+					}
+				}
 			}
 			return false;
 		} finally {
@@ -92,7 +120,6 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 				try {
 					reader.close();
 				} catch (IOException e) {
-					// Nothing to do
 				}
 			}
 		}
@@ -102,14 +129,13 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 			IOException {
 		RandomAccessFile raFile = new RandomAccessFile(file, "r");
 		try {
-			long len = 2 * 1024;
+			long len = bufferLength;
 			long fileSize = raFile.length();
 			long offset = fileSize - len;
 			if (offset < 0) {
 				offset = 0;
 			}
 			raFile.seek(offset);
-			byte buf[] = new byte[(int) (len + 1)];
 			int code = raFile.read(buf);
 			if (code != -1) {
 				String content = new String(buf, 0, code);
@@ -124,10 +150,9 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 
 	}
 
-	private boolean checkBufferForPatterns(String header, String[] patterns) {
+	private boolean checkBufferForPatterns(CharSequence header, Pattern[] patterns) {
 		for (int i = 0; i < patterns.length; i++) {
-			Pattern p = Pattern.compile(patterns[i], Pattern.MULTILINE);
-			Matcher m = p.matcher(header);
+			Matcher m = patterns[i].matcher(header);
 			if (m.find()) {
 				return true;
 			}
@@ -136,17 +161,17 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 	}
 
 	private boolean isSureNotTCLFile(IPath path) {
-		String name = path.toOSString();
-		String[] exts = { "so", "a", "la", "c", "h", "log" };
+		String extension = path.getFileExtension();
+		String[] exts = FILTER_EXTS;
 		for (int i = 0; i < exts.length; ++i) {
-			if (name.endsWith("." + exts[i])) {
+			if (extension.equals(exts[i])) {
 				return true;
 			}
 		}
 		if (Platform.getOS().equals(Platform.OS_LINUX)) {
-			name = path.lastSegment();
-			if (name.startsWith("lib")
-					&& Character.isDigit(name.charAt(name.length() - 1))) {
+			extension = path.lastSegment();
+			if (extension.startsWith("lib")
+					&& Character.isDigit(extension.charAt(extension.length() - 1))) {
 				return true;
 			}
 		}

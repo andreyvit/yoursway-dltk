@@ -37,6 +37,7 @@ public class PriorityDLTKExtensionManager {
 	 * The preffered Id is not zero then
 	 */
 	private Map prefferedLevels = new HashMap();
+	private Map prefferedExtensionCache = new HashMap();
 
 	protected void setIdentifierValue(String identifier) {
 		this.identifier = identifier;
@@ -116,6 +117,9 @@ public class PriorityDLTKExtensionManager {
 
 	protected ElementInfo internalGetElementInfo(String id) {
 		initialize();
+		if( prefferedExtensionCache.containsKey(id)) {
+			return (ElementInfo) prefferedExtensionCache.get(id);
+		}
 		ElementInfo info = (ElementInfo) extensions.get(id);
 		Object level = prefferedLevels.get(id);
 		if( level != null) {
@@ -128,6 +132,7 @@ public class PriorityDLTKExtensionManager {
 				info = info.oldInfo;
 			}
 		}
+		prefferedExtensionCache.put(id, info);
 		return info;
 	}
 	protected ElementInfo getElementInfo(String id) {
@@ -188,9 +193,11 @@ public class PriorityDLTKExtensionManager {
 	}
 	public void setPreffetedLevel(String id, int level) {
 		if( level != -1 ) {
+			this.prefferedExtensionCache.clear();
 			this.prefferedLevels.put( id, new Integer(level));
 		}
 		else {
+			this.prefferedExtensionCache.clear();
 			this.prefferedLevels.put( id, null);
 		}
 	}
