@@ -493,7 +493,7 @@ public class TclPreferenceConstants extends PreferenceConstants {
 		store.setDefault(TclPreferenceConstants.EDITOR_FOLDING_INCLUDE_LIST,
 				"proc,namespace,catch,switch,if,while,for,foreach");
 		store.setDefault(TclPreferenceConstants.EDITOR_FOLDING_EXCLUDE_LIST,
-				"variable, global");
+				"variable,global");
 		store.setDefault(
 				TclPreferenceConstants.EDITOR_FOLDING_COMMENTS_WITH_NEWLINES,
 				true);
