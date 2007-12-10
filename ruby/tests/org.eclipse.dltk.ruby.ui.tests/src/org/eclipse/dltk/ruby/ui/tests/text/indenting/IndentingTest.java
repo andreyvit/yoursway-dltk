@@ -42,7 +42,7 @@ public class IndentingTest extends SuiteOfTestCases {
 	}
 
 	protected void setUp() throws Exception {
-		waitWorkbenchCreated();
+		//waitWorkbenchCreated();
 		tabStrategy = createStrategy(true);
 		spaceStrategy = createStrategy(false);
         super.setUp();
