@@ -20,6 +20,7 @@ import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.DocCmd;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextUtilities;
+import org.eclipse.ui.PlatformUI;
 
 public class IndentingTest extends SuiteOfTestCases {
 
@@ -30,7 +31,18 @@ public class IndentingTest extends SuiteOfTestCases {
 	private static final String PATH = "resources/indenting/";
 	private RubyAutoEditStrategy tabStrategy, spaceStrategy;
 
+	private void waitWorkbenchCreated() throws InterruptedException {
+		for(int i=0;i<60;i++) {
+			Thread.sleep(1000);
+			if(PlatformUI.isWorkbenchRunning()) {
+				return;
+			}
+		}
+		throw new RuntimeException("Workbench did not intitialized during a minute.");
+	}
+
 	protected void setUp() throws Exception {
+		waitWorkbenchCreated();
 		tabStrategy = createStrategy(true);
 		spaceStrategy = createStrategy(false);
         super.setUp();
