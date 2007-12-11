@@ -26,13 +26,19 @@ public class XOTclParseUtil {
 				if ((childs.get(i) instanceof XOTclInstanceVariable)) {
 					XOTclInstanceVariable inst = (XOTclInstanceVariable) childs
 							.get(i);
-					if (inst.getName().equals(commandNameValue)) {
+					String elementFQN = TclParseUtil.getElementFQN(inst, "::",
+							module);
+					if (inst.getName().equals(commandNameValue)
+							|| elementFQN.equals(commandNameValue)) {
 						return inst;
 					}
 				} else if (childs.get(i) instanceof XOTclExInstanceVariable) {
 					XOTclExInstanceVariable inst = (XOTclExInstanceVariable) childs
 							.get(i);
-					if (inst.getName().equals(commandNameValue)) {
+					String elementFQN = TclParseUtil.getElementFQN(inst, "::",
+							module);
+					if (inst.getName().equals(commandNameValue)
+							|| elementFQN.equals(commandNameValue)) {
 						return inst;
 					}
 				}

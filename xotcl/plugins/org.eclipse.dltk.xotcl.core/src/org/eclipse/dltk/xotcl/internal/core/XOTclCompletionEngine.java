@@ -86,7 +86,7 @@ public class XOTclCompletionEngine extends TclCompletionEngine {
 					FieldDeclaration var = XOTclParseUtil
 							.findXOTclInstanceVariableDeclarationFrom(
 									this.parser.getModule(), TclParseUtil
-											.getPrevParent(this.parser
+											.getScopeParent(this.parser
 													.getModule(), st), name);
 					if (var == null) {
 						var = searchFieldFromMixin(name);
@@ -127,6 +127,8 @@ public class XOTclCompletionEngine extends TclCompletionEngine {
 		removeSameFrom(methodNames, classes, new String(token));
 		findFields(token, true, toList(classes), "");
 		methodNames.addAll(classes);
+		// Also use not fully qualified names
+//		String elementFQN = TclParseUtil.getElementFQN(parent, "::", parser.getModule());
 	}
 
 	private void findXOTclClassessIn(ASTNode parent, Set classes) {
@@ -165,7 +167,7 @@ public class XOTclCompletionEngine extends TclCompletionEngine {
 				.getModule(), null);
 
 		try {
-			this.parser.getModule().traverse(new ASTVisitor() {
+			parent.traverse(new ASTVisitor() {
 				public boolean visit(Statement st) {
 					if (st instanceof XOTclInstanceVariable
 							|| st instanceof XOTclExInstanceVariable) {
